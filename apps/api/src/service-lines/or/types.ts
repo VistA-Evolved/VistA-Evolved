@@ -7,44 +7,44 @@
 
 // ── OR Room ────────────────────────────────────────────────────────
 
-export type OrRoomStatus = "available" | "in-use" | "turnover" | "blocked" | "maintenance";
+export type OrRoomStatus = 'available' | 'in-use' | 'turnover' | 'blocked' | 'maintenance';
 
 export interface OrRoom {
   id: string;
   name: string;
-  location: string;   // e.g., "Main OR", "Ambulatory Surgery"
+  location: string; // e.g., "Main OR", "Ambulatory Surgery"
   status: OrRoomStatus;
   currentCaseId?: string;
-  capabilities: string[];  // e.g., ["general", "cardiac", "neuro", "robotic"]
+  capabilities: string[]; // e.g., ["general", "cardiac", "neuro", "robotic"]
 }
 
 export interface OrBlock {
   id: string;
   roomId: string;
-  serviceId: string;   // surgical service that owns the block
-  dayOfWeek: number;   // 0=Sun, 6=Sat
-  startTime: string;   // HH:MM
-  endTime: string;     // HH:MM
+  serviceId: string; // surgical service that owns the block
+  dayOfWeek: number; // 0=Sun, 6=Sat
+  startTime: string; // HH:MM
+  endTime: string; // HH:MM
   surgeon?: string;
 }
 
 // ── OR Case ────────────────────────────────────────────────────────
 
 export type OrCaseStatus =
-  | "scheduled"
-  | "pre-op"
-  | "in-holding"
-  | "in-or"
-  | "under-anesthesia"
-  | "procedure-start"
-  | "procedure-end"
-  | "closing"
-  | "in-pacu"
-  | "recovered"
-  | "completed"
-  | "cancelled";
+  | 'scheduled'
+  | 'pre-op'
+  | 'in-holding'
+  | 'in-or'
+  | 'under-anesthesia'
+  | 'procedure-start'
+  | 'procedure-end'
+  | 'closing'
+  | 'in-pacu'
+  | 'recovered'
+  | 'completed'
+  | 'cancelled';
 
-export type CasePriority = "elective" | "urgent" | "emergent" | "add-on";
+export type CasePriority = 'elective' | 'urgent' | 'emergent' | 'add-on';
 
 export interface OrCase {
   id: string;
@@ -59,7 +59,7 @@ export interface OrCase {
   assistants: string[];
   procedure: string;
   procedureCpt?: string;
-  laterality?: "left" | "right" | "bilateral" | "na";
+  laterality?: 'left' | 'right' | 'bilateral' | 'na';
   anesthesia?: AnesthesiaRecord;
   milestones: OrMilestone[];
   createdAt: string;
@@ -74,7 +74,14 @@ export interface OrMilestone {
 
 // ── Anesthesia ─────────────────────────────────────────────────────
 
-export type AnesthesiaType = "general" | "regional" | "local" | "mac" | "spinal" | "epidural" | "combined";
+export type AnesthesiaType =
+  | 'general'
+  | 'regional'
+  | 'local'
+  | 'mac'
+  | 'spinal'
+  | 'epidural'
+  | 'combined';
 
 export interface AnesthesiaRecord {
   type: AnesthesiaType;
@@ -86,8 +93,8 @@ export interface AnesthesiaRecord {
   intubationTime?: string;
   emergenceTime?: string;
   extubationTime?: string;
-  agents: string[];           // e.g., ["propofol", "sevoflurane", "fentanyl"]
-  airway?: "ett" | "lma" | "mask" | "native";
+  agents: string[]; // e.g., ["propofol", "sevoflurane", "fentanyl"]
+  airway?: 'ett' | 'lma' | 'mask' | 'native';
   complications: string[];
 }
 

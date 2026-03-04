@@ -8,6 +8,7 @@ or returning ok:true without real effects.
 ## Implementation Steps
 
 ### A. Enhanced Click Audit Suite (`apps/web/e2e/click-audit-v2.spec.ts`)
+
 - Extend Phase 72 click-audit with portal basics, scheduling, messaging
 - Capture network requests per click as evidence
 - Write network evidence JSON to artifacts on completion
@@ -16,6 +17,7 @@ or returning ok:true without real effects.
   state change, pending label, or disabled-with-tooltip -- else FAIL
 
 ### B. No Fake Success Enforcement (`apps/api/src/middleware/no-fake-success.ts`)
+
 - Enhance existing Phase 72 middleware with stricter classification
 - Add `reportViolationsForVerifier()` export: returns structured violations
   suitable for automated gate checking
@@ -23,12 +25,14 @@ or returning ok:true without real effects.
   (critical, warning, exempt) for the verifier script to consume
 
 ### C. Network Evidence Capture (`apps/web/e2e/helpers/network-evidence.ts`)
+
 - Helper that attaches to page, records all API requests + responses
 - Writes `artifacts/verify/phase74/e2e/network.json` with:
   - url, method, status, timing, requestSize, responseSize
 - Used by click-audit-v2 automatically
 
 ### D. Tripwire Proof (`tests/tripwire/`)
+
 - `tripwire-dead-click.test.ts`: programmatically seeds a dead-click
   (button with no handler), runs audit logic, confirms it FAILS, then
   removes the seed and confirms PASS
@@ -38,6 +42,7 @@ or returning ok:true without real effects.
 - These are unit-level tests (no browser needed) that prove the gates work
 
 ### E. Verifier (`scripts/verify-phase74-reality-v2.ps1`)
+
 - 30+ gates covering all deliverables
 - TSC clean on api + web
 - Structural checks on all new files
@@ -53,6 +58,7 @@ or returning ok:true without real effects.
 ## Files Touched
 
 ### New
+
 - `apps/web/e2e/click-audit-v2.spec.ts`
 - `apps/web/e2e/helpers/network-evidence.ts`
 - `tests/tripwire/tripwire-dead-click.test.ts`
@@ -62,6 +68,7 @@ or returning ok:true without real effects.
 - `prompts/79-PHASE-74-REALITY-VERIFIER-V2/79-99-VERIFY.md`
 
 ### Modified
+
 - `apps/api/src/middleware/no-fake-success.ts` (add reportViolationsForVerifier)
 - `apps/api/src/index.ts` (add /admin/fake-success-audit endpoint)
 - `scripts/verify-latest.ps1` (point to Phase 74)

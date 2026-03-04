@@ -14,24 +14,24 @@ Add `POST /vista/notes` to create a new progress note for a patient.
 
 **Parameters (positional via `callRpcWithList`):**
 
-| # | Name     | Type    | Value                       | Notes                                    |
-|---|----------|---------|-----------------------------|------------------------------------------|
-| 1 | DFN      | literal | Patient IEN                 | From `POST body.dfn`                     |
-| 2 | TITLE    | literal | `10`                        | GENERAL NOTE (IEN 10, type DOC, 8925.1)  |
-| 3 | VDT      | literal | FileMan date `YYYMMDD.HHMM` | YYY = year − 1700                        |
-| 4 | VLOC     | literal | `2`                         | DR OFFICE (Hospital Location)            |
-| 5 | VSIT     | literal | `""`                        | Let VistA create visit                   |
-| 6 | TIUX     | list    | `{1202: DUZ, 1301: fmDate}` | Author + reference date                 |
-| 7 | VSTR     | literal | `""`                        | Auto-derived from VDT+VLOC              |
-| 8 | SUPPRESS | literal | `1`                         | Suppress alerts during batch create      |
-| 9 | NOASF    | literal | `0`                         |                                          |
+| #   | Name     | Type    | Value                       | Notes                                   |
+| --- | -------- | ------- | --------------------------- | --------------------------------------- |
+| 1   | DFN      | literal | Patient IEN                 | From `POST body.dfn`                    |
+| 2   | TITLE    | literal | `10`                        | GENERAL NOTE (IEN 10, type DOC, 8925.1) |
+| 3   | VDT      | literal | FileMan date `YYYMMDD.HHMM` | YYY = year − 1700                       |
+| 4   | VLOC     | literal | `2`                         | DR OFFICE (Hospital Location)           |
+| 5   | VSIT     | literal | `""`                        | Let VistA create visit                  |
+| 6   | TIUX     | list    | `{1202: DUZ, 1301: fmDate}` | Author + reference date                 |
+| 7   | VSTR     | literal | `""`                        | Auto-derived from VDT+VLOC              |
+| 8   | SUPPRESS | literal | `1`                         | Suppress alerts during batch create     |
+| 9   | NOASF    | literal | `0`                         |                                         |
 
 **TIUX Fields:**
 
-| Key    | Description        | Value          |
-|--------|--------------------|----------------|
-| `1202` | Author/Dictator    | DUZ of signer  |
-| `1301` | Reference Date     | FileMan date   |
+| Key    | Description     | Value         |
+| ------ | --------------- | ------------- |
+| `1202` | Author/Dictator | DUZ of signer |
+| `1301` | Reference Date  | FileMan date  |
 
 ### TIU SET DOCUMENT TEXT
 
@@ -41,20 +41,20 @@ Add `POST /vista/notes` to create a new progress note for a patient.
 
 **Parameters:**
 
-| # | Name     | Type    | Value                          |
-|---|----------|---------|--------------------------------|
-| 1 | TIUDA    | literal | Note IEN (from CREATE step)    |
-| 2 | TIUX     | list    | `{HDR: "1^1", TEXT,N,0: line}` |
-| 3 | SUPPRESS | literal | `0`                            |
+| #   | Name     | Type    | Value                          |
+| --- | -------- | ------- | ------------------------------ |
+| 1   | TIUDA    | literal | Note IEN (from CREATE step)    |
+| 2   | TIUX     | list    | `{HDR: "1^1", TEXT,N,0: line}` |
+| 3   | SUPPRESS | literal | `0`                            |
 
 **TIUX Keys for TEXT:**
 
-| Key          | Value                            |
-|--------------|----------------------------------|
-| `HDR`        | `page^totalPages` (e.g., `1^1`)  |
-| `TEXT,1,0`   | First line of note body          |
-| `TEXT,2,0`   | Second line                      |
-| `TEXT,N,0`   | Nth line                         |
+| Key        | Value                           |
+| ---------- | ------------------------------- |
+| `HDR`      | `page^totalPages` (e.g., `1^1`) |
+| `TEXT,1,0` | First line of note body         |
+| `TEXT,2,0` | Second line                     |
+| `TEXT,N,0` | Nth line                        |
 
 ## Two-Step Create Flow
 
@@ -83,22 +83,22 @@ approach CPRS uses (create record → set text → optionally sign).
 
 ## Title IEN Reference
 
-| IEN  | Name              | Type |
-|------|-------------------|------|
-| 3    | PROGRESS NOTES    | CL   |
-| 10   | GENERAL NOTE      | DOC  |
-| 15   | CLINICAL WARNING  | DOC  |
-| 81   | ADDENDUM          | DOC  |
+| IEN | Name             | Type |
+| --- | ---------------- | ---- |
+| 3   | PROGRESS NOTES   | CL   |
+| 10  | GENERAL NOTE     | DOC  |
+| 15  | CLINICAL WARNING | DOC  |
+| 81  | ADDENDUM         | DOC  |
 
 We use IEN **10 (GENERAL NOTE)** as the default for all created notes.
 
 ## Hospital Location Reference
 
-| IEN | Name            |
-|-----|-----------------|
-| 1   | LAB DIV 050...  |
-| 2   | DR OFFICE       |
-| 3   | SECURE MESSAGING|
+| IEN | Name             |
+| --- | ---------------- |
+| 1   | LAB DIV 050...   |
+| 2   | DR OFFICE        |
+| 3   | SECURE MESSAGING |
 
 We use IEN **2 (DR OFFICE)** as the default location.
 
@@ -114,6 +114,7 @@ Example: February 11, 2026 at 3:15 PM → `3260211.1515`
 ## TIU DOCUMENTS BY CONTEXT — Updated for Phase 7B
 
 The GET /vista/notes endpoint now fetches both:
+
 - **CONTEXT=1** (all signed notes)
 - **CONTEXT=2** (unsigned notes)
 
@@ -125,6 +126,7 @@ first (newest at top). This ensures newly created notes appear immediately.
 ### POST /vista/notes
 
 **Request:**
+
 ```json
 {
   "dfn": "1",
@@ -134,6 +136,7 @@ first (newest at top). This ensures newly created notes appear immediately.
 ```
 
 **Response (success):**
+
 ```json
 {
   "ok": true,
@@ -144,6 +147,7 @@ first (newest at top). This ensures newly created notes appear immediately.
 ```
 
 **Response (failure):**
+
 ```json
 {
   "ok": false,

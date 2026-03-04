@@ -14,10 +14,10 @@
  * fires for authenticated requests (session-required routes).
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { getSession } from "../auth/session-store.js";
-import { getTenant } from "../config/tenant-config.js";
-import { log } from "../lib/logger.js";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { getSession } from '../auth/session-store.js';
+import { getTenant } from '../config/tenant-config.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Request decoration                                                  */
@@ -41,13 +41,11 @@ export async function getRequestTenantId(request: FastifyRequest): Promise<strin
   if (ctx) return ctx.tenantId;
 
   // Fallback: read from session
-  const token =
-    (request.cookies as any)?.ehr_session ??
-    (request.cookies as any)?.portal_session;
+  const token = (request.cookies as any)?.ehr_session ?? (request.cookies as any)?.portal_session;
   if (!token) return null;
 
   const session = await getSession(token);
-  return session?.tenantId ?? "default";
+  return session?.tenantId ?? 'default';
 }
 
 /* ------------------------------------------------------------------ */
@@ -65,60 +63,53 @@ export async function getRequestTenantId(request: FastifyRequest): Promise<strin
  * Unauthenticated requests (health checks, login, etc.) pass through
  * with tenantId = null.
  */
-export async function registerTenantContextMiddleware(
-  server: FastifyInstance,
-): Promise<void> {
-  server.addHook(
-    "onRequest",
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      // Extract session token
-      const token =
-        (request.cookies as any)?.ehr_session ??
-        (request.cookies as any)?.portal_session;
+export async function registerTenantContextMiddleware(server: FastifyInstance): Promise<void> {
+  server.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
+    // Extract session token
+    const token = (request.cookies as any)?.ehr_session ?? (request.cookies as any)?.portal_session;
 
-      if (!token) {
-        // No session -- unauthenticated route, skip
-        return;
-      }
+    if (!token) {
+      // No session -- unauthenticated route, skip
+      return;
+    }
 
-      const session = await getSession(token);
-      if (!session) {
-        // Invalid/expired session -- auth middleware will handle 401
-        return;
-      }
+    const session = await getSession(token);
+    if (!session) {
+      // Invalid/expired session -- auth middleware will handle 401
+      return;
+    }
 
-      const tenantId = session.tenantId || "default";
+    const tenantId = session.tenantId || 'default';
 
-      // Validate tenant exists
-      const tenant = getTenant(tenantId);
-      if (!tenant) {
-        log.warn("Tenant not found for session", {
-          tenantId,
-          duz: session.duz,
-        });
-        // Fall back to default tenant rather than hard-fail
-        // (single-tenant deployments always use "default")
-        const defaultTenant = getTenant("default");
-        if (!defaultTenant) {
-          reply.code(403).send({
-            ok: false,
-            error: "Tenant configuration not found",
-          });
-          return;
-        }
-        (request as any).__tenantCtx = {
-          tenantId: "default",
-          facilityName: defaultTenant.facilityName,
-        } satisfies TenantContext;
-        return;
-      }
-
-      (request as any).__tenantCtx = {
+    // Validate tenant exists
+    const tenant = getTenant(tenantId);
+    if (!tenant) {
+      log.warn('Tenant not found for session', {
         tenantId,
-        facilityName: tenant.facilityName,
+        duz: session.duz,
+      });
+      // Fall back to default tenant rather than hard-fail
+      // (single-tenant deployments always use "default")
+      const defaultTenant = getTenant('default');
+      if (!defaultTenant) {
+        reply.code(403).send({
+          ok: false,
+          error: 'Tenant configuration not found',
+        });
+        return;
+      }
+      (request as any).__tenantCtx = {
+        tenantId: 'default',
+        facilityName: defaultTenant.facilityName,
       } satisfies TenantContext;
-    },
-  );
+      return;
+    }
 
-  log.info("Tenant context middleware registered");
+    (request as any).__tenantCtx = {
+      tenantId,
+      facilityName: tenant.facilityName,
+    } satisfies TenantContext;
+  });
+
+  log.info('Tenant context middleware registered');
 }

@@ -1,8 +1,9 @@
-# Phase 63 Summary -- Scheduling v1 (VistA SD* First) + Portal Appointments
+# Phase 63 Summary -- Scheduling v1 (VistA SD\* First) + Portal Appointments
 
 ## What Changed
 
 ### API (apps/api/)
+
 - **Scheduling adapter** (adapters/scheduling/): Rewrote hollow Phase 37C stub
   into a real VistA adapter using SDOE and SD W/L RPCs. Includes encounter
   list parsing, clinic/provider lookup, VistA date conversion, in-memory
@@ -19,15 +20,18 @@
 - **Security**: /scheduling/ routes require session auth.
 
 ### Web (apps/web/)
+
 - **Clinician scheduling page** (cprs/scheduling/page.tsx): 4-tab dashboard
   (Clinic Schedule, Patient Appointments, Request Queue, Clinics & Providers).
-  Fetches real data from /scheduling/* endpoints.
+  Fetches real data from /scheduling/\* endpoints.
 
 ### Portal (apps/portal/)
+
 - **Appointments page**: No change needed - backend change flows through
   existing fetchAppointments().
 
 ### Scripts
+
 - **SD plan builder** (scripts/scheduling/buildSdPlan.ts): Scans Vivian +
   sandbox for all SD*/SDOE*/SDEC*/SC* RPCs, classifies capabilities, outputs
   artifacts/phase63/sd-plan.json.

@@ -14,16 +14,28 @@
 
 import type { Translator } from './translator.js';
 import type { TranslatorResult, ParsedResponse, TransactionEnvelope } from './types.js';
-import type { X12TransactionSet, EdiClaim837, EdiEligibilityInquiry270, EdiAcknowledgment, EdiRemittance835, EdiClaimStatusResponse277 } from '../edi/types.js';
+import type { X12TransactionSet, EdiClaim837 } from '../edi/types.js';
 import { serialize837, serialize270 } from '../edi/x12-serializer.js';
 
 /* ── Required field checks per transaction ───────────────────── */
 
 const REQUIRED_FIELDS: Record<string, string[]> = {
-  '837P': ['submitterInfo.npi', 'billingProvider.npi', 'subscriber.memberId', 'claimInfo.claimId', 'serviceLines'],
-  '837I': ['submitterInfo.npi', 'billingProvider.npi', 'subscriber.memberId', 'claimInfo.claimId', 'serviceLines'],
-  '270':  ['informationSource.payerId', 'informationReceiver.npi', 'subscriber.memberId'],
-  '276':  ['payerId', 'providerNpi', 'patientMemberId', 'claimId'],
+  '837P': [
+    'submitterInfo.npi',
+    'billingProvider.npi',
+    'subscriber.memberId',
+    'claimInfo.claimId',
+    'serviceLines',
+  ],
+  '837I': [
+    'submitterInfo.npi',
+    'billingProvider.npi',
+    'subscriber.memberId',
+    'claimInfo.claimId',
+    'serviceLines',
+  ],
+  '270': ['informationSource.payerId', 'informationReceiver.npi', 'subscriber.memberId'],
+  '276': ['payerId', 'providerNpi', 'patientMemberId', 'claimId'],
 };
 
 function getNestedField(obj: Record<string, unknown>, path: string): unknown {
@@ -48,7 +60,7 @@ export const localScaffoldTranslator: Translator = {
 
   validate(
     transactionSet: X12TransactionSet,
-    canonicalObject: Record<string, unknown>,
+    canonicalObject: Record<string, unknown>
   ): Array<{ field: string; message: string; severity: 'error' | 'warning' }> {
     const errors: Array<{ field: string; message: string; severity: 'error' | 'warning' }> = [];
     const required = REQUIRED_FIELDS[transactionSet];
@@ -78,7 +90,7 @@ export const localScaffoldTranslator: Translator = {
   buildX12(
     transactionSet: X12TransactionSet,
     canonicalObject: Record<string, unknown>,
-    envelope: TransactionEnvelope,
+    envelope: TransactionEnvelope
   ): TranslatorResult {
     const options = {
       senderId: envelope.senderId,
@@ -125,10 +137,7 @@ export const localScaffoldTranslator: Translator = {
     };
   },
 
-  parseX12(
-    transactionSet: X12TransactionSet,
-    rawX12: string,
-  ): ParsedResponse {
+  parseX12(transactionSet: X12TransactionSet, rawX12: string): ParsedResponse {
     // Parse response based on transaction type
     switch (transactionSet) {
       case '999':
@@ -146,7 +155,13 @@ export const localScaffoldTranslator: Translator = {
           transactionSet,
           canonical: { raw: rawX12 },
           accepted: false,
-          errors: [{ code: 'UNSUPPORTED', description: `Parsing not implemented for ${transactionSet}`, severity: 'error' }],
+          errors: [
+            {
+              code: 'UNSUPPORTED',
+              description: `Parsing not implemented for ${transactionSet}`,
+              severity: 'error',
+            },
+          ],
         };
     }
   },
@@ -155,7 +170,7 @@ export const localScaffoldTranslator: Translator = {
 /* ── Segment counter ─────────────────────────────────────────── */
 
 function countSegments(x12: string): number {
-  return x12.split('~').filter(s => s.trim().length > 0).length;
+  return x12.split('~').filter((s) => s.trim().length > 0).length;
 }
 
 /* ── 276 Scaffold Builder ────────────────────────────────────── */
@@ -170,30 +185,40 @@ function build276Scaffold(obj: Record<string, unknown>, env: TransactionEnvelope
   const segments: string[] = [];
 
   // ISA
-  segments.push(`ISA${sep}00${sep}          ${sep}00${sep}          ${sep}${env.isa.senderQualifier}${sep}${env.isa.senderId}${sep}${env.isa.receiverQualifier}${sep}${env.isa.receiverId}${sep}${env.isa.date}${sep}${env.isa.time}${sep}^${sep}00501${sep}${env.controlNumber}${sep}0${sep}${env.isa.usageIndicator}${sep}:`);
+  segments.push(
+    `ISA${sep}00${sep}          ${sep}00${sep}          ${sep}${env.isa.senderQualifier}${sep}${env.isa.senderId}${sep}${env.isa.receiverQualifier}${sep}${env.isa.receiverId}${sep}${env.isa.date}${sep}${env.isa.time}${sep}^${sep}00501${sep}${env.controlNumber}${sep}0${sep}${env.isa.usageIndicator}${sep}:`
+  );
 
   // GS
-  segments.push(`GS${sep}${env.gs.functionalCode}${sep}${env.gs.senderId}${sep}${env.gs.receiverId}${sep}${dateStr}${sep}${timeStr}${sep}${env.gs.controlNumber}${sep}X${sep}${env.gs.versionCode}`);
+  segments.push(
+    `GS${sep}${env.gs.functionalCode}${sep}${env.gs.senderId}${sep}${env.gs.receiverId}${sep}${dateStr}${sep}${timeStr}${sep}${env.gs.controlNumber}${sep}X${sep}${env.gs.versionCode}`
+  );
 
   // ST
   segments.push(`ST${sep}276${sep}${env.controlNumber.slice(-4)}`);
 
   // BHT
-  segments.push(`BHT${sep}0010${sep}13${sep}${env.correlationId.slice(0, 30)}${sep}${dateStr}${sep}${timeStr}`);
+  segments.push(
+    `BHT${sep}0010${sep}13${sep}${env.correlationId.slice(0, 30)}${sep}${dateStr}${sep}${timeStr}`
+  );
 
   // HL - Information Source
   segments.push(`HL${sep}1${sep}${sep}20${sep}1`);
 
   // NM1 - Payer
   const payerId = (obj.payerId ?? '') as string;
-  segments.push(`NM1${sep}PR${sep}2${sep}${payerId}${sep}${sep}${sep}${sep}${sep}PI${sep}${payerId}`);
+  segments.push(
+    `NM1${sep}PR${sep}2${sep}${payerId}${sep}${sep}${sep}${sep}${sep}PI${sep}${payerId}`
+  );
 
   // HL - Information Receiver
   segments.push(`HL${sep}2${sep}1${sep}21${sep}1`);
 
   // NM1 - Provider
   const providerNpi = (obj.providerNpi ?? '') as string;
-  segments.push(`NM1${sep}41${sep}2${sep}PROVIDER${sep}${sep}${sep}${sep}${sep}XX${sep}${providerNpi}`);
+  segments.push(
+    `NM1${sep}41${sep}2${sep}PROVIDER${sep}${sep}${sep}${sep}${sep}XX${sep}${providerNpi}`
+  );
 
   // HL - Billing Provider
   segments.push(`HL${sep}3${sep}2${sep}19${sep}1`);
@@ -232,8 +257,12 @@ function buildGenericScaffold(txSet: X12TransactionSet, env: TransactionEnvelope
   const term = '~';
   const segments: string[] = [];
 
-  segments.push(`ISA${sep}00${sep}          ${sep}00${sep}          ${sep}${env.isa.senderQualifier}${sep}${env.isa.senderId}${sep}${env.isa.receiverQualifier}${sep}${env.isa.receiverId}${sep}${env.isa.date}${sep}${env.isa.time}${sep}^${sep}00501${sep}${env.controlNumber}${sep}0${sep}${env.isa.usageIndicator}${sep}:`);
-  segments.push(`GS${sep}${env.gs.functionalCode}${sep}${env.gs.senderId}${sep}${env.gs.receiverId}${sep}${env.isa.date}${sep}${env.isa.time}${sep}${env.gs.controlNumber}${sep}X${sep}${env.gs.versionCode}`);
+  segments.push(
+    `ISA${sep}00${sep}          ${sep}00${sep}          ${sep}${env.isa.senderQualifier}${sep}${env.isa.senderId}${sep}${env.isa.receiverQualifier}${sep}${env.isa.receiverId}${sep}${env.isa.date}${sep}${env.isa.time}${sep}^${sep}00501${sep}${env.controlNumber}${sep}0${sep}${env.isa.usageIndicator}${sep}:`
+  );
+  segments.push(
+    `GS${sep}${env.gs.functionalCode}${sep}${env.gs.senderId}${sep}${env.gs.receiverId}${sep}${env.isa.date}${sep}${env.isa.time}${sep}${env.gs.controlNumber}${sep}X${sep}${env.gs.versionCode}`
+  );
   segments.push(`ST${sep}${txSet}${sep}${env.controlNumber.slice(-4)}`);
   segments.push(`SE${sep}2${sep}${env.controlNumber.slice(-4)}`);
   segments.push(`GE${sep}1${sep}${env.gs.controlNumber}`);
@@ -245,7 +274,7 @@ function buildGenericScaffold(txSet: X12TransactionSet, env: TransactionEnvelope
 /* ── Response Parsers (scaffold-level) ───────────────────────── */
 
 function parse999Response(raw: string): ParsedResponse {
-  const segments = raw.split('~').filter(s => s.trim());
+  const segments = raw.split('~').filter((s) => s.trim());
   let accepted = true;
   let referenceControlNumber: string | undefined;
   const errors: Array<{ code: string; description: string; severity: string }> = [];
@@ -279,7 +308,7 @@ function parse999Response(raw: string): ParsedResponse {
 }
 
 function parse271Response(raw: string): ParsedResponse {
-  const segments = raw.split('~').filter(s => s.trim());
+  const segments = raw.split('~').filter((s) => s.trim());
   const benefits: Array<Record<string, unknown>> = [];
   let subscriberStatus = 'unknown';
   let referenceControlNumber: string | undefined;
@@ -313,7 +342,7 @@ function parse271Response(raw: string): ParsedResponse {
 }
 
 function parse277Response(raw: string): ParsedResponse {
-  const segments = raw.split('~').filter(s => s.trim());
+  const segments = raw.split('~').filter((s) => s.trim());
   let statusCategoryCode = '';
   let statusCode = '';
   let referenceControlNumber: string | undefined;
@@ -332,20 +361,29 @@ function parse277Response(raw: string): ParsedResponse {
   }
 
   // A0-A3 categories generally mean "in process" or accepted
-  const accepted = statusCategoryCode.startsWith('A') &&
-                   !['A4', 'A5', 'A6', 'A7', 'A8'].includes(statusCategoryCode);
+  const accepted =
+    statusCategoryCode.startsWith('A') &&
+    !['A4', 'A5', 'A6', 'A7', 'A8'].includes(statusCategoryCode);
 
   return {
     transactionSet: '277',
     referenceControlNumber,
     canonical: { statusCategoryCode, statusCode },
     accepted,
-    errors: accepted ? [] : [{ code: statusCategoryCode, description: `Status: ${statusCategoryCode}/${statusCode}`, severity: 'warning' }],
+    errors: accepted
+      ? []
+      : [
+          {
+            code: statusCategoryCode,
+            description: `Status: ${statusCategoryCode}/${statusCode}`,
+            severity: 'warning',
+          },
+        ],
   };
 }
 
 function parse835Response(raw: string): ParsedResponse {
-  const segments = raw.split('~').filter(s => s.trim());
+  const segments = raw.split('~').filter((s) => s.trim());
   let totalPayment = 0;
   let referenceControlNumber: string | undefined;
   const claimPayments: Array<Record<string, unknown>> = [];

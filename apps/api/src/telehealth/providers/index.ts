@@ -10,8 +10,8 @@
  * 3. Set TELEHEALTH_PROVIDER=<name> in .env.local
  */
 
-import type { TelehealthProvider } from "../types.js";
-import { JitsiProvider } from "./jitsi-provider.js";
+import type { TelehealthProvider } from '../types.js';
+import { JitsiProvider } from './jitsi-provider.js';
 
 /* ------------------------------------------------------------------ */
 /* Stub provider for testing / future providers                         */
@@ -22,12 +22,12 @@ import { JitsiProvider } from "./jitsi-provider.js";
  * for future provider implementations (Zoom, Twilio, WebEx, etc.).
  */
 class StubProvider implements TelehealthProvider {
-  readonly name = "Stub";
+  readonly name = 'Stub';
 
   async createRoom(appointmentId: string) {
     return {
       roomId: `stub-${appointmentId}-${Date.now()}`,
-      meta: { provider: "stub", note: "Not a real video provider" },
+      meta: { provider: 'stub', note: 'Not a real video provider' },
     };
   }
 
@@ -69,14 +69,12 @@ let _instance: TelehealthProvider | null = null;
 export function getTelehealthProvider(): TelehealthProvider {
   if (_instance) return _instance;
 
-  const providerName = (process.env.TELEHEALTH_PROVIDER || "jitsi").toLowerCase();
+  const providerName = (process.env.TELEHEALTH_PROVIDER || 'jitsi').toLowerCase();
   const factory = PROVIDERS[providerName];
 
   if (!factory) {
-    const available = Object.keys(PROVIDERS).join(", ");
-    throw new Error(
-      `Unknown telehealth provider "${providerName}". Available: ${available}`
-    );
+    const available = Object.keys(PROVIDERS).join(', ');
+    throw new Error(`Unknown telehealth provider "${providerName}". Available: ${available}`);
   }
 
   _instance = factory();

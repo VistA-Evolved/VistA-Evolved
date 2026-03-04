@@ -5,6 +5,7 @@
 Implement Phase 33: AI Gateway with governed, grounded, safe AI assist.
 
 Three initial use cases:
+
 1. Intake summary — clinician-ready note draft grounded in patient chart
 2. Lab education — patient portal "explain this lab term" feature
 3. Portal search — navigation assistant for the patient portal
@@ -39,6 +40,7 @@ NOT ALLOWED: diagnosis, treatment plans, prescribing guidance, autonomous orderi
 ## Files Touched
 
 ### New
+
 - `apps/api/src/ai/types.ts`
 - `apps/api/src/ai/model-registry.ts`
 - `apps/api/src/ai/prompt-registry.ts`
@@ -57,6 +59,7 @@ NOT ALLOWED: diagnosis, treatment plans, prescribing guidance, autonomous orderi
 - `docs/runbooks/phase33-ai.md`
 
 ### Modified
+
 - `apps/api/src/index.ts`
 - `apps/web/src/components/cprs/panels/index.ts`
 - `apps/web/src/components/cprs/CPRSTabStrip.tsx`

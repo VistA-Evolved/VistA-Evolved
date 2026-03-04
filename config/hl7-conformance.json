@@ -92,24 +92,57 @@
     }
   ],
   "securityConsiderations": {
-    "phiSegments": ["PID", "NK1", "GT1", "IN1", "IN2", "ACC", "PD1", "DG1", "PR1", "AL1", "OBX", "NTE"],
+    "phiSegments": [
+      "PID",
+      "NK1",
+      "GT1",
+      "IN1",
+      "IN2",
+      "ACC",
+      "PD1",
+      "DG1",
+      "PR1",
+      "AL1",
+      "OBX",
+      "NTE"
+    ],
     "auditTrail": "hash-chained, PHI-redacted message event store",
     "transportSecurity": "TLS 1.2+ required for production MLLP connections",
     "messageIntegrity": "SHA-256 hash of each raw message stored in event log"
   },
   "integrationProfiles": {
     "ihe": [
-      { "profile": "PIX", "status": "planned", "description": "Patient Identifier Cross-referencing" },
+      {
+        "profile": "PIX",
+        "status": "planned",
+        "description": "Patient Identifier Cross-referencing"
+      },
       { "profile": "PDQ", "status": "planned", "description": "Patient Demographics Query" },
-      { "profile": "XDS.b", "status": "planned", "description": "Cross-Enterprise Document Sharing" },
-      { "profile": "PAM", "status": "supported", "description": "Patient Administration Management" },
+      {
+        "profile": "XDS.b",
+        "status": "planned",
+        "description": "Cross-Enterprise Document Sharing"
+      },
+      {
+        "profile": "PAM",
+        "status": "supported",
+        "description": "Patient Administration Management"
+      },
       { "profile": "LTW", "status": "supported", "description": "Laboratory Testing Workflow" }
     ],
     "onc": [
       { "criterion": "170.315(a)(1)", "status": "partial", "description": "CCDS / CPOE" },
       { "criterion": "170.315(b)(1)", "status": "partial", "description": "Transitions of Care" },
-      { "criterion": "170.315(b)(3)", "status": "partial", "description": "Electronic Prescribing" },
-      { "criterion": "170.315(f)(1)", "status": "partial", "description": "Transmission to Immunization Registries" }
+      {
+        "criterion": "170.315(b)(3)",
+        "status": "partial",
+        "description": "Electronic Prescribing"
+      },
+      {
+        "criterion": "170.315(f)(1)",
+        "status": "partial",
+        "description": "Transmission to Immunization Registries"
+      }
     ]
   },
   "fhirR4Bridge": {

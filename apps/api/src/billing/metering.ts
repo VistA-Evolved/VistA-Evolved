@@ -12,8 +12,8 @@
  * No PHI — counters are tenant-scoped, not patient-scoped.
  */
 
-import type { MeterEvent, MeteringRecord } from "./types.js";
-import { getBillingProvider } from "./types.js";
+import type { MeterEvent, MeteringRecord } from './types.js';
+import { getBillingProvider } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Counter store                                                       */
@@ -26,7 +26,7 @@ interface TenantCounters {
 
 const store = new Map<string, TenantCounters>();
 
-const FLUSH_INTERVAL_MS = parseInt(process.env.METERING_FLUSH_INTERVAL_MS || "60000", 10); // 1 min
+const FLUSH_INTERVAL_MS = parseInt(process.env.METERING_FLUSH_INTERVAL_MS || '60000', 10); // 1 min
 const MAX_TENANTS = 10_000;
 
 /* ------------------------------------------------------------------ */
@@ -127,10 +127,12 @@ let flushTimer: ReturnType<typeof setInterval> | null = null;
 export function startMeteringFlush(): void {
   if (flushTimer) return;
   flushTimer = setInterval(() => {
-    flushMeters().catch(() => { /* swallow — logged by provider */ });
+    flushMeters().catch(() => {
+      /* swallow — logged by provider */
+    });
   }, FLUSH_INTERVAL_MS);
   // Don't keep process alive just for metering flush
-  if (flushTimer && typeof flushTimer === "object" && "unref" in flushTimer) {
+  if (flushTimer && typeof flushTimer === 'object' && 'unref' in flushTimer) {
     (flushTimer as any).unref();
   }
 }

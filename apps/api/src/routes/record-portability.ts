@@ -19,9 +19,9 @@
  *   GET  /portal/record/stats           — Portability stats
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { validateCredentials } from "../vista/config.js";
-import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { validateCredentials } from '../vista/config.js';
+import { connect, disconnect, callRpc } from '../vista/rpcBrokerClient.js';
 import {
   buildTextPdf,
   formatAllergiesForPdf,
@@ -31,7 +31,7 @@ import {
   formatDemographicsForPdf,
   formatImmunizationsForPdf,
   formatLabsForPdf,
-} from "../services/portal-pdf.js";
+} from '../services/portal-pdf.js';
 import {
   createExport,
   downloadExport,
@@ -45,7 +45,7 @@ import {
   getShareAudit,
   getPortabilityStats,
   type ExportFormat,
-} from "../services/record-portability-store.js";
+} from '../services/record-portability-store.js';
 
 /* ================================================================== */
 /* Init — portal session lookup injection (same pattern as portal-core) */
@@ -67,14 +67,11 @@ export function initRecordPortability(
   portalSessionLookup = sessionLookup;
 }
 
-function requirePortalSession(
-  request: FastifyRequest,
-  reply: FastifyReply
-): PortalSessionData {
+function requirePortalSession(request: FastifyRequest, reply: FastifyReply): PortalSessionData {
   const session = portalSessionLookup?.(request);
   if (!session) {
-    reply.code(401).send({ ok: false, error: "Not authenticated" });
-    throw new Error("No portal session");
+    reply.code(401).send({ ok: false, error: 'Not authenticated' });
+    throw new Error('No portal session');
   }
   return session;
 }
@@ -84,8 +81,13 @@ function requirePortalSession(
 /* ================================================================== */
 
 const EXPORTABLE_SECTIONS = [
-  "allergies", "problems", "vitals", "medications",
-  "demographics", "immunizations", "labs",
+  'allergies',
+  'problems',
+  'vitals',
+  'medications',
+  'demographics',
+  'immunizations',
+  'labs',
 ];
 
 interface SummaryResult {
@@ -96,7 +98,10 @@ interface SummaryResult {
   pendingTargets: string[];
 }
 
-async function fetchSectionData(dfn: string, section: string): Promise<{
+async function fetchSectionData(
+  dfn: string,
+  section: string
+): Promise<{
   data: unknown[];
   rpcUsed: string[];
   pendingTargets: string[];
@@ -110,80 +115,98 @@ async function fetchSectionData(dfn: string, section: string): Promise<{
     let lines: string[];
 
     switch (section) {
-      case "allergies":
-        lines = await callRpc("ORQQAL LIST", [dfn]);
-        rpcUsed.push("ORQQAL LIST");
+      case 'allergies':
+        lines = await callRpc('ORQQAL LIST', [dfn]);
+        rpcUsed.push('ORQQAL LIST');
         return {
-          data: lines.map((l) => {
-            const p = l.split("^");
-            return p[0]?.trim() ? { id: p[0].trim(), allergen: p[1]?.trim() || "", severity: p[2]?.trim() || "" } : null;
-          }).filter(Boolean),
-          rpcUsed, pendingTargets,
+          data: lines
+            .map((l) => {
+              const p = l.split('^');
+              return p[0]?.trim()
+                ? { id: p[0].trim(), allergen: p[1]?.trim() || '', severity: p[2]?.trim() || '' }
+                : null;
+            })
+            .filter(Boolean),
+          rpcUsed,
+          pendingTargets,
         };
 
-      case "problems":
-        lines = await callRpc("ORWCH PROBLEM LIST", [dfn, "0"]);
-        rpcUsed.push("ORWCH PROBLEM LIST");
+      case 'problems':
+        lines = await callRpc('ORWCH PROBLEM LIST', [dfn, '0']);
+        rpcUsed.push('ORWCH PROBLEM LIST');
         return {
-          data: lines.map((l) => {
-            const p = l.split("^");
-            return p[0]?.trim() && p[1]?.trim() ? { id: p[0].trim(), text: p[1].trim(), status: p[2]?.trim() || "active" } : null;
-          }).filter(Boolean),
-          rpcUsed, pendingTargets,
+          data: lines
+            .map((l) => {
+              const p = l.split('^');
+              return p[0]?.trim() && p[1]?.trim()
+                ? { id: p[0].trim(), text: p[1].trim(), status: p[2]?.trim() || 'active' }
+                : null;
+            })
+            .filter(Boolean),
+          rpcUsed,
+          pendingTargets,
         };
 
-      case "vitals":
-        lines = await callRpc("ORQQVI VITALS", [dfn, "3000101", "3991231"]);
-        rpcUsed.push("ORQQVI VITALS");
+      case 'vitals':
+        lines = await callRpc('ORQQVI VITALS', [dfn, '3000101', '3991231']);
+        rpcUsed.push('ORQQVI VITALS');
         return {
-          data: lines.map((l) => {
-            const p = l.split("^");
-            return p[0]?.trim() ? { type: p[1]?.trim() || "", value: p[2]?.trim() || "" } : null;
-          }).filter(Boolean),
-          rpcUsed, pendingTargets,
+          data: lines
+            .map((l) => {
+              const p = l.split('^');
+              return p[0]?.trim() ? { type: p[1]?.trim() || '', value: p[2]?.trim() || '' } : null;
+            })
+            .filter(Boolean),
+          rpcUsed,
+          pendingTargets,
         };
 
-      case "medications":
-        lines = await callRpc("ORWPS ACTIVE", [dfn]);
-        rpcUsed.push("ORWPS ACTIVE");
+      case 'medications':
+        lines = await callRpc('ORWPS ACTIVE', [dfn]);
+        rpcUsed.push('ORWPS ACTIVE');
         const meds: { drugName: string; sig: string }[] = [];
         let cur: { drugName: string; sig: string } | null = null;
         for (const line of lines) {
-          if (line.startsWith("~")) {
+          if (line.startsWith('~')) {
             if (cur) meds.push(cur);
-            const p = line.substring(1).split("^");
-            cur = { drugName: p[2]?.trim() || p[1]?.trim() || "Unknown", sig: "" };
-          } else if (cur && (line.startsWith("\\") || line.startsWith(" "))) {
-            const trimmed = line.replace(/^[\\ ]+/, "").trim();
-            if (trimmed.toLowerCase().startsWith("sig:")) cur.sig = trimmed.substring(4).trim();
+            const p = line.substring(1).split('^');
+            cur = { drugName: p[2]?.trim() || p[1]?.trim() || 'Unknown', sig: '' };
+          } else if (cur && (line.startsWith('\\') || line.startsWith(' '))) {
+            const trimmed = line.replace(/^[\\ ]+/, '').trim();
+            if (trimmed.toLowerCase().startsWith('sig:')) cur.sig = trimmed.substring(4).trim();
           }
         }
         if (cur) meds.push(cur);
         return { data: meds, rpcUsed, pendingTargets };
 
-      case "demographics":
-        lines = await callRpc("ORWPT SELECT", [dfn]);
-        rpcUsed.push("ORWPT SELECT");
-        const raw = lines[0] || "";
-        const p = raw.split("^");
-        if (p[0] === "-1" || !p[0]) return { data: [], rpcUsed, pendingTargets };
-        return { data: [{ name: p[0], sex: p[1] || "", dob: p[2] || "" }], rpcUsed, pendingTargets };
+      case 'demographics':
+        lines = await callRpc('ORWPT SELECT', [dfn]);
+        rpcUsed.push('ORWPT SELECT');
+        const raw = lines[0] || '';
+        const p = raw.split('^');
+        if (p[0] === '-1' || !p[0]) return { data: [], rpcUsed, pendingTargets };
+        return {
+          data: [{ name: p[0], sex: p[1] || '', dob: p[2] || '' }],
+          rpcUsed,
+          pendingTargets,
+        };
 
-      case "immunizations":
+      case 'immunizations':
         // Integration-pending in WorldVistA sandbox
-        pendingTargets.push("ORQQPX IMMUN LIST");
+        pendingTargets.push('ORQQPX IMMUN LIST');
         return { data: [], rpcUsed, pendingTargets };
 
-      case "labs":
+      case 'labs':
         try {
-          lines = await callRpc("ORWLRR INTERIMG", [dfn, "", "1", ""]);
-          rpcUsed.push("ORWLRR INTERIMG");
+          lines = await callRpc('ORWLRR INTERIMG', [dfn, '', '1', '']);
+          rpcUsed.push('ORWLRR INTERIMG');
           return {
             data: lines.map((l) => ({ text: l })).filter((l) => l.text.trim()),
-            rpcUsed, pendingTargets,
+            rpcUsed,
+            pendingTargets,
           };
         } catch {
-          pendingTargets.push("ORWLRR INTERIMG");
+          pendingTargets.push('ORWLRR INTERIMG');
           return { data: [], rpcUsed, pendingTargets };
         }
 
@@ -193,7 +216,9 @@ async function fetchSectionData(dfn: string, section: string): Promise<{
   } catch {
     return { data: [], rpcUsed, pendingTargets };
   } finally {
-    try { disconnect(); } catch {}
+    try {
+      disconnect();
+    } catch {}
   }
 }
 
@@ -218,18 +243,20 @@ async function generatePatientSummary(
     validateCredentials();
     await connect();
     // Try to get abbreviated health summary
-    const reportLines = await callRpc("ORWRP REPORT TEXT", [dfn, "1", "", "", "1", "0"]);
-    allRpcUsed.push("ORWRP REPORT TEXT");
-    hsText = reportLines.join("\n").trim();
+    const reportLines = await callRpc('ORWRP REPORT TEXT', [dfn, '1', '', '', '1', '0']);
+    allRpcUsed.push('ORWRP REPORT TEXT');
+    hsText = reportLines.join('\n').trim();
     if (hsText.length < 20) hsText = null; // Too short = no real data
     disconnect();
   } catch {
-    try { disconnect(); } catch {}
+    try {
+      disconnect();
+    } catch {}
     // Will fall through to section-by-section
   }
 
   if (hsText) {
-    pdfSections.push({ heading: "VistA Health Summary", lines: hsText.split("\n") });
+    pdfSections.push({ heading: 'VistA Health Summary', lines: hsText.split('\n') });
     htmlParts.push(`<h2>VistA Health Summary</h2><pre>${escapeHtml(hsText)}</pre>`);
   }
 
@@ -240,18 +267,37 @@ async function generatePatientSummary(
     allRpcUsed.push(...result.rpcUsed);
     allPendingTargets.push(...result.pendingTargets);
 
-    let formatted: { heading: string; lines: string[] } = { heading: sec, lines: ["No data available."] };
+    let formatted: { heading: string; lines: string[] } = {
+      heading: sec,
+      lines: ['No data available.'],
+    };
     switch (sec) {
-      case "allergies": formatted = formatAllergiesForPdf(result.data as any[]); break;
-      case "problems": formatted = formatProblemsForPdf(result.data as any[]); break;
-      case "vitals": formatted = formatVitalsForPdf(result.data as any[]); break;
-      case "medications": formatted = formatMedicationsForPdf(result.data as any[]); break;
-      case "demographics": formatted = formatDemographicsForPdf(result.data as any[]); break;
-      case "immunizations": formatted = formatImmunizationsForPdf(result.data as any[]); break;
-      case "labs": formatted = formatLabsForPdf(result.data as any[]); break;
+      case 'allergies':
+        formatted = formatAllergiesForPdf(result.data as any[]);
+        break;
+      case 'problems':
+        formatted = formatProblemsForPdf(result.data as any[]);
+        break;
+      case 'vitals':
+        formatted = formatVitalsForPdf(result.data as any[]);
+        break;
+      case 'medications':
+        formatted = formatMedicationsForPdf(result.data as any[]);
+        break;
+      case 'demographics':
+        formatted = formatDemographicsForPdf(result.data as any[]);
+        break;
+      case 'immunizations':
+        formatted = formatImmunizationsForPdf(result.data as any[]);
+        break;
+      case 'labs':
+        formatted = formatLabsForPdf(result.data as any[]);
+        break;
     }
     pdfSections.push(formatted);
-    htmlParts.push(`<h2>${escapeHtml(formatted.heading)}</h2><pre>${formatted.lines.map(escapeHtml).join("\n")}</pre>`);
+    htmlParts.push(
+      `<h2>${escapeHtml(formatted.heading)}</h2><pre>${formatted.lines.map(escapeHtml).join('\n')}</pre>`
+    );
   }
 
   // Build output
@@ -270,10 +316,10 @@ async function generatePatientSummary(
 
 function escapeHtml(text: string): string {
   return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 function buildHtmlDocument(
@@ -299,11 +345,11 @@ function buildHtmlDocument(
 <body>
   <h1>${escapeHtml(title)}</h1>
   <p style="color:#6c757d;font-size:13px;">Generated: ${new Date().toISOString()}</p>
-  ${bodyParts.join("\n  ")}
+  ${bodyParts.join('\n  ')}
   <div class="footer">
     <p><strong>Data Sources:</strong></p>
-    <p class="rpc-info">RPCs used: ${rpcUsed.length > 0 ? rpcUsed.join(", ") : "none"}</p>
-    ${pendingTargets.length > 0 ? `<p class="rpc-info">Integration pending: ${pendingTargets.join(", ")}</p>` : ""}
+    <p class="rpc-info">RPCs used: ${rpcUsed.length > 0 ? rpcUsed.join(', ') : 'none'}</p>
+    ${pendingTargets.length > 0 ? `<p class="rpc-info">Integration pending: ${pendingTargets.join(', ')}</p>` : ''}
     <p>This document was generated from VistA electronic health records. It may not include all clinical information.</p>
   </div>
 </body>
@@ -314,20 +360,18 @@ function buildHtmlDocument(
 /* Route plugin                                                         */
 /* ================================================================== */
 
-export default async function recordPortabilityRoutes(
-  server: FastifyInstance
-): Promise<void> {
-
+export default async function recordPortabilityRoutes(server: FastifyInstance): Promise<void> {
   /* ---------------------------------------------------------------- */
   /* POST /portal/record/export — generate summary, return token      */
   /* ---------------------------------------------------------------- */
-  server.post("/portal/record/export", async (request, reply) => {
+  server.post('/portal/record/export', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const body = (request.body as any) || {};
-    const format: ExportFormat = body.format === "html" ? "html" : "pdf";
-    const sections: string[] = Array.isArray(body.sections) && body.sections.length > 0
-      ? body.sections.filter((s: string) => EXPORTABLE_SECTIONS.includes(s))
-      : EXPORTABLE_SECTIONS;
+    const format: ExportFormat = body.format === 'html' ? 'html' : 'pdf';
+    const sections: string[] =
+      Array.isArray(body.sections) && body.sections.length > 0
+        ? body.sections.filter((s: string) => EXPORTABLE_SECTIONS.includes(s))
+        : EXPORTABLE_SECTIONS;
 
     const summary = await generatePatientSummary(
       session.patientDfn,
@@ -336,9 +380,8 @@ export default async function recordPortabilityRoutes(
       format
     );
 
-    const content = format === "html"
-      ? Buffer.from(summary.htmlContent, "utf-8")
-      : summary.pdfBuffer;
+    const content =
+      format === 'html' ? Buffer.from(summary.htmlContent, 'utf-8') : summary.pdfBuffer;
 
     const result = createExport({
       patientDfn: session.patientDfn,
@@ -350,7 +393,7 @@ export default async function recordPortabilityRoutes(
       pendingTargets: summary.pendingTargets,
     });
 
-    if ("error" in result) {
+    if ('error' in result) {
       return reply.code(429).send({ ok: false, error: result.error });
     }
 
@@ -368,25 +411,28 @@ export default async function recordPortabilityRoutes(
   /* ---------------------------------------------------------------- */
   /* GET /portal/record/export/:token — download by token             */
   /* ---------------------------------------------------------------- */
-  server.get("/portal/record/export/:token", async (request, reply) => {
+  server.get('/portal/record/export/:token', async (request, reply) => {
     const { token } = request.params as { token: string };
     const result = downloadExport(token);
 
-    if ("error" in result) {
+    if ('error' in result) {
       return reply.code(result.status).send({ ok: false, error: result.error });
     }
 
-    const ext = result.format === "html" ? "html" : "pdf";
-    const mime = result.format === "html" ? "text/html" : "application/pdf";
-    reply.header("Content-Type", mime);
-    reply.header("Content-Disposition", `attachment; filename="health-summary-${Date.now()}.${ext}"`);
+    const ext = result.format === 'html' ? 'html' : 'pdf';
+    const mime = result.format === 'html' ? 'text/html' : 'application/pdf';
+    reply.header('Content-Type', mime);
+    reply.header(
+      'Content-Disposition',
+      `attachment; filename="health-summary-${Date.now()}.${ext}"`
+    );
     return reply.send(result.content);
   });
 
   /* ---------------------------------------------------------------- */
   /* GET /portal/record/exports — list patient's exports              */
   /* ---------------------------------------------------------------- */
-  server.get("/portal/record/exports", async (request, reply) => {
+  server.get('/portal/record/exports', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const exports = getPatientExports(session.patientDfn);
     return reply.send({ ok: true, exports });
@@ -395,12 +441,12 @@ export default async function recordPortabilityRoutes(
   /* ---------------------------------------------------------------- */
   /* POST /portal/record/export/:token/revoke — revoke an export      */
   /* ---------------------------------------------------------------- */
-  server.post("/portal/record/export/:token/revoke", async (request, reply) => {
+  server.post('/portal/record/export/:token/revoke', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { token } = request.params as { token: string };
     const ok = revokeExport(token, session.patientDfn);
     if (!ok) {
-      return reply.code(404).send({ ok: false, error: "Export not found or already revoked." });
+      return reply.code(404).send({ ok: false, error: 'Export not found or already revoked.' });
     }
     return reply.send({ ok: true, revokedAt: new Date().toISOString() });
   });
@@ -408,20 +454,20 @@ export default async function recordPortabilityRoutes(
   /* ---------------------------------------------------------------- */
   /* POST /portal/record/share — create share link                    */
   /* ---------------------------------------------------------------- */
-  server.post("/portal/record/share", async (request, reply) => {
+  server.post('/portal/record/share', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const body = (request.body as any) || {};
 
     if (!body.exportToken) {
-      return reply.code(400).send({ ok: false, error: "exportToken is required." });
+      return reply.code(400).send({ ok: false, error: 'exportToken is required.' });
     }
 
     const ttlMinutes = Math.max(1, Math.min(1440, Number(body.ttlMinutes) || 60));
-    const label = String(body.label || "Shared health summary").slice(0, 200);
-    const patientDob = String(body.patientDob || "");
+    const label = String(body.label || 'Shared health summary').slice(0, 200);
+    const patientDob = String(body.patientDob || '');
 
     if (!patientDob) {
-      return reply.code(400).send({ ok: false, error: "patientDob is required (YYYY-MM-DD)." });
+      return reply.code(400).send({ ok: false, error: 'patientDob is required (YYYY-MM-DD).' });
     }
 
     const result = createRecordShare({
@@ -434,7 +480,7 @@ export default async function recordPortabilityRoutes(
       ttlMs: ttlMinutes * 60 * 1000,
     });
 
-    if ("error" in result) {
+    if ('error' in result) {
       return reply.code(400).send({ ok: false, error: result.error });
     }
 
@@ -452,12 +498,12 @@ export default async function recordPortabilityRoutes(
   /* ---------------------------------------------------------------- */
   /* POST /portal/record/share/:id/revoke                             */
   /* ---------------------------------------------------------------- */
-  server.post("/portal/record/share/:id/revoke", async (request, reply) => {
+  server.post('/portal/record/share/:id/revoke', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
     const ok = revokeRecordShare(id, session.patientDfn);
     if (!ok) {
-      return reply.code(404).send({ ok: false, error: "Share not found or already revoked." });
+      return reply.code(404).send({ ok: false, error: 'Share not found or already revoked.' });
     }
     return reply.send({ ok: true, revokedAt: new Date().toISOString() });
   });
@@ -465,7 +511,7 @@ export default async function recordPortabilityRoutes(
   /* ---------------------------------------------------------------- */
   /* GET /portal/record/shares — list patient's share links           */
   /* ---------------------------------------------------------------- */
-  server.get("/portal/record/shares", async (request, reply) => {
+  server.get('/portal/record/shares', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const shares = getPatientShares(session.patientDfn).map((s) => ({
       id: s.id,
@@ -485,7 +531,7 @@ export default async function recordPortabilityRoutes(
   /* ---------------------------------------------------------------- */
   /* GET /portal/record/share/audit — access audit for patient        */
   /* ---------------------------------------------------------------- */
-  server.get("/portal/record/share/audit", async (request, reply) => {
+  server.get('/portal/record/share/audit', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const events = getShareAudit(session.patientDfn);
     return reply.send({ ok: true, events });
@@ -494,11 +540,11 @@ export default async function recordPortabilityRoutes(
   /* ---------------------------------------------------------------- */
   /* GET /portal/record/share/preview/:token — public preview         */
   /* ---------------------------------------------------------------- */
-  server.get("/portal/record/share/preview/:token", async (request, reply) => {
+  server.get('/portal/record/share/preview/:token', async (request, reply) => {
     const { token } = request.params as { token: string };
     const preview = getSharePreview(token);
     if (!preview) {
-      return reply.code(404).send({ ok: false, error: "Share not found or expired." });
+      return reply.code(404).send({ ok: false, error: 'Share not found or expired.' });
     }
     return reply.send({ ok: true, ...preview });
   });
@@ -506,35 +552,37 @@ export default async function recordPortabilityRoutes(
   /* ---------------------------------------------------------------- */
   /* POST /portal/record/share/verify/:token — verify + download      */
   /* ---------------------------------------------------------------- */
-  server.post("/portal/record/share/verify/:token", async (request, reply) => {
+  server.post('/portal/record/share/verify/:token', async (request, reply) => {
     const { token } = request.params as { token: string };
     const body = (request.body as any) || {};
-    const accessCode = String(body.accessCode || "");
-    const patientDob = String(body.patientDob || "");
+    const accessCode = String(body.accessCode || '');
+    const patientDob = String(body.patientDob || '');
 
     if (!accessCode || !patientDob) {
-      return reply.code(400).send({ ok: false, error: "accessCode and patientDob are required." });
+      return reply.code(400).send({ ok: false, error: 'accessCode and patientDob are required.' });
     }
 
     const result = verifyShareAccess(token, accessCode, patientDob, request.ip);
 
-    if ("error" in result) {
+    if ('error' in result) {
       const status = result.retryable ? 403 : 410;
-      return reply.code(status).send({ ok: false, error: result.error, retryable: result.retryable });
+      return reply
+        .code(status)
+        .send({ ok: false, error: result.error, retryable: result.retryable });
     }
 
     // Return the decrypted content directly
-    const ext = result.format === "html" ? "html" : "pdf";
-    const mime = result.format === "html" ? "text/html" : "application/pdf";
-    reply.header("Content-Type", mime);
-    reply.header("Content-Disposition", `inline; filename="shared-health-summary.${ext}"`);
+    const ext = result.format === 'html' ? 'html' : 'pdf';
+    const mime = result.format === 'html' ? 'text/html' : 'application/pdf';
+    reply.header('Content-Type', mime);
+    reply.header('Content-Disposition', `inline; filename="shared-health-summary.${ext}"`);
     return reply.send(result.content);
   });
 
   /* ---------------------------------------------------------------- */
   /* GET /portal/record/stats                                         */
   /* ---------------------------------------------------------------- */
-  server.get("/portal/record/stats", async (request, reply) => {
+  server.get('/portal/record/stats', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     if (!session) return; // guard
     const stats = getPortabilityStats();

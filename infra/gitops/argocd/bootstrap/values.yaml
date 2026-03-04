@@ -12,9 +12,9 @@ configs:
     server.insecure: true
   cm:
     # Allow local repo path (for kind testing)
-    resource.customizations: ""
+    resource.customizations: ''
     # Disable HTTPS redirect in dev
-    url: "http://localhost:8080"
+    url: 'http://localhost:8080'
 
 server:
   replicas: 1

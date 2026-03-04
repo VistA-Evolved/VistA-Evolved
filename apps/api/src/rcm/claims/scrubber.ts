@@ -26,7 +26,7 @@ import type {
 
 export interface ScrubRule {
   id: string;
-  pack: string;           // "core", "philhealth", "us_medicare", etc.
+  pack: string; // "core", "philhealth", "us_medicare", etc.
   description: string;
   severity: ScrubSeverity;
   /** Returns finding if rule fails, undefined if passes */
@@ -125,7 +125,7 @@ const CORE_RULES: ScrubRule[] = [
     description: 'One diagnosis should be marked as primary',
     severity: 'warning',
     evaluate: (c) => {
-      if (c.diagnoses.length > 0 && !c.diagnoses.some(d => d.isPrimary)) {
+      if (c.diagnoses.length > 0 && !c.diagnoses.some((d) => d.isPrimary)) {
         return {
           ruleId: 'core.primary_diagnosis',
           severity: 'warning',
@@ -223,7 +223,7 @@ const PH_RULES: ScrubRule[] = [
       const esoaCutoff = new Date('2026-04-01');
       const dos = new Date(c.dateOfService);
       if (dos >= esoaCutoff) {
-        const hasEsoa = c.attachments.some(a => a.category === 'esoa');
+        const hasEsoa = c.attachments.some((a) => a.category === 'esoa');
         if (!hasEsoa) {
           return {
             ruleId: 'ph.esoa_required',
@@ -261,7 +261,7 @@ const PH_RULES: ScrubRule[] = [
     description: 'PhilHealth requires ICD-10 diagnosis codes',
     severity: 'error',
     evaluate: (c) => {
-      const nonIcd10 = c.diagnoses.filter(d => d.qualifier !== 'icd10');
+      const nonIcd10 = c.diagnoses.filter((d) => d.qualifier !== 'icd10');
       if (nonIcd10.length > 0) {
         return {
           ruleId: 'ph.icd10_required',
@@ -281,7 +281,7 @@ const PH_RULES: ScrubRule[] = [
     severity: 'warning',
     evaluate: (c) => {
       if (c.claimType === 'professional') {
-        const nonRvs = c.procedures.filter(p => p.codeType !== 'rvs');
+        const nonRvs = c.procedures.filter((p) => p.codeType !== 'rvs');
         if (nonRvs.length > 0) {
           return {
             ruleId: 'ph.rvs_code',
@@ -352,7 +352,7 @@ const US_RULES: ScrubRule[] = [
     description: 'US claims should use CPT or HCPCS procedure codes',
     severity: 'warning',
     evaluate: (c) => {
-      const nonUs = c.procedures.filter(p => p.codeType !== 'cpt' && p.codeType !== 'hcpcs');
+      const nonUs = c.procedures.filter((p) => p.codeType !== 'cpt' && p.codeType !== 'hcpcs');
       if (nonUs.length > 0) {
         return {
           ruleId: 'us.cpt_hcpcs',
@@ -400,10 +400,7 @@ export interface ScrubOptions {
  * Deterministic scrubber: evaluates a ClaimCase against selected rule packs.
  * Returns a ClaimScrubResult. Same input always produces the same output.
  */
-export function scrubClaim(
-  claim: ClaimCase,
-  options: ScrubOptions = {},
-): ClaimScrubResult {
+export function scrubClaim(claim: ClaimCase, options: ScrubOptions = {}): ClaimScrubResult {
   const startMs = Date.now();
 
   // Determine which packs to run
@@ -426,8 +423,8 @@ export function scrubClaim(
   }
 
   // Determine outcome
-  const hasError = findings.some(f => f.severity === 'error');
-  const hasWarning = findings.some(f => f.severity === 'warning');
+  const hasError = findings.some((f) => f.severity === 'error');
+  const hasWarning = findings.some((f) => f.severity === 'warning');
   let outcome: ScrubOutcome = 'pass';
   if (hasError) outcome = 'fail';
   else if (hasWarning) outcome = 'warn';

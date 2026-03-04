@@ -6,14 +6,14 @@
 
 ## Phase Map
 
-| Phase ID | Folder Prefix | Title | Status | Dependencies |
-|----------|---------------|-------|--------|--------------|
-| 286 | 286 | Prompt Ordering Collision Fix + Index Regeneration | Implemented | — |
-| 287 | 294 | Real TLS in Dev + K8s | Planned | P286 |
-| 288 | 295 | VistA Distro Modernization (VistA-VEHU-M + Synthea) | Planned | P286 |
-| 289 | 296 | Production-Scale Load Test Campaign | Planned | P286 |
-| 290 | 297 | Interop Certification Harness (FHIR/SMART + HL7v2) | Planned | P286 |
-| 291 | 298 | Certification Evidence Pack v2 | Planned | P286–290 |
+| Phase ID | Folder Prefix | Title                                               | Status      | Dependencies |
+| -------- | ------------- | --------------------------------------------------- | ----------- | ------------ |
+| 286      | 286           | Prompt Ordering Collision Fix + Index Regeneration  | Implemented | —            |
+| 287      | 294           | Real TLS in Dev + K8s                               | Planned     | P286         |
+| 288      | 295           | VistA Distro Modernization (VistA-VEHU-M + Synthea) | Planned     | P286         |
+| 289      | 296           | Production-Scale Load Test Campaign                 | Planned     | P286         |
+| 290      | 297           | Interop Certification Harness (FHIR/SMART + HL7v2)  | Planned     | P286         |
+| 291      | 298           | Certification Evidence Pack v2                      | Planned     | P286–290     |
 
 ## Dependency Graph
 

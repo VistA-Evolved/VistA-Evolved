@@ -21,39 +21,46 @@ This phase makes the system deployable, observable, and reliable for production 
 ## Implementation Summary
 
 ### A) Deployment packaging
+
 - `apps/api/Dockerfile` — multi-stage Node 22 Alpine build
 - `apps/web/Dockerfile` — multi-stage Next.js standalone build
 - `docker-compose.prod.yml` — nginx + api + web
 - `nginx/nginx.conf` — reverse proxy with TLS placeholder
 
 ### B) Config & secrets
+
 - `apps/api/src/config/env.ts` — Zod-validated env config
 - `scripts/secret-scan.mjs` — CI secret pattern scanner
 - Updated `apps/api/.env.example` with all supported env vars
 
 ### C) Health/readiness/version
+
 - `/health` — process alive (existing, updated version tag)
 - `/ready` — VistA connectivity probe (existing)
 - `/version` — NEW: commit SHA, build time, node version
 - `/metrics` — enhanced with process memory stats
 
 ### D) Observability
+
 - Request correlation IDs (existing from Phase 15)
 - Enhanced metrics endpoint with process memory
 - Audit events (existing 63+ actions from Phase 15C)
 - Degraded mode banner (new)
 
 ### E) Reliability & resilience
+
 - RPC wrapper with timeout + circuit breaker + retry (existing from Phase 15B)
 - `DegradedBanner.tsx` — polls /ready, shows warning, blocks writes when degraded
 - Wired into CPRS layout
 
 ### F) Performance hardening
+
 - RPC caching already exists (Phase 15B)
 - Pagination already enforced on list endpoints
 - `scripts/load-test.mjs` — smoke performance test harness
 
 ### G) Documentation
+
 - `docs/runbooks/prod-deploy-phase16.md`
 - `docs/runbooks/observability-phase16.md`
 - `docs/runbooks/backup-restore-phase16.md`
@@ -61,6 +68,7 @@ This phase makes the system deployable, observable, and reliable for production 
 - Updated `docs/runbooks/README.md`
 
 ### H) Prompts & verifier
+
 - `prompts/18-PHASE-16-PRODUCTION-READINESS/18-01-Phase16-IMPLEMENT.md`
 - `prompts/18-PHASE-16-PRODUCTION-READINESS/18-99-Phase16-VERIFY.md`
 - `scripts/verify-phase16-production-readiness.ps1`
@@ -69,6 +77,7 @@ This phase makes the system deployable, observable, and reliable for production 
 ## Files Touched
 
 ### New files
+
 - `apps/api/Dockerfile`
 - `apps/web/Dockerfile`
 - `docker-compose.prod.yml`
@@ -86,6 +95,7 @@ This phase makes the system deployable, observable, and reliable for production 
 - `prompts/18-PHASE-16-PRODUCTION-READINESS/18-99-Phase16-VERIFY.md`
 
 ### Modified files
+
 - `apps/api/src/index.ts` — /version endpoint, enhanced /metrics, updated version tag
 - `apps/api/.env.example` — all supported env vars documented
 - `apps/web/src/app/cprs/layout.tsx` — added DegradedBanner

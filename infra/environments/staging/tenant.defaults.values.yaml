@@ -10,7 +10,7 @@ api:
       cpu: 250m
       memory: 512Mi
     limits:
-      cpu: "1"
+      cpu: '1'
       memory: 1Gi
 
 vista:
@@ -20,7 +20,7 @@ vista:
 
 backup:
   enabled: true
-  schedule: "0 3 * * *"
+  schedule: '0 3 * * *'
   retention:
     keepDays: 14
 

@@ -22,42 +22,44 @@
  *   2 — baseline file missing (run with --update first)
  */
 
-import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from "node:fs";
-import { join, dirname, relative } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { join, dirname, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, "..", "..");
-const SRC_DIR = join(ROOT, "apps", "api", "src");
-const BASELINE_PATH = join(ROOT, "docs", "qa", "integration-pending-baseline.json");
-const BACKLOG_PATH = join(ROOT, "docs", "qa", "integration-pending-backlog.md");
+const ROOT = join(__dirname, '..', '..');
+const SRC_DIR = join(ROOT, 'apps', 'api', 'src');
+const BASELINE_PATH = join(ROOT, 'docs', 'qa', 'integration-pending-baseline.json');
+const BACKLOG_PATH = join(ROOT, 'docs', 'qa', 'integration-pending-backlog.md');
 
 /* ── CLI ──────────────────────────────────────────────────── */
 
 const args = process.argv.slice(2);
-function flag(name) { return args.includes(name); }
+function flag(name) {
+  return args.includes(name);
+}
 function opt(name, fallback) {
   const idx = args.indexOf(name);
   return idx >= 0 && args[idx + 1] ? args[idx + 1] : fallback;
 }
 
-const UPDATE_MODE = flag("--update");
-const REPORT_MODE = flag("--report");
-const TOLERANCE = Number(opt("--tolerance", "0"));
+const UPDATE_MODE = flag('--update');
+const REPORT_MODE = flag('--report');
+const TOLERANCE = Number(opt('--tolerance', '0'));
 
 /* ── File Scanner ─────────────────────────────────────────── */
 
 const PATTERN = /integration[._-]pending/gi;
-const EXTENSIONS = new Set([".ts", ".tsx"]);
+const EXTENSIONS = new Set(['.ts', '.tsx']);
 
 function walkDir(dir) {
   const results = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) {
-      if (entry.name === "node_modules" || entry.name === ".git") continue;
+      if (entry.name === 'node_modules' || entry.name === '.git') continue;
       results.push(...walkDir(full));
-    } else if (EXTENSIONS.has(entry.name.slice(entry.name.lastIndexOf(".")))) {
+    } else if (EXTENSIONS.has(entry.name.slice(entry.name.lastIndexOf('.')))) {
       results.push(full);
     }
   }
@@ -65,7 +67,7 @@ function walkDir(dir) {
 }
 
 function countOccurrences(filepath) {
-  const content = readFileSync(filepath, "utf-8");
+  const content = readFileSync(filepath, 'utf-8');
   const matches = content.match(PATTERN);
   return matches ? matches.length : 0;
 }
@@ -78,7 +80,7 @@ function scanAll() {
   for (const f of files) {
     const count = countOccurrences(f);
     if (count > 0) {
-      const rel = relative(ROOT, f).replace(/\\/g, "/");
+      const rel = relative(ROOT, f).replace(/\\/g, '/');
       results.push({ file: rel, count });
       total += count;
     }
@@ -92,7 +94,7 @@ function scanAll() {
 
 function loadBaseline() {
   if (!existsSync(BASELINE_PATH)) return null;
-  const raw = readFileSync(BASELINE_PATH, "utf-8");
+  const raw = readFileSync(BASELINE_PATH, 'utf-8');
   // Strip BOM (BUG-064)
   const clean = raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw;
   return JSON.parse(clean);
@@ -101,29 +103,29 @@ function loadBaseline() {
 function saveBaseline(scan) {
   const baseline = {
     _meta: {
-      description: "Integration-pending budget baseline (Phase 480)",
+      description: 'Integration-pending budget baseline (Phase 480)',
       updatedAt: new Date().toISOString(),
-      updatedBy: "integration-pending-budget.mjs --update",
+      updatedBy: 'integration-pending-budget.mjs --update',
     },
     total: scan.total,
     tolerance: 0,
     files: scan.files,
   };
-  writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + "\n", "utf-8");
+  writeFileSync(BASELINE_PATH, JSON.stringify(baseline, null, 2) + '\n', 'utf-8');
   return baseline;
 }
 
 /* ── Main ─────────────────────────────────────────────────── */
 
 function main() {
-  console.log("Integration-Pending Budget Gate (Phase 480)\n");
+  console.log('Integration-Pending Budget Gate (Phase 480)\n');
 
   const scan = scanAll();
   console.log(`Current count: ${scan.total} occurrences in ${scan.files.length} files\n`);
 
   // Report mode
   if (REPORT_MODE) {
-    console.log("Per-file breakdown:");
+    console.log('Per-file breakdown:');
     for (const { file, count } of scan.files) {
       console.log(`  ${String(count).padStart(4)}  ${file}`);
     }
@@ -143,7 +145,7 @@ function main() {
   // Compare mode (default)
   const baseline = loadBaseline();
   if (!baseline) {
-    console.error("No baseline found. Run with --update first:");
+    console.error('No baseline found. Run with --update first:');
     console.error(`  node scripts/qa-gates/integration-pending-budget.mjs --update`);
     process.exit(2);
   }
@@ -151,15 +153,17 @@ function main() {
   const limit = baseline.total + TOLERANCE;
   const delta = scan.total - baseline.total;
 
-  console.log(`Baseline:  ${baseline.total} (from ${baseline._meta?.updatedAt || "unknown"})`);
+  console.log(`Baseline:  ${baseline.total} (from ${baseline._meta?.updatedAt || 'unknown'})`);
   console.log(`Current:   ${scan.total}`);
-  console.log(`Delta:     ${delta >= 0 ? "+" : ""}${delta}`);
+  console.log(`Delta:     ${delta >= 0 ? '+' : ''}${delta}`);
   console.log(`Tolerance: ${TOLERANCE}`);
   console.log();
 
   if (scan.total <= limit) {
     if (delta < 0) {
-      console.log(`PASS  Budget improved by ${Math.abs(delta)}! Consider running --update to lower the baseline.`);
+      console.log(
+        `PASS  Budget improved by ${Math.abs(delta)}! Consider running --update to lower the baseline.`
+      );
     } else if (delta === 0) {
       console.log(`PASS  Budget unchanged.`);
     } else {
@@ -179,13 +183,13 @@ function main() {
     });
 
     if (newFiles.length > 0) {
-      console.log("New files with integration-pending:");
+      console.log('New files with integration-pending:');
       for (const { file, count } of newFiles) {
         console.log(`  +${count}  ${file}`);
       }
     }
     if (grownFiles.length > 0) {
-      console.log("Files with increased counts:");
+      console.log('Files with increased counts:');
       for (const { file, count } of grownFiles) {
         const baseEntry = (baseline.files || []).find((b) => b.file === file);
         console.log(`  ${baseEntry.count} -> ${count}  ${file}`);
@@ -193,7 +197,7 @@ function main() {
     }
 
     console.log();
-    console.log("To fix: resolve integration-pending items or update baseline with justification.");
+    console.log('To fix: resolve integration-pending items or update baseline with justification.');
     process.exit(1);
   }
 }

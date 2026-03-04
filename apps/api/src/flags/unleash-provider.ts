@@ -12,12 +12,8 @@
  *   UNLEASH_REFRESH_INTERVAL_MS - Cache refresh interval (default: 15000)
  */
 
-import type {
-  FeatureFlagProvider,
-  FlagContext,
-  FlagEvaluationResult,
-} from "./types.js";
-import { DbFeatureFlagProvider } from "./db-provider.js";
+import type { FeatureFlagProvider, FlagContext, FlagEvaluationResult } from './types.js';
+import { DbFeatureFlagProvider } from './db-provider.js';
 
 // ─── Types ─────────────────────────────────────────────────────
 
@@ -48,7 +44,7 @@ interface UnleashClientFeaturesResponse {
 // ─── Provider Implementation ───────────────────────────────────
 
 export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
-  readonly providerType = "unleash" as const;
+  readonly providerType = 'unleash' as const;
 
   private readonly apiUrl: string;
   private readonly apiKey: string;
@@ -58,26 +54,15 @@ export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
   /** Local toggle cache, refreshed periodically. */
   private cache = new Map<string, UnleashToggle>();
   private refreshTimer: ReturnType<typeof setInterval> | null = null;
-  private lastRefresh = 0;
 
   /** Fallback provider when Unleash is unreachable. */
   private readonly fallback = new DbFeatureFlagProvider();
 
-  constructor(opts?: {
-    apiUrl?: string;
-    apiKey?: string;
-    appName?: string;
-    refreshMs?: number;
-  }) {
-    this.apiUrl =
-      opts?.apiUrl || process.env.UNLEASH_URL || "http://localhost:4242/api";
-    this.apiKey = opts?.apiKey || process.env.UNLEASH_API_KEY || "";
-    this.appName =
-      opts?.appName || process.env.UNLEASH_APP_NAME || "vista-evolved";
-    this.refreshMs =
-      opts?.refreshMs ||
-      Number(process.env.UNLEASH_REFRESH_INTERVAL_MS) ||
-      15_000;
+  constructor(opts?: { apiUrl?: string; apiKey?: string; appName?: string; refreshMs?: number }) {
+    this.apiUrl = opts?.apiUrl || process.env.UNLEASH_URL || 'http://localhost:4242/api';
+    this.apiKey = opts?.apiKey || process.env.UNLEASH_API_KEY || '';
+    this.appName = opts?.appName || process.env.UNLEASH_APP_NAME || 'vista-evolved';
+    this.refreshMs = opts?.refreshMs || Number(process.env.UNLEASH_REFRESH_INTERVAL_MS) || 15_000;
 
     // Start polling
     this.startRefresh();
@@ -85,10 +70,7 @@ export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
 
   // ─── Public API ────────────────────────────────────────────
 
-  async isEnabled(
-    flagKey: string,
-    context: FlagContext,
-  ): Promise<FlagEvaluationResult> {
+  async isEnabled(flagKey: string, context: FlagContext): Promise<FlagEvaluationResult> {
     const toggle = this.cache.get(flagKey);
     if (!toggle) {
       // Not in Unleash cache — try DB fallback
@@ -96,14 +78,11 @@ export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
     }
     return {
       enabled: toggle.enabled,
-      source: "unleash",
+      source: 'unleash',
     };
   }
 
-  async getVariant(
-    flagKey: string,
-    context: FlagContext,
-  ): Promise<FlagEvaluationResult> {
+  async getVariant(flagKey: string, context: FlagContext): Promise<FlagEvaluationResult> {
     const toggle = this.cache.get(flagKey);
     if (!toggle) {
       return this.fallback.getVariant(flagKey, context);
@@ -111,13 +90,13 @@ export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
     return {
       enabled: toggle.enabled,
       variant: toggle.variant?.name,
-      source: "unleash",
+      source: 'unleash',
     };
   }
 
   async evaluateAll(
     flagKeys: string[],
-    context: FlagContext,
+    context: FlagContext
   ): Promise<Record<string, FlagEvaluationResult>> {
     const results: Record<string, FlagEvaluationResult> = {};
     for (const key of flagKeys) {
@@ -129,7 +108,7 @@ export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
   async healthCheck(): Promise<boolean> {
     try {
       const res = await fetch(`${this.apiUrl}/client/features`, {
-        method: "GET",
+        method: 'GET',
         headers: this.headers(),
         signal: AbortSignal.timeout(5_000),
       });
@@ -151,9 +130,9 @@ export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
   private headers(): Record<string, string> {
     return {
       Authorization: this.apiKey,
-      Accept: "application/json",
-      "Unleash-AppName": this.appName,
-      "Unleash-InstanceId": `${this.appName}-api`,
+      Accept: 'application/json',
+      'Unleash-AppName': this.appName,
+      'Unleash-InstanceId': `${this.appName}-api`,
     };
   }
 
@@ -166,7 +145,7 @@ export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
     }, this.refreshMs);
 
     // Don't keep process alive just for polling
-    if (this.refreshTimer && typeof this.refreshTimer.unref === "function") {
+    if (this.refreshTimer && typeof this.refreshTimer.unref === 'function') {
       this.refreshTimer.unref();
     }
   }
@@ -174,7 +153,7 @@ export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
   private async refreshCache(): Promise<void> {
     try {
       const res = await fetch(`${this.apiUrl}/client/features`, {
-        method: "GET",
+        method: 'GET',
         headers: this.headers(),
         signal: AbortSignal.timeout(10_000),
       });
@@ -187,7 +166,6 @@ export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
         newCache.set(toggle.name, toggle);
       }
       this.cache = newCache;
-      this.lastRefresh = Date.now();
     } catch {
       // Network error — keep stale cache, DB provider is the fallback
     }

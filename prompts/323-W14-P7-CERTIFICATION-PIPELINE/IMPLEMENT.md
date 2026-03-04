@@ -1,10 +1,12 @@
 # Phase 323 — W14-P7: Integration Certification Pipeline
 
 ## User Request
+
 Build a certification pipeline that validates partner integrations meet
 conformance requirements before promotion to production.
 
 ## Implementation Steps
+
 1. **Service layer** (`services/certification-pipeline.ts`):
    - CertificationSuite: reusable test suite definitions (HL7v2, X12, FHIR, transport, security, performance)
    - CertificationRun: execute suites against partner endpoints, record per-test results
@@ -25,12 +27,14 @@ conformance requirements before promotion to production.
    - store-policy.ts: 3 entries (suites/registry, runs/cache, certificates/critical)
 
 ## Verification Steps
+
 - `npx tsc --noEmit` — zero errors
 - All 16 endpoints properly registered
 - Fingerprint tamper detection via SHA-256
 - Built-in suites seeded on first load (3 suites, 18 test cases total)
 
 ## Files Touched
+
 - `apps/api/src/services/certification-pipeline.ts` (NEW)
 - `apps/api/src/routes/certification-pipeline.ts` (NEW)
 - `apps/api/src/server/register-routes.ts` (MODIFIED)

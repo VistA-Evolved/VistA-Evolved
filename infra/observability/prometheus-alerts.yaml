@@ -16,8 +16,8 @@ groups:
           severity: critical
           team: platform
         annotations:
-          summary: "API error rate exceeds 5%"
-          description: "{{ $value | humanizePercentage }} of requests are returning 5xx errors."
+          summary: 'API error rate exceeds 5%'
+          description: '{{ $value | humanizePercentage }} of requests are returning 5xx errors.'
 
       # High latency (P95 > 2s)
       - alert: HighLatency
@@ -28,8 +28,8 @@ groups:
           severity: warning
           team: platform
         annotations:
-          summary: "API P95 latency exceeds 2s"
-          description: "P95 latency is {{ $value | humanizeDuration }}."
+          summary: 'API P95 latency exceeds 2s'
+          description: 'P95 latency is {{ $value | humanizeDuration }}.'
 
       # Circuit breaker open
       - alert: CircuitBreakerOpen
@@ -39,8 +39,8 @@ groups:
           severity: critical
           team: platform
         annotations:
-          summary: "VistA circuit breaker is OPEN"
-          description: "RPC calls to VistA are being rejected. Check VistA connectivity."
+          summary: 'VistA circuit breaker is OPEN'
+          description: 'RPC calls to VistA are being rejected. Check VistA connectivity.'
 
       # High memory usage (>80% of limit)
       - alert: HighMemoryUsage
@@ -51,8 +51,8 @@ groups:
           severity: warning
           team: platform
         annotations:
-          summary: "API memory usage exceeds 80% of 1Gi limit"
-          description: "RSS is {{ $value | humanize1024 }}B."
+          summary: 'API memory usage exceeds 80% of 1Gi limit'
+          description: 'RSS is {{ $value | humanize1024 }}B.'
 
       # Pod restarts
       - alert: PodRestarts
@@ -63,7 +63,7 @@ groups:
           severity: warning
           team: platform
         annotations:
-          summary: "Pod {{ $labels.pod }} has restarted >3 times in 1h"
+          summary: 'Pod {{ $labels.pod }} has restarted >3 times in 1h'
 
   - name: ve-pg-alerts
     rules:
@@ -75,8 +75,8 @@ groups:
           severity: warning
           team: platform
         annotations:
-          summary: "PG connection pool nearing max (20)"
-          description: "{{ $value }} active connections."
+          summary: 'PG connection pool nearing max (20)'
+          description: '{{ $value }} active connections.'
 
       # PG down
       - alert: PostgresDown
@@ -86,4 +86,4 @@ groups:
           severity: critical
           team: platform
         annotations:
-          summary: "Platform PostgreSQL is down"
+          summary: 'Platform PostgreSQL is down'

@@ -3,10 +3,10 @@
  */
 
 /** Workflow step status */
-export type WorkflowStepStatus = "pending" | "active" | "completed" | "skipped";
+export type WorkflowStepStatus = 'pending' | 'active' | 'completed' | 'skipped';
 
 /** Overall workflow instance status */
-export type WorkflowInstanceStatus = "not_started" | "in_progress" | "completed" | "cancelled";
+export type WorkflowInstanceStatus = 'not_started' | 'in_progress' | 'completed' | 'cancelled';
 
 /** A single step in a workflow definition */
 export interface WorkflowStepDef {
@@ -14,15 +14,15 @@ export interface WorkflowStepDef {
   name: string;
   description: string;
   order: number;
-  requiredRole?: string;          // e.g., "nurse", "provider", "clerk"
+  requiredRole?: string; // e.g., "nurse", "provider", "clerk"
   estimatedMinutes?: number;
-  specialtyTag?: string;          // Links to Phase 158 template specialty
-  templateId?: string;            // Links to a specific template
+  specialtyTag?: string; // Links to Phase 158 template specialty
+  templateId?: string; // Links to a specific template
   isOptional?: boolean;
-  automationHook?: string;        // Future: RPC or webhook trigger
+  automationHook?: string; // Future: RPC or webhook trigger
   vistaIntegration?: {
     targetRpc?: string;
-    status: "available" | "integration-pending";
+    status: 'available' | 'integration-pending';
   };
 }
 
@@ -34,7 +34,7 @@ export interface WorkflowDefinition {
   name: string;
   description: string;
   version: number;
-  status: "draft" | "active" | "archived";
+  status: 'draft' | 'active' | 'archived';
   steps: WorkflowStepDef[];
   tags: string[];
   createdBy?: string;
@@ -61,8 +61,8 @@ export interface WorkflowInstance {
   definitionId: string;
   department: string;
   patientDfn: string;
-  encounterRef?: string;           // Link to VistA encounter
-  queueTicketId?: string;          // Link to Phase 159 queue
+  encounterRef?: string; // Link to VistA encounter
+  queueTicketId?: string; // Link to Phase 159 queue
   status: WorkflowInstanceStatus;
   steps: WorkflowStepInstance[];
   startedAt: string;

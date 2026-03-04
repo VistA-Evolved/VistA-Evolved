@@ -9,6 +9,7 @@ durable PG-backed job queue. All background processing (eligibility polling,
 claim status checks, evidence scans, retention cleanup) runs through this system.
 
 **Key properties:**
+
 - At-least-once delivery semantics
 - PG-transactional job creation
 - Cron scheduling for recurring jobs
@@ -71,25 +72,25 @@ This starts only the job processor without the HTTP server.
 
 ## Registered Jobs
 
-| Job Name | Default Cron | Concurrency | Description |
-|----------|-------------|-------------|-------------|
-| `eligibility_check_poll` | `*/5 * * * *` (5 min) | 2 | Polls pending eligibility checks via payer adapters |
-| `claim_status_poll` | `*/10 * * * *` (10 min) | 2 | Polls pending claim status checks |
-| `evidence_staleness_scan` | `0 2 * * *` (daily 2AM) | 1 | Flags stale evidence entries for re-verification |
-| `retention_cleanup` | `0 3 * * *` (daily 3AM) | 1 | Purges expired sessions, idempotency keys, old job logs |
+| Job Name                  | Default Cron            | Concurrency | Description                                             |
+| ------------------------- | ----------------------- | ----------- | ------------------------------------------------------- |
+| `eligibility_check_poll`  | `*/5 * * * *` (5 min)   | 2           | Polls pending eligibility checks via payer adapters     |
+| `claim_status_poll`       | `*/10 * * * *` (10 min) | 2           | Polls pending claim status checks                       |
+| `evidence_staleness_scan` | `0 2 * * *` (daily 2AM) | 1           | Flags stale evidence entries for re-verification        |
+| `retention_cleanup`       | `0 3 * * *` (daily 3AM) | 1           | Purges expired sessions, idempotency keys, old job logs |
 
 ## Configuration
 
 ### Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `JOB_WORKER_ENABLED` | `false` | Enable embedded worker in API process |
-| `JOB_WORKER_CONCURRENCY` | `5` | Number of concurrent jobs |
-| `JOB_WORKER_SCHEMA` | `graphile_worker` | PG schema for graphile-worker tables |
-| `JOB_WORKER_POLL_INTERVAL` | `2000` | Poll interval (ms) for new jobs |
-| `JOB_CONCURRENCY_<NAME>` | (per-job) | Override concurrency per job type |
-| `JOB_CRON_<NAME>` | (per-job) | Override cron schedule; `disabled` to turn off |
+| Variable                   | Default           | Description                                    |
+| -------------------------- | ----------------- | ---------------------------------------------- |
+| `JOB_WORKER_ENABLED`       | `false`           | Enable embedded worker in API process          |
+| `JOB_WORKER_CONCURRENCY`   | `5`               | Number of concurrent jobs                      |
+| `JOB_WORKER_SCHEMA`        | `graphile_worker` | PG schema for graphile-worker tables           |
+| `JOB_WORKER_POLL_INTERVAL` | `2000`            | Poll interval (ms) for new jobs                |
+| `JOB_CONCURRENCY_<NAME>`   | (per-job)         | Override concurrency per job type              |
+| `JOB_CRON_<NAME>`          | (per-job)         | Override cron schedule; `disabled` to turn off |
 
 ### Disabling a Cron Job
 
@@ -118,11 +119,11 @@ Job payloads are structurally prevented from containing PHI:
 
 All require admin session:
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/admin/jobs/status` | GET | Runner status + registered jobs with cron/concurrency |
-| `/admin/jobs/runs` | GET | Recent job run log entries (paginated, filterable) |
-| `/admin/jobs/trigger` | POST | Manually trigger a job with custom payload |
+| Endpoint              | Method | Description                                           |
+| --------------------- | ------ | ----------------------------------------------------- |
+| `/admin/jobs/status`  | GET    | Runner status + registered jobs with cron/concurrency |
+| `/admin/jobs/runs`    | GET    | Recent job run log entries (paginated, filterable)    |
+| `/admin/jobs/trigger` | POST   | Manually trigger a job with custom payload            |
 
 ### Example: Check status
 
@@ -172,16 +173,19 @@ Do not modify these manually.
 ## Troubleshooting
 
 ### Worker won't start
+
 - Check `PLATFORM_PG_URL` is set and PG is reachable
 - Run `docker compose -f services/platform-db/docker-compose.yml up -d`
 - Check PG logs: `docker logs ve-platform-db`
 
 ### Jobs stuck in processing
+
 - Graphile Worker has built-in stale job recovery (default 4h)
 - Check `graphile_worker._private_jobs` for locked_at timestamps
 - Restart worker to release locks
 
 ### Cron jobs not firing
+
 - Verify `JOB_CRON_<NAME>` isn't set to `disabled`
 - Check runner is active: `GET /admin/jobs/status`
 - Graphile Worker backfills missed runs on startup (backfillPeriod: 0 = disabled)

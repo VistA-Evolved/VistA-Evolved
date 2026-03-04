@@ -8,21 +8,22 @@
 
 ## Current Posture
 
-| Item | Status |
-|------|--------|
-| **Adapter skeleton** | ACTIVE — Phase 96 |
-| **ClaimPacket builder** | ACTIVE — assembles from VistA-facing data |
-| **JSON export** | ACTIVE — canonical ClaimPacket as JSON |
-| **PDF text export** | ACTIVE — print-ready summary for manual portal submission |
-| **XML generator** | PLACEHOLDER — strict interface, "spec pending" implementation |
-| **Automated submission** | NOT AVAILABLE — requires spec + certification |
-| **Manual submission workflow** | ACTIVE — export → manual upload → status tracking |
+| Item                           | Status                                                        |
+| ------------------------------ | ------------------------------------------------------------- |
+| **Adapter skeleton**           | ACTIVE — Phase 96                                             |
+| **ClaimPacket builder**        | ACTIVE — assembles from VistA-facing data                     |
+| **JSON export**                | ACTIVE — canonical ClaimPacket as JSON                        |
+| **PDF text export**            | ACTIVE — print-ready summary for manual portal submission     |
+| **XML generator**              | PLACEHOLDER — strict interface, "spec pending" implementation |
+| **Automated submission**       | NOT AVAILABLE — requires spec + certification                 |
+| **Manual submission workflow** | ACTIVE — export → manual upload → status tracking             |
 
 ---
 
 ## Spec Acquisition Gates
 
 ### Gate 1: Obtain eClaims 3.0 Schema/Spec
+
 - **Status:** NOT STARTED
 - **Owner:** (assign)
 - **Description:** Download or receive the official eClaims 3.0 XML/JSON schema from PhilHealth.
@@ -34,6 +35,7 @@
 - **Acceptance:** Schema file (XSD/JSON Schema) available and loaded into `xml-generator.ts`
 
 ### Gate 2: Validate Required Identifiers
+
 - **Status:** NOT STARTED
 - **Owner:** (assign)
 - **Description:** Confirm all required identifier formats:
@@ -45,6 +47,7 @@
 - **Acceptance:** All identifier formats documented and validations implemented
 
 ### Gate 3: eClaims 3.0 Sandbox Registration
+
 - **Status:** NOT STARTED
 - **Owner:** (assign)
 - **Description:** Register facility for eClaims 3.0 sandbox/test environment.
@@ -52,6 +55,7 @@
 - **Acceptance:** API credentials for sandbox environment received and configured
 
 ### Gate 4: Sandbox Test Submission
+
 - **Status:** NOT STARTED
 - **Owner:** (assign)
 - **Description:** Submit test claim to PhilHealth sandbox, receive valid TCN.
@@ -59,6 +63,7 @@
 - **Acceptance:** Valid TCN received from sandbox for at least one test claim
 
 ### Gate 5: Production Certification
+
 - **Status:** NOT STARTED
 - **Owner:** (assign)
 - **Description:** Complete PhilHealth certification process for production submission.

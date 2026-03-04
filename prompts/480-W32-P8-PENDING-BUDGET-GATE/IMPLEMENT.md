@@ -1,6 +1,7 @@
 # Phase 480 — W32-P8: Integration-Pending Budget Gate
 
 ## Goal
+
 Create a CI-ready gate that counts `integration-pending` occurrences in the
 API source and fails if the count increases beyond the committed baseline.
 Prevents integration debt from growing silently.
@@ -26,11 +27,13 @@ Prevents integration debt from growing silently.
    - Reduction targets
 
 ## Files Created
+
 - `scripts/qa-gates/integration-pending-budget.mjs` — budget gate script
 - `docs/qa/integration-pending-baseline.json` — committed baseline
 - `docs/qa/integration-pending-backlog.md` — debt backlog
 
 ## Design Decisions
+
 - Pattern: `integration[._-]pending` (matches all variants)
 - BOM stripping for PowerShell-generated JSON (BUG-064 safe)
 - Shows new files and grown files on failure for easy triage

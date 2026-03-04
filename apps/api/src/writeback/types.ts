@@ -14,56 +14,56 @@
 /* Domain + Intent                                                     */
 /* ------------------------------------------------------------------ */
 
-export type WritebackDomain = "TIU" | "ORDERS" | "PHARM" | "LAB" | "ADT" | "IMG";
+export type WritebackDomain = 'TIU' | 'ORDERS' | 'PHARM' | 'LAB' | 'ADT' | 'IMG';
 
 export type WritebackIntent =
   // TIU
-  | "CREATE_NOTE_DRAFT"
-  | "UPDATE_NOTE_TEXT"
-  | "SIGN_NOTE"
-  | "CREATE_ADDENDUM"
+  | 'CREATE_NOTE_DRAFT'
+  | 'UPDATE_NOTE_TEXT'
+  | 'SIGN_NOTE'
+  | 'CREATE_ADDENDUM'
   // Orders
-  | "PLACE_ORDER"
-  | "DISCONTINUE_ORDER"
-  | "VERIFY_ORDER"
-  | "SIGN_ORDER"
-  | "FLAG_ORDER"
+  | 'PLACE_ORDER'
+  | 'DISCONTINUE_ORDER'
+  | 'VERIFY_ORDER'
+  | 'SIGN_ORDER'
+  | 'FLAG_ORDER'
   // Pharmacy
-  | "PLACE_MED_ORDER"
-  | "DISCONTINUE_MED_ORDER"
-  | "ADMINISTER_MED"
+  | 'PLACE_MED_ORDER'
+  | 'DISCONTINUE_MED_ORDER'
+  | 'ADMINISTER_MED'
   // Labs
-  | "PLACE_LAB_ORDER"
-  | "ACK_LAB_RESULT"
+  | 'PLACE_LAB_ORDER'
+  | 'ACK_LAB_RESULT'
   // ADT
-  | "ADMIT_PATIENT"
-  | "TRANSFER_PATIENT"
-  | "DISCHARGE_PATIENT"
+  | 'ADMIT_PATIENT'
+  | 'TRANSFER_PATIENT'
+  | 'DISCHARGE_PATIENT'
   // Imaging
-  | "PLACE_IMAGING_ORDER"
-  | "LINK_IMAGING_STUDY";
+  | 'PLACE_IMAGING_ORDER'
+  | 'LINK_IMAGING_STUDY';
 
 /** Maps each intent to its domain for validation. */
 export const INTENT_DOMAIN_MAP: Record<WritebackIntent, WritebackDomain> = {
-  CREATE_NOTE_DRAFT: "TIU",
-  UPDATE_NOTE_TEXT: "TIU",
-  SIGN_NOTE: "TIU",
-  CREATE_ADDENDUM: "TIU",
-  PLACE_ORDER: "ORDERS",
-  DISCONTINUE_ORDER: "ORDERS",
-  VERIFY_ORDER: "ORDERS",
-  SIGN_ORDER: "ORDERS",
-  FLAG_ORDER: "ORDERS",
-  PLACE_MED_ORDER: "PHARM",
-  DISCONTINUE_MED_ORDER: "PHARM",
-  ADMINISTER_MED: "PHARM",
-  PLACE_LAB_ORDER: "LAB",
-  ACK_LAB_RESULT: "LAB",
-  ADMIT_PATIENT: "ADT",
-  TRANSFER_PATIENT: "ADT",
-  DISCHARGE_PATIENT: "ADT",
-  PLACE_IMAGING_ORDER: "IMG",
-  LINK_IMAGING_STUDY: "IMG",
+  CREATE_NOTE_DRAFT: 'TIU',
+  UPDATE_NOTE_TEXT: 'TIU',
+  SIGN_NOTE: 'TIU',
+  CREATE_ADDENDUM: 'TIU',
+  PLACE_ORDER: 'ORDERS',
+  DISCONTINUE_ORDER: 'ORDERS',
+  VERIFY_ORDER: 'ORDERS',
+  SIGN_ORDER: 'ORDERS',
+  FLAG_ORDER: 'ORDERS',
+  PLACE_MED_ORDER: 'PHARM',
+  DISCONTINUE_MED_ORDER: 'PHARM',
+  ADMINISTER_MED: 'PHARM',
+  PLACE_LAB_ORDER: 'LAB',
+  ACK_LAB_RESULT: 'LAB',
+  ADMIT_PATIENT: 'ADT',
+  TRANSFER_PATIENT: 'ADT',
+  DISCHARGE_PATIENT: 'ADT',
+  PLACE_IMAGING_ORDER: 'IMG',
+  LINK_IMAGING_STUDY: 'IMG',
 };
 
 /* ------------------------------------------------------------------ */
@@ -71,20 +71,20 @@ export const INTENT_DOMAIN_MAP: Record<WritebackIntent, WritebackDomain> = {
 /* ------------------------------------------------------------------ */
 
 export type CommandStatus =
-  | "pending"           // Created, not yet processed
-  | "processing"        // Worker picked up
-  | "completed"         // RPC succeeded
-  | "failed"            // RPC failed (terminal)
-  | "dry_run"           // Dry-run recorded (no RPC executed)
-  | "rejected"          // Validation failed
-  | "retrying"          // Transient failure, will retry
-  | "awaiting_review";  // Supervised-mode: waiting for clinician review (Phase 437)
+  | 'pending' // Created, not yet processed
+  | 'processing' // Worker picked up
+  | 'completed' // RPC succeeded
+  | 'failed' // RPC failed (terminal)
+  | 'dry_run' // Dry-run recorded (no RPC executed)
+  | 'rejected' // Validation failed
+  | 'retrying' // Transient failure, will retry
+  | 'awaiting_review'; // Supervised-mode: waiting for clinician review (Phase 437)
 
 /* ------------------------------------------------------------------ */
 /* Supervised review (Phase 437)                                       */
 /* ------------------------------------------------------------------ */
 
-export type ReviewDecision = "approve" | "reject";
+export type ReviewDecision = 'approve' | 'reject';
 
 export interface SupervisedReviewMeta {
   /** Is this command subject to supervised review? */
@@ -116,8 +116,8 @@ export interface ClinicalCommand {
   payloadJson: Record<string, unknown>;
   idempotencyKey: string;
   status: CommandStatus;
-  createdAt: string;   // ISO 8601
-  createdBy: string;   // DUZ or user ID
+  createdAt: string; // ISO 8601
+  createdBy: string; // DUZ or user ID
   correlationId: string;
   /** If dry-run, contains the would-be RPC transcript */
   dryRunTranscript?: DryRunTranscript;
@@ -138,7 +138,7 @@ export interface CommandAttempt {
   attemptNo: number;
   startedAt: string;
   endedAt?: string;
-  status: "running" | "success" | "transient_failure" | "permanent_failure";
+  status: 'running' | 'success' | 'transient_failure' | 'permanent_failure';
   errorClass?: string;
   errorDetailRedacted?: string;
 }

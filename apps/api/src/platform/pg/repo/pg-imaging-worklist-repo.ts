@@ -7,9 +7,9 @@
  * Uses Drizzle ORM + pg-core for type-safe queries.
  */
 
-import { eq, sql } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { pgImagingWorkItem } from "../pg-schema.js";
+import { eq, sql } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { pgImagingWorkItem } from '../pg-schema.js';
 
 export type ImagingWorkItemRow = typeof pgImagingWorkItem.$inferSelect;
 
@@ -42,25 +42,25 @@ export async function insertWorkOrder(data: {
 
   await db.insert(pgImagingWorkItem).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     vistaOrderId: data.vistaOrderId ?? null,
     patientDfn: data.patientDfn,
-    patientName: data.patientName ?? "",
+    patientName: data.patientName ?? '',
     accessionNumber: data.accessionNumber,
-    scheduledProcedure: data.scheduledProcedure ?? "",
+    scheduledProcedure: data.scheduledProcedure ?? '',
     procedureCode: data.procedureCode ?? null,
     modality: data.modality,
-    scheduledTime: data.scheduledTime ?? "",
-    facility: data.facility ?? "DEFAULT",
-    location: data.location ?? "Radiology",
-    orderingProviderDuz: data.orderingProviderDuz ?? "",
-    orderingProviderName: data.orderingProviderName ?? "",
-    clinicalIndication: data.clinicalIndication ?? "",
-    priority: data.priority ?? "routine",
-    status: data.status ?? "ordered",
+    scheduledTime: data.scheduledTime ?? '',
+    facility: data.facility ?? 'DEFAULT',
+    location: data.location ?? 'Radiology',
+    orderingProviderDuz: data.orderingProviderDuz ?? '',
+    orderingProviderName: data.orderingProviderName ?? '',
+    clinicalIndication: data.clinicalIndication ?? '',
+    priority: data.priority ?? 'routine',
+    status: data.status ?? 'ordered',
     linkedStudyUid: data.linkedStudyUid ?? null,
     linkedOrthancStudyId: data.linkedOrthancStudyId ?? null,
-    source: data.source ?? "prototype-sidecar",
+    source: data.source ?? 'prototype-sidecar',
     createdAt: now,
     updatedAt: now,
   });
@@ -77,17 +77,20 @@ export async function findWorkOrderById(id: string): Promise<ImagingWorkItemRow 
   return rows[0];
 }
 
-export async function findByAccessionNumber(accessionNumber: string): Promise<ImagingWorkItemRow | undefined> {
+export async function findByAccessionNumber(
+  accessionNumber: string
+): Promise<ImagingWorkItemRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(pgImagingWorkItem)
+  const rows = await db
+    .select()
+    .from(pgImagingWorkItem)
     .where(eq(pgImagingWorkItem.accessionNumber, accessionNumber));
   return rows[0];
 }
 
 export async function findByPatientDfn(patientDfn: string): Promise<ImagingWorkItemRow[]> {
   const db = getPgDb();
-  return db.select().from(pgImagingWorkItem)
-    .where(eq(pgImagingWorkItem.patientDfn, patientDfn));
+  return db.select().from(pgImagingWorkItem).where(eq(pgImagingWorkItem.patientDfn, patientDfn));
 }
 
 export async function findAllWorkOrders(): Promise<ImagingWorkItemRow[]> {
@@ -97,15 +100,19 @@ export async function findAllWorkOrders(): Promise<ImagingWorkItemRow[]> {
 
 /* ── Update ────────────────────────────────────────────────── */
 
-export async function updateWorkOrder(id: string, updates: Partial<{
-  status: string;
-  linkedStudyUid: string | null;
-  linkedOrthancStudyId: string | null;
-  priority: string;
-}>): Promise<ImagingWorkItemRow | undefined> {
+export async function updateWorkOrder(
+  id: string,
+  updates: Partial<{
+    status: string;
+    linkedStudyUid: string | null;
+    linkedOrthancStudyId: string | null;
+    priority: string;
+  }>
+): Promise<ImagingWorkItemRow | undefined> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  await db.update(pgImagingWorkItem)
+  await db
+    .update(pgImagingWorkItem)
     .set({ ...updates, updatedAt: now } as any)
     .where(eq(pgImagingWorkItem.id, id));
   return findWorkOrderById(id);
@@ -115,9 +122,9 @@ export async function updateWorkOrder(id: string, updates: Partial<{
 
 export async function countWorkOrders(): Promise<{ total: number; active: number }> {
   const db = getPgDb();
-  const totalResult = await db.select({ count: sql<number>`count(*)` })
-    .from(pgImagingWorkItem);
-  const activeResult = await db.select({ count: sql<number>`count(*)` })
+  const totalResult = await db.select({ count: sql<number>`count(*)` }).from(pgImagingWorkItem);
+  const activeResult = await db
+    .select({ count: sql<number>`count(*)` })
     .from(pgImagingWorkItem)
     .where(sql`${pgImagingWorkItem.status} NOT IN ('completed', 'cancelled', 'discontinued')`);
   return {

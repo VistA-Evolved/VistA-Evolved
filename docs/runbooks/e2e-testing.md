@@ -18,29 +18,29 @@ load/performance tests. This runbook covers the Playwright E2E test suite.
 
 ### Scenario Tests (Phase 52)
 
-| File | Scenario | What It Tests |
-|------|----------|---------------|
-| `scenario-clinical.spec.ts` | Clinician workflow | Login -> search -> cover sheet -> problems -> add problem |
-| `scenario-rcm.spec.ts` | RCM workflow | RCM admin -> payer directory -> claims -> connectors -> audit |
-| `scenario-portal.spec.ts` | Patient portal | Portal login -> dashboard -> health/meds/appointments |
+| File                        | Scenario           | What It Tests                                                 |
+| --------------------------- | ------------------ | ------------------------------------------------------------- |
+| `scenario-clinical.spec.ts` | Clinician workflow | Login -> search -> cover sheet -> problems -> add problem     |
+| `scenario-rcm.spec.ts`      | RCM workflow       | RCM admin -> payer directory -> claims -> connectors -> audit |
+| `scenario-portal.spec.ts`   | Patient portal     | Portal login -> dashboard -> health/meds/appointments         |
 
 ### Contract Tests (Phase 52)
 
-| File | Contract | What It Enforces |
-|------|----------|------------------|
+| File                     | Contract       | What It Enforces                                                                           |
+| ------------------------ | -------------- | ------------------------------------------------------------------------------------------ |
 | `no-dead-clicks.spec.ts` | No dead clicks | Every button either navigates, opens dialog, changes state, or shows "integration pending" |
 
 ### Existing Tests (Phase 37)
 
-| File | What It Tests |
-|------|---------------|
-| `login-flow.spec.ts` | Login form rendering, valid/invalid credentials |
-| `cprs-tabs.spec.ts` | All 15 CPRS chart tabs load with non-empty content |
-| `clinical-flows.spec.ts` | Clinical tab buttons respond (no dead clicks) |
-| `menu-no-dead-clicks.spec.ts` | Menu bar items all trigger actions |
-| `parity-enforcement.spec.ts` | CPRS parity coverage |
-| `accessibility.spec.ts` | axe-core accessibility audit |
-| `console-error-gate.spec.ts` | Console error budget |
+| File                          | What It Tests                                      |
+| ----------------------------- | -------------------------------------------------- |
+| `login-flow.spec.ts`          | Login form rendering, valid/invalid credentials    |
+| `cprs-tabs.spec.ts`           | All 15 CPRS chart tabs load with non-empty content |
+| `clinical-flows.spec.ts`      | Clinical tab buttons respond (no dead clicks)      |
+| `menu-no-dead-clicks.spec.ts` | Menu bar items all trigger actions                 |
+| `parity-enforcement.spec.ts`  | CPRS parity coverage                               |
+| `accessibility.spec.ts`       | axe-core accessibility audit                       |
+| `console-error-gate.spec.ts`  | Console error budget                               |
 
 ## Running Tests
 
@@ -66,6 +66,7 @@ pnpm exec playwright test e2e/scenario-portal.spec.ts
 ## Auth Setup
 
 Tests use a shared auth setup (`auth.setup.ts`) that:
+
 1. Calls `POST /auth/login` with VistA credentials
 2. Saves session cookie to `e2e/.auth/user.json`
 3. All subsequent tests reuse this session
@@ -85,6 +86,7 @@ interactive element on key screens produces a visible response:
 
 Silent no-ops are failures. If a feature isn't wired, the button must show
 an "integration pending" message with:
+
 - What subsystem is pending
 - Target VistA file/routine (if applicable)
 - Next implementation step
@@ -98,6 +100,7 @@ an "integration pending" message with:
 ## Test Configuration
 
 See `apps/web/playwright.config.ts`:
+
 - Timeout: 60s per test
 - Retries: 1
 - Workers: 1 (serial, shared auth)
@@ -107,12 +110,12 @@ See `apps/web/playwright.config.ts`:
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| Auth setup fails | API not running or VistA Docker down | Start API + Docker |
-| Timeouts on clinical tabs | VistA RPC broker slow or disconnected | Check Docker, increase timeout |
-| Dead click false positives | Button uses JS state change not detected | Add to test's detection logic |
-| Portal tests 404 | Portal app not built/running | `pnpm -C apps/portal build && pnpm -C apps/portal start` |
+| Symptom                    | Cause                                    | Fix                                                      |
+| -------------------------- | ---------------------------------------- | -------------------------------------------------------- |
+| Auth setup fails           | API not running or VistA Docker down     | Start API + Docker                                       |
+| Timeouts on clinical tabs  | VistA RPC broker slow or disconnected    | Check Docker, increase timeout                           |
+| Dead click false positives | Button uses JS state change not detected | Add to test's detection logic                            |
+| Portal tests 404           | Portal app not built/running             | `pnpm -C apps/portal build && pnpm -C apps/portal start` |
 
 ## CI Integration
 

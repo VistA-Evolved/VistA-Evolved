@@ -24,6 +24,7 @@ real VistA RPCs and adds governance labels.
 ## Reference Projects Analyzed
 
 ### 1. HealtheMe (WorldVistA)
+
 - **Path:** `reference/HealtheMe-master/`
 - **License:** Apache 2.0
 - **Usage:** Referenced for VistA patient portal domain patterns (health
@@ -31,6 +32,7 @@ real VistA RPCs and adds governance labels.
 - **Code reused:** None. HealtheMe is Java/JSP; our portal is Next.js/React.
 
 ### 2. Ottehr
+
 - **Path:** `reference/ottehr ehr main/ottehr-main/`
 - **License:** MIT + attribution
 - **Usage:** Referenced for modern React portal patterns (component structure,
@@ -38,6 +40,7 @@ real VistA RPCs and adds governance labels.
 - **Code reused:** None. Our component architecture predates this reference.
 
 ### 3. AIOTP (All In One Telehealth Platform)
+
 - **Path:** `reference/All In One Telehealth Platform -AIOTP-/aiotp-main/`
 - **License:** CC BY-NC-SA 4.0
 - **Usage:** Observed only. This license prohibits commercial use and

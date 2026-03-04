@@ -1,9 +1,11 @@
 # Phase 409 (W24-P1): Reservation + Manifest + Pilot Archetypes + Readiness Gate Freeze
 
 ## Goal
+
 Lock Wave 24 IDs and define exactly what "pilot ready" means.
 
 ## Steps
+
 1. Reserve Wave 24 phase range 409-417 (N=9) in `docs/qa/prompt-phase-range-reservations.json`.
 2. Compute BASE_PHASE=409 and write `/prompts/WAVE_24_MANIFEST.md` with resolved IDs.
 3. Create `/docs/pilots/PILOT_ARCHETYPES.md` with Archetype A (outpatient) and B (hospital).
@@ -12,6 +14,7 @@ Lock Wave 24 IDs and define exactly what "pilot ready" means.
 6. Create evidence directories under `/evidence/wave-24/`.
 
 ## Files Created
+
 - `prompts/WAVE_24_MANIFEST.md`
 - `docs/pilots/PILOT_ARCHETYPES.md`
 - `docs/pilots/PILOT_READINESS_GATES.md`

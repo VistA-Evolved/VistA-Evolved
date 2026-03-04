@@ -31,11 +31,13 @@ The local scaffold translator is the default, built-in translator that:
    - 835: BPR/CLP remittance
 
 ### When to Use
+
 - Development and sandbox environments
 - Clearinghouses that accept 5010-compatible X12
 - Testing and verification
 
 ### Limitations
+
 - No level 4/5 SNIP validation
 - No code set validation (CPT/ICD membership)
 - No real-time syntax checking beyond field presence
@@ -55,6 +57,7 @@ EXTERNAL_TRANSLATOR_API_KEY=your-api-key-here
 ```
 
 ### When to Use
+
 - Production clearinghouse submission
 - When SNIP level 3-7 validation is required
 - When payer-specific companion guides must be enforced
@@ -63,6 +66,7 @@ EXTERNAL_TRANSLATOR_API_KEY=your-api-key-here
 ### How It Works
 
 When all 3 env vars are set:
+
 1. The external adapter reports `isAvailable() === true`
 2. The translator registry prefers it over local-scaffold
 3. Build/parse/validate calls are proxied to the external API
@@ -70,6 +74,7 @@ When all 3 env vars are set:
 ### Failover
 
 If the external translator fails:
+
 - Currently: returns scaffold placeholder
 - Future: automatic fallback to local-scaffold
 
@@ -95,10 +100,10 @@ If the external translator fails:
 
 ## API Endpoints
 
-| Endpoint | Description |
-|----------|-------------|
-| `GET /rcm/translators` | List all registered translators |
-| `POST /rcm/transactions/build` | Build uses active translator |
+| Endpoint                       | Description                     |
+| ------------------------------ | ------------------------------- |
+| `GET /rcm/translators`         | List all registered translators |
+| `POST /rcm/transactions/build` | Build uses active translator    |
 
 ## Verification
 

@@ -17,8 +17,16 @@
       "enrollmentNotes": "All licensed healthcare institutions must connect to NPHC for MediShield Life / MediSave claims. API-based submission with SingPass CorpPass authentication.",
       "enrollmentUrl": "https://www.moh.gov.sg/",
       "endpoints": [
-        { "purpose": "claims", "protocol": "rest", "notes": "NPHC REST API. Requires CorpPass authentication + MOH facility license." },
-        { "purpose": "eligibility", "protocol": "rest", "notes": "MediShield Life eligibility check via NPHC" }
+        {
+          "purpose": "claims",
+          "protocol": "rest",
+          "notes": "NPHC REST API. Requires CorpPass authentication + MOH facility license."
+        },
+        {
+          "purpose": "eligibility",
+          "protocol": "rest",
+          "notes": "MediShield Life eligibility check via NPHC"
+        }
       ],
       "aliases": ["NPHC", "MediShield Life"],
       "createdAt": "2026-02-20T00:00:00Z",
@@ -33,9 +41,7 @@
       "category": "government",
       "enrollmentRequired": true,
       "enrollmentNotes": "MediSave claims routed through NPHC for approved procedures. MediSave withdrawal limits apply.",
-      "endpoints": [
-        { "purpose": "claims", "protocol": "rest", "notes": "Via NPHC gateway" }
-      ],
+      "endpoints": [{ "purpose": "claims", "protocol": "rest", "notes": "Via NPHC gateway" }],
       "aliases": ["MediSave", "CPF MediSave"],
       "createdAt": "2026-02-20T00:00:00Z",
       "updatedAt": "2026-02-20T00:00:00Z"

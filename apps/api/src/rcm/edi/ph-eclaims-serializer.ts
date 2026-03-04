@@ -27,17 +27,17 @@ export interface PhilHealthCF1 {
   facilityCode: string;
   facilityName: string;
   accreditationNumber?: string;
-  patientPin: string;          // PhilHealth Identification Number
+  patientPin: string; // PhilHealth Identification Number
   patientLastName: string;
   patientFirstName: string;
   patientMiddleName?: string;
-  patientDob: string;          // YYYY-MM-DD
+  patientDob: string; // YYYY-MM-DD
   patientSex: 'M' | 'F';
   memberPin?: string;
-  memberRelationship: string;  // 'S' = self, 'D' = dependent, 'P' = parent
+  memberRelationship: string; // 'S' = self, 'D' = dependent, 'P' = parent
   admissionDate?: string;
   dischargeDate?: string;
-  patientType: 'O' | 'I';     // Outpatient or Inpatient
+  patientType: 'O' | 'I'; // Outpatient or Inpatient
 }
 
 export interface PhilHealthCF2 {
@@ -108,8 +108,8 @@ export interface PhilHealthClaimBundle {
   facilityCode: string;
   cf1: PhilHealthCF1;
   cf2: PhilHealthCF2;
-  cf3?: PhilHealthCF3;   // Only for inpatient
-  cf4?: PhilHealthCF4;   // Only when medicines/supplies present
+  cf3?: PhilHealthCF3; // Only for inpatient
+  cf4?: PhilHealthCF4; // Only when medicines/supplies present
   metadata: {
     generatedBy: string;
     generatedAt: string;
@@ -132,7 +132,7 @@ export function buildPhilHealthBundle(
     admissionDate?: string;
     dischargeDate?: string;
     isTest?: boolean;
-  },
+  }
 ): PhilHealthClaimBundle {
   const isInpatient = claim.transactionSet === '837I';
   const now = new Date().toISOString();
@@ -148,7 +148,7 @@ export function buildPhilHealthBundle(
     patientDob: claim.subscriber.dob
       ? `${claim.subscriber.dob.slice(0, 4)}-${claim.subscriber.dob.slice(4, 6)}-${claim.subscriber.dob.slice(6, 8)}`
       : '',
-    patientSex: (claim.subscriber.gender === 'F' ? 'F' : 'M'),
+    patientSex: claim.subscriber.gender === 'F' ? 'F' : 'M',
     memberPin: opts.memberPin ?? opts.patientPin,
     memberRelationship: opts.memberRelationship ?? 'S',
     admissionDate: opts.admissionDate,
@@ -162,9 +162,9 @@ export function buildPhilHealthBundle(
     claimType: isInpatient ? 'inpatient' : 'outpatient',
     diagnosis: claim.diagnosisCodes.map((dx, i) => ({
       icdCode: dx.code,
-      type: i === 0 ? 'primary' as const : 'secondary' as const,
+      type: i === 0 ? ('primary' as const) : ('secondary' as const),
     })),
-    procedures: claim.serviceLines.map(sl => ({
+    procedures: claim.serviceLines.map((sl) => ({
       code: sl.procedureCode,
     })),
     totalActualCharges: claim.claimInfo.totalChargeAmount,
@@ -175,7 +175,7 @@ export function buildPhilHealthBundle(
   if (isInpatient && claim.serviceLines.length > 0) {
     cf3 = {
       formType: 'CF3',
-      professionalFees: claim.serviceLines.map(sl => ({
+      professionalFees: claim.serviceLines.map((sl) => ({
         physicianName: claim.billingProvider.name,
         physicianLicense: claim.billingProvider.npi, // Map NPI to PRC license in production
         feeAmount: sl.chargeAmount,

@@ -16,11 +16,11 @@
  *   DENIAL_FOLLOWUP_TICK — Periodic SLA-deadline scanner for denials
  */
 
-import { randomUUID } from "node:crypto";
-import { getPgDb } from "../../platform/pg/pg-db.js";
-import { rcmDurableJob } from "../../platform/pg/pg-schema.js";
-import { eq, and, lte, sql, desc, asc } from "drizzle-orm";
-import type { RcmJobQueue, RcmJob, RcmJobType, RcmJobStatus } from "./queue.js";
+import { randomUUID } from 'node:crypto';
+import { getPgDb } from '../../platform/pg/pg-db.js';
+import { rcmDurableJob } from '../../platform/pg/pg-schema.js';
+import { eq, and, lte, sql, desc } from 'drizzle-orm';
+import type { RcmJobQueue, RcmJob, RcmJobType, RcmJobStatus } from './queue.js';
 
 /* ── Constants ─────────────────────────────────────────────── */
 
@@ -52,7 +52,11 @@ function rowToJob(row: any): RcmJob {
 
 function safeJsonParse<T>(val: string | null | undefined, fallback: T): T {
   if (!val) return fallback;
-  try { return JSON.parse(val); } catch { return fallback; }
+  try {
+    return JSON.parse(val);
+  } catch {
+    return fallback;
+  }
 }
 
 /* ── Durable Queue Implementation ──────────────────────────── */
@@ -80,29 +84,28 @@ export class DurableJobQueue implements RcmJobQueue {
         .where(
           and(
             eq(rcmDurableJob.idempotencyKey, params.idempotencyKey),
-            eq(rcmDurableJob.tenantId, String((params.payload as any)?._tenantId ?? "default")),
-          ),
+            eq(rcmDurableJob.tenantId, String((params.payload as any)?._tenantId ?? 'default'))
+          )
         );
       const existing = existingRows[0] ?? null;
       if (existing) return existing.id;
     }
 
     const id = randomUUID();
-    await db.insert(rcmDurableJob)
-      .values({
-        id,
-        tenantId: String((params.payload as any)?._tenantId ?? "default"),
-        type: params.type,
-        status: "queued",
-        payloadJson: JSON.stringify(params.payload),
-        attempts: 0,
-        maxAttempts: params.maxAttempts ?? DEFAULT_MAX_ATTEMPTS,
-        idempotencyKey: params.idempotencyKey ?? null,
-        priority: params.priority ?? 5,
-        scheduledAt,
-        createdAt: now.toISOString(),
-        updatedAt: now.toISOString(),
-      });
+    await db.insert(rcmDurableJob).values({
+      id,
+      tenantId: String((params.payload as any)?._tenantId ?? 'default'),
+      type: params.type,
+      status: 'queued',
+      payloadJson: JSON.stringify(params.payload),
+      attempts: 0,
+      maxAttempts: params.maxAttempts ?? DEFAULT_MAX_ATTEMPTS,
+      idempotencyKey: params.idempotencyKey ?? null,
+      priority: params.priority ?? 5,
+      scheduledAt,
+      createdAt: now.toISOString(),
+      updatedAt: now.toISOString(),
+    });
 
     return id;
   }
@@ -116,14 +119,14 @@ export class DurableJobQueue implements RcmJobQueue {
     const claimed = await db
       .update(rcmDurableJob)
       .set({
-        status: "processing",
+        status: 'processing',
         startedAt: now,
         attempts: sql`${rcmDurableJob.attempts} + 1`,
         updatedAt: now,
       })
       .where(
         and(
-          eq(rcmDurableJob.status, "queued"),
+          eq(rcmDurableJob.status, 'queued'),
           lte(rcmDurableJob.scheduledAt, now),
           // Pick the best candidate by sub-selecting the exact row ID
           sql`${rcmDurableJob.id} = (
@@ -133,8 +136,8 @@ export class DurableJobQueue implements RcmJobQueue {
             ORDER BY ${rcmDurableJob.priority} ASC, ${rcmDurableJob.scheduledAt} ASC
             LIMIT 1
             FOR UPDATE SKIP LOCKED
-          )`,
-        ),
+          )`
+        )
       )
       .returning();
 
@@ -147,9 +150,10 @@ export class DurableJobQueue implements RcmJobQueue {
   async complete(jobId: string, result?: Record<string, unknown>): Promise<void> {
     const db = getPgDb();
     const now = new Date().toISOString();
-    await db.update(rcmDurableJob)
+    await db
+      .update(rcmDurableJob)
       .set({
-        status: "completed",
+        status: 'completed',
         resultJson: result ? JSON.stringify(result) : null,
         completedAt: now,
         updatedAt: now,
@@ -170,9 +174,10 @@ export class DurableJobQueue implements RcmJobQueue {
 
     if (attempts >= maxAttempts) {
       // Move to dead letter
-      await db.update(rcmDurableJob)
+      await db
+        .update(rcmDurableJob)
         .set({
-          status: "dead_letter",
+          status: 'dead_letter',
           error,
           completedAt: now,
           updatedAt: now,
@@ -182,13 +187,14 @@ export class DurableJobQueue implements RcmJobQueue {
       // Exponential backoff, capped
       const delayMs = Math.min(
         RETRY_BACKOFF_BASE_MS * Math.pow(2, attempts - 1),
-        RETRY_BACKOFF_CAP_MS,
+        RETRY_BACKOFF_CAP_MS
       );
       const nextRetry = new Date(Date.now() + delayMs).toISOString();
 
-      await db.update(rcmDurableJob)
+      await db
+        .update(rcmDurableJob)
         .set({
-          status: "queued",
+          status: 'queued',
           error,
           scheduledAt: nextRetry,
           nextRetryAt: nextRetry,
@@ -201,9 +207,10 @@ export class DurableJobQueue implements RcmJobQueue {
   async deadLetter(jobId: string, error: string): Promise<void> {
     const db = getPgDb();
     const now = new Date().toISOString();
-    await db.update(rcmDurableJob)
+    await db
+      .update(rcmDurableJob)
       .set({
-        status: "dead_letter",
+        status: 'dead_letter',
         error,
         completedAt: now,
         updatedAt: now,
@@ -214,18 +221,14 @@ export class DurableJobQueue implements RcmJobQueue {
   async cancel(jobId: string): Promise<void> {
     const db = getPgDb();
     const now = new Date().toISOString();
-    await db.update(rcmDurableJob)
+    await db
+      .update(rcmDurableJob)
       .set({
-        status: "cancelled",
+        status: 'cancelled',
         completedAt: now,
         updatedAt: now,
       })
-      .where(
-        and(
-          eq(rcmDurableJob.id, jobId),
-          eq(rcmDurableJob.status, "queued"),
-        ),
-      );
+      .where(and(eq(rcmDurableJob.id, jobId), eq(rcmDurableJob.status, 'queued')));
   }
 
   async getJob(jobId: string): Promise<RcmJob | null> {
@@ -288,11 +291,21 @@ export class DurableJobQueue implements RcmJobQueue {
     for (const row of rows) {
       const count = Number((row as any).count ?? 0);
       switch (row.status) {
-        case "queued":       stats.queued = count; break;
-        case "processing":   stats.processing = count; break;
-        case "completed":    stats.completed = count; break;
-        case "failed":       stats.failed = count; break;
-        case "dead_letter":  stats.deadLetter = count; break;
+        case 'queued':
+          stats.queued = count;
+          break;
+        case 'processing':
+          stats.processing = count;
+          break;
+        case 'completed':
+          stats.completed = count;
+          break;
+        case 'failed':
+          stats.failed = count;
+          break;
+        case 'dead_letter':
+          stats.deadLetter = count;
+          break;
       }
     }
     return stats;
@@ -306,8 +319,8 @@ export class DurableJobQueue implements RcmJobQueue {
       .where(
         and(
           lte(rcmDurableJob.completedAt, beforeTimestamp),
-          sql`${rcmDurableJob.status} IN ('completed', 'cancelled')`,
-        ),
+          sql`${rcmDurableJob.status} IN ('completed', 'cancelled')`
+        )
       )
       .returning({ id: rcmDurableJob.id });
 

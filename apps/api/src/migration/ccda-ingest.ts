@@ -7,12 +7,8 @@
  * Uses lightweight regex extraction — no heavy XML dependencies.
  */
 
-import { randomBytes } from "crypto";
-import type {
-  FhirMigrationBatch,
-  FhirMigrationError,
-  FhirImportResult,
-} from "./types.js";
+import { randomBytes } from 'crypto';
+import type { FhirMigrationBatch, FhirImportResult } from './types.js';
 
 // ── Re-use the FHIR batch store for unified tracking ───────────────
 
@@ -31,12 +27,12 @@ export function listCcdaBatches(): FhirMigrationBatch[] {
 // ── C-CDA Section OIDs ─────────────────────────────────────────────
 
 const SECTION_OIDS: Record<string, string> = {
-  "2.16.840.1.113883.10.20.22.2.5.1": "Problems",
-  "2.16.840.1.113883.10.20.22.2.5":   "Problems",
-  "2.16.840.1.113883.10.20.22.2.1.1": "Medications",
-  "2.16.840.1.113883.10.20.22.2.1":   "Medications",
-  "2.16.840.1.113883.10.20.22.2.6.1": "Allergies",
-  "2.16.840.1.113883.10.20.22.2.6":   "Allergies",
+  '2.16.840.1.113883.10.20.22.2.5.1': 'Problems',
+  '2.16.840.1.113883.10.20.22.2.5': 'Problems',
+  '2.16.840.1.113883.10.20.22.2.1.1': 'Medications',
+  '2.16.840.1.113883.10.20.22.2.1': 'Medications',
+  '2.16.840.1.113883.10.20.22.2.6.1': 'Allergies',
+  '2.16.840.1.113883.10.20.22.2.6': 'Allergies',
 };
 
 // ── Lightweight XML extraction ─────────────────────────────────────
@@ -73,33 +69,16 @@ function extractSections(xml: string): CcdaSection[] {
   return sections;
 }
 
-function extractPatientName(xml: string): string | undefined {
-  // Look for <patient> within <patientRole>
-  const patientMatch = xml.match(/<patient[\s>]([\s\S]*?)<\/patient>/i);
-  if (!patientMatch) return undefined;
-
-  const nameMatch = patientMatch[1].match(/<name[\s>]([\s\S]*?)<\/name>/i);
-  if (!nameMatch) return undefined;
-
-  const familyMatch = nameMatch[1].match(/<family>([\s\S]*?)<\/family>/i);
-  const givenMatch = nameMatch[1].match(/<given>([\s\S]*?)<\/given>/i);
-
-  const parts: string[] = [];
-  if (familyMatch) parts.push(familyMatch[1].trim());
-  if (givenMatch) parts.push(givenMatch[1].trim());
-  return parts.length > 0 ? parts.join(", ") : undefined;
-}
-
 // ── Ingest pipeline ────────────────────────────────────────────────
 
 export function ingestCcda(xmlText: string, userId: string): FhirImportResult {
-  const batchId = `mig-ccda-${randomBytes(8).toString("hex")}`;
+  const batchId = `mig-ccda-${randomBytes(8).toString('hex')}`;
   const now = new Date().toISOString();
 
   const batch: FhirMigrationBatch = {
     id: batchId,
-    format: "fhir-r4",   // stored as fhir-r4 for unified tracking
-    status: "validating",
+    format: 'fhir-r4', // stored as fhir-r4 for unified tracking
+    status: 'validating',
     createdAt: now,
     updatedAt: now,
     createdBy: userId,
@@ -112,28 +91,44 @@ export function ingestCcda(xmlText: string, userId: string): FhirImportResult {
   };
 
   // Validate it's a ClinicalDocument
-  if (!xmlText.includes("ClinicalDocument")) {
-    batch.status = "failed";
+  if (!xmlText.includes('ClinicalDocument')) {
+    batch.status = 'failed';
     batch.errors.push({
-      resourceType: "ClinicalDocument",
-      message: "XML does not contain a ClinicalDocument root element",
-      severity: "error",
+      resourceType: 'ClinicalDocument',
+      message: 'XML does not contain a ClinicalDocument root element',
+      severity: 'error',
     });
     ccdaBatches.set(batchId, batch);
-    return { ok: false, batchId, status: "failed", imported: 0, failed: 1, skipped: 0, errors: batch.errors };
+    return {
+      ok: false,
+      batchId,
+      status: 'failed',
+      imported: 0,
+      failed: 1,
+      skipped: 0,
+      errors: batch.errors,
+    };
   }
 
   // Extract sections
   const sections = extractSections(xmlText);
   if (sections.length === 0) {
-    batch.status = "failed";
+    batch.status = 'failed';
     batch.errors.push({
-      resourceType: "Section",
-      message: "No recognized C-CDA sections found (Problems, Medications, Allergies)",
-      severity: "error",
+      resourceType: 'Section',
+      message: 'No recognized C-CDA sections found (Problems, Medications, Allergies)',
+      severity: 'error',
     });
     ccdaBatches.set(batchId, batch);
-    return { ok: false, batchId, status: "failed", imported: 0, failed: 0, skipped: 0, errors: batch.errors };
+    return {
+      ok: false,
+      batchId,
+      status: 'failed',
+      imported: 0,
+      failed: 0,
+      skipped: 0,
+      errors: batch.errors,
+    };
   }
 
   // Count extracted entries
@@ -145,7 +140,7 @@ export function ingestCcda(xmlText: string, userId: string): FhirImportResult {
 
   batch.totalResources = totalEntries;
   batch.importedCount = totalEntries;
-  batch.status = totalEntries > 0 ? "completed" : "partial";
+  batch.status = totalEntries > 0 ? 'completed' : 'partial';
   batch.updatedAt = new Date().toISOString();
   ccdaBatches.set(batchId, batch);
 

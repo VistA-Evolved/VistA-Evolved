@@ -1,7 +1,9 @@
 # Phase 114 -- IMPLEMENT: Durability Wave 1 (No More Restart Data Loss)
 
 ## Objective
+
 Replace in-memory Map stores with DB-backed persistence for:
+
 - Auth sessions (session-store.ts)
 - RCM work queues (workqueue-store.ts)
 - PayerOps capability matrix (capability-matrix.ts)
@@ -11,6 +13,7 @@ Add restart-durability CI gate.
 Establish store policy standard.
 
 ## Deliverables
+
 1. docs/architecture/store-policy.md -- classification standard
 2. DB schema + repos for auth_session, rcm_work_item, rcm_work_item_event
 3. DB-backed capability matrix with audit trail via payer_audit_event
@@ -21,6 +24,7 @@ Establish store policy standard.
 8. CI wiring in qa-gauntlet.yml
 
 ## Files Touched
+
 - apps/api/src/platform/db/schema.ts (new tables)
 - apps/api/src/platform/db/migrate.ts (new DDL)
 - apps/api/src/platform/db/repo/session-repo.ts (new)

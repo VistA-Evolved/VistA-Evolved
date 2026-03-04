@@ -29,7 +29,7 @@ export interface RouteProfile {
   /** Error count (4xx + 5xx) */
   errorCount: number;
   /** Budget status */
-  budgetStatus: "within" | "warning" | "exceeded";
+  budgetStatus: 'within' | 'warning' | 'exceeded';
   /** Last updated */
   updatedAt: string;
 }

@@ -11,20 +11,19 @@
  *   GET  /audit/shipping/health    — S3 connectivity check
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 import {
   getShipperStatus,
   getShipperManifests,
   shipOneCycle,
   checkS3Connectivity,
   getLastShipResult,
-} from "../audit-shipping/index.js";
-import { log } from "../lib/logger.js";
+} from '../audit-shipping/index.js';
+import { log } from '../lib/logger.js';
 
 export async function auditShippingRoutes(server: FastifyInstance): Promise<void> {
-
   /** GET /audit/shipping/status — Shipping health overview */
-  server.get("/audit/shipping/status", async () => {
+  server.get('/audit/shipping/status', async () => {
     const status = getShipperStatus();
     const lastResult = getLastShipResult();
     return {
@@ -36,8 +35,8 @@ export async function auditShippingRoutes(server: FastifyInstance): Promise<void
   });
 
   /** POST /audit/shipping/trigger — Manually trigger a ship cycle */
-  server.post("/audit/shipping/trigger", async (_request, reply) => {
-    log.info("Manual audit ship triggered");
+  server.post('/audit/shipping/trigger', async (_request, reply) => {
+    log.info('Manual audit ship triggered');
     try {
       const result = await shipOneCycle();
       return reply.code(result.ok ? 200 : 207).send({
@@ -48,17 +47,17 @@ export async function auditShippingRoutes(server: FastifyInstance): Promise<void
         timestamp: new Date().toISOString(),
       });
     } catch (err: any) {
-      log.error("Manual audit ship failed", { error: err.message });
+      log.error('Manual audit ship failed', { error: err.message });
       return reply.code(500).send({
         ok: false,
-        error: "Audit shipping operation failed",
+        error: 'Audit shipping operation failed',
         timestamp: new Date().toISOString(),
       });
     }
   });
 
   /** GET /audit/shipping/manifests — List recent manifests */
-  server.get("/audit/shipping/manifests", async (request) => {
+  server.get('/audit/shipping/manifests', async (request) => {
     const query = request.query as { limit?: string };
     const limit = Math.min(Number(query.limit) || 50, 200);
     const items = getShipperManifests(limit);
@@ -71,7 +70,7 @@ export async function auditShippingRoutes(server: FastifyInstance): Promise<void
   });
 
   /** GET /audit/shipping/health — S3 connectivity check */
-  server.get("/audit/shipping/health", async () => {
+  server.get('/audit/shipping/health', async () => {
     const connectivity = await checkS3Connectivity();
     const status = getShipperStatus();
     return {

@@ -19,26 +19,26 @@
  * VistA AR remains the source of truth for posted payments.
  */
 
-import { randomUUID } from "node:crypto";
+import { randomUUID } from 'node:crypto';
 
 /* ── Types ──────────────────────────────────────────────────── */
 
-export type RemittanceDocType = "eob" | "soa" | "check_image" | "payment_advice" | "other";
+export type RemittanceDocType = 'eob' | 'soa' | 'check_image' | 'payment_advice' | 'other';
 
 export type RemittanceStatus =
-  | "uploaded"        // file received
-  | "tagged"          // payer identified + associated to claim(s)
-  | "reviewed"        // billing staff reviewed amounts
-  | "posted"          // payment posted to VistA AR (or marked for posting)
-  | "disputed";       // underpayment or discrepancy flagged
+  | 'uploaded' // file received
+  | 'tagged' // payer identified + associated to claim(s)
+  | 'reviewed' // billing staff reviewed amounts
+  | 'posted' // payment posted to VistA AR (or marked for posting)
+  | 'disputed'; // underpayment or discrepancy flagged
 
 export interface RemittanceLineItem {
   claimId?: string;
-  claimReference?: string;    // payer's claim tracking number
-  billedAmount: number;       // in cents
-  allowedAmount: number;      // in cents
-  paidAmount: number;         // in cents
-  adjustmentAmount: number;   // in cents
+  claimReference?: string; // payer's claim tracking number
+  billedAmount: number; // in cents
+  allowedAmount: number; // in cents
+  paidAmount: number; // in cents
+  adjustmentAmount: number; // in cents
   patientResponsibility: number; // in cents
   denialReasonCode?: string;
   denialReasonText?: string;
@@ -64,17 +64,17 @@ export interface RemittanceDocument {
   // Parsed data (manual entry by billing staff)
   checkNumber?: string;
   checkDate?: string;
-  totalPaid: number;            // in cents
+  totalPaid: number; // in cents
   lineItems: RemittanceLineItem[];
 
   // Payment posting
   postedToVista: boolean;
-  vistaArIen?: string;          // ^PRCA(430,IEN) if posted
+  vistaArIen?: string; // ^PRCA(430,IEN) if posted
   postingNotes?: string;
 
   // Underpayment flagging
   underpaymentFlagged: boolean;
-  underpaymentAmount?: number;  // in cents (billed - allowed - adj)
+  underpaymentAmount?: number; // in cents (billed - allowed - adj)
   underpaymentNotes?: string;
 
   // Audit
@@ -129,7 +129,7 @@ export function createRemittanceDocument(params: {
   const doc: RemittanceDocument = {
     id,
     tenantId: params.tenantId,
-    status: "uploaded",
+    status: 'uploaded',
     payerId: params.payerId,
     payerName: params.payerName,
     docType: params.docType,
@@ -141,12 +141,14 @@ export function createRemittanceDocument(params: {
     lineItems: [],
     postedToVista: false,
     underpaymentFlagged: false,
-    auditTrail: [{
-      timestamp: now,
-      action: "remit.uploaded",
-      actor: params.uploadedBy,
-      detail: `File uploaded: ${params.filename}`,
-    }],
+    auditTrail: [
+      {
+        timestamp: now,
+        action: 'remit.uploaded',
+        actor: params.uploadedBy,
+        detail: `File uploaded: ${params.filename}`,
+      },
+    ],
     uploadedBy: params.uploadedBy,
     uploadedAt: now,
     updatedAt: now,
@@ -159,7 +161,17 @@ export function createRemittanceDocument(params: {
   tenantRemitIndex.get(params.tenantId)!.add(id);
 
   // Phase 146: Write-through to PG
-  dbRepo?.upsert({ id, tenantId: params.tenantId, source: params.uploadedBy, fileName: params.filename, contentType: params.mimeType, status: 'received', createdAt: now }).catch(() => {});
+  dbRepo
+    ?.upsert({
+      id,
+      tenantId: params.tenantId,
+      source: params.uploadedBy,
+      fileName: params.filename,
+      contentType: params.mimeType,
+      status: 'received',
+      createdAt: now,
+    })
+    .catch(() => {});
 
   return doc;
 }
@@ -177,18 +189,18 @@ export function listRemittanceDocuments(
     payerId?: string;
     limit?: number;
     offset?: number;
-  },
+  }
 ): { documents: RemittanceDocument[]; total: number } {
   const ids = tenantRemitIndex.get(tenantId);
   if (!ids) return { documents: [], total: 0 };
 
   let result = Array.from(ids)
-    .map(id => remitDocStore.get(id)!)
+    .map((id) => remitDocStore.get(id)!)
     .filter(Boolean)
     .sort((a, b) => b.uploadedAt.localeCompare(a.uploadedAt));
 
-  if (filters?.status) result = result.filter(d => d.status === filters.status);
-  if (filters?.payerId) result = result.filter(d => d.payerId === filters.payerId);
+  if (filters?.status) result = result.filter((d) => d.status === filters.status);
+  if (filters?.payerId) result = result.filter((d) => d.payerId === filters.payerId);
 
   const total = result.length;
   const offset = filters?.offset ?? 0;
@@ -206,7 +218,7 @@ export function tagRemittanceDocument(
     checkDate?: string;
     lineItems: RemittanceLineItem[];
     actor: string;
-  },
+  }
 ): RemittanceDocument {
   const doc = remitDocStore.get(id);
   if (!doc) throw new Error(`Remittance document not found: ${id}`);
@@ -216,7 +228,7 @@ export function tagRemittanceDocument(
 
   const updated: RemittanceDocument = {
     ...doc,
-    status: "tagged",
+    status: 'tagged',
     checkNumber: params.checkNumber ?? doc.checkNumber,
     checkDate: params.checkDate ?? doc.checkDate,
     lineItems: params.lineItems,
@@ -226,7 +238,7 @@ export function tagRemittanceDocument(
       ...doc.auditTrail,
       {
         timestamp: now,
-        action: "remit.tagged",
+        action: 'remit.tagged',
         actor: params.actor,
         detail: `Tagged with ${params.lineItems.length} line items, total paid: ${totalPaid}`,
       },
@@ -236,17 +248,21 @@ export function tagRemittanceDocument(
   remitDocStore.set(id, updated);
 
   // Phase 146: Write-through tag
-  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt }).catch(() => {});
+  dbRepo
+    ?.upsert({
+      id,
+      tenantId: updated.tenantId ?? 'default',
+      status: updated.status,
+      updatedAt: updated.updatedAt,
+    })
+    .catch(() => {});
 
   return updated;
 }
 
 /* ── Review + Underpayment Check ────────────────────────────── */
 
-export function reviewRemittanceDocument(
-  id: string,
-  actor: string,
-): RemittanceDocument {
+export function reviewRemittanceDocument(id: string, actor: string): RemittanceDocument {
   const doc = remitDocStore.get(id);
   if (!doc) throw new Error(`Remittance document not found: ${id}`);
 
@@ -262,7 +278,7 @@ export function reviewRemittanceDocument(
   const now = new Date().toISOString();
   const updated: RemittanceDocument = {
     ...doc,
-    status: totalUnderpayment > 0 ? "disputed" : "reviewed",
+    status: totalUnderpayment > 0 ? 'disputed' : 'reviewed',
     underpaymentFlagged: totalUnderpayment > 0,
     underpaymentAmount: totalUnderpayment > 0 ? totalUnderpayment : undefined,
     updatedAt: now,
@@ -270,11 +286,12 @@ export function reviewRemittanceDocument(
       ...doc.auditTrail,
       {
         timestamp: now,
-        action: totalUnderpayment > 0 ? "remit.underpayment_flagged" : "remit.reviewed",
+        action: totalUnderpayment > 0 ? 'remit.underpayment_flagged' : 'remit.reviewed',
         actor,
-        detail: totalUnderpayment > 0
-          ? `Underpayment detected: ${totalUnderpayment} cents`
-          : "Review completed -- amounts match",
+        detail:
+          totalUnderpayment > 0
+            ? `Underpayment detected: ${totalUnderpayment} cents`
+            : 'Review completed -- amounts match',
       },
     ],
   };
@@ -282,7 +299,14 @@ export function reviewRemittanceDocument(
   remitDocStore.set(id, updated);
 
   // Phase 146: Write-through review
-  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt }).catch(() => {});
+  dbRepo
+    ?.upsert({
+      id,
+      tenantId: updated.tenantId ?? 'default',
+      status: updated.status,
+      updatedAt: updated.updatedAt,
+    })
+    .catch(() => {});
 
   return updated;
 }
@@ -293,7 +317,7 @@ export function markAsPosted(
   id: string,
   vistaArIen: string | undefined,
   postingNotes: string,
-  actor: string,
+  actor: string
 ): RemittanceDocument {
   const doc = remitDocStore.get(id);
   if (!doc) throw new Error(`Remittance document not found: ${id}`);
@@ -301,7 +325,7 @@ export function markAsPosted(
   const now = new Date().toISOString();
   const updated: RemittanceDocument = {
     ...doc,
-    status: "posted",
+    status: 'posted',
     postedToVista: !!vistaArIen,
     vistaArIen,
     postingNotes,
@@ -310,7 +334,7 @@ export function markAsPosted(
       ...doc.auditTrail,
       {
         timestamp: now,
-        action: "remit.posted",
+        action: 'remit.posted',
         actor,
         detail: vistaArIen
           ? `Posted to VistA AR IEN: ${vistaArIen}`
@@ -322,7 +346,14 @@ export function markAsPosted(
   remitDocStore.set(id, updated);
 
   // Phase 146: Write-through post
-  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt }).catch(() => {});
+  dbRepo
+    ?.upsert({
+      id,
+      tenantId: updated.tenantId ?? 'default',
+      status: updated.status,
+      updatedAt: updated.updatedAt,
+    })
+    .catch(() => {});
 
   return updated;
 }
@@ -337,9 +368,16 @@ export function getRemittanceStats(tenantId: string): {
   underpaymentTotal: number;
 } {
   const ids = tenantRemitIndex.get(tenantId);
-  if (!ids) return { total: 0, byStatus: {}, totalPaid: 0, underpaymentCount: 0, underpaymentTotal: 0 };
+  if (!ids)
+    return { total: 0, byStatus: {}, totalPaid: 0, underpaymentCount: 0, underpaymentTotal: 0 };
 
-  const stats = { total: 0, byStatus: {} as Record<string, number>, totalPaid: 0, underpaymentCount: 0, underpaymentTotal: 0 };
+  const stats = {
+    total: 0,
+    byStatus: {} as Record<string, number>,
+    totalPaid: 0,
+    underpaymentCount: 0,
+    underpaymentTotal: 0,
+  };
 
   for (const id of ids) {
     const doc = remitDocStore.get(id);

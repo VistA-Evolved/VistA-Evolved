@@ -11,7 +11,7 @@
  * 4. Filing results -> Standard VistA RPCs per vistaTarget mapping
  */
 
-import { randomBytes, createHash } from "node:crypto";
+import { randomBytes, createHash } from 'node:crypto';
 import type {
   IntakeSession,
   IntakeEvent,
@@ -24,7 +24,7 @@ import type {
   SubjectType,
   BrainProvider,
   KioskResumeToken,
-} from "./types.js";
+} from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Stores                                                               */
@@ -36,8 +36,13 @@ const snapshots = new Map<string, QRSnapshot[]>(); // sessionId -> snapshots
 const kioskTokens = new Map<string, KioskResumeToken>();
 
 /* Phase 146: DB repo wiring */
-let intakeDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
-export function initIntakeStoreRepo(repo: typeof intakeDbRepo): void { intakeDbRepo = repo; }
+let intakeDbRepo: {
+  upsert(d: any): Promise<any>;
+  update?(id: string, u: any): Promise<any>;
+} | null = null;
+export function initIntakeStoreRepo(repo: typeof intakeDbRepo): void {
+  intakeDbRepo = repo;
+}
 
 const MAX_SESSIONS = 10_000;
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24h default
@@ -48,7 +53,7 @@ const KIOSK_TOKEN_TTL_MS = 30 * 60 * 1000; // 30 min
 /* ------------------------------------------------------------------ */
 
 function genId(): string {
-  return randomBytes(16).toString("hex");
+  return randomBytes(16).toString('hex');
 }
 
 function now(): string {
@@ -56,7 +61,7 @@ function now(): string {
 }
 
 function hashQR(qr: QuestionnaireResponse): string {
-  return createHash("sha256").update(JSON.stringify(qr)).digest("hex");
+  return createHash('sha256').update(JSON.stringify(qr)).digest('hex');
 }
 
 /* ------------------------------------------------------------------ */
@@ -64,12 +69,12 @@ function hashQR(qr: QuestionnaireResponse): string {
 /* ------------------------------------------------------------------ */
 
 const VALID_TRANSITIONS: Record<IntakeSessionStatus, IntakeSessionStatus[]> = {
-  not_started: ["in_progress"],
-  in_progress: ["submitted", "abandoned", "expired"],
-  submitted: ["clinician_reviewed"],
-  clinician_reviewed: ["filed", "filed_pending_integration"],
+  not_started: ['in_progress'],
+  in_progress: ['submitted', 'abandoned', 'expired'],
+  submitted: ['clinician_reviewed'],
+  clinician_reviewed: ['filed', 'filed_pending_integration'],
   filed: [],
-  filed_pending_integration: ["filed"],
+  filed_pending_integration: ['filed'],
   expired: [],
   abandoned: [],
 };
@@ -94,7 +99,7 @@ export function createSession(opts: {
   if (sessions.size >= MAX_SESSIONS) {
     // Evict oldest expired/abandoned sessions
     for (const [id, s] of sessions) {
-      if (s.status === "expired" || s.status === "abandoned") {
+      if (s.status === 'expired' || s.status === 'abandoned') {
         sessions.delete(id);
       }
       if (sessions.size < MAX_SESSIONS * 0.8) break;
@@ -107,10 +112,11 @@ export function createSession(opts: {
     appointmentId: opts.appointmentId ?? null,
     subjectType: opts.subjectType,
     proxyDfn: opts.proxyDfn ?? null,
-    language: opts.language ?? "en",
+    language: opts.language ?? 'en',
     context: opts.context ?? {},
-    status: "not_started",
-    brainProvider: opts.brainProvider ?? (process.env.INTAKE_BRAIN_PROVIDER as BrainProvider) ?? "rules",
+    status: 'not_started',
+    brainProvider:
+      opts.brainProvider ?? (process.env.INTAKE_BRAIN_PROVIDER as BrainProvider) ?? 'rules',
     questionnaireResponseVersion: 0,
     createdAt: now(),
     updatedAt: now(),
@@ -120,13 +126,23 @@ export function createSession(opts: {
   sessions.set(session.id, session);
 
   // Phase 146: Write-through to PG
-  intakeDbRepo?.upsert({ id: session.id, tenantId: (session as any).tenantId ?? 'default', patientDfn: (session as any).patientDfn ?? '', status: session.status, data: JSON.stringify(session), createdAt: session.createdAt, updatedAt: (session as any).updatedAt ?? session.createdAt }).catch(() => {});
+  intakeDbRepo
+    ?.upsert({
+      id: session.id,
+      tenantId: (session as any).tenantId ?? 'default',
+      patientDfn: (session as any).patientDfn ?? '',
+      status: session.status,
+      data: JSON.stringify(session),
+      createdAt: session.createdAt,
+      updatedAt: (session as any).updatedAt ?? session.createdAt,
+    })
+    .catch(() => {});
 
   appendEvent({
     sessionId: session.id,
-    type: "session.created",
-    actor: opts.patientDfn ?? "anonymous",
-    actorType: opts.subjectType === "proxy" ? "proxy" : "patient",
+    type: 'session.created',
+    actor: opts.patientDfn ?? 'anonymous',
+    actorType: opts.subjectType === 'proxy' ? 'proxy' : 'patient',
     payload: {
       appointmentId: opts.appointmentId,
       language: session.language,
@@ -143,14 +159,14 @@ export function getSession(id: string): IntakeSession | undefined {
 
   // Check expiry
   if (session.expiresAt && new Date(session.expiresAt) < new Date()) {
-    if (canTransition(session.status, "expired")) {
-      session.status = "expired";
+    if (canTransition(session.status, 'expired')) {
+      session.status = 'expired';
       session.updatedAt = now();
       appendEvent({
         sessionId: id,
-        type: "session.expired",
-        actor: "system",
-        actorType: "system",
+        type: 'session.expired',
+        actor: 'system',
+        actorType: 'system',
         payload: {},
       });
     }
@@ -159,7 +175,12 @@ export function getSession(id: string): IntakeSession | undefined {
   return session;
 }
 
-export function updateSessionStatus(id: string, newStatus: IntakeSessionStatus, actor: string, actorType: ActorType): boolean {
+export function updateSessionStatus(
+  id: string,
+  newStatus: IntakeSessionStatus,
+  actor: string,
+  actorType: ActorType
+): boolean {
   const session = sessions.get(id);
   if (!session) return false;
   if (!canTransition(session.status, newStatus)) return false;
@@ -194,10 +215,7 @@ export function listSessionsByStatus(status: IntakeSessionStatus): IntakeSession
 }
 
 export function listFilingQueue(): IntakeSession[] {
-  return [
-    ...listSessionsByStatus("clinician_reviewed"),
-    ...listSessionsByStatus("submitted"),
-  ];
+  return [...listSessionsByStatus('clinician_reviewed'), ...listSessionsByStatus('submitted')];
 }
 
 /* ------------------------------------------------------------------ */
@@ -288,7 +306,7 @@ export function getSnapshotHistory(sessionId: string): QRSnapshot[] {
 
 export function createKioskResumeToken(sessionId: string): KioskResumeToken {
   const token: KioskResumeToken = {
-    token: randomBytes(32).toString("hex"),
+    token: randomBytes(32).toString('hex'),
     sessionId,
     expiresAt: new Date(Date.now() + KIOSK_TOKEN_TTL_MS).toISOString(),
     used: false,

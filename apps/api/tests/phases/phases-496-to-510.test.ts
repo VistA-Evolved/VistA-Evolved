@@ -7,43 +7,43 @@
  *   node scripts/generate-phase-qa.mjs
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from 'vitest';
 
-const API = process.env.API_URL ?? "http://localhost:3001";
+const API = process.env.API_URL ?? 'http://localhost:3001';
 
-describe("Phase 496: Notes", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 496: Notes', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/dsar/requests`);
-    expect(r0.status, "/dsar/requests").not.toBe(500);
+    expect(r0.status, '/dsar/requests').not.toBe(500);
   });
 });
 
-describe("Phase 497: Notes", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 497: Notes', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/i18n/coverage`);
-    expect(r0.status, "/i18n/coverage").not.toBe(500);
+    expect(r0.status, '/i18n/coverage').not.toBe(500);
   });
 });
 
-describe("Phase 498: Notes", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 498: Notes', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/vista/utf8/status`);
-    expect(r0.status, "/vista/utf8/status").not.toBe(500);
+    expect(r0.status, '/vista/utf8/status').not.toBe(500);
     const r1 = await fetch(`${API}/vista/utf8/test`);
-    expect(r1.status, "/vista/utf8/test").not.toBe(500);
+    expect(r1.status, '/vista/utf8/test').not.toBe(500);
   });
 });
 
-describe("Phase 499: Notes", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 499: Notes', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/conformance/run`);
-    expect(r0.status, "/conformance/run").not.toBe(500);
+    expect(r0.status, '/conformance/run').not.toBe(500);
   });
 });
 
-describe("Phase 510: Prompt Tree Health Repair", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 510: Prompt Tree Health Repair', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/prompts`);
-    expect(r0.status, "/prompts").not.toBe(500);
+    expect(r0.status, '/prompts').not.toBe(500);
   });
 });

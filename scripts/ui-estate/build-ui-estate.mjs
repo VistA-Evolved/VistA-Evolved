@@ -57,7 +57,7 @@ function scanApiRoutes() {
   for (const rd of routeDirs) {
     const abs = join(ROOT, rd);
     if (!existsSync(abs)) continue;
-    for (const f of walkDir(abs, n => n.endsWith('.ts') && !n.endsWith('.test.ts'))) {
+    for (const f of walkDir(abs, (n) => n.endsWith('.ts') && !n.endsWith('.test.ts'))) {
       routeFiles.add(relative(ROOT, f).replace(/\\/g, '/'));
     }
   }
@@ -76,10 +76,16 @@ function scanApiRoutes() {
       // Match route patterns like '/vista/allergies', '/rcm/*', etc.
       const matches = content.matchAll(/['"`](\/[a-z][a-z0-9\-\/\*:[\]{}]*)/gi);
       for (const m of matches) {
-        const prefix = m[1].split('/').slice(0, 3).join('/').replace(/[:*[\]{}].*/, '');
+        const prefix = m[1]
+          .split('/')
+          .slice(0, 3)
+          .join('/')
+          .replace(/[:*[\]{}].*/, '');
         if (prefix.length > 1) routePrefixes.add(prefix);
       }
-    } catch { /* skip unreadable */ }
+    } catch {
+      /* skip unreadable */
+    }
   }
 
   return { routeFiles: [...routeFiles], routePrefixes: [...routePrefixes].sort() };
@@ -93,13 +99,17 @@ function scanUiPages() {
   const webDir = join(ROOT, 'apps/web/src/app');
   const portalDir = join(ROOT, 'apps/portal/src/app');
 
-  for (const f of walkDir(webDir, n => n === 'page.tsx')) {
-    const rel = relative(webDir, f).replace(/\\/g, '/').replace(/\/page\.tsx$/, '');
+  for (const f of walkDir(webDir, (n) => n === 'page.tsx')) {
+    const rel = relative(webDir, f)
+      .replace(/\\/g, '/')
+      .replace(/\/page\.tsx$/, '');
     webPages.push('/' + rel);
   }
 
-  for (const f of walkDir(portalDir, n => n === 'page.tsx')) {
-    const rel = relative(portalDir, f).replace(/\\/g, '/').replace(/\/page\.tsx$/, '');
+  for (const f of walkDir(portalDir, (n) => n === 'page.tsx')) {
+    const rel = relative(portalDir, f)
+      .replace(/\\/g, '/')
+      .replace(/\/page\.tsx$/, '');
     portalPages.push('/' + rel);
   }
 
@@ -111,7 +121,7 @@ function scanE2eTests() {
   const e2eDir = join(ROOT, 'apps/web/e2e');
   const tests = [];
   if (!existsSync(e2eDir)) return tests;
-  for (const f of walkDir(e2eDir, n => n.endsWith('.spec.ts'))) {
+  for (const f of walkDir(e2eDir, (n) => n.endsWith('.spec.ts'))) {
     tests.push(relative(ROOT, f).replace(/\\/g, '/'));
   }
   return tests.sort();
@@ -122,7 +132,11 @@ function loadCapabilities() {
   const caps = loadJson('config/capabilities.json');
   if (!caps) return [];
   if (Array.isArray(caps)) return caps;
-  if (caps.capabilities && typeof caps.capabilities === 'object' && !Array.isArray(caps.capabilities)) {
+  if (
+    caps.capabilities &&
+    typeof caps.capabilities === 'object' &&
+    !Array.isArray(caps.capabilities)
+  ) {
     // capabilities is an object keyed by id
     return Object.entries(caps.capabilities).map(([id, v]) => ({ id, ...v }));
   }
@@ -139,9 +153,16 @@ function loadEstateCatalog(file) {
 
 // ── 6. Compute coverage score per surface ───────────────────────────
 function coverageScore(coverage) {
-  const fields = ['present_ui', 'present_api', 'vista_rpc_wired', 'writeback_ready', 'tests_present', 'evidence_present'];
+  const fields = [
+    'present_ui',
+    'present_api',
+    'vista_rpc_wired',
+    'writeback_ready',
+    'tests_present',
+    'evidence_present',
+  ];
   const total = fields.length;
-  const met = fields.filter(f => coverage[f]).length;
+  const met = fields.filter((f) => coverage[f]).length;
   return { met, total, pct: Math.round((met / total) * 100) };
 }
 
@@ -168,8 +189,8 @@ function buildGapReport() {
   const ihsSystems = loadEstateCatalog('data/ui-estate/ihs-ui-estate.json');
 
   const allSystems = [
-    ...vaSystems.map(s => ({ ...s, agency: 'va' })),
-    ...ihsSystems.map(s => ({ ...s, agency: 'ihs' })),
+    ...vaSystems.map((s) => ({ ...s, agency: 'va' })),
+    ...ihsSystems.map((s) => ({ ...s, agency: 'ihs' })),
   ];
 
   // Per-system breakdown
@@ -177,8 +198,20 @@ function buildGapReport() {
   let totalSurfaces = 0;
   let coveredSurfaces = 0;
   let gapSurfaces = 0;
-  const priorityCounts = { 'p0-critical': { total: 0, covered: 0 }, 'p1-high': { total: 0, covered: 0 }, 'p2-medium': { total: 0, covered: 0 }, 'p3-low': { total: 0, covered: 0 } };
-  const statusCounts = { 'not-started': 0, 'scaffold': 0, 'api-wired': 0, 'writeback': 0, 'parity': 0, 'certified': 0 };
+  const priorityCounts = {
+    'p0-critical': { total: 0, covered: 0 },
+    'p1-high': { total: 0, covered: 0 },
+    'p2-medium': { total: 0, covered: 0 },
+    'p3-low': { total: 0, covered: 0 },
+  };
+  const statusCounts = {
+    'not-started': 0,
+    scaffold: 0,
+    'api-wired': 0,
+    writeback: 0,
+    parity: 0,
+    certified: 0,
+  };
   const gaps = [];
   let rpcReferencingCount = 0;
 
@@ -234,16 +267,17 @@ function buildGapReport() {
       });
     }
 
-    sysResult.coverageAvg = sys.surfaces.length > 0
-      ? Math.round(sysCoverageSum / sys.surfaces.length)
-      : 0;
+    sysResult.coverageAvg =
+      sys.surfaces.length > 0 ? Math.round(sysCoverageSum / sys.surfaces.length) : 0;
 
     systemBreakdown.push(sysResult);
   }
 
   // Sort gaps by priority then coverage
   const priorityOrder = { 'p0-critical': 0, 'p1-high': 1, 'p2-medium': 2, 'p3-low': 3 };
-  gaps.sort((a, b) => (priorityOrder[a.priority] - priorityOrder[b.priority]) || (a.coveragePct - b.coveragePct));
+  gaps.sort(
+    (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority] || a.coveragePct - b.coveragePct
+  );
 
   const report = {
     generatedAt: new Date().toISOString(),

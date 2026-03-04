@@ -1,7 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchDemographics, fetchAllergies, fetchProblems, fetchVitals, fetchMedications } from '@/lib/api';
+import {
+  fetchDemographics,
+  fetchAllergies,
+  fetchProblems,
+  fetchVitals,
+  fetchMedications,
+} from '@/lib/api';
 import type { PatientDemographics, Allergy, Problem, Vital, Medication } from '@/lib/chart-types';
 import styles from './panels.module.css';
 
@@ -31,9 +37,9 @@ function Section({
 }
 
 export default function CoverSheetPanel({ dfn }: CoverSheetPanelProps) {
-  const [demo, setDemo] = useState<PatientDemographics | null>(null);
-  const [demoLoading, setDemoLoading] = useState(true);
-  const [demoError, setDemoError] = useState<string | null>(null);
+  const [_demo, setDemo] = useState<PatientDemographics | null>(null);
+  const [_demoLoading, setDemoLoading] = useState(true);
+  const [_demoError, setDemoError] = useState<string | null>(null);
 
   const [allergies, setAllergies] = useState<Allergy[]>([]);
   const [allergyLoading, setAllergyLoading] = useState(true);
@@ -55,26 +61,78 @@ export default function CoverSheetPanel({ dfn }: CoverSheetPanelProps) {
     let cancelled = false;
 
     fetchDemographics(dfn)
-      .then((d) => { if (!cancelled) { setDemo(d); setDemoLoading(false); } })
-      .catch((e) => { if (!cancelled) { setDemoError(e.message); setDemoLoading(false); } });
+      .then((d) => {
+        if (!cancelled) {
+          setDemo(d);
+          setDemoLoading(false);
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) {
+          setDemoError(e.message);
+          setDemoLoading(false);
+        }
+      });
 
     fetchAllergies(dfn)
-      .then((a) => { if (!cancelled) { setAllergies(a); setAllergyLoading(false); } })
-      .catch((e) => { if (!cancelled) { setAllergyError(e.message); setAllergyLoading(false); } });
+      .then((a) => {
+        if (!cancelled) {
+          setAllergies(a);
+          setAllergyLoading(false);
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) {
+          setAllergyError(e.message);
+          setAllergyLoading(false);
+        }
+      });
 
     fetchProblems(dfn)
-      .then((p) => { if (!cancelled) { setProblems(p); setProbLoading(false); } })
-      .catch((e) => { if (!cancelled) { setProbError(e.message); setProbLoading(false); } });
+      .then((p) => {
+        if (!cancelled) {
+          setProblems(p);
+          setProbLoading(false);
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) {
+          setProbError(e.message);
+          setProbLoading(false);
+        }
+      });
 
     fetchVitals(dfn)
-      .then((v) => { if (!cancelled) { setVitals(v); setVitalLoading(false); } })
-      .catch((e) => { if (!cancelled) { setVitalError(e.message); setVitalLoading(false); } });
+      .then((v) => {
+        if (!cancelled) {
+          setVitals(v);
+          setVitalLoading(false);
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) {
+          setVitalError(e.message);
+          setVitalLoading(false);
+        }
+      });
 
     fetchMedications(dfn)
-      .then((m) => { if (!cancelled) { setMeds(m); setMedLoading(false); } })
-      .catch((e) => { if (!cancelled) { setMedError(e.message); setMedLoading(false); } });
+      .then((m) => {
+        if (!cancelled) {
+          setMeds(m);
+          setMedLoading(false);
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) {
+          setMedError(e.message);
+          setMedLoading(false);
+        }
+      });
 
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [dfn]);
 
   return (
@@ -86,7 +144,11 @@ export default function CoverSheetPanel({ dfn }: CoverSheetPanelProps) {
         ) : (
           <table className={styles.dataTable}>
             <thead>
-              <tr><th>Problem</th><th>Status</th><th>Onset</th></tr>
+              <tr>
+                <th>Problem</th>
+                <th>Status</th>
+                <th>Onset</th>
+              </tr>
             </thead>
             <tbody>
               {problems.map((p) => (
@@ -108,7 +170,11 @@ export default function CoverSheetPanel({ dfn }: CoverSheetPanelProps) {
         ) : (
           <table className={styles.dataTable}>
             <thead>
-              <tr><th>Allergen</th><th>Severity</th><th>Reactions</th></tr>
+              <tr>
+                <th>Allergen</th>
+                <th>Severity</th>
+                <th>Reactions</th>
+              </tr>
             </thead>
             <tbody>
               {allergies.map((a) => (
@@ -130,7 +196,11 @@ export default function CoverSheetPanel({ dfn }: CoverSheetPanelProps) {
         ) : (
           <table className={styles.dataTable}>
             <thead>
-              <tr><th>Medication</th><th>Sig</th><th>Status</th></tr>
+              <tr>
+                <th>Medication</th>
+                <th>Sig</th>
+                <th>Status</th>
+              </tr>
             </thead>
             <tbody>
               {meds.map((m) => (
@@ -152,7 +222,11 @@ export default function CoverSheetPanel({ dfn }: CoverSheetPanelProps) {
         ) : (
           <table className={styles.dataTable}>
             <thead>
-              <tr><th>Type</th><th>Value</th><th>Taken</th></tr>
+              <tr>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Taken</th>
+              </tr>
             </thead>
             <tbody>
               {vitals.map((v, i) => (

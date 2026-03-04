@@ -7,15 +7,15 @@
  * In-memory store; matches imaging worklist pattern from Phase 23.
  */
 
-import { randomBytes } from "node:crypto";
-import { log } from "../lib/logger.js";
+import { randomBytes } from 'node:crypto';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type EndpointDirection = "inbound" | "outbound" | "bidirectional";
-export type EndpointStatus = "active" | "inactive" | "testing" | "error";
+export type EndpointDirection = 'inbound' | 'outbound' | 'bidirectional';
+export type EndpointStatus = 'active' | 'inactive' | 'testing' | 'error';
 
 export interface Hl7TenantEndpoint {
   /** Unique endpoint ID */
@@ -69,7 +69,7 @@ export interface CreateEndpointRequest {
 const endpointStore = new Map<string, Hl7TenantEndpoint>();
 
 function generateEndpointId(): string {
-  return `hl7ep-${randomBytes(6).toString("hex")}`;
+  return `hl7ep-${randomBytes(6).toString('hex')}`;
 }
 
 export function createEndpoint(req: CreateEndpointRequest): Hl7TenantEndpoint {
@@ -79,7 +79,7 @@ export function createEndpoint(req: CreateEndpointRequest): Hl7TenantEndpoint {
     tenantId: req.tenantId,
     name: req.name,
     direction: req.direction,
-    status: "inactive",
+    status: 'inactive',
     remoteHost: req.remoteHost,
     remotePort: req.remotePort,
     sendingFacility: req.sendingFacility,
@@ -92,8 +92,8 @@ export function createEndpoint(req: CreateEndpointRequest): Hl7TenantEndpoint {
     updatedAt: now,
   };
   endpointStore.set(endpoint.id, endpoint);
-  log.info("HL7 tenant endpoint created", {
-    component: "hl7-tenant",
+  log.info('HL7 tenant endpoint created', {
+    component: 'hl7-tenant',
     endpointId: endpoint.id,
     tenantId: req.tenantId,
     direction: req.direction,
@@ -113,7 +113,20 @@ export function listEndpoints(tenantId?: string): Hl7TenantEndpoint[] {
 
 export function updateEndpoint(
   id: string,
-  updates: Partial<Pick<Hl7TenantEndpoint, "name" | "status" | "remoteHost" | "remotePort" | "sendingFacility" | "sendingApplication" | "receivingFacility" | "messageTypes" | "tlsEnabled">>,
+  updates: Partial<
+    Pick<
+      Hl7TenantEndpoint,
+      | 'name'
+      | 'status'
+      | 'remoteHost'
+      | 'remotePort'
+      | 'sendingFacility'
+      | 'sendingApplication'
+      | 'receivingFacility'
+      | 'messageTypes'
+      | 'tlsEnabled'
+    >
+  >
 ): Hl7TenantEndpoint {
   const ep = endpointStore.get(id);
   if (!ep) throw new Error(`Endpoint not found: ${id}`);
@@ -132,11 +145,11 @@ export function getEndpointsByTenant(tenantId: string): Hl7TenantEndpoint[] {
 export function resolveInboundEndpoint(
   sendingFacility: string,
   sendingApp: string,
-  messageType: string,
+  messageType: string
 ): Hl7TenantEndpoint | undefined {
   for (const ep of endpointStore.values()) {
-    if (ep.status !== "active") continue;
-    if (ep.direction === "outbound") continue;
+    if (ep.status !== 'active') continue;
+    if (ep.direction === 'outbound') continue;
     if (ep.sendingFacility && ep.sendingFacility !== sendingFacility) continue;
     if (ep.sendingApplication && ep.sendingApplication !== sendingApp) continue;
     if (ep.messageTypes.length > 0 && !ep.messageTypes.includes(messageType)) continue;

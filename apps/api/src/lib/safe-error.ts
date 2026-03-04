@@ -18,41 +18,41 @@
  * - Truncates to 200 chars max
  */
 export function safeErr(err: unknown): string {
-  if (!(err instanceof Error)) return "Operation failed";
+  if (!(err instanceof Error)) return 'Operation failed';
 
   const m = err.message;
 
   // Credential / config leaks
   if (
-    m.includes("credential") ||
-    m.includes("VISTA_") ||
-    m.includes("password") ||
-    m.includes("ACCESS_CODE") ||
-    m.includes("VERIFY_CODE")
+    m.includes('credential') ||
+    m.includes('VISTA_') ||
+    m.includes('password') ||
+    m.includes('ACCESS_CODE') ||
+    m.includes('VERIFY_CODE')
   ) {
-    return "Configuration error";
+    return 'Configuration error';
   }
 
   // Connection errors — user-friendly
-  if (m.includes("ECONNREFUSED") || m.includes("ECONNRESET") || m.includes("ETIMEDOUT")) {
-    return "VistA service unavailable";
+  if (m.includes('ECONNREFUSED') || m.includes('ECONNRESET') || m.includes('ETIMEDOUT')) {
+    return 'VistA service unavailable';
   }
-  if (m.includes("timeout") || m.includes("TIMEOUT")) {
-    return "Request timed out";
+  if (m.includes('timeout') || m.includes('TIMEOUT')) {
+    return 'Request timed out';
   }
 
   // Strip sensitive patterns
   let s = m
-    .replace(/\^[A-Z][A-Z0-9]*/g, "")           // MUMPS globals (^GLOBAL)
-    .replace(/%[A-Z][A-Z0-9]*/g, "")             // MUMPS % routines
-    .replace(/[A-Z]:\\[^\s]+/g, "")               // Windows file paths
-    .replace(/\/[^\s]*\/[^\s]*/g, "")             // Unix file paths
-    .replace(/at\s+\S+\s+\([^)]+\)/g, "")        // Stack trace frames
-    .replace(/\n\s+at\s+.*/g, "")                 // Multi-line stack frames
-    .replace(/node:internal\/[^\s]*/g, "")         // Node internal refs
-    .replace(/\s{2,}/g, " ")                       // Collapse whitespace
+    .replace(/\^[A-Z][A-Z0-9]*/g, '') // MUMPS globals (^GLOBAL)
+    .replace(/%[A-Z][A-Z0-9]*/g, '') // MUMPS % routines
+    .replace(/[A-Z]:\\[^\s]+/g, '') // Windows file paths
+    .replace(/\/[^\s]*\/[^\s]*/g, '') // Unix file paths
+    .replace(/at\s+\S+\s+\([^)]+\)/g, '') // Stack trace frames
+    .replace(/\n\s+at\s+.*/g, '') // Multi-line stack frames
+    .replace(/node:internal\/[^\s]*/g, '') // Node internal refs
+    .replace(/\s{2,}/g, ' ') // Collapse whitespace
     .trim();
 
-  if (s.length > 200) s = s.slice(0, 200) + "...";
-  return s || "Operation failed";
+  if (s.length > 200) s = s.slice(0, 200) + '...';
+  return s || 'Operation failed';
 }

@@ -1,6 +1,7 @@
 # 401-99-VERIFY — MPI / Client Registry
 
 ## Verification Gates
+
 1. `types.ts` exports MpiPatientIdentity, MatchResult, MergeEvent, MpiDashboardStats
 2. `mpi-store.ts` implements deterministic matching with score-based confidence
 3. Merge operations absorb identifiers from retired into survivor

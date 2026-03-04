@@ -12,6 +12,7 @@ configuration file, not a separate code branch or plugin binary.
 ## Context
 
 VistA-Evolved must support deployment to multiple countries with different:
+
 - Regulatory requirements (consent, data retention, export controls)
 - Terminology systems (ICD-10-CM vs ICD-10-AM, LOINC vs local lab codes)
 - Payer ecosystems (US commercial, PhilHealth, NHIA Ghana)
@@ -28,13 +29,13 @@ VistA-Evolved must support deployment to multiple countries with different:
 
 ## Rationale
 
-| Criterion           | Values-driven | Code plugins | Branch-per-country |
-|---------------------|:---:|:---:|:---:|
-| Maintenance cost    | Low | Medium | Very High |
-| Feature drift risk  | None | Low | Critical |
-| Runtime switchable  | Yes | Partial | No |
-| Testable in CI      | Yes | Yes | Exponential |
-| Tenant isolation    | Native | Requires loader | None |
+| Criterion          | Values-driven |  Code plugins   | Branch-per-country |
+| ------------------ | :-----------: | :-------------: | :----------------: |
+| Maintenance cost   |      Low      |     Medium      |     Very High      |
+| Feature drift risk |     None      |       Low       |      Critical      |
+| Runtime switchable |      Yes      |     Partial     |         No         |
+| Testable in CI     |      Yes      |       Yes       |    Exponential     |
+| Tenant isolation   |    Native     | Requires loader |        None        |
 
 - **Values-driven is the clear winner** for our architecture because:
   - Phase 37C already has `module-registry.ts` with SKU profiles and per-tenant overrides.
@@ -57,41 +58,46 @@ country-packs/<iso-3166-alpha2>/
 
 ```jsonc
 {
-  "countryCode": "US",               // ISO 3166-1 alpha-2
+  "countryCode": "US", // ISO 3166-1 alpha-2
   "countryName": "United States",
   "defaultLocale": "en-US",
   "defaultTimezone": "America/New_York",
   "supportedLocales": ["en-US", "es-US"],
   "regulatoryProfile": {
-    "consentRequired": true,          // Patient consent before data sharing
-    "dataExportRestricted": false,    // Cross-border data export allowed?
-    "retentionMinYears": 7,           // Minimum record retention
-    "retentionMaxYears": null,        // null = no upper bound
-    "breakGlassAllowed": true,        // Emergency access override
-    "auditRetentionDays": 2555       // ~7 years
+    "consentRequired": true, // Patient consent before data sharing
+    "dataExportRestricted": false, // Cross-border data export allowed?
+    "retentionMinYears": 7, // Minimum record retention
+    "retentionMaxYears": null, // null = no upper bound
+    "breakGlassAllowed": true, // Emergency access override
+    "auditRetentionDays": 2555, // ~7 years
   },
   "terminologyDefaults": {
     "diagnosisCodeSystem": "ICD-10-CM",
     "procedureCodeSystem": "CPT",
     "labCodeSystem": "LOINC",
-    "drugCodeSystem": "NDC"
+    "drugCodeSystem": "NDC",
   },
-  "payerModules": ["us_core"],        // refs to data/payers/*.json files
-  "enabledModules": [                  // Phase 37C module IDs to enable
-    "kernel", "clinical", "portal", "telehealth",
-    "imaging", "analytics", "interop", "rcm", "scheduling"
+  "payerModules": ["us_core"], // refs to data/payers/*.json files
+  "enabledModules": [
+    // Phase 37C module IDs to enable
+    "kernel",
+    "clinical",
+    "portal",
+    "telehealth",
+    "imaging",
+    "analytics",
+    "interop",
+    "rcm",
+    "scheduling",
   ],
   "uiDefaults": {
     "dateFormat": "MM/DD/YYYY",
     "timeFormat": "12h",
     "numberFormat": "en-US",
     "currencyCode": "USD",
-    "theme": "default"
+    "theme": "default",
   },
-  "reportingRequirements": [
-    "cms_quality_reporting",
-    "meaningful_use"
-  ]
+  "reportingRequirements": ["cms_quality_reporting", "meaningful_use"],
 }
 ```
 

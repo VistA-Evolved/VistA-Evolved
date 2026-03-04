@@ -4,28 +4,28 @@
 
 ## Supported ADT Trigger Events
 
-| Trigger | Description |
-|---------|-------------|
-| A01 | Admit/Visit Notification |
-| A02 | Transfer |
-| A03 | Discharge |
-| A08 | Update Patient Information |
+| Trigger | Description                |
+| ------- | -------------------------- |
+| A01     | Admit/Visit Notification   |
+| A02     | Transfer                   |
+| A03     | Discharge                  |
+| A08     | Update Patient Information |
 
 ## Parsed Segments
 
-| Segment | Fields Extracted |
-|---------|-----------------|
-| MSH | Sending/receiving facility, message timestamp, trigger event, control ID |
-| PID | Patient ID, name, DOB, gender |
-| PV1 | Patient class, assigned location, admit date/time |
+| Segment | Fields Extracted                                                         |
+| ------- | ------------------------------------------------------------------------ |
+| MSH     | Sending/receiving facility, message timestamp, trigger event, control ID |
+| PID     | Patient ID, name, DOB, gender                                            |
+| PV1     | Patient class, assigned location, admit date/time                        |
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/migration/hl7v2/adt` | Process an HL7v2 ADT message |
-| GET | `/migration/hl7v2/adt/events` | List processed ADT events |
-| GET | `/migration/hl7v2/adt/events/:id` | Get single event details |
+| Method | Path                              | Description                  |
+| ------ | --------------------------------- | ---------------------------- |
+| POST   | `/migration/hl7v2/adt`            | Process an HL7v2 ADT message |
+| GET    | `/migration/hl7v2/adt/events`     | List processed ADT events    |
+| GET    | `/migration/hl7v2/adt/events/:id` | Get single event details     |
 
 ## Example
 

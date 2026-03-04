@@ -6,8 +6,8 @@
  * requests and responses.
  */
 
-import { DISALLOWED_CATEGORIES } from "./types.js";
-import type { DisallowedCategory, AIUseCase, FacilityAIPolicy } from "./types.js";
+import { DISALLOWED_CATEGORIES } from './types.js';
+import type { DisallowedCategory, AIUseCase, FacilityAIPolicy } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Disallowed content detection patterns                               */
@@ -74,14 +74,11 @@ export interface SafetyCheckResult {
  * Check if a user's input text contains disallowed request patterns.
  * This runs BEFORE the model call.
  */
-export function checkRequestSafety(
-  userInput: string,
-  useCase: AIUseCase
-): SafetyCheckResult {
+export function checkRequestSafety(userInput: string, useCase: AIUseCase): SafetyCheckResult {
   const warnings: string[] = [];
 
   // Portal search is inherently safe — skip heavy checks
-  if (useCase === "portal-search") {
+  if (useCase === 'portal-search') {
     return { allowed: true, warnings };
   }
 
@@ -117,9 +114,13 @@ export function checkResponseSafety(
   const categoriesFound: DisallowedCategory[] = [];
 
   // Portal search responses are navigation-only — less strict
-  if (useCase === "portal-search") {
+  if (useCase === 'portal-search') {
     // Still check for medical advice
-    for (const category of ["diagnosis", "treatment_plan", "prescribing_guidance"] as DisallowedCategory[]) {
+    for (const category of [
+      'diagnosis',
+      'treatment_plan',
+      'prescribing_guidance',
+    ] as DisallowedCategory[]) {
       for (const pattern of CATEGORY_PATTERNS[category]) {
         if (pattern.test(responseText)) {
           categoriesFound.push(category);
@@ -144,12 +145,12 @@ export function checkResponseSafety(
   }
 
   // For lab education, allow "diagnosis" in educational context but flag
-  if (useCase === "lab-education" && categoriesFound.includes("diagnosis")) {
+  if (useCase === 'lab-education' && categoriesFound.includes('diagnosis')) {
     // Educational mention is acceptable if framed properly
-    const idx = categoriesFound.indexOf("diagnosis");
+    const idx = categoriesFound.indexOf('diagnosis');
     if (idx >= 0) {
       categoriesFound.splice(idx, 1);
-      warnings.push("Note: diagnosis-related term detected in educational context (allowed)");
+      warnings.push('Note: diagnosis-related term detected in educational context (allowed)');
     }
   }
 
@@ -157,9 +158,9 @@ export function checkResponseSafety(
   let filteredText = responseText;
   if (categoriesFound.length > 0) {
     filteredText +=
-      "\n\n---\n**Note:** This AI-generated content has been flagged for review. " +
-      "It may contain content outside the allowed scope. " +
-      "Please consult your healthcare provider for medical advice.";
+      '\n\n---\n**Note:** This AI-generated content has been flagged for review. ' +
+      'It may contain content outside the allowed scope. ' +
+      'Please consult your healthcare provider for medical advice.';
   }
 
   return { filteredText, warnings, categoriesFound };
@@ -175,7 +176,7 @@ export const DEFAULT_FACILITY_POLICY: FacilityAIPolicy = {
   redactPhi: true,
   cloudModelsAllowed: false,
   maxRequestsPerUserPerHour: 30,
-  allowedUseCases: ["intake-summary", "lab-education", "portal-search"],
+  allowedUseCases: ['intake-summary', 'lab-education', 'portal-search'],
   patientAiEnabled: true,
   requireClinicianConfirmation: true,
 };

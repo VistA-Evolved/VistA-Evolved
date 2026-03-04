@@ -1,6 +1,7 @@
 # Phase 7B — Create Note (VERIFY — no changes)
 
 Verify:
+
 - POST /vista/notes returns ok:true OR ok:false with meaningful VistA error (no crash)
 - GET /vista/notes shows new note OR count changes
 - UI create form works and refreshes list

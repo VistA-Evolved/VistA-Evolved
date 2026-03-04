@@ -36,14 +36,19 @@ export function computeAging(tenantId: string): AgingReport {
   const { items } = listClaimCases({ tenantId, limit: 10000 });
 
   const outstandingStatuses = new Set([
-    'submitted_electronic', 'submitted_portal', 'submitted_manual',
-    'exported', 'payer_acknowledged', 'appeal_in_progress',
-    'paid_partial', 'returned_to_provider',
+    'submitted_electronic',
+    'submitted_portal',
+    'submitted_manual',
+    'exported',
+    'payer_acknowledged',
+    'appeal_in_progress',
+    'paid_partial',
+    'returned_to_provider',
   ]);
 
-  const outstandingClaims = items.filter(c => outstandingStatuses.has(c.lifecycleStatus));
+  const outstandingClaims = items.filter((c) => outstandingStatuses.has(c.lifecycleStatus));
 
-  const buckets: AgingBucket[] = AGING_BUCKET_DEFS.map(def => ({
+  const buckets: AgingBucket[] = AGING_BUCKET_DEFS.map((def) => ({
     ...def,
     claimCount: 0,
     totalOutstanding: 0,
@@ -52,11 +57,9 @@ export function computeAging(tenantId: string): AgingReport {
   let totalOutstanding = 0;
 
   for (const claim of outstandingClaims) {
-    const submitDate = claim.submittedAt
-      ? new Date(claim.submittedAt)
-      : new Date(claim.updatedAt);
+    const submitDate = claim.submittedAt ? new Date(claim.submittedAt) : new Date(claim.updatedAt);
     const daysSinceSubmit = Math.floor(
-      (now.getTime() - submitDate.getTime()) / (1000 * 60 * 60 * 24),
+      (now.getTime() - submitDate.getTime()) / (1000 * 60 * 60 * 24)
     );
 
     const outstanding = claim.totalCharge - (claim.paidAmount ?? 0);
@@ -91,7 +94,7 @@ export function computeAging(tenantId: string): AgingReport {
 export function computePayerIntelligence(
   tenantId: string,
   periodStart?: string,
-  periodEnd?: string,
+  periodEnd?: string
 ): PayerIntelligenceReport {
   const now = new Date();
   const start = periodStart ?? new Date(now.getFullYear(), now.getMonth() - 6, 1).toISOString();
@@ -100,7 +103,7 @@ export function computePayerIntelligence(
   const { items: allClaims } = listClaimCases({ tenantId, limit: 10000 });
 
   // Filter by period (createdAt within range)
-  const periodClaims = allClaims.filter(c => c.createdAt >= start && c.createdAt <= end);
+  const periodClaims = allClaims.filter((c) => c.createdAt >= start && c.createdAt <= end);
 
   // Group by payerId
   const payerGroups = new Map<string, ClaimCase[]>();
@@ -120,11 +123,14 @@ export function computePayerIntelligence(
 
   for (const [payerId, claims] of payerGroups) {
     const totalClaims = claims.length;
-    const paidClaims = claims.filter(c =>
-      c.lifecycleStatus === 'paid_full' || c.lifecycleStatus === 'paid_partial' || c.lifecycleStatus === 'closed',
+    const paidClaims = claims.filter(
+      (c) =>
+        c.lifecycleStatus === 'paid_full' ||
+        c.lifecycleStatus === 'paid_partial' ||
+        c.lifecycleStatus === 'closed'
     );
-    const deniedClaims = claims.filter(c => c.lifecycleStatus === 'denied');
-    const returnedClaims = claims.filter(c => c.lifecycleStatus === 'returned_to_provider');
+    const deniedClaims = claims.filter((c) => c.lifecycleStatus === 'denied');
+    const returnedClaims = claims.filter((c) => c.lifecycleStatus === 'returned_to_provider');
 
     // Days to payment: from submittedAt to remitDate
     const daysToPayment: number[] = [];
@@ -132,19 +138,18 @@ export function computePayerIntelligence(
       if (claim.submittedAt && claim.remitDate) {
         const days = Math.floor(
           (new Date(claim.remitDate).getTime() - new Date(claim.submittedAt).getTime()) /
-            (1000 * 60 * 60 * 24),
+            (1000 * 60 * 60 * 24)
         );
         if (days >= 0) daysToPayment.push(days);
       }
     }
 
-    const avgDays = daysToPayment.length > 0
-      ? Math.round(daysToPayment.reduce((a, b) => a + b, 0) / daysToPayment.length)
-      : null;
+    const avgDays =
+      daysToPayment.length > 0
+        ? Math.round(daysToPayment.reduce((a, b) => a + b, 0) / daysToPayment.length)
+        : null;
 
-    const medianDays = daysToPayment.length > 0
-      ? computeMedian(daysToPayment)
-      : null;
+    const medianDays = daysToPayment.length > 0 ? computeMedian(daysToPayment) : null;
 
     const totalUnderpaid = underpaymentsByPayer.get(payerId) ?? 0;
 

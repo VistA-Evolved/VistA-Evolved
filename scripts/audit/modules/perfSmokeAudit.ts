@@ -7,9 +7,9 @@
  *   3. /vista/ping responds in < 2000ms
  */
 
-import type { AuditModule, AuditFinding } from "../types.js";
+import type { AuditModule, AuditFinding } from '../types.js';
 
-const API_BASE = process.env.AUDIT_API_BASE || "http://127.0.0.1:3001";
+const API_BASE = process.env.AUDIT_API_BASE || 'http://127.0.0.1:3001';
 
 async function timedFetch(url: string): Promise<{ status: number; ms: number }> {
   const t0 = Date.now();
@@ -19,16 +19,16 @@ async function timedFetch(url: string): Promise<{ status: number; ms: number }> 
 }
 
 export const perfSmokeAudit: AuditModule = {
-  name: "perfSmokeAudit",
-  requires: "integration",
+  name: 'perfSmokeAudit',
+  requires: 'integration',
 
   async run(root: string): Promise<AuditFinding[]> {
     const findings: AuditFinding[] = [];
 
     const endpoints: { url: string; name: string; threshold: number }[] = [
-      { url: `${API_BASE}/health`, name: "/health", threshold: 200 },
-      { url: `${API_BASE}/ready`, name: "/ready", threshold: 500 },
-      { url: `${API_BASE}/vista/ping`, name: "/vista/ping", threshold: 2000 },
+      { url: `${API_BASE}/health`, name: '/health', threshold: 200 },
+      { url: `${API_BASE}/ready`, name: '/ready', threshold: 500 },
+      { url: `${API_BASE}/vista/ping`, name: '/vista/ping', threshold: 2000 },
     ];
 
     for (const ep of endpoints) {
@@ -36,27 +36,27 @@ export const perfSmokeAudit: AuditModule = {
         const { status, ms } = await timedFetch(ep.url);
         if (ms <= ep.threshold) {
           findings.push({
-            rule: `perf-${ep.name.replace(/\//g, "-").replace(/^-/, "")}`,
-            status: "pass",
-            severity: "info",
+            rule: `perf-${ep.name.replace(/\//g, '-').replace(/^-/, '')}`,
+            status: 'pass',
+            severity: 'info',
             message: `${ep.name} responded in ${ms}ms (threshold: ${ep.threshold}ms)`,
           });
         } else {
           findings.push({
-            rule: `perf-${ep.name.replace(/\//g, "-").replace(/^-/, "")}`,
-            status: "warn",
-            severity: "medium",
+            rule: `perf-${ep.name.replace(/\//g, '-').replace(/^-/, '')}`,
+            status: 'warn',
+            severity: 'medium',
             message: `${ep.name} responded in ${ms}ms (threshold: ${ep.threshold}ms)`,
-            fix: "Investigate slow response time",
+            fix: 'Investigate slow response time',
           });
         }
       } catch (err: any) {
         findings.push({
-          rule: `perf-${ep.name.replace(/\//g, "-").replace(/^-/, "")}`,
-          status: "fail",
-          severity: "high",
+          rule: `perf-${ep.name.replace(/\//g, '-').replace(/^-/, '')}`,
+          status: 'fail',
+          severity: 'high',
           message: `${ep.name} failed: ${err.message}`,
-          fix: "Ensure API is running",
+          fix: 'Ensure API is running',
         });
       }
     }

@@ -1,11 +1,13 @@
 # Phase 396 -- W22-P8: Clinical Reasoning + Quality Measures -- IMPLEMENT
 
 ## User Request
+
 Implement CQL library management, quality measure definitions (eCQM/HEDIS/UDS),
 measure evaluation pipeline, PlanDefinition/ActivityDefinition resources, and
 QRDA-compatible measure reporting for Wave 22 clinical reasoning.
 
 ## Implementation Steps
+
 1. Created `apps/api/src/clinical-reasoning/types.ts`:
    - CqlLibrary (CQL source + ELM JSON, dependency tracking, value set refs)
    - QualityMeasure (eCQM/HEDIS/UDS/MIPS/custom, 4 scoring types, 8 population codes)
@@ -27,6 +29,7 @@ QRDA-compatible measure reporting for Wave 22 clinical reasoning.
 5. Wired into register-routes.ts, security.ts, store-policy.ts (7 entries)
 
 ## Files Touched
+
 - apps/api/src/clinical-reasoning/types.ts (new)
 - apps/api/src/clinical-reasoning/reasoning-store.ts (new)
 - apps/api/src/clinical-reasoning/reasoning-routes.ts (new)

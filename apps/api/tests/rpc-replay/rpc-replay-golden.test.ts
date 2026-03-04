@@ -9,12 +9,12 @@
  *   node scripts/qa/generate-phase-tests.mjs
  */
 
-import { describe, it, expect, beforeAll } from "vitest";
-import { readFileSync, existsSync } from "node:fs";
-import { resolve } from "node:path";
+import { describe, it, expect, beforeAll } from 'vitest';
+import { readFileSync, existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 
-const API = process.env.API_URL ?? "http://localhost:3001";
-const TRACE_PATH = resolve(__dirname, "../fixtures/rpc-golden-trace.json");
+const API = process.env.API_URL ?? 'http://localhost:3001';
+const TRACE_PATH = resolve(__dirname, '../fixtures/rpc-golden-trace.json');
 
 let vistaAvailable = false;
 let goldenTrace: any = null;
@@ -24,86 +24,107 @@ beforeAll(async () => {
   try {
     const res = await fetch(`${API}/vista/ping`);
     vistaAvailable = res.status === 200;
-  } catch { vistaAvailable = false; }
+  } catch {
+    vistaAvailable = false;
+  }
 
   // Load golden trace
   if (existsSync(TRACE_PATH)) {
-    const raw = readFileSync(TRACE_PATH, "utf-8");
+    const raw = readFileSync(TRACE_PATH, 'utf-8');
     goldenTrace = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
   }
 });
 
-describe("RPC Golden Trace Replay", () => {
-  it("golden trace file exists and is valid", () => {
-    expect(goldenTrace, "Golden trace file should exist").toBeTruthy();
-    expect(goldenTrace).toHaveProperty("workflows");
-    expect(goldenTrace).toHaveProperty("registrySnapshot");
+describe('RPC Golden Trace Replay', () => {
+  it('golden trace file exists and is valid', () => {
+    expect(goldenTrace, 'Golden trace file should exist').toBeTruthy();
+    expect(goldenTrace).toHaveProperty('workflows');
+    expect(goldenTrace).toHaveProperty('registrySnapshot');
   });
 
-  it.skipIf(!vistaAvailable)("workflow: patientSearch -- 1 RPCs in sequence", () => {
-    const wf = goldenTrace?.workflows?.["patientSearch"];
-    expect(wf, "Workflow patientSearch must exist in golden trace").toBeTruthy();
-    expect(wf.rpcSequence).toEqual(["ORWPT LIST ALL"]);
+  it.skipIf(!vistaAvailable)('workflow: patientSearch -- 1 RPCs in sequence', () => {
+    const wf = goldenTrace?.workflows?.['patientSearch'];
+    expect(wf, 'Workflow patientSearch must exist in golden trace').toBeTruthy();
+    expect(wf.rpcSequence).toEqual(['ORWPT LIST ALL']);
   });
 
-  it.skipIf(!vistaAvailable)("workflow: defaultPatientList -- 2 RPCs in sequence", () => {
-    const wf = goldenTrace?.workflows?.["defaultPatientList"];
-    expect(wf, "Workflow defaultPatientList must exist in golden trace").toBeTruthy();
-    expect(wf.rpcSequence).toEqual(["ORQPT DEFAULT LIST SOURCE","ORWPT LIST ALL"]);
+  it.skipIf(!vistaAvailable)('workflow: defaultPatientList -- 2 RPCs in sequence', () => {
+    const wf = goldenTrace?.workflows?.['defaultPatientList'];
+    expect(wf, 'Workflow defaultPatientList must exist in golden trace').toBeTruthy();
+    expect(wf.rpcSequence).toEqual(['ORQPT DEFAULT LIST SOURCE', 'ORWPT LIST ALL']);
   });
 
-  it.skipIf(!vistaAvailable)("workflow: coverSheet -- 5 RPCs in sequence", () => {
-    const wf = goldenTrace?.workflows?.["coverSheet"];
-    expect(wf, "Workflow coverSheet must exist in golden trace").toBeTruthy();
-    expect(wf.rpcSequence).toEqual(["ORQQAL LIST","GMV V/M ALLDATA","ORQQPL PROBLEM LIST","ORWPS ACTIVE","TIU DOCUMENTS BY CONTEXT"]);
+  it.skipIf(!vistaAvailable)('workflow: coverSheet -- 5 RPCs in sequence', () => {
+    const wf = goldenTrace?.workflows?.['coverSheet'];
+    expect(wf, 'Workflow coverSheet must exist in golden trace').toBeTruthy();
+    expect(wf.rpcSequence).toEqual([
+      'ORQQAL LIST',
+      'GMV V/M ALLDATA',
+      'ORQQPL PROBLEM LIST',
+      'ORWPS ACTIVE',
+      'TIU DOCUMENTS BY CONTEXT',
+    ]);
   });
 
-  it.skipIf(!vistaAvailable)("workflow: problems -- 1 RPCs in sequence", () => {
-    const wf = goldenTrace?.workflows?.["problems"];
-    expect(wf, "Workflow problems must exist in golden trace").toBeTruthy();
-    expect(wf.rpcSequence).toEqual(["ORQQPL PROBLEM LIST"]);
+  it.skipIf(!vistaAvailable)('workflow: problems -- 1 RPCs in sequence', () => {
+    const wf = goldenTrace?.workflows?.['problems'];
+    expect(wf, 'Workflow problems must exist in golden trace').toBeTruthy();
+    expect(wf.rpcSequence).toEqual(['ORQQPL PROBLEM LIST']);
   });
 
-  it("critical RPCs remain in registry snapshot", () => {
-    const expected = ["XUS SIGNON SETUP","XUS AV CODE","XWB CREATE CONTEXT","XUS GET USER INFO","ORQQAL LIST","ORWDAL32 ALLERGY MATCH","ORQPT DEFAULT LIST SOURCE","ORWPT LIST ALL","GMV V/M ALLDATA","ORQQPL PROBLEM LIST","ORWPS ACTIVE","TIU DOCUMENTS BY CONTEXT","ORWORB FASTUSER"];
+  it('critical RPCs remain in registry snapshot', () => {
+    const expected = [
+      'XUS SIGNON SETUP',
+      'XUS AV CODE',
+      'XWB CREATE CONTEXT',
+      'XUS GET USER INFO',
+      'ORQQAL LIST',
+      'ORWDAL32 ALLERGY MATCH',
+      'ORQPT DEFAULT LIST SOURCE',
+      'ORWPT LIST ALL',
+      'GMV V/M ALLDATA',
+      'ORQQPL PROBLEM LIST',
+      'ORWPS ACTIVE',
+      'TIU DOCUMENTS BY CONTEXT',
+      'ORWORB FASTUSER',
+    ];
     const actual = goldenTrace?.registrySnapshot?.criticalRpcs ?? [];
     for (const rpc of expected) {
       expect(actual, `Missing critical RPC: ${rpc}`).toContain(rpc);
     }
   });
 
-  it("no PHI in golden trace", () => {
+  it('no PHI in golden trace', () => {
     const text = JSON.stringify(goldenTrace);
     expect(text).not.toMatch(/\b\d{3}-\d{2}-\d{4}\b/); // SSN
     expect(text).not.toMatch(/\b\d{2}\/\d{2}\/\d{4}\b/); // DOB mm/dd/yyyy
-    expect(text.toLowerCase()).not.toContain("password");
+    expect(text.toLowerCase()).not.toContain('password');
   });
 });
 
-describe("Phase RPC Coverage", () => {
-  it("Phase 10 RPC workflows covered: coverSheet, problems", () => {
-    const workflows = ["coverSheet","problems"];
+describe('Phase RPC Coverage', () => {
+  it('Phase 10 RPC workflows covered: coverSheet, problems', () => {
+    const workflows = ['coverSheet', 'problems'];
     for (const wf of workflows) {
       expect(goldenTrace?.workflows, `Workflow ${wf} missing from golden trace`).toHaveProperty(wf);
     }
   });
 
-  it("Phase 13 RPC workflows covered: patientSearch, defaultPatientList", () => {
-    const workflows = ["patientSearch","defaultPatientList"];
+  it('Phase 13 RPC workflows covered: patientSearch, defaultPatientList', () => {
+    const workflows = ['patientSearch', 'defaultPatientList'];
     for (const wf of workflows) {
       expect(goldenTrace?.workflows, `Workflow ${wf} missing from golden trace`).toHaveProperty(wf);
     }
   });
 
-  it("Phase 19 workflows pending trace: clinicalReports", () => {
+  it('Phase 19 workflows pending trace: clinicalReports', () => {
     // These workflows are mapped by the phase registry but not yet in the golden trace.
     // Add them to rpc-golden-trace.json when the RPCs are integrated.
-    const pending = ["clinicalReports"];
+    const pending = ['clinicalReports'];
     for (const wf of pending) {
       if (goldenTrace?.workflows?.[wf]) {
-        expect(goldenTrace.workflows[wf]).toHaveProperty("rpcSequence");
+        expect(goldenTrace.workflows[wf]).toHaveProperty('rpcSequence');
       }
     }
   });
-
 });

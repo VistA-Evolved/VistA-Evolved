@@ -11,6 +11,7 @@
 ## Context
 
 VistA-Evolved needs a DICOM image store that provides:
+
 - DICOMweb API (QIDO-RS, WADO-RS, STOW-RS)
 - DICOM C-STORE SCP for receiving studies from modalities
 - Lua scripting for OnStableStudy webhooks
@@ -42,8 +43,8 @@ Options considered:
 
 ## Alternatives Rejected
 
-| Option | Reason |
-|--------|--------|
-| dcm4chee | Vastly heavier stack, Java dependency, overkill for current scale |
-| Cloud Healthcare API | Vendor lock-in, not self-hostable |
-| Horos/OsiriX | Desktop apps, not server-grade |
+| Option               | Reason                                                            |
+| -------------------- | ----------------------------------------------------------------- |
+| dcm4chee             | Vastly heavier stack, Java dependency, overkill for current scale |
+| Cloud Healthcare API | Vendor lock-in, not self-hostable                                 |
+| Horos/OsiriX         | Desktop apps, not server-grade                                    |

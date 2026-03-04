@@ -38,22 +38,22 @@ config/qa-flows/
 
 ## New API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/rcm/hmo/manifest` | Full HMO adapter manifest (all 27 HMOs) |
-| GET | `/rcm/hmo/manifest/:payerId` | Single HMO manifest entry |
-| GET | `/rcm/hmo/loa-templates` | All LOA template configurations |
-| GET | `/rcm/hmo/loa-templates/:payerId` | Single HMO LOA template |
-| GET | `/rcm/hmo/loa-templates/:payerId/specialty/:specialty` | Specialty-specific LOA fields |
-| GET | `/rcm/hmo/claim-configs` | All claim packet configurations |
-| GET | `/rcm/hmo/claim-configs/:payerId` | Single HMO claim config |
-| GET | `/rcm/hmo/claim-configs/:payerId/vista-annotations` | VistA field annotations |
-| GET | `/rcm/hmo/contracting` | Contracting dashboard (all payers) |
-| GET | `/rcm/hmo/contracting/:payerId` | Single payer contracting summary |
-| POST | `/rcm/hmo/contracting/:payerId/init` | Initialize standard contracting tasks |
-| PATCH | `/rcm/hmo/contracting/tasks/:taskId` | Update task status |
-| GET | `/rcm/hmo/contracting/tasks/:taskId` | Get single task |
-| GET | `/rcm/hmo/market-summary` | PH market summary dashboard |
+| Method | Path                                                   | Description                             |
+| ------ | ------------------------------------------------------ | --------------------------------------- |
+| GET    | `/rcm/hmo/manifest`                                    | Full HMO adapter manifest (all 27 HMOs) |
+| GET    | `/rcm/hmo/manifest/:payerId`                           | Single HMO manifest entry               |
+| GET    | `/rcm/hmo/loa-templates`                               | All LOA template configurations         |
+| GET    | `/rcm/hmo/loa-templates/:payerId`                      | Single HMO LOA template                 |
+| GET    | `/rcm/hmo/loa-templates/:payerId/specialty/:specialty` | Specialty-specific LOA fields           |
+| GET    | `/rcm/hmo/claim-configs`                               | All claim packet configurations         |
+| GET    | `/rcm/hmo/claim-configs/:payerId`                      | Single HMO claim config                 |
+| GET    | `/rcm/hmo/claim-configs/:payerId/vista-annotations`    | VistA field annotations                 |
+| GET    | `/rcm/hmo/contracting`                                 | Contracting dashboard (all payers)      |
+| GET    | `/rcm/hmo/contracting/:payerId`                        | Single payer contracting summary        |
+| POST   | `/rcm/hmo/contracting/:payerId/init`                   | Initialize standard contracting tasks   |
+| PATCH  | `/rcm/hmo/contracting/tasks/:taskId`                   | Update task status                      |
+| GET    | `/rcm/hmo/contracting/tasks/:taskId`                   | Get single task                         |
+| GET    | `/rcm/hmo/market-summary`                              | PH market summary dashboard             |
 
 ## Manual Testing
 

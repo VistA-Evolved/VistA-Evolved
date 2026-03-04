@@ -5,7 +5,7 @@
  * Admin-only endpoints for managing data regions and transfer agreements.
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 import {
   DATA_REGIONS,
   REGION_CATALOG,
@@ -17,9 +17,9 @@ import {
   enforcePackResidency,
   type DataTransferAgreement,
   type DataRegion,
-} from "../platform/data-residency.js";
-import { getEffectivePolicy } from "../middleware/country-policy-hook.js";
-import { randomBytes } from "node:crypto";
+} from '../platform/data-residency.js';
+import { getEffectivePolicy } from '../middleware/country-policy-hook.js';
+import { randomBytes } from 'node:crypto';
 
 // ── In-Memory Stores (Phase 311 scaffold) ──────────────────────
 
@@ -30,7 +30,7 @@ const tenantRegions = new Map<string, DataRegion>();
 
 export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
   // GET /residency/regions — list all data regions
-  app.get("/residency/regions", async (_request, _reply) => {
+  app.get('/residency/regions', async (_request, _reply) => {
     return {
       ok: true,
       regions: REGION_CATALOG.map((r) => ({
@@ -42,10 +42,10 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // GET /residency/regions/:region — get region details
-  app.get("/residency/regions/:region", async (request, reply) => {
+  app.get('/residency/regions/:region', async (request, reply) => {
     const { region } = request.params as { region: string };
     if (!isValidDataRegion(region)) {
-      return reply.code(404).send({ ok: false, error: "Unknown region" });
+      return reply.code(404).send({ ok: false, error: 'Unknown region' });
     }
     const meta = getRegionMetadata(region);
     return {
@@ -57,11 +57,11 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // GET /residency/tenant/:tenantId — get tenant's region assignment
-  app.get("/residency/tenant/:tenantId", async (request, reply) => {
+  app.get('/residency/tenant/:tenantId', async (request, reply) => {
     const { tenantId } = request.params as { tenantId: string };
     const region = tenantRegions.get(tenantId);
     if (!region) {
-      return reply.code(404).send({ ok: false, error: "Tenant has no region assignment" });
+      return reply.code(404).send({ ok: false, error: 'Tenant has no region assignment' });
     }
     return {
       ok: true,
@@ -73,7 +73,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // POST /residency/tenant/:tenantId/assign — assign region (one-time only)
-  app.post("/residency/tenant/:tenantId/assign", async (request, reply) => {
+  app.post('/residency/tenant/:tenantId/assign', async (request, reply) => {
     const { tenantId } = request.params as { tenantId: string };
     const body = (request.body as Record<string, unknown>) || {};
     const region = body.dataRegion as string;
@@ -81,7 +81,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     if (!region || !isValidDataRegion(region)) {
       return reply.code(400).send({
         ok: false,
-        error: `Invalid region. Valid: ${DATA_REGIONS.join(", ")}`,
+        error: `Invalid region. Valid: ${DATA_REGIONS.join(', ')}`,
       });
     }
 
@@ -95,7 +95,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     }
 
     const meta = getRegionMetadata(region);
-    if (meta?.status === "planned") {
+    if (meta?.status === 'planned') {
       return reply.code(400).send({
         ok: false,
         error: `Region "${region}" is not yet active.`,
@@ -113,7 +113,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // POST /residency/transfer-agreements — create a data transfer agreement
-  app.post("/residency/transfer-agreements", async (request, reply) => {
+  app.post('/residency/transfer-agreements', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const {
       tenantId,
@@ -129,12 +129,12 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     if (!tenantId || !sourceRegion || !targetRegion || !purpose || !legalBasis) {
       return reply.code(400).send({
         ok: false,
-        error: "Missing required fields: tenantId, sourceRegion, targetRegion, purpose, legalBasis",
+        error: 'Missing required fields: tenantId, sourceRegion, targetRegion, purpose, legalBasis',
       });
     }
 
     if (!isValidDataRegion(sourceRegion) || !isValidDataRegion(targetRegion)) {
-      return reply.code(400).send({ ok: false, error: "Invalid region" });
+      return reply.code(400).send({ ok: false, error: 'Invalid region' });
     }
 
     // Validate the transfer
@@ -146,17 +146,17 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     );
 
     const agreement: DataTransferAgreement = {
-      id: `dta-${randomBytes(8).toString("hex")}`,
+      id: `dta-${randomBytes(8).toString('hex')}`,
       tenantId,
       sourceRegion: sourceRegion as DataRegion,
       targetRegion: targetRegion as DataRegion,
       purpose,
       legalBasis,
-      consentEvidenceRef: consentEvidenceRef || "",
-      approvedBy: approvedBy || "admin",
+      consentEvidenceRef: consentEvidenceRef || '',
+      approvedBy: approvedBy || 'admin',
       createdAt: new Date().toISOString(),
       expiresAt: expiresAt || new Date(Date.now() + 365 * 86_400_000).toISOString(),
-      status: "active",
+      status: 'active',
     };
 
     transferAgreements.set(agreement.id, agreement);
@@ -169,7 +169,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // GET /residency/transfer-agreements — list agreements
-  app.get("/residency/transfer-agreements", async (request) => {
+  app.get('/residency/transfer-agreements', async (request) => {
     const query = (request.query as Record<string, string>) || {};
     let agreements = [...transferAgreements.values()];
 
@@ -184,7 +184,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // POST /residency/validate-transfer — check if transfer is allowed
-  app.post("/residency/validate-transfer", async (request, reply) => {
+  app.post('/residency/validate-transfer', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const { sourceRegion, targetRegion, hasConsent, hasAgreement } = body as {
       sourceRegion: string;
@@ -194,11 +194,11 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     };
 
     if (!sourceRegion || !targetRegion) {
-      return reply.code(400).send({ ok: false, error: "sourceRegion and targetRegion required" });
+      return reply.code(400).send({ ok: false, error: 'sourceRegion and targetRegion required' });
     }
 
     if (!isValidDataRegion(sourceRegion) || !isValidDataRegion(targetRegion)) {
-      return reply.code(400).send({ ok: false, error: "Invalid region" });
+      return reply.code(400).send({ ok: false, error: 'Invalid region' });
     }
 
     const result = validateCrossBorderTransfer(
@@ -213,7 +213,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
 
   // Phase 495 (W34-P5): Pack-aware residency enforcement
   // Auto-resolves pack dataResidency config from request.countryPolicy.
-  app.post("/residency/enforce-pack-transfer", async (request, reply) => {
+  app.post('/residency/enforce-pack-transfer', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const { targetRegion, hasConsent, hasAgreement } = body as {
       targetRegion: string;
@@ -222,7 +222,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     };
 
     if (!targetRegion) {
-      return reply.code(400).send({ ok: false, error: "targetRegion required" });
+      return reply.code(400).send({ ok: false, error: 'targetRegion required' });
     }
 
     const policy = getEffectivePolicy(request);
@@ -231,12 +231,12 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     if (!packResidency) {
       return reply.code(422).send({
         ok: false,
-        error: "No data residency config in country pack",
+        error: 'No data residency config in country pack',
         countryPackId: policy.countryPackId,
       });
     }
 
-    const tenantRegion = packResidency.region || "us-east";
+    const tenantRegion = packResidency.region || 'us-east';
     const result = enforcePackResidency(
       {
         region: packResidency.region,
@@ -247,7 +247,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
       tenantRegion,
       targetRegion,
       !!hasConsent,
-      !!hasAgreement,
+      !!hasAgreement
     );
 
     return {

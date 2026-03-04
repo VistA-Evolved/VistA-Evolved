@@ -18,23 +18,23 @@ Patient Request → Link Request (pending) → Staff Review → Verify/Reject
 
 ## Endpoints
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| POST | `/portal/identity/request-link` | session | Patient requests identity link |
-| GET | `/portal/identity/my-links` | session | Patient views their links |
-| DELETE | `/portal/identity/link/:id` | session | Revoke a link |
-| GET | `/admin/identity/pending-requests` | admin | Staff views pending requests |
-| GET | `/admin/identity/request/:id` | admin | Staff views request detail + VistA demo |
-| POST | `/admin/identity/request/:id/verify` | admin | Staff approves link |
-| POST | `/admin/identity/request/:id/reject` | admin | Staff rejects link |
-| GET | `/admin/identity/links` | admin | Staff views all links |
+| Method | Path                                 | Auth    | Description                             |
+| ------ | ------------------------------------ | ------- | --------------------------------------- |
+| POST   | `/portal/identity/request-link`      | session | Patient requests identity link          |
+| GET    | `/portal/identity/my-links`          | session | Patient views their links               |
+| DELETE | `/portal/identity/link/:id`          | session | Revoke a link                           |
+| GET    | `/admin/identity/pending-requests`   | admin   | Staff views pending requests            |
+| GET    | `/admin/identity/request/:id`        | admin   | Staff views request detail + VistA demo |
+| POST   | `/admin/identity/request/:id/verify` | admin   | Staff approves link                     |
+| POST   | `/admin/identity/request/:id/reject` | admin   | Staff rejects link                      |
+| GET    | `/admin/identity/links`              | admin   | Staff views all links                   |
 
 ## VistA Grounding
 
-| RPC | Purpose | Status |
-|-----|---------|--------|
-| ORWPT ID INFO | Fetch demographics for staff verification | Active |
-| ORWPT SELECT | Patient lookup by name | Referenced |
+| RPC           | Purpose                                   | Status     |
+| ------------- | ----------------------------------------- | ---------- |
+| ORWPT ID INFO | Fetch demographics for staff verification | Active     |
+| ORWPT SELECT  | Patient lookup by name                    | Referenced |
 
 ## Identity Verification Flow
 
@@ -63,12 +63,13 @@ Patient Request → Link Request (pending) → Staff Review → Verify/Reject
 
 ## Data Stores
 
-| Store | Type | Classification |
-|-------|------|----------------|
-| `linkRequests` | `Map<string, IdentityLinkRequest>` | critical |
-| `identityLinks` | `Map<string, IdentityLink>` | critical |
+| Store           | Type                               | Classification |
+| --------------- | ---------------------------------- | -------------- |
+| `linkRequests`  | `Map<string, IdentityLinkRequest>` | critical       |
+| `identityLinks` | `Map<string, IdentityLink>`        | critical       |
 
 Both stores reset on API restart. Integration-pending:
+
 - PG table `portal_patient_identity` (migration v19) for durable links
 - OIDC sub mapping when OIDC login flow is active
 

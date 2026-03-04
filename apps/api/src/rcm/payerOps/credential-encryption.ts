@@ -14,10 +14,10 @@
  * (AWS KMS / Azure Key Vault / GCP KMS). Interface is ready.
  */
 
-import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
-import { log } from "../../lib/logger.js";
+import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
+import { log } from '../../lib/logger.js';
 
-const ALGORITHM = "aes-256-gcm";
+const ALGORITHM = 'aes-256-gcm';
 const IV_LENGTH = 12;
 const AUTH_TAG_LENGTH = 16;
 
@@ -28,12 +28,12 @@ function getMasterKey(): Buffer {
 
   const envKey = process.env.PAYEROPS_CREDENTIAL_KEY;
   if (envKey && envKey.length === 64) {
-    masterKey = Buffer.from(envKey, "hex");
+    masterKey = Buffer.from(envKey, 'hex');
     return masterKey;
   }
 
   // Dev fallback: generate ephemeral key (lost on restart)
-  log.warn("PAYEROPS_CREDENTIAL_KEY not set — using ephemeral key (credentials lost on restart)");
+  log.warn('PAYEROPS_CREDENTIAL_KEY not set — using ephemeral key (credentials lost on restart)');
   masterKey = randomBytes(32);
   return masterKey;
 }
@@ -46,15 +46,12 @@ export function encryptCredential(plaintext: string): string {
   const iv = randomBytes(IV_LENGTH);
   const cipher = createCipheriv(ALGORITHM, key, iv, { authTagLength: AUTH_TAG_LENGTH });
 
-  const encrypted = Buffer.concat([
-    cipher.update(plaintext, "utf8"),
-    cipher.final(),
-  ]);
+  const encrypted = Buffer.concat([cipher.update(plaintext, 'utf8'), cipher.final()]);
   const authTag = cipher.getAuthTag();
 
   // Envelope: iv + authTag + ciphertext
   const envelope = Buffer.concat([iv, authTag, encrypted]);
-  return envelope.toString("base64");
+  return envelope.toString('base64');
 }
 
 /**
@@ -64,7 +61,7 @@ export function encryptCredential(plaintext: string): string {
 export function decryptCredential(envelopeBase64: string): string | null {
   try {
     const key = getMasterKey();
-    const envelope = Buffer.from(envelopeBase64, "base64");
+    const envelope = Buffer.from(envelopeBase64, 'base64');
 
     if (envelope.length < IV_LENGTH + AUTH_TAG_LENGTH + 1) return null;
 
@@ -75,11 +72,8 @@ export function decryptCredential(envelopeBase64: string): string | null {
     const decipher = createDecipheriv(ALGORITHM, key, iv, { authTagLength: AUTH_TAG_LENGTH });
     decipher.setAuthTag(authTag);
 
-    const decrypted = Buffer.concat([
-      decipher.update(ciphertext),
-      decipher.final(),
-    ]);
-    return decrypted.toString("utf8");
+    const decrypted = Buffer.concat([decipher.update(ciphertext), decipher.final()]);
+    return decrypted.toString('utf8');
   } catch {
     return null;
   }
@@ -91,11 +85,11 @@ export function decryptCredential(envelopeBase64: string): string | null {
  */
 export function testEncryptionHealth(): { ok: boolean; error?: string } {
   try {
-    const testData = "payerops-health-check-" + Date.now();
+    const testData = 'payerops-health-check-' + Date.now();
     const encrypted = encryptCredential(testData);
     const decrypted = decryptCredential(encrypted);
     if (decrypted !== testData) {
-      return { ok: false, error: "Round-trip mismatch" };
+      return { ok: false, error: 'Round-trip mismatch' };
     }
     return { ok: true };
   } catch (err: any) {

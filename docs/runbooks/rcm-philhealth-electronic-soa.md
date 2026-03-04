@@ -40,21 +40,22 @@ Claim Data → validateSoaInput() → generateElectronicSoa() → ElectronicSoa 
 
 Each SOA consists of line items with:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| description | string | Service/item description |
-| cptCode | string? | CPT procedure code |
-| quantity | number | Number of units |
-| unitCharge | number | Charge per unit (PHP) |
-| discount | number | Discount amount (PHP) |
-| netAmount | number | Net amount after discount |
-| phicCoverage | number | PhilHealth coverage amount |
-| patientShare | number | Patient out-of-pocket |
+| Field        | Type    | Description                |
+| ------------ | ------- | -------------------------- |
+| description  | string  | Service/item description   |
+| cptCode      | string? | CPT procedure code         |
+| quantity     | number  | Number of units            |
+| unitCharge   | number  | Charge per unit (PHP)      |
+| discount     | number  | Discount amount (PHP)      |
+| netAmount    | number  | Net amount after discount  |
+| phicCoverage | number  | PhilHealth coverage amount |
+| patientShare | number  | Patient out-of-pocket      |
 
 ## Totals
 
 The SOA generator automatically computes:
-- Total charges (sum of unitCharge * quantity)
+
+- Total charges (sum of unitCharge \* quantity)
 - Total discount
 - Total net amount
 - Total PHIC coverage

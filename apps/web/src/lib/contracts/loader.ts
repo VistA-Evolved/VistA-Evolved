@@ -3,13 +3,7 @@
  * Fails fast with clear errors if any required contract file is missing or malformed.
  */
 
-import type {
-  TabsContract,
-  MenusContract,
-  FormsContract,
-  ContractTab,
-  ContractMenuItem,
-} from './types';
+import type { TabsContract, MenusContract, ContractTab, ContractMenuItem } from './types';
 
 /* ------------------------------------------------------------------ */
 /* Static contract data (inlined from design/contracts/cprs/v1/)       */
@@ -87,9 +81,7 @@ export function getFrameMenu(): ContractMenuItem[] {
   const frameMenu = menus.mainMenus.find((m) => m.file.includes('fFrame'));
   if (frameMenu) return frameMenu.items;
   // Fallback: use first menu with most items
-  const sorted = [...menus.mainMenus].sort(
-    (a, b) => b.items.length - a.items.length
-  );
+  const sorted = [...menus.mainMenus].sort((a, b) => b.items.length - a.items.length);
   return sorted[0]?.items ?? [];
 }
 

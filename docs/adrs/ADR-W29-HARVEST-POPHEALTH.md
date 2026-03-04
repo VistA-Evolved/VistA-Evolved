@@ -13,18 +13,21 @@ generate QRDA reports.
 ## Analysis
 
 ### Benefits
+
 - Automated CQM calculation (NQF, CMS measures)
 - Population health dashboards
 - QRDA Category I and III report generation
 - Required for MIPS/QPP compliance reporting
 
 ### Concerns
+
 - Ruby on Rails application (different tech stack)
 - MongoDB dependency
 - May require significant configuration for WorldVistA data
 - Overlaps with analytics (Phase 25) for some metrics
 
 ### Deployment Complexity
+
 - Requires: Ruby runtime, MongoDB, Nginx
 - Separate Docker Compose profile: `pophealth`
 - No direct VistA RPC integration (reads from FHIR/C-CDA imports)
@@ -36,6 +39,7 @@ requirements are prioritized. The existing analytics pipeline (Phase 25)
 covers operational metrics. popHealth adds clinical quality measures.
 
 ### Prerequisites for Integration
+
 1. Business requirement for CQM/MIPS reporting
 2. FHIR Data Service integration provides data source
 3. MongoDB infrastructure approved for deployment

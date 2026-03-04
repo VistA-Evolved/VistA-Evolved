@@ -3,6 +3,7 @@
 ## What Changed
 
 ### New Files
+
 - **`apps/api/src/rcm/connectors/connector-state.ts`** (~300 lines)
   Honest connector/adapter health probing with normalized state types
   (`connected`, `degraded`, `disconnected`, `pending`). 60s probe cooldown.
@@ -30,13 +31,16 @@
 - **`scripts/verify-phase82-rcm-adapter.ps1`** -- 51-gate verifier
 
 ### Modified Files
+
 - **`apps/api/src/index.ts`** -- Import + register `rcmOpsRoutes`
 - **`apps/web/src/app/cprs/admin/rcm/page.tsx`** -- New "Ops Dashboard" tab
   with connector/adapter state tables, queue depth cards, scheduler status,
   workqueue summary, manual enqueue buttons, and honest-state disclosure.
 
 ### Existing Infrastructure Preserved
+
 All 63 existing RCM files untouched. The phase layers on top:
+
 - `workqueue-store.ts` (denial queue) -- reused directly
 - `queue.ts` (InMemoryJobQueue) -- reused via job-audit-bridge
 - `polling-scheduler.ts` -- status exposed via ops routes
@@ -80,6 +84,7 @@ TypeScript: clean compilation (0 errors)
 ```
 
 ## Follow-ups
+
 - Phase 83+: Real clearinghouse credential configuration flow
 - Production: Replace in-memory job queue with persistent store
 - Production: External health check integration for connectors

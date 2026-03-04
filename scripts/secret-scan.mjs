@@ -11,28 +11,49 @@
  *   npx tsx scripts/secret-scan.mjs && echo "CLEAN" || echo "BLOCKED"
  */
 
-import { readFileSync, readdirSync, statSync } from "fs";
-import { join, relative, extname } from "path";
+import { readFileSync, readdirSync, statSync } from 'fs';
+import { join, relative, extname } from 'path';
 
 const ROOT = process.cwd();
 
 /** File extensions to scan */
 const SCAN_EXTENSIONS = new Set([
-  ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs",
-  ".json", ".yml", ".yaml", ".toml", ".env",
-  ".md", ".sh", ".ps1", ".bat", ".cmd",
+  '.ts',
+  '.tsx',
+  '.js',
+  '.jsx',
+  '.mjs',
+  '.cjs',
+  '.json',
+  '.yml',
+  '.yaml',
+  '.toml',
+  '.env',
+  '.md',
+  '.sh',
+  '.ps1',
+  '.bat',
+  '.cmd',
 ]);
 
 /** Directories to skip */
 const SKIP_DIRS = new Set([
-  "node_modules", ".next", ".git", "dist", ".turbo",
-  ".pnpm", "coverage", ".nyc_output",
+  'node_modules',
+  '.next',
+  '.git',
+  'dist',
+  '.turbo',
+  '.pnpm',
+  'coverage',
+  '.nyc_output',
 ]);
 
 /** Files to skip entirely */
 const SKIP_FILES = new Set([
-  "pnpm-lock.yaml", "package-lock.json", "yarn.lock",
-  "secret-scan.mjs", // don't flag our own patterns
+  'pnpm-lock.yaml',
+  'package-lock.json',
+  'yarn.lock',
+  'secret-scan.mjs', // don't flag our own patterns
 ]);
 
 /**
@@ -41,47 +62,84 @@ const SKIP_FILES = new Set([
  */
 const SECRET_PATTERNS = [
   {
-    name: "Hardcoded password",
+    name: 'Hardcoded password',
     regex: /(?:password|passwd|pwd)\s*[:=]\s*["'][^"']{4,}["']/gi,
-    allow: [".env.example", ".md", "AGENTS.md", "BUG-TRACKER.md", ".test.ts", ".spec.ts", "docker-compose.yml", "reference/", "infra/scripts/"],
+    allow: [
+      '.env.example',
+      '.md',
+      'AGENTS.md',
+      'BUG-TRACKER.md',
+      '.test.ts',
+      '.spec.ts',
+      'docker-compose.yml',
+      'reference/',
+      'infra/scripts/',
+    ],
   },
   {
-    name: "AWS Access Key",
+    name: 'AWS Access Key',
     regex: /AKIA[0-9A-Z]{16}/g,
     allow: [],
   },
   {
-    name: "Generic API key",
+    name: 'Generic API key',
     regex: /(?:api[_-]?key|apikey)\s*[:=]\s*["'][a-zA-Z0-9]{20,}["']/gi,
-    allow: [".env.example"],
+    allow: ['.env.example'],
   },
   {
-    name: "Private key header",
+    name: 'Private key header',
     regex: /-----BEGIN (?:RSA |EC |DSA )?PRIVATE KEY-----/g,
     allow: [],
   },
   {
-    name: "Hardcoded JWT/token",
+    name: 'Hardcoded JWT/token',
     regex: /(?:token|jwt|bearer)\s*[:=]\s*["']eyJ[a-zA-Z0-9._-]{20,}["']/gi,
     allow: [],
   },
   {
-    name: "Connection string with creds",
+    name: 'Connection string with creds',
     regex: /(?:mongodb|postgres|mysql|redis):\/\/[^:]+:[^@]+@/gi,
-    allow: [".env.example", ".md"],
+    allow: ['.env.example', '.md'],
   },
   {
-    name: "Hardcoded VistA creds in non-doc",
+    name: 'Hardcoded VistA creds in non-doc',
     regex: /(?:PROV123|NURSE123|PHARM123)(?:!!)?/g,
-    allow: [".md", ".env.example", "AGENTS.md", "BUG-TRACKER.md", "secret-scan.mjs",
-            "verify-", "test-", ".test.ts", ".spec.ts", "login/page.tsx", "load-test.mjs", "patient-context.tsx",
-            "login-body.json", "login-v", "tests/k6/", "scripts/audit/", "docs/evidence/",
-            ".hooks/", "tools/", "e2e/", "e2e-results.json", "artifacts/", "qa/gauntlet/",
-            "scripts/tenant/", "scripts/certify-", "scripts/generate-certification",
-            "scripts/pilot-", "scripts/privacy/", "scripts/qa/",
-            "scripts/qa-gates/vista-container", "infra/secrets/dev/",
-            "data/vista/runtime-matrix.json", "scripts/security/run-precert.ps1",
-            "scripts/tier0-day-in-the-life.mjs"], // login page + test/audit/tool/QA infra use Docker dev creds
+    allow: [
+      '.md',
+      '.env.example',
+      'AGENTS.md',
+      'BUG-TRACKER.md',
+      'secret-scan.mjs',
+      'verify-',
+      'test-',
+      '.test.ts',
+      '.spec.ts',
+      'login/page.tsx',
+      'load-test.mjs',
+      'patient-context.tsx',
+      'login-body.json',
+      'login-v',
+      'tests/k6/',
+      'scripts/audit/',
+      'docs/evidence/',
+      '.hooks/',
+      'tools/',
+      'e2e/',
+      'e2e-results.json',
+      'artifacts/',
+      'qa/gauntlet/',
+      'scripts/tenant/',
+      'scripts/certify-',
+      'scripts/generate-certification',
+      'scripts/pilot-',
+      'scripts/privacy/',
+      'scripts/qa/',
+      'scripts/qa-gates/vista-container',
+      'infra/secrets/dev/',
+      'data/vista/runtime-matrix.json',
+      'scripts/security/run-precert.ps1',
+      'scripts/tier0-day-in-the-life.mjs',
+    ], // login page + test/audit/tool/QA infra use Docker dev creds
   },
 ];
 
@@ -107,7 +165,7 @@ function collectFiles(dir) {
 
 /** Check if a file path matches any allow pattern */
 function isAllowed(filePath, allowPatterns) {
-  const rel = relative(ROOT, filePath).replace(/\\/g, "/");
+  const rel = relative(ROOT, filePath).replace(/\\/g, '/');
   return allowPatterns.some((p) => rel.includes(p));
 }
 
@@ -117,8 +175,8 @@ let totalFindings = 0;
 const findings = [];
 
 for (const file of files) {
-  const content = readFileSync(file, "utf8");
-  const rel = relative(ROOT, file).replace(/\\/g, "/");
+  const content = readFileSync(file, 'utf8');
+  const rel = relative(ROOT, file).replace(/\\/g, '/');
 
   for (const pattern of SECRET_PATTERNS) {
     const matches = content.match(pattern.regex);
@@ -126,13 +184,17 @@ for (const file of files) {
       // Check: is it inside a comment?
       for (const match of matches) {
         const idx = content.indexOf(match);
-        const lineStart = content.lastIndexOf("\n", idx) + 1;
-        const line = content.slice(lineStart, idx + match.length + 50).split("\n")[0];
-        const lineNum = content.slice(0, idx).split("\n").length;
+        const lineStart = content.lastIndexOf('\n', idx) + 1;
+        const line = content.slice(lineStart, idx + match.length + 50).split('\n')[0];
+        const lineNum = content.slice(0, idx).split('\n').length;
 
         // Skip if clearly in a comment
         const trimmedLine = line.trimStart();
-        if (trimmedLine.startsWith("//") || trimmedLine.startsWith("*") || trimmedLine.startsWith("#")) {
+        if (
+          trimmedLine.startsWith('//') ||
+          trimmedLine.startsWith('*') ||
+          trimmedLine.startsWith('#')
+        ) {
           continue;
         }
 
@@ -150,7 +212,7 @@ for (const file of files) {
 
 // ---- Output ----
 if (totalFindings === 0) {
-  console.log("✓ Secret scan passed — no suspicious patterns found.");
+  console.log('✓ Secret scan passed — no suspicious patterns found.');
   console.log(`  Scanned ${files.length} files.`);
   process.exit(0);
 } else {

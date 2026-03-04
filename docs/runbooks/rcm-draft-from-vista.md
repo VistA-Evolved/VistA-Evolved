@@ -54,6 +54,7 @@ curl -X POST http://127.0.0.1:3001/rcm/vista/claim-drafts \
 ```
 
 Body parameters:
+
 - `patientIen` (required) -- patient DFN
 - `dateFrom` (optional) -- ISO date filter
 - `dateTo` (optional) -- ISO date filter
@@ -82,6 +83,7 @@ curl http://127.0.0.1:3001/rcm/vista/coverage?patientIen=3
 ## Missing Field Annotations
 
 Each claim draft candidate includes:
+
 - `missingFields[]` -- list of field names that are missing
 - `sourceMissing[]` -- detailed entries with:
   - `field` -- the field name
@@ -90,13 +92,13 @@ Each claim draft candidate includes:
 
 ### Common Missing Fields in Sandbox
 
-| Field | VistA Source | Reason |
-|-------|-------------|--------|
-| ibChargeAmount | ^IB(350) | IB billing empty in WorldVistA sandbox |
-| diagnoses | ORWPCE DIAG | Some encounters have no linked diagnoses |
-| procedures | ORWPCE PROC | Some encounters have no linked CPT codes |
-| subscriberId | IBCN INSURANCE QUERY | Patient may lack insurance |
-| payerName | IBCN INSURANCE QUERY | No insurance on file |
+| Field          | VistA Source         | Reason                                   |
+| -------------- | -------------------- | ---------------------------------------- |
+| ibChargeAmount | ^IB(350)             | IB billing empty in WorldVistA sandbox   |
+| diagnoses      | ORWPCE DIAG          | Some encounters have no linked diagnoses |
+| procedures     | ORWPCE PROC          | Some encounters have no linked CPT codes |
+| subscriberId   | IBCN INSURANCE QUERY | Patient may lack insurance               |
+| payerName      | IBCN INSURANCE QUERY | No insurance on file                     |
 
 ## VistA Wrapper RPC
 
@@ -106,6 +108,7 @@ Custom wrapper RPC (ZVERCMP.m) that reads provider NPI and facility
 identifiers for claim drafts.
 
 Install:
+
 ```powershell
 .\scripts\install-rcm-wrappers.ps1
 ```
@@ -130,6 +133,7 @@ npx vitest run tests/buildClaimDraftFromVista.test.ts
 ```
 
 25 tests covering:
+
 - Parser functions (encounters, diagnoses, procedures, insurance)
 - Builder with full data, partial data, and failures
 - Missing field annotations
@@ -139,19 +143,24 @@ npx vitest run tests/buildClaimDraftFromVista.test.ts
 ## Troubleshooting
 
 ### "VistA credentials not configured"
+
 Ensure `apps/api/.env.local` has VISTA_ACCESS_CODE and VISTA_VERIFY_CODE set.
 
 ### "VistA service unavailable"
+
 Check that the WorldVistA Docker container is running on port 9430.
 
 ### No encounters returned
+
 Verify the patient DFN exists. Try DFN=3 (CARTER,DAVID) in the sandbox.
 
 ### All charges show $0.00
+
 Expected in sandbox. IB charges (^IB(350)) are empty in WorldVistA Docker.
 In production with IB module active, charges will be populated.
 
 ### Insurance returns empty
+
 Not all sandbox patients have insurance. Try DFN=3 which may have partial
 coverage data.
 

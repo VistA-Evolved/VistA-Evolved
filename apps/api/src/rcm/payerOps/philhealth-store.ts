@@ -35,11 +35,18 @@ function newId(prefix: string): string {
 const claimDrafts = new Map<string, PhilHealthClaimDraft>();
 
 /* Phase 146: DB repo wiring */
-type DurabilityRepo = { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null;
+type DurabilityRepo = {
+  upsert(d: any): Promise<any>;
+  update?(id: string, u: any): Promise<any>;
+} | null;
 let phDraftDbRepo: DurabilityRepo = null;
 let phFacilityDbRepo: DurabilityRepo = null;
-export function initPhilHealthStoreRepo(repo: DurabilityRepo): void { phDraftDbRepo = repo; }
-export function initPhFacilityStoreRepo(repo: DurabilityRepo): void { phFacilityDbRepo = repo; }
+export function initPhilHealthStoreRepo(repo: DurabilityRepo): void {
+  phDraftDbRepo = repo;
+}
+export function initPhFacilityStoreRepo(repo: DurabilityRepo): void {
+  phFacilityDbRepo = repo;
+}
 
 export function createPhilHealthClaimDraft(data: {
   facilityId: string;
@@ -86,13 +93,15 @@ export function createPhilHealthClaimDraft(data: {
     professionalFees: [],
     attachmentRefs: [],
     status: 'draft',
-    timeline: [{
-      timestamp: now,
-      action: 'created',
-      actor: data.createdBy,
-      toStatus: 'draft',
-      detail: 'PhilHealth claim draft created',
-    }],
+    timeline: [
+      {
+        timestamp: now,
+        action: 'created',
+        actor: data.createdBy,
+        toStatus: 'draft',
+        detail: 'PhilHealth claim draft created',
+      },
+    ],
     createdBy: data.createdBy,
     createdAt: now,
     updatedAt: now,
@@ -100,7 +109,15 @@ export function createPhilHealthClaimDraft(data: {
   claimDrafts.set(id, draft);
 
   // Phase 146: Write-through to PG
-  phDraftDbRepo?.upsert({ id, tenantId: (draft as any).tenantId ?? 'default', patientDfn: (draft as any).patientDfn ?? '', status: draft.status, createdAt: draft.createdAt }).catch(() => {});
+  phDraftDbRepo
+    ?.upsert({
+      id,
+      tenantId: (draft as any).tenantId ?? 'default',
+      patientDfn: (draft as any).patientDfn ?? '',
+      status: draft.status,
+      createdAt: draft.createdAt,
+    })
+    .catch(() => {});
 
   return draft;
 }
@@ -115,26 +132,45 @@ export function listPhilHealthClaimDrafts(filter?: {
   status?: PhilHealthClaimStatus;
 }): PhilHealthClaimDraft[] {
   let results = Array.from(claimDrafts.values());
-  if (filter?.facilityId) results = results.filter(c => c.facilityId === filter.facilityId);
-  if (filter?.patientDfn) results = results.filter(c => c.patientDfn === filter.patientDfn);
-  if (filter?.status) results = results.filter(c => c.status === filter.status);
+  if (filter?.facilityId) results = results.filter((c) => c.facilityId === filter.facilityId);
+  if (filter?.patientDfn) results = results.filter((c) => c.patientDfn === filter.patientDfn);
+  if (filter?.status) results = results.filter((c) => c.status === filter.status);
   return results.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
 export function patchPhilHealthClaimDraft(
   id: string,
-  patch: Partial<Pick<PhilHealthClaimDraft,
-    'patientLastName' | 'patientFirstName' | 'patientMiddleName' | 'patientDob' |
-    'patientSex' | 'philhealthPin' | 'memberPin' | 'memberRelationship' |
-    'admissionDate' | 'dischargeDate' | 'patientType' | 'caseRateCode' |
-    'caseRateDescription' | 'diagnoses' | 'procedures' | 'charges' |
-    'professionalFees' | 'attachmentRefs'
-  >>,
+  patch: Partial<
+    Pick<
+      PhilHealthClaimDraft,
+      | 'patientLastName'
+      | 'patientFirstName'
+      | 'patientMiddleName'
+      | 'patientDob'
+      | 'patientSex'
+      | 'philhealthPin'
+      | 'memberPin'
+      | 'memberRelationship'
+      | 'admissionDate'
+      | 'dischargeDate'
+      | 'patientType'
+      | 'caseRateCode'
+      | 'caseRateDescription'
+      | 'diagnoses'
+      | 'procedures'
+      | 'charges'
+      | 'professionalFees'
+      | 'attachmentRefs'
+    >
+  >
 ): { ok: boolean; error?: string; draft?: PhilHealthClaimDraft } {
   const draft = claimDrafts.get(id);
   if (!draft) return { ok: false, error: 'Claim draft not found' };
   if (draft.status !== 'draft' && draft.status !== 'ready_for_submission') {
-    return { ok: false, error: `Cannot edit claim in status "${draft.status}". Only draft/ready_for_submission allowed.` };
+    return {
+      ok: false,
+      error: `Cannot edit claim in status "${draft.status}". Only draft/ready_for_submission allowed.`,
+    };
   }
   for (const [key, value] of Object.entries(patch)) {
     if (value !== undefined) {
@@ -144,7 +180,14 @@ export function patchPhilHealthClaimDraft(
   draft.updatedAt = new Date().toISOString();
 
   // Phase 146: Write-through patch
-  phDraftDbRepo?.upsert({ id, tenantId: (draft as any).tenantId ?? 'default', status: draft.status, updatedAt: draft.updatedAt }).catch(() => {});
+  phDraftDbRepo
+    ?.upsert({
+      id,
+      tenantId: (draft as any).tenantId ?? 'default',
+      status: draft.status,
+      updatedAt: draft.updatedAt,
+    })
+    .catch(() => {});
 
   return { ok: true, draft };
 }
@@ -153,7 +196,7 @@ export function transitionPhilHealthClaimStatus(
   id: string,
   newStatus: PhilHealthClaimStatus,
   actor: string,
-  reason?: string,
+  reason?: string
 ): { ok: boolean; error?: string; draft?: PhilHealthClaimDraft } {
   const draft = claimDrafts.get(id);
   if (!draft) return { ok: false, error: 'Claim draft not found' };
@@ -168,7 +211,8 @@ export function transitionPhilHealthClaimStatus(
 
   // Block real-submission statuses unless real integration is configured
   if (requiresRealIntegration(newStatus)) {
-    const hasRealIntegration = !!process.env.PHILHEALTH_API_TOKEN && process.env.PHILHEALTH_TEST_MODE === 'false';
+    const hasRealIntegration =
+      !!process.env.PHILHEALTH_API_TOKEN && process.env.PHILHEALTH_TEST_MODE === 'false';
     if (!hasRealIntegration) {
       return {
         ok: false,
@@ -190,7 +234,14 @@ export function transitionPhilHealthClaimStatus(
   draft.updatedAt = now;
 
   // Phase 146: Write-through transition
-  phDraftDbRepo?.upsert({ id, tenantId: (draft as any).tenantId ?? 'default', status: draft.status, updatedAt: draft.updatedAt }).catch(() => {});
+  phDraftDbRepo
+    ?.upsert({
+      id,
+      tenantId: (draft as any).tenantId ?? 'default',
+      status: draft.status,
+      updatedAt: draft.updatedAt,
+    })
+    .catch(() => {});
 
   return { ok: true, draft };
 }
@@ -200,12 +251,20 @@ export function transitionPhilHealthClaimStatus(
 export function generateExportPackage(
   id: string,
   actor: string,
-  signingKey?: string,
-): { ok: boolean; error?: string; manifest?: PhilHealthExportManifest; draft?: PhilHealthClaimDraft } {
+  signingKey?: string
+): {
+  ok: boolean;
+  error?: string;
+  manifest?: PhilHealthExportManifest;
+  draft?: PhilHealthClaimDraft;
+} {
   const draft = claimDrafts.get(id);
   if (!draft) return { ok: false, error: 'Claim draft not found' };
   if (draft.status !== 'ready_for_submission' && draft.status !== 'exported') {
-    return { ok: false, error: `Export requires status "ready_for_submission" or "exported". Current: "${draft.status}"` };
+    return {
+      ok: false,
+      error: `Export requires status "ready_for_submission" or "exported". Current: "${draft.status}"`,
+    };
   }
 
   // Generate electronic SOA from charges
@@ -268,7 +327,14 @@ export function generateExportPackage(
   draft.updatedAt = now;
 
   // Phase 146: Write-through export
-  phDraftDbRepo?.upsert({ id, tenantId: (draft as any).tenantId ?? 'default', status: draft.status, updatedAt: draft.updatedAt }).catch(() => {});
+  phDraftDbRepo
+    ?.upsert({
+      id,
+      tenantId: (draft as any).tenantId ?? 'default',
+      status: draft.status,
+      updatedAt: draft.updatedAt,
+    })
+    .catch(() => {});
 
   return { ok: true, manifest, draft };
 }
@@ -278,7 +344,7 @@ export function generateExportPackage(
 function generateSoaFromDraft(
   draft: PhilHealthClaimDraft,
   preparedBy: string,
-  signingKey?: string,
+  signingKey?: string
 ): PhilHealthElectronicSoa {
   const totals = draft.charges.reduce(
     (acc, item) => ({
@@ -288,7 +354,13 @@ function generateSoaFromDraft(
       totalPhicCoverage: acc.totalPhicCoverage + item.phicCoverage,
       totalPatientShare: acc.totalPatientShare + item.patientShare,
     }),
-    { totalCharges: 0, totalDiscount: 0, totalNetAmount: 0, totalPhicCoverage: 0, totalPatientShare: 0 },
+    {
+      totalCharges: 0,
+      totalDiscount: 0,
+      totalNetAmount: 0,
+      totalPhicCoverage: 0,
+      totalPatientShare: 0,
+    }
   );
 
   // Round to 2 decimal places
@@ -327,12 +399,20 @@ export function simulateTestUpload(
   id: string,
   actor: string,
   validationErrors: string[],
-  validationWarnings: string[],
-): { ok: boolean; error?: string; result?: PhilHealthTestUploadResult; draft?: PhilHealthClaimDraft } {
+  validationWarnings: string[]
+): {
+  ok: boolean;
+  error?: string;
+  result?: PhilHealthTestUploadResult;
+  draft?: PhilHealthClaimDraft;
+} {
   const draft = claimDrafts.get(id);
   if (!draft) return { ok: false, error: 'Claim draft not found' };
   if (draft.status !== 'exported') {
-    return { ok: false, error: `Test upload requires status "exported". Current: "${draft.status}"` };
+    return {
+      ok: false,
+      error: `Test upload requires status "exported". Current: "${draft.status}"`,
+    };
   }
 
   const validationPassed = validationErrors.length === 0;
@@ -371,7 +451,14 @@ export function simulateTestUpload(
     draft.updatedAt = now;
 
     // Phase 146: Write-through test upload
-    phDraftDbRepo?.upsert({ id, tenantId: (draft as any).tenantId ?? 'default', status: draft.status, updatedAt: draft.updatedAt }).catch(() => {});
+    phDraftDbRepo
+      ?.upsert({
+        id,
+        tenantId: (draft as any).tenantId ?? 'default',
+        status: draft.status,
+        updatedAt: draft.updatedAt,
+      })
+      .catch(() => {});
   }
 
   return { ok: true, result, draft };
@@ -393,7 +480,7 @@ export function getOrCreateFacilitySetup(facilityId: string): PhilHealthFacility
       accreditationNumber: '',
       testMode: true,
       providerAccreditations: [],
-      readinessChecklist: DEFAULT_READINESS_CHECKLIST.map(item => ({
+      readinessChecklist: DEFAULT_READINESS_CHECKLIST.map((item) => ({
         ...item,
         completedAt: undefined,
         completedBy: undefined,
@@ -404,17 +491,33 @@ export function getOrCreateFacilitySetup(facilityId: string): PhilHealthFacility
     facilitySetups.set(facilityId, setup);
 
     // Phase 146: Write-through facility create
-    phFacilityDbRepo?.upsert({ id: setup.id, tenantId: 'default', facilityId, facilityCode: setup.facilityCode, createdAt: setup.createdAt }).catch(() => {});
+    phFacilityDbRepo
+      ?.upsert({
+        id: setup.id,
+        tenantId: 'default',
+        facilityId,
+        facilityCode: setup.facilityCode,
+        createdAt: setup.createdAt,
+      })
+      .catch(() => {});
   }
   return setup;
 }
 
 export function updateFacilitySetup(
   facilityId: string,
-  patch: Partial<Pick<PhilHealthFacilitySetup,
-    'facilityCode' | 'facilityName' | 'accreditationNumber' |
-    'accreditationExpiry' | 'apiEndpoint' | 'testMode' | 'integrationNotes'
-  >>,
+  patch: Partial<
+    Pick<
+      PhilHealthFacilitySetup,
+      | 'facilityCode'
+      | 'facilityName'
+      | 'accreditationNumber'
+      | 'accreditationExpiry'
+      | 'apiEndpoint'
+      | 'testMode'
+      | 'integrationNotes'
+    >
+  >
 ): PhilHealthFacilitySetup {
   const setup = getOrCreateFacilitySetup(facilityId);
   for (const [key, value] of Object.entries(patch)) {
@@ -425,14 +528,22 @@ export function updateFacilitySetup(
   setup.updatedAt = new Date().toISOString();
 
   // Phase 146: Write-through facility update
-  phFacilityDbRepo?.upsert({ id: setup.id, tenantId: 'default', facilityId: setup.facilityId, facilityCode: setup.facilityCode, updatedAt: setup.updatedAt }).catch(() => {});
+  phFacilityDbRepo
+    ?.upsert({
+      id: setup.id,
+      tenantId: 'default',
+      facilityId: setup.facilityId,
+      facilityCode: setup.facilityCode,
+      updatedAt: setup.updatedAt,
+    })
+    .catch(() => {});
 
   return setup;
 }
 
 export function addProviderAccreditation(
   facilityId: string,
-  provider: PhilHealthProviderAccreditation,
+  provider: PhilHealthProviderAccreditation
 ): PhilHealthFacilitySetup {
   const setup = getOrCreateFacilitySetup(facilityId);
   setup.providerAccreditations.push(provider);
@@ -442,11 +553,11 @@ export function addProviderAccreditation(
 
 export function removeProviderAccreditation(
   facilityId: string,
-  prcLicenseNumber: string,
+  prcLicenseNumber: string
 ): PhilHealthFacilitySetup {
   const setup = getOrCreateFacilitySetup(facilityId);
   setup.providerAccreditations = setup.providerAccreditations.filter(
-    p => p.prcLicenseNumber !== prcLicenseNumber,
+    (p) => p.prcLicenseNumber !== prcLicenseNumber
   );
   setup.updatedAt = new Date().toISOString();
   return setup;
@@ -456,10 +567,10 @@ export function updateReadinessItem(
   facilityId: string,
   itemId: string,
   completed: boolean,
-  actor: string,
+  actor: string
 ): PhilHealthFacilitySetup {
   const setup = getOrCreateFacilitySetup(facilityId);
-  const item = setup.readinessChecklist.find(i => i.id === itemId);
+  const item = setup.readinessChecklist.find((i) => i.id === itemId);
   if (item) {
     item.completed = completed;
     item.completedAt = completed ? new Date().toISOString() : undefined;

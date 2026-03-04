@@ -1,10 +1,12 @@
 # Phase 338 — W16-P2 — Enterprise Identity Hardening — IMPLEMENT
 
 ## Objective
+
 Harden the authentication and session infrastructure with step-up auth policy,
 MFA enforcement hooks, session security controls, and device/session management.
 
 ## What Changed
+
 1. **`apps/api/src/auth/step-up-auth.ts`** — Step-up authentication policy model
    - Actions classified by assurance level (standard / elevated / critical)
    - Elevated actions require recent auth (< 5 min) or MFA
@@ -41,6 +43,7 @@ MFA enforcement hooks, session security controls, and device/session management.
 6. **Updated `server-config.ts`** — New config sections for step-up, MFA, session security
 
 ## Files Touched
+
 - `apps/api/src/auth/step-up-auth.ts` (NEW)
 - `apps/api/src/auth/mfa-enforcement.ts` (NEW)
 - `apps/api/src/auth/session-security.ts` (NEW)

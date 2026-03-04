@@ -6,37 +6,39 @@
 
 A rollback MUST be initiated if ANY of these conditions are met:
 
-| # | Condition | Trigger |
-|---|-----------|---------|
-| 1 | Patient safety event | Any clinical data loss or corruption |
-| 2 | Authentication failure | Users cannot log in within 15 min of cutover |
-| 3 | VistA connectivity loss | RPC broker unreachable for > 5 min post-unlock |
-| 4 | Data integrity failure | PG row counts diverge from migration source |
-| 5 | SLO breach | Error rate > 5% or p99 latency > 10s for > 10 min |
-| 6 | Go/No-Go lead decision | Lead determines risk exceeds tolerance |
+| #   | Condition               | Trigger                                           |
+| --- | ----------------------- | ------------------------------------------------- |
+| 1   | Patient safety event    | Any clinical data loss or corruption              |
+| 2   | Authentication failure  | Users cannot log in within 15 min of cutover      |
+| 3   | VistA connectivity loss | RPC broker unreachable for > 5 min post-unlock    |
+| 4   | Data integrity failure  | PG row counts diverge from migration source       |
+| 5   | SLO breach              | Error rate > 5% or p99 latency > 10s for > 10 min |
+| 6   | Go/No-Go lead decision  | Lead determines risk exceeds tolerance            |
 
 ---
 
 ## 2. Rollback Decision
 
-| Field | Value |
-|-------|-------|
-| Decision Time | _________________ |
-| Trigger Condition | # _____ |
-| Decision Maker | _________________ |
-| Rollback Approved By | _________________ |
+| Field                | Value                      |
+| -------------------- | -------------------------- |
+| Decision Time        | **\*\*\*\***\_**\*\*\*\*** |
+| Trigger Condition    | # **\_**                   |
+| Decision Maker       | **\*\*\*\***\_**\*\*\*\*** |
+| Rollback Approved By | **\*\*\*\***\_**\*\*\*\*** |
 
 ---
 
 ## 3. Rollback Sequence
 
 ### Phase R1: Stop + Protect (T + 0:00)
+
 1. [ ] Enable maintenance mode (`MAINTENANCE_MODE=true`)
 2. [ ] Wait for drain timeout (30s)
 3. [ ] Stop API process
 4. [ ] Take current PG snapshot (preserve for forensics)
 
 ### Phase R2: Restore (T + 0:10)
+
 5. [ ] Restore database from pre-cutover backup
    ```powershell
    node scripts/backup-restore.mjs restore --yes
@@ -50,12 +52,14 @@ A rollback MUST be initiated if ANY of these conditions are met:
    ```
 
 ### Phase R3: Revert Config (T + 0:25)
+
 8. [ ] Revert `PLATFORM_RUNTIME_MODE` to `dev`
 9. [ ] Revert `STORE_BACKEND` to `auto` or `sqlite`
 10. [ ] Revert any env var changes made during cutover
 11. [ ] Restart API with pre-cutover config
 
 ### Phase R4: Validate (T + 0:35)
+
 12. [ ] Verify `/health` returns 200
 13. [ ] Verify `/ready` returns `ok: true`
 14. [ ] Verify patient search works
@@ -63,6 +67,7 @@ A rollback MUST be initiated if ANY of these conditions are met:
 16. [ ] Verify no data loss (spot-check 3 patients)
 
 ### Phase R5: Unlock (T + 0:45)
+
 17. [ ] Disable maintenance mode
 18. [ ] Notify stakeholders: rollback complete
 19. [ ] First user login verified
@@ -81,12 +86,12 @@ A rollback MUST be initiated if ANY of these conditions are met:
 
 ## 5. Signoff
 
-| Role | Name | Signature | Date/Time |
-|------|------|-----------|-----------|
-| Rollback Lead | | | |
-| Technical Lead | | | |
-| Clinical Safety Lead | | | |
-| Incident Manager | | | |
+| Role                 | Name | Signature | Date/Time |
+| -------------------- | ---- | --------- | --------- |
+| Rollback Lead        |      |           |           |
+| Technical Lead       |      |           |           |
+| Clinical Safety Lead |      |           |           |
+| Incident Manager     |      |           |           |
 
 ---
 
@@ -113,6 +118,6 @@ Evidence recorded in `evidence/wave-24/415-cutover/`.
 
 _Record after every rollback or DR rehearsal:_
 
-1. _______________________________________________________________
-2. _______________________________________________________________
-3. _______________________________________________________________
+1. ***
+2. ***
+3. ***

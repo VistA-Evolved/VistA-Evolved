@@ -7,6 +7,7 @@
 ## Context
 
 Clinical Decision Support (CDS) is needed at multiple workflow points:
+
 - `patient-view` — alerts when opening a patient chart (e.g., overdue screening)
 - `order-sign` — checks when signing an order (e.g., drug interaction, duplicate)
 - `medication-prescribe` — pharmacy-specific checks (e.g., renal dosing)
@@ -18,6 +19,7 @@ reference implementation that evaluates CQL (Clinical Quality Language) logic
 against patient data.
 
 We need to decide between:
+
 1. **Native-only** — implement CDS logic in TypeScript within the platform
 2. **CQF Ruler only** — delegate all CDS to an external CQF Ruler sidecar
 3. **Hybrid** — native engine for simple rules + CQF Ruler for complex logic

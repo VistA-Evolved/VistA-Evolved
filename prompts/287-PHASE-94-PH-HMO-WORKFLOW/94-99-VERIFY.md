@@ -3,6 +3,7 @@
 ## Verification Steps
 
 ### Automated
+
 ```powershell
 cd apps\api; npx tsc --noEmit
 .\scripts\vista-first-audit.ps1
@@ -50,6 +51,7 @@ cd apps\api; npx tsc --noEmit
    - [ ] Audit trail entries for LOA + remittance actions
 
 ## Expected Output
+
 ```
 TypeScript: 0 errors
 Audit: 15+ PASS, 0 FAIL

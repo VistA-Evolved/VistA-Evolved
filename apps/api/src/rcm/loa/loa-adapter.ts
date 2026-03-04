@@ -10,7 +10,7 @@
  * Selection via LOA_ADAPTER env var: "stub" (default) or future adapters.
  */
 
-import type { LoaRequestRow } from "./loa-repo.js";
+import type { LoaRequestRow } from './loa-repo.js';
 
 /* ------------------------------------------------------------------ */
 /* Adapter Interface                                                   */
@@ -43,14 +43,14 @@ export interface LoaAdapter {
 /* ------------------------------------------------------------------ */
 
 class StubLoaAdapter implements LoaAdapter {
-  readonly name = "stub";
+  readonly name = 'stub';
 
   async submitLOA(loa: LoaRequestRow): Promise<LoaAdapterResult> {
     // Simulate processing delay
     return {
       ok: true,
       trackingNumber: `STUB-${Date.now()}-${loa.id.slice(0, 8)}`,
-      status: "submitted",
+      status: 'submitted',
     };
   }
 
@@ -58,7 +58,7 @@ class StubLoaAdapter implements LoaAdapter {
     // Stub always returns pending -- integration pending
     return {
       ok: true,
-      status: "pending_payer_review",
+      status: 'pending_payer_review',
     };
   }
 
@@ -67,11 +67,11 @@ class StubLoaAdapter implements LoaAdapter {
     return {
       ok: true,
       requirements: [
-        "Clinical summary or medical necessity letter",
-        "Relevant diagnosis codes (ICD-10)",
-        "Procedure codes (CPT/HCPCS)",
-        "Supporting lab results or imaging reports",
-        "Provider NPI and facility information",
+        'Clinical summary or medical necessity letter',
+        'Relevant diagnosis codes (ICD-10)',
+        'Procedure codes (CPT/HCPCS)',
+        'Supporting lab results or imaging reports',
+        'Provider NPI and facility information',
       ],
     };
   }
@@ -84,7 +84,7 @@ class StubLoaAdapter implements LoaAdapter {
 const adapterRegistry = new Map<string, LoaAdapter>();
 
 // Register the stub adapter
-adapterRegistry.set("stub", new StubLoaAdapter());
+adapterRegistry.set('stub', new StubLoaAdapter());
 
 /**
  * Register a custom LOA adapter.
@@ -98,11 +98,11 @@ export function registerLoaAdapter(name: string, adapter: LoaAdapter): void {
  * Defaults to "stub".
  */
 export function getLoaAdapter(): LoaAdapter {
-  const adapterName = process.env.LOA_ADAPTER || "stub";
+  const adapterName = process.env.LOA_ADAPTER || 'stub';
   const adapter = adapterRegistry.get(adapterName);
   if (!adapter) {
     // Fall back to stub if the configured adapter doesn't exist
-    return adapterRegistry.get("stub")!;
+    return adapterRegistry.get('stub')!;
   }
   return adapter;
 }

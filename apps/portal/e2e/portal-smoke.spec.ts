@@ -14,15 +14,15 @@
  *   - DataSourceBadge elements render on dashboard pages
  */
 
-import { test, expect } from "@playwright/test";
+import { test, expect } from '@playwright/test';
 
 /* ------------------------------------------------------------------ */
 /* Login page                                                          */
 /* ------------------------------------------------------------------ */
 
-test("login page renders with form", async ({ page }) => {
-  await page.goto("/");
-  await expect(page.locator("h1")).toContainText("Health Portal");
+test('login page renders with form', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('h1')).toContainText('Health Portal');
   await expect(page.locator('input[id="username"]')).toBeVisible();
   await expect(page.locator('input[id="password"]')).toBeVisible();
   await expect(page.locator('button[type="submit"]')).toBeVisible();
@@ -33,13 +33,13 @@ test("login page renders with form", async ({ page }) => {
 /* ------------------------------------------------------------------ */
 
 const DASHBOARD_ROUTES = [
-  "/dashboard",
-  "/dashboard/health",
-  "/dashboard/medications",
-  "/dashboard/messages",
-  "/dashboard/appointments",
-  "/dashboard/telehealth",
-  "/dashboard/profile",
+  '/dashboard',
+  '/dashboard/health',
+  '/dashboard/medications',
+  '/dashboard/messages',
+  '/dashboard/appointments',
+  '/dashboard/telehealth',
+  '/dashboard/profile',
 ];
 
 for (const route of DASHBOARD_ROUTES) {
@@ -53,17 +53,17 @@ for (const route of DASHBOARD_ROUTES) {
 /* Nav items present on dashboard                                      */
 /* ------------------------------------------------------------------ */
 
-test("dashboard layout has all nav items", async ({ page }) => {
-  await page.goto("/dashboard");
+test('dashboard layout has all nav items', async ({ page }) => {
+  await page.goto('/dashboard');
 
   const expectedLabels = [
-    "Home",
-    "Health Records",
-    "Medications",
-    "Messages",
-    "Appointments",
-    "Telehealth",
-    "My Profile",
+    'Home',
+    'Health Records',
+    'Medications',
+    'Messages',
+    'Appointments',
+    'Telehealth',
+    'My Profile',
   ];
 
   for (const label of expectedLabels) {
@@ -76,11 +76,10 @@ test("dashboard layout has all nav items", async ({ page }) => {
 /* Nav click — no dead clicks                                          */
 /* ------------------------------------------------------------------ */
 
-test("clicking each nav item navigates without error", async ({ page }) => {
-  await page.goto("/dashboard");
+test('clicking each nav item navigates without error', async ({ page }) => {
+  await page.goto('/dashboard');
 
   for (const route of DASHBOARD_ROUTES) {
-    const label = route === "/dashboard" ? "Home" : "";
     const link = page.locator(`nav a[href="${route}"]`);
     await expect(link).toBeVisible();
     await link.click();
@@ -94,11 +93,9 @@ test("clicking each nav item navigates without error", async ({ page }) => {
 /* DataSourceBadge renders on each content page                        */
 /* ------------------------------------------------------------------ */
 
-test("DataSourceBadge visible on dashboard", async ({ page }) => {
-  await page.goto("/dashboard");
+test('DataSourceBadge visible on dashboard', async ({ page }) => {
+  await page.goto('/dashboard');
   // Badge text includes "EHR" or "Pending" or "Local-only"
-  const badges = page.locator(
-    'text=/EHR|Pending|Local-only|Community|Self-Entered/'
-  );
+  const badges = page.locator('text=/EHR|Pending|Local-only|Community|Self-Entered/');
   expect(await badges.count()).toBeGreaterThan(0);
 });

@@ -3,6 +3,7 @@
 ## Problem
 
 When starting `apps/api` with `pnpm -C apps/api dev`, you get:
+
 ```
 Error: listen EADDRINUSE: address already in use :::3001
 ```
@@ -20,6 +21,7 @@ Get-NetTCPConnection -LocalPort 3001 | Select-Object -ExpandProperty OwningProce
 ```
 
 Example output:
+
 ```
 5432
 ```
@@ -33,6 +35,7 @@ Get-Process -Id 5432
 ```
 
 Example output (common conflicts):
+
 - `node` → Another Node.js dev server
 - `java` → Some Java application
 - `dotnet` → .NET application
@@ -58,11 +61,13 @@ $env:PORT=3002; pnpm -C apps/api dev
 ```
 
 This:
+
 - Sets environment variable `PORT=3002` for the current PowerShell session
 - Launches apps/api on `http://localhost:3002` instead of 3001
 - Leaves the conflicting process untouched
 
 **In another terminal, verify:**
+
 ```powershell
 curl http://localhost:3002/health
 ```
@@ -75,7 +80,7 @@ If `Get-NetTCPConnection` shows the port but you can't kill it normally:
 
 ```powershell
 Get-NetTCPConnection -LocalPort 3001 | ForEach-Object {
-  Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue | 
+  Get-Process -Id $_.OwningProcess -ErrorAction SilentlyContinue |
     Select-Object Id, Name, @{Name="Port"; Expression={3001}}
 }
 ```
@@ -95,6 +100,7 @@ Get-NetTCPConnection -LocalPort 3001 | ForEach-Object {
 ## Advanced: Prevent Future Conflicts
 
 ### Option A: Use a Unique Random Port
+
 ```powershell
 # Pick a port between 5000-9999, unlikely to conflict
 $env:PORT=7890
@@ -102,6 +108,7 @@ pnpm -C apps/api dev
 ```
 
 ### Option B: Windows Firewall Check
+
 If you've modified Windows Firewall, port 3001 might be blocked:
 
 ```powershell
@@ -114,12 +121,12 @@ If nothing shows, the port isn't firewalled. (This is normal for localhost.)
 
 ## Troubleshooting
 
-| Error | Cause | Fix |
-|-------|-------|-----|
-| `Get-NetTCPConnection: No matches found` | Port 3001 is free | Run `pnpm -C apps/api dev` without environment variable |
-| `Cannot find process with ID X` | Process already stopped | Run again; the port should be free |
-| `Access Denied` on Stop-Process | It's a system process | Use `$env:PORT=XXXX` instead of killing |
-| Port 3001 in use after `Stop-Process` | Another process took it | Try port 3002, 3003, etc. with `$env:PORT` |
+| Error                                    | Cause                   | Fix                                                     |
+| ---------------------------------------- | ----------------------- | ------------------------------------------------------- |
+| `Get-NetTCPConnection: No matches found` | Port 3001 is free       | Run `pnpm -C apps/api dev` without environment variable |
+| `Cannot find process with ID X`          | Process already stopped | Run again; the port should be free                      |
+| `Access Denied` on Stop-Process          | It's a system process   | Use `$env:PORT=XXXX` instead of killing                 |
+| Port 3001 in use after `Stop-Process`    | Another process took it | Try port 3002, 3003, etc. with `$env:PORT`              |
 
 ---
 

@@ -44,6 +44,7 @@ synchronizer token pattern across both EHR and Portal systems.
 ## Files Touched
 
 ### API Backend
+
 - `apps/api/src/auth/session-store.ts`
 - `apps/api/src/middleware/security.ts`
 - `apps/api/src/auth/auth-routes.ts`
@@ -55,6 +56,7 @@ synchronizer token pattern across both EHR and Portal systems.
 - `apps/api/src/routes/hardening-routes.ts`
 
 ### Frontend
+
 - `apps/web/src/lib/csrf.ts` (NEW)
 - `apps/web/src/stores/session-context.tsx`
 - `apps/web/src/app/cprs/admin/rcm/page.tsx`
@@ -62,17 +64,20 @@ synchronizer token pattern across both EHR and Portal systems.
 - `apps/web/src/app/cprs/admin/contracting-hub/page.tsx`
 
 ### Tests
+
 - `apps/api/tests/qa-api-routes.test.ts`
 - `apps/api/tests/contract.test.ts`
 - `tests/k6/db-load.js`
 
 ### Verification Scripts
+
 - `scripts/verify-phase49-auth-rbac.ps1`
 - `scripts/verify-phase43-claim-quality.ps1`
 - `scripts/verify-phase99-reconciliation.ps1`
 - `scripts/verify-phase100-eligibility-claimstatus.ps1`
 
 ### Documentation
+
 - `docs/security/auth-and-rbac.md`
 - `docs/security/portal-iam.md`
 - `docs/runbooks/auth-troubleshooting.md`

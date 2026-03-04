@@ -7,129 +7,129 @@
  *   node scripts/generate-phase-qa.mjs
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from 'vitest';
 
-const API = process.env.API_URL ?? "http://localhost:3001";
+const API = process.env.API_URL ?? 'http://localhost:3001';
 
-describe("Phase 1: Hello System", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 1: Hello System', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/health`);
-    expect(r0.status, "/health").not.toBe(500);
+    expect(r0.status, '/health').not.toBe(500);
   });
 });
 
-describe("Phase 4B: Patient Search", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 4B: Patient Search', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/vista/patient-search?q=SMI`);
-    expect(r0.status, "/vista/patient-search?q=SMI").not.toBe(500);
+    expect(r0.status, '/vista/patient-search?q=SMI').not.toBe(500);
   });
 });
 
-describe("Phase 6: Vitals Display", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 6: Vitals Display', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/vista/vitals`);
-    expect(r0.status, "/vista/vitals").not.toBe(500);
+    expect(r0.status, '/vista/vitals').not.toBe(500);
     const r1 = await fetch(`${API}/vista/vitals?dfn=1`);
-    expect(r1.status, "/vista/vitals?dfn=1").not.toBe(500);
+    expect(r1.status, '/vista/vitals?dfn=1').not.toBe(500);
   });
 });
 
-describe("Phase 7: Notes List", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 7: Notes List', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/vista/notes`);
-    expect(r0.status, "/vista/notes").not.toBe(500);
+    expect(r0.status, '/vista/notes').not.toBe(500);
     const r1 = await fetch(`${API}/vista/notes?dfn=1`);
-    expect(r1.status, "/vista/notes?dfn=1").not.toBe(500);
+    expect(r1.status, '/vista/notes?dfn=1').not.toBe(500);
   });
 });
 
-describe("Phase 8: Medications List", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 8: Medications List', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/vista/medications`);
-    expect(r0.status, "/vista/medications").not.toBe(500);
+    expect(r0.status, '/vista/medications').not.toBe(500);
     const r1 = await fetch(`${API}/vista/medications?dfn=1`);
-    expect(r1.status, "/vista/medications?dfn=1").not.toBe(500);
+    expect(r1.status, '/vista/medications?dfn=1').not.toBe(500);
   });
 });
 
-describe("Phase 9: Problem List", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 9: Problem List', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/vista/problems`);
-    expect(r0.status, "/vista/problems").not.toBe(500);
+    expect(r0.status, '/vista/problems').not.toBe(500);
     const r1 = await fetch(`${API}/vista/problems?dfn=1`);
-    expect(r1.status, "/vista/problems?dfn=1").not.toBe(500);
+    expect(r1.status, '/vista/problems?dfn=1').not.toBe(500);
   });
 });
 
-describe("Phase 25: Risk Mitigation (ETL Writer + Auth + Persistence)", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 25: Risk Mitigation (ETL Writer + Auth + Persistence)', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/analytics/dashboards/clinical-utilization`);
-    expect(r0.status, "/analytics/dashboards/clinical-utilization").not.toBe(500);
+    expect(r0.status, '/analytics/dashboards/clinical-utilization').not.toBe(500);
     const r1 = await fetch(`${API}/analytics/dashboards/ops`);
-    expect(r1.status, "/analytics/dashboards/ops").not.toBe(500);
+    expect(r1.status, '/analytics/dashboards/ops').not.toBe(500);
     const r2 = await fetch(`${API}/analytics/etl/status`);
-    expect(r2.status, "/analytics/etl/status").not.toBe(500);
+    expect(r2.status, '/analytics/etl/status').not.toBe(500);
     const r3 = await fetch(`${API}/analytics/etl/sync`);
-    expect(r3.status, "/analytics/etl/sync").not.toBe(500);
+    expect(r3.status, '/analytics/etl/sync').not.toBe(500);
     const r4 = await fetch(`${API}/vista/reports`);
-    expect(r4.status, "/vista/reports").not.toBe(500);
+    expect(r4.status, '/vista/reports').not.toBe(500);
   });
 });
 
-describe("Phase 36: Notes", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 36: Notes', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/health`);
-    expect(r0.status, "/health").not.toBe(500);
+    expect(r0.status, '/health').not.toBe(500);
     const r1 = await fetch(`${API}/metrics`);
-    expect(r1.status, "/metrics").not.toBe(500);
+    expect(r1.status, '/metrics').not.toBe(500);
     const r2 = await fetch(`${API}/metrics/prometheus`);
-    expect(r2.status, "/metrics/prometheus").not.toBe(500);
+    expect(r2.status, '/metrics/prometheus').not.toBe(500);
     const r3 = await fetch(`${API}/ready`);
-    expect(r3.status, "/ready").not.toBe(500);
+    expect(r3.status, '/ready').not.toBe(500);
     const r4 = await fetch(`${API}/version`);
-    expect(r4.status, "/version").not.toBe(500);
+    expect(r4.status, '/version').not.toBe(500);
   });
 });
 
-describe("Phase 37B: VistA/Vivian Grounding + CPRS Parity Enforcement", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 37B: VistA/Vivian Grounding + CPRS Parity Enforcement', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/vista/rpc-catalog`);
-    expect(r0.status, "/vista/rpc-catalog").not.toBe(500);
+    expect(r0.status, '/vista/rpc-catalog').not.toBe(500);
   });
 });
 
-describe("Phase 53: PromptOS v2.1 Governance + Anti-Sprawl Enforcement", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 53: PromptOS v2.1 Governance + Anti-Sprawl Enforcement', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/artifacts`);
-    expect(r0.status, "/artifacts").not.toBe(500);
+    expect(r0.status, '/artifacts').not.toBe(500);
     const r1 = await fetch(`${API}/artifacts/`);
-    expect(r1.status, "/artifacts/").not.toBe(500);
+    expect(r1.status, '/artifacts/').not.toBe(500);
     const r2 = await fetch(`${API}/artifacts/_legacy_verify_outputs/`);
-    expect(r2.status, "/artifacts/_legacy_verify_outputs/").not.toBe(500);
+    expect(r2.status, '/artifacts/_legacy_verify_outputs/').not.toBe(500);
     const r3 = await fetch(`${API}/artifacts/promptos/`);
-    expect(r3.status, "/artifacts/promptos/").not.toBe(500);
+    expect(r3.status, '/artifacts/promptos/').not.toBe(500);
     const r4 = await fetch(`${API}/docs/decisions`);
-    expect(r4.status, "/docs/decisions").not.toBe(500);
+    expect(r4.status, '/docs/decisions').not.toBe(500);
   });
 });
 
-describe("Phase 54: Full Alignment Audit v2 (Offline + Integration) + Triage Gen", () => {
-  it("phase registered in index", () => {
-    expect("54").toBeTruthy();
+describe('Phase 54: Full Alignment Audit v2 (Offline + Integration) + Triage Gen', () => {
+  it('phase registered in index', () => {
+    expect('54').toBeTruthy();
   });
 });
 
-describe("Phase 57: 01 IMPLEMENT -- CPRS Parity Wave 2 (WRITE) Safety + Capabili", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 57: 01 IMPLEMENT -- CPRS Parity Wave 2 (WRITE) Safety + Capabili', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/vista/cprs/allergies/add`);
-    expect(r0.status, "/vista/cprs/allergies/add").not.toBe(500);
+    expect(r0.status, '/vista/cprs/allergies/add').not.toBe(500);
     const r1 = await fetch(`${API}/vista/cprs/labs/ack`);
-    expect(r1.status, "/vista/cprs/labs/ack").not.toBe(500);
+    expect(r1.status, '/vista/cprs/labs/ack').not.toBe(500);
     const r2 = await fetch(`${API}/vista/cprs/meds/quick-order`);
-    expect(r2.status, "/vista/cprs/meds/quick-order").not.toBe(500);
+    expect(r2.status, '/vista/cprs/meds/quick-order').not.toBe(500);
     const r3 = await fetch(`${API}/vista/cprs/notes/create`);
-    expect(r3.status, "/vista/cprs/notes/create").not.toBe(500);
+    expect(r3.status, '/vista/cprs/notes/create').not.toBe(500);
     const r4 = await fetch(`${API}/vista/cprs/orders/draft`);
-    expect(r4.status, "/vista/cprs/orders/draft").not.toBe(500);
+    expect(r4.status, '/vista/cprs/orders/draft').not.toBe(500);
   });
 });

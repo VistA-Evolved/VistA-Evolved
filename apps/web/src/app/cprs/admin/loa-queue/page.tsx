@@ -13,9 +13,7 @@ import styles from '@/components/cprs/cprs.module.css';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
 
-
 type SLARisk = 'on_track' | 'at_risk' | 'overdue' | 'critical';
-type Priority = 'routine' | 'urgent' | 'stat';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, {
@@ -30,7 +28,10 @@ export default function LOAQueuePage() {
   const [items, setItems] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
   const [slaBreakdown, setSlaBreakdown] = useState<Record<SLARisk, number>>({
-    on_track: 0, at_risk: 0, overdue: 0, critical: 0,
+    on_track: 0,
+    at_risk: 0,
+    overdue: 0,
+    critical: 0,
   });
   const [loading, setLoading] = useState(true);
   const [selectedCase, setSelectedCase] = useState<any>(null);
@@ -55,7 +56,7 @@ export default function LOAQueuePage() {
     params.set('sortDir', 'asc');
 
     apiFetch(`/rcm/payerops/loa-queue?${params.toString()}`)
-      .then(d => {
+      .then((d) => {
         setItems(d?.items || []);
         setTotal(d?.total ?? 0);
         setSlaBreakdown(d?.slaBreakdown || { on_track: 0, at_risk: 0, overdue: 0, critical: 0 });
@@ -64,7 +65,9 @@ export default function LOAQueuePage() {
       .finally(() => setLoading(false));
   }, [filterStatus, filterPayer, filterRisk, filterPriority, filterAssignee]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const generatePack = async (id: string) => {
     const data = await apiFetch(`/rcm/payerops/loa/${id}/pack`, { method: 'POST' });
@@ -105,36 +108,88 @@ export default function LOAQueuePage() {
   return (
     <div className={styles.cprsPage}>
       {/* Header */}
-      <div style={{ padding: '16px 24px', borderBottom: '1px solid #dee2e6', display: 'flex', alignItems: 'center', gap: 16 }}>
+      <div
+        style={{
+          padding: '16px 24px',
+          borderBottom: '1px solid #dee2e6',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 16,
+        }}
+      >
         <h2 style={{ margin: 0, fontSize: 18 }}>LOA Work Queue</h2>
-        <span style={{ marginLeft: 'auto', fontSize: 11, color: '#6c757d' }}>Phase 89 -- LOA Engine v1</span>
+        <span style={{ marginLeft: 'auto', fontSize: 11, color: '#6c757d' }}>
+          Phase 89 -- LOA Engine v1
+        </span>
       </div>
 
       {/* SLA Summary Bar */}
-      <div style={{
-        display: 'flex', gap: 16, padding: '10px 24px', borderBottom: '1px solid #dee2e6',
-        background: '#f8f9fa', fontSize: 12,
-      }}>
-        <span>Total Active: <strong>{total}</strong></span>
-        <SLABadge risk="on_track" count={slaBreakdown.on_track} onClick={() => setFilterRisk(filterRisk === 'on_track' ? '' : 'on_track')} active={filterRisk === 'on_track'} />
-        <SLABadge risk="at_risk" count={slaBreakdown.at_risk} onClick={() => setFilterRisk(filterRisk === 'at_risk' ? '' : 'at_risk')} active={filterRisk === 'at_risk'} />
-        <SLABadge risk="critical" count={slaBreakdown.critical} onClick={() => setFilterRisk(filterRisk === 'critical' ? '' : 'critical')} active={filterRisk === 'critical'} />
-        <SLABadge risk="overdue" count={slaBreakdown.overdue} onClick={() => setFilterRisk(filterRisk === 'overdue' ? '' : 'overdue')} active={filterRisk === 'overdue'} />
+      <div
+        style={{
+          display: 'flex',
+          gap: 16,
+          padding: '10px 24px',
+          borderBottom: '1px solid #dee2e6',
+          background: '#f8f9fa',
+          fontSize: 12,
+        }}
+      >
+        <span>
+          Total Active: <strong>{total}</strong>
+        </span>
+        <SLABadge
+          risk="on_track"
+          count={slaBreakdown.on_track}
+          onClick={() => setFilterRisk(filterRisk === 'on_track' ? '' : 'on_track')}
+          active={filterRisk === 'on_track'}
+        />
+        <SLABadge
+          risk="at_risk"
+          count={slaBreakdown.at_risk}
+          onClick={() => setFilterRisk(filterRisk === 'at_risk' ? '' : 'at_risk')}
+          active={filterRisk === 'at_risk'}
+        />
+        <SLABadge
+          risk="critical"
+          count={slaBreakdown.critical}
+          onClick={() => setFilterRisk(filterRisk === 'critical' ? '' : 'critical')}
+          active={filterRisk === 'critical'}
+        />
+        <SLABadge
+          risk="overdue"
+          count={slaBreakdown.overdue}
+          onClick={() => setFilterRisk(filterRisk === 'overdue' ? '' : 'overdue')}
+          active={filterRisk === 'overdue'}
+        />
       </div>
 
       {/* Filters */}
-      <div style={{
-        display: 'flex', gap: 8, padding: '8px 24px', borderBottom: '1px solid #dee2e6',
-        flexWrap: 'wrap', fontSize: 12,
-      }}>
-        <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={filterStyle}>
+      <div
+        style={{
+          display: 'flex',
+          gap: 8,
+          padding: '8px 24px',
+          borderBottom: '1px solid #dee2e6',
+          flexWrap: 'wrap',
+          fontSize: 12,
+        }}
+      >
+        <select
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+          style={filterStyle}
+        >
           <option value="">All Statuses</option>
           <option value="draft">Draft</option>
           <option value="pending_submission">Pending Submission</option>
           <option value="submitted">Submitted</option>
           <option value="under_review">Under Review</option>
         </select>
-        <select value={filterPriority} onChange={e => setFilterPriority(e.target.value)} style={filterStyle}>
+        <select
+          value={filterPriority}
+          onChange={(e) => setFilterPriority(e.target.value)}
+          style={filterStyle}
+        >
           <option value="">All Priorities</option>
           <option value="stat">STAT</option>
           <option value="urgent">Urgent</option>
@@ -142,20 +197,34 @@ export default function LOAQueuePage() {
         </select>
         <input
           value={filterPayer}
-          onChange={e => setFilterPayer(e.target.value)}
+          onChange={(e) => setFilterPayer(e.target.value)}
           placeholder="Payer ID"
           style={{ ...filterStyle, width: 120 }}
         />
         <input
           value={filterAssignee}
-          onChange={e => setFilterAssignee(e.target.value)}
+          onChange={(e) => setFilterAssignee(e.target.value)}
           placeholder="Assigned To"
           style={{ ...filterStyle, width: 120 }}
         />
         {(filterStatus || filterPayer || filterRisk || filterPriority || filterAssignee) && (
           <button
-            onClick={() => { setFilterStatus(''); setFilterPayer(''); setFilterRisk(''); setFilterPriority(''); setFilterAssignee(''); }}
-            style={{ padding: '2px 8px', fontSize: 11, cursor: 'pointer', background: '#dc3545', color: '#fff', border: 'none', borderRadius: 3 }}
+            onClick={() => {
+              setFilterStatus('');
+              setFilterPayer('');
+              setFilterRisk('');
+              setFilterPriority('');
+              setFilterAssignee('');
+            }}
+            style={{
+              padding: '2px 8px',
+              fontSize: 11,
+              cursor: 'pointer',
+              background: '#dc3545',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 3,
+            }}
           >
             Clear
           </button>
@@ -189,12 +258,18 @@ export default function LOAQueuePage() {
             <tbody>
               {items.map((c: any) => (
                 <tr key={c.id} style={{ borderBottom: '1px solid #dee2e6' }}>
-                  <td style={tdStyle}><SLAIndicator risk={c.slaRiskLevel} /></td>
-                  <td style={tdStyle}><PriorityBadge priority={c.priority} /></td>
+                  <td style={tdStyle}>
+                    <SLAIndicator risk={c.slaRiskLevel} />
+                  </td>
+                  <td style={tdStyle}>
+                    <PriorityBadge priority={c.priority} />
+                  </td>
                   <td style={tdStyle}>{c.patientDfn}</td>
                   <td style={tdStyle}>{c.payerName}</td>
                   <td style={tdStyle}>{c.requestType?.replace(/_/g, ' ')}</td>
-                  <td style={tdStyle}><StatusBadge status={c.status} /></td>
+                  <td style={tdStyle}>
+                    <StatusBadge status={c.status} />
+                  </td>
                   <td style={tdStyle}>{c.assignedTo || '--'}</td>
                   <td style={{ ...tdStyle, fontSize: 11 }}>
                     {c.slaDeadline ? formatDeadline(c.slaDeadline) : '--'}
@@ -202,10 +277,18 @@ export default function LOAQueuePage() {
                   <td style={{ ...tdStyle, fontSize: 11 }}>{formatAge(c.createdAt)}</td>
                   <td style={tdStyle}>
                     <div style={{ display: 'flex', gap: 4 }}>
-                      <button onClick={() => viewDetail(c.id)} style={btnStyle} title="View Details">
+                      <button
+                        onClick={() => viewDetail(c.id)}
+                        style={btnStyle}
+                        title="View Details"
+                      >
                         View
                       </button>
-                      <button onClick={() => generatePack(c.id)} style={btnStyle} title="Generate Pack">
+                      <button
+                        onClick={() => generatePack(c.id)}
+                        style={btnStyle}
+                        title="Generate Pack"
+                      >
                         Pack
                       </button>
                     </div>
@@ -223,22 +306,28 @@ export default function LOAQueuePage() {
           loaCase={selectedCase}
           onClose={() => setSelectedCase(null)}
           onTransition={transitionStatus}
-          onGeneratePack={(id) => { generatePack(id); }}
+          onGeneratePack={(id) => {
+            generatePack(id);
+          }}
           onAssign={assignLOA}
         />
       )}
 
       {/* Pack Modal */}
-      {selectedPack && (
-        <PackModal pack={selectedPack} onClose={() => setSelectedPack(null)} />
-      )}
+      {selectedPack && <PackModal pack={selectedPack} onClose={() => setSelectedPack(null)} />}
     </div>
   );
 }
 
 /* ── LOA Detail Modal ───────────────────────────────────────── */
 
-function LOADetailModal({ loaCase, onClose, onTransition, onGeneratePack, onAssign }: {
+function LOADetailModal({
+  loaCase,
+  onClose,
+  onTransition,
+  onGeneratePack,
+  onAssign,
+}: {
   loaCase: any;
   onClose: () => void;
   onTransition: (id: string, status: string, reason?: string) => void;
@@ -261,27 +350,73 @@ function LOADetailModal({ loaCase, onClose, onTransition, onGeneratePack, onAssi
       <div style={{ ...modalStyle, maxWidth: 700 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
           <h3 style={{ margin: 0, fontSize: 16 }}>LOA Case: {loaCase.id.slice(0, 20)}...</h3>
-          <button onClick={onClose} style={{ cursor: 'pointer', border: 'none', background: 'none', fontSize: 18 }}>X</button>
+          <button
+            onClick={onClose}
+            style={{ cursor: 'pointer', border: 'none', background: 'none', fontSize: 18 }}
+          >
+            X
+          </button>
         </div>
 
         {/* Summary */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, fontSize: 12, marginBottom: 16 }}>
-          <div><strong>Patient DFN:</strong> {loaCase.patientDfn}</div>
-          <div><strong>Payer:</strong> {loaCase.payerName}</div>
-          <div><strong>Status:</strong> <StatusBadge status={loaCase.status} /></div>
-          <div><strong>Priority:</strong> <PriorityBadge priority={loaCase.priority} /></div>
-          <div><strong>SLA Risk:</strong> <SLAIndicator risk={loaCase.slaRiskLevel} /></div>
-          <div><strong>Deadline:</strong> {loaCase.slaDeadline ? new Date(loaCase.slaDeadline).toLocaleString() : 'Not set'}</div>
-          <div><strong>Assigned:</strong> {loaCase.assignedTo || 'Unassigned'}</div>
-          <div><strong>Mode:</strong> {loaCase.submissionMode}</div>
-          <div><strong>Member ID:</strong> {loaCase.memberId || 'N/A'}</div>
-          <div><strong>Plan:</strong> {loaCase.planName || 'N/A'}</div>
-          <div><strong>Type:</strong> {loaCase.requestType?.replace(/_/g, ' ')}</div>
-          <div><strong>Enrollment:</strong> {loaCase.enrollmentId || 'None'}</div>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: 8,
+            fontSize: 12,
+            marginBottom: 16,
+          }}
+        >
+          <div>
+            <strong>Patient DFN:</strong> {loaCase.patientDfn}
+          </div>
+          <div>
+            <strong>Payer:</strong> {loaCase.payerName}
+          </div>
+          <div>
+            <strong>Status:</strong> <StatusBadge status={loaCase.status} />
+          </div>
+          <div>
+            <strong>Priority:</strong> <PriorityBadge priority={loaCase.priority} />
+          </div>
+          <div>
+            <strong>SLA Risk:</strong> <SLAIndicator risk={loaCase.slaRiskLevel} />
+          </div>
+          <div>
+            <strong>Deadline:</strong>{' '}
+            {loaCase.slaDeadline ? new Date(loaCase.slaDeadline).toLocaleString() : 'Not set'}
+          </div>
+          <div>
+            <strong>Assigned:</strong> {loaCase.assignedTo || 'Unassigned'}
+          </div>
+          <div>
+            <strong>Mode:</strong> {loaCase.submissionMode}
+          </div>
+          <div>
+            <strong>Member ID:</strong> {loaCase.memberId || 'N/A'}
+          </div>
+          <div>
+            <strong>Plan:</strong> {loaCase.planName || 'N/A'}
+          </div>
+          <div>
+            <strong>Type:</strong> {loaCase.requestType?.replace(/_/g, ' ')}
+          </div>
+          <div>
+            <strong>Enrollment:</strong> {loaCase.enrollmentId || 'None'}
+          </div>
         </div>
 
         {loaCase.urgencyNotes && (
-          <div style={{ padding: 8, background: '#fff3cd', borderRadius: 4, marginBottom: 12, fontSize: 12 }}>
+          <div
+            style={{
+              padding: 8,
+              background: '#fff3cd',
+              borderRadius: 4,
+              marginBottom: 12,
+              fontSize: 12,
+            }}
+          >
             <strong>Urgency:</strong> {loaCase.urgencyNotes}
           </div>
         )}
@@ -292,7 +427,10 @@ function LOADetailModal({ loaCase, onClose, onTransition, onGeneratePack, onAssi
             <h4 style={{ fontSize: 13, margin: '0 0 4px' }}>Requested Services</h4>
             <ul style={{ margin: 0, paddingLeft: 20, fontSize: 12 }}>
               {loaCase.requestedServices.map((s: any, i: number) => (
-                <li key={i}>{s.code}: {s.description}{s.estimatedCost ? ` (Est: ${s.estimatedCost.toLocaleString()})` : ''}</li>
+                <li key={i}>
+                  {s.code}: {s.description}
+                  {s.estimatedCost ? ` (Est: ${s.estimatedCost.toLocaleString()})` : ''}
+                </li>
               ))}
             </ul>
           </div>
@@ -300,44 +438,86 @@ function LOADetailModal({ loaCase, onClose, onTransition, onGeneratePack, onAssi
 
         {/* Timeline */}
         <div style={{ marginBottom: 12 }}>
-          <h4 style={{ fontSize: 13, margin: '0 0 4px' }}>Timeline ({loaCase.timeline?.length || 0} events)</h4>
-          <div style={{ maxHeight: 150, overflow: 'auto', background: '#f8f9fa', borderRadius: 4, padding: 8 }}>
-            {(loaCase.timeline || []).slice().reverse().map((t: any, i: number) => (
-              <div key={i} style={{ fontSize: 11, marginBottom: 4, borderBottom: '1px solid #dee2e6', paddingBottom: 4 }}>
-                <span style={{ color: '#6c757d' }}>{new Date(t.timestamp).toLocaleString()}</span>
-                {' '}
-                {t.fromStatus && <><StatusBadge status={t.fromStatus} /> {'->'} </>}
-                <StatusBadge status={t.toStatus} />
-                {t.reason && <span style={{ marginLeft: 8, color: '#495057' }}>{t.reason}</span>}
-                <span style={{ marginLeft: 8, color: '#6c757d' }}>by {t.actor}</span>
-              </div>
-            ))}
+          <h4 style={{ fontSize: 13, margin: '0 0 4px' }}>
+            Timeline ({loaCase.timeline?.length || 0} events)
+          </h4>
+          <div
+            style={{
+              maxHeight: 150,
+              overflow: 'auto',
+              background: '#f8f9fa',
+              borderRadius: 4,
+              padding: 8,
+            }}
+          >
+            {(loaCase.timeline || [])
+              .slice()
+              .reverse()
+              .map((t: any, i: number) => (
+                <div
+                  key={i}
+                  style={{
+                    fontSize: 11,
+                    marginBottom: 4,
+                    borderBottom: '1px solid #dee2e6',
+                    paddingBottom: 4,
+                  }}
+                >
+                  <span style={{ color: '#6c757d' }}>{new Date(t.timestamp).toLocaleString()}</span>{' '}
+                  {t.fromStatus && (
+                    <>
+                      <StatusBadge status={t.fromStatus} /> {'->'}{' '}
+                    </>
+                  )}
+                  <StatusBadge status={t.toStatus} />
+                  {t.reason && <span style={{ marginLeft: 8, color: '#495057' }}>{t.reason}</span>}
+                  <span style={{ marginLeft: 8, color: '#6c757d' }}>by {t.actor}</span>
+                </div>
+              ))}
           </div>
         </div>
 
         {/* Pack History */}
         {loaCase.packHistory?.length > 0 && (
           <div style={{ marginBottom: 12 }}>
-            <h4 style={{ fontSize: 13, margin: '0 0 4px' }}>Pack History ({loaCase.packHistory.length})</h4>
+            <h4 style={{ fontSize: 13, margin: '0 0 4px' }}>
+              Pack History ({loaCase.packHistory.length})
+            </h4>
             <div style={{ fontSize: 11, color: '#6c757d' }}>
               {loaCase.packHistory.map((p: any, i: number) => (
-                <div key={i}>Pack {p.id} -- generated {new Date(p.generatedAt).toLocaleString()} by {p.generatedBy}</div>
+                <div key={i}>
+                  Pack {p.id} -- generated {new Date(p.generatedAt).toLocaleString()} by{' '}
+                  {p.generatedBy}
+                </div>
               ))}
             </div>
           </div>
         )}
 
         {/* Assign */}
-        <div style={{ display: 'flex', gap: 8, marginBottom: 12, alignItems: 'center', fontSize: 12 }}>
+        <div
+          style={{ display: 'flex', gap: 8, marginBottom: 12, alignItems: 'center', fontSize: 12 }}
+        >
           <strong>Assign to:</strong>
           <input
             value={assignInput}
-            onChange={e => setAssignInput(e.target.value)}
+            onChange={(e) => setAssignInput(e.target.value)}
             placeholder={loaCase.assignedTo || 'Staff name'}
-            style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #dee2e6', borderRadius: 3, width: 160 }}
+            style={{
+              padding: '4px 8px',
+              fontSize: 12,
+              border: '1px solid #dee2e6',
+              borderRadius: 3,
+              width: 160,
+            }}
           />
           <button
-            onClick={() => { if (assignInput.trim()) { onAssign(loaCase.id, assignInput.trim()); setAssignInput(''); } }}
+            onClick={() => {
+              if (assignInput.trim()) {
+                onAssign(loaCase.id, assignInput.trim());
+                setAssignInput('');
+              }
+            }}
             disabled={!assignInput.trim()}
             style={{ ...btnStyle, padding: '4px 12px', opacity: assignInput.trim() ? 1 : 0.5 }}
           >
@@ -347,17 +527,27 @@ function LOADetailModal({ loaCase, onClose, onTransition, onGeneratePack, onAssi
 
         {/* Actions */}
         <div style={{ display: 'flex', gap: 8, marginTop: 16, flexWrap: 'wrap' }}>
-          <button onClick={() => onGeneratePack(loaCase.id)} style={{ ...btnStyle, padding: '6px 16px' }}>
+          <button
+            onClick={() => onGeneratePack(loaCase.id)}
+            style={{ ...btnStyle, padding: '6px 16px' }}
+          >
             Generate Pack
           </button>
-          {getNextStatuses(loaCase.status).map(s => (
+          {getNextStatuses(loaCase.status).map((s) => (
             <button
               key={s}
               onClick={() => onTransition(loaCase.id, s)}
               style={{
                 ...btnStyle,
                 padding: '6px 12px',
-                background: s === 'approved' ? '#d4edda' : s === 'denied' ? '#f8d7da' : s === 'cancelled' ? '#e9ecef' : '#cce5ff',
+                background:
+                  s === 'approved'
+                    ? '#d4edda'
+                    : s === 'denied'
+                      ? '#f8d7da'
+                      : s === 'cancelled'
+                        ? '#e9ecef'
+                        : '#cce5ff',
               }}
             >
               {s.replace(/_/g, ' ')}
@@ -377,13 +567,27 @@ function PackModal({ pack, onClose }: { pack: any; onClose: () => void }) {
       <div style={{ ...modalStyle, maxWidth: 600, maxHeight: '80vh', overflow: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
           <h3 style={{ margin: 0, fontSize: 16 }}>{pack.title || 'Submission Pack'}</h3>
-          <button onClick={onClose} style={{ cursor: 'pointer', border: 'none', background: 'none', fontSize: 18 }}>X</button>
+          <button
+            onClick={onClose}
+            style={{ cursor: 'pointer', border: 'none', background: 'none', fontSize: 18 }}
+          >
+            X
+          </button>
         </div>
 
         {pack.slaInfo && (
-          <div style={{ fontSize: 12, marginBottom: 12, padding: 8, background: '#f8f9fa', borderRadius: 4 }}>
+          <div
+            style={{
+              fontSize: 12,
+              marginBottom: 12,
+              padding: 8,
+              background: '#f8f9fa',
+              borderRadius: 4,
+            }}
+          >
             <strong>Priority:</strong> {pack.slaInfo.priority?.toUpperCase()} |{' '}
-            <strong>Deadline:</strong> {pack.slaInfo.deadline ? new Date(pack.slaInfo.deadline).toLocaleString() : 'N/A'} |{' '}
+            <strong>Deadline:</strong>{' '}
+            {pack.slaInfo.deadline ? new Date(pack.slaInfo.deadline).toLocaleString() : 'N/A'} |{' '}
             <strong>Risk:</strong> <SLAIndicator risk={pack.slaInfo.riskLevel} />
           </div>
         )}
@@ -391,14 +595,36 @@ function PackModal({ pack, onClose }: { pack: any; onClose: () => void }) {
         {pack.sections?.map((s: any, i: number) => (
           <div key={i} style={{ marginBottom: 12 }}>
             <h4 style={{ margin: '0 0 4px', fontSize: 13, color: '#495057' }}>{s.heading}</h4>
-            <pre style={{ margin: 0, fontSize: 12, whiteSpace: 'pre-wrap', background: '#f8f9fa', padding: 8, borderRadius: 4 }}>{s.content}</pre>
+            <pre
+              style={{
+                margin: 0,
+                fontSize: 12,
+                whiteSpace: 'pre-wrap',
+                background: '#f8f9fa',
+                padding: 8,
+                borderRadius: 4,
+              }}
+            >
+              {s.content}
+            </pre>
           </div>
         ))}
 
         {pack.payerInstructions && (
           <div style={{ marginBottom: 12 }}>
-            <h4 style={{ margin: '0 0 4px', fontSize: 13, color: '#495057' }}>Payer Instructions</h4>
-            <pre style={{ margin: 0, fontSize: 12, whiteSpace: 'pre-wrap', background: '#fff3cd', padding: 8, borderRadius: 4 }}>
+            <h4 style={{ margin: '0 0 4px', fontSize: 13, color: '#495057' }}>
+              Payer Instructions
+            </h4>
+            <pre
+              style={{
+                margin: 0,
+                fontSize: 12,
+                whiteSpace: 'pre-wrap',
+                background: '#fff3cd',
+                padding: 8,
+                borderRadius: 4,
+              }}
+            >
               {pack.payerInstructions}
             </pre>
           </div>
@@ -407,13 +633,25 @@ function PackModal({ pack, onClose }: { pack: any; onClose: () => void }) {
         <h4 style={{ fontSize: 13, color: '#495057', marginBottom: 4 }}>Checklist</h4>
         <ul style={{ fontSize: 12, paddingLeft: 20 }}>
           {pack.checklist?.map((item: string, i: number) => (
-            <li key={i} style={{ marginBottom: 2 }}>{item}</li>
+            <li key={i} style={{ marginBottom: 2 }}>
+              {item}
+            </li>
           ))}
         </ul>
 
         <h4 style={{ fontSize: 13, color: '#495057', marginBottom: 4 }}>Email Template</h4>
-        <pre style={{ fontSize: 11, whiteSpace: 'pre-wrap', background: '#f8f9fa', padding: 8, borderRadius: 4 }}>
-          Subject: {pack.emailTemplate?.subject}{'\n\n'}{pack.emailTemplate?.body}
+        <pre
+          style={{
+            fontSize: 11,
+            whiteSpace: 'pre-wrap',
+            background: '#f8f9fa',
+            padding: 8,
+            borderRadius: 4,
+          }}
+        >
+          Subject: {pack.emailTemplate?.subject}
+          {'\n\n'}
+          {pack.emailTemplate?.body}
         </pre>
 
         {pack.includedCredentials?.length > 0 && (
@@ -428,7 +666,17 @@ function PackModal({ pack, onClose }: { pack: any; onClose: () => void }) {
 
 /* ── Shared Components ──────────────────────────────────────── */
 
-function SLABadge({ risk, count, onClick, active }: { risk: SLARisk; count: number; onClick: () => void; active: boolean }) {
+function SLABadge({
+  risk,
+  count,
+  onClick,
+  active,
+}: {
+  risk: SLARisk;
+  count: number;
+  onClick: () => void;
+  active: boolean;
+}) {
   const colors: Record<SLARisk, { bg: string; fg: string }> = {
     on_track: { bg: '#d4edda', fg: '#155724' },
     at_risk: { bg: '#fff3cd', fg: '#664d03' },
@@ -440,8 +688,13 @@ function SLABadge({ risk, count, onClick, active }: { risk: SLARisk; count: numb
     <button
       onClick={onClick}
       style={{
-        padding: '2px 10px', borderRadius: 12, fontSize: 11, fontWeight: 600,
-        background: c.bg, color: c.fg, border: active ? '2px solid #0d6efd' : '1px solid transparent',
+        padding: '2px 10px',
+        borderRadius: 12,
+        fontSize: 11,
+        fontWeight: 600,
+        background: c.bg,
+        color: c.fg,
+        border: active ? '2px solid #0d6efd' : '1px solid transparent',
         cursor: 'pointer',
       }}
     >
@@ -464,9 +717,13 @@ function SLAIndicator({ risk }: { risk: string }) {
     overdue: 'OVERDUE',
   };
   return (
-    <span style={{
-      fontSize: 11, fontWeight: 600, color: colors[risk] || '#6c757d',
-    }}>
+    <span
+      style={{
+        fontSize: 11,
+        fontWeight: 600,
+        color: colors[risk] || '#6c757d',
+      }}
+    >
       {risk === 'overdue' ? '\u26A0' : risk === 'critical' ? '\u26A0' : '\u2022'}{' '}
       {labels[risk] || risk}
     </span>
@@ -481,10 +738,17 @@ function PriorityBadge({ priority }: { priority: string }) {
   };
   const c = colors[priority] || { bg: '#e9ecef', fg: '#495057' };
   return (
-    <span style={{
-      fontSize: 10, padding: '2px 6px', borderRadius: 3, fontWeight: 600,
-      background: c.bg, color: c.fg, textTransform: 'uppercase',
-    }}>
+    <span
+      style={{
+        fontSize: 10,
+        padding: '2px 6px',
+        borderRadius: 3,
+        fontWeight: 600,
+        background: c.bg,
+        color: c.fg,
+        textTransform: 'uppercase',
+      }}
+    >
       {priority}
     </span>
   );
@@ -504,10 +768,16 @@ function StatusBadge({ status }: { status: string }) {
   };
   const c = colors[status] || { bg: '#e9ecef', fg: '#495057' };
   return (
-    <span style={{
-      fontSize: 11, padding: '2px 8px', borderRadius: 3, fontWeight: 600,
-      background: c.bg, color: c.fg,
-    }}>
+    <span
+      style={{
+        fontSize: 11,
+        padding: '2px 8px',
+        borderRadius: 3,
+        fontWeight: 600,
+        background: c.bg,
+        color: c.fg,
+      }}
+    >
       {status?.replace(/_/g, ' ')}
     </span>
   );
@@ -534,21 +804,39 @@ function formatAge(iso: string): string {
 /* ── Styles ─────────────────────────────────────────────────── */
 
 const filterStyle: React.CSSProperties = {
-  padding: '4px 8px', fontSize: 12, border: '1px solid #dee2e6', borderRadius: 3,
+  padding: '4px 8px',
+  fontSize: 12,
+  border: '1px solid #dee2e6',
+  borderRadius: 3,
 };
 
 const thStyle: React.CSSProperties = { padding: '6px 8px' };
 const tdStyle: React.CSSProperties = { padding: '6px 8px' };
 const btnStyle: React.CSSProperties = {
-  fontSize: 11, padding: '2px 8px', cursor: 'pointer', border: '1px solid #dee2e6',
-  borderRadius: 3, background: '#fff',
+  fontSize: 11,
+  padding: '2px 8px',
+  cursor: 'pointer',
+  border: '1px solid #dee2e6',
+  borderRadius: 3,
+  background: '#fff',
 };
 
 const overlayStyle: React.CSSProperties = {
-  position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-  background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000,
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  background: 'rgba(0,0,0,0.5)',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 1000,
 };
 
 const modalStyle: React.CSSProperties = {
-  background: '#fff', borderRadius: 8, padding: 24, width: '90%',
+  background: '#fff',
+  borderRadius: 8,
+  padding: 24,
+  width: '90%',
 };

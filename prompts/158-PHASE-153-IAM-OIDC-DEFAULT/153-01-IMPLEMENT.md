@@ -52,13 +52,13 @@ for sandbox convenience.
 
 ## Files Changed
 
-| File | Change |
-|------|--------|
-| `apps/api/src/auth/oidc-provider.ts` | `validateOidcConfig()`, rc/prod tightening |
-| `apps/api/src/posture/data-plane-posture.ts` | Gates 8-9: AUTH_MODE + cookie secure |
-| `apps/api/src/platform/pg/pg-migrate.ts` | v20: tenant_oidc_mapping table |
-| `apps/api/.env.example` | OIDC section |
-| `qa/gauntlet/gates/g12-data-plane.mjs` | OIDC config depth checks |
+| File                                         | Change                                     |
+| -------------------------------------------- | ------------------------------------------ |
+| `apps/api/src/auth/oidc-provider.ts`         | `validateOidcConfig()`, rc/prod tightening |
+| `apps/api/src/posture/data-plane-posture.ts` | Gates 8-9: AUTH_MODE + cookie secure       |
+| `apps/api/src/platform/pg/pg-migrate.ts`     | v20: tenant_oidc_mapping table             |
+| `apps/api/.env.example`                      | OIDC section                               |
+| `qa/gauntlet/gates/g12-data-plane.mjs`       | OIDC config depth checks                   |
 
 ## Verification
 

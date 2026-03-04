@@ -39,7 +39,7 @@ export interface FhirIdentifier {
 }
 
 export interface FhirHumanName {
-  use?: "usual" | "official" | "temp" | "nickname" | "anonymous" | "old" | "maiden";
+  use?: 'usual' | 'official' | 'temp' | 'nickname' | 'anonymous' | 'old' | 'maiden';
   family?: string;
   given?: string[];
   text?: string;
@@ -58,7 +58,7 @@ export interface FhirQuantity {
 }
 
 export interface FhirNarrative {
-  status: "generated" | "extensions" | "additional" | "empty";
+  status: 'generated' | 'extensions' | 'additional' | 'empty';
   div: string;
 }
 
@@ -90,10 +90,10 @@ export interface FhirResource {
 /* ================================================================== */
 
 export interface FhirPatient extends FhirResource {
-  resourceType: "Patient";
+  resourceType: 'Patient';
   identifier?: FhirIdentifier[];
   name?: FhirHumanName[];
-  gender?: "male" | "female" | "other" | "unknown";
+  gender?: 'male' | 'female' | 'other' | 'unknown';
   birthDate?: string;
 }
 
@@ -102,19 +102,19 @@ export interface FhirPatient extends FhirResource {
 /* ================================================================== */
 
 export interface FhirAllergyIntolerance extends FhirResource {
-  resourceType: "AllergyIntolerance";
+  resourceType: 'AllergyIntolerance';
   clinicalStatus?: FhirCodeableConcept;
   verificationStatus?: FhirCodeableConcept;
-  type?: "allergy" | "intolerance";
-  category?: Array<"food" | "medication" | "environment" | "biologic">;
-  criticality?: "low" | "high" | "unable-to-assess";
+  type?: 'allergy' | 'intolerance';
+  category?: Array<'food' | 'medication' | 'environment' | 'biologic'>;
+  criticality?: 'low' | 'high' | 'unable-to-assess';
   code?: FhirCodeableConcept;
   patient: FhirReference;
   recordedDate?: string;
   reaction?: Array<{
     substance?: FhirCodeableConcept;
     manifestation: FhirCodeableConcept[];
-    severity?: "mild" | "moderate" | "severe";
+    severity?: 'mild' | 'moderate' | 'severe';
   }>;
 }
 
@@ -123,7 +123,7 @@ export interface FhirAllergyIntolerance extends FhirResource {
 /* ================================================================== */
 
 export interface FhirCondition extends FhirResource {
-  resourceType: "Condition";
+  resourceType: 'Condition';
   clinicalStatus?: FhirCodeableConcept;
   verificationStatus?: FhirCodeableConcept;
   category?: FhirCodeableConcept[];
@@ -138,8 +138,16 @@ export interface FhirCondition extends FhirResource {
 /* ================================================================== */
 
 export interface FhirObservation extends FhirResource {
-  resourceType: "Observation";
-  status: "registered" | "preliminary" | "final" | "amended" | "corrected" | "cancelled" | "entered-in-error" | "unknown";
+  resourceType: 'Observation';
+  status:
+    | 'registered'
+    | 'preliminary'
+    | 'final'
+    | 'amended'
+    | 'corrected'
+    | 'cancelled'
+    | 'entered-in-error'
+    | 'unknown';
   category?: FhirCodeableConcept[];
   code: FhirCodeableConcept;
   subject?: FhirReference;
@@ -159,9 +167,25 @@ export interface FhirObservation extends FhirResource {
 /* ================================================================== */
 
 export interface FhirMedicationRequest extends FhirResource {
-  resourceType: "MedicationRequest";
-  status: "active" | "on-hold" | "cancelled" | "completed" | "entered-in-error" | "stopped" | "draft" | "unknown";
-  intent: "proposal" | "plan" | "order" | "original-order" | "reflex-order" | "filler-order" | "instance-order" | "option";
+  resourceType: 'MedicationRequest';
+  status:
+    | 'active'
+    | 'on-hold'
+    | 'cancelled'
+    | 'completed'
+    | 'entered-in-error'
+    | 'stopped'
+    | 'draft'
+    | 'unknown';
+  intent:
+    | 'proposal'
+    | 'plan'
+    | 'order'
+    | 'original-order'
+    | 'reflex-order'
+    | 'filler-order'
+    | 'instance-order'
+    | 'option';
   medicationCodeableConcept?: FhirCodeableConcept;
   subject: FhirReference;
   requester?: FhirReference;
@@ -179,8 +203,8 @@ export interface FhirMedicationRequest extends FhirResource {
 /* ================================================================== */
 
 export interface FhirDocumentReference extends FhirResource {
-  resourceType: "DocumentReference";
-  status: "current" | "superseded" | "entered-in-error";
+  resourceType: 'DocumentReference';
+  status: 'current' | 'superseded' | 'entered-in-error';
   type?: FhirCodeableConcept;
   subject?: FhirReference;
   date?: string;
@@ -199,8 +223,17 @@ export interface FhirDocumentReference extends FhirResource {
 /* ================================================================== */
 
 export interface FhirEncounter extends FhirResource {
-  resourceType: "Encounter";
-  status: "planned" | "arrived" | "triaged" | "in-progress" | "onleave" | "finished" | "cancelled" | "entered-in-error" | "unknown";
+  resourceType: 'Encounter';
+  status:
+    | 'planned'
+    | 'arrived'
+    | 'triaged'
+    | 'in-progress'
+    | 'onleave'
+    | 'finished'
+    | 'cancelled'
+    | 'entered-in-error'
+    | 'unknown';
   class: FhirCoding;
   type?: FhirCodeableConcept[];
   subject?: FhirReference;
@@ -214,7 +247,7 @@ export interface FhirEncounter extends FhirResource {
   serviceProvider?: FhirReference;
   location?: Array<{
     location: FhirReference;
-    status?: "planned" | "active" | "reserved" | "completed";
+    status?: 'planned' | 'active' | 'reserved' | 'completed';
   }>;
   length?: {
     value: number;
@@ -232,13 +265,22 @@ export interface FhirBundleEntry {
   fullUrl?: string;
   resource?: FhirResource;
   search?: {
-    mode?: "match" | "include" | "outcome";
+    mode?: 'match' | 'include' | 'outcome';
   };
 }
 
 export interface FhirBundle extends FhirResource {
-  resourceType: "Bundle";
-  type: "searchset" | "batch" | "transaction" | "batch-response" | "transaction-response" | "history" | "document" | "message" | "collection";
+  resourceType: 'Bundle';
+  type:
+    | 'searchset'
+    | 'batch'
+    | 'transaction'
+    | 'batch-response'
+    | 'transaction-response'
+    | 'history'
+    | 'document'
+    | 'message'
+    | 'collection';
   total?: number;
   link?: Array<{
     relation: string;
@@ -252,14 +294,14 @@ export interface FhirBundle extends FhirResource {
 /* ================================================================== */
 
 export interface FhirCapabilityStatement extends FhirResource {
-  resourceType: "CapabilityStatement";
-  status: "draft" | "active" | "retired" | "unknown";
+  resourceType: 'CapabilityStatement';
+  status: 'draft' | 'active' | 'retired' | 'unknown';
   date: string;
-  kind: "instance" | "capability" | "requirements";
+  kind: 'instance' | 'capability' | 'requirements';
   fhirVersion: string;
   format: string[];
   rest?: Array<{
-    mode: "server" | "client";
+    mode: 'server' | 'client';
     security?: {
       cors?: boolean;
       service?: FhirCodeableConcept[];
@@ -276,11 +318,29 @@ export interface FhirCapabilityStatement extends FhirResource {
       type: string;
       profile?: string;
       interaction?: Array<{
-        code: "read" | "vread" | "update" | "patch" | "delete" | "history-instance" | "history-type" | "create" | "search-type";
+        code:
+          | 'read'
+          | 'vread'
+          | 'update'
+          | 'patch'
+          | 'delete'
+          | 'history-instance'
+          | 'history-type'
+          | 'create'
+          | 'search-type';
       }>;
       searchParam?: Array<{
         name: string;
-        type: "number" | "date" | "string" | "token" | "reference" | "composite" | "quantity" | "uri" | "special";
+        type:
+          | 'number'
+          | 'date'
+          | 'string'
+          | 'token'
+          | 'reference'
+          | 'composite'
+          | 'quantity'
+          | 'uri'
+          | 'special';
         documentation?: string;
       }>;
     }>;
@@ -302,9 +362,9 @@ export interface FhirCapabilityStatement extends FhirResource {
 /* ================================================================== */
 
 export interface FhirOperationOutcome extends FhirResource {
-  resourceType: "OperationOutcome";
+  resourceType: 'OperationOutcome';
   issue: Array<{
-    severity: "fatal" | "error" | "warning" | "information";
+    severity: 'fatal' | 'error' | 'warning' | 'information';
     code: string;
     diagnostics?: string;
     details?: FhirCodeableConcept;

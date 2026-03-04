@@ -404,7 +404,7 @@ export async function runTransformers(
         PLUGIN_TIMEOUT_MS,
         `transformer:${transformKey}:${t.pluginId}`,
       );
-    } catch (err: any) {
+    } catch (_err: any) {
       // On transformer failure, pass through unchanged
       break;
     }

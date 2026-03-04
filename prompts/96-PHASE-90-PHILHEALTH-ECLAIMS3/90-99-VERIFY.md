@@ -1,19 +1,23 @@
 # Phase 90 VERIFY — PhilHealth eClaims 3.0 posture
 
 ## Prompt
+
 Verify Phase 90 (PhilHealth eClaims 3.0 posture) implementation:
 compliance integrity, security audit, feature integrity, regression check.
 
 ## Verification Steps
 
 ### 1. Build Check
+
 - [x] API `tsc --noEmit` — clean (0 errors)
 - [x] Web `tsc --noEmit` — clean (0 errors)
 
 ### 2. verify-latest.ps1
+
 - [x] 72/72 gates pass
 
 ### 3. Compliance Integrity
+
 - [x] Validator REJECTS scanned PDF for admissions >= 2026-04-01 (code: SCANNED_PDF_REJECTED)
 - [x] Validator WARNS for scanned PDF before cutoff (code: SCANNED_PDF_DEPRECATED)
 - [x] `requiresRealIntegration()` blocks submitted_pending/returned_to_hospital/paid/denied
@@ -25,6 +29,7 @@ compliance integrity, security audit, feature integrity, regression check.
 - [x] "SIMULATED" label on test upload results in claims UI
 
 ### 4. Feature Integrity
+
 - [x] Claim draft CRUD: create/list/get/patch work
 - [x] Status FSM: 8 states, all transitions defined
 - [x] PATCH restricted to draft/ready_for_submission states only
@@ -35,6 +40,7 @@ compliance integrity, security audit, feature integrity, regression check.
 - [x] Validation engine: CF1-CF4 fields, PIN format, eSOA compliance, procedure codes
 
 ### 5. Security Check
+
 - [x] No console.log in any new file
 - [x] No hardcoded credentials (PROV123, passwords, API keys)
 - [x] appendRcmAudit wired to all 10 mutation endpoints
@@ -43,16 +49,19 @@ compliance integrity, security audit, feature integrity, regression check.
 - [x] All routes use (request.body as any) || {} (BUG-046)
 
 ### 6. Wiring Check
+
 - [x] index.ts imports + registers philhealthRoutes
 - [x] layout.tsx has PH Setup + PH Claims nav entries (moduleId: 'rcm')
 - [x] Route paths match UI fetch URLs
 
 ### 7. Audit Issues Found + Fixed
+
 - [MEDIUM] Missing procedure validation in CF2 — Added procedure.code checks + case-rate warning
 - [LOW] Unused import PhilHealthChargeItem in store — Removed
 - [LOW] Unused import PhilHealthReadinessItem in store — Removed
 
 ## Files Touched
+
 - apps/api/src/rcm/payerOps/philhealth-types.ts (new)
 - apps/api/src/rcm/payerOps/philhealth-store.ts (new)
 - apps/api/src/rcm/payerOps/philhealth-validator.ts (new)

@@ -7,24 +7,29 @@ PHASE 29 -- PATIENT IAM + PROXY WORKFLOWS + ACCESS LOGS (enterprise portal basel
 Goal: make portal-grade identity and account controls, without breaking VistA-first.
 
 A) Identity architecture
+
 - Patient identity is NOT VistA DUZ. It is a portal identity mapped to patient(s) by enrollment workflow.
 - Create explicit mapping entity: PortalUser <-> PatientProfile(s) (self + proxies)
 - Support: password reset, account lockout after failed attempts, session/device list, MFA scaffolding (TOTP optional; can remain feature-flagged)
 
 B) Proxy invitation workflow (enterprise parity)
+
 - Portal user can request proxy connection: guardian/caregiver flow, patient accepts/declines
 - Enforce sensitivity restrictions and age policies created in Phase 28.
 
 C) Access logs (patient-visible)
+
 - Show "events performed by you or your proxy" (read-only)
 - Store event types: sign-in/out, view record section, export, share code create/redeem, proxy switch, message send, refill request.
 
 D) Security posture
+
 - Rate limits for auth endpoints
 - Secure cookie sessions; CSRF defense for write actions
 - Strict audit logging (PHI-safe)
 
 E) Documentation
+
 - docs/security/portal-iam.md
 - docs/runbooks/phase29-iam.md
 
@@ -69,7 +74,7 @@ Commit: "Phase 29: Portal IAM + proxy workflows + access logs"
 
 ## Files Touched
 
-- apps/api/src/portal-iam/*.ts (new)
+- apps/api/src/portal-iam/\*.ts (new)
 - apps/api/src/index.ts (modified)
 - apps/portal/src/app/dashboard/account/page.tsx (new)
 - apps/portal/src/app/dashboard/proxy/page.tsx (new)

@@ -10,12 +10,14 @@ multi-country deployment of VistA-Evolved.
 ## Deliverables
 
 ### 1. Country Pack Standard
+
 - **File:** `docs/country-packs/COUNTRY_PACK_STANDARD.md`
 - Defines what constitutes a country pack (schema, lifecycle, validation)
 - values.json schema with all sections: identity, locale, regulatory,
   data residency, terminology, payer, modules, UI, reporting
 
 ### 2. Architecture Decision Records (3 ADRs)
+
 - **`docs/adrs/ADR-country-pack-model.md`** — values-driven vs code-driven
   decision; describes JSON config approach leveraging existing module registry
 - **`docs/adrs/ADR-data-residency-model.md`** — region labels, enforcement
@@ -24,12 +26,14 @@ multi-country deployment of VistA-Evolved.
   resolver interface, VistA file mapping, passthrough fallback
 
 ### 3. Target Markets Matrix
+
 - **File:** `docs/market/target-markets.md`
 - US, PH, GH regulatory requirements
 - Terminology, payer, and interop comparison
 - Implementation priority (P0/P1/P2)
 
 ### 4. Wave 13 Manifest
+
 - **File:** `prompts/WAVE_13_MANIFEST.md`
 - BASE_PHASE = 309, 8 phases mapped (309–316)
 

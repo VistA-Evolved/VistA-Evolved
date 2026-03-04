@@ -26,6 +26,7 @@
 6. **Minimal edits, inventory first, deterministic changes, commit discipline.**
 
 ### Anti-Sprawl Rules
+
 - **Do NOT create `/reports` or `/docs/reports` folders.** They are forbidden.
 - **Do NOT commit verification outputs.** They belong in `/artifacts/` (gitignored).
 - **Prompts are canonical.** Do not duplicate prompt content in docs.
@@ -37,22 +38,22 @@
 
 ## 1. Credentials — Where They Live
 
-| What | Path | Notes |
-|------|------|-------|
-| **Credentials at runtime** | `apps/api/.env.local` | Git-ignored. Copy from `.env.example`. |
-| **Template / schema** | `apps/api/.env.example` | Committed — shows which vars are needed. |
-| **Config loader** | `apps/api/src/vista/config.ts` | Reads env vars; has full credential docs in header comment. |
-| **Runbook with creds** | `docs/runbooks/vista-rpc-default-patient-list.md` | Lists all 3 built-in Docker accounts. |
+| What                       | Path                                              | Notes                                                       |
+| -------------------------- | ------------------------------------------------- | ----------------------------------------------------------- |
+| **Credentials at runtime** | `apps/api/.env.local`                             | Git-ignored. Copy from `.env.example`.                      |
+| **Template / schema**      | `apps/api/.env.example`                           | Committed — shows which vars are needed.                    |
+| **Config loader**          | `apps/api/src/vista/config.ts`                    | Reads env vars; has full credential docs in header comment. |
+| **Runbook with creds**     | `docs/runbooks/vista-rpc-default-patient-list.md` | Lists all 3 built-in Docker accounts.                       |
 
 ### WorldVistA Docker default accounts
 
 From the [Docker Hub page](https://hub.docker.com/r/worldvista/worldvista-ehr):
 
-| Access Code | Verify Code | User |
-|-------------|-------------|------|
-| PROV123 | PROV123!! | PROVIDER,CLYDE WV (DUZ 87) |
-| PHARM123 | PHARM123!! | PHARMACIST,LINDA WV |
-| NURSE123 | NURSE123!! | NURSE,HELEN WV |
+| Access Code | Verify Code | User                       |
+| ----------- | ----------- | -------------------------- |
+| PROV123     | PROV123!!   | PROVIDER,CLYDE WV (DUZ 87) |
+| PHARM123    | PHARM123!!  | PHARMACIST,LINDA WV        |
+| NURSE123    | NURSE123!!  | NURSE,HELEN WV             |
 
 ---
 
@@ -83,6 +84,7 @@ casually. There are 20 pads (94 chars each) used for `$TRANSLATE`-based
 obfuscation of AV codes and context names.
 
 If you ever need to re-extract them:
+
 ```bash
 docker exec -it wv su - wv -c "mumps -r %XCMD 'F I=1:1:20 W \"PAD \"_I_\": \"_\$P(\$T(Z+I^XUSRB1),\";\",3),!'"
 ```
@@ -245,7 +247,7 @@ most recent phase verifier and reports PASS/FAIL for each gate.
 23. **Sandbox credentials on the login page are gated by NODE_ENV.** They only
     display when `NODE_ENV !== 'production'`. See BUG-035.
 24. **`/admin/*` routes require strict admin role check.** Use `requireRole(session,
-    'admin')` — not just session validation. RBAC is now strict admin-only in
+'admin')` — not just session validation. RBAC is now strict admin-only in
     `security.ts`, `imaging-proxy.ts`, and `ws-console.ts`. The sandbox user
     PROVIDER,CLYDE is mapped to admin role in `session-store.ts`.
 25. **WebSocket console blocks `XUS AV CODE` and `XUS SET VISITOR` RPCs.**
@@ -435,7 +437,7 @@ most recent phase verifier and reports PASS/FAIL for each gate.
     and net; fs and DNS are disabled to reduce noise.
 68. **PHI must never reach the OTel Collector storage.** The collector
     config has an `attributes/strip-phi` processor that deletes request
-    bodies, response bodies, DB statements, and patient.* attributes.
+    bodies, response bodies, DB statements, and patient.\* attributes.
     API-side instrumentation also avoids capturing bodies. Both layers
     must remain in place.
 69. **`sanitizeRoute()` prevents Prometheus label cardinality explosion.**
@@ -832,73 +834,73 @@ scripts/
      sites and fails if any reference an RPC not in `RPC_REGISTRY` or
      `RPC_EXCEPTIONS`. This prevents silent drift between code and registry.
 
-89. **VistA billing data is split across IB/PRCA/PCE subsystems (Phase 39).**
-    PCE encounters (^AUPNVSIT, ^AUPNVCPT, ^AUPNVPOV) have data in the sandbox.
-    IB charges (^IB(350)) and claims (^DGCR(399)) are empty in WorldVistA Docker.
-    AR transactions (^PRCA(430)) are also empty. The read-only endpoints return
-    `status: "integration-pending"` with exact VistA file/routine/RPC targets.
-90. **85 billing-related RPCs exist in the sandbox.** ORWPCE (55), IBD (12),
-    IBCN (2), IBARXM (3), SD W/L (14), IBO/DGBT (2). All are callable but
-    IB/PRCA data-producing RPCs return empty results due to missing upstream data.
-91. **`/vista/rcm/*` routes auto-require session via AUTH_RULES catch-all.**
-    No additional auth configuration needed. The `/vista/` prefix matches the
-    existing catch-all rule in `security.ts`.
-92. **Integration-pending responses include `vistaGrounding` metadata.**
-    Each pending endpoint returns `{ vistaFiles, targetRoutines, migrationPath,
-    sandboxNote }` so developers know exactly what VistA subsystem to integrate
-    when moving to production.
-93. **MUMPS probing through Docker uses .m routines, not inline commands.**
-    PowerShell -> Docker -> su -> mumps has 4 layers of quoting that break.
-    Write .m files in `services/vista/`, `docker cp` into container, then
-    `mumps -r ROUTINENAME`. See ZVEBILP.m and ZVEBILR.m for examples.
-94. **`CLAIM_SUBMISSION_ENABLED=false` by default (Phase 40).** No claim
-    is ever submitted to a real payer unless this env var is explicitly set
-    to `true`. The default behavior is export-only: claims are serialized to
-    X12 wire format and written to `data/rcm-exports/` as review artifacts.
-    The submit endpoint returns `submitted: false, safetyMode: 'export_only'`
-    and transitions the claim to `ready_to_submit` instead of `submitted`.
-95. **Demo claims are permanently blocked from real submission (Phase 40).**
-    Claims created with `isDemo: true` return 403 on `/rcm/claims/:id/submit`
-    regardless of `CLAIM_SUBMISSION_ENABLED`. They can only be exported.
-96. **X12 serializer defaults to `usageIndicator: 'T'` (test) (Phase 40).**
-    The scaffold serializer in `x12-serializer.ts` generates structurally
-    correct 5010 X12 but NEVER defaults to production mode. Override with
-    `{ usageIndicator: 'P' }` only for real clearinghouse submission.
-97. **No proprietary code set tables bundled (Phase 40).** CPT/HCPCS
-    descriptions and ICD-10-CM descriptions are NOT embedded in the
-    serializer. Code values pass through as-is. The clearinghouse or
-    payer validates code set membership. This avoids AMA/CMS licensing issues.
-98. **PhilHealth eClaims uses CF1-CF4 JSON bundles, NOT X12 (Phase 40).**
-    The `ph-eclaims-serializer.ts` transforms EdiClaim837 to PhilHealth
-    format. CF1=facility, CF2=claim, CF3=professional fees (inpatient),
-    CF4=medicines/supplies. Actual API submission through PhilHealth connector.
-99. **CSV payer import at `/rcm/payers/import` requires payerId,name columns.**
-    Additional columns map to payer fields. Defaults: country=US, status=active,
-    integrationMode=not_classified. Use this for bulk onboarding from
-    clearinghouse payer rosters.
-100. **Export artifacts go to `data/rcm-exports/` at repo root.**
+109. **VistA billing data is split across IB/PRCA/PCE subsystems (Phase 39).**
+     PCE encounters (^AUPNVSIT, ^AUPNVCPT, ^AUPNVPOV) have data in the sandbox.
+     IB charges (^IB(350)) and claims (^DGCR(399)) are empty in WorldVistA Docker.
+     AR transactions (^PRCA(430)) are also empty. The read-only endpoints return
+     `status: "integration-pending"` with exact VistA file/routine/RPC targets.
+110. **85 billing-related RPCs exist in the sandbox.** ORWPCE (55), IBD (12),
+     IBCN (2), IBARXM (3), SD W/L (14), IBO/DGBT (2). All are callable but
+     IB/PRCA data-producing RPCs return empty results due to missing upstream data.
+111. **`/vista/rcm/*` routes auto-require session via AUTH_RULES catch-all.**
+     No additional auth configuration needed. The `/vista/` prefix matches the
+     existing catch-all rule in `security.ts`.
+112. **Integration-pending responses include `vistaGrounding` metadata.**
+     Each pending endpoint returns `{ vistaFiles, targetRoutines, migrationPath,
+sandboxNote }` so developers know exactly what VistA subsystem to integrate
+     when moving to production.
+113. **MUMPS probing through Docker uses .m routines, not inline commands.**
+     PowerShell -> Docker -> su -> mumps has 4 layers of quoting that break.
+     Write .m files in `services/vista/`, `docker cp` into container, then
+     `mumps -r ROUTINENAME`. See ZVEBILP.m and ZVEBILR.m for examples.
+114. **`CLAIM_SUBMISSION_ENABLED=false` by default (Phase 40).** No claim
+     is ever submitted to a real payer unless this env var is explicitly set
+     to `true`. The default behavior is export-only: claims are serialized to
+     X12 wire format and written to `data/rcm-exports/` as review artifacts.
+     The submit endpoint returns `submitted: false, safetyMode: 'export_only'`
+     and transitions the claim to `ready_to_submit` instead of `submitted`.
+115. **Demo claims are permanently blocked from real submission (Phase 40).**
+     Claims created with `isDemo: true` return 403 on `/rcm/claims/:id/submit`
+     regardless of `CLAIM_SUBMISSION_ENABLED`. They can only be exported.
+116. **X12 serializer defaults to `usageIndicator: 'T'` (test) (Phase 40).**
+     The scaffold serializer in `x12-serializer.ts` generates structurally
+     correct 5010 X12 but NEVER defaults to production mode. Override with
+     `{ usageIndicator: 'P' }` only for real clearinghouse submission.
+117. **No proprietary code set tables bundled (Phase 40).** CPT/HCPCS
+     descriptions and ICD-10-CM descriptions are NOT embedded in the
+     serializer. Code values pass through as-is. The clearinghouse or
+     payer validates code set membership. This avoids AMA/CMS licensing issues.
+118. **PhilHealth eClaims uses CF1-CF4 JSON bundles, NOT X12 (Phase 40).**
+     The `ph-eclaims-serializer.ts` transforms EdiClaim837 to PhilHealth
+     format. CF1=facility, CF2=claim, CF3=professional fees (inpatient),
+     CF4=medicines/supplies. Actual API submission through PhilHealth connector.
+119. **CSV payer import at `/rcm/payers/import` requires payerId,name columns.**
+     Additional columns map to payer fields. Defaults: country=US, status=active,
+     integrationMode=not_classified. Use this for bulk onboarding from
+     clearinghouse payer rosters.
+120. **Export artifacts go to `data/rcm-exports/` at repo root.**
      Files named `{txSet}_{claimId}_{timestamp}.x12`. Directory is created
      automatically. Add to `.gitignore` for production deployments.
-101. **PowerShell `Set-Content -Encoding UTF8` adds BOM (Phase 75).**
+121. **PowerShell `Set-Content -Encoding UTF8` adds BOM (Phase 75).**
      Any JSON file emitted by PowerShell (e.g., `ConvertTo-Json | Set-Content`)
      starts with bytes `EF BB BF`. Node.js `JSON.parse()` chokes on the BOM.
      Always strip BOM before parsing: `raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw`.
      See BUG-064.
-102. **Idempotency `reply.then()` clobbers `onSend`-captured body (Phase 103).**
+122. **Idempotency `reply.then()` clobbers `onSend`-captured body (Phase 103).**
      Fastify `reply.then()` fires after the response is sent (payload gone).
      `onSend` fires during serialization (payload available). Never create a
      new cache entry in `reply.then()` if `onSend` already captured the body.
      The `onSend` hook is the sole authority for response body caching. See BUG-066.
-103. **`withPgRetry` and `isPgUniqueViolation` are infrastructure (Phase 103).**
+123. **`withPgRetry` and `isPgUniqueViolation` are infrastructure (Phase 103).**
      These are exported from the pg barrel but not yet consumed by PG repos.
      They're ready for adoption when PG repos need retry/dedup logic. Don't
      force-wire them into SQLite-backed routes.
-104. **Idempotency middleware is scoped to payer-db routes (Phase 103).**
+124. **Idempotency middleware is scoped to payer-db routes (Phase 103).**
      The hooks are registered inside the `adminPayerDbRoutes` Fastify plugin,
      so they only affect `/admin/payer-db/*` routes. Other mutation routes
      (RCM, imaging, etc.) are not affected. To extend, register the hooks
      in additional route plugins.
-105. **Fastify onRequest hooks don't stop after `reply.send()` (BUG-067).**
+125. **Fastify onRequest hooks don't stop after `reply.send()` (BUG-067).**
      In Fastify v5, calling `reply.send()` in one `onRequest` hook does NOT
      prevent subsequent `onRequest` hooks from executing. If a later hook also
      calls `reply.send()`, Node.js crashes with `ERR_HTTP_HEADERS_SENT`.
@@ -1111,7 +1113,7 @@ docs/runbooks/
      login response and `GET /auth/csrf-token`). Clients must store the token
      in memory and send it as `X-CSRF-Token` header. Never read CSRF from
      cookies. Portal uses the same pattern via `validateCsrf(req, reply,
-     session.csrfSecret)`. See `apps/web/src/lib/csrf.ts` for the shared
+session.csrfSecret)`. See `apps/web/src/lib/csrf.ts` for the shared
      frontend CSRF manager.
 
 ## 7o. Architecture Quick Map (Phase 143 additions)
@@ -1209,7 +1211,7 @@ docs/runbooks/
      `verifyAppointment()` calls `SDES GET APPT BY APPT IEN` with the local
      appointment ref. If the RPC confirms the appointment exists in VistA,
      `passed: true, vistaVerified: true`. Falls back to `SDOE LIST ENCOUNTERS
-     FOR PAT` and scans for a matching IEN. The result is logged to the
+FOR PAT` and scans for a matching IEN. The result is logged to the
      immutable audit trail as `scheduling.truth_gate`.
 139. **`getSchedulingMode()` probes SDES/SDOE/SDWL/SDVW RPCs at runtime (Phase 147).**
      Each probe is wrapped in try/catch. `sdesInstalled` means SDES GET APPT
@@ -1276,7 +1278,7 @@ docs/runbooks/
      This prevents session hijacking if the database is compromised.
      Use `pg-portal-session-repo.ts` for all PG session operations.
 148. **Portal logs never contain DFN (Phase 150).** The `log.info("Portal
-     login")` call no longer includes `{ dfn }`. DFN appears only in the
+login")` call no longer includes `{ dfn }`. DFN appears only in the
      `portalAudit()` security audit trail. Do not add DFN to general
      `log.*` calls.
 149. **`portal_patient_identity` maps OIDC sub to patient DFN (Phase 150).**
@@ -1591,6 +1593,7 @@ A comprehensive log of every bug, challenge, and fix from Phase 1 through
 Phase 25 lives in **[`docs/BUG-TRACKER.md`](docs/BUG-TRACKER.md)**.
 
 It covers 58 bugs with:
+
 - What was attempted
 - The exact error or symptom
 - Root cause analysis

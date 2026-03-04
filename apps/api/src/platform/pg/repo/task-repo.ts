@@ -6,17 +6,14 @@
  * Mirrors apps/api/src/platform/db/repo/task-repo.ts using Postgres.
  */
 
-import { randomUUID } from "node:crypto";
-import { eq, and, isNull, desc } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { payerTask, payerAuditEvent } from "../pg-schema.js";
+import { randomUUID } from 'node:crypto';
+import { eq, and, isNull, desc } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { payerTask, payerAuditEvent } from '../pg-schema.js';
 
 export type TaskRow = typeof payerTask.$inferSelect;
 
-export async function listTasks(
-  payerId: string,
-  tenantId?: string | null,
-): Promise<TaskRow[]> {
+export async function listTasks(payerId: string, tenantId?: string | null): Promise<TaskRow[]> {
   const db = getPgDb();
   if (tenantId) {
     const all = await db
@@ -47,7 +44,7 @@ export async function createTask(
     dueDate?: string;
     tenantId?: string | null;
   },
-  actor?: string,
+  actor?: string
 ): Promise<TaskRow> {
   const db = getPgDb();
   const id = randomUUID();
@@ -59,7 +56,7 @@ export async function createTask(
     payerId: data.payerId,
     title: data.title,
     description: data.description ?? null,
-    status: "open",
+    status: 'open',
     dueDate: data.dueDate ? new Date(data.dueDate) : null,
     createdAt: new Date(now),
     updatedAt: new Date(now),
@@ -71,14 +68,14 @@ export async function createTask(
   await db.insert(payerAuditEvent).values({
     id: randomUUID(),
     tenantId: data.tenantId ?? null,
-    actorType: actor ? "user" : "system",
+    actorType: actor ? 'user' : 'system',
     actorId: actor ?? null,
-    entityType: "payer_task",
+    entityType: 'payer_task',
     entityId: id,
-    action: "create",
+    action: 'create',
     beforeJson: null,
     afterJson: created ? JSON.parse(JSON.stringify(created)) : null,
-    reason: "Task created",
+    reason: 'Task created',
     evidenceSnapshotId: null,
     createdAt: new Date(now),
   });
@@ -90,7 +87,7 @@ export async function updateTaskStatus(
   id: string,
   status: string,
   reason: string,
-  actor?: string,
+  actor?: string
 ): Promise<TaskRow | null> {
   const db = getPgDb();
   const before = await findTaskById(id);
@@ -109,11 +106,11 @@ export async function updateTaskStatus(
   await db.insert(payerAuditEvent).values({
     id: randomUUID(),
     tenantId: before.tenantId ?? null,
-    actorType: actor ? "user" : "system",
+    actorType: actor ? 'user' : 'system',
     actorId: actor ?? null,
-    entityType: "payer_task",
+    entityType: 'payer_task',
     entityId: id,
-    action: "update",
+    action: 'update',
     beforeJson: JSON.parse(JSON.stringify(before)),
     afterJson: after ? JSON.parse(JSON.stringify(after)) : null,
     reason,

@@ -4,12 +4,12 @@ Container-per-tenant Kubernetes deployment using Helm.
 
 ## Prerequisites
 
-| Tool | Min Version | Install |
-|------|-------------|---------|
-| Docker Desktop | 4.x | https://docs.docker.com/desktop/ |
-| kind | 0.20+ | `choco install kind` or https://kind.sigs.k8s.io/ |
-| kubectl | 1.28+ | `choco install kubernetes-cli` |
-| helm | 3.14+ | `choco install kubernetes-helm` |
+| Tool           | Min Version | Install                                           |
+| -------------- | ----------- | ------------------------------------------------- |
+| Docker Desktop | 4.x         | https://docs.docker.com/desktop/                  |
+| kind           | 0.20+       | `choco install kind` or https://kind.sigs.k8s.io/ |
+| kubectl        | 1.28+       | `choco install kubernetes-cli`                    |
+| helm           | 3.14+       | `choco install kubernetes-helm`                   |
 
 ## Quick Start (Local Kind)
 
@@ -84,15 +84,16 @@ infra/
 
 ## Environment Overlays
 
-| Overlay | Network Policies | Keycloak | Observability | Storage |
-|---------|-----------------|----------|---------------|---------|
-| dev     | off | off | off | 2Gi PG |
-| staging | on  | on  | on  | 20Gi PG |
-| prod    | on  | on  | on  | 100Gi PG, restricted PSS |
+| Overlay | Network Policies | Keycloak | Observability | Storage                  |
+| ------- | ---------------- | -------- | ------------- | ------------------------ |
+| dev     | off              | off      | off           | 2Gi PG                   |
+| staging | on               | on       | on            | 20Gi PG                  |
+| prod    | on               | on       | on            | 100Gi PG, restricted PSS |
 
 ## Secrets Management
 
 Secrets are placeholder values in the Helm chart. For production:
+
 - Use SOPS + age for encrypting values files (Q184)
 - Or use External Secrets Operator with cloud KMS
 - Never commit plaintext secrets

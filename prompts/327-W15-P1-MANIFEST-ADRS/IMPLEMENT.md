@@ -1,9 +1,11 @@
 # Phase 327 -- W15-P1: Manifest + Multi-Region ADRs
 
 ## Goal
+
 Lock all multi-region architectural decisions before building, with rollback plans.
 
 ## Steps
+
 1. Computed BASE_PHASE = 327 from max prompts prefix (326) + 1
 2. Created `/prompts/WAVE_15_MANIFEST.md` mapping W15-P1..P10 to phases 327-336
 3. Created 5 ADRs under `/docs/adrs/`:
@@ -16,6 +18,7 @@ Lock all multi-region architectural decisions before building, with rollback pla
 5. Evidence: prompts scan output + ADR file listing
 
 ## Files Created
+
 - `prompts/WAVE_15_MANIFEST.md`
 - `docs/adrs/ADR-TENANT-SHARDING.md`
 - `docs/adrs/ADR-GLOBAL-ROUTING.md`

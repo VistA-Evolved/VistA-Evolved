@@ -4,7 +4,7 @@
  * Endpoints for webhook subscription management, testing, delivery log, DLQ.
  */
 
-import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import {
   createSubscription,
   listSubscriptions,
@@ -16,40 +16,40 @@ import {
   getWebhookDlq,
   getWebhookStats,
   verifyWebhookSignature,
-} from "../services/webhook-service.js";
+} from '../services/webhook-service.js';
 
 export async function webhookRoutes(server: FastifyInstance): Promise<void> {
-  const tenantId = "default";
+  const tenantId = 'default';
 
   // ─── Health ────────────────────────────────────────
 
-  server.get("/webhooks/health", async (_req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/webhooks/health', async (_req: FastifyRequest, reply: FastifyReply) => {
     const stats = getWebhookStats();
     return reply.send({ ok: true, phase: 356, ...stats });
   });
 
   // ─── Subscription CRUD ─────────────────────────────
 
-  server.get("/webhooks", async (_req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/webhooks', async (_req: FastifyRequest, reply: FastifyReply) => {
     return reply.send({ ok: true, subscriptions: listSubscriptions(tenantId) });
   });
 
-  server.get("/webhooks/:id", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/webhooks/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
     const sub = getSubscription(id);
     if (!sub || sub.tenantId !== tenantId) {
-      return reply.code(404).send({ ok: false, error: "Subscription not found" });
+      return reply.code(404).send({ ok: false, error: 'Subscription not found' });
     }
     // Redact secret
-    return reply.send({ ok: true, subscription: { ...sub, secret: "***REDACTED***" } });
+    return reply.send({ ok: true, subscription: { ...sub, secret: '***REDACTED***' } });
   });
 
-  server.post("/webhooks", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/webhooks', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     if (!body.name || !body.url || !body.eventFilters) {
       return reply.code(400).send({
         ok: false,
-        error: "name, url, and eventFilters are required",
+        error: 'name, url, and eventFilters are required',
       });
     }
     const sub = createSubscription(tenantId, {
@@ -65,34 +65,35 @@ export async function webhookRoutes(server: FastifyInstance): Promise<void> {
     });
   });
 
-  server.patch("/webhooks/:id", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.patch('/webhooks/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
     const raw = (req.body as any) || {};
     // Sanitize: only allow safe fields — never accept secret, tenantId, id, createdAt
     const { name, url, eventFilters, enabled, retryPolicy, metadata } = raw;
     const safeUpdates = Object.fromEntries(
-      Object.entries({ name, url, eventFilters, enabled, retryPolicy, metadata })
-        .filter(([, v]) => v !== undefined),
+      Object.entries({ name, url, eventFilters, enabled, retryPolicy, metadata }).filter(
+        ([, v]) => v !== undefined
+      )
     );
     const updated = updateSubscription(tenantId, id, safeUpdates);
     if (!updated) {
-      return reply.code(404).send({ ok: false, error: "Subscription not found" });
+      return reply.code(404).send({ ok: false, error: 'Subscription not found' });
     }
-    return reply.send({ ok: true, subscription: { ...updated, secret: "***REDACTED***" } });
+    return reply.send({ ok: true, subscription: { ...updated, secret: '***REDACTED***' } });
   });
 
-  server.delete("/webhooks/:id", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.delete('/webhooks/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
     const deleted = deleteSubscription(tenantId, id);
     if (!deleted) {
-      return reply.code(404).send({ ok: false, error: "Subscription not found" });
+      return reply.code(404).send({ ok: false, error: 'Subscription not found' });
     }
     return reply.send({ ok: true });
   });
 
   // ─── Test Webhook ──────────────────────────────────
 
-  server.post("/webhooks/:id/test", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/webhooks/:id/test', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
     const result = await testWebhook(id);
     const code = result.ok ? 200 : 422;
@@ -101,12 +102,12 @@ export async function webhookRoutes(server: FastifyInstance): Promise<void> {
 
   // ─── Signature Verification (utility) ──────────────
 
-  server.post("/webhooks/verify-signature", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/webhooks/verify-signature', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     if (!body.secret || !body.payload || !body.signature || !body.timestamp || !body.nonce) {
       return reply.code(400).send({
         ok: false,
-        error: "secret, payload, signature, timestamp, and nonce are required",
+        error: 'secret, payload, signature, timestamp, and nonce are required',
       });
     }
     const result = verifyWebhookSignature(
@@ -114,14 +115,14 @@ export async function webhookRoutes(server: FastifyInstance): Promise<void> {
       body.payload,
       body.signature,
       body.timestamp,
-      body.nonce,
+      body.nonce
     );
     return reply.send({ ok: result.valid, ...result });
   });
 
   // ─── Deliveries ────────────────────────────────────
 
-  server.get("/webhooks/deliveries", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/webhooks/deliveries', async (req: FastifyRequest, reply: FastifyReply) => {
     const { subscriptionId, status, limit } = (req.query as any) || {};
     const results = getWebhookDeliveries({
       subscriptionId,
@@ -134,7 +135,7 @@ export async function webhookRoutes(server: FastifyInstance): Promise<void> {
 
   // ─── DLQ ──────────────────────────────────────────
 
-  server.get("/webhooks/dlq", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/webhooks/dlq', async (req: FastifyRequest, reply: FastifyReply) => {
     const { limit } = (req.query as any) || {};
     const entries = getWebhookDlq(tenantId, limit ? parseInt(limit, 10) : 50);
     return reply.send({ ok: true, entries, count: entries.length });

@@ -26,11 +26,23 @@
       ],
       "dependencies": [],
       "adapters": [],
-      "services": ["security", "audit", "session-store", "tenant-config", "rpc-broker", "logger", "telemetry"],
+      "services": [
+        "security",
+        "audit",
+        "session-store",
+        "tenant-config",
+        "rpc-broker",
+        "logger",
+        "telemetry"
+      ],
       "permissions": ["admin:system", "audit:read"],
       "dataStores": [
         { "id": "session-store", "type": "in-memory", "description": "User session map" },
-        { "id": "immutable-audit", "type": "in-memory+jsonl", "description": "Hash-chained audit trail" },
+        {
+          "id": "immutable-audit",
+          "type": "in-memory+jsonl",
+          "description": "Hash-chained audit trail"
+        },
         { "id": "tenant-config", "type": "in-memory", "description": "Per-tenant configuration" }
       ],
       "healthCheckEndpoint": "/health"
@@ -73,8 +85,16 @@
       "services": ["clinical-reports", "rpc-resilience", "write-backs"],
       "permissions": ["clinical:read", "clinical:write"],
       "dataStores": [
-        { "id": "vista-globals", "type": "vista", "description": "VistA M globals via RPC broker (^DPT, ^AUPNVSIT, etc.)" },
-        { "id": "rpc-capability-cache", "type": "in-memory", "description": "RPC capability discovery cache (5 min TTL)" }
+        {
+          "id": "vista-globals",
+          "type": "vista",
+          "description": "VistA M globals via RPC broker (^DPT, ^AUPNVSIT, etc.)"
+        },
+        {
+          "id": "rpc-capability-cache",
+          "type": "in-memory",
+          "description": "RPC capability discovery cache (5 min TTL)"
+        }
       ],
       "healthCheckEndpoint": "/vista/ping"
     },
@@ -83,15 +103,28 @@
       "version": "1.0.0",
       "description": "Patient-facing health records, messaging, appointments, refills, exports, sharing",
       "alwaysEnabled": false,
-      "routePatterns": [
-        "^/portal/"
-      ],
+      "routePatterns": ["^/portal/"],
       "dependencies": ["kernel"],
       "adapters": ["clinical-engine"],
-      "services": ["portal-messaging", "portal-appointments", "portal-refills", "portal-sharing", "portal-pdf", "portal-shc", "portal-settings", "portal-tasks", "portal-audit", "portal-sensitivity"],
+      "services": [
+        "portal-messaging",
+        "portal-appointments",
+        "portal-refills",
+        "portal-sharing",
+        "portal-pdf",
+        "portal-shc",
+        "portal-settings",
+        "portal-tasks",
+        "portal-audit",
+        "portal-sensitivity"
+      ],
       "permissions": ["portal:own-data"],
       "dataStores": [
-        { "id": "portal-sessions", "type": "in-memory", "description": "Patient portal session store" },
+        {
+          "id": "portal-sessions",
+          "type": "in-memory",
+          "description": "Patient portal session store"
+        },
         { "id": "portal-audit", "type": "in-memory", "description": "Portal access audit trail" }
       ],
       "healthCheckEndpoint": "/portal/health"
@@ -101,15 +134,17 @@
       "version": "1.0.0",
       "description": "Video visit rooms, waiting room, device checks, Jitsi integration",
       "alwaysEnabled": false,
-      "routePatterns": [
-        "^/telehealth/"
-      ],
+      "routePatterns": ["^/telehealth/"],
       "dependencies": ["kernel"],
       "adapters": ["telehealth"],
       "services": ["room-store", "device-check"],
       "permissions": ["telehealth:create", "telehealth:join"],
       "dataStores": [
-        { "id": "room-store", "type": "in-memory", "description": "Telehealth room lifecycle store (4h TTL)" }
+        {
+          "id": "room-store",
+          "type": "in-memory",
+          "description": "Telehealth room lifecycle store (4h TTL)"
+        }
       ],
       "healthCheckEndpoint": "/telehealth/health"
     },
@@ -118,19 +153,34 @@
       "version": "1.0.0",
       "description": "DICOMweb proxy, OHIF viewer, worklist, ingest pipeline, device registry, break-glass",
       "alwaysEnabled": false,
-      "routePatterns": [
-        "^/imaging/",
-        "^/vista/imaging/",
-        "^/security/break-glass/"
-      ],
+      "routePatterns": ["^/imaging/", "^/vista/imaging/", "^/security/break-glass/"],
       "dependencies": ["kernel"],
       "adapters": ["imaging"],
-      "services": ["imaging-worklist", "imaging-ingest", "imaging-authz", "imaging-audit", "imaging-devices", "imaging-service"],
+      "services": [
+        "imaging-worklist",
+        "imaging-ingest",
+        "imaging-authz",
+        "imaging-audit",
+        "imaging-devices",
+        "imaging-service"
+      ],
       "permissions": ["imaging:read", "imaging:write", "imaging:admin"],
       "dataStores": [
-        { "id": "imaging-worklist", "type": "in-memory", "description": "Imaging order worklist (resets on restart)" },
-        { "id": "imaging-ingest", "type": "in-memory", "description": "Orthanc ingest reconciliation store" },
-        { "id": "imaging-audit", "type": "in-memory", "description": "Hash-chained imaging audit trail (20K max)" },
+        {
+          "id": "imaging-worklist",
+          "type": "in-memory",
+          "description": "Imaging order worklist (resets on restart)"
+        },
+        {
+          "id": "imaging-ingest",
+          "type": "in-memory",
+          "description": "Orthanc ingest reconciliation store"
+        },
+        {
+          "id": "imaging-audit",
+          "type": "in-memory",
+          "description": "Hash-chained imaging audit trail (20K max)"
+        },
         { "id": "imaging-devices", "type": "in-memory", "description": "DICOM device registry" }
       ],
       "healthCheckEndpoint": "/imaging/health"
@@ -140,18 +190,27 @@
       "version": "1.0.0",
       "description": "Operational analytics, clinical reports, ETL to ROcto, BI dashboards",
       "alwaysEnabled": false,
-      "routePatterns": [
-        "^/analytics/",
-        "^/reports/"
-      ],
+      "routePatterns": ["^/analytics/", "^/reports/"],
       "dependencies": ["kernel"],
       "adapters": [],
       "services": ["analytics-store", "analytics-aggregator", "analytics-etl", "clinical-reports"],
       "permissions": ["analytics:read", "analytics:admin"],
       "dataStores": [
-        { "id": "analytics-events", "type": "in-memory", "description": "PHI-safe analytics event ring buffer" },
-        { "id": "analytics-aggregations", "type": "in-memory", "description": "Hourly/daily aggregated metrics" },
-        { "id": "rocto-sql", "type": "external-sql", "description": "ROcto SQL analytics (PostgreSQL wire protocol)" }
+        {
+          "id": "analytics-events",
+          "type": "in-memory",
+          "description": "PHI-safe analytics event ring buffer"
+        },
+        {
+          "id": "analytics-aggregations",
+          "type": "in-memory",
+          "description": "Hourly/daily aggregated metrics"
+        },
+        {
+          "id": "rocto-sql",
+          "type": "external-sql",
+          "description": "ROcto SQL analytics (PostgreSQL wire protocol)"
+        }
       ],
       "healthCheckEndpoint": "/analytics/health"
     },
@@ -160,16 +219,17 @@
       "version": "1.0.0",
       "description": "HL7 interface telemetry, message monitoring, integration registry",
       "alwaysEnabled": false,
-      "routePatterns": [
-        "^/vista/interop/",
-        "^/admin/registry/"
-      ],
+      "routePatterns": ["^/vista/interop/", "^/admin/registry/"],
       "dependencies": ["kernel"],
       "adapters": ["messaging"],
       "services": ["integration-registry"],
       "permissions": ["admin:system"],
       "dataStores": [
-        { "id": "integration-registry", "type": "in-memory", "description": "HL7 interface registry + telemetry" }
+        {
+          "id": "integration-registry",
+          "type": "in-memory",
+          "description": "HL7 interface registry + telemetry"
+        }
       ],
       "healthCheckEndpoint": "/vista/interop/status"
     },
@@ -178,9 +238,7 @@
       "version": "0.1.0",
       "description": "Read-only FHIR R4 gateway: Patient, AllergyIntolerance, Condition, Observation, MedicationRequest, DocumentReference",
       "alwaysEnabled": false,
-      "routePatterns": [
-        "^/fhir/"
-      ],
+      "routePatterns": ["^/fhir/"],
       "dependencies": ["kernel", "clinical"],
       "adapters": ["clinical-engine"],
       "services": [],
@@ -193,17 +251,22 @@
       "version": "1.0.0",
       "description": "Patient intake forms, questionnaire packs, kiosk mode, VistA filing",
       "alwaysEnabled": false,
-      "routePatterns": [
-        "^/intake/",
-        "^/kiosk/"
-      ],
+      "routePatterns": ["^/intake/", "^/kiosk/"],
       "dependencies": ["kernel"],
       "adapters": [],
       "services": ["intake-store", "pack-registry", "summary-provider"],
       "permissions": ["clinical:read", "clinical:write"],
       "dataStores": [
-        { "id": "intake-store", "type": "in-memory", "description": "In-flight questionnaire responses" },
-        { "id": "pack-registry", "type": "in-memory", "description": "Questionnaire pack definitions" }
+        {
+          "id": "intake-store",
+          "type": "in-memory",
+          "description": "In-flight questionnaire responses"
+        },
+        {
+          "id": "pack-registry",
+          "type": "in-memory",
+          "description": "Questionnaire pack definitions"
+        }
       ],
       "healthCheckEndpoint": "/intake/health"
     },
@@ -212,16 +275,25 @@
       "version": "1.0.0",
       "description": "Clinical decision support, RAG engine, prompt registry, safety layer",
       "alwaysEnabled": false,
-      "routePatterns": [
-        "^/ai/"
-      ],
+      "routePatterns": ["^/ai/"],
       "dependencies": ["kernel"],
       "adapters": [],
-      "services": ["ai-gateway", "model-registry", "prompt-registry", "rag-engine", "safety-layer", "ai-audit"],
+      "services": [
+        "ai-gateway",
+        "model-registry",
+        "prompt-registry",
+        "rag-engine",
+        "safety-layer",
+        "ai-audit"
+      ],
       "permissions": ["clinical:read"],
       "dataStores": [
         { "id": "ai-audit", "type": "in-memory", "description": "AI request/response audit trail" },
-        { "id": "prompt-registry", "type": "in-memory", "description": "Registered prompt templates" }
+        {
+          "id": "prompt-registry",
+          "type": "in-memory",
+          "description": "Registered prompt templates"
+        }
       ],
       "healthCheckEndpoint": "/ai/health"
     },
@@ -230,16 +302,22 @@
       "version": "1.0.0",
       "description": "OIDC integration, biometric auth, policy engine, immutable audit",
       "alwaysEnabled": false,
-      "routePatterns": [
-        "^/iam/"
-      ],
+      "routePatterns": ["^/iam/"],
       "dependencies": ["kernel"],
       "adapters": [],
       "services": ["oidc-provider", "jwt-validator", "biometric-providers", "immutable-audit"],
       "permissions": ["admin:system", "audit:read"],
       "dataStores": [
-        { "id": "oidc-cache", "type": "in-memory", "description": "OIDC discovery + JWKS cache (10 min TTL)" },
-        { "id": "passkey-challenges", "type": "in-memory", "description": "WebAuthn challenge store (5 min TTL)" }
+        {
+          "id": "oidc-cache",
+          "type": "in-memory",
+          "description": "OIDC discovery + JWKS cache (10 min TTL)"
+        },
+        {
+          "id": "passkey-challenges",
+          "type": "in-memory",
+          "description": "WebAuthn challenge store (5 min TTL)"
+        }
       ],
       "healthCheckEndpoint": "/iam/health"
     },
@@ -248,22 +326,65 @@
       "version": "1.0.0",
       "description": "Claims lifecycle, EDI pipeline, payer registry, eligibility, remittance posting (Phase 38)",
       "alwaysEnabled": false,
-      "routePatterns": [
-        "^/rcm/"
-      ],
+      "routePatterns": ["^/rcm/"],
       "dependencies": ["kernel", "clinical"],
       "adapters": ["billing"],
-      "services": ["claim-store", "payer-registry", "edi-pipeline", "validation-engine", "rcm-audit", "clearinghouse-connector", "philhealth-connector", "sandbox-connector", "portal-batch-connector", "payerops-enrollment-store", "payerops-loa-store", "payerops-credential-vault"],
+      "services": [
+        "claim-store",
+        "payer-registry",
+        "edi-pipeline",
+        "validation-engine",
+        "rcm-audit",
+        "clearinghouse-connector",
+        "philhealth-connector",
+        "sandbox-connector",
+        "portal-batch-connector",
+        "payerops-enrollment-store",
+        "payerops-loa-store",
+        "payerops-credential-vault"
+      ],
       "permissions": ["rcm:read", "rcm:write", "rcm:admin"],
       "dataStores": [
-        { "id": "claim-store", "type": "in-memory", "description": "Claim + remittance lifecycle store" },
-        { "id": "payer-registry", "type": "json-seed", "description": "Payer catalog loaded from data/payers/*.json" },
-        { "id": "edi-pipeline", "type": "in-memory", "description": "10-stage EDI pipeline tracking" },
-        { "id": "rcm-audit", "type": "in-memory", "description": "Hash-chained RCM audit trail (20K max)" },
-        { "id": "rcm-exports", "type": "filesystem", "description": "X12/eClaims export artifacts in data/rcm-exports/" },
-        { "id": "payerops-enrollment", "type": "in-memory", "description": "Facility-payer enrollment lifecycle (Phase 87)" },
-        { "id": "payerops-loa", "type": "in-memory", "description": "LOA case lifecycle (Phase 87)" },
-        { "id": "payerops-credentials", "type": "in-memory", "description": "Credential vault entries (Phase 87)" }
+        {
+          "id": "claim-store",
+          "type": "in-memory",
+          "description": "Claim + remittance lifecycle store"
+        },
+        {
+          "id": "payer-registry",
+          "type": "json-seed",
+          "description": "Payer catalog loaded from data/payers/*.json"
+        },
+        {
+          "id": "edi-pipeline",
+          "type": "in-memory",
+          "description": "10-stage EDI pipeline tracking"
+        },
+        {
+          "id": "rcm-audit",
+          "type": "in-memory",
+          "description": "Hash-chained RCM audit trail (20K max)"
+        },
+        {
+          "id": "rcm-exports",
+          "type": "filesystem",
+          "description": "X12/eClaims export artifacts in data/rcm-exports/"
+        },
+        {
+          "id": "payerops-enrollment",
+          "type": "in-memory",
+          "description": "Facility-payer enrollment lifecycle (Phase 87)"
+        },
+        {
+          "id": "payerops-loa",
+          "type": "in-memory",
+          "description": "LOA case lifecycle (Phase 87)"
+        },
+        {
+          "id": "payerops-credentials",
+          "type": "in-memory",
+          "description": "Credential vault entries (Phase 87)"
+        }
       ],
       "healthCheckEndpoint": "/rcm/health"
     },
@@ -272,9 +393,7 @@
       "version": "1.0.0",
       "description": "Appointment scheduling, slot availability (future -- adapter-ready)",
       "alwaysEnabled": false,
-      "routePatterns": [
-        "^/scheduling/"
-      ],
+      "routePatterns": ["^/scheduling/"],
       "dependencies": ["kernel"],
       "adapters": ["scheduling"],
       "services": [],
@@ -287,15 +406,17 @@
       "version": "1.0.0",
       "description": "Import/export pipelines, mapping DSL, CSV/FHIR connectors, PHI-safe encrypted exports (Phase 50)",
       "alwaysEnabled": false,
-      "routePatterns": [
-        "^/migration/"
-      ],
+      "routePatterns": ["^/migration/"],
       "dependencies": ["kernel", "clinical"],
       "adapters": [],
       "services": ["migration-store", "mapping-engine", "import-pipeline", "export-pipeline"],
       "permissions": ["migration:read", "migration:write", "migration:admin"],
       "dataStores": [
-        { "id": "migration-store", "type": "in-memory", "description": "Import/export job tracking + mapping templates" }
+        {
+          "id": "migration-store",
+          "type": "in-memory",
+          "description": "Import/export job tracking + mapping templates"
+        }
       ],
       "healthCheckEndpoint": "/migration/health"
     }

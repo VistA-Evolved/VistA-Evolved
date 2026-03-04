@@ -10,14 +10,14 @@ all pack-based enforcement in P3-P9.
 
 ## Files Changed
 
-| File | Action | Purpose |
-|------|--------|---------|
-| `apps/api/src/config/tenant-config.ts` | EDIT | Add 3 fields to TenantConfig, toRow, fromRow, buildDefaultTenant |
-| `apps/api/src/platform/pg/repo/tenant-config-repo.ts` | EDIT | Add 3 fields to TenantConfigRow, upsert SQL, rowFromDb |
-| `apps/api/src/platform/pg/pg-migrate.ts` | EDIT | v51 ALTER TABLE + CANONICAL_RLS_TABLES no change needed |
-| `apps/api/src/platform/country-pack-loader.ts` | EDIT | Add resolveCountryPolicy() |
-| `prompts/492-W34-P2-TENANT-BINDING/492-01-IMPLEMENT.md` | CREATE | This file |
-| `prompts/492-W34-P2-TENANT-BINDING/492-99-VERIFY.md` | CREATE | Verify prompt |
+| File                                                    | Action | Purpose                                                          |
+| ------------------------------------------------------- | ------ | ---------------------------------------------------------------- |
+| `apps/api/src/config/tenant-config.ts`                  | EDIT   | Add 3 fields to TenantConfig, toRow, fromRow, buildDefaultTenant |
+| `apps/api/src/platform/pg/repo/tenant-config-repo.ts`   | EDIT   | Add 3 fields to TenantConfigRow, upsert SQL, rowFromDb           |
+| `apps/api/src/platform/pg/pg-migrate.ts`                | EDIT   | v51 ALTER TABLE + CANONICAL_RLS_TABLES no change needed          |
+| `apps/api/src/platform/country-pack-loader.ts`          | EDIT   | Add resolveCountryPolicy()                                       |
+| `prompts/492-W34-P2-TENANT-BINDING/492-01-IMPLEMENT.md` | CREATE | This file                                                        |
+| `prompts/492-W34-P2-TENANT-BINDING/492-99-VERIFY.md`    | CREATE | Verify prompt                                                    |
 
 ## Policy Decisions
 

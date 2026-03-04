@@ -8,21 +8,21 @@ This covers backup/restore for **application-layer** artifacts.
 
 ### What VistA-Evolved Owns
 
-| Component | Storage | Backup Method |
-|-----------|---------|---------------|
-| API configuration | `.env.local` / `.env.prod` | File copy |
-| Audit logs | `logs/audit.jsonl` (file sink) | File copy / log rotation |
-| Session state | In-memory (ephemeral) | Not persisted — sessions recreated on restart |
-| RPC cache | In-memory (ephemeral) | Not backed up — rebuilt on demand |
-| Web build output | `.next/` directory | Rebuild from source |
+| Component         | Storage                        | Backup Method                                 |
+| ----------------- | ------------------------------ | --------------------------------------------- |
+| API configuration | `.env.local` / `.env.prod`     | File copy                                     |
+| Audit logs        | `logs/audit.jsonl` (file sink) | File copy / log rotation                      |
+| Session state     | In-memory (ephemeral)          | Not persisted — sessions recreated on restart |
+| RPC cache         | In-memory (ephemeral)          | Not backed up — rebuilt on demand             |
+| Web build output  | `.next/` directory             | Rebuild from source                           |
 
 ### What VistA-Evolved Does NOT Own
 
-| Component | Owner | Backup Responsibility |
-|-----------|-------|----------------------|
-| **VistA/MUMPS database** | VistA/GT.M/YottaDB | **Site-level DBA** — see constraints below |
-| **Patient clinical data** | VistA | VistA database backup |
-| **VistA globals** | VistA | GT.M/YottaDB MUPIP backup |
+| Component                 | Owner              | Backup Responsibility                      |
+| ------------------------- | ------------------ | ------------------------------------------ |
+| **VistA/MUMPS database**  | VistA/GT.M/YottaDB | **Site-level DBA** — see constraints below |
+| **Patient clinical data** | VistA              | VistA database backup                      |
+| **VistA globals**         | VistA              | GT.M/YottaDB MUPIP backup                  |
 
 ## VistA Database Backup Constraints
 
@@ -49,6 +49,7 @@ docker start wv
 ### For Production VistA Instances
 
 Production VistA backup is outside VistA-Evolved's scope. Coordinate with:
+
 - **VistA DBA team** for MUPIP BACKUP (online/incremental)
 - **Infrastructure team** for filesystem snapshots
 - **Compliance team** for retention policy alignment
@@ -128,16 +129,17 @@ docker compose -f docker-compose.prod.yml up -d
 
 ## Backup Schedule Recommendation
 
-| Item | Frequency | Retention |
-|------|-----------|-----------|
-| Configuration files | Every change (versioned in Git) | Permanent (Git history) |
-| Audit logs | Daily | 365 days (configurable via `AUDIT_RETENTION_DAYS`) |
-| VistA database | Per VistA DBA policy | Per compliance requirements |
-| Docker images | Per deployment | Keep last 5 versions |
+| Item                | Frequency                       | Retention                                          |
+| ------------------- | ------------------------------- | -------------------------------------------------- |
+| Configuration files | Every change (versioned in Git) | Permanent (Git history)                            |
+| Audit logs          | Daily                           | 365 days (configurable via `AUDIT_RETENTION_DAYS`) |
+| VistA database      | Per VistA DBA policy            | Per compliance requirements                        |
+| Docker images       | Per deployment                  | Keep last 5 versions                               |
 
 ## Verification
 
 After restore, verify system health:
+
 ```bash
 curl http://localhost:3001/health   # Process alive
 curl http://localhost:3001/ready    # VistA reachable
@@ -161,12 +163,14 @@ Run the backup/restore drill scripts to exercise the full cycle:
 ```
 
 The backup drill produces:
+
 - `app-config-<ts>.tar.gz` -- config files
 - `audit-logs-<ts>.tar.gz` -- JSONL audit trails
 - `vista-globals-<ts>.tar.gz` -- Docker volume snapshot (dev only)
 - `backup-manifest.json` -- machine-readable manifest
 
 The restore drill validates:
+
 - Manifest is readable
 - Config archive is extractable with expected files
 - Audit archive contains valid JSONL

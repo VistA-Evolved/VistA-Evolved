@@ -7,515 +7,554 @@
  *   node scripts/generate-phase-qa.mjs
  */
 
-import { test, expect } from "@playwright/test";
-import { readdirSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { test, expect } from '@playwright/test';
+import { readdirSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
-const API = process.env.API_URL ?? "http://localhost:3001";
-const ROOT = resolve(__dirname, "..", "..", "..", "..");
+const API = process.env.API_URL ?? 'http://localhost:3001';
+const ROOT = resolve(__dirname, '..', '..', '..', '..');
 
-test.describe("Phase 131: IMPLEMENT: Scheduling SD Depth (VistA-First Lifecycle)", () => {
-  test("API routes respond (no 500)", async ({ request }) => {
+test.describe('Phase 131: IMPLEMENT: Scheduling SD Depth (VistA-First Lifecycle)', () => {
+  test('API routes respond (no 500)', async ({ request }) => {
     const r0 = await request.get(`${API}/scheduling/appointments/cprs`);
-    expect(r0.status(), "/scheduling/appointments/cprs not 500").not.toBe(500);
+    expect(r0.status(), '/scheduling/appointments/cprs not 500').not.toBe(500);
     const r1 = await request.get(`${API}/scheduling/appointments/cprs?dfn=3`);
-    expect(r1.status(), "/scheduling/appointments/cprs?dfn=3 not 500").not.toBe(500);
+    expect(r1.status(), '/scheduling/appointments/cprs?dfn=3 not 500').not.toBe(500);
     const r2 = await request.get(`${API}/scheduling/health`);
-    expect(r2.status(), "/scheduling/health not 500").not.toBe(500);
+    expect(r2.status(), '/scheduling/health not 500').not.toBe(500);
     const r3 = await request.get(`${API}/scheduling/lifecycle`);
-    expect(r3.status(), "/scheduling/lifecycle not 500").not.toBe(500);
+    expect(r3.status(), '/scheduling/lifecycle not 500').not.toBe(500);
     const r4 = await request.get(`${API}/scheduling/lifecycle/transition`);
-    expect(r4.status(), "/scheduling/lifecycle/transition not 500").not.toBe(500);
+    expect(r4.status(), '/scheduling/lifecycle/transition not 500').not.toBe(500);
   });
 
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["AIAssistPanel.tsx","AcknowledgeLabDialog.tsx","AddAllergyDialog.tsx","AddMedicationDialog.tsx","AddProblemDialog.tsx","AddVitalDialog.tsx","CreateNoteDialog.tsx","EditProblemDialog.tsx","ImagingPanel.tsx","IntakePanel.tsx"];
+  test('UI component files exist on disk', async () => {
+    const componentNames = [
+      'AIAssistPanel.tsx',
+      'AcknowledgeLabDialog.tsx',
+      'AddAllergyDialog.tsx',
+      'AddMedicationDialog.tsx',
+      'AddProblemDialog.tsx',
+      'AddVitalDialog.tsx',
+      'CreateNoteDialog.tsx',
+      'EditProblemDialog.tsx',
+      'ImagingPanel.tsx',
+      'IntakePanel.tsx',
+    ];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 17 UI files for Phase 131`).toBeGreaterThan(0);
   });
 
-  test("integration-pending responses are compliant", async ({ request }) => {
+  test('integration-pending responses are compliant', async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/scheduling/appointments/cprs`);
-    expect(res.status(), "/scheduling/appointments/cprs should respond").toBeDefined();
+    expect(res.status(), '/scheduling/appointments/cprs should respond').toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === "integration-pending") {
-        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
+      if (body && body.status === 'integration-pending') {
+        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
       }
     }
   });
 });
 
-test.describe("Phase 132: CSRF Synchronizer Token Migration", () => {
-  test("API routes respond (no 500)", async ({ request }) => {
+test.describe('Phase 132: CSRF Synchronizer Token Migration', () => {
+  test('API routes respond (no 500)', async ({ request }) => {
     const r0 = await request.get(`${API}/auth/csrf-token`);
-    expect(r0.status(), "/auth/csrf-token not 500").not.toBe(500);
+    expect(r0.status(), '/auth/csrf-token not 500').not.toBe(500);
     const r1 = await request.get(`${API}/scheduling/lifecycle/transition`);
-    expect(r1.status(), "/scheduling/lifecycle/transition not 500").not.toBe(500);
+    expect(r1.status(), '/scheduling/lifecycle/transition not 500').not.toBe(500);
   });
 
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["page.tsx","session-context.tsx"];
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['page.tsx', 'session-context.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 2 UI files for Phase 132`).toBeGreaterThan(0);
   });
 
-  test("integration-pending responses are compliant", async ({ request }) => {
+  test('integration-pending responses are compliant', async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/auth/csrf-token`);
-    expect(res.status(), "/auth/csrf-token should respond").toBeDefined();
+    expect(res.status(), '/auth/csrf-token should respond').toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === "integration-pending") {
-        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
+      if (body && body.status === 'integration-pending') {
+        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
       }
     }
   });
 });
 
-test.describe("Phase 132B: I18N FOUNDATION (MULTILINGUAL UI + INTAKE SCHEMA)", () => {
-  test("API routes respond (no 500)", async ({ request }) => {
+test.describe('Phase 132B: I18N FOUNDATION (MULTILINGUAL UI + INTAKE SCHEMA)', () => {
+  test('API routes respond (no 500)', async ({ request }) => {
     const r0 = await request.get(`${API}/admin/intake/question-schema`);
-    expect(r0.status(), "/admin/intake/question-schema not 500").not.toBe(500);
+    expect(r0.status(), '/admin/intake/question-schema not 500').not.toBe(500);
     const r1 = await request.get(`${API}/auth/locale`);
-    expect(r1.status(), "/auth/locale not 500").not.toBe(500);
+    expect(r1.status(), '/auth/locale not 500').not.toBe(500);
     const r2 = await request.get(`${API}/intake/question-schema?locale=en`);
-    expect(r2.status(), "/intake/question-schema?locale=en not 500").not.toBe(500);
+    expect(r2.status(), '/intake/question-schema?locale=en not 500').not.toBe(500);
   });
 
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["LanguageSwitcher.tsx","layout.tsx","page.tsx"];
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['LanguageSwitcher.tsx', 'layout.tsx', 'page.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 3 UI files for Phase 132B`).toBeGreaterThan(0);
   });
 
-  test("integration-pending responses are compliant", async ({ request }) => {
+  test('integration-pending responses are compliant', async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/admin/intake/question-schema`);
-    expect(res.status(), "/admin/intake/question-schema should respond").toBeDefined();
+    expect(res.status(), '/admin/intake/question-schema should respond').toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === "integration-pending") {
-        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
+      if (body && body.status === 'integration-pending') {
+        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
       }
     }
   });
 });
 
-test.describe("Phase 135: Tenant Onboarding + Module Packaging", () => {
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["layout.tsx","page.tsx","tenant-context.tsx"];
+test.describe('Phase 135: Tenant Onboarding + Module Packaging', () => {
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['layout.tsx', 'page.tsx', 'tenant-context.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 3 UI files for Phase 135`).toBeGreaterThan(0);
   });
-
 });
 
-test.describe("Phase 137: ADT + Bedboard + Census (VistA-First)", () => {
-  test("API routes respond (no 500)", async ({ request }) => {
+test.describe('Phase 137: ADT + Bedboard + Census (VistA-First)', () => {
+  test('API routes respond (no 500)', async ({ request }) => {
     const r0 = await request.get(`${API}/cprs/inpatient`);
-    expect(r0.status(), "/cprs/inpatient not 500").not.toBe(500);
+    expect(r0.status(), '/cprs/inpatient not 500').not.toBe(500);
     const r1 = await request.get(`${API}/inpatient/bedboard`);
-    expect(r1.status(), "/inpatient/bedboard not 500").not.toBe(500);
+    expect(r1.status(), '/inpatient/bedboard not 500').not.toBe(500);
     const r2 = await request.get(`${API}/inpatient/census`);
-    expect(r2.status(), "/inpatient/census not 500").not.toBe(500);
+    expect(r2.status(), '/inpatient/census not 500').not.toBe(500);
     const r3 = await request.get(`${API}/vista/adt/census`);
-    expect(r3.status(), "/vista/adt/census not 500").not.toBe(500);
+    expect(r3.status(), '/vista/adt/census not 500').not.toBe(500);
     const r4 = await request.get(`${API}/vista/adt/census?ward=IEN`);
-    expect(r4.status(), "/vista/adt/census?ward=IEN not 500").not.toBe(500);
+    expect(r4.status(), '/vista/adt/census?ward=IEN not 500').not.toBe(500);
   });
 
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["page.tsx"];
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['page.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 137`).toBeGreaterThan(0);
   });
 
-  test("integration-pending responses are compliant", async ({ request }) => {
+  test('integration-pending responses are compliant', async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/cprs/inpatient`);
-    expect(res.status(), "/cprs/inpatient should respond").toBeDefined();
+    expect(res.status(), '/cprs/inpatient should respond').toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === "integration-pending") {
-        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
+      if (body && body.status === 'integration-pending') {
+        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
       }
     }
   });
 });
 
-test.describe("Phase 138: IMPLEMENT: Nursing DOC + MAR + Handoff (VistA-First)", () => {
-  test("API routes respond (no 500)", async ({ request }) => {
+test.describe('Phase 138: IMPLEMENT: Nursing DOC + MAR + Handoff (VistA-First)', () => {
+  test('API routes respond (no 500)', async ({ request }) => {
     const r0 = await request.get(`${API}/emar/`);
-    expect(r0.status(), "/emar/ not 500").not.toBe(500);
+    expect(r0.status(), '/emar/ not 500').not.toBe(500);
     const r1 = await request.get(`${API}/emar/administer`);
-    expect(r1.status(), "/emar/administer not 500").not.toBe(500);
+    expect(r1.status(), '/emar/administer not 500').not.toBe(500);
     const r2 = await request.get(`${API}/emar/barcode-scan`);
-    expect(r2.status(), "/emar/barcode-scan not 500").not.toBe(500);
+    expect(r2.status(), '/emar/barcode-scan not 500').not.toBe(500);
     const r3 = await request.get(`${API}/handoff/`);
-    expect(r3.status(), "/handoff/ not 500").not.toBe(500);
+    expect(r3.status(), '/handoff/ not 500').not.toBe(500);
     const r4 = await request.get(`${API}/handoff/reports`);
-    expect(r4.status(), "/handoff/reports not 500").not.toBe(500);
+    expect(r4.status(), '/handoff/reports not 500').not.toBe(500);
   });
 
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["NursingPanel.tsx"];
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['NursingPanel.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 138`).toBeGreaterThan(0);
   });
 
-  test("integration-pending responses are compliant", async ({ request }) => {
+  test('integration-pending responses are compliant', async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/emar/`);
-    expect(res.status(), "/emar/ should respond").toBeDefined();
+    expect(res.status(), '/emar/ should respond').toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === "integration-pending") {
-        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
+      if (body && body.status === 'integration-pending') {
+        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
       }
     }
   });
 });
 
-test.describe("Phase 139: IMPLEMENT: Scheduling Lifecycle + Clinic Resources + Portal ", () => {
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["page.tsx"];
+test.describe('Phase 139: IMPLEMENT: Scheduling Lifecycle + Clinic Resources + Portal ', () => {
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['page.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 139`).toBeGreaterThan(0);
   });
 
-  test("integration-pending responses are compliant", async ({ request }) => {
+  test('integration-pending responses are compliant', async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     // Route has path params -- verify phase is indexed
-    expect("139").toBeTruthy();
+    expect('139').toBeTruthy();
   });
 });
 
-test.describe("Phase 140: Portal Parity Closure (Immunizations + Documents + Consents)", () => {
-  test("API routes respond (no 500)", async ({ request }) => {
+test.describe('Phase 140: Portal Parity Closure (Immunizations + Documents + Consents)', () => {
+  test('API routes respond (no 500)', async ({ request }) => {
     const r0 = await request.get(`${API}/portal/consents`);
-    expect(r0.status(), "/portal/consents not 500").not.toBe(500);
+    expect(r0.status(), '/portal/consents not 500').not.toBe(500);
     const r1 = await request.get(`${API}/portal/documents`);
-    expect(r1.status(), "/portal/documents not 500").not.toBe(500);
+    expect(r1.status(), '/portal/documents not 500').not.toBe(500);
     const r2 = await request.get(`${API}/portal/documents/generate`);
-    expect(r2.status(), "/portal/documents/generate not 500").not.toBe(500);
+    expect(r2.status(), '/portal/documents/generate not 500').not.toBe(500);
   });
 
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["page.tsx","portal-nav.tsx"];
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['page.tsx', 'portal-nav.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 2 UI files for Phase 140`).toBeGreaterThan(0);
   });
 
-  test("integration-pending responses are compliant", async ({ request }) => {
+  test('integration-pending responses are compliant', async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/portal/consents`);
-    expect(res.status(), "/portal/consents should respond").toBeDefined();
+    expect(res.status(), '/portal/consents should respond').toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === "integration-pending") {
-        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
+      if (body && body.status === 'integration-pending') {
+        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
       }
     }
   });
 });
 
-test.describe("Phase 141: Enterprise IAM Posture (OIDC Default + Break-Glass + Hardeni", () => {
-  test("API routes respond (no 500)", async ({ request }) => {
+test.describe('Phase 141: Enterprise IAM Posture (OIDC Default + Break-Glass + Hardeni', () => {
+  test('API routes respond (no 500)', async ({ request }) => {
     const r0 = await request.get(`${API}/admin/break-glass/active`);
-    expect(r0.status(), "/admin/break-glass/active not 500").not.toBe(500);
+    expect(r0.status(), '/admin/break-glass/active not 500').not.toBe(500);
     const r1 = await request.get(`${API}/admin/break-glass/approve`);
-    expect(r1.status(), "/admin/break-glass/approve not 500").not.toBe(500);
+    expect(r1.status(), '/admin/break-glass/approve not 500').not.toBe(500);
     const r2 = await request.get(`${API}/admin/break-glass/request`);
-    expect(r2.status(), "/admin/break-glass/request not 500").not.toBe(500);
+    expect(r2.status(), '/admin/break-glass/request not 500').not.toBe(500);
     const r3 = await request.get(`${API}/admin/break-glass/revoke`);
-    expect(r3.status(), "/admin/break-glass/revoke not 500").not.toBe(500);
+    expect(r3.status(), '/admin/break-glass/revoke not 500').not.toBe(500);
     const r4 = await request.get(`${API}/iam/auth-mode`);
-    expect(r4.status(), "/iam/auth-mode not 500").not.toBe(500);
+    expect(r4.status(), '/iam/auth-mode not 500').not.toBe(500);
   });
 
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["page.tsx"];
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['page.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 141`).toBeGreaterThan(0);
   });
 
-  test("integration-pending responses are compliant", async ({ request }) => {
+  test('integration-pending responses are compliant', async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/admin/break-glass/active`);
-    expect(res.status(), "/admin/break-glass/active should respond").toBeDefined();
+    expect(res.status(), '/admin/break-glass/active should respond').toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === "integration-pending") {
-        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
+      if (body && body.status === 'integration-pending') {
+        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
       }
     }
   });
 });
 
-test.describe("Phase 142: RCM Operational Excellence", () => {
-  test("API routes respond (no 500)", async ({ request }) => {
+test.describe('Phase 142: RCM Operational Excellence', () => {
+  test('API routes respond (no 500)', async ({ request }) => {
     const r0 = await request.get(`${API}/rcm/ops/denial-followup/run`);
-    expect(r0.status(), "/rcm/ops/denial-followup/run not 500").not.toBe(500);
+    expect(r0.status(), '/rcm/ops/denial-followup/run not 500').not.toBe(500);
     const r1 = await request.get(`${API}/rcm/ops/evidence-gate/check`);
-    expect(r1.status(), "/rcm/ops/evidence-gate/check not 500").not.toBe(500);
+    expect(r1.status(), '/rcm/ops/evidence-gate/check not 500').not.toBe(500);
     const r2 = await request.get(`${API}/rcm/ops/jobs/durable`);
-    expect(r2.status(), "/rcm/ops/jobs/durable not 500").not.toBe(500);
+    expect(r2.status(), '/rcm/ops/jobs/durable not 500').not.toBe(500);
   });
 
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["page.tsx"];
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['page.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 142`).toBeGreaterThan(0);
   });
 
-  test("integration-pending responses are compliant", async ({ request }) => {
+  test('integration-pending responses are compliant', async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/rcm/ops/denial-followup/run`);
-    expect(res.status(), "/rcm/ops/denial-followup/run should respond").toBeDefined();
+    expect(res.status(), '/rcm/ops/denial-followup/run should respond').toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === "integration-pending") {
-        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
+      if (body && body.status === 'integration-pending') {
+        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
       }
     }
   });
 });
 
-test.describe("Phase 143: AI Intake Engine (Interchangeable Brain)", () => {
-  test("API routes respond (no 500)", async ({ request }) => {
+test.describe('Phase 143: AI Intake Engine (Interchangeable Brain)', () => {
+  test('API routes respond (no 500)', async ({ request }) => {
     const r0 = await request.get(`${API}/intake/providers`);
-    expect(r0.status(), "/intake/providers not 500").not.toBe(500);
+    expect(r0.status(), '/intake/providers not 500').not.toBe(500);
   });
 
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["page.tsx"];
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['page.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 143`).toBeGreaterThan(0);
   });
 
-  test("integration-pending responses are compliant", async ({ request }) => {
+  test('integration-pending responses are compliant', async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/intake/providers`);
-    expect(res.status(), "/intake/providers should respond").toBeDefined();
+    expect(res.status(), '/intake/providers should respond').toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === "integration-pending") {
-        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
+      if (body && body.status === 'integration-pending') {
+        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
       }
     }
   });
 });
 
-test.describe("Phase 147: Scheduling Realism Pack: SDES Depth + Truth Gates", () => {
-  test("API routes respond (no 500)", async ({ request }) => {
+test.describe('Phase 147: Scheduling Realism Pack: SDES Depth + Truth Gates', () => {
+  test('API routes respond (no 500)', async ({ request }) => {
     const r0 = await request.get(`${API}/scheduling/appointment-types`);
-    expect(r0.status(), "/scheduling/appointment-types not 500").not.toBe(500);
+    expect(r0.status(), '/scheduling/appointment-types not 500').not.toBe(500);
     const r1 = await request.get(`${API}/scheduling/cancel-reasons`);
-    expect(r1.status(), "/scheduling/cancel-reasons not 500").not.toBe(500);
+    expect(r1.status(), '/scheduling/cancel-reasons not 500').not.toBe(500);
     const r2 = await request.get(`${API}/scheduling/mode`);
-    expect(r2.status(), "/scheduling/mode not 500").not.toBe(500);
+    expect(r2.status(), '/scheduling/mode not 500').not.toBe(500);
     const r3 = await request.get(`${API}/scheduling/sdes-availability`);
-    expect(r3.status(), "/scheduling/sdes-availability not 500").not.toBe(500);
-    const r4 = await request.get(`${API}/scheduling/sdes-availability?clinicIen=&startDate=&endDate=`);
-    expect(r4.status(), "/scheduling/sdes-availability?clinicIen=&startDate=&endDate= not 500").not.toBe(500);
+    expect(r3.status(), '/scheduling/sdes-availability not 500').not.toBe(500);
+    const r4 = await request.get(
+      `${API}/scheduling/sdes-availability?clinicIen=&startDate=&endDate=`
+    );
+    expect(
+      r4.status(),
+      '/scheduling/sdes-availability?clinicIen=&startDate=&endDate= not 500'
+    ).not.toBe(500);
   });
 
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["page.tsx"];
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['page.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 147`).toBeGreaterThan(0);
   });
 
-  test("integration-pending responses are compliant", async ({ request }) => {
+  test('integration-pending responses are compliant', async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/scheduling/appointment-types`);
-    expect(res.status(), "/scheduling/appointment-types should respond").toBeDefined();
+    expect(res.status(), '/scheduling/appointment-types should respond').toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === "integration-pending") {
-        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
+      if (body && body.status === 'integration-pending') {
+        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
       }
     }
   });

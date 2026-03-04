@@ -17,8 +17,18 @@
       "enrollmentNotes": "All treatment providers must register with ACC. Claims via ACC API (OAuth2 + REST). Bulk claims via ACC Claim API or HealthLink secure messaging.",
       "enrollmentUrl": "https://www.acc.co.nz/for-providers/",
       "endpoints": [
-        { "purpose": "claims", "protocol": "rest", "url": "https://api.acc.co.nz/claims/v2", "notes": "ACC Claim API v2 (REST/JSON, OAuth2). Test environment available." },
-        { "purpose": "eligibility", "protocol": "rest", "url": "https://api.acc.co.nz/coverage/v1", "notes": "ACC coverage check API" }
+        {
+          "purpose": "claims",
+          "protocol": "rest",
+          "url": "https://api.acc.co.nz/claims/v2",
+          "notes": "ACC Claim API v2 (REST/JSON, OAuth2). Test environment available."
+        },
+        {
+          "purpose": "eligibility",
+          "protocol": "rest",
+          "url": "https://api.acc.co.nz/coverage/v1",
+          "notes": "ACC coverage check API"
+        }
       ],
       "aliases": ["ACC", "Accident Compensation"],
       "createdAt": "2026-02-20T00:00:00Z",
@@ -34,7 +44,12 @@
       "enrollmentRequired": true,
       "enrollmentNotes": "Largest NZ private insurer (~60% market share). Provider registration + claims via Southern Cross provider portal.",
       "endpoints": [
-        { "purpose": "claims", "protocol": "portal", "url": "https://provider.southerncross.co.nz/", "notes": "Southern Cross provider portal" }
+        {
+          "purpose": "claims",
+          "protocol": "portal",
+          "url": "https://provider.southerncross.co.nz/",
+          "notes": "Southern Cross provider portal"
+        }
       ],
       "aliases": ["Southern Cross"],
       "createdAt": "2026-02-20T00:00:00Z",

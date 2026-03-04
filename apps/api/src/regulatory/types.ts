@@ -11,21 +11,16 @@
 /* ------------------------------------------------------------------ */
 
 /** Extends compliance-matrix.ts `RegulatoryFramework` with additional standards. */
-export type RegulatoryFramework =
-  | "HIPAA"
-  | "DPA_PH"
-  | "DPA_GH"
-  | "NIST_800_53"
-  | "OWASP_ASVS";
+export type RegulatoryFramework = 'HIPAA' | 'DPA_PH' | 'DPA_GH' | 'NIST_800_53' | 'OWASP_ASVS';
 
 /** Data classification tiers aligned with Phase 25 C1-C4 model. */
-export type DataClassTier = "C1_PHI" | "C2_DEIDENTIFIED" | "C3_AGGREGATED" | "C4_OPERATIONAL";
+export type DataClassTier = 'C1_PHI' | 'C2_DEIDENTIFIED' | 'C3_AGGREGATED' | 'C4_OPERATIONAL';
 
 /** Operation risk classification. */
-export type OperationRisk = "read" | "write" | "admin" | "export" | "delete";
+export type OperationRisk = 'read' | 'write' | 'admin' | 'export' | 'delete';
 
 /** Regulatory constraint severity. */
-export type ConstraintSeverity = "mandatory" | "recommended" | "informational";
+export type ConstraintSeverity = 'mandatory' | 'recommended' | 'informational';
 
 /* ------------------------------------------------------------------ */
 /* Classification Input                                                 */
@@ -66,7 +61,7 @@ export interface RegulatoryClassification {
   /** Export restrictions */
   exportRestrictions: ExportRestriction;
   /** Overall risk level */
-  riskLevel: "low" | "medium" | "high" | "critical";
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
   /** Classification timestamp */
   classifiedAt: string;
 }
@@ -118,7 +113,7 @@ export interface FrameworkDefinition {
   /** Default export restrictions */
   defaultExportRestriction: ExportRestriction;
   /** Consent model type */
-  consentModel: "category" | "all-or-nothing" | "opt-in" | "opt-out";
+  consentModel: 'category' | 'all-or-nothing' | 'opt-in' | 'opt-out';
   /** Breach notification window (hours, -1 = no requirement) */
   breachNotificationHours: number;
   /** Whether break-glass access is allowed */

@@ -3,6 +3,7 @@
 > META-RULES: Treat /prompts as source of truth. No phase may be split across folders. No duplicate folder numeric prefixes. Every phase must produce code changes + updated prompts. No placeholders.
 
 ## User Request
+
 Make prompts self-consistent, ordered, and enforceable. Audit and fix all prompt directory issues.
 
 ## Implementation Steps
@@ -25,11 +26,13 @@ Make prompts self-consistent, ordered, and enforceable. Audit and fix all prompt
 3. Update `scripts/check-prompts-ordering.ts` to accept variable-width prefixes
 
 ## Verification Steps
+
 - No duplicate folder prefixes
 - Every phase folder has implement + verify (or is in 00-PLAYBOOKS/00-ARCHIVE)
 - Prompt audit outputs committed
 
 ## Files Touched
+
 - `scripts/qa/prompts-canonical-audit.mjs` (NEW)
 - `prompts/00-PLAYBOOKS/prompt-folder-reindex-map.json` (NEW)
 - `docs/audits/prompts-canonical-audit.md` (NEW — generated)

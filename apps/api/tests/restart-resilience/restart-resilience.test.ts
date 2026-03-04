@@ -9,9 +9,9 @@
  *   node scripts/qa/generate-phase-tests.mjs
  */
 
-import { describe, it, expect, beforeAll } from "vitest";
+import { describe, it, expect, beforeAll } from 'vitest';
 
-const API = process.env.API_URL ?? "http://localhost:3001";
+const API = process.env.API_URL ?? 'http://localhost:3001';
 
 let apiAvailable = false;
 
@@ -19,29 +19,31 @@ beforeAll(async () => {
   try {
     const res = await fetch(`${API}/health`);
     apiAvailable = res.status === 200;
-  } catch { apiAvailable = false; }
+  } catch {
+    apiAvailable = false;
+  }
 });
 
-describe("Restart Resilience", () => {
-  it("health endpoint responds after startup", async () => {
+describe('Restart Resilience', () => {
+  it('health endpoint responds after startup', async () => {
     if (!apiAvailable) return;
     const res = await fetch(`${API}/health`);
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body).toHaveProperty("ok", true);
-    expect(body).toHaveProperty("uptime");
+    expect(body).toHaveProperty('ok', true);
+    expect(body).toHaveProperty('uptime');
   });
 
-  it("ready endpoint reflects circuit breaker state", async () => {
+  it('ready endpoint reflects circuit breaker state', async () => {
     if (!apiAvailable) return;
     const res = await fetch(`${API}/ready`);
     expect(res.status).toBe(200);
     const body = await res.json();
-    expect(body).toHaveProperty("ok");
+    expect(body).toHaveProperty('ok');
   });
 
-  describe("Store: platform-db (Phases 100, 101, 103, 104, 109, 110, 111, 115, 112, 114, 121, 122, 125, 142)", () => {
-    it("database connection is healthy", async () => {
+  describe('Store: platform-db (Phases 100, 101, 103, 104, 109, 110, 111, 115, 112, 114, 121, 122, 125, 142)', () => {
+    it('database connection is healthy', async () => {
       if (!apiAvailable) return;
       const res = await fetch(`${API}/health`);
       const body = await res.json();
@@ -49,8 +51,8 @@ describe("Restart Resilience", () => {
     });
   });
 
-  describe("Store: pg (Phases 101, 104, 107, 116, 117, 122, 125, 126, 127, 128, 131, 132, 139, 140)", () => {
-    it("database connection is healthy", async () => {
+  describe('Store: pg (Phases 101, 104, 107, 116, 117, 122, 125, 126, 127, 128, 131, 132, 139, 140)', () => {
+    it('database connection is healthy', async () => {
       if (!apiAvailable) return;
       const res = await fetch(`${API}/health`);
       const body = await res.json();
@@ -58,8 +60,8 @@ describe("Restart Resilience", () => {
     });
   });
 
-  describe("Store: room-store (Phases 115, 127)", () => {
-    it("in-memory store reinitializes on restart (room-store)", async () => {
+  describe('Store: room-store (Phases 115, 127)', () => {
+    it('in-memory store reinitializes on restart (room-store)', async () => {
       if (!apiAvailable) return;
       // In-memory stores reset on restart -- health endpoint confirms API is live
       const res = await fetch(`${API}/health`);
@@ -67,8 +69,8 @@ describe("Restart Resilience", () => {
     });
   });
 
-  describe("Store: imaging-worklist (Phases 115, 128, 23)", () => {
-    it("in-memory store reinitializes on restart (imaging-worklist)", async () => {
+  describe('Store: imaging-worklist (Phases 115, 128, 23)', () => {
+    it('in-memory store reinitializes on restart (imaging-worklist)', async () => {
       if (!apiAvailable) return;
       // In-memory stores reset on restart -- health endpoint confirms API is live
       const res = await fetch(`${API}/health`);
@@ -76,8 +78,8 @@ describe("Restart Resilience", () => {
     });
   });
 
-  describe("Store: imaging-ingest (Phases 115, 128, 23)", () => {
-    it("in-memory store reinitializes on restart (imaging-ingest)", async () => {
+  describe('Store: imaging-ingest (Phases 115, 128, 23)', () => {
+    it('in-memory store reinitializes on restart (imaging-ingest)', async () => {
       if (!apiAvailable) return;
       // In-memory stores reset on restart -- health endpoint confirms API is live
       const res = await fetch(`${API}/health`);
@@ -85,14 +87,14 @@ describe("Restart Resilience", () => {
     });
   });
 
-  describe("Store: session-store (Phases 114, 132, 13, 35, 49)", () => {
-    it("session store accepts new sessions", async () => {
+  describe('Store: session-store (Phases 114, 132, 13, 35, 49)', () => {
+    it('session store accepts new sessions', async () => {
       if (!apiAvailable) return;
-      const ac = process.env.VISTA_ACCESS_CODE || "test";
-      const vc = process.env.VISTA_VERIFY_CODE || "test";
+      const ac = process.env.VISTA_ACCESS_CODE || 'test';
+      const vc = process.env.VISTA_VERIFY_CODE || 'test';
       const res = await fetch(`${API}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ accessCode: ac, verifyCode: vc }),
       });
       // 200 = success, 401 = bad creds, 503 = VistA down, all valid contract responses
@@ -100,24 +102,24 @@ describe("Restart Resilience", () => {
     });
   });
 
-  describe("Store: immutable-audit (Phases 120, 138, 139, 140, 141, 35, 48, 63, 64, 87)", () => {
-    it("audit verify endpoint responds", async () => {
+  describe('Store: immutable-audit (Phases 120, 138, 139, 140, 141, 35, 48, 63, 64, 87)', () => {
+    it('audit verify endpoint responds', async () => {
       if (!apiAvailable) return;
       const res = await fetch(`${API}/iam/audit/verify`);
       expect([200, 401, 403]).toContain(res.status);
     });
   });
 
-  describe("Store: claim-store (Phases 121, 40, 91)", () => {
-    it("claim store endpoints respond (may require auth)", async () => {
+  describe('Store: claim-store (Phases 121, 40, 91)', () => {
+    it('claim store endpoints respond (may require auth)', async () => {
       if (!apiAvailable) return;
       const res = await fetch(`${API}/rcm/claims`);
       expect([200, 401, 403]).toContain(res.status);
     });
   });
 
-  describe("Store: analytics-store (Phases 25)", () => {
-    it("in-memory store reinitializes on restart (analytics-store)", async () => {
+  describe('Store: analytics-store (Phases 25)', () => {
+    it('in-memory store reinitializes on restart (analytics-store)', async () => {
       if (!apiAvailable) return;
       // In-memory stores reset on restart -- health endpoint confirms API is live
       const res = await fetch(`${API}/health`);
@@ -125,8 +127,8 @@ describe("Restart Resilience", () => {
     });
   });
 
-  describe("Store: payer-registry (Phases 40, 88, 95, 95B)", () => {
-    it("in-memory store reinitializes on restart (payer-registry)", async () => {
+  describe('Store: payer-registry (Phases 40, 88, 95, 95B)', () => {
+    it('in-memory store reinitializes on restart (payer-registry)', async () => {
       if (!apiAvailable) return;
       // In-memory stores reset on restart -- health endpoint confirms API is live
       const res = await fetch(`${API}/health`);
@@ -134,7 +136,7 @@ describe("Restart Resilience", () => {
     });
   });
 
-  it("error responses are well-shaped JSON", async () => {
+  it('error responses are well-shaped JSON', async () => {
     if (!apiAvailable) return;
     const res = await fetch(`${API}/nonexistent-route-for-test`);
     expect(res.status).toBe(404);
@@ -143,10 +145,12 @@ describe("Restart Resilience", () => {
     expect(body).not.toBeNull();
   });
 
-  it("handles concurrent requests without crash", async () => {
+  it('handles concurrent requests without crash', async () => {
     if (!apiAvailable) return;
     const requests = Array.from({ length: 10 }, () =>
-      fetch(`${API}/health`).then((r) => r.status).catch(() => 0)
+      fetch(`${API}/health`)
+        .then((r) => r.status)
+        .catch(() => 0)
     );
     const results = await Promise.all(requests);
     const successful = results.filter((s) => s === 200).length;

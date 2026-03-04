@@ -13,7 +13,7 @@
  * 4. Full HL7 ADT feed for device association (future)
  */
 
-import * as crypto from "node:crypto";
+import * as crypto from 'node:crypto';
 import type {
   EdgeGateway,
   GatewayStatus,
@@ -21,31 +21,19 @@ import type {
   UplinkEnvelope,
   DeviceObservation,
   GatewayHealthSnapshot,
-} from "./types.js";
+} from './types.js';
 
 // ---------------------------------------------------------------------------
 // Configuration
 // ---------------------------------------------------------------------------
 
-const MAX_GATEWAYS = parseInt(process.env.MAX_EDGE_GATEWAYS || "200", 10);
-const MAX_OBSERVATIONS = parseInt(
-  process.env.MAX_DEVICE_OBSERVATIONS || "50000",
-  10
-);
-const MAX_UPLINK_BUFFER = parseInt(
-  process.env.MAX_UPLINK_BUFFER || "10000",
-  10
-);
-const HEARTBEAT_TIMEOUT_MS = parseInt(
-  process.env.GATEWAY_HEARTBEAT_TIMEOUT_MS || "120000",
-  10
-);
-const CLEANUP_INTERVAL_MS = parseInt(
-  process.env.GATEWAY_CLEANUP_INTERVAL_MS || "60000",
-  10
-);
+const MAX_GATEWAYS = parseInt(process.env.MAX_EDGE_GATEWAYS || '200', 10);
+const MAX_OBSERVATIONS = parseInt(process.env.MAX_DEVICE_OBSERVATIONS || '50000', 10);
+const MAX_UPLINK_BUFFER = parseInt(process.env.MAX_UPLINK_BUFFER || '10000', 10);
+const HEARTBEAT_TIMEOUT_MS = parseInt(process.env.GATEWAY_HEARTBEAT_TIMEOUT_MS || '120000', 10);
+const CLEANUP_INTERVAL_MS = parseInt(process.env.GATEWAY_CLEANUP_INTERVAL_MS || '60000', 10);
 
-const DEFAULT_TENANT = "default";
+const DEFAULT_TENANT = 'default';
 
 // ---------------------------------------------------------------------------
 // Stores
@@ -64,10 +52,7 @@ const observations = new Map<string, DeviceObservation>();
 const gatewayConfigs = new Map<string, GatewayConfig>();
 
 /** Per-gateway message counters (rolling 24h window) */
-const messageCounters = new Map<
-  string,
-  { count: number; errors: number; windowStart: number }
->();
+const messageCounters = new Map<string, { count: number; errors: number; windowStart: number }>();
 
 /** Idempotency set for uplink messages (messageId -> timestamp) */
 const uplinkIdempotency = new Map<string, number>();
@@ -79,7 +64,7 @@ let cleanupTimer: ReturnType<typeof setInterval> | null = null;
 // ---------------------------------------------------------------------------
 
 function generateId(prefix: string): string {
-  return `${prefix}-${crypto.randomBytes(8).toString("hex")}`;
+  return `${prefix}-${crypto.randomBytes(8).toString('hex')}`;
 }
 
 function now(): string {
@@ -104,14 +89,14 @@ export function registerGateway(
   tenantId: string = DEFAULT_TENANT
 ): EdgeGateway {
   evictOldest(gateways, MAX_GATEWAYS - 1);
-  const id = generateId("eg");
+  const id = generateId('eg');
   const ts = now();
   const gw: EdgeGateway = {
     id,
     name,
     tenantId,
     facilityCode,
-    status: "registered",
+    status: 'registered',
     adapters,
     createdAt: ts,
     updatedAt: ts,
@@ -129,10 +114,7 @@ export function listGateways(tenantId?: string): EdgeGateway[] {
   return tenantId ? all.filter((g) => g.tenantId === tenantId) : all;
 }
 
-export function updateGatewayStatus(
-  id: string,
-  status: GatewayStatus
-): EdgeGateway | undefined {
+export function updateGatewayStatus(id: string, status: GatewayStatus): EdgeGateway | undefined {
   const gw = gateways.get(id);
   if (!gw) return undefined;
   gw.status = status;
@@ -140,14 +122,11 @@ export function updateGatewayStatus(
   return gw;
 }
 
-export function recordHeartbeat(
-  id: string,
-  firmwareVersion?: string
-): EdgeGateway | undefined {
+export function recordHeartbeat(id: string, firmwareVersion?: string): EdgeGateway | undefined {
   const gw = gateways.get(id);
   if (!gw) return undefined;
   gw.lastHeartbeat = now();
-  gw.status = "online";
+  gw.status = 'online';
   if (firmwareVersion) gw.firmwareVersion = firmwareVersion;
   gw.updatedAt = now();
   return gw;
@@ -156,7 +135,7 @@ export function recordHeartbeat(
 export function revokeGateway(id: string): boolean {
   const gw = gateways.get(id);
   if (!gw) return false;
-  gw.status = "revoked";
+  gw.status = 'revoked';
   gw.updatedAt = now();
   return true;
 }
@@ -173,7 +152,7 @@ const DEFAULT_CONFIG: GatewayConfig = {
   version: 1,
   observationIntervalMs: 5000,
   heartbeatIntervalMs: 30000,
-  enabledAdapters: ["hl7v2", "astm"],
+  enabledAdapters: ['hl7v2', 'astm'],
   deviceAllowlist: [],
   maxObservationsPerSecond: 100,
 };
@@ -182,10 +161,7 @@ export function getGatewayConfig(gatewayId: string): GatewayConfig {
   return gatewayConfigs.get(gatewayId) || { ...DEFAULT_CONFIG };
 }
 
-export function setGatewayConfig(
-  gatewayId: string,
-  config: Partial<GatewayConfig>
-): GatewayConfig {
+export function setGatewayConfig(gatewayId: string, config: Partial<GatewayConfig>): GatewayConfig {
   const current = getGatewayConfig(gatewayId);
   const updated: GatewayConfig = {
     ...current,
@@ -200,19 +176,19 @@ export function setGatewayConfig(
 // Uplink Ingest
 // ---------------------------------------------------------------------------
 
-export function ingestUplinkMessage(
-  envelope: UplinkEnvelope
-): { accepted: boolean; reason?: string } {
+export function ingestUplinkMessage(envelope: UplinkEnvelope): {
+  accepted: boolean;
+  reason?: string;
+} {
   // Idempotency check
   if (uplinkIdempotency.has(envelope.messageId)) {
-    return { accepted: false, reason: "duplicate" };
+    return { accepted: false, reason: 'duplicate' };
   }
 
   // Gateway must exist and not be revoked
   const gw = gateways.get(envelope.gatewayId);
-  if (!gw) return { accepted: false, reason: "unknown_gateway" };
-  if (gw.status === "revoked")
-    return { accepted: false, reason: "gateway_revoked" };
+  if (!gw) return { accepted: false, reason: 'unknown_gateway' };
+  if (gw.status === 'revoked') return { accepted: false, reason: 'gateway_revoked' };
 
   // Set server timestamp
   envelope.serverTimestamp = now();
@@ -233,19 +209,14 @@ export function ingestUplinkMessage(
     windowStart: Date.now(),
   };
   counter.count++;
-  if (envelope.type === "error") counter.errors++;
+  if (envelope.type === 'error') counter.errors++;
   messageCounters.set(envelope.gatewayId, counter);
 
   return { accepted: true };
 }
 
-export function getUplinkBuffer(
-  gatewayId?: string,
-  limit: number = 100
-): UplinkEnvelope[] {
-  const filtered = gatewayId
-    ? uplinkBuffer.filter((m) => m.gatewayId === gatewayId)
-    : uplinkBuffer;
+export function getUplinkBuffer(gatewayId?: string, limit: number = 100): UplinkEnvelope[] {
+  const filtered = gatewayId ? uplinkBuffer.filter((m) => m.gatewayId === gatewayId) : uplinkBuffer;
   return filtered.slice(-limit);
 }
 
@@ -308,11 +279,11 @@ function runCleanup(): void {
   // Mark gateways as offline if heartbeat timed out
   for (const [, gw] of gateways) {
     if (
-      gw.status === "online" &&
+      gw.status === 'online' &&
       gw.lastHeartbeat &&
       cutoff - new Date(gw.lastHeartbeat).getTime() > HEARTBEAT_TIMEOUT_MS
     ) {
-      gw.status = "offline";
+      gw.status = 'offline';
       gw.updatedAt = now();
     }
   }

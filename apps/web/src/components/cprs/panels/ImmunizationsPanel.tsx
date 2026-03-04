@@ -26,7 +26,6 @@ interface Props {
   dfn: string;
 }
 
-
 export default function ImmunizationsPanel({ dfn }: Props) {
   const [data, setData] = useState<ImmunizationResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -60,7 +59,11 @@ export default function ImmunizationsPanel({ dfn }: Props) {
     <div>
       <div className={styles.panelTitle}>Immunizations</div>
       <div className={styles.panelToolbar}>
-        <button className={styles.btn} disabled title="Add immunization — integration pending (PX SAVE DATA)">
+        <button
+          className={styles.btn}
+          disabled
+          title="Add immunization — integration pending (PX SAVE DATA)"
+        >
           + Add Immunization (pending)
         </button>
         <button className={styles.btn} onClick={fetchImmunizations} disabled={loading}>
@@ -74,7 +77,16 @@ export default function ImmunizationsPanel({ dfn }: Props) {
       </div>
 
       {isPending && (
-        <div style={{ background: '#2a2200', border: '1px solid #665500', padding: '8px 12px', margin: '8px 0', borderRadius: 4, fontSize: 12 }}>
+        <div
+          style={{
+            background: '#2a2200',
+            border: '1px solid #665500',
+            padding: '8px 12px',
+            margin: '8px 0',
+            borderRadius: 4,
+            fontSize: 12,
+          }}
+        >
           <strong style={{ color: '#ffcc00' }}>Integration Pending</strong>
           <span style={{ color: '#d9c9a3', marginLeft: 8 }}>
             VistA RPC unavailable — target: ORQQPX IMMUN LIST
@@ -103,7 +115,9 @@ export default function ImmunizationsPanel({ dfn }: Props) {
                   <tr
                     key={imm.ien}
                     onClick={() => setSelected(imm)}
-                    style={selected?.ien === imm.ien ? { background: 'var(--cprs-selected)' } : undefined}
+                    style={
+                      selected?.ien === imm.ien ? { background: 'var(--cprs-selected)' } : undefined
+                    }
                   >
                     <td>{imm.name || imm.ien}</td>
                     <td>{imm.dateTime || '\u2014'}</td>
@@ -120,9 +134,12 @@ export default function ImmunizationsPanel({ dfn }: Props) {
             <div style={{ padding: 8, fontSize: 12 }}>
               <h4 style={{ margin: '0 0 8px', fontSize: 13 }}>{selected.name}</h4>
               <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '4px 8px' }}>
-                <span style={{ color: '#888' }}>IEN:</span><span>{selected.ien}</span>
-                <span style={{ color: '#888' }}>Date:</span><span>{selected.dateTime || '\u2014'}</span>
-                <span style={{ color: '#888' }}>Reaction:</span><span>{selected.reaction || 'None'}</span>
+                <span style={{ color: '#888' }}>IEN:</span>
+                <span>{selected.ien}</span>
+                <span style={{ color: '#888' }}>Date:</span>
+                <span>{selected.dateTime || '\u2014'}</span>
+                <span style={{ color: '#888' }}>Reaction:</span>
+                <span>{selected.reaction || 'None'}</span>
               </div>
               {data?.pendingTargets && data.pendingTargets.length > 0 && (
                 <div style={{ marginTop: 12, fontSize: 11, color: '#888' }}>

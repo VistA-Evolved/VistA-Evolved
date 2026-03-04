@@ -14,9 +14,9 @@ import {
   updateTaskStatus,
   findTaskById,
   type TaskRow,
-} from "../../platform/pg/repo/task-repo.js";
-import { PH_HMO_PAYER_TYPES, type PayerTypeClassification } from "./adapter-manifest.js";
-import { getPhHmo } from "../payers/ph-hmo-registry.js";
+} from '../../platform/pg/repo/task-repo.js';
+import { PH_HMO_PAYER_TYPES, type PayerTypeClassification } from './adapter-manifest.js';
+import { getPhHmo } from '../payers/ph-hmo-registry.js';
 
 /* ── Contracting task templates ─────────────────────────────── */
 
@@ -32,54 +32,61 @@ export interface ContractingTemplate {
  */
 export const CONTRACTING_TASK_TEMPLATES: ContractingTemplate[] = [
   {
-    title: "Obtain accreditation application form",
-    description: "Request the provider accreditation application form from the HMO. Check website or call provider relations.",
-    applicableTo: ["hmo_l1", "hmo_l3"],
+    title: 'Obtain accreditation application form',
+    description:
+      'Request the provider accreditation application form from the HMO. Check website or call provider relations.',
+    applicableTo: ['hmo_l1', 'hmo_l3'],
   },
   {
-    title: "Submit accreditation documents",
-    description: "Submit DOH license, SEC registration, BIR TIN, professional licenses, and other required documents.",
-    applicableTo: ["hmo_l1", "hmo_l3"],
+    title: 'Submit accreditation documents',
+    description:
+      'Submit DOH license, SEC registration, BIR TIN, professional licenses, and other required documents.',
+    applicableTo: ['hmo_l1', 'hmo_l3'],
   },
   {
-    title: "Facility inspection / site visit",
-    description: "Coordinate site visit from HMO accreditation team. Ensure facility meets HMO standards.",
-    applicableTo: ["hmo_l1", "hmo_l3"],
+    title: 'Facility inspection / site visit',
+    description:
+      'Coordinate site visit from HMO accreditation team. Ensure facility meets HMO standards.',
+    applicableTo: ['hmo_l1', 'hmo_l3'],
   },
   {
-    title: "Negotiate fee schedule / rate card",
+    title: 'Negotiate fee schedule / rate card',
     description: "Review and negotiate the HMO's proposed fee schedule for covered services.",
-    applicableTo: ["hmo_l1", "hmo_l3"],
+    applicableTo: ['hmo_l1', 'hmo_l3'],
   },
   {
-    title: "Sign provider agreement / MOA",
-    description: "Execute the Memorandum of Agreement (MOA) or provider contract.",
-    applicableTo: ["hmo_l1", "hmo_l3"],
+    title: 'Sign provider agreement / MOA',
+    description: 'Execute the Memorandum of Agreement (MOA) or provider contract.',
+    applicableTo: ['hmo_l1', 'hmo_l3'],
   },
   {
-    title: "Obtain provider portal credentials",
-    description: "Request portal access credentials for LOA/claims submission. Store credential reference in vault (never in system).",
-    applicableTo: ["hmo_l1"],
+    title: 'Obtain provider portal credentials',
+    description:
+      'Request portal access credentials for LOA/claims submission. Store credential reference in vault (never in system).',
+    applicableTo: ['hmo_l1'],
   },
   {
-    title: "Test LOA submission workflow",
-    description: "Submit a test LOA request to verify the workflow. Confirm turnaround time and response format.",
-    applicableTo: ["hmo_l1", "hmo_l3"],
+    title: 'Test LOA submission workflow',
+    description:
+      'Submit a test LOA request to verify the workflow. Confirm turnaround time and response format.',
+    applicableTo: ['hmo_l1', 'hmo_l3'],
   },
   {
-    title: "Test claim submission workflow",
-    description: "Submit a test claim to verify the packet format and submission process.",
-    applicableTo: ["hmo_l1", "hmo_l3"],
+    title: 'Test claim submission workflow',
+    description: 'Submit a test claim to verify the packet format and submission process.',
+    applicableTo: ['hmo_l1', 'hmo_l3'],
   },
   {
-    title: "Confirm SOA/remittance cycle",
-    description: "Confirm the Statement of Account generation frequency and reconciliation process.",
-    applicableTo: ["hmo_l1", "hmo_l3"],
+    title: 'Confirm SOA/remittance cycle',
+    description:
+      'Confirm the Statement of Account generation frequency and reconciliation process.',
+    applicableTo: ['hmo_l1', 'hmo_l3'],
   },
   {
-    title: "Document payer-specific requirements",
-    description: "Record any payer-specific claim filing requirements, deadlines, or special forms.",
-    applicableTo: ["hmo_l1", "hmo_l3"],
+    title: 'Document payer-specific requirements',
+    description:
+      'Record any payer-specific claim filing requirements, deadlines, or special forms.',
+    applicableTo: ['hmo_l1', 'hmo_l3'],
   },
 ];
 
@@ -116,11 +123,11 @@ export async function initContractingTasks(
   payerId: string,
   payerName: string,
   tenantId?: string,
-  actor?: string,
+  actor?: string
 ): Promise<{ created: number; skipped: number }> {
-  const payerType = PH_HMO_PAYER_TYPES[payerId] ?? "hmo_l3";
+  const payerType = PH_HMO_PAYER_TYPES[payerId] ?? 'hmo_l3';
   const existing = await listTasks(payerId, tenantId);
-  const existingTitles = new Set(existing.map(t => t.title));
+  const existingTitles = new Set(existing.map((t) => t.title));
 
   let created = 0;
   let skipped = 0;
@@ -133,12 +140,15 @@ export async function initContractingTasks(
       skipped++;
       continue;
     }
-    await createTask({
-      payerId,
-      tenantId: tenantId ?? null,
-      title: template.title,
-      description: template.description,
-    }, actor);
+    await createTask(
+      {
+        payerId,
+        tenantId: tenantId ?? null,
+        title: template.title,
+        description: template.description,
+      },
+      actor
+    );
     created++;
   }
 
@@ -151,15 +161,15 @@ export async function initContractingTasks(
 export async function getContractingSummary(
   payerId: string,
   payerName: string,
-  tenantId?: string,
+  tenantId?: string
 ): Promise<ContractingSummary> {
-  const payerType = PH_HMO_PAYER_TYPES[payerId] ?? "hmo_l3";
+  const payerType = PH_HMO_PAYER_TYPES[payerId] ?? 'hmo_l3';
   const tasks = await listTasks(payerId, tenantId);
 
-  const open = tasks.filter(t => t.status === "open").length;
-  const inProgress = tasks.filter(t => t.status === "in_progress").length;
-  const blocked = tasks.filter(t => t.status === "blocked").length;
-  const done = tasks.filter(t => t.status === "done").length;
+  const open = tasks.filter((t) => t.status === 'open').length;
+  const inProgress = tasks.filter((t) => t.status === 'in_progress').length;
+  const blocked = tasks.filter((t) => t.status === 'blocked').length;
+  const done = tasks.filter((t) => t.status === 'done').length;
   const total = tasks.length;
 
   return {
@@ -185,7 +195,10 @@ export async function getContractingDashboard(tenantId?: string): Promise<Contra
   const payerIds = Object.keys(PH_HMO_PAYER_TYPES);
   const payers: ContractingSummary[] = [];
   const byStatus: Record<string, number> = {
-    open: 0, in_progress: 0, blocked: 0, done: 0,
+    open: 0,
+    in_progress: 0,
+    blocked: 0,
+    done: 0,
   };
   let totalTasks = 0;
 
@@ -217,9 +230,9 @@ export async function getContractingDashboard(tenantId?: string): Promise<Contra
  */
 export async function updateContractingTask(
   taskId: string,
-  status: "open" | "in_progress" | "blocked" | "done",
+  status: 'open' | 'in_progress' | 'blocked' | 'done',
   reason: string,
-  actor?: string,
+  actor?: string
 ): Promise<TaskRow | null> {
   return await updateTaskStatus(taskId, status, reason, actor);
 }

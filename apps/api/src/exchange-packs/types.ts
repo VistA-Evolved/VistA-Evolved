@@ -2,9 +2,16 @@
  * Phases 406-407 (W23-P8/P9): Exchange Packs — Types
  */
 
-export type ExchangePackId = "us-tefca" | "us-smart" | "eu-xds" | "eu-mhd" | "openhie-shrx" | "openhie-shr" | "custom";
-export type ConnectorStatus = "active" | "inactive" | "testing" | "error";
-export type ExchangeDirection = "send" | "receive" | "bidirectional";
+export type ExchangePackId =
+  | 'us-tefca'
+  | 'us-smart'
+  | 'eu-xds'
+  | 'eu-mhd'
+  | 'openhie-shrx'
+  | 'openhie-shr'
+  | 'custom';
+export type ConnectorStatus = 'active' | 'inactive' | 'testing' | 'error';
+export type ExchangeDirection = 'send' | 'receive' | 'bidirectional';
 
 export interface ExchangePackProfile {
   id: ExchangePackId;
@@ -26,13 +33,13 @@ export interface ExchangeConnector {
   status: ConnectorStatus;
   direction: ExchangeDirection;
   endpoint: string;
-  authType: "none" | "basic" | "bearer" | "mtls" | "oauth2" | "saml";
+  authType: 'none' | 'basic' | 'bearer' | 'mtls' | 'oauth2' | 'saml';
   authConfig?: Record<string, unknown>;
   headers?: Record<string, string>;
   timeoutMs: number;
   retryAttempts: number;
   lastHealthCheck?: string;
-  lastHealthStatus?: "healthy" | "unhealthy" | "unknown";
+  lastHealthStatus?: 'healthy' | 'unhealthy' | 'unknown';
   metadata?: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;
@@ -43,9 +50,9 @@ export interface ExchangeTransaction {
   tenantId: string;
   connectorId: string;
   packId: ExchangePackId;
-  direction: "outbound" | "inbound";
+  direction: 'outbound' | 'inbound';
   transactionType: string;
-  status: "pending" | "in-progress" | "completed" | "failed" | "timeout";
+  status: 'pending' | 'in-progress' | 'completed' | 'failed' | 'timeout';
   requestPayload?: string;
   responsePayload?: string;
   errorMessage?: string;

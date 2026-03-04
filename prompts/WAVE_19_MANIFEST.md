@@ -7,24 +7,24 @@
 
 ## Phase Map
 
-| Wave Phase | Resolved ID | Title | Prompt Folder |
-|------------|-------------|-------|---------------|
-| W19-P1 | 362 | Reservation + Manifest + ADRs | `362-W19-P1-MANIFEST-ADRS` |
-| W19-P2 | 363 | Analytics Extract Layer | `363-W19-P2-ANALYTICS-EXTRACT` |
-| W19-P3 | 364 | De-Identification & Pseudonymization | `364-W19-P3-DEID-SERVICE` |
-| W19-P4 | 365 | Reporting API + UI | `365-W19-P4-REPORTING-API` |
-| W19-P5 | 366 | Quality & Safety Metrics v1 | `366-W19-P5-QUALITY-SAFETY` |
-| W19-P6 | 367 | RCM Analytics v1 | `367-W19-P6-RCM-ANALYTICS` |
-| W19-P7 | 368 | Data Access Controls | `368-W19-P7-DATA-ACCESS-CONTROLS` |
-| W19-P8 | 369 | Analytics Certification Runner | `369-W19-P8-ANALYTICS-CERT-RUNNER` |
+| Wave Phase | Resolved ID | Title                                | Prompt Folder                      |
+| ---------- | ----------- | ------------------------------------ | ---------------------------------- |
+| W19-P1     | 362         | Reservation + Manifest + ADRs        | `362-W19-P1-MANIFEST-ADRS`         |
+| W19-P2     | 363         | Analytics Extract Layer              | `363-W19-P2-ANALYTICS-EXTRACT`     |
+| W19-P3     | 364         | De-Identification & Pseudonymization | `364-W19-P3-DEID-SERVICE`          |
+| W19-P4     | 365         | Reporting API + UI                   | `365-W19-P4-REPORTING-API`         |
+| W19-P5     | 366         | Quality & Safety Metrics v1          | `366-W19-P5-QUALITY-SAFETY`        |
+| W19-P6     | 367         | RCM Analytics v1                     | `367-W19-P6-RCM-ANALYTICS`         |
+| W19-P7     | 368         | Data Access Controls                 | `368-W19-P7-DATA-ACCESS-CONTROLS`  |
+| W19-P8     | 369         | Analytics Certification Runner       | `369-W19-P8-ANALYTICS-CERT-RUNNER` |
 
 ## ADR Index
 
-| ADR | Path |
-|-----|------|
-| Analytics Stack | `docs/decisions/ADR-ANALYTICS-STACK.md` |
+| ADR                       | Path                                             |
+| ------------------------- | ------------------------------------------------ |
+| Analytics Stack           | `docs/decisions/ADR-ANALYTICS-STACK.md`          |
 | De-Identification Posture | `docs/decisions/ADR-DEIDENTIFICATION-POSTURE.md` |
-| Reporting Model | `docs/decisions/ADR-REPORTING-MODEL.md` |
+| Reporting Model           | `docs/decisions/ADR-REPORTING-MODEL.md`          |
 
 ## Dependencies & Run Order
 

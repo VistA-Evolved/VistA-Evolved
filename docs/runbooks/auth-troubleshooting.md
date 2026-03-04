@@ -43,11 +43,13 @@ User reports: "I can't log in"
 **Symptoms:** Login POST returns `{"ok":false,"error":"Authentication failed"}`
 
 **Causes:**
+
 - Wrong access code or verify code
 - VistA Docker container not running or not ready
 - Port 9430 not accessible
 
 **Fix:**
+
 ```powershell
 # Check VistA is running and ready
 docker ps --filter name=wv
@@ -66,6 +68,7 @@ curl.exe http://127.0.0.1:3001/vista/ping
 **Causes:** 5+ failed login attempts within 15 minutes for the same access code.
 
 **Fix:**
+
 - Wait for lockout to expire (15 minutes by default)
 - Restart the API server (clears in-memory lockout state)
 - Adjust via `LOGIN_LOCKOUT_MAX` and `LOGIN_LOCKOUT_DURATION_MS` env vars
@@ -75,6 +78,7 @@ curl.exe http://127.0.0.1:3001/vista/ping
 **Symptoms:** API calls return 401 after previously working.
 
 **Causes:**
+
 - Session idle timeout (30 min of inactivity)
 - Session absolute timeout (8 hours)
 - API server restarted (in-memory sessions cleared)
@@ -88,6 +92,7 @@ curl.exe http://127.0.0.1:3001/vista/ping
 **Causes:** User's role doesn't have the required permission.
 
 **Fix:**
+
 ```powershell
 # Check your current role and permissions
 curl.exe -b cookies.txt http://127.0.0.1:3001/auth/permissions
@@ -105,10 +110,12 @@ curl.exe -b cookies.txt http://127.0.0.1:3001/auth/permissions
 **Symptoms:** POST/PUT/PATCH/DELETE returns `{"ok":false,"error":"CSRF token mismatch"}`
 
 **Causes:**
+
 - Frontend not sending `X-CSRF-Token` header on mutation requests
 - CSRF cookie expired or not set
 
 **Fix for curl testing (Phase 132: synchronizer token):**
+
 ```powershell
 # Login -- CSRF token is in the JSON response body
 $login = curl.exe -s -c cookies.txt -d "@login-body.json" -H "Content-Type: application/json" http://127.0.0.1:3001/auth/login
@@ -119,6 +126,7 @@ curl.exe -b cookies.txt -H "X-CSRF-Token: $csrf" -H "Content-Type: application/j
 ```
 
 **Fix for frontend (Phase 132: shared CSRF module):**
+
 ```typescript
 // Import shared CSRF manager
 import { getCsrfToken } from '@/lib/csrf';
@@ -143,6 +151,7 @@ fetch('/api/endpoint', {
 **Causes:** Rate limit exceeded for your IP address.
 
 **Fix:**
+
 - Wait 60 seconds (rate limit window)
 - Check `X-RateLimit-Remaining` header to monitor usage
 - Adjust via `RATE_LIMIT_GENERAL` (default 200) and `RATE_LIMIT_LOGIN` (default 10) env vars
@@ -154,6 +163,7 @@ fetch('/api/endpoint', {
 **Causes:** Browser's `Origin` header doesn't match the allowlist.
 
 **Fix:**
+
 ```powershell
 # Set ALLOWED_ORIGINS to include your frontend URL
 $env:ALLOWED_ORIGINS = "http://localhost:3000,http://localhost:3001,http://your-domain.com"
@@ -164,26 +174,31 @@ $env:ALLOWED_ORIGINS = "http://localhost:3000,http://localhost:3001,http://your-
 ## Debugging Tools
 
 ### Check active sessions (admin only)
+
 ```powershell
 curl.exe -b cookies.txt http://127.0.0.1:3001/admin/sessions
 ```
 
 ### Check your permissions
+
 ```powershell
 curl.exe -b cookies.txt http://127.0.0.1:3001/auth/permissions
 ```
 
 ### View RBAC matrix (admin only)
+
 ```powershell
 curl.exe -b cookies.txt http://127.0.0.1:3001/auth/rbac-matrix
 ```
 
 ### Check immutable audit trail (admin only)
+
 ```powershell
 curl.exe -b cookies.txt http://127.0.0.1:3001/audit/unified?limit=10
 ```
 
 ### Enable debug logging
+
 ```powershell
 $env:VISTA_DEBUG = "true"
 $env:LOG_LEVEL = "debug"
@@ -193,13 +208,13 @@ $env:LOG_LEVEL = "debug"
 
 ## Environment Variables Reference
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `SESSION_ABSOLUTE_TTL_MS` | 28800000 | Session max lifetime (ms) |
-| `SESSION_IDLE_TTL_MS` | 1800000 | Session idle timeout (ms) |
-| `RATE_LIMIT_GENERAL` | 200 | General API req/min per IP |
-| `RATE_LIMIT_LOGIN` | 10 | Login req/min per IP |
-| `LOGIN_LOCKOUT_MAX` | 5 | Failed attempts before lockout |
-| `LOGIN_LOCKOUT_DURATION_MS` | 900000 | Lockout duration (ms) |
-| `LOGIN_LOCKOUT_WINDOW_MS` | 900000 | Failure counting window (ms) |
-| `ALLOWED_ORIGINS` | localhost:3000,3001 | CORS origin allowlist |
+| Variable                    | Default             | Description                    |
+| --------------------------- | ------------------- | ------------------------------ |
+| `SESSION_ABSOLUTE_TTL_MS`   | 28800000            | Session max lifetime (ms)      |
+| `SESSION_IDLE_TTL_MS`       | 1800000             | Session idle timeout (ms)      |
+| `RATE_LIMIT_GENERAL`        | 200                 | General API req/min per IP     |
+| `RATE_LIMIT_LOGIN`          | 10                  | Login req/min per IP           |
+| `LOGIN_LOCKOUT_MAX`         | 5                   | Failed attempts before lockout |
+| `LOGIN_LOCKOUT_DURATION_MS` | 900000              | Lockout duration (ms)          |
+| `LOGIN_LOCKOUT_WINDOW_MS`   | 900000              | Failure counting window (ms)   |
+| `ALLOWED_ORIGINS`           | localhost:3000,3001 | CORS origin allowlist          |

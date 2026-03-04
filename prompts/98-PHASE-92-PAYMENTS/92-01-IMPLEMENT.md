@@ -44,21 +44,21 @@ mark a claim as paid without matching remittance evidence.
 
 ## API Endpoints
 
-| Method | Path | Purpose |
-|--------|------|---------|
-| POST | /payerops/payments/batches | Create remittance batch |
-| POST | /payerops/payments/batches/:id/upload | Upload CSV content |
-| POST | /payerops/payments/batches/:id/import | Parse CSV into lines |
-| POST | /payerops/payments/batches/:id/match | Run matching engine |
-| GET | /payerops/payments/batches | List batches |
-| GET | /payerops/payments/batches/:id | Batch detail + lines |
-| GET | /payerops/payments/reconciliation | Needs-review worklist |
-| POST | /payerops/payments/reconciliation/:lineId/link-claim | Manual link |
-| GET | /payerops/analytics/payer-intelligence | Payer KPIs |
-| GET | /payerops/analytics/aging | AR aging buckets |
-| GET | /payerops/exports/payments/:batchId | Export batch (CSV/JSON) |
-| GET | /payerops/payments/underpayments | Underpayment cases |
-| GET | /payerops/payments/store-info | Store stats |
+| Method | Path                                                 | Purpose                 |
+| ------ | ---------------------------------------------------- | ----------------------- |
+| POST   | /payerops/payments/batches                           | Create remittance batch |
+| POST   | /payerops/payments/batches/:id/upload                | Upload CSV content      |
+| POST   | /payerops/payments/batches/:id/import                | Parse CSV into lines    |
+| POST   | /payerops/payments/batches/:id/match                 | Run matching engine     |
+| GET    | /payerops/payments/batches                           | List batches            |
+| GET    | /payerops/payments/batches/:id                       | Batch detail + lines    |
+| GET    | /payerops/payments/reconciliation                    | Needs-review worklist   |
+| POST   | /payerops/payments/reconciliation/:lineId/link-claim | Manual link             |
+| GET    | /payerops/analytics/payer-intelligence               | Payer KPIs              |
+| GET    | /payerops/analytics/aging                            | AR aging buckets        |
+| GET    | /payerops/exports/payments/:batchId                  | Export batch (CSV/JSON) |
+| GET    | /payerops/payments/underpayments                     | Underpayment cases      |
+| GET    | /payerops/payments/store-info                        | Store stats             |
 
 ## Verification Steps
 

@@ -18,17 +18,17 @@
 // ─── Lab Order ──────────────────────────────────────────────
 
 export type LabOrderStatus =
-  | "pending"
-  | "collected"
-  | "in_process"
-  | "resulted"
-  | "reviewed"
-  | "verified"
-  | "final"
-  | "cancelled"
-  | "on_hold";
+  | 'pending'
+  | 'collected'
+  | 'in_process'
+  | 'resulted'
+  | 'reviewed'
+  | 'verified'
+  | 'final'
+  | 'cancelled'
+  | 'on_hold';
 
-export type LabOrderPriority = "routine" | "stat" | "asap" | "timed" | "preop";
+export type LabOrderPriority = 'routine' | 'stat' | 'asap' | 'timed' | 'preop';
 
 export interface LabOrder {
   id: string;
@@ -71,14 +71,14 @@ export interface LabOrder {
 // ─── Specimen Tracking ──────────────────────────────────────
 
 export type SpecimenStatus =
-  | "ordered"
-  | "collected"
-  | "in_transit"
-  | "received"
-  | "processing"
-  | "completed"
-  | "rejected"
-  | "lost";
+  | 'ordered'
+  | 'collected'
+  | 'in_transit'
+  | 'received'
+  | 'processing'
+  | 'completed'
+  | 'rejected'
+  | 'lost';
 
 export interface SpecimenSample {
   id: string;
@@ -109,16 +109,16 @@ export interface SpecimenSample {
 
 // ─── Lab Result ─────────────────────────────────────────────
 
-export type ResultStatus = "preliminary" | "final" | "corrected" | "amended" | "cancelled";
+export type ResultStatus = 'preliminary' | 'final' | 'corrected' | 'amended' | 'cancelled';
 
 export type AbnormalFlag =
-  | "normal"
-  | "low"
-  | "high"
-  | "critical_low"
-  | "critical_high"
-  | "abnormal"
-  | "very_abnormal";
+  | 'normal'
+  | 'low'
+  | 'high'
+  | 'critical_low'
+  | 'critical_high'
+  | 'abnormal'
+  | 'very_abnormal';
 
 export interface LabResult {
   id: string;
@@ -145,7 +145,7 @@ export interface LabResult {
   /** Instrument/device that produced result */
   performingDevice: string | null;
   /** Source: manual entry, device, imported */
-  source: "manual" | "device" | "imported" | "vista";
+  source: 'manual' | 'device' | 'imported' | 'vista';
   /** Wave 21 device observation ID (if from device ingest) */
   deviceObservationId: string | null;
   /** VistA Lab file IEN (File 63 entry) */
@@ -156,7 +156,7 @@ export interface LabResult {
 
 // ─── Critical Result Alerting ───────────────────────────────
 
-export type CriticalAlertStatus = "active" | "acknowledged" | "escalated" | "resolved";
+export type CriticalAlertStatus = 'active' | 'acknowledged' | 'escalated' | 'resolved';
 
 export interface CriticalAlert {
   id: string;
@@ -200,9 +200,9 @@ export interface LabDashboardStats {
 // ─── Lab Writeback Posture ──────────────────────────────────
 
 export interface LabWritebackPosture {
-  orderPlace: { rpc: string; status: "available" | "integration_pending"; note: string };
-  resultAck: { rpc: string; status: "available" | "integration_pending"; note: string };
-  resultVerify: { rpc: string; status: "available" | "integration_pending"; note: string };
-  specimenCollect: { rpc: string; status: "available" | "integration_pending"; note: string };
-  labReport: { rpc: string; status: "available" | "integration_pending"; note: string };
+  orderPlace: { rpc: string; status: 'available' | 'integration_pending'; note: string };
+  resultAck: { rpc: string; status: 'available' | 'integration_pending'; note: string };
+  resultVerify: { rpc: string; status: 'available' | 'integration_pending'; note: string };
+  specimenCollect: { rpc: string; status: 'available' | 'integration_pending'; note: string };
+  labReport: { rpc: string; status: 'available' | 'integration_pending'; note: string };
 }

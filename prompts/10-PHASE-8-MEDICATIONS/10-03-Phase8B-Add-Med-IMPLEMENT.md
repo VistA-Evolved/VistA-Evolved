@@ -4,6 +4,7 @@ Goal:
 POST /vista/medications adds a medication/order (MVP-safe).
 
 Rules:
+
 - Do NOT attempt full CPOE ordering complexity.
 - If true medication ordering requires multiple dependent RPCs, document it and stop.
 - Prefer the safest minimal "add med record" if sandbox supports it.
@@ -18,8 +19,10 @@ Return:
 { ok:true, message:"Created" } OR ok:false with explanation.
 
 UI:
+
 - Simple add form
 - refresh list
 
 Docs:
+
 - docs/runbooks/vista-rpc-add-medication.md

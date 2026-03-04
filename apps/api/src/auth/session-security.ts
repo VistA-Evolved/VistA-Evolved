@@ -16,23 +16,19 @@
  * and the immutable audit trail.
  */
 
-import { createHash, randomUUID } from "crypto";
-import { log } from "../lib/logger.js";
-import { immutableAudit, type ImmutableAuditAction } from "../lib/immutable-audit.js";
+import { createHash, randomUUID } from 'crypto';
+import { log } from '../lib/logger.js';
+import { immutableAudit, type ImmutableAuditAction } from '../lib/immutable-audit.js';
 
 /* ------------------------------------------------------------------ */
 /* Configuration                                                       */
 /* ------------------------------------------------------------------ */
 
 /** Max concurrent sessions per user. Default: 5. */
-const MAX_CONCURRENT_SESSIONS = Number(
-  process.env.MAX_CONCURRENT_SESSIONS || 5,
-);
+const MAX_CONCURRENT_SESSIONS = Number(process.env.MAX_CONCURRENT_SESSIONS || 5);
 
 /** Security event ring buffer max size. Default: 5000. */
-const MAX_SECURITY_EVENTS = Number(
-  process.env.MAX_SECURITY_EVENTS || 5000,
-);
+const MAX_SECURITY_EVENTS = Number(process.env.MAX_SECURITY_EVENTS || 5000);
 
 /** Fingerprint drift detection: minor (warn) vs major (revoke) threshold. */
 const FINGERPRINT_MINOR_DRIFT_FIELDS = 1;
@@ -55,20 +51,20 @@ export interface DeviceFingerprint {
 }
 
 export type SecurityEventType =
-  | "session.created"
-  | "session.destroyed"
-  | "session.rotated"
-  | "session.expired_idle"
-  | "session.expired_absolute"
-  | "session.evicted_concurrent"
-  | "mfa.verified"
-  | "mfa.enrollment_started"
-  | "mfa.enrollment_completed"
-  | "step_up.required"
-  | "step_up.completed"
-  | "fingerprint.drift_minor"
-  | "fingerprint.drift_major"
-  | "concurrent.limit_enforced";
+  | 'session.created'
+  | 'session.destroyed'
+  | 'session.rotated'
+  | 'session.expired_idle'
+  | 'session.expired_absolute'
+  | 'session.evicted_concurrent'
+  | 'mfa.verified'
+  | 'mfa.enrollment_started'
+  | 'mfa.enrollment_completed'
+  | 'step_up.required'
+  | 'step_up.completed'
+  | 'fingerprint.drift_minor'
+  | 'fingerprint.drift_major'
+  | 'concurrent.limit_enforced';
 
 export interface SessionSecurityEvent {
   id: string;
@@ -106,24 +102,27 @@ export interface SessionInfo {
  * Used for fingerprinting — not exact IP, reduces sensitivity.
  */
 function extractIpPrefix(ip: string): string {
-  if (!ip) return "unknown";
+  if (!ip) return 'unknown';
 
   // Remove IPv6 prefix for IPv4-mapped addresses
-  const cleaned = ip.replace(/^::ffff:/, "");
+  const cleaned = ip.replace(/^::ffff:/, '');
 
   // IPv4: take first 3 octets
-  if (cleaned.includes(".")) {
-    const parts = cleaned.split(".");
-    return parts.slice(0, 3).join(".") + ".0/24";
+  if (cleaned.includes('.')) {
+    const parts = cleaned.split('.');
+    return parts.slice(0, 3).join('.') + '.0/24';
   }
 
   // IPv6: take first 3 groups (48 bits)
-  const parts = cleaned.split(":");
-  return parts.slice(0, 3).join(":") + "::/48";
+  const parts = cleaned.split(':');
+  return parts.slice(0, 3).join(':') + '::/48';
 }
 
 function hashString(value: string): string {
-  return createHash("sha256").update(value || "").digest("hex").slice(0, 16);
+  return createHash('sha256')
+    .update(value || '')
+    .digest('hex')
+    .slice(0, 16);
 }
 
 /**
@@ -132,16 +131,16 @@ function hashString(value: string): string {
 export function computeDeviceFingerprint(
   userAgent: string,
   acceptLanguage: string,
-  ip: string,
+  ip: string
 ): DeviceFingerprint {
   const ipPrefix = extractIpPrefix(ip);
   const userAgentHash = hashString(userAgent);
   const langHash = hashString(acceptLanguage);
 
   // Full fingerprint hash combines all components
-  const fullHash = createHash("sha256")
+  const fullHash = createHash('sha256')
     .update(`${userAgentHash}:${langHash}:${ipPrefix}`)
-    .digest("hex")
+    .digest('hex')
     .slice(0, 32);
 
   return {
@@ -159,13 +158,13 @@ export function computeDeviceFingerprint(
  */
 export function detectFingerprintDrift(
   original: DeviceFingerprint,
-  current: DeviceFingerprint,
+  current: DeviceFingerprint
 ): { driftFields: number; changedComponents: string[] } {
   const changed: string[] = [];
 
-  if (original.userAgentHash !== current.userAgentHash) changed.push("userAgent");
-  if (original.langHash !== current.langHash) changed.push("acceptLanguage");
-  if (original.ipPrefix !== current.ipPrefix) changed.push("ipPrefix");
+  if (original.userAgentHash !== current.userAgentHash) changed.push('userAgent');
+  if (original.langHash !== current.langHash) changed.push('acceptLanguage');
+  if (original.ipPrefix !== current.ipPrefix) changed.push('ipPrefix');
 
   return { driftFields: changed.length, changedComponents: changed };
 }
@@ -194,7 +193,7 @@ export function registerSession(
   tokenHash: string,
   userId: string,
   tenantId: string,
-  fingerprint: DeviceFingerprint,
+  fingerprint: DeviceFingerprint
 ): void {
   // Track token hash for this user
   let userSessions = userSessionsMap.get(userId);
@@ -207,7 +206,7 @@ export function registerSession(
   // Store session info
   const now = Date.now();
   sessionInfoMap.set(tokenHash, {
-    tokenPrefix: tokenHash.slice(0, 8) + "...",
+    tokenPrefix: tokenHash.slice(0, 8) + '...',
     userId,
     tenantId,
     fingerprint,
@@ -250,10 +249,7 @@ export function getUserSessions(userId: string): SessionInfo[] {
 /**
  * Enforce concurrent session limit. Returns token hashes of evicted sessions.
  */
-export function enforceConcurrentSessionLimit(
-  userId: string,
-  tenantId: string,
-): string[] {
+export function enforceConcurrentSessionLimit(userId: string, tenantId: string): string[] {
   const sessions = getUserSessions(userId);
   if (sessions.length <= MAX_CONCURRENT_SESSIONS) return [];
 
@@ -268,8 +264,8 @@ export function enforceConcurrentSessionLimit(
       if (info.createdAt === session.createdAt && info.userId === session.userId) {
         evictedHashes.push(hash);
         unregisterSession(hash);
-        logSecurityEvent(tenantId, userId, hash.slice(0, 8), "session.evicted_concurrent", {
-          reason: "concurrent_session_limit",
+        logSecurityEvent(tenantId, userId, hash.slice(0, 8), 'session.evicted_concurrent', {
+          reason: 'concurrent_session_limit',
           limit: MAX_CONCURRENT_SESSIONS,
         });
         break;
@@ -310,7 +306,7 @@ export function logSecurityEvent(
   userId: string,
   sessionId: string,
   eventType: SecurityEventType,
-  detail: Record<string, unknown>,
+  detail: Record<string, unknown>
 ): SessionSecurityEvent {
   const evt: SessionSecurityEvent = {
     id: randomUUID(),
@@ -331,12 +327,12 @@ export function logSecurityEvent(
   // Immutable audit
   immutableAudit(
     `identity.${eventType}` as ImmutableAuditAction,
-    eventType.includes("drift_major") || eventType.includes("evicted") ? "failure" : "success",
-    { sub: userId, name: "", roles: [] },
-    { detail: { ...detail, sessionId, eventType } },
+    eventType.includes('drift_major') || eventType.includes('evicted') ? 'failure' : 'success',
+    { sub: userId, name: '', roles: [] },
+    { detail: { ...detail, sessionId, eventType } }
   );
 
-  log.debug("Session security event", { eventType, userId, sessionId });
+  log.debug('Session security event', { eventType, userId, sessionId });
 
   return evt;
 }

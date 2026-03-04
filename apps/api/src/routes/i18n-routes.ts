@@ -13,15 +13,15 @@
  * Portal language is managed via existing /portal/settings endpoint.
  */
 
-import type { FastifyInstance } from "fastify";
-import { requireSession, requireRole } from "../auth/auth-routes.js";
-import { isPgConfigured } from "../platform/pg/index.js";
-import { log } from "../lib/logger.js";
+import type { FastifyInstance } from 'fastify';
+import { requireSession, requireRole } from '../auth/auth-routes.js';
+import { isPgConfigured } from '../platform/pg/index.js';
+import { log } from '../lib/logger.js';
 
 const SUPPORTED_LOCALES = [
-  { code: "en", label: "English", nativeLabel: "English" },
-  { code: "fil", label: "Filipino", nativeLabel: "Filipino" },
-  { code: "es", label: "Spanish", nativeLabel: "Español" },
+  { code: 'en', label: 'English', nativeLabel: 'English' },
+  { code: 'fil', label: 'Filipino', nativeLabel: 'Filipino' },
+  { code: 'es', label: 'Spanish', nativeLabel: 'Español' },
 ] as const;
 
 const VALID_LOCALE_CODES = SUPPORTED_LOCALES.map((l) => l.code);
@@ -30,42 +30,39 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
   /* ------------------------------------------------------------------ */
   /* GET /i18n/locales — list supported locales (public, no auth)        */
   /* ------------------------------------------------------------------ */
-  server.get("/i18n/locales", async () => {
+  server.get('/i18n/locales', async () => {
     return { ok: true, locales: SUPPORTED_LOCALES };
   });
 
   /* ------------------------------------------------------------------ */
   /* GET /i18n/locale — get current clinician locale                     */
   /* ------------------------------------------------------------------ */
-  server.get("/i18n/locale", async (request, reply) => {
+  server.get('/i18n/locale', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
     if (!isPgConfigured()) {
-      return { ok: true, locale: "en", source: "default", note: "PG not configured" };
+      return { ok: true, locale: 'en', source: 'default', note: 'PG not configured' };
     }
 
     try {
-      const repo = await import("../platform/pg/repo/pg-user-locale-repo.js");
-      const pref = await repo.getLocalePreference(
-        session.tenantId || "default",
-        session.duz
-      );
+      const repo = await import('../platform/pg/repo/pg-user-locale-repo.js');
+      const pref = await repo.getLocalePreference(session.tenantId || 'default', session.duz);
       return {
         ok: true,
-        locale: pref?.locale ?? "en",
-        source: pref ? "database" : "default",
+        locale: pref?.locale ?? 'en',
+        source: pref ? 'database' : 'default',
       };
     } catch (err: any) {
-      log.warn("Failed to get locale preference", { error: err.message });
-      return { ok: true, locale: "en", source: "default", note: "DB read failed" };
+      log.warn('Failed to get locale preference', { error: err.message });
+      return { ok: true, locale: 'en', source: 'default', note: 'DB read failed' };
     }
   });
 
   /* ------------------------------------------------------------------ */
   /* PUT /i18n/locale — set clinician locale preference                  */
   /* ------------------------------------------------------------------ */
-  server.put("/i18n/locale", async (request, reply) => {
+  server.put('/i18n/locale', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
@@ -76,44 +73,44 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
       reply.code(400);
       return {
         ok: false,
-        error: `Invalid locale. Supported: ${VALID_LOCALE_CODES.join(", ")}`,
+        error: `Invalid locale. Supported: ${VALID_LOCALE_CODES.join(', ')}`,
       };
     }
 
     if (!isPgConfigured()) {
       reply.code(503);
-      return { ok: false, error: "Postgres not configured — locale cannot be persisted" };
+      return { ok: false, error: 'Postgres not configured — locale cannot be persisted' };
     }
 
     try {
-      const repo = await import("../platform/pg/repo/pg-user-locale-repo.js");
+      const repo = await import('../platform/pg/repo/pg-user-locale-repo.js');
       const row = await repo.upsertLocalePreference(
-        session.tenantId || "default",
+        session.tenantId || 'default',
         session.duz,
         locale
       );
-      log.info("Locale preference updated", { duz: session.duz, locale });
+      log.info('Locale preference updated', { duz: session.duz, locale });
       return { ok: true, locale: row.locale, persisted: true };
     } catch (err: any) {
-      log.error("Failed to set locale preference", { error: err.message });
+      log.error('Failed to set locale preference', { error: err.message });
       reply.code(500);
-      return { ok: false, error: "Failed to persist locale preference" };
+      return { ok: false, error: 'Failed to persist locale preference' };
     }
   });
 
   /* ------------------------------------------------------------------ */
   /* GET /intake/question-schema — locale-aware intake questions          */
   /* ------------------------------------------------------------------ */
-  server.get("/intake/question-schema", async (request, reply) => {
+  server.get('/intake/question-schema', async (request, reply) => {
     const query = request.query as any;
-    const locale = query.locale || "en";
-    const tenantId = query.tenantId || "default";
+    const locale = query.locale || 'en';
+    const tenantId = query.tenantId || 'default';
 
     if (!VALID_LOCALE_CODES.includes(locale)) {
       reply.code(400);
       return {
         ok: false,
-        error: `Invalid locale. Supported: ${VALID_LOCALE_CODES.join(", ")}`,
+        error: `Invalid locale. Supported: ${VALID_LOCALE_CODES.join(', ')}`,
       };
     }
 
@@ -123,13 +120,13 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
         ok: true,
         locale,
         questions: getStaticQuestions(locale),
-        source: "static",
-        note: "PG not configured — returning static defaults",
+        source: 'static',
+        note: 'PG not configured — returning static defaults',
       };
     }
 
     try {
-      const repo = await import("../platform/pg/repo/pg-intake-question-repo.js");
+      const repo = await import('../platform/pg/repo/pg-intake-question-repo.js');
       // Seed defaults if needed (idempotent)
       await repo.seedDefaultQuestions(tenantId);
       const questions = await repo.getQuestionsByLocale(tenantId, locale);
@@ -137,17 +134,17 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
         ok: true,
         locale,
         questions: questions.map(formatQuestion),
-        source: "database",
+        source: 'database',
         count: questions.length,
       };
     } catch (err: any) {
-      log.warn("Failed to get intake questions from DB", { error: err.message });
+      log.warn('Failed to get intake questions from DB', { error: err.message });
       return {
         ok: true,
         locale,
         questions: getStaticQuestions(locale),
-        source: "static",
-        note: "DB read failed — returning static defaults",
+        source: 'static',
+        note: 'DB read failed — returning static defaults',
       };
     }
   });
@@ -155,63 +152,73 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
   /* ------------------------------------------------------------------ */
   /* GET /admin/intake/question-schema — list all questions (admin)       */
   /* ------------------------------------------------------------------ */
-  server.get("/admin/intake/question-schema", async (request, reply) => {
+  server.get('/admin/intake/question-schema', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     if (!isPgConfigured()) {
       reply.code(503);
-      return { ok: false, error: "Postgres not configured" };
+      return { ok: false, error: 'Postgres not configured' };
     }
 
     try {
-      const repo = await import("../platform/pg/repo/pg-intake-question-repo.js");
-      const tenantId = session.tenantId || "default";
+      const repo = await import('../platform/pg/repo/pg-intake-question-repo.js');
+      const tenantId = session.tenantId || 'default';
       const questions = await repo.getAllQuestions(tenantId);
       return { ok: true, questions: questions.map(formatQuestion), count: questions.length };
     } catch (err: any) {
-      log.error("Failed to list intake questions", { error: err.message });
+      log.error('Failed to list intake questions', { error: err.message });
       reply.code(500);
-      return { ok: false, error: "Failed to list questions" };
+      return { ok: false, error: 'Failed to list questions' };
     }
   });
 
   /* ------------------------------------------------------------------ */
   /* POST /admin/intake/question-schema — create question (admin)        */
   /* ------------------------------------------------------------------ */
-  server.post("/admin/intake/question-schema", async (request, reply) => {
+  server.post('/admin/intake/question-schema', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     const body = (request.body as any) || {};
-    const { questionKey, locale, category, questionText, questionType, options, displayOrder, required, vistaFieldTarget } = body;
+    const {
+      questionKey,
+      locale,
+      category,
+      questionText,
+      questionType,
+      options,
+      displayOrder,
+      required,
+      vistaFieldTarget,
+    } = body;
 
     if (!questionKey || !questionText) {
       reply.code(400);
-      return { ok: false, error: "questionKey and questionText are required" };
+      return { ok: false, error: 'questionKey and questionText are required' };
     }
 
     if (locale && !VALID_LOCALE_CODES.includes(locale)) {
       reply.code(400);
-      return { ok: false, error: `Invalid locale. Supported: ${VALID_LOCALE_CODES.join(", ")}` };
+      return { ok: false, error: `Invalid locale. Supported: ${VALID_LOCALE_CODES.join(', ')}` };
     }
 
     if (!isPgConfigured()) {
       reply.code(503);
-      return { ok: false, error: "Postgres not configured" };
+      return { ok: false, error: 'Postgres not configured' };
     }
 
     try {
-      const repo = await import("../platform/pg/repo/pg-intake-question-repo.js");
+      const repo = await import('../platform/pg/repo/pg-intake-question-repo.js');
       const row = await repo.insertQuestion({
-        tenantId: session.tenantId || "default",
+        tenantId: session.tenantId || 'default',
         questionKey,
-        locale: locale || "en",
-        category: category || "general",
+        locale: locale || 'en',
+        category: category || 'general',
         questionText,
-        questionType: questionType || "text",
+        questionType: questionType || 'text',
         optionsJson: options ? JSON.stringify(options) : null,
         displayOrder: displayOrder ?? 99,
         required: required ?? false,
@@ -220,18 +227,18 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
       });
       return { ok: true, question: formatQuestion(row) };
     } catch (err: any) {
-      log.error("Failed to create intake question", { error: err.message });
+      log.error('Failed to create intake question', { error: err.message });
       reply.code(500);
-      return { ok: false, error: "Failed to create question" };
+      return { ok: false, error: 'Failed to create question' };
     }
   });
 
   /* ------------------------------------------------------------------ */
   /* Phase 497 (W34-P7): GET /i18n/coverage — per-pack locale coverage  */
   /* ------------------------------------------------------------------ */
-  server.get("/i18n/coverage", async () => {
+  server.get('/i18n/coverage', async () => {
     // Dynamic import to avoid hard dep on country-pack-loader at module level
-    const { getActiveCountryPacks } = await import("../platform/country-pack-loader.js");
+    const { getActiveCountryPacks } = await import('../platform/country-pack-loader.js');
     const packs = getActiveCountryPacks();
 
     const report = packs.map((r) => {
@@ -239,11 +246,11 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
       return {
         countryCode: p.countryCode,
         status: p.status,
-        supportedLocales: p.supportedLocales || [p.defaultLocale || "en"],
-        defaultLocale: p.defaultLocale || "en",
+        supportedLocales: p.supportedLocales || [p.defaultLocale || 'en'],
+        defaultLocale: p.defaultLocale || 'en',
         webMessageFiles: (p.supportedLocales || []).map((locale: string) => ({
           locale,
-          note: "Check via i18n-coverage-gate.mjs for file-level validation",
+          note: 'Check via i18n-coverage-gate.mjs for file-level validation',
         })),
       };
     });
@@ -279,24 +286,118 @@ function formatQuestion(row: any) {
 
 /** Static fallback questions when PG is unavailable */
 function getStaticQuestions(locale: string) {
-  const questions: Record<string, Array<{ key: string; text: string; type: string; required: boolean; category: string; order: number }>> = {
+  const questions: Record<
+    string,
+    Array<{
+      key: string;
+      text: string;
+      type: string;
+      required: boolean;
+      category: string;
+      order: number;
+    }>
+  > = {
     en: [
-      { key: "reason_for_visit", text: "What is the reason for your visit today?", type: "text", required: true, category: "chief_complaint", order: 1 },
-      { key: "known_allergies", text: "Do you have any known allergies?", type: "yes_no_detail", required: true, category: "allergies", order: 2 },
-      { key: "current_medications", text: "Are you currently taking any medications?", type: "yes_no_detail", required: true, category: "medications", order: 3 },
-      { key: "additional_concerns", text: "Is there anything else you would like your provider to know?", type: "textarea", required: false, category: "general", order: 4 },
+      {
+        key: 'reason_for_visit',
+        text: 'What is the reason for your visit today?',
+        type: 'text',
+        required: true,
+        category: 'chief_complaint',
+        order: 1,
+      },
+      {
+        key: 'known_allergies',
+        text: 'Do you have any known allergies?',
+        type: 'yes_no_detail',
+        required: true,
+        category: 'allergies',
+        order: 2,
+      },
+      {
+        key: 'current_medications',
+        text: 'Are you currently taking any medications?',
+        type: 'yes_no_detail',
+        required: true,
+        category: 'medications',
+        order: 3,
+      },
+      {
+        key: 'additional_concerns',
+        text: 'Is there anything else you would like your provider to know?',
+        type: 'textarea',
+        required: false,
+        category: 'general',
+        order: 4,
+      },
     ],
     fil: [
-      { key: "reason_for_visit", text: "Ano ang dahilan ng iyong pagbisita ngayon?", type: "text", required: true, category: "chief_complaint", order: 1 },
-      { key: "known_allergies", text: "Mayroon ka bang mga kilalang allergy?", type: "yes_no_detail", required: true, category: "allergies", order: 2 },
-      { key: "current_medications", text: "Kasalukuyan ka bang umiinom ng anumang gamot?", type: "yes_no_detail", required: true, category: "medications", order: 3 },
-      { key: "additional_concerns", text: "May iba pa ba kayong gustong ipaalam sa inyong doktor?", type: "textarea", required: false, category: "general", order: 4 },
+      {
+        key: 'reason_for_visit',
+        text: 'Ano ang dahilan ng iyong pagbisita ngayon?',
+        type: 'text',
+        required: true,
+        category: 'chief_complaint',
+        order: 1,
+      },
+      {
+        key: 'known_allergies',
+        text: 'Mayroon ka bang mga kilalang allergy?',
+        type: 'yes_no_detail',
+        required: true,
+        category: 'allergies',
+        order: 2,
+      },
+      {
+        key: 'current_medications',
+        text: 'Kasalukuyan ka bang umiinom ng anumang gamot?',
+        type: 'yes_no_detail',
+        required: true,
+        category: 'medications',
+        order: 3,
+      },
+      {
+        key: 'additional_concerns',
+        text: 'May iba pa ba kayong gustong ipaalam sa inyong doktor?',
+        type: 'textarea',
+        required: false,
+        category: 'general',
+        order: 4,
+      },
     ],
     es: [
-      { key: "reason_for_visit", text: "Cual es el motivo de su visita hoy?", type: "text", required: true, category: "chief_complaint", order: 1 },
-      { key: "known_allergies", text: "Tiene alguna alergia conocida?", type: "yes_no_detail", required: true, category: "allergies", order: 2 },
-      { key: "current_medications", text: "Esta tomando algun medicamento actualmente?", type: "yes_no_detail", required: true, category: "medications", order: 3 },
-      { key: "additional_concerns", text: "Hay algo mas que le gustaria que su medico supiera?", type: "textarea", required: false, category: "general", order: 4 },
+      {
+        key: 'reason_for_visit',
+        text: 'Cual es el motivo de su visita hoy?',
+        type: 'text',
+        required: true,
+        category: 'chief_complaint',
+        order: 1,
+      },
+      {
+        key: 'known_allergies',
+        text: 'Tiene alguna alergia conocida?',
+        type: 'yes_no_detail',
+        required: true,
+        category: 'allergies',
+        order: 2,
+      },
+      {
+        key: 'current_medications',
+        text: 'Esta tomando algun medicamento actualmente?',
+        type: 'yes_no_detail',
+        required: true,
+        category: 'medications',
+        order: 3,
+      },
+      {
+        key: 'additional_concerns',
+        text: 'Hay algo mas que le gustaria que su medico supiera?',
+        type: 'textarea',
+        required: false,
+        category: 'general',
+        order: 4,
+      },
     ],
   };
   return questions[locale] || questions.en;

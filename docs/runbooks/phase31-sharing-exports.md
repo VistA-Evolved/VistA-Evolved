@@ -52,14 +52,14 @@ curl -X POST http://localhost:3001/portal/share/verify/<token> \
 
 ### Security Parameters
 
-| Parameter | Phase 27 | Phase 31 |
-|-----------|----------|----------|
-| Default TTL | 72 hours | 60 minutes |
-| Max TTL | 7 days | 24 hours |
-| Lockout threshold | 5 attempts | 3 attempts |
-| One-time redeem | N/A | Optional (auto-revokes after first access) |
-| CAPTCHA | None | Stub (ready for real provider) |
-| Shareable sections | All | Curated: medications, allergies, problems, immunizations, labs |
+| Parameter          | Phase 27   | Phase 31                                                       |
+| ------------------ | ---------- | -------------------------------------------------------------- |
+| Default TTL        | 72 hours   | 60 minutes                                                     |
+| Max TTL            | 7 days     | 24 hours                                                       |
+| Lockout threshold  | 5 attempts | 3 attempts                                                     |
+| One-time redeem    | N/A        | Optional (auto-revokes after first access)                     |
+| CAPTCHA            | None       | Stub (ready for real provider)                                 |
+| Shareable sections | All        | Curated: medications, allergies, problems, immunizations, labs |
 
 ---
 
@@ -116,6 +116,7 @@ curl http://localhost:3001/portal/export/shc/immunizations \
 Returns JWS + `shc:/` numeric URI (for QR code generation).
 
 **WARNING**: Dev mode credentials use `DEV-HS256` algorithm. NOT production-grade. Production requires:
+
 - ES256 (P-256) signing key
 - Published JWKS at `/.well-known/jwks.json`
 - Proper FHIR Bundle validation
@@ -135,26 +136,27 @@ Both pages accessible from the portal sidebar navigation.
 
 ### Share-Code Threats
 
-| Threat | Mitigation |
-|--------|------------|
-| Brute-force access code | 3-attempt lockout, 6-char code (32^6 = 1B combos) |
-| Link forwarding | DOB verification required in addition to access code |
-| Stale access | 60-min default TTL, max 24h |
-| Session replay | One-time redeem option auto-revokes after first use |
-| Bot attacks | CAPTCHA stub (ready for real provider) |
-| Over-sharing | Curated section subset (no demographics/vitals in shares) |
+| Threat                  | Mitigation                                                |
+| ----------------------- | --------------------------------------------------------- |
+| Brute-force access code | 3-attempt lockout, 6-char code (32^6 = 1B combos)         |
+| Link forwarding         | DOB verification required in addition to access code      |
+| Stale access            | 60-min default TTL, max 24h                               |
+| Session replay          | One-time redeem option auto-revokes after first use       |
+| Bot attacks             | CAPTCHA stub (ready for real provider)                    |
+| Over-sharing            | Curated section subset (no demographics/vitals in shares) |
 
 ### Export Threats
 
-| Threat | Mitigation |
-|--------|------------|
-| Unauthorized export | Session required, all exports audited |
-| Data exfiltration at rest | PDF/JSON contain no SSN; minimal PII |
-| SHC credential forgery | Dev mode clearly marked; prod needs HSM signing |
+| Threat                    | Mitigation                                      |
+| ------------------------- | ----------------------------------------------- |
+| Unauthorized export       | Session required, all exports audited           |
+| Data exfiltration at rest | PDF/JSON contain no SSN; minimal PII            |
+| SHC credential forgery    | Dev mode clearly marked; prod needs HSM signing |
 
 ### Audit Coverage
 
 All operations logged to portal audit trail:
+
 - `portal.share.create` / `portal.share.access` / `portal.share.revoke` / `portal.share.view`
 - `portal.export.section` / `portal.export.full` / `portal.export.json` / `portal.export.shc`
 

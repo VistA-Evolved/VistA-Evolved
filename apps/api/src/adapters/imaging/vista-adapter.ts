@@ -3,16 +3,16 @@
  * Delegates to existing imaging-service.ts / imaging-worklist.ts.
  */
 
-import type { ImagingAdapter, ImagingStudy, ImagingOrder } from "./interface.js";
-import type { AdapterResult } from "../types.js";
+import type { ImagingAdapter, ImagingStudy, ImagingOrder } from './interface.js';
+import type { AdapterResult } from '../types.js';
 
 export class VistaImagingAdapter implements ImagingAdapter {
-  readonly adapterType = "imaging" as const;
-  readonly implementationName = "vista-orthanc";
+  readonly adapterType = 'imaging' as const;
+  readonly implementationName = 'vista-orthanc';
   readonly _isStub = false;
 
   async healthCheck() {
-    return { ok: true, latencyMs: 0, detail: "VistA imaging adapter (Orthanc + MAG RPCs)" };
+    return { ok: true, latencyMs: 0, detail: 'VistA imaging adapter (Orthanc + MAG RPCs)' };
   }
 
   async getStudies(patientDfn: string): Promise<AdapterResult<ImagingStudy[]>> {
@@ -25,12 +25,12 @@ export class VistaImagingAdapter implements ImagingAdapter {
   }
 
   async getViewerUrl(studyId: string): Promise<AdapterResult<string>> {
-    const base = process.env.OHIF_VIEWER_URL || "http://localhost:3003";
+    const base = process.env.OHIF_VIEWER_URL || 'http://localhost:3003';
     return { ok: true, data: `${base}/viewer?StudyInstanceUIDs=${studyId}` };
   }
 
   async submitOrder(): Promise<AdapterResult<ImagingOrder>> {
-    return { ok: false, pending: true, target: "ORWDXR NEW ORDER" };
+    return { ok: false, pending: true, target: 'ORWDXR NEW ORDER' };
   }
 
   async getWorklist(): Promise<AdapterResult<ImagingOrder[]>> {

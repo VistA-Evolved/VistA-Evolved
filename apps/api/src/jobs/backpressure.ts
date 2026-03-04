@@ -14,17 +14,17 @@
  *  JOB_BACKPRESSURE_MAX_PER_TASK - Max pending per task type (default: 200)
  */
 
-import { getPgPool, isPgConfigured } from "../platform/pg/index.js";
-import { log } from "../lib/logger.js";
+import { getPgPool, isPgConfigured } from '../platform/pg/index.js';
+import { log } from '../lib/logger.js';
 
 // ── Config ────────────────────────────────────────────────
 
-const MAX_PENDING = parseInt(process.env.JOB_BACKPRESSURE_MAX_PENDING ?? "1000", 10) || 1000;
-const MAX_PER_TASK = parseInt(process.env.JOB_BACKPRESSURE_MAX_PER_TASK ?? "200", 10) || 200;
+const MAX_PENDING = parseInt(process.env.JOB_BACKPRESSURE_MAX_PENDING ?? '1000', 10) || 1000;
+const MAX_PER_TASK = parseInt(process.env.JOB_BACKPRESSURE_MAX_PER_TASK ?? '200', 10) || 200;
 
-const RAW_SCHEMA = process.env.JOB_WORKER_SCHEMA ?? "graphile_worker";
+const RAW_SCHEMA = process.env.JOB_WORKER_SCHEMA ?? 'graphile_worker';
 // Sanitize schema name to prevent SQL injection (only allow lowercase identifier chars)
-const SCHEMA = /^[a-z_][a-z0-9_]*$/.test(RAW_SCHEMA) ? RAW_SCHEMA : "graphile_worker";
+const SCHEMA = /^[a-z_][a-z0-9_]*$/.test(RAW_SCHEMA) ? RAW_SCHEMA : 'graphile_worker';
 
 // ── Types ─────────────────────────────────────────────────
 
@@ -100,8 +100,7 @@ export async function getQueueHealth(): Promise<QueueHealth | null> {
       };
     });
 
-    const backpressure = pendingTotal >= MAX_PENDING ||
-      perTask.some(t => t.backpressure);
+    const backpressure = pendingTotal >= MAX_PENDING || perTask.some((t) => t.backpressure);
 
     return {
       ok: !backpressure,
@@ -116,10 +115,10 @@ export async function getQueueHealth(): Promise<QueueHealth | null> {
       timestamp: now,
     };
   } catch (err: any) {
-    log.warn("Failed to query queue health", { error: err.message });
+    log.warn('Failed to query queue health', { error: err.message });
     return {
       ok: false,
-      backpressure: true,  // fail-closed: assume backpressure on error
+      backpressure: true, // fail-closed: assume backpressure on error
       pendingTotal: -1,
       runningTotal: -1,
       failedTotal: -1,
@@ -144,7 +143,7 @@ export async function isTaskBackpressured(taskIdentifier: string): Promise<boole
 
   if (health.pendingTotal >= MAX_PENDING) return true;
 
-  const task = health.perTask.find(t => t.taskIdentifier === taskIdentifier);
+  const task = health.perTask.find((t) => t.taskIdentifier === taskIdentifier);
   return task?.backpressure ?? false;
 }
 
@@ -156,12 +155,12 @@ export async function addJobWithBackpressure(
   addJob: Function,
   taskIdentifier: string,
   payload: Record<string, unknown>,
-  opts?: { maxAttempts?: number; runAt?: Date; jobKey?: string },
+  opts?: { maxAttempts?: number; runAt?: Date; jobKey?: string }
 ): Promise<{ queued: boolean; reason?: string; jobId?: string }> {
   const pressured = await isTaskBackpressured(taskIdentifier);
 
   if (pressured) {
-    log.warn("Job rejected due to backpressure", {
+    log.warn('Job rejected due to backpressure', {
       task: taskIdentifier,
       maxPending: MAX_PENDING,
       maxPerTask: MAX_PER_TASK,

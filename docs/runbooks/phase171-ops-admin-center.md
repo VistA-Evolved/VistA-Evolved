@@ -17,16 +17,17 @@ Admin UI (ops/page.tsx)
 
 ## API Endpoints
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| GET | `/admin/ops/overview` | admin | Unified ops health snapshot |
-| GET | `/admin/ops/alerts` | admin | Active alert conditions |
-| GET | `/admin/ops/runbooks` | admin | Runbook index with deep links |
-| GET | `/admin/ops/store-inventory` | admin | Store policy summary |
+| Method | Path                         | Auth  | Description                   |
+| ------ | ---------------------------- | ----- | ----------------------------- |
+| GET    | `/admin/ops/overview`        | admin | Unified ops health snapshot   |
+| GET    | `/admin/ops/alerts`          | admin | Active alert conditions       |
+| GET    | `/admin/ops/runbooks`        | admin | Runbook index with deep links |
+| GET    | `/admin/ops/store-inventory` | admin | Store policy summary          |
 
 ## Overview Response
 
 The `/admin/ops/overview` endpoint returns:
+
 - `overallScore` — 0-100 aggregate posture score
 - `domains[]` — Per-domain health (observability, tenant, performance, backup, data-plane)
 - `alerts[]` — Active alert conditions with severity
@@ -35,15 +36,16 @@ The `/admin/ops/overview` endpoint returns:
 
 ## Alert Thresholds
 
-| Score | Severity | Action |
-|-------|----------|--------|
-| >= 80% | None | Healthy |
-| 50-79% | Warning | Investigate domain |
-| < 50% | Critical | Immediate action |
+| Score  | Severity | Action             |
+| ------ | -------- | ------------------ |
+| >= 80% | None     | Healthy            |
+| 50-79% | Warning  | Investigate domain |
+| < 50%  | Critical | Immediate action   |
 
 ## Admin UI
 
 Located at `/cprs/admin/ops`:
+
 - **Overview tab**: Score cards, domain health grid
 - **Alerts tab**: Active alerts with severity badges
 - **Store Inventory tab**: Classification/domain/durability breakdown

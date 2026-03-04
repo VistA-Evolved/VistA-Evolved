@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /**
  * I18nProvider — Phase 132: Wraps the portal with next-intl locale context.
@@ -9,8 +9,8 @@
  * Locale is managed via localStorage + portal settings API sync.
  */
 
-import { useState, useEffect, useCallback, createContext, useContext } from "react";
-import { NextIntlClientProvider } from "next-intl";
+import { useState, useEffect, useCallback, createContext, useContext } from 'react';
+import { NextIntlClientProvider } from 'next-intl';
 import {
   type SupportedLocale,
   DEFAULT_LOCALE,
@@ -18,7 +18,7 @@ import {
   setStoredLocale,
   syncLocaleToApi,
   loadLocaleFromApi,
-} from "@/lib/i18n";
+} from '@/lib/i18n';
 
 // Dynamic message loaders — fetch from /messages/*.json at runtime
 async function loadMessagesForLocale(locale: string): Promise<Record<string, any>> {
@@ -29,9 +29,9 @@ async function loadMessagesForLocale(locale: string): Promise<Record<string, any
     // fallback
   }
   // Fallback to English
-  if (locale !== "en") {
+  if (locale !== 'en') {
     try {
-      const res = await fetch("/messages/en.json");
+      const res = await fetch('/messages/en.json');
       if (res.ok) return res.json();
     } catch {
       // ignore

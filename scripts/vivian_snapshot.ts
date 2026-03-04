@@ -95,7 +95,7 @@ interface FlatPackage {
   vdlLinks: string[];
   distribution: string[];
   rpcCount: number;
-  rpcs: string[];  // filled later from 8994
+  rpcs: string[]; // filled later from 8994
 }
 
 function flattenPackageTree(node: VivianPackageNode, result: FlatPackage[] = []): FlatPackage[] {
@@ -136,7 +136,14 @@ interface RpcEntry {
   version: string;
   appProxyAllowed: boolean;
   description: string;
-  inputParams: Array<{ name: string; type: string; required: boolean; sequence: number; maxLength: number; description: string }>;
+  inputParams: Array<{
+    name: string;
+    type: string;
+    required: boolean;
+    sequence: number;
+    maxLength: number;
+    description: string;
+  }>;
   returnDescription: string;
   package?: string;
 }
@@ -170,7 +177,9 @@ function parseRpcFile(data: Record<string, any>): RpcEntry[] {
             .map((s: string) => s.replace(/^['"]|['"]$/g, '').trim())
             .join(' ')
             .substring(0, 500);
-        } catch { description = ''; }
+        } catch {
+          description = '';
+        }
       }
     }
 
@@ -186,7 +195,7 @@ function parseRpcFile(data: Record<string, any>): RpcEntry[] {
           inputParams.push({
             name: pname,
             type: '',
-            required: paramRaw.includes("REQUIRED: YES"),
+            required: paramRaw.includes('REQUIRED: YES'),
             sequence: 0,
             maxLength: 0,
             description: '',
@@ -207,7 +216,9 @@ function parseRpcFile(data: Record<string, any>): RpcEntry[] {
             .map((s: string) => s.replace(/^['"]|['"]$/g, '').trim())
             .join(' ')
             .substring(0, 300);
-        } catch { returnDescription = ''; }
+        } catch {
+          returnDescription = '';
+        }
       }
     }
 
@@ -265,32 +276,23 @@ async function run() {
 
   // 1. Fetch packages.json (hierarchical package tree)
   console.log('\n[vivian] Step 1: Fetching package hierarchy...');
-  const packagesTree = await fetchJSON(
-    `${VIVIAN_DATA_BASE}/packages.json`,
-    'packages'
-  );
+  const packagesTree = await fetchJSON(`${VIVIAN_DATA_BASE}/packages.json`, 'packages');
 
   // 2. Fetch 8994.json (ALL Remote Procedure definitions)
   console.log('\n[vivian] Step 2: Fetching RPC definitions (file 8994)...');
   const rpcData = await fetchJSON(
     `${VIVIAN_DATA_BASE}/8994.json`,
     '8994',
-    120000  // 2 min timeout -- this file is huge
+    120000 // 2 min timeout -- this file is huge
   );
 
   // 3. Fetch pkgdep.json (package dependencies)
   console.log('\n[vivian] Step 3: Fetching package dependencies...');
-  const pkgDeps = await fetchJSON(
-    `${VIVIAN_DATA_BASE}/pkgdep.json`,
-    'pkgdep'
-  );
+  const pkgDeps = await fetchJSON(`${VIVIAN_DATA_BASE}/pkgdep.json`, 'pkgdep');
 
   // 4. Fetch PackageDes.json (descriptions by namespace)
   console.log('\n[vivian] Step 4: Fetching package descriptions...');
-  const pkgDescs = await fetchJSON(
-    `${VIVIAN_SCRIPTS_BASE}/PackageDes.json`,
-    'PackageDes'
-  );
+  const pkgDescs = await fetchJSON(`${VIVIAN_SCRIPTS_BASE}/PackageDes.json`, 'PackageDes');
 
   // ---- Process packages ----
   console.log('\n[vivian] Processing package tree...');
@@ -367,12 +369,12 @@ async function run() {
 
   // Backward-compat aliases for CPRS parity matrix (guessPackage uses these keys)
   const CPRS_ALIASES: Record<string, string> = {
-    'GMR': 'GMRV',     // Vitals: parity matrix uses GMR, Vivian uses GMRV
-    'GMRD': 'GMRA',    // Allergy tracking data
-    'XUS': 'XU',       // Kernel sign-on
-    'XUSRB': 'XU',     // Kernel XWB sign-on routines
-    'DDR': 'DI',       // Data Dictionary -> VA FileMan
-    'VE': 'OR',        // VistA-Evolved custom RPCs default to OR context
+    GMR: 'GMRV', // Vitals: parity matrix uses GMR, Vivian uses GMRV
+    GMRD: 'GMRA', // Allergy tracking data
+    XUS: 'XU', // Kernel sign-on
+    XUSRB: 'XU', // Kernel XWB sign-on routines
+    DDR: 'DI', // Data Dictionary -> VA FileMan
+    VE: 'OR', // VistA-Evolved custom RPCs default to OR context
   };
   for (const [alias, target] of Object.entries(CPRS_ALIASES)) {
     if (!packagesIndex[alias] && packagesIndex[target]) {
@@ -382,7 +384,7 @@ async function run() {
 
   // ---- Build compact RPC catalog ----
   // Full detail for every RPC (name, tag, routine, returnType, availability, description, params)
-  const rpcCatalog = allRpcs.map(r => ({
+  const rpcCatalog = allRpcs.map((r) => ({
     name: r.name,
     tag: r.tag,
     routine: r.routine,
@@ -391,7 +393,7 @@ async function run() {
     inactive: r.inactive || '',
     appProxyAllowed: r.appProxyAllowed,
     description: r.description,
-    inputParams: r.inputParams.map(p => p.name),
+    inputParams: r.inputParams.map((p) => p.name),
     returnDescription: r.returnDescription,
     package: r.package || '',
   }));
@@ -404,11 +406,11 @@ async function run() {
   }
 
   // ---- Stats ----
-  const rpcPackages = new Set(allRpcs.filter(r => r.package).map(r => r.package));
-  const activeRpcs = allRpcs.filter(r => !r.inactive || r.inactive === 'ACTIVE');
-  const publicRpcs = allRpcs.filter(r => r.availability === 'PUBLIC');
-  const restrictedRpcs = allRpcs.filter(r => r.availability === 'RESTRICTED');
-  const subscribedRpcs = allRpcs.filter(r => r.availability === 'SUBSCRIPTION');
+  const rpcPackages = new Set(allRpcs.filter((r) => r.package).map((r) => r.package));
+  const activeRpcs = allRpcs.filter((r) => !r.inactive || r.inactive === 'ACTIVE');
+  const publicRpcs = allRpcs.filter((r) => r.availability === 'PUBLIC');
+  const restrictedRpcs = allRpcs.filter((r) => r.availability === 'RESTRICTED');
+  const subscribedRpcs = allRpcs.filter((r) => r.availability === 'SUBSCRIPTION');
 
   // ---- Output ----
   const output = {
@@ -418,8 +420,8 @@ async function run() {
       vivianDataSource: VIVIAN_DATA_BASE,
       vivianDoxBase: VIVIAN_DOX_BASE,
       packageCount: flatPackages.length,
-      packagesWithRPC: flatPackages.filter(p => p.hasRPC).length,
-      packagesWithHL7: flatPackages.filter(p => p.hasHL7).length,
+      packagesWithRPC: flatPackages.filter((p) => p.hasRPC).length,
+      packagesWithHL7: flatPackages.filter((p) => p.hasHL7).length,
       totalRpcs: allRpcs.length,
       activeRpcs: activeRpcs.length,
       publicRpcs: publicRpcs.length,
@@ -436,11 +438,15 @@ async function run() {
   writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, 2) + '\n');
   const fileSizeMB = (Buffer.byteLength(JSON.stringify(output, null, 2)) / 1024 / 1024).toFixed(1);
   console.log(`\n[vivian] Wrote ${OUTPUT_FILE} (${fileSizeMB} MB)`);
-  console.log(`[vivian] ${flatPackages.length} packages, ${allRpcs.length} RPCs, ${Object.keys(dependencyMap).length} dependency entries`);
-  console.log(`[vivian] RPC breakdown: ${activeRpcs.length} active, ${publicRpcs.length} public, ${restrictedRpcs.length} restricted, ${subscribedRpcs.length} subscription`);
+  console.log(
+    `[vivian] ${flatPackages.length} packages, ${allRpcs.length} RPCs, ${Object.keys(dependencyMap).length} dependency entries`
+  );
+  console.log(
+    `[vivian] RPC breakdown: ${activeRpcs.length} active, ${publicRpcs.length} public, ${restrictedRpcs.length} restricted, ${subscribedRpcs.length} subscription`
+  );
 }
 
-run().catch(err => {
+run().catch((err) => {
   console.error('[vivian] Fatal error:', err.message);
   process.exit(1);
 });

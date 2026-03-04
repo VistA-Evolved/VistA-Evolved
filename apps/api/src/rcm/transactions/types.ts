@@ -55,36 +55,36 @@ export interface TransactionEnvelope {
 /* ── Transaction Lifecycle ───────────────────────────────────── */
 
 export type TransactionState =
-  | 'created'       // Envelope built, not yet serialized
-  | 'serialized'    // X12 wire format generated
-  | 'validated'     // Pre-flight validation passed
-  | 'queued'        // In outbound queue
-  | 'transmitted'   // Sent to payer/clearinghouse
-  | 'ack_pending'   // Awaiting 999/TA1 acknowledgement
-  | 'ack_accepted'  // 999 accepted
-  | 'ack_rejected'  // 999 rejected
+  | 'created' // Envelope built, not yet serialized
+  | 'serialized' // X12 wire format generated
+  | 'validated' // Pre-flight validation passed
+  | 'queued' // In outbound queue
+  | 'transmitted' // Sent to payer/clearinghouse
+  | 'ack_pending' // Awaiting 999/TA1 acknowledgement
+  | 'ack_accepted' // 999 accepted
+  | 'ack_rejected' // 999 rejected
   | 'response_pending' // Awaiting substantive response (271/277/835)
   | 'response_received' // Got response
-  | 'reconciled'    // Matched back to source
-  | 'failed'        // Unrecoverable error
-  | 'cancelled'     // Manually cancelled
-  | 'dlq';          // Moved to dead-letter queue
+  | 'reconciled' // Matched back to source
+  | 'failed' // Unrecoverable error
+  | 'cancelled' // Manually cancelled
+  | 'dlq'; // Moved to dead-letter queue
 
 export const TRANSACTION_STATE_TRANSITIONS: Record<TransactionState, TransactionState[]> = {
-  created:           ['serialized', 'failed', 'cancelled'],
-  serialized:        ['validated', 'failed', 'cancelled'],
-  validated:         ['queued', 'failed', 'cancelled'],
-  queued:            ['transmitted', 'failed', 'cancelled'],
-  transmitted:       ['ack_pending', 'failed', 'cancelled'],
-  ack_pending:       ['ack_accepted', 'ack_rejected', 'failed', 'dlq'],
-  ack_accepted:      ['response_pending', 'reconciled'],
-  ack_rejected:      ['queued', 'failed', 'dlq'],  // retry or DLQ
-  response_pending:  ['response_received', 'failed', 'dlq'],
+  created: ['serialized', 'failed', 'cancelled'],
+  serialized: ['validated', 'failed', 'cancelled'],
+  validated: ['queued', 'failed', 'cancelled'],
+  queued: ['transmitted', 'failed', 'cancelled'],
+  transmitted: ['ack_pending', 'failed', 'cancelled'],
+  ack_pending: ['ack_accepted', 'ack_rejected', 'failed', 'dlq'],
+  ack_accepted: ['response_pending', 'reconciled'],
+  ack_rejected: ['queued', 'failed', 'dlq'], // retry or DLQ
+  response_pending: ['response_received', 'failed', 'dlq'],
   response_received: ['reconciled', 'failed'],
-  reconciled:        [],  // terminal
-  failed:            ['queued', 'dlq'],  // retry or DLQ
-  cancelled:         [],  // terminal
-  dlq:               ['queued'],  // manual retry from DLQ
+  reconciled: [], // terminal
+  failed: ['queued', 'dlq'], // retry or DLQ
+  cancelled: [], // terminal
+  dlq: ['queued'], // manual retry from DLQ
 };
 
 /* ── Translator types ────────────────────────────────────────── */
@@ -166,11 +166,14 @@ export interface ConnectivityProfile {
   };
 
   /** Transaction-specific response windows */
-  responseWindows: Record<X12TransactionSet, {
-    expectedResponseTimeMs: number;
-    maxWaitTimeMs: number;
-    description: string;
-  }>;
+  responseWindows: Record<
+    X12TransactionSet,
+    {
+      expectedResponseTimeMs: number;
+      maxWaitTimeMs: number;
+      description: string;
+    }
+  >;
 
   /** Error standardization */
   errorStandards: {

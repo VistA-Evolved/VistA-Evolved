@@ -19,7 +19,10 @@ const __dirname = dirname(__filename);
 /* Performance budgets (loaded once at startup)                        */
 /* ------------------------------------------------------------------ */
 
-interface LatencyBudget { p95: number; p99: number }
+interface LatencyBudget {
+  p95: number;
+  p99: number;
+}
 
 interface PerformanceBudgets {
   apiLatencyBudgets: {
@@ -53,7 +56,7 @@ function loadBudgets(): PerformanceBudgets {
   try {
     const raw = readFileSync(
       resolve(__dirname, '../../../../config/performance-budgets.json'),
-      'utf-8',
+      'utf-8'
     );
     // Strip BOM (BUG-064 / AGENTS.md #101)
     const clean = raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw;
@@ -67,16 +70,26 @@ function loadBudgets(): PerformanceBudgets {
         clinicalReads: { patientSearch: { p95: 3000, p99: 5000 } },
         clinicalWrites: { addAllergy: { p95: 5000, p99: 8000 } },
         adminReads: { moduleStatus: { p95: 200, p99: 500 } },
-        infrastructure: { health: { p95: 50, p99: 100 }, ready: { p95: 100, p99: 200 }, metrics: { p95: 200, p99: 500 } },
+        infrastructure: {
+          health: { p95: 50, p99: 100 },
+          ready: { p95: 100, p99: 200 },
+          metrics: { p95: 200, p99: 500 },
+        },
       },
       vistaRpcBudgets: {
-        connectionTimeoutMs: 10000, rpcCallTimeoutMs: 15000, rpcCallP95Ms: 5000,
-        rpcCallP99Ms: 10000, loginTimeoutMs: 15000, circuitBreakerThreshold: 5,
-        circuitBreakerResetMs: 30000, maxConcurrentRpcs: 10, healthCheckIntervalMs: 30000,
+        connectionTimeoutMs: 10000,
+        rpcCallTimeoutMs: 15000,
+        rpcCallP95Ms: 5000,
+        rpcCallP99Ms: 10000,
+        loginTimeoutMs: 15000,
+        circuitBreakerThreshold: 5,
+        circuitBreakerResetMs: 30000,
+        maxConcurrentRpcs: 10,
+        healthCheckIntervalMs: 30000,
       },
       loadTestThresholds: {
         httpReqDuration: { p95: 10000, p99: 15000 },
-        httpReqFailed: { maxRate: 0.10 },
+        httpReqFailed: { maxRate: 0.1 },
       },
     };
     return _budgets!;
@@ -112,9 +125,17 @@ export const OBSERVABILITY_CONFIG = {
    * Adding patient-identifying labels (dfn, patientName, ssn) is forbidden.
    */
   metricLabelAllowlist: [
-    'method', 'route', 'status_code', 'status',
-    'rpc_name', 'state', 'module', 'level',
-    'connector', 'payer_type', 'stage',
+    'method',
+    'route',
+    'status_code',
+    'status',
+    'rpc_name',
+    'state',
+    'module',
+    'level',
+    'connector',
+    'payer_type',
+    'stage',
   ] as readonly string[],
 
   /**
@@ -122,10 +143,22 @@ export const OBSERVABILITY_CONFIG = {
    * PHI-carrying attributes are structurally excluded.
    */
   spanAttributeAllowlist: [
-    'request.id', 'rpc.name', 'rpc.duz', 'module', 'action',
-    'operation', 'claimId', 'studyUid', 'connector', 'stage',
-    'http.method', 'http.route', 'http.status_code', 'http.target',
-    'net.peer.name', 'net.peer.port',
+    'request.id',
+    'rpc.name',
+    'rpc.duz',
+    'module',
+    'action',
+    'operation',
+    'claimId',
+    'studyUid',
+    'connector',
+    'stage',
+    'http.method',
+    'http.route',
+    'http.status_code',
+    'http.target',
+    'net.peer.name',
+    'net.peer.port',
   ] as readonly string[],
 
   /**
@@ -151,14 +184,20 @@ export const OBSERVABILITY_CONFIG = {
  */
 export function getLatencyBudget(category: string, operation: string): LatencyBudget | undefined {
   const budgets = loadBudgets();
-  const cat = (budgets.apiLatencyBudgets as Record<string, Record<string, LatencyBudget>>)[category];
+  const cat = (budgets.apiLatencyBudgets as Record<string, Record<string, LatencyBudget>>)[
+    category
+  ];
   return cat?.[operation];
 }
 
 /**
  * Check if a request duration is within the SLO budget.
  */
-export function isWithinLatencyBudget(category: string, operation: string, durationMs: number): boolean {
+export function isWithinLatencyBudget(
+  category: string,
+  operation: string,
+  durationMs: number
+): boolean {
   const budget = getLatencyBudget(category, operation);
   if (!budget) return true; // No budget defined = always within budget
   return durationMs <= budget.p95;

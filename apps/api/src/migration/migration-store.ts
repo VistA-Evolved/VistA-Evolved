@@ -8,7 +8,7 @@
  * Migration path: VistA FileMan files or external persistence when needed.
  */
 
-import { randomBytes } from "node:crypto";
+import { randomBytes } from 'node:crypto';
 import type {
   MigrationJob,
   MigrationJobStatus,
@@ -16,8 +16,8 @@ import type {
   RollbackPlan,
   ImportEntityType,
   MigrationDirection,
-} from "./types.js";
-import { log } from "../lib/logger.js";
+} from './types.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Stores                                                              */
@@ -28,8 +28,13 @@ const templateStore = new Map<string, MappingTemplate>();
 const rollbackStore = new Map<string, RollbackPlan>();
 
 /* Phase 146: DB repo wiring */
-let migrationDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
-export function initMigrationStoreRepo(repo: typeof migrationDbRepo): void { migrationDbRepo = repo; }
+let migrationDbRepo: {
+  upsert(d: any): Promise<any>;
+  update?(id: string, u: any): Promise<any>;
+} | null = null;
+export function initMigrationStoreRepo(repo: typeof migrationDbRepo): void {
+  migrationDbRepo = repo;
+}
 
 /** Max jobs retained in memory */
 const MAX_JOBS = 500;
@@ -39,14 +44,14 @@ const MAX_JOBS = 500;
 /* ------------------------------------------------------------------ */
 
 function generateId(prefix: string): string {
-  return `${prefix}-${Date.now().toString(36)}-${randomBytes(4).toString("hex")}`;
+  return `${prefix}-${Date.now().toString(36)}-${randomBytes(4).toString('hex')}`;
 }
 
 export function createJob(params: {
   direction: MigrationDirection;
   entityType?: ImportEntityType;
-  bundleType?: MigrationJob["bundleType"];
-  sourceFormat?: MigrationJob["sourceFormat"];
+  bundleType?: MigrationJob['bundleType'];
+  sourceFormat?: MigrationJob['sourceFormat'];
   templateId?: string;
   createdBy: string;
   createdByName: string;
@@ -55,16 +60,17 @@ export function createJob(params: {
 }): MigrationJob {
   // Evict oldest if at capacity
   if (jobStore.size >= MAX_JOBS) {
-    const oldest = [...jobStore.entries()]
-      .sort((a, b) => a[1].createdAt.localeCompare(b[1].createdAt))[0];
+    const oldest = [...jobStore.entries()].sort((a, b) =>
+      a[1].createdAt.localeCompare(b[1].createdAt)
+    )[0];
     if (oldest) jobStore.delete(oldest[0]);
   }
 
   const now = new Date().toISOString();
   const job: MigrationJob = {
-    id: generateId("mig"),
+    id: generateId('mig'),
     direction: params.direction,
-    status: "created",
+    status: 'created',
     entityType: params.entityType,
     bundleType: params.bundleType,
     sourceFormat: params.sourceFormat,
@@ -80,9 +86,21 @@ export function createJob(params: {
   jobStore.set(job.id, job);
 
   // Phase 146: Write-through to PG
-  migrationDbRepo?.upsert({ id: job.id, tenantId: 'default', jobType: job.direction ?? 'unknown', status: job.status, createdAt: job.createdAt }).catch(() => {});
+  migrationDbRepo
+    ?.upsert({
+      id: job.id,
+      tenantId: 'default',
+      jobType: job.direction ?? 'unknown',
+      status: job.status,
+      createdAt: job.createdAt,
+    })
+    .catch(() => {});
 
-  log.info("Migration job created", { jobId: job.id, direction: job.direction, entityType: job.entityType });
+  log.info('Migration job created', {
+    jobId: job.id,
+    direction: job.direction,
+    entityType: job.entityType,
+  });
   return job;
 }
 
@@ -129,33 +147,33 @@ export function deleteJob(id: string): boolean {
 /* ------------------------------------------------------------------ */
 
 const VALID_TRANSITIONS: Record<MigrationJobStatus, MigrationJobStatus[]> = {
-  created: ["validating"],
-  validating: ["validated", "validation-failed"],
-  validated: ["dry-run", "importing", "exporting"],
-  "validation-failed": ["validating"], // retry
-  "dry-run": ["dry-run-complete"],
-  "dry-run-complete": ["importing", "created"], // proceed or restart
-  importing: ["imported", "import-failed"],
-  imported: ["rolled-back"],
-  "import-failed": ["created"], // retry from scratch
-  exporting: ["exported", "export-failed"],
+  created: ['validating'],
+  validating: ['validated', 'validation-failed'],
+  validated: ['dry-run', 'importing', 'exporting'],
+  'validation-failed': ['validating'], // retry
+  'dry-run': ['dry-run-complete'],
+  'dry-run-complete': ['importing', 'created'], // proceed or restart
+  importing: ['imported', 'import-failed'],
+  imported: ['rolled-back'],
+  'import-failed': ['created'], // retry from scratch
+  exporting: ['exported', 'export-failed'],
   exported: [],
-  "export-failed": ["created"],
-  "rolled-back": [],
+  'export-failed': ['created'],
+  'rolled-back': [],
 };
 
 export function transitionJob(
   id: string,
-  newStatus: MigrationJobStatus,
+  newStatus: MigrationJobStatus
 ): { ok: boolean; job?: MigrationJob; error?: string } {
   const job = jobStore.get(id);
-  if (!job) return { ok: false, error: "Job not found" };
+  if (!job) return { ok: false, error: 'Job not found' };
 
   const allowed = VALID_TRANSITIONS[job.status] ?? [];
   if (!allowed.includes(newStatus)) {
     return {
       ok: false,
-      error: `Cannot transition from '${job.status}' to '${newStatus}'. Allowed: ${allowed.join(", ") || "none"}`,
+      error: `Cannot transition from '${job.status}' to '${newStatus}'. Allowed: ${allowed.join(', ') || 'none'}`,
     };
   }
 
@@ -169,7 +187,7 @@ export function transitionJob(
 
 export function registerTemplate(template: MappingTemplate): void {
   templateStore.set(template.id, template);
-  log.info("Mapping template registered", { id: template.id, name: template.name });
+  log.info('Mapping template registered', { id: template.id, name: template.name });
 }
 
 export function getTemplate(id: string): MappingTemplate | undefined {

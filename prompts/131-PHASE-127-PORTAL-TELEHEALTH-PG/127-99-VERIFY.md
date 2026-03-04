@@ -8,6 +8,7 @@
 4. Run existing telehealth verification scripts
 
 ## Acceptance Criteria
+
 - [ ] Telehealth room data survives API restart
 - [ ] PG migration includes telehealth tables with tenant_id
 - [ ] RLS policies applied to telehealth tables

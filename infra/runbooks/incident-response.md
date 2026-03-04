@@ -4,25 +4,26 @@
 
 ## Severity Levels
 
-| Severity | Description | Response Time | Escalation |
-|----------|-------------|---------------|------------|
-| **SEV-1** | Total outage, data loss risk | 15 min | Page on-call + engineering lead |
-| **SEV-2** | Partial degradation (>5% errors) | 30 min | Page on-call |
-| **SEV-3** | Minor degradation (<5% errors) | 2 hours | Slack notification |
-| **SEV-4** | Cosmetic / non-urgent | Next business day | Ticket |
+| Severity  | Description                      | Response Time     | Escalation                      |
+| --------- | -------------------------------- | ----------------- | ------------------------------- |
+| **SEV-1** | Total outage, data loss risk     | 15 min            | Page on-call + engineering lead |
+| **SEV-2** | Partial degradation (>5% errors) | 30 min            | Page on-call                    |
+| **SEV-3** | Minor degradation (<5% errors)   | 2 hours           | Slack notification              |
+| **SEV-4** | Cosmetic / non-urgent            | Next business day | Ticket                          |
 
 ## Alert Sources
 
-| Source | Location | Alerts |
-|--------|----------|--------|
-| Prometheus | `infra/observability/slo/alerts.rules.yaml` | SLO burn-rate, pod health, disk |
-| API circuit breaker | `/ready` returns `ok: false` | K8s readiness probe fails |
-| ArgoCD | Application sync status | Degraded / OutOfSync |
-| GitHub Actions | `cd-deploy.yml`, `dr-nightly.yml` | Build/deploy/DR failures |
+| Source              | Location                                    | Alerts                          |
+| ------------------- | ------------------------------------------- | ------------------------------- |
+| Prometheus          | `infra/observability/slo/alerts.rules.yaml` | SLO burn-rate, pod health, disk |
+| API circuit breaker | `/ready` returns `ok: false`                | K8s readiness probe fails       |
+| ArgoCD              | Application sync status                     | Degraded / OutOfSync            |
+| GitHub Actions      | `cd-deploy.yml`, `dr-nightly.yml`           | Build/deploy/DR failures        |
 
 ## Triage Checklist
 
 ### 1. Identify Scope
+
 ```powershell
 # Check overall health
 curl http://127.0.0.1:3001/health
@@ -36,6 +37,7 @@ curl http://127.0.0.1:3001/posture/performance
 ```
 
 ### 2. Check Pod Status
+
 ```powershell
 kubectl get pods -n ve-tenant-demo --sort-by=.status.startTime
 kubectl describe pod <name> -n ve-tenant-demo
@@ -43,12 +45,14 @@ kubectl logs <name> -n ve-tenant-demo --tail=200
 ```
 
 ### 3. Check ArgoCD Sync
+
 ```powershell
 kubectl get applications -n argocd
 # Look for: Synced/Healthy vs OutOfSync/Degraded
 ```
 
 ### 4. Check Prometheus Metrics
+
 ```
 # Error rate
 sum(rate(http_requests_total{code=~"5.."}[5m])) / sum(rate(http_requests_total[5m]))
@@ -63,6 +67,7 @@ rpc_circuit_breaker_state
 ## Mitigation Actions
 
 ### Rollback (most common)
+
 ```powershell
 # Automatic rollback to last-known-good
 .\infra\scripts\rollback-release.ps1 -Environment prod
@@ -72,6 +77,7 @@ kubectl get pods -n ve-tenant-demo --watch
 ```
 
 ### VistA Broker Down
+
 ```powershell
 # Restart VistA container
 docker restart wv
@@ -82,6 +88,7 @@ curl http://127.0.0.1:3001/vista/ping
 ```
 
 ### Database Issues
+
 ```powershell
 # Check PG connections
 psql $PLATFORM_PG_URL -c "SELECT count(*) FROM pg_stat_activity;"
@@ -91,6 +98,7 @@ node scripts/backup-restore.mjs restore --target pg --yes
 ```
 
 ### Pod Crash Loop
+
 ```powershell
 # Get crash reason
 kubectl logs <pod> -n <ns> --previous --tail=100
@@ -118,6 +126,7 @@ kubectl logs <pod> -n <ns> --previous --tail=100
 ## Post-Incident Review
 
 ### Within 24 Hours
+
 1. Create incident ticket with:
    - Timeline (detection -> mitigation -> resolution)
    - Root cause
@@ -131,6 +140,7 @@ kubectl logs <pod> -n <ns> --previous --tail=100
    - `infra/observability/slo/alerts.rules.yaml`
 
 ### Within 1 Week
+
 1. Blameless post-mortem document
 2. Action items with owners and due dates
 3. Verify preventive measures are in place
@@ -139,6 +149,7 @@ kubectl logs <pod> -n <ns> --previous --tail=100
 ## Communication Templates
 
 ### SEV-1 Initial
+
 ```
 INCIDENT: [Brief description]
 SEVERITY: SEV-1
@@ -148,6 +159,7 @@ NEXT UPDATE: [Time]
 ```
 
 ### Resolution
+
 ```
 INCIDENT: [Brief description]
 SEVERITY: SEV-1
@@ -159,9 +171,9 @@ FOLLOW-UP: Post-mortem scheduled for [date]
 
 ## Key Contacts
 
-| Role | Escalation Path |
-|------|----------------|
-| On-call engineer | PagerDuty rotation |
-| Engineering lead | Slack #ve-incidents |
-| Security | Slack #ve-security (for PHI/breach) |
-| Operations | Slack #ve-ops |
+| Role             | Escalation Path                     |
+| ---------------- | ----------------------------------- |
+| On-call engineer | PagerDuty rotation                  |
+| Engineering lead | Slack #ve-incidents                 |
+| Security         | Slack #ve-security (for PHI/breach) |
+| Operations       | Slack #ve-ops                       |

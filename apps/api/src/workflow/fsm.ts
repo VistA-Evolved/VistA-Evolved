@@ -36,10 +36,7 @@ export class StateMachine<TState extends string> {
   private readonly transitions: Readonly<Record<TState, readonly TState[]>>;
   private readonly allStates: ReadonlySet<TState>;
 
-  constructor(
-    transitions: Record<TState, TState[]>,
-    options: StateMachineOptions<TState>,
-  ) {
+  constructor(transitions: Record<TState, TState[]>, options: StateMachineOptions<TState>) {
     this.transitions = transitions;
     this.name = options.name;
     this.initialState = options.initialState;
@@ -54,9 +51,7 @@ export class StateMachine<TState extends string> {
 
     this.terminalStates = new Set(
       options.terminalStates ??
-        ([...states].filter(
-          (s) => !transitions[s] || transitions[s].length === 0,
-        ) as TState[]),
+        ([...states].filter((s) => !transitions[s] || transitions[s].length === 0) as TState[])
     );
   }
 
@@ -70,7 +65,7 @@ export class StateMachine<TState extends string> {
     if (!this.canTransition(from, to)) {
       throw new Error(
         `Invalid transition: ${this.name} cannot go from "${from}" to "${to}". ` +
-          `Valid: [${this.validNextStates(from).join(", ")}]`,
+          `Valid: [${this.validNextStates(from).join(', ')}]`
       );
     }
     return to;
@@ -93,13 +88,10 @@ export class StateMachine<TState extends string> {
 
   /** Generate Mermaid state diagram */
   toMermaid(): string {
-    const lines: string[] = ["stateDiagram-v2"];
+    const lines: string[] = ['stateDiagram-v2'];
     lines.push(`  [*] --> ${this.initialState}`);
 
-    for (const [from, tos] of Object.entries(this.transitions) as [
-      TState,
-      TState[],
-    ][]) {
+    for (const [from, tos] of Object.entries(this.transitions) as [TState, TState[]][]) {
       for (const to of tos) {
         lines.push(`  ${from} --> ${to}`);
       }
@@ -109,7 +101,7 @@ export class StateMachine<TState extends string> {
       lines.push(`  ${t} --> [*]`);
     }
 
-    return lines.join("\n");
+    return lines.join('\n');
   }
 
   /** Serialize to plain object for JSON responses */

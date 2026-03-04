@@ -1,10 +1,12 @@
 # Phase 330 — W15-P4: Data Plane Sharding (IMPLEMENT)
 
 ## User Request
+
 Implement data plane sharding -- tenant-to-regional-PG cluster mapping, cross-shard
 query guard, shard health monitoring, and migration planning.
 
 ## Implementation Steps
+
 1. Create `apps/api/src/services/data-plane-sharding.ts`:
    - DataShard type with region, replication role, connection ref, capacity
    - TenantShardMapping with migration state tracking
@@ -21,6 +23,7 @@ query guard, shard health monitoring, and migration planning.
 3. Wire into security.ts, register-routes.ts, store-policy.ts
 
 ## Files Touched
+
 - apps/api/src/services/data-plane-sharding.ts (NEW)
 - apps/api/src/routes/data-plane-sharding-routes.ts (NEW)
 - apps/api/src/middleware/security.ts (+1 AUTH_RULE)

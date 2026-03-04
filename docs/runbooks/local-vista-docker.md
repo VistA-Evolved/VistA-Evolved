@@ -18,6 +18,7 @@ docker compose --profile dev up -d
 ```
 
 Expected output:
+
 ```
 [+] Running 1/1
  ✓ Container wv  Started
@@ -40,6 +41,7 @@ Test-NetConnection 127.0.0.1 -Port 9430
 ```
 
 Expected output:
+
 ```
 ComputerName     : 127.0.0.1
 RemoteAddress    : 127.0.0.1
@@ -60,15 +62,17 @@ docker exec -it wv su - wv -c 'mumps -r ZU'
 This drops you into the VistA prompt:
 
 ```
-VistA> 
+VistA>
 ```
 
 Common commands:
+
 - `D ^%SY` — System menu
 - `H` — Help
 - `^C` — Exit (return to Docker shell)
 
 To exit VistA back to the container shell:
+
 ```
 VistA> H
 ```
@@ -100,23 +104,28 @@ docker compose --profile dev up -d
 ## Troubleshooting
 
 ### Port 9430 not responding
+
 - Wait 15–30 seconds after startup; the container initializes YottaDB and VistA listeners.
 - Check logs: `docker logs wv`
 - Ensure no other process is using port 9430: `netstat -ano | findstr :9430`
 
 ### Cannot enter roll-and-scroll
+
 - Verify container is fully started: `docker logs wv | tail -20`
 - Try: `docker exec -it wv /bin/bash` to get a shell and debug.
 
 ### SSH access (alternative to docker exec)
+
 ```bash
 ssh -p 2222 wv@127.0.0.1
 ```
+
 (password may be set in the image; check WorldVistA docs)
 
 ## Next steps
 
 Once the sandbox is running:
+
 1. Use the RPC listener (port 9430) to test Node.js bridge from `apps/api`.
 2. Reference the Port 9430 endpoint in bridge connection code.
 3. See: `utils/bridge/` (planned in later phases).

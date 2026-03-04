@@ -8,16 +8,16 @@
  * - Route pattern syntax is valid regex
  */
 
-import type { ValidationIssue, ValidationCategory } from "./types.js";
-import { getModuleDefinitions } from "../module-registry.js";
+import type { ValidationIssue, ValidationCategory } from './types.js';
+import { getModuleDefinitions } from '../module-registry.js';
 
 /* Known adapter types from adapter-loader.ts */
 const KNOWN_ADAPTER_TYPES = new Set([
-  "clinical-engine",
-  "scheduling",
-  "billing",
-  "imaging",
-  "messaging",
+  'clinical-engine',
+  'scheduling',
+  'billing',
+  'imaging',
+  'messaging',
 ]);
 
 /* ------------------------------------------------------------------ */
@@ -79,15 +79,11 @@ function detectRouteOverlaps(
  */
 function generateTestPaths(pattern: string): string[] {
   // Extract literal prefix before first regex metachar
-  const cleaned = pattern.replace(/^\^/, "").replace(/\$$/, "");
-  const literal = cleaned.replace(/[.*+?{}()|[\]\\].*/, "");
+  const cleaned = pattern.replace(/^\^/, '').replace(/\$$/, '');
+  const literal = cleaned.replace(/[.*+?{}()|[\]\\].*/, '');
   if (!literal || literal.length < 2) return [];
 
-  return [
-    literal,
-    literal + "test",
-    literal + "test/sub",
-  ];
+  return [literal, literal + 'test', literal + 'test/sub'];
 }
 
 /* ------------------------------------------------------------------ */
@@ -104,13 +100,13 @@ export function validateBoundaryIntegrity(): ValidationCategory {
     for (const pattern of def.routePatterns ?? []) {
       try {
         new RegExp(pattern);
-      } catch (err) {
+      } catch (_err) {
         issues.push({
-          code: "ROUTE_INVALID_REGEX",
-          severity: "error",
+          code: 'ROUTE_INVALID_REGEX',
+          severity: 'error',
           message: `Module "${modId}" has invalid route pattern: ${pattern}`,
           subject: modId,
-          suggestion: "Fix the regex in config/modules.json",
+          suggestion: 'Fix the regex in config/modules.json',
         });
       }
     }
@@ -120,12 +116,11 @@ export function validateBoundaryIntegrity(): ValidationCategory {
   const overlaps = detectRouteOverlaps(defs);
   for (const ov of overlaps) {
     issues.push({
-      code: "ROUTE_OVERLAP",
-      severity: "warning",
+      code: 'ROUTE_OVERLAP',
+      severity: 'warning',
       message: `Route overlap: "${ov.moduleA}" (${ov.patternA}) and "${ov.moduleB}" (${ov.patternB})`,
       subject: `${ov.moduleA} vs ${ov.moduleB}`,
-      suggestion:
-        "The first matching module wins. Ensure this is intentional or refine patterns.",
+      suggestion: 'The first matching module wins. Ensure this is intentional or refine patterns.',
     });
   }
 
@@ -134,8 +129,8 @@ export function validateBoundaryIntegrity(): ValidationCategory {
     for (const adapter of def.adapters ?? []) {
       if (!KNOWN_ADAPTER_TYPES.has(adapter)) {
         issues.push({
-          code: "ADAPTER_UNKNOWN",
-          severity: "warning",
+          code: 'ADAPTER_UNKNOWN',
+          severity: 'warning',
           message: `Module "${modId}" references unknown adapter type "${adapter}"`,
           subject: modId,
           suggestion: `Either add "${adapter}" to adapter-loader.ts or fix the reference in modules.json`,
@@ -156,16 +151,16 @@ export function validateBoundaryIntegrity(): ValidationCategory {
       continue;
     }
     // Check for any /health sub-route in the pattern list
-    const hasHealthRoute = def.routePatterns!.some((p: string) => p.includes("health"));
+    const hasHealthRoute = def.routePatterns!.some((p: string) => p.includes('health'));
     if (hasHealthRoute) {
       modulesWithHealth++;
     } else {
       issues.push({
-        code: "HEALTH_MISSING",
-        severity: "info",
+        code: 'HEALTH_MISSING',
+        severity: 'info',
         message: `Module "${modId}" has route patterns but no health endpoint`,
         subject: modId,
-        suggestion: "Consider adding a health check route for this module",
+        suggestion: 'Consider adding a health check route for this module',
       });
     }
   }
@@ -175,26 +170,26 @@ export function validateBoundaryIntegrity(): ValidationCategory {
     if (def.alwaysEnabled) continue;
     if (!def.routePatterns || def.routePatterns.length === 0) {
       issues.push({
-        code: "ROUTE_NONE",
-        severity: "info",
+        code: 'ROUTE_NONE',
+        severity: 'info',
         message: `Module "${modId}" has no route patterns defined`,
         subject: modId,
-        suggestion: "Module guard cannot protect this module without route patterns",
+        suggestion: 'Module guard cannot protect this module without route patterns',
       });
     }
   }
 
-  if (issues.filter((i) => i.severity === "error").length === 0) {
+  if (issues.filter((i) => i.severity === 'error').length === 0) {
     issues.push({
-      code: "BOUNDARY_OK",
-      severity: "info",
+      code: 'BOUNDARY_OK',
+      severity: 'info',
       message: `Module boundaries validated: ${Object.keys(defs).length} modules, ${modulesWithHealth} with health endpoints`,
     });
   }
 
   return {
-    category: "boundary-integrity",
-    label: "Boundary Integrity",
+    category: 'boundary-integrity',
+    label: 'Boundary Integrity',
     issues,
     durationMs: Date.now() - start,
   };

@@ -1,34 +1,38 @@
 # Phase 290 — Wave 9 Integrity Audit — Implementation
 
 ## User Request
+
 Comprehensive 3-tier "progressive sanity and integrity check" on Wave 9 (Phases 274-281, commit 9792fc6).
 Mandate: fix all issues found including pre-existing cosmetic defects.
 
 ## Issues Identified
 
 ### MODERATE (wiring gaps)
-| ID | Description |
-|----|-------------|
-| M1 | HL7 barrel (`hl7/index.ts`) missing re-exports for fhir-bridge, channel-health, outbound-builder |
-| M2 | No HTTP routes consume 3 new HL7 modules (fhir-bridge, channel-health, outbound-builder) |
-| M3 | `migration-routes.ts` missing imports and routes for fhir-bundle-parser, ccda-parser, reconciliation, migration-orchestrator |
-| M4 | `channel-health` endpointMetrics Map not in store-policy |
-| M5 | `read-through.ts` exports not in PG barrel (`platform/pg/index.ts`) |
+
+| ID  | Description                                                                                                                  |
+| --- | ---------------------------------------------------------------------------------------------------------------------------- |
+| M1  | HL7 barrel (`hl7/index.ts`) missing re-exports for fhir-bridge, channel-health, outbound-builder                             |
+| M2  | No HTTP routes consume 3 new HL7 modules (fhir-bridge, channel-health, outbound-builder)                                     |
+| M3  | `migration-routes.ts` missing imports and routes for fhir-bundle-parser, ccda-parser, reconciliation, migration-orchestrator |
+| M4  | `channel-health` endpointMetrics Map not in store-policy                                                                     |
+| M5  | `read-through.ts` exports not in PG barrel (`platform/pg/index.ts`)                                                          |
 
 ### MINOR (token divergence)
-| ID | Description |
-|----|-------------|
-| N1 | CSS `:root` had 22 variables vs 32 in theme-tokens.ts — missing 10+ tokens |
+
+| ID  | Description                                                                |
+| --- | -------------------------------------------------------------------------- |
+| N1  | CSS `:root` had 22 variables vs 32 in theme-tokens.ts — missing 10+ tokens |
 
 ### PRE-EXISTING (cosmetic / code quality)
-| ID | Description |
-|----|-------------|
-| P1 | MenuBar.module.css: 4 hardcoded hex colors |
-| P2 | cprs.module.css: 7 badge styles with hardcoded hex colors |
-| P3 | panels.module.css: 2 listBadge hardcoded background colors |
-| P4 | page.module.css: 1 hardcoded #ffffff background |
-| P5 | fhir-bridge.ts: 2 unnecessary `(resource as any).id` casts |
-| P6 | store-policy.ts: 3 missing entries (pack-registry, mllp-client-pool, mllp-connections) |
+
+| ID  | Description                                                                            |
+| --- | -------------------------------------------------------------------------------------- |
+| P1  | MenuBar.module.css: 4 hardcoded hex colors                                             |
+| P2  | cprs.module.css: 7 badge styles with hardcoded hex colors                              |
+| P3  | panels.module.css: 2 listBadge hardcoded background colors                             |
+| P4  | page.module.css: 1 hardcoded #ffffff background                                        |
+| P5  | fhir-bridge.ts: 2 unnecessary `(resource as any).id` casts                             |
+| P6  | store-policy.ts: 3 missing entries (pack-registry, mllp-client-pool, mllp-connections) |
 
 ## Implementation Steps
 
@@ -46,6 +50,7 @@ Mandate: fix all issues found including pre-existing cosmetic defects.
 12. **P6** — Add 3 store-policy entries: hl7-pack-registry, hl7-mllp-client-pool, hl7-mllp-connections
 
 ## Files Touched
+
 - `apps/api/src/hl7/index.ts` — barrel re-exports
 - `apps/api/src/routes/hl7-engine.ts` — 5 new routes (~90→234 lines)
 - `apps/api/src/migration/migration-routes.ts` — 10 new routes
@@ -58,5 +63,6 @@ Mandate: fix all issues found including pre-existing cosmetic defects.
 - `apps/web/src/app/chart/[dfn]/[tab]/page.module.css` — 1 hex→var()
 
 ## Verification
+
 - `pnpm -C apps/api exec tsc --noEmit` — CLEAN (0 errors)
 - IDE error scan on all 10 modified files — 0 code errors

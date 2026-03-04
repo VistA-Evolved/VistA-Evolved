@@ -15,20 +15,20 @@
 // ─── Pharmacy Order Lifecycle ───────────────────────────────
 
 export type PharmOrderStatus =
-  | "pending"
-  | "pharmacist_review"
-  | "verified"
-  | "dispensing"
-  | "dispensed"
-  | "ready_for_admin"
-  | "administered"
-  | "returned"
-  | "discontinued"
-  | "cancelled"
-  | "on_hold"
-  | "expired";
+  | 'pending'
+  | 'pharmacist_review'
+  | 'verified'
+  | 'dispensing'
+  | 'dispensed'
+  | 'ready_for_admin'
+  | 'administered'
+  | 'returned'
+  | 'discontinued'
+  | 'cancelled'
+  | 'on_hold'
+  | 'expired';
 
-export type PharmOrderType = "inpatient" | "outpatient" | "iv" | "prn" | "one_time" | "standing";
+export type PharmOrderType = 'inpatient' | 'outpatient' | 'iv' | 'prn' | 'one_time' | 'standing';
 
 export interface PharmOrder {
   id: string;
@@ -72,9 +72,15 @@ export interface PharmOrder {
 
 // ─── Clinical Checks (DDI, Allergy, Duplicate) ─────────────
 
-export type ClinicalCheckType = "ddi" | "allergy" | "duplicate_therapy" | "dose_range" | "renal_dose" | "high_alert";
+export type ClinicalCheckType =
+  | 'ddi'
+  | 'allergy'
+  | 'duplicate_therapy'
+  | 'dose_range'
+  | 'renal_dose'
+  | 'high_alert';
 
-export type ClinicalCheckSeverity = "info" | "warning" | "critical";
+export type ClinicalCheckSeverity = 'info' | 'warning' | 'critical';
 
 export interface ClinicalCheckResult {
   type: ClinicalCheckType;
@@ -88,7 +94,7 @@ export interface ClinicalCheckResult {
 
 // ─── Dispensing ─────────────────────────────────────────────
 
-export type DispenseStatus = "pending" | "picking" | "checked" | "ready" | "delivered" | "returned";
+export type DispenseStatus = 'pending' | 'picking' | 'checked' | 'ready' | 'delivered' | 'returned';
 
 export interface DispenseEvent {
   id: string;
@@ -120,7 +126,7 @@ export interface DispenseEvent {
 
 // ─── Administration Record ──────────────────────────────────
 
-export type AdminStatus = "scheduled" | "given" | "held" | "refused" | "missed" | "self_admin";
+export type AdminStatus = 'scheduled' | 'given' | 'held' | 'refused' | 'missed' | 'self_admin';
 
 export interface AdminRecord {
   id: string;
@@ -150,7 +156,7 @@ export interface AdminRecord {
   holdReason: string | null;
   /** VistA PSB MED LOG IEN (if written back) */
   vistaPsbIen: string | null;
-  writebackStatus: "not_attempted" | "pending" | "success" | "failed" | "not_available";
+  writebackStatus: 'not_attempted' | 'pending' | 'success' | 'failed' | 'not_available';
   createdAt: string;
 }
 
@@ -169,9 +175,9 @@ export interface PharmacyDashboardStats {
 // ─── Writeback Posture ──────────────────────────────────────
 
 export interface PharmWritebackPosture {
-  orderPlace: { rpc: string; status: "available" | "integration_pending"; note: string };
-  orderDc: { rpc: string; status: "available" | "integration_pending"; note: string };
-  medAdmin: { rpc: string; status: "available" | "integration_pending"; note: string };
-  dispense: { rpc: string; status: "available" | "integration_pending"; note: string };
-  barcodeVerify: { rpc: string; status: "available" | "integration_pending"; note: string };
+  orderPlace: { rpc: string; status: 'available' | 'integration_pending'; note: string };
+  orderDc: { rpc: string; status: 'available' | 'integration_pending'; note: string };
+  medAdmin: { rpc: string; status: 'available' | 'integration_pending'; note: string };
+  dispense: { rpc: string; status: 'available' | 'integration_pending'; note: string };
+  barcodeVerify: { rpc: string; status: 'available' | 'integration_pending'; note: string };
 }

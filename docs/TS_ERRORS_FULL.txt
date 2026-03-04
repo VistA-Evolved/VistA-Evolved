@@ -1,0 +1,27 @@
+289
+# TypeScript Strict Mode Error Scan — Full Output
+# Date: 2025-01-24
+# Config changed: added noUnusedLocals: true to all 4 tsconfigs
+# Projects scanned: apps/api, apps/web, apps/portal, packages/locale-utils
+
+## apps/api — 224 errors (TS6133: 183, TS6196: 37, TS6138: 3, TS6192: 1)
+## apps/web — 59 errors (TS6133: 49, TS6196: 10)
+## apps/portal — 6 errors (TS6133: 5, TS6138: 1)
+## packages/locale-utils — 0 errors
+
+# Total: 289 errors
+# All errors are unused-variable category (noUnusedLocals).
+# Zero type-safety errors (TS7006, TS2304, TS2345, TS2339) were found.
+
+# ============================================================
+# ERROR BREAKDOWN BY TYPE CODE
+# ============================================================
+
+# TS6133 — '{0}' is declared but its value is never read.       237 occurrences
+# TS6196 — '{0}' is declared but its value is never used.        47 occurrences
+# TS6138 — Property '{0}' is declared but its value is never read. 4 occurrences
+# TS6192 — All imports in import declaration are unused.          1 occurrence
+
+# ============================================================
+# ALL 289 ERRORS WERE AUTO-FIXED. REMAINING: 0
+# ============================================================

@@ -12,15 +12,10 @@
  * Every job completion/failure is logged via `logJobRun()`.
  */
 
-import { randomUUID } from "node:crypto";
-import {
-  type JobName,
-  JOB_PAYLOAD_SCHEMAS,
-  containsPhiFields,
-  ALL_JOB_NAMES,
-} from "./registry.js";
-import { log } from "../lib/logger.js";
-import { isPgConfigured, getPgPool } from "../platform/pg/index.js";
+import { randomUUID } from 'node:crypto';
+import { type JobName, JOB_PAYLOAD_SCHEMAS, containsPhiFields, ALL_JOB_NAMES } from './registry.js';
+import { log } from '../lib/logger.js';
+import { isPgConfigured, getPgPool } from '../platform/pg/index.js';
 
 /* ── Types ─────────────────────────────────────────────────── */
 
@@ -51,22 +46,19 @@ export interface ValidateResult {
  *  2. Parse through zod schema
  *  3. Reject if PHI fields detected
  */
-export function validateJobPayload(
-  jobName: string,
-  rawPayload: unknown,
-): ValidateResult {
+export function validateJobPayload(jobName: string, rawPayload: unknown): ValidateResult {
   // 1. Known job name?
   if (!ALL_JOB_NAMES.includes(jobName as JobName)) {
     return { ok: false, error: `Unknown job name: ${jobName}` };
   }
 
   // 2. PHI field check on RAW payload (before zod strips unknown keys)
-  if (rawPayload && typeof rawPayload === "object" && !Array.isArray(rawPayload)) {
+  if (rawPayload && typeof rawPayload === 'object' && !Array.isArray(rawPayload)) {
     const phiViolations = containsPhiFields(rawPayload as Record<string, unknown>);
     if (phiViolations.length > 0) {
       return {
         ok: false,
-        error: `PHI fields detected in payload: ${phiViolations.join(", ")}`,
+        error: `PHI fields detected in payload: ${phiViolations.join(', ')}`,
       };
     }
   }
@@ -94,10 +86,10 @@ export function validateJobPayload(
 export async function logJobStart(
   jobName: string,
   payload: Record<string, unknown>,
-  graphileJobId?: string,
+  graphileJobId?: string
 ): Promise<string> {
   const id = randomUUID();
-  const tenantId = (payload as any).tenantId ?? "default";
+  const tenantId = (payload as any).tenantId ?? 'default';
   const now = new Date().toISOString();
 
   if (isPgConfigured()) {
@@ -106,10 +98,10 @@ export async function logJobStart(
       await pool.query(
         `INSERT INTO job_run_log (id, job_name, graphile_job_id, payload_json, tenant_id, started_at, ok)
          VALUES ($1, $2, $3, $4, $5, $6, false)`,
-        [id, jobName, graphileJobId ?? null, JSON.stringify(payload), tenantId, now],
+        [id, jobName, graphileJobId ?? null, JSON.stringify(payload), tenantId, now]
       );
     } catch (err: any) {
-      log.warn("Failed to log job start to PG", {
+      log.warn('Failed to log job start to PG', {
         jobName,
         error: err.message,
       });
@@ -126,7 +118,7 @@ export async function logJobFinish(
   logId: string,
   ok: boolean,
   durationMs: number,
-  errorRedacted?: string,
+  errorRedacted?: string
 ): Promise<void> {
   const now = new Date().toISOString();
 
@@ -137,10 +129,10 @@ export async function logJobFinish(
         `UPDATE job_run_log
          SET finished_at = $1, ok = $2, duration_ms = $3, error_redacted = $4
          WHERE id = $5`,
-        [now, ok, durationMs, errorRedacted ?? null, logId],
+        [now, ok, durationMs, errorRedacted ?? null, logId]
       );
     } catch (err: any) {
-      log.warn("Failed to log job finish to PG", {
+      log.warn('Failed to log job finish to PG', {
         logId,
         ok,
         error: err.message,
@@ -152,8 +144,8 @@ export async function logJobFinish(
 /* ── Redact Error Messages ─────────────────────────────────── */
 
 const PHI_PATTERNS = [
-  /\b\d{3}-\d{2}-\d{4}\b/g,       // SSN
-  /\b\d{2}\/\d{2}\/\d{4}\b/g,     // Date of birth
+  /\b\d{3}-\d{2}-\d{4}\b/g, // SSN
+  /\b\d{2}\/\d{2}\/\d{4}\b/g, // Date of birth
   /\b[A-Z][a-z]+,\s?[A-Z][a-z]+/g, // Patient names (Last, First)
 ];
 
@@ -163,10 +155,10 @@ const PHI_PATTERNS = [
 export function redactErrorMessage(msg: string): string {
   let redacted = msg;
   for (const pattern of PHI_PATTERNS) {
-    redacted = redacted.replace(pattern, "[REDACTED]");
+    redacted = redacted.replace(pattern, '[REDACTED]');
   }
   // Truncate to prevent log bloat
-  return redacted.length > 500 ? redacted.slice(0, 500) + "..." : redacted;
+  return redacted.length > 500 ? redacted.slice(0, 500) + '...' : redacted;
 }
 
 /* ── Job Run Log Read ──────────────────────────────────────── */
@@ -200,12 +192,12 @@ export async function getRecentJobRuns(opts?: {
     params.push(opts.okOnly);
   }
 
-  const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+  const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
 
   try {
     const countRes = await pool.query(
       `SELECT COUNT(*)::int AS total FROM job_run_log ${where}`,
-      params,
+      params
     );
     const total = countRes.rows[0]?.total ?? 0;
 
@@ -216,25 +208,26 @@ export async function getRecentJobRuns(opts?: {
        FROM job_run_log ${where}
        ORDER BY started_at DESC
        LIMIT $${paramIdx++} OFFSET $${paramIdx++}`,
-      dataParams,
+      dataParams
     );
 
     const runs: JobRunLogEntry[] = dataRes.rows.map((r: any) => ({
       id: r.id,
       jobName: r.job_name,
       graphileJobId: r.graphile_job_id ?? undefined,
-      payload: typeof r.payload_json === "string" ? JSON.parse(r.payload_json) : (r.payload_json ?? {}),
+      payload:
+        typeof r.payload_json === 'string' ? JSON.parse(r.payload_json) : (r.payload_json ?? {}),
       startedAt: r.started_at,
       finishedAt: r.finished_at ?? undefined,
       ok: r.ok,
       durationMs: r.duration_ms ?? undefined,
       errorRedacted: r.error_redacted ?? undefined,
-      tenantId: r.tenant_id ?? "default",
+      tenantId: r.tenant_id ?? 'default',
     }));
 
     return { runs, total };
   } catch (err: any) {
-    log.warn("Failed to query job run log", { error: err.message });
+    log.warn('Failed to query job run log', { error: err.message });
     return { runs: [], total: 0 };
   }
 }

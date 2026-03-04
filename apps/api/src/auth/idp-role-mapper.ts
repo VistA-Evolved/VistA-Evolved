@@ -14,9 +14,9 @@
  * DB-backed config. For now, a sensible default covers Keycloak realm roles.
  */
 
-import type { UserRole } from "./session-store.js";
-import type { OidcTokenClaims } from "./oidc-provider.js";
-import { log } from "../lib/logger.js";
+import type { UserRole } from './session-store.js';
+import type { OidcTokenClaims } from './oidc-provider.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -54,24 +54,24 @@ export interface MappedIdentity {
  * Order matters: first match wins.
  */
 const DEFAULT_MAPPINGS: IdpRoleMapping[] = [
-  { idpGroup: "vista-admin", platformRole: "admin" },
-  { idpGroup: "admin", platformRole: "admin" },
-  { idpGroup: "vista-provider", platformRole: "provider" },
-  { idpGroup: "provider", platformRole: "provider" },
-  { idpGroup: "vista-nurse", platformRole: "nurse" },
-  { idpGroup: "nurse", platformRole: "nurse" },
-  { idpGroup: "vista-pharmacist", platformRole: "pharmacist" },
-  { idpGroup: "pharmacist", platformRole: "pharmacist" },
-  { idpGroup: "vista-billing", platformRole: "billing" },
-  { idpGroup: "billing", platformRole: "billing" },
-  { idpGroup: "vista-support", platformRole: "support" },
-  { idpGroup: "support", platformRole: "support" },
-  { idpGroup: "vista-clerk", platformRole: "clerk" },
-  { idpGroup: "clerk", platformRole: "clerk" },
+  { idpGroup: 'vista-admin', platformRole: 'admin' },
+  { idpGroup: 'admin', platformRole: 'admin' },
+  { idpGroup: 'vista-provider', platformRole: 'provider' },
+  { idpGroup: 'provider', platformRole: 'provider' },
+  { idpGroup: 'vista-nurse', platformRole: 'nurse' },
+  { idpGroup: 'nurse', platformRole: 'nurse' },
+  { idpGroup: 'vista-pharmacist', platformRole: 'pharmacist' },
+  { idpGroup: 'pharmacist', platformRole: 'pharmacist' },
+  { idpGroup: 'vista-billing', platformRole: 'billing' },
+  { idpGroup: 'billing', platformRole: 'billing' },
+  { idpGroup: 'vista-support', platformRole: 'support' },
+  { idpGroup: 'support', platformRole: 'support' },
+  { idpGroup: 'vista-clerk', platformRole: 'clerk' },
+  { idpGroup: 'clerk', platformRole: 'clerk' },
 ];
 
 /** Fallback role when no mapping matches */
-const DEFAULT_FALLBACK_ROLE: UserRole = "clerk";
+const DEFAULT_FALLBACK_ROLE: UserRole = 'clerk';
 
 /* ------------------------------------------------------------------ */
 /* Custom mapping support                                              */
@@ -85,7 +85,7 @@ let customMappings: IdpRoleMapping[] | null = null;
  */
 export function setIdpRoleMappings(mappings: IdpRoleMapping[] | null): void {
   customMappings = mappings;
-  log.info("IdP role mappings updated", { count: mappings?.length ?? 0, custom: !!mappings });
+  log.info('IdP role mappings updated', { count: mappings?.length ?? 0, custom: !!mappings });
 }
 
 function getActiveMappings(): IdpRoleMapping[] {
@@ -102,7 +102,7 @@ function getActiveMappings(): IdpRoleMapping[] {
  */
 export function mapOidcClaimsToIdentity(claims: OidcTokenClaims): MappedIdentity {
   const idpGroups = extractGroupsFromClaims(claims);
-  const tenantId = claims.tenant_id || claims.facility_station || "default";
+  const tenantId = claims.tenant_id || claims.facility_station || 'default';
   const warnings: string[] = [];
 
   // Find first matching rule
@@ -111,9 +111,7 @@ export function mapOidcClaimsToIdentity(claims: OidcTokenClaims): MappedIdentity
   let role: UserRole = DEFAULT_FALLBACK_ROLE;
 
   for (const mapping of mappings) {
-    const groupMatch = idpGroups.find(
-      (g) => g.toLowerCase() === mapping.idpGroup.toLowerCase()
-    );
+    const groupMatch = idpGroups.find((g) => g.toLowerCase() === mapping.idpGroup.toLowerCase());
     if (groupMatch) {
       // Check tenant restriction if specified
       if (mapping.tenantIds && mapping.tenantIds.length > 0) {
@@ -133,7 +131,7 @@ export function mapOidcClaimsToIdentity(claims: OidcTokenClaims): MappedIdentity
   if (!matchedRule) {
     warnings.push(
       `No IdP group matched. Assigning fallback role '${DEFAULT_FALLBACK_ROLE}'. ` +
-      `Groups: [${idpGroups.join(", ")}]`
+        `Groups: [${idpGroups.join(', ')}]`
     );
   }
 
@@ -191,7 +189,7 @@ export function validateTenantIsolation(
   }
 
   // "default" tenant is a wildcard for single-tenant deployments
-  if (sessionTenantId === "default" || requestTenantId === "default") {
+  if (sessionTenantId === 'default' || requestTenantId === 'default') {
     return { valid: true };
   }
 
@@ -211,26 +209,26 @@ export function validateTenantIsolation(
  * SAML uses attribute statements instead of JWT claims.
  * Structure follows the same mapping logic.
  */
-export function mapSamlAttributesToIdentity(attributes: Record<string, string | string[]>): MappedIdentity {
+export function mapSamlAttributesToIdentity(
+  attributes: Record<string, string | string[]>
+): MappedIdentity {
   // Convert SAML attributes to a claims-like structure
   const groups: string[] = [];
   const warnings: string[] = [];
 
   // Common SAML group attributes
-  const groupKeys = ["groups", "memberOf", "Role", "role", "Roles", "roles"];
+  const groupKeys = ['groups', 'memberOf', 'Role', 'role', 'Roles', 'roles'];
   for (const key of groupKeys) {
     const val = attributes[key];
     if (Array.isArray(val)) {
       groups.push(...val);
-    } else if (typeof val === "string") {
+    } else if (typeof val === 'string') {
       groups.push(val);
     }
   }
 
   const tenantId =
-    (attributes.tenant_id as string) ||
-    (attributes.facilityStation as string) ||
-    "default";
+    (attributes.tenant_id as string) || (attributes.facilityStation as string) || 'default';
 
   // Reuse the same mapping logic
   const mappings = getActiveMappings();
@@ -238,9 +236,7 @@ export function mapSamlAttributesToIdentity(attributes: Record<string, string | 
   let role: UserRole = DEFAULT_FALLBACK_ROLE;
 
   for (const mapping of mappings) {
-    const groupMatch = groups.find(
-      (g) => g.toLowerCase() === mapping.idpGroup.toLowerCase()
-    );
+    const groupMatch = groups.find((g) => g.toLowerCase() === mapping.idpGroup.toLowerCase());
     if (groupMatch) {
       if (mapping.tenantIds && mapping.tenantIds.length > 0) {
         if (!mapping.tenantIds.includes(tenantId)) {
@@ -259,7 +255,7 @@ export function mapSamlAttributesToIdentity(attributes: Record<string, string | 
   if (!matchedRule) {
     warnings.push(
       `No SAML group matched. Assigning fallback role '${DEFAULT_FALLBACK_ROLE}'. ` +
-      `Groups: [${groups.join(", ")}]`
+        `Groups: [${groups.join(', ')}]`
     );
   }
 
@@ -269,7 +265,11 @@ export function mapSamlAttributesToIdentity(attributes: Record<string, string | 
 /**
  * Get the current mapping table (for admin introspection).
  */
-export function getIdpRoleMappings(): { mappings: IdpRoleMapping[]; isCustom: boolean; fallbackRole: UserRole } {
+export function getIdpRoleMappings(): {
+  mappings: IdpRoleMapping[];
+  isCustom: boolean;
+  fallbackRole: UserRole;
+} {
   return {
     mappings: getActiveMappings(),
     isCustom: !!customMappings,

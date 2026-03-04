@@ -6,16 +6,17 @@
 
 VistA-Evolved supports HTTPS at every layer:
 
-| Environment | TLS Provider | Config Location |
-|-------------|-------------|-----------------|
-| Local dev | Caddy (auto self-signed) | `infra/tls/Caddyfile` |
-| Local dev (manual) | mkcert | `infra/tls/mkcert-bootstrap.ps1` |
-| Docker Compose prod | nginx + mounted certs | `nginx/tls.conf` |
-| Kubernetes | cert-manager | `infra/helm/ve-shared/templates/cert-manager.yaml` |
+| Environment         | TLS Provider             | Config Location                                    |
+| ------------------- | ------------------------ | -------------------------------------------------- |
+| Local dev           | Caddy (auto self-signed) | `infra/tls/Caddyfile`                              |
+| Local dev (manual)  | mkcert                   | `infra/tls/mkcert-bootstrap.ps1`                   |
+| Docker Compose prod | nginx + mounted certs    | `nginx/tls.conf`                                   |
+| Kubernetes          | cert-manager             | `infra/helm/ve-shared/templates/cert-manager.yaml` |
 
 ## Option A: Caddy (quickest for local dev)
 
 ### Prerequisites
+
 - Docker installed
 - Add `127.0.0.1 ehr.local` to your hosts file
 
@@ -38,6 +39,7 @@ cd apps/web; pnpm dev                                      # port 3000
 ```
 
 ### Verify
+
 ```powershell
 curl.exe -k https://ehr.local/health
 # Expected: {"status":"ok",...}
@@ -46,6 +48,7 @@ curl.exe -k https://ehr.local/health
 ## Option B: mkcert (trusted local certs)
 
 ### Prerequisites
+
 - mkcert installed: `choco install mkcert` or `scoop install mkcert`
 - Run as Administrator (for CA install)
 
@@ -68,6 +71,7 @@ Copy-Item infra\tls\certs\key.pem  nginx\certs\
 ## Option C: Docker Compose Production (nginx)
 
 ### Prerequisites
+
 - TLS certificates (from mkcert, Let's Encrypt, or your CA)
 - Certs placed at `nginx/certs/cert.pem` and `nginx/certs/key.pem`
 
@@ -87,6 +91,7 @@ curl.exe -k https://localhost/health
 ```
 
 ### nginx TLS details
+
 - TLS config: `nginx/tls.conf` (included via `conf.d/*.conf`)
 - Protocols: TLSv1.2 + TLSv1.3
 - HSTS: `max-age=63072000; includeSubDomains; preload`
@@ -95,6 +100,7 @@ curl.exe -k https://localhost/health
 ## Option D: Kubernetes (cert-manager)
 
 ### Prerequisites
+
 - cert-manager installed in cluster:
   ```bash
   kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yaml
@@ -121,6 +127,7 @@ kubectl describe certificate ve-gateway-tls -n ve-system
 ```
 
 ### Certificate details
+
 - Secret name: `ve-gateway-tls-secret`
 - Duration: 90 days (configurable)
 - Auto-renew: 15 days before expiry
@@ -129,6 +136,7 @@ kubectl describe certificate ve-gateway-tls -n ve-system
 ## Cookie secure flag alignment
 
 All session cookies automatically set `secure: true` when:
+
 - `NODE_ENV=production`, OR
 - `PLATFORM_RUNTIME_MODE=rc` or `prod`
 
@@ -138,19 +146,23 @@ See Phase 153 notes in AGENTS.md for details.
 ## Troubleshooting
 
 ### Browser shows "NET::ERR_CERT_AUTHORITY_INVALID"
+
 - **Caddy**: Run `docker exec ve-caddy-tls caddy trust` or accept the warning
 - **mkcert**: Run `mkcert -install` to install the CA
 - **cert-manager**: Check issuer status with `kubectl describe clusterissuer`
 
 ### Caddy can't reach API/Web
+
 - Ensure `host.docker.internal` resolves (Docker Desktop should handle this)
 - On Linux, add `--add-host=host.docker.internal:host-gateway` to Docker run
 
 ### nginx returns 502 Bad Gateway
+
 - Check that API and Web containers are healthy
 - Check upstream names match: `api:3001` and `web:3000`
 - Check TLS cert paths match the volume mounts
 
 ### HSTS prevents HTTP access after enabling TLS
+
 - HSTS is persistent in browsers. Clear HSTS for your domain in browser settings.
 - Chrome: `chrome://net-internals/#hsts` -- delete domain entry

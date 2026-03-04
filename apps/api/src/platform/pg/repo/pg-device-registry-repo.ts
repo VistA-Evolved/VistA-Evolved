@@ -8,14 +8,14 @@
  * Uses Drizzle ORM + pg-core for type-safe queries.
  */
 
-import { eq, and, desc } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
+import { eq, and, desc } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
 import {
   pgManagedDevice,
   pgDevicePatientAssociation,
   pgDeviceLocationMapping,
   pgDeviceAuditLog,
-} from "../pg-schema.js";
+} from '../pg-schema.js';
 
 export type ManagedDeviceRow = typeof pgManagedDevice.$inferSelect;
 export type DevicePatientAssociationRow = typeof pgDevicePatientAssociation.$inferSelect;
@@ -44,7 +44,7 @@ export async function insertManagedDevice(data: {
   const now = new Date();
   await db.insert(pgManagedDevice).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     name: data.name,
     manufacturer: data.manufacturer,
     model: data.model,
@@ -52,7 +52,7 @@ export async function insertManagedDevice(data: {
     deviceClass: data.deviceClass,
     protocols: data.protocols ?? [],
     gatewayId: data.gatewayId ?? null,
-    status: data.status ?? "active",
+    status: data.status ?? 'active',
     firmwareVersion: data.firmwareVersion ?? null,
     lastCalibration: data.lastCalibration ?? null,
     nextCalibration: data.nextCalibration ?? null,
@@ -70,44 +70,67 @@ export async function findManagedDeviceById(id: string): Promise<ManagedDeviceRo
   return rows[0];
 }
 
-export async function findManagedDevicesByClass(deviceClass: string, tenantId = "default"): Promise<ManagedDeviceRow[]> {
+export async function findManagedDevicesByClass(
+  deviceClass: string,
+  tenantId = 'default'
+): Promise<ManagedDeviceRow[]> {
   const db = getPgDb();
-  return db.select().from(pgManagedDevice)
-    .where(and(eq(pgManagedDevice.tenantId, tenantId), eq(pgManagedDevice.deviceClass, deviceClass)));
+  return db
+    .select()
+    .from(pgManagedDevice)
+    .where(
+      and(eq(pgManagedDevice.tenantId, tenantId), eq(pgManagedDevice.deviceClass, deviceClass))
+    );
 }
 
-export async function findManagedDevicesByStatus(status: string, tenantId = "default"): Promise<ManagedDeviceRow[]> {
+export async function findManagedDevicesByStatus(
+  status: string,
+  tenantId = 'default'
+): Promise<ManagedDeviceRow[]> {
   const db = getPgDb();
-  return db.select().from(pgManagedDevice)
+  return db
+    .select()
+    .from(pgManagedDevice)
     .where(and(eq(pgManagedDevice.tenantId, tenantId), eq(pgManagedDevice.status, status)));
 }
 
-export async function findManagedDevicesByGateway(gatewayId: string, tenantId = "default"): Promise<ManagedDeviceRow[]> {
+export async function findManagedDevicesByGateway(
+  gatewayId: string,
+  tenantId = 'default'
+): Promise<ManagedDeviceRow[]> {
   const db = getPgDb();
-  return db.select().from(pgManagedDevice)
+  return db
+    .select()
+    .from(pgManagedDevice)
     .where(and(eq(pgManagedDevice.tenantId, tenantId), eq(pgManagedDevice.gatewayId, gatewayId)));
 }
 
-export async function findAllManagedDevices(tenantId = "default"): Promise<ManagedDeviceRow[]> {
+export async function findAllManagedDevices(tenantId = 'default'): Promise<ManagedDeviceRow[]> {
   const db = getPgDb();
   return db.select().from(pgManagedDevice).where(eq(pgManagedDevice.tenantId, tenantId));
 }
 
-export async function updateManagedDevice(id: string, patch: Partial<{
-  name: string;
-  status: string;
-  firmwareVersion: string;
-  lastCalibration: string;
-  nextCalibration: string;
-  protocols: unknown[];
-  gatewayId: string | null;
-  metadataJson: unknown;
-}>): Promise<ManagedDeviceRow | undefined> {
+export async function updateManagedDevice(
+  id: string,
+  patch: Partial<{
+    name: string;
+    status: string;
+    firmwareVersion: string;
+    lastCalibration: string;
+    nextCalibration: string;
+    protocols: unknown[];
+    gatewayId: string | null;
+    metadataJson: unknown;
+  }>
+): Promise<ManagedDeviceRow | undefined> {
   const db = getPgDb();
-  await db.update(pgManagedDevice).set({
-    ...patch,
-    updatedAt: new Date(),
-  } as any).where(eq(pgManagedDevice.id, id));
+  await db
+    .update(pgManagedDevice)
+    .set({
+      ...patch,
+      updatedAt: new Date(),
+    } as any)
+    .where(eq(pgManagedDevice.id, id));
   return findManagedDeviceById(id);
 }
 
@@ -135,12 +158,12 @@ export async function insertDevicePatientAssociation(data: {
   const now = new Date();
   await db.insert(pgDevicePatientAssociation).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     deviceId: data.deviceId,
     patientDfn: data.patientDfn,
     location: data.location ?? null,
     facilityCode: data.facilityCode ?? null,
-    status: data.status ?? "active",
+    status: data.status ?? 'active',
     associatedBy: data.associatedBy,
     startedAt: data.startedAt,
     endedAt: data.endedAt ?? null,
@@ -150,45 +173,87 @@ export async function insertDevicePatientAssociation(data: {
   return row!;
 }
 
-export async function findDevicePatientAssociationById(id: string): Promise<DevicePatientAssociationRow | undefined> {
+export async function findDevicePatientAssociationById(
+  id: string
+): Promise<DevicePatientAssociationRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(pgDevicePatientAssociation).where(eq(pgDevicePatientAssociation.id, id));
+  const rows = await db
+    .select()
+    .from(pgDevicePatientAssociation)
+    .where(eq(pgDevicePatientAssociation.id, id));
   return rows[0];
 }
 
-export async function findDevicePatientAssociationsByDevice(deviceId: string, tenantId = "default"): Promise<DevicePatientAssociationRow[]> {
+export async function findDevicePatientAssociationsByDevice(
+  deviceId: string,
+  tenantId = 'default'
+): Promise<DevicePatientAssociationRow[]> {
   const db = getPgDb();
-  return db.select().from(pgDevicePatientAssociation)
-    .where(and(eq(pgDevicePatientAssociation.tenantId, tenantId), eq(pgDevicePatientAssociation.deviceId, deviceId)))
+  return db
+    .select()
+    .from(pgDevicePatientAssociation)
+    .where(
+      and(
+        eq(pgDevicePatientAssociation.tenantId, tenantId),
+        eq(pgDevicePatientAssociation.deviceId, deviceId)
+      )
+    )
     .orderBy(desc(pgDevicePatientAssociation.startedAt));
 }
 
-export async function findDevicePatientAssociationsByPatient(patientDfn: string, tenantId = "default"): Promise<DevicePatientAssociationRow[]> {
+export async function findDevicePatientAssociationsByPatient(
+  patientDfn: string,
+  tenantId = 'default'
+): Promise<DevicePatientAssociationRow[]> {
   const db = getPgDb();
-  return db.select().from(pgDevicePatientAssociation)
-    .where(and(eq(pgDevicePatientAssociation.tenantId, tenantId), eq(pgDevicePatientAssociation.patientDfn, patientDfn)))
+  return db
+    .select()
+    .from(pgDevicePatientAssociation)
+    .where(
+      and(
+        eq(pgDevicePatientAssociation.tenantId, tenantId),
+        eq(pgDevicePatientAssociation.patientDfn, patientDfn)
+      )
+    )
     .orderBy(desc(pgDevicePatientAssociation.startedAt));
 }
 
-export async function findActiveAssociations(tenantId = "default"): Promise<DevicePatientAssociationRow[]> {
+export async function findActiveAssociations(
+  tenantId = 'default'
+): Promise<DevicePatientAssociationRow[]> {
   const db = getPgDb();
-  return db.select().from(pgDevicePatientAssociation)
-    .where(and(eq(pgDevicePatientAssociation.tenantId, tenantId), eq(pgDevicePatientAssociation.status, "active")));
+  return db
+    .select()
+    .from(pgDevicePatientAssociation)
+    .where(
+      and(
+        eq(pgDevicePatientAssociation.tenantId, tenantId),
+        eq(pgDevicePatientAssociation.status, 'active')
+      )
+    );
 }
 
-export async function updateDevicePatientAssociation(id: string, patch: Partial<{
-  status: string;
-  endedAt: string;
-  location: string;
-}>): Promise<DevicePatientAssociationRow | undefined> {
+export async function updateDevicePatientAssociation(
+  id: string,
+  patch: Partial<{
+    status: string;
+    endedAt: string;
+    location: string;
+  }>
+): Promise<DevicePatientAssociationRow | undefined> {
   const db = getPgDb();
-  await db.update(pgDevicePatientAssociation).set(patch as any).where(eq(pgDevicePatientAssociation.id, id));
+  await db
+    .update(pgDevicePatientAssociation)
+    .set(patch as any)
+    .where(eq(pgDevicePatientAssociation.id, id));
   return findDevicePatientAssociationById(id);
 }
 
 export async function deleteDevicePatientAssociation(id: string): Promise<boolean> {
   const db = getPgDb();
-  const result = await db.delete(pgDevicePatientAssociation).where(eq(pgDevicePatientAssociation.id, id));
+  const result = await db
+    .delete(pgDevicePatientAssociation)
+    .where(eq(pgDevicePatientAssociation.id, id));
   return (result as any).rowCount > 0;
 }
 
@@ -209,7 +274,7 @@ export async function insertDeviceLocationMapping(data: {
   const now = new Date();
   await db.insert(pgDeviceLocationMapping).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     deviceId: data.deviceId,
     ward: data.ward,
     room: data.room,
@@ -223,32 +288,59 @@ export async function insertDeviceLocationMapping(data: {
   return row!;
 }
 
-export async function findDeviceLocationMappingById(id: string): Promise<DeviceLocationMappingRow | undefined> {
+export async function findDeviceLocationMappingById(
+  id: string
+): Promise<DeviceLocationMappingRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(pgDeviceLocationMapping).where(eq(pgDeviceLocationMapping.id, id));
+  const rows = await db
+    .select()
+    .from(pgDeviceLocationMapping)
+    .where(eq(pgDeviceLocationMapping.id, id));
   return rows[0];
 }
 
-export async function findDeviceLocationMappingsByDevice(deviceId: string, tenantId = "default"): Promise<DeviceLocationMappingRow[]> {
+export async function findDeviceLocationMappingsByDevice(
+  deviceId: string,
+  tenantId = 'default'
+): Promise<DeviceLocationMappingRow[]> {
   const db = getPgDb();
-  return db.select().from(pgDeviceLocationMapping)
-    .where(and(eq(pgDeviceLocationMapping.tenantId, tenantId), eq(pgDeviceLocationMapping.deviceId, deviceId)));
+  return db
+    .select()
+    .from(pgDeviceLocationMapping)
+    .where(
+      and(
+        eq(pgDeviceLocationMapping.tenantId, tenantId),
+        eq(pgDeviceLocationMapping.deviceId, deviceId)
+      )
+    );
 }
 
-export async function findActiveDeviceLocationMappings(tenantId = "default"): Promise<DeviceLocationMappingRow[]> {
+export async function findActiveDeviceLocationMappings(
+  tenantId = 'default'
+): Promise<DeviceLocationMappingRow[]> {
   const db = getPgDb();
-  return db.select().from(pgDeviceLocationMapping)
-    .where(and(eq(pgDeviceLocationMapping.tenantId, tenantId), eq(pgDeviceLocationMapping.active, true)));
+  return db
+    .select()
+    .from(pgDeviceLocationMapping)
+    .where(
+      and(eq(pgDeviceLocationMapping.tenantId, tenantId), eq(pgDeviceLocationMapping.active, true))
+    );
 }
 
-export async function updateDeviceLocationMapping(id: string, patch: Partial<{
-  active: boolean;
-  ward: string;
-  room: string;
-  bed: string;
-}>): Promise<DeviceLocationMappingRow | undefined> {
+export async function updateDeviceLocationMapping(
+  id: string,
+  patch: Partial<{
+    active: boolean;
+    ward: string;
+    room: string;
+    bed: string;
+  }>
+): Promise<DeviceLocationMappingRow | undefined> {
   const db = getPgDb();
-  await db.update(pgDeviceLocationMapping).set(patch as any).where(eq(pgDeviceLocationMapping.id, id));
+  await db
+    .update(pgDeviceLocationMapping)
+    .set(patch as any)
+    .where(eq(pgDeviceLocationMapping.id, id));
   return findDeviceLocationMappingById(id);
 }
 
@@ -273,7 +365,7 @@ export async function insertDeviceAuditLog(data: {
   const now = new Date();
   await db.insert(pgDeviceAuditLog).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     deviceId: data.deviceId,
     action: data.action,
     actor: data.actor,
@@ -291,16 +383,26 @@ export async function findDeviceAuditLogById(id: string): Promise<DeviceAuditLog
   return rows[0];
 }
 
-export async function findDeviceAuditByDevice(deviceId: string, tenantId = "default"): Promise<DeviceAuditLogRow[]> {
+export async function findDeviceAuditByDevice(
+  deviceId: string,
+  tenantId = 'default'
+): Promise<DeviceAuditLogRow[]> {
   const db = getPgDb();
-  return db.select().from(pgDeviceAuditLog)
+  return db
+    .select()
+    .from(pgDeviceAuditLog)
     .where(and(eq(pgDeviceAuditLog.tenantId, tenantId), eq(pgDeviceAuditLog.deviceId, deviceId)))
     .orderBy(desc(pgDeviceAuditLog.timestamp));
 }
 
-export async function findAllDeviceAuditLogs(tenantId = "default", limit = 100): Promise<DeviceAuditLogRow[]> {
+export async function findAllDeviceAuditLogs(
+  tenantId = 'default',
+  limit = 100
+): Promise<DeviceAuditLogRow[]> {
   const db = getPgDb();
-  return db.select().from(pgDeviceAuditLog)
+  return db
+    .select()
+    .from(pgDeviceAuditLog)
     .where(eq(pgDeviceAuditLog.tenantId, tenantId))
     .orderBy(desc(pgDeviceAuditLog.timestamp))
     .limit(limit);

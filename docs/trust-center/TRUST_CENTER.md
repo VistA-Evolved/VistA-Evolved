@@ -12,11 +12,11 @@ with configurable regulatory compliance.
 
 ### Supported Markets
 
-| Market | Framework | Status | Country Pack |
-|--------|-----------|--------|-------------|
-| United States | HIPAA | Active | US v1.0.0 |
-| Philippines | DPA 2012 (R.A. 10173) | Active | PH v1.0.0 |
-| Ghana | DPA 2012 (Act 843) | Draft | GH v0.1.0 |
+| Market        | Framework             | Status | Country Pack |
+| ------------- | --------------------- | ------ | ------------ |
+| United States | HIPAA                 | Active | US v1.0.0    |
+| Philippines   | DPA 2012 (R.A. 10173) | Active | PH v1.0.0    |
+| Ghana         | DPA 2012 (Act 843)    | Draft  | GH v0.1.0    |
 
 ---
 
@@ -24,11 +24,11 @@ with configurable regulatory compliance.
 
 ### Authentication
 
-| Method | Description | Phase |
-|--------|-------------|-------|
-| VistA RPC Broker | Native Access/Verify code authentication against VistA KERNEL | Phase 1 |
-| OIDC / OAuth 2.0 | OpenID Connect with Keycloak (RS256-512, ES256-384-512) | Phase 35 |
-| WebAuthn Passkeys | FIDO2 passwordless via Keycloak WebAuthn provider | Phase 35 |
+| Method            | Description                                                   | Phase    |
+| ----------------- | ------------------------------------------------------------- | -------- |
+| VistA RPC Broker  | Native Access/Verify code authentication against VistA KERNEL | Phase 1  |
+| OIDC / OAuth 2.0  | OpenID Connect with Keycloak (RS256-512, ES256-384-512)       | Phase 35 |
+| WebAuthn Passkeys | FIDO2 passwordless via Keycloak WebAuthn provider             | Phase 35 |
 
 - OIDC is mandatory in `rc` and `prod` runtime modes (Phase 150)
 - Session tokens are SHA-256 hashed in database storage (Phase 150)
@@ -58,11 +58,11 @@ with configurable regulatory compliance.
 
 ### Audit Trails
 
-| Trail | Scope | Chain Type | Verification Endpoint |
-|-------|-------|------------|----------------------|
-| Immutable Audit | General operations | SHA-256 hash chain | `GET /iam/audit/verify` |
-| Imaging Audit | DICOMweb + imaging ops | SHA-256 hash chain | `GET /imaging/audit/verify` |
-| RCM Audit | Claims + billing | SHA-256 hash chain | `GET /rcm/audit/verify` |
+| Trail           | Scope                  | Chain Type         | Verification Endpoint       |
+| --------------- | ---------------------- | ------------------ | --------------------------- |
+| Immutable Audit | General operations     | SHA-256 hash chain | `GET /iam/audit/verify`     |
+| Imaging Audit   | DICOMweb + imaging ops | SHA-256 hash chain | `GET /imaging/audit/verify` |
+| RCM Audit       | Claims + billing       | SHA-256 hash chain | `GET /rcm/audit/verify`     |
 
 - File-based JSONL persistence at `logs/immutable-audit.jsonl` (Phase 35)
 - S3/MinIO audit shipping with SHA-256 manifests (Phase 157)
@@ -73,20 +73,20 @@ with configurable regulatory compliance.
 23 regulatory requirements mapped across three frameworks:
 
 | Framework | Implemented | Partial | Planned | N/A | Coverage |
-|-----------|-------------|---------|---------|-----|----------|
-| HIPAA | 8 | 2 | 1 | 1 | 91% |
-| DPA_PH | 5 | 0 | 1 | 0 | 83% |
-| DPA_GH | 4 | 0 | 1 | 0 | 80% |
+| --------- | ----------- | ------- | ------- | --- | -------- |
+| HIPAA     | 8           | 2       | 1       | 1   | 91%      |
+| DPA_PH    | 5           | 0       | 1       | 0   | 83%      |
+| DPA_GH    | 4           | 0       | 1       | 0   | 80%      |
 
 Access via `GET /compliance/matrix` (Phase 315).
 
 ### Known Gaps
 
-| Gap | Frameworks | Status |
-|-----|-----------|--------|
-| Breach notification workflow | All | Planned |
-| At-rest encryption verification | HIPAA | Infra-dependent |
-| TLS enforcement verification | HIPAA | Infra-dependent |
+| Gap                             | Frameworks | Status          |
+| ------------------------------- | ---------- | --------------- |
+| Breach notification workflow    | All        | Planned         |
+| At-rest encryption verification | HIPAA      | Infra-dependent |
+| TLS enforcement verification    | HIPAA      | Infra-dependent |
 
 ---
 
@@ -94,14 +94,14 @@ Access via `GET /compliance/matrix` (Phase 315).
 
 ### Supported Regions
 
-| Region | Location | Status |
-|--------|----------|--------|
-| us-east | Virginia, US | Active |
-| us-west | Oregon, US | Active |
-| ph-mnl | Manila, Philippines | Active |
-| gh-acc | Accra, Ghana | Planned |
-| eu-fra | Frankfurt, EU | Planned |
-| local | On-premise | Active |
+| Region  | Location            | Status  |
+| ------- | ------------------- | ------- |
+| us-east | Virginia, US        | Active  |
+| us-west | Oregon, US          | Active  |
+| ph-mnl  | Manila, Philippines | Active  |
+| gh-acc  | Accra, Ghana        | Planned |
+| eu-fra  | Frankfurt, EU       | Planned |
+| local   | On-premise          | Active  |
 
 - Tenant-scoped region assignment (immutable after creation)
 - Cross-border transfer requires consent validation
@@ -114,11 +114,11 @@ Access via `GET /compliance/matrix` (Phase 315).
 ### Runtime Modes
 
 | Mode | PG Required | OIDC Required | SQLite Allowed | JSON Stores |
-|------|-------------|---------------|----------------|-------------|
-| dev | No | No | Yes | Yes |
-| test | No | No | Yes | Yes |
-| rc | Yes | Yes | No | No |
-| prod | Yes | Yes | No | No |
+| ---- | ----------- | ------------- | -------------- | ----------- |
+| dev  | No          | No            | Yes            | Yes         |
+| test | No          | No            | Yes            | Yes         |
+| rc   | Yes         | Yes           | No             | No          |
+| prod | Yes         | Yes           | No             | No          |
 
 ### Rate Limiting
 
@@ -144,23 +144,23 @@ Access via `GET /compliance/matrix` (Phase 315).
 
 ### Infrastructure
 
-| Component | Version | Purpose |
-|-----------|---------|---------|
-| WorldVistA EHR | Docker image | VistA MUMPS database |
-| Keycloak | 24.x | OIDC identity provider |
-| PostgreSQL | 16.x | Platform database |
-| Orthanc | Latest | DICOM/PACS server |
-| OHIF Viewer | Latest | Medical imaging viewer |
-| YottaDB/Octo | Latest | Analytics SQL engine |
+| Component      | Version      | Purpose                |
+| -------------- | ------------ | ---------------------- |
+| WorldVistA EHR | Docker image | VistA MUMPS database   |
+| Keycloak       | 24.x         | OIDC identity provider |
+| PostgreSQL     | 16.x         | Platform database      |
+| Orthanc        | Latest       | DICOM/PACS server      |
+| OHIF Viewer    | Latest       | Medical imaging viewer |
+| YottaDB/Octo   | Latest       | Analytics SQL engine   |
 
 ### Application
 
-| Component | Purpose |
-|-----------|---------|
-| Fastify | API server |
-| Next.js | Web + portal frontends |
-| next-intl | Internationalization |
-| prom-client | Prometheus metrics |
+| Component   | Purpose                |
+| ----------- | ---------------------- |
+| Fastify     | API server             |
+| Next.js     | Web + portal frontends |
+| next-intl   | Internationalization   |
+| prom-client | Prometheus metrics     |
 
 No external database drivers — PG uses zero-dependency wire protocol (Phase 25D).
 No external HTTP clients — S3 uses zero-dependency AWS Sig V4 (Phase 157).
@@ -191,5 +191,5 @@ repository's security policy.
 
 ---
 
-*This document is auto-maintained alongside the codebase. Machine-readable
-compliance data is available via the `/compliance/*` REST endpoints.*
+_This document is auto-maintained alongside the codebase. Machine-readable
+compliance data is available via the `/compliance/_` REST endpoints.\*

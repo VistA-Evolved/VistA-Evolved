@@ -25,10 +25,10 @@
 
 ## RPC Mapping
 
-| Intent | RPCs | Lock? |
-|--------|------|-------|
-| PLACE_ORDER | ORWDX LOCK, ORWDX SAVE, ORWDX UNLOCK | Yes |
-| DISCONTINUE_ORDER | ORWDX LOCK, ORWDXA DC, ORWDX UNLOCK | Yes |
-| VERIFY_ORDER | ORWDXA VERIFY | No |
-| SIGN_ORDER | ORWDX LOCK, ORWOR1 SIG, ORWDX UNLOCK | Yes |
-| FLAG_ORDER | ORWDXA FLAG | No |
+| Intent            | RPCs                                 | Lock? |
+| ----------------- | ------------------------------------ | ----- |
+| PLACE_ORDER       | ORWDX LOCK, ORWDX SAVE, ORWDX UNLOCK | Yes   |
+| DISCONTINUE_ORDER | ORWDX LOCK, ORWDXA DC, ORWDX UNLOCK  | Yes   |
+| VERIFY_ORDER      | ORWDXA VERIFY                        | No    |
+| SIGN_ORDER        | ORWDX LOCK, ORWOR1 SIG, ORWDX UNLOCK | Yes   |
+| FLAG_ORDER        | ORWDXA FLAG                          | No    |

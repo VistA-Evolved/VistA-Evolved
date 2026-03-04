@@ -10,6 +10,7 @@
 VistA-Evolved uses environment variables for all secrets (DB creds, OIDC
 client secrets, webhook keys, VistA RPC credentials). This works for dev but
 lacks:
+
 - Envelope encryption for data at rest
 - Automated rotation workflows
 - Audit trail for secret access
@@ -26,6 +27,7 @@ supports multiple backends (env-var, file-based, cloud KMS, Vault) selectable
 via configuration.
 
 Rationale:
+
 - No mandatory external infrastructure (env-var backend for dev/sandbox)
 - Cloud KMS or Vault backend for production (infrastructure team deploys)
 - Envelope encryption pattern is cloud-agnostic
@@ -35,6 +37,7 @@ Rationale:
 ## Alternatives Considered
 
 ### Option A: HashiCorp Vault
+
 - **Pros:** Industry standard, full key lifecycle, dynamic secrets, excellent
   audit trail, supports transit encryption
 - **Cons:** Requires Vault server infrastructure, operational complexity,
@@ -43,6 +46,7 @@ Rationale:
 - **Deferred:** Can be a `KeyProvider` backend when infrastructure is available
 
 ### Option B: Cloud KMS + External Secrets Operator (ESO)
+
 - **Pros:** Managed service, no self-hosted infra, K8s-native with ESO
 - **Cons:** Cloud-vendor lock-in, ESO adds Kubernetes dependency, different
   APIs per cloud provider
@@ -50,12 +54,14 @@ Rationale:
 - **Deferred:** Can be a `KeyProvider` backend for cloud deployments
 
 ### Option C: Sealed Secrets (Bitnami)
+
 - **Pros:** GitOps-friendly, secrets encrypted in repo
 - **Cons:** Kubernetes-only, no key rotation, no dynamic secrets, no audit
 - **License:** Apache 2.0 — acceptable
 - **Rejected:** Too limited for rotation workflows
 
 ### Option D: Hybrid Envelope Encryption (CHOSEN)
+
 - **Pros:** Backend-agnostic, works from dev to production, no mandatory
   external deps, audited rotation, zero npm deps
 - **Cons:** Must implement wrapper ourselves, less battle-tested than Vault

@@ -1,6 +1,7 @@
 # Phase 439 — Verification
 
 ## Checks
+
 1. `prompts-tree-health.mjs` passes (7/7 PASS, 0 FAIL)
 2. `classify()` returns valid `RegulatoryClassification` with frameworks, constraints, risk
 3. US tenant resolves to [HIPAA, OWASP_ASVS]

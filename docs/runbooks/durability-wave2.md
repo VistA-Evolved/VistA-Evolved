@@ -7,14 +7,14 @@ persistence using the lazy-wiring pattern from Phase 114.
 
 ## Stores Migrated
 
-| Store | File | Table | Repo |
-|-------|------|-------|------|
-| Portal Messages | `services/portal-messaging.ts` | `portal_message` | `portal-message-repo.ts` |
-| Portal Appointments | `services/portal-appointments.ts` | `portal_appointment` | `portal-appointment-repo.ts` |
-| Telehealth Rooms | `telehealth/room-store.ts` | `telehealth_room` | `telehealth-room-repo.ts` |
-| Imaging Worklist | `services/imaging-worklist.ts` | `imaging_work_order` | `imaging-worklist-repo.ts` |
-| Imaging Ingest | `services/imaging-ingest.ts` | `imaging_study_link` + `imaging_unmatched` | `imaging-ingest-repo.ts` |
-| Idempotency Keys | `middleware/idempotency.ts` | `idempotency_key` | `idempotency-repo.ts` |
+| Store               | File                              | Table                                      | Repo                         |
+| ------------------- | --------------------------------- | ------------------------------------------ | ---------------------------- |
+| Portal Messages     | `services/portal-messaging.ts`    | `portal_message`                           | `portal-message-repo.ts`     |
+| Portal Appointments | `services/portal-appointments.ts` | `portal_appointment`                       | `portal-appointment-repo.ts` |
+| Telehealth Rooms    | `telehealth/room-store.ts`        | `telehealth_room`                          | `telehealth-room-repo.ts`    |
+| Imaging Worklist    | `services/imaging-worklist.ts`    | `imaging_work_order`                       | `imaging-worklist-repo.ts`   |
+| Imaging Ingest      | `services/imaging-ingest.ts`      | `imaging_study_link` + `imaging_unmatched` | `imaging-ingest-repo.ts`     |
+| Idempotency Keys    | `middleware/idempotency.ts`       | `idempotency_key`                          | `idempotency-repo.ts`        |
 
 ## Architecture Pattern
 

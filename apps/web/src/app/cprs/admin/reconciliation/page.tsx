@@ -18,7 +18,6 @@ import { csrfHeaders } from '@/lib/csrf';
 import styles from '@/components/cprs/cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
-
 type Tab = 'upload' | 'payments' | 'matches' | 'underpayments' | 'dashboard';
 
 async function apiFetch(path: string, opts?: RequestInit) {
@@ -80,14 +79,16 @@ function cents(c: number): string {
 
 function badge(text: string, color: string): React.ReactElement {
   return (
-    <span style={{
-      backgroundColor: color,
-      color: '#fff',
-      padding: '2px 8px',
-      borderRadius: '4px',
-      fontSize: '12px',
-      fontWeight: 600,
-    }}>
+    <span
+      style={{
+        backgroundColor: color,
+        color: '#fff',
+        padding: '2px 8px',
+        borderRadius: '4px',
+        fontSize: '12px',
+        fontWeight: 600,
+      }}
+    >
       {text}
     </span>
   );
@@ -194,7 +195,9 @@ export default function ReconciliationPage() {
       const parsed = JSON.parse(jsonInput);
       const data = await apiPost('/rcm/reconciliation/import', parsed);
       if (data.ok) {
-        setMessage(`Imported ${data.paymentsCreated} payment records. Import ID: ${data.import?.id ?? 'unknown'}`);
+        setMessage(
+          `Imported ${data.paymentsCreated} payment records. Import ID: ${data.import?.id ?? 'unknown'}`
+        );
         setJsonInput('');
         loadImports();
       } else {
@@ -210,7 +213,9 @@ export default function ReconciliationPage() {
     setLoading(true);
     const data = await apiPost('/rcm/reconciliation/match-batch', { importId });
     if (data.ok) {
-      setMessage(`Matching complete: ${data.matched} matched, ${data.needsReview} review, ${data.unmatched} unmatched, ${data.underpayments} underpayments`);
+      setMessage(
+        `Matching complete: ${data.matched} matched, ${data.needsReview} review, ${data.unmatched} unmatched, ${data.underpayments} underpayments`
+      );
     } else {
       setMessage(`Matching failed: ${JSON.stringify(data.error ?? data)}`);
     }
@@ -256,10 +261,13 @@ export default function ReconciliationPage() {
 
       {/* Tab bar */}
       <div style={{ display: 'flex', gap: '4px', marginBottom: '16px', flexWrap: 'wrap' }}>
-        {tabs.map(t => (
+        {tabs.map((t) => (
           <button
             key={t.key}
-            onClick={() => { setTab(t.key); setMessage(''); }}
+            onClick={() => {
+              setTab(t.key);
+              setMessage('');
+            }}
             style={{
               padding: '6px 14px',
               borderRadius: '4px',
@@ -278,13 +286,18 @@ export default function ReconciliationPage() {
 
       {/* Status message */}
       {message && (
-        <div style={{
-          padding: '8px 12px',
-          marginBottom: '12px',
-          backgroundColor: message.includes('failed') || message.includes('Error') || message.includes('error') ? '#f8d7da' : '#d1e7dd',
-          borderRadius: '4px',
-          fontSize: '13px',
-        }}>
+        <div
+          style={{
+            padding: '8px 12px',
+            marginBottom: '12px',
+            backgroundColor:
+              message.includes('failed') || message.includes('Error') || message.includes('error')
+                ? '#f8d7da'
+                : '#d1e7dd',
+            borderRadius: '4px',
+            fontSize: '13px',
+          }}
+        >
           {message}
         </div>
       )}
@@ -294,13 +307,16 @@ export default function ReconciliationPage() {
       {/* ── Upload Tab ────────────────────────────────────── */}
       {tab === 'upload' && (
         <div>
-          <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>Import Remittance Batch</h2>
+          <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
+            Import Remittance Batch
+          </h2>
           <p style={{ fontSize: '13px', color: '#666', marginBottom: '8px' }}>
-            Paste a remittance JSON payload. Format: {`{ entries: [{ claimRef, payerId, billedAmount, paidAmount, ... }], sourceType, originalFilename }`}
+            Paste a remittance JSON payload. Format:{' '}
+            {`{ entries: [{ claimRef, payerId, billedAmount, paidAmount, ... }], sourceType, originalFilename }`}
           </p>
           <textarea
             value={jsonInput}
-            onChange={e => setJsonInput(e.target.value)}
+            onChange={(e) => setJsonInput(e.target.value)}
             placeholder='{"entries": [{"claimRef": "CLM-001", "payerId": "PAYER-A", "billedAmount": 500, "paidAmount": 450}], "sourceType": "MANUAL"}'
             style={{
               width: '100%',
@@ -332,7 +348,9 @@ export default function ReconciliationPage() {
           {/* Import history */}
           {imports.length > 0 && (
             <div style={{ marginTop: '16px' }}>
-              <h3 style={{ fontSize: '14px', fontWeight: 600, marginBottom: '8px' }}>Import History</h3>
+              <h3 style={{ fontSize: '14px', fontWeight: 600, marginBottom: '8px' }}>
+                Import History
+              </h3>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
                 <thead>
                   <tr style={{ borderBottom: '2px solid #ddd' }}>
@@ -347,10 +365,14 @@ export default function ReconciliationPage() {
                 <tbody>
                   {imports.map((imp: any) => (
                     <tr key={imp.id} style={{ borderBottom: '1px solid #eee' }}>
-                      <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{imp.id.slice(0, 8)}</td>
+                      <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>
+                        {imp.id.slice(0, 8)}
+                      </td>
                       <td style={{ padding: '4px 8px' }}>{imp.sourceType}</td>
                       <td style={{ padding: '4px 8px', textAlign: 'right' }}>{imp.lineCount}</td>
-                      <td style={{ padding: '4px 8px', textAlign: 'right' }}>{cents(imp.totalPaidCents)}</td>
+                      <td style={{ padding: '4px 8px', textAlign: 'right' }}>
+                        {cents(imp.totalPaidCents)}
+                      </td>
                       <td style={{ padding: '4px 8px' }}>{imp.createdAt?.slice(0, 16)}</td>
                       <td style={{ padding: '4px 8px' }}>
                         <button
@@ -384,13 +406,25 @@ export default function ReconciliationPage() {
             <label style={{ fontSize: '13px' }}>Status:</label>
             <select
               value={paymentStatusFilter}
-              onChange={e => { setPaymentStatusFilter(e.target.value); setPaymentPage(1); }}
-              style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #ccc', fontSize: '12px' }}
+              onChange={(e) => {
+                setPaymentStatusFilter(e.target.value);
+                setPaymentPage(1);
+              }}
+              style={{
+                padding: '4px 8px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                fontSize: '12px',
+              }}
             >
               <option value="">All</option>
-              {['IMPORTED', 'MATCHED', 'PARTIALLY_MATCHED', 'UNMATCHED', 'POSTED', 'DISPUTED'].map(s => (
-                <option key={s} value={s}>{s}</option>
-              ))}
+              {['IMPORTED', 'MATCHED', 'PARTIALLY_MATCHED', 'UNMATCHED', 'POSTED', 'DISPUTED'].map(
+                (s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                )
+              )}
             </select>
             <span style={{ fontSize: '12px', color: '#666' }}>
               {paymentTotal} total | Page {paymentPage}/{paymentTotalPages}
@@ -413,9 +447,15 @@ export default function ReconciliationPage() {
                 <tr key={p.id} style={{ borderBottom: '1px solid #eee' }}>
                   <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{p.claimRef}</td>
                   <td style={{ padding: '4px 8px' }}>{p.payerId}</td>
-                  <td style={{ padding: '4px 8px' }}>{badge(p.status, PAYMENT_STATUS_COLORS[p.status] ?? '#999')}</td>
-                  <td style={{ padding: '4px 8px', textAlign: 'right' }}>{cents(p.billedAmountCents)}</td>
-                  <td style={{ padding: '4px 8px', textAlign: 'right' }}>{cents(p.paidAmountCents)}</td>
+                  <td style={{ padding: '4px 8px' }}>
+                    {badge(p.status, PAYMENT_STATUS_COLORS[p.status] ?? '#999')}
+                  </td>
+                  <td style={{ padding: '4px 8px', textAlign: 'right' }}>
+                    {cents(p.billedAmountCents)}
+                  </td>
+                  <td style={{ padding: '4px 8px', textAlign: 'right' }}>
+                    {cents(p.paidAmountCents)}
+                  </td>
                   <td style={{ padding: '4px 8px' }}>{p.serviceDate ?? '-'}</td>
                 </tr>
               ))}
@@ -424,10 +464,30 @@ export default function ReconciliationPage() {
 
           {/* Pagination */}
           <div style={{ display: 'flex', gap: '8px', marginTop: '12px', justifyContent: 'center' }}>
-            <button disabled={paymentPage <= 1} onClick={() => setPaymentPage(p => p - 1)}
-              style={{ padding: '4px 12px', borderRadius: '4px', border: '1px solid #ccc', cursor: 'pointer' }}>&lt; Prev</button>
-            <button disabled={paymentPage >= paymentTotalPages} onClick={() => setPaymentPage(p => p + 1)}
-              style={{ padding: '4px 12px', borderRadius: '4px', border: '1px solid #ccc', cursor: 'pointer' }}>Next &gt;</button>
+            <button
+              disabled={paymentPage <= 1}
+              onClick={() => setPaymentPage((p) => p - 1)}
+              style={{
+                padding: '4px 12px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                cursor: 'pointer',
+              }}
+            >
+              &lt; Prev
+            </button>
+            <button
+              disabled={paymentPage >= paymentTotalPages}
+              onClick={() => setPaymentPage((p) => p + 1)}
+              style={{
+                padding: '4px 12px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                cursor: 'pointer',
+              }}
+            >
+              Next &gt;
+            </button>
           </div>
         </div>
       )}
@@ -435,7 +495,9 @@ export default function ReconciliationPage() {
       {/* ── Matches Review Tab ────────────────────────────── */}
       {tab === 'matches' && (
         <div>
-          <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>Matches Pending Review</h2>
+          <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
+            Matches Pending Review
+          </h2>
           {reviewMatches.length === 0 ? (
             <p style={{ color: '#666', fontSize: '13px' }}>No matches need review.</p>
           ) : (
@@ -453,18 +515,43 @@ export default function ReconciliationPage() {
               <tbody>
                 {reviewMatches.map((m: any) => (
                   <tr key={m.id} style={{ borderBottom: '1px solid #eee' }}>
-                    <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{m.id.slice(0, 8)}</td>
+                    <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>
+                      {m.id.slice(0, 8)}
+                    </td>
                     <td style={{ padding: '4px 8px' }}>{m.claimRef}</td>
                     <td style={{ padding: '4px 8px' }}>{m.matchMethod}</td>
                     <td style={{ padding: '4px 8px', textAlign: 'right' }}>{m.matchConfidence}%</td>
-                    <td style={{ padding: '4px 8px' }}>{badge(m.matchStatus, MATCH_STATUS_COLORS[m.matchStatus] ?? '#999')}</td>
                     <td style={{ padding: '4px 8px' }}>
-                      <button onClick={() => handleConfirmMatch(m.id, 'CONFIRMED')}
-                        style={{ marginRight: '4px', padding: '2px 8px', fontSize: '11px', border: '1px solid #198754', color: '#198754', background: '#fff', borderRadius: '3px', cursor: 'pointer' }}>
+                      {badge(m.matchStatus, MATCH_STATUS_COLORS[m.matchStatus] ?? '#999')}
+                    </td>
+                    <td style={{ padding: '4px 8px' }}>
+                      <button
+                        onClick={() => handleConfirmMatch(m.id, 'CONFIRMED')}
+                        style={{
+                          marginRight: '4px',
+                          padding: '2px 8px',
+                          fontSize: '11px',
+                          border: '1px solid #198754',
+                          color: '#198754',
+                          background: '#fff',
+                          borderRadius: '3px',
+                          cursor: 'pointer',
+                        }}
+                      >
                         Confirm
                       </button>
-                      <button onClick={() => handleConfirmMatch(m.id, 'REJECTED')}
-                        style={{ padding: '2px 8px', fontSize: '11px', border: '1px solid #dc3545', color: '#dc3545', background: '#fff', borderRadius: '3px', cursor: 'pointer' }}>
+                      <button
+                        onClick={() => handleConfirmMatch(m.id, 'REJECTED')}
+                        style={{
+                          padding: '2px 8px',
+                          fontSize: '11px',
+                          border: '1px solid #dc3545',
+                          color: '#dc3545',
+                          background: '#fff',
+                          borderRadius: '3px',
+                          cursor: 'pointer',
+                        }}
+                      >
                         Reject
                       </button>
                     </td>
@@ -483,12 +570,22 @@ export default function ReconciliationPage() {
             <label style={{ fontSize: '13px' }}>Status:</label>
             <select
               value={upStatusFilter}
-              onChange={e => { setUpStatusFilter(e.target.value); setUpPage(1); }}
-              style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #ccc', fontSize: '12px' }}
+              onChange={(e) => {
+                setUpStatusFilter(e.target.value);
+                setUpPage(1);
+              }}
+              style={{
+                padding: '4px 8px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                fontSize: '12px',
+              }}
             >
               <option value="">All</option>
-              {['NEW', 'INVESTIGATING', 'APPEALING', 'RESOLVED', 'WRITTEN_OFF'].map(s => (
-                <option key={s} value={s}>{s}</option>
+              {['NEW', 'INVESTIGATING', 'APPEALING', 'RESOLVED', 'WRITTEN_OFF'].map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
               ))}
             </select>
             <span style={{ fontSize: '12px', color: '#666' }}>
@@ -513,20 +610,45 @@ export default function ReconciliationPage() {
                 <tr key={u.id} style={{ borderBottom: '1px solid #eee' }}>
                   <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{u.claimRef}</td>
                   <td style={{ padding: '4px 8px' }}>{u.payerId}</td>
-                  <td style={{ padding: '4px 8px' }}>{badge(u.status, UNDERPAYMENT_STATUS_COLORS[u.status] ?? '#999')}</td>
-                  <td style={{ padding: '4px 8px', textAlign: 'right' }}>{cents(u.expectedAmountCents)}</td>
-                  <td style={{ padding: '4px 8px', textAlign: 'right' }}>{cents(u.paidAmountCents)}</td>
-                  <td style={{ padding: '4px 8px', textAlign: 'right', color: '#dc3545', fontWeight: 600 }}>
+                  <td style={{ padding: '4px 8px' }}>
+                    {badge(u.status, UNDERPAYMENT_STATUS_COLORS[u.status] ?? '#999')}
+                  </td>
+                  <td style={{ padding: '4px 8px', textAlign: 'right' }}>
+                    {cents(u.expectedAmountCents)}
+                  </td>
+                  <td style={{ padding: '4px 8px', textAlign: 'right' }}>
+                    {cents(u.paidAmountCents)}
+                  </td>
+                  <td
+                    style={{
+                      padding: '4px 8px',
+                      textAlign: 'right',
+                      color: '#dc3545',
+                      fontWeight: 600,
+                    }}
+                  >
                     {cents(u.deltaCents)}
                   </td>
                   <td style={{ padding: '4px 8px' }}>
                     {u.status === 'NEW' || u.status === 'INVESTIGATING' ? (
-                      <button onClick={() => handleSendToDenials(u.id)}
-                        style={{ padding: '2px 8px', fontSize: '11px', border: '1px solid #fd7e14', color: '#fd7e14', background: '#fff', borderRadius: '3px', cursor: 'pointer' }}>
+                      <button
+                        onClick={() => handleSendToDenials(u.id)}
+                        style={{
+                          padding: '2px 8px',
+                          fontSize: '11px',
+                          border: '1px solid #fd7e14',
+                          color: '#fd7e14',
+                          background: '#fff',
+                          borderRadius: '3px',
+                          cursor: 'pointer',
+                        }}
+                      >
                         Send to Denials
                       </button>
                     ) : u.denialCaseId ? (
-                      <span style={{ fontSize: '11px', color: '#666' }}>Denial: {u.denialCaseId.slice(0, 8)}</span>
+                      <span style={{ fontSize: '11px', color: '#666' }}>
+                        Denial: {u.denialCaseId.slice(0, 8)}
+                      </span>
                     ) : null}
                   </td>
                 </tr>
@@ -536,10 +658,30 @@ export default function ReconciliationPage() {
 
           {/* Pagination */}
           <div style={{ display: 'flex', gap: '8px', marginTop: '12px', justifyContent: 'center' }}>
-            <button disabled={upPage <= 1} onClick={() => setUpPage(p => p - 1)}
-              style={{ padding: '4px 12px', borderRadius: '4px', border: '1px solid #ccc', cursor: 'pointer' }}>&lt; Prev</button>
-            <button disabled={upPage >= upTotalPages} onClick={() => setUpPage(p => p + 1)}
-              style={{ padding: '4px 12px', borderRadius: '4px', border: '1px solid #ccc', cursor: 'pointer' }}>Next &gt;</button>
+            <button
+              disabled={upPage <= 1}
+              onClick={() => setUpPage((p) => p - 1)}
+              style={{
+                padding: '4px 12px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                cursor: 'pointer',
+              }}
+            >
+              &lt; Prev
+            </button>
+            <button
+              disabled={upPage >= upTotalPages}
+              onClick={() => setUpPage((p) => p + 1)}
+              style={{
+                padding: '4px 12px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                cursor: 'pointer',
+              }}
+            >
+              Next &gt;
+            </button>
           </div>
         </div>
       )}
@@ -547,8 +689,16 @@ export default function ReconciliationPage() {
       {/* ── Dashboard Tab ─────────────────────────────────── */}
       {tab === 'dashboard' && stats && (
         <div>
-          <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '12px' }}>Reconciliation Dashboard</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '12px' }}>
+          <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '12px' }}>
+            Reconciliation Dashboard
+          </h2>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+              gap: '12px',
+            }}
+          >
             {[
               { label: 'Total Imports', value: stats.totalImports, color: '#0d6efd' },
               { label: 'Total Payments', value: stats.totalPayments, color: '#6f42c1' },
@@ -558,15 +708,22 @@ export default function ReconciliationPage() {
               { label: 'Underpayments', value: stats.totalUnderpayments, color: '#fd7e14' },
               { label: 'Open Underpayments', value: stats.openUnderpayments, color: '#fd7e14' },
               { label: 'Total Shortfall', value: cents(stats.totalDeltaCents), color: '#dc3545' },
-            ].map(card => (
-              <div key={card.label} style={{
-                border: `2px solid ${card.color}`,
-                borderRadius: '8px',
-                padding: '16px',
-                textAlign: 'center',
-              }}>
-                <div style={{ fontSize: '24px', fontWeight: 700, color: card.color }}>{card.value}</div>
-                <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>{card.label}</div>
+            ].map((card) => (
+              <div
+                key={card.label}
+                style={{
+                  border: `2px solid ${card.color}`,
+                  borderRadius: '8px',
+                  padding: '16px',
+                  textAlign: 'center',
+                }}
+              >
+                <div style={{ fontSize: '24px', fontWeight: 700, color: card.color }}>
+                  {card.value}
+                </div>
+                <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                  {card.label}
+                </div>
               </div>
             ))}
           </div>

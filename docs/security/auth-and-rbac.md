@@ -21,24 +21,24 @@ cross-referenced against the Vivian index (3,754 RPCs).
 
 ### Session Management
 
-| Property | Value | Env Override |
-|----------|-------|--------------|
-| Token format | `randomBytes(32).toString("hex")` (64 hex chars) | -- |
-| Storage | In-memory `Map<string, SessionData>` | -- |
-| Absolute TTL | 8 hours | `SESSION_ABSOLUTE_TTL_MS` |
-| Idle timeout | 30 minutes | `SESSION_IDLE_TTL_MS` |
-| Rotation | On every login (fixation prevention) | -- |
-| Cleanup | Every 60 seconds | `SESSION_CLEANUP_MS` |
-| Cookie name | `ehr_session` | `SESSION_COOKIE` |
+| Property     | Value                                            | Env Override              |
+| ------------ | ------------------------------------------------ | ------------------------- |
+| Token format | `randomBytes(32).toString("hex")` (64 hex chars) | --                        |
+| Storage      | In-memory `Map<string, SessionData>`             | --                        |
+| Absolute TTL | 8 hours                                          | `SESSION_ABSOLUTE_TTL_MS` |
+| Idle timeout | 30 minutes                                       | `SESSION_IDLE_TTL_MS`     |
+| Rotation     | On every login (fixation prevention)             | --                        |
+| Cleanup      | Every 60 seconds                                 | `SESSION_CLEANUP_MS`      |
+| Cookie name  | `ehr_session`                                    | `SESSION_COOKIE`          |
 
 ### Cookie Security
 
-| Property | Value |
-|----------|-------|
-| `httpOnly` | `true` -- no JavaScript access |
-| `sameSite` | `lax` -- CSRF baseline protection |
-| `secure` | `true` in production (HTTPS only) |
-| `maxAge` | 8 hours (matches session TTL) |
+| Property      | Value                              |
+| ------------- | ---------------------------------- |
+| `httpOnly`    | `true` -- no JavaScript access     |
+| `sameSite`    | `lax` -- CSRF baseline protection  |
+| `secure`      | `true` in production (HTTPS only)  |
+| `maxAge`      | 8 hours (matches session TTL)      |
 | Token in body | **Never** -- cookie-only transport |
 
 ### CSRF Protection (Phase 49, upgraded Phase 132)
@@ -56,11 +56,11 @@ Combined with `SameSite=lax` session cookie and origin-check, this provides defe
 
 ### Account Lockout (Phase 49)
 
-| Property | Value | Env Override |
-|----------|-------|--------------|
-| Max failed attempts | 5 | `LOGIN_LOCKOUT_MAX` |
-| Lockout duration | 15 minutes | `LOGIN_LOCKOUT_DURATION_MS` |
-| Failure window | 15 minutes | `LOGIN_LOCKOUT_WINDOW_MS` |
+| Property            | Value      | Env Override                |
+| ------------------- | ---------- | --------------------------- |
+| Max failed attempts | 5          | `LOGIN_LOCKOUT_MAX`         |
+| Lockout duration    | 15 minutes | `LOGIN_LOCKOUT_DURATION_MS` |
+| Failure window      | 15 minutes | `LOGIN_LOCKOUT_WINDOW_MS`   |
 
 Per-account lockout (keyed on access code). Resets on successful login.
 Separate from per-IP rate limiting (10 req/60s on `/auth/login`).
@@ -71,15 +71,15 @@ Separate from per-IP rate limiting (10 req/60s on `/auth/login`).
 
 ### Role Definitions
 
-| Role | Description | VistA Security Key Hint |
-|------|-------------|------------------------|
-| `admin` | System administrator, superuser access | `XUPROGMODE`, `XUMGR` |
-| `provider` | Clinician/physician | `PROVIDER` |
-| `nurse` | Nursing staff | `ORES`, `ORELSE` |
-| `pharmacist` | Pharmacy staff | `PSJ RPHARM`, `PSO PHARMACIST` |
-| `billing` | Revenue cycle / billing staff | `IB BILLING`, `IB EDIT BILLING INFO` |
-| `clerk` | Administrative/clerical staff | (default if no key match) |
-| `support` | IT support / helpdesk | (assigned via OIDC claim) |
+| Role         | Description                            | VistA Security Key Hint              |
+| ------------ | -------------------------------------- | ------------------------------------ |
+| `admin`      | System administrator, superuser access | `XUPROGMODE`, `XUMGR`                |
+| `provider`   | Clinician/physician                    | `PROVIDER`                           |
+| `nurse`      | Nursing staff                          | `ORES`, `ORELSE`                     |
+| `pharmacist` | Pharmacy staff                         | `PSJ RPHARM`, `PSO PHARMACIST`       |
+| `billing`    | Revenue cycle / billing staff          | `IB BILLING`, `IB EDIT BILLING INFO` |
+| `clerk`      | Administrative/clerical staff          | (default if no key match)            |
+| `support`    | IT support / helpdesk                  | (assigned via OIDC claim)            |
 
 ### Role Assignment Priority
 
@@ -89,22 +89,22 @@ Separate from per-IP rate limiting (10 req/60s on `/auth/login`).
 
 ### Permission Matrix
 
-| Permission | admin | provider | nurse | pharmacist | billing | clerk | support |
-|------------|:-----:|:--------:|:-----:|:----------:|:-------:|:-----:|:-------:|
-| `clinical:read` | Y | Y | Y | Y | Y | Y | - |
-| `clinical:write` | Y | Y | Y | - | - | - | - |
-| `rcm:read` | Y | Y | Y | Y | Y | Y | - |
-| `rcm:write` | Y | - | - | - | Y | - | - |
-| `rcm:admin` | Y | - | - | - | - | - | - |
-| `imaging:read` | Y | Y | Y | Y | - | - | - |
-| `imaging:write` | Y | Y | - | - | - | - | - |
-| `imaging:admin` | Y | - | - | - | - | - | - |
-| `analytics:read` | Y | Y | Y | Y | Y | - | Y |
-| `analytics:admin` | Y | - | - | - | - | - | - |
-| `admin:system` | Y | - | - | - | - | - | - |
-| `audit:read` | Y | - | - | - | - | - | Y |
-| `telehealth:create` | Y | Y | - | - | - | - | - |
-| `telehealth:join` | Y | Y | Y | - | - | - | - |
+| Permission          | admin | provider | nurse | pharmacist | billing | clerk | support |
+| ------------------- | :---: | :------: | :---: | :--------: | :-----: | :---: | :-----: |
+| `clinical:read`     |   Y   |    Y     |   Y   |     Y      |    Y    |   Y   |    -    |
+| `clinical:write`    |   Y   |    Y     |   Y   |     -      |    -    |   -   |    -    |
+| `rcm:read`          |   Y   |    Y     |   Y   |     Y      |    Y    |   Y   |    -    |
+| `rcm:write`         |   Y   |    -     |   -   |     -      |    Y    |   -   |    -    |
+| `rcm:admin`         |   Y   |    -     |   -   |     -      |    -    |   -   |    -    |
+| `imaging:read`      |   Y   |    Y     |   Y   |     Y      |    -    |   -   |    -    |
+| `imaging:write`     |   Y   |    Y     |   -   |     -      |    -    |   -   |    -    |
+| `imaging:admin`     |   Y   |    -     |   -   |     -      |    -    |   -   |    -    |
+| `analytics:read`    |   Y   |    Y     |   Y   |     Y      |    Y    |   -   |    Y    |
+| `analytics:admin`   |   Y   |    -     |   -   |     -      |    -    |   -   |    -    |
+| `admin:system`      |   Y   |    -     |   -   |     -      |    -    |   -   |    -    |
+| `audit:read`        |   Y   |    -     |   -   |     -      |    -    |   -   |    Y    |
+| `telehealth:create` |   Y   |    Y     |   -   |     -      |    -    |   -   |    -    |
+| `telehealth:join`   |   Y   |    Y     |   Y   |     -      |    -    |   -   |    -    |
 
 ### Principle of Least Privilege
 
@@ -128,14 +128,14 @@ Each role is granted the **minimum permissions** necessary for its function:
 
 ### RCM Route Protection (Phase 49)
 
-| Route Pattern | Method | Required Permission |
-|---------------|--------|-------------------|
-| `/rcm/health` | GET | `session` (any authenticated user) |
-| `/rcm/payers`, `/rcm/claims`, `/rcm/edi/*` | GET | `rcm:read` |
-| `/rcm/claims/draft`, `/rcm/claims/:id/submit` | POST | `rcm:write` |
-| `/rcm/payers` (create), `/rcm/rules` (create) | POST | `rcm:admin` |
-| `/rcm/payers/:id` (update) | PATCH | `rcm:admin` |
-| `/rcm/directory/refresh` | POST | `rcm:admin` |
+| Route Pattern                                 | Method | Required Permission                |
+| --------------------------------------------- | ------ | ---------------------------------- |
+| `/rcm/health`                                 | GET    | `session` (any authenticated user) |
+| `/rcm/payers`, `/rcm/claims`, `/rcm/edi/*`    | GET    | `rcm:read`                         |
+| `/rcm/claims/draft`, `/rcm/claims/:id/submit` | POST   | `rcm:write`                        |
+| `/rcm/payers` (create), `/rcm/rules` (create) | POST   | `rcm:admin`                        |
+| `/rcm/payers/:id` (update)                    | PATCH  | `rcm:admin`                        |
+| `/rcm/directory/refresh`                      | POST   | `rcm:admin`                        |
 
 ---
 
@@ -143,12 +143,12 @@ Each role is granted the **minimum permissions** necessary for its function:
 
 Path-based, first-match-wins. Four auth levels:
 
-| Auth Level | Behavior |
-|------------|----------|
-| `none` | No authentication required |
-| `session` | Valid session cookie required |
-| `admin` | Valid session + admin role required |
-| `service` | Service-to-service key (X-Service-Key header) |
+| Auth Level | Behavior                                      |
+| ---------- | --------------------------------------------- |
+| `none`     | No authentication required                    |
+| `session`  | Valid session cookie required                 |
+| `admin`    | Valid session + admin role required           |
+| `service`  | Service-to-service key (X-Service-Key header) |
 
 See `AUTH_RULES` in `apps/api/src/middleware/security.ts` for the full route map.
 
@@ -156,12 +156,12 @@ See `AUTH_RULES` in `apps/api/src/middleware/security.ts` for the full route map
 
 ## 4. Rate Limiting
 
-| Endpoint | Limit | Window | Scope |
-|----------|-------|--------|-------|
-| General API | 200 req | 60s | Per IP |
-| `/auth/login` | 10 req | 60s | Per IP |
-| Portal login | 5 req | 15 min | Per IP |
-| DICOMweb proxy | 120 req | 60s | Per user |
+| Endpoint        | Limit      | Window | Scope       |
+| --------------- | ---------- | ------ | ----------- |
+| General API     | 200 req    | 60s    | Per IP      |
+| `/auth/login`   | 10 req     | 60s    | Per IP      |
+| Portal login    | 5 req      | 15 min | Per IP      |
+| DICOMweb proxy  | 120 req    | 60s    | Per user    |
 | Account lockout | 5 failures | 15 min | Per account |
 
 ---
@@ -184,25 +184,25 @@ See `AUTH_RULES` in `apps/api/src/middleware/security.ts` for the full route map
 
 ## 6. API Endpoints
 
-| Endpoint | Method | Auth | Description |
-|----------|--------|------|-------------|
-| `/auth/login` | POST | none | Authenticate with VistA |
-| `/auth/logout` | POST | session | Destroy session |
-| `/auth/session` | GET | session | Current session info + permissions |
-| `/auth/permissions` | GET | session | RBAC permissions for current role |
-| `/auth/rbac-matrix` | GET | admin | Full RBAC permission matrix |
+| Endpoint            | Method | Auth    | Description                        |
+| ------------------- | ------ | ------- | ---------------------------------- |
+| `/auth/login`       | POST   | none    | Authenticate with VistA            |
+| `/auth/logout`      | POST   | session | Destroy session                    |
+| `/auth/session`     | GET    | session | Current session info + permissions |
+| `/auth/permissions` | GET    | session | RBAC permissions for current role  |
+| `/auth/rbac-matrix` | GET    | admin   | Full RBAC permission matrix        |
 
 ---
 
 ## 7. Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `SESSION_ABSOLUTE_TTL_MS` | 28800000 (8h) | Session absolute lifetime |
-| `SESSION_IDLE_TTL_MS` | 1800000 (30m) | Session idle timeout |
-| `SESSION_COOKIE` | `ehr_session` | Session cookie name |
-| `RATE_LIMIT_GENERAL` | 200 | General API rate limit per IP |
-| `RATE_LIMIT_LOGIN` | 10 | Login rate limit per IP per minute |
-| `LOGIN_LOCKOUT_MAX` | 5 | Failed attempts before lockout |
-| `LOGIN_LOCKOUT_DURATION_MS` | 900000 (15m) | Lockout duration |
-| `ALLOWED_ORIGINS` | `localhost:3000,3001` | CORS origin allowlist |
+| Variable                    | Default               | Description                        |
+| --------------------------- | --------------------- | ---------------------------------- |
+| `SESSION_ABSOLUTE_TTL_MS`   | 28800000 (8h)         | Session absolute lifetime          |
+| `SESSION_IDLE_TTL_MS`       | 1800000 (30m)         | Session idle timeout               |
+| `SESSION_COOKIE`            | `ehr_session`         | Session cookie name                |
+| `RATE_LIMIT_GENERAL`        | 200                   | General API rate limit per IP      |
+| `RATE_LIMIT_LOGIN`          | 10                    | Login rate limit per IP per minute |
+| `LOGIN_LOCKOUT_MAX`         | 5                     | Failed attempts before lockout     |
+| `LOGIN_LOCKOUT_DURATION_MS` | 900000 (15m)          | Lockout duration                   |
+| `ALLOWED_ORIGINS`           | `localhost:3000,3001` | CORS origin allowlist              |

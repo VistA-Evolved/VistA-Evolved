@@ -3,12 +3,14 @@
 ## What Changed
 
 ### M Routines (services/vista/)
+
 - **ZVEMIOP.m** v1.1/Build 2: Added 2 new entry points:
   - `MSGLIST(RESULT,DIR,STAT,MAXN)` — List individual HL7 messages from `^HLMA` (#773) with direction/status filters. Returns metadata only (IEN, direction, status, link, date, text IEN). NO message body.
   - `MSGDETL(RESULT,MSGIEN)` — Single message metadata + segment type summary from #773/#772. Returns segment TYPE NAMES and COUNTS only — no raw content.
 - **ZVEMINS.m** v1.1/Build 2: Updated to register 6 RPCs (was 4). Added `VE INTEROP MSG LIST` and `VE INTEROP MSG DETAIL`.
 
 ### API (apps/api/src/)
+
 - **routes/vista-interop.ts**: 5 new v2 endpoints:
   - `GET /vista/interop/v2/hl7/messages` — message list with ?direction&status&limit filters
   - `GET /vista/interop/v2/hl7/messages/:id` — message detail, PHI segments masked by default
@@ -20,6 +22,7 @@
 - **vista/rpcDebugData.ts**: 2 new debug entries (msg-list, msg-detail)
 
 ### UI (apps/web/src/)
+
 - **integrations/page.tsx**: New "Message Browser" tab with:
   - Filter controls (direction, status, limit)
   - Message list table (click to view detail)
@@ -28,6 +31,7 @@
   - Unmask flow (admin only, requires 10+ char reason, confirmation banner)
 
 ### Artifacts
+
 - **artifacts/interop/capabilities.json**: Full capability inventory
 - **prompts/63-PHASE-58-INTEROP-MONITOR-V2/**: IMPLEMENT + VERIFY prompts
 
@@ -62,6 +66,7 @@
 ```
 
 ## Follow-ups
+
 - When ZVEMINS.m is run in Docker, the 2 new RPCs need re-registration after `docker compose down -v`
 - Future: If raw segment content is ever returned from ZVEMIOP.m, the unmask endpoint would gate actual PHI; currently it just toggles the masked flag on segment type counts
 - Future: Add auto-refresh polling for message list (currently manual Search button)

@@ -12,14 +12,14 @@
  * VistA RPCs: YTT/YTQZ namespace + TIU CREATE RECORD / TIU SET DOCUMENT TEXT.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { requireSession } from "../../auth/auth-routes.js";
-import { safeCallRpc } from "../../lib/rpc-resilience.js";
-import { log } from "../../lib/logger.js";
-import { listInstruments, getInstrument, loadInstruments } from "./instruments.js";
-import { scoreInstrument, type MhaAnswer, type MhaScoreResult } from "./scoring.js";
-import { generateMhaNote, buildNoteInput } from "./note-generator.js";
-import { randomUUID } from "node:crypto";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../../auth/auth-routes.js';
+import { safeCallRpc } from '../../lib/rpc-resilience.js';
+import { log } from '../../lib/logger.js';
+import { listInstruments, getInstrument, loadInstruments } from './instruments.js';
+import { scoreInstrument, type MhaAnswer, type MhaScoreResult } from './scoring.js';
+import { generateMhaNote, buildNoteInput } from './note-generator.js';
+import { randomUUID } from 'node:crypto';
 
 /* ------------------------------------------------------------------ */
 /* In-memory result store (Phase 536 = VistA TIU write-back)           */
@@ -53,7 +53,7 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
   /* -------------------------------------------------------------- */
   /* GET /vista/mha/instruments — list available instruments          */
   /* -------------------------------------------------------------- */
-  server.get("/vista/mha/instruments", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/vista/mha/instruments', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = requireSession(request, reply);
     if (!session) return;
 
@@ -61,19 +61,20 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
 
     return reply.send({
       ok: true,
-      source: "ve-instrument-catalog",
+      source: 've-instrument-catalog',
       count: instruments.length,
       instruments,
       rpcUsed: [],
-      pendingTargets: ["YTQZ LISTTESTS"],
-      _note: "Instruments loaded from FHIR Questionnaire definitions. VistA YTQZ LISTTESTS integration pending.",
+      pendingTargets: ['YTQZ LISTTESTS'],
+      _note:
+        'Instruments loaded from FHIR Questionnaire definitions. VistA YTQZ LISTTESTS integration pending.',
     });
   });
 
   /* -------------------------------------------------------------- */
   /* GET /vista/mha/instruments/:id — get single instrument           */
   /* -------------------------------------------------------------- */
-  server.get("/vista/mha/instruments/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/vista/mha/instruments/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = requireSession(request, reply);
     if (!session) return;
 
@@ -89,24 +90,25 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
 
     return reply.send({
       ok: true,
-      source: "ve-instrument-catalog",
+      source: 've-instrument-catalog',
       instrument,
       rpcUsed: [],
-      pendingTargets: ["YTT GET INSTRUMENT"],
-      _note: "Instrument definition from local FHIR Questionnaire. VistA YTT GET INSTRUMENT integration pending.",
+      pendingTargets: ['YTT GET INSTRUMENT'],
+      _note:
+        'Instrument definition from local FHIR Questionnaire. VistA YTT GET INSTRUMENT integration pending.',
     });
   });
 
   /* -------------------------------------------------------------- */
   /* GET /vista/mha/results?dfn=N — patient MH results history        */
   /* -------------------------------------------------------------- */
-  server.get("/vista/mha/results", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/vista/mha/results', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = requireSession(request, reply);
     if (!session) return;
 
     const { dfn } = request.query as { dfn?: string };
     if (!dfn) {
-      return reply.code(400).send({ ok: false, error: "Missing dfn query parameter" });
+      return reply.code(400).send({ ok: false, error: 'Missing dfn query parameter' });
     }
 
     // Try VistA RPC first (YTQZ RESULTLIST)
@@ -115,11 +117,11 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
     let vistaAvailable = false;
 
     try {
-      const raw = await safeCallRpc("YTQZ RESULTLIST", [dfn]);
-      const rawStr = Array.isArray(raw) ? raw.join("\n") : String(raw);
+      const raw = await safeCallRpc('YTQZ RESULTLIST', [dfn]);
+      const rawStr = Array.isArray(raw) ? raw.join('\n') : String(raw);
       if (rawStr && rawStr.trim()) {
         vistaResults = parseYtqzResults(rawStr);
-        rpcUsed.push("YTQZ RESULTLIST");
+        rpcUsed.push('YTQZ RESULTLIST');
         vistaAvailable = true;
       }
     } catch {
@@ -145,20 +147,20 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
 
     return reply.send({
       ok: true,
-      source: vistaAvailable ? "vista+local" : "local",
+      source: vistaAvailable ? 'vista+local' : 'local',
       dfn,
       vistaResults,
       localResults,
       count: vistaResults.length + localResults.length,
       rpcUsed,
-      pendingTargets: vistaAvailable ? [] : ["YTQZ RESULTLIST", "YTQZ DETAILLIST"],
+      pendingTargets: vistaAvailable ? [] : ['YTQZ RESULTLIST', 'YTQZ DETAILLIST'],
     });
   });
 
   /* -------------------------------------------------------------- */
   /* POST /vista/mha/administer — submit completed instrument         */
   /* -------------------------------------------------------------- */
-  server.post("/vista/mha/administer", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/vista/mha/administer', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = requireSession(request, reply);
     if (!session) return;
 
@@ -172,7 +174,7 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
     if (!instrumentId || !dfn || !answers || !Array.isArray(answers)) {
       return reply.code(400).send({
         ok: false,
-        error: "Required: instrumentId, dfn, answers[]",
+        error: 'Required: instrumentId, dfn, answers[]',
       });
     }
 
@@ -199,7 +201,7 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
       id: randomUUID(),
       instrumentId,
       dfn,
-      duz: (session as any).duz || "unknown",
+      duz: (session as any).duz || 'unknown',
       answers,
       score,
       administeredAt: new Date().toISOString(),
@@ -211,11 +213,13 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
     existing.push(administration.id);
     patientIndex.set(dfn, existing);
 
-    log.info(`MHA: Administered ${instrumentId} for patient, score=${score.totalScore}/${score.maxScore}, severity=${score.severity}${score.redFlag ? " RED FLAG" : ""}`);
+    log.info(
+      `MHA: Administered ${instrumentId} for patient, score=${score.totalScore}/${score.maxScore}, severity=${score.severity}${score.redFlag ? ' RED FLAG' : ''}`
+    );
 
     return reply.code(201).send({
       ok: true,
-      source: "local",
+      source: 'local',
       administration: {
         id: administration.id,
         instrumentId: administration.instrumentId,
@@ -224,8 +228,8 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
         vistaFiled: administration.vistaFiled,
       },
       rpcUsed: [],
-      pendingTargets: ["YTT SAVE RESULTS", "TIU CREATE RECORD"],
-      _note: "Stored locally. VistA write-back via TIU CREATE RECORD planned for Phase 536.",
+      pendingTargets: ['YTT SAVE RESULTS', 'TIU CREATE RECORD'],
+      _note: 'Stored locally. VistA write-back via TIU CREATE RECORD planned for Phase 536.',
     });
   });
 
@@ -233,126 +237,129 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
   /* POST /vista/mha/administer/:id/file-note — TIU writeback        */
   /* Phase 536: File scored result as TIU note in VistA               */
   /* -------------------------------------------------------------- */
-  server.post("/vista/mha/administer/:id/file-note", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
-    if (!session) return;
+  server.post(
+    '/vista/mha/administer/:id/file-note',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = requireSession(request, reply);
+      if (!session) return;
 
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
-    const { titleIen, visitLocation, visitDate } = body as {
-      titleIen?: string;
-      visitLocation?: string;
-      visitDate?: string;
-    };
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
+      const { titleIen, visitLocation, visitDate } = body as {
+        titleIen?: string;
+        visitLocation?: string;
+        visitDate?: string;
+      };
 
-    // Lookup administration
-    const admin = administrationStore.get(id);
-    if (!admin) {
-      return reply.code(404).send({ ok: false, error: `Administration not found: ${id}` });
-    }
-
-    if (admin.vistaFiled) {
-      return reply.code(409).send({
-        ok: false,
-        error: "Already filed to VistA",
-        vistaIen: admin.vistaIen,
-      });
-    }
-
-    // Get instrument for note generation
-    const instrument = getInstrument(admin.instrumentId);
-    if (!instrument) {
-      return reply.code(500).send({
-        ok: false,
-        error: `Instrument definition not found: ${admin.instrumentId}`,
-      });
-    }
-
-    // Generate note text
-    const noteInput = buildNoteInput(admin, instrument);
-    const noteLines = generateMhaNote(noteInput);
-
-    const duz = (session as any).duz || "unknown";
-    const useTitleIen = titleIen || "3"; // default to GENERAL NOTE if not specified
-
-    // Attempt TIU CREATE RECORD
-    let docIen: string | null = null;
-    let rpcUsed: string[] = [];
-    let draftFallback = false;
-
-    try {
-      const createResp = await safeCallRpc("TIU CREATE RECORD", [
-        admin.dfn,
-        useTitleIen,
-        duz,
-        visitLocation || "",
-        visitDate || "",
-      ]);
-
-      const firstLine = Array.isArray(createResp) ? createResp[0] : String(createResp);
-      docIen = firstLine?.split("^")[0]?.trim() || null;
-
-      if (!docIen || docIen.startsWith("-1") || docIen === "0") {
-        draftFallback = true;
-        docIen = null;
-        log.warn(`MHA: TIU CREATE RECORD returned error: ${firstLine}`);
-      } else {
-        rpcUsed.push("TIU CREATE RECORD");
+      // Lookup administration
+      const admin = administrationStore.get(id);
+      if (!admin) {
+        return reply.code(404).send({ ok: false, error: `Administration not found: ${id}` });
       }
-    } catch (err: any) {
-      draftFallback = true;
-      log.warn(`MHA: TIU CREATE RECORD unavailable, using draft fallback: ${err.message}`);
-    }
 
-    // If we got a doc IEN, set the text
-    if (docIen && !draftFallback) {
+      if (admin.vistaFiled) {
+        return reply.code(409).send({
+          ok: false,
+          error: 'Already filed to VistA',
+          vistaIen: admin.vistaIen,
+        });
+      }
+
+      // Get instrument for note generation
+      const instrument = getInstrument(admin.instrumentId);
+      if (!instrument) {
+        return reply.code(500).send({
+          ok: false,
+          error: `Instrument definition not found: ${admin.instrumentId}`,
+        });
+      }
+
+      // Generate note text
+      const noteInput = buildNoteInput(admin, instrument);
+      const noteLines = generateMhaNote(noteInput);
+
+      const duz = (session as any).duz || 'unknown';
+      const useTitleIen = titleIen || '3'; // default to GENERAL NOTE if not specified
+
+      // Attempt TIU CREATE RECORD
+      let docIen: string | null = null;
+      let rpcUsed: string[] = [];
+      let draftFallback = false;
+
       try {
-        // Build word-processing LIST parameter
-        const textEntries: string[] = [];
-        for (let i = 0; i < noteLines.length; i++) {
-          textEntries.push(noteLines[i]);
+        const createResp = await safeCallRpc('TIU CREATE RECORD', [
+          admin.dfn,
+          useTitleIen,
+          duz,
+          visitLocation || '',
+          visitDate || '',
+        ]);
+
+        const firstLine = Array.isArray(createResp) ? createResp[0] : String(createResp);
+        docIen = firstLine?.split('^')[0]?.trim() || null;
+
+        if (!docIen || docIen.startsWith('-1') || docIen === '0') {
+          draftFallback = true;
+          docIen = null;
+          log.warn(`MHA: TIU CREATE RECORD returned error: ${firstLine}`);
+        } else {
+          rpcUsed.push('TIU CREATE RECORD');
         }
-        await safeCallRpc("TIU SET DOCUMENT TEXT", [docIen, ...textEntries]);
-        rpcUsed.push("TIU SET DOCUMENT TEXT");
-
-        // Mark as filed
-        admin.vistaFiled = true;
-        admin.vistaIen = docIen;
-
-        log.info(`MHA: Filed TIU note IEN=${docIen} for instrument ${admin.instrumentId}`);
       } catch (err: any) {
         draftFallback = true;
-        log.warn(`MHA: TIU SET DOCUMENT TEXT failed: ${err.message}`);
+        log.warn(`MHA: TIU CREATE RECORD unavailable, using draft fallback: ${err.message}`);
       }
-    }
 
-    if (draftFallback) {
+      // If we got a doc IEN, set the text
+      if (docIen && !draftFallback) {
+        try {
+          // Build word-processing LIST parameter
+          const textEntries: string[] = [];
+          for (let i = 0; i < noteLines.length; i++) {
+            textEntries.push(noteLines[i]);
+          }
+          await safeCallRpc('TIU SET DOCUMENT TEXT', [docIen, ...textEntries]);
+          rpcUsed.push('TIU SET DOCUMENT TEXT');
+
+          // Mark as filed
+          admin.vistaFiled = true;
+          admin.vistaIen = docIen;
+
+          log.info(`MHA: Filed TIU note IEN=${docIen} for instrument ${admin.instrumentId}`);
+        } catch (err: any) {
+          draftFallback = true;
+          log.warn(`MHA: TIU SET DOCUMENT TEXT failed: ${err.message}`);
+        }
+      }
+
+      if (draftFallback) {
+        return reply.code(200).send({
+          ok: true,
+          status: 'draft',
+          source: 'local-draft',
+          administrationId: admin.id,
+          instrumentId: admin.instrumentId,
+          noteText: noteLines.join('\n'),
+          vistaFiled: false,
+          rpcUsed,
+          pendingTargets: ['TIU CREATE RECORD', 'TIU SET DOCUMENT TEXT'],
+          _note: 'VistA TIU RPCs unavailable -- note text returned as draft for manual filing.',
+        });
+      }
+
       return reply.code(200).send({
         ok: true,
-        status: "draft",
-        source: "local-draft",
+        status: 'filed',
+        source: 'vista',
         administrationId: admin.id,
         instrumentId: admin.instrumentId,
-        noteText: noteLines.join("\n"),
-        vistaFiled: false,
+        vistaFiled: true,
+        vistaIen: docIen,
         rpcUsed,
-        pendingTargets: ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT"],
-        _note: "VistA TIU RPCs unavailable -- note text returned as draft for manual filing.",
+        pendingTargets: [],
       });
     }
-
-    return reply.code(200).send({
-      ok: true,
-      status: "filed",
-      source: "vista",
-      administrationId: admin.id,
-      instrumentId: admin.instrumentId,
-      vistaFiled: true,
-      vistaIen: docIen,
-      rpcUsed,
-      pendingTargets: [],
-    });
-  });
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -377,17 +384,17 @@ function parseYtqzResults(raw: string): Array<{
     score: string;
     provider: string;
   }> = [];
-  const lines = raw.split("\n").filter((l) => l.trim());
+  const lines = raw.split('\n').filter((l) => l.trim());
   for (const line of lines) {
-    const parts = line.split("^");
-    const ien = parts[0]?.trim() || "";
+    const parts = line.split('^');
+    const ien = parts[0]?.trim() || '';
     if (!ien) continue;
     results.push({
       ien,
-      instrumentName: parts[1]?.trim() || "",
-      date: parts[2]?.trim() || "",
-      score: parts[3]?.trim() || "",
-      provider: parts[4]?.trim() || "",
+      instrumentName: parts[1]?.trim() || '',
+      date: parts[2]?.trim() || '',
+      score: parts[3]?.trim() || '',
+      provider: parts[4]?.trim() || '',
     });
   }
   return results;

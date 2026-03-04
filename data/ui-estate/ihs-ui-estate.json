@@ -38,7 +38,12 @@
           "id": "rpms-pcc-encounter",
           "name": "PCC Encounter Form",
           "description": "Patient Care Component encounter documentation. Multi-purpose visit form capturing diagnoses (ICD-10), procedures (CPT), providers, measurements. Foundational to IHS clinical data.",
-          "vistaFiles": ["VISIT(9000010)", "V POV(9000010.07)", "V CPT(9000010.18)", "V PROVIDER(9000010.06)"],
+          "vistaFiles": [
+            "VISIT(9000010)",
+            "V POV(9000010.07)",
+            "V CPT(9000010.18)",
+            "V PROVIDER(9000010.06)"
+          ],
           "targetRpcs": ["ORWPCE PCE4NOTE", "ORWPCE SAVE"],
           "priority": "p0-critical",
           "migrationStatus": "scaffold",

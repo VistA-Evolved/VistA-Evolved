@@ -11,8 +11,8 @@
  * The ACK swaps sending/receiving application/facility from the original MSH.
  */
 
-import type { AckCode, Hl7Ack, Hl7Message } from "./types.js";
-import { HL7_SEGMENT_SEP } from "./types.js";
+import type { AckCode, Hl7Ack, Hl7Message } from './types.js';
+import { HL7_SEGMENT_SEP } from './types.js';
 
 /**
  * Generate an HL7v2 ACK message for a received message.
@@ -24,8 +24,8 @@ import { HL7_SEGMENT_SEP } from "./types.js";
  */
 export function generateAck(
   original: Hl7Message,
-  ackCode: AckCode = "AA",
-  errorText?: string,
+  ackCode: AckCode = 'AA',
+  errorText?: string
 ): Hl7Ack {
   const msh = original.msh;
   const sep = msh.fieldSeparator;
@@ -36,35 +36,27 @@ export function generateAck(
   // MSH — swap sender/receiver
   const mshLine = [
     `MSH${sep}${enc}`,
-    msh.receivingApplication,  // Swap: was receiving, now sending
+    msh.receivingApplication, // Swap: was receiving, now sending
     msh.receivingFacility,
-    msh.sendingApplication,    // Swap: was sending, now receiving
+    msh.sendingApplication, // Swap: was sending, now receiving
     msh.sendingFacility,
     now,
-    "",                        // Security
-    `ACK`,                     // Message type
+    '', // Security
+    `ACK`, // Message type
     ackControlId,
-    msh.processingId || "P",
-    msh.versionId || "2.4",
+    msh.processingId || 'P',
+    msh.versionId || '2.4',
   ].join(sep);
 
   // MSA — acknowledgement
-  const msaLine = [
-    "MSA",
-    ackCode,
-    original.messageControlId,
-    errorText || "",
-  ].join(sep);
+  const msaLine = ['MSA', ackCode, original.messageControlId, errorText || ''].join(sep);
 
   // Build message lines
   const lines = [mshLine, msaLine];
 
   // ERR segment for error/reject
-  if (ackCode !== "AA" && ackCode !== "CA" && errorText) {
-    const errLine = [
-      "ERR",
-      errorText,
-    ].join(sep);
+  if (ackCode !== 'AA' && ackCode !== 'CA' && errorText) {
+    const errLine = ['ERR', errorText].join(sep);
     lines.push(errLine);
   }
 
@@ -82,21 +74,21 @@ export function generateAck(
  * Generate a simple AA (Application Accept) ACK.
  */
 export function ackAccept(original: Hl7Message): Hl7Ack {
-  return generateAck(original, "AA");
+  return generateAck(original, 'AA');
 }
 
 /**
  * Generate an AE (Application Error) ACK.
  */
 export function ackError(original: Hl7Message, errorText: string): Hl7Ack {
-  return generateAck(original, "AE", errorText);
+  return generateAck(original, 'AE', errorText);
 }
 
 /**
  * Generate an AR (Application Reject) ACK.
  */
 export function ackReject(original: Hl7Message, errorText: string): Hl7Ack {
-  return generateAck(original, "AR", errorText);
+  return generateAck(original, 'AR', errorText);
 }
 
 /**
@@ -104,10 +96,10 @@ export function ackReject(original: Hl7Message, errorText: string): Hl7Ack {
  */
 function formatHl7DateTime(date: Date): string {
   const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  const h = String(date.getHours()).padStart(2, "0");
-  const mi = String(date.getMinutes()).padStart(2, "0");
-  const s = String(date.getSeconds()).padStart(2, "0");
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  const h = String(date.getHours()).padStart(2, '0');
+  const mi = String(date.getMinutes()).padStart(2, '0');
+  const s = String(date.getSeconds()).padStart(2, '0');
   return `${y}${m}${d}${h}${mi}${s}`;
 }

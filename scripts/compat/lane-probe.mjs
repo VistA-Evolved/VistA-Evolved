@@ -11,7 +11,7 @@
  *   node scripts/compat/lane-probe.mjs --host 127.0.0.1 --port 9430 --id dev-sandbox
  */
 
-import { createConnection } from "net";
+import { createConnection } from 'net';
 
 const args = process.argv.slice(2);
 function getArg(name, fallback) {
@@ -19,9 +19,9 @@ function getArg(name, fallback) {
   return idx >= 0 && idx + 1 < args.length ? args[idx + 1] : fallback;
 }
 
-const host = getArg("host", "127.0.0.1");
-const port = parseInt(getArg("port", "9430"), 10);
-const laneId = getArg("id", "unknown");
+const host = getArg('host', '127.0.0.1');
+const port = parseInt(getArg('port', '9430'), 10);
+const laneId = getArg('id', 'unknown');
 
 const result = {
   laneId,
@@ -45,9 +45,12 @@ const probe = new Promise((resolve) => {
     result.tcpLatencyMs = Date.now() - start;
 
     // Try to read a banner (VistA XWB sends intro bytes)
-    sock.once("data", (data) => {
+    sock.once('data', (data) => {
       result.bannerReceived = true;
-      result.bannerSnippet = data.toString("utf-8").slice(0, 64).replace(/[\x00-\x1f]/g, ".");
+      result.bannerSnippet = data
+        .toString('utf-8')
+        .slice(0, 64)
+        .replace(/[\x00-\x1f]/g, '.');
       sock.destroy();
       resolve();
     });
@@ -61,14 +64,14 @@ const probe = new Promise((resolve) => {
     }, 2000);
   });
 
-  sock.on("error", (err) => {
+  sock.on('error', (err) => {
     result.error = err.message;
     sock.destroy();
     resolve();
   });
 
-  sock.on("timeout", () => {
-    result.error = "TCP connect timeout (5s)";
+  sock.on('timeout', () => {
+    result.error = 'TCP connect timeout (5s)';
     sock.destroy();
     resolve();
   });

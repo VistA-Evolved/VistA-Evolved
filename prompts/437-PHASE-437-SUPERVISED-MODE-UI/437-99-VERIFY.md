@@ -1,6 +1,7 @@
 # Phase 437 — Verification
 
 ## Checks
+
 1. `prompts-tree-health.mjs` passes (7/7 PASS, 0 FAIL)
 2. `CommandStatus` includes `awaiting_review`
 3. `SupervisedReviewMeta` type has all required fields

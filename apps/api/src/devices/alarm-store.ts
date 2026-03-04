@@ -5,7 +5,7 @@
  * acknowledgment, escalation, and audit trail.
  */
 
-import * as crypto from "node:crypto";
+import * as crypto from 'node:crypto';
 import type {
   DeviceAlarm,
   AlarmRoutingRule,
@@ -14,7 +14,7 @@ import type {
   AlarmState,
   AlarmSource,
   AlarmStats,
-} from "./alarm-types.js";
+} from './alarm-types.js';
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -58,7 +58,7 @@ const auditLog: AlarmAuditEntry[] = [];
 // ---------------------------------------------------------------------------
 
 function generateId(prefix: string): string {
-  return `${prefix}-${crypto.randomBytes(8).toString("hex")}`;
+  return `${prefix}-${crypto.randomBytes(8).toString('hex')}`;
 }
 
 function now(): string {
@@ -80,9 +80,15 @@ function getTenantAcks(tenantId: string): AlarmAcknowledgment[] {
   return acknowledgments.get(tenantId)!;
 }
 
-function writeAudit(tenantId: string, alarmId: string, action: string, actor?: string, detail?: string): void {
+function writeAudit(
+  tenantId: string,
+  alarmId: string,
+  action: string,
+  actor?: string,
+  detail?: string
+): void {
   auditLog.push({
-    id: generateId("alm-aud"),
+    id: generateId('alm-aud'),
     tenantId,
     alarmId,
     action,
@@ -126,15 +132,15 @@ export function createAlarm(
   evictOldest(store, MAX_ALARMS);
 
   const alarm: DeviceAlarm = {
-    id: generateId("alm"),
+    id: generateId('alm'),
     tenantId,
     deviceSerial: input.deviceSerial,
     gatewayId: input.gatewayId,
     code: input.code,
-    codingSystem: input.codingSystem || "MDC",
+    codingSystem: input.codingSystem || 'MDC',
     displayText: input.displayText,
     priority: input.priority,
-    state: "active",
+    state: 'active',
     source: input.source,
     patientId: input.patientId,
     location: input.location,
@@ -148,7 +154,7 @@ export function createAlarm(
   };
 
   store.set(alarm.id, alarm);
-  writeAudit(tenantId, alarm.id, "alarm_created", undefined, `${alarm.priority} ${alarm.code}`);
+  writeAudit(tenantId, alarm.id, 'alarm_created', undefined, `${alarm.priority} ${alarm.code}`);
 
   // Run routing rules
   routeAlarm(tenantId, alarm);
@@ -190,9 +196,9 @@ export function updateAlarmState(
   alarm.state = newState;
   alarm.updatedAt = now();
 
-  if (newState === "acknowledged") alarm.acknowledgedAt = now();
-  if (newState === "acknowledged" && actor) alarm.acknowledgedBy = actor;
-  if (newState === "resolved") alarm.resolvedAt = now();
+  if (newState === 'acknowledged') alarm.acknowledgedAt = now();
+  if (newState === 'acknowledged' && actor) alarm.acknowledgedBy = actor;
+  if (newState === 'resolved') alarm.resolvedAt = now();
 
   writeAudit(tenantId, alarmId, `state_change:${oldState}->${newState}`, actor);
   return alarm;
@@ -212,13 +218,13 @@ export function acknowledgeAlarm(
   const alarm = getTenantAlarms(tenantId).get(alarmId);
   if (!alarm) return undefined;
 
-  alarm.state = "acknowledged";
+  alarm.state = 'acknowledged';
   alarm.acknowledgedAt = now();
   alarm.acknowledgedBy = userId;
   alarm.updatedAt = now();
 
   const ack: AlarmAcknowledgment = {
-    id: generateId("ack"),
+    id: generateId('ack'),
     alarmId,
     userId,
     reason,
@@ -230,7 +236,7 @@ export function acknowledgeAlarm(
   acks.push(ack);
   if (acks.length > MAX_ACK_LOG) acks.shift();
 
-  writeAudit(tenantId, alarmId, "acknowledged", userId, reason);
+  writeAudit(tenantId, alarmId, 'acknowledged', userId, reason);
   return ack;
 }
 
@@ -238,17 +244,20 @@ export function acknowledgeAlarm(
 // Routing Rules
 // ---------------------------------------------------------------------------
 
-export function addRoutingRule(tenantId: string, rule: Omit<AlarmRoutingRule, "id" | "createdAt">): AlarmRoutingRule {
+export function addRoutingRule(
+  tenantId: string,
+  rule: Omit<AlarmRoutingRule, 'id' | 'createdAt'>
+): AlarmRoutingRule {
   const store = getTenantRules(tenantId);
   evictOldest(store, MAX_ROUTING_RULES);
 
   const fullRule: AlarmRoutingRule = {
     ...rule,
-    id: generateId("rule"),
+    id: generateId('rule'),
     createdAt: now(),
   };
   store.set(fullRule.id, fullRule);
-  writeAudit(tenantId, "N/A", "routing_rule_created", undefined, fullRule.name);
+  writeAudit(tenantId, 'N/A', 'routing_rule_created', undefined, fullRule.name);
   return fullRule;
 }
 
@@ -260,7 +269,7 @@ export function listRoutingRules(tenantId: string): AlarmRoutingRule[] {
 
 export function deleteRoutingRule(tenantId: string, ruleId: string): boolean {
   const deleted = getTenantRules(tenantId).delete(ruleId);
-  if (deleted) writeAudit(tenantId, "N/A", "routing_rule_deleted", undefined, ruleId);
+  if (deleted) writeAudit(tenantId, 'N/A', 'routing_rule_deleted', undefined, ruleId);
   return deleted;
 }
 
@@ -271,7 +280,13 @@ function routeAlarm(tenantId: string, alarm: DeviceAlarm): void {
     if (!matchesRule(alarm, rule)) continue;
 
     // Log routing match
-    writeAudit(tenantId, alarm.id, "routed", undefined, `rule=${rule.name} targets=${rule.notifyTargets.join(",")}`);
+    writeAudit(
+      tenantId,
+      alarm.id,
+      'routed',
+      undefined,
+      `rule=${rule.name} targets=${rule.notifyTargets.join(',')}`
+    );
 
     // If auto-escalate configured, set escalation target
     if (rule.autoEscalateAfterSec && rule.escalationChain && rule.escalationChain.length > 0) {
@@ -286,7 +301,7 @@ function routeAlarm(tenantId: string, alarm: DeviceAlarm): void {
 function matchesRule(alarm: DeviceAlarm, rule: AlarmRoutingRule): boolean {
   if (rule.codePattern) {
     try {
-      if (!new RegExp(rule.codePattern, "i").test(alarm.code)) return false;
+      if (!new RegExp(rule.codePattern, 'i').test(alarm.code)) return false;
     } catch {
       return false;
     }
@@ -296,14 +311,14 @@ function matchesRule(alarm: DeviceAlarm, rule: AlarmRoutingRule): boolean {
   }
   if (rule.devicePattern) {
     try {
-      if (!new RegExp(rule.devicePattern, "i").test(alarm.deviceSerial)) return false;
+      if (!new RegExp(rule.devicePattern, 'i').test(alarm.deviceSerial)) return false;
     } catch {
       return false;
     }
   }
   if (rule.locationPattern) {
     try {
-      if (!new RegExp(rule.locationPattern, "i").test(alarm.location || "")) return false;
+      if (!new RegExp(rule.locationPattern, 'i').test(alarm.location || '')) return false;
     } catch {
       return false;
     }
@@ -323,12 +338,18 @@ export function escalateAlarm(
   const alarm = getTenantAlarms(tenantId).get(alarmId);
   if (!alarm) return undefined;
 
-  alarm.state = "escalated";
+  alarm.state = 'escalated';
   alarm.escalationLevel++;
   alarm.updatedAt = now();
   if (target) alarm.escalationTarget = target;
 
-  writeAudit(tenantId, alarmId, "escalated", undefined, `level=${alarm.escalationLevel} target=${target || "auto"}`);
+  writeAudit(
+    tenantId,
+    alarmId,
+    'escalated',
+    undefined,
+    `level=${alarm.escalationLevel} target=${target || 'auto'}`
+  );
   return alarm;
 }
 
@@ -350,19 +371,21 @@ export function getAlarmStats(tenantId: string): AlarmStats {
   };
 
   for (const a of all) {
-    if (a.state === "active") stats.totalActive++;
-    if (a.state === "latched") stats.totalLatched++;
-    if (a.state === "acknowledged") stats.totalAcknowledged++;
-    if (a.state === "resolved") stats.totalResolved++;
-    if (a.state === "escalated") stats.totalEscalated++;
+    if (a.state === 'active') stats.totalActive++;
+    if (a.state === 'latched') stats.totalLatched++;
+    if (a.state === 'acknowledged') stats.totalAcknowledged++;
+    if (a.state === 'resolved') stats.totalResolved++;
+    if (a.state === 'escalated') stats.totalEscalated++;
     stats.byPriority[a.priority]++;
     stats.bySource[a.source] = (stats.bySource[a.source] || 0) + 1;
   }
 
-  const active = all.filter((a) => a.state === "active");
+  const active = all.filter((a) => a.state === 'active');
   if (active.length > 0) {
-    stats.oldestActiveAt = active.reduce((oldest, a) =>
-      a.activatedAt < oldest ? a.activatedAt : oldest, active[0].activatedAt);
+    stats.oldestActiveAt = active.reduce(
+      (oldest, a) => (a.activatedAt < oldest ? a.activatedAt : oldest),
+      active[0].activatedAt
+    );
   }
 
   return stats;

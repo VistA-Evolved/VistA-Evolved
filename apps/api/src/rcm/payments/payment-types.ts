@@ -17,11 +17,7 @@ import { randomUUID } from 'node:crypto';
 
 /* ── Remittance Batch ──────────────────────────────────────── */
 
-export type BatchSourceMode =
-  | 'manual_upload'
-  | 'portal_export'
-  | 'api'
-  | 'rpa_planned';
+export type BatchSourceMode = 'manual_upload' | 'portal_export' | 'api' | 'rpa_planned';
 
 export type BatchStatus =
   | 'created'
@@ -52,9 +48,9 @@ export interface RemittanceBatch {
   /** Redacted parse summary (no PHI in this blob) */
   parsedSummary?: {
     totalLines: number;
-    totalPaidAmount: number;    // cents
-    totalBilledAmount: number;  // cents
-    totalAdjustments: number;   // cents
+    totalPaidAmount: number; // cents
+    totalBilledAmount: number; // cents
+    totalAdjustments: number; // cents
     parseErrors: number;
     parsedAt: string;
   };
@@ -76,11 +72,7 @@ export interface RemittanceBatch {
 
 /* ── Remittance Line ───────────────────────────────────────── */
 
-export type LineMatchStatus =
-  | 'unmatched'
-  | 'matched'
-  | 'needs_review'
-  | 'manually_linked';
+export type LineMatchStatus = 'unmatched' | 'matched' | 'needs_review' | 'manually_linked';
 
 export interface RemittanceLine {
   id: string;
@@ -112,7 +104,7 @@ export interface RemittanceLine {
   /** Match result */
   matchStatus: LineMatchStatus;
   matchedClaimCaseId?: string;
-  matchConfidence?: number;   // 0-100
+  matchConfidence?: number; // 0-100
   matchMethod?: 'exact_id' | 'external_ref' | 'fuzzy' | 'manual';
 
   paidAt?: string;
@@ -142,7 +134,7 @@ export interface PaymentPostingEvent {
   };
 
   /** Evidence reference */
-  evidenceRef: string;   // batch fileUri or checksum
+  evidenceRef: string; // batch fileUri or checksum
 }
 
 /* ── Underpayment Case ─────────────────────────────────────── */
@@ -156,9 +148,9 @@ export interface UnderpaymentCase {
   batchId: string;
   lineId: string;
 
-  expectedAmount: number;   // cents (total charge from claim)
-  paidAmount: number;       // cents
-  shortfallAmount: number;  // cents
+  expectedAmount: number; // cents (total charge from claim)
+  paidAmount: number; // cents
+  shortfallAmount: number; // cents
   shortfallPercent: number; // 0-100
 
   payerId: string;
@@ -176,7 +168,7 @@ export interface UnderpaymentCase {
 export interface AgingBucket {
   label: string;
   minDays: number;
-  maxDays: number | null;  // null = unbounded
+  maxDays: number | null; // null = unbounded
   claimCount: number;
   totalOutstanding: number; // cents
 }
@@ -248,7 +240,15 @@ export interface PaymentExportBridge {
 
 /* ── Factory Helpers ───────────────────────────────────────── */
 
-export function newBatchId(): string { return randomUUID(); }
-export function newLineId(): string { return randomUUID(); }
-export function newPostingId(): string { return randomUUID(); }
-export function newUnderpaymentId(): string { return randomUUID(); }
+export function newBatchId(): string {
+  return randomUUID();
+}
+export function newLineId(): string {
+  return randomUUID();
+}
+export function newPostingId(): string {
+  return randomUUID();
+}
+export function newUnderpaymentId(): string {
+  return randomUUID();
+}

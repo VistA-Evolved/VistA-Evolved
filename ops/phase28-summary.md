@@ -3,6 +3,7 @@
 ## What Changed
 
 ### New Files (API -- `apps/api/src/intake/`)
+
 - `types.ts` -- All TypeScript types for intake (sessions, events, QR snapshots, packs, providers, filing)
 - `intake-store.ts` -- In-memory stores for sessions, events, snapshots, kiosk tokens
 - `pack-registry.ts` -- Pack registry, context resolver, merge/dedup logic
@@ -12,15 +13,18 @@
 - `packs/` -- 23 clinical packs across 9 files (core, 16 complaints, 5 specialty, 2 department)
 
 ### New Files (Web -- CPRS)
+
 - `IntakePanel.tsx` -- Clinician review panel (red flags, HPI, ROS, answers, actions)
 
 ### New Files (Portal)
+
 - `dashboard/intake/page.tsx` -- Portal intake start page
 - `dashboard/intake/[id]/page.tsx` -- Portal adaptive questionnaire form
 - `kiosk/intake/page.tsx` -- Kiosk launcher
 - `kiosk/intake/[id]/page.tsx` -- Kiosk adaptive form with idle timeout
 
 ### Modified Files
+
 - `index.ts` (API) -- intake routes + pack loader registration
 - `panels/index.ts` -- IntakePanel barrel export
 - `[tab]/page.tsx` -- intake tab routing
@@ -42,9 +46,11 @@ curl http://127.0.0.1:3001/intake/packs -H "Cookie: session=<token>"
 ```
 
 ## Verify Script
+
 Phase 28 VERIFY script not yet created -- will be Phase 28 VERIFY task.
 
 ## Follow-ups
+
 - Wire VistA filing RPCs
 - LLM-constrained provider implementation
 - Proxy authorization verification

@@ -23,9 +23,9 @@
  *   BUILD_ID  -- override build ID (default: git SHA short + timestamp)
  */
 
-import { execSync } from "child_process";
-import { mkdirSync, writeFileSync, existsSync } from "fs";
-import { join } from "path";
+import { execSync } from 'child_process';
+import { mkdirSync, writeFileSync, existsSync } from 'fs';
+import { join } from 'path';
 
 const ROOT = process.cwd();
 
@@ -35,26 +35,26 @@ const ROOT = process.cwd();
 
 function gitShaShort(): string {
   try {
-    return execSync("git rev-parse --short HEAD", { cwd: ROOT, encoding: "utf-8" }).trim();
+    return execSync('git rev-parse --short HEAD', { cwd: ROOT, encoding: 'utf-8' }).trim();
   } catch {
-    return "unknown";
+    return 'unknown';
   }
 }
 
 function gitBranch(): string {
   try {
-    return execSync("git branch --show-current", { cwd: ROOT, encoding: "utf-8" }).trim();
+    return execSync('git branch --show-current', { cwd: ROOT, encoding: 'utf-8' }).trim();
   } catch {
-    return "unknown";
+    return 'unknown';
   }
 }
 
 const sha = gitShaShort();
 const branch = gitBranch();
-const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 const buildId = process.env.BUILD_ID || `${sha}-${timestamp}`;
 
-const outDir = join(ROOT, "docs", "evidence", buildId);
+const outDir = join(ROOT, 'docs', 'evidence', buildId);
 mkdirSync(outDir, { recursive: true });
 console.log(`\n=== Evidence Pack Generator (Phase 47) ===`);
 console.log(`Build ID: ${buildId}`);
@@ -73,8 +73,8 @@ const buildInfo = {
   platform: process.platform,
   arch: process.arch,
 };
-writeFileSync(join(outDir, "build-info.json"), JSON.stringify(buildInfo, null, 2));
-console.log("[OK] build-info.json");
+writeFileSync(join(outDir, 'build-info.json'), JSON.stringify(buildInfo, null, 2));
+console.log('[OK] build-info.json');
 
 /* ------------------------------------------------------------------ */
 /* Gate runner                                                         */
@@ -82,7 +82,7 @@ console.log("[OK] build-info.json");
 
 interface GateResult {
   gate: string;
-  status: "pass" | "fail" | "error";
+  status: 'pass' | 'fail' | 'error';
   durationMs: number;
   outputFile?: string;
   stderr?: string;
@@ -95,7 +95,7 @@ function runGate(name: string, command: string, outputFile: string): GateResult 
   try {
     const output = execSync(command, {
       cwd: ROOT,
-      encoding: "utf-8",
+      encoding: 'utf-8',
       timeout: 120_000,
       env: {
         ...process.env,
@@ -105,29 +105,32 @@ function runGate(name: string, command: string, outputFile: string): GateResult 
     const duration = Date.now() - start;
     // If the gate script wrote its own output, great. Otherwise write stdout.
     if (!existsSync(join(outDir, outputFile))) {
-      writeFileSync(join(outDir, outputFile), JSON.stringify({ gate: name, stdout: output }, null, 2));
+      writeFileSync(
+        join(outDir, outputFile),
+        JSON.stringify({ gate: name, stdout: output }, null, 2)
+      );
     }
-    const result: GateResult = { gate: name, status: "pass", durationMs: duration, outputFile };
+    const result: GateResult = { gate: name, status: 'pass', durationMs: duration, outputFile };
     gateResults.push(result);
     console.log(`[PASS] ${name} (${duration}ms)`);
     return result;
   } catch (err: unknown) {
     const duration = Date.now() - start;
     const e = err as { status?: number; stdout?: string; stderr?: string };
-    const stderr = e.stderr?.slice(0, 500) || "";
-    const stdout = e.stdout || "";
+    const stderr = e.stderr?.slice(0, 500) || '';
+    const stdout = e.stdout || '';
 
     // Write whatever output we got
     if (!existsSync(join(outDir, outputFile))) {
       writeFileSync(
         join(outDir, outputFile),
-        JSON.stringify({ gate: name, error: true, stdout, stderr: stderr.slice(0, 200) }, null, 2),
+        JSON.stringify({ gate: name, error: true, stdout, stderr: stderr.slice(0, 200) }, null, 2)
       );
     }
 
     const result: GateResult = {
       gate: name,
-      status: e.status !== undefined ? "fail" : "error",
+      status: e.status !== undefined ? 'fail' : 'error',
       durationMs: duration,
       outputFile,
       stderr: stderr.slice(0, 200),
@@ -143,32 +146,36 @@ function runGate(name: string, command: string, outputFile: string): GateResult 
 /* ------------------------------------------------------------------ */
 
 // 1. TypeScript typecheck
-runGate("typecheck", "npx tsc -p apps/api/tsconfig.json --noEmit 2>&1 || true", "typecheck.json");
+runGate('typecheck', 'npx tsc -p apps/api/tsconfig.json --noEmit 2>&1 || true', 'typecheck.json');
 
 // 2. Unit tests
-runGate("unit-tests", "cd apps/api && npx vitest run --reporter=json 2>&1 || true", "unit-tests.json");
+runGate(
+  'unit-tests',
+  'cd apps/api && npx vitest run --reporter=json 2>&1 || true',
+  'unit-tests.json'
+);
 
 // 3. Secret scan
-runGate("secret-scan", "node scripts/secret-scan.mjs", "secret-scan.json");
+runGate('secret-scan', 'node scripts/secret-scan.mjs', 'secret-scan.json');
 
 // 4. Prompts ordering
-runGate("prompts-ordering", "npx tsx scripts/check-prompts-ordering.ts", "prompts-ordering.json");
+runGate('prompts-ordering', 'npx tsx scripts/check-prompts-ordering.ts', 'prompts-ordering.json');
 
 // 5. RPC registry
-runGate("rpc-registry", "npx tsx scripts/check-rpc-registry.ts", "rpc-registry.json");
+runGate('rpc-registry', 'npx tsx scripts/check-rpc-registry.ts', 'rpc-registry.json');
 
 // 6. Module gates
-runGate("module-gates", "npx tsx scripts/check-module-gates.ts", "module-gates.json");
+runGate('module-gates', 'npx tsx scripts/check-module-gates.ts', 'module-gates.json');
 
 /* ------------------------------------------------------------------ */
 /* Summary                                                             */
 /* ------------------------------------------------------------------ */
 
-writeFileSync(join(outDir, "gate-results.json"), JSON.stringify(gateResults, null, 2));
+writeFileSync(join(outDir, 'gate-results.json'), JSON.stringify(gateResults, null, 2));
 
-const passCount = gateResults.filter((g) => g.status === "pass").length;
-const failCount = gateResults.filter((g) => g.status === "fail").length;
-const errorCount = gateResults.filter((g) => g.status === "error").length;
+const passCount = gateResults.filter((g) => g.status === 'pass').length;
+const failCount = gateResults.filter((g) => g.status === 'fail').length;
+const errorCount = gateResults.filter((g) => g.status === 'error').length;
 
 const summaryMd = `# Evidence Pack -- ${buildId}
 
@@ -181,7 +188,7 @@ const summaryMd = `# Evidence Pack -- ${buildId}
 
 | Gate | Status | Duration |
 |------|--------|----------|
-${gateResults.map((g) => `| ${g.gate} | ${g.status.toUpperCase()} | ${g.durationMs}ms |`).join("\n")}
+${gateResults.map((g) => `| ${g.gate} | ${g.status.toUpperCase()} | ${g.durationMs}ms |`).join('\n')}
 
 ## Summary
 
@@ -192,13 +199,13 @@ ${gateResults.map((g) => `| ${g.gate} | ${g.status.toUpperCase()} | ${g.duration
 
 ## Files
 
-${gateResults.map((g) => `- \`${g.outputFile}\``).join("\n")}
+${gateResults.map((g) => `- \`${g.outputFile}\``).join('\n')}
 - \`build-info.json\`
 - \`gate-results.json\`
 - \`summary.md\`
 `;
 
-writeFileSync(join(outDir, "summary.md"), summaryMd);
+writeFileSync(join(outDir, 'summary.md'), summaryMd);
 
 console.log(`\n--- Evidence Pack Summary ---`);
 console.log(`Pass: ${passCount} | Fail: ${failCount} | Error: ${errorCount}`);

@@ -7,7 +7,7 @@
  *       /templates/specialty-packs is session-level (read-only catalog)
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 import {
   createTemplate,
   updateTemplate,
@@ -23,17 +23,17 @@ import {
   generateDraftNote,
   seedSpecialtyPack,
   getTemplateStats,
-} from "./template-engine.js";
-import { getAllSpecialtyPacks } from "./specialty-packs.js";
-import { SPECIALTY_TAGS } from "./types.js";
+} from './template-engine.js';
+import { getAllSpecialtyPacks } from './specialty-packs.js';
+import { SPECIALTY_TAGS } from './types.js';
 
 export default async function templateRoutes(server: FastifyInstance): Promise<void> {
   // ─── Admin Template Management ────────────────────────────────
 
   // List templates with optional filters
-  server.get("/admin/templates", async (request, reply) => {
+  server.get('/admin/templates', async (request, reply) => {
     const q = request.query as any;
-    const tenantId = (request as any).tenantId || "default";
+    const tenantId = (request as any).tenantId || 'default';
     const templates = await listTemplates(tenantId, {
       specialty: q.specialty,
       setting: q.setting,
@@ -44,114 +44,123 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
   });
 
   // Get single template
-  server.get("/admin/templates/:id", async (request, reply) => {
+  server.get('/admin/templates/:id', async (request, reply) => {
     const { id } = request.params as any;
-    const tenantId = (request as any).tenantId || "default";
+    const tenantId = (request as any).tenantId || 'default';
     const template = await getTemplate(tenantId, id);
     if (!template) {
       reply.code(404);
-      return { ok: false, error: "Template not found" };
+      return { ok: false, error: 'Template not found' };
     }
     return { ok: true, template };
   });
 
   // Create template
-  server.post("/admin/templates", async (request, reply) => {
+  server.post('/admin/templates', async (request, reply) => {
     const body = (request.body as any) || {};
-    const tenantId = (request as any).tenantId || "default";
-    const actor = (request as any).session?.userName || "system";
+    const tenantId = (request as any).tenantId || 'default';
+    const actor = (request as any).session?.userName || 'system';
 
     if (!body.name || !body.specialty) {
       reply.code(400);
-      return { ok: false, error: "name and specialty are required" };
+      return { ok: false, error: 'name and specialty are required' };
     }
 
-    const template = await createTemplate(tenantId, {
-      name: body.name,
-      specialty: body.specialty,
-      setting: body.setting || "any",
-      description: body.description,
-      tags: body.tags,
-      sections: body.sections || [],
-      quickInsertSections: body.quickInsertSections,
-      autoExpandRules: body.autoExpandRules,
-    }, actor);
+    const template = await createTemplate(
+      tenantId,
+      {
+        name: body.name,
+        specialty: body.specialty,
+        setting: body.setting || 'any',
+        description: body.description,
+        tags: body.tags,
+        sections: body.sections || [],
+        quickInsertSections: body.quickInsertSections,
+        autoExpandRules: body.autoExpandRules,
+      },
+      actor
+    );
 
     reply.code(201);
     return { ok: true, template };
   });
 
   // Update template
-  server.put("/admin/templates/:id", async (request, reply) => {
+  server.put('/admin/templates/:id', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
-    const tenantId = (request as any).tenantId || "default";
-    const actor = (request as any).session?.userName || "system";
+    const tenantId = (request as any).tenantId || 'default';
+    const actor = (request as any).session?.userName || 'system';
 
-    const updated = await updateTemplate(tenantId, id, {
-      name: body.name,
-      description: body.description,
-      specialty: body.specialty,
-      setting: body.setting,
-      tags: body.tags,
-      sections: body.sections,
-      quickInsertSections: body.quickInsertSections,
-      autoExpandRules: body.autoExpandRules,
-    }, actor);
+    const updated = await updateTemplate(
+      tenantId,
+      id,
+      {
+        name: body.name,
+        description: body.description,
+        specialty: body.specialty,
+        setting: body.setting,
+        tags: body.tags,
+        sections: body.sections,
+        quickInsertSections: body.quickInsertSections,
+        autoExpandRules: body.autoExpandRules,
+      },
+      actor
+    );
 
     if (!updated) {
       reply.code(404);
-      return { ok: false, error: "Template not found or archived" };
+      return { ok: false, error: 'Template not found or archived' };
     }
     return { ok: true, template: updated };
   });
 
   // Publish template
-  server.post("/admin/templates/:id/publish", async (request, reply) => {
+  server.post('/admin/templates/:id/publish', async (request, reply) => {
     const { id } = request.params as any;
-    const tenantId = (request as any).tenantId || "default";
-    const actor = (request as any).session?.userName || "system";
+    const tenantId = (request as any).tenantId || 'default';
+    const actor = (request as any).session?.userName || 'system';
 
     const published = await publishTemplate(tenantId, id, actor);
     if (!published) {
       reply.code(404);
-      return { ok: false, error: "Template not found" };
+      return { ok: false, error: 'Template not found' };
     }
     return { ok: true, template: published };
   });
 
   // Archive template
-  server.post("/admin/templates/:id/archive", async (request, reply) => {
+  server.post('/admin/templates/:id/archive', async (request, reply) => {
     const { id } = request.params as any;
-    const tenantId = (request as any).tenantId || "default";
-    const actor = (request as any).session?.userName || "system";
+    const tenantId = (request as any).tenantId || 'default';
+    const actor = (request as any).session?.userName || 'system';
 
     const archived = await archiveTemplate(tenantId, id, actor);
     if (!archived) {
       reply.code(404);
-      return { ok: false, error: "Template not found" };
+      return { ok: false, error: 'Template not found' };
     }
     return { ok: true, template: archived };
   });
 
   // Version history
-  server.get("/admin/templates/:id/versions", async (request, reply) => {
+  server.get('/admin/templates/:id/versions', async (request, reply) => {
     const { id } = request.params as any;
-    const tenantId = (request as any).tenantId || "default";
+    const tenantId = (request as any).tenantId || 'default';
     const events = await getVersionHistory(tenantId, id);
     return { ok: true, events, count: events.length };
   });
 
   // Template stats
-  server.get("/admin/templates/stats", async (request, reply) => {
-    const tenantId = (request as any).tenantId || "default";
+  server.get('/admin/templates/stats', async (request, reply) => {
+    const tenantId = (request as any).tenantId || 'default';
     const stats = getTemplateStats(tenantId);
     return { ok: true, ...stats };
   });
 
   // Seed specialty packs
-  server.post("/admin/templates/seed", async (request, reply) => {
-    const tenantId = (request as any).tenantId || "default";
+  server.post('/admin/templates/seed', async (request, reply) => {
+    const tenantId = (request as any).tenantId || 'default';
     const body = (request.body as any) || {};
     const specialty = body.specialty; // optional: seed only one specialty
 
@@ -169,9 +178,9 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
 
   // ─── Quick Text CRUD ──────────────────────────────────────────
 
-  server.get("/admin/templates/quick-text", async (request, reply) => {
+  server.get('/admin/templates/quick-text', async (request, reply) => {
     const q = request.query as any;
-    const tenantId = (request as any).tenantId || "default";
+    const tenantId = (request as any).tenantId || 'default';
     const items = await listQuickTexts(tenantId, {
       tag: q.tag,
       specialty: q.specialty,
@@ -180,13 +189,13 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
     return { ok: true, quickTexts: items, count: items.length };
   });
 
-  server.post("/admin/templates/quick-text", async (request, reply) => {
+  server.post('/admin/templates/quick-text', async (request, reply) => {
     const body = (request.body as any) || {};
-    const tenantId = (request as any).tenantId || "default";
+    const tenantId = (request as any).tenantId || 'default';
 
     if (!body.key || !body.text) {
       reply.code(400);
-      return { ok: false, error: "key and text are required" };
+      return { ok: false, error: 'key and text are required' };
     }
 
     const qt = await createQuickText(tenantId, {
@@ -201,10 +210,10 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
     return { ok: true, quickText: qt };
   });
 
-  server.put("/admin/templates/quick-text/:id", async (request, reply) => {
+  server.put('/admin/templates/quick-text/:id', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
-    const tenantId = (request as any).tenantId || "default";
+    const tenantId = (request as any).tenantId || 'default';
 
     const updated = await updateQuickText(tenantId, id, {
       text: body.text,
@@ -214,25 +223,25 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
 
     if (!updated) {
       reply.code(404);
-      return { ok: false, error: "Quick text not found" };
+      return { ok: false, error: 'Quick text not found' };
     }
     return { ok: true, quickText: updated };
   });
 
-  server.delete("/admin/templates/quick-text/:id", async (request, reply) => {
+  server.delete('/admin/templates/quick-text/:id', async (request, reply) => {
     const { id } = request.params as any;
-    const tenantId = (request as any).tenantId || "default";
+    const tenantId = (request as any).tenantId || 'default';
     const deleted = await deleteQuickText(tenantId, id);
     if (!deleted) {
       reply.code(404);
-      return { ok: false, error: "Quick text not found" };
+      return { ok: false, error: 'Quick text not found' };
     }
     return { ok: true };
   });
 
   // ─── Specialty Pack Catalog (read-only, session auth) ─────────
 
-  server.get("/templates/specialty-packs", async (request, reply) => {
+  server.get('/templates/specialty-packs', async (request, reply) => {
     const packs = getAllSpecialtyPacks();
     return {
       ok: true,
@@ -248,12 +257,12 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
 
   // ─── Note Builder ─────────────────────────────────────────────
 
-  server.post("/encounter/note-builder/generate", async (request, reply) => {
+  server.post('/encounter/note-builder/generate', async (request, reply) => {
     const body = (request.body as any) || {};
 
     if (!body.templateId) {
       reply.code(400);
-      return { ok: false, error: "templateId is required" };
+      return { ok: false, error: 'templateId is required' };
     }
 
     const result = await generateDraftNote({
@@ -266,7 +275,7 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
 
     if (!result.draftText && result.sectionsRendered === 0) {
       reply.code(404);
-      return { ok: false, error: "Template not found" };
+      return { ok: false, error: 'Template not found' };
     }
 
     return { ok: true, ...result };
@@ -274,20 +283,20 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
 
   // ─── Phase 167: Pack Validation ───────────────────────────────
 
-  server.get("/admin/templates/validate", async () => {
-    const { validateAllPacks } = await import("./pack-validator.js");
+  server.get('/admin/templates/validate', async () => {
+    const { validateAllPacks } = await import('./pack-validator.js');
     const report = validateAllPacks();
     return { ok: true, report };
   });
 
-  server.get("/admin/templates/validate/rubrics", async () => {
-    const { ALL_RUBRICS } = await import("./pack-validator.js");
+  server.get('/admin/templates/validate/rubrics', async () => {
+    const { ALL_RUBRICS } = await import('./pack-validator.js');
     return { ok: true, rubrics: ALL_RUBRICS };
   });
 
-  server.get("/admin/templates/validate/user", async (request) => {
-    const session = (request as any).session || { tenantId: "default" };
-    const { validateUserTemplates } = await import("./pack-validator.js");
+  server.get('/admin/templates/validate/user', async (request) => {
+    const session = (request as any).session || { tenantId: 'default' };
+    const { validateUserTemplates } = await import('./pack-validator.js');
     const report = await validateUserTemplates(session.tenantId);
     return { ok: true, report };
   });

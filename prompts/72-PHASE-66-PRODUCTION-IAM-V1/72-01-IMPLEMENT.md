@@ -1,7 +1,9 @@
 # Phase 66 — Production IAM v1 (OIDC + SAML Posture)
 
 ## User Request
+
 Close portal-plan auth gap by implementing production-ready authentication posture:
+
 - OIDC support (real end-to-end)
 - SAML via broker posture (Keycloak/AzureAD/Okta)
 - Tenant-scoped sessions
@@ -9,6 +11,7 @@ Close portal-plan auth gap by implementing production-ready authentication postu
 - VistA session binding for clinical actions
 
 ## Implementation Steps
+
 1. Create IdentityProvider interface in apps/api/src/auth/idp/types.ts
 2. Implement OIDC provider in apps/api/src/auth/idp/oidc-idp.ts
 3. Implement SAML broker posture in apps/api/src/auth/idp/saml-broker-idp.ts
@@ -21,12 +24,14 @@ Close portal-plan auth gap by implementing production-ready authentication postu
 10. Create verification script scripts/verify-phase66-iam.ps1
 
 ## Verification Steps
+
 - verify-latest.ps1 passes (regression)
-- verify-phase66-iam.ps1 passes (all G66-* gates)
+- verify-phase66-iam.ps1 passes (all G66-\* gates)
 - TSC clean
 - No secrets in code
 
 ## Files Touched
+
 - apps/api/src/auth/idp/types.ts (NEW)
 - apps/api/src/auth/idp/oidc-idp.ts (NEW)
 - apps/api/src/auth/idp/saml-broker-idp.ts (NEW)

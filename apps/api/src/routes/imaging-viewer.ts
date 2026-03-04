@@ -15,16 +15,19 @@
  * See: docs/runbooks/phase81-imaging-viewer.md
  */
 
-import type { FastifyInstance } from "fastify";
-import { validateCredentials } from "../vista/config.js";
-import { optionalRpc } from "../vista/rpcCapabilities.js";
-import { safeCallRpc } from "../lib/rpc-resilience.js";
-import { IMAGING_CONFIG } from "../config/server-config.js";
-import { audit } from "../lib/audit.js";
-import { log } from "../lib/logger.js";
-import { getLinkagesForPatient, getLinkageByStudyUid } from "../services/imaging-ingest.js";
-import { findByPatientDfn as findOrdersByPatient } from "../services/imaging-worklist.js";
-import { getViewerUrl as getTenantViewerUrl, getOrthancUrl as getTenantOrthancUrl } from "../config/imaging-tenant.js";
+import type { FastifyInstance } from 'fastify';
+import { validateCredentials } from '../vista/config.js';
+import { optionalRpc } from '../vista/rpcCapabilities.js';
+import { safeCallRpc } from '../lib/rpc-resilience.js';
+import { IMAGING_CONFIG } from '../config/server-config.js';
+import { audit } from '../lib/audit.js';
+import { log } from '../lib/logger.js';
+import { getLinkagesForPatient, getLinkageByStudyUid } from '../services/imaging-ingest.js';
+import { findByPatientDfn as findOrdersByPatient } from '../services/imaging-worklist.js';
+import {
+  getViewerUrl as getTenantViewerUrl,
+  getOrthancUrl as getTenantOrthancUrl,
+} from '../config/imaging-tenant.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -37,7 +40,7 @@ export interface ImagingStudyResult {
   description: string;
   imageCount: number;
   status: string;
-  source: "vista" | "orthanc" | "dicomweb" | "pacs";
+  source: 'vista' | 'orthanc' | 'dicomweb' | 'pacs';
   studyInstanceUid?: string;
   linkedOrderId?: string;
   accessionNumber?: string;
@@ -48,7 +51,7 @@ export interface ReportResult {
   ok: boolean;
   available: boolean;
   reportText?: string;
-  reportStatus?: "preliminary" | "final" | "addendum" | "unknown";
+  reportStatus?: 'preliminary' | 'final' | 'addendum' | 'unknown';
   rpcUsed?: string;
   pendingTarget?: {
     rpc: string;
@@ -62,7 +65,7 @@ export interface ViewerLinkResult {
   ok: boolean;
   viewerAvailable: boolean;
   url?: string;
-  viewerType?: "ohif" | "basic" | "none";
+  viewerType?: 'ohif' | 'basic' | 'none';
   message: string;
   instructions?: string[];
 }
@@ -74,7 +77,7 @@ export interface ViewerLinkResult {
 function auditActor(request: any): { duz: string; name?: string; role?: string } {
   const s = request.session;
   if (s) return { duz: s.duz, name: s.userName, role: s.role };
-  return { duz: "system" };
+  return { duz: 'system' };
 }
 
 /** Check if OHIF viewer is reachable (quick probe). */
@@ -110,7 +113,6 @@ async function isOrthancReachable(): Promise<boolean> {
 /* ------------------------------------------------------------------ */
 
 export default async function imagingViewerRoutes(server: FastifyInstance): Promise<void> {
-
   /**
    * GET /imaging/studies/:dfn
    *
@@ -118,45 +120,45 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
    * PROCEDURE), then falls back to Orthanc QIDO-RS, then returns
    * explicit pendingTargets if nothing is available.
    */
-  server.get("/imaging/studies/:dfn", async (request, reply) => {
+  server.get('/imaging/studies/:dfn', async (request, reply) => {
     const { dfn } = request.params as { dfn: string };
     if (!dfn) {
-      return reply.code(400).send({ ok: false, error: "Missing dfn" });
+      return reply.code(400).send({ ok: false, error: 'Missing dfn' });
     }
 
     const studies: ImagingStudyResult[] = [];
-    const tenantId = (request as any).session?.tenantId || "default";
     const pendingTargets: { rpc: string; reason: string }[] = [];
 
     // 1. Try VistA MAG4 REMOTE PROCEDURE
-    const mag4Check = optionalRpc("MAG4 REMOTE PROCEDURE");
+    const mag4Check = optionalRpc('MAG4 REMOTE PROCEDURE');
     if (mag4Check.available) {
       try {
         validateCredentials();
-        const resp = await safeCallRpc("MAG4 REMOTE PROCEDURE", ["IMAGELIST", dfn, ""]);
+        const resp = await safeCallRpc('MAG4 REMOTE PROCEDURE', ['IMAGELIST', dfn, '']);
 
         for (const line of resp) {
-          if (line.startsWith("0^")) continue;
-          const parts = line.split("^");
+          if (line.startsWith('0^')) continue;
+          const parts = line.split('^');
           if (parts.length >= 4) {
             studies.push({
-              studyId: parts[0] || "",
-              studyDate: parts[1] || "",
-              modality: parts[2] || "",
-              description: parts[3] || "",
-              imageCount: parseInt(parts[4] || "0", 10) || 0,
-              status: "available",
-              source: "vista",
+              studyId: parts[0] || '',
+              studyDate: parts[1] || '',
+              modality: parts[2] || '',
+              description: parts[3] || '',
+              imageCount: parseInt(parts[4] || '0', 10) || 0,
+              status: 'available',
+              source: 'vista',
             });
           }
         }
       } catch (err: any) {
-        log.warn("MAG4 study list failed", { error: err.message });
+        log.warn('MAG4 study list failed', { error: err.message });
       }
     } else {
       pendingTargets.push({
-        rpc: "MAG4 REMOTE PROCEDURE",
-        reason: "Not available on this VistA distro. Install VistA Imaging package for native study list.",
+        rpc: 'MAG4 REMOTE PROCEDURE',
+        reason:
+          'Not available on this VistA distro. Install VistA Imaging package for native study list.',
       });
     }
 
@@ -167,7 +169,7 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 10000);
         const resp = await fetch(qidoUrl, {
-          headers: { Accept: "application/dicom+json" },
+          headers: { Accept: 'application/dicom+json' },
           signal: controller.signal,
         });
         clearTimeout(timeout);
@@ -175,21 +177,22 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
         if (resp.ok) {
           const data = (await resp.json()) as any[];
           for (const study of data) {
-            const uid = study["0020000D"]?.Value?.[0] || "";
+            const uid = study['0020000D']?.Value?.[0] || '';
             studies.push({
               studyId: uid,
-              studyDate: study["00080020"]?.Value?.[0] || "",
-              modality: (study["00080061"]?.Value || []).join("/") || study["00080060"]?.Value?.[0] || "",
-              description: study["00081030"]?.Value?.[0] || "",
-              imageCount: study["00201208"]?.Value?.[0] || 0,
-              status: "available",
-              source: "orthanc",
+              studyDate: study['00080020']?.Value?.[0] || '',
+              modality:
+                (study['00080061']?.Value || []).join('/') || study['00080060']?.Value?.[0] || '',
+              description: study['00081030']?.Value?.[0] || '',
+              imageCount: study['00201208']?.Value?.[0] || 0,
+              status: 'available',
+              source: 'orthanc',
               studyInstanceUid: uid,
             });
           }
         }
       } catch (err: any) {
-        log.debug("Orthanc QIDO-RS unavailable", { error: err.message });
+        log.debug('Orthanc QIDO-RS unavailable', { error: err.message });
       }
     }
 
@@ -208,11 +211,11 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
       }
     }
 
-    audit("phi.imaging-view", "success", auditActor(request), {
+    audit('phi.imaging-view', 'success', auditActor(request), {
       patientDfn: dfn,
       requestId: (request as any).requestId,
       sourceIp: request.ip,
-      detail: { studyCount: studies.length, route: "phase81" },
+      detail: { studyCount: studies.length, route: 'phase81' },
     });
 
     return {
@@ -222,7 +225,7 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
       count: studies.length,
       sources: {
         vistaImaging: mag4Check.available,
-        orthanc: studies.some((s) => s.source === "orthanc"),
+        orthanc: studies.some((s) => s.source === 'orthanc'),
       },
       orderSummary: {
         totalOrders: orders.length,
@@ -230,7 +233,7 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
         unmatchedStudies: studies.filter((s) => !s.orderLinked).length,
       },
       pendingTargets: pendingTargets.length > 0 ? pendingTargets : undefined,
-      rpcUsed: mag4Check.available ? ["MAG4 REMOTE PROCEDURE"] : [],
+      rpcUsed: mag4Check.available ? ['MAG4 REMOTE PROCEDURE'] : [],
     };
   });
 
@@ -241,33 +244,35 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
    * REPORT first, then TIU GET RECORD TEXT as fallback, then returns
    * a pendingTarget with precise VistA file info.
    */
-  server.get("/imaging/report/:studyId", async (request, reply) => {
+  server.get('/imaging/report/:studyId', async (request, reply) => {
     const { studyId } = request.params as { studyId: string };
     if (!studyId) {
-      return reply.code(400).send({ ok: false, error: "Missing studyId" });
+      return reply.code(400).send({ ok: false, error: 'Missing studyId' });
     }
 
     // 1. Try RA DETAILED REPORT
-    const raCheck = optionalRpc("RA DETAILED REPORT");
+    const raCheck = optionalRpc('RA DETAILED REPORT');
     if (raCheck.available) {
       try {
         validateCredentials();
-        const resp = await safeCallRpc("RA DETAILED REPORT", [studyId, ""]);
+        const resp = await safeCallRpc('RA DETAILED REPORT', [studyId, '']);
 
-        const text = resp.join("\n").trim();
-        if (text && text !== "" && !text.startsWith("0^")) {
-          audit("phi.imaging-view", "success", auditActor(request), {
+        const text = resp.join('\n').trim();
+        if (text && text !== '' && !text.startsWith('0^')) {
+          audit('phi.imaging-view', 'success', auditActor(request), {
             requestId: (request as any).requestId,
             sourceIp: request.ip,
-            detail: { studyId, rpc: "RA DETAILED REPORT", type: "report" },
+            detail: { studyId, rpc: 'RA DETAILED REPORT', type: 'report' },
           });
 
           // Infer report status from text content
-          let reportStatus: "preliminary" | "final" | "addendum" | "unknown" = "unknown";
+          let reportStatus: 'preliminary' | 'final' | 'addendum' | 'unknown' = 'unknown';
           const textUpper = text.toUpperCase();
-          if (textUpper.includes("ADDENDUM")) reportStatus = "addendum";
-          else if (textUpper.includes("FINAL") || textUpper.includes("VERIFIED")) reportStatus = "final";
-          else if (textUpper.includes("PRELIMINARY") || textUpper.includes("DRAFT")) reportStatus = "preliminary";
+          if (textUpper.includes('ADDENDUM')) reportStatus = 'addendum';
+          else if (textUpper.includes('FINAL') || textUpper.includes('VERIFIED'))
+            reportStatus = 'final';
+          else if (textUpper.includes('PRELIMINARY') || textUpper.includes('DRAFT'))
+            reportStatus = 'preliminary';
 
           return {
             ok: true,
@@ -275,27 +280,27 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
             studyId,
             reportText: text,
             reportStatus,
-            rpcUsed: "RA DETAILED REPORT",
+            rpcUsed: 'RA DETAILED REPORT',
           } satisfies ReportResult & { studyId: string };
         }
       } catch (err: any) {
-        log.warn("RA DETAILED REPORT failed", { error: err.message, studyId });
+        log.warn('RA DETAILED REPORT failed', { error: err.message, studyId });
       }
     }
 
     // 2. Try TIU GET RECORD TEXT as fallback (if studyId is a TIU document IEN)
-    const tiuCheck = optionalRpc("TIU GET RECORD TEXT");
+    const tiuCheck = optionalRpc('TIU GET RECORD TEXT');
     if (tiuCheck.available) {
       try {
         validateCredentials();
-        const resp = await safeCallRpc("TIU GET RECORD TEXT", [studyId]);
+        const resp = await safeCallRpc('TIU GET RECORD TEXT', [studyId]);
 
-        const text = resp.join("\n").trim();
-        if (text && text !== "" && !text.startsWith("0^")) {
-          audit("phi.imaging-view", "success", auditActor(request), {
+        const text = resp.join('\n').trim();
+        if (text && text !== '' && !text.startsWith('0^')) {
+          audit('phi.imaging-view', 'success', auditActor(request), {
             requestId: (request as any).requestId,
             sourceIp: request.ip,
-            detail: { studyId, rpc: "TIU GET RECORD TEXT", type: "report" },
+            detail: { studyId, rpc: 'TIU GET RECORD TEXT', type: 'report' },
           });
 
           return {
@@ -303,12 +308,12 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
             available: true,
             studyId,
             reportText: text,
-            reportStatus: "unknown",
-            rpcUsed: "TIU GET RECORD TEXT",
+            reportStatus: 'unknown',
+            rpcUsed: 'TIU GET RECORD TEXT',
           } satisfies ReportResult & { studyId: string };
         }
       } catch (err: any) {
-        log.debug("TIU GET RECORD TEXT fallback failed", { error: err.message, studyId });
+        log.debug('TIU GET RECORD TEXT fallback failed', { error: err.message, studyId });
       }
     }
 
@@ -321,12 +326,13 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
       reportStatus: undefined,
       rpcUsed: undefined,
       pendingTarget: {
-        rpc: "RA DETAILED REPORT",
-        vistaFile: "#74 RAD/NUC MED REPORTS",
+        rpc: 'RA DETAILED REPORT',
+        vistaFile: '#74 RAD/NUC MED REPORTS',
         reason: raCheck.available
-          ? "RPC available but no report data found for this study ID"
-          : "RA DETAILED REPORT not available on this VistA distro",
-        migrationPath: "Install VistA Radiology package. Create radiology cases + reports. RA DETAILED REPORT returns text for case IEN.",
+          ? 'RPC available but no report data found for this study ID'
+          : 'RA DETAILED REPORT not available on this VistA distro',
+        migrationPath:
+          'Install VistA Radiology package. Create radiology cases + reports. RA DETAILED REPORT returns text for case IEN.',
       },
     } satisfies ReportResult & { studyId: string };
   });
@@ -337,13 +343,13 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
    * Returns a DICOM viewer URL for the given study, or integration
    * instructions if no viewer is configured/reachable.
    */
-  server.get("/imaging/viewer-link/:studyId", async (request, reply) => {
+  server.get('/imaging/viewer-link/:studyId', async (request, reply) => {
     const { studyId } = request.params as { studyId: string };
     if (!studyId) {
-      return reply.code(400).send({ ok: false, error: "Missing studyId" });
+      return reply.code(400).send({ ok: false, error: 'Missing studyId' });
     }
 
-    const tenantId = (request as any).session?.tenantId || "default";
+    const tenantId = (request as any).session?.tenantId || 'default';
 
     // 1. Check tenant-scoped viewer config
     let viewerBaseUrl = IMAGING_CONFIG.ohifUrl;
@@ -364,10 +370,10 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
     if (viewerOk && orthancOk) {
       const url = `${viewerBaseUrl}/viewer?StudyInstanceUIDs=${studyId}`;
 
-      audit("imaging.viewer-launch", "success", auditActor(request), {
+      audit('imaging.viewer-launch', 'success', auditActor(request), {
         requestId: (request as any).requestId,
         sourceIp: request.ip,
-        detail: { studyId, viewerUrl: url, viewerType: "ohif" },
+        detail: { studyId, viewerUrl: url, viewerType: 'ohif' },
       });
 
       return {
@@ -375,8 +381,8 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
         viewerAvailable: true,
         studyId,
         url,
-        viewerType: "ohif",
-        message: "OHIF viewer URL generated. Open in new tab or embedded iframe.",
+        viewerType: 'ohif',
+        message: 'OHIF viewer URL generated. Open in new tab or embedded iframe.',
       } satisfies ViewerLinkResult & { studyId: string };
     }
 
@@ -389,14 +395,14 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
         viewerAvailable: false,
         studyId,
         url: dicomWebUrl,
-        viewerType: "basic",
-        message: "OHIF viewer not reachable. DICOMweb URL provided for manual viewer integration.",
+        viewerType: 'basic',
+        message: 'OHIF viewer not reachable. DICOMweb URL provided for manual viewer integration.',
         instructions: [
-          "OHIF viewer is not currently reachable.",
+          'OHIF viewer is not currently reachable.',
           `Orthanc DICOMweb endpoint: ${dicomWebUrl}`,
-          "To enable OHIF: docker compose up -d ohif (in services/imaging/)",
+          'To enable OHIF: docker compose up -d ohif (in services/imaging/)',
           `Set OHIF_VIEWER_URL=${viewerBaseUrl} in .env.local`,
-          "OHIF will connect to Orthanc DICOMweb automatically.",
+          'OHIF will connect to Orthanc DICOMweb automatically.',
         ],
       } satisfies ViewerLinkResult & { studyId: string };
     }
@@ -406,22 +412,22 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
       ok: true,
       viewerAvailable: false,
       studyId,
-      viewerType: "none",
-      message: "No DICOM viewer or server available. Follow setup instructions to enable imaging.",
+      viewerType: 'none',
+      message: 'No DICOM viewer or server available. Follow setup instructions to enable imaging.',
       instructions: [
-        "1. Start Orthanc DICOM server: cd services/imaging && docker compose up -d",
-        "2. Start OHIF viewer: OHIF runs on port 3003 by default",
-        "3. Upload DICOM studies to Orthanc (port 8042 web UI or STOW-RS)",
-        "4. Set environment variables in apps/api/.env.local:",
-        "   ORTHANC_URL=http://localhost:8042",
-        "   OHIF_VIEWER_URL=http://localhost:3003",
-        "5. Restart the API server",
-        "6. Studies will appear in the imaging panel once Orthanc has data",
-        "",
-        "For production VistA Imaging integration:",
-        "  - Install VistA Imaging package (MAG namespace RPCs)",
-        "  - Configure VistA Imaging display gateway",
-        "  - See docs/runbooks/phase81-imaging-viewer.md",
+        '1. Start Orthanc DICOM server: cd services/imaging && docker compose up -d',
+        '2. Start OHIF viewer: OHIF runs on port 3003 by default',
+        '3. Upload DICOM studies to Orthanc (port 8042 web UI or STOW-RS)',
+        '4. Set environment variables in apps/api/.env.local:',
+        '   ORTHANC_URL=http://localhost:8042',
+        '   OHIF_VIEWER_URL=http://localhost:3003',
+        '5. Restart the API server',
+        '6. Studies will appear in the imaging panel once Orthanc has data',
+        '',
+        'For production VistA Imaging integration:',
+        '  - Install VistA Imaging package (MAG namespace RPCs)',
+        '  - Configure VistA Imaging display gateway',
+        '  - See docs/runbooks/phase81-imaging-viewer.md',
       ],
     } satisfies ViewerLinkResult & { studyId: string };
   });

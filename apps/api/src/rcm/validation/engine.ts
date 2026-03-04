@@ -41,7 +41,7 @@ export interface ValidationEdit {
 export interface ValidationResult {
   claimId: string;
   valid: boolean;
-  readinessScore: number;        // 0-100
+  readinessScore: number; // 0-100
   edits: ValidationEdit[];
   editCountBySeverity: { error: number; warning: number; info: number };
   validatedAt: string;
@@ -67,7 +67,7 @@ function makeEdit(
   rule: ValidationRule,
   field: string,
   message: string,
-  suggestedFix?: string,
+  suggestedFix?: string
 ): ValidationEdit {
   return {
     id: nextEditId(),
@@ -90,9 +90,15 @@ const syntaxRules: ValidationRule[] = [
     severity: 'error',
     blocksSubmission: true,
     description: 'Payer ID is required',
-    check: (c) => !c.payerId
-      ? makeEdit(syntaxRules[0], 'payerId', 'Payer ID is required', 'Select a payer from the registry')
-      : null,
+    check: (c) =>
+      !c.payerId
+        ? makeEdit(
+            syntaxRules[0],
+            'payerId',
+            'Payer ID is required',
+            'Select a payer from the registry'
+          )
+        : null,
   },
   {
     id: 'SYN-002',
@@ -100,9 +106,15 @@ const syntaxRules: ValidationRule[] = [
     severity: 'error',
     blocksSubmission: true,
     description: 'Patient DFN is required',
-    check: (c) => !c.patientDfn
-      ? makeEdit(syntaxRules[1], 'patientDfn', 'Patient DFN is required', 'Link claim to a patient')
-      : null,
+    check: (c) =>
+      !c.patientDfn
+        ? makeEdit(
+            syntaxRules[1],
+            'patientDfn',
+            'Patient DFN is required',
+            'Link claim to a patient'
+          )
+        : null,
   },
   {
     id: 'SYN-003',
@@ -110,9 +122,10 @@ const syntaxRules: ValidationRule[] = [
     severity: 'error',
     blocksSubmission: true,
     description: 'Total charge must be positive',
-    check: (c) => c.totalCharge <= 0
-      ? makeEdit(syntaxRules[2], 'totalCharge', 'Total charge must be greater than zero')
-      : null,
+    check: (c) =>
+      c.totalCharge <= 0
+        ? makeEdit(syntaxRules[2], 'totalCharge', 'Total charge must be greater than zero')
+        : null,
   },
   {
     id: 'SYN-004',
@@ -120,9 +133,10 @@ const syntaxRules: ValidationRule[] = [
     severity: 'error',
     blocksSubmission: true,
     description: 'At least one service line is required',
-    check: (c) => (!c.lines || c.lines.length === 0)
-      ? makeEdit(syntaxRules[3], 'lines', 'At least one service line is required')
-      : null,
+    check: (c) =>
+      !c.lines || c.lines.length === 0
+        ? makeEdit(syntaxRules[3], 'lines', 'At least one service line is required')
+        : null,
   },
   {
     id: 'SYN-005',
@@ -130,9 +144,10 @@ const syntaxRules: ValidationRule[] = [
     severity: 'error',
     blocksSubmission: true,
     description: 'At least one diagnosis code is required',
-    check: (c) => (!c.diagnoses || c.diagnoses.length === 0)
-      ? makeEdit(syntaxRules[4], 'diagnoses', 'At least one diagnosis code is required')
-      : null,
+    check: (c) =>
+      !c.diagnoses || c.diagnoses.length === 0
+        ? makeEdit(syntaxRules[4], 'diagnoses', 'At least one diagnosis code is required')
+        : null,
   },
   {
     id: 'SYN-006',
@@ -140,9 +155,10 @@ const syntaxRules: ValidationRule[] = [
     severity: 'error',
     blocksSubmission: true,
     description: 'Service date is required',
-    check: (c) => !c.dateOfService
-      ? makeEdit(syntaxRules[5], 'dateOfService', 'Service date is required')
-      : null,
+    check: (c) =>
+      !c.dateOfService
+        ? makeEdit(syntaxRules[5], 'dateOfService', 'Service date is required')
+        : null,
   },
   {
     id: 'SYN-007',
@@ -150,9 +166,15 @@ const syntaxRules: ValidationRule[] = [
     severity: 'error',
     blocksSubmission: true,
     description: 'Subscriber member ID is required',
-    check: (c) => !c.subscriberId
-      ? makeEdit(syntaxRules[6], 'subscriberId', 'Subscriber/member ID is required', 'Enter the insurance member ID')
-      : null,
+    check: (c) =>
+      !c.subscriberId
+        ? makeEdit(
+            syntaxRules[6],
+            'subscriberId',
+            'Subscriber/member ID is required',
+            'Enter the insurance member ID'
+          )
+        : null,
   },
   {
     id: 'SYN-008',
@@ -160,9 +182,14 @@ const syntaxRules: ValidationRule[] = [
     severity: 'warning',
     blocksSubmission: false,
     description: 'Patient name should be present',
-    check: (c) => (!c.patientFirstName || !c.patientLastName)
-      ? makeEdit(syntaxRules[7], 'patientName', 'Patient first and last name recommended for claim accuracy')
-      : null,
+    check: (c) =>
+      !c.patientFirstName || !c.patientLastName
+        ? makeEdit(
+            syntaxRules[7],
+            'patientName',
+            'Patient first and last name recommended for claim accuracy'
+          )
+        : null,
   },
 ];
 
@@ -181,12 +208,15 @@ const codeSetRules: ValidationRule[] = [
     description: 'ICD-10 diagnosis code format validation',
     check: (c) => {
       const invalid = (c.diagnoses ?? []).filter(
-        (dx: { code: string }) => !ICD10_PATTERN.test(dx.code),
+        (dx: { code: string }) => !ICD10_PATTERN.test(dx.code)
       );
       return invalid.length > 0
-        ? makeEdit(codeSetRules[0], 'diagnoses',
+        ? makeEdit(
+            codeSetRules[0],
+            'diagnoses',
             `Invalid ICD-10 code(s): ${invalid.map((dx: { code: string }) => dx.code).join(', ')}`,
-            'Use format A00-T98, V00-Y99 with optional decimal')
+            'Use format A00-T98, V00-Y99 with optional decimal'
+          )
         : null;
     },
   },
@@ -198,12 +228,15 @@ const codeSetRules: ValidationRule[] = [
     description: 'CPT/HCPCS procedure code format validation',
     check: (c) => {
       const invalid = (c.lines ?? []).filter(
-        (sl) => !CPT_PATTERN.test(sl.procedure.code) && !HCPCS_PATTERN.test(sl.procedure.code),
+        (sl) => !CPT_PATTERN.test(sl.procedure.code) && !HCPCS_PATTERN.test(sl.procedure.code)
       );
       return invalid.length > 0
-        ? makeEdit(codeSetRules[1], 'lines.procedure.code',
+        ? makeEdit(
+            codeSetRules[1],
+            'lines.procedure.code',
             `Invalid procedure code(s): ${invalid.map((sl) => sl.procedure.code).join(', ')}`,
-            'Use 5-digit CPT or alpha+4digit HCPCS format')
+            'Use 5-digit CPT or alpha+4digit HCPCS format'
+          )
         : null;
     },
   },
@@ -221,9 +254,12 @@ const codeSetRules: ValidationRule[] = [
         }
       }
       return invalidMods.length > 0
-        ? makeEdit(codeSetRules[2], 'serviceLines.modifiers',
+        ? makeEdit(
+            codeSetRules[2],
+            'serviceLines.modifiers',
             `Invalid modifier(s): ${invalidMods.join(', ')}`,
-            'Modifiers must be 2 alphanumeric characters')
+            'Modifiers must be 2 alphanumeric characters'
+          )
         : null;
     },
   },
@@ -243,9 +279,12 @@ const businessRules: ValidationRule[] = [
       const lineTotal = c.lines.reduce((sum: number, sl) => sum + sl.procedure.charge, 0);
       const diff = Math.abs(lineTotal - c.totalCharge);
       return diff > 0.01
-        ? makeEdit(businessRules[0], 'totalCharge',
+        ? makeEdit(
+            businessRules[0],
+            'totalCharge',
             `Service line total ($${lineTotal.toFixed(2)}) differs from claim total ($${c.totalCharge.toFixed(2)})`,
-            'Adjust service line charges or total charge')
+            'Adjust service line charges or total charge'
+          )
         : null;
     },
   },
@@ -261,9 +300,12 @@ const businessRules: ValidationRule[] = [
       const today = new Date();
       today.setHours(23, 59, 59, 999);
       return svcDate > today
-        ? makeEdit(businessRules[1], 'serviceDate',
+        ? makeEdit(
+            businessRules[1],
+            'serviceDate',
             'Service date is in the future',
-            'Verify the service date is correct')
+            'Verify the service date is correct'
+          )
         : null;
     },
   },
@@ -273,11 +315,15 @@ const businessRules: ValidationRule[] = [
     severity: 'error',
     blocksSubmission: true,
     description: 'Billing provider NPI is required for EDI submission',
-    check: (c) => !c.billingProviderNpi
-      ? makeEdit(businessRules[2], 'billingProviderNpi',
-          'Billing provider NPI is required for electronic claims',
-          'Enter the 10-digit NPI')
-      : null,
+    check: (c) =>
+      !c.billingProviderNpi
+        ? makeEdit(
+            businessRules[2],
+            'billingProviderNpi',
+            'Billing provider NPI is required for electronic claims',
+            'Enter the 10-digit NPI'
+          )
+        : null,
   },
   {
     id: 'BUS-004',
@@ -295,9 +341,12 @@ const businessRules: ValidationRule[] = [
         seen.add(key);
       }
       return dups.length > 0
-        ? makeEdit(businessRules[3], 'serviceLines',
+        ? makeEdit(
+            businessRules[3],
+            'serviceLines',
             `Duplicate procedure code(s) on same date: ${dups.join(', ')}`,
-            'Add appropriate modifier (e.g., 59, XE) or remove duplicate')
+            'Add appropriate modifier (e.g., 59, XE) or remove duplicate'
+          )
         : null;
     },
   },
@@ -315,19 +364,23 @@ const timelyFilingRules: ValidationRule[] = [
     check: (c) => {
       if (!c.dateOfService) return null;
       const svcDate = new Date(c.dateOfService);
-      const daysSinceService = Math.floor(
-        (Date.now() - svcDate.getTime()) / (1000 * 60 * 60 * 24),
-      );
+      const daysSinceService = Math.floor((Date.now() - svcDate.getTime()) / (1000 * 60 * 60 * 24));
       // Most payers: 90-365 days. Medicare: 365 days.
       if (daysSinceService > 365) {
-        return makeEdit(timelyFilingRules[0], 'serviceDate',
+        return makeEdit(
+          timelyFilingRules[0],
+          'serviceDate',
           `Service date is ${daysSinceService} days ago — may exceed timely filing limits`,
-          'Check payer-specific timely filing requirements');
+          'Check payer-specific timely filing requirements'
+        );
       }
       if (daysSinceService > 300) {
-        return makeEdit(timelyFilingRules[0], 'serviceDate',
+        return makeEdit(
+          timelyFilingRules[0],
+          'serviceDate',
           `Service date is ${daysSinceService} days ago — approaching filing deadline`,
-          'Submit promptly to avoid timely filing denial');
+          'Submit promptly to avoid timely filing denial'
+        );
       }
       return null;
     },
@@ -347,9 +400,12 @@ const payerSpecificRules: ValidationRule[] = [
       if (!c.payerId) return null; // caught by SYN-001
       const payer = getPayer(c.payerId);
       return !payer
-        ? makeEdit(payerSpecificRules[0], 'payerId',
+        ? makeEdit(
+            payerSpecificRules[0],
+            'payerId',
             `Payer '${c.payerId}' not found in registry`,
-            'Add the payer to the registry or verify the ID')
+            'Add the payer to the registry or verify the ID'
+          )
         : null;
     },
   },
@@ -364,9 +420,12 @@ const payerSpecificRules: ValidationRule[] = [
       const payer = getPayer(c.payerId);
       if (!payer) return null; // caught by PAY-001
       return payer.status !== 'active'
-        ? makeEdit(payerSpecificRules[1], 'payerId',
+        ? makeEdit(
+            payerSpecificRules[1],
+            'payerId',
             `Payer '${payer.name}' has status '${payer.status}'`,
-            'Verify payer readiness before submission')
+            'Verify payer readiness before submission'
+          )
         : null;
     },
   },
@@ -381,9 +440,12 @@ const payerSpecificRules: ValidationRule[] = [
       const payer = getPayer(c.payerId);
       if (!payer) return null;
       return payer.enrollmentRequired
-        ? makeEdit(payerSpecificRules[2], 'payerId',
+        ? makeEdit(
+            payerSpecificRules[2],
+            'payerId',
             `Payer '${payer.name}' requires enrollment — verify provider is enrolled`,
-            payer.enrollmentNotes ?? 'Complete payer enrollment')
+            payer.enrollmentNotes ?? 'Complete payer enrollment'
+          )
         : null;
     },
   },
@@ -402,13 +464,17 @@ const authorizationRules: ValidationRule[] = [
       // Revenue codes and CPT ranges that typically require prior auth
       const highCostCpts = ['27447', '27130', '63030', '22551', '22612', '33533'];
       const needsAuth = (c.lines ?? []).some(
-        sl => highCostCpts.includes(sl.procedure.code) ||
-              (parseInt(sl.procedure.code, 10) >= 20000 && parseInt(sl.procedure.code, 10) <= 29999),
+        (sl) =>
+          highCostCpts.includes(sl.procedure.code) ||
+          (parseInt(sl.procedure.code, 10) >= 20000 && parseInt(sl.procedure.code, 10) <= 29999)
       );
       return needsAuth
-        ? makeEdit(authorizationRules[0], 'lines',
+        ? makeEdit(
+            authorizationRules[0],
+            'lines',
             'One or more procedures may require prior authorization',
-            'Verify payer authorization requirements before submission')
+            'Verify payer authorization requirements before submission'
+          )
         : null;
     },
   },
@@ -420,9 +486,12 @@ const authorizationRules: ValidationRule[] = [
     description: 'Demo claims are blocked from real submission',
     check: (c) => {
       return (c as any).isDemo
-        ? makeEdit(authorizationRules[1], 'isDemo',
+        ? makeEdit(
+            authorizationRules[1],
+            'isDemo',
             'This is a demo claim -- real submission is blocked',
-            'Create a non-demo claim for live submission')
+            'Create a non-demo claim for live submission'
+          )
         : null;
     },
   },
@@ -434,9 +503,12 @@ const authorizationRules: ValidationRule[] = [
     description: 'Submission safety mode check',
     check: (c) => {
       return (c as any).submissionSafetyMode === 'export_only'
-        ? makeEdit(authorizationRules[2], 'submissionSafetyMode',
+        ? makeEdit(
+            authorizationRules[2],
+            'submissionSafetyMode',
             'CLAIM_SUBMISSION_ENABLED is false -- claims will be exported, not submitted',
-            'Set CLAIM_SUBMISSION_ENABLED=true in .env.local to enable live submission')
+            'Set CLAIM_SUBMISSION_ENABLED=true in .env.local to enable live submission'
+          )
         : null;
     },
   },
@@ -456,9 +528,12 @@ const countrySpecificRules: ValidationRule[] = [
       const payer = getPayer(c.payerId);
       if (!payer || payer.country !== 'PH') return null;
       if (payer.payerId === 'PH-PHILHEALTH' && !c.subscriberId) {
-        return makeEdit(countrySpecificRules[0], 'subscriberId',
+        return makeEdit(
+          countrySpecificRules[0],
+          'subscriberId',
           'PhilHealth claims require the member PhilHealth PIN as subscriberId',
-          'Enter the 12-digit PhilHealth Identification Number');
+          'Enter the 12-digit PhilHealth Identification Number'
+        );
       }
       return null;
     },
@@ -474,9 +549,12 @@ const countrySpecificRules: ValidationRule[] = [
       const payer = getPayer(c.payerId);
       if (!payer || payer.country !== 'AU') return null;
       if (payer.payerId === 'AU-MEDICARE' && !c.subscriberId) {
-        return makeEdit(countrySpecificRules[1], 'subscriberId',
+        return makeEdit(
+          countrySpecificRules[1],
+          'subscriberId',
           'Medicare Australia claims require the Medicare card number + IRN',
-          'Enter Medicare card number (10 digits) followed by IRN (1 digit)');
+          'Enter Medicare card number (10 digits) followed by IRN (1 digit)'
+        );
       }
       return null;
     },
@@ -492,9 +570,12 @@ const countrySpecificRules: ValidationRule[] = [
       const payer = getPayer(c.payerId);
       if (!payer || payer.country !== 'NZ') return null;
       if (payer.payerId === 'NZ-ACC') {
-        return makeEdit(countrySpecificRules[2], 'payerSpecific',
+        return makeEdit(
+          countrySpecificRules[2],
+          'payerSpecific',
           'ACC NZ claims require injury mechanism and date of injury in claim metadata',
-          'Include ACC45 or ACC2152 form data in claim notes');
+          'Include ACC45 or ACC2152 form data in claim notes'
+        );
       }
       return null;
     },
@@ -511,9 +592,12 @@ const countrySpecificRules: ValidationRule[] = [
       if (!payer) return null;
       const mode = payer.integrationMode;
       if (mode === 'not_classified') {
-        return makeEdit(countrySpecificRules[3], 'payerId',
+        return makeEdit(
+          countrySpecificRules[3],
+          'payerId',
           `Payer '${payer.name}' integration mode is unclassified -- no connector will match`,
-          'Set payer integrationMode to clearinghouse_edi, direct_api, or government_portal');
+          'Set payer integrationMode to clearinghouse_edi, direct_api, or government_portal'
+        );
       }
       return null;
     },
@@ -529,9 +613,12 @@ const countrySpecificRules: ValidationRule[] = [
       const payer = getPayer(c.payerId);
       if (!payer || payer.country !== 'US') return null;
       if (c.billingProviderNpi && !/^\d{10}$/.test(c.billingProviderNpi)) {
-        return makeEdit(countrySpecificRules[4], 'billingProviderNpi',
+        return makeEdit(
+          countrySpecificRules[4],
+          'billingProviderNpi',
           'NPI must be exactly 10 digits for US payer claims',
-          'Enter a valid 10-digit National Provider Identifier');
+          'Enter a valid 10-digit National Provider Identifier'
+        );
       }
       return null;
     },
@@ -575,12 +662,12 @@ export function validateClaim(claim: Claim): ValidationResult {
   }
 
   const editCountBySeverity = {
-    error: edits.filter(e => e.severity === 'error').length,
-    warning: edits.filter(e => e.severity === 'warning').length,
-    info: edits.filter(e => e.severity === 'info').length,
+    error: edits.filter((e) => e.severity === 'error').length,
+    warning: edits.filter((e) => e.severity === 'warning').length,
+    info: edits.filter((e) => e.severity === 'info').length,
   };
 
-  const blockers = edits.filter(e => e.blocksSubmission);
+  const blockers = edits.filter((e) => e.blocksSubmission);
   const valid = blockers.length === 0;
 
   // Readiness score: start at 100, deduct per edit severity
@@ -609,7 +696,7 @@ export function describeValidationRules(): Array<{
   blocksSubmission: boolean;
   description: string;
 }> {
-  return ALL_RULES.map(r => ({
+  return ALL_RULES.map((r) => ({
     id: r.id,
     category: r.category,
     severity: r.severity,

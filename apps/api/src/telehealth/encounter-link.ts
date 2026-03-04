@@ -24,20 +24,20 @@
  *   - Encounter probes use existing RPC auth (session DUZ)
  */
 
-import { createHash } from "node:crypto";
-import { log } from "../lib/logger.js";
+import { createHash } from 'node:crypto';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
 /* ------------------------------------------------------------------ */
 
 export type LinkageStatus =
-  | "pending"          // Room created, no encounter linked yet
-  | "probed"           // ORWPCE HASVISIT checked, encounter exists
-  | "linked"           // Room linked to VistA encounter IEN
-  | "created"          // New PCE encounter created (future: ORWPCE SAVE)
-  | "failed"           // Linkage attempt failed
-  | "integration_pending"; // Write RPC not available in sandbox
+  | 'pending' // Room created, no encounter linked yet
+  | 'probed' // ORWPCE HASVISIT checked, encounter exists
+  | 'linked' // Room linked to VistA encounter IEN
+  | 'created' // New PCE encounter created (future: ORWPCE SAVE)
+  | 'failed' // Linkage attempt failed
+  | 'integration_pending'; // Write RPC not available in sandbox
 
 export interface EncounterLink {
   /** Opaque room ID (from room-store) */
@@ -74,7 +74,7 @@ export interface ProbeEncounterResult {
   encounterIen?: string;
   visitDate?: string;
   probeRpc: string;
-  probeStatus: "success" | "rpc_unavailable" | "no_data";
+  probeStatus: 'success' | 'rpc_unavailable' | 'no_data';
 }
 
 /* ------------------------------------------------------------------ */
@@ -88,7 +88,7 @@ const MAX_LINKS = 2000;
  * Hash a patient DFN for non-PHI storage.
  */
 export function hashPatientRef(dfn: string): string {
-  return createHash("sha256").update(`telehealth:${dfn}`).digest("hex").slice(0, 16);
+  return createHash('sha256').update(`telehealth:${dfn}`).digest('hex').slice(0, 16);
 }
 
 /**
@@ -98,7 +98,7 @@ export function createEncounterLink(
   roomId: string,
   appointmentId: string,
   patientRefHash: string,
-  providerDuz: string,
+  providerDuz: string
 ): EncounterLink {
   // Enforce capacity
   if (links.size >= MAX_LINKS) {
@@ -113,7 +113,7 @@ export function createEncounterLink(
     appointmentId,
     patientRefHash,
     providerDuz,
-    status: "pending",
+    status: 'pending',
     createdAt: now,
     updatedAt: now,
   };
@@ -132,7 +132,7 @@ export function updateLinkStatus(
   encounterIen?: string,
   visitDate?: string,
   statusReason?: string,
-  vistaGrounding?: EncounterLink["vistaGrounding"],
+  vistaGrounding?: EncounterLink['vistaGrounding']
 ): EncounterLink | undefined {
   const link = links.get(roomId);
   if (!link) return undefined;
@@ -144,7 +144,7 @@ export function updateLinkStatus(
   if (statusReason) link.statusReason = statusReason;
   if (vistaGrounding) link.vistaGrounding = vistaGrounding;
 
-  log.info(`Encounter link updated: room=${roomId} status=${status} ien=${encounterIen || "none"}`);
+  log.info(`Encounter link updated: room=${roomId} status=${status} ien=${encounterIen || 'none'}`);
   return link;
 }
 

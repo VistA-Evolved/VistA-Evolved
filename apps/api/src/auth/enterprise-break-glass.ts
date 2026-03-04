@@ -22,16 +22,16 @@
  * immutable audit chain.
  */
 
-import { randomUUID } from "crypto";
-import { log } from "../lib/logger.js";
-import { immutableAudit } from "../lib/immutable-audit.js";
-import type { UserRole } from "./session-store.js";
+import { randomUUID } from 'crypto';
+import { log } from '../lib/logger.js';
+import { immutableAudit } from '../lib/immutable-audit.js';
+import type { UserRole } from './session-store.js';
 
 /* ================================================================== */
 /* Types                                                               */
 /* ================================================================== */
 
-export type BreakGlassStatus = "pending" | "active" | "expired" | "revoked" | "denied";
+export type BreakGlassStatus = 'pending' | 'active' | 'expired' | 'revoked' | 'denied';
 
 export interface EnterpriseBreakGlassSession {
   id: string;
@@ -93,8 +93,11 @@ const breakGlassStore = new Map<string, EnterpriseBreakGlassSession>();
 const expiryTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
 /* Phase 146: DB repo wiring */
-let bgDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
-export function initBreakGlassStoreRepo(repo: typeof bgDbRepo): void { bgDbRepo = repo; }
+let bgDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null =
+  null;
+export function initBreakGlassStoreRepo(repo: typeof bgDbRepo): void {
+  bgDbRepo = repo;
+}
 
 /* ================================================================== */
 /* Core operations                                                     */
@@ -141,7 +144,7 @@ export function requestBreakGlass(params: {
     patientDfn: params.patientDfn || null,
     reason: params.reason.trim(),
     tenantId: params.tenantId,
-    status: "pending",
+    status: 'pending',
     requestedAt: Date.now(),
     activatedAt: null,
     expiresAt: null,
@@ -156,25 +159,40 @@ export function requestBreakGlass(params: {
   breakGlassStore.set(session.id, session);
 
   // Phase 146: Write-through to PG
-  bgDbRepo?.upsert({ id: session.id, tenantId: session.tenantId ?? 'default', userId: params.requesterDuz, patientDfn: params.patientDfn, reason: params.reason, expiresAt: session.expiresAt, createdAt: session.requestedAt }).catch(() => {});
+  bgDbRepo
+    ?.upsert({
+      id: session.id,
+      tenantId: session.tenantId ?? 'default',
+      userId: params.requesterDuz,
+      patientDfn: params.patientDfn,
+      reason: params.reason,
+      expiresAt: session.expiresAt,
+      createdAt: session.requestedAt,
+    })
+    .catch(() => {});
 
   // Immutable audit
-  immutableAudit("iam.break-glass.request", "success", {
-    sub: params.requesterDuz,
-    name: params.requesterName,
-    roles: [params.requesterRole],
-  }, {
-    sourceIp: params.sourceIp,
-    tenantId: params.tenantId,
-    detail: {
-      sessionId: session.id,
-      targetModule: params.targetModule,
-      targetPermission: params.targetPermission,
-      patientDfn: params.patientDfn || null,
+  immutableAudit(
+    'iam.break-glass.request',
+    'success',
+    {
+      sub: params.requesterDuz,
+      name: params.requesterName,
+      roles: [params.requesterRole],
     },
-  });
+    {
+      sourceIp: params.sourceIp,
+      tenantId: params.tenantId,
+      detail: {
+        sessionId: session.id,
+        targetModule: params.targetModule,
+        targetPermission: params.targetPermission,
+        patientDfn: params.patientDfn || null,
+      },
+    }
+  );
 
-  log.info("Break-glass requested", {
+  log.info('Break-glass requested', {
     sessionId: session.id,
     requester: params.requesterDuz,
     module: params.targetModule,
@@ -195,16 +213,16 @@ export function approveBreakGlass(params: {
 }): { ok: boolean; session?: EnterpriseBreakGlassSession; error?: string } {
   const session = breakGlassStore.get(params.sessionId);
   if (!session) {
-    return { ok: false, error: "Break-glass session not found" };
+    return { ok: false, error: 'Break-glass session not found' };
   }
 
-  if (session.status !== "pending") {
+  if (session.status !== 'pending') {
     return { ok: false, error: `Cannot approve session in '${session.status}' state` };
   }
 
   // Self-approval blocked
   if (session.requesterDuz === params.approverDuz) {
-    return { ok: false, error: "Self-approval is not permitted" };
+    return { ok: false, error: 'Self-approval is not permitted' };
   }
 
   // Calculate TTL
@@ -213,7 +231,7 @@ export function approveBreakGlass(params: {
     : DEFAULT_BREAK_GLASS_TTL_MS;
 
   const now = Date.now();
-  session.status = "active";
+  session.status = 'active';
   session.activatedAt = now;
   session.expiresAt = now + ttlMs;
   session.approverDuz = params.approverDuz;
@@ -227,22 +245,27 @@ export function approveBreakGlass(params: {
   expiryTimers.set(session.id, timer);
 
   // Immutable audit
-  immutableAudit("iam.break-glass.approve", "success", {
-    sub: params.approverDuz,
-    name: params.approverName,
-    roles: ["admin"],
-  }, {
-    sourceIp: params.sourceIp,
-    tenantId: session.tenantId,
-    detail: {
-      sessionId: session.id,
-      requester: session.requesterDuz,
-      ttlMinutes: Math.round(ttlMs / 60000),
-      expiresAt: new Date(session.expiresAt).toISOString(),
+  immutableAudit(
+    'iam.break-glass.approve',
+    'success',
+    {
+      sub: params.approverDuz,
+      name: params.approverName,
+      roles: ['admin'],
     },
-  });
+    {
+      sourceIp: params.sourceIp,
+      tenantId: session.tenantId,
+      detail: {
+        sessionId: session.id,
+        requester: session.requesterDuz,
+        ttlMinutes: Math.round(ttlMs / 60000),
+        expiresAt: new Date(session.expiresAt).toISOString(),
+      },
+    }
+  );
 
-  log.info("Break-glass approved", {
+  log.info('Break-glass approved', {
     sessionId: session.id,
     approver: params.approverDuz,
     ttlMinutes: Math.round(ttlMs / 60000),
@@ -262,14 +285,14 @@ export function revokeBreakGlass(params: {
 }): { ok: boolean; session?: EnterpriseBreakGlassSession; error?: string } {
   const session = breakGlassStore.get(params.sessionId);
   if (!session) {
-    return { ok: false, error: "Break-glass session not found" };
+    return { ok: false, error: 'Break-glass session not found' };
   }
 
-  if (session.status !== "active" && session.status !== "pending") {
+  if (session.status !== 'active' && session.status !== 'pending') {
     return { ok: false, error: `Cannot revoke session in '${session.status}' state` };
   }
 
-  session.status = "revoked";
+  session.status = 'revoked';
   session.revokedAt = Date.now();
   session.revokerDuz = params.revokerDuz;
   session.revokerName = params.revokerName;
@@ -282,21 +305,26 @@ export function revokeBreakGlass(params: {
   }
 
   // Immutable audit
-  immutableAudit("iam.break-glass.revoke", "success", {
-    sub: params.revokerDuz,
-    name: params.revokerName,
-    roles: ["admin"],
-  }, {
-    sourceIp: params.sourceIp,
-    tenantId: session.tenantId,
-    detail: {
-      sessionId: session.id,
-      requester: session.requesterDuz,
-      wasActive: session.activatedAt !== null,
+  immutableAudit(
+    'iam.break-glass.revoke',
+    'success',
+    {
+      sub: params.revokerDuz,
+      name: params.revokerName,
+      roles: ['admin'],
     },
-  });
+    {
+      sourceIp: params.sourceIp,
+      tenantId: session.tenantId,
+      detail: {
+        sessionId: session.id,
+        requester: session.requesterDuz,
+        wasActive: session.activatedAt !== null,
+      },
+    }
+  );
 
-  log.info("Break-glass revoked", {
+  log.info('Break-glass revoked', {
     sessionId: session.id,
     revoker: params.revokerDuz,
   });
@@ -315,33 +343,38 @@ export function denyBreakGlass(params: {
 }): { ok: boolean; session?: EnterpriseBreakGlassSession; error?: string } {
   const session = breakGlassStore.get(params.sessionId);
   if (!session) {
-    return { ok: false, error: "Break-glass session not found" };
+    return { ok: false, error: 'Break-glass session not found' };
   }
 
-  if (session.status !== "pending") {
+  if (session.status !== 'pending') {
     return { ok: false, error: `Cannot deny session in '${session.status}' state` };
   }
 
-  session.status = "denied";
+  session.status = 'denied';
   session.revokedAt = Date.now();
   session.revokerDuz = params.denierDuz;
   session.revokerName = params.denierName;
 
   // Immutable audit
-  immutableAudit("iam.break-glass.deny", "success", {
-    sub: params.denierDuz,
-    name: params.denierName,
-    roles: ["admin"],
-  }, {
-    sourceIp: params.sourceIp,
-    tenantId: session.tenantId,
-    detail: {
-      sessionId: session.id,
-      requester: session.requesterDuz,
+  immutableAudit(
+    'iam.break-glass.deny',
+    'success',
+    {
+      sub: params.denierDuz,
+      name: params.denierName,
+      roles: ['admin'],
     },
-  });
+    {
+      sourceIp: params.sourceIp,
+      tenantId: session.tenantId,
+      detail: {
+        sessionId: session.id,
+        requester: session.requesterDuz,
+      },
+    }
+  );
 
-  log.info("Break-glass denied", {
+  log.info('Break-glass denied', {
     sessionId: session.id,
     denier: params.denierDuz,
   });
@@ -371,7 +404,7 @@ export function hasActiveBreakGlass(
 ): boolean {
   for (const session of breakGlassStore.values()) {
     if (
-      session.status === "active" &&
+      session.status === 'active' &&
       session.requesterDuz === duz &&
       session.targetModule === targetModule &&
       session.expiresAt !== null &&
@@ -393,7 +426,7 @@ export function getActiveSessionsForUser(duz: string): EnterpriseBreakGlassSessi
   for (const session of breakGlassStore.values()) {
     if (
       session.requesterDuz === duz &&
-      (session.status === "active" || session.status === "pending")
+      (session.status === 'active' || session.status === 'pending')
     ) {
       result.push(session);
     }
@@ -440,8 +473,8 @@ export function getBreakGlassStats(): {
 
   for (const session of breakGlassStore.values()) {
     byStatus[session.status] = (byStatus[session.status] || 0) + 1;
-    if (session.status === "active") activeCount++;
-    if (session.status === "pending") pendingCount++;
+    if (session.status === 'active') activeCount++;
+    if (session.status === 'pending') pendingCount++;
   }
 
   return {
@@ -458,27 +491,32 @@ export function getBreakGlassStats(): {
 
 function expireSession(id: string): void {
   const session = breakGlassStore.get(id);
-  if (!session || session.status !== "active") return;
+  if (!session || session.status !== 'active') return;
 
-  session.status = "expired";
+  session.status = 'expired';
   expiryTimers.delete(id);
 
-  immutableAudit("iam.break-glass.expire", "success", {
-    sub: "system",
-    name: "Break-glass auto-expire",
-    roles: [],
-  }, {
-    tenantId: session.tenantId,
-    detail: {
-      sessionId: session.id,
-      requester: session.requesterDuz,
-      durationMinutes: session.activatedAt
-        ? Math.round((Date.now() - session.activatedAt) / 60000)
-        : 0,
+  immutableAudit(
+    'iam.break-glass.expire',
+    'success',
+    {
+      sub: 'system',
+      name: 'Break-glass auto-expire',
+      roles: [],
     },
-  });
+    {
+      tenantId: session.tenantId,
+      detail: {
+        sessionId: session.id,
+        requester: session.requesterDuz,
+        durationMinutes: session.activatedAt
+          ? Math.round((Date.now() - session.activatedAt) / 60000)
+          : 0,
+      },
+    }
+  );
 
-  log.info("Break-glass expired", { sessionId: id, requester: session.requesterDuz });
+  log.info('Break-glass expired', { sessionId: id, requester: session.requesterDuz });
 }
 
 /* ================================================================== */
@@ -493,13 +531,15 @@ export function startBreakGlassCleanup(): void {
     const now = Date.now();
     for (const [id, session] of breakGlassStore) {
       // Expire active sessions past their TTL
-      if (session.status === "active" && session.expiresAt && session.expiresAt <= now) {
+      if (session.status === 'active' && session.expiresAt && session.expiresAt <= now) {
         expireSession(id);
       }
       // Remove terminal sessions older than 24 hours
       const terminalAge = 24 * 60 * 60 * 1000;
       if (
-        (session.status === "expired" || session.status === "revoked" || session.status === "denied") &&
+        (session.status === 'expired' ||
+          session.status === 'revoked' ||
+          session.status === 'denied') &&
         session.requestedAt + terminalAge < now
       ) {
         breakGlassStore.delete(id);

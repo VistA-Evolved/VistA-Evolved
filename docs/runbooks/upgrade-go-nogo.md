@@ -15,26 +15,26 @@ compat lanes, runbooks, component inventory, dashboard adapter, RPC registry.
 
 ## Human Review Checklist
 
-| # | Item | Owner | Done? |
-|---|------|-------|-------|
-| 1 | Automated go-nogo-checklist.ps1 passes | DevOps | [ ] |
-| 2 | Compat matrix ran against 2+ lanes | DevOps | [ ] |
-| 3 | License review for new/changed deps | Legal/Eng | [ ] |
-| 4 | Clinical workflows tested on staging | QA | [ ] |
-| 5 | Performance regression check | DevOps | [ ] |
-| 6 | Rollback plan documented | DevOps | [ ] |
-| 7 | Stakeholder notification sent | PM | [ ] |
+| #   | Item                                   | Owner     | Done? |
+| --- | -------------------------------------- | --------- | ----- |
+| 1   | Automated go-nogo-checklist.ps1 passes | DevOps    | [ ]   |
+| 2   | Compat matrix ran against 2+ lanes     | DevOps    | [ ]   |
+| 3   | License review for new/changed deps    | Legal/Eng | [ ]   |
+| 4   | Clinical workflows tested on staging   | QA        | [ ]   |
+| 5   | Performance regression check           | DevOps    | [ ]   |
+| 6   | Rollback plan documented               | DevOps    | [ ]   |
+| 7   | Stakeholder notification sent          | PM        | [ ]   |
 
 ## Sign-Off
 
-| Field | Value |
-|-------|-------|
-| Train ID | __________ |
-| Date | __________ |
-| Reviewer | __________ |
-| Decision | GO / NO-GO |
-| Automated Score | __/9 |
-| Notes | __________ |
+| Field           | Value            |
+| --------------- | ---------------- |
+| Train ID        | \***\*\_\_\*\*** |
+| Date            | \***\*\_\_\*\*** |
+| Reviewer        | \***\*\_\_\*\*** |
+| Decision        | GO / NO-GO       |
+| Automated Score | \_\_/9           |
+| Notes           | \***\*\_\_\*\*** |
 
 ### Sign-Off Procedure
 

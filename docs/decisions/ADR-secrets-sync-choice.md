@@ -17,6 +17,7 @@ Current state:
   Examples of secrets currently passed via env vars
 
 **What is missing:**
+
 - No external vault or KMS integration (env-var master key only)
 - No External Secrets Operator for K8s
 - No secret rotation automation
@@ -30,6 +31,7 @@ Keep SOPS + age for dev/CI. Implement VaultInterface against AWS Secrets Manager
 as the first production backend.**
 
 Rationale:
+
 - ESO is the K8s-native standard for external secret sync (CNCF project)
 - AWS Secrets Manager is the most likely production target (EKS deployment)
 - SOPS + age remains perfect for dev (no cloud dependency)
@@ -39,17 +41,18 @@ Rationale:
 
 ## Alternatives Considered
 
-| Option | License | Pros | Cons |
-|--------|---------|------|------|
-| **HashiCorp Vault** | BSL (was MPL) | Feature-rich, self-hosted | BSL license change, operational burden |
-| **sealed-secrets** | Apache-2.0 | Simple, K8s-native | No rotation, no external backend |
-| **External Secrets Operator** | Apache-2.0 | Multi-backend, CNCF, rotation | Requires ESO controller in cluster |
-| **SOPS only** | MPL-2.0 | Simple, works now | No runtime rotation, manual key mgmt |
-| **AWS Secrets Manager direct** | N/A | Native AWS integration | Vendor lock-in, no K8s sync |
+| Option                         | License       | Pros                          | Cons                                   |
+| ------------------------------ | ------------- | ----------------------------- | -------------------------------------- |
+| **HashiCorp Vault**            | BSL (was MPL) | Feature-rich, self-hosted     | BSL license change, operational burden |
+| **sealed-secrets**             | Apache-2.0    | Simple, K8s-native            | No rotation, no external backend       |
+| **External Secrets Operator**  | Apache-2.0    | Multi-backend, CNCF, rotation | Requires ESO controller in cluster     |
+| **SOPS only**                  | MPL-2.0       | Simple, works now             | No runtime rotation, manual key mgmt   |
+| **AWS Secrets Manager direct** | N/A           | Native AWS integration        | Vendor lock-in, no K8s sync            |
 
 ## Consequences
 
 **Positive:**
+
 - Cloud-agnostic via ESO SecretStore abstraction
 - Automatic secret rotation via ESO refresh intervals
 - Dev workflow unchanged (SOPS + age continues working)
@@ -57,11 +60,13 @@ Rationale:
 - CNCF project with strong community support
 
 **Negative:**
+
 - ESO controller is another cluster component to manage
 - AWS Secrets Manager has per-secret costs ($0.40/secret/month)
 - Two secret management modes (SOPS for dev, ESO for prod) adds complexity
 
 **Migration path:**
+
 1. Phase 238: Decision locked (this ADR)
 2. Phase 246 (P9): Implement VaultInterface for AWS Secrets Manager
 3. Phase 246 (P9): Add ESO manifests to Helm charts

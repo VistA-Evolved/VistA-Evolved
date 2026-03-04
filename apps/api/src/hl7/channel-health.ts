@@ -8,13 +8,13 @@
  * Pattern: In-memory health cache with periodic refresh. No PHI stored.
  */
 
-import { listEndpoints, type Hl7TenantEndpoint } from "./tenant-endpoints.js";
-import { listRoutes, getRouteStats, getDeadLetterQueue } from "./routing/registry.js";
-import type { RouteStats } from "./routing/types.js";
+import { listEndpoints, type Hl7TenantEndpoint } from './tenant-endpoints.js';
+import { listRoutes, getRouteStats, getDeadLetterQueue } from './routing/registry.js';
+import type { RouteStats } from './routing/types.js';
 
 /* ── Types ─────────────────────────────────────────────── */
 
-export type EndpointHealthStatus = "healthy" | "degraded" | "down" | "unknown";
+export type EndpointHealthStatus = 'healthy' | 'degraded' | 'down' | 'unknown';
 
 export interface EndpointHealth {
   endpointId: string;
@@ -48,15 +48,18 @@ export interface ChannelHealthSummary {
 
 /* ── Health State Cache ────────────────────────────────── */
 
-const endpointMetrics = new Map<string, {
-  messagesProcessed: number;
-  messagesFailed: number;
-  lastMessageAt: number;
-  latencies: number[];
-}>();
+const endpointMetrics = new Map<
+  string,
+  {
+    messagesProcessed: number;
+    messagesFailed: number;
+    lastMessageAt: number;
+    latencies: number[];
+  }
+>();
 
 const ERROR_RATE_THRESHOLD_DEGRADED = 0.05; // 5% error rate → degraded
-const ERROR_RATE_THRESHOLD_DOWN = 0.50; // 50% error rate → down
+const ERROR_RATE_THRESHOLD_DOWN = 0.5; // 50% error rate → down
 const STALE_THRESHOLD_MS = 5 * 60 * 1000; // 5 min no messages → unknown
 
 /**
@@ -66,7 +69,7 @@ const STALE_THRESHOLD_MS = 5 * 60 * 1000; // 5 min no messages → unknown
 export function recordMessageProcessed(
   endpointId: string,
   success: boolean,
-  latencyMs: number,
+  latencyMs: number
 ): void {
   let metrics = endpointMetrics.get(endpointId);
   if (!metrics) {
@@ -95,23 +98,22 @@ function computeEndpointHealth(endpoint: Hl7TenantEndpoint): EndpointHealth {
   const latencies = metrics?.latencies ?? [];
 
   const errorRate = messagesProcessed > 0 ? messagesFailed / messagesProcessed : 0;
-  const avgLatencyMs = latencies.length > 0
-    ? latencies.reduce((a, b) => a + b, 0) / latencies.length
-    : 0;
+  const avgLatencyMs =
+    latencies.length > 0 ? latencies.reduce((a, b) => a + b, 0) / latencies.length : 0;
 
   let status: EndpointHealthStatus;
-  if (endpoint.status === "inactive" || endpoint.status === "error") {
-    status = "down";
+  if (endpoint.status === 'inactive' || endpoint.status === 'error') {
+    status = 'down';
   } else if (messagesProcessed === 0) {
-    status = "unknown";
+    status = 'unknown';
   } else if (errorRate >= ERROR_RATE_THRESHOLD_DOWN) {
-    status = "down";
+    status = 'down';
   } else if (errorRate >= ERROR_RATE_THRESHOLD_DEGRADED) {
-    status = "degraded";
-  } else if (lastMessageAt > 0 && (now - lastMessageAt) > STALE_THRESHOLD_MS) {
-    status = "degraded";
+    status = 'degraded';
+  } else if (lastMessageAt > 0 && now - lastMessageAt > STALE_THRESHOLD_MS) {
+    status = 'degraded';
   } else {
-    status = "healthy";
+    status = 'healthy';
   }
 
   return {
@@ -140,10 +142,10 @@ export function getChannelHealthSummary(tenantId?: string): ChannelHealthSummary
   const allEndpoints = listEndpoints(tenantId);
   const endpoints = allEndpoints.map(computeEndpointHealth);
 
-  const healthy = endpoints.filter((e) => e.status === "healthy").length;
-  const degraded = endpoints.filter((e) => e.status === "degraded").length;
-  const down = endpoints.filter((e) => e.status === "down").length;
-  const unknown = endpoints.filter((e) => e.status === "unknown").length;
+  const healthy = endpoints.filter((e) => e.status === 'healthy').length;
+  const degraded = endpoints.filter((e) => e.status === 'degraded').length;
+  const down = endpoints.filter((e) => e.status === 'down').length;
+  const unknown = endpoints.filter((e) => e.status === 'unknown').length;
 
   const allRoutes = listRoutes();
   const enabledRoutes = allRoutes.filter((r) => r.enabled).length;
@@ -151,15 +153,15 @@ export function getChannelHealthSummary(tenantId?: string): ChannelHealthSummary
 
   let overallStatus: EndpointHealthStatus;
   if (endpoints.length === 0) {
-    overallStatus = "unknown";
+    overallStatus = 'unknown';
   } else if (down > 0 && healthy === 0) {
-    overallStatus = "down";
+    overallStatus = 'down';
   } else if (degraded > 0 || down > 0) {
-    overallStatus = "degraded";
+    overallStatus = 'degraded';
   } else if (healthy > 0) {
-    overallStatus = "healthy";
+    overallStatus = 'healthy';
   } else {
-    overallStatus = "unknown";
+    overallStatus = 'unknown';
   }
 
   return {

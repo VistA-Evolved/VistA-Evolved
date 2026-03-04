@@ -1,6 +1,7 @@
 # Phase 5A — Patient Search UI (VERIFY — no changes)
 
 Verify:
+
 - apps/web dev server starts
 - homepage links to /patient-search
 - /patient-search loads

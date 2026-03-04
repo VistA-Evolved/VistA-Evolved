@@ -1,11 +1,13 @@
 # Phase 280 — UX Theming & Layout Convergence
 
 ## User Request
+
 Fix dark mode (CSS exists but never applied to DOM), migrate hardcoded hex colors
 to CSS variables, add system theme detection, and create theme packs for
 tenant-level customization.
 
 ## Inventory
+
 - `apps/web/src/stores/cprs-ui-state.tsx` — CPRSUIProvider with ThemeMode type
 - `apps/web/src/components/cprs/cprs.module.css` — Has 22 CSS vars + dark theme block
 - `apps/web/src/components/chart/MenuBar.module.css` — Hardcoded hex colors
@@ -16,6 +18,7 @@ tenant-level customization.
 - `apps/web/src/app/layout.tsx` — No data-theme attribute
 
 ## Root Cause: BUG-071 — Dark mode CSS defined but never applied
+
 CPRSUIProvider stores `theme: 'light' | 'dark' | 'system'` in preferences,
 MenuBar dispatches 'theme:dark' action, but NO code sets `data-theme` attribute
 on `document.documentElement`. The dark CSS variables at `[data-theme='dark']`
@@ -30,6 +33,7 @@ are unreachable.
 5. Create verification QA gate
 
 ## Verification Steps
+
 - `data-theme` is set in CPRSUIProvider via useEffect
 - System theme detection exists (matchMedia listener)
 - Theme tokens module exports theme packs

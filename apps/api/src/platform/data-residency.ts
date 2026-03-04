@@ -10,12 +10,12 @@
 // ── Region Labels ──────────────────────────────────────────────
 
 export const DATA_REGIONS = [
-  "us-east",   // US East (Virginia)
-  "us-west",   // US West (Oregon)
-  "ph-mnl",    // Philippines (Manila)
-  "gh-acc",    // Ghana (Accra)
-  "eu-fra",    // EU (Frankfurt) -- future
-  "local",     // On-premise / in-country hosting
+  'us-east', // US East (Virginia)
+  'us-west', // US West (Oregon)
+  'ph-mnl', // Philippines (Manila)
+  'gh-acc', // Ghana (Accra)
+  'eu-fra', // EU (Frankfurt) -- future
+  'local', // On-premise / in-country hosting
 ] as const;
 
 export type DataRegion = (typeof DATA_REGIONS)[number];
@@ -32,58 +32,58 @@ export function isValidDataRegion(value: string): value is DataRegion {
 export interface RegionMetadata {
   readonly region: DataRegion;
   readonly displayName: string;
-  readonly country: string;         // ISO 3166-1 alpha-2
-  readonly status: "active" | "planned" | "deprecated";
+  readonly country: string; // ISO 3166-1 alpha-2
+  readonly status: 'active' | 'planned' | 'deprecated';
   readonly crossBorderAllowed: boolean;
   readonly defaultRetentionYears: number;
 }
 
 export const REGION_CATALOG: readonly RegionMetadata[] = [
   {
-    region: "us-east",
-    displayName: "US East (Virginia)",
-    country: "US",
-    status: "active",
+    region: 'us-east',
+    displayName: 'US East (Virginia)',
+    country: 'US',
+    status: 'active',
     crossBorderAllowed: false,
     defaultRetentionYears: 7,
   },
   {
-    region: "us-west",
-    displayName: "US West (Oregon)",
-    country: "US",
-    status: "active",
+    region: 'us-west',
+    displayName: 'US West (Oregon)',
+    country: 'US',
+    status: 'active',
     crossBorderAllowed: false,
     defaultRetentionYears: 7,
   },
   {
-    region: "ph-mnl",
-    displayName: "Philippines (Manila)",
-    country: "PH",
-    status: "active",
+    region: 'ph-mnl',
+    displayName: 'Philippines (Manila)',
+    country: 'PH',
+    status: 'active',
     crossBorderAllowed: false,
     defaultRetentionYears: 5,
   },
   {
-    region: "gh-acc",
-    displayName: "Ghana (Accra)",
-    country: "GH",
-    status: "planned",
+    region: 'gh-acc',
+    displayName: 'Ghana (Accra)',
+    country: 'GH',
+    status: 'planned',
     crossBorderAllowed: false,
     defaultRetentionYears: 7,
   },
   {
-    region: "eu-fra",
-    displayName: "EU (Frankfurt)",
-    country: "DE",
-    status: "planned",
+    region: 'eu-fra',
+    displayName: 'EU (Frankfurt)',
+    country: 'DE',
+    status: 'planned',
     crossBorderAllowed: false,
     defaultRetentionYears: 10,
   },
   {
-    region: "local",
-    displayName: "On-Premise / Local",
-    country: "",
-    status: "active",
+    region: 'local',
+    displayName: 'On-Premise / Local',
+    country: '',
+    status: 'active',
     crossBorderAllowed: false,
     defaultRetentionYears: 7,
   },
@@ -107,9 +107,9 @@ export interface DataTransferAgreement {
   legalBasis: string;
   consentEvidenceRef: string;
   approvedBy: string;
-  createdAt: string;      // ISO 8601
-  expiresAt: string;      // ISO 8601
-  status: "active" | "expired" | "revoked";
+  createdAt: string; // ISO 8601
+  expiresAt: string; // ISO 8601
+  status: 'active' | 'expired' | 'revoked';
 }
 
 // ── Tenant Region Assignment ───────────────────────────────────
@@ -117,9 +117,9 @@ export interface DataTransferAgreement {
 export interface TenantRegionAssignment {
   tenantId: string;
   dataRegion: DataRegion;
-  assignedAt: string;     // ISO 8601
+  assignedAt: string; // ISO 8601
   assignedBy: string;
-  immutable: true;        // Always true — cannot be changed after creation
+  immutable: true; // Always true — cannot be changed after creation
 }
 
 // ── Region Routing ─────────────────────────────────────────────
@@ -137,7 +137,7 @@ export interface TenantRegionAssignment {
  */
 export function resolveRegionPgUrl(tenantRegion: DataRegion): string {
   // Check for region-specific PG URL first
-  const regionKey = tenantRegion.replace("-", "_").toUpperCase();
+  const regionKey = tenantRegion.replace('-', '_').toUpperCase();
   const regionUrl = process.env[`PLATFORM_PG_URL_${regionKey}`];
   if (regionUrl) return regionUrl;
 
@@ -147,7 +147,7 @@ export function resolveRegionPgUrl(tenantRegion: DataRegion): string {
 
   throw new Error(
     `No PG URL configured for region "${tenantRegion}". ` +
-    `Set PLATFORM_PG_URL_${regionKey} or PLATFORM_PG_URL.`
+      `Set PLATFORM_PG_URL_${regionKey} or PLATFORM_PG_URL.`
   );
 }
 
@@ -157,13 +157,12 @@ export function resolveRegionPgUrl(tenantRegion: DataRegion): string {
  * Format: audit-{region} (e.g., "audit-us-east", "audit-ph-mnl")
  */
 export function resolveRegionAuditBucket(tenantRegion: DataRegion): string {
-  const regionBucket = process.env[
-    `AUDIT_SHIP_BUCKET_${tenantRegion.replace("-", "_").toUpperCase()}`
-  ];
+  const regionBucket =
+    process.env[`AUDIT_SHIP_BUCKET_${tenantRegion.replace('-', '_').toUpperCase()}`];
   if (regionBucket) return regionBucket;
 
   // Fall back to default bucket with region suffix
-  const baseBucket = process.env.AUDIT_SHIP_BUCKET || "audit";
+  const baseBucket = process.env.AUDIT_SHIP_BUCKET || 'audit';
   return `${baseBucket}-${tenantRegion}`;
 }
 
@@ -189,7 +188,7 @@ export function validateCrossBorderTransfer(
   if (sourceRegion === targetRegion) {
     return {
       allowed: true,
-      reason: "Same region - no transfer needed",
+      reason: 'Same region - no transfer needed',
       requiresConsent: false,
       requiresAgreement: false,
     };
@@ -230,7 +229,7 @@ export function validateCrossBorderTransfer(
   if (!hasConsent) {
     return {
       allowed: false,
-      reason: "Patient consent required for cross-border transfer",
+      reason: 'Patient consent required for cross-border transfer',
       requiresConsent: true,
       requiresAgreement: true,
     };
@@ -239,7 +238,7 @@ export function validateCrossBorderTransfer(
   if (!hasAgreement) {
     return {
       allowed: false,
-      reason: "Data Transfer Agreement required",
+      reason: 'Data Transfer Agreement required',
       requiresConsent: false,
       requiresAgreement: true,
     };
@@ -247,7 +246,7 @@ export function validateCrossBorderTransfer(
 
   return {
     allowed: true,
-    reason: "Cross-border transfer allowed with consent and agreement",
+    reason: 'Cross-border transfer allowed with consent and agreement',
     requiresConsent: false,
     requiresAgreement: false,
   };
@@ -289,13 +288,13 @@ export function enforcePackResidency(
   tenantRegion: string,
   targetRegion: string,
   hasConsent: boolean,
-  hasAgreement: boolean,
+  hasAgreement: boolean
 ): TransferValidationResult {
   // If tenant region matches pack's home region and target is same → allowed
   if (tenantRegion === targetRegion) {
     return {
       allowed: true,
-      reason: "Same region - no transfer needed",
+      reason: 'Same region - no transfer needed',
       requiresConsent: false,
       requiresAgreement: false,
     };
@@ -315,7 +314,7 @@ export function enforcePackResidency(
   if (packResidency.requiresConsentForTransfer && !hasConsent) {
     return {
       allowed: false,
-      reason: "Country pack requires patient consent for cross-border transfer",
+      reason: 'Country pack requires patient consent for cross-border transfer',
       requiresConsent: true,
       requiresAgreement: true,
     };
@@ -325,7 +324,7 @@ export function enforcePackResidency(
   if (!hasAgreement) {
     return {
       allowed: false,
-      reason: "Data Transfer Agreement required for cross-border transfer",
+      reason: 'Data Transfer Agreement required for cross-border transfer',
       requiresConsent: false,
       requiresAgreement: true,
     };
@@ -333,7 +332,7 @@ export function enforcePackResidency(
 
   return {
     allowed: true,
-    reason: "Cross-border transfer allowed per country pack policy",
+    reason: 'Cross-border transfer allowed per country pack policy',
     requiresConsent: false,
     requiresAgreement: false,
   };

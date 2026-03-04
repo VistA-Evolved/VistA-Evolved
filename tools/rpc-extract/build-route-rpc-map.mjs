@@ -55,7 +55,8 @@ function parseRpcRegistry() {
   const registry = new Map();
 
   // Parse RPC_REGISTRY entries: { name: "...", domain: "...", tag: "...", description: "..." }
-  const regRe = /\{\s*name:\s*["']([^"']+)["']\s*,\s*domain:\s*["']([^"']+)["']\s*,\s*tag:\s*["']([^"']+)["']/g;
+  const regRe =
+    /\{\s*name:\s*["']([^"']+)["']\s*,\s*domain:\s*["']([^"']+)["']\s*,\s*tag:\s*["']([^"']+)["']/g;
   let m;
   while ((m = regRe.exec(src)) !== null) {
     registry.set(m[1], { domain: m[2], tag: m[3], isException: false });
@@ -87,7 +88,8 @@ function extractRoutesFromFile(filePath, rpcRegistry) {
   // server.get('/path', ..., async (request, reply) => { ... })
   // server.post('/path', ..., async (request, reply) => { ... })
   // Also: fastify.get, app.get, etc.
-  const routeRe = /(?:server|fastify|app|instance)\s*\.\s*(get|post|put|delete|patch)\s*\(\s*["'`]([^"'`]+)["'`]/gi;
+  const routeRe =
+    /(?:server|fastify|app|instance)\s*\.\s*(get|post|put|delete|patch)\s*\(\s*["'`]([^"'`]+)["'`]/gi;
 
   let routeMatch;
   while ((routeMatch = routeRe.exec(src)) !== null) {
@@ -96,7 +98,8 @@ function extractRoutesFromFile(filePath, rpcRegistry) {
     const routeStartLine = src.substring(0, routeMatch.index).split('\n').length;
 
     // Find the handler scope: from route registration to next route or end
-    const nextRouteRe = /(?:server|fastify|app|instance)\s*\.\s*(?:get|post|put|delete|patch)\s*\(/gi;
+    const nextRouteRe =
+      /(?:server|fastify|app|instance)\s*\.\s*(?:get|post|put|delete|patch)\s*\(/gi;
     nextRouteRe.lastIndex = routeMatch.index + routeMatch[0].length;
     const nextMatch = nextRouteRe.exec(src);
     const handlerEnd = nextMatch ? nextMatch.index : src.length;
@@ -112,7 +115,10 @@ function extractRoutesFromFile(filePath, rpcRegistry) {
       line: routeStartLine,
       rpcs,
       rpcCount: rpcs.length,
-      isStub: handlerSrc.includes('integration-pending') || handlerSrc.includes('"ok":false') || handlerSrc.includes('ok: false'),
+      isStub:
+        handlerSrc.includes('integration-pending') ||
+        handlerSrc.includes('"ok":false') ||
+        handlerSrc.includes('ok: false'),
     });
   }
 
@@ -126,7 +132,8 @@ function extractRpcCalls(handlerSrc, rpcRegistry) {
   // Pattern 1: safeCallRpc("RPC NAME")
   // Pattern 2: callRpc("RPC NAME")
   // Pattern 3: safeCallRpcWithList("RPC NAME")
-  const callRe = /(?:safeCallRpc|callRpc|safeCallRpcWithList|cachedRpc|resilientRpc)\s*\(\s*["'`]([^"'`]+)["'`]/g;
+  const callRe =
+    /(?:safeCallRpc|callRpc|safeCallRpcWithList|cachedRpc|resilientRpc)\s*\(\s*["'`]([^"'`]+)["'`]/g;
   let m;
   while ((m = callRe.exec(handlerSrc)) !== null) {
     rpcs.add(m[1]);
@@ -145,7 +152,7 @@ function extractRpcCalls(handlerSrc, rpcRegistry) {
     }
   }
 
-  return [...rpcs].sort().map(name => {
+  return [...rpcs].sort().map((name) => {
     const meta = rpcRegistry.get(name);
     return {
       name,
@@ -162,8 +169,7 @@ function extractRpcCalls(handlerSrc, rpcRegistry) {
 /* ------------------------------------------------------------------ */
 
 function extractServiceRpcMap(rpcRegistry) {
-  const serviceFiles = walkTs(join(API_SRC, 'services'))
-    .concat(walkTs(join(API_SRC, 'adapters')));
+  const serviceFiles = walkTs(join(API_SRC, 'services')).concat(walkTs(join(API_SRC, 'adapters')));
 
   const serviceRpcs = new Map(); // file -> rpcs[]
 
@@ -212,7 +218,7 @@ function main() {
   }
 
   // Also scan top-level route files registered directly in index.ts
-  const topRoutes = readdirSync(API_SRC).filter(f => f.endsWith('.ts'));
+  const topRoutes = readdirSync(API_SRC).filter((f) => f.endsWith('.ts'));
   for (const f of topRoutes) {
     const full = join(API_SRC, f);
     if (scannedFiles.has(full)) continue;
@@ -229,13 +235,13 @@ function main() {
 
   // Build summary
   const totalRoutes = allRoutes.length;
-  const routesWithRpcs = allRoutes.filter(r => r.rpcCount > 0).length;
-  const stubRoutes = allRoutes.filter(r => r.isStub).length;
+  const routesWithRpcs = allRoutes.filter((r) => r.rpcCount > 0).length;
+  const stubRoutes = allRoutes.filter((r) => r.isStub).length;
   const allRpcNames = new Set();
   for (const r of allRoutes) {
     for (const rpc of r.rpcs) allRpcNames.add(rpc.name);
   }
-  const unregistered = [...allRpcNames].filter(n => !rpcRegistry.has(n));
+  const unregistered = [...allRpcNames].filter((n) => !rpcRegistry.has(n));
 
   console.log(`  Routes found: ${totalRoutes}`);
   console.log(`  Routes with live RPCs: ${routesWithRpcs}`);
@@ -297,7 +303,7 @@ function generateMarkdown(data) {
     '',
   ];
 
-  const liveRoutes = data.routes.filter(r => r.rpcCount > 0 && !r.isStub);
+  const liveRoutes = data.routes.filter((r) => r.rpcCount > 0 && !r.isStub);
   for (const r of liveRoutes) {
     lines.push(`### ${r.method} \`${r.path}\``);
     lines.push(`- **Source**: \`${r.sourceFile}:${r.line}\``);
@@ -311,7 +317,7 @@ function generateMarkdown(data) {
 
   lines.push('## Stub Routes (integration-pending)');
   lines.push('');
-  const stubs = data.routes.filter(r => r.isStub);
+  const stubs = data.routes.filter((r) => r.isStub);
   if (stubs.length === 0) {
     lines.push('None.');
   } else {

@@ -1,6 +1,7 @@
 # Phase 440 — NOTES
 
 ## Attestation Store Design
+
 - Same in-memory + FIFO pattern as imaging-worklist (Phase 23), telehealth rooms (Phase 30)
 - Hash chain uses SHA-256, truncated to 32 hex chars (16 bytes)
 - Evidence types: file (local path), url (external), phase_ref (PhaseNN), test_result (gate output)

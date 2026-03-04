@@ -16,7 +16,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
 
-
 async function apiFetch(path: string) {
   const res = await fetch(`${API_BASE}${path}`, {
     credentials: 'include',
@@ -253,9 +252,7 @@ export default function InpatientCensusPage() {
               <div
                 key={w.ien}
                 style={S.wardCard(selectedWard === w.ien)}
-                onClick={() =>
-                  setSelectedWard(selectedWard === w.ien ? null : w.ien)
-                }
+                onClick={() => setSelectedWard(selectedWard === w.ien ? null : w.ien)}
               >
                 <p style={S.wardName}>{w.name}</p>
                 <p style={S.wardCount}>{w.patientCount}</p>

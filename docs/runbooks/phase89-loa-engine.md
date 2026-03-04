@@ -26,12 +26,13 @@ Each case tracks:
 ## SLA Defaults
 
 | Priority | Default Deadline |
-|----------|-----------------|
-| routine  | 72 hours        |
-| urgent   | 24 hours        |
-| stat     | 4 hours         |
+| -------- | ---------------- |
+| routine  | 72 hours         |
+| urgent   | 24 hours         |
+| stat     | 4 hours          |
 
 SLA risk thresholds:
+
 - **on_track**: > 12 hours remaining
 - **at_risk**: 2-12 hours remaining
 - **critical**: < 2 hours remaining
@@ -39,15 +40,16 @@ SLA risk thresholds:
 
 ## New API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/rcm/payerops/loa-queue` | Filterable LOA work queue |
-| PATCH | `/rcm/payerops/loa/:id` | Edit draft LOA fields |
-| PUT | `/rcm/payerops/loa/:id/assign` | Assign LOA to staff |
+| Method | Path                           | Description               |
+| ------ | ------------------------------ | ------------------------- |
+| GET    | `/rcm/payerops/loa-queue`      | Filterable LOA work queue |
+| PATCH  | `/rcm/payerops/loa/:id`        | Edit draft LOA fields     |
+| PUT    | `/rcm/payerops/loa/:id/assign` | Assign LOA to staff       |
 
 ### LOA Queue Filters
 
 Query params:
+
 - `status` — comma-separated LOA statuses
 - `payerId` — filter by payer
 - `assignedTo` — filter by staff
@@ -63,12 +65,14 @@ Response includes `slaBreakdown` object with counts per risk level.
 ## UI Pages
 
 ### LOA Work Queue (`/cprs/admin/loa-queue`)
+
 - SLA summary bar with clickable risk filters
 - Filterable table with status, priority, SLA, payer, assignee
 - Detail modal with timeline, pack history, transition actions
 - Pack generation modal with checklist + email template
 
 ### Patient Chart LOA Panel (`PatientLOAPanel`)
+
 - Reusable component for any patient DFN context
 - Shows active cases with SLA dots + expandable details
 - Resolved cases section (last 5 shown)
@@ -78,17 +82,17 @@ Response includes `slaBreakdown` object with counts per risk level.
 
 All LOA mutations now emit audit events via `appendRcmAudit()`:
 
-| Route | Audit Action |
-|-------|-------------|
-| POST /loa | `loa.created` |
-| PATCH /loa/:id | `loa.updated` |
-| PUT /loa/:id/status | `loa.transition` / `loa.approved` / `loa.denied` / `loa.cancelled` / `loa.expired` |
-| PUT /loa/:id/assign | `loa.assigned` |
-| POST /loa/:id/attachments | `loa.attachment_added` |
-| POST /loa/:id/submit | `loa.submitted` |
-| POST /loa/:id/pack | `loa.pack_generated` |
-| POST /enrollments | `enrollment.created` |
-| PUT /enrollments/:id/status | `enrollment.updated` |
+| Route                       | Audit Action                                                                       |
+| --------------------------- | ---------------------------------------------------------------------------------- |
+| POST /loa                   | `loa.created`                                                                      |
+| PATCH /loa/:id              | `loa.updated`                                                                      |
+| PUT /loa/:id/status         | `loa.transition` / `loa.approved` / `loa.denied` / `loa.cancelled` / `loa.expired` |
+| PUT /loa/:id/assign         | `loa.assigned`                                                                     |
+| POST /loa/:id/attachments   | `loa.attachment_added`                                                             |
+| POST /loa/:id/submit        | `loa.submitted`                                                                    |
+| POST /loa/:id/pack          | `loa.pack_generated`                                                               |
+| POST /enrollments           | `enrollment.created`                                                               |
+| PUT /enrollments/:id/status | `enrollment.updated`                                                               |
 
 ## Manual Testing
 

@@ -13,7 +13,7 @@
 
 import type { Claim, DiagnosisCode, ClaimLine, ProcedureCode } from '../domain/claim.js';
 import { createDraftClaim } from '../domain/claim.js';
-import { safeErr } from "../../lib/safe-error.js";
+import { safeErr } from '../../lib/safe-error.js';
 
 /* ── RPC Caller abstraction (injectable for testing) ──────── */
 
@@ -80,8 +80,8 @@ export interface ClaimDraftResult {
 
 export function parseEncounters(lines: string[]): VistaEncounter[] {
   return lines
-    .filter(line => line && line.trim().length > 0)
-    .map(line => {
+    .filter((line) => line && line.trim().length > 0)
+    .map((line) => {
       const parts = line.split('^');
       return {
         visitIen: (parts[0] || '').trim(),
@@ -92,28 +92,28 @@ export function parseEncounters(lines: string[]): VistaEncounter[] {
         status: (parts[5] || '').trim(),
       };
     })
-    .filter(e => e.visitIen);
+    .filter((e) => e.visitIen);
 }
 
 export function parseDiagnoses(lines: string[], visitIen: string): VistaDiagnosis[] {
   return lines
-    .filter(line => line && line.trim().length > 0)
+    .filter((line) => line && line.trim().length > 0)
     .map((line, idx) => {
       const parts = line.split('^');
       return {
         code: (parts[0] || '').trim(),
         description: (parts[1] || '').trim(),
-        qualifier: idx === 0 ? 'principal' as const : 'other' as const,
+        qualifier: idx === 0 ? ('principal' as const) : ('other' as const),
         visitIen,
       };
     })
-    .filter(d => d.code);
+    .filter((d) => d.code);
 }
 
 export function parseProcedures(lines: string[], visitIen: string): VistaProcedure[] {
   return lines
-    .filter(line => line && line.trim().length > 0)
-    .map(line => {
+    .filter((line) => line && line.trim().length > 0)
+    .map((line) => {
       const parts = line.split('^');
       return {
         cptCode: (parts[0] || '').trim(),
@@ -122,13 +122,13 @@ export function parseProcedures(lines: string[], visitIen: string): VistaProcedu
         visitIen,
       };
     })
-    .filter(p => p.cptCode);
+    .filter((p) => p.cptCode);
 }
 
 export function parseInsurance(lines: string[]): VistaInsurance[] {
   return lines
-    .filter(line => line && line.trim().length > 0)
-    .map(line => {
+    .filter((line) => line && line.trim().length > 0)
+    .map((line) => {
       const parts = line.split('^');
       return {
         policyId: (parts[0] || '').trim(),
@@ -140,7 +140,7 @@ export function parseInsurance(lines: string[]): VistaInsurance[] {
         status: (parts[6] || '').trim(),
       };
     })
-    .filter(p => p.policyId || p.insuranceName);
+    .filter((p) => p.policyId || p.insuranceName);
 }
 
 /* ── Date filter helper ──────────────────────────────────── */
@@ -164,10 +164,10 @@ export async function buildClaimDraftFromVista(
   options?: {
     dateFrom?: string;
     dateTo?: string;
-    encounterId?: string;  // specific visit IEN
+    encounterId?: string; // specific visit IEN
     payerId?: string;
     tenantId?: string;
-  },
+  }
 ): Promise<ClaimDraftResult> {
   const rpcsCalled: string[] = [];
   const errors: string[] = [];
@@ -190,14 +190,14 @@ export async function buildClaimDraftFromVista(
 
   // Filter by date range if specified
   if (options?.dateFrom || options?.dateTo) {
-    encounters = encounters.filter(e =>
+    encounters = encounters.filter((e) =>
       isInDateRange(e.dateTime, options?.dateFrom, options?.dateTo)
     );
   }
 
   // Filter to specific encounter if specified
   if (options?.encounterId) {
-    encounters = encounters.filter(e => e.visitIen === options.encounterId);
+    encounters = encounters.filter((e) => e.visitIen === options.encounterId);
   }
 
   if (encounters.length === 0) {
@@ -223,7 +223,8 @@ export async function buildClaimDraftFromVista(
   // 3. Build claim draft for each encounter
   const candidates: ClaimDraftCandidate[] = [];
 
-  for (const enc of encounters.slice(0, 20)) { // cap at 20 encounters
+  for (const enc of encounters.slice(0, 20)) {
+    // cap at 20 encounters
     const missingFields: string[] = [];
     const sourceMissing: ClaimDraftCandidate['sourceMissing'] = [];
     const candidateRpcs = [...rpcsCalled];
@@ -287,7 +288,7 @@ export async function buildClaimDraftFromVista(
     });
 
     // 3e. Build the claim draft
-    const claimDiagnoses: DiagnosisCode[] = diagnoses.map(dx => ({
+    const claimDiagnoses: DiagnosisCode[] = diagnoses.map((dx) => ({
       code: dx.code,
       codeSystem: 'ICD10' as const,
       qualifier: dx.qualifier,
@@ -346,7 +347,7 @@ export async function buildClaimDraftFromVista(
 
 export async function getVistaCoverage(
   rpc: RpcCaller,
-  patientDfn: string,
+  patientDfn: string
 ): Promise<{
   ok: boolean;
   policies: VistaInsurance[];

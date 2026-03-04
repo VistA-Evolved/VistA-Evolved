@@ -7,153 +7,165 @@
  *   node scripts/generate-phase-qa.mjs
  */
 
-import { test, expect } from "@playwright/test";
-import { readdirSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { test, expect } from '@playwright/test';
+import { readdirSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
-const API = process.env.API_URL ?? "http://localhost:3001";
-const ROOT = resolve(__dirname, "..", "..", "..", "..");
+const ROOT = resolve(__dirname, '..', '..', '..', '..');
 
-test.describe("Phase 438: W27 Integrity Audit (Capstone)", () => {
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["WriteReviewBanner.tsx"];
+test.describe('Phase 438: W27 Integrity Audit (Capstone)', () => {
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['WriteReviewBanner.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 438`).toBeGreaterThan(0);
   });
-
 });
 
-test.describe("Phase 445: IMPLEMENT: Compliance Dashboard UI (W28 P7)", () => {
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["page.tsx"];
+test.describe('Phase 445: IMPLEMENT: Compliance Dashboard UI (W28 P7)', () => {
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['page.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 445`).toBeGreaterThan(0);
   });
-
 });
 
-test.describe("Phase 446: IMPLEMENT: W28 Integrity Audit — Capstone (W28 P8)", () => {
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["page.tsx"];
+test.describe('Phase 446: IMPLEMENT: W28 Integrity Audit — Capstone (W28 P8)', () => {
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['page.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 446`).toBeGreaterThan(0);
   });
-
 });
 
-test.describe("Phase 471: Service-Line Dashboards (W31-P8)", () => {
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["page.tsx"];
+test.describe('Phase 471: Service-Line Dashboards (W31-P8)', () => {
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['page.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 471`).toBeGreaterThan(0);
   });
-
 });
 
-test.describe("Phase 488: Notes", () => {
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["ActionInspector.tsx","IntegrationPendingModal.tsx","NursingPanel.tsx","OrdersPanel.tsx","RpcDebugPanel.tsx","page.tsx"];
+test.describe('Phase 488: Notes', () => {
+  test('UI component files exist on disk', async () => {
+    const componentNames = [
+      'ActionInspector.tsx',
+      'IntegrationPendingModal.tsx',
+      'NursingPanel.tsx',
+      'OrdersPanel.tsx',
+      'RpcDebugPanel.tsx',
+      'page.tsx',
+    ];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 6 UI files for Phase 488`).toBeGreaterThan(0);
   });
-
 });
 
-test.describe("Phase 503: Downtime Mode + VistA Outage Simulation", () => {
-  test("UI component files exist on disk", async () => {
-    const componentNames = ["layout.tsx"];
+test.describe('Phase 503: Downtime Mode + VistA Outage Simulation', () => {
+  test('UI component files exist on disk', async () => {
+    const componentNames = ['layout.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* permission error or similar */ }
+      } catch {
+        /* permission error or similar */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, "apps"), name)) found++;
+      if (findFile(join(ROOT, 'apps'), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 503`).toBeGreaterThan(0);
   });
-
 });

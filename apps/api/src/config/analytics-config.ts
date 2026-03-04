@@ -10,10 +10,10 @@
 /* ================================================================== */
 
 export type AnalyticsPermission =
-  | "analytics_viewer"   // Read dashboards, query aggregated metrics
-  | "analytics_admin";   // Export, manage connectors, full event access
+  | 'analytics_viewer' // Read dashboards, query aggregated metrics
+  | 'analytics_admin'; // Export, manage connectors, full event access
 
-import type { UserRole } from "../auth/session-store.js";
+import type { UserRole } from '../auth/session-store.js';
 
 /**
  * Default analytics permission mapping by UserRole.
@@ -22,13 +22,13 @@ import type { UserRole } from "../auth/session-store.js";
  * Clerk gets no analytics access by default.
  */
 export const ANALYTICS_ROLE_PERMISSIONS: Record<UserRole, AnalyticsPermission[]> = {
-  provider:   ["analytics_viewer"],
-  nurse:      ["analytics_viewer"],
-  pharmacist: ["analytics_viewer"],
-  clerk:      [],
-  admin:      ["analytics_viewer", "analytics_admin"],
-  billing:    ["analytics_viewer"],
-  support:    ["analytics_viewer"],
+  provider: ['analytics_viewer'],
+  nurse: ['analytics_viewer'],
+  pharmacist: ['analytics_viewer'],
+  clerk: [],
+  admin: ['analytics_viewer', 'analytics_admin'],
+  billing: ['analytics_viewer'],
+  support: ['analytics_viewer'],
 };
 
 /* ================================================================== */
@@ -39,11 +39,11 @@ export const ANALYTICS_EVENT_CONFIG = {
   /** Maximum in-memory events before ring buffer eviction. */
   maxMemoryEvents: Number(process.env.ANALYTICS_MAX_EVENTS || 50000),
   /** JSONL persistence path (set to empty string to disable). */
-  eventFilePath: process.env.ANALYTICS_EVENT_FILE ?? "data/analytics-events.jsonl",
+  eventFilePath: process.env.ANALYTICS_EVENT_FILE ?? 'data/analytics-events.jsonl',
   /** Retention days for event file (used by cleanup job). */
   retentionDays: Number(process.env.ANALYTICS_RETENTION_DAYS || 7),
   /** Salt for hashing user IDs in analytics (rotate periodically). */
-  userIdSalt: process.env.ANALYTICS_USER_SALT || "ve-analytics-salt-change-in-prod",
+  userIdSalt: process.env.ANALYTICS_USER_SALT || 've-analytics-salt-change-in-prod',
   /** Flush interval for batch writes to JSONL (ms). */
   flushIntervalMs: Number(process.env.ANALYTICS_FLUSH_INTERVAL_MS || 5000),
 } as const;
@@ -82,7 +82,7 @@ export const ANALYTICS_EXPORT_CONFIG = {
   /** Maximum rows per export. */
   maxExportRows: Number(process.env.ANALYTICS_MAX_EXPORT_ROWS || 100000),
   /** Allowed export formats. */
-  allowedFormats: ["csv", "json"] as const,
+  allowedFormats: ['csv', 'json'] as const,
   /** Max concurrent exports per user. */
   maxConcurrentPerUser: 3,
   /** Job TTL before cleanup (hours). */
@@ -95,18 +95,22 @@ export const ANALYTICS_EXPORT_CONFIG = {
 
 export const ANALYTICS_SQL_CONFIG = {
   /** ROcto host (internal). */
-  roctoHost: process.env.ROCTO_HOST || "127.0.0.1",
+  roctoHost: process.env.ROCTO_HOST || '127.0.0.1',
   /** ROcto port. */
   roctoPort: Number(process.env.ROCTO_PORT || 1338),
   /** Read-only BI user (for external tools). */
-  biReadOnlyUser: process.env.ANALYTICS_BI_USER || "bi_readonly",
+  biReadOnlyUser: process.env.ANALYTICS_BI_USER || 'bi_readonly',
   /** ETL writer user (for aggregation jobs). */
-  etlWriterUser: process.env.ANALYTICS_ETL_USER || "etl_writer",
+  etlWriterUser: process.env.ANALYTICS_ETL_USER || 'etl_writer',
   /** ETL writer password. Change in production. */
-  etlWriterPassword: process.env.ANALYTICS_ETL_PASSWORD || "etl_writer_pass",
+  etlWriterPassword: process.env.ANALYTICS_ETL_PASSWORD || 'etl_writer_pass',
   /** IP allowlist for ROcto connections (comma-separated CIDRs). */
-  ipAllowlist: (process.env.ROCTO_IP_ALLOWLIST || "127.0.0.1/32,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16")
-    .split(",").map(s => s.trim()).filter(Boolean),
+  ipAllowlist: (
+    process.env.ROCTO_IP_ALLOWLIST || '127.0.0.1/32,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16'
+  )
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean),
 } as const;
 
 /* ================================================================== */

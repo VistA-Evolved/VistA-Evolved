@@ -19,7 +19,18 @@ export class ClearinghouseConnector implements RcmConnector {
   readonly name = 'EDI Clearinghouse (X12 5010)';
   readonly supportedModes = ['clearinghouse_edi'];
   readonly supportedTransactions: X12TransactionSet[] = [
-    '837P', '837I', '835', '270', '271', '276', '277', '275', '278', '999', '997', 'TA1',
+    '837P',
+    '837I',
+    '835',
+    '270',
+    '271',
+    '276',
+    '277',
+    '275',
+    '278',
+    '999',
+    '997',
+    'TA1',
   ];
 
   private config: {
@@ -64,7 +75,7 @@ export class ClearinghouseConnector implements RcmConnector {
   async submit(
     transactionSet: X12TransactionSet,
     payload: string,
-    metadata: Record<string, string>,
+    metadata: Record<string, string>
   ): Promise<ConnectorResult> {
     const txId = `ch-${Date.now()}-${randomBytes(4).toString('hex')}`;
 
@@ -92,7 +103,7 @@ export class ClearinghouseConnector implements RcmConnector {
   }
 
   async checkStatus(transactionId: string): Promise<ConnectorResult> {
-    const entry = this.outboundQueue.find(e => e.id === transactionId);
+    const entry = this.outboundQueue.find((e) => e.id === transactionId);
     if (!entry) {
       return {
         success: false,
@@ -107,15 +118,17 @@ export class ClearinghouseConnector implements RcmConnector {
     };
   }
 
-  async fetchResponses(since?: string): Promise<Array<{
-    transactionSet: X12TransactionSet;
-    payload: string;
-    receivedAt: string;
-  }>> {
+  async fetchResponses(since?: string): Promise<
+    Array<{
+      transactionSet: X12TransactionSet;
+      payload: string;
+      receivedAt: string;
+    }>
+  > {
     // In production: poll SFTP inbox or API for 835s, 271s, 277s, 999s
     // For now, return any queued inbound responses
     if (since) {
-      return this.inboundQueue.filter(r => r.receivedAt >= since);
+      return this.inboundQueue.filter((r) => r.receivedAt >= since);
     }
     return [...this.inboundQueue];
   }
@@ -143,10 +156,7 @@ export class ClearinghouseConnector implements RcmConnector {
     return this.outboundQueue.length;
   }
 
-  simulateInboundResponse(
-    transactionSet: X12TransactionSet,
-    payload: string,
-  ): void {
+  simulateInboundResponse(transactionSet: X12TransactionSet, payload: string): void {
     this.inboundQueue.push({
       transactionSet,
       payload,

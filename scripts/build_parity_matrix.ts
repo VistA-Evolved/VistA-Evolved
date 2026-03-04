@@ -38,78 +38,117 @@ function formatDate() {
 
 // ---- Known wired RPCs in the API (from index.ts routes) ----
 const WIRED_RPCS: Record<string, { endpoint: string; method: string; phase: string }> = {
-  'ORQPT DEFAULT PATIENT LIST':   { endpoint: 'GET /vista/default-patient-list', method: 'GET', phase: '4A' },
-  'ORWPT LIST ALL':               { endpoint: 'GET /vista/patient-search', method: 'GET', phase: '4B' },
-  'ORWPT SELECT':                 { endpoint: 'GET /vista/patient-demographics', method: 'GET', phase: '5B' },
-  'ORQQAL LIST':                  { endpoint: 'GET /vista/allergies', method: 'GET', phase: '5C' },
-  'ORWDAL32 SAVE ALLERGY':        { endpoint: 'POST /vista/allergies', method: 'POST', phase: '5D' },
-  'ORQQVI VITALS':                { endpoint: 'GET /vista/vitals', method: 'GET', phase: '6A' },
-  'GMV ADD VM':                   { endpoint: 'POST /vista/vitals', method: 'POST', phase: '6B' },
-  'TIU DOCUMENTS BY CONTEXT':     { endpoint: 'GET /vista/notes', method: 'GET', phase: '7A' },
-  'TIU CREATE RECORD':            { endpoint: 'POST /vista/notes', method: 'POST', phase: '7B' },
-  'TIU SET RECORD TEXT':          { endpoint: 'POST /vista/notes', method: 'POST', phase: '7B' },
-  'ORWPS ACTIVE':                 { endpoint: 'GET /vista/medications', method: 'GET', phase: '8A' },
-  'ORWORR GETTXT':                { endpoint: 'GET /vista/medications', method: 'GET', phase: '8A' },
-  'ORWDXM AUTOACK':               { endpoint: 'POST /vista/medications', method: 'POST', phase: '8B' },
-  'ORWCH PROBLEM LIST':           { endpoint: 'GET /vista/problems', method: 'GET', phase: '9A' },
-  'ORQQCN LIST':                  { endpoint: 'GET /vista/consults', method: 'GET', phase: '12A' },
-  'ORQQCN DETAIL':                { endpoint: 'GET /vista/consults/detail', method: 'GET', phase: '12A' },
-  'ORWSR LIST':                   { endpoint: 'GET /vista/surgery', method: 'GET', phase: '12B' },
-  'ORWLRR INTERIM':               { endpoint: 'GET /vista/labs', method: 'GET', phase: '12D' },
-  'ORWRP REPORT LISTS':           { endpoint: 'GET /vista/reports', method: 'GET', phase: '12E' },
-  'ORWRP REPORT TEXT':            { endpoint: 'GET /vista/reports/text', method: 'GET', phase: '12E' },
-  'TIU GET RECORD TEXT':          { endpoint: 'GET /vista/tiu-text', method: 'GET', phase: '12C' },
-  'ORQQPL4 LEX':                  { endpoint: 'GET /vista/icd-search', method: 'GET', phase: '12F' },
-  'ORWDX LOCK':                   { endpoint: 'POST /vista/medications', method: 'POST', phase: '14C' },
-  'ORWDX UNLOCK':                 { endpoint: 'POST /vista/medications', method: 'POST', phase: '14C' },
-  'XUS SIGNON SETUP':             { endpoint: 'POST /auth/login', method: 'POST', phase: '13' },
-  'XUS AV CODE':                  { endpoint: 'POST /auth/login', method: 'POST', phase: '13' },
-  'XWB CREATE CONTEXT':           { endpoint: 'POST /auth/login', method: 'POST', phase: '13' },
-  'XUS GET USER INFO':            { endpoint: 'POST /auth/login', method: 'POST', phase: '13' },
-  'VE INTEROP HL7 LINKS':         { endpoint: 'GET /vista/interop/hl7-links', method: 'GET', phase: '21' },
-  'VE INTEROP HL7 MSGS':          { endpoint: 'GET /vista/interop/hl7-msgs', method: 'GET', phase: '21' },
-  'VE INTEROP HLO STATUS':        { endpoint: 'GET /vista/interop/hlo-status', method: 'GET', phase: '21' },
-  'VE INTEROP QUEUE DEPTH':       { endpoint: 'GET /vista/interop/queue-depth', method: 'GET', phase: '21' },
-  'VE LIST RPCS':                 { endpoint: 'GET /vista/rpc-catalog', method: 'GET', phase: '37B' },
+  'ORQPT DEFAULT PATIENT LIST': {
+    endpoint: 'GET /vista/default-patient-list',
+    method: 'GET',
+    phase: '4A',
+  },
+  'ORWPT LIST ALL': { endpoint: 'GET /vista/patient-search', method: 'GET', phase: '4B' },
+  'ORWPT SELECT': { endpoint: 'GET /vista/patient-demographics', method: 'GET', phase: '5B' },
+  'ORQQAL LIST': { endpoint: 'GET /vista/allergies', method: 'GET', phase: '5C' },
+  'ORWDAL32 SAVE ALLERGY': { endpoint: 'POST /vista/allergies', method: 'POST', phase: '5D' },
+  'ORQQVI VITALS': { endpoint: 'GET /vista/vitals', method: 'GET', phase: '6A' },
+  'GMV ADD VM': { endpoint: 'POST /vista/vitals', method: 'POST', phase: '6B' },
+  'TIU DOCUMENTS BY CONTEXT': { endpoint: 'GET /vista/notes', method: 'GET', phase: '7A' },
+  'TIU CREATE RECORD': { endpoint: 'POST /vista/notes', method: 'POST', phase: '7B' },
+  'TIU SET RECORD TEXT': { endpoint: 'POST /vista/notes', method: 'POST', phase: '7B' },
+  'ORWPS ACTIVE': { endpoint: 'GET /vista/medications', method: 'GET', phase: '8A' },
+  'ORWORR GETTXT': { endpoint: 'GET /vista/medications', method: 'GET', phase: '8A' },
+  'ORWDXM AUTOACK': { endpoint: 'POST /vista/medications', method: 'POST', phase: '8B' },
+  'ORWCH PROBLEM LIST': { endpoint: 'GET /vista/problems', method: 'GET', phase: '9A' },
+  'ORQQCN LIST': { endpoint: 'GET /vista/consults', method: 'GET', phase: '12A' },
+  'ORQQCN DETAIL': { endpoint: 'GET /vista/consults/detail', method: 'GET', phase: '12A' },
+  'ORWSR LIST': { endpoint: 'GET /vista/surgery', method: 'GET', phase: '12B' },
+  'ORWLRR INTERIM': { endpoint: 'GET /vista/labs', method: 'GET', phase: '12D' },
+  'ORWRP REPORT LISTS': { endpoint: 'GET /vista/reports', method: 'GET', phase: '12E' },
+  'ORWRP REPORT TEXT': { endpoint: 'GET /vista/reports/text', method: 'GET', phase: '12E' },
+  'TIU GET RECORD TEXT': { endpoint: 'GET /vista/tiu-text', method: 'GET', phase: '12C' },
+  'ORQQPL4 LEX': { endpoint: 'GET /vista/icd-search', method: 'GET', phase: '12F' },
+  'ORWDX LOCK': { endpoint: 'POST /vista/medications', method: 'POST', phase: '14C' },
+  'ORWDX UNLOCK': { endpoint: 'POST /vista/medications', method: 'POST', phase: '14C' },
+  'XUS SIGNON SETUP': { endpoint: 'POST /auth/login', method: 'POST', phase: '13' },
+  'XUS AV CODE': { endpoint: 'POST /auth/login', method: 'POST', phase: '13' },
+  'XWB CREATE CONTEXT': { endpoint: 'POST /auth/login', method: 'POST', phase: '13' },
+  'XUS GET USER INFO': { endpoint: 'POST /auth/login', method: 'POST', phase: '13' },
+  'VE INTEROP HL7 LINKS': { endpoint: 'GET /vista/interop/hl7-links', method: 'GET', phase: '21' },
+  'VE INTEROP HL7 MSGS': { endpoint: 'GET /vista/interop/hl7-msgs', method: 'GET', phase: '21' },
+  'VE INTEROP HLO STATUS': {
+    endpoint: 'GET /vista/interop/hlo-status',
+    method: 'GET',
+    phase: '21',
+  },
+  'VE INTEROP QUEUE DEPTH': {
+    endpoint: 'GET /vista/interop/queue-depth',
+    method: 'GET',
+    phase: '21',
+  },
+  'VE LIST RPCS': { endpoint: 'GET /vista/rpc-catalog', method: 'GET', phase: '37B' },
 };
 
 // ---- Tab → panel wiring ----
-const TAB_PANEL_STATUS: Record<string, { panel: string; status: 'wired' | 'integration-pending' | 'extension'; rpcs: string[] }> = {
-  'CT_COVER':      { panel: 'CoverSheetPanel', status: 'wired', rpcs: ['ORQQAL LIST', 'ORQQVI VITALS', 'ORWPS ACTIVE', 'ORWCH PROBLEM LIST'] },
-  'CT_PROBLEMS':   { panel: 'ProblemsPanel', status: 'wired', rpcs: ['ORWCH PROBLEM LIST'] },
-  'CT_MEDS':       { panel: 'MedsPanel', status: 'wired', rpcs: ['ORWPS ACTIVE', 'ORWORR GETTXT'] },
-  'CT_ORDERS':     { panel: 'OrdersPanel', status: 'wired', rpcs: ['ORWPS ACTIVE'] },
-  'CT_NOTES':      { panel: 'NotesPanel', status: 'wired', rpcs: ['TIU DOCUMENTS BY CONTEXT', 'TIU GET RECORD TEXT', 'TIU CREATE RECORD'] },
-  'CT_CONSULTS':   { panel: 'ConsultsPanel', status: 'wired', rpcs: ['ORQQCN LIST', 'ORQQCN DETAIL'] },
-  'CT_SURGERY':    { panel: 'SurgeryPanel', status: 'wired', rpcs: ['ORWSR LIST'] },
-  'CT_DCSUMM':     { panel: 'DCSummPanel', status: 'wired', rpcs: ['TIU DOCUMENTS BY CONTEXT', 'TIU GET RECORD TEXT'] },
-  'CT_LABS':       { panel: 'LabsPanel', status: 'wired', rpcs: ['ORWLRR INTERIM'] },
-  'CT_REPORTS':    { panel: 'ReportsPanel', status: 'wired', rpcs: ['ORWRP REPORT LISTS', 'ORWRP REPORT TEXT'] },
-  'CT_INTAKE':     { panel: 'IntakePanel', status: 'extension', rpcs: [] },
-  'CT_TELEHEALTH': { panel: 'TelehealthPanel', status: 'extension', rpcs: [] },
-  'CT_TASKS':      { panel: 'MessagingTasksPanel', status: 'extension', rpcs: [] },
-  'CT_AIASSIST':   { panel: 'AIAssistPanel', status: 'extension', rpcs: [] },
+const TAB_PANEL_STATUS: Record<
+  string,
+  { panel: string; status: 'wired' | 'integration-pending' | 'extension'; rpcs: string[] }
+> = {
+  CT_COVER: {
+    panel: 'CoverSheetPanel',
+    status: 'wired',
+    rpcs: ['ORQQAL LIST', 'ORQQVI VITALS', 'ORWPS ACTIVE', 'ORWCH PROBLEM LIST'],
+  },
+  CT_PROBLEMS: { panel: 'ProblemsPanel', status: 'wired', rpcs: ['ORWCH PROBLEM LIST'] },
+  CT_MEDS: { panel: 'MedsPanel', status: 'wired', rpcs: ['ORWPS ACTIVE', 'ORWORR GETTXT'] },
+  CT_ORDERS: { panel: 'OrdersPanel', status: 'wired', rpcs: ['ORWPS ACTIVE'] },
+  CT_NOTES: {
+    panel: 'NotesPanel',
+    status: 'wired',
+    rpcs: ['TIU DOCUMENTS BY CONTEXT', 'TIU GET RECORD TEXT', 'TIU CREATE RECORD'],
+  },
+  CT_CONSULTS: { panel: 'ConsultsPanel', status: 'wired', rpcs: ['ORQQCN LIST', 'ORQQCN DETAIL'] },
+  CT_SURGERY: { panel: 'SurgeryPanel', status: 'wired', rpcs: ['ORWSR LIST'] },
+  CT_DCSUMM: {
+    panel: 'DCSummPanel',
+    status: 'wired',
+    rpcs: ['TIU DOCUMENTS BY CONTEXT', 'TIU GET RECORD TEXT'],
+  },
+  CT_LABS: { panel: 'LabsPanel', status: 'wired', rpcs: ['ORWLRR INTERIM'] },
+  CT_REPORTS: {
+    panel: 'ReportsPanel',
+    status: 'wired',
+    rpcs: ['ORWRP REPORT LISTS', 'ORWRP REPORT TEXT'],
+  },
+  CT_INTAKE: { panel: 'IntakePanel', status: 'extension', rpcs: [] },
+  CT_TELEHEALTH: { panel: 'TelehealthPanel', status: 'extension', rpcs: [] },
+  CT_TASKS: { panel: 'MessagingTasksPanel', status: 'extension', rpcs: [] },
+  CT_AIASSIST: { panel: 'AIAssistPanel', status: 'extension', rpcs: [] },
 };
 
 // ---- Menu action status (mapped from CPRSMenuBar.tsx handleAction) ----
-const MENU_ACTION_STATUS: Record<string, { status: 'wired' | 'integration-pending'; handler: string; targetRpc?: string; targetPackage?: string }> = {
-  'selectPatient':    { status: 'wired', handler: 'router.push(/cprs/patient-search)' },
-  'refresh':          { status: 'wired', handler: 'window.location.reload()' },
-  'inbox':            { status: 'wired', handler: 'router.push(/cprs/inbox)' },
-  'orderSets':        { status: 'wired', handler: 'router.push(/cprs/order-sets)' },
-  'print':            { status: 'wired', handler: 'openModal(print)' },
-  'printSetup':       { status: 'wired', handler: 'openModal(printSetup)' },
-  'signOut':          { status: 'wired', handler: 'logout()' },
-  'exit':             { status: 'wired', handler: 'router.push(/cprs/login)' },
-  'copy':             { status: 'wired', handler: 'navigator.clipboard.writeText()' },
-  'paste':            { status: 'wired', handler: 'navigator.clipboard.readText()' },
-  'preferences':      { status: 'wired', handler: 'router.push(/cprs/settings/preferences)' },
-  'graphing':         { status: 'wired', handler: 'openModal(graphing)' },
-  'legacyConsole':    { status: 'wired', handler: 'openModal(legacyConsole)' },
-  'remoteData':       { status: 'wired', handler: 'openModal(remoteData)' },
-  'remoteDataPage':   { status: 'wired', handler: 'router.push(/cprs/remote-data-viewer)' },
-  'keyboardShortcuts':{ status: 'wired', handler: 'openModal(keyboardShortcuts)' },
-  'about':            { status: 'wired', handler: 'openModal(about)' },
+const MENU_ACTION_STATUS: Record<
+  string,
+  {
+    status: 'wired' | 'integration-pending';
+    handler: string;
+    targetRpc?: string;
+    targetPackage?: string;
+  }
+> = {
+  selectPatient: { status: 'wired', handler: 'router.push(/cprs/patient-search)' },
+  refresh: { status: 'wired', handler: 'window.location.reload()' },
+  inbox: { status: 'wired', handler: 'router.push(/cprs/inbox)' },
+  orderSets: { status: 'wired', handler: 'router.push(/cprs/order-sets)' },
+  print: { status: 'wired', handler: 'openModal(print)' },
+  printSetup: { status: 'wired', handler: 'openModal(printSetup)' },
+  signOut: { status: 'wired', handler: 'logout()' },
+  exit: { status: 'wired', handler: 'router.push(/cprs/login)' },
+  copy: { status: 'wired', handler: 'navigator.clipboard.writeText()' },
+  paste: { status: 'wired', handler: 'navigator.clipboard.readText()' },
+  preferences: { status: 'wired', handler: 'router.push(/cprs/settings/preferences)' },
+  graphing: { status: 'wired', handler: 'openModal(graphing)' },
+  legacyConsole: { status: 'wired', handler: 'openModal(legacyConsole)' },
+  remoteData: { status: 'wired', handler: 'openModal(remoteData)' },
+  remoteDataPage: { status: 'wired', handler: 'router.push(/cprs/remote-data-viewer)' },
+  keyboardShortcuts: { status: 'wired', handler: 'openModal(keyboardShortcuts)' },
+  about: { status: 'wired', handler: 'openModal(about)' },
 };
 
 // Theme/density/layout actions
@@ -124,8 +163,22 @@ for (const l of ['layout:cprs', 'layout:modern']) {
 }
 
 // Tab navigation actions
-for (const slug of ['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports']) {
-  MENU_ACTION_STATUS[`tab:${slug}`] = { status: 'wired', handler: `router.push(/cprs/chart/{dfn}/${slug})` };
+for (const slug of [
+  'cover',
+  'problems',
+  'meds',
+  'orders',
+  'notes',
+  'consults',
+  'surgery',
+  'dcsumm',
+  'labs',
+  'reports',
+]) {
+  MENU_ACTION_STATUS[`tab:${slug}`] = {
+    status: 'wired',
+    handler: `router.push(/cprs/chart/{dfn}/${slug})`,
+  };
 }
 
 // ---- Main ----
@@ -144,7 +197,9 @@ async function fetchRuntimeCatalog(rpcFilePath?: string): Promise<RuntimeRpc[]> 
   }
 
   // Try fetching from API
-  console.log('[parity] Fetching runtime RPC catalog from http://localhost:3001/vista/rpc-catalog...');
+  console.log(
+    '[parity] Fetching runtime RPC catalog from http://localhost:3001/vista/rpc-catalog...'
+  );
   try {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 10000);
@@ -154,7 +209,7 @@ async function fetchRuntimeCatalog(rpcFilePath?: string): Promise<RuntimeRpc[]> 
     });
     clearTimeout(timer);
     if (res.ok) {
-      const data = await res.json() as any;
+      const data = (await res.json()) as any;
       const rpcs = data.rpcs || data.catalog || [];
       // Save snapshot
       const snapPath = join(GROUNDING, 'runtime-rpc-catalog.json');
@@ -199,7 +254,7 @@ async function run() {
   }
 
   const runtimeRpcs = await fetchRuntimeCatalog(rpcFilePath);
-  const runtimeRpcSet = new Set(runtimeRpcs.map(r => r.name));
+  const runtimeRpcSet = new Set(runtimeRpcs.map((r) => r.name));
 
   // ---- Build RPC parity entries ----
   type RpcParityEntry = {
@@ -276,7 +331,18 @@ async function run() {
   };
 
   const tabParity: TabParityEntry[] = [];
-  const delphiTabs = ['CT_COVER', 'CT_PROBLEMS', 'CT_MEDS', 'CT_ORDERS', 'CT_NOTES', 'CT_CONSULTS', 'CT_SURGERY', 'CT_DCSUMM', 'CT_LABS', 'CT_REPORTS'];
+  const delphiTabs = [
+    'CT_COVER',
+    'CT_PROBLEMS',
+    'CT_MEDS',
+    'CT_ORDERS',
+    'CT_NOTES',
+    'CT_CONSULTS',
+    'CT_SURGERY',
+    'CT_DCSUMM',
+    'CT_LABS',
+    'CT_REPORTS',
+  ];
   const mainTabs = contract.mainTabs || [];
 
   for (const tab of mainTabs) {
@@ -290,7 +356,7 @@ async function run() {
       panelComponent: panelInfo.panel,
       status: panelInfo.status,
       rpcsUsed: panelInfo.rpcs,
-      rpcsWired: panelInfo.rpcs.filter(r => WIRED_RPCS[r]).length,
+      rpcsWired: panelInfo.rpcs.filter((r) => WIRED_RPCS[r]).length,
       rpcsTotal: panelInfo.rpcs.length,
     });
   }
@@ -326,18 +392,18 @@ async function run() {
 
   // ---- Summary stats ----
   const totalRpcs = rpcParity.length;
-  const wiredRpcs = rpcParity.filter(r => r.status === 'wired').length;
-  const presentUnwired = rpcParity.filter(r => r.status === 'present-unwired').length;
-  const absentRpcs = rpcParity.filter(r => r.status === 'absent').length;
+  const wiredRpcs = rpcParity.filter((r) => r.status === 'wired').length;
+  const presentUnwired = rpcParity.filter((r) => r.status === 'present-unwired').length;
+  const absentRpcs = rpcParity.filter((r) => r.status === 'absent').length;
 
   const totalTabs = tabParity.length;
-  const wiredTabs = tabParity.filter(t => t.status === 'wired').length;
-  const extensionTabs = tabParity.filter(t => t.status === 'extension').length;
-  const pendingTabs = tabParity.filter(t => t.status === 'integration-pending').length;
+  const wiredTabs = tabParity.filter((t) => t.status === 'wired').length;
+  const extensionTabs = tabParity.filter((t) => t.status === 'extension').length;
+  const pendingTabs = tabParity.filter((t) => t.status === 'integration-pending').length;
 
   const totalMenuActions = menuParity.length;
-  const wiredMenuActions = menuParity.filter(m => m.status === 'wired').length;
-  const pendingMenuActions = menuParity.filter(m => m.status === 'integration-pending').length;
+  const wiredMenuActions = menuParity.filter((m) => m.status === 'wired').length;
+  const pendingMenuActions = menuParity.filter((m) => m.status === 'integration-pending').length;
 
   const unhandledUiActions = pendingTabs + pendingMenuActions;
 
@@ -348,14 +414,19 @@ async function run() {
       description: 'CPRS Parity Matrix: Delphi contract x Runtime RPCs x Vivian/DOX grounding',
       sources: {
         delphiContract: contractPath,
-        runtimeCatalog: runtimeRpcs.length > 0 ? 'live /vista/rpc-catalog' : 'empty (API not available)',
+        runtimeCatalog:
+          runtimeRpcs.length > 0 ? 'live /vista/rpc-catalog' : 'empty (API not available)',
         vivianIndex: vivianPath,
       },
     },
     summary: {
       rpc: { total: totalRpcs, wired: wiredRpcs, presentUnwired, absent: absentRpcs },
       tabs: { total: totalTabs, wired: wiredTabs, extension: extensionTabs, pending: pendingTabs },
-      menuActions: { total: totalMenuActions, wired: wiredMenuActions, pending: pendingMenuActions },
+      menuActions: {
+        total: totalMenuActions,
+        wired: wiredMenuActions,
+        pending: pendingMenuActions,
+      },
       unhandledUiActions,
     },
     rpcParity,
@@ -379,9 +450,15 @@ async function run() {
   md.push('');
   md.push(`| Dimension | Total | Wired | Present (unwired) | Absent/Pending |`);
   md.push(`|-----------|-------|-------|-------------------|----------------|`);
-  md.push(`| RPCs (from Delphi) | ${totalRpcs} | ${wiredRpcs} | ${presentUnwired} | ${absentRpcs} |`);
-  md.push(`| Tabs | ${totalTabs} | ${wiredTabs} | - | ${pendingTabs} pending, ${extensionTabs} extensions |`);
-  md.push(`| Menu Actions | ${totalMenuActions} | ${wiredMenuActions} | - | ${pendingMenuActions} |`);
+  md.push(
+    `| RPCs (from Delphi) | ${totalRpcs} | ${wiredRpcs} | ${presentUnwired} | ${absentRpcs} |`
+  );
+  md.push(
+    `| Tabs | ${totalTabs} | ${wiredTabs} | - | ${pendingTabs} pending, ${extensionTabs} extensions |`
+  );
+  md.push(
+    `| Menu Actions | ${totalMenuActions} | ${wiredMenuActions} | - | ${pendingMenuActions} |`
+  );
   md.push('');
   md.push(`**Unhandled UI actions: ${unhandledUiActions}**`);
   md.push('');
@@ -392,7 +469,9 @@ async function run() {
   md.push('| Tab | Panel | Status | RPCs Used | Wired |');
   md.push('|-----|-------|--------|-----------|-------|');
   for (const t of tabParity) {
-    md.push(`| ${t.label} | ${t.panelComponent} | ${t.status} | ${t.rpcsUsed.join(', ') || '-'} | ${t.rpcsWired}/${t.rpcsTotal} |`);
+    md.push(
+      `| ${t.label} | ${t.panelComponent} | ${t.status} | ${t.rpcsUsed.join(', ') || '-'} | ${t.rpcsWired}/${t.rpcsTotal} |`
+    );
   }
   md.push('');
 
@@ -411,8 +490,10 @@ async function run() {
   md.push('');
   md.push('| RPC Name | API Endpoint | Phase | Package |');
   md.push('|----------|-------------|-------|---------|');
-  for (const r of rpcParity.filter(r => r.status === 'wired')) {
-    md.push(`| ${r.name} | ${r.apiEndpoint || '-'} | ${r.apiPhase || '-'} | ${r.targetPackage || '-'} |`);
+  for (const r of rpcParity.filter((r) => r.status === 'wired')) {
+    md.push(
+      `| ${r.name} | ${r.apiEndpoint || '-'} | ${r.apiPhase || '-'} | ${r.targetPackage || '-'} |`
+    );
   }
   md.push('');
 
@@ -421,8 +502,12 @@ async function run() {
   if (presentUnwired > 0) {
     md.push('| RPC Name | Ref Count | Package | Vivian Grounded |');
     md.push('|----------|-----------|---------|-----------------|');
-    for (const r of rpcParity.filter(r => r.status === 'present-unwired').sort((a, b) => b.referenceCount - a.referenceCount)) {
-      md.push(`| ${r.name} | ${r.referenceCount} | ${r.targetPackage || '-'} | ${r.vivianGrounded ? 'Yes' : 'No'} |`);
+    for (const r of rpcParity
+      .filter((r) => r.status === 'present-unwired')
+      .sort((a, b) => b.referenceCount - a.referenceCount)) {
+      md.push(
+        `| ${r.name} | ${r.referenceCount} | ${r.targetPackage || '-'} | ${r.vivianGrounded ? 'Yes' : 'No'} |`
+      );
     }
   } else {
     md.push('_Runtime catalog not available or no unwired RPCs found._');
@@ -433,7 +518,10 @@ async function run() {
   md.push('');
   md.push('| RPC Name | Ref Count | Package | Suggested Next Step |');
   md.push('|----------|-----------|---------|---------------------|');
-  const topAbsent = rpcParity.filter(r => r.status === 'absent').sort((a, b) => b.referenceCount - a.referenceCount).slice(0, 50);
+  const topAbsent = rpcParity
+    .filter((r) => r.status === 'absent')
+    .sort((a, b) => b.referenceCount - a.referenceCount)
+    .slice(0, 50);
   for (const r of topAbsent) {
     const step = r.targetPackage ? `Wire to ${r.targetPackage} package` : 'Identify target package';
     md.push(`| ${r.name} | ${r.referenceCount} | ${r.targetPackage || '?'} | ${step} |`);
@@ -446,7 +534,9 @@ async function run() {
     md.push('| Package | Name | FileMan Files | Routines | Globals |');
     md.push('|---------|------|---------------|----------|---------|');
     for (const [prefix, pkg] of Object.entries(vivianIndex.packages) as [string, any][]) {
-      md.push(`| ${prefix} | ${pkg.name} | ${(pkg.fileManFiles || []).length} | ${(pkg.routines || []).length} | ${(pkg.globals || []).length} |`);
+      md.push(
+        `| ${prefix} | ${pkg.name} | ${(pkg.fileManFiles || []).length} | ${(pkg.routines || []).length} | ${(pkg.globals || []).length} |`
+      );
     }
   } else {
     md.push('_Vivian index not available. Run vivian_snapshot.ts first._');
@@ -455,16 +545,20 @@ async function run() {
 
   md.push('---');
   md.push('');
-  md.push('*This report is auto-generated by `scripts/build_parity_matrix.ts`. Do not edit manually.*');
+  md.push(
+    '*This report is auto-generated by `scripts/build_parity_matrix.ts`. Do not edit manually.*'
+  );
   md.push('');
 
   const mdPath = join(GROUNDING, 'parity-matrix.md');
   writeFileSync(mdPath, md.join('\n'));
   console.log(`[parity] Wrote ${mdPath}`);
-  console.log(`[parity] Summary: ${wiredRpcs}/${totalRpcs} RPCs wired, ${wiredTabs}/${totalTabs} tabs wired, ${unhandledUiActions} unhandled UI actions`);
+  console.log(
+    `[parity] Summary: ${wiredRpcs}/${totalRpcs} RPCs wired, ${wiredTabs}/${totalTabs} tabs wired, ${unhandledUiActions} unhandled UI actions`
+  );
 }
 
-run().catch(err => {
+run().catch((err) => {
   console.error('[parity] Fatal error:', err.message);
   process.exit(1);
 });

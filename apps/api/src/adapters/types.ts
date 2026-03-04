@@ -224,14 +224,14 @@ export interface MAREntry {
   drugName: string;
   dose: string;
   route: string;
-  scheduledTime: string;      // ISO datetime
+  scheduledTime: string; // ISO datetime
   status: 'due' | 'given' | 'refused' | 'held' | 'missed' | 'not-given';
-  administeredTime?: string;  // ISO datetime when actually given
-  administeredBy?: string;    // nurse/provider name
+  administeredTime?: string; // ISO datetime when actually given
+  administeredBy?: string; // nurse/provider name
   administeredByDuz?: string;
   witnessedBy?: string;
-  reason?: string;            // if refused/held/not-given
-  site?: string;              // injection site
+  reason?: string; // if refused/held/not-given
+  site?: string; // injection site
   comments?: string;
 }
 

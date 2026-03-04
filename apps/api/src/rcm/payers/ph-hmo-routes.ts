@@ -11,7 +11,7 @@
  * No additional auth config needed.
  */
 
-import type { FastifyInstance, FastifyPluginAsync } from "fastify";
+import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
 import {
   initPhHmoRegistry,
   getPhHmo,
@@ -19,12 +19,12 @@ import {
   getPhHmoStats,
   getPhHmoMeta,
   getPhHmoRegistryValidation,
-} from "../payers/ph-hmo-registry.js";
+} from '../payers/ph-hmo-registry.js';
 import {
   createLoaRequestPacket,
   createClaimPacket,
   getAdapterCapabilityReport,
-} from "../payers/ph-hmo-adapter.js";
+} from '../payers/ph-hmo-adapter.js';
 
 let registryReady = false;
 
@@ -34,12 +34,12 @@ const phHmoRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
     const result = initPhHmoRegistry();
     registryReady = true;
     if (!result.valid) {
-      server.log.warn(`PH HMO registry init warnings: ${result.errors.join("; ")}`);
+      server.log.warn(`PH HMO registry init warnings: ${result.errors.join('; ')}`);
     }
   }
 
   /* ── GET /rcm/payers/ph/hmos — list all HMOs ──────────── */
-  server.get("/rcm/payers/ph/hmos", async (request, reply) => {
+  server.get('/rcm/payers/ph/hmos', async (request, reply) => {
     const query = request.query as {
       status?: string;
       integrationMode?: string;
@@ -64,7 +64,7 @@ const phHmoRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   });
 
   /* ── GET /rcm/payers/ph/hmos/stats — summary stats ────── */
-  server.get("/rcm/payers/ph/hmos/stats", async (_request, reply) => {
+  server.get('/rcm/payers/ph/hmos/stats', async (_request, reply) => {
     const stats = getPhHmoStats();
     const meta = getPhHmoMeta();
 
@@ -76,7 +76,7 @@ const phHmoRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   });
 
   /* ── GET /rcm/payers/ph/hmos/validate — validation ────── */
-  server.get("/rcm/payers/ph/hmos/validate", async (_request, reply) => {
+  server.get('/rcm/payers/ph/hmos/validate', async (_request, reply) => {
     const validation = getPhHmoRegistryValidation();
 
     return reply.send({
@@ -86,7 +86,7 @@ const phHmoRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   });
 
   /* ── GET /rcm/payers/ph/hmos/:payerId — single HMO ──── */
-  server.get("/rcm/payers/ph/hmos/:payerId", async (request, reply) => {
+  server.get('/rcm/payers/ph/hmos/:payerId', async (request, reply) => {
     const { payerId } = request.params as { payerId: string };
     const hmo = getPhHmo(payerId);
 
@@ -94,7 +94,7 @@ const phHmoRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
       return reply.code(404).send({
         ok: false,
         error: `HMO not found: ${payerId}`,
-        hint: "Use GET /rcm/payers/ph/hmos to list all available HMOs",
+        hint: 'Use GET /rcm/payers/ph/hmos to list all available HMOs',
       });
     }
 
@@ -105,7 +105,7 @@ const phHmoRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   });
 
   /* ── GET /rcm/payers/ph/hmos/:payerId/loa-packet ────── */
-  server.get("/rcm/payers/ph/hmos/:payerId/loa-packet", async (request, reply) => {
+  server.get('/rcm/payers/ph/hmos/:payerId/loa-packet', async (request, reply) => {
     const { payerId } = request.params as { payerId: string };
     const packet = createLoaRequestPacket(payerId);
 
@@ -120,7 +120,7 @@ const phHmoRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   });
 
   /* ── GET /rcm/payers/ph/hmos/:payerId/claim-packet ──── */
-  server.get("/rcm/payers/ph/hmos/:payerId/claim-packet", async (request, reply) => {
+  server.get('/rcm/payers/ph/hmos/:payerId/claim-packet', async (request, reply) => {
     const { payerId } = request.params as { payerId: string };
     const packet = createClaimPacket(payerId);
 
@@ -135,7 +135,7 @@ const phHmoRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   });
 
   /* ── GET /rcm/payers/ph/hmos/:payerId/capabilities ──── */
-  server.get("/rcm/payers/ph/hmos/:payerId/capabilities", async (request, reply) => {
+  server.get('/rcm/payers/ph/hmos/:payerId/capabilities', async (request, reply) => {
     const { payerId } = request.params as { payerId: string };
     const report = getAdapterCapabilityReport(payerId);
 

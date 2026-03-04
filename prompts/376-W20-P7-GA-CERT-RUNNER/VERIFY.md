@@ -1,6 +1,7 @@
 # 376-99-VERIFY --- GA Certification Runner (W20-P7)
 
 ## Verification Steps
+
 1. scripts/verify-ga.ps1 exists and is valid PowerShell
 2. The script creates evidence directory under artifacts/ga-cert/
 3. The script runs ga-checklist.ps1 internally

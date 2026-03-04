@@ -13,10 +13,10 @@
  * at application startup.
  */
 
-import type { FastifyInstance } from "fastify";
-import { validateCredentials } from "../vista/config.js";
-import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
-import { optionalRpc } from "../vista/rpcCapabilities.js";
+import type { FastifyInstance } from 'fastify';
+import { validateCredentials } from '../vista/config.js';
+import { connect, disconnect, callRpc } from '../vista/rpcBrokerClient.js';
+import { optionalRpc } from '../vista/rpcCapabilities.js';
 import { safeErr } from '../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
@@ -47,15 +47,14 @@ export function registerImagingPlugin(plugin: ImagingViewerPlugin): void {
 /* ------------------------------------------------------------------ */
 
 export default async function imagingRoutes(server: FastifyInstance): Promise<void> {
-
   /**
    * GET /vista/imaging/status
    *
    * Returns imaging system availability and capabilities.
    */
-  server.get("/vista/imaging/status", async () => {
-    const mag4Check = optionalRpc("MAG4 REMOTE PROCEDURE");
-    const raCheck = optionalRpc("RA DETAILED REPORT");
+  server.get('/vista/imaging/status', async () => {
+    const mag4Check = optionalRpc('MAG4 REMOTE PROCEDURE');
+    const raCheck = optionalRpc('RA DETAILED REPORT');
 
     return {
       ok: true,
@@ -63,12 +62,12 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
       capabilities: {
         vistaImaging: {
           available: mag4Check.available,
-          rpc: "MAG4 REMOTE PROCEDURE",
+          rpc: 'MAG4 REMOTE PROCEDURE',
           status: mag4Check.available ? 'active' : 'not-available-on-distro',
         },
         radiology: {
           available: raCheck.available,
-          rpc: "RA DETAILED REPORT",
+          rpc: 'RA DETAILED REPORT',
           status: raCheck.available ? 'active' : 'not-available-on-distro',
         },
         plugins: plugins.map((p) => ({
@@ -78,9 +77,10 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
         })),
       },
       integrationReady: true,
-      message: (mag4Check.available || raCheck.available)
-        ? 'Imaging APIs detected. Viewer integration active.'
-        : 'Imaging APIs not available on this distro. Plugin interface ready for external viewer.',
+      message:
+        mag4Check.available || raCheck.available
+          ? 'Imaging APIs detected. Viewer integration active.'
+          : 'Imaging APIs not available on this distro. Plugin interface ready for external viewer.',
     };
   });
 
@@ -89,27 +89,28 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
    *
    * Returns radiology report text if RA DETAILED REPORT is available.
    */
-  server.get("/vista/imaging/report", async (request, reply) => {
+  server.get('/vista/imaging/report', async (request, reply) => {
     const { dfn, caseId } = request.query as any;
     if (!dfn) {
-      return reply.code(400).send({ ok: false, error: "Missing dfn" });
+      return reply.code(400).send({ ok: false, error: 'Missing dfn' });
     }
 
-    const raCheck = optionalRpc("RA DETAILED REPORT");
+    const raCheck = optionalRpc('RA DETAILED REPORT');
     if (!raCheck.available) {
       return {
         ok: true,
         available: false,
-        message: 'RA DETAILED REPORT not available on this distro. Radiology reports require VistA Imaging integration.',
+        message:
+          'RA DETAILED REPORT not available on this distro. Radiology reports require VistA Imaging integration.',
       };
     }
 
     try {
       validateCredentials();
       await connect();
-      const resp = await callRpc("RA DETAILED REPORT", [String(dfn), String(caseId || "")]);
+      const resp = await callRpc('RA DETAILED REPORT', [String(dfn), String(caseId || '')]);
       disconnect();
-      return { ok: true, available: true, text: resp.join("\n"), rpcUsed: "RA DETAILED REPORT" };
+      return { ok: true, available: true, text: resp.join('\n'), rpcUsed: 'RA DETAILED REPORT' };
     } catch (err: any) {
       disconnect();
       return { ok: false, error: safeErr(err) };

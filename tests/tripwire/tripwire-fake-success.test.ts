@@ -17,7 +17,7 @@
  *   7. Bidirectional: add proof -> remove proof -> violation returns
  */
 
-import { validateResponseForTripwire } from "../../apps/api/src/middleware/no-fake-success.js";
+import { validateResponseForTripwire } from '../../apps/api/src/middleware/no-fake-success.js';
 
 /* ------------------------------------------------------------------ */
 /* Test runner                                                         */
@@ -47,83 +47,83 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
   }
 
   // ---- Tripwire 1: ok:true with NO proof -> VIOLATION ----
-  test("ok:true with no proof fields -> violation", () => {
-    const result = validateResponseForTripwire("/vista/some-endpoint", {
+  test('ok:true with no proof fields -> violation', () => {
+    const result = validateResponseForTripwire('/vista/some-endpoint', {
       ok: true,
     });
     assert(result.pass === false, `Expected pass=false, got pass=${result.pass}`);
     assert(
-      result.reason === "missing-effect-proof",
-      `Expected reason=missing-effect-proof, got ${result.reason}`,
+      result.reason === 'missing-effect-proof',
+      `Expected reason=missing-effect-proof, got ${result.reason}`
     );
   });
 
   // ---- Tripwire 2: ok:true + effectProof -> PASS ----
-  test("ok:true with effectProof field -> pass", () => {
-    const result = validateResponseForTripwire("/vista/some-endpoint", {
+  test('ok:true with effectProof field -> pass', () => {
+    const result = validateResponseForTripwire('/vista/some-endpoint', {
       ok: true,
-      effectProof: { messageId: "123" },
+      effectProof: { messageId: '123' },
     });
     assert(result.pass === true, `Expected pass=true, got pass=${result.pass}`);
-    assert(result.reason === "has-effect-proof", `Expected has-effect-proof, got ${result.reason}`);
+    assert(result.reason === 'has-effect-proof', `Expected has-effect-proof, got ${result.reason}`);
   });
 
   // ---- Tripwire 3: ok:true + pendingTargets -> PASS ----
-  test("ok:true with pendingTargets -> pass", () => {
-    const result = validateResponseForTripwire("/vista/some-endpoint", {
+  test('ok:true with pendingTargets -> pass', () => {
+    const result = validateResponseForTripwire('/vista/some-endpoint', {
       ok: true,
-      pendingTargets: [{ rpc: "ORWDX LOCK", package: "OR", reason: "Not integrated" }],
+      pendingTargets: [{ rpc: 'ORWDX LOCK', package: 'OR', reason: 'Not integrated' }],
     });
     assert(result.pass === true, `Expected pass=true, got pass=${result.pass}`);
   });
 
   // ---- Tripwire 4: ok:true + items (collection proof) -> PASS ----
-  test("ok:true with items array -> pass", () => {
-    const result = validateResponseForTripwire("/vista/allergies", {
+  test('ok:true with items array -> pass', () => {
+    const result = validateResponseForTripwire('/vista/allergies', {
       ok: true,
-      items: [{ name: "PENICILLIN", ien: "42" }],
-      rpcUsed: ["ORQQAL LIST"],
+      items: [{ name: 'PENICILLIN', ien: '42' }],
+      rpcUsed: ['ORQQAL LIST'],
     });
     assert(result.pass === true, `Expected pass=true, got pass=${result.pass}`);
   });
 
   // ---- Tripwire 5: ok:false -> not checked (always passes) ----
-  test("ok:false -> not checked", () => {
-    const result = validateResponseForTripwire("/vista/something", {
+  test('ok:false -> not checked', () => {
+    const result = validateResponseForTripwire('/vista/something', {
       ok: false,
-      error: "Something failed",
+      error: 'Something failed',
     });
     assert(result.pass === true, `Expected pass=true for ok:false`);
-    assert(result.reason === "not-ok-true", `Expected not-ok-true, got ${result.reason}`);
+    assert(result.reason === 'not-ok-true', `Expected not-ok-true, got ${result.reason}`);
   });
 
   // ---- Tripwire 6: Exempt route -> always passes ----
-  test("exempt route (health) -> always passes", () => {
-    const result = validateResponseForTripwire("/health", {
+  test('exempt route (health) -> always passes', () => {
+    const result = validateResponseForTripwire('/health', {
       ok: true,
       // No proof fields, but exempt
     });
     assert(result.pass === true, `Expected pass=true for exempt route`);
-    assert(result.reason === "exempt-route", `Expected exempt-route, got ${result.reason}`);
+    assert(result.reason === 'exempt-route', `Expected exempt-route, got ${result.reason}`);
   });
 
-  test("exempt route (auth) -> always passes", () => {
-    const result = validateResponseForTripwire("/auth/login", {
+  test('exempt route (auth) -> always passes', () => {
+    const result = validateResponseForTripwire('/auth/login', {
       ok: true,
     });
     assert(result.pass === true, `Expected pass=true for auth route`);
   });
 
-  test("exempt route (metrics) -> always passes", () => {
-    const result = validateResponseForTripwire("/metrics/prometheus", {
+  test('exempt route (metrics) -> always passes', () => {
+    const result = validateResponseForTripwire('/metrics/prometheus', {
       ok: true,
     });
     assert(result.pass === true, `Expected pass=true for metrics route`);
   });
 
   // ---- Tripwire 7: ok:true + count (aggregate proof) -> PASS ----
-  test("ok:true with count -> pass", () => {
-    const result = validateResponseForTripwire("/admin/something", {
+  test('ok:true with count -> pass', () => {
+    const result = validateResponseForTripwire('/admin/something', {
       ok: true,
       count: 42,
     });
@@ -132,7 +132,7 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
 
   // ---- Tripwire 8: ok:true + null proof field -> VIOLATION ----
   test("ok:true with null proof field -> violation (null doesn't count)", () => {
-    const result = validateResponseForTripwire("/vista/endpoint", {
+    const result = validateResponseForTripwire('/vista/endpoint', {
       ok: true,
       items: null,
     });
@@ -140,8 +140,8 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
   });
 
   // ---- Tripwire 9: ok:true + undefined proof field -> VIOLATION ----
-  test("ok:true with undefined proof field -> violation", () => {
-    const result = validateResponseForTripwire("/vista/endpoint", {
+  test('ok:true with undefined proof field -> violation', () => {
+    const result = validateResponseForTripwire('/vista/endpoint', {
       ok: true,
       items: undefined,
     });
@@ -149,26 +149,26 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
   });
 
   // ---- Tripwire 10: Bidirectional proof ----
-  test("bidirectional: no proof -> add proof -> remove proof", () => {
+  test('bidirectional: no proof -> add proof -> remove proof', () => {
     // Start with violation
     const body: Record<string, unknown> = { ok: true };
-    let result = validateResponseForTripwire("/vista/test", body);
-    assert(result.pass === false, "Should fail without proof");
+    let result = validateResponseForTripwire('/vista/test', body);
+    assert(result.pass === false, 'Should fail without proof');
 
     // Add proof
-    body.items = [{ ien: "1" }];
-    result = validateResponseForTripwire("/vista/test", body);
-    assert(result.pass === true, "Should pass with proof");
+    body.items = [{ ien: '1' }];
+    result = validateResponseForTripwire('/vista/test', body);
+    assert(result.pass === true, 'Should pass with proof');
 
     // Remove proof
     delete body.items;
-    result = validateResponseForTripwire("/vista/test", body);
-    assert(result.pass === false, "Should fail again without proof");
+    result = validateResponseForTripwire('/vista/test', body);
+    assert(result.pass === false, 'Should fail again without proof');
   });
 
   // ---- Tripwire 11: ok:true + empty array proof -> PASS (empty is non-null) ----
-  test("ok:true with empty array (items: []) -> pass (non-null)", () => {
-    const result = validateResponseForTripwire("/vista/endpoint", {
+  test('ok:true with empty array (items: []) -> pass (non-null)', () => {
+    const result = validateResponseForTripwire('/vista/endpoint', {
       ok: true,
       items: [],
     });
@@ -176,18 +176,18 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
   });
 
   // ---- Tripwire 12: Mutation proof fields ----
-  test("ok:true with created: true -> pass", () => {
-    const result = validateResponseForTripwire("/rcm/claims", {
+  test('ok:true with created: true -> pass', () => {
+    const result = validateResponseForTripwire('/rcm/claims', {
       ok: true,
       created: true,
     });
     assert(result.pass === true, `Expected pass=true for created`);
   });
 
-  test("ok:true with claimId -> pass", () => {
-    const result = validateResponseForTripwire("/rcm/claims/submit", {
+  test('ok:true with claimId -> pass', () => {
+    const result = validateResponseForTripwire('/rcm/claims/submit', {
       ok: true,
-      claimId: "CLM-001",
+      claimId: 'CLM-001',
     });
     assert(result.pass === true, `Expected pass=true for claimId`);
   });

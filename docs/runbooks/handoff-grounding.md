@@ -8,21 +8,22 @@ WorldVistA Docker sandbox.**
 
 ### Key CRHD RPCs (Migration Targets)
 
-| RPC Name                    | Purpose                              |
-|-----------------------------|--------------------------------------|
-| CRHD HANDOFF SAVE           | Save handoff document                |
-| CRHD HANDOFF GET            | Retrieve handoff document            |
-| CRHD HANDOFF SUBMIT         | Submit handoff for acceptance        |
-| CRHD HANDOFF ACCEPT         | Accept submitted handoff             |
-| CRHD HANDOFF LIST           | List handoffs by ward/date           |
-| CRHD HANDOFF DELETE         | Delete draft handoff                 |
-| CRHD GET PATIENT INFO       | Get patient clinical summary         |
-| CRHD GET TEAM INFO          | Get care team members                |
-| CRHD GET WARD LIST          | List wards for handoff               |
+| RPC Name              | Purpose                       |
+| --------------------- | ----------------------------- |
+| CRHD HANDOFF SAVE     | Save handoff document         |
+| CRHD HANDOFF GET      | Retrieve handoff document     |
+| CRHD HANDOFF SUBMIT   | Submit handoff for acceptance |
+| CRHD HANDOFF ACCEPT   | Accept submitted handoff      |
+| CRHD HANDOFF LIST     | List handoffs by ward/date    |
+| CRHD HANDOFF DELETE   | Delete draft handoff          |
+| CRHD GET PATIENT INFO | Get patient clinical summary  |
+| CRHD GET TEAM INFO    | Get care team members         |
+| CRHD GET WARD LIST    | List wards for handoff        |
 
 ### CRHD Data Model
 
 CRHD uses TIU DOCUMENT CLASS for persistence:
+
 - SBAR fields map to structured TIU note sections
 - Risk flags map to Clinical Reminders
 - Todos map to Orders (consult/procedure)
@@ -32,15 +33,16 @@ CRHD uses TIU DOCUMENT CLASS for persistence:
 
 These RPCs are available in the sandbox and provide ward patient data:
 
-| RPC Name              | File/Global            | Purpose                |
-|-----------------------|------------------------|------------------------|
-| ORQPT WARD PATIENTS   | ^DPT (File 2)         | List patients on ward  |
-| ORWPS ACTIVE          | ^PS(55)                | Active medications     |
-| ORQQAL LIST           | ^GMR(120.8)            | Allergy list           |
+| RPC Name            | File/Global   | Purpose               |
+| ------------------- | ------------- | --------------------- |
+| ORQPT WARD PATIENTS | ^DPT (File 2) | List patients on ward |
+| ORWPS ACTIVE        | ^PS(55)       | Active medications    |
+| ORQQAL LIST         | ^GMR(120.8)   | Allergy list          |
 
 ## In-Memory Store Design
 
 Current implementation uses `Map<string, HandoffReport>` with:
+
 - UUID-based report IDs
 - 4-state lifecycle: draft -> submitted -> accepted -> archived
 - Per-patient SBAR notes, risk flags, and todos
@@ -56,18 +58,19 @@ Current implementation uses `Map<string, HandoffReport>` with:
 
 ## VistA File References
 
-| File Number | Name                  | Usage                          |
-|-------------|-----------------------|--------------------------------|
-| 2           | PATIENT               | Patient demographics           |
-| 55          | PHARMACY PATIENT      | Active medications             |
-| 120.8       | ADVERSE REACTION      | Allergy/adverse reaction list  |
-| 8925        | TIU DOCUMENT          | Clinical notes (CRHD target)   |
-| 8925.1      | TIU DOCUMENT DEFINITION | Document class definitions   |
-| 811.9       | REMINDER DEFINITION   | Clinical reminders (risk flags)|
+| File Number | Name                    | Usage                           |
+| ----------- | ----------------------- | ------------------------------- |
+| 2           | PATIENT                 | Patient demographics            |
+| 55          | PHARMACY PATIENT        | Active medications              |
+| 120.8       | ADVERSE REACTION        | Allergy/adverse reaction list   |
+| 8925        | TIU DOCUMENT            | Clinical notes (CRHD target)    |
+| 8925.1      | TIU DOCUMENT DEFINITION | Document class definitions      |
+| 811.9       | REMINDER DEFINITION     | Clinical reminders (risk flags) |
 
 ## Integration-Pending Responses
 
 All API endpoints include:
+
 ```json
 {
   "pendingTargets": [

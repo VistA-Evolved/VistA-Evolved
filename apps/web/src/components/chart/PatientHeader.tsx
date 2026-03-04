@@ -16,15 +16,23 @@ export default function PatientHeader({ dfn }: PatientHeaderProps) {
   useEffect(() => {
     let cancelled = false;
     fetchDemographics(dfn)
-      .then((p) => { if (!cancelled) setPatient(p); })
-      .catch((e) => { if (!cancelled) setError(e.message); });
-    return () => { cancelled = true; };
+      .then((p) => {
+        if (!cancelled) setPatient(p);
+      })
+      .catch((e) => {
+        if (!cancelled) setError(e.message);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [dfn]);
 
   if (error) {
     return (
       <div className={styles.header}>
-        <span className={styles.error}>Patient {dfn} — Error: {error}</span>
+        <span className={styles.error}>
+          Patient {dfn} — Error: {error}
+        </span>
       </div>
     );
   }

@@ -1,6 +1,7 @@
 # 375-99-VERIFY — Data Rights Operations (W20-P6)
 
 ## Verification Steps
+
 1. tsc --noEmit clean
 2. POST /data-rights/retention-policies → 201 creates retention policy
 3. GET /data-rights/retention-policies → list

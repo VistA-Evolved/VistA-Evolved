@@ -1,6 +1,7 @@
 # Phase 333 — VERIFY: Multi-Region DR & GameDays (W15-P7)
 
 ## Verification Steps
+
 1. `npx tsc --noEmit` — 0 errors
 2. Drill lifecycle: scheduled → running → step advance → completed with grade
 3. Grading: A (100% pass, no findings) through F (critical findings / >50% failed)
@@ -11,4 +12,5 @@
    dr-schedules, dr-audit-log)
 
 ## Evidence
+
 - tsc: 0 errors

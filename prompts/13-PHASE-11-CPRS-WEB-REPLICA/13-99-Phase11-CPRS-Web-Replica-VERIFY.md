@@ -3,15 +3,19 @@
 ## Verification Checklist
 
 ### Automated Script
+
 ```powershell
 .\scripts\verify-phase1-to-phase11-cprs.ps1
 ```
+
 Expected: 0 FAIL
 
 ### Build Verification
+
 ```powershell
 pnpm -C apps/web build
 ```
+
 Expected: Clean compile, no TypeScript errors
 
 ### Manual Walkthrough
@@ -30,21 +34,25 @@ Expected: Clean compile, no TypeScript errors
 12. **Verify page** — Navigate to `/cprs/verify`, confirm 15 checks run
 
 ### Contract Binding
+
 - `getChartTabs()` returns 10 tabs sorted Cover Sheet first
 - `getFrameMenu()` returns 5+ top-level menu items
 - `sanitizeLabel()` maps VistAWeb → Remote Data Viewer, Non-VA Meds → External Medications
 
 ### No VA/VHA Terminology
+
 - Grep all `apps/web/src/components/cprs/**/*.tsx` files
 - Confirm NO occurrences of "VA Medical Center", "Non-VA Meds" in rendered strings
 - sanitizeLabel function handles replacements
 
 ### State Management
+
 - PatientProvider: selectPatient fetches demographics from API
 - DataCacheProvider: fetchAll loads all clinical domains
 - CPRSUIProvider: preferences persist to localStorage across page reloads
 
 ### Route Structure
+
 ```
 /cprs/login                      → Sign-on page
 /cprs/patient-search             → Patient selection

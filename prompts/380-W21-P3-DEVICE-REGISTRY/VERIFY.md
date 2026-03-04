@@ -1,6 +1,7 @@
 # Phase 380 — W21-P3 VERIFY
 
 ## Gates
+
 1. Types exist: device-registry.types.ts exports ManagedDevice, DevicePatientAssociation, DeviceLocationMapping
 2. Store CRUD: registerDevice, getDevice, getDeviceBySerial, listDevices, updateDevice, decommissionDevice
 3. Association: associatePatient, disassociatePatient, getActiveAssociation, listAssociations

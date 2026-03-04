@@ -1,6 +1,7 @@
 # Phase 435 — Verification
 
 ## Checks
+
 1. `prompts-tree-health.mjs` passes (7/7 PASS, 0 FAIL)
 2. `addAllergy()` calls `safeCallRpcWithList("ORWDAL32 SAVE ALLERGY", ...)` with OREDITED LIST
 3. `addVital()` calls `safeCallRpc("GMV ADD VM", ...)` with formatted param string

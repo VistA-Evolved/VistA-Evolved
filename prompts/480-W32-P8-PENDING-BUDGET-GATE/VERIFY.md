@@ -12,6 +12,7 @@
 8. Script handles BOM stripping (BUG-064)
 
 ## Verification
+
 ```powershell
 $script = Get-Content scripts/qa-gates/integration-pending-budget.mjs -Raw
 ($script.Split("`n").Count) -gt 80          # Gate 1

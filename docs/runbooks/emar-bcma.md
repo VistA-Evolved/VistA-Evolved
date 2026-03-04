@@ -12,18 +12,19 @@ with named VistA targets.
 
 ### API Endpoints (apps/api/src/routes/emar/index.ts)
 
-| Endpoint | Method | Source | RPCs |
-|----------|--------|--------|------|
-| `/emar/schedule?dfn=N` | GET | vista | ORWPS ACTIVE, ORWORR GETTXT |
-| `/emar/allergies?dfn=N` | GET | vista | ORQQAL LIST |
-| `/emar/duplicate-check?dfn=N` | GET | heuristic | ORWPS ACTIVE |
-| `/emar/history?dfn=N` | GET | integration-pending | PSB MED LOG |
-| `/emar/administer` | POST | integration-pending | PSB MED LOG |
-| `/emar/barcode-scan` | POST | integration-pending | PSB MED LOG, PSJBCMA |
+| Endpoint                      | Method | Source              | RPCs                        |
+| ----------------------------- | ------ | ------------------- | --------------------------- |
+| `/emar/schedule?dfn=N`        | GET    | vista               | ORWPS ACTIVE, ORWORR GETTXT |
+| `/emar/allergies?dfn=N`       | GET    | vista               | ORQQAL LIST                 |
+| `/emar/duplicate-check?dfn=N` | GET    | heuristic           | ORWPS ACTIVE                |
+| `/emar/history?dfn=N`         | GET    | integration-pending | PSB MED LOG                 |
+| `/emar/administer`            | POST   | integration-pending | PSB MED LOG                 |
+| `/emar/barcode-scan`          | POST   | integration-pending | PSB MED LOG, PSJBCMA        |
 
 ### Web UI (apps/web/src/app/cprs/emar/page.tsx)
 
 4 tabs:
+
 1. **Medication Schedule** -- Active meds from ORWPS ACTIVE with derived schedule/route/frequency
 2. **Allergy Warnings** -- ORQQAL LIST data with severity-based interaction warnings
 3. **Administration** -- Med admin recording (integration-pending with PSB MED LOG target)
@@ -39,19 +40,19 @@ with named VistA targets.
 
 ### Real VistA Data (working now)
 
-| RPC | Data | Notes |
-|-----|------|-------|
-| ORWPS ACTIVE | Active medication list | Returns ~TYPE^rxIEN;kind^drugName^...^orderIEN^status |
-| ORWORR GETTXT | Order text for empty drug names | Fallback when ORWPS ACTIVE has empty drugName |
-| ORQQAL LIST | Patient allergies | Returns id^allergen^severity^reactions |
+| RPC           | Data                            | Notes                                                 |
+| ------------- | ------------------------------- | ----------------------------------------------------- |
+| ORWPS ACTIVE  | Active medication list          | Returns ~TYPE^rxIEN;kind^drugName^...^orderIEN^status |
+| ORWORR GETTXT | Order text for empty drug names | Fallback when ORWPS ACTIVE has empty drugName         |
+| ORQQAL LIST   | Patient allergies               | Returns id^allergen^severity^reactions                |
 
 ### Integration-Pending (requires BCMA/PSB package)
 
-| RPC | Purpose | VistA File |
-|-----|---------|------------|
+| RPC         | Purpose                            | VistA File                     |
+| ----------- | ---------------------------------- | ------------------------------ |
 | PSB MED LOG | Administration history + recording | PSB(53.79) BCMA MEDICATION LOG |
-| PSB ALLERGY | Drug-allergy check at scan time | (PSB package) |
-| PSJBCMA | Barcode-to-medication lookup | (PSJ/PSB packages) |
+| PSB ALLERGY | Drug-allergy check at scan time    | (PSB package)                  |
+| PSJBCMA     | Barcode-to-medication lookup       | (PSJ/PSB packages)             |
 
 ## Heuristic Features
 
@@ -59,6 +60,7 @@ with named VistA targets.
 
 The `/emar/duplicate-check` endpoint uses a name-based therapeutic class
 matching heuristic to flag potential duplicate therapies. This is:
+
 - Based on a static list of ~130 drug names across 14 therapeutic classes
 - NOT a clinical decision support engine
 - NOT a substitute for pharmacist review

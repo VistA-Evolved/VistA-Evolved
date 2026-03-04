@@ -14,14 +14,14 @@
  * not in a client-readable cookie. This is immune to cookie injection.
  */
 
-import { randomBytes } from "node:crypto";
-import type { FastifyRequest, FastifyReply } from "fastify";
+import { randomBytes } from 'node:crypto';
+import type { FastifyRequest, FastifyReply } from 'fastify';
 
 /* ------------------------------------------------------------------ */
 /* Configuration                                                        */
 /* ------------------------------------------------------------------ */
 
-const CSRF_HEADER = "x-csrf-token";
+const CSRF_HEADER = 'x-csrf-token';
 const CSRF_TOKEN_LENGTH = 32;
 
 /* ------------------------------------------------------------------ */
@@ -29,7 +29,7 @@ const CSRF_TOKEN_LENGTH = 32;
 /* ------------------------------------------------------------------ */
 
 export function generateCsrfToken(): string {
-  return randomBytes(CSRF_TOKEN_LENGTH).toString("hex");
+  return randomBytes(CSRF_TOKEN_LENGTH).toString('hex');
 }
 
 /* ------------------------------------------------------------------ */
@@ -42,20 +42,24 @@ export function generateCsrfToken(): string {
  * Call inside handler body before processing.
  * Returns true if valid, sends 403 and returns false if not.
  */
-export function validateCsrf(request: FastifyRequest, reply: FastifyReply, sessionCsrfSecret?: string): boolean {
+export function validateCsrf(
+  request: FastifyRequest,
+  reply: FastifyReply,
+  sessionCsrfSecret?: string
+): boolean {
   const method = request.method.toUpperCase();
   // Only protect write methods
-  if (method === "GET" || method === "HEAD" || method === "OPTIONS") return true;
+  if (method === 'GET' || method === 'HEAD' || method === 'OPTIONS') return true;
 
   if (!sessionCsrfSecret) {
-    reply.code(403).send({ ok: false, error: "Invalid CSRF token" });
+    reply.code(403).send({ ok: false, error: 'Invalid CSRF token' });
     return false;
   }
 
   const headerToken = (request.headers as any)[CSRF_HEADER];
 
   if (!headerToken || headerToken !== sessionCsrfSecret) {
-    reply.code(403).send({ ok: false, error: "Invalid CSRF token" });
+    reply.code(403).send({ ok: false, error: 'Invalid CSRF token' });
     return false;
   }
 

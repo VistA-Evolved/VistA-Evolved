@@ -15,8 +15,9 @@ import { useDataCache, type ReportDef } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
-
-interface Props { dfn: string; }
+interface Props {
+  dfn: string;
+}
 
 interface ImagingStudy {
   studyId: string;
@@ -50,7 +51,9 @@ export default function ReportsPanel({ dfn }: Props) {
   const [studiesLoading, setStudiesLoading] = useState(false);
   const [showStudies, setShowStudies] = useState(false);
 
-  useEffect(() => { fetchDomain(dfn, 'reports'); }, [dfn, fetchDomain]);
+  useEffect(() => {
+    fetchDomain(dfn, 'reports');
+  }, [dfn, fetchDomain]);
 
   // Fetch imaging status once
   useEffect(() => {
@@ -59,7 +62,9 @@ export default function ReportsPanel({ dfn }: Props) {
         const res = await fetch(`${API_BASE}/vista/imaging/status`, { credentials: 'include' });
         const data = await res.json();
         if (data.ok) setImagingStatus(data);
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
     })();
   }, []);
 
@@ -75,7 +80,9 @@ export default function ReportsPanel({ dfn }: Props) {
         `${API_BASE}/vista/reports/text?dfn=${dfn}&id=${encodeURIComponent(r.id)}&hsType=${encodeURIComponent(r.hsType ?? '')}`
       );
       const data = await res.json();
-      setReportText(data.ok ? (data.text ?? '(no report text)') : `Error: ${data.error ?? 'unknown'}`);
+      setReportText(
+        data.ok ? (data.text ?? '(no report text)') : `Error: ${data.error ?? 'unknown'}`
+      );
     } catch {
       setReportText('Network error loading report');
     } finally {
@@ -87,21 +94,30 @@ export default function ReportsPanel({ dfn }: Props) {
     setShowStudies(true);
     setStudiesLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/vista/imaging/studies?dfn=${dfn}`, { credentials: 'include' });
+      const res = await fetch(`${API_BASE}/vista/imaging/studies?dfn=${dfn}`, {
+        credentials: 'include',
+      });
       const data = await res.json();
       if (data.ok) setStudies(data.studies || []);
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
     setStudiesLoading(false);
   }
 
   async function handleViewerLaunch(studyUid: string) {
     try {
-      const res = await fetch(`${API_BASE}/vista/imaging/viewer-url?studyUid=${encodeURIComponent(studyUid)}`, { credentials: 'include' });
+      const res = await fetch(
+        `${API_BASE}/vista/imaging/viewer-url?studyUid=${encodeURIComponent(studyUid)}`,
+        { credentials: 'include' }
+      );
       const data = await res.json();
       if (data.ok && data.viewer?.url) {
         window.open(data.viewer.url, '_blank', 'noopener');
       }
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }
 
   return (
@@ -136,16 +152,25 @@ export default function ReportsPanel({ dfn }: Props) {
           )}
 
           {/* Phase 18C: Imaging status and study list */}
-          <div style={{
-            marginTop: 12, padding: 8,
-            border: `1px ${imagingStatus?.viewerEnabled ? 'solid' : 'dashed'} var(--cprs-border)`,
-            borderRadius: 4, fontSize: 11,
-          }}>
+          <div
+            style={{
+              marginTop: 12,
+              padding: 8,
+              border: `1px ${imagingStatus?.viewerEnabled ? 'solid' : 'dashed'} var(--cprs-border)`,
+              borderRadius: 4,
+              fontSize: 11,
+            }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-              <span style={{
-                display: 'inline-block', width: 8, height: 8, borderRadius: '50%',
-                background: imagingStatus?.viewerEnabled ? '#16a34a' : '#6b7280',
-              }} />
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  background: imagingStatus?.viewerEnabled ? '#16a34a' : '#6b7280',
+                }}
+              />
               <strong>Imaging</strong>
               <span style={{ color: 'var(--cprs-text-muted)' }}>
                 {imagingStatus?.viewerEnabled ? 'Active' : 'Not Available'}
@@ -167,7 +192,11 @@ export default function ReportsPanel({ dfn }: Props) {
               onClick={handleLoadStudies}
               style={{ fontSize: 11, padding: '2px 8px', width: '100%' }}
             >
-              {studiesLoading ? 'Loading...' : showStudies ? 'Refresh Studies' : 'Load Patient Studies'}
+              {studiesLoading
+                ? 'Loading...'
+                : showStudies
+                  ? 'Refresh Studies'
+                  : 'Load Patient Studies'}
             </button>
 
             {showStudies && !studiesLoading && (
@@ -178,13 +207,21 @@ export default function ReportsPanel({ dfn }: Props) {
                   </p>
                 ) : (
                   studies.map((s) => (
-                    <div key={s.studyId} style={{
-                      padding: '3px 0', borderBottom: '1px solid var(--cprs-border)',
-                      fontSize: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                    }}>
+                    <div
+                      key={s.studyId}
+                      style={{
+                        padding: '3px 0',
+                        borderBottom: '1px solid var(--cprs-border)',
+                        fontSize: 10,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                    >
                       <div>
                         <strong>{s.modality}</strong> {s.description}
-                        <br />{s.studyDate} &bull; {s.imageCount} img &bull; {s.source}
+                        <br />
+                        {s.studyDate} &bull; {s.imageCount} img &bull; {s.source}
                       </div>
                       {s.studyInstanceUid && (
                         <button
@@ -204,14 +241,31 @@ export default function ReportsPanel({ dfn }: Props) {
         </div>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
           {selectedReport ? (
-            <div style={{ padding: 8, border: '1px solid var(--cprs-border)', borderRadius: 4, background: 'var(--cprs-bg)' }}>
+            <div
+              style={{
+                padding: 8,
+                border: '1px solid var(--cprs-border)',
+                borderRadius: 4,
+                background: 'var(--cprs-bg)',
+              }}
+            >
               <div className={styles.panelTitle}>{selectedReport.name}</div>
-              <pre style={{ fontFamily: 'monospace', fontSize: 12, whiteSpace: 'pre-wrap', margin: 0, minHeight: 60 }}>
+              <pre
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 12,
+                  whiteSpace: 'pre-wrap',
+                  margin: 0,
+                  minHeight: 60,
+                }}
+              >
                 {textLoading ? 'Loading report...' : reportText}
               </pre>
             </div>
           ) : (
-            <p className={styles.emptyText}>Select a report type, then view the report for this patient</p>
+            <p className={styles.emptyText}>
+              Select a report type, then view the report for this patient
+            </p>
           )}
         </div>
       </div>

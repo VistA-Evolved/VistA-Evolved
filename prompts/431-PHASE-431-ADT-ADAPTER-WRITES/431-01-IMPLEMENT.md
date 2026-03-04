@@ -3,11 +3,13 @@
 ## IMPLEMENT
 
 ### Goal
+
 Add write methods to the ClinicalEngineAdapter interface and ADT (Admission/
 Discharge/Transfer) type definitions. This closes the biggest architectural
 gap identified in Phase 427: all clinical writes bypassed the adapter layer.
 
 ### Steps
+
 1. Add ADT types to `adapters/types.ts`: WardRecord, MovementRecord,
    AdmitRequest, TransferRequest, DischargeRequest, WriteResult
 2. Add write methods to `ClinicalEngineAdapter` interface:
@@ -20,6 +22,7 @@ gap identified in Phase 427: all clinical writes bypassed the adapter layer.
 6. Register DGPM write RPCs as exceptions in rpcRegistry.ts
 
 ### Files Touched
+
 - `apps/api/src/adapters/types.ts` (MODIFIED -- ADT types + WriteResult)
 - `apps/api/src/adapters/clinical-engine/interface.ts` (MODIFIED -- 9 new methods)
 - `apps/api/src/adapters/clinical-engine/stub-adapter.ts` (MODIFIED -- 9 stubs)

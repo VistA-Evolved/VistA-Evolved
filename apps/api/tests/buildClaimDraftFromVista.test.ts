@@ -145,7 +145,7 @@ describe('buildClaimDraftFromVista', () => {
     });
     const c = result.candidates[0];
     expect(c.missingFields).toContain('ibChargeAmount');
-    expect(c.sourceMissing.find(s => s.field === 'ibChargeAmount')).toBeTruthy();
+    expect(c.sourceMissing.find((s) => s.field === 'ibChargeAmount')).toBeTruthy();
   });
 
   it('annotates missing insurance when absent', async () => {

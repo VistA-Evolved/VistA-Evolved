@@ -9,6 +9,7 @@
 5. Verify no `ehr_csrf` cookie is set (double-submit cookie removed)
 
 ## Acceptance Criteria
+
 - [ ] CSRF uses session-bound synchronizer token, NOT double-submit cookie
 - [ ] Login response body contains csrfToken field
 - [ ] Mutation requests without X-CSRF-Token header are rejected

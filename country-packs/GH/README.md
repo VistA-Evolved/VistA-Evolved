@@ -4,16 +4,16 @@
 
 Draft pack for Ghana-based VistA-Evolved deployments.
 
-| Field | Value |
-|-------|-------|
-| **Country Code** | GH |
+| Field                    | Value              |
+| ------------------------ | ------------------ |
+| **Country Code**         | GH                 |
 | **Regulatory Framework** | DPA 2012 (Act 843) |
-| **Consent Granularity** | All-or-nothing |
-| **Default Region** | gh-acc (planned) |
-| **Default Locale** | en |
-| **Supported Locales** | en |
-| **Payer Module** | None (NHIA direct) |
-| **Status** | Draft (P1) |
+| **Consent Granularity**  | All-or-nothing     |
+| **Default Region**       | gh-acc (planned)   |
+| **Default Locale**       | en                 |
+| **Supported Locales**    | en                 |
+| **Payer Module**         | None (NHIA direct) |
+| **Status**               | Draft (P1)         |
 
 ## Regulatory Notes
 

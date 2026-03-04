@@ -5,7 +5,7 @@
  * creation, acknowledgment, escalation, routing rules, and audit.
  */
 
-import type { FastifyInstance, FastifyRequest } from "fastify";
+import type { FastifyInstance, FastifyRequest } from 'fastify';
 import {
   createAlarm,
   getAlarm,
@@ -18,33 +18,35 @@ import {
   deleteRoutingRule,
   getAlarmStats,
   getAlarmAudit,
-} from "./alarm-store.js";
-import type { AlarmPriority, AlarmSource, AlarmState } from "./alarm-types.js";
+} from './alarm-store.js';
+import type { AlarmPriority, AlarmSource, AlarmState } from './alarm-types.js';
 
-const DEFAULT_TENANT = "default";
+const DEFAULT_TENANT = 'default';
 
 function tenantId(request: FastifyRequest): string {
-  return (request.headers["x-tenant-id"] as string) || DEFAULT_TENANT;
+  return (request.headers['x-tenant-id'] as string) || DEFAULT_TENANT;
 }
 
 export default async function alarmRoutes(server: FastifyInstance): Promise<void> {
   // -------------------------------------------------------------------------
   // POST /devices/alarms — Create alarm
   // -------------------------------------------------------------------------
-  server.post("/devices/alarms", async (request, reply) => {
+  server.post('/devices/alarms', async (request, reply) => {
     const tenant = tenantId(request);
     const body = request.body as any;
 
     if (!body?.deviceSerial || !body?.code || !body?.displayText || !body?.priority) {
       return reply.code(400).send({
         ok: false,
-        error: "Required: deviceSerial, code, displayText, priority",
+        error: 'Required: deviceSerial, code, displayText, priority',
       });
     }
 
-    const validPriorities: AlarmPriority[] = ["low", "medium", "high", "crisis"];
+    const validPriorities: AlarmPriority[] = ['low', 'medium', 'high', 'crisis'];
     if (!validPriorities.includes(body.priority)) {
-      return reply.code(400).send({ ok: false, error: "priority must be: low, medium, high, crisis" });
+      return reply
+        .code(400)
+        .send({ ok: false, error: 'priority must be: low, medium, high, crisis' });
     }
 
     const alarm = createAlarm(tenant, {
@@ -54,7 +56,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
       codingSystem: body.codingSystem,
       displayText: body.displayText,
       priority: body.priority,
-      source: (body.source as AlarmSource) || "manual",
+      source: (body.source as AlarmSource) || 'manual',
       patientId: body.patientId,
       location: body.location,
       triggerValue: body.triggerValue,
@@ -69,7 +71,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   // -------------------------------------------------------------------------
   // GET /devices/alarms — List alarms (with optional filters)
   // -------------------------------------------------------------------------
-  server.get("/devices/alarms", async (request, reply) => {
+  server.get('/devices/alarms', async (request, reply) => {
     const tenant = tenantId(request);
     const q = request.query as any;
     const filters: any = {};
@@ -85,7 +87,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   // -------------------------------------------------------------------------
   // GET /devices/alarms/stats — Alarm statistics
   // -------------------------------------------------------------------------
-  server.get("/devices/alarms/stats", async (request, reply) => {
+  server.get('/devices/alarms/stats', async (request, reply) => {
     const tenant = tenantId(request);
     return reply.send({ ok: true, stats: getAlarmStats(tenant) });
   });
@@ -93,24 +95,24 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   // -------------------------------------------------------------------------
   // GET /devices/alarms/:id — Get single alarm
   // -------------------------------------------------------------------------
-  server.get("/devices/alarms/:id", async (request, reply) => {
+  server.get('/devices/alarms/:id', async (request, reply) => {
     const tenant = tenantId(request);
     const { id } = request.params as any;
     const alarm = getAlarm(tenant, id);
-    if (!alarm) return reply.code(404).send({ ok: false, error: "Alarm not found" });
+    if (!alarm) return reply.code(404).send({ ok: false, error: 'Alarm not found' });
     return reply.send({ ok: true, alarm });
   });
 
   // -------------------------------------------------------------------------
   // POST /devices/alarms/:id/acknowledge — Acknowledge alarm
   // -------------------------------------------------------------------------
-  server.post("/devices/alarms/:id/acknowledge", async (request, reply) => {
+  server.post('/devices/alarms/:id/acknowledge', async (request, reply) => {
     const tenant = tenantId(request);
     const { id } = request.params as any;
     const body = request.body as any;
 
     if (!body?.userId) {
-      return reply.code(400).send({ ok: false, error: "Required: userId" });
+      return reply.code(400).send({ ok: false, error: 'Required: userId' });
     }
 
     const ack = acknowledgeAlarm(
@@ -120,50 +122,59 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
       body.reason,
       body.silencesEscalation !== false
     );
-    if (!ack) return reply.code(404).send({ ok: false, error: "Alarm not found" });
+    if (!ack) return reply.code(404).send({ ok: false, error: 'Alarm not found' });
     return reply.send({ ok: true, acknowledgment: ack });
   });
 
   // -------------------------------------------------------------------------
   // POST /devices/alarms/:id/escalate — Escalate alarm
   // -------------------------------------------------------------------------
-  server.post("/devices/alarms/:id/escalate", async (request, reply) => {
+  server.post('/devices/alarms/:id/escalate', async (request, reply) => {
     const tenant = tenantId(request);
     const { id } = request.params as any;
     const body = (request.body as any) || {};
 
     const alarm = escalateAlarm(tenant, id, body.target);
-    if (!alarm) return reply.code(404).send({ ok: false, error: "Alarm not found" });
+    if (!alarm) return reply.code(404).send({ ok: false, error: 'Alarm not found' });
     return reply.send({ ok: true, alarm });
   });
 
   // -------------------------------------------------------------------------
   // PATCH /devices/alarms/:id/state — Update alarm state
   // -------------------------------------------------------------------------
-  server.patch("/devices/alarms/:id/state", async (request, reply) => {
+  server.patch('/devices/alarms/:id/state', async (request, reply) => {
     const tenant = tenantId(request);
     const { id } = request.params as any;
     const body = request.body as any;
 
-    const validStates: AlarmState[] = ["active", "latched", "acknowledged", "resolved", "escalated"];
+    const validStates: AlarmState[] = [
+      'active',
+      'latched',
+      'acknowledged',
+      'resolved',
+      'escalated',
+    ];
     if (!body?.state || !validStates.includes(body.state)) {
-      return reply.code(400).send({ ok: false, error: "Required: state (active|latched|acknowledged|resolved|escalated)" });
+      return reply.code(400).send({
+        ok: false,
+        error: 'Required: state (active|latched|acknowledged|resolved|escalated)',
+      });
     }
 
     const alarm = updateAlarmState(tenant, id, body.state, body.actor);
-    if (!alarm) return reply.code(404).send({ ok: false, error: "Alarm not found" });
+    if (!alarm) return reply.code(404).send({ ok: false, error: 'Alarm not found' });
     return reply.send({ ok: true, alarm });
   });
 
   // -------------------------------------------------------------------------
   // POST /devices/alarms/routing-rules — Create routing rule
   // -------------------------------------------------------------------------
-  server.post("/devices/alarms/routing-rules", async (request, reply) => {
+  server.post('/devices/alarms/routing-rules', async (request, reply) => {
     const tenant = tenantId(request);
     const body = request.body as any;
 
     if (!body?.name || !Array.isArray(body.notifyTargets)) {
-      return reply.code(400).send({ ok: false, error: "Required: name, notifyTargets[]" });
+      return reply.code(400).send({ ok: false, error: 'Required: name, notifyTargets[]' });
     }
 
     const rule = addRoutingRule(tenant, {
@@ -185,7 +196,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   // -------------------------------------------------------------------------
   // GET /devices/alarms/routing-rules — List routing rules
   // -------------------------------------------------------------------------
-  server.get("/devices/alarms/routing-rules", async (request, reply) => {
+  server.get('/devices/alarms/routing-rules', async (request, reply) => {
     const tenant = tenantId(request);
     const rules = listRoutingRules(tenant);
     return reply.send({ ok: true, rules, count: rules.length });
@@ -194,18 +205,18 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   // -------------------------------------------------------------------------
   // DELETE /devices/alarms/routing-rules/:id — Delete routing rule
   // -------------------------------------------------------------------------
-  server.delete("/devices/alarms/routing-rules/:id", async (request, reply) => {
+  server.delete('/devices/alarms/routing-rules/:id', async (request, reply) => {
     const tenant = tenantId(request);
     const { id } = request.params as any;
     const deleted = deleteRoutingRule(tenant, id);
-    if (!deleted) return reply.code(404).send({ ok: false, error: "Rule not found" });
+    if (!deleted) return reply.code(404).send({ ok: false, error: 'Rule not found' });
     return reply.send({ ok: true, deleted: true });
   });
 
   // -------------------------------------------------------------------------
   // GET /devices/alarms/audit — Alarm audit trail
   // -------------------------------------------------------------------------
-  server.get("/devices/alarms/audit", async (request, reply) => {
+  server.get('/devices/alarms/audit', async (request, reply) => {
     const tenant = tenantId(request);
     const q = request.query as any;
     const limit = parseInt(q.limit as string, 10) || 100;

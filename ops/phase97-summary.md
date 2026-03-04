@@ -6,6 +6,7 @@ Phase 97 implements the complete HMO Portal Adapter Interface for the top-5
 Philippine HMO payers: Maxicare, MediCard, Intellicare, PhilCare, and ValuCare.
 
 ### New Files (12)
+
 - `apps/api/src/rcm/hmo-portal/types.ts` — Domain types (453 lines): PORTAL_CAPABLE_HMOS, VaultRef, PortalAdapter interface, 12-state FSM, HmoSubmissionRecord, adapter registry
 - `apps/api/src/rcm/hmo-portal/loa-engine.ts` — LOA packet builder with 16 specialty templates, JSON/PDF text exports, SHA-256 integrity hashing
 - `apps/api/src/rcm/hmo-portal/hmo-packet-builder.ts` — HMO claim packet builder from Phase 38 Claim objects, cents-to-pesos conversion, 80% default HMO coverage
@@ -21,6 +22,7 @@ Philippine HMO payers: Maxicare, MediCard, Intellicare, PhilCare, and ValuCare.
 - `apps/web/src/app/cprs/admin/hmo-portal/page.tsx` — 5-tab dashboard UI
 
 ### Modified Files (2)
+
 - `apps/api/src/index.ts` — Import + register hmoPortalRoutes + initHmoPortalAdapters
 - `apps/web/src/app/cprs/admin/layout.tsx` — Nav entry "HMO Portal"
 
@@ -36,6 +38,7 @@ Philippine HMO payers: Maxicare, MediCard, Intellicare, PhilCare, and ValuCare.
 8. **Stats tab**: Should show submission counts by status
 
 ### API Smoke Tests (curl)
+
 ```bash
 # Status overview
 curl http://localhost:3001/rcm/hmo-portal/status
@@ -60,6 +63,7 @@ ALL GATES PASSED
 ```
 
 ## Follow-ups
+
 - Phase 98+: Vault-automated mode (resolve credentials from VaultRef → portal API)
 - Per-HMO deep link refinement when actual portal page paths are confirmed
 - File-based LOA/claim packet export to disk for download

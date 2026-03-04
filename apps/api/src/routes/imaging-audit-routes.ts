@@ -7,7 +7,7 @@
  * All routes require imaging_admin permission.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import {
   queryImagingAudit,
   exportAuditCsv,
@@ -16,20 +16,19 @@ import {
   imagingAudit,
   type ImagingAuditAction,
   type ImagingAuditQuery,
-} from "../services/imaging-audit.js";
-import { hasImagingPermission } from "../services/imaging-authz.js";
+} from '../services/imaging-audit.js';
+import { hasImagingPermission } from '../services/imaging-authz.js';
 
 export async function imagingAuditRoutes(server: FastifyInstance): Promise<void> {
-
   /**
    * GET /imaging/audit/events
    * Query imaging audit trail with filters.
    */
-  server.get("/imaging/audit/events", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/imaging/audit/events', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = request.session;
-    if (!session) return reply.code(401).send({ ok: false, error: "Authentication required" });
-    if (!hasImagingPermission(session, "imaging_admin")) {
-      return reply.code(403).send({ ok: false, error: "Imaging admin required" });
+    if (!session) return reply.code(401).send({ ok: false, error: 'Authentication required' });
+    if (!hasImagingPermission(session, 'imaging_admin')) {
+      return reply.code(403).send({ ok: false, error: 'Imaging admin required' });
     }
 
     const q = request.query as {
@@ -56,12 +55,19 @@ export async function imagingAuditRoutes(server: FastifyInstance): Promise<void>
     };
 
     // Audit the audit query itself
-    imagingAudit("AUDIT_QUERY", {
-      duz: session.duz, name: session.userName, role: session.role,
-    }, session.tenantId, {
-      sourceIp: request.ip,
-      detail: { filters: q },
-    });
+    imagingAudit(
+      'AUDIT_QUERY',
+      {
+        duz: session.duz,
+        name: session.userName,
+        role: session.role,
+      },
+      session.tenantId,
+      {
+        sourceIp: request.ip,
+        detail: { filters: q },
+      }
+    );
 
     const result = queryImagingAudit(query);
     return {
@@ -74,11 +80,11 @@ export async function imagingAuditRoutes(server: FastifyInstance): Promise<void>
    * GET /imaging/audit/stats
    * Audit chain statistics and integrity verification.
    */
-  server.get("/imaging/audit/stats", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/imaging/audit/stats', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = request.session;
-    if (!session) return reply.code(401).send({ ok: false, error: "Authentication required" });
-    if (!hasImagingPermission(session, "imaging_admin")) {
-      return reply.code(403).send({ ok: false, error: "Imaging admin required" });
+    if (!session) return reply.code(401).send({ ok: false, error: 'Authentication required' });
+    if (!hasImagingPermission(session, 'imaging_admin')) {
+      return reply.code(403).send({ ok: false, error: 'Imaging admin required' });
     }
 
     return { ok: true, ...getChainStats() };
@@ -88,18 +94,18 @@ export async function imagingAuditRoutes(server: FastifyInstance): Promise<void>
    * GET /imaging/audit/verify
    * Verify hash chain integrity.
    */
-  server.get("/imaging/audit/verify", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/imaging/audit/verify', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = request.session;
-    if (!session) return reply.code(401).send({ ok: false, error: "Authentication required" });
-    if (!hasImagingPermission(session, "imaging_admin")) {
-      return reply.code(403).send({ ok: false, error: "Imaging admin required" });
+    if (!session) return reply.code(401).send({ ok: false, error: 'Authentication required' });
+    if (!hasImagingPermission(session, 'imaging_admin')) {
+      return reply.code(403).send({ ok: false, error: 'Imaging admin required' });
     }
 
     const valid = verifyChain();
     return {
       ok: true,
       chainValid: valid,
-      message: valid ? "Audit chain integrity verified" : "CHAIN INTEGRITY VIOLATION DETECTED",
+      message: valid ? 'Audit chain integrity verified' : 'CHAIN INTEGRITY VIOLATION DETECTED',
     };
   });
 
@@ -107,11 +113,11 @@ export async function imagingAuditRoutes(server: FastifyInstance): Promise<void>
    * GET /imaging/audit/export
    * Export audit trail as CSV for compliance review.
    */
-  server.get("/imaging/audit/export", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/imaging/audit/export', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = request.session;
-    if (!session) return reply.code(401).send({ ok: false, error: "Authentication required" });
-    if (!hasImagingPermission(session, "imaging_admin")) {
-      return reply.code(403).send({ ok: false, error: "Imaging admin required" });
+    if (!session) return reply.code(401).send({ ok: false, error: 'Authentication required' });
+    if (!hasImagingPermission(session, 'imaging_admin')) {
+      return reply.code(403).send({ ok: false, error: 'Imaging admin required' });
     }
 
     const q = request.query as {
@@ -123,12 +129,19 @@ export async function imagingAuditRoutes(server: FastifyInstance): Promise<void>
     };
 
     // Audit the export
-    imagingAudit("AUDIT_EXPORT", {
-      duz: session.duz, name: session.userName, role: session.role,
-    }, session.tenantId, {
-      sourceIp: request.ip,
-      detail: { filters: q },
-    });
+    imagingAudit(
+      'AUDIT_EXPORT',
+      {
+        duz: session.duz,
+        name: session.userName,
+        role: session.role,
+      },
+      session.tenantId,
+      {
+        sourceIp: request.ip,
+        detail: { filters: q },
+      }
+    );
 
     const csv = exportAuditCsv({
       tenantId: session.tenantId,
@@ -139,8 +152,11 @@ export async function imagingAuditRoutes(server: FastifyInstance): Promise<void>
       until: q.until,
     });
 
-    reply.header("Content-Type", "text/csv; charset=utf-8");
-    reply.header("Content-Disposition", `attachment; filename=imaging-audit-${new Date().toISOString().split("T")[0]}.csv`);
+    reply.header('Content-Type', 'text/csv; charset=utf-8');
+    reply.header(
+      'Content-Disposition',
+      `attachment; filename=imaging-audit-${new Date().toISOString().split('T')[0]}.csv`
+    );
     return reply.send(csv);
   });
 }

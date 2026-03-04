@@ -8,52 +8,52 @@ VistA-first source mapping visible in the UI.
 
 ### Deliverables
 
-| ID | Deliverable | Status |
-|----|-------------|--------|
-| A  | Unified LOA Workflow + Workbench | Done |
-| B  | Unified Claims Submission Workflow + Workbench | Done |
-| C  | Remittance / EOB Intake + Workbench | Done |
-| D  | Payer-Specific Rulepacks | Done |
-| E  | VistA-First Source Mapping | Done |
-| F  | Prompt Discipline | Done |
+| ID  | Deliverable                                    | Status |
+| --- | ---------------------------------------------- | ------ |
+| A   | Unified LOA Workflow + Workbench               | Done   |
+| B   | Unified Claims Submission Workflow + Workbench | Done   |
+| C   | Remittance / EOB Intake + Workbench            | Done   |
+| D   | Payer-Specific Rulepacks                       | Done   |
+| E   | VistA-First Source Mapping                     | Done   |
+| F   | Prompt Discipline                              | Done   |
 
 ### Files Created
 
 **Backend (apps/api/src/rcm/)**
 
-| File | Purpose |
-|------|---------|
-| loa/loa-types.ts | LOA domain types (7-state lifecycle) |
-| loa/loa-store.ts | In-memory LOA store with CRUD |
-| loa/loa-workflow.ts | LOA orchestration (payer-aware modes) |
-| loa/loa-routes.ts | 10 REST endpoints for LOA |
-| workflows/claims-workflow.ts | Claims submission with HMO awareness |
+| File                                | Purpose                                                  |
+| ----------------------------------- | -------------------------------------------------------- |
+| loa/loa-types.ts                    | LOA domain types (7-state lifecycle)                     |
+| loa/loa-store.ts                    | In-memory LOA store with CRUD                            |
+| loa/loa-workflow.ts                 | LOA orchestration (payer-aware modes)                    |
+| loa/loa-routes.ts                   | 10 REST endpoints for LOA                                |
+| workflows/claims-workflow.ts        | Claims submission with HMO awareness                     |
 | workflows/claims-workflow-routes.ts | 10 REST endpoints for claims + rulepacks + VistA sources |
-| workflows/remittance-intake.ts | Remittance document intake + underpayment flagging |
-| workflows/remittance-routes.ts | 7 REST endpoints for remittance |
-| workflows/vista-source-map.ts | 24-entry VistA field source map |
-| payers/payer-rulepacks.ts | Rulepack loader from JSON |
+| workflows/remittance-intake.ts      | Remittance document intake + underpayment flagging       |
+| workflows/remittance-routes.ts      | 7 REST endpoints for remittance                          |
+| workflows/vista-source-map.ts       | 24-entry VistA field source map                          |
+| payers/payer-rulepacks.ts           | Rulepack loader from JSON                                |
 
 **Data**
 
-| File | Purpose |
-|------|---------|
+| File                              | Purpose                                          |
+| --------------------------------- | ------------------------------------------------ |
 | data/payers/ph-hmo-rulepacks.json | 5 HMO rulepacks (evidence-only, unknowns marked) |
 
 **Frontend (apps/web/src/app/cprs/admin/)**
 
-| File | Purpose |
-|------|---------|
-| loa-workbench/page.tsx | LOA management: list, create, submit, approve/deny |
-| claims-workbench/page.tsx | Claims status board, create, VistA sources, rulepacks |
-| remittance-intake/page.tsx | Remittance upload, review, post, underpayment alerts |
+| File                       | Purpose                                               |
+| -------------------------- | ----------------------------------------------------- |
+| loa-workbench/page.tsx     | LOA management: list, create, submit, approve/deny    |
+| claims-workbench/page.tsx  | Claims status board, create, VistA sources, rulepacks |
+| remittance-intake/page.tsx | Remittance upload, review, post, underpayment alerts  |
 
 **Wiring**
 
-| File | Change |
-|------|--------|
-| apps/api/src/index.ts | +3 route imports + registrations |
-| apps/web/src/app/cprs/admin/layout.tsx | +3 nav entries |
+| File                                   | Change                           |
+| -------------------------------------- | -------------------------------- |
+| apps/api/src/index.ts                  | +3 route imports + registrations |
+| apps/web/src/app/cprs/admin/layout.tsx | +3 nav entries                   |
 
 ### Files Inspected (Not Modified)
 

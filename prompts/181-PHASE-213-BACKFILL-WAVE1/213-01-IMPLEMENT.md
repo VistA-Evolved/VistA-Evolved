@@ -1,6 +1,7 @@
 # Phase 213 -- Backfill Wave 1 into Real Phases 173-178
 
 ## Context
+
 Wave 1 bundled 6 queue items (Q173-Q178) into one mega-phase folder.
 This phase decomposes them into individual phase folders with proper
 IMPLEMENT + VERIFY files.
@@ -19,6 +20,7 @@ IMPLEMENT + VERIFY files.
 4. Regenerate phase-index.json
 
 ## Files Touched
+
 - prompts/178-PHASE-173-178-PROD-CONVERGENCE/ (moved to playbooks)
 - prompts/182-PHASE-173-API-BOOTSTRAP/ (new)
 - prompts/183-PHASE-174-PG-ONLY-DATAPLANE/ (new)

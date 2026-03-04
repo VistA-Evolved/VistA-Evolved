@@ -14,14 +14,28 @@ import { useState, useEffect } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
 
-
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
 /* ------------------------------------------------------------------ */
 
-interface VitalItem { date: string; type: string; value: string; units: string }
-interface NoteItem { ien: string; title: string; date: string; author: string; status: string }
-interface PendingTarget { rpc: string; package: string; reason: string }
+interface VitalItem {
+  date: string;
+  type: string;
+  value: string;
+  units: string;
+}
+interface NoteItem {
+  ien: string;
+  title: string;
+  date: string;
+  author: string;
+  status: string;
+}
+interface PendingTarget {
+  rpc: string;
+  package: string;
+  reason: string;
+}
 interface NursingResponse<T> {
   ok: boolean;
   source: string;
@@ -31,8 +45,21 @@ interface NursingResponse<T> {
   status?: string;
   note?: string;
 }
-interface FlowsheetEntry { type: string; value: string; date: string; units?: string; critical?: boolean }
-interface HandoffReport { id: string; ward: string; shiftLabel: string; status: string; createdAt: string; patients?: unknown[] }
+interface FlowsheetEntry {
+  type: string;
+  value: string;
+  date: string;
+  units?: string;
+  critical?: boolean;
+}
+interface HandoffReport {
+  id: string;
+  ward: string;
+  shiftLabel: string;
+  status: string;
+  createdAt: string;
+  patients?: unknown[];
+}
 
 /* ------------------------------------------------------------------ */
 /* Fetch helper                                                         */
@@ -61,20 +88,33 @@ async function apiFetchRaw<T = any>(path: string): Promise<T> {
 /* Shared Components                                                    */
 /* ------------------------------------------------------------------ */
 
-function IntegrationPendingBanner({ targets, status }: { targets: PendingTarget[]; status?: string }) {
+function IntegrationPendingBanner({
+  targets,
+  status,
+}: {
+  targets: PendingTarget[];
+  status?: string;
+}) {
   if (!targets?.length) return null;
-  const title = status === 'unsupported-in-sandbox' ? 'Unsupported in Sandbox' : 'Integration Pending';
+  const title =
+    status === 'unsupported-in-sandbox' ? 'Unsupported in Sandbox' : 'Integration Pending';
   return (
-    <div style={{
-      padding: '8px 12px', margin: '8px 0', borderRadius: 4,
-      background: status === 'unsupported-in-sandbox' ? '#e8f4f8' : '#fff3cd',
-      border: `1px solid ${status === 'unsupported-in-sandbox' ? '#90cdf4' : '#ffc107'}`,
-      fontSize: 12,
-    }}>
+    <div
+      style={{
+        padding: '8px 12px',
+        margin: '8px 0',
+        borderRadius: 4,
+        background: status === 'unsupported-in-sandbox' ? '#e8f4f8' : '#fff3cd',
+        border: `1px solid ${status === 'unsupported-in-sandbox' ? '#90cdf4' : '#ffc107'}`,
+        fontSize: 12,
+      }}
+    >
       <strong>{title}</strong>
       <ul style={{ margin: '4px 0 0', paddingLeft: 18 }}>
         {targets.map((t, i) => (
-          <li key={i}><code>{t.rpc}</code> ({t.package}) -- {t.reason}</li>
+          <li key={i}>
+            <code>{t.rpc}</code> ({t.package}) -- {t.reason}
+          </li>
         ))}
       </ul>
     </div>
@@ -82,15 +122,26 @@ function IntegrationPendingBanner({ targets, status }: { targets: PendingTarget[
 }
 
 function LoadingSpinner() {
-  return <div style={{ padding: 24, color: 'var(--cprs-text-muted, #888)', fontSize: 13 }}>Loading...</div>;
+  return (
+    <div style={{ padding: 24, color: 'var(--cprs-text-muted, #888)', fontSize: 13 }}>
+      Loading...
+    </div>
+  );
 }
 
 function ErrorBanner({ message }: { message: string }) {
   return (
-    <div style={{
-      padding: '8px 12px', margin: '8px 0', borderRadius: 4,
-      background: '#f8d7da', border: '1px solid #f5c6cb', fontSize: 12, color: '#721c24',
-    }}>
+    <div
+      style={{
+        padding: '8px 12px',
+        margin: '8px 0',
+        borderRadius: 4,
+        background: '#f8d7da',
+        border: '1px solid #f5c6cb',
+        fontSize: 12,
+        color: '#721c24',
+      }}
+    >
       {message}
     </div>
   );
@@ -116,8 +167,9 @@ function TaskListTab({ dfn }: { dfn: string }) {
     <div>
       <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />
       <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
-        Nursing task list will be populated when BCMA/PSB and order-based task derivation are available.
-        Tasks are sourced from active orders, scheduled medications, nursing protocols, and provider instructions.
+        Nursing task list will be populated when BCMA/PSB and order-based task derivation are
+        available. Tasks are sourced from active orders, scheduled medications, nursing protocols,
+        and provider instructions.
       </p>
     </div>
   );
@@ -139,7 +191,8 @@ function VitalsTab({ dfn }: { dfn: string }) {
 
   if (error) return <ErrorBanner message={error} />;
   if (!data) return <LoadingSpinner />;
-  if (data.pendingTargets?.length) return <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />;
+  if (data.pendingTargets?.length)
+    return <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />;
 
   return (
     <div>
@@ -194,12 +247,22 @@ function NotesTab({ dfn }: { dfn: string }) {
 
   if (error) return <ErrorBanner message={error} />;
   if (!data) return <LoadingSpinner />;
-  if (data.pendingTargets?.length) return <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />;
+  if (data.pendingTargets?.length)
+    return <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />;
 
   return (
     <div>
       {data.note && (
-        <div style={{ fontSize: 11, color: '#666', padding: '4px 8px', background: '#f0f8ff', borderRadius: 4, marginBottom: 8 }}>
+        <div
+          style={{
+            fontSize: 11,
+            color: '#666',
+            padding: '4px 8px',
+            background: '#f0f8ff',
+            borderRadius: 4,
+            marginBottom: 8,
+          }}
+        >
           {data.note}
         </div>
       )}
@@ -288,7 +351,8 @@ function FlowsheetTab({ dfn }: { dfn: string }) {
       {data.items.length === 0 ? (
         <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
           No flowsheet data found.
-          {(data.status === 'integration-pending' || data.status === 'unsupported-in-sandbox') && ' Flowsheet aggregation will populate when I/O and assessment RPCs are wired.'}
+          {(data.status === 'integration-pending' || data.status === 'unsupported-in-sandbox') &&
+            ' Flowsheet aggregation will populate when I/O and assessment RPCs are wired.'}
           {data.source && ` Source: ${data.source}`}
         </p>
       ) : (
@@ -303,10 +367,19 @@ function FlowsheetTab({ dfn }: { dfn: string }) {
           </thead>
           <tbody>
             {data.items.map((f, i) => (
-            <tr key={i} style={{ borderBottom: '1px solid var(--cprs-border, #eee)', background: f.critical ? 'rgba(220,38,38,0.08)' : undefined }}>
+              <tr
+                key={i}
+                style={{
+                  borderBottom: '1px solid var(--cprs-border, #eee)',
+                  background: f.critical ? 'rgba(220,38,38,0.08)' : undefined,
+                }}
+              >
                 <td style={{ padding: '4px 8px' }}>{f.date}</td>
                 <td style={{ padding: '4px 8px' }}>{f.type}</td>
-                <td style={{ padding: '4px 8px' }}>{f.value}{f.units ? ` ${f.units}` : ''}</td>
+                <td style={{ padding: '4px 8px' }}>
+                  {f.value}
+                  {f.units ? ` ${f.units}` : ''}
+                </td>
                 <td style={{ padding: '4px 8px' }}>{f.critical ? '⚠' : ''}</td>
               </tr>
             ))}
@@ -333,8 +406,14 @@ function HandoffTab({ dfn }: { dfn: string }) {
 
   useEffect(() => {
     apiFetchRaw<{ ok: boolean; reports: HandoffReport[] }>(`/handoff/reports?status=submitted`)
-      .then((d) => { setReports(d.reports || []); setLoading(false); })
-      .catch((e) => { setError(e.message); setLoading(false); });
+      .then((d) => {
+        setReports(d.reports || []);
+        setLoading(false);
+      })
+      .catch((e) => {
+        setError(e.message);
+        setLoading(false);
+      });
   }, [dfn]);
 
   if (error) return <ErrorBanner message={error} />;
@@ -393,7 +472,14 @@ export default function NursingPanel({ dfn }: { dfn: string }) {
 
   return (
     <div style={{ padding: 8 }}>
-      <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--cprs-border, #ccc)', marginBottom: 8 }}>
+      <div
+        style={{
+          display: 'flex',
+          gap: 0,
+          borderBottom: '1px solid var(--cprs-border, #ccc)',
+          marginBottom: 8,
+        }}
+      >
         {tabs.map((t) => (
           <button
             key={t.key}
@@ -404,9 +490,13 @@ export default function NursingPanel({ dfn }: { dfn: string }) {
               fontWeight: activeTab === t.key ? 600 : 400,
               background: activeTab === t.key ? 'var(--cprs-selected, #e8f0fe)' : 'transparent',
               border: 'none',
-              borderBottom: activeTab === t.key ? '2px solid var(--cprs-accent, #2563eb)' : '2px solid transparent',
+              borderBottom:
+                activeTab === t.key
+                  ? '2px solid var(--cprs-accent, #2563eb)'
+                  : '2px solid transparent',
               cursor: 'pointer',
-              color: activeTab === t.key ? 'var(--cprs-text, #333)' : 'var(--cprs-text-muted, #888)',
+              color:
+                activeTab === t.key ? 'var(--cprs-text, #333)' : 'var(--cprs-text-muted, #888)',
             }}
           >
             {t.label}

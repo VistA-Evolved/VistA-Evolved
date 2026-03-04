@@ -5,10 +5,10 @@
  * All operations are tenant-scoped.
  */
 
-import { eq, and } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { pgPatientConsent, pgPatientPortalPref } from "../pg-schema.js";
-import { randomUUID } from "node:crypto";
+import { eq, and } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { pgPatientConsent, pgPatientPortalPref } from '../pg-schema.js';
+import { randomUUID } from 'node:crypto';
 
 export type PatientConsentRow = typeof pgPatientConsent.$inferSelect;
 export type PatientPortalPrefRow = typeof pgPatientPortalPref.$inferSelect;
@@ -17,17 +17,14 @@ export type PatientPortalPrefRow = typeof pgPatientPortalPref.$inferSelect;
 
 export async function listConsents(
   patientDfn: string,
-  tenantId = "default"
+  tenantId = 'default'
 ): Promise<PatientConsentRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(pgPatientConsent)
     .where(
-      and(
-        eq(pgPatientConsent.tenantId, tenantId),
-        eq(pgPatientConsent.patientDfn, patientDfn)
-      )
+      and(eq(pgPatientConsent.tenantId, tenantId), eq(pgPatientConsent.patientDfn, patientDfn))
     );
 }
 
@@ -42,7 +39,7 @@ export async function upsertConsent(data: {
 }): Promise<PatientConsentRow> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  const tenantId = data.tenantId || "default";
+  const tenantId = data.tenantId || 'default';
   const id = randomUUID();
 
   // Try update first
@@ -63,8 +60,8 @@ export async function upsertConsent(data: {
       .update(pgPatientConsent)
       .set({
         status: data.status,
-        signedAt: data.status === "granted" ? now : row.signedAt,
-        revokedAt: data.status === "revoked" ? now : row.revokedAt,
+        signedAt: data.status === 'granted' ? now : row.signedAt,
+        revokedAt: data.status === 'revoked' ? now : row.revokedAt,
         locale: data.locale || row.locale,
         version: data.version ?? row.version,
         metadata: data.metadata ?? row.metadata,
@@ -82,9 +79,9 @@ export async function upsertConsent(data: {
     patientDfn: data.patientDfn,
     consentType: data.consentType,
     status: data.status,
-    signedAt: data.status === "granted" ? now : null,
+    signedAt: data.status === 'granted' ? now : null,
     revokedAt: null,
-    locale: data.locale || "en",
+    locale: data.locale || 'en',
     version: data.version ?? 1,
     metadata: data.metadata ?? null,
     createdAt: now,
@@ -99,7 +96,7 @@ export async function upsertConsent(data: {
 
 export async function getPortalPref(
   patientDfn: string,
-  tenantId = "default"
+  tenantId = 'default'
 ): Promise<PatientPortalPrefRow | null> {
   const db = getPgDb();
   const rows = await db
@@ -123,7 +120,7 @@ export async function upsertPortalPref(data: {
 }): Promise<PatientPortalPrefRow> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  const tenantId = data.tenantId || "default";
+  const tenantId = data.tenantId || 'default';
 
   const existing = await getPortalPref(data.patientDfn, tenantId);
 
@@ -153,7 +150,7 @@ export async function upsertPortalPref(data: {
     tenantId,
     patientDfn: data.patientDfn,
     notifications: data.notifications ?? null,
-    language: data.language || "en",
+    language: data.language || 'en',
     displayPrefs: data.displayPrefs ?? null,
     createdAt: now,
     updatedAt: now,

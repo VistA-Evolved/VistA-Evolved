@@ -17,9 +17,21 @@ export default function ProblemsPanel({ dfn }: ProblemsPanelProps) {
   useEffect(() => {
     let cancelled = false;
     fetchProblems(dfn)
-      .then((p) => { if (!cancelled) { setProblems(p); setLoading(false); } })
-      .catch((e) => { if (!cancelled) { setError(e.message); setLoading(false); } });
-    return () => { cancelled = true; };
+      .then((p) => {
+        if (!cancelled) {
+          setProblems(p);
+          setLoading(false);
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) {
+          setError(e.message);
+          setLoading(false);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [dfn]);
 
   return (
@@ -44,7 +56,9 @@ export default function ProblemsPanel({ dfn }: ProblemsPanelProps) {
               <tr key={p.id}>
                 <td>{p.text}</td>
                 <td>
-                  <span className={`${styles.listBadge} ${p.status?.toLowerCase() === 'active' ? styles.active : styles.inactive}`}>
+                  <span
+                    className={`${styles.listBadge} ${p.status?.toLowerCase() === 'active' ? styles.active : styles.inactive}`}
+                  >
                     {p.status}
                   </span>
                 </td>

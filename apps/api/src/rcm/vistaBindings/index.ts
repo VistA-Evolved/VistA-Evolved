@@ -14,11 +14,7 @@ export {
   type BindingResult,
 } from './encounter-to-claim.js';
 
-export {
-  postEraToVista,
-  checkVistaArTransaction,
-  type EraPostResult,
-} from './era-to-vista.js';
+export { postEraToVista, checkVistaArTransaction, type EraPostResult } from './era-to-vista.js';
 
 export {
   getChargeCaptureCandidates,

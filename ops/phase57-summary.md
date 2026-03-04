@@ -3,6 +3,7 @@
 ## What Changed
 
 ### New Files
+
 - `artifacts/cprs/wave57-plan.json` — Authoritative plan: 11 write actions + safetyRules
 - `apps/api/src/routes/cprs/wave2-routes.ts` — 11 POST endpoints with full safety model
 - `apps/web/src/components/cprs/dialogs/CreateNoteDialog.tsx` — TIU note creation
@@ -13,6 +14,7 @@
 - `prompts/62-PHASE-57-CPRS-WAVE2-WRITE/57-01-IMPLEMENT.md` — Prompt capture
 
 ### Modified Files
+
 - `apps/web/src/actions/actionRegistry.ts` — Added `rpcKind: "read" | "write"` to all 52 actions (12 write, 40 read), added endpoint fields to write actions, added `getWriteActions()`/`getReadActions()` helpers
 - `apps/api/src/lib/audit.ts` — 5 new audit action types for Phase 57 write events
 - `apps/api/src/routes/write-backs.ts` — Exported `createDraft` for reuse
@@ -22,6 +24,7 @@
 - `scripts/verify-latest.ps1` — Points to Phase 57 verifier
 
 ## Safety Model (5 layers)
+
 1. **No auto-retry on writes** — `safeCallRpc` called with `idempotent: false`
 2. **Idempotency keys** — `X-Idempotency-Key` header with 10-min TTL dedup store
 3. **LOCK/UNLOCK** — `ORWDX LOCK` before order writes, `ORWDX UNLOCK` in finally block
@@ -29,22 +32,24 @@
 5. **Metadata-only audit** — Only action type + DFN recorded, never input args/PHI
 
 ## 11 Write Endpoints
-| Endpoint | RPC(s) | Lock? | Draft? |
-|----------|--------|-------|--------|
-| POST /vista/cprs/problems/add | ORQQPL ADD SAVE | No | Yes |
-| POST /vista/cprs/problems/edit | ORQQPL EDIT SAVE | No | Yes |
-| POST /vista/cprs/notes/create | TIU CREATE RECORD + SET TEXT | No | Yes |
-| POST /vista/cprs/orders/draft | ORWDX SAVE | Yes | Yes |
-| POST /vista/cprs/orders/verify | ORWDXR01 VERIFY | No | No |
-| POST /vista/cprs/orders/dc | ORWDXA DC (integration-pending) | No | No |
-| POST /vista/cprs/orders/flag | ORWDXA FLAG (integration-pending) | No | No |
-| POST /vista/cprs/meds/quick-order | ORWDXM1 BLDQRSP | Yes | Yes |
-| POST /vista/cprs/labs/ack | ORWOR UNSIGN | No | No |
-| POST /vista/cprs/vitals/add | GMV ADD VM | No | Yes |
-| POST /vista/cprs/allergies/add | ORWDAL32 SAVE ALLERGY | No | Yes |
-| POST /vista/cprs/consults/complete | ORQQCN SET ACT MENUS | No | No |
+
+| Endpoint                           | RPC(s)                            | Lock? | Draft? |
+| ---------------------------------- | --------------------------------- | ----- | ------ |
+| POST /vista/cprs/problems/add      | ORQQPL ADD SAVE                   | No    | Yes    |
+| POST /vista/cprs/problems/edit     | ORQQPL EDIT SAVE                  | No    | Yes    |
+| POST /vista/cprs/notes/create      | TIU CREATE RECORD + SET TEXT      | No    | Yes    |
+| POST /vista/cprs/orders/draft      | ORWDX SAVE                        | Yes   | Yes    |
+| POST /vista/cprs/orders/verify     | ORWDXR01 VERIFY                   | No    | No     |
+| POST /vista/cprs/orders/dc         | ORWDXA DC (integration-pending)   | No    | No     |
+| POST /vista/cprs/orders/flag       | ORWDXA FLAG (integration-pending) | No    | No     |
+| POST /vista/cprs/meds/quick-order  | ORWDXM1 BLDQRSP                   | Yes   | Yes    |
+| POST /vista/cprs/labs/ack          | ORWOR UNSIGN                      | No    | No     |
+| POST /vista/cprs/vitals/add        | GMV ADD VM                        | No    | Yes    |
+| POST /vista/cprs/allergies/add     | ORWDAL32 SAVE ALLERGY             | No    | Yes    |
+| POST /vista/cprs/consults/complete | ORQQCN SET ACT MENUS              | No    | No     |
 
 ## How to Test Manually
+
 ```bash
 # Problems - add
 curl -X POST http://127.0.0.1:3001/vista/cprs/problems/add \
@@ -62,12 +67,14 @@ curl -X POST http://127.0.0.1:3001/vista/cprs/vitals/add \
 ```
 
 ## Verifier Output
+
 ```
 PASS: 12 / 12
 All gates passed.
 ```
 
 ## Follow-ups
+
 - Wire `orders.dc` and `orders.flag` to live RPCs when sandbox supports them
 - Add E2E Playwright tests for write dialogs
 - Implement Phase 57 VERIFY prompt (57-99-VERIFY.md)

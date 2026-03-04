@@ -3,6 +3,7 @@
 ## What Changed
 
 ### New Files
+
 - `apps/api/src/rcm/domain/ack-status.ts` — Normalized domain models for 999/277CA/TA1 acknowledgements and 276/277 claim status updates
 - `apps/api/src/rcm/edi/ack-status-processor.ts` — Ack and status ingestion with idempotency, claim lifecycle transitions, workqueue generation
 - `apps/api/src/rcm/edi/remit-processor.ts` — Enhanced 835 remittance processing with CARC enrichment and denial workqueue generation
@@ -13,6 +14,7 @@
 - `apps/api/tests/rcm-quality-loop.test.ts` — 25 unit tests across 6 describe blocks
 
 ### Modified Files
+
 - `apps/api/src/rcm/audit/rcm-audit.ts` — Added 10 new audit actions for ack/status/workqueue/rule/remit events
 - `apps/api/src/rcm/rcm-routes.ts` — Added 24 new endpoints (acks, status, workqueues, rules, reference)
 - `apps/api/src/rcm/domain/claim-store.ts` — Added `resetClaimStore()` for test isolation
@@ -48,6 +50,7 @@ curl -s 'http://localhost:3001/rcm/reference/carc?code=45'
 - vitest: 25/25 tests pass (429ms)
 
 ## Follow-ups
+
 - Wire 999/277/835 to real EDI file ingestion when clearinghouse integration goes live
 - Add bulk ack/status import from flat files
 - Add workqueue assignment and SLA tracking

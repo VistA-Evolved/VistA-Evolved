@@ -62,7 +62,9 @@ function runStaticAnalysis() {
   // Load route-rpc-map
   const mapPath = join(ALIGNMENT_DIR, 'route-rpc-map.json');
   if (!existsSync(mapPath)) {
-    console.log('  FAIL: route-rpc-map.json not found. Run: node tools/rpc-extract/build-route-rpc-map.mjs');
+    console.log(
+      '  FAIL: route-rpc-map.json not found. Run: node tools/rpc-extract/build-route-rpc-map.mjs'
+    );
     return { passed: 0, warned: 0, failed: 1, findings: [] };
   }
 
@@ -81,11 +83,15 @@ function runStaticAnalysis() {
       routeRpcs.add(rpc.name);
     }
   }
-  for (const rpcName of routeMap.serviceRpcs ? Object.values(routeMap.serviceRpcs).flat().map(r => r.name) : []) {
+  for (const rpcName of routeMap.serviceRpcs
+    ? Object.values(routeMap.serviceRpcs)
+        .flat()
+        .map((r) => r.name)
+    : []) {
     routeRpcs.add(rpcName);
   }
 
-  const unregistered = [...routeRpcs].filter(n => !registry.all.has(n));
+  const unregistered = [...routeRpcs].filter((n) => !registry.all.has(n));
   if (unregistered.length === 0) {
     console.log(`  PASS  All ${routeRpcs.size} RPCs in routes are registered`);
     passed++;
@@ -100,7 +106,9 @@ function runStaticAnalysis() {
   const domainConflicts = [];
   for (const route of routeMap.routes) {
     if (route.rpcs.length < 2) continue;
-    const domains = new Set(route.rpcs.map(r => r.domain).filter(d => d !== 'unknown' && d !== 'exception'));
+    const domains = new Set(
+      route.rpcs.map((r) => r.domain).filter((d) => d !== 'unknown' && d !== 'exception')
+    );
     if (domains.size > 2) {
       domainConflicts.push({ path: route.path, method: route.method, domains: [...domains] });
     }
@@ -121,19 +129,25 @@ function runStaticAnalysis() {
     console.log(`  PASS  Route-RPC map is fresh (${ageHours.toFixed(1)}h old)`);
     passed++;
   } else {
-    console.log(`  WARN  Route-RPC map is ${ageHours.toFixed(0)}h old -- regenerate with: node tools/rpc-extract/build-route-rpc-map.mjs`);
+    console.log(
+      `  WARN  Route-RPC map is ${ageHours.toFixed(0)}h old -- regenerate with: node tools/rpc-extract/build-route-rpc-map.mjs`
+    );
     warned++;
   }
 
   // Gate 4: Registry RPCs not used in any route (potential dead entries)
-  const unusedRegistry = [...registry.registered].filter(n => !routeRpcs.has(n));
-  console.log(`  INFO  ${unusedRegistry.length}/${registry.registered.size} registered RPCs not directly in routes (may be in adapters/services)`);
+  const unusedRegistry = [...registry.registered].filter((n) => !routeRpcs.has(n));
+  console.log(
+    `  INFO  ${unusedRegistry.length}/${registry.registered.size} registered RPCs not directly in routes (may be in adapters/services)`
+  );
 
   // Gate 5: Coverage stats
-  const rpcActiveRoutes = routeMap.routes.filter(r => r.rpcCount > 0 && !r.isStub);
-  const stubRoutes = routeMap.routes.filter(r => r.isStub);
-  const nonRpcRoutes = routeMap.routes.filter(r => r.rpcCount === 0 && !r.isStub);
-  console.log(`  INFO  ${rpcActiveRoutes.length} RPC-active, ${stubRoutes.length} stubs, ${nonRpcRoutes.length} non-RPC, ${routeMap.routes.length} total`);
+  const rpcActiveRoutes = routeMap.routes.filter((r) => r.rpcCount > 0 && !r.isStub);
+  const stubRoutes = routeMap.routes.filter((r) => r.isStub);
+  const nonRpcRoutes = routeMap.routes.filter((r) => r.rpcCount === 0 && !r.isStub);
+  console.log(
+    `  INFO  ${rpcActiveRoutes.length} RPC-active, ${stubRoutes.length} stubs, ${nonRpcRoutes.length} non-RPC, ${routeMap.routes.length} total`
+  );
 
   console.log(`\n=== Summary: ${passed} PASS, ${warned} WARN, ${failed} FAIL ===`);
 
@@ -148,7 +162,9 @@ async function runLiveProbe() {
   console.log('\n=== RPC Communication Verification (Live) ===\n');
 
   const API_BASE = process.env.API_BASE || 'http://127.0.0.1:3001';
-  let passed = 0, warned = 0, failed = 0;
+  let passed = 0,
+    warned = 0,
+    failed = 0;
   const findings = [];
 
   // Check if API is reachable
@@ -159,7 +175,9 @@ async function runLiveProbe() {
     passed++;
   } catch (e) {
     console.log(`  SKIP  API not reachable at ${API_BASE}: ${e.message}`);
-    console.log('         Start API with: cd apps/api && npx tsx --env-file=.env.local src/index.ts');
+    console.log(
+      '         Start API with: cd apps/api && npx tsx --env-file=.env.local src/index.ts'
+    );
     return { passed, warned, failed, findings, skipped: true };
   }
 
@@ -181,13 +199,16 @@ async function runLiveProbe() {
 
   // Check provisioning status (admin endpoint - needs auth)
   try {
-    const res = await fetch(`${API_BASE}/vista/provision/status`, { signal: AbortSignal.timeout(10000) });
+    const res = await fetch(`${API_BASE}/vista/provision/status`, {
+      signal: AbortSignal.timeout(10000),
+    });
     if (res.ok) {
       const data = await res.json();
       console.log(`  INFO  Provisioning: ${data.overallHealth || 'unknown'}`);
       if (data.routines) {
         for (const [name, status] of Object.entries(data.routines)) {
-          const icon = status.health === 'installed' ? 'PASS' : status.health === 'partial' ? 'WARN' : 'FAIL';
+          const icon =
+            status.health === 'installed' ? 'PASS' : status.health === 'partial' ? 'WARN' : 'FAIL';
           console.log(`  ${icon}  ${name}: ${status.health}`);
         }
       }
@@ -200,7 +221,9 @@ async function runLiveProbe() {
 
   // Try a read-only RPC via a public endpoint
   try {
-    const res = await fetch(`${API_BASE}/vista/default-patient-list`, { signal: AbortSignal.timeout(10000) });
+    const res = await fetch(`${API_BASE}/vista/default-patient-list`, {
+      signal: AbortSignal.timeout(10000),
+    });
     const data = await res.json();
     if (data.ok) {
       console.log(`  PASS  Live RPC call succeeded: /vista/default-patient-list`);
@@ -262,7 +285,9 @@ function generateReport(result, liveResult) {
     lines.push('');
     lines.push(`- **${result.routeRpcs.size}** unique RPCs across routes and services`);
     lines.push(`- **${result.registry?.registered.size || 0}** RPCs in RPC_REGISTRY`);
-    lines.push(`- **${result.unusedRegistry?.length || 0}** registered RPCs not directly used in route handlers`);
+    lines.push(
+      `- **${result.unusedRegistry?.length || 0}** registered RPCs not directly used in route handlers`
+    );
     lines.push('');
   }
 

@@ -18,16 +18,17 @@ outputs. Examples: Health Summary, Lab Cumulative, Progress Notes summary.
 
 **Source of truth**: VistA. Rendered by M routines.
 
-| RPC | Package | Purpose | State in VE |
-|-----|---------|---------|------------|
-| `ORWRP REPORT LISTS` | OE/RR | Get available report categories | **wired** |
-| `ORWRP REPORT TEXT` | OE/RR | Render a clinical report | **wired** |
-| `ORWRP2 HS TYPE LIST` | GMTS | List Health Summary types (Brief, Comprehensive, Custom) | **gap** |
-| `ORWRP2 HS COMPONENTS` | GMTS | List available HS components (Labs, Meds, etc.) | **gap** |
-| `ORWRP2 HS FILE LOOKUP` | GMTS | Lookup HS by name | **gap** |
-| `ORWRP LAB REPORT LISTS` | OE/RR/LR | Lab-specific report categories | **gap** |
+| RPC                      | Package  | Purpose                                                  | State in VE |
+| ------------------------ | -------- | -------------------------------------------------------- | ----------- |
+| `ORWRP REPORT LISTS`     | OE/RR    | Get available report categories                          | **wired**   |
+| `ORWRP REPORT TEXT`      | OE/RR    | Render a clinical report                                 | **wired**   |
+| `ORWRP2 HS TYPE LIST`    | GMTS     | List Health Summary types (Brief, Comprehensive, Custom) | **gap**     |
+| `ORWRP2 HS COMPONENTS`   | GMTS     | List available HS components (Labs, Meds, etc.)          | **gap**     |
+| `ORWRP2 HS FILE LOOKUP`  | GMTS     | Lookup HS by name                                        | **gap**     |
+| `ORWRP LAB REPORT LISTS` | OE/RR/LR | Lab-specific report categories                           | **gap**     |
 
 **FileMan files**:
+
 - **#142** HEALTH SUMMARY TYPE — defines report structure (which components, in what order)
 - **#142.1** HEALTH SUMMARY COMPONENT — component definitions (meds, labs, vitals, notes, etc.)
 - **#142.5** HEALTH SUMMARY PARAMETERS — site-level report config
@@ -38,13 +39,13 @@ outputs. Examples: Health Summary, Lab Cumulative, Progress Notes summary.
 Platform reports are **system-level** metrics for administrators. They track
 infrastructure health, not patient data.
 
-| Endpoint | What It Reports | VistA Data? |
-|----------|----------------|-------------|
-| `GET /reports/operations` | RPC circuit breaker stats, memory, uptime | No (platform metrics only) |
-| `GET /reports/integrations` | Integration registry health, queue depths | No (reads integration-registry.ts) |
-| `GET /reports/audit` | Audit event summary (counts by action type) | No (reads audit log) |
-| `GET /reports/clinical` | Clinical action counts (allergy adds, note creates, etc.) | **Derived** — counts platform audit events for VistA actions |
-| `POST /reports/export` | Create CSV/JSON export of report data | No |
+| Endpoint                    | What It Reports                                           | VistA Data?                                                  |
+| --------------------------- | --------------------------------------------------------- | ------------------------------------------------------------ |
+| `GET /reports/operations`   | RPC circuit breaker stats, memory, uptime                 | No (platform metrics only)                                   |
+| `GET /reports/integrations` | Integration registry health, queue depths                 | No (reads integration-registry.ts)                           |
+| `GET /reports/audit`        | Audit event summary (counts by action type)               | No (reads audit log)                                         |
+| `GET /reports/clinical`     | Clinical action counts (allergy adds, note creates, etc.) | **Derived** — counts platform audit events for VistA actions |
+| `POST /reports/export`      | Create CSV/JSON export of report data                     | No                                                           |
 
 ---
 
@@ -54,8 +55,8 @@ The Phase 19 `/reports/clinical` endpoint currently counts audit events
 for clinical actions (e.g., "allergy.add", "note.create"). This is
 **platform telemetry about clinical actions**, not a clinical report.
 
-| Endpoint | Current Label | Correct Label | Issue |
-|----------|--------------|---------------|-------|
+| Endpoint            | Current Label      | Correct Label                   | Issue                                                                  |
+| ------------------- | ------------------ | ------------------------------- | ---------------------------------------------------------------------- |
 | `/reports/clinical` | "Clinical Summary" | **"Clinical Activity Metrics"** | Not patient-facing; should not be confused with VistA clinical reports |
 
 **Recommended fix**: Rename to `/reports/clinical-activity` or
@@ -65,12 +66,12 @@ for clinical actions (e.g., "allergy.add", "note.create"). This is
 
 ## 3. Where Clinical Reports Live in VistA-Evolved
 
-| Layer | Location | Purpose |
-|-------|----------|---------|
+| Layer              | Location                                                    | Purpose                                                                 |
+| ------------------ | ----------------------------------------------------------- | ----------------------------------------------------------------------- |
 | **API — clinical** | `GET /vista/reports?dfn=&cat=&report=` (inline in index.ts) | Calls `ORWRP REPORT TEXT` → renders VistA clinical report for a patient |
-| **API — platform** | `GET /reports/operations`, `/audit`, etc. (reporting.ts) | Admin operational metrics |
-| **Web — clinical** | `apps/web/src/app/chart/[dfn]/reports/` (CPRS replica tab) | Displays VistA clinical reports for the selected patient |
-| **Web — platform** | `apps/web/src/app/admin/reports/page.tsx` | Admin dashboard for operational metrics |
+| **API — platform** | `GET /reports/operations`, `/audit`, etc. (reporting.ts)    | Admin operational metrics                                               |
+| **Web — clinical** | `apps/web/src/app/chart/[dfn]/reports/` (CPRS replica tab)  | Displays VistA clinical reports for the selected patient                |
+| **Web — platform** | `apps/web/src/app/admin/reports/page.tsx`                   | Admin dashboard for operational metrics                                 |
 
 ---
 
@@ -95,6 +96,7 @@ Each component has:
 ```
 
 There are typically 10-20 Health Summary types on a production VistA system:
+
 - **Brief Health Summary** — 1-page overview
 - **Comprehensive** — full clinical picture
 - **Discharge** — discharge-focused
@@ -123,6 +125,7 @@ Rename to `/reports/clinical-activity` or `/reports/activity-metrics`.
 ### Rule 4: Health Summary should be surfaced
 
 The existing `ORWRP REPORT TEXT` integration should be expanded with:
+
 - `ORWRP2 HS TYPE LIST` to let users pick Health Summary types
 - `ORWRP2 HS COMPONENTS` for admin configuration of HS types
 - Full VistA Health Summary rendering in the Reports tab
@@ -136,11 +139,11 @@ The existing `ORWRP REPORT TEXT` integration should be expanded with:
 
 ## 6. Implementation Roadmap
 
-| Step | Description | Priority | Phase |
-|------|-------------|----------|-------|
-| 1 | Document reporting architecture (this doc) | **Done** | Phase 20 |
-| 2 | Rename `/reports/clinical` → `/reports/clinical-activity` | LOW | Phase 20 (Artifact J) |
-| 3 | Wire `ORWRP2 HS TYPE LIST` for HS type picker | MEDIUM | Phase 21+ |
-| 4 | Wire `ORWRP2 HS COMPONENTS` for component listing | MEDIUM | Phase 21+ |
-| 5 | Add Health Summary type selection to Reports tab UI | MEDIUM | Phase 21+ |
-| 6 | Add lab-specific report categories via `ORWRP LAB REPORT LISTS` | LOW | Phase 21+ |
+| Step | Description                                                     | Priority | Phase                 |
+| ---- | --------------------------------------------------------------- | -------- | --------------------- |
+| 1    | Document reporting architecture (this doc)                      | **Done** | Phase 20              |
+| 2    | Rename `/reports/clinical` → `/reports/clinical-activity`       | LOW      | Phase 20 (Artifact J) |
+| 3    | Wire `ORWRP2 HS TYPE LIST` for HS type picker                   | MEDIUM   | Phase 21+             |
+| 4    | Wire `ORWRP2 HS COMPONENTS` for component listing               | MEDIUM   | Phase 21+             |
+| 5    | Add Health Summary type selection to Reports tab UI             | MEDIUM   | Phase 21+             |
+| 6    | Add lab-specific report categories via `ORWRP LAB REPORT LISTS` | LOW      | Phase 21+             |

@@ -8,18 +8,18 @@
  * - Fallback to false for unknown flags
  */
 
-import { createHash } from "node:crypto";
+import { createHash } from 'node:crypto';
 import type {
   FeatureFlagProvider,
   FlagContext,
   FlagEvaluationResult,
   UserTargetingRule,
-} from "./types.js";
+} from './types.js';
 import {
   getTenantFeatureFlag,
   listTenantFeatureFlags,
   type TenantFeatureFlagRow,
-} from "../platform/pg/repo/module-repo.js";
+} from '../platform/pg/repo/module-repo.js';
 
 // ─── Deterministic Hash Rollout ────────────────────────────────
 
@@ -28,9 +28,7 @@ import {
  * Uses SHA-256 for uniform distribution.
  */
 function rolloutBucket(flagKey: string, seed: string): number {
-  const hash = createHash("sha256")
-    .update(`${flagKey}:${seed}`)
-    .digest();
+  const hash = createHash('sha256').update(`${flagKey}:${seed}`).digest();
   // Use first 4 bytes as uint32, mod 100
   const val = hash.readUInt32BE(0);
   return val % 100;
@@ -38,17 +36,12 @@ function rolloutBucket(flagKey: string, seed: string): number {
 
 // ─── Targeting Evaluation ──────────────────────────────────────
 
-function evaluateTargetingRules(
-  rules: UserTargetingRule[],
-  context: FlagContext,
-): boolean {
+function evaluateTargetingRules(rules: UserTargetingRule[], context: FlagContext): boolean {
   if (!rules.length) return true; // No rules = pass
 
   for (const rule of rules) {
     const contextValue =
-      rule.field === "userId"
-        ? context.userId
-        : context.properties?.[rule.field];
+      rule.field === 'userId' ? context.userId : context.properties?.[rule.field];
 
     if (contextValue === undefined) {
       // If context doesn't have the field, rule fails
@@ -56,19 +49,19 @@ function evaluateTargetingRules(
     }
 
     switch (rule.operator) {
-      case "eq":
+      case 'eq':
         if (contextValue !== rule.values[0]) return false;
         break;
-      case "neq":
+      case 'neq':
         if (contextValue === rule.values[0]) return false;
         break;
-      case "in":
+      case 'in':
         if (!rule.values.includes(contextValue)) return false;
         break;
-      case "not_in":
+      case 'not_in':
         if (rule.values.includes(contextValue)) return false;
         break;
-      case "contains":
+      case 'contains':
         if (!rule.values.some((v) => contextValue.includes(v))) return false;
         break;
     }
@@ -79,30 +72,24 @@ function evaluateTargetingRules(
 // ─── Provider Implementation ───────────────────────────────────
 
 export class DbFeatureFlagProvider implements FeatureFlagProvider {
-  readonly providerType = "db" as const;
+  readonly providerType = 'db' as const;
 
-  async isEnabled(
-    flagKey: string,
-    context: FlagContext,
-  ): Promise<FlagEvaluationResult> {
+  async isEnabled(flagKey: string, context: FlagContext): Promise<FlagEvaluationResult> {
     const row = await getTenantFeatureFlag(context.tenantId, flagKey);
     if (!row) {
-      return { enabled: false, source: "fallback" };
+      return { enabled: false, source: 'fallback' };
     }
     return this.evaluateRow(row, context);
   }
 
-  async getVariant(
-    flagKey: string,
-    context: FlagContext,
-  ): Promise<FlagEvaluationResult> {
+  async getVariant(flagKey: string, context: FlagContext): Promise<FlagEvaluationResult> {
     const row = await getTenantFeatureFlag(context.tenantId, flagKey);
     if (!row) {
-      return { enabled: false, source: "fallback" };
+      return { enabled: false, source: 'fallback' };
     }
     const result = await this.evaluateRow(row, context);
     // Variant is the flagValue itself (e.g., "control", "treatment-a")
-    if (result.enabled && row.flagValue !== "true" && row.flagValue !== "false") {
+    if (result.enabled && row.flagValue !== 'true' && row.flagValue !== 'false') {
       result.variant = row.flagValue;
     }
     return result;
@@ -110,7 +97,7 @@ export class DbFeatureFlagProvider implements FeatureFlagProvider {
 
   async evaluateAll(
     flagKeys: string[],
-    context: FlagContext,
+    context: FlagContext
   ): Promise<Record<string, FlagEvaluationResult>> {
     // Batch-load all flags for tenant, then evaluate locally
     const allFlags = await listTenantFeatureFlags(context.tenantId);
@@ -120,7 +107,7 @@ export class DbFeatureFlagProvider implements FeatureFlagProvider {
     for (const key of flagKeys) {
       const row = flagMap.get(key);
       if (!row) {
-        results[key] = { enabled: false, source: "fallback" };
+        results[key] = { enabled: false, source: 'fallback' };
       } else {
         results[key] = this.evaluateRow(row, context);
       }
@@ -130,7 +117,7 @@ export class DbFeatureFlagProvider implements FeatureFlagProvider {
 
   async healthCheck(): Promise<boolean> {
     try {
-      await listTenantFeatureFlags("default");
+      await listTenantFeatureFlags('default');
       return true;
     } catch {
       return false;
@@ -143,23 +130,17 @@ export class DbFeatureFlagProvider implements FeatureFlagProvider {
 
   // ─── Internal ──────────────────────────────────────────────
 
-  private evaluateRow(
-    row: TenantFeatureFlagRow,
-    context: FlagContext,
-  ): FlagEvaluationResult {
+  private evaluateRow(row: TenantFeatureFlagRow, context: FlagContext): FlagEvaluationResult {
     // 1. Basic on/off check
-    if (row.flagValue === "false") {
-      return { enabled: false, source: "db" };
+    if (row.flagValue === 'false') {
+      return { enabled: false, source: 'db' };
     }
 
     // 2. User targeting rules (if present)
-    const targeting = (row as any).userTargeting as
-      | UserTargetingRule[]
-      | null
-      | undefined;
+    const targeting = (row as any).userTargeting as UserTargetingRule[] | null | undefined;
     if (targeting && Array.isArray(targeting) && targeting.length > 0) {
       if (!evaluateTargetingRules(targeting, context)) {
-        return { enabled: false, source: "db" };
+        return { enabled: false, source: 'db' };
       }
     }
 
@@ -169,10 +150,10 @@ export class DbFeatureFlagProvider implements FeatureFlagProvider {
       const seed = context.userId || context.tenantId;
       const bucket = rolloutBucket(row.flagKey, seed);
       if (bucket >= rolloutPct) {
-        return { enabled: false, source: "db" };
+        return { enabled: false, source: 'db' };
       }
     }
 
-    return { enabled: true, source: "db" };
+    return { enabled: true, source: 'db' };
   }
 }

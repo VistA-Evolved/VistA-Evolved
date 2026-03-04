@@ -12,27 +12,24 @@
  * Run: pnpm exec vitest run tests/qa-ladder-contracts.test.ts
  */
 
-import { describe, it, expect, beforeAll } from "vitest";
+import { describe, it, expect, beforeAll } from 'vitest';
 
-const API = process.env.API_URL ?? "http://localhost:3001";
+const API = process.env.API_URL ?? 'http://localhost:3001';
 const MAX_RESPONSE_MS = 10_000;
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
 /* ------------------------------------------------------------------ */
 
-async function api(
-  path: string,
-  opts?: { method?: string; body?: unknown; cookie?: string }
-) {
+async function api(path: string, opts?: { method?: string; body?: unknown; cookie?: string }) {
   const headers: Record<string, string> = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   };
-  if (opts?.cookie) headers["Cookie"] = opts.cookie;
+  if (opts?.cookie) headers['Cookie'] = opts.cookie;
 
   const start = Date.now();
   const res = await fetch(`${API}${path}`, {
-    method: opts?.method ?? "GET",
+    method: opts?.method ?? 'GET',
     headers,
     body: opts?.body ? JSON.stringify(opts.body) : undefined,
   });
@@ -42,27 +39,32 @@ async function api(
   let json: unknown = null;
   try {
     json = JSON.parse(text);
-  } catch { /* not JSON */ }
+  } catch {
+    /* not JSON */
+  }
 
   return { status: res.status, json, text, elapsed, headers: res.headers };
 }
 
 async function getSessionCookie(): Promise<string> {
   const res = await fetch(`${API}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      accessCode: process.env.VISTA_ACCESS_CODE ?? "PROV123",
-      verifyCode: process.env.VISTA_VERIFY_CODE ?? "PROV123!!",
+      accessCode: process.env.VISTA_ACCESS_CODE ?? 'PROV123',
+      verifyCode: process.env.VISTA_VERIFY_CODE ?? 'PROV123!!',
     }),
-    redirect: "manual",
+    redirect: 'manual',
   });
-  const setCookie = res.headers.get("set-cookie") ?? "";
-  const cookies = setCookie.split(",").map((c) => {
-    const m = c.trim().match(/^([^=]+=[^;]+)/);
-    return m?.[1] ?? "";
-  }).filter(Boolean);
-  return cookies.join("; ");
+  const setCookie = res.headers.get('set-cookie') ?? '';
+  const cookies = setCookie
+    .split(',')
+    .map((c) => {
+      const m = c.trim().match(/^([^=]+=[^;]+)/);
+      return m?.[1] ?? '';
+    })
+    .filter(Boolean);
+  return cookies.join('; ');
 }
 
 /* ------------------------------------------------------------------ */
@@ -71,20 +73,20 @@ async function getSessionCookie(): Promise<string> {
 
 /** All ok:true responses have this base shape. */
 function assertOkShape(json: unknown): void {
-  expect(json).toHaveProperty("ok", true);
+  expect(json).toHaveProperty('ok', true);
 }
 
 /** All ok:false responses have this error shape. */
 function assertErrorShape(json: unknown): void {
-  expect(json).toHaveProperty("ok", false);
+  expect(json).toHaveProperty('ok', false);
   const obj = json as Record<string, unknown>;
-  expect(typeof obj.error).toBe("string");
+  expect(typeof obj.error).toBe('string');
   // Must not leak stack traces
   const text = JSON.stringify(json);
-  expect(text).not.toContain("at Object.");
-  expect(text).not.toContain("at Module.");
-  expect(text).not.toContain("node_modules");
-  expect(text).not.toContain(".ts:");
+  expect(text).not.toContain('at Object.');
+  expect(text).not.toContain('at Module.');
+  expect(text).not.toContain('node_modules');
+  expect(text).not.toContain('.ts:');
 }
 
 /** Response must not be a placeholder/stub (empty results with no real data). */
@@ -95,9 +97,7 @@ function assertNotPlaceholder(json: unknown, endpointHint: string): void {
   // the presence of expected structural fields
   if (obj.ok !== true) return; // error responses are fine
   // Must have at least one domain-specific field beyond just {ok, results}
-  const keys = Object.keys(obj).filter(
-    (k) => !["ok", "timestamp", "source"].includes(k)
-  );
+  const keys = Object.keys(obj).filter((k) => !['ok', 'timestamp', 'source'].includes(k));
   expect(
     keys.length,
     `${endpointHint}: response has only {ok} — likely placeholder`
@@ -116,7 +116,7 @@ function assertTimeBudget(elapsed: number, endpoint: string): void {
 /* Contract: Authenticated clinical endpoints                           */
 /* ------------------------------------------------------------------ */
 
-describe("Authenticated clinical endpoint contracts", () => {
+describe('Authenticated clinical endpoint contracts', () => {
   let cookie: string;
 
   beforeAll(async () => {
@@ -126,43 +126,43 @@ describe("Authenticated clinical endpoint contracts", () => {
 
   const clinicalEndpoints = [
     {
-      path: "/vista/patient-search?q=ZZ",
-      requiredKeys: ["results"],
-      arrayField: "results",
+      path: '/vista/patient-search?q=ZZ',
+      requiredKeys: ['results'],
+      arrayField: 'results',
     },
     {
-      path: "/vista/default-patient-list",
-      requiredKeys: ["results"],
-      arrayField: "results",
+      path: '/vista/default-patient-list',
+      requiredKeys: ['results'],
+      arrayField: 'results',
     },
     {
-      path: "/vista/patient-demographics?dfn=3",
-      requiredKeys: ["patient"],
+      path: '/vista/patient-demographics?dfn=3',
+      requiredKeys: ['patient'],
     },
     {
-      path: "/vista/allergies?dfn=3",
-      requiredKeys: ["results", "count"],
-      arrayField: "results",
+      path: '/vista/allergies?dfn=3',
+      requiredKeys: ['results', 'count'],
+      arrayField: 'results',
     },
     {
-      path: "/vista/vitals?dfn=3",
-      requiredKeys: ["results", "count"],
-      arrayField: "results",
+      path: '/vista/vitals?dfn=3',
+      requiredKeys: ['results', 'count'],
+      arrayField: 'results',
     },
     {
-      path: "/vista/problems?dfn=3",
-      requiredKeys: ["results"],
-      arrayField: "results",
+      path: '/vista/problems?dfn=3',
+      requiredKeys: ['results'],
+      arrayField: 'results',
     },
     {
-      path: "/vista/medications?dfn=3",
-      requiredKeys: ["results"],
-      arrayField: "results",
+      path: '/vista/medications?dfn=3',
+      requiredKeys: ['results'],
+      arrayField: 'results',
     },
     {
-      path: "/vista/notes?dfn=3",
-      requiredKeys: ["results"],
-      arrayField: "results",
+      path: '/vista/notes?dfn=3',
+      requiredKeys: ['results'],
+      arrayField: 'results',
     },
   ];
 
@@ -184,10 +184,9 @@ describe("Authenticated clinical endpoint contracts", () => {
 
       // Array fields must be arrays
       if (ep.arrayField) {
-        expect(
-          Array.isArray(obj[ep.arrayField]),
-          `${ep.path}.${ep.arrayField} must be array`
-        ).toBe(true);
+        expect(Array.isArray(obj[ep.arrayField]), `${ep.path}.${ep.arrayField} must be array`).toBe(
+          true
+        );
       }
     });
   }
@@ -197,12 +196,12 @@ describe("Authenticated clinical endpoint contracts", () => {
 /* Contract: Error shape uniformity                                     */
 /* ------------------------------------------------------------------ */
 
-describe("Error shape uniformity", () => {
+describe('Error shape uniformity', () => {
   const errorEndpoints = [
     // No auth → 401
-    { path: "/vista/allergies?dfn=3", expectedStatus: 401 },
-    { path: "/vista/patient-demographics?dfn=3", expectedStatus: 401 },
-    { path: "/vista/medications?dfn=3", expectedStatus: 401 },
+    { path: '/vista/allergies?dfn=3', expectedStatus: 401 },
+    { path: '/vista/patient-demographics?dfn=3', expectedStatus: 401 },
+    { path: '/vista/medications?dfn=3', expectedStatus: 401 },
   ];
 
   for (const ep of errorEndpoints) {
@@ -213,25 +212,25 @@ describe("Error shape uniformity", () => {
     });
   }
 
-  it("POST /auth/login with missing body → 400 with error shape", async () => {
-    const { status, json } = await api("/auth/login", {
-      method: "POST",
+  it('POST /auth/login with missing body → 400 with error shape', async () => {
+    const { status, json } = await api('/auth/login', {
+      method: 'POST',
       body: {},
     });
     // Zod validation should catch empty body
     expect([400, 401]).toContain(status);
     const obj = json as Record<string, unknown>;
-    expect(obj).toHaveProperty("ok", false);
+    expect(obj).toHaveProperty('ok', false);
   });
 
-  it("POST /auth/login with invalid types → 400 with error shape", async () => {
-    const { status, json } = await api("/auth/login", {
-      method: "POST",
+  it('POST /auth/login with invalid types → 400 with error shape', async () => {
+    const { status, json } = await api('/auth/login', {
+      method: 'POST',
       body: { accessCode: 123, verifyCode: true },
     });
     expect([400, 401]).toContain(status);
     const obj = json as Record<string, unknown>;
-    expect(obj).toHaveProperty("ok", false);
+    expect(obj).toHaveProperty('ok', false);
   });
 });
 
@@ -239,52 +238,52 @@ describe("Error shape uniformity", () => {
 /* Contract: No placeholder responses on live paths                     */
 /* ------------------------------------------------------------------ */
 
-describe("No placeholder/stub responses", () => {
+describe('No placeholder/stub responses', () => {
   let cookie: string;
 
   beforeAll(async () => {
     cookie = await getSessionCookie();
   });
 
-  it("GET /auth/session returns full session object (not stub)", async () => {
-    const { json } = await api("/auth/session", { cookie });
+  it('GET /auth/session returns full session object (not stub)', async () => {
+    const { json } = await api('/auth/session', { cookie });
     const data = json as Record<string, unknown>;
     assertOkShape(data);
-    expect(data).toHaveProperty("authenticated", true);
-    expect(data).toHaveProperty("session");
+    expect(data).toHaveProperty('authenticated', true);
+    expect(data).toHaveProperty('session');
     const session = data.session as Record<string, unknown>;
-    expect(session).toHaveProperty("duz");
-    expect(session).toHaveProperty("userName");
+    expect(session).toHaveProperty('duz');
+    expect(session).toHaveProperty('userName');
     // DUZ should be a real value, not "0" or empty
-    expect(String(session.duz)).not.toBe("0");
-    expect(String(session.duz)).not.toBe("");
+    expect(String(session.duz)).not.toBe('0');
+    expect(String(session.duz)).not.toBe('');
   });
 
-  it("GET /vista/patient-search?q=CARTER returns non-empty results", async () => {
-    const { json } = await api("/vista/patient-search?q=CARTER", { cookie });
+  it('GET /vista/patient-search?q=CARTER returns non-empty results', async () => {
+    const { json } = await api('/vista/patient-search?q=CARTER', { cookie });
     const data = json as Record<string, unknown>;
     assertOkShape(data);
     const results = data.results as unknown[];
     // WorldVistA sandbox should have at least 1 CARTER patient
     expect(
       results.length,
-      "Patient search for CARTER returned 0 results — possible stub"
+      'Patient search for CARTER returned 0 results — possible stub'
     ).toBeGreaterThanOrEqual(1);
   });
 
-  it("GET /health has real uptime (not hardcoded 0)", async () => {
-    const { json } = await api("/health");
+  it('GET /health has real uptime (not hardcoded 0)', async () => {
+    const { json } = await api('/health');
     const data = json as Record<string, unknown>;
-    expect(data).toHaveProperty("ok", true);
-    expect(typeof data.uptime).toBe("number");
+    expect(data).toHaveProperty('ok', true);
+    expect(typeof data.uptime).toBe('number');
   });
 
-  it("GET /ready has vista field (not missing)", async () => {
-    const { json } = await api("/ready");
+  it('GET /ready has vista field (not missing)', async () => {
+    const { json } = await api('/ready');
     const data = json as Record<string, unknown>;
-    expect(data).toHaveProperty("ok");
-    expect(data).toHaveProperty("vista");
-    expect(["reachable", "unreachable"]).toContain(data.vista);
+    expect(data).toHaveProperty('ok');
+    expect(data).toHaveProperty('vista');
+    expect(['reachable', 'unreachable']).toContain(data.vista);
   });
 });
 
@@ -292,26 +291,26 @@ describe("No placeholder/stub responses", () => {
 /* Contract: Security headers present                                   */
 /* ------------------------------------------------------------------ */
 
-describe("Security headers present", () => {
-  it("Responses include security headers", async () => {
-    const { headers } = await api("/health");
+describe('Security headers present', () => {
+  it('Responses include security headers', async () => {
+    const { headers } = await api('/health');
     // X-Content-Type-Options should be set
-    const xCto = headers.get("x-content-type-options");
-    expect(xCto).toBe("nosniff");
+    const xCto = headers.get('x-content-type-options');
+    expect(xCto).toBe('nosniff');
   });
 
-  it("Set-Cookie uses httpOnly for session", async () => {
+  it('Set-Cookie uses httpOnly for session', async () => {
     const res = await fetch(`${API}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        accessCode: process.env.VISTA_ACCESS_CODE ?? "PROV123",
-        verifyCode: process.env.VISTA_VERIFY_CODE ?? "PROV123!!",
+        accessCode: process.env.VISTA_ACCESS_CODE ?? 'PROV123',
+        verifyCode: process.env.VISTA_VERIFY_CODE ?? 'PROV123!!',
       }),
     });
-    const setCookie = res.headers.get("set-cookie") ?? "";
+    const setCookie = res.headers.get('set-cookie') ?? '';
     // Session cookie should be httpOnly
-    expect(setCookie.toLowerCase()).toContain("httponly");
+    expect(setCookie.toLowerCase()).toContain('httponly');
   });
 });
 
@@ -319,30 +318,30 @@ describe("Security headers present", () => {
 /* Contract: Validation rejects bad input                               */
 /* ------------------------------------------------------------------ */
 
-describe("Input validation enforced", () => {
+describe('Input validation enforced', () => {
   let cookie: string;
 
   beforeAll(async () => {
     cookie = await getSessionCookie();
   });
 
-  it("GET /vista/patient-search without q param → ok:false", async () => {
-    const { status, json } = await api("/vista/patient-search", { cookie });
+  it('GET /vista/patient-search without q param → ok:false', async () => {
+    const { status, json } = await api('/vista/patient-search', { cookie });
     // API returns 200 with ok:false for missing params (graceful validation)
     expect(status).toBe(200);
     expect((json as any).ok).toBe(false);
     expect((json as any).error).toBeTruthy();
   });
 
-  it("GET /vista/allergies without dfn → ok:false", async () => {
-    const { status, json } = await api("/vista/allergies", { cookie });
+  it('GET /vista/allergies without dfn → ok:false', async () => {
+    const { status, json } = await api('/vista/allergies', { cookie });
     expect(status).toBe(200);
     expect((json as any).ok).toBe(false);
     expect((json as any).error).toBeTruthy();
   });
 
-  it("GET /vista/allergies?dfn=abc (non-numeric) → ok:false", async () => {
-    const { status, json } = await api("/vista/allergies?dfn=abc", { cookie });
+  it('GET /vista/allergies?dfn=abc (non-numeric) → ok:false', async () => {
+    const { status, json } = await api('/vista/allergies?dfn=abc', { cookie });
     expect(status).toBe(200);
     expect((json as any).ok).toBe(false);
     expect((json as any).error).toBeTruthy();

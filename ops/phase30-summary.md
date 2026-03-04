@@ -6,6 +6,7 @@ Phase 30 implements **telehealth video visit infrastructure** with a provider-ag
 adapter architecture. The default provider is self-hostable Jitsi Meet.
 
 ### New Capabilities
+
 - **Provider Adapter Pattern**: `TelehealthProvider` interface with JitsiProvider default
   and StubProvider for testing. New providers (Zoom, Twilio, WebEx) can be added by
   implementing the interface and registering in the factory.
@@ -22,6 +23,7 @@ adapter architecture. The default provider is self-hostable Jitsi Meet.
   support, recording disabled by default, portal audit trail integration.
 
 ### Files Created (8)
+
 - `apps/api/src/telehealth/types.ts` — Provider interface, room/device/waiting types
 - `apps/api/src/telehealth/providers/jitsi-provider.ts` — Jitsi Meet adapter
 - `apps/api/src/telehealth/providers/index.ts` — Provider registry/factory
@@ -32,6 +34,7 @@ adapter architecture. The default provider is self-hostable Jitsi Meet.
 - `docs/runbooks/phase30-telehealth.md` — Runbook
 
 ### Files Modified (8)
+
 - `apps/api/src/index.ts` — Telehealth route registration + room cleanup
 - `apps/api/src/middleware/security.ts` — Auth rules + graceful shutdown
 - `apps/api/src/services/portal-audit.ts` — 4 new telehealth audit actions

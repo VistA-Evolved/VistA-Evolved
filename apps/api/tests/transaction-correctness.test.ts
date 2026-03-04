@@ -170,8 +170,18 @@ describe('Transaction Store', () => {
   });
 
   it('indexes by correlation ID', () => {
-    const env1 = buildEnvelope({ transactionSet: '837P', senderId: 'S', receiverId: 'R', correlationId: 'corr-abc' });
-    const env2 = buildEnvelope({ transactionSet: '999', senderId: 'R', receiverId: 'S', correlationId: 'corr-abc' });
+    const env1 = buildEnvelope({
+      transactionSet: '837P',
+      senderId: 'S',
+      receiverId: 'R',
+      correlationId: 'corr-abc',
+    });
+    const env2 = buildEnvelope({
+      transactionSet: '999',
+      senderId: 'R',
+      receiverId: 'S',
+      correlationId: 'corr-abc',
+    });
     storeTransaction(env1);
     storeTransaction(env2);
 
@@ -180,7 +190,12 @@ describe('Transaction Store', () => {
   });
 
   it('indexes by source ID', () => {
-    const env = buildEnvelope({ transactionSet: '837P', senderId: 'S', receiverId: 'R', sourceId: 'claim-x' });
+    const env = buildEnvelope({
+      transactionSet: '837P',
+      senderId: 'S',
+      receiverId: 'R',
+      sourceId: 'claim-x',
+    });
     storeTransaction(env);
 
     const bySource = getTransactionsBySource('claim-x');
@@ -279,9 +294,20 @@ describe('Transaction State Machine', () => {
 
   it('verifies all states have defined transitions', () => {
     const allStates: TransactionState[] = [
-      'created', 'serialized', 'validated', 'queued', 'transmitted',
-      'ack_pending', 'ack_accepted', 'ack_rejected', 'response_pending',
-      'response_received', 'reconciled', 'failed', 'cancelled', 'dlq',
+      'created',
+      'serialized',
+      'validated',
+      'queued',
+      'transmitted',
+      'ack_pending',
+      'ack_accepted',
+      'ack_rejected',
+      'response_pending',
+      'response_received',
+      'reconciled',
+      'failed',
+      'cancelled',
+      'dlq',
     ];
     for (const state of allStates) {
       expect(TRANSACTION_STATE_TRANSITIONS[state]).toBeDefined();
@@ -351,24 +377,52 @@ describe('Local Scaffold Translator — Validation', () => {
 describe('Local Scaffold Translator — Build X12', () => {
   it('builds deterministic X12 for same input', () => {
     const canonical = {
-      submitterInfo: { npi: '1234567890', name: 'TEST SUBMITTER', contactName: 'TEST', contactPhone: '5551234567' },
-      billingProvider: { npi: '0987654321', name: 'TEST PROVIDER', taxId: '123456789', addressLine1: '123 MAIN', city: 'ANYTOWN', state: 'CA', zip: '90210' },
+      submitterInfo: {
+        npi: '1234567890',
+        name: 'TEST SUBMITTER',
+        contactName: 'TEST',
+        contactPhone: '5551234567',
+      },
+      billingProvider: {
+        npi: '0987654321',
+        name: 'TEST PROVIDER',
+        taxId: '123456789',
+        addressLine1: '123 MAIN',
+        city: 'ANYTOWN',
+        state: 'CA',
+        zip: '90210',
+      },
       subscriber: {
-        memberId: 'MEM001', lastName: 'DOE', firstName: 'JOHN', dob: '19800101', gender: 'M',
+        memberId: 'MEM001',
+        lastName: 'DOE',
+        firstName: 'JOHN',
+        dob: '19800101',
+        gender: 'M',
         relationshipCode: '18',
       },
       receiverInfo: { name: 'TEST PAYER' },
       claimInfo: {
-        claimId: 'CLM-1', totalChargeAmount: 100, facilityCode: '11',
-        frequencyCode: '1', providerSignature: true, assignmentOfBenefits: true,
+        claimId: 'CLM-1',
+        totalChargeAmount: 100,
+        facilityCode: '11',
+        frequencyCode: '1',
+        providerSignature: true,
+        assignmentOfBenefits: true,
         releaseOfInfo: 'Y',
       },
       diagnosisCodes: [{ code: 'A01.0', qualifier: 'ABK', isPrincipal: true }],
-      serviceLines: [{
-        lineNumber: 1, procedureCode: '99213', chargeAmount: 100, units: 1,
-        unitType: 'UN', serviceDate: '20250101', placeOfService: '11',
-        diagnosisPointers: [1],
-      }],
+      serviceLines: [
+        {
+          lineNumber: 1,
+          procedureCode: '99213',
+          chargeAmount: 100,
+          units: 1,
+          unitType: 'UN',
+          serviceDate: '20250101',
+          placeOfService: '11',
+          diagnosisPointers: [1],
+        },
+      ],
     };
 
     const env = buildEnvelope({ transactionSet: '837P', senderId: 'S', receiverId: 'R' });
@@ -383,7 +437,8 @@ describe('Local Scaffold Translator — Build X12', () => {
 
 describe('Local Scaffold Translator — Parse X12', () => {
   it('parses 999 response', () => {
-    const raw = 'ISA*00*          *00*          *ZZ*RECEIVER       *ZZ*SENDER         *250101*1200*^*00501*000000001*0*T*:~GS*FA*RECEIVER*SENDER*20250101*1200*1*X*005010X231A1~ST*999*0001~AK1*HC*000000001~AK9*A*1*1*1~SE*4*0001~GE*1*1~IEA*1*000000001~';
+    const raw =
+      'ISA*00*          *00*          *ZZ*RECEIVER       *ZZ*SENDER         *250101*1200*^*00501*000000001*0*T*:~GS*FA*RECEIVER*SENDER*20250101*1200*1*X*005010X231A1~ST*999*0001~AK1*HC*000000001~AK9*A*1*1*1~SE*4*0001~GE*1*1~IEA*1*000000001~';
     const parsed = localScaffoldTranslator.parseX12('999', raw);
     expect(parsed.transactionSet).toBe('999');
     expect(parsed.accepted).toBe(true);
@@ -400,42 +455,43 @@ describe('Local Scaffold Translator — Parse X12', () => {
 
 describe('Connectivity Gates', () => {
   it('pre-transmit gates pass for valid X12', () => {
-    const payload = 'ISA*00*          *00*          *ZZ*SENDER         *ZZ*RECEIVER       *250101*1200*^*00501*000000001*0*T*:~GS*HC*SENDER*RECEIVER*20250101*1200*1*X*005010X222A1~ST*837*0001~SE*2*0001~GE*1*1~IEA*1*000000001~';
+    const payload =
+      'ISA*00*          *00*          *ZZ*SENDER         *ZZ*RECEIVER       *250101*1200*^*00501*000000001*0*T*:~GS*HC*SENDER*RECEIVER*20250101*1200*1*X*005010X222A1~ST*837*0001~SE*2*0001~GE*1*1~IEA*1*000000001~';
     const results = checkPreTransmitGates('837P', payload);
-    const errors = results.filter(g => g.severity === 'error' && !g.passed);
+    const errors = results.filter((g) => g.severity === 'error' && !g.passed);
     expect(errors).toHaveLength(0);
   });
 
   it('pre-transmit gates fail for empty payload', () => {
     const results = checkPreTransmitGates('837P', '');
-    const errors = results.filter(g => !g.passed && g.severity === 'error');
+    const errors = results.filter((g) => !g.passed && g.severity === 'error');
     expect(errors.length).toBeGreaterThan(0);
-    expect(errors.some(g => g.gate === 'payload_present')).toBe(true);
+    expect(errors.some((g) => g.gate === 'payload_present')).toBe(true);
   });
 
   it('pre-transmit gates catch missing ISA', () => {
     const results = checkPreTransmitGates('837P', 'ST*837*0001~SE*2*0001~');
-    const isaGate = results.find(g => g.gate === 'isa_envelope');
+    const isaGate = results.find((g) => g.gate === 'isa_envelope');
     expect(isaGate?.passed).toBe(false);
   });
 
   it('pre-transmit gates catch missing IEA', () => {
     const results = checkPreTransmitGates('837P', 'ISA*test~ST*837*0001~SE*2*0001~');
-    const ieaGate = results.find(g => g.gate === 'iea_trailer');
+    const ieaGate = results.find((g) => g.gate === 'iea_trailer');
     expect(ieaGate?.passed).toBe(false);
   });
 
   it('ack gates report transaction not found', () => {
     const results = checkAckGates('non-existent-id');
-    expect(results.some(g => g.gate === 'transaction_exists' && !g.passed)).toBe(true);
+    expect(results.some((g) => g.gate === 'transaction_exists' && !g.passed)).toBe(true);
   });
 
   it('ack gates pass for created transaction', () => {
     const env = buildEnvelope({ transactionSet: '837P', senderId: 'S', receiverId: 'R' });
     const txn = storeTransaction(env);
     const results = checkAckGates(txn.id);
-    expect(results.some(g => g.gate === 'transaction_exists' && g.passed)).toBe(true);
-    expect(results.some(g => g.gate === 'not_in_dlq' && g.passed)).toBe(true);
+    expect(results.some((g) => g.gate === 'transaction_exists' && g.passed)).toBe(true);
+    expect(results.some((g) => g.gate === 'not_in_dlq' && g.passed)).toBe(true);
   });
 });
 
@@ -447,9 +503,9 @@ describe('Retry + DLQ Logic', () => {
     const d1 = calculateRetryDelay(1);
     const d2 = calculateRetryDelay(2);
 
-    expect(d0).toBe(5000);   // 5s initial
-    expect(d1).toBe(10000);  // 5s * 2^1
-    expect(d2).toBe(20000);  // 5s * 2^2
+    expect(d0).toBe(5000); // 5s initial
+    expect(d1).toBe(10000); // 5s * 2^1
+    expect(d2).toBe(20000); // 5s * 2^2
   });
 
   it('caps delay at maxDelayMs', () => {
@@ -603,8 +659,18 @@ describe('Reconciliation', () => {
   });
 
   it('builds batch reconciliation stats', () => {
-    const claim1 = createDraftClaim({ tenantId: 'default', patientDfn: '3', payerId: 'BCBS', claimType: '837P' });
-    const claim2 = createDraftClaim({ tenantId: 'default', patientDfn: '4', payerId: 'AETNA', claimType: '837P' });
+    const claim1 = createDraftClaim({
+      tenantId: 'default',
+      patientDfn: '3',
+      payerId: 'BCBS',
+      claimType: '837P',
+    });
+    const claim2 = createDraftClaim({
+      tenantId: 'default',
+      patientDfn: '4',
+      payerId: 'AETNA',
+      claimType: '837P',
+    });
     storeClaim(claim1);
     storeClaim(claim2);
 
@@ -619,7 +685,7 @@ describe('Connectivity Profile', () => {
   it('has CAQH CORE rule references', () => {
     const profile = getConnectivityProfile();
     expect(profile.operatingRuleReferences.length).toBeGreaterThan(0);
-    expect(profile.operatingRuleReferences.some(r => r.includes('CAQH CORE'))).toBe(true);
+    expect(profile.operatingRuleReferences.some((r) => r.includes('CAQH CORE'))).toBe(true);
   });
 
   it('configures ack timeouts', () => {

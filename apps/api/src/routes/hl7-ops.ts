@@ -18,7 +18,7 @@
  *   GET    /hl7/ops/retry/due         — entries due for retry
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 import {
   buildOpsDashboard,
   getThroughput,
@@ -37,46 +37,46 @@ import {
   recordRetryResult,
   getOpsStoreStats,
   DEFAULT_RETRY_POLICY,
-} from "../hl7/hl7-ops-monitor.js";
+} from '../hl7/hl7-ops-monitor.js';
 
-const DEFAULT_TENANT = "default";
+const DEFAULT_TENANT = 'default';
 
 function getTenantId(request: any): string {
   return (request as any).session?.tenantId || DEFAULT_TENANT;
 }
 
 export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
-
   // ─── Dashboard ───────────────────────────────────────────────────
 
-  app.get("/hl7/ops/dashboard", async (request) => {
+  app.get('/hl7/ops/dashboard', async (request) => {
     const dashboard = buildOpsDashboard(getTenantId(request));
     return { ok: true, dashboard };
   });
 
   // ─── Throughput ──────────────────────────────────────────────────
 
-  app.get("/hl7/ops/throughput/:endpointId", async (request) => {
+  app.get('/hl7/ops/throughput/:endpointId', async (request) => {
     const { endpointId } = request.params as { endpointId: string };
     const query = request.query as Record<string, string>;
-    const minutes = parseInt(query.minutes || "60", 10);
+    const minutes = parseInt(query.minutes || '60', 10);
     const throughput = getThroughput(endpointId, minutes);
     return { ok: true, throughput };
   });
 
   // ─── SLA Configuration ──────────────────────────────────────────
 
-  app.post("/hl7/ops/sla", async (request, reply) => {
+  app.post('/hl7/ops/sla', async (request, reply) => {
     const body = (request.body as any) || {};
-    const { targetId, description, deliveryRateTarget, p95LatencyTargetMs, p99LatencyTargetMs } = body;
+    const { targetId, description, deliveryRateTarget, p95LatencyTargetMs, p99LatencyTargetMs } =
+      body;
     if (!targetId) {
       reply.code(400);
-      return { ok: false, error: "targetId is required" };
+      return { ok: false, error: 'targetId is required' };
     }
     const config = createSlaConfig({
       targetId,
       tenantId: getTenantId(request),
-      description: description || "",
+      description: description || '',
       deliveryRateTarget: deliveryRateTarget ?? 0.995,
       p95LatencyTargetMs: p95LatencyTargetMs ?? 500,
       p99LatencyTargetMs: p99LatencyTargetMs ?? 2000,
@@ -87,32 +87,32 @@ export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, sla: config };
   });
 
-  app.get("/hl7/ops/sla", async (request) => {
+  app.get('/hl7/ops/sla', async (request) => {
     const configs = listSlaConfigs(getTenantId(request));
     return { ok: true, count: configs.length, slaConfigs: configs };
   });
 
-  app.get("/hl7/ops/sla/:id", async (request, reply) => {
+  app.get('/hl7/ops/sla/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const config = getSlaConfig(id);
     if (!config) {
       reply.code(404);
-      return { ok: false, error: "sla_config_not_found" };
+      return { ok: false, error: 'sla_config_not_found' };
     }
     return { ok: true, sla: config };
   });
 
-  app.delete("/hl7/ops/sla/:id", async (request, reply) => {
+  app.delete('/hl7/ops/sla/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const deleted = deleteSlaConfig(id, getTenantId(request));
     if (!deleted) {
       reply.code(404);
-      return { ok: false, error: "sla_config_not_found" };
+      return { ok: false, error: 'sla_config_not_found' };
     }
     return { ok: true, deleted: true };
   });
 
-  app.post("/hl7/ops/sla/evaluate", async () => {
+  app.post('/hl7/ops/sla/evaluate', async () => {
     const violations = evaluateSlas();
     return {
       ok: true,
@@ -127,29 +127,30 @@ export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
     };
   });
 
-  app.get("/hl7/ops/sla/violations", async (request) => {
+  app.get('/hl7/ops/sla/violations', async (request) => {
     const query = request.query as Record<string, string>;
     const violations = listSlaViolations({
       slaId: query.slaId,
-      acknowledged: query.acknowledged === "true" ? true : query.acknowledged === "false" ? false : undefined,
-      limit: parseInt(query.limit || "100", 10),
+      acknowledged:
+        query.acknowledged === 'true' ? true : query.acknowledged === 'false' ? false : undefined,
+      limit: parseInt(query.limit || '100', 10),
     });
     return { ok: true, count: violations.length, violations };
   });
 
-  app.post("/hl7/ops/sla/violations/:id/ack", async (request, reply) => {
+  app.post('/hl7/ops/sla/violations/:id/ack', async (request, reply) => {
     const { id } = request.params as { id: string };
     const success = acknowledgeSlaViolation(id, getTenantId(request));
     if (!success) {
       reply.code(404);
-      return { ok: false, error: "violation_not_found" };
+      return { ok: false, error: 'violation_not_found' };
     }
     return { ok: true, acknowledged: true };
   });
 
   // ─── Retry Queue ─────────────────────────────────────────────────
 
-  app.post("/hl7/ops/retry/:dlqId", async (request, reply) => {
+  app.post('/hl7/ops/retry/:dlqId', async (request, reply) => {
     const { dlqId } = request.params as { dlqId: string };
     const body = (request.body as any) || {};
     const policy = body.policy || DEFAULT_RETRY_POLICY;
@@ -158,34 +159,34 @@ export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, retryEntry: entry };
   });
 
-  app.get("/hl7/ops/retry", async () => {
+  app.get('/hl7/ops/retry', async () => {
     const queue = listRetryQueue();
     return { ok: true, count: queue.length, retryQueue: queue };
   });
 
-  app.get("/hl7/ops/retry/stats", async () => {
+  app.get('/hl7/ops/retry/stats', async () => {
     const stats = getRetryQueueStats();
     return { ok: true, ...stats };
   });
 
-  app.get("/hl7/ops/retry/due", async () => {
+  app.get('/hl7/ops/retry/due', async () => {
     const due = getRetryDueEntries();
     return { ok: true, count: due.length, dueEntries: due };
   });
 
   // ─── Retry State per DLQ entry ──────────────────────────────────
 
-  app.get("/hl7/ops/retry/:dlqId", async (request, reply) => {
+  app.get('/hl7/ops/retry/:dlqId', async (request, reply) => {
     const { dlqId } = request.params as { dlqId: string };
     const entry = getRetryState(dlqId);
     if (!entry) {
       reply.code(404);
-      return { ok: false, error: "retry_entry_not_found" };
+      return { ok: false, error: 'retry_entry_not_found' };
     }
     return { ok: true, retryEntry: entry };
   });
 
-  app.post("/hl7/ops/retry/:dlqId/result", async (request) => {
+  app.post('/hl7/ops/retry/:dlqId/result', async (request) => {
     const { dlqId } = request.params as { dlqId: string };
     const body = (request.body as any) || {};
     recordRetryResult(dlqId, !!body.success, body.error);
@@ -194,7 +195,7 @@ export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
 
   // ─── Store Stats ────────────────────────────────────────────────
 
-  app.get("/hl7/ops/store-stats", async () => {
+  app.get('/hl7/ops/store-stats', async () => {
     return { ok: true, ...getOpsStoreStats() };
   });
 }

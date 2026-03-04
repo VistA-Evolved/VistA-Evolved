@@ -27,9 +27,7 @@ Seed files are JSON arrays in `data/payers/`:
       "clearinghousePayerId": "00301",
       "enrollmentRequired": true,
       "enrollmentNotes": "...",
-      "endpoints": [
-        { "purpose": "claims", "protocol": "sftp", "url": "..." }
-      ],
+      "endpoints": [{ "purpose": "claims", "protocol": "sftp", "url": "..." }],
       "aliases": ["Medicare A"],
       "createdAt": "2026-02-20T00:00:00Z",
       "updatedAt": "2026-02-20T00:00:00Z"
@@ -40,18 +38,19 @@ Seed files are JSON arrays in `data/payers/`:
 
 ## Integration Modes
 
-| Mode | Connector | Description |
-|------|-----------|-------------|
-| `clearinghouse_edi` | `clearinghouse-edi` | X12 EDI via clearinghouse (SFTP/API) |
-| `direct_api` | `clearinghouse-edi` | Direct payer REST API |
-| `portal_batch` | `portal-batch` | Web portal batch upload |
+| Mode                | Connector            | Description                          |
+| ------------------- | -------------------- | ------------------------------------ |
+| `clearinghouse_edi` | `clearinghouse-edi`  | X12 EDI via clearinghouse (SFTP/API) |
+| `direct_api`        | `clearinghouse-edi`  | Direct payer REST API                |
+| `portal_batch`      | `portal-batch`       | Web portal batch upload              |
 | `government_portal` | `philhealth-eclaims` | Government portal (PhilHealth, etc.) |
-| `fhir_payer` | (future) | FHIR-based payer API |
-| `not_classified` | `sandbox` | Unknown/unclassified |
+| `fhir_payer`        | (future)             | FHIR-based payer API                 |
+| `not_classified`    | `sandbox`            | Unknown/unclassified                 |
 
 ## Adding a New Payer
 
 ### Via API
+
 ```bash
 curl -b cookies.txt -X POST http://localhost:3001/rcm/payers \
   -H "Content-Type: application/json" \
@@ -67,6 +66,7 @@ curl -b cookies.txt -X POST http://localhost:3001/rcm/payers \
 ```
 
 ### Via Seed File
+
 Add to `data/payers/us_core.json` (or create a new seed file).
 All `.json` files in `data/payers/` are loaded at startup.
 
@@ -80,6 +80,7 @@ All `.json` files in `data/payers/` are loaded at startup.
 ## Payer Statistics
 
 `GET /rcm/payers/stats` returns:
+
 - Total payer count
 - Count by country
 - Count by integration mode
@@ -92,6 +93,7 @@ GET /rcm/payers?country=US&integrationMode=clearinghouse_edi&search=medicare&lim
 ```
 
 Supported filters:
+
 - `country` — ISO 2-letter code
 - `integrationMode` — one of the 6 modes
 - `status` — active, inactive, testing, decommissioned

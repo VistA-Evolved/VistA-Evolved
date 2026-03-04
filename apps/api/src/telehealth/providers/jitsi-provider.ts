@@ -15,23 +15,23 @@
  *       Without it, uses unauthenticated Jitsi (suitable for dev).
  */
 
-import { randomBytes, createHmac } from "node:crypto";
+import { randomBytes, createHmac } from 'node:crypto';
 import type {
   TelehealthProvider,
   CreateRoomResult,
   JoinUrlResult,
   RoomParticipant,
-} from "../types.js";
+} from '../types.js';
 
 /* ------------------------------------------------------------------ */
 /* Configuration                                                        */
 /* ------------------------------------------------------------------ */
 
-const JITSI_BASE_URL = process.env.JITSI_BASE_URL || "https://meet.jit.si";
-const JITSI_APP_ID = process.env.JITSI_APP_ID || "";
-const JITSI_APP_SECRET = process.env.JITSI_APP_SECRET || "";
+const JITSI_BASE_URL = process.env.JITSI_BASE_URL || 'https://meet.jit.si';
+const JITSI_APP_ID = process.env.JITSI_APP_ID || '';
+const JITSI_APP_SECRET = process.env.JITSI_APP_SECRET || '';
 /** Join URL validity in seconds */
-const JOIN_URL_TTL_SECONDS = parseInt(process.env.JITSI_JOIN_TTL_SECONDS || "3600", 10);
+const JOIN_URL_TTL_SECONDS = parseInt(process.env.JITSI_JOIN_TTL_SECONDS || '3600', 10);
 
 /* ------------------------------------------------------------------ */
 /* JWT helper (simple HMAC-SHA256 for Jitsi prosody)                     */
@@ -54,10 +54,10 @@ interface JitsiJwtPayload {
 
 function base64url(data: string): string {
   return Buffer.from(data)
-    .toString("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
+    .toString('base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
 }
 
 /**
@@ -70,7 +70,7 @@ function generateJitsiJwt(
   ttlSeconds: number
 ): string {
   const now = Math.floor(Date.now() / 1000);
-  const header = { alg: "HS256", typ: "JWT" };
+  const header = { alg: 'HS256', typ: 'JWT' };
   const payload: JitsiJwtPayload = {
     iss: JITSI_APP_ID,
     sub: new URL(JITSI_BASE_URL).hostname,
@@ -81,19 +81,19 @@ function generateJitsiJwt(
     context: {
       user: {
         name: participant.displayName,
-        affiliation: participant.role === "provider" ? "owner" : "member",
+        affiliation: participant.role === 'provider' ? 'owner' : 'member',
       },
     },
   };
 
   const headerB64 = base64url(JSON.stringify(header));
   const payloadB64 = base64url(JSON.stringify(payload));
-  const signature = createHmac("sha256", JITSI_APP_SECRET)
+  const signature = createHmac('sha256', JITSI_APP_SECRET)
     .update(`${headerB64}.${payloadB64}`)
-    .digest("base64")
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
+    .digest('base64')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
 
   return `${headerB64}.${payloadB64}.${signature}`;
 }
@@ -103,12 +103,12 @@ function generateJitsiJwt(
 /* ------------------------------------------------------------------ */
 
 export class JitsiProvider implements TelehealthProvider {
-  readonly name = "Jitsi";
+  readonly name = 'Jitsi';
 
   async createRoom(_appointmentId: string): Promise<CreateRoomResult> {
     // Jitsi rooms are created on-the-fly; no server-side API call needed.
     // We generate an opaque room name to avoid PHI exposure.
-    const roomId = `ve-${randomBytes(12).toString("hex")}`;
+    const roomId = `ve-${randomBytes(12).toString('hex')}`;
     return {
       roomId,
       meta: {
@@ -118,32 +118,29 @@ export class JitsiProvider implements TelehealthProvider {
     };
   }
 
-  async joinUrl(
-    roomId: string,
-    participant: RoomParticipant
-  ): Promise<JoinUrlResult> {
+  async joinUrl(roomId: string, participant: RoomParticipant): Promise<JoinUrlResult> {
     let url = `${JITSI_BASE_URL}/${roomId}`;
     let token: string | undefined;
 
     // Add display name as URL param
     const params = new URLSearchParams();
-    params.set("userInfo.displayName", participant.displayName);
+    params.set('userInfo.displayName', participant.displayName);
 
     // If JWT auth is configured, generate a signed token
     if (JITSI_APP_SECRET) {
       token = generateJitsiJwt(roomId, participant, JOIN_URL_TTL_SECONDS);
-      params.set("jwt", token);
+      params.set('jwt', token);
     }
 
     // Jitsi config overrides for clinical use
-    params.set("config.prejoinPageEnabled", "false"); // We handle our own pre-join
-    params.set("config.disableDeepLinking", "true");
-    params.set("config.startWithAudioMuted", participant.role === "patient" ? "true" : "false");
+    params.set('config.prejoinPageEnabled', 'false'); // We handle our own pre-join
+    params.set('config.disableDeepLinking', 'true');
+    params.set('config.startWithAudioMuted', participant.role === 'patient' ? 'true' : 'false');
 
     // Disable recording by default (compliance — consent required)
-    params.set("config.disableRecordAudioNotification", "false");
-    params.set("config.localRecording.disable", "true");
-    params.set("interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES", "true");
+    params.set('config.disableRecordAudioNotification', 'false');
+    params.set('config.localRecording.disable', 'true');
+    params.set('interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES', 'true');
 
     url += `#${params.toString()}`;
 
@@ -166,7 +163,7 @@ export class JitsiProvider implements TelehealthProvider {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 5000);
       const res = await fetch(JITSI_BASE_URL, {
-        method: "HEAD",
+        method: 'HEAD',
         signal: controller.signal,
       });
       clearTimeout(timeout);

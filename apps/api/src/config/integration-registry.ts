@@ -37,34 +37,29 @@
 
 /** All supported integration types. */
 export type IntegrationType =
-  | "vista-rpc"        // Direct XWB RPC Broker connection
-  | "fhir"            // Generic FHIR R4 endpoint
-  | "fhir-c0fhir"     // WorldVistA C0FHIR Suite (RPC-backed FHIR)
-  | "fhir-vpr"        // VPR GET PATIENT DATA JSON → FHIR transform
-  | "dicom"           // Raw DICOM (C-STORE/C-FIND/C-MOVE)
-  | "dicomweb"        // DICOMweb (WADO-RS, STOW-RS, QIDO-RS)
-  | "hl7v2"           // HL7v2 MLLP feeds (ADT, ORM, ORU)
-  | "lis"             // Lab Information System interface
-  | "pacs-vna"        // PACS/VNA archive
-  | "device"          // Modality / bedside device
-  | "external";       // Other external system
+  | 'vista-rpc' // Direct XWB RPC Broker connection
+  | 'fhir' // Generic FHIR R4 endpoint
+  | 'fhir-c0fhir' // WorldVistA C0FHIR Suite (RPC-backed FHIR)
+  | 'fhir-vpr' // VPR GET PATIENT DATA JSON → FHIR transform
+  | 'dicom' // Raw DICOM (C-STORE/C-FIND/C-MOVE)
+  | 'dicomweb' // DICOMweb (WADO-RS, STOW-RS, QIDO-RS)
+  | 'hl7v2' // HL7v2 MLLP feeds (ADT, ORM, ORU)
+  | 'lis' // Lab Information System interface
+  | 'pacs-vna' // PACS/VNA archive
+  | 'device' // Modality / bedside device
+  | 'external'; // Other external system
 
 /** Authentication methods for integrations. */
 export type IntegrationAuthMethod =
-  | "none"
-  | "basic"
-  | "bearer"
-  | "certificate"
-  | "vista-av-codes"
-  | "api-key";
+  | 'none'
+  | 'basic'
+  | 'bearer'
+  | 'certificate'
+  | 'vista-av-codes'
+  | 'api-key';
 
 /** Integration health status. */
-export type IntegrationStatus =
-  | "connected"
-  | "disconnected"
-  | "degraded"
-  | "unknown"
-  | "disabled";
+export type IntegrationStatus = 'connected' | 'disconnected' | 'degraded' | 'unknown' | 'disabled';
 
 /** A single error log entry. */
 export interface IntegrationErrorEntry {
@@ -133,7 +128,7 @@ export interface IntegrationEntry {
 
 /** VistA RPC-specific config. */
 export interface VistaRpcConfig {
-  kind: "vista-rpc";
+  kind: 'vista-rpc';
   /** RPC context (e.g., "OR CPRS GUI CHART") */
   context: string;
   /** Whether to use XWB protocol v1.1 */
@@ -142,7 +137,7 @@ export interface VistaRpcConfig {
 
 /** C0FHIR Suite config (WorldVistA VistA-FHIR-Server). */
 export interface FhirC0FhirConfig {
-  kind: "fhir-c0fhir";
+  kind: 'fhir-c0fhir';
   /** FHIR endpoint path (typically "/fhir") */
   fhirEndpoint: string;
   /** The RPC name used behind the scenes */
@@ -155,7 +150,7 @@ export interface FhirC0FhirConfig {
 
 /** Generic FHIR endpoint config. */
 export interface FhirConfig {
-  kind: "fhir";
+  kind: 'fhir';
   /** FHIR base URL path */
   fhirEndpoint: string;
   /** FHIR version */
@@ -166,7 +161,7 @@ export interface FhirConfig {
 
 /** VPR-based FHIR config. */
 export interface FhirVprConfig {
-  kind: "fhir-vpr";
+  kind: 'fhir-vpr';
   /** The VPR RPC name */
   rpcName: string;
   /** VPR data categories */
@@ -175,7 +170,7 @@ export interface FhirVprConfig {
 
 /** DICOM config (raw C-STORE/C-FIND). */
 export interface DicomConfig {
-  kind: "dicom";
+  kind: 'dicom';
   /** Application Entity Title */
   aeTitle: string;
   /** Called AE Title */
@@ -186,7 +181,7 @@ export interface DicomConfig {
 
 /** DICOMweb config (WADO-RS, STOW-RS, QIDO-RS). */
 export interface DicomWebConfig {
-  kind: "dicomweb";
+  kind: 'dicomweb';
   /** WADO-RS endpoint path */
   wadoRsPath: string;
   /** STOW-RS endpoint path */
@@ -197,7 +192,7 @@ export interface DicomWebConfig {
 
 /** HL7v2 MLLP config. */
 export interface Hl7v2Config {
-  kind: "hl7v2";
+  kind: 'hl7v2';
   /** Message types handled (e.g., ["ADT", "ORM", "ORU"]) */
   messageTypes: string[];
   /** MLLP version */
@@ -210,7 +205,7 @@ export interface Hl7v2Config {
 
 /** Lab Information System config. */
 export interface LisConfig {
-  kind: "lis";
+  kind: 'lis';
   /** LIS vendor name */
   vendor: string;
   /** Interface type (e.g., "hl7", "astm", "poct1a") */
@@ -221,7 +216,7 @@ export interface LisConfig {
 
 /** PACS/VNA config. */
 export interface PacsVnaConfig {
-  kind: "pacs-vna";
+  kind: 'pacs-vna';
   /** Vendor name */
   vendor: string;
   /** Whether it supports DICOMweb */
@@ -234,7 +229,7 @@ export interface PacsVnaConfig {
 
 /** Device / modality config. */
 export interface DeviceConfig {
-  kind: "device";
+  kind: 'device';
   /** Device manufacturer */
   manufacturer: string;
   /** Device model */
@@ -255,7 +250,7 @@ export interface DeviceConfig {
 
 /** External system config (catch-all). */
 export interface ExternalConfig {
-  kind: "external";
+  kind: 'external';
   /** Arbitrary key-value settings */
   settings: Record<string, string>;
 }
@@ -308,27 +303,27 @@ export function seedDefaultIntegrations(tenantId: string): void {
   const now = new Date().toISOString();
 
   // 1. Primary VistA RPC connection
-  map.set("vista-primary", {
-    id: "vista-primary",
-    label: "Primary VistA RPC Broker",
-    type: "vista-rpc",
+  map.set('vista-primary', {
+    id: 'vista-primary',
+    label: 'Primary VistA RPC Broker',
+    type: 'vista-rpc',
     enabled: true,
-    host: process.env.VISTA_HOST || "127.0.0.1",
+    host: process.env.VISTA_HOST || '127.0.0.1',
     port: Number(process.env.VISTA_PORT || 9430),
-    basePath: "",
-    authMethod: "vista-av-codes",
-    status: "unknown",
+    basePath: '',
+    authMethod: 'vista-av-codes',
+    status: 'unknown',
     lastChecked: null,
     lastSuccess: null,
     lastError: null,
     errorLog: [],
     queueMetrics: emptyQueueMetrics(),
     config: {
-      kind: "vista-rpc",
-      context: process.env.VISTA_CONTEXT || "OR CPRS GUI CHART",
-      xwbVersion: "1.1",
+      kind: 'vista-rpc',
+      context: process.env.VISTA_CONTEXT || 'OR CPRS GUI CHART',
+      xwbVersion: '1.1',
     },
-    notes: "Default VistA RPC Broker connection (WorldVistA Docker sandbox)",
+    notes: 'Default VistA RPC Broker connection (WorldVistA Docker sandbox)',
     createdAt: now,
     updatedAt: now,
   });
@@ -336,58 +331,58 @@ export function seedDefaultIntegrations(tenantId: string): void {
   // 2. C0FHIR Suite (if host is configured)
   const c0fhirHost = process.env.C0FHIR_HOST;
   if (c0fhirHost) {
-    map.set("fhir-c0fhir", {
-      id: "fhir-c0fhir",
-      label: "C0FHIR Suite (FHIR R4)",
-      type: "fhir-c0fhir",
+    map.set('fhir-c0fhir', {
+      id: 'fhir-c0fhir',
+      label: 'C0FHIR Suite (FHIR R4)',
+      type: 'fhir-c0fhir',
       enabled: true,
       host: c0fhirHost,
       port: Number(process.env.C0FHIR_PORT || 9080),
-      basePath: "/fhir",
-      authMethod: "none",
-      status: "unknown",
+      basePath: '/fhir',
+      authMethod: 'none',
+      status: 'unknown',
       lastChecked: null,
       lastSuccess: null,
       lastError: null,
       errorLog: [],
       queueMetrics: emptyQueueMetrics(),
       config: {
-        kind: "fhir-c0fhir",
-        fhirEndpoint: "/fhir",
-        rpcName: "C0FHIR GET FULL BUNDLE",
-        rpcContext: "C0FHIR CONTEXT",
-        fhirVersion: "R4",
+        kind: 'fhir-c0fhir',
+        fhirEndpoint: '/fhir',
+        rpcName: 'C0FHIR GET FULL BUNDLE',
+        rpcContext: 'C0FHIR CONTEXT',
+        fhirVersion: 'R4',
       },
-      notes: "WorldVistA C0FHIR Suite — MUMPS-native FHIR R4 endpoint backed by RPC",
+      notes: 'WorldVistA C0FHIR Suite — MUMPS-native FHIR R4 endpoint backed by RPC',
       createdAt: now,
       updatedAt: now,
     });
   }
 
   // 3. VistA Imaging (placeholder — detects MAG4 REMOTE PROCEDURE)
-  map.set("vista-imaging", {
-    id: "vista-imaging",
-    label: "VistA Imaging (MAG4)",
-    type: "pacs-vna",
+  map.set('vista-imaging', {
+    id: 'vista-imaging',
+    label: 'VistA Imaging (MAG4)',
+    type: 'pacs-vna',
     enabled: true,
-    host: process.env.VISTA_HOST || "127.0.0.1",
+    host: process.env.VISTA_HOST || '127.0.0.1',
     port: Number(process.env.VISTA_PORT || 9430),
-    basePath: "",
-    authMethod: "vista-av-codes",
-    status: "unknown",
+    basePath: '',
+    authMethod: 'vista-av-codes',
+    status: 'unknown',
     lastChecked: null,
     lastSuccess: null,
     lastError: null,
     errorLog: [],
     queueMetrics: emptyQueueMetrics(),
     config: {
-      kind: "pacs-vna",
-      vendor: "VistA Imaging",
+      kind: 'pacs-vna',
+      vendor: 'VistA Imaging',
       supportsDicomWeb: false,
-      viewerUrlTemplate: "",
-      aeTitle: "",
+      viewerUrlTemplate: '',
+      aeTitle: '',
     },
-    notes: "VistA Imaging integration via MAG4 REMOTE PROCEDURE and RA DETAILED REPORT RPCs",
+    notes: 'VistA Imaging integration via MAG4 REMOTE PROCEDURE and RA DETAILED REPORT RPCs',
     createdAt: now,
     updatedAt: now,
   });
@@ -396,7 +391,7 @@ export function seedDefaultIntegrations(tenantId: string): void {
 }
 
 // Seed default on module load
-seedDefaultIntegrations("default");
+seedDefaultIntegrations('default');
 
 /* ------------------------------------------------------------------ */
 /* Public API                                                           */
@@ -440,11 +435,15 @@ export function deleteIntegration(tenantId: string, integrationId: string): bool
 }
 
 /** Enable or disable an integration. */
-export function toggleIntegration(tenantId: string, integrationId: string, enabled: boolean): IntegrationEntry | null {
+export function toggleIntegration(
+  tenantId: string,
+  integrationId: string,
+  enabled: boolean
+): IntegrationEntry | null {
   const entry = getIntegration(tenantId, integrationId);
   if (!entry) return null;
   entry.enabled = enabled;
-  entry.status = enabled ? "unknown" : "disabled";
+  entry.status = enabled ? 'unknown' : 'disabled';
   entry.updatedAt = new Date().toISOString();
   return entry;
 }
@@ -454,7 +453,7 @@ export function updateIntegrationStatus(
   tenantId: string,
   integrationId: string,
   status: IntegrationStatus,
-  errorMsg?: string,
+  errorMsg?: string
 ): IntegrationEntry | null {
   const entry = getIntegration(tenantId, integrationId);
   if (!entry) return null;
@@ -462,7 +461,7 @@ export function updateIntegrationStatus(
   entry.status = status;
   entry.lastChecked = new Date().toISOString();
 
-  if (status === "connected") {
+  if (status === 'connected') {
     entry.lastSuccess = entry.lastChecked;
   }
 
@@ -470,7 +469,7 @@ export function updateIntegrationStatus(
     entry.lastError = entry.lastChecked;
     entry.errorLog.push({
       timestamp: entry.lastChecked,
-      code: status === "disconnected" ? "CONNECTION_FAILED" : "DEGRADED",
+      code: status === 'disconnected' ? 'CONNECTION_FAILED' : 'DEGRADED',
       message: errorMsg,
     });
     // Ring buffer
@@ -487,7 +486,7 @@ export function updateIntegrationStatus(
 export function updateQueueMetrics(
   tenantId: string,
   integrationId: string,
-  metrics: Partial<IntegrationQueueMetrics>,
+  metrics: Partial<IntegrationQueueMetrics>
 ): IntegrationEntry | null {
   const entry = getIntegration(tenantId, integrationId);
   if (!entry) return null;
@@ -502,7 +501,7 @@ export function recordIntegrationError(
   integrationId: string,
   code: string,
   message: string,
-  detail?: string,
+  detail?: string
 ): void {
   const entry = getIntegration(tenantId, integrationId);
   if (!entry) return;
@@ -559,11 +558,21 @@ export function getIntegrationHealthSummary(tenantId: string): IntegrationHealth
   for (const e of entries) {
     if (e.enabled) summary.enabled++;
     switch (e.status) {
-      case "connected": summary.connected++; break;
-      case "disconnected": summary.disconnected++; break;
-      case "degraded": summary.degraded++; break;
-      case "disabled": summary.disabled++; break;
-      default: summary.unknown++; break;
+      case 'connected':
+        summary.connected++;
+        break;
+      case 'disconnected':
+        summary.disconnected++;
+        break;
+      case 'degraded':
+        summary.degraded++;
+        break;
+      case 'disabled':
+        summary.disabled++;
+        break;
+      default:
+        summary.unknown++;
+        break;
     }
     summary.byType[e.type] = (summary.byType[e.type] || 0) + 1;
     summary.entries.push({
@@ -586,15 +595,15 @@ export function getIntegrationHealthSummary(tenantId: string): IntegrationHealth
 /* ------------------------------------------------------------------ */
 
 export const INTEGRATION_TYPE_LABELS: Record<IntegrationType, string> = {
-  "vista-rpc": "VistA RPC Broker",
-  "fhir": "FHIR R4 Endpoint",
-  "fhir-c0fhir": "C0FHIR Suite (FHIR R4)",
-  "fhir-vpr": "VPR → FHIR",
-  "dicom": "DICOM (C-STORE/C-FIND)",
-  "dicomweb": "DICOMweb (WADO/STOW/QIDO)",
-  "hl7v2": "HL7v2 MLLP",
-  "lis": "Lab Information System",
-  "pacs-vna": "PACS / VNA",
-  "device": "Device / Modality",
-  "external": "External System",
+  'vista-rpc': 'VistA RPC Broker',
+  fhir: 'FHIR R4 Endpoint',
+  'fhir-c0fhir': 'C0FHIR Suite (FHIR R4)',
+  'fhir-vpr': 'VPR → FHIR',
+  dicom: 'DICOM (C-STORE/C-FIND)',
+  dicomweb: 'DICOMweb (WADO/STOW/QIDO)',
+  hl7v2: 'HL7v2 MLLP',
+  lis: 'Lab Information System',
+  'pacs-vna': 'PACS / VNA',
+  device: 'Device / Modality',
+  external: 'External System',
 };

@@ -16,9 +16,8 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import type { PayerImporter, ImportResult, DirectoryPayer, RegulatorySource } from '../types.js';
 
-const __dirname_resolved = typeof __dirname !== 'undefined'
-  ? __dirname
-  : dirname(fileURLToPath(import.meta.url));
+const __dirname_resolved =
+  typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
 
 const REPO_ROOT = join(__dirname_resolved, '..', '..', '..', '..', '..', '..');
 const SNAPSHOT_PATH = 'reference/payer-sources/philippines/ic-hmo-list.json';
@@ -43,16 +42,23 @@ function loadSnapshot(): { entries: ICHmoEntry[]; hash: string } {
 }
 
 function hmoToDirectoryPayer(hmo: ICHmoEntry, now: string): DirectoryPayer {
-  const code = hmo.code ?? hmo.name.replace(/[^A-Za-z0-9]/g, '').substring(0, 20).toUpperCase();
+  const code =
+    hmo.code ??
+    hmo.name
+      .replace(/[^A-Za-z0-9]/g, '')
+      .substring(0, 20)
+      .toUpperCase();
   return {
     payerId: `PH-${code}`,
     displayName: hmo.name,
     country: 'PH',
     payerType: 'PRIVATE',
-    channels: [{
-      type: 'PORTAL_BATCH',
-      notes: 'HMO portal/batch upload',
-    }],
+    channels: [
+      {
+        type: 'PORTAL_BATCH',
+        notes: 'HMO portal/batch upload',
+      },
+    ],
     supportedTransactions: ['CF1', 'CF2'],
     payerIdsByNetwork: {},
     regulatorySource: {
@@ -75,12 +81,14 @@ function buildPhilHealth(now: string): DirectoryPayer {
     displayName: 'Philippine Health Insurance Corporation (PhilHealth)',
     country: 'PH',
     payerType: 'NATIONAL',
-    channels: [{
-      type: 'NATIONAL_GATEWAY',
-      connectorId: 'philhealth',
-      endpoint: 'https://eclaims.philhealth.gov.ph',
-      notes: 'eClaims 3.0 (mandatory Apr 1 2026)',
-    }],
+    channels: [
+      {
+        type: 'NATIONAL_GATEWAY',
+        connectorId: 'philhealth',
+        endpoint: 'https://eclaims.philhealth.gov.ph',
+        notes: 'eClaims 3.0 (mandatory Apr 1 2026)',
+      },
+    ],
     supportedTransactions: ['CF1', 'CF2', 'CF3', 'CF4'],
     payerIdsByNetwork: {
       philhealthCode: 'PHIC',
@@ -110,7 +118,7 @@ export const phInsuranceCommissionImporter: PayerImporter = {
 
     const payers: DirectoryPayer[] = [
       buildPhilHealth(now),
-      ...entries.map(e => hmoToDirectoryPayer(e, now)),
+      ...entries.map((e) => hmoToDirectoryPayer(e, now)),
     ];
 
     const source: RegulatorySource = {

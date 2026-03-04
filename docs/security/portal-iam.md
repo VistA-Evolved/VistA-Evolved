@@ -30,17 +30,17 @@ Browser ─────┐
 
 ## Password Policy
 
-| Rule | Value |
-|------|-------|
-| Min length | 8 |
-| Max length | 128 |
-| Uppercase required | Yes (1+) |
-| Lowercase required | Yes (1+) |
-| Digit required | Yes (1+) |
-| Special char required | Yes (1+) |
-| Hashing | scrypt (N=16384, r=8, p=1, keyLen=64) |
-| Salt | 32 random bytes |
-| Storage format | `scrypt:{salt_hex}:{hash_hex}` |
+| Rule                  | Value                                 |
+| --------------------- | ------------------------------------- |
+| Min length            | 8                                     |
+| Max length            | 128                                   |
+| Uppercase required    | Yes (1+)                              |
+| Lowercase required    | Yes (1+)                              |
+| Digit required        | Yes (1+)                              |
+| Special char required | Yes (1+)                              |
+| Hashing               | scrypt (N=16384, r=8, p=1, keyLen=64) |
+| Salt                  | 32 random bytes                       |
+| Storage format        | `scrypt:{salt_hex}:{hash_hex}`        |
 
 ## Account Lockout
 
@@ -52,6 +52,7 @@ Browser ─────┐
 ## Rate Limiting
 
 Auth endpoints (`/portal/iam/login`, `/portal/iam/register`) are rate-limited:
+
 - **5 attempts per 15-minute window** per IP address
 - Returns `429 Too Many Requests` with retry info
 
@@ -68,14 +69,14 @@ No CSRF cookies are used. The token is never stored in cookies.
 
 ## Session Model
 
-| Property | Value |
-|----------|-------|
-| Cookie name | `portal_iam_session` |
-| Absolute TTL | 30 minutes |
-| Idle TTL | 15 minutes |
-| Storage | In-memory Map |
-| httpOnly | Yes |
-| sameSite | strict |
+| Property     | Value                |
+| ------------ | -------------------- |
+| Cookie name  | `portal_iam_session` |
+| Absolute TTL | 30 minutes           |
+| Idle TTL     | 15 minutes           |
+| Storage      | In-memory Map        |
+| httpOnly     | Yes                  |
+| sameSite     | strict               |
 
 This is separate from the Phase 26 `portal_session` cookie. The IAM session
 carries the `PortalUser` identity, while the portal session carries the
@@ -84,6 +85,7 @@ VistA patient context.
 ## MFA (TOTP)
 
 Multi-factor auth is scaffolded and feature-flagged:
+
 - Env var: `PORTAL_MFA_ENABLED=true` to activate
 - Setup: `POST /portal/iam/mfa/setup` → returns TOTP secret
 - Confirm: `POST /portal/iam/mfa/confirm` with code
@@ -94,10 +96,12 @@ Multi-factor auth is scaffolded and feature-flagged:
 ## Patient Profiles
 
 A `PortalUser` can be linked to multiple patients:
+
 - `isSelf: true` — the user's own record (enrolled at registration)
 - `isSelf: false` — proxy access to another patient
 
 Profile fields:
+
 - `patientDfn` — VistA patient IEN
 - `patientName` — display name
 - `relationship` — self/parent/guardian/spouse/caregiver/legal_representative/power_of_attorney
@@ -107,6 +111,7 @@ Profile fields:
 ## Proxy Invitations
 
 Workflow:
+
 1. User sends invitation (`POST /portal/iam/proxy/invite`)
 2. System evaluates policy (age, sensitivity, max proxies)
 3. If allowed, invitation enters `pending` state (TTL: 7 days)
@@ -114,6 +119,7 @@ Workflow:
 5. On acceptance, `PatientProfile` is added to requestor
 
 Policy rules:
+
 - Max 10 proxies per patient
 - Minors (< 18): only parent/guardian/legal_representative allowed
 - Protected minors (13–17): warning about restricted sections
@@ -125,6 +131,7 @@ Invitation statuses: `pending`, `accepted`, `declined`, `expired`, `cancelled`, 
 ## Access Log
 
 Patient-visible event log with PHI sanitization:
+
 - **Max entries per user:** 5,000
 - **Max total entries:** 100,000
 - **PHI patterns stripped:** SSN, DOB, VistA LAST,FIRST names
@@ -136,6 +143,7 @@ sanitized metadata, proxy flag.
 ## Device Sessions
 
 Track active login sessions across devices:
+
 - Token stored as SHA-256 hash (raw token never persisted)
 - **TTL:** 30 days (env: `DEVICE_SESSION_TTL_MS`)
 - User can list and revoke individual or all sessions
@@ -143,6 +151,7 @@ Track active login sessions across devices:
 ## API Endpoints
 
 ### Auth
+
 - `GET /portal/iam/csrf-token` — Generate CSRF token
 - `POST /portal/iam/register` — Create account
 - `POST /portal/iam/login` — Sign in (with optional MFA)
@@ -150,25 +159,30 @@ Track active login sessions across devices:
 - `GET /portal/iam/session` — Current session info
 
 ### Password
+
 - `POST /portal/iam/password/change` — Change password (CSRF)
 - `POST /portal/iam/password/reset` — Request reset token
 - `POST /portal/iam/password/confirm` — Confirm reset
 
 ### MFA
+
 - `POST /portal/iam/mfa/setup` — Generate TOTP secret (CSRF)
 - `POST /portal/iam/mfa/confirm` — Confirm MFA setup (CSRF)
 - `POST /portal/iam/mfa/disable` — Disable MFA (CSRF)
 
 ### Profiles
+
 - `GET /portal/iam/profiles` — List linked patients
 - `DELETE /portal/iam/profiles/:id` — Unlink patient (CSRF)
 
 ### Devices
+
 - `GET /portal/iam/devices` — List device sessions
 - `POST /portal/iam/devices/:id/revoke` — Revoke one (CSRF)
 - `POST /portal/iam/devices/revoke-all` — Revoke all (CSRF)
 
 ### Proxy
+
 - `POST /portal/iam/proxy/invite` — Send invitation (CSRF)
 - `GET /portal/iam/proxy/invitations` — My sent invitations
 - `GET /portal/iam/proxy/invitations/for-patient` — Invitations for my patients
@@ -176,9 +190,11 @@ Track active login sessions across devices:
 - `POST /portal/iam/proxy/invitations/:id/cancel` — Cancel invitation (CSRF)
 
 ### Activity
+
 - `GET /portal/iam/activity` — Access log (with filters)
 
 ### Admin
+
 - `GET /portal/iam/stats` — System statistics
 
 ## Security Boundaries

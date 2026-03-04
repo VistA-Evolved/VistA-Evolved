@@ -7,10 +7,7 @@
     },
     "nurse": {
       "description": "Nurse",
-      "allowed_actions": [
-        "clinical.vitals-add", "clinical.note-create",
-        "phi.*"
-      ],
+      "allowed_actions": ["clinical.vitals-add", "clinical.note-create", "phi.*"],
       "denied_actions": ["clinical.medication-add", "clinical.order-sign", "admin.*"]
     },
     "pharmacist": {

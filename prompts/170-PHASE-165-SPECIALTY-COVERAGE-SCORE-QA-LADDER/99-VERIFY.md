@@ -1,6 +1,7 @@
 # Phase 165 — VERIFY
 
 ## Gates
+
 1. API TypeScript compiles clean
 2. Web TypeScript compiles clean
 3. Coverage scorer produces per-specialty scores (0-100)

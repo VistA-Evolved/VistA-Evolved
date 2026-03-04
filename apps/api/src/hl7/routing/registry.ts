@@ -5,8 +5,8 @@
  * Matches the project pattern of in-memory stores with future PG migration path.
  */
 
-import { log } from "../../lib/logger.js";
-import type { Hl7Route, RouteStats, DeadLetterEntry } from "./types.js";
+import { log } from '../../lib/logger.js';
+import type { Hl7Route, RouteStats, DeadLetterEntry } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /*  In-Memory Stores                                                   */
@@ -42,8 +42,8 @@ export function addRoute(route: Hl7Route): void {
     });
   }
 
-  log.info("HL7 route added/updated", {
-    component: "hl7-routing",
+  log.info('HL7 route added/updated', {
+    component: 'hl7-routing',
     routeId: route.id,
     name: route.name,
     enabled: route.enabled,
@@ -72,7 +72,7 @@ export function removeRoute(id: string): boolean {
   const existed = routes.delete(id);
   routeStats.delete(id);
   if (existed) {
-    log.info("HL7 route removed", { component: "hl7-routing", routeId: id });
+    log.info('HL7 route removed', { component: 'hl7-routing', routeId: id });
   }
   return existed;
 }
@@ -83,8 +83,8 @@ export function toggleRoute(id: string, enabled: boolean): boolean {
   if (!route) return false;
   route.enabled = enabled;
   route.updatedAt = Date.now();
-  log.info("HL7 route toggled", {
-    component: "hl7-routing",
+  log.info('HL7 route toggled', {
+    component: 'hl7-routing',
     routeId: id,
     enabled,
   });
@@ -144,8 +144,8 @@ export function addToDeadLetter(entry: DeadLetterEntry): void {
     deadLetterQueue.shift();
   }
   deadLetterQueue.push(entry);
-  log.warn("HL7 message dead-lettered", {
-    component: "hl7-routing",
+  log.warn('HL7 message dead-lettered', {
+    component: 'hl7-routing',
     messageType: entry.messageType,
     messageControlId: entry.messageControlId,
     reason: entry.reason,

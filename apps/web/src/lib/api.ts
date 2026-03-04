@@ -28,9 +28,7 @@ async function get<T>(path: string): Promise<T> {
 /* ------------------------------------------------------------------ */
 
 export async function fetchDefaultPatientList(): Promise<Patient[]> {
-  const data = await get<{ ok: boolean; results: Patient[] }>(
-    '/vista/default-patient-list'
-  );
+  const data = await get<{ ok: boolean; results: Patient[] }>('/vista/default-patient-list');
   return data.results ?? [];
 }
 
@@ -49,36 +47,26 @@ export async function fetchDemographics(dfn: string): Promise<PatientDemographic
 }
 
 export async function fetchAllergies(dfn: string): Promise<Allergy[]> {
-  const data = await get<{ ok: boolean; results?: Allergy[] }>(
-    `/vista/allergies?dfn=${dfn}`
-  );
+  const data = await get<{ ok: boolean; results?: Allergy[] }>(`/vista/allergies?dfn=${dfn}`);
   return data.results ?? [];
 }
 
 export async function fetchVitals(dfn: string): Promise<Vital[]> {
-  const data = await get<{ ok: boolean; results?: Vital[] }>(
-    `/vista/vitals?dfn=${dfn}`
-  );
+  const data = await get<{ ok: boolean; results?: Vital[] }>(`/vista/vitals?dfn=${dfn}`);
   return data.results ?? [];
 }
 
 export async function fetchNotes(dfn: string): Promise<Note[]> {
-  const data = await get<{ ok: boolean; results?: Note[] }>(
-    `/vista/notes?dfn=${dfn}`
-  );
+  const data = await get<{ ok: boolean; results?: Note[] }>(`/vista/notes?dfn=${dfn}`);
   return data.results ?? [];
 }
 
 export async function fetchMedications(dfn: string): Promise<Medication[]> {
-  const data = await get<{ ok: boolean; results?: Medication[] }>(
-    `/vista/medications?dfn=${dfn}`
-  );
+  const data = await get<{ ok: boolean; results?: Medication[] }>(`/vista/medications?dfn=${dfn}`);
   return data.results ?? [];
 }
 
 export async function fetchProblems(dfn: string): Promise<Problem[]> {
-  const data = await get<{ ok: boolean; results?: Problem[] }>(
-    `/vista/problems?dfn=${dfn}`
-  );
+  const data = await get<{ ok: boolean; results?: Problem[] }>(`/vista/problems?dfn=${dfn}`);
   return data.results ?? [];
 }

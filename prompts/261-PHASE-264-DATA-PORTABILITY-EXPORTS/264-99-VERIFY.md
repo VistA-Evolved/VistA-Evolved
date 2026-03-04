@@ -1,9 +1,11 @@
 # Phase 264 -- Data Portability Exports v1 (VERIFY)
 
 ## Verification Script
+
 scripts/verify-phase264-data-portability-exports.ps1
 
 ## Gates (20)
+
 1. G01 -- data-portability.ts exists
 2. G02 -- data-portability-routes.ts exists
 3. G03 -- test file exists
@@ -26,6 +28,7 @@ scripts/verify-phase264-data-portability-exports.ps1
 20. G20 -- Prompt files present
 
 ## Run
+
 ```powershell
 .\scripts\verify-phase264-data-portability-exports.ps1
 ```

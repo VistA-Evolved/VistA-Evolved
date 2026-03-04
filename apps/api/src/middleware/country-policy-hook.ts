@@ -15,12 +15,9 @@
  * For unauthenticated routes, countryPolicy is null.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import {
-  resolveCountryPolicy,
-  type CountryPackValues,
-} from "../platform/country-pack-loader.js";
-import { getTenant } from "../config/tenant-config.js";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { resolveCountryPolicy, type CountryPackValues } from '../platform/country-pack-loader.js';
+import { getTenant } from '../config/tenant-config.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -41,7 +38,7 @@ export interface CountryPolicyContext {
 /* Fastify declaration merging                                         */
 /* ------------------------------------------------------------------ */
 
-declare module "fastify" {
+declare module 'fastify' {
   interface FastifyRequest {
     countryPolicy?: CountryPolicyContext;
   }
@@ -57,36 +54,36 @@ declare module "fastify" {
  * Sets request.countryPolicy with the resolved pack.
  */
 export async function countryPolicyHook(app: FastifyInstance): Promise<void> {
-  app.decorateRequest("countryPolicy", undefined);
+  app.decorateRequest('countryPolicy', undefined);
 
-  app.addHook("onRequest", async (request: FastifyRequest, _reply: FastifyReply) => {
+  app.addHook('onRequest', async (request: FastifyRequest, _reply: FastifyReply) => {
     // Skip if request was already rejected by auth gateway
     if ((request as any)._rejected || (request.raw as any)?.destroyed) return;
 
     // Resolve tenant from session
     const session = (request as any).session;
-    const tenantId = session?.tenantId || "default";
+    const tenantId = session?.tenantId || 'default';
 
     const tenant = getTenant(tenantId);
     if (!tenant) {
       // No tenant found — set null policy (will use system defaults)
       request.countryPolicy = {
         pack: null,
-        countryPackId: "US",
-        locale: "en",
-        timezone: "America/New_York",
+        countryPackId: 'US',
+        locale: 'en',
+        timezone: 'America/New_York',
       };
       return;
     }
 
-    const countryPackId = tenant.countryPackId || "US";
+    const countryPackId = tenant.countryPackId || 'US';
     const pack = resolveCountryPolicy(countryPackId);
 
     request.countryPolicy = {
       pack,
       countryPackId,
-      locale: tenant.locale || pack?.defaultLocale || "en",
-      timezone: tenant.timezone || pack?.defaultTimezone || "America/New_York",
+      locale: tenant.locale || pack?.defaultLocale || 'en',
+      timezone: tenant.timezone || pack?.defaultTimezone || 'America/New_York',
     };
   });
 }
@@ -103,9 +100,9 @@ export function getEffectivePolicy(request: FastifyRequest): CountryPolicyContex
   return (
     request.countryPolicy || {
       pack: null,
-      countryPackId: "US",
-      locale: "en",
-      timezone: "America/New_York",
+      countryPackId: 'US',
+      locale: 'en',
+      timezone: 'America/New_York',
     }
   );
 }

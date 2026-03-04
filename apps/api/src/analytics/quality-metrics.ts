@@ -7,8 +7,8 @@
  * workflows and regulatory requirements.
  */
 
-import { randomUUID } from "node:crypto";
-import { log } from "../lib/logger.js";
+import { randomUUID } from 'node:crypto';
+import { log } from '../lib/logger.js';
 import type {
   QualityMeasureId,
   QualityMeasure,
@@ -16,36 +16,36 @@ import type {
   ReportRow,
   ReportResult,
   ReportId,
-} from "./extract-types.js";
-import { getExtractRuns, getExtractRecords } from "./extract-layer.js";
-import { registerReportGenerator } from "./reporting-service.js";
+} from './extract-types.js';
+import { getExtractRuns, getExtractRecords } from './extract-layer.js';
+import { registerReportGenerator } from './reporting-service.js';
 
 // ── Measure Definitions ─────────────────────────────────────────────────
 
 const QUALITY_MEASURES: QualityMeasure[] = [
   {
-    id: "lab_followup_time",
-    name: "Abnormal Lab Follow-up Time",
-    description: "Average hours from abnormal lab result to provider follow-up action",
-    unit: "hours",
+    id: 'lab_followup_time',
+    name: 'Abnormal Lab Follow-up Time',
+    description: 'Average hours from abnormal lab result to provider follow-up action',
+    unit: 'hours',
     target: 24,
-    disclaimer: "Engineering metric only. Not a certified clinical quality measure.",
+    disclaimer: 'Engineering metric only. Not a certified clinical quality measure.',
   },
   {
-    id: "med_order_to_admin",
-    name: "Medication Order-to-Administration Time",
-    description: "Average minutes from medication order entry to first administration",
-    unit: "minutes",
+    id: 'med_order_to_admin',
+    name: 'Medication Order-to-Administration Time',
+    description: 'Average minutes from medication order entry to first administration',
+    unit: 'minutes',
     target: 60,
-    disclaimer: "Engineering metric only. Based on available order/admin timestamps.",
+    disclaimer: 'Engineering metric only. Based on available order/admin timestamps.',
   },
   {
-    id: "note_completion_timeliness",
-    name: "Note Completion Timeliness",
-    description: "Average minutes from note creation to provider signature",
-    unit: "minutes",
+    id: 'note_completion_timeliness',
+    name: 'Note Completion Timeliness',
+    description: 'Average minutes from note creation to provider signature',
+    unit: 'minutes',
     target: 120,
-    disclaimer: "Engineering metric only. Measures creation-to-signature gap.",
+    disclaimer: 'Engineering metric only. Measures creation-to-signature gap.',
   },
 ];
 
@@ -72,7 +72,7 @@ export function computeQualityMetric(
   measureId: QualityMeasureId,
   tenantId: string,
   periodStart?: string,
-  periodEnd?: string,
+  periodEnd?: string
 ): QualityMetricRun {
   const measure = QUALITY_MEASURES.find((m) => m.id === measureId);
   if (!measure) throw new Error(`Unknown measure: ${measureId}`);
@@ -85,14 +85,17 @@ export function computeQualityMetric(
       value: 0,
       sampleSize: 0,
       inputRefs: [],
-      status: "insufficient_data",
+      status: 'insufficient_data',
     });
   }
 
   const computer = METRIC_COMPUTERS[measureId];
   if (!computer) {
     return makeMetricRun(measureId, tenantId, periodStart, periodEnd, {
-      value: 0, sampleSize: 0, inputRefs: [latestRun.runId], status: "error",
+      value: 0,
+      sampleSize: 0,
+      inputRefs: [latestRun.runId],
+      status: 'error',
     });
   }
 
@@ -100,7 +103,7 @@ export function computeQualityMetric(
   const run = makeMetricRun(measureId, tenantId, periodStart, periodEnd, {
     ...result,
     inputRefs: [latestRun.runId],
-    status: result.sampleSize > 0 ? "computed" : "insufficient_data",
+    status: result.sampleSize > 0 ? 'computed' : 'insufficient_data',
   });
 
   metricRuns.push(run);
@@ -117,7 +120,7 @@ export function computeAllMetrics(tenantId: string): QualityMetricRun[] {
 export function getMetricRuns(
   tenantId: string,
   measureId?: QualityMeasureId,
-  limit = 50,
+  limit = 50
 ): QualityMetricRun[] {
   let filtered = metricRuns.filter((r) => r.tenantId === tenantId);
   if (measureId) filtered = filtered.filter((r) => r.measureId === measureId);
@@ -126,15 +129,18 @@ export function getMetricRuns(
 
 // ── Metric Computers ────────────────────────────────────────────────────
 
-type MetricComputer = (tenantId: string, runId: string) => {
+type MetricComputer = (
+  tenantId: string,
+  runId: string
+) => {
   value: number;
   sampleSize: number;
 };
 
 const METRIC_COMPUTERS: Record<QualityMeasureId, MetricComputer> = {
   lab_followup_time: (tenantId, runId) => {
-    const records = getExtractRecords(runId, { entityType: "lab_result" });
-    const abnormal = records.filter((r) => r.data.result === "abnormal" && r.data.followupAt);
+    const records = getExtractRecords(runId, { entityType: 'lab_result' });
+    const abnormal = records.filter((r) => r.data.result === 'abnormal' && r.data.followupAt);
     if (abnormal.length === 0) return { value: 0, sampleSize: 0 };
 
     const followupHours = abnormal.map((r) => {
@@ -147,7 +153,7 @@ const METRIC_COMPUTERS: Record<QualityMeasureId, MetricComputer> = {
   },
 
   med_order_to_admin: (tenantId, runId) => {
-    const records = getExtractRecords(runId, { entityType: "medication_order" });
+    const records = getExtractRecords(runId, { entityType: 'medication_order' });
     const withAdmin = records.filter((r) => r.data.orderToAdminMin != null);
     if (withAdmin.length === 0) return { value: 0, sampleSize: 0 };
 
@@ -157,7 +163,7 @@ const METRIC_COMPUTERS: Record<QualityMeasureId, MetricComputer> = {
   },
 
   note_completion_timeliness: (tenantId, runId) => {
-    const records = getExtractRecords(runId, { entityType: "note" });
+    const records = getExtractRecords(runId, { entityType: 'note' });
     const withSignature = records.filter((r) => r.data.completionMin != null);
     if (withSignature.length === 0) return { value: 0, sampleSize: 0 };
 
@@ -173,19 +179,21 @@ function qualityToReportResult(
   reportId: ReportId,
   tenantId: string,
   params: Record<string, unknown>,
-  measureId: QualityMeasureId,
+  measureId: QualityMeasureId
 ): ReportResult {
   const metric = computeQualityMetric(measureId, tenantId, params.startDate as string);
   const measure = QUALITY_MEASURES.find((m) => m.id === measureId)!;
-  const rows: ReportRow[] = [{
-    measure: measure.name,
-    value: metric.value,
-    unit: measure.unit,
-    target: measure.target ?? "N/A",
-    sampleSize: metric.sampleSize,
-    status: metric.status,
-    disclaimer: measure.disclaimer,
-  }];
+  const rows: ReportRow[] = [
+    {
+      measure: measure.name,
+      value: metric.value,
+      unit: measure.unit,
+      target: measure.target ?? 'N/A',
+      sampleSize: metric.sampleSize,
+      status: metric.status,
+      disclaimer: measure.disclaimer,
+    },
+  ];
   return {
     reportId,
     tenantId,
@@ -207,13 +215,16 @@ function qualityToReportResult(
  * Called at module init.
  */
 export function initQualityReportGenerators(): void {
-  registerReportGenerator("quality_lab_followup", (t, p) =>
-    qualityToReportResult("quality_lab_followup", t, p, "lab_followup_time"));
-  registerReportGenerator("quality_med_admin", (t, p) =>
-    qualityToReportResult("quality_med_admin", t, p, "med_order_to_admin"));
-  registerReportGenerator("quality_note_completion", (t, p) =>
-    qualityToReportResult("quality_note_completion", t, p, "note_completion_timeliness"));
-  log.info("Quality report generators registered (Phase 366)");
+  registerReportGenerator('quality_lab_followup', (t, p) =>
+    qualityToReportResult('quality_lab_followup', t, p, 'lab_followup_time')
+  );
+  registerReportGenerator('quality_med_admin', (t, p) =>
+    qualityToReportResult('quality_med_admin', t, p, 'med_order_to_admin')
+  );
+  registerReportGenerator('quality_note_completion', (t, p) =>
+    qualityToReportResult('quality_note_completion', t, p, 'note_completion_timeliness')
+  );
+  log.info('Quality report generators registered (Phase 366)');
 }
 
 // ── Helpers ─────────────────────────────────────────────────────────────
@@ -223,7 +234,7 @@ function makeMetricRun(
   tenantId: string,
   periodStart?: string,
   periodEnd?: string,
-  overrides?: Partial<QualityMetricRun>,
+  overrides?: Partial<QualityMetricRun>
 ): QualityMetricRun {
   const now = new Date().toISOString();
   return {
@@ -236,7 +247,7 @@ function makeMetricRun(
     value: 0,
     sampleSize: 0,
     inputRefs: [],
-    status: "computed",
+    status: 'computed',
     ...overrides,
   };
 }

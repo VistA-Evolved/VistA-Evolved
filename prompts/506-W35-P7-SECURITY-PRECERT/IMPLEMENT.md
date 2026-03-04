@@ -1,7 +1,9 @@
 # Phase 506 — Security Pre-Cert Pack + Evidence
 
 ## Objective
+
 Create a security pre-certification script that validates:
+
 1. No hardcoded credentials outside login page
 2. Console.log budget (<=6)
 3. PHI redaction patterns in audit emitters
@@ -11,7 +13,9 @@ Create a security pre-certification script that validates:
 7. Hash-chained audit integrity
 
 ## Files
+
 - `scripts/security/run-precert.ps1` — Security pre-cert runner
 
 ## Verification
+
 - run-precert.ps1 exits 0 when all checks pass

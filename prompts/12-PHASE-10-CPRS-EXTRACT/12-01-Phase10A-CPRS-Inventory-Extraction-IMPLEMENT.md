@@ -10,6 +10,7 @@ Create a new folder `tools/cprs-extract/` with Node scripts to extract from Delp
 - `extract-rpcs.mjs`: extract all RPC names (strings) and where referenced
 
 Output to `design/contracts/cprs/v1/`:
+
 - `tabs.json`
 - `menus.json`
 - `forms.json`
@@ -25,7 +26,7 @@ Do not modify app code yet.
 1. Inventory `reference/cprs/Packages/Order Entry Results Reporting/CPRS/CPRS-Chart/` for:
    - `.dfm` files (forms), `.pas` files (logic/RPCs)
    - Main frame (`fFrame.dfm`/`fFrame.pas`) — contains tab definitions and main menu
-   - `uConst.pas` — contains CT_* constants for tab IDs
+   - `uConst.pas` — contains CT\_\* constants for tab IDs
    - `r*.pas` files — contain RPC calls (`sCallV`, `tCallV`, `CallV`, `CallVistA`)
 2. Create `tools/cprs-extract/` with four extraction scripts (ESM `.mjs`)
 3. Create `design/contracts/cprs/v1/` output directory

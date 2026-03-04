@@ -8,33 +8,33 @@
  * floating-point rounding issues.
  */
 
-import { z } from "zod";
+import { z } from 'zod';
 
 /* ── Denial Status FSM ──────────────────────────────────────── */
 
 export const DENIAL_STATUSES = [
-  "NEW",
-  "TRIAGED",
-  "APPEALING",
-  "RESUBMITTED",
-  "PAID",
-  "PARTIAL",
-  "WRITEOFF",
-  "CLOSED",
+  'NEW',
+  'TRIAGED',
+  'APPEALING',
+  'RESUBMITTED',
+  'PAID',
+  'PARTIAL',
+  'WRITEOFF',
+  'CLOSED',
 ] as const;
 
 export type DenialStatus = (typeof DENIAL_STATUSES)[number];
 
 /** Valid transitions — key is current state, value is allowed next states */
 export const DENIAL_TRANSITIONS: Record<DenialStatus, readonly DenialStatus[]> = {
-  NEW:         ["TRIAGED", "APPEALING", "WRITEOFF", "CLOSED"],
-  TRIAGED:     ["APPEALING", "RESUBMITTED", "WRITEOFF", "CLOSED"],
-  APPEALING:   ["RESUBMITTED", "PAID", "PARTIAL", "WRITEOFF", "CLOSED"],
-  RESUBMITTED: ["PAID", "PARTIAL", "APPEALING", "WRITEOFF", "CLOSED"],
-  PAID:        ["CLOSED"],
-  PARTIAL:     ["APPEALING", "WRITEOFF", "CLOSED"],
-  WRITEOFF:    ["CLOSED"],
-  CLOSED:      [], // terminal
+  NEW: ['TRIAGED', 'APPEALING', 'WRITEOFF', 'CLOSED'],
+  TRIAGED: ['APPEALING', 'RESUBMITTED', 'WRITEOFF', 'CLOSED'],
+  APPEALING: ['RESUBMITTED', 'PAID', 'PARTIAL', 'WRITEOFF', 'CLOSED'],
+  RESUBMITTED: ['PAID', 'PARTIAL', 'APPEALING', 'WRITEOFF', 'CLOSED'],
+  PAID: ['CLOSED'],
+  PARTIAL: ['APPEALING', 'WRITEOFF', 'CLOSED'],
+  WRITEOFF: ['CLOSED'],
+  CLOSED: [], // terminal
 };
 
 export function isValidDenialTransition(from: DenialStatus, to: DenialStatus): boolean {
@@ -43,12 +43,12 @@ export function isValidDenialTransition(from: DenialStatus, to: DenialStatus): b
 
 /* ── Denial Source ──────────────────────────────────────────── */
 
-export const DENIAL_SOURCES = ["MANUAL", "EDI_835", "PORTAL_STATUS", "OTHER"] as const;
+export const DENIAL_SOURCES = ['MANUAL', 'EDI_835', 'PORTAL_STATUS', 'OTHER'] as const;
 export type DenialSource = (typeof DENIAL_SOURCES)[number];
 
 /* ── Denial Code ────────────────────────────────────────────── */
 
-export const DENIAL_CODE_TYPES = ["CARC", "RARC", "OTHER"] as const;
+export const DENIAL_CODE_TYPES = ['CARC', 'RARC', 'OTHER'] as const;
 export type DenialCodeType = (typeof DENIAL_CODE_TYPES)[number];
 
 export const DenialCodeSchema = z.object({
@@ -75,7 +75,7 @@ export type DenialFinancials = z.infer<typeof DenialFinancialsSchema>;
 /* ── Evidence Reference ─────────────────────────────────────── */
 
 export const EvidenceRefSchema = z.object({
-  refType: z.enum(["document", "screenshot", "remittance_hash", "clinical_note_ref", "other"]),
+  refType: z.enum(['document', 'screenshot', 'remittance_hash', 'clinical_note_ref', 'other']),
   label: z.string().min(1).max(200),
   storedPath: z.string().max(500).optional(), // reference only — no raw PHI
   sha256: z.string().max(64).optional(),
@@ -93,38 +93,38 @@ export interface DenialCase {
   updatedAt: string;
 
   // Claim linkage
-  claimRef: string;                    // internal claim ID or VistA claim ref
-  vistaClaimIen: string | null;        // VistA IB(350) IEN if available
+  claimRef: string; // internal claim ID or VistA claim ref
+  vistaClaimIen: string | null; // VistA IB(350) IEN if available
 
   // Patient — minimal reference, never logged
-  patientDfn: string | null;           // VistA DFN; not stored in audit
+  patientDfn: string | null; // VistA DFN; not stored in audit
 
   // Payer
-  payerId: string;                     // links to payer registry
+  payerId: string; // links to payer registry
 
   // Status
   denialStatus: DenialStatus;
   denialSource: DenialSource;
 
   // Codes
-  denialCodes: DenialCode[];           // JSON-serialized in DB
+  denialCodes: DenialCode[]; // JSON-serialized in DB
 
   // Narrative
   denialNarrative: string | null;
 
   // Dates
-  receivedDate: string;                // ISO 8601
-  deadlineDate: string | null;         // SLA deadline
+  receivedDate: string; // ISO 8601
+  deadlineDate: string | null; // SLA deadline
 
   // Assignment
-  assignedTo: string | null;           // user ID or name
+  assignedTo: string | null; // user ID or name
   assignedTeam: string | null;
 
   // Financials
   financials: DenialFinancials;
 
   // Evidence
-  evidenceRefs: EvidenceRef[];         // JSON-serialized in DB
+  evidenceRefs: EvidenceRef[]; // JSON-serialized in DB
 
   // Import provenance
   importFileHash: string | null;
@@ -139,14 +139,14 @@ export const CreateDenialSchema = z.object({
   vistaClaimIen: z.string().max(50).optional(),
   patientDfn: z.string().max(50).optional(),
   payerId: z.string().min(1).max(100),
-  denialSource: z.enum(DENIAL_SOURCES).default("MANUAL"),
+  denialSource: z.enum(DENIAL_SOURCES).default('MANUAL'),
   denialCodes: z.array(DenialCodeSchema).min(0).max(50),
   denialNarrative: z.string().max(2000).optional(),
   receivedDate: z.string().optional(), // defaults to now
   deadlineDate: z.string().optional(),
   assignedTo: z.string().max(100).optional(),
   assignedTeam: z.string().max(100).optional(),
-  billedAmount: z.number().min(0),     // in dollars (converted to cents internally)
+  billedAmount: z.number().min(0), // in dollars (converted to cents internally)
   allowedAmount: z.number().min(0).optional(),
   paidAmount: z.number().min(0).optional(),
   patientResp: z.number().min(0).optional(),
@@ -172,16 +172,16 @@ export type UpdateDenialInput = z.infer<typeof UpdateDenialSchema>;
 /* ── Denial Action ──────────────────────────────────────────── */
 
 export const DENIAL_ACTION_TYPES = [
-  "NOTE",
-  "ASSIGN",
-  "REQUEST_INFO",
-  "GENERATE_APPEAL_PACKET",
-  "SUBMIT_APPEAL",
-  "SUBMIT_CORRECTION",
-  "MARK_RESOLVED",
-  "MARK_WRITE_OFF",
-  "STATUS_CHANGE",
-  "IMPORT",
+  'NOTE',
+  'ASSIGN',
+  'REQUEST_INFO',
+  'GENERATE_APPEAL_PACKET',
+  'SUBMIT_APPEAL',
+  'SUBMIT_CORRECTION',
+  'MARK_RESOLVED',
+  'MARK_WRITE_OFF',
+  'STATUS_CHANGE',
+  'IMPORT',
 ] as const;
 
 export type DenialActionType = (typeof DENIAL_ACTION_TYPES)[number];
@@ -207,7 +207,7 @@ export type CreateDenialActionInput = z.infer<typeof CreateDenialActionSchema>;
 
 /* ── Resubmission Attempt ───────────────────────────────────── */
 
-export const RESUBMISSION_METHODS = ["MAIL", "PORTAL", "EDI", "FAX", "OTHER"] as const;
+export const RESUBMISSION_METHODS = ['MAIL', 'PORTAL', 'EDI', 'FAX', 'OTHER'] as const;
 export type ResubmissionMethod = (typeof RESUBMISSION_METHODS)[number];
 
 export interface ResubmissionAttempt {
@@ -282,8 +282,8 @@ export const DenialListQuerySchema = z.object({
   codeType: z.enum(DENIAL_CODE_TYPES).optional(),
   minAmount: z.coerce.number().min(0).optional(),
   maxAmount: z.coerce.number().min(0).optional(),
-  sort: z.enum(["createdAt", "deadlineDate", "billedAmount", "updatedAt"]).default("createdAt"),
-  order: z.enum(["asc", "desc"]).default("desc"),
+  sort: z.enum(['createdAt', 'deadlineDate', 'billedAmount', 'updatedAt']).default('createdAt'),
+  order: z.enum(['asc', 'desc']).default('desc'),
 });
 
 export type DenialListQuery = z.infer<typeof DenialListQuerySchema>;
@@ -306,7 +306,7 @@ export const ImportRemittanceDenialSchema = z.object({
 export const Import835BatchSchema = z.object({
   entries: z.array(ImportRemittanceDenialSchema).min(1).max(500),
   importFileHash: z.string().max(64).optional(),
-  parserVersion: z.string().max(20).default("1.0.0"),
+  parserVersion: z.string().max(20).default('1.0.0'),
 });
 
 export type Import835BatchInput = z.infer<typeof Import835BatchSchema>;

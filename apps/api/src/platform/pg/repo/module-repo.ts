@@ -9,15 +9,10 @@
  * Postgres via getPgDb() instead of SQLite via getDb().
  */
 
-import { eq, and, desc, count, sql } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import {
-  moduleCatalog,
-  tenantModule,
-  tenantFeatureFlag,
-  moduleAuditLog,
-} from "../pg-schema.js";
-import { randomUUID } from "node:crypto";
+import { eq, and, desc, count } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { moduleCatalog, tenantModule, tenantFeatureFlag, moduleAuditLog } from '../pg-schema.js';
+import { randomUUID } from 'node:crypto';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -136,14 +131,9 @@ export async function listModuleCatalog(): Promise<ModuleCatalogRow[]> {
 }
 
 /** Get a single module catalog entry. */
-export async function getModuleCatalogEntry(
-  moduleId: string,
-): Promise<ModuleCatalogRow | null> {
+export async function getModuleCatalogEntry(moduleId: string): Promise<ModuleCatalogRow | null> {
   const db = getPgDb();
-  const rows = await db
-    .select()
-    .from(moduleCatalog)
-    .where(eq(moduleCatalog.moduleId, moduleId));
+  const rows = await db.select().from(moduleCatalog).where(eq(moduleCatalog.moduleId, moduleId));
   return rows[0] ? parseModuleCatalogRow(rows[0]) : null;
 }
 
@@ -168,39 +158,29 @@ function parseModuleCatalogRow(row: any): ModuleCatalogRow {
 /* ------------------------------------------------------------------ */
 
 /** Get all module entitlements for a tenant. */
-export async function listTenantModules(
-  tenantId: string,
-): Promise<TenantModuleRow[]> {
+export async function listTenantModules(tenantId: string): Promise<TenantModuleRow[]> {
   const db = getPgDb();
-  const rows = await db
-    .select()
-    .from(tenantModule)
-    .where(eq(tenantModule.tenantId, tenantId));
+  const rows = await db.select().from(tenantModule).where(eq(tenantModule.tenantId, tenantId));
   return rows.map(parseTenantModuleRow);
 }
 
 /** Get a single tenant module entitlement. */
 export async function getTenantModule(
   tenantId: string,
-  moduleId: string,
+  moduleId: string
 ): Promise<TenantModuleRow | null> {
   const db = getPgDb();
   const rows = await db
     .select()
     .from(tenantModule)
-    .where(
-      and(
-        eq(tenantModule.tenantId, tenantId),
-        eq(tenantModule.moduleId, moduleId),
-      ),
-    );
+    .where(and(eq(tenantModule.tenantId, tenantId), eq(tenantModule.moduleId, moduleId)));
   return rows[0] ? parseTenantModuleRow(rows[0]) : null;
 }
 
 /** Check if a module is enabled for a tenant. Falls back to catalog alwaysEnabled. */
 export async function isModuleEnabledForTenant(
   tenantId: string,
-  moduleId: string,
+  moduleId: string
 ): Promise<boolean> {
   // Always-enabled modules bypass tenant check
   const catalogEntry = await getModuleCatalogEntry(moduleId);
@@ -212,9 +192,7 @@ export async function isModuleEnabledForTenant(
 }
 
 /** Get all enabled module IDs for a tenant. */
-export async function getEnabledModuleIds(
-  tenantId: string,
-): Promise<string[]> {
+export async function getEnabledModuleIds(tenantId: string): Promise<string[]> {
   const catalog = await listModuleCatalog();
   const tenantMods = await listTenantModules(tenantId);
   const tenantModMap = new Map(tenantMods.map((tm) => [tm.moduleId, tm]));
@@ -239,7 +217,7 @@ export async function setModuleEnabled(
   moduleId: string,
   enabled: boolean,
   actorId: string,
-  planTier: string = "base",
+  planTier: string = 'base'
 ): Promise<TenantModuleRow> {
   const db = getPgDb();
   const now = new Date().toISOString();
@@ -257,12 +235,7 @@ export async function setModuleEnabled(
         enabledBy: actorId,
         updatedAt: now,
       })
-      .where(
-        and(
-          eq(tenantModule.tenantId, tenantId),
-          eq(tenantModule.moduleId, moduleId),
-        ),
-      );
+      .where(and(eq(tenantModule.tenantId, tenantId), eq(tenantModule.moduleId, moduleId)));
   } else {
     const id = randomUUID();
     await db.insert(tenantModule).values({
@@ -289,7 +262,7 @@ export async function setModuleEnabled(
 export async function seedTenantModules(
   tenantId: string,
   moduleIds: string[],
-  actorId: string = "system",
+  actorId: string = 'system'
 ): Promise<number> {
   let seeded = 0;
   for (const moduleId of moduleIds) {
@@ -322,9 +295,7 @@ function parseTenantModuleRow(row: any): TenantModuleRow {
 /* ------------------------------------------------------------------ */
 
 /** Get all feature flags for a tenant. */
-export async function listTenantFeatureFlags(
-  tenantId: string,
-): Promise<TenantFeatureFlagRow[]> {
+export async function listTenantFeatureFlags(tenantId: string): Promise<TenantFeatureFlagRow[]> {
   const db = getPgDb();
   const rows = await db
     .select()
@@ -336,25 +307,20 @@ export async function listTenantFeatureFlags(
 /** Get a single feature flag. */
 export async function getTenantFeatureFlag(
   tenantId: string,
-  flagKey: string,
+  flagKey: string
 ): Promise<TenantFeatureFlagRow | null> {
   const db = getPgDb();
   const rows = await db
     .select()
     .from(tenantFeatureFlag)
-    .where(
-      and(
-        eq(tenantFeatureFlag.tenantId, tenantId),
-        eq(tenantFeatureFlag.flagKey, flagKey),
-      ),
-    );
+    .where(and(eq(tenantFeatureFlag.tenantId, tenantId), eq(tenantFeatureFlag.flagKey, flagKey)));
   return (rows[0] as TenantFeatureFlagRow | undefined) ?? null;
 }
 
 /** Resolve a feature flag value (returns string or null if not set). */
 export async function resolveFeatureFlag(
   tenantId: string,
-  flagKey: string,
+  flagKey: string
 ): Promise<string | null> {
   const row = await getTenantFeatureFlag(tenantId, flagKey);
   return row ? row.flagValue : null;
@@ -368,7 +334,7 @@ export async function upsertTenantFeatureFlag(
   moduleId?: string,
   description?: string,
   rolloutPercentage?: number,
-  userTargeting?: unknown[],
+  userTargeting?: unknown[]
 ): Promise<TenantFeatureFlagRow> {
   const db = getPgDb();
   const now = new Date().toISOString();
@@ -385,12 +351,7 @@ export async function upsertTenantFeatureFlag(
         userTargeting: userTargeting ?? existing.userTargeting,
         updatedAt: now,
       })
-      .where(
-        and(
-          eq(tenantFeatureFlag.tenantId, tenantId),
-          eq(tenantFeatureFlag.flagKey, flagKey),
-        ),
-      );
+      .where(and(eq(tenantFeatureFlag.tenantId, tenantId), eq(tenantFeatureFlag.flagKey, flagKey)));
   } else {
     await db.insert(tenantFeatureFlag).values({
       id: randomUUID(),
@@ -410,19 +371,11 @@ export async function upsertTenantFeatureFlag(
 }
 
 /** Delete a feature flag for a tenant. Returns true if deleted. */
-export async function deleteTenantFeatureFlag(
-  tenantId: string,
-  flagKey: string,
-): Promise<boolean> {
+export async function deleteTenantFeatureFlag(tenantId: string, flagKey: string): Promise<boolean> {
   const db = getPgDb();
   const result = await db
     .delete(tenantFeatureFlag)
-    .where(
-      and(
-        eq(tenantFeatureFlag.tenantId, tenantId),
-        eq(tenantFeatureFlag.flagKey, flagKey),
-      ),
-    );
+    .where(and(eq(tenantFeatureFlag.tenantId, tenantId), eq(tenantFeatureFlag.flagKey, flagKey)));
   // node-postgres returns rowCount on the result
   return ((result as any)?.rowCount ?? 0) > 0;
 }
@@ -433,7 +386,7 @@ export async function deleteTenantFeatureFlag(
 
 /** Append an audit log entry. */
 export async function appendModuleAudit(
-  entry: Omit<ModuleAuditEntry, "id" | "createdAt">,
+  entry: Omit<ModuleAuditEntry, 'id' | 'createdAt'>
 ): Promise<ModuleAuditEntry> {
   const db = getPgDb();
   const id = randomUUID();
@@ -448,7 +401,7 @@ export async function appendModuleAudit(
 export async function listModuleAuditLog(
   tenantId: string,
   limit: number = 100,
-  offset: number = 0,
+  offset: number = 0
 ): Promise<ModuleAuditEntry[]> {
   const db = getPgDb();
   const rows = await db
@@ -462,9 +415,7 @@ export async function listModuleAuditLog(
 }
 
 /** Count total audit entries for a tenant. */
-export async function countModuleAuditLog(
-  tenantId: string,
-): Promise<number> {
+export async function countModuleAuditLog(tenantId: string): Promise<number> {
   const db = getPgDb();
   const rows = await db
     .select({ cnt: count() })

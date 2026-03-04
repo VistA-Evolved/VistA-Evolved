@@ -5,7 +5,7 @@
  * PHI (patientDfn) is never included in audit logs.
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 import {
   CONSENT_CATEGORIES,
   type ConsentCategory,
@@ -17,12 +17,12 @@ import {
   getConsentProfile,
   getConsentProfileForPack,
   listConsentProfiles,
-} from "../services/consent-engine.js";
-import { getEffectivePolicy } from "../middleware/country-policy-hook.js";
+} from '../services/consent-engine.js';
+import { getEffectivePolicy } from '../middleware/country-policy-hook.js';
 
 export async function consentRoutes(app: FastifyInstance): Promise<void> {
   // GET /consent/profiles — list available regulatory consent profiles
-  app.get("/consent/profiles", async () => {
+  app.get('/consent/profiles', async () => {
     const names = listConsentProfiles();
     const profiles = names.map((name) => ({
       framework: name,
@@ -32,17 +32,17 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // GET /consent/categories — list consent categories
-  app.get("/consent/categories", async () => {
+  app.get('/consent/categories', async () => {
     return { ok: true, categories: [...CONSENT_CATEGORIES] };
   });
 
   // GET /consent/patient — get consent records for a patient
-  app.get("/consent/patient", async (request, reply) => {
+  app.get('/consent/patient', async (request, reply) => {
     const query = (request.query as Record<string, string>) || {};
     const { tenantId, dfn } = query;
 
     if (!tenantId || !dfn) {
-      return reply.code(400).send({ ok: false, error: "tenantId and dfn required" });
+      return reply.code(400).send({ ok: false, error: 'tenantId and dfn required' });
     }
 
     const records = getConsentRecords(tenantId, dfn);
@@ -50,12 +50,12 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // GET /consent/check — check consent compliance for a patient
-  app.get("/consent/check", async (request, reply) => {
+  app.get('/consent/check', async (request, reply) => {
     const query = (request.query as Record<string, string>) || {};
     const { tenantId, dfn, framework } = query;
 
     if (!tenantId || !dfn || !framework) {
-      return reply.code(400).send({ ok: false, error: "tenantId, dfn, and framework required" });
+      return reply.code(400).send({ ok: false, error: 'tenantId, dfn, and framework required' });
     }
 
     const profile = getConsentProfile(framework);
@@ -68,7 +68,7 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // POST /consent/grant — grant consent for a category
-  app.post("/consent/grant", async (request, reply) => {
+  app.post('/consent/grant', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const {
       tenantId,
@@ -84,14 +84,14 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
     if (!tenantId || !patientDfn || !category || !grantedBy) {
       return reply.code(400).send({
         ok: false,
-        error: "tenantId, patientDfn, category, grantedBy required",
+        error: 'tenantId, patientDfn, category, grantedBy required',
       });
     }
 
     if (!CONSENT_CATEGORIES.includes(category as ConsentCategory)) {
       return reply.code(400).send({
         ok: false,
-        error: `Invalid category. Valid: ${CONSENT_CATEGORIES.join(", ")}`,
+        error: `Invalid category. Valid: ${CONSENT_CATEGORIES.join(', ')}`,
       });
     }
 
@@ -99,16 +99,16 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
       tenantId,
       patientDfn,
       category: category as ConsentCategory,
-      status: "granted",
-      granularity: "category",
+      status: 'granted',
+      granularity: 'category',
       grantedBy,
       grantedAt: new Date().toISOString(),
       expiresAt: expiresAt || null,
       revokedAt: null,
       revokedBy: null,
       revocationReason: null,
-      regulatoryBasis: regulatoryBasis || "",
-      version: parseInt(version || "1", 10),
+      regulatoryBasis: regulatoryBasis || '',
+      version: parseInt(version || '1', 10),
       evidence: evidence as string | undefined,
     });
 
@@ -116,14 +116,14 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // POST /consent/revoke — revoke a consent
-  app.post("/consent/revoke", async (request, reply) => {
+  app.post('/consent/revoke', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const { consentId, revokedBy, reason } = body as Record<string, string>;
 
     if (!consentId || !revokedBy || !reason) {
       return reply.code(400).send({
         ok: false,
-        error: "consentId, revokedBy, reason required",
+        error: 'consentId, revokedBy, reason required',
       });
     }
 
@@ -131,7 +131,7 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
     if (!revoked) {
       return reply.code(404).send({
         ok: false,
-        error: "Consent not found or not in granted status",
+        error: 'Consent not found or not in granted status',
       });
     }
 
@@ -139,16 +139,16 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // GET /consent/active — get active consent for a specific category
-  app.get("/consent/active", async (request, reply) => {
+  app.get('/consent/active', async (request, reply) => {
     const query = (request.query as Record<string, string>) || {};
     const { tenantId, dfn, category } = query;
 
     if (!tenantId || !dfn || !category) {
-      return reply.code(400).send({ ok: false, error: "tenantId, dfn, category required" });
+      return reply.code(400).send({ ok: false, error: 'tenantId, dfn, category required' });
     }
 
     if (!CONSENT_CATEGORIES.includes(category as ConsentCategory)) {
-      return reply.code(400).send({ ok: false, error: "Invalid category" });
+      return reply.code(400).send({ ok: false, error: 'Invalid category' });
     }
 
     const active = getActiveConsent(tenantId, dfn, category as ConsentCategory);
@@ -161,22 +161,20 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
 
   // Phase 494 (W34-P4): Country-policy-aware consent compliance check
   // Auto-resolves framework from the tenant's bound country pack.
-  app.get("/consent/policy-check", async (request, reply) => {
+  app.get('/consent/policy-check', async (request, reply) => {
     const query = (request.query as Record<string, string>) || {};
     const { tenantId, dfn } = query;
 
     if (!tenantId || !dfn) {
-      return reply.code(400).send({ ok: false, error: "tenantId and dfn required" });
+      return reply.code(400).send({ ok: false, error: 'tenantId and dfn required' });
     }
 
     const policy = getEffectivePolicy(request);
     const pack = policy.pack;
-    const profile = pack
-      ? getConsentProfileForPack(pack)
-      : getConsentProfile("HIPAA");
+    const profile = pack ? getConsentProfileForPack(pack) : getConsentProfile('HIPAA');
 
     if (!profile) {
-      return reply.code(500).send({ ok: false, error: "Could not resolve consent profile" });
+      return reply.code(500).send({ ok: false, error: 'Could not resolve consent profile' });
     }
 
     const result = checkConsentCompliance(tenantId, dfn, profile);

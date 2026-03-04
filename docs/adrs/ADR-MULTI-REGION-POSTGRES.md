@@ -20,12 +20,14 @@ standby in the DR region. The DR standby is read-only and can be promoted
 during failover.
 
 **Pros:**
+
 - Native PostgreSQL, no third-party tools
 - Well-understood operational model
 - RPO = replication lag (typically < 1s async)
 - RTO = time to promote standby + DNS update (minutes)
 
 **Cons:**
+
 - DR region standby is read-only (no active-active)
 - Replication lag means potential data loss during async failover
 - Cross-region bandwidth cost for WAL shipping
@@ -36,10 +38,12 @@ Use PG logical replication to replicate specific tables (e.g., audit,
 reference data) to a DR region. Application data stays local.
 
 **Pros:**
+
 - Fine-grained control over what replicates
 - DR region can have its own schema extensions
 
 **Cons:**
+
 - Complex setup per table
 - DDL changes don't replicate automatically
 - Not a full DR solution without additional tooling
@@ -50,10 +54,12 @@ Both regions accept writes. Conflict resolution via application logic
 or CRDT-like patterns.
 
 **Pros:**
+
 - Zero-downtime failover
 - Read-write in both regions
 
 **Cons:**
+
 - Extreme complexity for healthcare data (order integrity, audit chains)
 - Conflict resolution for clinical data is clinically dangerous
 - No proven PostgreSQL-native active-active without third-party (e.g., BDR)
@@ -84,12 +90,12 @@ Region US-West (Primary for tenants assigned to US-West):
 
 ## RPO/RTO Targets
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| RPO (normal) | < 1 second | Streaming replication lag |
-| RPO (async DR) | < 30 seconds | Cross-region WAL lag |
-| RTO (standby promotion) | < 5 minutes | Time from decision to promoted + routing |
-| RTO (full DR) | < 15 minutes | Including DNS propagation + verification |
+| Metric                  | Target       | Measurement                              |
+| ----------------------- | ------------ | ---------------------------------------- |
+| RPO (normal)            | < 1 second   | Streaming replication lag                |
+| RPO (async DR)          | < 30 seconds | Cross-region WAL lag                     |
+| RTO (standby promotion) | < 5 minutes  | Time from decision to promoted + routing |
+| RTO (full DR)           | < 15 minutes | Including DNS propagation + verification |
 
 ## Migration Coordination
 

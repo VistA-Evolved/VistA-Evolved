@@ -1,4 +1,4 @@
-import { createConnection, Socket } from "net";
+import { createConnection, Socket } from 'net';
 import {
   VISTA_HOST,
   VISTA_PORT,
@@ -6,11 +6,11 @@ import {
   VISTA_VERIFY_CODE,
   VISTA_CONTEXT,
   validateCredentials,
-} from "./config";
-import { RPC_CONFIG } from "../config/server-config.js";
-import { log, getRequestId } from "../lib/logger.js";
+} from './config';
+import { RPC_CONFIG } from '../config/server-config.js';
+import { log, getRequestId } from '../lib/logger.js';
 // Phase 96B: RPC trace recording at the protocol level
-import { recordRpcTrace } from "../qa/rpc-trace.js";
+import { recordRpcTrace } from '../qa/rpc-trace.js';
 
 /**
  * XWB RPC Broker client for VistA.
@@ -31,8 +31,8 @@ import { recordRpcTrace } from "../qa/rpc-trace.js";
 
 /** Broker timeout wired to RPC_CONFIG.connectTimeoutMs (env: RPC_CONNECT_TIMEOUT_MS) */
 const TIMEOUT_MS = RPC_CONFIG.connectTimeoutMs;
-const EOT = "\x04"; // End-of-transmission marker used by XWB
-const PREFIX = "[XWB]"; // Every client message starts with this
+const EOT = '\x04'; // End-of-transmission marker used by XWB
+const PREFIX = '[XWB]'; // Every client message starts with this
 
 // ---- Debug logging (never logs credentials) -----------------------------
 // Gated by VISTA_DEBUG env var AND routed through structured logger (level=debug)
@@ -40,10 +40,8 @@ const PREFIX = "[XWB]"; // Every client message starts with this
 // even if VISTA_DEBUG=true is accidentally set.
 
 function dbg(step: string, detail?: string): void {
-  if (process.env.VISTA_DEBUG !== "true") return;
-  const safe = detail
-    ? detail.replace(/[\x00-\x03\x05-\x09\x0b\x0c\x0e-\x1f]/g, ".")
-    : "";
+  if (process.env.VISTA_DEBUG !== 'true') return;
+  const safe = detail ? detail.replace(/[\x00-\x03\x05-\x09\x0b\x0c\x0e-\x1f]/g, '.') : '';
   log.debug(`[RPC-DEBUG] ${step}`, { detail: safe || undefined });
 }
 
@@ -92,13 +90,13 @@ export async function withBrokerLock<T>(fn: () => Promise<T>): Promise<T> {
 
 /** SPack: 1-byte length prefix (max 255 chars). */
 function sPack(s: string): string {
-  if (s.length > 255) throw new Error("sPack: string exceeds 255");
+  if (s.length > 255) throw new Error('sPack: string exceeds 255');
   return String.fromCharCode(s.length) + s;
 }
 
 /** LPack: 3-digit zero-padded length prefix. */
 function lPack(s: string): string {
-  return s.length.toString().padStart(3, "0") + s;
+  return s.length.toString().padStart(3, '0') + s;
 }
 
 /**
@@ -109,11 +107,15 @@ function lPack(s: string): string {
 function buildTCPConnect(clientIP: string, callbackPort: number): string {
   return (
     PREFIX +
-    "10304" +
-    sPack("TCPConnect") +
-    "5" +
-    "0" + lPack(clientIP) + "f" +
-    "0" + lPack(String(callbackPort)) + "f" +
+    '10304' +
+    sPack('TCPConnect') +
+    '5' +
+    '0' +
+    lPack(clientIP) +
+    'f' +
+    '0' +
+    lPack(String(callbackPort)) +
+    'f' +
     EOT
   );
 }
@@ -125,13 +127,13 @@ function buildTCPConnect(clientIP: string, callbackPort: number): string {
  * No params: "54f"
  */
 function buildRpcMessage(rpcName: string, params: string[] = []): string {
-  let msg = PREFIX + "11302" + "\x01" + "1" + sPack(rpcName);
+  let msg = PREFIX + '11302' + '\x01' + '1' + sPack(rpcName);
   if (params.length === 0) {
-    msg += "54f";
+    msg += '54f';
   } else {
-    msg += "5";
+    msg += '5';
     for (const p of params) {
-      msg += "0" + lPack(p) + "f";
+      msg += '0' + lPack(p) + 'f';
     }
   }
   return msg + EOT;
@@ -139,7 +141,7 @@ function buildRpcMessage(rpcName: string, params: string[] = []): string {
 
 /** Build #BYE# disconnect message. */
 function buildBye(): string {
-  return PREFIX + "10304" + sPack("#BYE#") + EOT;
+  return PREFIX + '10304' + sPack('#BYE#') + EOT;
 }
 
 // ---- CipherPad encryption (XUS AV CODE + XWB CREATE CONTEXT) -----------
@@ -151,26 +153,26 @@ function buildBye(): string {
 // $TR substitution, identifier index (+31) at front, associator index (+31) at end.
 
 const CIPHER_PAD: readonly string[] = [
-  "wkEo-ZJt!dG)49K{nX1BS$vH<&:Myf*>Ae0jQW=;|#PsO`'%+rmb[gpqN,l6/hFC@DcUa ]z~R}\"V\\iIxu?872.(TYL5_3",
-  "rKv`R;M/9BqAF%&tSs#Vh)dO1DZP> *fX'u[.4lY=-mg_ci802N7LTG<]!CWo:3?{+,5Q}(@jaExn$~p\\IyHwzU\"|k6Jeb",
-  "\\pV(ZJk\"WQmCn!Y,y@1d+~8s?[lNMxgHEt=uw|X:qSLjAI*}6zoF{T3#;ca)/h5%`P4$r]G'9e2if_>UDKb7<v0&- RBO.",
-  "depjt3g4W)qD0V~NJar\\B \"?OYhcu[<Ms%Z`RIL_6:]AX-zG.#}$@vk7/5x&*m;(yb2Fn+l'PwUof1K{9,|EQi>H=CT8S!",
-  "NZW:1}K$byP;jk)7'`x90B|cq@iSsEnu,(l-hf.&Y_?J#R]+voQXU8mrV[!p4tg~OMez CAaGFD6H53%L/dT2<*>\"{\\wI=",
-  "vCiJ<oZ9|phXVNn)m K`t/SI%]A5qOWe\\&?;jT~M!fz1l>[D_0xR32c*4.P\"G{r7}E8wUgyudF+6-:B=$(sY,LkbHa#'@Q",
-  "hvMX,'4Ty;[a8/{6l~F_V\"}qLI\\!@x(D7bRmUH]W15J%N0BYPkrs&9:$)Zj>u|zwQ=ieC-oGA.#?tfdcO3gp`S+En K2*<",
-  "jd!W5[];4'<C$/&x|rZ(k{>?ghBzIFN}fAK\"#`p_TqtD*1E37XGVs@0nmSe+Y6Qyo-aUu%i8c=H2vJ\\) R:MLb.9,wlO~P",
-  "2ThtjEM+!=xXb)7,ZV{*ci3\"8@_l-HS69L>]\\AUF/Q%:qD?1~m(yvO0e'<#o$p4dnIzKP|`NrkaGg.ufCRB[; sJYwW}5&",
-  "vB\\5/zl-9y:Pj|=(R'7QJI *&CTX\"p0]_3.idcuOefVU#omwNZ`$Fs?L+1Sk<,b)hM4A6[Y%aDrg@~KqEW8t>H};n!2xG{",
-  "sFz0Bo@_HfnK>LR}qWXV+D6`Y28=4Cm~G/7-5A\\b9!a#rP.l&M$hc3ijQk;),TvUd<[:I\"u1'NZSOw]*gxtE{eJp|y (?%",
-  "M@,D}|LJyGO8`$*ZqH .j>c~h<d=fimszv[#-53F!+a;NC'6T91IV?(0x&/{B)w\"]Q\\YUWprk4:ol%g2nE7teRKbAPuS_X",
-  ".mjY#_0*H<B=Q+FML6]s;r2:e8R}[ic&KA 1w{)vV5d,$u\"~xD/Pg?IyfthO@CzWp%!`N4Z'3-(o|J9XUE7k\\TlqSb>anG",
-  "xVa1']_GU<X`|\\NgM?LS9{\"jT%s$}y[nvtlefB2RKJW~(/cIDCPow4,>#zm+:5b@06O3Ap8=*7ZFY!H-uEQk; .q)i&rhd",
-  "I]Jz7AG@QX.\"%3Lq>METUo{Pp_ |a6<0dYVSv8:b)~W9NK`(r'4fs&wim\\kReC2hg=HOj$1B*/nxt,;c#y+![?lFuZ-5D}",
-  "Rr(Ge6F Hx>q$m&C%M~Tn,:\"o'tX/*yP.{lZ!YkiVhuw_<KE5a[;}W0gjsz3]@7cI2\\QN?f#4p|vb1OUBD9)=-LJA+d`S8",
-  "I~k>y|m};d)-7DZ\"Fe/Y<B:xwojR,Vh]O0Sc[`$sg8GXE!1&Qrzp._W%TNK(=J 3i*2abuHA4C'?Mv\\Pq{n#56LftUl@9+",
-  "~A*>9 WidFN,1KsmwQ)GJM{I4:C%}#Ep(?HB/r;t.&U8o|l['Lg\"2hRDyZ5`nbf]qjc0!zS-TkYO<_=76a\\X@$Pe3+xVvu",
-  "yYgjf\"5VdHc#uA,W1i+v'6|@pr{n;DJ!8(btPGaQM.LT3oe?NB/&9>Z`-}02*%x<7lsqz4OS ~E$\\R]KI[:UwC_=h)kXmF",
-  "5:iar.{YU7mBZR@-K|2 \"+~`M%8sq4JhPo<_X\\Sg3WC;Tuxz,fvEQ1p9=w}FAI&j/keD0c?)LN6OHV]lGy'$*>nd[(tb!#",
+  'wkEo-ZJt!dG)49K{nX1BS$vH<&:Myf*>Ae0jQW=;|#PsO`\'%+rmb[gpqN,l6/hFC@DcUa ]z~R}"V\\iIxu?872.(TYL5_3',
+  'rKv`R;M/9BqAF%&tSs#Vh)dO1DZP> *fX\'u[.4lY=-mg_ci802N7LTG<]!CWo:3?{+,5Q}(@jaExn$~p\\IyHwzU"|k6Jeb',
+  '\\pV(ZJk"WQmCn!Y,y@1d+~8s?[lNMxgHEt=uw|X:qSLjAI*}6zoF{T3#;ca)/h5%`P4$r]G\'9e2if_>UDKb7<v0&- RBO.',
+  'depjt3g4W)qD0V~NJar\\B "?OYhcu[<Ms%Z`RIL_6:]AX-zG.#}$@vk7/5x&*m;(yb2Fn+l\'PwUof1K{9,|EQi>H=CT8S!',
+  'NZW:1}K$byP;jk)7\'`x90B|cq@iSsEnu,(l-hf.&Y_?J#R]+voQXU8mrV[!p4tg~OMez CAaGFD6H53%L/dT2<*>"{\\wI=',
+  'vCiJ<oZ9|phXVNn)m K`t/SI%]A5qOWe\\&?;jT~M!fz1l>[D_0xR32c*4.P"G{r7}E8wUgyudF+6-:B=$(sY,LkbHa#\'@Q',
+  'hvMX,\'4Ty;[a8/{6l~F_V"}qLI\\!@x(D7bRmUH]W15J%N0BYPkrs&9:$)Zj>u|zwQ=ieC-oGA.#?tfdcO3gp`S+En K2*<',
+  'jd!W5[];4\'<C$/&x|rZ(k{>?ghBzIFN}fAK"#`p_TqtD*1E37XGVs@0nmSe+Y6Qyo-aUu%i8c=H2vJ\\) R:MLb.9,wlO~P',
+  '2ThtjEM+!=xXb)7,ZV{*ci3"8@_l-HS69L>]\\AUF/Q%:qD?1~m(yvO0e\'<#o$p4dnIzKP|`NrkaGg.ufCRB[; sJYwW}5&',
+  'vB\\5/zl-9y:Pj|=(R\'7QJI *&CTX"p0]_3.idcuOefVU#omwNZ`$Fs?L+1Sk<,b)hM4A6[Y%aDrg@~KqEW8t>H};n!2xG{',
+  'sFz0Bo@_HfnK>LR}qWXV+D6`Y28=4Cm~G/7-5A\\b9!a#rP.l&M$hc3ijQk;),TvUd<[:I"u1\'NZSOw]*gxtE{eJp|y (?%',
+  'M@,D}|LJyGO8`$*ZqH .j>c~h<d=fimszv[#-53F!+a;NC\'6T91IV?(0x&/{B)w"]Q\\YUWprk4:ol%g2nE7teRKbAPuS_X',
+  '.mjY#_0*H<B=Q+FML6]s;r2:e8R}[ic&KA 1w{)vV5d,$u"~xD/Pg?IyfthO@CzWp%!`N4Z\'3-(o|J9XUE7k\\TlqSb>anG',
+  'xVa1\']_GU<X`|\\NgM?LS9{"jT%s$}y[nvtlefB2RKJW~(/cIDCPow4,>#zm+:5b@06O3Ap8=*7ZFY!H-uEQk; .q)i&rhd',
+  'I]Jz7AG@QX."%3Lq>METUo{Pp_ |a6<0dYVSv8:b)~W9NK`(r\'4fs&wim\\kReC2hg=HOj$1B*/nxt,;c#y+![?lFuZ-5D}',
+  'Rr(Ge6F Hx>q$m&C%M~Tn,:"o\'tX/*yP.{lZ!YkiVhuw_<KE5a[;}W0gjsz3]@7cI2\\QN?f#4p|vb1OUBD9)=-LJA+d`S8',
+  'I~k>y|m};d)-7DZ"Fe/Y<B:xwojR,Vh]O0Sc[`$sg8GXE!1&Qrzp._W%TNK(=J 3i*2abuHA4C\'?Mv\\Pq{n#56LftUl@9+',
+  '~A*>9 WidFN,1KsmwQ)GJM{I4:C%}#Ep(?HB/r;t.&U8o|l[\'Lg"2hRDyZ5`nbf]qjc0!zS-TkYO<_=76a\\X@$Pe3+xVvu',
+  'yYgjf"5VdHc#uA,W1i+v\'6|@pr{n;DJ!8(btPGaQM.LT3oe?NB/&9>Z`-}02*%x<7lsqz4OS ~E$\\R]KI[:UwC_=h)kXmF',
+  '5:iar.{YU7mBZR@-K|2 "+~`M%8sq4JhPo<_X\\Sg3WC;Tuxz,fvEQ1p9=w}FAI&j/keD0c?)LN6OHV]lGy\'$*>nd[(tb!#',
 ];
 
 /**
@@ -182,17 +184,19 @@ const CIPHER_PAD: readonly string[] = [
  *   Result: chr(IDIX+31) + translated + chr(ASSOCIX+31)
  */
 function cipherEncrypt(text: string): string {
-  const assocIdx = Math.floor(Math.random() * 20) + 1;       // 1-20
-  let idIdx = Math.floor(Math.random() * 20) + 1;            // 1-20
-  if (idIdx === assocIdx) { idIdx = (idIdx % 20) + 1; }      // must differ
+  const assocIdx = Math.floor(Math.random() * 20) + 1; // 1-20
+  let idIdx = Math.floor(Math.random() * 20) + 1; // 1-20
+  if (idIdx === assocIdx) {
+    idIdx = (idIdx % 20) + 1;
+  } // must differ
 
   const assocStr = CIPHER_PAD[assocIdx - 1];
-  const idStr    = CIPHER_PAD[idIdx - 1];
+  const idStr = CIPHER_PAD[idIdx - 1];
 
   // MUMPS $TR(PIECE,IDSTR,ASSOCSTR): find char in idStr, replace with char
   // at same position in assocStr.  Spaces are translated like any other char
   // so context names like "OR CPRS GUI CHART" round-trip correctly.
-  let s = "";
+  let s = '';
   for (let i = 0; i < text.length; i++) {
     const ch = text.charAt(i);
     const pos = idStr.indexOf(ch);
@@ -214,8 +218,8 @@ function stripNulls(s: string): string {
 
 /** Log raw hex of a packet (never logs more than 200 hex chars). */
 function dbgHex(label: string, data: string): void {
-  if (process.env.VISTA_DEBUG !== "true") return;
-  const hex = Buffer.from(data, "latin1").toString("hex").substring(0, 400);
+  if (process.env.VISTA_DEBUG !== 'true') return;
+  const hex = Buffer.from(data, 'latin1').toString('hex').substring(0, 400);
   log.debug(`[RPC-HEX] ${label}`, { hex });
 }
 
@@ -223,8 +227,8 @@ function dbgHex(label: string, data: string): void {
 
 let sock: Socket | null = null;
 let connected = false;
-let readBuf = ""; // persistent buffer across readToEOT calls
-let sessionDuz = ""; // DUZ of authenticated user (set during connect)
+let readBuf = ''; // persistent buffer across readToEOT calls
+let sessionDuz = ''; // DUZ of authenticated user (set during connect)
 let lastActivityMs = 0; // timestamp of last successful socket I/O
 
 /** Max idle time before we consider the socket potentially half-open (5 min). */
@@ -235,7 +239,7 @@ function isSocketHealthy(): boolean {
   if (!sock || sock.destroyed || !connected) return false;
   // If we haven't used the socket in > SOCKET_MAX_IDLE_MS, assume it may be half-open
   if (lastActivityMs > 0 && Date.now() - lastActivityMs > SOCKET_MAX_IDLE_MS) {
-    dbg("STALE", `Socket idle for ${Date.now() - lastActivityMs}ms, forcing reconnect`);
+    dbg('STALE', `Socket idle for ${Date.now() - lastActivityMs}ms, forcing reconnect`);
     return false;
   }
   return true;
@@ -249,9 +253,9 @@ function touchActivity(): void {
 /** Send raw bytes to broker (latin1 preserves byte values). */
 function rawSend(data: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    if (!sock || sock.destroyed) return reject(new Error("Socket closed"));
-    sock.write(Buffer.from(data, "latin1"), (err) => {
-      if (err) return reject(new Error("Send: " + err.message));
+    if (!sock || sock.destroyed) return reject(new Error('Socket closed'));
+    sock.write(Buffer.from(data, 'latin1'), (err) => {
+      if (err) return reject(new Error('Send: ' + err.message));
       touchActivity();
       resolve();
     });
@@ -261,7 +265,7 @@ function rawSend(data: string): Promise<void> {
 /** Read from broker until EOT byte. Returns everything before the EOT. */
 function readToEOT(): Promise<string> {
   return new Promise((resolve, reject) => {
-    if (!sock || sock.destroyed) return reject(new Error("Socket closed"));
+    if (!sock || sock.destroyed) return reject(new Error('Socket closed'));
 
     // Check if a complete response is already buffered
     const existing = readBuf.indexOf(EOT);
@@ -273,7 +277,7 @@ function readToEOT(): Promise<string> {
     }
 
     function onData(chunk: Buffer) {
-      readBuf += chunk.toString("latin1");
+      readBuf += chunk.toString('latin1');
       const i = readBuf.indexOf(EOT);
       if (i !== -1) {
         cleanup();
@@ -286,39 +290,41 @@ function readToEOT(): Promise<string> {
 
     function onErr(e: Error) {
       cleanup();
-      reject(new Error("Read: " + e.message));
+      reject(new Error('Read: ' + e.message));
     }
 
     function onClose() {
       cleanup();
       if (readBuf.length > 0) {
         const result = readBuf;
-        readBuf = "";
+        readBuf = '';
         resolve(result);
       } else {
-        reject(new Error("Connection closed before response"));
+        reject(new Error('Connection closed before response'));
       }
     }
 
     const timer = setTimeout(() => {
       cleanup();
       // Include buffer content in error for debugging
-      const preview = readBuf.substring(0, 200).replace(/[\x00-\x1f]/g, ".");
-      reject(new Error(
-        `Read timeout (${TIMEOUT_MS}ms). Received so far (${readBuf.length} bytes): ${preview}`
-      ));
+      const preview = readBuf.substring(0, 200).replace(/[\x00-\x1f]/g, '.');
+      reject(
+        new Error(
+          `Read timeout (${TIMEOUT_MS}ms). Received so far (${readBuf.length} bytes): ${preview}`
+        )
+      );
     }, TIMEOUT_MS);
 
     function cleanup() {
       clearTimeout(timer);
-      sock?.removeListener("data", onData);
-      sock?.removeListener("error", onErr);
-      sock?.removeListener("close", onClose);
+      sock?.removeListener('data', onData);
+      sock?.removeListener('error', onErr);
+      sock?.removeListener('close', onClose);
     }
 
-    sock.on("data", onData);
-    sock.once("error", onErr);
-    sock.once("close", onClose);
+    sock.on('data', onData);
+    sock.once('error', onErr);
+    sock.once('close', onClose);
   });
 }
 
@@ -335,109 +341,111 @@ export async function connect(): Promise<void> {
   if (connected && sock && !sock.destroyed && isSocketHealthy()) return;
   // If socket exists but is stale, clean it up first
   if (sock && !sock.destroyed) {
-    dbg("RECONNECT", "Cleaning up stale socket before reconnecting");
-    try { sock.destroy(); } catch { /* best effort */ }
+    dbg('RECONNECT', 'Cleaning up stale socket before reconnecting');
+    try {
+      sock.destroy();
+    } catch {
+      /* best effort */
+    }
     sock = null;
     connected = false;
-    readBuf = "";
-    sessionDuz = "";
+    readBuf = '';
+    sessionDuz = '';
   }
 
   validateCredentials();
 
   // 1. TCP connect
-  dbg("CONNECT", VISTA_HOST + ":" + VISTA_PORT);
+  dbg('CONNECT', VISTA_HOST + ':' + VISTA_PORT);
   sock = await new Promise<Socket>((resolve, reject) => {
     const s = createConnection({ host: VISTA_HOST, port: VISTA_PORT });
     // Enable TCP keepalive to detect dead peers (AGENTS.md #14)
     s.setKeepAlive(true, 30_000); // probe every 30s
     const timer = setTimeout(() => {
       s.destroy();
-      reject(new Error("TCP connect timeout"));
+      reject(new Error('TCP connect timeout'));
     }, TIMEOUT_MS);
-    s.once("connect", () => {
+    s.once('connect', () => {
       clearTimeout(timer);
       resolve(s);
     });
-    s.once("error", (e) => {
+    s.once('error', (e) => {
       clearTimeout(timer);
-      reject(new Error("TCP: " + e.message));
+      reject(new Error('TCP: ' + e.message));
     });
   });
-  readBuf = "";
+  readBuf = '';
 
   // Detect half-open state: mark disconnected on unexpected close/error
   // (AGENTS.md #14 - half-open socket detection)
-  sock.once("close", () => { connected = false; });
-  sock.on("error", () => { connected = false; });
+  sock.once('close', () => {
+    connected = false;
+  });
+  sock.on('error', () => {
+    connected = false;
+  });
   touchActivity();
 
   // 2. XWB TCPConnect handshake
-  const tcpMsg = buildTCPConnect("127.0.0.1", 0);
-  dbg("SEND", "TCPConnect");
-  dbgHex("SEND TCPConnect", tcpMsg);
+  const tcpMsg = buildTCPConnect('127.0.0.1', 0);
+  dbg('SEND', 'TCPConnect');
+  dbgHex('SEND TCPConnect', tcpMsg);
   await rawSend(tcpMsg);
   const tcpResp = stripNulls(await readToEOT());
-  dbg("RECV TCPConnect", tcpResp);
-  dbgHex("RECV TCPConnect", tcpResp);
-  if (!tcpResp.toLowerCase().includes("accept")) {
-    throw new Error("TCPConnect rejected: " + tcpResp.replace(/[\x00-\x1f]/g, ".").trim());
+  dbg('RECV TCPConnect', tcpResp);
+  dbgHex('RECV TCPConnect', tcpResp);
+  if (!tcpResp.toLowerCase().includes('accept')) {
+    throw new Error('TCPConnect rejected: ' + tcpResp.replace(/[\x00-\x1f]/g, '.').trim());
   }
 
   // 3. XUS SIGNON SETUP (no params -- returns server info)
-  const signOnMsg = buildRpcMessage("XUS SIGNON SETUP");
-  dbg("SEND", "XUS SIGNON SETUP");
-  dbgHex("SEND SIGNON SETUP", signOnMsg);
+  const signOnMsg = buildRpcMessage('XUS SIGNON SETUP');
+  dbg('SEND', 'XUS SIGNON SETUP');
+  dbgHex('SEND SIGNON SETUP', signOnMsg);
   await rawSend(signOnMsg);
   const setupResp = stripNulls(await readToEOT());
-  dbg("RECV SIGNON SETUP", setupResp.substring(0, 200));
-  dbgHex("RECV SIGNON SETUP", setupResp);
+  dbg('RECV SIGNON SETUP', setupResp.substring(0, 200));
+  dbgHex('RECV SIGNON SETUP', setupResp);
 
   // 4. XUS AV CODE (credentials encrypted with CipherPad)
-  dbg("SEND", "XUS AV CODE (credentials NOT logged)");
-  const avPlain = VISTA_ACCESS_CODE + ";" + VISTA_VERIFY_CODE;
+  dbg('SEND', 'XUS AV CODE (credentials NOT logged)');
+  const avPlain = VISTA_ACCESS_CODE + ';' + VISTA_VERIFY_CODE;
   const avEnc = cipherEncrypt(avPlain);
-  const avMsg = buildRpcMessage("XUS AV CODE", [avEnc]);
-  dbgHex("SEND AV CODE", avMsg);
+  const avMsg = buildRpcMessage('XUS AV CODE', [avEnc]);
+  dbgHex('SEND AV CODE', avMsg);
   await rawSend(avMsg);
   const avResp = stripNulls(await readToEOT());
-  dbg("RECV AV CODE", avResp.substring(0, 200));
-  dbgHex("RECV AV CODE", avResp);
+  dbg('RECV AV CODE', avResp.substring(0, 200));
+  dbgHex('RECV AV CODE', avResp);
 
   // Parse: first line is DUZ. "0" means failure.
   const avLines = avResp.split(/\r?\n/);
   const duz = avLines[0]?.trim();
-  if (!duz || duz === "0") {
+  if (!duz || duz === '0') {
     // Error reason is typically on line 3 or 4
-    const reason =
-      avLines[3]?.trim() || avLines[2]?.trim() || avLines[1]?.trim() || avResp;
-    throw new Error(
-      "Sign-on failed (DUZ=0). " +
-        reason.replace(/[\x00-\x1f]/g, " ").trim()
-    );
+    const reason = avLines[3]?.trim() || avLines[2]?.trim() || avLines[1]?.trim() || avResp;
+    throw new Error('Sign-on failed (DUZ=0). ' + reason.replace(/[\x00-\x1f]/g, ' ').trim());
   }
-  dbg("SIGNED ON", "DUZ=" + duz);
+  dbg('SIGNED ON', 'DUZ=' + duz);
   sessionDuz = duz;
 
   // 5. XWB CREATE CONTEXT (context name encrypted with CipherPad)
-  dbg("SEND", "XWB CREATE CONTEXT: " + VISTA_CONTEXT);
+  dbg('SEND', 'XWB CREATE CONTEXT: ' + VISTA_CONTEXT);
   const ctxEnc = cipherEncrypt(VISTA_CONTEXT);
-  const ctxMsg = buildRpcMessage("XWB CREATE CONTEXT", [ctxEnc]);
-  dbgHex("SEND CREATE CONTEXT", ctxMsg);
+  const ctxMsg = buildRpcMessage('XWB CREATE CONTEXT', [ctxEnc]);
+  dbgHex('SEND CREATE CONTEXT', ctxMsg);
   await rawSend(ctxMsg);
   const ctxResp = stripNulls(await readToEOT());
-  dbg("RECV CREATE CONTEXT", ctxResp);
-  dbgHex("RECV CREATE CONTEXT", ctxResp);
+  dbg('RECV CREATE CONTEXT', ctxResp);
+  dbgHex('RECV CREATE CONTEXT', ctxResp);
 
   const ctxVal = ctxResp.split(/\r?\n/)[0]?.trim();
-  if (ctxVal !== "1") {
-    throw new Error(
-      "Set context failed: " + ctxResp.replace(/[\x00-\x1f]/g, " ").trim()
-    );
+  if (ctxVal !== '1') {
+    throw new Error('Set context failed: ' + ctxResp.replace(/[\x00-\x1f]/g, ' ').trim());
   }
 
   connected = true;
-  dbg("READY", "Broker authenticated, context set");
+  dbg('READY', 'Broker authenticated, context set');
 }
 
 /** Disconnect from broker (sends properly-framed BYE then closes socket). */
@@ -446,7 +454,7 @@ export function disconnect(): void {
     try {
       // Use XWB-framed BYE message (fixes BUG-036 / AGENTS.md #28 dead-code gap)
       const bye = buildBye();
-      sock.write(Buffer.from(bye, "latin1"));
+      sock.write(Buffer.from(bye, 'latin1'));
     } catch {
       // best-effort — socket may already be half-closed
     }
@@ -454,33 +462,30 @@ export function disconnect(): void {
   }
   sock = null;
   connected = false;
-  readBuf = "";
-  sessionDuz = "";
+  readBuf = '';
+  sessionDuz = '';
 }
 
 /** Call an RPC and return the response split into lines. */
-export async function callRpc(
-  rpcName: string,
-  params: string[] = []
-): Promise<string[]> {
+export async function callRpc(rpcName: string, params: string[] = []): Promise<string[]> {
   if (!connected || !sock || sock.destroyed) {
-    throw new Error("Not connected. Call connect() first.");
+    throw new Error('Not connected. Call connect() first.');
   }
 
-  dbg("RPC CALL", rpcName);
+  dbg('RPC CALL', rpcName);
   const rpcMsg = buildRpcMessage(rpcName, params);
-  dbgHex("SEND RPC", rpcMsg);
+  dbgHex('SEND RPC', rpcMsg);
   const start = Date.now();
   try {
     await rawSend(rpcMsg);
     const resp = stripNulls(await readToEOT());
-    dbg("RPC RESP", resp.substring(0, 300));
-    dbgHex("RECV RPC", resp);
+    dbg('RPC RESP', resp.substring(0, 300));
+    dbgHex('RECV RPC', resp);
     const lines = resp.split(/\r?\n/).filter((l) => l.length > 0);
     // Phase 96B: record trace
     recordRpcTrace({
       rpcName,
-      params: [],   // PHI-safe: never log raw params
+      params: [], // PHI-safe: never log raw params
       durationMs: Date.now() - start,
       success: true,
       responseLines: lines.length,
@@ -513,8 +518,8 @@ export function getDuz(): string {
  * Used by callRpcWithList for RPCs that need LIST-type params.
  */
 export type RpcParam =
-  | { type: "literal"; value: string }
-  | { type: "list"; value: Record<string, string> };
+  | { type: 'literal'; value: string }
+  | { type: 'list'; value: Record<string, string> };
 
 /**
  * Build an RPC message with mixed literal + list params.
@@ -528,23 +533,23 @@ export type RpcParam =
  * string subscripts: LPack('"GMRAGNT"') not LPack('GMRAGNT').
  */
 function buildRpcMessageEx(rpcName: string, params: RpcParam[]): string {
-  let msg = PREFIX + "11302" + "\x01" + "1" + sPack(rpcName);
+  let msg = PREFIX + '11302' + '\x01' + '1' + sPack(rpcName);
   if (params.length === 0) {
-    msg += "54f";
+    msg += '54f';
   } else {
-    msg += "5";
+    msg += '5';
     for (const p of params) {
-      if (p.type === "literal") {
-        msg += "0" + lPack(p.value) + "f";
+      if (p.type === 'literal') {
+        msg += '0' + lPack(p.value) + 'f';
       } else {
         // LIST param: type "2", then entries, "f" on last entry
         const entries = Object.entries(p.value);
-        msg += "2";
+        msg += '2';
         entries.forEach(([key, val], idx) => {
           // Wrap key in MUMPS double-quotes for string subscripts
           const quotedKey = '"' + key + '"';
           msg += lPack(quotedKey) + lPack(val);
-          msg += idx < entries.length - 1 ? "t" : "f";
+          msg += idx < entries.length - 1 ? 't' : 'f';
         });
       }
     }
@@ -556,23 +561,20 @@ function buildRpcMessageEx(rpcName: string, params: RpcParam[]): string {
  * Call an RPC with mixed literal and list parameters.
  * Use this for RPCs like ORWDAL32 SAVE ALLERGY that need LIST-type params.
  */
-export async function callRpcWithList(
-  rpcName: string,
-  params: RpcParam[]
-): Promise<string[]> {
+export async function callRpcWithList(rpcName: string, params: RpcParam[]): Promise<string[]> {
   if (!connected || !sock || sock.destroyed) {
-    throw new Error("Not connected. Call connect() first.");
+    throw new Error('Not connected. Call connect() first.');
   }
 
-  dbg("RPC CALL", rpcName);
+  dbg('RPC CALL', rpcName);
   const rpcMsg = buildRpcMessageEx(rpcName, params);
-  dbgHex("SEND RPC", rpcMsg);
+  dbgHex('SEND RPC', rpcMsg);
   const start = Date.now();
   try {
     await rawSend(rpcMsg);
     const resp = stripNulls(await readToEOT());
-    dbg("RPC RESP", resp.substring(0, 300));
-    dbgHex("RECV RPC", resp);
+    dbg('RPC RESP', resp.substring(0, 300));
+    dbgHex('RECV RPC', resp);
     const lines = resp.split(/\r?\n/).filter((l) => l.length > 0);
     // Phase 96B: record trace
     recordRpcTrace({
@@ -625,20 +627,20 @@ export async function authenticateUser(
 
   // Temporary connection (separate from global sock)
   let tmpSock: Socket;
-  let tmpBuf = "";
+  let tmpBuf = '';
 
   function tmpRawSend(data: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      if (!tmpSock || tmpSock.destroyed) return reject(new Error("Socket closed"));
-      tmpSock.write(Buffer.from(data, "latin1"), (err) =>
-        err ? reject(new Error("Send: " + err.message)) : resolve()
+      if (!tmpSock || tmpSock.destroyed) return reject(new Error('Socket closed'));
+      tmpSock.write(Buffer.from(data, 'latin1'), (err) =>
+        err ? reject(new Error('Send: ' + err.message)) : resolve()
       );
     });
   }
 
   function tmpReadToEOT(): Promise<string> {
     return new Promise((resolve, reject) => {
-      if (!tmpSock || tmpSock.destroyed) return reject(new Error("Socket closed"));
+      if (!tmpSock || tmpSock.destroyed) return reject(new Error('Socket closed'));
       const existing = tmpBuf.indexOf(EOT);
       if (existing !== -1) {
         const result = tmpBuf.substring(0, existing);
@@ -646,7 +648,7 @@ export async function authenticateUser(
         return resolve(result);
       }
       function onData(chunk: Buffer) {
-        tmpBuf += chunk.toString("latin1");
+        tmpBuf += chunk.toString('latin1');
         const i = tmpBuf.indexOf(EOT);
         if (i !== -1) {
           cleanup();
@@ -655,85 +657,108 @@ export async function authenticateUser(
           resolve(result);
         }
       }
-      function onErr(e: Error) { cleanup(); reject(new Error("Read: " + e.message)); }
+      function onErr(e: Error) {
+        cleanup();
+        reject(new Error('Read: ' + e.message));
+      }
       function onClose() {
         cleanup();
-        if (tmpBuf.length > 0) { const r = tmpBuf; tmpBuf = ""; resolve(r); }
-        else reject(new Error("Connection closed before response"));
+        if (tmpBuf.length > 0) {
+          const r = tmpBuf;
+          tmpBuf = '';
+          resolve(r);
+        } else reject(new Error('Connection closed before response'));
       }
-      const timer = setTimeout(() => { cleanup(); reject(new Error("Read timeout")); }, TIMEOUT_MS);
+      const timer = setTimeout(() => {
+        cleanup();
+        reject(new Error('Read timeout'));
+      }, TIMEOUT_MS);
       function cleanup() {
         clearTimeout(timer);
-        tmpSock?.removeListener("data", onData);
-        tmpSock?.removeListener("error", onErr);
-        tmpSock?.removeListener("close", onClose);
+        tmpSock?.removeListener('data', onData);
+        tmpSock?.removeListener('error', onErr);
+        tmpSock?.removeListener('close', onClose);
       }
-      tmpSock.on("data", onData);
-      tmpSock.once("error", onErr);
-      tmpSock.once("close", onClose);
+      tmpSock.on('data', onData);
+      tmpSock.once('error', onErr);
+      tmpSock.once('close', onClose);
     });
   }
 
   function tmpDisconnect() {
     if (tmpSock && !tmpSock.destroyed) {
-      try { tmpSock.write(Buffer.from("#BYE#", "latin1")); } catch { /* best-effort */ }
+      try {
+        tmpSock.write(Buffer.from('#BYE#', 'latin1'));
+      } catch {
+        /* best-effort */
+      }
       tmpSock.destroy();
     }
   }
 
   // 1. TCP connect
-  dbg("AUTH CONNECT", host + ":" + port);
+  dbg('AUTH CONNECT', host + ':' + port);
   tmpSock = await new Promise<Socket>((resolve, reject) => {
     const s = createConnection({ host, port });
-    const timer = setTimeout(() => { s.destroy(); reject(new Error("TCP connect timeout")); }, TIMEOUT_MS);
-    s.once("connect", () => { clearTimeout(timer); resolve(s); });
-    s.once("error", (e) => { clearTimeout(timer); reject(new Error("TCP: " + e.message)); });
+    const timer = setTimeout(() => {
+      s.destroy();
+      reject(new Error('TCP connect timeout'));
+    }, TIMEOUT_MS);
+    s.once('connect', () => {
+      clearTimeout(timer);
+      resolve(s);
+    });
+    s.once('error', (e) => {
+      clearTimeout(timer);
+      reject(new Error('TCP: ' + e.message));
+    });
   });
 
   try {
     // 2. TCPConnect
-    await tmpRawSend(buildTCPConnect("127.0.0.1", 0));
+    await tmpRawSend(buildTCPConnect('127.0.0.1', 0));
     const tcpResp = stripNulls(await tmpReadToEOT());
-    if (!tcpResp.toLowerCase().includes("accept")) {
-      throw new Error("TCPConnect rejected: " + tcpResp.replace(/[\x00-\x1f]/g, ".").trim());
+    if (!tcpResp.toLowerCase().includes('accept')) {
+      throw new Error('TCPConnect rejected: ' + tcpResp.replace(/[\x00-\x1f]/g, '.').trim());
     }
 
     // 3. XUS SIGNON SETUP
-    await tmpRawSend(buildRpcMessage("XUS SIGNON SETUP"));
+    await tmpRawSend(buildRpcMessage('XUS SIGNON SETUP'));
     await tmpReadToEOT(); // server info (not needed)
 
     // 4. XUS AV CODE
-    const avPlain = accessCode + ";" + verifyCode;
+    const avPlain = accessCode + ';' + verifyCode;
     const avEnc = cipherEncrypt(avPlain);
-    await tmpRawSend(buildRpcMessage("XUS AV CODE", [avEnc]));
+    await tmpRawSend(buildRpcMessage('XUS AV CODE', [avEnc]));
     const avResp = stripNulls(await tmpReadToEOT());
     const avLines = avResp.split(/\r?\n/);
     const duz = avLines[0]?.trim();
-    if (!duz || duz === "0") {
-      const reason = avLines[3]?.trim() || avLines[2]?.trim() || avLines[1]?.trim() || "Invalid credentials";
-      throw new Error("Authentication failed: " + reason.replace(/[\x00-\x1f]/g, " ").trim());
+    if (!duz || duz === '0') {
+      const reason =
+        avLines[3]?.trim() || avLines[2]?.trim() || avLines[1]?.trim() || 'Invalid credentials';
+      throw new Error('Authentication failed: ' + reason.replace(/[\x00-\x1f]/g, ' ').trim());
     }
 
     // 5. Set Context
     const ctxEnc = cipherEncrypt(context);
-    await tmpRawSend(buildRpcMessage("XWB CREATE CONTEXT", [ctxEnc]));
+    await tmpRawSend(buildRpcMessage('XWB CREATE CONTEXT', [ctxEnc]));
     const ctxResp = stripNulls(await tmpReadToEOT());
-    if (ctxResp.split(/\r?\n/)[0]?.trim() !== "1") {
-      throw new Error("Set context failed");
+    if (ctxResp.split(/\r?\n/)[0]?.trim() !== '1') {
+      throw new Error('Set context failed');
     }
 
     // 6. XUS GET USER INFO — returns user details
-    await tmpRawSend(buildRpcMessage("XUS GET USER INFO"));
+    await tmpRawSend(buildRpcMessage('XUS GET USER INFO'));
     const userResp = stripNulls(await tmpReadToEOT());
     const userLines = userResp.split(/\r?\n/);
     // Line 0: DUZ, Line 1: user name, Line 2: ???, Line 3: division info
-    const userName = userLines[1]?.trim() || "Unknown User";
-    const divLine = userLines[3]?.trim() || "";
+    const userName = userLines[1]?.trim() || 'Unknown User';
+    const divLine = userLines[3]?.trim() || '';
     // Division format: IEN^station^name (e.g., "500^500^CAMP MASTER")
-    const divParts = divLine.split("^");
-    const divisionIen = divParts[0] || "500";
-    const facilityStation = divParts[1] || "500";
-    const facilityName = divParts[2] || "WorldVistA EHR";
+    const divParts = divLine.split('^');
+    const divisionIen = divParts[0] || '500';
+    const facilityStation = divParts[1] || '500';
+    const facilityName = divParts[2] || 'WorldVistA EHR';
 
     return { duz, userName, divisionIen, facilityStation, facilityName };
   } finally {

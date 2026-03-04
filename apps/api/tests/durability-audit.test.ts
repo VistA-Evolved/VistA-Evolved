@@ -9,23 +9,22 @@
  * - pg_backed stores reference real PG infrastructure
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from 'vitest';
 import {
   STORE_INVENTORY,
   getStoresByClassification,
   getCriticalInMemoryStores,
   getStoreInventorySummary,
   type StoreEntry,
-} from "../src/platform/store-policy.js";
+} from '../src/platform/store-policy.js';
 
-describe("Durability Audit -- Phase 177", () => {
-
-  describe("Inventory size and structure", () => {
-    it("has >=140 store entries", () => {
+describe('Durability Audit -- Phase 177', () => {
+  describe('Inventory size and structure', () => {
+    it('has >=140 store entries', () => {
       expect(STORE_INVENTORY.length).toBeGreaterThanOrEqual(140);
     });
 
-    it("every entry has all required fields", () => {
+    it('every entry has all required fields', () => {
       for (const s of STORE_INVENTORY) {
         expect(s.id, `Missing id`).toBeTruthy();
         expect(s.file, `Missing file for ${s.id}`).toBeTruthy();
@@ -36,54 +35,54 @@ describe("Durability Audit -- Phase 177", () => {
       }
     });
 
-    it("no duplicate IDs", () => {
-      const ids = STORE_INVENTORY.map(s => s.id);
+    it('no duplicate IDs', () => {
+      const ids = STORE_INVENTORY.map((s) => s.id);
       expect(new Set(ids).size).toBe(ids.length);
     });
   });
 
-  describe("Critical store policy", () => {
-    const critical = getStoresByClassification("critical");
+  describe('Critical store policy', () => {
+    const critical = getStoresByClassification('critical');
     const criticalInMemory = getCriticalInMemoryStores();
 
-    it("has >=50 critical stores", () => {
+    it('has >=50 critical stores', () => {
       expect(critical.length).toBeGreaterThanOrEqual(50);
     });
 
-    it("critical+in_memory_only stores are capped at <=10", () => {
+    it('critical+in_memory_only stores are capped at <=10', () => {
       // These are known policy violations that need migration paths
       expect(criticalInMemory.length).toBeLessThanOrEqual(10);
     });
 
-    it("every critical+in_memory_only store has migrationTarget", () => {
+    it('every critical+in_memory_only store has migrationTarget', () => {
       for (const s of criticalInMemory) {
         expect(
           s.migrationTarget,
-          `Critical in-memory store '${s.id}' missing migrationTarget`,
+          `Critical in-memory store '${s.id}' missing migrationTarget`
         ).toBeTruthy();
       }
     });
 
-    it("majority of critical stores are pg_backed", () => {
-      const pgBacked = critical.filter(s => s.durability === "pg_backed");
+    it('majority of critical stores are pg_backed', () => {
+      const pgBacked = critical.filter((s) => s.durability === 'pg_backed');
       const ratio = pgBacked.length / critical.length;
       expect(ratio).toBeGreaterThan(0.8); // >80% should be PG-backed
     });
   });
 
-  describe("pg_backed store cross-reference", () => {
-    const pgBacked = STORE_INVENTORY.filter(s => s.durability === "pg_backed");
+  describe('pg_backed store cross-reference', () => {
+    const pgBacked = STORE_INVENTORY.filter((s) => s.durability === 'pg_backed');
 
-    it("has >=50 pg_backed stores", () => {
+    it('has >=50 pg_backed stores', () => {
       expect(pgBacked.length).toBeGreaterThanOrEqual(50);
     });
 
-    it("pg_backed stores with migrationTarget reference real PG infrastructure", () => {
+    it('pg_backed stores with migrationTarget reference real PG infrastructure', () => {
       // migrationTarget strings are descriptive (e.g., "PG portal_sessions table")
       // and may use plural forms vs actual table names (portal_session).
       // This test validates that targets are documented, not exact name matches.
-      const withTargets = pgBacked.filter(s => s.migrationTarget);
-      const withoutTargets = pgBacked.filter(s => !s.migrationTarget);
+      const withTargets = pgBacked.filter((s) => s.migrationTarget);
+      const withoutTargets = pgBacked.filter((s) => !s.migrationTarget);
 
       // Every pg_backed store with migrationTarget should mention a table-like pattern
       const noTablePattern: string[] = [];
@@ -96,7 +95,7 @@ describe("Durability Audit -- Phase 177", () => {
       // Allow up to 5 stores with descriptive (non-table-pattern) migration targets
       expect(
         noTablePattern.length,
-        `pg_backed stores with migrationTarget but no table-like pattern:\n${noTablePattern.join("\n")}`,
+        `pg_backed stores with migrationTarget but no table-like pattern:\n${noTablePattern.join('\n')}`
       ).toBeLessThanOrEqual(5);
 
       // At least half of pg_backed stores should have migrationTarget documented
@@ -105,80 +104,69 @@ describe("Durability Audit -- Phase 177", () => {
     });
   });
 
-  describe("Audit store durability", () => {
-    const auditStores = getStoresByClassification("audit");
+  describe('Audit store durability', () => {
+    const auditStores = getStoresByClassification('audit');
 
-    it("has >=10 audit stores", () => {
+    it('has >=10 audit stores', () => {
       expect(auditStores.length).toBeGreaterThanOrEqual(10);
     });
 
-    it("majority of audit stores have durable backing (pg_backed or jsonl_backed)", () => {
+    it('majority of audit stores have durable backing (pg_backed or jsonl_backed)', () => {
       const durable = auditStores.filter(
-        s => s.durability === "pg_backed" || s.durability === "jsonl_backed",
+        (s) => s.durability === 'pg_backed' || s.durability === 'jsonl_backed'
       );
       const ratio = durable.length / auditStores.length;
       expect(ratio).toBeGreaterThanOrEqual(0.5); // >=50% should be durable
     });
   });
 
-  describe("Cache stores have limits", () => {
-    const caches = getStoresByClassification("cache");
+  describe('Cache stores have limits', () => {
+    const caches = getStoresByClassification('cache');
 
-    it("has >=25 cache stores", () => {
+    it('has >=25 cache stores', () => {
       expect(caches.length).toBeGreaterThanOrEqual(25);
     });
 
-    it(">70% of cache stores declare TTL or maxSize", () => {
-      const bounded = caches.filter(s => (s.ttlMs && s.ttlMs > 0) || (s.maxSize && s.maxSize > 0));
+    it('>70% of cache stores declare TTL or maxSize', () => {
+      const bounded = caches.filter(
+        (s) => (s.ttlMs && s.ttlMs > 0) || (s.maxSize && s.maxSize > 0)
+      );
       const ratio = bounded.length / caches.length;
       expect(ratio).toBeGreaterThan(0.7);
     });
   });
 
-  describe("Summary report consistency", () => {
+  describe('Summary report consistency', () => {
     const summary = getStoreInventorySummary();
 
-    it("total matches inventory length", () => {
+    it('total matches inventory length', () => {
       expect(summary.total).toBe(STORE_INVENTORY.length);
     });
 
-    it("classification counts sum to total", () => {
-      const classSum = Object.values(summary.byClassification).reduce(
-        (a, b) => a + b,
-        0,
-      );
+    it('classification counts sum to total', () => {
+      const classSum = Object.values(summary.byClassification).reduce((a, b) => a + b, 0);
       expect(classSum).toBe(summary.total);
     });
 
-    it("durability counts sum to total", () => {
-      const durSum = Object.values(summary.byDurability).reduce(
-        (a, b) => a + b,
-        0,
-      );
+    it('durability counts sum to total', () => {
+      const durSum = Object.values(summary.byDurability).reduce((a, b) => a + b, 0);
       expect(durSum).toBe(summary.total);
     });
 
-    it("pg_backed is the largest durability category", () => {
-      const pgCount = summary.byDurability["pg_backed"] || 0;
+    it('pg_backed is the largest durability category', () => {
+      const pgCount = summary.byDurability['pg_backed'] || 0;
       for (const [key, count] of Object.entries(summary.byDurability)) {
-        if (key !== "pg_backed") {
+        if (key !== 'pg_backed') {
           expect(pgCount).toBeGreaterThanOrEqual(count as number);
         }
       }
     });
   });
 
-  describe("Domain coverage", () => {
-    const domains = new Set(STORE_INVENTORY.map(s => s.domain));
+  describe('Domain coverage', () => {
+    const domains = new Set(STORE_INVENTORY.map((s) => s.domain));
 
-    const requiredDomains = [
-      "auth",
-      "rcm",
-      "portal",
-      "imaging",
-      "clinical",
-      "infrastructure",
-    ];
+    const requiredDomains = ['auth', 'rcm', 'portal', 'imaging', 'clinical', 'infrastructure'];
 
     for (const d of requiredDomains) {
       it(`domain '${d}' is represented`, () => {

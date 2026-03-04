@@ -60,18 +60,18 @@ Each transition is audit-logged.
 
 ### Claim Entity Fields
 
-| Field | Purpose | VistA Source |
-|-------|---------|-------------|
-| `patientDfn` | Patient identifier | DPT file |
-| `payerId` | Payer from registry | IB Insurance file |
-| `claimType` | professional/institutional | IB Claim type |
-| `totalCharge` | Sum of service lines | IB Charge total |
-| `diagnosisCodes` | ICD-10 codes | Problem List |
-| `serviceLines` | CPT/HCPCS + charges | IB Service lines |
-| `vistaChargeIen` | VistA IB Charge IEN | File #350 |
-| `vistaArIen` | VistA AR Account IEN | File #430 |
-| `subscriberMemberId` | Insurance member ID | IB Insurance |
-| `billingProviderNpi` | Provider NPI | New Person file |
+| Field                | Purpose                    | VistA Source      |
+| -------------------- | -------------------------- | ----------------- |
+| `patientDfn`         | Patient identifier         | DPT file          |
+| `payerId`            | Payer from registry        | IB Insurance file |
+| `claimType`          | professional/institutional | IB Claim type     |
+| `totalCharge`        | Sum of service lines       | IB Charge total   |
+| `diagnosisCodes`     | ICD-10 codes               | Problem List      |
+| `serviceLines`       | CPT/HCPCS + charges        | IB Service lines  |
+| `vistaChargeIen`     | VistA IB Charge IEN        | File #350         |
+| `vistaArIen`         | VistA AR Account IEN       | File #430         |
+| `subscriberMemberId` | Insurance member ID        | IB Insurance      |
+| `billingProviderNpi` | Provider NPI               | New Person file   |
 
 ### Payer Entity
 
@@ -171,11 +171,11 @@ PCE encounter data and produces claim draft candidates.
 
 ### Endpoints Added
 
-| Method | Path | Purpose |
-|--------|------|---------|
-| GET | `/rcm/vista/encounters` | PCE encounters for patient |
-| POST | `/rcm/vista/claim-drafts` | Generate claim draft candidates |
-| GET | `/rcm/vista/coverage` | Patient insurance coverage |
+| Method | Path                      | Purpose                         |
+| ------ | ------------------------- | ------------------------------- |
+| GET    | `/rcm/vista/encounters`   | PCE encounters for patient      |
+| POST   | `/rcm/vista/claim-drafts` | Generate claim draft candidates |
+| GET    | `/rcm/vista/coverage`     | Patient insurance coverage      |
 
 ### Data Flow
 

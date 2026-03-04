@@ -15,12 +15,10 @@ import type {
   FieldMapping,
   FieldTransform,
   TransformFunction,
-  MappingTemplate,
   ValidationIssue,
   ValidationResult,
-  ValidationSeverity,
-} from "./types.js";
-import { log } from "../lib/logger.js";
+} from './types.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Transform registry                                                  */
@@ -33,37 +31,37 @@ const TRANSFORMS: Record<TransformFunction, TransformFn> = {
   lowercase: (v) => v.toLowerCase(),
   trim: (v) => v.trim(),
 
-  "date-iso8601": (v) => {
+  'date-iso8601': (v) => {
     const d = new Date(v);
     return isNaN(d.getTime()) ? v : d.toISOString();
   },
-  "date-mmddyyyy": (v) => {
+  'date-mmddyyyy': (v) => {
     // Parse MM/DD/YYYY or MM-DD-YYYY
     const m = v.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/);
     if (!m) return v;
-    return `${m[3]}-${m[1].padStart(2, "0")}-${m[2].padStart(2, "0")}`;
+    return `${m[3]}-${m[1].padStart(2, '0')}-${m[2].padStart(2, '0')}`;
   },
-  "date-yyyymmdd": (v) => {
+  'date-yyyymmdd': (v) => {
     // Parse YYYYMMDD
     const m = v.match(/^(\d{4})(\d{2})(\d{2})$/);
     if (!m) return v;
     return `${m[1]}-${m[2]}-${m[3]}`;
   },
 
-  "split-first": (v, args) => {
-    const sep = args?.separator ?? ",";
+  'split-first': (v, args) => {
+    const sep = args?.separator ?? ',';
     return v.split(sep)[0]?.trim() ?? v;
   },
-  "split-last": (v, args) => {
-    const sep = args?.separator ?? ",";
+  'split-last': (v, args) => {
+    const sep = args?.separator ?? ',';
     const parts = v.split(sep);
     return parts[parts.length - 1]?.trim() ?? v;
   },
 
-  default: (v, args) => v || args?.default || "",
-  "map-value": (v, args) => args?.[v] ?? v,
-  concat: (v, args) => `${args?.prefix ?? ""}${v}${args?.suffix ?? ""}`,
-  "regex-extract": (v, args) => {
+  default: (v, args) => v || args?.default || '',
+  'map-value': (v, args) => args?.[v] ?? v,
+  concat: (v, args) => `${args?.prefix ?? ''}${v}${args?.suffix ?? ''}`,
+  'regex-extract': (v, args) => {
     if (!args?.pattern) return v;
     const m = v.match(new RegExp(args.pattern));
     return m?.[1] ?? m?.[0] ?? v;
@@ -74,7 +72,7 @@ const TRANSFORMS: Record<TransformFunction, TransformFn> = {
   },
   boolean: (v) => {
     const t = v.toLowerCase().trim();
-    return ["1", "true", "yes", "y", "on"].includes(t) ? "true" : "false";
+    return ['1', 'true', 'yes', 'y', 'on'].includes(t) ? 'true' : 'false';
   },
 };
 
@@ -83,12 +81,12 @@ const TRANSFORMS: Record<TransformFunction, TransformFn> = {
 /* ------------------------------------------------------------------ */
 
 export function parseCsv(text: string): { headers: string[]; rows: Record<string, string>[] } {
-  const lines = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n").split("\n");
+  const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
   if (lines.length === 0) return { headers: [], rows: [] };
 
   const parseRow = (line: string): string[] => {
     const fields: string[] = [];
-    let current = "";
+    let current = '';
     let inQuotes = false;
     for (let i = 0; i < line.length; i++) {
       const ch = line[i];
@@ -104,9 +102,9 @@ export function parseCsv(text: string): { headers: string[]; rows: Record<string
       } else {
         if (ch === '"') {
           inQuotes = true;
-        } else if (ch === ",") {
+        } else if (ch === ',') {
           fields.push(current.trim());
-          current = "";
+          current = '';
         } else {
           current += ch;
         }
@@ -125,7 +123,7 @@ export function parseCsv(text: string): { headers: string[]; rows: Record<string
     const values = parseRow(line);
     const row: Record<string, string> = {};
     for (let j = 0; j < headers.length; j++) {
-      row[headers[j]] = values[j] ?? "";
+      row[headers[j]] = values[j] ?? '';
     }
     rows.push(row);
   }
@@ -147,7 +145,7 @@ export function applyTransforms(value: string, transforms: FieldTransform[]): st
     if (fn) {
       result = fn(result, t.args);
     } else {
-      log.warn("Unknown transform function", { fn: t.fn });
+      log.warn('Unknown transform function', { fn: t.fn });
     }
   }
   return result;
@@ -158,11 +156,11 @@ export function applyTransforms(value: string, transforms: FieldTransform[]): st
  */
 export function mapRow(
   row: Record<string, string>,
-  fields: FieldMapping[],
+  fields: FieldMapping[]
 ): Record<string, unknown> {
   const result: Record<string, unknown> = {};
   for (const field of fields) {
-    let value = row[field.source] ?? "";
+    let value = row[field.source] ?? '';
     if (field.transforms && field.transforms.length > 0) {
       value = applyTransforms(value, field.transforms);
     }
@@ -181,7 +179,7 @@ export function mapRow(
 export function validateRow(
   row: Record<string, string>,
   fields: FieldMapping[],
-  rowIndex: number,
+  rowIndex: number
 ): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
 
@@ -189,12 +187,12 @@ export function validateRow(
     const value = row[field.source];
 
     // Required field missing
-    if (field.required && (!value || value.trim() === "")) {
+    if (field.required && (!value || value.trim() === '')) {
       issues.push({
         row: rowIndex,
         field: field.source,
-        severity: "error",
-        code: "REQUIRED_MISSING",
+        severity: 'error',
+        code: 'REQUIRED_MISSING',
         message: `Required field '${field.source}' is empty`,
       });
       continue;
@@ -208,8 +206,8 @@ export function validateRow(
           issues.push({
             row: rowIndex,
             field: field.source,
-            severity: "error",
-            code: "PATTERN_MISMATCH",
+            severity: 'error',
+            code: 'PATTERN_MISMATCH',
             message: `Field '${field.source}' value '${value}' does not match pattern '${field.validationPattern}'`,
           });
         }
@@ -217,8 +215,8 @@ export function validateRow(
         issues.push({
           row: rowIndex,
           field: field.source,
-          severity: "warning",
-          code: "INVALID_PATTERN",
+          severity: 'warning',
+          code: 'INVALID_PATTERN',
           message: `Validation pattern for '${field.source}' is invalid`,
         });
       }
@@ -235,7 +233,7 @@ export function validateRow(
 export function validateData(
   headers: string[],
   rows: Record<string, string>[],
-  fields: FieldMapping[],
+  fields: FieldMapping[]
 ): ValidationResult {
   const issues: ValidationIssue[] = [];
 
@@ -243,10 +241,10 @@ export function validateData(
   for (const field of fields) {
     if (field.required && !headers.includes(field.source)) {
       issues.push({
-        severity: "error",
-        code: "MISSING_COLUMN",
+        severity: 'error',
+        code: 'MISSING_COLUMN',
         field: field.source,
-        message: `Required source column '${field.source}' not found in CSV headers. Available: ${headers.join(", ")}`,
+        message: `Required source column '${field.source}' not found in CSV headers. Available: ${headers.join(', ')}`,
       });
     }
   }
@@ -255,8 +253,8 @@ export function validateData(
   for (const h of headers) {
     if (!fields.some((f) => f.source === h)) {
       issues.push({
-        severity: "info",
-        code: "UNMAPPED_COLUMN",
+        severity: 'info',
+        code: 'UNMAPPED_COLUMN',
         field: h,
         message: `Column '${h}' is not mapped and will be ignored`,
       });
@@ -268,7 +266,7 @@ export function validateData(
   for (let i = 0; i < rows.length; i++) {
     const rowIssues = validateRow(rows[i], fields, i + 1);
     issues.push(...rowIssues);
-    if (!rowIssues.some((iss) => iss.severity === "error")) {
+    if (!rowIssues.some((iss) => iss.severity === 'error')) {
       validRows++;
     }
   }
@@ -279,8 +277,8 @@ export function validateData(
     preview.push(mapRow(rows[i], fields));
   }
 
-  const errorCount = issues.filter((i) => i.severity === "error").length;
-  const warningCount = issues.filter((i) => i.severity === "warning").length;
+  const errorCount = issues.filter((i) => i.severity === 'error').length;
+  const warningCount = issues.filter((i) => i.severity === 'warning').length;
 
   return {
     valid: errorCount === 0,
@@ -299,7 +297,7 @@ export function validateData(
  */
 export function mergeFieldMappings(
   base: FieldMapping[],
-  overrides?: FieldMapping[],
+  overrides?: FieldMapping[]
 ): FieldMapping[] {
   if (!overrides || overrides.length === 0) return base;
 

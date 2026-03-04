@@ -1,6 +1,7 @@
 # Phase 478 — W32-P6: VistA Capability Snapshot
 
 ## Goal
+
 Create a unified `/vista/capabilities` API endpoint and offline snapshot
 generator script that produces sanitized, PHI-free capability baselines.
 
@@ -22,9 +23,11 @@ generator script that produces sanitized, PHI-free capability baselines.
 3. **Import `getFullRpcInventory`** from `rpcRegistry.ts` in `capabilities.ts`.
 
 ## Files Changed
+
 - `apps/api/src/routes/capabilities.ts` — added `/vista/capabilities` endpoint
 - `scripts/vista-capability-snapshot.mjs` — new offline snapshot generator
 
 ## No PHI
+
 Output contains only RPC names, availability booleans, domain names, and counts.
 No patient data, no credentials.

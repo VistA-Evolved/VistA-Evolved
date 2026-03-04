@@ -15,25 +15,25 @@
  *   - VistA Docker container running and reachable
  */
 
-import { writeFileSync, mkdirSync, existsSync, readFileSync } from "node:fs";
-import { join, dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
+import { join, dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = resolve(__dirname, "../..");
+const REPO_ROOT = resolve(__dirname, '../..');
 
 // ── CLI args ────────────────────────────────────────
 
 const args = process.argv.slice(2);
-let apiUrl = "http://127.0.0.1:3001";
-let outputPath = "";
+let apiUrl = 'http://127.0.0.1:3001';
+let outputPath = '';
 let compareBaseline = false;
 
 for (let i = 0; i < args.length; i++) {
-  if (args[i] === "--api" && args[i + 1]) apiUrl = args[++i];
-  if (args[i] === "--output" && args[i + 1]) outputPath = args[++i];
-  if (args[i] === "--compare") compareBaseline = true;
-  if (args[i] === "--help") {
+  if (args[i] === '--api' && args[i + 1]) apiUrl = args[++i];
+  if (args[i] === '--output' && args[i + 1]) outputPath = args[++i];
+  if (args[i] === '--compare') compareBaseline = true;
+  if (args[i] === '--help') {
     console.log(`
 Usage: node scripts/vista/probe-capabilities.mjs [options]
 
@@ -49,7 +49,7 @@ Options:
 
 // ── Probe ────────────────────────────────────────
 
-console.log("\n=== VistA Capability Probe (Phase 425) ===\n");
+console.log('\n=== VistA Capability Probe (Phase 425) ===\n');
 console.log(`  API:  ${apiUrl}`);
 
 async function probe() {
@@ -76,7 +76,7 @@ async function probe() {
   const data = await response.json();
 
   if (!data.ok) {
-    console.error("\n  ERROR: API returned ok=false");
+    console.error('\n  ERROR: API returned ok=false');
     console.error(`  ${JSON.stringify(data).substring(0, 500)}\n`);
     process.exit(1);
   }
@@ -100,7 +100,7 @@ async function main() {
 
   // Enrich with metadata
   const snapshot = {
-    snapshotVersion: "1.0.0",
+    snapshotVersion: '1.0.0',
     capturedAt: new Date().toISOString(),
     apiUrl,
     instanceId: capabilities.instanceId,
@@ -134,21 +134,23 @@ async function main() {
   }
 
   // Print summary
-  console.log("");
+  console.log('');
   console.log(`  Instance:   ${snapshot.instanceId}`);
   console.log(`  Available:  ${snapshot.summary.available}/${snapshot.summary.totalProbed}`);
-  console.log(`  Missing:    ${snapshot.summary.missing} (${snapshot.summary.expectedMissing} expected, ${snapshot.summary.unexpectedMissing} unexpected)`);
-  console.log("");
+  console.log(
+    `  Missing:    ${snapshot.summary.missing} (${snapshot.summary.expectedMissing} expected, ${snapshot.summary.unexpectedMissing} unexpected)`
+  );
+  console.log('');
 
   // Domain summaries
   if (snapshot.domains) {
-    console.log("  Domain Status:");
+    console.log('  Domain Status:');
     for (const [name, info] of Object.entries(snapshot.domains)) {
-      const read = info.readAvailable ? "R" : "-";
-      const write = info.writeAvailable ? "W" : "-";
+      const read = info.readAvailable ? 'R' : '-';
+      const write = info.writeAvailable ? 'W' : '-';
       console.log(`    [${read}${write}] ${name}`);
     }
-    console.log("");
+    console.log('');
   }
 
   // ── Output ────────────────────────────────────────
@@ -161,16 +163,16 @@ async function main() {
   const outDir = dirname(outputPath);
   if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
 
-  writeFileSync(outputPath, JSON.stringify(snapshot, null, 2) + "\n", "utf-8");
+  writeFileSync(outputPath, JSON.stringify(snapshot, null, 2) + '\n', 'utf-8');
   console.log(`  Snapshot saved: ${outputPath}`);
 
   // ── Compare against baseline ────────────────────────────────────────
 
   if (compareBaseline) {
-    const baselinePath = join(REPO_ROOT, "data/vista/baseline-worldvista-docker.json");
+    const baselinePath = join(REPO_ROOT, 'data/vista/baseline-worldvista-docker.json');
     if (existsSync(baselinePath)) {
       console.log(`\n  Comparing against baseline: ${baselinePath}`);
-      const raw = readFileSync(baselinePath, "utf-8");
+      const raw = readFileSync(baselinePath, 'utf-8');
       const baseline = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
 
       // Simple comparison: check if any baseline-available RPCs are now missing
@@ -208,15 +210,15 @@ async function main() {
       }
 
       if (regressions.length === 0 && newlyAvailable.length === 0) {
-        console.log("  No drift detected -- matches baseline.");
+        console.log('  No drift detected -- matches baseline.');
       }
     } else {
       console.log(`\n  No baseline found at ${baselinePath} -- skipping comparison.`);
-      console.log("  Run: scripts\\vista\\inspect-container.ps1 to create one.");
+      console.log('  Run: scripts\\vista\\inspect-container.ps1 to create one.');
     }
   }
 
-  console.log("");
+  console.log('');
 }
 
 main().catch((err) => {

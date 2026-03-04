@@ -243,10 +243,22 @@ describe('Runtime Mode System', () => {
       jsonBlocked: boolean;
       oidcRequired: boolean;
     }> = [
-      { mode: 'dev',  pgRequired: false, rlsRequired: false, jsonBlocked: false, oidcRequired: false },
-      { mode: 'test', pgRequired: false, rlsRequired: false, jsonBlocked: false, oidcRequired: false },
-      { mode: 'rc',   pgRequired: true,  rlsRequired: true,  jsonBlocked: true,  oidcRequired: true },
-      { mode: 'prod', pgRequired: true,  rlsRequired: true,  jsonBlocked: true,  oidcRequired: true },
+      {
+        mode: 'dev',
+        pgRequired: false,
+        rlsRequired: false,
+        jsonBlocked: false,
+        oidcRequired: false,
+      },
+      {
+        mode: 'test',
+        pgRequired: false,
+        rlsRequired: false,
+        jsonBlocked: false,
+        oidcRequired: false,
+      },
+      { mode: 'rc', pgRequired: true, rlsRequired: true, jsonBlocked: true, oidcRequired: true },
+      { mode: 'prod', pgRequired: true, rlsRequired: true, jsonBlocked: true, oidcRequired: true },
     ];
 
     for (const c of cases) {

@@ -38,6 +38,7 @@ docker kill --signal=SIGTERM <api-container>
 ### Step 3: Observe Drain Behavior (T+0 to T+30s)
 
 **Expected during drain period**:
+
 - `/ready` returns `ok: false` immediately (removed from load balancer)
 - `/health` continues to return 200
 - In-flight requests complete (up to drain timeout)
@@ -48,6 +49,7 @@ docker kill --signal=SIGTERM <api-container>
 ### Step 4: Verify Clean Shutdown
 
 Check API logs for:
+
 ```
 Graceful shutdown initiated
 Disconnecting RPC broker...
@@ -83,10 +85,10 @@ curl -s http://localhost:3001/vista/ping | jq .
 
 ## RPO/RTO Targets
 
-| Metric | Target | Notes |
-|--------|--------|-------|
+| Metric  | Target                                        | Notes                             |
+| ------- | --------------------------------------------- | --------------------------------- |
 | **RPO** | 0 - PG transactions committed before shutdown | In-memory stores lost (by design) |
-| **RTO** | < 30 seconds | New process startup time |
+| **RTO** | < 30 seconds                                  | New process startup time          |
 
 ---
 

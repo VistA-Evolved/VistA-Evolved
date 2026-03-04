@@ -22,12 +22,12 @@
  * Every response includes rpcUsed[], pendingTargets[], source.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { requireSession } from "../../auth/auth-routes.js";
-import { safeCallRpc } from "../../lib/rpc-resilience.js";
-import { immutableAudit } from "../../lib/immutable-audit.js";
-import { log } from "../../lib/logger.js";
-import { tier0Gate } from "../../lib/tier0-response.js";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../../auth/auth-routes.js';
+import { safeCallRpc } from '../../lib/rpc-resilience.js';
+import { immutableAudit } from '../../lib/immutable-audit.js';
+import { log } from '../../lib/logger.js';
+import { tier0Gate } from '../../lib/tier0-response.js';
 
 /* ------------------------------------------------------------------ */
 /* Audit helper                                                         */
@@ -36,8 +36,8 @@ import { tier0Gate } from "../../lib/tier0-response.js";
 function auditActor(request: FastifyRequest): { sub: string; name: string; roles: string[] } {
   const s = request.session;
   return {
-    sub: s?.duz || "anonymous",
-    name: s?.userName || "unknown",
+    sub: s?.duz || 'anonymous',
+    name: s?.userName || 'unknown',
     roles: s?.role ? [s.role] : [],
   };
 }
@@ -54,10 +54,10 @@ function parseIenNameList(lines: string[]): Array<{ ien: string; name: string }>
   const results: Array<{ ien: string; name: string }> = [];
   for (const line of lines) {
     if (!line?.trim()) continue;
-    const parts = line.split("^");
-    const ien = parts[0]?.trim() || "";
+    const parts = line.split('^');
+    const ien = parts[0]?.trim() || '';
     if (!NUMERIC_RE.test(ien)) continue;
-    results.push({ ien, name: parts[1]?.trim() || "" });
+    results.push({ ien, name: parts[1]?.trim() || '' });
   }
   return results;
 }
@@ -67,10 +67,10 @@ function parsePatientList(lines: string[]): Array<{ dfn: string; name: string }>
   const results: Array<{ dfn: string; name: string }> = [];
   for (const line of lines) {
     if (!line?.trim()) continue;
-    const parts = line.split("^");
-    const dfn = parts[0]?.trim() || "";
+    const parts = line.split('^');
+    const dfn = parts[0]?.trim() || '';
     if (!NUMERIC_RE.test(dfn)) continue;
-    results.push({ dfn, name: parts[1]?.trim() || "" });
+    results.push({ dfn, name: parts[1]?.trim() || '' });
   }
   return results;
 }
@@ -80,13 +80,13 @@ function parseLocations(lines: string[]): Array<{ ien: string; name: string; typ
   const results: Array<{ ien: string; name: string; type: string }> = [];
   for (const line of lines) {
     if (!line?.trim()) continue;
-    const parts = line.split("^");
-    const ien = parts[0]?.trim() || "";
+    const parts = line.split('^');
+    const ien = parts[0]?.trim() || '';
     if (!NUMERIC_RE.test(ien)) continue;
     results.push({
       ien,
-      name: parts[1]?.trim() || "",
-      type: parts[2]?.trim() || "",
+      name: parts[1]?.trim() || '',
+      type: parts[2]?.trim() || '',
     });
   }
   return results;
@@ -109,37 +109,33 @@ function parseAdmissionList(lines: string[]): Array<{
   }> = [];
   for (const line of lines) {
     if (!line?.trim()) continue;
-    const parts = line.split("^");
-    const dfn = parts[0]?.trim() || "";
+    const parts = line.split('^');
+    const dfn = parts[0]?.trim() || '';
     if (!NUMERIC_RE.test(dfn)) continue;
     results.push({
       dfn,
-      name: parts[1]?.trim() || "",
-      admitDate: parts[2]?.trim() || "",
-      ward: parts[3]?.trim() || "",
-      roomBed: parts[4]?.trim() || "",
+      name: parts[1]?.trim() || '',
+      admitDate: parts[2]?.trim() || '',
+      ward: parts[3]?.trim() || '',
+      roomBed: parts[4]?.trim() || '',
     });
   }
   return results;
 }
 
 /** Standard integration-pending error fallback. */
-function pendingFallback(
-  reply: FastifyReply,
-  rpcName: string,
-  err: any
-) {
+function pendingFallback(reply: FastifyReply, rpcName: string, err: any) {
   const errMsg = err?.message || String(err);
   log.warn(`${rpcName} failed -- returning integration-pending`, { err: errMsg });
   return reply.send({
     ok: false,
-    source: "vista",
+    source: 'vista',
     count: 0,
     results: [],
     rpcUsed: [],
     pendingTargets: [rpcName],
-    _integration: "pending",
-    _error: errMsg.includes("ECONNREFUSED") ? "VistA unavailable" : "RPC call failed",
+    _integration: 'pending',
+    _error: errMsg.includes('ECONNREFUSED') ? 'VistA unavailable' : 'RPC call failed',
   });
 }
 
@@ -148,161 +144,202 @@ function pendingFallback(
 /* ------------------------------------------------------------------ */
 
 export default async function adtRoutes(server: FastifyInstance): Promise<void> {
-
   /* ---- GET /vista/adt/wards ---- */
-  server.get("/vista/adt/wards", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+  server.get('/vista/adt/wards', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     try {
-      const lines = await safeCallRpc("ORQPT WARDS", []);
+      const lines = await safeCallRpc('ORQPT WARDS', []);
       const results = parseIenNameList(lines);
       return reply.send({
-        ok: true, source: "vista", count: results.length, results,
-        rpcUsed: ["ORQPT WARDS"], pendingTargets: [],
+        ok: true,
+        source: 'vista',
+        count: results.length,
+        results,
+        rpcUsed: ['ORQPT WARDS'],
+        pendingTargets: [],
       });
     } catch (err: any) {
-      return pendingFallback(reply, "ORQPT WARDS", err);
+      return pendingFallback(reply, 'ORQPT WARDS', err);
     }
   });
 
   /* ---- GET /vista/adt/ward-patients?ward=IEN ---- */
-  server.get("/vista/adt/ward-patients", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+  server.get('/vista/adt/ward-patients', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     const ward = (request.query as any)?.ward;
     if (!ward) {
-      return reply.status(400).send({ ok: false, error: "ward query parameter required" });
+      return reply.status(400).send({ ok: false, error: 'ward query parameter required' });
     }
     try {
-      const lines = await safeCallRpc("ORQPT WARD PATIENTS", [String(ward)]);
+      const lines = await safeCallRpc('ORQPT WARD PATIENTS', [String(ward)]);
       const results = parsePatientList(lines);
       return reply.send({
-        ok: true, source: "vista", count: results.length, results,
-        rpcUsed: ["ORQPT WARD PATIENTS"], pendingTargets: [],
+        ok: true,
+        source: 'vista',
+        count: results.length,
+        results,
+        rpcUsed: ['ORQPT WARD PATIENTS'],
+        pendingTargets: [],
       });
     } catch (err: any) {
-      return pendingFallback(reply, "ORQPT WARD PATIENTS", err);
+      return pendingFallback(reply, 'ORQPT WARD PATIENTS', err);
     }
   });
 
   /* ---- GET /vista/adt/provider-patients ---- */
-  server.get("/vista/adt/provider-patients", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    try {
-      // ORQPT PROVIDER PATIENTS takes DUZ as param
-      const duz = (session as any)?.duz || "";
-      const lines = await safeCallRpc("ORQPT PROVIDER PATIENTS", [String(duz)]);
-      const results = parsePatientList(lines);
-      return reply.send({
-        ok: true, source: "vista", count: results.length, results,
-        rpcUsed: ["ORQPT PROVIDER PATIENTS"], pendingTargets: [],
-      });
-    } catch (err: any) {
-      return pendingFallback(reply, "ORQPT PROVIDER PATIENTS", err);
+  server.get(
+    '/vista/adt/provider-patients',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      try {
+        // ORQPT PROVIDER PATIENTS takes DUZ as param
+        const duz = (session as any)?.duz || '';
+        const lines = await safeCallRpc('ORQPT PROVIDER PATIENTS', [String(duz)]);
+        const results = parsePatientList(lines);
+        return reply.send({
+          ok: true,
+          source: 'vista',
+          count: results.length,
+          results,
+          rpcUsed: ['ORQPT PROVIDER PATIENTS'],
+          pendingTargets: [],
+        });
+      } catch (err: any) {
+        return pendingFallback(reply, 'ORQPT PROVIDER PATIENTS', err);
+      }
     }
-  });
+  );
 
   /* ---- GET /vista/adt/teams ---- */
-  server.get("/vista/adt/teams", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+  server.get('/vista/adt/teams', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     try {
-      const lines = await safeCallRpc("ORQPT TEAMS", []);
+      const lines = await safeCallRpc('ORQPT TEAMS', []);
       const results = parseIenNameList(lines);
       return reply.send({
-        ok: true, source: "vista", count: results.length, results,
-        rpcUsed: ["ORQPT TEAMS"], pendingTargets: [],
+        ok: true,
+        source: 'vista',
+        count: results.length,
+        results,
+        rpcUsed: ['ORQPT TEAMS'],
+        pendingTargets: [],
       });
     } catch (err: any) {
-      return pendingFallback(reply, "ORQPT TEAMS", err);
+      return pendingFallback(reply, 'ORQPT TEAMS', err);
     }
   });
 
   /* ---- GET /vista/adt/team-patients?team=IEN ---- */
-  server.get("/vista/adt/team-patients", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+  server.get('/vista/adt/team-patients', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     const team = (request.query as any)?.team;
     if (!team) {
-      return reply.status(400).send({ ok: false, error: "team query parameter required" });
+      return reply.status(400).send({ ok: false, error: 'team query parameter required' });
     }
     try {
-      const lines = await safeCallRpc("ORQPT TEAM PATIENTS", [String(team)]);
+      const lines = await safeCallRpc('ORQPT TEAM PATIENTS', [String(team)]);
       const results = parsePatientList(lines);
       return reply.send({
-        ok: true, source: "vista", count: results.length, results,
-        rpcUsed: ["ORQPT TEAM PATIENTS"], pendingTargets: [],
+        ok: true,
+        source: 'vista',
+        count: results.length,
+        results,
+        rpcUsed: ['ORQPT TEAM PATIENTS'],
+        pendingTargets: [],
       });
     } catch (err: any) {
-      return pendingFallback(reply, "ORQPT TEAM PATIENTS", err);
+      return pendingFallback(reply, 'ORQPT TEAM PATIENTS', err);
     }
   });
 
   /* ---- GET /vista/adt/specialties ---- */
-  server.get("/vista/adt/specialties", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+  server.get('/vista/adt/specialties', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     try {
-      const lines = await safeCallRpc("ORQPT SPECIALTIES", []);
+      const lines = await safeCallRpc('ORQPT SPECIALTIES', []);
       const results = parseIenNameList(lines);
       return reply.send({
-        ok: true, source: "vista", count: results.length, results,
-        rpcUsed: ["ORQPT SPECIALTIES"], pendingTargets: [],
+        ok: true,
+        source: 'vista',
+        count: results.length,
+        results,
+        rpcUsed: ['ORQPT SPECIALTIES'],
+        pendingTargets: [],
       });
     } catch (err: any) {
-      return pendingFallback(reply, "ORQPT SPECIALTIES", err);
+      return pendingFallback(reply, 'ORQPT SPECIALTIES', err);
     }
   });
 
   /* ---- GET /vista/adt/specialty-patients?specialty=IEN ---- */
-  server.get("/vista/adt/specialty-patients", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    const specialty = (request.query as any)?.specialty;
-    if (!specialty) {
-      return reply.status(400).send({ ok: false, error: "specialty query parameter required" });
+  server.get(
+    '/vista/adt/specialty-patients',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const specialty = (request.query as any)?.specialty;
+      if (!specialty) {
+        return reply.status(400).send({ ok: false, error: 'specialty query parameter required' });
+      }
+      try {
+        const lines = await safeCallRpc('ORQPT SPECIALTY PATIENTS', [String(specialty)]);
+        const results = parsePatientList(lines);
+        return reply.send({
+          ok: true,
+          source: 'vista',
+          count: results.length,
+          results,
+          rpcUsed: ['ORQPT SPECIALTY PATIENTS'],
+          pendingTargets: [],
+        });
+      } catch (err: any) {
+        return pendingFallback(reply, 'ORQPT SPECIALTY PATIENTS', err);
+      }
     }
-    try {
-      const lines = await safeCallRpc("ORQPT SPECIALTY PATIENTS", [String(specialty)]);
-      const results = parsePatientList(lines);
-      return reply.send({
-        ok: true, source: "vista", count: results.length, results,
-        rpcUsed: ["ORQPT SPECIALTY PATIENTS"], pendingTargets: [],
-      });
-    } catch (err: any) {
-      return pendingFallback(reply, "ORQPT SPECIALTY PATIENTS", err);
-    }
-  });
+  );
 
   /* ---- GET /vista/adt/locations?search=TEXT ---- */
-  server.get("/vista/adt/locations", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    const search = (request.query as any)?.search || "";
+  server.get('/vista/adt/locations', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
+    const search = (request.query as any)?.search || '';
     if (!search) {
-      return reply.status(400).send({ ok: false, error: "search query parameter required" });
+      return reply.status(400).send({ ok: false, error: 'search query parameter required' });
     }
     try {
-      const lines = await safeCallRpc("ORWU1 NEWLOC", [String(search)]);
+      const lines = await safeCallRpc('ORWU1 NEWLOC', [String(search)]);
       const results = parseLocations(lines);
       return reply.send({
-        ok: true, source: "vista", count: results.length, results,
-        rpcUsed: ["ORWU1 NEWLOC"], pendingTargets: [],
+        ok: true,
+        source: 'vista',
+        count: results.length,
+        results,
+        rpcUsed: ['ORWU1 NEWLOC'],
+        pendingTargets: [],
       });
     } catch (err: any) {
-      return pendingFallback(reply, "ORWU1 NEWLOC", err);
+      return pendingFallback(reply, 'ORWU1 NEWLOC', err);
     }
   });
 
   /* ---- GET /vista/adt/admission-list?dfn=N ---- */
-  server.get("/vista/adt/admission-list", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+  server.get('/vista/adt/admission-list', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     const dfn = (request.query as any)?.dfn;
     if (!dfn) {
-      return reply.status(400).send({ ok: false, error: "dfn query parameter required" });
+      return reply.status(400).send({ ok: false, error: 'dfn query parameter required' });
     }
     try {
-      const lines = await safeCallRpc("ORWPT16 ADMITLST", [String(dfn)]);
+      const lines = await safeCallRpc('ORWPT16 ADMITLST', [String(dfn)]);
       const results = parseAdmissionList(lines);
       return reply.send({
-        ok: true, source: "vista", count: results.length, results,
-        rpcUsed: ["ORWPT16 ADMITLST"], pendingTargets: [],
+        ok: true,
+        source: 'vista',
+        count: results.length,
+        results,
+        rpcUsed: ['ORWPT16 ADMITLST'],
+        pendingTargets: [],
       });
     } catch (err: any) {
-      return pendingFallback(reply, "ORWPT16 ADMITLST", err);
+      return pendingFallback(reply, 'ORWPT16 ADMITLST', err);
     }
   });
 
@@ -315,70 +352,90 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
    * When ZVEADT.m is installed, this should delegate to ZVEADT WARDS for
    * the summary view or ORQPT WARD PATIENTS + ZVEADT BEDS for bed-level.
    */
-  server.get("/vista/adt/census", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+  server.get('/vista/adt/census', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     const wardIen = (request.query as any)?.ward;
 
     if (!wardIen) {
       // No ward specified: return ward list with patient counts
       try {
-        const wardLines = await safeCallRpc("ORQPT WARDS", []);
+        const wardLines = await safeCallRpc('ORQPT WARDS', []);
         const wards = parseIenNameList(wardLines);
         const summaries: Array<{ ien: string; name: string; patientCount: number }> = [];
         for (const w of wards) {
           let count = 0;
           try {
-            const patLines = await safeCallRpc("ORQPT WARD PATIENTS", [w.ien]);
+            const patLines = await safeCallRpc('ORQPT WARD PATIENTS', [w.ien]);
             count = parsePatientList(patLines).length;
-          } catch { /* count stays 0 */ }
+          } catch {
+            /* count stays 0 */
+          }
           summaries.push({ ien: w.ien, name: w.name, patientCount: count });
         }
-        immutableAudit("inpatient.census", "success", auditActor(request), {
-          detail: { mode: "ward-list", wardCount: summaries.length },
+        immutableAudit('inpatient.census', 'success', auditActor(request), {
+          detail: { mode: 'ward-list', wardCount: summaries.length },
         });
         return reply.send({
-          ok: true, source: "vista", count: summaries.length, results: summaries,
-          rpcUsed: ["ORQPT WARDS", "ORQPT WARD PATIENTS"], pendingTargets: ["ZVEADT WARDS"],
+          ok: true,
+          source: 'vista',
+          count: summaries.length,
+          results: summaries,
+          rpcUsed: ['ORQPT WARDS', 'ORQPT WARD PATIENTS'],
+          pendingTargets: ['ZVEADT WARDS'],
         });
       } catch (err: any) {
-        immutableAudit("inpatient.census", "failure", auditActor(request), {
+        immutableAudit('inpatient.census', 'failure', auditActor(request), {
           detail: { error: err?.message },
         });
-        return pendingFallback(reply, "ORQPT WARDS", err);
+        return pendingFallback(reply, 'ORQPT WARDS', err);
       }
     }
 
     // Specific ward census
     try {
-      const patientLines = await safeCallRpc("ORQPT WARD PATIENTS", [String(wardIen)]);
+      const patientLines = await safeCallRpc('ORQPT WARD PATIENTS', [String(wardIen)]);
       const patients = parsePatientList(patientLines);
-      const census: Array<{ dfn: string; name: string; admitDate: string; ward: string; roomBed: string }> = [];
+      const census: Array<{
+        dfn: string;
+        name: string;
+        admitDate: string;
+        ward: string;
+        roomBed: string;
+      }> = [];
       for (const pat of patients) {
-        let admitDate = "", ward = "", roomBed = "";
+        let admitDate = '',
+          ward = '',
+          roomBed = '';
         try {
-          const admitLines = await safeCallRpc("ORWPT16 ADMITLST", [pat.dfn]);
+          const admitLines = await safeCallRpc('ORWPT16 ADMITLST', [pat.dfn]);
           const adms = parseAdmissionList(admitLines);
           if (adms.length > 0) {
             admitDate = adms[0].admitDate;
             ward = adms[0].ward;
             roomBed = adms[0].roomBed;
           }
-        } catch { /* details unavailable */ }
+        } catch {
+          /* details unavailable */
+        }
         census.push({ dfn: pat.dfn, name: pat.name, admitDate, ward, roomBed });
       }
-      immutableAudit("inpatient.census", "success", auditActor(request), {
+      immutableAudit('inpatient.census', 'success', auditActor(request), {
         detail: { wardIen: String(wardIen), patientCount: census.length },
       });
       return reply.send({
-        ok: true, source: "vista", count: census.length, results: census,
+        ok: true,
+        source: 'vista',
+        count: census.length,
+        results: census,
         wardIen: String(wardIen),
-        rpcUsed: ["ORQPT WARD PATIENTS", "ORWPT16 ADMITLST"], pendingTargets: [],
+        rpcUsed: ['ORQPT WARD PATIENTS', 'ORWPT16 ADMITLST'],
+        pendingTargets: [],
       });
     } catch (err: any) {
-      immutableAudit("inpatient.census", "failure", auditActor(request), {
+      immutableAudit('inpatient.census', 'failure', auditActor(request), {
         detail: { wardIen: String(wardIen), error: err?.message },
       });
-      return pendingFallback(reply, "ORQPT WARD PATIENTS", err);
+      return pendingFallback(reply, 'ORQPT WARD PATIENTS', err);
     }
   });
 
@@ -387,93 +444,112 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
    * Patient movement timeline. Returns admission events from ORWPT16 ADMITLST.
    * Full movement history (transfers, discharges) requires ZVEADT MVHIST RPC.
    */
-  server.get("/vista/adt/movements", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+  server.get('/vista/adt/movements', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     const dfn = (request.query as any)?.dfn;
     if (!dfn) {
-      return reply.status(400).send({ ok: false, error: "dfn query parameter required" });
+      return reply.status(400).send({ ok: false, error: 'dfn query parameter required' });
     }
     try {
-      const lines = await safeCallRpc("ORWPT16 ADMITLST", [String(dfn)]);
+      const lines = await safeCallRpc('ORWPT16 ADMITLST', [String(dfn)]);
       const admissions = parseAdmissionList(lines);
       const movements = admissions.map((a) => ({
         date: a.admitDate,
-        type: "ADMISSION",
-        fromLocation: "",
+        type: 'ADMISSION',
+        fromLocation: '',
         toLocation: a.ward,
         ward: a.ward,
         roomBed: a.roomBed,
-        provider: "",
+        provider: '',
       }));
-      immutableAudit("inpatient.movements", "success", auditActor(request), {
+      immutableAudit('inpatient.movements', 'success', auditActor(request), {
         detail: { dfn: String(dfn), movementCount: movements.length },
       });
       return reply.send({
-        ok: true, source: "vista", count: movements.length, results: movements,
+        ok: true,
+        source: 'vista',
+        count: movements.length,
+        results: movements,
         dfn: String(dfn),
-        rpcUsed: ["ORWPT16 ADMITLST"], pendingTargets: ["ZVEADT MVHIST"],
-        _note: "Only admission events shown. Full movement history requires ZVEADT MVHIST RPC.",
+        rpcUsed: ['ORWPT16 ADMITLST'],
+        pendingTargets: ['ZVEADT MVHIST'],
+        _note: 'Only admission events shown. Full movement history requires ZVEADT MVHIST RPC.',
         vistaGrounding: {
-          vistaFiles: ["PATIENT MOVEMENT (405)", "PATIENT MOVEMENT TYPE (405.1)"],
-          targetRoutines: ["DGPMV", "ZVEADT"],
-          migrationPath: "Phase 137B: Install ZVEADT.m, register ZVEADT MVHIST RPC",
-          sandboxNote: "ORWPT16 returns admissions only, not transfers/discharges",
+          vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT MOVEMENT TYPE (405.1)'],
+          targetRoutines: ['DGPMV', 'ZVEADT'],
+          migrationPath: 'Phase 137B: Install ZVEADT.m, register ZVEADT MVHIST RPC',
+          sandboxNote: 'ORWPT16 returns admissions only, not transfers/discharges',
         },
       });
     } catch (err: any) {
-      immutableAudit("inpatient.movements", "failure", auditActor(request), {
+      immutableAudit('inpatient.movements', 'failure', auditActor(request), {
         detail: { dfn: String(dfn), error: err?.message },
       });
-      return pendingFallback(reply, "ORWPT16 ADMITLST", err);
+      return pendingFallback(reply, 'ORWPT16 ADMITLST', err);
     }
   });
 
   /* ---- POST /vista/adt/admit -- Tier-0 capability-driven (Phase 483) ---- */
-  server.post("/vista/adt/admit", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    const blocked = tier0Gate("DGPM NEW ADMISSION", "adt", {
-      vistaFiles: ["PATIENT MOVEMENT (405)", "PATIENT (2)"],
-      targetRoutines: ["DGPMV", "DGADM"],
-      migrationPath: "Wire DGPM admission RPCs with ward/bed selection + DG ADT event triggers",
-      sandboxNote: "WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context",
+  server.post('/vista/adt/admit', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
+    const blocked = tier0Gate('DGPM NEW ADMISSION', 'adt', {
+      vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT (2)'],
+      targetRoutines: ['DGPMV', 'DGADM'],
+      migrationPath: 'Wire DGPM admission RPCs with ward/bed selection + DG ADT event triggers',
+      sandboxNote:
+        'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
     });
-    immutableAudit("adt.admit", blocked ? "blocked" : "attempt", auditActor(request), {
+    immutableAudit('adt.admit', blocked ? 'blocked' : 'attempt', auditActor(request), {
       detail: { capabilityProbe: blocked?.capabilityProbe },
     });
     if (blocked) return reply.status(202).send(blocked);
     // RPC available -- attempt real writeback (future: wire DGPM NEW ADMISSION call)
-    return reply.status(501).send({ ok: false, status: "not-implemented", message: "DGPM NEW ADMISSION call not yet wired" });
+    return reply.status(501).send({
+      ok: false,
+      status: 'not-implemented',
+      message: 'DGPM NEW ADMISSION call not yet wired',
+    });
   });
 
   /* ---- POST /vista/adt/transfer -- Tier-0 capability-driven (Phase 483) ---- */
-  server.post("/vista/adt/transfer", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    const blocked = tier0Gate("DGPM NEW TRANSFER", "adt", {
-      vistaFiles: ["PATIENT MOVEMENT (405)", "WARD LOCATION (42)"],
-      targetRoutines: ["DGPMV", "DGTRAN"],
-      migrationPath: "Wire DGPM transfer RPC with destination ward/bed + attending provider",
-      sandboxNote: "WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context",
+  server.post('/vista/adt/transfer', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
+    const blocked = tier0Gate('DGPM NEW TRANSFER', 'adt', {
+      vistaFiles: ['PATIENT MOVEMENT (405)', 'WARD LOCATION (42)'],
+      targetRoutines: ['DGPMV', 'DGTRAN'],
+      migrationPath: 'Wire DGPM transfer RPC with destination ward/bed + attending provider',
+      sandboxNote:
+        'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
     });
-    immutableAudit("adt.transfer", blocked ? "blocked" : "attempt", auditActor(request), {
+    immutableAudit('adt.transfer', blocked ? 'blocked' : 'attempt', auditActor(request), {
       detail: { capabilityProbe: blocked?.capabilityProbe },
     });
     if (blocked) return reply.status(202).send(blocked);
-    return reply.status(501).send({ ok: false, status: "not-implemented", message: "DGPM NEW TRANSFER call not yet wired" });
+    return reply.status(501).send({
+      ok: false,
+      status: 'not-implemented',
+      message: 'DGPM NEW TRANSFER call not yet wired',
+    });
   });
 
   /* ---- POST /vista/adt/discharge -- Tier-0 capability-driven (Phase 483) ---- */
-  server.post("/vista/adt/discharge", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    const blocked = tier0Gate("DGPM NEW DISCHARGE", "adt", {
-      vistaFiles: ["PATIENT MOVEMENT (405)", "PATIENT (2)"],
-      targetRoutines: ["DGPMV", "DGDIS"],
-      migrationPath: "Wire DGPM discharge RPC with discharge type + disposition",
-      sandboxNote: "WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context",
+  server.post('/vista/adt/discharge', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
+    const blocked = tier0Gate('DGPM NEW DISCHARGE', 'adt', {
+      vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT (2)'],
+      targetRoutines: ['DGPMV', 'DGDIS'],
+      migrationPath: 'Wire DGPM discharge RPC with discharge type + disposition',
+      sandboxNote:
+        'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
     });
-    immutableAudit("adt.discharge", blocked ? "blocked" : "attempt", auditActor(request), {
+    immutableAudit('adt.discharge', blocked ? 'blocked' : 'attempt', auditActor(request), {
       detail: { capabilityProbe: blocked?.capabilityProbe },
     });
     if (blocked) return reply.status(202).send(blocked);
-    return reply.status(501).send({ ok: false, status: "not-implemented", message: "DGPM NEW DISCHARGE call not yet wired" });
+    return reply.status(501).send({
+      ok: false,
+      status: 'not-implemented',
+      message: 'DGPM NEW DISCHARGE call not yet wired',
+    });
   });
 }

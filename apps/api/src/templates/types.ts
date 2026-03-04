@@ -7,17 +7,33 @@
 
 // ─── Template Core Types ───────────────────────────────────────────
 
-export type TemplateSetting = "inpatient" | "outpatient" | "ed" | "any";
-export type TemplateStatus = "draft" | "published" | "archived";
-export type SectionType = "text" | "checkbox" | "multi-select" | "smart-field" | "table" | "header" | "vitals-grid";
-export type FieldType = "text" | "textarea" | "number" | "date" | "select" | "multi-select" | "checkbox" | "radio" | "coded-value";
+export type TemplateSetting = 'inpatient' | 'outpatient' | 'ed' | 'any';
+export type TemplateStatus = 'draft' | 'published' | 'archived';
+export type SectionType =
+  | 'text'
+  | 'checkbox'
+  | 'multi-select'
+  | 'smart-field'
+  | 'table'
+  | 'header'
+  | 'vitals-grid';
+export type FieldType =
+  | 'text'
+  | 'textarea'
+  | 'number'
+  | 'date'
+  | 'select'
+  | 'multi-select'
+  | 'checkbox'
+  | 'radio'
+  | 'coded-value';
 
 export interface MappingTarget {
   /** TIU note section this field maps to (e.g., "HPI", "ASSESSMENT") */
   tiuSection?: string;
   /** VistA RPC to read source data (or "integration_pending" with target) */
   vistaReadRpc?: string;
-  vistaReadStatus?: "available" | "integration_pending";
+  vistaReadStatus?: 'available' | 'integration_pending';
   /** Billing code suggestion (ICD/CPT) — stored as suggestion only, never auto-coded */
   billingSuggestion?: string;
   /** Freeform mapping note */
@@ -79,7 +95,7 @@ export interface TemplateVersionEvent {
   templateId: string;
   tenantId: string;
   version: number;
-  action: "created" | "updated" | "published" | "archived" | "cloned";
+  action: 'created' | 'updated' | 'published' | 'archived' | 'cloned';
   actor: string;
   changeSummary?: string;
   snapshotJson?: string;
@@ -115,7 +131,7 @@ export interface NoteBuilderInput {
 
 export interface NoteBuilderOutput {
   draftText: string;
-  mode: "tiu_draft" | "local_draft";
+  mode: 'tiu_draft' | 'local_draft';
   templateId: string;
   templateVersion: number;
   draftId?: string;
@@ -132,57 +148,57 @@ export interface SpecialtyPack {
   specialty: string;
   description: string;
   setting: TemplateSetting;
-  templates: Omit<ClinicalTemplate, "id" | "tenantId" | "createdAt" | "updatedAt">[];
+  templates: Omit<ClinicalTemplate, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>[];
 }
 
 // ─── All 45 Specialty Tags ─────────────────────────────────────────
 
 export const SPECIALTY_TAGS = [
-  "primary-care",
-  "family-medicine",
-  "internal-medicine",
-  "pediatrics",
-  "ob-gyn",
-  "emergency-medicine",
-  "urgent-care",
-  "cardiology",
-  "pulmonology",
-  "endocrinology",
-  "nephrology",
-  "neurology",
-  "psychiatry",
-  "psychology-behavioral",
-  "orthopedics",
-  "general-surgery",
-  "anesthesia",
-  "icu-critical-care",
-  "dermatology",
-  "ophthalmology",
-  "ent-otolaryngology",
-  "gastroenterology",
-  "oncology",
-  "hematology",
-  "radiology",
-  "laboratory",
-  "nursing",
-  "physical-therapy",
-  "rehabilitation",
-  "dental",
-  "infectious-disease",
-  "urology",
-  "rheumatology",
-  "family-planning",
-  "palliative-care",
-  "geriatrics",
-  "allergy-immunology",
-  "vascular-surgery",
-  "plastic-surgery",
-  "podiatry",
-  "nutrition-dietetics",
-  "social-work",
-  "pharmacy-clinical",
-  "wound-care",
-  "pain-management",
+  'primary-care',
+  'family-medicine',
+  'internal-medicine',
+  'pediatrics',
+  'ob-gyn',
+  'emergency-medicine',
+  'urgent-care',
+  'cardiology',
+  'pulmonology',
+  'endocrinology',
+  'nephrology',
+  'neurology',
+  'psychiatry',
+  'psychology-behavioral',
+  'orthopedics',
+  'general-surgery',
+  'anesthesia',
+  'icu-critical-care',
+  'dermatology',
+  'ophthalmology',
+  'ent-otolaryngology',
+  'gastroenterology',
+  'oncology',
+  'hematology',
+  'radiology',
+  'laboratory',
+  'nursing',
+  'physical-therapy',
+  'rehabilitation',
+  'dental',
+  'infectious-disease',
+  'urology',
+  'rheumatology',
+  'family-planning',
+  'palliative-care',
+  'geriatrics',
+  'allergy-immunology',
+  'vascular-surgery',
+  'plastic-surgery',
+  'podiatry',
+  'nutrition-dietetics',
+  'social-work',
+  'pharmacy-clinical',
+  'wound-care',
+  'pain-management',
 ] as const;
 
-export type SpecialtyTag = typeof SPECIALTY_TAGS[number];
+export type SpecialtyTag = (typeof SPECIALTY_TAGS)[number];

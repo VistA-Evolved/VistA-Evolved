@@ -2,18 +2,13 @@
 
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import { API_BASE } from '@/lib/api-config';
+import type { PatientDemographics } from '@vista-evolved/shared-types';
 
 /* ------------------------------------------------------------------ */
-/* Types                                                               */
+/* Types — PatientDemographics now imported from shared-types          */
 /* ------------------------------------------------------------------ */
 
-export interface PatientDemographics {
-  dfn: string;
-  name: string;
-  dob: string;
-  sex: string;
-  ssn?: string;
-}
+export type { PatientDemographics };
 
 export interface PatientContextValue {
   /** Currently selected patient DFN (empty = none) */
@@ -43,7 +38,6 @@ const PatientContext = createContext<PatientContextValue | null>(null);
 /* Provider                                                            */
 /* ------------------------------------------------------------------ */
 
-
 export function PatientProvider({ children }: { children: ReactNode }) {
   const [dfn, setDfn] = useState('');
   const [demographics, setDemographics] = useState<PatientDemographics | null>(null);
@@ -57,7 +51,9 @@ export function PatientProvider({ children }: { children: ReactNode }) {
     setDemographics(null);
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/vista/patient-demographics?dfn=${newDfn}`, { credentials: 'include' });
+      const res = await fetch(`${API_BASE}/vista/patient-demographics?dfn=${newDfn}`, {
+        credentials: 'include',
+      });
       const data = await res.json();
       if (data.ok && data.patient) {
         setDemographics(data.patient);
@@ -83,9 +79,16 @@ export function PatientProvider({ children }: { children: ReactNode }) {
   return (
     <PatientContext.Provider
       value={{
-        dfn, demographics, loading, providerDuz,
-        locationIen, locationName,
-        selectPatient, clearPatient, setProvider, setLocation,
+        dfn,
+        demographics,
+        loading,
+        providerDuz,
+        locationIen,
+        locationName,
+        selectPatient,
+        clearPatient,
+        setProvider,
+        setLocation,
       }}
     >
       {children}

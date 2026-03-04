@@ -17,7 +17,7 @@ export function assert(name, condition, detail) {
   return {
     name,
     passed: !!condition,
-    detail: condition ? undefined : detail || "assertion failed",
+    detail: condition ? undefined : detail || 'assertion failed',
   };
 }
 
@@ -64,7 +64,7 @@ export function assertResourceType(resource, expectedType) {
  */
 export function assertSupportsResource(capStmt, resourceType) {
   const rest = capStmt?.rest || [];
-  const serverRest = rest.find((r) => r.mode === "server") || rest[0];
+  const serverRest = rest.find((r) => r.mode === 'server') || rest[0];
   const resources = serverRest?.resource || [];
   const found = resources.some((r) => r.type === resourceType);
   return assert(
@@ -82,7 +82,7 @@ export function assertSupportsResource(capStmt, resourceType) {
  */
 export function assertSupportsInteraction(capStmt, resourceType, interaction) {
   const rest = capStmt?.rest || [];
-  const serverRest = rest.find((r) => r.mode === "server") || rest[0];
+  const serverRest = rest.find((r) => r.mode === 'server') || rest[0];
   const resources = serverRest?.resource || [];
   const res = resources.find((r) => r.type === resourceType);
   const interactions = res?.interaction || [];
@@ -100,10 +100,10 @@ export function assertSupportsInteraction(capStmt, resourceType, interaction) {
  */
 export function assertBundle(bundle) {
   const results = [];
-  results.push(assertResourceType(bundle, "Bundle"));
-  results.push(assert("Bundle has type", !!bundle?.type, "Missing bundle.type"));
+  results.push(assertResourceType(bundle, 'Bundle'));
+  results.push(assert('Bundle has type', !!bundle?.type, 'Missing bundle.type'));
   results.push(
-    assert("Bundle has entry array", Array.isArray(bundle?.entry), "Missing bundle.entry[]")
+    assert('Bundle has entry array', Array.isArray(bundle?.entry), 'Missing bundle.entry[]')
   );
   return results;
 }

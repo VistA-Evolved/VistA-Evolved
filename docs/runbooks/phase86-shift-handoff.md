@@ -42,16 +42,16 @@ See `docs/runbooks/handoff-grounding.md` for full capability map.
 
 ## Endpoints
 
-| Method | Path                          | Description                        |
-|--------|-------------------------------|------------------------------------|
-| GET    | /handoff/ward-patients        | Live VistA patient list with meds/allergies |
-| GET    | /handoff/reports              | List reports (filter: ward, status) |
-| GET    | /handoff/reports/:id          | Get single report                  |
-| POST   | /handoff/reports              | Create draft report                |
-| PUT    | /handoff/reports/:id          | Update draft report                |
-| POST   | /handoff/reports/:id/submit   | Submit draft for acceptance        |
-| POST   | /handoff/reports/:id/accept   | Accept submitted handoff           |
-| POST   | /handoff/reports/:id/archive  | Archive accepted handoff           |
+| Method | Path                         | Description                                 |
+| ------ | ---------------------------- | ------------------------------------------- |
+| GET    | /handoff/ward-patients       | Live VistA patient list with meds/allergies |
+| GET    | /handoff/reports             | List reports (filter: ward, status)         |
+| GET    | /handoff/reports/:id         | Get single report                           |
+| POST   | /handoff/reports             | Create draft report                         |
+| PUT    | /handoff/reports/:id         | Update draft report                         |
+| POST   | /handoff/reports/:id/submit  | Submit draft for acceptance                 |
+| POST   | /handoff/reports/:id/accept  | Accept submitted handoff                    |
+| POST   | /handoff/reports/:id/archive | Archive accepted handoff                    |
 
 ## Audit Actions
 

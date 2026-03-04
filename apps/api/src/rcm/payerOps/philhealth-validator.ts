@@ -58,7 +58,9 @@ function isValidDate(dateStr: string | undefined): boolean {
 
 /* ── Main Validator ──────────────────────────────────────────── */
 
-export function validatePhilHealthClaimDraft(draft: PhilHealthClaimDraft): PhilHealthValidationResult {
+export function validatePhilHealthClaimDraft(
+  draft: PhilHealthClaimDraft
+): PhilHealthValidationResult {
   const errors: PhilHealthValidationError[] = [];
   const warnings: PhilHealthValidationError[] = [];
 
@@ -68,16 +70,36 @@ export function validatePhilHealthClaimDraft(draft: PhilHealthClaimDraft): PhilH
   // ── CF1 Required Fields (Facility + Patient Demographics) ──
 
   if (!draft.facilityId) {
-    errors.push({ field: 'facilityId', code: 'REQUIRED', message: 'Facility ID is required', severity: 'error' });
+    errors.push({
+      field: 'facilityId',
+      code: 'REQUIRED',
+      message: 'Facility ID is required',
+      severity: 'error',
+    });
   }
   if (!draft.patientLastName) {
-    errors.push({ field: 'patientLastName', code: 'REQUIRED', message: 'Patient last name is required', severity: 'error' });
+    errors.push({
+      field: 'patientLastName',
+      code: 'REQUIRED',
+      message: 'Patient last name is required',
+      severity: 'error',
+    });
   }
   if (!draft.patientFirstName) {
-    errors.push({ field: 'patientFirstName', code: 'REQUIRED', message: 'Patient first name is required', severity: 'error' });
+    errors.push({
+      field: 'patientFirstName',
+      code: 'REQUIRED',
+      message: 'Patient first name is required',
+      severity: 'error',
+    });
   }
   if (!draft.philhealthPin) {
-    errors.push({ field: 'philhealthPin', code: 'REQUIRED', message: 'PhilHealth PIN is required', severity: 'error' });
+    errors.push({
+      field: 'philhealthPin',
+      code: 'REQUIRED',
+      message: 'PhilHealth PIN is required',
+      severity: 'error',
+    });
   } else if (!isValidPin(draft.philhealthPin)) {
     errors.push({
       field: 'philhealthPin',
@@ -87,36 +109,81 @@ export function validatePhilHealthClaimDraft(draft: PhilHealthClaimDraft): PhilH
     });
   }
   if (!draft.admissionDate) {
-    errors.push({ field: 'admissionDate', code: 'REQUIRED', message: 'Admission date is required', severity: 'error' });
+    errors.push({
+      field: 'admissionDate',
+      code: 'REQUIRED',
+      message: 'Admission date is required',
+      severity: 'error',
+    });
   } else if (!isValidDate(draft.admissionDate)) {
-    errors.push({ field: 'admissionDate', code: 'INVALID_DATE', message: 'Admission date is invalid', severity: 'error' });
+    errors.push({
+      field: 'admissionDate',
+      code: 'INVALID_DATE',
+      message: 'Admission date is invalid',
+      severity: 'error',
+    });
   }
   if (!draft.patientType) {
-    errors.push({ field: 'patientType', code: 'REQUIRED', message: 'Patient type (O/I) is required', severity: 'error' });
+    errors.push({
+      field: 'patientType',
+      code: 'REQUIRED',
+      message: 'Patient type (O/I) is required',
+      severity: 'error',
+    });
   }
   if (!draft.memberRelationship) {
-    errors.push({ field: 'memberRelationship', code: 'REQUIRED', message: 'Member relationship (S/D/P) is required', severity: 'error' });
+    errors.push({
+      field: 'memberRelationship',
+      code: 'REQUIRED',
+      message: 'Member relationship (S/D/P) is required',
+      severity: 'error',
+    });
   }
   if (!draft.patientDob) {
-    warnings.push({ field: 'patientDob', code: 'RECOMMENDED', message: 'Patient date of birth is recommended', severity: 'warning' });
+    warnings.push({
+      field: 'patientDob',
+      code: 'RECOMMENDED',
+      message: 'Patient date of birth is recommended',
+      severity: 'warning',
+    });
   }
   if (!draft.patientSex) {
-    warnings.push({ field: 'patientSex', code: 'RECOMMENDED', message: 'Patient sex (M/F) is recommended', severity: 'warning' });
+    warnings.push({
+      field: 'patientSex',
+      code: 'RECOMMENDED',
+      message: 'Patient sex (M/F) is recommended',
+      severity: 'warning',
+    });
   }
 
   // ── CF2 Required Fields (Diagnosis + Procedures) ──
 
   if (draft.diagnoses.length === 0) {
-    errors.push({ field: 'diagnoses', code: 'REQUIRED', message: 'At least one diagnosis code is required', severity: 'error' });
+    errors.push({
+      field: 'diagnoses',
+      code: 'REQUIRED',
+      message: 'At least one diagnosis code is required',
+      severity: 'error',
+    });
   } else {
-    const hasPrimary = draft.diagnoses.some(d => d.type === 'primary');
+    const hasPrimary = draft.diagnoses.some((d) => d.type === 'primary');
     if (!hasPrimary) {
-      errors.push({ field: 'diagnoses', code: 'NO_PRIMARY', message: 'At least one PRIMARY diagnosis code is required', severity: 'error' });
+      errors.push({
+        field: 'diagnoses',
+        code: 'NO_PRIMARY',
+        message: 'At least one PRIMARY diagnosis code is required',
+        severity: 'error',
+      });
     }
     for (let i = 0; i < draft.diagnoses.length; i++) {
       const dx = draft.diagnoses[i];
       if (!dx.icdCode) {
-        errors.push({ field: `diagnoses[${i}].icdCode`, code: 'REQUIRED', message: `Diagnosis ${i + 1}: ICD code is required`, severity: 'error' });
+        errors.push({
+          field: `diagnoses[${i}].icdCode`,
+          code: 'REQUIRED',
+          message: `Diagnosis ${i + 1}: ICD code is required`,
+          severity: 'error',
+        });
       }
     }
   }
@@ -124,18 +191,38 @@ export function validatePhilHealthClaimDraft(draft: PhilHealthClaimDraft): PhilH
   // ── Charges ──
 
   if (draft.charges.length === 0) {
-    warnings.push({ field: 'charges', code: 'RECOMMENDED', message: 'No charge line items. At least one is recommended for SOA.', severity: 'warning' });
+    warnings.push({
+      field: 'charges',
+      code: 'RECOMMENDED',
+      message: 'No charge line items. At least one is recommended for SOA.',
+      severity: 'warning',
+    });
   } else {
     for (let i = 0; i < draft.charges.length; i++) {
       const ch = draft.charges[i];
       if (!ch.description) {
-        errors.push({ field: `charges[${i}].description`, code: 'REQUIRED', message: `Charge ${i + 1}: description is required`, severity: 'error' });
+        errors.push({
+          field: `charges[${i}].description`,
+          code: 'REQUIRED',
+          message: `Charge ${i + 1}: description is required`,
+          severity: 'error',
+        });
       }
       if (ch.quantity <= 0) {
-        errors.push({ field: `charges[${i}].quantity`, code: 'INVALID', message: `Charge ${i + 1}: quantity must be > 0`, severity: 'error' });
+        errors.push({
+          field: `charges[${i}].quantity`,
+          code: 'INVALID',
+          message: `Charge ${i + 1}: quantity must be > 0`,
+          severity: 'error',
+        });
       }
       if (ch.netAmount < 0) {
-        errors.push({ field: `charges[${i}].netAmount`, code: 'INVALID', message: `Charge ${i + 1}: net amount cannot be negative`, severity: 'error' });
+        errors.push({
+          field: `charges[${i}].netAmount`,
+          code: 'INVALID',
+          message: `Charge ${i + 1}: net amount cannot be negative`,
+          severity: 'error',
+        });
       }
     }
   }
@@ -146,7 +233,12 @@ export function validatePhilHealthClaimDraft(draft: PhilHealthClaimDraft): PhilH
     for (let i = 0; i < draft.procedures.length; i++) {
       const proc = draft.procedures[i];
       if (!proc.code) {
-        errors.push({ field: `procedures[${i}].code`, code: 'REQUIRED', message: `Procedure ${i + 1}: RVS/CPT code is required`, severity: 'error' });
+        errors.push({
+          field: `procedures[${i}].code`,
+          code: 'REQUIRED',
+          message: `Procedure ${i + 1}: RVS/CPT code is required`,
+          severity: 'error',
+        });
       }
     }
   } else if (draft.caseRateCode) {
@@ -171,13 +263,28 @@ export function validatePhilHealthClaimDraft(draft: PhilHealthClaimDraft): PhilH
   for (let i = 0; i < draft.professionalFees.length; i++) {
     const pf = draft.professionalFees[i];
     if (!pf.physicianName) {
-      errors.push({ field: `professionalFees[${i}].physicianName`, code: 'REQUIRED', message: `PF ${i + 1}: physician name is required`, severity: 'error' });
+      errors.push({
+        field: `professionalFees[${i}].physicianName`,
+        code: 'REQUIRED',
+        message: `PF ${i + 1}: physician name is required`,
+        severity: 'error',
+      });
     }
     if (!pf.physicianLicense) {
-      errors.push({ field: `professionalFees[${i}].physicianLicense`, code: 'REQUIRED', message: `PF ${i + 1}: PRC license number is required`, severity: 'error' });
+      errors.push({
+        field: `professionalFees[${i}].physicianLicense`,
+        code: 'REQUIRED',
+        message: `PF ${i + 1}: PRC license number is required`,
+        severity: 'error',
+      });
     }
     if (pf.feeAmount <= 0) {
-      errors.push({ field: `professionalFees[${i}].feeAmount`, code: 'INVALID', message: `PF ${i + 1}: fee amount must be > 0`, severity: 'error' });
+      errors.push({
+        field: `professionalFees[${i}].feeAmount`,
+        code: 'INVALID',
+        message: `PF ${i + 1}: fee amount must be > 0`,
+        severity: 'error',
+      });
     }
   }
 

@@ -3,31 +3,33 @@
 ## Overview
 
 Phase 81 adds a credible imaging workflow with 3 clean endpoints:
+
 - **Study list** per patient (VistA MAG4 -> Orthanc QIDO-RS -> pendingTargets)
 - **Report viewer** (VistA RA DETAILED REPORT -> TIU fallback -> pendingTarget)
 - **Viewer posture** (OHIF URL if configured, DICOMweb fallback, or setup instructions)
 
 ## Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | /imaging/studies/:dfn | Patient study list |
-| GET | /imaging/report/:studyId | Radiology report text |
-| GET | /imaging/viewer-link/:studyId | DICOM viewer URL or instructions |
+| Method | Path                          | Description                      |
+| ------ | ----------------------------- | -------------------------------- |
+| GET    | /imaging/studies/:dfn         | Patient study list               |
+| GET    | /imaging/report/:studyId      | Radiology report text            |
+| GET    | /imaging/viewer-link/:studyId | DICOM viewer URL or instructions |
 
 ## VistA RPCs Used
 
-| RPC | Purpose | Sandbox Status |
-|-----|---------|----------------|
-| MAG4 REMOTE PROCEDURE | Study list from VistA Imaging | Not available |
-| MAG4 PAT GET IMAGES | Full image inventory | Not available |
-| RA DETAILED REPORT | Radiology report text | Available, data empty |
-| TIU GET RECORD TEXT | Document text fallback | Available |
-| TIU DOCUMENTS BY CONTEXT | Document query | Available |
+| RPC                      | Purpose                       | Sandbox Status        |
+| ------------------------ | ----------------------------- | --------------------- |
+| MAG4 REMOTE PROCEDURE    | Study list from VistA Imaging | Not available         |
+| MAG4 PAT GET IMAGES      | Full image inventory          | Not available         |
+| RA DETAILED REPORT       | Radiology report text         | Available, data empty |
+| TIU GET RECORD TEXT      | Document text fallback        | Available             |
+| TIU DOCUMENTS BY CONTEXT | Document query                | Available             |
 
 ## How to Test
 
 ### Prerequisites
+
 1. API server running: `cd apps/api && npx tsx --env-file=.env.local src/index.ts`
 2. VistA Docker running: `cd services/vista && docker compose --profile dev up -d`
 3. (Optional) Orthanc + OHIF: `cd services/imaging && docker compose up -d`
@@ -46,6 +48,7 @@ curl http://127.0.0.1:3001/imaging/viewer-link/1.2.3.4.5
 ```
 
 ### UI Testing
+
 1. Open CPRS web app
 2. Select a patient
 3. Navigate to Imaging tab
@@ -56,6 +59,7 @@ curl http://127.0.0.1:3001/imaging/viewer-link/1.2.3.4.5
 ## Plan Artifact
 
 Generate the imaging plan:
+
 ```bash
 npx tsx scripts/imaging/buildImagingPlan.ts
 # Output: artifacts/phase81/imaging-plan.json

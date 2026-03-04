@@ -12,17 +12,15 @@
  * Migration target: PG tables (future phase).
  */
 
-import { randomUUID } from "node:crypto";
+import { randomUUID } from 'node:crypto';
 import type {
   BedAssignment,
   BedStatus,
   AdtEvent,
-  AdtEventType,
   FlowsheetRow,
   VitalsEntry,
-  VitalSign,
   WritebackPosture,
-} from "./types.js";
+} from './types.js';
 
 // ─── Constants ──────────────────────────────────────────────
 
@@ -39,7 +37,7 @@ const vitalsEntryStore = new Map<string, VitalsEntry>();
 
 export function createBedAssignment(
   tenantId: string,
-  input: Omit<BedAssignment, "id" | "tenantId" | "updatedAt">,
+  input: Omit<BedAssignment, 'id' | 'tenantId' | 'updatedAt'>
 ): BedAssignment {
   if (bedAssignmentStore.size >= MAX_ITEMS) {
     // evict oldest (FIFO)
@@ -70,7 +68,21 @@ export function listBedAssignments(tenantId: string, locationId?: string): BedAs
 
 export function updateBedAssignment(
   id: string,
-  patch: Partial<Pick<BedAssignment, "status" | "patientDfn" | "patientName" | "admittingProviderDuz" | "admitDateTime" | "dischargeDateTime" | "precautions" | "acuity" | "wardName" | "roomNumber">>,
+  patch: Partial<
+    Pick<
+      BedAssignment,
+      | 'status'
+      | 'patientDfn'
+      | 'patientName'
+      | 'admittingProviderDuz'
+      | 'admitDateTime'
+      | 'dischargeDateTime'
+      | 'precautions'
+      | 'acuity'
+      | 'wardName'
+      | 'roomNumber'
+    >
+  >
 ): BedAssignment | undefined {
   const existing = bedAssignmentStore.get(id);
   if (!existing) return undefined;
@@ -88,14 +100,14 @@ export function assignPatientToBed(
   bedId: string,
   patientDfn: string,
   patientName: string,
-  providerDuz: string,
+  providerDuz: string
 ): BedAssignment | undefined {
   return updateBedAssignment(bedId, {
     patientDfn,
     patientName,
     admittingProviderDuz: providerDuz,
     admitDateTime: new Date().toISOString(),
-    status: "occupied" as const,
+    status: 'occupied' as const,
   });
 }
 
@@ -106,7 +118,7 @@ export function dischargePatientFromBed(bedId: string): BedAssignment | undefine
     patientName: null,
     admittingProviderDuz: null,
     dischargeDateTime: new Date().toISOString(),
-    status: "cleaning" as const,
+    status: 'cleaning' as const,
   });
 }
 
@@ -114,7 +126,7 @@ export function dischargePatientFromBed(bedId: string): BedAssignment | undefine
 
 export function recordAdtEvent(
   tenantId: string,
-  input: Omit<AdtEvent, "id" | "tenantId" | "createdAt">,
+  input: Omit<AdtEvent, 'id' | 'tenantId' | 'createdAt'>
 ): AdtEvent {
   if (adtEventStore.length >= MAX_ITEMS) {
     adtEventStore.shift();
@@ -141,7 +153,7 @@ export function listAdtEvents(tenantId: string, patientDfn?: string): AdtEvent[]
 
 export function createFlowsheetRow(
   tenantId: string,
-  input: Omit<FlowsheetRow, "id" | "tenantId">,
+  input: Omit<FlowsheetRow, 'id' | 'tenantId'>
 ): FlowsheetRow {
   if (flowsheetRowStore.size >= MAX_ITEMS) {
     const first = flowsheetRowStore.keys().next().value;
@@ -159,7 +171,7 @@ export function createFlowsheetRow(
 export function listFlowsheetRows(
   tenantId: string,
   patientDfn: string,
-  flowsheetId?: string,
+  flowsheetId?: string
 ): FlowsheetRow[] {
   return Array.from(flowsheetRowStore.values()).filter((r) => {
     if (r.tenantId !== tenantId) return false;
@@ -173,7 +185,7 @@ export function listFlowsheetRows(
 
 export function createVitalsEntry(
   tenantId: string,
-  input: Omit<VitalsEntry, "id" | "tenantId">,
+  input: Omit<VitalsEntry, 'id' | 'tenantId'>
 ): VitalsEntry {
   if (vitalsEntryStore.size >= MAX_ITEMS) {
     const first = vitalsEntryStore.keys().next().value;
@@ -192,10 +204,7 @@ export function getVitalsEntry(id: string): VitalsEntry | undefined {
   return vitalsEntryStore.get(id);
 }
 
-export function listVitalsEntries(
-  tenantId: string,
-  patientDfn: string,
-): VitalsEntry[] {
+export function listVitalsEntries(tenantId: string, patientDfn: string): VitalsEntry[] {
   return Array.from(vitalsEntryStore.values())
     .filter((v) => v.tenantId === tenantId && v.patientDfn === patientDfn)
     .sort((a, b) => b.recordedAt.localeCompare(a.recordedAt));
@@ -203,9 +212,9 @@ export function listVitalsEntries(
 
 export function updateVitalsWriteback(
   id: string,
-  writebackStatus: VitalsEntry["writebackStatus"],
+  writebackStatus: VitalsEntry['writebackStatus'],
   vistaVitalsIen: string | null,
-  writebackError: string | null,
+  writebackError: string | null
 ): VitalsEntry | undefined {
   const existing = vitalsEntryStore.get(id);
   if (!existing) return undefined;
@@ -224,19 +233,22 @@ export function updateVitalsWriteback(
 export function getWritebackPosture(): WritebackPosture {
   return {
     vitals: {
-      rpc: "GMV ADD VM",
-      status: "integration_pending",
-      sandboxNote: "GMV ADD VM is registered and callable in WorldVistA Docker. Wire-up requires exact MUMPS date/time format and vital-type IENs from GMRD(120.51).",
+      rpc: 'GMV ADD VM',
+      status: 'integration_pending',
+      sandboxNote:
+        'GMV ADD VM is registered and callable in WorldVistA Docker. Wire-up requires exact MUMPS date/time format and vital-type IENs from GMRD(120.51).',
     },
     nursingNote: {
-      rpc: "TIU CREATE RECORD",
-      status: "integration_pending",
-      sandboxNote: "TIU CREATE RECORD available. Requires valid TIU document class IEN, visit IEN, and text body. Notes remain unsigned until TIU SIGN RECORD is called.",
+      rpc: 'TIU CREATE RECORD',
+      status: 'integration_pending',
+      sandboxNote:
+        'TIU CREATE RECORD available. Requires valid TIU document class IEN, visit IEN, and text body. Notes remain unsigned until TIU SIGN RECORD is called.',
     },
     adtMovement: {
-      rpc: "DGPM ADT MOVEMENTS",
-      status: "integration_pending",
-      sandboxNote: "DGPM movement RPCs exist in sandbox but require valid ward IENs, bed IENs, and treating specialty. Admission, transfer, discharge all use DGPM subsystem.",
+      rpc: 'DGPM ADT MOVEMENTS',
+      status: 'integration_pending',
+      sandboxNote:
+        'DGPM movement RPCs exist in sandbox but require valid ward IENs, bed IENs, and treating specialty. Admission, transfer, discharge all use DGPM subsystem.',
     },
   };
 }
@@ -257,14 +269,14 @@ export function getBedboardSummary(tenantId: string): BedboardSummary {
   const beds = listBedAssignments(tenantId);
   const total = beds.length;
   const statusCount = (s: BedStatus) => beds.filter((b) => b.status === s).length;
-  const occupied = statusCount("occupied");
+  const occupied = statusCount('occupied');
   return {
     totalBeds: total,
     occupied,
-    available: statusCount("available"),
-    cleaning: statusCount("cleaning"),
-    blocked: statusCount("blocked"),
-    reserved: statusCount("reserved"),
+    available: statusCount('available'),
+    cleaning: statusCount('cleaning'),
+    blocked: statusCount('blocked'),
+    reserved: statusCount('reserved'),
     occupancyRate: total > 0 ? Math.round((occupied / total) * 100) / 100 : 0,
   };
 }

@@ -16,10 +16,7 @@
  * Evidence-first: posting always references the batch/file as evidence.
  */
 
-import type {
-  RemittanceBatch,
-  RemittanceLine,
-} from './payment-types.js';
+import type { RemittanceBatch, RemittanceLine } from './payment-types.js';
 import {
   updateLine,
   getAllLinesForBatch,
@@ -43,7 +40,7 @@ import type { ClaimCase } from '../claims/claim-types.js';
 const AMOUNT_TOLERANCE_CENTS = 100; // $1.00
 
 /** Underpayment threshold: flag if paid < (charged * threshold) */
-const UNDERPAYMENT_THRESHOLD = 0.90; // 90% — shortfall > 10% flagged
+const UNDERPAYMENT_THRESHOLD = 0.9; // 90% — shortfall > 10% flagged
 
 /* ── Match Result ──────────────────────────────────────────── */
 
@@ -73,10 +70,7 @@ export interface BatchMatchResult {
  * Run matching for all unmatched lines in a batch.
  * Deterministic: same input always produces the same output.
  */
-export function matchBatch(
-  batchId: string,
-  actor: string,
-): BatchMatchResult {
+export function matchBatch(batchId: string, actor: string): BatchMatchResult {
   const batch = getBatch(batchId);
   if (!batch) {
     return {
@@ -91,7 +85,7 @@ export function matchBatch(
 
   const allLines = getAllLinesForBatch(batchId);
   const unmatchedLines = allLines.filter(
-    l => l.matchStatus === 'unmatched' || l.matchStatus === 'needs_review',
+    (l) => l.matchStatus === 'unmatched' || l.matchStatus === 'needs_review'
   );
 
   const results: MatchResult[] = [];
@@ -141,11 +135,7 @@ export function matchBatch(
 /**
  * Match a single remittance line to a claim case.
  */
-function matchSingleLine(
-  line: RemittanceLine,
-  batch: RemittanceBatch,
-  actor: string,
-): MatchResult {
+function matchSingleLine(line: RemittanceLine, batch: RemittanceBatch, actor: string): MatchResult {
   // Strategy 1: Exact match by internal claim ID
   if (line.claimId) {
     const claim = getClaimCase(line.claimId);
@@ -161,7 +151,7 @@ function matchSingleLine(
       batch.payerId,
       line.externalClaimRef,
       line.serviceDate,
-      line.amountBilled,
+      line.amountBilled
     );
     if (candidate) {
       return applyMatch(line, candidate, batch, actor, 'external_ref', 85);
@@ -173,7 +163,7 @@ function matchSingleLine(
     batch.tenantId,
     batch.payerId,
     line.serviceDate,
-    line.amountBilled,
+    line.amountBilled
   );
   if (fuzzyCandidate) {
     return applyMatch(line, fuzzyCandidate, batch, actor, 'fuzzy', 60);
@@ -198,7 +188,7 @@ function applyMatch(
   batch: RemittanceBatch,
   actor: string,
   method: MatchResult['matchMethod'] & string,
-  confidence: number,
+  confidence: number
 ): MatchResult {
   // Update line
   updateLine(line.id, {
@@ -225,9 +215,7 @@ function applyMatch(
 
   // States that can be transitioned toward paid
   const directPayableStates = ['payer_acknowledged'];
-  const needsAckFirstStates = [
-    'submitted_electronic', 'submitted_portal', 'submitted_manual',
-  ];
+  const needsAckFirstStates = ['submitted_electronic', 'submitted_portal', 'submitted_manual'];
   const needsSubmitFirstStates = ['exported'];
 
   const currentStatus = claim.lifecycleStatus;
@@ -285,10 +273,7 @@ function applyMatch(
 
   // Underpayment detection
   let underpaymentCreated = false;
-  if (
-    claim.totalCharge > 0 &&
-    line.amountPaid < claim.totalCharge * UNDERPAYMENT_THRESHOLD
-  ) {
+  if (claim.totalCharge > 0 && line.amountPaid < claim.totalCharge * UNDERPAYMENT_THRESHOLD) {
     const shortfall = claim.totalCharge - line.amountPaid;
     createUnderpayment({
       tenantId: batch.tenantId,
@@ -323,7 +308,7 @@ function findByExternalRef(
   payerId: string,
   externalRef: string,
   serviceDate?: string,
-  amountBilled?: number,
+  amountBilled?: number
 ): ClaimCase | undefined {
   const { items } = listClaimCases({ tenantId, payerId, limit: 500 });
 
@@ -341,7 +326,7 @@ function findByFuzzy(
   tenantId: string,
   payerId: string,
   serviceDate?: string,
-  amountBilled?: number,
+  amountBilled?: number
 ): ClaimCase | undefined {
   if (!serviceDate || !amountBilled) return undefined;
 
@@ -364,11 +349,7 @@ function findByFuzzy(
  * Manually link a remittance line to a claim case.
  * Used from the reconciliation worklist UI.
  */
-export function manualLinkLine(
-  lineId: string,
-  claimCaseId: string,
-  actor: string,
-): MatchResult {
+export function manualLinkLine(lineId: string, claimCaseId: string, actor: string): MatchResult {
   const line = getLine(lineId);
 
   if (!line) {
@@ -451,14 +432,25 @@ export interface ParseResult {
 export function parseRemittanceCsv(
   csvContent: string,
   batchId: string,
-  tenantId: string,
+  tenantId: string
 ): ParseResult {
   const rows = csvContent.trim().split('\n');
   if (rows.length < 2) {
-    return { lines: [], errors: ['CSV must have a header row and at least one data row'], totalPaid: 0, totalBilled: 0, totalAdjusted: 0 };
+    return {
+      lines: [],
+      errors: ['CSV must have a header row and at least one data row'],
+      totalPaid: 0,
+      totalBilled: 0,
+      totalAdjusted: 0,
+    };
   }
 
-  const header = rows[0].split(',').map(h => h.trim().toLowerCase().replace(/[^a-z0-9_]/g, ''));
+  const header = rows[0].split(',').map((h) =>
+    h
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9_]/g, '')
+  );
   const errors: string[] = [];
   const parsed: Array<Omit<RemittanceLine, 'id'>> = [];
   let totalPaid = 0;
@@ -471,11 +463,17 @@ export function parseRemittanceCsv(
   const amountBilledIdx = col('amountbilled') !== -1 ? col('amountbilled') : col('amount_billed');
 
   if (amountPaidIdx === -1) {
-    return { lines: [], errors: ['Missing required column: amountPaid or amount_paid'], totalPaid: 0, totalBilled: 0, totalAdjusted: 0 };
+    return {
+      lines: [],
+      errors: ['Missing required column: amountPaid or amount_paid'],
+      totalPaid: 0,
+      totalBilled: 0,
+      totalAdjusted: 0,
+    };
   }
 
   for (let i = 1; i < rows.length; i++) {
-    const cells = rows[i].split(',').map(c => c.trim());
+    const cells = rows[i].split(',').map((c) => c.trim());
     if (cells.length < 2) {
       errors.push(`Row ${i}: too few columns`);
       continue;
@@ -483,12 +481,22 @@ export function parseRemittanceCsv(
 
     const amtPaid = parseCents(cells[amountPaidIdx]);
     const amtBilled = amountBilledIdx !== -1 ? parseCents(cells[amountBilledIdx]) : 0;
-    const amtAdj = col('amountadjusted') !== -1 || col('amount_adjusted') !== -1
-      ? parseCents(cells[col('amountadjusted') !== -1 ? col('amountadjusted') : col('amount_adjusted')])
-      : 0;
-    const patResp = col('patientresponsibility') !== -1 || col('patient_responsibility') !== -1
-      ? parseCents(cells[col('patientresponsibility') !== -1 ? col('patientresponsibility') : col('patient_responsibility')])
-      : 0;
+    const amtAdj =
+      col('amountadjusted') !== -1 || col('amount_adjusted') !== -1
+        ? parseCents(
+            cells[col('amountadjusted') !== -1 ? col('amountadjusted') : col('amount_adjusted')]
+          )
+        : 0;
+    const patResp =
+      col('patientresponsibility') !== -1 || col('patient_responsibility') !== -1
+        ? parseCents(
+            cells[
+              col('patientresponsibility') !== -1
+                ? col('patientresponsibility')
+                : col('patient_responsibility')
+            ]
+          )
+        : 0;
 
     if (isNaN(amtPaid)) {
       errors.push(`Row ${i}: invalid amountPaid`);
@@ -504,17 +512,38 @@ export function parseRemittanceCsv(
       tenantId,
       lineNumber: i,
       claimId: getCellIfPresent(cells, col('claimid') !== -1 ? col('claimid') : col('claim_id')),
-      externalClaimRef: getCellIfPresent(cells, col('externalclaimref') !== -1 ? col('externalclaimref') : col('external_claim_ref')),
-      patientRef: getCellIfPresent(cells, col('patientref') !== -1 ? col('patientref') : col('patient_ref')),
+      externalClaimRef: getCellIfPresent(
+        cells,
+        col('externalclaimref') !== -1 ? col('externalclaimref') : col('external_claim_ref')
+      ),
+      patientRef: getCellIfPresent(
+        cells,
+        col('patientref') !== -1 ? col('patientref') : col('patient_ref')
+      ),
       amountBilled: amtBilled,
       amountPaid: amtPaid,
       amountAdjusted: amtAdj,
       patientResponsibility: patResp,
-      serviceDate: getCellIfPresent(cells, col('servicedate') !== -1 ? col('servicedate') : col('service_date')),
-      procedureCode: getCellIfPresent(cells, col('procedurecode') !== -1 ? col('procedurecode') : col('procedure_code')),
-      adjustmentReasonCodes: getCellIfPresent(cells, col('adjustmentreasoncodes') !== -1 ? col('adjustmentreasoncodes') : col('adjustment_reason_codes'))
-        ?.split(';').filter(Boolean),
-      reasonText: getCellIfPresent(cells, col('reasontext') !== -1 ? col('reasontext') : col('reason_text')),
+      serviceDate: getCellIfPresent(
+        cells,
+        col('servicedate') !== -1 ? col('servicedate') : col('service_date')
+      ),
+      procedureCode: getCellIfPresent(
+        cells,
+        col('procedurecode') !== -1 ? col('procedurecode') : col('procedure_code')
+      ),
+      adjustmentReasonCodes: getCellIfPresent(
+        cells,
+        col('adjustmentreasoncodes') !== -1
+          ? col('adjustmentreasoncodes')
+          : col('adjustment_reason_codes')
+      )
+        ?.split(';')
+        .filter(Boolean),
+      reasonText: getCellIfPresent(
+        cells,
+        col('reasontext') !== -1 ? col('reasontext') : col('reason_text')
+      ),
       matchStatus: 'unmatched',
     });
   }

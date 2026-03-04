@@ -7,7 +7,11 @@
     "steps": [
       { "action": "login", "route": "POST /auth/login", "rpc": "XUS AV CODE" },
       { "action": "patient-search", "route": "GET /vista/patients", "rpc": "ORWPT LIST ALL" },
-      { "action": "demographics", "route": "GET /vista/patient-demographics", "rpc": "ORWPT16 DEMOG" },
+      {
+        "action": "demographics",
+        "route": "GET /vista/patient-demographics",
+        "rpc": "ORWPT16 DEMOG"
+      },
       { "action": "vitals-read", "route": "GET /vista/vitals", "rpc": "ORQQVI VITALS" },
       { "action": "note-create", "route": "POST /cprs/tiu/notes", "rpc": "TIU CREATE RECORD" },
       { "action": "orders-view", "route": "GET /cprs/orders", "rpc": "ORWORB FASTUSER" },

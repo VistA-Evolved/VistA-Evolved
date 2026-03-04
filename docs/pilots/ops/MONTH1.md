@@ -3,6 +3,7 @@
 > Phase 417 (W24-P9): Post-Go-Live Operations
 
 ## Overview
+
 Month 1 focuses on long-term stability validation, capacity planning,
 and preparation for general availability expansion.
 
@@ -11,6 +12,7 @@ and preparation for general availability expansion.
 ## Weekly Cadence (Weeks 2-4)
 
 ### Weekly Review Meeting
+
 - [ ] SLO dashboard walk-through
 - [ ] Error budget burn rate
 - [ ] Incident review + post-mortems
@@ -18,6 +20,7 @@ and preparation for general availability expansion.
 - [ ] Capacity metrics review
 
 ### Weekly Checks
+
 - [ ] Database growth rate
 - [ ] Audit trail chain integrity (`GET /imaging/audit/verify`)
 - [ ] Backup verification (restore test monthly)
@@ -29,12 +32,14 @@ and preparation for general availability expansion.
 ## Week 2: Stability Confirmation
 
 ### Performance Trending
+
 - [ ] Compare Week 2 baseline to Week 1
 - [ ] Document any degradation trends
 - [ ] Memory leak detection (heap snapshots)
 - [ ] Connection pool exhaustion check
 
 ### Integration Health
+
 - [ ] HL7 message throughput (if applicable)
 - [ ] FHIR call success rate
 - [ ] Payer connectivity (if RCM active)
@@ -45,12 +50,14 @@ and preparation for general availability expansion.
 ## Week 3: Capacity Planning
 
 ### Growth Projections
+
 - [ ] Current user count vs projected
 - [ ] Request rate growth rate
 - [ ] Database size growth rate
 - [ ] Audit trail growth rate
 
 ### Scaling Readiness
+
 - [ ] Horizontal scaling tested (multiple API instances)
 - [ ] PG connection pool adequate
 - [ ] Rate limiter thresholds appropriate
@@ -61,26 +68,29 @@ and preparation for general availability expansion.
 ## Week 4: Month 1 Assessment
 
 ### SLO Monthly Report
-| SLO | Week 1 | Week 2 | Week 3 | Week 4 | Target |
-|-----|--------|--------|--------|--------|--------|
-| Availability | | | | | 99.5% |
-| Latency p99 | | | | | < 3s |
-| RPC Success | | | | | 99.0% |
-| Error Rate | | | | | < 1% |
-| Login Success | | | | | 99.5% |
-| Data Plane | | | | | 100% |
+
+| SLO           | Week 1 | Week 2 | Week 3 | Week 4 | Target |
+| ------------- | ------ | ------ | ------ | ------ | ------ |
+| Availability  |        |        |        |        | 99.5%  |
+| Latency p99   |        |        |        |        | < 3s   |
+| RPC Success   |        |        |        |        | 99.0%  |
+| Error Rate    |        |        |        |        | < 1%   |
+| Login Success |        |        |        |        | 99.5%  |
+| Data Plane    |        |        |        |        | 100%   |
 
 ### Incident Trend
-| Week | P0 | P1 | P2 | P3 | Total |
-|------|----|----|----|----|-------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
+
+| Week | P0  | P1  | P2  | P3  | Total |
+| ---- | --- | --- | --- | --- | ----- |
+| 1    |     |     |     |     |       |
+| 2    |     |     |     |     |       |
+| 3    |     |     |     |     |       |
+| 4    |     |     |     |     |       |
 
 ### Error Budget Status
-- Budget consumed: _____%
-- Budget remaining: _____%
+
+- Budget consumed: **\_**%
+- Budget remaining: **\_**%
 - Budget tier: [ ] Green / [ ] Yellow / [ ] Red
 
 ---

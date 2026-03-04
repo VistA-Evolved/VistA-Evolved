@@ -24,38 +24,40 @@
  *   2 — no golden baseline found
  */
 
-import { readFileSync, readdirSync, existsSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, "..");
-const DEFAULT_TRACE_DIR = join(ROOT, "data", "rpc-traces");
-const DEFAULT_GOLDEN_DIR = join(DEFAULT_TRACE_DIR, "golden");
+const ROOT = join(__dirname, '..');
+const DEFAULT_TRACE_DIR = join(ROOT, 'data', 'rpc-traces');
+const DEFAULT_GOLDEN_DIR = join(DEFAULT_TRACE_DIR, 'golden');
 
 /* ── CLI ──────────────────────────────────────────────────── */
 
 const args = process.argv.slice(2);
-function flag(name) { return args.includes(name); }
+function flag(name) {
+  return args.includes(name);
+}
 function opt(name, fallback) {
   const idx = args.indexOf(name);
   return idx >= 0 && args[idx + 1] ? args[idx + 1] : fallback;
 }
 
-const LIST_MODE = flag("--list");
-const ALL_MODE = flag("--all");
-const STRICT = flag("--strict");
-const GOLDEN_DIR = opt("--golden", DEFAULT_GOLDEN_DIR);
-const TRACE_FILE = opt("--trace", null);
-const WORKFLOW = args.find((a) => !a.startsWith("-"));
+const LIST_MODE = flag('--list');
+const ALL_MODE = flag('--all');
+const STRICT = flag('--strict');
+const GOLDEN_DIR = opt('--golden', DEFAULT_GOLDEN_DIR);
+const TRACE_FILE = opt('--trace', null);
+const WORKFLOW = args.find((a) => !a.startsWith('-'));
 
 /* ── Helpers ──────────────────────────────────────────────── */
 
 function loadJsonl(filepath) {
-  let raw = readFileSync(filepath, "utf-8").trim();
+  let raw = readFileSync(filepath, 'utf-8').trim();
   // Strip BOM if present (BUG-064: PowerShell Set-Content adds UTF-8 BOM)
   if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
-  const lines = raw.split("\n");
+  const lines = raw.split('\n');
   const meta = JSON.parse(lines[0]);
   const entries = lines.slice(1).map((l) => JSON.parse(l));
   return { meta, entries };
@@ -64,7 +66,7 @@ function loadJsonl(filepath) {
 function findLatestTrace(workflow, dir) {
   if (!existsSync(dir)) return null;
   const files = readdirSync(dir)
-    .filter((f) => f.startsWith(workflow + "_") && f.endsWith(".jsonl"))
+    .filter((f) => f.startsWith(workflow + '_') && f.endsWith('.jsonl'))
     .sort()
     .reverse();
   return files.length > 0 ? join(dir, files[0]) : null;
@@ -81,23 +83,28 @@ function compare(actual, golden) {
     const g = goldenRpcs[i];
     const a = actualRpcs[i];
     if (!g && a) {
-      diffs.push({ type: "extra", seq: i, rpc: a, detail: `Extra: ${a}` });
+      diffs.push({ type: 'extra', seq: i, rpc: a, detail: `Extra: ${a}` });
     } else if (g && !a) {
-      diffs.push({ type: "missing", seq: i, rpc: g, detail: `Missing: ${g}` });
+      diffs.push({ type: 'missing', seq: i, rpc: g, detail: `Missing: ${g}` });
     } else if (g !== a) {
-      diffs.push({ type: "order", seq: i, rpc: a, detail: `Expected ${g}, got ${a}` });
+      diffs.push({ type: 'order', seq: i, rpc: a, detail: `Expected ${g}, got ${a}` });
     } else {
       const gSuccess = golden.entries[i].success;
       const aSuccess = actual.entries[i].success;
       if (gSuccess !== aSuccess) {
-        diffs.push({ type: "success", seq: i, rpc: a, detail: `golden=${gSuccess}, actual=${aSuccess}` });
+        diffs.push({
+          type: 'success',
+          seq: i,
+          rpc: a,
+          detail: `golden=${gSuccess}, actual=${aSuccess}`,
+        });
       } else {
         matched++;
       }
     }
   }
 
-  const criticalDiffs = diffs.filter((d) => d.type === "missing" || d.type === "extra");
+  const criticalDiffs = diffs.filter((d) => d.type === 'missing' || d.type === 'extra');
   return {
     passed: STRICT ? diffs.length === 0 : criticalDiffs.length === 0,
     workflow: actual.meta.workflow,
@@ -112,20 +119,20 @@ function compare(actual, golden) {
 /* ── Main ─────────────────────────────────────────────────── */
 
 function main() {
-  console.log("RPC Contract Trace Comparator (Phase 479)\n");
+  console.log('RPC Contract Trace Comparator (Phase 479)\n');
 
   // List mode
   if (LIST_MODE) {
     if (!existsSync(GOLDEN_DIR)) {
-      console.log("No golden directory found at:", GOLDEN_DIR);
+      console.log('No golden directory found at:', GOLDEN_DIR);
       process.exit(0);
     }
-    const files = readdirSync(GOLDEN_DIR).filter((f) => f.endsWith(".jsonl"));
+    const files = readdirSync(GOLDEN_DIR).filter((f) => f.endsWith('.jsonl'));
     if (files.length === 0) {
-      console.log("No golden traces found.");
+      console.log('No golden traces found.');
       process.exit(0);
     }
-    console.log("Golden baselines:");
+    console.log('Golden baselines:');
     for (const f of files) {
       try {
         const { meta } = loadJsonl(join(GOLDEN_DIR, f));
@@ -140,11 +147,11 @@ function main() {
   // All mode
   if (ALL_MODE) {
     if (!existsSync(GOLDEN_DIR)) {
-      console.log("No golden directory. Nothing to compare.");
+      console.log('No golden directory. Nothing to compare.');
       process.exit(2);
     }
-    const goldenFiles = readdirSync(GOLDEN_DIR).filter((f) => f.endsWith(".jsonl"));
-    const workflows = [...new Set(goldenFiles.map((f) => f.split("_")[0]))];
+    const goldenFiles = readdirSync(GOLDEN_DIR).filter((f) => f.endsWith('.jsonl'));
+    const workflows = [...new Set(goldenFiles.map((f) => f.split('_')[0]))];
 
     let allPassed = true;
     let compared = 0;
@@ -182,9 +189,9 @@ function main() {
 
   // Single workflow mode
   if (!WORKFLOW) {
-    console.error("Usage: node rpc-contract-compare.mjs <workflow> [--trace FILE] [--golden DIR]");
-    console.error("       node rpc-contract-compare.mjs --list");
-    console.error("       node rpc-contract-compare.mjs --all");
+    console.error('Usage: node rpc-contract-compare.mjs <workflow> [--trace FILE] [--golden DIR]');
+    console.error('       node rpc-contract-compare.mjs --list');
+    console.error('       node rpc-contract-compare.mjs --all');
     process.exit(2);
   }
 
@@ -224,7 +231,7 @@ function main() {
   } else {
     console.log(`FAIL  Contract mismatch`);
     for (const d of result.diffs) {
-      const prefix = d.type === "missing" || d.type === "extra" ? "!!" : "  ";
+      const prefix = d.type === 'missing' || d.type === 'extra' ? '!!' : '  ';
       console.log(`  ${prefix} [${d.type}] seq=${d.seq} ${d.detail}`);
     }
   }

@@ -3,6 +3,7 @@
 ## Verification Gates
 
 ### Infrastructure (5 gates)
+
 1. `services/keycloak/docker-compose.yml` exists and is valid YAML
 2. `infra/keycloak/realm-export.json` exists with realm, clients, roles
 3. `infra/opa/policy/authz.rego` exists with default-deny policy
@@ -10,6 +11,7 @@
 5. WebAuthn passwordless policy configured in realm export
 
 ### OIDC/JWT Auth (8 gates)
+
 6. `oidc-provider.ts` exports OIDC config loader
 7. `jwt-validator.ts` exports JWT validation function
 8. JWT validation rejects expired tokens
@@ -20,6 +22,7 @@
 13. Backward compatible: existing cookie auth still works
 
 ### Policy Authorization (10 gates)
+
 14. `policy-engine.ts` exports evaluatePolicy function
 15. Policy engine has default-deny behavior
 16. Policy maps action strings to required roles
@@ -32,6 +35,7 @@
 23. Tenant/site attribute in policy context
 
 ### Immutable Audit (10 gates)
+
 24. `immutable-audit.ts` exports append-only store
 25. Each audit entry has SHA-256 hash of previous
 26. Hash chain verification function exported
@@ -44,6 +48,7 @@
 33. Audit rotation/retention configurable
 
 ### Biometrics (8 gates)
+
 34. `BiometricAuthProvider` interface exported
 35. `PasskeysProvider` implements interface
 36. `FaceVerificationProvider` implements interface
@@ -54,12 +59,14 @@
 41. Liveness check scaffold in face provider
 
 ### Audit Viewer (4 gates)
+
 42. Admin audit viewer page exists
 43. Page requires admin role
 44. Events displayed without raw PHI
 45. Filtering by action/actor/time supported
 
 ### Integration (8 gates)
+
 46. Existing Phase 33 routes still accessible
 47. No console.log added (structured logger only)
 48. AGENTS.md updated with Phase 35 notes
@@ -70,6 +77,7 @@
 53. Graceful shutdown still works
 
 ### Verification Script
+
 54. `scripts/verify-phase35-iam-authz-audit.ps1` exists
 55. `scripts/verify-latest.ps1` delegates to Phase 35
 56. All file existence checks pass
@@ -77,6 +85,7 @@
 58. No secret leakage patterns detected
 
 ## Run
+
 ```powershell
 .\scripts\verify-phase35-iam-authz-audit.ps1
 ```

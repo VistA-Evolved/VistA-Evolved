@@ -21,7 +21,7 @@ import type {
   NextQuestionResult,
   DraftClinicianSummary,
   QuestionnaireItem,
-} from "../types.js";
+} from '../types.js';
 
 /* ------------------------------------------------------------------ */
 /* Provider Identifier                                                  */
@@ -39,26 +39,26 @@ import type {
 export type BrainProviderId = string;
 
 /** Provider family extracted from the id. */
-export type BrainProviderFamily = "rules_engine" | "llm_provider" | "third_party";
+export type BrainProviderFamily = 'rules_engine' | 'llm_provider' | 'third_party';
 
 export function parseBrainProviderId(id: BrainProviderId): {
   family: BrainProviderFamily;
   variant: string;
 } {
-  if (id === "rules_engine" || id === "rules") {
-    return { family: "rules_engine", variant: "default" };
+  if (id === 'rules_engine' || id === 'rules') {
+    return { family: 'rules_engine', variant: 'default' };
   }
-  if (id.startsWith("llm_provider:")) {
-    return { family: "llm_provider", variant: id.slice("llm_provider:".length) };
+  if (id.startsWith('llm_provider:')) {
+    return { family: 'llm_provider', variant: id.slice('llm_provider:'.length) };
   }
-  if (id.startsWith("third_party:")) {
-    return { family: "third_party", variant: id.slice("third_party:".length) };
+  if (id.startsWith('third_party:')) {
+    return { family: 'third_party', variant: id.slice('third_party:'.length) };
   }
   // Legacy BrainProvider values
-  if (id === "vendor_adapter") return { family: "third_party", variant: "vendor" };
-  if (id === "llm_constrained") return { family: "llm_provider", variant: "default" };
+  if (id === 'vendor_adapter') return { family: 'third_party', variant: 'vendor' };
+  if (id === 'llm_constrained') return { family: 'llm_provider', variant: 'default' };
   // Default to rules
-  return { family: "rules_engine", variant: "default" };
+  return { family: 'rules_engine', variant: 'default' };
 }
 
 /* ------------------------------------------------------------------ */
@@ -75,7 +75,7 @@ export interface BrainDecisionAudit {
   /** Provider family */
   providerFamily: BrainProviderFamily;
   /** Decision type */
-  decisionType: "next_question" | "submit_answer" | "finalize_summary" | "start_session";
+  decisionType: 'next_question' | 'submit_answer' | 'finalize_summary' | 'start_session';
   /** Input hash (SHA-256 of inputs, no PHI) */
   inputHash: string;
   /** Output hash (SHA-256 of output) */
@@ -101,7 +101,7 @@ export interface BrainDecisionAudit {
 export interface BrainProviderHealth {
   providerId: BrainProviderId;
   family: BrainProviderFamily;
-  status: "healthy" | "degraded" | "unavailable";
+  status: 'healthy' | 'degraded' | 'unavailable';
   lastCheckAt: string;
   detail?: string;
 }
@@ -145,10 +145,7 @@ export interface IntakeBrainPlugin {
    * Initialize a brain session. Called when an intake session starts or
    * switches provider. Returns any provider-specific session state.
    */
-  startSession(
-    session: IntakeSession,
-    context: IntakeContext
-  ): Promise<BrainSessionState>;
+  startSession(session: IntakeSession, context: IntakeContext): Promise<BrainSessionState>;
 
   /**
    * Determine the next set of questions. May use rules, LLM ranking,
@@ -225,13 +222,13 @@ export interface BrainSubmitResult {
   /** Red flags detected from this answer */
   newRedFlags: Array<{
     flag: string;
-    severity: "info" | "warning" | "critical" | "high" | "medium";
+    severity: 'info' | 'warning' | 'critical' | 'high' | 'medium';
     triggerLinkId: string;
   }>;
   /** Complaint clusters resolved or expanded */
   clusterUpdates: Array<{
     clusterId: string;
-    action: "expanded" | "resolved" | "escalated";
+    action: 'expanded' | 'resolved' | 'escalated';
   }>;
   /** Updated brain state */
   brainState: BrainSessionState;

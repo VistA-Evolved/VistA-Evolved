@@ -18,6 +18,7 @@ curl -s http://localhost:3001/rcm/directory/refresh \
 ```
 
 Expected response:
+
 ```json
 {
   "ok": true,
@@ -92,9 +93,9 @@ curl -s "http://localhost:3001/rcm/routing/resolve?payerId=PH-PHILHEALTH&jurisdi
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| 0 payers in directory | Importers not run | POST /rcm/directory/refresh |
-| ROUTE_NOT_FOUND | Payer has no channels | Check directory payer channels |
-| File import errors | Bad CSV format | Ensure payerId,name columns exist |
-| Stale directory | Refresh not run recently | POST /rcm/directory/refresh |
+| Symptom               | Cause                    | Fix                               |
+| --------------------- | ------------------------ | --------------------------------- |
+| 0 payers in directory | Importers not run        | POST /rcm/directory/refresh       |
+| ROUTE_NOT_FOUND       | Payer has no channels    | Check directory payer channels    |
+| File import errors    | Bad CSV format           | Ensure payerId,name columns exist |
+| Stale directory       | Refresh not run recently | POST /rcm/directory/refresh       |

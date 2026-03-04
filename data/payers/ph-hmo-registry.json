@@ -46,7 +46,12 @@
         }
       ],
       "status": "contracting_needed",
-      "contractingTasks": ["Obtain provider accreditation process", "Determine LOA submission method", "Identify claims submission workflow", "Request remittance/EOB format documentation"]
+      "contractingTasks": [
+        "Obtain provider accreditation process",
+        "Determine LOA submission method",
+        "Identify claims submission workflow",
+        "Request remittance/EOB format documentation"
+      ]
     },
     {
       "payerId": "PH-AVEGA",
@@ -79,7 +84,11 @@
         }
       ],
       "status": "contracting_needed",
-      "contractingTasks": ["Obtain provider network enrollment forms", "Determine LOA approval workflow", "Identify claims submission method"]
+      "contractingTasks": [
+        "Obtain provider network enrollment forms",
+        "Determine LOA approval workflow",
+        "Identify claims submission method"
+      ]
     },
     {
       "payerId": "PH-CAREHEALTH",
@@ -112,7 +121,11 @@
         }
       ],
       "status": "contracting_needed",
-      "contractingTasks": ["Contact for provider accreditation", "Determine LOA and claims workflow", "Request integration documentation"]
+      "contractingTasks": [
+        "Contact for provider accreditation",
+        "Determine LOA and claims workflow",
+        "Request integration documentation"
+      ]
     },
     {
       "payerId": "PH-CAREWELL",
@@ -145,7 +158,11 @@
         }
       ],
       "status": "contracting_needed",
-      "contractingTasks": ["Contact for provider accreditation", "Determine LOA submission process", "Identify claims and remittance workflows"]
+      "contractingTasks": [
+        "Contact for provider accreditation",
+        "Determine LOA submission process",
+        "Identify claims and remittance workflows"
+      ]
     },
     {
       "payerId": "PH-CARITAS",
@@ -178,7 +195,11 @@
         }
       ],
       "status": "contracting_needed",
-      "contractingTasks": ["Obtain provider accreditation (Catholic health network)", "Determine LOA approval workflow", "Request claims submission instructions"]
+      "contractingTasks": [
+        "Obtain provider accreditation (Catholic health network)",
+        "Determine LOA approval workflow",
+        "Request claims submission instructions"
+      ]
     },
     {
       "payerId": "PH-COCOLIFE",
@@ -211,7 +232,11 @@
         }
       ],
       "status": "contracting_needed",
-      "contractingTasks": ["Obtain provider accreditation forms", "Determine LOA and claims workflow", "Request integration documentation"]
+      "contractingTasks": [
+        "Obtain provider accreditation forms",
+        "Determine LOA and claims workflow",
+        "Request integration documentation"
+      ]
     },
     {
       "payerId": "PH-EASTWEST",
@@ -244,7 +269,11 @@
         }
       ],
       "status": "contracting_needed",
-      "contractingTasks": ["Locate dedicated HMO operations contact", "Obtain provider enrollment process", "Determine LOA and claims workflow"]
+      "contractingTasks": [
+        "Locate dedicated HMO operations contact",
+        "Obtain provider enrollment process",
+        "Determine LOA and claims workflow"
+      ]
     },
     {
       "payerId": "PH-FORTICARE",
@@ -277,7 +306,11 @@
         }
       ],
       "status": "contracting_needed",
-      "contractingTasks": ["Contact for provider accreditation process", "Determine LOA and claims submission workflow", "Request remittance format documentation"]
+      "contractingTasks": [
+        "Contact for provider accreditation process",
+        "Determine LOA and claims submission workflow",
+        "Request remittance format documentation"
+      ]
     },
     {
       "payerId": "PH-HEALTHMAINT",
@@ -302,7 +335,11 @@
       "integrationMode": "manual",
       "evidence": [],
       "status": "contracting_needed",
-      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+      "contractingTasks": [
+        "Locate current website or contact info",
+        "Obtain provider accreditation process",
+        "Determine all integration workflows"
+      ]
     },
     {
       "payerId": "PH-HEALTHPLAN",
@@ -327,7 +364,11 @@
       "integrationMode": "manual",
       "evidence": [],
       "status": "contracting_needed",
-      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+      "contractingTasks": [
+        "Locate current website or contact info",
+        "Obtain provider accreditation process",
+        "Determine all integration workflows"
+      ]
     },
     {
       "payerId": "PH-HEALTHFIRST",
@@ -352,7 +393,11 @@
       "integrationMode": "manual",
       "evidence": [],
       "status": "contracting_needed",
-      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+      "contractingTasks": [
+        "Locate current website or contact info",
+        "Obtain provider accreditation process",
+        "Determine all integration workflows"
+      ]
     },
     {
       "payerId": "PH-ICARE",
@@ -377,7 +422,11 @@
       "integrationMode": "manual",
       "evidence": [],
       "status": "contracting_needed",
-      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+      "contractingTasks": [
+        "Locate current website or contact info",
+        "Obtain provider accreditation process",
+        "Determine all integration workflows"
+      ]
     },
     {
       "payerId": "PH-INSULAR",
@@ -410,7 +459,11 @@
         }
       ],
       "status": "contracting_needed",
-      "contractingTasks": ["Obtain provider accreditation forms", "Determine LOA approval workflow", "Request claims submission instructions"]
+      "contractingTasks": [
+        "Obtain provider accreditation forms",
+        "Determine LOA approval workflow",
+        "Request claims submission instructions"
+      ]
     },
     {
       "payerId": "PH-INTELLICARE",
@@ -450,7 +503,11 @@
         }
       ],
       "status": "in_progress",
-      "contractingTasks": ["Complete provider portal onboarding", "Document LOA submission workflow from portal", "Map claims status codes"]
+      "contractingTasks": [
+        "Complete provider portal onboarding",
+        "Document LOA submission workflow from portal",
+        "Map claims status codes"
+      ]
     },
     {
       "payerId": "PH-KAISER-INTL",
@@ -483,7 +540,11 @@
         }
       ],
       "status": "contracting_needed",
-      "contractingTasks": ["Obtain provider accreditation process", "Determine LOA and claims workflow", "Request integration documentation"]
+      "contractingTasks": [
+        "Obtain provider accreditation process",
+        "Determine LOA and claims workflow",
+        "Request integration documentation"
+      ]
     },
     {
       "payerId": "PH-LIFEHEALTH",
@@ -508,7 +569,11 @@
       "integrationMode": "manual",
       "evidence": [],
       "status": "contracting_needed",
-      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+      "contractingTasks": [
+        "Locate current website or contact info",
+        "Obtain provider accreditation process",
+        "Determine all integration workflows"
+      ]
     },
     {
       "payerId": "PH-MAXICARE",
@@ -555,7 +620,11 @@
         }
       ],
       "status": "in_progress",
-      "contractingTasks": ["Complete MaxiLink portal onboarding", "Document full LOA→claims→remittance workflow", "Map SOA/remittance format for import"]
+      "contractingTasks": [
+        "Complete MaxiLink portal onboarding",
+        "Document full LOA→claims→remittance workflow",
+        "Map SOA/remittance format for import"
+      ]
     },
     {
       "payerId": "PH-MEDICARD",
@@ -595,7 +664,12 @@
         }
       ],
       "status": "in_progress",
-      "contractingTasks": ["Complete provider portal onboarding", "Document LOA submission workflow", "Map claims status codes", "Determine remittance/SOA format"]
+      "contractingTasks": [
+        "Complete provider portal onboarding",
+        "Document LOA submission workflow",
+        "Map claims status codes",
+        "Determine remittance/SOA format"
+      ]
     },
     {
       "payerId": "PH-MEDILINK",
@@ -620,7 +694,11 @@
       "integrationMode": "manual",
       "evidence": [],
       "status": "contracting_needed",
-      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+      "contractingTasks": [
+        "Locate current website or contact info",
+        "Obtain provider accreditation process",
+        "Determine all integration workflows"
+      ]
     },
     {
       "payerId": "PH-METROCARE",
@@ -645,7 +723,11 @@
       "integrationMode": "manual",
       "evidence": [],
       "status": "contracting_needed",
-      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+      "contractingTasks": [
+        "Locate current website or contact info",
+        "Obtain provider accreditation process",
+        "Determine all integration workflows"
+      ]
     },
     {
       "payerId": "PH-PACIFIC-CROSS",
@@ -678,7 +760,11 @@
         }
       ],
       "status": "contracting_needed",
-      "contractingTasks": ["Obtain provider network enrollment", "Determine LOA process (international vs domestic)", "Request claims submission workflow"]
+      "contractingTasks": [
+        "Obtain provider network enrollment",
+        "Determine LOA process (international vs domestic)",
+        "Request claims submission workflow"
+      ]
     },
     {
       "payerId": "PH-PHILCARE",
@@ -718,7 +804,11 @@
         }
       ],
       "status": "in_progress",
-      "contractingTasks": ["Complete provider portal onboarding", "Document LOA and claims workflow", "Map claim status tracking capabilities"]
+      "contractingTasks": [
+        "Complete provider portal onboarding",
+        "Document LOA and claims workflow",
+        "Map claim status tracking capabilities"
+      ]
     },
     {
       "payerId": "PH-PHILBRITISH",
@@ -743,7 +833,11 @@
       "integrationMode": "manual",
       "evidence": [],
       "status": "contracting_needed",
-      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+      "contractingTasks": [
+        "Locate current website or contact info",
+        "Obtain provider accreditation process",
+        "Determine all integration workflows"
+      ]
     },
     {
       "payerId": "PH-PHCP",
@@ -768,7 +862,11 @@
       "integrationMode": "manual",
       "evidence": [],
       "status": "contracting_needed",
-      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+      "contractingTasks": [
+        "Locate current website or contact info",
+        "Obtain provider accreditation process",
+        "Determine all integration workflows"
+      ]
     },
     {
       "payerId": "PH-PHP",
@@ -793,7 +891,11 @@
       "integrationMode": "manual",
       "evidence": [],
       "status": "contracting_needed",
-      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+      "contractingTasks": [
+        "Locate current website or contact info",
+        "Obtain provider accreditation process",
+        "Determine all integration workflows"
+      ]
     },
     {
       "payerId": "PH-STARCARE",
@@ -818,7 +920,11 @@
       "integrationMode": "manual",
       "evidence": [],
       "status": "contracting_needed",
-      "contractingTasks": ["Locate current website or contact info", "Obtain provider accreditation process", "Determine all integration workflows"]
+      "contractingTasks": [
+        "Locate current website or contact info",
+        "Obtain provider accreditation process",
+        "Determine all integration workflows"
+      ]
     },
     {
       "payerId": "PH-VALUCARE",
@@ -858,7 +964,11 @@
         }
       ],
       "status": "in_progress",
-      "contractingTasks": ["Complete provider portal onboarding", "Document LOA workflow", "Map claims submission process"]
+      "contractingTasks": [
+        "Complete provider portal onboarding",
+        "Document LOA workflow",
+        "Map claims submission process"
+      ]
     }
   ]
 }

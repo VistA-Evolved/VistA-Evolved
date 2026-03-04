@@ -1,10 +1,12 @@
 # Phase 276 — Durability: Read-Through Cache for PG-Backed Stores
 
 ## User Request
+
 Replace write-through-only patterns with read-through: on cache miss, check PG
 before returning null. Also hydrate critical Map stores from PG on startup.
 
 ## Inventory
+
 - 65 `pg_backed` stores in store-policy.ts
 - ~57 are write-through only (read from Map, never fall back to PG)
 - Only 5 have read-through: session-cache, payer-cache, module-overrides,
@@ -29,6 +31,7 @@ before returning null. Also hydrate critical Map stores from PG on startup.
    - `intake/intake-store.ts` — getSession falls through to PG
 
 ## Verification Steps
+
 - `readThroughGet` returns data from PG when Map is empty
 - QA gate script runs and reports coverage
 - Critical stores use read-through pattern

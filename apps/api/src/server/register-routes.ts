@@ -6,339 +6,350 @@
  * NO behavior change. NO route changes.
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 
 // Auth routes
-import authRoutes from "../auth/auth-routes.js";
-import { requireSession } from "../auth/auth-routes.js";
-import idpRoutes from "../auth/idp/idp-routes.js";
-import { initIdentityProviders } from "../auth/idp/index.js";
+import authRoutes from '../auth/auth-routes.js';
+import { requireSession } from '../auth/auth-routes.js';
+import idpRoutes from '../auth/idp/idp-routes.js';
+import { initIdentityProviders } from '../auth/idp/index.js';
 
 // WebSocket console
-import wsConsoleRoutes from "../routes/ws-console.js";
+import wsConsoleRoutes from '../routes/ws-console.js';
 
 // Capabilities + write-backs
-import capabilityRoutes from "../routes/capabilities.js";
-import writeBackRoutes from "../routes/write-backs.js";
+import capabilityRoutes from '../routes/capabilities.js';
+import writeBackRoutes from '../routes/write-backs.js';
 
 // Imaging domain
-import imagingRoutes from "../services/imaging-service.js";
-import imagingProxyRoutes from "../routes/imaging-proxy.js";
-import imagingWorklistRoutes from "../services/imaging-worklist.js";
-import imagingIngestRoutes from "../services/imaging-ingest.js";
-import { imagingAuthzRoutes } from "../services/imaging-authz.js";
-import { imagingDeviceRoutes } from "../services/imaging-devices.js";
-import { imagingAuditRoutes } from "../routes/imaging-audit-routes.js";
-import imagingViewerRoutes from "../routes/imaging-viewer.js";
+import imagingRoutes from '../services/imaging-service.js';
+import imagingProxyRoutes from '../routes/imaging-proxy.js';
+import imagingWorklistRoutes from '../services/imaging-worklist.js';
+import imagingIngestRoutes from '../services/imaging-ingest.js';
+import { imagingAuthzRoutes } from '../services/imaging-authz.js';
+import { imagingDeviceRoutes } from '../services/imaging-devices.js';
+import { imagingAuditRoutes } from '../routes/imaging-audit-routes.js';
+import imagingViewerRoutes from '../routes/imaging-viewer.js';
 
 // Admin + interop
-import adminRoutes from "../routes/admin.js";
-import interopRoutes from "../routes/interop.js";
-import vistaInteropRoutes from "../routes/vista-interop.js";
+import adminRoutes from '../routes/admin.js';
+import interopRoutes from '../routes/interop.js';
+import vistaInteropRoutes from '../routes/vista-interop.js';
 
 // Reporting + Analytics
-import reportingRoutes from "../routes/reporting.js";
-import analyticsRoutes from "../routes/analytics-routes.js";
+import reportingRoutes from '../routes/reporting.js';
+import analyticsRoutes from '../routes/analytics-routes.js';
 
 // Portal
-import portalAuthRoutes from "../routes/portal-auth.js";
-import { getPortalSession } from "../routes/portal-auth.js";
-import portalCoreRoutes, { initPortalCore } from "../routes/portal-core.js";
-import recordPortabilityRoutes, { initRecordPortability } from "../routes/record-portability.js";
-import { startCleanupJob as startPortabilityCleanup } from "../services/record-portability-store.js";
+import portalAuthRoutes from '../routes/portal-auth.js';
+import { getPortalSession } from '../routes/portal-auth.js';
+import portalCoreRoutes, { initPortalCore } from '../routes/portal-core.js';
+import recordPortabilityRoutes, { initRecordPortability } from '../routes/record-portability.js';
+import { startCleanupJob as startPortabilityCleanup } from '../services/record-portability-store.js';
 
 // Intake
-import intakeRoutes, { initIntakeRoutes } from "../intake/intake-routes.js";
-import "../intake/packs/index.js"; // registers 23 built-in packs
-import intakeBrainRoutes, { initBrainRoutes } from "../intake/brain-routes.js";
-import { initBrainPlugins } from "../intake/brain/index.js";
+import intakeRoutes, { initIntakeRoutes } from '../intake/intake-routes.js';
+import '../intake/packs/index.js'; // registers 23 built-in packs
+import intakeBrainRoutes, { initBrainRoutes } from '../intake/brain-routes.js';
+import { initBrainPlugins } from '../intake/brain/index.js';
 
 // Portal IAM
-import portalIamRoutes from "../portal-iam/portal-iam-routes.js";
-import { seedDevUsers } from "../portal-iam/portal-user-store.js";
+import portalIamRoutes from '../portal-iam/portal-iam-routes.js';
+import { seedDevUsers } from '../portal-iam/portal-user-store.js';
 
 // Telehealth
-import telehealthRoutes, { initTelehealthRoutes } from "../routes/telehealth.js";
-import { startRoomCleanup } from "../telehealth/room-store.js";
+import telehealthRoutes, { initTelehealthRoutes } from '../routes/telehealth.js';
+import { startRoomCleanup } from '../telehealth/room-store.js';
 
 // AI Gateway
-import aiGatewayRoutes, { initAiRoutes } from "../routes/ai-gateway.js";
+import aiGatewayRoutes, { initAiRoutes } from '../routes/ai-gateway.js';
 
 // IAM + Enterprise break-glass
-import iamRoutes from "../routes/iam-routes.js";
-import enterpriseBreakGlassRoutes from "../routes/enterprise-break-glass-routes.js";
-import { startBreakGlassCleanup } from "../auth/enterprise-break-glass.js";
+import iamRoutes from '../routes/iam-routes.js';
+import enterpriseBreakGlassRoutes from '../routes/enterprise-break-glass-routes.js';
+import { startBreakGlassCleanup } from '../auth/enterprise-break-glass.js';
 
 // Module system
-import moduleCapabilityRoutes from "../routes/module-capability-routes.js";
-import moduleEntitlementRoutes from "../routes/module-entitlement-routes.js";
+import moduleCapabilityRoutes from '../routes/module-capability-routes.js';
+import moduleEntitlementRoutes from '../routes/module-entitlement-routes.js';
 
 // RCM domain
-import rcmRoutes from "../rcm/rcm-routes.js";
-import vistaRcmRoutes from "../routes/vista-rcm.js";
-import rcmOpsRoutes from "../rcm/rcm-ops-routes.js";
-import payerOpsRoutes from "../rcm/payerOps/payerops-routes.js";
-import registryRoutes from "../rcm/payerOps/registry-routes.js";
-import philhealthRoutes from "../rcm/payerOps/philhealth-routes.js";
-import claimLifecycleRoutes from "../rcm/claims/claim-routes.js";
-import paymentRoutes from "../rcm/payments/payment-routes.js";
-import phHmoRoutes from "../rcm/payers/ph-hmo-routes.js";
-import loaRoutes from "../rcm/loa/loa-routes.js";
-import claimsWorkflowRoutes from "../rcm/workflows/claims-workflow-routes.js";
-import remittanceRoutes from "../rcm/workflows/remittance-routes.js";
-import payerAdminRoutes from "../rcm/payers/payer-admin-routes.js";
-import adminPayerDbRoutes from "../routes/admin-payer-db-routes.js";
-import eclaims3Routes from "../rcm/philhealth-eclaims3/eclaims3-routes.js";
-import qaRoutes from "../routes/qa-routes.js";
-import hmoPortalRoutes from "../rcm/hmo-portal/hmo-portal-routes.js";
-import { initHmoPortalAdapters } from "../rcm/hmo-portal/adapters/index.js";
-import phase97bRoutes from "../rcm/hmo-portal/phase97b-routes.js";
-import denialRoutes from "../rcm/denials/denial-routes.js";
-import reconciliationRoutes from "../rcm/reconciliation/recon-routes.js";
-import eligibilityClaimStatusRoutes from "../rcm/eligibility/routes.js";
-import credentialVaultRoutes from "../rcm/credential-vault/credential-vault-routes.js";
-import claimLifecycle111Routes from "../rcm/claim-lifecycle/claim-lifecycle-routes.js";
-import evidenceRoutes from "../rcm/evidence/evidence-routes.js";
-import { dossierRoutes } from "../routes/dossier-routes.js";
-import { philhealthTransportRoutes } from "../rcm/philhealth-eclaims3/transport-routes.js";
-import { clearinghouseGatewayRoutes } from "../rcm/connectors/clearinghouse-gateway-routes.js";
-import { denialPipelineRoutes } from "../rcm/denials/denial-pipeline-routes.js";
+import rcmRoutes from '../rcm/rcm-routes.js';
+import vistaRcmRoutes from '../routes/vista-rcm.js';
+import rcmOpsRoutes from '../rcm/rcm-ops-routes.js';
+import payerOpsRoutes from '../rcm/payerOps/payerops-routes.js';
+import registryRoutes from '../rcm/payerOps/registry-routes.js';
+import philhealthRoutes from '../rcm/payerOps/philhealth-routes.js';
+import claimLifecycleRoutes from '../rcm/claims/claim-routes.js';
+import paymentRoutes from '../rcm/payments/payment-routes.js';
+import phHmoRoutes from '../rcm/payers/ph-hmo-routes.js';
+import loaRoutes from '../rcm/loa/loa-routes.js';
+import claimsWorkflowRoutes from '../rcm/workflows/claims-workflow-routes.js';
+import remittanceRoutes from '../rcm/workflows/remittance-routes.js';
+import payerAdminRoutes from '../rcm/payers/payer-admin-routes.js';
+import adminPayerDbRoutes from '../routes/admin-payer-db-routes.js';
+import eclaims3Routes from '../rcm/philhealth-eclaims3/eclaims3-routes.js';
+import qaRoutes from '../routes/qa-routes.js';
+import hmoPortalRoutes from '../rcm/hmo-portal/hmo-portal-routes.js';
+import { initHmoPortalAdapters } from '../rcm/hmo-portal/adapters/index.js';
+import phase97bRoutes from '../rcm/hmo-portal/phase97b-routes.js';
+import denialRoutes from '../rcm/denials/denial-routes.js';
+import reconciliationRoutes from '../rcm/reconciliation/recon-routes.js';
+import eligibilityClaimStatusRoutes from '../rcm/eligibility/routes.js';
+import credentialVaultRoutes from '../rcm/credential-vault/credential-vault-routes.js';
+import claimLifecycle111Routes from '../rcm/claim-lifecycle/claim-lifecycle-routes.js';
+import evidenceRoutes from '../rcm/evidence/evidence-routes.js';
+import { dossierRoutes } from '../routes/dossier-routes.js';
+import { philhealthTransportRoutes } from '../rcm/philhealth-eclaims3/transport-routes.js';
+import { clearinghouseGatewayRoutes } from '../rcm/connectors/clearinghouse-gateway-routes.js';
+import { denialPipelineRoutes } from '../rcm/denials/denial-pipeline-routes.js';
 
 // SaaS Billing/Metering (Phase 284)
-import billingRoutes from "../billing/billing-routes.js";
+import billingRoutes from '../billing/billing-routes.js';
 
 // Feature Flag Evaluation (Phase 285)
-import flagEvalRoutes from "../flags/flag-eval-routes.js";
+import flagEvalRoutes from '../flags/flag-eval-routes.js';
 
 // Migration toolkit
-import migrationRoutes from "../migration/migration-routes.js";
+import migrationRoutes from '../migration/migration-routes.js';
 
 // CPRS
-import cprsWave1Routes from "../routes/cprs/wave1-routes.js";
-import cprsWave2Routes from "../routes/cprs/wave2-routes.js";
-import ordersCpoeRoutes from "../routes/cprs/orders-cpoe.js";
-import tiuNotesRoutes from "../routes/cprs/tiu-notes.js";
+import cprsWave1Routes from '../routes/cprs/wave1-routes.js';
+import cprsWave2Routes from '../routes/cprs/wave2-routes.js';
+import ordersCpoeRoutes from '../routes/cprs/orders-cpoe.js';
+import tiuNotesRoutes from '../routes/cprs/tiu-notes.js';
 
 // Scheduling + Messaging
-import schedulingRoutes from "../routes/scheduling/index.js";
-import messagingRoutes from "../routes/messaging/index.js";
-import vistaMailmanRoutes from "../routes/vista-mailman.js";
-import portalMailmanRoutes, { initPortalMailman } from "../routes/portal-mailman.js";
+import schedulingRoutes from '../routes/scheduling/index.js';
+import messagingRoutes from '../routes/messaging/index.js';
+import vistaMailmanRoutes from '../routes/vista-mailman.js';
+import portalMailmanRoutes, { initPortalMailman } from '../routes/portal-mailman.js';
 
 // Portal documents
-import portalDocumentsRoutes, { initPortalDocuments } from "../routes/portal-documents.js";
+import portalDocumentsRoutes, { initPortalDocuments } from '../routes/portal-documents.js';
 
 // Clinical domain routes
-import immunizationsRoutes from "../routes/immunizations/index.js";
-import adtRoutes from "../routes/adt/index.js";
-import inpatientRoutes from "../routes/inpatient/index.js";
-import nursingRoutes from "../routes/nursing/index.js";
-import emarRoutes from "../routes/emar/index.js";
-import handoffRoutes from "../routes/handoff/index.js";
-import uiPrefsRoutes from "../routes/ui-prefs.js";
+import immunizationsRoutes from '../routes/immunizations/index.js';
+import adtRoutes from '../routes/adt/index.js';
+import inpatientRoutes from '../routes/inpatient/index.js';
+import nursingRoutes from '../routes/nursing/index.js';
+import emarRoutes from '../routes/emar/index.js';
+import handoffRoutes from '../routes/handoff/index.js';
+import uiPrefsRoutes from '../routes/ui-prefs.js';
 
 // Mental Health Assessment (Phase 535)
-import mhaRoutes from "../routes/mha/index.js";
-import clinicalProceduresRoutes from "../routes/clinical-procedures/index.js";
-import imagingCaptureRoutes from "../routes/imaging-capture/index.js";
-import longitudinalRoutes from "../routes/longitudinal/index.js";
-import hybridsRoutes from "../routes/hybrids/index.js";
+import mhaRoutes from '../routes/mha/index.js';
+import clinicalProceduresRoutes from '../routes/clinical-procedures/index.js';
+import imagingCaptureRoutes from '../routes/imaging-capture/index.js';
+import longitudinalRoutes from '../routes/longitudinal/index.js';
+import hybridsRoutes from '../routes/hybrids/index.js';
 
 // Service-line boards (Phase 464-471, W31)
-import edRoutes from "../service-lines/ed/ed-routes.js";
-import orRoutes from "../service-lines/or/or-routes.js";
-import icuRoutes from "../service-lines/icu/icu-routes.js";
+import edRoutes from '../service-lines/ed/ed-routes.js';
+import orRoutes from '../service-lines/or/or-routes.js';
+import icuRoutes from '../service-lines/icu/icu-routes.js';
 
 // Schema status (Phase 175)
-import schemaStatusRoutes from "../routes/admin/schema-status.js";
+import schemaStatusRoutes from '../routes/admin/schema-status.js';
 
 // FHIR R4 gateway (Phase 178)
-import fhirRoutes from "../fhir/fhir-routes.js";
-import smartConfigRoutes from "../fhir/smart-configuration.js";
+import fhirRoutes from '../fhir/fhir-routes.js';
+import smartConfigRoutes from '../fhir/smart-configuration.js';
 
 // HL7v2 Engine (Phase 239)
-import hl7EngineRoutes from "../routes/hl7-engine.js";
+import hl7EngineRoutes from '../routes/hl7-engine.js';
 
 // HL7v2 Routing (Phase 240)
-import hl7RoutingRoutes from "../routes/hl7-routing.js";
+import hl7RoutingRoutes from '../routes/hl7-routing.js';
 
 // HL7v2 Message Packs (Phase 241)
-import hl7PackRoutes from "../routes/hl7-packs.js";
+import hl7PackRoutes from '../routes/hl7-packs.js';
 
 // RCM Scale Hardening (Phase 242)
-import rcmScaleRoutes from "../routes/rcm-scale.js";
+import rcmScaleRoutes from '../routes/rcm-scale.js';
 
 // Onboarding Wizard (Phase 243)
-import onboardingRoutes from "../routes/onboarding-routes.js";
+import onboardingRoutes from '../routes/onboarding-routes.js';
 
 // Support Tooling (Phase 244)
-import supportRoutes from "../routes/support-routes.js";
+import supportRoutes from '../routes/support-routes.js';
 
 // Data Exports v2 (Phase 245)
-import exportV2Routes from "../routes/export-routes.js";
+import exportV2Routes from '../routes/export-routes.js';
 
 // Pilot Hospital Hardening (Phase 246)
-import pilotRoutes from "../routes/pilot-routes.js";
+import pilotRoutes from '../routes/pilot-routes.js';
 
 // --- Wave 8: Enterprise Integrations + Customer Ops (Phases 258-265) ---
 // HL7v2 Tenant Endpoints (Phase 258)
-import hl7TenantEndpointRoutes from "../routes/hl7-tenant-endpoints.js";
+import hl7TenantEndpointRoutes from '../routes/hl7-tenant-endpoints.js';
 // HL7v2 Message Pipeline (Phase 259)
-import { hl7PipelineRoutes } from "../routes/hl7-pipeline.js";
+import { hl7PipelineRoutes } from '../routes/hl7-pipeline.js';
 // HL7v2 Use Cases (Phase 260)
-import { hl7UseCaseRoutes } from "../routes/hl7-use-cases.js";
+import { hl7UseCaseRoutes } from '../routes/hl7-use-cases.js';
 // Payer Adapter SDK (Phase 261)
-import { adapterSdkRoutes } from "../routes/adapter-sdk-routes.js";
+import { adapterSdkRoutes } from '../routes/adapter-sdk-routes.js';
 // Onboarding Integration Steps (Phase 262)
-import { onboardingIntegrationRoutes } from "../routes/onboarding-integration-routes.js";
+import { onboardingIntegrationRoutes } from '../routes/onboarding-integration-routes.js';
 // Support Toolkit v2 (Phase 263)
-import { supportToolkitV2Routes } from "../routes/support-toolkit-v2-routes.js";
+import { supportToolkitV2Routes } from '../routes/support-toolkit-v2-routes.js';
 // Data Portability Exports (Phase 264)
-import { dataPortabilityRoutes } from "../routes/data-portability-routes.js";
+import { dataPortabilityRoutes } from '../routes/data-portability-routes.js';
 // SAT Suite + Degraded Mode (Phase 265)
-import { satRoutes } from "../routes/sat-routes.js";
+import { satRoutes } from '../routes/sat-routes.js';
 
 // Infrastructure routes
-import postureRoutes from "../posture/index.js";
-import { jobAdminRoutes } from "../routes/job-admin-routes.js";
-import hardeningRoutes from "../routes/hardening-routes.js";
-import { auditShippingRoutes } from "../routes/audit-shipping-routes.js";
-import i18nRoutes from "../routes/i18n-routes.js";
-import { templateRoutes } from "../templates/index.js";
-import { contentPackRoutes } from "../content-packs/index.js";
-import { inpatientCoreRoutes } from "../inpatient/index.js";
-import { pharmacyDeepRoutes } from "../pharmacy/index.js";
-import { labDeepRoutes } from "../lab/index.js";
-import { radiologyDeepRoutes } from "../radiology/index.js";
-import { cdsHooksRoutes } from "../cds/index.js";
-import { clinicalReasoningRoutes } from "../clinical-reasoning/index.js";
-import { localizationRoutes } from "../localization/index.js";
-import { queueRoutes } from "../queue/index.js";
-import { workflowRoutes } from "../workflows/index.js";
-import { switchboardRoutes, initSwitchboard } from "../workflow/index.js";
-import alignmentRoutes from "../routes/alignment-routes.js";
-import { perfRoutes } from "../performance/index.js";
-import moduleValidationRoutes from "../routes/module-validation-routes.js";
-import coverageRoutes from "../routes/coverage-routes.js";
-import qaJourneyRoutes from "../routes/qa-journey-routes.js";
-import medReconciliationRoutes from "../routes/med-reconciliation.js";
-import dischargeWorkflowRoutes from "../routes/discharge-workflow.js";
-import marSafetyRoutes from "../routes/mar-safety.js";
-import identityLinkingRoutes from "../routes/identity-linking.js";
-import opsAdminRoutes from "../routes/ops-admin.js";
-import certificationEvidenceRoutes from "../routes/certification-evidence.js";
-import vistaProvisionRoutes from "../routes/vista-provision.js";
+import postureRoutes from '../posture/index.js';
+import { jobAdminRoutes } from '../routes/job-admin-routes.js';
+import hardeningRoutes from '../routes/hardening-routes.js';
+import { auditShippingRoutes } from '../routes/audit-shipping-routes.js';
+import i18nRoutes from '../routes/i18n-routes.js';
+import { templateRoutes } from '../templates/index.js';
+import { contentPackRoutes } from '../content-packs/index.js';
+import { inpatientCoreRoutes } from '../inpatient/index.js';
+import { pharmacyDeepRoutes } from '../pharmacy/index.js';
+import { labDeepRoutes } from '../lab/index.js';
+import { radiologyDeepRoutes } from '../radiology/index.js';
+import { cdsHooksRoutes } from '../cds/index.js';
+import { clinicalReasoningRoutes } from '../clinical-reasoning/index.js';
+import { localizationRoutes } from '../localization/index.js';
+import { queueRoutes } from '../queue/index.js';
+import { workflowRoutes } from '../workflows/index.js';
+import { switchboardRoutes, initSwitchboard } from '../workflow/index.js';
+import alignmentRoutes from '../routes/alignment-routes.js';
+import { perfRoutes } from '../performance/index.js';
+import moduleValidationRoutes from '../routes/module-validation-routes.js';
+import coverageRoutes from '../routes/coverage-routes.js';
+import qaJourneyRoutes from '../routes/qa-journey-routes.js';
+import medReconciliationRoutes from '../routes/med-reconciliation.js';
+import dischargeWorkflowRoutes from '../routes/discharge-workflow.js';
+import marSafetyRoutes from '../routes/mar-safety.js';
+import identityLinkingRoutes from '../routes/identity-linking.js';
+import opsAdminRoutes from '../routes/ops-admin.js';
+import certificationEvidenceRoutes from '../routes/certification-evidence.js';
+import vistaProvisionRoutes from '../routes/vista-provision.js';
 
 // Wave 21: Device + Modality Integration (Phases 378-388)
-import { edgeGatewayRoutes, deviceRegistryRoutes, hl7v2IngestRoutes, astmPoct1aIngestRoutes, sdcIngestRoutes, alarmRoutes, infusionBcmaRoutes, imagingModalityRoutes, normalizationRoutes, startGatewayCleanup } from "../devices/index.js";
+import {
+  edgeGatewayRoutes,
+  deviceRegistryRoutes,
+  hl7v2IngestRoutes,
+  astmPoct1aIngestRoutes,
+  sdcIngestRoutes,
+  alarmRoutes,
+  infusionBcmaRoutes,
+  imagingModalityRoutes,
+  normalizationRoutes,
+  startGatewayCleanup,
+} from '../devices/index.js';
 
 // Wave 23: Longitudinal Interop + HIE + Multi-Country Exchange Packs (Phases 399-408)
-import { interopGatewayRoutes } from "../interop-gateway/index.js";
-import { mpiRoutes } from "../mpi/index.js";
-import { providerDirectoryRoutes } from "../provider-directory/index.js";
-import { documentExchangeRoutes } from "../document-exchange/index.js";
-import { bulkDataRoutes } from "../bulk-data/index.js";
-import { consentPouRoutes } from "../consent-pou/index.js";
-import { exchangePackRoutes } from "../exchange-packs/index.js";
+import { interopGatewayRoutes } from '../interop-gateway/index.js';
+import { mpiRoutes } from '../mpi/index.js';
+import { providerDirectoryRoutes } from '../provider-directory/index.js';
+import { documentExchangeRoutes } from '../document-exchange/index.js';
+import { bulkDataRoutes } from '../bulk-data/index.js';
+import { consentPouRoutes } from '../consent-pou/index.js';
+import { exchangePackRoutes } from '../exchange-packs/index.js';
 
 // Wave 24: Pilot Go-Lives + Stabilization (Phases 409-417)
-import { intakeRoutes as pilotIntakeRoutes } from "../pilots/intake/index.js";
-import { sreRoutes } from "../pilots/sre/index.js";
+import { intakeRoutes as pilotIntakeRoutes } from '../pilots/intake/index.js';
+import { sreRoutes } from '../pilots/sre/index.js';
 
 // Inline routes + domain auto-stubs
-import { registerInlineRoutes } from "./inline-routes.js";
-import { registerDomainRoutes } from "../routes/index.js";
+import { registerInlineRoutes } from './inline-routes.js';
+import { registerDomainRoutes } from '../routes/index.js';
 
 // Writeback command bus (Phase 300)
-import writebackCommandRoutes from "../writeback/writeback-routes.js";
+import writebackCommandRoutes from '../writeback/writeback-routes.js';
 
 // Wave 13: Regulatory/Compliance + Multi-Country (Phases 311-315)
-import { dataResidencyRoutes } from "../routes/data-residency-routes.js";
-import { consentRoutes } from "../routes/consent-routes.js";
-import { terminologyRoutes } from "../routes/terminology-routes.js";
-import { initTerminologyResolvers } from "../services/terminology-registry.js";
-import { countryPackRoutes } from "../routes/country-pack-routes.js";
-import { countryPolicyHook } from "../middleware/country-policy-hook.js";
-import { dsarRoutes } from "../routes/dsar-routes.js";
-import { utf8Routes } from "../routes/utf8-routes.js";
-import { conformanceRoutes } from "../routes/conformance-routes.js";
-import { complianceRoutes } from "../routes/compliance-routes.js";
-import regulatoryRoutes from "../routes/regulatory-routes.js";
+import { dataResidencyRoutes } from '../routes/data-residency-routes.js';
+import { consentRoutes } from '../routes/consent-routes.js';
+import { terminologyRoutes } from '../routes/terminology-routes.js';
+import { initTerminologyResolvers } from '../services/terminology-registry.js';
+import { countryPackRoutes } from '../routes/country-pack-routes.js';
+import { countryPolicyHook } from '../middleware/country-policy-hook.js';
+import { dsarRoutes } from '../routes/dsar-routes.js';
+import { utf8Routes } from '../routes/utf8-routes.js';
+import { conformanceRoutes } from '../routes/conformance-routes.js';
+import { complianceRoutes } from '../routes/compliance-routes.js';
+import regulatoryRoutes from '../routes/regulatory-routes.js';
 
 // Wave 14: Enterprise Interop (Phase 318)
-import { integrationControlPlaneRoutes } from "../routes/integration-control-plane-routes.js";
+import { integrationControlPlaneRoutes } from '../routes/integration-control-plane-routes.js';
 
 // Wave 14: HL7v2 Message Templates (Phase 319)
-import { hl7TemplateRoutes } from "../routes/hl7-templates.js";
+import { hl7TemplateRoutes } from '../routes/hl7-templates.js';
 
 // Wave 14: HL7v2 Ops Maturity (Phase 320)
-import { hl7OpsRoutes } from "../routes/hl7-ops.js";
+import { hl7OpsRoutes } from '../routes/hl7-ops.js';
 
 // Wave 14: X12 Gateway Service (Phase 321)
-import { x12GatewayRoutes } from "../routes/x12-gateway.js";
+import { x12GatewayRoutes } from '../routes/x12-gateway.js';
 
 // Wave 14: Clearinghouse Transport (Phase 322)
-import { clearinghouseTransportRoutes } from "../routes/clearinghouse-transport.js";
+import { clearinghouseTransportRoutes } from '../routes/clearinghouse-transport.js';
 
 // Wave 14: Certification Pipeline (Phase 323)
-import certificationPipelineRoutes from "../routes/certification-pipeline.js";
+import certificationPipelineRoutes from '../routes/certification-pipeline.js';
 
 // Wave 14: Marketplace/Registry (Phase 324)
-import marketplaceRoutes from "../routes/marketplace.js";
+import marketplaceRoutes from '../routes/marketplace.js';
 
 // Wave 14: Onboarding UX (Phase 325)
-import integrationOnboardingRoutes from "../routes/onboarding.js";
+import integrationOnboardingRoutes from '../routes/onboarding.js';
 
 // Wave 15: Multi-Cluster Registry (Phase 328)
-import multiClusterRoutes from "../routes/multi-cluster-routes.js";
+import multiClusterRoutes from '../routes/multi-cluster-routes.js';
 
 // Wave 15: Global Routing (Phase 329)
-import globalRoutingRoutes from "../routes/global-routing-routes.js";
+import globalRoutingRoutes from '../routes/global-routing-routes.js';
 
 // Wave 15: Data Plane Sharding (Phase 330)
-import dataPlaneShardingRoutes from "../routes/data-plane-sharding-routes.js";
-import queueCacheRegionalRoutes from "../routes/queue-cache-regional-routes.js";
-import costAttributionRoutes from "../routes/cost-attribution-routes.js";
-import drGamedayRoutes from "../routes/dr-gameday-routes.js";
-import scalePerformanceRoutes from "../routes/scale-performance-routes.js";
-import sreSupportPostureRoutes from "../routes/sre-support-posture-routes.js";
-import scaleCertRunnerRoutes from "../routes/scale-cert-runner-routes.js";
+import dataPlaneShardingRoutes from '../routes/data-plane-sharding-routes.js';
+import queueCacheRegionalRoutes from '../routes/queue-cache-regional-routes.js';
+import costAttributionRoutes from '../routes/cost-attribution-routes.js';
+import drGamedayRoutes from '../routes/dr-gameday-routes.js';
+import scalePerformanceRoutes from '../routes/scale-performance-routes.js';
+import sreSupportPostureRoutes from '../routes/sre-support-posture-routes.js';
+import scaleCertRunnerRoutes from '../routes/scale-cert-runner-routes.js';
 
 // Wave 16: Enterprise Security + Governance (Phases 337-345)
-import sessionManagementRoutes from "../routes/session-management.js";
-import scimRoutes from "../routes/scim-routes.js";
-import { secretsRoutes } from "../routes/secrets-routes.js";
-import { tenantSecurityRoutes } from "../routes/tenant-security-routes.js";
-import { privacyRoutes } from "../routes/privacy-routes.js";
-import { siemRoutes } from "../routes/siem-routes.js";
+import sessionManagementRoutes from '../routes/session-management.js';
+import scimRoutes from '../routes/scim-routes.js';
+import { secretsRoutes } from '../routes/secrets-routes.js';
+import { tenantSecurityRoutes } from '../routes/tenant-security-routes.js';
+import { privacyRoutes } from '../routes/privacy-routes.js';
+import { siemRoutes } from '../routes/siem-routes.js';
 
 // Wave 17: Multi-Facility + Dept Packs + Workflow Inbox + Patient Comms (Phases 346-353)
-import { facilityRoutes } from "../routes/facility-routes.js";
-import { deptRbacRoutes } from "../routes/dept-rbac-routes.js";
-import { deptPackRoutes } from "../routes/dept-pack-routes.js";
-import { workflowInboxRoutes } from "../routes/workflow-inbox-routes.js";
-import { patientCommsRoutes } from "../routes/patient-comms-routes.js";
-import { deptSchedulingRoutes } from "../routes/dept-scheduling-routes.js";
+import { facilityRoutes } from '../routes/facility-routes.js';
+import { deptRbacRoutes } from '../routes/dept-rbac-routes.js';
+import { deptPackRoutes } from '../routes/dept-pack-routes.js';
+import { workflowInboxRoutes } from '../routes/workflow-inbox-routes.js';
+import { patientCommsRoutes } from '../routes/patient-comms-routes.js';
+import { deptSchedulingRoutes } from '../routes/dept-scheduling-routes.js';
 
 // Wave 18: Extensibility + Event Bus + Webhooks + FHIR Subscriptions + Plugins (Phases 354-361)
-import { eventBusRoutes } from "../routes/event-bus-routes.js";
-import { webhookRoutes } from "../routes/webhook-routes.js";
-import { fhirSubscriptionRoutes } from "../routes/fhir-subscription-routes.js";
-import { pluginRoutes } from "../routes/plugin-routes.js";
-import { uiExtensionRoutes } from "../routes/ui-extension-routes.js";
-import { marketplaceRoutes as pluginMarketplaceRoutes } from "../routes/marketplace-routes.js";
+import { eventBusRoutes } from '../routes/event-bus-routes.js';
+import { webhookRoutes } from '../routes/webhook-routes.js';
+import { fhirSubscriptionRoutes } from '../routes/fhir-subscription-routes.js';
+import { pluginRoutes } from '../routes/plugin-routes.js';
+import { uiExtensionRoutes } from '../routes/ui-extension-routes.js';
+import { marketplaceRoutes as pluginMarketplaceRoutes } from '../routes/marketplace-routes.js';
 
 // Wave 19: Data Platform + Analytics + De-Id + Reporting (Phases 362-369)
-import analyticsExtractRoutes from "../routes/analytics-extract-routes.js";
-import w19ReportingRoutes from "../routes/reporting-routes.js";
+import analyticsExtractRoutes from '../routes/analytics-extract-routes.js';
+import w19ReportingRoutes from '../routes/reporting-routes.js';
 
 // Wave 20: GA Launch Program + External Validation + Customer Success (Phases 370-377)
-import releaseTrainRoutes from "../routes/release-train-routes.js";
-import customerSuccessRoutes from "../routes/customer-success-routes.js";
-import supportOpsRoutes from "../routes/support-ops-routes.js";
-import externalValidationRoutes from "../routes/external-validation-routes.js";
-import dataRightsRoutes from "../routes/data-rights-routes.js";
-import gaEvidenceRoutes from "../routes/ga-evidence-routes.js";
+import releaseTrainRoutes from '../routes/release-train-routes.js';
+import customerSuccessRoutes from '../routes/customer-success-routes.js';
+import supportOpsRoutes from '../routes/support-ops-routes.js';
+import externalValidationRoutes from '../routes/external-validation-routes.js';
+import dataRightsRoutes from '../routes/data-rights-routes.js';
+import gaEvidenceRoutes from '../routes/ga-evidence-routes.js';
 
 /**
  * Register all route plugins in the exact order from the original index.ts.
@@ -420,8 +431,10 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
       try {
         const session = await requireSession(req, { code: () => ({ send: () => {} }) });
         return session ? { duz: session.duz, name: session.userName } : null;
-      } catch { return null; }
-    },
+      } catch {
+        return null;
+      }
+    }
   );
   server.register(intakeRoutes);
 
@@ -436,8 +449,10 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
       try {
         const session = await requireSession(req, { code: () => ({ send: () => {} }) });
         return session ? { duz: session.duz, name: session.userName } : null;
-      } catch { return null; }
-    },
+      } catch {
+        return null;
+      }
+    }
   );
   server.register(intakeBrainRoutes);
 
@@ -448,16 +463,13 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   // Telehealth (Phase 30)
   initTelehealthRoutes(
     getPortalSession,
-    async (req: any, reply: any) => await requireSession(req, reply),
+    async (req: any, reply: any) => await requireSession(req, reply)
   );
   server.register(telehealthRoutes);
   startRoomCleanup();
 
   // AI Gateway (Phase 33)
-  initAiRoutes(
-    async (req: any, reply: any) => await requireSession(req, reply),
-    getPortalSession,
-  );
+  initAiRoutes(async (req: any, reply: any) => await requireSession(req, reply), getPortalSession);
   server.register(aiGatewayRoutes);
 
   // IAM (Phase 35)
@@ -497,10 +509,10 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(credentialVaultRoutes);
   server.register(claimLifecycle111Routes);
   server.register(evidenceRoutes);
-  server.register(dossierRoutes);  // Phase 514: Payer Dossiers
-  server.register(philhealthTransportRoutes);  // Phase 515: PH Transport
-  server.register(clearinghouseGatewayRoutes);  // Phase 519: Clearinghouse v2
-  server.register(denialPipelineRoutes);  // Phase 520: Denial Pipeline Hardening
+  server.register(dossierRoutes); // Phase 514: Payer Dossiers
+  server.register(philhealthTransportRoutes); // Phase 515: PH Transport
+  server.register(clearinghouseGatewayRoutes); // Phase 519: Clearinghouse v2
+  server.register(denialPipelineRoutes); // Phase 520: Denial Pipeline Hardening
 
   // Migration toolkit (Phase 50)
   server.register(migrationRoutes);
@@ -724,40 +736,40 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(scaleCertRunnerRoutes);
 
   // Wave 16: Enterprise Security + Governance (Phases 337-345)
-  server.register(sessionManagementRoutes);   // Phase 338: session, step-up, MFA status
-  server.register(scimRoutes);                // Phase 339: SCIM 2.0 provisioning
-  server.register(secretsRoutes);             // Phase 341: key/secret management
-  server.register(tenantSecurityRoutes);      // Phase 342: tenant security policies
-  server.register(privacyRoutes);             // Phase 343: privacy segmentation
-  server.register(siemRoutes);                // Phase 344: SIEM sink & alerts
+  server.register(sessionManagementRoutes); // Phase 338: session, step-up, MFA status
+  server.register(scimRoutes); // Phase 339: SCIM 2.0 provisioning
+  server.register(secretsRoutes); // Phase 341: key/secret management
+  server.register(tenantSecurityRoutes); // Phase 342: tenant security policies
+  server.register(privacyRoutes); // Phase 343: privacy segmentation
+  server.register(siemRoutes); // Phase 344: SIEM sink & alerts
 
   // Wave 17: Multi-Facility + Dept Packs + Workflow Inbox + Patient Comms (Phases 346-353)
-  server.register(facilityRoutes);             // Phase 347: facility/department/location CRUD
-  server.register(deptRbacRoutes);              // Phase 348: dept RBAC templates + memberships
-  server.register(deptPackRoutes);               // Phase 349: department packs catalog + install
-  server.register(workflowInboxRoutes);           // Phase 350: unified workflow inbox
-  server.register(patientCommsRoutes);              // Phase 351: patient communications
-  server.register(deptSchedulingRoutes);             // Phase 352: dept scheduling & resource layer
+  server.register(facilityRoutes); // Phase 347: facility/department/location CRUD
+  server.register(deptRbacRoutes); // Phase 348: dept RBAC templates + memberships
+  server.register(deptPackRoutes); // Phase 349: department packs catalog + install
+  server.register(workflowInboxRoutes); // Phase 350: unified workflow inbox
+  server.register(patientCommsRoutes); // Phase 351: patient communications
+  server.register(deptSchedulingRoutes); // Phase 352: dept scheduling & resource layer
 
   // Wave 18: Extensibility + Event Bus + Webhooks + FHIR Subscriptions + Plugins (Phases 354-361)
-  server.register(eventBusRoutes);                    // Phase 355: canonical domain event bus
-  server.register(webhookRoutes);                      // Phase 356: webhook framework
-  server.register(fhirSubscriptionRoutes);              // Phase 357: FHIR Subscriptions v1
-  server.register(pluginRoutes);                          // Phase 358: backend plugin SDK
-  server.register(uiExtensionRoutes);                      // Phase 359: UI extension slots
-  server.register(pluginMarketplaceRoutes);                // Phase 360: plugin marketplace
+  server.register(eventBusRoutes); // Phase 355: canonical domain event bus
+  server.register(webhookRoutes); // Phase 356: webhook framework
+  server.register(fhirSubscriptionRoutes); // Phase 357: FHIR Subscriptions v1
+  server.register(pluginRoutes); // Phase 358: backend plugin SDK
+  server.register(uiExtensionRoutes); // Phase 359: UI extension slots
+  server.register(pluginMarketplaceRoutes); // Phase 360: plugin marketplace
 
   // Wave 19: Data Platform + Analytics + De-Id + Reporting (Phases 362-369)
-  server.register(analyticsExtractRoutes);                   // Phase 363-367: extract, de-id, quality, RCM metrics
-  server.register(w19ReportingRoutes);                            // Phase 365-368: reporting API, dataset access controls
+  server.register(analyticsExtractRoutes); // Phase 363-367: extract, de-id, quality, RCM metrics
+  server.register(w19ReportingRoutes); // Phase 365-368: reporting API, dataset access controls
 
   // Wave 20: GA Launch Program + Customer Success + External Validation (Phases 370-377)
-  server.register(releaseTrainRoutes);                              // Phase 371: release train governance
-  server.register(customerSuccessRoutes);                             // Phase 372: customer success tooling
-  server.register(supportOpsRoutes);                                    // Phase 373: support ops automation
-  server.register(externalValidationRoutes);                             // Phase 374: external validation harness
-  server.register(dataRightsRoutes);                                      // Phase 375: data rights operations
-  server.register(gaEvidenceRoutes);                                       // Phase 377: GA evidence + trust center
+  server.register(releaseTrainRoutes); // Phase 371: release train governance
+  server.register(customerSuccessRoutes); // Phase 372: customer success tooling
+  server.register(supportOpsRoutes); // Phase 373: support ops automation
+  server.register(externalValidationRoutes); // Phase 374: external validation harness
+  server.register(dataRightsRoutes); // Phase 375: data rights operations
+  server.register(gaEvidenceRoutes); // Phase 377: GA evidence + trust center
 
   // Wave 21: Device + Modality Integration (Phases 378-388)
   startGatewayCleanup();
@@ -772,17 +784,17 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(normalizationRoutes);
 
   // Wave 23: Longitudinal Interop + HIE + Multi-Country Exchange Packs (Phases 399-408)
-  server.register(interopGatewayRoutes);    // Phase 400: Interop Gateway Layer
-  server.register(mpiRoutes);               // Phase 401: MPI / Client Registry
+  server.register(interopGatewayRoutes); // Phase 400: Interop Gateway Layer
+  server.register(mpiRoutes); // Phase 401: MPI / Client Registry
   server.register(providerDirectoryRoutes); // Phase 402: Provider Directory
-  server.register(documentExchangeRoutes);  // Phase 403: Document Exchange
-  server.register(bulkDataRoutes);          // Phase 404: Bulk Data
-  server.register(consentPouRoutes);        // Phase 405: Consent + Purpose of Use
-  server.register(exchangePackRoutes);      // Phase 406-407: Exchange Packs (US + Global)
+  server.register(documentExchangeRoutes); // Phase 403: Document Exchange
+  server.register(bulkDataRoutes); // Phase 404: Bulk Data
+  server.register(consentPouRoutes); // Phase 405: Consent + Purpose of Use
+  server.register(exchangePackRoutes); // Phase 406-407: Exchange Packs (US + Global)
 
   // Wave 24: Pilot Go-Lives + Stabilization (Phases 409-417)
-  server.register(pilotIntakeRoutes);        // Phase 411: Customer Integration Intake
-  server.register(sreRoutes);                // Phase 416: SRE Monitoring
+  server.register(pilotIntakeRoutes); // Phase 411: Customer Integration Intake
+  server.register(sreRoutes); // Phase 416: SRE Monitoring
 
   // FHIR R4 gateway (Phase 178)
   server.register(fhirRoutes);

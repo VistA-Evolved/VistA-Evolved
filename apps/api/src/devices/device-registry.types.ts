@@ -13,22 +13,18 @@
 // Device Identity
 // ---------------------------------------------------------------------------
 
-export type DeviceStatus =
-  | "active"
-  | "inactive"
-  | "maintenance"
-  | "decommissioned";
+export type DeviceStatus = 'active' | 'inactive' | 'maintenance' | 'decommissioned';
 
 export type DeviceClass =
-  | "monitor"
-  | "ventilator"
-  | "infusion_pump"
-  | "analyzer"
-  | "poct"
-  | "anesthesia"
-  | "dialysis"
-  | "imaging_modality"
-  | "other";
+  | 'monitor'
+  | 'ventilator'
+  | 'infusion_pump'
+  | 'analyzer'
+  | 'poct'
+  | 'anesthesia'
+  | 'dialysis'
+  | 'imaging_modality'
+  | 'other';
 
 export interface ManagedDevice {
   /** Device ID (dev-XXXX) */
@@ -69,7 +65,7 @@ export interface ManagedDevice {
 // Patient Association
 // ---------------------------------------------------------------------------
 
-export type AssociationStatus = "active" | "ended";
+export type AssociationStatus = 'active' | 'ended';
 
 export interface DevicePatientAssociation {
   /** Association ID */
@@ -124,14 +120,14 @@ export interface DeviceLocationMapping {
 // ---------------------------------------------------------------------------
 
 export type DeviceAuditAction =
-  | "registered"
-  | "updated"
-  | "decommissioned"
-  | "associated"
-  | "disassociated"
-  | "location_mapped"
-  | "calibration_recorded"
-  | "status_changed";
+  | 'registered'
+  | 'updated'
+  | 'decommissioned'
+  | 'associated'
+  | 'disassociated'
+  | 'location_mapped'
+  | 'calibration_recorded'
+  | 'status_changed';
 
 export interface DeviceAuditEntry {
   id: string;

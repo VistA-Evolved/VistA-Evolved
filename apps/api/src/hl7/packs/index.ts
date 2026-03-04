@@ -5,18 +5,32 @@
  * Provides lookup by ID or by message type.
  */
 
-import type { MessagePack } from "./types.js";
-import { adtPack } from "./adt-pack.js";
-import { ormPack } from "./orm-pack.js";
-import { oruPack } from "./oru-pack.js";
-import { siuPack } from "./siu-pack.js";
+import type { MessagePack } from './types.js';
+import { adtPack } from './adt-pack.js';
+import { ormPack } from './orm-pack.js';
+import { oruPack } from './oru-pack.js';
+import { siuPack } from './siu-pack.js';
 
 // Re-exports
-export * from "./types.js";
-export { adtPack, buildAdtA01, buildAdtA02, buildAdtA03, buildAdtA08, validateAdtMessage } from "./adt-pack.js";
-export { ormPack, buildOrmO01, validateOrmMessage } from "./orm-pack.js";
-export { oruPack, buildOruR01, validateOruMessage } from "./oru-pack.js";
-export { siuPack, buildSiuS12, buildSiuS13, buildSiuS14, buildSiuS15, validateSiuMessage } from "./siu-pack.js";
+export * from './types.js';
+export {
+  adtPack,
+  buildAdtA01,
+  buildAdtA02,
+  buildAdtA03,
+  buildAdtA08,
+  validateAdtMessage,
+} from './adt-pack.js';
+export { ormPack, buildOrmO01, validateOrmMessage } from './orm-pack.js';
+export { oruPack, buildOruR01, validateOruMessage } from './oru-pack.js';
+export {
+  siuPack,
+  buildSiuS12,
+  buildSiuS13,
+  buildSiuS14,
+  buildSiuS15,
+  validateSiuMessage,
+} from './siu-pack.js';
 
 /* ------------------------------------------------------------------ */
 /*  Pack Registry                                                      */
@@ -42,14 +56,18 @@ export function listPacks(): MessagePack[] {
 /** Find a pack by message type. */
 export function findPackByMessageType(messageType: string): MessagePack | undefined {
   for (const pack of packRegistry.values()) {
-    if (pack.messageTypes.some((t) => messageType.startsWith(t.split("^")[0]!) && messageType === t)) {
+    if (
+      pack.messageTypes.some((t) => messageType.startsWith(t.split('^')[0]!) && messageType === t)
+    ) {
       return pack;
     }
     // Also check wildcard: "ADT^*" style matching
-    if (pack.messageTypes.some((t) => {
-      const prefix = t.split("^")[0]!;
-      return messageType.startsWith(prefix + "^");
-    })) {
+    if (
+      pack.messageTypes.some((t) => {
+        const prefix = t.split('^')[0]!;
+        return messageType.startsWith(prefix + '^');
+      })
+    ) {
       return pack;
     }
   }

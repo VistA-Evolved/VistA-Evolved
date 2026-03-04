@@ -9,23 +9,24 @@
  * Output: artifacts/scheduling-inventory.json (gitignored)
  */
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, "..", "..");
+const ROOT = join(__dirname, '..', '..');
 
 /* ---- Read RPC Registry ----------------------------------------------- */
-const registryPath = join(ROOT, "apps", "api", "src", "vista", "rpcRegistry.ts");
-const registrySource = readFileSync(registryPath, "utf-8");
+const registryPath = join(ROOT, 'apps', 'api', 'src', 'vista', 'rpcRegistry.ts');
+const registrySource = readFileSync(registryPath, 'utf-8');
 
 // Extract RPC_REGISTRY entries (array of { name, domain, tag, description })
 const rpcEntries = [];
 const registryMatch = registrySource.match(/RPC_REGISTRY[^=]*=\s*\[([\s\S]*?)\];/);
 if (registryMatch) {
   const body = registryMatch[1];
-  const entryRe = /\{\s*name:\s*"([^"]+)"[^}]*?tag:\s*"(\w+)"[^}]*?description:\s*"([^"]*)"[^}]*?\}/g;
+  const entryRe =
+    /\{\s*name:\s*"([^"]+)"[^}]*?tag:\s*"(\w+)"[^}]*?description:\s*"([^"]*)"[^}]*?\}/g;
   let m;
   while ((m = entryRe.exec(body)) !== null) {
     rpcEntries.push({ name: m[1], tag: m[2], description: m[3] });
@@ -40,12 +41,21 @@ if (exceptionsMatch) {
   const entryRe = /\{\s*name:\s*"([^"]+)"/g;
   let m;
   while ((m = entryRe.exec(body)) !== null) {
-    exceptions.push({ name: m[1], tag: "exception" });
+    exceptions.push({ name: m[1], tag: 'exception' });
   }
 }
 
 /* ---- Filter scheduling RPCs ------------------------------------------ */
-const schedulingKeywords = ["SD", "SDOE", "SDEC", "SDES", "ORWPT APT", "SC ", "APPOINTMENT", "SCHEDUL"];
+const schedulingKeywords = [
+  'SD',
+  'SDOE',
+  'SDEC',
+  'SDES',
+  'ORWPT APT',
+  'SC ',
+  'APPOINTMENT',
+  'SCHEDUL',
+];
 const schedulingRpcs = rpcEntries.filter((r) =>
   schedulingKeywords.some((k) => r.name.toUpperCase().includes(k))
 );
@@ -54,22 +64,30 @@ const schedulingExceptions = exceptions.filter((r) =>
 );
 
 /* ---- Read capabilities.json ------------------------------------------ */
-const capsPath = join(ROOT, "config", "capabilities.json");
-const capsRaw = readFileSync(capsPath, "utf-8");
+const capsPath = join(ROOT, 'config', 'capabilities.json');
+const capsRaw = readFileSync(capsPath, 'utf-8');
 // Strip BOM
 const capsJson = JSON.parse(capsRaw.charCodeAt(0) === 0xfeff ? capsRaw.slice(1) : capsRaw);
 // capabilities.json has { _meta, capabilities: { "key": {...}, ... } }
 const capsObj = capsJson.capabilities || capsJson;
 const capsArray = Object.entries(capsObj).map(([id, v]) => ({ id, ...v }));
-const schedulingCaps = capsArray.filter((c) => c.id?.startsWith("scheduling."));
+const schedulingCaps = capsArray.filter((c) => c.id?.startsWith('scheduling.'));
 
 /* ---- Known target RPCs not yet available ------------------------------ */
 const targetRpcs = [
-  { name: "SDEC APPADD", status: "not_in_sandbox", purpose: "Create new appointment" },
-  { name: "SDEC APPDEL", status: "not_in_sandbox", purpose: "Delete/cancel appointment" },
-  { name: "SDEC APPSLOTS", status: "not_in_sandbox", purpose: "Query available slots" },
-  { name: "SDVW MAKE APPT API APP", status: "not_in_sandbox", purpose: "VS GUI appointment booking" },
-  { name: "SDES GET PATIENT APPOINTMENTS", status: "not_in_sandbox", purpose: "Patient appointment list (new API)" },
+  { name: 'SDEC APPADD', status: 'not_in_sandbox', purpose: 'Create new appointment' },
+  { name: 'SDEC APPDEL', status: 'not_in_sandbox', purpose: 'Delete/cancel appointment' },
+  { name: 'SDEC APPSLOTS', status: 'not_in_sandbox', purpose: 'Query available slots' },
+  {
+    name: 'SDVW MAKE APPT API APP',
+    status: 'not_in_sandbox',
+    purpose: 'VS GUI appointment booking',
+  },
+  {
+    name: 'SDES GET PATIENT APPOINTMENTS',
+    status: 'not_in_sandbox',
+    purpose: 'Patient appointment list (new API)',
+  },
 ];
 
 /* ---- Build inventory ------------------------------------------------- */
@@ -92,56 +110,56 @@ const inventory = {
   })),
   targetRpcsNotInSandbox: targetRpcs,
   lifecycleStates: [
-    "requested",
-    "waitlisted",
-    "booked",
-    "checked_in",
-    "completed",
-    "cancelled",
-    "no_show",
+    'requested',
+    'waitlisted',
+    'booked',
+    'checked_in',
+    'completed',
+    'cancelled',
+    'no_show',
   ],
   pgTables: [
-    "scheduling_waitlist_request (Phase 128)",
-    "scheduling_booking_lock (Phase 128)",
-    "scheduling_lifecycle (Phase 131)",
-    "clinic_preferences (Phase 139)",
+    'scheduling_waitlist_request (Phase 128)',
+    'scheduling_booking_lock (Phase 128)',
+    'scheduling_lifecycle (Phase 131)',
+    'clinic_preferences (Phase 139)',
   ],
   existingEndpoints: [
-    "GET /scheduling/health",
-    "GET /scheduling/appointments?dfn=X",
-    "GET /scheduling/appointments/range?startDate=X&endDate=Y",
-    "GET /scheduling/clinics",
-    "GET /scheduling/providers",
-    "GET /scheduling/slots?clinicIen=X&startDate=Y&endDate=Z",
-    "POST /scheduling/appointments/request",
-    "POST /scheduling/appointments/:id/cancel",
-    "POST /scheduling/appointments/:id/reschedule",
-    "GET /scheduling/requests",
-    "GET /scheduling/encounters/:ien/detail",
-    "GET /scheduling/encounters/:ien/providers",
-    "GET /scheduling/encounters/:ien/diagnoses",
-    "GET /scheduling/waitlist",
-    "GET /scheduling/appointments/cprs?dfn=X",
-    "GET /scheduling/reference-data",
-    "GET /scheduling/posture",
-    "GET /scheduling/lifecycle",
-    "POST /scheduling/lifecycle/transition",
+    'GET /scheduling/health',
+    'GET /scheduling/appointments?dfn=X',
+    'GET /scheduling/appointments/range?startDate=X&endDate=Y',
+    'GET /scheduling/clinics',
+    'GET /scheduling/providers',
+    'GET /scheduling/slots?clinicIen=X&startDate=Y&endDate=Z',
+    'POST /scheduling/appointments/request',
+    'POST /scheduling/appointments/:id/cancel',
+    'POST /scheduling/appointments/:id/reschedule',
+    'GET /scheduling/requests',
+    'GET /scheduling/encounters/:ien/detail',
+    'GET /scheduling/encounters/:ien/providers',
+    'GET /scheduling/encounters/:ien/diagnoses',
+    'GET /scheduling/waitlist',
+    'GET /scheduling/appointments/cprs?dfn=X',
+    'GET /scheduling/reference-data',
+    'GET /scheduling/posture',
+    'GET /scheduling/lifecycle',
+    'POST /scheduling/lifecycle/transition',
   ],
   phase139NewEndpoints: [
-    "POST /scheduling/appointments/:id/checkin",
-    "POST /scheduling/appointments/:id/checkout",
-    "POST /scheduling/requests/:id/approve",
-    "POST /scheduling/requests/:id/reject",
-    "GET /scheduling/clinic/:ien/preferences",
-    "PUT /scheduling/clinic/:ien/preferences",
+    'POST /scheduling/appointments/:id/checkin',
+    'POST /scheduling/appointments/:id/checkout',
+    'POST /scheduling/requests/:id/approve',
+    'POST /scheduling/requests/:id/reject',
+    'GET /scheduling/clinic/:ien/preferences',
+    'PUT /scheduling/clinic/:ien/preferences',
   ],
 };
 
 /* ---- Write output ---------------------------------------------------- */
-const outDir = join(ROOT, "artifacts");
+const outDir = join(ROOT, 'artifacts');
 if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
-const outPath = join(outDir, "scheduling-inventory.json");
-writeFileSync(outPath, JSON.stringify(inventory, null, 2) + "\n", "utf-8");
+const outPath = join(outDir, 'scheduling-inventory.json');
+writeFileSync(outPath, JSON.stringify(inventory, null, 2) + '\n', 'utf-8');
 
 console.log(`Scheduling inventory written to: ${outPath}`);
 console.log(`  Registered RPCs: ${inventory.summary.registeredSchedulingRpcs}`);

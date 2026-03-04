@@ -5,7 +5,7 @@
  * transformation, and destination dispatch.
  */
 
-import type { Hl7Message, Hl7Ack } from "../types.js";
+import type { Hl7Message, Hl7Ack } from '../types.js';
 
 /* ------------------------------------------------------------------ */
 /*  Route Filter Types                                                 */
@@ -31,12 +31,12 @@ export interface RouteFilter {
 
 /** Transform operation type */
 export type TransformOp =
-  | "copy-field"        // Copy field value from one location to another
-  | "set-field"         // Set a field to a fixed value
-  | "remove-segment"    // Remove all segments of a type
-  | "filter-segments"   // Keep only specified segment types
-  | "replace-value"     // Find/replace within field values
-  | "custom";           // Custom transform function
+  | 'copy-field' // Copy field value from one location to another
+  | 'set-field' // Set a field to a fixed value
+  | 'remove-segment' // Remove all segments of a type
+  | 'filter-segments' // Keep only specified segment types
+  | 'replace-value' // Find/replace within field values
+  | 'custom'; // Custom transform function
 
 /** A single transform step in the pipeline. */
 export interface TransformStep {
@@ -68,10 +68,10 @@ export interface TransformResult {
 
 /** Destination type for routing */
 export type DestinationType =
-  | "mllp"           // Forward via MLLP to another system
-  | "vista-rpc"      // Bridge to VistA via RPC
-  | "http"           // POST to HTTP endpoint
-  | "dead-letter";   // Dead-letter queue (unroutable)
+  | 'mllp' // Forward via MLLP to another system
+  | 'vista-rpc' // Bridge to VistA via RPC
+  | 'http' // POST to HTTP endpoint
+  | 'dead-letter'; // Dead-letter queue (unroutable)
 
 /** Destination configuration */
 export interface RouteDestination {

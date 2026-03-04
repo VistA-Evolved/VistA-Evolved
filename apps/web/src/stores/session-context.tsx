@@ -3,12 +3,13 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { setCsrfToken, clearCsrfToken, csrfHeaders } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
+import type { UserRole } from '@vista-evolved/shared-types';
 
 /* ------------------------------------------------------------------ */
-/* Types                                                               */
+/* Types — UserRole now imported from shared-types                     */
 /* ------------------------------------------------------------------ */
 
-export type UserRole = 'provider' | 'nurse' | 'pharmacist' | 'clerk' | 'admin' | 'billing' | 'support';
+export type { UserRole };
 
 export interface SessionUser {
   duz: string;
@@ -41,7 +42,6 @@ export interface SessionContextValue {
 /* ------------------------------------------------------------------ */
 /* Constants                                                           */
 /* ------------------------------------------------------------------ */
-
 
 /* ------------------------------------------------------------------ */
 /* Context + Provider                                                  */
@@ -102,16 +102,21 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: '{}',
       });
-    } catch { /* best-effort */ }
+    } catch {
+      /* best-effort */
+    }
     setUser(null);
     setAuthenticated(false);
     clearCsrfToken();
   }, []);
 
-  const hasRole = useCallback((...roles: UserRole[]) => {
-    if (!user) return false;
-    return roles.includes(user.role);
-  }, [user]);
+  const hasRole = useCallback(
+    (...roles: UserRole[]) => {
+      if (!user) return false;
+      return roles.includes(user.role);
+    },
+    [user]
+  );
 
   return (
     <SessionContext.Provider value={{ ready, authenticated, user, login, logout, hasRole }}>

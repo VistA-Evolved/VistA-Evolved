@@ -1,10 +1,12 @@
 # Phase 119 -- QA Gauntlet Generator (IMPLEMENT)
 
 ## Objective
+
 Build a reusable, CI-enforced QA framework that runs phase-by-phase regression,
 grouped suites (FAST/RC/FULL), and enforces gates in GitHub Actions.
 
 ## Deliverables
+
 1. **Phase manifest** (`qa/gauntlet/phase-manifest.json`) -- auto-generated from
    prompts/ + phase-index.json, with override support.
 2. **Manifest generator** (`qa/gauntlet/build-manifest.mjs`) -- scans prompts/,
@@ -20,6 +22,7 @@ grouped suites (FAST/RC/FULL), and enforces gates in GitHub Actions.
    `pnpm qa:gauntlet:full`
 
 ## Files Touched
+
 - qa/gauntlet/build-manifest.mjs (NEW)
 - qa/gauntlet/phase-manifest.json (GENERATED)
 - qa/gauntlet/phase-manifest.overrides.json (NEW, empty default)
@@ -41,6 +44,7 @@ grouped suites (FAST/RC/FULL), and enforces gates in GitHub Actions.
 - package.json (UPDATED -- scripts)
 
 ## Verification
+
 - `pnpm qa:gauntlet:fast` passes locally
 - `scripts/verify-latest.ps1` passes
 - PR workflow runs FAST suite

@@ -16,7 +16,7 @@
  *   4. VistA file-backed (when VistA IB/AR files available in production)
  */
 
-import { randomBytes } from "node:crypto";
+import { randomBytes } from 'node:crypto';
 import {
   LOA_TRANSITIONS,
   type FacilityPayerEnrollment,
@@ -28,12 +28,12 @@ import {
   type LOAPack,
   type CredentialVaultEntry,
   type CredentialDocType,
-} from "./types.js";
+} from './types.js';
 
 /* ── ID generation ──────────────────────────────────────────── */
 
 function newId(prefix: string): string {
-  return `${prefix}-${Date.now().toString(36)}-${randomBytes(6).toString("hex")}`;
+  return `${prefix}-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
 /* ── Enrollment Store ───────────────────────────────────────── */
@@ -41,10 +41,20 @@ function newId(prefix: string): string {
 const enrollments = new Map<string, FacilityPayerEnrollment>();
 
 /* Phase 146: DB repo wiring (payer ops) */
-let enrollDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
-let loaCaseDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
+let enrollDbRepo: {
+  upsert(d: any): Promise<any>;
+  update?(id: string, u: any): Promise<any>;
+} | null = null;
+let loaCaseDbRepo: {
+  upsert(d: any): Promise<any>;
+  update?(id: string, u: any): Promise<any>;
+} | null = null;
 let credDbRepo: { upsert(d: any): Promise<any> } | null = null;
-export function initPayerOpsRepos(repos: { enrollments?: typeof enrollDbRepo; loaCases?: typeof loaCaseDbRepo; credentials?: typeof credDbRepo }): void {
+export function initPayerOpsRepos(repos: {
+  enrollments?: typeof enrollDbRepo;
+  loaCases?: typeof loaCaseDbRepo;
+  credentials?: typeof credDbRepo;
+}): void {
   if (repos.enrollments) enrollDbRepo = repos.enrollments;
   if (repos.loaCases) loaCaseDbRepo = repos.loaCases;
   if (repos.credentials) credDbRepo = repos.credentials;
@@ -55,13 +65,13 @@ export function createEnrollment(data: {
   facilityName: string;
   payerId: string;
   payerName: string;
-  integrationMode?: "manual" | "portal" | "api";
+  integrationMode?: 'manual' | 'portal' | 'api';
   portalUrl?: string;
   portalInstructions?: string;
   notes?: string;
   actor: string;
 }): FacilityPayerEnrollment {
-  const id = newId("enr");
+  const id = newId('enr');
   const now = new Date().toISOString();
   const enrollment: FacilityPayerEnrollment = {
     id,
@@ -69,25 +79,35 @@ export function createEnrollment(data: {
     facilityName: data.facilityName,
     payerId: data.payerId,
     payerName: data.payerName,
-    status: "not_enrolled",
+    status: 'not_enrolled',
     credentialVaultRefs: [],
-    integrationMode: data.integrationMode || "manual",
+    integrationMode: data.integrationMode || 'manual',
     portalUrl: data.portalUrl,
     portalInstructions: data.portalInstructions,
     enrollmentNotes: data.notes,
-    timeline: [{
-      timestamp: now,
-      action: "created",
-      actor: data.actor,
-      detail: "Enrollment record created",
-    }],
+    timeline: [
+      {
+        timestamp: now,
+        action: 'created',
+        actor: data.actor,
+        detail: 'Enrollment record created',
+      },
+    ],
     createdAt: now,
     updatedAt: now,
   };
   enrollments.set(id, enrollment);
 
   // Phase 146: Write-through to PG
-  enrollDbRepo?.upsert({ id, tenantId: (enrollment as any).tenantId ?? 'default', payerId: enrollment.payerId, status: enrollment.status, createdAt: enrollment.createdAt }).catch(() => {});
+  enrollDbRepo
+    ?.upsert({
+      id,
+      tenantId: (enrollment as any).tenantId ?? 'default',
+      payerId: enrollment.payerId,
+      status: enrollment.status,
+      createdAt: enrollment.createdAt,
+    })
+    .catch(() => {});
 
   return enrollment;
 }
@@ -102,9 +122,9 @@ export function listEnrollments(filter?: {
   status?: EnrollmentStatus;
 }): FacilityPayerEnrollment[] {
   let results = Array.from(enrollments.values());
-  if (filter?.facilityId) results = results.filter(e => e.facilityId === filter.facilityId);
-  if (filter?.payerId) results = results.filter(e => e.payerId === filter.payerId);
-  if (filter?.status) results = results.filter(e => e.status === filter.status);
+  if (filter?.facilityId) results = results.filter((e) => e.facilityId === filter.facilityId);
+  if (filter?.payerId) results = results.filter((e) => e.payerId === filter.payerId);
+  if (filter?.status) results = results.filter((e) => e.status === filter.status);
   return results.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
@@ -112,7 +132,7 @@ export function updateEnrollmentStatus(
   id: string,
   newStatus: EnrollmentStatus,
   actor: string,
-  detail?: string,
+  detail?: string
 ): FacilityPayerEnrollment | undefined {
   const enrollment = enrollments.get(id);
   if (!enrollment) return undefined;
@@ -128,10 +148,7 @@ export function updateEnrollmentStatus(
   return enrollment;
 }
 
-export function addCredentialRefToEnrollment(
-  enrollmentId: string,
-  credentialId: string,
-): boolean {
+export function addCredentialRefToEnrollment(enrollmentId: string, credentialId: string): boolean {
   const enrollment = enrollments.get(enrollmentId);
   if (!enrollment) return false;
   if (!enrollment.credentialVaultRefs.includes(credentialId)) {
@@ -153,9 +170,9 @@ export function createLOACase(data: {
   payerName: string;
   memberId?: string;
   planName?: string;
-  requestType: LOACase["requestType"];
-  requestedServices: LOACase["requestedServices"];
-  diagnosisCodes: LOACase["diagnosisCodes"];
+  requestType: LOACase['requestType'];
+  requestedServices: LOACase['requestedServices'];
+  diagnosisCodes: LOACase['diagnosisCodes'];
   createdBy: string;
   priority?: LOAPriority;
   assignedTo?: string;
@@ -163,7 +180,7 @@ export function createLOACase(data: {
   urgencyNotes?: string;
   enrollmentId?: string;
 }): LOACase {
-  const id = newId("loa");
+  const id = newId('loa');
   const now = new Date().toISOString();
   const loaCase: LOACase = {
     id,
@@ -178,23 +195,25 @@ export function createLOACase(data: {
     requestedServices: data.requestedServices,
     diagnosisCodes: data.diagnosisCodes,
     attachmentRefs: [],
-    status: "draft",
-    timeline: [{
-      timestamp: now,
-      fromStatus: undefined,
-      toStatus: "draft",
-      actor: data.createdBy,
-      reason: "LOA case created",
-    }],
-    submissionMode: "manual",
+    status: 'draft',
+    timeline: [
+      {
+        timestamp: now,
+        fromStatus: undefined,
+        toStatus: 'draft',
+        actor: data.createdBy,
+        reason: 'LOA case created',
+      },
+    ],
+    submissionMode: 'manual',
     createdAt: now,
     updatedAt: now,
     createdBy: data.createdBy,
     /* Phase 89 SLA fields */
-    priority: data.priority || "routine",
+    priority: data.priority || 'routine',
     assignedTo: data.assignedTo,
-    slaDeadline: data.slaDeadline || computeDefaultSLADeadline(data.priority || "routine"),
-    slaRiskLevel: "on_track",
+    slaDeadline: data.slaDeadline || computeDefaultSLADeadline(data.priority || 'routine'),
+    slaRiskLevel: 'on_track',
     urgencyNotes: data.urgencyNotes,
     enrollmentId: data.enrollmentId,
     packHistory: [],
@@ -205,7 +224,15 @@ export function createLOACase(data: {
   loaCases.set(id, loaCase);
 
   // Phase 146: Write-through to PG
-  loaCaseDbRepo?.upsert({ id, tenantId: (loaCase as any).tenantId ?? 'default', payerId: loaCase.payerId, status: loaCase.status, createdAt: loaCase.createdAt }).catch(() => {});
+  loaCaseDbRepo
+    ?.upsert({
+      id,
+      tenantId: (loaCase as any).tenantId ?? 'default',
+      payerId: loaCase.payerId,
+      status: loaCase.status,
+      createdAt: loaCase.createdAt,
+    })
+    .catch(() => {});
 
   return loaCase;
 }
@@ -221,10 +248,10 @@ export function listLOACases(filter?: {
   status?: LOAStatus;
 }): LOACase[] {
   let results = Array.from(loaCases.values());
-  if (filter?.facilityId) results = results.filter(c => c.facilityId === filter.facilityId);
-  if (filter?.patientDfn) results = results.filter(c => c.patientDfn === filter.patientDfn);
-  if (filter?.payerId) results = results.filter(c => c.payerId === filter.payerId);
-  if (filter?.status) results = results.filter(c => c.status === filter.status);
+  if (filter?.facilityId) results = results.filter((c) => c.facilityId === filter.facilityId);
+  if (filter?.patientDfn) results = results.filter((c) => c.patientDfn === filter.patientDfn);
+  if (filter?.payerId) results = results.filter((c) => c.payerId === filter.payerId);
+  if (filter?.status) results = results.filter((c) => c.status === filter.status);
   return results.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
@@ -232,16 +259,16 @@ export function transitionLOAStatus(
   id: string,
   newStatus: LOAStatus,
   actor: string,
-  reason?: string,
+  reason?: string
 ): { ok: boolean; error?: string; loaCase?: LOACase } {
   const loa = loaCases.get(id);
-  if (!loa) return { ok: false, error: "LOA case not found" };
+  if (!loa) return { ok: false, error: 'LOA case not found' };
 
   const allowed = LOA_TRANSITIONS[loa.status];
   if (!allowed?.includes(newStatus)) {
     return {
       ok: false,
-      error: `Cannot transition from "${loa.status}" to "${newStatus}". Allowed: ${allowed?.join(", ") || "none"}`,
+      error: `Cannot transition from "${loa.status}" to "${newStatus}". Allowed: ${allowed?.join(', ') || 'none'}`,
     };
   }
 
@@ -272,7 +299,7 @@ export function updateLOAPayerRef(
   id: string,
   payerRefNumber: string,
   approvedAmount?: number,
-  approvedServices?: string[],
+  approvedServices?: string[]
 ): boolean {
   const loa = loaCases.get(id);
   if (!loa) return false;
@@ -287,9 +314,9 @@ export function updateLOAPayerRef(
 
 /** Default SLA deadlines by priority (hours from creation) */
 const SLA_HOURS: Record<LOAPriority, number> = {
-  routine: 72,   // 3 days
-  urgent: 24,    // 1 day
-  stat: 4,       // 4 hours
+  routine: 72, // 3 days
+  urgent: 24, // 1 day
+  stat: 4, // 4 hours
 };
 
 function computeDefaultSLADeadline(priority: LOAPriority): string {
@@ -300,18 +327,24 @@ function computeDefaultSLADeadline(priority: LOAPriority): string {
 
 export function computeSLARisk(loa: LOACase): LOASLARiskLevel {
   // Terminal states have no SLA risk
-  const terminal: LOAStatus[] = ["approved", "partially_approved", "denied", "expired", "cancelled"];
-  if (terminal.includes(loa.status)) return "on_track";
+  const terminal: LOAStatus[] = [
+    'approved',
+    'partially_approved',
+    'denied',
+    'expired',
+    'cancelled',
+  ];
+  if (terminal.includes(loa.status)) return 'on_track';
 
-  if (!loa.slaDeadline) return "on_track";
+  if (!loa.slaDeadline) return 'on_track';
   const now = Date.now();
   const deadline = new Date(loa.slaDeadline).getTime();
   const hoursLeft = (deadline - now) / (1000 * 60 * 60);
 
-  if (hoursLeft < 0) return "overdue";
-  if (hoursLeft < 2) return "critical";
-  if (hoursLeft < 12) return "at_risk";
-  return "on_track";
+  if (hoursLeft < 0) return 'overdue';
+  if (hoursLeft < 2) return 'critical';
+  if (hoursLeft < 12) return 'at_risk';
+  return 'on_track';
 }
 
 /** Recompute SLA risk for all active LOA cases (called on reads) */
@@ -327,23 +360,26 @@ export function patchLOADraft(
   patch: {
     memberId?: string;
     planName?: string;
-    requestType?: LOACase["requestType"];
-    requestedServices?: LOACase["requestedServices"];
-    diagnosisCodes?: LOACase["diagnosisCodes"];
+    requestType?: LOACase['requestType'];
+    requestedServices?: LOACase['requestedServices'];
+    diagnosisCodes?: LOACase['diagnosisCodes'];
     priority?: LOAPriority;
     assignedTo?: string;
     slaDeadline?: string;
     urgencyNotes?: string;
     enrollmentId?: string;
     denialReason?: string;
-  },
+  }
 ): { ok: boolean; error?: string; loaCase?: LOACase } {
   const loa = loaCases.get(id);
-  if (!loa) return { ok: false, error: "LOA case not found" };
+  if (!loa) return { ok: false, error: 'LOA case not found' };
 
   // Only draft and pending_submission can be edited
-  if (loa.status !== "draft" && loa.status !== "pending_submission") {
-    return { ok: false, error: `Cannot edit LOA in status "${loa.status}". Only draft/pending_submission allowed.` };
+  if (loa.status !== 'draft' && loa.status !== 'pending_submission') {
+    return {
+      ok: false,
+      error: `Cannot edit LOA in status "${loa.status}". Only draft/pending_submission allowed.`,
+    };
   }
 
   if (patch.memberId !== undefined) loa.memberId = patch.memberId;
@@ -375,8 +411,8 @@ export interface LOAQueueFilter {
   /** Only cases older than this many hours */
   olderThanHours?: number;
   /** Sort field */
-  sortBy?: "slaDeadline" | "createdAt" | "updatedAt" | "priority";
-  sortDir?: "asc" | "desc";
+  sortBy?: 'slaDeadline' | 'createdAt' | 'updatedAt' | 'priority';
+  sortDir?: 'asc' | 'desc';
   limit?: number;
   offset?: number;
 }
@@ -397,26 +433,35 @@ export function listLOAQueue(filter: LOAQueueFilter = {}): {
   // Status filter
   if (filter.status) {
     const statuses = Array.isArray(filter.status) ? filter.status : [filter.status];
-    results = results.filter(c => statuses.includes(c.status));
+    results = results.filter((c) => statuses.includes(c.status));
   } else {
     // Default: only active cases (exclude terminal)
-    const terminal: LOAStatus[] = ["approved", "partially_approved", "denied", "expired", "cancelled"];
-    results = results.filter(c => !terminal.includes(c.status));
+    const terminal: LOAStatus[] = [
+      'approved',
+      'partially_approved',
+      'denied',
+      'expired',
+      'cancelled',
+    ];
+    results = results.filter((c) => !terminal.includes(c.status));
   }
 
-  if (filter.payerId) results = results.filter(c => c.payerId === filter.payerId);
-  if (filter.assignedTo) results = results.filter(c => c.assignedTo === filter.assignedTo);
-  if (filter.slaRiskLevel) results = results.filter(c => c.slaRiskLevel === filter.slaRiskLevel);
-  if (filter.patientDfn) results = results.filter(c => c.patientDfn === filter.patientDfn);
-  if (filter.priority) results = results.filter(c => c.priority === filter.priority);
+  if (filter.payerId) results = results.filter((c) => c.payerId === filter.payerId);
+  if (filter.assignedTo) results = results.filter((c) => c.assignedTo === filter.assignedTo);
+  if (filter.slaRiskLevel) results = results.filter((c) => c.slaRiskLevel === filter.slaRiskLevel);
+  if (filter.patientDfn) results = results.filter((c) => c.patientDfn === filter.patientDfn);
+  if (filter.priority) results = results.filter((c) => c.priority === filter.priority);
   if (filter.olderThanHours) {
     const cutoff = Date.now() - filter.olderThanHours * 60 * 60 * 1000;
-    results = results.filter(c => new Date(c.createdAt).getTime() < cutoff);
+    results = results.filter((c) => new Date(c.createdAt).getTime() < cutoff);
   }
 
   // SLA breakdown (pre-pagination)
   const slaBreakdown: Record<LOASLARiskLevel, number> = {
-    on_track: 0, at_risk: 0, overdue: 0, critical: 0,
+    on_track: 0,
+    at_risk: 0,
+    overdue: 0,
+    critical: 0,
   };
   for (const c of results) {
     slaBreakdown[c.slaRiskLevel]++;
@@ -425,22 +470,22 @@ export function listLOAQueue(filter: LOAQueueFilter = {}): {
   const total = results.length;
 
   // Sorting
-  const sortBy = filter.sortBy || "slaDeadline";
-  const sortDir = filter.sortDir || "asc";
+  const sortBy = filter.sortBy || 'slaDeadline';
+  const sortDir = filter.sortDir || 'asc';
   results.sort((a, b) => {
     let cmp = 0;
-    if (sortBy === "priority") {
+    if (sortBy === 'priority') {
       cmp = PRIORITY_WEIGHT[b.priority] - PRIORITY_WEIGHT[a.priority];
-    } else if (sortBy === "slaDeadline") {
-      const aVal = a.slaDeadline || "9999";
-      const bVal = b.slaDeadline || "9999";
+    } else if (sortBy === 'slaDeadline') {
+      const aVal = a.slaDeadline || '9999';
+      const bVal = b.slaDeadline || '9999';
       cmp = aVal.localeCompare(bVal);
     } else {
-      const aVal = (a as any)[sortBy] || "";
-      const bVal = (b as any)[sortBy] || "";
+      const aVal = (a as any)[sortBy] || '';
+      const bVal = (b as any)[sortBy] || '';
       cmp = aVal.localeCompare(bVal);
     }
-    return sortDir === "desc" ? -cmp : cmp;
+    return sortDir === 'desc' ? -cmp : cmp;
   });
 
   // Pagination
@@ -466,10 +511,10 @@ export function addPackToLOA(loaId: string, pack: LOAPack): boolean {
 export function assignLOA(
   id: string,
   assignedTo: string,
-  actor: string,
+  actor: string
 ): { ok: boolean; error?: string; loaCase?: LOACase } {
   const loa = loaCases.get(id);
-  if (!loa) return { ok: false, error: "LOA case not found" };
+  if (!loa) return { ok: false, error: 'LOA case not found' };
   const now = new Date().toISOString();
   loa.assignedTo = assignedTo;
   loa.timeline.push({
@@ -503,7 +548,7 @@ export function createCredentialEntry(data: {
   notes?: string;
   uploadedBy: string;
 }): CredentialVaultEntry {
-  const id = newId("cred");
+  const id = newId('cred');
   const now = new Date().toISOString();
   const entry: CredentialVaultEntry = {
     id,
@@ -528,7 +573,15 @@ export function createCredentialEntry(data: {
   credentials.set(id, entry);
 
   // Phase 146: Write-through to PG
-  credDbRepo?.upsert({ id, tenantId: (entry as any).tenantId ?? 'default', payerId: (entry as any).payerId ?? '', credentialType: (entry as any).type ?? 'generic', createdAt: (entry as any).createdAt ?? new Date().toISOString() }).catch(() => {});
+  credDbRepo
+    ?.upsert({
+      id,
+      tenantId: (entry as any).tenantId ?? 'default',
+      payerId: (entry as any).payerId ?? '',
+      credentialType: (entry as any).type ?? 'generic',
+      createdAt: (entry as any).createdAt ?? new Date().toISOString(),
+    })
+    .catch(() => {});
 
   return entry;
 }
@@ -544,14 +597,15 @@ export function listCredentialEntries(filter?: {
   expiringWithinDays?: number;
 }): CredentialVaultEntry[] {
   let results = Array.from(credentials.values());
-  if (filter?.facilityId) results = results.filter(c => c.facilityId === filter.facilityId);
-  if (filter?.docType) results = results.filter(c => c.docType === filter.docType);
-  if (filter?.payerId) results = results.filter(c => c.associatedPayerIds.includes(filter.payerId!));
+  if (filter?.facilityId) results = results.filter((c) => c.facilityId === filter.facilityId);
+  if (filter?.docType) results = results.filter((c) => c.docType === filter.docType);
+  if (filter?.payerId)
+    results = results.filter((c) => c.associatedPayerIds.includes(filter.payerId!));
   if (filter?.expiringWithinDays) {
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() + filter.expiringWithinDays);
     const cutoffStr = cutoff.toISOString();
-    results = results.filter(c => c.expiryDate && c.expiryDate <= cutoffStr);
+    results = results.filter((c) => c.expiryDate && c.expiryDate <= cutoffStr);
   }
   return results.sort((a, b) => b.uploadedAt.localeCompare(a.uploadedAt));
 }
@@ -565,10 +619,10 @@ export function deleteCredentialEntry(id: string): boolean {
 export function getExpiringCredentials(daysAhead: number = 30): CredentialVaultEntry[] {
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() + daysAhead);
-  const cutoffStr = cutoff.toISOString().split("T")[0];
-  return Array.from(credentials.values()).filter(c => {
+  const cutoffStr = cutoff.toISOString().split('T')[0];
+  return Array.from(credentials.values()).filter((c) => {
     if (!c.expiryDate) return false;
-    return c.expiryDate.split("T")[0] <= cutoffStr;
+    return c.expiryDate.split('T')[0] <= cutoffStr;
   });
 }
 

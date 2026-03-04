@@ -10,18 +10,19 @@
 
 **Monitoring cadence**: Every 15 minutes
 
-| Check | Endpoint / Method | Alert Threshold |
-|-------|--------------------|-----------------|
-| API alive | `GET /health` | Any non-200 |
-| API ready | `GET /ready` | `ok: false` for > 2 min |
-| VistA connected | `GET /vista/ping` | `ok: false` for > 1 min |
-| Error rate | Prometheus `http_errors_total` | > 5% of requests |
-| Response time P95 | Prometheus `http_duration_seconds` | > 2s |
-| Circuit breaker | `GET /ready` details | `open` state |
-| Audit chain | `GET /iam/audit/verify` | `chainValid: false` |
-| Memory usage | `GET /posture/performance` | > 80% heap |
+| Check             | Endpoint / Method                  | Alert Threshold         |
+| ----------------- | ---------------------------------- | ----------------------- |
+| API alive         | `GET /health`                      | Any non-200             |
+| API ready         | `GET /ready`                       | `ok: false` for > 2 min |
+| VistA connected   | `GET /vista/ping`                  | `ok: false` for > 1 min |
+| Error rate        | Prometheus `http_errors_total`     | > 5% of requests        |
+| Response time P95 | Prometheus `http_duration_seconds` | > 2s                    |
+| Circuit breaker   | `GET /ready` details               | `open` state            |
+| Audit chain       | `GET /iam/audit/verify`            | `chainValid: false`     |
+| Memory usage      | `GET /posture/performance`         | > 80% heap              |
 
 **Actions**:
+
 - Assign on-call engineer for continuous monitoring
 - Keep rollback backup readily accessible
 - Log all issues in incident channel
@@ -30,15 +31,16 @@
 
 **Monitoring cadence**: Every 30 minutes
 
-| Check | Alert Threshold |
-|-------|-----------------|
-| All checks from Hours 0-4 | Same thresholds |
-| Login success rate | < 95% |
-| Patient search latency | P95 > 3s |
-| RPC call success rate | < 98% |
-| Active sessions | Unexpected drop > 50% |
+| Check                     | Alert Threshold       |
+| ------------------------- | --------------------- |
+| All checks from Hours 0-4 | Same thresholds       |
+| Login success rate        | < 95%                 |
+| Patient search latency    | P95 > 3s              |
+| RPC call success rate     | < 98%                 |
+| Active sessions           | Unexpected drop > 50% |
 
 **Actions**:
+
 - Review first shift's clinical workflows end-to-end
 - Check audit trail for any anomalies
 - Verify data written during go-live reads back correctly
@@ -47,14 +49,15 @@
 
 **Monitoring cadence**: Every 60 minutes
 
-| Check | Alert Threshold |
-|-------|-----------------|
-| Daily aggregation ran | Analytics aggregation job completed |
-| Backup ran successfully | Backup script completed |
-| Disk usage | > 70% |
-| Queue depth | > 100 pending jobs |
+| Check                   | Alert Threshold                     |
+| ----------------------- | ----------------------------------- |
+| Daily aggregation ran   | Analytics aggregation job completed |
+| Backup ran successfully | Backup script completed             |
+| Disk usage              | > 70%                               |
+| Queue depth             | > 100 pending jobs                  |
 
 **Actions**:
+
 - Run evidence bundle: `node scripts/generate-certification-evidence-v2.mjs`
 - Compare Day 1 metrics to baseline
 - Brief stakeholders on Day 1 status
@@ -63,23 +66,23 @@
 
 **Monitoring cadence**: Every 2 hours
 
-| Check | Notes |
-|-------|-------|
-| Second-day usage patterns | Compare to Day 1 |
-| Any recurring errors | Review structured logs |
-| User feedback | Collect from pilot users |
-| Performance trends | CPU/memory/disk trending |
+| Check                     | Notes                    |
+| ------------------------- | ------------------------ |
+| Second-day usage patterns | Compare to Day 1         |
+| Any recurring errors      | Review structured logs   |
+| User feedback             | Collect from pilot users |
+| Performance trends        | CPU/memory/disk trending |
 
 ### Hours 48-72: Day 3
 
 **Monitoring cadence**: Every 4 hours
 
-| Check | Notes |
-|-------|-------|
-| Stabilization trends | Errors declining? |
-| Audit trail growth | Normal rate? |
-| Storage projections | Days until disk full? |
-| Go/No-Go for full rollout | Decision gate |
+| Check                     | Notes                 |
+| ------------------------- | --------------------- |
+| Stabilization trends      | Errors declining?     |
+| Audit trail growth        | Normal rate?          |
+| Storage projections       | Days until disk full? |
+| Go/No-Go for full rollout | Decision gate         |
 
 ---
 
@@ -87,26 +90,26 @@
 
 ### Severity Levels
 
-| Level | Description | Response Time | Escalation |
-|-------|-------------|---------------|------------|
-| **SEV-1** | System down, patient safety risk | < 5 minutes | Page on-call + CTO |
-| **SEV-2** | Major feature broken, data integrity risk | < 15 minutes | Page on-call |
-| **SEV-3** | Partial feature degraded, workaround exists | < 1 hour | Slack channel |
-| **SEV-4** | Minor cosmetic or performance issue | < 4 hours | Ticket |
+| Level     | Description                                 | Response Time | Escalation         |
+| --------- | ------------------------------------------- | ------------- | ------------------ |
+| **SEV-1** | System down, patient safety risk            | < 5 minutes   | Page on-call + CTO |
+| **SEV-2** | Major feature broken, data integrity risk   | < 15 minutes  | Page on-call       |
+| **SEV-3** | Partial feature degraded, workaround exists | < 1 hour      | Slack channel      |
+| **SEV-4** | Minor cosmetic or performance issue         | < 4 hours     | Ticket             |
 
 ### Escalation Triggers
 
-| Condition | Severity | Action |
-|-----------|----------|--------|
-| API unreachable for > 2 minutes | SEV-1 | Page + consider rollback |
-| VistA connection lost for > 5 minutes | SEV-1 | Page + check VistA health |
-| Audit chain integrity failure | SEV-1 | Stop writes, investigate |
-| PHI exposure detected | SEV-1 | Isolate, page security team |
-| Login broken for all users | SEV-2 | Page, 15-min rollback decision |
-| Circuit breaker stuck open | SEV-2 | Investigate VistA, page ops |
-| Single feature not working | SEV-3 | Disable via feature flag |
-| Slow queries (P95 > 5s) | SEV-3 | Investigate, tune queries |
-| UI rendering issue | SEV-4 | Create ticket |
+| Condition                             | Severity | Action                         |
+| ------------------------------------- | -------- | ------------------------------ |
+| API unreachable for > 2 minutes       | SEV-1    | Page + consider rollback       |
+| VistA connection lost for > 5 minutes | SEV-1    | Page + check VistA health      |
+| Audit chain integrity failure         | SEV-1    | Stop writes, investigate       |
+| PHI exposure detected                 | SEV-1    | Isolate, page security team    |
+| Login broken for all users            | SEV-2    | Page, 15-min rollback decision |
+| Circuit breaker stuck open            | SEV-2    | Investigate VistA, page ops    |
+| Single feature not working            | SEV-3    | Disable via feature flag       |
+| Slow queries (P95 > 5s)               | SEV-3    | Investigate, tune queries      |
+| UI rendering issue                    | SEV-4    | Create ticket                  |
 
 ---
 
@@ -117,6 +120,7 @@
 **Symptoms**: Circuit breaker open, clinical reads fail
 **Cause**: VistA container restart, network partition, port exhaustion
 **Response**:
+
 1. Check VistA Docker logs: `docker logs <wv-container>`
 2. Check if port 9430 is responsive: `nc -z <host> 9430`
 3. Wait 30-45s for circuit breaker recovery
@@ -127,6 +131,7 @@
 **Symptoms**: Users get 401 after API restart
 **Cause**: In-memory session cache cleared on restart
 **Response**:
+
 1. Users re-login (sessions persist in PG, cache refills)
 2. If PG sessions also lost: check PG connection
 3. Not a data integrity issue — expected transient behavior
@@ -136,6 +141,7 @@
 **Symptoms**: Patient data shows old values
 **Cause**: RPC capability cache (5 min TTL), clinical report cache (30s TTL)
 **Response**:
+
 1. Wait for cache TTL expiry
 2. If urgent: restart API to clear all caches
 3. No data corruption — display-only issue
@@ -145,6 +151,7 @@
 **Symptoms**: API slow, heap > 80%
 **Cause**: Large in-memory stores (30+ stores, some unbounded)
 **Response**:
+
 1. Check `/posture/performance` for heap details
 2. Identify largest stores via posture data
 3. Restart API to clear in-memory stores
@@ -155,6 +162,7 @@
 **Symptoms**: Disk filling up
 **Cause**: `logs/immutable-audit.jsonl` grows unbounded
 **Response**:
+
 1. Enable audit shipping (`AUDIT_SHIP_ENABLED=true`) to offload to S3
 2. Rotate file: rename current, API creates new on next write
 3. Keep old file for chain verification
@@ -164,6 +172,7 @@
 **Symptoms**: All OIDC logins fail
 **Cause**: JWKS cache stale, issuer misconfigured, clock skew
 **Response**:
+
 1. Check `OIDC_ISSUER` is reachable
 2. Restart API to refresh JWKS cache
 3. Check server clock sync (NTP)

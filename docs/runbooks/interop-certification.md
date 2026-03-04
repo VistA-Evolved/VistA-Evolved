@@ -10,11 +10,11 @@
 The interop certification harness comprises three test suites, an
 orchestrator script, and a shared assertion library:
 
-| Suite | File | What it tests |
-|-------|------|---------------|
+| Suite            | File                                 | What it tests                                      |
+| ---------------- | ------------------------------------ | -------------------------------------------------- |
 | FHIR conformance | `tests/interop/fhir-conformance.mjs` | CapabilityStatement, resource search, content-type |
-| SMART readiness | `tests/interop/smart-readiness.mjs` | .well-known discovery, OAuth endpoints, scopes |
-| HL7 pack suite | `tests/interop/hl7-pack-suite.mjs` | Pack list/detail, validation, template, pipeline |
+| SMART readiness  | `tests/interop/smart-readiness.mjs`  | .well-known discovery, OAuth endpoints, scopes     |
+| HL7 pack suite   | `tests/interop/hl7-pack-suite.mjs`   | Pack list/detail, validation, template, pipeline   |
 
 Shared: `tests/interop/assertions/fhir-assertions.mjs` (7 exported helpers).
 
@@ -104,11 +104,11 @@ certification.
 
 ### Expected exit codes
 
-| Code | Meaning |
-|------|---------|
-| 0 | All assertions passed |
-| 1 | At least one assertion failed |
-| 2 | Fatal error (network, script crash) |
+| Code | Meaning                             |
+| ---- | ----------------------------------- |
+| 0    | All assertions passed               |
+| 1    | At least one assertion failed       |
+| 2    | Fatal error (network, script crash) |
 
 ---
 
@@ -122,29 +122,34 @@ certification.
 ### Assertion helpers
 
 ```javascript
-import { assert, assertJsonResponse, assertResourceType,
-         assertSupportsResource, assertBundle, summarize
-       } from "./assertions/fhir-assertions.mjs";
+import {
+  assert,
+  assertJsonResponse,
+  assertResourceType,
+  assertSupportsResource,
+  assertBundle,
+  summarize,
+} from './assertions/fhir-assertions.mjs';
 ```
 
 ---
 
 ## 8. Known Gaps
 
-| Gap | Target |
-|-----|--------|
-| SMART `.well-known` not yet implemented | Phase TBD |
-| FHIR R4 resource endpoints return 404 | Wire via data-portability-routes |
-| HL7 pack validate returns mock data | Connect to real HL7 parser |
-| OIDC discovery proxied from Keycloak | Validate Keycloak realm export |
+| Gap                                     | Target                           |
+| --------------------------------------- | -------------------------------- |
+| SMART `.well-known` not yet implemented | Phase TBD                        |
+| FHIR R4 resource endpoints return 404   | Wire via data-portability-routes |
+| HL7 pack validate returns mock data     | Connect to real HL7 parser       |
+| OIDC discovery proxied from Keycloak    | Validate Keycloak realm export   |
 
 ---
 
 ## 9. Troubleshooting
 
-| Symptom | Fix |
-|---------|-----|
+| Symptom                      | Fix                                                                        |
+| ---------------------------- | -------------------------------------------------------------------------- |
 | All tests fail with status 0 | API not running -- start with `npx tsx --env-file=.env.local src/index.ts` |
-| ECONNREFUSED | Check port 3001 and firewall |
-| Timeout on SMART tests | OIDC not configured -- expected in dev |
-| HL7 validation returns empty | HL7 packs need to be registered at startup |
+| ECONNREFUSED                 | Check port 3001 and firewall                                               |
+| Timeout on SMART tests       | OIDC not configured -- expected in dev                                     |
+| HL7 validation returns empty | HL7 packs need to be registered at startup                                 |

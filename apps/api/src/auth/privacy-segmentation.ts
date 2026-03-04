@@ -5,8 +5,7 @@
  * access reason tracking for compliance (42 CFR Part 2, HIV, etc.)
  */
 
-import { log } from "../lib/logger.js";
-import { immutableAudit, type ImmutableAuditAction } from "../lib/immutable-audit.js";
+import { immutableAudit, type ImmutableAuditAction } from '../lib/immutable-audit.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -14,16 +13,16 @@ import { immutableAudit, type ImmutableAuditAction } from "../lib/immutable-audi
 
 /** Sensitivity categories per federal regulation. */
 export type SensitivityCategory =
-  | "normal"             // No special restriction
-  | "confidential"       // General confidential
-  | "substance_use"      // 42 CFR Part 2 (SUD treatment)
-  | "hiv"                // HIV/AIDS status
-  | "mental_health"      // Mental health / psychiatric
-  | "reproductive"       // Reproductive health
-  | "genetic"            // GINA-protected genetic information
-  | "vip"                // VIP/celebrity patient
-  | "employee"           // Employee health record
-  | "research";          // Research-only data
+  | 'normal' // No special restriction
+  | 'confidential' // General confidential
+  | 'substance_use' // 42 CFR Part 2 (SUD treatment)
+  | 'hiv' // HIV/AIDS status
+  | 'mental_health' // Mental health / psychiatric
+  | 'reproductive' // Reproductive health
+  | 'genetic' // GINA-protected genetic information
+  | 'vip' // VIP/celebrity patient
+  | 'employee' // Employee health record
+  | 'research'; // Research-only data
 
 /** A sensitivity tag applied to a record. */
 export interface SensitivityTag {
@@ -95,9 +94,7 @@ let reasonIdCounter = 0;
 /* Sensitivity Tag CRUD                                                */
 /* ------------------------------------------------------------------ */
 
-export function addSensitivityTag(
-  tag: Omit<SensitivityTag, "id" | "appliedAt">,
-): SensitivityTag {
+export function addSensitivityTag(tag: Omit<SensitivityTag, 'id' | 'appliedAt'>): SensitivityTag {
   const id = `st-${++tagIdCounter}`;
   const full: SensitivityTag = {
     ...tag,
@@ -107,10 +104,10 @@ export function addSensitivityTag(
   sensitivityTags.set(id, full);
 
   immutableAudit(
-    "privacy.sensitivity-tag-applied" as ImmutableAuditAction,
-    "success",
+    'privacy.sensitivity-tag-applied' as ImmutableAuditAction,
+    'success',
     { sub: tag.appliedBy, name: tag.appliedBy, roles: [] },
-    { detail: { tagId: id, category: tag.category, recordType: tag.recordType } },
+    { detail: { tagId: id, category: tag.category, recordType: tag.recordType } }
   );
 
   return full;
@@ -122,10 +119,10 @@ export function removeSensitivityTag(id: string, removedBy: string): boolean {
   sensitivityTags.delete(id);
 
   immutableAudit(
-    "privacy.sensitivity-tag-removed" as ImmutableAuditAction,
-    "success",
+    'privacy.sensitivity-tag-removed' as ImmutableAuditAction,
+    'success',
     { sub: removedBy, name: removedBy, roles: [] },
-    { detail: { tagId: id, category: tag.category } },
+    { detail: { tagId: id, category: tag.category } }
   );
 
   return true;
@@ -155,24 +152,21 @@ export function getSensitivityTags(filters: {
 export function getRecordSensitivity(
   tenantId: string,
   recordType: string,
-  recordId: string,
+  recordId: string
 ): SensitivityCategory[] {
   const tags = getSensitivityTags({ tenantId, recordType, recordId });
   const categories = new Set(tags.map((t) => t.category));
-  categories.delete("normal"); // Normal is non-restricting
+  categories.delete('normal'); // Normal is non-restricting
   return Array.from(categories);
 }
 
 /**
  * Check if a patient has any restricting sensitivity tags.
  */
-export function getPatientSensitivity(
-  tenantId: string,
-  patientDfn: string,
-): SensitivityCategory[] {
+export function getPatientSensitivity(tenantId: string, patientDfn: string): SensitivityCategory[] {
   const tags = getSensitivityTags({ tenantId, patientDfn });
   const categories = new Set(tags.map((t) => t.category));
-  categories.delete("normal");
+  categories.delete('normal');
   return Array.from(categories);
 }
 
@@ -183,9 +177,7 @@ export function getPatientSensitivity(
 /**
  * Record an access reason for viewing restricted data.
  */
-export function recordAccessReason(
-  entry: Omit<AccessReason, "id" | "accessedAt">,
-): AccessReason {
+export function recordAccessReason(entry: Omit<AccessReason, 'id' | 'accessedAt'>): AccessReason {
   const id = `ar-${++reasonIdCounter}`;
   const full: AccessReason = {
     ...entry,
@@ -196,8 +188,8 @@ export function recordAccessReason(
   if (accessReasons.length > MAX_ACCESS_REASONS) accessReasons.shift();
 
   immutableAudit(
-    "privacy.access-reason" as ImmutableAuditAction,
-    "success",
+    'privacy.access-reason' as ImmutableAuditAction,
+    'success',
     { sub: entry.userId, name: entry.userName, roles: [] },
     {
       detail: {
@@ -205,9 +197,9 @@ export function recordAccessReason(
         categories: entry.categories,
         breakGlass: entry.breakGlass,
         // Reason text NOT logged to avoid PHI leak — only hash
-        reasonHash: entry.reason.length > 0 ? "present" : "empty",
+        reasonHash: entry.reason.length > 0 ? 'present' : 'empty',
       },
-    },
+    }
   );
 
   return full;
@@ -239,12 +231,7 @@ export function queryAccessReasons(filters: {
 /* ------------------------------------------------------------------ */
 
 /** Categories that always require break-glass for non-admin access. */
-const BREAK_GLASS_REQUIRED: SensitivityCategory[] = [
-  "substance_use",
-  "hiv",
-  "vip",
-  "employee",
-];
+const BREAK_GLASS_REQUIRED: SensitivityCategory[] = ['substance_use', 'hiv', 'vip', 'employee'];
 
 /**
  * Check if a user can access a record based on sensitivity.
@@ -255,7 +242,7 @@ export function checkSensitivityAccess(
   recordType: string,
   recordId: string,
   userRole: string,
-  hasBreakGlass: boolean,
+  hasBreakGlass: boolean
 ): {
   allowed: boolean;
   requiresBreakGlass: boolean;
@@ -272,7 +259,7 @@ export function checkSensitivityAccess(
   const needsBreakGlass = categories.some((c) => BREAK_GLASS_REQUIRED.includes(c));
 
   // Admin always has access but still needs reason logged
-  if (userRole === "admin") {
+  if (userRole === 'admin') {
     return {
       allowed: true,
       requiresBreakGlass: false,
@@ -287,7 +274,7 @@ export function checkSensitivityAccess(
       requiresBreakGlass: true,
       requiresReason: true,
       categories,
-      denialReason: `Record has ${categories.join(",")} sensitivity tags requiring break-glass access`,
+      denialReason: `Record has ${categories.join(',')} sensitivity tags requiring break-glass access`,
     };
   }
 

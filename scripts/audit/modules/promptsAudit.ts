@@ -5,24 +5,24 @@
  * into the Audit v2 finding format.
  */
 
-import { readdirSync, statSync, existsSync, readFileSync } from "fs";
-import { join } from "path";
-import type { AuditModule, AuditFinding } from "../types.js";
+import { readdirSync, statSync, existsSync, readFileSync } from 'fs';
+import { join } from 'path';
+import type { AuditModule, AuditFinding } from '../types.js';
 
 export const promptsAudit: AuditModule = {
-  name: "promptsAudit",
-  requires: "offline",
+  name: 'promptsAudit',
+  requires: 'offline',
 
   async run(root: string): Promise<AuditFinding[]> {
     const findings: AuditFinding[] = [];
-    const promptsDir = join(root, "prompts");
+    const promptsDir = join(root, 'prompts');
 
     if (!existsSync(promptsDir)) {
       findings.push({
-        rule: "prompts-dir-exists",
-        status: "fail",
-        severity: "critical",
-        message: "prompts/ directory not found",
+        rule: 'prompts-dir-exists',
+        status: 'fail',
+        severity: 'critical',
+        message: 'prompts/ directory not found',
       });
       return findings;
     }
@@ -32,7 +32,7 @@ export const promptsAudit: AuditModule = {
       .sort();
 
     const PHASE_RE = /^(\d{2})-PHASE-(\d+[A-Z]?)-(.+)$/;
-    const phaseFolders = allEntries.filter((e) => /^\d{2}-/.test(e) && !e.startsWith("00-"));
+    const phaseFolders = allEntries.filter((e) => /^\d{2}-/.test(e) && !e.startsWith('00-'));
 
     // Check: unique prefixes
     const prefixMap = new Map<string, string[]>();
@@ -47,18 +47,18 @@ export const promptsAudit: AuditModule = {
     const dupes = [...prefixMap.entries()].filter(([_, v]) => v.length > 1);
     if (dupes.length === 0) {
       findings.push({
-        rule: "unique-prefixes",
-        status: "pass",
-        severity: "info",
+        rule: 'unique-prefixes',
+        status: 'pass',
+        severity: 'info',
         message: `All ${prefixMap.size} folder prefixes are unique`,
       });
     } else {
       for (const [p, folders] of dupes) {
         findings.push({
-          rule: "unique-prefixes",
-          status: "fail",
-          severity: "high",
-          message: `Duplicate prefix ${p}: ${folders.join(", ")}`,
+          rule: 'unique-prefixes',
+          status: 'fail',
+          severity: 'high',
+          message: `Duplicate prefix ${p}: ${folders.join(', ')}`,
         });
       }
     }
@@ -77,25 +77,25 @@ export const promptsAudit: AuditModule = {
       const hasVerify = files.some((f) => f.match(new RegExp(`^${prefix}-99-VERIFY\\.md$`)));
 
       // Check for legacy patterns
-      const hasLegacyPrompt = files.some((f) => f === "prompt.md");
-      const hasAnyMd = files.some((f) => f.endsWith(".md"));
+      const hasLegacyPrompt = files.some((f) => f === 'prompt.md');
+      const hasAnyMd = files.some((f) => f.endsWith('.md'));
 
       if (!hasImplement) {
         if (hasLegacyPrompt || hasAnyMd) {
           // Legacy pattern -- warn only
           findings.push({
-            rule: "implement-file",
-            status: "warn",
-            severity: "low",
+            rule: 'implement-file',
+            status: 'warn',
+            severity: 'low',
             message: `${folder}: missing ${prefix}-01-IMPLEMENT.md (has legacy .md files)`,
             file: `prompts/${folder}`,
           });
         } else {
           missingImplement++;
           findings.push({
-            rule: "implement-file",
-            status: "fail",
-            severity: "high",
+            rule: 'implement-file',
+            status: 'fail',
+            severity: 'high',
             message: `${folder}: missing ${prefix}-01-IMPLEMENT.md`,
             file: `prompts/${folder}`,
           });
@@ -105,18 +105,18 @@ export const promptsAudit: AuditModule = {
       if (!hasVerify) {
         if (hasLegacyPrompt || hasAnyMd) {
           findings.push({
-            rule: "verify-file",
-            status: "warn",
-            severity: "low",
+            rule: 'verify-file',
+            status: 'warn',
+            severity: 'low',
             message: `${folder}: missing ${prefix}-99-VERIFY.md (has legacy .md files)`,
             file: `prompts/${folder}`,
           });
         } else {
           missingVerify++;
           findings.push({
-            rule: "verify-file",
-            status: "fail",
-            severity: "high",
+            rule: 'verify-file',
+            status: 'fail',
+            severity: 'high',
             message: `${folder}: missing ${prefix}-99-VERIFY.md`,
             file: `prompts/${folder}`,
           });
@@ -126,17 +126,17 @@ export const promptsAudit: AuditModule = {
 
     if (missingImplement === 0 && missingVerify === 0) {
       findings.push({
-        rule: "prompt-files-complete",
-        status: "pass",
-        severity: "info",
+        rule: 'prompt-files-complete',
+        status: 'pass',
+        severity: 'info',
         message: `All phase folders have required prompt files (or legacy pattern)`,
       });
     }
 
     findings.push({
-      rule: "prompts-total",
-      status: "pass",
-      severity: "info",
+      rule: 'prompts-total',
+      status: 'pass',
+      severity: 'info',
       message: `${phaseFolders.length} phase folders audited`,
     });
 

@@ -13,7 +13,7 @@
  *   - GET  /intake/brain/audit/stats            — brain audit statistics
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 import {
   resolveBrainPlugin,
   listBrainPlugins,
@@ -22,18 +22,18 @@ import {
   getBrainDecisionAudit,
   getBrainAuditStats,
   hashForAudit,
-} from "./brain/index.js";
-import type { BrainSessionState } from "./brain/types.js";
+} from './brain/index.js';
+import type { BrainSessionState } from './brain/types.js';
 import {
   getSession,
   getLatestSnapshot,
   appendEvent,
   saveSnapshot,
   updateSessionStatus,
-} from "./intake-store.js";
-import type { QuestionnaireResponse } from "./types.js";
-import { isRpcAvailable } from "../vista/rpcCapabilities.js";
-import { log } from "../lib/logger.js";
+} from './intake-store.js';
+import type { QuestionnaireResponse } from './types.js';
+import { isRpcAvailable } from '../vista/rpcCapabilities.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Session + brain state storage (in-memory)                            */
@@ -47,7 +47,9 @@ const brainStates = new Map<string, BrainSessionState>();
 /* ------------------------------------------------------------------ */
 
 type PortalSessionFn = (req: any) => { patientDfn: string; patientName: string } | null;
-type ClinicianSessionFn = (req: any) => { duz: string; name: string } | null | Promise<{ duz: string; name: string } | null>;
+type ClinicianSessionFn = (
+  req: any
+) => { duz: string; name: string } | null | Promise<{ duz: string; name: string } | null>;
 
 let getPortalSessionFn: PortalSessionFn = () => null;
 let getClinicianSessionFn: ClinicianSessionFn = () => null;
@@ -65,17 +67,16 @@ export function initBrainRoutes(
 /* ------------------------------------------------------------------ */
 
 export default async function intakeBrainRoutes(server: FastifyInstance): Promise<void> {
-
   // =============================================
   // PROVIDER MANAGEMENT (session required)
   // =============================================
 
   /** List available brain providers */
-  server.get("/intake/providers", async (request, reply) => {
+  server.get('/intake/providers', async (request, reply) => {
     const portal = getPortalSessionFn(request);
     const clinician = await getClinicianSessionFn(request);
     if (!portal && !clinician) {
-      return reply.code(401).send({ error: "Session required" });
+      return reply.code(401).send({ error: 'Session required' });
     }
 
     const providers = listBrainPlugins();
@@ -83,10 +84,10 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
   });
 
   /** Health check all brain providers */
-  server.get("/intake/providers/health", async (request, reply) => {
+  server.get('/intake/providers/health', async (request, reply) => {
     const clinician = await getClinicianSessionFn(request);
     if (!clinician) {
-      return reply.code(401).send({ error: "Clinician session required" });
+      return reply.code(401).send({ error: 'Clinician session required' });
     }
 
     const health = await checkAllBrainHealth();
@@ -98,23 +99,23 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
   // =============================================
 
   /** Start a brain session for an intake session */
-  server.post("/intake/sessions/:id/brain/start", async (request, reply) => {
+  server.post('/intake/sessions/:id/brain/start', async (request, reply) => {
     const portal = getPortalSessionFn(request);
     if (!portal) {
-      return reply.code(401).send({ error: "Portal session required" });
+      return reply.code(401).send({ error: 'Portal session required' });
     }
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
     if (session.patientDfn !== portal.patientDfn) {
-      return reply.code(403).send({ error: "Access denied" });
+      return reply.code(403).send({ error: 'Access denied' });
     }
 
     const body = (request.body as any) || {};
-    const requestedProvider = body.providerId ?? session.brainProvider ?? "rules_engine";
+    const requestedProvider = body.providerId ?? session.brainProvider ?? 'rules_engine';
     const { plugin, fellBack, originalId } = resolveBrainPlugin(requestedProvider);
 
     try {
@@ -129,7 +130,7 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
         sessionId: id,
         providerId: plugin.id,
         providerFamily: plugin.family,
-        decisionType: "start_session",
+        decisionType: 'start_session',
         inputHash: hashForAudit({ sessionId: id, context: session.context }),
         outputHash: hashForAudit(brainState),
         usedLlm: false,
@@ -141,9 +142,9 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
 
       appendEvent({
         sessionId: id,
-        type: "session.created",
+        type: 'session.created',
         actor: portal.patientDfn,
-        actorType: "patient",
+        actorType: 'patient',
         payload: {
           brainProvider: plugin.id,
           fellBack,
@@ -163,30 +164,36 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
         },
       };
     } catch (err: any) {
-      log.error("Brain start session failed", { sessionId: id, provider: plugin.id, error: err?.message });
-      return reply.code(500).send({ ok: false, error: "Brain session start failed", detail: err?.message });
+      log.error('Brain start session failed', {
+        sessionId: id,
+        provider: plugin.id,
+        error: err?.message,
+      });
+      return reply
+        .code(500)
+        .send({ ok: false, error: 'Brain session start failed', detail: err?.message });
     }
   });
 
   /** Brain-driven next question */
-  server.post("/intake/sessions/:id/brain/next", async (request, reply) => {
+  server.post('/intake/sessions/:id/brain/next', async (request, reply) => {
     const portal = getPortalSessionFn(request);
     if (!portal) {
-      return reply.code(401).send({ error: "Portal session required" });
+      return reply.code(401).send({ error: 'Portal session required' });
     }
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
     if (session.patientDfn !== portal.patientDfn) {
-      return reply.code(403).send({ error: "Access denied" });
+      return reply.code(403).send({ error: 'Access denied' });
     }
 
     // Get or create brain state
     let brainState = brainStates.get(id);
-    const requestedProvider = session.brainProvider ?? "rules_engine";
+    const requestedProvider = session.brainProvider ?? 'rules_engine';
     const { plugin, fellBack } = resolveBrainPlugin(requestedProvider);
 
     if (!brainState) {
@@ -196,14 +203,14 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
 
     const body = (request.body as any) || {};
     const qrSoFar: QuestionnaireResponse = body.questionnaireResponseSoFar ?? {
-      resourceType: "QuestionnaireResponse",
-      status: "in-progress",
+      resourceType: 'QuestionnaireResponse',
+      status: 'in-progress',
       item: [],
     };
 
     // Transition to in_progress if needed
-    if (session.status === "not_started") {
-      updateSessionStatus(id, "in_progress", portal.patientDfn, "patient");
+    if (session.status === 'not_started') {
+      updateSessionStatus(id, 'in_progress', portal.patientDfn, 'patient');
     }
 
     try {
@@ -219,9 +226,12 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
         sessionId: id,
         providerId: plugin.id,
         providerFamily: plugin.family,
-        decisionType: "next_question",
+        decisionType: 'next_question',
         inputHash: hashForAudit({ qrItemCount: qrSoFar.item.length }),
-        outputHash: hashForAudit({ nextItemCount: result.nextItems.length, isComplete: result.isComplete }),
+        outputHash: hashForAudit({
+          nextItemCount: result.nextItems.length,
+          isComplete: result.isComplete,
+        }),
         usedLlm: result.usedLlm,
         phiRedacted: false,
         latencyMs,
@@ -232,9 +242,9 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
       if (result.nextItems.length > 0) {
         appendEvent({
           sessionId: id,
-          type: "question.asked",
+          type: 'question.asked',
           actor: portal.patientDfn,
-          actorType: "patient",
+          actorType: 'patient',
           payload: {
             brainProvider: plugin.id,
             itemCount: result.nextItems.length,
@@ -254,29 +264,35 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
         },
       };
     } catch (err: any) {
-      log.error("Brain next question failed", { sessionId: id, provider: plugin.id, error: err?.message });
-      return reply.code(500).send({ ok: false, error: "Brain next question failed", detail: err?.message });
+      log.error('Brain next question failed', {
+        sessionId: id,
+        provider: plugin.id,
+        error: err?.message,
+      });
+      return reply
+        .code(500)
+        .send({ ok: false, error: 'Brain next question failed', detail: err?.message });
     }
   });
 
   /** Brain-driven answer submission */
-  server.post("/intake/sessions/:id/brain/submit", async (request, reply) => {
+  server.post('/intake/sessions/:id/brain/submit', async (request, reply) => {
     const portal = getPortalSessionFn(request);
     if (!portal) {
-      return reply.code(401).send({ error: "Portal session required" });
+      return reply.code(401).send({ error: 'Portal session required' });
     }
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
     if (session.patientDfn !== portal.patientDfn) {
-      return reply.code(403).send({ error: "Access denied" });
+      return reply.code(403).send({ error: 'Access denied' });
     }
 
     let brainState = brainStates.get(id);
-    const requestedProvider = session.brainProvider ?? "rules_engine";
+    const requestedProvider = session.brainProvider ?? 'rules_engine';
     const { plugin, fellBack } = resolveBrainPlugin(requestedProvider);
 
     if (!brainState) {
@@ -290,8 +306,8 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
     // Get current QR
     const existing = getLatestSnapshot(id);
     const qr: QuestionnaireResponse = existing?.questionnaireResponse ?? {
-      resourceType: "QuestionnaireResponse",
-      status: "in-progress",
+      resourceType: 'QuestionnaireResponse',
+      status: 'in-progress',
       item: [],
     };
 
@@ -321,9 +337,12 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
         sessionId: id,
         providerId: plugin.id,
         providerFamily: plugin.family,
-        decisionType: "submit_answer",
+        decisionType: 'submit_answer',
         inputHash: hashForAudit({ answerCount: answers.length }),
-        outputHash: hashForAudit({ followUpCount: result.followUpItems.length, redFlagCount: result.newRedFlags.length }),
+        outputHash: hashForAudit({
+          followUpCount: result.followUpItems.length,
+          redFlagCount: result.newRedFlags.length,
+        }),
         usedLlm: false,
         phiRedacted: false,
         latencyMs,
@@ -334,9 +353,9 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
       for (const ans of answers) {
         appendEvent({
           sessionId: id,
-          type: "question.answered",
+          type: 'question.answered',
           actor: portal.patientDfn,
-          actorType: "patient",
+          actorType: 'patient',
           payload: { linkId: ans.linkId, brainProvider: plugin.id },
           questionId: ans.linkId,
         });
@@ -355,33 +374,39 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
         },
       };
     } catch (err: any) {
-      log.error("Brain submit answer failed", { sessionId: id, provider: plugin.id, error: err?.message });
-      return reply.code(500).send({ ok: false, error: "Brain answer submission failed", detail: err?.message });
+      log.error('Brain submit answer failed', {
+        sessionId: id,
+        provider: plugin.id,
+        error: err?.message,
+      });
+      return reply
+        .code(500)
+        .send({ ok: false, error: 'Brain answer submission failed', detail: err?.message });
     }
   });
 
   /** Brain-driven summary generation */
-  server.post("/intake/sessions/:id/brain/summary", async (request, reply) => {
+  server.post('/intake/sessions/:id/brain/summary', async (request, reply) => {
     // Allow both portal and clinician
     const portal = getPortalSessionFn(request);
     const clinician = await getClinicianSessionFn(request);
     if (!portal && !clinician) {
-      return reply.code(401).send({ error: "Session required" });
+      return reply.code(401).send({ error: 'Session required' });
     }
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
 
     // Access check
     if (portal && session.patientDfn !== portal.patientDfn) {
-      return reply.code(403).send({ error: "Access denied" });
+      return reply.code(403).send({ error: 'Access denied' });
     }
 
     let brainState = brainStates.get(id);
-    const requestedProvider = session.brainProvider ?? "rules_engine";
+    const requestedProvider = session.brainProvider ?? 'rules_engine';
     const { plugin, fellBack } = resolveBrainPlugin(requestedProvider);
 
     if (!brainState) {
@@ -390,8 +415,8 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
 
     const snap = getLatestSnapshot(id);
     const qr: QuestionnaireResponse = snap?.questionnaireResponse ?? {
-      resourceType: "QuestionnaireResponse",
-      status: "completed",
+      resourceType: 'QuestionnaireResponse',
+      status: 'completed',
       item: [],
     };
 
@@ -405,23 +430,26 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
         sessionId: id,
         providerId: plugin.id,
         providerFamily: plugin.family,
-        decisionType: "finalize_summary",
+        decisionType: 'finalize_summary',
         inputHash: hashForAudit({ qrItemCount: qr.item.length }),
-        outputHash: hashForAudit({ citationCount: summary.citations.length, tiuReady: summary.tiuReady }),
-        usedLlm: summary.generatedBy === "llm_constrained",
+        outputHash: hashForAudit({
+          citationCount: summary.citations.length,
+          tiuReady: summary.tiuReady,
+        }),
+        usedLlm: summary.generatedBy === 'llm_constrained',
         phiRedacted: false,
         latencyMs,
         fellBackToRules: fellBack,
         safetyWarnings: summary.governance.containsDiagnosis
-          ? ["Summary contained diagnosis -- blocked"]
+          ? ['Summary contained diagnosis -- blocked']
           : [],
       });
 
       appendEvent({
         sessionId: id,
-        type: "summary.generated",
-        actor: portal?.patientDfn ?? clinician?.duz ?? "system",
-        actorType: portal ? "patient" : "clinician",
+        type: 'summary.generated',
+        actor: portal?.patientDfn ?? clinician?.duz ?? 'system',
+        actorType: portal ? 'patient' : 'clinician',
         payload: {
           brainProvider: plugin.id,
           generatedBy: summary.generatedBy,
@@ -437,8 +465,14 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
         governance: summary.governance,
       };
     } catch (err: any) {
-      log.error("Brain summary generation failed", { sessionId: id, provider: plugin.id, error: err?.message });
-      return reply.code(500).send({ ok: false, error: "Brain summary generation failed", detail: err?.message });
+      log.error('Brain summary generation failed', {
+        sessionId: id,
+        provider: plugin.id,
+        error: err?.message,
+      });
+      return reply
+        .code(500)
+        .send({ ok: false, error: 'Brain summary generation failed', detail: err?.message });
     }
   });
 
@@ -447,20 +481,20 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
   // =============================================
 
   /** Generate TIU-ready draft note for VistA filing */
-  server.post("/intake/sessions/:id/tiu-draft", async (request, reply) => {
+  server.post('/intake/sessions/:id/tiu-draft', async (request, reply) => {
     const clinician = await getClinicianSessionFn(request);
     if (!clinician) {
-      return reply.code(401).send({ error: "Clinician session required" });
+      return reply.code(401).send({ error: 'Clinician session required' });
     }
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
 
     let brainState = brainStates.get(id);
-    const requestedProvider = session.brainProvider ?? "rules_engine";
+    const requestedProvider = session.brainProvider ?? 'rules_engine';
     const { plugin } = resolveBrainPlugin(requestedProvider);
 
     if (!brainState) {
@@ -469,8 +503,8 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
 
     const snap = getLatestSnapshot(id);
     const qr: QuestionnaireResponse = snap?.questionnaireResponse ?? {
-      resourceType: "QuestionnaireResponse",
-      status: "completed",
+      resourceType: 'QuestionnaireResponse',
+      status: 'completed',
       item: [],
     };
 
@@ -478,8 +512,8 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
       const summary = await plugin.finalizeSummary(session, qr, session.context, brainState);
 
       // Check VistA TIU RPC availability
-      const tiuCreateAvailable = isRpcAvailable("TIU CREATE RECORD");
-      const tiuSetTextAvailable = isRpcAvailable("TIU SET DOCUMENT TEXT");
+      const tiuCreateAvailable = isRpcAvailable('TIU CREATE RECORD');
+      const tiuSetTextAvailable = isRpcAvailable('TIU SET DOCUMENT TEXT');
       const vistaAvailable = tiuCreateAvailable && tiuSetTextAvailable;
 
       // Build TIU-ready note structure
@@ -497,32 +531,32 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
         governance: summary.governance,
         sections: {
           hpi: summary.sections.hpiNarrative,
-          rosCount: summary.sections.reviewOfSystems.filter((r) => r.status !== "not_asked").length,
+          rosCount: summary.sections.reviewOfSystems.filter((r) => r.status !== 'not_asked').length,
           redFlagCount: summary.sections.redFlags.length,
           citationCount: summary.citations.length,
         },
         vistaIntegration: {
-          status: vistaAvailable ? "draft_ready" as const : "integration_pending" as const,
+          status: vistaAvailable ? ('draft_ready' as const) : ('integration_pending' as const),
           vistaAvailable,
-          targetRpcs: ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT"],
+          targetRpcs: ['TIU CREATE RECORD', 'TIU SET DOCUMENT TEXT'],
           rpcStatus: {
-            "TIU CREATE RECORD": tiuCreateAvailable,
-            "TIU SET DOCUMENT TEXT": tiuSetTextAvailable,
+            'TIU CREATE RECORD': tiuCreateAvailable,
+            'TIU SET DOCUMENT TEXT': tiuSetTextAvailable,
           },
           requiresSignature: true,
           note: vistaAvailable
-            ? "Draft note requires clinician review and electronic signature before filing to VistA"
-            : "VistA TIU RPCs not yet available -- draft saved for manual review. Filing will be enabled when TIU CREATE RECORD and TIU SET DOCUMENT TEXT are configured.",
+            ? 'Draft note requires clinician review and electronic signature before filing to VistA'
+            : 'VistA TIU RPCs not yet available -- draft saved for manual review. Filing will be enabled when TIU CREATE RECORD and TIU SET DOCUMENT TEXT are configured.',
         },
       };
 
       appendEvent({
         sessionId: id,
-        type: "clinician.exported",
+        type: 'clinician.exported',
         actor: clinician.duz,
-        actorType: "clinician",
+        actorType: 'clinician',
         payload: {
-          format: "tiu-draft",
+          format: 'tiu-draft',
           brainProvider: summary.providerId,
           tiuReady: summary.tiuReady,
           vistaAvailable,
@@ -531,8 +565,14 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
 
       return { ok: true, tiuDraft };
     } catch (err: any) {
-      log.error("TIU draft generation failed", { sessionId: id, provider: plugin.id, error: err?.message });
-      return reply.code(500).send({ ok: false, error: "TIU draft generation failed", detail: err?.message });
+      log.error('TIU draft generation failed', {
+        sessionId: id,
+        provider: plugin.id,
+        error: err?.message,
+      });
+      return reply
+        .code(500)
+        .send({ ok: false, error: 'TIU draft generation failed', detail: err?.message });
     }
   });
 
@@ -541,10 +581,10 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
   // =============================================
 
   /** Get brain decision audit log */
-  server.get("/intake/brain/audit", async (request, reply) => {
+  server.get('/intake/brain/audit', async (request, reply) => {
     const clinician = await getClinicianSessionFn(request);
     if (!clinician) {
-      return reply.code(401).send({ error: "Clinician session required" });
+      return reply.code(401).send({ error: 'Clinician session required' });
     }
 
     const query = request.query as any;
@@ -558,10 +598,10 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
   });
 
   /** Brain audit statistics */
-  server.get("/intake/brain/audit/stats", async (request, reply) => {
+  server.get('/intake/brain/audit/stats', async (request, reply) => {
     const clinician = await getClinicianSessionFn(request);
     if (!clinician) {
-      return reply.code(401).send({ error: "Clinician session required" });
+      return reply.code(401).send({ error: 'Clinician session required' });
     }
 
     return { ok: true, stats: getBrainAuditStats() };

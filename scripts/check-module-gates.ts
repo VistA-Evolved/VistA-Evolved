@@ -18,12 +18,12 @@
  *   1 = hard failures found
  */
 
-import { readFileSync, existsSync, writeFileSync, mkdirSync } from "fs";
-import { join, dirname } from "path";
+import { readFileSync, existsSync, writeFileSync, mkdirSync } from 'fs';
+import { join, dirname } from 'path';
 
 const ROOT = process.cwd();
-const MODULES_PATH = join(ROOT, "config", "modules.json");
-const SKUS_PATH = join(ROOT, "config", "skus.json");
+const MODULES_PATH = join(ROOT, 'config', 'modules.json');
+const SKUS_PATH = join(ROOT, 'config', 'skus.json');
 
 interface ModuleDef {
   name: string;
@@ -43,7 +43,7 @@ interface SkuProfile {
 
 interface CheckResult {
   check: string;
-  status: "pass" | "fail" | "warn";
+  status: 'pass' | 'fail' | 'warn';
   message: string;
   details?: string[];
 }
@@ -51,13 +51,13 @@ interface CheckResult {
 const results: CheckResult[] = [];
 
 function pass(check: string, message: string) {
-  results.push({ check, status: "pass", message });
+  results.push({ check, status: 'pass', message });
 }
 function fail(check: string, message: string, details?: string[]) {
-  results.push({ check, status: "fail", message, details });
+  results.push({ check, status: 'fail', message, details });
 }
 function warn(check: string, message: string, details?: string[]) {
-  results.push({ check, status: "warn", message, details });
+  results.push({ check, status: 'warn', message, details });
 }
 
 /* ------------------------------------------------------------------ */
@@ -65,23 +65,23 @@ function warn(check: string, message: string, details?: string[]) {
 /* ------------------------------------------------------------------ */
 
 if (!existsSync(MODULES_PATH)) {
-  fail("modules-loaded", "config/modules.json not found");
+  fail('modules-loaded', 'config/modules.json not found');
   printAndExit();
 }
 if (!existsSync(SKUS_PATH)) {
-  fail("skus-loaded", "config/skus.json not found");
+  fail('skus-loaded', 'config/skus.json not found');
   printAndExit();
 }
 
-const modulesData = JSON.parse(readFileSync(MODULES_PATH, "utf-8"));
+const modulesData = JSON.parse(readFileSync(MODULES_PATH, 'utf-8'));
 const modules: Record<string, ModuleDef> = modulesData.modules || {};
 const moduleIds = Object.keys(modules);
 
-const skusData = JSON.parse(readFileSync(SKUS_PATH, "utf-8"));
+const skusData = JSON.parse(readFileSync(SKUS_PATH, 'utf-8'));
 const skus: Record<string, SkuProfile> = skusData.skus || {};
 const skuIds = Object.keys(skus);
 
-pass("config-loaded", `Loaded ${moduleIds.length} modules and ${skuIds.length} SKUs`);
+pass('config-loaded', `Loaded ${moduleIds.length} modules and ${skuIds.length} SKUs`);
 
 /* ------------------------------------------------------------------ */
 /* Check 1: Route patterns compile to valid RegExp                      */
@@ -104,9 +104,9 @@ for (const [modId, mod] of Object.entries(modules)) {
 
 if (badPatterns.length === 0) {
   const totalPatterns = moduleIds.reduce((sum, id) => sum + modules[id].routePatterns.length, 0);
-  pass("route-patterns-valid", `All ${totalPatterns} route patterns compile to valid RegExp`);
+  pass('route-patterns-valid', `All ${totalPatterns} route patterns compile to valid RegExp`);
 } else {
-  fail("route-patterns-valid", `${badPatterns.length} invalid route patterns`, badPatterns);
+  fail('route-patterns-valid', `${badPatterns.length} invalid route patterns`, badPatterns);
 }
 
 /* ------------------------------------------------------------------ */
@@ -120,9 +120,13 @@ for (const [modId, mod] of Object.entries(modules)) {
   }
 }
 if (emptyPatterns.length === 0) {
-  pass("no-empty-patterns", "All non-kernel modules have route patterns");
+  pass('no-empty-patterns', 'All non-kernel modules have route patterns');
 } else {
-  warn("no-empty-patterns", `Modules with no route patterns: ${emptyPatterns.join(", ")}`, emptyPatterns);
+  warn(
+    'no-empty-patterns',
+    `Modules with no route patterns: ${emptyPatterns.join(', ')}`,
+    emptyPatterns
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -138,9 +142,9 @@ for (const [skuId, sku] of Object.entries(skus)) {
   }
 }
 if (badSkuRefs.length === 0) {
-  pass("sku-refs-valid", `All ${skuIds.length} SKU profiles reference valid modules`);
+  pass('sku-refs-valid', `All ${skuIds.length} SKU profiles reference valid modules`);
 } else {
-  fail("sku-refs-valid", `${badSkuRefs.length} invalid SKU module references`, badSkuRefs);
+  fail('sku-refs-valid', `${badSkuRefs.length} invalid SKU module references`, badSkuRefs);
 }
 
 /* ------------------------------------------------------------------ */
@@ -156,9 +160,9 @@ for (const [modId, mod] of Object.entries(modules)) {
   }
 }
 if (badDeps.length === 0) {
-  pass("deps-valid", "All module dependencies reference existing modules");
+  pass('deps-valid', 'All module dependencies reference existing modules');
 } else {
-  fail("deps-valid", `${badDeps.length} invalid dependency references`, badDeps);
+  fail('deps-valid', `${badDeps.length} invalid dependency references`, badDeps);
 }
 
 /* ------------------------------------------------------------------ */
@@ -191,27 +195,27 @@ for (const modId of moduleIds) {
   }
 }
 if (cycles.length === 0) {
-  pass("no-circular-deps", "No circular dependencies detected");
+  pass('no-circular-deps', 'No circular dependencies detected');
 } else {
-  fail("no-circular-deps", `Circular dependencies: ${cycles.join("; ")}`);
+  fail('no-circular-deps', `Circular dependencies: ${cycles.join('; ')}`);
 }
 
 /* ------------------------------------------------------------------ */
 /* Check 6: FULL_SUITE SKU contains all non-test modules                */
 /* ------------------------------------------------------------------ */
 
-const fullSuite = skus["FULL_SUITE"];
+const fullSuite = skus['FULL_SUITE'];
 if (fullSuite) {
   const missing = moduleIds.filter(
-    (id) => !fullSuite.modules.includes(id) && !modules[id].alwaysEnabled,
+    (id) => !fullSuite.modules.includes(id) && !modules[id].alwaysEnabled
   );
   if (missing.length === 0) {
-    pass("full-suite-complete", "FULL_SUITE SKU includes all non-kernel modules");
+    pass('full-suite-complete', 'FULL_SUITE SKU includes all non-kernel modules');
   } else {
-    warn("full-suite-complete", `FULL_SUITE missing modules: ${missing.join(", ")}`, missing);
+    warn('full-suite-complete', `FULL_SUITE missing modules: ${missing.join(', ')}`, missing);
   }
 } else {
-  fail("full-suite-complete", "FULL_SUITE SKU not found in skus.json");
+  fail('full-suite-complete', 'FULL_SUITE SKU not found in skus.json');
 }
 
 /* ------------------------------------------------------------------ */
@@ -235,9 +239,9 @@ for (let i = 0; i < moduleEntries.length; i++) {
   }
 }
 if (overlaps.length === 0) {
-  pass("no-pattern-overlap", "No duplicate route patterns across modules");
+  pass('no-pattern-overlap', 'No duplicate route patterns across modules');
 } else {
-  warn("no-pattern-overlap", `${overlaps.length} shared patterns (may be intentional)`, overlaps);
+  warn('no-pattern-overlap', `${overlaps.length} shared patterns (may be intentional)`, overlaps);
 }
 
 /* ------------------------------------------------------------------ */
@@ -247,13 +251,13 @@ if (overlaps.length === 0) {
 const kernelWithDeps: string[] = [];
 for (const [modId, mod] of Object.entries(modules)) {
   if (mod.alwaysEnabled && mod.dependencies.length > 0) {
-    kernelWithDeps.push(`${modId} has deps: ${mod.dependencies.join(", ")}`);
+    kernelWithDeps.push(`${modId} has deps: ${mod.dependencies.join(', ')}`);
   }
 }
 if (kernelWithDeps.length === 0) {
-  pass("kernel-no-deps", "Always-enabled modules have no dependencies");
+  pass('kernel-no-deps', 'Always-enabled modules have no dependencies');
 } else {
-  warn("kernel-no-deps", `Always-enabled modules with deps: ${kernelWithDeps.join("; ")}`);
+  warn('kernel-no-deps', `Always-enabled modules with deps: ${kernelWithDeps.join('; ')}`);
 }
 
 /* ------------------------------------------------------------------ */
@@ -261,14 +265,14 @@ if (kernelWithDeps.length === 0) {
 /* ------------------------------------------------------------------ */
 
 function printAndExit() {
-  console.log("\n=== Module Toggle Integrity Check (Phase 47) ===\n");
+  console.log('\n=== Module Toggle Integrity Check (Phase 47) ===\n');
 
-  const passCount = results.filter((r) => r.status === "pass").length;
-  const failCount = results.filter((r) => r.status === "fail").length;
-  const warnCount = results.filter((r) => r.status === "warn").length;
+  const passCount = results.filter((r) => r.status === 'pass').length;
+  const failCount = results.filter((r) => r.status === 'fail').length;
+  const warnCount = results.filter((r) => r.status === 'warn').length;
 
   for (const r of results) {
-    const icon = r.status === "pass" ? "PASS" : r.status === "fail" ? "FAIL" : "WARN";
+    const icon = r.status === 'pass' ? 'PASS' : r.status === 'fail' ? 'FAIL' : 'WARN';
     console.log(`  [${icon}] ${r.check}: ${r.message}`);
     if (r.details && r.details.length > 0) {
       for (const d of r.details.slice(0, 5)) {
@@ -288,11 +292,21 @@ function printAndExit() {
     mkdirSync(dirname(process.env.EVIDENCE_OUTPUT), { recursive: true });
     writeFileSync(
       process.env.EVIDENCE_OUTPUT,
-      JSON.stringify({
-        gate: "module-gates",
-        results,
-        summary: { passCount, failCount, warnCount, moduleCount: moduleIds.length, skuCount: skuIds.length },
-      }, null, 2),
+      JSON.stringify(
+        {
+          gate: 'module-gates',
+          results,
+          summary: {
+            passCount,
+            failCount,
+            warnCount,
+            moduleCount: moduleIds.length,
+            skuCount: skuIds.length,
+          },
+        },
+        null,
+        2
+      )
     );
   }
 

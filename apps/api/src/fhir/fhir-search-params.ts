@@ -15,7 +15,7 @@
  *   DocumentReference:  patient, date, _count
  */
 
-import type { FhirResource } from "./types.js";
+import type { FhirResource } from './types.js';
 
 /* ================================================================== */
 /* Date comparison helpers                                              */
@@ -26,7 +26,7 @@ import type { FhirResource } from "./types.js";
  * FHIR supports: eq (default), ne, lt, gt, le, ge, sa, eb, ap
  * We support: eq, lt, gt, le, ge.
  */
-export type DatePrefix = "eq" | "lt" | "gt" | "le" | "ge";
+export type DatePrefix = 'eq' | 'lt' | 'gt' | 'le' | 'ge';
 
 export interface DateParam {
   prefix: DatePrefix;
@@ -36,7 +36,7 @@ export interface DateParam {
 export function parseDateParam(param: string): DateParam | null {
   const prefixMatch = param.match(/^(eq|ne|lt|gt|le|ge|sa|eb|ap)?(.+)$/);
   if (!prefixMatch) return null;
-  const prefix = (prefixMatch[1] || "eq") as DatePrefix;
+  const prefix = (prefixMatch[1] || 'eq') as DatePrefix;
   const dateStr = prefixMatch[2];
 
   // Support YYYY, YYYY-MM, YYYY-MM-DD, YYYY-MM-DDThh:mm:ss
@@ -57,12 +57,18 @@ export function matchesDate(resourceDate: string | undefined, param: DateParam):
   const r = rd.getTime();
 
   switch (param.prefix) {
-    case "eq": return r >= t && r < t + 86400000; // Same day
-    case "lt": return r < t;
-    case "gt": return r > t;
-    case "le": return r <= t + 86400000;
-    case "ge": return r >= t;
-    default: return r >= t && r < t + 86400000;
+    case 'eq':
+      return r >= t && r < t + 86400000; // Same day
+    case 'lt':
+      return r < t;
+    case 'gt':
+      return r > t;
+    case 'le':
+      return r <= t + 86400000;
+    case 'ge':
+      return r >= t;
+    default:
+      return r >= t && r < t + 86400000;
   }
 }
 
@@ -75,8 +81,8 @@ export function matchesDate(resourceDate: string | undefined, param: DateParam):
  * Clamps to 1-100, defaults to 20.
  */
 export function applyCount<T>(items: T[], countParam?: string): T[] {
-  const parsed = parseInt(countParam || "", 10);
-  const count = Math.min(Math.max(Number.isNaN(parsed) ? 20 : (parsed || 1), 1), 100);
+  const parsed = parseInt(countParam || '', 10);
+  const count = Math.min(Math.max(Number.isNaN(parsed) ? 20 : parsed || 1, 1), 100);
   return items.slice(0, count);
 }
 
@@ -85,15 +91,13 @@ export function applyCount<T>(items: T[], countParam?: string): T[] {
  */
 export function filterEncounters(
   resources: FhirResource[],
-  params: { date?: string; status?: string },
+  params: { date?: string; status?: string }
 ): FhirResource[] {
   let filtered = resources;
 
   if (params.status) {
-    const statuses = params.status.split(",").map((s) => s.trim().toLowerCase());
-    filtered = filtered.filter((r: any) =>
-      r.status && statuses.includes(r.status.toLowerCase()),
-    );
+    const statuses = params.status.split(',').map((s) => s.trim().toLowerCase());
+    filtered = filtered.filter((r: any) => r.status && statuses.includes(r.status.toLowerCase()));
   }
 
   if (params.date) {
@@ -115,17 +119,17 @@ export function filterEncounters(
  */
 export function filterObservations(
   resources: FhirResource[],
-  params: { code?: string; date?: string },
+  params: { code?: string; date?: string }
 ): FhirResource[] {
   let filtered = resources;
 
   if (params.code) {
-    const codes = params.code.split(",").map((c) => c.trim().toLowerCase());
+    const codes = params.code.split(',').map((c) => c.trim().toLowerCase());
     filtered = filtered.filter((r: any) => {
       const codings = r.code?.coding || [];
-      return codings.some((c: any) =>
-        codes.includes(c.code?.toLowerCase()) ||
-        codes.includes(c.display?.toLowerCase()),
+      return codings.some(
+        (c: any) =>
+          codes.includes(c.code?.toLowerCase()) || codes.includes(c.display?.toLowerCase())
       );
     });
   }
@@ -133,9 +137,7 @@ export function filterObservations(
   if (params.date) {
     const dp = parseDateParam(params.date);
     if (dp) {
-      filtered = filtered.filter((r: any) =>
-        matchesDate(r.effectiveDateTime, dp),
-      );
+      filtered = filtered.filter((r: any) => matchesDate(r.effectiveDateTime, dp));
     }
   }
 
@@ -147,14 +149,12 @@ export function filterObservations(
  */
 export function filterMedicationRequests(
   resources: FhirResource[],
-  params: { status?: string },
+  params: { status?: string }
 ): FhirResource[] {
   if (!params.status) return resources;
 
-  const statuses = params.status.split(",").map((s) => s.trim().toLowerCase());
-  return resources.filter((r: any) =>
-    r.status && statuses.includes(r.status.toLowerCase()),
-  );
+  const statuses = params.status.split(',').map((s) => s.trim().toLowerCase());
+  return resources.filter((r: any) => r.status && statuses.includes(r.status.toLowerCase()));
 }
 
 /**
@@ -162,12 +162,12 @@ export function filterMedicationRequests(
  */
 export function filterConditions(
   resources: FhirResource[],
-  params: { "clinical-status"?: string },
+  params: { 'clinical-status'?: string }
 ): FhirResource[] {
-  const cs = params["clinical-status"];
+  const cs = params['clinical-status'];
   if (!cs) return resources;
 
-  const statuses = cs.split(",").map((s) => s.trim().toLowerCase());
+  const statuses = cs.split(',').map((s) => s.trim().toLowerCase());
   return resources.filter((r: any) => {
     const coding = r.clinicalStatus?.coding?.[0]?.code;
     return coding && statuses.includes(coding.toLowerCase());
@@ -179,12 +179,12 @@ export function filterConditions(
  */
 export function filterAllergyIntolerances(
   resources: FhirResource[],
-  params: { "clinical-status"?: string },
+  params: { 'clinical-status'?: string }
 ): FhirResource[] {
-  const cs = params["clinical-status"];
+  const cs = params['clinical-status'];
   if (!cs) return resources;
 
-  const statuses = cs.split(",").map((s) => s.trim().toLowerCase());
+  const statuses = cs.split(',').map((s) => s.trim().toLowerCase());
   return resources.filter((r: any) => {
     const coding = r.clinicalStatus?.coding?.[0]?.code;
     return coding && statuses.includes(coding.toLowerCase());
@@ -196,7 +196,7 @@ export function filterAllergyIntolerances(
  */
 export function filterDocumentReferences(
   resources: FhirResource[],
-  params: { date?: string },
+  params: { date?: string }
 ): FhirResource[] {
   if (!params.date) return resources;
 

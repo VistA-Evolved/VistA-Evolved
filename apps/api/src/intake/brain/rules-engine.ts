@@ -15,33 +15,30 @@ import type {
   BrainNextQuestionResult,
   BrainSubmitResult,
   BrainSummaryResult,
-} from "./types.js";
+} from './types.js';
 import type {
   IntakeSession,
   QuestionnaireResponse,
   IntakeContext,
   QuestionnaireItem,
-} from "../types.js";
-import { RulesNextQuestionProvider } from "../providers.js";
-import { TemplateSummaryProvider } from "../summary-provider.js";
-import { resolvePacks, mergePackItems } from "../pack-registry.js";
+} from '../types.js';
+import { RulesNextQuestionProvider } from '../providers.js';
+import { TemplateSummaryProvider } from '../summary-provider.js';
+import { resolvePacks, mergePackItems } from '../pack-registry.js';
 
 /* ------------------------------------------------------------------ */
 /* Rules Engine Brain                                                   */
 /* ------------------------------------------------------------------ */
 
 export class RulesEngineBrain implements IntakeBrainPlugin {
-  readonly id = "rules_engine";
-  readonly name = "Deterministic Rules Engine";
-  readonly family = "rules_engine" as const;
+  readonly id = 'rules_engine';
+  readonly name = 'Deterministic Rules Engine';
+  readonly family = 'rules_engine' as const;
 
   private nextProvider = new RulesNextQuestionProvider();
   private summaryProvider = new TemplateSummaryProvider();
 
-  async startSession(
-    session: IntakeSession,
-    context: IntakeContext
-  ): Promise<BrainSessionState> {
+  async startSession(session: IntakeSession, context: IntakeContext): Promise<BrainSessionState> {
     const packs = resolvePacks(context);
     const allItems = mergePackItems(packs);
     const requiredCount = allItems.filter((i) => i.required).length;
@@ -91,7 +88,7 @@ export class RulesEngineBrain implements IntakeBrainPlugin {
     // Rules engine: detect red flags from answered items
     const packs = resolvePacks(context);
     const allItems = mergePackItems(packs);
-    const newRedFlags: BrainSubmitResult["newRedFlags"] = [];
+    const newRedFlags: BrainSubmitResult['newRedFlags'] = [];
 
     for (const answered of answeredItems) {
       const def = allItems.find((i) => i.linkId === answered.linkId);
@@ -128,14 +125,14 @@ export class RulesEngineBrain implements IntakeBrainPlugin {
       ...summary,
       providerId: this.id,
       tiuReady: true,
-      tiuNoteTitle: `PATIENT INTAKE - ${new Date().toLocaleDateString("en-US", {
-        month: "2-digit",
-        day: "2-digit",
-        year: "numeric",
+      tiuNoteTitle: `PATIENT INTAKE - ${new Date().toLocaleDateString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
       })}`,
       governance: {
-        promptVersion: "template-v1",
-        promptHash: "deterministic-no-llm",
+        promptVersion: 'template-v1',
+        promptHash: 'deterministic-no-llm',
         groundedInAnswers: true,
         citationCount: summary.citations.length,
         containsDiagnosis: false,
@@ -149,9 +146,9 @@ export class RulesEngineBrain implements IntakeBrainPlugin {
     return {
       providerId: this.id,
       family: this.family,
-      status: "healthy",
+      status: 'healthy',
       lastCheckAt: new Date().toISOString(),
-      detail: "Deterministic rules engine always available",
+      detail: 'Deterministic rules engine always available',
     };
   }
 
@@ -161,7 +158,7 @@ export class RulesEngineBrain implements IntakeBrainPlugin {
       summaryGeneration: true,
       complaintExpansion: false, // Rules do static enableWhen, not dynamic expansion
       followUpBranching: true,
-      supportedLanguages: ["en", "fil", "es"],
+      supportedLanguages: ['en', 'fil', 'es'],
       maxSessionDurationMs: 24 * 60 * 60 * 1000, // 24h
     };
   }

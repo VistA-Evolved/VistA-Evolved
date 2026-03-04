@@ -1,6 +1,7 @@
 # Phase 316 — Trust Center Pack (W13-P8)
 
 ## Objective
+
 Create a trust center documentation bundle for external stakeholders:
 security posture, compliance status, architecture overview.
 
@@ -12,9 +13,11 @@ security posture, compliance status, architecture overview.
 4. Create prompts, evidence, verifier
 
 ## Files Touched
+
 - `docs/trust-center/TRUST_CENTER.md` (new)
 - `docs/trust-center/SECURITY_POSTURE.md` (new)
 - `docs/trust-center/ARCHITECTURE_OVERVIEW.md` (new)
 
 ## Verification
+
 See `316-99-VERIFY.md`

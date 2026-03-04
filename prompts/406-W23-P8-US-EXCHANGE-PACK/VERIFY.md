@@ -3,6 +3,7 @@
 ## Phase 406 (W23-P8)
 
 ### Gates
+
 1. `us-tefca` profile exists in catalog with correct standards
 2. `us-smart` profile exists in catalog with correct standards
 3. Connector CRUD works for US pack profiles

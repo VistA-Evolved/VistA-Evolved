@@ -9,16 +9,16 @@
 
 ### 1.1 Persistent Stores
 
-| Store | Location | Type | Backup Method |
-|-------|----------|------|---------------|
-| **SQLite Platform DB** | `data/platform.db` | File (WAL mode) | File copy (quiesce first) |
-| **SQLite WAL** | `data/platform.db-wal` | File | Copy alongside .db |
-| **PostgreSQL Platform** | Port 5433, db `ve_platform` | Docker PG 16 | `pg_dump` |
-| **Immutable Audit JSONL** | `apps/api/logs/immutable-audit.jsonl` | Append-only file | File copy |
-| **WorldVistA Docker** | `services/vista/` | Docker volume | `mupip backup` inside container |
-| **Keycloak PostgreSQL** | `services/keycloak/` | Docker volume | `pg_dumpall` from keycloak-db |
-| **Orthanc DICOM** | `services/imaging/` | Docker volume | Orthanc REST API export |
-| **YottaDB/Octo Analytics** | `services/analytics/` | Docker volume | `mupip backup` |
+| Store                      | Location                              | Type             | Backup Method                   |
+| -------------------------- | ------------------------------------- | ---------------- | ------------------------------- |
+| **SQLite Platform DB**     | `data/platform.db`                    | File (WAL mode)  | File copy (quiesce first)       |
+| **SQLite WAL**             | `data/platform.db-wal`                | File             | Copy alongside .db              |
+| **PostgreSQL Platform**    | Port 5433, db `ve_platform`           | Docker PG 16     | `pg_dump`                       |
+| **Immutable Audit JSONL**  | `apps/api/logs/immutable-audit.jsonl` | Append-only file | File copy                       |
+| **WorldVistA Docker**      | `services/vista/`                     | Docker volume    | `mupip backup` inside container |
+| **Keycloak PostgreSQL**    | `services/keycloak/`                  | Docker volume    | `pg_dumpall` from keycloak-db   |
+| **Orthanc DICOM**          | `services/imaging/`                   | Docker volume    | Orthanc REST API export         |
+| **YottaDB/Octo Analytics** | `services/analytics/`                 | Docker volume    | `mupip backup`                  |
 
 ### 1.2 In-Memory Stores (~30)
 
@@ -105,16 +105,16 @@ docker exec -it wv su - wv -c "mupip restore \"*\" /tmp/vista-restore/"
 
 ### 4.1 Components (already deployed)
 
-| Component | Location | Purpose |
-|-----------|----------|---------|
-| **Structured Logger** | `apps/api/src/lib/logger.ts` | JSON logs, PHI redaction, request IDs |
-| **Request ID Propagation** | `AsyncLocalStorage` + `X-Request-Id` header | Distributed tracing correlation |
-| **Prometheus Metrics** | `apps/api/src/telemetry/metrics.ts` | 19 metrics at `/metrics/prometheus` |
-| **OTel Tracing** | `apps/api/src/telemetry/tracing.ts` | OTLP HTTP exporter to Jaeger |
-| **Audit System** | `apps/api/src/lib/audit.ts` | Event audit + hash-chain verification |
-| **OTel Collector** | `services/observability/` | PHI-strip processor + exporters |
-| **Jaeger** | `services/observability/` | Trace visualization |
-| **Prometheus Scraper** | `services/observability/` | Metric collection + alerting |
+| Component                  | Location                                    | Purpose                               |
+| -------------------------- | ------------------------------------------- | ------------------------------------- |
+| **Structured Logger**      | `apps/api/src/lib/logger.ts`                | JSON logs, PHI redaction, request IDs |
+| **Request ID Propagation** | `AsyncLocalStorage` + `X-Request-Id` header | Distributed tracing correlation       |
+| **Prometheus Metrics**     | `apps/api/src/telemetry/metrics.ts`         | 19 metrics at `/metrics/prometheus`   |
+| **OTel Tracing**           | `apps/api/src/telemetry/tracing.ts`         | OTLP HTTP exporter to Jaeger          |
+| **Audit System**           | `apps/api/src/lib/audit.ts`                 | Event audit + hash-chain verification |
+| **OTel Collector**         | `services/observability/`                   | PHI-strip processor + exporters       |
+| **Jaeger**                 | `services/observability/`                   | Trace visualization                   |
+| **Prometheus Scraper**     | `services/observability/`                   | Metric collection + alerting          |
 
 ### 4.2 Enable OTel Tracing
 
@@ -170,6 +170,7 @@ PLATFORM_PG_RLS_ENABLED=true
 ```
 
 On API startup, `initPlatformPg()` calls `applyRlsPolicies()` which:
+
 1. `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` on all 21 tables
 2. `ALTER TABLE ... FORCE ROW LEVEL SECURITY` (applies to table owner too)
 3. Creates policy: `USING (tenant_id = current_setting('app.current_tenant_id'))`
@@ -204,6 +205,7 @@ leakage in pooled connections.
 ### 6.1 Budget Configuration
 
 See `config/performance-budgets.json` for:
+
 - **Web Vitals**: LCP < 2500ms, FID < 100ms, CLS < 0.1
 - **API Latency**: p95 < 500ms, p99 < 2000ms
 - **RPC Calls**: p95 < 1000ms, p99 < 3000ms
@@ -257,14 +259,14 @@ Returns unified posture report with scores for all 4 domains.
 
 ## 8. Troubleshooting
 
-| Symptom | Likely Cause | Fix |
-|---------|-------------|-----|
-| `/posture` returns 401 | Not logged in as admin | Login with admin credentials |
-| RLS posture shows 0 tables | `PLATFORM_PG_RLS_ENABLED` not set | Add to `.env.local` |
-| Backup script skips PG | `PLATFORM_PG_URL` not set | Export the connection string |
-| OTel tracing gate fails | `OTEL_ENABLED` not set | Add to `.env.local` |
-| Circuit breaker open | VistA container down | `docker compose up -d` in services/vista |
-| Heap > 512MB | Memory leak or large dataset | Restart API, check for unbounded caches |
+| Symptom                    | Likely Cause                      | Fix                                      |
+| -------------------------- | --------------------------------- | ---------------------------------------- |
+| `/posture` returns 401     | Not logged in as admin            | Login with admin credentials             |
+| RLS posture shows 0 tables | `PLATFORM_PG_RLS_ENABLED` not set | Add to `.env.local`                      |
+| Backup script skips PG     | `PLATFORM_PG_URL` not set         | Export the connection string             |
+| OTel tracing gate fails    | `OTEL_ENABLED` not set            | Add to `.env.local`                      |
+| Circuit breaker open       | VistA container down              | `docker compose up -d` in services/vista |
+| Heap > 512MB               | Memory leak or large dataset      | Restart API, check for unbounded caches  |
 
 ---
 

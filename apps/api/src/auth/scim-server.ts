@@ -15,10 +15,10 @@
  *   - All changes audited via immutable audit trail
  */
 
-import { randomUUID } from "crypto";
-import { log } from "../lib/logger.js";
-import { immutableAudit, type ImmutableAuditAction } from "../lib/immutable-audit.js";
-import type { UserRole } from "./session-store.js";
+import { randomUUID } from 'crypto';
+import { log } from '../lib/logger.js';
+import { immutableAudit, type ImmutableAuditAction } from '../lib/immutable-audit.js';
+import type { UserRole } from './session-store.js';
 import type {
   ScimConnector,
   ScimUser,
@@ -26,14 +26,14 @@ import type {
   ScimPatchOp,
   ScimServiceProviderConfig,
   ScimMeta,
-} from "./scim-connector.js";
+} from './scim-connector.js';
 
 /* ------------------------------------------------------------------ */
 /* Configuration                                                       */
 /* ------------------------------------------------------------------ */
 
-export const SCIM_ENABLED = process.env.SCIM_ENABLED === "true";
-export const SCIM_BEARER_TOKEN = process.env.SCIM_BEARER_TOKEN || "";
+export const SCIM_ENABLED = process.env.SCIM_ENABLED === 'true';
+export const SCIM_BEARER_TOKEN = process.env.SCIM_BEARER_TOKEN || '';
 
 /* ------------------------------------------------------------------ */
 /* Group types (extends scim-connector.ts types)                      */
@@ -46,7 +46,7 @@ export interface ScimGroup {
   meta?: ScimMeta;
   displayName: string;
   members?: Array<{
-    value: string;   // user id
+    value: string; // user id
     display?: string;
     $ref?: string;
     type?: string;
@@ -93,9 +93,17 @@ function makeMeta(resourceType: string, id: string): ScimMeta {
  */
 export function mapGroupToRole(groupDisplayName: string): UserRole | null {
   const lower = groupDisplayName.toLowerCase();
-  if (lower.startsWith("role:")) {
+  if (lower.startsWith('role:')) {
     const roleName = lower.slice(5).trim();
-    const validRoles: UserRole[] = ["provider", "nurse", "pharmacist", "clerk", "admin", "billing", "support"];
+    const validRoles: UserRole[] = [
+      'provider',
+      'nurse',
+      'pharmacist',
+      'clerk',
+      'admin',
+      'billing',
+      'support',
+    ];
     if (validRoles.includes(roleName as UserRole)) return roleName as UserRole;
   }
   return null;
@@ -106,11 +114,10 @@ export function mapGroupToRole(groupDisplayName: string): UserRole | null {
 /* ------------------------------------------------------------------ */
 
 export class InProcessScimConnector implements ScimConnector {
-
   getServiceProviderConfig(): ScimServiceProviderConfig {
     return {
-      schemas: ["urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig"],
-      documentationUri: "https://github.com/VistA-Evolved/docs/scim",
+      schemas: ['urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig'],
+      documentationUri: 'https://github.com/VistA-Evolved/docs/scim',
       patch: { supported: true },
       bulk: { supported: false, maxOperations: 0, maxPayloadSize: 0 },
       filter: { supported: true, maxResults: 200 },
@@ -119,9 +126,9 @@ export class InProcessScimConnector implements ScimConnector {
       etag: { supported: true },
       authenticationSchemes: [
         {
-          type: "oauthbearertoken",
-          name: "OAuth Bearer Token",
-          description: "Authentication using OAuth 2.0 Bearer Token (RFC 6750)",
+          type: 'oauthbearertoken',
+          name: 'OAuth Bearer Token',
+          description: 'Authentication using OAuth 2.0 Bearer Token (RFC 6750)',
         },
       ],
     };
@@ -134,7 +141,9 @@ export class InProcessScimConnector implements ScimConnector {
       if (existing) {
         const existingUser = userStore.get(existing);
         if (existingUser) {
-          log.debug("SCIM createUser: externalId already exists, returning existing", { externalId: user.externalId });
+          log.debug('SCIM createUser: externalId already exists, returning existing', {
+            externalId: user.externalId,
+          });
           return this.stripInternal(existingUser);
         }
       }
@@ -147,10 +156,10 @@ export class InProcessScimConnector implements ScimConnector {
       schemas: user.schemas?.length
         ? user.schemas
         : [
-            "urn:ietf:params:scim:schemas:core:2.0:User",
-            "urn:ietf:params:scim:schemas:extension:vista:2.0:User",
+            'urn:ietf:params:scim:schemas:core:2.0:User',
+            'urn:ietf:params:scim:schemas:extension:vista:2.0:User',
           ],
-      meta: makeMeta("User", id),
+      meta: makeMeta('User', id),
       active: user.active ?? true,
       _tenantId: tenantId,
     };
@@ -161,10 +170,10 @@ export class InProcessScimConnector implements ScimConnector {
     }
 
     immutableAudit(
-      "scim.user.created" as ImmutableAuditAction,
-      "success",
-      { sub: "scim-provisioner", name: "SCIM", roles: [] },
-      { detail: { scimUserId: id, userName: user.userName, tenantId } },
+      'scim.user.created' as ImmutableAuditAction,
+      'success',
+      { sub: 'scim-provisioner', name: 'SCIM', roles: [] },
+      { detail: { scimUserId: id, userName: user.userName, tenantId } }
     );
 
     return this.stripInternal(created);
@@ -180,7 +189,7 @@ export class InProcessScimConnector implements ScimConnector {
     filter?: string,
     startIndex?: number,
     count?: number,
-    tenantId?: string,
+    tenantId?: string
   ): Promise<ScimListResponse<ScimUser>> {
     let users = [...userStore.values()];
     if (tenantId) users = users.filter((u) => u._tenantId === tenantId);
@@ -191,9 +200,9 @@ export class InProcessScimConnector implements ScimConnector {
       if (match) {
         const [, attr, val] = match;
         users = users.filter((u) => {
-          if (attr === "userName") return u.userName === val;
-          if (attr === "externalId") return u.externalId === val;
-          if (attr === "displayName") return u.displayName === val;
+          if (attr === 'userName') return u.userName === val;
+          if (attr === 'externalId') return u.externalId === val;
+          if (attr === 'displayName') return u.displayName === val;
           return true;
         });
       }
@@ -204,7 +213,7 @@ export class InProcessScimConnector implements ScimConnector {
     const page = users.slice(start, start + size);
 
     return {
-      schemas: ["urn:ietf:params:scim:api:messages:2.0:ListResponse"],
+      schemas: ['urn:ietf:params:scim:api:messages:2.0:ListResponse'],
       totalResults: users.length,
       startIndex: start + 1,
       itemsPerPage: page.length,
@@ -241,10 +250,10 @@ export class InProcessScimConnector implements ScimConnector {
     }
 
     immutableAudit(
-      "scim.user.replaced" as ImmutableAuditAction,
-      "success",
-      { sub: "scim-provisioner", name: "SCIM", roles: [] },
-      { detail: { scimUserId: id, tenantId } },
+      'scim.user.replaced' as ImmutableAuditAction,
+      'success',
+      { sub: 'scim-provisioner', name: 'SCIM', roles: [] },
+      { detail: { scimUserId: id, tenantId } }
     );
 
     return this.stripInternal(updated);
@@ -259,11 +268,11 @@ export class InProcessScimConnector implements ScimConnector {
     const patched = { ...existing } as any;
 
     for (const op of patch.Operations) {
-      if (op.op === "replace" && op.path) {
+      if (op.op === 'replace' && op.path) {
         patched[op.path] = op.value;
-      } else if (op.op === "add" && op.path) {
+      } else if (op.op === 'add' && op.path) {
         patched[op.path] = op.value;
-      } else if (op.op === "remove" && op.path) {
+      } else if (op.op === 'remove' && op.path) {
         delete patched[op.path];
       }
     }
@@ -277,10 +286,10 @@ export class InProcessScimConnector implements ScimConnector {
     userStore.set(id, patched);
 
     immutableAudit(
-      "scim.user.patched" as ImmutableAuditAction,
-      "success",
-      { sub: "scim-provisioner", name: "SCIM", roles: [] },
-      { detail: { scimUserId: id, tenantId, operations: patch.Operations.length } },
+      'scim.user.patched' as ImmutableAuditAction,
+      'success',
+      { sub: 'scim-provisioner', name: 'SCIM', roles: [] },
+      { detail: { scimUserId: id, tenantId, operations: patch.Operations.length } }
     );
 
     return this.stripInternal(patched);
@@ -300,10 +309,10 @@ export class InProcessScimConnector implements ScimConnector {
     };
 
     immutableAudit(
-      "scim.user.deactivated" as ImmutableAuditAction,
-      "success",
-      { sub: "scim-provisioner", name: "SCIM", roles: [] },
-      { detail: { scimUserId: id, tenantId } },
+      'scim.user.deactivated' as ImmutableAuditAction,
+      'success',
+      { sub: 'scim-provisioner', name: 'SCIM', roles: [] },
+      { detail: { scimUserId: id, tenantId } }
     );
   }
 
@@ -325,8 +334,8 @@ export class InProcessScimConnector implements ScimConnector {
     const created: ScimGroup & { _tenantId: string } = {
       ...group,
       id,
-      schemas: ["urn:ietf:params:scim:schemas:core:2.0:Group"],
-      meta: makeMeta("Group", id),
+      schemas: ['urn:ietf:params:scim:schemas:core:2.0:Group'],
+      meta: makeMeta('Group', id),
       members: group.members ?? [],
       _tenantId: tenantId,
     };
@@ -334,10 +343,10 @@ export class InProcessScimConnector implements ScimConnector {
     groupStore.set(id, created);
 
     immutableAudit(
-      "scim.group.created" as ImmutableAuditAction,
-      "success",
-      { sub: "scim-provisioner", name: "SCIM", roles: [] },
-      { detail: { scimGroupId: id, displayName: group.displayName, tenantId } },
+      'scim.group.created' as ImmutableAuditAction,
+      'success',
+      { sub: 'scim-provisioner', name: 'SCIM', roles: [] },
+      { detail: { scimGroupId: id, displayName: group.displayName, tenantId } }
     );
 
     return this.stripGroupInternal(created);
@@ -352,7 +361,7 @@ export class InProcessScimConnector implements ScimConnector {
   async listGroups(tenantId: string): Promise<ScimListResponse<ScimGroup>> {
     const groups = [...groupStore.values()].filter((g) => g._tenantId === tenantId);
     return {
-      schemas: ["urn:ietf:params:scim:api:messages:2.0:ListResponse"],
+      schemas: ['urn:ietf:params:scim:api:messages:2.0:ListResponse'],
       totalResults: groups.length,
       startIndex: 1,
       itemsPerPage: groups.length,
@@ -367,15 +376,18 @@ export class InProcessScimConnector implements ScimConnector {
     }
 
     for (const op of patch.Operations) {
-      if (op.path === "members") {
-        if (op.op === "add" && Array.isArray(op.value)) {
+      if (op.path === 'members') {
+        if (op.op === 'add' && Array.isArray(op.value)) {
           const newMembers = op.value as Array<{ value: string; display?: string }>;
-          group.members = [...(group.members ?? []), ...newMembers.map((m) => ({ value: m.value, display: m.display }))];
-        } else if (op.op === "remove" && Array.isArray(op.value)) {
+          group.members = [
+            ...(group.members ?? []),
+            ...newMembers.map((m) => ({ value: m.value, display: m.display })),
+          ];
+        } else if (op.op === 'remove' && Array.isArray(op.value)) {
           const removeIds = new Set((op.value as Array<{ value: string }>).map((m) => m.value));
           group.members = (group.members ?? []).filter((m) => !removeIds.has(m.value));
         }
-      } else if (op.op === "replace" && op.path === "displayName") {
+      } else if (op.op === 'replace' && op.path === 'displayName') {
         group.displayName = op.value as string;
       }
     }
@@ -387,10 +399,10 @@ export class InProcessScimConnector implements ScimConnector {
     };
 
     immutableAudit(
-      "scim.group.patched" as ImmutableAuditAction,
-      "success",
-      { sub: "scim-provisioner", name: "SCIM", roles: [] },
-      { detail: { scimGroupId: id, tenantId, operations: patch.Operations.length } },
+      'scim.group.patched' as ImmutableAuditAction,
+      'success',
+      { sub: 'scim-provisioner', name: 'SCIM', roles: [] },
+      { detail: { scimGroupId: id, tenantId, operations: patch.Operations.length } }
     );
 
     return this.stripGroupInternal(group);
@@ -404,10 +416,10 @@ export class InProcessScimConnector implements ScimConnector {
     groupStore.delete(id);
 
     immutableAudit(
-      "scim.group.deleted" as ImmutableAuditAction,
-      "success",
-      { sub: "scim-provisioner", name: "SCIM", roles: [] },
-      { detail: { scimGroupId: id, tenantId } },
+      'scim.group.deleted' as ImmutableAuditAction,
+      'success',
+      { sub: 'scim-provisioner', name: 'SCIM', roles: [] },
+      { detail: { scimGroupId: id, tenantId } }
     );
   }
 

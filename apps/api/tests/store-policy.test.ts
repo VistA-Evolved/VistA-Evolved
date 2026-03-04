@@ -5,7 +5,7 @@
  * and query helpers work correctly.
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from 'vitest';
 import {
   STORE_INVENTORY,
   getStoresByClassification,
@@ -13,15 +13,15 @@ import {
   getCriticalInMemoryStores,
   getCacheStoresWithoutLimits,
   getStoreInventorySummary,
-} from "../src/platform/store-policy.js";
+} from '../src/platform/store-policy.js';
 
-describe("Store Policy — Phase 136", () => {
-  describe("Inventory completeness", () => {
-    it("has at least 80 store entries", () => {
+describe('Store Policy — Phase 136', () => {
+  describe('Inventory completeness', () => {
+    it('has at least 80 store entries', () => {
       expect(STORE_INVENTORY.length).toBeGreaterThanOrEqual(80);
     });
 
-    it("every entry has required fields", () => {
+    it('every entry has required fields', () => {
       for (const entry of STORE_INVENTORY) {
         expect(entry.id).toBeTruthy();
         expect(entry.file).toBeTruthy();
@@ -33,34 +33,34 @@ describe("Store Policy — Phase 136", () => {
       }
     });
 
-    it("has no duplicate IDs", () => {
+    it('has no duplicate IDs', () => {
       const ids = STORE_INVENTORY.map((e) => e.id);
       const unique = new Set(ids);
       expect(unique.size).toBe(ids.length);
     });
 
-    it("uses valid classification values", () => {
+    it('uses valid classification values', () => {
       const validClassifications = [
-        "critical",
-        "cache",
-        "rate_limiter",
-        "registry",
-        "audit",
-        "dev_only",
+        'critical',
+        'cache',
+        'rate_limiter',
+        'registry',
+        'audit',
+        'dev_only',
       ];
       for (const entry of STORE_INVENTORY) {
         expect(validClassifications).toContain(entry.classification);
       }
     });
 
-    it("uses valid durability values", () => {
+    it('uses valid durability values', () => {
       const validDurabilities = [
-        "pg_backed",
-        "jsonl_backed",
-        "file_seeded",
-        "vista_passthrough",
-        "in_memory_only",
-        "env_gated",
+        'pg_backed',
+        'jsonl_backed',
+        'file_seeded',
+        'vista_passthrough',
+        'in_memory_only',
+        'env_gated',
       ];
       for (const entry of STORE_INVENTORY) {
         expect(validDurabilities).toContain(entry.durability);
@@ -68,48 +68,48 @@ describe("Store Policy — Phase 136", () => {
     });
   });
 
-  describe("Classification queries", () => {
-    it("getStoresByClassification returns correct entries", () => {
-      const critical = getStoresByClassification("critical");
+  describe('Classification queries', () => {
+    it('getStoresByClassification returns correct entries', () => {
+      const critical = getStoresByClassification('critical');
       expect(critical.length).toBeGreaterThan(0);
-      expect(critical.every((s) => s.classification === "critical")).toBe(true);
+      expect(critical.every((s) => s.classification === 'critical')).toBe(true);
 
-      const caches = getStoresByClassification("cache");
+      const caches = getStoresByClassification('cache');
       expect(caches.length).toBeGreaterThan(0);
-      expect(caches.every((s) => s.classification === "cache")).toBe(true);
+      expect(caches.every((s) => s.classification === 'cache')).toBe(true);
     });
 
-    it("getStoresByDomain returns correct entries", () => {
-      const rcm = getStoresByDomain("rcm");
+    it('getStoresByDomain returns correct entries', () => {
+      const rcm = getStoresByDomain('rcm');
       expect(rcm.length).toBeGreaterThan(10);
-      expect(rcm.every((s) => s.domain === "rcm")).toBe(true);
+      expect(rcm.every((s) => s.domain === 'rcm')).toBe(true);
 
-      const portal = getStoresByDomain("portal");
+      const portal = getStoresByDomain('portal');
       expect(portal.length).toBeGreaterThan(5);
-      expect(portal.every((s) => s.domain === "portal")).toBe(true);
+      expect(portal.every((s) => s.domain === 'portal')).toBe(true);
     });
   });
 
-  describe("Policy enforcement", () => {
-    it("getCriticalInMemoryStores returns only critical+in_memory_only", () => {
+  describe('Policy enforcement', () => {
+    it('getCriticalInMemoryStores returns only critical+in_memory_only', () => {
       const violations = getCriticalInMemoryStores();
       for (const v of violations) {
-        expect(v.classification).toBe("critical");
-        expect(v.durability).toBe("in_memory_only");
+        expect(v.classification).toBe('critical');
+        expect(v.durability).toBe('in_memory_only');
       }
     });
 
-    it("all critical+in_memory_only stores have migrationTarget", () => {
+    it('all critical+in_memory_only stores have migrationTarget', () => {
       const violations = getCriticalInMemoryStores();
       for (const v of violations) {
         expect(v.migrationTarget).toBeTruthy();
       }
     });
 
-    it("getCacheStoresWithoutLimits identifies unbounded caches", () => {
+    it('getCacheStoresWithoutLimits identifies unbounded caches', () => {
       const unbounded = getCacheStoresWithoutLimits();
       for (const u of unbounded) {
-        expect(u.classification).toBe("cache");
+        expect(u.classification).toBe('cache');
         // These should have NEITHER ttlMs > 0 NOR maxSize > 0
         const hasTtl = u.ttlMs !== undefined && u.ttlMs > 0;
         const hasMaxSize = u.maxSize !== undefined && u.maxSize > 0;
@@ -118,47 +118,41 @@ describe("Store Policy — Phase 136", () => {
     });
   });
 
-  describe("Summary report", () => {
-    it("getStoreInventorySummary has correct structure", () => {
+  describe('Summary report', () => {
+    it('getStoreInventorySummary has correct structure', () => {
       const summary = getStoreInventorySummary();
       expect(summary.total).toBe(STORE_INVENTORY.length);
       expect(summary.byClassification).toBeDefined();
       expect(summary.byDurability).toBeDefined();
       expect(summary.byDomain).toBeDefined();
-      expect(typeof summary.criticalInMemoryCount).toBe("number");
-      expect(typeof summary.cacheWithoutLimitsCount).toBe("number");
+      expect(typeof summary.criticalInMemoryCount).toBe('number');
+      expect(typeof summary.cacheWithoutLimitsCount).toBe('number');
       expect(Array.isArray(summary.policyViolations)).toBe(true);
     });
 
-    it("summary classification counts sum to total", () => {
+    it('summary classification counts sum to total', () => {
       const summary = getStoreInventorySummary();
-      const classSum = Object.values(summary.byClassification).reduce(
-        (a, b) => a + b,
-        0
-      );
+      const classSum = Object.values(summary.byClassification).reduce((a, b) => a + b, 0);
       expect(classSum).toBe(summary.total);
     });
 
-    it("summary durability counts sum to total", () => {
+    it('summary durability counts sum to total', () => {
       const summary = getStoreInventorySummary();
-      const durSum = Object.values(summary.byDurability).reduce(
-        (a, b) => a + b,
-        0
-      );
+      const durSum = Object.values(summary.byDurability).reduce((a, b) => a + b, 0);
       expect(durSum).toBe(summary.total);
     });
   });
 
-  describe("Domain coverage", () => {
+  describe('Domain coverage', () => {
     const expectedDomains = [
-      "auth",
-      "portal",
-      "rcm",
-      "imaging",
-      "telehealth",
-      "scheduling",
-      "clinical",
-      "infrastructure",
+      'auth',
+      'portal',
+      'rcm',
+      'imaging',
+      'telehealth',
+      'scheduling',
+      'clinical',
+      'infrastructure',
     ];
 
     for (const domain of expectedDomains) {
@@ -169,13 +163,11 @@ describe("Store Policy — Phase 136", () => {
     }
   });
 
-  describe("Cache stores have limits", () => {
-    it("most cache stores declare TTL or maxSize", () => {
-      const caches = getStoresByClassification("cache");
+  describe('Cache stores have limits', () => {
+    it('most cache stores declare TTL or maxSize', () => {
+      const caches = getStoresByClassification('cache');
       const withLimits = caches.filter(
-        (s) =>
-          (s.ttlMs !== undefined && s.ttlMs > 0) ||
-          (s.maxSize !== undefined && s.maxSize > 0)
+        (s) => (s.ttlMs !== undefined && s.ttlMs > 0) || (s.maxSize !== undefined && s.maxSize > 0)
       );
       // Allow a small number without limits (e.g., rpcMetrics accumulator)
       const ratio = withLimits.length / caches.length;

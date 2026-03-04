@@ -9,29 +9,29 @@
  * Also bridges audit event counts to Prometheus metrics.
  */
 
-import { log } from "./logger.js";
-import { getCurrentTraceId } from "../telemetry/tracing.js";
+import { log } from './logger.js';
+import { getCurrentTraceId } from '../telemetry/tracing.js';
 import {
   queryImmutableAudit,
   getImmutableAuditStats,
   type ImmutableAuditEntry,
-} from "./immutable-audit.js";
+} from './immutable-audit.js';
 import {
   queryImagingAudit,
   getChainStats as getImagingChainStats,
   type ImagingAuditEntry,
-} from "../services/imaging-audit.js";
+} from '../services/imaging-audit.js';
 import {
   getRcmAuditEntries,
   getRcmAuditStats,
   type RcmAuditEntry,
-} from "../rcm/audit/rcm-audit.js";
+} from '../rcm/audit/rcm-audit.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type AuditSource = "general" | "imaging" | "rcm";
+export type AuditSource = 'general' | 'imaging' | 'rcm';
 
 export interface UnifiedAuditEntry {
   source: AuditSource;
@@ -74,11 +74,11 @@ export interface UnifiedAuditStats {
  * sorted by timestamp descending.
  */
 export function queryUnifiedAudit(query: UnifiedAuditQuery = {}): UnifiedAuditEntry[] {
-  const sources = query.sources ?? ["general", "imaging", "rcm"];
+  const sources = query.sources ?? ['general', 'imaging', 'rcm'];
   const limit = query.limit ?? 100;
   const results: UnifiedAuditEntry[] = [];
 
-  if (sources.includes("general")) {
+  if (sources.includes('general')) {
     try {
       const entries = queryImmutableAudit({
         actionPrefix: query.actionPrefix,
@@ -90,11 +90,11 @@ export function queryUnifiedAudit(query: UnifiedAuditQuery = {}): UnifiedAuditEn
         results.push(mapGeneralEntry(e));
       }
     } catch (err) {
-      log.warn("Failed to query general audit", { error: (err as Error).message });
+      log.warn('Failed to query general audit', { error: (err as Error).message });
     }
   }
 
-  if (sources.includes("imaging")) {
+  if (sources.includes('imaging')) {
     try {
       const { entries } = queryImagingAudit({
         actorDuz: query.actor,
@@ -105,11 +105,11 @@ export function queryUnifiedAudit(query: UnifiedAuditQuery = {}): UnifiedAuditEn
         results.push(mapImagingEntry(e));
       }
     } catch (err) {
-      log.warn("Failed to query imaging audit", { error: (err as Error).message });
+      log.warn('Failed to query imaging audit', { error: (err as Error).message });
     }
   }
 
-  if (sources.includes("rcm")) {
+  if (sources.includes('rcm')) {
     try {
       const { items } = getRcmAuditEntries({
         since: query.since,
@@ -119,7 +119,7 @@ export function queryUnifiedAudit(query: UnifiedAuditQuery = {}): UnifiedAuditEn
         results.push(mapRcmEntry(e));
       }
     } catch (err) {
-      log.warn("Failed to query RCM audit", { error: (err as Error).message });
+      log.warn('Failed to query RCM audit', { error: (err as Error).message });
     }
   }
 
@@ -151,7 +151,7 @@ export function getUnifiedAuditStats(): UnifiedAuditStats {
 
 function mapGeneralEntry(e: ImmutableAuditEntry): UnifiedAuditEntry {
   return {
-    source: "general",
+    source: 'general',
     seq: e.seq,
     timestamp: e.timestamp,
     action: e.action,
@@ -165,7 +165,7 @@ function mapGeneralEntry(e: ImmutableAuditEntry): UnifiedAuditEntry {
 
 function mapImagingEntry(e: ImagingAuditEntry): UnifiedAuditEntry {
   return {
-    source: "imaging",
+    source: 'imaging',
     seq: e.seq,
     timestamp: e.timestamp,
     action: e.action,
@@ -179,7 +179,7 @@ function mapImagingEntry(e: ImagingAuditEntry): UnifiedAuditEntry {
 
 function mapRcmEntry(e: RcmAuditEntry): UnifiedAuditEntry {
   return {
-    source: "rcm",
+    source: 'rcm',
     seq: e.seq,
     timestamp: e.timestamp,
     action: e.action,
@@ -195,7 +195,9 @@ function mapRcmEntry(e: RcmAuditEntry): UnifiedAuditEntry {
  * Attach trace ID to any audit detail object. Call this before appending
  * to any audit store so that distributed traces correlate with audit entries.
  */
-export function withTraceId<T extends Record<string, unknown>>(detail: T): T & { traceId?: string } {
+export function withTraceId<T extends Record<string, unknown>>(
+  detail: T
+): T & { traceId?: string } {
   const traceId = getCurrentTraceId();
   if (traceId) return { ...detail, traceId };
   return detail;

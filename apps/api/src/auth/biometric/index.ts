@@ -11,10 +11,10 @@
  *   FACE_VERIFICATION_VENDOR    — vendor identifier (e.g., "aws-rekognition")
  */
 
-import type { BiometricAuthProvider, BiometricMethod } from "./types.js";
-import { PasskeysProvider } from "./passkeys-provider.js";
-import { FaceVerificationProvider } from "./face-provider.js";
-import { log } from "../../lib/logger.js";
+import type { BiometricAuthProvider, BiometricMethod } from './types.js';
+import { PasskeysProvider } from './passkeys-provider.js';
+import { FaceVerificationProvider } from './face-provider.js';
+import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Registry                                                            */
@@ -31,19 +31,19 @@ export async function initBiometricProviders(): Promise<void> {
   const passkeys = new PasskeysProvider();
   const passkeysReady = await passkeys.initialize();
   if (passkeysReady) {
-    providers.set("passkey", passkeys);
-    log.info("Biometric: Passkeys provider registered");
+    providers.set('passkey', passkeys);
+    log.info('Biometric: Passkeys provider registered');
   }
 
   // Face verification — optional, OFF by default
   const face = new FaceVerificationProvider();
   const faceReady = await face.initialize();
   if (faceReady) {
-    providers.set("face", face);
-    log.info("Biometric: Face verification provider registered");
+    providers.set('face', face);
+    log.info('Biometric: Face verification provider registered');
   }
 
-  log.info("Biometric providers initialized", {
+  log.info('Biometric providers initialized', {
     registered: [...providers.keys()],
   });
 }
@@ -80,4 +80,4 @@ export function hasBiometricProviders(): boolean {
 }
 
 // Re-export types
-export type { BiometricAuthProvider, BiometricMethod } from "./types.js";
+export type { BiometricAuthProvider, BiometricMethod } from './types.js';

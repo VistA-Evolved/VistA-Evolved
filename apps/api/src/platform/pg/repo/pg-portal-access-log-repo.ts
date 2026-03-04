@@ -7,9 +7,9 @@
  * Uses Drizzle ORM + pg-core for type-safe queries.
  */
 
-import { eq, and, desc, sql, gte } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { pgPortalAccessLog } from "../pg-schema.js";
+import { eq, and, desc, sql, gte } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { pgPortalAccessLog } from '../pg-schema.js';
 
 export type PortalAccessLogRow = typeof pgPortalAccessLog.$inferSelect;
 
@@ -30,14 +30,14 @@ export async function insertAccessLog(data: {
   const db = getPgDb();
   await db.insert(pgPortalAccessLog).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     userId: data.userId,
     actorName: data.actorName,
     isProxy: data.isProxy,
     targetPatientDfn: data.targetPatientDfn,
     eventType: data.eventType,
     description: data.description,
-    metadataJson: data.metadataJson ?? "{}",
+    metadataJson: data.metadataJson ?? '{}',
     createdAt: data.createdAt,
   });
 }
@@ -46,7 +46,7 @@ export async function insertAccessLog(data: {
 
 export async function findAccessLogsByUser(
   userId: string,
-  opts?: { eventType?: string; since?: string; limit?: number; offset?: number },
+  opts?: { eventType?: string; since?: string; limit?: number; offset?: number }
 ): Promise<PortalAccessLogRow[]> {
   const db = getPgDb();
   const conditions = [eq(pgPortalAccessLog.userId, userId)];
@@ -56,7 +56,9 @@ export async function findAccessLogsByUser(
   const limit = opts?.limit ?? 50;
   const offset = opts?.offset ?? 0;
 
-  return db.select().from(pgPortalAccessLog)
+  return db
+    .select()
+    .from(pgPortalAccessLog)
     .where(and(...conditions))
     .orderBy(desc(pgPortalAccessLog.createdAt))
     .limit(limit)
@@ -65,7 +67,8 @@ export async function findAccessLogsByUser(
 
 export async function countAccessLogsByUser(userId: string): Promise<number> {
   const db = getPgDb();
-  const result = await db.select({ count: sql<number>`count(*)` })
+  const result = await db
+    .select({ count: sql<number>`count(*)` })
     .from(pgPortalAccessLog)
     .where(eq(pgPortalAccessLog.userId, userId));
   return result[0]?.count ?? 0;
@@ -73,13 +76,14 @@ export async function countAccessLogsByUser(userId: string): Promise<number> {
 
 export async function countAccessLogsByUserFiltered(
   userId: string,
-  opts?: { eventType?: string; since?: string },
+  opts?: { eventType?: string; since?: string }
 ): Promise<number> {
   const db = getPgDb();
   const conditions = [eq(pgPortalAccessLog.userId, userId)];
   if (opts?.eventType) conditions.push(eq(pgPortalAccessLog.eventType, opts.eventType));
   if (opts?.since) conditions.push(gte(pgPortalAccessLog.createdAt, opts.since));
-  const result = await db.select({ count: sql<number>`count(*)` })
+  const result = await db
+    .select({ count: sql<number>`count(*)` })
     .from(pgPortalAccessLog)
     .where(and(...conditions));
   return result[0]?.count ?? 0;
@@ -87,8 +91,7 @@ export async function countAccessLogsByUserFiltered(
 
 export async function countAllAccessLogs(): Promise<number> {
   const db = getPgDb();
-  const result = await db.select({ count: sql<number>`count(*)` })
-    .from(pgPortalAccessLog);
+  const result = await db.select({ count: sql<number>`count(*)` }).from(pgPortalAccessLog);
   return result[0]?.count ?? 0;
 }
 
@@ -96,9 +99,9 @@ export async function countAllAccessLogs(): Promise<number> {
 
 export async function getAccessLogStats(): Promise<{ total: number; users: number }> {
   const db = getPgDb();
-  const total = await db.select({ count: sql<number>`count(*)` })
-    .from(pgPortalAccessLog);
-  const users = await db.select({ count: sql<number>`count(DISTINCT user_id)` })
+  const total = await db.select({ count: sql<number>`count(*)` }).from(pgPortalAccessLog);
+  const users = await db
+    .select({ count: sql<number>`count(DISTINCT user_id)` })
     .from(pgPortalAccessLog);
   return {
     total: total[0]?.count ?? 0,
@@ -108,10 +111,12 @@ export async function getAccessLogStats(): Promise<{ total: number; users: numbe
 
 export async function getAccessLogStatsByEventType(): Promise<Record<string, number>> {
   const db = getPgDb();
-  const rows = await db.select({
-    eventType: pgPortalAccessLog.eventType,
-    count: sql<number>`count(*)`,
-  }).from(pgPortalAccessLog)
+  const rows = await db
+    .select({
+      eventType: pgPortalAccessLog.eventType,
+      count: sql<number>`count(*)`,
+    })
+    .from(pgPortalAccessLog)
     .groupBy(pgPortalAccessLog.eventType);
   const result: Record<string, number> = {};
   for (const r of rows) result[r.eventType] = r.count;

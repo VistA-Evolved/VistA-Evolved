@@ -8,28 +8,28 @@ capabilities. These coexist alongside the existing Phase 87 in-memory
 PayerOps credential vault and Phase 94 in-memory LOA workflow.
 
 **VistA IB/AR/PCE remains the authoritative billing ledger.** Phase 110
-adds credentialing metadata and payer enrollment tracking *above* VistA.
+adds credentialing metadata and payer enrollment tracking _above_ VistA.
 
 ## Architecture
 
 ### New DB Tables (U-Z in platform.db)
 
-| Table | Purpose |
-|-------|---------|
-| `credential_artifact` (U) | Provider/facility credential metadata |
-| `credential_document` (V) | Document upload pointers (FK to credential) |
+| Table                      | Purpose                                     |
+| -------------------------- | ------------------------------------------- |
+| `credential_artifact` (U)  | Provider/facility credential metadata       |
+| `credential_document` (V)  | Document upload pointers (FK to credential) |
 | `accreditation_status` (W) | Per-payer enrollment/accreditation tracking |
-| `accreditation_task` (X) | Next-steps task lists per accreditation |
-| `loa_request` (Y) | LOA/pre-auth request lifecycle |
-| `loa_attachment` (Z) | LOA supporting document references |
+| `accreditation_task` (X)   | Next-steps task lists per accreditation     |
+| `loa_request` (Y)          | LOA/pre-auth request lifecycle              |
+| `loa_attachment` (Z)       | LOA supporting document references          |
 
 ### Coexistence with Existing Systems
 
-| Existing | Phase 110 Addition |
-|----------|--------------------|
-| `/rcm/payerops/credentials/*` (Phase 87, in-memory) | `/rcm/credential-vault/*` (DB-backed) |
-| `/rcm/loa/*` (Phase 94, in-memory) | `loa-repo.ts` + `loa-engine.ts` + `loa-adapter.ts` (DB layer) |
-| N/A | `/rcm/accreditation/*` (DB-backed, new) |
+| Existing                                            | Phase 110 Addition                                            |
+| --------------------------------------------------- | ------------------------------------------------------------- |
+| `/rcm/payerops/credentials/*` (Phase 87, in-memory) | `/rcm/credential-vault/*` (DB-backed)                         |
+| `/rcm/loa/*` (Phase 94, in-memory)                  | `loa-repo.ts` + `loa-engine.ts` + `loa-adapter.ts` (DB layer) |
+| N/A                                                 | `/rcm/accreditation/*` (DB-backed, new)                       |
 
 Both in-memory and DB-backed variants are registered and functional. The
 DB-backed versions are the long-term path; in-memory versions remain for
@@ -39,35 +39,35 @@ backward compatibility.
 
 ### Credential Vault (`/rcm/credential-vault/*`)
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/rcm/credential-vault` | List all credentials |
-| POST | `/rcm/credential-vault` | Create credential |
-| GET | `/rcm/credential-vault/expiring` | Get expiring credentials (`?withinDays=90`) |
-| GET | `/rcm/credential-vault/stats` | Aggregate stats |
-| GET | `/rcm/credential-vault/:id` | Get credential + documents |
-| PATCH | `/rcm/credential-vault/:id` | Update credential |
-| POST | `/rcm/credential-vault/:id/verify` | Mark as verified |
-| POST | `/rcm/credential-vault/:id/documents` | Add document reference |
-| GET | `/rcm/credential-vault/:id/documents` | List documents |
-| DELETE | `/rcm/credential-vault/documents/:docId` | Delete document |
+| Method | Path                                     | Description                                 |
+| ------ | ---------------------------------------- | ------------------------------------------- |
+| GET    | `/rcm/credential-vault`                  | List all credentials                        |
+| POST   | `/rcm/credential-vault`                  | Create credential                           |
+| GET    | `/rcm/credential-vault/expiring`         | Get expiring credentials (`?withinDays=90`) |
+| GET    | `/rcm/credential-vault/stats`            | Aggregate stats                             |
+| GET    | `/rcm/credential-vault/:id`              | Get credential + documents                  |
+| PATCH  | `/rcm/credential-vault/:id`              | Update credential                           |
+| POST   | `/rcm/credential-vault/:id/verify`       | Mark as verified                            |
+| POST   | `/rcm/credential-vault/:id/documents`    | Add document reference                      |
+| GET    | `/rcm/credential-vault/:id/documents`    | List documents                              |
+| DELETE | `/rcm/credential-vault/documents/:docId` | Delete document                             |
 
 ### Accreditation (`/rcm/accreditation/*`)
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/rcm/accreditation` | List all accreditations |
-| POST | `/rcm/accreditation` | Create accreditation |
-| GET | `/rcm/accreditation/stats` | Aggregate stats by status |
-| GET | `/rcm/accreditation/:id` | Get accreditation + tasks |
-| PATCH | `/rcm/accreditation/:id` | Update accreditation |
-| POST | `/rcm/accreditation/:id/verify` | Mark as verified |
-| POST | `/rcm/accreditation/:id/notes` | Add note |
-| GET | `/rcm/accreditation/:id/tasks` | List tasks |
-| POST | `/rcm/accreditation/:id/tasks` | Create task |
-| PATCH | `/rcm/accreditation/tasks/:taskId` | Update task |
-| POST | `/rcm/accreditation/tasks/:taskId/complete` | Complete task |
-| DELETE | `/rcm/accreditation/tasks/:taskId` | Delete task |
+| Method | Path                                        | Description               |
+| ------ | ------------------------------------------- | ------------------------- |
+| GET    | `/rcm/accreditation`                        | List all accreditations   |
+| POST   | `/rcm/accreditation`                        | Create accreditation      |
+| GET    | `/rcm/accreditation/stats`                  | Aggregate stats by status |
+| GET    | `/rcm/accreditation/:id`                    | Get accreditation + tasks |
+| PATCH  | `/rcm/accreditation/:id`                    | Update accreditation      |
+| POST   | `/rcm/accreditation/:id/verify`             | Mark as verified          |
+| POST   | `/rcm/accreditation/:id/notes`              | Add note                  |
+| GET    | `/rcm/accreditation/:id/tasks`              | List tasks                |
+| POST   | `/rcm/accreditation/:id/tasks`              | Create task               |
+| PATCH  | `/rcm/accreditation/tasks/:taskId`          | Update task               |
+| POST   | `/rcm/accreditation/tasks/:taskId/complete` | Complete task             |
+| DELETE | `/rcm/accreditation/tasks/:taskId`          | Delete task               |
 
 ### LOA Engine (DB Layer — Library)
 
@@ -103,28 +103,28 @@ Two new tabs are added to the RCM admin dashboard (`/cprs/admin/rcm`):
 
 Provider/facility credentials tracked:
 
-| Type | Description |
-|------|-------------|
-| `npi` | National Provider Identifier |
-| `state_license` | State medical license |
-| `dea` | Drug Enforcement Administration registration |
-| `board_cert` | Board certification |
-| `clia` | Clinical Laboratory Improvement Amendments |
-| `facility_license` | Facility operating license |
-| `malpractice` | Malpractice insurance |
-| `caqh` | CAQH ProView profile |
-| `tax_id` | Tax identification number |
+| Type               | Description                                  |
+| ------------------ | -------------------------------------------- |
+| `npi`              | National Provider Identifier                 |
+| `state_license`    | State medical license                        |
+| `dea`              | Drug Enforcement Administration registration |
+| `board_cert`       | Board certification                          |
+| `clia`             | Clinical Laboratory Improvement Amendments   |
+| `facility_license` | Facility operating license                   |
+| `malpractice`      | Malpractice insurance                        |
+| `caqh`             | CAQH ProView profile                         |
+| `tax_id`           | Tax identification number                    |
 
 ## Accreditation Statuses
 
-| Status | Meaning |
-|--------|---------|
-| `pending` | Application submitted, awaiting response |
-| `active` | Currently credentialed with payer |
-| `contracting_needed` | Approved but contract not signed |
-| `expiring` | Active but approaching expiration |
-| `denied` | Application denied by payer |
-| `suspended` | Temporarily suspended |
+| Status               | Meaning                                  |
+| -------------------- | ---------------------------------------- |
+| `pending`            | Application submitted, awaiting response |
+| `active`             | Currently credentialed with payer        |
+| `contracting_needed` | Approved but contract not signed         |
+| `expiring`           | Active but approaching expiration        |
+| `denied`             | Application denied by payer              |
+| `suspended`          | Temporarily suspended                    |
 
 ## Testing
 
@@ -170,6 +170,7 @@ curl -s -b cookies.txt http://127.0.0.1:3001/rcm/accreditation/stats | jq .
 ## Files Changed
 
 ### Created
+
 - `apps/api/src/rcm/credential-vault/credential-vault-repo.ts`
 - `apps/api/src/rcm/credential-vault/accreditation-repo.ts`
 - `apps/api/src/rcm/credential-vault/credential-vault-routes.ts`
@@ -178,6 +179,7 @@ curl -s -b cookies.txt http://127.0.0.1:3001/rcm/accreditation/stats | jq .
 - `apps/api/src/rcm/loa/loa-adapter.ts`
 
 ### Modified
+
 - `apps/api/src/platform/db/schema.ts` — 6 new table definitions
 - `apps/api/src/platform/db/migrate.ts` — 6 CREATE TABLE + indexes
 - `apps/api/src/index.ts` — Route registration

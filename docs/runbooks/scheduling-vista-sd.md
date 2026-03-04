@@ -1,8 +1,8 @@
-# Scheduling v1 -- VistA SD* First (Phase 63)
+# Scheduling v1 -- VistA SD\* First (Phase 63)
 
 ## Overview
 
-Phase 63 implements scheduling using VistA SD* RPCs as the primary data
+Phase 63 implements scheduling using VistA SD\* RPCs as the primary data
 source. The system does real reads against SDOE (encounter-level) and
 SD W/L (wait list/clinic/provider lookup) RPCs present in the WorldVistA
 sandbox. Booking/cancel/reschedule operations use a request-flow pattern
@@ -37,40 +37,40 @@ Browser (Clinician)                  Browser (Patient Portal)
 
 ## RPCs Used (Present in Sandbox)
 
-| RPC | Purpose | File |
-|-----|---------|------|
-| SDOE LIST ENCOUNTERS FOR PAT | Patient encounter list | vista-adapter.ts |
-| SDOE LIST ENCOUNTERS FOR DATES | Date-range encounter list | vista-adapter.ts |
-| SDOE GET GENERAL DATA | Encounter detail | vista-adapter.ts |
-| SDOE GET PROVIDERS | Encounter providers | vista-adapter.ts |
-| SD W/L RETRIVE HOSP LOC(#44) | Clinic/hospital location list | vista-adapter.ts |
-| SD W/L RETRIVE PERSON(200) | Provider list | vista-adapter.ts |
+| RPC                            | Purpose                       | File             |
+| ------------------------------ | ----------------------------- | ---------------- |
+| SDOE LIST ENCOUNTERS FOR PAT   | Patient encounter list        | vista-adapter.ts |
+| SDOE LIST ENCOUNTERS FOR DATES | Date-range encounter list     | vista-adapter.ts |
+| SDOE GET GENERAL DATA          | Encounter detail              | vista-adapter.ts |
+| SDOE GET PROVIDERS             | Encounter providers           | vista-adapter.ts |
+| SD W/L RETRIVE HOSP LOC(#44)   | Clinic/hospital location list | vista-adapter.ts |
+| SD W/L RETRIVE PERSON(200)     | Provider list                 | vista-adapter.ts |
 
 ## RPCs Targeted (Absent in Sandbox)
 
-| RPC | Purpose | Vivian Status |
-|-----|---------|---------------|
-| SDEC APPADD | Book appointment | Present in Vivian |
-| SDEC APPDEL | Cancel appointment | Present in Vivian |
+| RPC           | Purpose               | Vivian Status     |
+| ------------- | --------------------- | ----------------- |
+| SDEC APPADD   | Book appointment      | Present in Vivian |
+| SDEC APPDEL   | Cancel appointment    | Present in Vivian |
 | SDEC APPSLOTS | Query available slots | Present in Vivian |
-| SDEC EDITAPPT | Modify appointment | Present in Vivian |
-| SDEC CHECKIN | Patient check-in | Present in Vivian |
-| SDEC CHECKOUT | Patient check-out | Present in Vivian |
+| SDEC EDITAPPT | Modify appointment    | Present in Vivian |
+| SDEC CHECKIN  | Patient check-in      | Present in Vivian |
+| SDEC CHECKOUT | Patient check-out     | Present in Vivian |
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | /scheduling/appointments?dfn= | Patient appointments |
-| GET | /scheduling/appointments/range?startDate=&endDate= | Date range encounters |
-| GET | /scheduling/clinics | All hospital locations |
-| GET | /scheduling/providers | All providers |
-| GET | /scheduling/slots?clinicIen=&date= | Slot availability (pending) |
-| POST | /scheduling/appointments/request | Request new appointment |
-| POST | /scheduling/appointments/:id/cancel | Cancel appointment |
-| POST | /scheduling/appointments/:id/reschedule | Reschedule appointment |
-| GET | /scheduling/requests | Queue of pending requests |
-| GET | /scheduling/health | Adapter health check |
+| Method | Path                                               | Description                 |
+| ------ | -------------------------------------------------- | --------------------------- |
+| GET    | /scheduling/appointments?dfn=                      | Patient appointments        |
+| GET    | /scheduling/appointments/range?startDate=&endDate= | Date range encounters       |
+| GET    | /scheduling/clinics                                | All hospital locations      |
+| GET    | /scheduling/providers                              | All providers               |
+| GET    | /scheduling/slots?clinicIen=&date=                 | Slot availability (pending) |
+| POST   | /scheduling/appointments/request                   | Request new appointment     |
+| POST   | /scheduling/appointments/:id/cancel                | Cancel appointment          |
+| POST   | /scheduling/appointments/:id/reschedule            | Reschedule appointment      |
+| GET    | /scheduling/requests                               | Queue of pending requests   |
+| GET    | /scheduling/health                                 | Adapter health check        |
 
 ## Double-Booking Prevention
 
@@ -88,6 +88,7 @@ releaseBookingLock(patientDfn, clinicIen, date)
 ## Request Flow (Booking)
 
 Since SDEC APPADD is absent from the sandbox:
+
 1. Patient or clinician submits request via POST /scheduling/appointments/request
 2. Request stored in-memory with status `pending`
 3. Response includes `pending: true` + `target: "SDEC APPADD"`
@@ -105,6 +106,7 @@ Since SDEC APPADD is absent from the sandbox:
 ## Audit Trail
 
 All write operations are logged to the immutable audit trail:
+
 - `scheduling.request` -- new appointment request
 - `scheduling.cancel` -- cancellation request
 - `scheduling.reschedule` -- reschedule request
@@ -150,6 +152,7 @@ curl http://localhost:3001/scheduling/health -b cookies.txt
 ## Migration Path
 
 When SDEC RPCs become available:
+
 1. Replace request-flow with direct SDEC APPADD call
 2. Wire /scheduling/slots to SDEC APPSLOTS
 3. Wire cancel to SDEC APPDEL

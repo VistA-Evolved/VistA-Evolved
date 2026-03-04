@@ -1,11 +1,13 @@
 # Phase 2: Docker Sandbox Setup & Troubleshooting
 
 ## Overview
+
 This runbook walks you through starting the WorldVista-EHR Docker container ("wv") on Windows and verifying port 9430 connectivity for Phase 4 RPC server testing.
 
 ---
 
 ## Prerequisites
+
 - Docker Desktop installed and running on Windows
 - PowerShell 5.1+
 - Node v24.13.0 and pnpm v10.29.2 (for apps/api when needed)
@@ -67,6 +69,7 @@ docker ps
 ```
 
 Expected output for `docker ps`:
+
 ```
 CONTAINER ID   IMAGE                              COMMAND            CREATED         STATUS          PORTS
 abc123def456   worldvista/worldvista-ehr:latest   "/bin/sh -c ..."   X seconds ago   Up X seconds    2222->22/tcp, 9430->9430/tcp, 8001->8001/tcp, 8080->8080/tcp, 9080->9080/tcp
@@ -83,6 +86,7 @@ Test-NetConnection 127.0.0.1 -Port 9430
 ```
 
 Expected output:
+
 ```
 ComputerName     : 127.0.0.1
 RemoteAddress    : 127.0.0.1
@@ -103,6 +107,7 @@ docker logs wv --tail 100
 ```
 
 Look for errors like:
+
 - `Address already in use` → Another process on host or container port conflict
 - `Connection refused` → Service not listening yet (wait 30 seconds, retry)
 - `Bind mounts failed` → Docker permissions issue (restart Docker Desktop)
@@ -118,6 +123,7 @@ docker exec -it wv sh
 ```
 
 Once inside:
+
 ```sh
 # List running processes
 ps aux
@@ -166,6 +172,7 @@ Get-NetIPAddress | Where-Object {$_.AddressFamily -eq "IPv4"}
 ## Next Steps (Phase 4 RPC Testing)
 
 Once port 9430 is confirmed reachable:
+
 1. Start apps/api on port 3001 (see windows-port-3001-fix.md if conflict)
 2. Run Vista RPC patient search and default patient list tests
 3. Confirm RPC broker connectivity through port 9430

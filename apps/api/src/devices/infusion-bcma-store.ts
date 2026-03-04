@@ -6,7 +6,7 @@
  * established Map + FIFO eviction pattern from gateway-store/alarm-store.
  */
 
-import * as crypto from "node:crypto";
+import * as crypto from 'node:crypto';
 import type {
   InfusionPumpEvent,
   PumpEventType,
@@ -18,7 +18,7 @@ import type {
   MedicationScan,
   PatientScan,
   InfusionBcmaStats,
-} from "./infusion-bcma-types.js";
+} from './infusion-bcma-types.js';
 
 // ---------------------------------------------------------------------------
 // Config
@@ -43,7 +43,7 @@ interface InfusionAuditEntry {
   id: string;
   tenantId: string;
   action: string;
-  entityType: "pump_event" | "bcma_session" | "right6_check";
+  entityType: 'pump_event' | 'bcma_session' | 'right6_check';
   entityId: string;
   actor?: string;
   detail?: string;
@@ -56,7 +56,7 @@ const auditLog: InfusionAuditEntry[] = [];
 // ---------------------------------------------------------------------------
 
 function genId(): string {
-  return crypto.randomBytes(12).toString("hex");
+  return crypto.randomBytes(12).toString('hex');
 }
 
 function now(): string {
@@ -74,10 +74,10 @@ function evictOldest<V>(map: Map<string, V>, max: number): void {
 function audit(
   tenantId: string,
   action: string,
-  entityType: InfusionAuditEntry["entityType"],
+  entityType: InfusionAuditEntry['entityType'],
   entityId: string,
   actor?: string,
-  detail?: string,
+  detail?: string
 ): void {
   if (auditLog.length >= MAX_AUDIT_LOG) auditLog.shift();
   auditLog.push({
@@ -98,7 +98,7 @@ function audit(
 
 export function createPumpEvent(
   tenantId: string,
-  ev: Omit<InfusionPumpEvent, "id" | "tenantId" | "receivedAt" | "vistaVerified">,
+  ev: Omit<InfusionPumpEvent, 'id' | 'tenantId' | 'receivedAt' | 'vistaVerified'>
 ): InfusionPumpEvent {
   evictOldest(pumpEvents, MAX_PUMP_EVENTS);
   const event: InfusionPumpEvent = {
@@ -109,7 +109,7 @@ export function createPumpEvent(
     receivedAt: now(),
   };
   pumpEvents.set(event.id, event);
-  audit(tenantId, "pump_event_created", "pump_event", event.id, undefined, event.eventType);
+  audit(tenantId, 'pump_event_created', 'pump_event', event.id, undefined, event.eventType);
   return event;
 }
 
@@ -124,7 +124,7 @@ export function listPumpEvents(
     patientDfn?: string;
     eventType?: PumpEventType;
     limit?: number;
-  },
+  }
 ): InfusionPumpEvent[] {
   const limit = filters?.limit ?? 200;
   const result: InfusionPumpEvent[] = [];
@@ -142,13 +142,20 @@ export function listPumpEvents(
 export function updatePumpEventVerification(
   id: string,
   vistaVerified: boolean,
-  vistaMahIen?: string,
+  vistaMahIen?: string
 ): InfusionPumpEvent | undefined {
   const ev = pumpEvents.get(id);
   if (!ev) return undefined;
   ev.vistaVerified = vistaVerified;
   if (vistaMahIen) ev.vistaMahIen = vistaMahIen;
-  audit(ev.tenantId, "pump_event_verified", "pump_event", id, undefined, `verified=${vistaVerified}`);
+  audit(
+    ev.tenantId,
+    'pump_event_verified',
+    'pump_event',
+    id,
+    undefined,
+    `verified=${vistaVerified}`
+  );
   return ev;
 }
 
@@ -156,20 +163,17 @@ export function updatePumpEventVerification(
 // BCMA Session CRUD
 // ---------------------------------------------------------------------------
 
-export function createBcmaSession(
-  tenantId: string,
-  clinicianDuz: string,
-): BcmaSession {
+export function createBcmaSession(tenantId: string, clinicianDuz: string): BcmaSession {
   evictOldest(bcmaSessions, MAX_BCMA_SESSIONS);
   const session: BcmaSession = {
     id: genId(),
     tenantId,
     clinicianDuz,
-    status: "scanning",
+    status: 'scanning',
     startedAt: now(),
   };
   bcmaSessions.set(session.id, session);
-  audit(tenantId, "bcma_session_created", "bcma_session", session.id, clinicianDuz);
+  audit(tenantId, 'bcma_session_created', 'bcma_session', session.id, clinicianDuz);
   return session;
 }
 
@@ -183,7 +187,7 @@ export function listBcmaSessions(
     clinicianDuz?: string;
     status?: BcmaSessionStatus;
     limit?: number;
-  },
+  }
 ): BcmaSession[] {
   const limit = filters?.limit ?? 200;
   const result: BcmaSession[] = [];
@@ -199,23 +203,23 @@ export function listBcmaSessions(
 
 export function recordPatientScan(
   sessionId: string,
-  scan: Omit<PatientScan, "id" | "timestamp">,
+  scan: Omit<PatientScan, 'id' | 'timestamp'>
 ): BcmaSession | undefined {
   const s = bcmaSessions.get(sessionId);
   if (!s) return undefined;
   s.patientScan = { ...scan, id: genId(), timestamp: now() };
-  audit(s.tenantId, "patient_scanned", "bcma_session", sessionId, s.clinicianDuz);
+  audit(s.tenantId, 'patient_scanned', 'bcma_session', sessionId, s.clinicianDuz);
   return s;
 }
 
 export function recordMedicationScan(
   sessionId: string,
-  scan: Omit<MedicationScan, "id" | "timestamp">,
+  scan: Omit<MedicationScan, 'id' | 'timestamp'>
 ): BcmaSession | undefined {
   const s = bcmaSessions.get(sessionId);
   if (!s) return undefined;
   s.medicationScan = { ...scan, id: genId(), timestamp: now() };
-  audit(s.tenantId, "medication_scanned", "bcma_session", sessionId, s.clinicianDuz);
+  audit(s.tenantId, 'medication_scanned', 'bcma_session', sessionId, s.clinicianDuz);
   return s;
 }
 
@@ -239,7 +243,7 @@ export function performRight6Check(
     orderedRoute: string;
     scheduledTime: string;
     orderIen: string;
-  },
+  }
 ): BcmaRight6Result | undefined {
   const s = bcmaSessions.get(sessionId);
   if (!s) return undefined;
@@ -247,83 +251,83 @@ export function performRight6Check(
   const failures: BcmaCheckFailure[] = [];
 
   // Right patient
-  let rightPatient: BcmaCheckStatus = "pending";
+  let rightPatient: BcmaCheckStatus = 'pending';
   if (s.patientScan?.patientDfn) {
-    rightPatient = s.patientScan.patientDfn === expected.patientDfn ? "pass" : "fail";
-    if (rightPatient === "fail") {
+    rightPatient = s.patientScan.patientDfn === expected.patientDfn ? 'pass' : 'fail';
+    if (rightPatient === 'fail') {
       failures.push({
-        check: "rightPatient",
+        check: 'rightPatient',
         expected: expected.patientDfn,
         actual: s.patientScan.patientDfn,
-        severity: "error",
+        severity: 'error',
       });
     }
   }
 
   // Right drug
-  let rightDrug: BcmaCheckStatus = "pending";
+  let rightDrug: BcmaCheckStatus = 'pending';
   if (s.medicationScan?.ndc) {
-    rightDrug = s.medicationScan.ndc === expected.medicationNdc ? "pass" : "fail";
-    if (rightDrug === "fail") {
+    rightDrug = s.medicationScan.ndc === expected.medicationNdc ? 'pass' : 'fail';
+    if (rightDrug === 'fail') {
       failures.push({
-        check: "rightDrug",
+        check: 'rightDrug',
         expected: expected.medicationNdc,
         actual: s.medicationScan.ndc,
-        severity: "error",
+        severity: 'error',
       });
     }
   }
 
   // Right dose — scaffold: pass if medication scanned
-  const rightDose: BcmaCheckStatus = s.medicationScan ? "pass" : "pending";
+  const rightDose: BcmaCheckStatus = s.medicationScan ? 'pass' : 'pending';
 
   // Right route — scaffold: pass (route is visual nurse check)
-  const rightRoute: BcmaCheckStatus = expected.orderedRoute ? "pass" : "pending";
+  const rightRoute: BcmaCheckStatus = expected.orderedRoute ? 'pass' : 'pending';
 
   // Right time — check within 1-hour window
-  let rightTime: BcmaCheckStatus = "pending";
+  let rightTime: BcmaCheckStatus = 'pending';
   if (expected.scheduledTime) {
     const scheduled = new Date(expected.scheduledTime).getTime();
     const diff = Math.abs(Date.now() - scheduled);
     const ONE_HOUR = 60 * 60 * 1000;
     if (diff <= ONE_HOUR) {
-      rightTime = "pass";
+      rightTime = 'pass';
     } else if (diff <= ONE_HOUR * 2) {
-      rightTime = "warning";
+      rightTime = 'warning';
       failures.push({
-        check: "rightTime",
+        check: 'rightTime',
         expected: `within 1h of ${expected.scheduledTime}`,
         actual: `${Math.round(diff / 60000)}min off`,
-        severity: "warning",
+        severity: 'warning',
       });
     } else {
-      rightTime = "fail";
+      rightTime = 'fail';
       failures.push({
-        check: "rightTime",
+        check: 'rightTime',
         expected: `within 1h of ${expected.scheduledTime}`,
         actual: `${Math.round(diff / 60000)}min off`,
-        severity: "error",
+        severity: 'error',
       });
     }
   }
 
   // Right documentation — must have a valid order IEN
-  const rightDocumentation: BcmaCheckStatus = expected.orderIen ? "pass" : "fail";
-  if (rightDocumentation === "fail") {
+  const rightDocumentation: BcmaCheckStatus = expected.orderIen ? 'pass' : 'fail';
+  if (rightDocumentation === 'fail') {
     failures.push({
-      check: "rightDocumentation",
-      expected: "valid order IEN",
-      actual: "none",
-      severity: "error",
+      check: 'rightDocumentation',
+      expected: 'valid order IEN',
+      actual: 'none',
+      severity: 'error',
     });
   }
 
   // Overall
   const checks = [rightPatient, rightDrug, rightDose, rightRoute, rightTime, rightDocumentation];
-  let overallStatus: BcmaCheckStatus = "pass";
-  if (checks.some((c) => c === "fail")) overallStatus = "fail";
-  else if (checks.some((c) => c === "warning")) overallStatus = "warning";
-  else if (checks.some((c) => c === "pending")) overallStatus = "pending";
+  let overallStatus: BcmaCheckStatus = 'pass';
+  if (checks.some((c) => c === 'fail')) overallStatus = 'fail';
+  else if (checks.some((c) => c === 'warning')) overallStatus = 'warning';
+  else if (checks.some((c) => c === 'pending')) overallStatus = 'pending';
 
   const result: BcmaRight6Result = {
     rightPatient,
@@ -338,9 +342,10 @@ export function performRight6Check(
 
   s.right6Result = result;
   s.orderIen = expected.orderIen;
-  s.status = overallStatus === "pass" ? "verified" : overallStatus === "fail" ? "error" : "scanning";
+  s.status =
+    overallStatus === 'pass' ? 'verified' : overallStatus === 'fail' ? 'error' : 'scanning';
 
-  audit(s.tenantId, "right6_check", "right6_check", sessionId, s.clinicianDuz, overallStatus);
+  audit(s.tenantId, 'right6_check', 'right6_check', sessionId, s.clinicianDuz, overallStatus);
   return result;
 }
 
@@ -349,9 +354,9 @@ export function performRight6Check(
  */
 export function completeBcmaSession(
   sessionId: string,
-  status: "administered" | "refused" | "held",
+  status: 'administered' | 'refused' | 'held',
   notes?: string,
-  pumpEventId?: string,
+  pumpEventId?: string
 ): BcmaSession | undefined {
   const s = bcmaSessions.get(sessionId);
   if (!s) return undefined;
@@ -359,7 +364,7 @@ export function completeBcmaSession(
   s.notes = notes;
   s.pumpEventId = pumpEventId;
   s.completedAt = now();
-  audit(s.tenantId, `bcma_${status}`, "bcma_session", sessionId, s.clinicianDuz, notes);
+  audit(s.tenantId, `bcma_${status}`, 'bcma_session', sessionId, s.clinicianDuz, notes);
   return s;
 }
 
@@ -387,9 +392,9 @@ export function getInfusionBcmaStats(tenantId: string): InfusionBcmaStats {
     totalBcmaSessions++;
     byStatus[s.status] = (byStatus[s.status] ?? 0) + 1;
     if (s.right6Result) {
-      if (s.right6Result.overallStatus === "pass") right6Pass++;
-      if (s.right6Result.overallStatus === "fail") right6Fail++;
-      if (s.right6Result.overallStatus === "override") overrideCount++;
+      if (s.right6Result.overallStatus === 'pass') right6Pass++;
+      if (s.right6Result.overallStatus === 'fail') right6Fail++;
+      if (s.right6Result.overallStatus === 'override') overrideCount++;
     }
   }
 

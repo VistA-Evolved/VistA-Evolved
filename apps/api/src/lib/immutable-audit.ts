@@ -17,13 +17,13 @@
  *   - Separate audit DB with restricted credentials
  */
 
-import { createHash } from "crypto";
-import { appendFileSync, mkdirSync, existsSync, readFileSync } from "fs";
-import { dirname } from "path";
-import { log } from "./logger.js";
-import { getCurrentTraceId } from "../telemetry/tracing.js";
-import { safeErr } from "./safe-error.js";
-import { sanitizeAuditDetail } from "./phi-redaction.js";
+import { createHash } from 'crypto';
+import { appendFileSync, mkdirSync, existsSync, readFileSync } from 'fs';
+import { dirname } from 'path';
+import { log } from './logger.js';
+import { getCurrentTraceId } from '../telemetry/tracing.js';
+import { safeErr } from './safe-error.js';
+import { sanitizeAuditDetail } from './phi-redaction.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -31,161 +31,167 @@ import { sanitizeAuditDetail } from "./phi-redaction.js";
 
 export type ImmutableAuditAction =
   // Authentication lifecycle
-  | "auth.login"
-  | "auth.logout"
-  | "auth.session-create"
-  | "auth.session-expire"
-  | "auth.session-rotate"
-  | "auth.failed"
-  | "auth.oidc-login"
-  | "auth.passkey-register"
-  | "auth.passkey-login"
+  | 'auth.login'
+  | 'auth.logout'
+  | 'auth.session-create'
+  | 'auth.session-expire'
+  | 'auth.session-rotate'
+  | 'auth.failed'
+  | 'auth.oidc-login'
+  | 'auth.passkey-register'
+  | 'auth.passkey-login'
   // Patient context
-  | "context.patient-select"
-  | "context.patient-change"
-  | "context.patient-clear"
+  | 'context.patient-select'
+  | 'context.patient-change'
+  | 'context.patient-clear'
   // RPC call categories (no payloads)
-  | "rpc.read"
-  | "rpc.write"
-  | "rpc.admin"
-  | "rpc.context-set"
+  | 'rpc.read'
+  | 'rpc.write'
+  | 'rpc.admin'
+  | 'rpc.context-set'
   // Write attempts
-  | "write.allergy"
-  | "write.vitals"
-  | "write.note"
-  | "write.medication"
-  | "write.problem"
-  | "write.order"
-  | "write.draft"
+  | 'write.allergy'
+  | 'write.vitals'
+  | 'write.note'
+  | 'write.medication'
+  | 'write.problem'
+  | 'write.order'
+  | 'write.draft'
   // Policy decisions
-  | "policy.allowed"
-  | "policy.denied"
-  | "policy.break-glass"
+  | 'policy.allowed'
+  | 'policy.denied'
+  | 'policy.break-glass'
   // Security events
-  | "security.rbac-denied"
-  | "security.rate-limited"
-  | "security.origin-rejected"
-  | "security.invalid-token"
-  | "security.jwt-expired"
-  | "security.tenant-violation"
+  | 'security.rbac-denied'
+  | 'security.rate-limited'
+  | 'security.origin-rejected'
+  | 'security.invalid-token'
+  | 'security.jwt-expired'
+  | 'security.tenant-violation'
   // System events
-  | "system.startup"
-  | "system.shutdown"
-  | "system.config-change"
+  | 'system.startup'
+  | 'system.shutdown'
+  | 'system.config-change'
   // Audit access (meta-audit)
-  | "audit.view"
-  | "audit.export"
-  | "audit.verify"
+  | 'audit.view'
+  | 'audit.export'
+  | 'audit.verify'
   // Migration toolkit events (Phase 50)
-  | "migration.import.start"
-  | "migration.import.complete"
-  | "migration.export.start"
-  | "migration.export.complete"
-  | "migration.validate"
-  | "migration.dry-run"
-  | "migration.rollback"
-  | "migration.template.create"
-  | "migration.template.delete"
-  | "migration.job.delete"
+  | 'migration.import.start'
+  | 'migration.import.complete'
+  | 'migration.export.start'
+  | 'migration.export.complete'
+  | 'migration.validate'
+  | 'migration.dry-run'
+  | 'migration.rollback'
+  | 'migration.template.create'
+  | 'migration.template.delete'
+  | 'migration.job.delete'
   // Scheduling events (Phase 63 + Phase 139)
-  | "scheduling.list"
-  | "scheduling.request"
-  | "scheduling.cancel"
-  | "scheduling.reschedule"
-  | "scheduling.cprs_apptlist"
-  | "scheduling.lifecycle_transition"
-  | "scheduling.checkin"
-  | "scheduling.checkout"
-  | "scheduling.approve"
-  | "scheduling.reject"
-  | "scheduling.clinic_preferences"
-  | "scheduling.truth_gate"
+  | 'scheduling.list'
+  | 'scheduling.request'
+  | 'scheduling.cancel'
+  | 'scheduling.reschedule'
+  | 'scheduling.cprs_apptlist'
+  | 'scheduling.lifecycle_transition'
+  | 'scheduling.checkin'
+  | 'scheduling.checkout'
+  | 'scheduling.approve'
+  | 'scheduling.reject'
+  | 'scheduling.clinic_preferences'
+  | 'scheduling.truth_gate'
   // Secure messaging events (Phase 70)
-  | "messaging.send"
-  | "messaging.read"
-  | "messaging.manage"
-  | "messaging.portal-send"
+  | 'messaging.send'
+  | 'messaging.read'
+  | 'messaging.manage'
+  | 'messaging.portal-send'
   // Phase 66: Production IAM v1 immutable audit events
-  | "auth.idp.login"
-  | "auth.idp.failed"
-  | "auth.vista-bind"
+  | 'auth.idp.login'
+  | 'auth.idp.failed'
+  | 'auth.vista-bind'
   // Phase 76: Module toggle events
-  | "module.toggle"
-  | "module.override-clear"
+  | 'module.toggle'
+  | 'module.override-clear'
   // Phase 137: Inpatient ADT + census + bedboard audit events
-  | "inpatient.wards"
-  | "inpatient.census"
-  | "inpatient.bedboard"
-  | "inpatient.movements"
+  | 'inpatient.wards'
+  | 'inpatient.census'
+  | 'inpatient.bedboard'
+  | 'inpatient.movements'
   // Phase 483: ADT + inpatient Tier-0 writeback audit events
-  | "adt.admit"
-  | "adt.transfer"
-  | "adt.discharge"
-  | "inpatient.admit"
-  | "inpatient.transfer"
-  | "inpatient.discharge"
+  | 'adt.admit'
+  | 'adt.transfer'
+  | 'adt.discharge'
+  | 'inpatient.admit'
+  | 'inpatient.transfer'
+  | 'inpatient.discharge'
   // Phase 138: Nursing documentation + eMAR + handoff audit events
-  | "nursing.vitals"
-  | "nursing.vitals-range"
-  | "nursing.notes"
-  | "nursing.flowsheet"
-  | "nursing.create-note"
-  | "nursing.tasks"
-  | "nursing.mar"
-  | "nursing.io"
-  | "nursing.assessments"
-  | "nursing.context"
-  | "nursing.thresholds"
-  | "nursing.ward-patients"
-  | "nursing.note-text"
-  | "emar.schedule"
-  | "emar.allergies"
-  | "emar.history"
-  | "emar.administer"
-  | "emar.duplicate-check"
-  | "emar.barcode-scan"
-  | "handoff.create"
-  | "handoff.view"
-  | "handoff.update"
-  | "handoff.submit"
-  | "handoff.accept"
-  | "handoff.archive"
-  | "handoff.ward-patients"
+  | 'nursing.vitals'
+  | 'nursing.vitals-range'
+  | 'nursing.notes'
+  | 'nursing.flowsheet'
+  | 'nursing.create-note'
+  | 'nursing.tasks'
+  | 'nursing.mar'
+  | 'nursing.io'
+  | 'nursing.assessments'
+  | 'nursing.context'
+  | 'nursing.thresholds'
+  | 'nursing.ward-patients'
+  | 'nursing.note-text'
+  | 'emar.schedule'
+  | 'emar.allergies'
+  | 'emar.history'
+  | 'emar.administer'
+  | 'emar.duplicate-check'
+  | 'emar.barcode-scan'
+  | 'handoff.create'
+  | 'handoff.view'
+  | 'handoff.update'
+  | 'handoff.submit'
+  | 'handoff.accept'
+  | 'handoff.archive'
+  | 'handoff.ward-patients'
   // Phase 140: Portal parity — documents + consents
-  | "portal.document.list"
-  | "portal.document.generate"
-  | "portal.document.download"
-  | "portal.consent.view"
-  | "portal.consent.update"
+  | 'portal.document.list'
+  | 'portal.document.generate'
+  | 'portal.document.download'
+  | 'portal.consent.view'
+  | 'portal.consent.update'
   // Phase 141: Enterprise IAM posture — auth mode + break-glass + SCIM
-  | "iam.auth-mode.validated"
-  | "iam.auth-mode.enforced"
-  | "iam.break-glass.request"
-  | "iam.break-glass.approve"
-  | "iam.break-glass.deny"
-  | "iam.break-glass.revoke"
-  | "iam.break-glass.expire"
-  | "iam.role-mapping.resolve"
-  | "iam.tenant-isolation.violation"
+  | 'iam.auth-mode.validated'
+  | 'iam.auth-mode.enforced'
+  | 'iam.break-glass.request'
+  | 'iam.break-glass.approve'
+  | 'iam.break-glass.deny'
+  | 'iam.break-glass.revoke'
+  | 'iam.break-glass.expire'
+  | 'iam.role-mapping.resolve'
+  | 'iam.tenant-isolation.violation'
   // Phase 169: Patient identity linking
-  | "identity.link_requested"
-  | "identity.link_verified"
-  | "identity.link_rejected"
-  | "identity.link_revoked"
+  | 'identity.link_requested'
+  | 'identity.link_verified'
+  | 'identity.link_rejected'
+  | 'identity.link_revoked'
   // Phase 300: Clinical writeback command bus
-  | "writeback.submit"
-  | "writeback.execute"
-  | "writeback.dry_run"
-  | "writeback.reject"
-  | "writeback.retry"
-  | "writeback.fail"
+  | 'writeback.submit'
+  | 'writeback.execute'
+  | 'writeback.dry_run'
+  | 'writeback.reject'
+  | 'writeback.retry'
+  | 'writeback.fail'
   // Phase 307: Telehealth hardening
-  | "telehealth.encounter_link"
-  | "telehealth.consent_recorded"
-  | "telehealth.consent_withdrawn"
-  | "telehealth.session_auto_ended";
+  | 'telehealth.encounter_link'
+  | 'telehealth.consent_recorded'
+  | 'telehealth.consent_withdrawn'
+  | 'telehealth.session_auto_ended';
 
-export type ImmutableAuditOutcome = "success" | "failure" | "denied" | "error" | "blocked" | "attempt";
+export type ImmutableAuditOutcome =
+  | 'success'
+  | 'failure'
+  | 'denied'
+  | 'error'
+  | 'blocked'
+  | 'attempt';
 
 export interface ImmutableAuditEntry {
   /** Sequential entry number (monotonic) */
@@ -223,9 +229,9 @@ export interface ImmutableAuditEntry {
 /* ------------------------------------------------------------------ */
 
 const MAX_MEMORY_ENTRIES = Number(process.env.IMMUTABLE_AUDIT_MAX_ENTRIES || 10000);
-const AUDIT_FILE_PATH = process.env.IMMUTABLE_AUDIT_FILE_PATH || "logs/immutable-audit.jsonl";
-const AUDIT_SINK = process.env.IMMUTABLE_AUDIT_SINK || "both"; // "memory" | "file" | "both"
-const HASH_SOURCE_IP = process.env.NODE_ENV === "production";
+const AUDIT_FILE_PATH = process.env.IMMUTABLE_AUDIT_FILE_PATH || 'logs/immutable-audit.jsonl';
+const AUDIT_SINK = process.env.IMMUTABLE_AUDIT_SINK || 'both'; // "memory" | "file" | "both"
+const HASH_SOURCE_IP = process.env.NODE_ENV === 'production';
 
 /* ------------------------------------------------------------------ */
 /* Store                                                               */
@@ -238,23 +244,23 @@ const HASH_SOURCE_IP = process.env.NODE_ENV === "production";
  */
 function recoverLastEntry(): { hash: string; seq: number } {
   try {
-    if (AUDIT_SINK !== "file" && AUDIT_SINK !== "both") return { hash: "", seq: 0 };
-    if (!existsSync(AUDIT_FILE_PATH)) return { hash: "", seq: 0 };
-    const content = readFileSync(AUDIT_FILE_PATH, "utf-8");
-    const lines = content.trimEnd().split("\n").filter(Boolean);
-    if (lines.length === 0) return { hash: "", seq: 0 };
+    if (AUDIT_SINK !== 'file' && AUDIT_SINK !== 'both') return { hash: '', seq: 0 };
+    if (!existsSync(AUDIT_FILE_PATH)) return { hash: '', seq: 0 };
+    const content = readFileSync(AUDIT_FILE_PATH, 'utf-8');
+    const lines = content.trimEnd().split('\n').filter(Boolean);
+    if (lines.length === 0) return { hash: '', seq: 0 };
     const lastLine = lines[lines.length - 1];
     const entry = JSON.parse(lastLine);
-    if (entry && typeof entry.hash === "string") {
+    if (entry && typeof entry.hash === 'string') {
       return {
         hash: entry.hash,
-        seq: typeof entry.seq === "number" ? entry.seq : 0,
+        seq: typeof entry.seq === 'number' ? entry.seq : 0,
       };
     }
   } catch {
     // Corrupt or empty file — start fresh
   }
-  return { hash: "", seq: 0 };
+  return { hash: '', seq: 0 };
 }
 
 /** Append-only ring buffer. Oldest entries evicted when full. */
@@ -271,7 +277,7 @@ let lastHash = _recovered.hash;
  * Compute SHA-256 hash for an audit entry.
  * Hash includes all fields except `hash` itself.
  */
-function computeEntryHash(entry: Omit<ImmutableAuditEntry, "hash">): string {
+function computeEntryHash(entry: Omit<ImmutableAuditEntry, 'hash'>): string {
   const data = JSON.stringify({
     seq: entry.seq,
     prevHash: entry.prevHash,
@@ -287,7 +293,7 @@ function computeEntryHash(entry: Omit<ImmutableAuditEntry, "hash">): string {
     tenantId: entry.tenantId,
     detail: entry.detail,
   });
-  return createHash("sha256").update(data).digest("hex");
+  return createHash('sha256').update(data).digest('hex');
 }
 
 /**
@@ -295,7 +301,10 @@ function computeEntryHash(entry: Omit<ImmutableAuditEntry, "hash">): string {
  */
 function hashIp(ip: string): string {
   if (!HASH_SOURCE_IP) return ip;
-  return createHash("sha256").update(ip + "vista-evolved-ip-salt").digest("hex").slice(0, 16);
+  return createHash('sha256')
+    .update(ip + 'vista-evolved-ip-salt')
+    .digest('hex')
+    .slice(0, 16);
 }
 
 /* ------------------------------------------------------------------ */
@@ -304,25 +313,27 @@ function hashIp(ip: string): string {
 
 /** Patterns that indicate PHI — strip from detail values. */
 const PHI_PATTERNS = [
-  /\b\d{3}-\d{2}-\d{4}\b/g,   // SSN
-  /\b\d{9}\b/g,                 // SSN without dashes
-  /\d{4}-\d{2}-\d{2}T/g,       // ISO dates (could be DOB)
-  /\b[A-Z]+,[A-Z ]+\b/g,       // VistA patient name format
+  /\b\d{3}-\d{2}-\d{4}\b/g, // SSN
+  /\b\d{9}\b/g, // SSN without dashes
+  /\d{4}-\d{2}-\d{2}T/g, // ISO dates (could be DOB)
+  /\b[A-Z]+,[A-Z ]+\b/g, // VistA patient name format
 ];
 
 // Phase 151: delegate to centralized sanitizeAuditDetail from phi-redaction.ts
 // The local sanitizeDetail is kept as a secondary defense layer
-function sanitizeDetailLocal(detail?: Record<string, unknown>): Record<string, unknown> | undefined {
+function sanitizeDetailLocal(
+  detail?: Record<string, unknown>
+): Record<string, unknown> | undefined {
   // First pass: centralized PHI redaction (covers dfn, patientDfn, name, etc.)
   const centralized = sanitizeAuditDetail(detail);
   if (!centralized) return undefined;
   // Second pass: legacy pattern scrub (SSN/DOB patterns in string values)
   const sanitized: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(centralized)) {
-    if (typeof value === "string") {
+    if (typeof value === 'string') {
       let clean = value;
       for (const pattern of PHI_PATTERNS) {
-        clean = clean.replace(pattern, "[REDACTED]");
+        clean = clean.replace(pattern, '[REDACTED]');
       }
       sanitized[key] = clean;
     } else {
@@ -339,21 +350,21 @@ function sanitizeDetailLocal(detail?: Record<string, unknown>): Record<string, u
 let fileReady = false;
 
 function writeToFile(entry: ImmutableAuditEntry): void {
-  if (AUDIT_SINK !== "file" && AUDIT_SINK !== "both") return;
+  if (AUDIT_SINK !== 'file' && AUDIT_SINK !== 'both') return;
   try {
     if (!fileReady) {
       const dir = dirname(AUDIT_FILE_PATH);
       if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
       fileReady = true;
     }
-    appendFileSync(AUDIT_FILE_PATH, JSON.stringify(entry) + "\n");
+    appendFileSync(AUDIT_FILE_PATH, JSON.stringify(entry) + '\n');
   } catch (err: any) {
-    log.error("Immutable audit file write failed", { error: err.message });
+    log.error('Immutable audit file write failed', { error: err.message });
   }
 }
 
 function writeToMemory(entry: ImmutableAuditEntry): void {
-  if (AUDIT_SINK !== "memory" && AUDIT_SINK !== "both") return;
+  if (AUDIT_SINK !== 'memory' && AUDIT_SINK !== 'both') return;
   auditRing.push(entry);
   // Evict oldest when over limit
   while (auditRing.length > MAX_MEMORY_ENTRIES) {
@@ -380,7 +391,7 @@ export function immutableAudit(
     sourceIp?: string;
     tenantId?: string;
     detail?: Record<string, unknown>;
-  },
+  }
 ): ImmutableAuditEntry {
   const entryBase = {
     seq: ++seq,
@@ -388,8 +399,8 @@ export function immutableAudit(
     timestamp: new Date().toISOString(),
     action,
     outcome,
-    actorId: actor.sub || "anonymous",
-    actorName: actor.name || "unknown",
+    actorId: actor.sub || 'anonymous',
+    actorName: actor.name || 'unknown',
     actorRoles: actor.roles || [],
     requestId: opts?.requestId,
     traceId: getCurrentTraceId() || undefined,
@@ -542,9 +553,9 @@ export function verifyFileAuditChain(): {
       return { valid: true, totalEntries: 0 };
     }
 
-    const content = readFileSync(AUDIT_FILE_PATH, "utf-8");
-    const lines = content.trim().split("\n").filter(Boolean);
-    let prevHashExpected = "";
+    const content = readFileSync(AUDIT_FILE_PATH, 'utf-8');
+    const lines = content.trim().split('\n').filter(Boolean);
+    let prevHashExpected = '';
 
     for (let i = 0; i < lines.length; i++) {
       const entry: ImmutableAuditEntry = JSON.parse(lines[i]);

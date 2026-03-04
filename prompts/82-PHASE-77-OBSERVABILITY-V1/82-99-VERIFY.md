@@ -1,11 +1,13 @@
 # Phase 77 — VERIFY: Observability + Reliability v1
 
 ## Verification Protocol
+
 Run `scripts/verify-phase77-observability.ps1` — 67+ gates.
 
 ## Gate Categories
 
 ### A. Correlation ID Gates (10 gates)
+
 1. `apps/web/src/lib/fetch-with-correlation.ts` exists
 2. fetch-with-correlation exports `correlatedFetch`
 3. fetch-with-correlation generates `X-Request-Id` header
@@ -18,6 +20,7 @@ Run `scripts/verify-phase77-observability.ps1` — 67+ gates.
 10. Logger includes requestId in log entries
 
 ### B. Tracing Gates (12 gates)
+
 11. `apps/api/src/telemetry/spans.ts` exists
 12. spans.ts exports `withSpan`
 13. spans.ts exports `spanBusinessAction`
@@ -32,6 +35,7 @@ Run `scripts/verify-phase77-observability.ps1` — 67+ gates.
 22. index.ts calls `bridgeTracingToLogger()`
 
 ### C. Metrics + SLO Gates (15 gates)
+
 23. metrics.ts has `http_request_duration_seconds` histogram
 24. metrics.ts has `http_requests_total` counter
 25. metrics.ts has `vista_rpc_call_duration_seconds` histogram
@@ -49,6 +53,7 @@ Run `scripts/verify-phase77-observability.ps1` — 67+ gates.
 37. `config/performance-budgets.json` has loadTestThresholds
 
 ### D. PHI-Safe Telemetry Gates (15 gates)
+
 38. phi-redaction.ts exports `CREDENTIAL_FIELDS`
 39. phi-redaction.ts exports `PHI_FIELDS`
 40. phi-redaction.ts exports `ALL_BLOCKED_FIELDS`
@@ -66,6 +71,7 @@ Run `scripts/verify-phase77-observability.ps1` — 67+ gates.
 52. sanitizeRoute() strips numeric segments and UUIDs
 
 ### E. Observability Config Gates (8 gates)
+
 53. `apps/api/src/config/observability-config.ts` exists
 54. Config exports sampling rate (default 1.0)
 55. Config exports metric label allowlist
@@ -76,6 +82,7 @@ Run `scripts/verify-phase77-observability.ps1` — 67+ gates.
 60. Logger bridges OTel trace/span IDs
 
 ### F. Structural Integrity Gates (7+ gates)
+
 61. No `/reports` directory exists at root
 62. No `/docs/reports` directory exists
 63. console.log count <= 6 across codebase
@@ -87,13 +94,16 @@ Run `scripts/verify-phase77-observability.ps1` — 67+ gates.
 69. docs/runbooks/phase77-observability-reliability.md exists
 
 ## Evidence Artifacts
+
 Written to `artifacts/phase77/`:
+
 - `telemetry-inventory.json` — all telemetry files, metrics, spans
 - `phi-telemetry-scan.json` — PHI field scan results
 - `perf-budget-enforcement.json` — budget validation results
 - `gate-results.json` — all gate pass/fail results
 
 ## Run Command
+
 ```powershell
 .\scripts\verify-phase77-observability.ps1
 ```

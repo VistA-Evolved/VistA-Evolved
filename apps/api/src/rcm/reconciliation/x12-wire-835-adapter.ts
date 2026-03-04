@@ -6,13 +6,13 @@
  * use it by name ("x12-wire").
  */
 
-import type { Edi835Parser, NormalizedRemittance, NormalizedPaymentLine } from "./types.js";
-import { parseX12Wire } from "../edi/x12-wire-parser.js";
-import { registerParser } from "./edi835-parser.js";
+import type { Edi835Parser, NormalizedRemittance, NormalizedPaymentLine } from './types.js';
+import { parseX12Wire } from '../edi/x12-wire-parser.js';
+import { registerParser } from './edi835-parser.js';
 
 class X12WireEdi835Parser implements Edi835Parser {
-  readonly name = "x12-wire";
-  readonly version = "1.0.0";
+  readonly name = 'x12-wire';
+  readonly version = '1.0.0';
 
   parse(content: string): NormalizedRemittance {
     const { ok, results, errors } = parseX12Wire(content);
@@ -20,28 +20,28 @@ class X12WireEdi835Parser implements Edi835Parser {
     if (!ok || results.length === 0) {
       return {
         lines: [],
-        payerId: "",
+        payerId: '',
         totalPaidAmount: 0,
         totalBilledAmount: 0,
-        parseErrors: errors.length > 0 ? errors : ["No 835 transaction set found in X12 input"],
+        parseErrors: errors.length > 0 ? errors : ['No 835 transaction set found in X12 input'],
       };
     }
 
     // Find the first 835 result
-    const r835 = results.find(r => r.transactionSet === "835");
+    const r835 = results.find((r) => r.transactionSet === '835');
     if (!r835 || !r835.parsed835) {
       return {
         lines: [],
-        payerId: "",
+        payerId: '',
         totalPaidAmount: 0,
         totalBilledAmount: 0,
-        parseErrors: ["X12 parsed but no 835 transaction set found"],
+        parseErrors: ['X12 parsed but no 835 transaction set found'],
       };
     }
 
     const { parsed835 } = r835;
 
-    const lines: NormalizedPaymentLine[] = parsed835.lines.map(l => ({
+    const lines: NormalizedPaymentLine[] = parsed835.lines.map((l) => ({
       claimRef: l.claimRef,
       payerId: l.payerId,
       billedAmount: l.billedAmount,
@@ -53,7 +53,7 @@ class X12WireEdi835Parser implements Edi835Parser {
       postedDate: l.postedDate,
       traceNumber: l.traceNumber,
       checkNumber: l.checkNumber,
-      rawCodes: l.codes.map(c => ({
+      rawCodes: l.codes.map((c) => ({
         type: c.type,
         code: c.code,
         description: c.description,

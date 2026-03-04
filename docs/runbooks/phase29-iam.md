@@ -21,6 +21,7 @@ pnpm dev
 ```
 
 The API seeds two dev portal users on startup:
+
 - `patient1` / `Patient1!` → DFN 100022
 - `patient2` / `Patient2!` → DFN 100033
 
@@ -106,41 +107,45 @@ curl -b cookies.txt http://localhost:3001/portal/iam/stats
 
 ## Portal UI Pages
 
-| Page | URL | Description |
-|------|-----|-------------|
-| Family Access | `/dashboard/proxy` | Proxy invitation management |
-| Activity Log | `/dashboard/activity` | Patient-visible access log |
-| Account | `/dashboard/account` | Password change, device sessions |
+| Page          | URL                   | Description                      |
+| ------------- | --------------------- | -------------------------------- |
+| Family Access | `/dashboard/proxy`    | Proxy invitation management      |
+| Activity Log  | `/dashboard/activity` | Patient-visible access log       |
+| Account       | `/dashboard/account`  | Password change, device sessions |
 
 ## Troubleshooting
 
 ### "CSRF validation failed"
+
 - Ensure `GET /portal/iam/csrf-token` is called first
 - Include `x-csrf-token` header matching the `csrf_token` cookie value
 - Token expires after 30 minutes
 
 ### "Account locked"
+
 - 5 failed login attempts → 15 min lockout
 - Wait 15 minutes or restart the API (dev mode clears in-memory store)
 
 ### "Rate limit exceeded"
+
 - 5 auth attempts per 15 minutes per IP
 - Wait for the window to expire
 
 ### "MFA required"
+
 - Login returned `{ mfaRequired: true }`
 - Re-send login with `totpCode` field
 - Dev mode: use code `"000000"`
 
 ## Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORTAL_MFA_ENABLED` | `false` | Enable TOTP MFA |
-| `PORTAL_IAM_MAX_FAILED_ATTEMPTS` | `5` | Lockout threshold |
-| `PORTAL_IAM_LOCKOUT_DURATION_MS` | `900000` | Lockout duration (15 min) |
-| `DEVICE_SESSION_TTL_MS` | `2592000000` | Device session TTL (30 days) |
-| `PROXY_INVITE_TTL_MS` | `604800000` | Invitation TTL (7 days) |
+| Variable                         | Default      | Description                  |
+| -------------------------------- | ------------ | ---------------------------- |
+| `PORTAL_MFA_ENABLED`             | `false`      | Enable TOTP MFA              |
+| `PORTAL_IAM_MAX_FAILED_ATTEMPTS` | `5`          | Lockout threshold            |
+| `PORTAL_IAM_LOCKOUT_DURATION_MS` | `900000`     | Lockout duration (15 min)    |
+| `DEVICE_SESSION_TTL_MS`          | `2592000000` | Device session TTL (30 days) |
+| `PROXY_INVITE_TTL_MS`            | `604800000`  | Invitation TTL (7 days)      |
 
 ## Files
 

@@ -3,35 +3,35 @@
  */
 
 /** Priority levels for queue tickets */
-export type QueuePriority = "urgent" | "high" | "normal" | "low";
+export type QueuePriority = 'urgent' | 'high' | 'normal' | 'low';
 
 /** Ticket lifecycle states */
 export type TicketStatus =
-  | "waiting"    // Patient checked in, waiting to be called
-  | "called"     // Called to window/room
-  | "serving"    // Currently being served
-  | "completed"  // Visit complete
-  | "no-show"    // Did not respond when called
-  | "transferred"; // Moved to another department queue
+  | 'waiting' // Patient checked in, waiting to be called
+  | 'called' // Called to window/room
+  | 'serving' // Currently being served
+  | 'completed' // Visit complete
+  | 'no-show' // Did not respond when called
+  | 'transferred'; // Moved to another department queue
 
 /** Standard department identifiers */
 export const DEPARTMENT_IDS = [
-  "ed",
-  "primary-care",
-  "laboratory",
-  "radiology",
-  "pharmacy",
-  "dental",
-  "mental-health",
-  "ophthalmology",
-  "physical-therapy",
-  "surgery-clinic",
-  "ob-gyn",
-  "pediatrics",
-  "cardiology",
-  "specialty-clinic",
-  "registration",
-  "billing",
+  'ed',
+  'primary-care',
+  'laboratory',
+  'radiology',
+  'pharmacy',
+  'dental',
+  'mental-health',
+  'ophthalmology',
+  'physical-therapy',
+  'surgery-clinic',
+  'ob-gyn',
+  'pediatrics',
+  'cardiology',
+  'specialty-clinic',
+  'registration',
+  'billing',
 ] as const;
 
 export type DepartmentId = (typeof DEPARTMENT_IDS)[number] | string;
@@ -41,20 +41,20 @@ export interface QueueTicket {
   id: string;
   tenantId: string;
   department: string;
-  ticketNumber: string;       // e.g., "ED-001", "LAB-042"
+  ticketNumber: string; // e.g., "ED-001", "LAB-042"
   patientDfn: string;
-  patientName: string;        // Display name for calling board
+  patientName: string; // Display name for calling board
   priority: QueuePriority;
   status: TicketStatus;
-  providerDuz?: string;       // Assigned provider
-  windowNumber?: string;      // Window/room number
-  notes?: string;             // Internal notes (not displayed publicly)
-  appointmentIen?: string;    // Link to scheduling appointment
-  createdAt: string;          // ISO timestamp
+  providerDuz?: string; // Assigned provider
+  windowNumber?: string; // Window/room number
+  notes?: string; // Internal notes (not displayed publicly)
+  appointmentIen?: string; // Link to scheduling appointment
+  createdAt: string; // ISO timestamp
   calledAt?: string;
   servedAt?: string;
   completedAt?: string;
-  transferredFrom?: string;   // Source department if transferred
+  transferredFrom?: string; // Source department if transferred
 }
 
 /** Queue event for audit trail */
@@ -62,7 +62,7 @@ export interface QueueEvent {
   id: string;
   tenantId: string;
   ticketId: string;
-  eventType: string;          // "created" | "called" | "serving" | "completed" | "no-show" | "transferred" | "priority-changed"
+  eventType: string; // "created" | "called" | "serving" | "completed" | "no-show" | "transferred" | "priority-changed"
   actorDuz?: string;
   detail?: string;
   createdAt: string;
@@ -74,11 +74,11 @@ export interface DepartmentQueueConfig {
   tenantId: string;
   department: string;
   displayName: string;
-  prefix: string;            // Ticket prefix, e.g., "ED", "LAB"
-  maxActive: number;         // Max concurrent tickets
-  autoCallEnabled: boolean;  // Auto-call next on complete
+  prefix: string; // Ticket prefix, e.g., "ED", "LAB"
+  maxActive: number; // Max concurrent tickets
+  autoCallEnabled: boolean; // Auto-call next on complete
   estimatedServiceMinutes: number;
-  windows: string[];         // Available windows/rooms
+  windows: string[]; // Available windows/rooms
   enabled: boolean;
   createdAt: string;
   updatedAt: string;

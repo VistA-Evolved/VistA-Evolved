@@ -13,32 +13,32 @@
  *   1 = summary not found
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
-import { join } from "path";
-import type { AuditSummary, AuditFinding } from "./types.js";
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
+import { join } from 'path';
+import type { AuditSummary, AuditFinding } from './types.js';
 
 const ROOT = process.cwd();
-const AUDIT_DIR = join(ROOT, "artifacts", "audit");
-const SUMMARY_FILE = join(AUDIT_DIR, "audit-summary.json");
-const TRIAGE_FILE = join(AUDIT_DIR, "triage.md");
+const AUDIT_DIR = join(ROOT, 'artifacts', 'audit');
+const SUMMARY_FILE = join(AUDIT_DIR, 'audit-summary.json');
+const TRIAGE_FILE = join(AUDIT_DIR, 'triage.md');
 
 if (!existsSync(SUMMARY_FILE)) {
-  console.error("ERROR: audit-summary.json not found. Run the audit first:");
-  console.error("  npx tsx scripts/audit/run-audit.ts --mode=offline");
+  console.error('ERROR: audit-summary.json not found. Run the audit first:');
+  console.error('  npx tsx scripts/audit/run-audit.ts --mode=offline');
   process.exit(1);
 }
 
-const summary: AuditSummary = JSON.parse(readFileSync(SUMMARY_FILE, "utf-8"));
+const summary: AuditSummary = JSON.parse(readFileSync(SUMMARY_FILE, 'utf-8'));
 
 // ── Severity rubric ─────────────────────────────────────────────
 
-const SEVERITY_ORDER = ["critical", "high", "medium", "low", "info"] as const;
+const SEVERITY_ORDER = ['critical', 'high', 'medium', 'low', 'info'] as const;
 const SEVERITY_EMOJI: Record<string, string> = {
-  critical: "P0-CRITICAL",
-  high: "P1-HIGH",
-  medium: "P2-MEDIUM",
-  low: "P3-LOW",
-  info: "INFO",
+  critical: 'P0-CRITICAL',
+  high: 'P1-HIGH',
+  medium: 'P2-MEDIUM',
+  low: 'P3-LOW',
+  info: 'INFO',
 };
 
 // ── Collect failures and warnings ───────────────────────────────
@@ -57,7 +57,7 @@ const items: TriageItem[] = [];
 
 for (const mod of summary.modules) {
   for (const f of mod.findings) {
-    if (f.status === "fail" || f.status === "warn") {
+    if (f.status === 'fail' || f.status === 'warn') {
       items.push({
         severity: f.severity,
         module: mod.module,
@@ -81,16 +81,18 @@ items.sort((a, b) => {
 // ── Generate markdown ───────────────────────────────────────────
 
 const lines: string[] = [];
-lines.push("# Alignment Audit Triage Report");
-lines.push("");
+lines.push('# Alignment Audit Triage Report');
+lines.push('');
 lines.push(`Generated: ${summary.timestamp}`);
 lines.push(`Mode: ${summary.mode}`);
-lines.push("");
-lines.push("## Summary");
-lines.push("");
+lines.push('');
+lines.push('## Summary');
+lines.push('');
 lines.push(`| Metric | Count |`);
 lines.push(`|--------|-------|`);
-lines.push(`| Total findings | ${summary.totals.pass + summary.totals.fail + summary.totals.warn} |`);
+lines.push(
+  `| Total findings | ${summary.totals.pass + summary.totals.fail + summary.totals.warn} |`
+);
 lines.push(`| Pass | ${summary.totals.pass} |`);
 lines.push(`| Fail | ${summary.totals.fail} |`);
 lines.push(`| Warn | ${summary.totals.warn} |`);
@@ -98,28 +100,28 @@ lines.push(`| Critical | ${summary.totals.critical} |`);
 lines.push(`| High | ${summary.totals.high} |`);
 lines.push(`| Medium | ${summary.totals.medium} |`);
 lines.push(`| Low | ${summary.totals.low} |`);
-lines.push("");
+lines.push('');
 
-lines.push("## Severity Rubric");
-lines.push("");
-lines.push("| Priority | Meaning | SLA |");
-lines.push("|----------|---------|-----|");
-lines.push("| P0-CRITICAL | Security breach, data loss, system down | Fix immediately |");
-lines.push("| P1-HIGH | Broken feature, fake success, ungated RPC | Fix this sprint |");
-lines.push("| P2-MEDIUM | Quality/policy violation, potential PHI leak | Fix next sprint |");
-lines.push("| P3-LOW | Cosmetic, documentation gaps, orphan code | Backlog |");
-lines.push("| INFO | Informational, statistics | No action needed |");
-lines.push("");
+lines.push('## Severity Rubric');
+lines.push('');
+lines.push('| Priority | Meaning | SLA |');
+lines.push('|----------|---------|-----|');
+lines.push('| P0-CRITICAL | Security breach, data loss, system down | Fix immediately |');
+lines.push('| P1-HIGH | Broken feature, fake success, ungated RPC | Fix this sprint |');
+lines.push('| P2-MEDIUM | Quality/policy violation, potential PHI leak | Fix next sprint |');
+lines.push('| P3-LOW | Cosmetic, documentation gaps, orphan code | Backlog |');
+lines.push('| INFO | Informational, statistics | No action needed |');
+lines.push('');
 
 if (items.length === 0) {
-  lines.push("## No actionable items found");
-  lines.push("");
-  lines.push("All audit modules passed. No triage needed.");
+  lines.push('## No actionable items found');
+  lines.push('');
+  lines.push('All audit modules passed. No triage needed.');
 } else {
-  lines.push("## Actionable Items");
-  lines.push("");
+  lines.push('## Actionable Items');
+  lines.push('');
 
-  let currentSeverity = "";
+  let currentSeverity = '';
   let itemNum = 0;
 
   for (const item of items) {
@@ -127,37 +129,39 @@ if (items.length === 0) {
     if (item.severity !== currentSeverity) {
       currentSeverity = item.severity;
       lines.push(`### ${label}`);
-      lines.push("");
+      lines.push('');
     }
 
     itemNum++;
-    const loc = item.file ? ` -- \`${item.file}${item.line ? ":" + item.line : ""}\`` : "";
+    const loc = item.file ? ` -- \`${item.file}${item.line ? ':' + item.line : ''}\`` : '';
     lines.push(`${itemNum}. **[${item.module}/${item.rule}]** ${item.message}${loc}`);
     if (item.fix) {
       lines.push(`   - Fix: ${item.fix}`);
     }
-    lines.push("");
+    lines.push('');
   }
 }
 
 // Module-by-module summary
-lines.push("## Module Results");
-lines.push("");
-lines.push("| Module | Status | Pass | Fail | Warn | Time |");
-lines.push("|--------|--------|------|------|------|------|");
+lines.push('## Module Results');
+lines.push('');
+lines.push('| Module | Status | Pass | Fail | Warn | Time |');
+lines.push('|--------|--------|------|------|------|------|');
 for (const mod of summary.modules) {
-  const pCount = mod.findings.filter((f) => f.status === "pass").length;
-  const fCount = mod.findings.filter((f) => f.status === "fail").length;
-  const wCount = mod.findings.filter((f) => f.status === "warn").length;
-  lines.push(`| ${mod.module} | ${mod.status.toUpperCase()} | ${pCount} | ${fCount} | ${wCount} | ${mod.duration_ms}ms |`);
+  const pCount = mod.findings.filter((f) => f.status === 'pass').length;
+  const fCount = mod.findings.filter((f) => f.status === 'fail').length;
+  const wCount = mod.findings.filter((f) => f.status === 'warn').length;
+  lines.push(
+    `| ${mod.module} | ${mod.status.toUpperCase()} | ${pCount} | ${fCount} | ${wCount} | ${mod.duration_ms}ms |`
+  );
 }
-lines.push("");
+lines.push('');
 
 mkdirSync(AUDIT_DIR, { recursive: true });
-writeFileSync(TRIAGE_FILE, lines.join("\n"), "utf-8");
+writeFileSync(TRIAGE_FILE, lines.join('\n'), 'utf-8');
 
 console.log(`Triage report written to ${TRIAGE_FILE}`);
 console.log(`  ${items.length} actionable items`);
-console.log(`  ${items.filter((i) => i.severity === "critical").length} critical`);
-console.log(`  ${items.filter((i) => i.severity === "high").length} high`);
+console.log(`  ${items.filter((i) => i.severity === 'critical').length} critical`);
+console.log(`  ${items.filter((i) => i.severity === 'high').length} high`);
 process.exit(0);

@@ -19,50 +19,52 @@ never replace, the VistA source of truth.
 
 ### API (`apps/api/src/`)
 
-| File | Purpose |
-|------|---------|
+| File                             | Purpose                                                                                |
+| -------------------------------- | -------------------------------------------------------------------------------------- |
 | `config/integration-registry.ts` | IntegrationEntry model, in-memory per-tenant store, health monitoring, seeded defaults |
-| `routes/interop.ts` | Admin CRUD for registry, probe, toggle, health-summary, device onboarding |
-| `services/imaging-service.ts` | Enhanced imaging routes (studies, viewer-url, metadata, registry-status) |
-| `routes/imaging.ts` | Original Phase 14D imaging (preserved for reference) |
-| `lib/audit.ts` | 5 new AuditAction types for integration + imaging operations |
-| `index.ts` | Registers interop routes, integration health in `/metrics` |
+| `routes/interop.ts`              | Admin CRUD for registry, probe, toggle, health-summary, device onboarding              |
+| `services/imaging-service.ts`    | Enhanced imaging routes (studies, viewer-url, metadata, registry-status)               |
+| `routes/imaging.ts`              | Original Phase 14D imaging (preserved for reference)                                   |
+| `lib/audit.ts`                   | 5 new AuditAction types for integration + imaging operations                           |
+| `index.ts`                       | Registers interop routes, integration health in `/metrics`                             |
 
 ### Web (`apps/web/src/`)
 
-| File | Purpose |
-|------|---------|
-| `app/cprs/admin/integrations/page.tsx` | Integration Console (3 tabs: Registry, Device Onboarding, Legacy Connectors) |
-| `components/cprs/panels/ReportsPanel.tsx` | Imaging status, study list, viewer launch in Reports tab |
-| `app/cprs/remote-data-viewer/page.tsx` | External sources populated from integration registry |
+| File                                      | Purpose                                                                      |
+| ----------------------------------------- | ---------------------------------------------------------------------------- |
+| `app/cprs/admin/integrations/page.tsx`    | Integration Console (3 tabs: Registry, Device Onboarding, Legacy Connectors) |
+| `components/cprs/panels/ReportsPanel.tsx` | Imaging status, study list, viewer launch in Reports tab                     |
+| `app/cprs/remote-data-viewer/page.tsx`    | External sources populated from integration registry                         |
 
 ## Integration Types
 
-| Type | Description | Transport | Probe Method |
-|------|-------------|-----------|-------------|
-| `vista-rpc` | Direct XWB RPC Broker | TCP/9430 | XWB handshake via `probeConnect()` |
-| `fhir` | Generic FHIR R4 endpoint | HTTPS | HTTP GET `/metadata` |
-| `fhir-c0fhir` | WorldVistA C0FHIR Suite | RPC → HTTP | HTTP GET (Apache→MUMPS) |
-| `fhir-vpr` | VPR GET PATIENT DATA JSON | RPC | XWB handshake |
-| `dicom` | Raw DICOM (C-STORE/C-FIND) | TCP | TCP socket connect |
-| `dicomweb` | DICOMweb (WADO/STOW/QIDO) | HTTPS | HTTP GET qidoRsPath |
-| `hl7v2` | HL7v2 MLLP feeds | TCP | TCP socket connect |
-| `lis` | Lab Information System | TCP | TCP socket connect |
-| `pacs-vna` | PACS/VNA archive | TCP/HTTPS | TCP or HTTP fetch |
-| `device` | Modality / bedside device | TCP | TCP socket connect |
-| `external` | Other external system | HTTPS | HTTP fetch baseUrl |
+| Type          | Description                | Transport  | Probe Method                       |
+| ------------- | -------------------------- | ---------- | ---------------------------------- |
+| `vista-rpc`   | Direct XWB RPC Broker      | TCP/9430   | XWB handshake via `probeConnect()` |
+| `fhir`        | Generic FHIR R4 endpoint   | HTTPS      | HTTP GET `/metadata`               |
+| `fhir-c0fhir` | WorldVistA C0FHIR Suite    | RPC → HTTP | HTTP GET (Apache→MUMPS)            |
+| `fhir-vpr`    | VPR GET PATIENT DATA JSON  | RPC        | XWB handshake                      |
+| `dicom`       | Raw DICOM (C-STORE/C-FIND) | TCP        | TCP socket connect                 |
+| `dicomweb`    | DICOMweb (WADO/STOW/QIDO)  | HTTPS      | HTTP GET qidoRsPath                |
+| `hl7v2`       | HL7v2 MLLP feeds           | TCP        | TCP socket connect                 |
+| `lis`         | Lab Information System     | TCP        | TCP socket connect                 |
+| `pacs-vna`    | PACS/VNA archive           | TCP/HTTPS  | TCP or HTTP fetch                  |
+| `device`      | Modality / bedside device  | TCP        | TCP socket connect                 |
+| `external`    | Other external system      | HTTPS      | HTTP fetch baseUrl                 |
 
 ## Admin API Endpoints
 
 All `/admin/registry/` endpoints require admin role.
 
 ### Registry CRUD
+
 - `GET /admin/registry/:tenantId` — list all integrations for tenant
 - `GET /admin/registry/:tenantId/:integrationId` — get single integration
 - `PUT /admin/registry/:tenantId/:integrationId` — create or update integration
 - `DELETE /admin/registry/:tenantId/:integrationId` — delete integration
 
 ### Operations
+
 - `POST /admin/registry/:tenantId/:integrationId/toggle` — enable/disable
 - `POST /admin/registry/:tenantId/:integrationId/probe` — probe single integration
 - `POST /admin/registry/:tenantId/probe-all` — probe all enabled integrations
@@ -70,18 +72,19 @@ All `/admin/registry/` endpoints require admin role.
 - `GET /admin/registry/:tenantId/error-log/:integrationId` — error log (last 20)
 
 ### Device Onboarding
+
 - `POST /admin/registry/:tenantId/onboard-device` — onboard new device/modality
 
 ## Imaging Endpoints
 
-| Route | Auth | Description |
-|-------|------|-------------|
-| `GET /vista/imaging/status` | Session | Imaging system status (MAG4/RA + registry) |
-| `GET /vista/imaging/report` | Session | Radiology report text for a case |
-| `GET /vista/imaging/studies?dfn=` | Session | Patient study list (VistA + DICOMweb) |
-| `GET /vista/imaging/viewer-url?studyUid=` | Session | OHIF viewer URL for a study |
-| `GET /vista/imaging/metadata?studyUid=` | Session | WADO-RS metadata for a study |
-| `GET /vista/imaging/registry-status` | Session | Integration registry imaging entries |
+| Route                                     | Auth    | Description                                |
+| ----------------------------------------- | ------- | ------------------------------------------ |
+| `GET /vista/imaging/status`               | Session | Imaging system status (MAG4/RA + registry) |
+| `GET /vista/imaging/report`               | Session | Radiology report text for a case           |
+| `GET /vista/imaging/studies?dfn=`         | Session | Patient study list (VistA + DICOMweb)      |
+| `GET /vista/imaging/viewer-url?studyUid=` | Session | OHIF viewer URL for a study                |
+| `GET /vista/imaging/metadata?studyUid=`   | Session | WADO-RS metadata for a study               |
+| `GET /vista/imaging/registry-status`      | Session | Integration registry imaging entries       |
 
 ## Device Onboarding Workflow
 
@@ -202,21 +205,21 @@ Generated URL format: `{OHIF_VIEWER_URL}/viewer?StudyInstanceUIDs={uid}`
 
 On startup, `seedDefaultIntegrations("default")` creates:
 
-| ID | Type | Description |
-|----|------|-------------|
-| `vista-primary` | vista-rpc | Primary VistA RPC Broker (from env: VISTA_HOST/VISTA_PORT) |
-| `vista-imaging` | vista-rpc | VistA Imaging (MAG4/RA RPCs) — same host |
-| `fhir-c0fhir` | fhir-c0fhir | C0FHIR Suite (only if C0FHIR_HOST env is set) |
+| ID              | Type        | Description                                                |
+| --------------- | ----------- | ---------------------------------------------------------- |
+| `vista-primary` | vista-rpc   | Primary VistA RPC Broker (from env: VISTA_HOST/VISTA_PORT) |
+| `vista-imaging` | vista-rpc   | VistA Imaging (MAG4/RA RPCs) — same host                   |
+| `fhir-c0fhir`   | fhir-c0fhir | C0FHIR Suite (only if C0FHIR_HOST env is set)              |
 
 ## Audit Actions
 
-| Action | When |
-|--------|------|
-| `integration.config-change` | Integration created, updated, deleted, or toggled |
-| `integration.probe` | Integration probed (single or probe-all) |
-| `integration.dashboard-view` | Admin views integration console |
-| `integration.device-onboard` | New device onboarded |
-| `imaging.viewer-launch` | Viewer URL generated for a study |
+| Action                       | When                                              |
+| ---------------------------- | ------------------------------------------------- |
+| `integration.config-change`  | Integration created, updated, deleted, or toggled |
+| `integration.probe`          | Integration probed (single or probe-all)          |
+| `integration.dashboard-view` | Admin views integration console                   |
+| `integration.device-onboard` | New device onboarded                              |
+| `imaging.viewer-launch`      | Viewer URL generated for a study                  |
 
 ## Health Monitoring
 
@@ -235,6 +238,7 @@ On startup, `seedDefaultIntegrations("default")` creates:
 ### Health in /metrics
 
 The `/metrics` endpoint now includes:
+
 ```json
 {
   "integrations": { "total": 3, "healthy": 2, "degraded": 0, "down": 0, "unknown": 1 }
@@ -244,6 +248,7 @@ The `/metrics` endpoint now includes:
 ### Error Log
 
 Each integration keeps a ring buffer of the last 20 errors:
+
 ```typescript
 {
   timestamp: string;
@@ -255,23 +260,27 @@ Each integration keeps a ring buffer of the last 20 errors:
 ## Testing Manually
 
 ### 1. List integrations (admin)
+
 ```bash
 curl -b cookies.txt http://127.0.0.1:3001/admin/registry/default
 ```
 
 ### 2. Probe all integrations
+
 ```bash
 curl -X POST -b cookies.txt \
   http://127.0.0.1:3001/admin/registry/default/probe-all
 ```
 
 ### 3. Check health summary
+
 ```bash
 curl -b cookies.txt \
   http://127.0.0.1:3001/admin/registry/default/health-summary
 ```
 
 ### 4. Onboard a device
+
 ```bash
 curl -X POST -b cookies.txt \
   -H 'Content-Type: application/json' \
@@ -291,18 +300,21 @@ curl -X POST -b cookies.txt \
 ```
 
 ### 5. Check imaging studies
+
 ```bash
 curl -b cookies.txt \
   "http://127.0.0.1:3001/vista/imaging/studies?dfn=3"
 ```
 
 ### 6. Get viewer URL
+
 ```bash
 curl -b cookies.txt \
   "http://127.0.0.1:3001/vista/imaging/viewer-url?studyUid=1.2.3.4.5"
 ```
 
 ### 7. Check integration health in metrics
+
 ```bash
 curl http://127.0.0.1:3001/metrics | jq .integrations
 ```
@@ -322,21 +334,21 @@ Navigate to `/cprs/admin/integrations` (requires admin role).
 
 ## VistA RPCs Used
 
-| RPC | Context | Purpose |
-|-----|---------|---------|
-| `MAG4 REMOTE PROCEDURE` | `MAG WINDOWS` | Patient imaging study list |
-| `RA DETAILED REPORT` | `RA GUI LOCALONLY` | Radiology report text |
-| `C0FHIR GET FULL BUNDLE` | `C0FHIR CONTEXT` | FHIR R4 bundle (C0FHIR Suite) |
-| `VPR GET PATIENT DATA JSON` | `VPR APPLICATION PROXY` | VPR patient data as JSON |
+| RPC                         | Context                 | Purpose                       |
+| --------------------------- | ----------------------- | ----------------------------- |
+| `MAG4 REMOTE PROCEDURE`     | `MAG WINDOWS`           | Patient imaging study list    |
+| `RA DETAILED REPORT`        | `RA GUI LOCALONLY`      | Radiology report text         |
+| `C0FHIR GET FULL BUNDLE`    | `C0FHIR CONTEXT`        | FHIR R4 bundle (C0FHIR Suite) |
+| `VPR GET PATIENT DATA JSON` | `VPR APPLICATION PROXY` | VPR patient data as JSON      |
 
 ## External Tool References
 
-| Tool | Purpose | License |
-|------|---------|---------|
-| [Orthanc](https://www.orthanc-server.com/) | Open-source DICOM server | GPLv3 |
-| [OHIF](https://ohif.org/) | Open-source DICOM web viewer | MIT |
-| [dcm4chee](https://www.dcm4che.org/) | Enterprise DICOM archive | Apache 2.0 |
-| [WorldVistA C0FHIR](https://github.com/WorldVistA/VistA-FHIR-Server) | MUMPS-native FHIR R4 | Apache 2.0 |
+| Tool                                                                 | Purpose                      | License    |
+| -------------------------------------------------------------------- | ---------------------------- | ---------- |
+| [Orthanc](https://www.orthanc-server.com/)                           | Open-source DICOM server     | GPLv3      |
+| [OHIF](https://ohif.org/)                                            | Open-source DICOM web viewer | MIT        |
+| [dcm4chee](https://www.dcm4che.org/)                                 | Enterprise DICOM archive     | Apache 2.0 |
+| [WorldVistA C0FHIR](https://github.com/WorldVistA/VistA-FHIR-Server) | MUMPS-native FHIR R4         | Apache 2.0 |
 
 ## Notes
 

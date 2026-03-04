@@ -15,21 +15,23 @@
  * Roles: provider, nurse, pharmacist, clerk, admin, patient, support
  */
 
-import { log } from "../lib/logger.js";
-import { immutableAudit, type ImmutableAuditAction } from "../lib/immutable-audit.js";
-import {
-  evaluateAbac,
-  buildAbacContext,
-  type AbacResult,
-  type AbacDenial,
-} from "./abac-engine.js";
-import { type ResourceAttributes } from "./abac-attributes.js";
+import { log } from '../lib/logger.js';
+import { immutableAudit, type ImmutableAuditAction } from '../lib/immutable-audit.js';
+import { evaluateAbac, buildAbacContext, type AbacResult, type AbacDenial } from './abac-engine.js';
+import { type ResourceAttributes } from './abac-attributes.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type PolicyRole = "provider" | "nurse" | "pharmacist" | "clerk" | "admin" | "patient" | "support";
+export type PolicyRole =
+  | 'provider'
+  | 'nurse'
+  | 'pharmacist'
+  | 'clerk'
+  | 'admin'
+  | 'patient'
+  | 'support';
 
 export interface PolicyUser {
   /** VistA DUZ or OIDC sub */
@@ -91,72 +93,72 @@ export interface PolicyDecision {
  */
 const ROLE_ACTION_MAP: Record<string, PolicyRole[]> = {
   // PHI read actions
-  "phi.patient-search": ["provider", "nurse", "pharmacist", "clerk", "admin", "support"],
-  "phi.patient-list": ["provider", "nurse", "pharmacist", "clerk", "admin", "support"],
-  "phi.patient-select": ["provider", "nurse", "pharmacist", "clerk", "admin"],
-  "phi.demographics-view": ["provider", "nurse", "pharmacist", "clerk", "admin"],
-  "phi.allergies-view": ["provider", "nurse", "pharmacist", "admin"],
-  "phi.vitals-view": ["provider", "nurse", "pharmacist", "admin"],
-  "phi.notes-view": ["provider", "nurse", "pharmacist", "admin"],
-  "phi.medications-view": ["provider", "nurse", "pharmacist", "admin"],
-  "phi.problems-view": ["provider", "nurse", "pharmacist", "admin"],
-  "phi.labs-view": ["provider", "nurse", "pharmacist", "admin"],
-  "phi.reports-view": ["provider", "nurse", "pharmacist", "admin"],
-  "phi.imaging-view": ["provider", "nurse", "pharmacist", "admin"],
+  'phi.patient-search': ['provider', 'nurse', 'pharmacist', 'clerk', 'admin', 'support'],
+  'phi.patient-list': ['provider', 'nurse', 'pharmacist', 'clerk', 'admin', 'support'],
+  'phi.patient-select': ['provider', 'nurse', 'pharmacist', 'clerk', 'admin'],
+  'phi.demographics-view': ['provider', 'nurse', 'pharmacist', 'clerk', 'admin'],
+  'phi.allergies-view': ['provider', 'nurse', 'pharmacist', 'admin'],
+  'phi.vitals-view': ['provider', 'nurse', 'pharmacist', 'admin'],
+  'phi.notes-view': ['provider', 'nurse', 'pharmacist', 'admin'],
+  'phi.medications-view': ['provider', 'nurse', 'pharmacist', 'admin'],
+  'phi.problems-view': ['provider', 'nurse', 'pharmacist', 'admin'],
+  'phi.labs-view': ['provider', 'nurse', 'pharmacist', 'admin'],
+  'phi.reports-view': ['provider', 'nurse', 'pharmacist', 'admin'],
+  'phi.imaging-view': ['provider', 'nurse', 'pharmacist', 'admin'],
 
   // Clinical write actions
-  "clinical.allergy-add": ["provider", "admin"],
-  "clinical.vitals-add": ["provider", "nurse", "admin"],
-  "clinical.note-create": ["provider", "nurse", "admin"],
-  "clinical.medication-add": ["provider", "pharmacist", "admin"],
-  "clinical.problem-add": ["provider", "admin"],
-  "clinical.order-sign": ["provider", "admin"],
-  "clinical.order-release": ["provider", "admin"],
-  "clinical.draft-create": ["provider", "nurse", "admin"],
-  "clinical.draft-submit": ["provider", "nurse", "admin"],
-  "clinical.draft-delete": ["provider", "nurse", "admin"],
+  'clinical.allergy-add': ['provider', 'admin'],
+  'clinical.vitals-add': ['provider', 'nurse', 'admin'],
+  'clinical.note-create': ['provider', 'nurse', 'admin'],
+  'clinical.medication-add': ['provider', 'pharmacist', 'admin'],
+  'clinical.problem-add': ['provider', 'admin'],
+  'clinical.order-sign': ['provider', 'admin'],
+  'clinical.order-release': ['provider', 'admin'],
+  'clinical.draft-create': ['provider', 'nurse', 'admin'],
+  'clinical.draft-submit': ['provider', 'nurse', 'admin'],
+  'clinical.draft-delete': ['provider', 'nurse', 'admin'],
 
   // Imaging actions
-  "imaging.view": ["provider", "nurse", "pharmacist", "admin"],
-  "imaging.order": ["provider", "admin"],
-  "imaging.upload": ["admin"],
-  "imaging.device-manage": ["admin"],
+  'imaging.view': ['provider', 'nurse', 'pharmacist', 'admin'],
+  'imaging.order': ['provider', 'admin'],
+  'imaging.upload': ['admin'],
+  'imaging.device-manage': ['admin'],
 
   // Admin actions
-  "admin.config": ["admin"],
-  "admin.tenant": ["admin"],
-  "admin.user-manage": ["admin"],
-  "admin.system": ["admin"],
+  'admin.config': ['admin'],
+  'admin.tenant': ['admin'],
+  'admin.user-manage': ['admin'],
+  'admin.system': ['admin'],
 
   // Audit actions
-  "audit.view": ["admin", "support"],
-  "audit.query": ["admin", "support"],
-  "audit.export": ["admin"],
+  'audit.view': ['admin', 'support'],
+  'audit.query': ['admin', 'support'],
+  'audit.export': ['admin'],
 
   // System actions
-  "system.health": ["admin", "support"],
-  "system.metrics": ["admin", "support"],
-  "system.interop": ["admin"],
+  'system.health': ['admin', 'support'],
+  'system.metrics': ['admin', 'support'],
+  'system.interop': ['admin'],
 
   // Portal actions (patient self-service)
-  "portal.own-data": ["patient"],
-  "portal.messaging": ["patient"],
-  "portal.appointments": ["patient"],
-  "portal.refills": ["patient"],
+  'portal.own-data': ['patient'],
+  'portal.messaging': ['patient'],
+  'portal.appointments': ['patient'],
+  'portal.refills': ['patient'],
 
   // Telehealth
-  "telehealth.create": ["provider", "admin"],
-  "telehealth.join": ["provider", "nurse", "admin", "patient"],
-  "telehealth.manage": ["admin"],
+  'telehealth.create': ['provider', 'admin'],
+  'telehealth.join': ['provider', 'nurse', 'admin', 'patient'],
+  'telehealth.manage': ['admin'],
 
   // Analytics
-  "analytics.view": ["provider", "nurse", "pharmacist", "admin"],
-  "analytics.export": ["admin"],
-  "analytics.config": ["admin"],
+  'analytics.view': ['provider', 'nurse', 'pharmacist', 'admin'],
+  'analytics.export': ['admin'],
+  'analytics.config': ['admin'],
 
   // Reporting
-  "report.generate": ["provider", "nurse", "admin"],
-  "report.export": ["admin"],
+  'report.generate': ['provider', 'nurse', 'admin'],
+  'report.export': ['admin'],
 };
 
 /**
@@ -165,55 +167,55 @@ const ROLE_ACTION_MAP: Record<string, PolicyRole[]> = {
  */
 export const ROUTE_ACTION_MAP: Record<string, string> = {
   // Auth (no policy check — handled by auth gateway)
-  "/auth/login": "auth.login",
-  "/auth/logout": "auth.logout",
-  "/auth/session": "auth.session",
+  '/auth/login': 'auth.login',
+  '/auth/logout': 'auth.logout',
+  '/auth/session': 'auth.session',
 
   // Patient operations
-  "/vista/patient-search": "phi.patient-search",
-  "/vista/default-patient-list": "phi.patient-list",
-  "/vista/patient-demographics": "phi.demographics-view",
-  "/vista/allergies": "phi.allergies-view",
-  "/vista/vitals": "phi.vitals-view",
-  "/vista/notes": "phi.notes-view",
-  "/vista/medications": "phi.medications-view",
-  "/vista/problems": "phi.problems-view",
-  "/vista/labs": "phi.labs-view",
+  '/vista/patient-search': 'phi.patient-search',
+  '/vista/default-patient-list': 'phi.patient-list',
+  '/vista/patient-demographics': 'phi.demographics-view',
+  '/vista/allergies': 'phi.allergies-view',
+  '/vista/vitals': 'phi.vitals-view',
+  '/vista/notes': 'phi.notes-view',
+  '/vista/medications': 'phi.medications-view',
+  '/vista/problems': 'phi.problems-view',
+  '/vista/labs': 'phi.labs-view',
 
   // Clinical writes
-  "/vista/add-allergy": "clinical.allergy-add",
-  "/vista/add-vitals": "clinical.vitals-add",
-  "/vista/add-note": "clinical.note-create",
-  "/vista/add-medication": "clinical.medication-add",
-  "/vista/add-problem": "clinical.problem-add",
+  '/vista/add-allergy': 'clinical.allergy-add',
+  '/vista/add-vitals': 'clinical.vitals-add',
+  '/vista/add-note': 'clinical.note-create',
+  '/vista/add-medication': 'clinical.medication-add',
+  '/vista/add-problem': 'clinical.problem-add',
 
   // Imaging
-  "/imaging/studies": "imaging.view",
-  "/imaging/order": "imaging.order",
+  '/imaging/studies': 'imaging.view',
+  '/imaging/order': 'imaging.order',
 
   // Admin
-  "/admin/my-tenant": "phi.patient-list",  // Any authenticated user
-  "/admin/tenants": "admin.tenant",
-  "/admin/sessions": "admin.system",
+  '/admin/my-tenant': 'phi.patient-list', // Any authenticated user
+  '/admin/tenants': 'admin.tenant',
+  '/admin/sessions': 'admin.system',
 
   // Audit
-  "/audit/events": "audit.view",
-  "/audit/stats": "audit.view",
+  '/audit/events': 'audit.view',
+  '/audit/stats': 'audit.view',
 
   // Analytics
-  "/analytics/events": "analytics.view",
-  "/analytics/aggregated": "analytics.view",
-  "/analytics/export": "analytics.export",
+  '/analytics/events': 'analytics.view',
+  '/analytics/aggregated': 'analytics.view',
+  '/analytics/export': 'analytics.export',
 
   // Reports
-  "/reports/clinical": "report.generate",
-  "/reports/export": "report.export",
+  '/reports/clinical': 'report.generate',
+  '/reports/export': 'report.export',
 
   // Telehealth
-  "/telehealth/rooms": "telehealth.create",
+  '/telehealth/rooms': 'telehealth.create',
 
   // System
-  "/vista/interop/telemetry": "system.interop",
+  '/vista/interop/telemetry': 'system.interop',
 };
 
 /* ------------------------------------------------------------------ */
@@ -228,10 +230,10 @@ export function evaluatePolicy(input: PolicyInput): PolicyDecision {
   const start = performance.now();
 
   // Rule 0: Admin can do anything
-  if (input.user.roles.includes("admin")) {
+  if (input.user.roles.includes('admin')) {
     return {
       allowed: true,
-      matchedRule: "admin-superuser",
+      matchedRule: 'admin-superuser',
       evaluationTimeMs: performance.now() - start,
     };
   }
@@ -244,8 +246,8 @@ export function evaluatePolicy(input: PolicyInput): PolicyDecision {
   ) {
     return {
       allowed: false,
-      reason: "Cross-tenant access denied",
-      matchedRule: "tenant-isolation",
+      reason: 'Cross-tenant access denied',
+      matchedRule: 'tenant-isolation',
       evaluationTimeMs: performance.now() - start,
     };
   }
@@ -255,7 +257,7 @@ export function evaluatePolicy(input: PolicyInput): PolicyDecision {
     if (Date.now() < input.user.breakGlassExpiresAt) {
       return {
         allowed: true,
-        matchedRule: "break-glass-active",
+        matchedRule: 'break-glass-active',
         evaluationTimeMs: performance.now() - start,
       };
     }
@@ -263,29 +265,29 @@ export function evaluatePolicy(input: PolicyInput): PolicyDecision {
   }
 
   // Rule 3: Patient portal — own data only
-  if (input.user.roles.includes("patient")) {
-    if (input.action.startsWith("portal.")) {
+  if (input.user.roles.includes('patient')) {
+    if (input.action.startsWith('portal.')) {
       if (input.resource?.patientDfn && input.user.patientDfn) {
         if (input.resource.patientDfn !== input.user.patientDfn) {
           return {
             allowed: false,
-            reason: "Patient can only access own data",
-            matchedRule: "patient-own-data",
+            reason: 'Patient can only access own data',
+            matchedRule: 'patient-own-data',
             evaluationTimeMs: performance.now() - start,
           };
         }
       }
       return {
         allowed: true,
-        matchedRule: "patient-portal-access",
+        matchedRule: 'patient-portal-access',
         evaluationTimeMs: performance.now() - start,
       };
     }
     // Patient denied non-portal actions
     return {
       allowed: false,
-      reason: "Patient role limited to portal actions",
-      matchedRule: "patient-scope-limit",
+      reason: 'Patient role limited to portal actions',
+      matchedRule: 'patient-scope-limit',
       evaluationTimeMs: performance.now() - start,
     };
   }
@@ -303,14 +305,14 @@ export function evaluatePolicy(input: PolicyInput): PolicyDecision {
     }
     return {
       allowed: false,
-      reason: `Action '${input.action}' requires one of: ${allowedRoles.join(", ")}`,
+      reason: `Action '${input.action}' requires one of: ${allowedRoles.join(', ')}`,
       matchedRule: `role-action-denied:${input.action}`,
       evaluationTimeMs: performance.now() - start,
     };
   }
 
   // Rule 5: Wildcard pattern matching (e.g., "clinical.*")
-  const actionPrefix = input.action.split(".")[0] + ".*";
+  const actionPrefix = input.action.split('.')[0] + '.*';
   const wildcardRoles = ROLE_ACTION_MAP[actionPrefix];
   if (wildcardRoles) {
     const hasRole = input.user.roles.some((r) => wildcardRoles.includes(r));
@@ -326,8 +328,8 @@ export function evaluatePolicy(input: PolicyInput): PolicyDecision {
   // Default DENY
   return {
     allowed: false,
-    reason: `No policy rule allows action '${input.action}' for roles [${input.user.roles.join(", ")}]`,
-    matchedRule: "default-deny",
+    reason: `No policy rule allows action '${input.action}' for roles [${input.user.roles.join(', ')}]`,
+    matchedRule: 'default-deny',
     evaluationTimeMs: performance.now() - start,
   };
 }
@@ -338,7 +340,7 @@ export function evaluatePolicy(input: PolicyInput): PolicyDecision {
  */
 export function resolveActionForRoute(url: string, method?: string): string {
   // Strip query params
-  const path = url.split("?")[0];
+  const path = url.split('?')[0];
 
   // Exact match first
   if (ROUTE_ACTION_MAP[path]) return ROUTE_ACTION_MAP[path];
@@ -349,16 +351,16 @@ export function resolveActionForRoute(url: string, method?: string): string {
   }
 
   // Fallback based on prefix
-  if (path.startsWith("/vista/")) return "phi.patient-list"; // Default VistA to PHI read
-  if (path.startsWith("/admin/")) return "admin.config";
-  if (path.startsWith("/audit/")) return "audit.view";
-  if (path.startsWith("/portal/")) return "portal.own-data";
-  if (path.startsWith("/imaging/")) return "imaging.view";
-  if (path.startsWith("/analytics/")) return "analytics.view";
-  if (path.startsWith("/telehealth/")) return "telehealth.join";
-  if (path.startsWith("/reports/")) return "report.generate";
+  if (path.startsWith('/vista/')) return 'phi.patient-list'; // Default VistA to PHI read
+  if (path.startsWith('/admin/')) return 'admin.config';
+  if (path.startsWith('/audit/')) return 'audit.view';
+  if (path.startsWith('/portal/')) return 'portal.own-data';
+  if (path.startsWith('/imaging/')) return 'imaging.view';
+  if (path.startsWith('/analytics/')) return 'analytics.view';
+  if (path.startsWith('/telehealth/')) return 'telehealth.join';
+  if (path.startsWith('/reports/')) return 'report.generate';
 
-  return "unknown";
+  return 'unknown';
 }
 
 /**
@@ -369,28 +371,33 @@ export function checkPolicy(
   action: string,
   user: PolicyUser,
   resource?: PolicyResource,
-  requestMeta?: { requestId?: string; sourceIp?: string },
+  requestMeta?: { requestId?: string; sourceIp?: string }
 ): PolicyDecision {
   const decision = evaluatePolicy({ action, user, resource });
 
   if (!decision.allowed) {
     // Audit the denial
-    immutableAudit("policy.denied" as ImmutableAuditAction, "denied", {
-      sub: user.sub,
-      name: user.name,
-      roles: user.roles,
-    }, {
-      requestId: requestMeta?.requestId,
-      sourceIp: requestMeta?.sourceIp,
-      detail: {
-        action,
-        reason: decision.reason,
-        matchedRule: decision.matchedRule,
-        evaluationTimeMs: decision.evaluationTimeMs,
+    immutableAudit(
+      'policy.denied' as ImmutableAuditAction,
+      'denied',
+      {
+        sub: user.sub,
+        name: user.name,
+        roles: user.roles,
       },
-    });
+      {
+        requestId: requestMeta?.requestId,
+        sourceIp: requestMeta?.sourceIp,
+        detail: {
+          action,
+          reason: decision.reason,
+          matchedRule: decision.matchedRule,
+          evaluationTimeMs: decision.evaluationTimeMs,
+        },
+      }
+    );
 
-    log.warn("Policy denied", {
+    log.warn('Policy denied', {
       action,
       user: user.sub,
       roles: user.roles,
@@ -407,7 +414,7 @@ export function checkPolicy(
  * Useful for UI capability exposure.
  */
 export function getActionsForRoles(roles: PolicyRole[]): string[] {
-  if (roles.includes("admin")) {
+  if (roles.includes('admin')) {
     return Object.keys(ROLE_ACTION_MAP); // Admin gets everything
   }
 
@@ -425,7 +432,7 @@ export function getActionsForRoles(roles: PolicyRole[]): string[] {
  * Quick boolean check without full policy evaluation.
  */
 export function canPerform(roles: PolicyRole[], action: string): boolean {
-  if (roles.includes("admin")) return true;
+  if (roles.includes('admin')) return true;
   const allowedRoles = ROLE_ACTION_MAP[action];
   if (!allowedRoles) return false;
   return roles.some((r) => allowedRoles.includes(r));
@@ -455,7 +462,7 @@ export function evaluatePolicyWithAbac(
     method?: string;
     url?: string;
   },
-  resourceOverrides?: Partial<ResourceAttributes>,
+  resourceOverrides?: Partial<ResourceAttributes>
 ): PolicyDecisionWithAbac {
   // Step 1: RBAC evaluation
   const rbacDecision = evaluatePolicy(input);
@@ -469,13 +476,13 @@ export function evaluatePolicyWithAbac(
   const abacCtx = buildAbacContext(
     request,
     {
-      role: input.user.roles[0] ?? "clerk",
+      role: input.user.roles[0] ?? 'clerk',
       duz: input.user.sub,
       facilityStation: input.user.facilityStation,
       tenantId: input.user.tenantId,
     },
     input.action,
-    resourceOverrides,
+    resourceOverrides
   );
 
   const abacResult = evaluateAbac(abacCtx);
@@ -484,8 +491,8 @@ export function evaluatePolicyWithAbac(
     const denial = abacResult as AbacDenial;
     return {
       allowed: false,
-      reason: denial.reason || "ABAC policy denied",
-      matchedRule: `abac:${denial.violations.map((v) => v.conditionName).join("+")}`,
+      reason: denial.reason || 'ABAC policy denied',
+      matchedRule: `abac:${denial.violations.map((v) => v.conditionName).join('+')}`,
       evaluationTimeMs: rbacDecision.evaluationTimeMs,
       abac: abacResult,
     };
@@ -510,34 +517,36 @@ export function checkPolicyWithAbac(
   },
   resource?: PolicyResource,
   resourceOverrides?: Partial<ResourceAttributes>,
-  requestMeta?: { requestId?: string; sourceIp?: string },
+  requestMeta?: { requestId?: string; sourceIp?: string }
 ): PolicyDecisionWithAbac {
-  const decision = evaluatePolicyWithAbac(
-    { action, user, resource },
-    request,
-    resourceOverrides,
-  );
+  const decision = evaluatePolicyWithAbac({ action, user, resource }, request, resourceOverrides);
 
   if (!decision.allowed) {
-    immutableAudit("policy.denied" as ImmutableAuditAction, "denied", {
-      sub: user.sub,
-      name: user.name,
-      roles: user.roles,
-    }, {
-      requestId: requestMeta?.requestId,
-      sourceIp: requestMeta?.sourceIp,
-      detail: {
-        action,
-        reason: decision.reason,
-        matchedRule: decision.matchedRule,
-        evaluationTimeMs: decision.evaluationTimeMs,
-        abacViolations: decision.abac && !decision.abac.allowed
-          ? (decision.abac as AbacDenial).violations.map((v) => v.conditionName)
-          : undefined,
+    immutableAudit(
+      'policy.denied' as ImmutableAuditAction,
+      'denied',
+      {
+        sub: user.sub,
+        name: user.name,
+        roles: user.roles,
       },
-    });
+      {
+        requestId: requestMeta?.requestId,
+        sourceIp: requestMeta?.sourceIp,
+        detail: {
+          action,
+          reason: decision.reason,
+          matchedRule: decision.matchedRule,
+          evaluationTimeMs: decision.evaluationTimeMs,
+          abacViolations:
+            decision.abac && !decision.abac.allowed
+              ? (decision.abac as AbacDenial).violations.map((v) => v.conditionName)
+              : undefined,
+        },
+      }
+    );
 
-    log.warn("Policy denied (RBAC+ABAC)", {
+    log.warn('Policy denied (RBAC+ABAC)', {
       action,
       user: user.sub,
       roles: user.roles,

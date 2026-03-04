@@ -1,6 +1,7 @@
 # 488-99 VERIFY -- W33-P8: UI Hardening
 
 ## Gates
+
 1. `npx tsc --noEmit` -- clean compile (apps/web)
 2. `ActionStatus` type includes `"unsupported-in-sandbox"`
 3. `StatusBadge` in ActionInspector and RpcDebugPanel renders new status

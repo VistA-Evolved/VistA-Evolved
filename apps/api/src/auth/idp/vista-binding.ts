@@ -21,9 +21,9 @@
  *     VistA binding is implicit (already authenticated via XUS AV CODE).
  */
 
-import { log } from "../../lib/logger.js";
-import { authenticateUser } from "../../vista/rpcBrokerClient.js";
-import type { VistaBindingResult, VistaBindingStatus } from "./types.js";
+import { log } from '../../lib/logger.js';
+import { authenticateUser } from '../../vista/rpcBrokerClient.js';
+import type { VistaBindingResult, VistaBindingStatus } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* In-memory VistA binding store                                       */
@@ -42,7 +42,9 @@ const vistaBindings = new Map<string, VistaBinding>();
 
 /* Phase 146: DB repo wiring */
 let vistaBindDbRepo: { upsert(d: any): Promise<any> } | null = null;
-export function initVistaBindingStoreRepo(repo: typeof vistaBindDbRepo): void { vistaBindDbRepo = repo; }
+export function initVistaBindingStoreRepo(repo: typeof vistaBindDbRepo): void {
+  vistaBindDbRepo = repo;
+}
 
 /** TTL for VistA bindings (matches session TTL: 8h) */
 const BINDING_TTL_MS = 8 * 60 * 60 * 1000;
@@ -69,7 +71,7 @@ setInterval(() => {
 export async function bindVistaSession(
   sessionToken: string,
   accessCode: string,
-  verifyCode: string,
+  verifyCode: string
 ): Promise<VistaBindingResult> {
   try {
     const userInfo = await authenticateUser(accessCode, verifyCode);
@@ -84,9 +86,18 @@ export async function bindVistaSession(
     });
 
     // Phase 146: Write-through to PG
-    vistaBindDbRepo?.upsert({ id: sessionToken, tenantId: 'default', idpUserId: sessionToken, vistaDuz: userInfo.duz, provider: 'vista', createdAt: new Date().toISOString() }).catch(() => {});
+    vistaBindDbRepo
+      ?.upsert({
+        id: sessionToken,
+        tenantId: 'default',
+        idpUserId: sessionToken,
+        vistaDuz: userInfo.duz,
+        provider: 'vista',
+        createdAt: new Date().toISOString(),
+      })
+      .catch(() => {});
 
-    log.info("VistA session bound", { duz: userInfo.duz });
+    log.info('VistA session bound', { duz: userInfo.duz });
 
     return {
       ok: true,
@@ -98,9 +109,9 @@ export async function bindVistaSession(
     };
   } catch (err: any) {
     // W8 FIX: Sanitize error -- don't leak MUMPS routine names or VistA internals
-    const safeErr = (err.message || "unknown error").replace(/[\^%][A-Z0-9]+/g, "[redacted]");
-    log.warn("VistA binding failed", { error: safeErr });
-    return { ok: false, error: "VistA authentication failed" };
+    const safeErr = (err.message || 'unknown error').replace(/[\^%][A-Z0-9]+/g, '[redacted]');
+    log.warn('VistA binding failed', { error: safeErr });
+    return { ok: false, error: 'VistA authentication failed' };
   }
 }
 
@@ -122,8 +133,8 @@ export function getVistaBinding(sessionToken: string): VistaBinding | null {
  */
 export function getVistaBindingStatus(sessionToken: string): VistaBindingStatus {
   const binding = getVistaBinding(sessionToken);
-  if (binding) return "bound";
-  return "pending";
+  if (binding) return 'bound';
+  return 'pending';
 }
 
 /**
@@ -138,15 +149,16 @@ export function unbindVistaSession(sessionToken: string): void {
  * Returns null if binding is OK, or an error response body if not.
  */
 export function requireVistaBinding(
-  sessionToken: string,
+  sessionToken: string
 ): null | { ok: false; error: string; vistaBindingRequired: true; pendingTargets: string[] } {
   const status = getVistaBindingStatus(sessionToken);
-  if (status === "bound") return null;
+  if (status === 'bound') return null;
 
   return {
     ok: false,
-    error: "VistA session binding required for clinical actions. Authenticate with VistA credentials via POST /auth/idp/vista-bind.",
+    error:
+      'VistA session binding required for clinical actions. Authenticate with VistA credentials via POST /auth/idp/vista-bind.',
     vistaBindingRequired: true,
-    pendingTargets: ["XUS AV CODE", "XWB CREATE CONTEXT"],
+    pendingTargets: ['XUS AV CODE', 'XWB CREATE CONTEXT'],
   };
 }

@@ -1,10 +1,12 @@
 # Phase 329 — W15-P3: Global Routing (IMPLEMENT)
 
 ## User Request
+
 Implement global routing layer with tenant resolution, DNS record management,
 regional ingress, and DNS-based failover (per ADR-GLOBAL-ROUTING).
 
 ## Implementation Steps
+
 1. Create `apps/api/src/services/global-routing.ts`:
    - Tenant resolution: subdomain > path prefix (/t/<tenant>/) > X-Tenant-Id header > default
    - Full route resolution: tenant → placement → cluster → ingress
@@ -22,6 +24,7 @@ regional ingress, and DNS-based failover (per ADR-GLOBAL-ROUTING).
 3. Wire into security.ts, register-routes.ts, store-policy.ts
 
 ## Files Touched
+
 - apps/api/src/services/global-routing.ts (NEW)
 - apps/api/src/routes/global-routing-routes.ts (NEW)
 - apps/api/src/middleware/security.ts (+1 AUTH_RULE)

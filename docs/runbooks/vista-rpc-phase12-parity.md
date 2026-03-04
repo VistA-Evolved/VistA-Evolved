@@ -14,6 +14,7 @@ dialogs, and adds Graphing, Remote Data Viewer, and Legacy Console features.
 ## New API Endpoints
 
 ### ICD Lexicon Search
+
 ```
 GET /vista/icd-search?q=hypertension
 → ORQQPL4 LEX
@@ -21,6 +22,7 @@ GET /vista/icd-search?q=hypertension
 ```
 
 ### Consults
+
 ```
 GET /vista/consults?dfn=1
 → ORQQCN LIST [DFN, "", "", "", ""]
@@ -32,6 +34,7 @@ GET /vista/consults/detail?id=123
 ```
 
 ### Surgery
+
 ```
 GET /vista/surgery?dfn=1
 → ORWSR LIST [DFN, "", "", "-1", "999"]
@@ -39,6 +42,7 @@ GET /vista/surgery?dfn=1
 ```
 
 ### Discharge Summaries
+
 ```
 GET /vista/dc-summaries?dfn=1
 → TIU DOCUMENTS BY CONTEXT [CLASS=244, signed + unsigned]
@@ -50,6 +54,7 @@ GET /vista/tiu-text?id=123
 ```
 
 ### Labs
+
 ```
 GET /vista/labs?dfn=1
 → ORWLRR INTERIM [DFN, "", ""]
@@ -57,6 +62,7 @@ GET /vista/labs?dfn=1
 ```
 
 ### Reports
+
 ```
 GET /vista/reports
 → ORWRP REPORT LISTS []
@@ -70,6 +76,7 @@ GET /vista/reports/text?dfn=1&id=1&hsType=
 ## Testing
 
 ### Quick Smoke Test
+
 ```powershell
 # Start services
 cd services/vista; docker compose --profile dev up -d
@@ -87,6 +94,7 @@ Invoke-RestMethod http://127.0.0.1:3001/vista/reports
 ### Note on Test Data
 
 The WorldVistA Docker sandbox has limited clinical data for DFN 1/2/3:
+
 - Consults: 0 records (RPC works, no data)
 - Surgery: 0 records (RPC works, no data)
 - D/C Summaries: 0 records (RPC works, no data)
@@ -100,17 +108,21 @@ wired and will return real data when patients have clinical records.
 ## Troubleshooting
 
 ### "Not connected. Call connect() first."
+
 Every endpoint must call `await connect()` before `callRpc()` and `disconnect()`
 after. Check that the new endpoint follows the connect/disconnect pattern.
 
 ### "raw.split is not a function"
+
 `callRpc()` returns a `string[]`, not a raw string. Don't call `.split()` on it.
 Use `Array.isArray(lines) ? lines : [lines]` for safety.
 
 ### ICD search returns swapped fields
+
 ORQQPL4 LEX returns `IEN^Description^ICD-code`, not `IEN^ICD^Description`.
 The description comes before the ICD code in the response.
 
 ### Reports text returns empty
+
 Some report types require specific hsType or date parameters. Pass the hsType
 from the report catalog entry if available.

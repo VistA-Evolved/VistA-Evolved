@@ -28,6 +28,7 @@ Commit: "Phase 32: Messaging + refills + tasks (VistA-first)"
 ## Implementation Steps
 
 ### A) Messaging enhancements (portal-messaging.ts)
+
 1. Add proxy send support (check proxy relationship + sensitivity)
 2. Add clinician reply function (for CPRS shell)
 3. Attachments OFF by default (config flag `PORTAL_ATTACHMENTS_ENABLED`)
@@ -36,6 +37,7 @@ Commit: "Phase 32: Messaging + refills + tasks (VistA-first)"
 6. All actions audited
 
 ### B) Refill requests (portal-refills.ts -- NEW)
+
 1. RefillRequest type with status workflow: requested -> pending_review -> approved/denied/filed
 2. VistA-first: attempt PSO RENEW or store with `vistaSync: "pending_filing"` + banner
 3. Target RPC documented: `PSO RENEW` (Outpatient Pharmacy)
@@ -43,6 +45,7 @@ Commit: "Phase 32: Messaging + refills + tasks (VistA-first)"
 5. Demo seed data for dev patient
 
 ### C) Tasks/notifications (portal-tasks.ts -- NEW)
+
 1. Task types: form_due, appointment_reminder, message_unread, refill_status, general
 2. Auto-generate from other stores (appointments, messages, refills)
 3. Patient-facing: GET /portal/tasks
@@ -50,22 +53,26 @@ Commit: "Phase 32: Messaging + refills + tasks (VistA-first)"
 5. Mark complete/dismiss
 
 ### D) Route wiring
+
 1. Add refill + task routes to portal-core.ts
 2. Add CPRS panel: MessagingTasksPanel.tsx (staff queue for messages + tasks)
 3. Add portal pages: /dashboard/refills, /dashboard/tasks
 
 ### E) Portal UI
+
 1. Refills page: list meds, request refill button, status tracking
 2. Tasks page: unified task list with badges
 3. Nav entries for Refills + Tasks
 
 ### F) CPRS shell
+
 1. MessagingTasksPanel: staff sees patient messages queue + task queue
 2. Wire into tab strip + chart page
 
 ## Files Touched
 
 ### New files
+
 - apps/api/src/services/portal-refills.ts
 - apps/api/src/services/portal-tasks.ts
 - apps/portal/src/app/dashboard/refills/page.tsx
@@ -74,6 +81,7 @@ Commit: "Phase 32: Messaging + refills + tasks (VistA-first)"
 - docs/runbooks/phase32-messaging-refills.md
 
 ### Modified files
+
 - apps/api/src/services/portal-messaging.ts (proxy, rate limit, blocklist, clinician reply)
 - apps/api/src/services/portal-audit.ts (new action types)
 - apps/api/src/routes/portal-core.ts (new routes)
@@ -86,6 +94,7 @@ Commit: "Phase 32: Messaging + refills + tasks (VistA-first)"
 - apps/api/src/index.ts (route init)
 
 ## Verification Steps
+
 - TSC clean (api + portal + web)
 - All new routes accessible
 - Proxy messaging respects sensitivity

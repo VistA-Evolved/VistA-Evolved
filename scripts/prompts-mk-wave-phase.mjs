@@ -14,23 +14,24 @@
  *     NOTES.md       (stub)
  */
 
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
-const ROOT = resolve(import.meta.dirname, "..");
-const PROMPTS_DIR = join(ROOT, "prompts");
+const ROOT = resolve(import.meta.dirname, '..');
+const PROMPTS_DIR = join(ROOT, 'prompts');
 
 // ── Parse args ──────────────────────────────────
 function parseArgs() {
   const args = process.argv.slice(2);
   const opts = {};
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--wave" && args[i + 1]) opts.wave = parseInt(args[++i], 10);
-    else if (args[i] === "--phase" && args[i + 1]) opts.phase = parseInt(args[++i], 10);
-    else if (args[i] === "--p" && args[i + 1]) opts.p = parseInt(args[++i], 10);
-    else if (args[i] === "--title" && args[i + 1]) opts.title = args[++i].toUpperCase().replace(/\s+/g, "-");
-    else if (args[i] === "--dry-run") opts.dryRun = true;
-    else if (args[i] === "--help" || args[i] === "-h") opts.help = true;
+    if (args[i] === '--wave' && args[i + 1]) opts.wave = parseInt(args[++i], 10);
+    else if (args[i] === '--phase' && args[i + 1]) opts.phase = parseInt(args[++i], 10);
+    else if (args[i] === '--p' && args[i + 1]) opts.p = parseInt(args[++i], 10);
+    else if (args[i] === '--title' && args[i + 1])
+      opts.title = args[++i].toUpperCase().replace(/\s+/g, '-');
+    else if (args[i] === '--dry-run') opts.dryRun = true;
+    else if (args[i] === '--help' || args[i] === '-h') opts.help = true;
   }
   return opts;
 }
@@ -38,7 +39,9 @@ function parseArgs() {
 const opts = parseArgs();
 
 if (opts.help || !opts.wave || !opts.phase || !opts.p || !opts.title) {
-  console.log(`Usage: node scripts/prompts-mk-wave-phase.mjs --wave <N> --phase <N> --p <N> --title <SLUG>`);
+  console.log(
+    `Usage: node scripts/prompts-mk-wave-phase.mjs --wave <N> --phase <N> --p <N> --title <SLUG>`
+  );
   console.log(`  --wave    Wave number (e.g. 40)`);
   console.log(`  --phase   Global phase number (e.g. 543)`);
   console.log(`  --p       Position within wave (e.g. 1)`);
@@ -57,7 +60,7 @@ if (existsSync(folderPath)) {
 
 // ── Templates ──────────────────────────────────
 
-const humanTitle = opts.title.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+const humanTitle = opts.title.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
 const implementMd = `# Phase ${opts.phase} — ${humanTitle} — IMPLEMENT
 
@@ -112,16 +115,20 @@ const notesMd = `# Phase ${opts.phase} — ${humanTitle} — NOTES
 
 if (opts.dryRun) {
   console.log(`[DRY RUN] Would create: prompts/${folderName}/`);
-  console.log(`  IMPLEMENT.md (${implementMd.split("\n").filter((l) => l.trim()).length} non-empty lines)`);
-  console.log(`  VERIFY.md    (${verifyMd.split("\n").filter((l) => l.trim()).length} non-empty lines)`);
+  console.log(
+    `  IMPLEMENT.md (${implementMd.split('\n').filter((l) => l.trim()).length} non-empty lines)`
+  );
+  console.log(
+    `  VERIFY.md    (${verifyMd.split('\n').filter((l) => l.trim()).length} non-empty lines)`
+  );
   console.log(`  NOTES.md     (stub)`);
   process.exit(0);
 }
 
 mkdirSync(folderPath, { recursive: true });
-writeFileSync(join(folderPath, "IMPLEMENT.md"), implementMd, "utf-8");
-writeFileSync(join(folderPath, "VERIFY.md"), verifyMd, "utf-8");
-writeFileSync(join(folderPath, "NOTES.md"), notesMd, "utf-8");
+writeFileSync(join(folderPath, 'IMPLEMENT.md'), implementMd, 'utf-8');
+writeFileSync(join(folderPath, 'VERIFY.md'), verifyMd, 'utf-8');
+writeFileSync(join(folderPath, 'NOTES.md'), notesMd, 'utf-8');
 
 console.log(`Created: prompts/${folderName}/`);
 console.log(`  IMPLEMENT.md  VERIFY.md  NOTES.md`);

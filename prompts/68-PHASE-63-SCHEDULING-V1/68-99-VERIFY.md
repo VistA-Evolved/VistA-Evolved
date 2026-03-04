@@ -1,6 +1,7 @@
 # Phase 63 — VERIFY
 
 ## Gates
+
 - G63-01: sd-plan.json exists at artifacts/phase63/ with RPC inventory
 - G63-02: /scheduling/appointments route exists and uses SDOE RPCs
 - G63-03: /scheduling/clinics route exists and uses SD W/L RETRIVE HOSP LOC
@@ -17,4 +18,5 @@
 - G63-14: Ops artifacts exist (summary + notion update)
 
 ## Output
+
 - /artifacts/phase63/verify.txt (artifact only, gitignored)

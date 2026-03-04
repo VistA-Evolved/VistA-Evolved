@@ -1,6 +1,7 @@
 # Phase 354 — W18-P1: Range Reservation + Manifest + ADRs
 
 ## IMPLEMENT
+
 - Reserve phase range 354-361 in prompt-phase-range-reservations.json
 - Create /prompts/WAVE_18_MANIFEST.md with resolved IDs
 - ADRs:
@@ -10,6 +11,7 @@
 - Create prompt folders for all 8 phases
 
 ## Files touched
+
 - docs/qa/prompt-phase-range-reservations.json
 - prompts/WAVE_18_MANIFEST.md
 - docs/decisions/ADR-EVENT-BUS.md

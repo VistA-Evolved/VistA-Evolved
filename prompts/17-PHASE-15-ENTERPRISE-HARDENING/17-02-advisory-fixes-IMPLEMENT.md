@@ -17,11 +17,13 @@ Fix the two advisory items found during Phase 15B verification:
 ## Implementation Steps
 
 ### Fix 1: Gate sandbox credentials in login UI
+
 - File: `apps/web/src/app/cprs/login/page.tsx`
 - Wrap sandbox credentials table in `{process.env.NODE_ENV !== 'production' && (...)}`
 - Replace placeholder values with generic text in production
 
 ### Fix 2: Switch session-context to cookie-only auth
+
 - File: `apps/web/src/stores/session-context.tsx`
 - Remove `LS_TOKEN_KEY` and all `localStorage` token operations
 - Mount effect: call `/auth/session` with `credentials: 'include'` only (cookie sent by browser)
@@ -30,6 +32,7 @@ Fix the two advisory items found during Phase 15B verification:
 - Remove `token` from context interface (replaced by `authenticated` boolean)
 
 ### Fix 3: WebSocket console — use cookie auth
+
 - File: `apps/api/src/routes/ws-console.ts`
   - Use `request.session` (set by security middleware from cookie) instead of `?token=` query param
 - File: `apps/web/src/components/cprs/CPRSModals.tsx`

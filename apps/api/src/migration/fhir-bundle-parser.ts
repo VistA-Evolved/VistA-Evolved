@@ -10,8 +10,8 @@
  *   MedicationRequest, Encounter, Appointment, DocumentReference
  */
 
-import { createHash } from "crypto";
-import type { ImportEntityType, ValidationIssue } from "./types.js";
+import { createHash } from 'crypto';
+import type { ImportEntityType, ValidationIssue } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -29,7 +29,7 @@ export interface FhirBundleEntry {
 }
 
 export interface FhirBundleInput {
-  resourceType: "Bundle";
+  resourceType: 'Bundle';
   type?: string;
   total?: number;
   entry?: FhirBundleEntry[];
@@ -65,14 +65,14 @@ export interface FhirImportResult {
 /* ------------------------------------------------------------------ */
 
 const RESOURCE_TO_ENTITY: Record<string, ImportEntityType> = {
-  Patient: "patient",
-  AllergyIntolerance: "allergy",
-  Condition: "problem",
-  Observation: "note", // vitals/labs → note entity
-  MedicationRequest: "medication",
-  Encounter: "appointment", // closest mapping
-  Appointment: "appointment",
-  DocumentReference: "note",
+  Patient: 'patient',
+  AllergyIntolerance: 'allergy',
+  Condition: 'problem',
+  Observation: 'note', // vitals/labs → note entity
+  MedicationRequest: 'medication',
+  Encounter: 'appointment', // closest mapping
+  Appointment: 'appointment',
+  DocumentReference: 'note',
 };
 
 export function listSupportedFhirResourceTypes(): string[] {
@@ -84,9 +84,7 @@ export function listSupportedFhirResourceTypes(): string[] {
 /* ------------------------------------------------------------------ */
 
 function hashResource(resource: FhirResource): string {
-  return createHash("sha256")
-    .update(JSON.stringify(resource))
-    .digest("hex");
+  return createHash('sha256').update(JSON.stringify(resource)).digest('hex');
 }
 
 /* ------------------------------------------------------------------ */
@@ -97,32 +95,34 @@ function extractPatientFields(r: FhirResource): Record<string, string> {
   const fields: Record<string, string> = {};
   const name = Array.isArray(r.name) ? r.name[0] : undefined;
   if (name) {
-    fields.familyName = String(name.family ?? "");
-    fields.givenName = Array.isArray(name.given) ? name.given.join(" ") : "";
+    fields.familyName = String(name.family ?? '');
+    fields.givenName = Array.isArray(name.given) ? name.given.join(' ') : '';
   }
   if (r.birthDate) fields.dob = String(r.birthDate);
   if (r.gender) fields.gender = String(r.gender);
   if (r.id) fields.sourcePatientId = String(r.id);
 
   const telecom = Array.isArray(r.telecom) ? r.telecom : [];
-  const phone = telecom.find((t: any) => t.system === "phone");
-  if (phone) fields.phone = String(phone.value ?? "");
-  const email = telecom.find((t: any) => t.system === "email");
-  if (email) fields.email = String(email.value ?? "");
+  const phone = telecom.find((t: any) => t.system === 'phone');
+  if (phone) fields.phone = String(phone.value ?? '');
+  const email = telecom.find((t: any) => t.system === 'email');
+  if (email) fields.email = String(email.value ?? '');
 
   const addr = Array.isArray(r.address) ? r.address[0] : undefined;
   if (addr) {
-    fields.streetAddress = Array.isArray(addr.line) ? addr.line.join(", ") : "";
-    fields.city = String(addr.city ?? "");
-    fields.state = String(addr.state ?? "");
-    fields.postalCode = String(addr.postalCode ?? "");
+    fields.streetAddress = Array.isArray(addr.line) ? addr.line.join(', ') : '';
+    fields.city = String(addr.city ?? '');
+    fields.state = String(addr.state ?? '');
+    fields.postalCode = String(addr.postalCode ?? '');
   }
   const ssn = Array.isArray(r.identifier)
-    ? r.identifier.find((i: any) =>
-        String(i.system ?? "").includes("social-security") ||
-        String(i.system ?? "").includes("ssn"))
+    ? r.identifier.find(
+        (i: any) =>
+          String(i.system ?? '').includes('social-security') ||
+          String(i.system ?? '').includes('ssn')
+      )
     : undefined;
-  if (ssn) fields.ssn = String(ssn.value ?? "");
+  if (ssn) fields.ssn = String(ssn.value ?? '');
 
   return fields;
 }
@@ -131,15 +131,13 @@ function extractAllergyFields(r: FhirResource): Record<string, string> {
   const fields: Record<string, string> = {};
   const code = (r.code as any)?.coding?.[0];
   if (code) {
-    fields.allergenName = String(code.display ?? code.code ?? "");
-    fields.allergenCode = String(code.code ?? "");
-    fields.allergenSystem = String(code.system ?? "");
+    fields.allergenName = String(code.display ?? code.code ?? '');
+    fields.allergenCode = String(code.code ?? '');
+    fields.allergenSystem = String(code.system ?? '');
   }
   if (r.type) fields.type = String(r.type);
   if (r.category) {
-    fields.category = Array.isArray(r.category)
-      ? r.category.join(",")
-      : String(r.category);
+    fields.category = Array.isArray(r.category) ? r.category.join(',') : String(r.category);
   }
   if (r.criticality) fields.criticality = String(r.criticality);
   if (r.onsetDateTime) fields.onsetDate = String(r.onsetDateTime);
@@ -152,9 +150,9 @@ function extractConditionFields(r: FhirResource): Record<string, string> {
   const fields: Record<string, string> = {};
   const code = (r.code as any)?.coding?.[0];
   if (code) {
-    fields.conditionName = String(code.display ?? code.code ?? "");
-    fields.icdCode = String(code.code ?? "");
-    fields.codeSystem = String(code.system ?? "");
+    fields.conditionName = String(code.display ?? code.code ?? '');
+    fields.icdCode = String(code.code ?? '');
+    fields.codeSystem = String(code.system ?? '');
   }
   if (r.onsetDateTime) fields.onsetDate = String(r.onsetDateTime);
   const clinStatus = (r.clinicalStatus as any)?.coding?.[0]?.code;
@@ -170,15 +168,15 @@ function extractObservationFields(r: FhirResource): Record<string, string> {
   const fields: Record<string, string> = {};
   const code = (r.code as any)?.coding?.[0];
   if (code) {
-    fields.observationName = String(code.display ?? code.code ?? "");
-    fields.loincCode = String(code.code ?? "");
+    fields.observationName = String(code.display ?? code.code ?? '');
+    fields.loincCode = String(code.code ?? '');
   }
   if (r.effectiveDateTime) fields.effectiveDate = String(r.effectiveDateTime);
   if (r.status) fields.status = String(r.status);
   const vq = r.valueQuantity as any;
   if (vq) {
-    fields.value = String(vq.value ?? "");
-    fields.unit = String(vq.unit ?? "");
+    fields.value = String(vq.value ?? '');
+    fields.unit = String(vq.unit ?? '');
   }
   const subject = (r.subject as any)?.reference;
   if (subject) fields.patientRef = String(subject);
@@ -189,17 +187,15 @@ function extractMedicationRequestFields(r: FhirResource): Record<string, string>
   const fields: Record<string, string> = {};
   const med = (r.medicationCodeableConcept as any)?.coding?.[0];
   if (med) {
-    fields.medicationName = String(med.display ?? med.code ?? "");
-    fields.rxnormCode = String(med.code ?? "");
+    fields.medicationName = String(med.display ?? med.code ?? '');
+    fields.rxnormCode = String(med.code ?? '');
   }
   if (r.status) fields.status = String(r.status);
   if (r.intent) fields.intent = String(r.intent);
   if (r.authoredOn) fields.authoredOn = String(r.authoredOn);
-  const dosage = Array.isArray(r.dosageInstruction)
-    ? r.dosageInstruction[0]
-    : undefined;
+  const dosage = Array.isArray(r.dosageInstruction) ? r.dosageInstruction[0] : undefined;
   if (dosage) {
-    fields.dosageText = String((dosage as any).text ?? "");
+    fields.dosageText = String((dosage as any).text ?? '');
   }
   const subject = (r.subject as any)?.reference;
   if (subject) fields.patientRef = String(subject);
@@ -212,7 +208,7 @@ function extractEncounterFields(r: FhirResource): Record<string, string> {
   const cls = r.class as any;
   if (cls?.code) fields.class = String(cls.code);
   const type = Array.isArray(r.type) ? (r.type[0] as any)?.coding?.[0] : undefined;
-  if (type) fields.encounterType = String(type.display ?? type.code ?? "");
+  if (type) fields.encounterType = String(type.display ?? type.code ?? '');
   const period = r.period as any;
   if (period?.start) fields.startDate = String(period.start);
   if (period?.end) fields.endDate = String(period.end);
@@ -230,7 +226,7 @@ function extractAppointmentFields(r: FhirResource): Record<string, string> {
   const type = Array.isArray(r.appointmentType)
     ? undefined
     : (r.appointmentType as any)?.coding?.[0];
-  if (type) fields.appointmentType = String(type.display ?? type.code ?? "");
+  if (type) fields.appointmentType = String(type.display ?? type.code ?? '');
   const participant = Array.isArray(r.participant) ? r.participant[0] : undefined;
   if (participant) {
     const ref = (participant as any)?.actor?.reference;
@@ -244,8 +240,8 @@ function extractDocumentReferenceFields(r: FhirResource): Record<string, string>
   if (r.status) fields.status = String(r.status);
   const type = (r.type as any)?.coding?.[0];
   if (type) {
-    fields.documentType = String(type.display ?? type.code ?? "");
-    fields.typeCode = String(type.code ?? "");
+    fields.documentType = String(type.display ?? type.code ?? '');
+    fields.typeCode = String(type.code ?? '');
   }
   if (r.date) fields.date = String(r.date);
   if (r.description) fields.description = String(r.description);
@@ -278,18 +274,18 @@ export function parseFhirBundle(input: unknown): FhirImportResult {
   const skipped: { resourceType: string; reason: string }[] = [];
 
   // Validate top-level structure
-  if (!input || typeof input !== "object") {
+  if (!input || typeof input !== 'object') {
     return {
       ok: false,
-      bundleType: "unknown",
+      bundleType: 'unknown',
       totalEntries: 0,
       parsed: [],
       skipped: [],
       warnings: [
         {
-          severity: "error",
-          code: "INVALID_INPUT",
-          message: "Input is not a valid object",
+          severity: 'error',
+          code: 'INVALID_INPUT',
+          message: 'Input is not a valid object',
         },
       ],
     };
@@ -297,17 +293,17 @@ export function parseFhirBundle(input: unknown): FhirImportResult {
 
   const bundle = input as FhirBundleInput;
 
-  if (bundle.resourceType !== "Bundle") {
+  if (bundle.resourceType !== 'Bundle') {
     return {
       ok: false,
-      bundleType: "unknown",
+      bundleType: 'unknown',
       totalEntries: 0,
       parsed: [],
       skipped: [],
       warnings: [
         {
-          severity: "error",
-          code: "NOT_A_BUNDLE",
+          severity: 'error',
+          code: 'NOT_A_BUNDLE',
           message: `Expected resourceType "Bundle", got "${bundle.resourceType}"`,
         },
       ],
@@ -315,29 +311,29 @@ export function parseFhirBundle(input: unknown): FhirImportResult {
   }
 
   const entries = bundle.entry ?? [];
-  const bundleType = String(bundle.type ?? "unknown");
+  const bundleType = String(bundle.type ?? 'unknown');
 
   for (let i = 0; i < entries.length; i++) {
     const entry = entries[i];
     const resource = entry?.resource;
 
     if (!resource) {
-      skipped.push({ resourceType: "unknown", reason: "No resource in entry" });
+      skipped.push({ resourceType: 'unknown', reason: 'No resource in entry' });
       warnings.push({
         row: i,
-        severity: "warning",
-        code: "EMPTY_ENTRY",
+        severity: 'warning',
+        code: 'EMPTY_ENTRY',
         message: `Entry ${i} has no resource`,
       });
       continue;
     }
 
     if (!resource.resourceType) {
-      skipped.push({ resourceType: "unknown", reason: "Missing resourceType" });
+      skipped.push({ resourceType: 'unknown', reason: 'Missing resourceType' });
       warnings.push({
         row: i,
-        severity: "warning",
-        code: "MISSING_RESOURCE_TYPE",
+        severity: 'warning',
+        code: 'MISSING_RESOURCE_TYPE',
         message: `Entry ${i} resource has no resourceType`,
       });
       continue;
@@ -347,7 +343,7 @@ export function parseFhirBundle(input: unknown): FhirImportResult {
     if (!entityType) {
       skipped.push({
         resourceType: resource.resourceType,
-        reason: "Unsupported resource type",
+        reason: 'Unsupported resource type',
       });
       continue;
     }
@@ -366,7 +362,7 @@ export function parseFhirBundle(input: unknown): FhirImportResult {
   }
 
   return {
-    ok: warnings.filter((w) => w.severity === "error").length === 0,
+    ok: warnings.filter((w) => w.severity === 'error').length === 0,
     bundleType,
     totalEntries: entries.length,
     parsed,
@@ -380,7 +376,7 @@ export function parseFhirBundle(input: unknown): FhirImportResult {
  */
 export function extractPatientsFromBundle(input: unknown): ParsedEntity[] {
   const result = parseFhirBundle(input);
-  return result.parsed.filter((e) => e.entityType === "patient");
+  return result.parsed.filter((e) => e.entityType === 'patient');
 }
 
 /**
@@ -388,7 +384,7 @@ export function extractPatientsFromBundle(input: unknown): ParsedEntity[] {
  */
 export function extractEntitiesByType(
   input: unknown,
-  entityType: ImportEntityType,
+  entityType: ImportEntityType
 ): ParsedEntity[] {
   const result = parseFhirBundle(input);
   return result.parsed.filter((e) => e.entityType === entityType);

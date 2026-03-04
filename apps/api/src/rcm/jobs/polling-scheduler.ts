@@ -15,8 +15,8 @@
  * The scheduler polls the queue at intervals and dispatches work.
  */
 
-import { getJobQueue, type RcmJobType } from "./queue.js";
-import { log } from "../../lib/logger.js";
+import { getJobQueue, type RcmJobType } from './queue.js';
+import { log } from '../../lib/logger.js';
 
 /* ── Rate Limiter ──────────────────────────────────────────── */
 
@@ -80,7 +80,10 @@ export interface PollingJobConfig {
   intervalMs: number;
   rateLimitPerHour: number;
   enabled: boolean;
-  handler: (job: { id: string; payload: Record<string, unknown> }) => Promise<Record<string, unknown>>;
+  handler: (job: {
+    id: string;
+    payload: Record<string, unknown>;
+  }) => Promise<Record<string, unknown>>;
 }
 
 export interface SchedulerStatus {
@@ -118,7 +121,7 @@ export class PollingScheduler {
     this.configs.set(config.type, config);
     this.rateLimiters.set(
       config.type,
-      new SlidingWindowRateLimiter(config.rateLimitPerHour, HOUR_MS),
+      new SlidingWindowRateLimiter(config.rateLimitPerHour, HOUR_MS)
     );
   }
 
@@ -170,7 +173,7 @@ export class PollingScheduler {
 
     const queue = getJobQueue();
     // Peek through ready jobs for matching type — never fail wrong-type jobs
-    const { jobs: ready } = await queue.listJobs({ status: "queued", type, limit: 1 });
+    const { jobs: ready } = await queue.listJobs({ status: 'queued', type, limit: 1 });
     if (!ready || ready.length === 0) return;
 
     const job = await queue.dequeue();
@@ -178,7 +181,7 @@ export class PollingScheduler {
     // Safety: if dequeued job is wrong type (race condition), re-queue it
     if (job.type !== type) {
       // Reset to queued so another poller can pick it up
-      await queue.fail(job.id, "__RETYPE__");
+      await queue.fail(job.id, '__RETYPE__');
       return;
     }
 

@@ -3,7 +3,7 @@
  * In-memory queue management with ticket numbering, priority ordering,
  * department routing, and event logging. PG-backed via store-policy registration.
  */
-import { randomUUID } from "node:crypto";
+import { randomUUID } from 'node:crypto';
 import type {
   QueueTicket,
   QueueEvent,
@@ -13,7 +13,7 @@ import type {
   QueuePriority,
   CreateTicketInput,
   TransferTicketInput,
-} from "./types.js";
+} from './types.js';
 
 // ── In-memory stores ────────────────────────────────────────────────
 const ticketStore = new Map<string, QueueTicket>();
@@ -32,19 +32,129 @@ const PRIORITY_WEIGHT: Record<QueuePriority, number> = {
 };
 
 // ── Default department configs ──────────────────────────────────────
-const DEFAULT_CONFIGS: Array<Omit<DepartmentQueueConfig, "id" | "tenantId" | "createdAt" | "updatedAt">> = [
-  { department: "ed", displayName: "Emergency Department", prefix: "ED", maxActive: 50, autoCallEnabled: false, estimatedServiceMinutes: 30, windows: ["Triage-1", "Triage-2", "Bay-1", "Bay-2", "Bay-3"], enabled: true },
-  { department: "primary-care", displayName: "Primary Care", prefix: "PC", maxActive: 30, autoCallEnabled: true, estimatedServiceMinutes: 20, windows: ["Room-1", "Room-2", "Room-3"], enabled: true },
-  { department: "laboratory", displayName: "Laboratory", prefix: "LAB", maxActive: 40, autoCallEnabled: true, estimatedServiceMinutes: 10, windows: ["Window-1", "Window-2"], enabled: true },
-  { department: "radiology", displayName: "Radiology", prefix: "RAD", maxActive: 20, autoCallEnabled: true, estimatedServiceMinutes: 25, windows: ["Suite-1", "Suite-2"], enabled: true },
-  { department: "pharmacy", displayName: "Pharmacy", prefix: "RX", maxActive: 60, autoCallEnabled: true, estimatedServiceMinutes: 8, windows: ["Counter-1", "Counter-2", "Counter-3"], enabled: true },
-  { department: "dental", displayName: "Dental Clinic", prefix: "DEN", maxActive: 15, autoCallEnabled: true, estimatedServiceMinutes: 45, windows: ["Chair-1", "Chair-2"], enabled: true },
-  { department: "mental-health", displayName: "Mental Health", prefix: "MH", maxActive: 15, autoCallEnabled: false, estimatedServiceMinutes: 50, windows: ["Office-1", "Office-2"], enabled: true },
-  { department: "ophthalmology", displayName: "Eye Clinic", prefix: "EYE", maxActive: 20, autoCallEnabled: true, estimatedServiceMinutes: 20, windows: ["Exam-1", "Exam-2"], enabled: true },
-  { department: "physical-therapy", displayName: "Physical Therapy", prefix: "PT", maxActive: 15, autoCallEnabled: false, estimatedServiceMinutes: 40, windows: ["Gym-1", "Gym-2"], enabled: true },
-  { department: "surgery-clinic", displayName: "Surgery Clinic", prefix: "SURG", maxActive: 15, autoCallEnabled: false, estimatedServiceMinutes: 30, windows: ["Pre-Op-1", "Consult-1"], enabled: true },
-  { department: "registration", displayName: "Registration", prefix: "REG", maxActive: 40, autoCallEnabled: true, estimatedServiceMinutes: 10, windows: ["Desk-1", "Desk-2", "Desk-3"], enabled: true },
-  { department: "billing", displayName: "Billing", prefix: "BILL", maxActive: 20, autoCallEnabled: true, estimatedServiceMinutes: 15, windows: ["Desk-1", "Desk-2"], enabled: true },
+const DEFAULT_CONFIGS: Array<
+  Omit<DepartmentQueueConfig, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>
+> = [
+  {
+    department: 'ed',
+    displayName: 'Emergency Department',
+    prefix: 'ED',
+    maxActive: 50,
+    autoCallEnabled: false,
+    estimatedServiceMinutes: 30,
+    windows: ['Triage-1', 'Triage-2', 'Bay-1', 'Bay-2', 'Bay-3'],
+    enabled: true,
+  },
+  {
+    department: 'primary-care',
+    displayName: 'Primary Care',
+    prefix: 'PC',
+    maxActive: 30,
+    autoCallEnabled: true,
+    estimatedServiceMinutes: 20,
+    windows: ['Room-1', 'Room-2', 'Room-3'],
+    enabled: true,
+  },
+  {
+    department: 'laboratory',
+    displayName: 'Laboratory',
+    prefix: 'LAB',
+    maxActive: 40,
+    autoCallEnabled: true,
+    estimatedServiceMinutes: 10,
+    windows: ['Window-1', 'Window-2'],
+    enabled: true,
+  },
+  {
+    department: 'radiology',
+    displayName: 'Radiology',
+    prefix: 'RAD',
+    maxActive: 20,
+    autoCallEnabled: true,
+    estimatedServiceMinutes: 25,
+    windows: ['Suite-1', 'Suite-2'],
+    enabled: true,
+  },
+  {
+    department: 'pharmacy',
+    displayName: 'Pharmacy',
+    prefix: 'RX',
+    maxActive: 60,
+    autoCallEnabled: true,
+    estimatedServiceMinutes: 8,
+    windows: ['Counter-1', 'Counter-2', 'Counter-3'],
+    enabled: true,
+  },
+  {
+    department: 'dental',
+    displayName: 'Dental Clinic',
+    prefix: 'DEN',
+    maxActive: 15,
+    autoCallEnabled: true,
+    estimatedServiceMinutes: 45,
+    windows: ['Chair-1', 'Chair-2'],
+    enabled: true,
+  },
+  {
+    department: 'mental-health',
+    displayName: 'Mental Health',
+    prefix: 'MH',
+    maxActive: 15,
+    autoCallEnabled: false,
+    estimatedServiceMinutes: 50,
+    windows: ['Office-1', 'Office-2'],
+    enabled: true,
+  },
+  {
+    department: 'ophthalmology',
+    displayName: 'Eye Clinic',
+    prefix: 'EYE',
+    maxActive: 20,
+    autoCallEnabled: true,
+    estimatedServiceMinutes: 20,
+    windows: ['Exam-1', 'Exam-2'],
+    enabled: true,
+  },
+  {
+    department: 'physical-therapy',
+    displayName: 'Physical Therapy',
+    prefix: 'PT',
+    maxActive: 15,
+    autoCallEnabled: false,
+    estimatedServiceMinutes: 40,
+    windows: ['Gym-1', 'Gym-2'],
+    enabled: true,
+  },
+  {
+    department: 'surgery-clinic',
+    displayName: 'Surgery Clinic',
+    prefix: 'SURG',
+    maxActive: 15,
+    autoCallEnabled: false,
+    estimatedServiceMinutes: 30,
+    windows: ['Pre-Op-1', 'Consult-1'],
+    enabled: true,
+  },
+  {
+    department: 'registration',
+    displayName: 'Registration',
+    prefix: 'REG',
+    maxActive: 40,
+    autoCallEnabled: true,
+    estimatedServiceMinutes: 10,
+    windows: ['Desk-1', 'Desk-2', 'Desk-3'],
+    enabled: true,
+  },
+  {
+    department: 'billing',
+    displayName: 'Billing',
+    prefix: 'BILL',
+    maxActive: 20,
+    autoCallEnabled: true,
+    estimatedServiceMinutes: 15,
+    windows: ['Desk-1', 'Desk-2'],
+    enabled: true,
+  },
 ];
 
 // ── Helpers ─────────────────────────────────────────────────────────
@@ -57,10 +167,16 @@ function nextTicketNumber(tenantId: string, dept: string, prefix: string): strin
   const key = todayKey(tenantId, dept);
   const count = (dailyCounters.get(key) || 0) + 1;
   dailyCounters.set(key, count);
-  return `${prefix}-${String(count).padStart(3, "0")}`;
+  return `${prefix}-${String(count).padStart(3, '0')}`;
 }
 
-function logEvent(tenantId: string, ticketId: string, eventType: string, actorDuz?: string, detail?: string): void {
+function logEvent(
+  tenantId: string,
+  ticketId: string,
+  eventType: string,
+  actorDuz?: string,
+  detail?: string
+): void {
   eventStore.push({
     id: randomUUID(),
     tenantId,
@@ -77,7 +193,7 @@ function getConfig(tenantId: string, dept: string): DepartmentQueueConfig | unde
 }
 
 // ── Initialize defaults ─────────────────────────────────────────────
-export function seedDefaultConfigs(tenantId: string = "default"): number {
+export function seedDefaultConfigs(tenantId: string = 'default'): number {
   let seeded = 0;
   const now = new Date().toISOString();
   for (const cfg of DEFAULT_CONFIGS) {
@@ -98,7 +214,11 @@ export function seedDefaultConfigs(tenantId: string = "default"): number {
 
 // ── CRUD Operations ─────────────────────────────────────────────────
 
-export function createTicket(input: CreateTicketInput, tenantId: string = "default", actorDuz?: string): QueueTicket {
+export function createTicket(
+  input: CreateTicketInput,
+  tenantId: string = 'default',
+  actorDuz?: string
+): QueueTicket {
   const config = getConfig(tenantId, input.department);
   const prefix = config?.prefix || input.department.toUpperCase().slice(0, 4);
 
@@ -109,33 +229,48 @@ export function createTicket(input: CreateTicketInput, tenantId: string = "defau
     ticketNumber: nextTicketNumber(tenantId, input.department, prefix),
     patientDfn: input.patientDfn,
     patientName: input.patientName,
-    priority: input.priority || "normal",
-    status: "waiting",
+    priority: input.priority || 'normal',
+    status: 'waiting',
     appointmentIen: input.appointmentIen,
     notes: input.notes,
     createdAt: new Date().toISOString(),
   };
 
   ticketStore.set(ticket.id, ticket);
-  logEvent(tenantId, ticket.id, "created", actorDuz, `Ticket ${ticket.ticketNumber} created for dept ${input.department}`);
+  logEvent(
+    tenantId,
+    ticket.id,
+    'created',
+    actorDuz,
+    `Ticket ${ticket.ticketNumber} created for dept ${input.department}`
+  );
   return ticket;
 }
 
-export function callTicket(ticketId: string, windowNumber: string, actorDuz?: string): QueueTicket | null {
+export function callTicket(
+  ticketId: string,
+  windowNumber: string,
+  actorDuz?: string
+): QueueTicket | null {
   const ticket = ticketStore.get(ticketId);
-  if (!ticket || ticket.status !== "waiting") return null;
+  if (!ticket || ticket.status !== 'waiting') return null;
 
-  ticket.status = "called";
+  ticket.status = 'called';
   ticket.windowNumber = windowNumber;
   ticket.calledAt = new Date().toISOString();
-  logEvent(ticket.tenantId, ticketId, "called", actorDuz, `Called to ${windowNumber}`);
+  logEvent(ticket.tenantId, ticketId, 'called', actorDuz, `Called to ${windowNumber}`);
   return ticket;
 }
 
-export function callNextTicket(department: string, windowNumber: string, tenantId: string = "default", actorDuz?: string): QueueTicket | null {
+export function callNextTicket(
+  department: string,
+  windowNumber: string,
+  tenantId: string = 'default',
+  actorDuz?: string
+): QueueTicket | null {
   // Get all waiting tickets for this department, ordered by priority then creation time
   const waiting = Array.from(ticketStore.values())
-    .filter((t) => t.tenantId === tenantId && t.department === department && t.status === "waiting")
+    .filter((t) => t.tenantId === tenantId && t.department === department && t.status === 'waiting')
     .sort((a, b) => {
       const pw = PRIORITY_WEIGHT[a.priority] - PRIORITY_WEIGHT[b.priority];
       if (pw !== 0) return pw;
@@ -146,44 +281,59 @@ export function callNextTicket(department: string, windowNumber: string, tenantI
   return callTicket(waiting[0].id, windowNumber, actorDuz);
 }
 
-export function startServing(ticketId: string, providerDuz?: string, actorDuz?: string): QueueTicket | null {
+export function startServing(
+  ticketId: string,
+  providerDuz?: string,
+  actorDuz?: string
+): QueueTicket | null {
   const ticket = ticketStore.get(ticketId);
-  if (!ticket || ticket.status !== "called") return null;
+  if (!ticket || ticket.status !== 'called') return null;
 
-  ticket.status = "serving";
+  ticket.status = 'serving';
   ticket.servedAt = new Date().toISOString();
   if (providerDuz) ticket.providerDuz = providerDuz;
-  logEvent(ticket.tenantId, ticketId, "serving", actorDuz, `Serving started`);
+  logEvent(ticket.tenantId, ticketId, 'serving', actorDuz, `Serving started`);
   return ticket;
 }
 
 export function completeTicket(ticketId: string, actorDuz?: string): QueueTicket | null {
   const ticket = ticketStore.get(ticketId);
-  if (!ticket || (ticket.status !== "serving" && ticket.status !== "called")) return null;
+  if (!ticket || (ticket.status !== 'serving' && ticket.status !== 'called')) return null;
 
-  ticket.status = "completed";
+  ticket.status = 'completed';
   ticket.completedAt = new Date().toISOString();
-  logEvent(ticket.tenantId, ticketId, "completed", actorDuz, `Visit completed`);
+  logEvent(ticket.tenantId, ticketId, 'completed', actorDuz, `Visit completed`);
   return ticket;
 }
 
 export function markNoShow(ticketId: string, actorDuz?: string): QueueTicket | null {
   const ticket = ticketStore.get(ticketId);
-  if (!ticket || (ticket.status !== "waiting" && ticket.status !== "called")) return null;
+  if (!ticket || (ticket.status !== 'waiting' && ticket.status !== 'called')) return null;
 
-  ticket.status = "no-show";
+  ticket.status = 'no-show';
   ticket.completedAt = new Date().toISOString();
-  logEvent(ticket.tenantId, ticketId, "no-show", actorDuz, `Marked as no-show`);
+  logEvent(ticket.tenantId, ticketId, 'no-show', actorDuz, `Marked as no-show`);
   return ticket;
 }
 
-export function transferTicket(ticketId: string, input: TransferTicketInput, tenantId: string = "default", actorDuz?: string): QueueTicket | null {
+export function transferTicket(
+  ticketId: string,
+  input: TransferTicketInput,
+  tenantId: string = 'default',
+  actorDuz?: string
+): QueueTicket | null {
   const ticket = ticketStore.get(ticketId);
-  if (!ticket || ticket.status === "completed" || ticket.status === "no-show") return null;
+  if (!ticket || ticket.status === 'completed' || ticket.status === 'no-show') return null;
 
-  ticket.status = "transferred";
+  ticket.status = 'transferred';
   ticket.completedAt = new Date().toISOString();
-  logEvent(ticket.tenantId, ticketId, "transferred", actorDuz, `Transferred to ${input.targetDepartment}: ${input.reason || ""}`);
+  logEvent(
+    ticket.tenantId,
+    ticketId,
+    'transferred',
+    actorDuz,
+    `Transferred to ${input.targetDepartment}: ${input.reason || ''}`
+  );
 
   // Create new ticket in target department
   const newTicket = createTicket(
@@ -193,10 +343,10 @@ export function transferTicket(ticketId: string, input: TransferTicketInput, ten
       patientName: ticket.patientName,
       priority: ticket.priority,
       appointmentIen: ticket.appointmentIen,
-      notes: `Transferred from ${ticket.department}: ${input.reason || ""}`,
+      notes: `Transferred from ${ticket.department}: ${input.reason || ''}`,
     },
     tenantId,
-    actorDuz,
+    actorDuz
   );
   newTicket.transferredFrom = ticket.department;
   return newTicket;
@@ -204,9 +354,18 @@ export function transferTicket(ticketId: string, input: TransferTicketInput, ten
 
 // ── Queries ─────────────────────────────────────────────────────────
 
-export function listTickets(department: string, tenantId: string = "default", statusFilter?: string): QueueTicket[] {
+export function listTickets(
+  department: string,
+  tenantId: string = 'default',
+  statusFilter?: string
+): QueueTicket[] {
   return Array.from(ticketStore.values())
-    .filter((t) => t.tenantId === tenantId && t.department === department && (!statusFilter || t.status === statusFilter))
+    .filter(
+      (t) =>
+        t.tenantId === tenantId &&
+        t.department === department &&
+        (!statusFilter || t.status === statusFilter)
+    )
     .sort((a, b) => {
       const pw = PRIORITY_WEIGHT[a.priority] - PRIORITY_WEIGHT[b.priority];
       if (pw !== 0) return pw;
@@ -218,31 +377,36 @@ export function getTicket(ticketId: string): QueueTicket | undefined {
   return ticketStore.get(ticketId);
 }
 
-export function getDisplayBoard(department: string, tenantId: string = "default"): QueueDisplayBoard {
+export function getDisplayBoard(
+  department: string,
+  tenantId: string = 'default'
+): QueueDisplayBoard {
   const config = getConfig(tenantId, department);
   const tickets = Array.from(ticketStore.values()).filter(
-    (t) => t.tenantId === tenantId && t.department === department,
+    (t) => t.tenantId === tenantId && t.department === department
   );
 
-  const serving = tickets.filter((t) => t.status === "serving");
-  const called = tickets.filter((t) => t.status === "called");
-  const waiting = tickets.filter((t) => t.status === "waiting");
+  const serving = tickets.filter((t) => t.status === 'serving');
+  const called = tickets.filter((t) => t.status === 'called');
+  const waiting = tickets.filter((t) => t.status === 'waiting');
 
   // Estimate wait: avg service time × (serving + called + waiting ahead) / windows
   const windowCount = config?.windows.length || 1;
   const avgMin = config?.estimatedServiceMinutes || 15;
-  const estimatedWait = Math.round(((serving.length + called.length + waiting.length) * avgMin) / windowCount);
+  const estimatedWait = Math.round(
+    ((serving.length + called.length + waiting.length) * avgMin) / windowCount
+  );
 
   return {
     department,
     displayName: config?.displayName || department,
     currentlyServing: serving.map((t) => ({
       ticketNumber: t.ticketNumber,
-      windowNumber: t.windowNumber || "",
+      windowNumber: t.windowNumber || '',
     })),
     nowCalling: called.map((t) => ({
       ticketNumber: t.ticketNumber,
-      windowNumber: t.windowNumber || "",
+      windowNumber: t.windowNumber || '',
     })),
     waitingCount: waiting.length,
     estimatedWaitMinutes: estimatedWait,
@@ -250,16 +414,16 @@ export function getDisplayBoard(department: string, tenantId: string = "default"
   };
 }
 
-export function getQueueStats(department: string, tenantId: string = "default"): QueueStats {
+export function getQueueStats(department: string, tenantId: string = 'default'): QueueStats {
   const today = new Date().toISOString().slice(0, 10);
   const tickets = Array.from(ticketStore.values()).filter(
-    (t) => t.tenantId === tenantId && t.department === department && t.createdAt.startsWith(today),
+    (t) => t.tenantId === tenantId && t.department === department && t.createdAt.startsWith(today)
   );
 
-  const completed = tickets.filter((t) => t.status === "completed");
-  const waiting = tickets.filter((t) => t.status === "waiting");
-  const serving = tickets.filter((t) => t.status === "serving");
-  const noShow = tickets.filter((t) => t.status === "no-show");
+  const completed = tickets.filter((t) => t.status === 'completed');
+  const waiting = tickets.filter((t) => t.status === 'waiting');
+  const serving = tickets.filter((t) => t.status === 'serving');
+  const noShow = tickets.filter((t) => t.status === 'no-show');
 
   // Calculate average wait time (from created to called/served)
   let totalWaitMs = 0;
@@ -297,11 +461,14 @@ export function getQueueStats(department: string, tenantId: string = "default"):
   };
 }
 
-export function listDepartments(tenantId: string = "default"): DepartmentQueueConfig[] {
+export function listDepartments(tenantId: string = 'default'): DepartmentQueueConfig[] {
   return Array.from(departmentConfigs.values()).filter((c) => c.tenantId === tenantId);
 }
 
-export function upsertDepartmentConfig(config: Partial<DepartmentQueueConfig> & { department: string }, tenantId: string = "default"): DepartmentQueueConfig {
+export function upsertDepartmentConfig(
+  config: Partial<DepartmentQueueConfig> & { department: string },
+  tenantId: string = 'default'
+): DepartmentQueueConfig {
   const key = `${tenantId}:${config.department}`;
   const existing = departmentConfigs.get(key);
   const now = new Date().toISOString();
@@ -329,7 +496,7 @@ export function upsertDepartmentConfig(config: Partial<DepartmentQueueConfig> & 
     maxActive: config.maxActive ?? 30,
     autoCallEnabled: config.autoCallEnabled ?? true,
     estimatedServiceMinutes: config.estimatedServiceMinutes ?? 15,
-    windows: config.windows || ["Window-1"],
+    windows: config.windows || ['Window-1'],
     enabled: config.enabled ?? true,
     createdAt: now,
     updatedAt: now,

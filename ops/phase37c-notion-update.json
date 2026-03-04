@@ -10,21 +10,11 @@
   "verifyReport": "docs/verify/phase37c-verify-report.md",
   "commitSha": "pending",
   "artifacts": {
-    "configManifests": [
-      "config/modules.json",
-      "config/skus.json",
-      "config/capabilities.json"
-    ],
+    "configManifests": ["config/modules.json", "config/skus.json", "config/capabilities.json"],
     "moduleRegistry": "apps/api/src/modules/module-registry.ts",
     "capabilityService": "apps/api/src/modules/capability-service.ts",
     "adapterLoader": "apps/api/src/adapters/adapter-loader.ts",
-    "adapterTypes": [
-      "clinical-engine",
-      "scheduling",
-      "billing",
-      "imaging",
-      "messaging"
-    ],
+    "adapterTypes": ["clinical-engine", "scheduling", "billing", "imaging", "messaging"],
     "moduleGuard": "apps/api/src/middleware/module-guard.ts",
     "apiRoutes": "apps/api/src/routes/module-capability-routes.ts",
     "architectureDoc": "docs/architecture/product-modularity-v1.md",

@@ -16,7 +16,7 @@
  *   // ... attempt real RPC call ...
  */
 
-import { optionalRpc, getCapabilities } from "../vista/rpcCapabilities.js";
+import { optionalRpc, getCapabilities } from '../vista/rpcCapabilities.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -43,7 +43,7 @@ export interface Tier0VistaGrounding {
 
 export interface Tier0UnsupportedResponse {
   ok: false;
-  status: "unsupported-in-sandbox";
+  status: 'unsupported-in-sandbox';
   message: string;
   rpcUsed: string[];
   pendingTargets: string[];
@@ -53,7 +53,7 @@ export interface Tier0UnsupportedResponse {
 
 export interface Tier0PendingResponse {
   ok: false;
-  status: "integration-pending";
+  status: 'integration-pending';
   message: string;
   rpcUsed: string[];
   pendingTargets: string[];
@@ -71,24 +71,24 @@ export interface Tier0PendingResponse {
  */
 const SANDBOX_EXPECTED_MISSING: string[] = [
   // ADT write RPCs -- DGPM package not exposed in OR CPRS GUI CHART context
-  "DGPM NEW ADMISSION",
-  "DGPM NEW TRANSFER",
-  "DGPM NEW DISCHARGE",
+  'DGPM NEW ADMISSION',
+  'DGPM NEW TRANSFER',
+  'DGPM NEW DISCHARGE',
   // BCMA/PSB -- separate package, not in sandbox
-  "PSB MED LOG",
-  "PSB ALLERGY",
-  "PSB VALIDATE ORDER",
-  "PSJBCMA",
+  'PSB MED LOG',
+  'PSB ALLERGY',
+  'PSB VALIDATE ORDER',
+  'PSJBCMA',
   // Nursing -- NURS package not in sandbox
-  "NURS TASK LIST",
-  "NURS ASSESSMENTS",
+  'NURS TASK LIST',
+  'NURS ASSESSMENTS',
   // Lab write -- LR package not exposed via broker context
-  "LR VERIFY",
+  'LR VERIFY',
   // Phase 484 (W33-P4): Nursing I/O + assessment RPCs
-  "GMRIO RESULTS",
-  "GMRIO ADD",
-  "ZVENAS LIST",
-  "ZVENAS SAVE",
+  'GMRIO RESULTS',
+  'GMRIO ADD',
+  'ZVENAS LIST',
+  'ZVENAS SAVE',
 ];
 
 /* ------------------------------------------------------------------ */
@@ -112,7 +112,9 @@ export function probeTier0Rpc(rpcName: string, domain: string): Tier0ProbeResult
     available: check.available,
     error: check.error,
     domain,
-    probedAt: cachePopulated ? (caps!.discoveredAt || new Date().toISOString()) : new Date().toISOString(),
+    probedAt: cachePopulated
+      ? caps!.discoveredAt || new Date().toISOString()
+      : new Date().toISOString(),
     expectedMissing: SANDBOX_EXPECTED_MISSING.includes(rpcName),
     cachePopulated,
   };
@@ -122,9 +124,11 @@ export function probeTier0Rpc(rpcName: string, domain: string): Tier0ProbeResult
  * Probe multiple Tier-0 RPCs. Returns all probe results.
  * `allAvailable` is true only if every RPC is available.
  */
-export function probeTier0Rpcs(
-  rpcs: Array<{ name: string; domain: string }>,
-): { probes: Tier0ProbeResult[]; allAvailable: boolean; anyAvailable: boolean } {
+export function probeTier0Rpcs(rpcs: Array<{ name: string; domain: string }>): {
+  probes: Tier0ProbeResult[];
+  allAvailable: boolean;
+  anyAvailable: boolean;
+} {
   const probes = rpcs.map((r) => probeTier0Rpc(r.name, r.domain));
   return {
     probes,
@@ -144,12 +148,14 @@ export function probeTier0Rpcs(
 export function tier0UnsupportedResponse(
   probe: Tier0ProbeResult,
   grounding: Tier0VistaGrounding,
-  opts?: { message?: string },
+  opts?: { message?: string }
 ): Tier0UnsupportedResponse {
   return {
     ok: false,
-    status: "unsupported-in-sandbox",
-    message: opts?.message || `RPC "${probe.rpcName}" is not available in this VistA sandbox. ${grounding.sandboxNote}`,
+    status: 'unsupported-in-sandbox',
+    message:
+      opts?.message ||
+      `RPC "${probe.rpcName}" is not available in this VistA sandbox. ${grounding.sandboxNote}`,
     rpcUsed: [],
     pendingTargets: [probe.rpcName],
     capabilityProbe: probe,
@@ -165,12 +171,14 @@ export function tier0UnsupportedResponse(
 export function tier0PendingResponse(
   probe: Tier0ProbeResult,
   grounding?: Tier0VistaGrounding,
-  opts?: { message?: string },
+  opts?: { message?: string }
 ): Tier0PendingResponse {
   return {
     ok: false,
-    status: "integration-pending",
-    message: opts?.message || `RPC "${probe.rpcName}" capability probe indeterminate. Feature integration pending.`,
+    status: 'integration-pending',
+    message:
+      opts?.message ||
+      `RPC "${probe.rpcName}" capability probe indeterminate. Feature integration pending.`,
     rpcUsed: [],
     pendingTargets: [probe.rpcName],
     capabilityProbe: probe,
@@ -191,7 +199,7 @@ export function tier0Gate(
   rpcName: string,
   domain: string,
   grounding: Tier0VistaGrounding,
-  opts?: { message?: string },
+  opts?: { message?: string }
 ): Tier0UnsupportedResponse | Tier0PendingResponse | null {
   const probe = probeTier0Rpc(rpcName, domain);
 

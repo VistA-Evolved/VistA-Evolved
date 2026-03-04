@@ -8,7 +8,9 @@ Otherwise, show integration pending with explicit targets and prerequisites.
 ## Sections
 
 ### A -- wave57-plan.json
+
 Generate the authoritative write-action plan at artifacts/cprs/wave57-plan.json containing:
+
 - All write actions from actionRegistry (problems.add/edit, notes.create, orders.save,
   meds.quick-order, allergies.add, vitals.add, labs.ack, consults.complete,
   orders.verify, orders.dc, orders.flag)
@@ -16,7 +18,9 @@ Generate the authoritative write-action plan at artifacts/cprs/wave57-plan.json 
 - Runtime capability detection metadata
 
 ### B -- Write flows
+
 Implement wave2-routes.ts with POST endpoints for:
+
 - POST /vista/cprs/problems/add
 - POST /vista/cprs/problems/edit
 - POST /vista/cprs/notes/create
@@ -27,12 +31,14 @@ Implement wave2-routes.ts with POST endpoints for:
 - POST /vista/cprs/allergies/add
 
 Each endpoint:
+
 - Uses safeCallRpc (never raw callRpc) with idempotent: false
 - Falls back to ServerDraft when RPC unavailable
 - Returns rpcUsed[] and vivianPresence for traceability
 - Dual audit (centralized + write-back legacy)
 
 ### C -- Safety model
+
 - Add rpcKind field ('read' | 'write') to CprsAction interface
 - Tag all 52+ actions with rpcKind
 - Idempotency key via X-Idempotency-Key header on all write endpoints
@@ -41,14 +47,18 @@ Each endpoint:
 - Timeout enforcement via safeCallRpc defaults
 
 ### D -- Draft -> Validate -> Submit
+
 Server-side validation before RPC call:
+
 - Required field checks
 - DFN format validation (numeric)
 - Parameter bounds checks
 - Return 400 with field-level errors before attempting RPC
 
 ### E -- Verifier
+
 scripts/verify-phase57-wave2-write.ps1:
+
 - No fake success (no hardcoded mock data)
 - Write endpoints return rpcUsed[]
 - Audit events created for write attempts
@@ -57,6 +67,7 @@ scripts/verify-phase57-wave2-write.ps1:
 - PHI + secret scan clean
 
 ## Files touched
+
 - prompts/62-PHASE-57-CPRS-WAVE2-WRITE/57-01-IMPLEMENT.md (this file)
 - artifacts/cprs/wave57-plan.json
 - apps/api/src/routes/cprs/wave2-routes.ts (new)

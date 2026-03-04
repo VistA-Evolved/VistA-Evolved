@@ -1,7 +1,7 @@
 /**
  * Phase 390 (W22-P2): Content Pack Framework v2 — Barrel export
  */
-export { default as contentPackRoutes } from "./pack-routes.js";
+export { default as contentPackRoutes } from './pack-routes.js';
 
 export {
   installPack,
@@ -26,7 +26,7 @@ export {
   getCdsRule,
   listCdsRules,
   _resetContentPackStores,
-} from "./pack-store.js";
+} from './pack-store.js';
 
 export type {
   ContentPackV2,
@@ -46,4 +46,4 @@ export type {
   PackInstallPreview,
   PackMigration,
   PackTransform,
-} from "./types.js";
+} from './types.js';

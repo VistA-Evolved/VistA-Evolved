@@ -34,78 +34,218 @@ function loadJson(relPath) {
 // ── Known hybrid metadata ────────────────────────────────────────────
 // Static metadata for each system's origin platform, deployment model, etc.
 const HYBRID_META = {
-  'cprs':                { hostPlatform: 'delphi',  deploymentModel: 'thick-client', authMechanism: 'xwb-rpc', migrationStrategy: 'replace' },
-  'bcma':                { hostPlatform: 'delphi',  deploymentModel: 'thick-client', authMechanism: 'xwb-rpc', migrationStrategy: 'replace' },
-  'vista-imaging':       { hostPlatform: 'delphi',  deploymentModel: 'thick-client', authMechanism: 'xwb-rpc', migrationStrategy: 'replace' },
-  'ivs-sic':             { hostPlatform: 'web',     deploymentModel: 'browser',      authMechanism: 'saml',    migrationStrategy: 'coexist' },
-  'mha':                 { hostPlatform: 'delphi',  deploymentModel: 'thick-client', authMechanism: 'xwb-rpc', migrationStrategy: 'replace' },
-  'vse-vs-gui':          { hostPlatform: 'dotnet',  deploymentModel: 'thick-client', authMechanism: 'xwb-rpc', migrationStrategy: 'replace' },
-  'clinical-procedures': { hostPlatform: 'dotnet',  deploymentModel: 'thick-client', authMechanism: 'xwb-rpc', migrationStrategy: 'replace' },
-  'jlv':                 { hostPlatform: 'web',     deploymentModel: 'browser',      authMechanism: 'saml',    migrationStrategy: 'coexist' },
-  'vistaweb':            { hostPlatform: 'java',    deploymentModel: 'browser',      authMechanism: 'saml',    migrationStrategy: 'deprecate' },
-  'cdsp':                { hostPlatform: 'web',     deploymentModel: 'browser',      authMechanism: 'oauth2',  migrationStrategy: 'coexist' },
-  'ciss':                { hostPlatform: 'web',     deploymentModel: 'browser',      authMechanism: 'saml',    migrationStrategy: 'wrap' },
-  'va-direct':           { hostPlatform: 'web',     deploymentModel: 'api-only',     authMechanism: 'oauth2',  migrationStrategy: 'wrap' },
-  'esig':                { hostPlatform: 'dotnet',  deploymentModel: 'hybrid',       authMechanism: 'xwb-rpc', migrationStrategy: 'replace' },
-  'hinge':               { hostPlatform: 'java',    deploymentModel: 'hybrid',       authMechanism: 'iam-sts', migrationStrategy: 'coexist' },
-  'hwsc':                { hostPlatform: 'java',    deploymentModel: 'api-only',     authMechanism: 'iam-sts', migrationStrategy: 'wrap' },
-  'lighthouse':          { hostPlatform: 'web',     deploymentModel: 'api-only',     authMechanism: 'oauth2',  migrationStrategy: 'coexist' },
-  'ves':                 { hostPlatform: 'web',     deploymentModel: 'browser',      authMechanism: 'saml',    migrationStrategy: 'coexist' },
-  'mhv':                 { hostPlatform: 'web',     deploymentModel: 'browser',      authMechanism: 'oauth2',  migrationStrategy: 'coexist' },
-  'voda':                { hostPlatform: 'delphi',  deploymentModel: 'thick-client', authMechanism: 'xwb-rpc', migrationStrategy: 'deprecate' },
-  'numi':                { hostPlatform: 'web',     deploymentModel: 'browser',      authMechanism: 'saml',    migrationStrategy: 'coexist' },
-  'pats':                { hostPlatform: 'web',     deploymentModel: 'browser',      authMechanism: 'saml',    migrationStrategy: 'coexist' },
-  'person-services':     { hostPlatform: 'java',    deploymentModel: 'api-only',     authMechanism: 'iam-sts', migrationStrategy: 'wrap' },
-  'vista-audit':         { hostPlatform: 'web',     deploymentModel: 'browser',      authMechanism: 'saml',    migrationStrategy: 'coexist' },
-  'adt':                 { hostPlatform: 'delphi',  deploymentModel: 'thick-client', authMechanism: 'xwb-rpc', migrationStrategy: 'replace' },
+  cprs: {
+    hostPlatform: 'delphi',
+    deploymentModel: 'thick-client',
+    authMechanism: 'xwb-rpc',
+    migrationStrategy: 'replace',
+  },
+  bcma: {
+    hostPlatform: 'delphi',
+    deploymentModel: 'thick-client',
+    authMechanism: 'xwb-rpc',
+    migrationStrategy: 'replace',
+  },
+  'vista-imaging': {
+    hostPlatform: 'delphi',
+    deploymentModel: 'thick-client',
+    authMechanism: 'xwb-rpc',
+    migrationStrategy: 'replace',
+  },
+  'ivs-sic': {
+    hostPlatform: 'web',
+    deploymentModel: 'browser',
+    authMechanism: 'saml',
+    migrationStrategy: 'coexist',
+  },
+  mha: {
+    hostPlatform: 'delphi',
+    deploymentModel: 'thick-client',
+    authMechanism: 'xwb-rpc',
+    migrationStrategy: 'replace',
+  },
+  'vse-vs-gui': {
+    hostPlatform: 'dotnet',
+    deploymentModel: 'thick-client',
+    authMechanism: 'xwb-rpc',
+    migrationStrategy: 'replace',
+  },
+  'clinical-procedures': {
+    hostPlatform: 'dotnet',
+    deploymentModel: 'thick-client',
+    authMechanism: 'xwb-rpc',
+    migrationStrategy: 'replace',
+  },
+  jlv: {
+    hostPlatform: 'web',
+    deploymentModel: 'browser',
+    authMechanism: 'saml',
+    migrationStrategy: 'coexist',
+  },
+  vistaweb: {
+    hostPlatform: 'java',
+    deploymentModel: 'browser',
+    authMechanism: 'saml',
+    migrationStrategy: 'deprecate',
+  },
+  cdsp: {
+    hostPlatform: 'web',
+    deploymentModel: 'browser',
+    authMechanism: 'oauth2',
+    migrationStrategy: 'coexist',
+  },
+  ciss: {
+    hostPlatform: 'web',
+    deploymentModel: 'browser',
+    authMechanism: 'saml',
+    migrationStrategy: 'wrap',
+  },
+  'va-direct': {
+    hostPlatform: 'web',
+    deploymentModel: 'api-only',
+    authMechanism: 'oauth2',
+    migrationStrategy: 'wrap',
+  },
+  esig: {
+    hostPlatform: 'dotnet',
+    deploymentModel: 'hybrid',
+    authMechanism: 'xwb-rpc',
+    migrationStrategy: 'replace',
+  },
+  hinge: {
+    hostPlatform: 'java',
+    deploymentModel: 'hybrid',
+    authMechanism: 'iam-sts',
+    migrationStrategy: 'coexist',
+  },
+  hwsc: {
+    hostPlatform: 'java',
+    deploymentModel: 'api-only',
+    authMechanism: 'iam-sts',
+    migrationStrategy: 'wrap',
+  },
+  lighthouse: {
+    hostPlatform: 'web',
+    deploymentModel: 'api-only',
+    authMechanism: 'oauth2',
+    migrationStrategy: 'coexist',
+  },
+  ves: {
+    hostPlatform: 'web',
+    deploymentModel: 'browser',
+    authMechanism: 'saml',
+    migrationStrategy: 'coexist',
+  },
+  mhv: {
+    hostPlatform: 'web',
+    deploymentModel: 'browser',
+    authMechanism: 'oauth2',
+    migrationStrategy: 'coexist',
+  },
+  voda: {
+    hostPlatform: 'delphi',
+    deploymentModel: 'thick-client',
+    authMechanism: 'xwb-rpc',
+    migrationStrategy: 'deprecate',
+  },
+  numi: {
+    hostPlatform: 'web',
+    deploymentModel: 'browser',
+    authMechanism: 'saml',
+    migrationStrategy: 'coexist',
+  },
+  pats: {
+    hostPlatform: 'web',
+    deploymentModel: 'browser',
+    authMechanism: 'saml',
+    migrationStrategy: 'coexist',
+  },
+  'person-services': {
+    hostPlatform: 'java',
+    deploymentModel: 'api-only',
+    authMechanism: 'iam-sts',
+    migrationStrategy: 'wrap',
+  },
+  'vista-audit': {
+    hostPlatform: 'web',
+    deploymentModel: 'browser',
+    authMechanism: 'saml',
+    migrationStrategy: 'coexist',
+  },
+  adt: {
+    hostPlatform: 'delphi',
+    deploymentModel: 'thick-client',
+    authMechanism: 'xwb-rpc',
+    migrationStrategy: 'replace',
+  },
   // IHS systems
-  'rpms-ehr':            { hostPlatform: 'delphi',  deploymentModel: 'thick-client', authMechanism: 'xwb-rpc', migrationStrategy: 'replace' },
-  'icare':               { hostPlatform: 'web',     deploymentModel: 'browser',      authMechanism: 'saml',    migrationStrategy: 'coexist' },
-  'bprm':                { hostPlatform: 'delphi',  deploymentModel: 'thick-client', authMechanism: 'xwb-rpc', migrationStrategy: 'replace' },
-  'bsdx-pims':           { hostPlatform: 'dotnet',  deploymentModel: 'thick-client', authMechanism: 'xwb-rpc', migrationStrategy: 'replace' },
+  'rpms-ehr': {
+    hostPlatform: 'delphi',
+    deploymentModel: 'thick-client',
+    authMechanism: 'xwb-rpc',
+    migrationStrategy: 'replace',
+  },
+  icare: {
+    hostPlatform: 'web',
+    deploymentModel: 'browser',
+    authMechanism: 'saml',
+    migrationStrategy: 'coexist',
+  },
+  bprm: {
+    hostPlatform: 'delphi',
+    deploymentModel: 'thick-client',
+    authMechanism: 'xwb-rpc',
+    migrationStrategy: 'replace',
+  },
+  'bsdx-pims': {
+    hostPlatform: 'dotnet',
+    deploymentModel: 'thick-client',
+    authMechanism: 'xwb-rpc',
+    migrationStrategy: 'replace',
+  },
 };
 
 // ── Domain-to-system mapping for RPC overlap ─────────────────────────
 // Maps RPC domains from rpcRegistry to system IDs in the estate
 const DOMAIN_SYSTEM_MAP = {
-  'allergies':            ['cprs'],
-  'billing':              ['cprs'],
-  'consults':             ['cprs', 'clinical-procedures'],
-  'imaging':              ['vista-imaging', 'ivs-sic'],
-  'labs':                 ['cprs', 'jlv'],
-  'medications':          ['cprs', 'bcma'],
-  'notes':                ['cprs', 'clinical-procedures'],
-  'orders':               ['cprs'],
-  'patients':             ['cprs', 'adt'],
-  'problems':             ['cprs'],
-  'reports':              ['cprs', 'jlv', 'vistaweb'],
-  'surgery':              ['cprs'],
-  'vitals':               ['cprs'],
-  'adt':                  ['cprs', 'adt'],
-  'reminders':            ['cprs', 'cdsp'],
-  'immunizations':        ['cprs'],
-  'messaging':            ['cprs'],
-  'scheduling':           ['vse-vs-gui', 'cprs'],
-  'mental-health':        ['mha', 'cprs'],
-  'clinical-procedures':  ['clinical-procedures', 'cprs'],
-  'auth':                 [],       // infrastructure, maps to all
-  'catalog':              [],       // infrastructure
-  'interop':              ['hinge'],
-  'remote':               ['jlv', 'vistaweb'],
-  'inbox':                ['cprs'],
+  allergies: ['cprs'],
+  billing: ['cprs'],
+  consults: ['cprs', 'clinical-procedures'],
+  imaging: ['vista-imaging', 'ivs-sic'],
+  labs: ['cprs', 'jlv'],
+  medications: ['cprs', 'bcma'],
+  notes: ['cprs', 'clinical-procedures'],
+  orders: ['cprs'],
+  patients: ['cprs', 'adt'],
+  problems: ['cprs'],
+  reports: ['cprs', 'jlv', 'vistaweb'],
+  surgery: ['cprs'],
+  vitals: ['cprs'],
+  adt: ['cprs', 'adt'],
+  reminders: ['cprs', 'cdsp'],
+  immunizations: ['cprs'],
+  messaging: ['cprs'],
+  scheduling: ['vse-vs-gui', 'cprs'],
+  'mental-health': ['mha', 'cprs'],
+  'clinical-procedures': ['clinical-procedures', 'cprs'],
+  auth: [], // infrastructure, maps to all
+  catalog: [], // infrastructure
+  interop: ['hinge'],
+  remote: ['jlv', 'vistaweb'],
+  inbox: ['cprs'],
 };
 
 // ── Category-to-capability-module mapping ────────────────────────────
 const CATEGORY_MODULE_MAP = {
-  'clinical':        ['clinical'],
-  'pharmacy':        ['clinical'],
-  'imaging':         ['imaging'],
-  'scheduling':      ['scheduling'],
-  'reporting':       ['clinical', 'analytics'],
-  'portal':          ['portal'],
-  'mental-health':   ['clinical'],
-  'admin':           ['iam'],
-  'infrastructure':  ['interop', 'iam'],
+  clinical: ['clinical'],
+  pharmacy: ['clinical'],
+  imaging: ['imaging'],
+  scheduling: ['scheduling'],
+  reporting: ['clinical', 'analytics'],
+  portal: ['portal'],
+  'mental-health': ['clinical'],
+  admin: ['iam'],
+  infrastructure: ['interop', 'iam'],
 };
 
 // ── Main ─────────────────────────────────────────────────────────────
@@ -118,7 +258,10 @@ function buildHybridsMap() {
   const rpcCoverage = loadJson('docs/vista-alignment/rpc-coverage.json');
   const capsRaw = loadJson('config/capabilities.json');
 
-  if (!vaEstate) { console.error('Missing va-ui-estate.json'); process.exit(1); }
+  if (!vaEstate) {
+    console.error('Missing va-ui-estate.json');
+    process.exit(1);
+  }
 
   // Build RPC lookup: name -> { inRegistry, isLive, isException, domain, ... }
   const rpcLookup = new Map();
@@ -138,8 +281,8 @@ function buildHybridsMap() {
 
   // Flatten all systems
   const allSystems = [
-    ...(vaEstate.systems || []).map(s => ({ ...s, agency: 'va' })),
-    ...(ihsEstate?.systems || []).map(s => ({ ...s, agency: 'ihs' })),
+    ...(vaEstate.systems || []).map((s) => ({ ...s, agency: 'va' })),
+    ...(ihsEstate?.systems || []).map((s) => ({ ...s, agency: 'ihs' })),
   ];
 
   const hybrids = [];
@@ -222,10 +365,7 @@ function buildHybridsMap() {
     const testPct = (testedSurfaces / surfaceCount) * 100;
 
     const migrationReadiness = Math.round(
-      (surfaceCoveragePct * 0.4) +
-      (rpcOverlapPct * 0.3) +
-      (writebackPct * 0.2) +
-      (testPct * 0.1)
+      surfaceCoveragePct * 0.4 + rpcOverlapPct * 0.3 + writebackPct * 0.2 + testPct * 0.1
     );
 
     // Find VE equivalent components
@@ -275,17 +415,19 @@ function buildHybridsMap() {
     ),
     totalRpcOverlap: hybrids.reduce((s, h) => s + h.rpcOverlap.length, 0),
     totalRpcGap: hybrids.reduce((s, h) => s + h.rpcGap.length, 0),
-    totalCapOverlap: new Set(hybrids.flatMap(h => h.capabilityOverlap)).size,
-    thickClientCount: hybrids.filter(h => h.deploymentModel === 'thick-client').length,
-    browserCount: hybrids.filter(h => h.deploymentModel === 'browser').length,
-    hybridCount: hybrids.filter(h => h.deploymentModel === 'hybrid').length,
-    apiOnlyCount: hybrids.filter(h => h.deploymentModel === 'api-only').length,
+    totalCapOverlap: new Set(hybrids.flatMap((h) => h.capabilityOverlap)).size,
+    thickClientCount: hybrids.filter((h) => h.deploymentModel === 'thick-client').length,
+    browserCount: hybrids.filter((h) => h.deploymentModel === 'browser').length,
+    hybridCount: hybrids.filter((h) => h.deploymentModel === 'hybrid').length,
+    apiOnlyCount: hybrids.filter((h) => h.deploymentModel === 'api-only').length,
   };
 
   for (const h of hybrids) {
     summary.byPlatform[h.hostPlatform] = (summary.byPlatform[h.hostPlatform] || 0) + 1;
-    summary.byDeploymentModel[h.deploymentModel] = (summary.byDeploymentModel[h.deploymentModel] || 0) + 1;
-    summary.byMigrationStrategy[h.migrationStrategy] = (summary.byMigrationStrategy[h.migrationStrategy] || 0) + 1;
+    summary.byDeploymentModel[h.deploymentModel] =
+      (summary.byDeploymentModel[h.deploymentModel] || 0) + 1;
+    summary.byMigrationStrategy[h.migrationStrategy] =
+      (summary.byMigrationStrategy[h.migrationStrategy] || 0) + 1;
   }
 
   const output = {
@@ -293,7 +435,8 @@ function buildHybridsMap() {
       generatedAt: new Date().toISOString(),
       generatedBy: 'scripts/ui-estate/build-hybrids-map.mjs',
       phase: 541,
-      description: 'VA/IHS GUI Hybrids Capability Map -- cross-references desktop GUI apps with VistA-Evolved coverage',
+      description:
+        'VA/IHS GUI Hybrids Capability Map -- cross-references desktop GUI apps with VistA-Evolved coverage',
       sources: {
         vaEstate: 'data/ui-estate/va-ui-estate.json',
         ihsEstate: 'data/ui-estate/ihs-ui-estate.json',
@@ -313,12 +456,16 @@ function buildHybridsMap() {
   console.log(`  Avg migration readiness: ${summary.avgMigrationReadiness}%`);
   console.log(`  Total RPC overlap: ${summary.totalRpcOverlap}`);
   console.log(`  Total RPC gap: ${summary.totalRpcGap}`);
-  console.log(`  Thick-client: ${summary.thickClientCount}, Browser: ${summary.browserCount}, Hybrid: ${summary.hybridCount}, API-only: ${summary.apiOnlyCount}`);
+  console.log(
+    `  Thick-client: ${summary.thickClientCount}, Browser: ${summary.browserCount}, Hybrid: ${summary.hybridCount}, API-only: ${summary.apiOnlyCount}`
+  );
 
   if (verbose) {
     console.log('\nPer-hybrid readiness:');
     for (const h of hybrids) {
-      console.log(`  ${h.id.padEnd(22)} ${String(h.migrationReadiness).padStart(3)}%  RPCs: ${h.rpcOverlap.length}/${h.rpcOverlap.length + h.rpcGap.length}  Surfaces: ${h.coveredSurfaces}/${h.surfaceCount}`);
+      console.log(
+        `  ${h.id.padEnd(22)} ${String(h.migrationReadiness).padStart(3)}%  RPCs: ${h.rpcOverlap.length}/${h.rpcOverlap.length + h.rpcGap.length}  Surfaces: ${h.coveredSurfaces}/${h.surfaceCount}`
+      );
     }
   }
 

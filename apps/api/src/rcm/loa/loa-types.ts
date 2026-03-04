@@ -14,25 +14,31 @@
 /* ── LOA Status ─────────────────────────────────────────────── */
 
 export type LoaStatus =
-  | "draft"            // being prepared by billing staff
-  | "submitted"        // sent to payer (portal/email/fax)
-  | "pending"          // awaiting payer response
-  | "approved"         // payer approved the authorization
-  | "denied"           // payer denied the authorization
-  | "expired"          // authorization expired (time-limited)
-  | "cancelled";       // cancelled by billing staff
+  | 'draft' // being prepared by billing staff
+  | 'submitted' // sent to payer (portal/email/fax)
+  | 'pending' // awaiting payer response
+  | 'approved' // payer approved the authorization
+  | 'denied' // payer denied the authorization
+  | 'expired' // authorization expired (time-limited)
+  | 'cancelled'; // cancelled by billing staff
 
 export const LOA_STATUS_ORDER: LoaStatus[] = [
-  "draft", "submitted", "pending", "approved", "denied", "expired", "cancelled",
+  'draft',
+  'submitted',
+  'pending',
+  'approved',
+  'denied',
+  'expired',
+  'cancelled',
 ];
 
 export const LOA_TRANSITIONS: Record<LoaStatus, LoaStatus[]> = {
-  draft:     ["submitted", "cancelled"],
-  submitted: ["pending", "approved", "denied", "cancelled"],
-  pending:   ["approved", "denied", "expired", "cancelled"],
-  approved:  ["expired"],
-  denied:    ["draft"],     // can retry
-  expired:   ["draft"],     // can re-request
+  draft: ['submitted', 'cancelled'],
+  submitted: ['pending', 'approved', 'denied', 'cancelled'],
+  pending: ['approved', 'denied', 'expired', 'cancelled'],
+  approved: ['expired'],
+  denied: ['draft'], // can retry
+  expired: ['draft'], // can re-request
   cancelled: [],
 };
 
@@ -42,7 +48,7 @@ export function isValidLoaTransition(from: LoaStatus, to: LoaStatus): boolean {
 
 /* ── Submission Mode ────────────────────────────────────────── */
 
-export type LoaSubmissionMode = "manual" | "portal" | "email";
+export type LoaSubmissionMode = 'manual' | 'portal' | 'email';
 
 /* ── LOA Attachment ─────────────────────────────────────────── */
 
@@ -56,17 +62,17 @@ export interface LoaAttachment {
   uploadedAt: string;
   uploadedBy: string;
   /** Category for billing staff workflow */
-  category: "clinical_note" | "order" | "lab_result" | "imaging_report" | "other";
+  category: 'clinical_note' | 'order' | 'lab_result' | 'imaging_report' | 'other';
 }
 
 /* ── VistA Source Annotation ────────────────────────────────── */
 
 export interface VistaFieldSource {
   field: string;
-  vistaSource: string | null;     // RPC or file ref if available
-  status: "available" | "integration_pending";
-  targetRpc?: string;              // target RPC if integration pending
-  targetRoutine?: string;          // target M routine
+  vistaSource: string | null; // RPC or file ref if available
+  status: 'available' | 'integration_pending';
+  targetRpc?: string; // target RPC if integration pending
+  targetRoutine?: string; // target M routine
   notes?: string;
 }
 
@@ -85,7 +91,7 @@ export interface LoaChecklistItem {
 export interface LoaAuditEntry {
   timestamp: string;
   action: string;
-  actor: string;       // DUZ or system
+  actor: string; // DUZ or system
   fromStatus?: LoaStatus;
   toStatus?: LoaStatus;
   detail?: string;
@@ -101,21 +107,21 @@ export interface LoaRequest {
 
   // Patient (orchestration reference only — VistA is source of truth)
   patientDfn: string;
-  patientName?: string;           // display only, redacted in logs
+  patientName?: string; // display only, redacted in logs
 
   // Encounter context
-  encounterDate: string;          // ISO date
-  encounterIen?: string;          // VistA visit IEN if available
+  encounterDate: string; // ISO date
+  encounterIen?: string; // VistA visit IEN if available
 
   // Requested services
   diagnosisCodes: Array<{
     code: string;
-    codeSystem: "ICD10";
+    codeSystem: 'ICD10';
     description?: string;
   }>;
   procedureCodes: Array<{
     code: string;
-    codeSystem: "CPT" | "HCPCS";
+    codeSystem: 'CPT' | 'HCPCS';
     description?: string;
   }>;
 
@@ -127,10 +133,10 @@ export interface LoaRequest {
   // Payer
   payerId: string;
   payerName?: string;
-  memberId?: string;              // patient's HMO card number
+  memberId?: string; // patient's HMO card number
 
   // Payer response
-  loaReferenceNumber?: string;    // assigned by payer
+  loaReferenceNumber?: string; // assigned by payer
   approvedDate?: string;
   expirationDate?: string;
   denialReason?: string;
@@ -146,7 +152,7 @@ export interface LoaRequest {
 
   // Audit
   auditTrail: LoaAuditEntry[];
-  assignedTo?: string;            // DUZ of assigned billing staff
+  assignedTo?: string; // DUZ of assigned billing staff
   createdBy: string;
   createdAt: string;
   updatedAt: string;

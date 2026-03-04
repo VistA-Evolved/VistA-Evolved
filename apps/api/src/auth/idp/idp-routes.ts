@@ -19,32 +19,22 @@
  *   - Rate-limited auth endpoints
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { randomBytes } from "crypto";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { randomBytes } from 'crypto';
 import {
   initIdentityProviders,
   getProvider,
-  getDefaultProvider,
   listProviders,
   checkAllProviderHealth,
-} from "./index.js";
-import {
-  bindVistaSession,
-  getVistaBindingStatus,
-  getVistaBinding,
-  unbindVistaSession,
-} from "./vista-binding.js";
-import {
-  createSession,
-  getSession,
-  rotateSession,
-} from "../session-store.js";
-import { SESSION_CONFIG } from "../../config/server-config.js";
-import { log } from "../../lib/logger.js";
-import { audit } from "../../lib/audit.js";
-import { immutableAudit } from "../../lib/immutable-audit.js";
-import { getPermissionsForRole } from "../rbac.js";
-import type { IdpType, CallbackParams } from "./types.js";
+} from './index.js';
+import { bindVistaSession, getVistaBindingStatus, getVistaBinding } from './vista-binding.js';
+import { createSession, getSession, rotateSession } from '../session-store.js';
+import { SESSION_CONFIG } from '../../config/server-config.js';
+import { log } from '../../lib/logger.js';
+import { audit } from '../../lib/audit.js';
+import { immutableAudit } from '../../lib/immutable-audit.js';
+import { getPermissionsForRole } from '../rbac.js';
+import type { IdpType, CallbackParams } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Auth state store (short-lived, for CSRF + nonce)                    */
@@ -78,10 +68,12 @@ setInterval(() => {
 
 const COOKIE_NAME = SESSION_CONFIG.cookieName;
 const COOKIE_OPTS = {
-  path: "/",
+  path: '/',
   httpOnly: true,
-  sameSite: "lax" as const,
-  secure: process.env.NODE_ENV === "production" || ["rc","prod"].includes((process.env.PLATFORM_RUNTIME_MODE || "").toLowerCase().trim()),
+  sameSite: 'lax' as const,
+  secure:
+    process.env.NODE_ENV === 'production' ||
+    ['rc', 'prod'].includes((process.env.PLATFORM_RUNTIME_MODE || '').toLowerCase().trim()),
   maxAge: Math.floor(SESSION_CONFIG.absoluteTtlMs / 1000),
 };
 
@@ -89,7 +81,7 @@ function extractToken(request: FastifyRequest): string | null {
   const cookie = (request as any).cookies?.[COOKIE_NAME];
   if (cookie) return cookie;
   const auth = request.headers.authorization;
-  if (typeof auth === "string" && auth.startsWith("Bearer ")) {
+  if (typeof auth === 'string' && auth.startsWith('Bearer ')) {
     return auth.slice(7);
   }
   return null;
@@ -107,13 +99,13 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
    * GET /auth/idp/providers
    * List all available identity providers and their status.
    */
-  server.get("/auth/idp/providers", async () => {
+  server.get('/auth/idp/providers', async () => {
     const providers = listProviders();
     return {
       ok: true,
       providers,
       vistaDirectAvailable: true,
-      note: "VistA direct auth is always available via POST /auth/login",
+      note: 'VistA direct auth is always available via POST /auth/login',
     };
   });
 
@@ -121,11 +113,11 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
    * GET /auth/idp/authorize/:type
    * Start the OIDC/SAML authorization flow by redirecting to the IdP.
    */
-  server.get("/auth/idp/authorize/:type", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/auth/idp/authorize/:type', async (request: FastifyRequest, reply: FastifyReply) => {
     const { type } = request.params as { type: string };
     const idpType = type as IdpType;
 
-    if (idpType !== "oidc" && idpType !== "saml-broker") {
+    if (idpType !== 'oidc' && idpType !== 'saml-broker') {
       return reply.code(400).send({
         ok: false,
         error: `Invalid IdP type: ${type}. Use 'oidc' or 'saml-broker'.`,
@@ -136,13 +128,13 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
     if (!provider || !provider.isEnabled()) {
       return reply.code(404).send({
         ok: false,
-        error: `IdP '${type}' is not enabled. Configure IDP_${type.toUpperCase().replace("-", "_")}_ENABLED=true.`,
+        error: `IdP '${type}' is not enabled. Configure IDP_${type.toUpperCase().replace('-', '_')}_ENABLED=true.`,
       });
     }
 
     // Generate state + nonce
-    const state = randomBytes(32).toString("hex");
-    const nonce = randomBytes(16).toString("hex");
+    const state = randomBytes(32).toString('hex');
+    const nonce = randomBytes(16).toString('hex');
 
     // C1 FIX: Never accept redirect_uri from query params (open redirect attack vector).
     // Always derive callback URL from the server's own origin.
@@ -159,15 +151,22 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
 
     const authUrl = provider.getAuthorizationUrl(state, nonce, redirectUri);
     if (!authUrl) {
-      return reply.code(500).send({ ok: false, error: "Provider could not generate authorization URL" });
+      return reply
+        .code(500)
+        .send({ ok: false, error: 'Provider could not generate authorization URL' });
     }
 
     // Audit the auth initiation (no secrets)
-    audit("auth.idp.authorize", "success", { duz: "anonymous" }, {
-      requestId: (request as any).requestId,
-      sourceIp: request.ip,
-      detail: { idpType, state: state.substring(0, 8) + "..." },
-    });
+    audit(
+      'auth.idp.authorize',
+      'success',
+      { duz: 'anonymous' },
+      {
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { idpType, state: state.substring(0, 8) + '...' },
+      }
+    );
 
     return reply.redirect(authUrl);
   });
@@ -177,39 +176,53 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
    * Handle the callback from the IdP after user authenticates.
    * Exchanges authorization code for tokens, validates, creates session.
    */
-  server.get("/auth/idp/callback/:type", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/auth/idp/callback/:type', async (request: FastifyRequest, reply: FastifyReply) => {
     const { type } = request.params as { type: string };
-    const query = request.query as { code?: string; state?: string; error?: string; error_description?: string };
+    const query = request.query as {
+      code?: string;
+      state?: string;
+      error?: string;
+      error_description?: string;
+    };
 
     // Handle IdP-reported errors
     if (query.error) {
       // W6 FIX: Log full error_description server-side, return only generic message to client
-      log.warn("IdP callback error", { type, error: query.error, description: query.error_description });
-      audit("auth.idp.callback", "failure", { duz: "anonymous" }, {
-        requestId: (request as any).requestId,
-        sourceIp: request.ip,
-        detail: { idpType: type, error: query.error },
+      log.warn('IdP callback error', {
+        type,
+        error: query.error,
+        description: query.error_description,
       });
+      audit(
+        'auth.idp.callback',
+        'failure',
+        { duz: 'anonymous' },
+        {
+          requestId: (request as any).requestId,
+          sourceIp: request.ip,
+          detail: { idpType: type, error: query.error },
+        }
+      );
       return reply.code(400).send({
         ok: false,
-        error: "Authentication failed at identity provider",
+        error: 'Authentication failed at identity provider',
       });
     }
 
     if (!query.code || !query.state) {
       return reply.code(400).send({
         ok: false,
-        error: "Missing code or state parameter in callback",
+        error: 'Missing code or state parameter in callback',
       });
     }
 
     // Retrieve and validate state
     const pendingState = pendingAuthStates.get(query.state);
     if (!pendingState) {
-      log.warn("IdP callback with unknown state", { type, sourceIp: request.ip });
+      log.warn('IdP callback with unknown state', { type, sourceIp: request.ip });
       return reply.code(400).send({
         ok: false,
-        error: "Invalid or expired state parameter",
+        error: 'Invalid or expired state parameter',
       });
     }
 
@@ -218,13 +231,13 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
 
     // Check state age
     if (Date.now() - pendingState.createdAt > AUTH_STATE_TTL_MS) {
-      return reply.code(400).send({ ok: false, error: "Auth state expired" });
+      return reply.code(400).send({ ok: false, error: 'Auth state expired' });
     }
 
     // Get provider
     const provider = getProvider(pendingState.idpType);
     if (!provider) {
-      return reply.code(500).send({ ok: false, error: "Provider not found" });
+      return reply.code(500).send({ ok: false, error: 'Provider not found' });
     }
 
     // Exchange code and validate token
@@ -241,19 +254,31 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
     const result = await provider.handleCallback(callbackParams);
 
     if (!result.ok || !result.identity) {
-      log.warn("IdP callback authentication failed", { type, error: result.error });
-      audit("auth.idp.callback", "failure", { duz: "anonymous" }, {
-        requestId: (request as any).requestId,
-        sourceIp: request.ip,
-        detail: { idpType: type, error: result.error },
-      });
-      immutableAudit("auth.idp.failed", "failure", {
-        sub: "anonymous", name: "anonymous", roles: [],
-      }, {
-        requestId: (request as any).requestId,
-        sourceIp: request.ip,
-        detail: { idpType: type, error: "authentication-failed" },
-      });
+      log.warn('IdP callback authentication failed', { type, error: result.error });
+      audit(
+        'auth.idp.callback',
+        'failure',
+        { duz: 'anonymous' },
+        {
+          requestId: (request as any).requestId,
+          sourceIp: request.ip,
+          detail: { idpType: type, error: result.error },
+        }
+      );
+      immutableAudit(
+        'auth.idp.failed',
+        'failure',
+        {
+          sub: 'anonymous',
+          name: 'anonymous',
+          roles: [],
+        },
+        {
+          requestId: (request as any).requestId,
+          sourceIp: request.ip,
+          detail: { idpType: type, error: 'authentication-failed' },
+        }
+      );
       return reply.code(401).send({ ok: false, error: result.error });
     }
 
@@ -282,30 +307,40 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
     // No more double-submit cookie for IDP callback.
 
     // Audit successful IdP login
-    audit("auth.idp.login", "success", {
-      duz: identity.duz || identity.sub,
-      name: identity.displayName,
-      role: identity.role,
-    }, {
-      requestId: (request as any).requestId,
-      sourceIp: request.ip,
-      detail: { idpType: identity.idpType, tenantId: identity.tenantId },
-    });
+    audit(
+      'auth.idp.login',
+      'success',
+      {
+        duz: identity.duz || identity.sub,
+        name: identity.displayName,
+        role: identity.role,
+      },
+      {
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { idpType: identity.idpType, tenantId: identity.tenantId },
+      }
+    );
 
-    immutableAudit("auth.idp.login", "success", {
-      sub: identity.sub,
-      name: identity.displayName,
-      roles: [identity.role],
-    }, {
-      requestId: (request as any).requestId,
-      sourceIp: request.ip,
-      tenantId: identity.tenantId,
-    });
+    immutableAudit(
+      'auth.idp.login',
+      'success',
+      {
+        sub: identity.sub,
+        name: identity.displayName,
+        roles: [identity.role],
+      },
+      {
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        tenantId: identity.tenantId,
+      }
+    );
 
-    log.info("User authenticated via IdP", { idpType: identity.idpType, role: identity.role });
+    log.info('User authenticated via IdP', { idpType: identity.idpType, role: identity.role });
 
     // Redirect to app (or return JSON for API clients)
-    const acceptsJson = request.headers.accept?.includes("application/json");
+    const acceptsJson = request.headers.accept?.includes('application/json');
     if (acceptsJson) {
       return {
         ok: true,
@@ -323,7 +358,7 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
     }
 
     // HTML redirect for browser-based flows
-    const appUrl = process.env.APP_URL || "http://localhost:3000";
+    const appUrl = process.env.APP_URL || 'http://localhost:3000';
     return reply.redirect(`${appUrl}/cprs?idp_login=success`);
   });
 
@@ -332,14 +367,14 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
    * Bind a VistA RPC session to the current app session.
    * Required for clinical VistA actions when authenticated via OIDC/SAML.
    */
-  server.post("/auth/idp/vista-bind", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/auth/idp/vista-bind', async (request: FastifyRequest, reply: FastifyReply) => {
     const token = extractToken(request);
     if (!token) {
-      return reply.code(401).send({ ok: false, error: "Not authenticated" });
+      return reply.code(401).send({ ok: false, error: 'Not authenticated' });
     }
     const session = await getSession(token);
     if (!session) {
-      return reply.code(401).send({ ok: false, error: "Session expired" });
+      return reply.code(401).send({ ok: false, error: 'Session expired' });
     }
 
     const body = (request.body as any) || {};
@@ -348,20 +383,27 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
     if (!accessCode || !verifyCode) {
       return reply.code(400).send({
         ok: false,
-        error: "accessCode and verifyCode required for VistA binding",
+        error: 'accessCode and verifyCode required for VistA binding',
       });
     }
 
     const bindResult = await bindVistaSession(token, accessCode, verifyCode);
 
     if (!bindResult.ok) {
-      audit("auth.vista-bind", "failure", {
-        duz: session.duz, name: session.userName, role: session.role,
-      }, {
-        requestId: (request as any).requestId,
-        sourceIp: request.ip,
-        detail: { error: "vista-bind-failed" },
-      });
+      audit(
+        'auth.vista-bind',
+        'failure',
+        {
+          duz: session.duz,
+          name: session.userName,
+          role: session.role,
+        },
+        {
+          requestId: (request as any).requestId,
+          sourceIp: request.ip,
+          detail: { error: 'vista-bind-failed' },
+        }
+      );
       return reply.code(401).send({ ok: false, error: bindResult.error });
     }
 
@@ -373,21 +415,35 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
     if (bindResult.facilityName) session.facilityName = bindResult.facilityName;
     if (bindResult.divisionIen) session.divisionIen = bindResult.divisionIen;
 
-    audit("auth.vista-bind", "success", {
-      duz: session.duz, name: session.userName, role: session.role,
-    }, {
-      requestId: (request as any).requestId,
-      sourceIp: request.ip,
-      detail: { vistaBinding: "bound" },
-    });
+    audit(
+      'auth.vista-bind',
+      'success',
+      {
+        duz: session.duz,
+        name: session.userName,
+        role: session.role,
+      },
+      {
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { vistaBinding: 'bound' },
+      }
+    );
 
-    immutableAudit("auth.vista-bind", "success", {
-      sub: session.duz, name: session.userName, roles: [session.role],
-    }, {
-      requestId: (request as any).requestId,
-      sourceIp: request.ip,
-      tenantId: session.tenantId,
-    });
+    immutableAudit(
+      'auth.vista-bind',
+      'success',
+      {
+        sub: session.duz,
+        name: session.userName,
+        roles: [session.role],
+      },
+      {
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        tenantId: session.tenantId,
+      }
+    );
 
     return {
       ok: true,
@@ -395,7 +451,7 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
         duz: bindResult.duz,
         userName: bindResult.userName,
         facilityStation: bindResult.facilityStation,
-        status: "bound",
+        status: 'bound',
       },
     };
   });
@@ -404,14 +460,14 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
    * GET /auth/idp/vista-status
    * Check VistA session binding status for the current session.
    */
-  server.get("/auth/idp/vista-status", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/auth/idp/vista-status', async (request: FastifyRequest, reply: FastifyReply) => {
     const token = extractToken(request);
     if (!token) {
-      return reply.code(401).send({ ok: false, error: "Not authenticated" });
+      return reply.code(401).send({ ok: false, error: 'Not authenticated' });
     }
     const session = await getSession(token);
     if (!session) {
-      return reply.code(401).send({ ok: false, error: "Session expired" });
+      return reply.code(401).send({ ok: false, error: 'Session expired' });
     }
 
     const binding = getVistaBinding(token);
@@ -426,10 +482,11 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
         facilityStation: binding?.facilityStation,
         boundAt: binding?.boundAt,
       },
-      note: status === "pending"
-        ? "VistA session binding required for clinical actions. POST /auth/idp/vista-bind with accessCode + verifyCode."
-        : undefined,
-      pendingTargets: status === "pending" ? ["XUS AV CODE", "XWB CREATE CONTEXT"] : undefined,
+      note:
+        status === 'pending'
+          ? 'VistA session binding required for clinical actions. POST /auth/idp/vista-bind with accessCode + verifyCode.'
+          : undefined,
+      pendingTargets: status === 'pending' ? ['XUS AV CODE', 'XWB CREATE CONTEXT'] : undefined,
     };
   });
 
@@ -437,7 +494,7 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
    * GET /auth/idp/health
    * Health check for all identity providers.
    */
-  server.get("/auth/idp/health", async () => {
+  server.get('/auth/idp/health', async () => {
     const providerHealth = await checkAllProviderHealth();
     const allOk = providerHealth.every((p) => p.ok);
     return {

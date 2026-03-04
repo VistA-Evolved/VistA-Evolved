@@ -21,6 +21,7 @@ and per-tenant capability toggling. Current state:
   with audit logging
 
 **What is missing:**
+
 - No gradual rollout percentages (all-or-nothing per tenant)
 - No A/B testing framework
 - No external flag service integration (Unleash, LaunchDarkly, ConfigCat)
@@ -33,6 +34,7 @@ and per-tenant capability toggling. Current state:
 No external flag service.
 
 Rationale:
+
 - The existing system already handles the core use case: per-tenant module toggles
 - DB-backed flags survive restarts and are multi-instance safe
 - Adding `rollout_percentage` and `user_targeting_rules` columns to
@@ -42,17 +44,18 @@ Rationale:
 
 ## Alternatives Considered
 
-| Option | License | Pros | Cons |
-|--------|---------|------|------|
-| **Unleash** | Apache-2.0 | Self-hosted, feature-rich, SDK | New service to deploy/maintain |
-| **LaunchDarkly** | Proprietary | Best-in-class UX, real-time | SaaS dependency, cost, PHI concerns |
-| **ConfigCat** | Proprietary | Simple, CDN-backed | External dependency |
-| **Extend existing** | N/A | Zero new deps, DB-backed | Must build rollout % logic |
-| **Flipt** | GPL-3.0 | Self-hosted, gRPC | GPL license, new service |
+| Option              | License     | Pros                           | Cons                                |
+| ------------------- | ----------- | ------------------------------ | ----------------------------------- |
+| **Unleash**         | Apache-2.0  | Self-hosted, feature-rich, SDK | New service to deploy/maintain      |
+| **LaunchDarkly**    | Proprietary | Best-in-class UX, real-time    | SaaS dependency, cost, PHI concerns |
+| **ConfigCat**       | Proprietary | Simple, CDN-backed             | External dependency                 |
+| **Extend existing** | N/A         | Zero new deps, DB-backed       | Must build rollout % logic          |
+| **Flipt**           | GPL-3.0     | Self-hosted, gRPC              | GPL license, new service            |
 
 ## Consequences
 
 **Positive:**
+
 - Zero new infrastructure or services
 - Leverages existing DB schema, CRUD API, and admin UI
 - Audit trail already in place (module_audit_log)
@@ -60,12 +63,14 @@ Rationale:
 - Full control over flag evaluation logic
 
 **Negative:**
+
 - Must implement percentage rollout and user targeting ourselves
 - No real-time flag change propagation (DB polling or cache TTL)
 - Less sophisticated than purpose-built flag services
 - No built-in analytics on flag exposure
 
 **Migration path:**
+
 - If scale/sophistication demands it, add Unleash as a backend
 - Existing `tenant_feature_flag` schema is compatible with Unleash strategy model
 

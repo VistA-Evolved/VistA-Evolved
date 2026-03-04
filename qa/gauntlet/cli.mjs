@@ -19,15 +19,15 @@
  *   - Machine output: artifacts/qa-gauntlet.json (gitignored)
  */
 
-import { writeFileSync, mkdirSync, readFileSync, existsSync } from "node:fs";
-import { resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import { pathToFileURL } from "node:url";
+import { writeFileSync, mkdirSync, readFileSync, existsSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { pathToFileURL } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, "../..");
-const ARTIFACTS_DIR = resolve(ROOT, "artifacts");
-const MANIFEST_PATH = resolve(__dirname, "phase-manifest.json");
+const ROOT = resolve(__dirname, '../..');
+const ARTIFACTS_DIR = resolve(ROOT, 'artifacts');
+const MANIFEST_PATH = resolve(__dirname, 'phase-manifest.json');
 
 // ── Parse CLI args ──────────────────────────────────────────
 
@@ -39,83 +39,83 @@ function getArg(name) {
   return args[idx + 1] || true;
 }
 
-const suiteName = getArg("suite") || "fast";
-const phaseFilter = getArg("phase");
-const tagFilter = getArg("tag");
-const strict = args.includes("--strict");
-const ciMode = args.includes("--ci");
+const suiteName = getArg('suite') || 'fast';
+const phaseFilter = getArg('phase');
+const tagFilter = getArg('tag');
+const strict = args.includes('--strict');
+const ciMode = args.includes('--ci');
 
 // ── Suite definitions ───────────────────────────────────────
 
 const SUITE_GATES = {
   fast: [
-    "G0_prompts_integrity",
-    "G1_build_typecheck",
-    "G2_unit_tests",
-    "G3_security_scans",
-    "G4_contract_alignment",
+    'G0_prompts_integrity',
+    'G1_build_typecheck',
+    'G2_unit_tests',
+    'G3_security_scans',
+    'G4_contract_alignment',
   ],
   rc: [
-    "G0_prompts_integrity",
-    "G1_build_typecheck",
-    "G2_unit_tests",
-    "G3_security_scans",
-    "G4_contract_alignment",
-    "G5_api_smoke",
-    "G7_restart_durability",
-    "G8_ui_dead_click",
-    "G10_system_audit",
-    "G11_tenant_isolation",
-    "G12_data_plane",
-    "G13_imaging_scheduling_restart",
-    "G14_qa_ladder",
-    "G15_observability",
-    "G16_dr_chaos",
-    "G17_store_policy",
-    "G18_qa_ladder_v2",
-    "G19_system_audit_snapshot",
-    "G20_no_new_stub_growth",
-    "G21_no_new_critical_map_store",
-    "G22_phi_leak_audit",
-    "G23_clinic_day_journeys",
-    "G24_specialty_pack_hardening",
-    "G25_inpatient_depth",
-    "G26_patient_identity_linking",
-    "G27_scheduling_writeback",
-    "G28_ops_admin_center",
-    "G29_certification_evidence",
+    'G0_prompts_integrity',
+    'G1_build_typecheck',
+    'G2_unit_tests',
+    'G3_security_scans',
+    'G4_contract_alignment',
+    'G5_api_smoke',
+    'G7_restart_durability',
+    'G8_ui_dead_click',
+    'G10_system_audit',
+    'G11_tenant_isolation',
+    'G12_data_plane',
+    'G13_imaging_scheduling_restart',
+    'G14_qa_ladder',
+    'G15_observability',
+    'G16_dr_chaos',
+    'G17_store_policy',
+    'G18_qa_ladder_v2',
+    'G19_system_audit_snapshot',
+    'G20_no_new_stub_growth',
+    'G21_no_new_critical_map_store',
+    'G22_phi_leak_audit',
+    'G23_clinic_day_journeys',
+    'G24_specialty_pack_hardening',
+    'G25_inpatient_depth',
+    'G26_patient_identity_linking',
+    'G27_scheduling_writeback',
+    'G28_ops_admin_center',
+    'G29_certification_evidence',
   ],
   full: [
-    "G0_prompts_integrity",
-    "G1_build_typecheck",
-    "G2_unit_tests",
-    "G3_security_scans",
-    "G4_contract_alignment",
-    "G5_api_smoke",
-    "G6_vista_probe",
-    "G7_restart_durability",
-    "G8_ui_dead_click",
-    "G9_performance_budget",
-    "G10_system_audit",
-    "G11_tenant_isolation",
-    "G12_data_plane",
-    "G13_imaging_scheduling_restart",
-    "G14_qa_ladder",
-    "G15_observability",
-    "G16_dr_chaos",
-    "G17_store_policy",
-    "G18_qa_ladder_v2",
-    "G19_system_audit_snapshot",
-    "G20_no_new_stub_growth",
-    "G21_no_new_critical_map_store",
-    "G22_phi_leak_audit",
-    "G23_clinic_day_journeys",
-    "G24_specialty_pack_hardening",
-    "G25_inpatient_depth",
-    "G26_patient_identity_linking",
-    "G27_scheduling_writeback",
-    "G28_ops_admin_center",
-    "G29_certification_evidence",
+    'G0_prompts_integrity',
+    'G1_build_typecheck',
+    'G2_unit_tests',
+    'G3_security_scans',
+    'G4_contract_alignment',
+    'G5_api_smoke',
+    'G6_vista_probe',
+    'G7_restart_durability',
+    'G8_ui_dead_click',
+    'G9_performance_budget',
+    'G10_system_audit',
+    'G11_tenant_isolation',
+    'G12_data_plane',
+    'G13_imaging_scheduling_restart',
+    'G14_qa_ladder',
+    'G15_observability',
+    'G16_dr_chaos',
+    'G17_store_policy',
+    'G18_qa_ladder_v2',
+    'G19_system_audit_snapshot',
+    'G20_no_new_stub_growth',
+    'G21_no_new_critical_map_store',
+    'G22_phi_leak_audit',
+    'G23_clinic_day_journeys',
+    'G24_specialty_pack_hardening',
+    'G25_inpatient_depth',
+    'G26_patient_identity_linking',
+    'G27_scheduling_writeback',
+    'G28_ops_admin_center',
+    'G29_certification_evidence',
   ],
 };
 
@@ -127,36 +127,36 @@ if (!SUITE_GATES[suiteName]) {
 // ── Gate module registry ────────────────────────────────────
 
 const GATE_MODULES = {
-  G0_prompts_integrity: "gates/g0-prompts-integrity.mjs",
-  G1_build_typecheck: "gates/g1-build-typecheck.mjs",
-  G2_unit_tests: "gates/g2-unit-tests.mjs",
-  G3_security_scans: "gates/g3-security-scans.mjs",
-  G4_contract_alignment: "gates/g4-contract-alignment.mjs",
-  G5_api_smoke: "gates/g5-api-smoke.mjs",
-  G6_vista_probe: "gates/g6-vista-probe.mjs",
-  G7_restart_durability: "gates/g7-restart-durability.mjs",
-  G8_ui_dead_click: "gates/g8-ui-dead-click.mjs",
-  G9_performance_budget: "gates/g9-performance-budget.mjs",
-  G10_system_audit: "gates/g10-system-audit.mjs",
-  G11_tenant_isolation: "gates/g11-tenant-isolation.mjs",
-  G12_data_plane: "gates/g12-data-plane.mjs",
-  G13_imaging_scheduling_restart: "gates/g13-imaging-scheduling-restart.mjs",
-  G14_qa_ladder: "gates/g14-qa-ladder.mjs",
-  G15_observability: "gates/g15-observability.mjs",
-  G16_dr_chaos: "gates/g16-dr-chaos.mjs",
-  G17_store_policy: "gates/g17-store-policy.mjs",
-  G18_qa_ladder_v2: "gates/g18-qa-ladder-v2.mjs",
-  G19_system_audit_snapshot: "gates/g19-system-audit-snapshot.mjs",
-  G20_no_new_stub_growth: "gates/g20-no-new-stub-growth.mjs",
-  G21_no_new_critical_map_store: "gates/g21-no-new-critical-map-store.mjs",
-  G22_phi_leak_audit: "gates/g22-phi-leak-audit.mjs",
-  G23_clinic_day_journeys: "gates/g23-clinic-day.mjs",
-  G24_specialty_pack_hardening: "gates/g24-specialty-pack-hardening.mjs",
-  G25_inpatient_depth: "gates/g25-inpatient-depth.mjs",
-  G26_patient_identity_linking: "gates/g26-patient-identity-linking.mjs",
-  G27_scheduling_writeback: "gates/g27-scheduling-writeback.mjs",
-  G28_ops_admin_center: "gates/g28-ops-admin-center.mjs",
-  G29_certification_evidence: "gates/g29-certification-evidence.mjs",
+  G0_prompts_integrity: 'gates/g0-prompts-integrity.mjs',
+  G1_build_typecheck: 'gates/g1-build-typecheck.mjs',
+  G2_unit_tests: 'gates/g2-unit-tests.mjs',
+  G3_security_scans: 'gates/g3-security-scans.mjs',
+  G4_contract_alignment: 'gates/g4-contract-alignment.mjs',
+  G5_api_smoke: 'gates/g5-api-smoke.mjs',
+  G6_vista_probe: 'gates/g6-vista-probe.mjs',
+  G7_restart_durability: 'gates/g7-restart-durability.mjs',
+  G8_ui_dead_click: 'gates/g8-ui-dead-click.mjs',
+  G9_performance_budget: 'gates/g9-performance-budget.mjs',
+  G10_system_audit: 'gates/g10-system-audit.mjs',
+  G11_tenant_isolation: 'gates/g11-tenant-isolation.mjs',
+  G12_data_plane: 'gates/g12-data-plane.mjs',
+  G13_imaging_scheduling_restart: 'gates/g13-imaging-scheduling-restart.mjs',
+  G14_qa_ladder: 'gates/g14-qa-ladder.mjs',
+  G15_observability: 'gates/g15-observability.mjs',
+  G16_dr_chaos: 'gates/g16-dr-chaos.mjs',
+  G17_store_policy: 'gates/g17-store-policy.mjs',
+  G18_qa_ladder_v2: 'gates/g18-qa-ladder-v2.mjs',
+  G19_system_audit_snapshot: 'gates/g19-system-audit-snapshot.mjs',
+  G20_no_new_stub_growth: 'gates/g20-no-new-stub-growth.mjs',
+  G21_no_new_critical_map_store: 'gates/g21-no-new-critical-map-store.mjs',
+  G22_phi_leak_audit: 'gates/g22-phi-leak-audit.mjs',
+  G23_clinic_day_journeys: 'gates/g23-clinic-day.mjs',
+  G24_specialty_pack_hardening: 'gates/g24-specialty-pack-hardening.mjs',
+  G25_inpatient_depth: 'gates/g25-inpatient-depth.mjs',
+  G26_patient_identity_linking: 'gates/g26-patient-identity-linking.mjs',
+  G27_scheduling_writeback: 'gates/g27-scheduling-writeback.mjs',
+  G28_ops_admin_center: 'gates/g28-ops-admin-center.mjs',
+  G29_certification_evidence: 'gates/g29-certification-evidence.mjs',
 };
 
 // ── Resolve which gates to run ──────────────────────────────
@@ -166,7 +166,7 @@ let gateIds = [...SUITE_GATES[suiteName]];
 // If filtering by phase, add phase-specific gates from manifest
 if (phaseFilter && existsSync(MANIFEST_PATH)) {
   try {
-    const raw = readFileSync(MANIFEST_PATH, "utf-8");
+    const raw = readFileSync(MANIFEST_PATH, 'utf-8');
     const manifest = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
     const phase = manifest.phases.find((p) => String(p.phaseId) === String(phaseFilter));
     if (phase) {
@@ -176,30 +176,32 @@ if (phaseFilter && existsSync(MANIFEST_PATH)) {
         if (!gateIds.includes(g)) gateIds.push(g);
       }
     }
-  } catch { /* manifest parse error -- proceed with suite defaults */ }
+  } catch {
+    /* manifest parse error -- proceed with suite defaults */
+  }
 }
 
 // If filtering by tag, add tag-specific gates
 if (tagFilter && existsSync(MANIFEST_PATH)) {
   try {
-    const raw = readFileSync(MANIFEST_PATH, "utf-8");
+    const raw = readFileSync(MANIFEST_PATH, 'utf-8');
     const manifest = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
-    const tagPhases = manifest.phases.filter((p) =>
-      p.tags.includes(tagFilter.toLowerCase())
-    );
+    const tagPhases = manifest.phases.filter((p) => p.tags.includes(tagFilter.toLowerCase()));
     for (const phase of tagPhases) {
       const phaseSuiteGates = phase.suites[suiteName] || [];
       for (const g of phaseSuiteGates) {
         if (!gateIds.includes(g)) gateIds.push(g);
       }
     }
-  } catch { /* proceed with defaults */ }
+  } catch {
+    /* proceed with defaults */
+  }
 }
 
 // Deduplicate and sort by gate number
 gateIds = [...new Set(gateIds)].sort((a, b) => {
-  const na = parseInt(a.replace(/\D/g, "")) || 0;
-  const nb = parseInt(b.replace(/\D/g, "")) || 0;
+  const na = parseInt(a.replace(/\D/g, '')) || 0;
+  const nb = parseInt(b.replace(/\D/g, '')) || 0;
   return na - nb;
 });
 
@@ -211,13 +213,13 @@ let totalFail = 0;
 let totalSkip = 0;
 let totalWarn = 0;
 
-const header = `QA Gauntlet: suite=${suiteName}${phaseFilter ? ` phase=${phaseFilter}` : ""}${tagFilter ? ` tag=${tagFilter}` : ""}${strict ? " [STRICT]" : ""}`;
+const header = `QA Gauntlet: suite=${suiteName}${phaseFilter ? ` phase=${phaseFilter}` : ''}${tagFilter ? ` tag=${tagFilter}` : ''}${strict ? ' [STRICT]' : ''}`;
 
 if (!ciMode) {
-  console.log(`\n${"=".repeat(60)}`);
+  console.log(`\n${'='.repeat(60)}`);
   console.log(`  ${header}`);
   console.log(`  Gates: ${gateIds.length}`);
-  console.log(`${"=".repeat(60)}\n`);
+  console.log(`${'='.repeat(60)}\n`);
 }
 
 const runStart = Date.now();
@@ -225,7 +227,13 @@ const runStart = Date.now();
 for (const gateId of gateIds) {
   const modulePath = GATE_MODULES[gateId];
   if (!modulePath) {
-    const result = { id: gateId, name: gateId, status: "skip", details: ["Gate module not found"], durationMs: 0 };
+    const result = {
+      id: gateId,
+      name: gateId,
+      status: 'skip',
+      details: ['Gate module not found'],
+      durationMs: 0,
+    };
     results.push(result);
     totalSkip++;
     if (!ciMode) console.log(`  SKIP  ${gateId} (module not found)`);
@@ -244,26 +252,32 @@ for (const gateId of gateIds) {
     if (result.durationMs == null) result.durationMs = gateDuration;
     results.push(result);
 
-    if (result.status === "pass") {
+    if (result.status === 'pass') {
       totalPass++;
       if (!ciMode) console.log(`  PASS  ${result.name} (${result.durationMs}ms)`);
-    } else if (result.status === "skip") {
+    } else if (result.status === 'skip') {
       totalSkip++;
-      if (!ciMode) console.log(`  SKIP  ${result.name} -- ${result.details?.[0] || ""}`);
-    } else if (result.status === "warn") {
+      if (!ciMode) console.log(`  SKIP  ${result.name} -- ${result.details?.[0] || ''}`);
+    } else if (result.status === 'warn') {
       totalWarn++;
-      if (!ciMode) console.log(`  WARN  ${result.name} -- ${result.details?.[0] || ""}`);
+      if (!ciMode) console.log(`  WARN  ${result.name} -- ${result.details?.[0] || ''}`);
     } else {
       totalFail++;
       if (!ciMode) {
         console.log(`  FAIL  ${result.name} (${result.durationMs}ms)`);
-        for (const d of (result.details || []).filter((d) => d.includes("FAIL"))) {
+        for (const d of (result.details || []).filter((d) => d.includes('FAIL'))) {
           console.log(`        ${d}`);
         }
       }
     }
   } catch (err) {
-    const result = { id: gateId, name: gateId, status: "fail", details: [`Gate threw: ${err.message}`], durationMs: 0 };
+    const result = {
+      id: gateId,
+      name: gateId,
+      status: 'fail',
+      details: [`Gate threw: ${err.message}`],
+      durationMs: 0,
+    };
     results.push(result);
     totalFail++;
     if (!ciMode) console.log(`  FAIL  ${gateId} (threw: ${err.message})`);
@@ -275,27 +289,27 @@ const totalDuration = Date.now() - runStart;
 // ── Summary ─────────────────────────────────────────────────
 
 if (!ciMode) {
-  console.log(`\n${"=".repeat(60)}`);
+  console.log(`\n${'='.repeat(60)}`);
   console.log(`  QA Gauntlet Summary`);
-  console.log(`${"=".repeat(60)}`);
-  console.log(`  Suite:    ${suiteName}${strict ? " (strict)" : ""}`);
+  console.log(`${'='.repeat(60)}`);
+  console.log(`  Suite:    ${suiteName}${strict ? ' (strict)' : ''}`);
   console.log(`  Total:    ${results.length} gates`);
   console.log(`  PASS:     ${totalPass}`);
   console.log(`  FAIL:     ${totalFail}`);
   console.log(`  SKIP:     ${totalSkip}`);
   console.log(`  WARN:     ${totalWarn}`);
   console.log(`  Duration: ${(totalDuration / 1000).toFixed(1)}s`);
-  console.log(`${"=".repeat(60)}\n`);
+  console.log(`${'='.repeat(60)}\n`);
 
   if (totalFail > 0) {
-    console.log("Failed gates:");
-    for (const r of results.filter((r) => r.status === "fail")) {
+    console.log('Failed gates:');
+    for (const r of results.filter((r) => r.status === 'fail')) {
       console.log(`  - ${r.name}`);
-      for (const d of (r.details || []).filter((d) => d.includes("FAIL"))) {
+      for (const d of (r.details || []).filter((d) => d.includes('FAIL'))) {
         console.log(`    ${d}`);
       }
     }
-    console.log("");
+    console.log('');
   }
 }
 
@@ -315,11 +329,11 @@ const machineOutput = {
 try {
   mkdirSync(ARTIFACTS_DIR, { recursive: true });
   writeFileSync(
-    resolve(ARTIFACTS_DIR, "qa-gauntlet.json"),
-    JSON.stringify(machineOutput, null, 2) + "\n",
-    "utf-8"
+    resolve(ARTIFACTS_DIR, 'qa-gauntlet.json'),
+    JSON.stringify(machineOutput, null, 2) + '\n',
+    'utf-8'
   );
-  if (!ciMode) console.log("Machine output: artifacts/qa-gauntlet.json\n");
+  if (!ciMode) console.log('Machine output: artifacts/qa-gauntlet.json\n');
 } catch (err) {
   if (!ciMode) console.warn(`Could not write artifacts: ${err.message}`);
 }

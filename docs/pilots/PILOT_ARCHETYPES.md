@@ -10,33 +10,33 @@
 
 ### Profile
 
-| Field | Value |
-|-------|-------|
-| Setting | Freestanding outpatient clinic (5-20 providers) |
-| Bed count | 0 (ambulatory only) |
-| EHR scope | CPRS clinical, scheduling, pharmacy, lab orders |
+| Field         | Value                                              |
+| ------------- | -------------------------------------------------- |
+| Setting       | Freestanding outpatient clinic (5-20 providers)    |
+| Bed count     | 0 (ambulatory only)                                |
+| EHR scope     | CPRS clinical, scheduling, pharmacy, lab orders    |
 | Billing model | Fee-for-service + PhilHealth (PH) or US commercial |
 
 ### Required Modules
 
-| Module ID | Module Name | Adapter |
-|-----------|-------------|---------|
-| kernel | Platform kernel | vista |
-| clinical | Clinical engine (CPRS) | vista |
-| scheduling | Scheduling + appointments | vista or stub |
-| rcm | Revenue cycle management | vista or stub |
-| portal | Patient portal | stub |
-| interop | Interoperability gateway | stub |
-| iam | Identity + access management | vista |
+| Module ID  | Module Name                  | Adapter       |
+| ---------- | ---------------------------- | ------------- |
+| kernel     | Platform kernel              | vista         |
+| clinical   | Clinical engine (CPRS)       | vista         |
+| scheduling | Scheduling + appointments    | vista or stub |
+| rcm        | Revenue cycle management     | vista or stub |
+| portal     | Patient portal               | stub          |
+| interop    | Interoperability gateway     | stub          |
+| iam        | Identity + access management | vista         |
 
 ### Required Integrations (Minimum)
 
-| Integration | Transport | Standard | Notes |
-|-------------|-----------|----------|-------|
-| Lab orders inbound | HL7 v2.x ORM/ORU | HL7 2.5.1 | ADT optional |
-| Pharmacy dispense | HL7 v2.x RDS | HL7 2.5.1 | If external pharmacy |
-| Claims submission | X12 837P or PhilHealth eClaims | 5010 / CF1-CF4 | At least 1 payer |
-| Eligibility check | X12 270/271 or PhilHealth API | 5010 / REST | Optional |
+| Integration        | Transport                      | Standard       | Notes                |
+| ------------------ | ------------------------------ | -------------- | -------------------- |
+| Lab orders inbound | HL7 v2.x ORM/ORU               | HL7 2.5.1      | ADT optional         |
+| Pharmacy dispense  | HL7 v2.x RDS                   | HL7 2.5.1      | If external pharmacy |
+| Claims submission  | X12 837P or PhilHealth eClaims | 5010 / CF1-CF4 | At least 1 payer     |
+| Eligibility check  | X12 270/271 or PhilHealth API  | 5010 / REST    | Optional             |
 
 ### Success Criteria
 
@@ -61,40 +61,40 @@
 
 ### Profile
 
-| Field | Value |
-|-------|-------|
-| Setting | Hospital department or service line (50-200 beds) |
-| Bed count | 50-200 |
-| EHR scope | Inpatient ADT, CPOE, pharmacy, lab, imaging, nursing |
-| Billing model | DRG/case-rate + FFS + multi-payer |
+| Field         | Value                                                |
+| ------------- | ---------------------------------------------------- |
+| Setting       | Hospital department or service line (50-200 beds)    |
+| Bed count     | 50-200                                               |
+| EHR scope     | Inpatient ADT, CPOE, pharmacy, lab, imaging, nursing |
+| Billing model | DRG/case-rate + FFS + multi-payer                    |
 
 ### Required Modules
 
-| Module ID | Module Name | Adapter |
-|-----------|-------------|---------|
-| kernel | Platform kernel | vista |
-| clinical | Clinical engine (CPRS) | vista |
-| scheduling | Scheduling + appointments | vista |
-| rcm | Revenue cycle management | vista or stub |
-| imaging | Imaging (DICOM/PACS) | vista or stub |
-| portal | Patient portal | stub |
-| interop | Interoperability gateway | vista or stub |
-| analytics | Analytics + reporting | stub |
-| iam | Identity + access management | vista |
-| telehealth | Telehealth | stub |
+| Module ID  | Module Name                  | Adapter       |
+| ---------- | ---------------------------- | ------------- |
+| kernel     | Platform kernel              | vista         |
+| clinical   | Clinical engine (CPRS)       | vista         |
+| scheduling | Scheduling + appointments    | vista         |
+| rcm        | Revenue cycle management     | vista or stub |
+| imaging    | Imaging (DICOM/PACS)         | vista or stub |
+| portal     | Patient portal               | stub          |
+| interop    | Interoperability gateway     | vista or stub |
+| analytics  | Analytics + reporting        | stub          |
+| iam        | Identity + access management | vista         |
+| telehealth | Telehealth                   | stub          |
 
 ### Required Integrations (Minimum)
 
-| Integration | Transport | Standard | Notes |
-|-------------|-----------|----------|-------|
-| ADT feeds | HL7 v2.x ADT A01-A08 | HL7 2.5.1 | Admit/discharge/transfer |
-| Lab orders + results | HL7 v2.x ORM/ORU | HL7 2.5.1 | Bidirectional |
-| Pharmacy orders | HL7 v2.x OMP | HL7 2.5.1 | Inpatient formulary |
-| Radiology orders | HL7 v2.x ORM + DICOM worklist | HL7 2.5.1 + DICOM | MWL feed |
-| Claims submission | X12 837I + 837P | 5010 | Institutional + professional |
-| Eligibility/auth | X12 270/271 + 278 | 5010 | Prior auth for procedures |
-| HIE document sharing | IHE XDS.b or MHD | FHIR R4 / XDS.b | CCD/CDA exchange |
-| Device data (vitals) | HL7 v2.x ORU or ASTM | HL7 2.5.1 | Bedside monitors |
+| Integration          | Transport                     | Standard          | Notes                        |
+| -------------------- | ----------------------------- | ----------------- | ---------------------------- |
+| ADT feeds            | HL7 v2.x ADT A01-A08          | HL7 2.5.1         | Admit/discharge/transfer     |
+| Lab orders + results | HL7 v2.x ORM/ORU              | HL7 2.5.1         | Bidirectional                |
+| Pharmacy orders      | HL7 v2.x OMP                  | HL7 2.5.1         | Inpatient formulary          |
+| Radiology orders     | HL7 v2.x ORM + DICOM worklist | HL7 2.5.1 + DICOM | MWL feed                     |
+| Claims submission    | X12 837I + 837P               | 5010              | Institutional + professional |
+| Eligibility/auth     | X12 270/271 + 278             | 5010              | Prior auth for procedures    |
+| HIE document sharing | IHE XDS.b or MHD              | FHIR R4 / XDS.b   | CCD/CDA exchange             |
+| Device data (vitals) | HL7 v2.x ORU or ASTM          | HL7 2.5.1         | Bedside monitors             |
 
 ### Success Criteria
 

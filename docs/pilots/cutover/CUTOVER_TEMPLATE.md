@@ -4,16 +4,16 @@
 
 ## 1. Overview
 
-| Field | Value |
-|-------|-------|
-| Customer | _________________ |
-| Archetype | [ ] Clinic / [ ] Hospital |
-| Cutover Date | _________________ |
-| Cutover Window | _________________ (e.g., Sat 22:00 - Sun 06:00) |
-| Rollback Deadline | _________________ (T + 4 hours) |
-| Go/No-Go Lead | _________________ |
-| Technical Lead | _________________ |
-| Clinical Safety Lead | _________________ |
+| Field                | Value                                                    |
+| -------------------- | -------------------------------------------------------- |
+| Customer             | **\*\*\*\***\_**\*\*\*\***                               |
+| Archetype            | [ ] Clinic / [ ] Hospital                                |
+| Cutover Date         | **\*\*\*\***\_**\*\*\*\***                               |
+| Cutover Window       | **\*\*\*\***\_**\*\*\*\*** (e.g., Sat 22:00 - Sun 06:00) |
+| Rollback Deadline    | **\*\*\*\***\_**\*\*\*\*** (T + 4 hours)                 |
+| Go/No-Go Lead        | **\*\*\*\***\_**\*\*\*\***                               |
+| Technical Lead       | **\*\*\*\***\_**\*\*\*\***                               |
+| Clinical Safety Lead | **\*\*\*\***\_**\*\*\*\***                               |
 
 ---
 
@@ -45,18 +45,21 @@
 ## 4. Cutover Sequence
 
 ### Phase A: Lock (T + 0:00)
+
 1. [ ] Enable maintenance mode (`MAINTENANCE_MODE=true`)
 2. [ ] Verify no active user sessions (drain timeout: 30s)
 3. [ ] Take final database backup
 4. [ ] Record backup hash/checksum
 
 ### Phase B: Migrate (T + 0:15)
+
 5. [ ] Run SQLite-to-PG migration (`scripts/migrations/sqlite-to-pg.mjs`)
 6. [ ] Verify row counts match between source and target
 7. [ ] Run payer seed if needed
 8. [ ] Apply VistA routine updates (`scripts/install-vista-routines.ps1`)
 
 ### Phase C: Validate (T + 0:45)
+
 9. [ ] Switch runtime mode to `rc` (`PLATFORM_RUNTIME_MODE=rc`)
 10. [ ] Start API against PG backend
 11. [ ] Verify `/ready` returns `ok: true`
@@ -65,6 +68,7 @@
 14. [ ] Run smoke test (patient search, allergy read)
 
 ### Phase D: Unlock (T + 1:15)
+
 15. [ ] Disable maintenance mode
 16. [ ] Verify first user can log in
 17. [ ] Run 3 critical UAT scenarios (lookup, allergy, orders)
@@ -84,12 +88,12 @@
 
 ## 6. Signoff
 
-| Role | Name | Signature | Date/Time |
-|------|------|-----------|-----------|
-| Go/No-Go Lead | | | |
-| Technical Lead | | | |
-| Clinical Safety Lead | | | |
-| Ops On-Call | | | |
+| Role                 | Name | Signature | Date/Time |
+| -------------------- | ---- | --------- | --------- |
+| Go/No-Go Lead        |      |           |           |
+| Technical Lead       |      |           |           |
+| Clinical Safety Lead |      |           |           |
+| Ops On-Call          |      |           |           |
 
 ---
 
@@ -97,6 +101,6 @@
 
 _Record any deviations, issues, or lessons learned during cutover:_
 
-1. _______________________________________________________________
-2. _______________________________________________________________
-3. _______________________________________________________________
+1. ***
+2. ***
+3. ***

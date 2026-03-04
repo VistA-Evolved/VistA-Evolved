@@ -17,7 +17,6 @@ import styles from '@/components/cprs/cprs.module.css';
 import { getCsrfTokenSync, getCsrfToken as fetchCsrfToken } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
 
-
 type Tab = 'branding' | 'theme' | 'preview';
 
 interface BrandingConfig {
@@ -64,7 +63,7 @@ async function apiFetch(path: string, opts?: RequestInit) {
 }
 
 async function apiPut(path: string, body: unknown) {
-  const token = getCsrfTokenSync() || await fetchCsrfToken();
+  const token = getCsrfTokenSync() || (await fetchCsrfToken());
   return apiFetch(path, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', 'x-csrf-token': token },
@@ -74,7 +73,11 @@ async function apiPut(path: string, body: unknown) {
 
 /* ── Color Picker Helper ───────────────────────────────── */
 
-function ColorInput({ label, value, onChange }: {
+function ColorInput({
+  label,
+  value,
+  onChange,
+}: {
   label: string;
   value: string;
   onChange: (v: string) => void;
@@ -94,10 +97,26 @@ function ColorInput({ label, value, onChange }: {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="#003366"
-        style={{ width: 100, padding: '4px 8px', fontSize: 13, border: '1px solid #ccc', borderRadius: 3, fontFamily: 'monospace' }}
+        style={{
+          width: 100,
+          padding: '4px 8px',
+          fontSize: 13,
+          border: '1px solid #ccc',
+          borderRadius: 3,
+          fontFamily: 'monospace',
+        }}
       />
       {value && (
-        <button onClick={() => onChange('')} style={{ fontSize: 11, color: '#999', cursor: 'pointer', border: 'none', background: 'none' }}>
+        <button
+          onClick={() => onChange('')}
+          style={{
+            fontSize: 11,
+            color: '#999',
+            cursor: 'pointer',
+            border: 'none',
+            background: 'none',
+          }}
+        >
           clear
         </button>
       )}
@@ -114,7 +133,7 @@ export default function BrandingAdminPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [branding, setBranding] = useState<BrandingConfig>(EMPTY_BRANDING);
-  const [uiDefaults, setUiDefaults] = useState<UIDefaults | null>(null);
+  const [_uiDefaults, setUiDefaults] = useState<UIDefaults | null>(null);
   const [selectedTheme, setSelectedTheme] = useState('modern-default');
   const tenantId = 'default'; // single-tenant for now
 
@@ -138,7 +157,9 @@ export default function BrandingAdminPage() {
     }
   }, [tenantId]);
 
-  useEffect(() => { loadData(); }, [loadData]);
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const saveBranding = async () => {
     setSaving(true);
@@ -203,60 +224,119 @@ export default function BrandingAdminPage() {
           </div>
         </div>
 
-        <fieldset disabled={!branding.enabled} style={{ border: '1px solid #ddd', borderRadius: 4, padding: 16, opacity: branding.enabled ? 1 : 0.5 }}>
-          <legend style={{ fontSize: 13, fontWeight: 600, padding: '0 8px' }}>Visual Identity</legend>
+        <fieldset
+          disabled={!branding.enabled}
+          style={{
+            border: '1px solid #ddd',
+            borderRadius: 4,
+            padding: 16,
+            opacity: branding.enabled ? 1 : 0.5,
+          }}
+        >
+          <legend style={{ fontSize: 13, fontWeight: 600, padding: '0 8px' }}>
+            Visual Identity
+          </legend>
 
           <div style={{ marginBottom: 12 }}>
-            <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>Logo URL (HTTPS required)</label>
+            <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>
+              Logo URL (HTTPS required)
+            </label>
             <input
               type="url"
               value={branding.logoUrl}
               onChange={(e) => updateField('logoUrl', e.target.value)}
               placeholder="https://example.com/logo.png"
-              style={{ width: '100%', maxWidth: 500, padding: '6px 8px', fontSize: 13, border: '1px solid #ccc', borderRadius: 3 }}
+              style={{
+                width: '100%',
+                maxWidth: 500,
+                padding: '6px 8px',
+                fontSize: 13,
+                border: '1px solid #ccc',
+                borderRadius: 3,
+              }}
             />
           </div>
 
           <div style={{ marginBottom: 12 }}>
-            <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>Favicon URL (HTTPS required)</label>
+            <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>
+              Favicon URL (HTTPS required)
+            </label>
             <input
               type="url"
               value={branding.faviconUrl}
               onChange={(e) => updateField('faviconUrl', e.target.value)}
               placeholder="https://example.com/favicon.ico"
-              style={{ width: '100%', maxWidth: 500, padding: '6px 8px', fontSize: 13, border: '1px solid #ccc', borderRadius: 3 }}
+              style={{
+                width: '100%',
+                maxWidth: 500,
+                padding: '6px 8px',
+                fontSize: 13,
+                border: '1px solid #ccc',
+                borderRadius: 3,
+              }}
             />
           </div>
 
           <div style={{ marginBottom: 12 }}>
-            <ColorInput label="Primary Color" value={branding.primaryColor} onChange={(v) => updateField('primaryColor', v)} />
-            <ColorInput label="Secondary Color" value={branding.secondaryColor} onChange={(v) => updateField('secondaryColor', v)} />
+            <ColorInput
+              label="Primary Color"
+              value={branding.primaryColor}
+              onChange={(v) => updateField('primaryColor', v)}
+            />
+            <ColorInput
+              label="Secondary Color"
+              value={branding.secondaryColor}
+              onChange={(v) => updateField('secondaryColor', v)}
+            />
           </div>
 
           <div style={{ marginBottom: 12 }}>
-            <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>Header Text (max 100 chars)</label>
+            <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>
+              Header Text (max 100 chars)
+            </label>
             <input
               type="text"
               value={branding.headerText}
               onChange={(e) => updateField('headerText', e.target.value.slice(0, 100))}
               placeholder="My Health System"
               maxLength={100}
-              style={{ width: '100%', maxWidth: 500, padding: '6px 8px', fontSize: 13, border: '1px solid #ccc', borderRadius: 3 }}
+              style={{
+                width: '100%',
+                maxWidth: 500,
+                padding: '6px 8px',
+                fontSize: 13,
+                border: '1px solid #ccc',
+                borderRadius: 3,
+              }}
             />
-            <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>{branding.headerText.length}/100</div>
+            <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>
+              {branding.headerText.length}/100
+            </div>
           </div>
 
           <div style={{ marginBottom: 12 }}>
-            <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>Footer Text (max 200 chars)</label>
+            <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>
+              Footer Text (max 200 chars)
+            </label>
             <textarea
               value={branding.footerText}
               onChange={(e) => updateField('footerText', e.target.value.slice(0, 200))}
               placeholder="Powered by VistA-Evolved"
               maxLength={200}
               rows={2}
-              style={{ width: '100%', maxWidth: 500, padding: '6px 8px', fontSize: 13, border: '1px solid #ccc', borderRadius: 3, resize: 'vertical' }}
+              style={{
+                width: '100%',
+                maxWidth: 500,
+                padding: '6px 8px',
+                fontSize: 13,
+                border: '1px solid #ccc',
+                borderRadius: 3,
+                resize: 'vertical',
+              }}
             />
-            <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>{branding.footerText.length}/200</div>
+            <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>
+              {branding.footerText.length}/200
+            </div>
           </div>
         </fieldset>
 
@@ -272,7 +352,14 @@ export default function BrandingAdminPage() {
           <button
             onClick={loadData}
             disabled={loading}
-            style={{ padding: '6px 16px', fontSize: 13, cursor: 'pointer', border: '1px solid #ccc', borderRadius: 3, background: '#f5f5f5' }}
+            style={{
+              padding: '6px 16px',
+              fontSize: 13,
+              cursor: 'pointer',
+              border: '1px solid #ccc',
+              borderRadius: 3,
+              background: '#f5f5f5',
+            }}
           >
             Reset
           </button>
@@ -288,11 +375,17 @@ export default function BrandingAdminPage() {
       <div style={{ padding: 16 }}>
         <h3 style={{ marginBottom: 8, fontSize: 15, fontWeight: 600 }}>Default Theme Pack</h3>
         <p style={{ fontSize: 13, color: '#666', marginBottom: 16 }}>
-          Set the default theme pack for new users at this facility.
-          Users can override with their own preference.
+          Set the default theme pack for new users at this facility. Users can override with their
+          own preference.
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+            gap: 12,
+          }}
+        >
           {THEME_PACKS.map((tp) => (
             <label
               key={tp.id}
@@ -301,7 +394,10 @@ export default function BrandingAdminPage() {
                 alignItems: 'center',
                 gap: 10,
                 padding: '12px 14px',
-                border: selectedTheme === tp.id ? '2px solid var(--cprs-primary, #003366)' : '1px solid #ddd',
+                border:
+                  selectedTheme === tp.id
+                    ? '2px solid var(--cprs-primary, #003366)'
+                    : '1px solid #ddd',
                 borderRadius: 6,
                 cursor: 'pointer',
                 background: selectedTheme === tp.id ? 'var(--cprs-hover-bg, #f0f7ff)' : '#fff',
@@ -347,7 +443,10 @@ export default function BrandingAdminPage() {
     };
 
     const headerStyle: React.CSSProperties = {
-      background: branding.enabled && branding.primaryColor ? branding.primaryColor : 'var(--cprs-header-bg, #003366)',
+      background:
+        branding.enabled && branding.primaryColor
+          ? branding.primaryColor
+          : 'var(--cprs-header-bg, #003366)',
       color: '#fff',
       padding: '12px 16px',
       display: 'flex',
@@ -374,7 +473,9 @@ export default function BrandingAdminPage() {
                 src={branding.logoUrl}
                 alt="Logo"
                 style={{ height: 28, width: 'auto' }}
-                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
               />
             )}
             <span style={{ fontWeight: 600, fontSize: 15 }}>
@@ -402,7 +503,9 @@ export default function BrandingAdminPage() {
             )}
           </div>
           <div style={footerStyle}>
-            {branding.enabled && branding.footerText ? branding.footerText : 'Powered by VistA-Evolved'}
+            {branding.enabled && branding.footerText
+              ? branding.footerText
+              : 'Powered by VistA-Evolved'}
           </div>
         </div>
         <div style={{ marginTop: 12, fontSize: 12, color: '#888' }}>
@@ -424,16 +527,36 @@ export default function BrandingAdminPage() {
     <div className={styles.cprsRoot}>
       <div className={styles.cprsHeader}>
         <h2 className={styles.cprsHeaderTitle}>Tenant Branding Admin</h2>
-        <span className={styles.cprsBadge} style={{ marginLeft: 8 }}>Phase 282</span>
+        <span className={styles.cprsBadge} style={{ marginLeft: 8 }}>
+          Phase 282
+        </span>
       </div>
 
       {error && (
-        <div style={{ margin: '8px 16px', padding: '8px 12px', background: '#fde8e8', color: '#b91c1c', borderRadius: 4, fontSize: 13 }}>
+        <div
+          style={{
+            margin: '8px 16px',
+            padding: '8px 12px',
+            background: '#fde8e8',
+            color: '#b91c1c',
+            borderRadius: 4,
+            fontSize: 13,
+          }}
+        >
           {error}
         </div>
       )}
       {success && (
-        <div style={{ margin: '8px 16px', padding: '8px 12px', background: '#dcfce7', color: '#15803d', borderRadius: 4, fontSize: 13 }}>
+        <div
+          style={{
+            margin: '8px 16px',
+            padding: '8px 12px',
+            background: '#dcfce7',
+            color: '#15803d',
+            borderRadius: 4,
+            fontSize: 13,
+          }}
+        >
           {success}
         </div>
       )}
@@ -443,7 +566,11 @@ export default function BrandingAdminPage() {
           <button
             key={t.id}
             className={tab === t.id ? styles.cprsTabActive : styles.cprsTab}
-            onClick={() => { setTab(t.id); setError(''); setSuccess(''); }}
+            onClick={() => {
+              setTab(t.id);
+              setError('');
+              setSuccess('');
+            }}
           >
             {t.label}
           </button>

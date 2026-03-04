@@ -21,21 +21,93 @@ interface OrderTemplate {
 
 const ORDER_SET_TEMPLATES: OrderTemplate[] = [
   // Common Med Orders
-  { id: 'tpl-med-1', name: 'Acetaminophen 500mg PO Q6H PRN', category: 'Common Meds', type: 'med', details: 'Acetaminophen 500mg tab, PO, every 6 hours as needed for pain' },
-  { id: 'tpl-med-2', name: 'Lisinopril 10mg PO Daily', category: 'Common Meds', type: 'med', details: 'Lisinopril 10mg tab, PO, once daily' },
-  { id: 'tpl-med-3', name: 'Metformin 500mg PO BID', category: 'Common Meds', type: 'med', details: 'Metformin 500mg tab, PO, twice daily with meals' },
-  { id: 'tpl-med-4', name: 'Amlodipine 5mg PO Daily', category: 'Common Meds', type: 'med', details: 'Amlodipine 5mg tab, PO, once daily' },
+  {
+    id: 'tpl-med-1',
+    name: 'Acetaminophen 500mg PO Q6H PRN',
+    category: 'Common Meds',
+    type: 'med',
+    details: 'Acetaminophen 500mg tab, PO, every 6 hours as needed for pain',
+  },
+  {
+    id: 'tpl-med-2',
+    name: 'Lisinopril 10mg PO Daily',
+    category: 'Common Meds',
+    type: 'med',
+    details: 'Lisinopril 10mg tab, PO, once daily',
+  },
+  {
+    id: 'tpl-med-3',
+    name: 'Metformin 500mg PO BID',
+    category: 'Common Meds',
+    type: 'med',
+    details: 'Metformin 500mg tab, PO, twice daily with meals',
+  },
+  {
+    id: 'tpl-med-4',
+    name: 'Amlodipine 5mg PO Daily',
+    category: 'Common Meds',
+    type: 'med',
+    details: 'Amlodipine 5mg tab, PO, once daily',
+  },
   // Lab Orders
-  { id: 'tpl-lab-1', name: 'CBC with Differential', category: 'Lab Orders', type: 'lab', details: 'Complete Blood Count with Differential, routine' },
-  { id: 'tpl-lab-2', name: 'BMP (Basic Metabolic Panel)', category: 'Lab Orders', type: 'lab', details: 'Basic Metabolic Panel, routine draw' },
-  { id: 'tpl-lab-3', name: 'HbA1c', category: 'Lab Orders', type: 'lab', details: 'Hemoglobin A1c, routine' },
-  { id: 'tpl-lab-4', name: 'Lipid Panel', category: 'Lab Orders', type: 'lab', details: 'Lipid Panel (Total Chol, LDL, HDL, Trig), fasting' },
+  {
+    id: 'tpl-lab-1',
+    name: 'CBC with Differential',
+    category: 'Lab Orders',
+    type: 'lab',
+    details: 'Complete Blood Count with Differential, routine',
+  },
+  {
+    id: 'tpl-lab-2',
+    name: 'BMP (Basic Metabolic Panel)',
+    category: 'Lab Orders',
+    type: 'lab',
+    details: 'Basic Metabolic Panel, routine draw',
+  },
+  {
+    id: 'tpl-lab-3',
+    name: 'HbA1c',
+    category: 'Lab Orders',
+    type: 'lab',
+    details: 'Hemoglobin A1c, routine',
+  },
+  {
+    id: 'tpl-lab-4',
+    name: 'Lipid Panel',
+    category: 'Lab Orders',
+    type: 'lab',
+    details: 'Lipid Panel (Total Chol, LDL, HDL, Trig), fasting',
+  },
   // Imaging Orders
-  { id: 'tpl-img-1', name: 'Chest X-Ray PA/Lateral', category: 'Imaging', type: 'imaging', details: 'Chest X-Ray, PA and Lateral views, routine' },
-  { id: 'tpl-img-2', name: 'CT Abdomen/Pelvis w/ Contrast', category: 'Imaging', type: 'imaging', details: 'CT Abdomen and Pelvis with IV contrast' },
+  {
+    id: 'tpl-img-1',
+    name: 'Chest X-Ray PA/Lateral',
+    category: 'Imaging',
+    type: 'imaging',
+    details: 'Chest X-Ray, PA and Lateral views, routine',
+  },
+  {
+    id: 'tpl-img-2',
+    name: 'CT Abdomen/Pelvis w/ Contrast',
+    category: 'Imaging',
+    type: 'imaging',
+    details: 'CT Abdomen and Pelvis with IV contrast',
+  },
   // Consult Orders
-  { id: 'tpl-con-1', name: 'Cardiology Consult', category: 'Consults', type: 'consult', details: 'Outpatient cardiology consultation' },
-  { id: 'tpl-con-2', name: 'Endocrine Consult', category: 'Consults', type: 'consult', details: 'Outpatient endocrinology consultation' },
+  {
+    id: 'tpl-con-1',
+    name: 'Cardiology Consult',
+    category: 'Consults',
+    type: 'consult',
+    details: 'Outpatient cardiology consultation',
+  },
+  {
+    id: 'tpl-con-2',
+    name: 'Endocrine Consult',
+    category: 'Consults',
+    type: 'consult',
+    details: 'Outpatient endocrinology consultation',
+  },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -54,9 +126,10 @@ export default function OrderSetsPage() {
 
   const categories = ['all', ...new Set(ORDER_SET_TEMPLATES.map((t) => t.category))];
 
-  const filtered = selectedCategory === 'all'
-    ? ORDER_SET_TEMPLATES
-    : ORDER_SET_TEMPLATES.filter((t) => t.category === selectedCategory);
+  const filtered =
+    selectedCategory === 'all'
+      ? ORDER_SET_TEMPLATES
+      : ORDER_SET_TEMPLATES.filter((t) => t.category === selectedCategory);
 
   function handleAddOrder(template: OrderTemplate) {
     const order: DraftOrder = {
@@ -79,7 +152,14 @@ export default function OrderSetsPage() {
       <CPRSMenuBar dfn={patientDfn} />
 
       <div style={{ padding: 16 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 16,
+          }}
+        >
           <div>
             <h1 style={{ fontSize: 18, margin: 0 }}>Order Sets / Quick Orders</h1>
             <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)', margin: '4px 0 0' }}>
@@ -94,7 +174,9 @@ export default function OrderSetsPage() {
               style={{ width: 'auto', fontSize: 12 }}
             >
               {categories.map((c) => (
-                <option key={c} value={c}>{c === 'all' ? 'All Categories' : c}</option>
+                <option key={c} value={c}>
+                  {c === 'all' ? 'All Categories' : c}
+                </option>
               ))}
             </select>
             <button
@@ -106,7 +188,13 @@ export default function OrderSetsPage() {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 12 }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gap: 12,
+          }}
+        >
           {filtered.map((tpl) => (
             <div
               key={tpl.id}
@@ -117,10 +205,24 @@ export default function OrderSetsPage() {
                 background: addedIds.has(tpl.id) ? 'var(--cprs-bg)' : 'var(--cprs-surface)',
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  marginBottom: 6,
+                }}
+              >
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 600 }}>{tpl.name}</div>
-                  <div style={{ fontSize: 10, color: 'var(--cprs-text-muted)', textTransform: 'uppercase', marginTop: 2 }}>
+                  <div
+                    style={{
+                      fontSize: 10,
+                      color: 'var(--cprs-text-muted)',
+                      textTransform: 'uppercase',
+                      marginTop: 2,
+                    }}
+                  >
                     {tpl.category} &bull; {tpl.type}
                   </div>
                 </div>
@@ -133,15 +235,26 @@ export default function OrderSetsPage() {
                   {addedIds.has(tpl.id) ? 'Added' : 'Add to Orders'}
                 </button>
               </div>
-              <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: 0 }}>{tpl.details}</p>
+              <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: 0 }}>
+                {tpl.details}
+              </p>
             </div>
           ))}
         </div>
 
-        <div style={{ marginTop: 16, padding: 8, background: 'var(--cprs-bg)', borderRadius: 4, fontSize: 11, color: 'var(--cprs-text-muted)' }}>
-          <strong>Order Workflow:</strong> Draft → Unsigned → Signed → Released.
-          Orders added here start as <em>Draft</em>. Navigate to the Orders tab to
-          sign and release. Contract: ORWDX SAVE, ORWDXA DC.
+        <div
+          style={{
+            marginTop: 16,
+            padding: 8,
+            background: 'var(--cprs-bg)',
+            borderRadius: 4,
+            fontSize: 11,
+            color: 'var(--cprs-text-muted)',
+          }}
+        >
+          <strong>Order Workflow:</strong> Draft → Unsigned → Signed → Released. Orders added here
+          start as <em>Draft</em>. Navigate to the Orders tab to sign and release. Contract: ORWDX
+          SAVE, ORWDXA DC.
         </div>
       </div>
     </div>

@@ -10,26 +10,26 @@
  * Produces a 0–100 numeric score per specialty plus an aggregate.
  */
 
-import { SPECIALTY_TAGS, type SpecialtyTag } from "./types.js";
-import { getAllSpecialtyPacks } from "./specialty-packs.js";
+import { SPECIALTY_TAGS, type SpecialtyTag } from './types.js';
+import { getAllSpecialtyPacks } from './specialty-packs.js';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-export type LetterGrade = "A" | "B" | "C" | "D" | "F";
+export type LetterGrade = 'A' | 'B' | 'C' | 'D' | 'F';
 
 export interface SpecialtyScore {
   specialty: SpecialtyTag;
-  score: number;           // 0–100
+  score: number; // 0–100
   grade: LetterGrade;
   packExists: boolean;
   templateCount: number;
   avgFieldsPerTemplate: number;
   avgSectionsPerTemplate: number;
   breakdown: {
-    packExistence: number;   // 0 | 25
-    templateCount: number;   // 0–25
-    fieldCoverage: number;   // 0–25
-    sectionDepth: number;    // 0–25
+    packExistence: number; // 0 | 25
+    templateCount: number; // 0–25
+    fieldCoverage: number; // 0–25
+    sectionDepth: number; // 0–25
   };
 }
 
@@ -37,21 +37,21 @@ export interface CoverageReport {
   generatedAt: string;
   totalSpecialties: number;
   scoredSpecialties: number;
-  overallScore: number;       // weighted average 0–100
+  overallScore: number; // weighted average 0–100
   overallGrade: LetterGrade;
   distribution: Record<LetterGrade, number>;
   specialties: SpecialtyScore[];
-  gaps: SpecialtyScore[];     // specialties scoring < 50
+  gaps: SpecialtyScore[]; // specialties scoring < 50
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 export function scoreToGrade(score: number): LetterGrade {
-  if (score >= 90) return "A";
-  if (score >= 75) return "B";
-  if (score >= 60) return "C";
-  if (score >= 40) return "D";
-  return "F";
+  if (score >= 90) return 'A';
+  if (score >= 75) return 'B';
+  if (score >= 60) return 'C';
+  if (score >= 40) return 'D';
+  return 'F';
 }
 
 function clamp(v: number, min: number, max: number): number {
@@ -65,13 +65,13 @@ function clamp(v: number, min: number, max: number): number {
  */
 export function scoreSpecialty(
   specialty: SpecialtyTag,
-  pack: { templates: { sections?: { fields?: unknown[] }[] }[] } | null,
+  pack: { templates: { sections?: { fields?: unknown[] }[] }[] } | null
 ): SpecialtyScore {
   if (!pack || pack.templates.length === 0) {
     return {
       specialty,
       score: 0,
-      grade: "F",
+      grade: 'F',
       packExists: false,
       templateCount: 0,
       avgFieldsPerTemplate: 0,

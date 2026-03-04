@@ -12,15 +12,12 @@
  */
 
 import {
-  getPaymentById,
   updatePaymentStatus,
   createMatch,
   createUnderpaymentCase,
   listPaymentsByImport,
-} from "./recon-store.js";
-import type {
-  PaymentRecord,
-} from "./types.js";
+} from './recon-store.js';
+import type { PaymentRecord } from './types.js';
 
 /* ── Configuration ─────────────────────────────────────────── */
 
@@ -28,7 +25,7 @@ import type {
 const AMOUNT_TOLERANCE_CENTS = 100; // $1.00
 
 /** Underpayment threshold: flag if paid < (billed * threshold) */
-const UNDERPAYMENT_THRESHOLD = 0.90; // 90% — shortfall > 10% flagged
+const UNDERPAYMENT_THRESHOLD = 0.9; // 90% — shortfall > 10% flagged
 
 /** Minimum confidence to auto-match */
 const AUTO_MATCH_CONFIDENCE = 80;
@@ -99,14 +96,14 @@ export async function matchPayment(payment: PaymentRecord): Promise<SingleMatchR
     // Tier 1: Exact claimRef match
     const exactClaim = knownClaims.get(payment.claimRef);
     if (exactClaim) {
-      return await createMatchAndCheck(payment, exactClaim, "EXACT_CLAIM_REF", 100);
+      return await createMatchAndCheck(payment, exactClaim, 'EXACT_CLAIM_REF', 100);
     }
 
     // Tier 2: Match by trace number if available
     if (payment.traceNumber) {
       for (const claim of knownClaims.values()) {
         if (claim.claimRef === payment.traceNumber) {
-          return await createMatchAndCheck(payment, claim, "TRACE_NUMBER", 90);
+          return await createMatchAndCheck(payment, claim, 'TRACE_NUMBER', 90);
         }
       }
     }
@@ -120,14 +117,14 @@ export async function matchPayment(payment: PaymentRecord): Promise<SingleMatchR
         if (claim.totalChargeCents !== undefined) {
           const diff = Math.abs(claim.totalChargeCents - payment.billedAmountCents);
           if (diff <= AMOUNT_TOLERANCE_CENTS) {
-            return await createMatchAndCheck(payment, claim, "PATIENT_DOS_AMOUNT", 60);
+            return await createMatchAndCheck(payment, claim, 'PATIENT_DOS_AMOUNT', 60);
           }
         }
       }
     }
 
     // No match found — mark as unmatched
-    await updatePaymentStatus(payment.id, "UNMATCHED");
+    await updatePaymentStatus(payment.id, 'UNMATCHED');
     return {
       paymentId: payment.id,
       matched: false,
@@ -158,7 +155,7 @@ export async function matchImportBatch(importId: string): Promise<BatchMatchResu
   const errors: string[] = [];
 
   for (const payment of payments) {
-    if (payment.status !== "IMPORTED") continue; // skip already processed
+    if (payment.status !== 'IMPORTED') continue; // skip already processed
 
     const result = await matchPayment(payment);
     results.push(result);
@@ -194,7 +191,9 @@ export async function matchImportBatch(importId: string): Promise<BatchMatchResu
  * Run batch matching for a given import and return a simplified result.
  * Used by remittance-import-job.ts for background processing.
  */
-export async function runBatchMatch(importId: string): Promise<{ attempted: number; matched: number; errors: string[] }> {
+export async function runBatchMatch(
+  importId: string
+): Promise<{ attempted: number; matched: number; errors: string[] }> {
   const batch = await matchImportBatch(importId);
   return {
     attempted: batch.totalLines,
@@ -209,10 +208,10 @@ async function createMatchAndCheck(
   payment: PaymentRecord,
   claim: KnownClaim,
   method: string,
-  confidence: number,
+  confidence: number
 ): Promise<SingleMatchResult> {
-  const matchStatus = confidence >= AUTO_MATCH_CONFIDENCE ? "AUTO_MATCHED" : "REVIEW_REQUIRED";
-  const paymentStatus = confidence >= AUTO_MATCH_CONFIDENCE ? "MATCHED" : "IMPORTED";
+  const matchStatus = confidence >= AUTO_MATCH_CONFIDENCE ? 'AUTO_MATCHED' : 'REVIEW_REQUIRED';
+  const paymentStatus = confidence >= AUTO_MATCH_CONFIDENCE ? 'MATCHED' : 'IMPORTED';
 
   // Create reconciliation match record
   const match = await createMatch({
@@ -236,7 +235,7 @@ async function createMatchAndCheck(
       claimRef: claim.claimRef,
       paymentId: payment.id,
       payerId: payment.payerId,
-      expectedAmountModel: claim.totalChargeCents ? "CONTRACT_MODEL" : "BILLED_AMOUNT",
+      expectedAmountModel: claim.totalChargeCents ? 'CONTRACT_MODEL' : 'BILLED_AMOUNT',
       expectedAmountCents: expectedCents,
       paidAmountCents: payment.paidAmountCents,
     });

@@ -5,16 +5,16 @@
 
 ## Phase Map
 
-| Wave Phase | Resolved ID | Title | Prompt Folder | Status |
-|------------|-------------|-------|---------------|--------|
-| W32-P1 | 473 | Wave Auto-Numbering + Reservation Bootstrap | `473-W32-P1-AUTOWAVE-BOOTSTRAP` | Done |
-| W32-P2 | 474 | Prompt Phase File-Name Standardization | `474-W32-P2-WAVE-PROMPT-NORMALIZE` | Done |
-| W32-P3 | 475 | Fix Phase Index Gate Freshness | `475-W32-P3-PHASE-INDEX-FIX` | Done |
-| W32-P4 | 476 | VEHU VistA Runtime Profile | `476-W32-P4-VEHU-RUNTIME` | Done |
-| W32-P5 | 477 | VEHU Credentials + Test Harness | `477-W32-P5-VEHU-TESTS` | Done |
-| W32-P6 | 478 | VistA Capability Snapshot | `478-W32-P6-CAPABILITY-SNAPSHOT` | Done |
-| W32-P7 | 479 | RPC Contract Trace Recorder | `479-W32-P7-RPC-CONTRACT-TRACE` | Done |
-| W32-P8 | 480 | Integration-Pending Budget Gate | `480-W32-P8-PENDING-BUDGET-GATE` | Done |
+| Wave Phase | Resolved ID | Title                                       | Prompt Folder                      | Status |
+| ---------- | ----------- | ------------------------------------------- | ---------------------------------- | ------ |
+| W32-P1     | 473         | Wave Auto-Numbering + Reservation Bootstrap | `473-W32-P1-AUTOWAVE-BOOTSTRAP`    | Done   |
+| W32-P2     | 474         | Prompt Phase File-Name Standardization      | `474-W32-P2-WAVE-PROMPT-NORMALIZE` | Done   |
+| W32-P3     | 475         | Fix Phase Index Gate Freshness              | `475-W32-P3-PHASE-INDEX-FIX`       | Done   |
+| W32-P4     | 476         | VEHU VistA Runtime Profile                  | `476-W32-P4-VEHU-RUNTIME`          | Done   |
+| W32-P5     | 477         | VEHU Credentials + Test Harness             | `477-W32-P5-VEHU-TESTS`            | Done   |
+| W32-P6     | 478         | VistA Capability Snapshot                   | `478-W32-P6-CAPABILITY-SNAPSHOT`   | Done   |
+| W32-P7     | 479         | RPC Contract Trace Recorder                 | `479-W32-P7-RPC-CONTRACT-TRACE`    | Done   |
+| W32-P8     | 480         | Integration-Pending Budget Gate             | `480-W32-P8-PENDING-BUDGET-GATE`   | Done   |
 
 ## Scope
 

@@ -12,8 +12,12 @@ const ROOT = resolve(__dirname, '..', '..', '..');
 
 export const CPRS_CHART_DIR = join(
   ROOT,
-  'reference', 'cprs', 'Packages',
-  'Order Entry Results Reporting', 'CPRS', 'CPRS-Chart'
+  'reference',
+  'cprs',
+  'Packages',
+  'Order Entry Results Reporting',
+  'CPRS',
+  'CPRS-Chart'
 );
 
 export const CPRS_ROOT = join(ROOT, 'reference', 'cprs');
@@ -34,7 +38,7 @@ async function walkDir(dir, filter) {
   for (const entry of entries) {
     const fullPath = join(dir, entry.name);
     if (entry.isDirectory()) {
-      results.push(...await walkDir(fullPath, filter));
+      results.push(...(await walkDir(fullPath, filter)));
     } else if (filter(entry.name)) {
       results.push(fullPath);
     }

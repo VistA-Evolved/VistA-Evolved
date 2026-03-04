@@ -8,7 +8,11 @@
 import type { PayerImporter, ImportResult } from '../types.js';
 import { phInsuranceCommissionImporter } from './ph-insurance-commission.js';
 import { auApraImporter } from './au-apra.js';
-import { usClearinghouseImporter, usAvailityImporter, usOfficeAllyImporter } from './us-clearinghouse.js';
+import {
+  usClearinghouseImporter,
+  usAvailityImporter,
+  usOfficeAllyImporter,
+} from './us-clearinghouse.js';
 import { sgNzGatewayImporter } from './sg-nz-gateways.js';
 import type { PayerCountry } from '../../domain/payer.js';
 
@@ -26,7 +30,7 @@ const ALL_IMPORTERS: PayerImporter[] = [
 /* ── Registry Functions ─────────────────────────────────────── */
 
 export function getImporter(id: string): PayerImporter | undefined {
-  return ALL_IMPORTERS.find(i => i.id === id);
+  return ALL_IMPORTERS.find((i) => i.id === id);
 }
 
 export function listImporters(): Array<{
@@ -35,7 +39,7 @@ export function listImporters(): Array<{
   country: PayerCountry;
   supportsFileImport: boolean;
 }> {
-  return ALL_IMPORTERS.map(i => ({
+  return ALL_IMPORTERS.map((i) => ({
     id: i.id,
     name: i.name,
     country: i.country,
@@ -69,7 +73,7 @@ export function runAllImporters(): ImportResult[] {
  * Run importers for a specific country.
  */
 export function runImportersByCountry(country: PayerCountry): ImportResult[] {
-  const importers = ALL_IMPORTERS.filter(i => i.country === country);
+  const importers = ALL_IMPORTERS.filter((i) => i.country === country);
   const results: ImportResult[] = [];
   for (const importer of importers) {
     try {

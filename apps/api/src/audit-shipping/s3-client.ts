@@ -12,8 +12,8 @@
  * Uses Node.js built-in `crypto` and `http`/`https` only.
  */
 
-import { createHash, createHmac } from "crypto";
-import { log } from "../lib/logger.js";
+import { createHash, createHmac } from 'crypto';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -41,27 +41,30 @@ export interface S3PutResult {
 /* ------------------------------------------------------------------ */
 
 function sha256(data: string | Buffer): string {
-  return createHash("sha256").update(data).digest("hex");
+  return createHash('sha256').update(data).digest('hex');
 }
 
 function hmacSha256(key: string | Buffer, data: string): Buffer {
-  return createHmac("sha256", key).update(data).digest();
+  return createHmac('sha256', key).update(data).digest();
 }
 
 function getSignatureKey(
   secretKey: string,
   dateStamp: string,
   region: string,
-  service: string,
+  service: string
 ): Buffer {
-  const kDate = hmacSha256("AWS4" + secretKey, dateStamp);
+  const kDate = hmacSha256('AWS4' + secretKey, dateStamp);
   const kRegion = hmacSha256(kDate, region);
   const kService = hmacSha256(kRegion, service);
-  return hmacSha256(kService, "aws4_request");
+  return hmacSha256(kService, 'aws4_request');
 }
 
 function toAmzDate(date: Date): { amzDate: string; dateStamp: string } {
-  const iso = date.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const iso = date
+    .toISOString()
+    .replace(/[-:]/g, '')
+    .replace(/\.\d{3}/, '');
   return {
     amzDate: iso, // 20260227T120000Z
     dateStamp: iso.slice(0, 8), // 20260227
@@ -76,13 +79,11 @@ async function s3Request(
   method: string,
   url: string,
   headers: Record<string, string>,
-  body?: Buffer,
+  body?: Buffer
 ): Promise<{ statusCode: number; headers: Record<string, string>; body: string }> {
   const parsedUrl = new URL(url);
-  const isHttps = parsedUrl.protocol === "https:";
-  const mod = isHttps
-    ? await import("https")
-    : await import("http");
+  const isHttps = parsedUrl.protocol === 'https:';
+  const mod = isHttps ? await import('https') : await import('http');
 
   return new Promise((resolve, reject) => {
     const opts = {
@@ -95,19 +96,19 @@ async function s3Request(
 
     const req = mod.request(opts, (res) => {
       const chunks: Buffer[] = [];
-      res.on("data", (c: Buffer) => chunks.push(c));
-      res.on("end", () => {
+      res.on('data', (c: Buffer) => chunks.push(c));
+      res.on('end', () => {
         resolve({
           statusCode: res.statusCode || 0,
           headers: (res.headers || {}) as Record<string, string>,
-          body: Buffer.concat(chunks).toString("utf-8"),
+          body: Buffer.concat(chunks).toString('utf-8'),
         });
       });
     });
 
-    req.on("error", reject);
+    req.on('error', reject);
     req.setTimeout(30_000, () => {
-      req.destroy(new Error("S3 request timeout (30s)"));
+      req.destroy(new Error('S3 request timeout (30s)'));
     });
 
     if (body) req.write(body);
@@ -129,8 +130,8 @@ export class S3Client {
   /** Build the full URL for an object key */
   private objectUrl(key: string): string {
     const { endpoint, bucket, pathStyle } = this.config;
-    const cleanEndpoint = endpoint.replace(/\/+$/, "");
-    const encodedKey = key.split("/").map(encodeURIComponent).join("/");
+    const cleanEndpoint = endpoint.replace(/\/+$/, '');
+    const encodedKey = key.split('/').map(encodeURIComponent).join('/');
     if (pathStyle) {
       return `${cleanEndpoint}/${bucket}/${encodedKey}`;
     }
@@ -142,7 +143,7 @@ export class S3Client {
   /** Build the bucket URL */
   private bucketUrl(): string {
     const { endpoint, bucket, pathStyle } = this.config;
-    const cleanEndpoint = endpoint.replace(/\/+$/, "");
+    const cleanEndpoint = endpoint.replace(/\/+$/, '');
     if (pathStyle) {
       return `${cleanEndpoint}/${bucket}`;
     }
@@ -155,7 +156,7 @@ export class S3Client {
     method: string,
     url: string,
     headers: Record<string, string>,
-    payloadHash: string,
+    payloadHash: string
   ): Record<string, string> {
     const { accessKey, secretKey, region } = this.config;
     const parsedUrl = new URL(url);
@@ -163,8 +164,8 @@ export class S3Client {
     const { amzDate, dateStamp } = toAmzDate(now);
 
     // Add required headers
-    headers["x-amz-date"] = amzDate;
-    headers["x-amz-content-sha256"] = payloadHash;
+    headers['x-amz-date'] = amzDate;
+    headers['x-amz-content-sha256'] = payloadHash;
 
     // Canonical request
     const canonicalUri = parsedUrl.pathname;
@@ -174,10 +175,13 @@ export class S3Client {
     const signedHeaderKeys = Object.keys(headers)
       .map((k) => k.toLowerCase())
       .sort();
-    const canonicalHeaders = signedHeaderKeys
-      .map((k) => `${k}:${headers[Object.keys(headers).find((h) => h.toLowerCase() === k)!]!.trim()}`)
-      .join("\n") + "\n";
-    const signedHeaders = signedHeaderKeys.join(";");
+    const canonicalHeaders =
+      signedHeaderKeys
+        .map(
+          (k) => `${k}:${headers[Object.keys(headers).find((h) => h.toLowerCase() === k)!]!.trim()}`
+        )
+        .join('\n') + '\n';
+    const signedHeaders = signedHeaderKeys.join(';');
 
     const canonicalRequest = [
       method,
@@ -186,23 +190,18 @@ export class S3Client {
       canonicalHeaders,
       signedHeaders,
       payloadHash,
-    ].join("\n");
+    ].join('\n');
 
     // String to sign
     const scope = `${dateStamp}/${region}/s3/aws4_request`;
-    const stringToSign = [
-      "AWS4-HMAC-SHA256",
-      amzDate,
-      scope,
-      sha256(canonicalRequest),
-    ].join("\n");
+    const stringToSign = ['AWS4-HMAC-SHA256', amzDate, scope, sha256(canonicalRequest)].join('\n');
 
     // Signature
-    const signingKey = getSignatureKey(secretKey, dateStamp, region, "s3");
-    const signature = createHmac("sha256", signingKey).update(stringToSign).digest("hex");
+    const signingKey = getSignatureKey(secretKey, dateStamp, region, 's3');
+    const signature = createHmac('sha256', signingKey).update(stringToSign).digest('hex');
 
     // Authorization header
-    headers["Authorization"] =
+    headers['Authorization'] =
       `AWS4-HMAC-SHA256 Credential=${accessKey}/${scope}, ` +
       `SignedHeaders=${signedHeaders}, Signature=${signature}`;
 
@@ -210,54 +209,58 @@ export class S3Client {
   }
 
   /** Upload a Buffer to an S3 key. Returns result with etag. */
-  async putObject(key: string, body: Buffer, contentType = "application/x-ndjson"): Promise<S3PutResult> {
+  async putObject(
+    key: string,
+    body: Buffer,
+    contentType = 'application/x-ndjson'
+  ): Promise<S3PutResult> {
     const url = this.objectUrl(key);
     const payloadHash = sha256(body);
 
     let headers: Record<string, string> = {
-      "Host": new URL(url).host,
-      "Content-Type": contentType,
-      "Content-Length": body.length.toString(),
+      Host: new URL(url).host,
+      'Content-Type': contentType,
+      'Content-Length': body.length.toString(),
     };
 
-    headers = this.signRequest("PUT", url, headers, payloadHash);
+    headers = this.signRequest('PUT', url, headers, payloadHash);
 
     try {
-      const res = await s3Request("PUT", url, headers, body);
+      const res = await s3Request('PUT', url, headers, body);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return {
           ok: true,
           statusCode: res.statusCode,
-          etag: res.headers["etag"]?.replace(/"/g, ""),
+          etag: res.headers['etag']?.replace(/"/g, ''),
         };
       }
-      log.warn("S3 PUT failed", { key, statusCode: res.statusCode, body: res.body.slice(0, 200) });
+      log.warn('S3 PUT failed', { key, statusCode: res.statusCode, body: res.body.slice(0, 200) });
       return { ok: false, statusCode: res.statusCode, error: res.body.slice(0, 200) };
     } catch (err: any) {
-      log.error("S3 PUT error", { key, error: err.message });
+      log.error('S3 PUT error', { key, error: err.message });
       return { ok: false, statusCode: 0, error: err.message };
     }
   }
 
   /** Upload a manifest JSON alongside the chunk */
   async putManifest(key: string, manifest: Record<string, unknown>): Promise<S3PutResult> {
-    const body = Buffer.from(JSON.stringify(manifest, null, 2), "utf-8");
-    return this.putObject(key, body, "application/json");
+    const body = Buffer.from(JSON.stringify(manifest, null, 2), 'utf-8');
+    return this.putObject(key, body, 'application/json');
   }
 
   /** Check if the bucket exists (HEAD request) */
   async headBucket(): Promise<{ exists: boolean; error?: string }> {
     const url = this.bucketUrl();
-    const payloadHash = sha256("");
+    const payloadHash = sha256('');
 
     let headers: Record<string, string> = {
-      "Host": new URL(url).host,
+      Host: new URL(url).host,
     };
 
-    headers = this.signRequest("HEAD", url, headers, payloadHash);
+    headers = this.signRequest('HEAD', url, headers, payloadHash);
 
     try {
-      const res = await s3Request("HEAD", url, headers);
+      const res = await s3Request('HEAD', url, headers);
       return { exists: res.statusCode === 200 };
     } catch (err: any) {
       return { exists: false, error: err.message };
@@ -267,16 +270,16 @@ export class S3Client {
   /** Create bucket (PUT). Idempotent on most S3-compatible stores. */
   async createBucket(): Promise<{ ok: boolean; error?: string }> {
     const url = this.bucketUrl();
-    const payloadHash = sha256("");
+    const payloadHash = sha256('');
 
     let headers: Record<string, string> = {
-      "Host": new URL(url).host,
+      Host: new URL(url).host,
     };
 
-    headers = this.signRequest("PUT", url, headers, payloadHash);
+    headers = this.signRequest('PUT', url, headers, payloadHash);
 
     try {
-      const res = await s3Request("PUT", url, headers);
+      const res = await s3Request('PUT', url, headers);
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return { ok: true };
       }

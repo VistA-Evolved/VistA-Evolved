@@ -1,6 +1,7 @@
 # Phase 445 — VERIFY: Compliance Dashboard UI (W28 P7)
 
 ## Gates
+
 1. `page.tsx` exists at `apps/web/src/app/cprs/admin/compliance/`
 2. 4 tabs: Posture, Frameworks, Attestations, Validators
 3. All fetches use `credentials: 'include'`

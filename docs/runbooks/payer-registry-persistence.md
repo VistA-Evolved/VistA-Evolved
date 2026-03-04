@@ -6,9 +6,9 @@
 
 The Payer Registry subsystem supports two persistence backends:
 
-| Backend | When Used | Notes |
-|---------|-----------|-------|
-| **SQLite** | Default when PG is not configured | Synchronous, single-file, zero-config |
+| Backend        | When Used                             | Notes                                     |
+| -------------- | ------------------------------------- | ----------------------------------------- |
+| **SQLite**     | Default when PG is not configured     | Synchronous, single-file, zero-config     |
 | **PostgreSQL** | When `PLATFORM_PG_*` env vars are set | Async, multi-tenant RLS, production-grade |
 
 The **store resolver** (`apps/api/src/platform/store-resolver.ts`) automatically
@@ -35,15 +35,15 @@ store resolver wraps sync returns in `Promise.resolve()`.
 
 ## Repos Migrated
 
-| Repo | SQLite Source | PG Source |
-|------|-------------|-----------|
-| payerRepo | `db/repo/payer-repo.ts` | `pg/repo/payer-repo.ts` |
-| auditRepo | `db/repo/audit-repo.ts` | `pg/repo/audit-repo.ts` |
-| capabilityRepo | `db/repo/capability-repo.ts` | `pg/repo/capability-repo.ts` |
-| taskRepo | `db/repo/task-repo.ts` | `pg/repo/task-repo.ts` |
-| evidenceRepo | `db/repo/evidence-repo.ts` | `pg/repo/evidence-repo.ts` |
-| tenantPayerRepo | `db/repo/tenant-payer-repo.ts` | `pg/repo/tenant-payer-repo.ts` |
-| capabilityMatrixRepo | in-memory Map | `pg/repo/capability-matrix-repo.ts` |
+| Repo                 | SQLite Source                  | PG Source                           |
+| -------------------- | ------------------------------ | ----------------------------------- |
+| payerRepo            | `db/repo/payer-repo.ts`        | `pg/repo/payer-repo.ts`             |
+| auditRepo            | `db/repo/audit-repo.ts`        | `pg/repo/audit-repo.ts`             |
+| capabilityRepo       | `db/repo/capability-repo.ts`   | `pg/repo/capability-repo.ts`        |
+| taskRepo             | `db/repo/task-repo.ts`         | `pg/repo/task-repo.ts`              |
+| evidenceRepo         | `db/repo/evidence-repo.ts`     | `pg/repo/evidence-repo.ts`          |
+| tenantPayerRepo      | `db/repo/tenant-payer-repo.ts` | `pg/repo/tenant-payer-repo.ts`      |
+| capabilityMatrixRepo | in-memory Map                  | `pg/repo/capability-matrix-repo.ts` |
 
 ## New PG Tables (Migration v5)
 
@@ -98,9 +98,9 @@ SQLite database file persists independently.
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| Badge shows "SQLite" despite PG env vars | PG pool failed to connect | Check container is running, port 5433 accessible |
-| `/admin/payer-db/backend` returns `pgHealthy: false` | PG health check failed | Run `docker logs ve-platform-db` |
-| Seed shows 0 inserted, 0 skipped | No JSON files in `data/payers/` | Verify files exist (us_core.json, ph_hmos.json) |
-| Migration v5 error | Tables already exist from manual creation | Migrations are idempotent -- safe to re-run |
+| Symptom                                              | Cause                                     | Fix                                              |
+| ---------------------------------------------------- | ----------------------------------------- | ------------------------------------------------ |
+| Badge shows "SQLite" despite PG env vars             | PG pool failed to connect                 | Check container is running, port 5433 accessible |
+| `/admin/payer-db/backend` returns `pgHealthy: false` | PG health check failed                    | Run `docker logs ve-platform-db`                 |
+| Seed shows 0 inserted, 0 skipped                     | No JSON files in `data/payers/`           | Verify files exist (us_core.json, ph_hmos.json)  |
+| Migration v5 error                                   | Tables already exist from manual creation | Migrations are idempotent -- safe to re-run      |

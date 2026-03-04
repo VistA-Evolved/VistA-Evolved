@@ -9,11 +9,11 @@ the remaining six show placeholder content.
 
 ## Inputs
 
-| Input | Path | Notes |
-|-------|------|-------|
-| Tab definitions | `design/contracts/cprs/v1/tabs.json` | 10 chart tabs |
-| Menu definitions | `design/contracts/cprs/v1/menus.json` | File/Edit/View/Tools/Help |
-| API server | `http://127.0.0.1:3001` | Must be running for live data panels |
+| Input            | Path                                  | Notes                                |
+| ---------------- | ------------------------------------- | ------------------------------------ |
+| Tab definitions  | `design/contracts/cprs/v1/tabs.json`  | 10 chart tabs                        |
+| Menu definitions | `design/contracts/cprs/v1/menus.json` | File/Edit/View/Tools/Help            |
+| API server       | `http://127.0.0.1:3001`               | Must be running for live data panels |
 
 ## Commands
 
@@ -31,30 +31,30 @@ The chart shell is at `/chart/[dfn]/[tab]`. Example: `/chart/100/cover`.
 
 ### New files (18 total in `apps/web/src/`)
 
-| Path | Purpose |
-|------|---------|
-| `app/chart/[dfn]/[tab]/page.tsx` | Dynamic chart route |
-| `app/chart/[dfn]/[tab]/page.module.css` | Chart layout styles |
-| `components/chart/MenuBar.tsx` + `.module.css` | Dropdown menu bar |
-| `components/chart/TabStrip.tsx` + `.module.css` | Bottom tab strip |
-| `components/chart/PatientHeader.tsx` + `.module.css` | Patient demographics header |
-| `components/chart/panels/CoverSheetPanel.tsx` | 4-quadrant cover sheet |
-| `components/chart/panels/ProblemsPanel.tsx` | Problem list panel |
-| `components/chart/panels/MedsPanel.tsx` | Medications panel |
-| `components/chart/panels/NotesPanel.tsx` | Notes list panel |
-| `components/chart/panels/PlaceholderPanel.tsx` | Generic placeholder |
-| `components/chart/panels/index.ts` | Barrel export |
-| `components/chart/panels/panels.module.css` | Shared panel styles |
-| `lib/chart-types.ts` | Tab definitions, API_BASE, types |
-| `lib/api.ts` | Typed fetch wrappers for API endpoints |
-| `lib/menu-data.ts` | Static menu structure from menus.json |
+| Path                                                 | Purpose                                |
+| ---------------------------------------------------- | -------------------------------------- |
+| `app/chart/[dfn]/[tab]/page.tsx`                     | Dynamic chart route                    |
+| `app/chart/[dfn]/[tab]/page.module.css`              | Chart layout styles                    |
+| `components/chart/MenuBar.tsx` + `.module.css`       | Dropdown menu bar                      |
+| `components/chart/TabStrip.tsx` + `.module.css`      | Bottom tab strip                       |
+| `components/chart/PatientHeader.tsx` + `.module.css` | Patient demographics header            |
+| `components/chart/panels/CoverSheetPanel.tsx`        | 4-quadrant cover sheet                 |
+| `components/chart/panels/ProblemsPanel.tsx`          | Problem list panel                     |
+| `components/chart/panels/MedsPanel.tsx`              | Medications panel                      |
+| `components/chart/panels/NotesPanel.tsx`             | Notes list panel                       |
+| `components/chart/panels/PlaceholderPanel.tsx`       | Generic placeholder                    |
+| `components/chart/panels/index.ts`                   | Barrel export                          |
+| `components/chart/panels/panels.module.css`          | Shared panel styles                    |
+| `lib/chart-types.ts`                                 | Tab definitions, API_BASE, types       |
+| `lib/api.ts`                                         | Typed fetch wrappers for API endpoints |
+| `lib/menu-data.ts`                                   | Static menu structure from menus.json  |
 
 ### Modified files
 
-| Path | Change |
-|------|--------|
-| `app/page.tsx` | Added "Chart Shell (Patient 100)" link |
-| `app/layout.tsx` | Updated metadata title |
+| Path             | Change                                 |
+| ---------------- | -------------------------------------- |
+| `app/page.tsx`   | Added "Chart Shell (Patient 100)" link |
+| `app/layout.tsx` | Updated metadata title                 |
 
 ## Validation
 
@@ -79,22 +79,22 @@ pnpm -C apps/web build
 
 ### Manual checks
 
-| Check | Expected |
-|-------|----------|
-| `/chart/100/cover` | Cover Sheet with demographics, allergies, problems, vitals |
-| Bottom tabs | 10 tabs: Cover Sheet → Reports |
-| Click "Problems" tab | Navigates to `/chart/100/problems` |
-| Menu bar | File / Edit / View / Tools / Help dropdowns |
-| Labs, Orders, etc. | "Not yet implemented" placeholder |
+| Check                | Expected                                                   |
+| -------------------- | ---------------------------------------------------------- |
+| `/chart/100/cover`   | Cover Sheet with demographics, allergies, problems, vitals |
+| Bottom tabs          | 10 tabs: Cover Sheet → Reports                             |
+| Click "Problems" tab | Navigates to `/chart/100/problems`                         |
+| Menu bar             | File / Edit / View / Tools / Help dropdowns                |
+| Labs, Orders, etc.   | "Not yet implemented" placeholder                          |
 
 ## Common Failures
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| Build fails on `chart-types.ts` | Missing `design/contracts/` | Run `pnpm run cprs:extract` first |
-| API panels show "Error" | API server not running | Start with `pnpm -C apps/api dev` |
-| Patient header blank | DFN not found in VistA | Use DFN from `/vista/default-patient-list` |
-| Menu items empty | `menus.json` not generated | Run `pnpm run cprs:extract` |
+| Symptom                         | Cause                       | Fix                                        |
+| ------------------------------- | --------------------------- | ------------------------------------------ |
+| Build fails on `chart-types.ts` | Missing `design/contracts/` | Run `pnpm run cprs:extract` first          |
+| API panels show "Error"         | API server not running      | Start with `pnpm -C apps/api dev`          |
+| Patient header blank            | DFN not found in VistA      | Use DFN from `/vista/default-patient-list` |
+| Menu items empty                | `menus.json` not generated  | Run `pnpm run cprs:extract`                |
 
 ## No VA Terminology Check
 

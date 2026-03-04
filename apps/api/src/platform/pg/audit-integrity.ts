@@ -18,9 +18,9 @@
  * A broken chain indicates tampering or data corruption.
  */
 
-import { createHash } from "node:crypto";
-import { getPgPool, isPgConfigured } from "./pg-db.js";
-import { redactPhi } from "../../lib/phi-redaction.js";
+import { createHash } from 'node:crypto';
+import { getPgPool, isPgConfigured } from './pg-db.js';
+import { redactPhi } from '../../lib/phi-redaction.js';
 
 /* ================================================================
  *  Constants
@@ -34,10 +34,10 @@ const MAX_EXPORT_ROWS = 50_000;
 
 /** PHI patterns to scrub from audit detail JSON. */
 const PHI_PATTERNS = [
-  /\b\d{3}-\d{2}-\d{4}\b/g,                   // SSN
-  /\b\d{9}\b/g,                                 // SSN without dashes
+  /\b\d{3}-\d{2}-\d{4}\b/g, // SSN
+  /\b\d{9}\b/g, // SSN without dashes
   /\b(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/\d{4}\b/g, // DOB MM/DD/YYYY
-  /\b\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\b/g,   // DOB YYYY-MM-DD
+  /\b\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])\b/g, // DOB YYYY-MM-DD
 ];
 
 /* ================================================================
@@ -55,13 +55,13 @@ export function sanitizeAuditDetail(detail: unknown): unknown {
   const preSanitized = redactPhi(detail);
 
   // Then apply local inline PHI pattern scrub as secondary defense
-  const str = typeof preSanitized === "string" ? preSanitized : JSON.stringify(preSanitized);
+  const str = typeof preSanitized === 'string' ? preSanitized : JSON.stringify(preSanitized);
   let sanitized = str;
   for (const pattern of PHI_PATTERNS) {
-    sanitized = sanitized.replace(pattern, "[REDACTED]");
+    sanitized = sanitized.replace(pattern, '[REDACTED]');
   }
 
-  if (typeof preSanitized === "string") return sanitized;
+  if (typeof preSanitized === 'string') return sanitized;
   try {
     return JSON.parse(sanitized);
   } catch {
@@ -87,7 +87,7 @@ export function computeAuditHash(entry: {
   prev_hash: string | null;
   created_at: string;
 }): string {
-  const detailStr = entry.detail != null ? JSON.stringify(entry.detail) : "";
+  const detailStr = entry.detail != null ? JSON.stringify(entry.detail) : '';
   const payload = [
     entry.tenant_id,
     entry.actor,
@@ -95,11 +95,11 @@ export function computeAuditHash(entry: {
     entry.entity_type,
     entry.entity_id,
     detailStr,
-    entry.prev_hash ?? "",
+    entry.prev_hash ?? '',
     entry.created_at,
-  ].join("|");
+  ].join('|');
 
-  return createHash("sha256").update(payload).digest("hex");
+  return createHash('sha256').update(payload).digest('hex');
 }
 
 /* ================================================================
@@ -129,15 +129,13 @@ export async function verifyAuditChain(): Promise<AuditVerifyResult> {
       totalEntries: 0,
       verified: 0,
       missingHashes: 0,
-      error: "PG not configured; audit chain verification is PG-only",
+      error: 'PG not configured; audit chain verification is PG-only',
     };
   }
 
   const pool = getPgPool();
 
-  const countResult = await pool.query(
-    "SELECT count(*)::int AS total FROM platform_audit_event"
-  );
+  const countResult = await pool.query('SELECT count(*)::int AS total FROM platform_audit_event');
   const totalEntries = countResult.rows[0]?.total ?? 0;
 
   if (totalEntries === 0) {
@@ -177,7 +175,7 @@ export async function verifyAuditChain(): Promise<AuditVerifyResult> {
           id: row.id,
           position: i,
           expected: lastHash,
-          actual: row.prev_hash ?? "(null)",
+          actual: row.prev_hash ?? '(null)',
         },
       };
     }
@@ -191,9 +189,8 @@ export async function verifyAuditChain(): Promise<AuditVerifyResult> {
       entity_id: row.entity_id,
       detail: row.detail,
       prev_hash: row.prev_hash,
-      created_at: row.created_at instanceof Date
-        ? row.created_at.toISOString()
-        : String(row.created_at),
+      created_at:
+        row.created_at instanceof Date ? row.created_at.toISOString() : String(row.created_at),
     });
 
     if (computed !== row.entry_hash) {
@@ -252,7 +249,7 @@ export async function exportAuditEntries(
   opts: AuditExportOptions = {}
 ): Promise<AuditExportResult> {
   if (!isPgConfigured()) {
-    return { ok: false, count: 0, entries: [], truncated: false, error: "PG not configured" };
+    return { ok: false, count: 0, entries: [], truncated: false, error: 'PG not configured' };
   }
 
   const pool = getPgPool();
@@ -277,7 +274,7 @@ export async function exportAuditEntries(
     params.push(opts.entityType);
   }
 
-  const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+  const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
   const limit = Math.min(opts.limit ?? MAX_EXPORT_ROWS, MAX_EXPORT_ROWS);
 
   const result = await pool.query(
@@ -314,7 +311,7 @@ export interface RetentionPolicy {
   /** Tables covered by this policy. */
   tables: string[];
   /** Export format for archived entries. */
-  exportFormat: "jsonl" | "csv";
+  exportFormat: 'jsonl' | 'csv';
   /** Policy description. */
   description: string;
 }
@@ -325,23 +322,19 @@ export interface RetentionPolicy {
  */
 export function getRetentionPolicy(): RetentionPolicy {
   const days = Number(process.env.PLATFORM_AUDIT_RETENTION_DAYS) || DEFAULT_RETENTION_DAYS;
-  const autoPurge = process.env.PLATFORM_AUDIT_AUTO_PURGE === "true";
+  const autoPurge = process.env.PLATFORM_AUDIT_AUTO_PURGE === 'true';
 
   return {
     retentionDays: days,
     autoPurgeEnabled: autoPurge,
-    tables: [
-      "platform_audit_event",
-      "payer_audit_event",
-      "idempotency_key",
-    ],
-    exportFormat: "jsonl",
+    tables: ['platform_audit_event', 'payer_audit_event', 'idempotency_key'],
+    exportFormat: 'jsonl',
     description: [
       `Audit entries retained for ${days} days (env: PLATFORM_AUDIT_RETENTION_DAYS).`,
-      `Auto-purge: ${autoPurge ? "enabled" : "disabled"} (env: PLATFORM_AUDIT_AUTO_PURGE).`,
-      "Entries older than retention period should be exported before deletion.",
-      "Export via GET /admin/payer-db/audit/export?since=&until= (admin only).",
-      "Idempotency keys expire after 24h and are auto-pruned by middleware.",
-    ].join(" "),
+      `Auto-purge: ${autoPurge ? 'enabled' : 'disabled'} (env: PLATFORM_AUDIT_AUTO_PURGE).`,
+      'Entries older than retention period should be exported before deletion.',
+      'Export via GET /admin/payer-db/audit/export?since=&until= (admin only).',
+      'Idempotency keys expire after 24h and are auto-pruned by middleware.',
+    ].join(' '),
   };
 }

@@ -12,13 +12,13 @@
 // ---------------------------------------------------------------------------
 
 /** IHE PCD alarm priority mapping to IEEE 11073 alert priorities */
-export type AlarmPriority = "low" | "medium" | "high" | "crisis";
+export type AlarmPriority = 'low' | 'medium' | 'high' | 'crisis';
 
 /** Alarm condition state */
-export type AlarmState = "active" | "latched" | "acknowledged" | "resolved" | "escalated";
+export type AlarmState = 'active' | 'latched' | 'acknowledged' | 'resolved' | 'escalated';
 
 /** Source protocol that generated the alarm */
-export type AlarmSource = "hl7v2" | "astm" | "poct1a" | "sdc" | "manual" | "rule-engine";
+export type AlarmSource = 'hl7v2' | 'astm' | 'poct1a' | 'sdc' | 'manual' | 'rule-engine';
 
 // ---------------------------------------------------------------------------
 // Core Alarm Types

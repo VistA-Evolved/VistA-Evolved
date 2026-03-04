@@ -17,14 +17,16 @@
  * listSessions(), rotateSession(), mapUserRole().
  */
 
-import { randomBytes, createHash } from "crypto";
-import { SESSION_CONFIG } from "../config/server-config.js";
+import { randomBytes, createHash } from 'crypto';
+import { SESSION_CONFIG } from '../config/server-config.js';
+import type { UserRole } from '@vista-evolved/shared-types';
 
 /* ------------------------------------------------------------------ */
 /* Types (unchanged -- same exports as Phase 13/15)                    */
 /* ------------------------------------------------------------------ */
 
-export type UserRole = "provider" | "nurse" | "pharmacist" | "clerk" | "admin" | "billing" | "support";
+/** @deprecated Import UserRole from '@vista-evolved/shared-types' directly */
+export type { UserRole };
 
 export interface SessionData {
   /** Unique session token */
@@ -62,7 +64,7 @@ export interface SessionData {
 /* ------------------------------------------------------------------ */
 
 function hashToken(token: string): string {
-  return createHash("sha256").update(token).digest("hex");
+  return createHash('sha256').update(token).digest('hex');
 }
 
 /* ------------------------------------------------------------------ */
@@ -117,7 +119,7 @@ export function initSessionRepo(repo: SessionRepoLike): void {
 
 interface CachedSession {
   data: SessionData;
-  dbId: string;         // DB row id for touch/revoke operations
+  dbId: string; // DB row id for touch/revoke operations
   cachedAt: number;
 }
 
@@ -135,10 +137,14 @@ setInterval(() => {
   // Phase 117: repo may be async (PG) — fire-and-forget with .catch
   try {
     const result = _repo?.cleanupExpiredSessions();
-    if (result && typeof result === "object" && "catch" in result) {
-      (result as Promise<any>).catch(() => { /* non-fatal */ });
+    if (result && typeof result === 'object' && 'catch' in result) {
+      (result as Promise<any>).catch(() => {
+        /* non-fatal */
+      });
     }
-  } catch { /* non-fatal */ }
+  } catch {
+    /* non-fatal */
+  }
 }, SESSION_CONFIG.cleanupIntervalMs);
 
 /* ------------------------------------------------------------------ */
@@ -146,12 +152,20 @@ setInterval(() => {
 /* ------------------------------------------------------------------ */
 
 /** Create a new session and return its token. */
-export async function createSession(data: Omit<SessionData, "token" | "createdAt" | "lastActivity" | "csrfSecret">): Promise<string> {
-  const token = randomBytes(32).toString("hex");
-  const csrfSecret = randomBytes(32).toString("hex");
+export async function createSession(
+  data: Omit<SessionData, 'token' | 'createdAt' | 'lastActivity' | 'csrfSecret'>
+): Promise<string> {
+  const token = randomBytes(32).toString('hex');
+  const csrfSecret = randomBytes(32).toString('hex');
   const now = Date.now();
   const tokenH = hashToken(token);
-  const sessionData: SessionData = { ...data, token, csrfSecret, createdAt: now, lastActivity: now };
+  const sessionData: SessionData = {
+    ...data,
+    token,
+    csrfSecret,
+    createdAt: now,
+    lastActivity: now,
+  };
 
   if (_repo) {
     try {
@@ -171,11 +185,11 @@ export async function createSession(data: Omit<SessionData, "token" | "createdAt
       sessionCache.set(tokenH, { data: sessionData, dbId: row.id, cachedAt: now });
     } catch {
       // DB write failed -- degraded to cache-only
-      sessionCache.set(tokenH, { data: sessionData, dbId: "", cachedAt: now });
+      sessionCache.set(tokenH, { data: sessionData, dbId: '', cachedAt: now });
     }
   } else {
     // No DB yet (pre-init) -- cache-only
-    sessionCache.set(tokenH, { data: sessionData, dbId: "", cachedAt: now });
+    sessionCache.set(tokenH, { data: sessionData, dbId: '', cachedAt: now });
   }
   return token;
 }
@@ -187,19 +201,34 @@ export async function getSession(token: string): Promise<SessionData | null> {
 
   // 1. Check cache first (hot path)
   const cached = sessionCache.get(tokenH);
-  if (cached && (now - cached.cachedAt < CACHE_TTL_MS)) {
+  if (cached && now - cached.cachedAt < CACHE_TTL_MS) {
     if (now - cached.data.createdAt > SESSION_CONFIG.absoluteTtlMs) {
       sessionCache.delete(tokenH);
-      if (_repo && cached.dbId) try { await _repo.revokeSession(cached.dbId); } catch { /* */ }
+      if (_repo && cached.dbId)
+        try {
+          await _repo.revokeSession(cached.dbId);
+        } catch {
+          /* */
+        }
       return null;
     }
     if (now - cached.data.lastActivity > SESSION_CONFIG.idleTtlMs) {
       sessionCache.delete(tokenH);
-      if (_repo && cached.dbId) try { await _repo.revokeSession(cached.dbId); } catch { /* */ }
+      if (_repo && cached.dbId)
+        try {
+          await _repo.revokeSession(cached.dbId);
+        } catch {
+          /* */
+        }
       return null;
     }
     cached.data.lastActivity = now;
-    if (_repo && cached.dbId) try { await _repo.touchSession(cached.dbId); } catch { /* */ }
+    if (_repo && cached.dbId)
+      try {
+        await _repo.touchSession(cached.dbId);
+      } catch {
+        /* */
+      }
     return cached.data;
   }
 
@@ -231,22 +260,31 @@ export async function getSession(token: string): Promise<SessionData | null> {
         tenantId: row.tenantId,
         createdAt: new Date(row.createdAt).getTime(),
         lastActivity: now,
-        csrfSecret: (row as any).csrfSecret || "",
+        csrfSecret: (row as any).csrfSecret || '',
       };
       sessionCache.set(tokenH, { data: sessionData, dbId: row.id, cachedAt: now });
       await _repo.touchSession(row.id);
       return sessionData;
     } catch {
       // DB read failed -- check stale cache
-      if (cached) { cached.data.lastActivity = now; return cached.data; }
+      if (cached) {
+        cached.data.lastActivity = now;
+        return cached.data;
+      }
       return null;
     }
   }
 
   // 3. No repo and no cache -- session unknown
   if (cached) {
-    if (now - cached.data.createdAt > SESSION_CONFIG.absoluteTtlMs) { sessionCache.delete(tokenH); return null; }
-    if (now - cached.data.lastActivity > SESSION_CONFIG.idleTtlMs) { sessionCache.delete(tokenH); return null; }
+    if (now - cached.data.createdAt > SESSION_CONFIG.absoluteTtlMs) {
+      sessionCache.delete(tokenH);
+      return null;
+    }
+    if (now - cached.data.lastActivity > SESSION_CONFIG.idleTtlMs) {
+      sessionCache.delete(tokenH);
+      return null;
+    }
     cached.data.lastActivity = now;
     cached.cachedAt = now;
     return cached.data;
@@ -277,7 +315,7 @@ export async function listSessions(): Promise<SessionData[]> {
     try {
       const rows = await _repo.listActiveSessions();
       return rows.map((row: any) => ({
-        token: "[redacted]",
+        token: '[redacted]',
         duz: row.userId,
         userName: row.userName,
         role: row.userRole as UserRole,
@@ -287,18 +325,23 @@ export async function listSessions(): Promise<SessionData[]> {
         tenantId: row.tenantId,
         createdAt: new Date(row.createdAt).getTime(),
         lastActivity: new Date(row.lastSeenAt).getTime(),
-        csrfSecret: "",  // Never expose in session lists
+        csrfSecret: '', // Never expose in session lists
       }));
-    } catch { /* fall through */ }
+    } catch {
+      /* fall through */
+    }
   }
   // Cache-based listing (degraded)
   const now = Date.now();
   const result: SessionData[] = [];
   for (const [hash, cached] of sessionCache) {
-    if (now - cached.data.createdAt > SESSION_CONFIG.absoluteTtlMs || now - cached.data.lastActivity > SESSION_CONFIG.idleTtlMs) {
+    if (
+      now - cached.data.createdAt > SESSION_CONFIG.absoluteTtlMs ||
+      now - cached.data.lastActivity > SESSION_CONFIG.idleTtlMs
+    ) {
       sessionCache.delete(hash);
     } else {
-      result.push({ ...cached.data, token: "[redacted]" });
+      result.push({ ...cached.data, token: '[redacted]' });
     }
   }
   return result;
@@ -312,7 +355,7 @@ export async function listSessions(): Promise<SessionData[]> {
 export async function rotateSession(oldToken: string): Promise<string | null> {
   const oldHash = hashToken(oldToken);
   const cached = sessionCache.get(oldHash);
-  const newToken = randomBytes(32).toString("hex");
+  const newToken = randomBytes(32).toString('hex');
   const newHash = hashToken(newToken);
 
   if (_repo && cached?.dbId) {
@@ -325,7 +368,9 @@ export async function rotateSession(oldToken: string): Promise<string | null> {
       cached.data.lastActivity = now;
       sessionCache.set(newHash, { data: cached.data, dbId: cached.dbId, cachedAt: now });
       return newToken;
-    } catch { /* fall through to cache-only rotation */ }
+    } catch {
+      /* fall through to cache-only rotation */
+    }
   }
 
   if (cached) {
@@ -354,25 +399,26 @@ export function mapUserRole(userName: string, securityKeys?: string[]): UserRole
   if (securityKeys && securityKeys.length > 0) {
     const keys = new Set(securityKeys.map((k) => k.toUpperCase()));
     // Admin: XUPROGMODE or system-level keys
-    if (keys.has("XUPROGMODE") || keys.has("XUMGR")) return "admin";
+    if (keys.has('XUPROGMODE') || keys.has('XUMGR')) return 'admin';
     // Billing: IB-prefixed keys
-    if (keys.has("IB BILLING") || keys.has("IB EDIT BILLING INFO") || keys.has("IBCNE HCSR EDIT")) return "billing";
+    if (keys.has('IB BILLING') || keys.has('IB EDIT BILLING INFO') || keys.has('IBCNE HCSR EDIT'))
+      return 'billing';
     // Pharmacist: PSJ/PSO keys
-    if (keys.has("PSJ RPHARM") || keys.has("PSO PHARMACIST")) return "pharmacist";
+    if (keys.has('PSJ RPHARM') || keys.has('PSO PHARMACIST')) return 'pharmacist';
     // Nurse: nurse-related keys
-    if (keys.has("ORES") || keys.has("ORELSE")) return "nurse";
+    if (keys.has('ORES') || keys.has('ORELSE')) return 'nurse';
     // Provider: PROVIDER key
-    if (keys.has("PROVIDER")) return "provider";
+    if (keys.has('PROVIDER')) return 'provider';
   }
 
   // Fallback: name-substring matching for Docker sandbox users
   const upper = userName.toUpperCase();
   // PROV123 (PROVIDER,CLYDE WV DUZ 87) is the primary admin in Docker sandbox
-  if (upper.includes("PROVIDER") || upper.includes("CLYDE")) return "admin";
-  if (upper.includes("NURSE") || upper.includes("HELEN")) return "nurse";
-  if (upper.includes("PHARM") || upper.includes("LINDA")) return "pharmacist";
-  if (upper.includes("BILLING") || upper.includes("BILLER")) return "billing";
-  if (upper.includes("CLERK")) return "clerk";
-  if (upper.includes("SUPPORT") || upper.includes("HELPDESK")) return "support";
-  return "provider"; // default
+  if (upper.includes('PROVIDER') || upper.includes('CLYDE')) return 'admin';
+  if (upper.includes('NURSE') || upper.includes('HELEN')) return 'nurse';
+  if (upper.includes('PHARM') || upper.includes('LINDA')) return 'pharmacist';
+  if (upper.includes('BILLING') || upper.includes('BILLER')) return 'billing';
+  if (upper.includes('CLERK')) return 'clerk';
+  if (upper.includes('SUPPORT') || upper.includes('HELPDESK')) return 'support';
+  return 'provider'; // default
 }

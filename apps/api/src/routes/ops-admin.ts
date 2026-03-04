@@ -13,14 +13,14 @@
  * All endpoints require admin role (AUTH_RULES /admin/*).
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { requireSession } from "../auth/auth-routes.js";
-import { existsSync, readdirSync } from "node:fs";
-import { resolve } from "node:path";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
+import { existsSync, readdirSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 // ── Types ───────────────────────────────────────────────────
 
-export type AlertSeverity = "critical" | "warning" | "info";
+export type AlertSeverity = 'critical' | 'warning' | 'info';
 
 export interface OpsAlert {
   id: string;
@@ -60,17 +60,23 @@ interface RunbookEntry {
 }
 
 function indexRunbooks(): RunbookEntry[] {
-  const runbookDir = resolve(import.meta.dirname, "../../../../docs/runbooks");
+  const runbookDir = resolve(import.meta.dirname, '../../../../docs/runbooks');
   if (!existsSync(runbookDir)) return [];
   try {
-    const files = readdirSync(runbookDir).filter((f) => f.endsWith(".md"));
+    const files = readdirSync(runbookDir).filter((f) => f.endsWith('.md'));
     return files.map((f) => {
-      const domain = f.startsWith("phase") ? "phase" :
-        f.startsWith("rcm") ? "rcm" :
-        f.startsWith("imaging") ? "imaging" :
-        f.startsWith("vista") ? "vista" :
-        f.startsWith("analytics") ? "analytics" : "general";
-      return { name: f.replace(".md", ""), path: `docs/runbooks/${f}`, domain };
+      const domain = f.startsWith('phase')
+        ? 'phase'
+        : f.startsWith('rcm')
+          ? 'rcm'
+          : f.startsWith('imaging')
+            ? 'imaging'
+            : f.startsWith('vista')
+              ? 'vista'
+              : f.startsWith('analytics')
+                ? 'analytics'
+                : 'general';
+      return { name: f.replace('.md', ''), path: `docs/runbooks/${f}`, domain };
     });
   } catch {
     return [];
@@ -87,16 +93,16 @@ function generateAlerts(domains: OpsDomainStatus[]): OpsAlert[] {
     if (d.score < 50) {
       alerts.push({
         id: `${d.domain}-critical`,
-        severity: "critical",
+        severity: 'critical',
         domain: d.domain,
         message: `${d.domain} posture critically low: ${d.score}% (${d.passCount}/${d.totalGates} gates)`,
-        runbookLink: "docs/runbooks/phase107-production-posture.md",
+        runbookLink: 'docs/runbooks/phase107-production-posture.md',
         detectedAt: now,
       });
     } else if (d.score < 80) {
       alerts.push({
         id: `${d.domain}-warning`,
-        severity: "warning",
+        severity: 'warning',
         domain: d.domain,
         message: `${d.domain} posture degraded: ${d.score}% (${d.passCount}/${d.totalGates} gates)`,
         detectedAt: now,
@@ -111,7 +117,7 @@ function generateAlerts(domains: OpsDomainStatus[]): OpsAlert[] {
 
 export default async function opsAdminRoutes(server: FastifyInstance) {
   // GET /admin/ops/overview — unified ops health snapshot
-  server.get("/admin/ops/overview", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/admin/ops/overview', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
@@ -123,29 +129,39 @@ export default async function opsAdminRoutes(server: FastifyInstance) {
     // Each posture module has a named check function with a .gates array
     const postureCheckers: Array<{ name: string; fn: () => any }> = [];
     try {
-      const obs = await import("../posture/observability-posture.js");
-      postureCheckers.push({ name: "observability", fn: obs.checkObservabilityPosture });
-    } catch { /* ignore */ }
+      const obs = await import('../posture/observability-posture.js');
+      postureCheckers.push({ name: 'observability', fn: obs.checkObservabilityPosture });
+    } catch {
+      /* ignore */
+    }
     try {
-      const ten = await import("../posture/tenant-posture.js");
-      postureCheckers.push({ name: "tenant", fn: ten.checkTenantIsolationPosture });
-    } catch { /* ignore */ }
+      const ten = await import('../posture/tenant-posture.js');
+      postureCheckers.push({ name: 'tenant', fn: ten.checkTenantIsolationPosture });
+    } catch {
+      /* ignore */
+    }
     try {
-      const perf = await import("../posture/perf-posture.js");
-      postureCheckers.push({ name: "performance", fn: perf.checkPerfPosture });
-    } catch { /* ignore */ }
+      const perf = await import('../posture/perf-posture.js');
+      postureCheckers.push({ name: 'performance', fn: perf.checkPerfPosture });
+    } catch {
+      /* ignore */
+    }
     try {
-      const bk = await import("../posture/backup-posture.js");
-      postureCheckers.push({ name: "backup", fn: bk.checkBackupPosture });
-    } catch { /* ignore */ }
+      const bk = await import('../posture/backup-posture.js');
+      postureCheckers.push({ name: 'backup', fn: bk.checkBackupPosture });
+    } catch {
+      /* ignore */
+    }
     try {
-      const dp = await import("../posture/data-plane-posture.js");
-      postureCheckers.push({ name: "data-plane", fn: dp.checkDataPlanePosture });
-    } catch { /* ignore */ }
+      const dp = await import('../posture/data-plane-posture.js');
+      postureCheckers.push({ name: 'data-plane', fn: dp.checkDataPlanePosture });
+    } catch {
+      /* ignore */
+    }
 
     for (const { name, fn } of postureCheckers) {
       try {
-        if (typeof fn === "function") {
+        if (typeof fn === 'function') {
           const result = await fn();
           const gates = result?.gates || [];
           const pass = gates.filter((g: any) => g.pass).length;
@@ -162,19 +178,35 @@ export default async function opsAdminRoutes(server: FastifyInstance) {
             alerts: [],
           });
         } else {
-          domains.push({ domain: name, score: 0, passCount: 0, totalGates: 0, summary: "Module not callable", alerts: [] });
+          domains.push({
+            domain: name,
+            score: 0,
+            passCount: 0,
+            totalGates: 0,
+            summary: 'Module not callable',
+            alerts: [],
+          });
         }
       } catch {
-        domains.push({ domain: name, score: 0, passCount: 0, totalGates: 0, summary: "Module load failed", alerts: [] });
+        domains.push({
+          domain: name,
+          score: 0,
+          passCount: 0,
+          totalGates: 0,
+          summary: 'Module load failed',
+          alerts: [],
+        });
       }
     }
 
     // Store inventory count
     let storeCount = 0;
     try {
-      const storePolicy = await import("../platform/store-policy.js");
+      const storePolicy = await import('../platform/store-policy.js');
       storeCount = storePolicy.STORE_INVENTORY?.length || 0;
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
 
     // Runbook count
     const runbooks = indexRunbooks();
@@ -203,7 +235,7 @@ export default async function opsAdminRoutes(server: FastifyInstance) {
   });
 
   // GET /admin/ops/alerts — active alert conditions
-  server.get("/admin/ops/alerts", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/admin/ops/alerts', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
@@ -213,48 +245,54 @@ export default async function opsAdminRoutes(server: FastifyInstance) {
 
     // Check circuit breaker state
     try {
-      const perf = await import("../posture/perf-posture.js");
+      const perf = await import('../posture/perf-posture.js');
       const result = perf.checkPerfPosture();
-      const cbGate = result?.gates?.find((g: any) => g.name?.includes("circuit") || g.name?.includes("breaker"));
+      const cbGate = result?.gates?.find(
+        (g: any) => g.name?.includes('circuit') || g.name?.includes('breaker')
+      );
       if (cbGate && !cbGate.pass) {
         alerts.push({
-          id: "circuit-breaker-open",
-          severity: "critical",
-          domain: "performance",
-          message: "VistA circuit breaker is OPEN -- RPC calls failing",
-          runbookLink: "docs/runbooks/phase107-production-posture.md",
+          id: 'circuit-breaker-open',
+          severity: 'critical',
+          domain: 'performance',
+          message: 'VistA circuit breaker is OPEN -- RPC calls failing',
+          runbookLink: 'docs/runbooks/phase107-production-posture.md',
           detectedAt: now,
         });
       }
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
 
     // Check store count for unbounded growth
     try {
-      const storePolicy = await import("../platform/store-policy.js");
-      const criticalStores = storePolicy.getStoresByClassification?.("critical") || [];
-      const inMemoryOnly = criticalStores.filter((s: any) => s.durability === "in_memory_only");
+      const storePolicy = await import('../platform/store-policy.js');
+      const criticalStores = storePolicy.getStoresByClassification?.('critical') || [];
+      const inMemoryOnly = criticalStores.filter((s: any) => s.durability === 'in_memory_only');
       if (inMemoryOnly.length > 20) {
         alerts.push({
-          id: "many-in-memory-stores",
-          severity: "warning",
-          domain: "infrastructure",
+          id: 'many-in-memory-stores',
+          severity: 'warning',
+          domain: 'infrastructure',
           message: `${inMemoryOnly.length} critical in-memory-only stores (data loss on restart)`,
           detectedAt: now,
         });
       }
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
 
     return {
       ok: true,
       alerts,
       total: alerts.length,
-      criticalCount: alerts.filter((a) => a.severity === "critical").length,
-      warningCount: alerts.filter((a) => a.severity === "warning").length,
+      criticalCount: alerts.filter((a) => a.severity === 'critical').length,
+      warningCount: alerts.filter((a) => a.severity === 'warning').length,
     };
   });
 
   // GET /admin/ops/runbooks — runbook index
-  server.get("/admin/ops/runbooks", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/admin/ops/runbooks', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
@@ -274,12 +312,12 @@ export default async function opsAdminRoutes(server: FastifyInstance) {
   });
 
   // GET /admin/ops/store-inventory — in-memory store summary
-  server.get("/admin/ops/store-inventory", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/admin/ops/store-inventory', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
     try {
-      const storePolicy = await import("../platform/store-policy.js");
+      const storePolicy = await import('../platform/store-policy.js');
       const inventory = storePolicy.STORE_INVENTORY || [];
 
       const byClassification: Record<string, number> = {};
@@ -299,7 +337,7 @@ export default async function opsAdminRoutes(server: FastifyInstance) {
         byDomain,
         byDurability,
         criticalInMemory: inventory.filter(
-          (s: any) => s.classification === "critical" && s.durability === "in_memory_only",
+          (s: any) => s.classification === 'critical' && s.durability === 'in_memory_only'
         ).length,
       };
     } catch {
@@ -310,7 +348,7 @@ export default async function opsAdminRoutes(server: FastifyInstance) {
         byDomain: {},
         byDurability: {},
         criticalInMemory: 0,
-        error: "store-policy not available",
+        error: 'store-policy not available',
       };
     }
   });

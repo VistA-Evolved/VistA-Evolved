@@ -1,6 +1,7 @@
 # Phase 98 — RCM Denials & Appeals Loop (VERIFY)
 
 ## Gates
+
 1. `denial_case` table exists in platform DB
 2. `denial_action` table exists in platform DB
 3. `denial_attachment` table exists in platform DB

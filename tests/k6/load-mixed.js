@@ -7,58 +7,58 @@
  * Run: k6 run tests/k6/load-mixed.js
  */
 
-import http from "k6/http";
-import { check, group, sleep } from "k6";
+import http from 'k6/http';
+import { check, group, sleep } from 'k6';
 
-const BASE_URL = __ENV.API_URL || "http://localhost:3001";
+const BASE_URL = __ENV.API_URL || 'http://localhost:3001';
 
 export const options = {
   scenarios: {
     reads: {
-      executor: "constant-arrival-rate",
+      executor: 'constant-arrival-rate',
       rate: 10,
-      timeUnit: "1s",
-      duration: "2m",
+      timeUnit: '1s',
+      duration: '2m',
       preAllocatedVUs: 5,
       maxVUs: 20,
-      exec: "readWorkflow",
+      exec: 'readWorkflow',
     },
     fhir: {
-      executor: "constant-arrival-rate",
+      executor: 'constant-arrival-rate',
       rate: 3,
-      timeUnit: "1s",
-      duration: "2m",
+      timeUnit: '1s',
+      duration: '2m',
       preAllocatedVUs: 3,
       maxVUs: 10,
-      exec: "fhirWorkflow",
+      exec: 'fhirWorkflow',
     },
     writes: {
-      executor: "constant-arrival-rate",
+      executor: 'constant-arrival-rate',
       rate: 1,
-      timeUnit: "1s",
-      duration: "2m",
+      timeUnit: '1s',
+      duration: '2m',
       preAllocatedVUs: 2,
       maxVUs: 5,
-      exec: "writeWorkflow",
+      exec: 'writeWorkflow',
     },
   },
   thresholds: {
-    http_req_duration: ["p(95)<8000"],
-    http_req_failed: ["rate<0.15"],
-    "http_req_duration{scenario:reads}": ["p(95)<5000"],
-    "http_req_duration{scenario:fhir}": ["p(95)<5000"],
+    http_req_duration: ['p(95)<8000'],
+    http_req_failed: ['rate<0.15'],
+    'http_req_duration{scenario:reads}': ['p(95)<5000'],
+    'http_req_duration{scenario:fhir}': ['p(95)<5000'],
   },
-  tags: { testid: "load-mixed" },
+  tags: { testid: 'load-mixed' },
 };
 
 export function setup() {
   const loginRes = http.post(
     `${BASE_URL}/auth/login`,
     JSON.stringify({
-      accessCode: "PROV123",
-      verifyCode: "PROV123!!",
+      accessCode: 'PROV123',
+      verifyCode: 'PROV123!!',
     }),
-    { headers: { "Content-Type": "application/json" } }
+    { headers: { 'Content-Type': 'application/json' } }
   );
 
   if (loginRes.status !== 200) {
@@ -80,16 +80,16 @@ export function readWorkflow(data) {
   }
 
   const endpoints = [
-    "/vista/default-patient-list",
-    "/vista/patient-search?q=PATIENT",
-    "/vista/allergies?dfn=3",
-    "/vista/meds?dfn=3",
-    "/vista/vitals?dfn=3",
+    '/vista/default-patient-list',
+    '/vista/patient-search?q=PATIENT',
+    '/vista/allergies?dfn=3',
+    '/vista/meds?dfn=3',
+    '/vista/vitals?dfn=3',
   ];
   const url = endpoints[Math.floor(Math.random() * endpoints.length)];
   const res = http.get(`${BASE_URL}${url}`);
   check(res, {
-    "read ok": (r) => r.status === 200,
+    'read ok': (r) => r.status === 200,
   });
   sleep(0.1);
 }
@@ -106,16 +106,16 @@ export function fhirWorkflow(data) {
   }
 
   const endpoints = [
-    "/fhir/metadata",
-    "/fhir/Patient?name=ZZ",
-    "/fhir/Patient/3",
-    "/fhir/AllergyIntolerance?patient=3",
-    "/fhir/Encounter?patient=3",
+    '/fhir/metadata',
+    '/fhir/Patient?name=ZZ',
+    '/fhir/Patient/3',
+    '/fhir/AllergyIntolerance?patient=3',
+    '/fhir/Encounter?patient=3',
   ];
   const url = endpoints[Math.floor(Math.random() * endpoints.length)];
   const res = http.get(`${BASE_URL}${url}`);
   check(res, {
-    "fhir ok": (r) => r.status === 200 || r.status === 404,
+    'fhir ok': (r) => r.status === 200 || r.status === 404,
   });
   sleep(0.1);
 }
@@ -125,7 +125,7 @@ export function writeWorkflow(data) {
   // Real write tests require order/allergy data seeding and are in smoke-write.js
   const res = http.get(`${BASE_URL}/health`);
   check(res, {
-    "health ok": (r) => r.status === 200,
+    'health ok': (r) => r.status === 200,
   });
   sleep(0.5);
 }

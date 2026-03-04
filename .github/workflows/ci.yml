@@ -2,18 +2,154 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: ['**']
   pull_request:
-    branches: [main, develop]
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '24'
+  PNPM_VERSION: '10.29.2'
 
 jobs:
-  build:
+  # ── JOB 1: Code quality checks ────────────────────────────────────
+  quality-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
       - uses: actions/setup-node@v4
         with:
-          node-version: '24.13.0'
-      - run: npm install -g pnpm@10.29.2
-      - run: pnpm -r install
-      - run: pnpm -r build
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check formatting (Prettier)
+        run: pnpm run format:check
+
+      - name: Lint (ESLint)
+        run: pnpm run lint:ci
+
+      - name: TypeScript type check (API)
+        run: pnpm -C apps/api exec tsc --noEmit
+
+      - name: TypeScript type check (Web)
+        run: pnpm -C apps/web exec tsc --noEmit
+
+      - name: TypeScript type check (Portal)
+        run: pnpm -C apps/portal exec tsc --noEmit
+
+      - name: TypeScript type check (locale-utils)
+        run: pnpm -C packages/locale-utils exec tsc --noEmit
+
+  # ── JOB 2: Unit tests ─────────────────────────────────────────────
+  unit-tests:
+    runs-on: ubuntu-latest
+    needs: quality-check
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run unit tests with coverage
+        run: pnpm -C apps/api test -- --coverage --coverageReporters=text-summary
+        env:
+          NODE_ENV: test
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: apps/api/coverage/
+          retention-days: 14
+
+  # ── JOB 3: Integration tests ───────────────────────────────────────
+  integration-tests:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: vista_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run integration tests
+        run: pnpm -C apps/api test -- --testPathPattern='integration|contract'
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://postgres:testpassword@localhost:5432/vista_test
+          PLATFORM_PG_URL: postgresql://postgres:testpassword@localhost:5432/vista_test
+          REDIS_URL: redis://localhost:6379
+
+  # ── JOB 4: Build check ────────────────────────────────────────────
+  build-check:
+    runs-on: ubuntu-latest
+    needs: quality-check
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build all packages
+        run: pnpm run build

@@ -29,9 +29,7 @@ export class PortalBatchConnector implements RcmConnector {
   readonly id = 'portal-batch';
   readonly name = 'Portal/Batch Upload';
   readonly supportedModes = ['portal_batch'];
-  readonly supportedTransactions: X12TransactionSet[] = [
-    '837P', '837I', '270', '276',
-  ];
+  readonly supportedTransactions: X12TransactionSet[] = ['837P', '837I', '270', '276'];
 
   private batches = new Map<string, BatchEntry>();
 
@@ -42,7 +40,7 @@ export class PortalBatchConnector implements RcmConnector {
   async submit(
     transactionSet: X12TransactionSet,
     payload: string,
-    metadata: Record<string, string>,
+    metadata: Record<string, string>
   ): Promise<ConnectorResult> {
     const txId = `batch-${Date.now()}-${randomBytes(4).toString('hex')}`;
 
@@ -88,11 +86,13 @@ export class PortalBatchConnector implements RcmConnector {
     };
   }
 
-  async fetchResponses(): Promise<Array<{
-    transactionSet: X12TransactionSet;
-    payload: string;
-    receivedAt: string;
-  }>> {
+  async fetchResponses(): Promise<
+    Array<{
+      transactionSet: X12TransactionSet;
+      payload: string;
+      receivedAt: string;
+    }>
+  > {
     // Portal responses must be imported manually
     return [];
   }
@@ -135,8 +135,8 @@ export class PortalBatchConnector implements RcmConnector {
     createdAt: string;
   }> {
     return Array.from(this.batches.values())
-      .filter(b => b.status === 'pending_upload')
-      .map(b => ({
+      .filter((b) => b.status === 'pending_upload')
+      .map((b) => ({
         id: b.id,
         transactionSet: b.transactionSet,
         payerPortalUrl: b.payerPortalUrl,

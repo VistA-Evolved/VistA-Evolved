@@ -1,6 +1,7 @@
 # Phase 132 — VERIFY (I18N FOUNDATION)
 
 ## Gates
+
 1. `next-intl` installed in web + portal `package.json`
 2. Locale message files exist: `messages/{en,fil,es}.json` in both apps
 3. `NextIntlClientProvider` wired in both root layouts

@@ -1,9 +1,11 @@
 # Phase 69 IMPLEMENT -- RCM Ops Excellence v1
 
 ## Mission
+
 Enterprise-grade RCM ops: IB discovery, payer adapter framework, jobs posture, denial queue scaffolding.
 
 ## Deliverables
+
 A) IB capability report from Vivian + live catalog -> artifacts/phase69/ib-plan.json
 B) PayerAdapter interface (pluggable): eligibility, claim-status, denial workflows
 C) Rate-limited polling job scheduler on top of existing InMemoryJobQueue
@@ -11,6 +13,7 @@ D) UI: eligibility status, claim status, denial queue posture
 E) OS v3 verification
 
 ## Files Touched
+
 - artifacts/phase69/ib-plan.json (plan artifact)
 - apps/api/src/rcm/adapters/payer-adapter.ts (PayerAdapter interface + registry)
 - apps/api/src/rcm/adapters/x12-adapter.ts (X12/clearinghouse skeleton)

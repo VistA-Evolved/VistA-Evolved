@@ -1,6 +1,7 @@
 # Phase 162 -- Performance + UX Speed Pass (IMPLEMENT)
 
 ## User Request
+
 Add performance profiling hooks, route-level timing budgets, response size
 monitoring, and UX speed optimizations across the API.
 
@@ -23,6 +24,7 @@ monitoring, and UX speed optimizations across the API.
 5. Create runbook
 
 ## Files Touched
+
 - apps/api/src/performance/types.ts (NEW)
 - apps/api/src/performance/profiler.ts (NEW)
 - apps/api/src/performance/budget-engine.ts (NEW)

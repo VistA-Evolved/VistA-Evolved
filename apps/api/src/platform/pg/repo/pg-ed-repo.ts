@@ -7,9 +7,9 @@
  * Uses Drizzle ORM + pg-core for type-safe queries.
  */
 
-import { eq, and, desc } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { pgEdVisit, pgEdBed } from "../pg-schema.js";
+import { eq, and, desc } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { pgEdVisit, pgEdBed } from '../pg-schema.js';
 
 export type EdVisitRow = typeof pgEdVisit.$inferSelect;
 export type EdBedRow = typeof pgEdBed.$inferSelect;
@@ -41,9 +41,9 @@ export async function insertEdVisit(data: {
   const now = new Date();
   await db.insert(pgEdVisit).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     patientDfn: data.patientDfn,
-    status: data.status ?? "waiting",
+    status: data.status ?? 'waiting',
     arrivalTime: data.arrivalTime,
     arrivalMode: data.arrivalMode,
     triageJson: data.triageJson ?? null,
@@ -72,47 +72,65 @@ export async function findEdVisitById(id: string): Promise<EdVisitRow | undefine
   return rows[0];
 }
 
-export async function findEdVisitsByStatus(status: string, tenantId = "default"): Promise<EdVisitRow[]> {
+export async function findEdVisitsByStatus(
+  status: string,
+  tenantId = 'default'
+): Promise<EdVisitRow[]> {
   const db = getPgDb();
-  return db.select().from(pgEdVisit)
+  return db
+    .select()
+    .from(pgEdVisit)
     .where(and(eq(pgEdVisit.tenantId, tenantId), eq(pgEdVisit.status, status)))
     .orderBy(desc(pgEdVisit.arrivalTime));
 }
 
-export async function findEdVisitsByPatient(patientDfn: string, tenantId = "default"): Promise<EdVisitRow[]> {
+export async function findEdVisitsByPatient(
+  patientDfn: string,
+  tenantId = 'default'
+): Promise<EdVisitRow[]> {
   const db = getPgDb();
-  return db.select().from(pgEdVisit)
+  return db
+    .select()
+    .from(pgEdVisit)
     .where(and(eq(pgEdVisit.tenantId, tenantId), eq(pgEdVisit.patientDfn, patientDfn)))
     .orderBy(desc(pgEdVisit.arrivalTime));
 }
 
-export async function findAllEdVisits(tenantId = "default"): Promise<EdVisitRow[]> {
+export async function findAllEdVisits(tenantId = 'default'): Promise<EdVisitRow[]> {
   const db = getPgDb();
-  return db.select().from(pgEdVisit)
+  return db
+    .select()
+    .from(pgEdVisit)
     .where(eq(pgEdVisit.tenantId, tenantId))
     .orderBy(desc(pgEdVisit.arrivalTime));
 }
 
 /* ── Update ──────────────────────────────────────── */
 
-export async function updateEdVisit(id: string, patch: Partial<{
-  status: string;
-  triageJson: unknown;
-  bedAssignmentJson: unknown;
-  attendingProvider: string;
-  disposition: string;
-  dispositionTime: string;
-  dispositionBy: string;
-  admitOrderIen: string;
-  totalMinutes: number;
-  doorToProviderMinutes: number;
-  doorToDispositionMinutes: number;
-}>): Promise<EdVisitRow | undefined> {
+export async function updateEdVisit(
+  id: string,
+  patch: Partial<{
+    status: string;
+    triageJson: unknown;
+    bedAssignmentJson: unknown;
+    attendingProvider: string;
+    disposition: string;
+    dispositionTime: string;
+    dispositionBy: string;
+    admitOrderIen: string;
+    totalMinutes: number;
+    doorToProviderMinutes: number;
+    doorToDispositionMinutes: number;
+  }>
+): Promise<EdVisitRow | undefined> {
   const db = getPgDb();
-  await db.update(pgEdVisit).set({
-    ...patch,
-    updatedAt: new Date(),
-  } as any).where(eq(pgEdVisit.id, id));
+  await db
+    .update(pgEdVisit)
+    .set({
+      ...patch,
+      updatedAt: new Date(),
+    } as any)
+    .where(eq(pgEdVisit.id, id));
   return findEdVisitById(id);
 }
 
@@ -141,10 +159,10 @@ export async function insertEdBed(data: {
   const now = new Date();
   await db.insert(pgEdBed).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     zone: data.zone,
     bedNumber: data.bedNumber,
-    status: data.status ?? "available",
+    status: data.status ?? 'available',
     currentVisitId: data.currentVisitId ?? null,
     lastCleanedAt: data.lastCleanedAt ?? null,
     createdAt: now,
@@ -162,29 +180,40 @@ export async function findEdBedById(id: string): Promise<EdBedRow | undefined> {
   return rows[0];
 }
 
-export async function findEdBedsByStatus(status: string, tenantId = "default"): Promise<EdBedRow[]> {
+export async function findEdBedsByStatus(
+  status: string,
+  tenantId = 'default'
+): Promise<EdBedRow[]> {
   const db = getPgDb();
-  return db.select().from(pgEdBed)
+  return db
+    .select()
+    .from(pgEdBed)
     .where(and(eq(pgEdBed.tenantId, tenantId), eq(pgEdBed.status, status)));
 }
 
-export async function findAllEdBeds(tenantId = "default"): Promise<EdBedRow[]> {
+export async function findAllEdBeds(tenantId = 'default'): Promise<EdBedRow[]> {
   const db = getPgDb();
   return db.select().from(pgEdBed).where(eq(pgEdBed.tenantId, tenantId));
 }
 
 /* ── Update ──────────────────────────────────────── */
 
-export async function updateEdBed(id: string, patch: Partial<{
-  status: string;
-  currentVisitId: string | null;
-  lastCleanedAt: string;
-}>): Promise<EdBedRow | undefined> {
+export async function updateEdBed(
+  id: string,
+  patch: Partial<{
+    status: string;
+    currentVisitId: string | null;
+    lastCleanedAt: string;
+  }>
+): Promise<EdBedRow | undefined> {
   const db = getPgDb();
-  await db.update(pgEdBed).set({
-    ...patch,
-    updatedAt: new Date(),
-  } as any).where(eq(pgEdBed.id, id));
+  await db
+    .update(pgEdBed)
+    .set({
+      ...patch,
+      updatedAt: new Date(),
+    } as any)
+    .where(eq(pgEdBed.id, id));
   return findEdBedById(id);
 }
 

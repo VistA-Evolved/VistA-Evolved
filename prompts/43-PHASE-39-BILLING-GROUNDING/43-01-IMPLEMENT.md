@@ -3,6 +3,7 @@
 ## Request
 
 Build a VistA-first read-only billing module that:
+
 1. Probes the WorldVistA sandbox for IB/PRCA/PCE/scheduling globals & RPCs
 2. Creates a machine-readable capability map documenting what's live vs integration-pending
 3. Exposes read-only API endpoints for encounters, charges, insurance, and billing status
@@ -12,6 +13,7 @@ Build a VistA-first read-only billing module that:
 ## Implementation Steps
 
 ### A. VistA Billing Capability Probe (MUMPS)
+
 - [x] Write ZVEBILP.m + ZVEBILR.m probe routines
 - [x] Docker exec probes to discover:
   - PCE encounters: 68 visits, 32 V CPT, 28 V POV -- LIVE
@@ -23,10 +25,12 @@ Build a VistA-first read-only billing module that:
   - 85 billing-related RPCs found (ORWPCE*, IBD*, IBCN*, IBARXM*, etc.)
 
 ### B. Capability Map
+
 - [ ] `data/vista/capability-map-billing.json` -- machine-readable
 - [ ] `docs/vista/capability-map-billing.md` -- human-readable
 
 ### C. API Endpoints (read-only, VistA-first)
+
 - [ ] `GET /vista/rcm/encounters?dfn=N` -- PCE visits via ORWPCE GET VISIT + ORWPCE DIAG + ORWPCE PROC
 - [ ] `GET /vista/rcm/insurance?dfn=N` -- Patient insurance via IBCN INSURANCE QUERY
 - [ ] `GET /vista/rcm/icd-search?text=X` -- ICD/diagnosis search via ORWPCE4 LEX
@@ -36,16 +40,19 @@ Build a VistA-first read-only billing module that:
 - [ ] New Fastify plugin: `apps/api/src/routes/vista-rcm.ts`
 
 ### D. UI Screens
+
 - [ ] Update `apps/web/src/app/cprs/admin/rcm/page.tsx` with VistA Billing tab
 - [ ] Show encounters, insurance, ICD search from live VistA RPCs
 - [ ] Show charges/claims/AR as "integration-pending" with target VistA file refs
 
 ### E. Quality
+
 - [ ] Add billing RPCs to rpcCapabilities.ts KNOWN_RPCS
 - [ ] cachedRpc for encounter reads
 - [ ] PHI audit for all billing reads
 
 ### F. Docs & Ops
+
 - [ ] `docs/runbooks/rcm-billing-grounding.md`
 - [ ] Update AGENTS.md with Phase 39 gotchas
 - [ ] Update BUG-TRACKER.md if needed
@@ -53,6 +60,7 @@ Build a VistA-first read-only billing module that:
 - [ ] ops/ artifacts
 
 ## Files Touched
+
 - `data/vista/capability-map-billing.json` (NEW)
 - `docs/vista/capability-map-billing.md` (NEW)
 - `apps/api/src/routes/vista-rcm.ts` (NEW)
@@ -68,4 +76,5 @@ Build a VistA-first read-only billing module that:
 - `ops/phase39-notion-update.json` (NEW)
 
 ## Verification
+
 - `scripts/verify-phase39-billing-grounding.ps1`

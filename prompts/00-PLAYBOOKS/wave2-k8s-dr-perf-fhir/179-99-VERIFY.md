@@ -2,26 +2,26 @@
 
 ## Verification Summary
 
-| Gate | Test | Result |
-|------|------|--------|
-| Q179 | Helm charts lint clean | PASS |
-| Q180 | Portal Dockerfile + build script | PASS |
-| Q181 | Shared layer templates render | PASS |
-| Q182 | Tenant layer templates render | PASS |
-| Q183 | Provisioning scripts parse | PASS |
-| Q184 | Secrets strategy files exist | PASS |
-| Q185 | PG backup script parses | PASS |
-| Q186 | YottaDB backup script parses | PASS |
-| Q187 | DR drill script parses | PASS |
-| Q188 | Grafana + Prometheus configs valid | PASS |
-| Q189 | Perf tuning runbook exists | PASS |
-| Q190 | k6 test files validate | PASS |
-| Q191 | Backpressure module loads | PASS |
-| Q192 | HPA+PDB in tenant chart | PASS |
-| Q193 | FHIR Encounter: 74/74 pass | PASS |
-| Q194 | FHIR cache/ETag: 78/78 pass | PASS |
-| Q195 | SMART posture: 82/82 pass | PASS |
-| Q196 | FHIR conformance: 126/126 pass | PASS |
+| Gate | Test                               | Result |
+| ---- | ---------------------------------- | ------ |
+| Q179 | Helm charts lint clean             | PASS   |
+| Q180 | Portal Dockerfile + build script   | PASS   |
+| Q181 | Shared layer templates render      | PASS   |
+| Q182 | Tenant layer templates render      | PASS   |
+| Q183 | Provisioning scripts parse         | PASS   |
+| Q184 | Secrets strategy files exist       | PASS   |
+| Q185 | PG backup script parses            | PASS   |
+| Q186 | YottaDB backup script parses       | PASS   |
+| Q187 | DR drill script parses             | PASS   |
+| Q188 | Grafana + Prometheus configs valid | PASS   |
+| Q189 | Perf tuning runbook exists         | PASS   |
+| Q190 | k6 test files validate             | PASS   |
+| Q191 | Backpressure module loads          | PASS   |
+| Q192 | HPA+PDB in tenant chart            | PASS   |
+| Q193 | FHIR Encounter: 74/74 pass         | PASS   |
+| Q194 | FHIR cache/ETag: 78/78 pass        | PASS   |
+| Q195 | SMART posture: 82/82 pass          | PASS   |
+| Q196 | FHIR conformance: 126/126 pass     | PASS   |
 
 ## Verification Commands
 

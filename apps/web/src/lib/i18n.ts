@@ -1,4 +1,5 @@
 import { API_BASE } from '@/lib/api-config';
+import { SUPPORTED_LOCALES, type SupportedLocale } from '@vista-evolved/locale-utils';
 /**
  * i18n configuration for the EHR Web App — Phase 132.
  *
@@ -7,28 +8,28 @@ import { API_BASE } from '@/lib/api-config';
  * Supported locales: en, fil (Filipino), es (Spanish).
  */
 
-export const SUPPORTED_LOCALES = ["en", "fil", "es"] as const;
-export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+export { SUPPORTED_LOCALES };
+export type { SupportedLocale };
 
-export const DEFAULT_LOCALE: SupportedLocale = "en";
+export const DEFAULT_LOCALE: SupportedLocale = 'en';
 
 export const LOCALE_LABELS: Record<SupportedLocale, string> = {
-  en: "English",
-  fil: "Filipino",
-  es: "Espanol",
+  en: 'English',
+  fil: 'Filipino',
+  es: 'Espanol',
 };
 
 export const LOCALE_NATIVE_LABELS: Record<SupportedLocale, string> = {
-  en: "English",
-  fil: "Filipino",
-  es: "Espanol",
+  en: 'English',
+  fil: 'Filipino',
+  es: 'Espanol',
 };
 
-const LS_KEY = "ehr-locale";
+const LS_KEY = 'ehr-locale';
 
 /** Get the current locale from localStorage (client-side only) */
 export function getStoredLocale(): SupportedLocale {
-  if (typeof window === "undefined") return DEFAULT_LOCALE;
+  if (typeof window === 'undefined') return DEFAULT_LOCALE;
   const stored = localStorage.getItem(LS_KEY);
   if (stored && (SUPPORTED_LOCALES as readonly string[]).includes(stored)) {
     return stored as SupportedLocale;
@@ -38,19 +39,19 @@ export function getStoredLocale(): SupportedLocale {
 
 /** Set the locale in localStorage */
 export function setStoredLocale(locale: SupportedLocale): void {
-  if (typeof window === "undefined") return;
+  if (typeof window === 'undefined') return;
   localStorage.setItem(LS_KEY, locale);
 }
 
 /** Sync locale to the API for persistence */
 export async function syncLocaleToApi(locale: SupportedLocale): Promise<void> {
   try {
-    const { csrfHeaders } = await import("./csrf");
+    const { csrfHeaders } = await import('./csrf');
     await fetch(`${API_BASE}/i18n/locale`, {
-      method: "PUT",
-      credentials: "include",
+      method: 'PUT',
+      credentials: 'include',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         ...csrfHeaders(),
       },
       body: JSON.stringify({ locale }),
@@ -63,7 +64,7 @@ export async function syncLocaleToApi(locale: SupportedLocale): Promise<void> {
 /** Load locale from API (for initial hydration) */
 export async function loadLocaleFromApi(): Promise<SupportedLocale | null> {
   try {
-    const res = await fetch(`${API_BASE}/i18n/locale`, { credentials: "include" });
+    const res = await fetch(`${API_BASE}/i18n/locale`, { credentials: 'include' });
     if (res.ok) {
       const data = await res.json();
       if (data.ok && (SUPPORTED_LOCALES as readonly string[]).includes(data.locale)) {

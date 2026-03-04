@@ -1,14 +1,15 @@
-# Phase 123 — SCHEDULING SD* INTEGRATION PACK (VISTA-FIRST, TESTABLE)
+# Phase 123 — SCHEDULING SD\* INTEGRATION PACK (VISTA-FIRST, TESTABLE)
 
 ## User Request
 
 Turn the SCHEDULING module from "integration_pending" into **"wired (read)" + "partial (write)"** with honest limitations.
 
-Wire real SD* RPCs for scheduling read paths, add encounter detail + waitlist endpoints, and implement at least one real VistA write path via SD W/L CREATE FILE. All responses must include `vistaGrounding` metadata showing exactly which RPCs/files are used.
+Wire real SD\* RPCs for scheduling read paths, add encounter detail + waitlist endpoints, and implement at least one real VistA write path via SD W/L CREATE FILE. All responses must include `vistaGrounding` metadata showing exactly which RPCs/files are used.
 
 ## Implementation Steps
 
 ### Step 0 — Prompt files
+
 - Created `prompts/127-PHASE-123-SCHEDULING-SD/123-01-IMPLEMENT.md` (this file)
 - Created `prompts/127-PHASE-123-SCHEDULING-SD/123-99-VERIFY.md`
 
@@ -34,6 +35,7 @@ Wire real SD* RPCs for scheduling read paths, add encounter detail + waitlist en
 | SC BLD PAT APT LIST | appointments | read | check | Team-based appointment list |
 
 ### Step 2 — Read Path Wired
+
 - Add encounter detail endpoint: `GET /scheduling/encounters/:ien/detail`
 - Add encounter providers endpoint: `GET /scheduling/encounters/:ien/providers`
 - Add wait-list read endpoint: `GET /scheduling/waitlist`
@@ -42,6 +44,7 @@ Wire real SD* RPCs for scheduling read paths, add encounter detail + waitlist en
 - Register new RPCs in `rpcRegistry.ts` + `RPC_EXCEPTIONS`
 
 ### Step 3 — Write Path Partial
+
 - Wire `createAppointment()` to attempt SD W/L CREATE FILE first
 - If RPC succeeds: real VistA wait-list entry created
 - If RPC fails/unavailable: fall back to in-memory + DB request store
@@ -49,16 +52,19 @@ Wire real SD* RPCs for scheduling read paths, add encounter detail + waitlist en
 - Update `scheduling.appointments.create` capability to `configured`
 
 ### Step 4 — Sandbox Probe (Optional)
+
 - Attempt each new RPC in adapter with graceful error handling
 - Log which RPCs are actually available vs absent
 
 ### Step 5 — Tests + Verify
+
 - Integration tests for scheduling endpoints
 - Run TypeScript check across api/web/portal
 - Verify RPC registry consistency
 
 ## Files Touched
-- `apps/api/src/vista/rpcRegistry.ts` — new SD* RPCs
+
+- `apps/api/src/vista/rpcRegistry.ts` — new SD\* RPCs
 - `apps/api/src/adapters/scheduling/vista-adapter.ts` — new methods + write wiring
 - `apps/api/src/adapters/scheduling/interface.ts` — new types + methods
 - `apps/api/src/routes/scheduling/index.ts` — new endpoints
@@ -68,6 +74,7 @@ Wire real SD* RPCs for scheduling read paths, add encounter detail + waitlist en
 - `prompts/127-PHASE-123-SCHEDULING-SD/123-99-VERIFY.md`
 
 ## Verification
+
 - `pnpm -C apps/api exec tsc --noEmit`
 - `pnpm -C apps/web exec tsc --noEmit`
 - All scheduling routes respond correctly

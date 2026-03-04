@@ -18,9 +18,7 @@ export default function CPRSLayout({ children }: { children: React.ReactNode }) 
             <PatientProvider>
               <DataCacheProvider>
                 <DegradedBanner />
-                <ErrorBoundary name="CPRS Content">
-                  {children}
-                </ErrorBoundary>
+                <ErrorBoundary name="CPRS Content">{children}</ErrorBoundary>
                 <CPRSModals />
               </DataCacheProvider>
             </PatientProvider>

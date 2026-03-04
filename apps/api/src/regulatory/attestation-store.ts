@@ -9,18 +9,18 @@
  * Each attestation is hash-chained for tamper detection.
  */
 
-import { createHash, randomUUID } from "crypto";
-import type { RegulatoryFramework } from "./types.js";
+import { createHash, randomUUID } from 'crypto';
+import type { RegulatoryFramework } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
 /* ------------------------------------------------------------------ */
 
 export type AttestationStatus =
-  | "attested"       // Requirement met and confirmed
-  | "expired"        // Attestation past its review date
-  | "revoked"        // Explicitly revoked
-  | "pending_review"; // Awaiting next periodic review
+  | 'attested' // Requirement met and confirmed
+  | 'expired' // Attestation past its review date
+  | 'revoked' // Explicitly revoked
+  | 'pending_review'; // Awaiting next periodic review
 
 export interface ComplianceAttestation {
   id: string;
@@ -52,7 +52,7 @@ export interface ComplianceAttestation {
 }
 
 export interface AttestationEvidence {
-  type: "file" | "url" | "phase_ref" | "test_result";
+  type: 'file' | 'url' | 'phase_ref' | 'test_result';
   path: string;
   description: string;
   /** When the evidence was collected */
@@ -75,9 +75,9 @@ export interface AttestationSummary {
 
 const MAX_STORE_SIZE = 5000;
 const attestations = new Map<string, ComplianceAttestation>();
-let lastHash = "genesis";
+let lastHash = 'genesis';
 
-function computeHash(entry: Omit<ComplianceAttestation, "hash">): string {
+function computeHash(entry: Omit<ComplianceAttestation, 'hash'>): string {
   const payload = JSON.stringify({
     id: entry.id,
     framework: entry.framework,
@@ -87,7 +87,7 @@ function computeHash(entry: Omit<ComplianceAttestation, "hash">): string {
     status: entry.status,
     prevHash: entry.prevHash,
   });
-  return createHash("sha256").update(payload).digest("hex").slice(0, 32);
+  return createHash('sha256').update(payload).digest('hex').slice(0, 32);
 }
 
 /* ------------------------------------------------------------------ */
@@ -118,7 +118,7 @@ export function createAttestation(params: {
   const reviewDays = params.reviewIntervalDays || 90; // Default 90-day review cycle
   const reviewDue = new Date(now.getTime() + reviewDays * 86_400_000);
 
-  const entry: Omit<ComplianceAttestation, "hash"> = {
+  const entry: Omit<ComplianceAttestation, 'hash'> = {
     id: randomUUID(),
     framework: params.framework,
     requirementId: params.requirementId,
@@ -127,10 +127,10 @@ export function createAttestation(params: {
     attesterRole: params.attesterRole,
     attestedAt: now.toISOString(),
     reviewDueAt: reviewDue.toISOString(),
-    status: "attested",
+    status: 'attested',
     evidence: params.evidence,
     notes: params.notes,
-    tenantId: params.tenantId || "default",
+    tenantId: params.tenantId || 'default',
     prevHash: lastHash,
   };
 
@@ -165,7 +165,8 @@ export function listAttestations(filters?: {
   if (filters?.framework) items = items.filter((a) => a.framework === filters.framework);
   if (filters?.status) items = items.filter((a) => a.status === filters.status);
   if (filters?.tenantId) items = items.filter((a) => a.tenantId === filters.tenantId);
-  if (filters?.requirementId) items = items.filter((a) => a.requirementId === filters.requirementId);
+  if (filters?.requirementId)
+    items = items.filter((a) => a.requirementId === filters.requirementId);
 
   const total = items.length;
   const offset = filters?.offset || 0;
@@ -180,9 +181,9 @@ export function listAttestations(filters?: {
  */
 export function revokeAttestation(id: string, revokedBy: string, reason?: string): boolean {
   const att = attestations.get(id);
-  if (!att || att.status === "revoked") return false;
-  att.status = "revoked";
-  att.notes = (att.notes || "") + ` | Revoked by ${revokedBy}: ${reason || "no reason given"}`;
+  if (!att || att.status === 'revoked') return false;
+  att.status = 'revoked';
+  att.notes = (att.notes || '') + ` | Revoked by ${revokedBy}: ${reason || 'no reason given'}`;
   return true;
 }
 
@@ -193,8 +194,8 @@ export function checkExpiredAttestations(): number {
   const now = new Date().toISOString();
   let expired = 0;
   for (const att of attestations.values()) {
-    if (att.status === "attested" && att.reviewDueAt < now) {
-      att.status = "expired";
+    if (att.status === 'attested' && att.reviewDueAt < now) {
+      att.status = 'expired';
       expired++;
     }
   }
@@ -222,17 +223,16 @@ export function getAttestationSummary(tenantId?: string): AttestationSummary[] {
       byFramework.set(att.framework, summary);
     }
     summary.total++;
-    if (att.status === "attested") summary.attested++;
-    if (att.status === "expired") summary.expired++;
-    if (att.status === "revoked") summary.revoked++;
-    if (att.status === "pending_review") summary.pendingReview++;
+    if (att.status === 'attested') summary.attested++;
+    if (att.status === 'expired') summary.expired++;
+    if (att.status === 'revoked') summary.revoked++;
+    if (att.status === 'pending_review') summary.pendingReview++;
   }
 
   // Calculate coverage
   for (const summary of byFramework.values()) {
-    summary.coveragePercent = summary.total > 0
-      ? Math.round((summary.attested / summary.total) * 100)
-      : 0;
+    summary.coveragePercent =
+      summary.total > 0 ? Math.round((summary.attested / summary.total) * 100) : 0;
   }
 
   return [...byFramework.values()];
@@ -258,5 +258,5 @@ export function verifyAttestationChain(): { valid: boolean; brokenAt?: string; c
  */
 export function _resetAttestationStore(): void {
   attestations.clear();
-  lastHash = "genesis";
+  lastHash = 'genesis';
 }

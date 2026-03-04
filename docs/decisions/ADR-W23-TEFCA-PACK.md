@@ -36,19 +36,21 @@ evidence artifacts, without claiming regulatory status.
 
 ## Alternatives Considered
 
-| Option | Pros | Cons |
-|--------|------|------|
-| No TEFCA support | Avoids all claims | Misses US market requirement |
-| Full QHIN claim | Marketing advantage | Legally dangerous, inaccurate |
+| Option                         | Pros                         | Cons                          |
+| ------------------------------ | ---------------------------- | ----------------------------- |
+| No TEFCA support               | Avoids all claims            | Misses US market requirement  |
+| Full QHIN claim                | Marketing advantage          | Legally dangerous, inaccurate |
 | **Readiness posture (chosen)** | Honest, useful, demonstrable | Must be careful with language |
 
 ## Consequences
 
 **Positive:**
+
 - Deploying organizations can use VistA-Evolved as their TEFCA-ready platform
 - Evidence harness supports real certification processes
 - No legal risk from overclaiming
 
 **Negative:**
+
 - Marketing must be carefully worded
 - Actual TEFCA participation still requires org-level agreements

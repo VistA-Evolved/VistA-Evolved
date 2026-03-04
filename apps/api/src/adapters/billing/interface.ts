@@ -2,7 +2,7 @@
  * Billing Adapter Interface — Phase 37C.
  */
 
-import type { BaseAdapter, AdapterResult } from "../types.js";
+import type { BaseAdapter, AdapterResult } from '../types.js';
 
 export interface Claim {
   id: string;
@@ -33,7 +33,7 @@ export interface EligibilityResult {
 }
 
 export interface BillingAdapter extends BaseAdapter {
-  readonly adapterType: "billing";
+  readonly adapterType: 'billing';
   getClaims(patientDfn: string): Promise<AdapterResult<Claim[]>>;
   submitClaim(claim: Partial<Claim>): Promise<AdapterResult<Claim>>;
   getEOB(claimId: string): Promise<AdapterResult<EOB>>;

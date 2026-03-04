@@ -26,6 +26,7 @@ curl -s http://localhost:3001/health | jq .
 ### Step 2: Simulate Backlog (T+0)
 
 Option A — Direct DB injection (if PG access available):
+
 ```sql
 -- Insert synthetic failed jobs
 INSERT INTO graphile_worker.jobs (task_identifier, payload, attempts, max_attempts)
@@ -34,6 +35,7 @@ FROM generate_series(1, 100);
 ```
 
 Option B — Rapid API calls that queue work:
+
 ```bash
 # Trigger many async operations in rapid succession
 for i in $(seq 1 50); do
@@ -67,10 +69,10 @@ curl -s http://localhost:3001/metrics/prometheus | grep queue
 
 ## RPO/RTO Targets
 
-| Metric | Target | Notes |
-|--------|--------|-------|
-| **RPO** | 0 - jobs persisted in PG | Jobs survive restart |
-| **RTO** | < 10 minutes | Worker auto-recovers; failed jobs retry with backoff |
+| Metric  | Target                   | Notes                                                |
+| ------- | ------------------------ | ---------------------------------------------------- |
+| **RPO** | 0 - jobs persisted in PG | Jobs survive restart                                 |
+| **RTO** | < 10 minutes             | Worker auto-recovers; failed jobs retry with backoff |
 
 ---
 

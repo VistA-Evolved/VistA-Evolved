@@ -2,9 +2,17 @@
  * Phase 402 (W23-P4): Provider Directory — Types
  */
 
-export type PractitionerStatus = "active" | "inactive" | "suspended" | "retired";
-export type OrganizationType = "hospital" | "clinic" | "laboratory" | "pharmacy" | "imaging_center" | "payer" | "hie" | "other";
-export type LocationStatus = "active" | "inactive" | "suspended";
+export type PractitionerStatus = 'active' | 'inactive' | 'suspended' | 'retired';
+export type OrganizationType =
+  | 'hospital'
+  | 'clinic'
+  | 'laboratory'
+  | 'pharmacy'
+  | 'imaging_center'
+  | 'payer'
+  | 'hie'
+  | 'other';
+export type LocationStatus = 'active' | 'inactive' | 'suspended';
 
 export interface PractitionerQualification {
   code: string;
@@ -15,7 +23,7 @@ export interface PractitionerQualification {
 }
 
 export interface PractitionerIdentifier {
-  system: string;   // e.g. "NPI", "DEA", "state-license"
+  system: string; // e.g. "NPI", "DEA", "state-license"
   value: string;
 }
 
@@ -48,7 +56,13 @@ export interface DirectoryOrganization {
   active: boolean;
   alias?: string[];
   telecom: Array<{ system: string; value: string; use?: string }>;
-  address?: { line?: string[]; city?: string; state?: string; postalCode?: string; country?: string };
+  address?: {
+    line?: string[];
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    country?: string;
+  };
   parentOrganizationId?: string;
   metadata?: Record<string, unknown>;
   createdAt: string;
@@ -63,7 +77,13 @@ export interface DirectoryLocation {
   organizationId?: string;
   type?: string;
   telecom: Array<{ system: string; value: string; use?: string }>;
-  address?: { line?: string[]; city?: string; state?: string; postalCode?: string; country?: string };
+  address?: {
+    line?: string[];
+    city?: string;
+    state?: string;
+    postalCode?: string;
+    country?: string;
+  };
   position?: { latitude: number; longitude: number };
   metadata?: Record<string, unknown>;
   createdAt: string;

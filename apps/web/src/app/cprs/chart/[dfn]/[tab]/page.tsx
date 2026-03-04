@@ -64,23 +64,40 @@ function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
   switch (tab) {
     case 'cover':
       return <CoverSheetPanel dfn={dfn} />;
-    case 'problems':   return <ProblemsPanel   dfn={dfn} />;
-    case 'meds':       return <MedsPanel       dfn={dfn} />;
-    case 'orders':     return <OrdersPanel     dfn={dfn} />;
-    case 'notes':      return <NotesPanel      dfn={dfn} />;
-    case 'consults':   return <ConsultsPanel   dfn={dfn} />;
-    case 'surgery':    return <SurgeryPanel    dfn={dfn} />;
-    case 'dcsumm':     return <DCSummPanel     dfn={dfn} />;
-    case 'labs':       return <LabsPanel       dfn={dfn} />;
-    case 'reports':    return <ReportsPanel    dfn={dfn} />;
-    case 'imaging':    return <ImagingPanel    dfn={dfn} />;
-    case 'immunizations': return <ImmunizationsPanel dfn={dfn} />;
-    case 'intake':     return <IntakePanel     dfn={dfn} />;
-    case 'telehealth': return <TelehealthPanel dfn={dfn} />;
-    case 'tasks':      return <MessagingTasksPanel dfn={dfn} />;
-    case 'aiassist':  return <AIAssistPanel dfn={dfn} />;
-    case 'adt':       return <ADTPanel dfn={dfn} />;
-    case 'nursing':   return <NursingPanel dfn={dfn} />;
+    case 'problems':
+      return <ProblemsPanel dfn={dfn} />;
+    case 'meds':
+      return <MedsPanel dfn={dfn} />;
+    case 'orders':
+      return <OrdersPanel dfn={dfn} />;
+    case 'notes':
+      return <NotesPanel dfn={dfn} />;
+    case 'consults':
+      return <ConsultsPanel dfn={dfn} />;
+    case 'surgery':
+      return <SurgeryPanel dfn={dfn} />;
+    case 'dcsumm':
+      return <DCSummPanel dfn={dfn} />;
+    case 'labs':
+      return <LabsPanel dfn={dfn} />;
+    case 'reports':
+      return <ReportsPanel dfn={dfn} />;
+    case 'imaging':
+      return <ImagingPanel dfn={dfn} />;
+    case 'immunizations':
+      return <ImmunizationsPanel dfn={dfn} />;
+    case 'intake':
+      return <IntakePanel dfn={dfn} />;
+    case 'telehealth':
+      return <TelehealthPanel dfn={dfn} />;
+    case 'tasks':
+      return <MessagingTasksPanel dfn={dfn} />;
+    case 'aiassist':
+      return <AIAssistPanel dfn={dfn} />;
+    case 'adt':
+      return <ADTPanel dfn={dfn} />;
+    case 'nursing':
+      return <NursingPanel dfn={dfn} />;
     default:
       return (
         <div style={{ padding: 24 }}>
@@ -91,7 +108,26 @@ function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
   }
 }
 
-const VALID_TABS = new Set(['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging', 'immunizations', 'intake', 'telehealth', 'tasks', 'aiassist', 'adt', 'nursing']);
+const VALID_TABS = new Set([
+  'cover',
+  'problems',
+  'meds',
+  'orders',
+  'notes',
+  'consults',
+  'surgery',
+  'dcsumm',
+  'labs',
+  'reports',
+  'imaging',
+  'immunizations',
+  'intake',
+  'telehealth',
+  'tasks',
+  'aiassist',
+  'adt',
+  'nursing',
+]);
 
 export default function CPRSChartPage({ params }: ChartPageProps) {
   const { dfn, tab } = use(params);
@@ -123,7 +159,8 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
     }
   }, [dfn, fetchAll]);
 
-  const densityClass = preferences.density === 'compact' || preferences.density === 'dense' ? styles.compact : '';
+  const densityClass =
+    preferences.density === 'compact' || preferences.density === 'dense' ? styles.compact : '';
   const isModern = preferences.layoutMode === 'modern';
 
   return (
@@ -131,44 +168,83 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
       <CPRSMenuBar />
       <PatientBanner />
       {!isModern && <CPRSTabStrip dfn={dfn} activeTab={tab} />}
-      <div style={isModern ? { display: 'flex', flex: 1, overflow: 'hidden' } : { display: 'contents' }}>
+      <div
+        style={
+          isModern ? { display: 'flex', flex: 1, overflow: 'hidden' } : { display: 'contents' }
+        }
+      >
         {isModern && (
-          <nav style={{
-            width: 180,
-            borderRight: '1px solid var(--cprs-border)',
-            padding: '8px 0',
-            overflowY: 'auto',
-            background: 'var(--cprs-surface)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-          }}>
-            {['cover', 'problems', 'meds', 'orders', 'notes', 'consults', 'surgery', 'dcsumm', 'labs', 'reports', 'imaging', 'immunizations', 'adt', 'nursing', 'intake', 'telehealth', 'tasks', 'aiassist']
+          <nav
+            style={{
+              width: 180,
+              borderRight: '1px solid var(--cprs-border)',
+              padding: '8px 0',
+              overflowY: 'auto',
+              background: 'var(--cprs-surface)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+            }}
+          >
+            {[
+              'cover',
+              'problems',
+              'meds',
+              'orders',
+              'notes',
+              'consults',
+              'surgery',
+              'dcsumm',
+              'labs',
+              'reports',
+              'imaging',
+              'immunizations',
+              'adt',
+              'nursing',
+              'intake',
+              'telehealth',
+              'tasks',
+              'aiassist',
+            ]
               .filter((t) => isModuleEnabled(t))
               .map((t) => {
-              const label = ({ cover: 'Cover Sheet', dcsumm: 'DC Summaries', adt: 'ADT', aiassist: 'AI Assist' } as Record<string, string>)[t] ?? t.charAt(0).toUpperCase() + t.slice(1);
-              return (
-              <a
-                key={t}
-                href={`/cprs/chart/${dfn}/${t}`}
-                style={{
-                  display: 'block',
-                  padding: '6px 16px',
-                  fontSize: 12,
-                  textDecoration: 'none',
-                  color: t === tab ? 'var(--cprs-text)' : 'var(--cprs-text-muted)',
-                  background: t === tab ? 'var(--cprs-selected)' : 'transparent',
-                  fontWeight: t === tab ? 600 : 400,
-                  borderLeft: t === tab ? '3px solid var(--cprs-accent, #2563eb)' : '3px solid transparent',
-                }}
-              >
-                {label}
-              </a>
-              );
-            })}
+                const label =
+                  (
+                    {
+                      cover: 'Cover Sheet',
+                      dcsumm: 'DC Summaries',
+                      adt: 'ADT',
+                      aiassist: 'AI Assist',
+                    } as Record<string, string>
+                  )[t] ?? t.charAt(0).toUpperCase() + t.slice(1);
+                return (
+                  <a
+                    key={t}
+                    href={`/cprs/chart/${dfn}/${t}`}
+                    style={{
+                      display: 'block',
+                      padding: '6px 16px',
+                      fontSize: 12,
+                      textDecoration: 'none',
+                      color: t === tab ? 'var(--cprs-text)' : 'var(--cprs-text-muted)',
+                      background: t === tab ? 'var(--cprs-selected)' : 'transparent',
+                      fontWeight: t === tab ? 600 : 400,
+                      borderLeft:
+                        t === tab
+                          ? '3px solid var(--cprs-accent, #2563eb)'
+                          : '3px solid transparent',
+                    }}
+                  >
+                    {label}
+                  </a>
+                );
+              })}
           </nav>
         )}
-        <main className={styles.content} style={{ flex: 1, overflow: 'auto', padding: isModern ? 16 : 8 }}>
+        <main
+          className={styles.content}
+          style={{ flex: 1, overflow: 'auto', padding: isModern ? 16 : 8 }}
+        >
           <ErrorBoundary name={`Tab: ${tab}`}>
             {!isModuleEnabled(tab) ? (
               <div style={{ padding: 32, textAlign: 'center', color: 'var(--cprs-text-muted)' }}>

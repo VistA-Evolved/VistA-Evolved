@@ -10,14 +10,14 @@ postgres:
   enabled: true
   storage:
     size: 50Gi
-  password: ""  # must be supplied via --set or SOPS-encrypted secret
+  password: '' # must be supplied via --set or SOPS-encrypted secret
   restoreFromBackup:
     enabled: true
-    source: ""  # must be supplied: S3 URI or PVC snapshot ref
+    source: '' # must be supplied: S3 URI or PVC snapshot ref
 
 redis:
   enabled: true
-  maxMemory: "256Mi"
+  maxMemory: '256Mi'
 
 ingress:
   enabled: true
@@ -25,16 +25,16 @@ ingress:
   tls:
     enabled: true
     certManager: true
-    issuer: letsencrypt-staging  # use staging certs for DR validation
+    issuer: letsencrypt-staging # use staging certs for DR validation
 
 keycloak:
   enabled: true
-  url: ""  # must be supplied
+  url: '' # must be supplied
   realm: vista-evolved
 
 observability:
   enabled: true
-  otelCollectorEndpoint: "http://otel-collector.ve-dr-validate:4318"
+  otelCollectorEndpoint: 'http://otel-collector.ve-dr-validate:4318'
   jaeger:
     enabled: false
   prometheus:
@@ -42,7 +42,7 @@ observability:
     retention: 7d
 
 minio:
-  enabled: false  # DR does not ship audit; it validates restore
+  enabled: false # DR does not ship audit; it validates restore
 
 networkPolicies:
   enabled: true
@@ -50,7 +50,7 @@ networkPolicies:
 vista:
   enabled: true
   port: 9430
-  instanceId: "dr-validate"
+  instanceId: 'dr-validate'
 
 imaging:
   enabled: false

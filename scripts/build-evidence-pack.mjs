@@ -14,27 +14,27 @@
  *   node scripts/build-evidence-pack.mjs --strict   # exit 1 on gaps
  */
 
-import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSync } from "node:fs";
-import { join, relative } from "node:path";
+import { createHash } from 'node:crypto';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, statSync } from 'node:fs';
+import { join, relative } from 'node:path';
 
-const ROOT = join(import.meta.dirname, "..");
+const ROOT = join(import.meta.dirname, '..');
 const args = process.argv.slice(2);
 
-const outDir = args.includes("--out")
-  ? args[args.indexOf("--out") + 1]
-  : join(ROOT, "artifacts", "evidence-pack");
+const outDir = args.includes('--out')
+  ? args[args.indexOf('--out') + 1]
+  : join(ROOT, 'artifacts', 'evidence-pack');
 
-const strict = args.includes("--strict");
+const strict = args.includes('--strict');
 
 // ---- helpers ---------------------------------------------------------------
 
 function sha256(filePath) {
   try {
     const buf = readFileSync(filePath);
-    return createHash("sha256").update(buf).digest("hex").slice(0, 16);
+    return createHash('sha256').update(buf).digest('hex').slice(0, 16);
   } catch {
-    return "unreadable";
+    return 'unreadable';
   }
 }
 
@@ -53,20 +53,20 @@ function walkDir(dir, filter = () => true) {
 }
 
 function relPath(absPath) {
-  return relative(ROOT, absPath).replace(/\\/g, "/");
+  return relative(ROOT, absPath).replace(/\\/g, '/');
 }
 
 // ---- scanners --------------------------------------------------------------
 
 function scanEvidence() {
-  const evidenceDir = join(ROOT, "evidence");
+  const evidenceDir = join(ROOT, 'evidence');
   const files = walkDir(evidenceDir);
   const byWave = {};
   for (const f of files) {
     const rel = relPath(f);
-    const parts = rel.split("/");
-    const wave = parts[1] || "unknown";
-    const phase = parts[2] || "unknown";
+    const parts = rel.split('/');
+    const wave = parts[1] || 'unknown';
+    const phase = parts[2] || 'unknown';
     const key = `${wave}/${phase}`;
     if (!byWave[key]) byWave[key] = [];
     byWave[key].push({ path: rel, hash: sha256(f), size: statSync(f).size });
@@ -75,11 +75,11 @@ function scanEvidence() {
 }
 
 function scanRunbooks() {
-  const dir = join(ROOT, "docs", "runbooks");
+  const dir = join(ROOT, 'docs', 'runbooks');
   if (!existsSync(dir)) return [];
   return readdirSync(dir)
-    .filter(f => f.endsWith(".md"))
-    .map(f => ({
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => ({
       name: f,
       path: `docs/runbooks/${f}`,
       hash: sha256(join(dir, f)),
@@ -87,11 +87,11 @@ function scanRunbooks() {
 }
 
 function scanVerifiers() {
-  const dir = join(ROOT, "scripts");
+  const dir = join(ROOT, 'scripts');
   if (!existsSync(dir)) return [];
   return readdirSync(dir)
-    .filter(f => f.startsWith("verify-") && f.endsWith(".ps1"))
-    .map(f => ({
+    .filter((f) => f.startsWith('verify-') && f.endsWith('.ps1'))
+    .map((f) => ({
       name: f,
       path: `scripts/${f}`,
       hash: sha256(join(dir, f)),
@@ -100,35 +100,36 @@ function scanVerifiers() {
 }
 
 function scanInteropSuites() {
-  const dir = join(ROOT, "tests", "interop");
+  const dir = join(ROOT, 'tests', 'interop');
   if (!existsSync(dir)) return [];
-  return walkDir(dir, (name) => name.endsWith(".mjs") || name.endsWith(".ps1"))
-    .map(f => ({
-      path: relPath(f),
-      hash: sha256(f),
-    }));
+  return walkDir(dir, (name) => name.endsWith('.mjs') || name.endsWith('.ps1')).map((f) => ({
+    path: relPath(f),
+    hash: sha256(f),
+  }));
 }
 
 function scanK6Tests() {
-  const dir = join(ROOT, "tests", "k6");
+  const dir = join(ROOT, 'tests', 'k6');
   if (!existsSync(dir)) return [];
-  return walkDir(dir, (name) => name.endsWith(".js") || name.endsWith(".ps1") || name.endsWith(".md"))
-    .map(f => ({
-      path: relPath(f),
-      hash: sha256(f),
-    }));
+  return walkDir(
+    dir,
+    (name) => name.endsWith('.js') || name.endsWith('.ps1') || name.endsWith('.md')
+  ).map((f) => ({
+    path: relPath(f),
+    hash: sha256(f),
+  }));
 }
 
 function scanPrompts() {
-  const dir = join(ROOT, "prompts");
+  const dir = join(ROOT, 'prompts');
   if (!existsSync(dir)) return { folders: 0, files: 0 };
   const folders = readdirSync(dir, { withFileTypes: true })
-    .filter(d => d.isDirectory())
-    .map(d => d.name);
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name);
   let fileCount = 0;
   for (const folder of folders) {
     const fdir = join(dir, folder);
-    fileCount += readdirSync(fdir).filter(f => f.endsWith(".md")).length;
+    fileCount += readdirSync(fdir).filter((f) => f.endsWith('.md')).length;
   }
   return { folders: folders.length, files: fileCount };
 }
@@ -141,23 +142,21 @@ function detectGaps(verifiers, runbooks, evidence) {
   // Verifiers without evidence
   for (const v of verifiers) {
     if (v.phase) {
-      const hasEvidence = Object.keys(evidence.byWave).some(k =>
-        k.includes(v.phase)
-      );
+      const hasEvidence = Object.keys(evidence.byWave).some((k) => k.includes(v.phase));
       if (!hasEvidence) {
         gaps.push({
-          type: "verifier_no_evidence",
+          type: 'verifier_no_evidence',
           detail: `${v.name} (phase ${v.phase}) has no evidence captured`,
-          severity: "warn",
+          severity: 'warn',
         });
       }
     }
   }
 
   // Evidence directories without verifiers
-  const verifierPhases = new Set(verifiers.map(v => v.phase).filter(Boolean));
+  const verifierPhases = new Set(verifiers.map((v) => v.phase).filter(Boolean));
   for (const key of Object.keys(evidence.byWave)) {
-    const phaseNum = key.split("/").pop();
+    const phaseNum = key.split('/').pop();
     if (phaseNum && /^\d+/.test(phaseNum) && !verifierPhases.has(phaseNum)) {
       // Not all evidence phases need verifiers (e.g. wave-8 narrative evidence)
     }
@@ -169,8 +168,8 @@ function detectGaps(verifiers, runbooks, evidence) {
 // ---- main ------------------------------------------------------------------
 
 function main() {
-  console.log("Certification Evidence Pack Builder v2");
-  console.log("=".repeat(50));
+  console.log('Certification Evidence Pack Builder v2');
+  console.log('='.repeat(50));
 
   const evidence = scanEvidence();
   const runbooks = scanRunbooks();
@@ -214,20 +213,22 @@ function main() {
 
   // Write manifest
   mkdirSync(outDir, { recursive: true });
-  const manifestPath = join(outDir, "manifest.json");
+  const manifestPath = join(outDir, 'manifest.json');
   writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
   console.log(`\n  Manifest: ${relPath(manifestPath)}`);
 
   // Generate EVIDENCE_INDEX.md
   const lines = [];
-  lines.push("# Certification Evidence Index");
-  lines.push("");
-  lines.push(`> Auto-generated by \`scripts/build-evidence-pack.mjs\` on ${new Date().toISOString()}`);
-  lines.push("> Do NOT edit manually. Regenerate with: `node scripts/build-evidence-pack.mjs`");
-  lines.push("");
+  lines.push('# Certification Evidence Index');
+  lines.push('');
+  lines.push(
+    `> Auto-generated by \`scripts/build-evidence-pack.mjs\` on ${new Date().toISOString()}`
+  );
+  lines.push('> Do NOT edit manually. Regenerate with: `node scripts/build-evidence-pack.mjs`');
+  lines.push('');
 
-  lines.push("## Summary");
-  lines.push("");
+  lines.push('## Summary');
+  lines.push('');
   lines.push(`| Metric | Count |`);
   lines.push(`|--------|-------|`);
   lines.push(`| Evidence files | ${evidence.total} |`);
@@ -238,54 +239,54 @@ function main() {
   lines.push(`| K6 load tests | ${k6Tests.length} |`);
   lines.push(`| Prompt folders | ${prompts.folders} |`);
   lines.push(`| Prompt files | ${prompts.files} |`);
-  lines.push("");
+  lines.push('');
 
-  lines.push("## Evidence by Wave/Phase");
-  lines.push("");
+  lines.push('## Evidence by Wave/Phase');
+  lines.push('');
   const sortedKeys = Object.keys(evidence.byWave).sort();
   for (const key of sortedKeys) {
     const files = evidence.byWave[key];
     lines.push(`### ${key}`);
-    lines.push("");
-    lines.push("| File | SHA-256 (first 16) | Size |");
-    lines.push("|------|--------------------|------|");
+    lines.push('');
+    lines.push('| File | SHA-256 (first 16) | Size |');
+    lines.push('|------|--------------------|------|');
     for (const f of files) {
       lines.push(`| ${f.path} | \`${f.hash}\` | ${f.size} B |`);
     }
-    lines.push("");
+    lines.push('');
   }
 
-  lines.push("## Verifiers");
-  lines.push("");
-  lines.push("| Script | Phase | SHA-256 (first 16) |");
-  lines.push("|--------|-------|--------------------|");
+  lines.push('## Verifiers');
+  lines.push('');
+  lines.push('| Script | Phase | SHA-256 (first 16) |');
+  lines.push('|--------|-------|--------------------|');
   for (const v of verifiers) {
-    lines.push(`| ${v.path} | ${v.phase || "-"} | \`${v.hash}\` |`);
+    lines.push(`| ${v.path} | ${v.phase || '-'} | \`${v.hash}\` |`);
   }
-  lines.push("");
+  lines.push('');
 
-  lines.push("## Runbooks");
-  lines.push("");
-  lines.push("| Runbook | SHA-256 (first 16) |");
-  lines.push("|---------|-------------------|");
+  lines.push('## Runbooks');
+  lines.push('');
+  lines.push('| Runbook | SHA-256 (first 16) |');
+  lines.push('|---------|-------------------|');
   for (const r of runbooks) {
     lines.push(`| ${r.path} | \`${r.hash}\` |`);
   }
-  lines.push("");
+  lines.push('');
 
   if (gaps.length > 0) {
-    lines.push("## Gaps");
-    lines.push("");
-    lines.push("| Type | Detail | Severity |");
-    lines.push("|------|--------|----------|");
+    lines.push('## Gaps');
+    lines.push('');
+    lines.push('| Type | Detail | Severity |');
+    lines.push('|------|--------|----------|');
     for (const g of gaps) {
       lines.push(`| ${g.type} | ${g.detail} | ${g.severity} |`);
     }
-    lines.push("");
+    lines.push('');
   }
 
-  const indexPath = join(outDir, "EVIDENCE_INDEX.md");
-  writeFileSync(indexPath, lines.join("\n"));
+  const indexPath = join(outDir, 'EVIDENCE_INDEX.md');
+  writeFileSync(indexPath, lines.join('\n'));
   console.log(`  Index:    ${relPath(indexPath)}`);
 
   // Fail-loud in strict mode
@@ -294,7 +295,7 @@ function main() {
     process.exit(1);
   }
 
-  console.log("\n  Evidence pack built successfully.");
+  console.log('\n  Evidence pack built successfully.');
   process.exit(0);
 }
 

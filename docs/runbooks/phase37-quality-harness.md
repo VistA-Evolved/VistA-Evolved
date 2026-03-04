@@ -9,12 +9,12 @@
 
 Phase 37 establishes automated quality gates for the CPRS Web Replica:
 
-| Layer | Tool | Tests | Status |
-|-------|------|-------|--------|
-| E2E (web) | Playwright 1.58.2 | 16 pass, 1 fixme | GREEN |
-| A11y (web) | axe-core 4.11.1 | 3 pass (WCAG 2.1 AA) | GREEN |
-| API contracts | Vitest 4.0.18 | 37 pass | GREEN |
-| **Total** | | **53 passing** | **GREEN** |
+| Layer         | Tool              | Tests                | Status    |
+| ------------- | ----------------- | -------------------- | --------- |
+| E2E (web)     | Playwright 1.58.2 | 16 pass, 1 fixme     | GREEN     |
+| A11y (web)    | axe-core 4.11.1   | 3 pass (WCAG 2.1 AA) | GREEN     |
+| API contracts | Vitest 4.0.18     | 37 pass              | GREEN     |
+| **Total**     |                   | **53 passing**       | **GREEN** |
 
 ---
 
@@ -48,11 +48,11 @@ npx vitest --watch                 # watch mode
 
 ### Playwright Projects
 
-| Project | Auth | Tests |
-|---------|------|-------|
-| `setup` | Logs in via API, saves storageState | 1 |
-| `login-flow` | Fresh sessions (no storageState) | 4 |
-| `chromium` | Pre-authenticated via storageState | 12 |
+| Project      | Auth                                | Tests |
+| ------------ | ----------------------------------- | ----- |
+| `setup`      | Logs in via API, saves storageState | 1     |
+| `login-flow` | Fresh sessions (no storageState)    | 4     |
+| `chromium`   | Pre-authenticated via storageState  | 12    |
 
 ### Console Error Gate
 
@@ -68,6 +68,7 @@ a benign allowlist:
 ### Accessibility
 
 axe-core scans 3 key pages against WCAG 2.1 AA rules:
+
 - Login page
 - Patient search
 - Chart shell (cover sheet)

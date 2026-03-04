@@ -9,6 +9,7 @@
 
 As VistA-Evolved moves to multi-tenant SaaS with per-region infrastructure,
 the platform needs per-tenant cost visibility for:
+
 - Pricing accuracy (cost-plus or margin-based pricing)
 - Budget alerting (runaway tenants, unexpected spikes)
 - Capacity planning (predict infrastructure needs per growth)
@@ -22,6 +23,7 @@ Deploy OpenCost alongside Prometheus to provide Kubernetes-native cost
 allocation by namespace/label/pod.
 
 **Pros:**
+
 - CNCF project, active community
 - Native K8s integration (reads pod resource usage from kubelet)
 - Correlates with cloud pricing APIs (AWS, GCP, Azure)
@@ -29,6 +31,7 @@ allocation by namespace/label/pod.
 - REST API for programmatic access
 
 **Cons:**
+
 - Requires Prometheus (already deployed, Phase 36)
 - K8s-specific (non-K8s resources need supplementary tracking)
 - Cloud pricing API access may require IAM setup
@@ -39,10 +42,12 @@ Build a custom cost pipeline using Prometheus resource metrics + cloud
 billing APIs + a purpose-built aggregator.
 
 **Pros:**
+
 - Full control over cost model
 - Can include non-K8s costs (VistA instances, blob storage, network)
 
 **Cons:**
+
 - Significant build effort
 - Duplicates what OpenCost provides for K8s workloads
 - Maintenance burden
@@ -52,10 +57,12 @@ billing APIs + a purpose-built aggregator.
 Use cloud provider cost tools with resource tagging.
 
 **Pros:**
+
 - Accurate cloud costs
 - No additional tooling
 
 **Cons:**
+
 - Vendor lock-in
 - Tag propagation is fragile (missed tags = unallocated costs)
 - Limited to cloud costs (no insight into application-level usage)
@@ -70,12 +77,14 @@ blob storage, network egress). The supplementary layer uses the same
 ## Cost Model
 
 ### K8s Workload Costs (via OpenCost)
+
 - CPU cost per tenant (request-based + usage-based)
 - Memory cost per tenant
 - Persistent volume cost per tenant
 - Network cost per tenant (ingress + egress)
 
 ### Non-K8s Costs (via supplementary ingestion)
+
 - VistA instance cost (fixed per instance, allocated to tenant)
 - Blob storage cost (per tenant backup/audit volume)
 - Cross-region replication bandwidth
@@ -83,12 +92,12 @@ blob storage, network egress). The supplementary layer uses the same
 
 ### Budget Tiers
 
-| Plan Tier | Monthly Budget | Alert Threshold | Hard Limit |
-|-----------|---------------|-----------------|------------|
-| Starter | $500 | 80% | 120% (notify only) |
-| Professional | $2,000 | 80% | 150% (notify only) |
-| Enterprise | $10,000 | 80% | 200% (notify only) |
-| Custom | Configurable | Configurable | Configurable |
+| Plan Tier    | Monthly Budget | Alert Threshold | Hard Limit         |
+| ------------ | -------------- | --------------- | ------------------ |
+| Starter      | $500           | 80%             | 120% (notify only) |
+| Professional | $2,000         | 80%             | 150% (notify only) |
+| Enterprise   | $10,000        | 80%             | 200% (notify only) |
+| Custom       | Configurable   | Configurable    | Configurable       |
 
 Hard limits are notify-only. We do not auto-throttle tenants for cost
 overruns. Throttling requires manual ops decision.

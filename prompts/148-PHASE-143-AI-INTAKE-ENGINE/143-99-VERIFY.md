@@ -1,6 +1,7 @@
 # Phase 143 -- AI Intake Engine -- VERIFY
 
 ## Verification Gates
+
 1. TypeScript compiles clean (tsc --noEmit)
 2. Brain plugin registry loads rules_engine by default
 3. LLM provider bridges to AI Gateway (governed)

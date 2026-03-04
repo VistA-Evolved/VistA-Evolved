@@ -15,18 +15,13 @@
  * with target RPCs documented.
  */
 
-import { getPhHmo, initPhHmoRegistry } from "../payers/ph-hmo-registry.js";
-import { createClaimPacket } from "../payers/ph-hmo-adapter.js";
-import { randomUUID } from "node:crypto";
-import {
-  getClaim,
-  listClaims,
-  storeClaim,
-  updateClaim,
-} from "../domain/claim-store.js";
-import { createDraftClaim, transitionClaim } from "../domain/claim.js";
-import type { Claim, ClaimStatus } from "../domain/claim.js";
-import type { LoaSubmissionMode } from "../loa/loa-types.js";
+import { getPhHmo, initPhHmoRegistry } from '../payers/ph-hmo-registry.js';
+import { createClaimPacket } from '../payers/ph-hmo-adapter.js';
+import { randomUUID } from 'node:crypto';
+import { getClaim, listClaims, storeClaim, updateClaim } from '../domain/claim-store.js';
+import { createDraftClaim, transitionClaim } from '../domain/claim.js';
+import type { Claim, ClaimStatus } from '../domain/claim.js';
+import type { LoaSubmissionMode } from '../loa/loa-types.js';
 
 /* ── Ensure registry loaded ─────────────────────────────────── */
 
@@ -55,55 +50,59 @@ export function resolveClaimSubmissionPlan(payerId: string): ClaimSubmissionPlan
   const hmo = getPhHmo(payerId);
 
   const integrationPending = [
-    "totalCharge (VistA IB ^IB(350) -- empty in sandbox)",
-    "billingProviderNpi (VistA XUSNPI -- may not be populated)",
-    "subscriberId (VistA IBCNS -- insurance entries empty in sandbox)",
+    'totalCharge (VistA IB ^IB(350) -- empty in sandbox)',
+    'billingProviderNpi (VistA XUSNPI -- may not be populated)',
+    'subscriberId (VistA IBCNS -- insurance entries empty in sandbox)',
   ];
 
   if (!hmo) {
     return {
-      mode: "manual",
-      instructions: ["Unknown payer -- prepare claim packet for manual submission"],
-      requiredDocuments: ["LOA approval letter", "Itemized charges", "Supporting clinical documents"],
+      mode: 'manual',
+      instructions: ['Unknown payer -- prepare claim packet for manual submission'],
+      requiredDocuments: [
+        'LOA approval letter',
+        'Itemized charges',
+        'Supporting clinical documents',
+      ],
       integrationPendingFields: integrationPending,
     };
   }
 
   const baseDocuments = [
-    "LOA approval letter / reference number",
-    "Itemized statement of charges",
-    "Clinical summary / discharge summary",
-    "Laboratory results (if applicable)",
-    "Imaging reports (if applicable)",
+    'LOA approval letter / reference number',
+    'Itemized statement of charges',
+    'Clinical summary / discharge summary',
+    'Laboratory results (if applicable)',
+    'Imaging reports (if applicable)',
   ];
 
-  if (hmo.integrationMode === "portal") {
-    const portalEvidence = hmo.evidence.find(e => e.kind === "provider_portal");
+  if (hmo.integrationMode === 'portal') {
+    const portalEvidence = hmo.evidence.find((e) => e.kind === 'provider_portal');
     return {
-      mode: "portal",
+      mode: 'portal',
       portalUrl: portalEvidence?.url,
       instructions: [
-        `Open provider portal: ${portalEvidence?.url ?? "URL not available"}`,
-        "Navigate to Claims Submission section",
-        "Enter LOA reference number to link claim",
-        "Verify all line items match VistA encounter data",
-        "Attach required supporting documents",
-        "Submit and record claim tracking number",
+        `Open provider portal: ${portalEvidence?.url ?? 'URL not available'}`,
+        'Navigate to Claims Submission section',
+        'Enter LOA reference number to link claim',
+        'Verify all line items match VistA encounter data',
+        'Attach required supporting documents',
+        'Submit and record claim tracking number',
       ],
       requiredDocuments: baseDocuments,
       integrationPendingFields: integrationPending,
     };
   }
 
-  if (hmo.integrationMode === "email") {
+  if (hmo.integrationMode === 'email') {
     return {
-      mode: "email",
+      mode: 'email',
       instructions: [
         `Prepare claim email to ${hmo.legalName}`,
-        "Attach claim packet with all line items",
-        "Include LOA reference number",
-        "Attach supporting documents",
-        "Send and track response",
+        'Attach claim packet with all line items',
+        'Include LOA reference number',
+        'Attach supporting documents',
+        'Send and track response',
       ],
       requiredDocuments: baseDocuments,
       integrationPendingFields: integrationPending,
@@ -111,12 +110,12 @@ export function resolveClaimSubmissionPlan(payerId: string): ClaimSubmissionPlan
   }
 
   return {
-    mode: "manual",
+    mode: 'manual',
     instructions: [
       `Prepare claim packet for ${hmo.legalName}`,
-      "Include all required fields and supporting documents",
-      "Submit through designated channel (fax/courier/drop-off)",
-      "Record submission date and tracking info",
+      'Include all required fields and supporting documents',
+      'Submit through designated channel (fax/courier/drop-off)',
+      'Record submission date and tracking info',
     ],
     requiredDocuments: baseDocuments,
     integrationPendingFields: integrationPending,
@@ -131,8 +130,8 @@ export function createHmoClaim(params: {
   patientName?: string;
   payerId: string;
   dateOfService: string;
-  diagnosisCodes?: Claim["diagnoses"];
-  lines?: Claim["lines"];
+  diagnosisCodes?: Claim['diagnoses'];
+  lines?: Claim['lines'];
   totalCharge?: number;
   loaReferenceNumber?: string;
   actor: string;
@@ -168,14 +167,18 @@ export function generateClaimPacketForClaim(claimId: string): {
   error?: string;
 } {
   const claim = getClaim(claimId);
-  if (!claim) return { ok: false, error: "Claim not found" };
+  if (!claim) return { ok: false, error: 'Claim not found' };
 
   ensureRegistry();
   const packet = createClaimPacket(claim.payerId);
   const plan = resolveClaimSubmissionPlan(claim.payerId);
 
   if (!packet) {
-    return { ok: false, submissionPlan: plan, error: `No packet template for payer ${claim.payerId}` };
+    return {
+      ok: false,
+      submissionPlan: plan,
+      error: `No packet template for payer ${claim.payerId}`,
+    };
   }
 
   return { ok: true, packet, submissionPlan: plan };
@@ -187,7 +190,7 @@ export function transitionHmoClaim(
   claimId: string,
   toStatus: ClaimStatus,
   actor: string,
-  detail?: string,
+  detail?: string
 ): Claim {
   const claim = getClaim(claimId);
   if (!claim) throw new Error(`Claim not found: ${claimId}`);
@@ -241,7 +244,19 @@ export function recordDenial(params: {
   denialStore.set(params.claimId, existing);
 
   // Phase 146: Write-through to PG
-  denialDbRepo?.insert({ id: randomUUID(), tenantId: 'default', claimId: params.claimId, reasonCode: params.reasonCode, reasonDescription: params.reasonText, denialDate: record.deniedAt, status: 'open', createdAt: record.deniedAt, updatedAt: record.deniedAt }).catch(() => {});
+  denialDbRepo
+    ?.insert({
+      id: randomUUID(),
+      tenantId: 'default',
+      claimId: params.claimId,
+      reasonCode: params.reasonCode,
+      reasonDescription: params.reasonText,
+      denialDate: record.deniedAt,
+      status: 'open',
+      createdAt: record.deniedAt,
+      updatedAt: record.deniedAt,
+    })
+    .catch(() => {});
 
   return record;
 }

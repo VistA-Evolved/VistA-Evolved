@@ -5,9 +5,9 @@
  * In-memory ring buffers reset on API restart.
  */
 
-import { randomUUID } from "node:crypto";
-import type { RouteProfile, RouteTiming, SlowQueryEntry } from "./types.js";
-import { checkBudget, listBudgets } from "./budget-engine.js";
+import { randomUUID } from 'node:crypto';
+import type { RouteProfile, RouteTiming, SlowQueryEntry } from './types.js';
+import { checkBudget, listBudgets } from './budget-engine.js';
 
 /* ------------------------------------------------------------------ */
 /*  In-memory stores                                                   */
@@ -49,11 +49,18 @@ export function recordRouteProfile(timing: RouteTiming): void {
   buf.push(timing);
 
   // Check budget
-  const budgetResult = checkBudget(timing.routePattern, timing.method, timing.durationMs, timing.responseBytes);
-  if (budgetResult === "exceeded") {
+  const budgetResult = checkBudget(
+    timing.routePattern,
+    timing.method,
+    timing.durationMs,
+    timing.responseBytes
+  );
+  if (budgetResult === 'exceeded') {
     const budgets = listBudgets();
     const matched = budgets.find(
-      (b) => timing.routePattern.startsWith(b.routePattern) && (b.method === "*" || b.method === timing.method)
+      (b) =>
+        timing.routePattern.startsWith(b.routePattern) &&
+        (b.method === '*' || b.method === timing.method)
     );
     const entry: SlowQueryEntry = {
       id: randomUUID(),
@@ -102,7 +109,7 @@ export function getRouteProfiles(): RouteProfile[] {
   const profiles: RouteProfile[] = [];
 
   for (const [key, timings] of timingBuffers) {
-    const [method, routePattern] = key.split("|", 2);
+    const [method, routePattern] = key.split('|', 2);
     if (timings.length === 0) continue;
 
     const durations = timings.map((t) => t.durationMs).sort((a, b) => a - b);
@@ -113,7 +120,12 @@ export function getRouteProfiles(): RouteProfile[] {
     const avgBytes = bytes.reduce((s, b) => s + b, 0) / bytes.length;
 
     // Budget status
-    const budgetResult = checkBudget(routePattern, method, percentile(durations, 95), Math.max(...bytes));
+    const budgetResult = checkBudget(
+      routePattern,
+      method,
+      percentile(durations, 95),
+      Math.max(...bytes)
+    );
 
     profiles.push({
       routePattern,
@@ -171,7 +183,10 @@ export function getSystemAvg(): number {
   let total = 0;
   let count = 0;
   for (const buf of timingBuffers.values()) {
-    for (const t of buf) { total += t.durationMs; count++; }
+    for (const t of buf) {
+      total += t.durationMs;
+      count++;
+    }
   }
   return count > 0 ? Math.round((total / count) * 100) / 100 : 0;
 }

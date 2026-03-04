@@ -1,6 +1,7 @@
 # Phase 112 — Evidence Pipeline + No-Fake-Integrations Gate (IMPLEMENT)
 
 ## User Request
+
 Enforce that any payer/integration claim in the codebase is backed by evidence
 and is not fabricated. Build evidence registry, CI enforcement gate, and
 research helper template.
@@ -40,12 +41,14 @@ research helper template.
 8. **Runbook** — `docs/runbooks/phase112-evidence-gating.md`
 
 ## Verification Steps
+
 - `npx tsc --noEmit` — zero errors
 - `npx next build` — clean build
 - API starts, evidence endpoints return data
 - CI gate runs and reports coverage
 
 ## Files Touched
+
 - `apps/api/src/platform/db/schema.ts` — add integration_evidence table (AE)
 - `apps/api/src/platform/db/migrate.ts` — add CREATE TABLE + indexes
 - `apps/api/src/rcm/evidence/evidence-registry-repo.ts` — NEW

@@ -9,4 +9,4 @@ releaseChannel: canary
 api:
   env:
     - name: TENANT_DISPLAY_NAME
-      value: "Demo Canary"
+      value: 'Demo Canary'

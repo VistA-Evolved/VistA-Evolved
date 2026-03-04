@@ -36,11 +36,13 @@ apps/api/src/rcm/payers/
 ## Import Steps
 
 ### Option 1: CLI Script
+
 ```powershell
 .\scripts\import-payer-registry.ps1
 ```
 
 ### Option 2: API Call
+
 ```bash
 curl -X POST http://localhost:3001/admin/payers/import \
   -H "Content-Type: application/json" \
@@ -48,25 +50,26 @@ curl -X POST http://localhost:3001/admin/payers/import \
 ```
 
 ### Option 3: Admin UI
+
 Navigate to `/cprs/admin/payer-registry` → click "Import from Snapshot"
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/admin/payers` | List all payers (filterable, paginated) |
-| GET | `/admin/payers/stats` | Registry stats + evidence scores |
-| GET | `/admin/payers/:id` | Single payer detail with evidence validation |
-| POST | `/admin/payers/import` | Import from snapshot JSON |
-| PATCH | `/admin/payers/:id/capabilities` | Update payer capabilities |
-| PATCH | `/admin/payers/:id/tasks` | Update contracting tasks |
-| PATCH | `/admin/payers/:id/status` | Update payer status |
-| POST | `/admin/payers/:id/evidence` | Add evidence item |
-| GET | `/admin/payers/:id/evidence/validate` | Evidence validation report |
-| GET | `/admin/payers/:id/audit` | Payer audit trail |
-| GET | `/admin/payers/audit/verify` | Verify audit chain integrity |
-| POST | `/admin/payers/:id/tenant-override` | Set tenant override |
-| GET | `/admin/payers/:id/tenant-override` | Get tenant override |
+| Method | Path                                  | Description                                  |
+| ------ | ------------------------------------- | -------------------------------------------- |
+| GET    | `/admin/payers`                       | List all payers (filterable, paginated)      |
+| GET    | `/admin/payers/stats`                 | Registry stats + evidence scores             |
+| GET    | `/admin/payers/:id`                   | Single payer detail with evidence validation |
+| POST   | `/admin/payers/import`                | Import from snapshot JSON                    |
+| PATCH  | `/admin/payers/:id/capabilities`      | Update payer capabilities                    |
+| PATCH  | `/admin/payers/:id/tasks`             | Update contracting tasks                     |
+| PATCH  | `/admin/payers/:id/status`            | Update payer status                          |
+| POST   | `/admin/payers/:id/evidence`          | Add evidence item                            |
+| GET    | `/admin/payers/:id/evidence/validate` | Evidence validation report                   |
+| GET    | `/admin/payers/:id/audit`             | Payer audit trail                            |
+| GET    | `/admin/payers/audit/verify`          | Verify audit chain integrity                 |
+| POST   | `/admin/payers/:id/tenant-override`   | Set tenant override                          |
+| GET    | `/admin/payers/:id/tenant-override`   | Get tenant override                          |
 
 ## Key Behaviors
 
@@ -79,12 +82,12 @@ Navigate to `/cprs/admin/payer-registry` → click "Import from Snapshot"
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| "No payers in persistent store" | Registry not imported yet | Run import script or POST /admin/payers/import |
-| "Snapshot not found" | ph-hmo-registry.json missing | Verify data/payers/ph-hmo-registry.json exists |
-| Stale data after import | Import is idempotent, won't overwrite | Delete registry-db.json and re-import |
-| Audit chain broken | In-memory ring buffer reset on restart | Expected behavior; file audit trail persists |
+| Symptom                         | Cause                                  | Fix                                            |
+| ------------------------------- | -------------------------------------- | ---------------------------------------------- |
+| "No payers in persistent store" | Registry not imported yet              | Run import script or POST /admin/payers/import |
+| "Snapshot not found"            | ph-hmo-registry.json missing           | Verify data/payers/ph-hmo-registry.json exists |
+| Stale data after import         | Import is idempotent, won't overwrite  | Delete registry-db.json and re-import          |
+| Audit chain broken              | In-memory ring buffer reset on restart | Expected behavior; file audit trail persists   |
 
 ## Verification
 

@@ -2,20 +2,25 @@
  * Phase 405 (W23-P7): Consent + Purpose of Use — Types
  */
 
-export type ConsentStatus = "active" | "inactive" | "draft" | "revoked" | "entered-in-error";
-export type ConsentScope = "patient-privacy" | "treatment" | "research" | "advance-directive" | "adr";
-export type ConsentDecision = "permit" | "deny";
+export type ConsentStatus = 'active' | 'inactive' | 'draft' | 'revoked' | 'entered-in-error';
+export type ConsentScope =
+  | 'patient-privacy'
+  | 'treatment'
+  | 'research'
+  | 'advance-directive'
+  | 'adr';
+export type ConsentDecision = 'permit' | 'deny';
 
 export type PurposeOfUse =
-  | "TREAT"     // Treatment
-  | "HPAYMT"    // Healthcare payment
-  | "HOPERAT"   // Healthcare operations
-  | "PUBHLTH"   // Public health
-  | "RESEARCH"  // Research
-  | "ETREAT"    // Emergency treatment
-  | "PATRQT"    // Patient requested
-  | "SYSADMIN"  // System administration
-  | "HMARKT";   // Healthcare marketing
+  | 'TREAT' // Treatment
+  | 'HPAYMT' // Healthcare payment
+  | 'HOPERAT' // Healthcare operations
+  | 'PUBHLTH' // Public health
+  | 'RESEARCH' // Research
+  | 'ETREAT' // Emergency treatment
+  | 'PATRQT' // Patient requested
+  | 'SYSADMIN' // System administration
+  | 'HMARKT'; // Healthcare marketing
 
 export interface ConsentProvision {
   type: ConsentDecision;

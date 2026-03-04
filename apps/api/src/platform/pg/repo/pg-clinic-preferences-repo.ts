@@ -5,9 +5,9 @@
  * VistA remains the master clinic record; preferences are overlay config.
  */
 
-import { eq, and } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { pgClinicPreferences } from "../pg-schema.js";
+import { eq, and } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { pgClinicPreferences } from '../pg-schema.js';
 
 export type ClinicPreferencesRow = typeof pgClinicPreferences.$inferSelect;
 
@@ -26,13 +26,14 @@ export async function upsertClinicPreferences(data: {
 }): Promise<ClinicPreferencesRow> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  const tenantId = data.tenantId ?? "default";
+  const tenantId = data.tenantId ?? 'default';
 
   // Check if exists
   const existing = await findByClinicIen(data.clinicIen, tenantId);
   if (existing) {
     // Update
-    await db.update(pgClinicPreferences)
+    await db
+      .update(pgClinicPreferences)
       .set({
         clinicName: data.clinicName,
         timezone: data.timezone ?? existing.timezone,
@@ -52,7 +53,7 @@ export async function upsertClinicPreferences(data: {
     tenantId,
     clinicIen: data.clinicIen,
     clinicName: data.clinicName,
-    timezone: data.timezone ?? "America/New_York",
+    timezone: data.timezone ?? 'America/New_York',
     slotDurationMinutes: data.slotDurationMinutes ?? 30,
     maxDailySlots: data.maxDailySlots ?? 20,
     displayConfig: data.displayConfig ?? null,
@@ -67,21 +68,19 @@ export async function upsertClinicPreferences(data: {
 
 export async function findByClinicIen(
   clinicIen: string,
-  tenantId = "default",
+  tenantId = 'default'
 ): Promise<ClinicPreferencesRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(pgClinicPreferences)
-    .where(and(
-      eq(pgClinicPreferences.tenantId, tenantId),
-      eq(pgClinicPreferences.clinicIen, clinicIen),
-    ));
+  const rows = await db
+    .select()
+    .from(pgClinicPreferences)
+    .where(
+      and(eq(pgClinicPreferences.tenantId, tenantId), eq(pgClinicPreferences.clinicIen, clinicIen))
+    );
   return rows[0];
 }
 
-export async function findAllByTenant(
-  tenantId = "default",
-): Promise<ClinicPreferencesRow[]> {
+export async function findAllByTenant(tenantId = 'default'): Promise<ClinicPreferencesRow[]> {
   const db = getPgDb();
-  return db.select().from(pgClinicPreferences)
-    .where(eq(pgClinicPreferences.tenantId, tenantId));
+  return db.select().from(pgClinicPreferences).where(eq(pgClinicPreferences.tenantId, tenantId));
 }

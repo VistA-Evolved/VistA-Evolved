@@ -18,23 +18,16 @@
  * Usage: npx tsx scripts/governance/verifyRepoHygiene.ts
  */
 
-import {
-  readdirSync,
-  statSync,
-  existsSync,
-  readFileSync,
-  writeFileSync,
-  mkdirSync,
-} from "fs";
-import { join } from "path";
-import { execSync } from "child_process";
+import { readdirSync, statSync, existsSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
+import { join } from 'path';
+import { execSync } from 'child_process';
 
 const ROOT = process.cwd();
-const PROMPTS_DIR = join(ROOT, "prompts");
+const PROMPTS_DIR = join(ROOT, 'prompts');
 
 interface CheckResult {
   check: string;
-  status: "pass" | "fail" | "warn";
+  status: 'pass' | 'fail' | 'warn';
   message: string;
   details?: string[];
 }
@@ -42,26 +35,20 @@ interface CheckResult {
 const results: CheckResult[] = [];
 
 function pass(check: string, message: string) {
-  results.push({ check, status: "pass", message });
+  results.push({ check, status: 'pass', message });
 }
 function fail(check: string, message: string, details?: string[]) {
-  results.push({ check, status: "fail", message, details });
+  results.push({ check, status: 'fail', message, details });
 }
 function warn(check: string, message: string, details?: string[]) {
-  results.push({ check, status: "warn", message, details });
+  results.push({ check, status: 'warn', message, details });
 }
 
 /* ------------------------------------------------------------------ */
 /* Gate 1: No forbidden directories tracked by git                     */
 /* ------------------------------------------------------------------ */
 
-const FORBIDDEN_DIRS = [
-  "reports",
-  "output",
-  "tmp",
-  "docs/reports",
-  "docs/output",
-];
+const FORBIDDEN_DIRS = ['reports', 'output', 'tmp', 'docs/reports', 'docs/output'];
 
 const FORBIDDEN_ALLOWLIST: string[] = [
   // Add paths here if a forbidden dir is intentionally committed
@@ -73,10 +60,10 @@ for (const dir of FORBIDDEN_DIRS) {
   try {
     const tracked = execSync(`git ls-files -- "${dir}"`, {
       cwd: ROOT,
-      encoding: "utf-8",
+      encoding: 'utf-8',
     }).trim();
     if (tracked.length > 0) {
-      trackedForbidden.push(`${dir}/ has ${tracked.split("\n").length} tracked files`);
+      trackedForbidden.push(`${dir}/ has ${tracked.split('\n').length} tracked files`);
     }
   } catch {
     // git command failed, dir doesn't exist -- that's fine
@@ -84,13 +71,9 @@ for (const dir of FORBIDDEN_DIRS) {
 }
 
 if (trackedForbidden.length === 0) {
-  pass("no-forbidden-dirs", "No forbidden sprawl directories tracked by git");
+  pass('no-forbidden-dirs', 'No forbidden sprawl directories tracked by git');
 } else {
-  fail(
-    "no-forbidden-dirs",
-    `Forbidden directories have tracked files`,
-    trackedForbidden,
-  );
+  fail('no-forbidden-dirs', `Forbidden directories have tracked files`, trackedForbidden);
 }
 
 /* ------------------------------------------------------------------ */
@@ -100,16 +83,20 @@ if (trackedForbidden.length === 0) {
 try {
   const trackedArtifacts = execSync('git ls-files -- "artifacts/"', {
     cwd: ROOT,
-    encoding: "utf-8",
+    encoding: 'utf-8',
   }).trim();
   if (trackedArtifacts.length === 0) {
-    pass("no-tracked-artifacts", "No artifacts/ files tracked by git");
+    pass('no-tracked-artifacts', 'No artifacts/ files tracked by git');
   } else {
-    const count = trackedArtifacts.split("\n").length;
-    fail("no-tracked-artifacts", `${count} files under artifacts/ are tracked by git`, trackedArtifacts.split("\n").slice(0, 10));
+    const count = trackedArtifacts.split('\n').length;
+    fail(
+      'no-tracked-artifacts',
+      `${count} files under artifacts/ are tracked by git`,
+      trackedArtifacts.split('\n').slice(0, 10)
+    );
   }
 } catch {
-  pass("no-tracked-artifacts", "artifacts/ directory not found or not tracked");
+  pass('no-tracked-artifacts', 'artifacts/ directory not found or not tracked');
 }
 
 /* ------------------------------------------------------------------ */
@@ -126,7 +113,7 @@ if (existsSync(PROMPTS_DIR)) {
     const match = folder.match(/^(\d{2})-/);
     if (match) {
       const prefix = match[1];
-      if (prefix === "00") continue; // meta folders allowed duplicates
+      if (prefix === '00') continue; // meta folders allowed duplicates
       if (!prefixMap.has(prefix)) prefixMap.set(prefix, []);
       prefixMap.get(prefix)!.push(folder);
     }
@@ -135,14 +122,14 @@ if (existsSync(PROMPTS_DIR)) {
   const duplicates: string[] = [];
   for (const [prefix, folders] of prefixMap) {
     if (folders.length > 1) {
-      duplicates.push(`${prefix}: [${folders.join(", ")}]`);
+      duplicates.push(`${prefix}: [${folders.join(', ')}]`);
     }
   }
 
   if (duplicates.length === 0) {
-    pass("prompts-no-dupes", `No duplicate phase prefixes (${prefixMap.size} phases)`);
+    pass('prompts-no-dupes', `No duplicate phase prefixes (${prefixMap.size} phases)`);
   } else {
-    fail("prompts-no-dupes", `Duplicate prefixes: ${duplicates.join("; ")}`, duplicates);
+    fail('prompts-no-dupes', `Duplicate prefixes: ${duplicates.join('; ')}`, duplicates);
   }
 
   /* ---------------------------------------------------------------- */
@@ -160,14 +147,14 @@ if (existsSync(PROMPTS_DIR)) {
 
   if (gaps.length === 0) {
     pass(
-      "prompts-contiguous",
-      `Contiguous sequence ${sortedPrefixes[0]}..${sortedPrefixes[sortedPrefixes.length - 1]}`,
+      'prompts-contiguous',
+      `Contiguous sequence ${sortedPrefixes[0]}..${sortedPrefixes[sortedPrefixes.length - 1]}`
     );
   } else {
     warn(
-      "prompts-contiguous",
-      `Gaps at prefix(es): ${gaps.join(", ")}`,
-      gaps.map((g) => `Missing prefix ${g.toString().padStart(2, "0")}`),
+      'prompts-contiguous',
+      `Gaps at prefix(es): ${gaps.join(', ')}`,
+      gaps.map((g) => `Missing prefix ${g.toString().padStart(2, '0')}`)
     );
   }
 
@@ -180,12 +167,12 @@ if (existsSync(PROMPTS_DIR)) {
 
   for (const folder of phaseFolders) {
     const folderPath = join(PROMPTS_DIR, folder);
-    const files = readdirSync(folderPath).filter((f) => f.endsWith(".md"));
+    const files = readdirSync(folderPath).filter((f) => f.endsWith('.md'));
 
     for (const file of files) {
       const filePath = join(folderPath, file);
-      const content = readFileSync(filePath, "utf-8");
-      const firstLine = content.split("\n").find((l) => l.startsWith("# "));
+      const content = readFileSync(filePath, 'utf-8');
+      const firstLine = content.split('\n').find((l) => l.startsWith('# '));
       if (!firstLine) continue;
 
       // Extract phase number from folder name
@@ -194,31 +181,38 @@ if (existsSync(PROMPTS_DIR)) {
       const phaseNum = folderMatch[2];
 
       // Check that IMPLEMENT files mention IMPLEMENT and the phase number
-      if (file.includes("IMPLEMENT")) {
-        if (!firstLine.toLowerCase().includes("implement") && !firstLine.toLowerCase().includes("phase")) {
+      if (file.includes('IMPLEMENT')) {
+        if (
+          !firstLine.toLowerCase().includes('implement') &&
+          !firstLine.toLowerCase().includes('phase')
+        ) {
           // Relaxed: just check phase number is mentioned
         }
         if (!firstLine.includes(phaseNum)) {
-          headerMismatches.push(`${folder}/${file}: header "${firstLine}" missing phase ${phaseNum}`);
+          headerMismatches.push(
+            `${folder}/${file}: header "${firstLine}" missing phase ${phaseNum}`
+          );
         }
       }
 
       // Check that VERIFY files mention VERIFY and the phase number
-      if (file.includes("VERIFY")) {
+      if (file.includes('VERIFY')) {
         if (!firstLine.includes(phaseNum)) {
-          headerMismatches.push(`${folder}/${file}: header "${firstLine}" missing phase ${phaseNum}`);
+          headerMismatches.push(
+            `${folder}/${file}: header "${firstLine}" missing phase ${phaseNum}`
+          );
         }
       }
     }
   }
 
   if (headerMismatches.length === 0) {
-    pass("prompt-headers", `All prompt headers match filename phase numbers`);
+    pass('prompt-headers', `All prompt headers match filename phase numbers`);
   } else {
     warn(
-      "prompt-headers",
+      'prompt-headers',
       `${headerMismatches.length} header/filename mismatch(es)`,
-      headerMismatches.slice(0, 15),
+      headerMismatches.slice(0, 15)
     );
   }
 
@@ -229,28 +223,26 @@ if (existsSync(PROMPTS_DIR)) {
   const missingFiles: string[] = [];
   for (const folder of phaseFolders) {
     const folderPath = join(PROMPTS_DIR, folder);
-    const files = readdirSync(folderPath).filter((f) => f.endsWith(".md"));
+    const files = readdirSync(folderPath).filter((f) => f.endsWith('.md'));
 
-    const hasImplement = files.some((f) => f.includes("IMPLEMENT"));
-    const hasVerify = files.some(
-      (f) => f.includes("VERIFY") || f.includes("verify"),
-    );
+    const hasImplement = files.some((f) => f.includes('IMPLEMENT'));
+    const hasVerify = files.some((f) => f.includes('VERIFY') || f.includes('verify'));
 
     if (!hasImplement) missingFiles.push(`${folder}: missing IMPLEMENT`);
     if (!hasVerify) missingFiles.push(`${folder}: missing VERIFY`);
   }
 
   if (missingFiles.length === 0) {
-    pass("prompts-complete", `All ${phaseFolders.length} phase folders have IMPLEMENT + VERIFY`);
+    pass('prompts-complete', `All ${phaseFolders.length} phase folders have IMPLEMENT + VERIFY`);
   } else {
     warn(
-      "prompts-complete",
+      'prompts-complete',
       `${missingFiles.length} missing prompt file(s)`,
-      missingFiles.slice(0, 15),
+      missingFiles.slice(0, 15)
     );
   }
 } else {
-  fail("prompts-exists", "prompts/ directory not found");
+  fail('prompts-exists', 'prompts/ directory not found');
 }
 
 /* ------------------------------------------------------------------ */
@@ -258,31 +250,29 @@ if (existsSync(PROMPTS_DIR)) {
 /* ------------------------------------------------------------------ */
 
 try {
-  const gitignore = readFileSync(join(ROOT, ".gitignore"), "utf-8");
-  const hasArtifactsRule =
-    gitignore.includes("artifacts/") || gitignore.includes("/artifacts/");
+  const gitignore = readFileSync(join(ROOT, '.gitignore'), 'utf-8');
+  const hasArtifactsRule = gitignore.includes('artifacts/') || gitignore.includes('/artifacts/');
   if (hasArtifactsRule) {
-    pass("gitignore-artifacts", ".gitignore covers artifacts/");
+    pass('gitignore-artifacts', '.gitignore covers artifacts/');
   } else {
-    fail("gitignore-artifacts", ".gitignore missing artifacts/ rule");
+    fail('gitignore-artifacts', '.gitignore missing artifacts/ rule');
   }
 } catch {
-  fail("gitignore-artifacts", "Could not read .gitignore");
+  fail('gitignore-artifacts', 'Could not read .gitignore');
 }
 
 /* ------------------------------------------------------------------ */
 /* Output                                                              */
 /* ------------------------------------------------------------------ */
 
-const passCount = results.filter((r) => r.status === "pass").length;
-const failCount = results.filter((r) => r.status === "fail").length;
-const warnCount = results.filter((r) => r.status === "warn").length;
+const passCount = results.filter((r) => r.status === 'pass').length;
+const failCount = results.filter((r) => r.status === 'fail').length;
+const warnCount = results.filter((r) => r.status === 'warn').length;
 
-console.log("\n=== Repo Hygiene Gate (Phase 73) ===\n");
+console.log('\n=== Repo Hygiene Gate (Phase 73) ===\n');
 
 for (const r of results) {
-  const icon =
-    r.status === "pass" ? "PASS" : r.status === "fail" ? "FAIL" : "WARN";
+  const icon = r.status === 'pass' ? 'PASS' : r.status === 'fail' ? 'FAIL' : 'WARN';
   console.log(`  [${icon}] ${r.check}: ${r.message}`);
   if (r.details && r.details.length > 0) {
     for (const d of r.details) {
@@ -291,19 +281,17 @@ for (const r of results) {
   }
 }
 
-console.log(
-  `\nTotal: ${passCount} pass, ${failCount} fail, ${warnCount} warn`,
-);
+console.log(`\nTotal: ${passCount} pass, ${failCount} fail, ${warnCount} warn`);
 
 // Write artifact
-const artifactDir = join(ROOT, "artifacts", "governance");
+const artifactDir = join(ROOT, 'artifacts', 'governance');
 mkdirSync(artifactDir, { recursive: true });
 writeFileSync(
-  join(artifactDir, "repo-hygiene.json"),
+  join(artifactDir, 'repo-hygiene.json'),
   JSON.stringify(
     {
       _meta: {
-        gate: "repo-hygiene",
+        gate: 'repo-hygiene',
         phase: 73,
         timestamp: new Date().toISOString(),
       },
@@ -311,8 +299,8 @@ writeFileSync(
       results,
     },
     null,
-    2,
-  ),
+    2
+  )
 );
 
 process.exit(failCount > 0 ? 1 : 0);

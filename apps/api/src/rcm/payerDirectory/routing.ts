@@ -14,21 +14,6 @@ import { getDirectoryPayer } from './normalization.js';
 import { getPayer } from '../payer-registry/registry.js';
 import { getConnector, listConnectors } from '../connectors/types.js';
 
-/* ── Connector → Channel Type mapping ───────────────────────── */
-
-const CONNECTOR_CHANNEL_MAP: Record<string, string> = {
-  sandbox: 'EDI_CLEARINGHOUSE',
-  clearinghouse: 'EDI_CLEARINGHOUSE',
-  availity: 'EDI_CLEARINGHOUSE',
-  officeally: 'EDI_CLEARINGHOUSE',
-  stedi: 'EDI_CLEARINGHOUSE',
-  philhealth: 'NATIONAL_GATEWAY',
-  'eclipse-au': 'NATIONAL_GATEWAY',
-  'nphc-sg': 'NATIONAL_GATEWAY',
-  'acc-nz': 'DIRECT_API',
-  'portal-batch': 'PORTAL_BATCH',
-};
-
 /* ── Route Selection ────────────────────────────────────────── */
 
 /**
@@ -36,7 +21,7 @@ const CONNECTOR_CHANNEL_MAP: Record<string, string> = {
  */
 export function resolveRoute(
   payerId: string,
-  jurisdiction: PayerCountry,
+  jurisdiction: PayerCountry
 ): RouteSelection | RouteNotFound {
   // 1. Try directory payer first (enriched), fall back to base registry
   const dirPayer = getDirectoryPayer(payerId);
@@ -70,7 +55,8 @@ export function resolveRoute(
 
   for (const channel of channels) {
     // Find a connector that handles this channel type
-    const connectorId = channel.connectorId ?? findConnectorForChannel(channel, jurisdiction, availableConnectors);
+    const connectorId =
+      channel.connectorId ?? findConnectorForChannel(channel, jurisdiction, availableConnectors);
     if (connectorId) {
       const connector = getConnector(connectorId);
       if (connector) {
@@ -128,7 +114,7 @@ function inferChannelFromMode(mode: string): PayerChannel | null {
 function findConnectorForChannel(
   channel: PayerChannel,
   jurisdiction: PayerCountry,
-  _connectors: Array<{ id: string }>,
+  _connectors: Array<{ id: string }>
 ): string | null {
   // Jurisdiction-specific connector matching
   switch (jurisdiction) {
@@ -154,37 +140,43 @@ function findConnectorForChannel(
 
 function getJurisdictionFallback(jurisdiction: PayerCountry): string | null {
   switch (jurisdiction) {
-    case 'US': return 'sandbox';
-    case 'PH': return 'portal-batch';
-    case 'AU': return 'portal-batch';
-    case 'SG': return 'portal-batch';
-    case 'NZ': return 'portal-batch';
-    default: return null;
+    case 'US':
+      return 'sandbox';
+    case 'PH':
+      return 'portal-batch';
+    case 'AU':
+      return 'portal-batch';
+    case 'SG':
+      return 'portal-batch';
+    case 'NZ':
+      return 'portal-batch';
+    default:
+      return null;
   }
 }
 
 function buildRouteNotFound(
   payerId: string,
   jurisdiction: PayerCountry,
-  dirPayer?: DirectoryPayer,
+  dirPayer?: DirectoryPayer
 ): RouteNotFound {
   const remediation: string[] = [];
 
   if (!dirPayer) {
     remediation.push(
       `Payer "${payerId}" is in the base registry but not the enriched directory.`,
-      'Run POST /rcm/payers/refresh to pull authoritative sources.',
+      'Run POST /rcm/payers/refresh to pull authoritative sources.'
     );
   } else {
     remediation.push(
-      `Payer "${payerId}" has ${dirPayer.channels.length} channel(s) but none match an available connector.`,
+      `Payer "${payerId}" has ${dirPayer.channels.length} channel(s) but none match an available connector.`
     );
   }
 
   remediation.push(
     `Check connector health: GET /rcm/connectors/health`,
     `Verify enrollment status: GET /rcm/payers/${payerId}/enrollment-packet`,
-    `For ${jurisdiction} claims, ensure the appropriate connector is configured.`,
+    `For ${jurisdiction} claims, ensure the appropriate connector is configured.`
   );
 
   return { code: 'ROUTE_NOT_FOUND', payerId, jurisdiction, remediation };

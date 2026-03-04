@@ -13,9 +13,9 @@
  *   cleanExpired()                 -- remove expired sessions
  */
 
-import { createHash } from "node:crypto";
-import { getPgPool } from "../pg-db.js";
-import { log } from "../../../lib/logger.js";
+import { createHash } from 'node:crypto';
+import { getPgPool } from '../pg-db.js';
+import { log } from '../../../lib/logger.js';
 
 /* ── Types ────────────────────────────────────────────────── */
 
@@ -40,15 +40,15 @@ export interface PortalSessionRow {
  * Only the hash is persisted to the database.
  */
 export function hashPortalToken(rawToken: string): string {
-  return createHash("sha256").update(rawToken).digest("hex");
+  return createHash('sha256').update(rawToken).digest('hex');
 }
 
 /* ── Singleton repo ───────────────────────────────────────── */
 
-let pgRepo: ReturnType<typeof import("./generic-pg-repo.js").createPgRepo> | null = null;
+let pgRepo: ReturnType<typeof import('./generic-pg-repo.js').createPgRepo> | null = null;
 
 export function initPortalSessionPgRepo(
-  repo: ReturnType<typeof import("./generic-pg-repo.js").createPgRepo>,
+  repo: ReturnType<typeof import('./generic-pg-repo.js').createPgRepo>
 ): void {
   pgRepo = repo;
 }
@@ -97,10 +97,10 @@ export async function upsertPortalSession(data: {
         data.createdAt,
         data.expiresAt,
         data.lastActivityAt,
-      ],
+      ]
     );
   } catch (err: any) {
-    log.warn("Portal session upsert failed (Map cache fallback)", { error: err.message });
+    log.warn('Portal session upsert failed (Map cache fallback)', { error: err.message });
   }
 }
 
@@ -109,7 +109,7 @@ export async function upsertPortalSession(data: {
  * Returns null if not found or revoked/expired.
  */
 export async function findPortalSessionByTokenHash(
-  tokenHash: string,
+  tokenHash: string
 ): Promise<PortalSessionRow | null> {
   if (!pgRepo) return null;
   try {
@@ -119,7 +119,7 @@ export async function findPortalSessionByTokenHash(
               created_at, expires_at, last_activity_at, revoked_at
        FROM portal_session
        WHERE token_hash = $1 AND revoked_at IS NULL`,
-      [tokenHash],
+      [tokenHash]
     );
     if (result.rows.length === 0) return null;
     const row = result.rows[0];
@@ -128,16 +128,16 @@ export async function findPortalSessionByTokenHash(
       tenantId: row.tenant_id,
       tokenHash: row.token_hash,
       userId: row.user_id,
-      subject: row.subject || "",
-      patientDfn: row.patient_dfn || "",
-      dataJson: row.data_json || "{}",
+      subject: row.subject || '',
+      patientDfn: row.patient_dfn || '',
+      dataJson: row.data_json || '{}',
       createdAt: row.created_at,
       expiresAt: row.expires_at,
       lastActivityAt: row.last_activity_at || row.created_at,
       revokedAt: row.revoked_at,
     };
   } catch (err: any) {
-    log.debug("Portal session lookup by hash failed (Map cache fallback)", { error: err.message });
+    log.debug('Portal session lookup by hash failed (Map cache fallback)', { error: err.message });
     return null;
   }
 }
@@ -151,10 +151,10 @@ export async function revokePortalSession(tokenHash: string): Promise<void> {
     const pool = getPgPool();
     await pool.query(
       `UPDATE portal_session SET revoked_at = $1 WHERE token_hash = $2 AND revoked_at IS NULL`,
-      [new Date().toISOString(), tokenHash],
+      [new Date().toISOString(), tokenHash]
     );
   } catch (err: any) {
-    log.warn("Portal session revoke failed", { error: err.message });
+    log.warn('Portal session revoke failed', { error: err.message });
   }
 }
 
@@ -167,9 +167,9 @@ export async function touchPortalSession(tokenHash: string): Promise<void> {
     const pool = getPgPool();
     await pool.query(
       `UPDATE portal_session SET last_activity_at = $1 WHERE token_hash = $2 AND revoked_at IS NULL`,
-      [new Date().toISOString(), tokenHash],
+      [new Date().toISOString(), tokenHash]
     );
-  } catch (err: any) {
+  } catch (_err: any) {
     // Non-fatal -- touch is best-effort
   }
 }
@@ -183,11 +183,11 @@ export async function cleanExpiredPortalSessions(): Promise<number> {
     const pool = getPgPool();
     const result = await pool.query(
       `DELETE FROM portal_session WHERE expires_at < $1 OR revoked_at IS NOT NULL`,
-      [new Date().toISOString()],
+      [new Date().toISOString()]
     );
     return result.rowCount ?? 0;
   } catch (err: any) {
-    log.warn("Portal session cleanup failed", { error: err.message });
+    log.warn('Portal session cleanup failed', { error: err.message });
     return 0;
   }
 }

@@ -16,7 +16,6 @@ import { csrfHeaders } from '@/lib/csrf';
 import styles from '@/components/cprs/cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
-
 type Tab = 'payers' | 'sources' | 'merge';
 
 async function apiFetch(path: string, opts?: RequestInit) {
@@ -33,7 +32,9 @@ export default function PayerDirectoryPage() {
   const [health, setHealth] = useState<any>(null);
 
   useEffect(() => {
-    apiFetch('/rcm/payerops/registry/health').then(setHealth).catch(() => {});
+    apiFetch('/rcm/payerops/registry/health')
+      .then(setHealth)
+      .catch(() => {});
   }, []);
 
   const tabs: { id: Tab; label: string }[] = [
@@ -44,7 +45,14 @@ export default function PayerDirectoryPage() {
 
   return (
     <div className={styles.panelRoot ?? ''} style={{ padding: 16 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 16,
+        }}
+      >
         <div>
           <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Payer Directory</h2>
           <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6c757d' }}>
@@ -58,7 +66,7 @@ export default function PayerDirectoryPage() {
       </div>
 
       <div style={{ display: 'flex', gap: 0, borderBottom: '2px solid #dee2e6', marginBottom: 16 }}>
-        {tabs.map(t => (
+        {tabs.map((t) => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
@@ -113,8 +121,13 @@ function IngestButton({ onDone }: { onDone: () => void }) {
         onClick={run}
         disabled={loading}
         style={{
-          padding: '6px 16px', fontSize: 12, cursor: 'pointer',
-          background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4,
+          padding: '6px 16px',
+          fontSize: 12,
+          cursor: 'pointer',
+          background: '#0d6efd',
+          color: '#fff',
+          border: 'none',
+          borderRadius: 4,
         }}
       >
         {loading ? 'Ingesting...' : 'Run Ingestion'}
@@ -146,12 +159,14 @@ function PayersTab() {
     if (filters.tier) qs.set('tier', filters.tier);
     if (filters.search) qs.set('search', filters.search);
     apiFetch(`/rcm/payerops/payers?${qs}`)
-      .then(d => setPayers(d?.payers || []))
+      .then((d) => setPayers(d?.payers || []))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [filters]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const updatePayer = async (id: string, patch: any) => {
     await apiFetch(`/rcm/payerops/payers/${id}`, {
@@ -167,8 +182,11 @@ function PayersTab() {
     <div>
       {/* Filters */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
-        <select value={filters.type} onChange={e => setFilters(f => ({ ...f, type: e.target.value }))}
-          style={{ fontSize: 12, padding: 4 }}>
+        <select
+          value={filters.type}
+          onChange={(e) => setFilters((f) => ({ ...f, type: e.target.value }))}
+          style={{ fontSize: 12, padding: 4 }}
+        >
           <option value="">All Types</option>
           <option value="hmo">HMO</option>
           <option value="hmo_broker">HMO Broker</option>
@@ -176,16 +194,22 @@ function PayersTab() {
           <option value="insurer">Insurer</option>
           <option value="other">Other</option>
         </select>
-        <select value={filters.status} onChange={e => setFilters(f => ({ ...f, status: e.target.value }))}
-          style={{ fontSize: 12, padding: 4 }}>
+        <select
+          value={filters.status}
+          onChange={(e) => setFilters((f) => ({ ...f, status: e.target.value }))}
+          style={{ fontSize: 12, padding: 4 }}
+        >
           <option value="">All Statuses</option>
           <option value="active">Active</option>
           <option value="inactive">Inactive</option>
           <option value="suspended">Suspended</option>
           <option value="pending_ca">Pending CA</option>
         </select>
-        <select value={filters.tier} onChange={e => setFilters(f => ({ ...f, tier: e.target.value }))}
-          style={{ fontSize: 12, padding: 4 }}>
+        <select
+          value={filters.tier}
+          onChange={(e) => setFilters((f) => ({ ...f, tier: e.target.value }))}
+          style={{ fontSize: 12, padding: 4 }}
+        >
           <option value="">All Tiers</option>
           <option value="top5">Top 5</option>
           <option value="top10">Top 10</option>
@@ -195,7 +219,7 @@ function PayersTab() {
         <input
           type="text"
           value={filters.search}
-          onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
+          onChange={(e) => setFilters((f) => ({ ...f, search: e.target.value }))}
           placeholder="Search payer name..."
           style={{ fontSize: 12, padding: 4, width: 200 }}
         />
@@ -237,7 +261,7 @@ function PayersTab() {
                   {editing === p.id ? (
                     <select
                       defaultValue={p.priorityTier}
-                      onChange={e => updatePayer(p.id, { priorityTier: e.target.value })}
+                      onChange={(e) => updatePayer(p.id, { priorityTier: e.target.value })}
                       style={{ fontSize: 11, padding: 2 }}
                     >
                       <option value="top5">Top 5</option>
@@ -304,7 +328,9 @@ function SourcesTab() {
         </p>
       ) : (
         <>
-          <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse', marginBottom: 24 }}>
+          <table
+            style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse', marginBottom: 24 }}
+          >
             <thead>
               <tr style={{ borderBottom: '2px solid #dee2e6', textAlign: 'left' }}>
                 <th style={{ padding: '6px 8px' }}>Source</th>
@@ -321,7 +347,14 @@ function SourcesTab() {
                 <tr key={s.id} style={{ borderBottom: '1px solid #dee2e6' }}>
                   <td style={{ padding: '6px 8px' }}>{s.name}</td>
                   <td style={{ padding: '6px 8px' }}>
-                    <span style={{ fontSize: 11, padding: '2px 6px', background: '#e9ecef', borderRadius: 3 }}>
+                    <span
+                      style={{
+                        fontSize: 11,
+                        padding: '2px 6px',
+                        background: '#e9ecef',
+                        borderRadius: 3,
+                      }}
+                    >
                       {s.sourceType}
                     </span>
                   </td>
@@ -345,7 +378,10 @@ function SourcesTab() {
               <div
                 key={i}
                 style={{
-                  border: '1px solid #dee2e6', borderRadius: 4, padding: 12, marginBottom: 12,
+                  border: '1px solid #dee2e6',
+                  borderRadius: 4,
+                  padding: 12,
+                  marginBottom: 12,
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
@@ -359,16 +395,26 @@ function SourcesTab() {
                 {snap.diff?.length > 0 ? (
                   <ul style={{ margin: 0, paddingLeft: 20, fontSize: 12 }}>
                     {snap.diff.map((d: any, j: number) => (
-                      <li key={j} style={{
-                        color: d.change === 'added' ? '#198754' : d.change === 'removed' ? '#dc3545' : '#664d03',
-                      }}>
+                      <li
+                        key={j}
+                        style={{
+                          color:
+                            d.change === 'added'
+                              ? '#198754'
+                              : d.change === 'removed'
+                                ? '#dc3545'
+                                : '#664d03',
+                        }}
+                      >
                         <strong>{d.change}:</strong> {d.payerName}
                         {d.oldName ? ` (was: ${d.oldName})` : ''}
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p style={{ margin: 0, fontSize: 12, color: '#6c757d' }}>No changes from previous snapshot.</p>
+                  <p style={{ margin: 0, fontSize: 12, color: '#6c757d' }}>
+                    No changes from previous snapshot.
+                  </p>
                 )}
               </div>
             ))
@@ -389,7 +435,7 @@ function MergeTab() {
 
   useEffect(() => {
     apiFetch('/rcm/payerops/payers')
-      .then(d => setPayers(d?.payers || []))
+      .then((d) => setPayers(d?.payers || []))
       .catch(() => {});
   }, []);
 
@@ -403,7 +449,7 @@ function MergeTab() {
     setResult(data);
     // Reload
     apiFetch('/rcm/payerops/payers')
-      .then(d => setPayers(d?.payers || []))
+      .then((d) => setPayers(d?.payers || []))
       .catch(() => {});
   };
 
@@ -411,29 +457,41 @@ function MergeTab() {
     <div>
       <h3 style={{ margin: '0 0 8px', fontSize: 15 }}>Merge Duplicate Payers</h3>
       <p style={{ fontSize: 12, color: '#6c757d', marginBottom: 12 }}>
-        Select the payer to keep (target) and the duplicate to remove (source).
-        The source name becomes an alias on the target.
+        Select the payer to keep (target) and the duplicate to remove (source). The source name
+        becomes an alias on the target.
       </p>
 
       <div style={{ display: 'flex', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
         <label style={{ fontSize: 12 }}>
           Keep (target):
-          <select value={targetId} onChange={e => setTargetId(e.target.value)}
-            style={{ marginLeft: 4, fontSize: 12, padding: 4, minWidth: 250 }}>
+          <select
+            value={targetId}
+            onChange={(e) => setTargetId(e.target.value)}
+            style={{ marginLeft: 4, fontSize: 12, padding: 4, minWidth: 250 }}
+          >
             <option value="">Select payer...</option>
             {payers.map((p: any) => (
-              <option key={p.id} value={p.id}>{p.canonicalName}</option>
+              <option key={p.id} value={p.id}>
+                {p.canonicalName}
+              </option>
             ))}
           </select>
         </label>
         <label style={{ fontSize: 12 }}>
           Remove (source):
-          <select value={sourceId} onChange={e => setSourceId(e.target.value)}
-            style={{ marginLeft: 4, fontSize: 12, padding: 4, minWidth: 250 }}>
+          <select
+            value={sourceId}
+            onChange={(e) => setSourceId(e.target.value)}
+            style={{ marginLeft: 4, fontSize: 12, padding: 4, minWidth: 250 }}
+          >
             <option value="">Select duplicate...</option>
-            {payers.filter((p: any) => p.id !== targetId).map((p: any) => (
-              <option key={p.id} value={p.id}>{p.canonicalName}</option>
-            ))}
+            {payers
+              .filter((p: any) => p.id !== targetId)
+              .map((p: any) => (
+                <option key={p.id} value={p.id}>
+                  {p.canonicalName}
+                </option>
+              ))}
           </select>
         </label>
         <button
@@ -446,11 +504,15 @@ function MergeTab() {
       </div>
 
       {result && (
-        <div style={{
-          padding: 8, borderRadius: 4, fontSize: 12,
-          background: result.ok ? '#d4edda' : '#f8d7da',
-          color: result.ok ? '#155724' : '#721c24',
-        }}>
+        <div
+          style={{
+            padding: 8,
+            borderRadius: 4,
+            fontSize: 12,
+            background: result.ok ? '#d4edda' : '#f8d7da',
+            color: result.ok ? '#155724' : '#721c24',
+          }}
+        >
           {result.ok
             ? `Merged successfully. Target now has aliases: ${result.merged?.aliases?.join(', ')}`
             : `Error: ${result.error}`}
@@ -472,10 +534,16 @@ function TypeBadge({ type }: { type: string }) {
   };
   const c = colors[type] || colors.other;
   return (
-    <span style={{
-      fontSize: 11, padding: '2px 8px', borderRadius: 3, fontWeight: 600,
-      background: c.bg, color: c.fg,
-    }}>
+    <span
+      style={{
+        fontSize: 11,
+        padding: '2px 8px',
+        borderRadius: 3,
+        fontWeight: 600,
+        background: c.bg,
+        color: c.fg,
+      }}
+    >
       {type?.replace(/_/g, ' ')}
     </span>
   );
@@ -490,10 +558,16 @@ function StatusBadge({ status }: { status: string }) {
   };
   const c = colors[status] || { bg: '#e9ecef', fg: '#495057' };
   return (
-    <span style={{
-      fontSize: 11, padding: '2px 8px', borderRadius: 3, fontWeight: 600,
-      background: c.bg, color: c.fg,
-    }}>
+    <span
+      style={{
+        fontSize: 11,
+        padding: '2px 8px',
+        borderRadius: 3,
+        fontWeight: 600,
+        background: c.bg,
+        color: c.fg,
+      }}
+    >
       {status?.replace(/_/g, ' ')}
     </span>
   );
@@ -508,10 +582,15 @@ function TierBadge({ tier }: { tier: string }) {
   };
   const c = colors[tier] || colors.untiered;
   return (
-    <span style={{
-      fontSize: 11, padding: '2px 6px', borderRadius: 3,
-      background: c.bg, color: c.fg,
-    }}>
+    <span
+      style={{
+        fontSize: 11,
+        padding: '2px 6px',
+        borderRadius: 3,
+        background: c.bg,
+        color: c.fg,
+      }}
+    >
       {tier?.replace(/_/g, ' ')}
     </span>
   );

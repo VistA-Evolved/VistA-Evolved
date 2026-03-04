@@ -1,7 +1,9 @@
 # Phase 111 — VERIFY: Claim Scrubbing + Claim Lifecycle
 
 ## User Request
+
 Verify Phase 111 implementation:
+
 - UI→API→DB→UI flows for claim draft + scrub + submit attempt + denial status
 - No fabricated metrics
 - qa:all passes, security checks pass
@@ -10,10 +12,12 @@ Verify Phase 111 implementation:
 ## Verification Steps
 
 ### 1. Compile & Build
+
 - [ ] `npx tsc --noEmit` — zero errors
 - [ ] `npx next build` — clean build
 
 ### 2. Sanity Check
+
 - [ ] No hardcoded or placeholder data
 - [ ] No dead UI elements or unused backend logic
 - [ ] All new backend logic reachable and invoked
@@ -22,6 +26,7 @@ Verify Phase 111 implementation:
 - [ ] Migrations run cleanly
 
 ### 3. Feature Integrity (Live Endpoint Tests)
+
 - [ ] POST /rcm/claim-lifecycle/drafts — create draft
 - [ ] GET /rcm/claim-lifecycle/drafts — list drafts
 - [ ] POST /rcm/claim-lifecycle/rules — create scrub rule
@@ -38,17 +43,20 @@ Verify Phase 111 implementation:
 - [ ] Audit trail entries for each transition
 
 ### 4. System Regression Check
+
 - [ ] Existing RCM endpoints still work
 - [ ] No import conflicts
 - [ ] Auth/session flow intact
 - [ ] No console.log violations
 
 ### 5. Gap Analysis & Fixes
+
 - Document all issues found
 - Apply fixes immediately
 - Re-verify after fixes
 
 ## Files Touched (Phase 111)
+
 - apps/api/src/platform/db/schema.ts
 - apps/api/src/platform/db/migrate.ts
 - apps/api/src/rcm/claim-lifecycle/claim-draft-repo.ts

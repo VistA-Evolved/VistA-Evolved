@@ -12,31 +12,26 @@
  *   5. complete     — Review + finalize
  */
 
-import * as crypto from "node:crypto";
-import { log } from "../lib/logger.js";
+import * as crypto from 'node:crypto';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
-export type OnboardingStep =
-  | "tenant"
-  | "vista-probe"
-  | "modules"
-  | "users"
-  | "complete";
+export type OnboardingStep = 'tenant' | 'vista-probe' | 'modules' | 'users' | 'complete';
 
 export const STEP_ORDER: OnboardingStep[] = [
-  "tenant",
-  "vista-probe",
-  "modules",
-  "users",
-  "complete",
+  'tenant',
+  'vista-probe',
+  'modules',
+  'users',
+  'complete',
 ];
 
 export interface OnboardingStepData {
   step: OnboardingStep;
-  status: "pending" | "in-progress" | "completed" | "skipped";
+  status: 'pending' | 'in-progress' | 'completed' | 'skipped';
   data?: Record<string, unknown>;
   completedAt?: string;
 }
@@ -59,32 +54,29 @@ export interface OnboardingSession {
 const sessions = new Map<string, OnboardingSession>();
 
 function genId(): string {
-  return `onb-${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
+  return `onb-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
 }
 
 /* ------------------------------------------------------------------ */
 /*  Public API                                                         */
 /* ------------------------------------------------------------------ */
 
-export function createOnboarding(
-  tenantId: string,
-  createdBy: string,
-): OnboardingSession {
+export function createOnboarding(tenantId: string, createdBy: string): OnboardingSession {
   const now = new Date().toISOString();
   const session: OnboardingSession = {
     id: genId(),
     tenantId,
-    currentStep: "tenant",
+    currentStep: 'tenant',
     steps: STEP_ORDER.map((step) => ({
       step,
-      status: step === "tenant" ? "in-progress" : "pending",
+      status: step === 'tenant' ? 'in-progress' : 'pending',
     })),
     createdAt: now,
     updatedAt: now,
     createdBy,
   };
   sessions.set(session.id, session);
-  log.info("Onboarding session created", { sessionId: session.id, tenantId });
+  log.info('Onboarding session created', { sessionId: session.id, tenantId });
   return session;
 }
 
@@ -100,7 +92,7 @@ export function listOnboardingSessions(tenantId?: string): OnboardingSession[] {
 
 export function advanceStep(
   id: string,
-  stepData?: Record<string, unknown>,
+  stepData?: Record<string, unknown>
 ): OnboardingSession | null {
   const session = sessions.get(id);
   if (!session) return null;
@@ -111,7 +103,7 @@ export function advanceStep(
   // Mark current step completed
   const currentStepObj = session.steps.find((s) => s.step === session.currentStep);
   if (currentStepObj) {
-    currentStepObj.status = "completed";
+    currentStepObj.status = 'completed';
     currentStepObj.completedAt = now;
     if (stepData) currentStepObj.data = stepData;
   }
@@ -121,21 +113,21 @@ export function advanceStep(
     const nextStep = STEP_ORDER[currentIdx + 1];
     session.currentStep = nextStep;
     const nextStepObj = session.steps.find((s) => s.step === nextStep);
-    if (nextStepObj) nextStepObj.status = "in-progress";
+    if (nextStepObj) nextStepObj.status = 'in-progress';
   } else {
     // Final step completed
     session.completedAt = now;
   }
 
   session.updatedAt = now;
-  log.info("Onboarding step advanced", { sessionId: id, currentStep: session.currentStep });
+  log.info('Onboarding step advanced', { sessionId: id, currentStep: session.currentStep });
   return session;
 }
 
 export function updateStepData(
   id: string,
   step: OnboardingStep,
-  data: Record<string, unknown>,
+  data: Record<string, unknown>
 ): OnboardingSession | null {
   const session = sessions.get(id);
   if (!session) return null;

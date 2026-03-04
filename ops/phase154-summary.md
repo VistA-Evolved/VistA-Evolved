@@ -3,6 +3,7 @@
 ## What Changed
 
 ### Core Changes
+
 1. **Eliminated in-memory Map-based idempotency** from all 3 CPRS write route files:
    - `orders-cpoe.ts` — removed `idempotencyStore`, `checkIdempotency()`, `storeIdempotency()`
    - `wave2-routes.ts` — same removal (11 POST endpoints)
@@ -25,6 +26,7 @@
 7. **UI enhancement**: OrdersPanel now shows e-signature code input (password field) next to the Sign button. Sign button disabled until esCode is entered.
 
 ### Files Changed
+
 - `apps/api/src/routes/cprs/orders-cpoe.ts` — Map removed, DB middleware, sign audit
 - `apps/api/src/routes/cprs/wave2-routes.ts` — Map removed, DB middleware
 - `apps/api/src/routes/cprs/tiu-notes.ts` — Map removed, DB middleware
@@ -61,11 +63,13 @@ curl -s -X POST http://localhost:3001/vista/cprs/orders/sign \
 ```
 
 ## Verifier Output
+
 ```
 Phase 154 verification: ALL GATES PASSED (17/17)
 ```
 
 ## Follow-ups
+
 - [ ] Verify sign endpoint with real VistA Docker (ORWOR1 SIG RPC)
 - [ ] Monitor cpoe_order_sign_event table growth in production
 - [ ] Consider adding sign event query endpoint for audit UI

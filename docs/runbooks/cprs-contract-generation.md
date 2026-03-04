@@ -9,8 +9,8 @@ catalog, and that all JSON files conform to expected structure.
 
 ## Inputs
 
-| Input | Path | Notes |
-|-------|------|-------|
+| Input             | Path                        | Notes                                           |
+| ----------------- | --------------------------- | ----------------------------------------------- |
 | Extraction output | `design/contracts/cprs/v1/` | Produced by Phase 10A (`pnpm run cprs:extract`) |
 
 ## Commands
@@ -29,14 +29,14 @@ pnpm run cprs:extract
 
 The same 6 files from Phase 10A, now validated for schema correctness:
 
-| File | Required top-level keys |
-|------|------------------------|
-| `tabs.json` | `_meta`, `tabs`, `summary` |
-| `menus.json` | `_meta`, `menus`, `summary` |
-| `forms.json` | `_meta`, `forms`, `summary` |
-| `rpc_catalog.json` | `_meta`, `rpcs`, `summary` |
+| File                   | Required top-level keys       |
+| ---------------------- | ----------------------------- |
+| `tabs.json`            | `_meta`, `tabs`, `summary`    |
+| `menus.json`           | `_meta`, `menus`, `summary`   |
+| `forms.json`           | `_meta`, `forms`, `summary`   |
+| `rpc_catalog.json`     | `_meta`, `rpcs`, `summary`    |
 | `screen_registry.json` | `_meta`, `screens`, `summary` |
-| `coverage_report.md` | Non-empty markdown |
+| `coverage_report.md`   | Non-empty markdown            |
 
 ## Validation
 
@@ -73,11 +73,11 @@ Write-Host "Cross-ref: $($registryRpcs.Count) screen RPCs, $($missing.Count) mis
 
 ## Common Failures
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| Missing `_meta` key | Extraction script outdated | Re-run `pnpm run cprs:extract` |
+| Symptom                | Cause                                     | Fix                                                           |
+| ---------------------- | ----------------------------------------- | ------------------------------------------------------------- |
+| Missing `_meta` key    | Extraction script outdated                | Re-run `pnpm run cprs:extract`                                |
 | Cross-ref RPCs missing | Screen references RPC not in `.pas` files | May be context RPCs or aliased names — document as known gaps |
-| JSON parse error | Malformed extraction output | Check extraction script for encoding issues |
+| JSON parse error       | Malformed extraction output               | Check extraction script for encoding issues                   |
 
 ## No VA Terminology Check
 

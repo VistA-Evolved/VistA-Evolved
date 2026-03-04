@@ -16,7 +16,7 @@
 /* Plan & Subscription domain                                          */
 /* ------------------------------------------------------------------ */
 
-export type PlanTier = "free" | "starter" | "professional" | "enterprise" | "custom";
+export type PlanTier = 'free' | 'starter' | 'professional' | 'enterprise' | 'custom';
 
 export interface Plan {
   id: string;
@@ -36,12 +36,12 @@ export interface Plan {
 }
 
 export type SubscriptionStatus =
-  | "active"
-  | "trialing"
-  | "past_due"
-  | "suspended"
-  | "canceled"
-  | "unpaid";
+  | 'active'
+  | 'trialing'
+  | 'past_due'
+  | 'suspended'
+  | 'canceled'
+  | 'unpaid';
 
 export interface Subscription {
   id: string;
@@ -49,7 +49,7 @@ export interface Subscription {
   planId: string;
   status: SubscriptionStatus;
   currentPeriodStart: string; // ISO 8601
-  currentPeriodEnd: string;   // ISO 8601
+  currentPeriodEnd: string; // ISO 8601
   cancelAtPeriodEnd: boolean;
   trialEndDate?: string;
   createdAt: string;
@@ -61,14 +61,14 @@ export interface Subscription {
 /* ------------------------------------------------------------------ */
 
 export type MeterEvent =
-  | "api_call"
-  | "rpc_call"
-  | "physician_active"
-  | "patient_record_access"
-  | "storage_mb"
-  | "fhir_request"
-  | "hl7_message"
-  | "report_generated";
+  | 'api_call'
+  | 'rpc_call'
+  | 'physician_active'
+  | 'patient_record_access'
+  | 'storage_mb'
+  | 'fhir_request'
+  | 'hl7_message'
+  | 'report_generated';
 
 export interface MeteringRecord {
   tenantId: string;
@@ -89,7 +89,7 @@ export interface UsageSummary {
 /* Invoice domain                                                      */
 /* ------------------------------------------------------------------ */
 
-export type InvoiceStatus = "draft" | "finalized" | "paid" | "void" | "past_due";
+export type InvoiceStatus = 'draft' | 'finalized' | 'paid' | 'void' | 'past_due';
 
 export interface Invoice {
   id: string;
@@ -118,14 +118,14 @@ export interface InvoiceLineItem {
 /* ------------------------------------------------------------------ */
 
 export type BillingWebhookEvent =
-  | "subscription.created"
-  | "subscription.updated"
-  | "subscription.canceled"
-  | "invoice.finalized"
-  | "invoice.paid"
-  | "invoice.past_due"
-  | "payment.failed"
-  | "usage.threshold_reached";
+  | 'subscription.created'
+  | 'subscription.updated'
+  | 'subscription.canceled'
+  | 'invoice.finalized'
+  | 'invoice.paid'
+  | 'invoice.past_due'
+  | 'payment.failed'
+  | 'usage.threshold_reached';
 
 export interface BillingWebhookPayload {
   event: BillingWebhookEvent;
@@ -167,7 +167,7 @@ export interface BillingProvider {
 /* Provider registry                                                    */
 /* ------------------------------------------------------------------ */
 
-export type BillingProviderType = "mock" | "lago";
+export type BillingProviderType = 'mock' | 'lago';
 
 let activeProvider: BillingProvider | null = null;
 
@@ -177,7 +177,7 @@ export function setBillingProvider(provider: BillingProvider): void {
 
 export function getBillingProvider(): BillingProvider {
   if (!activeProvider) {
-    throw new Error("Billing provider not initialized. Call setBillingProvider() at startup.");
+    throw new Error('Billing provider not initialized. Call setBillingProvider() at startup.');
   }
   return activeProvider;
 }

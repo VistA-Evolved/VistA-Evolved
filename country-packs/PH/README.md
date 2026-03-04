@@ -4,16 +4,16 @@
 
 Active production pack for Philippine-based VistA-Evolved deployments.
 
-| Field | Value |
-|-------|-------|
-| **Country Code** | PH |
-| **Regulatory Framework** | DPA 2012 (R.A. 10173) |
-| **Consent Granularity** | All-or-nothing |
-| **Default Region** | ph-mnl |
-| **Default Locale** | fil |
-| **Supported Locales** | fil, en |
-| **Payer Module** | ph_hmos (15 payers incl. PhilHealth) |
-| **Status** | Active (P0) |
+| Field                    | Value                                |
+| ------------------------ | ------------------------------------ |
+| **Country Code**         | PH                                   |
+| **Regulatory Framework** | DPA 2012 (R.A. 10173)                |
+| **Consent Granularity**  | All-or-nothing                       |
+| **Default Region**       | ph-mnl                               |
+| **Default Locale**       | fil                                  |
+| **Supported Locales**    | fil, en                              |
+| **Payer Module**         | ph_hmos (15 payers incl. PhilHealth) |
+| **Status**               | Active (P0)                          |
 
 ## Regulatory Notes
 

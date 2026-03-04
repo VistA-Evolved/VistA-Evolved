@@ -5,8 +5,9 @@ import { useDataCache, type Consult } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
-
-interface Props { dfn: string; }
+interface Props {
+  dfn: string;
+}
 
 export default function ConsultsPanel({ dfn }: Props) {
   const { fetchDomain, getDomain, isLoading } = useDataCache();
@@ -15,7 +16,9 @@ export default function ConsultsPanel({ dfn }: Props) {
   const [detailText, setDetailText] = useState<string>('');
   const [detailLoading, setDetailLoading] = useState(false);
 
-  useEffect(() => { fetchDomain(dfn, 'consults'); }, [dfn, fetchDomain]);
+  useEffect(() => {
+    fetchDomain(dfn, 'consults');
+  }, [dfn, fetchDomain]);
 
   const consults = getDomain(dfn, 'consults');
   const loading = isLoading(dfn, 'consults');
@@ -31,7 +34,9 @@ export default function ConsultsPanel({ dfn }: Props) {
     setDetailText('');
     setDetailLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/vista/consults/detail?id=${c.id}`, { credentials: 'include' });
+      const res = await fetch(`${API_BASE}/vista/consults/detail?id=${c.id}`, {
+        credentials: 'include',
+      });
       const data = await res.json();
       setDetailText(data.ok ? (data.text ?? '(no detail text)') : 'Error loading detail');
     } catch {
@@ -49,7 +54,12 @@ export default function ConsultsPanel({ dfn }: Props) {
       </p>
 
       <div className={styles.panelToolbar}>
-        <select className={styles.formSelect} value={filter} onChange={(e) => setFilter(e.target.value as typeof filter)} style={{ width: 'auto' }}>
+        <select
+          className={styles.formSelect}
+          value={filter}
+          onChange={(e) => setFilter(e.target.value as typeof filter)}
+          style={{ width: 'auto' }}
+        >
           <option value="all">All Consults</option>
           <option value="pending">Pending</option>
           <option value="complete">Complete</option>
@@ -62,7 +72,13 @@ export default function ConsultsPanel({ dfn }: Props) {
       <div className={styles.splitPane}>
         <div className={styles.splitLeft}>
           <table className={styles.dataTable}>
-            <thead><tr><th>Service</th><th>Date</th><th>Status</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
             <tbody>
               {filtered.map((c) => (
                 <tr
@@ -73,14 +89,20 @@ export default function ConsultsPanel({ dfn }: Props) {
                   <td>{c.service}</td>
                   <td>{c.date}</td>
                   <td>
-                    <span className={`${styles.badge} ${/pending/i.test(c.status) ? styles.draft : styles.signed}`}>
+                    <span
+                      className={`${styles.badge} ${/pending/i.test(c.status) ? styles.draft : styles.signed}`}
+                    >
                       {c.status}
                     </span>
                   </td>
                 </tr>
               ))}
               {!loading && filtered.length === 0 && (
-                <tr><td colSpan={3} style={{ textAlign: 'center', fontStyle: 'italic' }}>No consults on file</td></tr>
+                <tr>
+                  <td colSpan={3} style={{ textAlign: 'center', fontStyle: 'italic' }}>
+                    No consults on file
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
@@ -89,12 +111,20 @@ export default function ConsultsPanel({ dfn }: Props) {
           {selected ? (
             <div>
               <div className={styles.panelTitle}>{selected.service} Consult</div>
-              <div className={styles.formGroup}><label>Date</label><div>{selected.date}</div></div>
-              <div className={styles.formGroup}><label>Type</label><div>{selected.type || '—'}</div></div>
+              <div className={styles.formGroup}>
+                <label>Date</label>
+                <div>{selected.date}</div>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Type</label>
+                <div>{selected.type || '—'}</div>
+              </div>
               <div className={styles.formGroup}>
                 <label>Status</label>
                 <div>
-                  <span className={`${styles.badge} ${/pending/i.test(selected.status) ? styles.draft : styles.signed}`}>
+                  <span
+                    className={`${styles.badge} ${/pending/i.test(selected.status) ? styles.draft : styles.signed}`}
+                  >
                     {selected.status}
                   </span>
                 </div>

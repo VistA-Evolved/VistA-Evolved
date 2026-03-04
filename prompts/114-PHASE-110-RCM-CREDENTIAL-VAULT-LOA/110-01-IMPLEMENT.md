@@ -8,6 +8,7 @@ a real, durable platform capability above VistA IB/AR/PCE.
 ## Implementation Steps
 
 ### 1. DB Schema (6 new tables: U-Z)
+
 - `credential_artifact` -- Provider/facility credential metadata (NPI, licenses, DEA, etc.)
 - `credential_document` -- Object storage pointers for uploaded documents
 - `accreditation_status` -- Per-payer accreditation status (active/pending/expiring/denied)
@@ -16,27 +17,33 @@ a real, durable platform capability above VistA IB/AR/PCE.
 - `loa_attachment` -- Attachments linked to LOA packets
 
 ### 2. Repository Layer
+
 - `credential-vault-repo.ts` -- CRUD for credentials + documents + audit
 - `accreditation-repo.ts` -- CRUD for accreditation status + tasks
 - `loa-repo.ts` -- CRUD for LOA requests + attachments + status transitions
 
 ### 3. LOA Engine
+
 - `loa-engine.ts` -- Domain logic: create LOA, generate packet, status FSM
 - LOA statuses: draft -> pending_review -> submitted -> approved / denied -> closed
 
 ### 4. Payer Adapter Interface
+
 - `loa-adapter.ts` -- Interface: submitLOA(), checkLOAStatus(), getRequirements()
 - `stub-loa-adapter.ts` -- Returns contracting_needed with concrete steps
 
 ### 5. API Routes
-- `credential-vault-routes.ts` -- /rcm/credentials/*, /rcm/accreditation/*
-- `loa-routes.ts` -- /rcm/loa/*
+
+- `credential-vault-routes.ts` -- /rcm/credentials/_, /rcm/accreditation/_
+- `loa-routes.ts` -- /rcm/loa/\*
 
 ### 6. Admin UI (2 new tabs on RCM page)
+
 - Credential Vault tab
 - LOA Requests tab
 
 ### 7. Docs + Runbook
+
 - `docs/runbooks/phase110-rcm-credential-vault-loa.md`
 
 ## Files Touched

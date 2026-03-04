@@ -1,6 +1,7 @@
 # Bootstrap 01-99 — Bootstrap Verify (VERIFY — no changes)
 
 Verify checklist:
+
 - repo has folder structure (apps/docs/scripts/services/vista)
 - baseline docs exist (README/SECURITY/CONTRIBUTING/etc.)
 - pnpm-workspace.yaml exists

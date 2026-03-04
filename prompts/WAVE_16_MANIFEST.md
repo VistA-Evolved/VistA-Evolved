@@ -5,26 +5,26 @@
 
 ## Phase Map
 
-| Wave Phase | Resolved ID | Title | Prompt Folder |
-|------------|-------------|-------|---------------|
-| W16-P1 | 337 | Range Reservation + Manifest + ADRs | `337-W16-P1-MANIFEST-ADRS` |
-| W16-P2 | 338 | Enterprise Identity Hardening | `338-W16-P2-IDENTITY-HARDENING` |
-| W16-P3 | 339 | SCIM Provisioning (Users/Groups) | `339-W16-P3-SCIM-PROVISIONING` |
-| W16-P4 | 340 | Fine-Grained Authorization (ABAC) | `340-W16-P4-ABAC-AUTHORIZATION` |
-| W16-P5 | 341 | Secrets & Key Management | `341-W16-P5-SECRETS-KEY-MGMT` |
-| W16-P6 | 342 | Tenant Security Posture Controls | `342-W16-P6-TENANT-SECURITY-POSTURE` |
-| W16-P7 | 343 | Privacy Segmentation | `343-W16-P7-PRIVACY-SEGMENTATION` |
-| W16-P8 | 344 | Security Monitoring + SIEM Export | `344-W16-P8-SIEM-EXPORT` |
-| W16-P9 | 345 | Security Certification Runner | `345-W16-P9-SECURITY-CERT-RUNNER` |
+| Wave Phase | Resolved ID | Title                               | Prompt Folder                        |
+| ---------- | ----------- | ----------------------------------- | ------------------------------------ |
+| W16-P1     | 337         | Range Reservation + Manifest + ADRs | `337-W16-P1-MANIFEST-ADRS`           |
+| W16-P2     | 338         | Enterprise Identity Hardening       | `338-W16-P2-IDENTITY-HARDENING`      |
+| W16-P3     | 339         | SCIM Provisioning (Users/Groups)    | `339-W16-P3-SCIM-PROVISIONING`       |
+| W16-P4     | 340         | Fine-Grained Authorization (ABAC)   | `340-W16-P4-ABAC-AUTHORIZATION`      |
+| W16-P5     | 341         | Secrets & Key Management            | `341-W16-P5-SECRETS-KEY-MGMT`        |
+| W16-P6     | 342         | Tenant Security Posture Controls    | `342-W16-P6-TENANT-SECURITY-POSTURE` |
+| W16-P7     | 343         | Privacy Segmentation                | `343-W16-P7-PRIVACY-SEGMENTATION`    |
+| W16-P8     | 344         | Security Monitoring + SIEM Export   | `344-W16-P8-SIEM-EXPORT`             |
+| W16-P9     | 345         | Security Certification Runner       | `345-W16-P9-SECURITY-CERT-RUNNER`    |
 
 ## ADR Index (Phase 337)
 
-| ADR | Path |
-|-----|------|
+| ADR                         | Path                                   |
+| --------------------------- | -------------------------------------- |
 | Authorization Policy Engine | `docs/adrs/ADR-AUTHZ-POLICY-ENGINE.md` |
-| SCIM Support | `docs/adrs/ADR-SCIM-SUPPORT.md` |
-| Secrets Rotation | `docs/adrs/ADR-SECRETS-ROTATION.md` |
-| SIEM Export | `docs/adrs/ADR-SIEM-EXPORT.md` |
+| SCIM Support                | `docs/adrs/ADR-SCIM-SUPPORT.md`        |
+| Secrets Rotation            | `docs/adrs/ADR-SECRETS-ROTATION.md`    |
+| SIEM Export                 | `docs/adrs/ADR-SIEM-EXPORT.md`         |
 
 ## Dependencies & Run Order
 
@@ -41,6 +41,7 @@ W16-P1 (manifest)
 ## Scope
 
 Wave 16 takes the existing auth/policy infrastructure and adds:
+
 1. **Identity hardening** -- step-up auth, MFA enforcement, session/device policies
 2. **SCIM provisioning** -- automated user/group sync from enterprise IdPs
 3. **ABAC authorization** -- attribute-based policies beyond roles (dept, facility, patient)

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /**
  * RpcDebugPanel.tsx -- Admin/dev-only debug panel showing RPC action mappings.
@@ -11,13 +11,13 @@
  * Only rendered when NODE_ENV !== "production" or user has admin role.
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from 'react';
 
 /* ------------------------------------------------------------------ */
 /*  Types (mirrored from actionRegistry to avoid cross-app import)    */
 /* ------------------------------------------------------------------ */
 
-type ActionStatus = "wired" | "integration-pending" | "unsupported-in-sandbox" | "stub";
+type ActionStatus = 'wired' | 'integration-pending' | 'unsupported-in-sandbox' | 'stub';
 
 interface CprsAction {
   actionId: string;
@@ -48,24 +48,24 @@ interface RpcRegistryEntry {
 
 function StatusBadge({ status }: { status: ActionStatus }) {
   const colors: Record<ActionStatus, string> = {
-    wired: "bg-green-100 text-green-800 border-green-300",
-    "integration-pending": "bg-yellow-100 text-yellow-800 border-yellow-300",
-    "unsupported-in-sandbox": "bg-blue-100 text-blue-800 border-blue-300",
-    stub: "bg-orange-100 text-orange-800 border-orange-300",
+    wired: 'bg-green-100 text-green-800 border-green-300',
+    'integration-pending': 'bg-yellow-100 text-yellow-800 border-yellow-300',
+    'unsupported-in-sandbox': 'bg-blue-100 text-blue-800 border-blue-300',
+    stub: 'bg-orange-100 text-orange-800 border-orange-300',
   };
-  return (
-    <span className={`text-xs px-2 py-0.5 rounded border ${colors[status]}`}>
-      {status}
-    </span>
-  );
+  return <span className={`text-xs px-2 py-0.5 rounded border ${colors[status]}`}>{status}</span>;
 }
 
 function RpcPresenceDot({ present }: { present: boolean | undefined }) {
   if (present === undefined) return <span className="text-gray-400 text-xs">?</span>;
   return present ? (
-    <span className="text-green-600 text-xs" title="Present in VistA">&#9679;</span>
+    <span className="text-green-600 text-xs" title="Present in VistA">
+      &#9679;
+    </span>
   ) : (
-    <span className="text-red-500 text-xs" title="Not in VistA instance">&#9675;</span>
+    <span className="text-red-500 text-xs" title="Not in VistA instance">
+      &#9675;
+    </span>
   );
 }
 
@@ -78,9 +78,9 @@ export default function RpcDebugPanel() {
   const [catalog, setCatalog] = useState<Map<string, boolean>>(new Map());
   const [registry, setRegistry] = useState<RpcRegistryEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<"all" | "wired" | "pending" | "unsupported" | "stub">("all");
-  const [locationFilter, setLocationFilter] = useState<string>("all");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState<'all' | 'wired' | 'pending' | 'unsupported' | 'stub'>('all');
+  const [locationFilter, setLocationFilter] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
@@ -88,14 +88,14 @@ export default function RpcDebugPanel() {
     setError(null);
     try {
       // Fetch action registry from API
-      const actionsResp = await fetch("/vista/rpc-debug/actions", { credentials: "include" });
+      const actionsResp = await fetch('/vista/rpc-debug/actions', { credentials: 'include' });
       if (actionsResp.ok) {
         const data = await actionsResp.json();
         setActions(data.actions || []);
       }
 
       // Fetch live RPC catalog
-      const catalogResp = await fetch("/vista/rpc-catalog", { credentials: "include" });
+      const catalogResp = await fetch('/vista/rpc-catalog', { credentials: 'include' });
       if (catalogResp.ok) {
         const data = await catalogResp.json();
         const map = new Map<string, boolean>();
@@ -106,13 +106,13 @@ export default function RpcDebugPanel() {
       }
 
       // Fetch registry
-      const registryResp = await fetch("/vista/rpc-debug/registry", { credentials: "include" });
+      const registryResp = await fetch('/vista/rpc-debug/registry', { credentials: 'include' });
       if (registryResp.ok) {
         const data = await registryResp.json();
         setRegistry(data.registry || []);
       }
     } catch (err: any) {
-      setError(err.message || "Failed to load RPC debug data");
+      setError(err.message || 'Failed to load RPC debug data');
     } finally {
       setLoading(false);
     }
@@ -125,11 +125,11 @@ export default function RpcDebugPanel() {
   const locations = [...new Set(actions.map((a) => a.location))].sort();
 
   const filtered = actions.filter((a) => {
-    if (filter === "pending" && a.status !== "integration-pending") return false;
-    if (filter === "unsupported" && a.status !== "unsupported-in-sandbox") return false;
-    if (filter === "wired" && a.status !== "wired") return false;
-    if (filter === "stub" && a.status !== "stub") return false;
-    if (locationFilter !== "all" && a.location !== locationFilter) return false;
+    if (filter === 'pending' && a.status !== 'integration-pending') return false;
+    if (filter === 'unsupported' && a.status !== 'unsupported-in-sandbox') return false;
+    if (filter === 'wired' && a.status !== 'wired') return false;
+    if (filter === 'stub' && a.status !== 'stub') return false;
+    if (locationFilter !== 'all' && a.location !== locationFilter) return false;
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
       return (
@@ -143,18 +143,16 @@ export default function RpcDebugPanel() {
 
   const stats = {
     total: actions.length,
-    wired: actions.filter((a) => a.status === "wired").length,
-    pending: actions.filter((a) => a.status === "integration-pending").length,
-    unsupported: actions.filter((a) => a.status === "unsupported-in-sandbox").length,
-    stub: actions.filter((a) => a.status === "stub").length,
+    wired: actions.filter((a) => a.status === 'wired').length,
+    pending: actions.filter((a) => a.status === 'integration-pending').length,
+    unsupported: actions.filter((a) => a.status === 'unsupported-in-sandbox').length,
+    stub: actions.filter((a) => a.status === 'stub').length,
     rpcsCatalogSize: catalog.size,
     registrySize: registry.length,
   };
 
   if (loading) {
-    return (
-      <div className="p-4 text-sm text-gray-500">Loading RPC debug data...</div>
-    );
+    return <div className="p-4 text-sm text-gray-500">Loading RPC debug data...</div>;
   }
 
   return (
@@ -195,7 +193,9 @@ export default function RpcDebugPanel() {
         >
           <option value="all">All Locations</option>
           {locations.map((loc) => (
-            <option key={loc} value={loc}>{loc}</option>
+            <option key={loc} value={loc}>
+              {loc}
+            </option>
           ))}
         </select>
         <input
@@ -204,10 +204,7 @@ export default function RpcDebugPanel() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <button
-          className="text-xs px-2 py-1 border rounded hover:bg-gray-50"
-          onClick={fetchData}
-        >
+        <button className="text-xs px-2 py-1 border rounded hover:bg-gray-50" onClick={fetchData}>
           Refresh
         </button>
       </div>
@@ -233,7 +230,9 @@ export default function RpcDebugPanel() {
                   <div className="text-gray-400">{action.actionId}</div>
                 </td>
                 <td className="p-2 text-gray-600">{action.location}</td>
-                <td className="p-2"><StatusBadge status={action.status} /></td>
+                <td className="p-2">
+                  <StatusBadge status={action.status} />
+                </td>
                 <td className="p-2">
                   {action.rpcs.map((rpc) => (
                     <div key={rpc} className="flex items-center gap-1">
@@ -253,9 +252,7 @@ export default function RpcDebugPanel() {
                     </div>
                   ))}
                 </td>
-                <td className="p-2 text-gray-500">
-                  {action.pendingNote || ""}
-                </td>
+                <td className="p-2 text-gray-500">{action.pendingNote || ''}</td>
               </tr>
             ))}
             {filtered.length === 0 && (
@@ -276,22 +273,14 @@ export default function RpcDebugPanel() {
 /*  Stat card                                                          */
 /* ------------------------------------------------------------------ */
 
-function Stat({
-  label,
-  value,
-  color = "gray",
-}: {
-  label: string;
-  value: number;
-  color?: string;
-}) {
+function Stat({ label, value, color = 'gray' }: { label: string; value: number; color?: string }) {
   const colorMap: Record<string, string> = {
-    gray: "bg-gray-50 border-gray-200",
-    green: "bg-green-50 border-green-200",
-    yellow: "bg-yellow-50 border-yellow-200",
-    orange: "bg-orange-50 border-orange-200",
-    blue: "bg-blue-50 border-blue-200",
-    purple: "bg-purple-50 border-purple-200",
+    gray: 'bg-gray-50 border-gray-200',
+    green: 'bg-green-50 border-green-200',
+    yellow: 'bg-yellow-50 border-yellow-200',
+    orange: 'bg-orange-50 border-orange-200',
+    blue: 'bg-blue-50 border-blue-200',
+    purple: 'bg-purple-50 border-purple-200',
   };
   return (
     <div className={`border rounded p-2 text-center ${colorMap[color] || colorMap.gray}`}>

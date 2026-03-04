@@ -8,22 +8,22 @@
  * Ring buffer with configurable max entries.
  */
 
-import { createHash } from "node:crypto";
-import { log } from "../lib/logger.js";
+import { createHash } from 'node:crypto';
+import { log } from '../lib/logger.js';
 import type {
   AIAuditEvent,
   AIUseCase,
   AIActorRole,
   DisallowedCategory,
   RAGSourceCategory,
-} from "./types.js";
+} from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Configuration                                                       */
 /* ------------------------------------------------------------------ */
 
 const MAX_AUDIT_ENTRIES = 5000;
-const HASH_SALT = process.env.AI_AUDIT_HASH_SALT || "ve-ai-audit-salt-33";
+const HASH_SALT = process.env.AI_AUDIT_HASH_SALT || 've-ai-audit-salt-33';
 
 /* ------------------------------------------------------------------ */
 /* Ring buffer store                                                   */
@@ -38,9 +38,9 @@ let nextId = 1;
 
 /** Hash an actor/patient ID for audit — never store raw DUZ/DFN. */
 export function hashAiId(id: string): string {
-  return createHash("sha256")
+  return createHash('sha256')
     .update(HASH_SALT + id)
-    .digest("hex")
+    .digest('hex')
     .slice(0, 16);
 }
 
@@ -56,7 +56,7 @@ export interface AuditLogInput {
   actorId: string;
   actorRole: AIActorRole;
   patientDfn: string | null;
-  outcome: "success" | "blocked" | "error" | "safety_filtered";
+  outcome: 'success' | 'blocked' | 'error' | 'safety_filtered';
   blockedCategory?: DisallowedCategory;
   safetyWarnings: string[];
   wasRedacted: boolean;
@@ -98,7 +98,7 @@ export function logAiAudit(input: AuditLogInput): AIAuditEvent {
   }
 
   // Structured log (no PHI — only hashes, action, outcome)
-  log.info("AI audit event", {
+  log.info('AI audit event', {
     id: event.id,
     useCase: event.useCase,
     modelId: event.modelId,
@@ -117,7 +117,7 @@ export function recordConfirmation(
   confirmed: boolean
 ): { ok: boolean; error?: string } {
   const event = auditLog.find((e) => e.id === auditEventId);
-  if (!event) return { ok: false, error: "Audit event not found" };
+  if (!event) return { ok: false, error: 'Audit event not found' };
   event.clinicianConfirmed = confirmed;
   return { ok: true };
 }
@@ -171,7 +171,7 @@ export function getAiAuditStats(): {
     byUseCase[e.useCase] = (byUseCase[e.useCase] ?? 0) + 1;
     byModel[e.modelId] = (byModel[e.modelId] ?? 0) + 1;
     totalLatency += e.latencyMs;
-    if (e.outcome === "blocked") blockedCount++;
+    if (e.outcome === 'blocked') blockedCount++;
     if (e.clinicianConfirmed !== null) {
       confirmableCount++;
       if (e.clinicianConfirmed) confirmedCount++;

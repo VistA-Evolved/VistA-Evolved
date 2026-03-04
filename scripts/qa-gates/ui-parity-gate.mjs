@@ -35,7 +35,11 @@ function loadCatalog(path) {
 }
 
 function countSurfaces(catalog) {
-  let total = 0, covered = 0, rpcWired = 0, writebackReady = 0, tested = 0;
+  let total = 0,
+    covered = 0,
+    rpcWired = 0,
+    writebackReady = 0,
+    tested = 0;
   for (const sys of catalog.systems || []) {
     for (const surf of sys.surfaces || []) {
       total++;
@@ -71,16 +75,17 @@ const current = {
   coveragePercent: 0,
   timestamp: new Date().toISOString(),
 };
-current.coveragePercent = current.total > 0
-  ? Math.round((current.covered / current.total) * 1000) / 10
-  : 0;
+current.coveragePercent =
+  current.total > 0 ? Math.round((current.covered / current.total) * 1000) / 10 : 0;
 
 // ----- update baseline mode -----
 if (updateBaseline) {
   const dir = dirname(BASELINE_FILE);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
   writeFileSync(BASELINE_FILE, JSON.stringify(current, null, 2) + '\n', 'utf8');
-  console.log(`[ui-parity-gate] Baseline updated: ${current.covered}/${current.total} covered (${current.coveragePercent}%)`);
+  console.log(
+    `[ui-parity-gate] Baseline updated: ${current.covered}/${current.total} covered (${current.coveragePercent}%)`
+  );
   process.exit(0);
 }
 
@@ -147,7 +152,7 @@ if (jsonOutput) {
     console.log(`\nRESULT: PASS`);
   } else {
     console.log(`\nRESULT: FAIL -- coverage regression detected`);
-    result.regressions.forEach(r => console.log(`  - ${r}`));
+    result.regressions.forEach((r) => console.log(`  - ${r}`));
   }
 }
 

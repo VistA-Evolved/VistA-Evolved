@@ -6,18 +6,27 @@
  * Does NOT send credentials. Exits 0 if reachable, 1 if not.
  */
 
-import { createConnection } from "net";
+import { createConnection } from 'net';
 
-const VISTA_HOST = process.env.VISTA_HOST || "localhost";
-const VISTA_PORT = parseInt(process.env.VISTA_PORT || "9430", 10);
-const API = process.env.API_URL || "http://localhost:3001";
+const VISTA_HOST = process.env.VISTA_HOST || 'localhost';
+const VISTA_PORT = parseInt(process.env.VISTA_PORT || '9430', 10);
+const API = process.env.API_URL || 'http://localhost:3001';
 
 function probePort(host, port, timeoutMs = 5000) {
   return new Promise((resolve) => {
     const sock = createConnection({ host, port, timeout: timeoutMs });
-    sock.on("connect", () => { sock.destroy(); resolve(true); });
-    sock.on("error", () => { sock.destroy(); resolve(false); });
-    sock.on("timeout", () => { sock.destroy(); resolve(false); });
+    sock.on('connect', () => {
+      sock.destroy();
+      resolve(true);
+    });
+    sock.on('error', () => {
+      sock.destroy();
+      resolve(false);
+    });
+    sock.on('timeout', () => {
+      sock.destroy();
+      resolve(false);
+    });
   });
 }
 

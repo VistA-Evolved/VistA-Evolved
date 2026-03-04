@@ -5,6 +5,7 @@
 ## PHI Risk Profile
 
 RCM data inherently contains Protected Health Information (PHI):
+
 - Patient identifiers (name, DOB, SSN, member ID)
 - Diagnosis codes (clinical condition disclosure)
 - Procedure codes (treatment disclosure)
@@ -17,13 +18,13 @@ RCM data inherently contains Protected Health Information (PHI):
 The RCM audit module (`rcm-audit.ts`) automatically sanitizes PHI
 before storing in the hash-chained audit log:
 
-| Pattern | Action |
-|---------|--------|
-| SSN (`\d{3}-\d{2}-\d{4}`) | → `[REDACTED]` |
-| DOB-like dates | → `[REDACTED]` |
-| "Last, First" name patterns | → `[REDACTED]` |
-| Fields containing `ssn`, `dob`, `patient_name` | → `[REDACTED-SSN/DOB/NAME]` |
-| Patient DFN | → `[DFN]` (never stored raw) |
+| Pattern                                        | Action                       |
+| ---------------------------------------------- | ---------------------------- |
+| SSN (`\d{3}-\d{2}-\d{4}`)                      | → `[REDACTED]`               |
+| DOB-like dates                                 | → `[REDACTED]`               |
+| "Last, First" name patterns                    | → `[REDACTED]`               |
+| Fields containing `ssn`, `dob`, `patient_name` | → `[REDACTED-SSN/DOB/NAME]`  |
+| Patient DFN                                    | → `[DFN]` (never stored raw) |
 
 ### 2. Claim Store Isolation
 
@@ -41,12 +42,12 @@ before storing in the hash-chained audit log:
 
 ### 4. Connector Security
 
-| Connector | PHI Exposure | Mitigation |
-|-----------|-------------|------------|
-| Clearinghouse | Full claim data in transit | TLS (SFTP/HTTPS), sender ID auth |
-| PhilHealth | Patient + clinical data | API token auth, TLS |
-| Portal/Batch | Batch files with patient data | Encrypt batch files, secure upload |
-| Sandbox | Simulated data only | No real PHI |
+| Connector     | PHI Exposure                  | Mitigation                         |
+| ------------- | ----------------------------- | ---------------------------------- |
+| Clearinghouse | Full claim data in transit    | TLS (SFTP/HTTPS), sender ID auth   |
+| PhilHealth    | Patient + clinical data       | API token auth, TLS                |
+| Portal/Batch  | Batch files with patient data | Encrypt batch files, secure upload |
+| Sandbox       | Simulated data only           | No real PHI                        |
 
 ### 5. API Access Control
 
@@ -65,16 +66,19 @@ before storing in the hash-chained audit log:
 ## HIPAA Compliance Considerations
 
 ### Minimum Necessary Standard
+
 - Eligibility checks send only required identifiers (member ID, DOB)
 - Claim submissions include only clinically necessary data
 - Remittance data limited to payment/adjustment amounts
 
 ### Transmission Security
+
 - All API calls over HTTPS (enforced by reverse proxy)
 - Clearinghouse SFTP uses SSH key authentication
 - PhilHealth API uses OAuth/token-based auth
 
 ### Audit Requirements
+
 - Every claim lifecycle event is audit-logged
 - Audit chain is hash-verified for tamper detection
 - Audit entries are append-only (no modification or deletion)

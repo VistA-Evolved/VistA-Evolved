@@ -47,7 +47,7 @@ export interface SlaViolation {
   /** SLA config ID */
   slaId: string;
   /** Which metric was violated */
-  metric: "delivery_rate" | "p95_latency" | "p99_latency";
+  metric: 'delivery_rate' | 'p95_latency' | 'p99_latency';
   /** Target value */
   target: number;
   /** Actual observed value */
@@ -122,11 +122,7 @@ function currentMinuteKey(): string {
 }
 
 /** Record a message in the throughput tracker */
-export function recordThroughput(
-  endpointId: string,
-  success: boolean,
-  latencyMs: number,
-): void {
+export function recordThroughput(endpointId: string, success: boolean, latencyMs: number): void {
   const key = currentMinuteKey();
   let buckets = throughputStore.get(endpointId);
   if (!buckets) {
@@ -152,7 +148,7 @@ export function recordThroughput(
 /** Get throughput data for an endpoint over the last N minutes */
 export function getThroughput(
   endpointId: string,
-  lastMinutes: number = 60,
+  lastMinutes: number = 60
 ): {
   endpointId: string;
   windowMinutes: number;
@@ -181,9 +177,10 @@ export function getThroughput(
     totalProcessed += b.processed;
     totalFailed += b.failed;
     allLatencies.push(...b.latencies);
-    const avg = b.latencies.length > 0
-      ? Math.round(b.latencies.reduce((s, v) => s + v, 0) / b.latencies.length)
-      : 0;
+    const avg =
+      b.latencies.length > 0
+        ? Math.round(b.latencies.reduce((s, v) => s + v, 0) / b.latencies.length)
+        : 0;
     return { minute: b.minute, processed: b.processed, failed: b.failed, avgLatencyMs: avg };
   });
 
@@ -204,14 +201,14 @@ export function getThroughput(
 /*  SLA Store                                                          */
 /* ------------------------------------------------------------------ */
 
-import { randomUUID } from "crypto";
+import { randomUUID } from 'crypto';
 
 const slaConfigs = new Map<string, Hl7SlaConfig>();
 const slaViolations: SlaViolation[] = [];
 const MAX_VIOLATIONS = 5000;
 
 /** Create an SLA configuration */
-export function createSlaConfig(input: Omit<Hl7SlaConfig, "id" | "createdAt">): Hl7SlaConfig {
+export function createSlaConfig(input: Omit<Hl7SlaConfig, 'id' | 'createdAt'>): Hl7SlaConfig {
   const config: Hl7SlaConfig = {
     ...input,
     id: randomUUID(),
@@ -254,19 +251,40 @@ export function evaluateSlas(): SlaViolation[] {
 
     // Check delivery rate
     if (deliveryRate < sla.deliveryRateTarget && throughput.totals.processed > 0) {
-      const v = createViolation(sla.id, "delivery_rate", sla.deliveryRateTarget, deliveryRate, now, sla.windowMinutes);
+      const v = createViolation(
+        sla.id,
+        'delivery_rate',
+        sla.deliveryRateTarget,
+        deliveryRate,
+        now,
+        sla.windowMinutes
+      );
       newViolations.push(v);
     }
 
     // Check p95 latency
     if (latencyPercentiles.p95 > sla.p95LatencyTargetMs && latencyPercentiles.count > 0) {
-      const v = createViolation(sla.id, "p95_latency", sla.p95LatencyTargetMs, latencyPercentiles.p95, now, sla.windowMinutes);
+      const v = createViolation(
+        sla.id,
+        'p95_latency',
+        sla.p95LatencyTargetMs,
+        latencyPercentiles.p95,
+        now,
+        sla.windowMinutes
+      );
       newViolations.push(v);
     }
 
     // Check p99 latency
     if (latencyPercentiles.p99 > sla.p99LatencyTargetMs && latencyPercentiles.count > 0) {
-      const v = createViolation(sla.id, "p99_latency", sla.p99LatencyTargetMs, latencyPercentiles.p99, now, sla.windowMinutes);
+      const v = createViolation(
+        sla.id,
+        'p99_latency',
+        sla.p99LatencyTargetMs,
+        latencyPercentiles.p99,
+        now,
+        sla.windowMinutes
+      );
       newViolations.push(v);
     }
   }
@@ -276,11 +294,11 @@ export function evaluateSlas(): SlaViolation[] {
 
 function createViolation(
   slaId: string,
-  metric: SlaViolation["metric"],
+  metric: SlaViolation['metric'],
   target: number,
   actual: number,
   windowEnd: Date,
-  windowMinutes: number,
+  windowMinutes: number
 ): SlaViolation {
   const v: SlaViolation = {
     id: randomUUID(),
@@ -308,7 +326,8 @@ export function listSlaViolations(filters?: {
 }): SlaViolation[] {
   let result = [...slaViolations];
   if (filters?.slaId) result = result.filter((v) => v.slaId === filters.slaId);
-  if (filters?.acknowledged !== undefined) result = result.filter((v) => v.acknowledged === filters.acknowledged);
+  if (filters?.acknowledged !== undefined)
+    result = result.filter((v) => v.acknowledged === filters.acknowledged);
   result.reverse(); // newest first
   return result.slice(0, filters?.limit || 100);
 }
@@ -360,7 +379,7 @@ export interface RetryEntry {
   /** Policy used */
   policy: RetryPolicy;
   /** Status */
-  status: "pending" | "retrying" | "succeeded" | "exhausted";
+  status: 'pending' | 'retrying' | 'succeeded' | 'exhausted';
   /** Last retry timestamp */
   lastRetryAt?: string;
   /** Last error */
@@ -372,14 +391,14 @@ const retryQueue = new Map<string, RetryEntry>();
 /** Queue a DLQ entry for automatic retry */
 export function queueForRetry(
   dlqEntryId: string,
-  policy: RetryPolicy = DEFAULT_RETRY_POLICY,
+  policy: RetryPolicy = DEFAULT_RETRY_POLICY
 ): RetryEntry {
   const entry: RetryEntry = {
     dlqEntryId,
     attempt: 0,
     nextRetryAt: new Date(Date.now() + policy.initialBackoffMs).toISOString(),
     policy,
-    status: "pending",
+    status: 'pending',
   };
   retryQueue.set(dlqEntryId, entry);
   return entry;
@@ -392,25 +411,19 @@ export function getRetryState(dlqEntryId: string): RetryEntry | undefined {
 
 /** List all retry queue entries */
 export function listRetryQueue(): RetryEntry[] {
-  return Array.from(retryQueue.values()).sort(
-    (a, b) => a.nextRetryAt.localeCompare(b.nextRetryAt),
-  );
+  return Array.from(retryQueue.values()).sort((a, b) => a.nextRetryAt.localeCompare(b.nextRetryAt));
 }
 
 /** Process retry queue: returns entries due for retry */
 export function getRetryDueEntries(): RetryEntry[] {
   const now = new Date().toISOString();
   return Array.from(retryQueue.values()).filter(
-    (e) => e.status === "pending" && e.nextRetryAt <= now,
+    (e) => e.status === 'pending' && e.nextRetryAt <= now
   );
 }
 
 /** Record a retry attempt result */
-export function recordRetryResult(
-  dlqEntryId: string,
-  success: boolean,
-  error?: string,
-): void {
+export function recordRetryResult(dlqEntryId: string, success: boolean, error?: string): void {
   const entry = retryQueue.get(dlqEntryId);
   if (!entry) return;
 
@@ -418,18 +431,18 @@ export function recordRetryResult(
   entry.lastRetryAt = new Date().toISOString();
 
   if (success) {
-    entry.status = "succeeded";
+    entry.status = 'succeeded';
   } else if (entry.attempt >= entry.policy.maxRetries) {
-    entry.status = "exhausted";
+    entry.status = 'exhausted';
     entry.lastError = error;
   } else {
     const backoff = Math.min(
       entry.policy.initialBackoffMs * Math.pow(entry.policy.backoffMultiplier, entry.attempt),
-      entry.policy.maxBackoffMs,
+      entry.policy.maxBackoffMs
     );
     entry.nextRetryAt = new Date(Date.now() + backoff).toISOString();
     entry.lastError = error;
-    entry.status = "pending";
+    entry.status = 'pending';
   }
 }
 
@@ -441,13 +454,24 @@ export function getRetryQueueStats(): {
   succeeded: number;
   exhausted: number;
 } {
-  let pending = 0, retrying = 0, succeeded = 0, exhausted = 0;
+  let pending = 0,
+    retrying = 0,
+    succeeded = 0,
+    exhausted = 0;
   for (const e of retryQueue.values()) {
     switch (e.status) {
-      case "pending": pending++; break;
-      case "retrying": retrying++; break;
-      case "succeeded": succeeded++; break;
-      case "exhausted": exhausted++; break;
+      case 'pending':
+        pending++;
+        break;
+      case 'retrying':
+        retrying++;
+        break;
+      case 'succeeded':
+        succeeded++;
+        break;
+      case 'exhausted':
+        exhausted++;
+        break;
     }
   }
   return { total: retryQueue.size, pending, retrying, succeeded, exhausted };
@@ -457,9 +481,9 @@ export function getRetryQueueStats(): {
 /*  Unified Ops Dashboard                                              */
 /* ------------------------------------------------------------------ */
 
-import { getChannelHealthSummary } from "./channel-health.js";
-import { getDlqStats } from "./dead-letter-enhanced.js";
-import { getMessageEventStats } from "./message-event-store.js";
+import { getChannelHealthSummary } from './channel-health.js';
+import { getDlqStats } from './dead-letter-enhanced.js';
+import { getMessageEventStats } from './message-event-store.js';
 
 /** Build a unified ops dashboard response */
 export function buildOpsDashboard(tenantId?: string): {

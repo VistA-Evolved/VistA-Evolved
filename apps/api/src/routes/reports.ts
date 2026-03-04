@@ -8,7 +8,7 @@
  * To implement: replace the stub body with connect() → callRpc() → disconnect().
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 
 /** RPC catalog entry for the reports domain. */
 export interface ReportsRpc {
@@ -20,50 +20,160 @@ export interface ReportsRpc {
 
 /** All RPCs in the reports domain. */
 export const REPORTS_RPCS: ReportsRpc[] = [
-  { name: "ORWRP COLUMN HEADERS", slug: "orwrp-column-headers", isContext: false, referenceCount: 1 },
-  { name: "ORWRP GET DEFAULT PRINTER", slug: "orwrp-get-default-printer", isContext: false, referenceCount: 1 },
-  { name: "ORWRP LAB REPORT LISTS", slug: "orwrp-lab-report-lists", isContext: false, referenceCount: 1 },
-  { name: "ORWRP PRINT LAB REMOTE", slug: "orwrp-print-lab-remote", isContext: false, referenceCount: 1 },
-  { name: "ORWRP PRINT LAB REPORTS", slug: "orwrp-print-lab-reports", isContext: false, referenceCount: 1 },
-  { name: "ORWRP PRINT REMOTE REPORT", slug: "orwrp-print-remote-report", isContext: false, referenceCount: 1 },
-  { name: "ORWRP PRINT REPORT", slug: "orwrp-print-report", isContext: false, referenceCount: 1 },
-  { name: "ORWRP PRINT V REPORT", slug: "orwrp-print-v-report", isContext: false, referenceCount: 1 },
-  { name: "ORWRP PRINT WINDOWS LAB REMOTE", slug: "orwrp-print-windows-lab-remote", isContext: false, referenceCount: 1 },
-  { name: "ORWRP PRINT WINDOWS REMOTE", slug: "orwrp-print-windows-remote", isContext: false, referenceCount: 1 },
-  { name: "ORWRP PRINT WINDOWS REPORT", slug: "orwrp-print-windows-report", isContext: false, referenceCount: 1 },
-  { name: "ORWRP REPORT LISTS", slug: "orwrp-report-lists", isContext: false, referenceCount: 1 },
-  { name: "ORWRP REPORT TEXT", slug: "orwrp-report-text", isContext: false, referenceCount: 2 },
-  { name: "ORWRP SAVE DEFAULT PRINTER", slug: "orwrp-save-default-printer", isContext: false, referenceCount: 1 },
-  { name: "ORWRP WINPRINT DEFAULT", slug: "orwrp-winprint-default", isContext: false, referenceCount: 1 },
-  { name: "ORWRP WINPRINT LAB REPORTS", slug: "orwrp-winprint-lab-reports", isContext: false, referenceCount: 1 },
-  { name: "ORWRP1 LISTNUTR", slug: "orwrp1-listnutr", isContext: false, referenceCount: 1 },
-  { name: "ORWRP2 COMPABV", slug: "orwrp2-compabv", isContext: false, referenceCount: 1 },
-  { name: "ORWRP2 COMPDISP", slug: "orwrp2-compdisp", isContext: false, referenceCount: 1 },
-  { name: "ORWRP2 GETLKUP", slug: "orwrp2-getlkup", isContext: false, referenceCount: 1 },
-  { name: "ORWRP2 HS COMP FILES", slug: "orwrp2-hs-comp-files", isContext: false, referenceCount: 1 },
-  { name: "ORWRP2 HS COMPONENT SUBS", slug: "orwrp2-hs-component-subs", isContext: false, referenceCount: 1 },
-  { name: "ORWRP2 HS COMPONENTS", slug: "orwrp2-hs-components", isContext: false, referenceCount: 1 },
-  { name: "ORWRP2 HS FILE LOOKUP", slug: "orwrp2-hs-file-lookup", isContext: false, referenceCount: 1 },
-  { name: "ORWRP2 HS REPORT TEXT", slug: "orwrp2-hs-report-text", isContext: false, referenceCount: 1 },
-  { name: "ORWRP2 HS SUBITEMS", slug: "orwrp2-hs-subitems", isContext: false, referenceCount: 1 },
-  { name: "ORWRP2 SAVLKUP", slug: "orwrp2-savlkup", isContext: false, referenceCount: 1 },
-  { name: "ORWRP3 EXPAND COLUMNS", slug: "orwrp3-expand-columns", isContext: false, referenceCount: 1 },
-  { name: "ORWRP4 HDR MODIFY", slug: "orwrp4-hdr-modify", isContext: false, referenceCount: 1 },
-  { name: "ORWSR CASELIST", slug: "orwsr-caselist", isContext: false, referenceCount: 1 },
-  { name: "ORWSR GET SURG CONTEXT", slug: "orwsr-get-surg-context", isContext: false, referenceCount: 1 },
-  { name: "ORWSR LIST", slug: "orwsr-list", isContext: false, referenceCount: 1 },
-  { name: "ORWSR ONECASE", slug: "orwsr-onecase", isContext: false, referenceCount: 2 },
-  { name: "ORWSR OPTOP", slug: "orwsr-optop", isContext: false, referenceCount: 1 },
-  { name: "ORWSR RPTLIST", slug: "orwsr-rptlist", isContext: false, referenceCount: 1 },
-  { name: "ORWSR SAVE SURG CONTEXT", slug: "orwsr-save-surg-context", isContext: false, referenceCount: 1 },
-  { name: "ORWSR SHOW OPTOP WHEN SIGNING", slug: "orwsr-show-optop-when-signing", isContext: false, referenceCount: 1 },
-  { name: "ORWSR SHOW SURG TAB", slug: "orwsr-show-surg-tab", isContext: false, referenceCount: 1 },
+  {
+    name: 'ORWRP COLUMN HEADERS',
+    slug: 'orwrp-column-headers',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP GET DEFAULT PRINTER',
+    slug: 'orwrp-get-default-printer',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP LAB REPORT LISTS',
+    slug: 'orwrp-lab-report-lists',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP PRINT LAB REMOTE',
+    slug: 'orwrp-print-lab-remote',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP PRINT LAB REPORTS',
+    slug: 'orwrp-print-lab-reports',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP PRINT REMOTE REPORT',
+    slug: 'orwrp-print-remote-report',
+    isContext: false,
+    referenceCount: 1,
+  },
+  { name: 'ORWRP PRINT REPORT', slug: 'orwrp-print-report', isContext: false, referenceCount: 1 },
+  {
+    name: 'ORWRP PRINT V REPORT',
+    slug: 'orwrp-print-v-report',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP PRINT WINDOWS LAB REMOTE',
+    slug: 'orwrp-print-windows-lab-remote',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP PRINT WINDOWS REMOTE',
+    slug: 'orwrp-print-windows-remote',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP PRINT WINDOWS REPORT',
+    slug: 'orwrp-print-windows-report',
+    isContext: false,
+    referenceCount: 1,
+  },
+  { name: 'ORWRP REPORT LISTS', slug: 'orwrp-report-lists', isContext: false, referenceCount: 1 },
+  { name: 'ORWRP REPORT TEXT', slug: 'orwrp-report-text', isContext: false, referenceCount: 2 },
+  {
+    name: 'ORWRP SAVE DEFAULT PRINTER',
+    slug: 'orwrp-save-default-printer',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP WINPRINT DEFAULT',
+    slug: 'orwrp-winprint-default',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP WINPRINT LAB REPORTS',
+    slug: 'orwrp-winprint-lab-reports',
+    isContext: false,
+    referenceCount: 1,
+  },
+  { name: 'ORWRP1 LISTNUTR', slug: 'orwrp1-listnutr', isContext: false, referenceCount: 1 },
+  { name: 'ORWRP2 COMPABV', slug: 'orwrp2-compabv', isContext: false, referenceCount: 1 },
+  { name: 'ORWRP2 COMPDISP', slug: 'orwrp2-compdisp', isContext: false, referenceCount: 1 },
+  { name: 'ORWRP2 GETLKUP', slug: 'orwrp2-getlkup', isContext: false, referenceCount: 1 },
+  {
+    name: 'ORWRP2 HS COMP FILES',
+    slug: 'orwrp2-hs-comp-files',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP2 HS COMPONENT SUBS',
+    slug: 'orwrp2-hs-component-subs',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP2 HS COMPONENTS',
+    slug: 'orwrp2-hs-components',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP2 HS FILE LOOKUP',
+    slug: 'orwrp2-hs-file-lookup',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWRP2 HS REPORT TEXT',
+    slug: 'orwrp2-hs-report-text',
+    isContext: false,
+    referenceCount: 1,
+  },
+  { name: 'ORWRP2 HS SUBITEMS', slug: 'orwrp2-hs-subitems', isContext: false, referenceCount: 1 },
+  { name: 'ORWRP2 SAVLKUP', slug: 'orwrp2-savlkup', isContext: false, referenceCount: 1 },
+  {
+    name: 'ORWRP3 EXPAND COLUMNS',
+    slug: 'orwrp3-expand-columns',
+    isContext: false,
+    referenceCount: 1,
+  },
+  { name: 'ORWRP4 HDR MODIFY', slug: 'orwrp4-hdr-modify', isContext: false, referenceCount: 1 },
+  { name: 'ORWSR CASELIST', slug: 'orwsr-caselist', isContext: false, referenceCount: 1 },
+  {
+    name: 'ORWSR GET SURG CONTEXT',
+    slug: 'orwsr-get-surg-context',
+    isContext: false,
+    referenceCount: 1,
+  },
+  { name: 'ORWSR LIST', slug: 'orwsr-list', isContext: false, referenceCount: 1 },
+  { name: 'ORWSR ONECASE', slug: 'orwsr-onecase', isContext: false, referenceCount: 2 },
+  { name: 'ORWSR OPTOP', slug: 'orwsr-optop', isContext: false, referenceCount: 1 },
+  { name: 'ORWSR RPTLIST', slug: 'orwsr-rptlist', isContext: false, referenceCount: 1 },
+  {
+    name: 'ORWSR SAVE SURG CONTEXT',
+    slug: 'orwsr-save-surg-context',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWSR SHOW OPTOP WHEN SIGNING',
+    slug: 'orwsr-show-optop-when-signing',
+    isContext: false,
+    referenceCount: 1,
+  },
+  { name: 'ORWSR SHOW SURG TAB', slug: 'orwsr-show-surg-tab', isContext: false, referenceCount: 1 },
 ];
 
 /** Stub response returned by unimplemented endpoints. */
 export interface StubResponse {
   ok: false;
-  error: "Not implemented";
+  error: 'Not implemented';
   rpcName: string;
   domain: string;
   slug: string;
@@ -77,12 +187,11 @@ export interface StubResponse {
  *         GET /vista/reports/rpcs  (catalog listing)
  */
 export default async function reportsRoutes(server: FastifyInstance): Promise<void> {
-
   // ── Catalog listing ───────────────────────────────────────────
-  server.get("/vista/reports/rpcs", async () => {
+  server.get('/vista/reports/rpcs', async () => {
     return {
       ok: true,
-      domain: "reports",
+      domain: 'reports',
       count: 38,
       rpcs: REPORTS_RPCS,
     };
@@ -91,457 +200,463 @@ export default async function reportsRoutes(server: FastifyInstance): Promise<vo
   // ── Individual RPC stubs ──────────────────────────────────────
 
   /** Stub for ORWRP COLUMN HEADERS (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-column-headers", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-column-headers', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP COLUMN HEADERS",
-      domain: "reports",
-      slug: "orwrp-column-headers",
+      error: 'Not implemented',
+      rpcName: 'ORWRP COLUMN HEADERS',
+      domain: 'reports',
+      slug: 'orwrp-column-headers',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP GET DEFAULT PRINTER (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-get-default-printer", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-get-default-printer', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP GET DEFAULT PRINTER",
-      domain: "reports",
-      slug: "orwrp-get-default-printer",
+      error: 'Not implemented',
+      rpcName: 'ORWRP GET DEFAULT PRINTER',
+      domain: 'reports',
+      slug: 'orwrp-get-default-printer',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP LAB REPORT LISTS (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-lab-report-lists", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-lab-report-lists', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP LAB REPORT LISTS",
-      domain: "reports",
-      slug: "orwrp-lab-report-lists",
+      error: 'Not implemented',
+      rpcName: 'ORWRP LAB REPORT LISTS',
+      domain: 'reports',
+      slug: 'orwrp-lab-report-lists',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP PRINT LAB REMOTE (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-print-lab-remote", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-print-lab-remote', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP PRINT LAB REMOTE",
-      domain: "reports",
-      slug: "orwrp-print-lab-remote",
+      error: 'Not implemented',
+      rpcName: 'ORWRP PRINT LAB REMOTE',
+      domain: 'reports',
+      slug: 'orwrp-print-lab-remote',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP PRINT LAB REPORTS (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-print-lab-reports", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-print-lab-reports', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP PRINT LAB REPORTS",
-      domain: "reports",
-      slug: "orwrp-print-lab-reports",
+      error: 'Not implemented',
+      rpcName: 'ORWRP PRINT LAB REPORTS',
+      domain: 'reports',
+      slug: 'orwrp-print-lab-reports',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP PRINT REMOTE REPORT (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-print-remote-report", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-print-remote-report', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP PRINT REMOTE REPORT",
-      domain: "reports",
-      slug: "orwrp-print-remote-report",
+      error: 'Not implemented',
+      rpcName: 'ORWRP PRINT REMOTE REPORT',
+      domain: 'reports',
+      slug: 'orwrp-print-remote-report',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP PRINT REPORT (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-print-report", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-print-report', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP PRINT REPORT",
-      domain: "reports",
-      slug: "orwrp-print-report",
+      error: 'Not implemented',
+      rpcName: 'ORWRP PRINT REPORT',
+      domain: 'reports',
+      slug: 'orwrp-print-report',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP PRINT V REPORT (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-print-v-report", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-print-v-report', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP PRINT V REPORT",
-      domain: "reports",
-      slug: "orwrp-print-v-report",
+      error: 'Not implemented',
+      rpcName: 'ORWRP PRINT V REPORT',
+      domain: 'reports',
+      slug: 'orwrp-print-v-report',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP PRINT WINDOWS LAB REMOTE (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-print-windows-lab-remote", async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP PRINT WINDOWS LAB REMOTE",
-      domain: "reports",
-      slug: "orwrp-print-windows-lab-remote",
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get(
+    '/vista/reports/rpc/orwrp-print-windows-lab-remote',
+    async (): Promise<StubResponse> => {
+      return {
+        ok: false,
+        error: 'Not implemented',
+        rpcName: 'ORWRP PRINT WINDOWS LAB REMOTE',
+        domain: 'reports',
+        slug: 'orwrp-print-windows-lab-remote',
+        hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
+      };
+    }
+  );
 
   /** Stub for ORWRP PRINT WINDOWS REMOTE (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-print-windows-remote", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-print-windows-remote', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP PRINT WINDOWS REMOTE",
-      domain: "reports",
-      slug: "orwrp-print-windows-remote",
+      error: 'Not implemented',
+      rpcName: 'ORWRP PRINT WINDOWS REMOTE',
+      domain: 'reports',
+      slug: 'orwrp-print-windows-remote',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP PRINT WINDOWS REPORT (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-print-windows-report", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-print-windows-report', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP PRINT WINDOWS REPORT",
-      domain: "reports",
-      slug: "orwrp-print-windows-report",
+      error: 'Not implemented',
+      rpcName: 'ORWRP PRINT WINDOWS REPORT',
+      domain: 'reports',
+      slug: 'orwrp-print-windows-report',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP REPORT LISTS (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-report-lists", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-report-lists', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP REPORT LISTS",
-      domain: "reports",
-      slug: "orwrp-report-lists",
+      error: 'Not implemented',
+      rpcName: 'ORWRP REPORT LISTS',
+      domain: 'reports',
+      slug: 'orwrp-report-lists',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP REPORT TEXT (2 call sites in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-report-text", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-report-text', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP REPORT TEXT",
-      domain: "reports",
-      slug: "orwrp-report-text",
+      error: 'Not implemented',
+      rpcName: 'ORWRP REPORT TEXT',
+      domain: 'reports',
+      slug: 'orwrp-report-text',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP SAVE DEFAULT PRINTER (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-save-default-printer", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-save-default-printer', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP SAVE DEFAULT PRINTER",
-      domain: "reports",
-      slug: "orwrp-save-default-printer",
+      error: 'Not implemented',
+      rpcName: 'ORWRP SAVE DEFAULT PRINTER',
+      domain: 'reports',
+      slug: 'orwrp-save-default-printer',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP WINPRINT DEFAULT (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-winprint-default", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-winprint-default', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP WINPRINT DEFAULT",
-      domain: "reports",
-      slug: "orwrp-winprint-default",
+      error: 'Not implemented',
+      rpcName: 'ORWRP WINPRINT DEFAULT',
+      domain: 'reports',
+      slug: 'orwrp-winprint-default',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP WINPRINT LAB REPORTS (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp-winprint-lab-reports", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp-winprint-lab-reports', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP WINPRINT LAB REPORTS",
-      domain: "reports",
-      slug: "orwrp-winprint-lab-reports",
+      error: 'Not implemented',
+      rpcName: 'ORWRP WINPRINT LAB REPORTS',
+      domain: 'reports',
+      slug: 'orwrp-winprint-lab-reports',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP1 LISTNUTR (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp1-listnutr", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp1-listnutr', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP1 LISTNUTR",
-      domain: "reports",
-      slug: "orwrp1-listnutr",
+      error: 'Not implemented',
+      rpcName: 'ORWRP1 LISTNUTR',
+      domain: 'reports',
+      slug: 'orwrp1-listnutr',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP2 COMPABV (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp2-compabv", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp2-compabv', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP2 COMPABV",
-      domain: "reports",
-      slug: "orwrp2-compabv",
+      error: 'Not implemented',
+      rpcName: 'ORWRP2 COMPABV',
+      domain: 'reports',
+      slug: 'orwrp2-compabv',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP2 COMPDISP (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp2-compdisp", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp2-compdisp', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP2 COMPDISP",
-      domain: "reports",
-      slug: "orwrp2-compdisp",
+      error: 'Not implemented',
+      rpcName: 'ORWRP2 COMPDISP',
+      domain: 'reports',
+      slug: 'orwrp2-compdisp',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP2 GETLKUP (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp2-getlkup", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp2-getlkup', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP2 GETLKUP",
-      domain: "reports",
-      slug: "orwrp2-getlkup",
+      error: 'Not implemented',
+      rpcName: 'ORWRP2 GETLKUP',
+      domain: 'reports',
+      slug: 'orwrp2-getlkup',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP2 HS COMP FILES (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp2-hs-comp-files", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp2-hs-comp-files', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP2 HS COMP FILES",
-      domain: "reports",
-      slug: "orwrp2-hs-comp-files",
+      error: 'Not implemented',
+      rpcName: 'ORWRP2 HS COMP FILES',
+      domain: 'reports',
+      slug: 'orwrp2-hs-comp-files',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP2 HS COMPONENT SUBS (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp2-hs-component-subs", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp2-hs-component-subs', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP2 HS COMPONENT SUBS",
-      domain: "reports",
-      slug: "orwrp2-hs-component-subs",
+      error: 'Not implemented',
+      rpcName: 'ORWRP2 HS COMPONENT SUBS',
+      domain: 'reports',
+      slug: 'orwrp2-hs-component-subs',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP2 HS COMPONENTS (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp2-hs-components", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp2-hs-components', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP2 HS COMPONENTS",
-      domain: "reports",
-      slug: "orwrp2-hs-components",
+      error: 'Not implemented',
+      rpcName: 'ORWRP2 HS COMPONENTS',
+      domain: 'reports',
+      slug: 'orwrp2-hs-components',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP2 HS FILE LOOKUP (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp2-hs-file-lookup", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp2-hs-file-lookup', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP2 HS FILE LOOKUP",
-      domain: "reports",
-      slug: "orwrp2-hs-file-lookup",
+      error: 'Not implemented',
+      rpcName: 'ORWRP2 HS FILE LOOKUP',
+      domain: 'reports',
+      slug: 'orwrp2-hs-file-lookup',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP2 HS REPORT TEXT (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp2-hs-report-text", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp2-hs-report-text', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP2 HS REPORT TEXT",
-      domain: "reports",
-      slug: "orwrp2-hs-report-text",
+      error: 'Not implemented',
+      rpcName: 'ORWRP2 HS REPORT TEXT',
+      domain: 'reports',
+      slug: 'orwrp2-hs-report-text',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP2 HS SUBITEMS (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp2-hs-subitems", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp2-hs-subitems', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP2 HS SUBITEMS",
-      domain: "reports",
-      slug: "orwrp2-hs-subitems",
+      error: 'Not implemented',
+      rpcName: 'ORWRP2 HS SUBITEMS',
+      domain: 'reports',
+      slug: 'orwrp2-hs-subitems',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP2 SAVLKUP (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp2-savlkup", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp2-savlkup', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP2 SAVLKUP",
-      domain: "reports",
-      slug: "orwrp2-savlkup",
+      error: 'Not implemented',
+      rpcName: 'ORWRP2 SAVLKUP',
+      domain: 'reports',
+      slug: 'orwrp2-savlkup',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP3 EXPAND COLUMNS (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp3-expand-columns", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp3-expand-columns', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP3 EXPAND COLUMNS",
-      domain: "reports",
-      slug: "orwrp3-expand-columns",
+      error: 'Not implemented',
+      rpcName: 'ORWRP3 EXPAND COLUMNS',
+      domain: 'reports',
+      slug: 'orwrp3-expand-columns',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWRP4 HDR MODIFY (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwrp4-hdr-modify", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwrp4-hdr-modify', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWRP4 HDR MODIFY",
-      domain: "reports",
-      slug: "orwrp4-hdr-modify",
+      error: 'Not implemented',
+      rpcName: 'ORWRP4 HDR MODIFY',
+      domain: 'reports',
+      slug: 'orwrp4-hdr-modify',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWSR CASELIST (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwsr-caselist", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwsr-caselist', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWSR CASELIST",
-      domain: "reports",
-      slug: "orwsr-caselist",
+      error: 'Not implemented',
+      rpcName: 'ORWSR CASELIST',
+      domain: 'reports',
+      slug: 'orwsr-caselist',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWSR GET SURG CONTEXT (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwsr-get-surg-context", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwsr-get-surg-context', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWSR GET SURG CONTEXT",
-      domain: "reports",
-      slug: "orwsr-get-surg-context",
+      error: 'Not implemented',
+      rpcName: 'ORWSR GET SURG CONTEXT',
+      domain: 'reports',
+      slug: 'orwsr-get-surg-context',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWSR LIST (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwsr-list", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwsr-list', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWSR LIST",
-      domain: "reports",
-      slug: "orwsr-list",
+      error: 'Not implemented',
+      rpcName: 'ORWSR LIST',
+      domain: 'reports',
+      slug: 'orwsr-list',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWSR ONECASE (2 call sites in CPRS) */
-  server.get("/vista/reports/rpc/orwsr-onecase", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwsr-onecase', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWSR ONECASE",
-      domain: "reports",
-      slug: "orwsr-onecase",
+      error: 'Not implemented',
+      rpcName: 'ORWSR ONECASE',
+      domain: 'reports',
+      slug: 'orwsr-onecase',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWSR OPTOP (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwsr-optop", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwsr-optop', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWSR OPTOP",
-      domain: "reports",
-      slug: "orwsr-optop",
+      error: 'Not implemented',
+      rpcName: 'ORWSR OPTOP',
+      domain: 'reports',
+      slug: 'orwsr-optop',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWSR RPTLIST (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwsr-rptlist", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwsr-rptlist', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWSR RPTLIST",
-      domain: "reports",
-      slug: "orwsr-rptlist",
+      error: 'Not implemented',
+      rpcName: 'ORWSR RPTLIST',
+      domain: 'reports',
+      slug: 'orwsr-rptlist',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWSR SAVE SURG CONTEXT (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwsr-save-surg-context", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwsr-save-surg-context', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWSR SAVE SURG CONTEXT",
-      domain: "reports",
-      slug: "orwsr-save-surg-context",
+      error: 'Not implemented',
+      rpcName: 'ORWSR SAVE SURG CONTEXT',
+      domain: 'reports',
+      slug: 'orwsr-save-surg-context',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWSR SHOW OPTOP WHEN SIGNING (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwsr-show-optop-when-signing", async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: "Not implemented",
-      rpcName: "ORWSR SHOW OPTOP WHEN SIGNING",
-      domain: "reports",
-      slug: "orwsr-show-optop-when-signing",
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get(
+    '/vista/reports/rpc/orwsr-show-optop-when-signing',
+    async (): Promise<StubResponse> => {
+      return {
+        ok: false,
+        error: 'Not implemented',
+        rpcName: 'ORWSR SHOW OPTOP WHEN SIGNING',
+        domain: 'reports',
+        slug: 'orwsr-show-optop-when-signing',
+        hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
+      };
+    }
+  );
 
   /** Stub for ORWSR SHOW SURG TAB (1 call site in CPRS) */
-  server.get("/vista/reports/rpc/orwsr-show-surg-tab", async (): Promise<StubResponse> => {
+  server.get('/vista/reports/rpc/orwsr-show-surg-tab', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWSR SHOW SURG TAB",
-      domain: "reports",
-      slug: "orwsr-show-surg-tab",
+      error: 'Not implemented',
+      rpcName: 'ORWSR SHOW SURG TAB',
+      domain: 'reports',
+      slug: 'orwsr-show-surg-tab',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });

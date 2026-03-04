@@ -8,15 +8,15 @@
  *   3. If Playwright exists, delegates to existing dead-click-crawler
  */
 
-import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
-import { resolve, dirname, join, extname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { resolve, dirname, join, extname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, "../../..");
+const ROOT = resolve(__dirname, '../../..');
 
-export const id = "G8_ui_dead_click";
-export const name = "UI Dead-Click Tripwire";
+export const id = 'G8_ui_dead_click';
+export const name = 'UI Dead-Click Tripwire';
 
 function walkFiles(dir, exts) {
   const results = [];
@@ -25,12 +25,19 @@ function walkFiles(dir, exts) {
     const full = join(dir, entry);
     try {
       const stat = statSync(full);
-      if (stat.isDirectory() && !entry.startsWith(".") && entry !== "node_modules" && entry !== ".next") {
+      if (
+        stat.isDirectory() &&
+        !entry.startsWith('.') &&
+        entry !== 'node_modules' &&
+        entry !== '.next'
+      ) {
         results.push(...walkFiles(full, exts));
       } else if (stat.isFile() && exts.includes(extname(entry))) {
         results.push(full);
       }
-    } catch { /* skip inaccessible */ }
+    } catch {
+      /* skip inaccessible */
+    }
   }
   return results;
 }
@@ -38,28 +45,25 @@ function walkFiles(dir, exts) {
 export async function run() {
   const start = Date.now();
   const details = [];
-  let status = "pass";
+  let status = 'pass';
 
   // Scan web + portal UI source for dead-click patterns
-  const uiDirs = [
-    resolve(ROOT, "apps/web/src"),
-    resolve(ROOT, "apps/portal/src"),
-  ];
+  const uiDirs = [resolve(ROOT, 'apps/web/src'), resolve(ROOT, 'apps/portal/src')];
 
   let deadClickCount = 0;
   const DEAD_PATTERNS = [
-    /onClick=\{?\s*\(\)\s*=>\s*\{\s*\}\s*\}?/,      // onClick={() => {}}
-    /onClick=\{?\s*undefined\s*\}?/,                   // onClick={undefined}
-    /href=["']#["']/,                                   // href="#"
+    /onClick=\{?\s*\(\)\s*=>\s*\{\s*\}\s*\}?/, // onClick={() => {}}
+    /onClick=\{?\s*undefined\s*\}?/, // onClick={undefined}
+    /href=["']#["']/, // href="#"
   ];
 
   for (const dir of uiDirs) {
-    const files = walkFiles(dir, [".tsx", ".jsx"]);
+    const files = walkFiles(dir, ['.tsx', '.jsx']);
     for (const f of files) {
-      const content = readFileSync(f, "utf-8");
+      const content = readFileSync(f, 'utf-8');
       for (const pat of DEAD_PATTERNS) {
         if (pat.test(content)) {
-          const rel = f.replace(ROOT + "\\", "").replace(ROOT + "/", "");
+          const rel = f.replace(ROOT + '\\', '').replace(ROOT + '/', '');
           // href="#" in certain contexts is acceptable (anchor links)
           if (pat.source.includes('href') && content.includes('className="anchor"')) continue;
           deadClickCount++;
@@ -74,9 +78,9 @@ export async function run() {
   if (deadClickCount > 0) {
     details.push(`Total dead-click patterns found: ${deadClickCount}`);
     // Warn, don't fail -- these may be intentional placeholders
-    if (deadClickCount > 20) status = "fail";
+    if (deadClickCount > 20) status = 'fail';
   } else {
-    details.push("No dead-click patterns found: PASS");
+    details.push('No dead-click patterns found: PASS');
   }
 
   return { id, name, status, details, durationMs: Date.now() - start };

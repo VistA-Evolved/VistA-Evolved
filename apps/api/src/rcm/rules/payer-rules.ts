@@ -33,20 +33,20 @@ export type RuleSeverity = 'error' | 'warning' | 'info';
 
 export interface PayerRule {
   id: string;
-  payerId: string;        // '*' for global rules
+  payerId: string; // '*' for global rules
   name: string;
   description: string;
   category: RuleCategory;
   severity: RuleSeverity;
   enabled: boolean;
-  
+
   /** Condition — when does this rule apply */
   condition: RuleCondition;
-  
+
   /** Remediation text */
   actionOnFail: string;
-  fieldHint?: string;     // which field to fix
-  
+  fieldHint?: string; // which field to fix
+
   /** Metadata */
   effectiveDate?: string;
   expirationDate?: string;
@@ -84,7 +84,9 @@ const payerIndex = new Map<string, Set<string>>(); // payerId → rule IDs
 
 /* Phase 146: DB repo wiring */
 let ruleDbRepo: { upsert(d: any): Promise<any> } | null = null;
-export function initPayerRuleStoreRepo(repo: typeof ruleDbRepo): void { ruleDbRepo = repo; }
+export function initPayerRuleStoreRepo(repo: typeof ruleDbRepo): void {
+  ruleDbRepo = repo;
+}
 
 /* ── CRUD ──────────────────────────────────────────────────── */
 
@@ -92,7 +94,16 @@ export function addRule(rule: PayerRule): void {
   rules.set(rule.id, rule);
 
   // Phase 146: Write-through to PG
-  ruleDbRepo?.upsert({ id: rule.id, tenantId: (rule as any).tenantId ?? 'default', payerId: rule.payerId, ruleType: (rule as any).type ?? 'generic', active: true, createdAt: new Date().toISOString() }).catch(() => {});
+  ruleDbRepo
+    ?.upsert({
+      id: rule.id,
+      tenantId: (rule as any).tenantId ?? 'default',
+      payerId: rule.payerId,
+      ruleType: (rule as any).type ?? 'generic',
+      active: true,
+      createdAt: new Date().toISOString(),
+    })
+    .catch(() => {});
 
   if (!payerIndex.has(rule.payerId)) {
     payerIndex.set(rule.payerId, new Set());
@@ -107,7 +118,13 @@ export function getRule(id: string): PayerRule | undefined {
 export function updateRule(id: string, updates: Partial<PayerRule>): PayerRule | undefined {
   const rule = rules.get(id);
   if (!rule) return undefined;
-  const updated = { ...rule, ...updates, id: rule.id, version: rule.version + 1, updatedAt: new Date().toISOString() };
+  const updated = {
+    ...rule,
+    ...updates,
+    id: rule.id,
+    version: rule.version + 1,
+    updatedAt: new Date().toISOString(),
+  };
   rules.set(id, updated);
   return updated;
 }
@@ -132,14 +149,11 @@ export function listRules(filters?: {
   if (filters?.payerId) {
     const ids = payerIndex.get(filters.payerId);
     const globalIds = payerIndex.get('*');
-    const combinedIds = new Set<string>([
-      ...(ids ?? []),
-      ...(globalIds ?? []),
-    ]);
-    result = result.filter(r => combinedIds.has(r.id));
+    const combinedIds = new Set<string>([...(ids ?? []), ...(globalIds ?? [])]);
+    result = result.filter((r) => combinedIds.has(r.id));
   }
-  if (filters?.category) result = result.filter(r => r.category === filters.category);
-  if (filters?.enabled !== undefined) result = result.filter(r => r.enabled === filters.enabled);
+  if (filters?.category) result = result.filter((r) => r.category === filters.category);
+  if (filters?.enabled !== undefined) result = result.filter((r) => r.enabled === filters.enabled);
 
   result.sort((a, b) => a.name.localeCompare(b.name));
   const total = result.length;
@@ -154,8 +168,8 @@ export function getRulesForPayer(payerId: string): PayerRule[] {
   const globalRuleIds = payerIndex.get('*') ?? new Set();
   const combinedIds = new Set([...payerRuleIds, ...globalRuleIds]);
   return Array.from(combinedIds)
-    .map(id => rules.get(id)!)
-    .filter(r => r && r.enabled);
+    .map((id) => rules.get(id)!)
+    .filter((r) => r && r.enabled);
 }
 
 /* ── Rule Evaluation ───────────────────────────────────────── */
@@ -166,7 +180,7 @@ export function getRulesForPayer(payerId: string): PayerRule[] {
  */
 export function evaluateRules(
   payerId: string,
-  claim: Record<string, unknown>,
+  claim: Record<string, unknown>
 ): { results: RuleEvalResult[]; score: number; passCount: number; failCount: number } {
   const applicableRules = getRulesForPayer(payerId);
   const now = new Date().toISOString();
@@ -181,8 +195,8 @@ export function evaluateRules(
     results.push(result);
   }
 
-  const passCount = results.filter(r => r.passed).length;
-  const failCount = results.filter(r => !r.passed).length;
+  const passCount = results.filter((r) => r.passed).length;
+  const failCount = results.filter((r) => !r.passed).length;
   const score = results.length > 0 ? Math.round((passCount / results.length) * 100) : 100;
 
   return { results, score, passCount, failCount };
@@ -203,35 +217,66 @@ function evaluateSingleRule(rule: PayerRule, claim: Record<string, unknown>): Ru
     case 'field_required': {
       const value = getNestedField(claim, cond.field);
       const passed = value !== undefined && value !== null && value !== '';
-      return { ...base, passed, message: passed ? 'Field present' : `Required field missing: ${cond.field}` };
+      return {
+        ...base,
+        passed,
+        message: passed ? 'Field present' : `Required field missing: ${cond.field}`,
+      };
     }
     case 'field_format': {
       const value = getNestedField(claim, cond.field);
-      if (!value || typeof value !== 'string') return { ...base, passed: false, message: `Field missing: ${cond.field}` };
+      if (!value || typeof value !== 'string')
+        return { ...base, passed: false, message: `Field missing: ${cond.field}` };
       const re = new RegExp(cond.pattern);
       const passed = re.test(value);
-      return { ...base, passed, message: passed ? 'Format valid' : `Field ${cond.field} does not match required format` };
+      return {
+        ...base,
+        passed,
+        message: passed ? 'Format valid' : `Field ${cond.field} does not match required format`,
+      };
     }
     case 'timely_filing': {
       const dos = claim.dateOfService as string;
       if (!dos) return { ...base, passed: false, message: 'Date of service missing' };
       const daysSince = Math.floor((Date.now() - new Date(dos).getTime()) / 86400000);
       const passed = daysSince <= cond.maxDaysFromService;
-      return { ...base, passed, message: passed ? 'Within filing limit' : `Exceeds timely filing limit (${daysSince} days > ${cond.maxDaysFromService} max)` };
+      return {
+        ...base,
+        passed,
+        message: passed
+          ? 'Within filing limit'
+          : `Exceeds timely filing limit (${daysSince} days > ${cond.maxDaysFromService} max)`,
+      };
     }
     case 'min_charge': {
       const charge = (claim.totalCharge as number) ?? 0;
       const passed = charge >= cond.minCents;
-      return { ...base, passed, message: passed ? 'Charge meets minimum' : `Charge below minimum (${charge} < ${cond.minCents})` };
+      return {
+        ...base,
+        passed,
+        message: passed
+          ? 'Charge meets minimum'
+          : `Charge below minimum (${charge} < ${cond.minCents})`,
+      };
     }
     case 'max_lines': {
       const lines = (claim.lines as unknown[]) ?? [];
       const passed = lines.length <= cond.maxLines;
-      return { ...base, passed, message: passed ? 'Line count OK' : `Too many service lines (${lines.length} > ${cond.maxLines})` };
+      return {
+        ...base,
+        passed,
+        message: passed
+          ? 'Line count OK'
+          : `Too many service lines (${lines.length} > ${cond.maxLines})`,
+      };
     }
     default:
       // For complex rules or future DSL types, always pass with info
-      return { ...base, passed: true, message: `Rule type "${cond.type}" not fully evaluated (pass-through)` };
+      return {
+        ...base,
+        passed: true,
+        message: `Rule type "${cond.type}" not fully evaluated (pass-through)`,
+      };
   }
 }
 
@@ -323,7 +368,8 @@ export function seedDefaultRules(): void {
       severity: 'error',
       enabled: true,
       condition: { type: 'timely_filing', maxDaysFromService: 365 },
-      actionOnFail: 'Medicare timely filing limit exceeded -- file appeal with proof of timely filing',
+      actionOnFail:
+        'Medicare timely filing limit exceeded -- file appeal with proof of timely filing',
       source: 'seed',
       version: 1,
     },
@@ -394,7 +440,8 @@ export function getRuleStats(): {
   for (const rule of rules.values()) {
     byCategory[rule.category] = (byCategory[rule.category] ?? 0) + 1;
     byPayer[rule.payerId] = (byPayer[rule.payerId] ?? 0) + 1;
-    if (rule.enabled) enabled++; else disabled++;
+    if (rule.enabled) enabled++;
+    else disabled++;
   }
 
   return { total: rules.size, byCategory, byPayer, enabled, disabled };

@@ -1,6 +1,7 @@
 # Phase 435 — Clinical Adapter Write Wiring (W27 P5)
 
 ## Objective
+
 Wire the 4 clinical adapter write methods (addAllergy, addVital,
 createNote, addProblem) from integration-pending stubs to real VistA
 RPC calls, matching the exact parameter formats already proven in
@@ -27,4 +28,5 @@ route-direct implementations.
    - Response: first line split on ^ gives IEN
 
 ## Files Modified
+
 - `apps/api/src/adapters/clinical-engine/vista-adapter.ts` — all 4 write methods wired

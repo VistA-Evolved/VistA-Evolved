@@ -15,22 +15,21 @@
  * This file is the enriched reference for billing staff workflows.
  */
 
-import { readFileSync, existsSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const __dirname_resolved = typeof __dirname !== "undefined"
-  ? __dirname
-  : dirname(fileURLToPath(import.meta.url));
+const __dirname_resolved =
+  typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
 
 /* ── Types ──────────────────────────────────────────────────── */
 
 export type HmoCapabilityStatus =
-  | "available"       // publicly confirmed as available
-  | "portal"          // available via provider portal login
-  | "manual"          // requires manual process (phone/fax/email)
-  | "unknown_publicly" // no public evidence found
-  | "unavailable";    // confirmed as not available
+  | 'available' // publicly confirmed as available
+  | 'portal' // available via provider portal login
+  | 'manual' // requires manual process (phone/fax/email)
+  | 'unknown_publicly' // no public evidence found
+  | 'unavailable'; // confirmed as not available
 
 export interface HmoCapabilities {
   loa: HmoCapabilityStatus;
@@ -43,7 +42,7 @@ export interface HmoCapabilities {
 }
 
 export interface HmoEvidence {
-  kind: "website" | "provider_portal" | "loa_instructions" | "api_docs" | "contract" | "other";
+  kind: 'website' | 'provider_portal' | 'loa_instructions' | 'api_docs' | 'contract' | 'other';
   url: string;
   title: string;
   retrievedAt: string;
@@ -56,20 +55,20 @@ export interface HmoCanonicalSource {
   retrievedAt: string;
 }
 
-export type HmoIntegrationMode = "manual" | "portal" | "api" | "email";
+export type HmoIntegrationMode = 'manual' | 'portal' | 'api' | 'email';
 
 export type HmoStatus =
-  | "in_progress"        // actively onboarding / portal access being set up
-  | "contracting_needed" // need to initiate contracting
-  | "active"             // fully integrated
-  | "suspended";         // temporarily suspended
+  | 'in_progress' // actively onboarding / portal access being set up
+  | 'contracting_needed' // need to initiate contracting
+  | 'active' // fully integrated
+  | 'suspended'; // temporarily suspended
 
 export interface PhHmo {
   payerId: string;
   legalName: string;
   brandNames: string[];
-  type: "HMO";
-  country: "PH";
+  type: 'HMO';
+  country: 'PH';
   canonicalSource: HmoCanonicalSource;
   capabilities: HmoCapabilities;
   integrationMode: HmoIntegrationMode;
@@ -120,12 +119,12 @@ function validateRegistry(data: PhHmoRegistryData): RegistryValidationResult {
 
   // Must have _meta
   if (!data._meta) {
-    errors.push("Missing _meta block");
+    errors.push('Missing _meta block');
   }
 
   // Must have hmos array
   if (!Array.isArray(data.hmos)) {
-    errors.push("Missing or invalid hmos array");
+    errors.push('Missing or invalid hmos array');
     return { valid: false, errors, warnings, count: 0 };
   }
 
@@ -140,7 +139,7 @@ function validateRegistry(data: PhHmoRegistryData): RegistryValidationResult {
   const ids = new Set<string>();
   for (const hmo of data.hmos) {
     if (!hmo.payerId) {
-      errors.push("HMO entry missing payerId");
+      errors.push('HMO entry missing payerId');
       continue;
     }
     if (ids.has(hmo.payerId)) {
@@ -150,14 +149,14 @@ function validateRegistry(data: PhHmoRegistryData): RegistryValidationResult {
 
     // Required fields
     if (!hmo.legalName) errors.push(`${hmo.payerId}: missing legalName`);
-    if (hmo.type !== "HMO") errors.push(`${hmo.payerId}: type must be "HMO"`);
-    if (hmo.country !== "PH") errors.push(`${hmo.payerId}: country must be "PH"`);
+    if (hmo.type !== 'HMO') errors.push(`${hmo.payerId}: type must be "HMO"`);
+    if (hmo.country !== 'PH') errors.push(`${hmo.payerId}: country must be "PH"`);
     if (!hmo.canonicalSource?.url) errors.push(`${hmo.payerId}: missing canonicalSource.url`);
     if (!hmo.capabilities) errors.push(`${hmo.payerId}: missing capabilities`);
 
     // Warn on unknown capability status
     if (hmo.capabilities) {
-      const allUnknown = Object.values(hmo.capabilities).every(v => v === "unknown_publicly");
+      const allUnknown = Object.values(hmo.capabilities).every((v) => v === 'unknown_publicly');
       if (allUnknown) {
         warnings.push(`${hmo.payerId}: all capabilities are unknown_publicly — research needed`);
       }
@@ -171,20 +170,25 @@ function validateRegistry(data: PhHmoRegistryData): RegistryValidationResult {
 
 export function initPhHmoRegistry(): RegistryValidationResult {
   if (initialized) {
-    return { valid: true, errors: [], warnings: ["Already initialized"], count: hmoStore.size };
+    return { valid: true, errors: [], warnings: ['Already initialized'], count: hmoStore.size };
   }
 
   // Resolve registry JSON from repo root
-  const repoRoot = join(__dirname_resolved, "..", "..", "..", "..", "..");
-  const registryPath = join(repoRoot, "data", "payers", "ph-hmo-registry.json");
+  const repoRoot = join(__dirname_resolved, '..', '..', '..', '..', '..');
+  const registryPath = join(repoRoot, 'data', 'payers', 'ph-hmo-registry.json');
 
   if (!existsSync(registryPath)) {
     initialized = true;
-    return { valid: false, errors: [`Registry file not found: ${registryPath}`], warnings: [], count: 0 };
+    return {
+      valid: false,
+      errors: [`Registry file not found: ${registryPath}`],
+      warnings: [],
+      count: 0,
+    };
   }
 
   try {
-    const raw = readFileSync(registryPath, "utf-8");
+    const raw = readFileSync(registryPath, 'utf-8');
     // Strip BOM if present (BUG-064: PowerShell-generated JSON can have BOM)
     const clean = raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw;
     const data: PhHmoRegistryData = JSON.parse(clean);
@@ -227,15 +231,15 @@ export function listPhHmos(filter?: {
   let result = Array.from(hmoStore.values());
 
   if (filter?.status) {
-    result = result.filter(h => h.status === filter.status);
+    result = result.filter((h) => h.status === filter.status);
   }
   if (filter?.integrationMode) {
-    result = result.filter(h => h.integrationMode === filter.integrationMode);
+    result = result.filter((h) => h.integrationMode === filter.integrationMode);
   }
   if (filter?.search) {
     const q = filter.search.toLowerCase();
-    result = result.filter(h => {
-      const haystack = [h.legalName, h.payerId, ...h.brandNames].join(" ").toLowerCase();
+    result = result.filter((h) => {
+      const haystack = [h.legalName, h.payerId, ...h.brandNames].join(' ').toLowerCase();
       return haystack.includes(q);
     });
   }
@@ -260,8 +264,8 @@ export function getPhHmoStats(): {
   for (const h of all) {
     byStatus[h.status] = (byStatus[h.status] || 0) + 1;
     byIntegrationMode[h.integrationMode] = (byIntegrationMode[h.integrationMode] || 0) + 1;
-    if (h.capabilities.providerPortal === "available") withPortal++;
-    if (h.status === "contracting_needed") contractingNeeded++;
+    if (h.capabilities.providerPortal === 'available') withPortal++;
+    if (h.status === 'contracting_needed') contractingNeeded++;
   }
 
   return {
@@ -279,15 +283,15 @@ export function getPhHmoMeta(): PhHmoRegistryMeta | null {
 }
 
 export function getPhHmoRegistryValidation(): RegistryValidationResult {
-  const repoRoot = join(__dirname_resolved, "..", "..", "..", "..", "..");
-  const registryPath = join(repoRoot, "data", "payers", "ph-hmo-registry.json");
+  const repoRoot = join(__dirname_resolved, '..', '..', '..', '..', '..');
+  const registryPath = join(repoRoot, 'data', 'payers', 'ph-hmo-registry.json');
 
   if (!existsSync(registryPath)) {
-    return { valid: false, errors: ["Registry file not found"], warnings: [], count: 0 };
+    return { valid: false, errors: ['Registry file not found'], warnings: [], count: 0 };
   }
 
   try {
-    const raw = readFileSync(registryPath, "utf-8");
+    const raw = readFileSync(registryPath, 'utf-8');
     const clean = raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw;
     const data: PhHmoRegistryData = JSON.parse(clean);
     return validateRegistry(data);

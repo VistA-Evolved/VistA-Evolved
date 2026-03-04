@@ -13,7 +13,7 @@
 
 // ── Types ──────────────────────────────────────────────────────────
 
-export type DualRunMode = "off" | "shadow" | "compare";
+export type DualRunMode = 'off' | 'shadow' | 'compare';
 
 export interface DualRunConfig {
   mode: DualRunMode;
@@ -63,7 +63,7 @@ let comparisonSeq = 0;
 let errorCount = 0;
 
 const config: DualRunConfig = {
-  mode: (process.env.DUAL_RUN_MODE as DualRunMode) || "off",
+  mode: (process.env.DUAL_RUN_MODE as DualRunMode) || 'off',
   maxLogEntries: 1000,
 };
 
@@ -81,12 +81,10 @@ export class DualRunHarness {
   getStats(): DualRunStats {
     const total = comparisons.length;
     const matches = comparisons.filter((c) => c.match).length;
-    const avgPrimary = total > 0
-      ? comparisons.reduce((s, c) => s + c.primaryDurationMs, 0) / total
-      : 0;
-    const avgSecondary = total > 0
-      ? comparisons.reduce((s, c) => s + c.secondaryDurationMs, 0) / total
-      : 0;
+    const avgPrimary =
+      total > 0 ? comparisons.reduce((s, c) => s + c.primaryDurationMs, 0) / total : 0;
+    const avgSecondary =
+      total > 0 ? comparisons.reduce((s, c) => s + c.secondaryDurationMs, 0) / total : 0;
 
     return {
       mode: config.mode,
@@ -122,7 +120,7 @@ export class DualRunHarness {
     const primary = await primaryFn();
     const pDuration = Date.now() - pStart;
 
-    if (config.mode === "off") {
+    if (config.mode === 'off') {
       return { primary };
     }
 
@@ -136,7 +134,7 @@ export class DualRunHarness {
     } catch (_err) {
       errorCount++;
       // In shadow mode, suppress secondary errors
-      if (config.mode === "shadow") return { primary };
+      if (config.mode === 'shadow') return { primary };
       throw _err;
     }
 
@@ -149,8 +147,8 @@ export class DualRunHarness {
       id: `dr-${++comparisonSeq}`,
       operation,
       timestamp: new Date().toISOString(),
-      primarySource: "vista",
-      secondarySource: "target",
+      primarySource: 'vista',
+      secondarySource: 'target',
       match: discrepancies.length === 0,
       discrepancies,
       primaryDurationMs: pDuration,
@@ -163,7 +161,7 @@ export class DualRunHarness {
       comparisons.splice(0, comparisons.length - config.maxLogEntries);
     }
 
-    if (config.mode === "shadow") {
+    if (config.mode === 'shadow') {
       return { primary, comparison };
     }
 
@@ -177,9 +175,9 @@ export class DualRunHarness {
 function defaultCompare(a: unknown, b: unknown): FieldDiscrepancy[] {
   const discrepancies: FieldDiscrepancy[] = [];
 
-  if (typeof a !== "object" || typeof b !== "object" || a === null || b === null) {
+  if (typeof a !== 'object' || typeof b !== 'object' || a === null || b === null) {
     if (a !== b) {
-      discrepancies.push({ field: "$root", primary: a, secondary: b });
+      discrepancies.push({ field: '$root', primary: a, secondary: b });
     }
     return discrepancies;
   }

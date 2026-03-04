@@ -5,15 +5,15 @@
  * Used by the validation middleware to reject malformed input early.
  */
 
-import { z } from "zod/v4";
+import { z } from 'zod/v4';
 
 /* ================================================================== */
 /* Auth schemas                                                        */
 /* ================================================================== */
 
 export const LoginBodySchema = z.object({
-  accessCode: z.string().min(1, "accessCode is required").max(64),
-  verifyCode: z.string().min(1, "verifyCode is required").max(64),
+  accessCode: z.string().min(1, 'accessCode is required').max(64),
+  verifyCode: z.string().min(1, 'verifyCode is required').max(64),
 });
 
 /* ================================================================== */
@@ -21,15 +21,15 @@ export const LoginBodySchema = z.object({
 /* ================================================================== */
 
 export const PatientSearchQuerySchema = z.object({
-  q: z.string().min(2, "Query must be at least 2 characters").max(100),
+  q: z.string().min(2, 'Query must be at least 2 characters').max(100),
 });
 
 export const DfnQuerySchema = z.object({
-  dfn: z.string().regex(/^\d+$/, "dfn must be a positive integer"),
+  dfn: z.string().regex(/^\d+$/, 'dfn must be a positive integer'),
 });
 
 export const DfnWithDateQuerySchema = z.object({
-  dfn: z.string().regex(/^\d+$/, "dfn must be a positive integer"),
+  dfn: z.string().regex(/^\d+$/, 'dfn must be a positive integer'),
   dateRange: z.string().optional(),
   from: z.string().optional(),
   to: z.string().optional(),
@@ -41,7 +41,7 @@ export const DfnWithDateQuerySchema = z.object({
 
 export const AllergyAddSchema = z.object({
   dfn: z.union([z.string(), z.number()]),
-  allergyName: z.string().min(1, "allergyName is required"),
+  allergyName: z.string().min(1, 'allergyName is required'),
   allergyIEN: z.union([z.string(), z.number()]),
   fileRoot: z.string().optional(),
   symptoms: z.array(z.string()).optional(),
@@ -51,11 +51,15 @@ export const AllergyAddSchema = z.object({
 
 export const VitalsAddSchema = z.object({
   dfn: z.union([z.string(), z.number()]),
-  vitals: z.array(z.object({
-    type: z.string().min(1),
-    value: z.string().min(1),
-    unit: z.string().optional(),
-  })).min(1, "At least one vital measurement required"),
+  vitals: z
+    .array(
+      z.object({
+        type: z.string().min(1),
+        value: z.string().min(1),
+        unit: z.string().optional(),
+      })
+    )
+    .min(1, 'At least one vital measurement required'),
   locationIen: z.union([z.string(), z.number()]).optional(),
 });
 
@@ -63,7 +67,7 @@ export const NoteCreateSchema = z.object({
   dfn: z.union([z.string(), z.number()]),
   title: z.string().optional(),
   titleIen: z.union([z.string(), z.number()]).optional(),
-  text: z.string().min(1, "Note text is required"),
+  text: z.string().min(1, 'Note text is required'),
   locationIen: z.union([z.string(), z.number()]).optional(),
 });
 
@@ -78,11 +82,11 @@ export const MedicationAddSchema = z.object({
 
 export const ProblemSaveSchema = z.object({
   dfn: z.union([z.string(), z.number()]),
-  problemText: z.string().min(1, "problemText is required"),
+  problemText: z.string().min(1, 'problemText is required'),
   icdCode: z.string().optional(),
   onset: z.string().optional(),
   status: z.string().optional(),
-  action: z.enum(["add", "edit"]).optional(),
+  action: z.enum(['add', 'edit']).optional(),
   savedBy: z.string().optional(),
 });
 
@@ -101,13 +105,13 @@ export const OrderReleaseSchema = z.object({
 
 export const LabAckSchema = z.object({
   dfn: z.union([z.string(), z.number()]),
-  labIds: z.array(z.union([z.string(), z.number()])).min(1, "At least one labId required"),
+  labIds: z.array(z.union([z.string(), z.number()])).min(1, 'At least one labId required'),
   acknowledgedBy: z.string().optional(),
 });
 
 export const ConsultCreateSchema = z.object({
   dfn: z.union([z.string(), z.number()]),
-  service: z.string().min(1, "service is required"),
+  service: z.string().min(1, 'service is required'),
   urgency: z.string().optional(),
   reason: z.string().optional(),
   requestedBy: z.string().optional(),
@@ -115,7 +119,7 @@ export const ConsultCreateSchema = z.object({
 
 export const SurgeryCreateSchema = z.object({
   dfn: z.union([z.string(), z.number()]),
-  procedure: z.string().min(1, "procedure is required"),
+  procedure: z.string().min(1, 'procedure is required'),
   surgeon: z.string().optional(),
   scheduledDate: z.string().optional(),
   createdBy: z.string().optional(),
@@ -140,8 +144,8 @@ export const AuditQuerySchema = z.object({
 });
 
 export const ReportTextQuerySchema = z.object({
-  dfn: z.string().regex(/^\d+$/, "dfn must be a positive integer"),
-  id: z.string().min(1, "report id is required"),
+  dfn: z.string().regex(/^\d+$/, 'dfn must be a positive integer'),
+  id: z.string().min(1, 'report id is required'),
   hsType: z.string().optional(),
 });
 
@@ -163,12 +167,12 @@ export function validate<T>(schema: z.ZodType<T>, input: unknown): ValidationRes
     return { ok: true, data: result.data };
   }
   const details = result.error.issues.map((issue) => ({
-    path: (issue.path || []).join("."),
+    path: (issue.path || []).join('.'),
     message: issue.message,
   }));
   return {
     ok: false,
-    error: "Validation failed",
+    error: 'Validation failed',
     details,
   };
 }

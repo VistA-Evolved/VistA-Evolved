@@ -15,8 +15,8 @@ import type {
   QuestionnaireItem,
   QRItem,
   EnableWhen,
-} from "./types.js";
-import { resolvePacks, mergePackItems, computeRequiredCoverage } from "./pack-registry.js";
+} from './types.js';
+import { resolvePacks, mergePackItems, computeRequiredCoverage } from './pack-registry.js';
 
 /* ------------------------------------------------------------------ */
 /* EnableWhen evaluator                                                 */
@@ -50,32 +50,32 @@ function getAnswerValue(qr: QuestionnaireResponse, linkId: string): unknown {
 
 function evaluateEnableWhen(
   conditions: EnableWhen[],
-  behavior: "all" | "any",
+  behavior: 'all' | 'any',
   qr: QuestionnaireResponse
 ): boolean {
   const results = conditions.map((cond) => {
     const val = getAnswerValue(qr, cond.question);
     switch (cond.operator) {
-      case "=":
+      case '=':
         return val === cond.answer;
-      case "!=":
+      case '!=':
         return val !== cond.answer;
-      case ">":
-        return typeof val === "number" && typeof cond.answer === "number" && val > cond.answer;
-      case "<":
-        return typeof val === "number" && typeof cond.answer === "number" && val < cond.answer;
-      case ">=":
-        return typeof val === "number" && typeof cond.answer === "number" && val >= cond.answer;
-      case "<=":
-        return typeof val === "number" && typeof cond.answer === "number" && val <= cond.answer;
-      case "exists":
+      case '>':
+        return typeof val === 'number' && typeof cond.answer === 'number' && val > cond.answer;
+      case '<':
+        return typeof val === 'number' && typeof cond.answer === 'number' && val < cond.answer;
+      case '>=':
+        return typeof val === 'number' && typeof cond.answer === 'number' && val >= cond.answer;
+      case '<=':
+        return typeof val === 'number' && typeof cond.answer === 'number' && val <= cond.answer;
+      case 'exists':
         return cond.answer ? val !== undefined : val === undefined;
       default:
         return true;
     }
   });
 
-  return behavior === "any" ? results.some(Boolean) : results.every(Boolean);
+  return behavior === 'any' ? results.some(Boolean) : results.every(Boolean);
 }
 
 /* ------------------------------------------------------------------ */
@@ -100,9 +100,7 @@ function getAnsweredSections(
     if (!item.section) continue;
     if (!item.required) continue;
     // A section is "complete" if all required items in it are answered
-    const sectionItems = allItems.filter(
-      (i) => i.section === item.section && i.required
-    );
+    const sectionItems = allItems.filter((i) => i.section === item.section && i.required);
     const allAnswered = sectionItems.every((i) => answeredLinkIds.has(i.linkId));
     if (allAnswered && sectionItems.length > 0) {
       sections.add(item.section);
@@ -145,15 +143,11 @@ export class RulesNextQuestionProvider implements NextQuestionProvider {
       if (answeredIds.has(item.linkId)) return false;
 
       // Skip display-only items
-      if (item.type === "display") return false;
+      if (item.type === 'display') return false;
 
       // Evaluate enableWhen conditions
       if (item.enableWhen?.length) {
-        const enabled = evaluateEnableWhen(
-          item.enableWhen,
-          item.enableBehavior ?? "all",
-          qrSoFar
-        );
+        const enabled = evaluateEnableWhen(item.enableWhen, item.enableBehavior ?? 'all', qrSoFar);
         if (!enabled) return false;
       }
 
@@ -163,14 +157,10 @@ export class RulesNextQuestionProvider implements NextQuestionProvider {
     // 4. Compute progress
     const answeredSections = getAnsweredSections(allItems, qrSoFar);
     const totalRequired = allItems.filter((i) => i.required).length;
-    const answeredRequired = allItems.filter(
-      (i) => i.required && answeredIds.has(i.linkId)
-    ).length;
+    const answeredRequired = allItems.filter((i) => i.required && answeredIds.has(i.linkId)).length;
     const percentComplete =
       totalRequired > 0 ? Math.round((answeredRequired / totalRequired) * 100) : 100;
-    const coverageRemaining = requiredCoverage.filter(
-      (c) => !answeredSections.has(c)
-    );
+    const coverageRemaining = requiredCoverage.filter((c) => !answeredSections.has(c));
 
     // 5. Pick next batch (up to ITEMS_PER_PAGE)
     const nextItems = eligible.slice(0, ITEMS_PER_PAGE);
@@ -184,7 +174,7 @@ export class RulesNextQuestionProvider implements NextQuestionProvider {
         requiredCoverageRemaining: coverageRemaining,
       },
       containedQuestionnaire: {
-        resourceType: "Questionnaire",
+        resourceType: 'Questionnaire',
         item: nextItems,
       },
       isComplete,
@@ -229,7 +219,7 @@ export class LLMConstrainedProvider implements NextQuestionProvider {
     qrSoFar: QuestionnaireResponse,
     context: IntakeContext
   ): Promise<NextQuestionResult> {
-    const enabled = process.env.INTAKE_LLM_ENABLED === "true";
+    const enabled = process.env.INTAKE_LLM_ENABLED === 'true';
     const apiKey = process.env.INTAKE_LLM_API_KEY;
 
     if (!enabled || !apiKey) {
@@ -252,16 +242,14 @@ export class LLMConstrainedProvider implements NextQuestionProvider {
 /* Provider Factory                                                     */
 /* ------------------------------------------------------------------ */
 
-export function createNextQuestionProvider(
-  providerName?: string
-): NextQuestionProvider {
-  const name = providerName ?? process.env.INTAKE_BRAIN_PROVIDER ?? "rules";
+export function createNextQuestionProvider(providerName?: string): NextQuestionProvider {
+  const name = providerName ?? process.env.INTAKE_BRAIN_PROVIDER ?? 'rules';
   switch (name) {
-    case "vendor_adapter":
+    case 'vendor_adapter':
       return new VendorAdapterProvider();
-    case "llm_constrained":
+    case 'llm_constrained':
       return new LLMConstrainedProvider();
-    case "rules":
+    case 'rules':
     default:
       return new RulesNextQuestionProvider();
   }

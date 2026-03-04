@@ -19,14 +19,14 @@ import {
   assertSupportsResource,
   assertBundle,
   summarize,
-} from "./assertions/fhir-assertions.mjs";
+} from './assertions/fhir-assertions.mjs';
 
-const API_URL = process.argv.includes("--api")
-  ? process.argv[process.argv.indexOf("--api") + 1]
-  : process.env.API_URL || "http://localhost:3001";
+const API_URL = process.argv.includes('--api')
+  ? process.argv[process.argv.indexOf('--api') + 1]
+  : process.env.API_URL || 'http://localhost:3001';
 
-const OUT_FILE = process.argv.includes("--out")
-  ? process.argv[process.argv.indexOf("--out") + 1]
+const OUT_FILE = process.argv.includes('--out')
+  ? process.argv[process.argv.indexOf('--out') + 1]
   : null;
 
 const results = [];
@@ -45,10 +45,10 @@ async function safeFetch(url, opts = {}) {
 
 // --- Test: FHIR metadata endpoint (CapabilityStatement) ---
 async function testCapabilityStatement() {
-  log("\n=== FHIR CapabilityStatement ===");
+  log('\n=== FHIR CapabilityStatement ===');
 
   const res = await safeFetch(`${API_URL}/fhir/metadata`);
-  const csResult = await assertJsonResponse("GET /fhir/metadata returns 200", res, 200);
+  const csResult = await assertJsonResponse('GET /fhir/metadata returns 200', res, 200);
 
   if (!csResult.passed) {
     // If FHIR not yet implemented, record the failure
@@ -60,16 +60,23 @@ async function testCapabilityStatement() {
   const capStmt = csResult.body;
 
   if (capStmt) {
-    results.push(assertResourceType(capStmt, "CapabilityStatement"));
-    results.push(assert("fhirVersion is 4.0.x", /^4\.0/.test(capStmt.fhirVersion || ""),
-      `Got fhirVersion: ${capStmt.fhirVersion}`));
-    results.push(assert("status is active", capStmt.status === "active",
-      `Got status: ${capStmt.status}`));
-    results.push(assert("kind is instance", capStmt.kind === "instance",
-      `Got kind: ${capStmt.kind}`));
+    results.push(assertResourceType(capStmt, 'CapabilityStatement'));
+    results.push(
+      assert(
+        'fhirVersion is 4.0.x',
+        /^4\.0/.test(capStmt.fhirVersion || ''),
+        `Got fhirVersion: ${capStmt.fhirVersion}`
+      )
+    );
+    results.push(
+      assert('status is active', capStmt.status === 'active', `Got status: ${capStmt.status}`)
+    );
+    results.push(
+      assert('kind is instance', capStmt.kind === 'instance', `Got kind: ${capStmt.kind}`)
+    );
 
     // Check for required resource types (US Core)
-    const coreResources = ["Patient", "AllergyIntolerance", "Condition", "MedicationRequest"];
+    const coreResources = ['Patient', 'AllergyIntolerance', 'Condition', 'MedicationRequest'];
     for (const rt of coreResources) {
       results.push(assertSupportsResource(capStmt, rt));
     }
@@ -80,60 +87,76 @@ async function testCapabilityStatement() {
 
 // --- Test: Patient search ---
 async function testPatientSearch() {
-  log("\n=== Patient Search ===");
+  log('\n=== Patient Search ===');
 
   const res = await safeFetch(`${API_URL}/fhir/Patient?_count=5`);
-  const result = await assertJsonResponse("GET /fhir/Patient returns 2xx", res);
+  const result = await assertJsonResponse('GET /fhir/Patient returns 2xx', res);
 
   if (result.passed && result.body) {
     const bundleResults = assertBundle(result.body);
     results.push(...bundleResults);
-    results.push(assert("Bundle type is searchset",
-      result.body.type === "searchset",
-      `Got type: ${result.body.type}`));
+    results.push(
+      assert(
+        'Bundle type is searchset',
+        result.body.type === 'searchset',
+        `Got type: ${result.body.type}`
+      )
+    );
   } else {
     results.push(result);
     // If FHIR not implemented, mark as expected-miss
-    results.push(assert("Patient search (integration-pending)", false,
-      "FHIR Patient endpoint not yet implemented"));
+    results.push(
+      assert(
+        'Patient search (integration-pending)',
+        false,
+        'FHIR Patient endpoint not yet implemented'
+      )
+    );
   }
 }
 
 // --- Test: AllergyIntolerance search ---
 async function testAllergySearch() {
-  log("\n=== AllergyIntolerance Search ===");
+  log('\n=== AllergyIntolerance Search ===');
 
   const res = await safeFetch(`${API_URL}/fhir/AllergyIntolerance?patient=3`);
-  const result = await assertJsonResponse("GET /fhir/AllergyIntolerance returns 2xx", res);
+  const result = await assertJsonResponse('GET /fhir/AllergyIntolerance returns 2xx', res);
 
   if (result.passed && result.body) {
     const bundleResults = assertBundle(result.body);
     results.push(...bundleResults);
   } else {
     results.push(result);
-    results.push(assert("AllergyIntolerance search (integration-pending)", false,
-      "FHIR AllergyIntolerance endpoint not yet implemented"));
+    results.push(
+      assert(
+        'AllergyIntolerance search (integration-pending)',
+        false,
+        'FHIR AllergyIntolerance endpoint not yet implemented'
+      )
+    );
   }
 }
 
 // --- Test: Content-Type header ---
 async function testContentType() {
-  log("\n=== Content-Type Header ===");
+  log('\n=== Content-Type Header ===');
 
   const res = await safeFetch(`${API_URL}/fhir/metadata`);
-  const ct = res.headers?.get?.("content-type") || "";
-  results.push(assert(
-    "FHIR content-type is application/fhir+json or application/json",
-    ct.includes("fhir+json") || ct.includes("application/json"),
-    `Got content-type: ${ct}`
-  ));
+  const ct = res.headers?.get?.('content-type') || '';
+  results.push(
+    assert(
+      'FHIR content-type is application/fhir+json or application/json',
+      ct.includes('fhir+json') || ct.includes('application/json'),
+      `Got content-type: ${ct}`
+    )
+  );
 }
 
 // --- Main ---
 async function main() {
-  log("FHIR R4 Conformance Test Suite");
+  log('FHIR R4 Conformance Test Suite');
   log(`API: ${API_URL}`);
-  log("=".repeat(50));
+  log('='.repeat(50));
 
   await testCapabilityStatement();
   await testPatientSearch();
@@ -142,17 +165,17 @@ async function main() {
 
   const summary = summarize(results);
 
-  log("\n" + "=".repeat(50));
+  log('\n' + '='.repeat(50));
   log(`Results: ${summary.passed}/${summary.total} passed, ${summary.failed} failed`);
   for (const r of summary.results) {
-    const icon = r.passed ? "PASS" : "FAIL";
-    const color = r.passed ? "\x1b[32m" : "\x1b[31m";
-    log(`  ${color}${icon}\x1b[0m ${r.name}${r.detail ? ` (${r.detail})` : ""}`);
+    const icon = r.passed ? 'PASS' : 'FAIL';
+    const color = r.passed ? '\x1b[32m' : '\x1b[31m';
+    log(`  ${color}${icon}\x1b[0m ${r.name}${r.detail ? ` (${r.detail})` : ''}`);
   }
 
   if (OUT_FILE) {
-    const fs = await import("node:fs");
-    const dir = await import("node:path");
+    const fs = await import('node:fs');
+    const dir = await import('node:path');
     fs.mkdirSync(dir.dirname(OUT_FILE), { recursive: true });
     fs.writeFileSync(OUT_FILE, JSON.stringify(summary, null, 2));
     log(`\nResults written to: ${OUT_FILE}`);
@@ -162,6 +185,6 @@ async function main() {
 }
 
 main().catch((e) => {
-  console.error("Fatal:", e);
+  console.error('Fatal:', e);
   process.exit(2);
 });

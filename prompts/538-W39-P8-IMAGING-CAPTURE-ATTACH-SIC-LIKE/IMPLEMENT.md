@@ -3,6 +3,7 @@
 ## Wave 39, P8
 
 ### Goal
+
 Browser-based image capture and attachment to patient VistA records
 (notes, consults, orders). Mirrors VA SIC (Scanned Image Capture) workflow.
 
@@ -10,8 +11,8 @@ Browser-based image capture and attachment to patient VistA records
 
 1. **Route Module** -- `apps/api/src/routes/imaging-capture/index.ts`
    - POST /imaging/capture -- Upload image file, store to Orthanc, create attachment record
-   - GET  /imaging/capture?dfn=N -- List capture attachments for patient
-   - GET  /imaging/capture/:id -- Detail of a capture attachment
+   - GET /imaging/capture?dfn=N -- List capture attachments for patient
+   - GET /imaging/capture/:id -- Detail of a capture attachment
    - POST /imaging/capture/:id/link -- Link attachment to VistA note/consult/order
    - All VistA writeback uses integration-pending (MAG4 ADD IMAGE not wired)
 
@@ -28,7 +29,7 @@ Browser-based image capture and attachment to patient VistA records
 4. **Capabilities** -- imaging.capture.upload, imaging.capture.attach, imaging.capture.list
 
 5. **Panel** -- Add 'capture' tab to ImagingPanel.tsx
-   - File input with accept="image/*,application/pdf"
+   - File input with accept="image/\*,application/pdf"
    - Capture form (patient DFN, attach type, notes)
    - Capture history list
 
@@ -37,6 +38,7 @@ Browser-based image capture and attachment to patient VistA records
 7. **Register Routes** -- Wire in register-routes.ts
 
 ### Files Touched
+
 - apps/api/src/routes/imaging-capture/index.ts (NEW)
 - apps/api/src/server/register-routes.ts
 - apps/api/src/vista/rpcRegistry.ts

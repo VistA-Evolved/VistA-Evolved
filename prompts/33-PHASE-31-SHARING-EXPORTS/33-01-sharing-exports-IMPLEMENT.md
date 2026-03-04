@@ -1,9 +1,11 @@
 # Phase 31 IMPLEMENT -- Patient-Directed Sharing + Exports + SHC Lane
 
 ## User request
+
 PHASE 31 -- PATIENT-DIRECTED SHARING + EXPORTS (Share-code lane + SHC lane)
 
 A) Share-code lane (web)
+
 - TTL configurable (default <= 60 min), one-time redeem, DOB verification
 - Invalidate after 3 wrong DOB attempts
 - CAPTCHA stub (no provider yet)
@@ -11,10 +13,12 @@ A) Share-code lane (web)
 - Audit everything (issue/redeem/view)
 
 B) Export lane
+
 - PDF clinical summary export (patient readable)
 - Structured JSON for portability (later IPS/FHIR mapping)
 
 C) SMART Health Cards (feature-flagged)
+
 - SHC export for selected datasets (e.g., immunizations)
 - Minimal spec adapter
 - Read-only, patient-initiated only
@@ -23,6 +27,7 @@ D) VistA-first data sourcing
 E) Docs: runbook + threat model
 
 ## Implementation steps
+
 1. Inventory existing portal, audit, clinical data services
 2. Create sharing types + share-code store (issue/redeem/invalidate)
 3. Create export service (PDF via HTML template, JSON structured)
@@ -35,6 +40,7 @@ E) Docs: runbook + threat model
 10. Commit
 
 ## Verification steps
+
 - TSC clean across api, web, portal
 - All files exist and compile
 - Share codes use crypto randomBytes, DOB hashing, constant-time compare
@@ -43,6 +49,7 @@ E) Docs: runbook + threat model
 - No raw backend dumps in exports
 
 ## Files touched
+
 - apps/api/src/sharing/ (new directory)
 - apps/api/src/routes/sharing-routes.ts (new)
 - apps/portal/src/app/dashboard/sharing/ (new)

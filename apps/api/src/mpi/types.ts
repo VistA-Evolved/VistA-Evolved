@@ -2,7 +2,16 @@
  * Phase 401 (W23-P3): MPI / Client Registry — Types
  */
 
-export type IdentifierSystem = "mrn" | "national_id" | "ssn4" | "payer_id" | "passport" | "drivers_license" | "facility_id" | "opencr" | "other";
+export type IdentifierSystem =
+  | 'mrn'
+  | 'national_id'
+  | 'ssn4'
+  | 'payer_id'
+  | 'passport'
+  | 'drivers_license'
+  | 'facility_id'
+  | 'opencr'
+  | 'other';
 
 export interface PatientIdentifier {
   system: IdentifierSystem;
@@ -11,8 +20,8 @@ export interface PatientIdentifier {
   expiresAt: string | null;
 }
 
-export type MatchConfidence = "exact" | "high" | "medium" | "low";
-export type MatchMethod = "deterministic" | "probabilistic" | "manual";
+export type MatchConfidence = 'exact' | 'high' | 'medium' | 'low';
+export type MatchMethod = 'deterministic' | 'probabilistic' | 'manual';
 
 export interface MpiPatientIdentity {
   id: string;
@@ -39,7 +48,7 @@ export interface MatchResult {
   matchedFields: string[];
 }
 
-export type MergeAction = "merge" | "link" | "unlink" | "split";
+export type MergeAction = 'merge' | 'link' | 'unlink' | 'split';
 
 export interface MergeEvent {
   id: string;

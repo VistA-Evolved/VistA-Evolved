@@ -9,4 +9,4 @@ tenantSlug: demo
 api:
   env:
     - name: TENANT_DISPLAY_NAME
-      value: "Demo Clinic"
+      value: 'Demo Clinic'

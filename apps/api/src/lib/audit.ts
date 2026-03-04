@@ -11,141 +11,141 @@
  * Audit events are immutable once written. Supports memory, file, and stdout sinks.
  */
 
-import { AUDIT_CONFIG, PHI_CONFIG } from "../config/server-config.js";
-import { log, getRequestId } from "./logger.js";
-import { sanitizeAuditDetail } from "./phi-redaction.js";
-import { appendFileSync, mkdirSync, existsSync } from "fs";
-import { dirname } from "path";
+import { AUDIT_CONFIG, PHI_CONFIG } from '../config/server-config.js';
+import { log, getRequestId } from './logger.js';
+import { sanitizeAuditDetail } from './phi-redaction.js';
+import { appendFileSync, mkdirSync, existsSync } from 'fs';
+import { dirname } from 'path';
 // Phase 133: audit events counter metric
-import { auditEventsTotal } from "../telemetry/metrics.js";
+import { auditEventsTotal } from '../telemetry/metrics.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
 export type AuditAction =
-  | "auth.login"
-  | "auth.logout"
-  | "auth.session-expired"
-  | "auth.session-rotated"
-  | "auth.failed"
-  | "phi.patient-search"
-  | "phi.patient-select"
-  | "phi.patient-list"
-  | "phi.demographics-view"
-  | "phi.allergies-view"
-  | "phi.vitals-view"
-  | "phi.notes-view"
-  | "phi.medications-view"
-  | "phi.problems-view"
-  | "phi.labs-view"
-  | "phi.reports-view"
-  | "phi.imaging-view"
-  | "phi.orders-view"
-  | "phi.reminders-view"
-  | "clinical.allergy-add"
-  | "clinical.vitals-add"
-  | "clinical.note-create"
-  | "clinical.medication-add"
-  | "clinical.problem-add"
-  | "clinical.order-sign"
-  | "clinical.order-release"
-  | "clinical.lab-ack"
-  | "clinical.consult-create"
-  | "clinical.surgery-create"
-  | "clinical.problem-save"
+  | 'auth.login'
+  | 'auth.logout'
+  | 'auth.session-expired'
+  | 'auth.session-rotated'
+  | 'auth.failed'
+  | 'phi.patient-search'
+  | 'phi.patient-select'
+  | 'phi.patient-list'
+  | 'phi.demographics-view'
+  | 'phi.allergies-view'
+  | 'phi.vitals-view'
+  | 'phi.notes-view'
+  | 'phi.medications-view'
+  | 'phi.problems-view'
+  | 'phi.labs-view'
+  | 'phi.reports-view'
+  | 'phi.imaging-view'
+  | 'phi.orders-view'
+  | 'phi.reminders-view'
+  | 'clinical.allergy-add'
+  | 'clinical.vitals-add'
+  | 'clinical.note-create'
+  | 'clinical.medication-add'
+  | 'clinical.problem-add'
+  | 'clinical.order-sign'
+  | 'clinical.order-release'
+  | 'clinical.lab-ack'
+  | 'clinical.consult-create'
+  | 'clinical.surgery-create'
+  | 'clinical.problem-save'
   // Phase 57: Write-back safety model audit events
-  | "clinical.note-sign"
-  | "clinical.note-addendum"
-  | "clinical.note-view-text"
-  | "clinical.problem-edit"
-  | "clinical.order-draft"
-  | "clinical.order-verify"
-  | "clinical.order-dc"
-  | "clinical.order-flag"
-  | "clinical.consult-complete"
-  | "config.capability-refresh"
-  | "config.tenant-update"
-  | "config.feature-flag-update"
-  | "config.ui-defaults-update"
-  | "config.ui-prefs-save"
-  | "config.modules-update"
-  | "config.template-upsert"
-  | "config.template-delete"
-  | "config.connector-update"
-  | "config.branding-update"
-  | "config.rpc-catalog"
-  | "security.rbac-denied"
-  | "security.rate-limited"
-  | "security.invalid-input"
-  | "security.session-hijack-attempt"
-  | "security.origin-rejected"
-  | "security.csrf-failed"
-  | "auth.locked"
-  | "system.startup"
-  | "system.shutdown"
-  | "system.circuit-breaker-open"
-  | "system.circuit-breaker-close"
-  | "rpc.console-connect"
-  | "rpc.console-disconnect"
-  | "rpc.console-call"
-  | "clinical.draft-create"
-  | "clinical.draft-submit"
-  | "clinical.draft-delete"
+  | 'clinical.note-sign'
+  | 'clinical.note-addendum'
+  | 'clinical.note-view-text'
+  | 'clinical.problem-edit'
+  | 'clinical.order-draft'
+  | 'clinical.order-verify'
+  | 'clinical.order-dc'
+  | 'clinical.order-flag'
+  | 'clinical.consult-complete'
+  | 'config.capability-refresh'
+  | 'config.tenant-update'
+  | 'config.feature-flag-update'
+  | 'config.ui-defaults-update'
+  | 'config.ui-prefs-save'
+  | 'config.modules-update'
+  | 'config.template-upsert'
+  | 'config.template-delete'
+  | 'config.connector-update'
+  | 'config.branding-update'
+  | 'config.rpc-catalog'
+  | 'security.rbac-denied'
+  | 'security.rate-limited'
+  | 'security.invalid-input'
+  | 'security.session-hijack-attempt'
+  | 'security.origin-rejected'
+  | 'security.csrf-failed'
+  | 'auth.locked'
+  | 'system.startup'
+  | 'system.shutdown'
+  | 'system.circuit-breaker-open'
+  | 'system.circuit-breaker-close'
+  | 'rpc.console-connect'
+  | 'rpc.console-disconnect'
+  | 'rpc.console-call'
+  | 'clinical.draft-create'
+  | 'clinical.draft-submit'
+  | 'clinical.draft-delete'
   // Phase 18: Integration + Imaging audit events
-  | "integration.config-change"
-  | "integration.probe"
-  | "integration.dashboard-view"
-  | "integration.device-onboard"
-  | "imaging.viewer-launch"
+  | 'integration.config-change'
+  | 'integration.probe'
+  | 'integration.dashboard-view'
+  | 'integration.device-onboard'
+  | 'imaging.viewer-launch'
   // Phase 22: Imaging platform audit events
-  | "imaging.study-view"
-  | "imaging.series-view"
-  | "imaging.dicom-upload"
-  | "imaging.proxy-request"
-  | "imaging.orthanc-health"
+  | 'imaging.study-view'
+  | 'imaging.series-view'
+  | 'imaging.dicom-upload'
+  | 'imaging.proxy-request'
+  | 'imaging.orthanc-health'
   // Phase 23: Imaging workflow audit events
-  | "imaging.order-create"
-  | "imaging.order-status-change"
-  | "imaging.worklist-view"
-  | "imaging.study-linked"
-  | "imaging.study-quarantined"
-  | "imaging.study-ingested"
+  | 'imaging.order-create'
+  | 'imaging.order-status-change'
+  | 'imaging.worklist-view'
+  | 'imaging.study-linked'
+  | 'imaging.study-quarantined'
+  | 'imaging.study-ingested'
   // Phase 19: Reporting & export governance audit events
-  | "report.generate"
-  | "export.request"
-  | "export.download"
-  | "export.policy-check"
+  | 'report.generate'
+  | 'export.request'
+  | 'export.download'
+  | 'export.policy-check'
   // Phase 39: VistA billing grounding audit events
-  | "phi.rcm-encounters-view"
-  | "phi.rcm-insurance-view"
-  | "phi.rcm-charges-view"
-  | "phi.rcm-claims-status-view"
-  | "phi.rcm-ar-status-view"
-  | "data.icd-search"
+  | 'phi.rcm-encounters-view'
+  | 'phi.rcm-insurance-view'
+  | 'phi.rcm-charges-view'
+  | 'phi.rcm-claims-status-view'
+  | 'phi.rcm-ar-status-view'
+  | 'data.icd-search'
   // Phase 58: Interop monitor v2 audit events
-  | "interop.message-unmask"
-  | "interop.message-list"
-  | "interop.message-detail"
+  | 'interop.message-unmask'
+  | 'interop.message-list'
+  | 'interop.message-detail'
   // Phase 59: CPOE parity audit events
-  | "clinical.order-lab"
-  | "clinical.order-imaging"
-  | "clinical.order-consult"
-  | "clinical.order-check"
+  | 'clinical.order-lab'
+  | 'clinical.order-imaging'
+  | 'clinical.order-consult'
+  | 'clinical.order-check'
   // Phase 66: Production IAM v1 audit events
-  | "auth.idp.authorize"
-  | "auth.idp.callback"
-  | "auth.idp.login"
-  | "auth.vista-bind"
+  | 'auth.idp.authorize'
+  | 'auth.idp.callback'
+  | 'auth.idp.login'
+  | 'auth.vista-bind'
   // Phase 86: Shift Handoff + Signout audit events
-  | "clinical.handoff-create"
-  | "clinical.handoff-update"
-  | "clinical.handoff-submit"
-  | "clinical.handoff-accept"
-  | "clinical.handoff-archive"
-  | "clinical.handoff-view";
+  | 'clinical.handoff-create'
+  | 'clinical.handoff-update'
+  | 'clinical.handoff-submit'
+  | 'clinical.handoff-accept'
+  | 'clinical.handoff-archive'
+  | 'clinical.handoff-view';
 
-export type AuditOutcome = "success" | "failure" | "denied" | "error";
+export type AuditOutcome = 'success' | 'failure' | 'denied' | 'error';
 
 export interface AuditEvent {
   /** Unique event ID */
@@ -199,9 +199,9 @@ function writeToFile(event: AuditEvent): void {
       if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
       fileReady = true;
     }
-    appendFileSync(AUDIT_CONFIG.filePath, JSON.stringify(event) + "\n");
+    appendFileSync(AUDIT_CONFIG.filePath, JSON.stringify(event) + '\n');
   } catch (err: any) {
-    log.error("Audit file write failed", { error: err.message, filePath: AUDIT_CONFIG.filePath });
+    log.error('Audit file write failed', { error: err.message, filePath: AUDIT_CONFIG.filePath });
     // Fallback to memory
     writeToMemory(event);
   }
@@ -209,20 +209,20 @@ function writeToFile(event: AuditEvent): void {
 
 function writeToStdout(event: AuditEvent): void {
   // Use process.stdout directly for audit -- structured logger would recurse
-  process.stdout.write(JSON.stringify({ _audit: true, ...event }) + "\n");
+  process.stdout.write(JSON.stringify({ _audit: true, ...event }) + '\n');
 }
 
 function writeSink(event: AuditEvent): void {
   switch (AUDIT_CONFIG.sink) {
-    case "file":
+    case 'file':
       writeToFile(event);
       writeToMemory(event); // Also keep in memory for API access
       break;
-    case "stdout":
+    case 'stdout':
       writeToStdout(event);
       writeToMemory(event);
       break;
-    case "memory":
+    case 'memory':
     default:
       writeToMemory(event);
       break;
@@ -246,16 +246,16 @@ export function audit(
     requestId?: string;
     sourceIp?: string;
     detail?: Record<string, unknown>;
-  },
+  }
 ): AuditEvent {
   const event: AuditEvent = {
     id: `audit-${++auditSeq}-${Date.now()}`,
     timestamp: new Date().toISOString(),
     action,
     outcome,
-    actorDuz: actor.duz || "anonymous",
-    actorName: actor.name || "unknown",
-    actorRole: actor.role || "unknown",
+    actorDuz: actor.duz || 'anonymous',
+    actorName: actor.name || 'unknown',
+    actorRole: actor.role || 'unknown',
     patientDfn: PHI_CONFIG.auditIncludesDfn ? opts?.patientDfn : undefined,
     // Phase 133: auto-inject correlationId from request context
     requestId: opts?.requestId || getRequestId(),
@@ -266,8 +266,12 @@ export function audit(
   writeSink(event);
 
   // Phase 133: increment audit events counter
-  const actionPrefix = action.split(".")[0] || "unknown";
-  try { auditEventsTotal.inc({ action_prefix: actionPrefix }); } catch { /* metric not critical */ }
+  const actionPrefix = action.split('.')[0] || 'unknown';
+  try {
+    auditEventsTotal.inc({ action_prefix: actionPrefix });
+  } catch {
+    /* metric not critical */
+  }
 
   // Also emit to structured log for correlation — Phase 151: no PHI in logs
   log.info(`AUDIT: ${action} → ${outcome}`, {

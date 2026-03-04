@@ -20,12 +20,14 @@ Each tenant gets a dedicated VistA instance in their assigned region. The API
 connects to the local VistA via the RPC Broker on a per-tenant basis.
 
 **Pros:**
+
 - Complete isolation between tenants
 - Data residency guaranteed (VistA globals stay in-region)
 - Independent maintenance windows per tenant
 - Aligns with existing `VISTA_HOST`/`VISTA_PORT` env var pattern
 
 **Cons:**
+
 - Resource-intensive (each VistA instance = YottaDB + broker process)
 - More instances to manage and monitor
 - Routine installations must be coordinated per instance
@@ -36,10 +38,12 @@ Multiple tenants share one VistA instance per region, with DUZ/institution
 separation.
 
 **Pros:**
+
 - Fewer instances to manage
 - Lower resource footprint
 
 **Cons:**
+
 - VistA's multi-tenant support is limited and fragile
 - Cross-tenant data leakage risk in globals
 - Maintenance affects all tenants simultaneously
@@ -51,10 +55,12 @@ All VistA instances run in one region. Remote regions connect cross-region
 for RPC calls.
 
 **Pros:**
+
 - Simplest operations
 - Fewest instances
 
 **Cons:**
+
 - Cross-region RPC latency (50-150ms per call)
 - Data residency violation (VistA globals contain PHI)
 - Single region failure takes down all clinical operations

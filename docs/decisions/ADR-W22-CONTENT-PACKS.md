@@ -8,6 +8,7 @@
 
 Phase 158 introduced the template engine with `ClinicalTemplate`, `SpecialtyPack`,
 and `TemplateSection` types. The existing system supports:
+
 - Template CRUD with versioning and publish/archive lifecycle
 - Specialty tags (45 specialties) and setting tags (inpatient/outpatient/ed/any)
 - Quick-text library and auto-expand rules
@@ -27,14 +28,14 @@ types alongside templates within the existing `SpecialtyPack` structure.
 
 ```typescript
 interface ContentPackV2 {
-  packId: string;               // e.g. "outpatient-primary-care"
-  version: string;              // semver: "1.0.0"
+  packId: string; // e.g. "outpatient-primary-care"
+  version: string; // semver: "1.0.0"
   name: string;
   specialty: string;
   setting: TemplateSetting;
   description: string;
-  country?: string;             // ISO 3166-1 alpha-2
-  locale?: string;              // BCP 47
+  country?: string; // ISO 3166-1 alpha-2
+  locale?: string; // BCP 47
 
   // Content sections (all optional per pack)
   templates: TemplateInput[];
@@ -45,7 +46,7 @@ interface ContentPackV2 {
   cdsRules: CdsRuleInput[];
 
   // Governance
-  requires?: string[];          // prerequisite packIds
+  requires?: string[]; // prerequisite packIds
   minPlatformVersion?: string;
   migrations?: PackMigration[];
 }

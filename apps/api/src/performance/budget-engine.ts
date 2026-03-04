@@ -5,8 +5,8 @@
  * Budgets are evaluated by the profiler on every request.
  */
 
-import { randomUUID } from "node:crypto";
-import type { PerformanceBudget } from "./types.js";
+import { randomUUID } from 'node:crypto';
+import type { PerformanceBudget } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /*  In-memory budget store                                             */
@@ -16,24 +16,87 @@ const budgetStore = new Map<string, PerformanceBudget>();
 /* ------------------------------------------------------------------ */
 /*  Default budgets                                                    */
 /* ------------------------------------------------------------------ */
-const DEFAULT_BUDGETS: Omit<PerformanceBudget, "id" | "createdAt">[] = [
+const DEFAULT_BUDGETS: Omit<PerformanceBudget, 'id' | 'createdAt'>[] = [
   // Clinical read routes should be fast
-  { routePattern: "/vista/", method: "*", maxMs: 2000, warningThreshold: 0.8, maxBytes: 512_000, enforce: false },
+  {
+    routePattern: '/vista/',
+    method: '*',
+    maxMs: 2000,
+    warningThreshold: 0.8,
+    maxBytes: 512_000,
+    enforce: false,
+  },
   // Admin routes can be slower
-  { routePattern: "/admin/", method: "*", maxMs: 5000, warningThreshold: 0.8, maxBytes: 2_000_000, enforce: false },
+  {
+    routePattern: '/admin/',
+    method: '*',
+    maxMs: 5000,
+    warningThreshold: 0.8,
+    maxBytes: 2_000_000,
+    enforce: false,
+  },
   // Auth should be very fast
-  { routePattern: "/auth/", method: "*", maxMs: 1000, warningThreshold: 0.7, maxBytes: 10_000, enforce: false },
+  {
+    routePattern: '/auth/',
+    method: '*',
+    maxMs: 1000,
+    warningThreshold: 0.7,
+    maxBytes: 10_000,
+    enforce: false,
+  },
   // Health/ready must be instant
-  { routePattern: "/health", method: "GET", maxMs: 100, warningThreshold: 0.8, maxBytes: 1_000, enforce: false },
-  { routePattern: "/ready", method: "GET", maxMs: 200, warningThreshold: 0.8, maxBytes: 1_000, enforce: false },
+  {
+    routePattern: '/health',
+    method: 'GET',
+    maxMs: 100,
+    warningThreshold: 0.8,
+    maxBytes: 1_000,
+    enforce: false,
+  },
+  {
+    routePattern: '/ready',
+    method: 'GET',
+    maxMs: 200,
+    warningThreshold: 0.8,
+    maxBytes: 1_000,
+    enforce: false,
+  },
   // Imaging proxy is allowed more time (DICOMweb)
-  { routePattern: "/imaging/", method: "*", maxMs: 10000, warningThreshold: 0.8, maxBytes: 50_000_000, enforce: false },
+  {
+    routePattern: '/imaging/',
+    method: '*',
+    maxMs: 10000,
+    warningThreshold: 0.8,
+    maxBytes: 50_000_000,
+    enforce: false,
+  },
   // Portal routes
-  { routePattern: "/portal/", method: "*", maxMs: 3000, warningThreshold: 0.8, maxBytes: 1_000_000, enforce: false },
+  {
+    routePattern: '/portal/',
+    method: '*',
+    maxMs: 3000,
+    warningThreshold: 0.8,
+    maxBytes: 1_000_000,
+    enforce: false,
+  },
   // Scheduling
-  { routePattern: "/scheduling/", method: "*", maxMs: 3000, warningThreshold: 0.8, maxBytes: 500_000, enforce: false },
+  {
+    routePattern: '/scheduling/',
+    method: '*',
+    maxMs: 3000,
+    warningThreshold: 0.8,
+    maxBytes: 500_000,
+    enforce: false,
+  },
   // Queue display (public, must be fast)
-  { routePattern: "/queue/display", method: "GET", maxMs: 500, warningThreshold: 0.8, maxBytes: 100_000, enforce: false },
+  {
+    routePattern: '/queue/display',
+    method: 'GET',
+    maxMs: 500,
+    warningThreshold: 0.8,
+    maxBytes: 100_000,
+    enforce: false,
+  },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -90,13 +153,13 @@ export function checkBudget(
   method: string,
   durationMs: number,
   responseBytes: number
-): "within" | "warning" | "exceeded" {
+): 'within' | 'warning' | 'exceeded' {
   // Find matching budget (most specific match wins)
   let bestMatch: PerformanceBudget | undefined;
   let bestMatchLen = 0;
 
   for (const budget of budgetStore.values()) {
-    if (budget.method !== "*" && budget.method !== method) continue;
+    if (budget.method !== '*' && budget.method !== method) continue;
     if (!routePattern.startsWith(budget.routePattern)) continue;
     if (budget.routePattern.length > bestMatchLen) {
       bestMatch = budget;
@@ -104,23 +167,23 @@ export function checkBudget(
     }
   }
 
-  if (!bestMatch) return "within"; // No budget = within by default
+  if (!bestMatch) return 'within'; // No budget = within by default
 
   // Check size budget
   if (bestMatch.maxBytes > 0 && responseBytes > bestMatch.maxBytes) {
-    return "exceeded";
+    return 'exceeded';
   }
 
   // Check time budget
   if (durationMs > bestMatch.maxMs) {
-    return "exceeded";
+    return 'exceeded';
   }
 
   if (durationMs > bestMatch.maxMs * bestMatch.warningThreshold) {
-    return "warning";
+    return 'warning';
   }
 
-  return "within";
+  return 'within';
 }
 
 /* ------------------------------------------------------------------ */

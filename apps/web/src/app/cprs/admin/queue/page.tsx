@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from 'react';
 import { API_BASE as API } from '@/lib/api-config';
 
 /**
@@ -49,37 +49,36 @@ interface DisplayBoard {
   estimatedWaitMinutes: number;
 }
 
-type Tab = "queue" | "display" | "departments" | "stats";
-
+type Tab = 'queue' | 'display' | 'departments' | 'stats';
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API}${path}`, {
-    credentials: "include",
+    credentials: 'include',
     ...opts,
-    headers: { "Content-Type": "application/json", ...opts?.headers },
+    headers: { 'Content-Type': 'application/json', ...opts?.headers },
   });
   return res.json();
 }
 
 const PRIORITY_COLORS: Record<string, string> = {
-  urgent: "#d32f2f",
-  high: "#f57c00",
-  normal: "#1976d2",
-  low: "#757575",
+  urgent: '#d32f2f',
+  high: '#f57c00',
+  normal: '#1976d2',
+  low: '#757575',
 };
 
 const STATUS_COLORS: Record<string, string> = {
-  waiting: "#fff3e0",
-  called: "#e3f2fd",
-  serving: "#e8f5e9",
-  completed: "#f5f5f5",
-  "no-show": "#fce4ec",
-  transferred: "#ede7f6",
+  waiting: '#fff3e0',
+  called: '#e3f2fd',
+  serving: '#e8f5e9',
+  completed: '#f5f5f5',
+  'no-show': '#fce4ec',
+  transferred: '#ede7f6',
 };
 
 export default function QueueAdminPage() {
-  const [tab, setTab] = useState<Tab>("queue");
-  const [selectedDept, setSelectedDept] = useState("primary-care");
+  const [tab, setTab] = useState<Tab>('queue');
+  const [selectedDept, setSelectedDept] = useState('primary-care');
   const [tickets, setTickets] = useState<QueueTicketRow[]>([]);
   const [departments, setDepartments] = useState<DepartmentConfig[]>([]);
   const [stats, setStats] = useState<QueueStatsData | null>(null);
@@ -87,7 +86,7 @@ export default function QueueAdminPage() {
   const [loading, setLoading] = useState(false);
 
   const loadDepartments = useCallback(async () => {
-    const data = await apiFetch("/queue/departments");
+    const data = await apiFetch('/queue/departments');
     if (data.ok) setDepartments(data.departments || []);
   }, []);
 
@@ -113,26 +112,26 @@ export default function QueueAdminPage() {
   }, [loadDepartments]);
 
   useEffect(() => {
-    if (tab === "queue") loadTickets();
-    if (tab === "stats") loadStats();
-    if (tab === "display") loadBoard();
+    if (tab === 'queue') loadTickets();
+    if (tab === 'stats') loadStats();
+    if (tab === 'display') loadBoard();
   }, [tab, selectedDept, loadTickets, loadStats, loadBoard]);
 
   // Auto-refresh queue every 10 seconds
   useEffect(() => {
-    if (tab !== "queue" && tab !== "display") return;
+    if (tab !== 'queue' && tab !== 'display') return;
     const interval = setInterval(() => {
-      if (tab === "queue") loadTickets();
-      if (tab === "display") loadBoard();
+      if (tab === 'queue') loadTickets();
+      if (tab === 'display') loadBoard();
     }, 10000);
     return () => clearInterval(interval);
   }, [tab, loadTickets, loadBoard]);
 
   const handleCallNext = async () => {
     const dept = departments.find((d) => d.department === selectedDept);
-    const windowNumber = dept?.windows[0] || "Window-1";
-    await apiFetch("/queue/call-next", {
-      method: "POST",
+    const windowNumber = dept?.windows[0] || 'Window-1';
+    await apiFetch('/queue/call-next', {
+      method: 'POST',
       body: JSON.stringify({ department: selectedDept, windowNumber }),
     });
     loadTickets();
@@ -140,115 +139,207 @@ export default function QueueAdminPage() {
 
   const handleAction = async (ticketId: string, action: string) => {
     await apiFetch(`/queue/tickets/${ticketId}/${action}`, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({}),
     });
     loadTickets();
   };
 
   const handleSeedDepts = async () => {
-    await apiFetch("/queue/departments/seed", { method: "POST" });
+    await apiFetch('/queue/departments/seed', { method: 'POST' });
     loadDepartments();
   };
 
   return (
-    <div style={{ padding: 24, fontFamily: "system-ui, sans-serif", maxWidth: 1200 }}>
+    <div style={{ padding: 24, fontFamily: 'system-ui, sans-serif', maxWidth: 1200 }}>
       <h1 style={{ fontSize: 22, marginBottom: 8 }}>Patient Queue Management</h1>
-      <p style={{ color: "#666", marginBottom: 16 }}>
+      <p style={{ color: '#666', marginBottom: 16 }}>
         Phase 159: Ticket numbering, priority triage, calling display, and department routing.
       </p>
 
       {/* Department Selector */}
-      <div style={{ display: "flex", gap: 12, marginBottom: 16, alignItems: "center" }}>
+      <div style={{ display: 'flex', gap: 12, marginBottom: 16, alignItems: 'center' }}>
         <label style={{ fontWeight: 600 }}>Department:</label>
         <select
           value={selectedDept}
           onChange={(e) => setSelectedDept(e.target.value)}
-          style={{ padding: 6, border: "1px solid #ccc", borderRadius: 4, minWidth: 200 }}
+          style={{ padding: 6, border: '1px solid #ccc', borderRadius: 4, minWidth: 200 }}
         >
           {departments.length === 0 && <option value="">-- Seed departments first --</option>}
           {departments.map((d) => (
-            <option key={d.department} value={d.department}>{d.displayName}</option>
+            <option key={d.department} value={d.department}>
+              {d.displayName}
+            </option>
           ))}
         </select>
         {departments.length === 0 && (
-          <button onClick={handleSeedDepts} style={{ padding: "6px 16px", background: "#0066cc", color: "#fff", border: "none", borderRadius: 4 }}>
+          <button
+            onClick={handleSeedDepts}
+            style={{
+              padding: '6px 16px',
+              background: '#0066cc',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 4,
+            }}
+          >
             Seed Departments
           </button>
         )}
       </div>
 
       {/* Tab Bar */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 16, borderBottom: "1px solid #ddd", paddingBottom: 8 }}>
-        {(["queue", "display", "departments", "stats"] as Tab[]).map((t) => (
+      <div
+        style={{
+          display: 'flex',
+          gap: 8,
+          marginBottom: 16,
+          borderBottom: '1px solid #ddd',
+          paddingBottom: 8,
+        }}
+      >
+        {(['queue', 'display', 'departments', 'stats'] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t satisfies Tab)}
             style={{
-              padding: "6px 16px",
-              border: tab === t ? "1px solid #0066cc" : "1px solid #ccc",
-              background: tab === t ? "#0066cc" : "#fff",
-              color: tab === t ? "#fff" : "#333",
+              padding: '6px 16px',
+              border: tab === t ? '1px solid #0066cc' : '1px solid #ccc',
+              background: tab === t ? '#0066cc' : '#fff',
+              color: tab === t ? '#fff' : '#333',
               borderRadius: 4,
-              cursor: "pointer",
+              cursor: 'pointer',
               fontWeight: tab === t ? 600 : 400,
             }}
           >
-            {t === "queue" ? "Active Queue" : t === "display" ? "Display Board" : t === "departments" ? "Departments" : "Statistics"}
+            {t === 'queue'
+              ? 'Active Queue'
+              : t === 'display'
+                ? 'Display Board'
+                : t === 'departments'
+                  ? 'Departments'
+                  : 'Statistics'}
           </button>
         ))}
       </div>
 
       {/* Active Queue Tab */}
-      {tab === "queue" && (
+      {tab === 'queue' && (
         <div>
-          <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-            <button onClick={handleCallNext} style={{ padding: "8px 20px", background: "#2e7d32", color: "#fff", border: "none", borderRadius: 4, cursor: "pointer", fontWeight: 600 }}>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+            <button
+              onClick={handleCallNext}
+              style={{
+                padding: '8px 20px',
+                background: '#2e7d32',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 4,
+                cursor: 'pointer',
+                fontWeight: 600,
+              }}
+            >
               Call Next Patient
             </button>
-            <button onClick={loadTickets} style={{ padding: "6px 12px" }}>Refresh</button>
+            <button onClick={loadTickets} style={{ padding: '6px 12px' }}>
+              Refresh
+            </button>
           </div>
           {loading ? (
             <p>Loading...</p>
           ) : tickets.length === 0 ? (
-            <p style={{ color: "#999" }}>No active tickets in this department.</p>
+            <p style={{ color: '#999' }}>No active tickets in this department.</p>
           ) : (
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
               <thead>
-                <tr style={{ background: "#f5f5f5" }}>
-                  <th style={{ textAlign: "left", padding: 8, borderBottom: "1px solid #ddd" }}>Ticket</th>
-                  <th style={{ textAlign: "left", padding: 8, borderBottom: "1px solid #ddd" }}>Patient</th>
-                  <th style={{ textAlign: "center", padding: 8, borderBottom: "1px solid #ddd" }}>Priority</th>
-                  <th style={{ textAlign: "center", padding: 8, borderBottom: "1px solid #ddd" }}>Status</th>
-                  <th style={{ textAlign: "left", padding: 8, borderBottom: "1px solid #ddd" }}>Window</th>
-                  <th style={{ textAlign: "left", padding: 8, borderBottom: "1px solid #ddd" }}>Created</th>
-                  <th style={{ textAlign: "right", padding: 8, borderBottom: "1px solid #ddd" }}>Actions</th>
+                <tr style={{ background: '#f5f5f5' }}>
+                  <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #ddd' }}>
+                    Ticket
+                  </th>
+                  <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #ddd' }}>
+                    Patient
+                  </th>
+                  <th style={{ textAlign: 'center', padding: 8, borderBottom: '1px solid #ddd' }}>
+                    Priority
+                  </th>
+                  <th style={{ textAlign: 'center', padding: 8, borderBottom: '1px solid #ddd' }}>
+                    Status
+                  </th>
+                  <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #ddd' }}>
+                    Window
+                  </th>
+                  <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #ddd' }}>
+                    Created
+                  </th>
+                  <th style={{ textAlign: 'right', padding: 8, borderBottom: '1px solid #ddd' }}>
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {tickets.map((t) => (
-                  <tr key={t.id} style={{ borderBottom: "1px solid #eee", background: STATUS_COLORS[t.status] || "#fff" }}>
-                    <td style={{ padding: 8, fontWeight: 700, fontFamily: "monospace" }}>{t.ticketNumber}</td>
+                  <tr
+                    key={t.id}
+                    style={{
+                      borderBottom: '1px solid #eee',
+                      background: STATUS_COLORS[t.status] || '#fff',
+                    }}
+                  >
+                    <td style={{ padding: 8, fontWeight: 700, fontFamily: 'monospace' }}>
+                      {t.ticketNumber}
+                    </td>
                     <td style={{ padding: 8 }}>{t.patientName}</td>
-                    <td style={{ textAlign: "center", padding: 8 }}>
-                      <span style={{ color: PRIORITY_COLORS[t.priority] || "#333", fontWeight: 600, fontSize: 12 }}>
+                    <td style={{ textAlign: 'center', padding: 8 }}>
+                      <span
+                        style={{
+                          color: PRIORITY_COLORS[t.priority] || '#333',
+                          fontWeight: 600,
+                          fontSize: 12,
+                        }}
+                      >
                         {t.priority.toUpperCase()}
                       </span>
                     </td>
-                    <td style={{ textAlign: "center", padding: 8 }}>
-                      <span style={{ padding: "2px 8px", borderRadius: 12, fontSize: 12, fontWeight: 600 }}>{t.status}</span>
+                    <td style={{ textAlign: 'center', padding: 8 }}>
+                      <span
+                        style={{
+                          padding: '2px 8px',
+                          borderRadius: 12,
+                          fontSize: 12,
+                          fontWeight: 600,
+                        }}
+                      >
+                        {t.status}
+                      </span>
                     </td>
-                    <td style={{ padding: 8 }}>{t.windowNumber || "-"}</td>
-                    <td style={{ padding: 8, fontSize: 12, color: "#666" }}>{new Date(t.createdAt).toLocaleTimeString()}</td>
-                    <td style={{ textAlign: "right", padding: 8 }}>
-                      {t.status === "called" && (
-                        <button onClick={() => handleAction(t.id, "serve")} style={{ marginRight: 4, fontSize: 12 }}>Serve</button>
+                    <td style={{ padding: 8 }}>{t.windowNumber || '-'}</td>
+                    <td style={{ padding: 8, fontSize: 12, color: '#666' }}>
+                      {new Date(t.createdAt).toLocaleTimeString()}
+                    </td>
+                    <td style={{ textAlign: 'right', padding: 8 }}>
+                      {t.status === 'called' && (
+                        <button
+                          onClick={() => handleAction(t.id, 'serve')}
+                          style={{ marginRight: 4, fontSize: 12 }}
+                        >
+                          Serve
+                        </button>
                       )}
-                      {(t.status === "serving" || t.status === "called") && (
-                        <button onClick={() => handleAction(t.id, "complete")} style={{ marginRight: 4, fontSize: 12, color: "#2e7d32" }}>Complete</button>
+                      {(t.status === 'serving' || t.status === 'called') && (
+                        <button
+                          onClick={() => handleAction(t.id, 'complete')}
+                          style={{ marginRight: 4, fontSize: 12, color: '#2e7d32' }}
+                        >
+                          Complete
+                        </button>
                       )}
-                      {(t.status === "waiting" || t.status === "called") && (
-                        <button onClick={() => handleAction(t.id, "no-show")} style={{ fontSize: 12, color: "#c62828" }}>No-Show</button>
+                      {(t.status === 'waiting' || t.status === 'called') && (
+                        <button
+                          onClick={() => handleAction(t.id, 'no-show')}
+                          style={{ fontSize: 12, color: '#c62828' }}
+                        >
+                          No-Show
+                        </button>
                       )}
                     </td>
                   </tr>
@@ -260,37 +351,71 @@ export default function QueueAdminPage() {
       )}
 
       {/* Display Board Tab */}
-      {tab === "display" && board && (
-        <div style={{ background: "#1a237e", color: "#fff", padding: 32, borderRadius: 12, minHeight: 300 }}>
-          <h2 style={{ textAlign: "center", fontSize: 24, marginBottom: 24 }}>{board.displayName}</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+      {tab === 'display' && board && (
+        <div
+          style={{
+            background: '#1a237e',
+            color: '#fff',
+            padding: 32,
+            borderRadius: 12,
+            minHeight: 300,
+          }}
+        >
+          <h2 style={{ textAlign: 'center', fontSize: 24, marginBottom: 24 }}>
+            {board.displayName}
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
             <div>
-              <h3 style={{ color: "#ffeb3b", fontSize: 18, marginBottom: 12 }}>NOW SERVING</h3>
+              <h3 style={{ color: '#ffeb3b', fontSize: 18, marginBottom: 12 }}>NOW SERVING</h3>
               {board.currentlyServing.length === 0 ? (
-                <p style={{ color: "#90caf9" }}>---</p>
+                <p style={{ color: '#90caf9' }}>---</p>
               ) : (
                 board.currentlyServing.map((s, i) => (
-                  <div key={i} style={{ fontSize: 36, fontWeight: 700, fontFamily: "monospace", marginBottom: 8 }}>
+                  <div
+                    key={i}
+                    style={{
+                      fontSize: 36,
+                      fontWeight: 700,
+                      fontFamily: 'monospace',
+                      marginBottom: 8,
+                    }}
+                  >
                     {s.ticketNumber} → {s.windowNumber}
                   </div>
                 ))
               )}
             </div>
             <div>
-              <h3 style={{ color: "#76ff03", fontSize: 18, marginBottom: 12 }}>NOW CALLING</h3>
+              <h3 style={{ color: '#76ff03', fontSize: 18, marginBottom: 12 }}>NOW CALLING</h3>
               {board.nowCalling.length === 0 ? (
-                <p style={{ color: "#90caf9" }}>---</p>
+                <p style={{ color: '#90caf9' }}>---</p>
               ) : (
                 board.nowCalling.map((c, i) => (
-                  <div key={i} style={{ fontSize: 36, fontWeight: 700, fontFamily: "monospace", marginBottom: 8, animation: "blink 1s infinite" }}>
+                  <div
+                    key={i}
+                    style={{
+                      fontSize: 36,
+                      fontWeight: 700,
+                      fontFamily: 'monospace',
+                      marginBottom: 8,
+                      animation: 'blink 1s infinite',
+                    }}
+                  >
                     {c.ticketNumber} → {c.windowNumber}
                   </div>
                 ))
               )}
             </div>
           </div>
-          <div style={{ textAlign: "center", marginTop: 32, borderTop: "1px solid #3949ab", paddingTop: 16 }}>
-            <span style={{ fontSize: 18, color: "#90caf9" }}>
+          <div
+            style={{
+              textAlign: 'center',
+              marginTop: 32,
+              borderTop: '1px solid #3949ab',
+              paddingTop: 16,
+            }}
+          >
+            <span style={{ fontSize: 18, color: '#90caf9' }}>
               Waiting: {board.waitingCount} | Est. Wait: {board.estimatedWaitMinutes} min
             </span>
           </div>
@@ -298,32 +423,58 @@ export default function QueueAdminPage() {
       )}
 
       {/* Departments Tab */}
-      {tab === "departments" && (
+      {tab === 'departments' && (
         <div>
           <h3>Department Configurations</h3>
           {departments.length === 0 ? (
-            <p style={{ color: "#999" }}>No departments configured. Click Seed to initialize.</p>
+            <p style={{ color: '#999' }}>No departments configured. Click Seed to initialize.</p>
           ) : (
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
               <thead>
-                <tr style={{ background: "#f5f5f5" }}>
-                  <th style={{ textAlign: "left", padding: 8, borderBottom: "1px solid #ddd" }}>Department</th>
-                  <th style={{ textAlign: "left", padding: 8, borderBottom: "1px solid #ddd" }}>Display Name</th>
-                  <th style={{ textAlign: "center", padding: 8, borderBottom: "1px solid #ddd" }}>Prefix</th>
-                  <th style={{ textAlign: "center", padding: 8, borderBottom: "1px solid #ddd" }}>Windows</th>
-                  <th style={{ textAlign: "center", padding: 8, borderBottom: "1px solid #ddd" }}>Status</th>
+                <tr style={{ background: '#f5f5f5' }}>
+                  <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #ddd' }}>
+                    Department
+                  </th>
+                  <th style={{ textAlign: 'left', padding: 8, borderBottom: '1px solid #ddd' }}>
+                    Display Name
+                  </th>
+                  <th style={{ textAlign: 'center', padding: 8, borderBottom: '1px solid #ddd' }}>
+                    Prefix
+                  </th>
+                  <th style={{ textAlign: 'center', padding: 8, borderBottom: '1px solid #ddd' }}>
+                    Windows
+                  </th>
+                  <th style={{ textAlign: 'center', padding: 8, borderBottom: '1px solid #ddd' }}>
+                    Status
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {departments.map((d) => (
-                  <tr key={d.department} style={{ borderBottom: "1px solid #eee" }}>
+                  <tr key={d.department} style={{ borderBottom: '1px solid #eee' }}>
                     <td style={{ padding: 8 }}>{d.department}</td>
                     <td style={{ padding: 8 }}>{d.displayName}</td>
-                    <td style={{ textAlign: "center", padding: 8, fontFamily: "monospace", fontWeight: 700 }}>{d.prefix}</td>
-                    <td style={{ textAlign: "center", padding: 8 }}>{d.windows.join(", ")}</td>
-                    <td style={{ textAlign: "center", padding: 8 }}>
-                      <span style={{ background: d.enabled ? "#e8f5e9" : "#fce4ec", padding: "2px 8px", borderRadius: 12, fontSize: 12 }}>
-                        {d.enabled ? "active" : "disabled"}
+                    <td
+                      style={{
+                        textAlign: 'center',
+                        padding: 8,
+                        fontFamily: 'monospace',
+                        fontWeight: 700,
+                      }}
+                    >
+                      {d.prefix}
+                    </td>
+                    <td style={{ textAlign: 'center', padding: 8 }}>{d.windows.join(', ')}</td>
+                    <td style={{ textAlign: 'center', padding: 8 }}>
+                      <span
+                        style={{
+                          background: d.enabled ? '#e8f5e9' : '#fce4ec',
+                          padding: '2px 8px',
+                          borderRadius: 12,
+                          fontSize: 12,
+                        }}
+                      >
+                        {d.enabled ? 'active' : 'disabled'}
                       </span>
                     </td>
                   </tr>
@@ -335,31 +486,31 @@ export default function QueueAdminPage() {
       )}
 
       {/* Stats Tab */}
-      {tab === "stats" && stats && (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
-          <div style={{ background: "#f5f5f5", padding: 16, borderRadius: 8 }}>
+      {tab === 'stats' && stats && (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+          <div style={{ background: '#f5f5f5', padding: 16, borderRadius: 8 }}>
             <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.totalToday}</div>
-            <div style={{ color: "#666" }}>Total Today</div>
+            <div style={{ color: '#666' }}>Total Today</div>
           </div>
-          <div style={{ background: "#fff3e0", padding: 16, borderRadius: 8 }}>
+          <div style={{ background: '#fff3e0', padding: 16, borderRadius: 8 }}>
             <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.waiting}</div>
-            <div style={{ color: "#666" }}>Waiting</div>
+            <div style={{ color: '#666' }}>Waiting</div>
           </div>
-          <div style={{ background: "#e8f5e9", padding: 16, borderRadius: 8 }}>
+          <div style={{ background: '#e8f5e9', padding: 16, borderRadius: 8 }}>
             <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.serving}</div>
-            <div style={{ color: "#666" }}>Serving</div>
+            <div style={{ color: '#666' }}>Serving</div>
           </div>
-          <div style={{ background: "#e3f2fd", padding: 16, borderRadius: 8 }}>
+          <div style={{ background: '#e3f2fd', padding: 16, borderRadius: 8 }}>
             <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.completed}</div>
-            <div style={{ color: "#666" }}>Completed</div>
+            <div style={{ color: '#666' }}>Completed</div>
           </div>
-          <div style={{ background: "#fce4ec", padding: 16, borderRadius: 8 }}>
+          <div style={{ background: '#fce4ec', padding: 16, borderRadius: 8 }}>
             <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.noShow}</div>
-            <div style={{ color: "#666" }}>No-Show</div>
+            <div style={{ color: '#666' }}>No-Show</div>
           </div>
-          <div style={{ background: "#f3e5f5", padding: 16, borderRadius: 8 }}>
+          <div style={{ background: '#f3e5f5', padding: 16, borderRadius: 8 }}>
             <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.averageWaitMinutes}m</div>
-            <div style={{ color: "#666" }}>Avg Wait</div>
+            <div style={{ color: '#666' }}>Avg Wait</div>
           </div>
         </div>
       )}

@@ -1,10 +1,12 @@
 # Phase 331 — IMPLEMENT: Queue & Cache Regionalization (W15-P5)
 
 ## User Request
+
 Implement region-local job queues, regional cache partitioning, worker
 registration with heartbeats, and idempotent cross-region failover transfer.
 
 ## Implementation Steps
+
 1. Create `apps/api/src/services/queue-cache-regional.ts`
    - RegionalJob lifecycle: enqueue → claim → complete → retry → dead_letter
    - Idempotency index prevents duplicate processing across failover
@@ -21,6 +23,7 @@ registration with heartbeats, and idempotent cross-region failover transfer.
 5. Add 5 store-policy entries
 
 ## Files Touched
+
 - apps/api/src/services/queue-cache-regional.ts (NEW)
 - apps/api/src/routes/queue-cache-regional-routes.ts (NEW)
 - apps/api/src/middleware/security.ts (3 AUTH_RULES)

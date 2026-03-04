@@ -7,6 +7,7 @@
 ## User Request
 
 Implement patient-facing record portability:
+
 - Generate a patient summary using VistA Health Summary / reporting capabilities
 - Allow download (PDF/HTML)
 - Allow share link (time-limited, revocable) for another provider
@@ -22,11 +23,13 @@ Implement patient-facing record portability:
 ## Implementation Steps
 
 ### 1. VistA Plan Artifact
+
 - `scripts/portability/buildPortabilityPlan.ts` -> `/artifacts/phase80/portability-plan.json`
 - Probes VistA for available Health Summary types via `ORWRP REPORT LISTS`
 - Documents which RPCs are used vs which are pending
 
 ### 2. API Endpoints (new route file: `apps/api/src/routes/record-portability.ts`)
+
 - `POST /portal/record/export` — generate summary, return file token
 - `GET /portal/record/export/:token` — download PDF/HTML by token
 - `POST /portal/record/share` — create share link with TTL
@@ -34,18 +37,21 @@ Implement patient-facing record portability:
 - `GET /portal/record/share/audit` — access audit for patient's shares
 
 ### 3. Storage (new service: `apps/api/src/services/record-portability-store.ts`)
+
 - In-memory export store (Map keyed by token)
 - AES-256-GCM encryption at rest for stored summaries
 - TTL cleanup job (runs every 5 minutes)
 - Reuses portal-sharing.ts patterns for share links
 
 ### 4. Portal UI (`apps/portal/src/app/dashboard/records/page.tsx`)
+
 - "My Records" page with 3 tabs: Summary, Download, Share
 - Download button triggers export + auto-download
 - Share link creation with TTL selector + revoke
 - Access audit table
 
 ### 5. E2E Tests (`apps/portal/e2e/record-portability.spec.ts`)
+
 - Export + download flow
 - Share link access then revoke, confirm denied
 - Expired token denied

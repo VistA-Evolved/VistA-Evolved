@@ -3,10 +3,12 @@
  */
 
 import type {
-  IntegrationIntake, IntakeStatus, IntakeConfigArtifact, IntakeDashboardStats,
-  PartnerType,
-} from "./types.js";
-import { randomUUID } from "node:crypto";
+  IntegrationIntake,
+  IntakeStatus,
+  IntakeConfigArtifact,
+  IntakeDashboardStats,
+} from './types.js';
+import { randomUUID } from 'node:crypto';
 
 const MAX_INTAKES = 5_000;
 const intakeStore = new Map<string, IntegrationIntake>();
@@ -21,13 +23,15 @@ function enforceMax(store: Map<string, unknown>, max: number): void {
 
 // --- CRUD ---
 
-export function createIntake(data: Omit<IntegrationIntake, "id" | "createdAt" | "updatedAt">): IntegrationIntake {
+export function createIntake(
+  data: Omit<IntegrationIntake, 'id' | 'createdAt' | 'updatedAt'>
+): IntegrationIntake {
   enforceMax(intakeStore, MAX_INTAKES);
   const now = new Date().toISOString();
   const rec: IntegrationIntake = {
     ...data,
     id: randomUUID(),
-    status: data.status || "draft",
+    status: data.status || 'draft',
     createdAt: now,
     updatedAt: now,
   };
@@ -39,7 +43,10 @@ export function getIntake(id: string): IntegrationIntake | undefined {
   return intakeStore.get(id);
 }
 
-export function listIntakes(tenantId: string, filters?: { status?: string; partnerType?: string }): IntegrationIntake[] {
+export function listIntakes(
+  tenantId: string,
+  filters?: { status?: string; partnerType?: string }
+): IntegrationIntake[] {
   const results: IntegrationIntake[] = [];
   for (const rec of intakeStore.values()) {
     if (rec.tenantId !== tenantId) continue;
@@ -50,15 +57,25 @@ export function listIntakes(tenantId: string, filters?: { status?: string; partn
   return results;
 }
 
-export function updateIntake(id: string, data: Partial<IntegrationIntake>): IntegrationIntake | undefined {
+export function updateIntake(
+  id: string,
+  data: Partial<IntegrationIntake>
+): IntegrationIntake | undefined {
   const rec = intakeStore.get(id);
   if (!rec) return undefined;
-  Object.assign(rec, data, { id: rec.id, createdAt: rec.createdAt, updatedAt: new Date().toISOString() });
+  Object.assign(rec, data, {
+    id: rec.id,
+    createdAt: rec.createdAt,
+    updatedAt: new Date().toISOString(),
+  });
   intakeStore.set(id, rec);
   return rec;
 }
 
-export function transitionIntake(id: string, newStatus: IntakeStatus): IntegrationIntake | undefined {
+export function transitionIntake(
+  id: string,
+  newStatus: IntakeStatus
+): IntegrationIntake | undefined {
   const rec = intakeStore.get(id);
   if (!rec) return undefined;
   rec.status = newStatus;

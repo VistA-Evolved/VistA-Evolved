@@ -6,17 +6,18 @@
 
 VistA-Evolved has **5 audit subsystems**, 3 of which use SHA-256 hash chains:
 
-| Subsystem | Hash Chain | Max Entries | Persistence | Verify Endpoint |
-|-----------|-----------|-------------|-------------|-----------------|
-| General (audit.ts) | No | 5,000 | Memory | -- |
-| **Immutable (immutable-audit.ts)** | **Yes** | 10,000 | Memory + JSONL | `GET /iam/audit/verify` |
-| Portal (portal-audit.ts) | No | 5,000 | Memory | -- |
-| **Imaging (imaging-audit.ts)** | **Yes** | 10,000 | Memory + JSONL | `GET /imaging/audit/verify` |
-| **RCM (rcm-audit.ts)** | **Yes** | 20,000 | Memory | `GET /rcm/audit/verify` |
+| Subsystem                          | Hash Chain | Max Entries | Persistence    | Verify Endpoint             |
+| ---------------------------------- | ---------- | ----------- | -------------- | --------------------------- |
+| General (audit.ts)                 | No         | 5,000       | Memory         | --                          |
+| **Immutable (immutable-audit.ts)** | **Yes**    | 10,000      | Memory + JSONL | `GET /iam/audit/verify`     |
+| Portal (portal-audit.ts)           | No         | 5,000       | Memory         | --                          |
+| **Imaging (imaging-audit.ts)**     | **Yes**    | 10,000      | Memory + JSONL | `GET /imaging/audit/verify` |
+| **RCM (rcm-audit.ts)**             | **Yes**    | 20,000      | Memory         | `GET /rcm/audit/verify`     |
 
 ### How the Hash Chain Works
 
 Each entry contains:
+
 - `seq` -- monotonically increasing sequence number
 - `prevHash` -- SHA-256 hash of the previous entry (empty string for first)
 - `hash` -- SHA-256(`seq + prevHash + timestamp + action + outcome + actorId + ...`)
@@ -50,11 +51,13 @@ curl -s http://127.0.0.1:3001/rcm/audit/verify | jq .
 ```
 
 Expected response:
+
 ```json
 { "valid": true, "totalEntries": 42 }
 ```
 
 Broken chain response:
+
 ```json
 { "valid": false, "totalEntries": 42, "brokenAt": 15, "error": "Hash mismatch at seq 15" }
 ```

@@ -119,11 +119,15 @@ export async function extractForms() {
 
   await mkdir(OUTPUT_DIR, { recursive: true });
   await writeFile(join(OUTPUT_DIR, 'forms.json'), JSON.stringify(result, null, 2));
-  console.log(`  ✓ forms.json — ${result.summary.totalForms} forms (${result.summary.withCaption} with captions)`);
+  console.log(
+    `  ✓ forms.json — ${result.summary.totalForms} forms (${result.summary.withCaption} with captions)`
+  );
   return result;
 }
 
-if (import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}` ||
-    process.argv[1]?.endsWith('extract-forms.mjs')) {
+if (
+  import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}` ||
+  process.argv[1]?.endsWith('extract-forms.mjs')
+) {
   extractForms().catch(console.error);
 }

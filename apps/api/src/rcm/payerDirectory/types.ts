@@ -18,34 +18,44 @@ export type PayerType = 'NATIONAL' | 'PRIVATE' | 'NETWORK' | 'CLEARINGHOUSE' | '
 
 export interface PayerChannel {
   type: 'EDI_CLEARINGHOUSE' | 'DIRECT_API' | 'PORTAL_BATCH' | 'NATIONAL_GATEWAY' | 'FHIR_R4';
-  connectorId?: string;      // maps to RcmConnector registry
-  receiverId?: string;       // e.g. ISA08 for EDI
-  endpoint?: string;         // URL or SFTP host
+  connectorId?: string; // maps to RcmConnector registry
+  receiverId?: string; // e.g. ISA08 for EDI
+  endpoint?: string; // URL or SFTP host
   notes?: string;
 }
 
 /* ── Supported Transactions ─────────────────────────────────── */
 
 export type TransactionType =
-  | '837P' | '837I' | '837D'                  // claims
-  | '835'                                      // remittance
-  | '270' | '271'                              // eligibility
-  | '276' | '277'                              // claim status
-  | '278'                                      // prior auth
-  | '999' | 'TA1'                              // ack
-  | 'CF1' | 'CF2' | 'CF3' | 'CF4'             // PH eClaims
-  | 'ACC_CLAIM' | 'ACC_STATUS'                 // NZ ACC
-  | 'ECLIPSE_CLAIM' | 'ECLIPSE_REMIT';         // AU Medicare
+  | '837P'
+  | '837I'
+  | '837D' // claims
+  | '835' // remittance
+  | '270'
+  | '271' // eligibility
+  | '276'
+  | '277' // claim status
+  | '278' // prior auth
+  | '999'
+  | 'TA1' // ack
+  | 'CF1'
+  | 'CF2'
+  | 'CF3'
+  | 'CF4' // PH eClaims
+  | 'ACC_CLAIM'
+  | 'ACC_STATUS' // NZ ACC
+  | 'ECLIPSE_CLAIM'
+  | 'ECLIPSE_REMIT'; // AU Medicare
 
 /* ── Regulatory Source ──────────────────────────────────────── */
 
 export interface RegulatorySource {
-  authority: string;          // e.g. "Insurance Commission", "APRA", "CMS"
-  documentTitle?: string;     // e.g. "List of HMOs with Certificates of Authority"
-  documentDate?: string;      // ISO date of source document
-  documentUrl?: string;       // URL of authoritative source
-  snapshotHash?: string;      // SHA-256 of snapshot file
-  snapshotPath?: string;      // path in repo (reference/payer-sources/...)
+  authority: string; // e.g. "Insurance Commission", "APRA", "CMS"
+  documentTitle?: string; // e.g. "List of HMOs with Certificates of Authority"
+  documentDate?: string; // ISO date of source document
+  documentUrl?: string; // URL of authoritative source
+  snapshotHash?: string; // SHA-256 of snapshot file
+  snapshotPath?: string; // path in repo (reference/payer-sources/...)
 }
 
 /* ── Network IDs ────────────────────────────────────────────── */
@@ -54,16 +64,16 @@ export interface NetworkIds {
   availityPayerId?: string;
   officeAllyPayerId?: string;
   stediPayerId?: string;
-  cmsPayerId?: string;         // CMS PECOS / NPI crosswalk
-  naicCode?: string;           // NAIC company code
+  cmsPayerId?: string; // CMS PECOS / NPI crosswalk
+  naicCode?: string; // NAIC company code
   philhealthCode?: string;
-  apraCode?: string;           // APRA registration number
+  apraCode?: string; // APRA registration number
 }
 
 /* ── Canonical Directory Payer ──────────────────────────────── */
 
 export interface DirectoryPayer {
-  payerId: string;            // stable, format: "{CC}-{CODE}" e.g. "PH-MAXICARE"
+  payerId: string; // stable, format: "{CC}-{CODE}" e.g. "PH-MAXICARE"
   displayName: string;
   country: PayerCountry;
   payerType: PayerType;
@@ -78,11 +88,11 @@ export interface DirectoryPayer {
   status: PayerStatus;
 
   // Metadata
-  category?: string;          // commercial, government, hmo, etc.
+  category?: string; // commercial, government, hmo, etc.
   parentOrg?: string;
   aliases?: string[];
   notes?: string;
-  lastRefreshedAt?: string;   // ISO timestamp of last directory refresh
+  lastRefreshedAt?: string; // ISO timestamp of last directory refresh
 
   createdAt: string;
   updatedAt: string;
@@ -118,7 +128,7 @@ export interface PayerDiffEntry {
   payerId: string;
   displayName: string;
   change: 'added' | 'removed' | 'modified';
-  fields?: string[];          // which fields changed (for 'modified')
+  fields?: string[]; // which fields changed (for 'modified')
 }
 
 export interface DirectoryDiffResult {
@@ -151,7 +161,7 @@ export interface EnrollmentChecklist {
 
 export interface EnrollmentPacket {
   payerId: string;
-  networkId?: string;         // clearinghouse or network entity
+  networkId?: string; // clearinghouse or network entity
   orgIdentifiers: {
     npi?: string;
     taxId?: string;

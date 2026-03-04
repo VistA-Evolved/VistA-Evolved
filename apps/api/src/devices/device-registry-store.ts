@@ -12,8 +12,8 @@
  * 3. VistA Equipment file (File 6914) integration (future)
  */
 
-import * as crypto from "node:crypto";
-import { log } from "../lib/logger.js";
+import * as crypto from 'node:crypto';
+import { log } from '../lib/logger.js';
 import type {
   ManagedDevice,
   DeviceStatus,
@@ -23,7 +23,7 @@ import type {
   DeviceLocationMapping,
   DeviceAuditEntry,
   DeviceAuditAction,
-} from "./device-registry.types.js";
+} from './device-registry.types.js';
 
 // ── PG Write-Through (Phase 526 / W38) ────────────────────────────
 
@@ -42,8 +42,10 @@ export function initDeviceRegistryStoreRepo(repo: DeviceDbRepo): void {
 }
 
 function dbWarn(op: string, err: any): void {
-  if (process.env.NODE_ENV !== "test") {
-    log.warn(`[device-registry] DB ${op} failed (cache-only fallback)`, { err: err?.message ?? err });
+  if (process.env.NODE_ENV !== 'test') {
+    log.warn(`[device-registry] DB ${op} failed (cache-only fallback)`, {
+      err: err?.message ?? err,
+    });
   }
 }
 
@@ -51,13 +53,10 @@ function dbWarn(op: string, err: any): void {
 // Config
 // ---------------------------------------------------------------------------
 
-const MAX_DEVICES = parseInt(process.env.MAX_MANAGED_DEVICES || "5000", 10);
-const MAX_ASSOCIATIONS = parseInt(
-  process.env.MAX_DEVICE_ASSOCIATIONS || "10000",
-  10
-);
-const MAX_AUDIT = parseInt(process.env.MAX_DEVICE_AUDIT || "20000", 10);
-const DEFAULT_TENANT = "default";
+const MAX_DEVICES = parseInt(process.env.MAX_MANAGED_DEVICES || '5000', 10);
+const MAX_ASSOCIATIONS = parseInt(process.env.MAX_DEVICE_ASSOCIATIONS || '10000', 10);
+const MAX_AUDIT = parseInt(process.env.MAX_DEVICE_AUDIT || '20000', 10);
+const DEFAULT_TENANT = 'default';
 
 // ---------------------------------------------------------------------------
 // Stores
@@ -76,7 +75,7 @@ const serialIndex = new Map<string, string>();
 // ---------------------------------------------------------------------------
 
 function generateId(prefix: string): string {
-  return `${prefix}-${crypto.randomBytes(8).toString("hex")}`;
+  return `${prefix}-${crypto.randomBytes(8).toString('hex')}`;
 }
 
 function now(): string {
@@ -99,7 +98,7 @@ function appendAudit(
 ): void {
   if (auditLog.length >= MAX_AUDIT) auditLog.shift();
   auditLog.push({
-    id: generateId("da"),
+    id: generateId('da'),
     deviceId,
     action,
     actor,
@@ -131,12 +130,12 @@ export function registerDevice(opts: {
   // Serial uniqueness check
   const serialKey = `${tid}:${opts.serialNumber}`;
   if (serialIndex.has(serialKey)) {
-    return { error: "duplicate_serial" };
+    return { error: 'duplicate_serial' };
   }
 
   evictOldest(devices, MAX_DEVICES - 1);
 
-  const id = generateId("dev");
+  const id = generateId('dev');
   const ts = now();
   const device: ManagedDevice = {
     id,
@@ -148,7 +147,7 @@ export function registerDevice(opts: {
     deviceClass: opts.deviceClass,
     protocols: opts.protocols || [],
     gatewayId: opts.gatewayId,
-    status: "active",
+    status: 'active',
     firmwareVersion: opts.firmwareVersion,
     metadata: opts.metadata || {},
     createdAt: ts,
@@ -157,16 +156,25 @@ export function registerDevice(opts: {
 
   devices.set(id, device);
   serialIndex.set(serialKey, id);
-  appendAudit(id, "registered", opts.actor || "system", { name: opts.name }, tid);
+  appendAudit(id, 'registered', opts.actor || 'system', { name: opts.name }, tid);
 
   if (dbRepo) {
-    dbRepo.insertManagedDevice({
-      id, tenantId: tid, name: opts.name, manufacturer: opts.manufacturer,
-      model: opts.model, serialNumber: opts.serialNumber, deviceClass: opts.deviceClass,
-      protocols: opts.protocols || [], gatewayId: opts.gatewayId ?? null,
-      status: "active", firmwareVersion: opts.firmwareVersion ?? null,
-      metadata: opts.metadata || {},
-    }).catch((e: unknown) => dbWarn("insertManagedDevice", e));
+    dbRepo
+      .insertManagedDevice({
+        id,
+        tenantId: tid,
+        name: opts.name,
+        manufacturer: opts.manufacturer,
+        model: opts.model,
+        serialNumber: opts.serialNumber,
+        deviceClass: opts.deviceClass,
+        protocols: opts.protocols || [],
+        gatewayId: opts.gatewayId ?? null,
+        status: 'active',
+        firmwareVersion: opts.firmwareVersion ?? null,
+        metadata: opts.metadata || {},
+      })
+      .catch((e: unknown) => dbWarn('insertManagedDevice', e));
   }
 
   return device;
@@ -192,14 +200,10 @@ export function listDevices(opts?: {
   status?: DeviceStatus;
 }): ManagedDevice[] {
   let results = Array.from(devices.values());
-  if (opts?.tenantId)
-    results = results.filter((d) => d.tenantId === opts.tenantId);
-  if (opts?.gatewayId)
-    results = results.filter((d) => d.gatewayId === opts.gatewayId);
-  if (opts?.deviceClass)
-    results = results.filter((d) => d.deviceClass === opts.deviceClass);
-  if (opts?.status)
-    results = results.filter((d) => d.status === opts.status);
+  if (opts?.tenantId) results = results.filter((d) => d.tenantId === opts.tenantId);
+  if (opts?.gatewayId) results = results.filter((d) => d.gatewayId === opts.gatewayId);
+  if (opts?.deviceClass) results = results.filter((d) => d.deviceClass === opts.deviceClass);
+  if (opts?.status) results = results.filter((d) => d.status === opts.status);
   return results;
 }
 
@@ -208,27 +212,27 @@ export function updateDevice(
   updates: Partial<
     Pick<
       ManagedDevice,
-      | "name"
-      | "manufacturer"
-      | "model"
-      | "firmwareVersion"
-      | "protocols"
-      | "gatewayId"
-      | "metadata"
-      | "status"
-      | "lastCalibration"
-      | "nextCalibration"
+      | 'name'
+      | 'manufacturer'
+      | 'model'
+      | 'firmwareVersion'
+      | 'protocols'
+      | 'gatewayId'
+      | 'metadata'
+      | 'status'
+      | 'lastCalibration'
+      | 'nextCalibration'
     >
   >,
-  actor: string = "system"
+  actor: string = 'system'
 ): ManagedDevice | undefined {
   const dev = devices.get(id);
   if (!dev) return undefined;
   Object.assign(dev, updates, { updatedAt: now() });
-  appendAudit(id, "updated", actor, updates, dev.tenantId);
+  appendAudit(id, 'updated', actor, updates, dev.tenantId);
 
   if (dbRepo) {
-    dbRepo.updateManagedDevice(id, updates).catch((e: unknown) => dbWarn("updateManagedDevice", e));
+    dbRepo.updateManagedDevice(id, updates).catch((e: unknown) => dbWarn('updateManagedDevice', e));
   }
 
   return dev;
@@ -237,41 +241,42 @@ export function updateDevice(
 export function changeDeviceStatus(
   id: string,
   status: DeviceStatus,
-  actor: string = "system"
+  actor: string = 'system'
 ): ManagedDevice | undefined {
   const dev = devices.get(id);
   if (!dev) return undefined;
   const prev = dev.status;
   dev.status = status;
   dev.updatedAt = now();
-  appendAudit(id, "status_changed", actor, { from: prev, to: status }, dev.tenantId);
+  appendAudit(id, 'status_changed', actor, { from: prev, to: status }, dev.tenantId);
 
   if (dbRepo) {
-    dbRepo.updateManagedDevice(id, { status }).catch((e: unknown) => dbWarn("updateManagedDevice/status", e));
+    dbRepo
+      .updateManagedDevice(id, { status })
+      .catch((e: unknown) => dbWarn('updateManagedDevice/status', e));
   }
 
   return dev;
 }
 
-export function decommissionDevice(
-  id: string,
-  actor: string = "system"
-): boolean {
+export function decommissionDevice(id: string, actor: string = 'system'): boolean {
   const dev = devices.get(id);
   if (!dev) return false;
-  dev.status = "decommissioned";
+  dev.status = 'decommissioned';
   dev.updatedAt = now();
   // End all active associations
   for (const [, assoc] of associations) {
-    if (assoc.deviceId === id && assoc.status === "active") {
-      assoc.status = "ended";
+    if (assoc.deviceId === id && assoc.status === 'active') {
+      assoc.status = 'ended';
       assoc.endedAt = now();
     }
   }
-  appendAudit(id, "decommissioned", actor, {}, dev.tenantId);
+  appendAudit(id, 'decommissioned', actor, {}, dev.tenantId);
 
   if (dbRepo) {
-    dbRepo.updateManagedDevice(id, { status: "decommissioned" }).catch((e: unknown) => dbWarn("updateManagedDevice/decommission", e));
+    dbRepo
+      .updateManagedDevice(id, { status: 'decommissioned' })
+      .catch((e: unknown) => dbWarn('updateManagedDevice/decommission', e));
   }
 
   return true;
@@ -290,23 +295,20 @@ export function associatePatient(opts: {
   tenantId?: string;
 }): DevicePatientAssociation | { error: string } {
   const dev = devices.get(opts.deviceId);
-  if (!dev) return { error: "device_not_found" };
-  if (dev.status === "decommissioned") return { error: "device_decommissioned" };
+  if (!dev) return { error: 'device_not_found' };
+  if (dev.status === 'decommissioned') return { error: 'device_decommissioned' };
 
   // End any existing active association for this device
   for (const [, assoc] of associations) {
-    if (
-      assoc.deviceId === opts.deviceId &&
-      assoc.status === "active"
-    ) {
-      assoc.status = "ended";
+    if (assoc.deviceId === opts.deviceId && assoc.status === 'active') {
+      assoc.status = 'ended';
       assoc.endedAt = now();
     }
   }
 
   evictOldest(associations, MAX_ASSOCIATIONS - 1);
 
-  const id = generateId("assoc");
+  const id = generateId('assoc');
   const tid = opts.tenantId || dev.tenantId;
   const assoc: DevicePatientAssociation = {
     id,
@@ -314,7 +316,7 @@ export function associatePatient(opts: {
     patientDfn: opts.patientDfn,
     location: opts.location,
     facilityCode: opts.facilityCode,
-    status: "active",
+    status: 'active',
     associatedBy: opts.associatedBy,
     startedAt: now(),
     tenantId: tid,
@@ -323,37 +325,42 @@ export function associatePatient(opts: {
   associations.set(id, assoc);
   appendAudit(
     opts.deviceId,
-    "associated",
+    'associated',
     opts.associatedBy,
     { patientDfn: opts.patientDfn, location: opts.location },
     tid
   );
 
   if (dbRepo) {
-    dbRepo.insertDevicePatientAssociation({
-      id, tenantId: tid, deviceId: opts.deviceId, patientDfn: opts.patientDfn,
-      location: opts.location ?? null, facilityCode: opts.facilityCode ?? null,
-      status: "active", associatedBy: opts.associatedBy, startedAt: assoc.startedAt,
-    }).catch((e: unknown) => dbWarn("insertDevicePatientAssociation", e));
+    dbRepo
+      .insertDevicePatientAssociation({
+        id,
+        tenantId: tid,
+        deviceId: opts.deviceId,
+        patientDfn: opts.patientDfn,
+        location: opts.location ?? null,
+        facilityCode: opts.facilityCode ?? null,
+        status: 'active',
+        associatedBy: opts.associatedBy,
+        startedAt: assoc.startedAt,
+      })
+      .catch((e: unknown) => dbWarn('insertDevicePatientAssociation', e));
   }
 
   return assoc;
 }
 
-export function disassociatePatient(
-  deviceId: string,
-  actor: string = "system"
-): boolean {
+export function disassociatePatient(deviceId: string, actor: string = 'system'): boolean {
   let found = false;
   for (const [, assoc] of associations) {
-    if (assoc.deviceId === deviceId && assoc.status === "active") {
-      assoc.status = "ended";
+    if (assoc.deviceId === deviceId && assoc.status === 'active') {
+      assoc.status = 'ended';
       assoc.endedAt = now();
       found = true;
       const dev = devices.get(deviceId);
       appendAudit(
         deviceId,
-        "disassociated",
+        'disassociated',
         actor,
         { patientDfn: assoc.patientDfn },
         dev?.tenantId || DEFAULT_TENANT
@@ -363,11 +370,9 @@ export function disassociatePatient(
   return found;
 }
 
-export function getActiveAssociation(
-  deviceId: string
-): DevicePatientAssociation | undefined {
+export function getActiveAssociation(deviceId: string): DevicePatientAssociation | undefined {
   for (const [, assoc] of associations) {
-    if (assoc.deviceId === deviceId && assoc.status === "active") {
+    if (assoc.deviceId === deviceId && assoc.status === 'active') {
       return assoc;
     }
   }
@@ -381,14 +386,10 @@ export function listAssociations(opts?: {
   tenantId?: string;
 }): DevicePatientAssociation[] {
   let results = Array.from(associations.values());
-  if (opts?.deviceId)
-    results = results.filter((a) => a.deviceId === opts.deviceId);
-  if (opts?.patientDfn)
-    results = results.filter((a) => a.patientDfn === opts.patientDfn);
-  if (opts?.status)
-    results = results.filter((a) => a.status === opts.status);
-  if (opts?.tenantId)
-    results = results.filter((a) => a.tenantId === opts.tenantId);
+  if (opts?.deviceId) results = results.filter((a) => a.deviceId === opts.deviceId);
+  if (opts?.patientDfn) results = results.filter((a) => a.patientDfn === opts.patientDfn);
+  if (opts?.status) results = results.filter((a) => a.status === opts.status);
+  if (opts?.tenantId) results = results.filter((a) => a.tenantId === opts.tenantId);
   return results;
 }
 
@@ -405,7 +406,7 @@ export function mapDeviceLocation(opts: {
   tenantId?: string;
 }): DeviceLocationMapping | { error: string } {
   const dev = devices.get(opts.deviceId);
-  if (!dev) return { error: "device_not_found" };
+  if (!dev) return { error: 'device_not_found' };
 
   // Deactivate any existing location mapping for this device
   for (const [, m] of locationMappings) {
@@ -414,7 +415,7 @@ export function mapDeviceLocation(opts: {
     }
   }
 
-  const id = generateId("loc");
+  const id = generateId('loc');
   const tid = opts.tenantId || dev.tenantId;
   const mapping: DeviceLocationMapping = {
     id,
@@ -431,26 +432,31 @@ export function mapDeviceLocation(opts: {
   locationMappings.set(id, mapping);
   appendAudit(
     opts.deviceId,
-    "location_mapped",
-    "system",
+    'location_mapped',
+    'system',
     { ward: opts.ward, room: opts.room, bed: opts.bed },
     tid
   );
 
   if (dbRepo) {
-    dbRepo.insertDeviceLocationMapping({
-      id, tenantId: tid, deviceId: opts.deviceId,
-      facilityCode: opts.facilityCode, ward: opts.ward,
-      room: opts.room, bed: opts.bed, active: true,
-    }).catch((e: unknown) => dbWarn("insertDeviceLocationMapping", e));
+    dbRepo
+      .insertDeviceLocationMapping({
+        id,
+        tenantId: tid,
+        deviceId: opts.deviceId,
+        facilityCode: opts.facilityCode,
+        ward: opts.ward,
+        room: opts.room,
+        bed: opts.bed,
+        active: true,
+      })
+      .catch((e: unknown) => dbWarn('insertDeviceLocationMapping', e));
   }
 
   return mapping;
 }
 
-export function getDeviceLocation(
-  deviceId: string
-): DeviceLocationMapping | undefined {
+export function getDeviceLocation(deviceId: string): DeviceLocationMapping | undefined {
   for (const [, m] of locationMappings) {
     if (m.deviceId === deviceId && m.active) return m;
   }
@@ -464,10 +470,8 @@ export function listLocationMappings(opts?: {
 }): DeviceLocationMapping[] {
   let results = Array.from(locationMappings.values()).filter((m) => m.active);
   if (opts?.ward) results = results.filter((m) => m.ward === opts.ward);
-  if (opts?.facilityCode)
-    results = results.filter((m) => m.facilityCode === opts.facilityCode);
-  if (opts?.tenantId)
-    results = results.filter((m) => m.tenantId === opts.tenantId);
+  if (opts?.facilityCode) results = results.filter((m) => m.facilityCode === opts.facilityCode);
+  if (opts?.tenantId) results = results.filter((m) => m.tenantId === opts.tenantId);
   return results;
 }
 
@@ -475,13 +479,8 @@ export function listLocationMappings(opts?: {
 // Audit
 // ---------------------------------------------------------------------------
 
-export function getDeviceAudit(
-  deviceId?: string,
-  limit: number = 100
-): DeviceAuditEntry[] {
-  const filtered = deviceId
-    ? auditLog.filter((e) => e.deviceId === deviceId)
-    : auditLog;
+export function getDeviceAudit(deviceId?: string, limit: number = 100): DeviceAuditEntry[] {
+  const filtered = deviceId ? auditLog.filter((e) => e.deviceId === deviceId) : auditLog;
   return filtered.slice(-limit);
 }
 

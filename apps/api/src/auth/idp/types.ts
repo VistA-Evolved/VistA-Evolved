@@ -13,7 +13,7 @@
  *   3. All providers produce the same IdentityResult shape.
  */
 
-import type { UserRole } from "../session-store.js";
+import type { UserRole } from '../session-store.js';
 
 /* ------------------------------------------------------------------ */
 /* Identity Result (canonical output from any IdP)                     */
@@ -57,7 +57,7 @@ export interface IdentityResult {
 /* IdP Types                                                           */
 /* ------------------------------------------------------------------ */
 
-export type IdpType = "vista" | "oidc" | "saml-broker";
+export type IdpType = 'vista' | 'oidc' | 'saml-broker';
 
 /* ------------------------------------------------------------------ */
 /* Provider Interface                                                  */
@@ -147,14 +147,14 @@ export interface VistaBindingResult {
  * When app auth is via OIDC/SAML, clinical actions still require a VistA
  * RPC session. This status tracks whether that binding is complete.
  */
-export type VistaBindingStatus = "not-required" | "pending" | "bound" | "failed";
+export type VistaBindingStatus = 'not-required' | 'pending' | 'bound' | 'failed';
 
 /* ------------------------------------------------------------------ */
 /* Provider Configuration                                              */
 /* ------------------------------------------------------------------ */
 
 export interface OidcIdpConfig {
-  type: "oidc";
+  type: 'oidc';
   enabled: boolean;
   issuer: string;
   clientId: string;
@@ -172,7 +172,7 @@ export interface OidcIdpConfig {
 }
 
 export interface SamlBrokerConfig {
-  type: "saml-broker";
+  type: 'saml-broker';
   enabled: boolean;
   /** The OIDC issuer of the broker (e.g., Keycloak) that handles SAML upstream */
   brokerIssuer: string;
@@ -184,7 +184,7 @@ export interface SamlBrokerConfig {
 }
 
 export interface VistaDirectConfig {
-  type: "vista";
+  type: 'vista';
   enabled: boolean;
   /** VistA host for RPC broker */
   vistaHost: string;

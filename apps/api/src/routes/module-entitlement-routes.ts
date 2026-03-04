@@ -14,9 +14,9 @@
  * All routes require admin auth (enforced by AUTH_RULES in security.ts).
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { requireSession } from "../auth/auth-routes.js";
-import { log } from "../lib/logger.js";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
+import { log } from '../lib/logger.js';
 import {
   listModuleCatalog,
   listTenantModules,
@@ -31,21 +31,15 @@ import {
   listModuleAuditLog,
   countModuleAuditLog,
   isModuleEnabledForTenant,
-} from "../platform/pg/repo/module-repo.js";
-import {
-  getActiveSkuProfile,
-  getModuleDefinitions,
-} from "../modules/module-registry.js";
+} from '../platform/pg/repo/module-repo.js';
+import { getActiveSkuProfile, getModuleDefinitions } from '../modules/module-registry.js';
 
-export default async function moduleEntitlementRoutes(
-  server: FastifyInstance
-): Promise<void> {
-
+export default async function moduleEntitlementRoutes(server: FastifyInstance): Promise<void> {
   // Scoped error handler -- catch DB errors and return clean 500 responses
   server.setErrorHandler((error, _request, reply) => {
     const msg = error instanceof Error ? error.message : String(error);
-    log.error("Module entitlement route error", { error: msg });
-    reply.code(500).send({ ok: false, error: "Internal server error" });
+    log.error('Module entitlement route error', { error: msg });
+    reply.code(500).send({ ok: false, error: 'Internal server error' });
   });
 
   /* ---------------------------------------------------------------- */
@@ -53,16 +47,13 @@ export default async function moduleEntitlementRoutes(
   /* ---------------------------------------------------------------- */
 
   /** GET /admin/modules/catalog — Full module catalog from DB. */
-  server.get(
-    "/admin/modules/catalog",
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = await requireSession(request, reply);
-      if (!session) return;
+  server.get('/admin/modules/catalog', async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
 
-      const catalog = await listModuleCatalog();
-      return { ok: true, modules: catalog, count: catalog.length };
-    }
-  );
+    const catalog = await listModuleCatalog();
+    return { ok: true, modules: catalog, count: catalog.length };
+  });
 
   /* ---------------------------------------------------------------- */
   /* Tenant Module Entitlements                                        */
@@ -70,13 +61,12 @@ export default async function moduleEntitlementRoutes(
 
   /** GET /admin/modules/entitlements — List module entitlements for a tenant. */
   server.get(
-    "/admin/modules/entitlements",
+    '/admin/modules/entitlements',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
       if (!session) return;
 
-      const tenantId =
-        (request.query as any)?.tenantId || session.tenantId || "default";
+      const tenantId = (request.query as any)?.tenantId || session.tenantId || 'default';
       const entitlements = await listTenantModules(tenantId);
       const enabledIds = await getEnabledModuleIds(tenantId);
 
@@ -91,24 +81,24 @@ export default async function moduleEntitlementRoutes(
 
   /** POST /admin/modules/entitlements — Toggle a module for a tenant. */
   server.post(
-    "/admin/modules/entitlements",
+    '/admin/modules/entitlements',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
       if (!session) return;
 
       const body = (request.body as any) || {};
       const {
-        tenantId = session.tenantId || "default",
+        tenantId = session.tenantId || 'default',
         moduleId,
         enabled,
-        planTier = "base",
+        planTier = 'base',
         reason,
       } = body;
 
-      if (!moduleId || typeof enabled !== "boolean") {
+      if (!moduleId || typeof enabled !== 'boolean') {
         return reply.code(400).send({
           ok: false,
-          error: "moduleId (string) and enabled (boolean) are required",
+          error: 'moduleId (string) and enabled (boolean) are required',
         });
       }
 
@@ -133,28 +123,22 @@ export default async function moduleEntitlementRoutes(
       const before = await isModuleEnabledForTenant(tenantId, moduleId);
 
       // Apply change
-      const result = await setModuleEnabled(
-        tenantId,
-        moduleId,
-        enabled,
-        session.duz,
-        planTier
-      );
+      const result = await setModuleEnabled(tenantId, moduleId, enabled, session.duz, planTier);
 
       // Audit log
       await appendModuleAudit({
         tenantId,
         actorId: session.duz,
-        actorType: "user",
-        entityType: "module",
+        actorType: 'user',
+        entityType: 'module',
         entityId: moduleId,
-        action: enabled ? "enable" : "disable",
+        action: enabled ? 'enable' : 'disable',
         beforeJson: JSON.stringify({ enabled: before }),
         afterJson: JSON.stringify({ enabled, planTier }),
         reason: reason || null,
       });
 
-      log.info("Module entitlement changed", {
+      log.info('Module entitlement changed', {
         tenantId,
         moduleId,
         enabled,
@@ -167,13 +151,13 @@ export default async function moduleEntitlementRoutes(
 
   /** POST /admin/modules/entitlements/seed — Seed baseline modules for a tenant. */
   server.post(
-    "/admin/modules/entitlements/seed",
+    '/admin/modules/entitlements/seed',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
       if (!session) return;
 
       const body = (request.body as any) || {};
-      const tenantId = body.tenantId || session.tenantId || "default";
+      const tenantId = body.tenantId || session.tenantId || 'default';
 
       // If caller provides explicit modules list, use it; otherwise read from SKU config
       let skuModules: string[];
@@ -190,13 +174,13 @@ export default async function moduleEntitlementRoutes(
       await appendModuleAudit({
         tenantId,
         actorId: session.duz,
-        actorType: "user",
-        entityType: "entitlement",
-        entityId: "baseline-seed",
-        action: "create",
+        actorType: 'user',
+        entityType: 'entitlement',
+        entityId: 'baseline-seed',
+        action: 'create',
         beforeJson: null,
         afterJson: JSON.stringify({ modules: skuModules, seeded }),
-        reason: "Baseline seed from SKU profile",
+        reason: 'Baseline seed from SKU profile',
       });
 
       return {
@@ -214,13 +198,12 @@ export default async function moduleEntitlementRoutes(
 
   /** GET /admin/modules/feature-flags — List feature flags for a tenant. */
   server.get(
-    "/admin/modules/feature-flags",
+    '/admin/modules/feature-flags',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
       if (!session) return;
 
-      const tenantId =
-        (request.query as any)?.tenantId || session.tenantId || "default";
+      const tenantId = (request.query as any)?.tenantId || session.tenantId || 'default';
       const flags = await listTenantFeatureFlags(tenantId);
 
       return { ok: true, tenantId, flags, count: flags.length };
@@ -229,14 +212,14 @@ export default async function moduleEntitlementRoutes(
 
   /** POST /admin/modules/feature-flags — Upsert a feature flag. */
   server.post(
-    "/admin/modules/feature-flags",
+    '/admin/modules/feature-flags',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
       if (!session) return;
 
       const body = (request.body as any) || {};
       const {
-        tenantId = session.tenantId || "default",
+        tenantId = session.tenantId || 'default',
         flagKey,
         flagValue,
         moduleId,
@@ -249,27 +232,23 @@ export default async function moduleEntitlementRoutes(
       if (!flagKey || flagValue === undefined) {
         return reply.code(400).send({
           ok: false,
-          error: "flagKey (string) and flagValue (string) are required",
+          error: 'flagKey (string) and flagValue (string) are required',
         });
       }
 
       // Validate rolloutPercentage range
       if (
         rolloutPercentage !== undefined &&
-        (typeof rolloutPercentage !== "number" ||
-          rolloutPercentage < 0 ||
-          rolloutPercentage > 100)
+        (typeof rolloutPercentage !== 'number' || rolloutPercentage < 0 || rolloutPercentage > 100)
       ) {
         return reply.code(400).send({
           ok: false,
-          error: "rolloutPercentage must be an integer 0-100",
+          error: 'rolloutPercentage must be an integer 0-100',
         });
       }
 
       // Capture before state
-      const before = (await listTenantFeatureFlags(tenantId)).find(
-        (f) => f.flagKey === flagKey
-      );
+      const before = (await listTenantFeatureFlags(tenantId)).find((f) => f.flagKey === flagKey);
 
       const result = await upsertTenantFeatureFlag(
         tenantId,
@@ -285,10 +264,10 @@ export default async function moduleEntitlementRoutes(
       await appendModuleAudit({
         tenantId,
         actorId: session.duz,
-        actorType: "user",
-        entityType: "feature_flag",
+        actorType: 'user',
+        entityType: 'feature_flag',
         entityId: flagKey,
-        action: before ? "update" : "create",
+        action: before ? 'update' : 'create',
         beforeJson: before ? JSON.stringify(before) : null,
         afterJson: JSON.stringify(result),
         reason: reason || null,
@@ -300,28 +279,22 @@ export default async function moduleEntitlementRoutes(
 
   /** DELETE /admin/modules/feature-flags — Remove a feature flag. */
   server.delete(
-    "/admin/modules/feature-flags",
+    '/admin/modules/feature-flags',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
       if (!session) return;
 
       const body = (request.body as any) || {};
-      const {
-        tenantId = session.tenantId || "default",
-        flagKey,
-        reason,
-      } = body;
+      const { tenantId = session.tenantId || 'default', flagKey, reason } = body;
 
       if (!flagKey) {
         return reply.code(400).send({
           ok: false,
-          error: "flagKey is required",
+          error: 'flagKey is required',
         });
       }
 
-      const before = (await listTenantFeatureFlags(tenantId)).find(
-        (f) => f.flagKey === flagKey
-      );
+      const before = (await listTenantFeatureFlags(tenantId)).find((f) => f.flagKey === flagKey);
 
       const deleted = await deleteTenantFeatureFlag(tenantId, flagKey);
 
@@ -329,10 +302,10 @@ export default async function moduleEntitlementRoutes(
         await appendModuleAudit({
           tenantId,
           actorId: session.duz,
-          actorType: "user",
-          entityType: "feature_flag",
+          actorType: 'user',
+          entityType: 'feature_flag',
           entityId: flagKey,
-          action: "delete",
+          action: 'delete',
           beforeJson: before ? JSON.stringify(before) : null,
           afterJson: null,
           reason: reason || null,
@@ -348,28 +321,25 @@ export default async function moduleEntitlementRoutes(
   /* ---------------------------------------------------------------- */
 
   /** GET /admin/modules/audit — Module audit trail for a tenant. */
-  server.get(
-    "/admin/modules/audit",
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = await requireSession(request, reply);
-      if (!session) return;
+  server.get('/admin/modules/audit', async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
 
-      const query = (request.query as any) || {};
-      const tenantId = query.tenantId || session.tenantId || "default";
-      const limit = Math.min(parseInt(query.limit) || 100, 500);
-      const offset = parseInt(query.offset) || 0;
+    const query = (request.query as any) || {};
+    const tenantId = query.tenantId || session.tenantId || 'default';
+    const limit = Math.min(parseInt(query.limit) || 100, 500);
+    const offset = parseInt(query.offset) || 0;
 
-      const entries = await listModuleAuditLog(tenantId, limit, offset);
-      const total = await countModuleAuditLog(tenantId);
+    const entries = await listModuleAuditLog(tenantId, limit, offset);
+    const total = await countModuleAuditLog(tenantId);
 
-      return {
-        ok: true,
-        tenantId,
-        entries,
-        total,
-        limit,
-        offset,
-      };
-    }
-  );
+    return {
+      ok: true,
+      tenantId,
+      entries,
+      total,
+      limit,
+      offset,
+    };
+  });
 }

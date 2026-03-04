@@ -1,6 +1,7 @@
 # Runbook: CPRS Parity Closure — Phase 14
 
 ## Overview
+
 Phase 14 introduces the VistA Compatibility Layer that detects RPC availability
 at runtime and provides structured fallback behavior. This eliminates WARNs
 from the verifier for known sandbox-missing RPCs and enables write-back
@@ -9,6 +10,7 @@ operations with server-side draft storage.
 ## Architecture
 
 ### RPC Capability Discovery
+
 ```
 Client → GET /vista/rpc-capabilities → API → VistA (probe each RPC)
                                         ↓
@@ -18,6 +20,7 @@ Client → GET /vista/rpc-capabilities → API → VistA (probe each RPC)
 ```
 
 ### Write-back Flow
+
 ```
 Client → POST /vista/orders/sign → API
                                     ↓
@@ -32,44 +35,44 @@ Client → POST /vista/orders/sign → API
 
 ## New Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | /vista/rpc-capabilities | RPC availability map |
-| POST | /vista/orders/sign | Sign order (real or draft) |
-| POST | /vista/orders/release | Release signed order |
-| POST | /vista/labs/ack | Acknowledge lab result |
-| POST | /vista/consults/create | Create consult request |
-| POST | /vista/surgery/create | Create surgery record |
-| POST | /vista/problems/save | Add/edit problem |
-| GET | /vista/drafts | List pending server-side drafts |
-| GET | /vista/drafts/stats | Draft count summary |
-| GET | /vista/write-audit | Write-back audit trail |
-| GET | /vista/imaging/status | Imaging viewer availability |
-| GET | /vista/imaging/report | Radiology report text |
+| Method | Path                    | Description                     |
+| ------ | ----------------------- | ------------------------------- |
+| GET    | /vista/rpc-capabilities | RPC availability map            |
+| POST   | /vista/orders/sign      | Sign order (real or draft)      |
+| POST   | /vista/orders/release   | Release signed order            |
+| POST   | /vista/labs/ack         | Acknowledge lab result          |
+| POST   | /vista/consults/create  | Create consult request          |
+| POST   | /vista/surgery/create   | Create surgery record           |
+| POST   | /vista/problems/save    | Add/edit problem                |
+| GET    | /vista/drafts           | List pending server-side drafts |
+| GET    | /vista/drafts/stats     | Draft count summary             |
+| GET    | /vista/write-audit      | Write-back audit trail          |
+| GET    | /vista/imaging/status   | Imaging viewer availability     |
+| GET    | /vista/imaging/report   | Radiology report text           |
 
 ## New Files
 
-| File | Purpose |
-|------|---------|
+| File                                  | Purpose                             |
+| ------------------------------------- | ----------------------------------- |
 | apps/api/src/vista/rpcCapabilities.ts | Capability discovery engine + cache |
-| apps/api/src/routes/capabilities.ts | GET /vista/rpc-capabilities route |
-| apps/api/src/routes/write-backs.ts | Write-back endpoints + draft store |
-| apps/api/src/routes/imaging.ts | Imaging viewer integration |
+| apps/api/src/routes/capabilities.ts   | GET /vista/rpc-capabilities route   |
+| apps/api/src/routes/write-backs.ts    | Write-back endpoints + draft store  |
+| apps/api/src/routes/imaging.ts        | Imaging viewer integration          |
 
 ## Modified Files
 
-| File | Change |
-|------|--------|
-| apps/api/src/index.ts | Import + register new route plugins |
-| apps/api/src/routes/inbox.ts | Use capability layer for inbox RPCs |
-| apps/web/src/stores/data-cache.tsx | Wire signOrder/releaseOrder/ackLabs to API |
-| apps/web/src/components/cprs/panels/LabsPanel.tsx | Server-side ack |
+| File                                              | Change                                     |
+| ------------------------------------------------- | ------------------------------------------ |
+| apps/api/src/index.ts                             | Import + register new route plugins        |
+| apps/api/src/routes/inbox.ts                      | Use capability layer for inbox RPCs        |
+| apps/web/src/stores/data-cache.tsx                | Wire signOrder/releaseOrder/ackLabs to API |
+| apps/web/src/components/cprs/panels/LabsPanel.tsx | Server-side ack                            |
 
 ## Configuration
 
-| Env Variable | Default | Description |
-|-------------|---------|-------------|
-| VISTA_CAPABILITY_TTL_MS | 300000 | Cache TTL for RPC capabilities (ms) |
+| Env Variable            | Default | Description                         |
+| ----------------------- | ------- | ----------------------------------- |
+| VISTA_CAPABILITY_TTL_MS | 300000  | Cache TTL for RPC capabilities (ms) |
 
 ## Verification
 

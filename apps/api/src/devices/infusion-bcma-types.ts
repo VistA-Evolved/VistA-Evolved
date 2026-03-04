@@ -11,7 +11,7 @@
 // BCMA Right-6 Check Types
 // ---------------------------------------------------------------------------
 
-export type BcmaCheckStatus = "pass" | "fail" | "warning" | "pending" | "override";
+export type BcmaCheckStatus = 'pass' | 'fail' | 'warning' | 'pending' | 'override';
 
 export interface BcmaRight6Result {
   /** Right patient — barcode scan matches ordered patient DFN */
@@ -36,7 +36,7 @@ export interface BcmaCheckFailure {
   check: string;
   expected: string;
   actual: string;
-  severity: "error" | "warning";
+  severity: 'error' | 'warning';
 }
 
 // ---------------------------------------------------------------------------
@@ -88,18 +88,18 @@ export interface PatientScan {
 // ---------------------------------------------------------------------------
 
 export type PumpEventType =
-  | "infusion_start"
-  | "infusion_stop"
-  | "rate_change"
-  | "bolus"
-  | "alarm"
-  | "occlusion"
-  | "air_in_line"
-  | "battery_low"
-  | "infusion_complete"
-  | "bag_change";
+  | 'infusion_start'
+  | 'infusion_stop'
+  | 'rate_change'
+  | 'bolus'
+  | 'alarm'
+  | 'occlusion'
+  | 'air_in_line'
+  | 'battery_low'
+  | 'infusion_complete'
+  | 'bag_change';
 
-export type PumpChannel = "A" | "B" | "C" | "primary" | "secondary" | "piggyback";
+export type PumpChannel = 'A' | 'B' | 'C' | 'primary' | 'secondary' | 'piggyback';
 
 export interface InfusionPumpEvent {
   /** Event ID */
@@ -144,7 +144,13 @@ export interface InfusionPumpEvent {
 // BCMA Administration Session
 // ---------------------------------------------------------------------------
 
-export type BcmaSessionStatus = "scanning" | "verified" | "administered" | "refused" | "held" | "error";
+export type BcmaSessionStatus =
+  | 'scanning'
+  | 'verified'
+  | 'administered'
+  | 'refused'
+  | 'held'
+  | 'error';
 
 export interface BcmaSession {
   /** Session ID */

@@ -15,6 +15,7 @@
 ## Evidence Paths
 
 All under `/artifacts/verify/phase64/`:
+
 - `scope.json`
 - `sanity/*.txt`
 - `nomock-scan.txt`

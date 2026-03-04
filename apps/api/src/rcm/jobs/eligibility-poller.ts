@@ -12,21 +12,17 @@
  * only eligibility status, payer code, and timestamps).
  */
 
-import type { RcmJobType } from "./queue.js";
-import {
-  getPayerAdapterForMode,
-  type EligibilityResponse,
-} from "../adapters/payer-adapter.js";
-import { log } from "../../lib/logger.js";
+import type { RcmJobType } from './queue.js';
+import { getPayerAdapterForMode, type EligibilityResponse } from '../adapters/payer-adapter.js';
+import { log } from '../../lib/logger.js';
 
 /* ── Config ────────────────────────────────────────────────── */
 
-const ELIGIBILITY_RATE_LIMIT =
-  parseInt(process.env.RCM_ELIGIBILITY_RATE_LIMIT ?? "60", 10) || 60;
+const ELIGIBILITY_RATE_LIMIT = parseInt(process.env.RCM_ELIGIBILITY_RATE_LIMIT ?? '60', 10) || 60;
 const ELIGIBILITY_INTERVAL_MS =
-  parseInt(process.env.RCM_ELIGIBILITY_INTERVAL_MS ?? "300000", 10) || 300_000;
+  parseInt(process.env.RCM_ELIGIBILITY_INTERVAL_MS ?? '300000', 10) || 300_000;
 
-export const ELIGIBILITY_JOB_TYPE: RcmJobType = "ELIGIBILITY_CHECK";
+export const ELIGIBILITY_JOB_TYPE: RcmJobType = 'ELIGIBILITY_CHECK';
 
 /* ── Result Store (ring buffer, no PHI) ────────────────────── */
 
@@ -36,7 +32,7 @@ export interface EligibilityPollResult {
   payerCode: string;
   integrationMode: string;
   eligible: boolean | null;
-  status: "completed" | "failed" | "pending";
+  status: 'completed' | 'failed' | 'pending';
   errorMessage?: string;
   pollTimestamp: string;
   responseMs: number;
@@ -51,7 +47,7 @@ export function getEligibilityResults(): readonly EligibilityPollResult[] {
 
 export function getEligibilityResultsSlice(
   offset: number,
-  limit: number,
+  limit: number
 ): { items: EligibilityPollResult[]; total: number } {
   return {
     items: results.slice(offset, offset + limit),
@@ -70,13 +66,14 @@ function pushResult(r: EligibilityPollResult): void {
  * Process a single eligibility check job.
  * Called by the PollingScheduler when a job of type ELIGIBILITY_CHECK is dequeued.
  */
-export async function handleEligibilityJob(
-  job: { id: string; payload: Record<string, unknown> },
-): Promise<Record<string, unknown>> {
+export async function handleEligibilityJob(job: {
+  id: string;
+  payload: Record<string, unknown>;
+}): Promise<Record<string, unknown>> {
   const {
-    claimId = "unknown",
-    payerCode = "unknown",
-    integrationMode = "sandbox",
+    claimId = 'unknown',
+    payerCode = 'unknown',
+    integrationMode = 'sandbox',
     patientDfn,
     subscriberId,
   } = job.payload as {
@@ -102,7 +99,7 @@ export async function handleEligibilityJob(
       const result: EligibilityPollResult = {
         ...resultBase,
         eligible: null,
-        status: "failed",
+        status: 'failed',
         errorMessage: `No payer adapter for mode: ${integrationMode}`,
         responseMs: Date.now() - start,
       };
@@ -112,15 +109,15 @@ export async function handleEligibilityJob(
 
     const response: EligibilityResponse = await adapter.checkEligibility({
       payerId: String(payerCode),
-      patientDfn: String(patientDfn ?? ""),
-      subscriberId: String(subscriberId ?? ""),
-      tenantId: "default",
+      patientDfn: String(patientDfn ?? ''),
+      subscriberId: String(subscriberId ?? ''),
+      tenantId: 'default',
     });
 
     const result: EligibilityPollResult = {
       ...resultBase,
       eligible: response.eligible,
-      status: "completed",
+      status: 'completed',
       responseMs: Date.now() - start,
     };
     pushResult(result);
@@ -137,7 +134,7 @@ export async function handleEligibilityJob(
     const result: EligibilityPollResult = {
       ...resultBase,
       eligible: null,
-      status: "failed",
+      status: 'failed',
       errorMessage: errMsg,
       responseMs: Date.now() - start,
     };
@@ -161,10 +158,10 @@ export async function handleEligibilityJob(
 export function getEligibilityPollerConfig() {
   return {
     type: ELIGIBILITY_JOB_TYPE,
-    label: "Eligibility Check Poller",
+    label: 'Eligibility Check Poller',
     intervalMs: ELIGIBILITY_INTERVAL_MS,
     rateLimitPerHour: ELIGIBILITY_RATE_LIMIT,
-    enabled: (process.env.RCM_ELIGIBILITY_POLLING ?? "false") === "true",
+    enabled: (process.env.RCM_ELIGIBILITY_POLLING ?? 'false') === 'true',
     handler: handleEligibilityJob,
   };
 }

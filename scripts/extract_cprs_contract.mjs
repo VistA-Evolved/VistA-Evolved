@@ -43,7 +43,7 @@ function run() {
   const menusContract = JSON.parse(readFileSync(menusPath, 'utf-8'));
 
   // ---- Extract main tabs ----
-  const mainTabs = (tabsContract.mainTabs || []).map(t => ({
+  const mainTabs = (tabsContract.mainTabs || []).map((t) => ({
     constant: t.constant,
     label: t.label,
     id: t.id,
@@ -52,11 +52,11 @@ function run() {
   }));
 
   // ---- Extract all RPCs with reference summary ----
-  const rpcs = (rpcCatalog.rpcs || []).map(r => ({
+  const rpcs = (rpcCatalog.rpcs || []).map((r) => ({
     name: r.name,
     isContext: r.isContext || false,
     referenceCount: (r.references || []).length,
-    sourceFiles: [...new Set((r.references || []).map(ref => ref.file))],
+    sourceFiles: [...new Set((r.references || []).map((ref) => ref.file))],
   }));
 
   // ---- Extract screen -> RPC mapping (simplified) ----
@@ -73,7 +73,7 @@ function run() {
   }
 
   // ---- Extract forms summary ----
-  const forms = (formsContract.forms || []).map(f => ({
+  const forms = (formsContract.forms || []).map((f) => ({
     file: f.file,
     formName: f.formName,
     formClass: f.formClass,
@@ -84,12 +84,12 @@ function run() {
   // ---- Extract frame menu items (fFrame.dfm) ----
   // Also extract menus from all .dfm sources (various forms)
   const allMenuSources = menusContract.mainMenus || [];
-  const frameMenu = allMenuSources.find(m =>
+  const frameMenu = allMenuSources.find((m) =>
     (m.file || m.sourceFile || '').includes('fFrame.dfm')
   );
   const menuItems = [];
   function extractMenuItems(items, path = '', sourceFile = '') {
-    for (const item of (items || [])) {
+    for (const item of items || []) {
       const label = (item.caption || item.name || '').replace(/&/g, '');
       if (label === '-' || !label) continue;
       const fullPath = path ? `${path} > ${label}` : label;
@@ -169,7 +169,9 @@ function run() {
   const outPath = join(OUTPUT_DIR, 'cprs-contract.extracted.json');
   writeFileSync(outPath, JSON.stringify(output, null, 2) + '\n');
   console.log(`[extract] Wrote ${outPath}`);
-  console.log(`[extract] Summary: ${output.summary.mainTabCount} tabs, ${output.summary.rpcCount} RPCs, ${output.summary.screenCount} screens, ${output.summary.formCount} forms, ${output.summary.menuItemCount} menu items, ${output.summary.uiActionCount} UI actions`);
+  console.log(
+    `[extract] Summary: ${output.summary.mainTabCount} tabs, ${output.summary.rpcCount} RPCs, ${output.summary.screenCount} screens, ${output.summary.formCount} forms, ${output.summary.menuItemCount} menu items, ${output.summary.uiActionCount} UI actions`
+  );
 }
 
 run();

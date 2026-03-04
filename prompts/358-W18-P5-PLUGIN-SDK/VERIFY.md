@@ -1,6 +1,7 @@
 # Phase 358 — W18-P5: VERIFY
 
 ## Gates
+
 1. Plugin SDK service exists
 2. Manifest schema defined
 3. SHA-256 signing verification works

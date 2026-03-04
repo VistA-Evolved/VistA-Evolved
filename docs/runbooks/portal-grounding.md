@@ -26,6 +26,7 @@ npx tsx --env-file=.env.local src/index.ts
 ```
 
 Verify portal routes are registered:
+
 ```powershell
 curl.exe -s http://localhost:3001/portal/auth/session | ConvertFrom-Json
 # Expected: {"ok":false,"error":"Not authenticated"}
@@ -47,22 +48,22 @@ pnpm dev
 
 ### Dev Mode Patient Map
 
-| Username | Password | Patient | DFN |
-|----------|----------|---------|-----|
+| Username | Password | Patient      | DFN    |
+| -------- | -------- | ------------ | ------ |
 | patient1 | patient1 | CARTER,DAVID | 100022 |
-| patient2 | patient2 | SMITH,JOHN | 100033 |
+| patient2 | patient2 | SMITH,JOHN   | 100033 |
 
 ## 5. Navigate the Portal
 
-| Page | URL | Data Source |
-|------|-----|-------------|
-| Dashboard | `/dashboard` | Summary cards |
-| Health Records | `/dashboard/health` | VistA RPCs (skeleton) |
-| Medications | `/dashboard/medications` | VistA RPCs (skeleton) |
-| Messages | `/dashboard/messages` | Placeholder |
-| Appointments | `/dashboard/appointments` | Placeholder |
-| Telehealth | `/dashboard/telehealth` | Placeholder |
-| Profile | `/dashboard/profile` | VistA RPCs (skeleton) |
+| Page           | URL                       | Data Source           |
+| -------------- | ------------------------- | --------------------- |
+| Dashboard      | `/dashboard`              | Summary cards         |
+| Health Records | `/dashboard/health`       | VistA RPCs (skeleton) |
+| Medications    | `/dashboard/medications`  | VistA RPCs (skeleton) |
+| Messages       | `/dashboard/messages`     | Placeholder           |
+| Appointments   | `/dashboard/appointments` | Placeholder           |
+| Telehealth     | `/dashboard/telehealth`   | Placeholder           |
+| Profile        | `/dashboard/profile`      | VistA RPCs (skeleton) |
 
 ## 6. Test Portal Auth API
 
@@ -97,6 +98,7 @@ Invoke-WebRequest -Uri http://localhost:3001/portal/auth/logout `
 ```
 
 All gates should PASS:
+
 - No AIOTP code in source tree
 - No VA terminology in portal UI strings
 - THIRD_PARTY_NOTICES.md exists
@@ -115,6 +117,7 @@ pnpm -r build
 
 Portal sessions (`portal_session` cookie) are completely separate from
 clinician sessions (`ehr_session` cookie). They use different:
+
 - Cookie names
 - Session stores (in-memory Map each)
 - TTL settings (portal: 30min absolute, 15min idle)
@@ -142,6 +145,7 @@ Patient Browser
 
 The portal contract (`docs/contracts/portal/portal-contract-v1.yaml`)
 defines future modules:
+
 - Secure messaging (SM API integration)
 - Appointment scheduling (SD RPCs)
 - Medication refill requests (provider approval workflow)

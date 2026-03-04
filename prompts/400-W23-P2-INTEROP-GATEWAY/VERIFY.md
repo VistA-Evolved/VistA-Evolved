@@ -1,6 +1,7 @@
 # 400-99-VERIFY — Interop Gateway Layer
 
 ## Verification Gates
+
 1. `types.ts` exports GatewayChannel, TransformPipeline, GatewayTransaction, MediatorConfig
 2. `gateway-store.ts` has FIFO eviction with `>=`, all CRUD functions
 3. `gateway-routes.ts` registers 18+ endpoints with requireSession

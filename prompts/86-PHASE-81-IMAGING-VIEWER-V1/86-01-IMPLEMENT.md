@@ -1,7 +1,9 @@
 # Phase 81 — Imaging Viewer v1 (VistA Metadata + DICOM Posture)
 
 ## User Request
+
 Deliver a credible imaging workflow:
+
 - Imaging studies list per patient (VistA metadata grounded)
 - Imaging report viewer (text reports)
 - Image viewer posture (DICOM viewer if configured; else integration instructions)
@@ -9,7 +11,9 @@ Deliver a credible imaging workflow:
 ## Implementation Steps
 
 ### Step 0 — Inventory
+
 Existing imaging infrastructure is extensive (Phases 14D, 18C, 22, 23, 24, 37C):
+
 - `apps/api/src/services/imaging-service.ts` — VistA MAG4 + Orthanc fallback study list, report, viewer URL
 - `apps/api/src/routes/imaging.ts` — Phase 14D: `/vista/imaging/status`, `/vista/imaging/report`
 - `apps/api/src/routes/imaging-proxy.ts` — Phase 22+24: DICOMweb proxy, viewer redirect
@@ -18,6 +22,7 @@ Existing imaging infrastructure is extensive (Phases 14D, 18C, 22, 23, 24, 37C):
 - `apps/api/src/adapters/imaging/` — Interface + VistA + Stub adapters
 
 ### Step 1 — New Phase 81 Files
+
 1. `scripts/imaging/buildImagingPlan.ts` — Plan artifact builder
 2. `apps/api/src/routes/imaging-viewer.ts` — Clean Phase 81 route file with 3 endpoints:
    - `GET /imaging/studies/:dfn` — Study list (delegates to imaging-service logic)
@@ -31,6 +36,7 @@ Existing imaging infrastructure is extensive (Phases 14D, 18C, 22, 23, 24, 37C):
 5. `scripts/verify-phase81-imaging-viewer.ps1` — Verifier
 
 ### Step 2 — Verification Gates
+
 - Source files exist
 - Route handlers registered
 - VistA RPCs referenced (MAG4, RA DETAILED REPORT, TIU)
@@ -40,6 +46,7 @@ Existing imaging infrastructure is extensive (Phases 14D, 18C, 22, 23, 24, 37C):
 - No PHI leakage
 
 ### Files Touched
+
 - `apps/api/src/routes/imaging-viewer.ts` (NEW)
 - `apps/api/src/index.ts` (ADD registration)
 - `apps/web/src/components/cprs/panels/ImagingPanel.tsx` (ENHANCE)

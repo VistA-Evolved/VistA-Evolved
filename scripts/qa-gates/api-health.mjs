@@ -6,7 +6,7 @@
  * Exits 0 if healthy, 1 if not.
  */
 
-const API = process.env.API_URL || "http://localhost:3001";
+const API = process.env.API_URL || 'http://localhost:3001';
 
 async function checkHealth() {
   try {
@@ -16,7 +16,7 @@ async function checkHealth() {
       console.log(`API healthy: version=${data.version}, uptime=${Math.round(data.uptime)}s`);
       return true;
     }
-    console.error("API returned ok=false:", JSON.stringify(data));
+    console.error('API returned ok=false:', JSON.stringify(data));
     return false;
   } catch (err) {
     console.error(`API not reachable at ${API}/health: ${err.message}`);

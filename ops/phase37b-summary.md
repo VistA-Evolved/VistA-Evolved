@@ -67,6 +67,7 @@ npx playwright test
 ## Verifier Output
 
 Phase 37B verifier covers:
+
 - G37B-0: Full regression (Phase 37 delegation)
 - G37B-1: Prompt ordering integrity
 - G37B-2: CPRS contract extraction (7 gates)

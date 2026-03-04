@@ -3,6 +3,7 @@
 ## What Changed
 
 ### New VistA Routine: ZVEMSGR.m
+
 - 5 RPC entrypoints for MailMan integration:
   - **FOLDERS**: Lists baskets (IN, WASTE, custom) with total/new counts
   - **LIST**: Lists messages in a basket with metadata
@@ -14,10 +15,12 @@
 - Access control: validates DUZ on every call, checks mailbox ownership
 
 ### RPC Registration
+
 - 5 RPCs registered: ZVE MAIL FOLDERS (3113), LIST (3114), GET (3115), SEND (3116), MANAGE (3117)
 - All added to OR CPRS GUI CHART context (sub-IENs 2155-2159)
 
 ### API Layer Rewrite
+
 - `secure-messaging.ts` rewritten from Phase 64 local-store to VistA-backed
 - DSIC SEND MAIL MSG dependency removed (routine missing in sandbox)
 - New endpoints: `/messaging/folders`, `/messaging/mail-list`, `/messaging/mail-get`, `/messaging/mail-manage`
@@ -25,6 +28,7 @@
 - `messaging.manage` added to immutable audit action type
 
 ### UI Updates
+
 - Clinician messages page shows VistA folder selector
 - Primary path: VistA MailMan messages with IEN, source indicator
 - Fallback: local cache when VistA unavailable

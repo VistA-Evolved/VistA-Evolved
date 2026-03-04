@@ -17,8 +17,8 @@
 
 ## RPC Mapping
 
-| Intent | RPCs | Lock? | Notes |
-|--------|------|-------|-------|
-| PLACE_MED_ORDER | ORWDX LOCK, SAVE, AUTOACK, UNLOCK | Yes | AUTOACK non-fatal |
-| DISCONTINUE_MED_ORDER | ORWDX LOCK, ORWDXA DC, UNLOCK | Yes | Same as orders DC |
-| ADMINISTER_MED | PSB MED LOG | N/A | Integration-pending |
+| Intent                | RPCs                              | Lock? | Notes               |
+| --------------------- | --------------------------------- | ----- | ------------------- |
+| PLACE_MED_ORDER       | ORWDX LOCK, SAVE, AUTOACK, UNLOCK | Yes   | AUTOACK non-fatal   |
+| DISCONTINUE_MED_ORDER | ORWDX LOCK, ORWDXA DC, UNLOCK     | Yes   | Same as orders DC   |
+| ADMINISTER_MED        | PSB MED LOG                       | N/A   | Integration-pending |

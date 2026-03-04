@@ -35,7 +35,7 @@ coverage and correctness gates.
    for 20 panels.
 5. **Registry fixes** — Added 7 missing RPCs to `rpcRegistry.ts`
    (ORWLRR INTERIMG, ORWPT ID INFO, ORWPT16 ID INFO, 4 scheduling RPCs)
-   + corresponding exceptions.
+   - corresponding exceptions.
 6. **CI gate** — Created `scripts/verify-phase106-vista-alignment.ps1`
    (8 gates, 23 checks). Updated `verify-latest.ps1` to delegate.
 7. **UI banner** — Created `VistaAlignmentBanner.tsx` (dev-mode only,
@@ -48,6 +48,7 @@ coverage and correctness gates.
 ```
 
 All 23 gates PASS:
+
 - Gate 1: All 4 artifacts exist
 - Gate 2: JSON valid, liveWired=76, CPRS=975, Vivian=3747
 - Gate 3: 151 callRpc invocations, ALL reference registered RPCs

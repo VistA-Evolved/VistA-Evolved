@@ -8,7 +8,7 @@ Stop ad-hoc auth bugs. Align with VistA's security model where possible.
 
 A) **Auth Flow Review** — Inventory current login/session model and gaps. Ensure no credentials stored in localStorage; session tokens httpOnly cookies preferred.
 
-B) **VistA Signon (VistA-first)** — Use existing XUS SIGNON / XUSRB* patterns already in codebase. Ensure all auth-related RPC calls go through rpcRegistry and Vivian. Add capabilities detection to handle sandbox differences gracefully.
+B) **VistA Signon (VistA-first)** — Use existing XUS SIGNON / XUSRB\* patterns already in codebase. Ensure all auth-related RPC calls go through rpcRegistry and Vivian. Add capabilities detection to handle sandbox differences gracefully.
 
 C) **RBAC Model** — Define roles (clinician, nurse, billing, admin, patient). Implement role checks on RCM routes, gateway readiness pages, admin refresh endpoints. Add principle of least privilege docs.
 
@@ -27,7 +27,7 @@ E) **Docs** — docs/security/auth-and-rbac.md, docs/runbooks/auth-troubleshooti
 7. Add CSRF token (double-submit cookie) for state-changing requests
 8. Enhance login rate-limit: per-account lockout + exponential backoff
 9. Verify auth RPCs in rpcRegistry (XUS SIGNON SETUP, XUS AV CODE, etc.)
-10. Create docs/security/auth-and-rbac.md 
+10. Create docs/security/auth-and-rbac.md
 11. Create docs/runbooks/auth-troubleshooting.md
 12. tsc clean, vitest, PHI scan, verify-latest
 

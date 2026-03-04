@@ -15,32 +15,35 @@
 
 The safety layer blocks any request or response that falls into these categories:
 
-| Category | Examples |
-|----------|----------|
-| `diagnosis` | "The patient likely has...", "Differential includes..." |
-| `treatment_plan` | "Recommended treatment is...", "Start the patient on..." |
-| `prescribing_guidance` | "Prescribe 10mg...", "Change dose to..." |
-| `autonomous_ordering` | "Order a CBC", "Schedule MRI" |
-| `prognosis` | "Expected outcome is...", "5-year survival..." |
-| `differential_diagnosis` | "Consider ruling out...", "DDx includes..." |
+| Category                 | Examples                                                 |
+| ------------------------ | -------------------------------------------------------- |
+| `diagnosis`              | "The patient likely has...", "Differential includes..."  |
+| `treatment_plan`         | "Recommended treatment is...", "Start the patient on..." |
+| `prescribing_guidance`   | "Prescribe 10mg...", "Change dose to..."                 |
+| `autonomous_ordering`    | "Order a CBC", "Schedule MRI"                            |
+| `prognosis`              | "Expected outcome is...", "5-year survival..."           |
+| `differential_diagnosis` | "Consider ruling out...", "DDx includes..."              |
 
 These are enforced at both the request (pre-model) and response (post-model) stages.
 
 ## 3. Approved Use Cases
 
 ### 3.1 Intake Summary (Clinician)
+
 - **Input:** Patient DFN + chart context (medications, allergies, problems, vitals)
 - **Output:** Structured note draft with citations to source data
 - **Flow:** Generate → Clinician reviews → Confirm/Reject → (if confirmed) Copy to notes
 - **Guardrail:** Output explicitly states "AI-generated draft — requires clinician review"
 
 ### 3.2 Lab Education (Patient Portal)
+
 - **Input:** Lab name + optional value
 - **Output:** Plain-language explanation of what the lab measures and what the value means
 - **Flow:** Patient enters term → AI explains → Disclaimer displayed
 - **Guardrail:** "This is for educational purposes only and does not replace medical advice"
 
 ### 3.3 Portal Search (Patient Portal)
+
 - **Input:** Natural language question about portal navigation
 - **Output:** Directions to the correct portal page/feature
 - **Flow:** Patient asks → AI responds with portal navigation help
@@ -54,6 +57,7 @@ These are enforced at both the request (pre-model) and response (post-model) sta
 4. **Capability Mapping:** Each model declares which use cases it supports.
 
 Current approved models:
+
 - `stub-v1` — Development stub (always available, no external calls)
 
 ## 5. Prompt Template Governance
@@ -67,18 +71,19 @@ Current approved models:
 
 Facilities can configure AI behavior via `/ai/policy` (admin only):
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| `aiEnabled` | `true` | Master kill switch |
-| `allowedUseCases` | all 3 | Which use cases are permitted |
-| `redactPhi` | `true` | Force PHI redaction for all models |
-| `cloudModelsAllowed` | `false` | Permit cloud-hosted models |
-| `maxRequestsPerUserPerHour` | `30` | Per-user rate limit |
-| `requireClinicianConfirmation` | `true` | Make confirm/reject mandatory |
+| Setting                        | Default | Description                        |
+| ------------------------------ | ------- | ---------------------------------- |
+| `aiEnabled`                    | `true`  | Master kill switch                 |
+| `allowedUseCases`              | all 3   | Which use cases are permitted      |
+| `redactPhi`                    | `true`  | Force PHI redaction for all models |
+| `cloudModelsAllowed`           | `false` | Permit cloud-hosted models         |
+| `maxRequestsPerUserPerHour`    | `30`    | Per-user rate limit                |
+| `requireClinicianConfirmation` | `true`  | Make confirm/reject mandatory      |
 
 ## 7. Audit Trail
 
 Every AI interaction produces an `AIAuditEvent` with:
+
 - Hashed user and patient IDs (PHI-safe)
 - Use case, model ID, prompt hash
 - Request/response content (full, for compliance)

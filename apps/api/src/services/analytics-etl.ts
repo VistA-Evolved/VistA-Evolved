@@ -148,7 +148,7 @@ class PgSimpleClient {
 
   /** Wait until ReadyForQuery ('Z') message. */
   private async waitForReady(): Promise<void> {
-    // eslint-disable-next-line no-constant-condition
+     
     while (true) {
       const msg = await this.nextMessage();
       if (msg.type === "Z") return;
@@ -226,7 +226,7 @@ class PgSimpleClient {
 
     let error: string | undefined;
     let tag: string | undefined;
-    // eslint-disable-next-line no-constant-condition
+     
     while (true) {
       const resp = await this.nextMessage();
       if (resp.type === "C") {

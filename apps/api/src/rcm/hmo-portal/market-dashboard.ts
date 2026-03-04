@@ -7,10 +7,10 @@
  * This is a read-only diagnostic service for admin dashboards.
  */
 
-import { generateHmoManifest, type PayerTypeClassification } from "./adapter-manifest.js";
-import { getContractingDashboard, type ContractingDashboard } from "./contracting-hub.js";
-import { LOA_TEMPLATES } from "./loa-templates.js";
-import { CLAIM_PACKET_CONFIGS } from "./claim-packet-config.js";
+import { generateHmoManifest, type PayerTypeClassification } from './adapter-manifest.js';
+import { getContractingDashboard, type ContractingDashboard } from './contracting-hub.js';
+import { LOA_TEMPLATES } from './loa-templates.js';
+import { CLAIM_PACKET_CONFIGS } from './claim-packet-config.js';
 
 /* ── Market Summary Types ───────────────────────────────────── */
 
@@ -34,7 +34,7 @@ export interface MarketSummary {
 
   /** Capability matrix coverage */
   capabilities: {
-    totalCapabilitySlots: number;     // total HMOs * 7 core keys
+    totalCapabilitySlots: number; // total HMOs * 7 core keys
     knownSlots: number;
     unknownSlots: number;
     coveragePct: number;
@@ -84,13 +84,12 @@ export async function generateMarketSummary(tenantId?: string): Promise<MarketSu
   }
 
   // Integration stats
-  const portalAdapterAvailable = manifest.byAdapterStatus["portal_adapter_available"] ?? 0;
-  const genericManualAdapter = manifest.byAdapterStatus["generic_manual_adapter"] ?? 0;
-  const manualOnly = manifest.byAdapterStatus["manual_only"] ?? 0;
+  const portalAdapterAvailable = manifest.byAdapterStatus['portal_adapter_available'] ?? 0;
+  const genericManualAdapter = manifest.byAdapterStatus['generic_manual_adapter'] ?? 0;
+  const manualOnly = manifest.byAdapterStatus['manual_only'] ?? 0;
   const totalWithAdapter = portalAdapterAvailable + genericManualAdapter;
-  const adapterCoveragePct = manifest.totalHmos > 0
-    ? Math.round((totalWithAdapter / manifest.totalHmos) * 100)
-    : 0;
+  const adapterCoveragePct =
+    manifest.totalHmos > 0 ? Math.round((totalWithAdapter / manifest.totalHmos) * 100) : 0;
 
   // Capability coverage
   const totalCapabilitySlots = manifest.totalHmos * 7; // 7 core keys
@@ -101,15 +100,23 @@ export async function generateMarketSummary(tenantId?: string): Promise<MarketSu
 
   // LOA template stats
   const loaTemplateValues = Object.values(LOA_TEMPLATES);
-  const withPortalSubmission = loaTemplateValues.filter(t => t.submissionMethod === "portal").length;
-  const withManualSubmission = loaTemplateValues.filter(t => t.submissionMethod === "manual").length;
-  const withTurnaroundEstimate = loaTemplateValues.filter(t => t.defaultTurnaroundDays !== null).length;
+  const withPortalSubmission = loaTemplateValues.filter(
+    (t) => t.submissionMethod === 'portal'
+  ).length;
+  const withManualSubmission = loaTemplateValues.filter(
+    (t) => t.submissionMethod === 'manual'
+  ).length;
+  const withTurnaroundEstimate = loaTemplateValues.filter(
+    (t) => t.defaultTurnaroundDays !== null
+  ).length;
 
   // Claim packet stats
   const claimConfigValues = Object.values(CLAIM_PACKET_CONFIGS);
-  const withPortalUpload = claimConfigValues.filter(c => c.submissionFormat === "portal_upload").length;
-  const withFilingDeadline = claimConfigValues.filter(c => c.filingDeadlineDays !== null).length;
-  const withAppealWindow = claimConfigValues.filter(c => c.appealWindowDays !== null).length;
+  const withPortalUpload = claimConfigValues.filter(
+    (c) => c.submissionFormat === 'portal_upload'
+  ).length;
+  const withFilingDeadline = claimConfigValues.filter((c) => c.filingDeadlineDays !== null).length;
+  const withAppealWindow = claimConfigValues.filter((c) => c.appealWindowDays !== null).length;
 
   return {
     generatedAt: new Date().toISOString(),
@@ -126,9 +133,8 @@ export async function generateMarketSummary(tenantId?: string): Promise<MarketSu
       totalCapabilitySlots,
       knownSlots,
       unknownSlots: totalCapabilitySlots - knownSlots,
-      coveragePct: totalCapabilitySlots > 0
-        ? Math.round((knownSlots / totalCapabilitySlots) * 100)
-        : 0,
+      coveragePct:
+        totalCapabilitySlots > 0 ? Math.round((knownSlots / totalCapabilitySlots) * 100) : 0,
     },
     loaTemplates: {
       total: loaTemplateValues.length,
@@ -145,9 +151,10 @@ export async function generateMarketSummary(tenantId?: string): Promise<MarketSu
     contracting: {
       totalTasks: contracting.totalTasks,
       completedTasks: contracting.byStatus.done ?? 0,
-      progressPct: contracting.totalTasks > 0
-        ? Math.round(((contracting.byStatus.done ?? 0) / contracting.totalTasks) * 100)
-        : 0,
+      progressPct:
+        contracting.totalTasks > 0
+          ? Math.round(((contracting.byStatus.done ?? 0) / contracting.totalTasks) * 100)
+          : 0,
       byStatus: contracting.byStatus,
     },
   };

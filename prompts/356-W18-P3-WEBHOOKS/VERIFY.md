@@ -1,6 +1,7 @@
 # Phase 356 — W18-P3: VERIFY
 
 ## Gates
+
 1. Webhook service file exists
 2. HMAC signing function exported
 3. Retry logic with exponential backoff

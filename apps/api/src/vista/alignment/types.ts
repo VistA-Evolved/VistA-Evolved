@@ -62,12 +62,12 @@ export interface SnapshotComparison {
 /*  RPC Tripwire: detect unexpected behavior changes                   */
 /* ------------------------------------------------------------------ */
 export type TripwireCondition =
-  | "response_empty"
-  | "response_error"
-  | "timeout"
-  | "schema_mismatch"
-  | "new_rpc_unregistered"
-  | "registry_drift";
+  | 'response_empty'
+  | 'response_error'
+  | 'timeout'
+  | 'schema_mismatch'
+  | 'new_rpc_unregistered'
+  | 'registry_drift';
 
 export interface RpcTripwire {
   id: string;
@@ -111,7 +111,7 @@ export interface PanelAlignmentScore {
   /** Are all routes functional? */
   routesHealthy: boolean;
   /** VistA integration depth: "full" | "partial" | "stub" | "none" */
-  depth: "full" | "partial" | "stub" | "none";
+  depth: 'full' | 'partial' | 'stub' | 'none';
   /** List of VistA files referenced */
   vistaFiles: string[];
   /** Tags from the wiring metadata */
@@ -145,7 +145,7 @@ export interface AlignmentScore {
 /* ------------------------------------------------------------------ */
 /*  Alignment Verification Gate                                        */
 /* ------------------------------------------------------------------ */
-export type GateStatus = "pass" | "fail" | "warn" | "skip";
+export type GateStatus = 'pass' | 'fail' | 'warn' | 'skip';
 
 export interface AlignmentGate {
   id: string;

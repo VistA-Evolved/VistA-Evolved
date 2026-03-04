@@ -1,6 +1,7 @@
 # Phase 340 — W16-P4 — Fine-Grained ABAC — NOTES
 
 ## Key Decisions
+
 - **ABAC is post-RBAC**: RBAC must allow first, then ABAC adds restrictions
 - **Composable rules**: AND/OR combinators for complex conditions
 - **Structured deny**: includes `{ code, reason, remediation, attributes }` for UI

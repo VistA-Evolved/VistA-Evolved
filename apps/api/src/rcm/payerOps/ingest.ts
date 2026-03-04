@@ -16,9 +16,9 @@
  * A future enhancement can add HTTP fetching + PDF/XLSX parsing.
  */
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   createSource,
   upsertRegistryPayer,
@@ -26,25 +26,24 @@ import {
   recordSnapshot,
   type PayerSourceType,
   type RegistryDiffEntry,
-} from "./registry-store.js";
-import { initPayerCapabilities } from "./capability-matrix.js";
+} from './registry-store.js';
+import { initPayerCapabilities } from './capability-matrix.js';
 
-const __dirname_resolved = typeof __dirname !== "undefined"
-  ? __dirname
-  : dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = join(__dirname_resolved, "..", "..", "..", "..", "..");
+const __dirname_resolved =
+  typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
+const REPO_ROOT = join(__dirname_resolved, '..', '..', '..', '..', '..');
 
 /* ── Snapshot Data Paths ─────────────────────────────────────── */
 
-const HMO_SNAPSHOT_PATH = "data/regulator-snapshots/ph-ic-hmo-list.json";
-const BROKER_SNAPSHOT_PATH = "data/regulator-snapshots/ph-ic-hmo-broker-list.json";
+const HMO_SNAPSHOT_PATH = 'data/regulator-snapshots/ph-ic-hmo-list.json';
+const BROKER_SNAPSHOT_PATH = 'data/regulator-snapshots/ph-ic-hmo-broker-list.json';
 
 /* ── Snapshot Entry Types ────────────────────────────────────── */
 
 interface HMOEntry {
   name: string;
   licenseNo?: string;
-  caNumber?: string;       // Certificate of Authority number
+  caNumber?: string; // Certificate of Authority number
   address?: string;
   status?: string;
 }
@@ -55,7 +54,7 @@ interface BrokerEntry {
   caNumber?: string;
   address?: string;
   status?: string;
-  associatedHmos?: string[];  // names of HMOs they broker for
+  associatedHmos?: string[]; // names of HMOs they broker for
 }
 
 interface SnapshotFile<T> {
@@ -72,7 +71,7 @@ function loadSnapshotFile<T>(relativePath: string): SnapshotFile<T> | null {
   const fullPath = join(REPO_ROOT, relativePath);
   if (!existsSync(fullPath)) return null;
   try {
-    const raw = readFileSync(fullPath, "utf-8");
+    const raw = readFileSync(fullPath, 'utf-8');
     // Strip BOM (PowerShell UTF8 BOM issue - BUG-064)
     const clean = raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw;
     return JSON.parse(clean);
@@ -84,11 +83,11 @@ function loadSnapshotFile<T>(relativePath: string): SnapshotFile<T> | null {
 /* ── Artifact Storage ────────────────────────────────────────── */
 
 function storeArtifact(content: string, filename: string): string {
-  const date = new Date().toISOString().split("T")[0];
-  const dir = join(REPO_ROOT, "artifacts", "regulator", date);
+  const date = new Date().toISOString().split('T')[0];
+  const dir = join(REPO_ROOT, 'artifacts', 'regulator', date);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
   const path = join(dir, filename);
-  writeFileSync(path, content, "utf-8");
+  writeFileSync(path, content, 'utf-8');
   return `artifacts/regulator/${date}/${filename}`;
 }
 
@@ -113,8 +112,8 @@ export function ingestHMOList(): IngestResult {
   if (!snapshot) {
     return {
       ok: false,
-      sourceType: "ic_hmo_list",
-      sourceId: "",
+      sourceType: 'ic_hmo_list',
+      sourceId: '',
       version: 0,
       payersIngested: 0,
       newPayers: 0,
@@ -125,18 +124,18 @@ export function ingestHMOList(): IngestResult {
   }
 
   const rawContent = JSON.stringify(snapshot);
-  const artifactPath = storeArtifact(rawContent, "ph-ic-hmo-list.json");
+  const artifactPath = storeArtifact(rawContent, 'ph-ic-hmo-list.json');
 
   // Get previous payers for diff
-  const prevPayers = listRegistryPayers({ type: "hmo", country: "PH" });
-  const prevNames = new Set(prevPayers.map(p => p.canonicalName.toLowerCase()));
+  const prevPayers = listRegistryPayers({ type: 'hmo', country: 'PH' });
+  const prevNames = new Set(prevPayers.map((p) => p.canonicalName.toLowerCase()));
 
   // Create source record
   const source = createSource({
-    name: snapshot.source || "Insurance Commission - List of HMOs with CA",
-    sourceType: "ic_hmo_list",
-    url: snapshot.sourceUrl || "https://www.insurance.gov.ph/list-of-hmos/",
-    asOfDate: snapshot.asOfDate || new Date().toISOString().split("T")[0],
+    name: snapshot.source || 'Insurance Commission - List of HMOs with CA',
+    sourceType: 'ic_hmo_list',
+    url: snapshot.sourceUrl || 'https://www.insurance.gov.ph/list-of-hmos/',
+    asOfDate: snapshot.asOfDate || new Date().toISOString().split('T')[0],
     content: rawContent,
     recordCount: snapshot.entries.length,
     rawArtifactPath: artifactPath,
@@ -144,18 +143,18 @@ export function ingestHMOList(): IngestResult {
 
   // Always add PhilHealth as government payer
   const { payer: philhealthPayer, isNew: philhealthNew } = upsertRegistryPayer({
-    canonicalName: "Philippine Health Insurance Corporation (PhilHealth)",
-    type: "government",
-    regulatorRef: "RA 7875",
-    status: "active",
-    country: "PH",
+    canonicalName: 'Philippine Health Insurance Corporation (PhilHealth)',
+    type: 'government',
+    regulatorRef: 'RA 7875',
+    status: 'active',
+    country: 'PH',
     sourceId: source.id,
-    aliases: ["PhilHealth", "PHIC"],
+    aliases: ['PhilHealth', 'PHIC'],
   });
 
   // Initialize capability matrix for PhilHealth when newly created
   if (philhealthNew) {
-    initPayerCapabilities(philhealthPayer.id, philhealthPayer.canonicalName, "system:ingest");
+    initPayerCapabilities(philhealthPayer.id, philhealthPayer.canonicalName, 'system:ingest');
   }
 
   let newCount = philhealthNew ? 1 : 0;
@@ -166,28 +165,28 @@ export function ingestHMOList(): IngestResult {
   // Upsert each HMO
   for (const entry of snapshot.entries) {
     if (!entry.name?.trim()) {
-      errors.push("Skipped entry with empty name");
+      errors.push('Skipped entry with empty name');
       continue;
     }
 
     const { payer, isNew } = upsertRegistryPayer({
       canonicalName: entry.name.trim(),
-      type: "hmo",
+      type: 'hmo',
       regulatorRef: entry.caNumber || entry.licenseNo,
-      status: entry.status === "inactive" ? "inactive" : "active",
-      country: "PH",
+      status: entry.status === 'inactive' ? 'inactive' : 'active',
+      country: 'PH',
       sourceId: source.id,
     });
 
     // Initialize capability matrix for new payers
     if (isNew) {
-      initPayerCapabilities(payer.id, payer.canonicalName, "system:ingest");
+      initPayerCapabilities(payer.id, payer.canonicalName, 'system:ingest');
     }
 
     newNames.add(payer.canonicalName.toLowerCase());
     if (isNew) {
       newCount++;
-      diff.push({ payerName: payer.canonicalName, change: "added" });
+      diff.push({ payerName: payer.canonicalName, change: 'added' });
     } else {
       updatedCount++;
     }
@@ -197,8 +196,10 @@ export function ingestHMOList(): IngestResult {
   for (const prevName of prevNames) {
     if (!newNames.has(prevName)) {
       diff.push({
-        payerName: prevPayers.find(p => p.canonicalName.toLowerCase() === prevName)?.canonicalName ?? prevName,
-        change: "removed",
+        payerName:
+          prevPayers.find((p) => p.canonicalName.toLowerCase() === prevName)?.canonicalName ??
+          prevName,
+        change: 'removed',
       });
     }
   }
@@ -206,7 +207,7 @@ export function ingestHMOList(): IngestResult {
   // Record snapshot
   recordSnapshot({
     sourceId: source.id,
-    sourceType: "ic_hmo_list",
+    sourceType: 'ic_hmo_list',
     version: source.version,
     asOfDate: source.asOfDate,
     fetchedAt: source.fetchedAt,
@@ -216,7 +217,7 @@ export function ingestHMOList(): IngestResult {
 
   return {
     ok: true,
-    sourceType: "ic_hmo_list",
+    sourceType: 'ic_hmo_list',
     sourceId: source.id,
     version: source.version,
     payersIngested: snapshot.entries.length + 1,
@@ -236,8 +237,8 @@ export function ingestHMOBrokerList(): IngestResult {
   if (!snapshot) {
     return {
       ok: false,
-      sourceType: "ic_hmo_broker_list",
-      sourceId: "",
+      sourceType: 'ic_hmo_broker_list',
+      sourceId: '',
       version: 0,
       payersIngested: 0,
       newPayers: 0,
@@ -248,16 +249,16 @@ export function ingestHMOBrokerList(): IngestResult {
   }
 
   const rawContent = JSON.stringify(snapshot);
-  const artifactPath = storeArtifact(rawContent, "ph-ic-hmo-broker-list.json");
+  const artifactPath = storeArtifact(rawContent, 'ph-ic-hmo-broker-list.json');
 
-  const prevBrokers = listRegistryPayers({ type: "hmo_broker", country: "PH" });
-  const prevNames = new Set(prevBrokers.map(p => p.canonicalName.toLowerCase()));
+  const prevBrokers = listRegistryPayers({ type: 'hmo_broker', country: 'PH' });
+  const prevNames = new Set(prevBrokers.map((p) => p.canonicalName.toLowerCase()));
 
   const source = createSource({
-    name: snapshot.source || "Insurance Commission - List of HMO Brokers with CA",
-    sourceType: "ic_hmo_broker_list",
-    url: snapshot.sourceUrl || "https://www.insurance.gov.ph/list-of-hmo-brokers/",
-    asOfDate: snapshot.asOfDate || new Date().toISOString().split("T")[0],
+    name: snapshot.source || 'Insurance Commission - List of HMO Brokers with CA',
+    sourceType: 'ic_hmo_broker_list',
+    url: snapshot.sourceUrl || 'https://www.insurance.gov.ph/list-of-hmo-brokers/',
+    asOfDate: snapshot.asOfDate || new Date().toISOString().split('T')[0],
     content: rawContent,
     recordCount: snapshot.entries.length,
     rawArtifactPath: artifactPath,
@@ -270,28 +271,28 @@ export function ingestHMOBrokerList(): IngestResult {
 
   for (const entry of snapshot.entries) {
     if (!entry.name?.trim()) {
-      errors.push("Skipped broker entry with empty name");
+      errors.push('Skipped broker entry with empty name');
       continue;
     }
 
     const { payer, isNew } = upsertRegistryPayer({
       canonicalName: entry.name.trim(),
-      type: "hmo_broker",
+      type: 'hmo_broker',
       regulatorRef: entry.caNumber || entry.licenseNo,
-      status: entry.status === "inactive" ? "inactive" : "active",
-      country: "PH",
+      status: entry.status === 'inactive' ? 'inactive' : 'active',
+      country: 'PH',
       sourceId: source.id,
     });
 
     // Initialize capability matrix for new brokers
     if (isNew) {
-      initPayerCapabilities(payer.id, payer.canonicalName, "system:ingest");
+      initPayerCapabilities(payer.id, payer.canonicalName, 'system:ingest');
     }
 
     newNames.add(payer.canonicalName.toLowerCase());
     if (isNew) {
       newCount++;
-      diff.push({ payerName: payer.canonicalName, change: "added" });
+      diff.push({ payerName: payer.canonicalName, change: 'added' });
     } else {
       updatedCount++;
     }
@@ -301,15 +302,17 @@ export function ingestHMOBrokerList(): IngestResult {
   for (const prevName of prevNames) {
     if (!newNames.has(prevName)) {
       diff.push({
-        payerName: prevBrokers.find(p => p.canonicalName.toLowerCase() === prevName)?.canonicalName ?? prevName,
-        change: "removed",
+        payerName:
+          prevBrokers.find((p) => p.canonicalName.toLowerCase() === prevName)?.canonicalName ??
+          prevName,
+        change: 'removed',
       });
     }
   }
 
   recordSnapshot({
     sourceId: source.id,
-    sourceType: "ic_hmo_broker_list",
+    sourceType: 'ic_hmo_broker_list',
     version: source.version,
     asOfDate: source.asOfDate,
     fetchedAt: source.fetchedAt,
@@ -319,7 +322,7 @@ export function ingestHMOBrokerList(): IngestResult {
 
   return {
     ok: true,
-    sourceType: "ic_hmo_broker_list",
+    sourceType: 'ic_hmo_broker_list',
     sourceId: source.id,
     version: source.version,
     payersIngested: snapshot.entries.length,

@@ -1,15 +1,18 @@
 # Phase 157 — Audit JSONL Shipping to Object Store (IMPLEMENT)
 
 ## User Request
+
 Close audit gap "append-only but not externally replicated".
 Implement an audit shipper that uploads immutable audit JSONL to object storage (MinIO/S3 compatible), with integrity hashes.
 
 ## Non-negotiables
+
 - No PHI leaks (audit entries already PHI-redacted by immutable-audit.ts)
 - Tenant-aware partitioning (object keys prefixed by tenantId)
 - Retryable and idempotent (offset tracked in Postgres)
 
 ## Implementation Steps
+
 1. Create S3/MinIO-compatible object store client (zero npm deps, raw HTTP)
 2. Create PG migration v22 for `audit_ship_offset` table
 3. Create audit shipper service with:
@@ -37,6 +40,7 @@ Implement an audit shipper that uploads immutable audit JSONL to object storage 
 10. Create runbook
 
 ## Files Touched
+
 - apps/api/src/audit-shipping/s3-client.ts (new)
 - apps/api/src/audit-shipping/shipper.ts (new)
 - apps/api/src/audit-shipping/manifest.ts (new)
@@ -55,4 +59,5 @@ Implement an audit shipper that uploads immutable audit JSONL to object storage 
 - docs/runbooks/phase157-audit-shipping.md (new)
 
 ## Verification Steps
+
 See 157-99-VERIFY.md

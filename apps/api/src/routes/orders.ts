@@ -8,7 +8,7 @@
  * To implement: replace the stub body with connect() → callRpc() → disconnect().
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 
 /** RPC catalog entry for the orders domain. */
 export interface OrdersRpc {
@@ -20,147 +20,202 @@ export interface OrdersRpc {
 
 /** All RPCs in the orders domain. */
 export const ORDERS_RPCS: OrdersRpc[] = [
-  { name: "ORWDX AGAIN", slug: "orwdx-again", isContext: false, referenceCount: 1 },
-  { name: "ORWDX CHANGE", slug: "orwdx-change", isContext: false, referenceCount: 2 },
-  { name: "ORWDX DGNM", slug: "orwdx-dgnm", isContext: false, referenceCount: 1 },
-  { name: "ORWDX DGRP", slug: "orwdx-dgrp", isContext: false, referenceCount: 1 },
-  { name: "ORWDX DISMSG", slug: "orwdx-dismsg", isContext: false, referenceCount: 1 },
-  { name: "ORWDX DLGDEF", slug: "orwdx-dlgdef", isContext: false, referenceCount: 1 },
-  { name: "ORWDX DLGID", slug: "orwdx-dlgid", isContext: false, referenceCount: 1 },
-  { name: "ORWDX FORMID", slug: "orwdx-formid", isContext: false, referenceCount: 1 },
-  { name: "ORWDX LOADRSP", slug: "orwdx-loadrsp", isContext: false, referenceCount: 1 },
-  { name: "ORWDX LOCK", slug: "orwdx-lock", isContext: false, referenceCount: 1 },
-  { name: "ORWDX LOCK ORDER", slug: "orwdx-lock-order", isContext: false, referenceCount: 1 },
-  { name: "ORWDX MSG", slug: "orwdx-msg", isContext: false, referenceCount: 1 },
-  { name: "ORWDX ORDITM", slug: "orwdx-orditm", isContext: false, referenceCount: 1 },
-  { name: "ORWDX SAVE", slug: "orwdx-save", isContext: false, referenceCount: 1 },
-  { name: "ORWDX SEND", slug: "orwdx-send", isContext: false, referenceCount: 1 },
-  { name: "ORWDX SENDED", slug: "orwdx-sended", isContext: false, referenceCount: 1 },
-  { name: "ORWDX SENDP", slug: "orwdx-sendp", isContext: false, referenceCount: 1 },
-  { name: "ORWDX UNLOCK", slug: "orwdx-unlock", isContext: false, referenceCount: 1 },
-  { name: "ORWDX UNLOCK ORDER", slug: "orwdx-unlock-order", isContext: false, referenceCount: 1 },
-  { name: "ORWDX WRLST", slug: "orwdx-wrlst", isContext: false, referenceCount: 1 },
-  { name: "ORWDX1 DCORIG", slug: "orwdx1-dcorig", isContext: false, referenceCount: 1 },
-  { name: "ORWDX1 DCREN", slug: "orwdx1-dcren", isContext: false, referenceCount: 1 },
-  { name: "ORWDX1 ORDMATCH", slug: "orwdx1-ordmatch", isContext: false, referenceCount: 1 },
-  { name: "ORWDX1 PATWARD", slug: "orwdx1-patward", isContext: false, referenceCount: 2 },
-  { name: "ORWDX1 STCHANGE", slug: "orwdx1-stchange", isContext: false, referenceCount: 1 },
-  { name: "ORWDX1 UNDCORIG", slug: "orwdx1-undcorig", isContext: false, referenceCount: 1 },
-  { name: "ORWDX2 DCREASON", slug: "orwdx2-dcreason", isContext: false, referenceCount: 1 },
-  { name: "ORWDXA ALERT", slug: "orwdxa-alert", isContext: false, referenceCount: 1 },
-  { name: "ORWDXA COMPLETE", slug: "orwdxa-complete", isContext: false, referenceCount: 1 },
-  { name: "ORWDXA DC", slug: "orwdxa-dc", isContext: false, referenceCount: 1 },
-  { name: "ORWDXA DCREQIEN", slug: "orwdxa-dcreqien", isContext: false, referenceCount: 1 },
-  { name: "ORWDXA FLAG", slug: "orwdxa-flag", isContext: false, referenceCount: 1 },
-  { name: "ORWDXA FLAGTXT", slug: "orwdxa-flagtxt", isContext: false, referenceCount: 1 },
-  { name: "ORWDXA HOLD", slug: "orwdxa-hold", isContext: false, referenceCount: 1 },
-  { name: "ORWDXA ISACTOI", slug: "orwdxa-isactoi", isContext: false, referenceCount: 1 },
-  { name: "ORWDXA OFCPLX", slug: "orwdxa-ofcplx", isContext: false, referenceCount: 1 },
-  { name: "ORWDXA UNFLAG", slug: "orwdxa-unflag", isContext: false, referenceCount: 1 },
-  { name: "ORWDXA UNHOLD", slug: "orwdxa-unhold", isContext: false, referenceCount: 1 },
-  { name: "ORWDXA VALID", slug: "orwdxa-valid", isContext: false, referenceCount: 3 },
-  { name: "ORWDXA VERIFY", slug: "orwdxa-verify", isContext: false, referenceCount: 2 },
-  { name: "ORWDXA WCGET", slug: "orwdxa-wcget", isContext: false, referenceCount: 1 },
-  { name: "ORWDXA WCPUT", slug: "orwdxa-wcput", isContext: false, referenceCount: 1 },
-  { name: "ORWDXC ACCEPT", slug: "orwdxc-accept", isContext: false, referenceCount: 2 },
-  { name: "ORWDXC DELAY", slug: "orwdxc-delay", isContext: false, referenceCount: 2 },
-  { name: "ORWDXC DELORD", slug: "orwdxc-delord", isContext: false, referenceCount: 1 },
-  { name: "ORWDXC DISPLAY", slug: "orwdxc-display", isContext: false, referenceCount: 1 },
-  { name: "ORWDXC FILLID", slug: "orwdxc-fillid", isContext: false, referenceCount: 1 },
-  { name: "ORWDXC ON", slug: "orwdxc-on", isContext: false, referenceCount: 1 },
-  { name: "ORWDXC SAVECHK", slug: "orwdxc-savechk", isContext: false, referenceCount: 2 },
-  { name: "ORWDXC SESSION", slug: "orwdxc-session", isContext: false, referenceCount: 1 },
-  { name: "ORWDXM AUTOACK", slug: "orwdxm-autoack", isContext: false, referenceCount: 1 },
-  { name: "ORWDXM DLGNAME", slug: "orwdxm-dlgname", isContext: false, referenceCount: 1 },
-  { name: "ORWDXM FORMID", slug: "orwdxm-formid", isContext: false, referenceCount: 1 },
-  { name: "ORWDXM LOADSET", slug: "orwdxm-loadset", isContext: false, referenceCount: 1 },
-  { name: "ORWDXM MENU", slug: "orwdxm-menu", isContext: false, referenceCount: 1 },
-  { name: "ORWDXM MSTYLE", slug: "orwdxm-mstyle", isContext: false, referenceCount: 1 },
-  { name: "ORWDXM PROMPTS", slug: "orwdxm-prompts", isContext: false, referenceCount: 1 },
-  { name: "ORWDXM RSCRN", slug: "orwdxm-rscrn", isContext: false, referenceCount: 1 },
-  { name: "ORWDXM1 BLDQRSP", slug: "orwdxm1-bldqrsp", isContext: false, referenceCount: 1 },
-  { name: "ORWDXM1 SVRPC", slug: "orwdxm1-svrpc", isContext: false, referenceCount: 2 },
-  { name: "ORWDXM2 CLRRCL", slug: "orwdxm2-clrrcl", isContext: false, referenceCount: 1 },
-  { name: "ORWDXM3 ISUDQO", slug: "orwdxm3-isudqo", isContext: false, referenceCount: 1 },
-  { name: "ORWDXQ DLGNAME", slug: "orwdxq-dlgname", isContext: false, referenceCount: 1 },
-  { name: "ORWDXQ DLGSAVE", slug: "orwdxq-dlgsave", isContext: false, referenceCount: 1 },
-  { name: "ORWDXQ GETQLST", slug: "orwdxq-getqlst", isContext: false, referenceCount: 3 },
-  { name: "ORWDXQ GETQNAM", slug: "orwdxq-getqnam", isContext: false, referenceCount: 1 },
-  { name: "ORWDXQ PUTQLST", slug: "orwdxq-putqlst", isContext: false, referenceCount: 1 },
-  { name: "ORWDXQ PUTQNAM", slug: "orwdxq-putqnam", isContext: false, referenceCount: 1 },
-  { name: "ORWDXR CANRN", slug: "orwdxr-canrn", isContext: false, referenceCount: 1 },
-  { name: "ORWDXR GETPKG", slug: "orwdxr-getpkg", isContext: false, referenceCount: 1 },
-  { name: "ORWDXR GTORITM", slug: "orwdxr-gtoritm", isContext: false, referenceCount: 1 },
-  { name: "ORWDXR ISCPLX", slug: "orwdxr-iscplx", isContext: false, referenceCount: 1 },
-  { name: "ORWDXR ISNOW", slug: "orwdxr-isnow", isContext: false, referenceCount: 1 },
-  { name: "ORWDXR ISREL", slug: "orwdxr-isrel", isContext: false, referenceCount: 1 },
-  { name: "ORWDXR ORCPLX", slug: "orwdxr-orcplx", isContext: false, referenceCount: 1 },
-  { name: "ORWDXR RENEW", slug: "orwdxr-renew", isContext: false, referenceCount: 1 },
-  { name: "ORWDXR RNWFLDS", slug: "orwdxr-rnwflds", isContext: false, referenceCount: 1 },
-  { name: "ORWDXR01 CANCHG", slug: "orwdxr01-canchg", isContext: false, referenceCount: 1 },
-  { name: "ORWDXR01 ISSPLY", slug: "orwdxr01-issply", isContext: false, referenceCount: 1 },
-  { name: "ORWDXR01 OXDATA", slug: "orwdxr01-oxdata", isContext: false, referenceCount: 1 },
-  { name: "ORWDXR01 SAVCHG", slug: "orwdxr01-savchg", isContext: false, referenceCount: 1 },
-  { name: "ORWDXVB COMPORD", slug: "orwdxvb-compord", isContext: false, referenceCount: 1 },
-  { name: "ORWDXVB GETALL", slug: "orwdxvb-getall", isContext: false, referenceCount: 1 },
-  { name: "ORWDXVB NURSADMN", slug: "orwdxvb-nursadmn", isContext: false, referenceCount: 1 },
-  { name: "ORWDXVB RAW", slug: "orwdxvb-raw", isContext: false, referenceCount: 1 },
-  { name: "ORWDXVB RESULTS", slug: "orwdxvb-results", isContext: false, referenceCount: 1 },
-  { name: "ORWDXVB STATALOW", slug: "orwdxvb-statalow", isContext: false, referenceCount: 1 },
-  { name: "ORWDXVB SUBCHK", slug: "orwdxvb-subchk", isContext: false, referenceCount: 1 },
-  { name: "ORWDXVB VBTNS", slug: "orwdxvb-vbtns", isContext: false, referenceCount: 1 },
-  { name: "ORWDXVB3 COLLTIM", slug: "orwdxvb3-colltim", isContext: false, referenceCount: 1 },
-  { name: "ORWDXVB3 DIAGORD", slug: "orwdxvb3-diagord", isContext: false, referenceCount: 1 },
-  { name: "ORWDXVB3 SWPANEL", slug: "orwdxvb3-swpanel", isContext: false, referenceCount: 1 },
-  { name: "ORWOR ACTION TEXT", slug: "orwor-action-text", isContext: false, referenceCount: 1 },
-  { name: "ORWOR EXPIRED", slug: "orwor-expired", isContext: false, referenceCount: 1 },
-  { name: "ORWOR PKISITE", slug: "orwor-pkisite", isContext: false, referenceCount: 1 },
-  { name: "ORWOR PKIUSE", slug: "orwor-pkiuse", isContext: false, referenceCount: 1 },
-  { name: "ORWOR REQUIRE CURRENT CLIENT", slug: "orwor-require-current-client", isContext: false, referenceCount: 2 },
-  { name: "ORWOR RESULT", slug: "orwor-result", isContext: false, referenceCount: 1 },
-  { name: "ORWOR RESULT HISTORY", slug: "orwor-result-history", isContext: false, referenceCount: 1 },
-  { name: "ORWOR SHEETS", slug: "orwor-sheets", isContext: false, referenceCount: 1 },
-  { name: "ORWOR TSALL", slug: "orwor-tsall", isContext: false, referenceCount: 1 },
-  { name: "ORWOR UNSIGN", slug: "orwor-unsign", isContext: false, referenceCount: 1 },
-  { name: "ORWOR VERIFY NOTE TITLE", slug: "orwor-verify-note-title", isContext: false, referenceCount: 4 },
-  { name: "ORWOR VWGET", slug: "orwor-vwget", isContext: false, referenceCount: 1 },
-  { name: "ORWOR VWSET", slug: "orwor-vwset", isContext: false, referenceCount: 1 },
-  { name: "ORWOR1 CHKDIG", slug: "orwor1-chkdig", isContext: false, referenceCount: 1 },
-  { name: "ORWOR1 GETDSCH", slug: "orwor1-getdsch", isContext: false, referenceCount: 1 },
-  { name: "ORWOR1 GETDTEXT", slug: "orwor1-getdtext", isContext: false, referenceCount: 1 },
-  { name: "ORWOR1 SETDTEXT", slug: "orwor1-setdtext", isContext: false, referenceCount: 1 },
-  { name: "ORWOR1 SIG", slug: "orwor1-sig", isContext: false, referenceCount: 1 },
-  { name: "ORWORB AUTOUNFLAG ORDERS", slug: "orworb-autounflag-orders", isContext: false, referenceCount: 1 },
-  { name: "ORWORB FASTUSER", slug: "orworb-fastuser", isContext: false, referenceCount: 1 },
-  { name: "ORWORB GETDATA", slug: "orworb-getdata", isContext: false, referenceCount: 1 },
-  { name: "ORWORB GETLTXT", slug: "orworb-getltxt", isContext: false, referenceCount: 1 },
-  { name: "ORWORB GETSORT", slug: "orworb-getsort", isContext: false, referenceCount: 1 },
-  { name: "ORWORB KILL EXPIR MED ALERT", slug: "orworb-kill-expir-med-alert", isContext: false, referenceCount: 1 },
-  { name: "ORWORB KILL EXPIR OI ALERT", slug: "orworb-kill-expir-oi-alert", isContext: false, referenceCount: 1 },
-  { name: "ORWORB KILL UNSIG ORDERS ALERT", slug: "orworb-kill-unsig-orders-alert", isContext: false, referenceCount: 1 },
-  { name: "ORWORB KILL UNVER MEDS ALERT", slug: "orworb-kill-unver-meds-alert", isContext: false, referenceCount: 1 },
-  { name: "ORWORB KILL UNVER ORDERS ALERT", slug: "orworb-kill-unver-orders-alert", isContext: false, referenceCount: 1 },
-  { name: "ORWORB SETSORT", slug: "orworb-setsort", isContext: false, referenceCount: 1 },
-  { name: "ORWORB TEXT FOLLOWUP", slug: "orworb-text-followup", isContext: false, referenceCount: 1 },
-  { name: "ORWORB UNSIG ORDERS FOLLOWUP", slug: "orworb-unsig-orders-followup", isContext: false, referenceCount: 1 },
-  { name: "ORWORDG ALLTREE", slug: "orwordg-alltree", isContext: false, referenceCount: 1 },
-  { name: "ORWORDG IEN", slug: "orwordg-ien", isContext: false, referenceCount: 2 },
-  { name: "ORWORDG MAPSEQ", slug: "orwordg-mapseq", isContext: false, referenceCount: 1 },
-  { name: "ORWORDG REVSTS", slug: "orwordg-revsts", isContext: false, referenceCount: 2 },
-  { name: "ORWORR AGET", slug: "orworr-aget", isContext: false, referenceCount: 2 },
-  { name: "ORWORR GET", slug: "orworr-get", isContext: false, referenceCount: 1 },
-  { name: "ORWORR GET4LST", slug: "orworr-get4lst", isContext: false, referenceCount: 1 },
-  { name: "ORWORR GETBYIFN", slug: "orworr-getbyifn", isContext: false, referenceCount: 1 },
-  { name: "ORWORR GETDEA", slug: "orworr-getdea", isContext: false, referenceCount: 1 },
-  { name: "ORWORR GETDSIG", slug: "orworr-getdsig", isContext: false, referenceCount: 1 },
-  { name: "ORWORR GETTXT", slug: "orworr-gettxt", isContext: false, referenceCount: 1 },
-  { name: "ORWORR RGET", slug: "orworr-rget", isContext: false, referenceCount: 1 },
+  { name: 'ORWDX AGAIN', slug: 'orwdx-again', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX CHANGE', slug: 'orwdx-change', isContext: false, referenceCount: 2 },
+  { name: 'ORWDX DGNM', slug: 'orwdx-dgnm', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX DGRP', slug: 'orwdx-dgrp', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX DISMSG', slug: 'orwdx-dismsg', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX DLGDEF', slug: 'orwdx-dlgdef', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX DLGID', slug: 'orwdx-dlgid', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX FORMID', slug: 'orwdx-formid', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX LOADRSP', slug: 'orwdx-loadrsp', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX LOCK', slug: 'orwdx-lock', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX LOCK ORDER', slug: 'orwdx-lock-order', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX MSG', slug: 'orwdx-msg', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX ORDITM', slug: 'orwdx-orditm', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX SAVE', slug: 'orwdx-save', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX SEND', slug: 'orwdx-send', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX SENDED', slug: 'orwdx-sended', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX SENDP', slug: 'orwdx-sendp', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX UNLOCK', slug: 'orwdx-unlock', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX UNLOCK ORDER', slug: 'orwdx-unlock-order', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX WRLST', slug: 'orwdx-wrlst', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX1 DCORIG', slug: 'orwdx1-dcorig', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX1 DCREN', slug: 'orwdx1-dcren', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX1 ORDMATCH', slug: 'orwdx1-ordmatch', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX1 PATWARD', slug: 'orwdx1-patward', isContext: false, referenceCount: 2 },
+  { name: 'ORWDX1 STCHANGE', slug: 'orwdx1-stchange', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX1 UNDCORIG', slug: 'orwdx1-undcorig', isContext: false, referenceCount: 1 },
+  { name: 'ORWDX2 DCREASON', slug: 'orwdx2-dcreason', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXA ALERT', slug: 'orwdxa-alert', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXA COMPLETE', slug: 'orwdxa-complete', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXA DC', slug: 'orwdxa-dc', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXA DCREQIEN', slug: 'orwdxa-dcreqien', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXA FLAG', slug: 'orwdxa-flag', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXA FLAGTXT', slug: 'orwdxa-flagtxt', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXA HOLD', slug: 'orwdxa-hold', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXA ISACTOI', slug: 'orwdxa-isactoi', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXA OFCPLX', slug: 'orwdxa-ofcplx', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXA UNFLAG', slug: 'orwdxa-unflag', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXA UNHOLD', slug: 'orwdxa-unhold', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXA VALID', slug: 'orwdxa-valid', isContext: false, referenceCount: 3 },
+  { name: 'ORWDXA VERIFY', slug: 'orwdxa-verify', isContext: false, referenceCount: 2 },
+  { name: 'ORWDXA WCGET', slug: 'orwdxa-wcget', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXA WCPUT', slug: 'orwdxa-wcput', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXC ACCEPT', slug: 'orwdxc-accept', isContext: false, referenceCount: 2 },
+  { name: 'ORWDXC DELAY', slug: 'orwdxc-delay', isContext: false, referenceCount: 2 },
+  { name: 'ORWDXC DELORD', slug: 'orwdxc-delord', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXC DISPLAY', slug: 'orwdxc-display', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXC FILLID', slug: 'orwdxc-fillid', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXC ON', slug: 'orwdxc-on', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXC SAVECHK', slug: 'orwdxc-savechk', isContext: false, referenceCount: 2 },
+  { name: 'ORWDXC SESSION', slug: 'orwdxc-session', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXM AUTOACK', slug: 'orwdxm-autoack', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXM DLGNAME', slug: 'orwdxm-dlgname', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXM FORMID', slug: 'orwdxm-formid', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXM LOADSET', slug: 'orwdxm-loadset', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXM MENU', slug: 'orwdxm-menu', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXM MSTYLE', slug: 'orwdxm-mstyle', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXM PROMPTS', slug: 'orwdxm-prompts', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXM RSCRN', slug: 'orwdxm-rscrn', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXM1 BLDQRSP', slug: 'orwdxm1-bldqrsp', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXM1 SVRPC', slug: 'orwdxm1-svrpc', isContext: false, referenceCount: 2 },
+  { name: 'ORWDXM2 CLRRCL', slug: 'orwdxm2-clrrcl', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXM3 ISUDQO', slug: 'orwdxm3-isudqo', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXQ DLGNAME', slug: 'orwdxq-dlgname', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXQ DLGSAVE', slug: 'orwdxq-dlgsave', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXQ GETQLST', slug: 'orwdxq-getqlst', isContext: false, referenceCount: 3 },
+  { name: 'ORWDXQ GETQNAM', slug: 'orwdxq-getqnam', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXQ PUTQLST', slug: 'orwdxq-putqlst', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXQ PUTQNAM', slug: 'orwdxq-putqnam', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXR CANRN', slug: 'orwdxr-canrn', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXR GETPKG', slug: 'orwdxr-getpkg', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXR GTORITM', slug: 'orwdxr-gtoritm', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXR ISCPLX', slug: 'orwdxr-iscplx', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXR ISNOW', slug: 'orwdxr-isnow', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXR ISREL', slug: 'orwdxr-isrel', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXR ORCPLX', slug: 'orwdxr-orcplx', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXR RENEW', slug: 'orwdxr-renew', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXR RNWFLDS', slug: 'orwdxr-rnwflds', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXR01 CANCHG', slug: 'orwdxr01-canchg', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXR01 ISSPLY', slug: 'orwdxr01-issply', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXR01 OXDATA', slug: 'orwdxr01-oxdata', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXR01 SAVCHG', slug: 'orwdxr01-savchg', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXVB COMPORD', slug: 'orwdxvb-compord', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXVB GETALL', slug: 'orwdxvb-getall', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXVB NURSADMN', slug: 'orwdxvb-nursadmn', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXVB RAW', slug: 'orwdxvb-raw', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXVB RESULTS', slug: 'orwdxvb-results', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXVB STATALOW', slug: 'orwdxvb-statalow', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXVB SUBCHK', slug: 'orwdxvb-subchk', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXVB VBTNS', slug: 'orwdxvb-vbtns', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXVB3 COLLTIM', slug: 'orwdxvb3-colltim', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXVB3 DIAGORD', slug: 'orwdxvb3-diagord', isContext: false, referenceCount: 1 },
+  { name: 'ORWDXVB3 SWPANEL', slug: 'orwdxvb3-swpanel', isContext: false, referenceCount: 1 },
+  { name: 'ORWOR ACTION TEXT', slug: 'orwor-action-text', isContext: false, referenceCount: 1 },
+  { name: 'ORWOR EXPIRED', slug: 'orwor-expired', isContext: false, referenceCount: 1 },
+  { name: 'ORWOR PKISITE', slug: 'orwor-pkisite', isContext: false, referenceCount: 1 },
+  { name: 'ORWOR PKIUSE', slug: 'orwor-pkiuse', isContext: false, referenceCount: 1 },
+  {
+    name: 'ORWOR REQUIRE CURRENT CLIENT',
+    slug: 'orwor-require-current-client',
+    isContext: false,
+    referenceCount: 2,
+  },
+  { name: 'ORWOR RESULT', slug: 'orwor-result', isContext: false, referenceCount: 1 },
+  {
+    name: 'ORWOR RESULT HISTORY',
+    slug: 'orwor-result-history',
+    isContext: false,
+    referenceCount: 1,
+  },
+  { name: 'ORWOR SHEETS', slug: 'orwor-sheets', isContext: false, referenceCount: 1 },
+  { name: 'ORWOR TSALL', slug: 'orwor-tsall', isContext: false, referenceCount: 1 },
+  { name: 'ORWOR UNSIGN', slug: 'orwor-unsign', isContext: false, referenceCount: 1 },
+  {
+    name: 'ORWOR VERIFY NOTE TITLE',
+    slug: 'orwor-verify-note-title',
+    isContext: false,
+    referenceCount: 4,
+  },
+  { name: 'ORWOR VWGET', slug: 'orwor-vwget', isContext: false, referenceCount: 1 },
+  { name: 'ORWOR VWSET', slug: 'orwor-vwset', isContext: false, referenceCount: 1 },
+  { name: 'ORWOR1 CHKDIG', slug: 'orwor1-chkdig', isContext: false, referenceCount: 1 },
+  { name: 'ORWOR1 GETDSCH', slug: 'orwor1-getdsch', isContext: false, referenceCount: 1 },
+  { name: 'ORWOR1 GETDTEXT', slug: 'orwor1-getdtext', isContext: false, referenceCount: 1 },
+  { name: 'ORWOR1 SETDTEXT', slug: 'orwor1-setdtext', isContext: false, referenceCount: 1 },
+  { name: 'ORWOR1 SIG', slug: 'orwor1-sig', isContext: false, referenceCount: 1 },
+  {
+    name: 'ORWORB AUTOUNFLAG ORDERS',
+    slug: 'orworb-autounflag-orders',
+    isContext: false,
+    referenceCount: 1,
+  },
+  { name: 'ORWORB FASTUSER', slug: 'orworb-fastuser', isContext: false, referenceCount: 1 },
+  { name: 'ORWORB GETDATA', slug: 'orworb-getdata', isContext: false, referenceCount: 1 },
+  { name: 'ORWORB GETLTXT', slug: 'orworb-getltxt', isContext: false, referenceCount: 1 },
+  { name: 'ORWORB GETSORT', slug: 'orworb-getsort', isContext: false, referenceCount: 1 },
+  {
+    name: 'ORWORB KILL EXPIR MED ALERT',
+    slug: 'orworb-kill-expir-med-alert',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWORB KILL EXPIR OI ALERT',
+    slug: 'orworb-kill-expir-oi-alert',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWORB KILL UNSIG ORDERS ALERT',
+    slug: 'orworb-kill-unsig-orders-alert',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWORB KILL UNVER MEDS ALERT',
+    slug: 'orworb-kill-unver-meds-alert',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWORB KILL UNVER ORDERS ALERT',
+    slug: 'orworb-kill-unver-orders-alert',
+    isContext: false,
+    referenceCount: 1,
+  },
+  { name: 'ORWORB SETSORT', slug: 'orworb-setsort', isContext: false, referenceCount: 1 },
+  {
+    name: 'ORWORB TEXT FOLLOWUP',
+    slug: 'orworb-text-followup',
+    isContext: false,
+    referenceCount: 1,
+  },
+  {
+    name: 'ORWORB UNSIG ORDERS FOLLOWUP',
+    slug: 'orworb-unsig-orders-followup',
+    isContext: false,
+    referenceCount: 1,
+  },
+  { name: 'ORWORDG ALLTREE', slug: 'orwordg-alltree', isContext: false, referenceCount: 1 },
+  { name: 'ORWORDG IEN', slug: 'orwordg-ien', isContext: false, referenceCount: 2 },
+  { name: 'ORWORDG MAPSEQ', slug: 'orwordg-mapseq', isContext: false, referenceCount: 1 },
+  { name: 'ORWORDG REVSTS', slug: 'orwordg-revsts', isContext: false, referenceCount: 2 },
+  { name: 'ORWORR AGET', slug: 'orworr-aget', isContext: false, referenceCount: 2 },
+  { name: 'ORWORR GET', slug: 'orworr-get', isContext: false, referenceCount: 1 },
+  { name: 'ORWORR GET4LST', slug: 'orworr-get4lst', isContext: false, referenceCount: 1 },
+  { name: 'ORWORR GETBYIFN', slug: 'orworr-getbyifn', isContext: false, referenceCount: 1 },
+  { name: 'ORWORR GETDEA', slug: 'orworr-getdea', isContext: false, referenceCount: 1 },
+  { name: 'ORWORR GETDSIG', slug: 'orworr-getdsig', isContext: false, referenceCount: 1 },
+  { name: 'ORWORR GETTXT', slug: 'orworr-gettxt', isContext: false, referenceCount: 1 },
+  { name: 'ORWORR RGET', slug: 'orworr-rget', isContext: false, referenceCount: 1 },
 ];
 
 /** Stub response returned by unimplemented endpoints. */
 export interface StubResponse {
   ok: false;
-  error: "Not implemented";
+  error: 'Not implemented';
   rpcName: string;
   domain: string;
   slug: string;
@@ -174,12 +229,11 @@ export interface StubResponse {
  *         GET /vista/orders/rpcs  (catalog listing)
  */
 export default async function ordersRoutes(server: FastifyInstance): Promise<void> {
-
   // ── Catalog listing ───────────────────────────────────────────
-  server.get("/vista/orders/rpcs", async () => {
+  server.get('/vista/orders/rpcs', async () => {
     return {
       ok: true,
-      domain: "orders",
+      domain: 'orders',
       count: 135,
       rpcs: ORDERS_RPCS,
     };
@@ -188,1621 +242,1627 @@ export default async function ordersRoutes(server: FastifyInstance): Promise<voi
   // ── Individual RPC stubs ──────────────────────────────────────
 
   /** Stub for ORWDX AGAIN (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-again", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-again', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX AGAIN",
-      domain: "orders",
-      slug: "orwdx-again",
+      error: 'Not implemented',
+      rpcName: 'ORWDX AGAIN',
+      domain: 'orders',
+      slug: 'orwdx-again',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX CHANGE (2 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-change", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-change', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX CHANGE",
-      domain: "orders",
-      slug: "orwdx-change",
+      error: 'Not implemented',
+      rpcName: 'ORWDX CHANGE',
+      domain: 'orders',
+      slug: 'orwdx-change',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX DGNM (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-dgnm", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-dgnm', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX DGNM",
-      domain: "orders",
-      slug: "orwdx-dgnm",
+      error: 'Not implemented',
+      rpcName: 'ORWDX DGNM',
+      domain: 'orders',
+      slug: 'orwdx-dgnm',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX DGRP (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-dgrp", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-dgrp', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX DGRP",
-      domain: "orders",
-      slug: "orwdx-dgrp",
+      error: 'Not implemented',
+      rpcName: 'ORWDX DGRP',
+      domain: 'orders',
+      slug: 'orwdx-dgrp',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX DISMSG (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-dismsg", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-dismsg', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX DISMSG",
-      domain: "orders",
-      slug: "orwdx-dismsg",
+      error: 'Not implemented',
+      rpcName: 'ORWDX DISMSG',
+      domain: 'orders',
+      slug: 'orwdx-dismsg',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX DLGDEF (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-dlgdef", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-dlgdef', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX DLGDEF",
-      domain: "orders",
-      slug: "orwdx-dlgdef",
+      error: 'Not implemented',
+      rpcName: 'ORWDX DLGDEF',
+      domain: 'orders',
+      slug: 'orwdx-dlgdef',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX DLGID (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-dlgid", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-dlgid', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX DLGID",
-      domain: "orders",
-      slug: "orwdx-dlgid",
+      error: 'Not implemented',
+      rpcName: 'ORWDX DLGID',
+      domain: 'orders',
+      slug: 'orwdx-dlgid',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX FORMID (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-formid", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-formid', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX FORMID",
-      domain: "orders",
-      slug: "orwdx-formid",
+      error: 'Not implemented',
+      rpcName: 'ORWDX FORMID',
+      domain: 'orders',
+      slug: 'orwdx-formid',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX LOADRSP (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-loadrsp", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-loadrsp', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX LOADRSP",
-      domain: "orders",
-      slug: "orwdx-loadrsp",
+      error: 'Not implemented',
+      rpcName: 'ORWDX LOADRSP',
+      domain: 'orders',
+      slug: 'orwdx-loadrsp',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX LOCK (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-lock", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-lock', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX LOCK",
-      domain: "orders",
-      slug: "orwdx-lock",
+      error: 'Not implemented',
+      rpcName: 'ORWDX LOCK',
+      domain: 'orders',
+      slug: 'orwdx-lock',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX LOCK ORDER (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-lock-order", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-lock-order', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX LOCK ORDER",
-      domain: "orders",
-      slug: "orwdx-lock-order",
+      error: 'Not implemented',
+      rpcName: 'ORWDX LOCK ORDER',
+      domain: 'orders',
+      slug: 'orwdx-lock-order',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX MSG (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-msg", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-msg', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX MSG",
-      domain: "orders",
-      slug: "orwdx-msg",
+      error: 'Not implemented',
+      rpcName: 'ORWDX MSG',
+      domain: 'orders',
+      slug: 'orwdx-msg',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX ORDITM (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-orditm", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-orditm', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX ORDITM",
-      domain: "orders",
-      slug: "orwdx-orditm",
+      error: 'Not implemented',
+      rpcName: 'ORWDX ORDITM',
+      domain: 'orders',
+      slug: 'orwdx-orditm',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX SAVE (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-save", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-save', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX SAVE",
-      domain: "orders",
-      slug: "orwdx-save",
+      error: 'Not implemented',
+      rpcName: 'ORWDX SAVE',
+      domain: 'orders',
+      slug: 'orwdx-save',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX SEND (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-send", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-send', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX SEND",
-      domain: "orders",
-      slug: "orwdx-send",
+      error: 'Not implemented',
+      rpcName: 'ORWDX SEND',
+      domain: 'orders',
+      slug: 'orwdx-send',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX SENDED (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-sended", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-sended', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX SENDED",
-      domain: "orders",
-      slug: "orwdx-sended",
+      error: 'Not implemented',
+      rpcName: 'ORWDX SENDED',
+      domain: 'orders',
+      slug: 'orwdx-sended',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX SENDP (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-sendp", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-sendp', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX SENDP",
-      domain: "orders",
-      slug: "orwdx-sendp",
+      error: 'Not implemented',
+      rpcName: 'ORWDX SENDP',
+      domain: 'orders',
+      slug: 'orwdx-sendp',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX UNLOCK (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-unlock", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-unlock', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX UNLOCK",
-      domain: "orders",
-      slug: "orwdx-unlock",
+      error: 'Not implemented',
+      rpcName: 'ORWDX UNLOCK',
+      domain: 'orders',
+      slug: 'orwdx-unlock',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX UNLOCK ORDER (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-unlock-order", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-unlock-order', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX UNLOCK ORDER",
-      domain: "orders",
-      slug: "orwdx-unlock-order",
+      error: 'Not implemented',
+      rpcName: 'ORWDX UNLOCK ORDER',
+      domain: 'orders',
+      slug: 'orwdx-unlock-order',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX WRLST (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx-wrlst", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx-wrlst', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX WRLST",
-      domain: "orders",
-      slug: "orwdx-wrlst",
+      error: 'Not implemented',
+      rpcName: 'ORWDX WRLST',
+      domain: 'orders',
+      slug: 'orwdx-wrlst',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX1 DCORIG (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx1-dcorig", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx1-dcorig', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX1 DCORIG",
-      domain: "orders",
-      slug: "orwdx1-dcorig",
+      error: 'Not implemented',
+      rpcName: 'ORWDX1 DCORIG',
+      domain: 'orders',
+      slug: 'orwdx1-dcorig',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX1 DCREN (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx1-dcren", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx1-dcren', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX1 DCREN",
-      domain: "orders",
-      slug: "orwdx1-dcren",
+      error: 'Not implemented',
+      rpcName: 'ORWDX1 DCREN',
+      domain: 'orders',
+      slug: 'orwdx1-dcren',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX1 ORDMATCH (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx1-ordmatch", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx1-ordmatch', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX1 ORDMATCH",
-      domain: "orders",
-      slug: "orwdx1-ordmatch",
+      error: 'Not implemented',
+      rpcName: 'ORWDX1 ORDMATCH',
+      domain: 'orders',
+      slug: 'orwdx1-ordmatch',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX1 PATWARD (2 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orwdx1-patward", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx1-patward', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX1 PATWARD",
-      domain: "orders",
-      slug: "orwdx1-patward",
+      error: 'Not implemented',
+      rpcName: 'ORWDX1 PATWARD',
+      domain: 'orders',
+      slug: 'orwdx1-patward',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX1 STCHANGE (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx1-stchange", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx1-stchange', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX1 STCHANGE",
-      domain: "orders",
-      slug: "orwdx1-stchange",
+      error: 'Not implemented',
+      rpcName: 'ORWDX1 STCHANGE',
+      domain: 'orders',
+      slug: 'orwdx1-stchange',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX1 UNDCORIG (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx1-undcorig", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx1-undcorig', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX1 UNDCORIG",
-      domain: "orders",
-      slug: "orwdx1-undcorig",
+      error: 'Not implemented',
+      rpcName: 'ORWDX1 UNDCORIG',
+      domain: 'orders',
+      slug: 'orwdx1-undcorig',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDX2 DCREASON (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdx2-dcreason", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdx2-dcreason', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDX2 DCREASON",
-      domain: "orders",
-      slug: "orwdx2-dcreason",
+      error: 'Not implemented',
+      rpcName: 'ORWDX2 DCREASON',
+      domain: 'orders',
+      slug: 'orwdx2-dcreason',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA ALERT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-alert", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-alert', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA ALERT",
-      domain: "orders",
-      slug: "orwdxa-alert",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA ALERT',
+      domain: 'orders',
+      slug: 'orwdxa-alert',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA COMPLETE (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-complete", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-complete', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA COMPLETE",
-      domain: "orders",
-      slug: "orwdxa-complete",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA COMPLETE',
+      domain: 'orders',
+      slug: 'orwdxa-complete',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA DC (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-dc", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-dc', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA DC",
-      domain: "orders",
-      slug: "orwdxa-dc",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA DC',
+      domain: 'orders',
+      slug: 'orwdxa-dc',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA DCREQIEN (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-dcreqien", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-dcreqien', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA DCREQIEN",
-      domain: "orders",
-      slug: "orwdxa-dcreqien",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA DCREQIEN',
+      domain: 'orders',
+      slug: 'orwdxa-dcreqien',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA FLAG (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-flag", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-flag', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA FLAG",
-      domain: "orders",
-      slug: "orwdxa-flag",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA FLAG',
+      domain: 'orders',
+      slug: 'orwdxa-flag',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA FLAGTXT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-flagtxt", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-flagtxt', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA FLAGTXT",
-      domain: "orders",
-      slug: "orwdxa-flagtxt",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA FLAGTXT',
+      domain: 'orders',
+      slug: 'orwdxa-flagtxt',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA HOLD (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-hold", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-hold', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA HOLD",
-      domain: "orders",
-      slug: "orwdxa-hold",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA HOLD',
+      domain: 'orders',
+      slug: 'orwdxa-hold',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA ISACTOI (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-isactoi", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-isactoi', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA ISACTOI",
-      domain: "orders",
-      slug: "orwdxa-isactoi",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA ISACTOI',
+      domain: 'orders',
+      slug: 'orwdxa-isactoi',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA OFCPLX (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-ofcplx", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-ofcplx', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA OFCPLX",
-      domain: "orders",
-      slug: "orwdxa-ofcplx",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA OFCPLX',
+      domain: 'orders',
+      slug: 'orwdxa-ofcplx',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA UNFLAG (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-unflag", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-unflag', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA UNFLAG",
-      domain: "orders",
-      slug: "orwdxa-unflag",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA UNFLAG',
+      domain: 'orders',
+      slug: 'orwdxa-unflag',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA UNHOLD (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-unhold", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-unhold', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA UNHOLD",
-      domain: "orders",
-      slug: "orwdxa-unhold",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA UNHOLD',
+      domain: 'orders',
+      slug: 'orwdxa-unhold',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA VALID (3 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-valid", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-valid', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA VALID",
-      domain: "orders",
-      slug: "orwdxa-valid",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA VALID',
+      domain: 'orders',
+      slug: 'orwdxa-valid',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA VERIFY (2 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-verify", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-verify', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA VERIFY",
-      domain: "orders",
-      slug: "orwdxa-verify",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA VERIFY',
+      domain: 'orders',
+      slug: 'orwdxa-verify',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA WCGET (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-wcget", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-wcget', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA WCGET",
-      domain: "orders",
-      slug: "orwdxa-wcget",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA WCGET',
+      domain: 'orders',
+      slug: 'orwdxa-wcget',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXA WCPUT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxa-wcput", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxa-wcput', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXA WCPUT",
-      domain: "orders",
-      slug: "orwdxa-wcput",
+      error: 'Not implemented',
+      rpcName: 'ORWDXA WCPUT',
+      domain: 'orders',
+      slug: 'orwdxa-wcput',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXC ACCEPT (2 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orwdxc-accept", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxc-accept', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXC ACCEPT",
-      domain: "orders",
-      slug: "orwdxc-accept",
+      error: 'Not implemented',
+      rpcName: 'ORWDXC ACCEPT',
+      domain: 'orders',
+      slug: 'orwdxc-accept',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXC DELAY (2 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orwdxc-delay", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxc-delay', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXC DELAY",
-      domain: "orders",
-      slug: "orwdxc-delay",
+      error: 'Not implemented',
+      rpcName: 'ORWDXC DELAY',
+      domain: 'orders',
+      slug: 'orwdxc-delay',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXC DELORD (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxc-delord", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxc-delord', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXC DELORD",
-      domain: "orders",
-      slug: "orwdxc-delord",
+      error: 'Not implemented',
+      rpcName: 'ORWDXC DELORD',
+      domain: 'orders',
+      slug: 'orwdxc-delord',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXC DISPLAY (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxc-display", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxc-display', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXC DISPLAY",
-      domain: "orders",
-      slug: "orwdxc-display",
+      error: 'Not implemented',
+      rpcName: 'ORWDXC DISPLAY',
+      domain: 'orders',
+      slug: 'orwdxc-display',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXC FILLID (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxc-fillid", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxc-fillid', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXC FILLID",
-      domain: "orders",
-      slug: "orwdxc-fillid",
+      error: 'Not implemented',
+      rpcName: 'ORWDXC FILLID',
+      domain: 'orders',
+      slug: 'orwdxc-fillid',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXC ON (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxc-on", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxc-on', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXC ON",
-      domain: "orders",
-      slug: "orwdxc-on",
+      error: 'Not implemented',
+      rpcName: 'ORWDXC ON',
+      domain: 'orders',
+      slug: 'orwdxc-on',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXC SAVECHK (2 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orwdxc-savechk", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxc-savechk', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXC SAVECHK",
-      domain: "orders",
-      slug: "orwdxc-savechk",
+      error: 'Not implemented',
+      rpcName: 'ORWDXC SAVECHK',
+      domain: 'orders',
+      slug: 'orwdxc-savechk',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXC SESSION (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxc-session", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxc-session', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXC SESSION",
-      domain: "orders",
-      slug: "orwdxc-session",
+      error: 'Not implemented',
+      rpcName: 'ORWDXC SESSION',
+      domain: 'orders',
+      slug: 'orwdxc-session',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXM AUTOACK (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxm-autoack", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxm-autoack', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXM AUTOACK",
-      domain: "orders",
-      slug: "orwdxm-autoack",
+      error: 'Not implemented',
+      rpcName: 'ORWDXM AUTOACK',
+      domain: 'orders',
+      slug: 'orwdxm-autoack',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXM DLGNAME (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxm-dlgname", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxm-dlgname', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXM DLGNAME",
-      domain: "orders",
-      slug: "orwdxm-dlgname",
+      error: 'Not implemented',
+      rpcName: 'ORWDXM DLGNAME',
+      domain: 'orders',
+      slug: 'orwdxm-dlgname',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXM FORMID (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxm-formid", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxm-formid', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXM FORMID",
-      domain: "orders",
-      slug: "orwdxm-formid",
+      error: 'Not implemented',
+      rpcName: 'ORWDXM FORMID',
+      domain: 'orders',
+      slug: 'orwdxm-formid',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXM LOADSET (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxm-loadset", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxm-loadset', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXM LOADSET",
-      domain: "orders",
-      slug: "orwdxm-loadset",
+      error: 'Not implemented',
+      rpcName: 'ORWDXM LOADSET',
+      domain: 'orders',
+      slug: 'orwdxm-loadset',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXM MENU (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxm-menu", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxm-menu', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXM MENU",
-      domain: "orders",
-      slug: "orwdxm-menu",
+      error: 'Not implemented',
+      rpcName: 'ORWDXM MENU',
+      domain: 'orders',
+      slug: 'orwdxm-menu',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXM MSTYLE (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxm-mstyle", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxm-mstyle', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXM MSTYLE",
-      domain: "orders",
-      slug: "orwdxm-mstyle",
+      error: 'Not implemented',
+      rpcName: 'ORWDXM MSTYLE',
+      domain: 'orders',
+      slug: 'orwdxm-mstyle',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXM PROMPTS (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxm-prompts", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxm-prompts', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXM PROMPTS",
-      domain: "orders",
-      slug: "orwdxm-prompts",
+      error: 'Not implemented',
+      rpcName: 'ORWDXM PROMPTS',
+      domain: 'orders',
+      slug: 'orwdxm-prompts',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXM RSCRN (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxm-rscrn", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxm-rscrn', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXM RSCRN",
-      domain: "orders",
-      slug: "orwdxm-rscrn",
+      error: 'Not implemented',
+      rpcName: 'ORWDXM RSCRN',
+      domain: 'orders',
+      slug: 'orwdxm-rscrn',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXM1 BLDQRSP (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxm1-bldqrsp", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxm1-bldqrsp', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXM1 BLDQRSP",
-      domain: "orders",
-      slug: "orwdxm1-bldqrsp",
+      error: 'Not implemented',
+      rpcName: 'ORWDXM1 BLDQRSP',
+      domain: 'orders',
+      slug: 'orwdxm1-bldqrsp',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXM1 SVRPC (2 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orwdxm1-svrpc", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxm1-svrpc', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXM1 SVRPC",
-      domain: "orders",
-      slug: "orwdxm1-svrpc",
+      error: 'Not implemented',
+      rpcName: 'ORWDXM1 SVRPC',
+      domain: 'orders',
+      slug: 'orwdxm1-svrpc',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXM2 CLRRCL (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxm2-clrrcl", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxm2-clrrcl', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXM2 CLRRCL",
-      domain: "orders",
-      slug: "orwdxm2-clrrcl",
+      error: 'Not implemented',
+      rpcName: 'ORWDXM2 CLRRCL',
+      domain: 'orders',
+      slug: 'orwdxm2-clrrcl',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXM3 ISUDQO (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxm3-isudqo", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxm3-isudqo', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXM3 ISUDQO",
-      domain: "orders",
-      slug: "orwdxm3-isudqo",
+      error: 'Not implemented',
+      rpcName: 'ORWDXM3 ISUDQO',
+      domain: 'orders',
+      slug: 'orwdxm3-isudqo',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXQ DLGNAME (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxq-dlgname", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxq-dlgname', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXQ DLGNAME",
-      domain: "orders",
-      slug: "orwdxq-dlgname",
+      error: 'Not implemented',
+      rpcName: 'ORWDXQ DLGNAME',
+      domain: 'orders',
+      slug: 'orwdxq-dlgname',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXQ DLGSAVE (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxq-dlgsave", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxq-dlgsave', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXQ DLGSAVE",
-      domain: "orders",
-      slug: "orwdxq-dlgsave",
+      error: 'Not implemented',
+      rpcName: 'ORWDXQ DLGSAVE',
+      domain: 'orders',
+      slug: 'orwdxq-dlgsave',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXQ GETQLST (3 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orwdxq-getqlst", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxq-getqlst', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXQ GETQLST",
-      domain: "orders",
-      slug: "orwdxq-getqlst",
+      error: 'Not implemented',
+      rpcName: 'ORWDXQ GETQLST',
+      domain: 'orders',
+      slug: 'orwdxq-getqlst',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXQ GETQNAM (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxq-getqnam", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxq-getqnam', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXQ GETQNAM",
-      domain: "orders",
-      slug: "orwdxq-getqnam",
+      error: 'Not implemented',
+      rpcName: 'ORWDXQ GETQNAM',
+      domain: 'orders',
+      slug: 'orwdxq-getqnam',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXQ PUTQLST (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxq-putqlst", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxq-putqlst', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXQ PUTQLST",
-      domain: "orders",
-      slug: "orwdxq-putqlst",
+      error: 'Not implemented',
+      rpcName: 'ORWDXQ PUTQLST',
+      domain: 'orders',
+      slug: 'orwdxq-putqlst',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXQ PUTQNAM (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxq-putqnam", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxq-putqnam', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXQ PUTQNAM",
-      domain: "orders",
-      slug: "orwdxq-putqnam",
+      error: 'Not implemented',
+      rpcName: 'ORWDXQ PUTQNAM',
+      domain: 'orders',
+      slug: 'orwdxq-putqnam',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXR CANRN (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxr-canrn", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxr-canrn', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXR CANRN",
-      domain: "orders",
-      slug: "orwdxr-canrn",
+      error: 'Not implemented',
+      rpcName: 'ORWDXR CANRN',
+      domain: 'orders',
+      slug: 'orwdxr-canrn',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXR GETPKG (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxr-getpkg", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxr-getpkg', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXR GETPKG",
-      domain: "orders",
-      slug: "orwdxr-getpkg",
+      error: 'Not implemented',
+      rpcName: 'ORWDXR GETPKG',
+      domain: 'orders',
+      slug: 'orwdxr-getpkg',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXR GTORITM (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxr-gtoritm", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxr-gtoritm', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXR GTORITM",
-      domain: "orders",
-      slug: "orwdxr-gtoritm",
+      error: 'Not implemented',
+      rpcName: 'ORWDXR GTORITM',
+      domain: 'orders',
+      slug: 'orwdxr-gtoritm',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXR ISCPLX (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxr-iscplx", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxr-iscplx', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXR ISCPLX",
-      domain: "orders",
-      slug: "orwdxr-iscplx",
+      error: 'Not implemented',
+      rpcName: 'ORWDXR ISCPLX',
+      domain: 'orders',
+      slug: 'orwdxr-iscplx',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXR ISNOW (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxr-isnow", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxr-isnow', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXR ISNOW",
-      domain: "orders",
-      slug: "orwdxr-isnow",
+      error: 'Not implemented',
+      rpcName: 'ORWDXR ISNOW',
+      domain: 'orders',
+      slug: 'orwdxr-isnow',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXR ISREL (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxr-isrel", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxr-isrel', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXR ISREL",
-      domain: "orders",
-      slug: "orwdxr-isrel",
+      error: 'Not implemented',
+      rpcName: 'ORWDXR ISREL',
+      domain: 'orders',
+      slug: 'orwdxr-isrel',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXR ORCPLX (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxr-orcplx", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxr-orcplx', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXR ORCPLX",
-      domain: "orders",
-      slug: "orwdxr-orcplx",
+      error: 'Not implemented',
+      rpcName: 'ORWDXR ORCPLX',
+      domain: 'orders',
+      slug: 'orwdxr-orcplx',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXR RENEW (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxr-renew", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxr-renew', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXR RENEW",
-      domain: "orders",
-      slug: "orwdxr-renew",
+      error: 'Not implemented',
+      rpcName: 'ORWDXR RENEW',
+      domain: 'orders',
+      slug: 'orwdxr-renew',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXR RNWFLDS (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxr-rnwflds", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxr-rnwflds', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXR RNWFLDS",
-      domain: "orders",
-      slug: "orwdxr-rnwflds",
+      error: 'Not implemented',
+      rpcName: 'ORWDXR RNWFLDS',
+      domain: 'orders',
+      slug: 'orwdxr-rnwflds',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXR01 CANCHG (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxr01-canchg", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxr01-canchg', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXR01 CANCHG",
-      domain: "orders",
-      slug: "orwdxr01-canchg",
+      error: 'Not implemented',
+      rpcName: 'ORWDXR01 CANCHG',
+      domain: 'orders',
+      slug: 'orwdxr01-canchg',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXR01 ISSPLY (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxr01-issply", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxr01-issply', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXR01 ISSPLY",
-      domain: "orders",
-      slug: "orwdxr01-issply",
+      error: 'Not implemented',
+      rpcName: 'ORWDXR01 ISSPLY',
+      domain: 'orders',
+      slug: 'orwdxr01-issply',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXR01 OXDATA (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxr01-oxdata", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxr01-oxdata', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXR01 OXDATA",
-      domain: "orders",
-      slug: "orwdxr01-oxdata",
+      error: 'Not implemented',
+      rpcName: 'ORWDXR01 OXDATA',
+      domain: 'orders',
+      slug: 'orwdxr01-oxdata',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXR01 SAVCHG (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxr01-savchg", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxr01-savchg', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXR01 SAVCHG",
-      domain: "orders",
-      slug: "orwdxr01-savchg",
+      error: 'Not implemented',
+      rpcName: 'ORWDXR01 SAVCHG',
+      domain: 'orders',
+      slug: 'orwdxr01-savchg',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXVB COMPORD (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxvb-compord", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxvb-compord', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXVB COMPORD",
-      domain: "orders",
-      slug: "orwdxvb-compord",
+      error: 'Not implemented',
+      rpcName: 'ORWDXVB COMPORD',
+      domain: 'orders',
+      slug: 'orwdxvb-compord',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXVB GETALL (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxvb-getall", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxvb-getall', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXVB GETALL",
-      domain: "orders",
-      slug: "orwdxvb-getall",
+      error: 'Not implemented',
+      rpcName: 'ORWDXVB GETALL',
+      domain: 'orders',
+      slug: 'orwdxvb-getall',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXVB NURSADMN (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxvb-nursadmn", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxvb-nursadmn', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXVB NURSADMN",
-      domain: "orders",
-      slug: "orwdxvb-nursadmn",
+      error: 'Not implemented',
+      rpcName: 'ORWDXVB NURSADMN',
+      domain: 'orders',
+      slug: 'orwdxvb-nursadmn',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXVB RAW (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxvb-raw", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxvb-raw', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXVB RAW",
-      domain: "orders",
-      slug: "orwdxvb-raw",
+      error: 'Not implemented',
+      rpcName: 'ORWDXVB RAW',
+      domain: 'orders',
+      slug: 'orwdxvb-raw',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXVB RESULTS (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxvb-results", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxvb-results', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXVB RESULTS",
-      domain: "orders",
-      slug: "orwdxvb-results",
+      error: 'Not implemented',
+      rpcName: 'ORWDXVB RESULTS',
+      domain: 'orders',
+      slug: 'orwdxvb-results',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXVB STATALOW (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxvb-statalow", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxvb-statalow', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXVB STATALOW",
-      domain: "orders",
-      slug: "orwdxvb-statalow",
+      error: 'Not implemented',
+      rpcName: 'ORWDXVB STATALOW',
+      domain: 'orders',
+      slug: 'orwdxvb-statalow',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXVB SUBCHK (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxvb-subchk", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxvb-subchk', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXVB SUBCHK",
-      domain: "orders",
-      slug: "orwdxvb-subchk",
+      error: 'Not implemented',
+      rpcName: 'ORWDXVB SUBCHK',
+      domain: 'orders',
+      slug: 'orwdxvb-subchk',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXVB VBTNS (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxvb-vbtns", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxvb-vbtns', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXVB VBTNS",
-      domain: "orders",
-      slug: "orwdxvb-vbtns",
+      error: 'Not implemented',
+      rpcName: 'ORWDXVB VBTNS',
+      domain: 'orders',
+      slug: 'orwdxvb-vbtns',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXVB3 COLLTIM (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxvb3-colltim", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxvb3-colltim', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXVB3 COLLTIM",
-      domain: "orders",
-      slug: "orwdxvb3-colltim",
+      error: 'Not implemented',
+      rpcName: 'ORWDXVB3 COLLTIM',
+      domain: 'orders',
+      slug: 'orwdxvb3-colltim',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXVB3 DIAGORD (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxvb3-diagord", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxvb3-diagord', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXVB3 DIAGORD",
-      domain: "orders",
-      slug: "orwdxvb3-diagord",
+      error: 'Not implemented',
+      rpcName: 'ORWDXVB3 DIAGORD',
+      domain: 'orders',
+      slug: 'orwdxvb3-diagord',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWDXVB3 SWPANEL (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwdxvb3-swpanel", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwdxvb3-swpanel', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWDXVB3 SWPANEL",
-      domain: "orders",
-      slug: "orwdxvb3-swpanel",
+      error: 'Not implemented',
+      rpcName: 'ORWDXVB3 SWPANEL',
+      domain: 'orders',
+      slug: 'orwdxvb3-swpanel',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR ACTION TEXT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor-action-text", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor-action-text', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR ACTION TEXT",
-      domain: "orders",
-      slug: "orwor-action-text",
+      error: 'Not implemented',
+      rpcName: 'ORWOR ACTION TEXT',
+      domain: 'orders',
+      slug: 'orwor-action-text',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR EXPIRED (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor-expired", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor-expired', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR EXPIRED",
-      domain: "orders",
-      slug: "orwor-expired",
+      error: 'Not implemented',
+      rpcName: 'ORWOR EXPIRED',
+      domain: 'orders',
+      slug: 'orwor-expired',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR PKISITE (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor-pkisite", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor-pkisite', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR PKISITE",
-      domain: "orders",
-      slug: "orwor-pkisite",
+      error: 'Not implemented',
+      rpcName: 'ORWOR PKISITE',
+      domain: 'orders',
+      slug: 'orwor-pkisite',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR PKIUSE (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor-pkiuse", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor-pkiuse', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR PKIUSE",
-      domain: "orders",
-      slug: "orwor-pkiuse",
+      error: 'Not implemented',
+      rpcName: 'ORWOR PKIUSE',
+      domain: 'orders',
+      slug: 'orwor-pkiuse',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR REQUIRE CURRENT CLIENT (2 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orwor-require-current-client", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor-require-current-client', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR REQUIRE CURRENT CLIENT",
-      domain: "orders",
-      slug: "orwor-require-current-client",
+      error: 'Not implemented',
+      rpcName: 'ORWOR REQUIRE CURRENT CLIENT',
+      domain: 'orders',
+      slug: 'orwor-require-current-client',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR RESULT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor-result", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor-result', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR RESULT",
-      domain: "orders",
-      slug: "orwor-result",
+      error: 'Not implemented',
+      rpcName: 'ORWOR RESULT',
+      domain: 'orders',
+      slug: 'orwor-result',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR RESULT HISTORY (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor-result-history", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor-result-history', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR RESULT HISTORY",
-      domain: "orders",
-      slug: "orwor-result-history",
+      error: 'Not implemented',
+      rpcName: 'ORWOR RESULT HISTORY',
+      domain: 'orders',
+      slug: 'orwor-result-history',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR SHEETS (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor-sheets", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor-sheets', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR SHEETS",
-      domain: "orders",
-      slug: "orwor-sheets",
+      error: 'Not implemented',
+      rpcName: 'ORWOR SHEETS',
+      domain: 'orders',
+      slug: 'orwor-sheets',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR TSALL (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor-tsall", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor-tsall', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR TSALL",
-      domain: "orders",
-      slug: "orwor-tsall",
+      error: 'Not implemented',
+      rpcName: 'ORWOR TSALL',
+      domain: 'orders',
+      slug: 'orwor-tsall',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR UNSIGN (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor-unsign", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor-unsign', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR UNSIGN",
-      domain: "orders",
-      slug: "orwor-unsign",
+      error: 'Not implemented',
+      rpcName: 'ORWOR UNSIGN',
+      domain: 'orders',
+      slug: 'orwor-unsign',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR VERIFY NOTE TITLE (4 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orwor-verify-note-title", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor-verify-note-title', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR VERIFY NOTE TITLE",
-      domain: "orders",
-      slug: "orwor-verify-note-title",
+      error: 'Not implemented',
+      rpcName: 'ORWOR VERIFY NOTE TITLE',
+      domain: 'orders',
+      slug: 'orwor-verify-note-title',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR VWGET (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor-vwget", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor-vwget', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR VWGET",
-      domain: "orders",
-      slug: "orwor-vwget",
+      error: 'Not implemented',
+      rpcName: 'ORWOR VWGET',
+      domain: 'orders',
+      slug: 'orwor-vwget',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR VWSET (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor-vwset", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor-vwset', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR VWSET",
-      domain: "orders",
-      slug: "orwor-vwset",
+      error: 'Not implemented',
+      rpcName: 'ORWOR VWSET',
+      domain: 'orders',
+      slug: 'orwor-vwset',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR1 CHKDIG (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor1-chkdig", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor1-chkdig', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR1 CHKDIG",
-      domain: "orders",
-      slug: "orwor1-chkdig",
+      error: 'Not implemented',
+      rpcName: 'ORWOR1 CHKDIG',
+      domain: 'orders',
+      slug: 'orwor1-chkdig',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR1 GETDSCH (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor1-getdsch", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor1-getdsch', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR1 GETDSCH",
-      domain: "orders",
-      slug: "orwor1-getdsch",
+      error: 'Not implemented',
+      rpcName: 'ORWOR1 GETDSCH',
+      domain: 'orders',
+      slug: 'orwor1-getdsch',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR1 GETDTEXT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor1-getdtext", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor1-getdtext', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR1 GETDTEXT",
-      domain: "orders",
-      slug: "orwor1-getdtext",
+      error: 'Not implemented',
+      rpcName: 'ORWOR1 GETDTEXT',
+      domain: 'orders',
+      slug: 'orwor1-getdtext',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR1 SETDTEXT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor1-setdtext", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor1-setdtext', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR1 SETDTEXT",
-      domain: "orders",
-      slug: "orwor1-setdtext",
+      error: 'Not implemented',
+      rpcName: 'ORWOR1 SETDTEXT',
+      domain: 'orders',
+      slug: 'orwor1-setdtext',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWOR1 SIG (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwor1-sig", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwor1-sig', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWOR1 SIG",
-      domain: "orders",
-      slug: "orwor1-sig",
+      error: 'Not implemented',
+      rpcName: 'ORWOR1 SIG',
+      domain: 'orders',
+      slug: 'orwor1-sig',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORB AUTOUNFLAG ORDERS (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworb-autounflag-orders", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworb-autounflag-orders', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORB AUTOUNFLAG ORDERS",
-      domain: "orders",
-      slug: "orworb-autounflag-orders",
+      error: 'Not implemented',
+      rpcName: 'ORWORB AUTOUNFLAG ORDERS',
+      domain: 'orders',
+      slug: 'orworb-autounflag-orders',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORB FASTUSER (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworb-fastuser", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworb-fastuser', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORB FASTUSER",
-      domain: "orders",
-      slug: "orworb-fastuser",
+      error: 'Not implemented',
+      rpcName: 'ORWORB FASTUSER',
+      domain: 'orders',
+      slug: 'orworb-fastuser',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORB GETDATA (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworb-getdata", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworb-getdata', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORB GETDATA",
-      domain: "orders",
-      slug: "orworb-getdata",
+      error: 'Not implemented',
+      rpcName: 'ORWORB GETDATA',
+      domain: 'orders',
+      slug: 'orworb-getdata',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORB GETLTXT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworb-getltxt", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworb-getltxt', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORB GETLTXT",
-      domain: "orders",
-      slug: "orworb-getltxt",
+      error: 'Not implemented',
+      rpcName: 'ORWORB GETLTXT',
+      domain: 'orders',
+      slug: 'orworb-getltxt',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORB GETSORT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworb-getsort", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworb-getsort', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORB GETSORT",
-      domain: "orders",
-      slug: "orworb-getsort",
+      error: 'Not implemented',
+      rpcName: 'ORWORB GETSORT',
+      domain: 'orders',
+      slug: 'orworb-getsort',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORB KILL EXPIR MED ALERT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworb-kill-expir-med-alert", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworb-kill-expir-med-alert', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORB KILL EXPIR MED ALERT",
-      domain: "orders",
-      slug: "orworb-kill-expir-med-alert",
+      error: 'Not implemented',
+      rpcName: 'ORWORB KILL EXPIR MED ALERT',
+      domain: 'orders',
+      slug: 'orworb-kill-expir-med-alert',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORB KILL EXPIR OI ALERT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworb-kill-expir-oi-alert", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworb-kill-expir-oi-alert', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORB KILL EXPIR OI ALERT",
-      domain: "orders",
-      slug: "orworb-kill-expir-oi-alert",
+      error: 'Not implemented',
+      rpcName: 'ORWORB KILL EXPIR OI ALERT',
+      domain: 'orders',
+      slug: 'orworb-kill-expir-oi-alert',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORB KILL UNSIG ORDERS ALERT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworb-kill-unsig-orders-alert", async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORB KILL UNSIG ORDERS ALERT",
-      domain: "orders",
-      slug: "orworb-kill-unsig-orders-alert",
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get(
+    '/vista/orders/rpc/orworb-kill-unsig-orders-alert',
+    async (): Promise<StubResponse> => {
+      return {
+        ok: false,
+        error: 'Not implemented',
+        rpcName: 'ORWORB KILL UNSIG ORDERS ALERT',
+        domain: 'orders',
+        slug: 'orworb-kill-unsig-orders-alert',
+        hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
+      };
+    }
+  );
 
   /** Stub for ORWORB KILL UNVER MEDS ALERT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworb-kill-unver-meds-alert", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworb-kill-unver-meds-alert', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORB KILL UNVER MEDS ALERT",
-      domain: "orders",
-      slug: "orworb-kill-unver-meds-alert",
+      error: 'Not implemented',
+      rpcName: 'ORWORB KILL UNVER MEDS ALERT',
+      domain: 'orders',
+      slug: 'orworb-kill-unver-meds-alert',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORB KILL UNVER ORDERS ALERT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworb-kill-unver-orders-alert", async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORB KILL UNVER ORDERS ALERT",
-      domain: "orders",
-      slug: "orworb-kill-unver-orders-alert",
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get(
+    '/vista/orders/rpc/orworb-kill-unver-orders-alert',
+    async (): Promise<StubResponse> => {
+      return {
+        ok: false,
+        error: 'Not implemented',
+        rpcName: 'ORWORB KILL UNVER ORDERS ALERT',
+        domain: 'orders',
+        slug: 'orworb-kill-unver-orders-alert',
+        hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
+      };
+    }
+  );
 
   /** Stub for ORWORB SETSORT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworb-setsort", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworb-setsort', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORB SETSORT",
-      domain: "orders",
-      slug: "orworb-setsort",
+      error: 'Not implemented',
+      rpcName: 'ORWORB SETSORT',
+      domain: 'orders',
+      slug: 'orworb-setsort',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORB TEXT FOLLOWUP (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworb-text-followup", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworb-text-followup', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORB TEXT FOLLOWUP",
-      domain: "orders",
-      slug: "orworb-text-followup",
+      error: 'Not implemented',
+      rpcName: 'ORWORB TEXT FOLLOWUP',
+      domain: 'orders',
+      slug: 'orworb-text-followup',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORB UNSIG ORDERS FOLLOWUP (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworb-unsig-orders-followup", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworb-unsig-orders-followup', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORB UNSIG ORDERS FOLLOWUP",
-      domain: "orders",
-      slug: "orworb-unsig-orders-followup",
+      error: 'Not implemented',
+      rpcName: 'ORWORB UNSIG ORDERS FOLLOWUP',
+      domain: 'orders',
+      slug: 'orworb-unsig-orders-followup',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORDG ALLTREE (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwordg-alltree", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwordg-alltree', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORDG ALLTREE",
-      domain: "orders",
-      slug: "orwordg-alltree",
+      error: 'Not implemented',
+      rpcName: 'ORWORDG ALLTREE',
+      domain: 'orders',
+      slug: 'orwordg-alltree',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORDG IEN (2 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orwordg-ien", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwordg-ien', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORDG IEN",
-      domain: "orders",
-      slug: "orwordg-ien",
+      error: 'Not implemented',
+      rpcName: 'ORWORDG IEN',
+      domain: 'orders',
+      slug: 'orwordg-ien',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORDG MAPSEQ (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orwordg-mapseq", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwordg-mapseq', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORDG MAPSEQ",
-      domain: "orders",
-      slug: "orwordg-mapseq",
+      error: 'Not implemented',
+      rpcName: 'ORWORDG MAPSEQ',
+      domain: 'orders',
+      slug: 'orwordg-mapseq',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORDG REVSTS (2 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orwordg-revsts", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orwordg-revsts', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORDG REVSTS",
-      domain: "orders",
-      slug: "orwordg-revsts",
+      error: 'Not implemented',
+      rpcName: 'ORWORDG REVSTS',
+      domain: 'orders',
+      slug: 'orwordg-revsts',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORR AGET (2 call sites in CPRS) */
-  server.get("/vista/orders/rpc/orworr-aget", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworr-aget', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORR AGET",
-      domain: "orders",
-      slug: "orworr-aget",
+      error: 'Not implemented',
+      rpcName: 'ORWORR AGET',
+      domain: 'orders',
+      slug: 'orworr-aget',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORR GET (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworr-get", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworr-get', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORR GET",
-      domain: "orders",
-      slug: "orworr-get",
+      error: 'Not implemented',
+      rpcName: 'ORWORR GET',
+      domain: 'orders',
+      slug: 'orworr-get',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORR GET4LST (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworr-get4lst", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworr-get4lst', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORR GET4LST",
-      domain: "orders",
-      slug: "orworr-get4lst",
+      error: 'Not implemented',
+      rpcName: 'ORWORR GET4LST',
+      domain: 'orders',
+      slug: 'orworr-get4lst',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORR GETBYIFN (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworr-getbyifn", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworr-getbyifn', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORR GETBYIFN",
-      domain: "orders",
-      slug: "orworr-getbyifn",
+      error: 'Not implemented',
+      rpcName: 'ORWORR GETBYIFN',
+      domain: 'orders',
+      slug: 'orworr-getbyifn',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORR GETDEA (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworr-getdea", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworr-getdea', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORR GETDEA",
-      domain: "orders",
-      slug: "orworr-getdea",
+      error: 'Not implemented',
+      rpcName: 'ORWORR GETDEA',
+      domain: 'orders',
+      slug: 'orworr-getdea',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORR GETDSIG (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworr-getdsig", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworr-getdsig', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORR GETDSIG",
-      domain: "orders",
-      slug: "orworr-getdsig",
+      error: 'Not implemented',
+      rpcName: 'ORWORR GETDSIG',
+      domain: 'orders',
+      slug: 'orworr-getdsig',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORR GETTXT (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworr-gettxt", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworr-gettxt', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORR GETTXT",
-      domain: "orders",
-      slug: "orworr-gettxt",
+      error: 'Not implemented',
+      rpcName: 'ORWORR GETTXT',
+      domain: 'orders',
+      slug: 'orworr-gettxt',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });
 
   /** Stub for ORWORR RGET (1 call site in CPRS) */
-  server.get("/vista/orders/rpc/orworr-rget", async (): Promise<StubResponse> => {
+  server.get('/vista/orders/rpc/orworr-rget', async (): Promise<StubResponse> => {
     return {
       ok: false,
-      error: "Not implemented",
-      rpcName: "ORWORR RGET",
-      domain: "orders",
-      slug: "orworr-rget",
+      error: 'Not implemented',
+      rpcName: 'ORWORR RGET',
+      domain: 'orders',
+      slug: 'orworr-rget',
       hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
     };
   });

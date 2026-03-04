@@ -39,12 +39,12 @@ integration scope.
 
 ### License Notes
 
-| Component | License | Notes |
-|-----------|---------|-------|
-| Orthanc | GPLv3 | Server binary — deployed as Docker container |
-| Orthanc plugins | GPLv3 or AGPLv3 | DICOMweb, Worklist, MPPS plugins |
-| OHIF Viewer | MIT | Client-side viewer |
-| Our code | Proprietary | Accesses Orthanc via REST/DICOMweb API |
+| Component       | License         | Notes                                        |
+| --------------- | --------------- | -------------------------------------------- |
+| Orthanc         | GPLv3           | Server binary — deployed as Docker container |
+| Orthanc plugins | GPLv3 or AGPLv3 | DICOMweb, Worklist, MPPS plugins             |
+| OHIF Viewer     | MIT             | Client-side viewer                           |
+| Our code        | Proprietary     | Accesses Orthanc via REST/DICOMweb API       |
 
 GPLv3 applies to Orthanc distribution, not to code that accesses it via
 network API. Our imaging routes (`imaging-proxy.ts`) are a REST client,

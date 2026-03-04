@@ -43,16 +43,12 @@
         {
           "gap": "OIDC is opt-in, not default",
           "severity": "med",
-          "evidenceFiles": [
-            "apps/api/src/auth/oidc-provider.ts"
-          ]
+          "evidenceFiles": ["apps/api/src/auth/oidc-provider.ts"]
         },
         {
           "gap": "Passkey data delegated to Keycloak (not available in sandbox)",
           "severity": "low",
-          "evidenceFiles": [
-            "apps/api/src/auth/biometric/passkeys-provider.ts"
-          ]
+          "evidenceFiles": ["apps/api/src/auth/biometric/passkeys-provider.ts"]
         }
       ],
       "nextActions": [
@@ -66,76 +62,43 @@
       "evidence": [
         {
           "route": "/cprs/admin/alignment",
-          "tags": [
-            "CPRS",
-            "Admin"
-          ]
+          "tags": ["CPRS", "Admin"]
         },
         {
           "route": "/cprs/admin/analytics",
-          "tags": [
-            "CPRS",
-            "Admin",
-            "Analytics"
-          ]
+          "tags": ["CPRS", "Admin", "Analytics"]
         },
         {
           "route": "/cprs/admin/audit-viewer",
-          "tags": [
-            "CPRS",
-            "Admin"
-          ]
+          "tags": ["CPRS", "Admin"]
         },
         {
           "route": "/cprs/admin/break-glass",
-          "tags": [
-            "CPRS",
-            "Admin"
-          ]
+          "tags": ["CPRS", "Admin"]
         },
         {
           "route": "/cprs/admin/capability-matrix",
-          "tags": [
-            "CPRS",
-            "Admin"
-          ]
+          "tags": ["CPRS", "Admin"]
         },
         {
           "route": "/cprs/admin/certification",
-          "tags": [
-            "CPRS",
-            "Admin"
-          ]
+          "tags": ["CPRS", "Admin"]
         },
         {
           "route": "/cprs/admin/claims-queue",
-          "tags": [
-            "CPRS",
-            "RCM",
-            "Admin"
-          ]
+          "tags": ["CPRS", "RCM", "Admin"]
         },
         {
           "route": "/cprs/admin/claims-workbench",
-          "tags": [
-            "CPRS",
-            "RCM",
-            "Admin"
-          ]
+          "tags": ["CPRS", "RCM", "Admin"]
         },
         {
           "route": "/cprs/admin/contracting-hub",
-          "tags": [
-            "CPRS",
-            "Admin"
-          ]
+          "tags": ["CPRS", "Admin"]
         },
         {
           "route": "/cprs/admin/coverage",
-          "tags": [
-            "CPRS",
-            "Admin"
-          ]
+          "tags": ["CPRS", "Admin"]
         }
       ],
       "topGaps": [
@@ -145,9 +108,7 @@
           "evidenceFiles": []
         }
       ],
-      "nextActions": [
-        "Audit each CPRS tab for end-to-end wiring to VistA RPCs"
-      ]
+      "nextActions": ["Audit each CPRS tab for end-to-end wiring to VistA RPCs"]
     },
     {
       "domain": "VISTA_RPC_COVERAGE",
@@ -173,10 +134,7 @@
           "evidenceFiles": []
         }
       ],
-      "nextActions": [
-        "Register unregistered RPCs",
-        "Wire unused registered RPCs to endpoints"
-      ]
+      "nextActions": ["Register unregistered RPCs", "Wire unused registered RPCs to endpoints"]
     },
     {
       "domain": "ORDERS_CPOE",
@@ -207,14 +165,10 @@
         {
           "gap": "Order signing workflow may be incomplete in sandbox",
           "severity": "med",
-          "evidenceFiles": [
-            "apps/api/src/routes/cprs/orders-cpoe.ts"
-          ]
+          "evidenceFiles": ["apps/api/src/routes/cprs/orders-cpoe.ts"]
         }
       ],
-      "nextActions": [
-        "Verify ORWDX LOCK/UNLOCK cycle end-to-end"
-      ]
+      "nextActions": ["Verify ORWDX LOCK/UNLOCK cycle end-to-end"]
     },
     {
       "domain": "SCHEDULING_SDMODULE",
@@ -245,14 +199,10 @@
         {
           "gap": "SDES RPCs callable but WorldVistA File 44 lacks resource/slot config. Target: SDES GET APPT TYPES, SDOE LIST ENCOUNTERS, SD W/L CREATE FILE. requestStore is pg_backed.",
           "severity": "med",
-          "evidenceFiles": [
-            "apps/api/src/routes/scheduling"
-          ]
+          "evidenceFiles": ["apps/api/src/routes/scheduling"]
         }
       ],
-      "nextActions": [
-        "Run ZVESDSEED.m to populate clinic data, then wire SDES write-back"
-      ]
+      "nextActions": ["Run ZVESDSEED.m to populate clinic data, then wire SDES write-back"]
     },
     {
       "domain": "PORTAL_PATIENT",
@@ -260,63 +210,43 @@
       "evidence": [
         {
           "route": "/dashboard/account",
-          "tags": [
-            "Portal"
-          ]
+          "tags": ["Portal"]
         },
         {
           "route": "/dashboard/activity",
-          "tags": [
-            "Portal"
-          ]
+          "tags": ["Portal"]
         },
         {
           "route": "/dashboard/ai-help",
-          "tags": [
-            "Portal"
-          ]
+          "tags": ["Portal"]
         },
         {
           "route": "/dashboard/appointments",
-          "tags": [
-            "Portal"
-          ]
+          "tags": ["Portal"]
         },
         {
           "route": "/dashboard/consents",
-          "tags": [
-            "Portal"
-          ]
+          "tags": ["Portal"]
         },
         {
           "route": "/dashboard/documents",
-          "tags": [
-            "Portal"
-          ]
+          "tags": ["Portal"]
         },
         {
           "route": "/dashboard/exports",
-          "tags": [
-            "Portal"
-          ]
+          "tags": ["Portal"]
         },
         {
           "route": "/dashboard/health",
-          "tags": [
-            "Portal"
-          ]
+          "tags": ["Portal"]
         },
         {
           "route": "/dashboard/immunizations",
-          "tags": [
-            "Portal"
-          ]
+          "tags": ["Portal"]
         },
         {
           "route": "/dashboard/intake",
-          "tags": [
-            "Portal"
-          ]
+          "tags": ["Portal"]
         }
       ],
       "topGaps": [
@@ -334,14 +264,10 @@
         {
           "gap": "Portal auth is separate from VistA auth",
           "severity": "med",
-          "evidenceFiles": [
-            "apps/api/src/routes/portal-auth.ts"
-          ]
+          "evidenceFiles": ["apps/api/src/routes/portal-auth.ts"]
         }
       ],
-      "nextActions": [
-        "Wire portal to VistA patient data via DFN linkage"
-      ]
+      "nextActions": ["Wire portal to VistA patient data via DFN linkage"]
     },
     {
       "domain": "TELEHEALTH",
@@ -372,14 +298,10 @@
         {
           "gap": "Room store is pg_backed (write-through). Rooms are ephemeral (4h TTL) by design. Target: VistA SDEC APPOINTMENT STATUS for future scheduling linkage.",
           "severity": "low",
-          "evidenceFiles": [
-            "apps/api/src/telehealth/room-store.ts"
-          ]
+          "evidenceFiles": ["apps/api/src/telehealth/room-store.ts"]
         }
       ],
-      "nextActions": [
-        "Integrate with VistA scheduling for appointments via SDEC RPCs"
-      ]
+      "nextActions": ["Integrate with VistA scheduling for appointments via SDEC RPCs"]
     },
     {
       "domain": "IMAGING",
@@ -418,9 +340,7 @@
         {
           "gap": "Orthanc integration requires external Docker service",
           "severity": "med",
-          "evidenceFiles": [
-            "services/imaging/docker-compose.yml"
-          ]
+          "evidenceFiles": ["services/imaging/docker-compose.yml"]
         }
       ],
       "nextActions": [
@@ -457,15 +377,10 @@
         {
           "gap": "Custom M routines must be installed in Docker",
           "severity": "med",
-          "evidenceFiles": [
-            "services/vista/ZVEMIOP.m"
-          ]
+          "evidenceFiles": ["services/vista/ZVEMIOP.m"]
         }
       ],
-      "nextActions": [
-        "Automate interop RPC installation",
-        "Test HL7/HLO round-trip"
-      ]
+      "nextActions": ["Automate interop RPC installation", "Test HL7/HLO round-trip"]
     },
     {
       "domain": "RCM_CORE",
@@ -516,16 +431,12 @@
         {
           "gap": "Claim store is pg_backed since Phase 126 (rcm_claim + rcm_remittance tables). Map is write-through cache. Target: VistA ^IB/^PRCA for production billing.",
           "severity": "low",
-          "evidenceFiles": [
-            "apps/api/src/rcm/domain/claim-store.ts"
-          ]
+          "evidenceFiles": ["apps/api/src/rcm/domain/claim-store.ts"]
         },
         {
           "gap": "CLAIM_SUBMISSION_ENABLED=false by default (intentional safety gate)",
           "severity": "low",
-          "evidenceFiles": [
-            "apps/api/src/rcm/edi/pipeline.ts"
-          ]
+          "evidenceFiles": ["apps/api/src/rcm/edi/pipeline.ts"]
         }
       ],
       "nextActions": [
@@ -550,14 +461,10 @@
         {
           "gap": "PhilHealth eClaims 3.0 connector is simulation scaffold. Blocked by: facility accreditation, TLS client cert (PKI), API access enrollment. Target: PhilHealth eClaims 3.0 REST /api/v3.",
           "severity": "med",
-          "evidenceFiles": [
-            "apps/api/src/rcm/connectors/philhealth-connector.ts"
-          ]
+          "evidenceFiles": ["apps/api/src/rcm/connectors/philhealth-connector.ts"]
         }
       ],
-      "nextActions": [
-        "Enroll facility for PhilHealth eClaims 3.0 API access + PKI cert"
-      ]
+      "nextActions": ["Enroll facility for PhilHealth eClaims 3.0 API access + PKI cert"]
     },
     {
       "domain": "PAYER_INTEGRATIONS_US",
@@ -576,14 +483,10 @@
         {
           "gap": "Clearinghouse connector is simulation scaffold. Blocked by: vendor contract (Change Healthcare/Availity/WayStar), SFTP credentials, sender/receiver ID enrollment. Target: vendor SFTP/API.",
           "severity": "med",
-          "evidenceFiles": [
-            "apps/api/src/rcm/connectors/clearinghouse-connector.ts"
-          ]
+          "evidenceFiles": ["apps/api/src/rcm/connectors/clearinghouse-connector.ts"]
         }
       ],
-      "nextActions": [
-        "Sign clearinghouse vendor contract and enroll sender ID"
-      ]
+      "nextActions": ["Sign clearinghouse vendor contract and enroll sender ID"]
     },
     {
       "domain": "REPORTING",
@@ -614,14 +517,10 @@
         {
           "gap": "Report cache is in-memory",
           "severity": "low",
-          "evidenceFiles": [
-            "apps/api/src/routes/reporting.ts"
-          ]
+          "evidenceFiles": ["apps/api/src/routes/reporting.ts"]
         }
       ],
-      "nextActions": [
-        "Wire clinical reports to VistA ORWRP REPORT TEXT"
-      ]
+      "nextActions": ["Wire clinical reports to VistA ORWRP REPORT TEXT"]
     },
     {
       "domain": "AI_GOVERNANCE",
@@ -640,9 +539,7 @@
           "evidenceFiles": []
         }
       ],
-      "nextActions": [
-        "Connect AI shield to production LLM endpoint"
-      ]
+      "nextActions": ["Connect AI shield to production LLM endpoint"]
     },
     {
       "domain": "ADMIN_PLATFORM",
@@ -690,9 +587,7 @@
         }
       ],
       "topGaps": [],
-      "nextActions": [
-        "Continue admin panel feature parity"
-      ]
+      "nextActions": ["Continue admin panel feature parity"]
     },
     {
       "domain": "AUDIT_COMPLIANCE",
@@ -715,14 +610,10 @@
         {
           "gap": "Audit JSONL files are append-only but not externally replicated",
           "severity": "med",
-          "evidenceFiles": [
-            "apps/api/src/lib/immutable-audit.ts"
-          ]
+          "evidenceFiles": ["apps/api/src/lib/immutable-audit.ts"]
         }
       ],
-      "nextActions": [
-        "Add audit log shipping to external SIEM"
-      ]
+      "nextActions": ["Add audit log shipping to external SIEM"]
     },
     {
       "domain": "MULTI_TENANCY",
@@ -742,21 +633,15 @@
         {
           "gap": "RLS auto-enables in rc/prod mode (Phase 125). PLATFORM_PG_RLS_ENABLED is dev-mode toggle only. 21 tables covered with ENABLE + FORCE RLS.",
           "severity": "low",
-          "evidenceFiles": [
-            "apps/api/src/posture/tenant-posture.ts"
-          ]
+          "evidenceFiles": ["apps/api/src/posture/tenant-posture.ts"]
         },
         {
           "gap": "SQLite blocked in rc/prod by store-resolver (Phase 125). Dev-mode SQLite has app-level tenant_id guards via tenant-guard.ts.",
           "severity": "low",
-          "evidenceFiles": [
-            "apps/api/src/platform/db/schema.ts"
-          ]
+          "evidenceFiles": ["apps/api/src/platform/db/schema.ts"]
         }
       ],
-      "nextActions": [
-        "Verify RLS covers all new tables added after Phase 125"
-      ]
+      "nextActions": ["Verify RLS covers all new tables added after Phase 125"]
     },
     {
       "domain": "DATABASE_POSTURE",
@@ -792,9 +677,7 @@
           ]
         }
       ],
-      "nextActions": [
-        "Verify all critical stores have store-policy pg_backed classification"
-      ]
+      "nextActions": ["Verify all critical stores have store-policy pg_backed classification"]
     },
     {
       "domain": "INTERNATIONALIZATION",
@@ -817,16 +700,12 @@
         {
           "gap": "I18nProvider wired in web+portal layouts (Phase 132) but not all strings extracted",
           "severity": "low",
-          "evidenceFiles": [
-            "apps/web/src/components/I18nProvider.tsx"
-          ]
+          "evidenceFiles": ["apps/web/src/components/I18nProvider.tsx"]
         },
         {
           "gap": "PHP peso currency in PH payer data -- locale formatting pending",
           "severity": "low",
-          "evidenceFiles": [
-            "data/payers/ph_hmos.json"
-          ]
+          "evidenceFiles": ["data/payers/ph_hmos.json"]
         }
       ],
       "nextActions": [
@@ -839,51 +718,37 @@
     {
       "risk": "Map store adapters in apps/api/src/adapters/adapter-loader.ts is write-through cache (pg_backed critical stores survive restart; ephemeral stores rebuildable)",
       "severity": "med",
-      "evidence": [
-        "apps/api/src/adapters/adapter-loader.ts:23"
-      ]
+      "evidence": ["apps/api/src/adapters/adapter-loader.ts:23"]
     },
     {
       "risk": "Map store offsets in apps/api/src/audit-shipping/shipper.ts is write-through cache (pg_backed critical stores survive restart; ephemeral stores rebuildable)",
       "severity": "med",
-      "evidence": [
-        "apps/api/src/audit-shipping/shipper.ts:54"
-      ]
+      "evidence": ["apps/api/src/audit-shipping/shipper.ts:54"]
     },
     {
       "risk": "Map store result in apps/api/src/audit-shipping/shipper.ts is write-through cache (pg_backed critical stores survive restart; ephemeral stores rebuildable)",
       "severity": "med",
-      "evidence": [
-        "apps/api/src/audit-shipping/shipper.ts:137"
-      ]
+      "evidence": ["apps/api/src/audit-shipping/shipper.ts:137"]
     },
     {
       "risk": "Map store tenantLines in apps/api/src/audit-shipping/shipper.ts is write-through cache (pg_backed critical stores survive restart; ephemeral stores rebuildable)",
       "severity": "med",
-      "evidence": [
-        "apps/api/src/audit-shipping/shipper.ts:147"
-      ]
+      "evidence": ["apps/api/src/audit-shipping/shipper.ts:147"]
     },
     {
       "risk": "Map store ruleMap in apps/api/src/rcm/claim-lifecycle/scrubber.ts is write-through cache (pg_backed critical stores survive restart; ephemeral stores rebuildable)",
       "severity": "med",
-      "evidence": [
-        "apps/api/src/rcm/claim-lifecycle/scrubber.ts:149"
-      ]
+      "evidence": ["apps/api/src/rcm/claim-lifecycle/scrubber.ts:149"]
     },
     {
       "risk": "Claim submission disabled by default (CLAIM_SUBMISSION_ENABLED=false) -- intentional safety gate",
       "severity": "low",
-      "evidence": [
-        "apps/api/src/rcm/edi/pipeline.ts"
-      ]
+      "evidence": ["apps/api/src/rcm/edi/pipeline.ts"]
     },
     {
       "risk": "RLS auto-enables in rc/prod (Phase 125). Dev-mode only requires PLATFORM_PG_RLS_ENABLED toggle.",
       "severity": "low",
-      "evidence": [
-        "apps/api/src/posture/tenant-posture.ts"
-      ]
+      "evidence": ["apps/api/src/posture/tenant-posture.ts"]
     },
     {
       "risk": "External payer integrations (PhilHealth eClaims, US Clearinghouse) are simulation scaffolds pending vendor enrollment",

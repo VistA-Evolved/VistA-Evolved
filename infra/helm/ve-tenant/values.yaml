@@ -1,13 +1,13 @@
 # ve-tenant — Default values
 # One release per tenant. Override tenantId/tenantSlug per install.
 
-tenantId: ""
-tenantSlug: ""
-tenantNamespace: ""
+tenantId: ''
+tenantSlug: ''
+tenantNamespace: ''
 
 global:
   sharedNamespace: ve-system
-  imageRegistry: ""
+  imageRegistry: ''
   imagePullSecrets: []
 
 # ---------- Tenant API ----------
@@ -22,7 +22,7 @@ api:
       cpu: 250m
       memory: 512Mi
     limits:
-      cpu: "1"
+      cpu: '1'
       memory: 1Gi
   env: []
   # Extra env vars injected into the API container
@@ -46,18 +46,18 @@ vista:
       cpu: 500m
       memory: 1Gi
     limits:
-      cpu: "2"
+      cpu: '2'
       memory: 2Gi
   storage:
     size: 5Gi
-    storageClass: ""
+    storageClass: ''
 
 # ---------- Backup CronJob ----------
 backup:
   enabled: false
-  schedule: "0 3 * * *"
-  s3Bucket: ""
-  s3Endpoint: ""
+  schedule: '0 3 * * *'
+  s3Bucket: ''
+  s3Endpoint: ''
   retention:
     keepDays: 7
 

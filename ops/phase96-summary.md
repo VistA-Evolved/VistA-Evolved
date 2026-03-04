@@ -8,22 +8,24 @@ export them in print-ready formats (JSON/PDF-text/XML-placeholder), and track
 submission status honestly without faking automated submission.
 
 ### New Files (8)
-| File | Purpose |
-|------|---------|
-| `apps/api/src/rcm/philhealth-eclaims3/types.ts` | Domain types: ClaimPacket, EClaimsSubmissionStatus (7-state FSM), ExportBundle, XmlGeneratorInterface, SpecAcquisitionGates |
-| `apps/api/src/rcm/philhealth-eclaims3/packet-builder.ts` | Assembles ClaimPacket from PhilHealthClaimDraft with validation + SHA-256 content hash |
-| `apps/api/src/rcm/philhealth-eclaims3/export-generators.ts` | Multi-format export: canonical JSON, PDF text summary, XML placeholder |
-| `apps/api/src/rcm/philhealth-eclaims3/xml-generator.ts` | Strict XML generator interface with placeholder impl ("spec pending") |
-| `apps/api/src/rcm/philhealth-eclaims3/submission-tracker.ts` | In-memory submission status FSM (draft→reviewed→exported→submitted_manual→accepted/denied→appealed) |
-| `apps/api/src/rcm/philhealth-eclaims3/eclaims3-routes.ts` | 12 API endpoints at `/rcm/eclaims3/*` |
-| `apps/web/src/app/cprs/admin/philhealth-eclaims3/page.tsx` | Operational UI — 4 tabs (Build & Export, Submissions, Denials, Spec Gates) |
-| `docs/runbooks/philhealth-eclaims3-spec-status.md` | Spec acquisition gates tracker (5 gates) |
+
+| File                                                         | Purpose                                                                                                                     |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| `apps/api/src/rcm/philhealth-eclaims3/types.ts`              | Domain types: ClaimPacket, EClaimsSubmissionStatus (7-state FSM), ExportBundle, XmlGeneratorInterface, SpecAcquisitionGates |
+| `apps/api/src/rcm/philhealth-eclaims3/packet-builder.ts`     | Assembles ClaimPacket from PhilHealthClaimDraft with validation + SHA-256 content hash                                      |
+| `apps/api/src/rcm/philhealth-eclaims3/export-generators.ts`  | Multi-format export: canonical JSON, PDF text summary, XML placeholder                                                      |
+| `apps/api/src/rcm/philhealth-eclaims3/xml-generator.ts`      | Strict XML generator interface with placeholder impl ("spec pending")                                                       |
+| `apps/api/src/rcm/philhealth-eclaims3/submission-tracker.ts` | In-memory submission status FSM (draft→reviewed→exported→submitted_manual→accepted/denied→appealed)                         |
+| `apps/api/src/rcm/philhealth-eclaims3/eclaims3-routes.ts`    | 12 API endpoints at `/rcm/eclaims3/*`                                                                                       |
+| `apps/web/src/app/cprs/admin/philhealth-eclaims3/page.tsx`   | Operational UI — 4 tabs (Build & Export, Submissions, Denials, Spec Gates)                                                  |
+| `docs/runbooks/philhealth-eclaims3-spec-status.md`           | Spec acquisition gates tracker (5 gates)                                                                                    |
 
 ### Modified Files (2)
-| File | Change |
-|------|--------|
-| `apps/api/src/index.ts` | Import + register `eclaims3Routes` |
-| `apps/web/src/app/cprs/admin/layout.tsx` | Add "eClaims 3.0" nav entry |
+
+| File                                     | Change                             |
+| ---------------------------------------- | ---------------------------------- |
+| `apps/api/src/index.ts`                  | Import + register `eclaims3Routes` |
+| `apps/web/src/app/cprs/admin/layout.tsx` | Add "eClaims 3.0" nav entry        |
 
 ## How to Test Manually
 

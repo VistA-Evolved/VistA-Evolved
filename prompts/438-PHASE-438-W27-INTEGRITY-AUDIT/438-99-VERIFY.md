@@ -1,6 +1,7 @@
 # Phase 438 — Verification
 
 ## Checks
+
 1. `prompts-tree-health.mjs` passes (7/7 PASS, 0 FAIL)
 2. `prompts-audit.mjs` shows 0 collisions
 3. All 8 W27 phases (431-438) have prompt folders with IMPLEMENT + VERIFY

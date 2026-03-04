@@ -11,12 +11,12 @@
  * does nothing when clicked. This is forbidden by AGENTS.md rule #4.
  */
 
-import { readFileSync, existsSync, readdirSync, statSync } from "fs";
-import { join, extname } from "path";
-import type { AuditModule, AuditFinding } from "../types.js";
+import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
+import { join, extname } from 'path';
+import type { AuditModule, AuditFinding } from '../types.js';
 
-const SCAN_EXTENSIONS = new Set([".ts", ".tsx"]);
-const SKIP_DIRS = new Set(["node_modules", ".next", ".git", "dist", ".turbo", "coverage", ".pnpm"]);
+const SCAN_EXTENSIONS = new Set(['.ts', '.tsx']);
+const SKIP_DIRS = new Set(['node_modules', '.next', '.git', 'dist', '.turbo', 'coverage', '.pnpm']);
 
 function collectFiles(dir: string): string[] {
   const results: string[] = [];
@@ -34,7 +34,7 @@ function collectFiles(dir: string): string[] {
   return results;
 }
 
-type ClickClass = "WIRED" | "STUB" | "PENDING" | "DEAD_CLICK";
+type ClickClass = 'WIRED' | 'STUB' | 'PENDING' | 'DEAD_CLICK';
 
 interface ActionEntry {
   actionId: string;
@@ -46,27 +46,28 @@ interface ActionEntry {
 }
 
 export const deadClickAudit: AuditModule = {
-  name: "deadClickAudit",
-  requires: "offline",
+  name: 'deadClickAudit',
+  requires: 'offline',
 
   async run(root: string): Promise<AuditFinding[]> {
     const findings: AuditFinding[] = [];
 
     // Parse action registry
-    const registryFile = join(root, "apps", "web", "src", "actions", "actionRegistry.ts");
+    const registryFile = join(root, 'apps', 'web', 'src', 'actions', 'actionRegistry.ts');
     if (!existsSync(registryFile)) {
       findings.push({
-        rule: "action-registry-exists",
-        status: "fail",
-        severity: "critical",
-        message: "actionRegistry.ts not found",
+        rule: 'action-registry-exists',
+        status: 'fail',
+        severity: 'critical',
+        message: 'actionRegistry.ts not found',
       });
       return findings;
     }
 
-    const registrySource = readFileSync(registryFile, "utf-8");
+    const registrySource = readFileSync(registryFile, 'utf-8');
     const actions: ActionEntry[] = [];
-    const actionBlockRe = /\{\s*actionId:\s*["']([^"']+)["'][\s\S]*?status:\s*["']([^"']+)["'][\s\S]*?\}/g;
+    const actionBlockRe =
+      /\{\s*actionId:\s*["']([^"']+)["'][\s\S]*?status:\s*["']([^"']+)["'][\s\S]*?\}/g;
 
     let m: RegExpExecArray | null;
     while ((m = actionBlockRe.exec(registrySource)) !== null) {
@@ -86,7 +87,7 @@ export const deadClickAudit: AuditModule = {
       actions.push({
         actionId,
         label: labelM ? labelM[1] : actionId,
-        location: locM ? locM[1] : "unknown",
+        location: locM ? locM[1] : 'unknown',
         rpcs,
         status,
         pendingNote: noteM ? noteM[1] : undefined,
@@ -95,30 +96,30 @@ export const deadClickAudit: AuditModule = {
 
     // Scan web source for onClick/button handlers that reference actions
     // but might be empty (dead clicks)
-    const webSrc = join(root, "apps", "web", "src");
+    const webSrc = join(root, 'apps', 'web', 'src');
     const webFiles = collectFiles(webSrc);
 
     // Look for "not implemented", empty onClick, console.log-only handlers
     const deadPatterns = [
-      { re: /onClick=\{\s*\(\)\s*=>\s*\{\s*\}\s*\}/g, name: "empty-onclick" },
-      { re: /onClick=\{\s*\(\)\s*=>\s*(?:console\.log|void\s+0)/g, name: "noop-onclick" },
-      { re: /disabled.*(?:coming\s*soon|not\s*implemented)/gi, name: "disabled-placeholder" },
+      { re: /onClick=\{\s*\(\)\s*=>\s*\{\s*\}\s*\}/g, name: 'empty-onclick' },
+      { re: /onClick=\{\s*\(\)\s*=>\s*(?:console\.log|void\s+0)/g, name: 'noop-onclick' },
+      { re: /disabled.*(?:coming\s*soon|not\s*implemented)/gi, name: 'disabled-placeholder' },
     ];
 
     let deadClicksInUi = 0;
     for (const file of webFiles) {
-      const content = readFileSync(file, "utf-8");
-      const rel = file.replace(root, "").replace(/\\/g, "/").replace(/^\//, "");
-      const lines = content.split("\n");
+      const content = readFileSync(file, 'utf-8');
+      const rel = file.replace(root, '').replace(/\\/g, '/').replace(/^\//, '');
+      const lines = content.split('\n');
       for (let i = 0; i < lines.length; i++) {
         for (const pat of deadPatterns) {
           pat.re.lastIndex = 0;
           if (pat.re.test(lines[i])) {
             deadClicksInUi++;
             findings.push({
-              rule: "no-dead-clicks-ui",
-              status: "warn",
-              severity: "medium",
+              rule: 'no-dead-clicks-ui',
+              status: 'warn',
+              severity: 'medium',
               message: `Potential dead click (${pat.name})`,
               file: rel,
               line: i + 1,
@@ -135,24 +136,24 @@ export const deadClickAudit: AuditModule = {
 
     for (const action of actions) {
       let cls: ClickClass;
-      if (action.status === "wired") {
-        cls = "WIRED";
-      } else if (action.status === "stub") {
-        cls = action.pendingNote ? "STUB" : "DEAD_CLICK";
-      } else if (action.status === "integration-pending") {
-        cls = action.pendingNote ? "PENDING" : "DEAD_CLICK";
+      if (action.status === 'wired') {
+        cls = 'WIRED';
+      } else if (action.status === 'stub') {
+        cls = action.pendingNote ? 'STUB' : 'DEAD_CLICK';
+      } else if (action.status === 'integration-pending') {
+        cls = action.pendingNote ? 'PENDING' : 'DEAD_CLICK';
       } else {
-        cls = "DEAD_CLICK";
+        cls = 'DEAD_CLICK';
       }
 
       classifications.push({ actionId: action.actionId, cls });
 
-      if (cls === "DEAD_CLICK") {
+      if (cls === 'DEAD_CLICK') {
         deadCount++;
         findings.push({
-          rule: "no-dead-click-action",
-          status: "fail",
-          severity: "high",
+          rule: 'no-dead-click-action',
+          status: 'fail',
+          severity: 'high',
           message: `Dead click: "${action.actionId}" (${action.status}) has no pendingNote`,
           fix: `Add pendingNote with target RPC(s) or wire the action`,
         });
@@ -161,24 +162,24 @@ export const deadClickAudit: AuditModule = {
 
     if (deadCount === 0 && deadClicksInUi === 0) {
       findings.push({
-        rule: "no-dead-clicks",
-        status: "pass",
-        severity: "info",
+        rule: 'no-dead-clicks',
+        status: 'pass',
+        severity: 'info',
         message: `No dead clicks found. ${actions.length} actions classified.`,
       });
     }
 
     // Summary
     const byClass = {
-      WIRED: classifications.filter((c) => c.cls === "WIRED").length,
-      STUB: classifications.filter((c) => c.cls === "STUB").length,
-      PENDING: classifications.filter((c) => c.cls === "PENDING").length,
-      DEAD_CLICK: classifications.filter((c) => c.cls === "DEAD_CLICK").length,
+      WIRED: classifications.filter((c) => c.cls === 'WIRED').length,
+      STUB: classifications.filter((c) => c.cls === 'STUB').length,
+      PENDING: classifications.filter((c) => c.cls === 'PENDING').length,
+      DEAD_CLICK: classifications.filter((c) => c.cls === 'DEAD_CLICK').length,
     };
     findings.push({
-      rule: "click-classification",
-      status: "pass",
-      severity: "info",
+      rule: 'click-classification',
+      status: 'pass',
+      severity: 'info',
       message: `Classification: ${byClass.WIRED} wired, ${byClass.STUB} stub, ${byClass.PENDING} pending, ${byClass.DEAD_CLICK} dead`,
     });
 

@@ -31,12 +31,12 @@ export interface SpecimenInfo {
 /* ------------------------------------------------------------------ */
 
 export type LabFilingStatus =
-  | "received"       // ORU^R01 parsed and staged
-  | "validated"      // Passed validation checks
-  | "filed"          // Filed to VistA (future — requires LR package RPCs)
-  | "file-failed"    // Filing to VistA failed
-  | "quarantined"    // Validation failed / unmatched patient
-  | "acknowledged";  // ORWLRR ACK called (clinician saw it)
+  | 'received' // ORU^R01 parsed and staged
+  | 'validated' // Passed validation checks
+  | 'filed' // Filed to VistA (future — requires LR package RPCs)
+  | 'file-failed' // Filing to VistA failed
+  | 'quarantined' // Validation failed / unmatched patient
+  | 'acknowledged'; // ORWLRR ACK called (clinician saw it)
 
 export interface InboundLabResult {
   /** Internal ID (UUID-like) */
@@ -56,7 +56,7 @@ export interface InboundLabResult {
   /** Patient external ID (PID-3) */
   patientExternalId: string;
   /** Patient name from HL7 (not stored in VistA-Evolved — for matching only) */
-  patientNameHash?: string;    // SHA-256 hash, not plaintext
+  patientNameHash?: string; // SHA-256 hash, not plaintext
   /** Matched VistA DFN (null if unmatched) */
   matchedDfn?: string;
 
@@ -78,15 +78,15 @@ export interface InboundLabResult {
 
   /* Status tracking */
   status: LabFilingStatus;
-  receivedAt: string;          // ISO 8601 — when we received it
+  receivedAt: string; // ISO 8601 — when we received it
   validatedAt?: string;
   filedAt?: string;
   filingError?: string;
-  vistaLabIen?: string;        // IEN in File 63 after filing (future)
+  vistaLabIen?: string; // IEN in File 63 after filing (future)
 
   /* Metadata */
-  resultStatus: "F" | "P" | "C" | "X";  // Final / Preliminary / Corrected / Cancelled
-  priority?: "S" | "R" | "A";           // Stat / Routine / ASAP
+  resultStatus: 'F' | 'P' | 'C' | 'X'; // Final / Preliminary / Corrected / Cancelled
+  priority?: 'S' | 'R' | 'A'; // Stat / Routine / ASAP
 }
 
 /** Individual observation within an inbound lab result. */
@@ -127,11 +127,11 @@ export interface LabValidationResult {
 
 export interface LabFilingTarget {
   /** Target VistA file for result storage */
-  vistaFile: string;          // "63" (LAB DATA) or "63.04" (CH subscript)
+  vistaFile: string; // "63" (LAB DATA) or "63.04" (CH subscript)
   /** Target routine/RPC for filing */
-  targetRpc: string;          // "LRFZX" or custom ZVE routine
+  targetRpc: string; // "LRFZX" or custom ZVE routine
   /** Package */
-  vistaPackage: string;       // "LR"
+  vistaPackage: string; // "LR"
   /** Sandbox availability */
   sandboxNote: string;
   /** Migration path */

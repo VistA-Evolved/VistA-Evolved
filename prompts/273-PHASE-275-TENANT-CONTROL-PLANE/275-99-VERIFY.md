@@ -1,6 +1,7 @@
 # Phase 275 — VERIFY: Tenant Control Plane
 
 ## Gates
+
 1. PG migration v27 creates `tenant_config` table with all columns
 2. `tenant_config` is in CANONICAL_RLS_TABLES
 3. `tenant-config-repo.ts` exports DB-backed CRUD

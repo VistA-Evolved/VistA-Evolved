@@ -1,0 +1,224 @@
+﻿src/adapters/messaging/vista-adapter.ts(21,13): error TS6133: 'safeCallRpc' is declared but its value is never read.
+src/adapters/scheduling/stub-adapter.ts(12,3): error TS6196: 'AppointmentRequest' is declared but never used.
+src/adapters/scheduling/vista-adapter.ts(54,23): error TS6133: 'safeCallRpcWithList' is declared but its value is never read.
+src/ai/ai-gateway.ts(16,3): error TS6196: 'AIUseCase' is declared but never used.
+src/ai/ai-gateway.ts(21,24): error TS6133: 'getPrompt' is declared but its value is never read.
+src/ai/ai-gateway.ts(235,9): error TS6133: 'wasRedacted' is declared but its value is never read.
+src/ai/prompt-registry.ts(10,31): error TS6196: 'AIUseCase' is declared but never used.
+src/analytics/extract-layer.ts(17,3): error TS6196: 'DeidMode' is declared but never used.
+src/auth/biometric/face-provider.ts(26,3): error TS6196: 'DEFAULT_FACE_CONFIG' is declared but never used.
+src/auth/idp/idp-routes.ts(27,3): error TS6133: 'getDefaultProvider' is declared but its value is never read.
+src/auth/idp/idp-routes.ts(35,3): error TS6133: 'unbindVistaSession' is declared but its value is never read.
+src/auth/idp/oidc-idp.ts(24,10): error TS6133: 'mapUserRole' is declared but its value is never read.
+src/auth/idp/oidc-idp.ts(94,13): error TS6133: 'errBody' is declared but its value is never read.
+src/auth/idp/saml-broker-idp.ts(26,36): error TS6133: 'OidcTokenClaims' is declared but its value is never read.
+src/auth/key-provider.ts(173,32): error TS6138: Property 'keyDir' is declared but its value is never read.
+src/auth/key-provider.ts(284,22): error TS6138: Property 'kmsRegion' is declared but its value is never read.
+src/auth/privacy-segmentation.ts(8,1): error TS6133: 'log' is declared but its value is never read.
+src/auth/rotation-manager.ts(20,8): error TS6133: 'KeyStatus' is declared but its value is never read.
+src/auth/siem-sink.ts(109,22): error TS6138: Property 'port' is declared but its value is never read.
+src/auth/siem-sink.ts(142,22): error TS6138: Property 'prefix' is declared but its value is never read.
+src/cds/cds-routes.ts(45,3): error TS6133: 'getCdsService' is declared but its value is never read.
+src/cds/cds-routes.ts(80,11): error TS6133: 'session' is declared but its value is never read.
+src/cds/cds-routes.ts(91,11): error TS6133: 'session' is declared but its value is never read.
+src/config/tenant-config.ts(18,3): error TS6133: 'dbGetTenant' is declared but its value is never read.
+src/devices/gateway-routes.ts(12,48): error TS6196: 'FastifyReply' is declared but never used.
+src/fhir/fhir-scope-enforcement.ts(20,1): error TS6133: 'FhirPrincipal' is declared but its value is never read.
+src/fhir/mappers.ts(62,7): error TS6133: 'VERIFICATION_SYSTEM' is declared but its value is never read.
+src/fhir/smart-configuration.ts(26,7): error TS6133: 'OIDC_CLIENT_ID' is declared but its value is never read.
+src/flags/unleash-provider.ts(61,11): error TS6133: 'lastRefresh' is declared but its value is never read.
+src/hl7/fhir-bridge.ts(383,9): error TS6133: 'placerOrder' is declared but its value is never read.
+src/hl7/fhir-bridge.ts(433,9): error TS6133: 'appointmentId' is declared but its value is never read.
+src/hl7/mllp-client.ts(18,33): error TS6196: 'MllpConnection' is declared but never used.
+src/hl7/mllp-client.ts(24,1): error TS6133: 'parseMessage' is declared but its value is never read.
+src/hl7/mllp-client.ts(25,1): error TS6133: 'Hl7Ack' is declared but its value is never read.
+src/hl7/mllp-client.ts(49,11): error TS6133: 'reconnectAttempt' is declared but its value is never read.
+src/hl7/packs/adt-pack.ts(13,1): error TS6133: 'Hl7Route' is declared but its value is never read.
+src/hl7/packs/orm-pack.ts(12,1): error TS6133: 'Hl7Route' is declared but its value is never read.
+src/hl7/packs/oru-pack.ts(11,1): error TS6133: 'Hl7Route' is declared but its value is never read.
+src/hl7/packs/siu-pack.ts(11,1): error TS6133: 'Hl7Route' is declared but its value is never read.
+src/hl7/packs/types.ts(7,27): error TS6196: 'Hl7Ack' is declared but never used.
+src/hl7/routing/dispatcher.ts(15,24): error TS6133: 'messageSummary' is declared but its value is never read.
+src/hl7/routing/dispatcher.ts(125,15): error TS6133: 'id' is declared but its value is never read.
+src/hl7/routing/index.ts(13,42): error TS6133: 'shutdownDispatcher' is declared but its value is never read.
+src/hl7/templates/template-validator.ts(12,3): error TS6196: 'SegmentTemplate' is declared but never used.
+src/inpatient/inpatient-routes.ts(44,3): error TS6196: 'VitalSign' is declared but never used.
+src/inpatient/inpatient-store.ts(20,3): error TS6196: 'AdtEventType' is declared but never used.
+src/inpatient/inpatient-store.ts(23,3): error TS6196: 'VitalSign' is declared but never used.
+src/intake/intake-routes.ts(33,3): error TS6196: 'IntakeContext' is declared but never used.
+src/intake/pack-registry.ts(119,9): error TS6133: 'merged' is declared but its value is never read.
+src/interop-gateway/gateway-routes.ts(23,3): error TS6133: 'recordTransaction' is declared but its value is never read.
+src/interop-gateway/gateway-routes.ts(28,3): error TS6133: 'getMediator' is declared but its value is never read.
+src/lab/lab-routes.ts(33,3): error TS6133: 'getSpecimen' is declared but its value is never read.
+src/lab/lab-routes.ts(38,3): error TS6133: 'getLabResult' is declared but its value is never read.
+src/lab/lab-routes.ts(41,3): error TS6133: 'getCriticalAlert' is declared but its value is never read.
+src/lib/logger.ts(16,22): error TS6133: 'PHI_CONFIG' is declared but its value is never read.
+src/lib/rpc-resilience.ts(15,15): error TS6133: 'getRequestId' is declared but its value is never read.
+src/lib/rpc-resilience.ts(16,52): error TS6133: 'getDuz' is declared but its value is never read.
+src/lib/rpc-resilience.ts(18,36): error TS6133: 'getCurrentTraceId' is declared but its value is never read.
+src/lib/rpc-resilience.ts(19,79): error TS6133: 'rpcCacheSizeGauge' is declared but its value is never read.
+src/migration/ccda-ingest.ts(13,3): error TS6196: 'FhirMigrationError' is declared but never used.
+src/migration/ccda-ingest.ts(76,10): error TS6133: 'extractPatientName' is declared but its value is never read.
+src/migration/ccda-parser.ts(81,10): error TS6133: 'extractAllTags' is declared but its value is never read.
+src/migration/ccda-parser.ts(91,10): error TS6133: 'extractAttribute' is declared but its value is never read.
+src/migration/export-pipeline.ts(16,3): error TS6196: 'MigrationJob' is declared but never used.
+src/migration/export-pipeline.ts(18,3): error TS6196: 'ExportBundleType' is declared but never used.
+src/migration/fhir-import.ts(16,3): error TS6196: 'FhirImportStatus' is declared but never used.
+src/migration/mapping-engine.ts(18,3): error TS6196: 'MappingTemplate' is declared but never used.
+src/migration/mapping-engine.ts(21,3): error TS6196: 'ValidationSeverity' is declared but never used.
+src/migration/migration-routes.ts(17,32): error TS6196: 'FastifyRequest' is declared but never used.
+src/migration/migration-routes.ts(17,48): error TS6196: 'FastifyReply' is declared but never used.
+src/modules/module-catalog-seed.ts(19,3): error TS6133: 'listModuleCatalog' is declared but its value is never read.
+src/pharmacy/pharmacy-store.ts(15,3): error TS6196: 'PharmOrderType' is declared but never used.
+src/pharmacy/pharmacy-store.ts(21,3): error TS6196: 'AdminStatus' is declared but never used.
+src/pilots/intake/intake-store.ts(7,3): error TS6196: 'PartnerType' is declared but never used.
+src/platform/payers/evidence-ingest.ts(16,22): error TS6133: 'randomUUID' is declared but its value is never read.
+src/platform/payers/evidence-ingest.ts(20,66): error TS6133: 'listEvidenceByStatus' is declared but its value is never read.
+src/platform/payers/evidence-ingest.ts(20,93): error TS6133: 'EvidenceRow' is declared but its value is never read.
+src/platform/payers/evidence-ingest.ts(21,63): error TS6133: 'getPayerCount' is declared but its value is never read.
+src/platform/payers/evidence-ingest.ts(281,11): error TS6133: 'now' is declared but its value is never read.
+src/platform/pg/repo/audit-repo.ts(9,23): error TS6133: 'like' is declared but its value is never read.
+src/platform/pg/repo/capability-matrix-repo.ts(17,24): error TS6133: 'desc' is declared but its value is never read.
+src/platform/pg/repo/capability-matrix-repo.ts(67,10): error TS6133: 'cellKey' is declared but its value is never read.
+src/platform/pg/repo/module-repo.ts(12,32): error TS6133: 'sql' is declared but its value is never read.
+src/platform/pg/repo/payer-repo.ts(12,14): error TS6133: 'like' is declared but its value is never read.
+src/platform/pg/repo/pg-scheduling-lifecycle-repo.ts(13,20): error TS6133: 'and' is declared but its value is never read.
+src/portal-iam/portal-iam-routes.ts(35,23): error TS6133: 'createHash' is declared but its value is never read.
+src/portal-iam/portal-iam-routes.ts(54,3): error TS6133: 'IAM_CONFIG' is declared but its value is never read.
+src/portal-iam/portal-user-store.ts(21,3): error TS6196: 'PortalUserStatus' is declared but never used.
+src/portal-iam/portal-user-store.ts(24,3): error TS6196: 'PatientRelationship' is declared but never used.
+src/portal-iam/proxy-store.ts(20,29): error TS6133: 'getUserById' is declared but its value is never read.
+src/portal-iam/proxy-store.ts(292,15): error TS6133: 'id' is declared but its value is never read.
+src/qa/rpc-contract-trace.ts(19,10): error TS6133: 'createHash' is declared but its value is never read.
+src/rcm/adapters/adapter-sdk.ts(10,22): error TS6133: 'randomBytes' is declared but its value is never read.
+src/rcm/claim-lifecycle/scrubber.ts(254,9): error TS6133: 'stats' is declared but its value is never read.
+src/rcm/connectors/sandbox-connector.ts(14,10): error TS6133: 'serialize837' is declared but its value is never read.
+src/rcm/connectors/types.ts(10,34): error TS6196: 'EdiTransaction' is declared but never used.
+src/rcm/denials/denial-pipeline-hardener.ts(16,15): error TS6196: 'DenialCode' is declared but never used.
+src/rcm/denials/denial-pipeline-hardener.ts(16,45): error TS6196: 'DenialCase' is declared but never used.
+src/rcm/denials/denial-pipeline-hardener.ts(16,57): error TS6196: 'DenialSource' is declared but never used.
+src/rcm/denials/denial-store.ts(23,3): error TS6196: 'DenialFinancials' is declared but never used.
+src/rcm/denials/denial-store.ts(25,3): error TS6196: 'EvidenceRef' is declared but never used.
+src/rcm/edi/ack-status-processor.ts(21,37): error TS6133: 'lookupCarc' is declared but its value is never read.
+src/rcm/edi/batch-processor.ts(17,20): error TS6133: 'listClaims' is declared but its value is never read.
+src/rcm/edi/pipeline.ts(16,3): error TS6196: 'EdiPriorAuth278' is declared but never used.
+src/rcm/edi/pipeline.ts(21,3): error TS6196: 'EdiTransaction' is declared but never used.
+src/rcm/edi/pipeline.ts(113,7): error TS6133: 'STAGE_ORDER' is declared but its value is never read.
+src/rcm/edi/remit-processor.ts(24,49): error TS6133: 'lookupRarc' is declared but its value is never read.
+src/rcm/edi/remit-processor.ts(177,13): error TS6133: 'isPartialDeny' is declared but its value is never read.
+src/rcm/edi/x12-gateway.ts(19,1): error TS6133: 'crypto' is declared but its value is never read.
+src/rcm/edi/x12-wire-parser.ts(302,17): error TS6133: 'linePaid' is declared but its value is never read.
+src/rcm/hmo-portal/adapter-manifest.ts(12,29): error TS6133: 'getPhHmo' is declared but its value is never read.
+src/rcm/hmo-portal/hmo-portal-routes.ts(43,3): error TS6133: 'getSpecialtyTemplate' is declared but its value is never read.
+src/rcm/hmo-portal/hmo-portal-routes.ts(45,8): error TS6133: 'LoaPacketBuildOptions' is declared but its value is never read.
+src/rcm/hmo-portal/hmo-portal-routes.ts(51,8): error TS6133: 'HmoPacketBuildOptions' is declared but its value is never read.
+src/rcm/hmo-portal/submission-checklist.ts(13,1): error TS6133: 'PortalCapableHmoId' is declared but its value is never read.
+src/rcm/jobs/denial-followup-tick.ts(67,9): error TS6133: 'horizonIso' is declared but its value is never read.
+src/rcm/jobs/durable-queue.ts(22,35): error TS6133: 'asc' is declared but its value is never read.
+src/rcm/jobs/job-audit-bridge.ts(178,17): error TS6133: 'total' is declared but its value is never read.
+src/rcm/loa/loa-routes.ts(31,3): error TS6133: 'generateLoaPacketForRequest' is declared but its value is never read.
+src/rcm/loa/loa-store.ts(25,3): error TS6196: 'LoaAuditEntry' is declared but never used.
+src/rcm/payerDirectory/importers/us-clearinghouse.ts(18,60): error TS6196: 'RegulatorySource' is declared but never used.
+src/rcm/payerDirectory/normalization.ts(22,23): error TS6133: 'getPayer' is declared but its value is never read.
+src/rcm/payerDirectory/normalization.ts(22,33): error TS6133: 'listPayers' is declared but its value is never read.
+src/rcm/payerDirectory/routing.ts(19,7): error TS6133: 'CONNECTOR_CHANNEL_MAP' is declared but its value is never read.
+src/rcm/payerOps/payerops-routes.ts(37,48): error TS6196: 'FastifyReply' is declared but never used.
+src/rcm/payers/payer-admin-routes.ts(35,3): error TS6133: 'listTenantOverrides' is declared but its value is never read.
+src/rcm/payers/payer-admin-routes.ts(43,3): error TS6133: 'getAllPayerAudit' is declared but its value is never read.
+src/rcm/philhealth-eclaims3/transport.ts(13,10): error TS6133: 'createHash' is declared but its value is never read.
+src/rcm/rcm-ops-routes.ts(47,1): error TS6133: 'handleRemittanceImportJob' is declared but its value is never read.
+src/rcm/rcm-routes.ts(125,10): error TS6133: 'CsvPayerImporter' is declared but its value is never read.
+src/rcm/rcm-routes.ts(150,22): error TS6133: 'getStatusUpdate' is declared but its value is never read.
+src/rcm/rcm-routes.ts(156,3): error TS6133: 'createWorkqueueItem' is declared but its value is never read.
+src/rcm/rcm-routes.ts(177,62): error TS6133: 'getTransactionsBySource' is declared but its value is never read.
+src/rcm/rcm-routes.ts(1173,13): error TS6133: 'builder' is declared but its value is never read.
+src/rcm/reconciliation/matching-engine.ts(15,3): error TS6133: 'getPaymentById' is declared but its value is never read.
+src/rcm/reconciliation/recon-routes.ts(39,3): error TS6133: 'createUnderpaymentCase' is declared but its value is never read.
+src/rcm/reconciliation/recon-routes.ts(46,3): error TS6133: 'matchPayment' is declared but its value is never read.
+src/rcm/reconciliation/recon-store.ts(37,10): error TS6133: 'toCents' is declared but its value is never read.
+src/rcm/transactions/local-scaffold-translator.ts(17,47): error TS6196: 'EdiEligibilityInquiry270' is declared but never used.
+src/rcm/transactions/local-scaffold-translator.ts(17,73): error TS6196: 'EdiAcknowledgment' is declared but never used.
+src/rcm/transactions/local-scaffold-translator.ts(17,92): error TS6196: 'EdiRemittance835' is declared but never used.
+src/rcm/transactions/local-scaffold-translator.ts(17,110): error TS6196: 'EdiClaimStatusResponse277' is declared but never used.
+src/rcm/workflows/claims-workflow-routes.ts(22,3): error TS6133: 'resolveClaimSubmissionPlan' is declared but its value is never read.
+src/rcm/workflows/claims-workflow-routes.ts(32,3): error TS6133: 'getVistaSourceForField' is declared but its value is never read.
+src/regulatory/export-pipeline.ts(15,1): error TS6133: 'classify' is declared but its value is never read.
+src/routes/adt/index.ts(154,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/adt/index.ts(169,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/adt/index.ts(205,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/adt/index.ts(220,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/adt/index.ts(239,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/adt/index.ts(254,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/adt/index.ts(273,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/adt/index.ts(292,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/adt/index.ts(319,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/adt/index.ts(391,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/adt/index.ts(433,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/adt/index.ts(450,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/adt/index.ts(466,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/cprs/orders-cpoe.ts(502,43): error TS6133: 'reason' is declared but its value is never read.
+src/routes/cprs/wave2-routes.ts(37,28): error TS6133: 'ServerDraft' is declared but its value is never read.
+src/routes/cprs/wave2-routes.ts(116,67): error TS6133: 'comment' is declared but its value is never read.
+src/routes/cprs/wave2-routes.ts(172,79): error TS6133: 'comment' is declared but its value is never read.
+src/routes/cprs/wave2-routes.ts(306,43): error TS6133: 'urgency' is declared but its value is never read.
+src/routes/cprs/wave2-routes.ts(306,52): error TS6133: 'comment' is declared but its value is never read.
+src/routes/discharge-workflow.ts(188,9): error TS6133: 'lastVitals' is declared but its value is never read.
+src/routes/emar/index.ts(36,10): error TS6133: 'pendingFallback' is declared but its value is never read.
+src/routes/iam-routes.ts(155,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/iam-routes.ts(197,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/imaging-viewer.ts(128,11): error TS6133: 'tenantId' is declared but its value is never read.
+src/routes/immunizations/index.ts(79,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/immunizations/index.ts(116,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/immunizations/index.ts(151,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/inpatient/index.ts(184,13): error TS6133: 'session' is declared but its value is never read.
+src/routes/inpatient/index.ts(236,13): error TS6133: 'session' is declared but its value is never read.
+src/routes/inpatient/index.ts(317,13): error TS6133: 'session' is declared but its value is never read.
+src/routes/inpatient/index.ts(413,13): error TS6133: 'session' is declared but its value is never read.
+src/routes/inpatient/index.ts(479,13): error TS6133: 'session' is declared but its value is never read.
+src/routes/inpatient/index.ts(500,13): error TS6133: 'session' is declared but its value is never read.
+src/routes/inpatient/index.ts(521,13): error TS6133: 'session' is declared but its value is never read.
+src/routes/portal-core.ts(864,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/portal-core.ts(971,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/portal-core.ts(1001,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/portal-core.ts(1010,11): error TS6133: 'session' is declared but its value is never read.
+src/routes/session-management.ts(92,11): error TS6133: 'userSessions' is declared but its value is never read.
+src/routes/telehealth.ts(241,13): error TS6133: 'session' is declared but its value is never read.
+src/routes/telehealth.ts(292,13): error TS6133: 'session' is declared but its value is never read.
+src/routes/write-backs.ts(96,10): error TS6133: 'markDraftSynced' is declared but its value is never read.
+src/routes/write-backs.ts(107,10): error TS6133: 'markDraftFailed' is declared but its value is never read.
+src/routes/write-backs.ts(316,11): error TS6133: 'check' is declared but its value is never read.
+src/server/inline-routes.ts(26,3): error TS6133: 'getCurrentTraceId' is declared but its value is never read.
+src/server/inline-routes.ts(27,3): error TS6133: 'getCurrentSpanId' is declared but its value is never read.
+src/server/inline-routes.ts(33,3): error TS6133: 'dbPoolInUse' is declared but its value is never read.
+src/server/inline-routes.ts(34,3): error TS6133: 'dbPoolTotal' is declared but its value is never read.
+src/server/inline-routes.ts(35,3): error TS6133: 'dbPoolWaiting' is declared but its value is never read.
+src/server/inline-routes.ts(37,1): error TS6133: 'log' is declared but its value is never read.
+src/server/inline-routes.ts(45,3): error TS6133: 'safeCallRpc' is declared but its value is never read.
+src/server/inline-routes.ts(46,3): error TS6133: 'safeCallRpcWithList' is declared but its value is never read.
+src/server/inline-routes.ts(54,3): error TS6133: 'RPC_REGISTRY' is declared but its value is never read.
+src/server/inline-routes.ts(55,3): error TS6133: 'RPC_EXCEPTIONS' is declared but its value is never read.
+src/server/lifecycle.ts(11,42): error TS6133: 'pgHealthCheck' is declared but its value is never read.
+src/server/lifecycle.ts(12,31): error TS6133: 'stopAggregationJob' is declared but its value is never read.
+src/server/lifecycle.ts(19,25): error TS6133: 'stopHl7Engine' is declared but its value is never read.
+src/server/lifecycle.ts(20,30): error TS6133: 'stopHealthMonitor' is declared but its value is never read.
+src/server/lifecycle.ts(25,31): error TS6133: 'stopSessionSweeper' is declared but its value is never read.
+src/server/register-plugins.ts(16,30): error TS6133: 'setDbEntitlementProvider' is declared but its value is never read.
+src/services/clinical-reports.ts(16,1): error TS6133: 'safeCallRpc' is declared but its value is never read.
+src/services/data-plane-sharding.ts(18,1): error TS6192: All imports in import declaration are unused.
+src/services/imaging-ingest.ts(262,11): error TS6133: 'orthancStudyId' is declared but its value is never read.
+src/services/imaging-service.ts(47,3): error TS6133: 'getIntegrationHealthSummary' is declared but its value is never read.
+src/services/multi-cluster-registry.ts(16,10): error TS6133: 'createHash' is declared but its value is never read.
+src/services/portal-pdf.ts(46,9): error TS6133: 'pageHeight' is declared but its value is never read.
+src/services/portal-shc.ts(23,22): error TS6133: 'randomBytes' is declared but its value is never read.
+src/support/support-toolkit-v2.ts(105,7): error TS6133: 'hl7ViewerCache' is declared but its value is never read.
+src/support/support-toolkit-v2.ts(315,9): error TS6133: 'ticketId' is declared but its value is never read.
+src/templates/template-engine.ts(17,3): error TS6196: 'TemplateField' is declared but never used.
+src/vista/alignment/alignment-scorer.ts(98,9): error TS6133: 'vistaLinked' is declared but its value is never read.
+src/writeback/__tests__/certification-contract.test.ts(19,15): error TS6196: 'CertificationReport' is declared but never used.
+src/writeback/__tests__/tiu-contract.test.ts(8,32): error TS6133: 'beforeEach' is declared but its value is never read.
+src/writeback/__tests__/tiu-contract.test.ts(8,44): error TS6133: 'afterEach' is declared but its value is never read.
+src/writeback/__tests__/tiu-contract.test.ts(8,55): error TS6133: 'vi' is declared but its value is never read.
+src/writeback/certification-runner.ts(24,29): error TS6133: 'getWritebackGateSummary' is declared but its value is never read.
+src/writeback/command-bus.ts(12,1): error TS6133: 'randomUUID' is declared but its value is never read.
+src/writeback/command-store.ts(11,1): error TS6133: 'createHash' is declared but its value is never read.
+src/writeback/executors/tiu-executor.ts(48,11): error TS6133: 'p' is declared but its value is never read.

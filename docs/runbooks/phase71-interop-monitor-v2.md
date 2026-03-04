@@ -21,14 +21,14 @@ Browser -> /vista/interop/* -> cachedRpc() -> VE INTEROP * RPCs
 
 ## RPCs (all read-only)
 
-| RPC Name | Entry Point | Global(s) | Purpose |
-|----------|-------------|-----------|---------|
-| VE INTEROP HL7 LINKS | LINKS^ZVEMIOP | ^HLCS(870) | HL7 logical link status |
-| VE INTEROP HL7 MSGS | MSGS^ZVEMIOP | ^HLMA | Message history (time-windowed) |
-| VE INTEROP HLO STATUS | HLOSTAT^ZVEMIOP | ^HLD(779.*) | HLO engine configuration |
-| VE INTEROP QUEUE DEPTH | QLENGTH^ZVEMIOP | ^HLMA, ^HLB | Pending/error queue counts |
-| VE INTEROP MSG LIST | MSGLIST^ZVEMIOP | ^HLMA, ^HL(772) | Filtered message list |
-| VE INTEROP MSG DETAIL | MSGDETL^ZVEMIOP | ^HLMA, ^HL(772) | Single message detail |
+| RPC Name               | Entry Point     | Global(s)       | Purpose                         |
+| ---------------------- | --------------- | --------------- | ------------------------------- |
+| VE INTEROP HL7 LINKS   | LINKS^ZVEMIOP   | ^HLCS(870)      | HL7 logical link status         |
+| VE INTEROP HL7 MSGS    | MSGS^ZVEMIOP    | ^HLMA           | Message history (time-windowed) |
+| VE INTEROP HLO STATUS  | HLOSTAT^ZVEMIOP | ^HLD(779.\*)    | HLO engine configuration        |
+| VE INTEROP QUEUE DEPTH | QLENGTH^ZVEMIOP | ^HLMA, ^HLB     | Pending/error queue counts      |
+| VE INTEROP MSG LIST    | MSGLIST^ZVEMIOP | ^HLMA, ^HL(772) | Filtered message list           |
+| VE INTEROP MSG DETAIL  | MSGDETL^ZVEMIOP | ^HLMA, ^HL(772) | Single message detail           |
 
 ## Installation
 
@@ -43,6 +43,7 @@ registers RPCs in file 8994, and adds them to OR CPRS GUI CHART context.
 ## API Endpoints
 
 ### Phase 21 (original)
+
 - `GET /vista/interop/hl7-links` -- HL7 logical links
 - `GET /vista/interop/hl7-messages` -- Recent messages
 - `GET /vista/interop/hlo-status` -- HLO engine status
@@ -50,6 +51,7 @@ registers RPCs in file 8994, and adds them to OR CPRS GUI CHART context.
 - `GET /vista/interop/summary` -- Combined summary
 
 ### Phase 58 (v2 message browser)
+
 - `GET /vista/interop/v2/hl7/messages` -- Filtered message list
 - `GET /vista/interop/v2/hl7/messages/:id` -- Message detail
 - `POST /vista/interop/v2/hl7/messages/:id/unmask` -- PHI unmask (admin)
@@ -59,6 +61,7 @@ registers RPCs in file 8994, and adds them to OR CPRS GUI CHART context.
 ## Resilience
 
 All RPC calls use `cachedRpc()` which wraps `resilientRpc()`:
+
 - Circuit breaker: 5 failures -> open, 30s half-open, 2 retries + backoff
 - Timeout: 15s per RPC call
 - Cache TTL: 10s (configurable)

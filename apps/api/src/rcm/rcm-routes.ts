@@ -60,27 +60,45 @@ import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { createDraftClaim, transitionClaim, isValidTransition } from './domain/claim.js';
 import type { ClaimStatus } from './domain/claim.js';
 import {
-  storeClaim, getClaim, updateClaim, listClaims, getClaimStats,
-  storeRemittance, getRemittance, listRemittances, matchRemittanceToClaim,
+  storeClaim,
+  getClaim,
+  updateClaim,
+  listClaims,
+  getClaimStats,
+  storeRemittance,
+  getRemittance,
+  listRemittances,
+  matchRemittanceToClaim,
   getStoreStats,
 } from './domain/claim-store.js';
 
 // Payer registry
-import { initPayerRegistry, getPayer, listPayers, upsertPayer, getPayerStats } from './payer-registry/registry.js';
+import {
+  initPayerRegistry,
+  getPayer,
+  listPayers,
+  upsertPayer,
+  getPayerStats,
+} from './payer-registry/registry.js';
 
 // Validation
 import { validateClaim, describeValidationRules } from './validation/engine.js';
 
 // EDI pipeline
 import {
-  createPipelineEntry, advancePipelineStage,
-  listPipelineEntries, getPipelineStats,
+  createPipelineEntry,
+  advancePipelineStage,
+  listPipelineEntries,
+  getPipelineStats,
   buildClaim837FromDomain,
 } from './edi/pipeline.js';
 
 // Connectors
 import {
-  registerConnector, listConnectors, getConnectorForMode, getAllConnectors,
+  registerConnector,
+  listConnectors,
+  getConnectorForMode,
+  getAllConnectors,
 } from './connectors/types.js';
 import { ClearinghouseConnector } from './connectors/clearinghouse-connector.js';
 import { PhilHealthConnector } from './connectors/philhealth-connector.js';
@@ -95,7 +113,10 @@ import { NphcSgConnector } from './connectors/nphc-sg-connector.js';
 
 // Audit
 import {
-  appendRcmAudit, getRcmAuditEntries, verifyRcmAuditChain, getRcmAuditStats,
+  appendRcmAudit,
+  getRcmAuditEntries,
+  verifyRcmAuditChain,
+  getRcmAuditStats,
 } from './audit/rcm-audit.js';
 
 // X12 serializer (Phase 40)
@@ -107,7 +128,9 @@ import type { RcmJobType } from './jobs/queue.js';
 
 // Payer adapters (Phase 69)
 import {
-  registerPayerAdapter, listPayerAdapters, getAllPayerAdapters,
+  registerPayerAdapter,
+  listPayerAdapters,
+  getAllPayerAdapters,
 } from './adapters/payer-adapter.js';
 import { SandboxPayerAdapter } from './adapters/sandbox-adapter.js';
 import { X12ClearinghouseAdapter } from './adapters/x12-adapter.js';
@@ -115,14 +138,20 @@ import { PhilHealthAdapter } from './adapters/philhealth-adapter.js';
 
 // Polling scheduler + pollers (Phase 69)
 import { getPollingScheduler } from './jobs/polling-scheduler.js';
-import { getEligibilityPollerConfig, getEligibilityResultsSlice } from './jobs/eligibility-poller.js';
-import { getClaimStatusPollerConfig, getClaimStatusResultsSlice } from './jobs/claim-status-poller.js';
+import {
+  getEligibilityPollerConfig,
+  getEligibilityResultsSlice,
+} from './jobs/eligibility-poller.js';
+import {
+  getClaimStatusPollerConfig,
+  getClaimStatusResultsSlice,
+} from './jobs/claim-status-poller.js';
 // Phase 142: Denial followup tick + remittance import job
 import { getDenialFollowupConfig } from './jobs/denial-followup-tick.js';
 import { getRemittanceImportConfig } from './jobs/remittance-import-job.js';
 
 // Payer catalog importers (Phase 40 Superseding)
-import { CsvPayerImporter, JsonPayerImporter } from './importers/payer-catalog-importer.js';
+import { JsonPayerImporter } from './importers/payer-catalog-importer.js';
 
 // VistA binding points (Phase 40 Superseding)
 import {
@@ -145,42 +174,78 @@ import { requirePermission, requireRcmWrite, requireRcmAdmin } from '../auth/rba
 
 // Phase 43 -- Ack/Status/Remit processors, workqueues, payer rules
 import {
-  ingestAck, ingestStatusUpdate,
-  listAcks, getAck, getAcksForClaim, getAckStats,
-  listStatusUpdates, getStatusUpdate, getStatusUpdatesForClaim, getStatusStats,
+  ingestAck,
+  ingestStatusUpdate,
+  listAcks,
+  getAck,
+  getAcksForClaim,
+  getAckStats,
+  listStatusUpdates,
+  getStatusUpdatesForClaim,
+  getStatusStats,
 } from './edi/ack-status-processor.js';
 import {
-  ingestRemittance as processRemittance, getRemitProcessorStats,
+  ingestRemittance as processRemittance,
+  getRemitProcessorStats,
 } from './edi/remit-processor.js';
 import {
-  createWorkqueueItem, getWorkqueueItem, updateWorkqueueItem,
-  listWorkqueueItems, getWorkqueueItemsForClaim, getWorkqueueStats,
+  getWorkqueueItem,
+  updateWorkqueueItem,
+  listWorkqueueItems,
+  getWorkqueueItemsForClaim,
+  getWorkqueueStats,
 } from './workqueues/workqueue-store.js';
 import {
-  seedDefaultRules, addRule, getRule, updateRule as updatePayerRule, deleteRule,
-  listRules, evaluateRules, getRuleStats,
+  seedDefaultRules,
+  addRule,
+  getRule,
+  updateRule as updatePayerRule,
+  deleteRule,
+  listRules,
+  evaluateRules,
+  getRuleStats,
 } from './rules/payer-rules.js';
 import { lookupCarc, lookupRarc, CARC_CODES, RARC_CODES } from './reference/carc-rarc.js';
 
 // Phase 44 -- Payer Directory Engine + Jurisdiction Packs
 import {
-  runDirectoryRefresh, getDirectoryPayer, listDirectoryPayers,
-  getDirectoryStats, getRefreshHistory,
-  getEnrollmentPacket, upsertEnrollmentPacket, listEnrollmentPackets,
+  runDirectoryRefresh,
+  getDirectoryPayer,
+  listDirectoryPayers,
+  getDirectoryStats,
+  getRefreshHistory,
+  getEnrollmentPacket,
+  upsertEnrollmentPacket,
+  listEnrollmentPackets,
 } from './payerDirectory/normalization.js';
 import { resolveRoute, isRouteNotFound } from './payerDirectory/routing.js';
-import { runAllImporters, runImportersByCountry, listImporters, getImporter } from './payerDirectory/importers/index.js';
+import {
+  runAllImporters,
+  runImportersByCountry,
+  listImporters,
+  getImporter,
+} from './payerDirectory/importers/index.js';
 import type { EnrollmentPacket, EnrollmentStatus } from './payerDirectory/types.js';
 
 // Phase 45 -- Transaction Correctness Engine
 import {
-  buildEnvelope, storeTransaction, getTransaction as getTxn, getTransactionsBySource,
-  transitionTransaction, listTransactions as listTxns, getTransactionStats,
-  getActiveTranslator, listTranslators,
-  getConnectivityProfile, getConnectivityHealth,
-  checkPreTransmitGates, checkAckGates,
-  processRetry, getDLQTransactions, retryFromDLQ,
-  buildReconciliationSummary, buildReconciliationStats,
+  buildEnvelope,
+  storeTransaction,
+  getTransaction as getTxn,
+  transitionTransaction,
+  listTransactions as listTxns,
+  getTransactionStats,
+  getActiveTranslator,
+  listTranslators,
+  getConnectivityProfile,
+  getConnectivityHealth,
+  checkPreTransmitGates,
+  checkAckGates,
+  processRetry,
+  getDLQTransactions,
+  retryFromDLQ,
+  buildReconciliationSummary,
+  buildReconciliationStats,
 } from './transactions/index.js';
 import type { TransactionState } from './transactions/index.js';
 import type { X12TransactionSet } from './edi/types.js';
@@ -188,7 +253,11 @@ import type { X12TransactionSet } from './edi/types.js';
 // Phase 46 -- National Gateway Packs
 import { probeAllGateways, probeGateway, getGatewayIds } from './gateways/readiness.js';
 import type { GatewayId } from './gateways/readiness.js';
-import { getAllGatewayConformance, getGatewayConformance, validatePayloadConformance } from './conformance/gateway-conformance.js';
+import {
+  getAllGatewayConformance,
+  getGatewayConformance,
+  validatePayloadConformance,
+} from './conformance/gateway-conformance.js';
 
 /* ─── Submission safety (Phase 40) ───────────────────────────────── */
 
@@ -321,37 +390,51 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     const method = request.method;
 
     // Admin-only routes
-    const adminRoutes = [
-      '/rcm/payers/import',
-      '/rcm/payers/import/json',
-      '/rcm/directory/refresh',
-    ];
+    const adminRoutes = ['/rcm/payers/import', '/rcm/payers/import/json', '/rcm/directory/refresh'];
     const adminRoutePatterns = [
       /^\/rcm\/payers\/[^/]+$/, // PATCH/PUT on specific payer
-      /^\/rcm\/rules\/[^/]+$/,  // PATCH/DELETE on specific rule
+      /^\/rcm\/rules\/[^/]+$/, // PATCH/DELETE on specific rule
       /^\/rcm\/directory\/import\//, // Import specific directory
     ];
     if (method === 'POST' && (url === '/rcm/payers' || adminRoutes.includes(url))) {
-      requireRcmAdmin(session, reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+      requireRcmAdmin(session, reply, {
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+      });
       return;
     }
-    if ((method === 'PATCH' || method === 'DELETE') && adminRoutePatterns.some((p) => p.test(url))) {
-      requireRcmAdmin(session, reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+    if (
+      (method === 'PATCH' || method === 'DELETE') &&
+      adminRoutePatterns.some((p) => p.test(url))
+    ) {
+      requireRcmAdmin(session, reply, {
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+      });
       return;
     }
     if (method === 'POST' && url === '/rcm/rules') {
-      requireRcmAdmin(session, reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+      requireRcmAdmin(session, reply, {
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+      });
       return;
     }
 
     // Write routes (billing + admin)
     if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
-      requireRcmWrite(session, reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+      requireRcmWrite(session, reply, {
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+      });
       return;
     }
 
     // Read routes — rcm:read (all authenticated clinical roles)
-    requirePermission(session, 'rcm:read', reply, { requestId: (request as any).requestId, sourceIp: request.ip });
+    requirePermission(session, 'rcm:read', reply, {
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+    });
   });
 
   // ───── Health ────────────────────────────────────────────────────
@@ -441,9 +524,14 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       return reply.code(400).send({ ok: false, error: 'csv field (string) is required' });
     }
 
-    const lines = csvText.split('\n').map((l: string) => l.trim()).filter(Boolean);
+    const lines = csvText
+      .split('\n')
+      .map((l: string) => l.trim())
+      .filter(Boolean);
     if (lines.length < 2) {
-      return reply.code(400).send({ ok: false, error: 'CSV must have header + at least one data row' });
+      return reply
+        .code(400)
+        .send({ ok: false, error: 'CSV must have header + at least one data row' });
     }
 
     const headers = lines[0].split(',').map((h: string) => h.trim().toLowerCase());
@@ -522,7 +610,8 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       payerId: body.payerId,
       claimType: body.claimType ?? 'professional',
       totalCharge: body.totalCharge ?? 0,
-      dateOfService: body.dateOfService ?? body.serviceDate ?? new Date().toISOString().slice(0, 10),
+      dateOfService:
+        body.dateOfService ?? body.serviceDate ?? new Date().toISOString().slice(0, 10),
       diagnoses: body.diagnoses ?? body.diagnosisCodes ?? [],
       lines: body.lines ?? body.serviceLines ?? [],
       subscriberId: body.subscriberId ?? body.subscriberMemberId,
@@ -579,7 +668,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
         detail: {
           valid: result.valid,
           readinessScore: result.readinessScore,
-          blockers: result.edits.filter(e => e.blocksSubmission).length,
+          blockers: result.edits.filter((e) => e.blocksSubmission).length,
         },
       });
     }
@@ -594,8 +683,11 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
     // Idempotency guard: if already submitted with same key, return cached result
-    if (idempotencyKey && claim.status === 'submitted' &&
-        claim.auditTrail?.some((e: any) => e.idempotencyKey === idempotencyKey)) {
+    if (
+      idempotencyKey &&
+      claim.status === 'submitted' &&
+      claim.auditTrail?.some((e: any) => e.idempotencyKey === idempotencyKey)
+    ) {
       return { ok: true, submitted: true, idempotent: true, claim };
     }
 
@@ -627,14 +719,21 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
 
       const edi837 = buildClaim837FromDomain(claim);
       const x12Wire = serialize837(edi837, { usageIndicator: 'T' });
-      const exportResult = await exportX12Bundle(x12Wire, claim.id, 
-        claim.claimType === 'institutional' ? '837I' : '837P');
+      const exportResult = await exportX12Bundle(
+        x12Wire,
+        claim.id,
+        claim.claimType === 'institutional' ? '837I' : '837P'
+      );
 
       const session = (request as any).session;
       let updated = claim;
       if (claim.status === 'validated') {
-        updated = transitionClaim(claim, 'ready_to_submit', session?.duz ?? 'system',
-          'CLAIM_SUBMISSION_ENABLED=false -- exported as artifact');
+        updated = transitionClaim(
+          claim,
+          'ready_to_submit',
+          session?.duz ?? 'system',
+          'CLAIM_SUBMISSION_ENABLED=false -- exported as artifact'
+        );
       }
       updated = { ...updated, exportArtifactPath: exportResult.path };
       updateClaim(updated);
@@ -653,7 +752,8 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
         ok: true,
         submitted: false,
         safetyMode: 'export_only',
-        message: 'Claim exported as X12 artifact (CLAIM_SUBMISSION_ENABLED=false). Review artifact before enabling live submission.',
+        message:
+          'Claim exported as X12 artifact (CLAIM_SUBMISSION_ENABLED=false). Review artifact before enabling live submission.',
         claim: getClaim(id),
         exportArtifact: exportResult,
       };
@@ -665,7 +765,8 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       return reply.code(400).send({ ok: false, error: `Payer '${claim.payerId}' not found` });
     }
 
-    const connector = getConnectorForMode(payer.integrationMode) ?? getConnectorForMode('clearinghouse_edi');
+    const connector =
+      getConnectorForMode(payer.integrationMode) ?? getConnectorForMode('clearinghouse_edi');
     if (!connector) {
       return reply.code(500).send({ ok: false, error: 'No connector available for payer' });
     }
@@ -678,7 +779,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       claim.id,
       claim.claimType === 'institutional' ? '837I' : '837P',
       connector.id,
-      claim.payerId,
+      claim.payerId
     );
 
     advancePipelineStage(entry.id, 'validate', { outbound: payload });
@@ -687,7 +788,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     const result = await connector.submit(
       claim.claimType === 'institutional' ? '837I' : '837P',
       payload,
-      { claimId: claim.id, chargeAmount: String(claim.totalCharge) },
+      { claimId: claim.id, chargeAmount: String(claim.totalCharge) }
     );
 
     if (result.success) {
@@ -734,39 +835,42 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     }
   });
 
-  server.post('/rcm/claims/:id/transition', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
-    const { newStatus, reason } = body;
+  server.post(
+    '/rcm/claims/:id/transition',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
+      const { newStatus, reason } = body;
 
-    if (!newStatus) {
-      return reply.code(400).send({ ok: false, error: 'newStatus is required' });
-    }
+      if (!newStatus) {
+        return reply.code(400).send({ ok: false, error: 'newStatus is required' });
+      }
 
-    const claim = getClaim(id);
-    if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
+      const claim = getClaim(id);
+      if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
-    if (!isValidTransition(claim.status, newStatus)) {
-      return reply.code(400).send({
-        ok: false,
-        error: `Invalid transition: ${claim.status} → ${newStatus}`,
+      if (!isValidTransition(claim.status, newStatus)) {
+        return reply.code(400).send({
+          ok: false,
+          error: `Invalid transition: ${claim.status} → ${newStatus}`,
+        });
+      }
+
+      const session = (request as any).session;
+      const updated = transitionClaim(claim, newStatus, session?.duz ?? 'system', reason);
+      if (!updated) {
+        return reply.code(400).send({ ok: false, error: 'Transition failed' });
+      }
+
+      updateClaim(updated);
+      appendRcmAudit('claim.transition', {
+        claimId: id,
+        detail: { from: claim.status, to: newStatus, reason },
       });
+
+      return { ok: true, claim: updated };
     }
-
-    const session = (request as any).session;
-    const updated = transitionClaim(claim, newStatus, session?.duz ?? 'system', reason);
-    if (!updated) {
-      return reply.code(400).send({ ok: false, error: 'Transition failed' });
-    }
-
-    updateClaim(updated);
-    appendRcmAudit('claim.transition', {
-      claimId: id,
-      detail: { from: claim.status, to: newStatus, reason },
-    });
-
-    return { ok: true, claim: updated };
-  });
+  );
 
   server.get('/rcm/claims/:id/timeline', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
@@ -791,12 +895,16 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     }
 
     const payer = getPayer(claim.payerId);
-    if (!payer) return reply.code(400).send({ ok: false, error: `Payer '${claim.payerId}' not found` });
+    if (!payer)
+      return reply.code(400).send({ ok: false, error: `Payer '${claim.payerId}' not found` });
 
     const edi837 = buildClaim837FromDomain(claim);
     const x12Wire = serialize837(edi837, { usageIndicator: 'T' });
-    const exportResult = await exportX12Bundle(x12Wire, claim.id,
-      claim.claimType === 'institutional' ? '837I' : '837P');
+    const exportResult = await exportX12Bundle(
+      x12Wire,
+      claim.id,
+      claim.claimType === 'institutional' ? '837I' : '837P'
+    );
 
     const updated = { ...claim, exportArtifactPath: exportResult.path };
     updateClaim(updated);
@@ -857,17 +965,16 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   // ───── Remittances ──────────────────────────────────────────────
   server.get('/rcm/remittances', async (request: FastifyRequest) => {
     const q = request.query as Record<string, string>;
-    const result = listRemittances('default',
-      Number(q.limit ?? 50),
-      Number(q.offset ?? 0),
-    );
+    const result = listRemittances('default', Number(q.limit ?? 50), Number(q.offset ?? 0));
     return { ok: true, ...result };
   });
 
   server.post('/rcm/remittances/import', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     if (!body.payerId || !body.checkNumber || body.paymentAmount === undefined) {
-      return reply.code(400).send({ ok: false, error: 'payerId, checkNumber, and paymentAmount are required' });
+      return reply
+        .code(400)
+        .send({ ok: false, error: 'payerId, checkNumber, and paymentAmount are required' });
     }
 
     const now = new Date().toISOString();
@@ -982,10 +1089,16 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       return reply.code(400).send({ ok: false, error: 'type and payload are required' });
     }
     const validTypes: RcmJobType[] = [
-      'CLAIM_SUBMIT', 'ELIGIBILITY_CHECK', 'STATUS_POLL', 'ERA_INGEST', 'ACK_PROCESS',
+      'CLAIM_SUBMIT',
+      'ELIGIBILITY_CHECK',
+      'STATUS_POLL',
+      'ERA_INGEST',
+      'ACK_PROCESS',
     ];
     if (!validTypes.includes(type)) {
-      return reply.code(400).send({ ok: false, error: `Invalid type. Must be one of: ${validTypes.join(', ')}` });
+      return reply
+        .code(400)
+        .send({ ok: false, error: `Invalid type. Must be one of: ${validTypes.join(', ')}` });
     }
     const queue = getJobQueue();
     const jobId = await queue.enqueue({ type, payload, priority, idempotencyKey });
@@ -1018,7 +1131,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   // ───── Connector capability matrix (Phase 40 Superseding) ──────
   server.get('/rcm/connectors/capabilities', async () => {
     const all = Array.from(getAllConnectors().values());
-    const matrix = all.map(c => ({
+    const matrix = all.map((c) => ({
       id: c.id,
       name: c.name,
       supportedModes: c.supportedModes,
@@ -1028,38 +1141,54 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   // ───── VistA Binding Routes (Phase 40 Superseding) ─────────────
-  server.post('/rcm/vista/encounter-to-claim', async (request: FastifyRequest, reply: FastifyReply) => {
-    const body = (request.body as any) || {};
-    const { visitIen, patientDfn, payerId } = body;
-    if (!patientDfn || !payerId) {
-      return reply.code(400).send({ ok: false, error: 'patientDfn and payerId are required' });
-    }
-    const session = (request as any).session;
-    const actor = session?.duz ?? 'unknown';
-
-    if (visitIen) {
-      // Try VistA-native binding
-      const result = await buildClaimFromVistaEncounter(visitIen, patientDfn, payerId, actor);
-      if (!result.ok) {
-        return { ok: false, integrationPending: result.integrationPending, vistaGrounding: result.vistaGrounding, errors: result.errors };
+  server.post(
+    '/rcm/vista/encounter-to-claim',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const body = (request.body as any) || {};
+      const { visitIen, patientDfn, payerId } = body;
+      if (!patientDfn || !payerId) {
+        return reply.code(400).send({ ok: false, error: 'patientDfn and payerId are required' });
       }
-      if (result.data) {
-        storeClaim(result.data);
-        appendRcmAudit('claim.created', { claimId: result.data.id, detail: { source: 'vista-encounter', visitIen } });
-        return reply.code(201).send({ ok: true, claim: result.data });
+      const session = (request as any).session;
+      const actor = session?.duz ?? 'unknown';
+
+      if (visitIen) {
+        // Try VistA-native binding
+        const result = await buildClaimFromVistaEncounter(visitIen, patientDfn, payerId, actor);
+        if (!result.ok) {
+          return {
+            ok: false,
+            integrationPending: result.integrationPending,
+            vistaGrounding: result.vistaGrounding,
+            errors: result.errors,
+          };
+        }
+        if (result.data) {
+          storeClaim(result.data);
+          appendRcmAudit('claim.created', {
+            claimId: result.data.id,
+            detail: { source: 'vista-encounter', visitIen },
+          });
+          return reply.code(201).send({ ok: true, claim: result.data });
+        }
       }
-    }
 
-    // Fallback: use manual encounter data if provided
-    if (body.encounterData) {
-      const claim = buildClaimFromEncounterData(body.encounterData, payerId, actor, body.options);
-      storeClaim(claim);
-      appendRcmAudit('claim.created', { claimId: claim.id, detail: { source: 'manual-encounter-data' } });
-      return reply.code(201).send({ ok: true, claim });
-    }
+      // Fallback: use manual encounter data if provided
+      if (body.encounterData) {
+        const claim = buildClaimFromEncounterData(body.encounterData, payerId, actor, body.options);
+        storeClaim(claim);
+        appendRcmAudit('claim.created', {
+          claimId: claim.id,
+          detail: { source: 'manual-encounter-data' },
+        });
+        return reply.code(201).send({ ok: true, claim });
+      }
 
-    return reply.code(400).send({ ok: false, error: 'Either visitIen or encounterData is required' });
-  });
+      return reply
+        .code(400)
+        .send({ ok: false, error: 'Either visitIen or encounterData is required' });
+    }
+  );
 
   server.get('/rcm/vista/charge-candidates', async (request: FastifyRequest) => {
     const q = request.query as Record<string, string>;
@@ -1083,7 +1212,11 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     }
     const result = await postEraToVista(remittance);
     appendRcmAudit('era.post_attempted', {
-      detail: { remittanceId, posted: result.posted, integrationPending: result.integrationPending },
+      detail: {
+        remittanceId,
+        posted: result.posted,
+        integrationPending: result.integrationPending,
+      },
     });
     return result;
   });
@@ -1103,11 +1236,21 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
 
   /** RPCs used by the claim draft builder */
   const DRAFT_RPCS = [
-    { name: 'ORWPCE VISIT',          source: 'Vivian',    required: true,  description: 'PCE encounters' },
-    { name: 'ORWPCE DIAG',           source: 'Vivian',    required: true,  description: 'PCE diagnoses' },
-    { name: 'ORWPCE PROC',           source: 'Vivian',    required: true,  description: 'PCE procedures' },
-    { name: 'IBCN INSURANCE QUERY',  source: 'Vivian',    required: false, description: 'Patient insurance' },
-    { name: 'VE RCM PROVIDER INFO',  source: 'Custom',    required: false, description: 'Provider NPI/facility (install ZVERCMP.m)' },
+    { name: 'ORWPCE VISIT', source: 'Vivian', required: true, description: 'PCE encounters' },
+    { name: 'ORWPCE DIAG', source: 'Vivian', required: true, description: 'PCE diagnoses' },
+    { name: 'ORWPCE PROC', source: 'Vivian', required: true, description: 'PCE procedures' },
+    {
+      name: 'IBCN INSURANCE QUERY',
+      source: 'Vivian',
+      required: false,
+      description: 'Patient insurance',
+    },
+    {
+      name: 'VE RCM PROVIDER INFO',
+      source: 'Custom',
+      required: false,
+      description: 'Provider NPI/facility (install ZVERCMP.m)',
+    },
   ];
 
   /**
@@ -1119,10 +1262,14 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     try {
       validateCredentials();
     } catch {
-      return { ok: false, error: 'VistA credentials not configured', rpcs: DRAFT_RPCS.map(r => ({ ...r, available: 'unknown' as const })) };
+      return {
+        ok: false,
+        error: 'VistA credentials not configured',
+        rpcs: DRAFT_RPCS.map((r) => ({ ...r, available: 'unknown' as const })),
+      };
     }
 
-    const results: Array<typeof DRAFT_RPCS[0] & { available: boolean; error?: string }> = [];
+    const results: Array<(typeof DRAFT_RPCS)[0] & { available: boolean; error?: string }> = [];
 
     try {
       await connect();
@@ -1138,16 +1285,20 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
         }
       }
       disconnect();
-    } catch (err: any) {
+    } catch (_err: any) {
       disconnect();
-      return { ok: false, error: 'VistA connection failed', rpcs: DRAFT_RPCS.map(r => ({ ...r, available: 'unknown' as const })) };
+      return {
+        ok: false,
+        error: 'VistA connection failed',
+        rpcs: DRAFT_RPCS.map((r) => ({ ...r, available: 'unknown' as const })),
+      };
     }
 
     return {
       ok: true,
       rpcs: results,
-      allRequired: results.filter(r => r.required).every(r => r.available),
-      summary: `${results.filter(r => r.available).length}/${results.length} available`,
+      allRequired: results.filter((r) => r.required).every((r) => r.available),
+      summary: `${results.filter((r) => r.available).length}/${results.length} available`,
     };
   });
 
@@ -1170,17 +1321,18 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
 
     try {
       const rpc = makeRpcCaller();
-      const { buildClaimDraftFromVista: builder } = await import('./vistaBindings/buildClaimDraftFromVista.js');
+      const { buildClaimDraftFromVista: _builder } =
+        await import('./vistaBindings/buildClaimDraftFromVista.js');
       const visitLines = await rpc.call('ORWPCE VISIT', [patientIen]);
       const { parseEncounters } = await import('./vistaBindings/buildClaimDraftFromVista.js');
       let encounters = parseEncounters(visitLines);
 
       // Date filtering
       if (q.from) {
-        encounters = encounters.filter(e => e.dateTime >= q.from.replace(/-/g, ''));
+        encounters = encounters.filter((e) => e.dateTime >= q.from.replace(/-/g, ''));
       }
       if (q.to) {
-        encounters = encounters.filter(e => e.dateTime <= q.to.replace(/-/g, ''));
+        encounters = encounters.filter((e) => e.dateTime <= q.to.replace(/-/g, ''));
       }
 
       disconnect();
@@ -1313,7 +1465,8 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     if (!type || !disposition || !originalControlNumber || !ackControlNumber || !idempotencyKey) {
       return reply.code(400).send({
         ok: false,
-        error: 'type, disposition, originalControlNumber, ackControlNumber, and idempotencyKey are required',
+        error:
+          'type, disposition, originalControlNumber, ackControlNumber, and idempotencyKey are required',
       });
     }
 
@@ -1576,7 +1729,8 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
 
     if (!payerId || !name || !condition || !actionOnFail) {
       return reply.code(400).send({
-        ok: false, error: 'payerId, name, condition, and actionOnFail are required',
+        ok: false,
+        error: 'payerId, name, condition, and actionOnFail are required',
       });
     }
 
@@ -1730,33 +1884,35 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     const country = body.country as string | undefined;
     const userId = body.userId ?? 'admin';
 
-    const importResults = country
-      ? runImportersByCountry(country as any)
-      : runAllImporters();
+    const importResults = country ? runImportersByCountry(country as any) : runAllImporters();
 
     const result = runDirectoryRefresh(importResults, userId);
     return { ok: true, ...result };
   });
 
   /** POST /rcm/directory/import/:importerId -- run a single importer */
-  server.post('/rcm/directory/import/:importerId', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { importerId } = request.params as { importerId: string };
-    const importer = getImporter(importerId);
-    if (!importer) return reply.code(404).send({ ok: false, error: `Importer '${importerId}' not found` });
+  server.post(
+    '/rcm/directory/import/:importerId',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { importerId } = request.params as { importerId: string };
+      const importer = getImporter(importerId);
+      if (!importer)
+        return reply.code(404).send({ ok: false, error: `Importer '${importerId}' not found` });
 
-    const body = (request.body as any) || {};
-    const userId = body.userId ?? 'admin';
+      const body = (request.body as any) || {};
+      const userId = body.userId ?? 'admin';
 
-    let importResults;
-    if (body.fileData && importer.importFromFile) {
-      importResults = [importer.importFromFile(body.fileData, body.format ?? 'json')];
-    } else {
-      importResults = [importer.importFromSnapshot()];
+      let importResults;
+      if (body.fileData && importer.importFromFile) {
+        importResults = [importer.importFromFile(body.fileData, body.format ?? 'json')];
+      } else {
+        importResults = [importer.importFromSnapshot()];
+      }
+
+      const result = runDirectoryRefresh(importResults, userId);
+      return { ok: true, importerId, ...result };
     }
-
-    const result = runDirectoryRefresh(importResults, userId);
-    return { ok: true, importerId, ...result };
-  });
+  );
 
   // ───── Enrollment Packets (Phase 44) ──────────────────────────
 
@@ -1773,7 +1929,8 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.get('/rcm/enrollment/:payerId', async (request: FastifyRequest, reply: FastifyReply) => {
     const { payerId } = request.params as { payerId: string };
     const packet = getEnrollmentPacket(payerId);
-    if (!packet) return reply.code(404).send({ ok: false, error: 'No enrollment packet for this payer' });
+    if (!packet)
+      return reply.code(404).send({ ok: false, error: 'No enrollment packet for this payer' });
     return { ok: true, packet };
   });
 
@@ -1841,7 +1998,8 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   /** GET /rcm/routing/resolve -- resolve route by payerId + jurisdiction */
   server.get('/rcm/routing/resolve', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = request.query as Record<string, string>;
-    if (!q.payerId) return reply.code(400).send({ ok: false, error: 'payerId query param required' });
+    if (!q.payerId)
+      return reply.code(400).send({ ok: false, error: 'payerId query param required' });
     const jurisdiction = (q.jurisdiction ?? 'US') as any;
     const route = resolveRoute(q.payerId, jurisdiction);
 
@@ -1882,7 +2040,9 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.post('/rcm/transactions/build', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     if (!body.transactionSet || !body.senderId || !body.receiverId) {
-      return reply.code(400).send({ ok: false, error: 'transactionSet, senderId, receiverId required' });
+      return reply
+        .code(400)
+        .send({ ok: false, error: 'transactionSet, senderId, receiverId required' });
     }
 
     const envelope = buildEnvelope({
@@ -1938,67 +2098,79 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /** POST /rcm/transactions/:id/transition -- manually transition state */
-  server.post('/rcm/transactions/:id/transition', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
-    if (!body.state) return reply.code(400).send({ ok: false, error: 'state is required' });
+  server.post(
+    '/rcm/transactions/:id/transition',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
+      if (!body.state) return reply.code(400).send({ ok: false, error: 'state is required' });
 
-    const result = transitionTransaction(id, body.state, {
-      responsePayload: body.responsePayload,
-      error: body.error,
-    });
+      const result = transitionTransaction(id, body.state, {
+        responsePayload: body.responsePayload,
+        error: body.error,
+      });
 
-    if (!result) return reply.code(422).send({ ok: false, error: 'Invalid state transition' });
+      if (!result) return reply.code(422).send({ ok: false, error: 'Invalid state transition' });
 
-    appendRcmAudit(`transaction.${body.state === 'failed' ? 'failed' : body.state === 'dlq' ? 'dlq' : body.state === 'reconciled' ? 'reconciled' : 'transmitted'}` as any, {
-      detail: { transactionId: id, newState: body.state },
-    });
+      appendRcmAudit(
+        `transaction.${body.state === 'failed' ? 'failed' : body.state === 'dlq' ? 'dlq' : body.state === 'reconciled' ? 'reconciled' : 'transmitted'}` as any,
+        {
+          detail: { transactionId: id, newState: body.state },
+        }
+      );
 
-    return { ok: true, transaction: result };
-  });
+      return { ok: true, transaction: result };
+    }
+  );
 
   /** POST /rcm/transactions/:id/check-gates -- run pre-transmit or ack gates */
-  server.post('/rcm/transactions/:id/check-gates', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
-    const gateType = body.gateType ?? 'pre-transmit';
+  server.post(
+    '/rcm/transactions/:id/check-gates',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
+      const gateType = body.gateType ?? 'pre-transmit';
 
-    const txn = getTxn(id);
-    if (!txn) return reply.code(404).send({ ok: false, error: 'Transaction not found' });
+      const txn = getTxn(id);
+      if (!txn) return reply.code(404).send({ ok: false, error: 'Transaction not found' });
 
-    if (gateType === 'ack') {
-      const ackResult = checkAckGates(id);
-      return { ok: true, gateType: 'ack', gates: ackResult };
-    }
+      if (gateType === 'ack') {
+        const ackResult = checkAckGates(id);
+        return { ok: true, gateType: 'ack', gates: ackResult };
+      }
 
-    // Pre-transmit gates
-    if (!txn.x12Payload) {
-      return reply.code(422).send({ ok: false, error: 'Transaction has no X12 payload' });
+      // Pre-transmit gates
+      if (!txn.x12Payload) {
+        return reply.code(422).send({ ok: false, error: 'Transaction has no X12 payload' });
+      }
+      const gateResults = checkPreTransmitGates(txn.envelope.transactionSet, txn.x12Payload);
+      const allPassed = gateResults.every((g) => g.passed || g.severity !== 'error');
+      if (!allPassed) {
+        appendRcmAudit('connectivity.gate_failed', {
+          detail: { transactionId: id, failures: gateResults.filter((g) => !g.passed) },
+        });
+      }
+      return { ok: true, gateType: 'pre-transmit', gates: gateResults, allPassed };
     }
-    const gateResults = checkPreTransmitGates(txn.envelope.transactionSet, txn.x12Payload);
-    const allPassed = gateResults.every(g => g.passed || g.severity !== 'error');
-    if (!allPassed) {
-      appendRcmAudit('connectivity.gate_failed', {
-        detail: { transactionId: id, failures: gateResults.filter(g => !g.passed) },
-      });
-    }
-    return { ok: true, gateType: 'pre-transmit', gates: gateResults, allPassed };
-  });
+  );
 
   /** POST /rcm/transactions/:id/retry -- retry a failed transaction */
-  server.post('/rcm/transactions/:id/retry', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const result = processRetry(id);
-    if (!result.retried && !result.movedToDLQ) {
-      return reply.code(422).send({ ok: false, error: 'Cannot retry this transaction' });
+  server.post(
+    '/rcm/transactions/:id/retry',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const result = processRetry(id);
+      if (!result.retried && !result.movedToDLQ) {
+        return reply.code(422).send({ ok: false, error: 'Cannot retry this transaction' });
+      }
+
+      appendRcmAudit('transaction.retried', {
+        detail: { transactionId: id, retried: result.retried, movedToDLQ: result.movedToDLQ },
+      });
+
+      return { ok: true, transaction: result };
     }
-
-    appendRcmAudit('transaction.retried', {
-      detail: { transactionId: id, retried: result.retried, movedToDLQ: result.movedToDLQ },
-    });
-
-    return { ok: true, transaction: result };
-  });
+  );
 
   /** GET /rcm/transactions/dlq -- list dead-letter queue transactions */
   server.get('/rcm/transactions/dlq', async () => {
@@ -2006,17 +2178,21 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /** POST /rcm/transactions/dlq/:id/retry -- retry from dead-letter queue */
-  server.post('/rcm/transactions/dlq/:id/retry', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const success = retryFromDLQ(id);
-    if (!success) return reply.code(422).send({ ok: false, error: 'Cannot retry: not in DLQ or not found' });
+  server.post(
+    '/rcm/transactions/dlq/:id/retry',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const success = retryFromDLQ(id);
+      if (!success)
+        return reply.code(422).send({ ok: false, error: 'Cannot retry: not in DLQ or not found' });
 
-    appendRcmAudit('transaction.retried', {
-      detail: { transactionId: id, fromDLQ: true },
-    });
+      appendRcmAudit('transaction.retried', {
+        detail: { transactionId: id, fromDLQ: true },
+      });
 
-    return { ok: true, retried: true };
-  });
+      return { ok: true, retried: true };
+    }
+  );
 
   /** GET /rcm/translators -- list registered translators */
   server.get('/rcm/translators', async () => {
@@ -2034,14 +2210,17 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /** GET /rcm/claims/:id/reconciliation -- full claim reconciliation */
-  server.get('/rcm/claims/:id/reconciliation', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const claim = getClaim(id);
-    if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
+  server.get(
+    '/rcm/claims/:id/reconciliation',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const claim = getClaim(id);
+      if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
-    const summary = buildReconciliationSummary(id);
-    return { ok: true, reconciliation: summary };
-  });
+      const summary = buildReconciliationSummary(id);
+      return { ok: true, reconciliation: summary };
+    }
+  );
 
   /** POST /rcm/claims/batch-reconciliation -- batch reconciliation stats */
   server.post('/rcm/claims/batch-reconciliation', async (request: FastifyRequest) => {
@@ -2063,16 +2242,23 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /** GET /rcm/gateways/readiness/:id -- Readiness for single gateway */
-  server.get('/rcm/gateways/readiness/:id', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const validIds = getGatewayIds();
-    if (!validIds.includes(id as GatewayId)) {
-      return reply.code(404).send({ ok: false, error: `Unknown gateway: ${id}. Valid: ${validIds.join(', ')}` });
+  server.get(
+    '/rcm/gateways/readiness/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const validIds = getGatewayIds();
+      if (!validIds.includes(id as GatewayId)) {
+        return reply
+          .code(404)
+          .send({ ok: false, error: `Unknown gateway: ${id}. Valid: ${validIds.join(', ')}` });
+      }
+      const gateway = probeGateway(id as GatewayId);
+      appendRcmAudit('gateway.probe', {
+        detail: { gatewayId: id, overallStatus: gateway.overallStatus },
+      });
+      return { ok: true, gateway };
     }
-    const gateway = probeGateway(id as GatewayId);
-    appendRcmAudit('gateway.probe', { detail: { gatewayId: id, overallStatus: gateway.overallStatus } });
-    return { ok: true, gateway };
-  });
+  );
 
   /** GET /rcm/gateways/ids -- List available gateway IDs */
   server.get('/rcm/gateways/ids', async (_request: FastifyRequest) => {
@@ -2085,23 +2271,31 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /** GET /rcm/conformance/gateways/:id -- Single gateway conformance */
-  server.get('/rcm/conformance/gateways/:id', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const conformance = getGatewayConformance(id);
-    if (!conformance) {
-      return reply.code(404).send({ ok: false, error: `No conformance data for gateway: ${id}` });
+  server.get(
+    '/rcm/conformance/gateways/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const conformance = getGatewayConformance(id);
+      if (!conformance) {
+        return reply.code(404).send({ ok: false, error: `No conformance data for gateway: ${id}` });
+      }
+      return { ok: true, conformance };
     }
-    return { ok: true, conformance };
-  });
+  );
 
   /** POST /rcm/conformance/gateways/:id/validate -- Validate payload against conformance */
-  server.post('/rcm/conformance/gateways/:id/validate', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const body = (request.body as Record<string, unknown>) || {};
-    const result = validatePayloadConformance(id, body);
-    appendRcmAudit('gateway.conformance_validated', { detail: { gatewayId: id, valid: result.valid, missingFields: result.missingFields.length } });
-    return { ok: true, ...result };
-  });
+  server.post(
+    '/rcm/conformance/gateways/:id/validate',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const body = (request.body as Record<string, unknown>) || {};
+      const result = validatePayloadConformance(id, body);
+      appendRcmAudit('gateway.conformance_validated', {
+        detail: { gatewayId: id, valid: result.valid, missingFields: result.missingFields.length },
+      });
+      return { ok: true, ...result };
+    }
+  );
 
   /* ═══════════════════════════════════════════════════════════════════
    * Phase 69 — RCM Ops Excellence: Adapters, Polling, Jobs

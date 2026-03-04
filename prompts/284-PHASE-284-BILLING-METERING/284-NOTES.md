@@ -3,21 +3,25 @@
 ## Design Decisions
 
 ### Provider-Agnostic Interface
+
 The BillingProvider interface abstracts all billing operations so the system
 is not locked to any single vendor. The mock provider enables zero-config
 development; the Lago provider targets self-hosted OSS billing.
 
 ### In-Memory Metering
+
 Metering uses an in-memory counter store for hot-path performance. Counters
 are periodically flushed to the billing provider. This matches the established
 pattern from imaging worklist (Phase 23) and telehealth rooms (Phase 30).
 
 ### Mock Plans
+
 The 4 built-in mock plans (free/starter/professional/enterprise) align with
 the PlanTier enum already present in module-repo.ts and the ADR-OSS-BILLING
 architecture decision. Prices are placeholder values.
 
 ### Lago REST API v1
+
 The Lago adapter uses vanilla Node.js fetch (no npm deps) against the REST
 API v1. This follows the zero-dependency principle from analytics-etl.ts
 (Phase 25D) and the PgSimpleClient pattern.

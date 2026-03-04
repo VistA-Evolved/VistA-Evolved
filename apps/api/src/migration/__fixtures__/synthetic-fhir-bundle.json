@@ -44,7 +44,9 @@
           }
         ],
         "maritalStatus": {
-          "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus", "code": "M" }]
+          "coding": [
+            { "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus", "code": "M" }
+          ]
         }
       }
     },
@@ -68,9 +70,7 @@
         ],
         "gender": "male",
         "birthDate": "1972-11-20",
-        "telecom": [
-          { "system": "phone", "value": "555-0202", "use": "mobile" }
-        ],
+        "telecom": [{ "system": "phone", "value": "555-0202", "use": "mobile" }],
         "address": [
           {
             "use": "home",
@@ -88,15 +88,31 @@
         "resourceType": "AllergyIntolerance",
         "id": "allergy-001",
         "clinicalStatus": {
-          "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical", "code": "active" }]
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
         },
         "verificationStatus": {
-          "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification", "code": "confirmed" }]
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+              "code": "confirmed"
+            }
+          ]
         },
         "category": ["medication"],
         "criticality": "high",
         "code": {
-          "coding": [{ "system": "http://www.nlm.nih.gov/research/umls/rxnorm", "code": "723", "display": "Amoxicillin" }],
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "723",
+              "display": "Amoxicillin"
+            }
+          ],
           "text": "Amoxicillin"
         },
         "patient": { "reference": "Patient/patient-001" },
@@ -115,7 +131,12 @@
         "resourceType": "AllergyIntolerance",
         "id": "allergy-002",
         "clinicalStatus": {
-          "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical", "code": "active" }]
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
         },
         "category": ["food"],
         "criticality": "low",
@@ -137,13 +158,31 @@
         "resourceType": "Condition",
         "id": "condition-001",
         "clinicalStatus": {
-          "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/condition-clinical", "code": "active" }]
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
         },
         "category": [
-          { "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/condition-category", "code": "problem-list-item" }] }
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                "code": "problem-list-item"
+              }
+            ]
+          }
         ],
         "code": {
-          "coding": [{ "system": "http://snomed.info/sct", "code": "44054006", "display": "Diabetes mellitus type 2" }],
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "44054006",
+              "display": "Diabetes mellitus type 2"
+            }
+          ],
           "text": "Diabetes mellitus type 2"
         },
         "subject": { "reference": "Patient/patient-001" },
@@ -156,10 +195,17 @@
         "resourceType": "Condition",
         "id": "condition-002",
         "clinicalStatus": {
-          "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/condition-clinical", "code": "active" }]
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
         },
         "code": {
-          "coding": [{ "system": "http://snomed.info/sct", "code": "38341003", "display": "Hypertension" }],
+          "coding": [
+            { "system": "http://snomed.info/sct", "code": "38341003", "display": "Hypertension" }
+          ],
           "text": "Essential hypertension"
         },
         "subject": { "reference": "Patient/patient-001" },
@@ -173,10 +219,19 @@
         "id": "observation-001",
         "status": "final",
         "category": [
-          { "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/observation-category", "code": "vital-signs" }] }
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "vital-signs"
+              }
+            ]
+          }
         ],
         "code": {
-          "coding": [{ "system": "http://loinc.org", "code": "8480-6", "display": "Systolic blood pressure" }]
+          "coding": [
+            { "system": "http://loinc.org", "code": "8480-6", "display": "Systolic blood pressure" }
+          ]
         },
         "subject": { "reference": "Patient/patient-001" },
         "effectiveDateTime": "2025-01-10T09:30:00Z",
@@ -196,14 +251,18 @@
         "status": "active",
         "intent": "order",
         "medicationCodeableConcept": {
-          "coding": [{ "system": "http://www.nlm.nih.gov/research/umls/rxnorm", "code": "860975", "display": "Metformin 500 MG Oral Tablet" }],
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "860975",
+              "display": "Metformin 500 MG Oral Tablet"
+            }
+          ],
           "text": "Metformin 500 MG Oral Tablet"
         },
         "subject": { "reference": "Patient/patient-001" },
         "authoredOn": "2018-02-01",
-        "dosageInstruction": [
-          { "text": "Take 1 tablet by mouth twice daily" }
-        ],
+        "dosageInstruction": [{ "text": "Take 1 tablet by mouth twice daily" }],
         "dispenseRequest": {
           "quantity": { "value": 60, "unit": "tablets" },
           "numberOfRepeatsAllowed": 3
@@ -222,9 +281,7 @@
         },
         "subject": { "reference": "Patient/patient-001" },
         "authoredOn": "2015-08-01",
-        "dosageInstruction": [
-          { "text": "Take 1 tablet by mouth daily" }
-        ],
+        "dosageInstruction": [{ "text": "Take 1 tablet by mouth daily" }],
         "dispenseRequest": {
           "quantity": { "value": 30, "unit": "tablets" },
           "numberOfRepeatsAllowed": 6
@@ -242,17 +299,13 @@
           "code": "AMB",
           "display": "ambulatory"
         },
-        "type": [
-          { "coding": [{ "display": "Office Visit" }] }
-        ],
+        "type": [{ "coding": [{ "display": "Office Visit" }] }],
         "subject": { "reference": "Patient/patient-001" },
         "period": {
           "start": "2025-01-10T09:00:00Z",
           "end": "2025-01-10T09:30:00Z"
         },
-        "location": [
-          { "location": { "display": "Primary Care Clinic A" } }
-        ]
+        "location": [{ "location": { "display": "Primary Care Clinic A" } }]
       }
     },
     {
@@ -286,7 +339,9 @@
         "id": "document-001",
         "status": "current",
         "type": {
-          "coding": [{ "system": "http://loinc.org", "code": "11506-3", "display": "Progress note" }]
+          "coding": [
+            { "system": "http://loinc.org", "code": "11506-3", "display": "Progress note" }
+          ]
         },
         "subject": { "reference": "Patient/patient-001" },
         "date": "2025-01-10T09:30:00Z",

@@ -40,7 +40,7 @@ groups:
           slo: api-availability
           team: platform
         annotations:
-          summary: "API availability fast burn: 14.4x budget consumption"
+          summary: 'API availability fast burn: 14.4x budget consumption'
           description: >
             5m error ratio {{ $value | humanizePercentage }} exceeds
             fast-burn threshold (7.2%). Page on-call immediately.
@@ -55,7 +55,7 @@ groups:
           slo: api-availability
           team: platform
         annotations:
-          summary: "API availability slow burn: error budget depleting"
+          summary: 'API availability slow burn: error budget depleting'
           description: >
             6h error ratio {{ $value | humanizePercentage }} indicates
             slow budget depletion. Investigate within shift.
@@ -89,7 +89,7 @@ groups:
           slo: api-latency-p95
           team: platform
         annotations:
-          summary: "API latency fast burn: p95 SLO at risk"
+          summary: 'API latency fast burn: p95 SLO at risk'
           description: >
             More than {{ $value | humanizePercentage }} of requests
             exceed 2s in the last 5m.
@@ -103,7 +103,7 @@ groups:
           slo: api-latency-p95
           team: platform
         annotations:
-          summary: "API latency slow burn: p95 degrading"
+          summary: 'API latency slow burn: p95 degrading'
 
   # ================================================================
   #  SLO-3 — RPC Broker Success (99%)
@@ -125,7 +125,7 @@ groups:
           slo: rpc-broker-success
           team: platform
         annotations:
-          summary: "RPC broker failure rate > 10% for 5 minutes"
+          summary: 'RPC broker failure rate > 10% for 5 minutes'
           description: >
             VistA RPC broker error ratio {{ $value | humanizePercentage }}.
             Circuit breaker may be open.
@@ -138,7 +138,7 @@ groups:
           slo: rpc-broker-success
           team: platform
         annotations:
-          summary: "RPC broker failure rate > 1% for 15 minutes"
+          summary: 'RPC broker failure rate > 1% for 15 minutes'
 
   # ================================================================
   #  SLO-4 — Backup Success (99.9%)
@@ -154,7 +154,7 @@ groups:
           slo: backup-success
           team: platform
         annotations:
-          summary: "Database backup failed in the last 24 hours"
+          summary: 'Database backup failed in the last 24 hours'
           description: >
             At least one backup failure detected.
             Check backup job logs and storage connectivity.
@@ -173,7 +173,7 @@ groups:
           severity: critical
           team: platform
         annotations:
-          summary: "Pod {{ $labels.pod }} crash-looping (>3 restarts/hour)"
+          summary: 'Pod {{ $labels.pod }} crash-looping (>3 restarts/hour)'
 
       - alert: VEPodNotReady
         expr: >
@@ -183,7 +183,7 @@ groups:
           severity: warning
           team: platform
         annotations:
-          summary: "Pod {{ $labels.pod }} not ready for 10+ minutes"
+          summary: 'Pod {{ $labels.pod }} not ready for 10+ minutes'
 
       - alert: VEHighMemoryUsage
         expr: >
@@ -196,7 +196,7 @@ groups:
           severity: warning
           team: platform
         annotations:
-          summary: "Container {{ $labels.container }} memory > 90% of limit"
+          summary: 'Container {{ $labels.container }} memory > 90% of limit'
 
       - alert: VEDiskPressure
         expr: >
@@ -210,4 +210,4 @@ groups:
           severity: critical
           team: platform
         annotations:
-          summary: "Disk space < 10% remaining on {{ $labels.instance }}"
+          summary: 'Disk space < 10% remaining on {{ $labels.instance }}'

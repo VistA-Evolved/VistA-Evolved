@@ -6,43 +6,43 @@
 
 ## Wave 4 Summary (Q211-Q220)
 
-| Queue | Title | Commit | Status |
-|-------|-------|--------|--------|
-| Q211 | PromptOps Governance Upgrade | a9e8c70 | DONE |
-| Q212 | Repair Prompts Tree | 0e7595f | DONE |
-| Q213 | Backfill Wave 1 (Phases 173-178) | 2f0cdc0 | DONE |
-| Q214 | Convert Wave 2 (Phases 179-196) | 2f0cdc0 | DONE |
-| Q215 | Convert Wave 3 (Phases 197-210) | 2f0cdc0 | DONE |
-| Q216 | Route-RPC Map Generator | 5f0d568 | DONE |
-| Q217 | Live RPC Communication Verification | ec774f8 | DONE |
-| Q218 | Fix What Verification Finds | 294bc1c | DONE |
-| Q219 | Re-run Waves 1-3 Audit | 664da21 | DONE |
-| Q220 | Convergence Snapshot | (this commit) | DONE |
+| Queue | Title                               | Commit        | Status |
+| ----- | ----------------------------------- | ------------- | ------ |
+| Q211  | PromptOps Governance Upgrade        | a9e8c70       | DONE   |
+| Q212  | Repair Prompts Tree                 | 0e7595f       | DONE   |
+| Q213  | Backfill Wave 1 (Phases 173-178)    | 2f0cdc0       | DONE   |
+| Q214  | Convert Wave 2 (Phases 179-196)     | 2f0cdc0       | DONE   |
+| Q215  | Convert Wave 3 (Phases 197-210)     | 2f0cdc0       | DONE   |
+| Q216  | Route-RPC Map Generator             | 5f0d568       | DONE   |
+| Q217  | Live RPC Communication Verification | ec774f8       | DONE   |
+| Q218  | Fix What Verification Finds         | 294bc1c       | DONE   |
+| Q219  | Re-run Waves 1-3 Audit              | 664da21       | DONE   |
+| Q220  | Convergence Snapshot                | (this commit) | DONE   |
 
 ## QA Gate Results
 
-| Gate | Result |
-|------|--------|
-| Prompts tree health | 6 PASS, 0 WARN, 0 FAIL |
-| Prompts quality | PASS (231 legacy WARN, 0 FAIL) |
-| Phase index integrity | 6/6 PASS (230 phases) |
-| RPC verification | 3 PASS, 0 WARN, 0 FAIL |
+| Gate                  | Result                         |
+| --------------------- | ------------------------------ |
+| Prompts tree health   | 6 PASS, 0 WARN, 0 FAIL         |
+| Prompts quality       | PASS (231 legacy WARN, 0 FAIL) |
+| Phase index integrity | 6/6 PASS (230 phases)          |
+| RPC verification      | 3 PASS, 0 WARN, 0 FAIL         |
 
 ## Key Metrics
 
-| Metric | Value |
-|--------|-------|
-| Total phases | 230 |
-| Phase folders with IMPLEMENT+VERIFY | 230 |
-| Wave phases enriched (Q219) | 76 files |
-| Quality warnings eliminated | 76 (307 -> 231) |
-| RPC registry entries | 138 (137 registered + ORWCV VST) |
-| Unique RPCs across routes + services | 111 |
-| Unregistered RPCs | 0 |
-| Total routes | 907 |
-| RPC-active routes | 115 |
-| Stub routes | 686 |
-| Non-RPC routes | 106 |
+| Metric                               | Value                            |
+| ------------------------------------ | -------------------------------- |
+| Total phases                         | 230                              |
+| Phase folders with IMPLEMENT+VERIFY  | 230                              |
+| Wave phases enriched (Q219)          | 76 files                         |
+| Quality warnings eliminated          | 76 (307 -> 231)                  |
+| RPC registry entries                 | 138 (137 registered + ORWCV VST) |
+| Unique RPCs across routes + services | 111                              |
+| Unregistered RPCs                    | 0                                |
+| Total routes                         | 907                              |
+| RPC-active routes                    | 115                              |
+| Stub routes                          | 686                              |
+| Non-RPC routes                       | 106                              |
 
 ## New Tooling Created
 

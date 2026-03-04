@@ -18,7 +18,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
 
-
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
 /* ------------------------------------------------------------------ */
@@ -110,13 +109,17 @@ export default function TelehealthPanel({ dfn }: Props) {
     setLoading(false);
   }, []);
 
-  useEffect(() => { loadData(); }, [loadData]);
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   // Poll waiting state for active room
   useEffect(() => {
     if (!activeRoomId) return;
     const poll = setInterval(async () => {
-      const res = await clinicianFetch<{ waiting: WaitingRoomState }>(`/telehealth/rooms/${activeRoomId}/waiting`);
+      const res = await clinicianFetch<{ waiting: WaitingRoomState }>(
+        `/telehealth/rooms/${activeRoomId}/waiting`
+      );
       if (res.ok && res.data?.waiting) setWaitState(res.data.waiting);
     }, 5000);
     return () => clearInterval(poll);
@@ -134,7 +137,10 @@ export default function TelehealthPanel({ dfn }: Props) {
       body: JSON.stringify({ appointmentId }),
     });
     if (res.ok && res.data?.room) {
-      setNotice({ text: 'Room created. Share the appointment link with the patient.', type: 'success' });
+      setNotice({
+        text: 'Room created. Share the appointment link with the patient.',
+        type: 'success',
+      });
       await loadData();
     } else {
       setNotice({ text: res.error || 'Failed to create room', type: 'error' });
@@ -143,7 +149,9 @@ export default function TelehealthPanel({ dfn }: Props) {
   };
 
   const handleJoin = async (roomId: string) => {
-    const res = await clinicianFetch<{ joinUrl: string }>(`/telehealth/rooms/${roomId}/join`, { method: 'POST' });
+    const res = await clinicianFetch<{ joinUrl: string }>(`/telehealth/rooms/${roomId}/join`, {
+      method: 'POST',
+    });
     if (res.ok && res.data?.joinUrl) {
       setJoinUrl(res.data.joinUrl);
       setActiveRoomId(roomId);
@@ -189,11 +197,16 @@ export default function TelehealthPanel({ dfn }: Props) {
 
   const statusColor = (status: string) => {
     switch (status) {
-      case 'created': return '#6b7280';
-      case 'waiting': return '#f59e0b';
-      case 'active': return '#22c55e';
-      case 'ended': return '#ef4444';
-      default: return '#6b7280';
+      case 'created':
+        return '#6b7280';
+      case 'waiting':
+        return '#f59e0b';
+      case 'active':
+        return '#22c55e';
+      case 'ended':
+        return '#ef4444';
+      default:
+        return '#6b7280';
     }
   };
 
@@ -202,14 +215,16 @@ export default function TelehealthPanel({ dfn }: Props) {
   if (joinUrl) {
     return (
       <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '0.5rem 0.75rem',
-          background: '#f9fafb',
-          borderBottom: '1px solid #e5e7eb',
-        }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '0.5rem 0.75rem',
+            background: '#f9fafb',
+            borderBottom: '1px solid #e5e7eb',
+          }}
+        >
           <div>
             <strong>Video Visit</strong>
             {waitState && (
@@ -221,14 +236,29 @@ export default function TelehealthPanel({ dfn }: Props) {
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             <button
               onClick={handleLeaveVisit}
-              style={{ padding: '0.25rem 0.75rem', fontSize: '0.8125rem', border: '1px solid #d1d5db', borderRadius: '4px', background: '#fff', cursor: 'pointer' }}
+              style={{
+                padding: '0.25rem 0.75rem',
+                fontSize: '0.8125rem',
+                border: '1px solid #d1d5db',
+                borderRadius: '4px',
+                background: '#fff',
+                cursor: 'pointer',
+              }}
             >
               Minimize
             </button>
             {activeRoomId && (
               <button
                 onClick={() => handleEnd(activeRoomId)}
-                style={{ padding: '0.25rem 0.75rem', fontSize: '0.8125rem', border: '1px solid #ef4444', borderRadius: '4px', background: '#fef2f2', color: '#ef4444', cursor: 'pointer' }}
+                style={{
+                  padding: '0.25rem 0.75rem',
+                  fontSize: '0.8125rem',
+                  border: '1px solid #ef4444',
+                  borderRadius: '4px',
+                  background: '#fef2f2',
+                  color: '#ef4444',
+                  cursor: 'pointer',
+                }}
               >
                 End Visit
               </button>
@@ -249,7 +279,14 @@ export default function TelehealthPanel({ dfn }: Props) {
 
   return (
     <div style={{ padding: '1rem' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '1rem',
+        }}
+      >
         <h3 style={{ margin: 0, fontSize: '1.125rem' }}>Telehealth</h3>
         <button
           onClick={handleCreateRoom}
@@ -270,14 +307,16 @@ export default function TelehealthPanel({ dfn }: Props) {
       </div>
 
       {notice && (
-        <div style={{
-          padding: '0.5rem 0.75rem',
-          marginBottom: '0.75rem',
-          borderRadius: '4px',
-          background: notice.type === 'success' ? '#f0fdf4' : '#fef2f2',
-          color: notice.type === 'success' ? '#166534' : '#991b1b',
-          fontSize: '0.8125rem',
-        }}>
+        <div
+          style={{
+            padding: '0.5rem 0.75rem',
+            marginBottom: '0.75rem',
+            borderRadius: '4px',
+            background: notice.type === 'success' ? '#f0fdf4' : '#fef2f2',
+            color: notice.type === 'success' ? '#166534' : '#991b1b',
+            fontSize: '0.8125rem',
+          }}
+        >
           {notice.text}
         </div>
       )}
@@ -296,7 +335,8 @@ export default function TelehealthPanel({ dfn }: Props) {
             </div>
             {health.roomStats && (
               <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
-                Active: {health.roomStats.active} | Waiting: {health.roomStats.waiting} | Total: {health.roomStats.total}
+                Active: {health.roomStats.active} | Waiting: {health.roomStats.waiting} | Total:{' '}
+                {health.roomStats.total}
               </div>
             )}
           </div>
@@ -305,7 +345,9 @@ export default function TelehealthPanel({ dfn }: Props) {
 
       {/* Active Rooms */}
       <div style={sectionStyle}>
-        <h4 style={{ fontSize: '0.875rem', marginBottom: '0.5rem', color: '#374151' }}>Active Rooms</h4>
+        <h4 style={{ fontSize: '0.875rem', marginBottom: '0.5rem', color: '#374151' }}>
+          Active Rooms
+        </h4>
         {loading ? (
           <p style={{ fontSize: '0.8125rem', color: '#9ca3af' }}>Loading...</p>
         ) : rooms.length === 0 ? (
@@ -313,7 +355,9 @@ export default function TelehealthPanel({ dfn }: Props) {
         ) : (
           rooms.map((room) => (
             <div key={room.roomId} style={cardStyle}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+              >
                 <div>
                   <span style={{ fontSize: '0.8125rem', fontWeight: 500 }}>
                     {room.roomId.slice(0, 12)}...
@@ -358,8 +402,8 @@ export default function TelehealthPanel({ dfn }: Props) {
                 </div>
               </div>
               <div style={{ fontSize: '0.6875rem', color: '#9ca3af', marginTop: '0.25rem' }}>
-                Created: {new Date(room.createdAt).toLocaleTimeString()} |
-                Expires: {new Date(room.expiresAt).toLocaleTimeString()}
+                Created: {new Date(room.createdAt).toLocaleTimeString()} | Expires:{' '}
+                {new Date(room.expiresAt).toLocaleTimeString()}
               </div>
             </div>
           ))
@@ -367,16 +411,17 @@ export default function TelehealthPanel({ dfn }: Props) {
       </div>
 
       {/* Privacy notice */}
-      <div style={{
-        padding: '0.5rem 0.75rem',
-        background: '#f9fafb',
-        borderRadius: '4px',
-        border: '1px solid #e5e7eb',
-        fontSize: '0.6875rem',
-        color: '#9ca3af',
-      }}>
-        Recording is OFF by default. No PHI in meeting URLs.
-        Room links auto-expire within 4 hours.
+      <div
+        style={{
+          padding: '0.5rem 0.75rem',
+          background: '#f9fafb',
+          borderRadius: '4px',
+          border: '1px solid #e5e7eb',
+          fontSize: '0.6875rem',
+          color: '#9ca3af',
+        }}
+      >
+        Recording is OFF by default. No PHI in meeting URLs. Room links auto-expire within 4 hours.
       </div>
     </div>
   );

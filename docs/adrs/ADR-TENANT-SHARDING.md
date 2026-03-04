@@ -10,6 +10,7 @@
 VistA-Evolved currently runs all tenants against a single PostgreSQL cluster
 with Row-Level Security (RLS) enforcing isolation. As tenant count and data
 volume grow, a single cluster becomes a bottleneck for:
+
 - Connection pool exhaustion (hundreds of tenants x connection pool size)
 - Storage IOPS contention during peak hours
 - Data residency requirements (PHI must stay in-region)
@@ -25,12 +26,14 @@ control plane maintains a `tenant_db_map` that the API uses to select the
 correct connection pool.
 
 **Pros:**
+
 - Clear data residency boundaries per region
 - Horizontal scale: add regions to add capacity
 - Blast radius limited to one region
 - RLS still enforced within each cluster
 
 **Cons:**
+
 - Cross-region queries require explicit federation (not supported initially)
 - Schema migrations must be coordinated across clusters
 - More complex connection management
@@ -40,10 +43,12 @@ correct connection pool.
 Each tenant gets its own database within a cluster (or its own cluster).
 
 **Pros:**
+
 - Maximum isolation
 - Simple backup/restore per tenant
 
 **Cons:**
+
 - Connection pool explosion (N tenants x pool size)
 - Migration complexity scales linearly with tenants
 - Expensive at scale
@@ -53,10 +58,12 @@ Each tenant gets its own database within a cluster (or its own cluster).
 Continue with a single PG cluster and RLS.
 
 **Pros:**
+
 - Simple operations
 - Already working
 
 **Cons:**
+
 - Single point of failure
 - Cannot satisfy data residency requirements
 - Connection/IOPS ceiling

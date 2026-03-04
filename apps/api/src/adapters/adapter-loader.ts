@@ -13,8 +13,8 @@
  * All adapters are singletons — loaded once at startup.
  */
 
-import { log } from "../lib/logger.js";
-import type { BaseAdapter } from "./types.js";
+import { log } from '../lib/logger.js';
+import type { BaseAdapter } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Adapter registry (type → instance)                                  */
@@ -27,47 +27,47 @@ const adapters = new Map<string, BaseAdapter>();
 /* ------------------------------------------------------------------ */
 
 async function loadClinicalEngineAdapter(variant: string): Promise<BaseAdapter> {
-  if (variant === "stub") {
-    const { StubClinicalAdapter } = await import("./clinical-engine/stub-adapter.js");
+  if (variant === 'stub') {
+    const { StubClinicalAdapter } = await import('./clinical-engine/stub-adapter.js');
     return new StubClinicalAdapter();
   }
-  const { VistaClinicalAdapter } = await import("./clinical-engine/vista-adapter.js");
+  const { VistaClinicalAdapter } = await import('./clinical-engine/vista-adapter.js');
   return new VistaClinicalAdapter();
 }
 
 async function loadSchedulingAdapter(variant: string): Promise<BaseAdapter> {
-  if (variant === "stub") {
-    const { StubSchedulingAdapter } = await import("./scheduling/stub-adapter.js");
+  if (variant === 'stub') {
+    const { StubSchedulingAdapter } = await import('./scheduling/stub-adapter.js');
     return new StubSchedulingAdapter();
   }
-  const { VistaSchedulingAdapter } = await import("./scheduling/vista-adapter.js");
+  const { VistaSchedulingAdapter } = await import('./scheduling/vista-adapter.js');
   return new VistaSchedulingAdapter();
 }
 
 async function loadBillingAdapter(variant: string): Promise<BaseAdapter> {
-  if (variant === "stub") {
-    const { StubBillingAdapter } = await import("./billing/stub-adapter.js");
+  if (variant === 'stub') {
+    const { StubBillingAdapter } = await import('./billing/stub-adapter.js');
     return new StubBillingAdapter();
   }
-  const { VistaBillingAdapter } = await import("./billing/vista-adapter.js");
+  const { VistaBillingAdapter } = await import('./billing/vista-adapter.js');
   return new VistaBillingAdapter();
 }
 
 async function loadImagingAdapter(variant: string): Promise<BaseAdapter> {
-  if (variant === "stub") {
-    const { StubImagingAdapter } = await import("./imaging/stub-adapter.js");
+  if (variant === 'stub') {
+    const { StubImagingAdapter } = await import('./imaging/stub-adapter.js');
     return new StubImagingAdapter();
   }
-  const { VistaImagingAdapter } = await import("./imaging/vista-adapter.js");
+  const { VistaImagingAdapter } = await import('./imaging/vista-adapter.js');
   return new VistaImagingAdapter();
 }
 
 async function loadMessagingAdapter(variant: string): Promise<BaseAdapter> {
-  if (variant === "stub") {
-    const { StubMessagingAdapter } = await import("./messaging/stub-adapter.js");
+  if (variant === 'stub') {
+    const { StubMessagingAdapter } = await import('./messaging/stub-adapter.js');
     return new StubMessagingAdapter();
   }
-  const { VistaMessagingAdapter } = await import("./messaging/vista-adapter.js");
+  const { VistaMessagingAdapter } = await import('./messaging/vista-adapter.js');
   return new VistaMessagingAdapter();
 }
 
@@ -76,7 +76,7 @@ async function loadMessagingAdapter(variant: string): Promise<BaseAdapter> {
 /* ------------------------------------------------------------------ */
 
 const ADAPTER_LOADERS: Record<string, (variant: string) => Promise<BaseAdapter>> = {
-  "clinical-engine": loadClinicalEngineAdapter,
+  'clinical-engine': loadClinicalEngineAdapter,
   scheduling: loadSchedulingAdapter,
   billing: loadBillingAdapter,
   imaging: loadImagingAdapter,
@@ -101,15 +101,15 @@ export async function initAdapters(): Promise<void> {
   const types = Object.keys(ADAPTER_LOADERS);
 
   for (const type of types) {
-    const envKey = `ADAPTER_${type.replace(/-/g, "_").toUpperCase()}`;
-    const variant = (process.env[envKey] || "vista").toLowerCase();
+    const envKey = `ADAPTER_${type.replace(/-/g, '_').toUpperCase()}`;
+    const variant = (process.env[envKey] || 'vista').toLowerCase();
 
     try {
       const loader = ADAPTER_LOADERS[type];
       const adapter = await loader(variant);
       adapters.set(type, adapter);
 
-      log.info("Adapter loaded", {
+      log.info('Adapter loaded', {
         type,
         implementation: adapter.implementationName,
         isStub: adapter._isStub,
@@ -120,7 +120,7 @@ export async function initAdapters(): Promise<void> {
       });
       // Fallback to stub
       try {
-        const adapter = await ADAPTER_LOADERS[type]("stub");
+        const adapter = await ADAPTER_LOADERS[type]('stub');
         adapters.set(type, adapter);
       } catch {
         log.error(`Failed to load even stub adapter for '${type}'`);
@@ -128,7 +128,7 @@ export async function initAdapters(): Promise<void> {
     }
   }
 
-  log.info("Adapter loader initialized", {
+  log.info('Adapter loader initialized', {
     loaded: adapters.size,
     types: [...adapters.keys()],
     stubs: [...adapters.values()].filter((a) => a._isStub).map((a) => a.adapterType),
@@ -155,7 +155,10 @@ export function getAllAdapters(): Map<string, BaseAdapter> {
 export async function getAdapterHealth(): Promise<
   Record<string, { ok: boolean; implementation: string; isStub: boolean; latencyMs: number }>
 > {
-  const result: Record<string, { ok: boolean; implementation: string; isStub: boolean; latencyMs: number }> = {};
+  const result: Record<
+    string,
+    { ok: boolean; implementation: string; isStub: boolean; latencyMs: number }
+  > = {};
 
   for (const [type, adapter] of adapters) {
     try {
@@ -192,7 +195,7 @@ export function isAdapterLive(type: string): boolean {
  */
 export function setAdapter(type: string, adapter: BaseAdapter): void {
   adapters.set(type, adapter);
-  log.info("Adapter replaced at runtime", {
+  log.info('Adapter replaced at runtime', {
     type,
     implementation: adapter.implementationName,
     isStub: adapter._isStub,

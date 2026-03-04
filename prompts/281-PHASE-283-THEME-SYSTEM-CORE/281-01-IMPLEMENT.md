@@ -14,19 +14,22 @@
 10. Added setThemePack callback to CPRSUIStateValue interface
 
 ## Theme Resolution Order
+
 tenant default → user preference → system default ("modern-default")
 
 ## Available Theme Packs
-| ID | Name | Category | Dark? | Contrast |
-|----|------|----------|-------|----------|
-| modern-default | Modern Default | built-in | No | AA |
-| modern-dark | Modern Dark | built-in | Yes | AA |
-| vista-legacy | VistA Legacy | built-in | No | AA |
-| openmrs | OpenMRS-Inspired | oss-inspired | No | AA |
-| openemr | OpenEMR-Inspired | oss-inspired | No | AA |
-| high-contrast | High Contrast | built-in | No | AAA |
+
+| ID             | Name             | Category     | Dark? | Contrast |
+| -------------- | ---------------- | ------------ | ----- | -------- |
+| modern-default | Modern Default   | built-in     | No    | AA       |
+| modern-dark    | Modern Dark      | built-in     | Yes   | AA       |
+| vista-legacy   | VistA Legacy     | built-in     | No    | AA       |
+| openmrs        | OpenMRS-Inspired | oss-inspired | No    | AA       |
+| openemr        | OpenEMR-Inspired | oss-inspired | No    | AA       |
+| high-contrast  | High Contrast    | built-in     | No    | AAA      |
 
 ## Files Touched
+
 - `apps/web/src/lib/theme-tokens.ts` — 3 new packs + ThemePackId + helpers
 - `apps/web/src/stores/cprs-ui-state.tsx` — themePack pref + server sync + CSS apply
 - `apps/api/src/services/ui-prefs-store.ts` — themePack on UIPrefsDocument + get/set

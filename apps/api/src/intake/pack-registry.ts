@@ -5,7 +5,7 @@
  * Packs are loaded from the packs/ directory at startup.
  */
 
-import type { IntakePack, IntakeContext, QuestionnaireItem } from "./types.js";
+import type { IntakePack, IntakeContext, QuestionnaireItem } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Registry                                                             */
@@ -53,49 +53,46 @@ export function resolvePacks(context: IntakeContext): IntakePack[] {
     // Department match
     if (context.department && depts.length) {
       if (depts.includes(context.department)) score += 10;
-      else if (depts.includes("*")) score += 2;
+      else if (depts.includes('*')) score += 2;
       else continue; // Pack explicitly lists departments and this one doesn't match
     }
 
     // Specialty match
     if (context.specialty && specs.length) {
       if (specs.includes(context.specialty)) score += 10;
-      else if (specs.includes("*")) score += 2;
+      else if (specs.includes('*')) score += 2;
       else continue;
     }
 
     // Visit type match
     if (context.visitType && vtypes.length) {
       if (vtypes.includes(context.visitType)) score += 5;
-      else if (vtypes.includes("*")) score += 1;
+      else if (vtypes.includes('*')) score += 1;
     }
 
     // Chief complaint cluster match (from pack complaintClusters or context chiefComplaints)
     if (context.chiefComplaint && (pack.complaintClusters?.length || ctx.chiefComplaints?.length)) {
       const cc = context.chiefComplaint.toLowerCase();
       const clusters = [...(pack.complaintClusters ?? []), ...(ctx.chiefComplaints ?? [])];
-      const match = clusters.some((c) =>
-        cc.includes(c.toLowerCase())
-      );
+      const match = clusters.some((c) => cc.includes(c.toLowerCase()));
       if (match) score += 15;
     }
 
     // Universal packs always included (no filtering criteria)
-    const isUniversal =
-      !depts.length && !specs.length && !vtypes.length;
+    const isUniversal = !depts.length && !specs.length && !vtypes.length;
     if (isUniversal) score += 1;
 
     // Age/sex gating (peds packs need age)
-    if (pack.specialtyTags?.includes("pediatrics") && context.age !== undefined) {
+    if (pack.specialtyTags?.includes('pediatrics') && context.age !== undefined) {
       if (context.age >= 18) continue; // skip peds pack for adults
     }
-    if (pack.specialtyTags?.includes("adult_only") && context.age !== undefined) {
+    if (pack.specialtyTags?.includes('adult_only') && context.age !== undefined) {
       if (context.age < 18) continue;
     }
 
     // OB/GYN gating
-    if (pack.specialtyTags?.includes("ob_gyn")) {
-      if (context.sex === "M") continue;
+    if (pack.specialtyTags?.includes('ob_gyn')) {
+      if (context.sex === 'M') continue;
     }
 
     scored.push({ pack, score });
@@ -116,22 +113,21 @@ export function resolvePacks(context: IntakeContext): IntakePack[] {
  */
 export function mergePackItems(packs: IntakePack[]): QuestionnaireItem[] {
   const seen = new Set<string>();
-  const merged: QuestionnaireItem[] = [];
 
   // Section ordering
   const sectionOrder = [
-    "demographics",
-    "chief_complaint",
-    "hpi",
-    "ros",
-    "pmh",
-    "fh",
-    "sh",
-    "medications",
-    "allergies",
-    "vitals",
-    "screening",
-    "custom",
+    'demographics',
+    'chief_complaint',
+    'hpi',
+    'ros',
+    'pmh',
+    'fh',
+    'sh',
+    'medications',
+    'allergies',
+    'vitals',
+    'screening',
+    'custom',
   ];
 
   // Collect all items
@@ -147,8 +143,8 @@ export function mergePackItems(packs: IntakePack[]): QuestionnaireItem[] {
 
   // Sort by section order, then by original position
   allItems.sort((a, b) => {
-    const aIdx = sectionOrder.indexOf(a.section ?? "custom");
-    const bIdx = sectionOrder.indexOf(b.section ?? "custom");
+    const aIdx = sectionOrder.indexOf(a.section ?? 'custom');
+    const bIdx = sectionOrder.indexOf(b.section ?? 'custom');
     return aIdx - bIdx;
   });
 

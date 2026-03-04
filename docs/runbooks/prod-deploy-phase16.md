@@ -81,16 +81,17 @@ docker build -f apps/web/Dockerfile \
 
 ## Health Check Endpoints
 
-| Endpoint | Purpose | Expected |
-|----------|---------|----------|
-| `/health` | Process alive | `{ ok: true, uptime: N }` |
-| `/ready` | VistA reachable | `{ ok: true, vista: "reachable" }` |
-| `/version` | Build metadata | `{ commitSha, buildTime, nodeVersion }` |
-| `/metrics` | RPC stats | Circuit breaker + cache + latencies |
+| Endpoint   | Purpose         | Expected                                |
+| ---------- | --------------- | --------------------------------------- |
+| `/health`  | Process alive   | `{ ok: true, uptime: N }`               |
+| `/ready`   | VistA reachable | `{ ok: true, vista: "reachable" }`      |
+| `/version` | Build metadata  | `{ commitSha, buildTime, nodeVersion }` |
+| `/metrics` | RPC stats       | Circuit breaker + cache + latencies     |
 
 ## Local Development (unchanged)
 
 Local dev is unaffected by the Docker setup:
+
 ```bash
 pnpm -C apps/api dev    # API on :3001
 pnpm -C apps/web dev    # Web on :3000
@@ -110,6 +111,7 @@ docker compose -f docker-compose.prod.yml up -d --no-deps proxy
 ## Graceful Shutdown
 
 The API handles SIGTERM/SIGINT gracefully:
+
 1. Stops accepting new connections
 2. Drains in-flight requests
 3. Logs shutdown audit event

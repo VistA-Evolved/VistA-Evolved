@@ -8,7 +8,7 @@
 
 // ─── Bed Assignment ─────────────────────────────────────────────
 
-export type BedStatus = "available" | "occupied" | "cleaning" | "blocked" | "reserved";
+export type BedStatus = 'available' | 'occupied' | 'cleaning' | 'blocked' | 'reserved';
 
 export interface BedAssignment {
   id: string;
@@ -33,13 +33,19 @@ export interface BedAssignment {
   /** Isolation/precaution flags */
   precautions: string[];
   /** Acuity level for sorting */
-  acuity: "low" | "medium" | "high" | "critical" | null;
+  acuity: 'low' | 'medium' | 'high' | 'critical' | null;
   updatedAt: string;
 }
 
 // ─── ADT Events ─────────────────────────────────────────────────
 
-export type AdtEventType = "admit" | "transfer" | "discharge" | "update" | "cancel_admit" | "cancel_discharge";
+export type AdtEventType =
+  | 'admit'
+  | 'transfer'
+  | 'discharge'
+  | 'update'
+  | 'cancel_admit'
+  | 'cancel_discharge';
 
 export interface AdtEvent {
   id: string;
@@ -68,18 +74,28 @@ export interface FlowsheetRow {
   /** Column key → value */
   values: Record<string, string | number | boolean>;
   /** Flags for out-of-range values */
-  flags: Record<string, "low" | "high" | "critical_low" | "critical_high">;
+  flags: Record<string, 'low' | 'high' | 'critical_low' | 'critical_high'>;
   recordedBy: string;
   recordedAt: string;
   /** Source: manual vs device ingest (Wave 21) */
-  source: "manual" | "device" | "imported";
+  source: 'manual' | 'device' | 'imported';
   /** Device observation ID if ingested from Wave 21 */
   deviceObservationId: string | null;
 }
 
 // ─── Vitals (Subset of Flowsheet) ──────────────────────────────
 
-export type VitalSign = "bp_systolic" | "bp_diastolic" | "heart_rate" | "respiratory_rate" | "temperature" | "spo2" | "weight" | "height" | "bmi" | "pain";
+export type VitalSign =
+  | 'bp_systolic'
+  | 'bp_diastolic'
+  | 'heart_rate'
+  | 'respiratory_rate'
+  | 'temperature'
+  | 'spo2'
+  | 'weight'
+  | 'height'
+  | 'bmi'
+  | 'pain';
 
 export interface VitalsEntry {
   id: string;
@@ -90,9 +106,9 @@ export interface VitalsEntry {
   units: Partial<Record<VitalSign, string>>;
   recordedBy: string;
   recordedAt: string;
-  source: "manual" | "device" | "imported";
+  source: 'manual' | 'device' | 'imported';
   /** VistA writeback status */
-  writebackStatus: "not_attempted" | "pending" | "success" | "failed" | "not_available";
+  writebackStatus: 'not_attempted' | 'pending' | 'success' | 'failed' | 'not_available';
   /** VistA GMV file IEN if written back */
   vistaVitalsIen: string | null;
   writebackError: string | null;
@@ -102,18 +118,18 @@ export interface VitalsEntry {
 
 export interface WritebackPosture {
   vitals: {
-    rpc: "GMV ADD VM";
-    status: "available" | "integration_pending" | "unavailable";
+    rpc: 'GMV ADD VM';
+    status: 'available' | 'integration_pending' | 'unavailable';
     sandboxNote: string;
   };
   nursingNote: {
-    rpc: "TIU CREATE RECORD";
-    status: "available" | "integration_pending" | "unavailable";
+    rpc: 'TIU CREATE RECORD';
+    status: 'available' | 'integration_pending' | 'unavailable';
     sandboxNote: string;
   };
   adtMovement: {
-    rpc: "DGPM ADT MOVEMENTS";
-    status: "available" | "integration_pending" | "unavailable";
+    rpc: 'DGPM ADT MOVEMENTS';
+    status: 'available' | 'integration_pending' | 'unavailable';
     sandboxNote: string;
   };
 }

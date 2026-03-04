@@ -3,6 +3,7 @@
 ## What Changed
 
 ### API (apps/api/src/rcm/payerOps/)
+
 - **types.ts**: Added `LOASLARiskLevel`, `LOAPriority`, `LOAPack`, `LOAPackSection` types.
   Extended `LOACase` with `priority`, `assignedTo`, `slaDeadline`, `slaRiskLevel`,
   `urgencyNotes`, `enrollmentId`, `packHistory`, `lastReminderAt`, `reminderCount`.
@@ -16,12 +17,14 @@
   payer instructions, included credentials, total cost calculation.
 
 ### Audit (apps/api/src/rcm/audit/)
+
 - **rcm-audit.ts**: Added 12 LOA-specific audit actions (loa.created, loa.updated,
   loa.transition, loa.submitted, loa.pack_generated, loa.attachment_added,
   loa.assigned, loa.reminder_sent, loa.approved, loa.denied, loa.cancelled,
   loa.expired).
 
 ### Web (apps/web/)
+
 - **loa-queue/page.tsx**: Full LOA work queue page with SLA summary bar,
   filters (status/payer/risk/priority/assignee), queue table, detail modal
   with timeline + pack history + transition actions, pack modal.

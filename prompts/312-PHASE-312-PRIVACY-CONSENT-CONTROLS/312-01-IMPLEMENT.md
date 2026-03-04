@@ -10,6 +10,7 @@ category-level consent, compliance checking, and consent lifecycle (grant/revoke
 ## Deliverables
 
 ### 1. Consent Engine
+
 - **File:** `apps/api/src/services/consent-engine.ts`
 - 8 consent categories: treatment, payment, operations, research, data_sharing,
   cross_border, telehealth, analytics
@@ -19,6 +20,7 @@ category-level consent, compliance checking, and consent lifecycle (grant/revoke
 - Evidence hash (SHA-256) for consent form tracking
 
 ### 2. Consent Routes
+
 - **File:** `apps/api/src/routes/consent-routes.ts`
 - `GET /consent/profiles` — list regulatory profiles
 - `GET /consent/categories` — list consent categories

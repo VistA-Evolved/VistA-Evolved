@@ -12,7 +12,7 @@
 // Gateway Identity
 // ---------------------------------------------------------------------------
 
-export type GatewayStatus = "registered" | "online" | "offline" | "revoked";
+export type GatewayStatus = 'registered' | 'online' | 'offline' | 'revoked';
 
 export interface GatewayCertInfo {
   /** SHA-256 fingerprint of the client certificate */
@@ -54,12 +54,7 @@ export interface EdgeGateway {
 // Uplink Message Envelope
 // ---------------------------------------------------------------------------
 
-export type UplinkMessageType =
-  | "observation"
-  | "alarm"
-  | "heartbeat"
-  | "config_ack"
-  | "error";
+export type UplinkMessageType = 'observation' | 'alarm' | 'heartbeat' | 'config_ack' | 'error';
 
 export interface UplinkEnvelope {
   /** Message ID (idempotency key) */
@@ -138,7 +133,7 @@ export interface GatewayConfig {
 
 export interface DownlinkMessage {
   /** Message type */
-  type: "config_push" | "restart" | "update_firmware" | "revoke";
+  type: 'config_push' | 'restart' | 'update_firmware' | 'revoke';
   /** Payload */
   payload: Record<string, unknown>;
   /** Timestamp */

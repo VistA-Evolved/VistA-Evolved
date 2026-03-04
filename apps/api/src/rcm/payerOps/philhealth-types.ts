@@ -52,9 +52,16 @@ export function requiresRealIntegration(to: PhilHealthClaimStatus): boolean {
 /* ── Charge Line Item ───────────────────────────────────────── */
 
 export interface PhilHealthChargeItem {
-  category: 'room_board' | 'drugs_meds' | 'labs' | 'imaging' | 'supplies' | 'professional_fee' | 'other';
+  category:
+    | 'room_board'
+    | 'drugs_meds'
+    | 'labs'
+    | 'imaging'
+    | 'supplies'
+    | 'professional_fee'
+    | 'other';
   description: string;
-  code?: string;           // CPT/RVS/HCPCS
+  code?: string; // CPT/RVS/HCPCS
   quantity: number;
   unitCharge: number;
   discount: number;
@@ -74,7 +81,7 @@ export interface PhilHealthDiagnosis {
 /* ── Procedure Code ─────────────────────────────────────────── */
 
 export interface PhilHealthProcedure {
-  code: string;              // RVS or CPT
+  code: string; // RVS or CPT
   description?: string;
   laterality?: 'L' | 'R' | 'B';
 }
@@ -83,7 +90,7 @@ export interface PhilHealthProcedure {
 
 export interface PhilHealthProfessionalFee {
   physicianName: string;
-  physicianLicense: string;  // PRC license number
+  physicianLicense: string; // PRC license number
   accreditationNumber?: string;
   feeAmount: number;
   serviceDate: string;
@@ -282,7 +289,10 @@ export interface PhilHealthValidationResult {
 
 /* ── Default Readiness Checklist ────────────────────────────── */
 
-export const DEFAULT_READINESS_CHECKLIST: Omit<PhilHealthReadinessItem, 'completedAt' | 'completedBy'>[] = [
+export const DEFAULT_READINESS_CHECKLIST: Omit<
+  PhilHealthReadinessItem,
+  'completedAt' | 'completedBy'
+>[] = [
   {
     id: 'facility-accreditation',
     label: 'Facility Accreditation',

@@ -11,12 +11,14 @@ Fix ALL issues found, including pre-existing errors.
 ## Verification Steps
 
 ### Tier 1: QA Suites
+
 1. `pnpm qa:prod-posture` -- 1/1 PASS (offline file-existence checks)
 2. `pnpm qa:smoke` -- 3/3 PASS (API health, API integration, E2E smoke)
 3. `pnpm qa:all` -- 6/10 PASS (4 pre-existing failures: rate limiter exhaustion,
    VistA Docker not running, tsx path for prompts)
 
 ### Tier 2: Live Posture Verification
+
 4. `GET /posture` -- 24/24 gates, score 100
 5. `GET /posture/observability` -- 6/6, score 100
 6. `GET /posture/tenant` -- 6/6, score 100
@@ -27,6 +29,7 @@ Fix ALL issues found, including pre-existing errors.
 11. `node scripts/backup-restore.mjs backup` -- 3 files backed up
 
 ### Tier 3: Code Audit + Fix
+
 12. Comprehensive 13-file audit (4 medium, 5 low issues found)
 13. BUG-068: Fixed `requirePortalSession()` ERR_HTTP_HEADERS_SENT crash
 14. M-1: Fixed shell injection in `backup-restore.mjs` (execSync -> execFileSync)
@@ -38,6 +41,7 @@ Fix ALL issues found, including pre-existing errors.
 20. L-4: Removed unnecessary ?? 0 operator
 
 ### Final Verification
+
 21. TypeScript compiles (apps/api): CLEAN
 22. Phase 107 verifier: 23/23 PASS
 23. `pnpm qa:prod-posture`: 15/15 PASS
@@ -45,6 +49,7 @@ Fix ALL issues found, including pre-existing errors.
 ## Files Touched
 
 ### Fixed
+
 - `apps/api/src/routes/portal-core.ts` -- BUG-068 crash fix
 - `scripts/backup-restore.mjs` -- Shell injection fix + --yes flag
 - `docs/runbooks/phase107-production-posture.md` -- Table names corrected
@@ -54,8 +59,10 @@ Fix ALL issues found, including pre-existing errors.
 - `apps/api/src/posture/backup-posture.ts` -- import.meta.url + documented constant
 
 ### Documentation
+
 - `AGENTS.md` -- Added gotchas 113-114 (BUG-068, execFileSync)
 - `docs/BUG-TRACKER.md` -- Added BUG-068 entry
 
 ### Created
+
 - `prompts/111-PHASE-107-PRODUCTION-POSTURE/107-99-VERIFY.md` (this file)

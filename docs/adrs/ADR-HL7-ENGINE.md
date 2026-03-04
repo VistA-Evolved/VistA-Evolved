@@ -11,16 +11,19 @@ VistA-Evolved needs a production-grade HL7v2 engine for bidirectional message ex
 ## Options Evaluated
 
 ### Option A: Open Integration Engine (OIE) / NextGen Connect
+
 - **License:** MPL 2.0 (NextGen Connect), various
 - **Pros:** Full-featured channel management, GUI, community plugins
 - **Cons:** Java-based sidecar, heavy operational footprint, separate deployment/monitoring, impedance mismatch with our Node.js stack
 
 ### Option B: Custom Zero-Dep Engine (Current)
+
 - **License:** Project-owned (MIT)
 - **Pros:** Already built and integrated (25+ files), zero external dependencies, TypeScript-native, in-process with API, tenant-aware, PHI-safe by design
 - **Cons:** Requires ongoing maintenance, no community plugin ecosystem
 
 ### Option C: node-hl7-complete / node-hl7-client
+
 - **License:** MIT
 - **Pros:** npm-native, HL7v2 parsing
 - **Cons:** Less mature than our existing parser, would require migration, no routing/DLQ/pack system
@@ -30,6 +33,7 @@ VistA-Evolved needs a production-grade HL7v2 engine for bidirectional message ex
 **Keep and harden the existing custom engine (Option B).**
 
 Rationale:
+
 1. The engine already exists with 25+ source files covering parser, MLLP server/client, routing, DLQ, packs, FHIR bridge, and domain mapping.
 2. It is zero-dependency, TypeScript-native, and tenant-aware — matching our architecture principles.
 3. Adding an external engine (OIE/NextGen) would introduce a Java sidecar with separate deployment, monitoring, and a cross-process serialization boundary — complexity that exceeds the benefit.

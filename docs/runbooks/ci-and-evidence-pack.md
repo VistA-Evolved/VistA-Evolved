@@ -20,17 +20,17 @@ Phase 47 introduces three layers of automated quality enforcement:
 
 **Triggers**: Push to `main`, PRs to `main`
 
-| Job | Steps |
-|-----|-------|
+| Job             | Steps                                                                                                   |
+| --------------- | ------------------------------------------------------------------------------------------------------- |
 | `quality-gates` | Install pnpm, typecheck (API), unit tests, prompts ordering gate, RPC registry gate, module gates check |
-| `evidence-pack` | Runs only on push to main. Generates full evidence pack, uploads as artifact (90-day retention). |
+| `evidence-pack` | Runs only on push to main. Generates full evidence pack, uploads as artifact (90-day retention).        |
 
 ### ci-security.yml
 
 **Triggers**: Push to `main`, PRs to `main`, weekly schedule
 
-| Job | Steps |
-|-----|-------|
+| Job             | Steps                                                            |
+| --------------- | ---------------------------------------------------------------- |
 | `security-scan` | Secret scan (`secret-scan.mjs`), dependency audit (`pnpm audit`) |
 
 ### Existing Workflows
@@ -47,6 +47,7 @@ Phase 47 introduces three layers of automated quality enforcement:
 ### check-prompts-ordering.ts
 
 Validates the `prompts/` directory structure:
+
 - No duplicate numeric prefixes
 - No gaps (warn only)
 - All phase folders have .md content
@@ -59,6 +60,7 @@ npx tsx scripts/check-prompts-ordering.ts
 ### check-rpc-registry.ts
 
 Ensures RPC integrity:
+
 - All `callRpc`/`safeCallRpc` calls reference known RPCs
 - All registry entries are in Vivian index or exception list
 - Exception entries have valid reasons
@@ -71,6 +73,7 @@ npx tsx scripts/check-rpc-registry.ts
 ### check-module-gates.ts
 
 Validates module toggle system:
+
 - Route patterns compile to valid RegExp
 - SKU profiles reference existing modules
 - Module dependencies are valid
@@ -120,13 +123,13 @@ artifact with 90-day retention. Download from the Actions tab.
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| `check-rpc-registry` fails with unknown RPC | New RPC added without registry entry | Add to `rpcRegistry.ts` RPC_REGISTRY or RPC_EXCEPTIONS |
-| `check-module-gates` fails with invalid pattern | Bad regex in `config/modules.json` | Fix the regex pattern |
-| `check-prompts-ordering` fails with duplicates | Two folders share a numeric prefix | Renumber one folder |
-| Evidence pack shows FAIL for typecheck | TypeScript errors introduced | Fix the errors, re-run |
-| Secret scan false positive | Legitimate string matches secret pattern | Add to allowlist in `secret-scan.mjs` |
+| Symptom                                         | Cause                                    | Fix                                                    |
+| ----------------------------------------------- | ---------------------------------------- | ------------------------------------------------------ |
+| `check-rpc-registry` fails with unknown RPC     | New RPC added without registry entry     | Add to `rpcRegistry.ts` RPC_REGISTRY or RPC_EXCEPTIONS |
+| `check-module-gates` fails with invalid pattern | Bad regex in `config/modules.json`       | Fix the regex pattern                                  |
+| `check-prompts-ordering` fails with duplicates  | Two folders share a numeric prefix       | Renumber one folder                                    |
+| Evidence pack shows FAIL for typecheck          | TypeScript errors introduced             | Fix the errors, re-run                                 |
+| Secret scan false positive                      | Legitimate string matches secret pattern | Add to allowlist in `secret-scan.mjs`                  |
 
 ---
 

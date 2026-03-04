@@ -3,7 +3,7 @@
 
 global:
   namespace: ve-system
-  imageRegistry: ""
+  imageRegistry: ''
   imagePullSecrets: []
 
 # ---------- Ingress (nginx) ----------
@@ -12,7 +12,7 @@ ingress:
   className: nginx
   image:
     repository: nginx
-    tag: "1.27-alpine"
+    tag: '1.27-alpine'
   replicas: 1
   resources:
     requests:
@@ -27,33 +27,33 @@ postgres:
   enabled: true
   image:
     repository: postgres
-    tag: "16-alpine"
+    tag: '16-alpine'
   database: ve_platform
   user: ve_api
   # Password read from secret "ve-shared-pg" key "password"
-  existingSecret: ""
+  existingSecret: ''
   storage:
     size: 10Gi
-    storageClass: ""
+    storageClass: ''
   resources:
     requests:
       cpu: 250m
       memory: 512Mi
     limits:
-      cpu: "1"
+      cpu: '1'
       memory: 1Gi
   backup:
     enabled: false
-    schedule: "0 2 * * *"
-    s3Bucket: ""
-    s3Endpoint: ""
+    schedule: '0 2 * * *'
+    s3Bucket: ''
+    s3Endpoint: ''
 
 # ---------- Redis ----------
 redis:
   enabled: true
   image:
     repository: redis
-    tag: "7-alpine"
+    tag: '7-alpine'
   resources:
     requests:
       cpu: 100m
@@ -68,8 +68,8 @@ keycloak:
   # When enabled, installs a lightweight Keycloak with PG backend.
   # For production, use an external Keycloak and set keycloak.external.*
   external:
-    url: ""
-    realm: "vista-evolved"
+    url: ''
+    realm: 'vista-evolved'
 
 # ---------- Observability ----------
 observability:
@@ -81,22 +81,22 @@ observability:
   otelCollector:
     image:
       repository: otel/opentelemetry-collector-contrib
-      tag: "0.96.0"
+      tag: '0.96.0'
 
 # ---------- MinIO (dev object storage for backups) ----------
 minio:
   enabled: false
   image:
     repository: minio/minio
-    tag: "latest"
+    tag: 'latest'
   storage:
     size: 5Gi
-    storageClass: ""
+    storageClass: ''
   # Credentials: override via --set or existingSecret in staging/prod.
   # Defaults below are for local dev only.
   rootUser: minioadmin
   # Password: set via --set minio.rootPassword=xxx or use existingSecret in prod
-  rootPassword: ""
+  rootPassword: ''
 
 # ---------- Network Policies ----------
 networkPolicies:
@@ -111,7 +111,7 @@ policy:
   kyverno:
     image:
       repository: bitnami/kubectl
-      tag: "1.30"
+      tag: '1.30'
 
 # ---------- Pod Security ----------
 podSecurityStandards:
@@ -125,11 +125,11 @@ certManager:
   issuerName: ve-selfsigned-issuer
   # ACME settings (only used when type: acme)
   acme:
-    email: ""
-    server: "https://acme-v02.api.letsencrypt.org/directory"
+    email: ''
+    server: 'https://acme-v02.api.letsencrypt.org/directory'
   certificate:
-    duration: "2160h"     # 90 days
-    renewBefore: "360h"   # 15 days before expiry
+    duration: '2160h' # 90 days
+    renewBefore: '360h' # 15 days before expiry
     dnsNames:
-      - "ehr.local"
-      - "*.ehr.local"
+      - 'ehr.local'
+      - '*.ehr.local'

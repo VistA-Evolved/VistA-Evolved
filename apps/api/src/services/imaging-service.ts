@@ -44,7 +44,6 @@ import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
 import { optionalRpc } from "../vista/rpcCapabilities.js";
 import {
   listIntegrations,
-  getIntegrationHealthSummary,
   type IntegrationEntry,
 } from "../config/integration-registry.js";
 import { IMAGING_CONFIG } from "../config/server-config.js";

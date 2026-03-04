@@ -5,22 +5,22 @@
  * Portal patient language is stored in portal_patient_setting (Phase 27).
  */
 
-import { eq, and } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { pgUserLocalePreference } from "../pg-schema.js";
-import { randomBytes } from "node:crypto";
+import { eq, and } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { pgUserLocalePreference } from '../pg-schema.js';
+import { randomBytes } from 'node:crypto';
+import { SUPPORTED_LOCALES, type SupportedLocale } from '@vista-evolved/locale-utils';
 
 export type UserLocaleRow = typeof pgUserLocalePreference.$inferSelect;
 
-const VALID_LOCALES = ["en", "fil", "es"] as const;
-export type SupportedLocale = (typeof VALID_LOCALES)[number];
+export type { SupportedLocale };
 
 export function isValidLocale(locale: string): locale is SupportedLocale {
-  return (VALID_LOCALES as readonly string[]).includes(locale);
+  return (SUPPORTED_LOCALES as readonly string[]).includes(locale);
 }
 
 function genId(): string {
-  return randomBytes(16).toString("hex");
+  return randomBytes(16).toString('hex');
 }
 
 function now(): string {

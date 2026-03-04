@@ -5,30 +5,48 @@
  * Total: 23 packs (1 core + 15 complaint + 5 specialty + 2 department)
  */
 
-import { registerPack } from "../pack-registry.js";
+import { registerPack } from '../pack-registry.js';
 
 // Core
-import coreEnterprisePack from "./core-enterprise.js";
+import coreEnterprisePack from './core-enterprise.js';
 
 // Complaint packs — individual
-import chestPainPack from "./complaint-chest-pain.js";
-import headachePack from "./complaint-headache.js";
-import abdominalPainPack from "./complaint-abdominal-pain.js";
+import chestPainPack from './complaint-chest-pain.js';
+import headachePack from './complaint-headache.js';
+import abdominalPainPack from './complaint-abdominal-pain.js';
 
 // Complaint packs — batch 1
-import { backPainPack, coughPack, feverPack, fatiguePack, dizzinessPack } from "./complaint-batch-1.js";
+import {
+  backPainPack,
+  coughPack,
+  feverPack,
+  fatiguePack,
+  dizzinessPack,
+} from './complaint-batch-1.js';
 
 // Complaint packs — batch 2
-import { sobPack, soreThroatPack, nauseaPack, skinRashPack, jointPainPack } from "./complaint-batch-2.js";
+import {
+  sobPack,
+  soreThroatPack,
+  nauseaPack,
+  skinRashPack,
+  jointPainPack,
+} from './complaint-batch-2.js';
 
 // Complaint packs — behavioral health
-import { anxietyPack, depressionPack } from "./complaint-behavioral-health.js";
+import { anxietyPack, depressionPack } from './complaint-behavioral-health.js';
 
 // Specialty packs
-import { primaryCarePack, pediatricsPack, obgynPack, cardiologyPack, behavioralHealthPack } from "./specialty-packs.js";
+import {
+  primaryCarePack,
+  pediatricsPack,
+  obgynPack,
+  cardiologyPack,
+  behavioralHealthPack,
+} from './specialty-packs.js';
 
 // Department packs
-import { edTriagePack, outpatientClinicPack } from "./department-packs.js";
+import { edTriagePack, outpatientClinicPack } from './department-packs.js';
 
 /* ------------------------------------------------------------------ */
 /* Register all packs                                                   */
@@ -72,4 +90,4 @@ for (const pack of allPacks) {
 }
 
 export const PACK_COUNT = allPacks.length; // 23
-export const PACK_IDS = allPacks.map(p => p.packId);
+export const PACK_IDS = allPacks.map((p) => p.packId);

@@ -20,22 +20,18 @@ import type {
   SubmissionResponse,
   DenialWorkflowResponse,
   AdapterHealthResult,
-} from "./payer-adapter.js";
+} from './payer-adapter.js';
 
 const CONFIG: PayerAdapterConfig = {
-  id: "x12-clearinghouse",
-  name: "X12 Clearinghouse Adapter (US EDI)",
-  supportedModes: ["clearinghouse_edi"],
+  id: 'x12-clearinghouse',
+  name: 'X12 Clearinghouse Adapter (US EDI)',
+  supportedModes: ['clearinghouse_edi'],
   rateLimits: {
     eligibilityPerHour: 60,
     claimStatusPerHour: 30,
     submissionsPerHour: 100,
   },
-  requiredEnvVars: [
-    "CLEARINGHOUSE_API_URL",
-    "CLEARINGHOUSE_API_KEY",
-    "CLEARINGHOUSE_SENDER_ID",
-  ],
+  requiredEnvVars: ['CLEARINGHOUSE_API_URL', 'CLEARINGHOUSE_API_KEY', 'CLEARINGHOUSE_SENDER_ID'],
   enabled: Boolean(process.env.CLEARINGHOUSE_API_URL),
 };
 
@@ -63,9 +59,9 @@ export class X12ClearinghouseAdapter implements PayerAdapter {
     if (!this.config.enabled) {
       return {
         eligible: false,
-        status: "unknown",
+        status: 'unknown',
         payerId: params.payerId,
-        payerName: "Unknown (clearinghouse not configured)",
+        payerName: 'Unknown (clearinghouse not configured)',
         checkedAt: new Date().toISOString(),
       };
     }
@@ -73,9 +69,9 @@ export class X12ClearinghouseAdapter implements PayerAdapter {
     // For now return pending posture
     return {
       eligible: false,
-      status: "pending",
+      status: 'pending',
       payerId: params.payerId,
-      payerName: "Clearinghouse (pending configuration)",
+      payerName: 'Clearinghouse (pending configuration)',
       checkedAt: new Date().toISOString(),
     };
   }
@@ -89,16 +85,16 @@ export class X12ClearinghouseAdapter implements PayerAdapter {
     if (!this.config.enabled) {
       return {
         claimId: params.claimId,
-        status: "unknown",
-        statusDescription: "Clearinghouse not configured",
+        status: 'unknown',
+        statusDescription: 'Clearinghouse not configured',
         checkedAt: new Date().toISOString(),
       };
     }
     // Production: build 276 EDI, submit, parse 277 response
     return {
       claimId: params.claimId,
-      status: "unknown",
-      statusDescription: "Claim status polling pending clearinghouse configuration",
+      status: 'unknown',
+      statusDescription: 'Claim status polling pending clearinghouse configuration',
       checkedAt: new Date().toISOString(),
     };
   }
@@ -107,20 +103,25 @@ export class X12ClearinghouseAdapter implements PayerAdapter {
     claimId: string;
     payerId: string;
     payload: string;
-    transactionSet: "837P" | "837I";
+    transactionSet: '837P' | '837I';
     tenantId: string;
   }): Promise<SubmissionResponse> {
     if (!this.config.enabled) {
       return {
         accepted: false,
-        errors: [{ code: "ADAPTER_DISABLED", description: "Clearinghouse not configured" }],
+        errors: [{ code: 'ADAPTER_DISABLED', description: 'Clearinghouse not configured' }],
         submittedAt: new Date().toISOString(),
       };
     }
     // Production: submit via clearinghouse connector
     return {
       accepted: false,
-      errors: [{ code: "NOT_IMPLEMENTED", description: "Clearinghouse submission pending production config" }],
+      errors: [
+        {
+          code: 'NOT_IMPLEMENTED',
+          description: 'Clearinghouse submission pending production config',
+        },
+      ],
       submittedAt: new Date().toISOString(),
     };
   }
@@ -134,8 +135,8 @@ export class X12ClearinghouseAdapter implements PayerAdapter {
     return {
       appealCreated: false,
       recommendedActions: [
-        "Review denial codes and correct claim data",
-        "Resubmit via clearinghouse after corrections",
+        'Review denial codes and correct claim data',
+        'Resubmit via clearinghouse after corrections',
       ],
       automatedCorrections: [],
       escalationRequired: true,
@@ -148,8 +149,8 @@ export class X12ClearinghouseAdapter implements PayerAdapter {
       adapterId: this.config.id,
       adapterName: this.config.name,
       details: this.config.enabled
-        ? "Clearinghouse configured"
-        : "Clearinghouse not configured (set CLEARINGHOUSE_API_URL)",
+        ? 'Clearinghouse configured'
+        : 'Clearinghouse not configured (set CLEARINGHOUSE_API_URL)',
       checkedAt: new Date().toISOString(),
     };
   }

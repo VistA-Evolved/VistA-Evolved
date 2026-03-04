@@ -13,21 +13,21 @@
  *   const payer = await store.payerRepo.findPayerById(id);
  */
 
-import { isPgConfigured } from "./pg/pg-db.js";
+import { isPgConfigured } from './pg/pg-db.js';
 
 // PG repos
-import * as pgPayerRepo from "./pg/repo/payer-repo.js";
-import * as pgTenantPayerRepo from "./pg/repo/tenant-payer-repo.js";
-import * as pgCapabilityRepo from "./pg/repo/capability-repo.js";
-import * as pgTaskRepo from "./pg/repo/task-repo.js";
-import * as pgEvidenceRepo from "./pg/repo/evidence-repo.js";
-import * as pgAuditRepo from "./pg/repo/audit-repo.js";
+import * as pgPayerRepo from './pg/repo/payer-repo.js';
+import * as pgTenantPayerRepo from './pg/repo/tenant-payer-repo.js';
+import * as pgCapabilityRepo from './pg/repo/capability-repo.js';
+import * as pgTaskRepo from './pg/repo/task-repo.js';
+import * as pgEvidenceRepo from './pg/repo/evidence-repo.js';
+import * as pgAuditRepo from './pg/repo/audit-repo.js';
 
 /* ----------------------------------------------------------------
  *  Backend type (PG-only)
  * ---------------------------------------------------------------- */
 
-export type StoreBackend = "pg";
+export type StoreBackend = 'pg';
 
 /**
  * Returns "pg". Throws if PLATFORM_PG_URL is not configured.
@@ -35,11 +35,11 @@ export type StoreBackend = "pg";
 export function resolveBackend(): StoreBackend {
   if (!isPgConfigured()) {
     throw new Error(
-      "PLATFORM_PG_URL is not set. PostgreSQL is required. " +
-      "Set PLATFORM_PG_URL to enable the data store."
+      'PLATFORM_PG_URL is not set. PostgreSQL is required. ' +
+        'Set PLATFORM_PG_URL to enable the data store.'
     );
   }
-  return "pg";
+  return 'pg';
 }
 
 /* ----------------------------------------------------------------
@@ -64,7 +64,7 @@ export function resolveStore(): ResolvedStore {
   resolveBackend(); // validates PG is configured
 
   return {
-    backend: "pg",
+    backend: 'pg',
     payerRepo: pgPayerRepo,
     auditRepo: pgAuditRepo,
     capabilityRepo: pgCapabilityRepo,

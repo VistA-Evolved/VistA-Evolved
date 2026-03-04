@@ -14,8 +14,8 @@
  * as new migrations.
  */
 
-import { getPgPool } from "./pg-db.js";
-import { createHash } from "node:crypto";
+import { getPgPool } from './pg-db.js';
+import { createHash } from 'node:crypto';
 
 interface Migration {
   version: number;
@@ -26,7 +26,7 @@ interface Migration {
 const MIGRATIONS: Migration[] = [
   {
     version: 1,
-    name: "create_core_platform_tables",
+    name: 'create_core_platform_tables',
     sql: `
 -- Core: platform_audit_event (append-only, hash-chained)
 CREATE TABLE IF NOT EXISTS platform_audit_event (
@@ -79,7 +79,7 @@ CREATE INDEX IF NOT EXISTS idx_outbox_aggregate ON outbox_event(aggregate_type, 
   },
   {
     version: 2,
-    name: "create_payer_tables",
+    name: 'create_payer_tables',
     sql: `
 -- Payer domain (mirrored from SQLite, enhanced with Postgres types)
 CREATE TABLE IF NOT EXISTS payer (
@@ -170,7 +170,7 @@ CREATE INDEX IF NOT EXISTS idx_payer_audit_entity ON payer_audit_event(entity_ty
   },
   {
     version: 3,
-    name: "create_denial_reconciliation_tables",
+    name: 'create_denial_reconciliation_tables',
     sql: `
 -- Denial case
 CREATE TABLE IF NOT EXISTS denial_case (
@@ -319,7 +319,7 @@ CREATE INDEX IF NOT EXISTS idx_underpayment_tenant ON underpayment_case(tenant_i
   },
   {
     version: 4,
-    name: "create_eligibility_claim_status_tables",
+    name: 'create_eligibility_claim_status_tables',
     sql: `
 -- Eligibility check (Phase 100)
 CREATE TABLE IF NOT EXISTS eligibility_check (
@@ -366,7 +366,7 @@ CREATE INDEX IF NOT EXISTS idx_claim_status_claim ON claim_status_check(claim_re
   },
   {
     version: 5,
-    name: "create_capability_matrix_tables",
+    name: 'create_capability_matrix_tables',
     sql: `
 -- Capability matrix cell — one row per (payerId x capabilityType)
 CREATE TABLE IF NOT EXISTS capability_matrix_cell (
@@ -400,7 +400,7 @@ CREATE INDEX IF NOT EXISTS idx_cap_evidence_cell ON capability_matrix_evidence(c
   },
   {
     version: 6,
-    name: "performance_indexes_and_partitioning_posture",
+    name: 'performance_indexes_and_partitioning_posture',
     sql: `
 -- ============================================================
 -- Phase 103: DB Performance Posture
@@ -493,7 +493,7 @@ CREATE INDEX IF NOT EXISTS idx_claim_status_status ON claim_status_check(status,
   },
   {
     version: 7,
-    name: "security_integrity_posture",
+    name: 'security_integrity_posture',
     sql: `
 -- ============================================================
 -- Phase 104: Platform DB Security/Compliance Posture
@@ -576,7 +576,7 @@ END $$;
   },
   {
     version: 8,
-    name: "create_job_run_log",
+    name: 'create_job_run_log',
     sql: `
 -- ============================================================
 -- Phase 116: Job Run Log (Graphile Worker governance)
@@ -605,7 +605,7 @@ CREATE INDEX IF NOT EXISTS idx_job_run_log_ok ON job_run_log(ok, finished_at);
   },
   {
     version: 9,
-    name: "session_workqueue_multi_instance",
+    name: 'session_workqueue_multi_instance',
     sql: `
 -- ============================================================
 -- Phase 117: Postgres-first Prod Posture + Multi-Instance
@@ -700,7 +700,7 @@ CREATE INDEX IF NOT EXISTS idx_work_event_tenant ON rcm_work_item_event(tenant_i
   },
   {
     version: 10,
-    name: "rcm_durability_pg",
+    name: 'rcm_durability_pg',
     sql: `
 -- ============================================================
 -- Phase 126: RCM Durability Wave (Map stores -> Postgres)
@@ -894,7 +894,7 @@ CREATE INDEX IF NOT EXISTS idx_edi_pipeline_payer ON edi_pipeline_entry(payer_id
   },
   {
     version: 11,
-    name: "portal_telehealth_durability_pg",
+    name: 'portal_telehealth_durability_pg',
     sql: `
 -- ============================================================
 -- Phase 127: Portal + Telehealth Durability (Map stores -> PG)
@@ -1007,7 +1007,7 @@ CREATE INDEX IF NOT EXISTS idx_th_event_created ON telehealth_room_event(created
   },
   {
     version: 12,
-    name: "imaging_scheduling_durability_pg",
+    name: 'imaging_scheduling_durability_pg',
     sql: `
 -- ============================================================
 -- Phase 128: Imaging + Scheduling Durability (Map stores -> PG)
@@ -1121,7 +1121,7 @@ CREATE INDEX IF NOT EXISTS idx_sched_bl_expires ON scheduling_booking_lock(expir
   },
   {
     version: 13,
-    name: "imaging_ingest_dicom_patient_name",
+    name: 'imaging_ingest_dicom_patient_name',
     sql: `
 -- Phase 128 fix: Add dicom_patient_name column to imaging_ingest_event
 -- For fresh installs this is already in v12 DDL; this covers upgrades
@@ -1136,7 +1136,7 @@ END $$;
   },
   {
     version: 14,
-    name: "scheduling_lifecycle",
+    name: 'scheduling_lifecycle',
     sql: `
 -- Phase 131: Scheduling lifecycle — operational state machine tracking.
 -- VistA is source of truth; this table tracks transitions for audit/UI.
@@ -1167,7 +1167,7 @@ CREATE INDEX IF NOT EXISTS idx_sched_lc_created ON scheduling_lifecycle(created_
   },
   {
     version: 15,
-    name: "i18n_foundation",
+    name: 'i18n_foundation',
     sql: `
 -- Phase 132: I18N foundation — user locale preferences + intake question schema.
 
@@ -1209,7 +1209,7 @@ CREATE INDEX IF NOT EXISTS idx_iqs_active ON intake_question_schema(active);
   },
   {
     version: 16,
-    name: "clinic_preferences",
+    name: 'clinic_preferences',
     sql: `
 -- Phase 139: Clinic scheduling preferences -- tenant-scoped overlay on VistA clinic data.
 -- VistA remains the master clinic record (SD W/L RETRIVE HOSP LOC).
@@ -1234,7 +1234,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_cp_tenant_clinic ON clinic_preferences(ten
   },
   {
     version: 17,
-    name: "patient_consent_and_portal_pref",
+    name: 'patient_consent_and_portal_pref',
     sql: `
 -- Phase 140: Patient consent decisions (HIPAA, research, data sharing, etc.)
 CREATE TABLE IF NOT EXISTS patient_consent (
@@ -1274,7 +1274,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_ppp_tenant_patient ON patient_portal_pref(
   },
   {
     version: 18,
-    name: "durability_wave3_critical_stores",
+    name: 'durability_wave3_critical_stores',
     sql: `
 -- ============================================================
 -- Phase 146: Durability Wave 3 — Critical Map Stores to PG
@@ -1933,7 +1933,7 @@ CREATE INDEX IF NOT EXISTS idx_ej_status ON export_job(status);
   },
   {
     version: 19,
-    name: "phase150_portal_session_oidc",
+    name: 'phase150_portal_session_oidc',
     sql: `
 -- ============================================================
 -- Phase 150: Portal Session Modernization + Patient Identity
@@ -1966,7 +1966,7 @@ CREATE INDEX IF NOT EXISTS idx_ppi_tenant ON portal_patient_identity(tenant_id);
   },
   {
     version: 20,
-    name: "phase153_tenant_oidc_mapping",
+    name: 'phase153_tenant_oidc_mapping',
     sql: `
 -- ============================================================
 -- Phase 153: Tenant OIDC Mapping
@@ -1996,7 +1996,7 @@ CREATE INDEX IF NOT EXISTS idx_tom_tenant
   /* ── v21: Phase 154 — CPOE order sign events ─────────────────── */
   {
     version: 21,
-    name: "phase154_cpoe_order_sign_event",
+    name: 'phase154_cpoe_order_sign_event',
     sql: `
 CREATE TABLE IF NOT EXISTS cpoe_order_sign_event (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -2021,7 +2021,7 @@ CREATE INDEX IF NOT EXISTS idx_cpoe_sign_dfn
   },
   {
     version: 22,
-    name: "phase157_audit_ship_offset_manifest",
+    name: 'phase157_audit_ship_offset_manifest',
     sql: `
 -- Phase 157: Audit JSONL shipping offset tracking
 CREATE TABLE IF NOT EXISTS audit_ship_offset (
@@ -2056,7 +2056,7 @@ CREATE INDEX IF NOT EXISTS idx_ship_manifest_key
   },
   {
     version: 23,
-    name: "phase158_specialty_templates",
+    name: 'phase158_specialty_templates',
     sql: `
 -- Phase 158: Specialty Template & Workflow Studio
 CREATE TABLE IF NOT EXISTS clinical_template (
@@ -2113,7 +2113,7 @@ CREATE INDEX IF NOT EXISTS idx_quick_text_tenant
   },
   {
     version: 24,
-    name: "phase159_patient_queue",
+    name: 'phase159_patient_queue',
     sql: `
 -- Phase 159: Patient Queue / Waiting / Numbering / Calling System
 CREATE TABLE IF NOT EXISTS queue_ticket (
@@ -2155,7 +2155,7 @@ CREATE INDEX IF NOT EXISTS idx_queue_event_ticket
   },
   {
     version: 25,
-    name: "phase160_department_workflows",
+    name: 'phase160_department_workflows',
     sql: `
 -- Phase 160: Department Workflow Packs
 CREATE TABLE IF NOT EXISTS workflow_definition (
@@ -2203,7 +2203,7 @@ CREATE INDEX IF NOT EXISTS idx_workflow_inst_status
   // ── Phase 174: RCM SQLite-to-PG parity tables ────────────────
   {
     version: 26,
-    name: "phase174_rcm_pg_parity",
+    name: 'phase174_rcm_pg_parity',
     sql: `
 -- integration_evidence (Phase 112)
 CREATE TABLE IF NOT EXISTS integration_evidence (
@@ -2583,7 +2583,7 @@ CREATE INDEX IF NOT EXISTS idx_mal_tenant_created
   // ── Phase 275: Tenant Config Control Plane ────────────────
   {
     version: 27,
-    name: "phase275_tenant_config",
+    name: 'phase275_tenant_config',
     sql: `
 -- tenant_config: persistent multi-tenant configuration (Phase 275)
 -- Replaces in-memory Map store from Phase 17A with DB-backed persistence.
@@ -2610,7 +2610,7 @@ CREATE INDEX IF NOT EXISTS idx_tenant_config_station
   },
   {
     version: 28,
-    name: "phase282_tenant_branding",
+    name: 'phase282_tenant_branding',
     sql: `
 -- tenant branding: JSONB column for per-tenant visual branding (Phase 282)
 ALTER TABLE tenant_config
@@ -2619,7 +2619,7 @@ ALTER TABLE tenant_config
   },
   {
     version: 29,
-    name: "phase285_feature_flags_upgrade",
+    name: 'phase285_feature_flags_upgrade',
     sql: `
 -- Phase 285: Add rollout_percentage and user_targeting to tenant_feature_flag
 ALTER TABLE tenant_feature_flag
@@ -2633,7 +2633,7 @@ CREATE INDEX IF NOT EXISTS idx_tff_rollout
   },
   {
     version: 30,
-    name: "phase300_clinical_writeback_commands",
+    name: 'phase300_clinical_writeback_commands',
     sql: `
 -- Phase 300: Clinical Writeback Command Bus tables
 CREATE TABLE IF NOT EXISTS clinical_command (
@@ -2679,7 +2679,7 @@ CREATE TABLE IF NOT EXISTS clinical_command_result (
   },
   {
     version: 31,
-    name: "phase318_integration_control_plane",
+    name: 'phase318_integration_control_plane',
     sql: `
 -- Phase 318: Integration Control Plane v2 tables
 CREATE TABLE IF NOT EXISTS integration_partner (
@@ -2757,7 +2757,7 @@ CREATE INDEX IF NOT EXISTS idx_itr_tenant ON integration_test_run(tenant_id);
   // ─── v32: Phase 328 — Multi-Cluster Registry ───────────────────────────
   {
     version: 32,
-    name: "phase328_multi_cluster_registry",
+    name: 'phase328_multi_cluster_registry',
     sql: `
 -- Platform cluster registry
 CREATE TABLE IF NOT EXISTS platform_cluster (
@@ -2803,7 +2803,7 @@ CREATE INDEX IF NOT EXISTS idx_tp_active ON tenant_placement(tenant_id) WHERE ac
   },
   {
     version: 33,
-    name: "phase338_identity_hardening",
+    name: 'phase338_identity_hardening',
     sql: `
 -- Session device fingerprints (Phase 338)
 CREATE TABLE IF NOT EXISTS session_device_fingerprint (
@@ -2854,7 +2854,7 @@ CREATE INDEX IF NOT EXISTS idx_sms_user ON session_mfa_state(tenant_id, user_id)
   },
   {
     version: 34,
-    name: "phase339_scim_provisioning",
+    name: 'phase339_scim_provisioning',
     sql: `
 -- SCIM Users (Phase 339)
 CREATE TABLE IF NOT EXISTS scim_user (
@@ -2904,7 +2904,7 @@ CREATE INDEX IF NOT EXISTS idx_sgm_user ON scim_group_member(user_id);
   },
   {
     version: 35,
-    name: "phase341_secrets_key_management",
+    name: 'phase341_secrets_key_management',
     sql: `
 -- Encrypted Key Store (Phase 341)
 CREATE TABLE IF NOT EXISTS encryption_key (
@@ -2941,7 +2941,7 @@ CREATE INDEX IF NOT EXISTS idx_kre_time ON key_rotation_event(tenant_id, created
   },
   {
     version: 36,
-    name: "phase342_tenant_security_policy",
+    name: 'phase342_tenant_security_policy',
     sql: `
 -- Tenant Security Policy (Phase 342)
 CREATE TABLE IF NOT EXISTS tenant_security_policy (
@@ -2978,7 +2978,7 @@ CREATE INDEX IF NOT EXISTS idx_tspc_time ON tenant_security_policy_change(tenant
   },
   {
     version: 37,
-    name: "phase343_privacy_segmentation",
+    name: 'phase343_privacy_segmentation',
     sql: `
 -- Sensitivity Tags (Phase 343)
 CREATE TABLE IF NOT EXISTS sensitivity_tag (
@@ -3020,7 +3020,7 @@ CREATE INDEX IF NOT EXISTS idx_ar_time ON access_reason(tenant_id, accessed_at);
   },
   {
     version: 38,
-    name: "phase347_facility_location_model",
+    name: 'phase347_facility_location_model',
     sql: `
 -- Facility (Phase 347)
 CREATE TABLE IF NOT EXISTS facility (
@@ -3110,7 +3110,7 @@ CREATE INDEX IF NOT EXISTS idx_pfa_facility ON provider_facility_assignment(tena
   },
   {
     version: 39,
-    name: "phase348_dept_rbac_templates",
+    name: 'phase348_dept_rbac_templates',
     sql: `
 -- Department Role Templates (Phase 348)
 CREATE TABLE IF NOT EXISTS dept_role_template (
@@ -3150,7 +3150,7 @@ CREATE INDEX IF NOT EXISTS idx_drm_dept ON dept_role_membership(tenant_id, depar
   },
   {
     version: 40,
-    name: "phase349_department_packs",
+    name: 'phase349_department_packs',
     sql: `
 -- Pack Installation Tracking (Phase 349)
 CREATE TABLE IF NOT EXISTS pack_installation (
@@ -3174,7 +3174,7 @@ CREATE INDEX IF NOT EXISTS idx_pi_status ON pack_installation(tenant_id, status)
   },
   {
     version: 41,
-    name: "phase350_workflow_inbox",
+    name: 'phase350_workflow_inbox',
     sql: `
 -- Workflow Task (Phase 350)
 CREATE TABLE IF NOT EXISTS workflow_task (
@@ -3226,7 +3226,7 @@ CREATE INDEX IF NOT EXISTS idx_wte_tenant ON workflow_task_event(tenant_id);
   // ── v42 — Phase 351: Patient Communications ──
   {
     version: 42,
-    name: "phase351_patient_comms",
+    name: 'phase351_patient_comms',
     sql: `
 -- Patient Consent (Phase 351)
 CREATE TABLE IF NOT EXISTS patient_consent (
@@ -3280,7 +3280,7 @@ CREATE INDEX IF NOT EXISTS idx_nr_patient ON notification_record(tenant_id, pati
   // -- v43 -- Phase 352: Department Scheduling & Resources --
   {
     version: 43,
-    name: "phase352_dept_scheduling",
+    name: 'phase352_dept_scheduling',
     sql: `
 -- Schedule Template (Phase 352)
 CREATE TABLE IF NOT EXISTS schedule_template (
@@ -3391,7 +3391,7 @@ CREATE INDEX IF NOT EXISTS idx_cdr_status ON cross_dept_referral(tenant_id, stat
   // ── Phase 355: Event Bus ──
   {
     version: 44,
-    name: "phase355_event_bus",
+    name: 'phase355_event_bus',
     sql: `
 CREATE TABLE IF NOT EXISTS event_bus_outbox (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -3441,7 +3441,7 @@ CREATE INDEX IF NOT EXISTS idx_ebdl_event ON event_bus_delivery_log(tenant_id, e
   // -- Phase 356: Webhooks --
   {
     version: 45,
-    name: "phase356_webhooks",
+    name: 'phase356_webhooks',
     sql: `
 CREATE TABLE IF NOT EXISTS webhook_subscription (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -3483,7 +3483,7 @@ CREATE INDEX IF NOT EXISTS idx_wdl_status ON webhook_delivery_log(tenant_id, sta
   // ── v46: FHIR Subscriptions (Phase 357) ──
   {
     version: 46,
-    name: "fhir_subscriptions",
+    name: 'fhir_subscriptions',
     sql: `
 CREATE TABLE IF NOT EXISTS fhir_subscription (
   id TEXT PRIMARY KEY,
@@ -3526,7 +3526,7 @@ CREATE INDEX IF NOT EXISTS idx_fnot_status ON fhir_notification(tenant_id, statu
   // ── v47: Plugin SDK (Phase 358) ──
   {
     version: 47,
-    name: "plugin_sdk",
+    name: 'plugin_sdk',
     sql: `
 CREATE TABLE IF NOT EXISTS plugin_registry (
   id TEXT PRIMARY KEY,
@@ -3567,7 +3567,7 @@ CREATE INDEX IF NOT EXISTS idx_pal_created ON plugin_audit_log(tenant_id, create
   // ── v48: UI Extension Slots (Phase 359) ──
   {
     version: 48,
-    name: "ui_extension_slots",
+    name: 'ui_extension_slots',
     sql: `
 CREATE TABLE IF NOT EXISTS ui_extension_slot (
   id TEXT PRIMARY KEY,
@@ -3605,7 +3605,7 @@ CREATE INDEX IF NOT EXISTS idx_usp_tenant ON ui_slot_policy(tenant_id);
   // ── v49: Plugin Marketplace (Phase 360) ──
   {
     version: 49,
-    name: "plugin_marketplace",
+    name: 'plugin_marketplace',
     sql: `
 CREATE TABLE IF NOT EXISTS marketplace_listing (
   id TEXT PRIMARY KEY,
@@ -3671,7 +3671,7 @@ CREATE INDEX IF NOT EXISTS idx_mpa_created ON marketplace_audit_log(created_at);
   // ── v50: Analytics Data Platform (Wave 19, Phases 362-369) ──
   {
     version: 50,
-    name: "analytics_data_platform",
+    name: 'analytics_data_platform',
     sql: `
 CREATE TABLE IF NOT EXISTS analytics_extract_run (
   id TEXT PRIMARY KEY,
@@ -3771,7 +3771,7 @@ CREATE INDEX IF NOT EXISTS idx_aea_exported ON analytics_export_audit(tenant_id,
   // ── v51: Phase 492 (W34-P2) — Tenant Country Pack Binding ──
   {
     version: 51,
-    name: "phase492_tenant_country_binding",
+    name: 'phase492_tenant_country_binding',
     sql: `
 -- Phase 492 (W34-P2): Add country pack binding to tenant_config.
 -- countryPackId = ISO 3166-1 alpha-2 (e.g. "US", "PH", "GH")
@@ -3792,7 +3792,7 @@ CREATE INDEX IF NOT EXISTS idx_tenant_config_pack
   // ── v52: Phase 514 (W37-P2) — Payer Dossiers + Onboarding Tasks ──
   {
     version: 52,
-    name: "phase514_payer_dossiers",
+    name: 'phase514_payer_dossiers',
     sql: `
 -- Phase 514 (W37-P2): Payer dossier enrichment profile + onboarding workflow tasks.
 CREATE TABLE IF NOT EXISTS payer_dossier (
@@ -3845,7 +3845,7 @@ CREATE INDEX IF NOT EXISTS idx_onboard_status ON payer_onboarding_task(status);
   // ── v53: Phase 523 (W38-C2) — ED Durability ──
   {
     version: 53,
-    name: "phase523_ed_durability",
+    name: 'phase523_ed_durability',
     sql: `
 -- Phase 523 (W38-C2): Emergency Department PG-backed durability.
 CREATE TABLE IF NOT EXISTS ed_visit (
@@ -3893,7 +3893,7 @@ CREATE INDEX IF NOT EXISTS idx_ed_bed_status ON ed_bed(status);
   // ── v54: Phase 524 (W38-C3) — OR/Anesthesia Durability ──
   {
     version: 54,
-    name: "phase524_or_durability",
+    name: 'phase524_or_durability',
     sql: `
 -- Phase 524 (W38-C3): Operating Room PG-backed durability.
 CREATE TABLE IF NOT EXISTS or_case (
@@ -3955,7 +3955,7 @@ CREATE INDEX IF NOT EXISTS idx_or_block_room ON or_block(room_id);
   // ── v55: Phase 525 (W38-C4) — ICU Durability ──
   {
     version: 55,
-    name: "phase525_icu_durability",
+    name: 'phase525_icu_durability',
     sql: `
 -- Phase 525 (W38-C4): ICU PG-backed durability (6 tables).
 CREATE TABLE IF NOT EXISTS icu_admission (
@@ -4070,7 +4070,7 @@ CREATE INDEX IF NOT EXISTS idx_icu_score_type ON icu_score(score_type);
   // ── v56: Phase 526 (W38-C5) — Device Registry Durability ──
   {
     version: 56,
-    name: "phase526_device_registry_durability",
+    name: 'phase526_device_registry_durability',
     sql: `
 -- Phase 526 (W38-C5): Device Registry PG-backed durability.
 CREATE TABLE IF NOT EXISTS managed_device (
@@ -4150,7 +4150,7 @@ CREATE INDEX IF NOT EXISTS idx_dal_timestamp ON device_audit_log(timestamp);
   // ── v57: Phase 528 (W38-C7) — Radiology Durability ──
   {
     version: 57,
-    name: "phase528_radiology_durability",
+    name: 'phase528_radiology_durability',
     sql: `
 -- Phase 528 (W38-C7): Radiology PG-backed durability (6 tables).
 CREATE TABLE IF NOT EXISTS radiology_order (
@@ -4324,7 +4324,7 @@ CREATE INDEX IF NOT EXISTS idx_pr_reviewer ON peer_review(reviewer_duz);
   // ═══════════════════════════════════════════════════════════
   {
     version: 58,
-    name: "wave41_durable_ops_stores",
+    name: 'wave41_durable_ops_stores',
     sql: `
 -- Scheduling writeback entries (Phase 170 -> PG)
 CREATE TABLE IF NOT EXISTS scheduling_writeback_entry (
@@ -4423,7 +4423,7 @@ CREATE INDEX IF NOT EXISTS idx_bej_status ON bulk_export_job(tenant_id, status);
  * Compute SHA-256 checksum for a migration's SQL.
  */
 function migrationChecksum(sql: string): string {
-  return createHash("sha256").update(sql).digest("hex").slice(0, 16);
+  return createHash('sha256').update(sql).digest('hex').slice(0, 16);
 }
 
 /**
@@ -4435,7 +4435,7 @@ export function getMigrationManifest(): Array<{
   name: string;
   checksum: string;
 }> {
-  return MIGRATIONS.map(m => ({
+  return MIGRATIONS.map((m) => ({
     version: m.version,
     name: m.name,
     checksum: migrationChecksum(m.sql),
@@ -4446,9 +4446,7 @@ export function getMigrationManifest(): Array<{
  * Get the latest migration version defined in code.
  */
 export function getLatestMigrationVersion(): number {
-  return MIGRATIONS.length > 0
-    ? Math.max(...MIGRATIONS.map(m => m.version))
-    : 0;
+  return MIGRATIONS.length > 0 ? Math.max(...MIGRATIONS.map((m) => m.version)) : 0;
 }
 
 /**
@@ -4459,228 +4457,228 @@ export function getLatestMigrationVersion(): number {
  * ANY table with a tenant_id column MUST appear here.
  */
 export const CANONICAL_RLS_TABLES: readonly string[] = [
-  "platform_audit_event",
-  "idempotency_key",
-  "outbox_event",
-  "payer",
-  "tenant_payer",
-  "payer_capability",
-  "payer_task",
-  "payer_evidence_snapshot",
-  "payer_audit_event",
-  "denial_case",
-  "denial_action",
-  "denial_attachment",
-  "resubmission_attempt",
-  "remittance_import",
-  "payment_record",
-  "reconciliation_match",
-  "underpayment_case",
-  "eligibility_check",
-  "claim_status_check",
-  "capability_matrix_cell",
-  "capability_matrix_evidence",
-  "job_run_log",
-  "auth_session",
-  "rcm_work_item",
-  "rcm_work_item_event",
-  "rcm_claim",
-  "rcm_remittance",
-  "rcm_claim_case",
-  "edi_acknowledgement",
-  "edi_claim_status",
-  "edi_pipeline_entry",
-  "portal_message",
-  "portal_access_log",
-  "portal_patient_setting",
-  "telehealth_room",
-  "telehealth_room_event",
-  "imaging_work_item",
-  "imaging_ingest_event",
-  "scheduling_waitlist_request",
-  "scheduling_booking_lock",
-  "scheduling_lifecycle",
-  "user_locale_preference",
-  "intake_question_schema",
-  "clinic_preferences",
-  "patient_consent",
-  "patient_portal_pref",
+  'platform_audit_event',
+  'idempotency_key',
+  'outbox_event',
+  'payer',
+  'tenant_payer',
+  'payer_capability',
+  'payer_task',
+  'payer_evidence_snapshot',
+  'payer_audit_event',
+  'denial_case',
+  'denial_action',
+  'denial_attachment',
+  'resubmission_attempt',
+  'remittance_import',
+  'payment_record',
+  'reconciliation_match',
+  'underpayment_case',
+  'eligibility_check',
+  'claim_status_check',
+  'capability_matrix_cell',
+  'capability_matrix_evidence',
+  'job_run_log',
+  'auth_session',
+  'rcm_work_item',
+  'rcm_work_item_event',
+  'rcm_claim',
+  'rcm_remittance',
+  'rcm_claim_case',
+  'edi_acknowledgement',
+  'edi_claim_status',
+  'edi_pipeline_entry',
+  'portal_message',
+  'portal_access_log',
+  'portal_patient_setting',
+  'telehealth_room',
+  'telehealth_room_event',
+  'imaging_work_item',
+  'imaging_ingest_event',
+  'scheduling_waitlist_request',
+  'scheduling_booking_lock',
+  'scheduling_lifecycle',
+  'user_locale_preference',
+  'intake_question_schema',
+  'clinic_preferences',
+  'patient_consent',
+  'patient_portal_pref',
   // Phase 146: Durability Wave 3 tables
-  "portal_user",
-  "portal_session",
-  "portal_refill",
-  "portal_task",
-  "portal_sensitivity_config",
-  "portal_share_link",
-  "portal_export",
-  "portal_proxy_invitation",
-  "imaging_device",
-  "idp_vista_binding",
-  "iam_break_glass_session",
-  "rcm_payment_batch",
-  "rcm_payment_line",
-  "rcm_payment_posting",
-  "rcm_underpayment_case",
-  "rcm_loa_request",
-  "rcm_remit_document",
-  "rcm_transaction_envelope",
-  "rcm_ph_submission",
-  "rcm_hmo_submission",
-  "rcm_payer_enrollment",
-  "rcm_loa_case",
-  "rcm_credential_vault",
-  "rcm_ph_claim_draft",
-  "rcm_ph_facility_setup",
-  "rcm_payer_rule",
-  "rcm_payer_rulepack",
-  "rcm_denial",
-  "rcm_payer_directory_entry",
-  "rcm_job_queue_entry",
-  "clinical_draft",
-  "ui_preference",
-  "handoff_report",
-  "intake_session",
-  "migration_job",
-  "export_job",
+  'portal_user',
+  'portal_session',
+  'portal_refill',
+  'portal_task',
+  'portal_sensitivity_config',
+  'portal_share_link',
+  'portal_export',
+  'portal_proxy_invitation',
+  'imaging_device',
+  'idp_vista_binding',
+  'iam_break_glass_session',
+  'rcm_payment_batch',
+  'rcm_payment_line',
+  'rcm_payment_posting',
+  'rcm_underpayment_case',
+  'rcm_loa_request',
+  'rcm_remit_document',
+  'rcm_transaction_envelope',
+  'rcm_ph_submission',
+  'rcm_hmo_submission',
+  'rcm_payer_enrollment',
+  'rcm_loa_case',
+  'rcm_credential_vault',
+  'rcm_ph_claim_draft',
+  'rcm_ph_facility_setup',
+  'rcm_payer_rule',
+  'rcm_payer_rulepack',
+  'rcm_denial',
+  'rcm_payer_directory_entry',
+  'rcm_job_queue_entry',
+  'clinical_draft',
+  'ui_preference',
+  'handoff_report',
+  'intake_session',
+  'migration_job',
+  'export_job',
   // Phase 150: Patient identity mapping
-  "portal_patient_identity",
+  'portal_patient_identity',
   // Phase 153: Tenant OIDC mapping
-  "tenant_oidc_mapping",
+  'tenant_oidc_mapping',
   // Phase 154: CPOE order sign events
-  "cpoe_order_sign_event",
+  'cpoe_order_sign_event',
   // Phase 157: Audit JSONL shipping
-  "audit_ship_offset",
-  "audit_ship_manifest",
+  'audit_ship_offset',
+  'audit_ship_manifest',
   // Phase 158: Specialty Template & Workflow Studio
-  "clinical_template",
-  "template_version_event",
-  "quick_text",
+  'clinical_template',
+  'template_version_event',
+  'quick_text',
   // Phase 159: Patient Queue
-  "queue_ticket",
-  "queue_event",
+  'queue_ticket',
+  'queue_event',
   // Phase 160: Department Workflows
-  "workflow_definition",
-  "workflow_instance",
+  'workflow_definition',
+  'workflow_instance',
   // Phase 174: RCM SQLite-to-PG parity
-  "integration_evidence",
-  "loa_request",
-  "loa_attachment",
-  "accreditation_status",
-  "accreditation_task",
-  "credential_artifact",
-  "credential_document",
-  "claim_draft",
-  "claim_lifecycle_event",
-  "scrub_rule",
-  "scrub_result",
-  "rcm_durable_job",
+  'integration_evidence',
+  'loa_request',
+  'loa_attachment',
+  'accreditation_status',
+  'accreditation_task',
+  'credential_artifact',
+  'credential_document',
+  'claim_draft',
+  'claim_lifecycle_event',
+  'scrub_rule',
+  'scrub_result',
+  'rcm_durable_job',
   // Phase 174: Module entitlements
-  "module_catalog",
-  "tenant_module",
-  "tenant_feature_flag",
-  "module_audit_log",
+  'module_catalog',
+  'tenant_module',
+  'tenant_feature_flag',
+  'module_audit_log',
   // Phase 275: Tenant config control plane
-  "tenant_config",
+  'tenant_config',
   // Phase 300: Clinical writeback command bus
-  "clinical_command",
-  "clinical_command_attempt",
-  "clinical_command_result",
+  'clinical_command',
+  'clinical_command_attempt',
+  'clinical_command_result',
   // Phase 318: Integration Control Plane v2
-  "integration_partner",
-  "integration_endpoint",
-  "integration_credential_ref",
-  "integration_route",
-  "integration_test_run",
+  'integration_partner',
+  'integration_endpoint',
+  'integration_credential_ref',
+  'integration_route',
+  'integration_test_run',
   // Phase 328: Multi-Cluster Registry
-  "platform_cluster",
-  "tenant_placement",
+  'platform_cluster',
+  'tenant_placement',
   // Phase 347: Facility/Location Model
-  "facility",
-  "department",
-  "location",
-  "provider_facility_assignment",
+  'facility',
+  'department',
+  'location',
+  'provider_facility_assignment',
   // Phase 348: Dept RBAC Templates
-  "dept_role_template",
-  "dept_role_membership",
+  'dept_role_template',
+  'dept_role_membership',
   // Phase 349: Department Packs
-  "pack_installation",
+  'pack_installation',
   // Phase 350: Workflow Inbox
-  "workflow_task",
-  "workflow_task_event",
+  'workflow_task',
+  'workflow_task_event',
   // Phase 351: Patient Communications
-  "patient_consent",
-  "notification_template",
-  "notification_record",
+  'patient_consent',
+  'notification_template',
+  'notification_record',
   // Phase 352: Department Scheduling & Resources
-  "schedule_template",
-  "dept_resource",
-  "resource_allocation",
-  "scheduling_rule",
-  "cross_dept_referral",
+  'schedule_template',
+  'dept_resource',
+  'resource_allocation',
+  'scheduling_rule',
+  'cross_dept_referral',
   // Phase 355: Event Bus
-  "event_bus_outbox",
-  "event_bus_dlq",
-  "event_bus_delivery_log",
+  'event_bus_outbox',
+  'event_bus_dlq',
+  'event_bus_delivery_log',
   // Phase 356: Webhooks
-  "webhook_subscription",
-  "webhook_delivery_log",
+  'webhook_subscription',
+  'webhook_delivery_log',
   // Phase 357: FHIR Subscriptions
-  "fhir_subscription",
-  "fhir_notification",
+  'fhir_subscription',
+  'fhir_notification',
   // Phase 358: Plugin SDK
-  "plugin_registry",
-  "plugin_audit_log",
+  'plugin_registry',
+  'plugin_audit_log',
   // Phase 359: UI Extension Slots
-  "ui_extension_slot",
-  "ui_slot_policy",
+  'ui_extension_slot',
+  'ui_slot_policy',
   // Phase 360: Plugin Marketplace
-  "marketplace_listing",
-  "marketplace_install",
-  "marketplace_review",
-  "marketplace_audit_log",
+  'marketplace_listing',
+  'marketplace_install',
+  'marketplace_review',
+  'marketplace_audit_log',
   // Wave 19: Analytics Data Platform (Phases 362-369)
-  "analytics_extract_run",
-  "analytics_extract_record",
-  "analytics_extract_offset",
-  "analytics_deid_config",
-  "analytics_quality_metric_run",
-  "analytics_dataset_permission",
-  "analytics_column_mask_rule",
-  "analytics_export_audit",
+  'analytics_extract_run',
+  'analytics_extract_record',
+  'analytics_extract_offset',
+  'analytics_deid_config',
+  'analytics_quality_metric_run',
+  'analytics_dataset_permission',
+  'analytics_column_mask_rule',
+  'analytics_export_audit',
   // Phase 514: Payer dossiers + onboarding
-  "payer_dossier",
-  "payer_onboarding_task",
+  'payer_dossier',
+  'payer_onboarding_task',
   // Phase 523 (W38-C2): ED durability
-  "ed_visit",
-  "ed_bed",
+  'ed_visit',
+  'ed_bed',
   // Phase 524 (W38-C3): OR durability
-  "or_case",
-  "or_room",
-  "or_block",
+  'or_case',
+  'or_room',
+  'or_block',
   // Phase 525 (W38-C4): ICU durability
-  "icu_admission",
-  "icu_bed",
-  "icu_flowsheet_entry",
-  "icu_vent_record",
-  "icu_io_record",
-  "icu_score",
+  'icu_admission',
+  'icu_bed',
+  'icu_flowsheet_entry',
+  'icu_vent_record',
+  'icu_io_record',
+  'icu_score',
   // Phase 526 (W38-C5): Device registry durability
-  "managed_device",
-  "device_patient_association",
-  "device_location_mapping",
-  "device_audit_log",
+  'managed_device',
+  'device_patient_association',
+  'device_location_mapping',
+  'device_audit_log',
   // Phase 528 (W38-C7): Radiology durability
-  "radiology_order",
-  "reading_worklist_item",
-  "rad_report",
-  "dose_registry_entry",
-  "rad_critical_alert",
-  "peer_review",
+  'radiology_order',
+  'reading_worklist_item',
+  'rad_report',
+  'dose_registry_entry',
+  'rad_critical_alert',
+  'peer_review',
   // Wave 41: Durable Ops Stores
-  "scheduling_writeback_entry",
-  "hl7_dead_letter",
-  "dsar_request",
-  "bulk_export_job",
+  'scheduling_writeback_entry',
+  'hl7_dead_letter',
+  'dsar_request',
+  'bulk_export_job',
 ] as const;
 
 /**
@@ -4720,7 +4718,7 @@ export async function runPgMigrations(): Promise<{
 
   // Get already-applied versions with checksums
   const result = await pool.query(
-    "SELECT version, checksum FROM _platform_migrations ORDER BY version"
+    'SELECT version, checksum FROM _platform_migrations ORDER BY version'
   );
   const appliedMap = new Map<number, string | null>(
     result.rows.map((r: any) => [r.version, r.checksum])
@@ -4746,17 +4744,17 @@ export async function runPgMigrations(): Promise<{
 
     const client = await pool.connect();
     try {
-      await client.query("BEGIN");
+      await client.query('BEGIN');
       await client.query(migration.sql);
       await client.query(
-        "INSERT INTO _platform_migrations (version, name, checksum) VALUES ($1, $2, $3)",
+        'INSERT INTO _platform_migrations (version, name, checksum) VALUES ($1, $2, $3)',
         [migration.version, migration.name, expectedChecksum]
       );
-      await client.query("COMMIT");
+      await client.query('COMMIT');
       applied++;
       currentVersion = Math.max(currentVersion, migration.version);
     } catch (err: any) {
-      await client.query("ROLLBACK");
+      await client.query('ROLLBACK');
       errors.push(`Migration v${migration.version} (${migration.name}): ${err.message}`);
     } finally {
       client.release();
@@ -4774,18 +4772,17 @@ export async function runPgMigrations(): Promise<{
  */
 export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: string[] }> {
   const pgConfigured = !!process.env.PLATFORM_PG_URL;
-  const isProduction = process.env.NODE_ENV === "production";
+  const isProduction = process.env.NODE_ENV === 'production';
   const explicit = process.env.PLATFORM_PG_RLS_ENABLED;
 
   // Phase 125: Check runtime mode for rc/prod auto-enable
-  const runtimeMode = (process.env.PLATFORM_RUNTIME_MODE || "").toLowerCase().trim();
-  const isRcOrProd = runtimeMode === "rc" || runtimeMode === "prod";
+  const runtimeMode = (process.env.PLATFORM_RUNTIME_MODE || '').toLowerCase().trim();
+  const isRcOrProd = runtimeMode === 'rc' || runtimeMode === 'prod';
 
   // Phase 122: Auto-enable in production when PG is configured
   // Phase 125: Also auto-enable in rc/prod runtime modes
-  const rlsEnabled = explicit !== undefined
-    ? explicit === "true"
-    : (pgConfigured && (isProduction || isRcOrProd));
+  const rlsEnabled =
+    explicit !== undefined ? explicit === 'true' : pgConfigured && (isProduction || isRcOrProd);
 
   if (!rlsEnabled) {
     return { applied: [], errors: [] };
@@ -4802,7 +4799,7 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
       applied.push(table);
     } catch (err: any) {
       // Policy may already exist — that's OK
-      if (err.message?.includes("already exists")) {
+      if (err.message?.includes('already exists')) {
         applied.push(table);
       } else {
         errors.push(`${table}: ${err.message}`);

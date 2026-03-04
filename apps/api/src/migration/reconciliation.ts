@@ -6,17 +6,17 @@
  * Produces a structured ReconciliationReport for audit compliance.
  */
 
-import { createHash } from "crypto";
+import { createHash } from 'crypto';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
 export type ReconciliationStatus =
-  | "matched"
-  | "mismatched"
-  | "missing-in-target"
-  | "extra-in-target";
+  | 'matched'
+  | 'mismatched'
+  | 'missing-in-target'
+  | 'extra-in-target';
 
 export interface ReconciliationEntry {
   /** Source record identifier */
@@ -95,22 +95,22 @@ function hashRecord(record: ReconciliationRecord): string {
           acc[k] = record.fields[k];
           return acc;
         },
-        {} as Record<string, string>,
+        {} as Record<string, string>
       ),
   });
-  return createHash("sha256").update(normalized).digest("hex");
+  return createHash('sha256').update(normalized).digest('hex');
 }
 
 function findFieldDiffs(
   source: Record<string, string>,
-  target: Record<string, string>,
+  target: Record<string, string>
 ): FieldDiff[] {
   const diffs: FieldDiff[] = [];
   const allKeys = new Set([...Object.keys(source), ...Object.keys(target)]);
 
   for (const key of allKeys) {
-    const sv = source[key] ?? "";
-    const tv = target[key] ?? "";
+    const sv = source[key] ?? '';
+    const tv = target[key] ?? '';
     if (sv !== tv) {
       diffs.push({ field: key, sourceValue: sv, targetValue: tv });
     }
@@ -141,7 +141,7 @@ export function reconcileImport(
   options?: {
     /** Custom ID mapping: source ID → target ID */
     idMapping?: Map<string, string>;
-  },
+  }
 ): ReconciliationReport {
   const idMapping = options?.idMapping ?? new Map<string, string>();
   const entries: ReconciliationEntry[] = [];
@@ -164,7 +164,7 @@ export function reconcileImport(
       entries.push({
         sourceId: source.id,
         entityType: source.entityType,
-        status: "missing-in-target",
+        status: 'missing-in-target',
         sourceHash,
       });
       continue;
@@ -178,7 +178,7 @@ export function reconcileImport(
         sourceId: source.id,
         targetId: target.id,
         entityType: source.entityType,
-        status: "matched",
+        status: 'matched',
         sourceHash,
         targetHash,
       });
@@ -188,7 +188,7 @@ export function reconcileImport(
         sourceId: source.id,
         targetId: target.id,
         entityType: source.entityType,
-        status: "mismatched",
+        status: 'mismatched',
         sourceHash,
         targetHash,
         diffs,
@@ -201,11 +201,11 @@ export function reconcileImport(
     const key = `${t.entityType}:${t.id}`;
     if (!matchedTargetKeys.has(key)) {
       entries.push({
-        sourceId: "",
+        sourceId: '',
         targetId: t.id,
         entityType: t.entityType,
-        status: "extra-in-target",
-        sourceHash: "",
+        status: 'extra-in-target',
+        sourceHash: '',
         targetHash: hashRecord(t),
       });
     }
@@ -215,14 +215,14 @@ export function reconcileImport(
   const summary = {
     totalSource: sourceRecords.length,
     totalTarget: targetRecords.length,
-    matched: entries.filter((e) => e.status === "matched").length,
-    mismatched: entries.filter((e) => e.status === "mismatched").length,
-    missingInTarget: entries.filter((e) => e.status === "missing-in-target").length,
-    extraInTarget: entries.filter((e) => e.status === "extra-in-target").length,
+    matched: entries.filter((e) => e.status === 'matched').length,
+    mismatched: entries.filter((e) => e.status === 'mismatched').length,
+    missingInTarget: entries.filter((e) => e.status === 'missing-in-target').length,
+    extraInTarget: entries.filter((e) => e.status === 'extra-in-target').length,
   };
 
   // Per entity type breakdown
-  const byEntityType: ReconciliationReport["byEntityType"] = {};
+  const byEntityType: ReconciliationReport['byEntityType'] = {};
   for (const entry of entries) {
     if (!byEntityType[entry.entityType]) {
       byEntityType[entry.entityType] = {
@@ -233,10 +233,10 @@ export function reconcileImport(
       };
     }
     const bucket = byEntityType[entry.entityType];
-    if (entry.status === "matched") bucket.matched++;
-    else if (entry.status === "mismatched") bucket.mismatched++;
-    else if (entry.status === "missing-in-target") bucket.missingInTarget++;
-    else if (entry.status === "extra-in-target") bucket.extraInTarget++;
+    if (entry.status === 'matched') bucket.matched++;
+    else if (entry.status === 'mismatched') bucket.mismatched++;
+    else if (entry.status === 'missing-in-target') bucket.missingInTarget++;
+    else if (entry.status === 'extra-in-target') bucket.extraInTarget++;
   }
 
   const reportId = generateReportId();
@@ -244,7 +244,7 @@ export function reconcileImport(
 
   // Hash the report for tamper detection
   const reportPayload = JSON.stringify({ reportId, generatedAt, summary, entries });
-  const reportHash = createHash("sha256").update(reportPayload).digest("hex");
+  const reportHash = createHash('sha256').update(reportPayload).digest('hex');
 
   return {
     id: reportId,
@@ -266,6 +266,6 @@ export function verifyReportIntegrity(report: ReconciliationReport): boolean {
     summary: report.summary,
     entries: report.entries,
   });
-  const computed = createHash("sha256").update(payload).digest("hex");
+  const computed = createHash('sha256').update(payload).digest('hex');
   return computed === report.reportHash;
 }

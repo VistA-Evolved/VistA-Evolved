@@ -19,38 +19,35 @@
  * analytics_admin) are performed in-handler using the analytics config.
  */
 
-import type { FastifyInstance } from "fastify";
-import { requireSession } from "../auth/auth-routes.js";
-import { audit, type AuditAction } from "../lib/audit.js";
-import { log } from "../lib/logger.js";
-import { getRpcHealthSummary } from "../lib/rpc-resilience.js";
+import type { FastifyInstance } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
+import { audit, type AuditAction } from '../lib/audit.js';
+import { log } from '../lib/logger.js';
+import { getRpcHealthSummary } from '../lib/rpc-resilience.js';
 import {
   ANALYTICS_ROLE_PERMISSIONS,
   ANALYTICS_EXPORT_CONFIG,
   ANALYTICS_DASHBOARD_CONFIG,
   type AnalyticsPermission,
-} from "../config/analytics-config.js";
+} from '../config/analytics-config.js';
 import {
   queryAnalyticsEvents,
   getEventBufferStats,
   exportAnalyticsEventsCsv,
   recordAnalyticsEvent,
-} from "../services/analytics-store.js";
+} from '../services/analytics-store.js';
 import {
   queryAggregatedMetrics,
   getMetricSeries,
   getAggregationStats,
   runAggregation,
-} from "../services/analytics-aggregator.js";
-import {
-  getEtlStatus,
-  syncBucketsToOcto,
-} from "../services/analytics-etl.js";
+} from '../services/analytics-aggregator.js';
+import { getEtlStatus, syncBucketsToOcto } from '../services/analytics-etl.js';
 import {
   getClinicalReportList,
   getClinicalReportText,
   getClinicalReportHealth,
-} from "../services/clinical-reports.js";
+} from '../services/clinical-reports.js';
 
 /* ================================================================== */
 /* Helpers                                                              */
@@ -59,14 +56,11 @@ import {
 function auditActor(request: any): { duz: string; name?: string; role?: string } {
   const s = request.session;
   if (s) return { duz: s.duz, name: s.userName, role: s.role };
-  return { duz: "system" };
+  return { duz: 'system' };
 }
 
 /** Check if user has a specific analytics permission via their role. */
-function hasAnalyticsPermission(
-  role: string,
-  permission: AnalyticsPermission,
-): boolean {
+function hasAnalyticsPermission(role: string, permission: AnalyticsPermission): boolean {
   const perms = ANALYTICS_ROLE_PERMISSIONS[role as keyof typeof ANALYTICS_ROLE_PERMISSIONS];
   if (!perms) return false;
   return perms.includes(permission);
@@ -76,7 +70,7 @@ function hasAnalyticsPermission(
 function requireAnalyticsPermission(
   session: any,
   permission: AnalyticsPermission,
-  reply: any,
+  reply: any
 ): void {
   if (!hasAnalyticsPermission(session.role, permission)) {
     reply.code(403).send({
@@ -115,11 +109,10 @@ function setDashboardCache(key: string, data: unknown): void {
 /* ================================================================== */
 
 export default async function analyticsRoutes(server: FastifyInstance): Promise<void> {
-
   /* ── GET /analytics/dashboards/ops ────────────────────────── */
-  server.get("/analytics/dashboards/ops", async (request, reply) => {
+  server.get('/analytics/dashboards/ops', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireAnalyticsPermission(session, "analytics_viewer", reply);
+    requireAnalyticsPermission(session, 'analytics_viewer', reply);
 
     const cached = getCachedDashboard(`ops:${session.tenantId}`);
     if (cached) return { ok: true, cached: true, ...(cached as object) };
@@ -133,8 +126,8 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
       timestamp: new Date().toISOString(),
       tenantId: session.tenantId,
       process: {
-        heapUsedMB: Math.round(mem.heapUsed / 1024 / 1024 * 100) / 100,
-        rssMB: Math.round(mem.rss / 1024 / 1024 * 100) / 100,
+        heapUsedMB: Math.round((mem.heapUsed / 1024 / 1024) * 100) / 100,
+        rssMB: Math.round((mem.rss / 1024 / 1024) * 100) / 100,
         uptime: process.uptime(),
       },
       rpcHealth: {
@@ -152,12 +145,12 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
 
     setDashboardCache(`ops:${session.tenantId}`, dashboard);
 
-    audit("analytics.view" as AuditAction, "success", auditActor(request), {
-      detail: { dashboard: "ops" },
+    audit('analytics.view' as AuditAction, 'success', auditActor(request), {
+      detail: { dashboard: 'ops' },
     });
 
-    recordAnalyticsEvent("usage.report", "dashboard_ops_view", 1, {
-      unit: "count",
+    recordAnalyticsEvent('usage.report', 'dashboard_ops_view', 1, {
+      unit: 'count',
       tenantId: session.tenantId,
     });
 
@@ -165,32 +158,32 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── GET /analytics/dashboards/clinical ───────────────────── */
-  server.get("/analytics/dashboards/clinical", async (request, reply) => {
+  server.get('/analytics/dashboards/clinical', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireAnalyticsPermission(session, "analytics_viewer", reply);
+    requireAnalyticsPermission(session, 'analytics_viewer', reply);
 
     const cached = getCachedDashboard(`clinical:${session.tenantId}`);
     if (cached) return { ok: true, cached: true, ...(cached as object) };
 
     // Aggregate clinical utilization from usage.* events
     const { buckets: reportBuckets } = queryAggregatedMetrics({
-      category: "usage.report",
+      category: 'usage.report',
       tenantId: session.tenantId,
-      period: "daily",
+      period: 'daily',
       limit: 30,
     });
 
     const { buckets: orderBuckets } = queryAggregatedMetrics({
-      category: "usage.order",
+      category: 'usage.order',
       tenantId: session.tenantId,
-      period: "daily",
+      period: 'daily',
       limit: 30,
     });
 
     const { buckets: searchBuckets } = queryAggregatedMetrics({
-      category: "usage.search",
+      category: 'usage.search',
       tenantId: session.tenantId,
-      period: "daily",
+      period: 'daily',
       limit: 30,
     });
 
@@ -202,9 +195,10 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
       clinicalReports: {
         dailyBuckets: reportBuckets.length,
         recentViews: reportBuckets.reduce((s, b) => s + b.count, 0),
-        avgLatency: reportBuckets.length > 0
-          ? Math.round(reportBuckets.reduce((s, b) => s + b.avg, 0) / reportBuckets.length)
-          : 0,
+        avgLatency:
+          reportBuckets.length > 0
+            ? Math.round(reportBuckets.reduce((s, b) => s + b.avg, 0) / reportBuckets.length)
+            : 0,
         cacheHealth: reportHealth,
       },
       orderActivity: {
@@ -219,17 +213,17 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
 
     setDashboardCache(`clinical:${session.tenantId}`, dashboard);
 
-    audit("analytics.view" as AuditAction, "success", auditActor(request), {
-      detail: { dashboard: "clinical" },
+    audit('analytics.view' as AuditAction, 'success', auditActor(request), {
+      detail: { dashboard: 'clinical' },
     });
 
     return { ok: true, cached: false, ...dashboard };
   });
 
   /* ── GET /analytics/events ────────────────────────────────── */
-  server.get("/analytics/events", async (request, reply) => {
+  server.get('/analytics/events', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireAnalyticsPermission(session, "analytics_viewer", reply);
+    requireAnalyticsPermission(session, 'analytics_viewer', reply);
 
     const q = request.query as any;
 
@@ -246,14 +240,14 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── GET /analytics/aggregated ────────────────────────────── */
-  server.get("/analytics/aggregated", async (request, reply) => {
+  server.get('/analytics/aggregated', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireAnalyticsPermission(session, "analytics_viewer", reply);
+    requireAnalyticsPermission(session, 'analytics_viewer', reply);
 
     const q = request.query as any;
 
     const result = queryAggregatedMetrics({
-      period: q.period || "hourly",
+      period: q.period || 'hourly',
       metric: q.metric,
       category: q.category,
       tenantId: q.tenantId || session.tenantId,
@@ -266,15 +260,15 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── GET /analytics/series/:metric ────────────────────────── */
-  server.get("/analytics/series/:metric", async (request, reply) => {
+  server.get('/analytics/series/:metric', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireAnalyticsPermission(session, "analytics_viewer", reply);
+    requireAnalyticsPermission(session, 'analytics_viewer', reply);
 
     const { metric } = request.params as any;
     const q = request.query as any;
 
     const series = getMetricSeries(metric, {
-      period: q.period || "hourly",
+      period: q.period || 'hourly',
       tenantId: q.tenantId || session.tenantId,
       since: q.since,
       until: q.until,
@@ -282,32 +276,32 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     });
 
     if (!series) {
-      return { ok: true, metric, dataPoints: [], note: "No data available for this metric" };
+      return { ok: true, metric, dataPoints: [], note: 'No data available for this metric' };
     }
 
     return { ok: true, ...series };
   });
 
   /* ── POST /analytics/export ───────────────────────────────── */
-  server.post("/analytics/export", async (request, reply) => {
+  server.post('/analytics/export', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireAnalyticsPermission(session, "analytics_admin", reply);
+    requireAnalyticsPermission(session, 'analytics_admin', reply);
 
     const body = request.body as any;
-    const exportType = body.type || "events"; // "events" | "aggregated"
-    const format = body.format || "csv";
+    const exportType = body.type || 'events'; // "events" | "aggregated"
+    const format = body.format || 'csv';
 
-    if (format !== "csv") {
-      return reply.code(400).send({ ok: false, error: "Only CSV export is currently supported" });
+    if (format !== 'csv') {
+      return reply.code(400).send({ ok: false, error: 'Only CSV export is currently supported' });
     }
 
-    audit("analytics.export" as AuditAction, "success", auditActor(request), {
+    audit('analytics.export' as AuditAction, 'success', auditActor(request), {
       detail: { exportType, format, filters: body.filters },
     });
 
     let csv: string;
-    if (exportType === "aggregated") {
-      const { exportAggregatedCsv } = await import("../services/analytics-aggregator.js");
+    if (exportType === 'aggregated') {
+      const { exportAggregatedCsv } = await import('../services/analytics-aggregator.js');
       csv = exportAggregatedCsv({
         period: body.filters?.period,
         metric: body.filters?.metric,
@@ -327,26 +321,29 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
       });
     }
 
-    recordAnalyticsEvent("usage.report", "analytics_export", 1, {
-      unit: "count",
+    recordAnalyticsEvent('usage.report', 'analytics_export', 1, {
+      unit: 'count',
       tenantId: session.tenantId,
       tags: { exportType, format },
     });
 
-    reply.header("Content-Type", "text/csv");
-    reply.header("Content-Disposition", `attachment; filename="analytics-${exportType}-${Date.now()}.csv"`);
+    reply.header('Content-Type', 'text/csv');
+    reply.header(
+      'Content-Disposition',
+      `attachment; filename="analytics-${exportType}-${Date.now()}.csv"`
+    );
     return csv;
   });
 
   /* ── POST /analytics/aggregate ─────────────────────────────── */
-  server.post("/analytics/aggregate", async (request, reply) => {
+  server.post('/analytics/aggregate', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireAnalyticsPermission(session, "analytics_admin", reply);
+    requireAnalyticsPermission(session, 'analytics_admin', reply);
 
     const body = (request.body as any) || {};
     const result = runAggregation(body.since, body.until, body.tenantId || session.tenantId);
 
-    audit("analytics.aggregate" as AuditAction, "success", auditActor(request), {
+    audit('analytics.aggregate' as AuditAction, 'success', auditActor(request), {
       detail: { ...result },
     });
 
@@ -354,9 +351,9 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── GET /analytics/health ────────────────────────────────── */
-  server.get("/analytics/health", async (request, reply) => {
+  server.get('/analytics/health', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireAnalyticsPermission(session, "analytics_viewer", reply);
+    requireAnalyticsPermission(session, 'analytics_viewer', reply);
 
     const eventStats = getEventBufferStats();
     const aggStats = getAggregationStats();
@@ -373,62 +370,59 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── GET /analytics/clinical-reports ──────────────────────── */
-  server.get("/analytics/clinical-reports", async (request, reply) => {
+  server.get('/analytics/clinical-reports', async (request, reply) => {
     const session = await requireSession(request, reply);
     // Any authenticated user can list reports
-    const result = await getClinicalReportList(
-      auditActor(request),
-      session.tenantId,
-    );
+    const result = await getClinicalReportList(auditActor(request), session.tenantId);
     return result;
   });
 
   /* ── GET /analytics/clinical-reports/text ─────────────────── */
-  server.get("/analytics/clinical-reports/text", async (request, reply) => {
+  server.get('/analytics/clinical-reports/text', async (request, reply) => {
     const session = await requireSession(request, reply);
     // Any authenticated user can view clinical reports
 
     const { dfn, id, hsType } = request.query as any;
     if (!dfn || !/^\d+$/.test(String(dfn))) {
-      return reply.code(400).send({ ok: false, error: "Missing or non-numeric dfn" });
+      return reply.code(400).send({ ok: false, error: 'Missing or non-numeric dfn' });
     }
     if (!id) {
-      return reply.code(400).send({ ok: false, error: "Missing report id" });
+      return reply.code(400).send({ ok: false, error: 'Missing report id' });
     }
 
     const result = await getClinicalReportText(
       String(dfn),
       String(id),
-      String(hsType || ""),
+      String(hsType || ''),
       auditActor(request),
-      session.tenantId,
+      session.tenantId
     );
     return result;
   });
 
   /* ── GET /analytics/etl/status ──────────────────────────── */
-  server.get("/analytics/etl/status", async (request, reply) => {
+  server.get('/analytics/etl/status', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireAnalyticsPermission(session, "analytics_admin", reply);
+    requireAnalyticsPermission(session, 'analytics_admin', reply);
     return { ok: true, ...getEtlStatus() };
   });
 
   /* ── POST /analytics/etl/sync ──────────────────────────── */
-  server.post("/analytics/etl/sync", async (request, reply) => {
+  server.post('/analytics/etl/sync', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireAnalyticsPermission(session, "analytics_admin", reply);
+    requireAnalyticsPermission(session, 'analytics_admin', reply);
 
-    const { buckets: hourly } = queryAggregatedMetrics({ period: "hourly", limit: 5000 });
-    const { buckets: daily } = queryAggregatedMetrics({ period: "daily", limit: 5000 });
+    const { buckets: hourly } = queryAggregatedMetrics({ period: 'hourly', limit: 5000 });
+    const { buckets: daily } = queryAggregatedMetrics({ period: 'daily', limit: 5000 });
 
     const result = await syncBucketsToOcto(hourly, daily);
 
-    audit("analytics.etl_sync" as AuditAction, "success", auditActor(request), {
+    audit('analytics.etl_sync' as AuditAction, 'success', auditActor(request), {
       detail: { ...result, hourlyTotal: hourly.length, dailyTotal: daily.length },
     });
 
     return { ok: true, ...result };
   });
 
-  log.info("Analytics routes registered (Phase 25)");
+  log.info('Analytics routes registered (Phase 25)');
 }

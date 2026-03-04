@@ -1,6 +1,7 @@
 # Phase 254 — Resilience Certification (Wave 7 P7)
 
 ## Objective
+
 Certify that VistA-Evolved has production-ready resilience patterns covering
 failure injection, circuit breaker behavior, graceful degradation, health/readiness
 split, posture observability, and recovery automation.
@@ -8,6 +9,7 @@ split, posture observability, and recovery automation.
 ## Implementation Steps
 
 ### 1. Resilience Drill Infrastructure (`ops/drills/`)
+
 - Create `resilience-drills.ts` — typed drill registry (5 scenarios)
   - VistA Connection Loss: stop VistA, verify API degrades, restart, verify recovery
   - Circuit Breaker Activation: induce failures, verify CB opens, verify half-open recovery
@@ -18,9 +20,10 @@ split, posture observability, and recovery automation.
   - `run-vista-down-drill.ps1` — live VistA down/up cycle
   - `run-circuit-breaker-drill.ps1` — CB state machine validation
   - `run-health-readiness-drill.ps1` — /health vs /ready contract checks
-  - `run-posture-audit-drill.ps1` — all /posture/* endpoints reachable
+  - `run-posture-audit-drill.ps1` — all /posture/\* endpoints reachable
 
 ### 2. Static Resilience Certification Test Suite
+
 - Create `apps/api/tests/resilience-certification.test.ts` (Vitest)
   - Circuit Breaker: module exists, exports safeCallRpc, state machine, configurable
   - RPC Broker Reconnection: health check, idle timeout, keepalive, mutex
@@ -33,14 +36,17 @@ split, posture observability, and recovery automation.
   - Security Resilience: rate limiting, CORS, CSRF, auth rules
 
 ### 3. CI Workflow
+
 - Create `.github/workflows/resilience-certification.yml`
   - Triggers: push (resilience files), nightly, manual
   - Runs Vitest resilience suite + file existence checks
 
 ### 4. Verification Script
+
 - Create `scripts/verify-phase254-resilience.ps1` (27+ gates)
 
 ## Files Created
+
 - `ops/drills/resilience-drills.ts`
 - `ops/drills/run-vista-down-drill.ps1`
 - `ops/drills/run-circuit-breaker-drill.ps1`
@@ -51,6 +57,7 @@ split, posture observability, and recovery automation.
 - `scripts/verify-phase254-resilience.ps1`
 
 ## Files Inspected (Inventory-First)
+
 - `apps/api/src/lib/rpc-resilience.ts` — circuit breaker, retry, timeout, cache
 - `apps/api/src/vista/rpcBrokerClient.ts` — socket health, reconnection, mutex
 - `apps/api/src/middleware/security.ts` — SIGTERM, drain, rate limit, CSRF
@@ -61,6 +68,7 @@ split, posture observability, and recovery automation.
 - `.github/workflows/dr-nightly.yml` — DR nightly workflow
 
 ## Existing Patterns Reused
+
 - Verifier pattern: `$MyInvocation.MyCommand.Definition` root resolution, Gate() helper
 - Drill scripts: same Invoke-WebRequest + Gate pattern as existing verifiers
 - Vitest: same `describe/it/expect` pattern as P3/P4 certification tests

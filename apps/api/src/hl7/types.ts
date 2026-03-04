@@ -35,22 +35,22 @@ export const MLLPS_DEFAULT_PORT = 2576;
 /* ------------------------------------------------------------------ */
 
 /** Standard HL7v2 field separator */
-export const HL7_FIELD_SEP = "|";
+export const HL7_FIELD_SEP = '|';
 
 /** Standard HL7v2 component separator */
-export const HL7_COMPONENT_SEP = "^";
+export const HL7_COMPONENT_SEP = '^';
 
 /** Standard HL7v2 subcomponent separator */
-export const HL7_SUBCOMPONENT_SEP = "&";
+export const HL7_SUBCOMPONENT_SEP = '&';
 
 /** Standard HL7v2 repetition separator */
-export const HL7_REPETITION_SEP = "~";
+export const HL7_REPETITION_SEP = '~';
 
 /** Standard HL7v2 escape character */
-export const HL7_ESCAPE_CHAR = "\\";
+export const HL7_ESCAPE_CHAR = '\\';
 
 /** Standard HL7v2 segment terminator */
-export const HL7_SEGMENT_SEP = "\r";
+export const HL7_SEGMENT_SEP = '\r';
 
 /** HL7v2 segment — parsed representation */
 export interface Hl7Segment {
@@ -107,7 +107,7 @@ export interface Hl7Message {
  * CE = Commit Error (enhanced mode)
  * CR = Commit Reject (enhanced mode)
  */
-export type AckCode = "AA" | "AE" | "AR" | "CA" | "CE" | "CR";
+export type AckCode = 'AA' | 'AE' | 'AR' | 'CA' | 'CE' | 'CR';
 
 /** ACK message result */
 export interface Hl7Ack {
@@ -126,7 +126,7 @@ export interface Hl7Ack {
 /* ------------------------------------------------------------------ */
 
 /** MLLP connection state */
-export type ConnectionState = "connecting" | "connected" | "idle" | "disconnected" | "error";
+export type ConnectionState = 'connecting' | 'connected' | 'idle' | 'disconnected' | 'error';
 
 /** MLLP peer connection descriptor */
 export interface MllpConnection {
@@ -193,10 +193,7 @@ export interface MllpClientConfig {
 /* ------------------------------------------------------------------ */
 
 /** Handler for received HL7v2 messages */
-export type MessageHandler = (
-  message: Hl7Message,
-  connection: MllpConnection,
-) => Promise<Hl7Ack>;
+export type MessageHandler = (message: Hl7Message, connection: MllpConnection) => Promise<Hl7Ack>;
 
 /** HL7v2 Engine status */
 export interface Hl7EngineStatus {
@@ -227,18 +224,18 @@ export interface Hl7EngineStatus {
  * These segments must be redacted in logs, audit trails, and error messages.
  */
 export const PHI_SEGMENTS = new Set([
-  "PID",  // Patient Identification
-  "NK1",  // Next of Kin
-  "GT1",  // Guarantor
-  "IN1",  // Insurance 1
-  "IN2",  // Insurance 2
-  "ACC",  // Accident
-  "PD1",  // Patient Additional Demographics
-  "DG1",  // Diagnosis
-  "PR1",  // Procedures
-  "AL1",  // Allergy Information
-  "OBX",  // Observation/Result
-  "NTE",  // Notes and Comments (may contain clinical text)
+  'PID', // Patient Identification
+  'NK1', // Next of Kin
+  'GT1', // Guarantor
+  'IN1', // Insurance 1
+  'IN2', // Insurance 2
+  'ACC', // Accident
+  'PD1', // Patient Additional Demographics
+  'DG1', // Diagnosis
+  'PR1', // Procedures
+  'AL1', // Allergy Information
+  'OBX', // Observation/Result
+  'NTE', // Notes and Comments (may contain clinical text)
 ]);
 
 /** Check if a segment type contains PHI */

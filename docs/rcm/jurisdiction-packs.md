@@ -17,13 +17,13 @@ for a specific country or region. Packs are loaded from snapshot files in
 
 ### Payers
 
-| Payer ID | Name | Type |
-|----------|------|------|
-| PH-PHILHEALTH | PhilHealth | NATIONAL |
-| PH-HMO-MAXICARE | Maxicare Healthcare | PRIVATE |
-| PH-HMO-INTELLICARE | Intellicare | PRIVATE |
-| PH-HMO-MEDICARD | Medicard Philippines | PRIVATE |
-| ... (27 HMOs total) | | |
+| Payer ID            | Name                 | Type     |
+| ------------------- | -------------------- | -------- |
+| PH-PHILHEALTH       | PhilHealth           | NATIONAL |
+| PH-HMO-MAXICARE     | Maxicare Healthcare  | PRIVATE  |
+| PH-HMO-INTELLICARE  | Intellicare          | PRIVATE  |
+| PH-HMO-MEDICARD     | Medicard Philippines | PRIVATE  |
+| ... (27 HMOs total) |                      |          |
 
 ### Integration
 
@@ -40,13 +40,13 @@ for a specific country or region. Packs are loaded from snapshot files in
 
 ### Payers
 
-| Payer ID | Name | Type |
-|----------|------|------|
-| AU-MEDICARE | Medicare Australia | NATIONAL |
-| AU-DVA | Department of Veterans Affairs | GOVERNMENT |
-| AU-MEDIBANK | Medibank Private | PRIVATE |
-| AU-BUPA | Bupa Health Insurance | PRIVATE |
-| ... (20 APRA insurers total) | | |
+| Payer ID                     | Name                           | Type       |
+| ---------------------------- | ------------------------------ | ---------- |
+| AU-MEDICARE                  | Medicare Australia             | NATIONAL   |
+| AU-DVA                       | Department of Veterans Affairs | GOVERNMENT |
+| AU-MEDIBANK                  | Medibank Private               | PRIVATE    |
+| AU-BUPA                      | Bupa Health Insurance          | PRIVATE    |
+| ... (20 APRA insurers total) |                                |            |
 
 ### Integration
 
@@ -62,21 +62,21 @@ for a specific country or region. Packs are loaded from snapshot files in
 
 ### Federal Payers
 
-| Payer ID | Name | Type |
-|----------|------|------|
-| US-MEDICARE-A | Medicare Part A | NATIONAL |
-| US-MEDICARE-B | Medicare Part B | NATIONAL |
-| US-MEDICAID | Medicaid | GOVERNMENT |
-| US-TRICARE | TRICARE | GOVERNMENT |
-| US-VA | Veterans Affairs | GOVERNMENT |
+| Payer ID      | Name             | Type       |
+| ------------- | ---------------- | ---------- |
+| US-MEDICARE-A | Medicare Part A  | NATIONAL   |
+| US-MEDICARE-B | Medicare Part B  | NATIONAL   |
+| US-MEDICAID   | Medicaid         | GOVERNMENT |
+| US-TRICARE    | TRICARE          | GOVERNMENT |
+| US-VA         | Veterans Affairs | GOVERNMENT |
 
 ### Network Entities
 
-| Payer ID | Name | Type |
-|----------|------|------|
-| US-NETWORK-AVAILITY | Availity | NETWORK |
+| Payer ID                    | Name        | Type          |
+| --------------------------- | ----------- | ------------- |
+| US-NETWORK-AVAILITY         | Availity    | NETWORK       |
 | US-CLEARINGHOUSE-OFFICEALLY | Office Ally | CLEARINGHOUSE |
-| US-CLEARINGHOUSE-STEDI | Stedi | CLEARINGHOUSE |
+| US-CLEARINGHOUSE-STEDI      | Stedi       | CLEARINGHOUSE |
 
 ### Integration
 
@@ -91,10 +91,10 @@ for a specific country or region. Packs are loaded from snapshot files in
 **Source**: Ministry of Health  
 **Importer**: `sg-nz-gateways`
 
-| Payer ID | Name | Type |
-|----------|------|------|
-| SG-NPHC | NPHC Gateway | NATIONAL |
-| SG-MEDISAVE | MediSave | GOVERNMENT |
+| Payer ID      | Name            | Type       |
+| ------------- | --------------- | ---------- |
+| SG-NPHC       | NPHC Gateway    | NATIONAL   |
+| SG-MEDISAVE   | MediSave        | GOVERNMENT |
 | SG-MEDISHIELD | MediShield Life | GOVERNMENT |
 
 ### Integration
@@ -108,10 +108,10 @@ for a specific country or region. Packs are loaded from snapshot files in
 **Source**: ACC + major private insurers  
 **Importer**: `sg-nz-gateways`
 
-| Payer ID | Name | Type |
-|----------|------|------|
-| NZ-ACC | ACC (Accident Compensation) | NATIONAL |
-| NZ-SOUTHERNCROSS | Southern Cross Health Insurance | PRIVATE |
+| Payer ID         | Name                            | Type     |
+| ---------------- | ------------------------------- | -------- |
+| NZ-ACC           | ACC (Accident Compensation)     | NATIONAL |
+| NZ-SOUTHERNCROSS | Southern Cross Health Insurance | PRIVATE  |
 
 ### Integration
 

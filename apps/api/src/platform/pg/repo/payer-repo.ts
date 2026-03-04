@@ -8,10 +8,10 @@
  * Postgres via getPgDb() instead of SQLite via getDb().
  */
 
-import { randomUUID } from "node:crypto";
-import { eq, like, and, or, sql, ilike } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { payer, payerAuditEvent } from "../pg-schema.js";
+import { randomUUID } from 'node:crypto';
+import { eq, and, or, sql, ilike } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { payer, payerAuditEvent } from '../pg-schema.js';
 
 export type PayerRow = typeof payer.$inferSelect;
 export type PayerInsert = typeof payer.$inferInsert;
@@ -20,7 +20,7 @@ export type PayerInsert = typeof payer.$inferInsert;
 function normalizeAliases(aliases: unknown): unknown[] {
   if (!aliases) return [];
   if (Array.isArray(aliases)) return aliases;
-  if (typeof aliases === "string") {
+  if (typeof aliases === 'string') {
     try {
       const parsed = JSON.parse(aliases);
       return Array.isArray(parsed) ? parsed : [];
@@ -55,9 +55,7 @@ export async function listPayers(filters?: {
   }
   if (filters?.search) {
     const term = `%${filters.search}%`;
-    conditions.push(
-      or(ilike(payer.canonicalName, term), ilike(payer.id, term))!,
-    );
+    conditions.push(or(ilike(payer.canonicalName, term), ilike(payer.id, term))!);
   }
 
   const where = conditions.length > 0 ? and(...conditions) : undefined;
@@ -85,7 +83,7 @@ export async function listPayers(filters?: {
 export async function insertPayer(
   data: Partial<PayerInsert> & { id: string; canonicalName: string },
   reason: string,
-  actor?: string,
+  actor?: string
 ): Promise<PayerRow> {
   const db = getPgDb();
   const now = new Date().toISOString();
@@ -93,10 +91,10 @@ export async function insertPayer(
 
   await db.insert(payer).values({
     id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     canonicalName: data.canonicalName,
     aliases: normalizeAliases(data.aliases),
-    countryCode: data.countryCode ?? "PH",
+    countryCode: data.countryCode ?? 'PH',
     regulatorSource: data.regulatorSource ?? null,
     regulatorLicenseNo: data.regulatorLicenseNo ?? null,
     category: data.category ?? null,
@@ -112,11 +110,11 @@ export async function insertPayer(
   await db.insert(payerAuditEvent).values({
     id: randomUUID(),
     tenantId: data.tenantId ?? null,
-    actorType: actor ? "user" : "system",
+    actorType: actor ? 'user' : 'system',
     actorId: actor ?? null,
-    entityType: "payer",
+    entityType: 'payer',
     entityId: id,
-    action: "create",
+    action: 'create',
     beforeJson: null,
     afterJson: created ? JSON.parse(JSON.stringify(created)) : null,
     reason,
@@ -143,7 +141,7 @@ export async function updatePayer(
   reason: string,
   actor?: string,
   /** Expected version for optimistic concurrency. If provided, update fails if version doesn't match. */
-  expectedVersion?: number,
+  expectedVersion?: number
 ): Promise<PayerRow | null> {
   const db = getPgDb();
   const before = await findPayerById(id);
@@ -156,7 +154,7 @@ export async function updatePayer(
       const err: any = new Error(
         `Optimistic concurrency conflict: expected version ${expectedVersion}, found ${currentVersion}`
       );
-      err.code = "CONCURRENCY_CONFLICT";
+      err.code = 'CONCURRENCY_CONFLICT';
       err.statusCode = 409;
       throw err;
     }
@@ -173,7 +171,8 @@ export async function updatePayer(
   if (updates.aliases !== undefined) setObj.aliases = normalizeAliases(updates.aliases);
   if (updates.countryCode !== undefined) setObj.countryCode = updates.countryCode;
   if (updates.regulatorSource !== undefined) setObj.regulatorSource = updates.regulatorSource;
-  if (updates.regulatorLicenseNo !== undefined) setObj.regulatorLicenseNo = updates.regulatorLicenseNo;
+  if (updates.regulatorLicenseNo !== undefined)
+    setObj.regulatorLicenseNo = updates.regulatorLicenseNo;
   if (updates.category !== undefined) setObj.category = updates.category;
   if (updates.payerType !== undefined) setObj.payerType = updates.payerType;
   if (updates.integrationMode !== undefined) setObj.integrationMode = updates.integrationMode;
@@ -182,7 +181,10 @@ export async function updatePayer(
   // Increment version on every update (Phase 104 optimistic concurrency)
   setObj.version = sql`COALESCE(version, 1) + 1`;
 
-  await db.update(payer).set(setObj as any).where(eq(payer.id, id));
+  await db
+    .update(payer)
+    .set(setObj as any)
+    .where(eq(payer.id, id));
 
   const after = await findPayerById(id);
 
@@ -190,11 +192,11 @@ export async function updatePayer(
   await db.insert(payerAuditEvent).values({
     id: randomUUID(),
     tenantId: before.tenantId ?? null,
-    actorType: actor ? "user" : "system",
+    actorType: actor ? 'user' : 'system',
     actorId: actor ?? null,
-    entityType: "payer",
+    entityType: 'payer',
     entityId: id,
-    action: "update",
+    action: 'update',
     beforeJson: JSON.parse(JSON.stringify(before)),
     afterJson: after ? JSON.parse(JSON.stringify(after)) : null,
     reason,
@@ -208,15 +210,13 @@ export async function updatePayer(
 export async function deactivatePayer(
   id: string,
   reason: string,
-  actor?: string,
+  actor?: string
 ): Promise<PayerRow | null> {
   return updatePayer(id, { active: false }, reason, actor);
 }
 
 export async function getPayerCount(): Promise<number> {
   const db = getPgDb();
-  const result = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(payer);
+  const result = await db.select({ count: sql<number>`count(*)::int` }).from(payer);
   return result[0]?.count ?? 0;
 }

@@ -22,7 +22,7 @@ import {
   extractResourceAttributes,
   extractEnvironmentAttributes,
   compareSensitivity,
-} from "./abac-attributes.js";
+} from './abac-attributes.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -91,7 +91,7 @@ export interface AbacPolicy {
   /** Conditions to evaluate. */
   conditions: AbacCondition[];
   /** How to combine conditions: AND = all must pass, OR = at least one. */
-  combinator: "AND" | "OR";
+  combinator: 'AND' | 'OR';
   /** Whether this policy is enabled. */
   enabled: boolean;
 }
@@ -106,7 +106,7 @@ export interface AbacPolicy {
 export function timeOfDayCondition(
   allowedStartHour: number,
   allowedEndHour: number,
-  name = "time-of-day",
+  name = 'time-of-day'
 ): AbacCondition {
   return (ctx: AbacContext): AbacConditionResult => {
     const hour = ctx.request.hourUtc;
@@ -120,8 +120,12 @@ export function timeOfDayCondition(
     return {
       passed: inRange,
       conditionName: name,
-      reason: inRange ? undefined : `Access denied outside allowed hours (${allowedStartHour}:00-${allowedEndHour}:00 UTC)`,
-      remediation: inRange ? undefined : `Retry during business hours (${allowedStartHour}:00-${allowedEndHour}:00 UTC)`,
+      reason: inRange
+        ? undefined
+        : `Access denied outside allowed hours (${allowedStartHour}:00-${allowedEndHour}:00 UTC)`,
+      remediation: inRange
+        ? undefined
+        : `Retry during business hours (${allowedStartHour}:00-${allowedEndHour}:00 UTC)`,
     };
   };
 }
@@ -129,17 +133,16 @@ export function timeOfDayCondition(
 /**
  * Day-of-week condition: restrict to certain days (0=Sun..6=Sat).
  */
-export function dayOfWeekCondition(
-  allowedDays: number[],
-  name = "day-of-week",
-): AbacCondition {
+export function dayOfWeekCondition(allowedDays: number[], name = 'day-of-week'): AbacCondition {
   return (ctx: AbacContext): AbacConditionResult => {
     const inRange = allowedDays.includes(ctx.request.dayOfWeek);
     return {
       passed: inRange,
       conditionName: name,
-      reason: inRange ? undefined : "Access denied on this day of the week",
-      remediation: inRange ? undefined : `Retry on allowed days: ${allowedDays.map(d => ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d]).join(", ")}`,
+      reason: inRange ? undefined : 'Access denied on this day of the week',
+      remediation: inRange
+        ? undefined
+        : `Retry on allowed days: ${allowedDays.map((d) => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d]).join(', ')}`,
     };
   };
 }
@@ -147,18 +150,15 @@ export function dayOfWeekCondition(
 /**
  * IP range condition: restrict to certain IP prefixes.
  */
-export function ipRangeCondition(
-  allowedPrefixes: string[],
-  name = "ip-range",
-): AbacCondition {
+export function ipRangeCondition(allowedPrefixes: string[], name = 'ip-range'): AbacCondition {
   return (ctx: AbacContext): AbacConditionResult => {
     const ip = ctx.request.sourceIp;
     const passed = allowedPrefixes.some((prefix) => ip.startsWith(prefix));
     return {
       passed,
       conditionName: name,
-      reason: passed ? undefined : "Access denied from this network location",
-      remediation: passed ? undefined : "Connect from an authorized network or use VPN",
+      reason: passed ? undefined : 'Access denied from this network location',
+      remediation: passed ? undefined : 'Connect from an authorized network or use VPN',
     };
   };
 }
@@ -166,23 +166,19 @@ export function ipRangeCondition(
 /**
  * Internal network condition: require requests from internal networks.
  */
-export function internalNetworkCondition(
-  name = "internal-network",
-): AbacCondition {
+export function internalNetworkCondition(name = 'internal-network'): AbacCondition {
   return (ctx: AbacContext): AbacConditionResult => ({
     passed: ctx.request.isInternalNetwork,
     conditionName: name,
-    reason: ctx.request.isInternalNetwork ? undefined : "Access requires internal network",
-    remediation: ctx.request.isInternalNetwork ? undefined : "Connect via VPN or internal network",
+    reason: ctx.request.isInternalNetwork ? undefined : 'Access requires internal network',
+    remediation: ctx.request.isInternalNetwork ? undefined : 'Connect via VPN or internal network',
   });
 }
 
 /**
  * Facility match condition: user must belong to the resource's facility.
  */
-export function facilityMatchCondition(
-  name = "facility-match",
-): AbacCondition {
+export function facilityMatchCondition(name = 'facility-match'): AbacCondition {
   return (ctx: AbacContext): AbacConditionResult => {
     // If no facility on resource, allow (no constraint)
     if (!ctx.resource.facilityStation) {
@@ -192,8 +188,10 @@ export function facilityMatchCondition(
     return {
       passed,
       conditionName: name,
-      reason: passed ? undefined : `Access denied: resource belongs to facility ${ctx.resource.facilityStation}`,
-      remediation: passed ? undefined : "Request cross-facility access through your administrator",
+      reason: passed
+        ? undefined
+        : `Access denied: resource belongs to facility ${ctx.resource.facilityStation}`,
+      remediation: passed ? undefined : 'Request cross-facility access through your administrator',
     };
   };
 }
@@ -203,17 +201,19 @@ export function facilityMatchCondition(
  */
 export function sensitivityCondition(
   roleClearances: Record<string, SensitivityLevel>,
-  name = "sensitivity-level",
+  name = 'sensitivity-level'
 ): AbacCondition {
   return (ctx: AbacContext): AbacConditionResult => {
-    const maxAllowed = roleClearances[ctx.user.role] ?? "internal";
+    const maxAllowed = roleClearances[ctx.user.role] ?? 'internal';
     const resourceLevel = ctx.resource.sensitivityLevel;
     const passed = compareSensitivity(resourceLevel, maxAllowed) <= 0;
     return {
       passed,
       conditionName: name,
-      reason: passed ? undefined : `Access denied: resource sensitivity '${resourceLevel}' exceeds role clearance '${maxAllowed}'`,
-      remediation: passed ? undefined : "Request elevated access or contact your security officer",
+      reason: passed
+        ? undefined
+        : `Access denied: resource sensitivity '${resourceLevel}' exceeds role clearance '${maxAllowed}'`,
+      remediation: passed ? undefined : 'Request elevated access or contact your security officer',
     };
   };
 }
@@ -223,15 +223,19 @@ export function sensitivityCondition(
  */
 export function environmentCondition(
   allowedModes: string[],
-  name = "environment-mode",
+  name = 'environment-mode'
 ): AbacCondition {
   return (ctx: AbacContext): AbacConditionResult => {
     const passed = allowedModes.includes(ctx.environment.runtimeMode);
     return {
       passed,
       conditionName: name,
-      reason: passed ? undefined : `Action not available in ${ctx.environment.runtimeMode} environment`,
-      remediation: passed ? undefined : `This action is only available in: ${allowedModes.join(", ")}`,
+      reason: passed
+        ? undefined
+        : `Action not available in ${ctx.environment.runtimeMode} environment`,
+      remediation: passed
+        ? undefined
+        : `This action is only available in: ${allowedModes.join(', ')}`,
     };
   };
 }
@@ -239,19 +243,19 @@ export function environmentCondition(
 /**
  * Maintenance mode condition: block non-admin access during maintenance.
  */
-export function maintenanceModeCondition(
-  name = "maintenance-mode",
-): AbacCondition {
+export function maintenanceModeCondition(name = 'maintenance-mode'): AbacCondition {
   return (ctx: AbacContext): AbacConditionResult => {
     if (!ctx.environment.maintenanceMode) {
       return { passed: true, conditionName: name };
     }
-    const isAdmin = ctx.user.role === "admin";
+    const isAdmin = ctx.user.role === 'admin';
     return {
       passed: isAdmin,
       conditionName: name,
-      reason: isAdmin ? undefined : "System is in maintenance mode",
-      remediation: isAdmin ? undefined : "Wait for maintenance to complete or contact your administrator",
+      reason: isAdmin ? undefined : 'System is in maintenance mode',
+      remediation: isAdmin
+        ? undefined
+        : 'Wait for maintenance to complete or contact your administrator',
     };
   };
 }
@@ -259,10 +263,7 @@ export function maintenanceModeCondition(
 /**
  * Feature flag condition: require a specific feature flag to be active.
  */
-export function featureFlagCondition(
-  requiredFlag: string,
-  name?: string,
-): AbacCondition {
+export function featureFlagCondition(requiredFlag: string, name?: string): AbacCondition {
   const condName = name ?? `feature-flag:${requiredFlag}`;
   return (ctx: AbacContext): AbacConditionResult => {
     const passed = ctx.environment.featureFlags.includes(requiredFlag);
@@ -290,10 +291,7 @@ export function andConditions(conditions: AbacCondition[]): AbacCondition[] {
 /**
  * OR combinator: wrap multiple conditions into one that passes if any passes.
  */
-export function orCondition(
-  conditions: AbacCondition[],
-  name = "or-group",
-): AbacCondition {
+export function orCondition(conditions: AbacCondition[], name = 'or-group'): AbacCondition {
   return (ctx: AbacContext): AbacConditionResult => {
     const results = conditions.map((c) => c(ctx));
     const anyPassed = results.some((r) => r.passed);
@@ -303,7 +301,10 @@ export function orCondition(
     return {
       passed: false,
       conditionName: name,
-      reason: results.map((r) => r.reason).filter(Boolean).join("; "),
+      reason: results
+        .map((r) => r.reason)
+        .filter(Boolean)
+        .join('; '),
       remediation: results.map((r) => r.remediation).filter(Boolean)[0],
     };
   };
@@ -355,17 +356,14 @@ export function clearAbacPolicies(): void {
 /**
  * Evaluate a single ABAC policy against the context.
  */
-export function evaluateAbacPolicy(
-  policy: AbacPolicy,
-  ctx: AbacContext,
-): AbacResult {
+export function evaluateAbacPolicy(policy: AbacPolicy, ctx: AbacContext): AbacResult {
   if (!policy.enabled) {
     return { allowed: true, evaluatedConditions: [] };
   }
 
   const results = policy.conditions.map((c) => c(ctx));
 
-  if (policy.combinator === "AND") {
+  if (policy.combinator === 'AND') {
     const violations = results.filter((r) => !r.passed);
     if (violations.length === 0) {
       return {
@@ -376,8 +374,12 @@ export function evaluateAbacPolicy(
     return {
       allowed: false,
       violations,
-      reason: violations.map((v) => v.reason).filter(Boolean).join("; "),
-      remediation: violations.map((v) => v.remediation).filter(Boolean)[0] ?? "Contact your administrator",
+      reason: violations
+        .map((v) => v.reason)
+        .filter(Boolean)
+        .join('; '),
+      remediation:
+        violations.map((v) => v.remediation).filter(Boolean)[0] ?? 'Contact your administrator',
     };
   }
 
@@ -392,8 +394,12 @@ export function evaluateAbacPolicy(
   return {
     allowed: false,
     violations: results.filter((r) => !r.passed),
-    reason: results.map((r) => r.reason).filter(Boolean).join("; "),
-    remediation: results.map((r) => r.remediation).filter(Boolean)[0] ?? "Contact your administrator",
+    reason: results
+      .map((r) => r.reason)
+      .filter(Boolean)
+      .join('; '),
+    remediation:
+      results.map((r) => r.remediation).filter(Boolean)[0] ?? 'Contact your administrator',
   };
 }
 
@@ -403,7 +409,7 @@ export function evaluateAbacPolicy(
  */
 export function evaluateAbac(ctx: AbacContext): AbacResult {
   const matchingPolicies = policyRegistry.filter(
-    (p) => p.enabled && p.actionPatterns.some((pat) => pat.test(ctx.action)),
+    (p) => p.enabled && p.actionPatterns.some((pat) => pat.test(ctx.action))
   );
 
   if (matchingPolicies.length === 0) {
@@ -434,9 +440,9 @@ export function buildAbacContext(
     method?: string;
     url?: string;
   },
-  user: AbacContext["user"],
+  user: AbacContext['user'],
   action: string,
-  resourceOverrides?: Partial<ResourceAttributes>,
+  resourceOverrides?: Partial<ResourceAttributes>
 ): AbacContext {
   return {
     request: extractRequestAttributes(request),
@@ -458,66 +464,66 @@ export function buildAbacContext(
 export function initializeDefaultAbacPolicies(): void {
   // 1. Maintenance mode blocks non-admin access
   registerAbacPolicy({
-    name: "system-maintenance-guard",
-    description: "Block non-admin access during maintenance mode",
+    name: 'system-maintenance-guard',
+    description: 'Block non-admin access during maintenance mode',
     actionPatterns: [/.*/],
     conditions: [maintenanceModeCondition()],
-    combinator: "AND",
+    combinator: 'AND',
     enabled: true,
   });
 
   // 2. Admin actions require internal network in prod
   registerAbacPolicy({
-    name: "admin-network-restriction",
-    description: "Admin actions require internal network in rc/prod",
+    name: 'admin-network-restriction',
+    description: 'Admin actions require internal network in rc/prod',
     actionPatterns: [/^admin\./],
     conditions: [
       (ctx: AbacContext): AbacConditionResult => {
         // Only enforce in rc/prod
-        if (ctx.environment.runtimeMode !== "rc" && ctx.environment.runtimeMode !== "prod") {
-          return { passed: true, conditionName: "admin-network-env-gate" };
+        if (ctx.environment.runtimeMode !== 'rc' && ctx.environment.runtimeMode !== 'prod') {
+          return { passed: true, conditionName: 'admin-network-env-gate' };
         }
-        return internalNetworkCondition("admin-internal-network")(ctx);
+        return internalNetworkCondition('admin-internal-network')(ctx);
       },
     ],
-    combinator: "AND",
+    combinator: 'AND',
     enabled: true,
   });
 
   // 3. Restricted sensitivity requires admin or provider role
   registerAbacPolicy({
-    name: "restricted-data-clearance",
-    description: "Restricted-sensitivity data requires admin or provider clearance",
+    name: 'restricted-data-clearance',
+    description: 'Restricted-sensitivity data requires admin or provider clearance',
     actionPatterns: [/^clinical\./, /^patient\./],
     conditions: [
       sensitivityCondition(
         {
-          admin: "restricted",
-          provider: "restricted",
-          pharmacist: "confidential",
-          nurse: "confidential",
-          billing: "internal",
-          clerk: "internal",
-          support: "public",
+          admin: 'restricted',
+          provider: 'restricted',
+          pharmacist: 'confidential',
+          nurse: 'confidential',
+          billing: 'internal',
+          clerk: 'internal',
+          support: 'public',
         },
-        "role-sensitivity-clearance",
+        'role-sensitivity-clearance'
       ),
     ],
-    combinator: "AND",
+    combinator: 'AND',
     enabled: true,
   });
 
   // 4. Audit export only in business hours (configurable)
-  if (process.env.ABAC_AUDIT_EXPORT_HOURS === "true") {
+  if (process.env.ABAC_AUDIT_EXPORT_HOURS === 'true') {
     registerAbacPolicy({
-      name: "audit-export-business-hours",
-      description: "Audit exports restricted to business hours",
+      name: 'audit-export-business-hours',
+      description: 'Audit exports restricted to business hours',
       actionPatterns: [/^audit\.export/],
       conditions: [
-        timeOfDayCondition(6, 22, "audit-export-hours"),
-        dayOfWeekCondition([1, 2, 3, 4, 5], "audit-export-weekday"),
+        timeOfDayCondition(6, 22, 'audit-export-hours'),
+        dayOfWeekCondition([1, 2, 3, 4, 5], 'audit-export-weekday'),
       ],
-      combinator: "AND",
+      combinator: 'AND',
       enabled: true,
     });
   }

@@ -5,6 +5,7 @@
 PHASE 30 -- TELEHEALTH (provider adapter architecture) + device check + waiting room
 
 A) Provider interface
+
 - TelehealthProvider:
   - createRoom(appointmentId, participants)
   - joinUrl(roomId, role)
@@ -13,6 +14,7 @@ A) Provider interface
 - Create stubs for other providers (no hardcoding)
 
 B) UX
+
 - Patient portal:
   - upcoming appointment -> "Test device" -> waiting room -> join
 - Clinician side (CPRS shell):
@@ -26,17 +28,20 @@ B) UX
   - show "provider will join shortly"
 
 C) Security + compliance posture
+
 - Meeting links are short-lived and bound to session
 - No PHI in meeting URL
 - Audit events: room created/joined/ended
 - Optional recording is OFF by default; if enabled later, document consent workflow
 
 D) Reuse reference code
+
 - Review reference/ottehr ehr main telehealth patterns
 - Review reference/All In One Telehealth Platform -AIOTP- patterns
 - Reuse only if license permits; record in THIRD_PARTY_NOTICES
 
 E) Docs
+
 - docs/runbooks/phase30-telehealth.md
 
 ## Implementation Steps

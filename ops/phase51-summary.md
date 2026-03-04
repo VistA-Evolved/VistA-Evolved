@@ -3,6 +3,7 @@
 ## What Changed
 
 ### A) Enhanced Module Manifests
+
 - `config/modules.json` upgraded from v1.0.0 to v2.0.0 schema
 - Added per-module: `version`, `permissions[]`, `dataStores[]`, `healthCheckEndpoint`
 - All 13 modules have complete manifests
@@ -10,6 +11,7 @@
 - Runtime enforcement unchanged: module-guard blocks disabled module routes with 403
 
 ### B) Tenant Config Loader
+
 - New `config/marketplace-tenant.ts` with:
   - 4 jurisdiction packs (US, PH, Global, Sandbox) with default connectors/settings
   - `MarketplaceTenantConfig` with enabledModules, connectors, customSettings
@@ -25,6 +27,7 @@
 - AUTH_RULES and module-guard updated for `/api/marketplace` bypass
 
 ### C) Admin Modules UI
+
 - New page at `/cprs/admin/modules` with 4 tabs:
   - Modules -- list, toggle, dependency constraints, expandable detail
   - Connectors -- view/toggle tenant connectors
@@ -32,6 +35,7 @@
   - Status -- summary stats dashboard
 
 ### D) Documentation
+
 - `docs/platform/modules.md` -- Module architecture, manifest schema, SKUs, runtime enforcement
 - `docs/platform/tenant-config.md` -- Tenant config layers, jurisdiction packs, API reference
 
@@ -50,11 +54,13 @@
    ```
 
 ## Verifier Output
+
 - `npx tsc --noEmit` in apps/api: CLEAN
 - `npx tsc --noEmit` in apps/web: CLEAN
 - No IDE errors in modified files
 
 ## Follow-ups
+
 - Persist tenant configs to database (currently in-memory)
 - Module versioning + marketplace catalog service
 - Module dependency graph visualization in UI

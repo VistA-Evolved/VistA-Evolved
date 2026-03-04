@@ -2,6 +2,7 @@
 
 Goal:
 Prepare the repo for AI + team development before any app code:
+
 - folder structure
 - baseline docs
 - minimal package manager wiring (safe)
@@ -11,11 +12,13 @@ Repo path:
 C:\Users\kmoul\OneDrive\Documents\GitHub\VistA-Evolved
 
 Rules:
+
 - Inventory first.
 - Do not delete any existing docs.
 - If files exist, leave them unless incorrect.
 
 Must ensure these exist:
+
 - README.md
 - CONTRIBUTING.md
 - SECURITY.md
@@ -29,10 +32,12 @@ Must ensure these exist:
   private:true, packageManager pinned, engines node >=24 <25
 
 Windows requirements section in README.md:
+
 - Node 24 LTS
 - pnpm 10
 - PowerShell execution policy RemoteSigned (if needed)
 
 Output:
+
 - list files created/modified
 - exact commands to run: pnpm -r install

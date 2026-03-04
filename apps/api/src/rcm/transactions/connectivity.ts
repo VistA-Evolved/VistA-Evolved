@@ -35,14 +35,14 @@ const DEFAULT_PROFILE: ConnectivityProfile = {
   ackRequirements: {
     require999: true,
     require277CA: true,
-    ack999TimeoutMs: 24 * 60 * 60 * 1000,    // 24 hours per CORE
-    ack277CATimeoutMs: 48 * 60 * 60 * 1000,   // 48 hours
+    ack999TimeoutMs: 24 * 60 * 60 * 1000, // 24 hours per CORE
+    ack277CATimeoutMs: 48 * 60 * 60 * 1000, // 48 hours
   },
 
   retryPolicy: {
     maxRetries: 3,
-    initialDelayMs: 5_000,        // 5 seconds
-    maxDelayMs: 300_000,          // 5 minutes
+    initialDelayMs: 5_000, // 5 seconds
+    maxDelayMs: 300_000, // 5 minutes
     backoffMultiplier: 2.0,
     retryableErrors: [
       'TIMEOUT',
@@ -56,30 +56,78 @@ const DEFAULT_PROFILE: ConnectivityProfile = {
   },
 
   timeouts: {
-    connectTimeoutMs: 30_000,      // 30 seconds
-    readTimeoutMs: 120_000,        // 2 minutes
-    totalTimeoutMs: 300_000,       // 5 minutes
+    connectTimeoutMs: 30_000, // 30 seconds
+    readTimeoutMs: 120_000, // 2 minutes
+    totalTimeoutMs: 300_000, // 5 minutes
   },
 
   dlqPolicy: {
-    maxRetries: 3,                 // After 3 total retries, move to DLQ
+    maxRetries: 3, // After 3 total retries, move to DLQ
     moveToLDQAfterFailures: 3,
     alertOnDLQ: true,
   },
 
   responseWindows: {
-    '837P': { expectedResponseTimeMs: 20_000, maxWaitTimeMs: 24 * 60 * 60 * 1000, description: 'Claim submission: 999 within 24h' },
-    '837I': { expectedResponseTimeMs: 20_000, maxWaitTimeMs: 24 * 60 * 60 * 1000, description: 'Institutional claim: 999 within 24h' },
-    '270':  { expectedResponseTimeMs: 20_000, maxWaitTimeMs: 20_000, description: 'CORE 258: Real-time eligibility response within 20s' },
-    '271':  { expectedResponseTimeMs: 20_000, maxWaitTimeMs: 20_000, description: 'Eligibility response' },
-    '276':  { expectedResponseTimeMs: 20_000, maxWaitTimeMs: 20_000, description: 'Claim status: real-time expected within 20s' },
-    '277':  { expectedResponseTimeMs: 20_000, maxWaitTimeMs: 86_400_000, description: 'Claim status response' },
-    '835':  { expectedResponseTimeMs: 86_400_000, maxWaitTimeMs: 30 * 86_400_000, description: 'ERA: within payment cycle' },
-    '999':  { expectedResponseTimeMs: 86_400_000, maxWaitTimeMs: 86_400_000, description: 'Implementation ack within 24h' },
-    '997':  { expectedResponseTimeMs: 86_400_000, maxWaitTimeMs: 86_400_000, description: 'Functional ack within 24h' },
-    'TA1':  { expectedResponseTimeMs: 86_400_000, maxWaitTimeMs: 86_400_000, description: 'Interchange ack within 24h' },
-    '275':  { expectedResponseTimeMs: 86_400_000, maxWaitTimeMs: 86_400_000, description: 'Attachment' },
-    '278':  { expectedResponseTimeMs: 120_000, maxWaitTimeMs: 2 * 86_400_000, description: 'Prior auth: 2 min real-time, 2 day async' },
+    '837P': {
+      expectedResponseTimeMs: 20_000,
+      maxWaitTimeMs: 24 * 60 * 60 * 1000,
+      description: 'Claim submission: 999 within 24h',
+    },
+    '837I': {
+      expectedResponseTimeMs: 20_000,
+      maxWaitTimeMs: 24 * 60 * 60 * 1000,
+      description: 'Institutional claim: 999 within 24h',
+    },
+    '270': {
+      expectedResponseTimeMs: 20_000,
+      maxWaitTimeMs: 20_000,
+      description: 'CORE 258: Real-time eligibility response within 20s',
+    },
+    '271': {
+      expectedResponseTimeMs: 20_000,
+      maxWaitTimeMs: 20_000,
+      description: 'Eligibility response',
+    },
+    '276': {
+      expectedResponseTimeMs: 20_000,
+      maxWaitTimeMs: 20_000,
+      description: 'Claim status: real-time expected within 20s',
+    },
+    '277': {
+      expectedResponseTimeMs: 20_000,
+      maxWaitTimeMs: 86_400_000,
+      description: 'Claim status response',
+    },
+    '835': {
+      expectedResponseTimeMs: 86_400_000,
+      maxWaitTimeMs: 30 * 86_400_000,
+      description: 'ERA: within payment cycle',
+    },
+    '999': {
+      expectedResponseTimeMs: 86_400_000,
+      maxWaitTimeMs: 86_400_000,
+      description: 'Implementation ack within 24h',
+    },
+    '997': {
+      expectedResponseTimeMs: 86_400_000,
+      maxWaitTimeMs: 86_400_000,
+      description: 'Functional ack within 24h',
+    },
+    TA1: {
+      expectedResponseTimeMs: 86_400_000,
+      maxWaitTimeMs: 86_400_000,
+      description: 'Interchange ack within 24h',
+    },
+    '275': {
+      expectedResponseTimeMs: 86_400_000,
+      maxWaitTimeMs: 86_400_000,
+      description: 'Attachment',
+    },
+    '278': {
+      expectedResponseTimeMs: 120_000,
+      maxWaitTimeMs: 2 * 86_400_000,
+      description: 'Prior auth: 2 min real-time, 2 day async',
+    },
   },
 
   errorStandards: {
@@ -97,7 +145,9 @@ export function getConnectivityProfile(): ConnectivityProfile {
   return { ...activeProfile };
 }
 
-export function updateConnectivityProfile(partial: Partial<ConnectivityProfile>): ConnectivityProfile {
+export function updateConnectivityProfile(
+  partial: Partial<ConnectivityProfile>
+): ConnectivityProfile {
   activeProfile = { ...activeProfile, ...partial };
   return { ...activeProfile };
 }
@@ -120,7 +170,7 @@ export interface GateCheckResult {
  */
 export function checkPreTransmitGates(
   transactionSet: X12TransactionSet,
-  x12Payload: string,
+  x12Payload: string
 ): GateCheckResult[] {
   const results: GateCheckResult[] = [];
 
@@ -151,7 +201,7 @@ export function checkPreTransmitGates(
   });
 
   // Gate 4: Segment terminator consistency
-  const segments = x12Payload.split('~').filter(s => s.trim());
+  const segments = x12Payload.split('~').filter((s) => s.trim());
   const hasSegments = segments.length >= 4; // Minimum: ISA, GS, ST, SE (or equivalent)
   results.push({
     gate: 'segment_count',
@@ -175,7 +225,9 @@ export function checkPreTransmitGates(
   results.push({
     gate: 'response_window',
     passed: !!window,
-    message: window ? `Response window: ${window.description}` : `No response window configured for ${transactionSet}`,
+    message: window
+      ? `Response window: ${window.description}`
+      : `No response window configured for ${transactionSet}`,
     severity: window ? 'info' : 'warning',
   });
 
@@ -190,11 +242,21 @@ export function checkAckGates(transactionId: string): GateCheckResult[] {
   const txn = getTransaction(transactionId);
 
   if (!txn) {
-    results.push({ gate: 'transaction_exists', passed: false, message: 'Transaction not found', severity: 'error' });
+    results.push({
+      gate: 'transaction_exists',
+      passed: false,
+      message: 'Transaction not found',
+      severity: 'error',
+    });
     return results;
   }
 
-  results.push({ gate: 'transaction_exists', passed: true, message: `Transaction ${transactionId} found`, severity: 'info' });
+  results.push({
+    gate: 'transaction_exists',
+    passed: true,
+    message: `Transaction ${transactionId} found`,
+    severity: 'info',
+  });
 
   // Check if 999 is required and received
   if (activeProfile.ackRequirements.require999) {
@@ -255,7 +317,11 @@ export function calculateRetryDelay(retryCount: number): number {
 /**
  * Determine if a transaction should be retried or moved to DLQ.
  */
-export function shouldRetry(transactionId: string): { retry: boolean; moveToDLQ: boolean; nextDelayMs: number } {
+export function shouldRetry(transactionId: string): {
+  retry: boolean;
+  moveToDLQ: boolean;
+  nextDelayMs: number;
+} {
   const txn = getTransaction(transactionId);
   if (!txn) return { retry: false, moveToDLQ: false, nextDelayMs: 0 };
 
@@ -286,12 +352,20 @@ export function shouldRetry(transactionId: string): { retry: boolean; moveToDLQ:
 /**
  * Process retry for a failed/rejected transaction.
  */
-export function processRetry(transactionId: string): { retried: boolean; movedToDLQ: boolean; nextDelayMs: number } {
+export function processRetry(transactionId: string): {
+  retried: boolean;
+  movedToDLQ: boolean;
+  nextDelayMs: number;
+} {
   const decision = shouldRetry(transactionId);
 
   if (decision.moveToDLQ) {
     transitionTransaction(transactionId, 'dlq', {
-      error: { code: 'DLQ', description: 'Moved to dead-letter queue after max retries', severity: 'error' },
+      error: {
+        code: 'DLQ',
+        description: 'Moved to dead-letter queue after max retries',
+        severity: 'error',
+      },
     });
     return { retried: false, movedToDLQ: true, nextDelayMs: 0 };
   }
@@ -335,10 +409,14 @@ export function getConnectivityHealth(): ConnectivityHealth {
   const ackPending = listTransactions({ state: 'ack_pending' });
 
   const now = Date.now();
-  const overdueAcks = ackPending.filter(txn => {
-    const sentTime = txn.envelope.sentAt ? new Date(txn.envelope.sentAt).getTime() : txn.createdAt ? new Date(txn.createdAt).getTime() : now;
+  const overdueAcks = ackPending.filter((txn) => {
+    const sentTime = txn.envelope.sentAt
+      ? new Date(txn.envelope.sentAt).getTime()
+      : txn.createdAt
+        ? new Date(txn.createdAt).getTime()
+        : now;
     const window = activeProfile.responseWindows[txn.envelope.transactionSet];
-    return window ? (now - sentTime) > window.maxWaitTimeMs : false;
+    return window ? now - sentTime > window.maxWaitTimeMs : false;
   });
 
   const checks: GateCheckResult[] = [];
@@ -353,14 +431,19 @@ export function getConnectivityHealth(): ConnectivityHealth {
   checks.push({
     gate: 'overdue_acks',
     passed: overdueAcks.length === 0,
-    message: overdueAcks.length === 0 ? 'No overdue acknowledgements' : `${overdueAcks.length} overdue acks`,
+    message:
+      overdueAcks.length === 0
+        ? 'No overdue acknowledgements'
+        : `${overdueAcks.length} overdue acks`,
     severity: overdueAcks.length === 0 ? 'info' : 'error',
   });
 
   const status: ConnectivityHealth['status'] =
-    dlq.length > 5 || overdueAcks.length > 0 ? 'unhealthy' :
-    dlq.length > 0 || failed.length > 3 ? 'degraded' :
-    'healthy';
+    dlq.length > 5 || overdueAcks.length > 0
+      ? 'unhealthy'
+      : dlq.length > 0 || failed.length > 3
+        ? 'degraded'
+        : 'healthy';
 
   return {
     status,

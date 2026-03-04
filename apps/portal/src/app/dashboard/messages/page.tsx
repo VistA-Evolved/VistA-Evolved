@@ -8,10 +8,10 @@
  * IMPORTANT: SLA disclaimer — this is NOT for urgent communication.
  */
 
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { DataSourceBadge } from "@/components/data-source-badge";
+import { useEffect, useState } from 'react';
+import { DataSourceBadge } from '@/components/data-source-badge';
 import {
   fetchInbox,
   fetchDrafts,
@@ -21,24 +21,24 @@ import {
   deleteMessageDraft,
   fetchVistaMailmanInbox,
   sendVistaMailmanMessage,
-} from "@/lib/api";
+} from '@/lib/api';
 
-type Tab = "inbox" | "drafts" | "sent" | "compose";
+type Tab = 'inbox' | 'drafts' | 'sent' | 'compose';
 
 export default function MessagesPage() {
-  const [tab, setTab] = useState<Tab>("inbox");
+  const [tab, setTab] = useState<Tab>('inbox');
   const [inbox, setInbox] = useState<any[]>([]);
   const [drafts, setDrafts] = useState<any[]>([]);
   const [sent, setSent] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [slaDisclaimer, setSlaDisclaimer] = useState("");
-  const [composeSubject, setSubject] = useState("");
-  const [composeBody, setBody] = useState("");
-  const [composeCategory, setCategory] = useState("general");
+  const [slaDisclaimer, setSlaDisclaimer] = useState('');
+  const [composeSubject, setSubject] = useState('');
+  const [composeBody, setBody] = useState('');
+  const [composeCategory, setCategory] = useState('general');
   const [sending, setSending] = useState(false);
-  const [notice, setNotice] = useState("");
-  const [vistaSync, setVistaSync] = useState<string>("");
-  const [inboxSource, setInboxSource] = useState<"vista" | "local" | "">("");
+  const [notice, setNotice] = useState('');
+  const [vistaSync, setVistaSync] = useState<string>('');
+  const [inboxSource, setInboxSource] = useState<'vista' | 'local' | ''>('');
 
   useEffect(() => {
     loadMessages();
@@ -48,27 +48,30 @@ export default function MessagesPage() {
     setLoading(true);
     // Phase 130: Try VistA MailMan inbox first, fall back to Postgres
     let inboxMessages: any[] = [];
-    let source: "vista" | "local" = "local";
+    let source: 'vista' | 'local' = 'local';
     try {
       const vistaRes = await fetchVistaMailmanInbox(50);
-      if (vistaRes.ok && (vistaRes.data as any)?.source === "vista") {
+      if (vistaRes.ok && (vistaRes.data as any)?.source === 'vista') {
         inboxMessages = (vistaRes.data as any)?.messages || [];
-        source = "vista";
+        source = 'vista';
       }
-    } catch { /* VistA unavailable — fall through */ }
-    if (source !== "vista") {
+    } catch {
+      /* VistA unavailable — fall through */
+    }
+    if (source !== 'vista') {
       const inRes = await fetchInbox();
       inboxMessages = (inRes.data as any)?.messages || [];
-      source = (inRes.data as any)?.source === "vista" ? "vista" : "local";
+      source = (inRes.data as any)?.source === 'vista' ? 'vista' : 'local';
     }
     setInbox(inboxMessages);
     setInboxSource(source);
-    setSlaDisclaimer(source === "local" ? "Local Mode — VistA MailMan unavailable. Messages are stored locally." : "");
+    setSlaDisclaimer(
+      source === 'local'
+        ? 'Local Mode — VistA MailMan unavailable. Messages are stored locally.'
+        : ''
+    );
 
-    const [dRes, sRes] = await Promise.all([
-      fetchDrafts(),
-      fetchSentMessages(),
-    ]);
+    const [dRes, sRes] = await Promise.all([fetchDrafts(), fetchSentMessages()]);
     setDrafts((dRes.data as any)?.messages || []);
     setSent((sRes.data as any)?.messages || []);
     setLoading(false);
@@ -76,11 +79,11 @@ export default function MessagesPage() {
 
   async function handleSend() {
     if (!composeSubject.trim() || !composeBody.trim()) {
-      setNotice("Subject and message body are required.");
+      setNotice('Subject and message body are required.');
       return;
     }
     setSending(true);
-    setNotice("");
+    setNotice('');
 
     // Phase 130: Try VistA MailMan primary send first
     try {
@@ -90,22 +93,25 @@ export default function MessagesPage() {
         category: composeCategory,
       });
       if (mmRes.ok && (mmRes.data as any)?.ok) {
-        const src = (mmRes.data as any)?.source || "unknown";
-        const syncStatus = (mmRes.data as any)?.vistaSync || "pending";
+        const src = (mmRes.data as any)?.source || 'unknown';
+        const syncStatus = (mmRes.data as any)?.vistaSync || 'pending';
         setVistaSync(syncStatus);
-        const label = src === "vista"
-          ? " (sent to clinic via VistA MailMan)"
-          : " (stored locally — VistA MailMan unavailable)";
-        setSubject("");
-        setBody("");
-        setCategory("general");
-        setNotice("Message sent successfully." + label);
+        const label =
+          src === 'vista'
+            ? ' (sent to clinic via VistA MailMan)'
+            : ' (stored locally — VistA MailMan unavailable)';
+        setSubject('');
+        setBody('');
+        setCategory('general');
+        setNotice('Message sent successfully.' + label);
         setSending(false);
-        setTab("sent");
+        setTab('sent');
         loadMessages();
         return;
       }
-    } catch { /* fall through to legacy path */ }
+    } catch {
+      /* fall through to legacy path */
+    }
 
     // Fallback: legacy draft+send via Postgres store
     const draftRes = await createMessageDraft({
@@ -114,28 +120,28 @@ export default function MessagesPage() {
       category: composeCategory,
     });
     if (!draftRes.ok) {
-      setNotice("Failed to create message.");
+      setNotice('Failed to create message.');
       setSending(false);
       return;
     }
     const draftId = (draftRes.data as any)?.message?.id;
     if (!draftId) {
-      setNotice("Failed to create message draft.");
+      setNotice('Failed to create message draft.');
       setSending(false);
       return;
     }
     const sendRes = await sendMessageDraft(draftId);
     setSending(false);
     if (sendRes.ok) {
-      setVistaSync("local-only");
-      setSubject("");
-      setBody("");
-      setCategory("general");
-      setNotice("Message sent successfully. (stored locally — VistA MailMan unavailable)");
-      setTab("sent");
+      setVistaSync('local-only');
+      setSubject('');
+      setBody('');
+      setCategory('general');
+      setNotice('Message sent successfully. (stored locally — VistA MailMan unavailable)');
+      setTab('sent');
       loadMessages();
     } else {
-      setNotice("Failed to send message.");
+      setNotice('Failed to send message.');
     }
   }
 
@@ -145,65 +151,94 @@ export default function MessagesPage() {
   }
 
   const tabs: { key: Tab; label: string; count?: number }[] = [
-    { key: "inbox", label: "Inbox", count: inbox.length },
-    { key: "drafts", label: "Drafts", count: drafts.length },
-    { key: "sent", label: "Sent", count: sent.length },
-    { key: "compose", label: "Compose" },
+    { key: 'inbox', label: 'Inbox', count: inbox.length },
+    { key: 'drafts', label: 'Drafts', count: drafts.length },
+    { key: 'sent', label: 'Sent', count: sent.length },
+    { key: 'compose', label: 'Compose' },
   ];
 
   return (
     <div className="container">
-      <h1 style={{ fontSize: "1.5rem", marginBottom: "0.25rem" }}>Messages</h1>
-      <p style={{ color: "var(--portal-text-muted)", fontSize: "0.875rem", marginBottom: "1rem" }}>
+      <h1 style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>Messages</h1>
+      <p style={{ color: 'var(--portal-text-muted)', fontSize: '0.875rem', marginBottom: '1rem' }}>
         Secure messaging with your care team
       </p>
 
       {slaDisclaimer && (
-        <div style={{ padding: "0.5rem 0.75rem", background: "#fef3c7", borderRadius: 4, fontSize: "0.8125rem", color: "#92400e", marginBottom: "1rem" }}>
+        <div
+          style={{
+            padding: '0.5rem 0.75rem',
+            background: '#fef3c7',
+            borderRadius: 4,
+            fontSize: '0.8125rem',
+            color: '#92400e',
+            marginBottom: '1rem',
+          }}
+        >
           {slaDisclaimer}
         </div>
       )}
 
       {/* Phase 130: Data source indicator */}
       {inboxSource && (
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem", fontSize: "0.8125rem", color: "#64748b" }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            marginBottom: '0.75rem',
+            fontSize: '0.8125rem',
+            color: '#64748b',
+          }}
+        >
           <span>Data source:</span>
-          <DataSourceBadge source={inboxSource === "vista" ? "ehr" : "local"} />
-          {inboxSource === "local" && (
-            <span style={{ color: "#92400e" }}>(Local Mode)</span>
-          )}
+          <DataSourceBadge source={inboxSource === 'vista' ? 'ehr' : 'local'} />
+          {inboxSource === 'local' && <span style={{ color: '#92400e' }}>(Local Mode)</span>}
         </div>
       )}
 
       {/* Tab bar */}
-      <div style={{ display: "flex", gap: "0", borderBottom: "2px solid #e2e8f0", marginBottom: "1rem" }}>
+      <div
+        style={{
+          display: 'flex',
+          gap: '0',
+          borderBottom: '2px solid #e2e8f0',
+          marginBottom: '1rem',
+        }}
+      >
         {tabs.map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key)}
             style={{
-              padding: "0.5rem 1rem",
-              fontSize: "0.875rem",
+              padding: '0.5rem 1rem',
+              fontSize: '0.875rem',
               fontWeight: tab === t.key ? 600 : 400,
-              color: tab === t.key ? "#2563eb" : "#64748b",
-              background: "transparent",
-              border: "none",
-              borderBottom: tab === t.key ? "2px solid #2563eb" : "2px solid transparent",
-              cursor: "pointer",
-              marginBottom: "-2px",
+              color: tab === t.key ? '#2563eb' : '#64748b',
+              background: 'transparent',
+              border: 'none',
+              borderBottom: tab === t.key ? '2px solid #2563eb' : '2px solid transparent',
+              cursor: 'pointer',
+              marginBottom: '-2px',
             }}
           >
-            {t.label} {t.count !== undefined ? `(${t.count})` : ""}
+            {t.label} {t.count !== undefined ? `(${t.count})` : ''}
           </button>
         ))}
       </div>
 
       {loading ? (
-        <p style={{ color: "#94a3b8" }}>Loading messages...</p>
+        <p style={{ color: '#94a3b8' }}>Loading messages...</p>
       ) : (
         <>
-          {tab === "inbox" && <MessageList messages={inbox} emptyText="No messages in your inbox." dataSource={inboxSource || "local"} />}
-          {tab === "drafts" && (
+          {tab === 'inbox' && (
+            <MessageList
+              messages={inbox}
+              emptyText="No messages in your inbox."
+              dataSource={inboxSource || 'local'}
+            />
+          )}
+          {tab === 'drafts' && (
             <MessageList
               messages={drafts}
               emptyText="No drafts."
@@ -211,27 +246,40 @@ export default function MessagesPage() {
               dataSource="local"
             />
           )}
-          {tab === "sent" && <MessageList messages={sent} emptyText="No sent messages." dataSource="local" />}
-          {tab === "compose" && (
+          {tab === 'sent' && (
+            <MessageList messages={sent} emptyText="No sent messages." dataSource="local" />
+          )}
+          {tab === 'compose' && (
             <div className="card">
-              <h3 style={{ margin: "0 0 0.75rem" }}>New Message</h3>
+              <h3 style={{ margin: '0 0 0.75rem' }}>New Message</h3>
               {notice && (
-                <div style={{
-                  padding: "0.375rem 0.75rem", borderRadius: 4, marginBottom: "0.75rem",
-                  background: notice.includes("success") ? "#dcfce7" : "#fef2f2",
-                  color: notice.includes("success") ? "#166534" : "#dc2626",
-                  fontSize: "0.8125rem",
-                }}>
+                <div
+                  style={{
+                    padding: '0.375rem 0.75rem',
+                    borderRadius: 4,
+                    marginBottom: '0.75rem',
+                    background: notice.includes('success') ? '#dcfce7' : '#fef2f2',
+                    color: notice.includes('success') ? '#166534' : '#dc2626',
+                    fontSize: '0.8125rem',
+                  }}
+                >
                   {notice}
                 </div>
               )}
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 <div>
-                  <label style={{ fontSize: "0.8125rem", fontWeight: 500 }}>Category</label>
+                  <label style={{ fontSize: '0.8125rem', fontWeight: 500 }}>Category</label>
                   <select
                     value={composeCategory}
                     onChange={(e) => setCategory(e.target.value)}
-                    style={{ display: "block", width: "100%", padding: "0.375rem", borderRadius: 4, border: "1px solid #cbd5e1", marginTop: "0.25rem" }}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      padding: '0.375rem',
+                      borderRadius: 4,
+                      border: '1px solid #cbd5e1',
+                      marginTop: '0.25rem',
+                    }}
                   >
                     <option value="general">General Question</option>
                     <option value="medication">Medication Question</option>
@@ -241,50 +289,77 @@ export default function MessagesPage() {
                   </select>
                 </div>
                 <div>
-                  <label style={{ fontSize: "0.8125rem", fontWeight: 500 }}>Subject</label>
+                  <label style={{ fontSize: '0.8125rem', fontWeight: 500 }}>Subject</label>
                   <input
                     type="text"
                     value={composeSubject}
                     onChange={(e) => setSubject(e.target.value)}
                     placeholder="Message subject"
                     maxLength={200}
-                    style={{ display: "block", width: "100%", padding: "0.375rem", borderRadius: 4, border: "1px solid #cbd5e1", marginTop: "0.25rem" }}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      padding: '0.375rem',
+                      borderRadius: 4,
+                      border: '1px solid #cbd5e1',
+                      marginTop: '0.25rem',
+                    }}
                   />
                 </div>
                 <div>
-                  <label style={{ fontSize: "0.8125rem", fontWeight: 500 }}>Message</label>
+                  <label style={{ fontSize: '0.8125rem', fontWeight: 500 }}>Message</label>
                   <textarea
                     value={composeBody}
                     onChange={(e) => setBody(e.target.value)}
                     placeholder="Type your message here..."
                     rows={6}
                     maxLength={10000}
-                    style={{ display: "block", width: "100%", padding: "0.375rem", borderRadius: 4, border: "1px solid #cbd5e1", marginTop: "0.25rem", resize: "vertical" }}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      padding: '0.375rem',
+                      borderRadius: 4,
+                      border: '1px solid #cbd5e1',
+                      marginTop: '0.25rem',
+                      resize: 'vertical',
+                    }}
                   />
                 </div>
                 <button
                   onClick={handleSend}
                   disabled={sending}
                   style={{
-                    alignSelf: "flex-end",
-                    padding: "0.5rem 1.25rem",
-                    background: sending ? "#94a3b8" : "#2563eb",
-                    color: "#fff",
-                    border: "none",
+                    alignSelf: 'flex-end',
+                    padding: '0.5rem 1.25rem',
+                    background: sending ? '#94a3b8' : '#2563eb',
+                    color: '#fff',
+                    border: 'none',
                     borderRadius: 4,
                     fontWeight: 600,
-                    cursor: sending ? "not-allowed" : "pointer",
+                    cursor: sending ? 'not-allowed' : 'pointer',
                   }}
                 >
-                  {sending ? "Sending..." : "Send Message"}
+                  {sending ? 'Sending...' : 'Send Message'}
                 </button>
                 {vistaSync && (
-                  <div style={{
-                    fontSize: "0.75rem",
-                    color: vistaSync === "synced" ? "#166534" : vistaSync === "integration-pending" ? "#92400e" : "#64748b",
-                    marginTop: "0.25rem",
-                  }}>
-                    VistA MailMan: {vistaSync === "synced" ? "Synced to clinic" : vistaSync === "integration-pending" ? "Integration pending (target: DSIC SEND MAIL MSG)" : vistaSync}
+                  <div
+                    style={{
+                      fontSize: '0.75rem',
+                      color:
+                        vistaSync === 'synced'
+                          ? '#166534'
+                          : vistaSync === 'integration-pending'
+                            ? '#92400e'
+                            : '#64748b',
+                      marginTop: '0.25rem',
+                    }}
+                  >
+                    VistA MailMan:{' '}
+                    {vistaSync === 'synced'
+                      ? 'Synced to clinic'
+                      : vistaSync === 'integration-pending'
+                        ? 'Integration pending (target: DSIC SEND MAIL MSG)'
+                        : vistaSync}
                   </div>
                 )}
               </div>
@@ -300,17 +375,17 @@ function MessageList({
   messages,
   emptyText,
   onDelete,
-  dataSource = "local",
+  dataSource = 'local',
 }: {
   messages: any[];
   emptyText: string;
   onDelete?: (id: string) => void;
-  dataSource?: "vista" | "local";
+  dataSource?: 'vista' | 'local';
 }) {
   if (!messages.length) {
     return (
       <div className="card">
-        <div className="empty-state" style={{ padding: "1.5rem" }}>
+        <div className="empty-state" style={{ padding: '1.5rem' }}>
           <p>{emptyText}</p>
         </div>
       </div>
@@ -318,34 +393,71 @@ function MessageList({
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
       {messages.map((msg: any) => (
-        <div key={msg.id || msg.ien || msg.subject} className="card" style={{ padding: "0.75rem 1rem" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div
+          key={msg.id || msg.ien || msg.subject}
+          className="card"
+          style={{ padding: '0.75rem 1rem' }}
+        >
+          <div
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}
+          >
             <div>
-              <div style={{ fontWeight: 600, fontSize: "0.875rem" }}>{msg.subject || "(No subject)"}</div>
-              <div style={{ fontSize: "0.75rem", color: "#64748b", marginTop: "0.125rem" }}>
-                {msg.category && <span style={{ textTransform: "capitalize" }}>{msg.category.replace("_", " ")} · </span>}
+              <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>
+                {msg.subject || '(No subject)'}
+              </div>
+              <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.125rem' }}>
+                {msg.category && (
+                  <span style={{ textTransform: 'capitalize' }}>
+                    {msg.category.replace('_', ' ')} ·{' '}
+                  </span>
+                )}
                 {msg.fromName && <span>{msg.fromName} · </span>}
-                {msg.status === "sent" ? "Sent" : msg.status === "draft" ? "Draft" : msg.isNew ? "New" : "Received"}{" "}
-                {msg.date ? new Date(msg.date).toLocaleDateString() : msg.sentAt ? new Date(msg.sentAt).toLocaleDateString() : msg.createdAt ? new Date(msg.createdAt).toLocaleDateString() : ""}
+                {msg.status === 'sent'
+                  ? 'Sent'
+                  : msg.status === 'draft'
+                    ? 'Draft'
+                    : msg.isNew
+                      ? 'New'
+                      : 'Received'}{' '}
+                {msg.date
+                  ? new Date(msg.date).toLocaleDateString()
+                  : msg.sentAt
+                    ? new Date(msg.sentAt).toLocaleDateString()
+                    : msg.createdAt
+                      ? new Date(msg.createdAt).toLocaleDateString()
+                      : ''}
               </div>
             </div>
-            <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-              {msg.status === "draft" && onDelete && (
+            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              {msg.status === 'draft' && onDelete && (
                 <button
                   onClick={() => onDelete(msg.id)}
-                  style={{ fontSize: "0.75rem", color: "#dc2626", background: "transparent", border: "none", cursor: "pointer" }}
+                  style={{
+                    fontSize: '0.75rem',
+                    color: '#dc2626',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
                 >
                   Delete
                 </button>
               )}
-              <DataSourceBadge source={dataSource === "vista" ? "ehr" : "local"} />
+              <DataSourceBadge source={dataSource === 'vista' ? 'ehr' : 'local'} />
             </div>
           </div>
           {msg.body && (
-            <p style={{ fontSize: "0.8125rem", color: "#475569", marginTop: "0.375rem", whiteSpace: "pre-wrap" }}>
-              {msg.body.length > 200 ? msg.body.slice(0, 200) + "..." : msg.body}
+            <p
+              style={{
+                fontSize: '0.8125rem',
+                color: '#475569',
+                marginTop: '0.375rem',
+                whiteSpace: 'pre-wrap',
+              }}
+            >
+              {msg.body.length > 200 ? msg.body.slice(0, 200) + '...' : msg.body}
             </p>
           )}
         </div>

@@ -30,9 +30,9 @@ export interface ChargeCapturCandidate {
   providerDuz?: string;
   cptCodes: string[];
   diagnosisCodes: string[];
-  hasIbCharge: boolean;          // true if ^IB(350) link exists
-  hasClaimRecord: boolean;       // true if ^DGCR(399) link exists
-  estimatedCharge?: number;      // cents, estimated from CPT fee schedule
+  hasIbCharge: boolean; // true if ^IB(350) link exists
+  hasClaimRecord: boolean; // true if ^DGCR(399) link exists
+  estimatedCharge?: number; // cents, estimated from CPT fee schedule
   captureStatus: 'ready' | 'partial' | 'needs_review';
 }
 
@@ -62,10 +62,10 @@ export interface ChargeCaptureResult {
 export async function getChargeCaptureCandidates(
   patientDfn: string,
   options?: {
-    dateFrom?: string;    // ISO date
-    dateTo?: string;      // ISO date
+    dateFrom?: string; // ISO date
+    dateTo?: string; // ISO date
     locationIen?: string;
-  },
+  }
 ): Promise<ChargeCaptureResult> {
   return {
     ok: false,
@@ -90,13 +90,14 @@ export async function getChargeCaptureCandidates(
         '4. Visits with CPT codes but NO IB charge = charge capture candidates',
         '5. Return candidate list sorted by date descending',
       ].join('\n'),
-      sandboxNote: 'WorldVistA Docker has PCE encounters in ^AUPNVSIT. ' +
+      sandboxNote:
+        'WorldVistA Docker has PCE encounters in ^AUPNVSIT. ' +
         'IB charges are empty, so all encounters would appear as candidates. ' +
         'Production VistA with active IB will filter correctly.',
     },
     errors: [
       `Patient ${patientDfn}: charge capture scan not available in sandbox. ` +
-      'PCE encounters exist but IB charge linkage (^IB(350)) is empty.',
+        'PCE encounters exist but IB charge linkage (^IB(350)) is empty.',
     ],
   };
 }
@@ -107,9 +108,7 @@ export async function getChargeCaptureCandidates(
  * Target VistA file: ^DPT(DFN,"I") — Patient Insurance entries
  * Target RPC: IBCN INSURANCE LIST — List patient insurance policies
  */
-export async function getVistaInsurancePolicies(
-  patientDfn: string,
-): Promise<{
+export async function getVistaInsurancePolicies(patientDfn: string): Promise<{
   ok: boolean;
   policies: Array<{
     insuranceIen: string;

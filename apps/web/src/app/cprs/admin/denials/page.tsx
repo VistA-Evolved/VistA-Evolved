@@ -16,7 +16,6 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-
 /* ── Types ────────────────────────────────────────────────────── */
 
 interface DenialItem {
@@ -85,7 +84,9 @@ export default function DenialsWorkbenchPage() {
       params.set('limit', String(limit));
       params.set('offset', String(page * limit));
 
-      const res = await fetch(`${API}/rcm/claims/lifecycle/denials?${params}`, { credentials: 'include' });
+      const res = await fetch(`${API}/rcm/claims/lifecycle/denials?${params}`, {
+        credentials: 'include',
+      });
       const data = await res.json();
       if (data.ok) {
         setDenials(data.items || []);
@@ -100,7 +101,9 @@ export default function DenialsWorkbenchPage() {
     }
   }, [resolvedFilter, sourceFilter, page]);
 
-  useEffect(() => { fetchDenials(); }, [fetchDenials]);
+  useEffect(() => {
+    fetchDenials();
+  }, [fetchDenials]);
 
   const resolveDenial = async (denialId: string) => {
     try {
@@ -124,23 +127,39 @@ export default function DenialsWorkbenchPage() {
   };
 
   const formatCurrency = (cents: number) => {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+      cents / 100
+    );
   };
 
   return (
     <div style={{ padding: 24 }}>
-      <h1 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16, margin: 0 }}>Denials Workbench</h1>
+      <h1 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16, margin: 0 }}>
+        Denials Workbench
+      </h1>
 
       {/* Filters */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-        <select value={resolvedFilter} onChange={e => { setResolvedFilter(e.target.value); setPage(0); }}
-          style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #d1d5db', borderRadius: 4 }}>
+        <select
+          value={resolvedFilter}
+          onChange={(e) => {
+            setResolvedFilter(e.target.value);
+            setPage(0);
+          }}
+          style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #d1d5db', borderRadius: 4 }}
+        >
           <option value="">All</option>
           <option value="false">Unresolved</option>
           <option value="true">Resolved</option>
         </select>
-        <select value={sourceFilter} onChange={e => { setSourceFilter(e.target.value); setPage(0); }}
-          style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #d1d5db', borderRadius: 4 }}>
+        <select
+          value={sourceFilter}
+          onChange={(e) => {
+            setSourceFilter(e.target.value);
+            setPage(0);
+          }}
+          style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #d1d5db', borderRadius: 4 }}
+        >
           <option value="">All Sources</option>
           <option value="payer_remit">Payer Remit</option>
           <option value="payer_status">Payer Status</option>
@@ -148,8 +167,17 @@ export default function DenialsWorkbenchPage() {
           <option value="portal_response">Portal Response</option>
           <option value="manual">Manual</option>
         </select>
-        <button onClick={fetchDenials}
-          style={{ padding: '4px 12px', fontSize: 12, border: '1px solid #d1d5db', borderRadius: 4, cursor: 'pointer', background: '#f9fafb' }}>
+        <button
+          onClick={fetchDenials}
+          style={{
+            padding: '4px 12px',
+            fontSize: 12,
+            border: '1px solid #d1d5db',
+            borderRadius: 4,
+            cursor: 'pointer',
+            background: '#f9fafb',
+          }}
+        >
           Refresh
         </button>
       </div>
@@ -158,7 +186,9 @@ export default function DenialsWorkbenchPage() {
 
       {/* Denials Table */}
       {loading ? (
-        <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>Loading...</div>
+        <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
+          Loading...
+        </div>
       ) : denials.length === 0 ? (
         <div style={{ padding: 24, textAlign: 'center', color: '#6b7280', fontSize: 13 }}>
           No denials found. {resolvedFilter === 'false' ? 'All denials have been resolved.' : ''}
@@ -178,26 +208,30 @@ export default function DenialsWorkbenchPage() {
             </tr>
           </thead>
           <tbody>
-            {denials.map(d => (
+            {denials.map((d) => (
               <React.Fragment key={d.id}>
                 <tr style={{ borderBottom: '1px solid #f3f4f6' }}>
                   <td style={{ padding: '6px 8px' }}>
                     <div style={{ fontWeight: 600, fontFamily: 'monospace' }}>{d.reasonCode}</div>
                     <div style={{ color: '#6b7280', fontSize: 11 }}>{d.reasonDescription}</div>
                     {d.reasonCategory && (
-                      <span style={{ fontSize: 10, color: '#9ca3af' }}>Category: {d.reasonCategory}</span>
+                      <span style={{ fontSize: 10, color: '#9ca3af' }}>
+                        Category: {d.reasonCategory}
+                      </span>
                     )}
                   </td>
                   <td style={{ padding: '6px 8px' }}>
-                    <span style={{
-                      display: 'inline-block',
-                      padding: '1px 6px',
-                      fontSize: 10,
-                      fontWeight: 600,
-                      borderRadius: 3,
-                      color: '#fff',
-                      background: SOURCE_COLORS[d.source] || '#6b7280',
-                    }}>
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        padding: '1px 6px',
+                        fontSize: 10,
+                        fontWeight: 600,
+                        borderRadius: 3,
+                        color: '#fff',
+                        background: SOURCE_COLORS[d.source] || '#6b7280',
+                      }}
+                    >
                       {d.source.replace(/_/g, ' ')}
                     </span>
                   </td>
@@ -215,7 +249,9 @@ export default function DenialsWorkbenchPage() {
                   </td>
                   <td style={{ padding: '6px 8px' }}>
                     {d.resolvedAt ? (
-                      <span style={{ color: '#059669', fontWeight: 500, fontSize: 11 }}>Resolved</span>
+                      <span style={{ color: '#059669', fontWeight: 500, fontSize: 11 }}>
+                        Resolved
+                      </span>
                     ) : (
                       <span style={{ color: '#dc2626', fontWeight: 500, fontSize: 11 }}>Open</span>
                     )}
@@ -239,7 +275,8 @@ export default function DenialsWorkbenchPage() {
                     )}
                     {d.resolvedAt && d.resolutionNote && (
                       <span style={{ fontSize: 10, color: '#6b7280' }} title={d.resolutionNote}>
-                        {d.resolutionNote.slice(0, 30)}{d.resolutionNote.length > 30 ? '...' : ''}
+                        {d.resolutionNote.slice(0, 30)}
+                        {d.resolutionNote.length > 30 ? '...' : ''}
                       </span>
                     )}
                   </td>
@@ -248,9 +285,14 @@ export default function DenialsWorkbenchPage() {
                 {/* Inline remediation panel */}
                 {!d.resolvedAt && d.recommendedAction && resolvingId !== d.id && (
                   <tr>
-                    <td colSpan={8} style={{ padding: '4px 8px 8px', background: '#fffbeb', fontSize: 11 }}>
+                    <td
+                      colSpan={8}
+                      style={{ padding: '4px 8px 8px', background: '#fffbeb', fontSize: 11 }}
+                    >
                       <strong>Recommended:</strong> {d.recommendedAction}
-                      {d.fieldToFix && <span style={{ color: '#6b7280' }}> (field: {d.fieldToFix})</span>}
+                      {d.fieldToFix && (
+                        <span style={{ color: '#6b7280' }}> (field: {d.fieldToFix})</span>
+                      )}
                     </td>
                   </tr>
                 )}
@@ -269,18 +311,42 @@ export default function DenialsWorkbenchPage() {
                         <input
                           placeholder="Resolution note..."
                           value={resolutionNote}
-                          onChange={e => setResolutionNote(e.target.value)}
-                          style={{ flex: 1, padding: '4px 8px', fontSize: 12, border: '1px solid #d1d5db', borderRadius: 3 }}
+                          onChange={(e) => setResolutionNote(e.target.value)}
+                          style={{
+                            flex: 1,
+                            padding: '4px 8px',
+                            fontSize: 12,
+                            border: '1px solid #d1d5db',
+                            borderRadius: 3,
+                          }}
                         />
                         <button
                           onClick={() => resolveDenial(d.id)}
-                          style={{ padding: '4px 12px', fontSize: 12, background: '#059669', color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer' }}
+                          style={{
+                            padding: '4px 12px',
+                            fontSize: 12,
+                            background: '#059669',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: 3,
+                            cursor: 'pointer',
+                          }}
                         >
                           Confirm
                         </button>
                         <button
-                          onClick={() => { setResolvingId(null); setResolutionNote(''); }}
-                          style={{ padding: '4px 12px', fontSize: 12, border: '1px solid #d1d5db', borderRadius: 3, cursor: 'pointer', background: '#fff' }}
+                          onClick={() => {
+                            setResolvingId(null);
+                            setResolutionNote('');
+                          }}
+                          style={{
+                            padding: '4px 12px',
+                            fontSize: 12,
+                            border: '1px solid #d1d5db',
+                            borderRadius: 3,
+                            cursor: 'pointer',
+                            background: '#fff',
+                          }}
                         >
                           Cancel
                         </button>
@@ -297,15 +363,33 @@ export default function DenialsWorkbenchPage() {
       {/* Pagination */}
       {total > limit && (
         <div style={{ display: 'flex', gap: 8, marginTop: 8, justifyContent: 'center' }}>
-          <button disabled={page === 0} onClick={() => setPage(p => p - 1)}
-            style={{ padding: '4px 12px', fontSize: 12, border: '1px solid #d1d5db', borderRadius: 4, cursor: page === 0 ? 'default' : 'pointer' }}>
+          <button
+            disabled={page === 0}
+            onClick={() => setPage((p) => p - 1)}
+            style={{
+              padding: '4px 12px',
+              fontSize: 12,
+              border: '1px solid #d1d5db',
+              borderRadius: 4,
+              cursor: page === 0 ? 'default' : 'pointer',
+            }}
+          >
             Prev
           </button>
           <span style={{ fontSize: 12, lineHeight: '28px', color: '#6b7280' }}>
             Page {page + 1} of {Math.ceil(total / limit)}
           </span>
-          <button disabled={(page + 1) * limit >= total} onClick={() => setPage(p => p + 1)}
-            style={{ padding: '4px 12px', fontSize: 12, border: '1px solid #d1d5db', borderRadius: 4, cursor: (page + 1) * limit >= total ? 'default' : 'pointer' }}>
+          <button
+            disabled={(page + 1) * limit >= total}
+            onClick={() => setPage((p) => p + 1)}
+            style={{
+              padding: '4px 12px',
+              fontSize: 12,
+              border: '1px solid #d1d5db',
+              borderRadius: 4,
+              cursor: (page + 1) * limit >= total ? 'default' : 'pointer',
+            }}
+          >
             Next
           </button>
         </div>

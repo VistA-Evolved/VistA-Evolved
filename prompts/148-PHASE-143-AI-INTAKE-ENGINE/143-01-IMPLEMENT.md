@@ -1,11 +1,13 @@
 # Phase 143 -- AI Intake Engine (Interchangeable Brain)
 
 ## User Request
+
 Create a pluggable AI intake engine that can be rules-driven (deterministic),
 LLM-assisted (governed), or integrated with 3rd-party APIs -- without locking
 the system to any single provider.
 
 ## Implementation Steps
+
 1. Extend `BrainProvider` type with typed provider identifiers (rules_engine, llm_provider:<name>, third_party:<name>)
 2. Create `IntakeBrainPlugin` interface (startSession, nextQuestion, submitAnswer, finalizeSummary)
 3. Build plugin registry in `apps/api/src/intake/brain/` with rules, LLM, 3P adapters
@@ -17,6 +19,7 @@ the system to any single provider.
 9. PHI redaction + safety layer for all provider interactions
 
 ## Verification Steps
+
 - TypeScript compile clean
 - All existing intake routes still work
 - New provider routes return correct shapes
@@ -26,6 +29,7 @@ the system to any single provider.
 - i18n keys present in all 3 locales
 
 ## Files Touched
+
 - apps/api/src/intake/types.ts (extend)
 - apps/api/src/intake/providers.ts (refactor)
 - apps/api/src/intake/brain/ (new directory -- plugin architecture)

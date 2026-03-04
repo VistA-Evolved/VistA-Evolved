@@ -96,7 +96,7 @@ export async function clearinghouseGatewayRoutes(server: FastifyInstance): Promi
     return reply.send({
       ok: true,
       count: results.length,
-      results: results.map(r => ({
+      results: results.map((r) => ({
         transactionSet: r.transactionSet,
         receivedAt: r.receivedAt,
         contentHash: r.contentHash,
@@ -116,7 +116,7 @@ export async function clearinghouseGatewayRoutes(server: FastifyInstance): Promi
     return reply.send({
       ok: true,
       count: subs.length,
-      submissions: subs.map(s => ({
+      submissions: subs.map((s) => ({
         id: s.id,
         transactionSet: s.transactionSet,
         provider: s.provider,
@@ -167,7 +167,7 @@ export async function clearinghouseGatewayRoutes(server: FastifyInstance): Promi
     return reply.send({
       ok: true,
       count: traces.length,
-      traces: traces.map(t => ({
+      traces: traces.map((t) => ({
         id: t.id,
         timestamp: t.timestamp,
         direction: t.direction,

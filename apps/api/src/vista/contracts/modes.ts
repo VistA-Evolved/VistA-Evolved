@@ -5,7 +5,7 @@
  * REPLAY: loads fixtures, validates schema/invariants without VistA
  */
 
-export type ContractMode = "record" | "replay";
+export type ContractMode = 'record' | 'replay';
 
 /**
  * Resolve the current contract mode from environment.
@@ -13,15 +13,15 @@ export type ContractMode = "record" | "replay";
  */
 export function getContractMode(): ContractMode {
   const mode = process.env.VISTA_CONTRACT_MODE?.toLowerCase();
-  if (mode === "record") return "record";
-  return "replay";
+  if (mode === 'record') return 'record';
+  return 'replay';
 }
 
 /**
  * Fixture file path for a given RPC and case name.
  */
 export function fixtureFilePath(rpcName: string, caseName: string): string {
-  const safeName = rpcName.replace(/\s+/g, "_").replace(/[^A-Za-z0-9_]/g, "");
+  const safeName = rpcName.replace(/\s+/g, '_').replace(/[^A-Za-z0-9_]/g, '');
   return `apps/api/tests/fixtures/vista/${safeName}/${caseName}.json`;
 }
 

@@ -18,33 +18,31 @@
 // Phase 125: Validate runtime mode contract BEFORE anything else
 // Throws in rc/prod if PLATFORM_PG_URL is missing.
 // ----------------------------------------------------------------------
-import { validateRuntimeMode } from "./platform/runtime-mode.js";
+import { validateRuntimeMode } from './platform/runtime-mode.js';
 validateRuntimeMode();
 
 // ----------------------------------------------------------------------
 // Phase 141: Validate auth mode policy (after runtime mode)
 // In rc/prod: requires AUTH_MODE=oidc. In dev/test: permissive.
 // ----------------------------------------------------------------------
-import { enforceAuthMode } from "./auth/auth-mode-policy.js";
+import { enforceAuthMode } from './auth/auth-mode-policy.js';
 enforceAuthMode();
 
 // ----------------------------------------------------------------------
 // Phase 153: Validate OIDC config depth (warnings/errors at boot)
 // Surfaces JWKS derivability + client_id explicitness issues.
 // ----------------------------------------------------------------------
-import { validateOidcConfig } from "./auth/oidc-provider.js";
-import { log } from "./lib/logger.js";
+import { validateOidcConfig } from './auth/oidc-provider.js';
+import { log } from './lib/logger.js';
 
 {
   const oidcValidation = validateOidcConfig();
   if (oidcValidation.errors.length > 0) {
-    throw new Error(
-      `OIDC configuration validation failed: ${oidcValidation.errors.join("; ")}`
-    );
+    throw new Error(`OIDC configuration validation failed: ${oidcValidation.errors.join('; ')}`);
   }
   if (oidcValidation.warnings.length > 0) {
     for (const w of oidcValidation.warnings) {
-      log.warn(w, { component: "oidc-config" });
+      log.warn(w, { component: 'oidc-config' });
     }
   }
 }
@@ -52,8 +50,8 @@ import { log } from "./lib/logger.js";
 // ----------------------------------------------------------------------
 // Phase 36: Initialize OTel tracing (must be before Fastify)
 // ----------------------------------------------------------------------
-import { initTracing, getCurrentTraceId, getCurrentSpanId } from "./telemetry/tracing.js";
-import { bridgeTracingToLogger } from "./lib/logger.js";
+import { initTracing, getCurrentTraceId, getCurrentSpanId } from './telemetry/tracing.js';
+import { bridgeTracingToLogger } from './lib/logger.js';
 
 initTracing();
 bridgeTracingToLogger(getCurrentTraceId, getCurrentSpanId);
@@ -61,6 +59,6 @@ bridgeTracingToLogger(getCurrentTraceId, getCurrentSpanId);
 // ----------------------------------------------------------------------
 // Start the server (build + listen + lifecycle)
 // ----------------------------------------------------------------------
-import { startServer } from "./server/start.js";
+import { startServer } from './server/start.js';
 
 await startServer();

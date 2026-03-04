@@ -15,8 +15,8 @@
  *   - TTL configurable via VISTA_CAPABILITY_TTL_MS env var (default: 5 min)
  */
 
-import { connect, disconnect, callRpc } from "./rpcBrokerClient.js";
-import { validateCredentials } from "./config.js";
+import { connect, disconnect, callRpc } from './rpcBrokerClient.js';
+import { validateCredentials } from './config.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -63,16 +63,12 @@ export interface RpcCheck {
  * but was called with insufficient parameters — that's a positive availability
  * signal (the M routine ran). We only flag "doesn't exist" responses.
  */
-const RPC_NOT_FOUND_PATTERNS = [
-  "doesn't exist",
-  "doesn\u0027t exist",
-  "not found",
-];
+const RPC_NOT_FOUND_PATTERNS = ["doesn't exist", 'doesn\u0027t exist', 'not found'];
 
 function isRpcMissing(response: string[]): boolean {
-  const first = response[0] || "";
+  const first = response[0] || '';
   // "CRemote Procedure 'X' doesn't exist" — server-level rejection
-  if (first.startsWith("CRemote")) return true;
+  if (first.startsWith('CRemote')) return true;
   return RPC_NOT_FOUND_PATTERNS.some((pat) => first.includes(pat));
 }
 
@@ -84,144 +80,207 @@ function isRpcMissing(response: string[]): boolean {
  * RPCs we attempt to discover. Grouped by domain.
  * Some have known fallback alternatives.
  */
-export const KNOWN_RPCS: { rpc: string; domain: string; fallback?: string; description: string }[] = [
-  // Core patient
-  { rpc: "ORWPT LIST ALL", domain: "patient", description: "Patient search" },
-  { rpc: "ORWPT SELECT", domain: "patient", description: "Patient demographics" },
+export const KNOWN_RPCS: { rpc: string; domain: string; fallback?: string; description: string }[] =
+  [
+    // Core patient
+    { rpc: 'ORWPT LIST ALL', domain: 'patient', description: 'Patient search' },
+    { rpc: 'ORWPT SELECT', domain: 'patient', description: 'Patient demographics' },
 
-  // Default patient list
-  { rpc: "ORQPT DEFAULT PATIENT LIST", domain: "patient", description: "Default patient list" },
+    // Default patient list
+    { rpc: 'ORQPT DEFAULT PATIENT LIST', domain: 'patient', description: 'Default patient list' },
 
-  // Allergies
-  { rpc: "ORQQAL LIST", domain: "allergies", description: "List allergies" },
-  { rpc: "ORWDAL32 ALLERGY MATCH", domain: "allergies", description: "Allergy reactant search" },
-  { rpc: "ORWDAL32 SAVE ALLERGY", domain: "allergies", description: "Write-back: save allergy" },
+    // Allergies
+    { rpc: 'ORQQAL LIST', domain: 'allergies', description: 'List allergies' },
+    { rpc: 'ORWDAL32 ALLERGY MATCH', domain: 'allergies', description: 'Allergy reactant search' },
+    { rpc: 'ORWDAL32 SAVE ALLERGY', domain: 'allergies', description: 'Write-back: save allergy' },
 
-  // Vitals
-  { rpc: "ORQQVI VITALS", domain: "vitals", description: "Read vitals" },
-  { rpc: "GMV ADD VM", domain: "vitals", description: "Write-back: add vitals" },
+    // Vitals
+    { rpc: 'ORQQVI VITALS', domain: 'vitals', description: 'Read vitals' },
+    { rpc: 'GMV ADD VM', domain: 'vitals', description: 'Write-back: add vitals' },
 
-  // Notes (TIU)
-  { rpc: "TIU DOCUMENTS BY CONTEXT", domain: "notes", description: "List notes" },
-  { rpc: "TIU CREATE RECORD", domain: "notes", description: "Write-back: create note" },
-  { rpc: "TIU SET RECORD TEXT", domain: "notes", description: "Write-back: set note text" },
-  { rpc: "TIU GET RECORD TEXT", domain: "notes", description: "Get note text" },
+    // Notes (TIU)
+    { rpc: 'TIU DOCUMENTS BY CONTEXT', domain: 'notes', description: 'List notes' },
+    { rpc: 'TIU CREATE RECORD', domain: 'notes', description: 'Write-back: create note' },
+    { rpc: 'TIU SET RECORD TEXT', domain: 'notes', description: 'Write-back: set note text' },
+    { rpc: 'TIU GET RECORD TEXT', domain: 'notes', description: 'Get note text' },
 
-  // Medications
-  { rpc: "ORWPS ACTIVE", domain: "medications", description: "Active medications" },
-  { rpc: "ORWORR GETTXT", domain: "medications", description: "Order detail text" },
-  { rpc: "ORWDXM AUTOACK", domain: "medications", description: "Write-back: quick-order med" },
+    // Medications
+    { rpc: 'ORWPS ACTIVE', domain: 'medications', description: 'Active medications' },
+    { rpc: 'ORWORR GETTXT', domain: 'medications', description: 'Order detail text' },
+    { rpc: 'ORWDXM AUTOACK', domain: 'medications', description: 'Write-back: quick-order med' },
 
-  // Problems
-  { rpc: "ORQQPL PROBLEM LIST", domain: "problems", description: "Problem list" },
-  { rpc: "ORQQPL4 LEX", domain: "problems", description: "ICD/lexicon search" },
-  { rpc: "ORQQPL ADD SAVE", domain: "problems", description: "Write-back: add problem" },
-  { rpc: "ORQQPL EDIT SAVE", domain: "problems", description: "Write-back: edit problem" },
+    // Problems
+    { rpc: 'ORQQPL PROBLEM LIST', domain: 'problems', description: 'Problem list' },
+    { rpc: 'ORQQPL4 LEX', domain: 'problems', description: 'ICD/lexicon search' },
+    { rpc: 'ORQQPL ADD SAVE', domain: 'problems', description: 'Write-back: add problem' },
+    { rpc: 'ORQQPL EDIT SAVE', domain: 'problems', description: 'Write-back: edit problem' },
 
-  // Orders
-  { rpc: "ORWDX SAVE", domain: "orders", description: "Write-back: save order" },
-  { rpc: "ORWDXA DC", domain: "orders", description: "Discontinue order" },
-  { rpc: "ORWDXA FLAG", domain: "orders", description: "Flag order" },
-  { rpc: "ORWDXA VERIFY", domain: "orders", description: "Verify order" },
-  { rpc: "ORWORR AGET", domain: "orders", description: "Active orders list" },
-  { rpc: "ORWOR1 SIG", domain: "orders", description: "Write-back: sign orders electronically" },
-  { rpc: "ORWDXC ACCEPT", domain: "orders", description: "Order checks: accept/display findings" },
+    // Orders
+    { rpc: 'ORWDX SAVE', domain: 'orders', description: 'Write-back: save order' },
+    { rpc: 'ORWDXA DC', domain: 'orders', description: 'Discontinue order' },
+    { rpc: 'ORWDXA FLAG', domain: 'orders', description: 'Flag order' },
+    { rpc: 'ORWDXA VERIFY', domain: 'orders', description: 'Verify order' },
+    { rpc: 'ORWORR AGET', domain: 'orders', description: 'Active orders list' },
+    { rpc: 'ORWOR1 SIG', domain: 'orders', description: 'Write-back: sign orders electronically' },
+    {
+      rpc: 'ORWDXC ACCEPT',
+      domain: 'orders',
+      description: 'Order checks: accept/display findings',
+    },
 
-  // Consults
-  { rpc: "ORQQCN LIST", domain: "consults", description: "List consults" },
-  { rpc: "ORQQCN DETAIL", domain: "consults", description: "Consult detail" },
-  { rpc: "ORQQCN2 MED RESULTS", domain: "consults", description: "Write-back: consult result entry" },
+    // Consults
+    { rpc: 'ORQQCN LIST', domain: 'consults', description: 'List consults' },
+    { rpc: 'ORQQCN DETAIL', domain: 'consults', description: 'Consult detail' },
+    {
+      rpc: 'ORQQCN2 MED RESULTS',
+      domain: 'consults',
+      description: 'Write-back: consult result entry',
+    },
 
-  // Surgery
-  { rpc: "ORWSR LIST", domain: "surgery", description: "List surgeries" },
-  { rpc: "ORWSR RPTLIST", domain: "surgery", description: "Surgery report list" },
+    // Surgery
+    { rpc: 'ORWSR LIST', domain: 'surgery', description: 'List surgeries' },
+    { rpc: 'ORWSR RPTLIST', domain: 'surgery', description: 'Surgery report list' },
 
-  // D/C Summaries (reuse TIU with class 244)
-  { rpc: "TIU DOCUMENTS BY CONTEXT", domain: "dcSummaries", description: "D/C summary list (class 244)" },
+    // D/C Summaries (reuse TIU with class 244)
+    {
+      rpc: 'TIU DOCUMENTS BY CONTEXT',
+      domain: 'dcSummaries',
+      description: 'D/C summary list (class 244)',
+    },
 
-  // Labs
-  { rpc: "ORWLRR INTERIM", domain: "labs", description: "Interim lab results" },
-  { rpc: "ORWLRR ACK", domain: "labs", description: "Write-back: acknowledge lab result" },
-  { rpc: "ORWLRR CHART", domain: "labs", description: "Lab charting data" },
+    // Labs
+    { rpc: 'ORWLRR INTERIM', domain: 'labs', description: 'Interim lab results' },
+    { rpc: 'ORWLRR ACK', domain: 'labs', description: 'Write-back: acknowledge lab result' },
+    { rpc: 'ORWLRR CHART', domain: 'labs', description: 'Lab charting data' },
 
-  // Reports
-  { rpc: "ORWRP REPORT LISTS", domain: "reports", description: "Report definitions" },
-  { rpc: "ORWRP REPORT TEXT", domain: "reports", description: "Report text content" },
+    // Reports
+    { rpc: 'ORWRP REPORT LISTS', domain: 'reports', description: 'Report definitions' },
+    { rpc: 'ORWRP REPORT TEXT', domain: 'reports', description: 'Report text content' },
 
-  // Inbox / Notifications
-  { rpc: "ORWORB UNSIG ORDERS", domain: "inbox", fallback: "ORWPS ACTIVE", description: "Unsigned orders (notifications)" },
-  { rpc: "ORWORB FASTUSER", domain: "inbox", fallback: "disabled", description: "Fast user notifications" },
+    // Inbox / Notifications
+    {
+      rpc: 'ORWORB UNSIG ORDERS',
+      domain: 'inbox',
+      fallback: 'ORWPS ACTIVE',
+      description: 'Unsigned orders (notifications)',
+    },
+    {
+      rpc: 'ORWORB FASTUSER',
+      domain: 'inbox',
+      fallback: 'disabled',
+      description: 'Fast user notifications',
+    },
 
-  // Remote data
-  { rpc: "ORWCIRN FACILITIES", domain: "remote", description: "Remote facility list" },
+    // Remote data
+    { rpc: 'ORWCIRN FACILITIES', domain: 'remote', description: 'Remote facility list' },
 
-  // Imaging
-  { rpc: "MAG4 REMOTE PROCEDURE", domain: "imaging", description: "VistA Imaging gateway" },
-  { rpc: "RA DETAILED REPORT", domain: "imaging", description: "Radiology report" },
+    // Imaging
+    { rpc: 'MAG4 REMOTE PROCEDURE', domain: 'imaging', description: 'VistA Imaging gateway' },
+    { rpc: 'RA DETAILED REPORT', domain: 'imaging', description: 'Radiology report' },
 
-  // Encounter
-  { rpc: "ORWPCE SAVE", domain: "encounter", description: "Write-back: save encounter" },
+    // Encounter
+    { rpc: 'ORWPCE SAVE', domain: 'encounter', description: 'Write-back: save encounter' },
 
-  // Phase 39: Billing Grounding — encounter/PCE reads
-  { rpc: "ORWPCE VISIT", domain: "billing", description: "Visit details for patient" },
-  { rpc: "ORWPCE GET VISIT", domain: "billing", description: "Get encounter data for visit" },
-  { rpc: "ORWPCE DIAG", domain: "billing", description: "Diagnoses for encounter" },
-  { rpc: "ORWPCE PROC", domain: "billing", description: "Procedures for encounter" },
-  { rpc: "ORWPCE PCE4NOTE", domain: "billing", description: "PCE data linked to note" },
-  { rpc: "ORWPCE HASVISIT", domain: "billing", description: "Check if note has visit" },
-  { rpc: "ORWPCE GETSVC", domain: "billing", description: "Service-connected conditions" },
-  { rpc: "ORWPCE4 LEX", domain: "billing", description: "ICD-10 lexicon search" },
-  { rpc: "ORWPCE LEXCODE", domain: "billing", description: "Get code for lexicon entry" },
-  { rpc: "ORWPCE ACTIVE CODE", domain: "billing", description: "Check ICD code active" },
+    // Phase 39: Billing Grounding — encounter/PCE reads
+    { rpc: 'ORWPCE VISIT', domain: 'billing', description: 'Visit details for patient' },
+    { rpc: 'ORWPCE GET VISIT', domain: 'billing', description: 'Get encounter data for visit' },
+    { rpc: 'ORWPCE DIAG', domain: 'billing', description: 'Diagnoses for encounter' },
+    { rpc: 'ORWPCE PROC', domain: 'billing', description: 'Procedures for encounter' },
+    { rpc: 'ORWPCE PCE4NOTE', domain: 'billing', description: 'PCE data linked to note' },
+    { rpc: 'ORWPCE HASVISIT', domain: 'billing', description: 'Check if note has visit' },
+    { rpc: 'ORWPCE GETSVC', domain: 'billing', description: 'Service-connected conditions' },
+    { rpc: 'ORWPCE4 LEX', domain: 'billing', description: 'ICD-10 lexicon search' },
+    { rpc: 'ORWPCE LEXCODE', domain: 'billing', description: 'Get code for lexicon entry' },
+    { rpc: 'ORWPCE ACTIVE CODE', domain: 'billing', description: 'Check ICD code active' },
 
-  // Phase 39: Billing Grounding — insurance
-  { rpc: "IBCN INSURANCE QUERY", domain: "billing", description: "Query patient insurance coverage" },
+    // Phase 39: Billing Grounding — insurance
+    {
+      rpc: 'IBCN INSURANCE QUERY',
+      domain: 'billing',
+      description: 'Query patient insurance coverage',
+    },
 
-  // Phase 39: Billing Grounding — IB forms + pharmacy billing
-  { rpc: "IBD GET ALL PCE DATA", domain: "billing", description: "All PCE data for billing" },
-  { rpc: "IBD GET FORMSPEC", domain: "billing", description: "Billing form specification" },
-  { rpc: "IBARXM QUERY ONLY", domain: "billing", description: "Pharmacy billing query" },
-  { rpc: "IBO MT LTC COPAY QUERY", domain: "billing", description: "Means test / LTC copay" },
+    // Phase 39: Billing Grounding — IB forms + pharmacy billing
+    { rpc: 'IBD GET ALL PCE DATA', domain: 'billing', description: 'All PCE data for billing' },
+    { rpc: 'IBD GET FORMSPEC', domain: 'billing', description: 'Billing form specification' },
+    { rpc: 'IBARXM QUERY ONLY', domain: 'billing', description: 'Pharmacy billing query' },
+    { rpc: 'IBO MT LTC COPAY QUERY', domain: 'billing', description: 'Means test / LTC copay' },
 
-  // Phase 155: Custom VistA-Evolved RPCs (provisioned via install-vista-routines.ps1)
-  { rpc: "VE INTEROP HL7 LINKS",   domain: "interop",    description: "List HL7 logical links (ZVEMIOP)" },
-  { rpc: "VE INTEROP HL7 MSGS",    domain: "interop",    description: "List recent HL7 messages (ZVEMIOP)" },
-  { rpc: "VE INTEROP HLO STATUS",  domain: "interop",    description: "HLO application status (ZVEMIOP)" },
-  { rpc: "VE INTEROP QUEUE DEPTH", domain: "interop",    description: "HL7 queue depths (ZVEMIOP)" },
-  { rpc: "VE INTEROP MSG LIST",    domain: "interop",    description: "List HL7 messages with filters (ZVEMIOP)" },
-  { rpc: "VE INTEROP MSG DETAIL",  domain: "interop",    description: "HL7 message detail (ZVEMIOP)" },
-  { rpc: "ZVE MAIL FOLDERS",       domain: "messaging",  description: "MailMan folders (ZVEMSGR)" },
-  { rpc: "ZVE MAIL LIST",          domain: "messaging",  description: "MailMan message list (ZVEMSGR)" },
-  { rpc: "ZVE MAIL GET",           domain: "messaging",  description: "Get MailMan message (ZVEMSGR)" },
-  { rpc: "ZVE MAIL SEND",          domain: "messaging",  description: "Write-back: send MailMan message (ZVEMSGR)" },
-  { rpc: "ZVE MAIL MANAGE",        domain: "messaging",  description: "Write-back: manage MailMan folders (ZVEMSGR)" },
-  { rpc: "VE LIST RPCS",           domain: "catalog",    description: "List installed RPCs (ZVERPC)" },
-  { rpc: "VE RCM PROVIDER INFO",   domain: "rcm",        description: "Provider info for RCM (ZVERCMP)" },
-  { rpc: "ZVEADT WARDS",           domain: "adt",        description: "Ward census (ZVEADT)" },
-  { rpc: "ZVEADT BEDS",            domain: "adt",        description: "Bed board (ZVEADT)" },
-  { rpc: "ZVEADT MVHIST",          domain: "adt",        description: "Movement history (ZVEADT)" },
+    // Phase 155: Custom VistA-Evolved RPCs (provisioned via install-vista-routines.ps1)
+    {
+      rpc: 'VE INTEROP HL7 LINKS',
+      domain: 'interop',
+      description: 'List HL7 logical links (ZVEMIOP)',
+    },
+    {
+      rpc: 'VE INTEROP HL7 MSGS',
+      domain: 'interop',
+      description: 'List recent HL7 messages (ZVEMIOP)',
+    },
+    {
+      rpc: 'VE INTEROP HLO STATUS',
+      domain: 'interop',
+      description: 'HLO application status (ZVEMIOP)',
+    },
+    { rpc: 'VE INTEROP QUEUE DEPTH', domain: 'interop', description: 'HL7 queue depths (ZVEMIOP)' },
+    {
+      rpc: 'VE INTEROP MSG LIST',
+      domain: 'interop',
+      description: 'List HL7 messages with filters (ZVEMIOP)',
+    },
+    {
+      rpc: 'VE INTEROP MSG DETAIL',
+      domain: 'interop',
+      description: 'HL7 message detail (ZVEMIOP)',
+    },
+    { rpc: 'ZVE MAIL FOLDERS', domain: 'messaging', description: 'MailMan folders (ZVEMSGR)' },
+    { rpc: 'ZVE MAIL LIST', domain: 'messaging', description: 'MailMan message list (ZVEMSGR)' },
+    { rpc: 'ZVE MAIL GET', domain: 'messaging', description: 'Get MailMan message (ZVEMSGR)' },
+    {
+      rpc: 'ZVE MAIL SEND',
+      domain: 'messaging',
+      description: 'Write-back: send MailMan message (ZVEMSGR)',
+    },
+    {
+      rpc: 'ZVE MAIL MANAGE',
+      domain: 'messaging',
+      description: 'Write-back: manage MailMan folders (ZVEMSGR)',
+    },
+    { rpc: 'VE LIST RPCS', domain: 'catalog', description: 'List installed RPCs (ZVERPC)' },
+    { rpc: 'VE RCM PROVIDER INFO', domain: 'rcm', description: 'Provider info for RCM (ZVERCMP)' },
+    { rpc: 'ZVEADT WARDS', domain: 'adt', description: 'Ward census (ZVEADT)' },
+    { rpc: 'ZVEADT BEDS', domain: 'adt', description: 'Bed board (ZVEADT)' },
+    { rpc: 'ZVEADT MVHIST', domain: 'adt', description: 'Movement history (ZVEADT)' },
 
-  // Phase 482 (W33-P2): Tier-0 hospital writeback RPCs — probed for capability evidence
-  // ADT write RPCs (DGPM package)
-  { rpc: "DGPM NEW ADMISSION",     domain: "adt",        description: "Write-back: admit patient (DGPM)" },
-  { rpc: "DGPM NEW TRANSFER",      domain: "adt",        description: "Write-back: transfer patient (DGPM)" },
-  { rpc: "DGPM NEW DISCHARGE",     domain: "adt",        description: "Write-back: discharge patient (DGPM)" },
-  // BCMA / eMAR write RPCs (PSB/PSJ packages)
-  { rpc: "PSB MED LOG",            domain: "emar",       description: "Write-back: BCMA medication log (PSB)" },
-  { rpc: "PSB ALLERGY",            domain: "emar",       description: "BCMA allergy check at scan (PSB)" },
-  { rpc: "PSB VALIDATE ORDER",     domain: "emar",       description: "BCMA order validation at scan (PSB)" },
-  { rpc: "PSJBCMA",                domain: "emar",       description: "Write-back: barcode-to-med lookup (PSJ)" },
-  // Nursing task / assessment RPCs (NURS package)
-  { rpc: "NURS TASK LIST",         domain: "nursing",    description: "Nursing task list (NURS)" },
-  { rpc: "NURS ASSESSMENTS",       domain: "nursing",    description: "Nursing assessments (NURS)" },
-  // Lab write RPCs (LR package)
-  { rpc: "LR VERIFY",              domain: "labs",       description: "Write-back: verify lab result (LR)" },
-  // Phase 484 (W33-P4): Nursing I/O + assessment RPCs
-  { rpc: "GMRIO RESULTS",           domain: "nursing",    description: "I&O results read (GMR)" },
-  { rpc: "GMRIO ADD",               domain: "nursing",    description: "I&O entry add (GMR)" },
-  { rpc: "ZVENAS LIST",             domain: "nursing",    description: "Assessment read (custom ZVE)" },
-  { rpc: "ZVENAS SAVE",             domain: "nursing",    description: "Assessment save (custom ZVE)" },
-];
+    // Phase 482 (W33-P2): Tier-0 hospital writeback RPCs — probed for capability evidence
+    // ADT write RPCs (DGPM package)
+    { rpc: 'DGPM NEW ADMISSION', domain: 'adt', description: 'Write-back: admit patient (DGPM)' },
+    { rpc: 'DGPM NEW TRANSFER', domain: 'adt', description: 'Write-back: transfer patient (DGPM)' },
+    {
+      rpc: 'DGPM NEW DISCHARGE',
+      domain: 'adt',
+      description: 'Write-back: discharge patient (DGPM)',
+    },
+    // BCMA / eMAR write RPCs (PSB/PSJ packages)
+    { rpc: 'PSB MED LOG', domain: 'emar', description: 'Write-back: BCMA medication log (PSB)' },
+    { rpc: 'PSB ALLERGY', domain: 'emar', description: 'BCMA allergy check at scan (PSB)' },
+    {
+      rpc: 'PSB VALIDATE ORDER',
+      domain: 'emar',
+      description: 'BCMA order validation at scan (PSB)',
+    },
+    { rpc: 'PSJBCMA', domain: 'emar', description: 'Write-back: barcode-to-med lookup (PSJ)' },
+    // Nursing task / assessment RPCs (NURS package)
+    { rpc: 'NURS TASK LIST', domain: 'nursing', description: 'Nursing task list (NURS)' },
+    { rpc: 'NURS ASSESSMENTS', domain: 'nursing', description: 'Nursing assessments (NURS)' },
+    // Lab write RPCs (LR package)
+    { rpc: 'LR VERIFY', domain: 'labs', description: 'Write-back: verify lab result (LR)' },
+    // Phase 484 (W33-P4): Nursing I/O + assessment RPCs
+    { rpc: 'GMRIO RESULTS', domain: 'nursing', description: 'I&O results read (GMR)' },
+    { rpc: 'GMRIO ADD', domain: 'nursing', description: 'I&O entry add (GMR)' },
+    { rpc: 'ZVENAS LIST', domain: 'nursing', description: 'Assessment read (custom ZVE)' },
+    { rpc: 'ZVENAS SAVE', domain: 'nursing', description: 'Assessment save (custom ZVE)' },
+  ];
 
 /* ------------------------------------------------------------------ */
 /* Cache                                                               */
@@ -238,7 +297,7 @@ let cacheTimestamp: number = 0;
  * whose XWB response contains "Remote Procedure 'X' doesn't exist".
  */
 const WORLDVISTA_EXPECTED_MISSING = [
-  "ORQQPL EDIT SAVE",      // Returns CRemote "doesn't exist" (not installed)
+  'ORQQPL EDIT SAVE', // Returns CRemote "doesn't exist" (not installed)
   // All other RPCs that error with LVUNDEF are actually available.
   // The list is intentionally short — only genuinely absent RPCs.
 ];
@@ -256,7 +315,7 @@ const WORLDVISTA_EXPECTED_MISSING = [
  */
 export async function discoverCapabilities(forceRefresh = false): Promise<CapabilityMap> {
   const now = Date.now();
-  if (!forceRefresh && cachedCapabilities && (now - cacheTimestamp < CACHE_TTL_MS)) {
+  if (!forceRefresh && cachedCapabilities && now - cacheTimestamp < CACHE_TTL_MS) {
     return cachedCapabilities;
   }
 
@@ -278,7 +337,12 @@ export async function discoverCapabilities(forceRefresh = false): Promise<Capabi
         // Probe with empty/minimal params — we only care about "exists" vs "doesn't exist"
         const resp = await callRpc(rpcName, []);
         if (isRpcMissing(resp)) {
-          rpcs[rpcName] = { rpcName, available: false, error: resp[0]?.substring(0, 200), probedAt };
+          rpcs[rpcName] = {
+            rpcName,
+            available: false,
+            error: resp[0]?.substring(0, 200),
+            probedAt,
+          };
           missingList.push(rpcName);
         } else {
           // RPC exists — even if response contains M ERROR / LVUNDEF, the
@@ -288,7 +352,12 @@ export async function discoverCapabilities(forceRefresh = false): Promise<Capabi
         }
       } catch (err: any) {
         // Connection errors, timeouts — treat as unavailable but don't stop
-        rpcs[rpcName] = { rpcName, available: false, error: err.message?.substring(0, 200), probedAt };
+        rpcs[rpcName] = {
+          rpcName,
+          available: false,
+          error: err.message?.substring(0, 200),
+          probedAt,
+        };
         missingList.push(rpcName);
       }
     }
@@ -304,7 +373,7 @@ export async function discoverCapabilities(forceRefresh = false): Promise<Capabi
   const expectedMissing = missingList.filter((r) => WORLDVISTA_EXPECTED_MISSING.includes(r));
 
   const map: CapabilityMap = {
-    instanceId: "worldvista-docker",
+    instanceId: 'worldvista-docker',
     discoveredAt: new Date().toISOString(),
     rpcs,
     expectedMissing,
@@ -348,16 +417,13 @@ export function requireRpc(rpcName: string): RpcCheck {
   if (!cap.available) {
     const known = KNOWN_RPCS.find((r) => r.rpc === rpcName);
     const isExpected = WORLDVISTA_EXPECTED_MISSING.includes(rpcName);
-    throw Object.assign(
-      new Error(`RPC "${rpcName}" is not available on this VistA instance`),
-      {
-        code: "RPC_UNAVAILABLE",
-        rpcName,
-        expectedMissing: isExpected,
-        fallback: known?.fallback,
-        domain: known?.domain,
-      }
-    );
+    throw Object.assign(new Error(`RPC "${rpcName}" is not available on this VistA instance`), {
+      code: 'RPC_UNAVAILABLE',
+      rpcName,
+      expectedMissing: isExpected,
+      fallback: known?.fallback,
+      domain: known?.domain,
+    });
   }
   return { available: true, rpcName };
 }
@@ -380,7 +446,7 @@ export function optionalRpc(rpcName: string): RpcCheck {
       available: false,
       rpcName,
       error: cap.error,
-      fallbackBehavior: known?.fallback ?? "feature-disabled",
+      fallbackBehavior: known?.fallback ?? 'feature-disabled',
     };
   }
   return { available: true, rpcName };
@@ -397,8 +463,8 @@ export function getDomainCapabilities(domain: string): {
 } {
   const domainRpcs = KNOWN_RPCS.filter((r) => r.domain === domain);
   const checks = domainRpcs.map((r) => optionalRpc(r.rpc));
-  const readRpcs = domainRpcs.filter((r) => !r.description.startsWith("Write-back"));
-  const writeRpcs = domainRpcs.filter((r) => r.description.startsWith("Write-back"));
+  const readRpcs = domainRpcs.filter((r) => !r.description.startsWith('Write-back'));
+  const writeRpcs = domainRpcs.filter((r) => r.description.startsWith('Write-back'));
 
   return {
     domain,
@@ -470,7 +536,7 @@ export function compareToBaseline(baseline: {
   const parts: string[] = [];
   if (regressions.length > 0) parts.push(`${regressions.length} regression(s)`);
   if (newlyAvailable.length > 0) parts.push(`${newlyAvailable.length} newly available`);
-  if (parts.length === 0) parts.push("no drift detected");
+  if (parts.length === 0) parts.push('no drift detected');
 
   return {
     comparedAt: new Date().toISOString(),
@@ -479,7 +545,7 @@ export function compareToBaseline(baseline: {
     newlyAvailable,
     unchanged,
     hasDrift,
-    summary: parts.join(", "),
+    summary: parts.join(', '),
   };
 }
 
@@ -508,7 +574,7 @@ export function buildRuntimeMatrix(): {
   }
 
   return {
-    instanceId: cachedCapabilities?.instanceId ?? "unknown",
+    instanceId: cachedCapabilities?.instanceId ?? 'unknown',
     discoveredAt: cachedCapabilities?.discoveredAt ?? null,
     domains,
     totalAvailable: cachedCapabilities?.availableList.length ?? 0,

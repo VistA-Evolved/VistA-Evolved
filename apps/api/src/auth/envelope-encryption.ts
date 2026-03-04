@@ -11,17 +11,9 @@
  * Pure Node.js crypto — no external dependencies.
  */
 
-import {
-  createCipheriv,
-  createDecipheriv,
-  randomBytes,
-} from "node:crypto";
+import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
 
-import {
-  resolveKeyProvider,
-  generateKey,
-  type KeyProvider,
-} from "./key-provider.js";
+import { resolveKeyProvider, generateKey, type KeyProvider } from './key-provider.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -52,7 +44,7 @@ export interface EnvelopeEncryptionResult {
 /* Core functions                                                      */
 /* ------------------------------------------------------------------ */
 
-const ALGORITHM = "aes-256-gcm" as const;
+const ALGORITHM = 'aes-256-gcm' as const;
 const IV_LENGTH = 12; // 96-bit IV for GCM
 const DEK_LENGTH = 32; // 256-bit DEK
 
@@ -66,7 +58,7 @@ const DEK_LENGTH = 32; // 256-bit DEK
 export async function envelopeEncrypt(
   plaintext: Buffer | string,
   kekId: string,
-  provider?: KeyProvider,
+  provider?: KeyProvider
 ): Promise<EnvelopeEncryptionResult> {
   const kp = provider ?? resolveKeyProvider();
   const kek = await kp.getKey(kekId);
@@ -80,7 +72,7 @@ export async function envelopeEncrypt(
   // Step 2: Encrypt data with DEK
   const dataIv = randomBytes(IV_LENGTH);
   const dataCipher = createCipheriv(ALGORITHM, dek, dataIv);
-  const dataBuf = typeof plaintext === "string" ? Buffer.from(plaintext, "utf-8") : plaintext;
+  const dataBuf = typeof plaintext === 'string' ? Buffer.from(plaintext, 'utf-8') : plaintext;
   const encData = Buffer.concat([dataCipher.update(dataBuf), dataCipher.final()]);
   const dataAuthTag = dataCipher.getAuthTag();
 
@@ -94,12 +86,12 @@ export async function envelopeEncrypt(
   dek.fill(0);
 
   return {
-    encryptedData: encData.toString("base64"),
-    encryptedDek: encDek.toString("base64"),
-    iv: dataIv.toString("base64"),
-    authTag: dataAuthTag.toString("base64"),
-    dekIv: dekIv.toString("base64"),
-    dekAuthTag: dekAuthTag.toString("base64"),
+    encryptedData: encData.toString('base64'),
+    encryptedDek: encDek.toString('base64'),
+    iv: dataIv.toString('base64'),
+    authTag: dataAuthTag.toString('base64'),
+    dekIv: dekIv.toString('base64'),
+    dekAuthTag: dekAuthTag.toString('base64'),
     kekId,
     kekVersion: kek.metadata.version,
     algorithm: ALGORITHM,
@@ -114,7 +106,7 @@ export async function envelopeEncrypt(
  */
 export async function envelopeDecrypt(
   envelope: EnvelopeEncryptionResult,
-  provider?: KeyProvider,
+  provider?: KeyProvider
 ): Promise<Buffer> {
   const kp = provider ?? resolveKeyProvider();
   const kek = await kp.getKey(envelope.kekId, envelope.kekVersion);
@@ -126,23 +118,19 @@ export async function envelopeDecrypt(
   const dekDecipher = createDecipheriv(
     ALGORITHM,
     kek.key.subarray(0, 32),
-    Buffer.from(envelope.dekIv, "base64"),
+    Buffer.from(envelope.dekIv, 'base64')
   );
-  dekDecipher.setAuthTag(Buffer.from(envelope.dekAuthTag, "base64"));
+  dekDecipher.setAuthTag(Buffer.from(envelope.dekAuthTag, 'base64'));
   const dek = Buffer.concat([
-    dekDecipher.update(Buffer.from(envelope.encryptedDek, "base64")),
+    dekDecipher.update(Buffer.from(envelope.encryptedDek, 'base64')),
     dekDecipher.final(),
   ]);
 
   // Step 2: Decrypt data with DEK
-  const dataDecipher = createDecipheriv(
-    ALGORITHM,
-    dek,
-    Buffer.from(envelope.iv, "base64"),
-  );
-  dataDecipher.setAuthTag(Buffer.from(envelope.authTag, "base64"));
+  const dataDecipher = createDecipheriv(ALGORITHM, dek, Buffer.from(envelope.iv, 'base64'));
+  dataDecipher.setAuthTag(Buffer.from(envelope.authTag, 'base64'));
   const plaintext = Buffer.concat([
-    dataDecipher.update(Buffer.from(envelope.encryptedData, "base64")),
+    dataDecipher.update(Buffer.from(envelope.encryptedData, 'base64')),
     dataDecipher.final(),
   ]);
 
@@ -159,7 +147,7 @@ export async function envelopeDecrypt(
 export async function reEncrypt(
   envelope: EnvelopeEncryptionResult,
   newKekId: string,
-  provider?: KeyProvider,
+  provider?: KeyProvider
 ): Promise<EnvelopeEncryptionResult> {
   const plaintext = await envelopeDecrypt(envelope, provider);
   const result = await envelopeEncrypt(plaintext, newKekId, provider);

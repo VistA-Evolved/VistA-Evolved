@@ -17,9 +17,21 @@ export default function MedsPanel({ dfn }: MedsPanelProps) {
   useEffect(() => {
     let cancelled = false;
     fetchMedications(dfn)
-      .then((m) => { if (!cancelled) { setMeds(m); setLoading(false); } })
-      .catch((e) => { if (!cancelled) { setError(e.message); setLoading(false); } });
-    return () => { cancelled = true; };
+      .then((m) => {
+        if (!cancelled) {
+          setMeds(m);
+          setLoading(false);
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) {
+          setError(e.message);
+          setLoading(false);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [dfn]);
 
   return (
@@ -45,7 +57,9 @@ export default function MedsPanel({ dfn }: MedsPanelProps) {
                 <td>{m.name}</td>
                 <td>{m.sig}</td>
                 <td>
-                  <span className={`${styles.listBadge} ${m.status?.toLowerCase() === 'active' ? styles.active : ''}`}>
+                  <span
+                    className={`${styles.listBadge} ${m.status?.toLowerCase() === 'active' ? styles.active : ''}`}
+                  >
                     {m.status}
                   </span>
                 </td>

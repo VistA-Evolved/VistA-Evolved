@@ -24,41 +24,42 @@ apps/web/src/app/cprs/admin/performance/
 
 All under `/admin/performance/` (admin auth required):
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | /admin/performance/summary | Health score, system P95/avg, budget status |
-| GET | /admin/performance/profiles | All route profiles with percentiles |
-| GET | /admin/performance/slow-routes?threshold=1000 | Routes exceeding threshold |
-| GET | /admin/performance/slow-queries?limit=100 | Recent slow query log |
-| GET | /admin/performance/budgets | List all budgets |
-| GET | /admin/performance/budgets/:id | Get single budget |
-| POST | /admin/performance/budgets | Create/update budget |
-| DELETE | /admin/performance/budgets/:id | Delete budget |
-| POST | /admin/performance/budgets/seed | Seed 9 default budgets |
-| POST | /admin/performance/record | Manual record (testing) |
-| POST | /admin/performance/reset | Reset all profiles and logs |
+| Method | Path                                          | Description                                 |
+| ------ | --------------------------------------------- | ------------------------------------------- |
+| GET    | /admin/performance/summary                    | Health score, system P95/avg, budget status |
+| GET    | /admin/performance/profiles                   | All route profiles with percentiles         |
+| GET    | /admin/performance/slow-routes?threshold=1000 | Routes exceeding threshold                  |
+| GET    | /admin/performance/slow-queries?limit=100     | Recent slow query log                       |
+| GET    | /admin/performance/budgets                    | List all budgets                            |
+| GET    | /admin/performance/budgets/:id                | Get single budget                           |
+| POST   | /admin/performance/budgets                    | Create/update budget                        |
+| DELETE | /admin/performance/budgets/:id                | Delete budget                               |
+| POST   | /admin/performance/budgets/seed               | Seed 9 default budgets                      |
+| POST   | /admin/performance/record                     | Manual record (testing)                     |
+| POST   | /admin/performance/reset                      | Reset all profiles and logs                 |
 
 ## Performance Budgets
 
 Default budgets (seeded via `/budgets/seed`):
 
-| Pattern | Method | Max Ms | Description |
-|---------|--------|--------|-------------|
-| /vista/ | * | 2000 | Clinical read routes |
-| /admin/ | * | 5000 | Admin routes |
-| /auth/ | * | 1000 | Auth endpoints |
-| /health | GET | 100 | Health check |
-| /ready | GET | 200 | Readiness check |
-| /imaging/ | * | 10000 | DICOMweb proxy |
-| /portal/ | * | 3000 | Portal routes |
-| /scheduling/ | * | 3000 | Scheduling |
-| /queue/display | GET | 500 | Public queue display |
+| Pattern        | Method | Max Ms | Description          |
+| -------------- | ------ | ------ | -------------------- |
+| /vista/        | \*     | 2000   | Clinical read routes |
+| /admin/        | \*     | 5000   | Admin routes         |
+| /auth/         | \*     | 1000   | Auth endpoints       |
+| /health        | GET    | 100    | Health check         |
+| /ready         | GET    | 200    | Readiness check      |
+| /imaging/      | \*     | 10000  | DICOMweb proxy       |
+| /portal/       | \*     | 3000   | Portal routes        |
+| /scheduling/   | \*     | 3000   | Scheduling           |
+| /queue/display | GET    | 500    | Public queue display |
 
 Budget evaluation uses prefix matching (most specific wins).
 
 ## Health Score
 
 Calculated from:
+
 - Start at 100
 - Each budget violation: -5 points
 - System P95 > 5s: -20, > 2s: -10, > 1s: -5
@@ -100,6 +101,7 @@ curl http://localhost:3001/admin/performance/profiles -b cookies.txt
 ## Store Policy
 
 Three entries registered:
+
 - `route-profile-store` (cache, in_memory_only, maxSize: 1000/route)
 - `slow-query-log` (audit, in_memory_only, maxSize: 2000)
 - `performance-budget-store` (registry, in_memory_only)

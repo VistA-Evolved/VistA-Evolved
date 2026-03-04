@@ -14,7 +14,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-
 /* ── Types ──────────────────────────────────────────────────── */
 
 interface PersistedPayer {
@@ -25,7 +24,13 @@ interface PersistedPayer {
   country: string;
   capabilities: Record<string, string>;
   integrationMode: string;
-  evidence: Array<{ kind: string; url: string; title: string; retrievedAt: string; notes?: string }>;
+  evidence: Array<{
+    kind: string;
+    url: string;
+    title: string;
+    retrievedAt: string;
+    notes?: string;
+  }>;
   status: string;
   contractingTasks?: string[];
   importedAt: string;
@@ -123,7 +128,9 @@ export default function PayerRegistryPage() {
         setPayers(data.payers ?? []);
         setPayerCount(data.total ?? data.count ?? 0);
       }
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
     setLoading(false);
   }, [search]);
 
@@ -135,7 +142,9 @@ export default function PayerRegistryPage() {
         setStats(data.stats ?? null);
         setEvidenceScore(data.evidenceScore ?? null);
       }
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }, []);
 
   const fetchAudit = useCallback(async () => {
@@ -156,7 +165,9 @@ export default function PayerRegistryPage() {
         setAuditEvents([]);
         setAuditTotal(0);
       }
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }, [selectedPayer]);
 
   const handleImport = async () => {
@@ -187,7 +198,9 @@ export default function PayerRegistryPage() {
     setImporting(false);
   };
 
-  useEffect(() => { fetchPayers(); }, [fetchPayers]);
+  useEffect(() => {
+    fetchPayers();
+  }, [fetchPayers]);
   useEffect(() => {
     if (tab === 'stats' || tab === 'evidence') fetchStats();
   }, [tab, fetchStats]);
@@ -206,15 +219,17 @@ export default function PayerRegistryPage() {
   };
 
   const badge = (color: string, text: string): React.ReactNode => (
-    <span style={{
-      display: 'inline-block',
-      padding: '2px 8px',
-      borderRadius: 4,
-      fontSize: 11,
-      fontWeight: 600,
-      color: '#fff',
-      background: color,
-    }}>
+    <span
+      style={{
+        display: 'inline-block',
+        padding: '2px 8px',
+        borderRadius: 4,
+        fontSize: 11,
+        fontWeight: 600,
+        color: '#fff',
+        background: color,
+      }}
+    >
       {text}
     </span>
   );
@@ -230,7 +245,7 @@ export default function PayerRegistryPage() {
 
       {/* Tab bar */}
       <div style={{ display: 'flex', gap: 4, borderBottom: '1px solid #e5e7eb', marginBottom: 20 }}>
-        {(['registry', 'evidence', 'audit', 'stats'] as Tab[]).map(t => (
+        {(['registry', 'evidence', 'audit', 'stats'] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -259,7 +274,7 @@ export default function PayerRegistryPage() {
               type="text"
               placeholder="Search payers..."
               value={search}
-              onChange={e => setSearch(e.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
               style={{
                 padding: '6px 12px',
                 border: '1px solid #d1d5db',
@@ -284,20 +299,20 @@ export default function PayerRegistryPage() {
             >
               {importing ? 'Importing...' : 'Import from Snapshot'}
             </button>
-            <span style={{ fontSize: 12, color: '#6b7280' }}>
-              {payerCount} payers loaded
-            </span>
+            <span style={{ fontSize: 12, color: '#6b7280' }}>{payerCount} payers loaded</span>
           </div>
 
           {importResult && (
-            <div style={{
-              padding: '8px 12px',
-              marginBottom: 12,
-              borderRadius: 6,
-              fontSize: 13,
-              background: importResult.startsWith('Imported') ? '#dcfce7' : '#fee2e2',
-              color: importResult.startsWith('Imported') ? '#166534' : '#991b1b',
-            }}>
+            <div
+              style={{
+                padding: '8px 12px',
+                marginBottom: 12,
+                borderRadius: 6,
+                fontSize: 13,
+                background: importResult.startsWith('Imported') ? '#dcfce7' : '#fee2e2',
+                color: importResult.startsWith('Imported') ? '#166534' : '#991b1b',
+              }}
+            >
               {importResult}
             </div>
           )}
@@ -307,17 +322,21 @@ export default function PayerRegistryPage() {
           {payers.length === 0 && !loading && (
             <div style={{ ...cardStyle, textAlign: 'center', color: '#6b7280' }}>
               <p style={{ fontSize: 14, marginBottom: 8 }}>No payers in persistent store</p>
-              <p style={{ fontSize: 12 }}>Click &quot;Import from Snapshot&quot; to load the 27 HMOs + PhilHealth</p>
+              <p style={{ fontSize: 12 }}>
+                Click &quot;Import from Snapshot&quot; to load the 27 HMOs + PhilHealth
+              </p>
             </div>
           )}
 
-          {payers.map(p => (
+          {payers.map((p) => (
             <div
               key={p.payerId}
               style={{ ...cardStyle, cursor: 'pointer' }}
               onClick={() => setSelectedPayer(selectedPayer === p.payerId ? null : p.payerId)}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+              >
                 <div>
                   <span style={{ fontWeight: 600, fontSize: 14 }}>{p.legalName}</span>
                   <span style={{ marginLeft: 8, fontSize: 11, color: '#6b7280' }}>{p.payerId}</span>
@@ -330,15 +349,28 @@ export default function PayerRegistryPage() {
 
               {selectedPayer === p.payerId && (
                 <div style={{ marginTop: 12, fontSize: 12 }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 12 }}>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(4, 1fr)',
+                      gap: 8,
+                      marginBottom: 12,
+                    }}
+                  >
                     {Object.entries(p.capabilities).map(([cap, status]) => (
                       <div key={cap} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                        <span style={{
-                          width: 8, height: 8, borderRadius: '50%',
-                          background: CAP_COLORS[status as string] ?? '#9ca3af',
-                          display: 'inline-block',
-                        }} />
-                        <span>{cap}: {status as string}</span>
+                        <span
+                          style={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: '50%',
+                            background: CAP_COLORS[status as string] ?? '#9ca3af',
+                            display: 'inline-block',
+                          }}
+                        />
+                        <span>
+                          {cap}: {status as string}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -347,9 +379,13 @@ export default function PayerRegistryPage() {
                     <div>
                       <strong>Provenance</strong>
                       <div style={{ color: '#6b7280', marginTop: 4 }}>
-                        Source: {p.provenance?.sourceType ?? 'unknown'}<br />
-                        Imported: {p.importedAt ? new Date(p.importedAt).toLocaleDateString() : 'n/a'}<br />
-                        By: {p.provenance?.importedBy ?? 'n/a'}<br />
+                        Source: {p.provenance?.sourceType ?? 'unknown'}
+                        <br />
+                        Imported:{' '}
+                        {p.importedAt ? new Date(p.importedAt).toLocaleDateString() : 'n/a'}
+                        <br />
+                        By: {p.provenance?.importedBy ?? 'n/a'}
+                        <br />
                         Hash: <code style={{ fontSize: 10 }}>{p.importHash?.slice(0, 16)}...</code>
                       </div>
                     </div>
@@ -357,11 +393,21 @@ export default function PayerRegistryPage() {
                       <strong>Evidence ({p.evidence?.length ?? 0} items)</strong>
                       {(p.evidence ?? []).slice(0, 3).map((e, i) => (
                         <div key={i} style={{ color: '#6b7280', marginTop: 2 }}>
-                          [{e.kind}] <a href={e.url} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb' }}>{e.title}</a>
+                          [{e.kind}]{' '}
+                          <a
+                            href={e.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: '#2563eb' }}
+                          >
+                            {e.title}
+                          </a>
                         </div>
                       ))}
                       {(p.evidence?.length ?? 0) > 3 && (
-                        <div style={{ color: '#9ca3af', marginTop: 2 }}>+{p.evidence.length - 3} more</div>
+                        <div style={{ color: '#9ca3af', marginTop: 2 }}>
+                          +{p.evidence.length - 3} more
+                        </div>
                       )}
                     </div>
                   </div>
@@ -370,7 +416,9 @@ export default function PayerRegistryPage() {
                     <div style={{ marginTop: 8 }}>
                       <strong>Contracting Tasks</strong>
                       <ul style={{ margin: '4px 0 0 16px', color: '#6b7280' }}>
-                        {(p.contractingTasks ?? []).map((t, i) => <li key={i}>{t}</li>)}
+                        {(p.contractingTasks ?? []).map((t, i) => (
+                          <li key={i}>{t}</li>
+                        ))}
                       </ul>
                     </div>
                   )}
@@ -386,10 +434,23 @@ export default function PayerRegistryPage() {
         <div>
           {evidenceScore ? (
             <>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 20 }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: 12,
+                  marginBottom: 20,
+                }}
+              >
                 <div style={cardStyle}>
                   <div style={{ fontSize: 11, color: '#6b7280' }}>Average Coverage</div>
-                  <div style={{ fontSize: 28, fontWeight: 700, color: evidenceScore.averageCoverage >= 50 ? '#16a34a' : '#d97706' }}>
+                  <div
+                    style={{
+                      fontSize: 28,
+                      fontWeight: 700,
+                      color: evidenceScore.averageCoverage >= 50 ? '#16a34a' : '#d97706',
+                    }}
+                  >
                     {evidenceScore.averageCoverage}%
                   </div>
                 </div>
@@ -399,15 +460,21 @@ export default function PayerRegistryPage() {
                 </div>
                 <div style={cardStyle}>
                   <div style={{ fontSize: 11, color: '#6b7280' }}>Fully Evidenced</div>
-                  <div style={{ fontSize: 28, fontWeight: 700, color: '#16a34a' }}>{evidenceScore.fullyEvidenced}</div>
+                  <div style={{ fontSize: 28, fontWeight: 700, color: '#16a34a' }}>
+                    {evidenceScore.fullyEvidenced}
+                  </div>
                 </div>
                 <div style={cardStyle}>
                   <div style={{ fontSize: 11, color: '#6b7280' }}>Zero Evidence</div>
-                  <div style={{ fontSize: 28, fontWeight: 700, color: '#dc2626' }}>{evidenceScore.zeroEvidence}</div>
+                  <div style={{ fontSize: 28, fontWeight: 700, color: '#dc2626' }}>
+                    {evidenceScore.zeroEvidence}
+                  </div>
                 </div>
               </div>
 
-              <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>Per-Payer Evidence Scores</h3>
+              <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>
+                Per-Payer Evidence Scores
+              </h3>
               <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid #e5e7eb', textAlign: 'left' }}>
@@ -418,21 +485,31 @@ export default function PayerRegistryPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {(evidenceScore.perPayer ?? []).map(p => (
+                  {(evidenceScore.perPayer ?? []).map((p) => (
                     <tr key={p.payerId} style={{ borderBottom: '1px solid #f3f4f6' }}>
                       <td style={{ padding: '6px 12px', fontFamily: 'monospace' }}>{p.payerId}</td>
                       <td style={{ padding: '6px 12px' }}>{p.total}</td>
-                      <td style={{ padding: '6px 12px', fontWeight: 600, color: p.score >= 50 ? '#16a34a' : '#d97706' }}>
+                      <td
+                        style={{
+                          padding: '6px 12px',
+                          fontWeight: 600,
+                          color: p.score >= 50 ? '#16a34a' : '#d97706',
+                        }}
+                      >
                         {p.score}%
                       </td>
                       <td style={{ padding: '6px 12px' }}>
-                        <div style={{ width: 120, height: 8, background: '#f3f4f6', borderRadius: 4 }}>
-                          <div style={{
-                            width: `${p.score}%`,
-                            height: 8,
-                            background: p.score >= 50 ? '#16a34a' : '#d97706',
-                            borderRadius: 4,
-                          }} />
+                        <div
+                          style={{ width: 120, height: 8, background: '#f3f4f6', borderRadius: 4 }}
+                        >
+                          <div
+                            style={{
+                              width: `${p.score}%`,
+                              height: 8,
+                              background: p.score >= 50 ? '#16a34a' : '#d97706',
+                              borderRadius: 4,
+                            }}
+                          />
                         </div>
                       </td>
                     </tr>
@@ -466,14 +543,16 @@ export default function PayerRegistryPage() {
               Verify Chain
             </button>
             {chainOk !== null && (
-              <span style={{
-                padding: '4px 12px',
-                borderRadius: 4,
-                fontSize: 12,
-                fontWeight: 600,
-                background: chainOk ? '#dcfce7' : '#fee2e2',
-                color: chainOk ? '#166534' : '#991b1b',
-              }}>
+              <span
+                style={{
+                  padding: '4px 12px',
+                  borderRadius: 4,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  background: chainOk ? '#dcfce7' : '#fee2e2',
+                  color: chainOk ? '#166534' : '#991b1b',
+                }}
+              >
                 {chainOk ? 'CHAIN VALID' : 'CHAIN BROKEN'}: {chainMsg}
               </span>
             )}
@@ -484,23 +563,42 @@ export default function PayerRegistryPage() {
               <p style={{ fontSize: 13, color: '#6b7280', marginBottom: 8 }}>
                 Audit trail for <strong>{selectedPayer}</strong> ({auditTotal} events)
                 <button
-                  onClick={() => { setSelectedPayer(null); fetchAudit(); }}
-                  style={{ marginLeft: 8, fontSize: 11, color: '#2563eb', background: 'none', border: 'none', cursor: 'pointer' }}
+                  onClick={() => {
+                    setSelectedPayer(null);
+                    fetchAudit();
+                  }}
+                  style={{
+                    marginLeft: 8,
+                    fontSize: 11,
+                    color: '#2563eb',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
                 >
                   Show all
                 </button>
               </p>
-              {auditEvents.map(e => (
+              {auditEvents.map((e) => (
                 <div key={e.id} style={{ ...cardStyle, fontSize: 12 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <strong>{e.action}</strong>
-                    <span style={{ color: '#6b7280' }}>{new Date(e.timestamp).toLocaleString()}</span>
+                    <span style={{ color: '#6b7280' }}>
+                      {new Date(e.timestamp).toLocaleString()}
+                    </span>
                   </div>
                   <div style={{ color: '#6b7280', marginTop: 4 }}>
                     Actor: {e.actor} | Tenant: {e.tenantId}
                     {e.reason && <> | Reason: {e.reason}</>}
                   </div>
-                  <div style={{ marginTop: 4, fontFamily: 'monospace', fontSize: 10, color: '#9ca3af' }}>
+                  <div
+                    style={{
+                      marginTop: 4,
+                      fontFamily: 'monospace',
+                      fontSize: 10,
+                      color: '#9ca3af',
+                    }}
+                  >
                     Hash: {e.hash.slice(0, 24)}... | Prev: {e.prevHash.slice(0, 16)}...
                   </div>
                 </div>
@@ -508,7 +606,8 @@ export default function PayerRegistryPage() {
             </>
           ) : (
             <p style={{ fontSize: 13, color: '#6b7280' }}>
-              Select a payer from the Registry tab to view its audit trail, or click Verify Chain above.
+              Select a payer from the Registry tab to view its audit trail, or click Verify Chain
+              above.
             </p>
           )}
         </div>
@@ -519,22 +618,39 @@ export default function PayerRegistryPage() {
         <div>
           {stats ? (
             <>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 20 }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: 12,
+                  marginBottom: 20,
+                }}
+              >
                 <div style={cardStyle}>
                   <div style={{ fontSize: 11, color: '#6b7280' }}>Total Payers</div>
                   <div style={{ fontSize: 28, fontWeight: 700 }}>{stats.total}</div>
                 </div>
                 <div style={cardStyle}>
                   <div style={{ fontSize: 11, color: '#6b7280' }}>With Portal</div>
-                  <div style={{ fontSize: 28, fontWeight: 700, color: '#2563eb' }}>{stats.withPortal}</div>
+                  <div style={{ fontSize: 28, fontWeight: 700, color: '#2563eb' }}>
+                    {stats.withPortal}
+                  </div>
                 </div>
                 <div style={cardStyle}>
                   <div style={{ fontSize: 11, color: '#6b7280' }}>Contracting Needed</div>
-                  <div style={{ fontSize: 28, fontWeight: 700, color: '#d97706' }}>{stats.contractingNeeded}</div>
+                  <div style={{ fontSize: 28, fontWeight: 700, color: '#d97706' }}>
+                    {stats.contractingNeeded}
+                  </div>
                 </div>
                 <div style={cardStyle}>
                   <div style={{ fontSize: 11, color: '#6b7280' }}>PhilHealth</div>
-                  <div style={{ fontSize: 28, fontWeight: 700, color: stats.hasPhilHealth ? '#16a34a' : '#dc2626' }}>
+                  <div
+                    style={{
+                      fontSize: 28,
+                      fontWeight: 700,
+                      color: stats.hasPhilHealth ? '#16a34a' : '#dc2626',
+                    }}
+                  >
                     {stats.hasPhilHealth ? 'Yes' : 'No'}
                   </div>
                 </div>
@@ -544,16 +660,34 @@ export default function PayerRegistryPage() {
                 <div style={cardStyle}>
                   <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>By Status</h3>
                   {Object.entries(stats.byStatus).map(([status, count]) => (
-                    <div key={status} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', fontSize: 13 }}>
+                    <div
+                      key={status}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        padding: '4px 0',
+                        fontSize: 13,
+                      }}
+                    >
                       <span>{badge(STATUS_COLORS[status] ?? '#9ca3af', status)}</span>
                       <span style={{ fontWeight: 600 }}>{count}</span>
                     </div>
                   ))}
                 </div>
                 <div style={cardStyle}>
-                  <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>By Integration Mode</h3>
+                  <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 8 }}>
+                    By Integration Mode
+                  </h3>
                   {Object.entries(stats.byIntegrationMode).map(([mode, count]) => (
-                    <div key={mode} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', fontSize: 13 }}>
+                    <div
+                      key={mode}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        padding: '4px 0',
+                        fontSize: 13,
+                      }}
+                    >
                       <span>{badge('#6366f1', mode)}</span>
                       <span style={{ fontWeight: 600 }}>{count}</span>
                     </div>

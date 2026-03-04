@@ -12,14 +12,28 @@
  */
 
 import { randomUUID, createHash } from 'node:crypto';
-import { lookupCarc, lookupRarc, buildActionRecommendation, getCarcGroupDescription } from '../reference/carc-rarc.js';
-import type { DenialCode, DenialFinancials, DenialCase, DenialSource } from '../denials/types.js';
-import type { NormalizedPaymentLine, NormalizedRemittance, PaymentCode } from '../reconciliation/types.js';
+import {
+  lookupCarc,
+  lookupRarc,
+  buildActionRecommendation,
+  getCarcGroupDescription,
+} from '../reference/carc-rarc.js';
+import type { DenialFinancials } from '../denials/types.js';
+import type {
+  NormalizedPaymentLine,
+  NormalizedRemittance,
+  PaymentCode,
+} from '../reconciliation/types.js';
 
 /* ── Types ──────────────────────────────────────────────────── */
 
 export type PostingApprovalStatus = 'pending_review' | 'approved' | 'rejected' | 'auto_approved';
-export type LineClassification = 'full_denial' | 'partial_denial' | 'adjustment' | 'full_payment' | 'unknown';
+export type LineClassification =
+  | 'full_denial'
+  | 'partial_denial'
+  | 'adjustment'
+  | 'full_payment'
+  | 'unknown';
 
 export interface NormalizedCarcRarc {
   type: 'CARC' | 'RARC' | 'OTHER';
@@ -99,7 +113,7 @@ export interface DenialPipelineResult {
 /* ── CARC/RARC Normalization ────────────────────────────────── */
 
 export function normalizeCodes(codes: PaymentCode[]): NormalizedCarcRarc[] {
-  return codes.map(code => {
+  return codes.map((code) => {
     if (code.type === 'CARC') {
       const carcEntry = lookupCarc(code.code);
       const groupCode = code.code.length >= 1 ? extractGroupCode(code.code) : undefined;
@@ -159,7 +173,7 @@ export function classifyLine(line: NormalizedPaymentLine): LineClassification {
   if (paid === 0 || paid <= 0.01) return 'full_denial';
 
   // Check if CARC codes indicate denial vs adjustment
-  const hasDenialCarc = (line.rawCodes ?? []).some(c => {
+  const hasDenialCarc = (line.rawCodes ?? []).some((c) => {
     if (c.type !== 'CARC') return false;
     const entry = lookupCarc(c.code);
     return entry?.category === 'denial';
@@ -174,21 +188,23 @@ export function classifyLine(line: NormalizedPaymentLine): LineClassification {
   return paid < billed * 0.5 ? 'partial_denial' : 'adjustment';
 }
 
-export function classifyRemittanceLine(line: NormalizedPaymentLine, lineIndex: number): ClassifiedLine {
+export function classifyRemittanceLine(
+  line: NormalizedPaymentLine,
+  lineIndex: number
+): ClassifiedLine {
   const classification = classifyLine(line);
   const normalizedCodes = normalizeCodes(line.rawCodes ?? []);
   const toCents = (n?: number) => Math.round((n ?? 0) * 100);
 
   // Find primary denial reason from CARC codes
-  const denialCarcs = normalizedCodes.filter(c => c.type === 'CARC' && c.category === 'denial');
-  const primaryDenialReason = denialCarcs.length > 0
-    ? `${denialCarcs[0].code}: ${denialCarcs[0].description}`
-    : undefined;
+  const denialCarcs = normalizedCodes.filter((c) => c.type === 'CARC' && c.category === 'denial');
+  const primaryDenialReason =
+    denialCarcs.length > 0 ? `${denialCarcs[0].code}: ${denialCarcs[0].description}` : undefined;
 
   // Aggregate action recommendations
   const actions = normalizedCodes
-    .filter(c => c.actionRecommendation)
-    .map(c => c.actionRecommendation!);
+    .filter((c) => c.actionRecommendation)
+    .map((c) => c.actionRecommendation!);
   const actionRecommendation = actions.length > 0 ? actions.join('; ') : undefined;
 
   return {
@@ -218,13 +234,13 @@ export function classifyRemittanceLine(line: NormalizedPaymentLine, lineIndex: n
 
 const DEFAULT_SLA_DAYS = 30;
 const PAYER_SLA_OVERRIDES: Record<string, number> = {
-  'MEDICARE': 120,
-  'MEDICAID': 90,
-  'BCBS': 60,
-  'AETNA': 60,
-  'CIGNA': 60,
-  'UNITED': 60,
-  'HUMANA': 60,
+  MEDICARE: 120,
+  MEDICAID: 90,
+  BCBS: 60,
+  AETNA: 60,
+  CIGNA: 60,
+  UNITED: 60,
+  HUMANA: 60,
 };
 
 export function computeDeadlineDate(payerId: string, receivedDate: string): string {
@@ -254,7 +270,7 @@ export function processRemittanceBatch(
     importedBy?: string;
     autoApproveFullPayments?: boolean;
     autoApproveBelowCents?: number;
-  } = {},
+  } = {}
 ): DenialPipelineResult {
   const sourceHash = hashContent(JSON.stringify(remittance));
   const batchId = `batch-${Date.now()}-${randomUUID().slice(0, 8)}`;
@@ -264,7 +280,13 @@ export function processRemittanceBatch(
     return {
       batchId,
       totalLines: remittance.lines.length,
-      classified: { fullDenials: 0, partialDenials: 0, adjustments: 0, fullPayments: 0, unknown: 0 },
+      classified: {
+        fullDenials: 0,
+        partialDenials: 0,
+        adjustments: 0,
+        fullPayments: 0,
+        unknown: 0,
+      },
       denialCasesCreated: 0,
       stagingEntriesCreated: 0,
       duplicateSkipped: remittance.lines.length,
@@ -291,11 +313,21 @@ export function processRemittanceBatch(
     const classifiedLine = classifyRemittanceLine(line, i);
 
     switch (classifiedLine.classification) {
-      case 'full_denial': classified.fullDenials++; break;
-      case 'partial_denial': classified.partialDenials++; break;
-      case 'adjustment': classified.adjustments++; break;
-      case 'full_payment': classified.fullPayments++; break;
-      default: classified.unknown++; break;
+      case 'full_denial':
+        classified.fullDenials++;
+        break;
+      case 'partial_denial':
+        classified.partialDenials++;
+        break;
+      case 'adjustment':
+        classified.adjustments++;
+        break;
+      case 'full_payment':
+        classified.fullPayments++;
+        break;
+      default:
+        classified.unknown++;
+        break;
     }
 
     // Determine approval status
@@ -321,7 +353,10 @@ export function processRemittanceBatch(
     };
 
     // Auto-create denial case for denials
-    if (classifiedLine.classification === 'full_denial' || classifiedLine.classification === 'partial_denial') {
+    if (
+      classifiedLine.classification === 'full_denial' ||
+      classifiedLine.classification === 'partial_denial'
+    ) {
       const denialCaseId = `den-${randomUUID().slice(0, 12)}`;
       stagingEntry.denialCaseId = denialCaseId;
       denialCasesCreated++;
@@ -367,7 +402,7 @@ export function processRemittanceBatch(
 
 export function approveStagingEntry(
   entryId: string,
-  approvedBy: string,
+  approvedBy: string
 ): PostingStagingEntry | null {
   const entry = stagingStore.get(entryId);
   if (!entry) return null;
@@ -387,7 +422,7 @@ export function approveStagingEntry(
 export function rejectStagingEntry(
   entryId: string,
   rejectedBy: string,
-  reason: string,
+  reason: string
 ): PostingStagingEntry | null {
   const entry = stagingStore.get(entryId);
   if (!entry) return null;
@@ -424,7 +459,7 @@ function updateBatchApprovalStatus(batchId: string): void {
   const batch = batchStore.get(batchId);
   if (!batch) return;
 
-  const pending = batch.stagingEntries.filter(e => e.approvalStatus === 'pending_review').length;
+  const pending = batch.stagingEntries.filter((e) => e.approvalStatus === 'pending_review').length;
   const total = batch.stagingEntries.length;
 
   if (pending === 0) {
@@ -453,11 +488,11 @@ export function getStagingEntry(id: string): PostingStagingEntry | undefined {
 export function listStagingEntries(
   batchId?: string,
   status?: PostingApprovalStatus,
-  limit = 100,
+  limit = 100
 ): PostingStagingEntry[] {
   let entries = Array.from(stagingStore.values());
-  if (batchId) entries = entries.filter(e => e.remittanceBatchId === batchId);
-  if (status) entries = entries.filter(e => e.approvalStatus === status);
+  if (batchId) entries = entries.filter((e) => e.remittanceBatchId === batchId);
+  if (status) entries = entries.filter((e) => e.approvalStatus === status);
   return entries.slice(-limit);
 }
 
@@ -474,11 +509,11 @@ export function getPipelineStats(): {
   return {
     totalBatches: batchStore.size,
     totalStaging: staging.length,
-    pendingReview: staging.filter(e => e.approvalStatus === 'pending_review').length,
-    approved: staging.filter(e => e.approvalStatus === 'approved').length,
-    rejected: staging.filter(e => e.approvalStatus === 'rejected').length,
-    autoApproved: staging.filter(e => e.approvalStatus === 'auto_approved').length,
-    denialCasesLinked: staging.filter(e => !!e.denialCaseId).length,
+    pendingReview: staging.filter((e) => e.approvalStatus === 'pending_review').length,
+    approved: staging.filter((e) => e.approvalStatus === 'approved').length,
+    rejected: staging.filter((e) => e.approvalStatus === 'rejected').length,
+    autoApproved: staging.filter((e) => e.approvalStatus === 'auto_approved').length,
+    denialCasesLinked: staging.filter((e) => !!e.denialCaseId).length,
   };
 }
 

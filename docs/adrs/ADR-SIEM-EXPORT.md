@@ -8,6 +8,7 @@
 ## Context
 
 VistA-Evolved has extensive audit infrastructure:
+
 - `lib/immutable-audit.ts` — SHA-256 hash-chained general audit (ring buffer + JSONL)
 - `audit-shipping/` — S3/MinIO audit shipper (Phase 157)
 - `services/imaging-audit.ts` — Imaging-specific audit chain
@@ -17,6 +18,7 @@ VistA-Evolved has extensive audit infrastructure:
 
 Missing: real-time security event streaming to enterprise SIEM systems
 (Splunk, Sentinel, QRadar, Elastic SIEM) with:
+
 - Structured security events (auth failures, break-glass, exports, anomalies)
 - PHI-safe redaction before export
 - Alert rules for anomaly detection
@@ -28,6 +30,7 @@ Missing: real-time security event streaming to enterprise SIEM systems
 S3 archive, OTLP logs) and built-in alert rules.
 
 Rationale:
+
 - Extends existing audit infrastructure (not a replacement)
 - PHI redaction already proven in `phi-redaction.ts`
 - Multi-sink allows tenant-specific SIEM routing
@@ -38,12 +41,14 @@ Rationale:
 ## Alternatives Considered
 
 ### Option A: Syslog (RFC 5424) Only
+
 - **Pros:** Universal SIEM support, simple protocol, well-understood
 - **Cons:** UDP unreliable, TCP syslog not standard everywhere, no structured
   data beyond STRUCTURED-DATA field, hard to batch
 - **Partially adopted:** Syslog is one transport option
 
 ### Option B: Webhook (HTTPS POST) Only
+
 - **Pros:** Simple, works with any SIEM that accepts webhooks (most do),
   structured JSON payloads, TLS built-in
 - **Cons:** Requires SIEM webhook endpoint, no standard payload format,
@@ -51,6 +56,7 @@ Rationale:
 - **Partially adopted:** Webhook is one transport option
 
 ### Option C: S3 Archive Only
+
 - **Pros:** Already implemented (audit-shipping Phase 157), reliable,
   batch-friendly, cost-effective
 - **Cons:** Not real-time (5-minute batches), SIEM must pull from S3,
@@ -58,6 +64,7 @@ Rationale:
 - **Partially adopted:** S3 is one transport option (using existing shipper)
 
 ### Option D: OpenTelemetry Logs
+
 - **Pros:** Integrates with existing OTel infrastructure, standard protocol,
   collector handles routing/batching/retry
 - **Cons:** OTel log specification is newer, not all SIEMs support OTLP logs
@@ -65,6 +72,7 @@ Rationale:
 - **Partially adopted:** OTLP logs is one transport option
 
 ### Option E: Multi-Sink Streaming (CHOSEN)
+
 - **Pros:** All of the above as pluggable transports, tenant-specific routing,
   unified PHI redaction, in-process alert rules
 - **Cons:** More code to maintain, multiple transport implementations

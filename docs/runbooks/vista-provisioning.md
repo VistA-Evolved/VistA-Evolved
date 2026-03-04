@@ -29,16 +29,16 @@ docker compose --profile dev up -d
 
 ### Production M Routines (8 files)
 
-| Routine      | Purpose                                        | Source File              |
-|-------------|------------------------------------------------|--------------------------|
-| ZVEMIOP.m   | 4 interop RPC entry points (HL7/HLO telemetry) | services/vista/ZVEMIOP.m |
-| ZVEMINS.m   | RPC registration installer                     | services/vista/ZVEMINS.m |
-| VEMCTX3.m   | Safe context adder (append, never KILL)         | services/vista/VEMCTX3.m |
-| ZVEMSGR.m   | Secure messaging RPC routines                  | services/vista/ZVEMSGR.m |
-| ZVEMSIN.m   | Message-related RPC installer                  | services/vista/ZVEMSIN.m |
-| ZVERPC.m    | RPC catalog wrapper                            | services/vista/ZVERPC.m  |
-| ZVERCMP.m   | RCM wrapper routines (billing probes)          | services/vista/ZVERCMP.m |
-| ZVEADT.m    | ADT/scheduling/admission RPCs                  | services/vista/ZVEADT.m  |
+| Routine   | Purpose                                        | Source File              |
+| --------- | ---------------------------------------------- | ------------------------ |
+| ZVEMIOP.m | 4 interop RPC entry points (HL7/HLO telemetry) | services/vista/ZVEMIOP.m |
+| ZVEMINS.m | RPC registration installer                     | services/vista/ZVEMINS.m |
+| VEMCTX3.m | Safe context adder (append, never KILL)        | services/vista/VEMCTX3.m |
+| ZVEMSGR.m | Secure messaging RPC routines                  | services/vista/ZVEMSGR.m |
+| ZVEMSIN.m | Message-related RPC installer                  | services/vista/ZVEMSIN.m |
+| ZVERPC.m  | RPC catalog wrapper                            | services/vista/ZVERPC.m  |
+| ZVERCMP.m | RCM wrapper routines (billing probes)          | services/vista/ZVERCMP.m |
+| ZVEADT.m  | ADT/scheduling/admission RPCs                  | services/vista/ZVEADT.m  |
 
 ### INSTALL Entry Points (5 invocations)
 
@@ -89,11 +89,13 @@ their expected RPCs via the RPC capability cache.
 ```
 
 **Health values:**
+
 - `installed` — all expected RPCs found
 - `partial` — some RPCs found, some missing
 - `missing` — no expected RPCs found
 
 **Overall health:**
+
 - `fully-provisioned` — all routines installed
 - `partially-provisioned` — at least one partial or missing
 - `unprovisioned` — all routines missing
@@ -112,37 +114,45 @@ Re-running the installer after a container restart is the recommended workflow.
 ## Troubleshooting
 
 ### Container not found
+
 ```
 ERROR: Container 'wv' not found or not running
 ```
+
 Start the VistA container: `cd services/vista && docker compose --profile dev up -d`
 
 ### INSTALL tag fails
+
 ```
 mumps -run RUN^ZVEMINS returns non-zero
 ```
+
 Check that the .m file was copied correctly:
+
 ```powershell
 docker exec -it wv ls -la /home/wv/r/ZVEMINS.m
 ```
 
 ### Provisioning endpoint shows "missing" RPCs
+
 RPCs may not be in the capability cache. Wait for cache TTL to expire
 (`VISTA_CAPABILITY_TTL_MS`, default 5 min) or restart the API.
 
 ### After `docker compose down -v`
+
 Volume destruction removes all installed routines and RPCs. Re-run:
+
 ```powershell
 .\scripts\install-vista-routines.ps1
 ```
 
 ## Relation to Existing Install Scripts
 
-| Script                           | Status      | Covered By Unified? |
-|---------------------------------|-------------|---------------------|
-| scripts/install-interop-rpcs.ps1 | Retained    | Yes (Step 3a)       |
-| scripts/install-rpc-catalog.ps1  | Retained    | Yes (Step 3c)       |
-| scripts/install-rcm-wrappers.ps1 | Retained    | Yes (Step 3d)       |
+| Script                           | Status   | Covered By Unified? |
+| -------------------------------- | -------- | ------------------- |
+| scripts/install-interop-rpcs.ps1 | Retained | Yes (Step 3a)       |
+| scripts/install-rpc-catalog.ps1  | Retained | Yes (Step 3c)       |
+| scripts/install-rcm-wrappers.ps1 | Retained | Yes (Step 3d)       |
 
 The individual scripts remain for backward compatibility. The unified
 installer subsumes all of them.

@@ -34,6 +34,7 @@ Phase 39 grounds the Phase 38 RCM Gateway in real VistA billing data by:
 ## Files Added/Changed
 
 ### New Files (10)
+
 - `data/vista/capability-map-billing.json` -- machine-readable billing capability map
 - `docs/vista/capability-map-billing.md` -- human-readable billing capability map
 - `apps/api/src/routes/vista-rcm.ts` -- VistA RCM read-only API routes (7 endpoints)
@@ -46,6 +47,7 @@ Phase 39 grounds the Phase 38 RCM Gateway in real VistA billing data by:
 - `ops/phase39-notion-update.json` -- Notion update payload
 
 ### Modified Files (4)
+
 - `apps/api/src/index.ts` -- register vistaRcmRoutes
 - `apps/api/src/vista/rpcCapabilities.ts` -- add 15 billing RPCs to KNOWN_RPCS
 - `apps/api/src/lib/audit.ts` -- add 6 billing audit actions

@@ -26,13 +26,13 @@ export interface LocaleDefinition {
   /** Display name in English */
   englishName: string;
   /** Text direction */
-  direction: "ltr" | "rtl";
+  direction: 'ltr' | 'rtl';
   /** Date/time format preference */
   dateFormat: string;
   /** Number format (decimal separator) */
-  decimalSeparator: "." | ",";
+  decimalSeparator: '.' | ',';
   /** Thousands separator */
-  thousandsSeparator: "," | "." | " " | "";
+  thousandsSeparator: ',' | '.' | ' ' | '';
   /** Default UCUM unit profile */
   defaultUnitProfileId: string | null;
   /** Whether this locale is enabled */
@@ -54,7 +54,7 @@ export interface TranslationBundle {
   /** Version number for cache busting */
   version: number;
   /** Source: manual, imported, content-pack */
-  source: "manual" | "imported" | "content-pack";
+  source: 'manual' | 'imported' | 'content-pack';
   contentPackId: string | null;
   createdAt: string;
   updatedAt: string;
@@ -90,7 +90,7 @@ export interface UcumUnitProfile {
 
 // -- Country-Specific Clinical Packs --
 
-export type IcdVersion = "ICD-10-CM" | "ICD-10-AM" | "ICD-10-PCS" | "ICD-11" | "ICD-O-3";
+export type IcdVersion = 'ICD-10-CM' | 'ICD-10-AM' | 'ICD-10-PCS' | 'ICD-11' | 'ICD-O-3';
 
 export interface CountryPack {
   id: string;
@@ -121,7 +121,7 @@ export interface CountryPack {
 
 // -- Theme Definitions --
 
-export type ThemePreset = "legacy" | "modern" | "high-contrast" | "custom";
+export type ThemePreset = 'legacy' | 'modern' | 'high-contrast' | 'custom';
 
 export interface ThemeVariable {
   /** CSS custom property name (e.g., "--color-primary") */
@@ -129,7 +129,7 @@ export interface ThemeVariable {
   /** Value */
   value: string;
   /** Category for UI grouping */
-  category: "color" | "typography" | "spacing" | "border" | "shadow" | "animation";
+  category: 'color' | 'typography' | 'spacing' | 'border' | 'shadow' | 'animation';
 }
 
 export interface ThemeDefinition {

@@ -60,10 +60,10 @@ RTIMAGE  RTDOSE  RTPLAN  RTSTRUCT  SEG  KO  PR
 
 ### TLS Modes
 
-| Mode | Description |
-|---|---|
-| `off` | No TLS (development only) |
-| `optional` | Accept both TLS and plain connections |
+| Mode       | Description                             |
+| ---------- | --------------------------------------- |
+| `off`      | No TLS (development only)               |
+| `optional` | Accept both TLS and plain connections   |
 | `required` | Enforce TLS for all DICOM communication |
 
 ## Device Lifecycle
@@ -162,11 +162,11 @@ for CIDR format on registration.
 
 All device operations are logged to the imaging audit trail:
 
-| Action | Trigger |
-|---|---|
-| `DEVICE_REGISTER` | POST /imaging/devices |
-| `DEVICE_UPDATE` | PATCH /imaging/devices/:id |
-| `DEVICE_DELETE` | DELETE /imaging/devices/:id |
+| Action            | Trigger                     |
+| ----------------- | --------------------------- |
+| `DEVICE_REGISTER` | POST /imaging/devices       |
+| `DEVICE_UPDATE`   | PATCH /imaging/devices/:id  |
+| `DEVICE_DELETE`   | DELETE /imaging/devices/:id |
 
 These entries are hash-chained and tamper-evident.
 
@@ -179,9 +179,9 @@ These entries are hash-chained and tamper-evident.
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---|---|---|
-| 400 on device create | Invalid AE Title format | Ensure uppercase, 1-16 chars |
-| 409 on device create | Duplicate AE Title | Use unique AE Title |
-| C-ECHO fails | Device unreachable from Orthanc | Check Docker networking |
-| 403 on device endpoints | Not imaging_admin | Login as admin role |
+| Symptom                 | Cause                           | Fix                          |
+| ----------------------- | ------------------------------- | ---------------------------- |
+| 400 on device create    | Invalid AE Title format         | Ensure uppercase, 1-16 chars |
+| 409 on device create    | Duplicate AE Title              | Use unique AE Title          |
+| C-ECHO fails            | Device unreachable from Orthanc | Check Docker networking      |
+| 403 on device endpoints | Not imaging_admin               | Login as admin role          |

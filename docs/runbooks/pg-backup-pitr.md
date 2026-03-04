@@ -34,11 +34,13 @@ command: >
 **Production steps:**
 
 1. Create WAL archive volume:
+
    ```bash
    docker exec ve-platform-db-prod mkdir -p /var/lib/postgresql/wal_archive
    ```
 
 2. Verify WAL level:
+
    ```sql
    SHOW wal_level;          -- must be 'replica'
    SHOW archive_mode;       -- must be 'on'
@@ -98,16 +100,19 @@ Add to crontab or Windows Task Scheduler:
 ### 4b. Steps
 
 1. **Stop the API** (both instances):
+
    ```bash
    docker compose -f docker-compose.prod.yml stop api
    ```
 
 2. **Stop PG**:
+
    ```bash
    docker compose -f docker-compose.prod.yml stop platform-db
    ```
 
 3. **Restore base backup** over the pgdata volume:
+
    ```bash
    # Remove current data
    docker volume rm vistaevolved_pgdata
@@ -120,6 +125,7 @@ Add to crontab or Windows Task Scheduler:
    ```
 
 4. **Create recovery config** (`recovery.signal` + `postgresql.conf`):
+
    ```bash
    docker run --rm -v vistaevolved_pgdata:/var/lib/postgresql/data alpine sh -c "
      touch /var/lib/postgresql/data/recovery.signal
@@ -129,12 +135,14 @@ Add to crontab or Windows Task Scheduler:
    ```
 
 5. **Start PG** — it replays WAL up to the target time:
+
    ```bash
    docker compose -f docker-compose.prod.yml up platform-db -d
    docker logs -f ve-platform-db-prod  # Watch for "recovery complete"
    ```
 
 6. **Promote** (if needed):
+
    ```bash
    docker exec ve-platform-db-prod pg_ctl promote -D /var/lib/postgresql/data
    ```
@@ -152,15 +160,15 @@ Run this drill monthly to verify backup integrity:
 
 ### Drill checklist
 
-| # | Step | Verify |
-|---|------|--------|
-| 1 | Take fresh pg_dump | File size > 0 |
-| 2 | Spin up isolated PG container | Container healthy |
-| 3 | Restore dump into isolated PG | `pg_restore` exits 0 |
-| 4 | Point one API instance at restored PG | API starts, /health → 200 |
-| 5 | Run `scripts/test-multi-instance.mjs` against it | All gates pass |
-| 6 | Verify RLS is enforced | `SELECT * FROM auth_session` returns only tenant-scoped rows |
-| 7 | Tear down isolated PG | Clean exit |
+| #   | Step                                             | Verify                                                       |
+| --- | ------------------------------------------------ | ------------------------------------------------------------ |
+| 1   | Take fresh pg_dump                               | File size > 0                                                |
+| 2   | Spin up isolated PG container                    | Container healthy                                            |
+| 3   | Restore dump into isolated PG                    | `pg_restore` exits 0                                         |
+| 4   | Point one API instance at restored PG            | API starts, /health → 200                                    |
+| 5   | Run `scripts/test-multi-instance.mjs` against it | All gates pass                                               |
+| 6   | Verify RLS is enforced                           | `SELECT * FROM auth_session` returns only tenant-scoped rows |
+| 7   | Tear down isolated PG                            | Clean exit                                                   |
 
 ### Drill script
 
@@ -193,17 +201,17 @@ Remove-Item ./drill.custom
 
 ### Current migrations (pg-migrate.ts)
 
-| Version | Name | Tables |
-|---------|------|--------|
-| v1 | payer_db | payers, payer_edi_config |
-| v2 | capability_matrix | payer_capability, payer_override, payer_audit_event |
-| v3 | accreditation | payer_accreditation |
-| v4 | connector_state | connector_state, connector_event, connector_alert |
-| v5 | performance_indexes | 15+ indexes |
-| v6 | security_rls | RLS enablement for 22 tables |
-| v7 | job_run_log | job_run_log table |
-| v8 | (reserved) | |
-| v9 | session_workqueue_multi_instance | auth_session, rcm_work_item, rcm_work_item_event + RLS |
+| Version | Name                             | Tables                                                 |
+| ------- | -------------------------------- | ------------------------------------------------------ |
+| v1      | payer_db                         | payers, payer_edi_config                               |
+| v2      | capability_matrix                | payer_capability, payer_override, payer_audit_event    |
+| v3      | accreditation                    | payer_accreditation                                    |
+| v4      | connector_state                  | connector_state, connector_event, connector_alert      |
+| v5      | performance_indexes              | 15+ indexes                                            |
+| v6      | security_rls                     | RLS enablement for 22 tables                           |
+| v7      | job_run_log                      | job_run_log table                                      |
+| v8      | (reserved)                       |                                                        |
+| v9      | session_workqueue_multi_instance | auth_session, rcm_work_item, rcm_work_item_event + RLS |
 
 ### Adding a new migration
 
@@ -252,12 +260,12 @@ nginx round-robins between instances. All durable state is in PG.
 
 ## 8. Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `STORE_BACKEND` | `auto` | `auto` (PG if URL set), `pg` (force), `sqlite` (force) |
-| `PLATFORM_PG_URL` | — | PostgreSQL connection string |
-| `PLATFORM_PG_RLS_ENABLED` | `false` | Enable Row-Level Security |
-| `JOB_WORKER_ENABLED` | `false` | Start embedded Graphile Worker |
+| Variable                  | Default | Description                                            |
+| ------------------------- | ------- | ------------------------------------------------------ |
+| `STORE_BACKEND`           | `auto`  | `auto` (PG if URL set), `pg` (force), `sqlite` (force) |
+| `PLATFORM_PG_URL`         | —       | PostgreSQL connection string                           |
+| `PLATFORM_PG_RLS_ENABLED` | `false` | Enable Row-Level Security                              |
+| `JOB_WORKER_ENABLED`      | `false` | Start embedded Graphile Worker                         |
 
 ---
 

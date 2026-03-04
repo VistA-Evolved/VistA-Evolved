@@ -1,6 +1,7 @@
 # Phase 212 -- Repair Prompts Tree to Match Policy
 
 ## Context
+
 Q212 from Wave 4. The prompts directory has accumulated structural debt:
 orphan flat files, split IMPLEMENT/VERIFY across folders, missing VERIFYs,
 duplicate phase numbers, file prefix mismatches, and a wave mega-phase
@@ -17,6 +18,7 @@ folder that should be a playbook.
 7. Regenerate phase-index.json and test specs
 
 ## Files Touched
+
 - prompts/197-01-IMPLEMENT.md (moved)
 - prompts/100-PHASE-179-WAVE2-K8S-DR-PERF-FHIR/ (moved)
 - prompts/47-PHASE-43-RCM-LOOP/ (merged, file renamed)

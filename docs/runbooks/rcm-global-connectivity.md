@@ -40,29 +40,33 @@ The RCM Gateway supports multi-country, multi-payer claims processing with:
 ## Connectors
 
 ### US Clearinghouses
-| Connector | Target | Auth | Status |
-|-----------|--------|------|--------|
-| clearinghouse | Generic EDI clearinghouse | API key | Integration-ready |
-| officeally | OfficeAlly | SFTP + API key | Integration-ready |
-| availity | Availity Health Info Network | OAuth2 client_credentials | Integration-ready |
-| stedi | Stedi API-first EDI | API key (STEDI_ENABLED flag) | Feature-flagged |
+
+| Connector     | Target                       | Auth                         | Status            |
+| ------------- | ---------------------------- | ---------------------------- | ----------------- |
+| clearinghouse | Generic EDI clearinghouse    | API key                      | Integration-ready |
+| officeally    | OfficeAlly                   | SFTP + API key               | Integration-ready |
+| availity      | Availity Health Info Network | OAuth2 client_credentials    | Integration-ready |
+| stedi         | Stedi API-first EDI          | API key (STEDI_ENABLED flag) | Feature-flagged   |
 
 ### Asia-Pacific
-| Connector | Target | Auth | Status |
-|-----------|--------|------|--------|
-| philhealth | PhilHealth eClaims | API token | Integration-ready |
-| portal-batch | HMO portal/batch | varies | Integration-ready |
-| nphc-sg | NPHC Singapore | CorpPass | Integration-ready |
+
+| Connector    | Target             | Auth      | Status            |
+| ------------ | ------------------ | --------- | ----------------- |
+| philhealth   | PhilHealth eClaims | API token | Integration-ready |
+| portal-batch | HMO portal/batch   | varies    | Integration-ready |
+| nphc-sg      | NPHC Singapore     | CorpPass  | Integration-ready |
 
 ### Oceania
-| Connector | Target | Auth | Status |
-|-----------|--------|------|--------|
+
+| Connector  | Target                    | Auth        | Status            |
+| ---------- | ------------------------- | ----------- | ----------------- |
 | eclipse-au | ECLIPSE (AU Medicare/DVA) | PRODA + PKI | Integration-ready |
-| acc-nz | ACC New Zealand | OAuth2 | Integration-ready |
+| acc-nz     | ACC New Zealand           | OAuth2      | Integration-ready |
 
 ## Env Vars
 
 ### US Connectors
+
 ```
 OFFICEALLY_SFTP_HOST, OFFICEALLY_SFTP_USER, OFFICEALLY_SFTP_KEY_PATH
 OFFICEALLY_API_ENDPOINT, OFFICEALLY_API_KEY, OFFICEALLY_SENDER_ID
@@ -71,6 +75,7 @@ STEDI_ENABLED, STEDI_API_KEY, STEDI_PARTNER_ID, STEDI_API_ENDPOINT
 ```
 
 ### APAC / Oceania
+
 ```
 PHILHEALTH_API_ENDPOINT, PHILHEALTH_API_TOKEN, PHILHEALTH_FACILITY_CODE
 NPHC_API_ENDPOINT, NPHC_CORPPASS_CLIENT_ID, NPHC_CORPPASS_SECRET, NPHC_FACILITY_LICENSE
@@ -79,6 +84,7 @@ ACC_NZ_API_ENDPOINT, ACC_NZ_CLIENT_ID, ACC_NZ_CLIENT_SECRET, ACC_NZ_PROVIDER_ID
 ```
 
 ### Submission Safety
+
 ```
 CLAIM_SUBMISSION_ENABLED=false  # default -- export-only mode
 ```
@@ -86,18 +92,21 @@ CLAIM_SUBMISSION_ENABLED=false  # default -- export-only mode
 ## VistA Binding Points
 
 ### 1. Encounter to Claim
+
 - **Route**: POST `/rcm/vista/encounter-to-claim`
 - **VistA Files**: ^AUPNVSIT, ^AUPNVCPT, ^AUPNVPOV, ^IB(350), ^DGCR(399)
 - **RPCs**: ORWPCE PCE4NOTE, ORWPCE GETVSIT, IB CHARGE DATA
 - **Status**: Integration-pending in sandbox (PCE has data, IB is empty)
 
 ### 2. ERA to VistA AR
+
 - **Route**: POST `/rcm/vista/era-post`
 - **VistA Files**: ^PRCA(430), ^PRCA(433), ^RC(344)
 - **RPCs**: RCDPE PAYMENT POST, PRCA POST PAYMENT
 - **Status**: Integration-pending (AR is empty in sandbox)
 
 ### 3. Charge Capture Candidates
+
 - **Route**: GET `/rcm/vista/charge-candidates?patientDfn=3`
 - **VistA Files**: ^AUPNVSIT, ^AUPNVCPT, ^IB(350)
 - **RPCs**: ORWCV VST, ORWPCE PCE4NOTE, IBD FIND CHARGES
@@ -106,6 +115,7 @@ CLAIM_SUBMISSION_ENABLED=false  # default -- export-only mode
 ## Job Queue
 
 The in-memory job queue supports 5 job types:
+
 - `CLAIM_SUBMIT` -- submit claim to payer
 - `ELIGIBILITY_CHECK` -- 270/271 eligibility inquiry
 - `STATUS_POLL` -- 276/277 claim status
@@ -113,6 +123,7 @@ The in-memory job queue supports 5 job types:
 - `ACK_PROCESS` -- 999/TA1 acknowledgement handling
 
 Routes:
+
 - GET `/rcm/jobs` -- list jobs
 - GET `/rcm/jobs/stats` -- queue statistics
 - GET `/rcm/jobs/:id` -- get single job
@@ -121,15 +132,15 @@ Routes:
 
 ## Validation Rules (23 total)
 
-| Category | Count | Rule IDs |
-|----------|-------|----------|
-| Syntax | 8 | SYN-001 through SYN-008 |
-| Code Set | 3 | CS-001 through CS-003 |
-| Business Rule | 4 | BUS-001 through BUS-004 |
-| Timely Filing | 1 | TF-001 |
-| Payer Specific | 3 | PAY-001 through PAY-003 |
-| Authorization | 3 | AUTH-001 through AUTH-003 |
-| Country Specific | 5 | CTY-001 through CTY-005 |
+| Category         | Count | Rule IDs                  |
+| ---------------- | ----- | ------------------------- |
+| Syntax           | 8     | SYN-001 through SYN-008   |
+| Code Set         | 3     | CS-001 through CS-003     |
+| Business Rule    | 4     | BUS-001 through BUS-004   |
+| Timely Filing    | 1     | TF-001                    |
+| Payer Specific   | 3     | PAY-001 through PAY-003   |
+| Authorization    | 3     | AUTH-001 through AUTH-003 |
+| Country Specific | 5     | CTY-001 through CTY-005   |
 
 ## Verification
 

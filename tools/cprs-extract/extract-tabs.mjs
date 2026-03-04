@@ -69,7 +69,9 @@ async function parseFrameDfmTabPosition() {
   const src = await readFile(dfmFile, 'latin1');
 
   // Find the tabPage TTabControl block
-  const tabPageMatch = src.match(/object\s+tabPage\s*:\s*TTabControl[\s\S]*?(?=\n\s{2,4}(?:object|end)\b)/);
+  const tabPageMatch = src.match(
+    /object\s+tabPage\s*:\s*TTabControl[\s\S]*?(?=\n\s{2,4}(?:object|end)\b)/
+  );
   if (!tabPageMatch) return { position: 'unknown', align: 'unknown' };
 
   const block = tabPageMatch[0];
@@ -181,12 +183,16 @@ export async function extractTabs() {
 
   await mkdir(OUTPUT_DIR, { recursive: true });
   await writeFile(join(OUTPUT_DIR, 'tabs.json'), JSON.stringify(result, null, 2));
-  console.log(`  ✓ tabs.json — ${result.summary.mainTabCount} main tabs, ${result.summary.subTabSheetCount} sub-tabs`);
+  console.log(
+    `  ✓ tabs.json — ${result.summary.mainTabCount} main tabs, ${result.summary.subTabSheetCount} sub-tabs`
+  );
   return result;
 }
 
 // Allow direct execution
-if (import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}` ||
-    process.argv[1]?.endsWith('extract-tabs.mjs')) {
+if (
+  import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}` ||
+  process.argv[1]?.endsWith('extract-tabs.mjs')
+) {
   extractTabs().catch(console.error);
 }

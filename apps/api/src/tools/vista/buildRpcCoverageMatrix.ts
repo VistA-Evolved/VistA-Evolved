@@ -18,40 +18,52 @@
  *   npx tsx apps/api/src/tools/vista/buildRpcCoverageMatrix.ts --cached
  */
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const ROOT = resolve(__dirname, "../../../../..");
+const ROOT = resolve(__dirname, '../../../../..');
 
-const VIVIAN_INDEX = resolve(ROOT, "data/vista/vivian/rpc_index.json");
-const INSTANCE_DIR = resolve(ROOT, "data/vista/vista_instance");
-const CACHE_FILE = resolve(INSTANCE_DIR, "rpc_catalog_cache.json");
-const PRESENT_FILE = resolve(INSTANCE_DIR, "rpc_present.json");
-const MISSING_FILE = resolve(INSTANCE_DIR, "rpc_missing_vs_vivian.json");
-const EXTRA_FILE = resolve(INSTANCE_DIR, "rpc_extra_vs_vivian.json");
-const REPORT_FILE = resolve(ROOT, "docs/vista/rpc-coverage-report.md");
+const VIVIAN_INDEX = resolve(ROOT, 'data/vista/vivian/rpc_index.json');
+const INSTANCE_DIR = resolve(ROOT, 'data/vista/vista_instance');
+const CACHE_FILE = resolve(INSTANCE_DIR, 'rpc_catalog_cache.json');
+const PRESENT_FILE = resolve(INSTANCE_DIR, 'rpc_present.json');
+const MISSING_FILE = resolve(INSTANCE_DIR, 'rpc_missing_vs_vivian.json');
+const EXTRA_FILE = resolve(INSTANCE_DIR, 'rpc_extra_vs_vivian.json');
+const REPORT_FILE = resolve(ROOT, 'docs/vista/rpc-coverage-report.md');
 
-interface RpcIndexEntry { name: string; package?: string; }
-interface CatalogEntry { ien: string; name: string; tag?: string; routine?: string; present: boolean; }
+interface RpcIndexEntry {
+  name: string;
+  package?: string;
+}
+interface CatalogEntry {
+  ien: string;
+  name: string;
+  tag?: string;
+  routine?: string;
+  present: boolean;
+}
 
 async function fetchLiveCatalog(apiBase: string): Promise<CatalogEntry[]> {
   // Login first to get session cookie
   const loginResp = await fetch(`${apiBase}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ accessCode: process.env.VISTA_ACCESS_CODE || "PROV123", verifyCode: process.env.VISTA_VERIFY_CODE || "PROV123!!" }),
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      accessCode: process.env.VISTA_ACCESS_CODE || 'PROV123',
+      verifyCode: process.env.VISTA_VERIFY_CODE || 'PROV123!!',
+    }),
   });
   const cookies = loginResp.headers.getSetCookie?.() || [];
-  const cookieStr = cookies.map((c: string) => c.split(";")[0]).join("; ");
+  const cookieStr = cookies.map((c: string) => c.split(';')[0]).join('; ');
 
   const resp = await fetch(`${apiBase}/vista/rpc-catalog`, {
     headers: { Cookie: cookieStr },
   });
-  const data = await resp.json() as any;
-  if (!data.ok) throw new Error(`RPC catalog fetch failed: ${data.error || "unknown"}`);
+  const data = (await resp.json()) as any;
+  if (!data.ok) throw new Error(`RPC catalog fetch failed: ${data.error || 'unknown'}`);
   return data.catalog || [];
 }
 
@@ -59,15 +71,17 @@ function loadCachedCatalog(): CatalogEntry[] {
   if (!existsSync(CACHE_FILE)) {
     throw new Error(`No cached catalog at ${CACHE_FILE}. Run with --api first.`);
   }
-  const raw = JSON.parse(readFileSync(CACHE_FILE, "utf-8"));
+  const raw = JSON.parse(readFileSync(CACHE_FILE, 'utf-8'));
   return raw.catalog || raw;
 }
 
 function loadVivianIndex(): RpcIndexEntry[] {
   if (!existsSync(VIVIAN_INDEX)) {
-    throw new Error(`Vivian index not found at ${VIVIAN_INDEX}. Run normalizeVivianSnapshot.ts first.`);
+    throw new Error(
+      `Vivian index not found at ${VIVIAN_INDEX}. Run normalizeVivianSnapshot.ts first.`
+    );
   }
-  const raw = JSON.parse(readFileSync(VIVIAN_INDEX, "utf-8"));
+  const raw = JSON.parse(readFileSync(VIVIAN_INDEX, 'utf-8'));
   return raw.rpcs || [];
 }
 
@@ -76,12 +90,11 @@ function generateReport(
   instanceRpcs: CatalogEntry[],
   overlap: string[],
   missingFromInstance: string[],
-  extraInInstance: string[],
+  extraInInstance: string[]
 ): string {
   const now = new Date().toISOString();
-  const overlapPct = vivianRpcs.length > 0
-    ? ((overlap.length / vivianRpcs.length) * 100).toFixed(1)
-    : "0";
+  const overlapPct =
+    vivianRpcs.length > 0 ? ((overlap.length / vivianRpcs.length) * 100).toFixed(1) : '0';
 
   let md = `# VistA RPC Coverage Report\n\n`;
   md += `> Generated: ${now}\n\n`;
@@ -123,18 +136,18 @@ function generateReport(
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
-  const useCached = args.includes("--cached");
-  const apiIndex = args.indexOf("--api");
-  const apiBase = apiIndex >= 0 ? args[apiIndex + 1] : "http://127.0.0.1:3001";
+  const useCached = args.includes('--cached');
+  const apiIndex = args.indexOf('--api');
+  const apiBase = apiIndex >= 0 ? args[apiIndex + 1] : 'http://127.0.0.1:3001';
 
-  console.log("Loading Vivian index...");
+  console.log('Loading Vivian index...');
   const vivianRpcs = loadVivianIndex();
   const vivianSet = new Set(vivianRpcs.map((r) => r.name.toUpperCase()));
   console.log(`  ${vivianRpcs.length} RPCs in Vivian index`);
 
   let instanceRpcs: CatalogEntry[];
   if (useCached) {
-    console.log("Loading cached instance catalog...");
+    console.log('Loading cached instance catalog...');
     instanceRpcs = loadCachedCatalog();
   } else {
     console.log(`Fetching live catalog from ${apiBase}...`);
@@ -142,15 +155,18 @@ async function main(): Promise<void> {
       instanceRpcs = await fetchLiveCatalog(apiBase);
       // Cache it
       if (!existsSync(INSTANCE_DIR)) mkdirSync(INSTANCE_DIR, { recursive: true });
-      writeFileSync(CACHE_FILE, JSON.stringify({ fetchedAt: new Date().toISOString(), catalog: instanceRpcs }, null, 2));
+      writeFileSync(
+        CACHE_FILE,
+        JSON.stringify({ fetchedAt: new Date().toISOString(), catalog: instanceRpcs }, null, 2)
+      );
       console.log(`  Cached to ${CACHE_FILE}`);
     } catch (err: any) {
       console.warn(`  Live fetch failed: ${err.message}`);
       if (existsSync(CACHE_FILE)) {
-        console.log("  Falling back to cached catalog...");
+        console.log('  Falling back to cached catalog...');
         instanceRpcs = loadCachedCatalog();
       } else {
-        console.error("  No cached catalog available. Run the API first or provide --api URL.");
+        console.error('  No cached catalog available. Run the API first or provide --api URL.');
         process.exit(1);
       }
     }
@@ -172,15 +188,50 @@ async function main(): Promise<void> {
   // Write output files
   if (!existsSync(INSTANCE_DIR)) mkdirSync(INSTANCE_DIR, { recursive: true });
 
-  writeFileSync(PRESENT_FILE, JSON.stringify({ generatedAt: new Date().toISOString(), count: overlap.length, rpcs: overlap }, null, 2));
-  writeFileSync(MISSING_FILE, JSON.stringify({ generatedAt: new Date().toISOString(), count: missingFromInstance.length, rpcs: missingFromInstance }, null, 2));
-  writeFileSync(EXTRA_FILE, JSON.stringify({ generatedAt: new Date().toISOString(), count: extraInInstance.length, rpcs: extraInInstance }, null, 2));
+  writeFileSync(
+    PRESENT_FILE,
+    JSON.stringify(
+      { generatedAt: new Date().toISOString(), count: overlap.length, rpcs: overlap },
+      null,
+      2
+    )
+  );
+  writeFileSync(
+    MISSING_FILE,
+    JSON.stringify(
+      {
+        generatedAt: new Date().toISOString(),
+        count: missingFromInstance.length,
+        rpcs: missingFromInstance,
+      },
+      null,
+      2
+    )
+  );
+  writeFileSync(
+    EXTRA_FILE,
+    JSON.stringify(
+      {
+        generatedAt: new Date().toISOString(),
+        count: extraInInstance.length,
+        rpcs: extraInInstance,
+      },
+      null,
+      2
+    )
+  );
 
   // Generate report
-  const docsDir = resolve(ROOT, "docs/vista");
+  const docsDir = resolve(ROOT, 'docs/vista');
   if (!existsSync(docsDir)) mkdirSync(docsDir, { recursive: true });
-  const report = generateReport(vivianRpcs, instanceRpcs, overlap, missingFromInstance, extraInInstance);
-  writeFileSync(REPORT_FILE, report, "utf-8");
+  const report = generateReport(
+    vivianRpcs,
+    instanceRpcs,
+    overlap,
+    missingFromInstance,
+    extraInInstance
+  );
+  writeFileSync(REPORT_FILE, report, 'utf-8');
 
   console.log(`\nWrote:`);
   console.log(`  ${PRESENT_FILE}`);

@@ -25,7 +25,7 @@
  *   - GET  /scim/v2/ResourceTypes — Resource type discovery
  */
 
-import type { UserRole } from "./session-store.js";
+import type { UserRole } from './session-store.js';
 
 /* ================================================================== */
 /* SCIM 2.0 Core Types                                                 */
@@ -69,7 +69,7 @@ export interface ScimUser {
     $ref?: string;
   }>;
   /** VistA-specific extension */
-  "urn:ietf:params:scim:schemas:extension:vista:2.0:User"?: {
+  'urn:ietf:params:scim:schemas:extension:vista:2.0:User'?: {
     duz?: string;
     facilityStation?: string;
     role?: UserRole;
@@ -107,7 +107,7 @@ export interface ScimError {
 export interface ScimPatchOp {
   schemas: string[];
   Operations: Array<{
-    op: "add" | "remove" | "replace";
+    op: 'add' | 'remove' | 'replace';
     path?: string;
     value?: unknown;
   }>;
@@ -138,7 +138,12 @@ export interface ScimConnector {
   getUser(id: string, tenantId: string): Promise<ScimUser | null>;
 
   /** List/filter users */
-  listUsers(filter?: string, startIndex?: number, count?: number, tenantId?: string): Promise<ScimListResponse<ScimUser>>;
+  listUsers(
+    filter?: string,
+    startIndex?: number,
+    count?: number,
+    tenantId?: string
+  ): Promise<ScimListResponse<ScimUser>>;
 
   /** Replace user (full update) */
   replaceUser(id: string, user: ScimUser, tenantId: string): Promise<ScimUser>;
@@ -178,8 +183,8 @@ export interface ScimServiceProviderConfig {
 export class StubScimConnector implements ScimConnector {
   getServiceProviderConfig(): ScimServiceProviderConfig {
     return {
-      schemas: ["urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig"],
-      documentationUri: "https://github.com/VistA-Evolved/docs/scim",
+      schemas: ['urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig'],
+      documentationUri: 'https://github.com/VistA-Evolved/docs/scim',
       patch: { supported: false },
       bulk: { supported: false, maxOperations: 0, maxPayloadSize: 0 },
       filter: { supported: false, maxResults: 0 },
@@ -188,47 +193,47 @@ export class StubScimConnector implements ScimConnector {
       etag: { supported: false },
       authenticationSchemes: [
         {
-          type: "oauthbearertoken",
-          name: "OAuth Bearer Token",
-          description: "Authentication scheme using the OAuth Bearer Token standard (RFC 6750)",
+          type: 'oauthbearertoken',
+          name: 'OAuth Bearer Token',
+          description: 'Authentication scheme using the OAuth Bearer Token standard (RFC 6750)',
         },
       ],
     };
   }
 
   async createUser(_user: ScimUser, _tenantId: string): Promise<ScimUser> {
-    throw new ScimNotImplementedError("SCIM user provisioning is not yet implemented");
+    throw new ScimNotImplementedError('SCIM user provisioning is not yet implemented');
   }
 
   async getUser(_id: string, _tenantId: string): Promise<ScimUser | null> {
-    throw new ScimNotImplementedError("SCIM user read is not yet implemented");
+    throw new ScimNotImplementedError('SCIM user read is not yet implemented');
   }
 
   async listUsers(): Promise<ScimListResponse<ScimUser>> {
-    throw new ScimNotImplementedError("SCIM user listing is not yet implemented");
+    throw new ScimNotImplementedError('SCIM user listing is not yet implemented');
   }
 
   async replaceUser(_id: string, _user: ScimUser, _tenantId: string): Promise<ScimUser> {
-    throw new ScimNotImplementedError("SCIM user replace is not yet implemented");
+    throw new ScimNotImplementedError('SCIM user replace is not yet implemented');
   }
 
   async patchUser(_id: string, _patch: ScimPatchOp, _tenantId: string): Promise<ScimUser> {
-    throw new ScimNotImplementedError("SCIM user patch is not yet implemented");
+    throw new ScimNotImplementedError('SCIM user patch is not yet implemented');
   }
 
   async deactivateUser(_id: string, _tenantId: string): Promise<void> {
-    throw new ScimNotImplementedError("SCIM user deactivation is not yet implemented");
+    throw new ScimNotImplementedError('SCIM user deactivation is not yet implemented');
   }
 }
 
 /** Custom error for SCIM not-implemented operations */
 export class ScimNotImplementedError extends Error {
   public readonly statusCode = 501;
-  public readonly scimType = "invalidValue";
+  public readonly scimType = 'invalidValue';
 
   constructor(message: string) {
     super(message);
-    this.name = "ScimNotImplementedError";
+    this.name = 'ScimNotImplementedError';
   }
 }
 
@@ -243,8 +248,8 @@ export function getScimReadinessStatus(): {
 } {
   return {
     ready: false,
-    connector: "stub",
+    connector: 'stub',
     interfaceDefined: true,
-    implementation: "placeholder — awaiting IdP SCIM 2.0 integration",
+    implementation: 'placeholder — awaiting IdP SCIM 2.0 integration',
   };
 }

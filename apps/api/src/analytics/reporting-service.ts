@@ -7,148 +7,138 @@
  * ADR: docs/decisions/ADR-REPORTING-MODEL.md
  */
 
-import { log } from "../lib/logger.js";
-import type {
-  ReportId,
-  ReportDefinition,
-  ReportResult,
-  ReportRow,
-} from "./extract-types.js";
-import { queryAnalyticsEvents } from "../services/analytics-store.js";
-import { getExtractRuns, getExtractRecords } from "./extract-layer.js";
+import { log } from '../lib/logger.js';
+import type { ReportId, ReportDefinition, ReportResult, ReportRow } from './extract-types.js';
+import { queryAnalyticsEvents } from '../services/analytics-store.js';
+import { getExtractRuns, getExtractRecords } from './extract-layer.js';
 
 // ── Report Definitions ──────────────────────────────────────────────────
 
 const REPORT_DEFINITIONS: ReportDefinition[] = [
   {
-    id: "active_users",
-    name: "Active Users",
-    description: "Unique users by session count over a time range",
-    category: "operational",
+    id: 'active_users',
+    name: 'Active Users',
+    description: 'Unique users by session count over a time range',
+    category: 'operational',
     parameters: [
-      { name: "startDate", type: "date", required: false },
-      { name: "endDate", type: "date", required: false },
+      { name: 'startDate', type: 'date', required: false },
+      { name: 'endDate', type: 'date', required: false },
     ],
-    requiredPermission: "analytics_viewer",
+    requiredPermission: 'analytics_viewer',
   },
   {
-    id: "error_rate",
-    name: "Error Rate",
-    description: "API error rate over time (5xx responses)",
-    category: "operational",
+    id: 'error_rate',
+    name: 'Error Rate',
+    description: 'API error rate over time (5xx responses)',
+    category: 'operational',
     parameters: [
-      { name: "startDate", type: "date", required: false },
-      { name: "endDate", type: "date", required: false },
+      { name: 'startDate', type: 'date', required: false },
+      { name: 'endDate', type: 'date', required: false },
     ],
-    requiredPermission: "analytics_viewer",
+    requiredPermission: 'analytics_viewer',
   },
   {
-    id: "queue_lag",
-    name: "Queue Lag",
-    description: "Average queue wait time across departments",
-    category: "operational",
-    parameters: [
-      { name: "startDate", type: "date", required: false },
-    ],
-    requiredPermission: "analytics_viewer",
+    id: 'queue_lag',
+    name: 'Queue Lag',
+    description: 'Average queue wait time across departments',
+    category: 'operational',
+    parameters: [{ name: 'startDate', type: 'date', required: false }],
+    requiredPermission: 'analytics_viewer',
   },
   {
-    id: "uptime",
-    name: "System Uptime",
-    description: "Service availability percentage over time",
-    category: "operational",
-    parameters: [
-      { name: "periodDays", type: "number", required: false, defaultValue: 30 },
-    ],
-    requiredPermission: "analytics_viewer",
+    id: 'uptime',
+    name: 'System Uptime',
+    description: 'Service availability percentage over time',
+    category: 'operational',
+    parameters: [{ name: 'periodDays', type: 'number', required: false, defaultValue: 30 }],
+    requiredPermission: 'analytics_viewer',
   },
   {
-    id: "patient_volume",
-    name: "Patient Volume Trends",
-    description: "Patient encounters over time (synthetic data)",
-    category: "clinical",
+    id: 'patient_volume',
+    name: 'Patient Volume Trends',
+    description: 'Patient encounters over time (synthetic data)',
+    category: 'clinical',
     parameters: [
-      { name: "startDate", type: "date", required: false },
-      { name: "endDate", type: "date", required: false },
-      { name: "encounterType", type: "select", required: false, options: ["outpatient", "inpatient", "emergency"] },
+      { name: 'startDate', type: 'date', required: false },
+      { name: 'endDate', type: 'date', required: false },
+      {
+        name: 'encounterType',
+        type: 'select',
+        required: false,
+        options: ['outpatient', 'inpatient', 'emergency'],
+      },
     ],
-    requiredPermission: "analytics_viewer",
+    requiredPermission: 'analytics_viewer',
   },
   {
-    id: "appointment_volume",
-    name: "Appointment Volume",
-    description: "Appointment counts and no-show rates",
-    category: "clinical",
+    id: 'appointment_volume',
+    name: 'Appointment Volume',
+    description: 'Appointment counts and no-show rates',
+    category: 'clinical',
     parameters: [
-      { name: "startDate", type: "date", required: false },
-      { name: "endDate", type: "date", required: false },
+      { name: 'startDate', type: 'date', required: false },
+      { name: 'endDate', type: 'date', required: false },
     ],
-    requiredPermission: "analytics_viewer",
+    requiredPermission: 'analytics_viewer',
   },
   {
-    id: "quality_lab_followup",
-    name: "Lab Follow-up Timeliness",
-    description: "Time from abnormal lab result to provider follow-up",
-    category: "quality",
-    parameters: [
-      { name: "startDate", type: "date", required: false },
-    ],
-    requiredPermission: "analytics_viewer",
+    id: 'quality_lab_followup',
+    name: 'Lab Follow-up Timeliness',
+    description: 'Time from abnormal lab result to provider follow-up',
+    category: 'quality',
+    parameters: [{ name: 'startDate', type: 'date', required: false }],
+    requiredPermission: 'analytics_viewer',
   },
   {
-    id: "quality_med_admin",
-    name: "Medication Order-to-Admin Time",
-    description: "Time from medication order to first administration",
-    category: "quality",
-    parameters: [
-      { name: "startDate", type: "date", required: false },
-    ],
-    requiredPermission: "analytics_viewer",
+    id: 'quality_med_admin',
+    name: 'Medication Order-to-Admin Time',
+    description: 'Time from medication order to first administration',
+    category: 'quality',
+    parameters: [{ name: 'startDate', type: 'date', required: false }],
+    requiredPermission: 'analytics_viewer',
   },
   {
-    id: "quality_note_completion",
-    name: "Note Completion Timeliness",
-    description: "Time from note creation to signature",
-    category: "quality",
-    parameters: [
-      { name: "startDate", type: "date", required: false },
-    ],
-    requiredPermission: "analytics_viewer",
+    id: 'quality_note_completion',
+    name: 'Note Completion Timeliness',
+    description: 'Time from note creation to signature',
+    category: 'quality',
+    parameters: [{ name: 'startDate', type: 'date', required: false }],
+    requiredPermission: 'analytics_viewer',
   },
   {
-    id: "rcm_claim_throughput",
-    name: "Claim Submission Throughput",
-    description: "Claims submitted, accepted, denied per period",
-    category: "rcm",
+    id: 'rcm_claim_throughput',
+    name: 'Claim Submission Throughput',
+    description: 'Claims submitted, accepted, denied per period',
+    category: 'rcm',
     parameters: [
-      { name: "startDate", type: "date", required: false },
-      { name: "endDate", type: "date", required: false },
+      { name: 'startDate', type: 'date', required: false },
+      { name: 'endDate', type: 'date', required: false },
     ],
-    requiredPermission: "analytics_viewer",
+    requiredPermission: 'analytics_viewer',
   },
   {
-    id: "rcm_denial_distribution",
-    name: "Denial Reasons Distribution",
-    description: "Top denial reasons by frequency (synthetic fixtures)",
-    category: "rcm",
+    id: 'rcm_denial_distribution',
+    name: 'Denial Reasons Distribution',
+    description: 'Top denial reasons by frequency (synthetic fixtures)',
+    category: 'rcm',
     parameters: [],
-    requiredPermission: "analytics_viewer",
+    requiredPermission: 'analytics_viewer',
   },
   {
-    id: "rcm_days_in_ar",
-    name: "Days in AR Estimate",
-    description: "Average days from submission to payment",
-    category: "rcm",
+    id: 'rcm_days_in_ar',
+    name: 'Days in AR Estimate',
+    description: 'Average days from submission to payment',
+    category: 'rcm',
     parameters: [],
-    requiredPermission: "analytics_viewer",
+    requiredPermission: 'analytics_viewer',
   },
   {
-    id: "rcm_ack_reject_rate",
-    name: "Ack/Reject Rate",
-    description: "Clearinghouse acknowledgment vs rejection rate",
-    category: "rcm",
+    id: 'rcm_ack_reject_rate',
+    name: 'Ack/Reject Rate',
+    description: 'Clearinghouse acknowledgment vs rejection rate',
+    category: 'rcm',
     parameters: [],
-    requiredPermission: "analytics_viewer",
+    requiredPermission: 'analytics_viewer',
   },
 ];
 
@@ -166,7 +156,7 @@ export function getReportDefinition(id: ReportId): ReportDefinition | undefined 
 export function generateReport(
   reportId: ReportId,
   tenantId: string,
-  params: Record<string, unknown> = {},
+  params: Record<string, unknown> = {}
 ): ReportResult {
   const defn = getReportDefinition(reportId);
   if (!defn) throw new Error(`Unknown report: ${reportId}`);
@@ -185,33 +175,51 @@ type ReportGenerator = (tenantId: string, params: Record<string, unknown>) => Re
 
 const REPORT_GENERATORS: Record<string, ReportGenerator> = {
   active_users: (tenantId, params) => {
-    const events = queryAnalyticsEvents({ tenantId, category: "ops.auth", limit: 10000, offset: 0 });
+    const events = queryAnalyticsEvents({
+      tenantId,
+      category: 'ops.auth',
+      limit: 10000,
+      offset: 0,
+    });
     const userSessions = new Map<string, number>();
     for (const e of events.events) {
-      const actor = e.actorHash || "unknown";
+      const actor = e.actorHash || 'unknown';
       userSessions.set(actor, (userSessions.get(actor) || 0) + 1);
     }
     const rows: ReportRow[] = Array.from(userSessions.entries()).map(([userId, sessions]) => ({
-      userId, sessions, lastSeen: new Date().toISOString(),
+      userId,
+      sessions,
+      lastSeen: new Date().toISOString(),
     }));
-    return makeResult("active_users", tenantId, params, rows, {
+    return makeResult('active_users', tenantId, params, rows, {
       uniqueUsers: userSessions.size,
       totalSessions: events.events.length,
     });
   },
 
   error_rate: (tenantId, params) => {
-    const events = queryAnalyticsEvents({ tenantId, category: "ops.error", limit: 10000, offset: 0 });
-    const allEvents = queryAnalyticsEvents({ tenantId, category: "ops.api", limit: 10000, offset: 0 });
+    const events = queryAnalyticsEvents({
+      tenantId,
+      category: 'ops.error',
+      limit: 10000,
+      offset: 0,
+    });
+    const allEvents = queryAnalyticsEvents({
+      tenantId,
+      category: 'ops.api',
+      limit: 10000,
+      offset: 0,
+    });
     const total = allEvents.events.length || 1;
     const errors = events.events.length;
     const rows: ReportRow[] = [
-      { metric: "error_count", value: errors },
-      { metric: "total_requests", value: total },
-      { metric: "error_rate_pct", value: Number(((errors / total) * 100).toFixed(2)) },
+      { metric: 'error_count', value: errors },
+      { metric: 'total_requests', value: total },
+      { metric: 'error_rate_pct', value: Number(((errors / total) * 100).toFixed(2)) },
     ];
-    return makeResult("error_rate", tenantId, params, rows, {
-      errorCount: errors, totalRequests: total,
+    return makeResult('error_rate', tenantId, params, rows, {
+      errorCount: errors,
+      totalRequests: total,
       errorRatePct: Number(((errors / total) * 100).toFixed(2)),
     });
   },
@@ -219,13 +227,14 @@ const REPORT_GENERATORS: Record<string, ReportGenerator> = {
   queue_lag: (tenantId, params) => {
     // Synthetic queue metrics
     const rows: ReportRow[] = [
-      { department: "Primary Care", avgWaitMin: 12, maxWaitMin: 35, ticketsToday: 28 },
-      { department: "Emergency", avgWaitMin: 5, maxWaitMin: 18, ticketsToday: 45 },
-      { department: "Pharmacy", avgWaitMin: 8, maxWaitMin: 22, ticketsToday: 62 },
-      { department: "Radiology", avgWaitMin: 15, maxWaitMin: 40, ticketsToday: 15 },
+      { department: 'Primary Care', avgWaitMin: 12, maxWaitMin: 35, ticketsToday: 28 },
+      { department: 'Emergency', avgWaitMin: 5, maxWaitMin: 18, ticketsToday: 45 },
+      { department: 'Pharmacy', avgWaitMin: 8, maxWaitMin: 22, ticketsToday: 62 },
+      { department: 'Radiology', avgWaitMin: 15, maxWaitMin: 40, ticketsToday: 15 },
     ];
-    return makeResult("queue_lag", tenantId, params, rows, {
-      avgWaitAllDepts: 10, totalTickets: 150,
+    return makeResult('queue_lag', tenantId, params, rows, {
+      avgWaitAllDepts: 10,
+      totalTickets: 150,
     });
   },
 
@@ -240,45 +249,46 @@ const REPORT_GENERATORS: Record<string, ReportGenerator> = {
         incidents: i % 7 === 0 ? 1 : 0,
       });
     }
-    return makeResult("uptime", tenantId, params, rows, {
-      avgUptimePct: 99.85, totalIncidents: Math.floor(days / 7),
+    return makeResult('uptime', tenantId, params, rows, {
+      avgUptimePct: 99.85,
+      totalIncidents: Math.floor(days / 7),
     });
   },
 
   patient_volume: (tenantId, params) => {
     const runs = getExtractRuns(tenantId, 10);
-    const records = runs.length > 0
-      ? getExtractRecords(runs[runs.length - 1].runId, { entityType: "patient_encounter" })
-      : [];
+    const records =
+      runs.length > 0
+        ? getExtractRecords(runs[runs.length - 1].runId, { entityType: 'patient_encounter' })
+        : [];
     const typeFilter = params.encounterType as string | undefined;
-    const filtered = typeFilter
-      ? records.filter((r) => r.data.type === typeFilter)
-      : records;
+    const filtered = typeFilter ? records.filter((r) => r.data.type === typeFilter) : records;
     const rows: ReportRow[] = filtered.map((r) => ({
       encounterId: r.data.encounterId,
       type: r.data.type,
       visitDate: r.data.visitDate,
       facilityId: r.data.facilityId,
     }));
-    return makeResult("patient_volume", tenantId, params, rows, {
+    return makeResult('patient_volume', tenantId, params, rows, {
       totalEncounters: rows.length,
-      byType: countByField(rows, "type"),
+      byType: countByField(rows, 'type'),
     });
   },
 
   appointment_volume: (tenantId, params) => {
     const runs = getExtractRuns(tenantId, 10);
-    const records = runs.length > 0
-      ? getExtractRecords(runs[runs.length - 1].runId, { entityType: "appointment" })
-      : [];
+    const records =
+      runs.length > 0
+        ? getExtractRecords(runs[runs.length - 1].runId, { entityType: 'appointment' })
+        : [];
     const rows: ReportRow[] = records.map((r) => ({
       appointmentId: r.data.appointmentId,
       status: r.data.status,
       clinicIen: r.data.clinicIen,
       date: r.data.appointmentDate,
     }));
-    const noShows = rows.filter((r) => r.status === "no_show").length;
-    return makeResult("appointment_volume", tenantId, params, rows, {
+    const noShows = rows.filter((r) => r.status === 'no_show').length;
+    return makeResult('appointment_volume', tenantId, params, rows, {
       totalAppointments: rows.length,
       noShows,
       noShowRatePct: rows.length > 0 ? Number(((noShows / rows.length) * 100).toFixed(1)) : 0,
@@ -286,15 +296,15 @@ const REPORT_GENERATORS: Record<string, ReportGenerator> = {
   },
 
   // Quality report generators delegated to quality-metrics.ts
-  quality_lab_followup: qualityReportStub("quality_lab_followup"),
-  quality_med_admin: qualityReportStub("quality_med_admin"),
-  quality_note_completion: qualityReportStub("quality_note_completion"),
+  quality_lab_followup: qualityReportStub('quality_lab_followup'),
+  quality_med_admin: qualityReportStub('quality_med_admin'),
+  quality_note_completion: qualityReportStub('quality_note_completion'),
 
   // RCM report generators delegated to rcm-analytics.ts
-  rcm_claim_throughput: rcmReportStub("rcm_claim_throughput"),
-  rcm_denial_distribution: rcmReportStub("rcm_denial_distribution"),
-  rcm_days_in_ar: rcmReportStub("rcm_days_in_ar"),
-  rcm_ack_reject_rate: rcmReportStub("rcm_ack_reject_rate"),
+  rcm_claim_throughput: rcmReportStub('rcm_claim_throughput'),
+  rcm_denial_distribution: rcmReportStub('rcm_denial_distribution'),
+  rcm_days_in_ar: rcmReportStub('rcm_days_in_ar'),
+  rcm_ack_reject_rate: rcmReportStub('rcm_ack_reject_rate'),
 };
 
 // ── Stubs for reports implemented in other modules ──────────────────────
@@ -305,7 +315,7 @@ function qualityReportStub(reportId: string): ReportGenerator {
     const generator = externalGenerators.get(reportId);
     if (generator) return generator(tenantId, params);
     return makeResult(reportId as ReportId, tenantId, params, [], {
-      note: "Run quality metrics extract first",
+      note: 'Run quality metrics extract first',
     });
   };
 }
@@ -315,7 +325,7 @@ function rcmReportStub(reportId: string): ReportGenerator {
     const generator = externalGenerators.get(reportId);
     if (generator) return generator(tenantId, params);
     return makeResult(reportId as ReportId, tenantId, params, [], {
-      note: "Run RCM analytics extract first",
+      note: 'Run RCM analytics extract first',
     });
   };
 }
@@ -329,12 +339,12 @@ export function registerReportGenerator(reportId: string, generator: ReportGener
 // ── Export Functions ─────────────────────────────────────────────────────
 
 export function exportReportCsv(result: ReportResult): string {
-  if (result.data.length === 0) return "";
+  if (result.data.length === 0) return '';
   const headers = Object.keys(result.data[0]);
   const rows = result.data.map((row) =>
-    headers.map((h) => csvEscape(String(row[h] ?? ""))).join(",")
+    headers.map((h) => csvEscape(String(row[h] ?? ''))).join(',')
   );
-  return [headers.join(","), ...rows].join("\n");
+  return [headers.join(','), ...rows].join('\n');
 }
 
 export function exportReportJson(result: ReportResult): string {
@@ -342,7 +352,7 @@ export function exportReportJson(result: ReportResult): string {
 }
 
 function csvEscape(val: string): string {
-  if (val.includes(",") || val.includes('"') || val.includes("\n")) {
+  if (val.includes(',') || val.includes('"') || val.includes('\n')) {
     return `"${val.replace(/"/g, '""')}"`;
   }
   return val;
@@ -355,7 +365,7 @@ function makeResult(
   tenantId: string,
   params: Record<string, unknown>,
   data: ReportRow[],
-  summary: Record<string, unknown>,
+  summary: Record<string, unknown>
 ): ReportResult {
   return {
     reportId,
@@ -371,7 +381,7 @@ function makeResult(
 function countByField(rows: ReportRow[], field: string): Record<string, number> {
   const counts: Record<string, number> = {};
   for (const row of rows) {
-    const val = String(row[field] || "unknown");
+    const val = String(row[field] || 'unknown');
     counts[val] = (counts[val] || 0) + 1;
   }
   return counts;

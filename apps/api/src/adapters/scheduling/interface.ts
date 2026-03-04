@@ -9,7 +9,7 @@
  * CprsAppointment, getReferenceData, getAppointmentsCprs, getRpcPosture.
  */
 
-import type { BaseAdapter, AdapterResult } from "../types.js";
+import type { BaseAdapter, AdapterResult } from '../types.js';
 
 export interface Appointment {
   id: string;
@@ -28,7 +28,7 @@ export interface Appointment {
   /** Reason / chief complaint */
   reason?: string;
   /** Source: "vista" or "request" */
-  source?: "vista" | "request";
+  source?: 'vista' | 'request';
 }
 
 export interface TimeSlot {
@@ -106,7 +106,7 @@ export interface WaitListEntry {
   status: string;
   createdAt: string;
   reason?: string;
-  type?: "new_appointment" | "reschedule" | "cancel_request";
+  type?: 'new_appointment' | 'reschedule' | 'cancel_request';
   /** Phase 123: VistA wait-list IEN if created via SD W/L CREATE FILE */
   vistaWaitListIen?: string;
 }
@@ -158,7 +158,7 @@ export interface LifecycleEntry {
 export interface RpcPostureEntry {
   rpc: string;
   ien?: string;
-  status: "available" | "callable_no_data" | "not_installed";
+  status: 'available' | 'callable_no_data' | 'not_installed';
   vistaPackage: string;
   sandboxNote: string;
 }
@@ -231,20 +231,34 @@ export interface SchedulingMode {
   sdoeInstalled: boolean;
   sdwlInstalled: boolean;
   sdvwInstalled?: boolean;
-  mode: "vista_direct" | "vista_waitlist" | "sdes_partial" | "request_only";
+  mode: 'vista_direct' | 'vista_waitlist' | 'sdes_partial' | 'request_only';
   detail: string;
 }
 
 export interface SchedulingAdapter extends BaseAdapter {
-  readonly adapterType: "scheduling";
+  readonly adapterType: 'scheduling';
   /** List appointments for a patient (SDOE encounter-based) */
-  listAppointments(patientDfn: string, startDate?: string, endDate?: string): Promise<AdapterResult<Appointment[]>>;
+  listAppointments(
+    patientDfn: string,
+    startDate?: string,
+    endDate?: string
+  ): Promise<AdapterResult<Appointment[]>>;
   /** Create/book an appointment (SD W/L CREATE FILE -> SDEC when available, else request store) */
-  createAppointment(request: AppointmentRequest): Promise<AdapterResult<Appointment | WaitListEntry>>;
+  createAppointment(
+    request: AppointmentRequest
+  ): Promise<AdapterResult<Appointment | WaitListEntry>>;
   /** Cancel an appointment or submit cancel request */
-  cancelAppointment(appointmentId: string, reason: string, patientDfn?: string): Promise<AdapterResult<void>>;
+  cancelAppointment(
+    appointmentId: string,
+    reason: string,
+    patientDfn?: string
+  ): Promise<AdapterResult<void>>;
   /** Get available time slots for a clinic */
-  getAvailableSlots(clinicIen: string, startDate: string, endDate: string): Promise<AdapterResult<TimeSlot[]>>;
+  getAvailableSlots(
+    clinicIen: string,
+    startDate: string,
+    endDate: string
+  ): Promise<AdapterResult<TimeSlot[]>>;
   /** List clinics / hospital locations */
   listClinics(): Promise<AdapterResult<ClinicInfo[]>>;
   /** List providers */
@@ -272,9 +286,16 @@ export interface SchedulingAdapter extends BaseAdapter {
   /** Phase 147: Get resource/hours for a clinic (SDES GET RESOURCE BY CLINIC) */
   getClinicResource(clinicIen: string): Promise<AdapterResult<ClinicResource>>;
   /** Phase 147: Get SDES clinic availability (SDES GET CLIN AVAILABILITY) */
-  getSdesAvailability(clinicIen: string, startDate: string, endDate: string): Promise<AdapterResult<SdesAvailSlot[]>>;
+  getSdesAvailability(
+    clinicIen: string,
+    startDate: string,
+    endDate: string
+  ): Promise<AdapterResult<SdesAvailSlot[]>>;
   /** Phase 147: Verify an appointment exists in VistA (truth gate) */
-  verifyAppointment(appointmentRef: string, patientDfn: string): Promise<AdapterResult<TruthGateResult>>;
+  verifyAppointment(
+    appointmentRef: string,
+    patientDfn: string
+  ): Promise<AdapterResult<TruthGateResult>>;
   /** Phase 147: Get scheduling mode for this tenant */
   getSchedulingMode(): Promise<AdapterResult<SchedulingMode>>;
 }

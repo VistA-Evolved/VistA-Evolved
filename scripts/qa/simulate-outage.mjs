@@ -25,7 +25,8 @@ const results = [];
 function check(label, ok, detail) {
   const tag = ok ? 'PASS' : 'FAIL';
   console.log(`  [${tag}] ${label}${detail ? ' -- ' + detail : ''}`);
-  if (ok) passes++; else failures++;
+  if (ok) passes++;
+  else failures++;
   results.push({ label, status: tag, detail: detail || '' });
 }
 
@@ -38,18 +39,26 @@ console.log(`  Mode: ${isLive ? 'LIVE' : 'OFFLINE (pattern check)'}\n`);
 const inlineR = resolve(root, 'apps/api/src/server/inline-routes.ts');
 if (existsSync(inlineR)) {
   const src = readFileSync(inlineR, 'utf8');
-  check('/health returns ok:true unconditionally',
+  check(
+    '/health returns ok:true unconditionally',
     src.includes('ok: true') && src.includes('/health'),
-    'inline-routes.ts');
-  check('/ready checks circuit breaker state',
+    'inline-routes.ts'
+  );
+  check(
+    '/ready checks circuit breaker state',
     src.includes('circuitBreaker') && src.includes('/ready'),
-    'inline-routes.ts');
-  check('Admin force-open endpoint exists',
+    'inline-routes.ts'
+  );
+  check(
+    'Admin force-open endpoint exists',
     src.includes('force-open'),
-    'POST /admin/circuit-breaker/force-open');
-  check('Admin reset endpoint exists',
+    'POST /admin/circuit-breaker/force-open'
+  );
+  check(
+    'Admin reset endpoint exists',
     src.includes('circuit-breaker/reset'),
-    'POST /admin/circuit-breaker/reset');
+    'POST /admin/circuit-breaker/reset'
+  );
 } else {
   check('inline-routes.ts exists', false, inlineR);
 }
@@ -58,12 +67,12 @@ if (existsSync(inlineR)) {
 const resilience = resolve(root, 'apps/api/src/lib/rpc-resilience.ts');
 if (existsSync(resilience)) {
   const src = readFileSync(resilience, 'utf8');
-  check('forceOpenCircuitBreaker() exists',
+  check(
+    'forceOpenCircuitBreaker() exists',
     src.includes('forceOpenCircuitBreaker'),
-    'rpc-resilience.ts');
-  check('CircuitOpenError is exported',
-    src.includes('CircuitOpenError'),
-    'rpc-resilience.ts');
+    'rpc-resilience.ts'
+  );
+  check('CircuitOpenError is exported', src.includes('CircuitOpenError'), 'rpc-resilience.ts');
 } else {
   check('rpc-resilience.ts exists', false, resilience);
 }
@@ -72,15 +81,17 @@ if (existsSync(resilience)) {
 const banner = resolve(root, 'apps/web/src/components/cprs/DegradedBanner.tsx');
 if (existsSync(banner)) {
   const src = readFileSync(banner, 'utf8');
-  check('DegradedBanner polls /ready',
-    src.includes('/ready'),
-    'DegradedBanner.tsx');
-  check('DegradedBanner shows degraded state',
+  check('DegradedBanner polls /ready', src.includes('/ready'), 'DegradedBanner.tsx');
+  check(
+    'DegradedBanner shows degraded state',
     src.includes('degraded') || src.includes('unreachable'),
-    'DegradedBanner.tsx');
-  check('DegradedBanner exports useSystemStatus',
+    'DegradedBanner.tsx'
+  );
+  check(
+    'DegradedBanner exports useSystemStatus',
     src.includes('useSystemStatus'),
-    'DegradedBanner.tsx');
+    'DegradedBanner.tsx'
+  );
 } else {
   check('DegradedBanner.tsx exists', false, banner);
 }
@@ -89,9 +100,11 @@ if (existsSync(banner)) {
 const layout = resolve(root, 'apps/web/src/app/cprs/layout.tsx');
 if (existsSync(layout)) {
   const src = readFileSync(layout, 'utf8');
-  check('DegradedBanner integrated in CPRS layout',
+  check(
+    'DegradedBanner integrated in CPRS layout',
     src.includes('DegradedBanner'),
-    'cprs/layout.tsx');
+    'cprs/layout.tsx'
+  );
 } else {
   check('cprs/layout.tsx exists', false, layout);
 }
@@ -100,9 +113,11 @@ if (existsSync(layout)) {
 const exitCriteria = resolve(root, 'docs/release/RC_EXIT_CRITERIA.md');
 if (existsSync(exitCriteria)) {
   const src = readFileSync(exitCriteria, 'utf8');
-  check('Exit criteria documents downtime behavior',
+  check(
+    'Exit criteria documents downtime behavior',
     src.includes('Downtime') || src.includes('downtime') || src.includes('outage'),
-    'RC_EXIT_CRITERIA.md');
+    'RC_EXIT_CRITERIA.md'
+  );
 } else {
   check('RC_EXIT_CRITERIA.md exists', false, exitCriteria);
 }
@@ -117,7 +132,11 @@ if (isLive) {
 
   async function apiFetch(path, opts = {}) {
     const headers = cookie ? { Cookie: `ehr_session=${cookie}` } : {};
-    const res = await fetch(`${API}${path}`, { ...opts, headers: { ...headers, ...(opts.headers || {}) }, signal: AbortSignal.timeout(5000) });
+    const res = await fetch(`${API}${path}`, {
+      ...opts,
+      headers: { ...headers, ...(opts.headers || {}) },
+      signal: AbortSignal.timeout(5000),
+    });
     const body = await res.json();
     return { status: res.status, body };
   }
@@ -125,7 +144,10 @@ if (isLive) {
   try {
     // Step 1: Verify /health is ok
     const h1 = await apiFetch('/health');
-    check('[LIVE] /health returns 200 + ok:true before outage', h1.status === 200 && h1.body.ok === true);
+    check(
+      '[LIVE] /health returns 200 + ok:true before outage',
+      h1.status === 200 && h1.body.ok === true
+    );
 
     // Step 2: Force-open circuit breaker
     const fo = await apiFetch('/admin/circuit-breaker/force-open', { method: 'POST' });
@@ -163,7 +185,7 @@ const report = {
   mode: isLive ? 'live' : 'offline',
   passes,
   failures,
-  results
+  results,
 };
 writeFileSync(resolve(evDir, 'outage-sim-report.json'), JSON.stringify(report, null, 2));
 

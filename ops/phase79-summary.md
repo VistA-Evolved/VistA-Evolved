@@ -3,6 +3,7 @@
 ## What Changed
 
 ### API (apps/api/)
+
 - **NEW** `src/services/ui-prefs-store.ts` -- In-memory UI preferences store
   - `CoverSheetLayoutV1` type with schemaVersion, panelOrder, panelHeights (px), panelVisibility, layoutMode
   - Validation: min 80px, max 800px heights; valid panel keys; no duplicates
@@ -15,6 +16,7 @@
 - **MODIFIED** `src/lib/audit.ts` -- added `config.ui-prefs-save` audit action
 
 ### Web (apps/web/)
+
 - **MODIFIED** `src/stores/cprs-ui-state.tsx` -- Major upgrade:
   - CoverSheetLayout now versioned (schemaVersion: 1) with panelVisibility field
   - Heights changed from percentage (33) to pixels (200)
@@ -37,6 +39,7 @@
 - **MODIFIED** `src/components/cprs/cprs.module.css` -- Added resize handle focus/focus-visible styles, coverToolbar class
 
 ### Tests
+
 - **NEW** `apps/web/e2e/coversheet-layout.spec.ts` -- 6 Playwright E2E tests:
   1. All 10 panels render
   2. Resize handle changes height
@@ -46,6 +49,7 @@
   6. Panel visibility toggle
 
 ## How to Test Manually
+
 1. Start API: `cd apps/api && npx tsx --env-file=.env.local src/index.ts`
 2. Start Web: `cd apps/web && pnpm dev`
 3. Navigate to /cprs/chart/3/cover
@@ -56,6 +60,7 @@
 8. Click "Reset Layout" -- everything returns to CPRS defaults
 
 ## Follow-ups
+
 - Server-side prefs currently in-memory; migration to VistA UserPrefs file when available
 - Column spanning for important panels in modern mode
 - Drag-and-drop with animation (react-dnd or similar) for smoother UX

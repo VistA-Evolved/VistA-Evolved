@@ -11,29 +11,29 @@
  * Run: k6 run tests/k6/smoke-write.js
  */
 
-import http from "k6/http";
-import { check, group, sleep } from "k6";
+import http from 'k6/http';
+import { check, group, sleep } from 'k6';
 
-const BASE_URL = __ENV.API_URL || "http://localhost:3001";
+const BASE_URL = __ENV.API_URL || 'http://localhost:3001';
 
 export const options = {
   vus: 1,
   iterations: 3,
   thresholds: {
-    http_req_duration: ["p(95)<15000"], // 15s -- writes can be slow
-    http_req_failed: ["rate<0.80"],     // High tolerance -- sandbox may reject writes
+    http_req_duration: ['p(95)<15000'], // 15s -- writes can be slow
+    http_req_failed: ['rate<0.80'], // High tolerance -- sandbox may reject writes
   },
-  tags: { testid: "smoke-write" },
+  tags: { testid: 'smoke-write' },
 };
 
 export function setup() {
   const loginRes = http.post(
     `${BASE_URL}/auth/login`,
     JSON.stringify({
-      accessCode: "PROV123",
-      verifyCode: "PROV123!!",
+      accessCode: 'PROV123',
+      verifyCode: 'PROV123!!',
     }),
-    { headers: { "Content-Type": "application/json" } }
+    { headers: { 'Content-Type': 'application/json' } }
   );
 
   if (loginRes.status !== 200) {
@@ -46,22 +46,19 @@ export function setup() {
 export default function (data) {
   // Attempt to add an allergy -- the request itself exercises the full
   // RPC broker path even if VistA rejects the payload.
-  group("add-allergy", function () {
+  group('add-allergy', function () {
     const payload = {
-      dfn: "3",
-      allergyText: "PENICILLIN",
+      dfn: '3',
+      allergyText: 'PENICILLIN',
     };
 
-    const res = http.post(
-      `${BASE_URL}/vista/allergies`,
-      JSON.stringify(payload),
-      { headers: { "Content-Type": "application/json" } }
-    );
+    const res = http.post(`${BASE_URL}/vista/allergies`, JSON.stringify(payload), {
+      headers: { 'Content-Type': 'application/json' },
+    });
 
     check(res, {
-      "add-allergy responded": (r) =>
-        r.status === 200 || r.status === 400 || r.status === 500,
-      "add-allergy has body": (r) => r.body && r.body.length > 0,
+      'add-allergy responded': (r) => r.status === 200 || r.status === 400 || r.status === 500,
+      'add-allergy has body': (r) => r.body && r.body.length > 0,
     });
   });
 

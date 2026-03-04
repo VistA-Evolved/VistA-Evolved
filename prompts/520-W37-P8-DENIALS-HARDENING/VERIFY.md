@@ -5,4 +5,3 @@
 - All deliverables created and functional
 - QA gate passes
 - Evidence captured
-

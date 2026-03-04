@@ -19,21 +19,24 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 
 // Gateway readiness
-import {
-  probeAllGateways, probeGateway, getGatewayIds,
-} from '../src/rcm/gateways/readiness.js';
+import { probeAllGateways, probeGateway, getGatewayIds } from '../src/rcm/gateways/readiness.js';
 import type { GatewayId, GatewayReadiness } from '../src/rcm/gateways/readiness.js';
 
 // SOA generator
 import {
-  generateElectronicSoa, validateSoaInput, verifySoaSignature, isScannedPdf,
+  generateElectronicSoa,
+  validateSoaInput,
+  verifySoaSignature,
+  isScannedPdf,
 } from '../src/rcm/gateways/soa-generator.js';
 import type { SoaInput } from '../src/rcm/gateways/soa-generator.js';
 
 // Conformance harness
 import {
-  getAllGatewayConformance, getGatewayConformance,
-  validatePayloadConformance, getConformanceGatewayIds,
+  getAllGatewayConformance,
+  getGatewayConformance,
+  validatePayloadConformance,
+  getConformanceGatewayIds,
 } from '../src/rcm/conformance/gateway-conformance.js';
 
 // Connectors
@@ -109,7 +112,7 @@ describe('Gateway Readiness', () => {
 
   it('PH checks include SOA and cert probes', () => {
     const ph = probeGateway('ph-philhealth');
-    const checkNames = ph.checks.map(c => c.check);
+    const checkNames = ph.checks.map((c) => c.check);
     expect(checkNames).toContain('Electronic SOA signing capability');
     expect(checkNames).toContain('TLS client certificate');
   });
@@ -208,21 +211,24 @@ describe('SOA Generator', () => {
   });
 
   it('detects scanned PDF from magic bytes', () => {
-    const pdfBuffer = Buffer.from([0x25, 0x50, 0x44, 0x46, 0x2D]);
+    const pdfBuffer = Buffer.from([0x25, 0x50, 0x44, 0x46, 0x2d]);
     expect(isScannedPdf(pdfBuffer)).toBe(true);
     expect(isScannedPdf('%PDF-1.4')).toBe(true);
     expect(isScannedPdf('JVBERi0xLjQ=')).toBe(true); // base64 of %PDF
-      });
+  });
 
   it('allows non-PDF data through', () => {
     expect(isScannedPdf('{"cf1":{"facilityCode":"H01028007"}}')).toBe(false);
-    expect(isScannedPdf(Buffer.from([0x7B, 0x22]))).toBe(false); // {"
+    expect(isScannedPdf(Buffer.from([0x7b, 0x22]))).toBe(false); // {"
   });
 
   it('throws on invalid input when generating', () => {
-    expect(() => generateElectronicSoa({
-      ...validInput, claimId: '',
-    })).toThrow('SOA validation failed');
+    expect(() =>
+      generateElectronicSoa({
+        ...validInput,
+        claimId: '',
+      })
+    ).toThrow('SOA validation failed');
   });
 });
 
@@ -293,7 +299,7 @@ describe('Conformance Harness', () => {
   it('AU conformance has PRODA probes', () => {
     const au = getGatewayConformance('au-eclipse');
     expect(au).toBeDefined();
-    const probes = au!.probeBehaviors.map(p => p.probe);
+    const probes = au!.probeBehaviors.map((p) => p.probe);
     expect(probes).toContain('proda_org_id');
     expect(probes).toContain('cert_path');
   });
@@ -330,7 +336,7 @@ describe('PhilHealth Connector (eClaims 3.0)', () => {
   it('accepts non-PDF payload in test mode', async () => {
     const result = await connector.submit('837P', '{"claim":"test"}', {});
     // Will fail for missing facility code but won't be PDF rejection
-    const codes = result.errors.map(e => e.code);
+    const codes = result.errors.map((e) => e.code);
     expect(codes).not.toContain('PH-SOA-FORMAT-INVALID');
   });
 

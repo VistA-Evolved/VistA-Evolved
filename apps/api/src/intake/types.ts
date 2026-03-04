@@ -11,17 +11,17 @@
 /* ------------------------------------------------------------------ */
 
 export type IntakeSessionStatus =
-  | "not_started"
-  | "in_progress"
-  | "submitted"
-  | "clinician_reviewed"
-  | "filed"
-  | "filed_pending_integration"
-  | "expired"
-  | "abandoned";
+  | 'not_started'
+  | 'in_progress'
+  | 'submitted'
+  | 'clinician_reviewed'
+  | 'filed'
+  | 'filed_pending_integration'
+  | 'expired'
+  | 'abandoned';
 
-export type SubjectType = "patient" | "proxy";
-export type BrainProvider = "rules" | "vendor_adapter" | "llm_constrained";
+export type SubjectType = 'patient' | 'proxy';
+export type BrainProvider = 'rules' | 'vendor_adapter' | 'llm_constrained';
 
 export interface IntakeContext {
   department?: string;
@@ -54,29 +54,29 @@ export interface IntakeSession {
 /* ------------------------------------------------------------------ */
 
 export type IntakeEventType =
-  | "session.created"
-  | "session.resumed"
-  | "session.expired"
-  | "question.asked"
-  | "question.answered"
-  | "question.skipped"
-  | "answer.edited"
-  | "navigation.forward"
-  | "navigation.back"
-  | "navigation.jump"
-  | "section.completed"
-  | "intake.submitted"
-  | "intake.save_draft"
-  | "clinician.opened"
-  | "clinician.edited"
-  | "clinician.reviewed"
-  | "clinician.filed"
-  | "clinician.exported"
-  | "summary.generated"
-  | "redflag.triggered"
-  | "sensitivity.withheld";
+  | 'session.created'
+  | 'session.resumed'
+  | 'session.expired'
+  | 'question.asked'
+  | 'question.answered'
+  | 'question.skipped'
+  | 'answer.edited'
+  | 'navigation.forward'
+  | 'navigation.back'
+  | 'navigation.jump'
+  | 'section.completed'
+  | 'intake.submitted'
+  | 'intake.save_draft'
+  | 'clinician.opened'
+  | 'clinician.edited'
+  | 'clinician.reviewed'
+  | 'clinician.filed'
+  | 'clinician.exported'
+  | 'summary.generated'
+  | 'redflag.triggered'
+  | 'sensitivity.withheld';
 
-export type ActorType = "patient" | "proxy" | "clinician" | "system";
+export type ActorType = 'patient' | 'proxy' | 'clinician' | 'system';
 
 export interface IntakeEvent {
   id: string;
@@ -122,57 +122,57 @@ export interface AnswerOption {
 
 export interface EnableWhen {
   question: string;
-  operator: "=" | "!=" | ">" | "<" | ">=" | "<=" | "exists";
+  operator: '=' | '!=' | '>' | '<' | '>=' | '<=' | 'exists';
   answer: unknown;
 }
 
 export type QuestionSection =
-  | "demographics"
-  | "chief_complaint"
-  | "hpi"
-  | "ros"
-  | "pmh"
-  | "fh"
-  | "sh"
-  | "medications"
-  | "allergies"
-  | "vitals"
-  | "screening"
-  | "custom"
+  | 'demographics'
+  | 'chief_complaint'
+  | 'hpi'
+  | 'ros'
+  | 'pmh'
+  | 'fh'
+  | 'sh'
+  | 'medications'
+  | 'allergies'
+  | 'vitals'
+  | 'screening'
+  | 'custom'
   /* Extended sections for specialty/department packs */
-  | "consent"
-  | "family_hx"
-  | "triage"
-  | "safety"
-  | "visit_prep"
-  | "social_hx"
-  | "preventive"
-  | "growth"
-  | "development"
-  | "immunizations"
-  | "menstrual_hx"
-  | "ob_hx"
-  | "cardiac_hx"
-  | "functional_status"
-  | "psych_hx"
-  | "substance_use";
+  | 'consent'
+  | 'family_hx'
+  | 'triage'
+  | 'safety'
+  | 'visit_prep'
+  | 'social_hx'
+  | 'preventive'
+  | 'growth'
+  | 'development'
+  | 'immunizations'
+  | 'menstrual_hx'
+  | 'ob_hx'
+  | 'cardiac_hx'
+  | 'functional_status'
+  | 'psych_hx'
+  | 'substance_use';
 
 export type QuestionType =
-  | "string"
-  | "text"
-  | "integer"
-  | "decimal"
-  | "boolean"
-  | "choice"
-  | "open-choice"
-  | "date"
-  | "dateTime"
-  | "group"
-  | "display";
+  | 'string'
+  | 'text'
+  | 'integer'
+  | 'decimal'
+  | 'boolean'
+  | 'choice'
+  | 'open-choice'
+  | 'date'
+  | 'dateTime'
+  | 'group'
+  | 'display';
 
 export interface RedFlagDef {
   condition: string;
-  severity: "info" | "warning" | "critical" | "high" | "medium";
+  severity: 'info' | 'warning' | 'critical' | 'high' | 'medium';
   message: string;
   message_tl?: string;
 }
@@ -183,7 +183,7 @@ export interface VistaTarget {
   rpc?: string;
   routine?: string;
   noteSection?: string;
-  integrationStatus: "available" | "pending" | "not_applicable";
+  integrationStatus: 'available' | 'pending' | 'not_applicable';
 }
 
 export interface ScoringDef {
@@ -205,7 +205,7 @@ export interface QuestionnaireItem {
   answerOption?: AnswerOption[];
   answerValueSet?: string;
   enableWhen?: EnableWhen[];
-  enableBehavior?: "all" | "any";
+  enableBehavior?: 'all' | 'any';
   item?: QuestionnaireItem[];
   redFlag?: RedFlagDef;
   scoring?: ScoringDef;
@@ -236,8 +236,8 @@ export interface QRItem {
 }
 
 export interface QuestionnaireResponse {
-  resourceType: "QuestionnaireResponse";
-  status: "in-progress" | "completed" | "amended";
+  resourceType: 'QuestionnaireResponse';
+  status: 'in-progress' | 'completed' | 'amended';
   authored?: string;
   item: QRItem[];
 }
@@ -249,12 +249,12 @@ export interface QuestionnaireResponse {
 export interface ROSFinding {
   system: string;
   findings: string;
-  status: "positive" | "negative" | "not_asked";
+  status: 'positive' | 'negative' | 'not_asked';
 }
 
 export interface RedFlagResult {
   flag: string;
-  severity: "info" | "warning" | "critical" | "high" | "medium";
+  severity: 'info' | 'warning' | 'critical' | 'high' | 'medium';
   triggerQuestionId: string;
   triggerAnswerId: string;
 }
@@ -268,7 +268,7 @@ export interface DraftClinicianSummary {
   sessionId: string;
   version: number;
   generatedAt: string;
-  generatedBy: "template" | "llm_constrained";
+  generatedBy: 'template' | 'llm_constrained';
   sections: {
     hpiNarrative: string;
     reviewOfSystems: ROSFinding[];
@@ -300,7 +300,7 @@ export interface ScoringThreshold {
   instrument: string;
   threshold?: number;
   cutoff?: number;
-  action: "flag" | "escalate" | "require_followup" | "flag_for_review";
+  action: 'flag' | 'escalate' | 'require_followup' | 'flag_for_review';
   message: string;
 }
 
@@ -349,7 +349,7 @@ export interface NextQuestionResult {
     requiredCoverageRemaining: string[];
   };
   containedQuestionnaire: {
-    resourceType: "Questionnaire";
+    resourceType: 'Questionnaire';
     item: QuestionnaireItem[];
   };
   isComplete: boolean;
@@ -383,7 +383,7 @@ export interface FilingTarget {
   value: unknown;
 }
 
-export type FilingResultStatus = "filed" | "pending" | "error" | "not_applicable";
+export type FilingResultStatus = 'filed' | 'pending' | 'error' | 'not_applicable';
 
 export interface FilingResult {
   questionLinkId: string;

@@ -10,10 +10,9 @@
  * - /vista/rpc-capabilities (raw RPC discovery)
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styles from '@/components/cprs/cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
-
 
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include', ...opts });
@@ -96,7 +95,8 @@ function ImplBadge({ impl, isStub }: { impl: string; isStub: boolean }) {
         color: isStub ? '#664d03' : '#084298',
       }}
     >
-      {impl.toUpperCase()}{isStub ? ' (stub)' : ''}
+      {impl.toUpperCase()}
+      {isStub ? ' (stub)' : ''}
     </span>
   );
 }
@@ -152,17 +152,53 @@ function DomainMatrixTab({ matrix, loading }: { matrix: RuntimeMatrix | null; lo
   return (
     <>
       <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
-        <span style={{ padding: '4px 12px', borderRadius: 8, background: '#d1e7dd', color: '#0f5132', fontSize: 12, fontWeight: 600 }}>
+        <span
+          style={{
+            padding: '4px 12px',
+            borderRadius: 8,
+            background: '#d1e7dd',
+            color: '#0f5132',
+            fontSize: 12,
+            fontWeight: 600,
+          }}
+        >
           {matrix.totalAvailable} available
         </span>
-        <span style={{ padding: '4px 12px', borderRadius: 8, background: '#f8d7da', color: '#842029', fontSize: 12, fontWeight: 600 }}>
+        <span
+          style={{
+            padding: '4px 12px',
+            borderRadius: 8,
+            background: '#f8d7da',
+            color: '#842029',
+            fontSize: 12,
+            fontWeight: 600,
+          }}
+        >
           {matrix.totalMissing} missing
         </span>
-        <span style={{ padding: '4px 12px', borderRadius: 8, background: '#e2e3e5', color: '#41464b', fontSize: 12, fontWeight: 600 }}>
+        <span
+          style={{
+            padding: '4px 12px',
+            borderRadius: 8,
+            background: '#e2e3e5',
+            color: '#41464b',
+            fontSize: 12,
+            fontWeight: 600,
+          }}
+        >
           {matrix.totalKnown} total RPCs
         </span>
         {matrix.instanceId && (
-          <span style={{ padding: '4px 12px', borderRadius: 8, background: '#cfe2ff', color: '#084298', fontSize: 12, fontWeight: 600 }}>
+          <span
+            style={{
+              padding: '4px 12px',
+              borderRadius: 8,
+              background: '#cfe2ff',
+              color: '#084298',
+              fontSize: 12,
+              fontWeight: 600,
+            }}
+          >
             Instance: {matrix.instanceId}
           </span>
         )}
@@ -238,7 +274,11 @@ function RpcCoverageTab({ matrix, loading }: { matrix: RuntimeMatrix | null; loa
               fontSize: 12,
             }}
           >
-            {f === 'all' ? `All (${allRpcs.length})` : f === 'available' ? `Available (${allRpcs.filter((r) => r.available).length})` : `Missing (${allRpcs.filter((r) => !r.available).length})`}
+            {f === 'all'
+              ? `All (${allRpcs.length})`
+              : f === 'available'
+                ? `Available (${allRpcs.filter((r) => r.available).length})`
+                : `Missing (${allRpcs.filter((r) => !r.available).length})`}
           </button>
         ))}
       </div>
@@ -246,7 +286,15 @@ function RpcCoverageTab({ matrix, loading }: { matrix: RuntimeMatrix | null; loa
       <div style={{ maxHeight: 500, overflow: 'auto' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
           <thead>
-            <tr style={{ borderBottom: '2px solid #dee2e6', textAlign: 'left', position: 'sticky', top: 0, background: '#fff' }}>
+            <tr
+              style={{
+                borderBottom: '2px solid #dee2e6',
+                textAlign: 'left',
+                position: 'sticky',
+                top: 0,
+                background: '#fff',
+              }}
+            >
               <th style={{ padding: '6px 10px' }}>RPC Name</th>
               <th style={{ padding: '6px 10px' }}>Domain</th>
               <th style={{ padding: '6px 10px' }}>Status</th>
@@ -330,7 +378,10 @@ export default function AdapterHealthPage() {
       >
         <h2 style={{ margin: 0, fontSize: 18 }}>Adapter Health</h2>
         {!loadingAdapters && (
-          <StatusBadge ok={allOk} label={allOk ? 'ALL HEALTHY' : `${adapters.filter((a) => !a.ok).length} UNHEALTHY`} />
+          <StatusBadge
+            ok={allOk}
+            label={allOk ? 'ALL HEALTHY' : `${adapters.filter((a) => !a.ok).length} UNHEALTHY`}
+          />
         )}
         {stubs > 0 && (
           <span
@@ -360,9 +411,7 @@ export default function AdapterHealthPage() {
         >
           Refresh
         </button>
-        {lastRefresh && (
-          <span style={{ fontSize: 11, color: '#6c757d' }}>Last: {lastRefresh}</span>
-        )}
+        {lastRefresh && <span style={{ fontSize: 11, color: '#6c757d' }}>Last: {lastRefresh}</span>}
         <span style={{ fontSize: 11, color: '#6c757d' }}>Phase 428</span>
       </div>
 

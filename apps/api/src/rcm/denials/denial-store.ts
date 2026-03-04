@@ -8,22 +8,25 @@
  * Patient DFN is stored but NEVER included in audit or logs.
  */
 
-import { randomUUID } from "node:crypto";
-import { getPgDb } from "../../platform/pg/pg-db.js";
-import { denialCase, denialAction, denialAttachment, resubmissionAttempt } from "../../platform/pg/pg-schema.js";
-import { eq, desc, asc, and, sql, lte, gte } from "drizzle-orm";
+import { randomUUID } from 'node:crypto';
+import { getPgDb } from '../../platform/pg/pg-db.js';
+import {
+  denialCase,
+  denialAction,
+  denialAttachment,
+  resubmissionAttempt,
+} from '../../platform/pg/pg-schema.js';
+import { eq, desc, asc, and, sql, lte, gte } from 'drizzle-orm';
 import type {
   DenialCase,
   DenialAction,
   DenialAttachment,
   ResubmissionAttempt,
   DenialStatus,
+  DenialCode,
   DenialListQuery,
   CreateDenialInput,
-  DenialFinancials,
-  DenialCode,
-  EvidenceRef,
-} from "./types.js";
+} from './types.js';
 
 /* ── Helpers ────────────────────────────────────────────────── */
 
@@ -65,7 +68,11 @@ function rowToDenialCase(row: any): DenialCase {
 
 function safeJsonParse<T>(val: string | null | undefined, fallback: T): T {
   if (!val) return fallback;
-  try { return JSON.parse(val); } catch { return fallback; }
+  try {
+    return JSON.parse(val);
+  } catch {
+    return fallback;
+  }
 }
 
 function rowToAction(row: any): DenialAction {
@@ -109,7 +116,10 @@ function rowToResubmission(row: any): ResubmissionAttempt {
 
 /* ── Denial Case CRUD ───────────────────────────────────────── */
 
-export async function createDenialCase(input: CreateDenialInput, actor?: string): Promise<DenialCase> {
+export async function createDenialCase(
+  input: CreateDenialInput,
+  actor?: string
+): Promise<DenialCase> {
   const db = getPgDb();
   const now = new Date().toISOString();
   const id = randomUUID();
@@ -120,8 +130,8 @@ export async function createDenialCase(input: CreateDenialInput, actor?: string)
     vistaClaimIen: input.vistaClaimIen ?? null,
     patientDfn: input.patientDfn ?? null,
     payerId: input.payerId,
-    denialStatus: "NEW" as const,
-    denialSource: input.denialSource ?? "MANUAL",
+    denialStatus: 'NEW' as const,
+    denialSource: input.denialSource ?? 'MANUAL',
     denialCodesJson: JSON.stringify(input.denialCodes ?? []),
     denialNarrative: input.denialNarrative ?? null,
     receivedDate: new Date(input.receivedDate ?? now),
@@ -133,7 +143,7 @@ export async function createDenialCase(input: CreateDenialInput, actor?: string)
     paidAmountCents: toCents(input.paidAmount) ?? null,
     patientRespCents: toCents(input.patientResp) ?? null,
     adjustmentAmountCents: toCents(input.adjustmentAmount) ?? null,
-    evidenceRefsJson: "[]",
+    evidenceRefsJson: '[]',
     importFileHash: null,
     importTimestamp: null,
     importParserVersion: null,
@@ -144,7 +154,7 @@ export async function createDenialCase(input: CreateDenialInput, actor?: string)
   await db.insert(denialCase).values(row);
 
   // Record initial action
-  await insertAction(id, actor ?? "system", "NOTE", {}, null, "NEW");
+  await insertAction(id, actor ?? 'system', 'NOTE', {}, null, 'NEW');
 
   return rowToDenialCase(row);
 }
@@ -160,7 +170,7 @@ export async function createDenialCaseWithProvenance(
     importTimestamp: string;
     importParserVersion: string;
   },
-  actor?: string,
+  actor?: string
 ): Promise<DenialCase> {
   const db = getPgDb();
   const now = new Date().toISOString();
@@ -172,8 +182,8 @@ export async function createDenialCaseWithProvenance(
     vistaClaimIen: input.vistaClaimIen ?? null,
     patientDfn: input.patientDfn ?? null,
     payerId: input.payerId,
-    denialStatus: "NEW" as const,
-    denialSource: input.denialSource ?? "EDI_835",
+    denialStatus: 'NEW' as const,
+    denialSource: input.denialSource ?? 'EDI_835',
     denialCodesJson: JSON.stringify(input.denialCodes ?? []),
     denialNarrative: input.denialNarrative ?? null,
     receivedDate: new Date(input.receivedDate ?? now),
@@ -185,7 +195,7 @@ export async function createDenialCaseWithProvenance(
     paidAmountCents: toCents(input.paidAmount) ?? null,
     patientRespCents: toCents(input.patientResp) ?? null,
     adjustmentAmountCents: toCents(input.adjustmentAmount) ?? null,
-    evidenceRefsJson: "[]",
+    evidenceRefsJson: '[]',
     importFileHash: provenance.importFileHash,
     importTimestamp: new Date(provenance.importTimestamp),
     importParserVersion: provenance.importParserVersion,
@@ -196,10 +206,17 @@ export async function createDenialCaseWithProvenance(
   await db.insert(denialCase).values(row);
 
   // Record initial action
-  await insertAction(id, actor ?? "system", "IMPORT", {
-    source: input.denialSource ?? "EDI_835",
-    importFileHash: provenance.importFileHash,
-  }, null, "NEW");
+  await insertAction(
+    id,
+    actor ?? 'system',
+    'IMPORT',
+    {
+      source: input.denialSource ?? 'EDI_835',
+      importFileHash: provenance.importFileHash,
+    },
+    null,
+    'NEW'
+  );
 
   return rowToDenialCase(row);
 }
@@ -221,7 +238,7 @@ export async function updateDenialCase(
     denialCodes?: DenialCode[];
   },
   actor: string,
-  reason: string,
+  reason: string
 ): Promise<DenialCase | null> {
   const db = getPgDb();
   const existing = await getDenialById(id);
@@ -242,9 +259,16 @@ export async function updateDenialCase(
   await db.update(denialCase).set(setClause).where(eq(denialCase.id, id));
 
   // Record action
-  const actionType = updates.denialStatus && updates.denialStatus !== previousStatus
-    ? "STATUS_CHANGE" : "NOTE";
-  await insertAction(id, actor, actionType, { reason, changes: Object.keys(setClause) }, previousStatus, newStatus);
+  const actionType =
+    updates.denialStatus && updates.denialStatus !== previousStatus ? 'STATUS_CHANGE' : 'NOTE';
+  await insertAction(
+    id,
+    actor,
+    actionType,
+    { reason, changes: Object.keys(setClause) },
+    previousStatus,
+    newStatus
+  );
 
   return getDenialById(id);
 }
@@ -279,21 +303,28 @@ export async function listDenials(query: DenialListQuery): Promise<DenialListRes
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
   // Count total
-  const countRows = await db.select({ count: sql<number>`count(*)` })
+  const countRows = await db
+    .select({ count: sql<number>`count(*)` })
     .from(denialCase)
     .where(whereClause);
   const total = (countRows[0] as any)?.count ?? 0;
 
   // Determine sort column
-  const sortCol = query.sort === "deadlineDate" ? denialCase.deadlineDate
-    : query.sort === "billedAmount" ? denialCase.billedAmountCents
-    : query.sort === "updatedAt" ? denialCase.updatedAt
-    : denialCase.createdAt;
-  const orderFn = query.order === "asc" ? asc : desc;
+  const sortCol =
+    query.sort === 'deadlineDate'
+      ? denialCase.deadlineDate
+      : query.sort === 'billedAmount'
+        ? denialCase.billedAmountCents
+        : query.sort === 'updatedAt'
+          ? denialCase.updatedAt
+          : denialCase.createdAt;
+  const orderFn = query.order === 'asc' ? asc : desc;
 
   // Paginated query
   const offset = (query.page - 1) * query.limit;
-  const rows = await db.select().from(denialCase)
+  const rows = await db
+    .select()
+    .from(denialCase)
     .where(whereClause)
     .orderBy(orderFn(sortCol))
     .limit(query.limit)
@@ -316,7 +347,7 @@ async function insertAction(
   actionType: string,
   payload: Record<string, unknown>,
   previousStatus: DenialStatus | null,
-  newStatus: DenialStatus | null,
+  newStatus: DenialStatus | null
 ): Promise<DenialAction> {
   const db = getPgDb();
   const id = randomUUID();
@@ -341,16 +372,25 @@ export async function addDenialAction(
   denialId: string,
   actor: string,
   actionType: string,
-  payload: Record<string, unknown>,
+  payload: Record<string, unknown>
 ): Promise<DenialAction> {
   const existing = await getDenialById(denialId);
   if (!existing) throw new Error(`Denial not found: ${denialId}`);
-  return insertAction(denialId, actor, actionType, payload, existing.denialStatus, existing.denialStatus);
+  return insertAction(
+    denialId,
+    actor,
+    actionType,
+    payload,
+    existing.denialStatus,
+    existing.denialStatus
+  );
 }
 
 export async function listDenialActions(denialId: string): Promise<DenialAction[]> {
   const db = getPgDb();
-  const rows = await db.select().from(denialAction)
+  const rows = await db
+    .select()
+    .from(denialAction)
     .where(eq(denialAction.denialId, denialId))
     .orderBy(asc(denialAction.timestamp));
   return rows.map(rowToAction);
@@ -364,7 +404,7 @@ export async function addAttachment(
   refType: string,
   storedPath: string | null,
   sha256: string | null,
-  actor: string,
+  actor: string
 ): Promise<DenialAttachment> {
   const db = getPgDb();
   const id = randomUUID();
@@ -387,7 +427,9 @@ export async function addAttachment(
 
 export async function listAttachments(denialId: string): Promise<DenialAttachment[]> {
   const db = getPgDb();
-  const rows = await db.select().from(denialAttachment)
+  const rows = await db
+    .select()
+    .from(denialAttachment)
     .where(eq(denialAttachment.denialId, denialId))
     .orderBy(asc(denialAttachment.addedAt));
   return rows.map(rowToAttachment);
@@ -401,7 +443,7 @@ export async function createResubmission(
   referenceNumber: string | null,
   followUpDate: string | null,
   notes: string | null,
-  actor: string,
+  actor: string
 ): Promise<ResubmissionAttempt> {
   const db = getPgDb();
   const id = randomUUID();
@@ -421,14 +463,16 @@ export async function createResubmission(
   await db.insert(resubmissionAttempt).values(row);
 
   // Record action
-  await insertAction(denialId, actor, "SUBMIT_APPEAL", { method, referenceNumber }, null, null);
+  await insertAction(denialId, actor, 'SUBMIT_APPEAL', { method, referenceNumber }, null, null);
 
   return rowToResubmission(row);
 }
 
 export async function listResubmissions(denialId: string): Promise<ResubmissionAttempt[]> {
   const db = getPgDb();
-  const rows = await db.select().from(resubmissionAttempt)
+  const rows = await db
+    .select()
+    .from(resubmissionAttempt)
     .where(eq(resubmissionAttempt.denialId, denialId))
     .orderBy(desc(resubmissionAttempt.createdAt));
   return rows.map(rowToResubmission);
@@ -438,10 +482,13 @@ export async function listResubmissions(denialId: string): Promise<ResubmissionA
 
 export async function getDenialStats(): Promise<Record<string, number>> {
   const db = getPgDb();
-  const rows = await db.select({
-    status: denialCase.denialStatus,
-    count: sql<number>`count(*)`,
-  }).from(denialCase).groupBy(denialCase.denialStatus);
+  const rows = await db
+    .select({
+      status: denialCase.denialStatus,
+      count: sql<number>`count(*)`,
+    })
+    .from(denialCase)
+    .groupBy(denialCase.denialStatus);
 
   const stats: Record<string, number> = {};
   for (const row of rows) {

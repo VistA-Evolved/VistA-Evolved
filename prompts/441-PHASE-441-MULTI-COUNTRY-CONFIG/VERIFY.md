@@ -1,6 +1,7 @@
 # Phase 441 — VERIFY: Multi-Country Config Layer (W28 P3)
 
 ## Gates
+
 1. `country-config.ts` exists in `apps/api/src/regulatory/`
 2. Exports: assignCountryToTenant, getTenantCountryAssignment, listTenantCountryAssignments,
    clearTenantCountry, resolveTenantRegulatoryConfig, getSupportedCountries

@@ -44,9 +44,7 @@ export interface EraPostResult {
  * is empty in the WorldVistA sandbox. The grounding metadata provides
  * the exact target files and routines for production integration.
  */
-export async function postEraToVista(
-  remittance: Remittance,
-): Promise<EraPostResult> {
+export async function postEraToVista(remittance: Remittance): Promise<EraPostResult> {
   return {
     ok: false,
     posted: false,
@@ -69,12 +67,13 @@ export async function postEraToVista(
         '4. Record payment in AR Activity (^PRCA(433))',
         '5. Update claim status in RCM store from payment result',
       ].join('\n'),
-      sandboxNote: 'WorldVistA Docker AR (^PRCA(430)) is empty. ' +
+      sandboxNote:
+        'WorldVistA Docker AR (^PRCA(430)) is empty. ' +
         'Production VistA with active AR module will accept ERA postings.',
     },
     errors: [
       `Remittance ${remittance.id}: ERA-to-AR posting not available in sandbox. ` +
-      'AR transaction file (^PRCA(430)) is empty in WorldVistA Docker.',
+        'AR transaction file (^PRCA(430)) is empty in WorldVistA Docker.',
     ],
   };
 }
@@ -82,9 +81,7 @@ export async function postEraToVista(
 /**
  * Check if a VistA AR transaction exists for a given IEN.
  */
-export async function checkVistaArTransaction(
-  arIen: string,
-): Promise<{
+export async function checkVistaArTransaction(arIen: string): Promise<{
   exists: boolean;
   integrationPending: boolean;
   detail?: string;
@@ -92,7 +89,8 @@ export async function checkVistaArTransaction(
   return {
     exists: false,
     integrationPending: true,
-    detail: `AR IEN ${arIen}: ^PRCA(430) is empty in sandbox. ` +
+    detail:
+      `AR IEN ${arIen}: ^PRCA(430) is empty in sandbox. ` +
       'Production VistA with IB/AR module will have transaction data.',
   };
 }

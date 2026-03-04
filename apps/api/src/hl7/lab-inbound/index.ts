@@ -8,7 +8,7 @@ export type {
   LabFilingStatus,
   LabFilingTarget,
   LabValidationResult,
-} from "./types.js";
+} from './types.js';
 
 export {
   stageLabResult,
@@ -20,11 +20,8 @@ export {
   getLabStoreStats,
   validateLabResult,
   _resetLabStore,
-} from "./store.js";
+} from './store.js';
 
-export {
-  processOruR01,
-  getLabFilingTarget,
-} from "./handler.js";
+export { processOruR01, getLabFilingTarget } from './handler.js';
 
-export type { OruProcessResult } from "./handler.js";
+export type { OruProcessResult } from './handler.js';

@@ -19,7 +19,7 @@ ingress:
 keycloak:
   enabled: true
   external:
-    url: "https://auth.staging.example.com"
+    url: 'https://auth.staging.example.com'
 
 observability:
   enabled: true

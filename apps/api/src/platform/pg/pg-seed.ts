@@ -8,19 +8,18 @@
  * Idempotent: skips payers that already exist.
  */
 
-import { readFileSync, existsSync, readdirSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import { getPgDb } from "./pg-db.js";
-import { payer } from "./pg-schema.js";
-import { eq } from "drizzle-orm";
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { getPgDb } from './pg-db.js';
+import { payer } from './pg-schema.js';
+import { eq } from 'drizzle-orm';
 
-const __dirname_resolved = typeof __dirname !== "undefined"
-  ? __dirname
-  : dirname(fileURLToPath(import.meta.url));
+const __dirname_resolved =
+  typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
 
-const REPO_ROOT = join(__dirname_resolved, "..", "..", "..", "..", "..");
-const PAYERS_DIR = join(REPO_ROOT, "data", "payers");
+const REPO_ROOT = join(__dirname_resolved, '..', '..', '..', '..', '..');
+const PAYERS_DIR = join(REPO_ROOT, 'data', 'payers');
 
 interface SeedPayer {
   payerId: string;
@@ -53,22 +52,20 @@ export async function pgSeedFromJsonFixtures(): Promise<{
     return { inserted, skipped, errors: [`Payers directory not found: ${PAYERS_DIR}`] };
   }
 
-  const jsonFiles = readdirSync(PAYERS_DIR).filter((f) => f.endsWith(".json"));
+  const jsonFiles = readdirSync(PAYERS_DIR).filter((f) => f.endsWith('.json'));
 
   for (const file of jsonFiles) {
     // Skip non-seed files
-    if (file === "registry-db.json" || file === "tenant-overrides.json") continue;
+    if (file === 'registry-db.json' || file === 'tenant-overrides.json') continue;
 
     const filePath = join(PAYERS_DIR, file);
     try {
-      let raw = readFileSync(filePath, "utf-8");
+      let raw = readFileSync(filePath, 'utf-8');
       // Strip BOM (BUG-064)
       if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
 
       const data = JSON.parse(raw);
-      const payerList: SeedPayer[] = Array.isArray(data.payers)
-        ? data.payers
-        : [];
+      const payerList: SeedPayer[] = Array.isArray(data.payers) ? data.payers : [];
 
       for (const p of payerList) {
         if (!p.payerId || !p.name) {
@@ -97,10 +94,10 @@ export async function pgSeedFromJsonFixtures(): Promise<{
 
         await db.insert(payer).values({
           id: p.payerId,
-          tenantId: "default",
+          tenantId: 'default',
           canonicalName: p.name,
           aliases,
-          countryCode: p.country ?? "PH",
+          countryCode: p.country ?? 'PH',
           regulatorSource: null,
           regulatorLicenseNo: null,
           category: p.category ?? null,
@@ -113,9 +110,7 @@ export async function pgSeedFromJsonFixtures(): Promise<{
         inserted++;
       }
     } catch (err) {
-      errors.push(
-        `${file}: ${err instanceof Error ? err.message : String(err)}`,
-      );
+      errors.push(`${file}: ${err instanceof Error ? err.message : String(err)}`);
     }
   }
 

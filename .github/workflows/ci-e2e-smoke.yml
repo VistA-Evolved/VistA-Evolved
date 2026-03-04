@@ -8,25 +8,25 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "apps/web/**"
-      - "apps/portal/**"
-      - "apps/api/src/routes/**"
+      - 'apps/web/**'
+      - 'apps/portal/**'
+      - 'apps/api/src/routes/**'
   push:
     branches: [main]
     paths:
-      - "apps/web/**"
-      - "apps/portal/**"
+      - 'apps/web/**'
+      - 'apps/portal/**'
 
 concurrency:
-  group: "e2e-${{ github.ref }}"
+  group: 'e2e-${{ github.ref }}'
   cancel-in-progress: true
 
 permissions:
   contents: read
 
 env:
-  NODE_VERSION: "24"
-  PNPM_VERSION: "10"
+  NODE_VERSION: '24'
+  PNPM_VERSION: '10'
 
 jobs:
   e2e-web:
@@ -54,7 +54,7 @@ jobs:
       - name: Build web app
         run: pnpm -C apps/web build
         env:
-          NEXT_TELEMETRY_DISABLED: "1"
+          NEXT_TELEMETRY_DISABLED: '1'
 
       # Start web app in preview mode (no API needed for smoke)
       - name: Start web server
@@ -80,8 +80,8 @@ jobs:
             --output=e2e-results-ci.json \
             || true
         env:
-          CI: "true"
-          PLAYWRIGHT_JSON_OUTPUT_NAME: "e2e-results-ci.json"
+          CI: 'true'
+          PLAYWRIGHT_JSON_OUTPUT_NAME: 'e2e-results-ci.json'
 
       # Always upload artifacts
       - name: Upload test results
@@ -120,7 +120,7 @@ jobs:
       - name: Build portal app
         run: pnpm -C apps/portal build
         env:
-          NEXT_TELEMETRY_DISABLED: "1"
+          NEXT_TELEMETRY_DISABLED: '1'
 
       - name: Start portal server
         run: |
@@ -141,7 +141,7 @@ jobs:
             --reporter=json \
             || true
         env:
-          CI: "true"
+          CI: 'true'
 
       - name: Upload test results
         if: always()

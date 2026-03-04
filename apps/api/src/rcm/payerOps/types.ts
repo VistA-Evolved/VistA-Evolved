@@ -19,13 +19,13 @@
 /* ── Facility-Payer Enrollment ──────────────────────────────── */
 
 export type EnrollmentStatus =
-  | "not_enrolled"
-  | "application_submitted"
-  | "pending_accreditation"
-  | "active"
-  | "renewal_required"
-  | "suspended"
-  | "terminated";
+  | 'not_enrolled'
+  | 'application_submitted'
+  | 'pending_accreditation'
+  | 'active'
+  | 'renewal_required'
+  | 'suspended'
+  | 'terminated';
 
 export interface FacilityPayerEnrollment {
   id: string;
@@ -40,7 +40,7 @@ export interface FacilityPayerEnrollment {
   expiryDate?: string;
   renewalDueDate?: string;
   /** Integration mode for this enrollment (manual/portal/api) */
-  integrationMode: "manual" | "portal" | "api";
+  integrationMode: 'manual' | 'portal' | 'api';
   portalUrl?: string;
   portalInstructions?: string;
   enrollmentNotes?: string;
@@ -59,29 +59,29 @@ export interface EnrollmentTimelineEvent {
 /* ── LOA Case (Letter of Authorization) ─────────────────────── */
 
 export type LOAStatus =
-  | "draft"
-  | "pending_submission"
-  | "submitted"
-  | "under_review"
-  | "approved"
-  | "partially_approved"
-  | "denied"
-  | "expired"
-  | "cancelled";
+  | 'draft'
+  | 'pending_submission'
+  | 'submitted'
+  | 'under_review'
+  | 'approved'
+  | 'partially_approved'
+  | 'denied'
+  | 'expired'
+  | 'cancelled';
 
 export type LOARequestType =
-  | "initial_loa"
-  | "extension"
-  | "upgrade"
-  | "second_opinion"
-  | "pre_auth"
-  | "guarantee_letter";
+  | 'initial_loa'
+  | 'extension'
+  | 'upgrade'
+  | 'second_opinion'
+  | 'pre_auth'
+  | 'guarantee_letter';
 
 /* ── LOA SLA / Queue fields (Phase 89) ──────────────────────── */
 
-export type LOASLARiskLevel = "on_track" | "at_risk" | "overdue" | "critical";
+export type LOASLARiskLevel = 'on_track' | 'at_risk' | 'overdue' | 'critical';
 
-export type LOAPriority = "routine" | "urgent" | "stat";
+export type LOAPriority = 'routine' | 'urgent' | 'stat';
 
 export interface LOACase {
   id: string;
@@ -114,7 +114,7 @@ export interface LOACase {
   /** Timeline of status changes */
   timeline: LOATimelineEvent[];
   /** Submission method used */
-  submissionMode: "manual" | "portal" | "api";
+  submissionMode: 'manual' | 'portal' | 'api';
   createdAt: string;
   updatedAt: string;
   createdBy: string;
@@ -149,7 +149,7 @@ export interface LOAPack {
   generatedAt: string;
   generatedBy: string;
   /** Pack format: structured JSON manifest with sections */
-  format: "manifest";
+  format: 'manifest';
   /** Sections included in the pack */
   sections: LOAPackSection[];
   /** Checklist items for manual submission */
@@ -177,7 +177,7 @@ export interface LOARequestedService {
 export interface LOADiagnosisCode {
   code: string;
   description: string;
-  type: "primary" | "secondary";
+  type: 'primary' | 'secondary';
 }
 
 export interface LOATimelineEvent {
@@ -191,12 +191,12 @@ export interface LOATimelineEvent {
 
 /* Valid LOA status transitions */
 export const LOA_TRANSITIONS: Record<LOAStatus, LOAStatus[]> = {
-  draft: ["pending_submission", "cancelled"],
-  pending_submission: ["submitted", "cancelled"],
-  submitted: ["under_review", "approved", "partially_approved", "denied", "cancelled"],
-  under_review: ["approved", "partially_approved", "denied"],
-  approved: ["expired"],
-  partially_approved: ["expired"],
+  draft: ['pending_submission', 'cancelled'],
+  pending_submission: ['submitted', 'cancelled'],
+  submitted: ['under_review', 'approved', 'partially_approved', 'denied', 'cancelled'],
+  under_review: ['approved', 'partially_approved', 'denied'],
+  approved: ['expired'],
+  partially_approved: ['expired'],
   denied: [],
   expired: [],
   cancelled: [],
@@ -205,15 +205,15 @@ export const LOA_TRANSITIONS: Record<LOAStatus, LOAStatus[]> = {
 /* ── Credential Vault ───────────────────────────────────────── */
 
 export type CredentialDocType =
-  | "prc_license"
-  | "facility_license"
-  | "bir_registration"
-  | "philhealth_accreditation"
-  | "doh_license"
-  | "professional_license"
-  | "malpractice_insurance"
-  | "hmo_accreditation"
-  | "other";
+  | 'prc_license'
+  | 'facility_license'
+  | 'bir_registration'
+  | 'philhealth_accreditation'
+  | 'doh_license'
+  | 'professional_license'
+  | 'malpractice_insurance'
+  | 'hmo_accreditation'
+  | 'other';
 
 export interface CredentialVaultEntry {
   id: string;
@@ -251,17 +251,13 @@ export interface CredentialVaultEntry {
 
 /* ── Adapter Result Types ───────────────────────────────────── */
 
-export type PayerOpsResultStatus =
-  | "success"
-  | "manual_required"
-  | "not_supported"
-  | "error";
+export type PayerOpsResultStatus = 'success' | 'manual_required' | 'not_supported' | 'error';
 
 export interface PayerOpsEvidence {
   requestId?: string;
   rawReference?: string;
   timestamp: string;
-  modeUsed: "manual" | "portal" | "api";
+  modeUsed: 'manual' | 'portal' | 'api';
 }
 
 export interface PayerOpsAudit {
@@ -282,7 +278,7 @@ export interface PayerOpsResult<T = unknown> {
 export interface PayerOpsAdapter {
   readonly id: string;
   readonly name: string;
-  readonly mode: "manual" | "portal" | "api";
+  readonly mode: 'manual' | 'portal' | 'api';
 
   capabilities(): {
     eligibility: boolean;

@@ -7,8 +7,8 @@
  * the same AIProvider interface.
  */
 
-import type { AIProvider } from "../types.js";
-import { stubProvider } from "./stub-provider.js";
+import type { AIProvider } from '../types.js';
+import { stubProvider } from './stub-provider.js';
 
 /* ------------------------------------------------------------------ */
 /* Registry                                                            */

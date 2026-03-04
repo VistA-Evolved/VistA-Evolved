@@ -13,63 +13,63 @@
  *   3. PostgreSQL (SaaS multi-tenant)
  */
 
-import { randomBytes, createHash } from "node:crypto";
+import { randomBytes, createHash } from 'node:crypto';
 
 /* ── ID generation ──────────────────────────────────────────── */
 
 function newId(prefix: string): string {
-  return `${prefix}-${Date.now().toString(36)}-${randomBytes(6).toString("hex")}`;
+  return `${prefix}-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
 /* ── Types ──────────────────────────────────────────────────── */
 
-export type PayerSourceType = "ic_hmo_list" | "ic_hmo_broker_list" | "manual" | "csv_import";
+export type PayerSourceType = 'ic_hmo_list' | 'ic_hmo_broker_list' | 'manual' | 'csv_import';
 
 export interface PayerRegistrySource {
   id: string;
   name: string;
   sourceType: PayerSourceType;
   url: string;
-  asOfDate: string;           // date the source doc was published
-  contentHash: string;        // SHA-256 of raw content
-  fetchedAt: string;          // when we fetched it
+  asOfDate: string; // date the source doc was published
+  contentHash: string; // SHA-256 of raw content
+  fetchedAt: string; // when we fetched it
   recordCount: number;
-  version: number;            // increments on each ingest of same source type
-  rawArtifactPath?: string;   // path under /artifacts/regulator/
+  version: number; // increments on each ingest of same source type
+  rawArtifactPath?: string; // path under /artifacts/regulator/
 }
 
-export type RegistryPayerType = "hmo" | "hmo_broker" | "government" | "insurer" | "other";
-export type PriorityTier = "top5" | "top10" | "long_tail" | "untiered";
-export type RegistryPayerStatus = "active" | "inactive" | "suspended" | "pending_ca";
+export type RegistryPayerType = 'hmo' | 'hmo_broker' | 'government' | 'insurer' | 'other';
+export type PriorityTier = 'top5' | 'top10' | 'long_tail' | 'untiered';
+export type RegistryPayerStatus = 'active' | 'inactive' | 'suspended' | 'pending_ca';
 
 export interface RegistryPayer {
   id: string;
   canonicalName: string;
   aliases: string[];
   type: RegistryPayerType;
-  regulatorRef?: string;       // e.g., license/CA number
+  regulatorRef?: string; // e.g., license/CA number
   status: RegistryPayerStatus;
   country: string;
   priorityTier: PriorityTier;
   portalUrl?: string;
   portalInstructions?: string;
-  sourceId: string;            // FK to PayerRegistrySource
+  sourceId: string; // FK to PayerRegistrySource
   createdAt: string;
   updatedAt: string;
 }
 
 export interface PayerRelationship {
   id: string;
-  brokerId: string;            // RegistryPayer.id (type=hmo_broker)
-  payerId: string;             // RegistryPayer.id (type=hmo)
-  relationship: "broker_for" | "partner" | "affiliate";
+  brokerId: string; // RegistryPayer.id (type=hmo_broker)
+  payerId: string; // RegistryPayer.id (type=hmo)
+  relationship: 'broker_for' | 'partner' | 'affiliate';
   notes?: string;
   createdAt: string;
 }
 
 export interface RegistryDiffEntry {
   payerName: string;
-  change: "added" | "removed" | "renamed";
+  change: 'added' | 'removed' | 'renamed';
   oldName?: string;
   newName?: string;
 }
@@ -92,7 +92,9 @@ const relationships = new Map<string, PayerRelationship>();
 
 /* Phase 146: DB repo wiring */
 let registryDbRepo: { upsert(d: any): Promise<any> } | null = null;
-export function initRegistryStoreRepo(repo: typeof registryDbRepo): void { registryDbRepo = repo; }
+export function initRegistryStoreRepo(repo: typeof registryDbRepo): void {
+  registryDbRepo = repo;
+}
 const snapshots: RegistrySnapshot[] = [];
 
 /* ── Source CRUD ─────────────────────────────────────────────── */
@@ -106,23 +108,23 @@ export function createSource(data: {
   recordCount: number;
   rawArtifactPath?: string;
 }): PayerRegistrySource {
-  const hash = createHash("sha256").update(data.content).digest("hex");
+  const hash = createHash('sha256').update(data.content).digest('hex');
 
   // Check for duplicate hash — idempotent
   const existing = Array.from(sources.values()).find(
-    s => s.sourceType === data.sourceType && s.contentHash === hash
+    (s) => s.sourceType === data.sourceType && s.contentHash === hash
   );
   if (existing) return existing;
 
   // Compute version for this source type
   const prevVersions = Array.from(sources.values())
-    .filter(s => s.sourceType === data.sourceType)
-    .map(s => s.version);
+    .filter((s) => s.sourceType === data.sourceType)
+    .map((s) => s.version);
   const version = prevVersions.length > 0 ? Math.max(...prevVersions) + 1 : 1;
 
   const now = new Date().toISOString();
   const source: PayerRegistrySource = {
-    id: newId("src"),
+    id: newId('src'),
     name: data.name,
     sourceType: data.sourceType,
     url: data.url,
@@ -136,14 +138,22 @@ export function createSource(data: {
   sources.set(source.id, source);
 
   // Phase 146: Write-through to PG
-  registryDbRepo?.upsert({ id: source.id, tenantId: 'default', field: 'source', value: JSON.stringify(source), source: (source as any).type ?? 'manual', createdAt: (source as any).createdAt ?? new Date().toISOString() }).catch(() => {});
+  registryDbRepo
+    ?.upsert({
+      id: source.id,
+      tenantId: 'default',
+      field: 'source',
+      value: JSON.stringify(source),
+      source: (source as any).type ?? 'manual',
+      createdAt: (source as any).createdAt ?? new Date().toISOString(),
+    })
+    .catch(() => {});
 
   return source;
 }
 
 export function listSources(): PayerRegistrySource[] {
-  return Array.from(sources.values())
-    .sort((a, b) => b.fetchedAt.localeCompare(a.fetchedAt));
+  return Array.from(sources.values()).sort((a, b) => b.fetchedAt.localeCompare(a.fetchedAt));
 }
 
 export function getSource(id: string): PayerRegistrySource | undefined {
@@ -152,7 +162,7 @@ export function getSource(id: string): PayerRegistrySource | undefined {
 
 export function getLatestSourceByType(type: PayerSourceType): PayerRegistrySource | undefined {
   return Array.from(sources.values())
-    .filter(s => s.sourceType === type)
+    .filter((s) => s.sourceType === type)
     .sort((a, b) => b.version - a.version)[0];
 }
 
@@ -176,7 +186,7 @@ export function upsertRegistryPayer(data: {
       existing = p;
       break;
     }
-    if (p.aliases.some(a => a.toLowerCase() === normalizedName)) {
+    if (p.aliases.some((a) => a.toLowerCase() === normalizedName)) {
       existing = p;
       break;
     }
@@ -197,14 +207,14 @@ export function upsertRegistryPayer(data: {
 
   const now = new Date().toISOString();
   const payer: RegistryPayer = {
-    id: newId("rp"),
+    id: newId('rp'),
     canonicalName: data.canonicalName.trim(),
     aliases: data.aliases ?? [],
     type: data.type,
     regulatorRef: data.regulatorRef,
-    status: data.status ?? "active",
-    country: data.country ?? "PH",
-    priorityTier: "untiered",
+    status: data.status ?? 'active',
+    country: data.country ?? 'PH',
+    priorityTier: 'untiered',
     sourceId: data.sourceId,
     createdAt: now,
     updatedAt: now,
@@ -225,15 +235,16 @@ export function listRegistryPayers(filter?: {
   search?: string;
 }): RegistryPayer[] {
   let result = Array.from(payers.values());
-  if (filter?.type) result = result.filter(p => p.type === filter.type);
-  if (filter?.status) result = result.filter(p => p.status === filter.status);
-  if (filter?.country) result = result.filter(p => p.country === filter.country);
-  if (filter?.tier) result = result.filter(p => p.priorityTier === filter.tier);
+  if (filter?.type) result = result.filter((p) => p.type === filter.type);
+  if (filter?.status) result = result.filter((p) => p.status === filter.status);
+  if (filter?.country) result = result.filter((p) => p.country === filter.country);
+  if (filter?.tier) result = result.filter((p) => p.priorityTier === filter.tier);
   if (filter?.search) {
     const q = filter.search.toLowerCase();
-    result = result.filter(p =>
-      p.canonicalName.toLowerCase().includes(q) ||
-      p.aliases.some(a => a.toLowerCase().includes(q))
+    result = result.filter(
+      (p) =>
+        p.canonicalName.toLowerCase().includes(q) ||
+        p.aliases.some((a) => a.toLowerCase().includes(q))
     );
   }
   return result.sort((a, b) => a.canonicalName.localeCompare(b.canonicalName));
@@ -241,7 +252,18 @@ export function listRegistryPayers(filter?: {
 
 export function patchRegistryPayer(
   id: string,
-  patch: Partial<Pick<RegistryPayer, "canonicalName" | "aliases" | "priorityTier" | "portalUrl" | "portalInstructions" | "status" | "type">>
+  patch: Partial<
+    Pick<
+      RegistryPayer,
+      | 'canonicalName'
+      | 'aliases'
+      | 'priorityTier'
+      | 'portalUrl'
+      | 'portalInstructions'
+      | 'status'
+      | 'type'
+    >
+  >
 ): RegistryPayer | undefined {
   const payer = payers.get(id);
   if (!payer) return undefined;
@@ -262,13 +284,13 @@ export function patchRegistryPayer(
  */
 export function mergeRegistryPayers(
   targetId: string,
-  sourceId: string,
+  sourceId: string
 ): { ok: boolean; error?: string; merged?: RegistryPayer } {
   const target = payers.get(targetId);
   const source = payers.get(sourceId);
-  if (!target) return { ok: false, error: "Target payer not found" };
-  if (!source) return { ok: false, error: "Source payer not found" };
-  if (targetId === sourceId) return { ok: false, error: "Cannot merge payer with itself" };
+  if (!target) return { ok: false, error: 'Target payer not found' };
+  if (!source) return { ok: false, error: 'Source payer not found' };
+  if (targetId === sourceId) return { ok: false, error: 'Cannot merge payer with itself' };
 
   // Move source name + aliases into target
   const aliasSet = new Set([...target.aliases, source.canonicalName, ...source.aliases]);
@@ -291,7 +313,7 @@ export function mergeRegistryPayers(
 export function addRelationship(data: {
   brokerId: string;
   payerId: string;
-  relationship?: "broker_for" | "partner" | "affiliate";
+  relationship?: 'broker_for' | 'partner' | 'affiliate';
   notes?: string;
 }): PayerRelationship {
   // Idempotent: skip if same pair exists
@@ -299,10 +321,10 @@ export function addRelationship(data: {
     if (rel.brokerId === data.brokerId && rel.payerId === data.payerId) return rel;
   }
   const rel: PayerRelationship = {
-    id: newId("rel"),
+    id: newId('rel'),
     brokerId: data.brokerId,
     payerId: data.payerId,
-    relationship: data.relationship ?? "broker_for",
+    relationship: data.relationship ?? 'broker_for',
     notes: data.notes,
     createdAt: new Date().toISOString(),
   };
@@ -315,8 +337,8 @@ export function listRelationships(filter?: {
   payerId?: string;
 }): PayerRelationship[] {
   let result = Array.from(relationships.values());
-  if (filter?.brokerId) result = result.filter(r => r.brokerId === filter.brokerId);
-  if (filter?.payerId) result = result.filter(r => r.payerId === filter.payerId);
+  if (filter?.brokerId) result = result.filter((r) => r.brokerId === filter.brokerId);
+  if (filter?.payerId) result = result.filter((r) => r.payerId === filter.payerId);
   return result;
 }
 
@@ -340,7 +362,7 @@ export function listSnapshots(): RegistrySnapshot[] {
 
 export function getLatestSnapshot(sourceType: PayerSourceType): RegistrySnapshot | undefined {
   return snapshots
-    .filter(s => s.sourceType === sourceType)
+    .filter((s) => s.sourceType === sourceType)
     .sort((a, b) => b.version - a.version)[0];
 }
 

@@ -15,12 +15,12 @@ can bypass gates with `--SkipGates` (requires documented justification).
 
 ## Monthly Cadence
 
-| Week | Activity |
-|------|----------|
+| Week   | Activity                                                |
+| ------ | ------------------------------------------------------- |
 | Week 1 | Upstream sync (`worldvista-sync.ps1`), create candidate |
-| Week 2 | Run candidate gates, promote to staging |
-| Week 3 | Staging soak (compat matrix, SBOM, license review) |
-| Week 4 | Run staging gates, promote to production, sign-off |
+| Week 2 | Run candidate gates, promote to staging                 |
+| Week 3 | Staging soak (compat matrix, SBOM, license review)      |
+| Week 4 | Run staging gates, promote to production, sign-off      |
 
 ## Commands
 
@@ -57,23 +57,23 @@ pwsh scripts/patch-train/promote.ps1 -From candidate -To staging -DryRun
 
 ## Candidate Gates
 
-| # | Gate | What it checks |
-|---|------|---------------|
-| 1 | docker-build | Dockerfile exists (CI does actual build) |
-| 2 | vista-health | TCP probe to VistA (soft gate) |
-| 3 | custom-routines | .m files exist in services/vista/ |
-| 4 | rpc-registry | >100 RPCs in rpcRegistry.ts |
-| 5 | release-manifest | artifacts/vista-release-manifest.json exists |
+| #   | Gate             | What it checks                               |
+| --- | ---------------- | -------------------------------------------- |
+| 1   | docker-build     | Dockerfile exists (CI does actual build)     |
+| 2   | vista-health     | TCP probe to VistA (soft gate)               |
+| 3   | custom-routines  | .m files exist in services/vista/            |
+| 4   | rpc-registry     | >100 RPCs in rpcRegistry.ts                  |
+| 5   | release-manifest | artifacts/vista-release-manifest.json exists |
 
 ## Staging Gates
 
-| # | Gate | What it checks |
-|---|------|---------------|
-| 1 | candidate-promoted | Candidate->staging promotion record exists |
-| 2 | lock-pinned | All LOCK.json SHAs are real commits |
-| 3 | license-snapshot | License inventory exists |
-| 4 | compat-matrix | Phase 451 evidence (soft until implemented) |
-| 5 | sbom | Phase 454 evidence (soft until implemented) |
+| #   | Gate               | What it checks                              |
+| --- | ------------------ | ------------------------------------------- |
+| 1   | candidate-promoted | Candidate->staging promotion record exists  |
+| 2   | lock-pinned        | All LOCK.json SHAs are real commits         |
+| 3   | license-snapshot   | License inventory exists                    |
+| 4   | compat-matrix      | Phase 451 evidence (soft until implemented) |
+| 5   | sbom               | Phase 454 evidence (soft until implemented) |
 
 ## Artifacts
 

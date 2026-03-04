@@ -9,21 +9,20 @@
  * seedTenantModules only inserts rows that don't yet exist.
  */
 
-import { readFileSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
-import { log } from "../lib/logger.js";
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { log } from '../lib/logger.js';
 import {
   upsertModuleCatalog,
   seedTenantModules,
-  listModuleCatalog,
   getEnabledModuleIds,
   appendModuleAudit,
-} from "../platform/pg/repo/module-repo.js";
+} from '../platform/pg/repo/module-repo.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const CONFIG_ROOT = join(__dirname, "..", "..", "..", "..", "config");
+const CONFIG_ROOT = join(__dirname, '..', '..', '..', '..', 'config');
 
 export interface SeedResult {
   catalogCount: number;
@@ -36,12 +35,12 @@ export interface SeedResult {
  * tenant entitlements from the active SKU profile.
  */
 export async function seedModuleCatalogFromConfig(): Promise<SeedResult> {
-  const modulesPath = join(CONFIG_ROOT, "modules.json");
-  const modulesData = JSON.parse(readFileSync(modulesPath, "utf-8"));
+  const modulesPath = join(CONFIG_ROOT, 'modules.json');
+  const modulesData = JSON.parse(readFileSync(modulesPath, 'utf-8'));
   const modules: Record<string, any> = modulesData.modules || {};
 
-  const skusPath = join(CONFIG_ROOT, "skus.json");
-  const skusData = JSON.parse(readFileSync(skusPath, "utf-8"));
+  const skusPath = join(CONFIG_ROOT, 'skus.json');
+  const skusData = JSON.parse(readFileSync(skusPath, 'utf-8'));
   const skus: Record<string, any> = skusData.skus || {};
 
   // 1. Seed module catalog
@@ -50,8 +49,8 @@ export async function seedModuleCatalogFromConfig(): Promise<SeedResult> {
     await upsertModuleCatalog({
       moduleId,
       name: def.name || moduleId,
-      description: def.description || "",
-      version: def.version || "1.0.0",
+      description: def.description || '',
+      version: def.version || '1.0.0',
       alwaysEnabled: Boolean(def.alwaysEnabled),
       dependencies: def.dependencies || [],
       routePatterns: def.routePatterns || [],
@@ -64,34 +63,34 @@ export async function seedModuleCatalogFromConfig(): Promise<SeedResult> {
   }
 
   // 2. Seed default tenant entitlements from active SKU
-  const activeSku = process.env.DEPLOY_SKU || "FULL_SUITE";
+  const activeSku = process.env.DEPLOY_SKU || 'FULL_SUITE';
   const skuProfile = skus[activeSku];
   const skuModules: string[] = skuProfile?.modules || Object.keys(modules);
 
-  const defaultTenantSeeded = await seedTenantModules("default", skuModules, "system");
+  const defaultTenantSeeded = await seedTenantModules('default', skuModules, 'system');
 
   // 3. Audit the seed event (only if we actually seeded new rows)
   if (defaultTenantSeeded > 0) {
     await appendModuleAudit({
-      tenantId: "default",
-      actorId: "system",
-      actorType: "system",
-      entityType: "entitlement",
-      entityId: "startup-seed",
-      action: "create",
+      tenantId: 'default',
+      actorId: 'system',
+      actorType: 'system',
+      entityType: 'entitlement',
+      entityId: 'startup-seed',
+      action: 'create',
       beforeJson: null,
       afterJson: JSON.stringify({
         sku: activeSku,
         moduleIds: skuModules,
         seeded: defaultTenantSeeded,
       }),
-      reason: "Automatic startup seed from modules.json + SKU profile",
+      reason: 'Automatic startup seed from modules.json + SKU profile',
     });
   }
 
-  const defaultTenantEnabled = (await getEnabledModuleIds("default")).length;
+  const defaultTenantEnabled = (await getEnabledModuleIds('default')).length;
 
-  log.info("Module catalog seed complete", {
+  log.info('Module catalog seed complete', {
     catalogCount,
     sku: activeSku,
     defaultTenantSeeded,

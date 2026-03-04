@@ -16,40 +16,34 @@
  * Auth: session-level (matched by /rcm/ catch-all in AUTH_RULES).
  */
 
-import type { FastifyInstance, FastifyPluginAsync } from "fastify";
+import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
 import {
   createHmoClaim,
-  resolveClaimSubmissionPlan,
   generateClaimPacketForClaim,
   transitionHmoClaim,
   recordDenial,
   getDenials,
   getClaimsStatusBoard,
-} from "../workflows/claims-workflow.js";
-import type { ClaimStatus } from "../domain/claim.js";
-import {
-  getVistaSourceMap,
-  getVistaSourceForField,
-  getVistaSourceStats,
-} from "../workflows/vista-source-map.js";
+} from '../workflows/claims-workflow.js';
+import type { ClaimStatus } from '../domain/claim.js';
+import { getVistaSourceMap, getVistaSourceStats } from '../workflows/vista-source-map.js';
 import {
   loadPayerRulepacks,
   getPayerRulepack,
   listPayerRulepacks,
   getRulepackStats,
-} from "../payers/payer-rulepacks.js";
-import { safeErr } from "../../lib/safe-error.js";
+} from '../payers/payer-rulepacks.js';
+import { safeErr } from '../../lib/safe-error.js';
 
 const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
-
   // Load rulepacks once
   loadPayerRulepacks();
 
   /* ── POST /rcm/claims/hmo — create HMO claim ──────────── */
-  server.post("/rcm/claims/hmo", async (request, reply) => {
+  server.post('/rcm/claims/hmo', async (request, reply) => {
     const body = (request.body as any) || {};
     const {
-      tenantId = "default",
+      tenantId = 'default',
       patientDfn,
       patientName,
       payerId,
@@ -58,13 +52,13 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       lines,
       totalCharge,
       loaReferenceNumber,
-      actor = "system",
+      actor = 'system',
     } = body;
 
     if (!patientDfn || !payerId || !dateOfService) {
       return reply.status(400).send({
         ok: false,
-        error: "patientDfn, payerId, and dateOfService required",
+        error: 'patientDfn, payerId, and dateOfService required',
       });
     }
 
@@ -96,14 +90,14 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   });
 
   /* ── GET /rcm/claims/hmo/board — status board ──────────── */
-  server.get("/rcm/claims/hmo/board", async (request, reply) => {
-    const tenantId = (request.query as any)?.tenantId ?? "default";
+  server.get('/rcm/claims/hmo/board', async (request, reply) => {
+    const tenantId = (request.query as any)?.tenantId ?? 'default';
     const board = getClaimsStatusBoard(tenantId);
     return reply.send({ ok: true, ...board });
   });
 
   /* ── GET /rcm/claims/hmo/:id/plan — submission plan ────── */
-  server.get("/rcm/claims/hmo/:id/plan", async (request, reply) => {
+  server.get('/rcm/claims/hmo/:id/plan', async (request, reply) => {
     const { id } = request.params as { id: string };
     // For plan resolution, we get the payer from the claim
     const result = generateClaimPacketForClaim(id);
@@ -114,13 +108,13 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   });
 
   /* ── POST /rcm/claims/hmo/:id/transition ───────────────── */
-  server.post("/rcm/claims/hmo/:id/transition", async (request, reply) => {
+  server.post('/rcm/claims/hmo/:id/transition', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const { toStatus, actor = "system", detail } = body;
+    const { toStatus, actor = 'system', detail } = body;
 
     if (!toStatus) {
-      return reply.status(400).send({ ok: false, error: "toStatus required" });
+      return reply.status(400).send({ ok: false, error: 'toStatus required' });
     }
 
     try {
@@ -135,13 +129,13 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   });
 
   /* ── POST /rcm/claims/hmo/:id/denial — record denial ──── */
-  server.post("/rcm/claims/hmo/:id/denial", async (request, reply) => {
+  server.post('/rcm/claims/hmo/:id/denial', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const { reasonText, reasonCode, actor = "system" } = body;
+    const { reasonText, reasonCode, actor = 'system' } = body;
 
     if (!reasonText) {
-      return reply.status(400).send({ ok: false, error: "reasonText required" });
+      return reply.status(400).send({ ok: false, error: 'reasonText required' });
     }
 
     const denial = recordDenial({ claimId: id, reasonText, reasonCode, actor });
@@ -149,14 +143,14 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   });
 
   /* ── GET /rcm/claims/hmo/:id/denials — denial history ─── */
-  server.get("/rcm/claims/hmo/:id/denials", async (request, reply) => {
+  server.get('/rcm/claims/hmo/:id/denials', async (request, reply) => {
     const { id } = request.params as { id: string };
     const denials = getDenials(id);
     return reply.send({ ok: true, count: denials.length, denials });
   });
 
   /* ── GET /rcm/claims/hmo/:id/packet — generate packet ─── */
-  server.get("/rcm/claims/hmo/:id/packet", async (request, reply) => {
+  server.get('/rcm/claims/hmo/:id/packet', async (request, reply) => {
     const { id } = request.params as { id: string };
     const result = generateClaimPacketForClaim(id);
     if (!result.ok) {
@@ -166,24 +160,24 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   });
 
   /* ── GET /rcm/claims/source-map — VistA source map ─────── */
-  server.get("/rcm/claims/source-map", async (_request, reply) => {
+  server.get('/rcm/claims/source-map', async (_request, reply) => {
     const map = getVistaSourceMap();
     const stats = getVistaSourceStats();
     return reply.send({ ok: true, entries: map, stats });
   });
 
   /* ── GET /rcm/payers/rulepacks ─────────────────────────── */
-  server.get("/rcm/payers/rulepacks", async (_request, reply) => {
+  server.get('/rcm/payers/rulepacks', async (_request, reply) => {
     const packs = listPayerRulepacks();
     const stats = getRulepackStats();
     return reply.send({ ok: true, count: packs.length, stats, rulepacks: packs });
   });
 
   /* ── GET /rcm/payers/rulepacks/:id ─────────────────────── */
-  server.get("/rcm/payers/rulepacks/:id", async (request, reply) => {
+  server.get('/rcm/payers/rulepacks/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const pack = getPayerRulepack(id);
-    if (!pack) return reply.status(404).send({ ok: false, error: "Rulepack not found" });
+    if (!pack) return reply.status(404).send({ ok: false, error: 'Rulepack not found' });
     return reply.send({ ok: true, rulepack: pack });
   });
 };

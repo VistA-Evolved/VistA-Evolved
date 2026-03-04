@@ -1,6 +1,7 @@
 # Phase 303 — Pharmacy Deep Writeback (W12-P5)
 
 ## User Request
+
 Implement the Pharmacy domain writeback executor for the Clinical Writeback Command Bus,
 covering PLACE_MED_ORDER, DISCONTINUE_MED_ORDER, and ADMINISTER_MED intents.
 
@@ -18,9 +19,11 @@ covering PLACE_MED_ORDER, DISCONTINUE_MED_ORDER, and ADMINISTER_MED intents.
 3. Create contract tests: `pharm-contract.test.ts`
 
 ## Verification Steps
+
 Run `scripts/verify-phase303-pharm-writeback.ps1` — all gates must PASS.
 
 ## Files Touched
+
 - `apps/api/src/writeback/executors/pharm-executor.ts` (NEW)
 - `apps/api/src/writeback/executors/index.ts` (MODIFIED)
 - `apps/api/src/writeback/__tests__/pharm-contract.test.ts` (NEW)

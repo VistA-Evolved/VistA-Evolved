@@ -12,11 +12,11 @@
  *   - Auditable: every denial is logged to immutable audit trail
  */
 
-import type { FastifyReply } from "fastify";
-import type { SessionData, UserRole } from "./session-store.js";
-import { evaluatePolicy, type PolicyRole, type PolicyDecision } from "./policy-engine.js";
-import { immutableAudit } from "../lib/immutable-audit.js";
-import { log } from "../lib/logger.js";
+import type { FastifyReply } from 'fastify';
+import type { SessionData, UserRole } from './session-store.js';
+import { evaluatePolicy, type PolicyRole, type PolicyDecision } from './policy-engine.js';
+import { immutableAudit } from '../lib/immutable-audit.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Permission definitions                                              */
@@ -29,38 +29,38 @@ import { log } from "../lib/logger.js";
  */
 export type RbacPermission =
   // Clinical read
-  | "clinical:read"
+  | 'clinical:read'
   // Clinical write
-  | "clinical:write"
+  | 'clinical:write'
   // RCM read (view claims, payers, pipeline)
-  | "rcm:read"
+  | 'rcm:read'
   // RCM write (create/edit claims, submit, import payers)
-  | "rcm:write"
+  | 'rcm:write'
   // RCM admin (payer management, connector config, audit)
-  | "rcm:admin"
+  | 'rcm:admin'
   // Imaging read
-  | "imaging:read"
+  | 'imaging:read'
   // Imaging write (orders, upload)
-  | "imaging:write"
+  | 'imaging:write'
   // Imaging admin (device management, audit)
-  | "imaging:admin"
+  | 'imaging:admin'
   // Analytics read
-  | "analytics:read"
+  | 'analytics:read'
   // Analytics admin (export, config)
-  | "analytics:admin"
+  | 'analytics:admin'
   // Admin operations
-  | "admin:system"
+  | 'admin:system'
   // Audit viewing
-  | "audit:read"
+  | 'audit:read'
   // Telehealth
-  | "telehealth:create"
-  | "telehealth:join"
+  | 'telehealth:create'
+  | 'telehealth:join'
   // Portal (patient self-service -- separate domain)
-  | "portal:own-data"
+  | 'portal:own-data'
   // Migration toolkit (Phase 50)
-  | "migration:read"
-  | "migration:write"
-  | "migration:admin";
+  | 'migration:read'
+  | 'migration:write'
+  | 'migration:admin';
 
 /**
  * Role → permission mapping. Principle of least privilege.
@@ -77,47 +77,46 @@ export type RbacPermission =
  */
 const ROLE_PERMISSIONS: Record<UserRole, RbacPermission[]> = {
   admin: [
-    "clinical:read", "clinical:write",
-    "rcm:read", "rcm:write", "rcm:admin",
-    "imaging:read", "imaging:write", "imaging:admin",
-    "analytics:read", "analytics:admin",
-    "admin:system", "audit:read",
-    "telehealth:create", "telehealth:join",
-    "migration:read", "migration:write", "migration:admin",
+    'clinical:read',
+    'clinical:write',
+    'rcm:read',
+    'rcm:write',
+    'rcm:admin',
+    'imaging:read',
+    'imaging:write',
+    'imaging:admin',
+    'analytics:read',
+    'analytics:admin',
+    'admin:system',
+    'audit:read',
+    'telehealth:create',
+    'telehealth:join',
+    'migration:read',
+    'migration:write',
+    'migration:admin',
   ],
   provider: [
-    "clinical:read", "clinical:write",
-    "rcm:read",
-    "imaging:read", "imaging:write",
-    "analytics:read",
-    "telehealth:create", "telehealth:join",
+    'clinical:read',
+    'clinical:write',
+    'rcm:read',
+    'imaging:read',
+    'imaging:write',
+    'analytics:read',
+    'telehealth:create',
+    'telehealth:join',
   ],
   nurse: [
-    "clinical:read", "clinical:write",
-    "rcm:read",
-    "imaging:read",
-    "analytics:read",
-    "telehealth:join",
+    'clinical:read',
+    'clinical:write',
+    'rcm:read',
+    'imaging:read',
+    'analytics:read',
+    'telehealth:join',
   ],
-  pharmacist: [
-    "clinical:read",
-    "rcm:read",
-    "imaging:read",
-    "analytics:read",
-  ],
-  billing: [
-    "clinical:read",
-    "rcm:read", "rcm:write",
-    "analytics:read",
-  ],
-  clerk: [
-    "clinical:read",
-    "rcm:read",
-  ],
-  support: [
-    "analytics:read",
-    "audit:read",
-  ],
+  pharmacist: ['clinical:read', 'rcm:read', 'imaging:read', 'analytics:read'],
+  billing: ['clinical:read', 'rcm:read', 'rcm:write', 'analytics:read'],
+  clerk: ['clinical:read', 'rcm:read'],
+  support: ['analytics:read', 'audit:read'],
 };
 
 /* ------------------------------------------------------------------ */
@@ -162,26 +161,31 @@ export function requirePermission(
   session: SessionData,
   permission: RbacPermission,
   reply: FastifyReply,
-  meta?: { requestId?: string; sourceIp?: string },
+  meta?: { requestId?: string; sourceIp?: string }
 ): void {
   if (hasPermission(session.role, permission)) return;
 
   // Audit the denial
-  immutableAudit("policy.denied" as any, "denied", {
-    sub: session.duz,
-    name: session.userName,
-    roles: [session.role],
-  }, {
-    requestId: meta?.requestId,
-    sourceIp: meta?.sourceIp,
-    detail: {
-      permission,
-      role: session.role,
-      reason: `Role '${session.role}' lacks permission '${permission}'`,
+  immutableAudit(
+    'policy.denied' as any,
+    'denied',
+    {
+      sub: session.duz,
+      name: session.userName,
+      roles: [session.role],
     },
-  });
+    {
+      requestId: meta?.requestId,
+      sourceIp: meta?.sourceIp,
+      detail: {
+        permission,
+        role: session.role,
+        reason: `Role '${session.role}' lacks permission '${permission}'`,
+      },
+    }
+  );
 
-  log.warn("RBAC denied", {
+  log.warn('RBAC denied', {
     duz: session.duz,
     role: session.role,
     permission,
@@ -189,7 +193,7 @@ export function requirePermission(
 
   reply.code(403).send({
     ok: false,
-    error: "Insufficient privileges",
+    error: 'Insufficient privileges',
     requiredPermission: permission,
   });
   throw new Error(`RBAC: role '${session.role}' lacks '${permission}'`);
@@ -202,25 +206,30 @@ export function requireAnyPermission(
   session: SessionData,
   permissions: RbacPermission[],
   reply: FastifyReply,
-  meta?: { requestId?: string; sourceIp?: string },
+  meta?: { requestId?: string; sourceIp?: string }
 ): void {
   if (permissions.some((p) => hasPermission(session.role, p))) return;
 
-  immutableAudit("policy.denied" as any, "denied", {
-    sub: session.duz,
-    name: session.userName,
-    roles: [session.role],
-  }, {
-    requestId: meta?.requestId,
-    sourceIp: meta?.sourceIp,
-    detail: {
-      permissions,
-      role: session.role,
-      reason: `Role '${session.role}' lacks any of: ${permissions.join(", ")}`,
+  immutableAudit(
+    'policy.denied' as any,
+    'denied',
+    {
+      sub: session.duz,
+      name: session.userName,
+      roles: [session.role],
     },
-  });
+    {
+      requestId: meta?.requestId,
+      sourceIp: meta?.sourceIp,
+      detail: {
+        permissions,
+        role: session.role,
+        reason: `Role '${session.role}' lacks any of: ${permissions.join(', ')}`,
+      },
+    }
+  );
 
-  log.warn("RBAC denied (any)", {
+  log.warn('RBAC denied (any)', {
     duz: session.duz,
     role: session.role,
     permissions,
@@ -228,10 +237,10 @@ export function requireAnyPermission(
 
   reply.code(403).send({
     ok: false,
-    error: "Insufficient privileges",
+    error: 'Insufficient privileges',
     requiredPermissions: permissions,
   });
-  throw new Error(`RBAC: role '${session.role}' lacks any of: ${permissions.join(", ")}`);
+  throw new Error(`RBAC: role '${session.role}' lacks any of: ${permissions.join(', ')}`);
 }
 
 /**
@@ -240,9 +249,9 @@ export function requireAnyPermission(
 export function requireAdmin(
   session: SessionData,
   reply: FastifyReply,
-  meta?: { requestId?: string; sourceIp?: string },
+  meta?: { requestId?: string; sourceIp?: string }
 ): void {
-  return requirePermission(session, "admin:system", reply, meta);
+  return requirePermission(session, 'admin:system', reply, meta);
 }
 
 /**
@@ -251,9 +260,9 @@ export function requireAdmin(
 export function requireRcmWrite(
   session: SessionData,
   reply: FastifyReply,
-  meta?: { requestId?: string; sourceIp?: string },
+  meta?: { requestId?: string; sourceIp?: string }
 ): void {
-  return requirePermission(session, "rcm:write", reply, meta);
+  return requirePermission(session, 'rcm:write', reply, meta);
 }
 
 /**
@@ -262,9 +271,9 @@ export function requireRcmWrite(
 export function requireRcmAdmin(
   session: SessionData,
   reply: FastifyReply,
-  meta?: { requestId?: string; sourceIp?: string },
+  meta?: { requestId?: string; sourceIp?: string }
 ): void {
-  return requirePermission(session, "rcm:admin", reply, meta);
+  return requirePermission(session, 'rcm:admin', reply, meta);
 }
 
 /* ------------------------------------------------------------------ */
@@ -278,7 +287,7 @@ export function requireRcmAdmin(
 export function evaluateAccess(
   session: SessionData,
   action: string,
-  resource?: { tenantId?: string; patientDfn?: string },
+  resource?: { tenantId?: string; patientDfn?: string }
 ): PolicyDecision {
   return evaluatePolicy({
     action,

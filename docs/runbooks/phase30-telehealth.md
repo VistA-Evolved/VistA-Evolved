@@ -3,6 +3,7 @@
 ## Overview
 
 Phase 30 implements a **provider-agnostic telehealth system** with:
+
 - **Provider adapter pattern** (no hardcoded vendor)
 - **Self-hostable Jitsi Meet** as default provider
 - **Device check** (camera, microphone, WebRTC, browser compatibility)
@@ -35,42 +36,42 @@ UI
 
 ## Configuration
 
-| Env Variable | Default | Description |
-|---|---|---|
-| `TELEHEALTH_PROVIDER` | `jitsi` | Provider adapter name |
-| `JITSI_BASE_URL` | `https://meet.jit.si` | Jitsi instance URL |
-| `JITSI_APP_ID` | (empty) | Jitsi app ID for JWT auth |
-| `JITSI_APP_SECRET` | (empty) | Jitsi secret for JWT signing |
-| `JITSI_JOIN_TTL_SECONDS` | `3600` | Join URL validity |
-| `TELEHEALTH_ROOM_TTL_MS` | `14400000` | Max room lifetime (4h) |
-| `TELEHEALTH_TURN_URL` | (empty) | Self-hosted TURN server |
-| `TELEHEALTH_TURN_USERNAME` | (empty) | TURN username |
-| `TELEHEALTH_TURN_CREDENTIAL` | (empty) | TURN credential |
+| Env Variable                 | Default               | Description                  |
+| ---------------------------- | --------------------- | ---------------------------- |
+| `TELEHEALTH_PROVIDER`        | `jitsi`               | Provider adapter name        |
+| `JITSI_BASE_URL`             | `https://meet.jit.si` | Jitsi instance URL           |
+| `JITSI_APP_ID`               | (empty)               | Jitsi app ID for JWT auth    |
+| `JITSI_APP_SECRET`           | (empty)               | Jitsi secret for JWT signing |
+| `JITSI_JOIN_TTL_SECONDS`     | `3600`                | Join URL validity            |
+| `TELEHEALTH_ROOM_TTL_MS`     | `14400000`            | Max room lifetime (4h)       |
+| `TELEHEALTH_TURN_URL`        | (empty)               | Self-hosted TURN server      |
+| `TELEHEALTH_TURN_USERNAME`   | (empty)               | TURN username                |
+| `TELEHEALTH_TURN_CREDENTIAL` | (empty)               | TURN credential              |
 
 ## API Endpoints
 
 ### Clinician Routes (session auth)
 
-| Method | Path | Description |
-|---|---|---|
-| POST | `/telehealth/rooms` | Create room for appointment |
-| GET | `/telehealth/rooms` | List active rooms |
-| GET | `/telehealth/rooms/:roomId` | Get room status |
-| POST | `/telehealth/rooms/:roomId/join` | Join room (get video URL) |
-| POST | `/telehealth/rooms/:roomId/end` | End room |
-| GET | `/telehealth/rooms/:roomId/waiting` | Get waiting room state |
-| GET | `/telehealth/device-check/requirements` | Device requirements |
-| GET | `/telehealth/health` | Provider health check |
+| Method | Path                                    | Description                 |
+| ------ | --------------------------------------- | --------------------------- |
+| POST   | `/telehealth/rooms`                     | Create room for appointment |
+| GET    | `/telehealth/rooms`                     | List active rooms           |
+| GET    | `/telehealth/rooms/:roomId`             | Get room status             |
+| POST   | `/telehealth/rooms/:roomId/join`        | Join room (get video URL)   |
+| POST   | `/telehealth/rooms/:roomId/end`         | End room                    |
+| GET    | `/telehealth/rooms/:roomId/waiting`     | Get waiting room state      |
+| GET    | `/telehealth/device-check/requirements` | Device requirements         |
+| GET    | `/telehealth/health`                    | Provider health check       |
 
 ### Patient Routes (portal session)
 
-| Method | Path | Description |
-|---|---|---|
-| GET | `/portal/telehealth/appointment/:id/room` | Get room for appointment |
-| POST | `/portal/telehealth/rooms/:roomId/join` | Patient join |
-| GET | `/portal/telehealth/rooms/:roomId/waiting` | Waiting room state |
-| GET | `/portal/telehealth/device-check` | Device requirements |
-| POST | `/portal/telehealth/device-check/report` | Submit device check |
+| Method | Path                                       | Description              |
+| ------ | ------------------------------------------ | ------------------------ |
+| GET    | `/portal/telehealth/appointment/:id/room`  | Get room for appointment |
+| POST   | `/portal/telehealth/rooms/:roomId/join`    | Patient join             |
+| GET    | `/portal/telehealth/rooms/:roomId/waiting` | Waiting room state       |
+| GET    | `/portal/telehealth/device-check`          | Device requirements      |
+| POST   | `/portal/telehealth/device-check/report`   | Submit device check      |
 
 ## Room Lifecycle
 
@@ -135,21 +136,21 @@ curl http://localhost:3001/telehealth/device-check/requirements
 
 ## Files Changed
 
-| File | Action |
-|---|---|
-| `apps/api/src/telehealth/types.ts` | New — Provider interface, room types |
-| `apps/api/src/telehealth/providers/jitsi-provider.ts` | New — Jitsi adapter |
-| `apps/api/src/telehealth/providers/index.ts` | New — Provider registry |
-| `apps/api/src/telehealth/room-store.ts` | New — Room lifecycle store |
-| `apps/api/src/telehealth/device-check.ts` | New — Device check service |
-| `apps/api/src/routes/telehealth.ts` | New — All telehealth routes |
-| `apps/api/src/index.ts` | Modified — Route registration |
-| `apps/api/src/middleware/security.ts` | Modified — Auth rules + shutdown |
-| `apps/api/src/services/portal-audit.ts` | Modified — Telehealth audit actions |
-| `apps/portal/src/app/dashboard/telehealth/page.tsx` | Replaced — Full telehealth UI |
-| `apps/portal/src/lib/api.ts` | Modified — Telehealth API functions |
-| `apps/web/src/components/cprs/panels/TelehealthPanel.tsx` | New — Clinician panel |
-| `apps/web/src/components/cprs/panels/index.ts` | Modified — Barrel export |
-| `apps/web/src/components/cprs/CPRSTabStrip.tsx` | Modified — Tab module map |
-| `apps/web/src/lib/contracts/data/tabs.json` | Modified — Telehealth tab |
-| `apps/web/src/app/cprs/chart/[dfn]/[tab]/page.tsx` | Modified — Panel routing |
+| File                                                      | Action                               |
+| --------------------------------------------------------- | ------------------------------------ |
+| `apps/api/src/telehealth/types.ts`                        | New — Provider interface, room types |
+| `apps/api/src/telehealth/providers/jitsi-provider.ts`     | New — Jitsi adapter                  |
+| `apps/api/src/telehealth/providers/index.ts`              | New — Provider registry              |
+| `apps/api/src/telehealth/room-store.ts`                   | New — Room lifecycle store           |
+| `apps/api/src/telehealth/device-check.ts`                 | New — Device check service           |
+| `apps/api/src/routes/telehealth.ts`                       | New — All telehealth routes          |
+| `apps/api/src/index.ts`                                   | Modified — Route registration        |
+| `apps/api/src/middleware/security.ts`                     | Modified — Auth rules + shutdown     |
+| `apps/api/src/services/portal-audit.ts`                   | Modified — Telehealth audit actions  |
+| `apps/portal/src/app/dashboard/telehealth/page.tsx`       | Replaced — Full telehealth UI        |
+| `apps/portal/src/lib/api.ts`                              | Modified — Telehealth API functions  |
+| `apps/web/src/components/cprs/panels/TelehealthPanel.tsx` | New — Clinician panel                |
+| `apps/web/src/components/cprs/panels/index.ts`            | Modified — Barrel export             |
+| `apps/web/src/components/cprs/CPRSTabStrip.tsx`           | Modified — Tab module map            |
+| `apps/web/src/lib/contracts/data/tabs.json`               | Modified — Telehealth tab            |
+| `apps/web/src/app/cprs/chart/[dfn]/[tab]/page.tsx`        | Modified — Panel routing             |

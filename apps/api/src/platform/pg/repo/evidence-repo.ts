@@ -6,10 +6,10 @@
  * Mirrors apps/api/src/platform/db/repo/evidence-repo.ts using Postgres.
  */
 
-import { randomUUID } from "node:crypto";
-import { eq, or, isNull, desc } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { payerEvidenceSnapshot, payerAuditEvent } from "../pg-schema.js";
+import { randomUUID } from 'node:crypto';
+import { eq, or, isNull, desc } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { payerEvidenceSnapshot, payerAuditEvent } from '../pg-schema.js';
 
 export type EvidenceRow = typeof payerEvidenceSnapshot.$inferSelect;
 
@@ -28,21 +28,15 @@ export async function listEvidence(tenantId?: string | null): Promise<EvidenceRo
     return db
       .select()
       .from(payerEvidenceSnapshot)
-      .where(or(
-        eq(payerEvidenceSnapshot.tenantId, tenantId),
-        isNull(payerEvidenceSnapshot.tenantId),
-      ))
+      .where(
+        or(eq(payerEvidenceSnapshot.tenantId, tenantId), isNull(payerEvidenceSnapshot.tenantId))
+      )
       .orderBy(desc(payerEvidenceSnapshot.ingestedAt));
   }
-  return db
-    .select()
-    .from(payerEvidenceSnapshot)
-    .orderBy(desc(payerEvidenceSnapshot.ingestedAt));
+  return db.select().from(payerEvidenceSnapshot).orderBy(desc(payerEvidenceSnapshot.ingestedAt));
 }
 
-export async function listEvidenceByStatus(
-  status: string,
-): Promise<EvidenceRow[]> {
+export async function listEvidenceByStatus(status: string): Promise<EvidenceRow[]> {
   const db = getPgDb();
   return db
     .select()
@@ -73,8 +67,8 @@ export async function insertEvidence(data: {
     asOfDate: new Date(data.asOfDate),
     sha256: data.sha256,
     storedPath: data.storedPath ?? null,
-    parserVersion: data.parserVersion ?? "1.0.0",
-    status: "pending",
+    parserVersion: data.parserVersion ?? '1.0.0',
+    status: 'pending',
     payerCount: data.payerCount ?? null,
     ingestedAt: new Date(now),
   });
@@ -83,14 +77,14 @@ export async function insertEvidence(data: {
   await db.insert(payerAuditEvent).values({
     id: randomUUID(),
     tenantId: data.tenantId ?? null,
-    actorType: "system",
+    actorType: 'system',
     actorId: null,
-    entityType: "evidence_snapshot",
+    entityType: 'evidence_snapshot',
     entityId: id,
-    action: "create",
+    action: 'create',
     beforeJson: null,
     afterJson: { id, sourceType: data.sourceType, sha256: data.sha256 },
-    reason: "Evidence snapshot ingested",
+    reason: 'Evidence snapshot ingested',
     evidenceSnapshotId: id,
     createdAt: new Date(now),
   });
@@ -100,9 +94,9 @@ export async function insertEvidence(data: {
 
 export async function updateEvidenceStatus(
   id: string,
-  status: "pending" | "promoted" | "superseded",
+  status: 'pending' | 'promoted' | 'superseded',
   reason: string,
-  actor?: string,
+  actor?: string
 ): Promise<EvidenceRow | null> {
   const db = getPgDb();
   const before = await findEvidenceById(id);
@@ -121,11 +115,11 @@ export async function updateEvidenceStatus(
   await db.insert(payerAuditEvent).values({
     id: randomUUID(),
     tenantId: before.tenantId ?? null,
-    actorType: actor ? "user" : "system",
+    actorType: actor ? 'user' : 'system',
     actorId: actor ?? null,
-    entityType: "evidence_snapshot",
+    entityType: 'evidence_snapshot',
     entityId: id,
-    action: "promote",
+    action: 'promote',
     beforeJson: JSON.parse(JSON.stringify(before)),
     afterJson: after ? JSON.parse(JSON.stringify(after)) : null,
     reason,

@@ -1,6 +1,7 @@
 # Phase 331 — VERIFY: Queue & Cache Regionalization (W15-P5)
 
 ## Verification Steps
+
 1. `npx tsc --noEmit` — 0 errors
 2. Service exports: enqueueJob, claimJob, completeJob, retryJob, transferJobs,
    registerWorker, heartbeatWorker, registerCachePartition, updateCacheStats,
@@ -15,6 +16,7 @@
 8. Priority claim: critical jobs claimed before normal
 
 ## Evidence
+
 - tsc: 0 errors
 - All stores registered in store-policy
 - AUTH_RULES gating verified

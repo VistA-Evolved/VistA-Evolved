@@ -12,22 +12,27 @@
  *   4. Full ledger posting via VistA AR
  */
 
-import { randomBytes } from "node:crypto";
-import type { HmoSubmissionRecord, HmoSubmissionStatus } from "./types.js";
-import { isValidHmoTransition } from "./types.js";
+import { randomBytes } from 'node:crypto';
+import type { HmoSubmissionRecord, HmoSubmissionStatus } from './types.js';
+import { isValidHmoTransition } from './types.js';
 
 /* ── In-Memory Store ────────────────────────────────────────── */
 
 const submissions = new Map<string, HmoSubmissionRecord>();
 
 /* Phase 146: DB repo wiring */
-let hmoSubDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
-export function initHmoSubmissionStoreRepo(repo: typeof hmoSubDbRepo): void { hmoSubDbRepo = repo; }
+let hmoSubDbRepo: {
+  upsert(d: any): Promise<any>;
+  update?(id: string, u: any): Promise<any>;
+} | null = null;
+export function initHmoSubmissionStoreRepo(repo: typeof hmoSubDbRepo): void {
+  hmoSubDbRepo = repo;
+}
 
 /* ── ID Generation ──────────────────────────────────────────── */
 
 function newSubmissionId(): string {
-  return `hsub-${Date.now().toString(36)}-${randomBytes(6).toString("hex")}`;
+  return `hsub-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
 /* ── CRUD ───────────────────────────────────────────────────── */
@@ -46,7 +51,7 @@ export function createSubmission(params: {
     payerName: params.payerName,
     claimId: params.claimId,
     loaRequestId: params.loaRequestId,
-    status: "draft",
+    status: 'draft',
     staffNotes: [],
     exportFiles: [],
     timeline: [],
@@ -56,7 +61,16 @@ export function createSubmission(params: {
   submissions.set(record.id, record);
 
   // Phase 146: Write-through to PG
-  hmoSubDbRepo?.upsert({ id: record.id, tenantId: (record as any).tenantId ?? 'default', claimId: (record as any).claimId ?? '', payerId: (record as any).payerId ?? '', status: record.status, submittedAt: record.createdAt }).catch(() => {});
+  hmoSubDbRepo
+    ?.upsert({
+      id: record.id,
+      tenantId: (record as any).tenantId ?? 'default',
+      claimId: (record as any).claimId ?? '',
+      payerId: (record as any).payerId ?? '',
+      status: record.status,
+      submittedAt: record.createdAt,
+    })
+    .catch(() => {});
 
   return record;
 }
@@ -83,10 +97,10 @@ export function transitionSubmission(
   id: string,
   toStatus: HmoSubmissionStatus,
   actor: string,
-  detail?: string,
+  detail?: string
 ): { ok: boolean; record?: HmoSubmissionRecord; error?: string } {
   const record = submissions.get(id);
-  if (!record) return { ok: false, error: "Submission not found." };
+  if (!record) return { ok: false, error: 'Submission not found.' };
 
   if (!isValidHmoTransition(record.status, toStatus)) {
     return {
@@ -120,19 +134,19 @@ export function updateSubmissionFields(
   fields: Partial<
     Pick<
       HmoSubmissionRecord,
-      | "portalRef"
-      | "loaReferenceNumber"
-      | "loaPacketId"
-      | "claimPacketId"
-      | "claimId"
-      | "loaRequestId"
-      | "denialReason"
-      | "denialCode"
+      | 'portalRef'
+      | 'loaReferenceNumber'
+      | 'loaPacketId'
+      | 'claimPacketId'
+      | 'claimId'
+      | 'loaRequestId'
+      | 'denialReason'
+      | 'denialCode'
     >
-  >,
+  >
 ): { ok: boolean; record?: HmoSubmissionRecord; error?: string } {
   const record = submissions.get(id);
-  if (!record) return { ok: false, error: "Submission not found." };
+  if (!record) return { ok: false, error: 'Submission not found.' };
 
   const now = new Date().toISOString();
   const updated: HmoSubmissionRecord = {
@@ -144,24 +158,18 @@ export function updateSubmissionFields(
   return { ok: true, record: updated };
 }
 
-export function addStaffNote(
-  id: string,
-  note: string,
-): { ok: boolean; error?: string } {
+export function addStaffNote(id: string, note: string): { ok: boolean; error?: string } {
   const record = submissions.get(id);
-  if (!record) return { ok: false, error: "Submission not found." };
+  if (!record) return { ok: false, error: 'Submission not found.' };
 
   record.staffNotes.push(`[${new Date().toISOString()}] ${note}`);
   record.updatedAt = new Date().toISOString();
   return { ok: true };
 }
 
-export function addExportFile(
-  id: string,
-  filename: string,
-): { ok: boolean; error?: string } {
+export function addExportFile(id: string, filename: string): { ok: boolean; error?: string } {
   const record = submissions.get(id);
-  if (!record) return { ok: false, error: "Submission not found." };
+  if (!record) return { ok: false, error: 'Submission not found.' };
 
   record.exportFiles.push(filename);
   record.updatedAt = new Date().toISOString();
@@ -177,10 +185,18 @@ export function getSubmissionStats(): Record<HmoSubmissionStatus, number> {
   }
   // Ensure all statuses present
   const allStatuses: HmoSubmissionStatus[] = [
-    "draft", "loa_pending", "loa_approved", "loa_denied",
-    "claim_prepared", "claim_exported", "claim_submitted_manual",
-    "claim_processing", "claim_approved", "claim_denied",
-    "remittance_received", "posted_to_vista",
+    'draft',
+    'loa_pending',
+    'loa_approved',
+    'loa_denied',
+    'claim_prepared',
+    'claim_exported',
+    'claim_submitted_manual',
+    'claim_processing',
+    'claim_approved',
+    'claim_denied',
+    'remittance_received',
+    'posted_to_vista',
   ];
   for (const s of allStatuses) {
     if (!(s in stats)) stats[s] = 0;

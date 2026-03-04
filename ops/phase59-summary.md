@@ -3,10 +3,11 @@
 ## What Changed
 
 ### API (apps/api)
+
 - **New file: `routes/cprs/orders-cpoe.ts`** (~460 lines)
   - `GET /vista/cprs/orders` -- Fetches active orders via ORWORR AGET, parses IEN/name/status/dates
-  - `POST /vista/cprs/orders/lab` -- Lab order entry with LOCK/AUTOACK/UNLOCK (integration-pending: no LRZ* quick orders in sandbox)
-  - `POST /vista/cprs/orders/imaging` -- Imaging order entry (integration-pending: needs RA* quick orders)
+  - `POST /vista/cprs/orders/lab` -- Lab order entry with LOCK/AUTOACK/UNLOCK (integration-pending: no LRZ\* quick orders in sandbox)
+  - `POST /vista/cprs/orders/imaging` -- Imaging order entry (integration-pending: needs RA\* quick orders)
   - `POST /vista/cprs/orders/consult` -- Consult order entry (integration-pending: needs ORDIALOG #101.43)
   - `POST /vista/cprs/orders/sign` -- Electronic signing via ORWOR1 SIG (integration-pending without esCode)
   - `POST /vista/cprs/order-checks` -- Order check retrieval via ORWDXC ACCEPT/DISPLAY
@@ -15,6 +16,7 @@
 - **index.ts** -- Registered ordersCpoeRoutes plugin
 
 ### Web UI (apps/web)
+
 - **OrdersPanel.tsx** -- Major upgrade:
   - Fetches VistA active orders on mount via GET /vista/cprs/orders
   - Lab/imaging/consult orders POST to real CPOE endpoints (not draft-only)
@@ -24,10 +26,12 @@
   - No dead clicks -- every button has a real endpoint or integration-pending feedback
 
 ### Artifacts
+
 - `artifacts/phase59/inventory.json` -- Full order state inventory
 - `artifacts/phase59/order-plan.json` -- Per-flow RPC sequences (7 flows)
 
 ### Prompts
+
 - `prompts/64-PHASE-59-CPOE-PARITY/59-01-IMPLEMENT.md`
 - `prompts/64-PHASE-59-CPOE-PARITY/59-99-VERIFY.md`
 
@@ -51,8 +55,9 @@ scripts/verify-phase59-cpoe-parity.ps1 -Verbose
 ```
 
 ## Follow-ups
-- Lab quick orders (LRZ*) need configuration in WorldVistA Docker for live lab ordering
-- Imaging quick orders (RAD*) need RA package configuration
+
+- Lab quick orders (LRZ\*) need configuration in WorldVistA Docker for live lab ordering
+- Imaging quick orders (RAD\*) need RA package configuration
 - Consult ordering needs full ORDIALOG parameter construction
 - E-signature code (esCode) needs credential flow for real signing
 - Order checks context needs active order IENs from prior order placement

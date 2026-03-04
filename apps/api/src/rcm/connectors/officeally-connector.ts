@@ -19,25 +19,35 @@
  *   OFFICEALLY_SENDER_ID (Office Ally assigns on enrollment)
  */
 
-import type { RcmConnector, ConnectorResult } from "./types.js";
-import type { X12TransactionSet } from "../edi/types.js";
+import type { RcmConnector, ConnectorResult } from './types.js';
+import type { X12TransactionSet } from '../edi/types.js';
 
 export class OfficeAllyConnector implements RcmConnector {
-  readonly id = "officeally";
-  readonly name = "Office Ally Clearinghouse";
-  readonly supportedModes = ["clearinghouse_edi"];
+  readonly id = 'officeally';
+  readonly name = 'Office Ally Clearinghouse';
+  readonly supportedModes = ['clearinghouse_edi'];
   readonly supportedTransactions: X12TransactionSet[] = [
-    "837P", "837I", "835", "270", "271", "276", "277", "275", "999", "997", "TA1",
+    '837P',
+    '837I',
+    '835',
+    '270',
+    '271',
+    '276',
+    '277',
+    '275',
+    '999',
+    '997',
+    'TA1',
   ];
 
   private configured = false;
   private config = {
-    sftpHost: process.env.OFFICEALLY_SFTP_HOST ?? "",
-    sftpUser: process.env.OFFICEALLY_SFTP_USER ?? "",
-    sftpKeyPath: process.env.OFFICEALLY_SFTP_KEY_PATH ?? "",
-    apiEndpoint: process.env.OFFICEALLY_API_ENDPOINT ?? "https://api.officeally.com/v1",
-    apiKey: process.env.OFFICEALLY_API_KEY ?? "",
-    senderId: process.env.OFFICEALLY_SENDER_ID ?? "",
+    sftpHost: process.env.OFFICEALLY_SFTP_HOST ?? '',
+    sftpUser: process.env.OFFICEALLY_SFTP_USER ?? '',
+    sftpKeyPath: process.env.OFFICEALLY_SFTP_KEY_PATH ?? '',
+    apiEndpoint: process.env.OFFICEALLY_API_ENDPOINT ?? 'https://api.officeally.com/v1',
+    apiKey: process.env.OFFICEALLY_API_KEY ?? '',
+    senderId: process.env.OFFICEALLY_SENDER_ID ?? '',
   };
 
   async initialize(): Promise<void> {
@@ -47,22 +57,26 @@ export class OfficeAllyConnector implements RcmConnector {
   async submit(
     transactionSet: X12TransactionSet,
     payload: string,
-    metadata: Record<string, string>,
+    metadata: Record<string, string>
   ): Promise<ConnectorResult> {
     if (!this.configured) {
       return {
         success: false,
-        errors: [{
-          code: "OA-NOT-CONFIGURED",
-          description: "Office Ally connector not configured. Set OFFICEALLY_SFTP_HOST or OFFICEALLY_API_KEY. Enrollment: https://cms.officeally.com/",
-          severity: "error",
-        }],
+        errors: [
+          {
+            code: 'OA-NOT-CONFIGURED',
+            description:
+              'Office Ally connector not configured. Set OFFICEALLY_SFTP_HOST or OFFICEALLY_API_KEY. Enrollment: https://cms.officeally.com/',
+            severity: 'error',
+          },
+        ],
         metadata: {
-          targetSystem: "Office Ally Clearinghouse",
-          enrollmentUrl: "https://cms.officeally.com/",
-          requiredEnvVars: "OFFICEALLY_SFTP_HOST,OFFICEALLY_SFTP_USER,OFFICEALLY_API_KEY,OFFICEALLY_SENDER_ID",
+          targetSystem: 'Office Ally Clearinghouse',
+          enrollmentUrl: 'https://cms.officeally.com/',
+          requiredEnvVars:
+            'OFFICEALLY_SFTP_HOST,OFFICEALLY_SFTP_USER,OFFICEALLY_API_KEY,OFFICEALLY_SENDER_ID',
           transactionSet,
-          integrationStatus: "integration-ready",
+          integrationStatus: 'integration-ready',
         },
       };
     }
@@ -73,16 +87,18 @@ export class OfficeAllyConnector implements RcmConnector {
     // 3. Parse 999 acknowledgment response
     return {
       success: false,
-      errors: [{
-        code: "OA-NOT-IMPLEMENTED",
-        description: `Office Ally ${transactionSet} submission requires live SFTP/API credentials. Transport layer is integration-ready.`,
-        severity: "error",
-      }],
+      errors: [
+        {
+          code: 'OA-NOT-IMPLEMENTED',
+          description: `Office Ally ${transactionSet} submission requires live SFTP/API credentials. Transport layer is integration-ready.`,
+          severity: 'error',
+        },
+      ],
       metadata: {
-        targetSystem: "Office Ally Clearinghouse",
-        transport: this.config.sftpHost ? "sftp" : "https",
+        targetSystem: 'Office Ally Clearinghouse',
+        transport: this.config.sftpHost ? 'sftp' : 'https',
         transactionSet,
-        integrationStatus: "integration-ready",
+        integrationStatus: 'integration-ready',
       },
     };
   }
@@ -90,20 +106,25 @@ export class OfficeAllyConnector implements RcmConnector {
   async checkStatus(transactionId: string): Promise<ConnectorResult> {
     return {
       success: false,
-      errors: [{
-        code: "OA-STATUS-PENDING",
-        description: "Office Ally status check requires live credentials. Poll via SFTP /inbound/999/ or API GET /transactions/{id}.",
-        severity: "info",
-      }],
-      metadata: { transactionId, integrationStatus: "integration-ready" },
+      errors: [
+        {
+          code: 'OA-STATUS-PENDING',
+          description:
+            'Office Ally status check requires live credentials. Poll via SFTP /inbound/999/ or API GET /transactions/{id}.',
+          severity: 'info',
+        },
+      ],
+      metadata: { transactionId, integrationStatus: 'integration-ready' },
     };
   }
 
-  async fetchResponses(since?: string): Promise<Array<{
-    transactionSet: X12TransactionSet;
-    payload: string;
-    receivedAt: string;
-  }>> {
+  async fetchResponses(since?: string): Promise<
+    Array<{
+      transactionSet: X12TransactionSet;
+      payload: string;
+      receivedAt: string;
+    }>
+  > {
     // Integration-ready: would list files from SFTP /inbound/ dirs
     return [];
   }
@@ -112,12 +133,13 @@ export class OfficeAllyConnector implements RcmConnector {
     if (!this.configured) {
       return {
         healthy: false,
-        details: "Office Ally: not configured. Set OFFICEALLY_SFTP_HOST or OFFICEALLY_API_KEY. Free enrollment at https://cms.officeally.com/",
+        details:
+          'Office Ally: not configured. Set OFFICEALLY_SFTP_HOST or OFFICEALLY_API_KEY. Free enrollment at https://cms.officeally.com/',
       };
     }
     return {
       healthy: false,
-      details: "Office Ally: configured but connectivity test requires live SFTP/API connection.",
+      details: 'Office Ally: configured but connectivity test requires live SFTP/API connection.',
     };
   }
 

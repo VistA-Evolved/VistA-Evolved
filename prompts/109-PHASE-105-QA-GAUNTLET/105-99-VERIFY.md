@@ -1,6 +1,7 @@
 # Phase 105 -- QA Gauntlet v1 (VERIFY)
 
 ## Gates
+
 1. `pnpm qa:smoke` exits 0
 2. `pnpm qa:api` exits 0 (with API running)
 3. `pnpm qa:security` exits 0

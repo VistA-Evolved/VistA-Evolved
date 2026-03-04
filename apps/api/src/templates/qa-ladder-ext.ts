@@ -6,16 +6,12 @@
  * PASS/FAIL. Each gate checks a specific coverage dimension.
  */
 
-import { SPECIALTY_TAGS, type SpecialtyTag } from "./types.js";
-import {
-  generateCoverageReport,
-  type LetterGrade,
-  scoreToGrade,
-} from "./coverage-scorer.js";
+import { SPECIALTY_TAGS, type SpecialtyTag } from './types.js';
+import { generateCoverageReport, type LetterGrade, scoreToGrade } from './coverage-scorer.js';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-export type QaCheckStatus = "pass" | "warn" | "fail";
+export type QaCheckStatus = 'pass' | 'warn' | 'fail';
 
 export interface QaSpecialtyCheck {
   specialty: SpecialtyTag;
@@ -35,7 +31,7 @@ export interface QaLadderResult {
   passCount: number;
   warnCount: number;
   failCount: number;
-  aggregateScore: number;   // 0–100
+  aggregateScore: number; // 0–100
   aggregateGrade: LetterGrade;
   status: QaCheckStatus;
   checks: QaSpecialtyCheck[];
@@ -44,15 +40,15 @@ export interface QaLadderResult {
 // ─── Gate Logic ──────────────────────────────────────────────────────────────
 
 function toStatus(condition: boolean, warnCondition?: boolean): QaCheckStatus {
-  if (condition) return "pass";
-  if (warnCondition) return "warn";
-  return "fail";
+  if (condition) return 'pass';
+  if (warnCondition) return 'warn';
+  return 'fail';
 }
 
 function worstStatus(...statuses: QaCheckStatus[]): QaCheckStatus {
-  if (statuses.includes("fail")) return "fail";
-  if (statuses.includes("warn")) return "warn";
-  return "pass";
+  if (statuses.includes('fail')) return 'fail';
+  if (statuses.includes('warn')) return 'warn';
+  return 'pass';
 }
 
 /**
@@ -72,7 +68,10 @@ export function runSpecialtyCoverageGate(): QaLadderResult {
     const hasPack = toStatus(s.packExists);
     const hasMultipleTemplates = toStatus(s.templateCount >= 3, s.templateCount >= 1);
     const hasSufficientFields = toStatus(s.avgFieldsPerTemplate >= 5, s.avgFieldsPerTemplate >= 2);
-    const hasSufficientSections = toStatus(s.avgSectionsPerTemplate >= 3, s.avgSectionsPerTemplate >= 1);
+    const hasSufficientSections = toStatus(
+      s.avgSectionsPerTemplate >= 3,
+      s.avgSectionsPerTemplate >= 1
+    );
 
     checks.push({
       specialty: s.specialty,
@@ -80,27 +79,32 @@ export function runSpecialtyCoverageGate(): QaLadderResult {
       hasMultipleTemplates,
       hasSufficientFields,
       hasSufficientSections,
-      overallStatus: worstStatus(hasPack, hasMultipleTemplates, hasSufficientFields, hasSufficientSections),
+      overallStatus: worstStatus(
+        hasPack,
+        hasMultipleTemplates,
+        hasSufficientFields,
+        hasSufficientSections
+      ),
       score: s.score,
     });
   }
 
-  const passCount = checks.filter((c) => c.overallStatus === "pass").length;
-  const warnCount = checks.filter((c) => c.overallStatus === "warn").length;
-  const failCount = checks.filter((c) => c.overallStatus === "fail").length;
+  const passCount = checks.filter((c) => c.overallStatus === 'pass').length;
+  const warnCount = checks.filter((c) => c.overallStatus === 'warn').length;
+  const failCount = checks.filter((c) => c.overallStatus === 'fail').length;
 
   const aggregateScore = report.overallScore;
   const status: QaCheckStatus =
     failCount > SPECIALTY_TAGS.length * 0.3
-      ? "fail"
+      ? 'fail'
       : warnCount > SPECIALTY_TAGS.length * 0.3
-        ? "warn"
-        : "pass";
+        ? 'warn'
+        : 'pass';
 
   return {
     generatedAt: new Date().toISOString(),
-    gateId: "G-SPECIALTY-COVERAGE",
-    gateLabel: "Specialty Template Coverage",
+    gateId: 'G-SPECIALTY-COVERAGE',
+    gateLabel: 'Specialty Template Coverage',
     totalChecks: checks.length,
     passCount,
     warnCount,

@@ -62,10 +62,7 @@ export {
 } from './connectivity.js';
 
 // Reconciliation
-export {
-  buildReconciliationSummary,
-  buildReconciliationStats,
-} from './reconciliation.js';
+export { buildReconciliationSummary, buildReconciliationStats } from './reconciliation.js';
 
 /* ── Auto-register translators ───────────────────────────────── */
 

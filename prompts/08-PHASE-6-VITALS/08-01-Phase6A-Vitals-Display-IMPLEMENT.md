@@ -9,11 +9,13 @@ ien^type^value^datetime
 NOT ien^type^datetime^rate.
 
 Rules:
+
 - Do not change broker protocol code.
 - Handle FileMan dates if returned.
 - Filter informational lines mixed with data.
 
 Deliverables:
+
 - API endpoint GET /vista/vitals?dfn=1 => { ok:true, count, results:[...] }
 - UI shows vitals table under patient header
 - Runbook: docs/runbooks/vista-rpc-vitals.md

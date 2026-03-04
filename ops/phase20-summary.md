@@ -7,15 +7,15 @@ grounding documentation and minimal code corrections.
 
 ### New Documents (7)
 
-| Document | Purpose |
-|----------|---------|
+| Document                          | Purpose                                                                          |
+| --------------------------------- | -------------------------------------------------------------------------------- |
 | `docs/vista-capability-matrix.md` | 115 features mapped to VistA packages, RPCs, FileMan files, implementation state |
-| `docs/interop-grounding.md` | HL7/HLO file architecture → Interop Monitor binding plan |
-| `docs/imaging-grounding.md` | VistA Imaging files, OHIF/Orthanc build strategy, FDA awareness |
-| `docs/reporting-grounding.md` | Clinical vs. platform reporting separation |
-| `docs/fhir-posture.md` | VistA-first, FHIR-second interop strategy |
-| `docs/octo-analytics-plan.md` | Platform telemetry architecture (NOT clinical analytics) |
-| `docs/ai-gateway-plan.md` | Governed clinical AI integration with human-in-the-loop |
+| `docs/interop-grounding.md`       | HL7/HLO file architecture → Interop Monitor binding plan                         |
+| `docs/imaging-grounding.md`       | VistA Imaging files, OHIF/Orthanc build strategy, FDA awareness                  |
+| `docs/reporting-grounding.md`     | Clinical vs. platform reporting separation                                       |
+| `docs/fhir-posture.md`            | VistA-first, FHIR-second interop strategy                                        |
+| `docs/octo-analytics-plan.md`     | Platform telemetry architecture (NOT clinical analytics)                         |
+| `docs/ai-gateway-plan.md`         | Governed clinical AI integration with human-in-the-loop                          |
 
 ### New Prompt Files (6)
 

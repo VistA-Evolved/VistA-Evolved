@@ -11,12 +11,14 @@
  *   - ACEP Clinical Policy (ED)
  */
 
-import type { TemplateSetting, ClinicalTemplate, TemplateSection } from "./types.js";
-import { getAllSpecialtyPacks } from "./specialty-packs.js";
-import { listTemplates } from "./template-engine.js";
+import type { TemplateSetting, ClinicalTemplate, TemplateSection } from './types.js';
+import { getAllSpecialtyPacks } from './specialty-packs.js';
+import { listTemplates } from './template-engine.js';
 
 /** Minimal template shape needed for validation (works with both ClinicalTemplate and TemplateInput) */
-type ValidatableTemplate = Pick<ClinicalTemplate, "name" | "sections"> & { setting?: TemplateSetting };
+type ValidatableTemplate = Pick<ClinicalTemplate, 'name' | 'sections'> & {
+  setting?: TemplateSetting;
+};
 
 // ── Rubric Definitions ──────────────────────────────────────
 
@@ -67,15 +69,15 @@ export interface ValidationReport {
 // ── Rubrics per Setting ─────────────────────────────────────
 
 export const OUTPATIENT_RUBRIC: SettingRubric = {
-  setting: "outpatient",
-  label: "Outpatient Visit",
+  setting: 'outpatient',
+  label: 'Outpatient Visit',
   requiredSections: [
-    { artifact: "hpi", description: "History of Present Illness", minFields: 4, required: true },
-    { artifact: "ros", description: "Review of Systems", minFields: 6, required: true },
-    { artifact: "pe", description: "Physical Examination", minFields: 4, required: true },
-    { artifact: "assessment", description: "Assessment & Plan", minFields: 2, required: true },
-    { artifact: "medications", description: "Medication List", minFields: 1, required: false },
-    { artifact: "followup", description: "Follow-up Plan", minFields: 1, required: false },
+    { artifact: 'hpi', description: 'History of Present Illness', minFields: 4, required: true },
+    { artifact: 'ros', description: 'Review of Systems', minFields: 6, required: true },
+    { artifact: 'pe', description: 'Physical Examination', minFields: 4, required: true },
+    { artifact: 'assessment', description: 'Assessment & Plan', minFields: 2, required: true },
+    { artifact: 'medications', description: 'Medication List', minFields: 1, required: false },
+    { artifact: 'followup', description: 'Follow-up Plan', minFields: 1, required: false },
   ],
   minTemplates: 1,
   minSectionsPerTemplate: 3,
@@ -83,14 +85,19 @@ export const OUTPATIENT_RUBRIC: SettingRubric = {
 };
 
 export const INPATIENT_RUBRIC: SettingRubric = {
-  setting: "inpatient",
-  label: "Inpatient Stay",
+  setting: 'inpatient',
+  label: 'Inpatient Stay',
   requiredSections: [
-    { artifact: "hpi", description: "History of Present Illness", minFields: 4, required: true },
-    { artifact: "assessment", description: "Assessment & Plan", minFields: 2, required: true },
-    { artifact: "medications", description: "Medication List / Reconciliation", minFields: 1, required: true },
-    { artifact: "pe", description: "Physical Examination", minFields: 3, required: false },
-    { artifact: "ros", description: "Review of Systems", minFields: 4, required: false },
+    { artifact: 'hpi', description: 'History of Present Illness', minFields: 4, required: true },
+    { artifact: 'assessment', description: 'Assessment & Plan', minFields: 2, required: true },
+    {
+      artifact: 'medications',
+      description: 'Medication List / Reconciliation',
+      minFields: 1,
+      required: true,
+    },
+    { artifact: 'pe', description: 'Physical Examination', minFields: 3, required: false },
+    { artifact: 'ros', description: 'Review of Systems', minFields: 4, required: false },
   ],
   minTemplates: 1,
   minSectionsPerTemplate: 2,
@@ -98,44 +105,43 @@ export const INPATIENT_RUBRIC: SettingRubric = {
 };
 
 export const ED_RUBRIC: SettingRubric = {
-  setting: "ed",
-  label: "Emergency Department",
+  setting: 'ed',
+  label: 'Emergency Department',
   requiredSections: [
-    { artifact: "hpi", description: "Triage / HPI", minFields: 3, required: true },
-    { artifact: "pe", description: "Physical Examination", minFields: 3, required: true },
-    { artifact: "assessment", description: "Assessment & Plan", minFields: 2, required: true },
-    { artifact: "medications", description: "Medication List", minFields: 1, required: false },
+    { artifact: 'hpi', description: 'Triage / HPI', minFields: 3, required: true },
+    { artifact: 'pe', description: 'Physical Examination', minFields: 3, required: true },
+    { artifact: 'assessment', description: 'Assessment & Plan', minFields: 2, required: true },
+    { artifact: 'medications', description: 'Medication List', minFields: 1, required: false },
   ],
   minTemplates: 1,
   minSectionsPerTemplate: 2,
   minFieldsPerTemplate: 4,
 };
 
-export const ALL_RUBRICS: SettingRubric[] = [
-  OUTPATIENT_RUBRIC,
-  INPATIENT_RUBRIC,
-  ED_RUBRIC,
-];
+export const ALL_RUBRICS: SettingRubric[] = [OUTPATIENT_RUBRIC, INPATIENT_RUBRIC, ED_RUBRIC];
 
 // ── Validation Logic ────────────────────────────────────────
 
 function getRubricForSetting(setting: TemplateSetting): SettingRubric {
   switch (setting) {
-    case "inpatient": return INPATIENT_RUBRIC;
-    case "ed": return ED_RUBRIC;
-    case "outpatient":
-    case "any":
-    default: return OUTPATIENT_RUBRIC;
+    case 'inpatient':
+      return INPATIENT_RUBRIC;
+    case 'ed':
+      return ED_RUBRIC;
+    case 'outpatient':
+    case 'any':
+    default:
+      return OUTPATIENT_RUBRIC;
   }
 }
 
 function findSectionInTemplates(
   templates: ValidatableTemplate[],
-  artifactId: string,
+  artifactId: string
 ): { found: boolean; fieldCount: number } {
   for (const t of templates) {
     const section = t.sections.find(
-      (s: TemplateSection) => s.id === artifactId || s.id.startsWith(artifactId),
+      (s: TemplateSection) => s.id === artifactId || s.id.startsWith(artifactId)
     );
     if (section) {
       return { found: true, fieldCount: section.fields.length };
@@ -147,7 +153,7 @@ function findSectionInTemplates(
 export function validatePack(
   specialty: string,
   setting: TemplateSetting,
-  templates: ValidatableTemplate[],
+  templates: ValidatableTemplate[]
 ): PackValidationResult {
   const rubric = getRubricForSetting(setting);
   const missingArtifacts: string[] = [];
@@ -158,7 +164,7 @@ export function validatePack(
   // Check template count
   if (templates.length < rubric.minTemplates) {
     missingArtifacts.push(
-      `Need at least ${rubric.minTemplates} template(s), have ${templates.length}`,
+      `Need at least ${rubric.minTemplates} template(s), have ${templates.length}`
     );
   }
 
@@ -177,7 +183,7 @@ export function validatePack(
       sectionsCovered.push(req.artifact);
       if (fieldCount < req.minFields) {
         warnings.push(
-          `Section "${req.artifact}" has ${fieldCount} fields, minimum recommended: ${req.minFields}`,
+          `Section "${req.artifact}" has ${fieldCount} fields, minimum recommended: ${req.minFields}`
         );
       }
     }
@@ -187,13 +193,16 @@ export function validatePack(
   for (const t of templates) {
     if (t.sections.length < rubric.minSectionsPerTemplate) {
       warnings.push(
-        `Template "${t.name}" has ${t.sections.length} sections, minimum: ${rubric.minSectionsPerTemplate}`,
+        `Template "${t.name}" has ${t.sections.length} sections, minimum: ${rubric.minSectionsPerTemplate}`
       );
     }
-    const totalFields = t.sections.reduce((a: number, s: TemplateSection) => a + s.fields.length, 0);
+    const totalFields = t.sections.reduce(
+      (a: number, s: TemplateSection) => a + s.fields.length,
+      0
+    );
     if (totalFields < rubric.minFieldsPerTemplate) {
       warnings.push(
-        `Template "${t.name}" has ${totalFields} fields, minimum: ${rubric.minFieldsPerTemplate}`,
+        `Template "${t.name}" has ${totalFields} fields, minimum: ${rubric.minFieldsPerTemplate}`
       );
     }
   }
@@ -205,9 +214,14 @@ export function validatePack(
     .filter((r) => sectionsCovered.includes(r.artifact)).length;
   const sectionScore = requiredCount > 0 ? (coveredRequired / requiredCount) * 60 : 60;
   const templateScore = Math.min(templates.length / Math.max(rubric.minTemplates, 1), 1) * 20;
-  const avgFields = templates.length > 0
-    ? templates.reduce((a, t) => a + t.sections.reduce((b: number, s: TemplateSection) => b + s.fields.length, 0), 0) / templates.length
-    : 0;
+  const avgFields =
+    templates.length > 0
+      ? templates.reduce(
+          (a, t) =>
+            a + t.sections.reduce((b: number, s: TemplateSection) => b + s.fields.length, 0),
+          0
+        ) / templates.length
+      : 0;
   const fieldScore = Math.min(avgFields / rubric.minFieldsPerTemplate, 1) * 20;
   const score = Math.round(sectionScore + templateScore + fieldScore);
 
@@ -237,7 +251,7 @@ export function validateAllPacks(): ValidationReport {
 
   for (const pack of packs) {
     const inferredSetting: TemplateSetting =
-      (pack.templates[0]?.setting as TemplateSetting) || "outpatient";
+      (pack.templates[0]?.setting as TemplateSetting) || 'outpatient';
     const result = validatePack(pack.specialty, inferredSetting, pack.templates);
     results.push(result);
   }
@@ -259,7 +273,7 @@ export async function validateUserTemplates(tenantId: string): Promise<Validatio
   const bySettings = new Map<TemplateSetting, ClinicalTemplate[]>();
 
   for (const t of allTemplates) {
-    const setting = t.setting || "outpatient";
+    const setting = t.setting || 'outpatient';
     if (!bySettings.has(setting)) bySettings.set(setting, []);
     bySettings.get(setting)!.push(t);
   }

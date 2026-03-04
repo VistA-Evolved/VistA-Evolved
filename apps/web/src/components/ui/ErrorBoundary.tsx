@@ -32,7 +32,11 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    console.error(`[ErrorBoundary${this.props.name ? ` — ${this.props.name}` : ''}]`, error, errorInfo);
+    console.error(
+      `[ErrorBoundary${this.props.name ? ` — ${this.props.name}` : ''}]`,
+      error,
+      errorInfo
+    );
     this.props.onError?.(error, errorInfo);
   }
 
@@ -47,16 +51,18 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div style={{
-          padding: '16px',
-          margin: '8px',
-          border: '1px solid #dc3545',
-          borderRadius: '4px',
-          backgroundColor: '#fff5f5',
-          color: '#333',
-          fontFamily: 'system-ui, sans-serif',
-          fontSize: '13px',
-        }}>
+        <div
+          style={{
+            padding: '16px',
+            margin: '8px',
+            border: '1px solid #dc3545',
+            borderRadius: '4px',
+            backgroundColor: '#fff5f5',
+            color: '#333',
+            fontFamily: 'system-ui, sans-serif',
+            fontSize: '13px',
+          }}
+        >
           <div style={{ fontWeight: 'bold', marginBottom: '8px', color: '#dc3545' }}>
             {this.props.name ? `Error in ${this.props.name}` : 'Something went wrong'}
           </div>
@@ -98,12 +104,14 @@ interface LoadingPanelProps {
 
 export function LoadingPanel({ rows = 4, label }: LoadingPanelProps): ReactNode {
   return (
-    <div style={{
-      padding: '12px',
-      fontFamily: 'system-ui, sans-serif',
-      fontSize: '13px',
-      color: '#888',
-    }}>
+    <div
+      style={{
+        padding: '12px',
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '13px',
+        color: '#888',
+      }}
+    >
       {label && <div style={{ marginBottom: '8px' }}>{label}</div>}
       {Array.from({ length: rows }, (_, i) => (
         <div
@@ -137,15 +145,20 @@ interface EmptyStateProps {
   icon?: string;
 }
 
-export function EmptyState({ message = 'No data available', icon = '📋' }: EmptyStateProps): ReactNode {
+export function EmptyState({
+  message = 'No data available',
+  icon = '📋',
+}: EmptyStateProps): ReactNode {
   return (
-    <div style={{
-      padding: '24px',
-      textAlign: 'center',
-      color: '#999',
-      fontFamily: 'system-ui, sans-serif',
-      fontSize: '13px',
-    }}>
+    <div
+      style={{
+        padding: '24px',
+        textAlign: 'center',
+        color: '#999',
+        fontFamily: 'system-ui, sans-serif',
+        fontSize: '13px',
+      }}
+    >
       <div style={{ fontSize: '24px', marginBottom: '8px' }}>{icon}</div>
       <div>{message}</div>
     </div>

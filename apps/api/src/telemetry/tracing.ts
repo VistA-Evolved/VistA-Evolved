@@ -10,25 +10,25 @@
  * Gated by OTEL_ENABLED env var (default: false).
  */
 
-import { NodeSDK } from "@opentelemetry/sdk-node";
-import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
-import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
-import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http";
-import { ConsoleSpanExporter } from "@opentelemetry/sdk-trace-base";
-import { resourceFromAttributes } from "@opentelemetry/resources";
-import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from "@opentelemetry/semantic-conventions";
-import { PeriodicExportingMetricReader } from "@opentelemetry/sdk-metrics";
-import { trace, context, SpanStatusCode } from "@opentelemetry/api";
-import type { Span } from "@opentelemetry/api";
+import { NodeSDK } from '@opentelemetry/sdk-node';
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
+import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-http';
+import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-base';
+import { resourceFromAttributes } from '@opentelemetry/resources';
+import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
+import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
+import { trace, context, SpanStatusCode } from '@opentelemetry/api';
+import type { Span } from '@opentelemetry/api';
 
 /* ------------------------------------------------------------------ */
 /* Config                                                              */
 /* ------------------------------------------------------------------ */
 
-const OTEL_ENABLED = process.env.OTEL_ENABLED === "true";
-const OTEL_ENDPOINT = process.env.OTEL_EXPORTER_OTLP_ENDPOINT || "http://localhost:4318";
-const SERVICE_NAME = process.env.OTEL_SERVICE_NAME || "vista-evolved-api";
-const SERVICE_VERSION = process.env.BUILD_SHA || "dev";
+const OTEL_ENABLED = process.env.OTEL_ENABLED === 'true';
+const OTEL_ENDPOINT = process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318';
+const SERVICE_NAME = process.env.OTEL_SERVICE_NAME || 'vista-evolved-api';
+const SERVICE_VERSION = process.env.BUILD_SHA || 'dev';
 
 /* ------------------------------------------------------------------ */
 /* SDK Instance                                                        */
@@ -59,7 +59,7 @@ export function initTracing(): void {
   });
 
   // Phase 133: Use console exporter for dev mode if no collector is reachable
-  const useConsoleExporter = process.env.OTEL_DEV_CONSOLE === "true";
+  const useConsoleExporter = process.env.OTEL_DEV_CONSOLE === 'true';
 
   const metricExporter = new OTLPMetricExporter({
     url: `${OTEL_ENDPOINT}/v1/metrics`,
@@ -74,16 +74,16 @@ export function initTracing(): void {
     }),
     instrumentations: [
       getNodeAutoInstrumentations({
-        "@opentelemetry/instrumentation-fs": { enabled: false },
-        "@opentelemetry/instrumentation-dns": { enabled: false },
-        "@opentelemetry/instrumentation-http": {
+        '@opentelemetry/instrumentation-fs': { enabled: false },
+        '@opentelemetry/instrumentation-dns': { enabled: false },
+        '@opentelemetry/instrumentation-http': {
           enabled: true,
           requestHook: (_span: Span, _request: any) => {},
           responseHook: (_span: Span, _response: any) => {},
         },
-        "@opentelemetry/instrumentation-net": { enabled: true },
+        '@opentelemetry/instrumentation-net': { enabled: true },
         // Phase 133: Enable PG instrumentation for database span tracing
-        "@opentelemetry/instrumentation-pg": {
+        '@opentelemetry/instrumentation-pg': {
           enabled: true,
           enhancedDatabaseReporting: false, // PHI-safe: no query params
         },
@@ -127,9 +127,9 @@ const tracer = trace.getTracer(SERVICE_NAME, SERVICE_VERSION);
 export function startRpcSpan(rpcName: string, duz?: string): Span {
   const span = tracer.startSpan(`rpc.${rpcName}`, {
     attributes: {
-      "rpc.system": "vista-xwb",
-      "rpc.method": rpcName,
-      ...(duz ? { "enduser.id": duz } : {}),
+      'rpc.system': 'vista-xwb',
+      'rpc.method': rpcName,
+      ...(duz ? { 'enduser.id': duz } : {}),
     },
   });
   return span;
@@ -154,7 +154,7 @@ export function endRpcSpan(span: Span, error?: Error): void {
  */
 export function getCurrentTraceId(): string {
   const span = trace.getActiveSpan();
-  if (!span) return "";
+  if (!span) return '';
   return span.spanContext().traceId;
 }
 
@@ -163,7 +163,7 @@ export function getCurrentTraceId(): string {
  */
 export function getCurrentSpanId(): string {
   const span = trace.getActiveSpan();
-  if (!span) return "";
+  if (!span) return '';
   return span.spanContext().spanId;
 }
 

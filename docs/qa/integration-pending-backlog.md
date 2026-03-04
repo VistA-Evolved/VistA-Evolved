@@ -12,18 +12,18 @@
 
 ## Top Files by Count
 
-| Count | File | Domain | Notes |
-|-------|------|--------|-------|
-| 24 | `routes/nursing/index.ts` | Nursing | Needs VistA Nursing package RPCs |
-| 19 | `routes/emar/index.ts` | eMAR | Needs BCMA/PSB RPCs |
-| 19 | `writeback/__tests__/adt-contract.test.ts` | ADT | Test assertions for pending items |
-| 17 | `routes/cprs/orders-cpoe.ts` | Orders | Partial — sign + complex orders pending |
-| 12 | `rcm/workflows/vista-source-map.ts` | RCM | VistA billing grounding pending |
-| 12 | `routes/vista-rcm.ts` | RCM | IB/PRCA file access pending |
-| 10 | `workflows/department-packs.ts` | Workflows | Department-specific packs |
-| 10 | `writeback/executors/adt-executor.ts` | ADT | ADT write-back pending |
-| 9 | `rcm/eligibility/routes.ts` | RCM | Eligibility verification pending |
-| 9 | `routes/discharge-workflow.ts` | Discharge | Discharge workflow pending |
+| Count | File                                       | Domain    | Notes                                   |
+| ----- | ------------------------------------------ | --------- | --------------------------------------- |
+| 24    | `routes/nursing/index.ts`                  | Nursing   | Needs VistA Nursing package RPCs        |
+| 19    | `routes/emar/index.ts`                     | eMAR      | Needs BCMA/PSB RPCs                     |
+| 19    | `writeback/__tests__/adt-contract.test.ts` | ADT       | Test assertions for pending items       |
+| 17    | `routes/cprs/orders-cpoe.ts`               | Orders    | Partial — sign + complex orders pending |
+| 12    | `rcm/workflows/vista-source-map.ts`        | RCM       | VistA billing grounding pending         |
+| 12    | `routes/vista-rcm.ts`                      | RCM       | IB/PRCA file access pending             |
+| 10    | `workflows/department-packs.ts`            | Workflows | Department-specific packs               |
+| 10    | `writeback/executors/adt-executor.ts`      | ADT       | ADT write-back pending                  |
+| 9     | `rcm/eligibility/routes.ts`                | RCM       | Eligibility verification pending        |
+| 9     | `routes/discharge-workflow.ts`             | Discharge | Discharge workflow pending              |
 
 ## Resolution Strategy
 

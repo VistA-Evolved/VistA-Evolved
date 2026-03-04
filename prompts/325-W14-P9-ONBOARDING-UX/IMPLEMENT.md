@@ -1,10 +1,12 @@
 # Phase 325 — W14-P9: Integration Onboarding UX
 
 ## User Request
+
 Build a guided onboarding wizard for integration partners with step-by-step
 setup, prerequisite validation, and go-live readiness checks.
 
 ## Implementation Steps
+
 1. **Service layer** (`services/integration-onboarding.ts`):
    - OnboardingTemplate: reusable step-by-step templates with prerequisites, estimated times
    - OnboardingSession: active partner progress with step status tracking + completion %
@@ -26,6 +28,7 @@ setup, prerequisite validation, and go-live readiness checks.
    - store-policy.ts: 3 entries (templates/registry, sessions/critical, readiness/cache)
 
 ## Verification Steps
+
 - `npx tsc --noEmit` — zero errors
 - 16 endpoints registered
 - Seed templates: 3 templates, 20 total steps
@@ -33,6 +36,7 @@ setup, prerequisite validation, and go-live readiness checks.
 - Readiness report has 6 gates
 
 ## Files Touched
+
 - `apps/api/src/services/integration-onboarding.ts` (NEW)
 - `apps/api/src/routes/onboarding.ts` (NEW)
 - `apps/api/src/server/register-routes.ts` (MODIFIED)

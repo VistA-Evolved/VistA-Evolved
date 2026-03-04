@@ -49,7 +49,9 @@ Each HMO in the registry has evidence sources collected using:
 ## HMO Coverage
 
 ### Tier 1: Portal-Integrated (5 HMOs)
+
 These HMOs have confirmed provider portals:
+
 - **Maxicare** (PH-MAXICARE) -- MaxiLink portal
 - **MediCard** (PH-MEDICARD) -- MediCard Provider Portal
 - **Intellicare** (PH-INTELLICARE) -- Intellicare Provider Portal
@@ -57,12 +59,16 @@ These HMOs have confirmed provider portals:
 - **ValuCare** (PH-VALUCARE) -- ValuCare Provider Portal
 
 ### Tier 2: Website Confirmed (10 HMOs)
+
 These HMOs have active websites but no confirmed provider portal:
+
 - AsianLife, Avega, Caritas, Cocolife, EastWest, Forticare,
   Insular, Kaiser International, Pacific Cross, CareHealth Plus
 
 ### Tier 3: Contracting Needed (12 HMOs)
+
 These HMOs need direct engagement to determine integration approach:
+
 - Carewell, Health Maintenance, Health Plan Philippines, HealthFirst,
   i-Care, Life & Health, MediLink, Metrocare, PhilBritish, PHCP,
   PHP, Starcare

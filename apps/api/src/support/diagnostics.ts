@@ -13,13 +13,13 @@
  *   - Background job status
  */
 
-import { log } from "../lib/logger.js";
-import { probeConnect } from "../vista/rpcBroker.js";
-import { getAdapterHealth, getAllAdapters } from "../adapters/adapter-loader.js";
-import { getModuleStatus, getActiveSku } from "../modules/module-registry.js";
-import { getCapabilitySummary } from "../modules/capability-service.js";
-import { getStoreInventorySummary } from "../platform/store-policy.js";
-import { getHl7EngineStatus } from "../hl7/index.js";
+import { log } from '../lib/logger.js';
+import { probeConnect } from '../vista/rpcBroker.js';
+import { getAdapterHealth, getAllAdapters } from '../adapters/adapter-loader.js';
+import { getModuleStatus, getActiveSku } from '../modules/module-registry.js';
+import { getCapabilitySummary } from '../modules/capability-service.js';
+import { getStoreInventorySummary } from '../platform/store-policy.js';
+import { getHl7EngineStatus } from '../hl7/index.js';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -80,9 +80,9 @@ interface Hl7Summary {
 /*  Collector                                                          */
 /* ------------------------------------------------------------------ */
 
-export async function collectDiagnostics(tenantId = "default"): Promise<DiagnosticReport> {
+export async function collectDiagnostics(tenantId = 'default'): Promise<DiagnosticReport> {
   const start = Date.now();
-  log.info("Collecting system diagnostics");
+  log.info('Collecting system diagnostics');
 
   // Runtime
   const mem = process.memoryUsage();
@@ -96,19 +96,24 @@ export async function collectDiagnostics(tenantId = "default"): Promise<Diagnost
       heapUsed: Math.round(mem.heapUsed / 1024 / 1024),
       heapTotal: Math.round(mem.heapTotal / 1024 / 1024),
     },
-    env: process.env.NODE_ENV || "development",
+    env: process.env.NODE_ENV || 'development',
   };
 
   // VistA probe
-  const vistaHost = process.env.VISTA_HOST || "localhost";
+  const vistaHost = process.env.VISTA_HOST || 'localhost';
   const vistaPort = Number(process.env.VISTA_PORT) || 9430;
   let vista: VistaStatus;
   try {
     const probeStart = Date.now();
     await probeConnect(3000);
-    vista = { reachable: true, host: vistaHost, port: vistaPort, latencyMs: Date.now() - probeStart };
-  } catch (err) {
-    vista = { reachable: false, host: vistaHost, port: vistaPort, error: "VistA probe failed" };
+    vista = {
+      reachable: true,
+      host: vistaHost,
+      port: vistaPort,
+      latencyMs: Date.now() - probeStart,
+    };
+  } catch (_err) {
+    vista = { reachable: false, host: vistaHost, port: vistaPort, error: 'VistA probe failed' };
   }
 
   // Modules
@@ -153,12 +158,12 @@ export async function collectDiagnostics(tenantId = "default"): Promise<Diagnost
   let hl7: Hl7Summary;
   try {
     const hl7Status = getHl7EngineStatus();
-    hl7 = { enabled: hl7Status.running, status: hl7Status.running ? "running" : "stopped" };
+    hl7 = { enabled: hl7Status.running, status: hl7Status.running ? 'running' : 'stopped' };
   } catch {
     hl7 = { enabled: false };
   }
 
-  log.info("Diagnostics collected", { durationMs: Date.now() - start });
+  log.info('Diagnostics collected', { durationMs: Date.now() - start });
 
   return {
     timestamp: new Date().toISOString(),

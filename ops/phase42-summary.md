@@ -8,17 +8,20 @@ then producing annotated claim draft candidates with explicit missing-field
 markers for subsystems not available in the sandbox (IB charges, claims/AR).
 
 ### Deliverable A — Billing Capability Map v2
+
 - `docs/vista/billing-grounding-v2.md`: Package availability table (PCE populated,
   IB/PRCA empty), object-to-RPC mappings for 7 billing domains, claim draft
   strategy, wrapper RPC spec, production migration path.
 
 ### Deliverable B — Safe Wrapper RPCs
+
 - `services/vista/ZVERCMP.m`: Read-only M routine producing provider NPI +
   facility identifiers via `VE RCM PROVIDER INFO` RPC.
 - `scripts/install-rcm-wrappers.ps1`: Docker install script.
 - Added to `RPC_EXCEPTIONS` in rpcRegistry.ts (14 total).
 
 ### Deliverable C — Claim Draft Builder
+
 - `apps/api/src/rcm/vistaBindings/buildClaimDraftFromVista.ts`:
   - Injectable `RpcCaller` interface (testable without VistA).
   - Calls ORWPCE VISIT, ORWPCE DIAG, ORWPCE PROC, IBCN INSURANCE QUERY.
@@ -26,24 +29,29 @@ markers for subsystems not available in the sandbox (IB charges, claims/AR).
   - Max 20 encounters per call, date range filtering.
 
 ### Deliverable D — API Endpoints
+
 - `GET /rcm/vista/encounters?patientIen=&from=&to=` — PCE encounters.
 - `POST /rcm/vista/claim-drafts` — Generate claim draft candidates.
 - `GET /rcm/vista/coverage?patientIen=` — Patient insurance coverage.
 
 ### Deliverable E — UI
+
 - `DraftFromVistaTab` in RCM admin page: prerequisites checklist, coverage
   summary, encounter selection, draft generation, missing-field annotations.
 
 ### Deliverable F — Tests
+
 - 25 unit tests (all pass): parser tests, builder tests, coverage tests,
   no-PHI-in-output tests. Uses injectable RpcCaller stubs.
 
 ### Deliverable G — Documentation
+
 - `docs/runbooks/rcm-draft-from-vista.md` — Full runbook.
 - `docs/runbooks/vista-billing-wrappers.md` — Wrapper install guide.
 - Updated `docs/architecture/rcm-gateway-architecture.md` with Phase 42 pipeline.
 
 ### Additional Fix
+
 - Added 3 new audit actions to `RcmAuditAction` type: `vista.encounters.read`,
   `vista.claim-drafts.created`, `vista.coverage.read`.
 
@@ -72,11 +80,13 @@ curl -b cookies.txt 'http://127.0.0.1:3001/rcm/vista/coverage?patientIen=3'
 ```
 
 ## Verifier Output
+
 ```
 Phase 42 Verification: 42/42 PASS
 ```
 
 ## Follow-ups
+
 - Install VE RCM PROVIDER INFO wrapper in Docker: `scripts/install-rcm-wrappers.ps1`
 - Production: Integrate IB charge capture when IB subsystem populated
 - Production: Add VistA claims tracking when DGCR(399) available

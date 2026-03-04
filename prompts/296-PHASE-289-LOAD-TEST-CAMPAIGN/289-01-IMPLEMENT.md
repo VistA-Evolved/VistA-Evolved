@@ -1,6 +1,7 @@
 # Phase 289 -- Production-Scale Load Test Campaign (IMPLEMENT)
 
 ## Goal
+
 Create a comprehensive load testing framework that goes beyond smoke tests:
 sustained load, spike, soak, and breakpoint scenarios with documented p50/p95
 budgets and a tuning backlog.
@@ -16,6 +17,7 @@ budgets and a tuning backlog.
 7. Create verifier + evidence
 
 ## Files Touched
+
 - `tests/k6/prod-load-plan.md` (NEW)
 - `tests/k6/prod-sustained.js` (NEW)
 - `tests/k6/prod-spike.js` (NEW)

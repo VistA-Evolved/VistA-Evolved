@@ -19,5 +19,5 @@ export {
   defaultTenantContext,
   registerTenantHook,
   pgSchema,
-} from "./pg/index.js";
-export type { PgDb, PlatformPgInitResult, TenantContext } from "./pg/index.js";
+} from './pg/index.js';
+export type { PgDb, PlatformPgInitResult, TenantContext } from './pg/index.js';

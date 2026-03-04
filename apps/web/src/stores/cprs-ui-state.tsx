@@ -1,8 +1,21 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, useEffect, useRef, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  type ReactNode,
+} from 'react';
 import { csrfHeaders } from '@/lib/csrf';
-import { getThemePack, applyThemeTokens, clearThemeTokens, type ThemePack } from '@/lib/theme-tokens';
+import {
+  getThemePack,
+  applyThemeTokens,
+  clearThemeTokens,
+  type ThemePack,
+} from '@/lib/theme-tokens';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -66,21 +79,42 @@ export interface CPRSUIStateValue {
 /* ------------------------------------------------------------------ */
 
 export const DEFAULT_PANEL_ORDER = [
-  'problems', 'allergies', 'meds', 'vitals',
-  'notes', 'labs', 'orders', 'appointments',
-  'immunizations', 'reminders',
+  'problems',
+  'allergies',
+  'meds',
+  'vitals',
+  'notes',
+  'labs',
+  'orders',
+  'appointments',
+  'immunizations',
+  'reminders',
 ];
 
 export const DEFAULT_PANEL_HEIGHTS: Record<string, number> = {
-  problems: 200, allergies: 200, meds: 200, vitals: 200,
-  notes: 200, labs: 200, orders: 200, appointments: 200,
-  immunizations: 200, reminders: 200,
+  problems: 200,
+  allergies: 200,
+  meds: 200,
+  vitals: 200,
+  notes: 200,
+  labs: 200,
+  orders: 200,
+  appointments: 200,
+  immunizations: 200,
+  reminders: 200,
 };
 
 const DEFAULT_PANEL_VISIBILITY: Record<string, boolean> = {
-  problems: true, allergies: true, meds: true, vitals: true,
-  notes: true, labs: true, orders: true, appointments: true,
-  immunizations: true, reminders: true,
+  problems: true,
+  allergies: true,
+  meds: true,
+  vitals: true,
+  notes: true,
+  labs: true,
+  orders: true,
+  appointments: true,
+  immunizations: true,
+  reminders: true,
 };
 
 export const DEFAULT_COVER_LAYOUT: CoverSheetLayout = {
@@ -123,7 +157,9 @@ function loadPrefs(): CPRSPreferences {
       }
       return { ...DEFAULT_PREFS, ...parsed };
     }
-  } catch { /* ignore corrupt localStorage */ }
+  } catch {
+    /* ignore corrupt localStorage */
+  }
   return DEFAULT_PREFS;
 }
 
@@ -131,16 +167,17 @@ function savePrefs(prefs: CPRSPreferences): void {
   if (typeof window === 'undefined') return;
   try {
     localStorage.setItem(LS_KEY, JSON.stringify(prefs));
-  } catch { /* ignore quota errors */ }
+  } catch {
+    /* ignore quota errors */
+  }
 }
 
 /* ------------------------------------------------------------------ */
 /* Server sync                                                         */
 /* ------------------------------------------------------------------ */
 
-const API_BASE = typeof window !== 'undefined'
-  ? (process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001')
-  : '';
+const API_BASE =
+  typeof window !== 'undefined' ? process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001' : '';
 
 async function fetchServerPrefs(): Promise<{ layout: CoverSheetLayout; source: string } | null> {
   try {
@@ -150,7 +187,9 @@ async function fetchServerPrefs(): Promise<{ layout: CoverSheetLayout; source: s
     if (data.ok && data.layout) {
       return { layout: data.layout, source: data.source };
     }
-  } catch { /* server unreachable -- use local */ }
+  } catch {
+    /* server unreachable -- use local */
+  }
   return null;
 }
 
@@ -163,7 +202,9 @@ async function pushServerPrefs(layout: CoverSheetLayout): Promise<boolean> {
       body: JSON.stringify(layout),
     });
     return res.ok;
-  } catch { return false; }
+  } catch {
+    return false;
+  }
 }
 
 async function resetServerPrefs(): Promise<boolean> {
@@ -174,7 +215,9 @@ async function resetServerPrefs(): Promise<boolean> {
       headers: { ...csrfHeaders() },
     });
     return res.ok;
-  } catch { return false; }
+  } catch {
+    return false;
+  }
 }
 
 /** Phase 281: Fetch user's active theme pack from server */
@@ -186,7 +229,9 @@ async function fetchServerTheme(): Promise<{ themePack: string; source: string }
     if (data.ok && data.activeThemePack) {
       return { themePack: data.activeThemePack, source: data.source };
     }
-  } catch { /* server unreachable */ }
+  } catch {
+    /* server unreachable */
+  }
   return null;
 }
 
@@ -200,7 +245,9 @@ async function pushServerTheme(themePack: string): Promise<boolean> {
       body: JSON.stringify({ themePack }),
     });
     return res.ok;
-  } catch { return false; }
+  } catch {
+    return false;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -213,7 +260,9 @@ export function CPRSUIProvider({ children }: { children: ReactNode }) {
   const [preferences, setPreferences] = useState<CPRSPreferences>(DEFAULT_PREFS);
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [modalData, setModalData] = useState<Record<string, unknown> | null>(null);
-  const [prefsSource, setPrefsSource] = useState<'loading' | 'server' | 'local' | 'defaults'>('loading');
+  const [prefsSource, setPrefsSource] = useState<'loading' | 'server' | 'local' | 'defaults'>(
+    'loading'
+  );
   const serverSyncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Load from server first, fall back to localStorage
@@ -222,26 +271,30 @@ export function CPRSUIProvider({ children }: { children: ReactNode }) {
     setPreferences(localPrefs);
 
     // Fetch both layout and theme from server
-    Promise.all([fetchServerPrefs(), fetchServerTheme()]).then(([serverResult, themeResult]) => {
-      setPreferences(prev => {
-        let updated = { ...prev };
-        if (serverResult && serverResult.source === 'server') {
-          updated = {
-            ...updated,
-            coverSheetLayout: serverResult.layout,
-            layoutMode: serverResult.layout.layoutMode,
-          };
-        }
-        if (themeResult && themeResult.source !== 'default') {
-          updated = { ...updated, themePack: themeResult.themePack };
-        }
-        savePrefs(updated);
-        setPrefsSource(serverResult?.source === 'server' || themeResult?.source === 'user' ? 'server' : 'local');
-        return updated;
+    Promise.all([fetchServerPrefs(), fetchServerTheme()])
+      .then(([serverResult, themeResult]) => {
+        setPreferences((prev) => {
+          let updated = { ...prev };
+          if (serverResult && serverResult.source === 'server') {
+            updated = {
+              ...updated,
+              coverSheetLayout: serverResult.layout,
+              layoutMode: serverResult.layout.layoutMode,
+            };
+          }
+          if (themeResult && themeResult.source !== 'default') {
+            updated = { ...updated, themePack: themeResult.themePack };
+          }
+          savePrefs(updated);
+          setPrefsSource(
+            serverResult?.source === 'server' || themeResult?.source === 'user' ? 'server' : 'local'
+          );
+          return updated;
+        });
+      })
+      .catch(() => {
+        setPrefsSource('local');
       });
-    }).catch(() => {
-      setPrefsSource('local');
-    });
   }, []);
 
   // Phase 280 (BUG-071 fix): Apply data-theme attribute on DOM + system theme detection
@@ -318,19 +371,22 @@ export function CPRSUIProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const saveCoverSheetLayout = useCallback((partial: Partial<CoverSheetLayout>) => {
-    setPreferences((prev) => {
-      const merged: CoverSheetLayout = {
-        ...prev.coverSheetLayout,
-        ...partial,
-        schemaVersion: 1,
-      };
-      const next = { ...prev, coverSheetLayout: merged };
-      savePrefs(next);
-      pushLayoutToServer(merged);
-      return next;
-    });
-  }, [pushLayoutToServer]);
+  const saveCoverSheetLayout = useCallback(
+    (partial: Partial<CoverSheetLayout>) => {
+      setPreferences((prev) => {
+        const merged: CoverSheetLayout = {
+          ...prev.coverSheetLayout,
+          ...partial,
+          schemaVersion: 1,
+        };
+        const next = { ...prev, coverSheetLayout: merged };
+        savePrefs(next);
+        pushLayoutToServer(merged);
+        return next;
+      });
+    },
+    [pushLayoutToServer]
+  );
 
   const resetCoverSheetLayout = useCallback(() => {
     setPreferences((prev) => {
@@ -368,9 +424,16 @@ export function CPRSUIProvider({ children }: { children: ReactNode }) {
   return (
     <CPRSUIContext.Provider
       value={{
-        preferences, activeModal, modalData, prefsSource,
-        updatePreferences, saveCoverSheetLayout, resetCoverSheetLayout,
-        openModal, closeModal, setThemePack,
+        preferences,
+        activeModal,
+        modalData,
+        prefsSource,
+        updatePreferences,
+        saveCoverSheetLayout,
+        resetCoverSheetLayout,
+        openModal,
+        closeModal,
+        setThemePack,
       }}
     >
       {children}

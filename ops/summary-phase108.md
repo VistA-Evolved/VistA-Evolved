@@ -12,6 +12,7 @@
 6. **Stale file cleanup** -- Generator now deletes old `phases-*.spec.ts` / `phases-*.test.ts` before writing new files. Fixed broken `await import("fs")` in non-async context.
 
 ### Files Modified
+
 - `scripts/generate-phase-qa.mjs` -- All 6 fixes above
 - `scripts/phase-qa-runner.mjs` -- Substring matching fix
 - `docs/qa/phase-index.json` -- Regenerated timestamp
@@ -65,6 +66,7 @@ qa:range 5..5: **1/1 pass**
 ## What Changed
 
 ### New Files (10)
+
 - `apps/api/src/posture/index.ts` -- Fastify plugin with 5 posture routes
 - `apps/api/src/posture/observability-posture.ts` -- 6 observability gates
 - `apps/api/src/posture/tenant-posture.ts` -- 8 tenant isolation gates (live PG RLS check)
@@ -77,6 +79,7 @@ qa:range 5..5: **1/1 pass**
 - `prompts/111-PHASE-107-PRODUCTION-POSTURE/107-01-IMPLEMENT.md` -- Prompt file
 
 ### Modified Files (6)
+
 - `apps/api/src/index.ts` -- Import + register posture routes
 - `apps/api/src/middleware/security.ts` -- AUTH_RULES: /posture -> admin
 - `scripts/qa-runner.mjs` -- Added prod-posture suite
@@ -114,7 +117,7 @@ Run `.\scripts\verify-phase107-prod-posture.ps1` -- expects 15/15 PASS.
 - Add Docker volume backup automation (VistA, Keycloak, Orthanc)
 - Add Grafana dashboards consuming Prometheus posture metrics
 - Add alerting rules for posture score degradation
-vs what is pending. Cross-references three canonical sources:
+  vs what is pending. Cross-references three canonical sources:
 
 - **CPRS Delphi extraction** (975 RPCs from `rpc_catalog.json`)
 - **Vivian RPC index** (3,747 RPCs from `rpc_index.json`)
@@ -122,15 +125,15 @@ vs what is pending. Cross-references three canonical sources:
 
 ### Key Metrics
 
-| Metric | Value |
-|--------|-------|
-| Live Wired RPCs | 76 |
-| Registered Only | 34 |
-| Stub Routes | 368 |
-| CPRS-Only Gap | 538 |
-| Coverage vs CPRS | 7.8% |
-| Coverage vs Vivian | 2.0% |
-| Total Tracked | 1,016 |
+| Metric             | Value |
+| ------------------ | ----- |
+| Live Wired RPCs    | 76    |
+| Registered Only    | 34    |
+| Stub Routes        | 368   |
+| CPRS-Only Gap      | 538   |
+| Coverage vs CPRS   | 7.8%  |
+| Coverage vs Vivian | 2.0%  |
+| Total Tracked      | 1,016 |
 
 ### New Files
 
@@ -172,12 +175,12 @@ node tools/rpc-extract/build-coverage-map.mjs
 
 ## Verification Results
 
-| Suite | Result | Detail |
-|-------|--------|--------|
-| qa:smoke | **3/3 PASS** | health 0.2s, API 23.5s, E2E 90.2s |
-| qa:api | **4/4 PASS** | health, integration (28), security, contract (27) |
-| qa:security | **4/4 PASS** | secret scan, PHI leak, security tests, dep audit |
-| TypeScript | **CLEAN** | 0 errors via `tsc --noEmit` |
+| Suite       | Result       | Detail                                            |
+| ----------- | ------------ | ------------------------------------------------- |
+| qa:smoke    | **3/3 PASS** | health 0.2s, API 23.5s, E2E 90.2s                 |
+| qa:api      | **4/4 PASS** | health, integration (28), security, contract (27) |
+| qa:security | **4/4 PASS** | secret scan, PHI leak, security tests, dep audit  |
+| TypeScript  | **CLEAN**    | 0 errors via `tsc --noEmit`                       |
 
 ## How to Test
 

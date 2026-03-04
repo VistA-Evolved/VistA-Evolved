@@ -1,6 +1,7 @@
 # Phase 243 — Verify: Onboarding UX Wizard
 
 ## Gates
+
 1. `onboarding-store.ts` exists with `createOnboarding`, `getOnboarding`, `advanceStep` exports
 2. `onboarding-routes.ts` exists with POST/GET/PATCH endpoints
 3. Routes registered in `register-routes.ts`

@@ -5,6 +5,7 @@
 ## User Request
 
 Build a modular, payer-complete Philippines RCM foundation with:
+
 - Facility-payer enrollment lifecycle (accreditation tracking)
 - LOA (Letter of Authorization) workflow skeleton
 - Credential vault (AES-256-GCM encrypted at rest)
@@ -24,11 +25,13 @@ G. **Security posture** — AES-256-GCM at rest, env-var master key, PHI redacti
 ## Implementation Steps
 
 ### Step 0 — Inventory
+
 - Listed all existing RCM files (67+), routes (55+), payers (28 PH), adapters (3)
 - Confirmed: NO LOA code, NO credential vault, NO ManualAdapter/PortalAdapter existed
 - Existing payer registry and connector infrastructure reused
 
 ### Step 1 — Data Model + API Skeleton
+
 1. `apps/api/src/rcm/payerOps/types.ts` — Domain types + adapter interface
 2. `apps/api/src/rcm/payerOps/store.ts` — In-memory stores (enrollment, LOA, credential vault)
 3. `apps/api/src/rcm/payerOps/credential-encryption.ts` — AES-256-GCM envelope encryption
@@ -37,14 +40,17 @@ G. **Security posture** — AES-256-GCM at rest, env-var master key, PHI redacti
 6. Updated `config/modules.json` with payerops data stores
 
 ### Step 2 — UI Page
+
 7. `apps/web/src/app/cprs/admin/payerops/page.tsx` — 4 tabs (Enrollments, LOA, Credentials, Adapters)
 8. Added nav link in `apps/web/src/app/cprs/admin/layout.tsx` (gated to 'rcm' module)
 
 ### Step 4 — Adapters
+
 9. `apps/api/src/rcm/payerOps/manual-adapter.ts` — ManualAdapter + LOA submission pack generator
 10. `apps/api/src/rcm/payerOps/portal-adapter.ts` — PortalAdapter + portal config registry
 
 ### Step 5 — Docs
+
 11. `docs/runbooks/philippines-rcm-foundation.md` — Runbook
 12. `prompts/93-PHASE-87-PH-RCM/93-01-IMPLEMENT.md` — This file
 13. `prompts/93-PHASE-87-PH-RCM/93-99-VERIFY.md` — Verification prompt
@@ -52,6 +58,7 @@ G. **Security posture** — AES-256-GCM at rest, env-var master key, PHI redacti
 ## Files Touched
 
 ### New Files
+
 - `apps/api/src/rcm/payerOps/types.ts`
 - `apps/api/src/rcm/payerOps/store.ts`
 - `apps/api/src/rcm/payerOps/credential-encryption.ts`
@@ -64,6 +71,7 @@ G. **Security posture** — AES-256-GCM at rest, env-var master key, PHI redacti
 - `prompts/93-PHASE-87-PH-RCM/93-99-VERIFY.md`
 
 ### Modified Files
+
 - `apps/api/src/index.ts` — import + register payerOpsRoutes
 - `apps/web/src/app/cprs/admin/layout.tsx` — add PayerOps nav link
 - `config/modules.json` — add payerops data stores to RCM module

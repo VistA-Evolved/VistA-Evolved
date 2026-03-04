@@ -6,12 +6,12 @@
  * Usage: node scripts/prompts-index.mjs
  */
 
-import { readdirSync, statSync, writeFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { readdirSync, statSync, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
-const ROOT = resolve(import.meta.dirname, "..");
-const PROMPTS_DIR = join(ROOT, "prompts");
-const OUTPUT = join(PROMPTS_DIR, "PROMPTS_INDEX.md");
+const ROOT = resolve(import.meta.dirname, '..');
+const PROMPTS_DIR = join(ROOT, 'prompts');
+const OUTPUT = join(PROMPTS_DIR, 'PROMPTS_INDEX.md');
 
 const entries = readdirSync(PROMPTS_DIR)
   .filter((e) => {
@@ -30,7 +30,7 @@ const rows = [];
 for (const folder of entries) {
   const prefix = parseInt(folder, 10);
   const folderPath = join(PROMPTS_DIR, folder);
-  const files = readdirSync(folderPath).filter((f) => f.endsWith(".md"));
+  const files = readdirSync(folderPath).filter((f) => f.endsWith('.md'));
 
   // Extract phase number from folder name
   let phase = prefix.toString();
@@ -42,22 +42,22 @@ for (const folder of entries) {
   rows.push({ prefix, folder, phase, fileCount: files.length });
 }
 
-const today = new Date().toISOString().split("T")[0];
+const today = new Date().toISOString().split('T')[0];
 const lines = [
-  "# Prompts Index",
-  "",
+  '# Prompts Index',
+  '',
   `Generated: ${today}`,
   `Total prompt folders: ${rows.length}`,
-  "",
-  "| # | Folder | Phase | Files |",
-  "|---|--------|-------|-------|",
+  '',
+  '| # | Folder | Phase | Files |',
+  '|---|--------|-------|-------|',
 ];
 
 for (const r of rows) {
   lines.push(`| ${r.prefix} | ${r.folder} | ${r.phase} | ${r.fileCount} |`);
 }
 
-lines.push("");
+lines.push('');
 
-writeFileSync(OUTPUT, lines.join("\n"), "utf-8");
+writeFileSync(OUTPUT, lines.join('\n'), 'utf-8');
 console.log(`Wrote ${OUTPUT} (${rows.length} folders)`);

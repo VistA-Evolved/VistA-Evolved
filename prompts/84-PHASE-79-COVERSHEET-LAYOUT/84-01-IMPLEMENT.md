@@ -1,9 +1,11 @@
 # Phase 79 — CPRS Cover Sheet Layout Parity v1
 
 ## User Request
+
 Implement resizable, rearrangeable, and persistable coversheet panels matching CPRS behavior.
 
 ## Implementation Steps
+
 1. Create API endpoints: GET/PUT /ui-prefs/coversheet (tenant + user scoped, audited)
 2. Create in-memory preference store (same pattern as imaging worklist)
 3. Upgrade CoverSheetLayout types with version, panelSizes (px), panelOrder, panelVisibility
@@ -15,12 +17,14 @@ Implement resizable, rearrangeable, and persistable coversheet panels matching C
 9. Rebuild governance indexes
 
 ## Verification
+
 - scripts/verify-latest.ps1
 - tsc --noEmit (API + web)
 - Playwright tests pass
 - No dead clicks, no PHI leaks
 
 ## Files Touched
+
 - apps/api/src/routes/ui-prefs.ts (NEW)
 - apps/api/src/services/ui-prefs-store.ts (NEW)
 - apps/api/src/index.ts (register route)

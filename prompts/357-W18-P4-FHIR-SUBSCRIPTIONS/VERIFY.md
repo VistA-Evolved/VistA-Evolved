@@ -1,6 +1,7 @@
 # Phase 357 — W18-P4: VERIFY
 
 ## Gates
+
 1. FHIR subscription service exists
 2. rest-hook channel supported
 3. Delivery uses webhook framework

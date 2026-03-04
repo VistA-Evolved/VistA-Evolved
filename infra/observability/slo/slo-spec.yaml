@@ -5,18 +5,17 @@
 # These SLOs define the minimum reliability targets.
 # Each SLO generates recording + alerting rules when processed by `sloth generate`.
 
-version: "prometheus/v1"
-service: "vista-evolved-api"
+version: 'prometheus/v1'
+service: 'vista-evolved-api'
 labels:
-  owner: "platform-team"
-  repo: "vista-evolved"
+  owner: 'platform-team'
+  repo: 'vista-evolved'
 
 slos:
-
   # ---- SLO-1: API Availability ----
-  - name: "api-availability"
-    objective: 99.5   # 99.5% over 30d window
-    description: "API returns non-5xx responses for authenticated requests."
+  - name: 'api-availability'
+    objective: 99.5 # 99.5% over 30d window
+    description: 'API returns non-5xx responses for authenticated requests.'
     sli:
       events:
         error_query: >
@@ -24,24 +23,24 @@ slos:
         total_query: >
           sum(rate(http_requests_total{job="vista-evolved-api"}[{{.window}}]))
     alerting:
-      name: "VEApiAvailabilitySLOBreach"
+      name: 'VEApiAvailabilitySLOBreach'
       labels:
-        severity: "critical"
-        team: "platform"
+        severity: 'critical'
+        team: 'platform'
       annotations:
-        summary: "API availability SLO (99.5%) at risk"
-        runbook: "https://github.com/owner/vista-evolved/blob/main/infra/runbooks/incident-response.md"
+        summary: 'API availability SLO (99.5%) at risk'
+        runbook: 'https://github.com/owner/vista-evolved/blob/main/infra/runbooks/incident-response.md'
       page_alert:
         labels:
-          severity: "critical"
+          severity: 'critical'
       ticket_alert:
         labels:
-          severity: "warning"
+          severity: 'warning'
 
   # ---- SLO-2: API Latency (p95 < 2s) ----
-  - name: "api-latency-p95"
-    objective: 95.0   # 95% of requests complete within 2s
-    description: "95th percentile request latency stays below 2 seconds."
+  - name: 'api-latency-p95'
+    objective: 95.0 # 95% of requests complete within 2s
+    description: '95th percentile request latency stays below 2 seconds.'
     sli:
       events:
         error_query: >
@@ -51,23 +50,23 @@ slos:
         total_query: >
           sum(rate(http_request_duration_seconds_count{job="vista-evolved-api"}[{{.window}}]))
     alerting:
-      name: "VEApiLatencySLOBreach"
+      name: 'VEApiLatencySLOBreach'
       labels:
-        severity: "warning"
-        team: "platform"
+        severity: 'warning'
+        team: 'platform'
       annotations:
-        summary: "API p95 latency SLO (2s) at risk"
+        summary: 'API p95 latency SLO (2s) at risk'
       page_alert:
         labels:
-          severity: "critical"
+          severity: 'critical'
       ticket_alert:
         labels:
-          severity: "warning"
+          severity: 'warning'
 
   # ---- SLO-3: RPC Broker Success Rate ----
-  - name: "rpc-broker-success"
-    objective: 99.0   # 99% RPC calls succeed
-    description: "VistA RPC broker calls return success (no circuit breaker open)."
+  - name: 'rpc-broker-success'
+    objective: 99.0 # 99% RPC calls succeed
+    description: 'VistA RPC broker calls return success (no circuit breaker open).'
     sli:
       events:
         error_query: >
@@ -75,23 +74,23 @@ slos:
         total_query: >
           sum(rate(rpc_calls_total{job="vista-evolved-api"}[{{.window}}]))
     alerting:
-      name: "VERpcBrokerSLOBreach"
+      name: 'VERpcBrokerSLOBreach'
       labels:
-        severity: "warning"
-        team: "platform"
+        severity: 'warning'
+        team: 'platform'
       annotations:
-        summary: "RPC broker success rate SLO (99%) at risk"
+        summary: 'RPC broker success rate SLO (99%) at risk'
       page_alert:
         labels:
-          severity: "critical"
+          severity: 'critical'
       ticket_alert:
         labels:
-          severity: "warning"
+          severity: 'warning'
 
   # ---- SLO-4: Backup Success ----
-  - name: "backup-success"
-    objective: 99.9   # 99.9% (one failure per 1000 scheduled backups)
-    description: "Scheduled database backups complete successfully."
+  - name: 'backup-success'
+    objective: 99.9 # 99.9% (one failure per 1000 scheduled backups)
+    description: 'Scheduled database backups complete successfully.'
     sli:
       events:
         error_query: >
@@ -99,15 +98,15 @@ slos:
         total_query: >
           sum(rate(backup_result_total{job="vista-evolved-api"}[{{.window}}]))
     alerting:
-      name: "VEBackupSLOBreach"
+      name: 'VEBackupSLOBreach'
       labels:
-        severity: "critical"
-        team: "platform"
+        severity: 'critical'
+        team: 'platform'
       annotations:
-        summary: "Backup success SLO (99.9%) at risk — data loss risk"
+        summary: 'Backup success SLO (99.9%) at risk — data loss risk'
       page_alert:
         labels:
-          severity: "critical"
+          severity: 'critical'
       ticket_alert:
         labels:
-          severity: "warning"
+          severity: 'warning'

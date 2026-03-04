@@ -16,14 +16,14 @@
  * Exit: 0 = pass, 1 = fail
  */
 
-import { existsSync, readdirSync, readFileSync, statSync } from "fs";
-import { join } from "path";
+import { existsSync, readdirSync, readFileSync, statSync } from 'fs';
+import { join } from 'path';
 
 const ROOT = process.cwd();
-const INDEX_PATH = join(ROOT, "docs", "qa", "phase-index.json");
-const PROMPTS_DIR = join(ROOT, "prompts");
-const E2E_DIR = join(ROOT, "apps", "web", "e2e", "phases");
-const API_TEST_DIR = join(ROOT, "apps", "api", "tests", "phases");
+const INDEX_PATH = join(ROOT, 'docs', 'qa', 'phase-index.json');
+const PROMPTS_DIR = join(ROOT, 'prompts');
+const E2E_DIR = join(ROOT, 'apps', 'web', 'e2e', 'phases');
+const API_TEST_DIR = join(ROOT, 'apps', 'api', 'tests', 'phases');
 
 const results = [];
 let failures = 0;
@@ -31,21 +31,21 @@ let failures = 0;
 function gate(name, pass, detail) {
   results.push({ name, pass, detail });
   if (!pass) failures++;
-  console.log(`  ${pass ? "PASS" : "FAIL"}  ${name}${detail ? ` -- ${detail}` : ""}`);
+  console.log(`  ${pass ? 'PASS' : 'FAIL'}  ${name}${detail ? ` -- ${detail}` : ''}`);
 }
 
-console.log("\n=== QA Gate: Phase Index Integrity (Phase 108) ===\n");
+console.log('\n=== QA Gate: Phase Index Integrity (Phase 108) ===\n');
 
 // 1. phase-index.json exists
 const indexExists = existsSync(INDEX_PATH);
-gate("phase-index.json exists", indexExists, INDEX_PATH);
+gate('phase-index.json exists', indexExists, INDEX_PATH);
 
 if (!indexExists) {
-  console.log("\n  Run: node scripts/build-phase-index.mjs\n");
+  console.log('\n  Run: node scripts/build-phase-index.mjs\n');
   process.exit(1);
 }
 
-const raw = readFileSync(INDEX_PATH, "utf-8");
+const raw = readFileSync(INDEX_PATH, 'utf-8');
 const index = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
 
 // 2. Phase count matches prompts/ folder count
@@ -54,7 +54,7 @@ const phaseFolders = readdirSync(PROMPTS_DIR)
   .filter((e) => /^\d+-(?:PHASE-\d|W\d+-P\d+-|WAVE-\d+-)/.test(e));
 
 gate(
-  "phase count matches",
+  'phase count matches',
   index.phaseCount === phaseFolders.length,
   `index: ${index.phaseCount}, folders: ${phaseFolders.length}`
 );
@@ -64,10 +64,10 @@ const missingFiles = index.phases.filter(
   (p) => p.implementFiles.length === 0 && p.verifyFiles.length === 0
 );
 gate(
-  "all phases have IMPLEMENT or VERIFY",
+  'all phases have IMPLEMENT or VERIFY',
   missingFiles.length === 0,
   missingFiles.length > 0
-    ? `Missing: ${missingFiles.map((p) => `Phase ${p.phaseNumber}`).join(", ")}`
+    ? `Missing: ${missingFiles.map((p) => `Phase ${p.phaseNumber}`).join(', ')}`
     : `${index.phaseCount} phases validated`
 );
 
@@ -80,22 +80,23 @@ for (const pn of phaseNumbers) {
   dupeSet.add(pn);
 }
 // Known legacy duplicates (pre-existing in prompts/ folder, not fixable here)
-const KNOWN_DUPES = new Set(["43", "87", "120", "131", "132", "263", "283", "284", "290"]);
+const KNOWN_DUPES = new Set(['43', '87', '120', '131', '132', '263', '283', '284', '290']);
 const newDupes = dupes.filter((d) => !KNOWN_DUPES.has(String(d)));
 gate(
-  "no new duplicate phase numbers",
+  'no new duplicate phase numbers',
   newDupes.length === 0,
   dupes.length > 0
-    ? `Duplicates: ${dupes.join(", ")}${newDupes.length === 0 ? " (all known legacy)" : ` -- NEW: ${newDupes.join(", ")}`}`
+    ? `Duplicates: ${dupes.join(', ')}${newDupes.length === 0 ? ' (all known legacy)' : ` -- NEW: ${newDupes.join(', ')}`}`
     : `${phaseNumbers.length} unique phase numbers`
 );
 
 // 5. Generated specs exist for phases with routes
 const phasesWithRoutes = index.phases.filter((p) => p.routes.length > 0);
-const e2eExists = existsSync(E2E_DIR) && readdirSync(E2E_DIR).some((f) => f.endsWith(".spec.ts"));
-const apiExists = existsSync(API_TEST_DIR) && readdirSync(API_TEST_DIR).some((f) => f.endsWith(".test.ts"));
+const e2eExists = existsSync(E2E_DIR) && readdirSync(E2E_DIR).some((f) => f.endsWith('.spec.ts'));
+const apiExists =
+  existsSync(API_TEST_DIR) && readdirSync(API_TEST_DIR).some((f) => f.endsWith('.test.ts'));
 gate(
-  "generated specs exist",
+  'generated specs exist',
   e2eExists || apiExists,
   `E2E: ${e2eExists}, API: ${apiExists} (${phasesWithRoutes.length} phases with routes)`
 );
@@ -105,20 +106,22 @@ const genDate = new Date(index.generatedAt);
 const ageMs = Date.now() - genDate.getTime();
 const ageDays = Math.round(ageMs / (1000 * 60 * 60 * 24));
 gate(
-  "phase-index freshness",
+  'phase-index freshness',
   ageDays < 30,
-  `Generated ${ageDays} days ago (${index.generatedAt.split("T")[0]})`
+  `Generated ${ageDays} days ago (${index.generatedAt.split('T')[0]})`
 );
 
 // ---- Summary ----
-console.log(`\n=== Phase Index Gate: ${results.length} checks, ${results.length - failures} pass, ${failures} fail ===\n`);
+console.log(
+  `\n=== Phase Index Gate: ${results.length} checks, ${results.length - failures} pass, ${failures} fail ===\n`
+);
 
 if (failures > 0) {
-  console.log("Failed checks:");
+  console.log('Failed checks:');
   for (const r of results.filter((r) => !r.pass)) {
     console.log(`  - ${r.name}: ${r.detail}`);
   }
-  console.log("\nFix: node scripts/build-phase-index.mjs && node scripts/generate-phase-qa.mjs\n");
+  console.log('\nFix: node scripts/build-phase-index.mjs && node scripts/generate-phase-qa.mjs\n');
 }
 
 process.exit(failures > 0 ? 1 : 0);

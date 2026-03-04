@@ -1,7 +1,7 @@
 /**
  * Phase 158: Template Engine — Barrel export
  */
-export { default as templateRoutes } from "./template-routes.js";
+export { default as templateRoutes } from './template-routes.js';
 export {
   createTemplate,
   updateTemplate,
@@ -19,26 +19,18 @@ export {
   getTemplateStats,
   setTemplateDbRepo,
   resetTemplateStore,
-} from "./template-engine.js";
-export { getAllSpecialtyPacks } from "./specialty-packs.js";
-export { SPECIALTY_TAGS } from "./types.js";
+} from './template-engine.js';
+export { getAllSpecialtyPacks } from './specialty-packs.js';
+export { SPECIALTY_TAGS } from './types.js';
 export {
   generateCoverageReport,
   resetCoverageCache,
   scoreSpecialty,
   scoreToGrade,
-} from "./coverage-scorer.js";
-export type {
-  CoverageReport,
-  SpecialtyScore,
-  LetterGrade,
-} from "./coverage-scorer.js";
-export { runSpecialtyCoverageGate } from "./qa-ladder-ext.js";
-export type {
-  QaLadderResult,
-  QaSpecialtyCheck,
-  QaCheckStatus,
-} from "./qa-ladder-ext.js";
+} from './coverage-scorer.js';
+export type { CoverageReport, SpecialtyScore, LetterGrade } from './coverage-scorer.js';
+export { runSpecialtyCoverageGate } from './qa-ladder-ext.js';
+export type { QaLadderResult, QaSpecialtyCheck, QaCheckStatus } from './qa-ladder-ext.js';
 export type {
   ClinicalTemplate,
   TemplateSection,
@@ -52,4 +44,4 @@ export type {
   TemplateSetting,
   TemplateStatus,
   MappingTarget,
-} from "./types.js";
+} from './types.js';

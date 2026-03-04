@@ -24,44 +24,89 @@ export interface Utf8TestString {
  * after a round-trip, the encoding is preserved.
  */
 export function buildTestCorpus(): Utf8TestString[] {
-  const corpus: Array<Omit<Utf8TestString, "byteLength">> = [
+  const corpus: Array<Omit<Utf8TestString, 'byteLength'>> = [
     // Latin-1 / ASCII baseline
-    { locale: "en", script: "Latin", label: "ASCII baseline", input: "Hello World 1234" },
+    { locale: 'en', script: 'Latin', label: 'ASCII baseline', input: 'Hello World 1234' },
 
     // Spanish — accented characters
-    { locale: "es", script: "Latin-Extended", label: "Spanish accents", input: "Prueba de acentos: ni\u00F1a, se\u00F1or, caf\u00E9" },
+    {
+      locale: 'es',
+      script: 'Latin-Extended',
+      label: 'Spanish accents',
+      input: 'Prueba de acentos: ni\u00F1a, se\u00F1or, caf\u00E9',
+    },
 
     // Filipino — Tagalog with diacritics
-    { locale: "fil", script: "Latin-Extended", label: "Filipino diacritics", input: "Magandang umaga, kumust\u00E1 ka?" },
+    {
+      locale: 'fil',
+      script: 'Latin-Extended',
+      label: 'Filipino diacritics',
+      input: 'Magandang umaga, kumust\u00E1 ka?',
+    },
 
     // Filipino — extended characters
-    { locale: "fil", script: "Latin-Extended", label: "Filipino names", input: "Ju\u00E1n, Mar\u00EDa, Jos\u00E9" },
+    {
+      locale: 'fil',
+      script: 'Latin-Extended',
+      label: 'Filipino names',
+      input: 'Ju\u00E1n, Mar\u00EDa, Jos\u00E9',
+    },
 
     // Mixed numeric + diacritics
-    { locale: "es", script: "Latin-Extended", label: "Mixed numeric", input: "Paciente #12345 - atenci\u00F3n m\u00E9dica" },
+    {
+      locale: 'es',
+      script: 'Latin-Extended',
+      label: 'Mixed numeric',
+      input: 'Paciente #12345 - atenci\u00F3n m\u00E9dica',
+    },
 
     // Vietnamese — heavy diacritics
-    { locale: "vi", script: "Latin-Extended", label: "Vietnamese diacritics", input: "Xin ch\u00E0o, c\u1EA3m \u01A1n b\u1EA1n" },
+    {
+      locale: 'vi',
+      script: 'Latin-Extended',
+      label: 'Vietnamese diacritics',
+      input: 'Xin ch\u00E0o, c\u1EA3m \u01A1n b\u1EA1n',
+    },
 
     // CJK — Chinese characters
-    { locale: "zh", script: "CJK", label: "Chinese characters", input: "\u4F60\u597D\u4E16\u754C" },
+    { locale: 'zh', script: 'CJK', label: 'Chinese characters', input: '\u4F60\u597D\u4E16\u754C' },
 
     // CJK — Japanese hiragana
-    { locale: "ja", script: "CJK", label: "Japanese hiragana", input: "\u3053\u3093\u306B\u3061\u306F" },
+    {
+      locale: 'ja',
+      script: 'CJK',
+      label: 'Japanese hiragana',
+      input: '\u3053\u3093\u306B\u3061\u306F',
+    },
 
     // Cyrillic
-    { locale: "ru", script: "Cyrillic", label: "Russian Cyrillic", input: "\u041F\u0440\u0438\u0432\u0435\u0442" },
+    {
+      locale: 'ru',
+      script: 'Cyrillic',
+      label: 'Russian Cyrillic',
+      input: '\u041F\u0440\u0438\u0432\u0435\u0442',
+    },
 
     // Arabic — RTL
-    { locale: "ar", script: "Arabic", label: "Arabic RTL", input: "\u0645\u0631\u062D\u0628\u0627" },
+    {
+      locale: 'ar',
+      script: 'Arabic',
+      label: 'Arabic RTL',
+      input: '\u0645\u0631\u062D\u0628\u0627',
+    },
 
     // Boundary: max 7-bit ASCII printable
-    { locale: "en", script: "ASCII", label: "Printable ASCII boundary", input: " !\"#$%&'()*+,-./0123456789:;<=>?@" },
+    {
+      locale: 'en',
+      script: 'ASCII',
+      label: 'Printable ASCII boundary',
+      input: ' !"#$%&\'()*+,-./0123456789:;<=>?@',
+    },
   ];
 
   return corpus.map((c) => ({
     ...c,
-    byteLength: Buffer.byteLength(c.input, "utf-8"),
+    byteLength: Buffer.byteLength(c.input, 'utf-8'),
   }));
 }
 
@@ -85,7 +130,7 @@ export interface Utf8RoundTripResult {
 export function validateRoundTrip(
   test: Utf8TestString,
   output: string | null,
-  error: string | null,
+  error: string | null
 ): Utf8RoundTripResult {
   return {
     locale: test.locale,
@@ -95,7 +140,7 @@ export function validateRoundTrip(
     output,
     match: output !== null && output === test.input,
     inputBytes: test.byteLength,
-    outputBytes: output !== null ? Buffer.byteLength(output, "utf-8") : null,
+    outputBytes: output !== null ? Buffer.byteLength(output, 'utf-8') : null,
     error,
   };
 }
@@ -114,16 +159,14 @@ export function summarizeResults(results: Utf8RoundTripResult[]): {
   const passed = results.filter((r) => r.match).length;
   const errored = results.filter((r) => r.error !== null).length;
   const failed = results.length - passed;
-  const failedScripts = [...new Set(
-    results.filter((r) => !r.match).map((r) => r.script),
-  )];
+  const failedScripts = [...new Set(results.filter((r) => !r.match).map((r) => r.script))];
 
   return {
     total: results.length,
     passed,
     failed,
     errored,
-    passRate: results.length > 0 ? ((passed / results.length) * 100).toFixed(1) + "%" : "0%",
+    passRate: results.length > 0 ? ((passed / results.length) * 100).toFixed(1) + '%' : '0%',
     failedScripts,
   };
 }

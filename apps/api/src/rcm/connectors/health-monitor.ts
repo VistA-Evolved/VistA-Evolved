@@ -7,10 +7,10 @@
  * Pattern follows: analytics aggregation timer (Phase 25), room cleanup (Phase 30).
  */
 
-import { log } from "../../lib/logger.js";
-import { getAllConnectors } from "./types.js";
-import { resilientConnectorCall } from "./connector-resilience.js";
-import { CONNECTOR_HEALTH_TIMEOUT_MS } from "./types.js";
+import { log } from '../../lib/logger.js';
+import { getAllConnectors } from './types.js';
+import { resilientConnectorCall } from './connector-resilience.js';
+import { CONNECTOR_HEALTH_TIMEOUT_MS } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -28,7 +28,7 @@ export interface HealthProbeResult {
 export interface HealthHistory {
   connectorId: string;
   connectorName: string;
-  currentStatus: "healthy" | "degraded" | "unhealthy" | "unknown";
+  currentStatus: 'healthy' | 'degraded' | 'unhealthy' | 'unknown';
   uptimePercent: number;
   lastProbe: HealthProbeResult | null;
   recentProbes: HealthProbeResult[];
@@ -60,8 +60,8 @@ export function startHealthMonitor(): void {
   probeTimer = setInterval(() => probeAllConnectors(), PROBE_INTERVAL_MS);
   probeTimer.unref(); // don't keep process alive
 
-  log.info("Connector health monitor started", {
-    component: "rcm-health",
+  log.info('Connector health monitor started', {
+    component: 'rcm-health',
     intervalMs: PROBE_INTERVAL_MS,
   });
 }
@@ -73,7 +73,7 @@ export function stopHealthMonitor(): void {
   if (probeTimer) {
     clearInterval(probeTimer);
     probeTimer = null;
-    log.info("Connector health monitor stopped", { component: "rcm-health" });
+    log.info('Connector health monitor stopped', { component: 'rcm-health' });
   }
 }
 
@@ -91,9 +91,9 @@ export async function probeAllConnectors(): Promise<HealthProbeResult[]> {
     try {
       const health = await resilientConnectorCall(
         id,
-        "healthCheck",
+        'healthCheck',
         () => connector.healthCheck(),
-        { timeoutMs: CONNECTOR_HEALTH_TIMEOUT_MS, retries: 0 },
+        { timeoutMs: CONNECTOR_HEALTH_TIMEOUT_MS, retries: 0 }
       );
 
       result = {
@@ -104,12 +104,12 @@ export async function probeAllConnectors(): Promise<HealthProbeResult[]> {
         probedAt: Date.now(),
         durationMs: Date.now() - start,
       };
-    } catch (err) {
+    } catch (_err) {
       result = {
         connectorId: id,
         connectorName: connector.name,
         healthy: false,
-        details: "Connector health check failed",
+        details: 'Connector health check failed',
         probedAt: Date.now(),
         durationMs: Date.now() - start,
       };
@@ -151,19 +151,18 @@ export function getHealthHistory(): HealthHistory[] {
     const lastProbe = timeline.length > 0 ? timeline[timeline.length - 1]! : null;
 
     const healthyCount = timeline.filter((p) => p.healthy).length;
-    const uptimePercent = timeline.length > 0
-      ? Math.round((healthyCount / timeline.length) * 100)
-      : 0;
+    const uptimePercent =
+      timeline.length > 0 ? Math.round((healthyCount / timeline.length) * 100) : 0;
 
-    let currentStatus: HealthHistory["currentStatus"] = "unknown";
+    let currentStatus: HealthHistory['currentStatus'] = 'unknown';
     if (lastProbe) {
       if (lastProbe.healthy) {
-        currentStatus = "healthy";
+        currentStatus = 'healthy';
       } else {
         // Check last 3 probes for degraded vs unhealthy
         const last3 = timeline.slice(-3);
         const healthyLast3 = last3.filter((p) => p.healthy).length;
-        currentStatus = healthyLast3 > 0 ? "degraded" : "unhealthy";
+        currentStatus = healthyLast3 > 0 ? 'degraded' : 'unhealthy';
       }
     }
 

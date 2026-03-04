@@ -7,23 +7,23 @@
 
 // ── ICU Bed / Admission ────────────────────────────────────────────
 
-export type IcuBedStatus = "available" | "occupied" | "reserved" | "cleaning" | "blocked";
+export type IcuBedStatus = 'available' | 'occupied' | 'reserved' | 'cleaning' | 'blocked';
 
 export interface IcuBed {
   id: string;
-  unit: string;       // e.g., "MICU", "SICU", "CCU", "NICU"
+  unit: string; // e.g., "MICU", "SICU", "CCU", "NICU"
   bedNumber: string;
   status: IcuBedStatus;
   currentAdmissionId?: string;
-  monitors: string[];  // e.g., ["cardiac", "hemodynamic", "neuro"]
+  monitors: string[]; // e.g., ["cardiac", "hemodynamic", "neuro"]
 }
 
 export type IcuAdmissionStatus =
-  | "active"
-  | "pending-transfer"
-  | "transferred"
-  | "discharged"
-  | "expired";
+  | 'active'
+  | 'pending-transfer'
+  | 'transferred'
+  | 'discharged'
+  | 'expired';
 
 export interface IcuAdmission {
   id: string;
@@ -32,10 +32,10 @@ export interface IcuAdmission {
   unit: string;
   status: IcuAdmissionStatus;
   admitTime: string;
-  admitSource: "ed" | "or" | "floor" | "transfer" | "direct";
+  admitSource: 'ed' | 'or' | 'floor' | 'transfer' | 'direct';
   attendingProvider: string;
   diagnosis: string;
-  codeStatus: "full" | "dnr" | "dni" | "dnr-dni" | "comfort";
+  codeStatus: 'full' | 'dnr' | 'dni' | 'dnr-dni' | 'comfort';
   isolationPrecautions?: string[];
   dischargeTime?: string;
   dischargeDisposition?: string;
@@ -46,15 +46,15 @@ export interface IcuAdmission {
 // ── Flowsheet ──────────────────────────────────────────────────────
 
 export type FlowsheetCategory =
-  | "vitals"
-  | "ventilator"
-  | "hemodynamics"
-  | "neuro"
-  | "io"           // intake & output
-  | "labs"
-  | "drips"
-  | "assessment"
-  | "intervention";
+  | 'vitals'
+  | 'ventilator'
+  | 'hemodynamics'
+  | 'neuro'
+  | 'io' // intake & output
+  | 'labs'
+  | 'drips'
+  | 'assessment'
+  | 'intervention';
 
 export interface FlowsheetEntry {
   id: string;
@@ -68,31 +68,40 @@ export interface FlowsheetEntry {
 
 // ── Ventilator Settings ────────────────────────────────────────────
 
-export type VentMode = "ac-vc" | "ac-pc" | "simv" | "psv" | "cpap" | "bipap" | "aprv" | "hfov";
+export type VentMode = 'ac-vc' | 'ac-pc' | 'simv' | 'psv' | 'cpap' | 'bipap' | 'aprv' | 'hfov';
 
 export interface VentSettings {
   id: string;
   admissionId: string;
   timestamp: string;
   mode: VentMode;
-  tidalVolume?: number;    // mL
+  tidalVolume?: number; // mL
   respiratoryRate?: number;
-  peep: number;            // cmH2O
-  fio2: number;            // 0.21 - 1.0
+  peep: number; // cmH2O
+  fio2: number; // 0.21 - 1.0
   pressureSupport?: number;
   inspiratoryPressure?: number;
-  pip?: number;            // peak inspiratory pressure
-  plateau?: number;        // plateau pressure
-  compliance?: number;     // mL/cmH2O
+  pip?: number; // peak inspiratory pressure
+  plateau?: number; // plateau pressure
+  compliance?: number; // mL/cmH2O
   recordedBy: string;
 }
 
 // ── Intake & Output ────────────────────────────────────────────────
 
-export type IoType = "intake" | "output";
+export type IoType = 'intake' | 'output';
 export type IoSource =
-  | "iv-fluid" | "oral" | "blood-product" | "tpn" | "medication"   // intake
-  | "urine" | "drain" | "emesis" | "stool" | "blood-loss" | "ng-output"; // output
+  | 'iv-fluid'
+  | 'oral'
+  | 'blood-product'
+  | 'tpn'
+  | 'medication' // intake
+  | 'urine'
+  | 'drain'
+  | 'emesis'
+  | 'stool'
+  | 'blood-loss'
+  | 'ng-output'; // output
 
 export interface IoRecord {
   id: string;
@@ -107,7 +116,7 @@ export interface IoRecord {
 
 // ── Severity Scores ────────────────────────────────────────────────
 
-export type SeverityScoreType = "apache-ii" | "sofa" | "gcs" | "rass" | "cam-icu" | "braden";
+export type SeverityScoreType = 'apache-ii' | 'sofa' | 'gcs' | 'rass' | 'cam-icu' | 'braden';
 
 export interface SeverityScore {
   id: string;

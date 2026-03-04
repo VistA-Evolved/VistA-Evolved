@@ -11,15 +11,15 @@
  *   npx tsx scripts/ops/perf-budget-smoke.ts [--api-url http://localhost:3001] [--skip-api]
  */
 
-import * as fs from "node:fs";
-import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const ROOT = path.resolve(__dirname, "../..");
-const EVIDENCE_DIR = path.join(ROOT, "artifacts/evidence/phase75/perf");
-const BUDGETS_PATH = path.join(ROOT, "config/performance-budgets.json");
+const ROOT = path.resolve(__dirname, '../..');
+const EVIDENCE_DIR = path.join(ROOT, 'artifacts/evidence/phase75/perf');
+const BUDGETS_PATH = path.join(ROOT, 'config/performance-budgets.json');
 
 interface EndpointResult {
   name: string;
@@ -84,7 +84,7 @@ async function measureEndpoint(
   name: string,
   urlPath: string,
   budgetMs: number,
-  method = "GET"
+  method = 'GET'
 ): Promise<EndpointResult> {
   const url = `${baseUrl}${urlPath}`;
   const start = performance.now();
@@ -96,7 +96,7 @@ async function measureEndpoint(
     const res = await fetch(url, {
       method,
       signal: controller.signal,
-      headers: { Accept: "application/json" },
+      headers: { Accept: 'application/json' },
     });
     clearTimeout(timeout);
 
@@ -127,7 +127,7 @@ async function measureEndpoint(
 }
 
 export async function runPerfBudgetSmoke(
-  apiUrl = "http://localhost:3001",
+  apiUrl = 'http://localhost:3001',
   skipApi = false
 ): Promise<PerfBudgetReport> {
   const start = Date.now();
@@ -136,13 +136,13 @@ export async function runPerfBudgetSmoke(
   // Load budgets config
   let budgets: BudgetConfig = { apiLatencyBudgets: {} };
   if (fs.existsSync(BUDGETS_PATH)) {
-    budgets = JSON.parse(fs.readFileSync(BUDGETS_PATH, "utf-8"));
+    budgets = JSON.parse(fs.readFileSync(BUDGETS_PATH, 'utf-8'));
   }
 
   const report: PerfBudgetReport = {
     _meta: {
       phase: 75,
-      tool: "perf-budget-smoke",
+      tool: 'perf-budget-smoke',
       generatedAt: new Date().toISOString(),
       apiUrl,
       durationMs: 0,
@@ -171,20 +171,20 @@ export async function runPerfBudgetSmoke(
 
   if (skipApi) {
     // Validate budget config exists and structure is sound
-    console.log("[perf-smoke] --skip-api: validating budget config only");
+    console.log('[perf-smoke] --skip-api: validating budget config only');
 
     const budgetGroups = budgets.apiLatencyBudgets || {};
     let configEndpoints = 0;
     for (const group of Object.values(budgetGroups)) {
-      if (typeof group === "object" && group !== null) {
+      if (typeof group === 'object' && group !== null) {
         for (const [epName, epBudget] of Object.entries(group)) {
-          if (epName.startsWith("_")) continue;
-          if (typeof epBudget === "object" && epBudget !== null && "p95" in epBudget) {
+          if (epName.startsWith('_')) continue;
+          if (typeof epBudget === 'object' && epBudget !== null && 'p95' in epBudget) {
             configEndpoints++;
             report.endpoints.push({
               name: epName,
-              url: "(config-only)",
-              method: "GET",
+              url: '(config-only)',
+              method: 'GET',
               statusCode: null,
               durationMs: 0,
               budgetMs: (epBudget as any).p95,
@@ -206,12 +206,32 @@ export async function runPerfBudgetSmoke(
     // Define test endpoints from budget config
     const testEndpoints: Array<{ name: string; path: string; budget: number; group: string }> = [
       // Infrastructure (no auth needed)
-      { name: "health", path: "/health", budget: budgets.apiLatencyBudgets?.infrastructure?.health?.p95 || 50, group: "infrastructure" },
-      { name: "ready", path: "/ready", budget: budgets.apiLatencyBudgets?.infrastructure?.ready?.p95 || 100, group: "infrastructure" },
-      { name: "version", path: "/version", budget: 200, group: "infrastructure" },
+      {
+        name: 'health',
+        path: '/health',
+        budget: budgets.apiLatencyBudgets?.infrastructure?.health?.p95 || 50,
+        group: 'infrastructure',
+      },
+      {
+        name: 'ready',
+        path: '/ready',
+        budget: budgets.apiLatencyBudgets?.infrastructure?.ready?.p95 || 100,
+        group: 'infrastructure',
+      },
+      { name: 'version', path: '/version', budget: 200, group: 'infrastructure' },
       // Admin reads (may need auth -- 401 is acceptable)
-      { name: "module-status", path: "/api/modules/status", budget: budgets.apiLatencyBudgets?.adminReads?.moduleStatus?.p95 || 200, group: "admin" },
-      { name: "capabilities", path: "/api/capabilities", budget: budgets.apiLatencyBudgets?.adminReads?.capabilities?.p95 || 200, group: "admin" },
+      {
+        name: 'module-status',
+        path: '/api/modules/status',
+        budget: budgets.apiLatencyBudgets?.adminReads?.moduleStatus?.p95 || 200,
+        group: 'admin',
+      },
+      {
+        name: 'capabilities',
+        path: '/api/capabilities',
+        budget: budgets.apiLatencyBudgets?.adminReads?.capabilities?.p95 || 200,
+        group: 'admin',
+      },
     ];
 
     // Run each endpoint 3 times and use median
@@ -229,8 +249,12 @@ export async function runPerfBudgetSmoke(
     }
 
     // Calculate summary statistics
-    const durations = report.endpoints.filter((e) => e.statusCode !== null).map((e) => e.durationMs);
-    const errors = report.endpoints.filter((e) => e.error !== null || (e.statusCode !== null && e.statusCode >= 500));
+    const durations = report.endpoints
+      .filter((e) => e.statusCode !== null)
+      .map((e) => e.durationMs);
+    const errors = report.endpoints.filter(
+      (e) => e.error !== null || (e.statusCode !== null && e.statusCode >= 500)
+    );
 
     report.summary.total = report.endpoints.length;
     report.summary.passed = report.endpoints.filter((e) => e.withinBudget).length;
@@ -239,7 +263,7 @@ export async function runPerfBudgetSmoke(
     report.summary.p95LatencyMs = percentile(durations, 95);
     report.summary.errorRate = report.summary.total > 0 ? errors.length / report.summary.total : 0;
 
-    const maxErrorRate = budgets.loadTestThresholds?.httpReqFailed?.maxRate || 0.10;
+    const maxErrorRate = budgets.loadTestThresholds?.httpReqFailed?.maxRate || 0.1;
     report.summary.overallPass =
       report.summary.errorRate <= maxErrorRate &&
       report.summary.failed === 0 &&
@@ -257,19 +281,21 @@ export async function runPerfBudgetSmoke(
   report._meta.durationMs = Date.now() - start;
 
   // Write evidence
-  const evidencePath = path.join(EVIDENCE_DIR, "perf-budget-evidence.json");
+  const evidencePath = path.join(EVIDENCE_DIR, 'perf-budget-evidence.json');
   fs.writeFileSync(evidencePath, JSON.stringify(report, null, 2));
   console.log(`[perf-smoke] Evidence written to ${evidencePath}`);
-  console.log(`[perf-smoke] ${report.summary.passed}/${report.summary.total} within budget, p95=${report.summary.p95LatencyMs}ms, errorRate=${(report.summary.errorRate * 100).toFixed(1)}%`);
+  console.log(
+    `[perf-smoke] ${report.summary.passed}/${report.summary.total} within budget, p95=${report.summary.p95LatencyMs}ms, errorRate=${(report.summary.errorRate * 100).toFixed(1)}%`
+  );
 
   return report;
 }
 
 // CLI entry point
-if (process.argv[1]?.endsWith("perf-budget-smoke.ts")) {
-  const apiUrlIdx = process.argv.indexOf("--api-url");
-  const apiUrl = apiUrlIdx >= 0 ? process.argv[apiUrlIdx + 1] : "http://localhost:3001";
-  const skipApi = process.argv.includes("--skip-api");
+if (process.argv[1]?.endsWith('perf-budget-smoke.ts')) {
+  const apiUrlIdx = process.argv.indexOf('--api-url');
+  const apiUrl = apiUrlIdx >= 0 ? process.argv[apiUrlIdx + 1] : 'http://localhost:3001';
+  const skipApi = process.argv.includes('--skip-api');
 
   runPerfBudgetSmoke(apiUrl, skipApi).then((r) => {
     process.exit(r.summary.overallPass ? 0 : 1);

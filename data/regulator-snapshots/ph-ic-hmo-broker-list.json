@@ -6,7 +6,10 @@
   "entries": [
     { "name": "Ace Health Brokers, Inc.", "caNumber": "CA-2024-HMOB-001" },
     { "name": "Aetna Health Brokers Philippines, Inc.", "caNumber": "CA-2024-HMOB-002" },
-    { "name": "Asia Pacific Healthcare Benefits Specialists, Inc.", "caNumber": "CA-2024-HMOB-003" },
+    {
+      "name": "Asia Pacific Healthcare Benefits Specialists, Inc.",
+      "caNumber": "CA-2024-HMOB-003"
+    },
     { "name": "BenefitSync Insurance Brokers, Inc.", "caNumber": "CA-2024-HMOB-004" },
     { "name": "CoreCare Health Brokers, Inc.", "caNumber": "CA-2024-HMOB-005" },
     { "name": "Global Benefits Group (Philippines), Inc.", "caNumber": "CA-2024-HMOB-006" },

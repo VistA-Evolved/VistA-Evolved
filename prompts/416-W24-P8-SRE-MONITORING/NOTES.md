@@ -4,4 +4,4 @@
 - In-memory stores: MAX_INCIDENTS=1000 with FIFO eviction
 - Budget tier calculation: green (>50%), yellow (25-50%), red (<25%), exhausted (0%)
 - Dashboard aggregates SLO snapshots + active incidents for overall health
-- Routes under /pilots/sre/* covered by existing /pilots/ admin auth rule
+- Routes under /pilots/sre/\* covered by existing /pilots/ admin auth rule

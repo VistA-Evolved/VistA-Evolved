@@ -1,6 +1,7 @@
 # Phase 394 -- W22-P6: Imaging/Radiology Deep Workflows -- NOTES
 
 ## Design Decisions
+
 - **Separate `/radiology/*` routes from existing `/imaging/*`**: The 33+ existing
   imaging endpoints (Phases 18C/22/23/24/81/386) handle infrastructure (DICOMweb
   proxy, Orthanc ingest, device registry, RBAC/audit). The new `/radiology/*`
@@ -22,12 +23,14 @@
   significant (no adverse outcome), 4=Clinically significant (adverse outcome).
 
 ## Wave 21 Bridging
+
 - `RadOrder.mwlWorklistItemId` links to Phase 386 MWL WorklistItem
 - `RadOrder.mppsRecordId` links to Phase 386 MppsRecord
 - `DoseRegistryEntry.mppsRecordId` links dose data to MPPS records
 - Bridging is via REST POST (link-mwl, link-mpps endpoints), not automatic
 
 ## Existing Infra Preserved
+
 - Phase 23 worklist (`/imaging/worklist/*`) -- unchanged
 - Phase 24 audit/authz/devices -- unchanged
 - Phase 386 MWL/MPPS/modality routes (`/devices/imaging/*`) -- unchanged

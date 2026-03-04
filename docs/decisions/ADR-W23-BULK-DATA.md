@@ -25,19 +25,21 @@ job controls, and signed/encrypted output packages.
 
 ## Alternatives Considered
 
-| Option | Pros | Cons |
-|--------|------|------|
-| Custom CSV export | Simple | Not interoperable |
-| FHIR Bundle export | Standard | Not scalable for large datasets |
-| **Bulk Data IG (chosen)** | Standard, scalable, interoperable | More complex |
+| Option                    | Pros                              | Cons                            |
+| ------------------------- | --------------------------------- | ------------------------------- |
+| Custom CSV export         | Simple                            | Not interoperable               |
+| FHIR Bundle export        | Standard                          | Not scalable for large datasets |
+| **Bulk Data IG (chosen)** | Standard, scalable, interoperable | More complex                    |
 
 ## Consequences
 
 **Positive:**
+
 - Aligns with ONC/TEFCA expectations for population data access
 - NDJSON is streamable and tool-friendly (jq, pandas, Spark)
 - Reuse of existing export/encryption infrastructure
 
 **Negative:**
+
 - Must implement async job model with status polling
 - Large exports need disk/object-store staging

@@ -21,7 +21,7 @@
  * Mutations wired to appendRcmAudit.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import {
   createRemittanceImport,
   getRemittanceImportById,
@@ -36,17 +36,13 @@ import {
   confirmMatch,
   listMatchesByPayment,
   listMatchesByStatus,
-  createUnderpaymentCase,
   getUnderpaymentById,
   updateUnderpaymentCase,
   listUnderpayments,
   getReconciliationStats,
-} from "./recon-store.js";
-import {
-  matchPayment,
-  matchImportBatch,
-} from "./matching-engine.js";
-import { appendRcmAudit } from "../audit/rcm-audit.js";
+} from './recon-store.js';
+import { matchImportBatch } from './matching-engine.js';
+import { appendRcmAudit } from '../audit/rcm-audit.js';
 import {
   ImportRemittanceBatchSchema,
   PaymentListQuerySchema,
@@ -54,404 +50,460 @@ import {
   UnderpaymentListQuerySchema,
   UpdateUnderpaymentSchema,
   isValidUnderpaymentTransition,
-} from "./types.js";
-import type { UnderpaymentStatus } from "./types.js";
+} from './types.js';
+import type { UnderpaymentStatus } from './types.js';
 
 /* ── Session helper ────────────────────────────────────────── */
 
 function getSession(request: FastifyRequest): { duz: string; tenantId: string } {
   const s = (request as any).session;
   return {
-    duz: s?.duz ?? "system",
-    tenantId: s?.tenantId ?? "default",
+    duz: s?.duz ?? 'system',
+    tenantId: s?.tenantId ?? 'default',
   };
 }
 
 /* ── Route Registration ────────────────────────────────────── */
 
 export default async function reconciliationRoutes(server: FastifyInstance): Promise<void> {
-
   /* ─────────────────────────────────────────────────
    * POST /rcm/reconciliation/import
    * Import a remittance batch (EDI 835 JSON or manual)
    * ───────────────────────────────────────────────── */
-  server.post("/rcm/reconciliation/import", async (request: FastifyRequest, reply: FastifyReply) => {
-    const body = (request.body as any) || {};
-    const parsed = ImportRemittanceBatchSchema.safeParse(body);
-    if (!parsed.success) {
-      return reply.status(400).send({ ok: false, error: parsed.error.issues });
-    }
+  server.post(
+    '/rcm/reconciliation/import',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const body = (request.body as any) || {};
+      const parsed = ImportRemittanceBatchSchema.safeParse(body);
+      if (!parsed.success) {
+        return reply.status(400).send({ ok: false, error: parsed.error.issues });
+      }
 
-    const { duz } = getSession(request);
-    const { entries, sourceType, originalFilename, parserVersion } = parsed.data;
+      const { duz } = getSession(request);
+      const { entries, sourceType, originalFilename, parserVersion } = parsed.data;
 
-    // Compute totals
-    let totalPaidCents = 0;
-    let totalBilledCents = 0;
-    for (const e of entries) {
-      totalPaidCents += Math.round(e.paidAmount * 100);
-      totalBilledCents += Math.round(e.billedAmount * 100);
-    }
+      // Compute totals
+      let totalPaidCents = 0;
+      let totalBilledCents = 0;
+      for (const e of entries) {
+        totalPaidCents += Math.round(e.paidAmount * 100);
+        totalBilledCents += Math.round(e.billedAmount * 100);
+      }
 
-    // Create import record
-    const imp = await createRemittanceImport({
-      sourceType,
-      originalFilename,
-      parserName: "batch-api",
-      parserVersion,
-      lineCount: entries.length,
-      totalPaidCents,
-      totalBilledCents,
-      importedBy: duz,
-    });
-
-    // Create payment records for each line
-    const payments = await Promise.all(entries.map((e, idx) =>
-      createPaymentRecord({
-        remittanceImportId: imp.id,
-        claimRef: e.claimRef,
-        payerId: e.payerId,
-        billedAmountCents: Math.round(e.billedAmount * 100),
-        paidAmountCents: Math.round(e.paidAmount * 100),
-        allowedAmountCents: e.allowedAmount != null ? Math.round(e.allowedAmount * 100) : undefined,
-        patientRespCents: e.patientResp != null ? Math.round(e.patientResp * 100) : undefined,
-        adjustmentAmountCents: e.adjustmentAmount != null ? Math.round(e.adjustmentAmount * 100) : undefined,
-        traceNumber: e.traceNumber,
-        checkNumber: e.checkNumber,
-        postedDate: e.postedDate,
-        serviceDate: e.serviceDate,
-        rawCodes: e.rawCodes ?? [],
-        patientDfn: e.patientDfn,
-        lineIndex: idx,
-      }),
-    ));
-
-    appendRcmAudit("recon.imported", {
-      userId: duz,
-      detail: {
-        importId: imp.id,
+      // Create import record
+      const imp = await createRemittanceImport({
         sourceType,
+        originalFilename,
+        parserName: 'batch-api',
+        parserVersion,
         lineCount: entries.length,
         totalPaidCents,
         totalBilledCents,
-      },
-    });
+        importedBy: duz,
+      });
 
-    return reply.status(201).send({
-      ok: true,
-      import: imp,
-      paymentsCreated: payments.length,
-    });
-  });
+      // Create payment records for each line
+      const payments = await Promise.all(
+        entries.map((e, idx) =>
+          createPaymentRecord({
+            remittanceImportId: imp.id,
+            claimRef: e.claimRef,
+            payerId: e.payerId,
+            billedAmountCents: Math.round(e.billedAmount * 100),
+            paidAmountCents: Math.round(e.paidAmount * 100),
+            allowedAmountCents:
+              e.allowedAmount != null ? Math.round(e.allowedAmount * 100) : undefined,
+            patientRespCents: e.patientResp != null ? Math.round(e.patientResp * 100) : undefined,
+            adjustmentAmountCents:
+              e.adjustmentAmount != null ? Math.round(e.adjustmentAmount * 100) : undefined,
+            traceNumber: e.traceNumber,
+            checkNumber: e.checkNumber,
+            postedDate: e.postedDate,
+            serviceDate: e.serviceDate,
+            rawCodes: e.rawCodes ?? [],
+            patientDfn: e.patientDfn,
+            lineIndex: idx,
+          })
+        )
+      );
+
+      appendRcmAudit('recon.imported', {
+        userId: duz,
+        detail: {
+          importId: imp.id,
+          sourceType,
+          lineCount: entries.length,
+          totalPaidCents,
+          totalBilledCents,
+        },
+      });
+
+      return reply.status(201).send({
+        ok: true,
+        import: imp,
+        paymentsCreated: payments.length,
+      });
+    }
+  );
 
   /* ─────────────────────────────────────────────────
    * GET /rcm/reconciliation/imports
    * ───────────────────────────────────────────────── */
-  server.get("/rcm/reconciliation/imports", async (_request: FastifyRequest, reply: FastifyReply) => {
-    const imports = await listRemittanceImports();
-    return reply.send({ ok: true, imports });
-  });
+  server.get(
+    '/rcm/reconciliation/imports',
+    async (_request: FastifyRequest, reply: FastifyReply) => {
+      const imports = await listRemittanceImports();
+      return reply.send({ ok: true, imports });
+    }
+  );
 
   /* ─────────────────────────────────────────────────
    * GET /rcm/reconciliation/imports/:id
    * ───────────────────────────────────────────────── */
-  server.get("/rcm/reconciliation/imports/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const imp = await getRemittanceImportById(id);
-    if (!imp) {
-      return reply.status(404).send({ ok: false, error: "Import not found" });
+  server.get(
+    '/rcm/reconciliation/imports/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const imp = await getRemittanceImportById(id);
+      if (!imp) {
+        return reply.status(404).send({ ok: false, error: 'Import not found' });
+      }
+      const payments = await listPaymentsByImport(id);
+      return reply.send({ ok: true, import: imp, payments });
     }
-    const payments = await listPaymentsByImport(id);
-    return reply.send({ ok: true, import: imp, payments });
-  });
+  );
 
   /* ─────────────────────────────────────────────────
    * GET /rcm/reconciliation/payments
    * ───────────────────────────────────────────────── */
-  server.get("/rcm/reconciliation/payments", async (request: FastifyRequest, reply: FastifyReply) => {
-    const q = (request.query as any) || {};
-    const parsed = PaymentListQuerySchema.safeParse(q);
-    if (!parsed.success) {
-      return reply.status(400).send({ ok: false, error: parsed.error.issues });
+  server.get(
+    '/rcm/reconciliation/payments',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const q = (request.query as any) || {};
+      const parsed = PaymentListQuerySchema.safeParse(q);
+      if (!parsed.success) {
+        return reply.status(400).send({ ok: false, error: parsed.error.issues });
+      }
+      const result = await listPayments(parsed.data);
+      return reply.send({ ok: true, ...result });
     }
-    const result = await listPayments(parsed.data);
-    return reply.send({ ok: true, ...result });
-  });
+  );
 
   /* ─────────────────────────────────────────────────
    * GET /rcm/reconciliation/payments/:id
    * ───────────────────────────────────────────────── */
-  server.get("/rcm/reconciliation/payments/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const payment = await getPaymentById(id);
-    if (!payment) {
-      return reply.status(404).send({ ok: false, error: "Payment not found" });
+  server.get(
+    '/rcm/reconciliation/payments/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const payment = await getPaymentById(id);
+      if (!payment) {
+        return reply.status(404).send({ ok: false, error: 'Payment not found' });
+      }
+      const matches = await listMatchesByPayment(id);
+      return reply.send({ ok: true, payment, matches });
     }
-    const matches = await listMatchesByPayment(id);
-    return reply.send({ ok: true, payment, matches });
-  });
+  );
 
   /* ─────────────────────────────────────────────────
    * POST /rcm/reconciliation/payments/:id/match
    * Manual match: create a match record for a payment
    * ───────────────────────────────────────────────── */
-  server.post("/rcm/reconciliation/payments/:id/match", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const payment = await getPaymentById(id);
-    if (!payment) {
-      return reply.status(404).send({ ok: false, error: "Payment not found" });
+  server.post(
+    '/rcm/reconciliation/payments/:id/match',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const payment = await getPaymentById(id);
+      if (!payment) {
+        return reply.status(404).send({ ok: false, error: 'Payment not found' });
+      }
+
+      const body = (request.body as any) || {};
+      const claimRef = body.claimRef;
+      const notes = body.notes ?? null;
+      if (!claimRef) {
+        return reply.status(400).send({ ok: false, error: 'claimRef is required' });
+      }
+
+      const { duz } = getSession(request);
+      const match = await createMatch({
+        paymentId: id,
+        claimRef,
+        matchConfidence: 100,
+        matchMethod: 'MANUAL',
+        matchStatus: 'CONFIRMED',
+        matchNotes: notes,
+      });
+
+      // Confirm match immediately
+      await confirmMatch(match.id, 'CONFIRMED', duz, notes);
+      await updatePaymentStatus(id, 'MATCHED');
+
+      appendRcmAudit('recon.matched', {
+        claimId: claimRef,
+        payerId: payment.payerId,
+        userId: duz,
+        detail: { paymentId: id, matchId: match.id, method: 'MANUAL' },
+      });
+
+      return reply.status(201).send({ ok: true, match });
     }
-
-    const body = (request.body as any) || {};
-    const claimRef = body.claimRef;
-    const notes = body.notes ?? null;
-    if (!claimRef) {
-      return reply.status(400).send({ ok: false, error: "claimRef is required" });
-    }
-
-    const { duz } = getSession(request);
-    const match = await createMatch({
-      paymentId: id,
-      claimRef,
-      matchConfidence: 100,
-      matchMethod: "MANUAL",
-      matchStatus: "CONFIRMED",
-      matchNotes: notes,
-    });
-
-    // Confirm match immediately
-    await confirmMatch(match.id, "CONFIRMED", duz, notes);
-    await updatePaymentStatus(id, "MATCHED");
-
-    appendRcmAudit("recon.matched", {
-      claimId: claimRef,
-      payerId: payment.payerId,
-      userId: duz,
-      detail: { paymentId: id, matchId: match.id, method: "MANUAL" },
-    });
-
-    return reply.status(201).send({ ok: true, match });
-  });
+  );
 
   /* ─────────────────────────────────────────────────
    * POST /rcm/reconciliation/match-batch
    * Run matching engine on an import batch
    * ───────────────────────────────────────────────── */
-  server.post("/rcm/reconciliation/match-batch", async (request: FastifyRequest, reply: FastifyReply) => {
-    const body = (request.body as any) || {};
-    const importId = body.importId;
-    if (!importId) {
-      return reply.status(400).send({ ok: false, error: "importId is required" });
+  server.post(
+    '/rcm/reconciliation/match-batch',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const body = (request.body as any) || {};
+      const importId = body.importId;
+      if (!importId) {
+        return reply.status(400).send({ ok: false, error: 'importId is required' });
+      }
+
+      const imp = await getRemittanceImportById(importId);
+      if (!imp) {
+        return reply.status(404).send({ ok: false, error: 'Import not found' });
+      }
+
+      const { duz } = getSession(request);
+      const result = await matchImportBatch(importId);
+
+      appendRcmAudit('recon.batch_matched', {
+        userId: duz,
+        detail: {
+          importId,
+          totalLines: result.totalLines,
+          matched: result.matched,
+          needsReview: result.needsReview,
+          unmatched: result.unmatched,
+          underpayments: result.underpayments,
+          errors: result.errors.length,
+        },
+      });
+
+      return reply.send({ ok: true, ...result });
     }
-
-    const imp = await getRemittanceImportById(importId);
-    if (!imp) {
-      return reply.status(404).send({ ok: false, error: "Import not found" });
-    }
-
-    const { duz } = getSession(request);
-    const result = await matchImportBatch(importId);
-
-    appendRcmAudit("recon.batch_matched", {
-      userId: duz,
-      detail: {
-        importId,
-        totalLines: result.totalLines,
-        matched: result.matched,
-        needsReview: result.needsReview,
-        unmatched: result.unmatched,
-        underpayments: result.underpayments,
-        errors: result.errors.length,
-      },
-    });
-
-    return reply.send({ ok: true, ...result });
-  });
+  );
 
   /* ─────────────────────────────────────────────────
    * GET /rcm/reconciliation/matches/review
    * List matches needing human review
    * ───────────────────────────────────────────────── */
-  server.get("/rcm/reconciliation/matches/review", async (_request: FastifyRequest, reply: FastifyReply) => {
-    const matches = await listMatchesByStatus("REVIEW_REQUIRED");
-    return reply.send({ ok: true, matches });
-  });
+  server.get(
+    '/rcm/reconciliation/matches/review',
+    async (_request: FastifyRequest, reply: FastifyReply) => {
+      const matches = await listMatchesByStatus('REVIEW_REQUIRED');
+      return reply.send({ ok: true, matches });
+    }
+  );
 
   /* ─────────────────────────────────────────────────
    * PATCH /rcm/reconciliation/matches/:id
    * Confirm or reject a match
    * ───────────────────────────────────────────────── */
-  server.patch("/rcm/reconciliation/matches/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const existing = await getMatchById(id);
-    if (!existing) {
-      return reply.status(404).send({ ok: false, error: "Match not found" });
+  server.patch(
+    '/rcm/reconciliation/matches/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const existing = await getMatchById(id);
+      if (!existing) {
+        return reply.status(404).send({ ok: false, error: 'Match not found' });
+      }
+
+      const body = (request.body as any) || {};
+      const parsed = ConfirmMatchSchema.safeParse(body);
+      if (!parsed.success) {
+        return reply.status(400).send({ ok: false, error: parsed.error.issues });
+      }
+
+      const { duz } = getSession(request);
+      const updated = await confirmMatch(id, parsed.data.matchStatus, duz, parsed.data.notes);
+
+      // Update payment status based on match decision
+      if (parsed.data.matchStatus === 'CONFIRMED') {
+        await updatePaymentStatus(existing.paymentId, 'MATCHED');
+      } else if (parsed.data.matchStatus === 'REJECTED') {
+        await updatePaymentStatus(existing.paymentId, 'UNMATCHED');
+      }
+
+      appendRcmAudit('recon.confirmed', {
+        claimId: existing.claimRef,
+        userId: duz,
+        detail: {
+          matchId: id,
+          paymentId: existing.paymentId,
+          decision: parsed.data.matchStatus,
+          confidence: existing.matchConfidence,
+        },
+      });
+
+      return reply.send({ ok: true, match: updated });
     }
-
-    const body = (request.body as any) || {};
-    const parsed = ConfirmMatchSchema.safeParse(body);
-    if (!parsed.success) {
-      return reply.status(400).send({ ok: false, error: parsed.error.issues });
-    }
-
-    const { duz } = getSession(request);
-    const updated = await confirmMatch(id, parsed.data.matchStatus, duz, parsed.data.notes);
-
-    // Update payment status based on match decision
-    if (parsed.data.matchStatus === "CONFIRMED") {
-      await updatePaymentStatus(existing.paymentId, "MATCHED");
-    } else if (parsed.data.matchStatus === "REJECTED") {
-      await updatePaymentStatus(existing.paymentId, "UNMATCHED");
-    }
-
-    appendRcmAudit("recon.confirmed", {
-      claimId: existing.claimRef,
-      userId: duz,
-      detail: {
-        matchId: id,
-        paymentId: existing.paymentId,
-        decision: parsed.data.matchStatus,
-        confidence: existing.matchConfidence,
-      },
-    });
-
-    return reply.send({ ok: true, match: updated });
-  });
+  );
 
   /* ─────────────────────────────────────────────────
    * GET /rcm/reconciliation/underpayments
    * ───────────────────────────────────────────────── */
-  server.get("/rcm/reconciliation/underpayments", async (request: FastifyRequest, reply: FastifyReply) => {
-    const q = (request.query as any) || {};
-    const parsed = UnderpaymentListQuerySchema.safeParse(q);
-    if (!parsed.success) {
-      return reply.status(400).send({ ok: false, error: parsed.error.issues });
+  server.get(
+    '/rcm/reconciliation/underpayments',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const q = (request.query as any) || {};
+      const parsed = UnderpaymentListQuerySchema.safeParse(q);
+      if (!parsed.success) {
+        return reply.status(400).send({ ok: false, error: parsed.error.issues });
+      }
+      const result = await listUnderpayments(parsed.data);
+      return reply.send({ ok: true, ...result });
     }
-    const result = await listUnderpayments(parsed.data);
-    return reply.send({ ok: true, ...result });
-  });
+  );
 
   /* ─────────────────────────────────────────────────
    * GET /rcm/reconciliation/underpayments/:id
    * ───────────────────────────────────────────────── */
-  server.get("/rcm/reconciliation/underpayments/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const up = await getUnderpaymentById(id);
-    if (!up) {
-      return reply.status(404).send({ ok: false, error: "Underpayment case not found" });
+  server.get(
+    '/rcm/reconciliation/underpayments/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const up = await getUnderpaymentById(id);
+      if (!up) {
+        return reply.status(404).send({ ok: false, error: 'Underpayment case not found' });
+      }
+      // Fetch the associated payment + matches for context
+      const payment = await getPaymentById(up.paymentId);
+      const matches = payment ? await listMatchesByPayment(payment.id) : [];
+      return reply.send({ ok: true, underpayment: up, payment, matches });
     }
-    // Fetch the associated payment + matches for context
-    const payment = await getPaymentById(up.paymentId);
-    const matches = payment ? await listMatchesByPayment(payment.id) : [];
-    return reply.send({ ok: true, underpayment: up, payment, matches });
-  });
+  );
 
   /* ─────────────────────────────────────────────────
    * PATCH /rcm/reconciliation/underpayments/:id
    * Update underpayment status with FSM validation
    * ───────────────────────────────────────────────── */
-  server.patch("/rcm/reconciliation/underpayments/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const existing = await getUnderpaymentById(id);
-    if (!existing) {
-      return reply.status(404).send({ ok: false, error: "Underpayment case not found" });
-    }
+  server.patch(
+    '/rcm/reconciliation/underpayments/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const existing = await getUnderpaymentById(id);
+      if (!existing) {
+        return reply.status(404).send({ ok: false, error: 'Underpayment case not found' });
+      }
 
-    const body = (request.body as any) || {};
-    const parsed = UpdateUnderpaymentSchema.safeParse(body);
-    if (!parsed.success) {
-      return reply.status(400).send({ ok: false, error: parsed.error.issues });
-    }
+      const body = (request.body as any) || {};
+      const parsed = UpdateUnderpaymentSchema.safeParse(body);
+      if (!parsed.success) {
+        return reply.status(400).send({ ok: false, error: parsed.error.issues });
+      }
 
-    // FSM guard
-    if (parsed.data.status && !isValidUnderpaymentTransition(existing.status, parsed.data.status)) {
-      return reply.status(400).send({
-        ok: false,
-        error: `Invalid transition: ${existing.status} -> ${parsed.data.status}`,
+      // FSM guard
+      if (
+        parsed.data.status &&
+        !isValidUnderpaymentTransition(existing.status, parsed.data.status)
+      ) {
+        return reply.status(400).send({
+          ok: false,
+          error: `Invalid transition: ${existing.status} -> ${parsed.data.status}`,
+        });
+      }
+
+      const { duz } = getSession(request);
+      const updated = await updateUnderpaymentCase(
+        id,
+        {
+          status: parsed.data.status,
+          resolutionNote: parsed.data.resolutionNote,
+        },
+        duz
+      );
+
+      appendRcmAudit('recon.underpayment_updated', {
+        claimId: existing.claimRef,
+        payerId: existing.payerId,
+        userId: duz,
+        detail: {
+          underpaymentId: id,
+          oldStatus: existing.status,
+          newStatus: parsed.data.status ?? existing.status,
+          reason: parsed.data.reason,
+          deltaCents: existing.deltaCents,
+        },
       });
+
+      return reply.send({ ok: true, underpayment: updated });
     }
-
-    const { duz } = getSession(request);
-    const updated = await updateUnderpaymentCase(
-      id,
-      {
-        status: parsed.data.status,
-        resolutionNote: parsed.data.resolutionNote,
-      },
-      duz,
-    );
-
-    appendRcmAudit("recon.underpayment_updated", {
-      claimId: existing.claimRef,
-      payerId: existing.payerId,
-      userId: duz,
-      detail: {
-        underpaymentId: id,
-        oldStatus: existing.status,
-        newStatus: parsed.data.status ?? existing.status,
-        reason: parsed.data.reason,
-        deltaCents: existing.deltaCents,
-      },
-    });
-
-    return reply.send({ ok: true, underpayment: updated });
-  });
+  );
 
   /* ─────────────────────────────────────────────────
    * POST /rcm/reconciliation/underpayments/:id/send-to-denials
    * Bridge: create a Phase 98 denial case from underpayment
    * ───────────────────────────────────────────────── */
-  server.post("/rcm/reconciliation/underpayments/:id/send-to-denials", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const up = await getUnderpaymentById(id);
-    if (!up) {
-      return reply.status(404).send({ ok: false, error: "Underpayment case not found" });
+  server.post(
+    '/rcm/reconciliation/underpayments/:id/send-to-denials',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const up = await getUnderpaymentById(id);
+      if (!up) {
+        return reply.status(404).send({ ok: false, error: 'Underpayment case not found' });
+      }
+
+      if (up.denialCaseId) {
+        return reply.status(409).send({
+          ok: false,
+          error: 'Already linked to denial case',
+          denialCaseId: up.denialCaseId,
+        });
+      }
+
+      const { duz } = getSession(request);
+
+      // Lazy import to avoid circular dependency
+      const { createDenialCase } = await import('../denials/denial-store.js');
+
+      // Create denial case from underpayment
+      const denial = await createDenialCase(
+        {
+          claimRef: up.claimRef,
+          payerId: up.payerId,
+          denialSource: 'EDI_835',
+          billedAmount: up.expectedAmountCents / 100,
+          paidAmount: up.paidAmountCents / 100,
+          denialCodes: [],
+          denialNarrative: `Auto-created from underpayment case ${up.id}. Expected: $${(up.expectedAmountCents / 100).toFixed(2)}, Paid: $${(up.paidAmountCents / 100).toFixed(2)}, Delta: $${(up.deltaCents / 100).toFixed(2)}`,
+        },
+        duz
+      );
+
+      // Link underpayment to denial
+      await updateUnderpaymentCase(
+        id,
+        {
+          status: 'APPEALING' as UnderpaymentStatus,
+          denialCaseId: denial.id,
+        },
+        duz
+      );
+
+      appendRcmAudit('recon.sent_to_denials', {
+        claimId: up.claimRef,
+        payerId: up.payerId,
+        userId: duz,
+        detail: {
+          underpaymentId: id,
+          denialCaseId: denial.id,
+          deltaCents: up.deltaCents,
+        },
+      });
+
+      return reply.status(201).send({ ok: true, denialCaseId: denial.id, underpaymentId: id });
     }
-
-    if (up.denialCaseId) {
-      return reply.status(409).send({ ok: false, error: "Already linked to denial case", denialCaseId: up.denialCaseId });
-    }
-
-    const { duz } = getSession(request);
-
-    // Lazy import to avoid circular dependency
-    const { createDenialCase } = await import("../denials/denial-store.js");
-
-    // Create denial case from underpayment
-    const denial = await createDenialCase({
-      claimRef: up.claimRef,
-      payerId: up.payerId,
-      denialSource: "EDI_835",
-      billedAmount: up.expectedAmountCents / 100,
-      paidAmount: up.paidAmountCents / 100,
-      denialCodes: [],
-      denialNarrative: `Auto-created from underpayment case ${up.id}. Expected: $${(up.expectedAmountCents / 100).toFixed(2)}, Paid: $${(up.paidAmountCents / 100).toFixed(2)}, Delta: $${(up.deltaCents / 100).toFixed(2)}`,
-    }, duz);
-
-    // Link underpayment to denial
-    await updateUnderpaymentCase(id, {
-      status: "APPEALING" as UnderpaymentStatus,
-      denialCaseId: denial.id,
-    }, duz);
-
-    appendRcmAudit("recon.sent_to_denials", {
-      claimId: up.claimRef,
-      payerId: up.payerId,
-      userId: duz,
-      detail: {
-        underpaymentId: id,
-        denialCaseId: denial.id,
-        deltaCents: up.deltaCents,
-      },
-    });
-
-    return reply.status(201).send({ ok: true, denialCaseId: denial.id, underpaymentId: id });
-  });
+  );
 
   /* ─────────────────────────────────────────────────
    * GET /rcm/reconciliation/stats
    * ───────────────────────────────────────────────── */
-  server.get("/rcm/reconciliation/stats", async (_request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/reconciliation/stats', async (_request: FastifyRequest, reply: FastifyReply) => {
     const stats = await getReconciliationStats();
     return reply.send({ ok: true, stats });
   });

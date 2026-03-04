@@ -17,7 +17,7 @@
  * metadata only. No PHI in logs.
  */
 
-import type { FastifyInstance, FastifyPluginAsync } from "fastify";
+import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
 import {
   createRemittanceDocument,
   getRemittanceDocument,
@@ -26,31 +26,30 @@ import {
   tagRemittanceDocument,
   reviewRemittanceDocument,
   markAsPosted,
-} from "../workflows/remittance-intake.js";
-import type { RemittanceDocType, RemittanceStatus } from "../workflows/remittance-intake.js";
-import { safeErr } from "../../lib/safe-error.js";
+} from '../workflows/remittance-intake.js';
+import type { RemittanceDocType, RemittanceStatus } from '../workflows/remittance-intake.js';
+import { safeErr } from '../../lib/safe-error.js';
 
 const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
-
   /* ── POST /rcm/remittance — upload metadata ────────────── */
-  server.post("/rcm/remittance", async (request, reply) => {
+  server.post('/rcm/remittance', async (request, reply) => {
     const body = (request.body as any) || {};
     const {
-      tenantId = "default",
+      tenantId = 'default',
       payerId,
       payerName,
-      docType = "eob",
+      docType = 'eob',
       filename,
-      mimeType = "application/pdf",
+      mimeType = 'application/pdf',
       sizeBytes = 0,
       storageRef,
-      uploadedBy = "system",
+      uploadedBy = 'system',
     } = body;
 
     if (!payerId || !filename || !storageRef) {
       return reply.status(400).send({
         ok: false,
-        error: "payerId, filename, and storageRef required",
+        error: 'payerId, filename, and storageRef required',
       });
     }
 
@@ -70,7 +69,7 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── GET /rcm/remittance — list ────────────────────────── */
-  server.get("/rcm/remittance", async (request, reply) => {
+  server.get('/rcm/remittance', async (request, reply) => {
     const query = request.query as {
       tenantId?: string;
       status?: string;
@@ -79,7 +78,7 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
       offset?: string;
     };
 
-    const result = listRemittanceDocuments(query.tenantId ?? "default", {
+    const result = listRemittanceDocuments(query.tenantId ?? 'default', {
       status: query.status as RemittanceStatus | undefined,
       payerId: query.payerId,
       limit: query.limit ? parseInt(query.limit, 10) : undefined,
@@ -90,30 +89,30 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── GET /rcm/remittance/stats ─────────────────────────── */
-  server.get("/rcm/remittance/stats", async (request, reply) => {
-    const tenantId = (request.query as any)?.tenantId ?? "default";
+  server.get('/rcm/remittance/stats', async (request, reply) => {
+    const tenantId = (request.query as any)?.tenantId ?? 'default';
     const stats = getRemittanceStats(tenantId);
     return reply.send({ ok: true, ...stats });
   });
 
   /* ── GET /rcm/remittance/:id — detail ──────────────────── */
-  server.get("/rcm/remittance/:id", async (request, reply) => {
+  server.get('/rcm/remittance/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const doc = getRemittanceDocument(id);
-    if (!doc) return reply.status(404).send({ ok: false, error: "Remittance document not found" });
+    if (!doc) return reply.status(404).send({ ok: false, error: 'Remittance document not found' });
     return reply.send({ ok: true, document: doc });
   });
 
   /* ── POST /rcm/remittance/:id/tag — tag + associate ────── */
-  server.post("/rcm/remittance/:id/tag", async (request, reply) => {
+  server.post('/rcm/remittance/:id/tag', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const { checkNumber, checkDate, lineItems, actor = "system" } = body;
+    const { checkNumber, checkDate, lineItems, actor = 'system' } = body;
 
     if (!Array.isArray(lineItems) || lineItems.length === 0) {
       return reply.status(400).send({
         ok: false,
-        error: "lineItems array required (non-empty)",
+        error: 'lineItems array required (non-empty)',
       });
     }
 
@@ -129,10 +128,10 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── POST /rcm/remittance/:id/review — review + flag ──── */
-  server.post("/rcm/remittance/:id/review", async (request, reply) => {
+  server.post('/rcm/remittance/:id/review', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const { actor = "system" } = body;
+    const { actor = 'system' } = body;
 
     try {
       const doc = reviewRemittanceDocument(id, actor);
@@ -151,10 +150,10 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── POST /rcm/remittance/:id/post — mark as posted ────── */
-  server.post("/rcm/remittance/:id/post", async (request, reply) => {
+  server.post('/rcm/remittance/:id/post', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const { vistaArIen, postingNotes = "", actor = "system" } = body;
+    const { vistaArIen, postingNotes = '', actor = 'system' } = body;
 
     try {
       const doc = markAsPosted(id, vistaArIen, postingNotes, actor);
@@ -162,8 +161,8 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
         ok: true,
         document: doc,
         vistaIntegration: vistaArIen
-          ? "posted"
-          : "integration-pending (VistA AR ^PRCA(430) empty in sandbox)",
+          ? 'posted'
+          : 'integration-pending (VistA AR ^PRCA(430) empty in sandbox)',
       });
     } catch (err) {
       return reply.status(400).send({

@@ -19,14 +19,14 @@ import { randomUUID } from 'node:crypto';
 export type AckType = '999' | '277CA' | 'TA1';
 
 export type AckDisposition =
-  | 'accepted'        // A — accepted
+  | 'accepted' // A — accepted
   | 'accepted_errors' // E — accepted with errors
-  | 'rejected';       // R — rejected
+  | 'rejected'; // R — rejected
 
 export interface AckError {
-  segmentId?: string;     // e.g. "CLM", "SV1"
+  segmentId?: string; // e.g. "CLM", "SV1"
   elementPosition?: string;
-  errorCode: string;       // IK3/IK4 error code
+  errorCode: string; // IK3/IK4 error code
   description: string;
 }
 
@@ -36,9 +36,9 @@ export interface Acknowledgement {
   disposition: AckDisposition;
 
   /** The original claim or interchange this ack refers to */
-  claimId?: string;             // our internal claim ID
+  claimId?: string; // our internal claim ID
   originalControlNumber: string; // ISA13 or ST02 of the original
-  ackControlNumber: string;      // this ack's control number
+  ackControlNumber: string; // this ack's control number
 
   /** Payer info */
   payerId?: string;
@@ -121,19 +121,19 @@ export type StatusCategoryCode =
 
 export interface ClaimStatusUpdate {
   id: string;
-  claimId?: string;         // our internal claim ID
-  payerClaimId?: string;    // payer's tracking reference
+  claimId?: string; // our internal claim ID
+  payerClaimId?: string; // payer's tracking reference
 
   /** 277 category + status codes */
   categoryCode: StatusCategoryCode;
-  statusCode: string;       // specific status (free text from payer)
+  statusCode: string; // specific status (free text from payer)
   statusDescription: string;
 
   /** Key dates from payer */
   effectiveDate?: string;
   checkDate?: string;
-  totalCharged?: number;    // cents
-  totalPaid?: number;       // cents
+  totalCharged?: number; // cents
+  totalPaid?: number; // cents
 
   /** Payer */
   payerId?: string;
@@ -206,7 +206,7 @@ export interface ClaimHistoryEvent {
   claimId: string;
   eventType: ClaimHistoryEventType;
   timestamp: string;
-  source: string;       // 'system' | 'payer' | 'user' | connector id
-  summary: string;      // human-readable description
+  source: string; // 'system' | 'payer' | 'user' | connector id
+  summary: string; // human-readable description
   detail?: Record<string, unknown>;
 }

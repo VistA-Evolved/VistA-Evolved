@@ -39,12 +39,12 @@ NO new product features. Only governance, indexing, verification hardening, repo
 
 ## Files Touched
 
-| File | Action |
-|------|--------|
-| scripts/governance/verifyRepoHygiene.ts | CREATE |
-| scripts/governance/buildPendingTargetsIndex.ts | CREATE |
-| scripts/governance/buildTraceabilityIndex.ts | CREATE |
-| scripts/verify-latest.ps1 | MODIFY |
-| scripts/verify-phase73-drift-lock.ps1 | CREATE |
+| File                                              | Action |
+| ------------------------------------------------- | ------ |
+| scripts/governance/verifyRepoHygiene.ts           | CREATE |
+| scripts/governance/buildPendingTargetsIndex.ts    | CREATE |
+| scripts/governance/buildTraceabilityIndex.ts      | CREATE |
+| scripts/verify-latest.ps1                         | MODIFY |
+| scripts/verify-phase73-drift-lock.ps1             | CREATE |
 | prompts/78-PHASE-73-DRIFT-LOCK/78-01-IMPLEMENT.md | CREATE |
-| prompts/78-PHASE-73-DRIFT-LOCK/78-99-VERIFY.md | CREATE |
+| prompts/78-PHASE-73-DRIFT-LOCK/78-99-VERIFY.md    | CREATE |

@@ -19,10 +19,10 @@
  *   - api-config.ts itself (skip)
  */
 
-import { readFileSync, writeFileSync, readdirSync, statSync } from "fs";
-import { join, relative, sep } from "path";
+import { readFileSync, writeFileSync, readdirSync, statSync } from 'fs';
+import { join, relative, sep } from 'path';
 
-const DRY_RUN = process.argv.includes("--dry-run");
+const DRY_RUN = process.argv.includes('--dry-run');
 const ROOT = process.cwd();
 
 // ── Pattern matchers ─────────────────────────────────────────────────
@@ -40,13 +40,13 @@ const INLINE_RE =
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
-function walk(dir, exts = [".ts", ".tsx"]) {
+function walk(dir, exts = ['.ts', '.tsx']) {
   const results = [];
   for (const entry of readdirSync(dir)) {
     const fullPath = join(dir, entry);
     const stat = statSync(fullPath);
     if (stat.isDirectory()) {
-      if (entry === "node_modules" || entry === ".next" || entry === "dist") continue;
+      if (entry === 'node_modules' || entry === '.next' || entry === 'dist') continue;
       results.push(...walk(fullPath, exts));
     } else if (exts.some((e) => entry.endsWith(e))) {
       results.push(fullPath);
@@ -64,8 +64,8 @@ function isPortalFile(filePath) {
 }
 
 function getImportPath(filePath) {
-  if (isWebFile(filePath)) return "@/lib/api-config";
-  if (isPortalFile(filePath)) return "@/lib/api-config";
+  if (isWebFile(filePath)) return '@/lib/api-config';
+  if (isPortalFile(filePath)) return '@/lib/api-config';
   return null;
 }
 
@@ -74,7 +74,7 @@ function hasImportAlready(content, importPath) {
 }
 
 function buildImportLine(varName, importPath) {
-  if (varName === "API_BASE") return `import { API_BASE } from '${importPath}';`;
+  if (varName === 'API_BASE') return `import { API_BASE } from '${importPath}';`;
   // For API, API_BASE as API to keep existing usage
   return `import { API_BASE as ${varName} } from '${importPath}';`;
 }
@@ -84,24 +84,24 @@ function buildImportLine(varName, importPath) {
 const stats = { files: 0, replacements: 0, skipped: [] };
 
 function transformFile(filePath) {
-  const rel = relative(ROOT, filePath).replace(/\\/g, "/");
+  const rel = relative(ROOT, filePath).replace(/\\/g, '/');
 
   // Skip the config files themselves
-  if (rel.endsWith("lib/api-config.ts")) return;
+  if (rel.endsWith('lib/api-config.ts')) return;
   // Skip test files and config files that are fine
-  if (rel.includes("playwright.config")) return;
-  if (rel.includes(".test.")) return;
-  if (rel.includes(".spec.")) return;
+  if (rel.includes('playwright.config')) return;
+  if (rel.includes('.test.')) return;
+  if (rel.includes('.spec.')) return;
 
   const importPath = getImportPath(filePath);
   if (!importPath) return;
 
-  const original = readFileSync(filePath, "utf-8");
-  if (!original.includes("localhost:3001")) return;
+  const original = readFileSync(filePath, 'utf-8');
+  if (!original.includes('localhost:3001')) return;
 
-  const lines = original.split("\n");
+  const lines = original.split('\n');
   let modified = false;
-  let neededImportVar = null;     // Which var name to import
+  let neededImportVar = null; // Which var name to import
   const removedLines = [];
 
   for (let i = 0; i < lines.length; i++) {
@@ -125,7 +125,7 @@ function transformFile(filePath) {
       // Replace with: const varName = API_BASE;
       lines[i] = `${indent}const ${varName} = API_BASE;`;
       // We need API_BASE import
-      neededImportVar = neededImportVar || "API_BASE";
+      neededImportVar = neededImportVar || 'API_BASE';
       modified = true;
       continue;
     }
@@ -133,15 +133,15 @@ function transformFile(filePath) {
     // Check inline usage (inside template literals etc.)
     if (INLINE_RE.test(line)) {
       // Replace inline with API_BASE reference
-      lines[i] = line.replace(INLINE_RE, "API_BASE");
-      neededImportVar = neededImportVar || "API_BASE";
+      lines[i] = line.replace(INLINE_RE, 'API_BASE');
+      neededImportVar = neededImportVar || 'API_BASE';
       modified = true;
     }
   }
 
   if (!modified) {
     // File has localhost:3001 but in a pattern we don't handle (e.g., comments)
-    if (original.includes("localhost:3001") && !rel.includes("api-config")) {
+    if (original.includes('localhost:3001') && !rel.includes('api-config')) {
       stats.skipped.push(rel);
     }
     return;
@@ -153,29 +153,31 @@ function transformFile(filePath) {
     lines.splice(idx, 1);
   }
 
-  let content = lines.join("\n");
+  let content = lines.join('\n');
 
   // Add import if not already present
   if (neededImportVar && !hasImportAlready(content, importPath)) {
     const importLine = buildImportLine(neededImportVar, importPath);
     // Insert after the last existing import or 'use client' directive
     const importInsertIdx = findImportInsertPosition(content);
-    const contentLines = content.split("\n");
+    const contentLines = content.split('\n');
     contentLines.splice(importInsertIdx, 0, importLine);
-    content = contentLines.join("\n");
+    content = contentLines.join('\n');
   }
 
   if (!DRY_RUN) {
-    writeFileSync(filePath, content, "utf-8");
+    writeFileSync(filePath, content, 'utf-8');
   }
 
   stats.files++;
   stats.replacements += removedLines.length + (modified ? 1 : 0);
-  console.log(`  ${DRY_RUN ? "[DRY] " : ""}${rel} → import { ${neededImportVar === "API_BASE" ? "API_BASE" : `API_BASE as ${neededImportVar}`} }`);
+  console.log(
+    `  ${DRY_RUN ? '[DRY] ' : ''}${rel} → import { ${neededImportVar === 'API_BASE' ? 'API_BASE' : `API_BASE as ${neededImportVar}`} }`
+  );
 }
 
 function findImportInsertPosition(content) {
-  const lines = content.split("\n");
+  const lines = content.split('\n');
   let lastImportLine = -1;
   let useClientLine = -1;
 
@@ -184,11 +186,18 @@ function findImportInsertPosition(content) {
     if (trimmed.startsWith("'use client'") || trimmed.startsWith('"use client"')) {
       useClientLine = i;
     }
-    if (trimmed.startsWith("import ") || trimmed.startsWith("import{")) {
+    if (trimmed.startsWith('import ') || trimmed.startsWith('import{')) {
       lastImportLine = i;
     }
     // Stop scanning after we pass the import block
-    if (lastImportLine > -1 && !trimmed.startsWith("import") && trimmed !== "" && !trimmed.startsWith("//") && !trimmed.startsWith("/*") && !trimmed.startsWith("*")) {
+    if (
+      lastImportLine > -1 &&
+      !trimmed.startsWith('import') &&
+      trimmed !== '' &&
+      !trimmed.startsWith('//') &&
+      !trimmed.startsWith('/*') &&
+      !trimmed.startsWith('*')
+    ) {
       break;
     }
   }
@@ -200,10 +209,10 @@ function findImportInsertPosition(content) {
 
 // ── Run ──────────────────────────────────────────────────────────────
 
-console.log(`\nCentralising API_BASE declarations...${DRY_RUN ? " (DRY RUN)" : ""}\n`);
+console.log(`\nCentralising API_BASE declarations...${DRY_RUN ? ' (DRY RUN)' : ''}\n`);
 
-const webFiles = walk(join(ROOT, "apps", "web", "src"));
-const portalFiles = walk(join(ROOT, "apps", "portal", "src"));
+const webFiles = walk(join(ROOT, 'apps', 'web', 'src'));
+const portalFiles = walk(join(ROOT, 'apps', 'portal', 'src'));
 
 for (const f of [...webFiles, ...portalFiles]) {
   transformFile(f);
@@ -216,4 +225,4 @@ if (stats.skipped.length) {
   console.log(`  Skipped (needs manual review):`);
   for (const s of stats.skipped) console.log(`    ${s}`);
 }
-console.log("");
+console.log('');

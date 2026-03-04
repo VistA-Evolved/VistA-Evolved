@@ -26,13 +26,31 @@ function titleFromFolder(dirName) {
   // Convert KEBAB-CASE to Title Case, with special handling
   const raw = m[1];
   const specials = {
-    'PG': 'PG', 'PITR': 'PITR', 'DR': 'DR', 'K8S': 'K8s', 'FHIR': 'FHIR',
-    'ETAG': 'ETag', 'ARGOCD': 'ArgoCD', 'CI': 'CI', 'CD': 'CD', 'PR': 'PR',
-    'SBOM': 'SBOM', 'SLO': 'SLO', 'E2E': 'E2E', 'CLI': 'CLI',
-    'YOTTADB': 'YottaDB', 'TLS': 'TLS', 'SMART': 'SMART', 'ON': 'on',
-    'AS': 'as', 'R4': 'R4',
+    PG: 'PG',
+    PITR: 'PITR',
+    DR: 'DR',
+    K8S: 'K8s',
+    FHIR: 'FHIR',
+    ETAG: 'ETag',
+    ARGOCD: 'ArgoCD',
+    CI: 'CI',
+    CD: 'CD',
+    PR: 'PR',
+    SBOM: 'SBOM',
+    SLO: 'SLO',
+    E2E: 'E2E',
+    CLI: 'CLI',
+    YOTTADB: 'YottaDB',
+    TLS: 'TLS',
+    SMART: 'SMART',
+    ON: 'on',
+    AS: 'as',
+    R4: 'R4',
   };
-  return raw.split('-').map(w => specials[w] || (w.charAt(0) + w.slice(1).toLowerCase())).join(' ');
+  return raw
+    .split('-')
+    .map((w) => specials[w] || w.charAt(0) + w.slice(1).toLowerCase())
+    .join(' ');
 }
 
 // Corrected content for phases 183-196 (WAVE2 misaligned entries)
@@ -46,7 +64,12 @@ const WAVE2_FIX = {
       'Add provisioning audit trail for compliance',
     ],
     files: ['apps/api/src/platform/', 'infra/helm/charts/tenant/'],
-    verify: ['New tenant provisioned via API', 'Database isolation verified', 'Default settings applied', 'Audit trail records provisioning events'],
+    verify: [
+      'New tenant provisioned via API',
+      'Database isolation verified',
+      'Default settings applied',
+      'Audit trail records provisioning events',
+    ],
   },
   184: {
     steps: [
@@ -57,7 +80,12 @@ const WAVE2_FIX = {
       'Document secret management procedures',
     ],
     files: ['infra/secrets/', 'infra/helm/templates/'],
-    verify: ['Secrets not in plain text in repo', 'External store accessible', 'Rotation works', 'Audit logged'],
+    verify: [
+      'Secrets not in plain text in repo',
+      'External store accessible',
+      'Rotation works',
+      'Audit logged',
+    ],
   },
   185: {
     steps: [
@@ -68,7 +96,12 @@ const WAVE2_FIX = {
       'Test restore to specific timestamp',
     ],
     files: ['scripts/backup-restore.mjs', 'infra/'],
-    verify: ['WAL archiving active', 'Base backup runs on schedule', 'PITR restore succeeds', 'RPO/RTO targets documented'],
+    verify: [
+      'WAL archiving active',
+      'Base backup runs on schedule',
+      'PITR restore succeeds',
+      'RPO/RTO targets documented',
+    ],
   },
   186: {
     steps: [
@@ -78,7 +111,12 @@ const WAVE2_FIX = {
       'Define backup retention policy for VistA data',
     ],
     files: ['services/vista/', 'scripts/backup-restore.mjs'],
-    verify: ['YottaDB journal backup completes', 'Global export verifiable', 'Backup files archived', 'Retention policy enforced'],
+    verify: [
+      'YottaDB journal backup completes',
+      'Global export verifiable',
+      'Backup files archived',
+      'Retention policy enforced',
+    ],
   },
   187: {
     steps: [
@@ -89,7 +127,12 @@ const WAVE2_FIX = {
       'Document manual escalation procedures',
     ],
     files: ['scripts/', 'docs/runbooks/'],
-    verify: ['DR drill runs to completion', 'Failover tested successfully', 'Health checks trigger correctly', 'Results tracked and reported'],
+    verify: [
+      'DR drill runs to completion',
+      'Failover tested successfully',
+      'Health checks trigger correctly',
+      'Results tracked and reported',
+    ],
   },
   188: {
     steps: [
@@ -100,7 +143,12 @@ const WAVE2_FIX = {
       'Document observability stack topology',
     ],
     files: ['services/observability/', 'apps/api/src/telemetry/'],
-    verify: ['Metrics flowing to Prometheus', 'Traces visible in Jaeger', 'Dashboards render correctly', 'Alerts fire on threshold breach'],
+    verify: [
+      'Metrics flowing to Prometheus',
+      'Traces visible in Jaeger',
+      'Dashboards render correctly',
+      'Alerts fire on threshold breach',
+    ],
   },
   189: {
     steps: [
@@ -111,7 +159,12 @@ const WAVE2_FIX = {
       'Establish latency budget per route category',
     ],
     files: ['docs/runbooks/', 'tests/k6/'],
-    verify: ['Runbook covers all critical paths', 'Profiling procedure documented', 'Pool tuning guidelines complete', 'Latency budgets defined'],
+    verify: [
+      'Runbook covers all critical paths',
+      'Profiling procedure documented',
+      'Pool tuning guidelines complete',
+      'Latency budgets defined',
+    ],
   },
   190: {
     steps: [
@@ -122,7 +175,12 @@ const WAVE2_FIX = {
       'Add performance regression detection to CI',
     ],
     files: ['tests/k6/'],
-    verify: ['Load tests run to completion', 'Thresholds met', 'Circuit breaker trips correctly', 'Rate limiter holds'],
+    verify: [
+      'Load tests run to completion',
+      'Thresholds met',
+      'Circuit breaker trips correctly',
+      'Rate limiter holds',
+    ],
   },
   191: {
     steps: [
@@ -133,7 +191,12 @@ const WAVE2_FIX = {
       'Document queue capacity planning guidelines',
     ],
     files: ['apps/api/src/'],
-    verify: ['Queue depth metrics exported', 'Backpressure activates under load', 'Worker scaling responds to depth', 'Dead letters captured'],
+    verify: [
+      'Queue depth metrics exported',
+      'Backpressure activates under load',
+      'Worker scaling responds to depth',
+      'Dead letters captured',
+    ],
   },
   192: {
     steps: [
@@ -144,7 +207,12 @@ const WAVE2_FIX = {
       'Test scaling behavior under load spikes',
     ],
     files: ['infra/helm/'],
-    verify: ['HPA scales up under load', 'Scale-to-zero works in dev', 'Resource limits enforced', 'Scale-down is graceful'],
+    verify: [
+      'HPA scales up under load',
+      'Scale-to-zero works in dev',
+      'Resource limits enforced',
+      'Scale-down is graceful',
+    ],
   },
   193: {
     steps: [
@@ -154,7 +222,12 @@ const WAVE2_FIX = {
       'Add period, class, and type mappings per R4 spec',
     ],
     files: ['apps/api/src/fhir/'],
-    verify: ['Encounter resource conforms to R4 spec', 'Search by patient works', 'Date range filtering correct', 'All required fields populated'],
+    verify: [
+      'Encounter resource conforms to R4 spec',
+      'Search by patient works',
+      'Date range filtering correct',
+      'All required fields populated',
+    ],
   },
   194: {
     steps: [
@@ -164,7 +237,12 @@ const WAVE2_FIX = {
       'Add Last-Modified header for time-based caching',
     ],
     files: ['apps/api/src/fhir/'],
-    verify: ['ETag present on FHIR responses', 'Conditional GET returns 304 when unchanged', 'Cache headers correct', 'Stale cache detected and refreshed'],
+    verify: [
+      'ETag present on FHIR responses',
+      'Conditional GET returns 304 when unchanged',
+      'Cache headers correct',
+      'Stale cache detected and refreshed',
+    ],
   },
   195: {
     steps: [
@@ -174,7 +252,12 @@ const WAVE2_FIX = {
       'Configure SMART well-known endpoint for discovery',
     ],
     files: ['apps/api/src/fhir/'],
-    verify: ['CapabilityStatement valid R4', 'SMART launch context works', 'Scopes declared correctly', 'Well-known endpoint accessible'],
+    verify: [
+      'CapabilityStatement valid R4',
+      'SMART launch context works',
+      'Scopes declared correctly',
+      'Well-known endpoint accessible',
+    ],
   },
   196: {
     steps: [
@@ -184,7 +267,12 @@ const WAVE2_FIX = {
       'Document known gaps vs full R4 support',
     ],
     files: ['apps/api/src/fhir/', 'tests/fhir/'],
-    verify: ['Resources pass R4 validation', 'Conformance tests pass', 'Search params tested', 'Gaps documented'],
+    verify: [
+      'Resources pass R4 validation',
+      'Conformance tests pass',
+      'Search params tested',
+      'Gaps documented',
+    ],
   },
 };
 
@@ -198,7 +286,12 @@ const WAVE3_FIX = {
       'Add sync policy with auto-prune for deleted resources',
     ],
     files: ['infra/gitops/'],
-    verify: ['ArgoCD connects to repo', 'Auto-sync triggers on push', 'Prune removes deleted resources', 'Multi-tenant apps deployed'],
+    verify: [
+      'ArgoCD connects to repo',
+      'Auto-sync triggers on push',
+      'Prune removes deleted resources',
+      'Multi-tenant apps deployed',
+    ],
   },
   198: {
     steps: [
@@ -208,7 +301,12 @@ const WAVE3_FIX = {
       'Configure environment-specific feature flags and limits',
     ],
     files: ['infra/helm/', 'docs/architecture/'],
-    verify: ['All environments have distinct configs', 'Helm overlays render correctly', 'Promotion criteria documented', 'Feature flags per-environment work'],
+    verify: [
+      'All environments have distinct configs',
+      'Helm overlays render correctly',
+      'Promotion criteria documented',
+      'Feature flags per-environment work',
+    ],
   },
   199: {
     steps: [
@@ -218,7 +316,12 @@ const WAVE3_FIX = {
       'Add Helm chart validation step to CI pipeline',
     ],
     files: ['.github/workflows/'],
-    verify: ['CI runs on every PR', 'All gate steps execute', 'Failed gates block merge', 'Charts validated in CI'],
+    verify: [
+      'CI runs on every PR',
+      'All gate steps execute',
+      'Failed gates block merge',
+      'Charts validated in CI',
+    ],
   },
   200: {
     steps: [
@@ -228,7 +331,12 @@ const WAVE3_FIX = {
       'Integrate with ArgoCD for GitOps-driven deployment',
     ],
     files: ['.github/workflows/', 'infra/gitops/'],
-    verify: ['CD triggers on merge to main', 'Images pushed successfully', 'Deployment proceeds automatically', 'Rollback mechanism tested'],
+    verify: [
+      'CD triggers on merge to main',
+      'Images pushed successfully',
+      'Deployment proceeds automatically',
+      'Rollback mechanism tested',
+    ],
   },
   201: {
     steps: [
@@ -238,7 +346,12 @@ const WAVE3_FIX = {
       'Integrate canary metrics with Prometheus alerts',
     ],
     files: ['infra/', 'services/observability/'],
-    verify: ['Canary receives configured traffic percentage', 'Metrics gate promotion correctly', 'Auto-rollback on errors works', 'Alerts fire on canary issues'],
+    verify: [
+      'Canary receives configured traffic percentage',
+      'Metrics gate promotion correctly',
+      'Auto-rollback on errors works',
+      'Alerts fire on canary issues',
+    ],
   },
   202: {
     steps: [
@@ -248,7 +361,12 @@ const WAVE3_FIX = {
       'Test rollback under various failure scenarios',
     ],
     files: ['infra/', 'apps/api/'],
-    verify: ['Rollback triggers on health failure', 'Correct previous revision restored', 'Rollback event logged', 'Notification sent to operations'],
+    verify: [
+      'Rollback triggers on health failure',
+      'Correct previous revision restored',
+      'Rollback event logged',
+      'Notification sent to operations',
+    ],
   },
   203: {
     steps: [
@@ -258,7 +376,12 @@ const WAVE3_FIX = {
       'Create policy test suite with expected outcomes',
     ],
     files: ['infra/opa/', '.github/workflows/'],
-    verify: ['Policies evaluate correctly', 'CI enforces policies', 'K8s admission controller active', 'Policy tests pass'],
+    verify: [
+      'Policies evaluate correctly',
+      'CI enforces policies',
+      'K8s admission controller active',
+      'Policy tests pass',
+    ],
   },
   204: {
     steps: [
@@ -268,7 +391,12 @@ const WAVE3_FIX = {
       'Add SBOM verification step to deployment pipeline',
     ],
     files: ['.github/workflows/', 'infra/'],
-    verify: ['SBOM generated for each image', 'Attestations signed and verifiable', 'Verification passes before deploy', 'SBOM queryable for dependency audit'],
+    verify: [
+      'SBOM generated for each image',
+      'Attestations signed and verifiable',
+      'Verification passes before deploy',
+      'SBOM queryable for dependency audit',
+    ],
   },
   205: {
     steps: [
@@ -278,7 +406,12 @@ const WAVE3_FIX = {
       'Create runbook links in alert annotations for responders',
     ],
     files: ['services/observability/', 'docs/runbooks/'],
-    verify: ['SLOs defined for key services', 'Burn rate alerts fire on budget consumption', 'Multi-window thresholds tuned', 'Runbook links in alerts'],
+    verify: [
+      'SLOs defined for key services',
+      'Burn rate alerts fire on budget consumption',
+      'Multi-window thresholds tuned',
+      'Runbook links in alerts',
+    ],
   },
   206: {
     steps: [
@@ -288,7 +421,12 @@ const WAVE3_FIX = {
       'Integrate E2E tests into CI pipeline with retry support',
     ],
     files: ['apps/web/e2e/', '.github/workflows/'],
-    verify: ['E2E tests pass against staging', 'Critical paths covered', 'Portal flows tested', 'CI integration works'],
+    verify: [
+      'E2E tests pass against staging',
+      'Critical paths covered',
+      'Portal flows tested',
+      'CI integration works',
+    ],
   },
   207: {
     steps: [
@@ -298,7 +436,12 @@ const WAVE3_FIX = {
       'Configure rollout status tracking and reporting dashboard',
     ],
     files: ['scripts/', 'infra/'],
-    verify: ['CLI performs fleet rollout', 'Progressive stages work', 'Dry-run shows plan without changes', 'Status tracked per tenant'],
+    verify: [
+      'CLI performs fleet rollout',
+      'Progressive stages work',
+      'Dry-run shows plan without changes',
+      'Status tracked per tenant',
+    ],
   },
   208: {
     steps: [
@@ -308,7 +451,12 @@ const WAVE3_FIX = {
       'Archive compliance evidence with timestamps and integrity hashes',
     ],
     files: ['scripts/', 'docs/security/'],
-    verify: ['Evidence artifacts generated', 'Regulatory mapping complete', 'Collection pipeline runs on schedule', 'Archive integrity verifiable'],
+    verify: [
+      'Evidence artifacts generated',
+      'Regulatory mapping complete',
+      'Collection pipeline runs on schedule',
+      'Archive integrity verifiable',
+    ],
   },
   209: {
     steps: [
@@ -318,7 +466,12 @@ const WAVE3_FIX = {
       'Plan cross-region PG replication and VistA global sync',
     ],
     files: ['infra/', 'docs/architecture/'],
-    verify: ['Architecture documented', 'Data residency accounted for', 'Regional configs exist', 'Failover planned and tested'],
+    verify: [
+      'Architecture documented',
+      'Data residency accounted for',
+      'Regional configs exist',
+      'Failover planned and tested',
+    ],
   },
   210: {
     steps: [
@@ -329,14 +482,19 @@ const WAVE3_FIX = {
       'Archive all verification artifacts for audit trail',
     ],
     files: ['docs/runbooks/', 'scripts/'],
-    verify: ['Runbook covers all services', 'Rollback procedures tested', 'Go/no-go criteria defined', 'Monitoring checklist complete'],
+    verify: [
+      'Runbook covers all services',
+      'Rollback procedures tested',
+      'Go/no-go criteria defined',
+      'Monitoring checklist complete',
+    ],
   },
 };
 
 const allFixes = { ...WAVE2_FIX, ...WAVE3_FIX };
 
 // Scan prompt directories for wave phase folders
-const dirs = readdirSync(PROMPTS).filter(d => {
+const dirs = readdirSync(PROMPTS).filter((d) => {
   const p = join(PROMPTS, d);
   return statSync(p).isDirectory() && /PHASE-\d+/.test(d);
 });
@@ -348,11 +506,17 @@ for (const dir of dirs) {
   const m = dir.match(/PHASE-(\d+)/);
   if (!m) continue;
   const phaseNum = parseInt(m[1]);
-  if (!allFixes[phaseNum]) { skipped++; continue; }
+  if (!allFixes[phaseNum]) {
+    skipped++;
+    continue;
+  }
 
   const data = allFixes[phaseNum];
   const title = titleFromFolder(dir);
-  if (!title) { skipped++; continue; }
+  if (!title) {
+    skipped++;
+    continue;
+  }
 
   const dirPath = join(PROMPTS, dir);
   const files = readdirSync(dirPath);
@@ -372,7 +536,7 @@ for (const dir of dirs) {
         ...data.verify.map((v, i) => `${i + 1}. ${v}`),
         '',
         '## Acceptance Criteria',
-        ...data.verify.map(v => `- [ ] ${v}`),
+        ...data.verify.map((v) => `- [ ] ${v}`),
         '',
         '## Source',
         '- Derived from wave playbook decomposition (Q213-Q215)',
@@ -392,7 +556,7 @@ for (const dir of dirs) {
         ...data.steps.map((s, i) => `${i + 1}. ${s}`),
         '',
         '## Files Touched',
-        ...data.files.map(f => `- ${f}`),
+        ...data.files.map((f) => `- ${f}`),
         '',
         '## Source',
         '- Derived from wave playbook decomposition (Q213-Q215)',

@@ -12,14 +12,18 @@
  *   - In-memory store (matches project pattern)
  */
 
-import * as crypto from "node:crypto";
-import { log } from "../../lib/logger.js";
-import { getClaim, listClaims } from "../domain/claim-store.js";
-import { getConnectorForMode, type RcmConnector } from "../connectors/types.js";
-import { resilientConnectorCall } from "../connectors/connector-resilience.js";
-import { buildClaim837FromDomain, advancePipelineStage, createPipelineEntry } from "../edi/pipeline.js";
-import { serialize837 } from "../edi/x12-serializer.js";
-import type { Claim } from "../domain/claim.js";
+import * as crypto from 'node:crypto';
+import { log } from '../../lib/logger.js';
+import { getClaim } from '../domain/claim-store.js';
+import { getConnectorForMode, type RcmConnector } from '../connectors/types.js';
+import { resilientConnectorCall } from '../connectors/connector-resilience.js';
+import {
+  buildClaim837FromDomain,
+  advancePipelineStage,
+  createPipelineEntry,
+} from '../edi/pipeline.js';
+import { serialize837 } from '../edi/x12-serializer.js';
+import type { Claim } from '../domain/claim.js';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -44,7 +48,7 @@ export interface BatchClaimResult {
 
 export interface BatchStatus {
   batchId: string;
-  status: "queued" | "processing" | "completed" | "failed";
+  status: 'queued' | 'processing' | 'completed' | 'failed';
   totalClaims: number;
   processed: number;
   succeeded: number;
@@ -72,12 +76,12 @@ const MAX_BATCHES = 200;
  * Returns a batch ID for tracking.
  */
 export function submitBatch(request: BatchSubmitRequest): BatchStatus {
-  const batchId = `batch-${crypto.randomBytes(6).toString("hex")}`;
+  const batchId = `batch-${crypto.randomBytes(6).toString('hex')}`;
   const claimIds = request.claimIds.slice(0, MAX_BATCH_SIZE);
 
   const batch: BatchStatus = {
     batchId,
-    status: "queued",
+    status: 'queued',
     totalClaims: claimIds.length,
     processed: 0,
     succeeded: 0,
@@ -93,16 +97,16 @@ export function submitBatch(request: BatchSubmitRequest): BatchStatus {
   }
   batches.set(batchId, batch);
 
-  log.info("Batch claim submission queued", {
-    component: "rcm-batch",
+  log.info('Batch claim submission queued', {
+    component: 'rcm-batch',
     batchId,
     claimCount: claimIds.length,
   });
 
   // Process asynchronously
   processBatch(batchId, claimIds, request.concurrency).catch((err) => {
-    log.error("Batch processing error", {
-      component: "rcm-batch",
+    log.error('Batch processing error', {
+      component: 'rcm-batch',
       batchId,
       error: (err as Error).message,
     });
@@ -134,26 +138,24 @@ export function listBatches(limit = 50): BatchStatus[] {
 async function processBatch(
   batchId: string,
   claimIds: string[],
-  concurrency?: number,
+  concurrency?: number
 ): Promise<void> {
   const batch = batches.get(batchId);
   if (!batch) return;
 
-  batch.status = "processing";
+  batch.status = 'processing';
   const maxConcurrent = Math.min(concurrency || MAX_BATCH_CONCURRENCY, MAX_BATCH_CONCURRENCY);
 
   // Process in chunks for concurrency control
   for (let i = 0; i < claimIds.length; i += maxConcurrent) {
     const chunk = claimIds.slice(i, i + maxConcurrent);
-    const results = await Promise.allSettled(
-      chunk.map((claimId) => processOneClaim(claimId)),
-    );
+    const results = await Promise.allSettled(chunk.map((claimId) => processOneClaim(claimId)));
 
     for (let j = 0; j < results.length; j++) {
       const result = results[j]!;
       batch.processed++;
 
-      if (result.status === "fulfilled") {
+      if (result.status === 'fulfilled') {
         batch.results.push(result.value);
         if (result.value.ok) {
           batch.succeeded++;
@@ -165,18 +167,18 @@ async function processBatch(
         batch.results.push({
           claimId: chunk[j]!,
           ok: false,
-          error: result.reason?.message || "Unknown error",
+          error: result.reason?.message || 'Unknown error',
           durationMs: 0,
         });
       }
     }
   }
 
-  batch.status = batch.failed === batch.totalClaims ? "failed" : "completed";
+  batch.status = batch.failed === batch.totalClaims ? 'failed' : 'completed';
   batch.completedAt = Date.now();
 
-  log.info("Batch claim submission completed", {
-    component: "rcm-batch",
+  log.info('Batch claim submission completed', {
+    component: 'rcm-batch',
     batchId,
     total: batch.totalClaims,
     succeeded: batch.succeeded,
@@ -190,13 +192,18 @@ async function processOneClaim(claimId: string): Promise<BatchClaimResult> {
   try {
     const claim = getClaim(claimId);
     if (!claim) {
-      return { claimId, ok: false, error: "Claim not found", durationMs: Date.now() - start };
+      return { claimId, ok: false, error: 'Claim not found', durationMs: Date.now() - start };
     }
 
     // Find connector for this claim's payer
     const connector = resolveConnector(claim);
     if (!connector) {
-      return { claimId, ok: false, error: "No connector for payer integration mode", durationMs: Date.now() - start };
+      return {
+        claimId,
+        ok: false,
+        error: 'No connector for payer integration mode',
+        durationMs: Date.now() - start,
+      };
     }
 
     // Build EDI payload
@@ -204,17 +211,15 @@ async function processOneClaim(claimId: string): Promise<BatchClaimResult> {
     const payload = serialize837(ediClaim);
 
     // Create pipeline entry
-    const pipelineEntry = createPipelineEntry(claimId, "837P", connector.id, claim.payerId);
+    const pipelineEntry = createPipelineEntry(claimId, '837P', connector.id, claim.payerId);
 
     // Submit through resilient wrapper
-    const result = await resilientConnectorCall(
-      connector.id,
-      "submit",
-      () => connector.submit("837P" as any, payload, { claimId, batchMode: "true" }),
+    const result = await resilientConnectorCall(connector.id, 'submit', () =>
+      connector.submit('837P' as any, payload, { claimId, batchMode: 'true' })
     );
 
     if (result.success) {
-      advancePipelineStage(pipelineEntry.id, "transmit");
+      advancePipelineStage(pipelineEntry.id, 'transmit');
       return {
         claimId,
         ok: true,
@@ -222,19 +227,19 @@ async function processOneClaim(claimId: string): Promise<BatchClaimResult> {
         durationMs: Date.now() - start,
       };
     } else {
-      advancePipelineStage(pipelineEntry.id, "error", { errors: result.errors });
+      advancePipelineStage(pipelineEntry.id, 'error', { errors: result.errors });
       return {
         claimId,
         ok: false,
-        error: result.errors.map((e) => e.description || e.code).join("; ") || "Submission failed",
+        error: result.errors.map((e) => e.description || e.code).join('; ') || 'Submission failed',
         durationMs: Date.now() - start,
       };
     }
-  } catch (err) {
+  } catch (_err) {
     return {
       claimId,
       ok: false,
-      error: "Claim submission failed",
+      error: 'Claim submission failed',
       durationMs: Date.now() - start,
     };
   }
@@ -242,5 +247,5 @@ async function processOneClaim(claimId: string): Promise<BatchClaimResult> {
 
 function resolveConnector(claim: Claim): RcmConnector | undefined {
   // Try claim's integration mode, fall back to sandbox
-  return getConnectorForMode(claim.payerId) || getConnectorForMode("sandbox");
+  return getConnectorForMode(claim.payerId) || getConnectorForMode('sandbox');
 }

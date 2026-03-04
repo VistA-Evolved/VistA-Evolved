@@ -8,18 +8,16 @@
  * - Permission declarations vs known actions
  */
 
-import type { ValidationIssue, ValidationCategory } from "./types.js";
-import { getModuleDefinitions, getEnabledModules } from "../module-registry.js";
-import { getCapabilityDefinitions, resolveCapabilities } from "../capability-service.js";
-import { STORE_INVENTORY } from "../../platform/store-policy.js";
+import type { ValidationIssue, ValidationCategory } from './types.js';
+import { getModuleDefinitions, getEnabledModules } from '../module-registry.js';
+import { getCapabilityDefinitions, resolveCapabilities } from '../capability-service.js';
+import { STORE_INVENTORY } from '../../platform/store-policy.js';
 
 /* ------------------------------------------------------------------ */
 /*  Main validator                                                     */
 /* ------------------------------------------------------------------ */
 
-export function validateCoverageIntegrity(
-  tenantId: string = "default"
-): ValidationCategory {
+export function validateCoverageIntegrity(tenantId: string = 'default'): ValidationCategory {
   const start = Date.now();
   const issues: ValidationIssue[] = [];
   const defs = getModuleDefinitions();
@@ -32,8 +30,8 @@ export function validateCoverageIntegrity(
     capModules.add(cap.module);
     if (!defs[cap.module]) {
       issues.push({
-        code: "CAP_ORPHAN_MODULE",
-        severity: "error",
+        code: 'CAP_ORPHAN_MODULE',
+        severity: 'error',
         message: `Capability "${capId}" references module "${cap.module}" which does not exist`,
         subject: capId,
         suggestion: `Fix the module reference in capabilities.json or add "${cap.module}" to modules.json`,
@@ -43,14 +41,14 @@ export function validateCoverageIntegrity(
 
   // 2. Check for modules with zero capabilities
   for (const modId of Object.keys(defs)) {
-    if (modId === "kernel") continue; // kernel is infrastructure, no user-facing caps
+    if (modId === 'kernel') continue; // kernel is infrastructure, no user-facing caps
     if (!capModules.has(modId)) {
       issues.push({
-        code: "MODULE_NO_CAPS",
-        severity: "warning",
+        code: 'MODULE_NO_CAPS',
+        severity: 'warning',
         message: `Module "${modId}" has no capabilities defined in capabilities.json`,
         subject: modId,
-        suggestion: "Add at least one capability for this module",
+        suggestion: 'Add at least one capability for this module',
       });
     }
   }
@@ -61,14 +59,14 @@ export function validateCoverageIntegrity(
   let pendingCount = 0;
   let disabledCount = 0;
   for (const cap of resolved) {
-    if (cap.effectiveStatus === "live") liveCount++;
-    else if (cap.effectiveStatus === "pending") pendingCount++;
-    else if (cap.effectiveStatus === "disabled") disabledCount++;
+    if (cap.effectiveStatus === 'live') liveCount++;
+    else if (cap.effectiveStatus === 'pending') pendingCount++;
+    else if (cap.effectiveStatus === 'disabled') disabledCount++;
   }
 
   issues.push({
-    code: "CAP_SUMMARY",
-    severity: "info",
+    code: 'CAP_SUMMARY',
+    severity: 'info',
     message: `${resolved.length} capabilities: ${liveCount} live, ${pendingCount} pending, ${disabledCount} disabled`,
   });
 
@@ -78,16 +76,14 @@ export function validateCoverageIntegrity(
     if (!dataStores) continue;
     for (const storeName of dataStores) {
       // Check if any store-policy entry matches by ID or domain
-      const found = STORE_INVENTORY.some(
-        (s) => s.id === storeName || s.domain === modId
-      );
+      const found = STORE_INVENTORY.some((s) => s.id === storeName || s.domain === modId);
       if (!found) {
         issues.push({
-          code: "STORE_NOT_IN_POLICY",
-          severity: "warning",
+          code: 'STORE_NOT_IN_POLICY',
+          severity: 'warning',
           message: `Module "${modId}" declares dataStore "${storeName}" not found in store-policy`,
           subject: modId,
-          suggestion: "Add a matching entry to STORE_INVENTORY in store-policy.ts",
+          suggestion: 'Add a matching entry to STORE_INVENTORY in store-policy.ts',
         });
       }
     }
@@ -100,17 +96,28 @@ export function validateCoverageIntegrity(
     if (
       store.domain &&
       !allModIds.has(store.domain) &&
-      !["auth", "security", "platform", "infra", "dev", "performance", "queue", "workflow", "templates", "alignment"].includes(store.domain)
+      ![
+        'auth',
+        'security',
+        'platform',
+        'infra',
+        'dev',
+        'performance',
+        'queue',
+        'workflow',
+        'templates',
+        'alignment',
+      ].includes(store.domain)
     ) {
       unmatchedDomains.add(store.domain);
     }
   }
   if (unmatchedDomains.size > 0) {
     issues.push({
-      code: "STORE_UNMATCHED_DOMAIN",
-      severity: "info",
-      message: `${unmatchedDomains.size} store-policy domains not matching a module ID: ${[...unmatchedDomains].join(", ")}`,
-      suggestion: "This is informational -- non-module domains are acceptable",
+      code: 'STORE_UNMATCHED_DOMAIN',
+      severity: 'info',
+      message: `${unmatchedDomains.size} store-policy domains not matching a module ID: ${[...unmatchedDomains].join(', ')}`,
+      suggestion: 'This is informational -- non-module domains are acceptable',
     });
   }
 
@@ -118,16 +125,16 @@ export function validateCoverageIntegrity(
   const capsPerModule = resolved.length / Math.max(enabled.length, 1);
   if (capsPerModule < 2) {
     issues.push({
-      code: "CAP_LOW_COVERAGE",
-      severity: "warning",
+      code: 'CAP_LOW_COVERAGE',
+      severity: 'warning',
       message: `Only ${capsPerModule.toFixed(1)} capabilities per enabled module (recommended >= 3)`,
-      suggestion: "Add more granular capabilities for better UI feature gating",
+      suggestion: 'Add more granular capabilities for better UI feature gating',
     });
   }
 
   return {
-    category: "coverage-integrity",
-    label: "Coverage Integrity",
+    category: 'coverage-integrity',
+    label: 'Coverage Integrity',
     issues,
     durationMs: Date.now() - start,
   };

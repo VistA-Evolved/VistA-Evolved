@@ -12,6 +12,7 @@ rules** — enforced at the platform layer, not the application layer.
 ## Context
 
 Different countries impose data residency requirements:
+
 - **US (HIPAA):** No explicit residency mandate, but BAA/HITECH requires
   safeguards. Many orgs prefer US-only hosting.
 - **Philippines (DPA 2012):** National Privacy Commission requires consent
@@ -29,13 +30,13 @@ Different countries impose data residency requirements:
 
 ## Rationale
 
-| Criterion                | Separate deploy | Region-routed | Client-encrypt |
-|--------------------------|:---:|:---:|:---:|
-| Operational complexity   | High (N clusters) | Medium (1 control plane) | Low |
-| Regulatory alignment     | Best | Good | Uncertain |
-| Data sovereignty proof   | Trivial | Requires audit | Hard to prove |
-| Cost efficiency          | Worst | Good | Best |
-| Feature parity           | Hard to maintain | Guaranteed | Guaranteed |
+| Criterion              |  Separate deploy  |      Region-routed       | Client-encrypt |
+| ---------------------- | :---------------: | :----------------------: | :------------: |
+| Operational complexity | High (N clusters) | Medium (1 control plane) |      Low       |
+| Regulatory alignment   |       Best        |           Good           |   Uncertain    |
+| Data sovereignty proof |      Trivial      |      Requires audit      | Hard to prove  |
+| Cost efficiency        |       Worst       |           Good           |      Best      |
+| Feature parity         | Hard to maintain  |        Guaranteed        |   Guaranteed   |
 
 - **Hybrid approach:** Region-routed by default, with separate-deploy override
   for high-assurance markets.
@@ -51,12 +52,12 @@ Each tenant has a `dataRegion` property:
 
 ```typescript
 type DataRegion =
-  | "us-east"     // US East (Virginia)
-  | "us-west"     // US West (Oregon)
-  | "ph-mnl"      // Philippines (Manila)
-  | "gh-acc"      // Ghana (Accra)
-  | "eu-fra"      // EU (Frankfurt) — future
-  | "local"       // On-premise / in-country hosting
+  | 'us-east' // US East (Virginia)
+  | 'us-west' // US West (Oregon)
+  | 'ph-mnl' // Philippines (Manila)
+  | 'gh-acc' // Ghana (Accra)
+  | 'eu-fra' // EU (Frankfurt) — future
+  | 'local'; // On-premise / in-country hosting
 ```
 
 ### Enforcement Points
@@ -79,12 +80,12 @@ interface DataTransferAgreement {
   tenantId: string;
   sourceRegion: DataRegion;
   targetRegion: DataRegion;
-  purpose: string;            // Why data is being transferred
-  legalBasis: string;         // Regulatory justification
+  purpose: string; // Why data is being transferred
+  legalBasis: string; // Regulatory justification
   consentEvidenceRef: string; // Link to consent record
-  approvedBy: string;         // Admin who approved
-  expiresAt: string;          // ISO 8601
-  status: "active" | "expired" | "revoked";
+  approvedBy: string; // Admin who approved
+  expiresAt: string; // ISO 8601
+  status: 'active' | 'expired' | 'revoked';
 }
 ```
 
@@ -98,8 +99,8 @@ The country pack `values.json` includes:
     "region": "us-east",
     "crossBorderTransferAllowed": false,
     "requiresConsentForTransfer": true,
-    "retentionMinYears": 7
-  }
+    "retentionMinYears": 7,
+  },
 }
 ```
 

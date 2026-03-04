@@ -10,15 +10,17 @@ RTL readiness, and locale key parity auditing.
 ## Deliverables
 
 ### 1. Centralized Formatting Package
+
 - **Package:** `packages/locale-utils/`
 - `formatDate()`, `formatTime()`, `formatDateTime()` — locale-aware date formatting
 - `formatNumber()`, `formatCurrency()` — locale-aware number/currency
 - `formatRelativeTime()` — relative time (e.g., "3 days ago")
 - `isRtlLocale()`, `getTextDirection()` — RTL detection infrastructure
 - `SUPPORTED_LOCALES` — canonical list of supported locales
-- Zero external dependencies — uses Intl.* APIs only
+- Zero external dependencies — uses Intl.\* APIs only
 
 ### 2. Locale Key Parity Audit
+
 - **Script:** `packages/locale-utils/src/audit-keys.ts`
 - Scans en.json, fil.json, es.json for portal and web apps
 - Reports missing keys (fil/es vs en baseline)
@@ -26,12 +28,14 @@ RTL readiness, and locale key parity auditing.
 - JSON output for CI consumption
 
 ### 3. Contract Tests
+
 - **File:** `packages/locale-utils/tests/locale-utils.test.ts`
 - Tests for all formatting functions
 - RTL detection tests
 - Null/undefined safety tests
 
 ### 4. Workspace Integration
+
 - `pnpm-workspace.yaml` updated to include `packages/*`
 
 ## Acceptance Criteria

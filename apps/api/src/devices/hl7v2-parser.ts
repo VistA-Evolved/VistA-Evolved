@@ -117,13 +117,11 @@ export function extractMllpMessage(buffer: Buffer): {
   const fsIndex = buffer.indexOf(MLLP_FS, vtIndex + 1);
   if (fsIndex === -1) return { message: null, remainder: buffer };
 
-  const message = buffer.subarray(vtIndex + 1, fsIndex).toString("utf-8");
+  const message = buffer.subarray(vtIndex + 1, fsIndex).toString('utf-8');
 
   // Skip optional trailing CR
   const endIndex =
-    fsIndex + 1 < buffer.length && buffer[fsIndex + 1] === MLLP_CR
-      ? fsIndex + 2
-      : fsIndex + 1;
+    fsIndex + 1 < buffer.length && buffer[fsIndex + 1] === MLLP_CR ? fsIndex + 2 : fsIndex + 1;
 
   const remainder = buffer.subarray(endIndex);
   return { message, remainder };
@@ -137,24 +135,22 @@ export function extractMllpMessage(buffer: Buffer): {
  * Parse an HL7 v2 message string into structured segments and fields.
  */
 export function parseHl7Message(raw: string): Hl7ParseResult {
-  if (!raw || !raw.startsWith("MSH")) {
-    return { ok: false, error: "message must start with MSH" };
+  if (!raw || !raw.startsWith('MSH')) {
+    return { ok: false, error: 'message must start with MSH' };
   }
 
   // Field separator is the character at position 3 (after "MSH")
   const fieldSep = raw.charAt(3);
   if (!fieldSep) {
-    return { ok: false, error: "missing field separator" };
+    return { ok: false, error: 'missing field separator' };
   }
 
   // Component separator is at MSH-2 position 0
   const encodingChars = raw.substring(4, 8);
-  const componentSep = encodingChars.charAt(0) || "^";
+  const componentSep = encodingChars.charAt(0) || '^';
 
   // Split into segments by \r or \n (handles both)
-  const segmentLines = raw
-    .split(/\r\n|\r|\n/)
-    .filter((line) => line.trim().length > 0);
+  const segmentLines = raw.split(/\r\n|\r|\n/).filter((line) => line.trim().length > 0);
 
   const segments: Hl7Segment[] = segmentLines.map((line) => {
     const rawFields = line.split(fieldSep);
@@ -170,17 +166,17 @@ export function parseHl7Message(raw: string): Hl7ParseResult {
   });
 
   // Extract MSH fields
-  const msh = segments.find((s) => s.type === "MSH");
+  const msh = segments.find((s) => s.type === 'MSH');
   if (!msh || msh.fields.length < 10) {
-    return { ok: false, error: "invalid MSH segment" };
+    return { ok: false, error: 'invalid MSH segment' };
   }
 
-  const messageType = msh.fields[9]?.raw || "UNKNOWN"; // MSH-9
-  const controlId = msh.fields[10]?.raw || ""; // MSH-10
-  const sendingApp = msh.fields[3]?.raw || ""; // MSH-3
-  const sendingFacility = msh.fields[4]?.raw || ""; // MSH-4
-  const timestamp = msh.fields[7]?.raw || ""; // MSH-7
-  const version = msh.fields[12]?.raw || "2.3"; // MSH-12
+  const messageType = msh.fields[9]?.raw || 'UNKNOWN'; // MSH-9
+  const controlId = msh.fields[10]?.raw || ''; // MSH-10
+  const sendingApp = msh.fields[3]?.raw || ''; // MSH-3
+  const sendingFacility = msh.fields[4]?.raw || ''; // MSH-4
+  const timestamp = msh.fields[7]?.raw || ''; // MSH-7
+  const version = msh.fields[12]?.raw || '2.3'; // MSH-12
 
   const message: Hl7Message = {
     raw,
@@ -194,31 +190,31 @@ export function parseHl7Message(raw: string): Hl7ParseResult {
   };
 
   // Extract patient ID from PID-3
-  const pid = segments.find((s) => s.type === "PID");
+  const pid = segments.find((s) => s.type === 'PID');
   const patientId = pid?.fields[3]?.components?.[0] || undefined;
 
   // Extract observations from OBX segments
   const observations: Hl7Observation[] = [];
-  const obr = segments.find((s) => s.type === "OBR");
+  const obr = segments.find((s) => s.type === 'OBR');
   const obrTimestamp = obr?.fields[7]?.raw || timestamp;
 
   for (const seg of segments) {
-    if (seg.type !== "OBX") continue;
+    if (seg.type !== 'OBX') continue;
 
     const obxId = seg.fields[3]; // OBX-3: Observation Identifier
     observations.push({
-      setId: seg.fields[1]?.raw || "",
-      valueType: seg.fields[2]?.raw || "",
-      observationId: obxId?.raw || "",
-      code: obxId?.components?.[0] || "",
-      codeText: obxId?.components?.[1] || "",
-      codeSystem: obxId?.components?.[2] || "local",
-      subId: seg.fields[4]?.raw || "",
-      value: seg.fields[5]?.raw || "",
-      units: seg.fields[6]?.components?.[0] || "",
-      referenceRange: seg.fields[7]?.raw || "",
-      abnormalFlags: seg.fields[8]?.raw || "",
-      resultStatus: seg.fields[11]?.raw || "",
+      setId: seg.fields[1]?.raw || '',
+      valueType: seg.fields[2]?.raw || '',
+      observationId: obxId?.raw || '',
+      code: obxId?.components?.[0] || '',
+      codeText: obxId?.components?.[1] || '',
+      codeSystem: obxId?.components?.[2] || 'local',
+      subId: seg.fields[4]?.raw || '',
+      value: seg.fields[5]?.raw || '',
+      units: seg.fields[6]?.components?.[0] || '',
+      referenceRange: seg.fields[7]?.raw || '',
+      abnormalFlags: seg.fields[8]?.raw || '',
+      resultStatus: seg.fields[11]?.raw || '',
       observationTimestamp: seg.fields[14]?.raw || obrTimestamp,
     });
   }
@@ -240,16 +236,13 @@ export function parseHl7Message(raw: string): Hl7ParseResult {
  */
 export function generateAck(
   controlId: string,
-  ackCode: "AA" | "AE" | "AR" = "AA",
+  ackCode: 'AA' | 'AE' | 'AR' = 'AA',
   errorMessage?: string
 ): string {
-  const ts = new Date()
-    .toISOString()
-    .replace(/[-:T]/g, "")
-    .substring(0, 14);
+  const ts = new Date().toISOString().replace(/[-:T]/g, '').substring(0, 14);
   const lines = [
     `MSH|^~\\&|VISTA_EVOLVED|FACILITY|DEVICE|FACILITY|${ts}||ACK|${controlId}|P|2.3`,
-    `MSA|${ackCode}|${controlId}${errorMessage ? `|${errorMessage}` : ""}`,
+    `MSA|${ackCode}|${controlId}${errorMessage ? `|${errorMessage}` : ''}`,
   ];
-  return lines.join("\r");
+  return lines.join('\r');
 }

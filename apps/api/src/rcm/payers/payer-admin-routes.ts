@@ -19,7 +19,7 @@
  * Auth: session-level (matched by /admin/ catch-all in AUTH_RULES).
  */
 
-import type { FastifyInstance, FastifyPluginAsync } from "fastify";
+import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
 import {
   initPayerPersistence,
   importFromSnapshot,
@@ -32,24 +32,22 @@ import {
   getPayerRegistryStats,
   getTenantOverride,
   setTenantOverride,
-  listTenantOverrides,
   resolvePayerForTenant,
   type PersistedPayer,
   type TenantPayerOverride,
-} from "./payer-persistence.js";
+} from './payer-persistence.js';
 import {
   appendPayerAudit,
   getPayerAuditTrail,
-  getAllPayerAudit,
   verifyPayerAuditChain,
   getPayerAuditStats,
-} from "./payer-audit.js";
+} from './payer-audit.js';
 import {
   validatePayerEvidence,
   hashEvidenceList,
   computeRegistryEvidenceScore,
-} from "./evidence-manager.js";
-import type { HmoCapabilities, HmoEvidence, HmoStatus } from "./ph-hmo-registry.js";
+} from './evidence-manager.js';
+import type { HmoCapabilities, HmoEvidence, HmoStatus } from './ph-hmo-registry.js';
 
 let persistenceReady = false;
 
@@ -66,7 +64,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   }
 
   /* ── GET /admin/payers — list all payers ────────────────── */
-  server.get("/admin/payers", async (request, reply) => {
+  server.get('/admin/payers', async (request, reply) => {
     ensurePersistence();
     const query = request.query as {
       status?: string;
@@ -88,7 +86,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     // If tenantId provided, resolve with tenant overrides
     let resolved: PersistedPayer[] = payers;
     if (query.tenantId) {
-      resolved = payers.map(p => {
+      resolved = payers.map((p) => {
         const r = resolvePayerForTenant(query.tenantId!, p.payerId);
         return r ?? p;
       });
@@ -103,7 +101,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── GET /admin/payers/stats — registry stats ──────────── */
-  server.get("/admin/payers/stats", async (_request, reply) => {
+  server.get('/admin/payers/stats', async (_request, reply) => {
     ensurePersistence();
     const stats = getPayerRegistryStats();
 
@@ -122,29 +120,29 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── GET /admin/payers/audit/verify — chain integrity ──── */
-  server.get("/admin/payers/audit/verify", async (_request, reply) => {
+  server.get('/admin/payers/audit/verify', async (_request, reply) => {
     const result = verifyPayerAuditChain();
     return reply.send(result);
   });
 
   /* ── POST /admin/payers/import — import from snapshot ──── */
-  server.post("/admin/payers/import", async (request, reply) => {
+  server.post('/admin/payers/import', async (request, reply) => {
     ensurePersistence();
     const body = (request.body as any) || {};
-    const actor = body.actor ?? "system";
+    const actor = body.actor ?? 'system';
 
     const result = importFromSnapshot({
-      sourceType: body.sourceType ?? "insurance_commission_snapshot",
+      sourceType: body.sourceType ?? 'insurance_commission_snapshot',
       sourceUrl: body.sourceUrl,
       importedBy: actor,
     });
 
     if (result.imported > 0) {
       appendPayerAudit({
-        action: "payer.registry_imported",
+        action: 'payer.registry_imported',
         actor,
         detail: `Imported ${result.imported} payers, skipped ${result.skipped}`,
-        reason: body.reason ?? "Initial registry import",
+        reason: body.reason ?? 'Initial registry import',
       });
     }
 
@@ -157,7 +155,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── GET /admin/payers/:id — single payer detail ────────── */
-  server.get("/admin/payers/:id", async (request, reply) => {
+  server.get('/admin/payers/:id', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
     const query = request.query as { tenantId?: string };
@@ -177,7 +175,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     const evidenceValidation = validatePayerEvidence(
       payer.payerId,
       payer.capabilities,
-      payer.evidence,
+      payer.evidence
     );
 
     const evidenceHashes = hashEvidenceList(payer.evidence);
@@ -191,16 +189,16 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── PATCH /admin/payers/:id/capabilities — update caps ── */
-  server.patch("/admin/payers/:id/capabilities", async (request, reply) => {
+  server.patch('/admin/payers/:id/capabilities', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const actor = body.actor ?? "admin";
-    const reason = body.reason ?? "Capability update";
+    const actor = body.actor ?? 'admin';
+    const reason = body.reason ?? 'Capability update';
     const capabilities: Partial<HmoCapabilities> = body.capabilities ?? {};
 
     if (Object.keys(capabilities).length === 0) {
-      return reply.code(400).send({ ok: false, error: "No capabilities provided" });
+      return reply.code(400).send({ ok: false, error: 'No capabilities provided' });
     }
 
     const result = updatePayerCapabilities(id, capabilities, actor, reason);
@@ -209,7 +207,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     }
 
     appendPayerAudit({
-      action: "payer.capabilities_updated",
+      action: 'payer.capabilities_updated',
       actor,
       payerId: id,
       before: result.before,
@@ -224,12 +222,12 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── PATCH /admin/payers/:id/tasks — update tasks ──────── */
-  server.patch("/admin/payers/:id/tasks", async (request, reply) => {
+  server.patch('/admin/payers/:id/tasks', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const actor = body.actor ?? "admin";
-    const reason = body.reason ?? "Task update";
+    const actor = body.actor ?? 'admin';
+    const reason = body.reason ?? 'Task update';
     const tasks: string[] = body.tasks ?? [];
 
     const result = updatePayerTasks(id, tasks, actor, reason);
@@ -238,7 +236,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     }
 
     appendPayerAudit({
-      action: "payer.tasks_updated",
+      action: 'payer.tasks_updated',
       actor,
       payerId: id,
       before: result.before,
@@ -253,23 +251,23 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── PATCH /admin/payers/:id/status — update status ────── */
-  server.patch("/admin/payers/:id/status", async (request, reply) => {
+  server.patch('/admin/payers/:id/status', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const actor = body.actor ?? "admin";
-    const reason = body.reason ?? "Status change";
+    const actor = body.actor ?? 'admin';
+    const reason = body.reason ?? 'Status change';
     const status: HmoStatus = body.status;
 
     if (!status) {
-      return reply.code(400).send({ ok: false, error: "Missing status field" });
+      return reply.code(400).send({ ok: false, error: 'Missing status field' });
     }
 
-    const validStatuses = ["in_progress", "contracting_needed", "active", "suspended"];
+    const validStatuses = ['in_progress', 'contracting_needed', 'active', 'suspended'];
     if (!validStatuses.includes(status)) {
       return reply.code(400).send({
         ok: false,
-        error: `Invalid status: ${status}. Valid: ${validStatuses.join(", ")}`,
+        error: `Invalid status: ${status}. Valid: ${validStatuses.join(', ')}`,
       });
     }
 
@@ -279,7 +277,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     }
 
     appendPayerAudit({
-      action: "payer.status_changed",
+      action: 'payer.status_changed',
       actor,
       payerId: id,
       before: result.before,
@@ -294,22 +292,22 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── POST /admin/payers/:id/evidence — add evidence ────── */
-  server.post("/admin/payers/:id/evidence", async (request, reply) => {
+  server.post('/admin/payers/:id/evidence', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const actor = body.actor ?? "admin";
+    const actor = body.actor ?? 'admin';
 
     const evidence: HmoEvidence = {
-      kind: body.kind ?? "other",
+      kind: body.kind ?? 'other',
       url: body.url,
-      title: body.title ?? "Untitled evidence",
+      title: body.title ?? 'Untitled evidence',
       retrievedAt: body.retrievedAt ?? new Date().toISOString(),
       notes: body.notes,
     };
 
     if (!evidence.url) {
-      return reply.code(400).send({ ok: false, error: "Missing evidence URL" });
+      return reply.code(400).send({ ok: false, error: 'Missing evidence URL' });
     }
 
     const result = addPayerEvidence(id, evidence, actor);
@@ -318,7 +316,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     }
 
     appendPayerAudit({
-      action: "payer.evidence_added",
+      action: 'payer.evidence_added',
       actor,
       payerId: id,
       after: evidence,
@@ -333,7 +331,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── GET /admin/payers/:id/evidence/validate — validate ─── */
-  server.get("/admin/payers/:id/evidence/validate", async (request, reply) => {
+  server.get('/admin/payers/:id/evidence/validate', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
     const payer = getPayer(id);
@@ -349,7 +347,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── GET /admin/payers/:id/audit — audit trail ──────────── */
-  server.get("/admin/payers/:id/audit", async (request, reply) => {
+  server.get('/admin/payers/:id/audit', async (request, reply) => {
     const { id } = request.params as { id: string };
     const query = request.query as { limit?: string; offset?: string };
 
@@ -362,14 +360,14 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
   });
 
   /* ── POST /admin/payers/:id/tenant-override — set override */
-  server.post("/admin/payers/:id/tenant-override", async (request, reply) => {
+  server.post('/admin/payers/:id/tenant-override', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const tenantId = body.tenantId;
 
     if (!tenantId) {
-      return reply.code(400).send({ ok: false, error: "Missing tenantId" });
+      return reply.code(400).send({ ok: false, error: 'Missing tenantId' });
     }
 
     const payer = getPayer(id);
@@ -388,36 +386,40 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
       routingPreferences: body.routingPreferences,
       enabled: body.enabled ?? true,
       updatedAt: new Date().toISOString(),
-      updatedBy: body.actor ?? "admin",
+      updatedBy: body.actor ?? 'admin',
     };
 
     setTenantOverride(override);
 
     appendPayerAudit({
-      action: "payer.tenant_override_set",
-      actor: body.actor ?? "admin",
+      action: 'payer.tenant_override_set',
+      actor: body.actor ?? 'admin',
       payerId: id,
       tenantId,
       after: override,
-      reason: body.reason ?? "Tenant override updated",
+      reason: body.reason ?? 'Tenant override updated',
     });
 
     return reply.send({ ok: true, override });
   });
 
   /* ── GET /admin/payers/:id/tenant-override — get override ─ */
-  server.get("/admin/payers/:id/tenant-override", async (request, reply) => {
+  server.get('/admin/payers/:id/tenant-override', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
     const query = request.query as { tenantId?: string };
 
     if (!query.tenantId) {
-      return reply.code(400).send({ ok: false, error: "Missing tenantId query param" });
+      return reply.code(400).send({ ok: false, error: 'Missing tenantId query param' });
     }
 
     const override = getTenantOverride(query.tenantId, id);
     if (!override) {
-      return reply.send({ ok: true, override: null, message: "No tenant override - using global defaults" });
+      return reply.send({
+        ok: true,
+        override: null,
+        message: 'No tenant override - using global defaults',
+      });
     }
 
     return reply.send({ ok: true, override });

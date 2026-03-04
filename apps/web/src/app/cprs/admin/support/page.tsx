@@ -7,17 +7,20 @@
  * Tabs: Diagnostics | Tickets
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styles from '@/components/cprs/cprs.module.css';
 import { getCsrfToken } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
-
 
 type Tab = 'diagnostics' | 'tickets';
 
 interface DiagnosticReport {
   timestamp: string;
-  runtime: { nodeVersion: string; uptimeSeconds: number; memoryMb: { heapUsed: number; heapTotal: number } };
+  runtime: {
+    nodeVersion: string;
+    uptimeSeconds: number;
+    memoryMb: { heapUsed: number; heapTotal: number };
+  };
   vista: { reachable: boolean; host: string; port: number; latencyMs?: number; error?: string };
   modules: { sku: string; totalModules: number; enabledModules: number };
   adapters: { totalAdapters: number; healthyAdapters: number };
@@ -77,7 +80,9 @@ export default function SupportPage() {
     try {
       const data = await apiFetch('/admin/support/diagnostics');
       if (data.ok) setDiag(data.report);
-    } catch { setError('Failed to load diagnostics'); }
+    } catch {
+      setError('Failed to load diagnostics');
+    }
     setLoading(false);
   }, []);
 
@@ -86,7 +91,9 @@ export default function SupportPage() {
     try {
       const data = await apiFetch('/admin/support/tickets');
       if (data.ok) setTickets(data.tickets);
-    } catch { setError('Failed to load tickets'); }
+    } catch {
+      setError('Failed to load tickets');
+    }
   }, []);
 
   useEffect(() => {
@@ -99,9 +106,12 @@ export default function SupportPage() {
     setLoading(true);
     try {
       await apiPost('/admin/support/tickets', { title, description, category, priority });
-      setTitle(''); setDescription('');
+      setTitle('');
+      setDescription('');
       loadTickets();
-    } catch { setError('Failed to create ticket'); }
+    } catch {
+      setError('Failed to create ticket');
+    }
     setLoading(false);
   };
 
@@ -110,19 +120,34 @@ export default function SupportPage() {
       <h2 style={{ marginTop: 0 }}>Support Tooling</h2>
 
       {error && (
-        <div style={{ background: '#fee', color: '#c00', padding: '8px 12px', borderRadius: 4, marginBottom: 12 }}>
+        <div
+          style={{
+            background: '#fee',
+            color: '#c00',
+            padding: '8px 12px',
+            borderRadius: 4,
+            marginBottom: 12,
+          }}
+        >
           {error}
         </div>
       )}
 
       <div style={{ display: 'flex', gap: 4, marginBottom: 16 }}>
         {(['diagnostics', 'tickets'] as Tab[]).map((t) => (
-          <button key={t} onClick={() => setTab(t)}
+          <button
+            key={t}
+            onClick={() => setTab(t)}
             style={{
-              padding: '8px 16px', border: 'none', borderRadius: 4, cursor: 'pointer',
-              background: tab === t ? '#0066cc' : '#e0e0e0', color: tab === t ? '#fff' : '#333',
+              padding: '8px 16px',
+              border: 'none',
+              borderRadius: 4,
+              cursor: 'pointer',
+              background: tab === t ? '#0066cc' : '#e0e0e0',
+              color: tab === t ? '#fff' : '#333',
               fontWeight: tab === t ? 600 : 400,
-            }}>
+            }}
+          >
             {t === 'diagnostics' ? 'System Diagnostics' : 'Support Tickets'}
           </button>
         ))}
@@ -130,56 +155,118 @@ export default function SupportPage() {
 
       {tab === 'diagnostics' && (
         <div>
-          <button onClick={loadDiagnostics} disabled={loading}
-            style={{ padding: '8px 16px', background: '#0066cc', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', marginBottom: 16 }}>
+          <button
+            onClick={loadDiagnostics}
+            disabled={loading}
+            style={{
+              padding: '8px 16px',
+              background: '#0066cc',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 4,
+              cursor: 'pointer',
+              marginBottom: 16,
+            }}
+          >
             {loading ? 'Collecting...' : 'Refresh Diagnostics'}
           </button>
 
           {diag && (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                gap: 16,
+              }}
+            >
               {/* Runtime */}
-              <div style={{ padding: 16, border: '1px solid #ddd', borderRadius: 8, background: '#fafafa' }}>
+              <div
+                style={{
+                  padding: 16,
+                  border: '1px solid #ddd',
+                  borderRadius: 8,
+                  background: '#fafafa',
+                }}
+              >
                 <h4 style={{ margin: '0 0 8px 0' }}>Runtime</h4>
                 <div>Node: {diag.runtime.nodeVersion}</div>
                 <div>Uptime: {Math.round(diag.runtime.uptimeSeconds / 60)}m</div>
-                <div>Heap: {diag.runtime.memoryMb.heapUsed}/{diag.runtime.memoryMb.heapTotal} MB</div>
+                <div>
+                  Heap: {diag.runtime.memoryMb.heapUsed}/{diag.runtime.memoryMb.heapTotal} MB
+                </div>
               </div>
 
               {/* VistA */}
-              <div style={{
-                padding: 16, border: '1px solid', borderRadius: 8,
-                borderColor: diag.vista.reachable ? '#4caf50' : '#f44336',
-                background: diag.vista.reachable ? '#e8f5e9' : '#ffebee',
-              }}>
+              <div
+                style={{
+                  padding: 16,
+                  border: '1px solid',
+                  borderRadius: 8,
+                  borderColor: diag.vista.reachable ? '#4caf50' : '#f44336',
+                  background: diag.vista.reachable ? '#e8f5e9' : '#ffebee',
+                }}
+              >
                 <h4 style={{ margin: '0 0 8px 0' }}>VistA Connection</h4>
                 <div>Status: {diag.vista.reachable ? 'Reachable' : 'Unreachable'}</div>
-                <div>Host: {diag.vista.host}:{diag.vista.port}</div>
+                <div>
+                  Host: {diag.vista.host}:{diag.vista.port}
+                </div>
                 {diag.vista.latencyMs != null && <div>Latency: {diag.vista.latencyMs}ms</div>}
                 {diag.vista.error && <div style={{ color: '#d32f2f' }}>{diag.vista.error}</div>}
               </div>
 
               {/* Modules */}
-              <div style={{ padding: 16, border: '1px solid #ddd', borderRadius: 8, background: '#fafafa' }}>
+              <div
+                style={{
+                  padding: 16,
+                  border: '1px solid #ddd',
+                  borderRadius: 8,
+                  background: '#fafafa',
+                }}
+              >
                 <h4 style={{ margin: '0 0 8px 0' }}>Modules</h4>
                 <div>SKU: {diag.modules.sku}</div>
-                <div>Enabled: {diag.modules.enabledModules}/{diag.modules.totalModules}</div>
+                <div>
+                  Enabled: {diag.modules.enabledModules}/{diag.modules.totalModules}
+                </div>
               </div>
 
               {/* Adapters */}
-              <div style={{ padding: 16, border: '1px solid #ddd', borderRadius: 8, background: '#fafafa' }}>
+              <div
+                style={{
+                  padding: 16,
+                  border: '1px solid #ddd',
+                  borderRadius: 8,
+                  background: '#fafafa',
+                }}
+              >
                 <h4 style={{ margin: '0 0 8px 0' }}>Adapters</h4>
                 <div>Total: {diag.adapters.totalAdapters}</div>
                 <div>Healthy: {diag.adapters.healthyAdapters}</div>
               </div>
 
               {/* Stores */}
-              <div style={{ padding: 16, border: '1px solid #ddd', borderRadius: 8, background: '#fafafa' }}>
+              <div
+                style={{
+                  padding: 16,
+                  border: '1px solid #ddd',
+                  borderRadius: 8,
+                  background: '#fafafa',
+                }}
+              >
                 <h4 style={{ margin: '0 0 8px 0' }}>Data Stores</h4>
                 <div>Total: {diag.stores.total}</div>
               </div>
 
               {/* HL7 */}
-              <div style={{ padding: 16, border: '1px solid #ddd', borderRadius: 8, background: '#fafafa' }}>
+              <div
+                style={{
+                  padding: 16,
+                  border: '1px solid #ddd',
+                  borderRadius: 8,
+                  background: '#fafafa',
+                }}
+              >
                 <h4 style={{ margin: '0 0 8px 0' }}>HL7 Engine</h4>
                 <div>Enabled: {diag.hl7.enabled ? 'Yes' : 'No'}</div>
                 {diag.hl7.status && <div>Status: {diag.hl7.status}</div>}
@@ -192,28 +279,68 @@ export default function SupportPage() {
       {tab === 'tickets' && (
         <div>
           {/* Create ticket form */}
-          <div style={{ padding: 16, border: '1px solid #ddd', borderRadius: 8, marginBottom: 16, background: '#fafafa' }}>
+          <div
+            style={{
+              padding: 16,
+              border: '1px solid #ddd',
+              borderRadius: 8,
+              marginBottom: 16,
+              background: '#fafafa',
+            }}
+          >
             <h4 style={{ margin: '0 0 12px 0' }}>Create Support Ticket</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              <input type="text" placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)}
-                style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }} />
-              <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)}
-                rows={3} style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }} />
+              <input
+                type="text"
+                placeholder="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+              />
+              <textarea
+                placeholder="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                rows={3}
+                style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+              />
               <div style={{ display: 'flex', gap: 8 }}>
-                <select value={category} onChange={(e) => setCategory(e.target.value)}
-                  style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}>
-                  {['vista', 'adapter', 'module', 'performance', 'data', 'security', 'other'].map((c) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                >
+                  {['vista', 'adapter', 'module', 'performance', 'data', 'security', 'other'].map(
+                    (c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    )
+                  )}
                 </select>
-                <select value={priority} onChange={(e) => setPriority(e.target.value)}
-                  style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}>
+                <select
+                  value={priority}
+                  onChange={(e) => setPriority(e.target.value)}
+                  style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                >
                   {['low', 'medium', 'high', 'critical'].map((p) => (
-                    <option key={p} value={p}>{p}</option>
+                    <option key={p} value={p}>
+                      {p}
+                    </option>
                   ))}
                 </select>
-                <button onClick={createNewTicket} disabled={loading || !title || !description}
-                  style={{ padding: '8px 16px', background: '#0066cc', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
+                <button
+                  onClick={createNewTicket}
+                  disabled={loading || !title || !description}
+                  style={{
+                    padding: '8px 16px',
+                    background: '#0066cc',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: 4,
+                    cursor: 'pointer',
+                  }}
+                >
                   Create
                 </button>
               </div>
@@ -234,21 +361,33 @@ export default function SupportPage() {
             </thead>
             <tbody>
               {tickets.length === 0 ? (
-                <tr><td colSpan={6} style={{ padding: 16, textAlign: 'center', color: '#999' }}>No tickets yet</td></tr>
-              ) : tickets.map((t) => (
-                <tr key={t.id} style={{ borderBottom: '1px solid #eee' }}>
-                  <td style={{ padding: 8, fontFamily: 'monospace', fontSize: 12 }}>{t.id.slice(0, 16)}</td>
-                  <td style={{ padding: 8 }}>{t.title}</td>
-                  <td style={{ padding: 8 }}>{t.category}</td>
-                  <td style={{ padding: 8 }}>
-                    <span style={{ color: PRIORITY_COLORS[t.priority] || '#333', fontWeight: 600 }}>
-                      {t.priority}
-                    </span>
+                <tr>
+                  <td colSpan={6} style={{ padding: 16, textAlign: 'center', color: '#999' }}>
+                    No tickets yet
                   </td>
-                  <td style={{ padding: 8 }}>{t.status}</td>
-                  <td style={{ padding: 8, fontSize: 12 }}>{new Date(t.createdAt).toLocaleDateString()}</td>
                 </tr>
-              ))}
+              ) : (
+                tickets.map((t) => (
+                  <tr key={t.id} style={{ borderBottom: '1px solid #eee' }}>
+                    <td style={{ padding: 8, fontFamily: 'monospace', fontSize: 12 }}>
+                      {t.id.slice(0, 16)}
+                    </td>
+                    <td style={{ padding: 8 }}>{t.title}</td>
+                    <td style={{ padding: 8 }}>{t.category}</td>
+                    <td style={{ padding: 8 }}>
+                      <span
+                        style={{ color: PRIORITY_COLORS[t.priority] || '#333', fontWeight: 600 }}
+                      >
+                        {t.priority}
+                      </span>
+                    </td>
+                    <td style={{ padding: 8 }}>{t.status}</td>
+                    <td style={{ padding: 8, fontSize: 12 }}>
+                      {new Date(t.createdAt).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

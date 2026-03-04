@@ -8,8 +8,8 @@
  * In-memory cache with PG persistence. Changes audited immutably.
  */
 
-import { log } from "../lib/logger.js";
-import { immutableAudit, type ImmutableAuditAction } from "../lib/immutable-audit.js";
+import { log } from '../lib/logger.js';
+import { immutableAudit, type ImmutableAuditAction } from '../lib/immutable-audit.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -71,7 +71,7 @@ export function defaultTenantSecurityPolicy(tenantId: string): TenantSecurityPol
     auditShippingEnabled: false,
     metadata: {},
     updatedAt: new Date().toISOString(),
-    updatedBy: "system",
+    updatedBy: 'system',
   };
 }
 
@@ -95,8 +95,8 @@ export function getTenantSecurityPolicy(tenantId: string): TenantSecurityPolicy 
  */
 export function updateTenantSecurityPolicy(
   tenantId: string,
-  updates: Partial<Omit<TenantSecurityPolicy, "tenantId" | "updatedAt" | "updatedBy">>,
-  updatedBy: string,
+  updates: Partial<Omit<TenantSecurityPolicy, 'tenantId' | 'updatedAt' | 'updatedBy'>>,
+  updatedBy: string
 ): { policy: TenantSecurityPolicy; changes: TenantPolicyChange[] } {
   const current = getTenantSecurityPolicy(tenantId);
   const changes: TenantPolicyChange[] = [];
@@ -136,18 +136,18 @@ export function updateTenantSecurityPolicy(
   // Audit
   if (changes.length > 0) {
     immutableAudit(
-      "admin.tenant-security-policy" as ImmutableAuditAction,
-      "success",
-      { sub: updatedBy, name: updatedBy, roles: ["admin"] },
+      'admin.tenant-security-policy' as ImmutableAuditAction,
+      'success',
+      { sub: updatedBy, name: updatedBy, roles: ['admin'] },
       {
         detail: {
           tenantId,
           changesCount: changes.length,
           fields: changes.map((c) => c.field),
         },
-      },
+      }
     );
-    log.info("Tenant security policy updated", {
+    log.info('Tenant security policy updated', {
       tenantId,
       fields: changes.map((c) => c.field),
       changedBy: updatedBy,
@@ -179,10 +179,10 @@ export function deleteTenantSecurityPolicy(tenantId: string, deletedBy: string):
   const existed = policyCache.delete(tenantId);
   if (existed) {
     immutableAudit(
-      "admin.tenant-security-policy" as ImmutableAuditAction,
-      "success",
-      { sub: deletedBy, name: deletedBy, roles: ["admin"] },
-      { detail: { tenantId, action: "deleted" } },
+      'admin.tenant-security-policy' as ImmutableAuditAction,
+      'success',
+      { sub: deletedBy, name: deletedBy, roles: ['admin'] },
+      { detail: { tenantId, action: 'deleted' } }
     );
   }
   return existed;

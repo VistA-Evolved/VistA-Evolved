@@ -1,6 +1,7 @@
 # Phase 443 — VERIFY: Country-Specific Validation (W28 P5)
 
 ## Gates
+
 1. `country-validation.ts` exists in `apps/api/src/regulatory/`
 2. 3 built-in validators registered: US, PH, GH
 3. US validator covers: diagnosis (ICD-10-CM), procedure (CPT), medication (NDC), billing (NPI), identifier (SSN)

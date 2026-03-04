@@ -8,27 +8,27 @@
 
 ## Phase Map
 
-| Wave Phase | Resolved ID | Title | Prompt Folder |
-|------------|-------------|-------|---------------|
-| W22-P1 | 389 | Reservation + Manifest + Specialty Coverage Map + ADRs | `389-W22-P1-MANIFEST-COVERAGE` |
-| W22-P2 | 390 | Clinical Content Pack Framework v2 | `390-W22-P2-CONTENT-PACKS` |
-| W22-P3 | 391 | Inpatient Core (ADT bedboard + nursing flowsheets + vitals writeback) | `391-W22-P3-INPATIENT-CORE` |
-| W22-P4 | 392 | Pharmacy Deep Workflows + VistA Alignment Contracts | `392-W22-P4-PHARMACY-DEEP` |
-| W22-P5 | 393 | Lab Deep Workflows + Writeback Contracts | `393-W22-P5-LAB-DEEP` |
-| W22-P6 | 394 | Imaging/Radiology Workflows + Writeback Contracts | `394-W22-P6-IMAGING-RAD` |
-| W22-P7 | 395 | CDS Hooks + SMART Launch Integration | `395-W22-P7-CDS-HOOKS` |
-| W22-P8 | 396 | Clinical Reasoning + Measures (CQL/Measure eval) | `396-W22-P8-CLINICAL-REASONING` |
-| W22-P9 | 397 | Localization + Multi-Country Packs + Theming Engine | `397-W22-P9-LOCALIZATION-THEMING` |
-| W22-P10 | 398 | Specialty Certification Runner | `398-W22-P10-CERT-RUNNER` |
+| Wave Phase | Resolved ID | Title                                                                 | Prompt Folder                     |
+| ---------- | ----------- | --------------------------------------------------------------------- | --------------------------------- |
+| W22-P1     | 389         | Reservation + Manifest + Specialty Coverage Map + ADRs                | `389-W22-P1-MANIFEST-COVERAGE`    |
+| W22-P2     | 390         | Clinical Content Pack Framework v2                                    | `390-W22-P2-CONTENT-PACKS`        |
+| W22-P3     | 391         | Inpatient Core (ADT bedboard + nursing flowsheets + vitals writeback) | `391-W22-P3-INPATIENT-CORE`       |
+| W22-P4     | 392         | Pharmacy Deep Workflows + VistA Alignment Contracts                   | `392-W22-P4-PHARMACY-DEEP`        |
+| W22-P5     | 393         | Lab Deep Workflows + Writeback Contracts                              | `393-W22-P5-LAB-DEEP`             |
+| W22-P6     | 394         | Imaging/Radiology Workflows + Writeback Contracts                     | `394-W22-P6-IMAGING-RAD`          |
+| W22-P7     | 395         | CDS Hooks + SMART Launch Integration                                  | `395-W22-P7-CDS-HOOKS`            |
+| W22-P8     | 396         | Clinical Reasoning + Measures (CQL/Measure eval)                      | `396-W22-P8-CLINICAL-REASONING`   |
+| W22-P9     | 397         | Localization + Multi-Country Packs + Theming Engine                   | `397-W22-P9-LOCALIZATION-THEMING` |
+| W22-P10    | 398         | Specialty Certification Runner                                        | `398-W22-P10-CERT-RUNNER`         |
 
 ## ADR Index
 
-| ADR | Path |
-|-----|------|
-| Content Packs | `docs/decisions/ADR-W22-CONTENT-PACKS.md` |
-| CDS Architecture | `docs/decisions/ADR-W22-CDS-ARCH.md` |
-| Terminology Posture | `docs/decisions/ADR-W22-TERMINOLOGY.md` |
-| Theming Engine | `docs/decisions/ADR-W22-THEMING.md` |
+| ADR                 | Path                                      |
+| ------------------- | ----------------------------------------- |
+| Content Packs       | `docs/decisions/ADR-W22-CONTENT-PACKS.md` |
+| CDS Architecture    | `docs/decisions/ADR-W22-CDS-ARCH.md`      |
+| Terminology Posture | `docs/decisions/ADR-W22-TERMINOLOGY.md`   |
+| Theming Engine      | `docs/decisions/ADR-W22-THEMING.md`       |
 
 ## Dependencies & Run Order
 

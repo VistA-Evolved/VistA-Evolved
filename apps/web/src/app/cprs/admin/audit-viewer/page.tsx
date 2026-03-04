@@ -6,7 +6,6 @@ import { useSession } from '@/stores/session-context';
 import styles from '@/components/cprs/cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
-
 interface AuditEntry {
   seq: number;
   hash: string;
@@ -127,7 +126,15 @@ export default function AuditViewerPage() {
 
   if (!ready || !authenticated) {
     return (
-      <div className={styles.shell} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+      <div
+        className={styles.shell}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+        }}
+      >
         <p style={{ color: 'var(--cprs-text-muted)' }}>Checking session...</p>
       </div>
     );
@@ -144,16 +151,24 @@ export default function AuditViewerPage() {
 
   const outcomeColor = (outcome: string) => {
     switch (outcome) {
-      case 'success': return '#2e7d32';
-      case 'failure': return '#c62828';
-      case 'denied': return '#e65100';
-      case 'error': return '#b71c1c';
-      default: return '#666';
+      case 'success':
+        return '#2e7d32';
+      case 'failure':
+        return '#c62828';
+      case 'denied':
+        return '#e65100';
+      case 'error':
+        return '#b71c1c';
+      default:
+        return '#666';
     }
   };
 
   return (
-    <div className={styles.shell} style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div
+      className={styles.shell}
+      style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
+    >
       <div className={styles.menuBar}>
         <span style={{ fontWeight: 600, fontSize: 13 }}>EHR &mdash; Evolved</span>
         <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--cprs-text-muted)' }}>
@@ -162,7 +177,14 @@ export default function AuditViewerPage() {
       </div>
 
       {/* Tab bar */}
-      <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--cprs-border)', background: 'var(--cprs-bg)' }}>
+      <div
+        style={{
+          display: 'flex',
+          gap: 0,
+          borderBottom: '1px solid var(--cprs-border)',
+          background: 'var(--cprs-bg)',
+        }}
+      >
         {(['events', 'stats', 'chain', 'policy'] as const).map((t) => (
           <button
             key={t}
@@ -226,7 +248,11 @@ export default function AuditViewerPage() {
                 <option value="100">100</option>
                 <option value="200">200</option>
               </select>
-              <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={loadEvents} disabled={eventsLoading}>
+              <button
+                className={`${styles.btn} ${styles.btnPrimary}`}
+                onClick={loadEvents}
+                disabled={eventsLoading}
+              >
                 {eventsLoading ? 'Loading...' : 'Refresh'}
               </button>
             </div>
@@ -251,16 +277,37 @@ export default function AuditViewerPage() {
                     <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{e.seq}</td>
                     <td style={{ padding: '4px 8px' }}>{new Date(e.timestamp).toLocaleString()}</td>
                     <td style={{ padding: '4px 8px', fontFamily: 'monospace' }}>{e.action}</td>
-                    <td style={{ padding: '4px 8px', color: outcomeColor(e.outcome), fontWeight: 600 }}>{e.outcome}</td>
+                    <td
+                      style={{
+                        padding: '4px 8px',
+                        color: outcomeColor(e.outcome),
+                        fontWeight: 600,
+                      }}
+                    >
+                      {e.outcome}
+                    </td>
                     <td style={{ padding: '4px 8px' }}>{e.actorId}</td>
                     <td style={{ padding: '4px 8px', fontSize: 10 }}>{e.actorRoles?.join(', ')}</td>
-                    <td style={{ padding: '4px 8px', fontSize: 10, maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <td
+                      style={{
+                        padding: '4px 8px',
+                        fontSize: 10,
+                        maxWidth: 200,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
                       {e.detail ? JSON.stringify(e.detail) : '-'}
                     </td>
                   </tr>
                 ))}
                 {events.length === 0 && (
-                  <tr><td colSpan={7} style={{ padding: 16, textAlign: 'center', color: '#888' }}>No events found</td></tr>
+                  <tr>
+                    <td colSpan={7} style={{ padding: 16, textAlign: 'center', color: '#888' }}>
+                      No events found
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </table>
@@ -274,33 +321,68 @@ export default function AuditViewerPage() {
               <p>Loading statistics...</p>
             ) : stats ? (
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                <div style={{ border: '1px solid var(--cprs-border)', padding: 12, borderRadius: 4 }}>
+                <div
+                  style={{ border: '1px solid var(--cprs-border)', padding: 12, borderRadius: 4 }}
+                >
                   <h3 style={{ fontSize: 14, margin: '0 0 8px' }}>Overview</h3>
-                  <p style={{ fontSize: 12 }}>Total entries: <strong>{stats.totalEntries}</strong></p>
                   <p style={{ fontSize: 12 }}>
-                    Chain integrity: <strong style={{ color: stats.chainValid ? '#2e7d32' : '#c00' }}>
+                    Total entries: <strong>{stats.totalEntries}</strong>
+                  </p>
+                  <p style={{ fontSize: 12 }}>
+                    Chain integrity:{' '}
+                    <strong style={{ color: stats.chainValid ? '#2e7d32' : '#c00' }}>
                       {stats.chainValid ? 'VALID' : 'BROKEN'}
                     </strong>
                   </p>
-                  <p style={{ fontSize: 12 }}>Oldest: {stats.oldestTimestamp ? new Date(stats.oldestTimestamp).toLocaleString() : 'N/A'}</p>
-                  <p style={{ fontSize: 12 }}>Newest: {stats.newestTimestamp ? new Date(stats.newestTimestamp).toLocaleString() : 'N/A'}</p>
+                  <p style={{ fontSize: 12 }}>
+                    Oldest:{' '}
+                    {stats.oldestTimestamp
+                      ? new Date(stats.oldestTimestamp).toLocaleString()
+                      : 'N/A'}
+                  </p>
+                  <p style={{ fontSize: 12 }}>
+                    Newest:{' '}
+                    {stats.newestTimestamp
+                      ? new Date(stats.newestTimestamp).toLocaleString()
+                      : 'N/A'}
+                  </p>
                 </div>
-                <div style={{ border: '1px solid var(--cprs-border)', padding: 12, borderRadius: 4 }}>
+                <div
+                  style={{ border: '1px solid var(--cprs-border)', padding: 12, borderRadius: 4 }}
+                >
                   <h3 style={{ fontSize: 14, margin: '0 0 8px' }}>By Outcome</h3>
                   {Object.entries(stats.byOutcome).map(([outcome, count]) => (
                     <p key={outcome} style={{ fontSize: 12 }}>
-                      <span style={{ color: outcomeColor(outcome), fontWeight: 600 }}>{outcome}</span>: {count}
+                      <span style={{ color: outcomeColor(outcome), fontWeight: 600 }}>
+                        {outcome}
+                      </span>
+                      : {count}
                     </p>
                   ))}
                 </div>
-                <div style={{ border: '1px solid var(--cprs-border)', padding: 12, borderRadius: 4, gridColumn: '1 / -1' }}>
+                <div
+                  style={{
+                    border: '1px solid var(--cprs-border)',
+                    padding: 12,
+                    borderRadius: 4,
+                    gridColumn: '1 / -1',
+                  }}
+                >
                   <h3 style={{ fontSize: 14, margin: '0 0 8px' }}>By Action</h3>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: 4 }}>
-                    {Object.entries(stats.byAction).sort((a, b) => b[1] - a[1]).map(([action, count]) => (
-                      <p key={action} style={{ fontSize: 11, fontFamily: 'monospace' }}>
-                        {action}: <strong>{count}</strong>
-                      </p>
-                    ))}
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+                      gap: 4,
+                    }}
+                  >
+                    {Object.entries(stats.byAction)
+                      .sort((a, b) => b[1] - a[1])
+                      .map(([action, count]) => (
+                        <p key={action} style={{ fontSize: 11, fontFamily: 'monospace' }}>
+                          {action}: <strong>{count}</strong>
+                        </p>
+                      ))}
                   </div>
                 </div>
               </div>
@@ -313,29 +395,44 @@ export default function AuditViewerPage() {
         {/* Chain verification tab */}
         {tab === 'chain' && (
           <div>
-            <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={verifyChain} disabled={chainLoading} style={{ marginBottom: 12 }}>
+            <button
+              className={`${styles.btn} ${styles.btnPrimary}`}
+              onClick={verifyChain}
+              disabled={chainLoading}
+              style={{ marginBottom: 12 }}
+            >
               {chainLoading ? 'Verifying...' : 'Verify Hash Chain'}
             </button>
             {chainResult && (
-              <div style={{
-                border: `2px solid ${chainResult.valid ? '#2e7d32' : '#c00'}`,
-                padding: 16,
-                borderRadius: 8,
-                background: chainResult.valid ? '#e8f5e9' : '#ffebee',
-              }}>
-                <h3 style={{ fontSize: 16, color: chainResult.valid ? '#2e7d32' : '#c00', margin: '0 0 8px' }}>
+              <div
+                style={{
+                  border: `2px solid ${chainResult.valid ? '#2e7d32' : '#c00'}`,
+                  padding: 16,
+                  borderRadius: 8,
+                  background: chainResult.valid ? '#e8f5e9' : '#ffebee',
+                }}
+              >
+                <h3
+                  style={{
+                    fontSize: 16,
+                    color: chainResult.valid ? '#2e7d32' : '#c00',
+                    margin: '0 0 8px',
+                  }}
+                >
                   {chainResult.valid ? 'CHAIN VALID' : 'CHAIN INTEGRITY FAILURE'}
                 </h3>
                 <p style={{ fontSize: 13 }}>Total entries: {chainResult.totalEntries}</p>
                 {chainResult.brokenAt && (
-                  <p style={{ fontSize: 13, color: '#c00' }}>Broken at sequence: {chainResult.brokenAt}</p>
+                  <p style={{ fontSize: 13, color: '#c00' }}>
+                    Broken at sequence: {chainResult.brokenAt}
+                  </p>
                 )}
                 {chainResult.error && (
                   <p style={{ fontSize: 13, color: '#c00' }}>{chainResult.error}</p>
                 )}
                 <p style={{ fontSize: 11, color: '#666', marginTop: 8 }}>
-                  Each audit entry includes a SHA-256 hash of the previous entry.
-                  A valid chain means no entries have been tampered with, deleted, or reordered.
+                  Each audit entry includes a SHA-256 hash of the previous entry. A valid chain
+                  means no entries have been tampered with, deleted, or reordered.
                 </p>
               </div>
             )}
@@ -346,12 +443,29 @@ export default function AuditViewerPage() {
         {tab === 'policy' && (
           <div>
             <h3 style={{ fontSize: 14, margin: '0 0 12px' }}>Policy Engine Status (Phase 35)</h3>
-            <div style={{ border: '1px solid var(--cprs-border)', padding: 12, borderRadius: 4, marginBottom: 16 }}>
-              <p style={{ fontSize: 12, margin: '0 0 4px' }}>Engine: <strong>In-process (OPA-compatible)</strong></p>
-              <p style={{ fontSize: 12, margin: '0 0 4px' }}>Default behavior: <strong>DENY</strong></p>
-              <p style={{ fontSize: 12, margin: '0 0 4px' }}>OIDC Provider: <strong>Keycloak</strong></p>
-              <p style={{ fontSize: 12, margin: '0 0 4px' }}>Authorization model: <strong>RBAC + ABAC</strong></p>
-              <p style={{ fontSize: 12, margin: 0 }}>Break-glass: <strong>Scaffold ready</strong></p>
+            <div
+              style={{
+                border: '1px solid var(--cprs-border)',
+                padding: 12,
+                borderRadius: 4,
+                marginBottom: 16,
+              }}
+            >
+              <p style={{ fontSize: 12, margin: '0 0 4px' }}>
+                Engine: <strong>In-process (OPA-compatible)</strong>
+              </p>
+              <p style={{ fontSize: 12, margin: '0 0 4px' }}>
+                Default behavior: <strong>DENY</strong>
+              </p>
+              <p style={{ fontSize: 12, margin: '0 0 4px' }}>
+                OIDC Provider: <strong>Keycloak</strong>
+              </p>
+              <p style={{ fontSize: 12, margin: '0 0 4px' }}>
+                Authorization model: <strong>RBAC + ABAC</strong>
+              </p>
+              <p style={{ fontSize: 12, margin: 0 }}>
+                Break-glass: <strong>Scaffold ready</strong>
+              </p>
             </div>
 
             <h4 style={{ fontSize: 13, margin: '0 0 8px' }}>Role Definitions</h4>
@@ -367,20 +481,56 @@ export default function AuditViewerPage() {
               </thead>
               <tbody>
                 {[
-                  { role: 'provider', desc: 'Full clinical access', write: true, admin: false, bg: true },
-                  { role: 'nurse', desc: 'Vitals, notes, read', write: true, admin: false, bg: true },
-                  { role: 'pharmacist', desc: 'Medications, read', write: true, admin: false, bg: true },
-                  { role: 'clerk', desc: 'Limited read access', write: false, admin: false, bg: false },
+                  {
+                    role: 'provider',
+                    desc: 'Full clinical access',
+                    write: true,
+                    admin: false,
+                    bg: true,
+                  },
+                  {
+                    role: 'nurse',
+                    desc: 'Vitals, notes, read',
+                    write: true,
+                    admin: false,
+                    bg: true,
+                  },
+                  {
+                    role: 'pharmacist',
+                    desc: 'Medications, read',
+                    write: true,
+                    admin: false,
+                    bg: true,
+                  },
+                  {
+                    role: 'clerk',
+                    desc: 'Limited read access',
+                    write: false,
+                    admin: false,
+                    bg: false,
+                  },
                   { role: 'admin', desc: 'Unrestricted', write: true, admin: true, bg: true },
                   { role: 'patient', desc: 'Own data only', write: false, admin: false, bg: false },
-                  { role: 'support', desc: 'Audit + health', write: false, admin: false, bg: false },
+                  {
+                    role: 'support',
+                    desc: 'Audit + health',
+                    write: false,
+                    admin: false,
+                    bg: false,
+                  },
                 ].map((r) => (
                   <tr key={r.role} style={{ borderBottom: '1px solid var(--cprs-border)' }}>
                     <td style={{ padding: '4px 8px', fontWeight: 600 }}>{r.role}</td>
                     <td style={{ padding: '4px 8px' }}>{r.desc}</td>
-                    <td style={{ padding: '4px 8px', color: r.write ? '#2e7d32' : '#c00' }}>{r.write ? 'Yes' : 'No'}</td>
-                    <td style={{ padding: '4px 8px', color: r.admin ? '#2e7d32' : '#c00' }}>{r.admin ? 'Yes' : 'No'}</td>
-                    <td style={{ padding: '4px 8px', color: r.bg ? '#2e7d32' : '#888' }}>{r.bg ? 'Eligible' : 'No'}</td>
+                    <td style={{ padding: '4px 8px', color: r.write ? '#2e7d32' : '#c00' }}>
+                      {r.write ? 'Yes' : 'No'}
+                    </td>
+                    <td style={{ padding: '4px 8px', color: r.admin ? '#2e7d32' : '#c00' }}>
+                      {r.admin ? 'Yes' : 'No'}
+                    </td>
+                    <td style={{ padding: '4px 8px', color: r.bg ? '#2e7d32' : '#888' }}>
+                      {r.bg ? 'Eligible' : 'No'}
+                    </td>
                   </tr>
                 ))}
               </tbody>

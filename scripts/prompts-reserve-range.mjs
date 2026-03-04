@@ -16,12 +16,12 @@
  *   6. Outputs the reserved range
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from "fs";
-import { join, dirname } from "path";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync } from 'fs';
+import { join, dirname } from 'path';
 
 const ROOT = process.cwd();
-const RESERVATIONS_FILE = join(ROOT, "docs", "qa", "prompt-phase-range-reservations.json");
-const PROMPTS_DIR = join(ROOT, "prompts");
+const RESERVATIONS_FILE = join(ROOT, 'docs', 'qa', 'prompt-phase-range-reservations.json');
+const PROMPTS_DIR = join(ROOT, 'prompts');
 
 // ── Parse args ─────────────────────────────────────────────────────
 
@@ -30,13 +30,15 @@ function getArg(name) {
   return idx >= 0 && process.argv[idx + 1] ? process.argv[idx + 1] : null;
 }
 
-const wave = getArg("wave");
-const count = parseInt(getArg("count") || "0", 10);
-const branch = getArg("branch") || "main";
-const owner = getArg("owner") || "agent";
+const wave = getArg('wave');
+const count = parseInt(getArg('count') || '0', 10);
+const branch = getArg('branch') || 'main';
+const owner = getArg('owner') || 'agent';
 
 if (!wave || !count || count < 1) {
-  console.error("Usage: node prompts-reserve-range.mjs --wave <N> --count <N> --branch <name> --owner <name>");
+  console.error(
+    'Usage: node prompts-reserve-range.mjs --wave <N> --count <N> --branch <name> --owner <name>'
+  );
   process.exit(1);
 }
 
@@ -52,23 +54,27 @@ function computeMaxUsed() {
       const m = d.name.match(/^(\d+)/);
       if (m) max = Math.max(max, parseInt(m[1], 10));
     }
-  } catch { /* empty */ }
+  } catch {
+    /* empty */
+  }
 
   // From manifests
   try {
     const manifests = readdirSync(PROMPTS_DIR).filter((f) => /^WAVE_\d+_MANIFEST\.md$/i.test(f));
     for (const mf of manifests) {
-      const content = readFileSync(join(PROMPTS_DIR, mf), "utf-8");
+      const content = readFileSync(join(PROMPTS_DIR, mf), 'utf-8');
       for (const match of content.matchAll(/\|\s*(\d+)\s*\|/g)) {
         max = Math.max(max, parseInt(match[1], 10));
       }
     }
-  } catch { /* empty */ }
+  } catch {
+    /* empty */
+  }
 
   // From reservation file
   try {
     if (existsSync(RESERVATIONS_FILE)) {
-      const raw = readFileSync(RESERVATIONS_FILE, "utf-8");
+      const raw = readFileSync(RESERVATIONS_FILE, 'utf-8');
       const clean = raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw;
       const data = JSON.parse(clean);
       const reservations = Array.isArray(data) ? data : data.reservations || [];
@@ -76,7 +82,9 @@ function computeMaxUsed() {
         max = Math.max(max, parseInt(r.end, 10));
       }
     }
-  } catch { /* empty */ }
+  } catch {
+    /* empty */
+  }
 
   return max;
 }
@@ -86,7 +94,7 @@ function computeMaxUsed() {
 function loadReservations() {
   if (!existsSync(RESERVATIONS_FILE)) return [];
   try {
-    const raw = readFileSync(RESERVATIONS_FILE, "utf-8");
+    const raw = readFileSync(RESERVATIONS_FILE, 'utf-8');
     const clean = raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw;
     const data = JSON.parse(clean);
     return Array.isArray(data) ? data : data.reservations || [];
@@ -98,7 +106,7 @@ function loadReservations() {
 function saveReservations(reservations) {
   const dir = dirname(RESERVATIONS_FILE);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-  writeFileSync(RESERVATIONS_FILE, JSON.stringify(reservations, null, 2) + "\n", "utf-8");
+  writeFileSync(RESERVATIONS_FILE, JSON.stringify(reservations, null, 2) + '\n', 'utf-8');
 }
 
 // ── Check overlaps ─────────────────────────────────────────────────
@@ -126,7 +134,9 @@ const end = start + count - 1;
 // Verify no overlap
 for (const r of reservations) {
   if (rangesOverlap({ start, end }, { start: parseInt(r.start, 10), end: parseInt(r.end, 10) })) {
-    console.error(`ERROR: range ${start}-${end} overlaps with wave ${r.wave} (${r.start}-${r.end})`);
+    console.error(
+      `ERROR: range ${start}-${end} overlaps with wave ${r.wave} (${r.start}-${r.end})`
+    );
     process.exit(1);
   }
 }
@@ -138,7 +148,7 @@ const reservation = {
   count,
   branch,
   owner,
-  status: "reserved",
+  status: 'reserved',
   reservedAt: new Date().toISOString(),
 };
 

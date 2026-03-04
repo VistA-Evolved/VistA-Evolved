@@ -31,48 +31,48 @@
  *   capability_matrix_cell, capability_matrix_evidence
  */
 
-import { execSync } from "node:child_process";
-import { existsSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { execSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, "..", "..");
-const SQLITE_PATH = join(ROOT, "data", "platform.db");
+const ROOT = join(__dirname, '..', '..');
+const SQLITE_PATH = join(ROOT, 'data', 'platform.db');
 
-const isDryRun = process.argv.includes("--dry-run");
-const tableFilter = process.argv.includes("--table")
-  ? process.argv[process.argv.indexOf("--table") + 1]
+const isDryRun = process.argv.includes('--dry-run');
+const tableFilter = process.argv.includes('--table')
+  ? process.argv[process.argv.indexOf('--table') + 1]
   : null;
 
 // ─── Preflight ───────────────────────────────────────────────
 if (!existsSync(SQLITE_PATH)) {
   console.error(`[FATAL] SQLite DB not found at ${SQLITE_PATH}`);
-  console.error("Start the API once in dev mode to create it.");
+  console.error('Start the API once in dev mode to create it.');
   process.exit(1);
 }
 
 const pgUrl = process.env.PLATFORM_PG_URL;
 if (!pgUrl) {
-  console.error("[FATAL] PLATFORM_PG_URL is not set.");
-  console.error("Set it to your Postgres connection string.");
+  console.error('[FATAL] PLATFORM_PG_URL is not set.');
+  console.error('Set it to your Postgres connection string.');
   process.exit(1);
 }
 
 // ─── Dynamic imports ─────────────────────────────────────────
 let Database;
 try {
-  Database = (await import("better-sqlite3")).default;
+  Database = (await import('better-sqlite3')).default;
 } catch {
-  console.error("[FATAL] better-sqlite3 not installed. Run: pnpm add better-sqlite3");
+  console.error('[FATAL] better-sqlite3 not installed. Run: pnpm add better-sqlite3');
   process.exit(1);
 }
 
 let pg;
 try {
-  pg = (await import("pg")).default;
+  pg = (await import('pg')).default;
 } catch {
-  console.error("[FATAL] pg not installed. Run: pnpm add pg");
+  console.error('[FATAL] pg not installed. Run: pnpm add pg');
   process.exit(1);
 }
 
@@ -82,21 +82,25 @@ const pool = new pg.Pool({ connectionString: pgUrl });
 
 // ─── Discover tables ─────────────────────────────────────────
 const allTables = sqlite
-  .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '_migrations%' ORDER BY name")
+  .prepare(
+    "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '_migrations%' ORDER BY name"
+  )
   .all()
-  .map(r => r.name);
+  .map((r) => r.name);
 
-const tables = tableFilter ? allTables.filter(t => t === tableFilter) : allTables;
+const tables = tableFilter ? allTables.filter((t) => t === tableFilter) : allTables;
 
 if (tables.length === 0) {
-  console.error(tableFilter ? `Table "${tableFilter}" not found in SQLite.` : "No tables found in SQLite.");
+  console.error(
+    tableFilter ? `Table "${tableFilter}" not found in SQLite.` : 'No tables found in SQLite.'
+  );
   process.exit(1);
 }
 
 console.log(`\n=== SQLite -> PostgreSQL Migration (Phase 125) ===`);
-console.log(`Mode: ${isDryRun ? "DRY RUN" : "LIVE"}`);
+console.log(`Mode: ${isDryRun ? 'DRY RUN' : 'LIVE'}`);
 console.log(`SQLite: ${SQLITE_PATH}`);
-console.log(`PG: ${pgUrl.replace(/:[^@]+@/, ":***@")}`);
+console.log(`PG: ${pgUrl.replace(/:[^@]+@/, ':***@')}`);
 console.log(`Tables: ${tables.length}\n`);
 
 // ─── Migrate each table ─────────────────────────────────────
@@ -113,8 +117,8 @@ for (const table of tables) {
   }
 
   const columns = Object.keys(rows[0]);
-  const placeholders = columns.map((_, i) => `$${i + 1}`).join(", ");
-  const colList = columns.map(c => `"${c}"`).join(", ");
+  const placeholders = columns.map((_, i) => `$${i + 1}`).join(', ');
+  const colList = columns.map((c) => `"${c}"`).join(', ');
   const insertSql = `INSERT INTO "${table}" (${colList}) VALUES (${placeholders}) ON CONFLICT DO NOTHING`;
 
   let inserted = 0;
@@ -128,7 +132,7 @@ for (const table of tables) {
   }
 
   for (const row of rows) {
-    const values = columns.map(c => {
+    const values = columns.map((c) => {
       const v = row[c];
       // SQLite stores JSON as TEXT; PG expects it as-is for JSONB columns
       // We pass strings through -- PG will cast them appropriately
@@ -156,8 +160,10 @@ for (const table of tables) {
   totalSkipped += skipped;
   totalErrors += errors;
 
-  const status = errors > 0 ? "WARN" : "OK";
-  console.log(`  [${status}] ${table}: ${rows.length} rows -> ${inserted} inserted, ${skipped} skipped, ${errors} errors`);
+  const status = errors > 0 ? 'WARN' : 'OK';
+  console.log(
+    `  [${status}] ${table}: ${rows.length} rows -> ${inserted} inserted, ${skipped} skipped, ${errors} errors`
+  );
 }
 
 // ─── Summary ─────────────────────────────────────────────────
@@ -168,7 +174,7 @@ if (!isDryRun) {
   console.log(`Skipped (dupe): ${totalSkipped}`);
   console.log(`Errors:         ${totalErrors}`);
 }
-console.log(`Result: ${totalErrors === 0 ? "SUCCESS" : "COMPLETED WITH ERRORS"}\n`);
+console.log(`Result: ${totalErrors === 0 ? 'SUCCESS' : 'COMPLETED WITH ERRORS'}\n`);
 
 // ─── Cleanup ─────────────────────────────────────────────────
 sqlite.close();

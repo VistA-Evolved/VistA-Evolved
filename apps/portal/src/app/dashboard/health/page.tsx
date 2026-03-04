@@ -10,10 +10,10 @@
  *   ORWSR LIST (pending), TIU DOCUMENTS BY CONTEXT (pending)
  */
 
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { DataSourceBadge } from "@/components/data-source-badge";
+import { useEffect, useState } from 'react';
+import { DataSourceBadge } from '@/components/data-source-badge';
 import {
   fetchAllergies,
   fetchProblems,
@@ -26,7 +26,7 @@ import {
   fetchDischargeSummaries,
   exportSectionUrl,
   exportFullRecordUrl,
-} from "@/lib/api";
+} from '@/lib/api';
 
 interface SectionState {
   loading: boolean;
@@ -41,14 +41,14 @@ function DownloadButton({ url, label }: { url: string; label: string }) {
       target="_blank"
       rel="noopener noreferrer"
       style={{
-        display: "inline-block",
-        padding: "0.25rem 0.5rem",
-        fontSize: "0.75rem",
-        background: "#2563eb",
-        color: "#fff",
+        display: 'inline-block',
+        padding: '0.25rem 0.5rem',
+        fontSize: '0.75rem',
+        background: '#2563eb',
+        color: '#fff',
         borderRadius: 4,
-        textDecoration: "none",
-        cursor: "pointer",
+        textDecoration: 'none',
+        cursor: 'pointer',
       }}
     >
       {label}
@@ -60,7 +60,7 @@ export default function HealthRecordsPage() {
   const [allergies, setAllergies] = useState<SectionState>({ loading: true, data: null });
   const [problems, setProblems] = useState<SectionState>({ loading: true, data: null });
   const [vitals, setVitals] = useState<SectionState>({ loading: true, data: null });
-  const [medications, setMeds] = useState<SectionState>({ loading: true, data: null });
+  const [_medications, setMeds] = useState<SectionState>({ loading: true, data: null });
   const [demographics, setDemo] = useState<SectionState>({ loading: true, data: null });
   const [labs, setLabs] = useState<SectionState>({ loading: true, data: null });
   const [consults, setConsults] = useState<SectionState>({ loading: true, data: null });
@@ -81,33 +81,46 @@ export default function HealthRecordsPage() {
 
   return (
     <div className="container">
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '1.5rem',
+        }}
+      >
         <div>
-          <h1 style={{ fontSize: "1.5rem", marginBottom: "0.25rem" }}>Health Records</h1>
-          <p style={{ color: "var(--portal-text-muted)", fontSize: "0.875rem" }}>
+          <h1 style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>Health Records</h1>
+          <p style={{ color: 'var(--portal-text-muted)', fontSize: '0.875rem' }}>
             Your complete health information from the health system
           </p>
         </div>
         <DownloadButton url={exportFullRecordUrl()} label="Download Full Record (PDF)" />
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         {/* Demographics */}
         <HealthSection
           title="Demographics"
           loading={demographics.loading}
           data={demographics.data}
-          source={demographics.data?._integration === "pending" ? "pending" : "ehr"}
-          downloadUrl={exportSectionUrl("demographics")}
+          source={demographics.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          downloadUrl={exportSectionUrl('demographics')}
           renderData={(d) => {
             const results = d.results || [];
             if (!results.length) return <p>No demographic data available</p>;
             const p = results[0];
             return (
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.5rem" }}>
-                <div><strong>Name:</strong> {p.name}</div>
-                <div><strong>Sex:</strong> {p.sex}</div>
-                <div><strong>DOB:</strong> {p.dob}</div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
+                <div>
+                  <strong>Name:</strong> {p.name}
+                </div>
+                <div>
+                  <strong>Sex:</strong> {p.sex}
+                </div>
+                <div>
+                  <strong>DOB:</strong> {p.dob}
+                </div>
               </div>
             );
           }}
@@ -118,26 +131,26 @@ export default function HealthRecordsPage() {
           title="Allergies"
           loading={allergies.loading}
           data={allergies.data}
-          source={allergies.data?._integration === "pending" ? "pending" : "ehr"}
-          downloadUrl={exportSectionUrl("allergies")}
+          source={allergies.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          downloadUrl={exportSectionUrl('allergies')}
           renderData={(d) => {
             const results = d.results || [];
             if (!results.length) return <p>No known allergies</p>;
             return (
-              <table style={{ width: "100%", fontSize: "0.875rem", borderCollapse: "collapse" }}>
+              <table style={{ width: '100%', fontSize: '0.875rem', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid #e2e8f0", textAlign: "left" }}>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Allergen</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Severity</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Reactions</th>
+                  <tr style={{ borderBottom: '1px solid #e2e8f0', textAlign: 'left' }}>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Allergen</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Severity</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Reactions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {results.map((a: any, i: number) => (
-                    <tr key={i} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{a.allergen}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{a.severity || "—"}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{a.reactions || "—"}</td>
+                    <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{a.allergen}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{a.severity || '—'}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{a.reactions || '—'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -151,33 +164,40 @@ export default function HealthRecordsPage() {
           title="Problem List"
           loading={problems.loading}
           data={problems.data}
-          source={problems.data?._integration === "pending" ? "pending" : "ehr"}
-          downloadUrl={exportSectionUrl("problems")}
+          source={problems.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          downloadUrl={exportSectionUrl('problems')}
           renderData={(d) => {
             const results = d.results || [];
             if (!results.length) return <p>No problems on file</p>;
             return (
-              <table style={{ width: "100%", fontSize: "0.875rem", borderCollapse: "collapse" }}>
+              <table style={{ width: '100%', fontSize: '0.875rem', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid #e2e8f0", textAlign: "left" }}>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Problem</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Status</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Onset</th>
+                  <tr style={{ borderBottom: '1px solid #e2e8f0', textAlign: 'left' }}>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Problem</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Status</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Onset</th>
                   </tr>
                 </thead>
                 <tbody>
                   {results.map((p: any, i: number) => (
-                    <tr key={i} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{p.text}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>
-                        <span style={{
-                          display: "inline-block", padding: "0.125rem 0.375rem", borderRadius: 4,
-                          fontSize: "0.75rem", fontWeight: 600,
-                          background: p.status === "active" ? "#dcfce7" : "#f1f5f9",
-                          color: p.status === "active" ? "#166534" : "#64748b",
-                        }}>{p.status}</span>
+                    <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{p.text}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>
+                        <span
+                          style={{
+                            display: 'inline-block',
+                            padding: '0.125rem 0.375rem',
+                            borderRadius: 4,
+                            fontSize: '0.75rem',
+                            fontWeight: 600,
+                            background: p.status === 'active' ? '#dcfce7' : '#f1f5f9',
+                            color: p.status === 'active' ? '#166534' : '#64748b',
+                          }}
+                        >
+                          {p.status}
+                        </span>
                       </td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{p.onset || "—"}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{p.onset || '—'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -191,26 +211,26 @@ export default function HealthRecordsPage() {
           title="Vital Signs"
           loading={vitals.loading}
           data={vitals.data}
-          source={vitals.data?._integration === "pending" ? "pending" : "ehr"}
-          downloadUrl={exportSectionUrl("vitals")}
+          source={vitals.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          downloadUrl={exportSectionUrl('vitals')}
           renderData={(d) => {
             const results = d.results || [];
             if (!results.length) return <p>No vitals recorded</p>;
             return (
-              <table style={{ width: "100%", fontSize: "0.875rem", borderCollapse: "collapse" }}>
+              <table style={{ width: '100%', fontSize: '0.875rem', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid #e2e8f0", textAlign: "left" }}>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Type</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Value</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Taken At</th>
+                  <tr style={{ borderBottom: '1px solid #e2e8f0', textAlign: 'left' }}>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Type</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Value</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Taken At</th>
                   </tr>
                 </thead>
                 <tbody>
                   {results.map((v: any, i: number) => (
-                    <tr key={i} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{v.type}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{v.value}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{v.takenAt}</td>
+                    <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{v.type}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{v.value}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{v.takenAt}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -224,37 +244,59 @@ export default function HealthRecordsPage() {
           title="Lab Results"
           loading={labs.loading}
           data={labs.data}
-          source={labs.data?._integration === "pending" ? "pending" : "ehr"}
-          downloadUrl={exportSectionUrl("labs")}
+          source={labs.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          downloadUrl={exportSectionUrl('labs')}
           renderData={(d) => {
             const results = d.results || [];
             if (!results.length) {
               return d.rawText ? (
-                <pre style={{ whiteSpace: "pre-wrap", fontSize: "0.8rem", color: "#475569", maxHeight: 200, overflow: "auto" }}>{d.rawText}</pre>
+                <pre
+                  style={{
+                    whiteSpace: 'pre-wrap',
+                    fontSize: '0.8rem',
+                    color: '#475569',
+                    maxHeight: 200,
+                    overflow: 'auto',
+                  }}
+                >
+                  {d.rawText}
+                </pre>
               ) : (
                 <p>No lab results on file</p>
               );
             }
             return (
-              <table style={{ width: "100%", fontSize: "0.875rem", borderCollapse: "collapse" }}>
+              <table style={{ width: '100%', fontSize: '0.875rem', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid #e2e8f0", textAlign: "left" }}>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Test</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Result</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Units</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Ref Range</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Flag</th>
+                  <tr style={{ borderBottom: '1px solid #e2e8f0', textAlign: 'left' }}>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Test</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Result</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Units</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Ref Range</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Flag</th>
                   </tr>
                 </thead>
                 <tbody>
                   {results.map((r: any, i: number) => (
-                    <tr key={i} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{r.testName}</td>
-                      <td style={{ padding: "0.25rem 0.5rem", fontWeight: r.flag ? 600 : 400, color: r.flag ? "#dc2626" : "inherit" }}>{r.result}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{r.units || "--"}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{r.refRange || "--"}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>
-                        {r.flag ? <span style={{ color: "#dc2626", fontWeight: 600 }}>{r.flag}</span> : "--"}
+                    <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{r.testName}</td>
+                      <td
+                        style={{
+                          padding: '0.25rem 0.5rem',
+                          fontWeight: r.flag ? 600 : 400,
+                          color: r.flag ? '#dc2626' : 'inherit',
+                        }}
+                      >
+                        {r.result}
+                      </td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{r.units || '--'}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{r.refRange || '--'}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>
+                        {r.flag ? (
+                          <span style={{ color: '#dc2626', fontWeight: 600 }}>{r.flag}</span>
+                        ) : (
+                          '--'
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -269,28 +311,28 @@ export default function HealthRecordsPage() {
           title="Consult History"
           loading={consults.loading}
           data={consults.data}
-          source={consults.data?._integration === "pending" ? "pending" : "ehr"}
-          downloadUrl={exportSectionUrl("consults")}
+          source={consults.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          downloadUrl={exportSectionUrl('consults')}
           renderData={(d) => {
             const results = d.results || [];
             if (!results.length) return <p>No consults on file</p>;
             return (
-              <table style={{ width: "100%", fontSize: "0.875rem", borderCollapse: "collapse" }}>
+              <table style={{ width: '100%', fontSize: '0.875rem', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid #e2e8f0", textAlign: "left" }}>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Service</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Status</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Date</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Type</th>
+                  <tr style={{ borderBottom: '1px solid #e2e8f0', textAlign: 'left' }}>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Service</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Status</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Date</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Type</th>
                   </tr>
                 </thead>
                 <tbody>
                   {results.map((c: any, i: number) => (
-                    <tr key={i} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{c.service}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{c.status}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{c.date}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{c.type}</td>
+                    <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{c.service}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{c.status}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{c.date}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{c.type}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -304,28 +346,28 @@ export default function HealthRecordsPage() {
           title="Surgery History"
           loading={surgery.loading}
           data={surgery.data}
-          source={surgery.data?._integration === "pending" ? "pending" : "ehr"}
-          downloadUrl={exportSectionUrl("surgery")}
+          source={surgery.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          downloadUrl={exportSectionUrl('surgery')}
           renderData={(d) => {
             const results = d.results || [];
             if (!results.length) return <p>No surgical history on file</p>;
             return (
-              <table style={{ width: "100%", fontSize: "0.875rem", borderCollapse: "collapse" }}>
+              <table style={{ width: '100%', fontSize: '0.875rem', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid #e2e8f0", textAlign: "left" }}>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Procedure</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Date</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Surgeon</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Status</th>
+                  <tr style={{ borderBottom: '1px solid #e2e8f0', textAlign: 'left' }}>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Procedure</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Date</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Surgeon</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {results.map((s: any, i: number) => (
-                    <tr key={i} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{s.procedure}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{s.date}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{s.surgeon || "--"}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{s.status}</td>
+                    <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{s.procedure}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{s.date}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{s.surgeon || '--'}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{s.status}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -339,28 +381,28 @@ export default function HealthRecordsPage() {
           title="Discharge Summaries"
           loading={dcSummaries.loading}
           data={dcSummaries.data}
-          source={dcSummaries.data?._integration === "pending" ? "pending" : "ehr"}
-          downloadUrl={exportSectionUrl("dc-summaries")}
+          source={dcSummaries.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          downloadUrl={exportSectionUrl('dc-summaries')}
           renderData={(d) => {
             const results = d.results || [];
             if (!results.length) return <p>No discharge summaries on file</p>;
             return (
-              <table style={{ width: "100%", fontSize: "0.875rem", borderCollapse: "collapse" }}>
+              <table style={{ width: '100%', fontSize: '0.875rem', borderCollapse: 'collapse' }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid #e2e8f0", textAlign: "left" }}>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Title</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Date</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Author</th>
-                    <th style={{ padding: "0.25rem 0.5rem" }}>Status</th>
+                  <tr style={{ borderBottom: '1px solid #e2e8f0', textAlign: 'left' }}>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Title</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Date</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Author</th>
+                    <th style={{ padding: '0.25rem 0.5rem' }}>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {results.map((dc: any, i: number) => (
-                    <tr key={i} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{dc.title}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{dc.date}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{dc.author || "--"}</td>
-                      <td style={{ padding: "0.25rem 0.5rem" }}>{dc.status || "--"}</td>
+                    <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{dc.title}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{dc.date}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{dc.author || '--'}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{dc.status || '--'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -384,21 +426,28 @@ function HealthSection({
   title: string;
   loading: boolean;
   data: any;
-  source: "ehr" | "pending";
+  source: 'ehr' | 'pending';
   downloadUrl?: string;
   renderData: (data: any) => React.ReactNode;
 }) {
   return (
     <div className="card">
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '0.5rem',
+        }}
+      >
         <h3 style={{ margin: 0 }}>{title}</h3>
-        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           {downloadUrl && <DownloadButton url={downloadUrl} label="PDF" />}
           <DataSourceBadge source={source} />
         </div>
       </div>
       {loading ? (
-        <p style={{ color: "#94a3b8", fontSize: "0.875rem" }}>Loading...</p>
+        <p style={{ color: '#94a3b8', fontSize: '0.875rem' }}>Loading...</p>
       ) : (
         renderData(data || {})
       )}

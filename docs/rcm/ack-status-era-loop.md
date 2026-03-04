@@ -30,6 +30,7 @@ Claim Draft -> Validated Claim -> X12 Envelope Built
   - `P` -- Partially accepted
 
 When a 999 is received:
+
 1. It is ingested via `ingestAck()` (idempotent by ICN)
 2. The linked transaction transitions to `ack_accepted` or `ack_rejected`
 3. For rejections: errors are extracted from AK9/IK5 segments
@@ -49,6 +50,7 @@ When a 999 is received:
 ## 835 Remittance Advice (ERA)
 
 ERA processing:
+
 1. Receive 835 file (from payer or clearinghouse)
 2. Parse BPR segment (payment total)
 3. Parse CLP segments (claim-level details)
@@ -72,6 +74,7 @@ The reconciliation engine (`buildReconciliationSummary`) aggregates:
 - Denial summary with recommended actions
 
 Payment status determination:
+
 - **full_payment**: Paid >= Billed
 - **partial_payment**: 0 < Paid < Billed
 - **denied**: All lines denied (CARC present, zero payment)
@@ -80,24 +83,26 @@ Payment status determination:
 ## Batch Reconciliation
 
 `buildReconciliationStats` processes multiple claim IDs and returns:
+
 - Counts per payment status
 - Total billed/paid/adjusted amounts
 - Average days to reconciliation
 
 ## API Endpoints
 
-| Endpoint | Description |
-|----------|-------------|
-| `GET /rcm/claims/:id/reconciliation` | Full reconciliation summary |
-| `POST /rcm/claims/batch-reconciliation` | Batch stats for claim list |
-| `GET /rcm/acks` | List all acknowledgements |
-| `GET /rcm/acks/claim/:claimId` | Acks for a specific claim |
-| `GET /rcm/statuses` | List all status updates |
-| `GET /rcm/remittances` | List all remittances |
+| Endpoint                                | Description                 |
+| --------------------------------------- | --------------------------- |
+| `GET /rcm/claims/:id/reconciliation`    | Full reconciliation summary |
+| `POST /rcm/claims/batch-reconciliation` | Batch stats for claim list  |
+| `GET /rcm/acks`                         | List all acknowledgements   |
+| `GET /rcm/acks/claim/:claimId`          | Acks for a specific claim   |
+| `GET /rcm/statuses`                     | List all status updates     |
+| `GET /rcm/remittances`                  | List all remittances        |
 
 ## Audit Trail Integration
 
 Every ack/status/ERA event is logged to the RCM hash-chained audit:
+
 - `ack.ingested`
 - `status.ingested`
 - `remit.received` / `remit.matched` / `remit.posted`

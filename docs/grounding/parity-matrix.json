@@ -9817,9 +9817,7 @@
       "delphiOriginal": true,
       "panelComponent": "ProblemsPanel",
       "status": "wired",
-      "rpcsUsed": [
-        "ORWCH PROBLEM LIST"
-      ],
+      "rpcsUsed": ["ORWCH PROBLEM LIST"],
       "rpcsWired": 1,
       "rpcsTotal": 1
     },
@@ -9829,10 +9827,7 @@
       "delphiOriginal": true,
       "panelComponent": "MedsPanel",
       "status": "wired",
-      "rpcsUsed": [
-        "ORWPS ACTIVE",
-        "ORWORR GETTXT"
-      ],
+      "rpcsUsed": ["ORWPS ACTIVE", "ORWORR GETTXT"],
       "rpcsWired": 2,
       "rpcsTotal": 2
     },
@@ -9842,9 +9837,7 @@
       "delphiOriginal": true,
       "panelComponent": "OrdersPanel",
       "status": "wired",
-      "rpcsUsed": [
-        "ORWPS ACTIVE"
-      ],
+      "rpcsUsed": ["ORWPS ACTIVE"],
       "rpcsWired": 1,
       "rpcsTotal": 1
     },
@@ -9854,11 +9847,7 @@
       "delphiOriginal": true,
       "panelComponent": "NotesPanel",
       "status": "wired",
-      "rpcsUsed": [
-        "TIU DOCUMENTS BY CONTEXT",
-        "TIU GET RECORD TEXT",
-        "TIU CREATE RECORD"
-      ],
+      "rpcsUsed": ["TIU DOCUMENTS BY CONTEXT", "TIU GET RECORD TEXT", "TIU CREATE RECORD"],
       "rpcsWired": 3,
       "rpcsTotal": 3
     },
@@ -9868,10 +9857,7 @@
       "delphiOriginal": true,
       "panelComponent": "ConsultsPanel",
       "status": "wired",
-      "rpcsUsed": [
-        "ORQQCN LIST",
-        "ORQQCN DETAIL"
-      ],
+      "rpcsUsed": ["ORQQCN LIST", "ORQQCN DETAIL"],
       "rpcsWired": 2,
       "rpcsTotal": 2
     },
@@ -9881,9 +9867,7 @@
       "delphiOriginal": true,
       "panelComponent": "SurgeryPanel",
       "status": "wired",
-      "rpcsUsed": [
-        "ORWSR LIST"
-      ],
+      "rpcsUsed": ["ORWSR LIST"],
       "rpcsWired": 1,
       "rpcsTotal": 1
     },
@@ -9893,10 +9877,7 @@
       "delphiOriginal": true,
       "panelComponent": "DCSummPanel",
       "status": "wired",
-      "rpcsUsed": [
-        "TIU DOCUMENTS BY CONTEXT",
-        "TIU GET RECORD TEXT"
-      ],
+      "rpcsUsed": ["TIU DOCUMENTS BY CONTEXT", "TIU GET RECORD TEXT"],
       "rpcsWired": 2,
       "rpcsTotal": 2
     },
@@ -9906,9 +9887,7 @@
       "delphiOriginal": true,
       "panelComponent": "LabsPanel",
       "status": "wired",
-      "rpcsUsed": [
-        "ORWLRR INTERIM"
-      ],
+      "rpcsUsed": ["ORWLRR INTERIM"],
       "rpcsWired": 1,
       "rpcsTotal": 1
     },
@@ -9918,10 +9897,7 @@
       "delphiOriginal": true,
       "panelComponent": "ReportsPanel",
       "status": "wired",
-      "rpcsUsed": [
-        "ORWRP REPORT LISTS",
-        "ORWRP REPORT TEXT"
-      ],
+      "rpcsUsed": ["ORWRP REPORT LISTS", "ORWRP REPORT TEXT"],
       "rpcsWired": 2,
       "rpcsTotal": 2
     },
@@ -9931,12 +9907,7 @@
       "delphiOriginal": true,
       "panelComponent": "CoverSheetPanel",
       "status": "wired",
-      "rpcsUsed": [
-        "ORQQAL LIST",
-        "ORQQVI VITALS",
-        "ORWPS ACTIVE",
-        "ORWCH PROBLEM LIST"
-      ],
+      "rpcsUsed": ["ORQQAL LIST", "ORQQVI VITALS", "ORWPS ACTIVE", "ORWCH PROBLEM LIST"],
       "rpcsWired": 4,
       "rpcsTotal": 4
     }

@@ -1,13 +1,11 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 import { useSession } from '@/stores/session-context';
 import CPRSMenuBar from '@/components/cprs/CPRSMenuBar';
 import styles from '@/components/cprs/cprs.module.css';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
-
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -81,8 +79,7 @@ interface MailMessageDetail {
 /* ------------------------------------------------------------------ */
 
 export default function MessagesPage() {
-  const router = useRouter();
-  const { user } = useSession();
+  const {} = useSession();
 
   // Tab state
   const [tab, setTab] = useState<'inbox' | 'sent' | 'compose'>('inbox');
@@ -106,8 +103,12 @@ export default function MessagesPage() {
   // Compose state
   const [composeSubject, setComposeSubject] = useState('');
   const [composeBody, setComposeBody] = useState('');
-  const [composePriority, setComposePriority] = useState<'routine' | 'priority' | 'urgent'>('routine');
-  const [composeRecipientType, setComposeRecipientType] = useState<'user' | 'mail-group'>('mail-group');
+  const [composePriority, setComposePriority] = useState<'routine' | 'priority' | 'urgent'>(
+    'routine'
+  );
+  const [composeRecipientType, setComposeRecipientType] = useState<'user' | 'mail-group'>(
+    'mail-group'
+  );
   const [composeRecipientId, setComposeRecipientId] = useState('');
   const [composeRecipientName, setComposeRecipientName] = useState('');
   const [mailGroups, setMailGroups] = useState<MailGroup[]>([]);
@@ -125,14 +126,18 @@ export default function MessagesPage() {
         setFolders(data.folders);
         setVistaSource(data.source || 'vista');
       }
-    } catch { /* silent */ }
+    } catch {
+      /* silent */
+    }
   }, []);
 
   const fetchVistaMessages = useCallback(async (folderId: string) => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`${API_BASE}/messaging/mail-list?folderId=${folderId}&limit=100`, { credentials: 'include' });
+      const res = await fetch(`${API_BASE}/messaging/mail-list?folderId=${folderId}&limit=100`, {
+        credentials: 'include',
+      });
       const data = await res.json();
       if (data.ok && data.source === 'vista') {
         setVistaMessages(data.messages || []);
@@ -154,37 +159,28 @@ export default function MessagesPage() {
 
   const fetchVistaDetail = useCallback(async (ien: string) => {
     try {
-      const res = await fetch(`${API_BASE}/messaging/mail-get?ien=${ien}`, { credentials: 'include' });
+      const res = await fetch(`${API_BASE}/messaging/mail-get?ien=${ien}`, {
+        credentials: 'include',
+      });
       const data = await res.json();
       if (data.ok && data.message) {
         setVistaDetail(data.message);
       }
-    } catch { /* silent */ }
+    } catch {
+      /* silent */
+    }
   }, []);
 
   /* ---- Legacy Data Loading (Fallback) ---- */
-
-  const fetchInbox = useCallback(async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const res = await fetch(`${API_BASE}/messaging/inbox`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) setInboxMessages(data.messages || []);
-      else setError(data.error || 'Failed to load inbox');
-    } catch {
-      setError('Cannot reach API server');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
   const fetchSent = useCallback(async () => {
     try {
       const res = await fetch(`${API_BASE}/messaging/sent`, { credentials: 'include' });
       const data = await res.json();
       if (data.ok) setSentMessages(data.messages || []);
-    } catch { /* silent */ }
+    } catch {
+      /* silent */
+    }
   }, []);
 
   const fetchMailGroups = useCallback(async () => {
@@ -198,7 +194,9 @@ export default function MessagesPage() {
           setComposeRecipientName(data.groups[0].name);
         }
       }
-    } catch { /* silent */ }
+    } catch {
+      /* silent */
+    }
   }, []);
 
   useEffect(() => {
@@ -221,29 +219,36 @@ export default function MessagesPage() {
           credentials: 'include',
           headers: { ...csrfHeaders() },
         });
-      } catch { /* silent */ }
+      } catch {
+        /* silent */
+      }
     }
   }, []);
 
-  const openVistaMessage = useCallback(async (msg: MailMessageSummary) => {
-    setSelectedMsg(null);
-    setVistaDetail(null);
-    await fetchVistaDetail(msg.ien);
-    // Mark as read via VistA
-    if (msg.isNew) {
-      try {
-        await fetch(`${API_BASE}/messaging/mail-manage`, {
-          method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
-          body: JSON.stringify({ action: 'markread', ien: msg.ien, basket: selectedFolderId }),
-        });
-        // Refresh folder counts
-        fetchFolders();
-        fetchVistaMessages(selectedFolderId);
-      } catch { /* silent */ }
-    }
-  }, [fetchVistaDetail, selectedFolderId, fetchFolders, fetchVistaMessages]);
+  const openVistaMessage = useCallback(
+    async (msg: MailMessageSummary) => {
+      setSelectedMsg(null);
+      setVistaDetail(null);
+      await fetchVistaDetail(msg.ien);
+      // Mark as read via VistA
+      if (msg.isNew) {
+        try {
+          await fetch(`${API_BASE}/messaging/mail-manage`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
+            body: JSON.stringify({ action: 'markread', ien: msg.ien, basket: selectedFolderId }),
+          });
+          // Refresh folder counts
+          fetchFolders();
+          fetchVistaMessages(selectedFolderId);
+        } catch {
+          /* silent */
+        }
+      }
+    },
+    [fetchVistaDetail, selectedFolderId, fetchFolders, fetchVistaMessages]
+  );
 
   /* ---- Compose + Send ---- */
 
@@ -274,20 +279,23 @@ export default function MessagesPage() {
           subject: composeSubject,
           body: composeBody,
           priority: composePriority,
-          recipients: [{
-            type: composeRecipientType,
-            id: composeRecipientId,
-            name: composeRecipientName,
-          }],
+          recipients: [
+            {
+              type: composeRecipientType,
+              id: composeRecipientId,
+              name: composeRecipientName,
+            },
+          ],
         }),
       });
       const data = await res.json();
       if (data.ok) {
-        const syncNote = data.vistaSync === 'synced'
-          ? ' (synced to VistA MailMan)'
-          : data.vistaSync === 'failed'
-            ? ' (VistA sync failed -- stored locally)'
-            : '';
+        const syncNote =
+          data.vistaSync === 'synced'
+            ? ' (synced to VistA MailMan)'
+            : data.vistaSync === 'failed'
+              ? ' (VistA sync failed -- stored locally)'
+              : '';
         setComposeSuccess(`Message sent${syncNote}`);
         setComposeSubject('');
         setComposeBody('');
@@ -303,7 +311,18 @@ export default function MessagesPage() {
     } finally {
       setSending(false);
     }
-  }, [composeSubject, composeBody, composePriority, composeRecipientType, composeRecipientId, composeRecipientName, fetchFolders, fetchVistaMessages, selectedFolderId, fetchSent]);
+  }, [
+    composeSubject,
+    composeBody,
+    composePriority,
+    composeRecipientType,
+    composeRecipientId,
+    composeRecipientName,
+    fetchFolders,
+    fetchVistaMessages,
+    selectedFolderId,
+    fetchSent,
+  ]);
 
   /* ---- Reply ---- */
 
@@ -328,7 +347,11 @@ export default function MessagesPage() {
 
   const formatDate = (d: string | null) => {
     if (!d) return '';
-    try { return new Date(d).toLocaleString(); } catch { return d; }
+    try {
+      return new Date(d).toLocaleString();
+    } catch {
+      return d;
+    }
   };
 
   /* ================================================================ */
@@ -342,50 +365,81 @@ export default function MessagesPage() {
       <div style={{ padding: '8px 16px' }}>
         <h2 style={{ margin: '0 0 8px' }}>
           Secure Messages
-          {vistaSource === 'vista' && <span style={{ fontSize: '0.6em', color: '#28a745', marginLeft: '8px' }}>VistA MailMan</span>}
-          {vistaSource === 'local' && <span style={{ fontSize: '0.6em', color: '#fd7e14', marginLeft: '8px' }}>Local fallback</span>}
+          {vistaSource === 'vista' && (
+            <span style={{ fontSize: '0.6em', color: '#28a745', marginLeft: '8px' }}>
+              VistA MailMan
+            </span>
+          )}
+          {vistaSource === 'local' && (
+            <span style={{ fontSize: '0.6em', color: '#fd7e14', marginLeft: '8px' }}>
+              Local fallback
+            </span>
+          )}
         </h2>
 
         {/* Folder selector (VistA baskets) */}
         {vistaSource === 'vista' && folders.length > 0 && (
           <div style={{ display: 'flex', gap: '4px', marginBottom: '6px' }}>
-            {folders.map(f => (
+            {folders.map((f) => (
               <button
                 key={f.id}
-                onClick={() => { setSelectedFolderId(f.id); setVistaDetail(null); }}
+                onClick={() => {
+                  setSelectedFolderId(f.id);
+                  setVistaDetail(null);
+                }}
                 style={{
                   padding: '3px 10px',
                   fontSize: '0.8em',
-                  background: selectedFolderId === f.id ? 'var(--cprs-accent, #0078d4)' : 'var(--cprs-bg-secondary, #f0f0f0)',
+                  background:
+                    selectedFolderId === f.id
+                      ? 'var(--cprs-accent, #0078d4)'
+                      : 'var(--cprs-bg-secondary, #f0f0f0)',
                   color: selectedFolderId === f.id ? 'white' : 'inherit',
                   border: 'none',
                   borderRadius: '3px',
                   cursor: 'pointer',
                 }}
               >
-                {f.name} ({f.totalMessages}{f.newMessages > 0 ? `, ${f.newMessages} new` : ''})
+                {f.name} ({f.totalMessages}
+                {f.newMessages > 0 ? `, ${f.newMessages} new` : ''})
               </button>
             ))}
           </div>
         )}
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: '4px', marginBottom: '8px', borderBottom: '1px solid var(--cprs-border)' }}>
-          {(['inbox', 'sent', 'compose'] as const).map(t => (
+        <div
+          style={{
+            display: 'flex',
+            gap: '4px',
+            marginBottom: '8px',
+            borderBottom: '1px solid var(--cprs-border)',
+          }}
+        >
+          {(['inbox', 'sent', 'compose'] as const).map((t) => (
             <button
               key={t}
-              onClick={() => { setTab(t); setSelectedMsg(null); }}
+              onClick={() => {
+                setTab(t);
+                setSelectedMsg(null);
+              }}
               style={{
                 padding: '6px 16px',
                 background: tab === t ? 'var(--cprs-bg-active, #e8e8e8)' : 'transparent',
                 border: 'none',
-                borderBottom: tab === t ? '2px solid var(--cprs-accent, #0078d4)' : '2px solid transparent',
+                borderBottom:
+                  tab === t ? '2px solid var(--cprs-accent, #0078d4)' : '2px solid transparent',
                 cursor: 'pointer',
                 fontWeight: tab === t ? 600 : 400,
                 textTransform: 'capitalize',
               }}
             >
-              {t} {t === 'inbox' ? `(${inboxMessages.length})` : t === 'sent' ? `(${sentMessages.length})` : ''}
+              {t}{' '}
+              {t === 'inbox'
+                ? `(${inboxMessages.length})`
+                : t === 'sent'
+                  ? `(${sentMessages.length})`
+                  : ''}
             </button>
           ))}
         </div>
@@ -396,12 +450,19 @@ export default function MessagesPage() {
         {tab === 'inbox' && (
           <div style={{ display: 'flex', gap: '12px' }}>
             {/* Message List */}
-            <div style={{ flex: '0 0 45%', maxHeight: '60vh', overflowY: 'auto', borderRight: '1px solid var(--cprs-border)' }}>
+            <div
+              style={{
+                flex: '0 0 45%',
+                maxHeight: '60vh',
+                overflowY: 'auto',
+                borderRight: '1px solid var(--cprs-border)',
+              }}
+            >
               {loading ? (
                 <div style={{ padding: '16px', color: 'var(--cprs-text-muted)' }}>Loading...</div>
               ) : vistaSource === 'vista' && vistaMessages.length > 0 ? (
                 /* VistA MailMan messages (primary) */
-                vistaMessages.map(msg => (
+                vistaMessages.map((msg) => (
                   <div
                     key={msg.ien}
                     onClick={() => openVistaMessage(msg)}
@@ -409,16 +470,25 @@ export default function MessagesPage() {
                       padding: '8px 12px',
                       borderBottom: '1px solid var(--cprs-border)',
                       cursor: 'pointer',
-                      background: vistaDetail?.ien === msg.ien ? 'var(--cprs-bg-active, #e8e8e8)' : 'transparent',
+                      background:
+                        vistaDetail?.ien === msg.ien
+                          ? 'var(--cprs-bg-active, #e8e8e8)'
+                          : 'transparent',
                       fontWeight: msg.isNew ? 700 : 400,
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ fontSize: '0.85em' }}>{msg.fromName || `DUZ ${msg.fromDuz}`}</span>
-                      <span style={{ fontSize: '0.75em', color: 'var(--cprs-text-muted)' }}>{formatDate(msg.date)}</span>
+                      <span style={{ fontSize: '0.85em' }}>
+                        {msg.fromName || `DUZ ${msg.fromDuz}`}
+                      </span>
+                      <span style={{ fontSize: '0.75em', color: 'var(--cprs-text-muted)' }}>
+                        {formatDate(msg.date)}
+                      </span>
                     </div>
                     <div style={{ fontSize: '0.9em', marginTop: '2px' }}>
-                      {msg.isNew && <span style={{ color: '#0078d4', marginRight: '4px' }}>[NEW]</span>}
+                      {msg.isNew && (
+                        <span style={{ color: '#0078d4', marginRight: '4px' }}>[NEW]</span>
+                      )}
                       {msg.subject}
                     </div>
                     <div style={{ fontSize: '0.75em', color: '#28a745', marginTop: '2px' }}>
@@ -427,12 +497,16 @@ export default function MessagesPage() {
                   </div>
                 ))
               ) : vistaSource === 'vista' && vistaMessages.length === 0 ? (
-                <div style={{ padding: '16px', color: 'var(--cprs-text-muted)' }}>No messages in this basket</div>
+                <div style={{ padding: '16px', color: 'var(--cprs-text-muted)' }}>
+                  No messages in this basket
+                </div>
               ) : inboxMessages.length === 0 ? (
-                <div style={{ padding: '16px', color: 'var(--cprs-text-muted)' }}>No messages in local cache.</div>
+                <div style={{ padding: '16px', color: 'var(--cprs-text-muted)' }}>
+                  No messages in local cache.
+                </div>
               ) : (
                 /* Fallback: local cache messages */
-                inboxMessages.map(msg => (
+                inboxMessages.map((msg) => (
                   <div
                     key={msg.id}
                     onClick={() => openMessage(msg)}
@@ -440,13 +514,18 @@ export default function MessagesPage() {
                       padding: '8px 12px',
                       borderBottom: '1px solid var(--cprs-border)',
                       cursor: 'pointer',
-                      background: selectedMsg?.id === msg.id ? 'var(--cprs-bg-active, #e8e8e8)' : 'transparent',
+                      background:
+                        selectedMsg?.id === msg.id
+                          ? 'var(--cprs-bg-active, #e8e8e8)'
+                          : 'transparent',
                       fontWeight: !msg.readAt && msg.direction === 'inbound' ? 700 : 400,
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <span style={{ fontSize: '0.85em' }}>{msg.fromName}</span>
-                      <span style={{ fontSize: '0.75em', color: 'var(--cprs-text-muted)' }}>{formatDate(msg.createdAt)}</span>
+                      <span style={{ fontSize: '0.75em', color: 'var(--cprs-text-muted)' }}>
+                        {formatDate(msg.createdAt)}
+                      </span>
                     </div>
                     <div style={{ fontSize: '0.9em', marginTop: '2px' }}>
                       <span style={{ color: priorityColor(msg.priority), marginRight: '4px' }}>
@@ -454,8 +533,18 @@ export default function MessagesPage() {
                       </span>
                       {msg.subject}
                     </div>
-                    <div style={{ fontSize: '0.75em', color: 'var(--cprs-text-muted)', marginTop: '2px' }}>
-                      {msg.vistaSync === 'synced' ? 'VistA synced' : msg.vistaSync === 'failed' ? 'VistA sync failed' : 'Local only'}
+                    <div
+                      style={{
+                        fontSize: '0.75em',
+                        color: 'var(--cprs-text-muted)',
+                        marginTop: '2px',
+                      }}
+                    >
+                      {msg.vistaSync === 'synced'
+                        ? 'VistA synced'
+                        : msg.vistaSync === 'failed'
+                          ? 'VistA sync failed'
+                          : 'Local only'}
                     </div>
                   </div>
                 ))
@@ -468,23 +557,38 @@ export default function MessagesPage() {
                 /* VistA message detail */
                 <div>
                   <h3 style={{ margin: '0 0 4px' }}>{vistaDetail.subject}</h3>
-                  <div style={{ fontSize: '0.85em', color: 'var(--cprs-text-muted)', marginBottom: '8px' }}>
-                    From: {vistaDetail.fromName || `DUZ ${vistaDetail.fromDuz}`} | {formatDate(vistaDetail.date)}
+                  <div
+                    style={{
+                      fontSize: '0.85em',
+                      color: 'var(--cprs-text-muted)',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    From: {vistaDetail.fromName || `DUZ ${vistaDetail.fromDuz}`} |{' '}
+                    {formatDate(vistaDetail.date)}
                   </div>
                   {vistaDetail.recipients.length > 0 && (
-                    <div style={{ fontSize: '0.85em', color: 'var(--cprs-text-muted)', marginBottom: '12px' }}>
-                      To: {vistaDetail.recipients.map(r => r.name || `DUZ ${r.duz}`).join(', ')}
+                    <div
+                      style={{
+                        fontSize: '0.85em',
+                        color: 'var(--cprs-text-muted)',
+                        marginBottom: '12px',
+                      }}
+                    >
+                      To: {vistaDetail.recipients.map((r) => r.name || `DUZ ${r.duz}`).join(', ')}
                     </div>
                   )}
-                  <div style={{
-                    whiteSpace: 'pre-wrap',
-                    background: 'var(--cprs-bg-secondary, #f5f5f5)',
-                    padding: '12px',
-                    borderRadius: '4px',
-                    fontSize: '0.9em',
-                    minHeight: '120px',
-                    marginBottom: '12px',
-                  }}>
+                  <div
+                    style={{
+                      whiteSpace: 'pre-wrap',
+                      background: 'var(--cprs-bg-secondary, #f5f5f5)',
+                      padding: '12px',
+                      borderRadius: '4px',
+                      fontSize: '0.9em',
+                      minHeight: '120px',
+                      marginBottom: '12px',
+                    }}
+                  >
                     {vistaDetail.bodyLines.join('\n')}
                   </div>
                   <div style={{ fontSize: '0.7em', color: '#28a745', marginBottom: '6px' }}>
@@ -498,7 +602,9 @@ export default function MessagesPage() {
                       if (vistaDetail.fromDuz) {
                         setComposeRecipientType('user');
                         setComposeRecipientId(vistaDetail.fromDuz);
-                        setComposeRecipientName(vistaDetail.fromName || `User ${vistaDetail.fromDuz}`);
+                        setComposeRecipientName(
+                          vistaDetail.fromName || `User ${vistaDetail.fromDuz}`
+                        );
                       }
                     }}
                     style={{
@@ -516,26 +622,42 @@ export default function MessagesPage() {
               ) : selectedMsg ? (
                 <div>
                   <h3 style={{ margin: '0 0 4px' }}>{selectedMsg.subject}</h3>
-                  <div style={{ fontSize: '0.85em', color: 'var(--cprs-text-muted)', marginBottom: '8px' }}>
+                  <div
+                    style={{
+                      fontSize: '0.85em',
+                      color: 'var(--cprs-text-muted)',
+                      marginBottom: '8px',
+                    }}
+                  >
                     From: {selectedMsg.fromName} | {formatDate(selectedMsg.createdAt)}
                     {selectedMsg.priority !== 'routine' && (
-                      <span style={{ color: priorityColor(selectedMsg.priority), marginLeft: '8px' }}>
+                      <span
+                        style={{ color: priorityColor(selectedMsg.priority), marginLeft: '8px' }}
+                      >
                         [{selectedMsg.priority.toUpperCase()}]
                       </span>
                     )}
                   </div>
-                  <div style={{ fontSize: '0.85em', color: 'var(--cprs-text-muted)', marginBottom: '12px' }}>
-                    To: {selectedMsg.recipients.map(r => r.name).join(', ')}
+                  <div
+                    style={{
+                      fontSize: '0.85em',
+                      color: 'var(--cprs-text-muted)',
+                      marginBottom: '12px',
+                    }}
+                  >
+                    To: {selectedMsg.recipients.map((r) => r.name).join(', ')}
                   </div>
-                  <div style={{
-                    whiteSpace: 'pre-wrap',
-                    background: 'var(--cprs-bg-secondary, #f5f5f5)',
-                    padding: '12px',
-                    borderRadius: '4px',
-                    fontSize: '0.9em',
-                    minHeight: '120px',
-                    marginBottom: '12px',
-                  }}>
+                  <div
+                    style={{
+                      whiteSpace: 'pre-wrap',
+                      background: 'var(--cprs-bg-secondary, #f5f5f5)',
+                      padding: '12px',
+                      borderRadius: '4px',
+                      fontSize: '0.9em',
+                      minHeight: '120px',
+                      marginBottom: '12px',
+                    }}
+                  >
                     {selectedMsg.body}
                   </div>
                   <button
@@ -553,7 +675,9 @@ export default function MessagesPage() {
                   </button>
                 </div>
               ) : (
-                <div style={{ padding: '16px', color: 'var(--cprs-text-muted)' }}>Select a message to read</div>
+                <div style={{ padding: '16px', color: 'var(--cprs-text-muted)' }}>
+                  Select a message to read
+                </div>
               )}
             </div>
           </div>
@@ -563,12 +687,17 @@ export default function MessagesPage() {
         {tab === 'sent' && (
           <div style={{ maxHeight: '60vh', overflowY: 'auto' }}>
             {sentMessages.length === 0 ? (
-              <div style={{ padding: '16px', color: 'var(--cprs-text-muted)' }}>No sent messages</div>
+              <div style={{ padding: '16px', color: 'var(--cprs-text-muted)' }}>
+                No sent messages
+              </div>
             ) : (
-              sentMessages.map(msg => (
+              sentMessages.map((msg) => (
                 <div
                   key={msg.id}
-                  onClick={() => { setSelectedMsg(msg); setTab('inbox'); }}
+                  onClick={() => {
+                    setSelectedMsg(msg);
+                    setTab('inbox');
+                  }}
                   style={{
                     padding: '8px 12px',
                     borderBottom: '1px solid var(--cprs-border)',
@@ -576,12 +705,26 @@ export default function MessagesPage() {
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: '0.85em' }}>To: {msg.recipients.map(r => r.name).join(', ')}</span>
-                    <span style={{ fontSize: '0.75em', color: 'var(--cprs-text-muted)' }}>{formatDate(msg.sentAt)}</span>
+                    <span style={{ fontSize: '0.85em' }}>
+                      To: {msg.recipients.map((r) => r.name).join(', ')}
+                    </span>
+                    <span style={{ fontSize: '0.75em', color: 'var(--cprs-text-muted)' }}>
+                      {formatDate(msg.sentAt)}
+                    </span>
                   </div>
                   <div style={{ fontSize: '0.9em', marginTop: '2px' }}>{msg.subject}</div>
-                  <div style={{ fontSize: '0.75em', color: 'var(--cprs-text-muted)', marginTop: '2px' }}>
-                    {msg.vistaSync === 'synced' ? 'VistA synced' : msg.vistaSync === 'failed' ? 'VistA sync failed' : 'Local only'}
+                  <div
+                    style={{
+                      fontSize: '0.75em',
+                      color: 'var(--cprs-text-muted)',
+                      marginTop: '2px',
+                    }}
+                  >
+                    {msg.vistaSync === 'synced'
+                      ? 'VistA synced'
+                      : msg.vistaSync === 'failed'
+                        ? 'VistA sync failed'
+                        : 'Local only'}
                   </div>
                 </div>
               ))
@@ -592,14 +735,20 @@ export default function MessagesPage() {
         {/* ---- COMPOSE TAB ---- */}
         {tab === 'compose' && (
           <div style={{ maxWidth: '600px' }}>
-            {composeError && <div style={{ color: '#dc3545', marginBottom: '8px' }}>{composeError}</div>}
-            {composeSuccess && <div style={{ color: '#28a745', marginBottom: '8px' }}>{composeSuccess}</div>}
+            {composeError && (
+              <div style={{ color: '#dc3545', marginBottom: '8px' }}>{composeError}</div>
+            )}
+            {composeSuccess && (
+              <div style={{ color: '#28a745', marginBottom: '8px' }}>{composeSuccess}</div>
+            )}
 
             <div style={{ marginBottom: '8px' }}>
-              <label style={{ display: 'block', fontSize: '0.85em', marginBottom: '2px' }}>Recipient Type</label>
+              <label style={{ display: 'block', fontSize: '0.85em', marginBottom: '2px' }}>
+                Recipient Type
+              </label>
               <select
                 value={composeRecipientType}
-                onChange={e => setComposeRecipientType(e.target.value as 'user' | 'mail-group')}
+                onChange={(e) => setComposeRecipientType(e.target.value as 'user' | 'mail-group')}
                 style={{ padding: '4px 8px', width: '100%' }}
               >
                 <option value="mail-group">Mail Group</option>
@@ -609,56 +758,74 @@ export default function MessagesPage() {
 
             {composeRecipientType === 'mail-group' ? (
               <div style={{ marginBottom: '8px' }}>
-                <label style={{ display: 'block', fontSize: '0.85em', marginBottom: '2px' }}>Mail Group</label>
+                <label style={{ display: 'block', fontSize: '0.85em', marginBottom: '2px' }}>
+                  Mail Group
+                </label>
                 {mailGroups.length > 0 ? (
                   <select
                     value={composeRecipientId}
-                    onChange={e => {
+                    onChange={(e) => {
                       setComposeRecipientId(e.target.value);
                       setComposeRecipientName(e.target.value);
                     }}
                     style={{ padding: '4px 8px', width: '100%' }}
                   >
-                    {mailGroups.map(g => (
-                      <option key={g.ien} value={g.name}>{g.name}</option>
+                    {mailGroups.map((g) => (
+                      <option key={g.ien} value={g.name}>
+                        {g.name}
+                      </option>
                     ))}
                   </select>
                 ) : (
                   <input
                     placeholder="Enter mail group name"
                     value={composeRecipientId}
-                    onChange={e => { setComposeRecipientId(e.target.value); setComposeRecipientName(e.target.value); }}
+                    onChange={(e) => {
+                      setComposeRecipientId(e.target.value);
+                      setComposeRecipientName(e.target.value);
+                    }}
                     style={{ padding: '4px 8px', width: '100%' }}
                   />
                 )}
               </div>
             ) : (
               <div style={{ marginBottom: '8px' }}>
-                <label style={{ display: 'block', fontSize: '0.85em', marginBottom: '2px' }}>Recipient DUZ</label>
+                <label style={{ display: 'block', fontSize: '0.85em', marginBottom: '2px' }}>
+                  Recipient DUZ
+                </label>
                 <input
                   placeholder="Enter user DUZ"
                   value={composeRecipientId}
-                  onChange={e => { setComposeRecipientId(e.target.value); setComposeRecipientName(`User ${e.target.value}`); }}
+                  onChange={(e) => {
+                    setComposeRecipientId(e.target.value);
+                    setComposeRecipientName(`User ${e.target.value}`);
+                  }}
                   style={{ padding: '4px 8px', width: '100%' }}
                 />
               </div>
             )}
 
             <div style={{ marginBottom: '8px' }}>
-              <label style={{ display: 'block', fontSize: '0.85em', marginBottom: '2px' }}>Subject (3-65 chars)</label>
+              <label style={{ display: 'block', fontSize: '0.85em', marginBottom: '2px' }}>
+                Subject (3-65 chars)
+              </label>
               <input
                 value={composeSubject}
-                onChange={e => setComposeSubject(e.target.value)}
+                onChange={(e) => setComposeSubject(e.target.value)}
                 maxLength={65}
                 style={{ padding: '4px 8px', width: '100%' }}
               />
             </div>
 
             <div style={{ marginBottom: '8px' }}>
-              <label style={{ display: 'block', fontSize: '0.85em', marginBottom: '2px' }}>Priority</label>
+              <label style={{ display: 'block', fontSize: '0.85em', marginBottom: '2px' }}>
+                Priority
+              </label>
               <select
                 value={composePriority}
-                onChange={e => setComposePriority(e.target.value as 'routine' | 'priority' | 'urgent')}
+                onChange={(e) =>
+                  setComposePriority(e.target.value as 'routine' | 'priority' | 'urgent')
+                }
                 style={{ padding: '4px 8px', width: '100%' }}
               >
                 <option value="routine">Routine</option>
@@ -668,10 +835,12 @@ export default function MessagesPage() {
             </div>
 
             <div style={{ marginBottom: '12px' }}>
-              <label style={{ display: 'block', fontSize: '0.85em', marginBottom: '2px' }}>Message Body</label>
+              <label style={{ display: 'block', fontSize: '0.85em', marginBottom: '2px' }}>
+                Message Body
+              </label>
               <textarea
                 value={composeBody}
-                onChange={e => setComposeBody(e.target.value)}
+                onChange={(e) => setComposeBody(e.target.value)}
                 rows={8}
                 style={{ padding: '8px', width: '100%', resize: 'vertical' }}
               />

@@ -11,12 +11,12 @@ become available, the platform RBAC can delegate to VistA's authorization.
 
 ## Imaging Permissions
 
-| Permission | Who Gets It | What It Allows |
-|---|---|---|
-| `imaging_view` | provider, nurse, pharmacist, admin | View studies, launch viewer, DICOMweb read |
-| `imaging_diagnostic` | admin (future: radiologists via VistA) | Advanced viewer tools, annotations |
-| `imaging_admin` | admin only | Device onboarding, STOW-RS, ingest admin, audit |
-| `break_glass` | Any clinician (time-limited) | Emergency imaging_view override |
+| Permission           | Who Gets It                            | What It Allows                                  |
+| -------------------- | -------------------------------------- | ----------------------------------------------- |
+| `imaging_view`       | provider, nurse, pharmacist, admin     | View studies, launch viewer, DICOMweb read      |
+| `imaging_diagnostic` | admin (future: radiologists via VistA) | Advanced viewer tools, annotations              |
+| `imaging_admin`      | admin only                             | Device onboarding, STOW-RS, ingest admin, audit |
+| `break_glass`        | Any clinician (time-limited)           | Emergency imaging_view override                 |
 
 ### Role → Permission Mapping
 
@@ -83,10 +83,10 @@ curl http://localhost:3001/security/break-glass/history \
 All DICOMweb proxy routes have a **per-user rate limit** separate from the
 general API rate limiter:
 
-| Parameter | Default | Env Variable |
-|---|---|---|
-| Max requests/window | 120 | `DICOMWEB_RATE_LIMIT` |
-| Window duration | 60s | `DICOMWEB_RATE_WINDOW_MS` |
+| Parameter           | Default | Env Variable              |
+| ------------------- | ------- | ------------------------- |
+| Max requests/window | 120     | `DICOMWEB_RATE_LIMIT`     |
+| Window duration     | 60s     | `DICOMWEB_RATE_WINDOW_MS` |
 
 When exceeded, the API returns `429 Too Many Requests` with `Retry-After` header.
 
@@ -100,18 +100,18 @@ When exceeded, the API returns `429 Too Many Requests` with `Retry-After` header
 
 All DICOMweb routes now enforce `imaging_view` before proxying:
 
-| Route | Auth Level | Phase 24 Change |
-|---|---|---|
-| `GET /imaging/dicom-web/studies` | session + imaging_view | ✅ Added |
-| `GET .../studies/:uid/series` | session + imaging_view | ✅ Added |
-| `GET .../studies/:uid/metadata` | session + imaging_view | ✅ Added |
-| `GET .../instances` | session + imaging_view | ✅ Added |
-| `GET .../instances/:uid` | session + imaging_view | ✅ Added |
-| `GET .../frames/:list` | session + imaging_view | ✅ Added |
+| Route                             | Auth Level              | Phase 24 Change            |
+| --------------------------------- | ----------------------- | -------------------------- |
+| `GET /imaging/dicom-web/studies`  | session + imaging_view  | ✅ Added                   |
+| `GET .../studies/:uid/series`     | session + imaging_view  | ✅ Added                   |
+| `GET .../studies/:uid/metadata`   | session + imaging_view  | ✅ Added                   |
+| `GET .../instances`               | session + imaging_view  | ✅ Added                   |
+| `GET .../instances/:uid`          | session + imaging_view  | ✅ Added                   |
+| `GET .../frames/:list`            | session + imaging_view  | ✅ Added                   |
 | `POST /imaging/dicom-web/studies` | session + imaging_admin | ✅ Changed from admin role |
-| `GET /imaging/orthanc/studies` | session + imaging_view | ✅ Added |
-| `POST /imaging/demo/upload` | session + imaging_admin | ✅ Changed from admin role |
-| `GET /imaging/viewer` | session + imaging_view | ✅ Added |
+| `GET /imaging/orthanc/studies`    | session + imaging_view  | ✅ Added                   |
+| `POST /imaging/demo/upload`       | session + imaging_admin | ✅ Changed from admin role |
+| `GET /imaging/viewer`             | session + imaging_view  | ✅ Added                   |
 
 ## Future VistA Integration
 
@@ -125,9 +125,9 @@ When VistA MAG security keys become available:
 
 ## Troubleshooting
 
-| Symptom | Likely Cause | Fix |
-|---|---|---|
-| 403 on all imaging routes | User lacks imaging_view | Check role mapping or use break-glass |
-| 429 on rapid viewer loads | DICOMweb rate limit hit | Increase DICOMWEB_RATE_LIMIT |
-| Break-glass expired early | TTL too short | Increase ttlMinutes (max 240) |
-| No break-glass option in UI | Error message doesn't contain "permission" | Check API error response |
+| Symptom                     | Likely Cause                               | Fix                                   |
+| --------------------------- | ------------------------------------------ | ------------------------------------- |
+| 403 on all imaging routes   | User lacks imaging_view                    | Check role mapping or use break-glass |
+| 429 on rapid viewer loads   | DICOMweb rate limit hit                    | Increase DICOMWEB_RATE_LIMIT          |
+| Break-glass expired early   | TTL too short                              | Increase ttlMinutes (max 240)         |
+| No break-glass option in UI | Error message doesn't contain "permission" | Check API error response              |

@@ -14,13 +14,13 @@
  * Production would swap the in-memory store for a database or config service.
  */
 
-import { log } from "../lib/logger.js";
+import { log } from '../lib/logger.js';
 import {
   getEnabledModules,
   setTenantModules,
   validateDependencies,
   getActiveSku,
-} from "../modules/module-registry.js";
+} from '../modules/module-registry.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -28,10 +28,10 @@ import {
 
 /** Supported jurisdiction packs (determines regulatory defaults). */
 export type JurisdictionPack =
-  | "us"       // United States — HIPAA, CMS, X12 EDI
-  | "ph"       // Philippines — PhilHealth, DOH
-  | "global"   // Generic — minimal regulatory assumptions
-  | "sandbox"; // Development/testing — all features, relaxed validation
+  | 'us' // United States — HIPAA, CMS, X12 EDI
+  | 'ph' // Philippines — PhilHealth, DOH
+  | 'global' // Generic — minimal regulatory assumptions
+  | 'sandbox'; // Development/testing — all features, relaxed validation
 
 /** Connector configuration (no secrets — secrets come from env vars). */
 export interface ConnectorConfig {
@@ -70,25 +70,28 @@ export interface MarketplaceTenantConfig {
 /* ------------------------------------------------------------------ */
 
 /** Default connector templates per jurisdiction. */
-const JURISDICTION_DEFAULTS: Record<JurisdictionPack, {
-  connectors: ConnectorConfig[];
-  settings: Record<string, string | number | boolean>;
-}> = {
+const JURISDICTION_DEFAULTS: Record<
+  JurisdictionPack,
+  {
+    connectors: ConnectorConfig[];
+    settings: Record<string, string | number | boolean>;
+  }
+> = {
   us: {
     connectors: [
       {
-        type: "clearinghouse",
-        name: "US EDI Clearinghouse",
+        type: 'clearinghouse',
+        name: 'US EDI Clearinghouse',
         enabled: true,
         settings: {
-          ediVersion: "5010",
-          submissionMode: "test",
-          claimFormat: "837P",
+          ediVersion: '5010',
+          submissionMode: 'test',
+          claimFormat: '837P',
         },
       },
       {
-        type: "pacs",
-        name: "Orthanc PACS",
+        type: 'pacs',
+        name: 'Orthanc PACS',
         enabled: true,
         settings: {
           dicomwebEnabled: true,
@@ -99,24 +102,24 @@ const JURISDICTION_DEFAULTS: Record<JurisdictionPack, {
     settings: {
       hipaaEnabled: true,
       ediEnabled: true,
-      currencyCode: "USD",
-      dateFormat: "MM/DD/YYYY",
+      currencyCode: 'USD',
+      dateFormat: 'MM/DD/YYYY',
     },
   },
   ph: {
     connectors: [
       {
-        type: "philhealth",
-        name: "PhilHealth eClaims",
+        type: 'philhealth',
+        name: 'PhilHealth eClaims',
         enabled: true,
         settings: {
           testMode: true,
-          claimFormat: "CF1-CF4",
+          claimFormat: 'CF1-CF4',
         },
       },
       {
-        type: "pacs",
-        name: "Orthanc PACS",
+        type: 'pacs',
+        name: 'Orthanc PACS',
         enabled: false,
         settings: {
           dicomwebEnabled: true,
@@ -125,15 +128,15 @@ const JURISDICTION_DEFAULTS: Record<JurisdictionPack, {
     ],
     settings: {
       philhealthEnabled: true,
-      currencyCode: "PHP",
-      dateFormat: "DD/MM/YYYY",
+      currencyCode: 'PHP',
+      dateFormat: 'DD/MM/YYYY',
     },
   },
   global: {
     connectors: [
       {
-        type: "pacs",
-        name: "Orthanc PACS",
+        type: 'pacs',
+        name: 'Orthanc PACS',
         enabled: false,
         settings: {
           dicomwebEnabled: true,
@@ -141,15 +144,15 @@ const JURISDICTION_DEFAULTS: Record<JurisdictionPack, {
       },
     ],
     settings: {
-      currencyCode: "USD",
-      dateFormat: "YYYY-MM-DD",
+      currencyCode: 'USD',
+      dateFormat: 'YYYY-MM-DD',
     },
   },
   sandbox: {
     connectors: [
       {
-        type: "sandbox",
-        name: "Sandbox Connector (simulated)",
+        type: 'sandbox',
+        name: 'Sandbox Connector (simulated)',
         enabled: true,
         settings: {
           simulatedLatencyMs: 200,
@@ -157,8 +160,8 @@ const JURISDICTION_DEFAULTS: Record<JurisdictionPack, {
         },
       },
       {
-        type: "pacs",
-        name: "Orthanc PACS (dev)",
+        type: 'pacs',
+        name: 'Orthanc PACS (dev)',
         enabled: true,
         settings: {
           dicomwebEnabled: true,
@@ -168,8 +171,8 @@ const JURISDICTION_DEFAULTS: Record<JurisdictionPack, {
     ],
     settings: {
       allFeaturesEnabled: true,
-      currencyCode: "USD",
-      dateFormat: "YYYY-MM-DD",
+      currencyCode: 'USD',
+      dateFormat: 'YYYY-MM-DD',
     },
   },
 };
@@ -189,25 +192,25 @@ const tenantConfigs = new Map<string, MarketplaceTenantConfig>();
  * Seeds a "default" tenant from env vars + jurisdiction defaults.
  */
 export function initMarketplaceTenantConfig(): void {
-  const jurisdiction = (process.env.TENANT_JURISDICTION || "sandbox") as JurisdictionPack;
-  const facilityName = process.env.FACILITY_NAME || "VistA-Evolved Sandbox";
+  const jurisdiction = (process.env.TENANT_JURISDICTION || 'sandbox') as JurisdictionPack;
+  const facilityName = process.env.FACILITY_NAME || 'VistA-Evolved Sandbox';
 
   // Seed default tenant
   const defaults = JURISDICTION_DEFAULTS[jurisdiction] || JURISDICTION_DEFAULTS.sandbox;
   const defaultConfig: MarketplaceTenantConfig = {
-    tenantId: "default",
+    tenantId: 'default',
     facilityName,
     jurisdiction,
-    enabledModules: getEnabledModules("default"),
+    enabledModules: getEnabledModules('default'),
     connectors: defaults.connectors,
     customSettings: defaults.settings,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
 
-  tenantConfigs.set("default", defaultConfig);
+  tenantConfigs.set('default', defaultConfig);
 
-  log.info("Marketplace tenant config initialized", {
+  log.info('Marketplace tenant config initialized', {
     defaultJurisdiction: jurisdiction,
     facilityName,
     moduleCount: defaultConfig.enabledModules.length,
@@ -240,14 +243,15 @@ export function upsertMarketplaceTenant(
   const now = new Date().toISOString();
 
   // Merge with existing or create new
-  const jurisdiction = config.jurisdiction || existing?.jurisdiction || "sandbox";
+  const jurisdiction = config.jurisdiction || existing?.jurisdiction || 'sandbox';
   const defaults = JURISDICTION_DEFAULTS[jurisdiction] || JURISDICTION_DEFAULTS.sandbox;
 
   const merged: MarketplaceTenantConfig = {
     tenantId: config.tenantId,
-    facilityName: config.facilityName || existing?.facilityName || "Unnamed Facility",
+    facilityName: config.facilityName || existing?.facilityName || 'Unnamed Facility',
     jurisdiction,
-    enabledModules: config.enabledModules || existing?.enabledModules || getEnabledModules("default"),
+    enabledModules:
+      config.enabledModules || existing?.enabledModules || getEnabledModules('default'),
     connectors: config.connectors || existing?.connectors || defaults.connectors,
     customSettings: {
       ...defaults.settings,
@@ -270,7 +274,7 @@ export function upsertMarketplaceTenant(
   // Sync to module registry
   setTenantModules(config.tenantId, merged.enabledModules);
 
-  log.info("Marketplace tenant config updated", {
+  log.info('Marketplace tenant config updated', {
     tenantId: config.tenantId,
     jurisdiction: merged.jurisdiction,
     moduleCount: merged.enabledModules.length,
@@ -281,7 +285,7 @@ export function upsertMarketplaceTenant(
 
 /** Delete a marketplace tenant config (cannot delete "default"). */
 export function deleteMarketplaceTenant(tenantId: string): boolean {
-  if (tenantId === "default") return false;
+  if (tenantId === 'default') return false;
   const deleted = tenantConfigs.delete(tenantId);
   if (deleted) {
     setTenantModules(tenantId, null); // clear module overrides
@@ -297,7 +301,7 @@ export function updateTenantConnectors(
   connectors: ConnectorConfig[]
 ): { ok: boolean; error?: string } {
   const existing = tenantConfigs.get(tenantId);
-  if (!existing) return { ok: false, error: "Tenant not found" };
+  if (!existing) return { ok: false, error: 'Tenant not found' };
 
   existing.connectors = connectors;
   existing.updatedAt = new Date().toISOString();
@@ -313,7 +317,7 @@ export function updateTenantJurisdiction(
   jurisdiction: JurisdictionPack
 ): { ok: boolean; error?: string } {
   const existing = tenantConfigs.get(tenantId);
-  if (!existing) return { ok: false, error: "Tenant not found" };
+  if (!existing) return { ok: false, error: 'Tenant not found' };
 
   const defaults = JURISDICTION_DEFAULTS[jurisdiction] || JURISDICTION_DEFAULTS.sandbox;
   existing.jurisdiction = jurisdiction;
@@ -321,7 +325,7 @@ export function updateTenantJurisdiction(
   existing.customSettings = { ...defaults.settings };
   existing.updatedAt = new Date().toISOString();
 
-  log.info("Tenant jurisdiction updated", { tenantId, jurisdiction });
+  log.info('Tenant jurisdiction updated', { tenantId, jurisdiction });
   return { ok: true };
 }
 
@@ -336,27 +340,27 @@ export function getAvailableJurisdictions(): Array<{
 }> {
   return [
     {
-      id: "us",
-      name: "United States",
-      description: "HIPAA compliance, CMS billing, X12 5010 EDI, US payer clearinghouses",
+      id: 'us',
+      name: 'United States',
+      description: 'HIPAA compliance, CMS billing, X12 5010 EDI, US payer clearinghouses',
       defaultConnectorCount: JURISDICTION_DEFAULTS.us.connectors.length,
     },
     {
-      id: "ph",
-      name: "Philippines",
-      description: "PhilHealth eClaims, DOH reporting, Philippine HMO connectivity",
+      id: 'ph',
+      name: 'Philippines',
+      description: 'PhilHealth eClaims, DOH reporting, Philippine HMO connectivity',
       defaultConnectorCount: JURISDICTION_DEFAULTS.ph.connectors.length,
     },
     {
-      id: "global",
-      name: "Global / Generic",
-      description: "Minimal regulatory assumptions, adaptable to any jurisdiction",
+      id: 'global',
+      name: 'Global / Generic',
+      description: 'Minimal regulatory assumptions, adaptable to any jurisdiction',
       defaultConnectorCount: JURISDICTION_DEFAULTS.global.connectors.length,
     },
     {
-      id: "sandbox",
-      name: "Sandbox / Development",
-      description: "All features enabled, simulated connectors, relaxed validation",
+      id: 'sandbox',
+      name: 'Sandbox / Development',
+      description: 'All features enabled, simulated connectors, relaxed validation',
       defaultConnectorCount: JURISDICTION_DEFAULTS.sandbox.connectors.length,
     },
   ];

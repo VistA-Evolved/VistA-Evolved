@@ -6,6 +6,7 @@
 - **Dependencies**: Phase 423 (W26 P1)
 
 ## Key Decisions
+
 1. Runtime matrix is a static JSON document describing environments, not a
    live-generated artifact. Live data comes from rpcCapabilities.ts discovery.
 2. Drift detection compares live discovery against saved baselines. Baselines

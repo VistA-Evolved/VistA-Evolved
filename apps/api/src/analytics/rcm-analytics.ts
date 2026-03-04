@@ -6,14 +6,10 @@
  * Reads from the RCM claim store and extract layer.
  */
 
-import { log } from "../lib/logger.js";
-import type {
-  ReportId,
-  ReportResult,
-  ReportRow,
-} from "./extract-types.js";
-import { getExtractRuns, getExtractRecords } from "./extract-layer.js";
-import { registerReportGenerator } from "./reporting-service.js";
+import { log } from '../lib/logger.js';
+import type { ReportId, ReportResult, ReportRow } from './extract-types.js';
+import { getExtractRuns, getExtractRecords } from './extract-layer.js';
+import { registerReportGenerator } from './reporting-service.js';
 
 // ── RCM Metric Computation ──────────────────────────────────────────────
 
@@ -27,12 +23,12 @@ interface RcmMetricResult {
  * Claim throughput: claims processed per day over the given window.
  */
 function computeClaimThroughput(tenantId: string, runId: string): RcmMetricResult {
-  const records = getExtractRecords(runId, { entityType: "claim" });
+  const records = getExtractRecords(runId, { entityType: 'claim' });
   if (records.length === 0) return { value: 0, sampleSize: 0, breakdown: {} };
 
   const byStatus: Record<string, number> = {};
   for (const r of records) {
-    const s = (r.data.status ?? "unknown") as string;
+    const s = (r.data.status ?? 'unknown') as string;
     byStatus[s] = (byStatus[s] || 0) + 1;
   }
 
@@ -46,21 +42,18 @@ function computeClaimThroughput(tenantId: string, runId: string): RcmMetricResul
  * Denial distribution: percentage of claims denied, grouped by denial reason.
  */
 function computeDenialDistribution(tenantId: string, runId: string): RcmMetricResult {
-  const records = getExtractRecords(runId, { entityType: "claim" });
+  const records = getExtractRecords(runId, { entityType: 'claim' });
   if (records.length === 0) return { value: 0, sampleSize: 0, breakdown: {} };
 
-  const denied = records.filter(
-    (r) => r.data.status === "denied" || r.data.status === "rejected",
-  );
+  const denied = records.filter((r) => r.data.status === 'denied' || r.data.status === 'rejected');
   const byReason: Record<string, number> = {};
   for (const d of denied) {
-    const reason = (d.data.denialReason ?? "unspecified") as string;
+    const reason = (d.data.denialReason ?? 'unspecified') as string;
     byReason[reason] = (byReason[reason] || 0) + 1;
   }
 
-  const denialRate = records.length > 0
-    ? Number(((denied.length / records.length) * 100).toFixed(1))
-    : 0;
+  const denialRate =
+    records.length > 0 ? Number(((denied.length / records.length) * 100).toFixed(1)) : 0;
   return { value: denialRate, sampleSize: records.length, breakdown: byReason };
 }
 
@@ -68,24 +61,28 @@ function computeDenialDistribution(tenantId: string, runId: string): RcmMetricRe
  * Days-in-AR: average days a claim remains in accounts receivable.
  */
 function computeDaysInAR(tenantId: string, runId: string): RcmMetricResult {
-  const records = getExtractRecords(runId, { entityType: "claim" });
+  const records = getExtractRecords(runId, { entityType: 'claim' });
   if (records.length === 0) return { value: 0, sampleSize: 0, breakdown: {} };
 
   const arRecords = records.filter((r) => r.data.daysInAR != null);
   if (arRecords.length === 0) return { value: 0, sampleSize: 0, breakdown: {} };
 
   const buckets: Record<string, number> = {
-    "0-30": 0, "31-60": 0, "61-90": 0, "91-120": 0, "120+": 0,
+    '0-30': 0,
+    '31-60': 0,
+    '61-90': 0,
+    '91-120': 0,
+    '120+': 0,
   };
   let totalDays = 0;
   for (const r of arRecords) {
     const d = r.data.daysInAR as number;
     totalDays += d;
-    if (d <= 30) buckets["0-30"]++;
-    else if (d <= 60) buckets["31-60"]++;
-    else if (d <= 90) buckets["61-90"]++;
-    else if (d <= 120) buckets["91-120"]++;
-    else buckets["120+"]++;
+    if (d <= 30) buckets['0-30']++;
+    else if (d <= 60) buckets['31-60']++;
+    else if (d <= 90) buckets['61-90']++;
+    else if (d <= 120) buckets['91-120']++;
+    else buckets['120+']++;
   }
 
   const avg = Number((totalDays / arRecords.length).toFixed(1));
@@ -96,7 +93,7 @@ function computeDaysInAR(tenantId: string, runId: string): RcmMetricResult {
  * Acknowledgement reject rate from EDI pipeline data.
  */
 function computeAckRejectRate(tenantId: string, runId: string): RcmMetricResult {
-  const records = getExtractRecords(runId, { entityType: "claim" });
+  const records = getExtractRecords(runId, { entityType: 'claim' });
   if (records.length === 0) return { value: 0, sampleSize: 0, breakdown: {} };
 
   const withAck = records.filter((r) => r.data.ackStatus != null);
@@ -104,12 +101,12 @@ function computeAckRejectRate(tenantId: string, runId: string): RcmMetricResult 
 
   const byAck: Record<string, number> = {};
   for (const r of withAck) {
-    const s = (r.data.ackStatus ?? "unknown") as string;
+    const s = (r.data.ackStatus ?? 'unknown') as string;
     byAck[s] = (byAck[s] || 0) + 1;
   }
 
   const rejected = withAck.filter(
-    (r) => r.data.ackStatus === "rejected" || r.data.ackStatus === "R",
+    (r) => r.data.ackStatus === 'rejected' || r.data.ackStatus === 'R'
   );
   const rejectRate = Number(((rejected.length / withAck.length) * 100).toFixed(1));
   return { value: rejectRate, sampleSize: withAck.length, breakdown: byAck };
@@ -122,23 +119,23 @@ type RcmComputer = (tenantId: string, runId: string) => RcmMetricResult;
 const RCM_COMPUTERS: Record<string, { computer: RcmComputer; unit: string; label: string }> = {
   rcm_claim_throughput: {
     computer: computeClaimThroughput,
-    unit: "claims/day",
-    label: "Claim Throughput",
+    unit: 'claims/day',
+    label: 'Claim Throughput',
   },
   rcm_denial_distribution: {
     computer: computeDenialDistribution,
-    unit: "% denied",
-    label: "Denial Distribution",
+    unit: '% denied',
+    label: 'Denial Distribution',
   },
   rcm_days_in_ar: {
     computer: computeDaysInAR,
-    unit: "days",
-    label: "Average Days in AR",
+    unit: 'days',
+    label: 'Average Days in AR',
   },
   rcm_ack_reject_rate: {
     computer: computeAckRejectRate,
-    unit: "% rejected",
-    label: "Acknowledgement Reject Rate",
+    unit: '% rejected',
+    label: 'Acknowledgement Reject Rate',
   },
 };
 
@@ -146,7 +143,7 @@ function rcmToReportResult(
   reportId: ReportId,
   tenantId: string,
   params: Record<string, unknown>,
-  computerKey: string,
+  computerKey: string
 ): ReportResult {
   const def = RCM_COMPUTERS[computerKey];
   if (!def) throw new Error(`Unknown RCM computer: ${computerKey}`);
@@ -161,7 +158,7 @@ function rcmToReportResult(
       generatedAt: new Date().toISOString(),
       parameters: params,
       data: [],
-      summary: { label: def.label, value: 0, unit: def.unit, status: "no_extract_data" },
+      summary: { label: def.label, value: 0, unit: def.unit, status: 'no_extract_data' },
       totalRows: 0,
     };
   }
@@ -202,16 +199,17 @@ function rcmToReportResult(
 export function initRcmReportGenerators(): void {
   for (const key of Object.keys(RCM_COMPUTERS)) {
     registerReportGenerator(key as ReportId, (t, p) =>
-      rcmToReportResult(key as ReportId, t, p, key));
+      rcmToReportResult(key as ReportId, t, p, key)
+    );
   }
-  log.info("RCM report generators registered (Phase 367)");
+  log.info('RCM report generators registered (Phase 367)');
 }
 
 // ── Direct query API ────────────────────────────────────────────────────
 
 export function computeRcmMetric(
   metricKey: string,
-  tenantId: string,
+  tenantId: string
 ): { metric: string; result: RcmMetricResult } | null {
   const def = RCM_COMPUTERS[metricKey];
   if (!def) return null;

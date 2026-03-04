@@ -41,8 +41,10 @@ export function initClaimCaseRepo(repo: ClaimCaseRepo): void {
 }
 
 function dbWarn(op: string, err: any): void {
-  if (process.env.NODE_ENV !== "test") {
-    log.warn(`[claim-case-store] DB ${op} failed (cache-only fallback)`, { err: err?.message ?? err });
+  if (process.env.NODE_ENV !== 'test') {
+    log.warn(`[claim-case-store] DB ${op} failed (cache-only fallback)`, {
+      err: err?.message ?? err,
+    });
   }
 }
 
@@ -94,22 +96,28 @@ function caseToDbRow(cc: ClaimCase): Record<string, unknown> {
 
 function dbRowToCase(row: any): ClaimCase {
   const {
-    diagnosesJson, proceduresJson, scrubHistoryJson, lastScrubResultJson,
-    attachmentsJson, eventsJson, denialsJson, ...rest
+    diagnosesJson,
+    proceduresJson,
+    scrubHistoryJson,
+    lastScrubResultJson,
+    attachmentsJson,
+    eventsJson,
+    denialsJson,
+    ...rest
   } = row;
   return {
     ...rest,
-    diagnoses: JSON.parse(diagnosesJson ?? "[]"),
-    procedures: JSON.parse(proceduresJson ?? "[]"),
-    scrubHistory: JSON.parse(scrubHistoryJson ?? "[]"),
+    diagnoses: JSON.parse(diagnosesJson ?? '[]'),
+    procedures: JSON.parse(proceduresJson ?? '[]'),
+    scrubHistory: JSON.parse(scrubHistoryJson ?? '[]'),
     lastScrubResult: lastScrubResultJson ? JSON.parse(lastScrubResultJson) : undefined,
-    attachments: JSON.parse(attachmentsJson ?? "[]"),
-    events: JSON.parse(eventsJson ?? "[]"),
-    denials: JSON.parse(denialsJson ?? "[]"),
+    attachments: JSON.parse(attachmentsJson ?? '[]'),
+    events: JSON.parse(eventsJson ?? '[]'),
+    denials: JSON.parse(denialsJson ?? '[]'),
     isDemo: Boolean(rest.isDemo),
     isMock: Boolean(rest.isMock),
     totalCharge: Number(rest.totalCharge ?? 0),
-    createdBy: rest.createdBy ?? "unknown",
+    createdBy: rest.createdBy ?? 'unknown',
   } as ClaimCase;
 }
 
@@ -136,15 +144,17 @@ function persistCaseToDb(cc: ClaimCase): void {
       patientName: cc.patientName,
       baseClaimId: cc.baseClaimId,
     });
-  } catch (e) { dbWarn("updateClaimCase", e); }
+  } catch (e) {
+    dbWarn('updateClaimCase', e);
+  }
 }
 
 /* ── In-Memory Stores ──────────────────────────────────────── */
 
 const cases = new Map<string, ClaimCase>();
-const tenantIndex = new Map<string, Set<string>>();  // tenantId → caseIds
-const denialIndex = new Map<string, Set<string>>();   // claimCaseId → denialIds
-const allDenials = new Map<string, DenialRecord>();   // denialId → DenialRecord
+const tenantIndex = new Map<string, Set<string>>(); // tenantId → caseIds
+const denialIndex = new Map<string, Set<string>>(); // claimCaseId → denialIds
+const allDenials = new Map<string, DenialRecord>(); // denialId → DenialRecord
 
 /* ── Factory ───────────────────────────────────────────────── */
 
@@ -185,8 +195,8 @@ export function createClaimCase(params: CreateClaimCaseParams): ClaimCase {
   const now = new Date().toISOString();
   const id = randomUUID();
   const procedures = params.procedures ?? [];
-  const totalCharge = params.totalCharge ??
-    procedures.reduce((sum, p) => sum + (p.chargeAmount * p.units), 0);
+  const totalCharge =
+    params.totalCharge ?? procedures.reduce((sum, p) => sum + p.chargeAmount * p.units, 0);
 
   const initEvent: ClaimEvent = {
     id: randomUUID(),
@@ -194,7 +204,13 @@ export function createClaimCase(params: CreateClaimCaseParams): ClaimCase {
     eventType: 'lifecycle.created',
     toStatus: 'draft',
     actor: params.actor,
-    detail: { source: params.philhealthDraftId ? 'philhealth_draft' : params.loaCaseId ? 'loa_approval' : 'manual' },
+    detail: {
+      source: params.philhealthDraftId
+        ? 'philhealth_draft'
+        : params.loaCaseId
+          ? 'loa_approval'
+          : 'manual',
+    },
     timestamp: now,
   };
 
@@ -246,7 +262,11 @@ export function createClaimCase(params: CreateClaimCaseParams): ClaimCase {
 
   // Write-through to DB
   if (dbRepo) {
-    try { dbRepo.insertClaimCase(caseToDbRow(cc)); } catch (e) { dbWarn("insertClaimCase", e); }
+    try {
+      dbRepo.insertClaimCase(caseToDbRow(cc));
+    } catch (e) {
+      dbWarn('insertClaimCase', e);
+    }
   }
 
   return cc;
@@ -276,7 +296,9 @@ export function getClaimCase(id: string): ClaimCase | undefined {
         }
         return cc;
       }
-    } catch (e) { dbWarn("findClaimCaseById", e); }
+    } catch (e) {
+      dbWarn('findClaimCaseById', e);
+    }
   }
   return undefined;
 }
@@ -288,8 +310,8 @@ export function updateClaimCase(id: string, updates: Partial<ClaimCase>): ClaimC
   const updated: ClaimCase = {
     ...existing,
     ...updates,
-    id: existing.id,               // immutable
-    tenantId: existing.tenantId,   // immutable
+    id: existing.id, // immutable
+    tenantId: existing.tenantId, // immutable
     createdAt: existing.createdAt, // immutable
     updatedAt: new Date().toISOString(),
   };
@@ -313,7 +335,7 @@ export function transitionClaimCase(
   id: string,
   toStatus: ClaimLifecycleStatus,
   actor: string,
-  detail?: Record<string, unknown>,
+  detail?: Record<string, unknown>
 ): TransitionResult {
   const cc = getClaimCase(id);
   if (!cc) return { ok: false, error: 'Claim case not found' };
@@ -337,7 +359,12 @@ export function transitionClaimCase(
   }
 
   // Gate: paid/denied/acknowledged require evidence (detail must have evidence)
-  const evidenceRequired: ClaimLifecycleStatus[] = ['payer_acknowledged', 'paid_full', 'paid_partial', 'denied'];
+  const evidenceRequired: ClaimLifecycleStatus[] = [
+    'payer_acknowledged',
+    'paid_full',
+    'paid_partial',
+    'denied',
+  ];
   if (evidenceRequired.includes(toStatus)) {
     if (!detail?.evidenceRef && !detail?.payerClaimNumber) {
       return {
@@ -369,10 +396,14 @@ export function transitionClaimCase(
   // Set submission metadata
   if (toStatus.startsWith('submitted_') || toStatus === 'exported') {
     updated.submittedAt = now;
-    updated.submissionMethod = toStatus === 'submitted_electronic' ? 'electronic'
-      : toStatus === 'submitted_portal' ? 'portal'
-      : toStatus === 'submitted_manual' ? 'manual'
-      : 'export_only';
+    updated.submissionMethod =
+      toStatus === 'submitted_electronic'
+        ? 'electronic'
+        : toStatus === 'submitted_portal'
+          ? 'portal'
+          : toStatus === 'submitted_manual'
+            ? 'manual'
+            : 'export_only';
   }
 
   if (toStatus === 'payer_acknowledged' && detail?.payerClaimNumber) {
@@ -397,7 +428,7 @@ export function transitionClaimCase(
 
 export function recordScrubResult(
   claimCaseId: string,
-  result: ClaimScrubResult,
+  result: ClaimScrubResult
 ): ClaimCase | undefined {
   const cc = getClaimCase(claimCaseId);
   if (!cc) return undefined;
@@ -433,7 +464,7 @@ export function recordScrubResult(
 export function addAttachment(
   claimCaseId: string,
   attachment: Omit<ClaimAttachment, 'id' | 'claimCaseId'>,
-  actor: string,
+  actor: string
 ): ClaimCase | undefined {
   const cc = getClaimCase(claimCaseId);
   if (!cc) return undefined;
@@ -468,7 +499,7 @@ export function addAttachment(
 
 export function addDenial(
   claimCaseId: string,
-  denial: Omit<DenialRecord, 'id' | 'claimCaseId'>,
+  denial: Omit<DenialRecord, 'id' | 'claimCaseId'>
 ): DenialRecord | undefined {
   const cc = getClaimCase(claimCaseId);
   if (!cc) return undefined;
@@ -508,7 +539,7 @@ export function addDenial(
 export function resolveDenial(
   denialId: string,
   resolvedBy: string,
-  resolutionNote: string,
+  resolutionNote: string
 ): DenialRecord | undefined {
   const dr = allDenials.get(denialId);
   if (!dr) return undefined;
@@ -524,7 +555,7 @@ export function resolveDenial(
   // Update in the claim case too
   const cc = getClaimCase(dr.claimCaseId);
   if (cc) {
-    const updatedDenials = cc.denials.map(d => d.id === denialId ? updated : d);
+    const updatedDenials = cc.denials.map((d) => (d.id === denialId ? updated : d));
     const updatedCase = { ...cc, denials: updatedDenials, updatedAt: new Date().toISOString() };
     cases.set(cc.id, updatedCase);
     persistCaseToDb(updatedCase);
@@ -571,20 +602,22 @@ export function listClaimCases(filters: ListClaimCasesFilters): {
           tenantIndex.get(cc.tenantId)!.add(cc.id);
         }
         return { items, total };
-      } catch (e) { dbWarn("findClaimCasesByTenant", e); }
+      } catch (e) {
+        dbWarn('findClaimCasesByTenant', e);
+      }
     }
     return { items: [], total: 0 };
   }
 
   let items = Array.from(tenantSet)
-    .map(id => cases.get(id)!)
+    .map((id) => cases.get(id)!)
     .filter(Boolean);
 
-  if (filters.status) items = items.filter(c => c.lifecycleStatus === filters.status);
-  if (filters.payerId) items = items.filter(c => c.payerId === filters.payerId);
-  if (filters.patientDfn) items = items.filter(c => c.patientDfn === filters.patientDfn);
-  if (filters.priority) items = items.filter(c => c.priority === filters.priority);
-  if (filters.hasDenials) items = items.filter(c => c.denials.length > 0);
+  if (filters.status) items = items.filter((c) => c.lifecycleStatus === filters.status);
+  if (filters.payerId) items = items.filter((c) => c.payerId === filters.payerId);
+  if (filters.patientDfn) items = items.filter((c) => c.patientDfn === filters.patientDfn);
+  if (filters.priority) items = items.filter((c) => c.priority === filters.priority);
+  if (filters.hasDenials) items = items.filter((c) => c.denials.length > 0);
 
   // Sort newest first
   items.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
@@ -643,7 +676,15 @@ export function getClaimCaseStats(tenantId: string): {
   avgScrubScore: number;
 } {
   const tenantSet = tenantIndex.get(tenantId);
-  if (!tenantSet) return { total: 0, byStatus: {}, byPriority: {}, totalDenials: 0, unresolvedDenials: 0, avgScrubScore: 0 };
+  if (!tenantSet)
+    return {
+      total: 0,
+      byStatus: {},
+      byPriority: {},
+      totalDenials: 0,
+      unresolvedDenials: 0,
+      avgScrubScore: 0,
+    };
 
   const byStatus: Record<string, number> = {};
   const byPriority: Record<string, number> = {};
@@ -659,7 +700,7 @@ export function getClaimCaseStats(tenantId: string): {
     byStatus[cc.lifecycleStatus] = (byStatus[cc.lifecycleStatus] ?? 0) + 1;
     byPriority[cc.priority] = (byPriority[cc.priority] ?? 0) + 1;
     totalDenials += cc.denials.length;
-    unresolvedDenials += cc.denials.filter(d => !d.resolvedAt).length;
+    unresolvedDenials += cc.denials.filter((d) => !d.resolvedAt).length;
 
     if (cc.lastScrubResult) {
       scrubTotal++;
@@ -705,7 +746,12 @@ function redactDetail(detail: Record<string, unknown>): Record<string, unknown> 
   const redacted: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(detail)) {
     const lk = key.toLowerCase();
-    if (lk.includes('ssn') || lk.includes('dob') || lk.includes('patient_name') || lk.includes('patientname')) {
+    if (
+      lk.includes('ssn') ||
+      lk.includes('dob') ||
+      lk.includes('patient_name') ||
+      lk.includes('patientname')
+    ) {
       redacted[key] = '[REDACTED]';
     } else {
       redacted[key] = value;

@@ -8,7 +8,7 @@
  * Kiosk routes use kiosk_device_token (stubbed for Phase 28).
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 import {
   createSession,
   getSession,
@@ -24,22 +24,20 @@ import {
   getIntakeStats,
   createKioskResumeToken,
   redeemKioskToken,
-} from "./intake-store.js";
-import { createNextQuestionProvider } from "./providers.js";
-import { createSummaryProvider } from "./summary-provider.js";
-import { getAllPacks, getPack, getPackCount } from "./pack-registry.js";
-import type {
-  QuestionnaireResponse,
-  IntakeContext,
-  IntakeSessionStatus,
-} from "./types.js";
+} from './intake-store.js';
+import { createNextQuestionProvider } from './providers.js';
+import { createSummaryProvider } from './summary-provider.js';
+import { getAllPacks, getPack, getPackCount } from './pack-registry.js';
+import type { QuestionnaireResponse, IntakeSessionStatus } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Session resolver helpers                                             */
 /* ------------------------------------------------------------------ */
 
 type PortalSessionFn = (req: any) => { patientDfn: string; patientName: string } | null;
-type ClinicianSessionFn = (req: any) => { duz: string; name: string } | null | Promise<{ duz: string; name: string } | null>;
+type ClinicianSessionFn = (
+  req: any
+) => { duz: string; name: string } | null | Promise<{ duz: string; name: string } | null>;
 
 let getPortalSessionFn: PortalSessionFn = () => null;
 let getClinicianSessionFn: ClinicianSessionFn = () => null;
@@ -52,19 +50,25 @@ export function initIntakeRoutes(
   getClinicianSessionFn = clinicianSessionFn;
 }
 
-function requirePortalSession(request: any, reply: any): { patientDfn: string; patientName: string } | null {
+function requirePortalSession(
+  request: any,
+  reply: any
+): { patientDfn: string; patientName: string } | null {
   const session = getPortalSessionFn(request);
   if (!session) {
-    reply.code(401).send({ error: "Portal session required" });
+    reply.code(401).send({ error: 'Portal session required' });
     return null;
   }
   return session;
 }
 
-async function requireClinicianSession(request: any, reply: any): Promise<{ duz: string; name: string } | null> {
+async function requireClinicianSession(
+  request: any,
+  reply: any
+): Promise<{ duz: string; name: string } | null> {
   const session = await getClinicianSessionFn(request);
   if (!session) {
-    reply.code(401).send({ error: "Clinician session required" });
+    reply.code(401).send({ error: 'Clinician session required' });
     return null;
   }
   return session;
@@ -75,13 +79,12 @@ async function requireClinicianSession(request: any, reply: any): Promise<{ duz:
 /* ------------------------------------------------------------------ */
 
 export default async function intakeRoutes(server: FastifyInstance): Promise<void> {
-
   // =============================================
   // PATIENT / PORTAL ROUTES
   // =============================================
 
   /** Create new intake session */
-  server.post("/intake/sessions", async (request, reply) => {
+  server.post('/intake/sessions', async (request, reply) => {
     const portal = requirePortalSession(request, reply);
     if (!portal) return;
 
@@ -89,9 +92,9 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
     const session = createSession({
       patientDfn: portal.patientDfn,
       appointmentId: body.appointmentId ?? null,
-      subjectType: body.subjectType ?? "patient",
+      subjectType: body.subjectType ?? 'patient',
       proxyDfn: body.proxyDfn ?? null,
-      language: body.language ?? "en",
+      language: body.language ?? 'en',
       context: body.context ?? {},
       brainProvider: body.brainProvider,
     });
@@ -100,30 +103,30 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   });
 
   /** Get session state + current QR snapshot */
-  server.get("/intake/sessions/:id", async (request, reply) => {
+  server.get('/intake/sessions/:id', async (request, reply) => {
     // Allow both portal and clinician sessions
     const portal = getPortalSessionFn(request);
     const clinician = await getClinicianSessionFn(request);
     if (!portal && !clinician) {
-      return reply.code(401).send({ error: "Session required" });
+      return reply.code(401).send({ error: 'Session required' });
     }
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
 
     // Access check: portal users can only see their own sessions
     if (portal && session.patientDfn !== portal.patientDfn) {
-      return reply.code(403).send({ error: "Access denied" });
+      return reply.code(403).send({ error: 'Access denied' });
     }
 
     const snapshot = getLatestSnapshot(id);
     const provider = createNextQuestionProvider(session.brainProvider);
     const qr: QuestionnaireResponse = snapshot?.questionnaireResponse ?? {
-      resourceType: "QuestionnaireResponse",
-      status: "in-progress",
+      resourceType: 'QuestionnaireResponse',
+      status: 'in-progress',
       item: [],
     };
     const progress = await provider.getNext(session, qr, session.context);
@@ -137,23 +140,23 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   });
 
   /** SDC-like $next-question */
-  server.post("/intake/sessions/:id/next-question", async (request, reply) => {
+  server.post('/intake/sessions/:id/next-question', async (request, reply) => {
     const portal = requirePortalSession(request, reply);
     if (!portal) return;
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
     if (session.patientDfn !== portal.patientDfn) {
-      return reply.code(403).send({ error: "Access denied" });
+      return reply.code(403).send({ error: 'Access denied' });
     }
 
     const body = (request.body as any) || {};
     const qrSoFar: QuestionnaireResponse = body.questionnaireResponseSoFar ?? {
-      resourceType: "QuestionnaireResponse",
-      status: "in-progress",
+      resourceType: 'QuestionnaireResponse',
+      status: 'in-progress',
       item: [],
     };
 
@@ -163,8 +166,8 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
     }
 
     // Transition to in_progress if not started
-    if (session.status === "not_started") {
-      updateSessionStatus(id, "in_progress", portal.patientDfn, "patient");
+    if (session.status === 'not_started') {
+      updateSessionStatus(id, 'in_progress', portal.patientDfn, 'patient');
     }
 
     const provider = createNextQuestionProvider(session.brainProvider);
@@ -174,9 +177,9 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
     if (result.nextItems.length > 0) {
       appendEvent({
         sessionId: id,
-        type: "question.asked",
+        type: 'question.asked',
         actor: portal.patientDfn,
-        actorType: "patient",
+        actorType: 'patient',
         payload: {
           itemCount: result.nextItems.length,
           linkIds: result.nextItems.map((i) => i.linkId),
@@ -188,17 +191,17 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   });
 
   /** Submit answers */
-  server.post("/intake/sessions/:id/answers", async (request, reply) => {
+  server.post('/intake/sessions/:id/answers', async (request, reply) => {
     const portal = requirePortalSession(request, reply);
     if (!portal) return;
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
     if (session.patientDfn !== portal.patientDfn) {
-      return reply.code(403).send({ error: "Access denied" });
+      return reply.code(403).send({ error: 'Access denied' });
     }
 
     const body = (request.body as any) || {};
@@ -207,8 +210,8 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
     // Get current QR
     const existing = getLatestSnapshot(id);
     const qr: QuestionnaireResponse = existing?.questionnaireResponse ?? {
-      resourceType: "QuestionnaireResponse",
-      status: "in-progress",
+      resourceType: 'QuestionnaireResponse',
+      status: 'in-progress',
       item: [],
     };
 
@@ -221,9 +224,9 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
         // Log edit
         appendEvent({
           sessionId: id,
-          type: "answer.edited",
+          type: 'answer.edited',
           actor: portal.patientDfn,
-          actorType: "patient",
+          actorType: 'patient',
           payload: { linkId },
           questionId: linkId,
         });
@@ -231,9 +234,9 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
         qr.item.push({ linkId, text: ans.text, answer: ans.answer });
         appendEvent({
           sessionId: id,
-          type: "question.answered",
+          type: 'question.answered',
           actor: portal.patientDfn,
-          actorType: "patient",
+          actorType: 'patient',
           payload: { linkId },
           questionId: linkId,
         });
@@ -260,63 +263,63 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   });
 
   /** Save draft */
-  server.post("/intake/sessions/:id/save", async (request, reply) => {
+  server.post('/intake/sessions/:id/save', async (request, reply) => {
     const portal = requirePortalSession(request, reply);
     if (!portal) return;
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
     if (session.patientDfn !== portal.patientDfn) {
-      return reply.code(403).send({ error: "Access denied" });
+      return reply.code(403).send({ error: 'Access denied' });
     }
 
     appendEvent({
       sessionId: id,
-      type: "intake.save_draft",
+      type: 'intake.save_draft',
       actor: portal.patientDfn,
-      actorType: "patient",
+      actorType: 'patient',
       payload: {},
     });
 
-    return { ok: true, message: "Draft saved" };
+    return { ok: true, message: 'Draft saved' };
   });
 
   /** Submit completed intake */
-  server.post("/intake/sessions/:id/submit", async (request, reply) => {
+  server.post('/intake/sessions/:id/submit', async (request, reply) => {
     const portal = requirePortalSession(request, reply);
     if (!portal) return;
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
     if (session.patientDfn !== portal.patientDfn) {
-      return reply.code(403).send({ error: "Access denied" });
+      return reply.code(403).send({ error: 'Access denied' });
     }
 
     // Transition to submitted
-    const ok = updateSessionStatus(id, "submitted", portal.patientDfn, "patient");
+    const ok = updateSessionStatus(id, 'submitted', portal.patientDfn, 'patient');
     if (!ok) {
-      return reply.code(400).send({ error: "Cannot submit from current status" });
+      return reply.code(400).send({ error: 'Cannot submit from current status' });
     }
 
     appendEvent({
       sessionId: id,
-      type: "intake.submitted",
+      type: 'intake.submitted',
       actor: portal.patientDfn,
-      actorType: "patient",
+      actorType: 'patient',
       payload: {},
     });
 
     // Generate summary
     const snap = getLatestSnapshot(id);
     const qr = snap?.questionnaireResponse ?? {
-      resourceType: "QuestionnaireResponse" as const,
-      status: "completed" as const,
+      resourceType: 'QuestionnaireResponse' as const,
+      status: 'completed' as const,
       item: [],
     };
     const summaryProvider = createSummaryProvider();
@@ -324,9 +327,9 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
 
     appendEvent({
       sessionId: id,
-      type: "summary.generated",
-      actor: "system",
-      actorType: "system",
+      type: 'summary.generated',
+      actor: 'system',
+      actorType: 'system',
       payload: { generatedBy: summary.generatedBy, redFlagCount: summary.sections.redFlags.length },
     });
 
@@ -334,7 +337,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   });
 
   /** List my sessions */
-  server.get("/intake/sessions", async (request, reply) => {
+  server.get('/intake/sessions', async (request, reply) => {
     const portal = requirePortalSession(request, reply);
     if (!portal) return;
 
@@ -347,7 +350,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   // =============================================
 
   /** List intakes for a specific patient (clinician view) */
-  server.get("/intake/by-patient/:dfn", async (request, reply) => {
+  server.get('/intake/by-patient/:dfn', async (request, reply) => {
     const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
@@ -357,28 +360,28 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   });
 
   /** Get intake for clinician review */
-  server.get("/intake/sessions/:id/review", async (request, reply) => {
+  server.get('/intake/sessions/:id/review', async (request, reply) => {
     const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
 
     appendEvent({
       sessionId: id,
-      type: "clinician.opened",
+      type: 'clinician.opened',
       actor: clinician.duz,
-      actorType: "clinician",
+      actorType: 'clinician',
       payload: { clinicianName: clinician.name },
     });
 
     const snap = getLatestSnapshot(id);
     const qr = snap?.questionnaireResponse ?? {
-      resourceType: "QuestionnaireResponse" as const,
-      status: "in-progress" as const,
+      resourceType: 'QuestionnaireResponse' as const,
+      status: 'in-progress' as const,
       item: [],
     };
     const summaryProvider = createSummaryProvider();
@@ -389,14 +392,14 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   });
 
   /** Clinician edit/confirm */
-  server.put("/intake/sessions/:id/review", async (request, reply) => {
+  server.put('/intake/sessions/:id/review', async (request, reply) => {
     const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
 
     const body = (request.body as any) || {};
@@ -405,8 +408,8 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
       // Apply clinician edits to QR
       const snap = getLatestSnapshot(id);
       const qr = snap?.questionnaireResponse ?? {
-        resourceType: "QuestionnaireResponse" as const,
-        status: "in-progress" as const,
+        resourceType: 'QuestionnaireResponse' as const,
+        status: 'in-progress' as const,
         item: [],
       };
 
@@ -419,9 +422,9 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
         }
         appendEvent({
           sessionId: id,
-          type: "clinician.edited",
+          type: 'clinician.edited',
           actor: clinician.duz,
-          actorType: "clinician",
+          actorType: 'clinician',
           payload: { linkId: edit.linkId },
           questionId: edit.linkId,
         });
@@ -431,12 +434,12 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
     }
 
     if (body.reviewed) {
-      updateSessionStatus(id, "clinician_reviewed", clinician.duz, "clinician");
+      updateSessionStatus(id, 'clinician_reviewed', clinician.duz, 'clinician');
       appendEvent({
         sessionId: id,
-        type: "clinician.reviewed",
+        type: 'clinician.reviewed',
         actor: clinician.duz,
-        actorType: "clinician",
+        actorType: 'clinician',
         payload: { clinicianName: clinician.name },
       });
     }
@@ -445,18 +448,18 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   });
 
   /** File reviewed intake to VistA */
-  server.post("/intake/sessions/:id/file", async (request, reply) => {
+  server.post('/intake/sessions/:id/file', async (request, reply) => {
     const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
 
-    if (session.status !== "clinician_reviewed") {
-      return reply.code(400).send({ error: "Session must be reviewed before filing" });
+    if (session.status !== 'clinician_reviewed') {
+      return reply.code(400).send({ error: 'Session must be reviewed before filing' });
     }
 
     const body = (request.body as any) || {};
@@ -465,47 +468,47 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
     // For now, mark as filed_pending_integration since VistA RPCs
     // for intake-specific filing are not yet wired
     const newStatus: IntakeSessionStatus =
-      body.targets?.length > 0 ? "filed_pending_integration" : "filed_pending_integration";
+      body.targets?.length > 0 ? 'filed_pending_integration' : 'filed_pending_integration';
 
-    updateSessionStatus(id, newStatus, clinician.duz, "clinician");
+    updateSessionStatus(id, newStatus, clinician.duz, 'clinician');
 
     appendEvent({
       sessionId: id,
-      type: "clinician.filed",
+      type: 'clinician.filed',
       actor: clinician.duz,
-      actorType: "clinician",
+      actorType: 'clinician',
       payload: {
         clinicianName: clinician.name,
         targetCount: body.targets?.length ?? 0,
-        noteText: body.noteText ? "[present]" : "[absent]",
+        noteText: body.noteText ? '[present]' : '[absent]',
       },
     });
 
     // In future: iterate targets, call VistA RPCs per vistaTarget mapping
     const filingResults = (body.targets ?? []).map((t: any) => ({
-      questionLinkId: t.questionLinkId ?? "unknown",
-      status: t.vistaTarget?.integrationStatus === "available" ? "pending" : "pending",
-      message: "VistA filing integration pending",
+      questionLinkId: t.questionLinkId ?? 'unknown',
+      status: t.vistaTarget?.integrationStatus === 'available' ? 'pending' : 'pending',
+      message: 'VistA filing integration pending',
     }));
 
     return { ok: true, session: getSession(id), filingResults };
   });
 
   /** Export draft note */
-  server.post("/intake/sessions/:id/export", async (request, reply) => {
+  server.post('/intake/sessions/:id/export', async (request, reply) => {
     const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Intake session not found" });
+      return reply.code(404).send({ error: 'Intake session not found' });
     }
 
     const snap = getLatestSnapshot(id);
     const qr = snap?.questionnaireResponse ?? {
-      resourceType: "QuestionnaireResponse" as const,
-      status: "in-progress" as const,
+      resourceType: 'QuestionnaireResponse' as const,
+      status: 'in-progress' as const,
       item: [],
     };
     const summaryProvider = createSummaryProvider();
@@ -513,17 +516,17 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
 
     appendEvent({
       sessionId: id,
-      type: "clinician.exported",
+      type: 'clinician.exported',
       actor: clinician.duz,
-      actorType: "clinician",
-      payload: { format: "text" },
+      actorType: 'clinician',
+      payload: { format: 'text' },
     });
 
-    return { ok: true, noteText: summary.draftNoteText, format: "text" };
+    return { ok: true, noteText: summary.draftNoteText, format: 'text' };
   });
 
   /** Filing queue */
-  server.get("/intake/filing-queue", async (request, reply) => {
+  server.get('/intake/filing-queue', async (request, reply) => {
     const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
@@ -536,7 +539,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   // =============================================
 
   /** Start kiosk session */
-  server.post("/kiosk/sessions", async (request, reply) => {
+  server.post('/kiosk/sessions', async (request, reply) => {
     // Kiosk auth is simplified: device token or open access
     // In production, require kiosk device registration
     const body = (request.body as any) || {};
@@ -549,22 +552,22 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
         if (session) {
           appendEvent({
             sessionId,
-            type: "session.resumed",
-            actor: session.patientDfn ?? "anonymous",
-            actorType: "patient",
-            payload: { via: "kiosk_resume_token" },
+            type: 'session.resumed',
+            actor: session.patientDfn ?? 'anonymous',
+            actorType: 'patient',
+            payload: { via: 'kiosk_resume_token' },
           });
           return { ok: true, session };
         }
       }
-      return reply.code(400).send({ error: "Invalid or expired resume token" });
+      return reply.code(400).send({ error: 'Invalid or expired resume token' });
     }
 
     const session = createSession({
       patientDfn: body.patientDfn ?? null,
       appointmentId: body.appointmentId ?? null,
-      subjectType: "patient",
-      language: body.language ?? "en",
+      subjectType: 'patient',
+      language: body.language ?? 'en',
       context: body.context ?? {},
     });
 
@@ -574,11 +577,11 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   });
 
   /** Generate resume token for QR code */
-  server.post("/kiosk/sessions/:id/resume-token", async (request, reply) => {
+  server.post('/kiosk/sessions/:id/resume-token', async (request, reply) => {
     const { id } = request.params as { id: string };
     const session = getSession(id);
     if (!session) {
-      return reply.code(404).send({ error: "Session not found" });
+      return reply.code(404).send({ error: 'Session not found' });
     }
 
     const token = createKioskResumeToken(id);
@@ -590,12 +593,12 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   // =============================================
 
   /** List packs */
-  server.get("/intake/packs", async (request, reply) => {
+  server.get('/intake/packs', async (request, reply) => {
     // Allow both portal and clinician
     const portal = getPortalSessionFn(request);
     const clinician = await getClinicianSessionFn(request);
     if (!portal && !clinician) {
-      return reply.code(401).send({ error: "Session required" });
+      return reply.code(401).send({ error: 'Session required' });
     }
 
     const packs = getAllPacks().map((p) => ({
@@ -613,17 +616,17 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   });
 
   /** Get pack detail */
-  server.get("/intake/packs/:packId", async (request, reply) => {
+  server.get('/intake/packs/:packId', async (request, reply) => {
     const portal = getPortalSessionFn(request);
     const clinician = await getClinicianSessionFn(request);
     if (!portal && !clinician) {
-      return reply.code(401).send({ error: "Session required" });
+      return reply.code(401).send({ error: 'Session required' });
     }
 
     const { packId } = request.params as { packId: string };
     const pack = getPack(packId);
     if (!pack) {
-      return reply.code(404).send({ error: "Pack not found" });
+      return reply.code(404).send({ error: 'Pack not found' });
     }
 
     return { ok: true, pack };
@@ -633,7 +636,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   // INTAKE STATS (admin)
   // =============================================
 
-  server.get("/intake/stats", async (request, reply) => {
+  server.get('/intake/stats', async (request, reply) => {
     const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
@@ -644,7 +647,7 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   // EVENT LOG (clinician, for audit)
   // =============================================
 
-  server.get("/intake/sessions/:id/events", async (request, reply) => {
+  server.get('/intake/sessions/:id/events', async (request, reply) => {
     const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
@@ -657,12 +660,19 @@ export default async function intakeRoutes(server: FastifyInstance): Promise<voi
   // SNAPSHOT HISTORY (clinician, for audit)
   // =============================================
 
-  server.get("/intake/sessions/:id/snapshots", async (request, reply) => {
+  server.get('/intake/sessions/:id/snapshots', async (request, reply) => {
     const clinician = await requireClinicianSession(request, reply);
     if (!clinician) return;
 
     const { id } = request.params as { id: string };
     const snaps = getSnapshotHistory(id);
-    return { ok: true, snapshots: snaps.map((s) => ({ ...s, questionnaireResponse: undefined, contentHash: s.contentHash })) };
+    return {
+      ok: true,
+      snapshots: snaps.map((s) => ({
+        ...s,
+        questionnaireResponse: undefined,
+        contentHash: s.contentHash,
+      })),
+    };
   });
 }

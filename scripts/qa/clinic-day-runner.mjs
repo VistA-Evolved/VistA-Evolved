@@ -6,13 +6,13 @@
  * Runs all 6 A-Z proof journeys against the live API and prints results.
  * Exit code 0 = all passed, 1 = failures.
  */
-import { resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import { writeFileSync, mkdirSync } from "node:fs";
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { writeFileSync, mkdirSync } from 'node:fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, "../..");
-const ARTIFACTS_DIR = resolve(ROOT, "artifacts");
+const ROOT = resolve(__dirname, '../..');
+const ARTIFACTS_DIR = resolve(ROOT, 'artifacts');
 
 const args = process.argv.slice(2);
 function getArg(name) {
@@ -20,42 +20,45 @@ function getArg(name) {
   return idx >= 0 ? args[idx + 1] : undefined;
 }
 
-const baseUrl = getArg("base-url") || "http://127.0.0.1:3001";
-const journeyFilter = getArg("journey");
+const baseUrl = getArg('base-url') || 'http://127.0.0.1:3001';
+const journeyFilter = getArg('journey');
 
 async function loginAndGetCookie() {
   try {
     const resp = await fetch(`${baseUrl}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ accessCode: "PROV123", verifyCode: "PROV123!!" }),
-      redirect: "manual",
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ accessCode: 'PROV123', verifyCode: 'PROV123!!' }),
+      redirect: 'manual',
     });
-    const setCookie = resp.headers.get("set-cookie") || "";
-    return setCookie.split(",").map((c) => c.split(";")[0].trim()).join("; ");
+    const setCookie = resp.headers.get('set-cookie') || '';
+    return setCookie
+      .split(',')
+      .map((c) => c.split(';')[0].trim())
+      .join('; ');
   } catch {
-    return "";
+    return '';
   }
 }
 
 async function runJourneys() {
   console.log(`\n  Clinic Day Simulator`);
   console.log(`  Base URL: ${baseUrl}`);
-  console.log(`  Filter: ${journeyFilter || "all"}\n`);
+  console.log(`  Filter: ${journeyFilter || 'all'}\n`);
 
   // Check API reachability
   try {
     const h = await fetch(`${baseUrl}/health`, { signal: AbortSignal.timeout(5000) });
-    if (!h.ok) throw new Error("not ok");
+    if (!h.ok) throw new Error('not ok');
   } catch {
-    console.error("  ERROR: API not reachable at", baseUrl);
+    console.error('  ERROR: API not reachable at', baseUrl);
     process.exit(1);
   }
 
   // Login
   const cookie = await loginAndGetCookie();
   if (!cookie) {
-    console.warn("  WARN: Could not authenticate, some journeys may fail\n");
+    console.warn('  WARN: Could not authenticate, some journeys may fail\n');
   }
 
   // Fetch journey definitions
@@ -64,7 +67,7 @@ async function runJourneys() {
   });
   const defs = await defResp.json();
   if (!defs.ok) {
-    console.error("  ERROR: Cannot fetch journey definitions");
+    console.error('  ERROR: Cannot fetch journey definitions');
     process.exit(1);
   }
 
@@ -73,8 +76,8 @@ async function runJourneys() {
   let report;
   if (journeyFilter) {
     const resp = await fetch(`${baseUrl}/admin/qa/journeys/${journeyFilter}/run`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...(cookie ? { Cookie: cookie } : {}) },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...(cookie ? { Cookie: cookie } : {}) },
       body: JSON.stringify(runBody),
     });
     const data = await resp.json();
@@ -93,8 +96,8 @@ async function runJourneys() {
     };
   } else {
     const resp = await fetch(`${baseUrl}/admin/qa/journeys/run`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", ...(cookie ? { Cookie: cookie } : {}) },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...(cookie ? { Cookie: cookie } : {}) },
       body: JSON.stringify(runBody),
     });
     const data = await resp.json();
@@ -103,16 +106,16 @@ async function runJourneys() {
 
   // Print results
   if (!report) {
-    console.error("  ERROR: No report returned");
+    console.error('  ERROR: No report returned');
     process.exit(1);
   }
 
-  console.log("  ============================================================");
+  console.log('  ============================================================');
   for (const j of report.journeys) {
-    const icon = j.passed ? "PASS" : "FAIL";
+    const icon = j.passed ? 'PASS' : 'FAIL';
     console.log(`  ${icon}  ${j.journeyId} ${j.journeyName} (${j.durationMs}ms)`);
     for (const s of j.steps) {
-      const sIcon = s.passed ? "  ok" : "  FAIL";
+      const sIcon = s.passed ? '  ok' : '  FAIL';
       console.log(`       ${sIcon}  ${s.stepName} [${s.status}] ${s.durationMs}ms`);
       if (s.errors.length > 0) {
         for (const e of s.errors) {
@@ -121,24 +124,23 @@ async function runJourneys() {
       }
     }
   }
-  console.log("  ============================================================");
-  console.log(`  Summary: ${report.summary.passed}/${report.summary.totalJourneys} journeys passed`);
+  console.log('  ============================================================');
+  console.log(
+    `  Summary: ${report.summary.passed}/${report.summary.totalJourneys} journeys passed`
+  );
   console.log(`           ${report.summary.passedSteps}/${report.summary.totalSteps} steps passed`);
   console.log(`  Duration: ${report.durationMs}ms`);
-  console.log("  ============================================================\n");
+  console.log('  ============================================================\n');
 
   // Write artifact
   mkdirSync(ARTIFACTS_DIR, { recursive: true });
-  writeFileSync(
-    resolve(ARTIFACTS_DIR, "clinic-day-report.json"),
-    JSON.stringify(report, null, 2),
-  );
+  writeFileSync(resolve(ARTIFACTS_DIR, 'clinic-day-report.json'), JSON.stringify(report, null, 2));
   console.log(`  Report written to artifacts/clinic-day-report.json\n`);
 
   process.exit(report.summary.failed > 0 ? 1 : 0);
 }
 
 runJourneys().catch((err) => {
-  console.error("  FATAL:", err.message);
+  console.error('  FATAL:', err.message);
   process.exit(1);
 });

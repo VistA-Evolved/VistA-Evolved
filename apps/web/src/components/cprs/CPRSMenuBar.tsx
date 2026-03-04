@@ -46,7 +46,9 @@ function buildMenus(): Record<string, MenuAction[]> {
     ],
     View: [
       {
-        label: 'Chart Tab', action: 'chartTab', children: [
+        label: 'Chart Tab',
+        action: 'chartTab',
+        children: [
           { label: 'Cover Sheet', shortcut: 'Shift+S', action: 'tab:cover' },
           { label: 'Problem List', shortcut: 'Shift+P', action: 'tab:problems' },
           { label: 'Medications', shortcut: 'Shift+M', action: 'tab:meds' },
@@ -57,7 +59,7 @@ function buildMenus(): Record<string, MenuAction[]> {
           { label: 'Discharge Summaries', shortcut: 'Shift+D', action: 'tab:dcsumm' },
           { label: 'Laboratory', shortcut: 'Shift+L', action: 'tab:labs' },
           { label: 'Reports', shortcut: 'Shift+R', action: 'tab:reports' },
-        ]
+        ],
       },
       { separator: true, label: '', action: '' },
       { label: 'Theme: Light', action: 'theme:light' },
@@ -175,7 +177,11 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
       const theme = action.replace('theme:', '') as 'light' | 'dark';
       updatePreferences({ theme });
     } else if (action.startsWith('density:')) {
-      const density = action.replace('density:', '') as 'comfortable' | 'compact' | 'balanced' | 'dense';
+      const density = action.replace('density:', '') as
+        | 'comfortable'
+        | 'compact'
+        | 'balanced'
+        | 'dense';
       updatePreferences({ density });
     } else if (action.startsWith('layout:')) {
       const layoutMode = action.replace('layout:', '') as 'cprs' | 'modern';
@@ -216,16 +222,16 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
         <div key={item.action} className={hasChildren ? styles.submenuWrapper : undefined}>
           <button
             className={`${styles.menuItem} ${item.enabled === false ? styles.disabled : ''}`}
-            onClick={() => { if (!hasChildren) handleAction(item.action); }}
+            onClick={() => {
+              if (!hasChildren) handleAction(item.action);
+            }}
             disabled={item.enabled === false}
           >
             <span>{label}</span>
             {item.shortcut && <span className={styles.shortcut}>{item.shortcut}</span>}
             {hasChildren && <span className={styles.arrow}>&#9656;</span>}
           </button>
-          {hasChildren && (
-            <div className={styles.submenu}>{renderItems(item.children!)}</div>
-          )}
+          {hasChildren && <div className={styles.submenu}>{renderItems(item.children!)}</div>}
         </div>
       );
     });
@@ -234,21 +240,25 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
   const menuNames = Object.keys(menus);
 
   return (
-    <div className={styles.menuBar} ref={barRef} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div
+      className={styles.menuBar}
+      ref={barRef}
+      style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+    >
       <div style={{ display: 'flex' }}>
         {menuNames.map((name) => (
           <div key={name} style={{ position: 'relative' }}>
             <button
               className={`${styles.menuTrigger} ${openMenu === name ? styles.open : ''}`}
               onClick={() => setOpenMenu(openMenu === name ? null : name)}
-              onMouseEnter={() => { if (openMenu) setOpenMenu(name); }}
+              onMouseEnter={() => {
+                if (openMenu) setOpenMenu(name);
+              }}
             >
               {menuI18n[name] || name}
             </button>
             {openMenu === name && (
-              <div className={styles.menuDropdown}>
-                {renderItems(menus[name])}
-              </div>
+              <div className={styles.menuDropdown}>{renderItems(menus[name])}</div>
             )}
           </div>
         ))}

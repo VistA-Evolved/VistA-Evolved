@@ -1,9 +1,11 @@
 # Phase 44 — Global Payer Directory Engine + Jurisdiction Packs
 
 ## User Request
+
 Implement payer directory importers and jurisdiction packs that pull from authoritative sources. Payers are data; connectors are adapters. Make it impossible to forget payers.
 
 ## Implementation Steps
+
 1. Create `apps/api/src/rcm/payerDirectory/` module:
    - `types.ts` (DirectoryPayer canonical schema, ImporterInterface, DiffResult, EnrollmentPacket)
    - `normalization.ts` (raw -> normalized pipeline + diff engine)
@@ -18,10 +20,11 @@ Implement payer directory importers and jurisdiction packs that pull from author
 5. Routing rules engine with ROUTE_NOT_FOUND typed error
 6. UI: Add "Payer Directory" tab on RCM page
 7. Docs: payer-directory.md, jurisdiction-packs.md, runbooks
-8. Tests: vitest suite for importers + routing + enrollment 
+8. Tests: vitest suite for importers + routing + enrollment
 9. Prompts folder audit
 
 ## Verification Steps
+
 - `npx tsc --noEmit` clean
 - `npx vitest run tests/payer-directory.test.ts` all pass
 - API starts, endpoints respond
@@ -29,6 +32,7 @@ Implement payer directory importers and jurisdiction packs that pull from author
 - Routing resolves known combos, returns ROUTE_NOT_FOUND for unknown
 
 ## Files Touched
+
 - apps/api/src/rcm/payerDirectory/types.ts (NEW)
 - apps/api/src/rcm/payerDirectory/normalization.ts (NEW)
 - apps/api/src/rcm/payerDirectory/routing.ts (NEW)

@@ -1,6 +1,7 @@
 # Phase 315 — Compliance Evidence Mapping (W13-P7)
 
 ## Objective
+
 Map each regulatory requirement (HIPAA, DPA_PH, DPA_GH) to the specific
 code artifact, config file, or documentation that implements it. Expose
 the matrix via REST endpoints for runtime compliance queries.
@@ -18,9 +19,11 @@ the matrix via REST endpoints for runtime compliance queries.
 4. Create prompts, evidence, verifier
 
 ## Files Touched
+
 - `apps/api/src/services/compliance-matrix.ts` (new)
 - `apps/api/src/routes/compliance-routes.ts` (new)
 - `docs/compliance/compliance-evidence-map.md` (new)
 
 ## Verification
+
 See `315-99-VERIFY.md`

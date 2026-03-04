@@ -129,7 +129,7 @@
       "unit": "ms"
     },
     "httpReqFailed": {
-      "maxRate": 0.10,
+      "maxRate": 0.1,
       "description": "Max 10% request failure rate"
     },
     "iterations": {

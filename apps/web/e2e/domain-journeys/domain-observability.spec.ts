@@ -7,328 +7,363 @@
  *   node scripts/qa/generate-phase-tests.mjs
  */
 
-import { test, expect } from "@playwright/test";
+import { test, expect } from '@playwright/test';
 
-const API = process.env.API_URL ?? "http://localhost:3001";
+const API = process.env.API_URL ?? 'http://localhost:3001';
 
-test.describe("Phase 107: Production Posture Pack", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 107: Production Posture Pack', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__posture = await request.get(`${API}/posture`);
-    expect(r__posture.status(), "/posture should not be 500").not.toBe(500);
+    expect(r__posture.status(), '/posture should not be 500').not.toBe(500);
     const r__posture_backup = await request.get(`${API}/posture/backup`);
-    expect(r__posture_backup.status(), "/posture/backup should not be 500").not.toBe(500);
+    expect(r__posture_backup.status(), '/posture/backup should not be 500').not.toBe(500);
     const r__posture_observability = await request.get(`${API}/posture/observability`);
-    expect(r__posture_observability.status(), "/posture/observability should not be 500").not.toBe(500);
+    expect(r__posture_observability.status(), '/posture/observability should not be 500').not.toBe(
+      500
+    );
     const r__posture_performance = await request.get(`${API}/posture/performance`);
-    expect(r__posture_performance.status(), "/posture/performance should not be 500").not.toBe(500);
+    expect(r__posture_performance.status(), '/posture/performance should not be 500').not.toBe(500);
     const r__posture_tenant = await request.get(`${API}/posture/tenant`);
-    expect(r__posture_tenant.status(), "/posture/tenant should not be 500").not.toBe(500);
+    expect(r__posture_tenant.status(), '/posture/tenant should not be 500').not.toBe(500);
     const r__posture_tenant_isolation = await request.get(`${API}/posture/tenant-isolation`);
-    expect(r__posture_tenant_isolation.status(), "/posture/tenant-isolation should not be 500").not.toBe(500);
+    expect(
+      r__posture_tenant_isolation.status(),
+      '/posture/tenant-isolation should not be 500'
+    ).not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/posture`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
-
 });
 
-test.describe("Phase 111: IMPLEMENT: Claim Scrubbing + Claim Lifecycle", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 111: IMPLEMENT: Claim Scrubbing + Claim Lifecycle', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__rcm_claim_lifecycle_drafts = await request.get(`${API}/rcm/claim-lifecycle/drafts`);
-    expect(r__rcm_claim_lifecycle_drafts.status(), "/rcm/claim-lifecycle/drafts should not be 500").not.toBe(500);
-    const r__rcm_claim_lifecycle_drafts_aging = await request.get(`${API}/rcm/claim-lifecycle/drafts/aging`);
-    expect(r__rcm_claim_lifecycle_drafts_aging.status(), "/rcm/claim-lifecycle/drafts/aging should not be 500").not.toBe(500);
-    const r__rcm_claim_lifecycle_drafts_stats = await request.get(`${API}/rcm/claim-lifecycle/drafts/stats`);
-    expect(r__rcm_claim_lifecycle_drafts_stats.status(), "/rcm/claim-lifecycle/drafts/stats should not be 500").not.toBe(500);
+    expect(
+      r__rcm_claim_lifecycle_drafts.status(),
+      '/rcm/claim-lifecycle/drafts should not be 500'
+    ).not.toBe(500);
+    const r__rcm_claim_lifecycle_drafts_aging = await request.get(
+      `${API}/rcm/claim-lifecycle/drafts/aging`
+    );
+    expect(
+      r__rcm_claim_lifecycle_drafts_aging.status(),
+      '/rcm/claim-lifecycle/drafts/aging should not be 500'
+    ).not.toBe(500);
+    const r__rcm_claim_lifecycle_drafts_stats = await request.get(
+      `${API}/rcm/claim-lifecycle/drafts/stats`
+    );
+    expect(
+      r__rcm_claim_lifecycle_drafts_stats.status(),
+      '/rcm/claim-lifecycle/drafts/stats should not be 500'
+    ).not.toBe(500);
     const r__rcm_claim_lifecycle_metrics = await request.get(`${API}/rcm/claim-lifecycle/metrics`);
-    expect(r__rcm_claim_lifecycle_metrics.status(), "/rcm/claim-lifecycle/metrics should not be 500").not.toBe(500);
-    const r__rcm_claim_lifecycle_metrics_scrub = await request.get(`${API}/rcm/claim-lifecycle/metrics/scrub`);
-    expect(r__rcm_claim_lifecycle_metrics_scrub.status(), "/rcm/claim-lifecycle/metrics/scrub should not be 500").not.toBe(500);
+    expect(
+      r__rcm_claim_lifecycle_metrics.status(),
+      '/rcm/claim-lifecycle/metrics should not be 500'
+    ).not.toBe(500);
+    const r__rcm_claim_lifecycle_metrics_scrub = await request.get(
+      `${API}/rcm/claim-lifecycle/metrics/scrub`
+    );
+    expect(
+      r__rcm_claim_lifecycle_metrics_scrub.status(),
+      '/rcm/claim-lifecycle/metrics/scrub should not be 500'
+    ).not.toBe(500);
     const r__rcm_claim_lifecycle_rules = await request.get(`${API}/rcm/claim-lifecycle/rules`);
-    expect(r__rcm_claim_lifecycle_rules.status(), "/rcm/claim-lifecycle/rules should not be 500").not.toBe(500);
+    expect(
+      r__rcm_claim_lifecycle_rules.status(),
+      '/rcm/claim-lifecycle/rules should not be 500'
+    ).not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/rcm/claim-lifecycle/drafts`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
 
-  test("UI component files exist", async () => {
-    const { readdirSync } = await import("node:fs");
-    const { join, resolve: resolvePath } = await import("node:path");
-    const root = resolvePath(__dirname, "..", "..", "..", "..");
-    const componentNames = ["page.tsx"];
+  test('UI component files exist', async () => {
+    const { readdirSync } = await import('node:fs');
+    const { join, resolve: resolvePath } = await import('node:path');
+    const root = resolvePath(__dirname, '..', '..', '..', '..');
+    const componentNames = ['page.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* skip */ }
+      } catch {
+        /* skip */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(root, "apps"), name)) found++;
+      if (findFile(join(root, 'apps'), name)) found++;
     }
     expect(found).toBeGreaterThan(0);
   });
 
-  test("RCM endpoint contract", async ({ request }) => {
+  test('RCM endpoint contract', async ({ request }) => {
     const res = await request.get(`${API}/rcm/claim-lifecycle/drafts`);
     expect([200, 401, 403]).toContain(res.status());
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body) expect(body).toHaveProperty("ok");
+      if (body) expect(body).toHaveProperty('ok');
     }
   });
-
 });
 
-test.describe("Phase 117: IMPLEMENT: Postgres-First Prod Posture + Multi-Instance", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 117: IMPLEMENT: Postgres-First Prod Posture + Multi-Instance', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__api_capabilities = await request.get(`${API}/api/capabilities`);
-    expect(r__api_capabilities.status(), "/api/capabilities should not be 500").not.toBe(500);
+    expect(r__api_capabilities.status(), '/api/capabilities should not be 500').not.toBe(500);
     const r__auth_login = await request.get(`${API}/auth/login`);
-    expect(r__auth_login.status(), "/auth/login should not be 500").not.toBe(500);
+    expect(r__auth_login.status(), '/auth/login should not be 500').not.toBe(500);
     const r__auth_logout = await request.get(`${API}/auth/logout`);
-    expect(r__auth_logout.status(), "/auth/logout should not be 500").not.toBe(500);
+    expect(r__auth_logout.status(), '/auth/logout should not be 500').not.toBe(500);
     const r__auth_session = await request.get(`${API}/auth/session`);
-    expect(r__auth_session.status(), "/auth/session should not be 500").not.toBe(500);
+    expect(r__auth_session.status(), '/auth/session should not be 500').not.toBe(500);
     const r__health = await request.get(`${API}/health`);
-    expect(r__health.status(), "/health should not be 500").not.toBe(500);
+    expect(r__health.status(), '/health should not be 500').not.toBe(500);
     const r__posture_backup = await request.get(`${API}/posture/backup`);
-    expect(r__posture_backup.status(), "/posture/backup should not be 500").not.toBe(500);
+    expect(r__posture_backup.status(), '/posture/backup should not be 500').not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/api/capabilities`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
 
-  test("clinical data contract shape", async ({ request }) => {
+  test('clinical data contract shape', async ({ request }) => {
     const res = await request.get(`${API}/vista/allergies?dfn=3`);
     // Should return JSON with ok field (may be 401 without auth)
     if (res.status() === 200) {
       const body = await res.json();
-      expect(body).toHaveProperty("ok");
+      expect(body).toHaveProperty('ok');
     } else {
       expect([401, 403]).toContain(res.status());
     }
   });
 
-  test("RCM endpoint contract", async ({ request }) => {
+  test('RCM endpoint contract', async ({ request }) => {
     const res = await request.get(`${API}/rcm/acks/ingest`);
     expect([200, 401, 403]).toContain(res.status());
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body) expect(body).toHaveProperty("ok");
+      if (body) expect(body).toHaveProperty('ok');
     }
   });
-
 });
 
-test.describe("Phase 118: Go-Live Hardening Pack", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 118: Go-Live Hardening Pack', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__admin_jobs_status = await request.get(`${API}/admin/jobs/status`);
-    expect(r__admin_jobs_status.status(), "/admin/jobs/status should not be 500").not.toBe(500);
+    expect(r__admin_jobs_status.status(), '/admin/jobs/status should not be 500').not.toBe(500);
     const r__api_capabilities = await request.get(`${API}/api/capabilities`);
-    expect(r__api_capabilities.status(), "/api/capabilities should not be 500").not.toBe(500);
+    expect(r__api_capabilities.status(), '/api/capabilities should not be 500').not.toBe(500);
     const r__auth_session = await request.get(`${API}/auth/session`);
-    expect(r__auth_session.status(), "/auth/session should not be 500").not.toBe(500);
+    expect(r__auth_session.status(), '/auth/session should not be 500').not.toBe(500);
     const r__hardening_audit_verify = await request.get(`${API}/hardening/audit-verify`);
-    expect(r__hardening_audit_verify.status(), "/hardening/audit-verify should not be 500").not.toBe(500);
+    expect(
+      r__hardening_audit_verify.status(),
+      '/hardening/audit-verify should not be 500'
+    ).not.toBe(500);
     const r__hardening_backup_status = await request.get(`${API}/hardening/backup-status`);
-    expect(r__hardening_backup_status.status(), "/hardening/backup-status should not be 500").not.toBe(500);
+    expect(
+      r__hardening_backup_status.status(),
+      '/hardening/backup-status should not be 500'
+    ).not.toBe(500);
     const r__hardening_rc_checklist = await request.get(`${API}/hardening/rc-checklist`);
-    expect(r__hardening_rc_checklist.status(), "/hardening/rc-checklist should not be 500").not.toBe(500);
+    expect(
+      r__hardening_rc_checklist.status(),
+      '/hardening/rc-checklist should not be 500'
+    ).not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/admin/jobs/status`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
 
-  test("clinical data contract shape", async ({ request }) => {
+  test('clinical data contract shape', async ({ request }) => {
     const res = await request.get(`${API}/vista/allergies?dfn=3`);
     // Should return JSON with ok field (may be 401 without auth)
     if (res.status() === 200) {
       const body = await res.json();
-      expect(body).toHaveProperty("ok");
+      expect(body).toHaveProperty('ok');
     } else {
       expect([401, 403]).toContain(res.status());
     }
   });
 
-  test("RCM endpoint contract", async ({ request }) => {
+  test('RCM endpoint contract', async ({ request }) => {
     const res = await request.get(`${API}/rcm/audit/verify`);
     expect([200, 401, 403]).toContain(res.status());
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body) expect(body).toHaveProperty("ok");
+      if (body) expect(body).toHaveProperty('ok');
     }
   });
-
 });
 
-test.describe("Phase 125: IMPLEMENT: Postgres-Only Production Data Plane", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 125: IMPLEMENT: Postgres-Only Production Data Plane', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__posture_data_plane = await request.get(`${API}/posture/data-plane`);
-    expect(r__posture_data_plane.status(), "/posture/data-plane should not be 500").not.toBe(500);
+    expect(r__posture_data_plane.status(), '/posture/data-plane should not be 500').not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/posture/data-plane`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
-
 });
 
-test.describe("Phase 133: IMPLEMENT (Enterprise Observability Baseline)", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 133: IMPLEMENT (Enterprise Observability Baseline)', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__metrics_prometheus = await request.get(`${API}/metrics/prometheus`);
-    expect(r__metrics_prometheus.status(), "/metrics/prometheus should not be 500").not.toBe(500);
+    expect(r__metrics_prometheus.status(), '/metrics/prometheus should not be 500').not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/metrics/prometheus`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
-
 });
 
-test.describe("Phase 136: IMPLEMENT: Store Policy Gate + Durability Sweep", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 136: IMPLEMENT: Store Policy Gate + Durability Sweep', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__posture_store_policy = await request.get(`${API}/posture/store-policy`);
-    expect(r__posture_store_policy.status(), "/posture/store-policy should not be 500").not.toBe(500);
+    expect(r__posture_store_policy.status(), '/posture/store-policy should not be 500').not.toBe(
+      500
+    );
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/posture/store-policy`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
-
 });
 
-test.describe("Phase 36: OBSERVABILITY RELIABILITY", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 36: OBSERVABILITY RELIABILITY', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__health = await request.get(`${API}/health`);
-    expect(r__health.status(), "/health should not be 500").not.toBe(500);
+    expect(r__health.status(), '/health should not be 500').not.toBe(500);
     const r__metrics = await request.get(`${API}/metrics`);
-    expect(r__metrics.status(), "/metrics should not be 500").not.toBe(500);
+    expect(r__metrics.status(), '/metrics should not be 500').not.toBe(500);
     const r__metrics_prometheus = await request.get(`${API}/metrics/prometheus`);
-    expect(r__metrics_prometheus.status(), "/metrics/prometheus should not be 500").not.toBe(500);
+    expect(r__metrics_prometheus.status(), '/metrics/prometheus should not be 500').not.toBe(500);
     const r__ready = await request.get(`${API}/ready`);
-    expect(r__ready.status(), "/ready should not be 500").not.toBe(500);
+    expect(r__ready.status(), '/ready should not be 500').not.toBe(500);
     const r__version = await request.get(`${API}/version`);
-    expect(r__version.status(), "/version should not be 500").not.toBe(500);
+    expect(r__version.status(), '/version should not be 500').not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/health`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
-
 });
 
-test.describe("Phase 77: OBSERVABILITY + RELIABILITY v1", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 77: OBSERVABILITY + RELIABILITY v1', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__docs_reports = await request.get(`${API}/docs/reports`);
-    expect(r__docs_reports.status(), "/docs/reports should not be 500").not.toBe(500);
+    expect(r__docs_reports.status(), '/docs/reports should not be 500').not.toBe(500);
     const r__metrics = await request.get(`${API}/metrics`);
-    expect(r__metrics.status(), "/metrics should not be 500").not.toBe(500);
+    expect(r__metrics.status(), '/metrics should not be 500').not.toBe(500);
     const r__metrics_prometheus = await request.get(`${API}/metrics/prometheus`);
-    expect(r__metrics_prometheus.status(), "/metrics/prometheus should not be 500").not.toBe(500);
+    expect(r__metrics_prometheus.status(), '/metrics/prometheus should not be 500').not.toBe(500);
     const r__reports = await request.get(`${API}/reports`);
-    expect(r__reports.status(), "/reports should not be 500").not.toBe(500);
+    expect(r__reports.status(), '/reports should not be 500').not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/docs/reports`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
 
-  test("UI component files exist", async () => {
-    const { readdirSync } = await import("node:fs");
-    const { join, resolve: resolvePath } = await import("node:path");
-    const root = resolvePath(__dirname, "..", "..", "..", "..");
-    const componentNames = ["data-cache.tsx"];
+  test('UI component files exist', async () => {
+    const { readdirSync } = await import('node:fs');
+    const { join, resolve: resolvePath } = await import('node:path');
+    const root = resolvePath(__dirname, '..', '..', '..', '..');
+    const componentNames = ['data-cache.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* skip */ }
+      } catch {
+        /* skip */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(root, "apps"), name)) found++;
+      if (findFile(join(root, 'apps'), name)) found++;
     }
     expect(found).toBeGreaterThan(0);
   });
-
 });

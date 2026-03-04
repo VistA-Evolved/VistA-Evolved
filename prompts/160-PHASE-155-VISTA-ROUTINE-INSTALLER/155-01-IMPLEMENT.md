@@ -14,7 +14,7 @@ installation deterministic. Eliminate manual install steps.
 ## Implementation Steps
 
 1. Create unified installer script `scripts/install-vista-routines.ps1` that:
-   - Copies all production ZVE*.m routines into container
+   - Copies all production ZVE\*.m routines into container
    - Runs each routine's INSTALL entry point
    - Adds RPCs to OR CPRS GUI CHART broker context
    - Verifies callable
@@ -32,17 +32,17 @@ installation deterministic. Eliminate manual install steps.
 
 ## Target Routines (production only)
 
-| Routine | Installer Tag | RPCs Registered |
-|---------|--------------|-----------------|
-| ZVEMIOP.m | RUN^ZVEMINS | 6 VE INTEROP * RPCs |
-| ZVEMINS.m | (is the installer) | — |
-| VEMCTX3.m | (context adder) | — |
-| ZVEMSGR.m | EN^ZVEMSIN | 5 ZVE MAIL * RPCs |
-| ZVEMSIN.m | (is the installer) | — |
-| ZVERPC.m | INSTALL^ZVERPC | VE LIST RPCS |
-| ZVERCMP.m | INSTALL^ZVERCMP | VE RCM PROVIDER INFO |
-| ZVEADT.m | INSTALL^ZVEADT | 3 ZVEADT * RPCs |
-| ZVESDSEED.m | (optional seeder, not installed by default) | — |
+| Routine     | Installer Tag                               | RPCs Registered      |
+| ----------- | ------------------------------------------- | -------------------- |
+| ZVEMIOP.m   | RUN^ZVEMINS                                 | 6 VE INTEROP \* RPCs |
+| ZVEMINS.m   | (is the installer)                          | —                    |
+| VEMCTX3.m   | (context adder)                             | —                    |
+| ZVEMSGR.m   | EN^ZVEMSIN                                  | 5 ZVE MAIL \* RPCs   |
+| ZVEMSIN.m   | (is the installer)                          | —                    |
+| ZVERPC.m    | INSTALL^ZVERPC                              | VE LIST RPCS         |
+| ZVERCMP.m   | INSTALL^ZVERCMP                             | VE RCM PROVIDER INFO |
+| ZVEADT.m    | INSTALL^ZVEADT                              | 3 ZVEADT \* RPCs     |
+| ZVESDSEED.m | (optional seeder, not installed by default) | —                    |
 
 ## Files Touched
 

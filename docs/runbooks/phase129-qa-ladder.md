@@ -23,12 +23,12 @@ apps/api/tests/
 
 ### A: Playwright Journeys (`qa-ladder-journeys.spec.ts`)
 
-| Journey | What it tests |
-|---------|---------------|
-| Journey 1 | Login -> patient search -> cover sheet -> 3 clinical tabs |
-| Journey 2 | Orders tab navigation |
+| Journey   | What it tests                                                    |
+| --------- | ---------------------------------------------------------------- |
+| Journey 1 | Login -> patient search -> cover sheet -> 3 clinical tabs        |
+| Journey 2 | Orders tab navigation                                            |
 | Journey 3 | Dead-click audit: clicks every button, fails on >5 silent no-ops |
-| Journey 4 | API health/ready after E2E exercise |
+| Journey 4 | API health/ready after E2E exercise                              |
 
 **Run:** `cd apps/web && pnpm exec playwright test e2e/qa-ladder-journeys.spec.ts`
 
@@ -77,6 +77,7 @@ Update baselines: `pnpm exec playwright test --update-snapshots`
 ## G14 Gauntlet Gate
 
 The gate validates QA ladder infrastructure is in place:
+
 - All 5 spec files exist
 - Test bodies are non-empty (no placeholder tests)
 - Golden trace has required structure
@@ -108,10 +109,10 @@ node qa/gauntlet/cli.mjs --suite rc
 
 ## Troubleshooting
 
-| Symptom | Fix |
-|---------|-----|
-| Playwright tests fail with timeout | Ensure API (3001) and web (3000) are running |
-| Visual regression baseline mismatch | Run with `--update-snapshots` to regenerate |
-| Contract tests fail with 401 | Check VistA Docker is running on port 9430 |
-| RPC trace test fails on registry | RPC was renamed/removed -- update golden trace |
-| Dead-click count > 5 | New buttons need handlers or "integration pending" messages |
+| Symptom                             | Fix                                                         |
+| ----------------------------------- | ----------------------------------------------------------- |
+| Playwright tests fail with timeout  | Ensure API (3001) and web (3000) are running                |
+| Visual regression baseline mismatch | Run with `--update-snapshots` to regenerate                 |
+| Contract tests fail with 401        | Check VistA Docker is running on port 9430                  |
+| RPC trace test fails on registry    | RPC was renamed/removed -- update golden trace              |
+| Dead-click count > 5                | New buttons need handlers or "integration pending" messages |

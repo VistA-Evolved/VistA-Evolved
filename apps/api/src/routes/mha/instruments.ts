@@ -5,9 +5,9 @@
  * Each .questionnaire.json file is a standard FHIR Questionnaire resource.
  */
 
-import { readFileSync, readdirSync } from "node:fs";
-import { join, resolve } from "node:path";
-import { log } from "../../lib/logger.js";
+import { readFileSync, readdirSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -29,11 +29,11 @@ export interface FhirQuestionnaireItem {
   type: string;
   required?: boolean;
   answerOption?: FhirAnswerOption[];
-  item?: FhirQuestionnaireItem[];  // nested groups
+  item?: FhirQuestionnaireItem[]; // nested groups
 }
 
 export interface FhirQuestionnaire {
-  resourceType: "Questionnaire";
+  resourceType: 'Questionnaire';
   id: string;
   url?: string;
   name: string;
@@ -55,34 +55,20 @@ const instrumentCatalog = new Map<string, FhirQuestionnaire>();
  * Called once at startup.
  */
 export function loadInstruments(): void {
-  const dataDir = resolve(
-    process.cwd(),
-    "data",
-    "instruments",
-  );
+  const dataDir = resolve(process.cwd(), 'data', 'instruments');
 
   let files: string[];
   try {
-    files = readdirSync(dataDir).filter((f) =>
-      f.endsWith(".questionnaire.json"),
-    );
+    files = readdirSync(dataDir).filter((f) => f.endsWith('.questionnaire.json'));
   } catch {
     // Try relative from project root (monorepo)
-    const altDir = resolve(
-      process.cwd(),
-      "..",
-      "..",
-      "data",
-      "instruments",
-    );
+    const altDir = resolve(process.cwd(), '..', '..', 'data', 'instruments');
     try {
-      files = readdirSync(altDir).filter((f) =>
-        f.endsWith(".questionnaire.json"),
-      );
+      files = readdirSync(altDir).filter((f) => f.endsWith('.questionnaire.json'));
       loadFilesFromDir(altDir, files);
       return;
     } catch {
-      log.warn("MHA: No instruments directory found. Instrument catalog empty.");
+      log.warn('MHA: No instruments directory found. Instrument catalog empty.');
       return;
     }
   }
@@ -93,9 +79,9 @@ export function loadInstruments(): void {
 function loadFilesFromDir(dir: string, files: string[]): void {
   for (const file of files) {
     try {
-      const raw = readFileSync(join(dir, file), "utf-8");
+      const raw = readFileSync(join(dir, file), 'utf-8');
       const q: FhirQuestionnaire = JSON.parse(raw);
-      if (q.resourceType !== "Questionnaire" || !q.id) {
+      if (q.resourceType !== 'Questionnaire' || !q.id) {
         log.warn(`MHA: Skipping ${file} — not a valid FHIR Questionnaire`);
         continue;
       }

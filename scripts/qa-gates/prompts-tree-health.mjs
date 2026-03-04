@@ -16,11 +16,11 @@
  * Exit: 0 = pass (or WARN-only), 1 = FAIL
  */
 
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
-const ROOT = resolve(import.meta.dirname, "../..");
-const PROMPTS_DIR = join(ROOT, "prompts");
+const ROOT = resolve(import.meta.dirname, '../..');
+const PROMPTS_DIR = join(ROOT, 'prompts');
 
 let passed = 0;
 let warned = 0;
@@ -41,7 +41,7 @@ function fail(gate, detail) {
   console.log(`  FAIL  ${gate}: ${detail}`);
 }
 
-console.log("\n=== QA Gate: Prompts Tree Health (Phase 113B) ===\n");
+console.log('\n=== QA Gate: Prompts Tree Health (Phase 113B) ===\n');
 
 // ── Inventory ────────────────────────────────────────
 
@@ -54,21 +54,16 @@ const allEntries = readdirSync(PROMPTS_DIR);
 //   "263-WAVE-8-*"           (wave-level integrity audits)
 const PHASE_FOLDER_RE = /^\d+-(?:PHASE-\d+\w?-|W\d+-P\d+-|WAVE-\d+-|BOOTSTRAP|PLAYBOOKS?)/;
 const phaseFolders = allEntries.filter(
-  (e) =>
-    statSync(join(PROMPTS_DIR, e)).isDirectory() && PHASE_FOLDER_RE.test(e)
+  (e) => statSync(join(PROMPTS_DIR, e)).isDirectory() && PHASE_FOLDER_RE.test(e)
 );
 
 // Flat markdown files (excluding 00-* meta files, manifests, and README)
-const ALLOWED_ROOT_FILES = new Set([
-  "README.md",
-  "PROMPTS_INDEX.md",
-  "00-ORDERING-RULES.md",
-]);
+const ALLOWED_ROOT_FILES = new Set(['README.md', 'PROMPTS_INDEX.md', '00-ORDERING-RULES.md']);
 const flatFiles = allEntries.filter(
   (e) =>
-    e.endsWith(".md") &&
-    !e.startsWith("00-") &&
-    !e.startsWith("WAVE_") &&
+    e.endsWith('.md') &&
+    !e.startsWith('00-') &&
+    !e.startsWith('WAVE_') &&
     !ALLOWED_ROOT_FILES.has(e) &&
     statSync(join(PROMPTS_DIR, e)).isFile()
 );
@@ -100,43 +95,41 @@ for (const file of flatFiles) {
 
 if (duplicateFlats.length > 0) {
   for (const { file, folder } of duplicateFlats) {
-    fail(
-      "no-duplicate-flat",
-      `"${file}" exists at root but folder "${folder}" already exists`
-    );
+    fail('no-duplicate-flat', `"${file}" exists at root but folder "${folder}" already exists`);
   }
 } else {
-  pass("no-duplicate-flat", "No flat files duplicating existing phase folders");
+  pass('no-duplicate-flat', 'No flat files duplicating existing phase folders');
 }
 
 if (orphanFlats.length > 0) {
   for (const file of orphanFlats) {
     fail(
-      "orphan-flat",
+      'orphan-flat',
       `"${file}" at root has no corresponding phase folder -- must be moved into a folder`
     );
   }
 } else {
-  pass("orphan-flat", "No orphan flat files at root");
+  pass('orphan-flat', 'No orphan flat files at root');
 }
 
 // ── Gate 2: Folder naming convention ──────────────────
 
-const FOLDER_CONVENTION_RE = /^\d{1,3}-(?:PHASE-\d+\w?-[A-Z0-9-]+|W\d+-P\d+-[A-Z0-9-]+|WAVE-\d+-[A-Z0-9-]+|BOOTSTRAP|PLAYBOOKS?)$/;
+const FOLDER_CONVENTION_RE =
+  /^\d{1,3}-(?:PHASE-\d+\w?-[A-Z0-9-]+|W\d+-P\d+-[A-Z0-9-]+|WAVE-\d+-[A-Z0-9-]+|BOOTSTRAP|PLAYBOOKS?)$/;
 const badNames = [];
 
 for (const folder of phaseFolders) {
-  if (!FOLDER_CONVENTION_RE.test(folder) && folder !== "00-ARCHIVE") {
+  if (!FOLDER_CONVENTION_RE.test(folder) && folder !== '00-ARCHIVE') {
     badNames.push(folder);
   }
 }
 
 if (badNames.length > 0) {
   for (const name of badNames) {
-    warn("naming-convention", `Folder "${name}" doesn't match convention`);
+    warn('naming-convention', `Folder "${name}" doesn't match convention`);
   }
 } else {
-  pass("naming-convention", `All ${phaseFolders.length} folders follow convention`);
+  pass('naming-convention', `All ${phaseFolders.length} folders follow convention`);
 }
 
 // ── Gate 3: IMPLEMENT + VERIFY pair check ─────────────
@@ -145,29 +138,29 @@ let missingPairs = 0;
 let checkedFolders = 0;
 
 for (const folder of phaseFolders) {
-  if (folder === "00-ARCHIVE" || folder.startsWith("00-")) continue;
+  if (folder === '00-ARCHIVE' || folder.startsWith('00-')) continue;
 
   const folderPath = join(PROMPTS_DIR, folder);
   const files = readdirSync(folderPath);
 
-  const hasImpl = files.some((f) => f.includes("IMPLEMENT"));
-  const hasVerify = files.some((f) => f.includes("VERIFY"));
+  const hasImpl = files.some((f) => f.includes('IMPLEMENT'));
+  const hasVerify = files.some((f) => f.includes('VERIFY'));
 
   checkedFolders++;
   if (!hasImpl && !hasVerify) {
-    warn("impl-verify-pair", `"${folder}" has neither IMPLEMENT nor VERIFY`);
+    warn('impl-verify-pair', `"${folder}" has neither IMPLEMENT nor VERIFY`);
     missingPairs++;
   } else if (!hasImpl) {
-    warn("impl-verify-pair", `"${folder}" is missing IMPLEMENT file`);
+    warn('impl-verify-pair', `"${folder}" is missing IMPLEMENT file`);
     missingPairs++;
   } else if (!hasVerify) {
-    warn("impl-verify-pair", `"${folder}" is missing VERIFY file`);
+    warn('impl-verify-pair', `"${folder}" is missing VERIFY file`);
     missingPairs++;
   }
 }
 
 if (missingPairs === 0) {
-  pass("impl-verify-pair", `All ${checkedFolders} folders have IMPLEMENT + VERIFY`);
+  pass('impl-verify-pair', `All ${checkedFolders} folders have IMPLEMENT + VERIFY`);
 }
 
 // ── Gate 4: Internal phase number must match folder ───
@@ -181,24 +174,23 @@ for (const folder of phaseFolders) {
   const folderPhase = folderMatch[1];
 
   const folderPath = join(PROMPTS_DIR, folder);
-  const files = readdirSync(folderPath).filter((f) => f.endsWith(".md"));
+  const files = readdirSync(folderPath).filter((f) => f.endsWith('.md'));
 
   for (const file of files) {
     // Read first line to check phase number in heading
     try {
-      const firstLine = readFileSync(join(folderPath, file), "utf-8")
-        .split("\n")[0];
+      const firstLine = readFileSync(join(folderPath, file), 'utf-8').split('\n')[0];
       // Match "Phase NNN" in heading
       const headingMatch = firstLine.match(/Phase\s+(\d+\w?)/i);
       if (headingMatch) {
         const headingPhase = headingMatch[1];
         // Extract numeric prefix for comparison: "5A" -> "5", "25D" -> "25"
-        const folderNum = folderPhase.replace(/[A-Za-z]+$/, "");
-        const headingNum = headingPhase.replace(/[A-Za-z]+$/, "");
+        const folderNum = folderPhase.replace(/[A-Za-z]+$/, '');
+        const headingNum = headingPhase.replace(/[A-Za-z]+$/, '');
         // Accept exact match OR sub-phase match (e.g., "5A" in folder "5")
         if (headingNum !== folderNum && headingPhase !== folderPhase) {
           fail(
-            "phase-mismatch",
+            'phase-mismatch',
             `${folder}/${file}: heading says Phase ${headingPhase} but folder says Phase ${folderPhase}`
           );
           mismatches++;
@@ -211,7 +203,7 @@ for (const folder of phaseFolders) {
 }
 
 if (mismatches === 0) {
-  pass("phase-mismatch", "All file headings match their folder phase numbers");
+  pass('phase-mismatch', 'All file headings match their folder phase numbers');
 }
 
 // ── Gate 5: Duplicate phase numbers across folders ────
@@ -228,16 +220,13 @@ for (const folder of phaseFolders) {
 let dupeCount = 0;
 for (const [num, folders] of phaseToFolders) {
   if (folders.length > 1) {
-    warn(
-      "duplicate-phase",
-      `Phase ${num} has ${folders.length} folders: ${folders.join(", ")}`
-    );
+    warn('duplicate-phase', `Phase ${num} has ${folders.length} folders: ${folders.join(', ')}`);
     dupeCount++;
   }
 }
 
 if (dupeCount === 0) {
-  pass("duplicate-phase", "No duplicate phase numbers across folders");
+  pass('duplicate-phase', 'No duplicate phase numbers across folders');
 }
 
 // ── Gate 6: No nested numbered subdirectories in phase folders ───
@@ -252,7 +241,7 @@ for (const folder of phaseFolders) {
       const childPath = join(folderPath, child);
       if (statSync(childPath).isDirectory() && /^\d+/.test(child)) {
         fail(
-          "nested-phase",
+          'nested-phase',
           `"${folder}/${child}" is a nested numbered subdirectory -- phases must be top-level`
         );
         nestedCount++;
@@ -264,51 +253,52 @@ for (const folder of phaseFolders) {
 }
 
 if (nestedCount === 0) {
-  pass("nested-phase", "No nested numbered subdirectories in phase folders");
+  pass('nested-phase', 'No nested numbered subdirectories in phase folders');
 }
 
 // ── Gate 7: No shadow numbered directories (unscanned) ───
 
-const ALLOWED_NON_PHASE_DIRS = new Set(["00-ARCHIVE", "00-PLAYBOOKS"]);
+const ALLOWED_NON_PHASE_DIRS = new Set(['00-ARCHIVE', '00-PLAYBOOKS']);
 const allNumberedDirs = allEntries.filter(
   (e) =>
-    /^\d+/.test(e) &&
-    statSync(join(PROMPTS_DIR, e)).isDirectory() &&
-    !ALLOWED_NON_PHASE_DIRS.has(e)
+    /^\d+/.test(e) && statSync(join(PROMPTS_DIR, e)).isDirectory() && !ALLOWED_NON_PHASE_DIRS.has(e)
 );
 
 const shadowDirs = allNumberedDirs.filter((d) => !phaseFolders.includes(d));
 if (shadowDirs.length > 0) {
   for (const d of shadowDirs) {
     fail(
-      "shadow-folder",
+      'shadow-folder',
       `"${d}" is a numbered directory not matching phase folder convention -- rename to NNN-PHASE-NNN-SLUG`
     );
   }
 } else {
-  pass("shadow-folder", `No shadow numbered directories (${allNumberedDirs.length} dirs all recognized)`);
+  pass(
+    'shadow-folder',
+    `No shadow numbered directories (${allNumberedDirs.length} dirs all recognized)`
+  );
 }
 
 // ── Gate 8: NOTES.md presence (WARN only -- many legacy gaps) ──
 
 let missingNotes = 0;
 for (const folder of phaseFolders) {
-  if (folder === "00-ARCHIVE" || folder.startsWith("00-")) continue;
+  if (folder === '00-ARCHIVE' || folder.startsWith('00-')) continue;
   const folderPath = join(PROMPTS_DIR, folder);
   const files = readdirSync(folderPath);
-  if (!files.some((f) => f.includes("NOTES"))) {
+  if (!files.some((f) => f.includes('NOTES'))) {
     missingNotes++;
   }
 }
 if (missingNotes > 0) {
-  warn("notes-present", `${missingNotes} phase folders missing NOTES.md (legacy)`);
+  warn('notes-present', `${missingNotes} phase folders missing NOTES.md (legacy)`);
 } else {
-  pass("notes-present", "All phase folders have NOTES.md");
+  pass('notes-present', 'All phase folders have NOTES.md');
 }
 
 // ── Summary ──────────────────────────────────────────
 
-console.log("\n=== Summary ===");
+console.log('\n=== Summary ===');
 console.log(`  PASS: ${passed}`);
 console.log(`  WARN: ${warned}`);
 console.log(`  FAIL: ${failed}`);

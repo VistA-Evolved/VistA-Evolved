@@ -12,13 +12,13 @@ Authentication uses OAuth2 client_credentials flow.
 
 ## Prerequisites
 
-| Item | Environment Variable | Required |
-|------|---------------------|----------|
-| OAuth2 client ID | `ACC_NZ_CLIENT_ID` | Yes |
-| OAuth2 client secret | `ACC_NZ_CLIENT_SECRET` | Yes |
-| ACC provider ID | `ACC_NZ_PROVIDER_ID` | Yes |
-| API endpoint | `ACC_NZ_API_ENDPOINT` | No (defaults to api.acc.co.nz) |
-| Sandbox endpoint | `ACC_NZ_SANDBOX_ENDPOINT` | No (defaults to sandbox.api.acc.co.nz) |
+| Item                 | Environment Variable      | Required                               |
+| -------------------- | ------------------------- | -------------------------------------- |
+| OAuth2 client ID     | `ACC_NZ_CLIENT_ID`        | Yes                                    |
+| OAuth2 client secret | `ACC_NZ_CLIENT_SECRET`    | Yes                                    |
+| ACC provider ID      | `ACC_NZ_PROVIDER_ID`      | Yes                                    |
+| API endpoint         | `ACC_NZ_API_ENDPOINT`     | No (defaults to api.acc.co.nz)         |
+| Sandbox endpoint     | `ACC_NZ_SANDBOX_ENDPOINT` | No (defaults to sandbox.api.acc.co.nz) |
 
 ## Enrollment Steps
 
@@ -81,28 +81,29 @@ ACC enforces **50 requests/minute** per client. The connector implements:
 
 ACC uses **REST/JSON**, NOT X12. Logical mapping:
 
-| Logical | NZ Equivalent |
-|---------|--------------|
-| 837P | Injury claim lodgement |
-| 276 | Claim status enquiry |
-| 277 | Claim status response |
-| 835 | Payment advice / remittance |
+| Logical | NZ Equivalent               |
+| ------- | --------------------------- |
+| 837P    | Injury claim lodgement      |
+| 276     | Claim status enquiry        |
+| 277     | Claim status response       |
+| 835     | Payment advice / remittance |
 
 ## NHI Numbers
 
 Patients are identified by National Health Index (NHI) number:
+
 - Format: 3 letters + 4 digits (e.g., `ZAA1234`)
 - Never store in audit logs or analytics
 
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| OAuth2 token expired | Auto-refresh via client_credentials; check secret validity |
-| 429 rate limited | Backoff and retry; check request volume |
-| Invalid NHI | Verify format: 3 letters + 4 digits |
-| Duplicate claim | ACC returns existing claim reference |
-| Provider not registered | Verify provider ID with ACC portal |
+| Issue                   | Solution                                                   |
+| ----------------------- | ---------------------------------------------------------- |
+| OAuth2 token expired    | Auto-refresh via client_credentials; check secret validity |
+| 429 rate limited        | Backoff and retry; check request volume                    |
+| Invalid NHI             | Verify format: 3 letters + 4 digits                        |
+| Duplicate claim         | ACC returns existing claim reference                       |
+| Provider not registered | Verify provider ID with ACC portal                         |
 
 ## References
 

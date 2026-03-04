@@ -6,14 +6,10 @@ import { usePatient } from '@/stores/patient-context';
 import { useSession } from '@/stores/session-context';
 import styles from '@/components/cprs/cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
+import type { PatientSummary } from '@vista-evolved/shared-types';
 
-
-interface PatientSearchResult {
-  dfn: string;
-  name: string;
-  ssn?: string;
-  dob?: string;
-}
+/** Local alias for backward compat */
+type PatientSearchResult = PatientSummary;
 
 /**
  * CPRS Patient Search / Selection page.
@@ -42,7 +38,9 @@ export default function CPRSPatientSearchPage() {
     if (!authenticated) return;
     async function loadDefaults() {
       try {
-        const res = await fetch(`${API_BASE}/vista/default-patient-list`, { credentials: 'include' });
+        const res = await fetch(`${API_BASE}/vista/default-patient-list`, {
+          credentials: 'include',
+        });
         const data = await res.json();
         if (data.ok && Array.isArray(data.patients)) {
           setDefaultList(data.patients);
@@ -60,7 +58,10 @@ export default function CPRSPatientSearchPage() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`${API_BASE}/vista/patient-search?q=${encodeURIComponent(query.trim())}`, { credentials: 'include' });
+      const res = await fetch(
+        `${API_BASE}/vista/patient-search?q=${encodeURIComponent(query.trim())}`,
+        { credentials: 'include' }
+      );
       const data = await res.json();
       if (data.ok && Array.isArray(data.results)) {
         setResults(data.results);
@@ -90,20 +91,43 @@ export default function CPRSPatientSearchPage() {
   // Show loading while checking session, or redirect if not authenticated
   if (!ready || !authenticated) {
     return (
-      <div className={styles.shell} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+      <div
+        className={styles.shell}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+        }}
+      >
         <p style={{ color: 'var(--cprs-text-muted)' }}>Checking session...</p>
       </div>
     );
   }
 
   return (
-    <div className={styles.shell} style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div
+      className={styles.shell}
+      style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
+    >
       <div className={styles.menuBar}>
         <span style={{ fontWeight: 600, fontSize: 13 }}>EHR &mdash; Evolved</span>
-        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--cprs-text-muted)' }}>Patient Selection</span>
+        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--cprs-text-muted)' }}>
+          Patient Selection
+        </span>
       </div>
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: 16, maxWidth: 700, margin: '0 auto', width: '100%' }}>
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          padding: 16,
+          maxWidth: 700,
+          margin: '0 auto',
+          width: '100%',
+        }}
+      >
         <h2 style={{ fontSize: 16, margin: '0 0 12px' }}>Select a Patient</h2>
 
         <form onSubmit={handleSearch} style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
@@ -122,15 +146,35 @@ export default function CPRSPatientSearchPage() {
         </form>
 
         {error && (
-          <div style={{ padding: '6px 10px', background: '#f8d7da', border: '1px solid #dc3545', borderRadius: 4, color: '#721c24', fontSize: 12, marginBottom: 8 }}>
+          <div
+            style={{
+              padding: '6px 10px',
+              background: '#f8d7da',
+              border: '1px solid #dc3545',
+              borderRadius: 4,
+              color: '#721c24',
+              fontSize: 12,
+              marginBottom: 8,
+            }}
+          >
             {error}
           </div>
         )}
 
-        <div style={{ flex: 1, overflowY: 'auto', border: '1px solid var(--cprs-border)', borderRadius: 4, background: 'var(--cprs-bg)' }}>
+        <div
+          style={{
+            flex: 1,
+            overflowY: 'auto',
+            border: '1px solid var(--cprs-border)',
+            borderRadius: 4,
+            background: 'var(--cprs-bg)',
+          }}
+        >
           {displayList.length === 0 ? (
             <p className={styles.emptyText} style={{ padding: 20, textAlign: 'center' }}>
-              {results.length === 0 && defaultList.length === 0 ? 'Enter a name to search for patients.' : 'No results.'}
+              {results.length === 0 && defaultList.length === 0
+                ? 'Enter a name to search for patients.'
+                : 'No results.'}
             </p>
           ) : (
             <table className={styles.dataTable}>
@@ -147,7 +191,10 @@ export default function CPRSPatientSearchPage() {
                   <tr
                     key={p.dfn}
                     onClick={() => handleSelectPatient(p.dfn)}
-                    onDoubleClick={() => { handleSelectPatient(p.dfn); setTimeout(handleOpenChart, 50); }}
+                    onDoubleClick={() => {
+                      handleSelectPatient(p.dfn);
+                      setTimeout(handleOpenChart, 50);
+                    }}
                     style={selected === p.dfn ? { background: 'var(--cprs-selected)' } : undefined}
                   >
                     <td>{p.name}</td>
@@ -162,8 +209,14 @@ export default function CPRSPatientSearchPage() {
         </div>
 
         <div style={{ display: 'flex', gap: 8, marginTop: 12, justifyContent: 'flex-end' }}>
-          <button className={styles.btn} onClick={() => router.push('/cprs/login')}>Back</button>
-          <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={handleOpenChart} disabled={!selected}>
+          <button className={styles.btn} onClick={() => router.push('/cprs/login')}>
+            Back
+          </button>
+          <button
+            className={`${styles.btn} ${styles.btnPrimary}`}
+            onClick={handleOpenChart}
+            disabled={!selected}
+          >
             Open Chart
           </button>
         </div>

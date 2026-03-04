@@ -63,7 +63,7 @@ function sanitizeAttributes(attrs?: SafeAttributes): Record<string, string | num
 export async function withSpan<T>(
   name: string,
   attrs: SafeAttributes | undefined,
-  fn: () => Promise<T>,
+  fn: () => Promise<T>
 ): Promise<T> {
   if (!isTracingEnabled()) {
     return fn();
@@ -83,7 +83,10 @@ export async function withSpan<T>(
     span.setStatus({ code: SpanStatusCode.OK });
     return result;
   } catch (err) {
-    span.setStatus({ code: SpanStatusCode.ERROR, message: err instanceof Error ? err.message : 'unknown' });
+    span.setStatus({
+      code: SpanStatusCode.ERROR,
+      message: err instanceof Error ? err.message : 'unknown',
+    });
     span.recordException(err instanceof Error ? err : new Error(String(err)));
     throw err;
   } finally {
@@ -94,11 +97,7 @@ export async function withSpan<T>(
 /**
  * Synchronous version of withSpan.
  */
-export function withSpanSync<T>(
-  name: string,
-  attrs: SafeAttributes | undefined,
-  fn: () => T,
-): T {
+export function withSpanSync<T>(name: string, attrs: SafeAttributes | undefined, fn: () => T): T {
   if (!isTracingEnabled()) {
     return fn();
   }
@@ -117,7 +116,10 @@ export function withSpanSync<T>(
     span.setStatus({ code: SpanStatusCode.OK });
     return result;
   } catch (err) {
-    span.setStatus({ code: SpanStatusCode.ERROR, message: err instanceof Error ? err.message : 'unknown' });
+    span.setStatus({
+      code: SpanStatusCode.ERROR,
+      message: err instanceof Error ? err.message : 'unknown',
+    });
     span.recordException(err instanceof Error ? err : new Error(String(err)));
     throw err;
   } finally {

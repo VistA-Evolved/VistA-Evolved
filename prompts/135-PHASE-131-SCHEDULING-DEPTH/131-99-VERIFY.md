@@ -8,6 +8,7 @@ regression check. Fix all errors even if they do not pertain to this build.
 ## What Was Found
 
 ### Phase 131 (Scheduling SD Depth) -- All Endpoints Verified
+
 - GET /scheduling/health: ok=true, adapter=vista-rpc-sdoe-phase131
 - GET /scheduling/appointments/cprs?dfn=3: pending (circuit breaker open -- expected sandbox)
 - GET /scheduling/reference-data: ok=true, pending=true with VistA grounding metadata
@@ -16,6 +17,7 @@ regression check. Fix all errors even if they do not pertain to this build.
 - POST /scheduling/lifecycle/transition: state machine working (validates transitions, rejects invalid)
 
 ### Phase 132 (CSRF) -- Critical Regression Found
+
 The Phase 132 CSRF synchronizer token migration moved from double-submit cookie to
 session-bound synchronizer token. The backend correctly validates `x-csrf-token` on
 all POST/PUT/PATCH/DELETE mutations. However, **44 frontend files with ~138 mutation
@@ -48,9 +50,11 @@ Only 3 files had been updated: rcm/page.tsx, modules/page.tsx, contracting-hub/p
 ## Files Touched
 
 ### New
+
 - prompts/99-PHASE-131-132-VERIFY/131-99-VERIFY.md (this file)
 
 ### Modified (CSRF hardening)
+
 - apps/web/src/lib/csrf.ts (added csrfHeaders utility)
 - apps/web/src/stores/session-context.tsx (logout POST)
 - apps/web/src/stores/cprs-ui-state.tsx (PUT/DELETE prefs)

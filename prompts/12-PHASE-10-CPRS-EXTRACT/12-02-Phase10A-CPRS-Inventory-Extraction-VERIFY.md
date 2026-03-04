@@ -30,14 +30,15 @@ Test-Path design/contracts/cprs/v1/coverage_report.md
 
 ## Manual spot-checks
 
-| Check | Expected |
-|-------|----------|
-| tabs.json has 10 entries | Cover Sheet, Problems, Meds, Orders, Notes, Consults, Surgery, D/C Summ, Labs, Reports |
-| menus.json has 5 top-level menus | File, Edit, View, Tools, Help |
-| forms.json has 300+ forms | Each with caption and component list |
-| rpc_catalog.json has 900+ RPCs | Each with name, isContext, references array |
-| screen_registry.json has 80+ screens | Each with tab, sourceFiles, rpcs mapping |
-| coverage_report.md is non-empty | Summary of extraction stats |
+| Check                                | Expected                                                                               |
+| ------------------------------------ | -------------------------------------------------------------------------------------- |
+| tabs.json has 10 entries             | Cover Sheet, Problems, Meds, Orders, Notes, Consults, Surgery, D/C Summ, Labs, Reports |
+| menus.json has 5 top-level menus     | File, Edit, View, Tools, Help                                                          |
+| forms.json has 300+ forms            | Each with caption and component list                                                   |
+| rpc_catalog.json has 900+ RPCs       | Each with name, isContext, references array                                            |
+| screen_registry.json has 80+ screens | Each with tab, sourceFiles, rpcs mapping                                               |
+| coverage_report.md is non-empty      | Summary of extraction stats                                                            |
 
 ## Pass criteria
+
 All automated checks return `True` / exit 0. Manual spot-checks match expected values.

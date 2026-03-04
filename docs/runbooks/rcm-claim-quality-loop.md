@@ -14,6 +14,7 @@ Inbound:   999/277CA -> ack-status-processor -> claim lifecycle + workqueue
 ## Processing Flow
 
 ### 1. Ack Ingestion (999 / 277CA)
+
 POST `/rcm/acks/ingest`
 
 - Idempotency: Required `idempotencyKey` prevents duplicate processing
@@ -22,15 +23,17 @@ POST `/rcm/acks/ingest`
 - Each error in the ack creates a separate workqueue item with CARC lookup
 
 ### 2. Status Ingestion (276/277)
+
 POST `/rcm/status/ingest`
 
 - Category codes drive claim lifecycle transitions:
   - `F1` = Finalized with payment -> `paid`
   - `F2`/`D0` = Denial -> `denied` + denial workqueue item
-  - `P1`/`R0`/`R1` = Pending info -> missing\_info workqueue item
+  - `P1`/`R0`/`R1` = Pending info -> missing_info workqueue item
 - Status updates are stored with full history per claim
 
 ### 3. Remittance Processing (835)
+
 POST `/rcm/remittances/process`
 
 - Normalizes service lines with CARC/RARC code enrichment
@@ -39,12 +42,15 @@ POST `/rcm/remittances/process`
 - Auto-matches to claim by ID
 
 ### 4. Workqueues
+
 Three workqueue types:
+
 - **Rejections**: From 999/277CA errors. Usually syntax / format issues.
 - **Denials**: From 835 CARC codes or 277 denial categories. Clinical / coverage issues.
 - **Missing Info**: From 277 P1/R0/R1 categories. Payer needs more documentation.
 
 Each item includes:
+
 - Reason code + description (CARC/RARC enriched)
 - Recommended action (auto-generated from CARC reference tables)
 - Field to fix (e.g., `billingProviderNpi`, `subscriberId`)
@@ -53,10 +59,12 @@ Each item includes:
 - Assignment + resolution tracking
 
 ### 5. Payer Rules
+
 Configuration-driven pre-submission validation:
+
 - Global rules (payerId = `*`) apply to all claims
 - Per-payer rules override/extend globals
-- Categories: required\_field, code\_restriction, timely\_filing, prior\_auth, bundling, modifier, demographics, eligibility, custom
+- Categories: required_field, code_restriction, timely_filing, prior_auth, bundling, modifier, demographics, eligibility, custom
 - Seed rules loaded at startup (9 default rules)
 - Admin CRUD via API
 
@@ -64,32 +72,32 @@ POST `/rcm/rules/evaluate` runs all applicable rules against a claim.
 
 ## API Endpoints (Phase 43)
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | /rcm/acks/ingest | Ingest 999/277CA ack |
-| GET | /rcm/acks | List acks |
-| GET | /rcm/acks/:id | Get single ack |
-| GET | /rcm/acks/stats | Ack statistics |
-| POST | /rcm/status/ingest | Ingest 276/277 status |
-| GET | /rcm/status | List status updates |
-| GET | /rcm/status/stats | Status statistics |
-| GET | /rcm/claims/:id/history | Combined claim history (acks+status+remits+workqueue) |
-| POST | /rcm/remittances/process | Enhanced 835 processing with workqueue generation |
-| GET | /rcm/remittances/processor-stats | Remit processor stats |
-| GET | /rcm/workqueues | List workqueue items (filter by type/status/priority) |
-| GET | /rcm/workqueues/stats | Workqueue statistics |
-| GET | /rcm/workqueues/:id | Get single workqueue item |
-| PATCH | /rcm/workqueues/:id | Update workqueue item (status, assignment, resolution) |
-| GET | /rcm/claims/:id/workqueue | Workqueue items for a specific claim |
-| GET | /rcm/rules | List payer rules |
-| GET | /rcm/rules/stats | Rule statistics |
-| GET | /rcm/rules/:id | Get single rule |
-| POST | /rcm/rules | Create payer rule |
-| PATCH | /rcm/rules/:id | Update payer rule |
-| DELETE | /rcm/rules/:id | Delete payer rule |
-| POST | /rcm/rules/evaluate | Evaluate rules against claim |
-| GET | /rcm/reference/carc | CARC code lookup |
-| GET | /rcm/reference/rarc | RARC code lookup |
+| Method | Path                             | Description                                            |
+| ------ | -------------------------------- | ------------------------------------------------------ |
+| POST   | /rcm/acks/ingest                 | Ingest 999/277CA ack                                   |
+| GET    | /rcm/acks                        | List acks                                              |
+| GET    | /rcm/acks/:id                    | Get single ack                                         |
+| GET    | /rcm/acks/stats                  | Ack statistics                                         |
+| POST   | /rcm/status/ingest               | Ingest 276/277 status                                  |
+| GET    | /rcm/status                      | List status updates                                    |
+| GET    | /rcm/status/stats                | Status statistics                                      |
+| GET    | /rcm/claims/:id/history          | Combined claim history (acks+status+remits+workqueue)  |
+| POST   | /rcm/remittances/process         | Enhanced 835 processing with workqueue generation      |
+| GET    | /rcm/remittances/processor-stats | Remit processor stats                                  |
+| GET    | /rcm/workqueues                  | List workqueue items (filter by type/status/priority)  |
+| GET    | /rcm/workqueues/stats            | Workqueue statistics                                   |
+| GET    | /rcm/workqueues/:id              | Get single workqueue item                              |
+| PATCH  | /rcm/workqueues/:id              | Update workqueue item (status, assignment, resolution) |
+| GET    | /rcm/claims/:id/workqueue        | Workqueue items for a specific claim                   |
+| GET    | /rcm/rules                       | List payer rules                                       |
+| GET    | /rcm/rules/stats                 | Rule statistics                                        |
+| GET    | /rcm/rules/:id                   | Get single rule                                        |
+| POST   | /rcm/rules                       | Create payer rule                                      |
+| PATCH  | /rcm/rules/:id                   | Update payer rule                                      |
+| DELETE | /rcm/rules/:id                   | Delete payer rule                                      |
+| POST   | /rcm/rules/evaluate              | Evaluate rules against claim                           |
+| GET    | /rcm/reference/carc              | CARC code lookup                                       |
+| GET    | /rcm/reference/rarc              | RARC code lookup                                       |
 
 ## Testing
 
@@ -127,6 +135,7 @@ curl http://localhost:3001/rcm/reference/carc?code=45
 ## CARC/RARC Reference
 
 The system includes 30+ common CARC codes and 15 RARC codes with:
+
 - Description
 - Category (denial/adjustment/info)
 - Recommended action

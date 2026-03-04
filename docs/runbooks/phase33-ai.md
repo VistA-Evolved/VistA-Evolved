@@ -5,6 +5,7 @@
 ## Overview
 
 Phase 33 adds an AI Gateway to VistA-Evolved with:
+
 - Pluggable model registry (stub provider for dev)
 - Versioned prompt templates with SHA-256 hashes
 - Safety layer blocking diagnosis/treatment/prescribing/ordering
@@ -23,28 +24,29 @@ Phase 33 adds an AI Gateway to VistA-Evolved with:
 
 ### Clinician Endpoints (session auth required)
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/ai/request` | Submit an AI request (intake-summary, lab-education, etc.) |
-| POST | `/ai/confirm/:id` | Confirm or reject an AI output |
-| GET | `/ai/models` | List registered models |
-| GET | `/ai/prompts` | List prompt templates |
-| GET | `/ai/audit` | Query audit log (admin only) |
-| GET | `/ai/audit/stats` | Audit statistics (admin only) |
-| GET | `/ai/policy` | Get facility AI policy |
-| PUT | `/ai/policy` | Update facility AI policy (admin only) |
-| GET | `/ai/health` | AI subsystem health check |
+| Method | Path              | Description                                                |
+| ------ | ----------------- | ---------------------------------------------------------- |
+| POST   | `/ai/request`     | Submit an AI request (intake-summary, lab-education, etc.) |
+| POST   | `/ai/confirm/:id` | Confirm or reject an AI output                             |
+| GET    | `/ai/models`      | List registered models                                     |
+| GET    | `/ai/prompts`     | List prompt templates                                      |
+| GET    | `/ai/audit`       | Query audit log (admin only)                               |
+| GET    | `/ai/audit/stats` | Audit statistics (admin only)                              |
+| GET    | `/ai/policy`      | Get facility AI policy                                     |
+| PUT    | `/ai/policy`      | Update facility AI policy (admin only)                     |
+| GET    | `/ai/health`      | AI subsystem health check                                  |
 
 ### Portal Endpoints (portal session required)
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/ai/portal/education` | Lab education for patients |
-| POST | `/ai/portal/search` | Portal navigation assistant |
+| Method | Path                   | Description                 |
+| ------ | ---------------------- | --------------------------- |
+| POST   | `/ai/portal/education` | Lab education for patients  |
+| POST   | `/ai/portal/search`    | Portal navigation assistant |
 
 ## Request Examples
 
 ### Intake Summary
+
 ```bash
 curl -X POST http://127.0.0.1:3001/ai/request \
   -H "Content-Type: application/json" \
@@ -58,6 +60,7 @@ curl -X POST http://127.0.0.1:3001/ai/request \
 ```
 
 ### Lab Education (Portal)
+
 ```bash
 curl -X POST http://127.0.0.1:3001/ai/portal/education \
   -H "Content-Type: application/json" \
@@ -66,6 +69,7 @@ curl -X POST http://127.0.0.1:3001/ai/portal/education \
 ```
 
 ### Portal Search
+
 ```bash
 curl -X POST http://127.0.0.1:3001/ai/portal/search \
   -H "Content-Type: application/json" \
@@ -74,6 +78,7 @@ curl -X POST http://127.0.0.1:3001/ai/portal/search \
 ```
 
 ### Confirm/Reject AI Output
+
 ```bash
 curl -X POST http://127.0.0.1:3001/ai/confirm/abc123 \
   -H "Content-Type: application/json" \
@@ -82,6 +87,7 @@ curl -X POST http://127.0.0.1:3001/ai/confirm/abc123 \
 ```
 
 ### Facility Policy Update (Admin)
+
 ```bash
 curl -X PUT http://127.0.0.1:3001/ai/policy \
   -H "Content-Type: application/json" \
@@ -92,6 +98,7 @@ curl -X PUT http://127.0.0.1:3001/ai/policy \
 ## Files Changed
 
 ### New Files — API AI Gateway
+
 - `apps/api/src/ai/types.ts` — Core type system
 - `apps/api/src/ai/model-registry.ts` — Model registry
 - `apps/api/src/ai/prompt-registry.ts` — Prompt template registry
@@ -105,17 +112,21 @@ curl -X PUT http://127.0.0.1:3001/ai/policy \
 - `apps/api/src/routes/ai-gateway.ts` — REST endpoints
 
 ### New Files — CPRS
+
 - `apps/web/src/components/cprs/panels/AIAssistPanel.tsx` — AI Assist tab
 
 ### New Files — Portal
+
 - `apps/portal/src/app/dashboard/ai-help/page.tsx` — Patient AI help page
 
 ### New Files — Docs
+
 - `docs/ai/ai-governance.md` — Governance framework
 - `docs/ai/ai-risk-controls.md` — Risk controls
 - `docs/runbooks/phase33-ai.md` — This runbook
 
 ### Modified Files
+
 - `apps/api/src/index.ts` — Added AI gateway route registration
 - `apps/web/src/components/cprs/panels/index.ts` — Added AIAssistPanel export
 - `apps/web/src/components/cprs/CPRSTabStrip.tsx` — Added aiassist module
@@ -129,6 +140,7 @@ curl -X PUT http://127.0.0.1:3001/ai/policy \
 No new environment variables required. The stub provider runs without configuration.
 
 Future model providers may require:
+
 - `AI_PROVIDER` — Provider name (default: `"stub"`)
 - `AI_MODEL_ENDPOINT` — External model API endpoint
 - `AI_MODEL_API_KEY` — API key for external model
@@ -136,6 +148,7 @@ Future model providers may require:
 ## Testing
 
 ### Quick Smoke Test
+
 ```bash
 # Health check
 curl http://127.0.0.1:3001/ai/health
@@ -148,7 +161,9 @@ curl http://127.0.0.1:3001/ai/prompts -b "session=<cookie>"
 ```
 
 ### Safety Layer Test
+
 The safety layer should block requests containing diagnosis/treatment language:
+
 ```bash
 # This should be blocked
 curl -X POST http://127.0.0.1:3001/ai/request \

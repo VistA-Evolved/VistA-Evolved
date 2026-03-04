@@ -17,14 +17,24 @@ import { describe, it, expect, beforeEach } from 'vitest';
 
 // Importers
 import {
-  runAllImporters, runImportersByCountry, listImporters, getImporter,
+  runAllImporters,
+  runImportersByCountry,
+  listImporters,
+  getImporter,
 } from '../src/rcm/payerDirectory/importers/index.js';
 
 // Normalization
 import {
-  normalizeImportResults, computeDiff, runDirectoryRefresh,
-  getDirectoryPayer, listDirectoryPayers, getDirectoryStats, getRefreshHistory,
-  getEnrollmentPacket, upsertEnrollmentPacket, listEnrollmentPackets,
+  normalizeImportResults,
+  computeDiff,
+  runDirectoryRefresh,
+  getDirectoryPayer,
+  listDirectoryPayers,
+  getDirectoryStats,
+  getRefreshHistory,
+  getEnrollmentPacket,
+  upsertEnrollmentPacket,
+  listEnrollmentPackets,
   resetDirectoryStore,
 } from '../src/rcm/payerDirectory/normalization.js';
 
@@ -32,7 +42,11 @@ import {
 import { resolveRoute, isRouteNotFound } from '../src/rcm/payerDirectory/routing.js';
 
 // Types
-import type { DirectoryPayer, ImportResult, EnrollmentPacket } from '../src/rcm/payerDirectory/types.js';
+import type {
+  DirectoryPayer,
+  ImportResult,
+  EnrollmentPacket,
+} from '../src/rcm/payerDirectory/types.js';
 
 // Payer registry (needed for routing fallback)
 import { initPayerRegistry } from '../src/rcm/payer-registry/registry.js';
@@ -89,26 +103,26 @@ describe('Payer Directory Importers', () => {
 
   it('PH importer includes PhilHealth national payer', () => {
     const results = runImportersByCountry('PH');
-    const allPayers = results.flatMap(r => r.payers);
-    const philhealth = allPayers.find(p => p.payerId === 'PH-PHILHEALTH');
+    const allPayers = results.flatMap((r) => r.payers);
+    const philhealth = allPayers.find((p) => p.payerId === 'PH-PHILHEALTH');
     expect(philhealth).toBeDefined();
     expect(philhealth!.payerType).toBe('NATIONAL');
   });
 
   it('AU importer includes Medicare AU', () => {
     const results = runImportersByCountry('AU');
-    const allPayers = results.flatMap(r => r.payers);
-    const medicare = allPayers.find(p => p.payerId === 'AU-MEDICARE');
+    const allPayers = results.flatMap((r) => r.payers);
+    const medicare = allPayers.find((p) => p.payerId === 'AU-MEDICARE');
     expect(medicare).toBeDefined();
     expect(medicare!.payerType).toBe('NATIONAL');
   });
 
   it('US importer includes federal payers', () => {
     const results = runImportersByCountry('US');
-    const allPayers = results.flatMap(r => r.payers);
-    expect(allPayers.find(p => p.payerId === 'US-MEDICARE-A')).toBeDefined();
-    expect(allPayers.find(p => p.payerId === 'US-MEDICARE-B')).toBeDefined();
-    expect(allPayers.find(p => p.payerId === 'US-MEDICAID')).toBeDefined();
+    const allPayers = results.flatMap((r) => r.payers);
+    expect(allPayers.find((p) => p.payerId === 'US-MEDICARE-A')).toBeDefined();
+    expect(allPayers.find((p) => p.payerId === 'US-MEDICARE-B')).toBeDefined();
+    expect(allPayers.find((p) => p.payerId === 'US-MEDICAID')).toBeDefined();
   });
 });
 
@@ -125,8 +139,36 @@ describe('Normalization Pipeline', () => {
         importedAt: now,
         source,
         payers: [
-          { payerId: 'TEST-1', displayName: 'Test One', country: 'US', payerType: 'PRIVATE', channels: [], supportedTransactions: [], payerIdsByNetwork: {}, integrationMode: 'not_classified', status: 'active', goLiveChecklist: [], contacts: [], createdAt: now, updatedAt: now },
-          { payerId: 'TEST-2', displayName: 'Test Two', country: 'US', payerType: 'PRIVATE', channels: [], supportedTransactions: [], payerIdsByNetwork: {}, integrationMode: 'not_classified', status: 'active', goLiveChecklist: [], contacts: [], createdAt: now, updatedAt: now },
+          {
+            payerId: 'TEST-1',
+            displayName: 'Test One',
+            country: 'US',
+            payerType: 'PRIVATE',
+            channels: [],
+            supportedTransactions: [],
+            payerIdsByNetwork: {},
+            integrationMode: 'not_classified',
+            status: 'active',
+            goLiveChecklist: [],
+            contacts: [],
+            createdAt: now,
+            updatedAt: now,
+          },
+          {
+            payerId: 'TEST-2',
+            displayName: 'Test Two',
+            country: 'US',
+            payerType: 'PRIVATE',
+            channels: [],
+            supportedTransactions: [],
+            payerIdsByNetwork: {},
+            integrationMode: 'not_classified',
+            status: 'active',
+            goLiveChecklist: [],
+            contacts: [],
+            createdAt: now,
+            updatedAt: now,
+          },
         ] as DirectoryPayer[],
         errors: [],
       },
@@ -136,7 +178,21 @@ describe('Normalization Pipeline', () => {
         importedAt: now,
         source,
         payers: [
-          { payerId: 'TEST-1', displayName: 'Test One Updated', country: 'US', payerType: 'PRIVATE', channels: [{ type: 'EDI_CLEARINGHOUSE', connectorId: 'clearinghouse' }], supportedTransactions: [], payerIdsByNetwork: {}, integrationMode: 'not_classified', status: 'active', goLiveChecklist: [], contacts: [], createdAt: now, updatedAt: now },
+          {
+            payerId: 'TEST-1',
+            displayName: 'Test One Updated',
+            country: 'US',
+            payerType: 'PRIVATE',
+            channels: [{ type: 'EDI_CLEARINGHOUSE', connectorId: 'clearinghouse' }],
+            supportedTransactions: [],
+            payerIdsByNetwork: {},
+            integrationMode: 'not_classified',
+            status: 'active',
+            goLiveChecklist: [],
+            contacts: [],
+            createdAt: now,
+            updatedAt: now,
+          },
         ] as DirectoryPayer[],
         errors: [],
       },
@@ -144,7 +200,7 @@ describe('Normalization Pipeline', () => {
 
     const normalized = normalizeImportResults(results);
     expect(normalized.length).toBe(2);
-    const test1 = normalized.find(p => p.payerId === 'TEST-1');
+    const test1 = normalized.find((p) => p.payerId === 'TEST-1');
     expect(test1).toBeDefined();
     // Should have merged channels
     expect(test1!.channels.length).toBeGreaterThanOrEqual(1);
@@ -153,7 +209,21 @@ describe('Normalization Pipeline', () => {
   it('computeDiff detects added payers', () => {
     const now = new Date().toISOString();
     const newPayers: DirectoryPayer[] = [
-      { payerId: 'NEW-1', displayName: 'New Payer', country: 'US', payerType: 'PRIVATE', channels: [], supportedTransactions: [], payerIdsByNetwork: {}, integrationMode: 'not_classified', status: 'active', goLiveChecklist: [], contacts: [], createdAt: now, updatedAt: now } as DirectoryPayer,
+      {
+        payerId: 'NEW-1',
+        displayName: 'New Payer',
+        country: 'US',
+        payerType: 'PRIVATE',
+        channels: [],
+        supportedTransactions: [],
+        payerIdsByNetwork: {},
+        integrationMode: 'not_classified',
+        status: 'active',
+        goLiveChecklist: [],
+        contacts: [],
+        createdAt: now,
+        updatedAt: now,
+      } as DirectoryPayer,
     ];
     const diff = computeDiff('test-importer', newPayers);
     expect(diff.added.length).toBe(1);
@@ -166,9 +236,25 @@ describe('Normalization Pipeline', () => {
     const source = { authority: 'test', documentTitle: 'test' };
     // First populate the directory
     const initial: DirectoryPayer[] = [
-      { payerId: 'OLD-1', displayName: 'Old Payer', country: 'US', payerType: 'PRIVATE', channels: [], supportedTransactions: [], payerIdsByNetwork: {}, integrationMode: 'not_classified', status: 'active', goLiveChecklist: [], contacts: [], createdAt: now, updatedAt: now } as DirectoryPayer,
+      {
+        payerId: 'OLD-1',
+        displayName: 'Old Payer',
+        country: 'US',
+        payerType: 'PRIVATE',
+        channels: [],
+        supportedTransactions: [],
+        payerIdsByNetwork: {},
+        integrationMode: 'not_classified',
+        status: 'active',
+        goLiveChecklist: [],
+        contacts: [],
+        createdAt: now,
+        updatedAt: now,
+      } as DirectoryPayer,
     ];
-    const results1: ImportResult[] = [{ importerId: 'test', country: 'US', importedAt: now, source, payers: initial, errors: [] }];
+    const results1: ImportResult[] = [
+      { importerId: 'test', country: 'US', importedAt: now, source, payers: initial, errors: [] },
+    ];
     runDirectoryRefresh(results1, 'system');
 
     // Now compute diff with empty set
@@ -271,14 +357,26 @@ describe('Enrollment Packets', () => {
   it('lists enrollment packets with filters', () => {
     const now = new Date().toISOString();
     upsertEnrollmentPacket({
-      payerId: 'LIVE-1', orgIdentifiers: { npi: '111' },
-      certRequirements: [], goLiveChecklist: [], contacts: [], testingSteps: [],
-      enrollmentStatus: 'LIVE', createdAt: now, updatedAt: now,
+      payerId: 'LIVE-1',
+      orgIdentifiers: { npi: '111' },
+      certRequirements: [],
+      goLiveChecklist: [],
+      contacts: [],
+      testingSteps: [],
+      enrollmentStatus: 'LIVE',
+      createdAt: now,
+      updatedAt: now,
     });
     upsertEnrollmentPacket({
-      payerId: 'TEST-1', orgIdentifiers: { npi: '222' },
-      certRequirements: [], goLiveChecklist: [], contacts: [], testingSteps: [],
-      enrollmentStatus: 'TESTING', createdAt: now, updatedAt: now,
+      payerId: 'TEST-1',
+      orgIdentifiers: { npi: '222' },
+      certRequirements: [],
+      goLiveChecklist: [],
+      contacts: [],
+      testingSteps: [],
+      enrollmentStatus: 'TESTING',
+      createdAt: now,
+      updatedAt: now,
     });
 
     const all = listEnrollmentPackets();

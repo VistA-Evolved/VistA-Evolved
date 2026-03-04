@@ -16,12 +16,12 @@ claims through the PhilHealth eClaims system.
 
 ## PhilHealth Claim Forms
 
-| Form | Purpose | Mapping |
-|------|---------|---------|
-| CF1 | Member/patient data | `Claim.subscriber` fields |
-| CF2 | Diagnosis + procedures | `Claim.diagnosisCodes` + `serviceLines` |
-| CF3 | Hospital charges (institutional) | `Claim.serviceLines` with revenue codes |
-| CF4 | Professional fees | Rendering provider fee lines |
+| Form | Purpose                          | Mapping                                 |
+| ---- | -------------------------------- | --------------------------------------- |
+| CF1  | Member/patient data              | `Claim.subscriber` fields               |
+| CF2  | Diagnosis + procedures           | `Claim.diagnosisCodes` + `serviceLines` |
+| CF3  | Hospital charges (institutional) | `Claim.serviceLines` with revenue codes |
+| CF4  | Professional fees                | Rendering provider fee lines            |
 
 ## Integration Architecture
 
@@ -53,36 +53,36 @@ PHILHEALTH_TEST_MODE=true
 The Philippines payer seed (`data/payers/ph_hmos.json`) includes 28 payers:
 PhilHealth (1 government) + all 27 Insurance Commission-licensed HMOs.
 
-| Payer ID | Name | Mode |
-|----------|------|------|
-| PH-PHIC | PhilHealth | `government_portal` |
-| PH-ASIANLIFE | AsianLife General | `portal_batch` |
-| PH-AVEGA | Avega Managed Care | `portal_batch` |
-| PH-CAREHEALTH | CareHealth Plus | `portal_batch` |
-| PH-CAREWELL | Carewell Health | `portal_batch` |
-| PH-CARITAS | Caritas Health Shield | `portal_batch` |
-| PH-COCOLIFE | Cocolife Health Care | `portal_batch` |
-| PH-EASTWEST | EastWest Healthcare | `portal_batch` |
-| PH-FORTICARE | Forticare Health | `portal_batch` |
-| PH-HEALTHMAINT | Health Maintenance | `portal_batch` |
-| PH-HEALTHPLAN | Health Plan Philippines | `portal_batch` |
-| PH-HEALTHFIRST | HealthFirst Healthcare | `portal_batch` |
-| PH-ICARE | i-Care Health | `portal_batch` |
-| PH-INSULAR | Insular Health Care | `portal_batch` |
-| PH-INTELLICARE | Intellicare Asia | `portal_batch` |
-| PH-KAISER-INTL | Kaiser International | `portal_batch` |
-| PH-LIFEHEALTH | Life and Health HMP | `portal_batch` |
-| PH-MAXICARE | MaxiCare Healthcare | `portal_batch` |
-| PH-MEDICARD | MediCard Philippines | `portal_batch` |
-| PH-MEDILINK | MediLink Network | `portal_batch` |
-| PH-METROCARE | Metrocare Health | `portal_batch` |
-| PH-PACIFIC-CROSS | Pacific Cross | `portal_batch` |
-| PH-PHILCARE | PhilCare | `portal_batch` |
-| PH-PHILBRITISH | Philippine British | `portal_batch` |
-| PH-PHCP | PH Health Care Providers | `portal_batch` |
-| PH-PHP | Philippine Health Plan | `portal_batch` |
-| PH-STARCARE | Starcare Health | `portal_batch` |
-| PH-VALUCARE | ValuCare | `portal_batch` |
+| Payer ID         | Name                     | Mode                |
+| ---------------- | ------------------------ | ------------------- |
+| PH-PHIC          | PhilHealth               | `government_portal` |
+| PH-ASIANLIFE     | AsianLife General        | `portal_batch`      |
+| PH-AVEGA         | Avega Managed Care       | `portal_batch`      |
+| PH-CAREHEALTH    | CareHealth Plus          | `portal_batch`      |
+| PH-CAREWELL      | Carewell Health          | `portal_batch`      |
+| PH-CARITAS       | Caritas Health Shield    | `portal_batch`      |
+| PH-COCOLIFE      | Cocolife Health Care     | `portal_batch`      |
+| PH-EASTWEST      | EastWest Healthcare      | `portal_batch`      |
+| PH-FORTICARE     | Forticare Health         | `portal_batch`      |
+| PH-HEALTHMAINT   | Health Maintenance       | `portal_batch`      |
+| PH-HEALTHPLAN    | Health Plan Philippines  | `portal_batch`      |
+| PH-HEALTHFIRST   | HealthFirst Healthcare   | `portal_batch`      |
+| PH-ICARE         | i-Care Health            | `portal_batch`      |
+| PH-INSULAR       | Insular Health Care      | `portal_batch`      |
+| PH-INTELLICARE   | Intellicare Asia         | `portal_batch`      |
+| PH-KAISER-INTL   | Kaiser International     | `portal_batch`      |
+| PH-LIFEHEALTH    | Life and Health HMP      | `portal_batch`      |
+| PH-MAXICARE      | MaxiCare Healthcare      | `portal_batch`      |
+| PH-MEDICARD      | MediCard Philippines     | `portal_batch`      |
+| PH-MEDILINK      | MediLink Network         | `portal_batch`      |
+| PH-METROCARE     | Metrocare Health         | `portal_batch`      |
+| PH-PACIFIC-CROSS | Pacific Cross            | `portal_batch`      |
+| PH-PHILCARE      | PhilCare                 | `portal_batch`      |
+| PH-PHILBRITISH   | Philippine British       | `portal_batch`      |
+| PH-PHCP          | PH Health Care Providers | `portal_batch`      |
+| PH-PHP           | Philippine Health Plan   | `portal_batch`      |
+| PH-STARCARE      | Starcare Health          | `portal_batch`      |
+| PH-VALUCARE      | ValuCare                 | `portal_batch`      |
 
 ## PhilHealth-Specific Workflow
 
@@ -96,6 +96,7 @@ PhilHealth (1 government) + all 27 Insurance Commission-licensed HMOs.
 ## HMO Claims (Non-PhilHealth)
 
 Philippine HMOs use `portal_batch` Integration mode. Claims are:
+
 1. Generated in batch format (CSV/XML per HMO spec)
 2. Queued in the Portal/Batch Connector
 3. Uploaded manually or via RPA to each HMO's provider portal

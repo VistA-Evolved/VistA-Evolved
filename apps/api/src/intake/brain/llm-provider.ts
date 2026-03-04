@@ -20,15 +20,15 @@ import type {
   BrainNextQuestionResult,
   BrainSubmitResult,
   BrainSummaryResult,
-} from "./types.js";
+} from './types.js';
 import type {
   IntakeSession,
   QuestionnaireResponse,
   IntakeContext,
   QuestionnaireItem,
-} from "../types.js";
-import { RulesEngineBrain } from "./rules-engine.js";
-import { log } from "../../lib/logger.js";
+} from '../types.js';
+import { RulesEngineBrain } from './rules-engine.js';
+import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* LLM Provider Brain                                                   */
@@ -37,25 +37,22 @@ import { log } from "../../lib/logger.js";
 export class LlmBrainPlugin implements IntakeBrainPlugin {
   readonly id: string;
   readonly name: string;
-  readonly family = "llm_provider" as const;
+  readonly family = 'llm_provider' as const;
 
   private fallback = new RulesEngineBrain();
   private variant: string;
 
-  constructor(variant: string = "default") {
+  constructor(variant: string = 'default') {
     this.variant = variant;
     this.id = `llm_provider:${variant}`;
     this.name = `LLM Provider (${variant})`;
   }
 
   private isEnabled(): boolean {
-    return process.env.INTAKE_LLM_ENABLED === "true";
+    return process.env.INTAKE_LLM_ENABLED === 'true';
   }
 
-  async startSession(
-    session: IntakeSession,
-    context: IntakeContext
-  ): Promise<BrainSessionState> {
+  async startSession(session: IntakeSession, context: IntakeContext): Promise<BrainSessionState> {
     const base = await this.fallback.startSession(session, context);
     return {
       ...base,
@@ -81,9 +78,7 @@ export class LlmBrainPlugin implements IntakeBrainPlugin {
 
     try {
       // Step 1: Get eligible questions from rules engine (the pool)
-      const rulesResult = await this.fallback.nextQuestion(
-        session, qrSoFar, context, brainState
-      );
+      const rulesResult = await this.fallback.nextQuestion(session, qrSoFar, context, brainState);
 
       if (rulesResult.isComplete || rulesResult.nextItems.length === 0) {
         return { ...rulesResult, usedLlm: false };
@@ -107,12 +102,14 @@ export class LlmBrainPlugin implements IntakeBrainPlugin {
       //   4. Reorder nextItems per LLM ranking
       //   5. Log everything to audit
 
-      log.info(`LLM brain: would rank ${rulesResult.nextItems.length} items for session ${session.id}`);
+      log.info(
+        `LLM brain: would rank ${rulesResult.nextItems.length} items for session ${session.id}`
+      );
 
       return {
         ...rulesResult,
         usedLlm: false, // Will be true when wired to AI Gateway
-        reasoningTrace: "LLM ranking pending integration -- using rules order",
+        reasoningTrace: 'LLM ranking pending integration -- using rules order',
         brainState: {
           ...brainState,
           turnsCompleted: brainState.turnsCompleted + 1,
@@ -143,7 +140,11 @@ export class LlmBrainPlugin implements IntakeBrainPlugin {
     try {
       // Rules engine handles red flag detection + enableWhen evaluation
       const rulesResult = await this.fallback.submitAnswer(
-        session, qrSoFar, answeredItems, context, brainState
+        session,
+        qrSoFar,
+        answeredItems,
+        context,
+        brainState
       );
 
       // LLM could add dynamic follow-up question suggestions here
@@ -169,9 +170,7 @@ export class LlmBrainPlugin implements IntakeBrainPlugin {
 
     try {
       // Step 1: Get template summary as baseline
-      const templateResult = await this.fallback.finalizeSummary(
-        session, qr, context, brainState
-      );
+      const templateResult = await this.fallback.finalizeSummary(session, qr, context, brainState);
 
       // Step 2: In production, ask LLM to enhance the narrative
       // using AI Gateway governed pipeline:
@@ -189,7 +188,7 @@ export class LlmBrainPlugin implements IntakeBrainPlugin {
         ...templateResult,
         governance: {
           ...templateResult.governance,
-          promptVersion: "llm-intake-v1-pending",
+          promptVersion: 'llm-intake-v1-pending',
           groundedInAnswers: true,
           containsDiagnosis: false,
           containsTreatment: false,
@@ -207,11 +206,11 @@ export class LlmBrainPlugin implements IntakeBrainPlugin {
     return {
       providerId: this.id,
       family: this.family,
-      status: enabled ? "degraded" : "unavailable",
+      status: enabled ? 'degraded' : 'unavailable',
       lastCheckAt: new Date().toISOString(),
       detail: enabled
-        ? "LLM integration scaffolded -- AI Gateway bridge pending"
-        : "INTAKE_LLM_ENABLED not set to true",
+        ? 'LLM integration scaffolded -- AI Gateway bridge pending'
+        : 'INTAKE_LLM_ENABLED not set to true',
     };
   }
 
@@ -221,7 +220,7 @@ export class LlmBrainPlugin implements IntakeBrainPlugin {
       summaryGeneration: true,
       complaintExpansion: true,
       followUpBranching: true,
-      supportedLanguages: ["en", "fil", "es"],
+      supportedLanguages: ['en', 'fil', 'es'],
       maxSessionDurationMs: 24 * 60 * 60 * 1000,
     };
   }

@@ -5,4 +5,4 @@ tenantSlug: demo
 api:
   env:
     - name: TENANT_DISPLAY_NAME
-      value: "Demo Staging"
+      value: 'Demo Staging'

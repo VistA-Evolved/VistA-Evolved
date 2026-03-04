@@ -3,6 +3,7 @@
 ## What Changed
 
 ### Portal Document Center (5 endpoints)
+
 - `GET /portal/documents` — Lists 5 document types (health_summary, immunization_record, medication_list, allergy_list, lab_results)
 - `POST /portal/documents/generate` — Generates signed HMAC-SHA256 token (5-min TTL, single-use) for document download
 - `GET /portal/documents/download/:token` — Downloads VistA-sourced document via signed token
@@ -10,20 +11,24 @@
 - `POST /portal/consents` — Updates consent status (granted/revoked) with PG persistence
 
 ### Data Model
+
 - **PG migration v17**: `patient_consent` + `patient_portal_pref` tables
 - **RLS**: Both tables added to `applyRlsPolicies()` tenant tables (now 46)
 - **pg-consent-repo.ts**: CRUD repo for consents + portal preferences (Drizzle ORM)
 
 ### Audit
+
 - **immutable-audit.ts**: +5 actions (`portal.document.list`, `portal.document.generate`, `portal.document.download`, `portal.consent.view`, `portal.consent.update`)
 
 ### Portal UI
+
 - **documents/page.tsx**: Document center with generate/download workflow, DataSourceBadge, card layout
 - **consents/page.tsx**: Consent management with grant/revoke, status badges, required indicators
 - **portal-nav.tsx**: +3 nav items (Immunizations 💉, Documents 📑, Consents ✅)
 - **i18n**: 3 new nav keys in en.json, fil.json, es.json
 
 ### Security
+
 - Signed tokens: HMAC-SHA256 with random 32-byte secret, 5-min TTL, single-use, in-memory store with 60s cleanup
 - Session-authenticated endpoints via `requirePortalSession()`
 - Consent writes audited via `immutableAudit()`
@@ -65,12 +70,14 @@ curl -X POST http://localhost:3001/portal/consents \
 - **Builds**: Clean (24 static pages including new documents + consents)
 
 ## Follow-ups
+
 - Health card with QR code (optional, deferred)
 - Consent-gated route middleware (future phase)
 - VistA consent integration when consent RPCs available
   -d '{"patientDfn":"3","clinicName":"Primary Care"}'
 
 curl http://localhost:3001/scheduling/clinic/44/preferences -b cookies.txt
+
 ```
 
 ## Follow-ups
@@ -78,3 +85,4 @@ curl http://localhost:3001/scheduling/clinic/44/preferences -b cookies.txt
 - Migrate in-memory request store to full PG-backed request queue
 - Add scheduling notification hooks (email/SMS on approve/reject)
 - Clinic preferences: operating hours builder UI
+```

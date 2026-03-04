@@ -13,10 +13,10 @@
  *   postgresql://ve_api:password@127.0.0.1:5433/ve_platform
  */
 
-import { drizzle } from "drizzle-orm/node-postgres";
-import pg from "pg";
-import { readFileSync } from "node:fs";
-import * as schema from "./pg-schema.js";
+import { drizzle } from 'drizzle-orm/node-postgres';
+import pg from 'pg';
+import { readFileSync } from 'node:fs';
+import * as schema from './pg-schema.js';
 
 const { Pool } = pg;
 
@@ -40,14 +40,14 @@ function resolvePgConnectionString(): string | undefined {
   if (process.env.PLATFORM_PG_URL) return process.env.PLATFORM_PG_URL;
   const host = process.env.PLATFORM_PG_HOST;
   if (!host) return undefined;
-  const port = process.env.PLATFORM_PG_PORT ?? "5432";
-  const user = process.env.PLATFORM_PG_USER ?? "ve_api";
-  const password = process.env.PLATFORM_PG_PASSWORD ?? "";
-  const db = process.env.PLATFORM_PG_DB ?? "ve_platform";
+  const port = process.env.PLATFORM_PG_PORT ?? '5432';
+  const user = process.env.PLATFORM_PG_USER ?? 've_api';
+  const password = process.env.PLATFORM_PG_PASSWORD ?? '';
+  const db = process.env.PLATFORM_PG_DB ?? 've_platform';
   // Build connection URL from components — split to avoid secret-scan false positive
-  const scheme = "postgre" + "s://";
-  const auth = encodeURIComponent(user) + ":" + encodeURIComponent(password);
-  return scheme + auth + "@" + host + ":" + port + "/" + db;
+  const scheme = 'postgre' + 's://';
+  const auth = encodeURIComponent(user) + ':' + encodeURIComponent(password);
+  return scheme + auth + '@' + host + ':' + port + '/' + db;
 }
 
 /**
@@ -60,9 +60,9 @@ export function getPgDb(): PgDb {
   const connectionString = resolvePgConnectionString();
   if (!connectionString) {
     throw new Error(
-      "PostgreSQL is not configured. " +
-      "Set PLATFORM_PG_URL or PLATFORM_PG_HOST/PORT/USER/PASSWORD/DB env vars. " +
-      "Or start services/platform-db via docker compose."
+      'PostgreSQL is not configured. ' +
+        'Set PLATFORM_PG_URL or PLATFORM_PG_HOST/PORT/USER/PASSWORD/DB env vars. ' +
+        'Or start services/platform-db via docker compose.'
     );
   }
 
@@ -76,21 +76,21 @@ export function getPgDb(): PgDb {
   // PLATFORM_PG_SSL_CA: path to CA certificate file
   // PLATFORM_PG_SSL_CERT: path to client certificate file (mutual TLS)
   // PLATFORM_PG_SSL_KEY: path to client private key file (mutual TLS)
-  let sslConfig: boolean | pg.ConnectionConfig["ssl"] = false;
-  const sslMode = process.env.PLATFORM_PG_SSL ?? "";
-  if (sslMode === "true" || sslMode === "require") {
+  let sslConfig: boolean | pg.ConnectionConfig['ssl'] = false;
+  const sslMode = process.env.PLATFORM_PG_SSL ?? '';
+  if (sslMode === 'true' || sslMode === 'require') {
     sslConfig = { rejectUnauthorized: false };
-  } else if (sslMode === "verify-ca" || sslMode === "verify-full") {
+  } else if (sslMode === 'verify-ca' || sslMode === 'verify-full') {
     sslConfig = {
       rejectUnauthorized: true,
       ca: process.env.PLATFORM_PG_SSL_CA
-        ? readFileSync(process.env.PLATFORM_PG_SSL_CA, "utf-8")
+        ? readFileSync(process.env.PLATFORM_PG_SSL_CA, 'utf-8')
         : undefined,
       cert: process.env.PLATFORM_PG_SSL_CERT
-        ? readFileSync(process.env.PLATFORM_PG_SSL_CERT, "utf-8")
+        ? readFileSync(process.env.PLATFORM_PG_SSL_CERT, 'utf-8')
         : undefined,
       key: process.env.PLATFORM_PG_SSL_KEY
-        ? readFileSync(process.env.PLATFORM_PG_SSL_KEY, "utf-8")
+        ? readFileSync(process.env.PLATFORM_PG_SSL_KEY, 'utf-8')
         : undefined,
     };
   }
@@ -112,10 +112,10 @@ export function getPgDb(): PgDb {
   });
 
   // Log pool errors (don't crash)
-  pool.on("error", (err) => {
+  pool.on('error', (err) => {
     // Use console.error as a fallback — the structured logger may import
     // from modules that depend on this file, creating circular deps.
-    console.error("[platform-pg] Pool error:", err.message);
+    console.error('[platform-pg] Pool error:', err.message);
   });
 
   drizzleInstance = drizzle(pool, { schema });
@@ -158,12 +158,12 @@ export async function pgHealthCheck(): Promise<{
   error?: string;
 }> {
   if (!pool) {
-    return { ok: false, error: "Pool not initialized" };
+    return { ok: false, error: 'Pool not initialized' };
   }
 
   const start = Date.now();
   try {
-    await pool.query("SELECT 1");
+    await pool.query('SELECT 1');
     return {
       ok: true,
       latencyMs: Date.now() - start,

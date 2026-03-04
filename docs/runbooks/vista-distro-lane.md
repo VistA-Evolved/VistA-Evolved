@@ -105,34 +105,34 @@ npx tsx --env-file=.env.local src/index.ts
 The swap boundary (`apps/api/src/vista/swap-boundary.ts`) defines what ANY
 VistA instance must provide:
 
-| Capability | Required | Test |
-|-----------|----------|------|
-| TCP probe on broker port | YES | `nc -z host port` |
-| RPC auth (XUS SIGNON SETUP + XUS AV CODE) | YES | Login via API |
-| CPRS context (XWB CREATE CONTEXT) | YES | Context set in rpcBrokerClient |
-| Basic RPC reads | YES | Patient list, demographics |
+| Capability                                | Required | Test                           |
+| ----------------------------------------- | -------- | ------------------------------ |
+| TCP probe on broker port                  | YES      | `nc -z host port`              |
+| RPC auth (XUS SIGNON SETUP + XUS AV CODE) | YES      | Login via API                  |
+| CPRS context (XWB CREATE CONTEXT)         | YES      | Context set in rpcBrokerClient |
+| Basic RPC reads                           | YES      | Patient list, demographics     |
 
 ## Security Posture
 
 ### Dev Sandbox
 
-| Aspect | Value |
-|--------|-------|
-| Default credentials | YES (PROV123, PHARM123, NURSE123) |
-| SSH exposed | YES (port 2222) |
-| Network | All ports open |
-| Suitable for production | NO |
+| Aspect                  | Value                             |
+| ----------------------- | --------------------------------- |
+| Default credentials     | YES (PROV123, PHARM123, NURSE123) |
+| SSH exposed             | YES (port 2222)                   |
+| Network                 | All ports open                    |
+| Suitable for production | NO                                |
 
 ### Distro Lane
 
-| Aspect | Value |
-|--------|-------|
-| Default credentials | NO -- env-only injection |
-| SSH exposed | NO |
-| Network | Only RPC Broker port (9430) |
-| Root filesystem | Read-only |
-| Resource limits | 2GB RAM, 2 CPU |
-| Health check | Built-in TCP probe |
+| Aspect                  | Value                                   |
+| ----------------------- | --------------------------------------- |
+| Default credentials     | NO -- env-only injection                |
+| SSH exposed             | NO                                      |
+| Network                 | Only RPC Broker port (9430)             |
+| Root filesystem         | Read-only                               |
+| Resource limits         | 2GB RAM, 2 CPU                          |
+| Health check            | Built-in TCP probe                      |
 | Suitable for production | YES (with proper credential management) |
 
 ## Version Pinning
@@ -152,7 +152,7 @@ VISTA_ROUTINE_REF=abc123def456
 
 ## Custom Routines
 
-Place VistA-Evolved MUMPS routines (ZVE* namespace) in
+Place VistA-Evolved MUMPS routines (ZVE\* namespace) in
 `services/vista-distro/routines/`. They are copied into the container at
 build time.
 
@@ -173,7 +173,7 @@ the distro lane for production use.
 - [ ] Build distro image with pinned versions (not `master`)
 - [ ] Generate strong credentials (not WorldVistA defaults)
 - [ ] Run compatibility test: `verify-vista-compat.ps1 -Port 9431`
-- [ ] Copy required ZVE* routines to `routines/` directory
+- [ ] Copy required ZVE\* routines to `routines/` directory
 - [ ] Install custom RPCs (equivalent of `install-interop-rpcs.ps1`)
 - [ ] Verify RPC catalog: all 137+ registered RPCs respond
 - [ ] Test authentication with production credentials
@@ -212,6 +212,7 @@ FATAL: VISTA_ADMIN_ACCESS and VISTA_ADMIN_VERIFY must be set.
 ```
 
 **Fix:** Pass credentials via environment variables:
+
 ```powershell
 docker run -e VISTA_ADMIN_ACCESS=... -e VISTA_ADMIN_VERIFY=... ...
 ```
@@ -219,6 +220,7 @@ docker run -e VISTA_ADMIN_ACCESS=... -e VISTA_ADMIN_VERIFY=... ...
 ### Health check failing
 
 Check if the RPC Broker is listening:
+
 ```powershell
 docker exec vista-distro /opt/vista/health-check.sh
 ```
@@ -226,6 +228,7 @@ docker exec vista-distro /opt/vista/health-check.sh
 ### RPC calls timing out
 
 YottaDB may need shared memory cleanup after restart:
+
 ```powershell
 docker exec vista-distro bash -c "source /opt/yottadb/current/ydb_env_set && mupip rundown -reg '*'"
 ```

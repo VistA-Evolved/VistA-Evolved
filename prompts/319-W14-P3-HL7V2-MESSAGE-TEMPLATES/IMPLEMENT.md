@@ -10,7 +10,7 @@ and template validation.
 
 1. **Template types** (`apps/api/src/hl7/templates/types.ts`)
    - ConformanceProfile with IHE/HL7/custom sources
-   - 8 well-known profiles (IHE-PAM, IHE-SWF, IHE-LAB, HL7-251-*)
+   - 8 well-known profiles (IHE-PAM, IHE-SWF, IHE-LAB, HL7-251-\*)
    - FieldConstraint with optionality (R/RE/O/C/X), data types, fixed values
    - SegmentTemplate with usage, cardinality, field constraints
    - MessageTemplate: versioned, scoped (system/tenant), status FSM, profiles
@@ -30,7 +30,7 @@ and template validation.
    - Uses existing parser.ts getField/getSegments with proper Hl7Segment types
 
 4. **Routes** (`apps/api/src/routes/hl7-templates.ts`)
-   - 12 REST endpoints under /hl7/templates/*
+   - 12 REST endpoints under /hl7/templates/\*
    - CRUD + validate + clone + conformance + profiles listing + stats
 
 5. **Wiring**: register-routes.ts, security.ts AUTH_RULES, store-policy.ts

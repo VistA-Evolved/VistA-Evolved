@@ -10,15 +10,18 @@ with its own auth domain, audit trail, and license guardrails.
 ## Implementation Steps
 
 ### Step 0 — Inventory
+
 1. Catalog all VistA RPCs currently wired (35 live RPCs)
 2. Catalog reference repos: HealtheMe (Apache 2.0), Ottehr (MIT), AIOTP (NC — observe only)
 3. Build competitive baseline (MyChart-equivalent feature matrix)
 
 ### Step 1 — Portal Contract
+
 4. Create `docs/contracts/portal/portal-contract-v1.yaml` — modules, VistA RPC mappings, security rules, no-parallel-engine rule
 5. Create `docs/contracts/portal/portal-capability-matrix.md` — Module | Screen | VistA Source | Status
 
 ### Step 2 — Implementation
+
 6. Create `apps/portal/` — New Next.js app (port 3002)
    - Login page (dev-mode sandbox credentials)
    - Dashboard with summary cards
@@ -41,6 +44,7 @@ with its own auth domain, audit trail, and license guardrails.
 11. Update `security.ts` AUTH_RULES for `/portal/*` routes
 
 ### Step 3 — Prompts & Docs
+
 12. Create prompts folder `28-PHASE-26-PORTAL-TELEHEALTH/`
 13. Create runbook `docs/runbooks/portal-grounding.md`
 14. Create ops artifacts
@@ -58,6 +62,7 @@ with its own auth domain, audit trail, and license guardrails.
 ## Files Touched
 
 ### Created
+
 - `docs/contracts/portal/vista-source-inventory.md`
 - `docs/contracts/portal/reference-repos-inventory.md`
 - `docs/contracts/portal/competitive-baseline.md`
@@ -74,5 +79,6 @@ with its own auth domain, audit trail, and license guardrails.
 - `ops/notion-update.json`
 
 ### Modified
+
 - `apps/api/src/index.ts` — register portal routes
 - `apps/api/src/middleware/security.ts` — add portal AUTH_RULES

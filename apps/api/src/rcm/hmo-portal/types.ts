@@ -17,14 +17,14 @@
 /* ── Top-5 Portal-Capable HMOs ──────────────────────────────── */
 
 export const PORTAL_CAPABLE_HMOS = [
-  "PH-MAXICARE",
-  "PH-MEDICARD",
-  "PH-INTELLICARE",
-  "PH-PHILCARE",
-  "PH-VALUCARE",
+  'PH-MAXICARE',
+  'PH-MEDICARD',
+  'PH-INTELLICARE',
+  'PH-PHILCARE',
+  'PH-VALUCARE',
 ] as const;
 
-export type PortalCapableHmoId = typeof PORTAL_CAPABLE_HMOS[number];
+export type PortalCapableHmoId = (typeof PORTAL_CAPABLE_HMOS)[number];
 
 export function isPortalCapableHmo(payerId: string): payerId is PortalCapableHmoId {
   return (PORTAL_CAPABLE_HMOS as readonly string[]).includes(payerId);
@@ -49,30 +49,30 @@ export interface VaultRef {
 /* ── Portal Adapter Mode ────────────────────────────────────── */
 
 export type PortalAdapterMode =
-  | "manual_assisted"     // download packet + deep link to portal (always available)
-  | "vault_automated";    // auto-submit via vault-resolved credentials (future)
+  | 'manual_assisted' // download packet + deep link to portal (always available)
+  | 'vault_automated'; // auto-submit via vault-resolved credentials (future)
 
 /* ── LOA Packet Types ───────────────────────────────────────── */
 
-export type LoaPacketFormat = "json" | "pdf_text";
+export type LoaPacketFormat = 'json' | 'pdf_text';
 
 export type DepartmentSpecialty =
-  | "general_medicine"
-  | "surgery"
-  | "obstetrics_gynecology"
-  | "pediatrics"
-  | "orthopedics"
-  | "cardiology"
-  | "neurology"
-  | "oncology"
-  | "emergency"
-  | "rehabilitation"
-  | "psychiatry"
-  | "ophthalmology"
-  | "ent"
-  | "dermatology"
-  | "dental"
-  | "other";
+  | 'general_medicine'
+  | 'surgery'
+  | 'obstetrics_gynecology'
+  | 'pediatrics'
+  | 'orthopedics'
+  | 'cardiology'
+  | 'neurology'
+  | 'oncology'
+  | 'emergency'
+  | 'rehabilitation'
+  | 'psychiatry'
+  | 'ophthalmology'
+  | 'ent'
+  | 'dermatology'
+  | 'dental'
+  | 'other';
 
 export interface LoaPacketTemplate {
   specialty: DepartmentSpecialty;
@@ -84,31 +84,31 @@ export interface LoaPacketTemplate {
 /** LOA request packet — structured data for portal upload or print */
 export interface LoaPacket {
   packetId: string;
-  loaRequestId: string;        // back-ref to Phase 94 LoaRequest.id
+  loaRequestId: string; // back-ref to Phase 94 LoaRequest.id
   payerId: string;
   payerName: string;
 
   // Patient basics (display only — VistA is source of truth)
   patientName: string;
   patientDfn: string;
-  memberId?: string;           // HMO card number
+  memberId?: string; // HMO card number
 
   // Clinical data (from VistA encounter)
   encounterDate: string;
   encounterIen?: string;
   specialty: DepartmentSpecialty;
-  admissionType: "outpatient" | "inpatient" | "daycare" | "emergency";
+  admissionType: 'outpatient' | 'inpatient' | 'daycare' | 'emergency';
 
   // Diagnoses + procedures (from VistA)
   diagnoses: Array<{
     code: string;
-    codeSystem: "ICD10";
+    codeSystem: 'ICD10';
     description?: string;
     isPrimary: boolean;
   }>;
   procedures: Array<{
     code: string;
-    codeSystem: "CPT" | "HCPCS" | "RVS";
+    codeSystem: 'CPT' | 'HCPCS' | 'RVS';
     description?: string;
   }>;
 
@@ -169,9 +169,9 @@ export interface HmoClaimPacket {
     firstName: string;
     middleName?: string;
     dob?: string;
-    sex?: "M" | "F";
-    memberId?: string;           // HMO card number
-    memberType?: "principal" | "dependent";
+    sex?: 'M' | 'F';
+    memberId?: string; // HMO card number
+    memberType?: 'principal' | 'dependent';
     employerName?: string;
     employerCode?: string;
   };
@@ -185,7 +185,7 @@ export interface HmoClaimPacket {
   };
 
   // Encounter
-  patientType: "O" | "I";
+  patientType: 'O' | 'I';
   admissionDate: string;
   dischargeDate?: string;
   specialty: DepartmentSpecialty;
@@ -194,12 +194,12 @@ export interface HmoClaimPacket {
   diagnoses: Array<{
     code: string;
     description?: string;
-    type: "primary" | "secondary";
+    type: 'primary' | 'secondary';
   }>;
   procedures: Array<{
     code: string;
     description?: string;
-    laterality?: "L" | "R" | "B";
+    laterality?: 'L' | 'R' | 'B';
   }>;
 
   // Charges (from VistA IB or manual entry)
@@ -211,7 +211,7 @@ export interface HmoClaimPacket {
     unitCharge: number;
     discount: number;
     netAmount: number;
-    hmoCoverage: number;         // HMO-specific (vs PHIC coverage)
+    hmoCoverage: number; // HMO-specific (vs PHIC coverage)
     patientShare: number;
   }>;
 
@@ -245,7 +245,7 @@ export interface HmoClaimPacket {
 export interface PortalSubmitResult {
   ok: boolean;
   /** Manual-assisted: always "manual_download" */
-  method: "manual_download" | "automated";
+  method: 'manual_download' | 'automated';
   /** Portal URL to navigate to (deep link if possible) */
   portalUrl?: string;
   /** Step-by-step instructions for staff */
@@ -263,7 +263,7 @@ export interface PortalSubmitResult {
 
 export interface PortalStatusResult {
   ok: boolean;
-  status: "unknown" | "pending" | "approved" | "denied" | "processing";
+  status: 'unknown' | 'pending' | 'approved' | 'denied' | 'processing';
   /** True only if checked via actual portal API */
   checkedViaApi: boolean;
   /** Last check timestamp */
@@ -278,7 +278,7 @@ export interface PortalRemitResult {
   ok: boolean;
   available: boolean;
   /** Remittance download available only via manual portal access */
-  method: "manual_download" | "automated";
+  method: 'manual_download' | 'automated';
   portalUrl?: string;
   instructions: string[];
   error?: string;
@@ -309,40 +309,28 @@ export interface PortalAdapter {
    * In manual_assisted mode: generates exports + deep link.
    * In vault_automated mode: submits via portal API.
    */
-  submitLOA(
-    packet: LoaPacket,
-    vaultRef?: VaultRef,
-  ): Promise<PortalSubmitResult>;
+  submitLOA(packet: LoaPacket, vaultRef?: VaultRef): Promise<PortalSubmitResult>;
 
   /**
    * Check claim/LOA status on the HMO portal.
    * In manual_assisted mode: returns deep link to status page.
    * In vault_automated mode: queries portal API.
    */
-  checkStatus(
-    claimId: string,
-    vaultRef?: VaultRef,
-  ): Promise<PortalStatusResult>;
+  checkStatus(claimId: string, vaultRef?: VaultRef): Promise<PortalStatusResult>;
 
   /**
    * Download remittance/EOB from HMO portal.
    * In manual_assisted mode: returns deep link to remittance page.
    * In vault_automated mode: downloads via portal API.
    */
-  downloadRemit(
-    claimId: string,
-    vaultRef?: VaultRef,
-  ): Promise<PortalRemitResult>;
+  downloadRemit(claimId: string, vaultRef?: VaultRef): Promise<PortalRemitResult>;
 
   /**
    * Submit a claim packet to the HMO portal.
    * In manual_assisted mode: generates exports + deep link.
    * In vault_automated mode: submits via portal API.
    */
-  submitClaim(
-    packet: HmoClaimPacket,
-    vaultRef?: VaultRef,
-  ): Promise<PortalSubmitResult>;
+  submitClaim(packet: HmoClaimPacket, vaultRef?: VaultRef): Promise<PortalSubmitResult>;
 
   /** Health/connectivity check (portal reachable?) */
   healthCheck(): Promise<{ healthy: boolean; details: string }>;
@@ -377,32 +365,32 @@ export function listPortalAdapters(): Array<{
 /* ── HMO Submission Status Tracking ─────────────────────────── */
 
 export type HmoSubmissionStatus =
-  | "draft"
-  | "loa_pending"
-  | "loa_approved"
-  | "loa_denied"
-  | "claim_prepared"
-  | "claim_exported"
-  | "claim_submitted_manual"
-  | "claim_processing"
-  | "claim_approved"
-  | "claim_denied"
-  | "remittance_received"
-  | "posted_to_vista";        // terminal — ledger posting is VistA-first
+  | 'draft'
+  | 'loa_pending'
+  | 'loa_approved'
+  | 'loa_denied'
+  | 'claim_prepared'
+  | 'claim_exported'
+  | 'claim_submitted_manual'
+  | 'claim_processing'
+  | 'claim_approved'
+  | 'claim_denied'
+  | 'remittance_received'
+  | 'posted_to_vista'; // terminal — ledger posting is VistA-first
 
 export const HMO_STATUS_TRANSITIONS: Record<HmoSubmissionStatus, HmoSubmissionStatus[]> = {
-  draft:                   ["loa_pending"],
-  loa_pending:             ["loa_approved", "loa_denied"],
-  loa_approved:            ["claim_prepared"],
-  loa_denied:              ["draft"],                    // retry
-  claim_prepared:          ["claim_exported"],
-  claim_exported:          ["claim_submitted_manual"],
-  claim_submitted_manual:  ["claim_processing", "claim_approved", "claim_denied"],
-  claim_processing:        ["claim_approved", "claim_denied"],
-  claim_approved:          ["remittance_received"],
-  claim_denied:            ["claim_prepared"],            // rework and resubmit
-  remittance_received:     ["posted_to_vista"],
-  posted_to_vista:         [],                            // terminal
+  draft: ['loa_pending'],
+  loa_pending: ['loa_approved', 'loa_denied'],
+  loa_approved: ['claim_prepared'],
+  loa_denied: ['draft'], // retry
+  claim_prepared: ['claim_exported'],
+  claim_exported: ['claim_submitted_manual'],
+  claim_submitted_manual: ['claim_processing', 'claim_approved', 'claim_denied'],
+  claim_processing: ['claim_approved', 'claim_denied'],
+  claim_approved: ['remittance_received'],
+  claim_denied: ['claim_prepared'], // rework and resubmit
+  remittance_received: ['posted_to_vista'],
+  posted_to_vista: [], // terminal
 };
 
 export function isValidHmoTransition(from: HmoSubmissionStatus, to: HmoSubmissionStatus): boolean {
@@ -415,11 +403,11 @@ export function isValidHmoTransition(from: HmoSubmissionStatus, to: HmoSubmissio
  */
 export function isHmoManualTransition(to: HmoSubmissionStatus): boolean {
   return [
-    "claim_submitted_manual",
-    "claim_approved",
-    "claim_denied",
-    "remittance_received",
-    "posted_to_vista",
+    'claim_submitted_manual',
+    'claim_approved',
+    'claim_denied',
+    'remittance_received',
+    'posted_to_vista',
   ].includes(to);
 }
 
@@ -429,17 +417,17 @@ export interface HmoSubmissionRecord {
   id: string;
   payerId: string;
   payerName: string;
-  claimId?: string;                // Phase 38 claim store ID
-  loaRequestId?: string;           // Phase 94 LOA store ID
+  claimId?: string; // Phase 38 claim store ID
+  loaRequestId?: string; // Phase 94 LOA store ID
   loaPacketId?: string;
   claimPacketId?: string;
   status: HmoSubmissionStatus;
-  portalRef?: string;              // HMO-assigned reference
+  portalRef?: string; // HMO-assigned reference
   loaReferenceNumber?: string;
   denialReason?: string;
   denialCode?: string;
   staffNotes: string[];
-  exportFiles: string[];           // filenames generated
+  exportFiles: string[]; // filenames generated
   timeline: Array<{
     timestamp: string;
     fromStatus: HmoSubmissionStatus;

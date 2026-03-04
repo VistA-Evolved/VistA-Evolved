@@ -52,10 +52,10 @@ observations to the API.
 
 ### Library
 
-| Component | License | Notes |
-|-----------|---------|-------|
-| sdc11073 | BSD-3-Clause | Python IEEE 11073 SDC consumer |
-| lxml | BSD | XML parsing dependency |
+| Component | License      | Notes                          |
+| --------- | ------------ | ------------------------------ |
+| sdc11073  | BSD-3-Clause | Python IEEE 11073 SDC consumer |
+| lxml      | BSD          | XML parsing dependency         |
 
 ### Trade-offs
 

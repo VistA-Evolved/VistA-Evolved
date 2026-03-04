@@ -1,6 +1,7 @@
 # Phase 391 — W22-P3 Inpatient Core: IMPLEMENT
 
 ## User Request
+
 Implement Phase 391 (W22-P3): Inpatient Core — ADT bedboard, nursing flowsheet
 data capture, vitals recording, and writeback posture for GMV ADD VM / TIU
 CREATE RECORD / DGPM ADT MOVEMENTS.
@@ -30,10 +31,12 @@ CREATE RECORD / DGPM ADT MOVEMENTS.
    - `store-policy.ts`: 4 store entries (beds, adt-events, flowsheet-rows, vitals)
 
 ## Verification
+
 - `pnpm exec tsc --noEmit` from `apps/api/` — clean build
 - All 13 endpoints follow existing patterns (await requireSession, field allowlists)
 
 ## Files Touched
+
 - `apps/api/src/inpatient/types.ts` (new)
 - `apps/api/src/inpatient/inpatient-store.ts` (new)
 - `apps/api/src/inpatient/inpatient-routes.ts` (new)

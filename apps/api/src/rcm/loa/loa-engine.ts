@@ -15,21 +15,21 @@ import {
   listAttachments,
   type LoaRequestRow,
   type LoaAttachmentRow,
-} from "./loa-repo.js";
-import { getLoaAdapter, type LoaAdapterResult } from "./loa-adapter.js";
+} from './loa-repo.js';
+import { getLoaAdapter, type LoaAdapterResult } from './loa-adapter.js';
 
 /* ------------------------------------------------------------------ */
 /* FSM Definition                                                      */
 /* ------------------------------------------------------------------ */
 
 const VALID_TRANSITIONS: Record<string, string[]> = {
-  draft: ["pending_review", "closed"],
-  pending_review: ["submitted", "draft", "closed"],
-  submitted: ["approved", "denied", "closed"],
-  approved: ["expired", "closed"],
-  denied: ["appealed", "closed"],
-  appealed: ["submitted", "approved", "denied", "closed"],
-  expired: ["closed"],
+  draft: ['pending_review', 'closed'],
+  pending_review: ['submitted', 'draft', 'closed'],
+  submitted: ['approved', 'denied', 'closed'],
+  approved: ['expired', 'closed'],
+  denied: ['appealed', 'closed'],
+  appealed: ['submitted', 'approved', 'denied', 'closed'],
+  expired: ['closed'],
   closed: [],
 };
 
@@ -64,12 +64,12 @@ export interface TransitionResult {
 
 export async function transitionLoa(input: TransitionInput): Promise<TransitionResult> {
   const loa = await getLoaRequestById(input.tenantId, input.loaId);
-  if (!loa) return { ok: false, error: "LOA request not found" };
+  if (!loa) return { ok: false, error: 'LOA request not found' };
 
   if (!isValidTransition(loa.status, input.newStatus)) {
     return {
       ok: false,
-      error: `Invalid transition: ${loa.status} -> ${input.newStatus}. Valid: ${getValidNextStatuses(loa.status).join(", ")}`,
+      error: `Invalid transition: ${loa.status} -> ${input.newStatus}. Valid: ${getValidNextStatuses(loa.status).join(', ')}`,
     };
   }
 
@@ -111,13 +111,19 @@ export interface LoaPacket {
   }>;
 }
 
-export async function generatePacket(tenantId: string, loaId: string): Promise<{ ok: boolean; packet?: LoaPacket; error?: string }> {
+export async function generatePacket(
+  tenantId: string,
+  loaId: string
+): Promise<{ ok: boolean; packet?: LoaPacket; error?: string }> {
   const loa = await getLoaRequestById(tenantId, loaId);
-  if (!loa) return { ok: false, error: "LOA request not found" };
+  if (!loa) return { ok: false, error: 'LOA request not found' };
 
   // Only draft and pending_review can generate packets
-  if (!["draft", "pending_review"].includes(loa.status)) {
-    return { ok: false, error: `Cannot generate packet in status '${loa.status}'. Must be draft or pending_review.` };
+  if (!['draft', 'pending_review'].includes(loa.status)) {
+    return {
+      ok: false,
+      error: `Cannot generate packet in status '${loa.status}'. Must be draft or pending_review.`,
+    };
   }
 
   const attachments = await listAttachments(loaId);
@@ -160,20 +166,23 @@ export async function generatePacket(tenantId: string, loaId: string): Promise<{
  */
 export async function submitLoa(tenantId: string, loaId: string): Promise<TransitionResult> {
   const loa = await getLoaRequestById(tenantId, loaId);
-  if (!loa) return { ok: false, error: "LOA request not found" };
+  if (!loa) return { ok: false, error: 'LOA request not found' };
 
-  if (loa.status !== "pending_review") {
-    return { ok: false, error: `Cannot submit LOA in status '${loa.status}'. Must be pending_review.` };
+  if (loa.status !== 'pending_review') {
+    return {
+      ok: false,
+      error: `Cannot submit LOA in status '${loa.status}'. Must be pending_review.`,
+    };
   }
 
   const adapter = getLoaAdapter();
   const result: LoaAdapterResult = await adapter.submitLOA(loa);
 
   if (!result.ok) {
-    return { ok: false, error: result.error || "Adapter submission failed" };
+    return { ok: false, error: result.error || 'Adapter submission failed' };
   }
 
-  const updated = await transitionLoaStatus(tenantId, loaId, "submitted", {
+  const updated = await transitionLoaStatus(tenantId, loaId, 'submitted', {
     authorizationNumber: result.trackingNumber,
   });
 
@@ -183,11 +192,14 @@ export async function submitLoa(tenantId: string, loaId: string): Promise<Transi
 /**
  * Check LOA status with payer via the configured adapter.
  */
-export async function checkLoaStatus(tenantId: string, loaId: string): Promise<{ ok: boolean; adapterStatus?: string; error?: string }> {
+export async function checkLoaStatus(
+  tenantId: string,
+  loaId: string
+): Promise<{ ok: boolean; adapterStatus?: string; error?: string }> {
   const loa = await getLoaRequestById(tenantId, loaId);
-  if (!loa) return { ok: false, error: "LOA request not found" };
+  if (!loa) return { ok: false, error: 'LOA request not found' };
 
-  if (!["submitted", "appealed"].includes(loa.status)) {
+  if (!['submitted', 'appealed'].includes(loa.status)) {
     return { ok: false, error: `Cannot check status for LOA in status '${loa.status}'.` };
   }
 
@@ -200,7 +212,9 @@ export async function checkLoaStatus(tenantId: string, loaId: string): Promise<{
 /**
  * Get payer-specific LOA requirements via the configured adapter.
  */
-export async function getPayerRequirements(payerId: string): Promise<{ ok: boolean; requirements?: string[]; error?: string }> {
+export async function getPayerRequirements(
+  payerId: string
+): Promise<{ ok: boolean; requirements?: string[]; error?: string }> {
   const adapter = getLoaAdapter();
   const result = await adapter.getRequirements(payerId);
   return { ok: result.ok, requirements: result.requirements, error: result.error };

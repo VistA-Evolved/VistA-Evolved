@@ -9,11 +9,11 @@
 
 ### ORWDAL32 ALLERGY MATCH (IEN 615)
 
-| Property | Value |
-|----------|-------|
-| Tag | `ALLSRCH^ORWDAL32` |
-| Return type | 2 (array) |
-| Params | 1 LITERAL (search text) |
+| Property    | Value                   |
+| ----------- | ----------------------- |
+| Tag         | `ALLSRCH^ORWDAL32`      |
+| Return type | 2 (array)               |
+| Params      | 1 LITERAL (search text) |
 
 **Response format** (one line per match):
 
@@ -34,11 +34,11 @@ Example:
 
 ### ORWDAL32 SAVE ALLERGY (IEN 1968)
 
-| Property | Value |
-|----------|-------|
-| Tag | `EDITSAVE^ORWDAL32` |
-| Return type | 1 (single value) |
-| Params | LITERAL (allergyIEN, `0` = new), LITERAL (DFN), LIST (OREDITED) |
+| Property    | Value                                                           |
+| ----------- | --------------------------------------------------------------- |
+| Tag         | `EDITSAVE^ORWDAL32`                                             |
+| Return type | 1 (single value)                                                |
+| Params      | LITERAL (allergyIEN, `0` = new), LITERAL (DFN), LIST (OREDITED) |
 
 **Returns**: `"0"` on success, `"-1^error message"` on failure.
 
@@ -50,14 +50,14 @@ All six fields are mandatory — `UPDATE^GMRAGUI1` iterates over them in a
 `FOR` loop without `$G()` protection, so a missing field causes a
 `GVUNDEF` error.
 
-| Key | Description | Example |
-|-----|-------------|---------|
-| `GMRAGNT` | `NAME^IEN;file_root` | `PENICILLIN^49;GMRD(120.82,` |
-| `GMRATYPE` | Allergy type from MATCH | `D` (Drug), `F` (Food), `DF` |
-| `GMRANATR` | Nature of reaction | `U^Unknown` |
-| `GMRAORIG` | DUZ of authenticated user | `87` |
-| `GMRAORDT` | FileMan date/time | `3260211.152300` |
-| `GMRAOBHX` | Observed / historical flag | `h^HISTORICAL` |
+| Key        | Description                | Example                      |
+| ---------- | -------------------------- | ---------------------------- |
+| `GMRAGNT`  | `NAME^IEN;file_root`       | `PENICILLIN^49;GMRD(120.82,` |
+| `GMRATYPE` | Allergy type from MATCH    | `D` (Drug), `F` (Food), `DF` |
+| `GMRANATR` | Nature of reaction         | `U^Unknown`                  |
+| `GMRAORIG` | DUZ of authenticated user  | `87`                         |
+| `GMRAORDT` | FileMan date/time          | `3260211.152300`             |
+| `GMRAOBHX` | Observed / historical flag | `h^HISTORICAL`               |
 
 ### GMRAGNT format
 
@@ -73,8 +73,8 @@ ALLERGEN_NAME ^ IEN ; file_root
 
 `YYYMMDD.HHMMSS` where `YYY = year − 1700`.
 
-| Calendar Date | FileMan Date |
-|---------------|-------------|
+| Calendar Date       | FileMan Date     |
+| ------------------- | ---------------- |
 | 2026-02-11 15:23:00 | `3260211.152300` |
 | 2025-07-04 09:00:00 | `3250704.090000` |
 
@@ -110,6 +110,7 @@ Wire format discovered by reading `PRS5`/`LINST`/`OARY` in `XWBPRS.m`:
 ```
 
 **Validations**:
+
 - `dfn` — required, must be numeric
 - `allergyText` — required, minimum 2 characters
 
@@ -189,13 +190,13 @@ Client                        API                        VistA
 
 ## 7. Files Changed (Phase 5D)
 
-| File | Change |
-|------|--------|
-| `apps/api/src/vista/rpcBrokerClient.ts` | Added `getDuz()`, `RpcParam` type, `buildRpcMessageEx()`, `callRpcWithList()` |
-| `apps/api/src/index.ts` | Added `POST /vista/allergies` endpoint |
-| `apps/web/src/app/patient-search/page.tsx` | Added "Add Allergy" form with loading/error/success states |
-| `apps/web/src/app/patient-search/page.module.css` | Added `.addAllergyForm`, `.allergyInput`, `.addAllergyBtn`, etc. |
-| `docs/runbooks/vista-rpc-add-allergy.md` | This file |
+| File                                              | Change                                                                        |
+| ------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `apps/api/src/vista/rpcBrokerClient.ts`           | Added `getDuz()`, `RpcParam` type, `buildRpcMessageEx()`, `callRpcWithList()` |
+| `apps/api/src/index.ts`                           | Added `POST /vista/allergies` endpoint                                        |
+| `apps/web/src/app/patient-search/page.tsx`        | Added "Add Allergy" form with loading/error/success states                    |
+| `apps/web/src/app/patient-search/page.module.css` | Added `.addAllergyForm`, `.allergyInput`, `.addAllergyBtn`, etc.              |
+| `docs/runbooks/vista-rpc-add-allergy.md`          | This file                                                                     |
 
 ---
 

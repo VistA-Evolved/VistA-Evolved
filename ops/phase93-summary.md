@@ -7,6 +7,7 @@ Insurance Commission-licensed HMOs, evidence-backed capability data,
 adapter layer for billing staff workflows, and admin console UI.
 
 ### Files Created
+
 - `data/payers/ph-hmo-registry.json` — 27-entry canonical registry with evidence, capabilities, contracting tasks
 - `apps/api/src/rcm/payers/ph-hmo-registry.ts` — TypeScript types, validation, loader, query functions
 - `apps/api/src/rcm/payers/ph-hmo-adapter.ts` — LOA/claim packet generation, capability reports (no fabricated APIs)
@@ -20,6 +21,7 @@ adapter layer for billing staff workflows, and admin console UI.
 - `prompts/99-PHASE-93-PH-HMO-DEEPENING/93-99-VERIFY.md` — Verification prompt
 
 ### Files Modified
+
 - `apps/api/src/index.ts` — Import + register phHmoRoutes
 - `apps/web/src/app/cprs/admin/layout.tsx` — Add PH HMO Console nav entry
 
@@ -60,6 +62,7 @@ RESULT: PASS
 ```
 
 ## Follow-ups
+
 - Complete contracting with Tier 2/3 HMOs to discover capabilities
 - Implement portal scraping adapters once contracting is done (Phase TBD)
 - Add remittance import workflow when SOA formats are documented

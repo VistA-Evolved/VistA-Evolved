@@ -18,7 +18,7 @@
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type AssuranceLevel = "standard" | "elevated" | "critical";
+export type AssuranceLevel = 'standard' | 'elevated' | 'critical';
 
 export interface StepUpRequirement {
   /** Required assurance level */
@@ -57,13 +57,11 @@ export interface StepUpResult {
 
 /** Default recent-auth window: 5 minutes */
 const DEFAULT_RECENT_AUTH_WINDOW_MS = Number(
-  process.env.STEP_UP_RECENT_AUTH_WINDOW_MS || 5 * 60 * 1000,
+  process.env.STEP_UP_RECENT_AUTH_WINDOW_MS || 5 * 60 * 1000
 );
 
 /** MFA verification validity window: 15 minutes */
-const MFA_VALIDITY_WINDOW_MS = Number(
-  process.env.STEP_UP_MFA_VALIDITY_MS || 15 * 60 * 1000,
-);
+const MFA_VALIDITY_WINDOW_MS = Number(process.env.STEP_UP_MFA_VALIDITY_MS || 15 * 60 * 1000);
 
 /* ------------------------------------------------------------------ */
 /* Step-Up Policy Map                                                  */
@@ -75,23 +73,23 @@ const MFA_VALIDITY_WINDOW_MS = Number(
  */
 const STEP_UP_POLICY: Record<string, AssuranceLevel> = {
   // Critical: admin operations, credential changes, data export
-  "admin.user-manage": "critical",
-  "admin.system": "critical",
-  "admin.tenant": "critical",
-  "audit.export": "critical",
-  "analytics.export": "critical",
-  "report.export": "critical",
-  "admin.config": "critical",
+  'admin.user-manage': 'critical',
+  'admin.system': 'critical',
+  'admin.tenant': 'critical',
+  'audit.export': 'critical',
+  'analytics.export': 'critical',
+  'report.export': 'critical',
+  'admin.config': 'critical',
 
   // Elevated: clinical writes, imaging, ordering
-  "clinical.order-sign": "elevated",
-  "clinical.order-release": "elevated",
-  "clinical.medication-add": "elevated",
-  "clinical.allergy-add": "elevated",
-  "imaging.order": "elevated",
-  "imaging.upload": "elevated",
-  "imaging.device-manage": "elevated",
-  "telehealth.create": "elevated",
+  'clinical.order-sign': 'elevated',
+  'clinical.order-release': 'elevated',
+  'clinical.medication-add': 'elevated',
+  'clinical.allergy-add': 'elevated',
+  'imaging.order': 'elevated',
+  'imaging.upload': 'elevated',
+  'imaging.device-manage': 'elevated',
+  'telehealth.create': 'elevated',
 };
 
 /* ------------------------------------------------------------------ */
@@ -104,17 +102,18 @@ const STEP_UP_POLICY: Record<string, AssuranceLevel> = {
 export function computeAssuranceLevel(
   lastAuthAt: number,
   mfaState: MfaState,
-  now?: number,
+  now?: number
 ): AssuranceLevel {
   const ts = now ?? Date.now();
-  const recentAuth = (ts - lastAuthAt) < DEFAULT_RECENT_AUTH_WINDOW_MS;
-  const mfaRecent = mfaState.enrolled &&
+  const recentAuth = ts - lastAuthAt < DEFAULT_RECENT_AUTH_WINDOW_MS;
+  const mfaRecent =
+    mfaState.enrolled &&
     mfaState.lastVerifiedAt > 0 &&
-    (ts - mfaState.lastVerifiedAt) < MFA_VALIDITY_WINDOW_MS;
+    ts - mfaState.lastVerifiedAt < MFA_VALIDITY_WINDOW_MS;
 
-  if (recentAuth && mfaRecent) return "critical";
-  if (recentAuth || mfaRecent) return "elevated";
-  return "standard";
+  if (recentAuth && mfaRecent) return 'critical';
+  if (recentAuth || mfaRecent) return 'elevated';
+  return 'standard';
 }
 
 /**
@@ -122,11 +121,11 @@ export function computeAssuranceLevel(
  */
 export function getStepUpRequirement(action: string): StepUpRequirement | null {
   const level = STEP_UP_POLICY[action];
-  if (!level || level === "standard") return null;
+  if (!level || level === 'standard') return null;
 
-  if (level === "critical") {
+  if (level === 'critical') {
     return {
-      level: "critical",
+      level: 'critical',
       recentAuthRequired: true,
       mfaRequired: true,
       recentAuthWindowMs: DEFAULT_RECENT_AUTH_WINDOW_MS,
@@ -135,7 +134,7 @@ export function getStepUpRequirement(action: string): StepUpRequirement | null {
 
   // elevated: recent auth OR MFA
   return {
-    level: "elevated",
+    level: 'elevated',
     recentAuthRequired: false,
     mfaRequired: false, // either is OK for elevated
     recentAuthWindowMs: DEFAULT_RECENT_AUTH_WINDOW_MS,
@@ -154,7 +153,7 @@ export function evaluateStepUp(
   action: string,
   lastAuthAt: number,
   mfaState: MfaState,
-  now?: number,
+  now?: number
 ): StepUpResult {
   const ts = now ?? Date.now();
   const currentLevel = computeAssuranceLevel(lastAuthAt, mfaState, ts);

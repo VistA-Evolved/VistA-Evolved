@@ -13,7 +13,6 @@ import { useRouter } from 'next/navigation';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
 
-
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API_BASE}${path}`, {
     credentials: 'include',
@@ -264,8 +263,22 @@ const S = {
       borderRadius: '10px',
       fontSize: '11px',
       fontWeight: 600,
-      background: color === 'blue' ? '#bee3f8' : color === 'green' ? '#c6f6d5' : color === 'yellow' ? '#fefcbf' : '#e2e8f0',
-      color: color === 'blue' ? '#2a4365' : color === 'green' ? '#22543d' : color === 'yellow' ? '#744210' : '#4a5568',
+      background:
+        color === 'blue'
+          ? '#bee3f8'
+          : color === 'green'
+            ? '#c6f6d5'
+            : color === 'yellow'
+              ? '#fefcbf'
+              : '#e2e8f0',
+      color:
+        color === 'blue'
+          ? '#2a4365'
+          : color === 'green'
+            ? '#22543d'
+            : color === 'yellow'
+              ? '#744210'
+              : '#4a5568',
     }) as React.CSSProperties,
   timeline: {
     position: 'relative' as const,
@@ -388,7 +401,9 @@ function CensusTab() {
     setLoadingCensus(false);
   }, []);
 
-  useEffect(() => { loadWards(); }, [loadWards]);
+  useEffect(() => {
+    loadWards();
+  }, [loadWards]);
 
   useEffect(() => {
     if (selectedWard) loadCensus(selectedWard);
@@ -421,7 +436,9 @@ function CensusTab() {
               </button>
             ))}
             {wards.length === 0 && !loading && (
-              <span style={{ color: '#a0aec0', fontSize: '13px' }}>No wards found. Is VistA connected?</span>
+              <span style={{ color: '#a0aec0', fontSize: '13px' }}>
+                No wards found. Is VistA connected?
+              </span>
             )}
           </div>
         )}
@@ -432,11 +449,20 @@ function CensusTab() {
       {/* Census table */}
       {selectedWard && (
         <div style={S.card}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '8px',
+            }}
+          >
             <span style={{ fontWeight: 600, fontSize: '14px', color: '#2d3748' }}>
               Ward Census ({census.length} patients)
             </span>
-            {loadingCensus && <span style={{ color: '#718096', fontSize: '12px' }}>Loading...</span>}
+            {loadingCensus && (
+              <span style={{ color: '#718096', fontSize: '12px' }}>Loading...</span>
+            )}
           </div>
           <table style={S.table}>
             <thead>
@@ -453,9 +479,17 @@ function CensusTab() {
                 <tr
                   key={p.dfn}
                   onClick={() => handlePatientClick(p)}
-                  style={{ ...S.clickRow, background: selectedPatient?.dfn === p.dfn ? '#ebf8ff' : 'transparent' }}
-                  onMouseOver={(e) => { (e.currentTarget as HTMLElement).style.background = '#f7fafc'; }}
-                  onMouseOut={(e) => { (e.currentTarget as HTMLElement).style.background = selectedPatient?.dfn === p.dfn ? '#ebf8ff' : 'transparent'; }}
+                  style={{
+                    ...S.clickRow,
+                    background: selectedPatient?.dfn === p.dfn ? '#ebf8ff' : 'transparent',
+                  }}
+                  onMouseOver={(e) => {
+                    (e.currentTarget as HTMLElement).style.background = '#f7fafc';
+                  }}
+                  onMouseOut={(e) => {
+                    (e.currentTarget as HTMLElement).style.background =
+                      selectedPatient?.dfn === p.dfn ? '#ebf8ff' : 'transparent';
+                  }}
                 >
                   <td style={S.td}>{p.dfn}</td>
                   <td style={{ ...S.td, fontWeight: 500 }}>{p.name}</td>
@@ -480,20 +514,50 @@ function CensusTab() {
       {selectedPatient && (
         <div style={S.modal} onClick={() => setSelectedPatient(null)}>
           <div style={S.modalContent} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '16px',
+              }}
+            >
               <h3 style={{ margin: 0, fontSize: '16px', color: '#1a365d' }}>Patient Detail</h3>
               <button
                 onClick={() => setSelectedPatient(null)}
-                style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '18px', color: '#a0aec0' }}
-              >&times;</button>
+                style={{
+                  border: 'none',
+                  background: 'none',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  color: '#a0aec0',
+                }}
+              >
+                &times;
+              </button>
             </div>
             <table style={{ ...S.table, fontSize: '13px' }}>
               <tbody>
-                <tr><td style={{ ...S.td, fontWeight: 600, width: '140px' }}>DFN</td><td style={S.td}>{selectedPatient.dfn}</td></tr>
-                <tr><td style={{ ...S.td, fontWeight: 600 }}>Name</td><td style={S.td}>{selectedPatient.name}</td></tr>
-                <tr><td style={{ ...S.td, fontWeight: 600 }}>Ward</td><td style={S.td}>{selectedPatient.ward || 'Unknown'}</td></tr>
-                <tr><td style={{ ...S.td, fontWeight: 600 }}>Room/Bed</td><td style={S.td}>{selectedPatient.roomBed || 'Unknown'}</td></tr>
-                <tr><td style={{ ...S.td, fontWeight: 600 }}>Admit Date</td><td style={S.td}>{selectedPatient.admitDate || 'Unknown'}</td></tr>
+                <tr>
+                  <td style={{ ...S.td, fontWeight: 600, width: '140px' }}>DFN</td>
+                  <td style={S.td}>{selectedPatient.dfn}</td>
+                </tr>
+                <tr>
+                  <td style={{ ...S.td, fontWeight: 600 }}>Name</td>
+                  <td style={S.td}>{selectedPatient.name}</td>
+                </tr>
+                <tr>
+                  <td style={{ ...S.td, fontWeight: 600 }}>Ward</td>
+                  <td style={S.td}>{selectedPatient.ward || 'Unknown'}</td>
+                </tr>
+                <tr>
+                  <td style={{ ...S.td, fontWeight: 600 }}>Room/Bed</td>
+                  <td style={S.td}>{selectedPatient.roomBed || 'Unknown'}</td>
+                </tr>
+                <tr>
+                  <td style={{ ...S.td, fontWeight: 600 }}>Admit Date</td>
+                  <td style={S.td}>{selectedPatient.admitDate || 'Unknown'}</td>
+                </tr>
               </tbody>
             </table>
             <div style={{ marginTop: '16px', display: 'flex', gap: '8px' }}>
@@ -554,11 +618,16 @@ function BedboardTab() {
     setLoading(false);
   }, []);
 
-  useEffect(() => { loadWards(); }, [loadWards]);
+  useEffect(() => {
+    loadWards();
+  }, [loadWards]);
 
   useEffect(() => {
     if (selectedWard) loadBedboard(selectedWard);
-    else { setBeds([]); setWardName(''); }
+    else {
+      setBeds([]);
+      setWardName('');
+    }
   }, [selectedWard, loadBedboard]);
 
   return (
@@ -573,7 +642,9 @@ function BedboardTab() {
           >
             <option value="">-- Select Ward --</option>
             {wards.map((w) => (
-              <option key={w.ien} value={w.ien}>{w.name} ({w.patientCount})</option>
+              <option key={w.ien} value={w.ien}>
+                {w.name} ({w.patientCount})
+              </option>
             ))}
           </select>
           {wardName && <span style={{ fontWeight: 600, color: '#2b6cb0' }}>{wardName}</span>}
@@ -623,7 +694,14 @@ function BedboardTab() {
               </div>
             ))}
             {beds.length === 0 && (
-              <div style={{ gridColumn: '1 / -1', textAlign: 'center', color: '#a0aec0', padding: '24px' }}>
+              <div
+                style={{
+                  gridColumn: '1 / -1',
+                  textAlign: 'center',
+                  color: '#a0aec0',
+                  padding: '24px',
+                }}
+              >
                 No beds with patients found for this ward
               </div>
             )}
@@ -635,21 +713,58 @@ function BedboardTab() {
       {selectedBed && (
         <div style={S.modal} onClick={() => setSelectedBed(null)}>
           <div style={S.modalContent} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h3 style={{ margin: 0, fontSize: '16px', color: '#1a365d' }}>Bed Occupancy Detail</h3>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '16px',
+              }}
+            >
+              <h3 style={{ margin: 0, fontSize: '16px', color: '#1a365d' }}>
+                Bed Occupancy Detail
+              </h3>
               <button
                 onClick={() => setSelectedBed(null)}
-                style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '18px', color: '#a0aec0' }}
-              >&times;</button>
+                style={{
+                  border: 'none',
+                  background: 'none',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  color: '#a0aec0',
+                }}
+              >
+                &times;
+              </button>
             </div>
             <table style={{ ...S.table, fontSize: '13px' }}>
               <tbody>
-                <tr><td style={{ ...S.td, fontWeight: 600, width: '120px' }}>Room/Bed</td><td style={S.td}>{selectedBed.roomBed}</td></tr>
-                <tr><td style={{ ...S.td, fontWeight: 600 }}>Ward</td><td style={S.td}>{selectedBed.ward}</td></tr>
-                <tr><td style={{ ...S.td, fontWeight: 600 }}>Status</td><td style={S.td}><span style={S.badge('blue')}>Occupied</span></td></tr>
-                <tr><td style={{ ...S.td, fontWeight: 600 }}>Patient</td><td style={S.td}>{selectedBed.patientName || '-'}</td></tr>
-                <tr><td style={{ ...S.td, fontWeight: 600 }}>DFN</td><td style={S.td}>{selectedBed.patientDfn || '-'}</td></tr>
-                <tr><td style={{ ...S.td, fontWeight: 600 }}>Admit Date</td><td style={S.td}>{selectedBed.admitDate || '-'}</td></tr>
+                <tr>
+                  <td style={{ ...S.td, fontWeight: 600, width: '120px' }}>Room/Bed</td>
+                  <td style={S.td}>{selectedBed.roomBed}</td>
+                </tr>
+                <tr>
+                  <td style={{ ...S.td, fontWeight: 600 }}>Ward</td>
+                  <td style={S.td}>{selectedBed.ward}</td>
+                </tr>
+                <tr>
+                  <td style={{ ...S.td, fontWeight: 600 }}>Status</td>
+                  <td style={S.td}>
+                    <span style={S.badge('blue')}>Occupied</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ ...S.td, fontWeight: 600 }}>Patient</td>
+                  <td style={S.td}>{selectedBed.patientName || '-'}</td>
+                </tr>
+                <tr>
+                  <td style={{ ...S.td, fontWeight: 600 }}>DFN</td>
+                  <td style={S.td}>{selectedBed.patientDfn || '-'}</td>
+                </tr>
+                <tr>
+                  <td style={{ ...S.td, fontWeight: 600 }}>Admit Date</td>
+                  <td style={S.td}>{selectedBed.admitDate || '-'}</td>
+                </tr>
               </tbody>
             </table>
             <div style={{ marginTop: '12px' }}>
@@ -704,17 +819,23 @@ function ADTWorkflowTab() {
       <div style={S.card}>
         <h3 style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#2d3748' }}>ADT Actions</h3>
         <p style={{ fontSize: '13px', color: '#718096', margin: '0 0 16px 0' }}>
-          Select an action below. Write operations require DG ADT package RPCs that are not available
-          in the WorldVistA sandbox. Each action shows what VistA integration is needed.
+          Select an action below. Write operations require DG ADT package RPCs that are not
+          available in the WorldVistA sandbox. Each action shows what VistA integration is needed.
         </p>
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <button style={S.actionBtn(false)} onClick={() => handleAction('admit')}>
             Admit Patient
           </button>
-          <button style={{ ...S.actionBtn(false), background: '#d69e2e' }} onClick={() => handleAction('transfer')}>
+          <button
+            style={{ ...S.actionBtn(false), background: '#d69e2e' }}
+            onClick={() => handleAction('transfer')}
+          >
             Transfer Patient
           </button>
-          <button style={{ ...S.actionBtn(false), background: '#e53e3e' }} onClick={() => handleAction('discharge')}>
+          <button
+            style={{ ...S.actionBtn(false), background: '#e53e3e' }}
+            onClick={() => handleAction('discharge')}
+          >
             Discharge Patient
           </button>
         </div>
@@ -723,15 +844,15 @@ function ADTWorkflowTab() {
       <div style={{ ...S.pendingBanner, background: '#e8f4f8', border: '1px solid #90cdf4' }}>
         <div style={{ ...S.pendingTitle, color: '#2b6cb0' }}>Unsupported in Sandbox</div>
         <div style={S.pendingText}>
-          ADT write operations (Admit/Transfer/Discharge) target the DG ADT package
-          (<code>DGPM</code> routines) which is not exposed in the WorldVistA Docker sandbox
-          context <code>OR CPRS GUI CHART</code>. These will activate when
-          DG ADT write RPCs become available on the connected VistA instance.
+          ADT write operations (Admit/Transfer/Discharge) target the DG ADT package (
+          <code>DGPM</code> routines) which is not exposed in the WorldVistA Docker sandbox context{' '}
+          <code>OR CPRS GUI CHART</code>. These will activate when DG ADT write RPCs become
+          available on the connected VistA instance.
         </div>
         <div style={S.codeBlock}>
           Target RPCs: DGPM NEW ADMISSION, DGPM NEW TRANSFER, DGPM NEW DISCHARGE{'\n'}
-          VistA Files: PATIENT MOVEMENT (405), WARD LOCATION (42), PATIENT (2){'\n'}
-          M Routines: DGPMV, DGADM, DGTRAN, DGDIS
+          VistA Files: PATIENT MOVEMENT (405), WARD LOCATION (42), PATIENT (2){'\n'}M Routines:
+          DGPMV, DGADM, DGTRAN, DGDIS
         </div>
       </div>
 
@@ -739,7 +860,14 @@ function ADTWorkflowTab() {
       {showModal && (
         <div style={S.modal} onClick={closeModal}>
           <div style={S.modalContent} onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '16px',
+              }}
+            >
               <h3 style={{ margin: 0, fontSize: '16px', color: '#1a365d' }}>
                 {showModal === 'admit' && 'Admit Patient'}
                 {showModal === 'transfer' && 'Transfer Patient'}
@@ -747,8 +875,16 @@ function ADTWorkflowTab() {
               </h3>
               <button
                 onClick={closeModal}
-                style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: '18px', color: '#a0aec0' }}
-              >&times;</button>
+                style={{
+                  border: 'none',
+                  background: 'none',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  color: '#a0aec0',
+                }}
+              >
+                &times;
+              </button>
             </div>
 
             {loading && <div style={S.loading}>Checking integration status...</div>}
@@ -757,9 +893,11 @@ function ADTWorkflowTab() {
               <div>
                 <div style={S.pendingBanner}>
                   <div style={S.pendingTitle}>
-                    {pendingInfo.status === 'unsupported-in-sandbox' ? 'Unsupported in Sandbox'
-                      : pendingInfo.status === 'integration-pending' ? 'Integration Pending'
-                      : 'Error'}
+                    {pendingInfo.status === 'unsupported-in-sandbox'
+                      ? 'Unsupported in Sandbox'
+                      : pendingInfo.status === 'integration-pending'
+                        ? 'Integration Pending'
+                        : 'Error'}
                   </div>
                   <div style={S.pendingText}>{pendingInfo.message}</div>
                 </div>
@@ -768,14 +906,29 @@ function ADTWorkflowTab() {
                   <div style={{ marginTop: '12px' }}>
                     <div style={S.label}>VistA Integration Requirements:</div>
                     <div style={S.codeBlock}>
-                      <div><strong>Target RPC:</strong> {pendingInfo.pendingTargets.join(', ')}</div>
-                      <div><strong>VistA Files:</strong> {pendingInfo.vistaGrounding.vistaFiles.join(', ')}</div>
-                      <div><strong>M Routines:</strong> {pendingInfo.vistaGrounding.targetRoutines.join(', ')}</div>
+                      <div>
+                        <strong>Target RPC:</strong> {pendingInfo.pendingTargets.join(', ')}
+                      </div>
+                      <div>
+                        <strong>VistA Files:</strong>{' '}
+                        {pendingInfo.vistaGrounding.vistaFiles.join(', ')}
+                      </div>
+                      <div>
+                        <strong>M Routines:</strong>{' '}
+                        {pendingInfo.vistaGrounding.targetRoutines.join(', ')}
+                      </div>
                       {pendingInfo.vistaGrounding.requiredFields && (
-                        <div><strong>Required Fields:</strong> {pendingInfo.vistaGrounding.requiredFields.join(', ')}</div>
+                        <div>
+                          <strong>Required Fields:</strong>{' '}
+                          {pendingInfo.vistaGrounding.requiredFields.join(', ')}
+                        </div>
                       )}
-                      <div><strong>Migration Path:</strong> {pendingInfo.vistaGrounding.migrationPath}</div>
-                      <div><strong>Sandbox Note:</strong> {pendingInfo.vistaGrounding.sandboxNote}</div>
+                      <div>
+                        <strong>Migration Path:</strong> {pendingInfo.vistaGrounding.migrationPath}
+                      </div>
+                      <div>
+                        <strong>Sandbox Note:</strong> {pendingInfo.vistaGrounding.sandboxNote}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -868,14 +1021,15 @@ function MovementTimelineTab() {
                 <div style={{ fontSize: '12px', color: '#a0aec0', marginBottom: '2px' }}>
                   {m.date || 'Unknown date'}
                 </div>
-                <div style={{ fontWeight: 600, fontSize: '13px', color: '#2d3748' }}>
-                  {m.type}
-                </div>
+                <div style={{ fontWeight: 600, fontSize: '13px', color: '#2d3748' }}>{m.type}</div>
                 <div style={{ fontSize: '13px', color: '#4a5568' }}>
                   {m.fromLocation && <span>From: {m.fromLocation} &rarr; </span>}
                   {m.toLocation && <span>To: {m.toLocation}</span>}
                   {!m.fromLocation && !m.toLocation && m.ward && (
-                    <span>Ward: {m.ward}{m.roomBed ? `, Bed: ${m.roomBed}` : ''}</span>
+                    <span>
+                      Ward: {m.ward}
+                      {m.roomBed ? `, Bed: ${m.roomBed}` : ''}
+                    </span>
                   )}
                 </div>
                 {m.provider && (
@@ -900,12 +1054,22 @@ function MovementTimelineTab() {
           <div style={S.pendingText}>{pendingNote}</div>
           {vistaGrounding && (
             <div style={S.codeBlock}>
-              <div><strong>Target RPC:</strong> ZVEADTM LIST</div>
-              <div><strong>VistA Files:</strong> {vistaGrounding.vistaFiles?.join(', ')}</div>
-              <div><strong>M Routines:</strong> {vistaGrounding.targetRoutines?.join(', ')}</div>
-              <div><strong>Migration Path:</strong> {vistaGrounding.migrationPath}</div>
+              <div>
+                <strong>Target RPC:</strong> ZVEADTM LIST
+              </div>
+              <div>
+                <strong>VistA Files:</strong> {vistaGrounding.vistaFiles?.join(', ')}
+              </div>
+              <div>
+                <strong>M Routines:</strong> {vistaGrounding.targetRoutines?.join(', ')}
+              </div>
+              <div>
+                <strong>Migration Path:</strong> {vistaGrounding.migrationPath}
+              </div>
               {vistaGrounding.sandboxNote && (
-                <div><strong>Sandbox Note:</strong> {vistaGrounding.sandboxNote}</div>
+                <div>
+                  <strong>Sandbox Note:</strong> {vistaGrounding.sandboxNote}
+                </div>
               )}
             </div>
           )}
@@ -931,11 +1095,7 @@ export default function InpatientPage() {
 
       <div style={S.tabBar}>
         {TABS.map((t) => (
-          <button
-            key={t.id}
-            style={S.tab(tab === t.id)}
-            onClick={() => setTab(t.id)}
-          >
+          <button key={t.id} style={S.tab(tab === t.id)} onClick={() => setTab(t.id)}>
             {t.label}
           </button>
         ))}

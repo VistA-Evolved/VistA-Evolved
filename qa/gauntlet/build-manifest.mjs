@@ -16,34 +16,34 @@
  *   node qa/gauntlet/build-manifest.mjs
  */
 
-import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from "node:fs";
-import { join, resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { join, resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, "../..");
-const PROMPTS_DIR = join(ROOT, "prompts");
-const INDEX_PATH = join(ROOT, "docs", "qa", "phase-index.json");
-const OVERRIDES_PATH = join(__dirname, "phase-manifest.overrides.json");
-const OUTPUT_PATH = join(__dirname, "phase-manifest.json");
+const ROOT = resolve(__dirname, '../..');
+const PROMPTS_DIR = join(ROOT, 'prompts');
+const INDEX_PATH = join(ROOT, 'docs', 'qa', 'phase-index.json');
+const OVERRIDES_PATH = join(__dirname, 'phase-manifest.overrides.json');
+const OUTPUT_PATH = join(__dirname, 'phase-manifest.json');
 
 // ── Tag inference from folder name keywords ─────────────────
 
 const TAG_KEYWORDS = {
-  rcm: ["RCM", "BILLING", "PAYER", "CLAIM", "EDI"],
-  portal: ["PORTAL"],
-  cprs: ["CPRS", "CHART", "COVER"],
-  security: ["SECURITY", "IAM", "HARDENING", "AUDIT", "AUTH"],
-  vista: ["VISTA", "RPC", "ALIGNMENT"],
-  imaging: ["IMAGING", "DICOM", "PACS"],
-  telehealth: ["TELEHEALTH"],
-  analytics: ["ANALYTICS", "BI"],
-  interop: ["INTEROP", "HL7"],
-  observability: ["OBSERVABILITY", "TELEMETRY", "OTEL"],
-  modularity: ["MODULAR", "MODULE", "SKU"],
-  durability: ["DURABILITY", "RESTART", "PERSIST"],
-  qa: ["QA", "GAUNTLET", "VERIFY", "HARNESS"],
-  infrastructure: ["BOOTSTRAP", "HELLO", "SANDBOX", "DOCKER"],
+  rcm: ['RCM', 'BILLING', 'PAYER', 'CLAIM', 'EDI'],
+  portal: ['PORTAL'],
+  cprs: ['CPRS', 'CHART', 'COVER'],
+  security: ['SECURITY', 'IAM', 'HARDENING', 'AUDIT', 'AUTH'],
+  vista: ['VISTA', 'RPC', 'ALIGNMENT'],
+  imaging: ['IMAGING', 'DICOM', 'PACS'],
+  telehealth: ['TELEHEALTH'],
+  analytics: ['ANALYTICS', 'BI'],
+  interop: ['INTEROP', 'HL7'],
+  observability: ['OBSERVABILITY', 'TELEMETRY', 'OTEL'],
+  modularity: ['MODULAR', 'MODULE', 'SKU'],
+  durability: ['DURABILITY', 'RESTART', 'PERSIST'],
+  qa: ['QA', 'GAUNTLET', 'VERIFY', 'HARNESS'],
+  infrastructure: ['BOOTSTRAP', 'HELLO', 'SANDBOX', 'DOCKER'],
 };
 
 function inferTags(folderName) {
@@ -54,14 +54,26 @@ function inferTags(folderName) {
       tags.push(tag);
     }
   }
-  return tags.length > 0 ? tags : ["general"];
+  return tags.length > 0 ? tags : ['general'];
 }
 
 // ── Default gate assignments by tag ─────────────────────────
 
-const FAST_GATES = ["G0_prompts_integrity", "G1_build_typecheck", "G2_unit_tests", "G3_security_scans", "G4_contract_alignment"];
-const RC_GATES = [...FAST_GATES, "G5_api_smoke", "G7_restart_durability", "G8_ui_dead_click", "G10_system_audit"];
-const FULL_GATES = [...RC_GATES, "G6_vista_probe", "G9_performance_budget"];
+const FAST_GATES = [
+  'G0_prompts_integrity',
+  'G1_build_typecheck',
+  'G2_unit_tests',
+  'G3_security_scans',
+  'G4_contract_alignment',
+];
+const RC_GATES = [
+  ...FAST_GATES,
+  'G5_api_smoke',
+  'G7_restart_durability',
+  'G8_ui_dead_click',
+  'G10_system_audit',
+];
+const FULL_GATES = [...RC_GATES, 'G6_vista_probe', 'G9_performance_budget'];
 
 function buildSuites(tags) {
   const fast = [...FAST_GATES];
@@ -69,15 +81,15 @@ function buildSuites(tags) {
   const full = [...FULL_GATES];
 
   // Tag-specific additions
-  if (tags.includes("vista") && !rc.includes("G6_vista_probe")) {
-    rc.push("G6_vista_probe");
+  if (tags.includes('vista') && !rc.includes('G6_vista_probe')) {
+    rc.push('G6_vista_probe');
   }
-  if (tags.includes("rcm") && !fast.includes("G7_restart_durability")) {
-    fast.push("G7_restart_durability");
+  if (tags.includes('rcm') && !fast.includes('G7_restart_durability')) {
+    fast.push('G7_restart_durability');
   }
-  if (tags.includes("cprs")) {
-    if (!fast.includes("G4_contract_alignment")) fast.push("G4_contract_alignment");
-    if (!rc.includes("G8_ui_dead_click")) rc.push("G8_ui_dead_click");
+  if (tags.includes('cprs')) {
+    if (!fast.includes('G4_contract_alignment')) fast.push('G4_contract_alignment');
+    if (!rc.includes('G8_ui_dead_click')) rc.push('G8_ui_dead_click');
   }
 
   return { fast, rc, full };
@@ -87,7 +99,7 @@ function buildSuites(tags) {
 
 let phaseIndex = new Map();
 if (existsSync(INDEX_PATH)) {
-  const raw = readFileSync(INDEX_PATH, "utf-8");
+  const raw = readFileSync(INDEX_PATH, 'utf-8');
   const data = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
   for (const p of data.phases || []) {
     phaseIndex.set(String(p.phaseNumber), p);
@@ -109,7 +121,7 @@ for (const folder of allFolders) {
 
   const phaseId = m[2]; // e.g. "37B", "112"
   const titleSlug = m[3]; // e.g. "QA-GAUNTLET"
-  const title = titleSlug.replace(/-/g, " ");
+  const title = titleSlug.replace(/-/g, ' ');
   const tags = inferTags(folder);
   const suites = buildSuites(tags);
 
@@ -128,9 +140,7 @@ for (const folder of allFolders) {
     }
     if (idx.uiComponents && idx.uiComponents.length > 0) {
       // Map components to likely routes
-      smoke.uiRoutes = idx.uiComponents
-        .filter((c) => c.includes("/"))
-        .slice(0, 5);
+      smoke.uiRoutes = idx.uiComponents.filter((c) => c.includes('/')).slice(0, 5);
     }
   }
 
@@ -141,14 +151,14 @@ for (const folder of allFolders) {
     tags,
     suites,
     smoke,
-    notes: "",
+    notes: '',
   });
 }
 
 // ── Merge overrides ─────────────────────────────────────────
 
 if (existsSync(OVERRIDES_PATH)) {
-  const raw = readFileSync(OVERRIDES_PATH, "utf-8");
+  const raw = readFileSync(OVERRIDES_PATH, 'utf-8');
   const overrides = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
 
   for (const ov of overrides) {
@@ -178,10 +188,10 @@ if (existsSync(OVERRIDES_PATH)) {
 
 const output = {
   generatedAt: new Date().toISOString(),
-  generator: "qa/gauntlet/build-manifest.mjs",
+  generator: 'qa/gauntlet/build-manifest.mjs',
   phaseCount: manifest.length,
   phases: manifest,
 };
 
-writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + "\n", "utf-8");
+writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + '\n', 'utf-8');
 console.log(`Phase manifest generated: ${manifest.length} phases -> ${OUTPUT_PATH}`);

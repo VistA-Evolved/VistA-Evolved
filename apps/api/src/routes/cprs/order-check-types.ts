@@ -10,24 +10,24 @@
 /* Order Check Severity                                                */
 /* ------------------------------------------------------------------ */
 
-export type OrderCheckSeverity = "high" | "moderate" | "low" | "info";
+export type OrderCheckSeverity = 'high' | 'moderate' | 'low' | 'info';
 
 /* ------------------------------------------------------------------ */
 /* Order Check Category                                                */
 /* ------------------------------------------------------------------ */
 
 export type OrderCheckCategory =
-  | "drug-allergy"        // ORWDXC checks allergy reactant match
-  | "drug-drug"           // Drug-drug interaction (PSJOE)
-  | "duplicate-therapy"   // Duplicate therapeutic class
-  | "duplicate-order"     // Same drug already ordered
-  | "contraindication"    // Clinical contraindication
-  | "dose-range"          // Dose outside normal range
-  | "critical-result"     // Pending critical lab result
-  | "age-weight"          // Age/weight based check
-  | "pregnancy"           // Pregnancy contraindication
-  | "renal"               // Renal dose adjustment needed
-  | "other";              // Unclassified check
+  | 'drug-allergy' // ORWDXC checks allergy reactant match
+  | 'drug-drug' // Drug-drug interaction (PSJOE)
+  | 'duplicate-therapy' // Duplicate therapeutic class
+  | 'duplicate-order' // Same drug already ordered
+  | 'contraindication' // Clinical contraindication
+  | 'dose-range' // Dose outside normal range
+  | 'critical-result' // Pending critical lab result
+  | 'age-weight' // Age/weight based check
+  | 'pregnancy' // Pregnancy contraindication
+  | 'renal' // Renal dose adjustment needed
+  | 'other'; // Unclassified check
 
 /* ------------------------------------------------------------------ */
 /* Order Check Finding                                                 */
@@ -70,7 +70,7 @@ export interface OrderCheckSession {
   /** All findings from ORWDXC ACCEPT */
   findings: OrderCheckFinding[];
   /** Session state */
-  state: "open" | "reviewed" | "acknowledged" | "expired";
+  state: 'open' | 'reviewed' | 'acknowledged' | 'expired';
   /** Created timestamp */
   createdAt: string;
   /** Updated timestamp */
@@ -101,7 +101,7 @@ export interface PreSignCheckResult {
   /** Warnings (non-blocking) */
   warnings: string[];
   /** Source information */
-  source: "vista" | "integration-pending";
+  source: 'vista' | 'integration-pending';
   /** RPCs used */
   rpcUsed: string[];
 }
@@ -126,16 +126,16 @@ export interface OrderCheckAcknowledgeRequest {
 /* ------------------------------------------------------------------ */
 
 const CATEGORY_PATTERNS: Array<[RegExp, OrderCheckCategory]> = [
-  [/allerg/i, "drug-allergy"],
-  [/interact/i, "drug-drug"],
-  [/duplicate\s*(therap|class)/i, "duplicate-therapy"],
-  [/duplicate\s*(order|med)/i, "duplicate-order"],
-  [/contraindic/i, "contraindication"],
-  [/dose\s*(rang|limit|exceed)/i, "dose-range"],
-  [/critical\s*(result|lab|value)/i, "critical-result"],
-  [/age|weight|pediatric|geriatric/i, "age-weight"],
-  [/pregnan/i, "pregnancy"],
-  [/renal|creatinine|gfr|kidney/i, "renal"],
+  [/allerg/i, 'drug-allergy'],
+  [/interact/i, 'drug-drug'],
+  [/duplicate\s*(therap|class)/i, 'duplicate-therapy'],
+  [/duplicate\s*(order|med)/i, 'duplicate-order'],
+  [/contraindic/i, 'contraindication'],
+  [/dose\s*(rang|limit|exceed)/i, 'dose-range'],
+  [/critical\s*(result|lab|value)/i, 'critical-result'],
+  [/age|weight|pediatric|geriatric/i, 'age-weight'],
+  [/pregnan/i, 'pregnancy'],
+  [/renal|creatinine|gfr|kidney/i, 'renal'],
 ];
 
 /** Detect order check category from message text. */
@@ -143,23 +143,27 @@ export function detectCategory(message: string): OrderCheckCategory {
   for (const [pattern, category] of CATEGORY_PATTERNS) {
     if (pattern.test(message)) return category;
   }
-  return "other";
+  return 'other';
 }
 
 /** Map VistA severity code to structured severity. */
 export function mapSeverity(raw: string): OrderCheckSeverity {
-  const normalized = (raw || "").toLowerCase().trim();
-  if (normalized === "high" || normalized === "1" || normalized === "critical") return "high";
-  if (normalized === "moderate" || normalized === "2" || normalized === "significant") return "moderate";
-  if (normalized === "low" || normalized === "3" || normalized === "minor") return "low";
-  return "info";
+  const normalized = (raw || '').toLowerCase().trim();
+  if (normalized === 'high' || normalized === '1' || normalized === 'critical') return 'high';
+  if (normalized === 'moderate' || normalized === '2' || normalized === 'significant')
+    return 'moderate';
+  if (normalized === 'low' || normalized === '3' || normalized === 'minor') return 'low';
+  return 'info';
 }
 
 /** Determine if a finding requires override before signing. */
-export function requiresOverrideForCategory(category: OrderCheckCategory, severity: OrderCheckSeverity): boolean {
+export function requiresOverrideForCategory(
+  category: OrderCheckCategory,
+  severity: OrderCheckSeverity
+): boolean {
   // High-severity drug-allergy and drug-drug ALWAYS require override
-  if (severity === "high") return true;
-  if (category === "drug-allergy" && severity === "moderate") return true;
-  if (category === "drug-drug" && severity === "moderate") return true;
+  if (severity === 'high') return true;
+  if (category === 'drug-allergy' && severity === 'moderate') return true;
+  if (category === 'drug-drug' && severity === 'moderate') return true;
   return false;
 }

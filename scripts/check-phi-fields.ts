@@ -17,12 +17,12 @@
  *   1 = violations found
  */
 
-import { readFileSync, readdirSync, statSync, existsSync, writeFileSync, mkdirSync } from "fs";
-import { join, relative, extname, dirname } from "path";
+import { readFileSync, readdirSync, statSync, existsSync, writeFileSync, mkdirSync } from 'fs';
+import { join, relative, extname, dirname } from 'path';
 
 const ROOT = process.cwd();
-const SRC_DIR = join(ROOT, "apps", "api", "src");
-const SKIP_DIRS = new Set(["node_modules", ".next", "dist", "test", "tests"]);
+const SRC_DIR = join(ROOT, 'apps', 'api', 'src');
+const SKIP_DIRS = new Set(['node_modules', '.next', 'dist', 'test', 'tests']);
 
 /* ------------------------------------------------------------------ */
 /* Load blocklist from phi-redaction.ts dynamically                     */
@@ -32,23 +32,57 @@ const SKIP_DIRS = new Set(["node_modules", ".next", "dist", "test", "tests"]);
 // These must stay in sync with apps/api/src/lib/phi-redaction.ts
 const BLOCKED_FIELDS = new Set([
   // Credentials
-  "accesscode", "verifycode", "password", "secret",
-  "token", "sessiontoken", "avplain",
-  "access_code", "verify_code",
-  "authorization", "cookie", "set-cookie",
-  "x-service-key", "api_key", "apikey",
+  'accesscode',
+  'verifycode',
+  'password',
+  'secret',
+  'token',
+  'sessiontoken',
+  'avplain',
+  'access_code',
+  'verify_code',
+  'authorization',
+  'cookie',
+  'set-cookie',
+  'x-service-key',
+  'api_key',
+  'apikey',
   // PHI
-  "ssn", "socialsecuritynumber", "social_security_number",
-  "dob", "dateofbirth", "date_of_birth", "birthdate",
-  "notetext", "notecontent", "problemtext",
-  "patientname", "patient_name", "membername", "member_name",
-  "subscribername", "subscriber_name",
-  "memberid", "member_id", "subscriberid", "subscriber_id",
-  "insuranceid", "insurance_id", "policyid", "policy_id",
-  "medicarenum", "medicaidnum",
-  "address", "streetaddress", "street_address",
-  "phonenumber", "phone_number", "phone",
-  "email", "emailaddress", "email_address",
+  'ssn',
+  'socialsecuritynumber',
+  'social_security_number',
+  'dob',
+  'dateofbirth',
+  'date_of_birth',
+  'birthdate',
+  'notetext',
+  'notecontent',
+  'problemtext',
+  'patientname',
+  'patient_name',
+  'membername',
+  'member_name',
+  'subscribername',
+  'subscriber_name',
+  'memberid',
+  'member_id',
+  'subscriberid',
+  'subscriber_id',
+  'insuranceid',
+  'insurance_id',
+  'policyid',
+  'policy_id',
+  'medicarenum',
+  'medicaidnum',
+  'address',
+  'streetaddress',
+  'street_address',
+  'phonenumber',
+  'phone_number',
+  'phone',
+  'email',
+  'emailaddress',
+  'email_address',
 ]);
 
 /* ------------------------------------------------------------------ */
@@ -63,7 +97,7 @@ function walkDir(dir: string): string[] {
     const stat = statSync(fullPath);
     if (stat.isDirectory() && !SKIP_DIRS.has(entry)) {
       files.push(...walkDir(fullPath));
-    } else if (stat.isFile() && extname(entry) === ".ts") {
+    } else if (stat.isFile() && extname(entry) === '.ts') {
       files.push(fullPath);
     }
   }
@@ -83,16 +117,16 @@ const LOG_CALL_PATTERN = /\blog\.(trace|debug|info|warn|error|fatal)\s*\([^)]*\{
 
 function scanFile(filePath: string): Violation[] {
   const violations: Violation[] = [];
-  const content = readFileSync(filePath, "utf-8");
-  const lines = content.split("\n");
-  const relPath = relative(ROOT, filePath).replace(/\\/g, "/");
+  const content = readFileSync(filePath, 'utf-8');
+  const lines = content.split('\n');
+  const relPath = relative(ROOT, filePath).replace(/\\/g, '/');
 
   // Skip phi-redaction.ts itself (it defines the blocklist)
-  if (relPath.includes("phi-redaction.ts")) return violations;
+  if (relPath.includes('phi-redaction.ts')) return violations;
   // Skip test files
-  if (relPath.includes(".test.") || relPath.includes(".spec.")) return violations;
+  if (relPath.includes('.test.') || relPath.includes('.spec.')) return violations;
   // Skip the check script itself
-  if (relPath.includes("check-phi-fields")) return violations;
+  if (relPath.includes('check-phi-fields')) return violations;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -100,7 +134,7 @@ function scanFile(filePath: string): Violation[] {
     if (!line.match(/\blog\.(trace|debug|info|warn|error|fatal)\s*\(/)) continue;
 
     // Extract potential object keys from the line and next few lines
-    const context = lines.slice(i, Math.min(i + 5, lines.length)).join(" ");
+    const context = lines.slice(i, Math.min(i + 5, lines.length)).join(' ');
 
     // Find all keys in object literals after log calls
     const keyPattern = /\b(\w+)\s*:/g;
@@ -132,7 +166,7 @@ for (const f of sourceFiles) {
   allViolations.push(...scanFile(f));
 }
 
-console.log("\n=== PHI Field Blocklist Check (Phase 48) ===\n");
+console.log('\n=== PHI Field Blocklist Check (Phase 48) ===\n');
 
 if (allViolations.length === 0) {
   console.log(`  [PASS] No blocked PHI/credential fields in ${sourceFiles.length} source files`);
@@ -154,13 +188,17 @@ if (process.env.EVIDENCE_OUTPUT) {
   mkdirSync(dirname(process.env.EVIDENCE_OUTPUT), { recursive: true });
   writeFileSync(
     process.env.EVIDENCE_OUTPUT,
-    JSON.stringify({
-      gate: "phi-fields",
-      passed: allViolations.length === 0,
-      filesScanned: sourceFiles.length,
-      violationCount: allViolations.length,
-      violations: allViolations.slice(0, 50),
-    }, null, 2),
+    JSON.stringify(
+      {
+        gate: 'phi-fields',
+        passed: allViolations.length === 0,
+        filesScanned: sourceFiles.length,
+        violationCount: allViolations.length,
+        violations: allViolations.slice(0, 50),
+      },
+      null,
+      2
+    )
   );
 }
 

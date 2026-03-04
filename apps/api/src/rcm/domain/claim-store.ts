@@ -16,8 +16,8 @@
  * 4. Production: PostgreSQL or VistA-native with EDI gateway integration
  */
 
-import type { Claim, ClaimStatus } from "./claim.js";
-import type { Remittance } from "./remit.js";
+import type { Claim, ClaimStatus } from './claim.js';
+import type { Remittance } from './remit.js';
 import { log } from '../../lib/logger.js';
 
 /* ── DB repo interface (lazy-wired at startup) ──────────────── */
@@ -51,7 +51,7 @@ export function initClaimStoreRepo(repo: ClaimRepo): void {
 }
 
 function dbWarn(op: string, err: any): void {
-  if (process.env.NODE_ENV !== "test") {
+  if (process.env.NODE_ENV !== 'test') {
     log.warn(`[claim-store] DB ${op} failed (cache-only fallback)`, { err: err?.message ?? err });
   }
 }
@@ -101,7 +101,9 @@ function claimToDbRow(claim: Claim): Record<string, unknown> {
     remitDate: claim.remitDate,
     vistaChargeIen: claim.vistaChargeIen,
     vistaArIen: claim.vistaArIen,
-    validationResultJson: claim.validationResult ? JSON.stringify(claim.validationResult) : undefined,
+    validationResultJson: claim.validationResult
+      ? JSON.stringify(claim.validationResult)
+      : undefined,
     pipelineEntryId: claim.pipelineEntryId,
     exportArtifactPath: claim.exportArtifactPath,
     isDemo: claim.isDemo,
@@ -117,9 +119,9 @@ function dbRowToClaim(row: any): Claim {
   const { diagnosesJson, linesJson, auditTrailJson, validationResultJson, ...rest } = row;
   return {
     ...rest,
-    diagnoses: JSON.parse(diagnosesJson ?? "[]"),
-    lines: JSON.parse(linesJson ?? "[]"),
-    auditTrail: JSON.parse(auditTrailJson ?? "[]"),
+    diagnoses: JSON.parse(diagnosesJson ?? '[]'),
+    lines: JSON.parse(linesJson ?? '[]'),
+    auditTrail: JSON.parse(auditTrailJson ?? '[]'),
     validationResult: validationResultJson ? JSON.parse(validationResultJson) : undefined,
     isDemo: Boolean(rest.isDemo),
     isMock: Boolean(rest.isMock),
@@ -137,7 +139,11 @@ export function storeClaim(claim: Claim): void {
 
   // Write-through to DB
   if (dbRepo) {
-    try { dbRepo.insertClaim(claimToDbRow(claim)); } catch (e) { dbWarn("insertClaim", e); }
+    try {
+      dbRepo.insertClaim(claimToDbRow(claim));
+    } catch (e) {
+      dbWarn('insertClaim', e);
+    }
   }
 }
 
@@ -160,7 +166,9 @@ export function getClaim(id: string): Claim | undefined {
         tenantClaimIndex.get(claim.tenantId)!.add(claim.id);
         return claim;
       }
-    } catch (e) { dbWarn("findClaimById", e); }
+    } catch (e) {
+      dbWarn('findClaimById', e);
+    }
   }
   return undefined;
 }
@@ -182,7 +190,9 @@ export function updateClaim(claim: Claim): void {
         adjustmentAmount: claim.adjustmentAmount,
         patientResponsibility: claim.patientResponsibility,
         remitDate: claim.remitDate,
-        validationResultJson: claim.validationResult ? JSON.stringify(claim.validationResult) : undefined,
+        validationResultJson: claim.validationResult
+          ? JSON.stringify(claim.validationResult)
+          : undefined,
         pipelineEntryId: claim.pipelineEntryId,
         exportArtifactPath: claim.exportArtifactPath,
         submissionSafetyMode: claim.submissionSafetyMode,
@@ -191,7 +201,9 @@ export function updateClaim(claim: Claim): void {
         linesJson: JSON.stringify(claim.lines ?? []),
         totalCharge: claim.totalCharge,
       });
-    } catch (e) { dbWarn("updateClaim", e); }
+    } catch (e) {
+      dbWarn('updateClaim', e);
+    }
   }
 }
 
@@ -203,7 +215,7 @@ export function listClaims(
     payerId?: string;
     limit?: number;
     offset?: number;
-  },
+  }
 ): { claims: Claim[]; total: number } {
   const ids = tenantClaimIndex.get(tenantId);
   if (!ids || ids.size === 0) {
@@ -226,19 +238,21 @@ export function listClaims(
           tenantClaimIndex.get(c.tenantId)!.add(c.id);
         }
         return { claims: claimsResult, total };
-      } catch (e) { dbWarn("findClaimsByTenant", e); }
+      } catch (e) {
+        dbWarn('findClaimsByTenant', e);
+      }
     }
     return { claims: [], total: 0 };
   }
 
   let result = Array.from(ids)
-    .map(id => claims.get(id)!)
+    .map((id) => claims.get(id)!)
     .filter(Boolean)
     .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 
-  if (filters?.status) result = result.filter(c => c.status === filters.status);
-  if (filters?.patientDfn) result = result.filter(c => c.patientDfn === filters.patientDfn);
-  if (filters?.payerId) result = result.filter(c => c.payerId === filters.payerId);
+  if (filters?.status) result = result.filter((c) => c.status === filters.status);
+  if (filters?.patientDfn) result = result.filter((c) => c.patientDfn === filters.patientDfn);
+  if (filters?.payerId) result = result.filter((c) => c.payerId === filters.payerId);
 
   const total = result.length;
   const offset = filters?.offset ?? 0;
@@ -293,7 +307,11 @@ export function storeRemittance(remit: Remittance): void {
   remittances.set(remit.id, remit);
 
   if (dbRepo) {
-    try { dbRepo.insertRemittance(remitToDbRow(remit)); } catch (e) { dbWarn("insertRemittance", e); }
+    try {
+      dbRepo.insertRemittance(remitToDbRow(remit));
+    } catch (e) {
+      dbWarn('insertRemittance', e);
+    }
   }
 }
 
@@ -308,13 +326,15 @@ export function getRemittance(id: string): Remittance | undefined {
         const { serviceLinesJson, ...rest } = row;
         const remit = {
           ...rest,
-          serviceLines: JSON.parse(serviceLinesJson ?? "[]"),
+          serviceLines: JSON.parse(serviceLinesJson ?? '[]'),
           isMock: Boolean(rest.isMock),
         } as Remittance;
         remittances.set(remit.id, remit);
         return remit;
       }
-    } catch (e) { dbWarn("findRemittanceById", e); }
+    } catch (e) {
+      dbWarn('findRemittanceById', e);
+    }
   }
   return undefined;
 }
@@ -322,10 +342,10 @@ export function getRemittance(id: string): Remittance | undefined {
 export function listRemittances(
   tenantId: string,
   limit = 50,
-  offset = 0,
+  offset = 0
 ): { remittances: Remittance[]; total: number } {
   const all = Array.from(remittances.values())
-    .filter(r => r.tenantId === tenantId)
+    .filter((r) => r.tenantId === tenantId)
     .sort((a, b) => b.importedAt.localeCompare(a.importedAt));
 
   if (all.length === 0 && dbRepo) {
@@ -335,7 +355,7 @@ export function listRemittances(
         const { serviceLinesJson, ...rest } = r;
         return {
           ...rest,
-          serviceLines: JSON.parse(serviceLinesJson ?? "[]"),
+          serviceLines: JSON.parse(serviceLinesJson ?? '[]'),
           isMock: Boolean(rest.isMock),
         } as Remittance;
       });
@@ -343,10 +363,18 @@ export function listRemittances(
       // Count total from DB (not paginated length)
       let dbTotal = result.length;
       if (dbRepo) {
-        try { dbTotal = dbRepo.countRemittancesByTenant ? dbRepo.countRemittancesByTenant(tenantId) : result.length; } catch (_) { /* fallback to result.length */ }
+        try {
+          dbTotal = dbRepo.countRemittancesByTenant
+            ? dbRepo.countRemittancesByTenant(tenantId)
+            : result.length;
+        } catch (_) {
+          /* fallback to result.length */
+        }
       }
       return { remittances: result, total: dbTotal };
-    } catch (e) { dbWarn("findRemittancesByTenant", e); }
+    } catch (e) {
+      dbWarn('findRemittancesByTenant', e);
+    }
   }
 
   return {
@@ -356,17 +384,14 @@ export function listRemittances(
 }
 
 /** Link a remittance to a claim by matching payerClaimId */
-export function matchRemittanceToClaim(
-  remitId: string,
-  claimId: string,
-): boolean {
+export function matchRemittanceToClaim(remitId: string, claimId: string): boolean {
   const remit = getRemittance(remitId);
   const claim = getClaim(claimId);
   if (!remit || !claim) return false;
 
   remit.claimId = claimId;
   remit.matchedAt = new Date().toISOString();
-  remit.status = "matched";
+  remit.status = 'matched';
   remittances.set(remitId, remit);
 
   if (dbRepo) {
@@ -374,9 +399,11 @@ export function matchRemittanceToClaim(
       dbRepo.updateRemittance(remitId, {
         claimId,
         matchedAt: remit.matchedAt,
-        status: "matched",
+        status: 'matched',
       });
-    } catch (e) { dbWarn("updateRemittance", e); }
+    } catch (e) {
+      dbWarn('updateRemittance', e);
+    }
   }
 
   return true;

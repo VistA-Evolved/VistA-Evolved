@@ -19,11 +19,11 @@
  *   - Results from pipeline feed alarm-store.ts for alert evaluation
  */
 
-import type { DeviceObservation } from "./types.js";
+import type { DeviceObservation } from './types.js';
 
 // ── Pipeline types ─────────────────────────────────────────────
 
-export type PipelineStage = "ingest" | "validate" | "enrich" | "persist";
+export type PipelineStage = 'ingest' | 'validate' | 'enrich' | 'persist';
 
 export interface PipelineResult {
   ok: boolean;
@@ -69,12 +69,12 @@ export function resetPipelineStats(): void {
 function stageIngest(obs: Partial<DeviceObservation>): { ok: boolean; errors: string[] } {
   const errors: string[] = [];
 
-  if (!obs.id) errors.push("missing observation id");
-  if (!obs.deviceId) errors.push("missing deviceId");
-  if (!obs.gatewayId) errors.push("missing gatewayId");
-  if (!obs.code) errors.push("missing observation code");
-  if (!obs.value) errors.push("missing observation value");
-  if (!obs.observedAt) errors.push("missing observedAt timestamp");
+  if (!obs.id) errors.push('missing observation id');
+  if (!obs.deviceId) errors.push('missing deviceId');
+  if (!obs.gatewayId) errors.push('missing gatewayId');
+  if (!obs.code) errors.push('missing observation code');
+  if (!obs.value) errors.push('missing observation value');
+  if (!obs.observedAt) errors.push('missing observedAt timestamp');
 
   return { ok: errors.length === 0, errors };
 }
@@ -82,7 +82,7 @@ function stageIngest(obs: Partial<DeviceObservation>): { ok: boolean; errors: st
 function stageValidate(
   obs: Partial<DeviceObservation>,
   knownDeviceIds: Set<string>,
-  activePatientMap: Map<string, string>,
+  activePatientMap: Map<string, string>
 ): { ok: boolean; errors: string[] } {
   const errors: string[] = [];
 
@@ -104,7 +104,7 @@ function stageValidate(
 
 function stageEnrich(
   obs: Partial<DeviceObservation>,
-  activePatientMap: Map<string, string>,
+  activePatientMap: Map<string, string>
 ): { enrichments: Record<string, string> } {
   const enrichments: Record<string, string> = {};
 
@@ -113,20 +113,20 @@ function stageEnrich(
     const patientDfn = activePatientMap.get(obs.deviceId);
     if (patientDfn) {
       obs.patientId = patientDfn;
-      enrichments["patientId"] = patientDfn;
+      enrichments['patientId'] = patientDfn;
     }
   }
 
   // Add ingest timestamp if missing
   if (!obs.ingestedAt) {
     obs.ingestedAt = new Date().toISOString();
-    enrichments["ingestedAt"] = obs.ingestedAt;
+    enrichments['ingestedAt'] = obs.ingestedAt;
   }
 
   // Default tenant
   if (!obs.tenantId) {
-    obs.tenantId = "default";
-    enrichments["tenantId"] = "default";
+    obs.tenantId = 'default';
+    enrichments['tenantId'] = 'default';
   }
 
   return { enrichments };
@@ -146,7 +146,7 @@ export async function processObservation(
   obs: Partial<DeviceObservation>,
   knownDeviceIds: Set<string>,
   activePatientMap: Map<string, string>,
-  persistFn?: (observation: DeviceObservation) => Promise<void>,
+  persistFn?: (observation: DeviceObservation) => Promise<void>
 ): Promise<PipelineResult> {
   const start = Date.now();
   stats.total++;
@@ -156,7 +156,13 @@ export async function processObservation(
   if (!ingest.ok) {
     stats.failed++;
     stats.byStageFailure.ingest++;
-    return { ok: false, stage: "ingest", errors: ingest.errors, enrichments: {}, durationMs: Date.now() - start };
+    return {
+      ok: false,
+      stage: 'ingest',
+      errors: ingest.errors,
+      enrichments: {},
+      durationMs: Date.now() - start,
+    };
   }
 
   // Stage 2: Business validation
@@ -164,7 +170,13 @@ export async function processObservation(
   if (!validate.ok) {
     stats.failed++;
     stats.byStageFailure.validate++;
-    return { ok: false, stage: "validate", errors: validate.errors, enrichments: {}, durationMs: Date.now() - start };
+    return {
+      ok: false,
+      stage: 'validate',
+      errors: validate.errors,
+      enrichments: {},
+      durationMs: Date.now() - start,
+    };
   }
 
   // Stage 3: Enrichment
@@ -180,9 +192,9 @@ export async function processObservation(
       stats.byStageFailure.persist++;
       return {
         ok: false,
-        stage: "persist",
+        stage: 'persist',
         observation,
-        errors: [`persist failed: ${err.message || "unknown"}`],
+        errors: [`persist failed: ${err.message || 'unknown'}`],
         enrichments,
         durationMs: Date.now() - start,
       };
@@ -193,7 +205,7 @@ export async function processObservation(
   stats.lastProcessedAt = new Date().toISOString();
   return {
     ok: true,
-    stage: "persist",
+    stage: 'persist',
     observation,
     errors: [],
     enrichments,
@@ -208,7 +220,7 @@ export async function processObservationBatch(
   observations: Partial<DeviceObservation>[],
   knownDeviceIds: Set<string>,
   activePatientMap: Map<string, string>,
-  persistFn?: (observation: DeviceObservation) => Promise<void>,
+  persistFn?: (observation: DeviceObservation) => Promise<void>
 ): Promise<{ results: PipelineResult[]; successCount: number; failCount: number }> {
   const results: PipelineResult[] = [];
   let successCount = 0;

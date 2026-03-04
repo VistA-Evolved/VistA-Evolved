@@ -6,15 +6,15 @@
  * All adapter write methods call through here to ensure consistent audit trail.
  */
 
-import { immutableAudit } from "../lib/immutable-audit.js";
+import { immutableAudit } from '../lib/immutable-audit.js';
 
 export type AdapterWriteAction =
-  | "write.allergy"
-  | "write.vitals"
-  | "write.note"
-  | "write.problem"
-  | "write.medication"
-  | "write.order";
+  | 'write.allergy'
+  | 'write.vitals'
+  | 'write.note'
+  | 'write.problem'
+  | 'write.medication'
+  | 'write.order';
 
 export interface AdapterWriteAuditOpts {
   action: AdapterWriteAction;
@@ -39,14 +39,14 @@ export interface AdapterWriteAuditOpts {
  * by the immutable-audit layer's sanitizeAuditDetail().
  */
 export function auditAdapterWrite(opts: AdapterWriteAuditOpts): void {
-  const outcome = opts.success ? "success" : "failure";
+  const outcome = opts.success ? 'success' : 'failure';
   const actor = {
-    sub: opts.duz ?? "unknown",
-    name: "adapter-write",
-    roles: ["provider"],
+    sub: opts.duz ?? 'unknown',
+    name: 'adapter-write',
+    roles: ['provider'],
   };
   const detail: Record<string, unknown> = {
-    source: "clinical-engine-adapter",
+    source: 'clinical-engine-adapter',
     rpc: opts.rpc,
     ...(opts.ien ? { resultIen: opts.ien } : {}),
     ...(opts.errorMessage ? { error: opts.errorMessage } : {}),

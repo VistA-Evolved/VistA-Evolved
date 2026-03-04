@@ -14,10 +14,10 @@
 /* ------------------------------------------------------------------ */
 
 /** Deployment locations determine PHI handling rules. */
-export type ModelDeployment = "on-premises" | "cloud";
+export type ModelDeployment = 'on-premises' | 'cloud';
 
 /** Approved model status — only "active" models accept requests. */
-export type ModelStatus = "active" | "deprecated" | "disabled";
+export type ModelStatus = 'active' | 'deprecated' | 'disabled';
 
 /** A registered AI model with governance metadata. */
 export interface ModelConfig {
@@ -75,29 +75,29 @@ export interface PromptTemplate {
 
 /** Allowed AI use cases — strictly scoped. */
 export type AIUseCase =
-  | "intake-summary"       // Intake → clinician-ready note draft (grounded)
-  | "lab-education"        // Explain lab results in plain language
-  | "portal-search"        // Navigation help ("where do I find...")
-  | "custom";              // Facility-registered custom prompts
+  | 'intake-summary' // Intake → clinician-ready note draft (grounded)
+  | 'lab-education' // Explain lab results in plain language
+  | 'portal-search' // Navigation help ("where do I find...")
+  | 'custom'; // Facility-registered custom prompts
 
 /** Disallowed content categories — requests matching these are BLOCKED. */
 export const DISALLOWED_CATEGORIES = [
-  "diagnosis",
-  "treatment_plan",
-  "prescribing_guidance",
-  "autonomous_ordering",
-  "prognosis",
-  "differential_diagnosis",
+  'diagnosis',
+  'treatment_plan',
+  'prescribing_guidance',
+  'autonomous_ordering',
+  'prognosis',
+  'differential_diagnosis',
 ] as const;
 
-export type DisallowedCategory = typeof DISALLOWED_CATEGORIES[number];
+export type DisallowedCategory = (typeof DISALLOWED_CATEGORIES)[number];
 
 /* ------------------------------------------------------------------ */
 /* Request / Response Types                                            */
 /* ------------------------------------------------------------------ */
 
 /** Role of the actor making the AI request. */
-export type AIActorRole = "clinician" | "patient" | "proxy" | "system";
+export type AIActorRole = 'clinician' | 'patient' | 'proxy' | 'system';
 
 /** AI request — all fields required for audit trail. */
 export interface AIRequest {
@@ -132,7 +132,7 @@ export interface Citation {
 }
 
 /** Confidence level for AI-generated content. */
-export type ConfidenceLevel = "high" | "medium" | "low";
+export type ConfidenceLevel = 'high' | 'medium' | 'low';
 
 /** AI response — includes grounding metadata. */
 export interface AIResponse {
@@ -168,15 +168,15 @@ export interface AIResponse {
 
 /** Allowed RAG data sources — must match role-visible data. */
 export type RAGSourceCategory =
-  | "demographics"
-  | "medications"
-  | "allergies"
-  | "problems"
-  | "vitals"
-  | "labs"
-  | "notes"
-  | "intake"
-  | "appointments";
+  | 'demographics'
+  | 'medications'
+  | 'allergies'
+  | 'problems'
+  | 'vitals'
+  | 'labs'
+  | 'notes'
+  | 'intake'
+  | 'appointments';
 
 /** A chunk of patient context for RAG grounding. */
 export interface RAGChunk {
@@ -227,7 +227,7 @@ export interface AIAuditEvent {
   /** Hashed patient ID (never raw DFN). */
   patientHash: string | null;
   /** Outcome. */
-  outcome: "success" | "blocked" | "error" | "safety_filtered";
+  outcome: 'success' | 'blocked' | 'error' | 'safety_filtered';
   /** If blocked, which category triggered the block. */
   blockedCategory?: DisallowedCategory;
   /** Safety warnings emitted. */
@@ -255,11 +255,7 @@ export interface AIProvider {
   /** Human-readable name. */
   name: string;
   /** Generate a completion. */
-  complete(opts: {
-    systemPrompt: string;
-    userPrompt: string;
-    maxTokens: number;
-  }): Promise<{
+  complete(opts: { systemPrompt: string; userPrompt: string; maxTokens: number }): Promise<{
     text: string;
     inputTokens: number;
     outputTokens: number;

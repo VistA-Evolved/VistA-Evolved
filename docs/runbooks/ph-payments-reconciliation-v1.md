@@ -51,6 +51,7 @@ curl -X POST http://localhost:3001/payerops/payments/batches/{BATCH_ID}/match \
 ```
 
 The matching engine tries 3 strategies in order:
+
 1. **Exact ID** — `line.claimId` matches a `ClaimCase.id`
 2. **External Ref** — `line.externalClaimRef` matches `ClaimCase.externalClaimId`
 3. **Fuzzy** — Patient + amount + date proximity matching
@@ -69,22 +70,22 @@ curl -X POST http://localhost:3001/payerops/payments/reconciliation/{LINE_ID}/li
 
 ### Required Columns (camelCase or snake_case)
 
-| Column | Description |
-|--------|-------------|
-| `claim_id` / `claimId` | Our internal claim ID |
-| `amount_billed` / `amountBilled` | Billed amount in cents |
-| `amount_paid` / `amountPaid` | Paid amount in cents |
+| Column                               | Description              |
+| ------------------------------------ | ------------------------ |
+| `claim_id` / `claimId`               | Our internal claim ID    |
+| `amount_billed` / `amountBilled`     | Billed amount in cents   |
+| `amount_paid` / `amountPaid`         | Paid amount in cents     |
 | `amount_adjusted` / `amountAdjusted` | Adjusted amount in cents |
 
 ### Optional Columns
 
-| Column | Description |
-|--------|-------------|
+| Column                                    | Description             |
+| ----------------------------------------- | ----------------------- |
 | `external_claim_ref` / `externalClaimRef` | Payer's claim reference |
-| `patient_ref` / `patientRef` | Patient identifier |
-| `service_date` / `serviceDate` | Date of service |
-| `reason_code` / `reasonCode` | Adjustment reason |
-| `reason_text` / `reasonText` | Human-readable reason |
+| `patient_ref` / `patientRef`              | Patient identifier      |
+| `service_date` / `serviceDate`            | Date of service         |
+| `reason_code` / `reasonCode`              | Adjustment reason       |
+| `reason_text` / `reasonText`              | Human-readable reason   |
 
 ## Analytics Endpoints
 
@@ -105,6 +106,7 @@ curl http://localhost:3001/payerops/analytics/payer-intelligence -b cookies.txt
 Optionally filter by period: `?periodStart=2025-01-01T00:00:00Z&periodEnd=2025-12-31T23:59:59Z`
 
 Returns per-payer KPIs:
+
 - Average days to payment
 - Median days to payment
 - Denial rate

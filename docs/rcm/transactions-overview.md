@@ -57,12 +57,14 @@ status responses, and remittance advice.
 ## Key Components
 
 ### Transaction Envelopes (`types.ts`, `envelope.ts`)
+
 - `TransactionEnvelope` wraps ISA/GS metadata, control numbers, correlation IDs
 - Auto-generated monotonic control numbers per sender/receiver pair
 - Idempotency keys prevent duplicate submissions
 - In-memory store with correlation and source indexes
 
 ### Translator Strategy (`translator.ts`)
+
 - Pluggable translator interface with registry
 - **Local Scaffold**: Built-in, always available, delegates to existing
   `serialize837`/`serialize270` + custom scaffolds for 276/999
@@ -70,6 +72,7 @@ status responses, and remittance advice.
   scaffold for clearinghouse-grade translator services
 
 ### Connectivity Rules (`connectivity.ts`)
+
 - CAQH CORE operating rule references (numbers only, no copyrighted text)
 - Pre-transmit gates: 6 checks before any transaction leaves the system
 - Ack gates: 999/277CA timeout tracking
@@ -77,6 +80,7 @@ status responses, and remittance advice.
 - DLQ: dead-letter queue for unrecoverable failures
 
 ### Reconciliation (`reconciliation.ts`)
+
 - End-to-end claim reconciliation: claim -> transactions -> acks -> statuses -> remits
 - Batch stats across multiple claims
 - Payment status determination (full/partial/denied/pending)
@@ -93,22 +97,22 @@ created -> serialized -> validated -> queued -> transmitted
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/rcm/transactions` | List transactions with filters |
-| GET | `/rcm/transactions/stats` | Transaction statistics |
-| GET | `/rcm/transactions/:id` | Get single transaction |
-| POST | `/rcm/transactions/build` | Build envelope + translate |
-| POST | `/rcm/transactions/:id/transition` | Manual state transition |
-| POST | `/rcm/transactions/:id/check-gates` | Run pre-transmit/ack gates |
-| POST | `/rcm/transactions/:id/retry` | Retry failed transaction |
-| GET | `/rcm/transactions/dlq` | List DLQ transactions |
-| POST | `/rcm/transactions/dlq/:id/retry` | Retry from DLQ |
-| GET | `/rcm/translators` | List registered translators |
-| GET | `/rcm/connectivity/profile` | Active connectivity profile |
-| GET | `/rcm/connectivity/health` | Connectivity health check |
-| GET | `/rcm/claims/:id/reconciliation` | Claim reconciliation summary |
-| POST | `/rcm/claims/batch-reconciliation` | Batch reconciliation stats |
+| Method | Path                                | Description                    |
+| ------ | ----------------------------------- | ------------------------------ |
+| GET    | `/rcm/transactions`                 | List transactions with filters |
+| GET    | `/rcm/transactions/stats`           | Transaction statistics         |
+| GET    | `/rcm/transactions/:id`             | Get single transaction         |
+| POST   | `/rcm/transactions/build`           | Build envelope + translate     |
+| POST   | `/rcm/transactions/:id/transition`  | Manual state transition        |
+| POST   | `/rcm/transactions/:id/check-gates` | Run pre-transmit/ack gates     |
+| POST   | `/rcm/transactions/:id/retry`       | Retry failed transaction       |
+| GET    | `/rcm/transactions/dlq`             | List DLQ transactions          |
+| POST   | `/rcm/transactions/dlq/:id/retry`   | Retry from DLQ                 |
+| GET    | `/rcm/translators`                  | List registered translators    |
+| GET    | `/rcm/connectivity/profile`         | Active connectivity profile    |
+| GET    | `/rcm/connectivity/health`          | Connectivity health check      |
+| GET    | `/rcm/claims/:id/reconciliation`    | Claim reconciliation summary   |
+| POST   | `/rcm/claims/batch-reconciliation`  | Batch reconciliation stats     |
 
 ## In-Memory Store Notice
 

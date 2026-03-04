@@ -29,10 +29,10 @@ import type {
   BarcodeScanResult,
   PharmacyVerifyRequest,
   PharmacyVerifyResult,
-} from "../types.js";
+} from '../types.js';
 
 export interface ClinicalEngineAdapter extends BaseAdapter {
-  readonly adapterType: "clinical-engine";
+  readonly adapterType: 'clinical-engine';
 
   /* ---------------------------------------------------------------- */
   /* Read methods (Phase 37C)                                          */
@@ -66,7 +66,7 @@ export interface ClinicalEngineAdapter extends BaseAdapter {
   getEncounters(dfn: string): Promise<AdapterResult<EncounterRecord[]>>;
 
   /** Get report list. */
-  getReportList(): Promise<AdapterResult<Array<{ id: string; name: string }>>>;  
+  getReportList(): Promise<AdapterResult<Array<{ id: string; name: string }>>>;
 
   /** Get report text. */
   getReportText(dfn: string, reportId: string): Promise<AdapterResult<string>>;
@@ -76,16 +76,35 @@ export interface ClinicalEngineAdapter extends BaseAdapter {
   /* ---------------------------------------------------------------- */
 
   /** Add an allergy for a patient. */
-  addAllergy(dfn: string, allergen: string, params: Record<string, unknown>): Promise<AdapterResult<WriteResult>>;
+  addAllergy(
+    dfn: string,
+    allergen: string,
+    params: Record<string, unknown>
+  ): Promise<AdapterResult<WriteResult>>;
 
   /** Add a vital sign reading. */
-  addVital(dfn: string, vitalType: string, value: string, params?: Record<string, unknown>): Promise<AdapterResult<WriteResult>>;
+  addVital(
+    dfn: string,
+    vitalType: string,
+    value: string,
+    params?: Record<string, unknown>
+  ): Promise<AdapterResult<WriteResult>>;
 
   /** Create a clinical note (TIU). */
-  createNote(dfn: string, titleIen: string, text: string, params?: Record<string, unknown>): Promise<AdapterResult<WriteResult>>;
+  createNote(
+    dfn: string,
+    titleIen: string,
+    text: string,
+    params?: Record<string, unknown>
+  ): Promise<AdapterResult<WriteResult>>;
 
   /** Add a problem to the patient's problem list. */
-  addProblem(dfn: string, icdCode: string, description: string, params?: Record<string, unknown>): Promise<AdapterResult<WriteResult>>;
+  addProblem(
+    dfn: string,
+    icdCode: string,
+    description: string,
+    params?: Record<string, unknown>
+  ): Promise<AdapterResult<WriteResult>>;
 
   /* ---------------------------------------------------------------- */
   /* ADT methods (Phase 431)                                           */
@@ -114,7 +133,10 @@ export interface ClinicalEngineAdapter extends BaseAdapter {
   getInpatientMeds(dfn: string): Promise<AdapterResult<InpatientMedOrder[]>>;
 
   /** Get MAR (Medication Administration Record) entries for a patient. */
-  getMAR(dfn: string, dateRange?: { from?: string; to?: string }): Promise<AdapterResult<MAREntry[]>>;
+  getMAR(
+    dfn: string,
+    dateRange?: { from?: string; to?: string }
+  ): Promise<AdapterResult<MAREntry[]>>;
 
   /** Record a medication administration (given/refused/held/not-given). */
   recordAdministration(request: MedAdminRequest): Promise<AdapterResult<WriteResult>>;

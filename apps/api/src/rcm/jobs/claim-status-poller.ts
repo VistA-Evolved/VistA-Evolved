@@ -11,21 +11,17 @@
  * No PHI in results — only claim ID, payer code, and status.
  */
 
-import type { RcmJobType } from "./queue.js";
-import {
-  getPayerAdapterForMode,
-  type ClaimStatusResponse,
-} from "../adapters/payer-adapter.js";
-import { log } from "../../lib/logger.js";
+import type { RcmJobType } from './queue.js';
+import { getPayerAdapterForMode, type ClaimStatusResponse } from '../adapters/payer-adapter.js';
+import { log } from '../../lib/logger.js';
 
 /* ── Config ────────────────────────────────────────────────── */
 
-const CLAIM_STATUS_RATE_LIMIT =
-  parseInt(process.env.RCM_CLAIM_STATUS_RATE_LIMIT ?? "30", 10) || 30;
+const CLAIM_STATUS_RATE_LIMIT = parseInt(process.env.RCM_CLAIM_STATUS_RATE_LIMIT ?? '30', 10) || 30;
 const CLAIM_STATUS_INTERVAL_MS =
-  parseInt(process.env.RCM_CLAIM_STATUS_INTERVAL_MS ?? "600000", 10) || 600_000;
+  parseInt(process.env.RCM_CLAIM_STATUS_INTERVAL_MS ?? '600000', 10) || 600_000;
 
-export const CLAIM_STATUS_JOB_TYPE: RcmJobType = "STATUS_POLL";
+export const CLAIM_STATUS_JOB_TYPE: RcmJobType = 'STATUS_POLL';
 
 /* ── Result Store (ring buffer, no PHI) ────────────────────── */
 
@@ -36,7 +32,7 @@ export interface ClaimStatusPollResult {
   integrationMode: string;
   claimStatus: string | null;
   adjudicationStatus?: string;
-  status: "completed" | "failed" | "pending";
+  status: 'completed' | 'failed' | 'pending';
   errorMessage?: string;
   pollTimestamp: string;
   responseMs: number;
@@ -51,7 +47,7 @@ export function getClaimStatusResults(): readonly ClaimStatusPollResult[] {
 
 export function getClaimStatusResultsSlice(
   offset: number,
-  limit: number,
+  limit: number
 ): { items: ClaimStatusPollResult[]; total: number } {
   return {
     items: results.slice(offset, offset + limit),
@@ -70,13 +66,14 @@ function pushResult(r: ClaimStatusPollResult): void {
  * Process a single claim status poll job.
  * Called by the PollingScheduler when a job of type STATUS_POLL is dequeued.
  */
-export async function handleClaimStatusJob(
-  job: { id: string; payload: Record<string, unknown> },
-): Promise<Record<string, unknown>> {
+export async function handleClaimStatusJob(job: {
+  id: string;
+  payload: Record<string, unknown>;
+}): Promise<Record<string, unknown>> {
   const {
-    claimId = "unknown",
-    payerCode = "unknown",
-    integrationMode = "sandbox",
+    claimId = 'unknown',
+    payerCode = 'unknown',
+    integrationMode = 'sandbox',
     payerClaimId,
   } = job.payload as {
     claimId?: string;
@@ -100,7 +97,7 @@ export async function handleClaimStatusJob(
       const result: ClaimStatusPollResult = {
         ...resultBase,
         claimStatus: null,
-        status: "failed",
+        status: 'failed',
         errorMessage: `No payer adapter for mode: ${integrationMode}`,
         responseMs: Date.now() - start,
       };
@@ -110,16 +107,16 @@ export async function handleClaimStatusJob(
 
     const response: ClaimStatusResponse = await adapter.pollClaimStatus({
       claimId: String(claimId),
-      payerClaimId: String(payerClaimId ?? ""),
+      payerClaimId: String(payerClaimId ?? ''),
       payerId: String(payerCode),
-      tenantId: "default",
+      tenantId: 'default',
     });
 
     const result: ClaimStatusPollResult = {
       ...resultBase,
       claimStatus: response.status,
       adjudicationStatus: response.adjudicationDate,
-      status: "completed",
+      status: 'completed',
       responseMs: Date.now() - start,
     };
     pushResult(result);
@@ -136,7 +133,7 @@ export async function handleClaimStatusJob(
     const result: ClaimStatusPollResult = {
       ...resultBase,
       claimStatus: null,
-      status: "failed",
+      status: 'failed',
       errorMessage: errMsg,
       responseMs: Date.now() - start,
     };
@@ -160,10 +157,10 @@ export async function handleClaimStatusJob(
 export function getClaimStatusPollerConfig() {
   return {
     type: CLAIM_STATUS_JOB_TYPE,
-    label: "Claim Status Poller",
+    label: 'Claim Status Poller',
     intervalMs: CLAIM_STATUS_INTERVAL_MS,
     rateLimitPerHour: CLAIM_STATUS_RATE_LIMIT,
-    enabled: (process.env.RCM_CLAIM_STATUS_POLLING ?? "false") === "true",
+    enabled: (process.env.RCM_CLAIM_STATUS_POLLING ?? 'false') === 'true',
     handler: handleClaimStatusJob,
   };
 }

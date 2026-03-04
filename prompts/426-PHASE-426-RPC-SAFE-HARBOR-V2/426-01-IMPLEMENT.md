@@ -9,19 +9,19 @@ grading each by production readiness tier based on sandbox testing evidence.
 
 ### New Files
 
-| File | Purpose |
-|------|---------|
+| File                                 | Purpose                                        |
+| ------------------------------------ | ---------------------------------------------- |
 | `data/vista/rpc-safe-harbor-v2.json` | 18 write RPCs classified across 5 safety tiers |
 
 ## Safety Tiers
 
-| Tier | Count | Meaning |
-|------|-------|---------|
-| safe-harbor | 7 | Proven safe in sandbox, production-ready |
-| supervised | 6 | Works but requires clinical oversight |
-| experimental | 2 | Dev/test only, output not fully validated |
-| blocked | 1 | Must not be called (absent or dangerous) |
-| infrastructure | 2 | Internal-use (LOCK/UNLOCK) |
+| Tier           | Count | Meaning                                   |
+| -------------- | ----- | ----------------------------------------- |
+| safe-harbor    | 7     | Proven safe in sandbox, production-ready  |
+| supervised     | 6     | Works but requires clinical oversight     |
+| experimental   | 2     | Dev/test only, output not fully validated |
+| blocked        | 1     | Must not be called (absent or dangerous)  |
+| infrastructure | 2     | Internal-use (LOCK/UNLOCK)                |
 
 ## Per-RPC Classification Fields
 

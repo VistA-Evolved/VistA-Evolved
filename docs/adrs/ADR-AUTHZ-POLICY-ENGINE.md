@@ -10,6 +10,7 @@
 VistA-Evolved currently uses an in-process policy engine (`auth/policy-engine.ts`,
 Phase 35) with ~40 role-action mappings and admin superuser bypass. This is
 sufficient for role-based access but lacks:
+
 - Department/facility-scoped authorization
 - Patient assignment checks
 - Note sensitivity enforcement
@@ -25,6 +26,7 @@ authorization without introducing external infrastructure dependencies.
 structured deny reasons, and tenant-scoped policy overrides.
 
 Rationale:
+
 - Zero new infrastructure (no OPA sidecar container, no network hop)
 - Sub-millisecond evaluation (critical for clinical workflows)
 - Already integrated with immutable audit
@@ -34,12 +36,14 @@ Rationale:
 ## Alternatives Considered
 
 ### Option A: Keep Custom RBAC Only (status quo)
+
 - **Pros:** Simple, known working, no migration risk
 - **Cons:** Cannot express department scope, patient assignment, note sensitivity;
   the same nurse accessing data across all departments violates least-privilege
 - **Rejected:** Insufficient for enterprise security requirements
 
 ### Option B: OPA (Open Policy Agent) / Rego
+
 - **Pros:** Industry standard, rich policy language, well-tested
 - **Cons:** Requires sidecar container, 1-5ms network round trip per decision,
   Rego learning curve, complex debugging, infrastructure dependency
@@ -48,12 +52,14 @@ Rationale:
   migrate to OPA sidecar if evaluation volume exceeds 10K req/s
 
 ### Option C: Cedar (Amazon Verified Permissions)
+
 - **Pros:** Formally verified, strong typing, fast evaluation
 - **Cons:** AWS-specific ecosystem, relatively new, smaller community
 - **License:** Apache 2.0 — acceptable
 - **Rejected:** Vendor lock-in risk, less community support than OPA
 
 ### Option D: OpenFGA (Fine-Grained Authorization)
+
 - **Pros:** Relationship-based authorization, Google Zanzibar model
 - **Cons:** Requires separate server, relationship tuples storage, overkill for
   clinical hierarchies that map well to attributes

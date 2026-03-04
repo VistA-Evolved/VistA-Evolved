@@ -5,15 +5,15 @@
  * Phase 13 additions marked with comments.
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 
-import problemsRoutes from "./problems.js";
-import medsRoutes from "./meds.js";
-import notesRoutes from "./notes.js";
-import ordersRoutes from "./orders.js";
-import labsRoutes from "./labs.js";
-import reportsRoutes from "./reports.js";
-import inboxRoutes from "./inbox.js";  // Phase 13B
+import problemsRoutes from './problems.js';
+import medsRoutes from './meds.js';
+import notesRoutes from './notes.js';
+import ordersRoutes from './orders.js';
+import labsRoutes from './labs.js';
+import reportsRoutes from './reports.js';
+import inboxRoutes from './inbox.js'; // Phase 13B
 
 /** Register all domain route plugins on the server. */
 export async function registerDomainRoutes(server: FastifyInstance): Promise<void> {
@@ -27,4 +27,12 @@ export async function registerDomainRoutes(server: FastifyInstance): Promise<voi
 }
 
 /** All scaffolded domains. */
-export const SCAFFOLDED_DOMAINS = ["problems","meds","notes","orders","labs","reports","inbox"] as const;
+export const SCAFFOLDED_DOMAINS = [
+  'problems',
+  'meds',
+  'notes',
+  'orders',
+  'labs',
+  'reports',
+  'inbox',
+] as const;

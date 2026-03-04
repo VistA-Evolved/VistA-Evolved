@@ -15,33 +15,28 @@
  * the auth flow to enforce MFA where policy requires it.
  */
 
-import { log } from "../lib/logger.js";
-import type { UserRole } from "./session-store.js";
-import type { MfaState } from "./step-up-auth.js";
+import { log } from '../lib/logger.js';
+import type { UserRole } from './session-store.js';
+import type { MfaState } from './step-up-auth.js';
 
 /* ------------------------------------------------------------------ */
 /* Configuration                                                       */
 /* ------------------------------------------------------------------ */
 
 /** Whether MFA enforcement is active. Default: false (opt-in). */
-export const MFA_ENFORCEMENT_ENABLED =
-  process.env.MFA_ENFORCEMENT_ENABLED === "true";
+export const MFA_ENFORCEMENT_ENABLED = process.env.MFA_ENFORCEMENT_ENABLED === 'true';
 
 /** Grace period for newly required MFA enrollment (ms). Default: 7 days. */
-const MFA_GRACE_PERIOD_MS = Number(
-  process.env.MFA_GRACE_PERIOD_MS || 7 * 24 * 60 * 60 * 1000,
-);
+const MFA_GRACE_PERIOD_MS = Number(process.env.MFA_GRACE_PERIOD_MS || 7 * 24 * 60 * 60 * 1000);
 
 /** MFA verification validity window (ms). Default: 15 minutes. */
-const MFA_VERIFICATION_WINDOW_MS = Number(
-  process.env.MFA_VERIFICATION_WINDOW_MS || 15 * 60 * 1000,
-);
+const MFA_VERIFICATION_WINDOW_MS = Number(process.env.MFA_VERIFICATION_WINDOW_MS || 15 * 60 * 1000);
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type MfaMethod = "totp" | "webauthn" | "sms" | "email" | "passkey";
+export type MfaMethod = 'totp' | 'webauthn' | 'sms' | 'email' | 'passkey';
 
 export interface MfaEnrollment {
   /** User ID (DUZ or OIDC sub) */
@@ -76,23 +71,19 @@ export interface MfaCheckResult {
 /* ------------------------------------------------------------------ */
 
 /** Roles that require MFA when enforcement is enabled. */
-const MFA_REQUIRED_ROLES: Set<UserRole> = new Set([
-  "admin",
-  "provider",
-  "pharmacist",
-]);
+const MFA_REQUIRED_ROLES: Set<UserRole> = new Set(['admin', 'provider', 'pharmacist']);
 
 /** Actions exempt from MFA enforcement (read-only, low-risk). */
 const MFA_EXEMPT_ACTIONS: Set<string> = new Set([
-  "auth.login",
-  "auth.logout",
-  "auth.session",
-  "phi.patient-search",
-  "phi.patient-list",
-  "system.health",
-  "portal.own-data",
-  "portal.messaging",
-  "portal.appointments",
+  'auth.login',
+  'auth.logout',
+  'auth.session',
+  'phi.patient-search',
+  'phi.patient-list',
+  'system.health',
+  'portal.own-data',
+  'portal.messaging',
+  'portal.appointments',
 ]);
 
 /* ------------------------------------------------------------------ */
@@ -119,23 +110,38 @@ export function checkMfaRequired(
   userId: string,
   tenantId: string,
   mfaState: MfaState,
-  now?: number,
+  now?: number
 ): MfaCheckResult {
   const ts = now ?? Date.now();
 
   // Feature gate
   if (!MFA_ENFORCEMENT_ENABLED) {
-    return { allowed: true, inGracePeriod: false, enrollmentRequired: false, verificationRequired: false };
+    return {
+      allowed: true,
+      inGracePeriod: false,
+      enrollmentRequired: false,
+      verificationRequired: false,
+    };
   }
 
   // Exempt actions
   if (MFA_EXEMPT_ACTIONS.has(action)) {
-    return { allowed: true, inGracePeriod: false, enrollmentRequired: false, verificationRequired: false };
+    return {
+      allowed: true,
+      inGracePeriod: false,
+      enrollmentRequired: false,
+      verificationRequired: false,
+    };
   }
 
   // Check if role requires MFA
   if (!MFA_REQUIRED_ROLES.has(role)) {
-    return { allowed: true, inGracePeriod: false, enrollmentRequired: false, verificationRequired: false };
+    return {
+      allowed: true,
+      inGracePeriod: false,
+      enrollmentRequired: false,
+      verificationRequired: false,
+    };
   }
 
   // Check enrollment
@@ -149,7 +155,7 @@ export function checkMfaRequired(
         inGracePeriod: true,
         enrollmentRequired: true,
         verificationRequired: false,
-        reason: "MFA enrollment required — grace period active",
+        reason: 'MFA enrollment required — grace period active',
       };
     }
 
@@ -159,7 +165,7 @@ export function checkMfaRequired(
       inGracePeriod: false,
       enrollmentRequired: true,
       verificationRequired: false,
-      reason: "MFA enrollment required for this role",
+      reason: 'MFA enrollment required for this role',
     };
   }
 
@@ -171,21 +177,26 @@ export function checkMfaRequired(
       inGracePeriod: false,
       enrollmentRequired: false,
       verificationRequired: true,
-      reason: "MFA verification required",
+      reason: 'MFA verification required',
     };
   }
 
-  if (mfaState.lastVerifiedAt <= 0 || (ts - mfaState.lastVerifiedAt) > MFA_VERIFICATION_WINDOW_MS) {
+  if (mfaState.lastVerifiedAt <= 0 || ts - mfaState.lastVerifiedAt > MFA_VERIFICATION_WINDOW_MS) {
     return {
       allowed: false,
       inGracePeriod: false,
       enrollmentRequired: false,
       verificationRequired: true,
-      reason: "MFA verification expired — re-verification required",
+      reason: 'MFA verification expired — re-verification required',
     };
   }
 
-  return { allowed: true, inGracePeriod: false, enrollmentRequired: false, verificationRequired: false };
+  return {
+    allowed: true,
+    inGracePeriod: false,
+    enrollmentRequired: false,
+    verificationRequired: false,
+  };
 }
 
 /**
@@ -194,7 +205,7 @@ export function checkMfaRequired(
 export function recordMfaEnrollment(
   tenantId: string,
   userId: string,
-  methods: MfaMethod[],
+  methods: MfaMethod[]
 ): MfaEnrollment {
   const enrollment: MfaEnrollment = {
     userId,
@@ -212,10 +223,7 @@ export function recordMfaEnrollment(
 /**
  * Start a grace period for a user who needs to enroll MFA.
  */
-export function startMfaGracePeriod(
-  tenantId: string,
-  userId: string,
-): MfaEnrollment {
+export function startMfaGracePeriod(tenantId: string, userId: string): MfaEnrollment {
   const existing = enrollmentStore.get(enrollKey(tenantId, userId));
   const enrollment: MfaEnrollment = {
     userId,

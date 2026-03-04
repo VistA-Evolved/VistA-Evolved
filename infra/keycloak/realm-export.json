@@ -71,25 +71,14 @@
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "dev-web-secret-change-in-production",
-      "redirectUris": [
-        "http://localhost:3000/*",
-        "http://127.0.0.1:3000/*"
-      ],
-      "webOrigins": [
-        "http://localhost:3000",
-        "http://127.0.0.1:3000"
-      ],
+      "redirectUris": ["http://localhost:3000/*", "http://127.0.0.1:3000/*"],
+      "webOrigins": ["http://localhost:3000", "http://127.0.0.1:3000"],
       "standardFlowEnabled": true,
       "directAccessGrantsEnabled": false,
       "publicClient": false,
       "protocol": "openid-connect",
       "fullScopeAllowed": true,
-      "defaultClientScopes": [
-        "openid",
-        "profile",
-        "email",
-        "roles"
-      ],
+      "defaultClientScopes": ["openid", "profile", "email", "roles"],
       "protocolMappers": [
         {
           "name": "realm-roles",
@@ -168,25 +157,14 @@
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "dev-portal-secret-change-in-production",
-      "redirectUris": [
-        "http://localhost:3002/*",
-        "http://127.0.0.1:3002/*"
-      ],
-      "webOrigins": [
-        "http://localhost:3002",
-        "http://127.0.0.1:3002"
-      ],
+      "redirectUris": ["http://localhost:3002/*", "http://127.0.0.1:3002/*"],
+      "webOrigins": ["http://localhost:3002", "http://127.0.0.1:3002"],
       "standardFlowEnabled": true,
       "directAccessGrantsEnabled": false,
       "publicClient": false,
       "protocol": "openid-connect",
       "fullScopeAllowed": true,
-      "defaultClientScopes": [
-        "openid",
-        "profile",
-        "email",
-        "roles"
-      ]
+      "defaultClientScopes": ["openid", "profile", "email", "roles"]
     }
   ],
   "authenticationFlows": [

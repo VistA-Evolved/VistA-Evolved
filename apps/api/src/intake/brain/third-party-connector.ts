@@ -24,15 +24,15 @@ import type {
   BrainNextQuestionResult,
   BrainSubmitResult,
   BrainSummaryResult,
-} from "./types.js";
+} from './types.js';
 import type {
   IntakeSession,
   QuestionnaireResponse,
   IntakeContext,
   QuestionnaireItem,
-} from "../types.js";
-import { RulesEngineBrain } from "./rules-engine.js";
-import { log } from "../../lib/logger.js";
+} from '../types.js';
+import { RulesEngineBrain } from './rules-engine.js';
+import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Third-Party Connector Interface                                      */
@@ -60,12 +60,12 @@ export interface ThirdPartyAdapter {
 export class ThirdPartyBrainPlugin implements IntakeBrainPlugin {
   readonly id: string;
   readonly name: string;
-  readonly family = "third_party" as const;
+  readonly family = 'third_party' as const;
 
   private fallback = new RulesEngineBrain();
   private variant: string;
 
-  constructor(variant: string = "stub") {
+  constructor(variant: string = 'stub') {
     this.variant = variant;
     this.id = `third_party:${variant}`;
     this.name = `Third-Party Connector (${variant})`;
@@ -76,10 +76,7 @@ export class ThirdPartyBrainPlugin implements IntakeBrainPlugin {
     return !!process.env[envKey];
   }
 
-  async startSession(
-    session: IntakeSession,
-    context: IntakeContext
-  ): Promise<BrainSessionState> {
+  async startSession(session: IntakeSession, context: IntakeContext): Promise<BrainSessionState> {
     const base = await this.fallback.startSession(session, context);
     return {
       ...base,
@@ -177,7 +174,7 @@ export class ThirdPartyBrainPlugin implements IntakeBrainPlugin {
     return {
       providerId: this.id,
       family: this.family,
-      status: configured ? "degraded" : "unavailable",
+      status: configured ? 'degraded' : 'unavailable',
       lastCheckAt: new Date().toISOString(),
       detail: configured
         ? `Third-party ${this.variant} configured -- integration pending`
@@ -191,7 +188,7 @@ export class ThirdPartyBrainPlugin implements IntakeBrainPlugin {
       summaryGeneration: false, // depends on vendor
       complaintExpansion: false,
       followUpBranching: false,
-      supportedLanguages: ["en"],
+      supportedLanguages: ['en'],
       maxSessionDurationMs: 24 * 60 * 60 * 1000,
     };
   }

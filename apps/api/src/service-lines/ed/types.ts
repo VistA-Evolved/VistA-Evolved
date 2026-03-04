@@ -13,7 +13,7 @@ export type TriageLevel = 1 | 2 | 3 | 4 | 5;
 export interface TriageAssessment {
   level: TriageLevel;
   chiefComplaint: string;
-  acuityCategory: "resuscitation" | "emergent" | "urgent" | "less-urgent" | "non-urgent";
+  acuityCategory: 'resuscitation' | 'emergent' | 'urgent' | 'less-urgent' | 'non-urgent';
   vitalSigns?: {
     hr?: number;
     bp?: string;
@@ -29,11 +29,11 @@ export interface TriageAssessment {
 
 // ── Bed Management ─────────────────────────────────────────────────
 
-export type BedStatus = "available" | "occupied" | "cleaning" | "blocked" | "reserved";
+export type BedStatus = 'available' | 'occupied' | 'cleaning' | 'blocked' | 'reserved';
 
 export interface EdBed {
   id: string;
-  zone: string;          // e.g., "trauma", "acute", "fast-track", "hallway"
+  zone: string; // e.g., "trauma", "acute", "fast-track", "hallway"
   bedNumber: string;
   status: BedStatus;
   currentVisitId?: string;
@@ -51,37 +51,37 @@ export interface BedAssignment {
 // ── ED Visit ───────────────────────────────────────────────────────
 
 export type EdVisitStatus =
-  | "waiting"         // In waiting room
-  | "triaged"         // Triage complete
-  | "bedded"          // Assigned to bed
-  | "in-treatment"    // Physician evaluation/treatment
-  | "pending-results" // Awaiting lab/imaging
-  | "pending-consult" // Awaiting specialist consult
-  | "pending-disposition" // Treatment done, awaiting decision
-  | "admitted"        // Decision to admit
-  | "discharged"      // Released home
-  | "transferred"     // Transferred to another facility
-  | "left-ama"        // Left against medical advice
-  | "lwbs"            // Left without being seen
-  | "expired";        // Patient expired
+  | 'waiting' // In waiting room
+  | 'triaged' // Triage complete
+  | 'bedded' // Assigned to bed
+  | 'in-treatment' // Physician evaluation/treatment
+  | 'pending-results' // Awaiting lab/imaging
+  | 'pending-consult' // Awaiting specialist consult
+  | 'pending-disposition' // Treatment done, awaiting decision
+  | 'admitted' // Decision to admit
+  | 'discharged' // Released home
+  | 'transferred' // Transferred to another facility
+  | 'left-ama' // Left against medical advice
+  | 'lwbs' // Left without being seen
+  | 'expired'; // Patient expired
 
 export type EdDisposition =
-  | "admit-floor"
-  | "admit-icu"
-  | "admit-telemetry"
-  | "admit-obs"
-  | "discharge-home"
-  | "transfer-out"
-  | "left-ama"
-  | "lwbs"
-  | "expired";
+  | 'admit-floor'
+  | 'admit-icu'
+  | 'admit-telemetry'
+  | 'admit-obs'
+  | 'discharge-home'
+  | 'transfer-out'
+  | 'left-ama'
+  | 'lwbs'
+  | 'expired';
 
 export interface EdVisit {
   id: string;
   patientDfn: string;
   status: EdVisitStatus;
   arrivalTime: string;
-  arrivalMode: "ambulance" | "walk-in" | "police" | "helicopter" | "transfer";
+  arrivalMode: 'ambulance' | 'walk-in' | 'police' | 'helicopter' | 'transfer';
   triage?: TriageAssessment;
   bedAssignment?: BedAssignment;
   attendingProvider?: string;
@@ -105,8 +105,8 @@ export interface EdBoardMetrics {
   beddedCount: number;
   pendingAdmitCount: number;
   avgWaitMinutes: number;
-  avgLosMinutes: number;     // Length of stay
-  lwbsRate: number;          // Left without being seen percentage
+  avgLosMinutes: number; // Length of stay
+  lwbsRate: number; // Left without being seen percentage
   bedOccupancyPct: number;
   byAcuity: Record<string, number>;
 }

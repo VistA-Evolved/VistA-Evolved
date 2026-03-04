@@ -10,15 +10,15 @@
  * All HTTP calls go through this module. The connector delegates here.
  */
 
-import { createHash, randomBytes } from "node:crypto";
-import https from "node:https";
-import http from "node:http";
-import { readFileSync } from "node:fs";
+import { randomBytes } from 'node:crypto';
+import https from 'node:https';
+import http from 'node:http';
+import { readFileSync } from 'node:fs';
 
 /* ── Types ───────────────────────────────────────────────── */
 
 export interface PhTransportConfig {
-  mode: "mock" | "live";
+  mode: 'mock' | 'live';
   apiEndpoint: string;
   facilityCode: string;
   apiToken: string;
@@ -65,14 +65,14 @@ export interface PhAttachmentResult {
 
 export function loadTransportConfig(): PhTransportConfig {
   return {
-    mode: (process.env.PHILHEALTH_MODE as "mock" | "live") ?? "mock",
-    apiEndpoint: process.env.PHILHEALTH_API_ENDPOINT ?? "https://eclaims3.philhealth.gov.ph/api/v3",
-    facilityCode: process.env.PHILHEALTH_FACILITY_CODE ?? "",
-    apiToken: process.env.PHILHEALTH_API_TOKEN ?? "",
+    mode: (process.env.PHILHEALTH_MODE as 'mock' | 'live') ?? 'mock',
+    apiEndpoint: process.env.PHILHEALTH_API_ENDPOINT ?? 'https://eclaims3.philhealth.gov.ph/api/v3',
+    facilityCode: process.env.PHILHEALTH_FACILITY_CODE ?? '',
+    apiToken: process.env.PHILHEALTH_API_TOKEN ?? '',
     certPath: process.env.PHILHEALTH_CERT_PATH,
     certKeyPath: process.env.PHILHEALTH_CERT_KEY_PATH,
-    testMode: process.env.PHILHEALTH_TEST_MODE !== "false",
-    timeoutMs: parseInt(process.env.PHILHEALTH_TIMEOUT_MS ?? "30000", 10),
+    testMode: process.env.PHILHEALTH_TEST_MODE !== 'false',
+    timeoutMs: parseInt(process.env.PHILHEALTH_TIMEOUT_MS ?? '30000', 10),
   };
 }
 
@@ -81,9 +81,13 @@ export function loadTransportConfig(): PhTransportConfig {
 const mockStore = new Map<string, { status: string; claimRefNo: string; submittedAt: string }>();
 
 function mockSubmit(payload: unknown): PhSubmitResult {
-  const claimRefNo = `PHIC-MOCK-${Date.now()}-${randomBytes(4).toString("hex")}`;
-  const txId = `ph-mock-${randomBytes(6).toString("hex")}`;
-  mockStore.set(claimRefNo, { status: "queued", claimRefNo, submittedAt: new Date().toISOString() });
+  const claimRefNo = `PHIC-MOCK-${Date.now()}-${randomBytes(4).toString('hex')}`;
+  const txId = `ph-mock-${randomBytes(6).toString('hex')}`;
+  mockStore.set(claimRefNo, {
+    status: 'queued',
+    claimRefNo,
+    submittedAt: new Date().toISOString(),
+  });
   return {
     success: true,
     claimRefNo,
@@ -96,7 +100,7 @@ function mockSubmit(payload: unknown): PhSubmitResult {
 function mockCheckStatus(claimRefNo: string): PhStatusResult {
   const entry = mockStore.get(claimRefNo);
   if (!entry) {
-    return { success: false, claimRefNo, status: "not_found", remarks: "Mock: claim not found" };
+    return { success: false, claimRefNo, status: 'not_found', remarks: 'Mock: claim not found' };
   }
   return { success: true, claimRefNo, status: entry.status, statusDate: entry.submittedAt };
 }
@@ -106,16 +110,16 @@ function mockCheckEligibility(pin: string): PhEligibilityResult {
     success: true,
     memberPin: pin,
     eligible: true,
-    memberName: "MOCK MEMBER",
-    effectiveDate: "2024-01-01",
-    remarks: "Mock eligibility check",
+    memberName: 'MOCK MEMBER',
+    effectiveDate: '2024-01-01',
+    remarks: 'Mock eligibility check',
   };
 }
 
 function mockUploadAttachment(_claimRefNo: string, _filename: string): PhAttachmentResult {
   return {
     success: true,
-    attachmentId: `att-mock-${randomBytes(4).toString("hex")}`,
+    attachmentId: `att-mock-${randomBytes(4).toString('hex')}`,
     errors: [],
   };
 }
@@ -126,11 +130,11 @@ function makeRequest(
   config: PhTransportConfig,
   method: string,
   path: string,
-  body?: unknown,
+  body?: unknown
 ): Promise<{ status: number; data: unknown }> {
   return new Promise((resolve, reject) => {
     const url = new URL(path, config.apiEndpoint);
-    const isHttps = url.protocol === "https:";
+    const isHttps = url.protocol === 'https:';
     const mod = isHttps ? https : http;
 
     const options: https.RequestOptions = {
@@ -139,9 +143,9 @@ function makeRequest(
       port: url.port || (isHttps ? 443 : 80),
       path: url.pathname + url.search,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${config.apiToken}`,
-        "X-Facility-Code": config.facilityCode,
+        'X-Facility-Code': config.facilityCode,
       },
       timeout: config.timeoutMs,
     };
@@ -158,9 +162,9 @@ function makeRequest(
 
     const req = mod.request(options, (res) => {
       const chunks: Buffer[] = [];
-      res.on("data", (c) => chunks.push(c));
-      res.on("end", () => {
-        const raw = Buffer.concat(chunks).toString("utf-8");
+      res.on('data', (c) => chunks.push(c));
+      res.on('end', () => {
+        const raw = Buffer.concat(chunks).toString('utf-8');
         try {
           resolve({ status: res.statusCode ?? 0, data: JSON.parse(raw) });
         } catch {
@@ -169,8 +173,11 @@ function makeRequest(
       });
     });
 
-    req.on("error", reject);
-    req.on("timeout", () => { req.destroy(); reject(new Error("PhilHealth API timeout")); });
+    req.on('error', reject);
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('PhilHealth API timeout'));
+    });
 
     if (body) req.write(JSON.stringify(body));
     req.end();
@@ -194,17 +201,22 @@ export class PhilHealthTransport {
    * Submit a claim (CF1-CF4 bundle) to PhilHealth eClaims 3.0 API.
    */
   async submitClaim(claimBundle: unknown): Promise<PhSubmitResult> {
-    if (this.config.mode === "mock") return mockSubmit(claimBundle);
+    if (this.config.mode === 'mock') return mockSubmit(claimBundle);
 
     try {
-      const { status, data } = await makeRequest(this.config, "POST", "/claims/submit", claimBundle);
+      const { status, data } = await makeRequest(
+        this.config,
+        'POST',
+        '/claims/submit',
+        claimBundle
+      );
       const d = data as any;
 
       if (status >= 200 && status < 300) {
         return {
           success: true,
           claimRefNo: d.claimReferenceNumber ?? d.claimRefNo,
-          transactionId: d.transactionId ?? `ph-live-${randomBytes(4).toString("hex")}`,
+          transactionId: d.transactionId ?? `ph-live-${randomBytes(4).toString('hex')}`,
           errors: [],
           rawResponse: d,
         };
@@ -212,15 +224,15 @@ export class PhilHealthTransport {
 
       return {
         success: false,
-        transactionId: d.transactionId ?? "",
-        errors: (d.errors ?? [{ code: `HTTP-${status}`, description: String(d), severity: "error" }]),
+        transactionId: d.transactionId ?? '',
+        errors: d.errors ?? [{ code: `HTTP-${status}`, description: String(d), severity: 'error' }],
         rawResponse: d,
       };
     } catch (err: any) {
       return {
         success: false,
-        transactionId: "",
-        errors: [{ code: "TRANSPORT_ERROR", description: err.message, severity: "error" }],
+        transactionId: '',
+        errors: [{ code: 'TRANSPORT_ERROR', description: err.message, severity: 'error' }],
       };
     }
   }
@@ -229,22 +241,26 @@ export class PhilHealthTransport {
    * Check claim status by reference number.
    */
   async checkClaimStatus(claimRefNo: string): Promise<PhStatusResult> {
-    if (this.config.mode === "mock") return mockCheckStatus(claimRefNo);
+    if (this.config.mode === 'mock') return mockCheckStatus(claimRefNo);
 
     try {
-      const { status, data } = await makeRequest(this.config, "GET", `/claims/${encodeURIComponent(claimRefNo)}/status`);
+      const { status, data } = await makeRequest(
+        this.config,
+        'GET',
+        `/claims/${encodeURIComponent(claimRefNo)}/status`
+      );
       const d = data as any;
 
       return {
         success: status >= 200 && status < 300,
         claimRefNo,
-        status: d.status ?? "unknown",
+        status: d.status ?? 'unknown',
         statusDate: d.statusDate,
         remarks: d.remarks,
         rawResponse: d,
       };
     } catch (err: any) {
-      return { success: false, claimRefNo, status: "error", remarks: err.message };
+      return { success: false, claimRefNo, status: 'error', remarks: err.message };
     }
   }
 
@@ -252,10 +268,14 @@ export class PhilHealthTransport {
    * Check member eligibility via PIN.
    */
   async checkEligibility(memberPin: string): Promise<PhEligibilityResult> {
-    if (this.config.mode === "mock") return mockCheckEligibility(memberPin);
+    if (this.config.mode === 'mock') return mockCheckEligibility(memberPin);
 
     try {
-      const { status, data } = await makeRequest(this.config, "GET", `/members/${encodeURIComponent(memberPin)}/eligibility`);
+      const { status, data } = await makeRequest(
+        this.config,
+        'GET',
+        `/members/${encodeURIComponent(memberPin)}/eligibility`
+      );
       const d = data as any;
 
       return {
@@ -280,20 +300,25 @@ export class PhilHealthTransport {
     claimRefNo: string,
     filename: string,
     content: Buffer,
-    contentType: string = "application/pdf",
+    contentType: string = 'application/pdf'
   ): Promise<PhAttachmentResult> {
-    if (this.config.mode === "mock") return mockUploadAttachment(claimRefNo, filename);
+    if (this.config.mode === 'mock') return mockUploadAttachment(claimRefNo, filename);
 
     try {
       // Note: Actual PhilHealth API may use multipart/form-data.
       // This is a structural scaffold — production implementation would
       // need the exact multipart format from PHIC API docs.
-      const base64 = content.toString("base64");
-      const { status, data } = await makeRequest(this.config, "POST", `/claims/${encodeURIComponent(claimRefNo)}/attachments`, {
-        filename,
-        contentType,
-        content: base64,
-      });
+      const base64 = content.toString('base64');
+      const { status, data } = await makeRequest(
+        this.config,
+        'POST',
+        `/claims/${encodeURIComponent(claimRefNo)}/attachments`,
+        {
+          filename,
+          contentType,
+          content: base64,
+        }
+      );
       const d = data as any;
 
       if (status >= 200 && status < 300) {
@@ -307,7 +332,7 @@ export class PhilHealthTransport {
     } catch (err: any) {
       return {
         success: false,
-        errors: [{ code: "TRANSPORT_ERROR", description: err.message }],
+        errors: [{ code: 'TRANSPORT_ERROR', description: err.message }],
       };
     }
   }
@@ -318,15 +343,15 @@ export class PhilHealthTransport {
   async healthCheck(): Promise<{ ok: boolean; mode: string; latencyMs: number }> {
     const start = Date.now();
 
-    if (this.config.mode === "mock") {
-      return { ok: true, mode: "mock", latencyMs: Date.now() - start };
+    if (this.config.mode === 'mock') {
+      return { ok: true, mode: 'mock', latencyMs: Date.now() - start };
     }
 
     try {
-      const { status } = await makeRequest(this.config, "GET", "/health");
-      return { ok: status >= 200 && status < 300, mode: "live", latencyMs: Date.now() - start };
+      const { status } = await makeRequest(this.config, 'GET', '/health');
+      return { ok: status >= 200 && status < 300, mode: 'live', latencyMs: Date.now() - start };
     } catch {
-      return { ok: false, mode: "live", latencyMs: Date.now() - start };
+      return { ok: false, mode: 'live', latencyMs: Date.now() - start };
     }
   }
 }

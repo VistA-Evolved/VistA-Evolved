@@ -1,6 +1,7 @@
 # Phase 372 — W20-P3 IMPLEMENT: Customer Success Tooling
 
 ## User Request
+
 Build tenant onboarding automation, training mode with synthetic dataset seeding,
 UI banner for training environments, and demo environment generator.
 
@@ -13,6 +14,7 @@ UI banner for training environments, and demo environment generator.
 4. Register stores in store-policy.ts
 
 ## Files Touched
+
 - apps/api/src/services/customer-success-service.ts
 - apps/api/src/routes/customer-success-routes.ts
 - apps/api/src/server/register-routes.ts

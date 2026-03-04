@@ -1,6 +1,7 @@
 # Phase 221 -- Wave 4 Comprehensive Audit
 
 ## User Request
+
 Run a 3-tier progressive sanity/integrity/regression check on all Wave 4 changes (Q211-Q220).
 Fix any issues found, including pre-existing cosmetic issues.
 
@@ -13,6 +14,7 @@ Fix any issues found, including pre-existing cosmetic issues.
 ## Fixes Applied
 
 ### verify-rpc-communication.mjs (9 fixes)
+
 - Removed dead Gate 6 code (writeRpcs always returned [], regEntry unused)
 - Restructured main(): static analysis -> live probe -> generate report (was: static -> report -> live)
 - generateReport() now accepts liveResult parameter, writes live probe results to markdown
@@ -23,6 +25,7 @@ Fix any issues found, including pre-existing cosmetic issues.
 - Coverage labels clarified: "across routes and services" (not just "in routes")
 
 ### enrich-wave-phases.mjs title mismatches (CRITICAL, 56 files)
+
 - WAVE2/WAVE3 dictionaries mapped playbook section order to phase numbers without checking folder names
 - 28 phase titles corrected (183-210) in dictionary
 - 56 prompt files rewritten with correct titles, steps, and verification criteria
@@ -30,17 +33,20 @@ Fix any issues found, including pre-existing cosmetic issues.
 - Created fix-wave-titles.mjs (one-shot, kept for audit trail)
 
 ### Convergence snapshot (docs/wave4-convergence-snapshot.md)
+
 - Phase count: 228 -> 229
 - HEAD hash: 664da21 -> 8c6e90f
 - Route labels: "Live RPC routes" -> "RPC-active routes", added "Non-RPC routes: 106"
 - RPC label: "Unique RPCs in routes" -> "Unique RPCs across routes + services"
 
 ### Verification report (docs/vista-alignment/rpc-verification-report.md)
+
 - Clarified coverage labels with scope breakdown (74 route + 37 service)
 - Explained 138 registry vs 59 exceptions distinction
 - Clarified 29 "unused" = 27 adapter/service + 2 pre-registered
 
 ## Files Touched
+
 - scripts/verify-rpc-communication.mjs
 - scripts/enrich-wave-phases.mjs
 - scripts/fix-wave-titles.mjs (new, one-shot audit artifact)
@@ -50,6 +56,7 @@ Fix any issues found, including pre-existing cosmetic issues.
 - 56 prompt files across prompts/193-221 (wave phases 183-210)
 
 ## Verification
+
 - pnpm qa:prompts: 2/2 PASS
 - Phase index gate: 6/6 PASS (229 phases)
 - get_errors: 0 errors

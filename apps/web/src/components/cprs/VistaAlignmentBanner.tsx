@@ -61,7 +61,8 @@ export default function VistaAlignmentBanner({ panelName }: Props) {
       <span>{label}</span>
       {wiring.pendingRpcs.length > 0 && (
         <span style={{ opacity: 0.7 }}>
-          {' '}| target: {wiring.pendingRpcs.slice(0, 2).join(', ')}
+          {' '}
+          | target: {wiring.pendingRpcs.slice(0, 2).join(', ')}
           {wiring.pendingRpcs.length > 2 ? ` +${wiring.pendingRpcs.length - 2}` : ''}
         </span>
       )}
@@ -69,7 +70,12 @@ export default function VistaAlignmentBanner({ panelName }: Props) {
   );
 }
 
-function getStatusDisplay(w: PanelWiring): { label: string; color: string; bg: string; detail: string } {
+function getStatusDisplay(w: PanelWiring): {
+  label: string;
+  color: string;
+  bg: string;
+  detail: string;
+} {
   if (w.noVista) {
     return {
       label: 'no VistA RPCs',

@@ -1,6 +1,7 @@
 # 374-99-VERIFY — External Validation Harness (W20-P5)
 
 ## Verification Steps
+
 1. tsc --noEmit clean
 2. POST /external-validation/vulnerabilities → 201
 3. GET /external-validation/vulnerabilities → list with triage status

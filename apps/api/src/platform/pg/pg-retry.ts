@@ -16,15 +16,15 @@
 
 /** Transient PG error codes that are safe to retry. */
 const RETRYABLE_PG_CODES = new Set([
-  "08000", // connection_exception
-  "08003", // connection_does_not_exist
-  "08006", // connection_failure
-  "08001", // sqlclient_unable_to_establish_sqlconnection
-  "40001", // serialization_failure
-  "40P01", // deadlock_detected
-  "57P01", // admin_shutdown (e.g. pgbouncer restart)
-  "57P03", // cannot_connect_now
-  "53300", // too_many_connections
+  '08000', // connection_exception
+  '08003', // connection_does_not_exist
+  '08006', // connection_failure
+  '08001', // sqlclient_unable_to_establish_sqlconnection
+  '40001', // serialization_failure
+  '40P01', // deadlock_detected
+  '57P01', // admin_shutdown (e.g. pgbouncer restart)
+  '57P03', // cannot_connect_now
+  '53300', // too_many_connections
 ]);
 
 export interface PgRetryOptions {
@@ -50,20 +50,20 @@ export interface PgRetryResult<T> {
  * Determine if a Postgres error is transient and safe to retry.
  */
 function isRetryableError(err: unknown): boolean {
-  if (!err || typeof err !== "object") return false;
+  if (!err || typeof err !== 'object') return false;
   const pgErr = err as { code?: string; message?: string };
 
   // Check PG error codes
   if (pgErr.code && RETRYABLE_PG_CODES.has(pgErr.code)) return true;
 
   // Check common transient error messages
-  const msg = pgErr.message?.toLowerCase() ?? "";
-  if (msg.includes("connection reset")) return true;
-  if (msg.includes("connection terminated")) return true;
-  if (msg.includes("econnrefused")) return true;
-  if (msg.includes("econnreset")) return true;
-  if (msg.includes("etimedout")) return true;
-  if (msg.includes("too many clients")) return true;
+  const msg = pgErr.message?.toLowerCase() ?? '';
+  if (msg.includes('connection reset')) return true;
+  if (msg.includes('connection terminated')) return true;
+  if (msg.includes('econnrefused')) return true;
+  if (msg.includes('econnreset')) return true;
+  if (msg.includes('etimedout')) return true;
+  if (msg.includes('too many clients')) return true;
 
   return false;
 }
@@ -74,7 +74,7 @@ function isRetryableError(err: unknown): boolean {
  */
 export async function withPgRetry<T>(
   fn: () => Promise<T>,
-  opts?: PgRetryOptions,
+  opts?: PgRetryOptions
 ): Promise<PgRetryResult<T>> {
   const maxRetries = opts?.maxRetries ?? 3;
   const baseDelayMs = opts?.baseDelayMs ?? 100;
@@ -111,7 +111,7 @@ export async function withPgRetry<T>(
       // Exponential backoff with jitter
       const delay = Math.min(
         baseDelayMs * Math.pow(2, attempt - 1) + Math.random() * baseDelayMs,
-        maxDelayMs,
+        maxDelayMs
       );
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
@@ -130,6 +130,6 @@ export async function withPgRetry<T>(
  * Useful for idempotent upserts — if insert conflicts, it's a no-op.
  */
 export function isPgUniqueViolation(err: unknown): boolean {
-  if (!err || typeof err !== "object") return false;
-  return (err as { code?: string }).code === "23505";
+  if (!err || typeof err !== 'object') return false;
+  return (err as { code?: string }).code === '23505';
 }

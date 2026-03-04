@@ -9,7 +9,6 @@
  *   3. All state transitions are audited via immutable-audit
  */
 
-import { randomUUID } from "crypto";
 import type {
   ClinicalCommand,
   CommandAttempt,
@@ -19,8 +18,8 @@ import type {
   WritebackDomain,
   DryRunTranscript,
   ReviewDecision,
-} from "./types.js";
-import { INTENT_DOMAIN_MAP } from "./types.js";
+} from './types.js';
+import { INTENT_DOMAIN_MAP } from './types.js';
 import {
   createCommand,
   getCommand,
@@ -30,10 +29,10 @@ import {
   recordResult,
   getAttempts,
   getResult,
-} from "./command-store.js";
-import { checkWritebackGate } from "./gates.js";
-import { log } from "../lib/logger.js";
-import { immutableAudit } from "../lib/immutable-audit.js";
+} from './command-store.js';
+import { checkWritebackGate } from './gates.js';
+import { log } from '../lib/logger.js';
+import { immutableAudit } from '../lib/immutable-audit.js';
 
 /* ------------------------------------------------------------------ */
 /* Executor registry                                                   */
@@ -75,8 +74,8 @@ export function submitCommand(req: SubmitCommandRequest): CommandExecutionResult
   const expectedDomain = INTENT_DOMAIN_MAP[req.intent];
   if (expectedDomain !== req.domain) {
     return {
-      commandId: "",
-      status: "rejected",
+      commandId: '',
+      status: 'rejected',
       error: `Intent ${req.intent} belongs to domain ${expectedDomain}, not ${req.domain}`,
     };
   }
@@ -85,14 +84,19 @@ export function submitCommand(req: SubmitCommandRequest): CommandExecutionResult
   const gate = checkWritebackGate(req.domain, req.tenantId, req.forceDryRun);
   if (!gate.allowed) {
     log.info(`Writeback rejected: domain=${req.domain} reason=${gate.reason}`);
-    immutableAudit("writeback.reject", "failure", { sub: req.createdBy, name: req.createdBy }, {
-      tenantId: req.tenantId,
-      detail: { domain: req.domain, intent: req.intent, reason: gate.reason },
-    });
+    immutableAudit(
+      'writeback.reject',
+      'failure',
+      { sub: req.createdBy, name: req.createdBy },
+      {
+        tenantId: req.tenantId,
+        detail: { domain: req.domain, intent: req.intent, reason: gate.reason },
+      }
+    );
     return {
-      commandId: "",
-      status: "rejected",
-      error: gate.reason || "Writeback not allowed",
+      commandId: '',
+      status: 'rejected',
+      error: gate.reason || 'Writeback not allowed',
     };
   }
 
@@ -117,14 +121,21 @@ export function submitCommand(req: SubmitCommandRequest): CommandExecutionResult
   }
 
   // 5. Return pending (worker will pick up)
-  log.info(`Writeback command submitted: id=${command.id} domain=${req.domain} intent=${req.intent}`);
-  immutableAudit("writeback.submit", "success", { sub: req.createdBy, name: req.createdBy }, {
-    tenantId: req.tenantId,
-    detail: { commandId: command.id, domain: req.domain, intent: req.intent },
-  });
+  log.info(
+    `Writeback command submitted: id=${command.id} domain=${req.domain} intent=${req.intent}`
+  );
+  immutableAudit(
+    'writeback.submit',
+    'success',
+    { sub: req.createdBy, name: req.createdBy },
+    {
+      tenantId: req.tenantId,
+      detail: { commandId: command.id, domain: req.domain, intent: req.intent },
+    }
+  );
   return {
     commandId: command.id,
-    status: "pending",
+    status: 'pending',
   };
 }
 
@@ -138,10 +149,10 @@ export function submitCommand(req: SubmitCommandRequest): CommandExecutionResult
 export async function processCommand(commandId: string): Promise<CommandExecutionResult> {
   const cmd = getCommand(commandId);
   if (!cmd) {
-    return { commandId, status: "failed", error: "Command not found" };
+    return { commandId, status: 'failed', error: 'Command not found' };
   }
 
-  if (cmd.status !== "pending" && cmd.status !== "retrying") {
+  if (cmd.status !== 'pending' && cmd.status !== 'retrying') {
     return {
       commandId,
       status: cmd.status,
@@ -150,14 +161,14 @@ export async function processCommand(commandId: string): Promise<CommandExecutio
   }
 
   // Transition to processing
-  updateCommandStatus(commandId, "processing");
+  updateCommandStatus(commandId, 'processing');
 
   const executor = executors.get(cmd.domain);
   if (!executor) {
-    updateCommandStatus(commandId, "failed", `No executor registered for domain ${cmd.domain}`);
+    updateCommandStatus(commandId, 'failed', `No executor registered for domain ${cmd.domain}`);
     return {
       commandId,
-      status: "failed",
+      status: 'failed',
       error: `No executor registered for domain ${cmd.domain}`,
     };
   }
@@ -168,7 +179,7 @@ export async function processCommand(commandId: string): Promise<CommandExecutio
     commandId,
     attemptNo,
     startedAt: new Date().toISOString(),
-    status: "running",
+    status: 'running',
   };
   recordAttempt(attempt);
 
@@ -176,7 +187,7 @@ export async function processCommand(commandId: string): Promise<CommandExecutio
     const result = await executor.execute(cmd);
 
     // Success
-    attempt.status = "success";
+    attempt.status = 'success';
     attempt.endedAt = new Date().toISOString();
 
     recordResult({
@@ -186,40 +197,57 @@ export async function processCommand(commandId: string): Promise<CommandExecutio
       completedAt: new Date().toISOString(),
     });
 
-    updateCommandStatus(commandId, "completed");
+    updateCommandStatus(commandId, 'completed');
 
     log.info(`Writeback completed: id=${commandId} domain=${cmd.domain} intent=${cmd.intent}`);
-    immutableAudit("writeback.execute", "success", { sub: cmd.createdBy, name: cmd.createdBy }, {
-      tenantId: cmd.tenantId,
-      detail: { commandId, domain: cmd.domain, intent: cmd.intent },
-    });
+    immutableAudit(
+      'writeback.execute',
+      'success',
+      { sub: cmd.createdBy, name: cmd.createdBy },
+      {
+        tenantId: cmd.tenantId,
+        detail: { commandId, domain: cmd.domain, intent: cmd.intent },
+      }
+    );
 
     return {
       commandId,
-      status: "completed",
+      status: 'completed',
       vistaRefs: result.vistaRefs,
       resultSummary: result.resultSummary,
     };
   } catch (err: any) {
-    const errorClass = err.errorClass || "unknown";
-    const isTransient = errorClass === "transient" || errorClass === "timeout";
+    const errorClass = err.errorClass || 'unknown';
+    const isTransient = errorClass === 'transient' || errorClass === 'timeout';
 
-    attempt.status = isTransient ? "transient_failure" : "permanent_failure";
+    attempt.status = isTransient ? 'transient_failure' : 'permanent_failure';
     attempt.endedAt = new Date().toISOString();
     attempt.errorClass = errorClass;
     attempt.errorDetailRedacted = String(err.message || err).slice(0, 200);
 
-    const newStatus = isTransient && attemptNo < 3 ? "retrying" : "failed";
+    const newStatus = isTransient && attemptNo < 3 ? 'retrying' : 'failed';
     updateCommandStatus(commandId, newStatus, attempt.errorDetailRedacted);
 
-    const auditAction = newStatus === "retrying" ? "writeback.retry" as const : "writeback.fail" as const;
-    immutableAudit(auditAction, "failure", { sub: cmd.createdBy, name: cmd.createdBy }, {
-      tenantId: cmd.tenantId,
-      detail: { commandId, domain: cmd.domain, intent: cmd.intent, errorClass, attempt: attemptNo },
-    });
+    const auditAction =
+      newStatus === 'retrying' ? ('writeback.retry' as const) : ('writeback.fail' as const);
+    immutableAudit(
+      auditAction,
+      'failure',
+      { sub: cmd.createdBy, name: cmd.createdBy },
+      {
+        tenantId: cmd.tenantId,
+        detail: {
+          commandId,
+          domain: cmd.domain,
+          intent: cmd.intent,
+          errorClass,
+          attempt: attemptNo,
+        },
+      }
+    );
 
     log.warn(
-      `Writeback ${newStatus}: id=${commandId} domain=${cmd.domain} error=${errorClass} attempt=${attemptNo}`,
+      `Writeback ${newStatus}: id=${commandId} domain=${cmd.domain} error=${errorClass} attempt=${attemptNo}`
     );
 
     return {
@@ -244,22 +272,34 @@ function processDryRun(cmd: ClinicalCommand): CommandExecutionResult {
     transcript = {
       rpcName: `[no executor for ${cmd.domain}]`,
       params: cmd.payloadJson,
-      simulatedResult: "No executor registered — dry-run transcript only",
+      simulatedResult: 'No executor registered — dry-run transcript only',
       recordedAt: new Date().toISOString(),
     };
   }
 
   setDryRunTranscript(cmd.id, transcript);
 
-  log.info(`Writeback dry-run: id=${cmd.id} domain=${cmd.domain} intent=${cmd.intent} rpc=${transcript.rpcName}`);
-  immutableAudit("writeback.dry_run", "success", { sub: cmd.createdBy, name: cmd.createdBy }, {
-    tenantId: cmd.tenantId,
-    detail: { commandId: cmd.id, domain: cmd.domain, intent: cmd.intent, rpcName: transcript.rpcName },
-  });
+  log.info(
+    `Writeback dry-run: id=${cmd.id} domain=${cmd.domain} intent=${cmd.intent} rpc=${transcript.rpcName}`
+  );
+  immutableAudit(
+    'writeback.dry_run',
+    'success',
+    { sub: cmd.createdBy, name: cmd.createdBy },
+    {
+      tenantId: cmd.tenantId,
+      detail: {
+        commandId: cmd.id,
+        domain: cmd.domain,
+        intent: cmd.intent,
+        rpcName: transcript.rpcName,
+      },
+    }
+  );
 
   return {
     commandId: cmd.id,
-    status: "dry_run",
+    status: 'dry_run',
     dryRunTranscript: transcript,
   };
 }
@@ -274,7 +314,7 @@ function processDryRun(cmd: ClinicalCommand): CommandExecutionResult {
 export function getCommandDetail(commandId: string): {
   command: ClinicalCommand | undefined;
   attempts: CommandAttempt[];
-  result: import("./types.js").CommandResult | undefined;
+  result: import('./types.js').CommandResult | undefined;
 } {
   return {
     command: getCommand(commandId),
@@ -293,34 +333,41 @@ export function getCommandDetail(commandId: string): {
  */
 export function markAsSupervisedReview(
   commandId: string,
-  safeHarborTier: string,
+  safeHarborTier: string
 ): CommandExecutionResult {
   const cmd = getCommand(commandId);
   if (!cmd) {
-    return { commandId, status: "failed", error: "Command not found" };
+    return { commandId, status: 'failed', error: 'Command not found' };
   }
 
-  updateCommandStatus(commandId, "awaiting_review");
+  updateCommandStatus(commandId, 'awaiting_review');
   cmd.supervisedMeta = {
     requiresReview: true,
     safeHarborTier,
   };
 
-  log.info(`Writeback awaiting review: id=${commandId} domain=${cmd.domain} tier=${safeHarborTier}`);
-  immutableAudit("writeback.submit", "success", { sub: cmd.createdBy, name: cmd.createdBy }, {
-    tenantId: cmd.tenantId,
-    detail: {
-      commandId,
-      domain: cmd.domain,
-      intent: cmd.intent,
-      supervisedTier: safeHarborTier,
-      status: "awaiting_review",
-    },
-  });
+  log.info(
+    `Writeback awaiting review: id=${commandId} domain=${cmd.domain} tier=${safeHarborTier}`
+  );
+  immutableAudit(
+    'writeback.submit',
+    'success',
+    { sub: cmd.createdBy, name: cmd.createdBy },
+    {
+      tenantId: cmd.tenantId,
+      detail: {
+        commandId,
+        domain: cmd.domain,
+        intent: cmd.intent,
+        supervisedTier: safeHarborTier,
+        status: 'awaiting_review',
+      },
+    }
+  );
 
   return {
     commandId,
-    status: "awaiting_review",
+    status: 'awaiting_review',
     dryRunTranscript: cmd.dryRunTranscript,
   };
 }
@@ -335,14 +382,14 @@ export async function reviewCommand(
   commandId: string,
   decision: ReviewDecision,
   reviewerDuz: string,
-  reason?: string,
+  reason?: string
 ): Promise<CommandExecutionResult> {
   const cmd = getCommand(commandId);
   if (!cmd) {
-    return { commandId, status: "failed", error: "Command not found" };
+    return { commandId, status: 'failed', error: 'Command not found' };
   }
 
-  if (cmd.status !== "awaiting_review") {
+  if (cmd.status !== 'awaiting_review') {
     return {
       commandId,
       status: cmd.status,
@@ -359,28 +406,33 @@ export async function reviewCommand(
   cmd.supervisedMeta.reviewDecision = decision;
   if (reason) cmd.supervisedMeta.reviewReason = reason;
 
-  const auditAction = decision === "approve" ? "writeback.execute" : "writeback.reject";
-  const auditOutcome = decision === "approve" ? "success" : "denied";
+  const auditAction = decision === 'approve' ? 'writeback.execute' : 'writeback.reject';
+  const auditOutcome = decision === 'approve' ? 'success' : 'denied';
 
-  immutableAudit(auditAction as any, auditOutcome, { sub: reviewerDuz, name: reviewerDuz }, {
-    tenantId: cmd.tenantId,
-    detail: {
-      commandId,
-      domain: cmd.domain,
-      intent: cmd.intent,
-      reviewDecision: decision,
-      reviewReason: reason,
-    },
-  });
+  immutableAudit(
+    auditAction as any,
+    auditOutcome,
+    { sub: reviewerDuz, name: reviewerDuz },
+    {
+      tenantId: cmd.tenantId,
+      detail: {
+        commandId,
+        domain: cmd.domain,
+        intent: cmd.intent,
+        reviewDecision: decision,
+        reviewReason: reason,
+      },
+    }
+  );
 
-  if (decision === "reject") {
-    updateCommandStatus(commandId, "rejected", reason || "Supervisor rejected");
+  if (decision === 'reject') {
+    updateCommandStatus(commandId, 'rejected', reason || 'Supervisor rejected');
     log.info(`Writeback review rejected: id=${commandId} by=${reviewerDuz}`);
-    return { commandId, status: "rejected", error: reason || "Supervisor rejected" };
+    return { commandId, status: 'rejected', error: reason || 'Supervisor rejected' };
   }
 
   // Approve → process the command
-  updateCommandStatus(commandId, "pending");
+  updateCommandStatus(commandId, 'pending');
   log.info(`Writeback review approved: id=${commandId} by=${reviewerDuz}`);
   return processCommand(commandId);
 }

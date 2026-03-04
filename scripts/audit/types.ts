@@ -2,10 +2,10 @@
  * Phase 54 -- Shared types for the alignment audit framework.
  */
 
-export type AuditMode = "offline" | "integration";
+export type AuditMode = 'offline' | 'integration';
 
-export type FindingSeverity = "critical" | "high" | "medium" | "low" | "info";
-export type FindingStatus = "pass" | "fail" | "warn" | "skip";
+export type FindingSeverity = 'critical' | 'high' | 'medium' | 'low' | 'info';
+export type FindingStatus = 'pass' | 'fail' | 'warn' | 'skip';
 
 export interface AuditFinding {
   rule: string;
@@ -19,13 +19,13 @@ export interface AuditFinding {
 
 export interface ModuleResult {
   module: string;
-  status: "pass" | "fail" | "warn" | "skip";
+  status: 'pass' | 'fail' | 'warn' | 'skip';
   findings: AuditFinding[];
   duration_ms: number;
 }
 
 export interface AuditSummary {
-  version: "2.0";
+  version: '2.0';
   mode: AuditMode;
   timestamp: string;
   modules: ModuleResult[];

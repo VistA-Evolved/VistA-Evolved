@@ -29,12 +29,12 @@ Remittance Source (835 JSON / Manual)
 
 ### Tables (platform.db)
 
-| Letter | Table | Purpose |
-|--------|-------|---------|
-| K | remittance_import | Import batch metadata + provenance |
-| L | payment_record | Individual payment lines |
-| M | reconciliation_match | Payment-to-claim match records |
-| N | underpayment_case | Shortfall tracking + denial bridge |
+| Letter | Table                | Purpose                            |
+| ------ | -------------------- | ---------------------------------- |
+| K      | remittance_import    | Import batch metadata + provenance |
+| L      | payment_record       | Individual payment lines           |
+| M      | reconciliation_match | Payment-to-claim match records     |
+| N      | underpayment_case    | Shortfall tracking + denial bridge |
 
 ### Matching Engine — 3 Tiers
 
@@ -54,26 +54,27 @@ Send-to-denials bridge creates a Phase 98 DenialCase and links it via
 
 ## API Endpoints
 
-| Method | Path | Purpose |
-|--------|------|---------|
-| POST | /rcm/reconciliation/import | Import remittance batch |
-| GET | /rcm/reconciliation/imports | List imports |
-| GET | /rcm/reconciliation/imports/:id | Import detail + payments |
-| GET | /rcm/reconciliation/payments | Paginated payments |
-| GET | /rcm/reconciliation/payments/:id | Payment + matches |
-| POST | /rcm/reconciliation/payments/:id/match | Manual match |
-| POST | /rcm/reconciliation/match-batch | Run matching on import |
-| GET | /rcm/reconciliation/matches/review | Review queue |
-| PATCH | /rcm/reconciliation/matches/:id | Confirm/reject match |
-| GET | /rcm/reconciliation/underpayments | Paginated underpayments |
-| GET | /rcm/reconciliation/underpayments/:id | Underpayment detail |
-| PATCH | /rcm/reconciliation/underpayments/:id | Update status (FSM) |
-| POST | /rcm/reconciliation/underpayments/:id/send-to-denials | Bridge to denials |
-| GET | /rcm/reconciliation/stats | Dashboard stats |
+| Method | Path                                                  | Purpose                  |
+| ------ | ----------------------------------------------------- | ------------------------ |
+| POST   | /rcm/reconciliation/import                            | Import remittance batch  |
+| GET    | /rcm/reconciliation/imports                           | List imports             |
+| GET    | /rcm/reconciliation/imports/:id                       | Import detail + payments |
+| GET    | /rcm/reconciliation/payments                          | Paginated payments       |
+| GET    | /rcm/reconciliation/payments/:id                      | Payment + matches        |
+| POST   | /rcm/reconciliation/payments/:id/match                | Manual match             |
+| POST   | /rcm/reconciliation/match-batch                       | Run matching on import   |
+| GET    | /rcm/reconciliation/matches/review                    | Review queue             |
+| PATCH  | /rcm/reconciliation/matches/:id                       | Confirm/reject match     |
+| GET    | /rcm/reconciliation/underpayments                     | Paginated underpayments  |
+| GET    | /rcm/reconciliation/underpayments/:id                 | Underpayment detail      |
+| PATCH  | /rcm/reconciliation/underpayments/:id                 | Update status (FSM)      |
+| POST   | /rcm/reconciliation/underpayments/:id/send-to-denials | Bridge to denials        |
+| GET    | /rcm/reconciliation/stats                             | Dashboard stats          |
 
 ## UI
 
 `/cprs/admin/reconciliation` — 5 tabs:
+
 - **Upload Remittance**: Paste JSON → import batch
 - **Payments**: Paginated list with status filter
 - **Review Matches**: Confirm/reject low-confidence matches
@@ -90,9 +91,9 @@ Uses adapter pattern. Built-in `scaffold-json` parser accepts:
     {
       "claimRef": "CLM-001",
       "payerId": "PAYER-A",
-      "billedAmount": 500.00,
-      "paidAmount": 450.00,
-      "allowedAmount": 480.00,
+      "billedAmount": 500.0,
+      "paidAmount": 450.0,
+      "allowedAmount": 480.0,
       "serviceDate": "2024-01-15",
       "rawCodes": [{ "type": "CARC", "code": "45" }]
     }
@@ -106,16 +107,16 @@ Custom parsers registered via `registerParser(parser)`.
 
 ## Audit Actions
 
-| Action | When |
-|--------|------|
-| recon.imported | Remittance batch imported |
-| recon.payment_created | Payment record created |
-| recon.matched | Payment matched to claim |
-| recon.batch_matched | Batch matching completed |
-| recon.confirmed | Match confirmed/rejected |
-| recon.underpayment_created | Underpayment flagged |
-| recon.underpayment_updated | Status transition |
-| recon.sent_to_denials | Escalated to denial case |
+| Action                     | When                      |
+| -------------------------- | ------------------------- |
+| recon.imported             | Remittance batch imported |
+| recon.payment_created      | Payment record created    |
+| recon.matched              | Payment matched to claim  |
+| recon.batch_matched        | Batch matching completed  |
+| recon.confirmed            | Match confirmed/rejected  |
+| recon.underpayment_created | Underpayment flagged      |
+| recon.underpayment_updated | Status transition         |
+| recon.sent_to_denials      | Escalated to denial case  |
 
 ## Testing
 

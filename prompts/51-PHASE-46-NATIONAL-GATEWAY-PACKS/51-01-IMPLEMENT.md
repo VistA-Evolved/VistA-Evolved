@@ -1,7 +1,9 @@
 # Phase 46 -- National Gateway Packs (PH eClaims3, AU ECLIPSE, SG NPHC, NZ ACC)
 
 ## User Request
+
 Implement national gateway packs for 4 countries with:
+
 - Connector upgrades / new modules
 - Enrollment packets + go-live checklists
 - Conformance harness per gateway
@@ -11,6 +13,7 @@ Implement national gateway packs for 4 countries with:
 - 5 runbook files
 
 ## Implementation Steps
+
 1. Create gateway readiness model: `apps/api/src/rcm/gateways/readiness.ts`
 2. Upgrade PhilHealth connector for eClaims 3.0 + SOA generator
 3. Upgrade AU ECLIPSE connector with cert/PRODA probes
@@ -25,11 +28,13 @@ Implement national gateway packs for 4 countries with:
 12. Verify: tsc + vitest
 
 ## Verification Steps
+
 - `npx tsc --noEmit` exits 0
 - `npx vitest run` all tests pass
 - GET /rcm/gateways/readiness returns structured readiness per gateway
 
 ## Files Touched
+
 - apps/api/src/rcm/gateways/readiness.ts (new)
 - apps/api/src/rcm/gateways/soa-generator.ts (new)
 - apps/api/src/rcm/conformance/gateway-conformance.ts (new)

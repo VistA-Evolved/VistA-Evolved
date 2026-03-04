@@ -6,7 +6,7 @@
  *
  * Route convention: /hl7/pipeline/* for event stream, /hl7/dlq/* for DLQ.
  */
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 import {
   queryMessageEvents,
   getMessageEvent,
@@ -14,14 +14,14 @@ import {
   getMessageEventStats,
   type Hl7ProcessingStatus,
   type Hl7MessageDirection,
-} from "../hl7/message-event-store.js";
+} from '../hl7/message-event-store.js';
 import {
   listEnhancedDeadLetters,
   getEnhancedDeadLetter,
   replayDeadLetter,
   resolveDeadLetter,
   getDlqStats,
-} from "../hl7/dead-letter-enhanced.js";
+} from '../hl7/dead-letter-enhanced.js';
 
 export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> {
   /* ── Message Event Stream ─────────────────────────────── */
@@ -29,7 +29,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   /**
    * GET /hl7/pipeline/events — Query message events
    */
-  server.get("/hl7/pipeline/events", async (request, reply) => {
+  server.get('/hl7/pipeline/events', async (request, reply) => {
     const q = request.query as {
       tenantId?: string;
       messageType?: string;
@@ -54,11 +54,11 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   /**
    * GET /hl7/pipeline/events/:id — Get single event
    */
-  server.get("/hl7/pipeline/events/:id", async (request, reply) => {
+  server.get('/hl7/pipeline/events/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const event = getMessageEvent(id);
     if (!event) {
-      return reply.code(404).send({ ok: false, error: "Event not found" });
+      return reply.code(404).send({ ok: false, error: 'Event not found' });
     }
     return reply.send({ ok: true, event });
   });
@@ -66,7 +66,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   /**
    * GET /hl7/pipeline/stats — Event statistics by status
    */
-  server.get("/hl7/pipeline/stats", async (_request, reply) => {
+  server.get('/hl7/pipeline/stats', async (_request, reply) => {
     const stats = getMessageEventStats();
     return reply.send({ ok: true, stats });
   });
@@ -74,7 +74,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   /**
    * GET /hl7/pipeline/verify — Verify hash chain integrity
    */
-  server.get("/hl7/pipeline/verify", async (_request, reply) => {
+  server.get('/hl7/pipeline/verify', async (_request, reply) => {
     const result = verifyMessageEventChain();
     return reply.send({ ...result });
   });
@@ -84,7 +84,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   /**
    * GET /hl7/dlq — List dead-lettered messages
    */
-  server.get("/hl7/dlq", async (request, reply) => {
+  server.get('/hl7/dlq', async (request, reply) => {
     const q = request.query as {
       tenantId?: string;
       resolved?: string;
@@ -92,7 +92,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
     };
     const result = listEnhancedDeadLetters({
       tenantId: q.tenantId,
-      resolved: q.resolved === "true" ? true : q.resolved === "false" ? false : undefined,
+      resolved: q.resolved === 'true' ? true : q.resolved === 'false' ? false : undefined,
       limit: q.limit ? parseInt(q.limit, 10) : undefined,
     });
     return reply.send({ ok: true, ...result });
@@ -101,7 +101,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   /**
    * GET /hl7/dlq/stats — DLQ summary stats
    */
-  server.get("/hl7/dlq/stats", async (_request, reply) => {
+  server.get('/hl7/dlq/stats', async (_request, reply) => {
     const stats = getDlqStats();
     return reply.send({ ok: true, stats });
   });
@@ -109,11 +109,11 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   /**
    * GET /hl7/dlq/:id — Get single DLQ entry
    */
-  server.get("/hl7/dlq/:id", async (request, reply) => {
+  server.get('/hl7/dlq/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const entry = getEnhancedDeadLetter(id);
     if (!entry) {
-      return reply.code(404).send({ ok: false, error: "DLQ entry not found" });
+      return reply.code(404).send({ ok: false, error: 'DLQ entry not found' });
     }
     return reply.send({ ok: true, entry });
   });
@@ -121,14 +121,14 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   /**
    * POST /hl7/dlq/:id/replay — Replay a dead-lettered message
    */
-  server.post("/hl7/dlq/:id/replay", async (request, reply) => {
+  server.post('/hl7/dlq/:id/replay', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as { actorId?: string }) || {};
-    const actorId = body.actorId || "system";
+    const actorId = body.actorId || 'system';
 
     const result = replayDeadLetter(id, actorId);
     if (!result.ok) {
-      return reply.code(result.action === "not_found" ? 404 : 409).send({
+      return reply.code(result.action === 'not_found' ? 404 : 409).send({
         ok: false,
         action: result.action,
         detail: result.detail,
@@ -139,7 +139,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
     // into the routing pipeline. For now, return replay confirmation.
     return reply.send({
       ok: true,
-      action: "replayed",
+      action: 'replayed',
       entryId: result.entryId,
       detail: result.detail,
       // rawMessage intentionally NOT returned in API response (PHI safety)
@@ -149,10 +149,10 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   /**
    * POST /hl7/dlq/:id/resolve — Mark DLQ entry as manually resolved
    */
-  server.post("/hl7/dlq/:id/resolve", async (request, reply) => {
+  server.post('/hl7/dlq/:id/resolve', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as { actorId?: string }) || {};
-    const actorId = body.actorId || "system";
+    const actorId = body.actorId || 'system';
 
     const result = resolveDeadLetter(id, actorId);
     if (!result.ok) {

@@ -1,20 +1,21 @@
 # Phase 56: CPRS Parity Wave 1 (READ) + Cover Sheet Layout Manager
 
 ## Overview
+
 Wave 1 of CPRS functional parity implementation. Ensures the web UI matches
 CPRS behavior for core READ workflows across cover sheet, problems, meds,
 orders, notes, and labs tabs.
 
 ## New API Endpoints
 
-| Endpoint | RPC | Status |
-|----------|-----|--------|
-| `GET /vista/cprs/orders-summary?dfn=` | ORWORB UNSIG ORDERS | wired |
-| `GET /vista/cprs/appointments?dfn=` | SD API APPOINTMENTS BY DFN | integration-pending |
-| `GET /vista/cprs/reminders?dfn=` | ORQQPX REMINDERS LIST | integration-pending |
-| `GET /vista/cprs/meds/detail?orderId=` | ORWORR GETTXT | wired |
-| `GET /vista/cprs/labs/chart?dfn=&testName=` | ORWLRR CHART | wired |
-| `GET /vista/cprs/problems/icd-search?term=` | ORQQPL4 LEX | wired |
+| Endpoint                                    | RPC                        | Status              |
+| ------------------------------------------- | -------------------------- | ------------------- |
+| `GET /vista/cprs/orders-summary?dfn=`       | ORWORB UNSIG ORDERS        | wired               |
+| `GET /vista/cprs/appointments?dfn=`         | SD API APPOINTMENTS BY DFN | integration-pending |
+| `GET /vista/cprs/reminders?dfn=`            | ORQQPX REMINDERS LIST      | integration-pending |
+| `GET /vista/cprs/meds/detail?orderId=`      | ORWORR GETTXT              | wired               |
+| `GET /vista/cprs/labs/chart?dfn=&testName=` | ORWLRR CHART               | wired               |
+| `GET /vista/cprs/problems/icd-search?term=` | ORQQPL4 LEX                | wired               |
 
 ## Cover Sheet Sections (9 total)
 

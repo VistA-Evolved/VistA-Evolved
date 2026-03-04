@@ -91,7 +91,8 @@ export interface ClearinghouseGatewayConfig {
 }
 
 function loadConfig(): ClearinghouseGatewayConfig {
-  const isProd = process.env.NODE_ENV === 'production' ||
+  const isProd =
+    process.env.NODE_ENV === 'production' ||
     ['rc', 'prod'].includes(process.env.PLATFORM_RUNTIME_MODE ?? '');
   return {
     provider: (process.env.CLEARINGHOUSE_PROVIDER as ClearinghouseProvider) ?? 'generic',
@@ -141,11 +142,7 @@ class TraceStore {
       if (!existsSync(subDir)) mkdirSync(subDir, { recursive: true });
 
       const filename = `${entry.timestamp.replace(/[:.]/g, '-')}_${entry.id}.json`;
-      writeFileSync(
-        join(subDir, filename),
-        JSON.stringify(entry, null, 2),
-        'utf8',
-      );
+      writeFileSync(join(subDir, filename), JSON.stringify(entry, null, 2), 'utf8');
 
       // Trim old traces
       this.trimTraces(subDir);
@@ -156,7 +153,9 @@ class TraceStore {
 
   private trimTraces(dir: string): void {
     try {
-      const files = readdirSync(dir).filter(f => f.endsWith('.json')).sort();
+      const files = readdirSync(dir)
+        .filter((f) => f.endsWith('.json'))
+        .sort();
       while (files.length > this.config.maxTracesPerSet) {
         const oldest = files.shift();
         if (oldest) {
@@ -172,19 +171,21 @@ class TraceStore {
   findReplay(transactionSet: X12TransactionSet, requestHash: string): ReplayMatch {
     // First check memory
     const memMatch = this.memoryTraces.find(
-      t => t.transactionSet === transactionSet && t.requestHash === requestHash && t.response,
+      (t) => t.transactionSet === transactionSet && t.requestHash === requestHash && t.response
     );
     if (memMatch) {
       return {
         traceId: memMatch.id,
         matched: true,
         response: memMatch.response,
-        result: memMatch.result ? {
-          success: memMatch.result.success,
-          transactionId: memMatch.result.transactionId,
-          errors: [],
-          metadata: { replayed: 'true', originalTraceId: memMatch.id },
-        } : undefined,
+        result: memMatch.result
+          ? {
+              success: memMatch.result.success,
+              transactionId: memMatch.result.transactionId,
+              errors: [],
+              metadata: { replayed: 'true', originalTraceId: memMatch.id },
+            }
+          : undefined,
       };
     }
 
@@ -193,7 +194,10 @@ class TraceStore {
       const subDir = join(this.config.traceDir, transactionSet);
       if (!existsSync(subDir)) return { traceId: '', matched: false };
 
-      const files = readdirSync(subDir).filter(f => f.endsWith('.json')).sort().reverse();
+      const files = readdirSync(subDir)
+        .filter((f) => f.endsWith('.json'))
+        .sort()
+        .reverse();
       for (const file of files) {
         const raw = readFileSync(join(subDir, file), 'utf8');
         const entry: TraceEntry = JSON.parse(raw);
@@ -202,12 +206,14 @@ class TraceStore {
             traceId: entry.id,
             matched: true,
             response: entry.response,
-            result: entry.result ? {
-              success: entry.result.success,
-              transactionId: entry.result.transactionId,
-              errors: [],
-              metadata: { replayed: 'true', originalTraceId: entry.id },
-            } : undefined,
+            result: entry.result
+              ? {
+                  success: entry.result.success,
+                  transactionId: entry.result.transactionId,
+                  errors: [],
+                  metadata: { replayed: 'true', originalTraceId: entry.id },
+                }
+              : undefined,
           };
         }
       }
@@ -221,13 +227,13 @@ class TraceStore {
   listTraces(transactionSet?: X12TransactionSet, limit = 50): TraceEntry[] {
     let entries = this.memoryTraces;
     if (transactionSet) {
-      entries = entries.filter(e => e.transactionSet === transactionSet);
+      entries = entries.filter((e) => e.transactionSet === transactionSet);
     }
     return entries.slice(-limit);
   }
 
   getTrace(id: string): TraceEntry | undefined {
-    return this.memoryTraces.find(t => t.id === id);
+    return this.memoryTraces.find((t) => t.id === id);
   }
 
   getStats(): Record<string, { count: number; lastAt?: string }> {
@@ -261,7 +267,13 @@ class StediAdapter {
     if (!this.apiKey) {
       return {
         success: false,
-        errors: [{ code: 'STEDI_NO_KEY', description: 'STEDI_API_KEY not configured', severity: 'error' as const }],
+        errors: [
+          {
+            code: 'STEDI_NO_KEY',
+            description: 'STEDI_API_KEY not configured',
+            severity: 'error' as const,
+          },
+        ],
       };
     }
 
@@ -305,7 +317,7 @@ export class ClearinghouseGatewayV2 {
     if (this.config.stediEnabled && this.config.stediApiKey) {
       this.stedi = new StediAdapter(
         this.config.stediApiKey,
-        this.config.stediEndpoint ?? 'https://edi.stedi.com/2024-01-01',
+        this.config.stediEndpoint ?? 'https://edi.stedi.com/2024-01-01'
       );
     }
   }
@@ -317,7 +329,7 @@ export class ClearinghouseGatewayV2 {
    */
   async submit837(
     payload: string,
-    metadata: Record<string, string> = {},
+    metadata: Record<string, string> = {}
   ): Promise<ClearinghouseSubmission> {
     const txSet: X12TransactionSet = (metadata.transactionSet as X12TransactionSet) ?? '837P';
     const submissionId = `sub-${Date.now()}-${randomBytes(4).toString('hex')}`;
@@ -398,7 +410,7 @@ export class ClearinghouseGatewayV2 {
    */
   async check276277(
     payload: string,
-    metadata: Record<string, string> = {},
+    metadata: Record<string, string> = {}
   ): Promise<ClearinghouseSubmission> {
     const txSet: X12TransactionSet = '276';
     const submissionId = `chk-${Date.now()}-${randomBytes(4).toString('hex')}`;
@@ -471,8 +483,8 @@ export class ClearinghouseGatewayV2 {
     const responses = await connector.fetchResponses(since);
 
     const results: ClearinghouseReceiveResult[] = responses
-      .filter(r => r.transactionSet === '835')
-      .map(r => ({
+      .filter((r) => r.transactionSet === '835')
+      .map((r) => ({
         ...r,
         contentHash: hashContent(r.payload),
       }));
@@ -561,7 +573,7 @@ export class ClearinghouseGatewayV2 {
   }
 
   getConfig(): Omit<ClearinghouseGatewayConfig, 'stediApiKey'> {
-    const { stediApiKey, ...safe } = this.config;
+    const { stediApiKey: _stediApiKey, ...safe } = this.config;
     return safe;
   }
 
@@ -582,14 +594,29 @@ export class ClearinghouseGatewayV2 {
       async submit(_txSet, _payload, _meta) {
         return {
           success: false,
-          errors: [{ code: 'NO_CONNECTOR', description: 'Clearinghouse connector not initialized', severity: 'error' as const }],
+          errors: [
+            {
+              code: 'NO_CONNECTOR',
+              description: 'Clearinghouse connector not initialized',
+              severity: 'error' as const,
+            },
+          ],
         };
       },
       async checkStatus(_txId) {
-        return { success: false, errors: [{ code: 'NO_CONNECTOR', description: 'Not available', severity: 'error' as const }] };
+        return {
+          success: false,
+          errors: [
+            { code: 'NO_CONNECTOR', description: 'Not available', severity: 'error' as const },
+          ],
+        };
       },
-      async fetchResponses() { return []; },
-      async healthCheck() { return { healthy: false, details: 'Connector not registered' }; },
+      async fetchResponses() {
+        return [];
+      },
+      async healthCheck() {
+        return { healthy: false, details: 'Connector not registered' };
+      },
       async shutdown() {},
     };
   }
@@ -599,7 +626,9 @@ export class ClearinghouseGatewayV2 {
 
 let instance: ClearinghouseGatewayV2 | null = null;
 
-export function getClearinghouseGateway(config?: Partial<ClearinghouseGatewayConfig>): ClearinghouseGatewayV2 {
+export function getClearinghouseGateway(
+  config?: Partial<ClearinghouseGatewayConfig>
+): ClearinghouseGatewayV2 {
   if (!instance) {
     instance = new ClearinghouseGatewayV2(config);
   }

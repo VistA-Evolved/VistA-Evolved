@@ -1,6 +1,7 @@
 # Phase 304 — NOTES — Lab Deep Writeback (W12-P6)
 
 ## Design Decisions
+
 1. **Lab orders use the general order pipeline.** PLACE_LAB_ORDER goes through
    ORWDX LOCK/SAVE/UNLOCK just like general and medication orders.
 2. **ACK_LAB_RESULT does not need patient LOCK.** Result acknowledgment is a
@@ -9,7 +10,8 @@
    Additional intents (e.g., order addendums) can be added later.
 
 ## RPC Mapping
-| Intent | RPCs | Lock? |
-|--------|------|-------|
-| PLACE_LAB_ORDER | ORWDX LOCK, ORWDX SAVE, ORWDX UNLOCK | Yes |
-| ACK_LAB_RESULT | ORWLRR ACK | No |
+
+| Intent          | RPCs                                 | Lock? |
+| --------------- | ------------------------------------ | ----- |
+| PLACE_LAB_ORDER | ORWDX LOCK, ORWDX SAVE, ORWDX UNLOCK | Yes   |
+| ACK_LAB_RESULT  | ORWLRR ACK                           | No    |

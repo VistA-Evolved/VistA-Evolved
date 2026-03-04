@@ -31,25 +31,30 @@
  *   ECLIPSE_CERT_PATH, ECLIPSE_PROVIDER_NUMBER, ECLIPSE_HPI_I
  */
 
-import type { RcmConnector, ConnectorResult } from "./types.js";
-import type { X12TransactionSet } from "../edi/types.js";
+import type { RcmConnector, ConnectorResult } from './types.js';
+import type { X12TransactionSet } from '../edi/types.js';
 
 export class EclipseAuConnector implements RcmConnector {
-  readonly id = "eclipse-au";
-  readonly name = "ECLIPSE (Services Australia Medicare/DVA Gateway)";
-  readonly supportedModes = ["government_portal"];
+  readonly id = 'eclipse-au';
+  readonly name = 'ECLIPSE (Services Australia Medicare/DVA Gateway)';
+  readonly supportedModes = ['government_portal'];
   readonly supportedTransactions: X12TransactionSet[] = [
-    "837P", "837I", "270", "271", "276", "277",
+    '837P',
+    '837I',
+    '270',
+    '271',
+    '276',
+    '277',
   ]; // Note: AU uses different wire format but maps to same logical transactions
 
   private configured = false;
   private config = {
-    apiEndpoint: process.env.ECLIPSE_API_ENDPOINT ?? "https://proda.humanservices.gov.au",
-    prodaOrgId: process.env.ECLIPSE_PRODA_ORG_ID ?? "",
-    deviceName: process.env.ECLIPSE_DEVICE_NAME ?? "",
-    certPath: process.env.ECLIPSE_CERT_PATH ?? "",
-    providerNumber: process.env.ECLIPSE_PROVIDER_NUMBER ?? "",
-    hpiI: process.env.ECLIPSE_HPI_I ?? "",
+    apiEndpoint: process.env.ECLIPSE_API_ENDPOINT ?? 'https://proda.humanservices.gov.au',
+    prodaOrgId: process.env.ECLIPSE_PRODA_ORG_ID ?? '',
+    deviceName: process.env.ECLIPSE_DEVICE_NAME ?? '',
+    certPath: process.env.ECLIPSE_CERT_PATH ?? '',
+    providerNumber: process.env.ECLIPSE_PROVIDER_NUMBER ?? '',
+    hpiI: process.env.ECLIPSE_HPI_I ?? '',
   };
 
   async initialize(): Promise<void> {
@@ -59,38 +64,44 @@ export class EclipseAuConnector implements RcmConnector {
   async submit(
     transactionSet: X12TransactionSet,
     payload: string,
-    metadata: Record<string, string>,
+    metadata: Record<string, string>
   ): Promise<ConnectorResult> {
     if (!this.configured) {
       return {
         success: false,
-        errors: [{
-          code: "ECLIPSE-NOT-CONFIGURED",
-          description: "ECLIPSE connector not configured. Requires PRODA organisation registration + PKI device certificate. See: https://www.servicesaustralia.gov.au/proda",
-          severity: "error",
-        }],
+        errors: [
+          {
+            code: 'ECLIPSE-NOT-CONFIGURED',
+            description:
+              'ECLIPSE connector not configured. Requires PRODA organisation registration + PKI device certificate. See: https://www.servicesaustralia.gov.au/proda',
+            severity: 'error',
+          },
+        ],
         metadata: {
-          targetSystem: "ECLIPSE (Services Australia)",
-          enrollmentUrl: "https://www.servicesaustralia.gov.au/proda",
-          requiredEnvVars: "ECLIPSE_PRODA_ORG_ID,ECLIPSE_DEVICE_NAME,ECLIPSE_CERT_PATH",
-          wireFormat: "Australian Medicare proprietary (not X12). Requires AU-specific claim mapping.",
+          targetSystem: 'ECLIPSE (Services Australia)',
+          enrollmentUrl: 'https://www.servicesaustralia.gov.au/proda',
+          requiredEnvVars: 'ECLIPSE_PRODA_ORG_ID,ECLIPSE_DEVICE_NAME,ECLIPSE_CERT_PATH',
+          wireFormat:
+            'Australian Medicare proprietary (not X12). Requires AU-specific claim mapping.',
           transactionSet,
-          integrationStatus: "integration-ready",
+          integrationStatus: 'integration-ready',
         },
       };
     }
 
     return {
       success: false,
-      errors: [{
-        code: "ECLIPSE-NOT-IMPLEMENTED",
-        description: `ECLIPSE ${transactionSet} submission requires live PRODA credentials + AU-format claim mapping.`,
-        severity: "error",
-      }],
+      errors: [
+        {
+          code: 'ECLIPSE-NOT-IMPLEMENTED',
+          description: `ECLIPSE ${transactionSet} submission requires live PRODA credentials + AU-format claim mapping.`,
+          severity: 'error',
+        },
+      ],
       metadata: {
-        targetSystem: "ECLIPSE (Services Australia)",
+        targetSystem: 'ECLIPSE (Services Australia)',
         transactionSet,
-        integrationStatus: "integration-ready",
+        integrationStatus: 'integration-ready',
       },
     };
   }
@@ -98,20 +109,25 @@ export class EclipseAuConnector implements RcmConnector {
   async checkStatus(transactionId: string): Promise<ConnectorResult> {
     return {
       success: false,
-      errors: [{
-        code: "ECLIPSE-STATUS-PENDING",
-        description: "ECLIPSE claim status: Medicare Online claim enquiry API. Requires PRODA auth.",
-        severity: "info",
-      }],
-      metadata: { transactionId, integrationStatus: "integration-ready" },
+      errors: [
+        {
+          code: 'ECLIPSE-STATUS-PENDING',
+          description:
+            'ECLIPSE claim status: Medicare Online claim enquiry API. Requires PRODA auth.',
+          severity: 'info',
+        },
+      ],
+      metadata: { transactionId, integrationStatus: 'integration-ready' },
     };
   }
 
-  async fetchResponses(since?: string): Promise<Array<{
-    transactionSet: X12TransactionSet;
-    payload: string;
-    receivedAt: string;
-  }>> {
+  async fetchResponses(since?: string): Promise<
+    Array<{
+      transactionSet: X12TransactionSet;
+      payload: string;
+      receivedAt: string;
+    }>
+  > {
     return [];
   }
 

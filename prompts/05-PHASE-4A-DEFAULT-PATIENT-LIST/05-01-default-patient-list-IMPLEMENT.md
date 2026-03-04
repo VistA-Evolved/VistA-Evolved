@@ -4,12 +4,14 @@ Goal:
 Implement /vista/default-patient-list returning real data via RPC Broker.
 
 Rules:
+
 - never invent protocol
 - secrets only in .env.local (untracked)
 - commit .env.example (schema)
 - add VISTA_DEBUG=true safe debug logging
 
 Protocol requirements (must be implemented exactly):
+
 - TCPConnect accepted
 - RPC message framing: 11302 requires bytes \x01 then "1" between prefix and SPack(rpcName)
 - EOT delimiter: \x04
@@ -22,6 +24,7 @@ Protocol requirements (must be implemented exactly):
   - end byte chr(assocIdx+31)
 
 RPC sequence:
+
 - TCPConnect
 - XUS SIGNON SETUP
 - XUS AV CODE (encrypted)
@@ -29,5 +32,6 @@ RPC sequence:
 - ORQPT DEFAULT PATIENT LIST
 
 Docs:
+
 - docs/runbooks/vista-rpc-default-patient-list.md
 - AGENTS.md updated with fixes summary

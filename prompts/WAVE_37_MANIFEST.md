@@ -7,17 +7,17 @@ adapter v2, denials hardening, and global pack expansion.
 
 ## Phase Map
 
-| Phase | Slug | Title |
-|-------|------|-------|
-| 513 | W37-P1-RCM-READINESS-SCAN | RCM Reality Scan + Integration Readiness Matrix |
-| 514 | W37-P2-PAYER-DOSSIERS | Payer Dossiers + Ops Onboarding Workflow |
-| 515 | W37-P3-PHILHEALTH-TRANSPORT | PhilHealth eClaims Transport Skeleton |
-| 516 | W37-P4-PHILHEALTH-EXPORT-V2 | PhilHealth Claim Pack Export v2 |
-| 517 | W37-P5-PH-HMO-OPS-V2 | PH HMO Ops v2 |
-| 518 | W37-P6-US-X12-INGEST-V2 | US X12 Ingest v2 |
-| 519 | W37-P7-CLEARINGHOUSE-V2 | Clearinghouse Adapter v2 |
-| 520 | W37-P8-DENIALS-HARDENING | Denials/Appeals + Remittance Posting Hardening |
-| 521 | W37-P9-GLOBAL-PACK-EXPANSION | Global Pack Expansion + Conformance Runner |
+| Phase | Slug                         | Title                                           |
+| ----- | ---------------------------- | ----------------------------------------------- |
+| 513   | W37-P1-RCM-READINESS-SCAN    | RCM Reality Scan + Integration Readiness Matrix |
+| 514   | W37-P2-PAYER-DOSSIERS        | Payer Dossiers + Ops Onboarding Workflow        |
+| 515   | W37-P3-PHILHEALTH-TRANSPORT  | PhilHealth eClaims Transport Skeleton           |
+| 516   | W37-P4-PHILHEALTH-EXPORT-V2  | PhilHealth Claim Pack Export v2                 |
+| 517   | W37-P5-PH-HMO-OPS-V2         | PH HMO Ops v2                                   |
+| 518   | W37-P6-US-X12-INGEST-V2      | US X12 Ingest v2                                |
+| 519   | W37-P7-CLEARINGHOUSE-V2      | Clearinghouse Adapter v2                        |
+| 520   | W37-P8-DENIALS-HARDENING     | Denials/Appeals + Remittance Posting Hardening  |
+| 521   | W37-P9-GLOBAL-PACK-EXPANSION | Global Pack Expansion + Conformance Runner      |
 
 ## Definition of Done
 
@@ -34,14 +34,14 @@ adapter v2, denials hardening, and global pack expansion.
 
 ## Commit Log
 
-| Phase | Commit | Title |
-|-------|--------|-------|
-| 513 | 20ab12b | RCM Reality Scan |
-| 514 | 20ab12b | Payer Dossiers |
-| 515 | 20ab12b | PhilHealth Transport |
-| 516 | 20ab12b | PhilHealth Export v2 |
-| 517 | 20ab12b | PH HMO Ops v2 |
-| 518 | 20ab12b | US X12 Ingest v2 |
-| 519 | 20ab12b | Clearinghouse v2 |
-| 520 | 20ab12b | Denials Hardening |
-| 521 | 20ab12b | Global Pack Expansion |
+| Phase | Commit  | Title                 |
+| ----- | ------- | --------------------- |
+| 513   | 20ab12b | RCM Reality Scan      |
+| 514   | 20ab12b | Payer Dossiers        |
+| 515   | 20ab12b | PhilHealth Transport  |
+| 516   | 20ab12b | PhilHealth Export v2  |
+| 517   | 20ab12b | PH HMO Ops v2         |
+| 518   | 20ab12b | US X12 Ingest v2      |
+| 519   | 20ab12b | Clearinghouse v2      |
+| 520   | 20ab12b | Denials Hardening     |
+| 521   | 20ab12b | Global Pack Expansion |

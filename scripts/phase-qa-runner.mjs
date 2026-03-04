@@ -20,17 +20,17 @@
  *   - docs/qa/phase-index.json exists (run "index" command first)
  */
 
-import { execSync } from "child_process";
-import { existsSync, readdirSync, readFileSync } from "fs";
-import { join } from "path";
+import { execSync } from 'child_process';
+import { existsSync, readdirSync, readFileSync } from 'fs';
+import { join } from 'path';
 
 const ROOT = process.cwd();
 const args = process.argv.slice(2);
-const command = args[0] || "all";
+const command = args[0] || 'all';
 
-const INDEX_PATH = join(ROOT, "docs", "qa", "phase-index.json");
-const E2E_DIR = join(ROOT, "apps", "web", "e2e", "phases");
-const API_TEST_DIR = join(ROOT, "apps", "api", "tests", "phases");
+const INDEX_PATH = join(ROOT, 'docs', 'qa', 'phase-index.json');
+const E2E_DIR = join(ROOT, 'apps', 'web', 'e2e', 'phases');
+const API_TEST_DIR = join(ROOT, 'apps', 'api', 'tests', 'phases');
 
 // ---- Helpers ----
 
@@ -39,9 +39,9 @@ function runCmd(cmd, label) {
   try {
     execSync(cmd, {
       cwd: ROOT,
-      stdio: ["pipe", "pipe", "pipe"],
+      stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 300_000,
-      env: { ...process.env, FORCE_COLOR: "0" },
+      env: { ...process.env, FORCE_COLOR: '0' },
     });
     const elapsed = ((Date.now() - start) / 1000).toFixed(1);
     console.log(`  PASS  ${label} (${elapsed}s)`);
@@ -49,33 +49,33 @@ function runCmd(cmd, label) {
   } catch (err) {
     const elapsed = ((Date.now() - start) / 1000).toFixed(1);
     console.log(`  FAIL  ${label} (${elapsed}s)`);
-    const output = err.stdout?.toString() || err.stderr?.toString() || "";
-    const lines = output.split("\n").filter(Boolean).slice(-15);
-    if (lines.length) console.log(`        ${lines.join("\n        ")}`);
+    const output = err.stdout?.toString() || err.stderr?.toString() || '';
+    const lines = output.split('\n').filter(Boolean).slice(-15);
+    if (lines.length) console.log(`        ${lines.join('\n        ')}`);
     return false;
   }
 }
 
 function loadIndex() {
   if (!existsSync(INDEX_PATH)) {
-    console.error("Phase index not found. Run: node scripts/phase-qa-runner.mjs index");
+    console.error('Phase index not found. Run: node scripts/phase-qa-runner.mjs index');
     process.exit(1);
   }
-  const raw = readFileSync(INDEX_PATH, "utf-8");
+  const raw = readFileSync(INDEX_PATH, 'utf-8');
   return JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
 }
 
 function findSpecFiles(dir, phaseNumbers) {
   if (!existsSync(dir)) return [];
   return readdirSync(dir)
-    .filter((f) => f.endsWith(".spec.ts") || f.endsWith(".test.ts"))
+    .filter((f) => f.endsWith('.spec.ts') || f.endsWith('.test.ts'))
     .filter((f) => {
       // Parse range from filename: phases-X-to-Y.spec.ts
       const match = f.match(/phases-(\w+)-to-(\w+)\./);
       if (!match) return false;
       // A spec file is relevant if any requested phase falls in its range
       // We check by reading the file header for phase numbers
-      const content = readFileSync(join(dir, f), "utf-8");
+      const content = readFileSync(join(dir, f), 'utf-8');
       return phaseNumbers.some((pn) => {
         const re = new RegExp(`Phase ${pn}[:\\s]`);
         return re.test(content);
@@ -86,13 +86,13 @@ function findSpecFiles(dir, phaseNumbers) {
 // ---- Commands ----
 
 function runIndex() {
-  console.log("\n=== Rebuilding phase-index.json ===\n");
-  return runCmd("node scripts/build-phase-index.mjs", "build-phase-index");
+  console.log('\n=== Rebuilding phase-index.json ===\n');
+  return runCmd('node scripts/build-phase-index.mjs', 'build-phase-index');
 }
 
 function runGenerate() {
-  console.log("\n=== Regenerating phase QA specs ===\n");
-  return runCmd("node scripts/generate-phase-qa.mjs", "generate-phase-qa");
+  console.log('\n=== Regenerating phase QA specs ===\n');
+  return runCmd('node scripts/generate-phase-qa.mjs', 'generate-phase-qa');
 }
 
 function runPhase(phaseNum) {
@@ -106,7 +106,9 @@ function runPhase(phaseNum) {
   }
 
   console.log(`  Phase ${phase.phaseNumber}: ${phase.title}`);
-  console.log(`  Routes: ${phase.routes.length}, RPCs: ${phase.rpcs.length}, UI: ${phase.uiComponents.length}\n`);
+  console.log(
+    `  Routes: ${phase.routes.length}, RPCs: ${phase.rpcs.length}, UI: ${phase.uiComponents.length}\n`
+  );
 
   let pass = 0;
   let fail = 0;
@@ -158,7 +160,7 @@ function runRange(from, to) {
     process.exit(1);
   }
 
-  console.log(`  Phases in range: ${phaseNums.join(", ")}\n`);
+  console.log(`  Phases in range: ${phaseNums.join(', ')}\n`);
 
   let pass = 0;
   let fail = 0;
@@ -185,19 +187,23 @@ function runRange(from, to) {
     ok ? pass++ : fail++;
   }
 
-  console.log(`\n=== Range ${from}..${to}: ${pass} pass, ${fail} fail (${phaseNums.length} phases) ===\n`);
+  console.log(
+    `\n=== Range ${from}..${to}: ${pass} pass, ${fail} fail (${phaseNums.length} phases) ===\n`
+  );
   return fail === 0;
 }
 
 function runAll() {
-  console.log("\n=== Phase QA: ALL ===\n");
+  console.log('\n=== Phase QA: ALL ===\n');
 
   let pass = 0;
   let fail = 0;
 
   // Run all E2E phase specs
   if (existsSync(E2E_DIR)) {
-    const specs = readdirSync(E2E_DIR).filter((f) => f.endsWith(".spec.ts")).sort();
+    const specs = readdirSync(E2E_DIR)
+      .filter((f) => f.endsWith('.spec.ts'))
+      .sort();
     for (const spec of specs) {
       const ok = runCmd(
         `cd apps/web && pnpm exec playwright test e2e/phases/${spec} --reporter=list`,
@@ -209,7 +215,9 @@ function runAll() {
 
   // Run all API phase specs
   if (existsSync(API_TEST_DIR)) {
-    const specs = readdirSync(API_TEST_DIR).filter((f) => f.endsWith(".test.ts")).sort();
+    const specs = readdirSync(API_TEST_DIR)
+      .filter((f) => f.endsWith('.test.ts'))
+      .sort();
     for (const spec of specs) {
       const ok = runCmd(
         `cd apps/api && pnpm exec vitest run tests/phases/${spec} --reporter=verbose`,
@@ -228,42 +236,42 @@ function runAll() {
 let success = true;
 
 switch (command) {
-  case "index":
+  case 'index':
     success = runIndex();
     break;
 
-  case "generate":
+  case 'generate':
     success = runGenerate();
     break;
 
-  case "phase": {
+  case 'phase': {
     const num = args[1];
     if (!num) {
-      console.error("Usage: node scripts/phase-qa-runner.mjs phase <number>");
+      console.error('Usage: node scripts/phase-qa-runner.mjs phase <number>');
       process.exit(1);
     }
     success = runPhase(num);
     break;
   }
 
-  case "range": {
+  case 'range': {
     const from = args[1];
     const to = args[2];
     if (!from || !to) {
-      console.error("Usage: node scripts/phase-qa-runner.mjs range <from> <to>");
+      console.error('Usage: node scripts/phase-qa-runner.mjs range <from> <to>');
       process.exit(1);
     }
     success = runRange(from, to);
     break;
   }
 
-  case "all":
+  case 'all':
     success = runAll();
     break;
 
   default:
     console.error(`Unknown command: ${command}`);
-    console.error("Usage: phase | range <from> <to> | all | index | generate");
+    console.error('Usage: phase | range <from> <to> | all | index | generate');
     process.exit(1);
 }
 

@@ -11,16 +11,16 @@
  * No PHI in audit entries — only job IDs, types, payer codes, timestamps.
  */
 
-import { getJobQueue, type RcmJob, type RcmJobType, type RcmJobStatus } from "./queue.js";
-import { appendRcmAudit } from "../audit/rcm-audit.js";
-import { log } from "../../lib/logger.js";
+import { getJobQueue, type RcmJob, type RcmJobType, type RcmJobStatus } from './queue.js';
+import { appendRcmAudit } from '../audit/rcm-audit.js';
+import { log } from '../../lib/logger.js';
 
 /* ── PHI Guard ─────────────────────────────────────────────── */
 
 const PHI_PATTERNS = [
-  /\b\d{3}-\d{2}-\d{4}\b/,           // SSN
-  /\b\d{2}\/\d{2}\/\d{4}\b/,         // DOB format
-  /patient.*name/i,                    // patient name fields
+  /\b\d{3}-\d{2}-\d{4}\b/, // SSN
+  /\b\d{2}\/\d{2}\/\d{4}\b/, // DOB format
+  /patient.*name/i, // patient name fields
   /\b[A-Z][a-z]+,\s*[A-Z][a-z]+\b/, // Name,Name pattern
 ];
 
@@ -39,7 +39,14 @@ export function validateJobPayload(payload: Record<string, unknown>): {
   }
 
   // Check for forbidden field names
-  const forbiddenFields = ["ssn", "socialsecurity", "dateofbirth", "dob", "patientname", "fullname"];
+  const forbiddenFields = [
+    'ssn',
+    'socialsecurity',
+    'dateofbirth',
+    'dob',
+    'patientname',
+    'fullname',
+  ];
   for (const key of Object.keys(payload)) {
     if (forbiddenFields.includes(key.toLowerCase())) {
       violations.push(`Forbidden field in job payload: ${key}`);
@@ -68,20 +75,20 @@ export async function auditedEnqueue(params: {
   // PHI guard
   const phiCheck = validateJobPayload(params.payload);
   if (!phiCheck.valid) {
-    log.warn("Job payload rejected — potential PHI", {
+    log.warn('Job payload rejected — potential PHI', {
       type: params.type,
       violations: phiCheck.violations,
     });
-    appendRcmAudit("job.enqueued", {
+    appendRcmAudit('job.enqueued', {
       userId: params.userId,
       detail: {
         type: params.type,
         rejected: true,
-        reason: "PHI detected in payload",
-        tenantId: params.tenantId ?? "default",
+        reason: 'PHI detected in payload',
+        tenantId: params.tenantId ?? 'default',
       },
     });
-    throw new Error(`Job payload rejected: ${phiCheck.violations.join("; ")}`);
+    throw new Error(`Job payload rejected: ${phiCheck.violations.join('; ')}`);
   }
 
   const queue = getJobQueue();
@@ -89,8 +96,8 @@ export async function auditedEnqueue(params: {
     type: params.type,
     payload: {
       ...params.payload,
-      _tenantId: params.tenantId ?? "default",
-      _enqueuedBy: params.userId ?? "system",
+      _tenantId: params.tenantId ?? 'default',
+      _enqueuedBy: params.userId ?? 'system',
       _enqueuedAt: new Date().toISOString(),
     },
     idempotencyKey: params.idempotencyKey,
@@ -99,12 +106,12 @@ export async function auditedEnqueue(params: {
     delayMs: params.delayMs,
   });
 
-  appendRcmAudit("job.enqueued", {
+  appendRcmAudit('job.enqueued', {
     userId: params.userId,
     detail: {
       jobId,
       type: params.type,
-      tenantId: params.tenantId ?? "default",
+      tenantId: params.tenantId ?? 'default',
       priority: params.priority ?? 5,
       payerCode: params.payload.payerCode,
       claimId: params.payload.claimId,
@@ -119,12 +126,12 @@ export async function auditedEnqueue(params: {
  * Called by the polling scheduler after handler returns.
  */
 export function auditJobCompletion(job: RcmJob): void {
-  appendRcmAudit("job.completed", {
+  appendRcmAudit('job.completed', {
     detail: {
       jobId: job.id,
       type: job.type,
       attempts: job.attempts,
-      tenantId: (job.payload as any)?._tenantId ?? "default",
+      tenantId: (job.payload as any)?._tenantId ?? 'default',
       payerCode: (job.payload as any)?.payerCode,
       claimId: (job.payload as any)?.claimId,
       completedAt: job.completedAt,
@@ -136,7 +143,7 @@ export function auditJobCompletion(job: RcmJob): void {
  * Record a job failure in the audit trail.
  */
 export function auditJobFailure(job: RcmJob, error: string): void {
-  const action = job.status === "dead_letter" ? "job.dead_letter" : "job.failed";
+  const action = job.status === 'dead_letter' ? 'job.dead_letter' : 'job.failed';
   appendRcmAudit(action, {
     detail: {
       jobId: job.id,
@@ -144,8 +151,8 @@ export function auditJobFailure(job: RcmJob, error: string): void {
       attempts: job.attempts,
       maxAttempts: job.maxAttempts,
       error,
-      deadLetter: job.status === "dead_letter",
-      tenantId: (job.payload as any)?._tenantId ?? "default",
+      deadLetter: job.status === 'dead_letter',
+      tenantId: (job.payload as any)?._tenantId ?? 'default',
       payerCode: (job.payload as any)?.payerCode,
       claimId: (job.payload as any)?.claimId,
     },
@@ -156,7 +163,7 @@ export function auditJobFailure(job: RcmJob, error: string): void {
  * Record a job cancellation in the audit trail.
  */
 export function auditJobCancellation(jobId: string, userId?: string): void {
-  appendRcmAudit("job.cancelled", {
+  appendRcmAudit('job.cancelled', {
     userId,
     detail: {
       jobId,
@@ -172,17 +179,17 @@ export function auditJobCancellation(jobId: string, userId?: string): void {
  */
 export async function listJobsByTenant(
   tenantId: string,
-  filter?: { status?: RcmJobStatus; type?: RcmJobType; limit?: number; offset?: number },
+  filter?: { status?: RcmJobStatus; type?: RcmJobType; limit?: number; offset?: number }
 ): Promise<{ jobs: RcmJob[]; total: number }> {
   const queue = getJobQueue();
-  const { jobs, total } = await queue.listJobs({
+  const { jobs, total: _total } = await queue.listJobs({
     status: filter?.status,
     type: filter?.type,
     limit: 1000, // get all then filter by tenant
   });
 
   const tenantJobs = jobs.filter(
-    j => (j.payload as any)?._tenantId === tenantId || tenantId === "default",
+    (j) => (j.payload as any)?._tenantId === tenantId || tenantId === 'default'
   );
 
   const offset = filter?.offset ?? 0;
@@ -217,11 +224,11 @@ export async function getJobStatsByTenant(tenantId: string): Promise<{
   };
 
   for (const job of jobs) {
-    if (job.status === "queued") stats.queued++;
-    else if (job.status === "processing") stats.processing++;
-    else if (job.status === "completed") stats.completed++;
-    else if (job.status === "failed") stats.failed++;
-    else if (job.status === "dead_letter") stats.deadLetter++;
+    if (job.status === 'queued') stats.queued++;
+    else if (job.status === 'processing') stats.processing++;
+    else if (job.status === 'completed') stats.completed++;
+    else if (job.status === 'failed') stats.failed++;
+    else if (job.status === 'dead_letter') stats.deadLetter++;
 
     stats.byType[job.type] = (stats.byType[job.type] ?? 0) + 1;
   }

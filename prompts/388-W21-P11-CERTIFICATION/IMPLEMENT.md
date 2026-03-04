@@ -1,9 +1,11 @@
 # Phase 388 — W21-P11 Certification Runner — IMPLEMENT
 
 ## User Request
+
 Build a push-button certification runner that validates all 10 Wave 21 implementation phases (P1–P10) in a single invocation, with color-coded PASS/FAIL output and a summary exit code.
 
 ## Implementation Steps
+
 1. Create `scripts/verify-wave21-devices.ps1` with 12 verification sections:
    - S1: P1 Manifest + 5 ADR files
    - S2: P2 Edge Device Gateway (types / store / routes / sidecar / runbook)
@@ -22,7 +24,9 @@ Build a push-button certification runner that validates all 10 Wave 21 implement
 4. Exit code 0 only when all gates pass
 
 ## Files Touched
+
 - `scripts/verify-wave21-devices.ps1` (new — ~270 lines, 93 gates)
 
 ## Verification
+
 - Run `.\scripts\verify-wave21-devices.ps1 -SkipDocker` → 93/93 PASS

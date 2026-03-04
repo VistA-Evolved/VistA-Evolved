@@ -2,19 +2,19 @@ name: Supply Chain Attestation
 
 on:
   workflow_run:
-    workflows: ["CD Deploy"]
+    workflows: ['CD Deploy']
     types: [completed]
     branches: [main]
 
 permissions:
   contents: read
   packages: write
-  id-token: write  # For cosign keyless signing via GitHub OIDC
+  id-token: write # For cosign keyless signing via GitHub OIDC
 
 env:
   REGISTRY: ghcr.io
   IMAGE_PREFIX: ${{ github.repository_owner }}/vista-evolved
-  COSIGN_ENABLED: false   # Set to true when ready for keyless signing
+  COSIGN_ENABLED: false # Set to true when ready for keyless signing
 
 jobs:
   attest:
@@ -51,8 +51,8 @@ jobs:
       - name: Upload SBOM
         uses: actions/upload-artifact@v4
         with:
-          name: "sbom-${{ matrix.image }}"
-          path: "sbom-${{ matrix.image }}.spdx.json"
+          name: 'sbom-${{ matrix.image }}'
+          path: 'sbom-${{ matrix.image }}.spdx.json'
           retention-days: 90
 
       # ---- Optional: cosign keyless sign ----

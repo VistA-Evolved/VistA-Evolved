@@ -10,16 +10,16 @@
  * functions by matching job name to the task list in runner.ts.
  */
 
-import { z } from "zod";
+import { z } from 'zod';
 
 /* ── Job Name Constants ────────────────────────────────────── */
 
 export const JOB_NAMES = {
-  ELIGIBILITY_CHECK_POLL: "eligibility_check_poll",
-  CLAIM_STATUS_POLL: "claim_status_poll",
-  EVIDENCE_STALENESS_SCAN: "evidence_staleness_scan",
-  RETENTION_CLEANUP: "retention_cleanup",
-  PG_BACKUP: "pg_backup",
+  ELIGIBILITY_CHECK_POLL: 'eligibility_check_poll',
+  CLAIM_STATUS_POLL: 'claim_status_poll',
+  EVIDENCE_STALENESS_SCAN: 'evidence_staleness_scan',
+  RETENTION_CLEANUP: 'retention_cleanup',
+  PG_BACKUP: 'pg_backup',
 } as const;
 
 export type JobName = (typeof JOB_NAMES)[keyof typeof JOB_NAMES];
@@ -33,10 +33,10 @@ export const ALL_JOB_NAMES: readonly JobName[] = Object.values(JOB_NAMES);
  * References payer + claim by opaque IDs only — no patient name, DOB, SSN.
  */
 export const EligibilityCheckPollPayload = z.object({
-  tenantId: z.string().default("default"),
+  tenantId: z.string().default('default'),
   payerId: z.string().optional(),
   claimId: z.string().optional(),
-  integrationMode: z.string().default("sandbox"),
+  integrationMode: z.string().default('sandbox'),
   batchSize: z.number().int().min(1).max(100).default(10),
 });
 export type EligibilityCheckPollPayload = z.infer<typeof EligibilityCheckPollPayload>;
@@ -46,7 +46,7 @@ export type EligibilityCheckPollPayload = z.infer<typeof EligibilityCheckPollPay
  * Claim reference is an opaque ID, not patient-identifying.
  */
 export const ClaimStatusPollPayload = z.object({
-  tenantId: z.string().default("default"),
+  tenantId: z.string().default('default'),
   payerId: z.string().optional(),
   claimRef: z.string().optional(),
   batchSize: z.number().int().min(1).max(100).default(10),
@@ -58,7 +58,7 @@ export type ClaimStatusPollPayload = z.infer<typeof ClaimStatusPollPayload>;
  * Configures staleness threshold; no patient data.
  */
 export const EvidenceStalenessScanPayload = z.object({
-  tenantId: z.string().default("default"),
+  tenantId: z.string().default('default'),
   staleAfterDays: z.number().int().min(1).max(365).default(90),
   autoFlag: z.boolean().default(true),
 });
@@ -69,7 +69,7 @@ export type EvidenceStalenessScanPayload = z.infer<typeof EvidenceStalenessScanP
  * Configures what gets purged and age thresholds.
  */
 export const RetentionCleanupPayload = z.object({
-  tenantId: z.string().default("default"),
+  tenantId: z.string().default('default'),
   expiredSessionsMaxAgeDays: z.number().int().min(1).default(7),
   idempotencyKeysMaxAgeDays: z.number().int().min(1).default(3),
   completedJobsMaxAgeDays: z.number().int().min(1).default(30),
@@ -82,7 +82,7 @@ export type RetentionCleanupPayload = z.infer<typeof RetentionCleanupPayload>;
  * Configures backup retention and directory. No PHI.
  */
 export const PgBackupPayload = z.object({
-  tenantId: z.string().default("default"),
+  tenantId: z.string().default('default'),
   retainCount: z.number().int().min(1).max(30).default(7),
   backupDir: z.string().optional(),
 });
@@ -109,45 +109,40 @@ export const JOB_PAYLOAD_SCHEMAS: Record<JobName, z.ZodType> = {
  * Governance layer checks for these before enqueue.
  */
 export const PHI_BLOCKED_FIELDS = new Set([
-  "patientName",
-  "patient_name",
-  "ssn",
-  "socialSecurityNumber",
-  "social_security_number",
-  "dateOfBirth",
-  "date_of_birth",
-  "dob",
-  "address",
-  "phoneNumber",
-  "phone_number",
-  "email",
-  "mrn",
-  "medicalRecordNumber",
-  "medical_record_number",
-  "insuranceId",
-  "insurance_id",
-  "diagnosis",
-  "medication",
+  'patientName',
+  'patient_name',
+  'ssn',
+  'socialSecurityNumber',
+  'social_security_number',
+  'dateOfBirth',
+  'date_of_birth',
+  'dob',
+  'address',
+  'phoneNumber',
+  'phone_number',
+  'email',
+  'mrn',
+  'medicalRecordNumber',
+  'medical_record_number',
+  'insuranceId',
+  'insurance_id',
+  'diagnosis',
+  'medication',
 ]);
 
 /**
  * Validate that a payload object contains no PHI-blocked fields.
  * Checks recursively through nested objects.
  */
-export function containsPhiFields(
-  obj: Record<string, unknown>,
-  path = "",
-): string[] {
+export function containsPhiFields(obj: Record<string, unknown>, path = ''): string[] {
   const violations: string[] = [];
   for (const [key, value] of Object.entries(obj)) {
     const fullPath = path ? `${path}.${key}` : key;
     if (PHI_BLOCKED_FIELDS.has(key)) {
       violations.push(fullPath);
     }
-    if (value && typeof value === "object" && !Array.isArray(value)) {
-      violations.push(
-        ...containsPhiFields(value as Record<string, unknown>, fullPath),
-      );
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      violations.push(...containsPhiFields(value as Record<string, unknown>, fullPath));
     }
   }
   return violations;
@@ -172,11 +167,11 @@ export const DEFAULT_CONCURRENCY: Record<JobName, number> = {
  * Can be overridden via env vars: JOB_CRON_<UPPER_NAME>="..."
  */
 export const DEFAULT_CRON_SCHEDULES: Record<JobName, string | null> = {
-  [JOB_NAMES.ELIGIBILITY_CHECK_POLL]: "*/5 * * * *",   // every 5 minutes
-  [JOB_NAMES.CLAIM_STATUS_POLL]: "*/10 * * * *",       // every 10 minutes
-  [JOB_NAMES.EVIDENCE_STALENESS_SCAN]: "0 2 * * *",    // daily at 2 AM
-  [JOB_NAMES.RETENTION_CLEANUP]: "0 3 * * *",          // daily at 3 AM
-  [JOB_NAMES.PG_BACKUP]: "0 1 * * *",                 // daily at 1 AM (Phase 118)
+  [JOB_NAMES.ELIGIBILITY_CHECK_POLL]: '*/5 * * * *', // every 5 minutes
+  [JOB_NAMES.CLAIM_STATUS_POLL]: '*/10 * * * *', // every 10 minutes
+  [JOB_NAMES.EVIDENCE_STALENESS_SCAN]: '0 2 * * *', // daily at 2 AM
+  [JOB_NAMES.RETENTION_CLEANUP]: '0 3 * * *', // daily at 3 AM
+  [JOB_NAMES.PG_BACKUP]: '0 1 * * *', // daily at 1 AM (Phase 118)
 };
 
 /**
@@ -199,7 +194,7 @@ export function getJobConcurrency(name: JobName): number {
 export function getJobCronSchedule(name: JobName): string | null {
   const envKey = `JOB_CRON_${name.toUpperCase()}`;
   const envVal = process.env[envKey];
-  if (envVal === "disabled" || envVal === "off") return null;
+  if (envVal === 'disabled' || envVal === 'off') return null;
   if (envVal) return envVal;
   return DEFAULT_CRON_SCHEDULES[name] ?? null;
 }

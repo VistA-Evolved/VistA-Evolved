@@ -11,26 +11,31 @@ VistA-Evolved needs X12 5010 parsing and generation for revenue cycle operations
 ## Options Evaluated
 
 ### Option A: node-x12 (npm)
+
 - **License:** MIT
 - **Pros:** TypeScript/JavaScript native, npm install, actively maintained, supports 837/835/270/271/276/277, loop-level parsing
 - **Cons:** Limited validation depth, no built-in encryption, we still own the domain mapping
 
 ### Option B: pyx12 (Python)
+
 - **License:** MIT
 - **Pros:** Mature, full X12 grammar support, used by CMS
 - **Cons:** Python sidecar, cross-process serialization, separate deployment
 
 ### Option C: imsweb x12-parser (Java)
+
 - **License:** Apache 2.0
 - **Pros:** ASC X12 grammar-driven, very thorough
 - **Cons:** Java sidecar, same operational overhead as pyx12
 
 ### Option D: Custom Serializer (Current)
+
 - **License:** Project-owned (MIT)
 - **Pros:** Already exists (`x12-serializer.ts`, `remit-processor.ts`, `ack-status-processor.ts`), in-process, TypeScript-native
 - **Cons:** Scaffold-level — generates structural X12 but lacks full loop/element validation, no round-trip parsing
 
 ### Option E: Hybrid — Extend Custom + Adopt node-x12 for Parsing
+
 - **License:** MIT (node-x12) + project-owned
 - **Pros:** Best of both — use node-x12 for parsing received X12 (835, 271, 277CA), keep custom serializer for generation (837P/I, 270), all in-process
 - **Cons:** Two code paths to maintain
@@ -40,6 +45,7 @@ VistA-Evolved needs X12 5010 parsing and generation for revenue cycle operations
 **Extend the existing custom engine and evaluate node-x12 for parse-side adoption (Option D + partial E).**
 
 Rationale:
+
 1. The custom serializer (`x12-serializer.ts`) and processors (`remit-processor.ts`, `ack-status-processor.ts`) already handle 837 generation and 835/999/277CA parsing.
 2. Adding a Java/Python sidecar (Options B/C) contradicts our zero-dependency, in-process architecture.
 3. For W14-P5, we will harden the existing engine with deterministic tests and structural validation. If parse-side gaps emerge (e.g., complex 835 loop structures), we will adopt `node-x12` as a parse-only dependency behind a facade.

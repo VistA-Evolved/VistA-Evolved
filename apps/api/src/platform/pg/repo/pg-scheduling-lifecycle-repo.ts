@@ -10,30 +10,30 @@
  *                                       \-> no_show
  */
 
-import { eq, desc, and, sql } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { pgSchedulingLifecycle } from "../pg-schema.js";
+import { eq, desc, sql } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { pgSchedulingLifecycle } from '../pg-schema.js';
 
 export type SchedulingLifecycleRow = typeof pgSchedulingLifecycle.$inferSelect;
 
 /** Valid lifecycle states */
 export const LIFECYCLE_STATES = [
-  "requested",
-  "waitlisted",
-  "booked",
-  "checked_in",
-  "completed",
-  "cancelled",
-  "no_show",
+  'requested',
+  'waitlisted',
+  'booked',
+  'checked_in',
+  'completed',
+  'cancelled',
+  'no_show',
 ] as const;
 export type LifecycleState = (typeof LIFECYCLE_STATES)[number];
 
 /** Valid state transitions */
 const VALID_TRANSITIONS: Record<string, string[]> = {
-  requested: ["waitlisted", "booked", "cancelled"],
-  waitlisted: ["booked", "cancelled"],
-  booked: ["checked_in", "cancelled", "no_show"],
-  checked_in: ["completed", "cancelled"],
+  requested: ['waitlisted', 'booked', 'cancelled'],
+  waitlisted: ['booked', 'cancelled'],
+  booked: ['checked_in', 'cancelled', 'no_show'],
+  checked_in: ['completed', 'cancelled'],
   completed: [],
   cancelled: [],
   no_show: [],
@@ -64,7 +64,7 @@ export async function insertLifecycleEntry(data: {
   const now = new Date().toISOString();
   await db.insert(pgSchedulingLifecycle).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     appointmentRef: data.appointmentRef,
     patientDfn: data.patientDfn,
     clinicIen: data.clinicIen ?? null,
@@ -84,34 +84,48 @@ export async function insertLifecycleEntry(data: {
 
 /* -- Lookup ---------------------------------------------------------- */
 
-export async function findLifecycleEntryById(id: string): Promise<SchedulingLifecycleRow | undefined> {
+export async function findLifecycleEntryById(
+  id: string
+): Promise<SchedulingLifecycleRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(pgSchedulingLifecycle)
+  const rows = await db
+    .select()
+    .from(pgSchedulingLifecycle)
     .where(eq(pgSchedulingLifecycle.id, id));
   return rows[0];
 }
 
-export async function findLifecycleByAppointmentRef(appointmentRef: string): Promise<SchedulingLifecycleRow[]> {
+export async function findLifecycleByAppointmentRef(
+  appointmentRef: string
+): Promise<SchedulingLifecycleRow[]> {
   const db = getPgDb();
-  return db.select().from(pgSchedulingLifecycle)
+  return db
+    .select()
+    .from(pgSchedulingLifecycle)
     .where(eq(pgSchedulingLifecycle.appointmentRef, appointmentRef))
     .orderBy(desc(pgSchedulingLifecycle.createdAt));
 }
 
 export async function findLifecycleByPatient(
   patientDfn: string,
-  limit = 50,
+  limit = 50
 ): Promise<SchedulingLifecycleRow[]> {
   const db = getPgDb();
-  return db.select().from(pgSchedulingLifecycle)
+  return db
+    .select()
+    .from(pgSchedulingLifecycle)
     .where(eq(pgSchedulingLifecycle.patientDfn, patientDfn))
     .orderBy(desc(pgSchedulingLifecycle.createdAt))
     .limit(limit);
 }
 
-export async function findLatestByAppointmentRef(appointmentRef: string): Promise<SchedulingLifecycleRow | undefined> {
+export async function findLatestByAppointmentRef(
+  appointmentRef: string
+): Promise<SchedulingLifecycleRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(pgSchedulingLifecycle)
+  const rows = await db
+    .select()
+    .from(pgSchedulingLifecycle)
     .where(eq(pgSchedulingLifecycle.appointmentRef, appointmentRef))
     .orderBy(desc(pgSchedulingLifecycle.createdAt))
     .limit(1);
@@ -120,10 +134,12 @@ export async function findLatestByAppointmentRef(appointmentRef: string): Promis
 
 export async function findLifecycleByState(
   state: string,
-  limit = 100,
+  limit = 100
 ): Promise<SchedulingLifecycleRow[]> {
   const db = getPgDb();
-  return db.select().from(pgSchedulingLifecycle)
+  return db
+    .select()
+    .from(pgSchedulingLifecycle)
     .where(eq(pgSchedulingLifecycle.state, state))
     .orderBy(desc(pgSchedulingLifecycle.createdAt))
     .limit(limit);
@@ -133,10 +149,11 @@ export async function findLifecycleByState(
 
 export async function countByState(): Promise<Record<string, number>> {
   const db = getPgDb();
-  const rows = await db.select({
-    state: pgSchedulingLifecycle.state,
-    count: sql<number>`count(*)`,
-  })
+  const rows = await db
+    .select({
+      state: pgSchedulingLifecycle.state,
+      count: sql<number>`count(*)`,
+    })
     .from(pgSchedulingLifecycle)
     .groupBy(pgSchedulingLifecycle.state);
 
@@ -149,7 +166,6 @@ export async function countByState(): Promise<Record<string, number>> {
 
 export async function countTotal(): Promise<number> {
   const db = getPgDb();
-  const rows = await db.select({ count: sql<number>`count(*)` })
-    .from(pgSchedulingLifecycle);
+  const rows = await db.select({ count: sql<number>`count(*)` }).from(pgSchedulingLifecycle);
   return Number(rows[0]?.count ?? 0);
 }

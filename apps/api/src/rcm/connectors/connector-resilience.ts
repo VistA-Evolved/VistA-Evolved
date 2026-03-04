@@ -13,19 +13,19 @@
  *   - Trace span creation for each connector call
  */
 
-import { log } from "../../lib/logger.js";
+import { log } from '../../lib/logger.js';
 import {
   connectorCallDuration,
   connectorCallsTotal,
   connectorHealthGauge,
-} from "../../telemetry/metrics.js";
-import { CONNECTOR_DEFAULT_TIMEOUT_MS } from "./types.js";
+} from '../../telemetry/metrics.js';
+import { CONNECTOR_DEFAULT_TIMEOUT_MS } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Circuit breaker FSM (per-connector)                                 */
 /* ------------------------------------------------------------------ */
 
-type CbState = "closed" | "open" | "half-open";
+type CbState = 'closed' | 'open' | 'half-open';
 
 interface ConnectorCb {
   state: CbState;
@@ -44,7 +44,7 @@ const breakers = new Map<string, ConnectorCb>();
 function getCb(connectorId: string): ConnectorCb {
   let cb = breakers.get(connectorId);
   if (!cb) {
-    cb = { state: "closed", failureCount: 0, lastFailureAt: 0, successCount: 0 };
+    cb = { state: 'closed', failureCount: 0, lastFailureAt: 0, successCount: 0 };
     breakers.set(connectorId, cb);
   }
   return cb;
@@ -52,10 +52,10 @@ function getCb(connectorId: string): ConnectorCb {
 
 function recordSuccess(connectorId: string): void {
   const cb = getCb(connectorId);
-  if (cb.state === "half-open") {
-    cb.state = "closed";
+  if (cb.state === 'half-open') {
+    cb.state = 'closed';
     cb.successCount++;
-    log.info("Connector CB closed", { connectorId });
+    log.info('Connector CB closed', { connectorId });
   }
   cb.failureCount = 0;
 }
@@ -65,19 +65,19 @@ function recordFailure(connectorId: string): void {
   cb.failureCount++;
   cb.lastFailureAt = Date.now();
 
-  if (cb.failureCount >= CB_THRESHOLD && cb.state === "closed") {
-    cb.state = "open";
-    log.warn("Connector CB opened", { connectorId, failures: cb.failureCount });
+  if (cb.failureCount >= CB_THRESHOLD && cb.state === 'closed') {
+    cb.state = 'open';
+    log.warn('Connector CB opened', { connectorId, failures: cb.failureCount });
   }
 }
 
 function shouldAllow(connectorId: string): boolean {
   const cb = getCb(connectorId);
-  if (cb.state === "closed") return true;
-  if (cb.state === "open") {
+  if (cb.state === 'closed') return true;
+  if (cb.state === 'open') {
     if (Date.now() - cb.lastFailureAt >= CB_RESET_MS) {
-      cb.state = "half-open";
-      log.info("Connector CB half-open", { connectorId });
+      cb.state = 'half-open';
+      log.info('Connector CB half-open', { connectorId });
       return true;
     }
     return false;
@@ -93,14 +93,14 @@ function shouldAllow(connectorId: string): boolean {
 export class ConnectorTimeoutError extends Error {
   constructor(connectorId: string, timeoutMs: number) {
     super(`Connector ${connectorId} timed out after ${timeoutMs}ms`);
-    this.name = "ConnectorTimeoutError";
+    this.name = 'ConnectorTimeoutError';
   }
 }
 
 export class ConnectorCircuitOpenError extends Error {
   constructor(connectorId: string) {
     super(`Connector ${connectorId} circuit breaker is open`);
-    this.name = "ConnectorCircuitOpenError";
+    this.name = 'ConnectorCircuitOpenError';
   }
 }
 
@@ -108,11 +108,17 @@ function withTimeout<T>(promise: Promise<T>, timeoutMs: number, connectorId: str
   return new Promise<T>((resolve, reject) => {
     const timer = setTimeout(
       () => reject(new ConnectorTimeoutError(connectorId, timeoutMs)),
-      timeoutMs,
+      timeoutMs
     );
     promise
-      .then((v) => { clearTimeout(timer); resolve(v); })
-      .catch((e) => { clearTimeout(timer); reject(e); });
+      .then((v) => {
+        clearTimeout(timer);
+        resolve(v);
+      })
+      .catch((e) => {
+        clearTimeout(timer);
+        reject(e);
+      });
   });
 }
 
@@ -132,13 +138,13 @@ export async function resilientConnectorCall<T>(
   connectorId: string,
   operation: string,
   fn: () => Promise<T>,
-  opts?: { timeoutMs?: number; retries?: number },
+  opts?: { timeoutMs?: number; retries?: number }
 ): Promise<T> {
   const timeoutMs = opts?.timeoutMs ?? CONNECTOR_DEFAULT_TIMEOUT_MS;
   const maxRetries = opts?.retries ?? MAX_RETRIES;
 
   if (!shouldAllow(connectorId)) {
-    connectorCallsTotal.inc({ connector_id: connectorId, operation, outcome: "circuit_open" });
+    connectorCallsTotal.inc({ connector_id: connectorId, operation, outcome: 'circuit_open' });
     throw new ConnectorCircuitOpenError(connectorId);
   }
 
@@ -151,7 +157,7 @@ export async function resilientConnectorCall<T>(
       const durationSec = (Date.now() - start) / 1000;
 
       connectorCallDuration.observe({ connector_id: connectorId, operation }, durationSec);
-      connectorCallsTotal.inc({ connector_id: connectorId, operation, outcome: "success" });
+      connectorCallsTotal.inc({ connector_id: connectorId, operation, outcome: 'success' });
       connectorHealthGauge.set({ connector_id: connectorId }, 1);
 
       recordSuccess(connectorId);
@@ -159,7 +165,7 @@ export async function resilientConnectorCall<T>(
     } catch (err) {
       lastError = err instanceof Error ? err : new Error(String(err));
       const durationSec = (Date.now() - start) / 1000;
-      const outcome = lastError instanceof ConnectorTimeoutError ? "timeout" : "error";
+      const outcome = lastError instanceof ConnectorTimeoutError ? 'timeout' : 'error';
 
       connectorCallDuration.observe({ connector_id: connectorId, operation }, durationSec);
       connectorCallsTotal.inc({ connector_id: connectorId, operation, outcome });
@@ -168,8 +174,12 @@ export async function resilientConnectorCall<T>(
 
       if (attempt < maxRetries) {
         const delay = RETRY_BASE_MS * Math.pow(2, attempt);
-        log.warn("Connector call failed, retrying", {
-          connectorId, operation, attempt: attempt + 1, maxRetries, delayMs: delay,
+        log.warn('Connector call failed, retrying', {
+          connectorId,
+          operation,
+          attempt: attempt + 1,
+          maxRetries,
+          delayMs: delay,
           error: lastError.message,
         });
         await new Promise((resolve) => setTimeout(resolve, delay));
@@ -201,10 +211,10 @@ export function getConnectorCbStats(): Array<{
 
 export function resetConnectorCb(connectorId: string): void {
   breakers.delete(connectorId);
-  log.info("Connector CB reset", { connectorId });
+  log.info('Connector CB reset', { connectorId });
 }
 
 export function resetAllConnectorCbs(): void {
   breakers.clear();
-  log.info("All connector CBs reset");
+  log.info('All connector CBs reset');
 }

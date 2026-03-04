@@ -8,13 +8,9 @@
  * In-memory store -- snapshots reset on API restart. Future: persist to PG.
  */
 
-import { randomUUID } from "node:crypto";
-import type {
-  GoldenTraceEntry,
-  GoldenSnapshot,
-  SnapshotComparison,
-} from "./types.js";
-import { RPC_REGISTRY, RPC_EXCEPTIONS } from "../rpcRegistry.js";
+import { randomUUID } from 'node:crypto';
+import type { GoldenTraceEntry, GoldenSnapshot, SnapshotComparison } from './types.js';
+import { RPC_REGISTRY, RPC_EXCEPTIONS } from '../rpcRegistry.js';
 
 /* ------------------------------------------------------------------ */
 /*  In-memory snapshot store                                           */
@@ -35,14 +31,14 @@ export function captureGoldenSnapshot(
   name: string,
   description: string,
   capturedBy: string,
-  tenantId = "default"
+  tenantId = 'default'
 ): GoldenSnapshot {
   const now = new Date().toISOString();
   const traces: GoldenTraceEntry[] = RPC_REGISTRY.map((rpc) => ({
     rpcName: rpc.name,
     domain: rpc.domain,
     tag: rpc.tag,
-    expectedShape: "registry-only",
+    expectedShape: 'registry-only',
     capturedAt: now,
     success: true, // registered = baseline success
     responseBytes: 0,
@@ -70,10 +66,7 @@ export function captureGoldenSnapshot(
 /*  Compare two snapshots                                              */
 /* ------------------------------------------------------------------ */
 
-export function compareSnapshots(
-  baselineId: string,
-  currentId: string
-): SnapshotComparison | null {
+export function compareSnapshots(baselineId: string, currentId: string): SnapshotComparison | null {
   const baseline = snapshotStore.get(baselineId);
   const current = snapshotStore.get(currentId);
   if (!baseline || !current) return null;
@@ -101,8 +94,7 @@ export function compareSnapshots(
   }
 
   const alignmentDelta =
-    (current.passRate - baseline.passRate) +
-    improvements.length - regressions.length;
+    current.passRate - baseline.passRate + improvements.length - regressions.length;
 
   return {
     baselineId,
@@ -123,7 +115,7 @@ export function getSnapshot(id: string): GoldenSnapshot | undefined {
   return snapshotStore.get(id);
 }
 
-export function listSnapshots(tenantId = "default"): GoldenSnapshot[] {
+export function listSnapshots(tenantId = 'default'): GoldenSnapshot[] {
   return [...snapshotStore.values()]
     .filter((s) => s.tenantId === tenantId)
     .sort((a, b) => b.capturedAt.localeCompare(a.capturedAt));

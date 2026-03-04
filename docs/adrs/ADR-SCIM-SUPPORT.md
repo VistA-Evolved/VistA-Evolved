@@ -10,6 +10,7 @@
 Enterprise customers require automated user provisioning from identity providers
 (Azure AD, Okta, OneLogin, Ping). SCIM 2.0 (RFC 7643/7644) is the industry
 standard protocol. VistA-Evolved already has:
+
 - `auth/scim-connector.ts` — Full interface + `StubScimConnector` (Phase 141)
 - `auth/idp-role-mapper.ts` — IdP claim to role mapping
 - `auth/session-store.ts` — DB-backed sessions with role/tenant binding
@@ -23,6 +24,7 @@ The stub connector throws `ScimNotImplementedError` for all operations.
 `ScimConnector` interface, backed by PG storage with tenant isolation.
 
 Rationale:
+
 - Interface already designed and tested at compile time
 - Extension schema for VistA DUZ binding already defined
 - In-process implementation avoids external SCIM server dependency
@@ -32,12 +34,14 @@ Rationale:
 ## Alternatives Considered
 
 ### Option A: Build Minimal SCIM Server Endpoints (CHOSEN)
+
 - **Pros:** Full control, no external deps, aligned with existing interface,
   tenant-isolated by design
 - **Cons:** Must implement RFC compliance ourselves, handle edge cases
 - **Selected:** Minimal viable compliance (Users + Groups + PATCH) is tractable
 
 ### Option B: Integrate External IdP SCIM (e.g., SCIM Bridge)
+
 - **Pros:** Full RFC compliance out of box, battle-tested
 - **Cons:** External container, licensing cost, network dependency, must still
   map to internal user model
@@ -45,6 +49,7 @@ Rationale:
   can be built on the existing interface
 
 ### Option C: Hybrid (SCIM proxy → internal API)
+
 - **Pros:** External SCIM compliance + internal flexibility
 - **Cons:** Two systems to maintain, proxy adds latency, versioning complexity
 - **Rejected:** Over-engineering for current requirements

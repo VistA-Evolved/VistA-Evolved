@@ -1,6 +1,7 @@
 # Phase 432 — Verification
 
 ## Checks
+
 1. `prompts-tree-health.mjs` passes (7/7 PASS, 0 FAIL)
 2. `types.ts` exports all 7 new pharmacy/MAR interfaces
 3. `interface.ts` declares all 6 new pharmacy/MAR methods

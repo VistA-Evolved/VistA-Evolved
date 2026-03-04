@@ -24,10 +24,15 @@ export default function CPRSPreferencesPage() {
   };
 
   return (
-    <div className={styles.shell} style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div
+      className={styles.shell}
+      style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
+    >
       <div className={styles.menuBar}>
         <span style={{ fontWeight: 600, fontSize: 13 }}>EHR &mdash; Evolved</span>
-        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--cprs-text-muted)' }}>Settings &rarr; Preferences</span>
+        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--cprs-text-muted)' }}>
+          Settings &rarr; Preferences
+        </span>
       </div>
 
       <div style={{ flex: 1, padding: 24, maxWidth: 600, margin: '0 auto', width: '100%' }}>
@@ -41,7 +46,9 @@ export default function CPRSPreferencesPage() {
               <select
                 className={styles.formSelect}
                 value={preferences.theme}
-                onChange={(e) => updatePreferences({ theme: e.target.value as 'light' | 'dark' | 'system' })}
+                onChange={(e) =>
+                  updatePreferences({ theme: e.target.value as 'light' | 'dark' | 'system' })
+                }
               >
                 <option value="light">Light</option>
                 <option value="dark">Dark</option>
@@ -75,8 +82,8 @@ export default function CPRSPreferencesPage() {
                 <option value="modern">Modern</option>
               </select>
               <p style={{ fontSize: 10, color: 'var(--cprs-text-muted)', margin: '2px 0 0' }}>
-                Classic preserves the CPRS workflow and menu bar. Modern uses a sidebar navigation with card-based layouts.
-                Both modes use identical workflows and screen IDs.
+                Classic preserves the CPRS workflow and menu bar. Modern uses a sidebar navigation
+                with card-based layouts. Both modes use identical workflows and screen IDs.
               </p>
             </div>
           </section>

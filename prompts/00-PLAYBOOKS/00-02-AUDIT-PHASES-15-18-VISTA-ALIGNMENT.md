@@ -1,18 +1,22 @@
 # Prompt: Audit Phases 15–18 Against Real VistA/CPRS
 
 ## User Request
+
 Audit Phases 15–18 of VistA-Evolved against real VistA/CPRS to categorize every feature as REAL VISTA, CPRS ANALOG, VISTA EXTENSION, or INVENTED.
 
 ## Implementation Steps
+
 1. Read all source files for Phases 15–18
 2. Identify every discrete feature in each phase
 3. Cross-reference each feature against real VistA namespaces (XUS*, MAG*, OR*, RA*, etc.), CPRS desktop behavior, and standard VistA ecosystem patterns
 4. Produce a categorized audit
 
 ## Verification Steps
+
 - Manual review of classifications against VistA technical documentation
 
 ## Files Inspected
+
 - apps/api/src/middleware/security.ts
 - apps/api/src/lib/audit.ts
 - apps/api/src/lib/logger.ts

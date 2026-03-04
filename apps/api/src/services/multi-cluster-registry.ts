@@ -13,7 +13,7 @@
  *   Must be deterministic and testable -- same inputs always produce same output.
  */
 
-import { createHash, randomUUID } from "node:crypto";
+import { randomUUID } from "node:crypto";
 import { getPgPool } from "../platform/pg/pg-db.js";
 import { isPgConfigured } from "../platform/pg/pg-db.js";
 

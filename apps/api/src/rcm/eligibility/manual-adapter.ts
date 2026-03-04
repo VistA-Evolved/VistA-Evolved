@@ -15,12 +15,12 @@ import type {
   SubmissionResponse,
   DenialWorkflowResponse,
   AdapterHealthResult,
-} from "../adapters/payer-adapter.js";
+} from '../adapters/payer-adapter.js';
 
 const CONFIG: PayerAdapterConfig = {
-  id: "manual",
-  name: "Manual Entry Adapter (User-reported)",
-  supportedModes: ["manual"],
+  id: 'manual',
+  name: 'Manual Entry Adapter (User-reported)',
+  supportedModes: ['manual'],
   rateLimits: {
     eligibilityPerHour: 500,
     claimStatusPerHour: 500,
@@ -56,12 +56,12 @@ export class ManualPayerAdapter implements PayerAdapter {
   }): Promise<EligibilityResponse> {
     return {
       eligible: params.manualEligible ?? true,
-      status: "active",
+      status: 'active',
       isTestData: false,
       payerId: params.payerId,
       payerName: `Manual entry (${params.payerId})`,
       memberId: params.memberId ?? undefined,
-      coverageType: params.manualCoverageType ?? "unknown",
+      coverageType: params.manualCoverageType ?? 'unknown',
       checkedAt: new Date().toISOString(),
     };
   }
@@ -80,13 +80,12 @@ export class ManualPayerAdapter implements PayerAdapter {
     return {
       claimId: params.claimId,
       payerClaimId: params.payerClaimId,
-      status: (params.manualClaimStatus as ClaimStatusResponse["status"]) ?? "pending",
+      status: (params.manualClaimStatus as ClaimStatusResponse['status']) ?? 'pending',
       isTestData: false,
-      statusDescription: params.manualNotes ?? "Manually reported claim status",
+      statusDescription: params.manualNotes ?? 'Manually reported claim status',
       adjudicationDate: params.manualAdjudicationDate,
-      paidAmount: params.manualPaidAmountCents != null
-        ? params.manualPaidAmountCents / 100
-        : undefined,
+      paidAmount:
+        params.manualPaidAmountCents != null ? params.manualPaidAmountCents / 100 : undefined,
       checkedAt: new Date().toISOString(),
     };
   }
@@ -95,7 +94,13 @@ export class ManualPayerAdapter implements PayerAdapter {
     return {
       accepted: false,
       isTestData: false,
-      errors: [{ code: "UNSUPPORTED", description: "Manual adapter does not support claim submission. Use a clearinghouse or portal adapter." }],
+      errors: [
+        {
+          code: 'UNSUPPORTED',
+          description:
+            'Manual adapter does not support claim submission. Use a clearinghouse or portal adapter.',
+        },
+      ],
       submittedAt: new Date().toISOString(),
     };
   }
@@ -109,7 +114,7 @@ export class ManualPayerAdapter implements PayerAdapter {
     return {
       appealCreated: false,
       recommendedActions: params.denialReasons.map(
-        (r) => `Manual review: denial ${r.code} - ${r.description}`,
+        (r) => `Manual review: denial ${r.code} - ${r.description}`
       ),
       automatedCorrections: [],
       escalationRequired: false,
@@ -122,7 +127,7 @@ export class ManualPayerAdapter implements PayerAdapter {
       adapterId: this.config.id,
       adapterName: this.config.name,
       latencyMs: 0,
-      details: "Manual adapter always available - no external dependencies",
+      details: 'Manual adapter always available - no external dependencies',
       checkedAt: new Date().toISOString(),
     };
   }

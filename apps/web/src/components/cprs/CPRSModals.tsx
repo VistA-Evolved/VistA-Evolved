@@ -5,10 +5,17 @@ import { useCPRSUI } from '@/stores/cprs-ui-state';
 import { usePatient } from '@/stores/patient-context';
 import { useSession } from '@/stores/session-context';
 import { useDataCache, type Vital } from '@/stores/data-cache';
-import { AddProblemDialog, EditProblemDialog, AddMedicationDialog, CreateNoteDialog, AddVitalDialog, AddAllergyDialog, AcknowledgeLabDialog } from './dialogs';
+import {
+  AddProblemDialog,
+  EditProblemDialog,
+  AddMedicationDialog,
+  CreateNoteDialog,
+  AddVitalDialog,
+  AddAllergyDialog,
+  AcknowledgeLabDialog,
+} from './dialogs';
 import styles from './cprs.module.css';
 import { API_BASE, WS_BASE } from '@/lib/api-config';
-
 
 /* ------------------------------------------------------------------ */
 /* Modal shell                                                         */
@@ -34,7 +41,9 @@ function Modal({
       >
         <div className={styles.modalHeader}>
           <span>{title}</span>
-          <button className={styles.closeBtn} onClick={onClose}>&times;</button>
+          <button className={styles.closeBtn} onClick={onClose}>
+            &times;
+          </button>
         </div>
         <div className={styles.modalBody}>{children}</div>
       </div>
@@ -51,14 +60,28 @@ function PrintModal({ onClose }: { onClose: () => void }) {
     <Modal title="Print" onClose={onClose}>
       <p>Select the content to print:</p>
       <div className={styles.formGroup}>
-        <label><input type="checkbox" defaultChecked /> Current View</label>
+        <label>
+          <input type="checkbox" defaultChecked /> Current View
+        </label>
       </div>
       <div className={styles.formGroup}>
-        <label><input type="checkbox" /> Full Patient Summary</label>
+        <label>
+          <input type="checkbox" /> Full Patient Summary
+        </label>
       </div>
       <div className={styles.modalFooter}>
-        <button className={styles.btn} onClick={() => { window.print(); onClose(); }}>Print</button>
-        <button className={styles.btn} onClick={onClose}>Cancel</button>
+        <button
+          className={styles.btn}
+          onClick={() => {
+            window.print();
+            onClose();
+          }}
+        >
+          Print
+        </button>
+        <button className={styles.btn} onClick={onClose}>
+          Cancel
+        </button>
       </div>
     </Modal>
   );
@@ -69,7 +92,9 @@ function PrintSetupModal({ onClose }: { onClose: () => void }) {
     <Modal title="Print Setup" onClose={onClose}>
       <p>Print setup options are controlled by the browser&apos;s print dialog.</p>
       <div className={styles.modalFooter}>
-        <button className={styles.btn} onClick={onClose}>OK</button>
+        <button className={styles.btn} onClick={onClose}>
+          OK
+        </button>
       </div>
     </Modal>
   );
@@ -97,11 +122,17 @@ function GraphingModal({ onClose }: { onClose: () => void }) {
     .sort((a: Vital, b: Vital) => new Date(a.takenAt).getTime() - new Date(b.takenAt).getTime());
 
   // SVG chart dimensions
-  const W = 560, H = 200, PAD = 40;
+  const W = 560,
+    H = 200,
+    PAD = 40;
 
   function renderChart() {
     if (filteredVitals.length === 0) {
-      return <text x={W / 2} y={H / 2} textAnchor="middle" fill="var(--cprs-text-muted)" fontSize={13}>No data points for {selectedType}</text>;
+      return (
+        <text x={W / 2} y={H / 2} textAnchor="middle" fill="var(--cprs-text-muted)" fontSize={13}>
+          No data points for {selectedType}
+        </text>
+      );
     }
 
     const nums = filteredVitals.map((v: Vital) => {
@@ -123,20 +154,41 @@ function GraphingModal({ onClose }: { onClose: () => void }) {
     return (
       <>
         {/* Y axis labels */}
-        <text x={PAD - 4} y={PAD} textAnchor="end" fontSize={10} fill="var(--cprs-text-muted)">{maxV}</text>
-        <text x={PAD - 4} y={H - PAD} textAnchor="end" fontSize={10} fill="var(--cprs-text-muted)">{minV}</text>
+        <text x={PAD - 4} y={PAD} textAnchor="end" fontSize={10} fill="var(--cprs-text-muted)">
+          {maxV}
+        </text>
+        <text x={PAD - 4} y={H - PAD} textAnchor="end" fontSize={10} fill="var(--cprs-text-muted)">
+          {minV}
+        </text>
         {/* Grid lines */}
         <line x1={PAD} y1={PAD} x2={PAD} y2={H - PAD} stroke="var(--cprs-border)" strokeWidth={1} />
-        <line x1={PAD} y1={H - PAD} x2={W - PAD} y2={H - PAD} stroke="var(--cprs-border)" strokeWidth={1} />
+        <line
+          x1={PAD}
+          y1={H - PAD}
+          x2={W - PAD}
+          y2={H - PAD}
+          stroke="var(--cprs-border)"
+          strokeWidth={1}
+        />
         {/* Data line */}
         <polyline fill="none" stroke="#2563eb" strokeWidth={2} points={polyline} />
         {/* Data points + labels */}
         {points.map((p, i) => (
           <g key={i}>
             <circle cx={p.x} cy={p.y} r={4} fill="#2563eb" />
-            <text x={p.x} y={p.y - 8} textAnchor="middle" fontSize={9} fill="var(--cprs-text)">{p.val}</text>
+            <text x={p.x} y={p.y - 8} textAnchor="middle" fontSize={9} fill="var(--cprs-text)">
+              {p.val}
+            </text>
             {i % Math.max(1, Math.floor(points.length / 6)) === 0 && (
-              <text x={p.x} y={H - PAD + 14} textAnchor="middle" fontSize={8} fill="var(--cprs-text-muted)">{p.label}</text>
+              <text
+                x={p.x}
+                y={H - PAD + 14}
+                textAnchor="middle"
+                fontSize={8}
+                fill="var(--cprs-text-muted)"
+              >
+                {p.label}
+              </text>
             )}
           </g>
         ))}
@@ -148,8 +200,17 @@ function GraphingModal({ onClose }: { onClose: () => void }) {
     <Modal title="Graphing" onClose={onClose} wide>
       <div style={{ marginBottom: 8, display: 'flex', gap: 8, alignItems: 'center' }}>
         <label style={{ fontSize: 12, fontWeight: 600 }}>Vital Type:</label>
-        <select className={styles.formSelect} value={selectedType} onChange={(e) => setVitalType(e.target.value)} style={{ width: 'auto' }}>
-          {vitalTypes.map((t: string) => <option key={t} value={t}>{t}</option>)}
+        <select
+          className={styles.formSelect}
+          value={selectedType}
+          onChange={(e) => setVitalType(e.target.value)}
+          style={{ width: 'auto' }}
+        >
+          {vitalTypes.map((t: string) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
           {vitalTypes.length === 0 && <option value="">No vitals</option>}
         </select>
         <span style={{ fontSize: 11, color: 'var(--cprs-text-muted)' }}>
@@ -157,7 +218,15 @@ function GraphingModal({ onClose }: { onClose: () => void }) {
         </span>
       </div>
 
-      <svg width={W} height={H} style={{ border: '1px solid var(--cprs-border)', borderRadius: 4, background: 'var(--cprs-bg)' }}>
+      <svg
+        width={W}
+        height={H}
+        style={{
+          border: '1px solid var(--cprs-border)',
+          borderRadius: 4,
+          background: 'var(--cprs-bg)',
+        }}
+      >
         {renderChart()}
       </svg>
 
@@ -165,7 +234,9 @@ function GraphingModal({ onClose }: { onClose: () => void }) {
         Contract: ORWGRPC ITEMS &bull; Data source: live vitals RPC
       </p>
       <div className={styles.modalFooter}>
-        <button className={styles.btn} onClick={onClose}>Close</button>
+        <button className={styles.btn} onClick={onClose}>
+          Close
+        </button>
       </div>
     </Modal>
   );
@@ -225,12 +296,7 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
           ]);
         } else if (msg.type === 'api_result') {
           const body = typeof msg.body === 'string' ? msg.body : JSON.stringify(msg.body, null, 2);
-          setOutput((prev) => [
-            ...prev,
-            `[${ts}] ${msg.status} ${msg.path}`,
-            body,
-            '> _',
-          ]);
+          setOutput((prev) => [...prev, `[${ts}] ${msg.status} ${msg.path}`, body, '> _']);
         } else if (msg.type === 'error') {
           setOutput((prev) => [...prev, `[${ts}] ERROR: ${msg.message}`, '> _']);
         } else if (msg.type === 'pong') {
@@ -252,7 +318,9 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
     };
 
     setWsRef(ws);
-    return () => { ws.close(); };
+    return () => {
+      ws.close();
+    };
   }, [authenticated, hasRole]);
 
   async function handleExecute() {
@@ -292,7 +360,9 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
         setLoading(false);
       } else {
         // Default: treat as API path
-        wsRef.send(JSON.stringify({ type: 'api', path: cmd.startsWith('/') ? cmd : `/vista/${cmd}` }));
+        wsRef.send(
+          JSON.stringify({ type: 'api', path: cmd.startsWith('/') ? cmd : `/vista/${cmd}` })
+        );
       }
     } else {
       // HTTP fallback
@@ -302,12 +372,21 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
         const text = await res.text();
         try {
           const obj = JSON.parse(text);
-          setOutput((prev) => [...prev, `[${ts}] ${res.status} OK`, JSON.stringify(obj, null, 2), '> _']);
+          setOutput((prev) => [
+            ...prev,
+            `[${ts}] ${res.status} OK`,
+            JSON.stringify(obj, null, 2),
+            '> _',
+          ]);
         } catch {
           setOutput((prev) => [...prev, `[${ts}] ${res.status}`, text.slice(0, 2000), '> _']);
         }
       } catch (err: unknown) {
-        setOutput((prev) => [...prev, `[${ts}] ERROR: ${err instanceof Error ? err.message : String(err)}`, '> _']);
+        setOutput((prev) => [
+          ...prev,
+          `[${ts}] ERROR: ${err instanceof Error ? err.message : String(err)}`,
+          '> _',
+        ]);
       } finally {
         setLoading(false);
       }
@@ -328,16 +407,39 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
           placeholder={connected ? 'rpc ORWPT LIST ALL SMI 1' : '/vista/ping'}
           style={{ flex: 1, fontFamily: 'monospace', fontSize: 12 }}
         />
-        <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={handleExecute} disabled={loading}>
+        <button
+          className={`${styles.btn} ${styles.btnPrimary}`}
+          onClick={handleExecute}
+          disabled={loading}
+        >
           {loading ? '...' : 'Execute'}
         </button>
       </div>
-      <div style={{ background: '#0a0a0a', color: '#0f0', padding: 12, fontFamily: 'monospace', borderRadius: 4, minHeight: 250, maxHeight: 400, overflowY: 'auto', fontSize: 11, whiteSpace: 'pre-wrap' }}>
-        {output.map((line, i) => <div key={i}>{line}</div>)}
+      <div
+        style={{
+          background: '#0a0a0a',
+          color: '#0f0',
+          padding: 12,
+          fontFamily: 'monospace',
+          borderRadius: 4,
+          minHeight: 250,
+          maxHeight: 400,
+          overflowY: 'auto',
+          fontSize: 11,
+          whiteSpace: 'pre-wrap',
+        }}
+      >
+        {output.map((line, i) => (
+          <div key={i}>{line}</div>
+        ))}
       </div>
       <div className={styles.modalFooter}>
-        <button className={styles.btn} onClick={() => setOutput(['> Console cleared.', '> _'])}>Clear</button>
-        <button className={styles.btn} onClick={onClose}>Close</button>
+        <button className={styles.btn} onClick={() => setOutput(['> Console cleared.', '> _'])}>
+          Clear
+        </button>
+        <button className={styles.btn} onClick={onClose}>
+          Close
+        </button>
       </div>
     </Modal>
   );
@@ -370,14 +472,37 @@ function RemoteDataModal({ onClose }: { onClose: () => void }) {
       {loading ? (
         <p style={{ fontSize: 12 }}>Querying remote facilities...</p>
       ) : facilities.length === 0 ? (
-        <div style={{ padding: 16, textAlign: 'center', border: '1px dashed var(--cprs-border)', borderRadius: 6 }}>
+        <div
+          style={{
+            padding: 16,
+            textAlign: 'center',
+            border: '1px dashed var(--cprs-border)',
+            borderRadius: 6,
+          }}
+        >
           <p style={{ fontSize: 14, fontWeight: 600 }}>No Remote Facilities Connected</p>
-          <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)', maxWidth: 400, margin: '8px auto' }}>
-            The Docker sandbox does not have remote facility connections.
-            In a production environment, this viewer would display clinical data
-            from other facilities via VHIE (Health Information Exchange) or FHIR bridges.
+          <p
+            style={{
+              fontSize: 12,
+              color: 'var(--cprs-text-muted)',
+              maxWidth: 400,
+              margin: '8px auto',
+            }}
+          >
+            The Docker sandbox does not have remote facility connections. In a production
+            environment, this viewer would display clinical data from other facilities via VHIE
+            (Health Information Exchange) or FHIR bridges.
           </p>
-          <div style={{ marginTop: 12, padding: 8, background: 'var(--cprs-bg)', borderRadius: 4, fontSize: 11, textAlign: 'left' }}>
+          <div
+            style={{
+              marginTop: 12,
+              padding: 8,
+              background: 'var(--cprs-bg)',
+              borderRadius: 4,
+              fontSize: 11,
+              textAlign: 'left',
+            }}
+          >
             <strong>Architecture:</strong>
             <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
               <li>ORWCIRN FACLIST — Lists connected remote facilities</li>
@@ -389,17 +514,27 @@ function RemoteDataModal({ onClose }: { onClose: () => void }) {
         </div>
       ) : (
         <table className={styles.dataTable}>
-          <thead><tr><th>Facility</th><th>Status</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Facility</th>
+              <th>Status</th>
+            </tr>
+          </thead>
           <tbody>
             {facilities.map((f, i) => (
-              <tr key={i}><td>{f}</td><td>Connected</td></tr>
+              <tr key={i}>
+                <td>{f}</td>
+                <td>Connected</td>
+              </tr>
             ))}
           </tbody>
         </table>
       )}
 
       <div className={styles.modalFooter}>
-        <button className={styles.btn} onClick={onClose}>Close</button>
+        <button className={styles.btn} onClick={onClose}>
+          Close
+        </button>
       </div>
     </Modal>
   );
@@ -425,15 +560,27 @@ function KeyboardShortcutsModal({ onClose }: { onClose: () => void }) {
   return (
     <Modal title="Keyboard Shortcuts" onClose={onClose}>
       <table className={styles.dataTable}>
-        <thead><tr><th>Key</th><th>Action</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Action</th>
+          </tr>
+        </thead>
         <tbody>
           {shortcuts.map(([key, action]) => (
-            <tr key={key}><td><code>{key}</code></td><td>{action}</td></tr>
+            <tr key={key}>
+              <td>
+                <code>{key}</code>
+              </td>
+              <td>{action}</td>
+            </tr>
           ))}
         </tbody>
       </table>
       <div className={styles.modalFooter}>
-        <button className={styles.btn} onClick={onClose}>Close</button>
+        <button className={styles.btn} onClick={onClose}>
+          Close
+        </button>
       </div>
     </Modal>
   );
@@ -446,17 +593,22 @@ function AboutModal({ onClose }: { onClose: () => void }) {
         <h2 style={{ fontSize: 18, margin: '0 0 8px' }}>EHR — Evolved</h2>
         <p>CPRS Web Replica v2.0</p>
         <p style={{ color: 'var(--cprs-text-muted)', fontSize: 12 }}>
-          Built from CPRS Delphi source contracts.<br />
+          Built from CPRS Delphi source contracts.
+          <br />
           Phase 13 — CPRS Operationalization.
         </p>
         <p style={{ marginTop: 12, fontSize: 11, color: 'var(--cprs-text-muted)' }}>
           975 RPCs cataloged &bull; 10 chart tabs &bull; 27+ API endpoints &bull; 12 data domains
-          <br />Session auth &bull; Inbox &bull; Order state machine &bull; Results workflow
-          <br />WebSocket console &bull; Modern UI toggle &bull; Remote data viewer
+          <br />
+          Session auth &bull; Inbox &bull; Order state machine &bull; Results workflow
+          <br />
+          WebSocket console &bull; Modern UI toggle &bull; Remote data viewer
         </p>
       </div>
       <div className={styles.modalFooter}>
-        <button className={styles.btn} onClick={onClose}>OK</button>
+        <button className={styles.btn} onClick={onClose}>
+          OK
+        </button>
       </div>
     </Modal>
   );
@@ -472,20 +624,35 @@ export default function CPRSModals() {
   if (!activeModal) return null;
 
   switch (activeModal) {
-    case 'print': return <PrintModal onClose={closeModal} />;
-    case 'printSetup': return <PrintSetupModal onClose={closeModal} />;
-    case 'graphing': return <GraphingModal onClose={closeModal} />;
-    case 'legacyConsole': return <LegacyConsoleModal onClose={closeModal} />;
-    case 'remoteData': return <RemoteDataModal onClose={closeModal} />;
-    case 'keyboardShortcuts': return <KeyboardShortcutsModal onClose={closeModal} />;
-    case 'about': return <AboutModal onClose={closeModal} />;
-    case 'addProblem': return <AddProblemDialog />;
-    case 'editProblem': return <EditProblemDialog />;
-    case 'addMedication': return <AddMedicationDialog />;
-    case 'createNote': return <CreateNoteDialog />;
-    case 'addVital': return <AddVitalDialog />;
-    case 'addAllergy': return <AddAllergyDialog />;
-    case 'ackLab': return <AcknowledgeLabDialog />;
-    default: return null;
+    case 'print':
+      return <PrintModal onClose={closeModal} />;
+    case 'printSetup':
+      return <PrintSetupModal onClose={closeModal} />;
+    case 'graphing':
+      return <GraphingModal onClose={closeModal} />;
+    case 'legacyConsole':
+      return <LegacyConsoleModal onClose={closeModal} />;
+    case 'remoteData':
+      return <RemoteDataModal onClose={closeModal} />;
+    case 'keyboardShortcuts':
+      return <KeyboardShortcutsModal onClose={closeModal} />;
+    case 'about':
+      return <AboutModal onClose={closeModal} />;
+    case 'addProblem':
+      return <AddProblemDialog />;
+    case 'editProblem':
+      return <EditProblemDialog />;
+    case 'addMedication':
+      return <AddMedicationDialog />;
+    case 'createNote':
+      return <CreateNoteDialog />;
+    case 'addVital':
+      return <AddVitalDialog />;
+    case 'addAllergy':
+      return <AddAllergyDialog />;
+    case 'ackLab':
+      return <AcknowledgeLabDialog />;
+    default:
+      return null;
   }
 }

@@ -1,6 +1,7 @@
 # Phase 336 — W15-P10: Verification Checklist
 
 ## Gates
+
 - [ ] `scale-cert-runner.ts` exports all domain functions
 - [ ] `scale-cert-runner-routes.ts` registers 16 endpoints under `/platform/cert/`
 - [ ] AUTH_RULES: `/platform/cert/` → admin

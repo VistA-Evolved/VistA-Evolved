@@ -9,6 +9,7 @@ foundation for all subsequent Wave 39 phases.
 ## User Request
 
 Build a comprehensive UI estate catalog covering:
+
 - **VA systems**: BCMA, VistA Imaging, IVS/SIC, MHA, VSE/VS GUI,
   Clinical Procedures CP/MD, JLV, VistAWeb, and all "GUI Hybrids"
   (CDSP, CISS, Direct, ESig, HINGE, HWSC, Lighthouse, VES, MHV,
@@ -18,7 +19,9 @@ Build a comprehensive UI estate catalog covering:
 ## Implementation Steps
 
 ### 1. JSON Schema (`data/ui-estate/ui-estate.schema.json`)
+
 Define the schema for UI surface entries:
+
 - `id`: kebab-case unique identifier
 - `agency`: "va" | "ihs" | "shared"
 - `system`: parent system name
@@ -31,15 +34,19 @@ Define the schema for UI surface entries:
   - `migrationStatus`: "not-started" | "scaffold" | "api-wired" | "writeback" | "parity" | "certified"
 
 ### 2. VA Catalog (`data/ui-estate/va-ui-estate.json`)
+
 Populate all VA systems with surfaces, VistA file references, target
 RPCs, and current VistA-Evolved coverage status (auto-detected where
 possible, manually annotated otherwise).
 
 ### 3. IHS Catalog (`data/ui-estate/ihs-ui-estate.json`)
+
 Same structure for IHS systems.
 
 ### 4. Auto-Detection Script (`scripts/ui-estate/build-ui-estate.mjs`)
+
 Node.js script that:
+
 - Scans `apps/api/src/routes/` for route prefixes
 - Scans `apps/web/src/app/` and `apps/portal/src/app/` for page.tsx files
 - Cross-references with `config/capabilities.json`
@@ -47,12 +54,15 @@ Node.js script that:
 - Produces `data/ui-estate/ui-gap-report.json`
 
 ### 5. Gap Report (`data/ui-estate/ui-gap-report.json`)
+
 Generated output showing:
+
 - Total surfaces, covered, gaps, coverage percentage
 - Per-system breakdown
 - Per-priority breakdown
 
 ### 6. Documentation (`docs/ui-estate/README.md`)
+
 How to update the catalog, what "coverage" means, how to run the
 build script.
 

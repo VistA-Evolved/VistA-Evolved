@@ -12,13 +12,13 @@ governance labels, and documents the reuse analysis.
 
 5 portal endpoints upgraded from stubs to live VistA RPC calls:
 
-| Endpoint | RPC | Params | Phase |
-|---|---|---|---|
-| `GET /portal/health/labs` | ORWLRR INTERIM | DFN, startDate, endDate | 61 |
-| `GET /portal/health/consults` | ORQQCN LIST | DFN, start, stop, service, status | 61 |
-| `GET /portal/health/surgery` | ORWSR LIST | DFN, start, end, context, max | 61 |
-| `GET /portal/health/dc-summaries` | TIU DOCUMENTS BY CONTEXT | class=244, signed+unsigned | 61 |
-| `GET /portal/health/reports` | ORWRP REPORT TEXT / LISTS | DFN, reportId, hsType | 61 |
+| Endpoint                          | RPC                       | Params                            | Phase |
+| --------------------------------- | ------------------------- | --------------------------------- | ----- |
+| `GET /portal/health/labs`         | ORWLRR INTERIM            | DFN, startDate, endDate           | 61    |
+| `GET /portal/health/consults`     | ORQQCN LIST               | DFN, start, stop, service, status | 61    |
+| `GET /portal/health/surgery`      | ORWSR LIST                | DFN, start, end, context, max     | 61    |
+| `GET /portal/health/dc-summaries` | TIU DOCUMENTS BY CONTEXT  | class=244, signed+unsigned        | 61    |
+| `GET /portal/health/reports`      | ORWRP REPORT TEXT / LISTS | DFN, reportId, hsType             | 61    |
 
 All endpoints gracefully fall back to `_integration: "pending"` if VistA is unavailable.
 
@@ -38,6 +38,7 @@ All endpoints gracefully fall back to `_integration: "pending"` if VistA is unav
 ## How to Test
 
 ### Prerequisites
+
 - VistA Docker running on port 9430
 - API running: `cd apps/api && npx tsx --env-file=.env.local src/index.ts`
 - Portal running: `cd apps/portal && pnpm dev`
@@ -80,7 +81,8 @@ All endpoints gracefully fall back to `_integration: "pending"` if VistA is unav
 ## Remaining Gaps
 
 See `artifacts/phase61/portal-plan.json` for full feature map including:
+
 - Immunizations (no RPCs registered)
 - VistA-backed messaging (target: XMXAPI MailMan)
-- Real scheduling (target: SD* RPCs)
+- Real scheduling (target: SD\* RPCs)
 - Production auth (OIDC/SAML)

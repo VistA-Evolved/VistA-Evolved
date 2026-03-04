@@ -26,8 +26,8 @@
  *   GET    /platform/shards/migrations/:id         -- get migration plan
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { log } from "../lib/logger.js";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { log } from '../lib/logger.js';
 import {
   registerShard,
   listShards,
@@ -47,32 +47,42 @@ import {
   getShardingAuditLog,
   type ShardStatus,
   type ShardHealthProbe,
-} from "../services/data-plane-sharding.js";
+} from '../services/data-plane-sharding.js';
 
-const VALID_SHARD_STATUSES: ShardStatus[] = ["active", "readonly", "draining", "offline", "promoting"];
+const VALID_SHARD_STATUSES: ShardStatus[] = [
+  'active',
+  'readonly',
+  'draining',
+  'offline',
+  'promoting',
+];
 
 function getActor(request: FastifyRequest): string {
-  return (request as any).session?.duz || "unknown";
+  return (request as any).session?.duz || 'unknown';
 }
 
 export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<void> {
   // ─── Shard CRUD ───────────────────────────────────────────────────────
 
-  server.post("/platform/shards", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/platform/shards', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     if (!body.name || !body.region || !body.clusterId || !body.connectionRef) {
-      return reply.code(400).send({ ok: false, error: "name, region, clusterId, and connectionRef are required" });
+      return reply
+        .code(400)
+        .send({ ok: false, error: 'name, region, clusterId, and connectionRef are required' });
     }
     try {
       const shard = registerShard(body, getActor(request));
       return reply.code(201).send({ ok: true, shard });
     } catch (err: any) {
-      log.warn("Shard registration failed", { error: err.message });
-      return reply.code(err.statusCode || 500).send({ ok: false, error: "Shard registration failed" });
+      log.warn('Shard registration failed', { error: err.message });
+      return reply
+        .code(err.statusCode || 500)
+        .send({ ok: false, error: 'Shard registration failed' });
     }
   });
 
-  server.get("/platform/shards", async (request: FastifyRequest) => {
+  server.get('/platform/shards', async (request: FastifyRequest) => {
     const query = request.query as any;
     const shards = listShards({
       region: query.region,
@@ -82,16 +92,16 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
     return { ok: true, shards, count: shards.length };
   });
 
-  server.get("/platform/shards/summary", async () => {
+  server.get('/platform/shards/summary', async () => {
     return { ok: true, ...getShardingSummary() };
   });
 
-  server.get("/platform/shards/health", async () => {
+  server.get('/platform/shards/health', async () => {
     const probes = listShardHealth();
     return { ok: true, probes, count: probes.length };
   });
 
-  server.get("/platform/shards/audit", async (request: FastifyRequest) => {
+  server.get('/platform/shards/audit', async (request: FastifyRequest) => {
     const query = request.query as any;
     const limit = Math.min(parseInt(query.limit, 10) || 100, 500);
     const offset = parseInt(query.offset, 10) || 0;
@@ -99,115 +109,146 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
     return { ok: true, entries, count: entries.length };
   });
 
-  server.get("/platform/shards/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/platform/shards/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as any;
     const shard = getShard(id);
-    if (!shard) return reply.code(404).send({ ok: false, error: "Shard not found" });
+    if (!shard) return reply.code(404).send({ ok: false, error: 'Shard not found' });
     const health = getShardHealth(id);
     const mappings = listShardMappings({ shardId: id, active: true });
     return { ok: true, shard, health: health || null, activeTenants: mappings.length };
   });
 
-  server.post("/platform/shards/:id/status", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as any;
-    const body = (request.body as any) || {};
-    if (!body.status || !VALID_SHARD_STATUSES.includes(body.status)) {
-      return reply.code(400).send({ ok: false, error: `Invalid status. Valid: ${VALID_SHARD_STATUSES.join(", ")}` });
+  server.post(
+    '/platform/shards/:id/status',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as any;
+      const body = (request.body as any) || {};
+      if (!body.status || !VALID_SHARD_STATUSES.includes(body.status)) {
+        return reply
+          .code(400)
+          .send({ ok: false, error: `Invalid status. Valid: ${VALID_SHARD_STATUSES.join(', ')}` });
+      }
+      try {
+        const shard = updateShardStatus(id, body.status, getActor(request));
+        return { ok: true, shard };
+      } catch (err: any) {
+        log.warn('Shard status update failed', { error: err.message });
+        return reply
+          .code(err.statusCode || 500)
+          .send({ ok: false, error: 'Shard status update failed' });
+      }
     }
-    try {
-      const shard = updateShardStatus(id, body.status, getActor(request));
-      return { ok: true, shard };
-    } catch (err: any) {
-      log.warn("Shard status update failed", { error: err.message });
-      return reply.code(err.statusCode || 500).send({ ok: false, error: "Shard status update failed" });
+  );
+
+  server.post(
+    '/platform/shards/:id/health',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as any;
+      const shard = getShard(id);
+      if (!shard) return reply.code(404).send({ ok: false, error: 'Shard not found' });
+      const body = (request.body as any) || {};
+      const probe: ShardHealthProbe = {
+        shardId: id,
+        timestamp: new Date().toISOString(),
+        reachable: !!body.reachable,
+        replicationLagMs: body.replicationLagMs ?? null,
+        connectionPoolActive: body.connectionPoolActive ?? 0,
+        connectionPoolIdle: body.connectionPoolIdle ?? 0,
+        connectionPoolWaiting: body.connectionPoolWaiting ?? 0,
+        avgQueryTimeMs: body.avgQueryTimeMs ?? null,
+      };
+      recordShardHealth(probe);
+      return reply.code(201).send({ ok: true, probe });
     }
-  });
+  );
 
-  server.post("/platform/shards/:id/health", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as any;
-    const shard = getShard(id);
-    if (!shard) return reply.code(404).send({ ok: false, error: "Shard not found" });
-    const body = (request.body as any) || {};
-    const probe: ShardHealthProbe = {
-      shardId: id,
-      timestamp: new Date().toISOString(),
-      reachable: !!body.reachable,
-      replicationLagMs: body.replicationLagMs ?? null,
-      connectionPoolActive: body.connectionPoolActive ?? 0,
-      connectionPoolIdle: body.connectionPoolIdle ?? 0,
-      connectionPoolWaiting: body.connectionPoolWaiting ?? 0,
-      avgQueryTimeMs: body.avgQueryTimeMs ?? null,
-    };
-    recordShardHealth(probe);
-    return reply.code(201).send({ ok: true, probe });
-  });
-
-  server.get("/platform/shards/:id/health", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as any;
-    const probe = getShardHealth(id);
-    if (!probe) return reply.code(404).send({ ok: false, error: "No health data" });
-    return { ok: true, probe };
-  });
+  server.get(
+    '/platform/shards/:id/health',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as any;
+      const probe = getShardHealth(id);
+      if (!probe) return reply.code(404).send({ ok: false, error: 'No health data' });
+      return { ok: true, probe };
+    }
+  );
 
   // ─── Tenant-Shard Mapping ─────────────────────────────────────────────
 
-  server.post("/platform/shards/map-tenant", async (request: FastifyRequest, reply: FastifyReply) => {
-    const body = (request.body as any) || {};
-    if (!body.tenantId || !body.region) {
-      return reply.code(400).send({ ok: false, error: "tenantId and region are required" });
+  server.post(
+    '/platform/shards/map-tenant',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const body = (request.body as any) || {};
+      if (!body.tenantId || !body.region) {
+        return reply.code(400).send({ ok: false, error: 'tenantId and region are required' });
+      }
+      try {
+        const mapping = mapTenantToShard(body, getActor(request));
+        return reply.code(201).send({ ok: true, mapping });
+      } catch (err: any) {
+        log.warn('Tenant-shard mapping failed', { error: err.message });
+        return reply
+          .code(err.statusCode || 500)
+          .send({ ok: false, error: 'Tenant-shard mapping failed' });
+      }
     }
-    try {
-      const mapping = mapTenantToShard(body, getActor(request));
-      return reply.code(201).send({ ok: true, mapping });
-    } catch (err: any) {
-      log.warn("Tenant-shard mapping failed", { error: err.message });
-      return reply.code(err.statusCode || 500).send({ ok: false, error: "Tenant-shard mapping failed" });
+  );
+
+  server.get(
+    '/platform/shards/tenant/:tenantId',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { tenantId } = request.params as any;
+      const result = getTenantShard(tenantId);
+      if (!result) return reply.code(404).send({ ok: false, error: 'No shard mapping for tenant' });
+      return { ok: true, ...result };
     }
-  });
+  );
 
-  server.get("/platform/shards/tenant/:tenantId", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { tenantId } = request.params as any;
-    const result = getTenantShard(tenantId);
-    if (!result) return reply.code(404).send({ ok: false, error: "No shard mapping for tenant" });
-    return { ok: true, ...result };
-  });
-
-  server.get("/platform/shards/mappings", async (request: FastifyRequest) => {
+  server.get('/platform/shards/mappings', async (request: FastifyRequest) => {
     const query = request.query as any;
     const mappings = listShardMappings({
       shardId: query.shardId,
       region: query.region,
-      active: query.active === "true" ? true : query.active === "false" ? false : undefined,
+      active: query.active === 'true' ? true : query.active === 'false' ? false : undefined,
     });
     return { ok: true, mappings, count: mappings.length };
   });
 
-  server.post("/platform/shards/validate-access", async (request: FastifyRequest, reply: FastifyReply) => {
-    const body = (request.body as any) || {};
-    if (!body.requestingTenantId || !body.targetTenantId) {
-      return reply.code(400).send({ ok: false, error: "requestingTenantId and targetTenantId required" });
+  server.post(
+    '/platform/shards/validate-access',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const body = (request.body as any) || {};
+      if (!body.requestingTenantId || !body.targetTenantId) {
+        return reply
+          .code(400)
+          .send({ ok: false, error: 'requestingTenantId and targetTenantId required' });
+      }
+      const result = validateSameShardAccess(body.requestingTenantId, body.targetTenantId);
+      return { ok: true, ...result };
     }
-    const result = validateSameShardAccess(body.requestingTenantId, body.targetTenantId);
-    return { ok: true, ...result };
-  });
+  );
 
   // ─── Migration Plans ──────────────────────────────────────────────────
 
-  server.post("/platform/shards/migrations", async (request: FastifyRequest, reply: FastifyReply) => {
-    const body = (request.body as any) || {};
-    if (!body.tenantId || !body.toShardId) {
-      return reply.code(400).send({ ok: false, error: "tenantId and toShardId are required" });
+  server.post(
+    '/platform/shards/migrations',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const body = (request.body as any) || {};
+      if (!body.tenantId || !body.toShardId) {
+        return reply.code(400).send({ ok: false, error: 'tenantId and toShardId are required' });
+      }
+      try {
+        const plan = createMigrationPlan(body, getActor(request));
+        return reply.code(201).send({ ok: true, plan });
+      } catch (err: any) {
+        log.warn('Migration plan creation failed', { error: err.message });
+        return reply
+          .code(err.statusCode || 500)
+          .send({ ok: false, error: 'Migration plan creation failed' });
+      }
     }
-    try {
-      const plan = createMigrationPlan(body, getActor(request));
-      return reply.code(201).send({ ok: true, plan });
-    } catch (err: any) {
-      log.warn("Migration plan creation failed", { error: err.message });
-      return reply.code(err.statusCode || 500).send({ ok: false, error: "Migration plan creation failed" });
-    }
-  });
+  );
 
-  server.get("/platform/shards/migrations", async (request: FastifyRequest) => {
+  server.get('/platform/shards/migrations', async (request: FastifyRequest) => {
     const query = request.query as any;
     const plans = listMigrationPlans({
       tenantId: query.tenantId,
@@ -216,12 +257,15 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
     return { ok: true, plans, count: plans.length };
   });
 
-  server.get("/platform/shards/migrations/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as any;
-    const plan = getMigrationPlan(id);
-    if (!plan) return reply.code(404).send({ ok: false, error: "Migration plan not found" });
-    return { ok: true, plan };
-  });
+  server.get(
+    '/platform/shards/migrations/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as any;
+      const plan = getMigrationPlan(id);
+      if (!plan) return reply.code(404).send({ ok: false, error: 'Migration plan not found' });
+      return { ok: true, plan };
+    }
+  );
 }
 
 export default dataPlaneShardingRoutes;

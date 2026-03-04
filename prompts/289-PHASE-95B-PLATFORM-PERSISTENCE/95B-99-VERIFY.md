@@ -9,6 +9,7 @@
 5. Run store-policy gate to confirm all stores are categorized
 
 ## Acceptance Criteria
+
 - [ ] `initPlatformDb()` creates `data/platform.db` in dev mode
 - [ ] PG migrations run successfully when PG URL is configured
 - [ ] Store resolver returns correct backend based on STORE_BACKEND env var

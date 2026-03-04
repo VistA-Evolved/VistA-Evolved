@@ -14,16 +14,10 @@
  * Production migration: Replace Map stores with database.
  */
 
-import { randomBytes, scrypt, createHash, timingSafeEqual } from "node:crypto";
-import { promisify } from "node:util";
-import type {
-  PortalUser,
-  PortalUserStatus,
-  PatientProfile,
-  DeviceSession,
-  PatientRelationship,
-} from "./types.js";
-import { log } from "../lib/logger.js";
+import { randomBytes, scrypt, createHash, timingSafeEqual } from 'node:crypto';
+import { promisify } from 'node:util';
+import type { PortalUser, PatientProfile, DeviceSession } from './types.js';
+import { log } from '../lib/logger.js';
 
 const scryptAsync = promisify(scrypt);
 
@@ -62,19 +56,22 @@ const usersByUsername = new Map<string, string>(); // username -> userId
 const usersByEmail = new Map<string, string>(); // email -> userId
 
 /* Phase 146: DB repo wiring */
-let userDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
-export function initPortalUserStoreRepo(repo: typeof userDbRepo): void { userDbRepo = repo; }
+let userDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null =
+  null;
+export function initPortalUserStoreRepo(repo: typeof userDbRepo): void {
+  userDbRepo = repo;
+}
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
 /* ------------------------------------------------------------------ */
 
 function genId(): string {
-  return randomBytes(16).toString("hex");
+  return randomBytes(16).toString('hex');
 }
 
 function hashToken(token: string): string {
-  return createHash("sha256").update(token).digest("hex");
+  return createHash('sha256').update(token).digest('hex');
 }
 
 function now(): string {
@@ -86,28 +83,17 @@ function now(): string {
 /* ------------------------------------------------------------------ */
 
 export async function hashPassword(password: string): Promise<string> {
-  const salt = randomBytes(32).toString("hex");
-  const derived = (await scryptAsync(
-    password,
-    salt,
-    IAM_CONFIG.scryptKeyLen
-  )) as Buffer;
-  return `scrypt:${salt}:${derived.toString("hex")}`;
+  const salt = randomBytes(32).toString('hex');
+  const derived = (await scryptAsync(password, salt, IAM_CONFIG.scryptKeyLen)) as Buffer;
+  return `scrypt:${salt}:${derived.toString('hex')}`;
 }
 
-export async function verifyPassword(
-  password: string,
-  stored: string
-): Promise<boolean> {
-  const parts = stored.split(":");
-  if (parts.length !== 3 || parts[0] !== "scrypt") return false;
+export async function verifyPassword(password: string, stored: string): Promise<boolean> {
+  const parts = stored.split(':');
+  if (parts.length !== 3 || parts[0] !== 'scrypt') return false;
   const [, salt, hash] = parts;
-  const derived = (await scryptAsync(
-    password,
-    salt,
-    IAM_CONFIG.scryptKeyLen
-  )) as Buffer;
-  const storedBuf = Buffer.from(hash, "hex");
+  const derived = (await scryptAsync(password, salt, IAM_CONFIG.scryptKeyLen)) as Buffer;
+  const storedBuf = Buffer.from(hash, 'hex');
   if (derived.length !== storedBuf.length) return false;
   return timingSafeEqual(derived, storedBuf);
 }
@@ -127,10 +113,10 @@ export function validatePasswordStrength(password: string): {
   if (password.length > IAM_CONFIG.passwordMaxLength) {
     errors.push(`Password must be at most ${IAM_CONFIG.passwordMaxLength} characters`);
   }
-  if (!/[A-Z]/.test(password)) errors.push("Password must contain an uppercase letter");
-  if (!/[a-z]/.test(password)) errors.push("Password must contain a lowercase letter");
-  if (!/[0-9]/.test(password)) errors.push("Password must contain a digit");
-  if (!/[^A-Za-z0-9]/.test(password)) errors.push("Password must contain a special character");
+  if (!/[A-Z]/.test(password)) errors.push('Password must contain an uppercase letter');
+  if (!/[a-z]/.test(password)) errors.push('Password must contain a lowercase letter');
+  if (!/[0-9]/.test(password)) errors.push('Password must contain a digit');
+  if (!/[^A-Za-z0-9]/.test(password)) errors.push('Password must contain a special character');
   return { valid: errors.length === 0, errors };
 }
 
@@ -146,13 +132,13 @@ export async function createUser(
   selfPatient?: { dfn: string; name: string }
 ): Promise<PortalUser> {
   if (users.size >= IAM_CONFIG.maxUsers) {
-    throw new Error("Maximum user capacity reached");
+    throw new Error('Maximum user capacity reached');
   }
   if (usersByUsername.has(username.toLowerCase())) {
-    throw new Error("Username already exists");
+    throw new Error('Username already exists');
   }
   if (usersByEmail.has(email.toLowerCase())) {
-    throw new Error("Email already registered");
+    throw new Error('Email already registered');
   }
 
   const id = genId();
@@ -164,9 +150,9 @@ export async function createUser(
       id: genId(),
       patientDfn: selfPatient.dfn,
       patientName: selfPatient.name,
-      relationship: "self",
+      relationship: 'self',
       isSelf: true,
-      accessLevel: "full",
+      accessLevel: 'full',
       enrolledAt: now(),
       verified: false, // needs verification flow
     });
@@ -178,7 +164,7 @@ export async function createUser(
     displayName,
     email: email.toLowerCase(),
     passwordHash,
-    status: "active",
+    status: 'active',
     failedAttempts: 0,
     lockedUntil: null,
     mfaEnabled: false,
@@ -197,7 +183,19 @@ export async function createUser(
   usersByEmail.set(user.email, id);
 
   // Phase 146: Write-through to PG
-  userDbRepo?.upsert({ id, tenantId: 'default', username: user.username, email: user.email, displayName: user.displayName, passwordHash: user.passwordHash, status: user.status, createdAt: user.createdAt, updatedAt: user.updatedAt }).catch(() => {});
+  userDbRepo
+    ?.upsert({
+      id,
+      tenantId: 'default',
+      username: user.username,
+      email: user.email,
+      displayName: user.displayName,
+      passwordHash: user.passwordHash,
+      status: user.status,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    })
+    .catch(() => {});
 
   log.info(`Portal user created: ${id}`);
   return user;
@@ -209,12 +207,12 @@ export function getUserById(id: string): PortalUser | null {
 
 export function getUserByUsername(username: string): PortalUser | null {
   const id = usersByUsername.get(username.toLowerCase());
-  return id ? users.get(id) ?? null : null;
+  return id ? (users.get(id) ?? null) : null;
 }
 
 export function getUserByEmail(email: string): PortalUser | null {
   const id = usersByEmail.get(email.toLowerCase());
-  return id ? users.get(id) ?? null : null;
+  return id ? (users.get(id) ?? null) : null;
 }
 
 /* ------------------------------------------------------------------ */
@@ -228,44 +226,49 @@ export interface AuthResult {
   requiresMfa?: boolean;
 }
 
-export async function authenticateUser(
-  username: string,
-  password: string
-): Promise<AuthResult> {
+export async function authenticateUser(username: string, password: string): Promise<AuthResult> {
   const user = getUserByUsername(username);
   if (!user) {
-    return { success: false, error: "Invalid credentials" };
+    return { success: false, error: 'Invalid credentials' };
   }
 
   // Check lockout
-  if (user.status === "locked") {
+  if (user.status === 'locked') {
     if (user.lockedUntil && Date.now() < user.lockedUntil) {
-      return { success: false, error: "Account is locked. Try again later." };
+      return { success: false, error: 'Account is locked. Try again later.' };
     }
     // Lockout expired, reset
-    user.status = "active";
+    user.status = 'active';
     user.failedAttempts = 0;
     user.lockedUntil = null;
   }
 
-  if (user.status === "disabled") {
-    return { success: false, error: "Account is disabled" };
+  if (user.status === 'disabled') {
+    return { success: false, error: 'Account is disabled' };
   }
 
   const valid = await verifyPassword(password, user.passwordHash);
   if (!valid) {
     user.failedAttempts++;
     if (user.failedAttempts >= IAM_CONFIG.maxFailedAttempts) {
-      user.status = "locked";
+      user.status = 'locked';
       user.lockedUntil = Date.now() + IAM_CONFIG.lockoutDurationMs;
       log.warn(`Portal user locked out: ${user.id} after ${user.failedAttempts} failed attempts`);
     }
     user.updatedAt = now();
 
     // Phase 146: Write-through lockout state
-    userDbRepo?.upsert({ id: user.id, tenantId: 'default', status: user.status, failedAttempts: user.failedAttempts, updatedAt: user.updatedAt }).catch(() => {});
+    userDbRepo
+      ?.upsert({
+        id: user.id,
+        tenantId: 'default',
+        status: user.status,
+        failedAttempts: user.failedAttempts,
+        updatedAt: user.updatedAt,
+      })
+      .catch(() => {});
 
-    return { success: false, error: "Invalid credentials" };
+    return { success: false, error: 'Invalid credentials' };
   }
 
   // Successful auth — reset failed attempts
@@ -275,7 +278,16 @@ export async function authenticateUser(
   user.updatedAt = now();
 
   // Phase 146: Write-through login success
-  userDbRepo?.upsert({ id: user.id, tenantId: 'default', status: user.status, failedAttempts: 0, lastLoginAt: user.lastLoginAt, updatedAt: user.updatedAt }).catch(() => {});
+  userDbRepo
+    ?.upsert({
+      id: user.id,
+      tenantId: 'default',
+      status: user.status,
+      failedAttempts: 0,
+      lastLoginAt: user.lastLoginAt,
+      updatedAt: user.updatedAt,
+    })
+    .catch(() => {});
 
   // Check MFA
   if (user.mfaEnabled) {
@@ -293,13 +305,15 @@ export function generatePasswordResetToken(userId: string): string | null {
   const user = users.get(userId);
   if (!user) return null;
 
-  const token = randomBytes(32).toString("hex");
+  const token = randomBytes(32).toString('hex');
   user.passwordResetToken = hashToken(token);
   user.passwordResetExpiry = Date.now() + IAM_CONFIG.resetTokenTtlMs;
   user.updatedAt = now();
 
   // Phase 146: Write-through reset token
-  userDbRepo?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt }).catch(() => {});
+  userDbRepo
+    ?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt })
+    .catch(() => {});
 
   return token; // Return plaintext — only returned once (sent via email)
 }
@@ -321,16 +335,25 @@ export async function resetPassword(
       user.passwordResetExpiry = null;
       user.failedAttempts = 0;
       user.lockedUntil = null;
-      user.status = "active";
+      user.status = 'active';
       user.updatedAt = now();
 
       // Phase 146: Write-through password reset
-      userDbRepo?.upsert({ id: user.id, tenantId: 'default', passwordHash: user.passwordHash, status: user.status, failedAttempts: 0, updatedAt: user.updatedAt }).catch(() => {});
+      userDbRepo
+        ?.upsert({
+          id: user.id,
+          tenantId: 'default',
+          passwordHash: user.passwordHash,
+          status: user.status,
+          failedAttempts: 0,
+          updatedAt: user.updatedAt,
+        })
+        .catch(() => {});
 
       return { success: true };
     }
   }
-  return { success: false, error: "Invalid or expired reset token" };
+  return { success: false, error: 'Invalid or expired reset token' };
 }
 
 export async function changePassword(
@@ -339,16 +362,23 @@ export async function changePassword(
   newPassword: string
 ): Promise<{ success: boolean; error?: string }> {
   const user = users.get(userId);
-  if (!user) return { success: false, error: "User not found" };
+  if (!user) return { success: false, error: 'User not found' };
 
   const valid = await verifyPassword(currentPassword, user.passwordHash);
-  if (!valid) return { success: false, error: "Current password is incorrect" };
+  if (!valid) return { success: false, error: 'Current password is incorrect' };
 
   user.passwordHash = await hashPassword(newPassword);
   user.updatedAt = now();
 
   // Phase 146: Write-through password change
-  userDbRepo?.upsert({ id: user.id, tenantId: 'default', passwordHash: user.passwordHash, updatedAt: user.updatedAt }).catch(() => {});
+  userDbRepo
+    ?.upsert({
+      id: user.id,
+      tenantId: 'default',
+      passwordHash: user.passwordHash,
+      updatedAt: user.updatedAt,
+    })
+    .catch(() => {});
 
   return { success: true };
 }
@@ -357,7 +387,7 @@ export async function changePassword(
 /* MFA Scaffold (TOTP)                                                  */
 /* ------------------------------------------------------------------ */
 
-const MFA_FEATURE_FLAG = process.env.PORTAL_MFA_ENABLED === "true";
+const MFA_FEATURE_FLAG = process.env.PORTAL_MFA_ENABLED === 'true';
 
 export function isMfaEnabled(): boolean {
   return MFA_FEATURE_FLAG;
@@ -372,12 +402,19 @@ export function setupMfa(userId: string): {
   if (!user) return null;
 
   // Generate a base32-like secret (real TOTP would use proper base32)
-  const secret = randomBytes(20).toString("hex");
+  const secret = randomBytes(20).toString('hex');
   user.totpSecret = secret;
   user.updatedAt = now();
 
   // Phase 146: Write-through MFA setup
-  userDbRepo?.upsert({ id: user.id, tenantId: 'default', mfaEnabled: user.mfaEnabled, updatedAt: user.updatedAt }).catch(() => {});
+  userDbRepo
+    ?.upsert({
+      id: user.id,
+      tenantId: 'default',
+      mfaEnabled: user.mfaEnabled,
+      updatedAt: user.updatedAt,
+    })
+    .catch(() => {});
 
   const uri = `otpauth://totp/VistA-Evolved:${user.username}?secret=${secret}&issuer=VistA-Evolved`;
   return { secret, uri };
@@ -390,12 +427,14 @@ export function confirmMfa(userId: string, code: string): boolean {
 
   // Stub: In production, verify TOTP code against secret + time window
   // For now, accept "000000" in dev mode or validate properly in prod
-  if (process.env.NODE_ENV !== "production" && code === "000000") {
+  if (process.env.NODE_ENV !== 'production' && code === '000000') {
     user.mfaEnabled = true;
     user.updatedAt = now();
 
     // Phase 146: Write-through MFA confirm
-    userDbRepo?.upsert({ id: user.id, tenantId: 'default', mfaEnabled: true, updatedAt: user.updatedAt }).catch(() => {});
+    userDbRepo
+      ?.upsert({ id: user.id, tenantId: 'default', mfaEnabled: true, updatedAt: user.updatedAt })
+      .catch(() => {});
 
     return true;
   }
@@ -412,7 +451,9 @@ export function disableMfa(userId: string): boolean {
   user.updatedAt = now();
 
   // Phase 146: Write-through MFA disable
-  userDbRepo?.upsert({ id: user.id, tenantId: 'default', mfaEnabled: false, updatedAt: user.updatedAt }).catch(() => {});
+  userDbRepo
+    ?.upsert({ id: user.id, tenantId: 'default', mfaEnabled: false, updatedAt: user.updatedAt })
+    .catch(() => {});
 
   return true;
 }
@@ -423,7 +464,7 @@ export function disableMfa(userId: string): boolean {
 
 export function addPatientProfile(
   userId: string,
-  profile: Omit<PatientProfile, "id" | "enrolledAt">
+  profile: Omit<PatientProfile, 'id' | 'enrolledAt'>
 ): PatientProfile | null {
   const user = users.get(userId);
   if (!user) return null;
@@ -442,7 +483,9 @@ export function addPatientProfile(
   user.updatedAt = now();
 
   // Phase 146: Write-through profile add
-  userDbRepo?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt }).catch(() => {});
+  userDbRepo
+    ?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt })
+    .catch(() => {});
 
   return fullProfile;
 }
@@ -458,7 +501,9 @@ export function removePatientProfile(userId: string, profileId: string): boolean
   user.updatedAt = now();
 
   // Phase 146: Write-through profile remove
-  userDbRepo?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt }).catch(() => {});
+  userDbRepo
+    ?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt })
+    .catch(() => {});
 
   return true;
 }
@@ -470,7 +515,7 @@ export function removePatientProfile(userId: string, profileId: string): boolean
 export function createDeviceSession(
   userId: string,
   sessionToken: string,
-  meta: { userAgent: string; ipAddress: string; deviceType?: DeviceSession["deviceType"] }
+  meta: { userAgent: string; ipAddress: string; deviceType?: DeviceSession['deviceType'] }
 ): DeviceSession | null {
   const user = users.get(userId);
   if (!user) return null;
@@ -493,17 +538,21 @@ export function createDeviceSession(
   user.updatedAt = now();
 
   // Phase 146: Write-through device session
-  userDbRepo?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt }).catch(() => {});
+  userDbRepo
+    ?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt })
+    .catch(() => {});
 
   return ds;
 }
 
-function detectDeviceType(ua: string): DeviceSession["deviceType"] {
+function detectDeviceType(ua: string): DeviceSession['deviceType'] {
   const lower = ua.toLowerCase();
-  if (lower.includes("mobile") || lower.includes("android") || lower.includes("iphone")) return "mobile";
-  if (lower.includes("tablet") || lower.includes("ipad")) return "tablet";
-  if (lower.includes("mozilla") || lower.includes("chrome") || lower.includes("safari")) return "browser";
-  return "unknown";
+  if (lower.includes('mobile') || lower.includes('android') || lower.includes('iphone'))
+    return 'mobile';
+  if (lower.includes('tablet') || lower.includes('ipad')) return 'tablet';
+  if (lower.includes('mozilla') || lower.includes('chrome') || lower.includes('safari'))
+    return 'browser';
+  return 'unknown';
 }
 
 export function listDeviceSessions(userId: string): DeviceSession[] {
@@ -526,7 +575,9 @@ export function revokeDeviceSession(userId: string, sessionId: string): boolean 
   user.updatedAt = now();
 
   // Phase 146: Write-through device revoke
-  userDbRepo?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt }).catch(() => {});
+  userDbRepo
+    ?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt })
+    .catch(() => {});
 
   return true;
 }
@@ -544,7 +595,9 @@ export function revokeAllDeviceSessions(userId: string): number {
   user.updatedAt = now();
 
   // Phase 146: Write-through revoke all devices
-  userDbRepo?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt }).catch(() => {});
+  userDbRepo
+    ?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt })
+    .catch(() => {});
 
   return count;
 }
@@ -582,19 +635,19 @@ export function getIamStats(): {
 /* ------------------------------------------------------------------ */
 
 export async function seedDevUsers(): Promise<void> {
-  if (process.env.NODE_ENV === "production") return;
+  if (process.env.NODE_ENV === 'production') return;
   if (users.size > 0) return; // already seeded
 
   try {
-    await createUser("patient1", "patient1@example.com", "Patient1!", "David Carter", {
-      dfn: "100022",
-      name: "CARTER,DAVID",
+    await createUser('patient1', 'patient1@example.com', 'Patient1!', 'David Carter', {
+      dfn: '100022',
+      name: 'CARTER,DAVID',
     });
-    await createUser("patient2", "patient2@example.com", "Patient2!", "John Smith", {
-      dfn: "100033",
-      name: "SMITH,JOHN",
+    await createUser('patient2', 'patient2@example.com', 'Patient2!', 'John Smith', {
+      dfn: '100033',
+      name: 'SMITH,JOHN',
     });
-    log.info("Portal IAM: dev users seeded");
+    log.info('Portal IAM: dev users seeded');
   } catch {
     // ignore if already exists
   }

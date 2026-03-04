@@ -10,45 +10,45 @@
  *   - All mutations audit-logged to payerAuditEvent table (survives restart)
  */
 
-import { randomBytes, randomUUID } from "node:crypto";
+import { randomBytes, randomUUID } from 'node:crypto';
 
 /* ── Types ──────────────────────────────────────────────────── */
 
 export type CapabilityType =
-  | "eligibility"
-  | "loa"
-  | "claims_submit"
-  | "claim_status"
-  | "remittance";
+  | 'eligibility'
+  | 'loa'
+  | 'claims_submit'
+  | 'claim_status'
+  | 'remittance';
 
 export const ALL_CAPABILITY_TYPES: CapabilityType[] = [
-  "eligibility",
-  "loa",
-  "claims_submit",
-  "claim_status",
-  "remittance",
+  'eligibility',
+  'loa',
+  'claims_submit',
+  'claim_status',
+  'remittance',
 ];
 
-export type CapabilityMode = "manual" | "portal" | "api" | "rpa_planned";
+export type CapabilityMode = 'manual' | 'portal' | 'api' | 'rpa_planned';
 
-export type CapabilityMaturity = "none" | "planned" | "in_progress" | "active";
+export type CapabilityMaturity = 'none' | 'planned' | 'in_progress' | 'active';
 
 export interface CapabilityEvidence {
   id: string;
-  type: "url" | "internal_note" | "runbook_ref";
-  value: string;         // URL, note text, or runbook path
+  type: 'url' | 'internal_note' | 'runbook_ref';
+  value: string; // URL, note text, or runbook path
   addedAt: string;
   addedBy: string;
 }
 
 export interface PayerCapability {
-  payerId: string;       // FK to RegistryPayer.id
-  payerName: string;     // denormalized for fast display
+  payerId: string; // FK to RegistryPayer.id
+  payerName: string; // denormalized for fast display
   capability: CapabilityType;
   mode: CapabilityMode;
   maturity: CapabilityMaturity;
   evidence: CapabilityEvidence[];
-  operationalNotes?: string;  // timeouts, business hours, known denial triggers
+  operationalNotes?: string; // timeouts, business hours, known denial triggers
   updatedAt: string;
   updatedBy: string;
 }
@@ -84,27 +84,31 @@ function auditMutation(
   before: any,
   after: any,
   actor: string,
-  reason?: string,
+  reason?: string
 ): void {
   if (!_dbAudit) return;
   try {
     const db = _dbAudit.getDb();
     const { payerAuditEvent } = _dbAudit;
-    db.insert(payerAuditEvent).values({
-      id: randomUUID(),
-      tenantId: null,
-      actorType: actor === "system" ? "system" : "user",
-      actorId: actor,
-      entityType: "capability_matrix",
-      entityId,
-      action,
-      beforeJson: before ? JSON.stringify(before) : null,
-      afterJson: after ? JSON.stringify(after) : null,
-      reason: reason ?? null,
-      evidenceSnapshotId: null,
-      createdAt: new Date().toISOString(),
-    }).run();
-  } catch { /* audit failure must not break operations */ }
+    db.insert(payerAuditEvent)
+      .values({
+        id: randomUUID(),
+        tenantId: null,
+        actorType: actor === 'system' ? 'system' : 'user',
+        actorId: actor,
+        entityType: 'capability_matrix',
+        entityId,
+        action,
+        beforeJson: before ? JSON.stringify(before) : null,
+        afterJson: after ? JSON.stringify(after) : null,
+        reason: reason ?? null,
+        evidenceSnapshotId: null,
+        createdAt: new Date().toISOString(),
+      })
+      .run();
+  } catch {
+    /* audit failure must not break operations */
+  }
 }
 
 /* ── CRUD ────────────────────────────────────────────────────── */
@@ -112,7 +116,10 @@ function auditMutation(
 /**
  * Get or create a capability cell. If not set, returns default (manual/none/no evidence).
  */
-export function getCapability(payerId: string, capability: CapabilityType): PayerCapability | undefined {
+export function getCapability(
+  payerId: string,
+  capability: CapabilityType
+): PayerCapability | undefined {
   return matrix.get(cellKey(payerId, capability));
 }
 
@@ -120,9 +127,9 @@ export function getCapability(payerId: string, capability: CapabilityType): Paye
  * Get all capabilities for a payer.
  */
 export function getPayerCapabilities(payerId: string): PayerCapability[] {
-  return ALL_CAPABILITY_TYPES
-    .map(c => matrix.get(cellKey(payerId, c)))
-    .filter((c): c is PayerCapability => c !== undefined);
+  return ALL_CAPABILITY_TYPES.map((c) => matrix.get(cellKey(payerId, c))).filter(
+    (c): c is PayerCapability => c !== undefined
+  );
 }
 
 /**
@@ -131,12 +138,15 @@ export function getPayerCapabilities(payerId: string): PayerCapability[] {
 export function getFullMatrix(): {
   payerId: string;
   payerName: string;
-  capabilities: Record<CapabilityType, {
-    mode: CapabilityMode;
-    maturity: CapabilityMaturity;
-    evidenceCount: number;
-    hasOperationalNotes: boolean;
-  } | null>;
+  capabilities: Record<
+    CapabilityType,
+    {
+      mode: CapabilityMode;
+      maturity: CapabilityMaturity;
+      evidenceCount: number;
+      hasOperationalNotes: boolean;
+    } | null
+  >;
 }[] {
   // Group by payerId
   const grouped = new Map<string, { payerName: string; caps: PayerCapability[] }>();
@@ -149,21 +159,23 @@ export function getFullMatrix(): {
     }
   }
 
-  return Array.from(grouped.entries()).map(([payerId, { payerName, caps }]) => {
-    const capabilities: Record<string, any> = {};
-    for (const ct of ALL_CAPABILITY_TYPES) {
-      const cap = caps.find(c => c.capability === ct);
-      capabilities[ct] = cap
-        ? {
-            mode: cap.mode,
-            maturity: cap.maturity,
-            evidenceCount: cap.evidence.length,
-            hasOperationalNotes: !!cap.operationalNotes,
-          }
-        : null;
-    }
-    return { payerId, payerName, capabilities: capabilities as any };
-  }).sort((a, b) => a.payerName.localeCompare(b.payerName));
+  return Array.from(grouped.entries())
+    .map(([payerId, { payerName, caps }]) => {
+      const capabilities: Record<string, any> = {};
+      for (const ct of ALL_CAPABILITY_TYPES) {
+        const cap = caps.find((c) => c.capability === ct);
+        capabilities[ct] = cap
+          ? {
+              mode: cap.mode,
+              maturity: cap.maturity,
+              evidenceCount: cap.evidence.length,
+              hasOperationalNotes: !!cap.operationalNotes,
+            }
+          : null;
+      }
+      return { payerId, payerName, capabilities: capabilities as any };
+    })
+    .sort((a, b) => a.payerName.localeCompare(b.payerName));
 }
 
 /**
@@ -183,7 +195,7 @@ export function setCapability(data: {
   const existing = matrix.get(key);
   const currentEvidence = existing?.evidence ?? [];
 
-  if (data.maturity === "active" && currentEvidence.length === 0) {
+  if (data.maturity === 'active' && currentEvidence.length === 0) {
     return {
       ok: false,
       error: `Cannot set maturity to "active" without evidence. Add at least one evidence link first.`,
@@ -203,7 +215,14 @@ export function setCapability(data: {
     updatedBy: data.actor,
   };
   matrix.set(key, cap);
-  auditMutation("set_capability", key, existing ?? null, cap, data.actor, `mode=${data.mode}, maturity=${data.maturity}`);
+  auditMutation(
+    'set_capability',
+    key,
+    existing ?? null,
+    cap,
+    data.actor,
+    `mode=${data.mode}, maturity=${data.maturity}`
+  );
   return { ok: true, capability: cap };
 }
 
@@ -213,18 +232,18 @@ export function setCapability(data: {
 export function addEvidence(data: {
   payerId: string;
   capability: CapabilityType;
-  type: "url" | "internal_note" | "runbook_ref";
+  type: 'url' | 'internal_note' | 'runbook_ref';
   value: string;
   actor: string;
 }): { ok: boolean; error?: string; capability?: PayerCapability } {
   const key = cellKey(data.payerId, data.capability);
   const cap = matrix.get(key);
   if (!cap) {
-    return { ok: false, error: "Capability cell not found. Set mode/maturity first." };
+    return { ok: false, error: 'Capability cell not found. Set mode/maturity first.' };
   }
 
   const evidence: CapabilityEvidence = {
-    id: `ev-${randomBytes(6).toString("hex")}`,
+    id: `ev-${randomBytes(6).toString('hex')}`,
     type: data.type,
     value: data.value,
     addedAt: new Date().toISOString(),
@@ -233,7 +252,7 @@ export function addEvidence(data: {
   cap.evidence.push(evidence);
   cap.updatedAt = evidence.addedAt;
   cap.updatedBy = data.actor;
-  auditMutation("add_evidence", key, null, evidence, data.actor, `type=${data.type}`);
+  auditMutation('add_evidence', key, null, evidence, data.actor, `type=${data.type}`);
   return { ok: true, capability: cap };
 }
 
@@ -248,19 +267,26 @@ export function removeEvidence(data: {
 }): { ok: boolean; error?: string; capability?: PayerCapability } {
   const key = cellKey(data.payerId, data.capability);
   const cap = matrix.get(key);
-  if (!cap) return { ok: false, error: "Capability cell not found" };
+  if (!cap) return { ok: false, error: 'Capability cell not found' };
 
-  const idx = cap.evidence.findIndex(e => e.id === data.evidenceId);
-  if (idx === -1) return { ok: false, error: "Evidence not found" };
+  const idx = cap.evidence.findIndex((e) => e.id === data.evidenceId);
+  if (idx === -1) return { ok: false, error: 'Evidence not found' };
 
   cap.evidence.splice(idx, 1);
 
   // Auto-demote if no evidence left and maturity was active
-  if (cap.evidence.length === 0 && cap.maturity === "active") {
-    cap.maturity = "in_progress";
+  if (cap.evidence.length === 0 && cap.maturity === 'active') {
+    cap.maturity = 'in_progress';
   }
   cap.updatedAt = new Date().toISOString();
-  auditMutation("remove_evidence", key, { evidenceId: data.evidenceId }, cap, "system", "evidence removed");
+  auditMutation(
+    'remove_evidence',
+    key,
+    { evidenceId: data.evidenceId },
+    cap,
+    'system',
+    'evidence removed'
+  );
   return { ok: true, capability: cap };
 }
 
@@ -275,8 +301,8 @@ export function initPayerCapabilities(payerId: string, payerName: string, actor:
         payerId,
         payerName,
         capability: ct,
-        mode: "manual",
-        maturity: "none",
+        mode: 'manual',
+        maturity: 'none',
         evidence: [],
         updatedAt: new Date().toISOString(),
         updatedBy: actor,
@@ -303,7 +329,7 @@ export function getMatrixStats(): {
   for (const cap of matrix.values()) {
     byMode[cap.mode] = (byMode[cap.mode] ?? 0) + 1;
     byMaturity[cap.maturity] = (byMaturity[cap.maturity] ?? 0) + 1;
-    if (cap.maturity === "active") {
+    if (cap.maturity === 'active') {
       if (cap.evidence.length > 0) activeWithEvidence++;
       else activeWithoutEvidence++;
     }

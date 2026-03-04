@@ -81,9 +81,9 @@ curl -s http://localhost:3001/vista/allergies?dfn=3 -b cookies.txt | jq .ok
 
 ## RPO/RTO Targets
 
-| Metric | Target | Notes |
-|--------|--------|-------|
-| **RPO** | N/A | VistA is source of truth; no data stored locally |
+| Metric  | Target      | Notes                                             |
+| ------- | ----------- | ------------------------------------------------- |
+| **RPO** | N/A         | VistA is source of truth; no data stored locally  |
 | **RTO** | < 2 minutes | Circuit breaker auto-recovery after VistA restart |
 
 ---

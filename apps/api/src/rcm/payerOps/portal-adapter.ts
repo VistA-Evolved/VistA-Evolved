@@ -11,15 +11,11 @@
  *   - Generates portal navigation guides
  */
 
-import { randomBytes } from "node:crypto";
-import type {
-  PayerOpsAdapter,
-  PayerOpsResult,
-  LOACase,
-} from "./types.js";
+import { randomBytes } from 'node:crypto';
+import type { PayerOpsAdapter, PayerOpsResult, LOACase } from './types.js';
 
 function correlationId(): string {
-  return `portal-${Date.now().toString(36)}-${randomBytes(4).toString("hex")}`;
+  return `portal-${Date.now().toString(36)}-${randomBytes(4).toString('hex')}`;
 }
 
 function timestamp(): string {
@@ -36,9 +32,9 @@ export interface PortalConfig {
 }
 
 export class PortalAdapter implements PayerOpsAdapter {
-  readonly id = "portal";
-  readonly name = "Portal Workflow";
-  readonly mode = "portal" as const;
+  readonly id = 'portal';
+  readonly name = 'Portal Workflow';
+  readonly mode = 'portal' as const;
 
   private configs = new Map<string, PortalConfig>();
 
@@ -67,15 +63,15 @@ export class PortalAdapter implements PayerOpsAdapter {
   async submitLOA(loaCase: LOACase): Promise<PayerOpsResult<{ submissionRef?: string }>> {
     const corrId = correlationId();
     const config = this.configs.get(loaCase.payerId);
-    const portalUrl = config?.portalUrl || "[No portal URL configured]";
-    const steps = config?.steps || ["Navigate to the payer portal and submit the LOA manually."];
+    const portalUrl = config?.portalUrl || '[No portal URL configured]';
+    const steps = config?.steps || ['Navigate to the payer portal and submit the LOA manually.'];
 
     return {
-      status: "manual_required",
+      status: 'manual_required',
       data: { submissionRef: undefined },
       evidence: {
         timestamp: timestamp(),
-        modeUsed: "portal",
+        modeUsed: 'portal',
         requestId: corrId,
       },
       audit: { redactionsApplied: true, correlationId: corrId },
@@ -84,8 +80,10 @@ export class PortalAdapter implements PayerOpsAdapter {
         `Portal URL: ${portalUrl}`,
         `Steps:`,
         ...steps.map((s, i) => `  ${i + 1}. ${s}`),
-        config?.notes ? `Note: ${config.notes}` : "",
-      ].filter(Boolean).join("\n"),
+        config?.notes ? `Note: ${config.notes}` : '',
+      ]
+        .filter(Boolean)
+        .join('\n'),
     };
   }
 
@@ -96,14 +94,14 @@ export class PortalAdapter implements PayerOpsAdapter {
   }): Promise<PayerOpsResult<{ eligible?: boolean; details?: string }>> {
     const corrId = correlationId();
     const config = this.configs.get(params.payerId);
-    const portalUrl = config?.portalUrl || "[No portal URL configured]";
+    const portalUrl = config?.portalUrl || '[No portal URL configured]';
 
     return {
-      status: "manual_required",
+      status: 'manual_required',
       data: { details: `Check eligibility at: ${portalUrl}` },
       evidence: {
         timestamp: timestamp(),
-        modeUsed: "portal",
+        modeUsed: 'portal',
         requestId: corrId,
       },
       audit: { redactionsApplied: true, correlationId: corrId },
@@ -117,14 +115,14 @@ export class PortalAdapter implements PayerOpsAdapter {
   }): Promise<PayerOpsResult<{ trackingId?: string }>> {
     const corrId = correlationId();
     const config = this.configs.get(params.payerId);
-    const portalUrl = config?.portalUrl || "[No portal URL configured]";
+    const portalUrl = config?.portalUrl || '[No portal URL configured]';
 
     return {
-      status: "manual_required",
+      status: 'manual_required',
       data: { trackingId: undefined },
       evidence: {
         timestamp: timestamp(),
-        modeUsed: "portal",
+        modeUsed: 'portal',
         requestId: corrId,
       },
       audit: { redactionsApplied: true, correlationId: corrId },
@@ -138,14 +136,14 @@ export class PortalAdapter implements PayerOpsAdapter {
   }): Promise<PayerOpsResult<{ status?: string; details?: string }>> {
     const corrId = correlationId();
     const config = this.configs.get(params.payerId);
-    const portalUrl = config?.portalUrl || "[No portal URL configured]";
+    const portalUrl = config?.portalUrl || '[No portal URL configured]';
 
     return {
-      status: "manual_required",
+      status: 'manual_required',
       data: { details: `Track claim at: ${portalUrl}` },
       evidence: {
         timestamp: timestamp(),
-        modeUsed: "portal",
+        modeUsed: 'portal',
         requestId: corrId,
       },
       audit: { redactionsApplied: true, correlationId: corrId },
@@ -159,14 +157,14 @@ export class PortalAdapter implements PayerOpsAdapter {
   }): Promise<PayerOpsResult<{ remittanceId?: string }>> {
     const corrId = correlationId();
     const config = this.configs.get(params.payerId);
-    const portalUrl = config?.portalUrl || "[No portal URL configured]";
+    const portalUrl = config?.portalUrl || '[No portal URL configured]';
 
     return {
-      status: "manual_required",
+      status: 'manual_required',
       data: { remittanceId: undefined },
       evidence: {
         timestamp: timestamp(),
-        modeUsed: "portal",
+        modeUsed: 'portal',
         requestId: corrId,
       },
       audit: { redactionsApplied: true, correlationId: corrId },

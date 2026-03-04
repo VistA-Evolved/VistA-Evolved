@@ -20,6 +20,7 @@
   `deviceObservationId` linking to Wave 21 device ingest observations.
 
 ## VistA RPC Targets (for future writeback)
+
 - `GMV ADD VM` — write vitals (registered in rpcRegistry)
 - `TIU CREATE RECORD` — nursing notes (registered)
 - `DGPM ADT MOVEMENTS` — patient movements (File ^DGPM)

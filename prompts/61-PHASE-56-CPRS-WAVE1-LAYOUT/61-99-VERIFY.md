@@ -1,6 +1,7 @@
 # Phase 56 -- VERIFY
 
 ## Gates
+
 - G56-1: wave56-plan.json artifact generated with all Wave 1 targets
 - G56-2: API cprs/ route file exists and declares rpcUsed[] per endpoint
 - G56-3: CoverSheet has resize + persist + reset-to-default

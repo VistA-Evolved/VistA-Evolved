@@ -13,28 +13,28 @@
  *   - Stable alphabetical ordering by name
  */
 
-import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { createHash } from 'node:crypto';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 /* ------------------------------------------------------------------ */
 /*  Paths                                                              */
 /* ------------------------------------------------------------------ */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const ROOT = resolve(__dirname, "../../../../..");
-const VIVIAN_SRC = resolve(ROOT, "docs/grounding/vivian-index.json");
-const OUT_DIR = resolve(ROOT, "data/vista/vivian");
-const OUT_INDEX = resolve(OUT_DIR, "rpc_index.json");
-const OUT_HASH = resolve(OUT_DIR, "rpc_index.hash");
+const ROOT = resolve(__dirname, '../../../../..');
+const VIVIAN_SRC = resolve(ROOT, 'docs/grounding/vivian-index.json');
+const OUT_DIR = resolve(ROOT, 'data/vista/vivian');
+const OUT_INDEX = resolve(OUT_DIR, 'rpc_index.json');
+const OUT_HASH = resolve(OUT_DIR, 'rpc_index.hash');
 
 /* ------------------------------------------------------------------ */
 /*  Sensitive-data patterns (never emit these)                        */
 /* ------------------------------------------------------------------ */
 const SENSITIVE_PATTERNS = [
-  /\b\d{3}-\d{2}-\d{4}\b/,          // SSN
-  /\b\d{1,3}(\.\d{1,3}){3}\b/,      // IPv4
+  /\b\d{3}-\d{2}-\d{4}\b/, // SSN
+  /\b\d{1,3}(\.\d{1,3}){3}\b/, // IPv4
   /password|secret|token|credential/i,
   /PROV123|PHARM123|NURSE123/i,
 ];
@@ -64,7 +64,7 @@ function main(): void {
   }
 
   console.log(`Reading Vivian index from ${VIVIAN_SRC}...`);
-  const raw = readFileSync(VIVIAN_SRC, "utf-8");
+  const raw = readFileSync(VIVIAN_SRC, 'utf-8');
   const vivian = JSON.parse(raw);
 
   const seen = new Set<string>();
@@ -75,7 +75,7 @@ function main(): void {
     const rpcs: string[] = pkg.rpcs || [];
     for (const rpcName of rpcs) {
       // Normalize: trim, uppercase for comparison, preserve original case
-      const normalized = rpcName.trim().replace(/\s+/g, " ");
+      const normalized = rpcName.trim().replace(/\s+/g, ' ');
       const key = normalized.toUpperCase();
 
       if (!key || seen.has(key)) continue;
@@ -95,10 +95,10 @@ function main(): void {
   const output = {
     _meta: {
       generatedAt: new Date().toISOString(),
-      source: "docs/grounding/vivian-index.json",
-      description: "Normalized deduplicated RPC index from WorldVistA Vivian/DOX",
+      source: 'docs/grounding/vivian-index.json',
+      description: 'Normalized deduplicated RPC index from WorldVistA Vivian/DOX',
       totalRpcs: entries.length,
-      tool: "apps/api/src/tools/vivian/normalizeVivianSnapshot.ts",
+      tool: 'apps/api/src/tools/vivian/normalizeVivianSnapshot.ts',
     },
     rpcs: entries,
   };
@@ -106,12 +106,12 @@ function main(): void {
   // Write index
   if (!existsSync(OUT_DIR)) mkdirSync(OUT_DIR, { recursive: true });
   const json = JSON.stringify(output, null, 2);
-  writeFileSync(OUT_INDEX, json, "utf-8");
+  writeFileSync(OUT_INDEX, json, 'utf-8');
   console.log(`Wrote ${entries.length} RPCs to ${OUT_INDEX}`);
 
   // Write content hash
-  const hash = createHash("sha256").update(json).digest("hex");
-  writeFileSync(OUT_HASH, hash + "\n", "utf-8");
+  const hash = createHash('sha256').update(json).digest('hex');
+  writeFileSync(OUT_HASH, hash + '\n', 'utf-8');
   console.log(`Hash: ${hash}`);
   console.log(`Wrote hash to ${OUT_HASH}`);
 }

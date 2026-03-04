@@ -6,35 +6,30 @@
  * detects discrepancies, and tracks resolution workflow.
  */
 
-import { randomBytes } from "crypto";
+import { randomBytes } from 'crypto';
 
 // ── Types ──────────────────────────────────────────────────────────
 
-export type ReconEntityType = "patient" | "problem" | "medication" | "allergy" | "encounter";
+export type ReconEntityType = 'patient' | 'problem' | 'medication' | 'allergy' | 'encounter';
 
 export type DiscrepancyCategory =
-  | "missing-in-target"
-  | "missing-in-source"
-  | "field-mismatch"
-  | "data-quality";
+  | 'missing-in-target'
+  | 'missing-in-source'
+  | 'field-mismatch'
+  | 'data-quality';
 
-export type ResolutionStatus =
-  | "open"
-  | "auto-resolved"
-  | "manual-review"
-  | "accepted"
-  | "resolved";
+export type ResolutionStatus = 'open' | 'auto-resolved' | 'manual-review' | 'accepted' | 'resolved';
 
 export interface ReconRule {
   entityType: ReconEntityType;
-  matchKeys: string[];       // Fields used to match records across systems
-  compareFields: string[];   // Fields compared for discrepancies
+  matchKeys: string[]; // Fields used to match records across systems
+  compareFields: string[]; // Fields compared for discrepancies
   autoResolveRules?: AutoResolveRule[];
 }
 
 export interface AutoResolveRule {
   field: string;
-  condition: "case-insensitive" | "whitespace-trim" | "date-format";
+  condition: 'case-insensitive' | 'whitespace-trim' | 'date-format';
 }
 
 export interface Discrepancy {
@@ -57,7 +52,7 @@ export interface Discrepancy {
 export interface ReconJob {
   id: string;
   entityType: ReconEntityType;
-  status: "running" | "completed" | "failed";
+  status: 'running' | 'completed' | 'failed';
   createdAt: string;
   completedAt?: string;
   createdBy: string;
@@ -86,34 +81,30 @@ const discrepancies = new Map<string, Discrepancy>();
 
 const DEFAULT_RULES: ReconRule[] = [
   {
-    entityType: "patient",
-    matchKeys: ["patientId", "ssn", "dob"],
-    compareFields: ["lastName", "firstName", "gender", "dob", "address", "phone"],
+    entityType: 'patient',
+    matchKeys: ['patientId', 'ssn', 'dob'],
+    compareFields: ['lastName', 'firstName', 'gender', 'dob', 'address', 'phone'],
     autoResolveRules: [
-      { field: "lastName", condition: "case-insensitive" },
-      { field: "firstName", condition: "case-insensitive" },
+      { field: 'lastName', condition: 'case-insensitive' },
+      { field: 'firstName', condition: 'case-insensitive' },
     ],
   },
   {
-    entityType: "problem",
-    matchKeys: ["patientId", "icdCode"],
-    compareFields: ["description", "status", "onsetDate"],
-    autoResolveRules: [
-      { field: "description", condition: "whitespace-trim" },
-    ],
+    entityType: 'problem',
+    matchKeys: ['patientId', 'icdCode'],
+    compareFields: ['description', 'status', 'onsetDate'],
+    autoResolveRules: [{ field: 'description', condition: 'whitespace-trim' }],
   },
   {
-    entityType: "medication",
-    matchKeys: ["patientId", "drugName"],
-    compareFields: ["dose", "route", "frequency", "status"],
+    entityType: 'medication',
+    matchKeys: ['patientId', 'drugName'],
+    compareFields: ['dose', 'route', 'frequency', 'status'],
   },
   {
-    entityType: "allergy",
-    matchKeys: ["patientId", "allergen"],
-    compareFields: ["reaction", "severity", "status"],
-    autoResolveRules: [
-      { field: "allergen", condition: "case-insensitive" },
-    ],
+    entityType: 'allergy',
+    matchKeys: ['patientId', 'allergen'],
+    compareFields: ['reaction', 'severity', 'status'],
+    autoResolveRules: [{ field: 'allergen', condition: 'case-insensitive' }],
   },
 ];
 
@@ -139,14 +130,14 @@ export class ReconEngine {
     targetRecords: Record<string, unknown>[],
     userId: string
   ): ReconJob {
-    const jobId = `recon-${randomBytes(8).toString("hex")}`;
+    const jobId = `recon-${randomBytes(8).toString('hex')}`;
     const now = new Date().toISOString();
     const rule = this.rules.find((r) => r.entityType === entityType);
 
     const job: ReconJob = {
       id: jobId,
       entityType,
-      status: "running",
+      status: 'running',
       createdAt: now,
       createdBy: userId,
       sourceCount: sourceRecords.length,
@@ -157,7 +148,7 @@ export class ReconEngine {
     };
 
     if (!rule) {
-      job.status = "failed";
+      job.status = 'failed';
       reconJobs.set(jobId, job);
       return job;
     }
@@ -165,7 +156,7 @@ export class ReconEngine {
     // Build target index using match keys
     const targetIndex = new Map<string, Record<string, unknown>>();
     for (const rec of targetRecords) {
-      const key = rule.matchKeys.map((k) => String(rec[k] || "")).join("|");
+      const key = rule.matchKeys.map((k) => String(rec[k] || '')).join('|');
       targetIndex.set(key, rec);
     }
 
@@ -173,12 +164,19 @@ export class ReconEngine {
     const matchedTargetKeys = new Set<string>();
 
     for (const srcRec of sourceRecords) {
-      const key = rule.matchKeys.map((k) => String(srcRec[k] || "")).join("|");
+      const key = rule.matchKeys.map((k) => String(srcRec[k] || '')).join('|');
       const tgtRec = targetIndex.get(key);
 
       if (!tgtRec) {
         // Missing in target
-        this.addDiscrepancy(jobId, entityType, "missing-in-target", String(srcRec["id"] || key), undefined, now);
+        this.addDiscrepancy(
+          jobId,
+          entityType,
+          'missing-in-target',
+          String(srcRec['id'] || key),
+          undefined,
+          now
+        );
         job.discrepancyCount++;
         continue;
       }
@@ -197,17 +195,23 @@ export class ReconEngine {
           const canAutoResolve = autoRule && this.tryAutoResolve(autoRule, sv, tv);
 
           const discId = this.addDiscrepancy(
-            jobId, entityType, "field-mismatch",
-            String(srcRec["id"] || key), String(tgtRec["id"] || key),
-            now, field, sv, tv
+            jobId,
+            entityType,
+            'field-mismatch',
+            String(srcRec['id'] || key),
+            String(tgtRec['id'] || key),
+            now,
+            field,
+            sv,
+            tv
           );
 
           if (canAutoResolve) {
             const disc = discrepancies.get(discId);
             if (disc) {
-              disc.resolution = "auto-resolved";
+              disc.resolution = 'auto-resolved';
               disc.resolvedAt = now;
-              disc.resolvedBy = "system";
+              disc.resolvedBy = 'system';
             }
             job.autoResolvedCount++;
           }
@@ -218,47 +222,75 @@ export class ReconEngine {
 
     // Check for records missing in source
     for (const tgtRec of targetRecords) {
-      const key = rule.matchKeys.map((k) => String(tgtRec[k] || "")).join("|");
+      const key = rule.matchKeys.map((k) => String(tgtRec[k] || '')).join('|');
       if (!matchedTargetKeys.has(key)) {
-        const srcKey = rule.matchKeys.map((k) => String(tgtRec[k] || "")).join("|");
+        const srcKey = rule.matchKeys.map((k) => String(tgtRec[k] || '')).join('|');
         // Only create if there's no matching source record
-        if (!sourceRecords.some((s) => rule.matchKeys.map((k) => String(s[k] || "")).join("|") === srcKey)) {
-          this.addDiscrepancy(jobId, entityType, "missing-in-source", "", String(tgtRec["id"] || key), now);
+        if (
+          !sourceRecords.some(
+            (s) => rule.matchKeys.map((k) => String(s[k] || '')).join('|') === srcKey
+          )
+        ) {
+          this.addDiscrepancy(
+            jobId,
+            entityType,
+            'missing-in-source',
+            '',
+            String(tgtRec['id'] || key),
+            now
+          );
           job.discrepancyCount++;
         }
       }
     }
 
-    job.status = "completed";
+    job.status = 'completed';
     job.completedAt = new Date().toISOString();
     reconJobs.set(jobId, job);
     return job;
   }
 
   private addDiscrepancy(
-    jobId: string, entityType: ReconEntityType, category: DiscrepancyCategory,
-    sourceId: string, targetId: string | undefined, now: string,
-    field?: string, sourceValue?: unknown, targetValue?: unknown
+    jobId: string,
+    entityType: ReconEntityType,
+    category: DiscrepancyCategory,
+    sourceId: string,
+    targetId: string | undefined,
+    now: string,
+    field?: string,
+    sourceValue?: unknown,
+    targetValue?: unknown
   ): string {
-    const id = `disc-${randomBytes(6).toString("hex")}`;
+    const id = `disc-${randomBytes(6).toString('hex')}`;
     const disc: Discrepancy = {
-      id, reconJobId: jobId, entityType, category,
-      sourceRecordId: sourceId, targetRecordId: targetId,
-      field, sourceValue, targetValue,
-      resolution: "open", createdAt: now,
+      id,
+      reconJobId: jobId,
+      entityType,
+      category,
+      sourceRecordId: sourceId,
+      targetRecordId: targetId,
+      field,
+      sourceValue,
+      targetValue,
+      resolution: 'open',
+      createdAt: now,
     };
     discrepancies.set(id, disc);
     return id;
   }
 
   private tryAutoResolve(rule: AutoResolveRule, sv: unknown, tv: unknown): boolean {
-    const s = String(sv || "");
-    const t = String(tv || "");
+    const s = String(sv || '');
+    const t = String(tv || '');
     switch (rule.condition) {
-      case "case-insensitive": return s.toLowerCase() === t.toLowerCase();
-      case "whitespace-trim": return s.trim() === t.trim();
-      case "date-format": return s.replace(/[-/]/g, "") === t.replace(/[-/]/g, "");
-      default: return false;
+      case 'case-insensitive':
+        return s.toLowerCase() === t.toLowerCase();
+      case 'whitespace-trim':
+        return s.trim() === t.trim();
+      case 'date-format':
+        return s.replace(/[-/]/g, '') === t.replace(/[-/]/g, '');
+      default:
+        return false;
     }
   }
 
@@ -285,7 +317,12 @@ export class ReconEngine {
     return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
-  resolveDiscrepancy(id: string, resolution: ResolutionStatus, userId: string, notes?: string): boolean {
+  resolveDiscrepancy(
+    id: string,
+    resolution: ResolutionStatus,
+    userId: string,
+    notes?: string
+  ): boolean {
     const disc = discrepancies.get(id);
     if (!disc) return false;
     disc.resolution = resolution;
@@ -305,7 +342,7 @@ export class ReconEngine {
     for (const d of all) {
       byCategory[d.category] = (byCategory[d.category] || 0) + 1;
       byEntity[d.entityType] = (byEntity[d.entityType] || 0) + 1;
-      if (d.resolution === "open" || d.resolution === "manual-review") open++;
+      if (d.resolution === 'open' || d.resolution === 'manual-review') open++;
       else resolved++;
     }
 

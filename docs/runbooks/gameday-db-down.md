@@ -86,10 +86,10 @@ curl -s http://localhost:3001/posture/data-plane | jq .overallHealth
 
 ## RPO/RTO Targets
 
-| Metric | Target | Method |
-|--------|--------|--------|
-| **RPO** (Recovery Point Objective) | 0 data loss for committed transactions | WAL + pg_dump |
-| **RTO** (Recovery Time Objective) | < 5 minutes | Auto-reconnect + circuit breaker recovery |
+| Metric                             | Target                                 | Method                                    |
+| ---------------------------------- | -------------------------------------- | ----------------------------------------- |
+| **RPO** (Recovery Point Objective) | 0 data loss for committed transactions | WAL + pg_dump                             |
+| **RTO** (Recovery Time Objective)  | < 5 minutes                            | Auto-reconnect + circuit breaker recovery |
 
 ---
 
@@ -107,6 +107,7 @@ curl -s http://localhost:3001/posture/data-plane | jq .overallHealth
 ## Escalation
 
 If recovery does not occur within 10 minutes:
+
 1. Check PG logs: `docker logs <postgres-container>`
 2. Run `node scripts/backup-restore.mjs status`
 3. If needed: `node scripts/backup-restore.mjs restore --from <backup-dir> --yes`

@@ -6,20 +6,37 @@ import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
-interface Props { dfn: string; }
+interface Props {
+  dfn: string;
+}
 
 const ORDER_TYPES = ['med', 'lab', 'imaging', 'consult'] as const;
-type OrderType = typeof ORDER_TYPES[number];
-
+type OrderType = (typeof ORDER_TYPES)[number];
 
 /* ------------------------------------------------------------------ */
 /* Quick-order drug list (matches API backend Phase 8B)                */
 /* ------------------------------------------------------------------ */
 const QUICK_DRUGS = [
-  'ASPIRIN', 'ATENOLOL', 'ATORVASTATIN', 'BENAZEPRIL', 'CANDESARTAN',
-  'CAPTOPRIL', 'CARVEDILOL', 'ENALAPRIL', 'FLUVASTATIN', 'LISINOPRIL',
-  'LOSARTAN', 'LOVASTATIN', 'METOPROLOL', 'NADOLOL', 'CLOPIDOGREL',
-  'PRAVASTATIN', 'PROPRANOLOL', 'ROSUVASTATIN', 'SIMVASTATIN', 'WARFARIN',
+  'ASPIRIN',
+  'ATENOLOL',
+  'ATORVASTATIN',
+  'BENAZEPRIL',
+  'CANDESARTAN',
+  'CAPTOPRIL',
+  'CARVEDILOL',
+  'ENALAPRIL',
+  'FLUVASTATIN',
+  'LISINOPRIL',
+  'LOSARTAN',
+  'LOVASTATIN',
+  'METOPROLOL',
+  'NADOLOL',
+  'CLOPIDOGREL',
+  'PRAVASTATIN',
+  'PROPRANOLOL',
+  'ROSUVASTATIN',
+  'SIMVASTATIN',
+  'WARFARIN',
 ];
 
 /* ------------------------------------------------------------------ */
@@ -175,7 +192,7 @@ export default function OrdersPanel({ dfn }: Props) {
       const data = await res.json();
 
       // Determine status from response
-      const orderStatus = data.integrationPending ? 'draft' : (data.ok ? 'unsigned' : 'draft');
+      const orderStatus = data.integrationPending ? 'draft' : data.ok ? 'unsigned' : 'draft';
       const statusLabel = data.integrationPending
         ? `Integration pending -- ${data.pendingReason || 'backend not yet available'}`
         : data.ok
@@ -227,12 +244,16 @@ export default function OrdersPanel({ dfn }: Props) {
       if (data.ok && data.checks?.length) {
         setOrderChecks(data.checks);
       } else if (data.integrationPending) {
-        setOrderChecks([{ type: 'info', message: 'Order checks -- integration pending', level: 'info' }]);
+        setOrderChecks([
+          { type: 'info', message: 'Order checks -- integration pending', level: 'info' },
+        ]);
       } else {
         setOrderChecks([{ type: 'info', message: 'No order checks found', level: 'info' }]);
       }
     } catch {
-      setOrderChecks([{ type: 'error', message: 'Failed to retrieve order checks', level: 'error' }]);
+      setOrderChecks([
+        { type: 'error', message: 'Failed to retrieve order checks', level: 'error' },
+      ]);
     } finally {
       setCheckLoading(false);
     }
@@ -268,10 +289,20 @@ export default function OrdersPanel({ dfn }: Props) {
       } else if (data.status === 'sign-blocked') {
         setSignMsg(`Signing blocked: ${data.message || 'e-signature verification failed'}`);
       } else if (data.status === 'sign-failed') {
-        setSignMsg(`Signing failed: ${data.message || data.error || 'RPC call failed — retry or contact support'}`);
-      } else if (data.status === 'integration-pending' || data.status === 'unsupported-in-sandbox') {
-        const label = data.status === 'unsupported-in-sandbox' ? 'unsupported in sandbox' : 'integration pending';
-        setSignMsg(`Signing -- ${label}: ${data.pendingNote || data.message || 'ORWOR1 SIG not available'}`);
+        setSignMsg(
+          `Signing failed: ${data.message || data.error || 'RPC call failed — retry or contact support'}`
+        );
+      } else if (
+        data.status === 'integration-pending' ||
+        data.status === 'unsupported-in-sandbox'
+      ) {
+        const label =
+          data.status === 'unsupported-in-sandbox'
+            ? 'unsupported in sandbox'
+            : 'integration pending';
+        setSignMsg(
+          `Signing -- ${label}: ${data.pendingNote || data.message || 'ORWOR1 SIG not available'}`
+        );
       } else if (data.ok) {
         setSignMsg(data.message || 'Order sign processed');
         fetchVistaOrders();
@@ -305,7 +336,9 @@ export default function OrdersPanel({ dfn }: Props) {
         fetchVistaOrders();
       } else if (data.ok && data.syncPending) {
         cache.updateOrderStatus(dfn, orderId, 'discontinued');
-        setDcMsg(`Discontinue stored as draft -- sync pending (${data.message || 'ORWDXA DC draft'})`);
+        setDcMsg(
+          `Discontinue stored as draft -- sync pending (${data.message || 'ORWDXA DC draft'})`
+        );
       } else if (data.ok) {
         setDcMsg(data.message || 'Order discontinue processed');
         cache.updateOrderStatus(dfn, orderId, 'discontinued');
@@ -327,10 +360,15 @@ export default function OrdersPanel({ dfn }: Props) {
   /* ---------------------------------------------------------------- */
   function statusBadge(status: string) {
     const s = status.toLowerCase();
-    const cls = s === 'active' ? styles.signed
-              : s === 'pending' || s === 'unsigned' ? styles.unsigned
-              : s === 'discontinued' || s === 'expired' ? styles.discontinued
-              : s === 'draft' ? styles.draft
+    const cls =
+      s === 'active'
+        ? styles.signed
+        : s === 'pending' || s === 'unsigned'
+          ? styles.unsigned
+          : s === 'discontinued' || s === 'expired'
+            ? styles.discontinued
+            : s === 'draft'
+              ? styles.draft
               : '';
     return <span className={`${styles.badge} ${cls}`}>{status}</span>;
   }
@@ -342,7 +380,12 @@ export default function OrdersPanel({ dfn }: Props) {
         <button className={styles.btn} onClick={() => setShowComposer(!showComposer)}>
           {showComposer ? 'Close Composer' : '+ New Order'}
         </button>
-        <button className={styles.btn} onClick={fetchVistaOrders} disabled={vistaLoading} style={{ marginLeft: 8 }}>
+        <button
+          className={styles.btn}
+          onClick={fetchVistaOrders}
+          disabled={vistaLoading}
+          style={{ marginLeft: 8 }}
+        >
           {vistaLoading ? 'Loading...' : 'Refresh'}
         </button>
         {vistaSource && (
@@ -352,12 +395,42 @@ export default function OrdersPanel({ dfn }: Props) {
         )}
       </div>
 
-      {medMsg && <p style={{ color: medMsg.startsWith('Error') ? 'var(--cprs-danger)' : 'var(--cprs-success)', fontSize: 12, margin: '4px 0' }}>{medMsg}</p>}
-      {signMsg && <p style={{ color: signMsg.includes('pending') || signMsg.includes('failed') || signMsg.includes('error') ? 'var(--cprs-warning, orange)' : 'var(--cprs-success)', fontSize: 12, margin: '4px 0' }}>{signMsg}</p>}
+      {medMsg && (
+        <p
+          style={{
+            color: medMsg.startsWith('Error') ? 'var(--cprs-danger)' : 'var(--cprs-success)',
+            fontSize: 12,
+            margin: '4px 0',
+          }}
+        >
+          {medMsg}
+        </p>
+      )}
+      {signMsg && (
+        <p
+          style={{
+            color:
+              signMsg.includes('pending') || signMsg.includes('failed') || signMsg.includes('error')
+                ? 'var(--cprs-warning, orange)'
+                : 'var(--cprs-success)',
+            fontSize: 12,
+            margin: '4px 0',
+          }}
+        >
+          {signMsg}
+        </p>
+      )}
 
       {/* Order Composer */}
       {showComposer && (
-        <div style={{ border: '1px solid var(--cprs-border)', padding: 12, marginBottom: 8, borderRadius: 4 }}>
+        <div
+          style={{
+            border: '1px solid var(--cprs-border)',
+            padding: 12,
+            marginBottom: 8,
+            borderRadius: 4,
+          }}
+        >
           <div className={styles.subTabs}>
             {ORDER_TYPES.map((t) => (
               <button
@@ -365,7 +438,13 @@ export default function OrdersPanel({ dfn }: Props) {
                 className={`${styles.subTab} ${activeType === t ? styles.active : ''}`}
                 onClick={() => setActiveType(t)}
               >
-                {t === 'med' ? 'Medication' : t === 'lab' ? 'Laboratory' : t === 'imaging' ? 'Imaging' : 'Consult'}
+                {t === 'med'
+                  ? 'Medication'
+                  : t === 'lab'
+                    ? 'Laboratory'
+                    : t === 'imaging'
+                      ? 'Imaging'
+                      : 'Consult'}
               </button>
             ))}
           </div>
@@ -374,12 +453,24 @@ export default function OrdersPanel({ dfn }: Props) {
             <div>
               <div className={styles.formGroup}>
                 <label>Drug Name (quick-order match)</label>
-                <input className={styles.formInput} value={drug} onChange={(e) => setDrug(e.target.value)} placeholder="e.g. ASPIRIN, LISINOPRIL" list="drug-list" />
+                <input
+                  className={styles.formInput}
+                  value={drug}
+                  onChange={(e) => setDrug(e.target.value)}
+                  placeholder="e.g. ASPIRIN, LISINOPRIL"
+                  list="drug-list"
+                />
                 <datalist id="drug-list">
-                  {QUICK_DRUGS.map((d) => <option key={d} value={d} />)}
+                  {QUICK_DRUGS.map((d) => (
+                    <option key={d} value={d} />
+                  ))}
                 </datalist>
               </div>
-              <button className={styles.btnPrimary} onClick={handleMedOrder} disabled={medSaving || !drug.trim()}>
+              <button
+                className={styles.btnPrimary}
+                onClick={handleMedOrder}
+                disabled={medSaving || !drug.trim()}
+              >
                 {medSaving ? 'Ordering...' : 'Place Medication Order'}
               </button>
             </div>
@@ -388,15 +479,32 @@ export default function OrdersPanel({ dfn }: Props) {
           {activeType !== 'med' && (
             <div>
               <div className={styles.formGroup}>
-                <label>{activeType === 'lab' ? 'Lab Test' : activeType === 'imaging' ? 'Imaging Study' : 'Consult Service'}</label>
-                <input className={styles.formInput} value={draftName} onChange={(e) => setDraftName(e.target.value)} placeholder={`Enter ${activeType} name...`} />
+                <label>
+                  {activeType === 'lab'
+                    ? 'Lab Test'
+                    : activeType === 'imaging'
+                      ? 'Imaging Study'
+                      : 'Consult Service'}
+                </label>
+                <input
+                  className={styles.formInput}
+                  value={draftName}
+                  onChange={(e) => setDraftName(e.target.value)}
+                  placeholder={`Enter ${activeType} name...`}
+                />
               </div>
               <div className={styles.formGroup}>
                 <label>Details / Instructions</label>
-                <textarea className={styles.formTextarea} value={draftDetails} onChange={(e) => setDraftDetails(e.target.value)} rows={3} />
+                <textarea
+                  className={styles.formTextarea}
+                  value={draftDetails}
+                  onChange={(e) => setDraftDetails(e.target.value)}
+                  rows={3}
+                />
               </div>
               <p className={styles.pendingText}>
-                Order will be placed via VistA if backend is available.<br />
+                Order will be placed via VistA if backend is available.
+                <br />
                 Otherwise saved as draft with integration-pending status.
               </p>
               <button
@@ -404,7 +512,9 @@ export default function OrdersPanel({ dfn }: Props) {
                 onClick={() => handleTypedOrder(activeType)}
                 disabled={orderSaving || !draftName.trim()}
               >
-                {orderSaving ? 'Placing...' : `Place ${activeType === 'lab' ? 'Lab' : activeType === 'imaging' ? 'Imaging' : 'Consult'} Order`}
+                {orderSaving
+                  ? 'Placing...'
+                  : `Place ${activeType === 'lab' ? 'Lab' : activeType === 'imaging' ? 'Imaging' : 'Consult'} Order`}
               </button>
             </div>
           )}
@@ -415,15 +525,25 @@ export default function OrdersPanel({ dfn }: Props) {
       <div className={styles.subTabs}>
         {ORDER_TYPES.map((t) => {
           const draftCount = draftOrders.filter((o) => o.type === t).length;
-          const vistaCount = vistaOrders.length; // VistA orders are not type-filtered (display group varies)
           return (
             <button
               key={t}
               className={`${styles.subTab} ${activeType === t ? styles.active : ''}`}
-              onClick={() => { setActiveType(t); setSelected(null); setOrderChecks([]); setSignMsg(null); }}
+              onClick={() => {
+                setActiveType(t);
+                setSelected(null);
+                setOrderChecks([]);
+                setSignMsg(null);
+              }}
             >
-              {t === 'med' ? 'Medication' : t === 'lab' ? 'Laboratory' : t === 'imaging' ? 'Imaging' : 'Consult'}
-              {' '}({draftCount})
+              {t === 'med'
+                ? 'Medication'
+                : t === 'lab'
+                  ? 'Laboratory'
+                  : t === 'imaging'
+                    ? 'Imaging'
+                    : 'Consult'}{' '}
+              ({draftCount})
             </button>
           );
         })}
@@ -432,11 +552,25 @@ export default function OrdersPanel({ dfn }: Props) {
       {/* VistA Active Orders (from API) */}
       {vistaOrders.length > 0 && (
         <div style={{ marginBottom: 8 }}>
-          <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 4, color: 'var(--cprs-accent, #336)' }}>
+          <div
+            style={{
+              fontSize: 12,
+              fontWeight: 600,
+              marginBottom: 4,
+              color: 'var(--cprs-accent, #336)',
+            }}
+          >
             VistA Active Orders ({vistaOrders.length})
           </div>
           <table className={styles.dataTable}>
-            <thead><tr><th>Order</th><th>Status</th><th>Start</th><th>Stop</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Status</th>
+                <th>Start</th>
+                <th>Stop</th>
+              </tr>
+            </thead>
             <tbody>
               {vistaOrders.map((vo) => (
                 <tr key={vo.ien}>
@@ -458,13 +592,25 @@ export default function OrdersPanel({ dfn }: Props) {
             <p className={styles.emptyText}>No {activeType} orders in local cache</p>
           ) : (
             <table className={styles.dataTable}>
-              <thead><tr><th>Order</th><th>Status</th><th>Date</th></tr></thead>
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
               <tbody>
                 {filteredDrafts.map((o) => (
                   <tr
                     key={o.id}
-                    onClick={() => { setSelected(o); setOrderChecks([]); setSignMsg(null); }}
-                    style={selected?.id === o.id ? { background: 'var(--cprs-selected)' } : undefined}
+                    onClick={() => {
+                      setSelected(o);
+                      setOrderChecks([]);
+                      setSignMsg(null);
+                    }}
+                    style={
+                      selected?.id === o.id ? { background: 'var(--cprs-selected)' } : undefined
+                    }
                   >
                     <td>{o.name}</td>
                     <td>{statusBadge(o.status)}</td>
@@ -479,18 +625,53 @@ export default function OrdersPanel({ dfn }: Props) {
           {selected ? (
             <div>
               <div className={styles.panelTitle}>Order Detail</div>
-              <div className={styles.formGroup}><label>Name</label><div>{selected.name}</div></div>
-              <div className={styles.formGroup}><label>Type</label><div>{selected.type}</div></div>
-              <div className={styles.formGroup}><label>Status</label><div>{statusBadge(selected.status)}</div></div>
-              <div className={styles.formGroup}><label>Details</label><div style={{ whiteSpace: 'pre-wrap' }}>{selected.details}</div></div>
-              <div className={styles.formGroup}><label>Created</label><div>{new Date(selected.createdAt).toLocaleString()}</div></div>
+              <div className={styles.formGroup}>
+                <label>Name</label>
+                <div>{selected.name}</div>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Type</label>
+                <div>{selected.type}</div>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Status</label>
+                <div>{statusBadge(selected.status)}</div>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Details</label>
+                <div style={{ whiteSpace: 'pre-wrap' }}>{selected.details}</div>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Created</label>
+                <div>{new Date(selected.createdAt).toLocaleString()}</div>
+              </div>
 
               {/* Order Checks display */}
               {orderChecks.length > 0 && (
-                <div style={{ border: '1px solid var(--cprs-warning, orange)', padding: 8, borderRadius: 4, marginTop: 8, background: 'rgba(255,165,0,0.05)' }}>
+                <div
+                  style={{
+                    border: '1px solid var(--cprs-warning, orange)',
+                    padding: 8,
+                    borderRadius: 4,
+                    marginTop: 8,
+                    background: 'rgba(255,165,0,0.05)',
+                  }}
+                >
                   <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 4 }}>Order Checks</div>
                   {orderChecks.map((c, i) => (
-                    <div key={i} style={{ fontSize: 12, padding: '2px 0', color: c.level === 'error' ? 'var(--cprs-danger)' : c.level === 'warning' ? 'var(--cprs-warning, orange)' : 'inherit' }}>
+                    <div
+                      key={i}
+                      style={{
+                        fontSize: 12,
+                        padding: '2px 0',
+                        color:
+                          c.level === 'error'
+                            ? 'var(--cprs-danger)'
+                            : c.level === 'warning'
+                              ? 'var(--cprs-warning, orange)'
+                              : 'inherit',
+                      }}
+                    >
                       [{c.type}] {c.message}
                     </div>
                   ))}
@@ -500,7 +681,11 @@ export default function OrdersPanel({ dfn }: Props) {
               <div style={{ marginTop: 12, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 {/* Order Checks button */}
                 {(selected.status === 'unsigned' || selected.status === 'draft') && (
-                  <button className={styles.btn} onClick={() => handleOrderChecks(selected.id)} disabled={checkLoading}>
+                  <button
+                    className={styles.btn}
+                    onClick={() => handleOrderChecks(selected.id)}
+                    disabled={checkLoading}
+                  >
                     {checkLoading ? 'Checking...' : 'Run Order Checks'}
                   </button>
                 )}
@@ -511,19 +696,33 @@ export default function OrdersPanel({ dfn }: Props) {
                       type="password"
                       placeholder="E-Signature Code"
                       value={esCode}
-                      onChange={e => setEsCode(e.target.value)}
-                      style={{ width: 140, padding: '4px 8px', fontSize: 12, borderRadius: 4, border: '1px solid var(--cprs-border)' }}
+                      onChange={(e) => setEsCode(e.target.value)}
+                      style={{
+                        width: 140,
+                        padding: '4px 8px',
+                        fontSize: 12,
+                        borderRadius: 4,
+                        border: '1px solid var(--cprs-border)',
+                      }}
                       disabled={signLoading}
                       aria-label="Electronic signature code"
                     />
-                    <button className={styles.btnPrimary} onClick={() => handleSignOrder(selected.id)} disabled={signLoading || !esCode.trim()}>
+                    <button
+                      className={styles.btnPrimary}
+                      onClick={() => handleSignOrder(selected.id)}
+                      disabled={signLoading || !esCode.trim()}
+                    >
                       {signLoading ? 'Signing...' : 'Sign Order'}
                     </button>
                   </div>
                 )}
                 {/* Discontinue button */}
                 {selected.status !== 'discontinued' && selected.status !== 'cancelled' && (
-                  <button className={styles.btnDanger} onClick={() => handleDiscontinue(selected.id)} disabled={dcLoading}>
+                  <button
+                    className={styles.btnDanger}
+                    onClick={() => handleDiscontinue(selected.id)}
+                    disabled={dcLoading}
+                  >
                     {dcLoading ? 'Processing...' : 'Discontinue'}
                   </button>
                 )}
@@ -531,16 +730,30 @@ export default function OrdersPanel({ dfn }: Props) {
 
               {/* Discontinue status message */}
               {dcMsg && (
-                <div style={{
-                  marginTop: 8, padding: '6px 10px', borderRadius: 4, fontSize: 12,
-                  background: dcMsg.includes('pending') ? 'rgba(255,165,0,0.08)' : dcMsg.includes('failed') ? 'rgba(220,53,69,0.08)' : 'rgba(40,167,69,0.08)',
-                  border: `1px solid ${dcMsg.includes('pending') ? 'orange' : dcMsg.includes('failed') ? '#dc3545' : '#28a745'}`,
-                  color: dcMsg.includes('pending') ? '#856404' : dcMsg.includes('failed') ? '#721c24' : '#155724',
-                }}>
+                <div
+                  style={{
+                    marginTop: 8,
+                    padding: '6px 10px',
+                    borderRadius: 4,
+                    fontSize: 12,
+                    background: dcMsg.includes('pending')
+                      ? 'rgba(255,165,0,0.08)'
+                      : dcMsg.includes('failed')
+                        ? 'rgba(220,53,69,0.08)'
+                        : 'rgba(40,167,69,0.08)',
+                    border: `1px solid ${dcMsg.includes('pending') ? 'orange' : dcMsg.includes('failed') ? '#dc3545' : '#28a745'}`,
+                    color: dcMsg.includes('pending')
+                      ? '#856404'
+                      : dcMsg.includes('failed')
+                        ? '#721c24'
+                        : '#155724',
+                  }}
+                >
                   {dcMsg}
                   {dcMsg.includes('pending') && (
                     <div style={{ fontSize: 10, marginTop: 4, color: 'var(--cprs-text-muted)' }}>
-                      Target RPC: ORWDXA DC | VistA discontinue write-back requires active VistA connection
+                      Target RPC: ORWDXA DC | VistA discontinue write-back requires active VistA
+                      connection
                     </div>
                   )}
                 </div>

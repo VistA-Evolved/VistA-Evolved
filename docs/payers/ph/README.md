@@ -5,16 +5,17 @@ HMO integrations in VistA-Evolved RCM.
 
 ## Files
 
-| File | Description |
-|------|-------------|
-| [canonical-sources.md](canonical-sources.md) | Insurance Commission source references and evidence methodology |
-| [payer-capabilities-schema.md](payer-capabilities-schema.md) | Schema documentation for the PH HMO registry capability model |
+| File                                                         | Description                                                     |
+| ------------------------------------------------------------ | --------------------------------------------------------------- |
+| [canonical-sources.md](canonical-sources.md)                 | Insurance Commission source references and evidence methodology |
+| [payer-capabilities-schema.md](payer-capabilities-schema.md) | Schema documentation for the PH HMO registry capability model   |
 
 ## Canonical Data Source
 
 All 27 IC-licensed HMOs are sourced from:
 
 **Insurance Commission of the Philippines**
+
 - [List of HMOs with Certificate of Authority as of 31 December 2025](https://www.insurance.gov.ph/list-of-hmos-with-certificate-of-authority-as-of-31-december-2025/)
 
 ## Registry Location

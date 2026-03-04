@@ -3,12 +3,11 @@
  * Unified view of pending actions: appointments, messages, refills, etc.
  */
 
-"use client";
+'use client';
 
-import { useEffect, useState, useCallback } from "react";
-import { DataSourceBadge } from "@/components/data-source-badge";
+import { useEffect, useState, useCallback } from 'react';
+import { DataSourceBadge } from '@/components/data-source-badge';
 import { API_BASE as API } from '@/lib/api-config';
-
 
 interface PortalTask {
   id: string;
@@ -32,15 +31,15 @@ export default function TasksPage() {
   const [tasks, setTasks] = useState<PortalTask[]>([]);
   const [counts, setCounts] = useState<TaskCounts | null>(null);
   const [loading, setLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState("active");
-  const [notice, setNotice] = useState("");
+  const [statusFilter, setStatusFilter] = useState('active');
+  const [notice, setNotice] = useState('');
 
   const loadTasks = useCallback(async () => {
     setLoading(true);
     try {
       const [tRes, cRes] = await Promise.all([
-        fetch(`${API}/portal/tasks?status=${statusFilter}`, { credentials: "include" }),
-        fetch(`${API}/portal/tasks/counts`, { credentials: "include" }),
+        fetch(`${API}/portal/tasks?status=${statusFilter}`, { credentials: 'include' }),
+        fetch(`${API}/portal/tasks/counts`, { credentials: 'include' }),
       ]);
       if (tRes.ok) {
         const d = await tRes.json();
@@ -64,11 +63,11 @@ export default function TasksPage() {
   async function handleDismiss(id: string) {
     try {
       const res = await fetch(`${API}/portal/tasks/${id}/dismiss`, {
-        method: "POST",
-        credentials: "include",
+        method: 'POST',
+        credentials: 'include',
       });
       if (res.ok) {
-        setNotice("Task dismissed.");
+        setNotice('Task dismissed.');
         loadTasks();
       }
     } catch {
@@ -79,11 +78,11 @@ export default function TasksPage() {
   async function handleComplete(id: string) {
     try {
       const res = await fetch(`${API}/portal/tasks/${id}/complete`, {
-        method: "POST",
-        credentials: "include",
+        method: 'POST',
+        credentials: 'include',
       });
       if (res.ok) {
-        setNotice("Task completed.");
+        setNotice('Task completed.');
         loadTasks();
       }
     } catch {
@@ -93,29 +92,39 @@ export default function TasksPage() {
 
   const priorityColor = (p: string) => {
     switch (p) {
-      case "urgent": return "#ef4444";
-      case "high": return "#d97706";
-      case "normal": return "#2563eb";
-      default: return "#64748b";
+      case 'urgent':
+        return '#ef4444';
+      case 'high':
+        return '#d97706';
+      case 'normal':
+        return '#2563eb';
+      default:
+        return '#64748b';
     }
   };
 
   const categoryIcon = (c: string) => {
     switch (c) {
-      case "appointment_reminder": return "\u{1F4C5}";  // calendar
-      case "message_unread": return "\u{1F4E9}";        // envelope
-      case "refill_status": return "\u{1F48A}";          // pill
-      case "form_due": return "\u{1F4CB}";               // clipboard
-      case "lab_result": return "\u{1F9EA}";             // test tube
-      default: return "\u{1F514}";                       // bell
+      case 'appointment_reminder':
+        return '\u{1F4C5}'; // calendar
+      case 'message_unread':
+        return '\u{1F4E9}'; // envelope
+      case 'refill_status':
+        return '\u{1F48A}'; // pill
+      case 'form_due':
+        return '\u{1F4CB}'; // clipboard
+      case 'lab_result':
+        return '\u{1F9EA}'; // test tube
+      default:
+        return '\u{1F514}'; // bell
     }
   };
 
   return (
     <div className="container">
-      <div style={{ marginBottom: "1.5rem" }}>
-        <h1 style={{ fontSize: "1.5rem", marginBottom: "0.25rem" }}>Tasks & Notifications</h1>
-        <p style={{ color: "var(--portal-text-muted)", fontSize: "0.875rem" }}>
+      <div style={{ marginBottom: '1.5rem' }}>
+        <h1 style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>Tasks & Notifications</h1>
+        <p style={{ color: 'var(--portal-text-muted)', fontSize: '0.875rem' }}>
           Your pending actions and health reminders
         </p>
       </div>
@@ -123,12 +132,12 @@ export default function TasksPage() {
       {notice && (
         <div
           style={{
-            padding: "0.5rem 0.75rem",
-            marginBottom: "1rem",
+            padding: '0.5rem 0.75rem',
+            marginBottom: '1rem',
             borderRadius: 4,
-            fontSize: "0.875rem",
-            background: "#dcfce7",
-            color: "#166534",
+            fontSize: '0.875rem',
+            background: '#dcfce7',
+            color: '#166534',
           }}
         >
           {notice}
@@ -137,23 +146,23 @@ export default function TasksPage() {
 
       {/* Badge summary */}
       {counts && counts.total > 0 && (
-        <div className="card" style={{ marginBottom: "1rem" }}>
-          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+        <div className="card" style={{ marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
             {Object.entries(counts.byCategory)
               .filter(([, v]) => v > 0)
               .map(([k, v]) => (
                 <div
                   key={k}
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.375rem",
-                    fontSize: "0.875rem",
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.375rem',
+                    fontSize: '0.875rem',
                   }}
                 >
                   <span>{categoryIcon(k)}</span>
                   <span style={{ fontWeight: 500 }}>{v}</span>
-                  <span style={{ color: "#64748b" }}>{k.replace(/_/g, " ")}</span>
+                  <span style={{ color: '#64748b' }}>{k.replace(/_/g, ' ')}</span>
                 </div>
               ))}
           </div>
@@ -161,20 +170,22 @@ export default function TasksPage() {
       )}
 
       {/* Filter */}
-      <div style={{ marginBottom: "0.75rem", display: "flex", gap: "0.5rem", alignItems: "center" }}>
-        <label style={{ fontSize: "0.8125rem", color: "#64748b" }}>Show:</label>
-        {["active", "completed", "dismissed"].map((s) => (
+      <div
+        style={{ marginBottom: '0.75rem', display: 'flex', gap: '0.5rem', alignItems: 'center' }}
+      >
+        <label style={{ fontSize: '0.8125rem', color: '#64748b' }}>Show:</label>
+        {['active', 'completed', 'dismissed'].map((s) => (
           <button
             key={s}
             onClick={() => setStatusFilter(s)}
             style={{
-              padding: "0.25rem 0.625rem",
+              padding: '0.25rem 0.625rem',
               borderRadius: 4,
-              border: statusFilter === s ? "1px solid #2563eb" : "1px solid #e2e8f0",
-              background: statusFilter === s ? "#eff6ff" : "transparent",
-              color: statusFilter === s ? "#2563eb" : "#64748b",
-              fontSize: "0.8125rem",
-              cursor: "pointer",
+              border: statusFilter === s ? '1px solid #2563eb' : '1px solid #e2e8f0',
+              background: statusFilter === s ? '#eff6ff' : 'transparent',
+              color: statusFilter === s ? '#2563eb' : '#64748b',
+              fontSize: '0.8125rem',
+              cursor: 'pointer',
             }}
           >
             {s}
@@ -184,79 +195,93 @@ export default function TasksPage() {
 
       {/* Task list */}
       <div className="card">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '0.5rem',
+          }}
+        >
           <h3 style={{ margin: 0 }}>
-            {statusFilter === "active" ? "Active Tasks" : `${statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)} Tasks`}
+            {statusFilter === 'active'
+              ? 'Active Tasks'
+              : `${statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)} Tasks`}
           </h3>
           <DataSourceBadge source="pending" />
         </div>
 
         {loading ? (
-          <p style={{ color: "#94a3b8", fontSize: "0.875rem" }}>Loading tasks...</p>
+          <p style={{ color: '#94a3b8', fontSize: '0.875rem' }}>Loading tasks...</p>
         ) : tasks.length === 0 ? (
-          <div className="empty-state" style={{ padding: "1.5rem" }}>
+          <div className="empty-state" style={{ padding: '1.5rem' }}>
             <p>No {statusFilter} tasks.</p>
           </div>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
             {tasks.map((t) => (
               <div
                 key={t.id}
                 style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: "0.75rem",
-                  padding: "0.625rem 0.75rem",
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '0.75rem',
+                  padding: '0.625rem 0.75rem',
                   borderRadius: 6,
-                  border: "1px solid #e2e8f0",
-                  background: t.priority === "urgent" ? "#fef2f2" : t.priority === "high" ? "#fffbeb" : "#fff",
+                  border: '1px solid #e2e8f0',
+                  background:
+                    t.priority === 'urgent'
+                      ? '#fef2f2'
+                      : t.priority === 'high'
+                        ? '#fffbeb'
+                        : '#fff',
                 }}
               >
-                <span style={{ fontSize: "1.25rem" }}>{categoryIcon(t.category)}</span>
+                <span style={{ fontSize: '1.25rem' }}>{categoryIcon(t.category)}</span>
                 <div style={{ flex: 1 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                    <span style={{ fontWeight: 600, fontSize: "0.875rem" }}>{t.title}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span style={{ fontWeight: 600, fontSize: '0.875rem' }}>{t.title}</span>
                     <span
                       style={{
-                        fontSize: "0.6875rem",
+                        fontSize: '0.6875rem',
                         color: priorityColor(t.priority),
-                        textTransform: "uppercase",
+                        textTransform: 'uppercase',
                         fontWeight: 600,
                       }}
                     >
-                      {t.priority !== "normal" ? t.priority : ""}
+                      {t.priority !== 'normal' ? t.priority : ''}
                     </span>
                   </div>
-                  <p style={{ fontSize: "0.8125rem", color: "#64748b", margin: "0.125rem 0 0" }}>
+                  <p style={{ fontSize: '0.8125rem', color: '#64748b', margin: '0.125rem 0 0' }}>
                     {t.body}
                   </p>
                   {t.actionUrl && t.actionLabel && (
                     <a
                       href={t.actionUrl}
                       style={{
-                        display: "inline-block",
-                        marginTop: "0.375rem",
-                        fontSize: "0.8125rem",
-                        color: "#2563eb",
-                        textDecoration: "none",
+                        display: 'inline-block',
+                        marginTop: '0.375rem',
+                        fontSize: '0.8125rem',
+                        color: '#2563eb',
+                        textDecoration: 'none',
                       }}
                     >
                       {t.actionLabel} &rarr;
                     </a>
                   )}
                 </div>
-                {t.status === "active" && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                {t.status === 'active' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                     <button
                       onClick={() => handleComplete(t.id)}
                       style={{
-                        fontSize: "0.75rem",
-                        color: "#16a34a",
-                        background: "transparent",
-                        border: "1px solid #16a34a",
+                        fontSize: '0.75rem',
+                        color: '#16a34a',
+                        background: 'transparent',
+                        border: '1px solid #16a34a',
                         borderRadius: 4,
-                        padding: "2px 8px",
-                        cursor: "pointer",
+                        padding: '2px 8px',
+                        cursor: 'pointer',
                       }}
                     >
                       Done
@@ -264,13 +289,13 @@ export default function TasksPage() {
                     <button
                       onClick={() => handleDismiss(t.id)}
                       style={{
-                        fontSize: "0.75rem",
-                        color: "#64748b",
-                        background: "transparent",
-                        border: "1px solid #e2e8f0",
+                        fontSize: '0.75rem',
+                        color: '#64748b',
+                        background: 'transparent',
+                        border: '1px solid #e2e8f0',
                         borderRadius: 4,
-                        padding: "2px 8px",
-                        cursor: "pointer",
+                        padding: '2px 8px',
+                        cursor: 'pointer',
                       }}
                     >
                       Dismiss

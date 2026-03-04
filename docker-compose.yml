@@ -1,0 +1,185 @@
+# =============================================================================
+# VistA-Evolved — Development Docker Compose
+# =============================================================================
+# One command starts everything:
+#   docker compose up --build
+#
+# Or start infrastructure only (no build):
+#   docker compose up -d vista postgres redis
+#
+# Prerequisites:
+#   1. Copy .env.example to .env and fill in values
+#   2. Docker Desktop running
+#
+# Service map:
+#   vista    — VistA EHR (RPC Broker + Web UI)
+#   postgres — PostgreSQL 15 (platform state)
+#   redis    — Redis 7 (cache / sessions)
+#   api      — Fastify API server (hot-reload)
+#   web      — Next.js CPRS clinician UI (hot-reload)
+# =============================================================================
+
+services:
+  # ---------- SERVICE 1: VistA EHR ----------
+  vista:
+    image: worldvista/worldvista-ehr:latest
+    container_name: vista-ehr
+    ports:
+      - '${VISTA_BROKER_PORT:-9210}:9210'
+      - '${VISTA_WEB_PORT:-8001}:8001'
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD-SHELL', "bash -c '</dev/tcp/127.0.0.1/9210' 2>/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      start_period: 45s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+        reservations:
+          memory: 512M
+    volumes:
+      - vista_data:/home/wv
+    networks:
+      - backend
+
+  # ---------- SERVICE 2: PostgreSQL ----------
+  postgres:
+    image: postgres:15-alpine
+    container_name: vista-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-vista_evolved}
+      POSTGRES_USER: ${POSTGRES_USER:-vista_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./services/platform-db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
+    healthcheck:
+      test:
+        ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-vista_user} -d ${POSTGRES_DB:-vista_evolved}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - backend
+
+  # ---------- SERVICE 3: Redis ----------
+  redis:
+    image: redis:7-alpine
+    container_name: vista-redis
+    ports:
+      - '${REDIS_PORT:-6379}:6379'
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    volumes:
+      - redis_data:/data
+    networks:
+      - backend
+
+  # ---------- SERVICE 4: API (Fastify backend) ----------
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: vista-api
+    ports:
+      - '${API_PORT:-4000}:3001'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
+      - PORT=3001
+      # VistA connection (points to vista service)
+      - VISTA_HOST=vista
+      - VISTA_PORT=9210
+      - VISTA_ACCESS_CODE=${VISTA_ACCESS_CODE}
+      - VISTA_VERIFY_CODE=${VISTA_VERIFY_CODE}
+      - VISTA_CONTEXT=${VISTA_CONTEXT:-OR CPRS GUI CHART}
+      # PostgreSQL (points to postgres service)
+      - PLATFORM_PG_URL=postgresql://${POSTGRES_USER:-vista_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-vista_evolved}
+      - PLATFORM_PG_RLS_ENABLED=${PLATFORM_PG_RLS_ENABLED:-false}
+      - STORE_BACKEND=${STORE_BACKEND:-pg}
+      # Redis
+      - REDIS_URL=redis://redis:6379
+      # Security
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:3000}
+      - SESSION_COOKIE=${SESSION_COOKIE:-ehr_session}
+      # Logging
+      - LOG_LEVEL=${LOG_LEVEL:-debug}
+      - LOG_FORMAT=${LOG_FORMAT:-pretty}
+      # Audit
+      - AUDIT_SINK=${AUDIT_SINK:-memory}
+    volumes:
+      # Mount source for hot reload in development
+      - ./apps/api/src:/app/apps/api/src:ro
+      - ./config:/app/config:ro
+      - ./data:/app/data:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://127.0.0.1:3001/health']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - frontend
+      - backend
+
+  # ---------- SERVICE 5: Web (Next.js frontend) ----------
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000}
+    container_name: vista-web
+    ports:
+      - '${WEB_PORT:-5173}:3000'
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:4000}
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'wget', '-q', '--spider', 'http://127.0.0.1:3000/']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    networks:
+      - frontend
+
+volumes:
+  vista_data:
+    name: vista-evolved-ehr-data
+  postgres_data:
+    name: vista-evolved-pg-data
+  redis_data:
+    name: vista-evolved-redis-data
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge

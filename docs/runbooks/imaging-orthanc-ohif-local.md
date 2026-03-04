@@ -18,6 +18,7 @@ docker compose --profile imaging up -d
 ```
 
 This starts:
+
 - **Orthanc** on port 8042 (HTTP/DICOMweb) and 4242 (DICOM C-STORE)
 - **OHIF Viewer** on port 3003
 
@@ -105,6 +106,7 @@ IMAGING_MAX_UPLOAD_BYTES=536870912
 ### Orthanc Config
 
 Edit `services/imaging/orthanc.json` for:
+
 - AE title (default: `VISTAEVOLVED`)
 - DICOM port (default: 4242)
 - DICOMweb root path (default: `/dicom-web/`)
@@ -113,6 +115,7 @@ Edit `services/imaging/orthanc.json` for:
 ### OHIF Config
 
 Edit `services/imaging/ohif-config.js` for:
+
 - DICOMweb data source URLs
 - Viewer features/modes
 
@@ -128,13 +131,13 @@ docker compose --profile imaging down -v
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| Port 8042 refused | Orthanc not running | `docker compose --profile imaging up -d` |
-| OHIF shows no studies | No DICOM data uploaded | Upload test data via Orthanc UI |
-| 502 from proxy | Orthanc container down | Check `docker ps`, restart if needed |
-| 504 from proxy | Orthanc slow to respond | Increase `IMAGING_PROXY_TIMEOUT_MS` |
-| CORS errors in OHIF | Config mismatch | Check `ohif-config.js` data source URLs |
+| Symptom               | Cause                   | Fix                                      |
+| --------------------- | ----------------------- | ---------------------------------------- |
+| Port 8042 refused     | Orthanc not running     | `docker compose --profile imaging up -d` |
+| OHIF shows no studies | No DICOM data uploaded  | Upload test data via Orthanc UI          |
+| 502 from proxy        | Orthanc container down  | Check `docker ps`, restart if needed     |
+| 504 from proxy        | Orthanc slow to respond | Increase `IMAGING_PROXY_TIMEOUT_MS`      |
+| CORS errors in OHIF   | Config mismatch         | Check `ohif-config.js` data source URLs  |
 
 ## Security Notes
 

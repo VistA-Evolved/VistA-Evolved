@@ -31,7 +31,7 @@ export const ASTM_NAK = 0x15;
 // ASTM Record Types (per E1394)
 // ---------------------------------------------------------------------------
 
-export type AstmRecordType = "H" | "P" | "O" | "R" | "C" | "L" | "M" | "S" | "Q";
+export type AstmRecordType = 'H' | 'P' | 'O' | 'R' | 'C' | 'L' | 'M' | 'S' | 'Q';
 
 export interface AstmField {
   /** Raw field value */
@@ -143,7 +143,7 @@ export function calculateAstmChecksum(frameNumberAndData: string, termByte: numb
     sum += frameNumberAndData.charCodeAt(i);
   }
   sum += termByte; // ETX or ETB
-  return (sum % 256).toString(16).toUpperCase().padStart(2, "0");
+  return (sum % 256).toString(16).toUpperCase().padStart(2, '0');
 }
 
 // ---------------------------------------------------------------------------
@@ -163,7 +163,7 @@ export function parseAstmFrame(raw: string): AstmFrame | null {
     content = content.slice(1);
   }
   // Trim trailing CR LF
-  content = content.replace(/\r?\n$/, "");
+  content = content.replace(/\r?\n$/, '');
 
   const frameNumber = parseInt(content[0], 10);
   if (isNaN(frameNumber)) return null;
@@ -179,7 +179,7 @@ export function parseAstmFrame(raw: string): AstmFrame | null {
     return {
       frameNumber,
       data: content.slice(1),
-      checksum: "",
+      checksum: '',
       checksumValid: false,
       intermediate: false,
     };
@@ -215,18 +215,18 @@ export function parseAstmRecord(line: string): AstmRecord | null {
   if (!line || line.length < 2) return null;
 
   const type = line[0] as AstmRecordType;
-  if (!"HPORCLMSQ".includes(type)) return null;
+  if (!'HPORCLMSQ'.includes(type)) return null;
 
   // Split by pipe (default ASTM field delimiter)
-  const rawFields = line.split("|");
+  const rawFields = line.split('|');
   const fields: AstmField[] = rawFields.map((f) => ({
     raw: f,
-    components: f.split("^"),
+    components: f.split('^'),
   }));
 
   // Sequence number: for H it's always 1, for others it's in field[1]
   let seq = 1;
-  if (type !== "H" && fields.length > 1) {
+  if (type !== 'H' && fields.length > 1) {
     const parsed = parseInt(fields[1].raw, 10);
     if (!isNaN(parsed)) seq = parsed;
   }
@@ -251,21 +251,19 @@ export function parseAstmMessage(recordLines: string[]): AstmMessage {
     if (rec) records.push(rec);
   }
 
-  const header = records.find((r) => r.type === "H") || null;
-  const patients = records.filter((r) => r.type === "P");
-  const orders = records.filter((r) => r.type === "O");
-  const results = records.filter((r) => r.type === "R");
-  const comments = records.filter((r) => r.type === "C");
-  const terminator = records.find((r) => r.type === "L") || null;
+  const header = records.find((r) => r.type === 'H') || null;
+  const patients = records.filter((r) => r.type === 'P');
+  const orders = records.filter((r) => r.type === 'O');
+  const results = records.filter((r) => r.type === 'R');
+  const comments = records.filter((r) => r.type === 'C');
+  const terminator = records.find((r) => r.type === 'L') || null;
 
   // H record fields: H|delimiters|messageId|...|senderId|...|receiverId|...|...|...|...|timestamp|...
   // Simplified: field[4]=senderId, field[9]=receiverId, field[13]=timestamp (varies by implementation)
-  const senderId = header && header.fields.length > 4 ? header.fields[4].raw : "";
-  const receiverId = header && header.fields.length > 9 ? header.fields[9].raw : "";
+  const senderId = header && header.fields.length > 4 ? header.fields[4].raw : '';
+  const receiverId = header && header.fields.length > 9 ? header.fields[9].raw : '';
   const timestamp =
-    header && header.fields.length > 13
-      ? header.fields[13].raw
-      : new Date().toISOString();
+    header && header.fields.length > 13 ? header.fields[13].raw : new Date().toISOString();
 
   return {
     records,
@@ -298,24 +296,24 @@ export function extractAstmObservations(message: AstmMessage): AstmObservation[]
   const patientId =
     message.patients.length > 0 && message.patients[0].fields.length > 3
       ? message.patients[0].fields[3].raw
-      : "";
+      : '';
 
   // Get specimen ID from first O record (field[2] typically)
   const specimenId =
     message.orders.length > 0 && message.orders[0].fields.length > 2
       ? message.orders[0].fields[2].raw
-      : "";
+      : '';
 
   for (const r of message.results) {
     // R|seq|analyteId^analyteName|value|units|referenceRange|abnormalFlag|...|status
-    const analyteField = r.fields.length > 2 ? r.fields[2] : { raw: "", components: [""] };
-    const testCode = analyteField.components[0] || "";
-    const testName = analyteField.components.length > 1 ? analyteField.components[1] : "";
-    const value = r.fields.length > 3 ? r.fields[3].raw : "";
-    const units = r.fields.length > 4 ? r.fields[4].raw : "";
-    const referenceRange = r.fields.length > 5 ? r.fields[5].raw : "";
-    const abnormalFlag = r.fields.length > 6 ? r.fields[6].raw : "";
-    const resultStatus = r.fields.length > 8 ? r.fields[8].raw : "";
+    const analyteField = r.fields.length > 2 ? r.fields[2] : { raw: '', components: [''] };
+    const testCode = analyteField.components[0] || '';
+    const testName = analyteField.components.length > 1 ? analyteField.components[1] : '';
+    const value = r.fields.length > 3 ? r.fields[3].raw : '';
+    const units = r.fields.length > 4 ? r.fields[4].raw : '';
+    const referenceRange = r.fields.length > 5 ? r.fields[5].raw : '';
+    const abnormalFlag = r.fields.length > 6 ? r.fields[6].raw : '';
+    const resultStatus = r.fields.length > 8 ? r.fields[8].raw : '';
 
     observations.push({
       testCode,
@@ -366,7 +364,7 @@ export function parseAstm(raw: string): AstmParseResult {
       }
       // Frame data may contain CR-separated records
       recordLines = extractedData
-        .join("")
+        .join('')
         .split(/\r/)
         .filter((l) => l.trim());
     } else {
@@ -391,7 +389,7 @@ export function parseAstm(raw: string): AstmParseResult {
       observations: [],
       frameCount: 0,
       checksumErrors: 0,
-      error: err.message || "ASTM parse error",
+      error: err.message || 'ASTM parse error',
     };
   }
 }

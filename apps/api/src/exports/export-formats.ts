@@ -10,9 +10,9 @@
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type ExportV2Format = "csv" | "json" | "jsonl" | "ndjson";
+export type ExportV2Format = 'csv' | 'json' | 'jsonl' | 'ndjson';
 
-export const SUPPORTED_FORMATS: ExportV2Format[] = ["csv", "json", "jsonl", "ndjson"];
+export const SUPPORTED_FORMATS: ExportV2Format[] = ['csv', 'json', 'jsonl', 'ndjson'];
 
 export interface FormatResult {
   data: string;
@@ -26,25 +26,23 @@ export interface FormatResult {
 /* ------------------------------------------------------------------ */
 
 function escapeCsvField(val: unknown): string {
-  const s = String(val ?? "");
-  return s.includes(",") || s.includes('"') || s.includes("\n")
-    ? `"${s.replace(/"/g, '""')}"`
-    : s;
+  const s = String(val ?? '');
+  return s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
 export function formatCsv(rows: Record<string, unknown>[]): FormatResult {
   if (rows.length === 0) {
-    return { data: "", mimeType: "text/csv", extension: "csv", rowCount: 0 };
+    return { data: '', mimeType: 'text/csv', extension: 'csv', rowCount: 0 };
   }
   const headers = Object.keys(rows[0]);
   const lines = [
-    headers.join(","),
-    ...rows.map((row) => headers.map((h) => escapeCsvField(row[h])).join(",")),
+    headers.join(','),
+    ...rows.map((row) => headers.map((h) => escapeCsvField(row[h])).join(',')),
   ];
   return {
-    data: lines.join("\n"),
-    mimeType: "text/csv",
-    extension: "csv",
+    data: lines.join('\n'),
+    mimeType: 'text/csv',
+    extension: 'csv',
     rowCount: rows.length,
   };
 }
@@ -56,8 +54,8 @@ export function formatCsv(rows: Record<string, unknown>[]): FormatResult {
 export function formatJson(rows: Record<string, unknown>[]): FormatResult {
   return {
     data: JSON.stringify(rows, null, 2),
-    mimeType: "application/json",
-    extension: "json",
+    mimeType: 'application/json',
+    extension: 'json',
     rowCount: rows.length,
   };
 }
@@ -69,9 +67,9 @@ export function formatJson(rows: Record<string, unknown>[]): FormatResult {
 export function formatJsonl(rows: Record<string, unknown>[]): FormatResult {
   const lines = rows.map((r) => JSON.stringify(r));
   return {
-    data: lines.join("\n"),
-    mimeType: "application/x-ndjson",
-    extension: "jsonl",
+    data: lines.join('\n'),
+    mimeType: 'application/x-ndjson',
+    extension: 'jsonl',
     rowCount: rows.length,
   };
 }
@@ -85,18 +83,15 @@ export function formatNdjson(rows: Record<string, unknown>[]): FormatResult {
 /* Dispatcher                                                          */
 /* ------------------------------------------------------------------ */
 
-export function formatRows(
-  format: ExportV2Format,
-  rows: Record<string, unknown>[],
-): FormatResult {
+export function formatRows(format: ExportV2Format, rows: Record<string, unknown>[]): FormatResult {
   switch (format) {
-    case "csv":
+    case 'csv':
       return formatCsv(rows);
-    case "json":
+    case 'json':
       return formatJson(rows);
-    case "jsonl":
+    case 'jsonl':
       return formatJsonl(rows);
-    case "ndjson":
+    case 'ndjson':
       return formatNdjson(rows);
     default:
       throw new Error(`Unsupported export format: ${format}`);

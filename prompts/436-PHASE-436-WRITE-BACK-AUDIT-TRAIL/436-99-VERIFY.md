@@ -1,6 +1,7 @@
 # Phase 436 — Verification
 
 ## Checks
+
 1. `prompts-tree-health.mjs` passes (7/7 PASS, 0 FAIL)
 2. `adapter-audit.ts` exports `auditAdapterWrite` with correct type signature
 3. `vista-adapter.ts` imports and calls `auditAdapterWrite` in all 4 write methods

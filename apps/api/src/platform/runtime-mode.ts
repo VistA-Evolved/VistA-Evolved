@@ -16,9 +16,9 @@
  *   - JSON mutable file stores disabled
  */
 
-export type RuntimeMode = "dev" | "test" | "rc" | "prod";
+export type RuntimeMode = 'dev' | 'test' | 'rc' | 'prod';
 
-const VALID_MODES: readonly RuntimeMode[] = ["dev", "test", "rc", "prod"] as const;
+const VALID_MODES: readonly RuntimeMode[] = ['dev', 'test', 'rc', 'prod'] as const;
 
 let cachedMode: RuntimeMode | null = null;
 
@@ -29,18 +29,18 @@ let cachedMode: RuntimeMode | null = null;
 export function getRuntimeMode(): RuntimeMode {
   if (cachedMode) return cachedMode;
 
-  const raw = (process.env.PLATFORM_RUNTIME_MODE || "dev").toLowerCase().trim();
+  const raw = (process.env.PLATFORM_RUNTIME_MODE || 'dev').toLowerCase().trim();
 
   if (VALID_MODES.includes(raw as RuntimeMode)) {
     cachedMode = raw as RuntimeMode;
   } else {
     // Fallback: map NODE_ENV to runtime mode for backwards compat
-    if (process.env.NODE_ENV === "production") {
-      cachedMode = "prod";
-    } else if (process.env.NODE_ENV === "test") {
-      cachedMode = "test";
+    if (process.env.NODE_ENV === 'production') {
+      cachedMode = 'prod';
+    } else if (process.env.NODE_ENV === 'test') {
+      cachedMode = 'test';
     } else {
-      cachedMode = "dev";
+      cachedMode = 'dev';
     }
   }
 
@@ -50,7 +50,7 @@ export function getRuntimeMode(): RuntimeMode {
 /** True when runtime mode requires Postgres (rc or prod). */
 export function requiresPg(): boolean {
   const mode = getRuntimeMode();
-  return mode === "rc" || mode === "prod";
+  return mode === 'rc' || mode === 'prod';
 }
 
 /** True when RLS should be auto-enabled (rc or prod). */
@@ -81,27 +81,27 @@ export function validateRuntimeMode(): void {
     if (!pgUrl) {
       throw new Error(
         `PLATFORM_RUNTIME_MODE=${mode} requires PostgreSQL. ` +
-        `Set PLATFORM_PG_URL or PLATFORM_PG_HOST. ` +
-        `Use PLATFORM_RUNTIME_MODE=dev for local development without PG.`
+          `Set PLATFORM_PG_URL or PLATFORM_PG_HOST. ` +
+          `Use PLATFORM_RUNTIME_MODE=dev for local development without PG.`
       );
     }
   }
 
   // Phase 150: OIDC is mandatory in rc/prod
   if (requiresOidc()) {
-    const oidcEnabled = (process.env.OIDC_ENABLED || "").toLowerCase().trim();
-    if (oidcEnabled !== "true") {
+    const oidcEnabled = (process.env.OIDC_ENABLED || '').toLowerCase().trim();
+    if (oidcEnabled !== 'true') {
       throw new Error(
         `PLATFORM_RUNTIME_MODE=${mode} requires OIDC. ` +
-        `Set OIDC_ENABLED=true and OIDC_ISSUER to your IdP issuer URL. ` +
-        `Use PLATFORM_RUNTIME_MODE=dev for VistA-only local development.`
+          `Set OIDC_ENABLED=true and OIDC_ISSUER to your IdP issuer URL. ` +
+          `Use PLATFORM_RUNTIME_MODE=dev for VistA-only local development.`
       );
     }
     const oidcIssuer = process.env.OIDC_ISSUER;
     if (!oidcIssuer) {
       throw new Error(
         `PLATFORM_RUNTIME_MODE=${mode} requires OIDC_ISSUER to be set. ` +
-        `Point it at your Keycloak (or OIDC-compliant) issuer URL.`
+          `Point it at your Keycloak (or OIDC-compliant) issuer URL.`
       );
     }
   }

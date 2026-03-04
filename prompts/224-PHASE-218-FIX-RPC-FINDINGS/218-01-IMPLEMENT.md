@@ -1,6 +1,7 @@
 # Phase 218 -- Fix What Verification Finds
 
 ## User Request
+
 Q218: Review Q217 verification findings and fix any RPC communication issues.
 
 ## Implementation Steps
@@ -15,22 +16,27 @@ Q218: Review Q217 verification findings and fix any RPC communication issues.
 ## Findings Summary
 
 ### Fixed in Q217
+
 - `ORWCV VST` was used in `clinical-engine/vista-adapter.ts` via `safeCallRpc` but not in `rpcRegistry.ts`
 - Added to registry under `scheduling` domain with `read` tag
 
 ### Pre-registered RPCs (intentional, no action needed)
+
 - `ORQPT DEFAULT LIST SOURCE` -- companion to active `ORQPT DEFAULT PATIENT LIST`, planned for list source picker
 - `ORQQPX REMINDER DETAIL` -- companion to active `ORQQPX REMINDERS LIST`, planned for reminder detail view
 
 ### Coverage Stats
+
 - 138 registered RPCs, 111 unique RPCs used in routes
 - 0 unregistered RPCs
 - 0 domain conflicts
 - 907 total routes, 115 live, 686 stubs
 
 ## Files Touched
+
 - (none -- all fixes were made in Q217)
 
 ## Verification Steps
+
 - Q217 verification: 3 PASS, 0 WARN, 0 FAIL
 - All QA gates: green

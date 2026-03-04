@@ -11,14 +11,15 @@ testing (test), but is blocked at startup in rc/prod.
 
 ## Runtime Modes
 
-| Mode | SQLite | PG Required | RLS | JSON Writes |
-|------|--------|-------------|-----|-------------|
-| `dev`  | Allowed | Optional | Optional | Allowed |
-| `test` | Allowed | Optional | Optional | Allowed |
+| Mode   | SQLite      | PG Required  | RLS              | JSON Writes |
+| ------ | ----------- | ------------ | ---------------- | ----------- |
+| `dev`  | Allowed     | Optional     | Optional         | Allowed     |
+| `test` | Allowed     | Optional     | Optional         | Allowed     |
 | `rc`   | **Blocked** | **Required** | **Auto-enabled** | **Blocked** |
 | `prod` | **Blocked** | **Required** | **Auto-enabled** | **Blocked** |
 
 Set the mode via:
+
 ```
 PLATFORM_RUNTIME_MODE=rc   # or prod, dev, test
 ```
@@ -28,12 +29,12 @@ it auto-maps to `prod`.
 
 ## Env Vars
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `PLATFORM_RUNTIME_MODE` | No | `dev` | Runtime mode (dev/test/rc/prod) |
-| `PLATFORM_PG_URL` | In rc/prod | - | PostgreSQL connection string |
-| `STORE_BACKEND` | No | `auto` | auto/pg/sqlite (sqlite blocked in rc/prod) |
-| `PLATFORM_PG_RLS_ENABLED` | No | auto | Explicit RLS override (auto-enabled in rc/prod) |
+| Variable                  | Required   | Default | Description                                     |
+| ------------------------- | ---------- | ------- | ----------------------------------------------- |
+| `PLATFORM_RUNTIME_MODE`   | No         | `dev`   | Runtime mode (dev/test/rc/prod)                 |
+| `PLATFORM_PG_URL`         | In rc/prod | -       | PostgreSQL connection string                    |
+| `STORE_BACKEND`           | No         | `auto`  | auto/pg/sqlite (sqlite blocked in rc/prod)      |
+| `PLATFORM_PG_RLS_ENABLED` | No         | auto    | Explicit RLS override (auto-enabled in rc/prod) |
 
 ## Migration: SQLite to PostgreSQL
 
@@ -71,6 +72,7 @@ GET /posture/data-plane
 ```
 
 Returns 6 gates:
+
 - `runtime_mode` -- mode is recognized
 - `pg_connected` -- PG is configured (critical in rc/prod)
 - `store_backend` -- resolves to "pg" (critical in rc/prod)
@@ -81,6 +83,7 @@ Returns 6 gates:
 ## Gauntlet Gate
 
 G12 (Data Plane) is part of the RC and FULL gauntlet suites. It validates:
+
 - `runtime-mode.ts` exists with all required exports
 - `store-resolver.ts` imports runtime-mode and enforces PG
 - `data-plane-posture.ts` exports `checkDataPlanePosture`
@@ -115,6 +118,7 @@ scripts/migrations/
 In-memory Map stores (~50+ across the codebase) are **intentionally ephemeral**.
 They reset on API restart and serve as caches or VistA-first transient stores.
 These include:
+
 - Imaging worklist/ingest stores
 - Telehealth room store
 - EDI pipeline state

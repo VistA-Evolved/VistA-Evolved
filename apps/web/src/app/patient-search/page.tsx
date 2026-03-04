@@ -1,14 +1,21 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import Link from "next/link";
-import styles from "./page.module.css";
+import { useState, useEffect, useRef, useCallback } from 'react';
+import Link from 'next/link';
+import styles from './page.module.css';
 import { API_BASE } from '@/lib/api-config';
+import type {
+  PatientSummary,
+  PatientDemographics,
+  Allergy,
+  Vital,
+  Note,
+  Medication,
+  Problem,
+} from '@vista-evolved/shared-types';
 
-interface Patient {
-  dfn: string;
-  name: string;
-}
+/** @deprecated Local alias — use PatientSummary directly */
+type Patient = PatientSummary;
 
 interface SearchResult {
   ok: boolean;
@@ -18,25 +25,11 @@ interface SearchResult {
   error?: string;
 }
 
-interface PatientDemographics {
-  dfn: string;
-  name: string;
-  dob: string;
-  sex: string;
-}
-
 interface DemographicsResult {
   ok: boolean;
   patient?: PatientDemographics;
   rpcUsed?: string;
   error?: string;
-}
-
-interface Allergy {
-  id: string;
-  allergen: string;
-  severity: string;
-  reactions: string;
 }
 
 interface AllergiesResult {
@@ -47,27 +40,12 @@ interface AllergiesResult {
   error?: string;
 }
 
-interface Vital {
-  type: string;
-  value: string;
-  takenAt: string;
-}
-
 interface VitalsResult {
   ok: boolean;
   count?: number;
   results?: Vital[];
   rpcUsed?: string;
   error?: string;
-}
-
-interface Note {
-  id: string;
-  title: string;
-  date: string;
-  author: string;
-  location: string;
-  status: string;
 }
 
 interface NotesResult {
@@ -78,26 +56,12 @@ interface NotesResult {
   error?: string;
 }
 
-interface Medication {
-  id: string;
-  name: string;
-  sig: string;
-  status: string;
-}
-
 interface MedicationsResult {
   ok: boolean;
   count?: number;
   results?: Medication[];
   rpcUsed?: string;
   error?: string;
-}
-
-interface Problem {
-  id: string;
-  text: string;
-  status: string;
-  onset?: string;
 }
 
 interface ProblemsResult {
@@ -111,8 +75,8 @@ interface ProblemsResult {
 const DEBOUNCE_MS = 400;
 
 export default function PatientSearchPage() {
-  const [query, setQuery] = useState("SMI");
-  const [debouncedQuery, setDebouncedQuery] = useState("SMI");
+  const [query, setQuery] = useState('SMI');
+  const [debouncedQuery, setDebouncedQuery] = useState('SMI');
   const [results, setResults] = useState<Patient[]>([]);
   const [count, setCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
@@ -124,37 +88,37 @@ export default function PatientSearchPage() {
   const [allergies, setAllergies] = useState<Allergy[]>([]);
   const [allergyLoading, setAllergyLoading] = useState(false);
   const [allergyError, setAllergyError] = useState<string | null>(null);
-  const [newAllergen, setNewAllergen] = useState("");
+  const [newAllergen, setNewAllergen] = useState('');
   const [addLoading, setAddLoading] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
   const [addSuccess, setAddSuccess] = useState<string | null>(null);
   const [vitals, setVitals] = useState<Vital[]>([]);
   const [vitalsLoading, setVitalsLoading] = useState(false);
   const [vitalsError, setVitalsError] = useState<string | null>(null);
-  const [newVitalType, setNewVitalType] = useState("BP");
-  const [newVitalValue, setNewVitalValue] = useState("");
+  const [newVitalType, setNewVitalType] = useState('BP');
+  const [newVitalValue, setNewVitalValue] = useState('');
   const [addVitalLoading, setAddVitalLoading] = useState(false);
   const [addVitalError, setAddVitalError] = useState<string | null>(null);
   const [addVitalSuccess, setAddVitalSuccess] = useState<string | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [notesLoading, setNotesLoading] = useState(false);
   const [notesError, setNotesError] = useState<string | null>(null);
-  const [newNoteTitle, setNewNoteTitle] = useState("");
-  const [newNoteText, setNewNoteText] = useState("");
+  const [newNoteTitle, setNewNoteTitle] = useState('');
+  const [newNoteText, setNewNoteText] = useState('');
   const [addNoteLoading, setAddNoteLoading] = useState(false);
   const [addNoteError, setAddNoteError] = useState<string | null>(null);
   const [addNoteSuccess, setAddNoteSuccess] = useState<string | null>(null);
   const [medications, setMedications] = useState<Medication[]>([]);
   const [medsLoading, setMedsLoading] = useState(false);
   const [medsError, setMedsError] = useState<string | null>(null);
-  const [newMedDrug, setNewMedDrug] = useState("");
+  const [newMedDrug, setNewMedDrug] = useState('');
   const [addMedLoading, setAddMedLoading] = useState(false);
   const [addMedError, setAddMedError] = useState<string | null>(null);
   const [addMedSuccess, setAddMedSuccess] = useState<string | null>(null);
   const [problems, setProblems] = useState<Problem[]>([]);
   const [problemsLoading, setProblemsLoading] = useState(false);
   const [problemsError, setProblemsError] = useState<string | null>(null);
-  const [newProblemText, setNewProblemText] = useState("");
+  const [newProblemText, setNewProblemText] = useState('');
   const [addProblemLoading, setAddProblemLoading] = useState(false);
   const [addProblemError, setAddProblemError] = useState<string | null>(null);
   const [addProblemSuccess, setAddProblemSuccess] = useState<string | null>(null);
@@ -185,10 +149,9 @@ export default function PatientSearchPage() {
     setError(null);
 
     try {
-      const res = await fetch(
-        `${API_BASE}/vista/patient-search?q=${encodeURIComponent(trimmed)}`,
-        { credentials: 'include' }
-      );
+      const res = await fetch(`${API_BASE}/vista/patient-search?q=${encodeURIComponent(trimmed)}`, {
+        credentials: 'include',
+      });
       const data: SearchResult = await res.json();
 
       if (!res.ok || !data.ok) {
@@ -200,9 +163,7 @@ export default function PatientSearchPage() {
         setCount(data.count);
       }
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to reach API server"
-      );
+      setError(err instanceof Error ? err.message : 'Failed to reach API server');
       setResults([]);
       setCount(null);
     } finally {
@@ -219,10 +180,9 @@ export default function PatientSearchPage() {
     setAllergyLoading(true);
     setAllergyError(null);
     try {
-      const allergyRes = await fetch(
-        `${API_BASE}/vista/allergies?dfn=${encodeURIComponent(dfn)}`,
-        { credentials: 'include' }
-      );
+      const allergyRes = await fetch(`${API_BASE}/vista/allergies?dfn=${encodeURIComponent(dfn)}`, {
+        credentials: 'include',
+      });
       const allergyData: AllergiesResult = await allergyRes.json();
 
       if (!allergyRes.ok || !allergyData.ok) {
@@ -231,9 +191,7 @@ export default function PatientSearchPage() {
         setAllergies(allergyData.results || []);
       }
     } catch (err) {
-      setAllergyError(
-        err instanceof Error ? err.message : "Failed to reach API server"
-      );
+      setAllergyError(err instanceof Error ? err.message : 'Failed to reach API server');
     } finally {
       setAllergyLoading(false);
     }
@@ -244,10 +202,9 @@ export default function PatientSearchPage() {
     setVitalsLoading(true);
     setVitalsError(null);
     try {
-      const res = await fetch(
-        `${API_BASE}/vista/vitals?dfn=${encodeURIComponent(dfn)}`,
-        { credentials: 'include' }
-      );
+      const res = await fetch(`${API_BASE}/vista/vitals?dfn=${encodeURIComponent(dfn)}`, {
+        credentials: 'include',
+      });
       const data: VitalsResult = await res.json();
 
       if (!res.ok || !data.ok) {
@@ -256,9 +213,7 @@ export default function PatientSearchPage() {
         setVitals(data.results || []);
       }
     } catch (err) {
-      setVitalsError(
-        err instanceof Error ? err.message : "Failed to reach API server"
-      );
+      setVitalsError(err instanceof Error ? err.message : 'Failed to reach API server');
     } finally {
       setVitalsLoading(false);
     }
@@ -269,10 +224,9 @@ export default function PatientSearchPage() {
     setNotesLoading(true);
     setNotesError(null);
     try {
-      const res = await fetch(
-        `${API_BASE}/vista/notes?dfn=${encodeURIComponent(dfn)}`,
-        { credentials: 'include' }
-      );
+      const res = await fetch(`${API_BASE}/vista/notes?dfn=${encodeURIComponent(dfn)}`, {
+        credentials: 'include',
+      });
       const data: NotesResult = await res.json();
 
       if (!res.ok || !data.ok) {
@@ -281,9 +235,7 @@ export default function PatientSearchPage() {
         setNotes(data.results || []);
       }
     } catch (err) {
-      setNotesError(
-        err instanceof Error ? err.message : "Failed to reach API server"
-      );
+      setNotesError(err instanceof Error ? err.message : 'Failed to reach API server');
     } finally {
       setNotesLoading(false);
     }
@@ -294,10 +246,9 @@ export default function PatientSearchPage() {
     setMedsLoading(true);
     setMedsError(null);
     try {
-      const res = await fetch(
-        `${API_BASE}/vista/medications?dfn=${encodeURIComponent(dfn)}`,
-        { credentials: 'include' }
-      );
+      const res = await fetch(`${API_BASE}/vista/medications?dfn=${encodeURIComponent(dfn)}`, {
+        credentials: 'include',
+      });
       const data: MedicationsResult = await res.json();
 
       if (!res.ok || !data.ok) {
@@ -306,9 +257,7 @@ export default function PatientSearchPage() {
         setMedications(data.results || []);
       }
     } catch (err) {
-      setMedsError(
-        err instanceof Error ? err.message : "Failed to reach API server"
-      );
+      setMedsError(err instanceof Error ? err.message : 'Failed to reach API server');
     } finally {
       setMedsLoading(false);
     }
@@ -319,10 +268,9 @@ export default function PatientSearchPage() {
     setProblemsLoading(true);
     setProblemsError(null);
     try {
-      const res = await fetch(
-        `${API_BASE}/vista/problems?dfn=${encodeURIComponent(dfn)}`,
-        { credentials: 'include' }
-      );
+      const res = await fetch(`${API_BASE}/vista/problems?dfn=${encodeURIComponent(dfn)}`, {
+        credentials: 'include',
+      });
       const data: ProblemsResult = await res.json();
 
       if (!res.ok || !data.ok) {
@@ -331,9 +279,7 @@ export default function PatientSearchPage() {
         setProblems(data.results || []);
       }
     } catch (err) {
-      setProblemsError(
-        err instanceof Error ? err.message : "Failed to reach API server"
-      );
+      setProblemsError(err instanceof Error ? err.message : 'Failed to reach API server');
     } finally {
       setProblemsLoading(false);
     }
@@ -348,8 +294,8 @@ export default function PatientSearchPage() {
 
     try {
       const res = await fetch(`${API_BASE}/vista/medications`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({ dfn: selected.dfn, drug: newMedDrug.trim() }),
       });
@@ -358,15 +304,13 @@ export default function PatientSearchPage() {
       if (!res.ok || !data.ok) {
         setAddMedError(data.error || `Server error (${res.status})`);
       } else {
-        setAddMedSuccess(data.message || "Medication ordered");
-        setNewMedDrug("");
+        setAddMedSuccess(data.message || 'Medication ordered');
+        setNewMedDrug('');
         // Refresh medications list
         await fetchMedications(selected.dfn);
       }
     } catch (err) {
-      setAddMedError(
-        err instanceof Error ? err.message : "Failed to reach API server"
-      );
+      setAddMedError(err instanceof Error ? err.message : 'Failed to reach API server');
     } finally {
       setAddMedLoading(false);
     }
@@ -380,8 +324,8 @@ export default function PatientSearchPage() {
 
     try {
       const res = await fetch(`${API_BASE}/vista/problems`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({ dfn: selected.dfn, text: newProblemText.trim() }),
       });
@@ -391,80 +335,79 @@ export default function PatientSearchPage() {
         // For Phase 9B, this will return a documented blocker explaining why it's not implemented
         setAddProblemError(data.error || `Server error (${res.status})`);
       } else {
-        setAddProblemSuccess(data.message || "Problem added");
-        setNewProblemText("");
+        setAddProblemSuccess(data.message || 'Problem added');
+        setNewProblemText('');
         // Refresh problems list
         await fetchProblems(selected.dfn);
       }
     } catch (err) {
-      setAddProblemError(
-        err instanceof Error ? err.message : "Failed to reach API server"
-      );
+      setAddProblemError(err instanceof Error ? err.message : 'Failed to reach API server');
     } finally {
       setAddProblemLoading(false);
     }
   }, [selected, newProblemText, fetchProblems]);
-  const selectPatient = useCallback(async (pt: Patient) => {
-    setSelected(pt);
-    setDemographics(null);
-    setDemoError(null);
-    setDemoLoading(true);
-    setAllergies([]);
-    setAllergyError(null);
-    setNewAllergen("");
-    setAddError(null);
-    setAddSuccess(null);
-    setVitals([]);
-    setVitalsError(null);
-    setNewVitalValue("");
-    setAddVitalError(null);
-    setAddVitalSuccess(null);
-    setNotes([]);
-    setNotesError(null);
-    setNewNoteTitle("");
-    setNewNoteText("");
-    setAddNoteError(null);
-    setAddNoteSuccess(null);
-    setMedications([]);
-    setMedsError(null);
-    setNewMedDrug("");
-    setAddMedError(null);
-    setAddMedSuccess(null);
-    setProblems([]);
-    setProblemsError(null);
-    setNewProblemText("");
-    setAddProblemError(null);
-    setAddProblemSuccess(null);
+  const selectPatient = useCallback(
+    async (pt: Patient) => {
+      setSelected(pt);
+      setDemographics(null);
+      setDemoError(null);
+      setDemoLoading(true);
+      setAllergies([]);
+      setAllergyError(null);
+      setNewAllergen('');
+      setAddError(null);
+      setAddSuccess(null);
+      setVitals([]);
+      setVitalsError(null);
+      setNewVitalValue('');
+      setAddVitalError(null);
+      setAddVitalSuccess(null);
+      setNotes([]);
+      setNotesError(null);
+      setNewNoteTitle('');
+      setNewNoteText('');
+      setAddNoteError(null);
+      setAddNoteSuccess(null);
+      setMedications([]);
+      setMedsError(null);
+      setNewMedDrug('');
+      setAddMedError(null);
+      setAddMedSuccess(null);
+      setProblems([]);
+      setProblemsError(null);
+      setNewProblemText('');
+      setAddProblemError(null);
+      setAddProblemSuccess(null);
 
-    try {
-      const res = await fetch(
-        `${API_BASE}/vista/patient-demographics?dfn=${encodeURIComponent(pt.dfn)}`,
-        { credentials: 'include' }
-      );
-      const data: DemographicsResult = await res.json();
+      try {
+        const res = await fetch(
+          `${API_BASE}/vista/patient-demographics?dfn=${encodeURIComponent(pt.dfn)}`,
+          { credentials: 'include' }
+        );
+        const data: DemographicsResult = await res.json();
 
-      if (!res.ok || !data.ok) {
-        setDemoError(data.error || `Server error (${res.status})`);
-      } else if (data.patient) {
-        setDemographics(data.patient);
+        if (!res.ok || !data.ok) {
+          setDemoError(data.error || `Server error (${res.status})`);
+        } else if (data.patient) {
+          setDemographics(data.patient);
+        }
+      } catch (err) {
+        setDemoError(err instanceof Error ? err.message : 'Failed to reach API server');
+      } finally {
+        setDemoLoading(false);
       }
-    } catch (err) {
-      setDemoError(
-        err instanceof Error ? err.message : "Failed to reach API server"
-      );
-    } finally {
-      setDemoLoading(false);
-    }
 
-    // Fetch allergies, vitals, notes, medications, and problems in parallel
-    await Promise.all([
-      fetchAllergies(pt.dfn),
-      fetchVitals(pt.dfn),
-      fetchNotes(pt.dfn),
-      fetchMedications(pt.dfn),
-      fetchProblems(pt.dfn),
-    ]);
-  }, [fetchAllergies, fetchVitals, fetchNotes, fetchMedications, fetchProblems]);
+      // Fetch allergies, vitals, notes, medications, and problems in parallel
+      await Promise.all([
+        fetchAllergies(pt.dfn),
+        fetchVitals(pt.dfn),
+        fetchNotes(pt.dfn),
+        fetchMedications(pt.dfn),
+        fetchProblems(pt.dfn),
+      ]);
+    },
+    [fetchAllergies, fetchVitals, fetchNotes, fetchMedications, fetchProblems]
+  );
 
   // Add a new allergy for the selected patient
   const addAllergy = useCallback(async () => {
@@ -475,8 +418,8 @@ export default function PatientSearchPage() {
 
     try {
       const res = await fetch(`${API_BASE}/vista/allergies`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({ dfn: selected.dfn, allergyText: newAllergen.trim() }),
       });
@@ -486,21 +429,19 @@ export default function PatientSearchPage() {
         setAddError(data.error || `Server error (${res.status})`);
       } else {
         setAddSuccess(`Added ${data.allergen}`);
-        setNewAllergen("");
+        setNewAllergen('');
         // Refresh allergies list
         await fetchAllergies(selected.dfn);
       }
     } catch (err) {
-      setAddError(
-        err instanceof Error ? err.message : "Failed to reach API server"
-      );
+      setAddError(err instanceof Error ? err.message : 'Failed to reach API server');
     } finally {
       setAddLoading(false);
     }
   }, [selected, newAllergen, fetchAllergies]);
 
   // Add a vital for the selected patient
-  const VITAL_TYPES = ["BP", "T", "P", "R", "HT", "WT", "PO2", "PN"];
+  const VITAL_TYPES = ['BP', 'T', 'P', 'R', 'HT', 'WT', 'PO2', 'PN'];
   const addVital = useCallback(async () => {
     if (!selected || newVitalValue.trim().length < 1) return;
     setAddVitalLoading(true);
@@ -509,10 +450,14 @@ export default function PatientSearchPage() {
 
     try {
       const res = await fetch(`${API_BASE}/vista/vitals`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ dfn: selected.dfn, type: newVitalType, value: newVitalValue.trim() }),
+        body: JSON.stringify({
+          dfn: selected.dfn,
+          type: newVitalType,
+          value: newVitalValue.trim(),
+        }),
       });
       const data = await res.json();
 
@@ -520,14 +465,12 @@ export default function PatientSearchPage() {
         setAddVitalError(data.error || `Server error (${res.status})`);
       } else {
         setAddVitalSuccess(`Recorded ${data.type} ${data.value}`);
-        setNewVitalValue("");
+        setNewVitalValue('');
         // Refresh vitals list
         await fetchVitals(selected.dfn);
       }
     } catch (err) {
-      setAddVitalError(
-        err instanceof Error ? err.message : "Failed to reach API server"
-      );
+      setAddVitalError(err instanceof Error ? err.message : 'Failed to reach API server');
     } finally {
       setAddVitalLoading(false);
     }
@@ -542,10 +485,14 @@ export default function PatientSearchPage() {
 
     try {
       const res = await fetch(`${API_BASE}/vista/notes`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ dfn: selected.dfn, title: newNoteTitle.trim(), text: newNoteText.trim() }),
+        body: JSON.stringify({
+          dfn: selected.dfn,
+          title: newNoteTitle.trim(),
+          text: newNoteText.trim(),
+        }),
       });
       const data = await res.json();
 
@@ -553,15 +500,13 @@ export default function PatientSearchPage() {
         setAddNoteError(data.error || `Server error (${res.status})`);
       } else {
         setAddNoteSuccess(`Note created (ID: ${data.id})`);
-        setNewNoteTitle("");
-        setNewNoteText("");
+        setNewNoteTitle('');
+        setNewNoteText('');
         // Refresh notes list
         await fetchNotes(selected.dfn);
       }
     } catch (err) {
-      setAddNoteError(
-        err instanceof Error ? err.message : "Failed to reach API server"
-      );
+      setAddNoteError(err instanceof Error ? err.message : 'Failed to reach API server');
     } finally {
       setAddNoteLoading(false);
     }
@@ -575,9 +520,7 @@ export default function PatientSearchPage() {
         </Link>
 
         <h1 className={styles.title}>Patient Search</h1>
-        <p className={styles.subtitle}>
-          Search VistA patients by last name (via ORWPT LIST ALL)
-        </p>
+        <p className={styles.subtitle}>Search VistA patients by last name (via ORWPT LIST ALL)</p>
 
         <div className={styles.searchBox}>
           <label htmlFor="patient-query" className={styles.label}>
@@ -597,12 +540,8 @@ export default function PatientSearchPage() {
         {selected && (
           <div className={styles.patientHeader}>
             <h2 className={styles.patientHeaderTitle}>Patient Header</h2>
-            {demoLoading && (
-              <p className={styles.loading}>Loading demographics…</p>
-            )}
-            {demoError && (
-              <div className={styles.error}>{demoError}</div>
-            )}
+            {demoLoading && <p className={styles.loading}>Loading demographics…</p>}
+            {demoError && <div className={styles.error}>{demoError}</div>}
             {demographics && (
               <div className={styles.patientGrid}>
                 <div className={styles.patientField}>
@@ -629,12 +568,8 @@ export default function PatientSearchPage() {
         {selected && (
           <div className={styles.allergiesSection}>
             <h2 className={styles.allergiesSectionTitle}>Allergies</h2>
-            {allergyLoading && (
-              <p className={styles.loading}>Loading allergies…</p>
-            )}
-            {allergyError && (
-              <div className={styles.error}>{allergyError}</div>
-            )}
+            {allergyLoading && <p className={styles.loading}>Loading allergies…</p>}
+            {allergyError && <div className={styles.error}>{allergyError}</div>}
             {!allergyLoading && !allergyError && allergies.length === 0 && (
               <p className={styles.empty}>No known allergies.</p>
             )}
@@ -644,11 +579,11 @@ export default function PatientSearchPage() {
                   <li key={a.id} className={styles.allergyItem}>
                     <div className={styles.allergyName}>{a.allergen}</div>
                     <div className={styles.allergyMeta}>
-                      {a.severity && (
-                        <span className={styles.allergySeverity}>{a.severity}</span>
-                      )}
+                      {a.severity && <span className={styles.allergySeverity}>{a.severity}</span>}
                       {a.reactions && (
-                        <span className={styles.allergyReactions}>{a.reactions.replace(/;/g, ", ")}</span>
+                        <span className={styles.allergyReactions}>
+                          {a.reactions.replace(/;/g, ', ')}
+                        </span>
                       )}
                     </div>
                   </li>
@@ -672,7 +607,7 @@ export default function PatientSearchPage() {
                   placeholder="Allergen name (e.g., PENICILLIN)"
                   disabled={addLoading}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") addAllergy();
+                    if (e.key === 'Enter') addAllergy();
                   }}
                 />
                 <button
@@ -680,7 +615,7 @@ export default function PatientSearchPage() {
                   onClick={addAllergy}
                   disabled={addLoading || newAllergen.trim().length < 2}
                 >
-                  {addLoading ? "Saving…" : "Add"}
+                  {addLoading ? 'Saving…' : 'Add'}
                 </button>
               </div>
               {addError && <div className={styles.addAllergyError}>{addError}</div>}
@@ -693,12 +628,8 @@ export default function PatientSearchPage() {
         {selected && (
           <div className={styles.vitalsSection}>
             <h2 className={styles.vitalsSectionTitle}>Vitals</h2>
-            {vitalsLoading && (
-              <p className={styles.loading}>Loading vitals…</p>
-            )}
-            {vitalsError && (
-              <div className={styles.error}>{vitalsError}</div>
-            )}
+            {vitalsLoading && <p className={styles.loading}>Loading vitals…</p>}
+            {vitalsError && <div className={styles.error}>{vitalsError}</div>}
             {!vitalsLoading && !vitalsError && vitals.length === 0 && (
               <p className={styles.empty}>No vitals found.</p>
             )}
@@ -738,7 +669,9 @@ export default function PatientSearchPage() {
                   disabled={addVitalLoading}
                 >
                   {VITAL_TYPES.map((t) => (
-                    <option key={t} value={t}>{t}</option>
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
                   ))}
                 </select>
                 <input
@@ -752,7 +685,7 @@ export default function PatientSearchPage() {
                   placeholder="Value (e.g., 120/80)"
                   disabled={addVitalLoading}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") addVital();
+                    if (e.key === 'Enter') addVital();
                   }}
                 />
                 <button
@@ -760,7 +693,7 @@ export default function PatientSearchPage() {
                   onClick={addVital}
                   disabled={addVitalLoading || newVitalValue.trim().length < 1}
                 >
-                  {addVitalLoading ? "Saving…" : "Record"}
+                  {addVitalLoading ? 'Saving…' : 'Record'}
                 </button>
               </div>
               {addVitalError && <div className={styles.addVitalError}>{addVitalError}</div>}
@@ -773,12 +706,8 @@ export default function PatientSearchPage() {
         {selected && (
           <div className={styles.medsSection}>
             <h2 className={styles.medsSectionTitle}>Medications</h2>
-            {medsLoading && (
-              <p className={styles.loading}>Loading medications…</p>
-            )}
-            {medsError && (
-              <div className={styles.error}>{medsError}</div>
-            )}
+            {medsLoading && <p className={styles.loading}>Loading medications…</p>}
+            {medsError && <div className={styles.error}>{medsError}</div>}
             {!medsLoading && !medsError && medications.length === 0 && (
               <p className={styles.empty}>No active medications.</p>
             )}
@@ -814,7 +743,7 @@ export default function PatientSearchPage() {
                   value={newMedDrug}
                   onChange={(e) => setNewMedDrug(e.target.value)}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") addMedication();
+                    if (e.key === 'Enter') addMedication();
                   }}
                   disabled={addMedLoading}
                 />
@@ -823,7 +752,7 @@ export default function PatientSearchPage() {
                   onClick={addMedication}
                   disabled={addMedLoading || newMedDrug.trim().length < 2}
                 >
-                  {addMedLoading ? "Ordering…" : "Order"}
+                  {addMedLoading ? 'Ordering…' : 'Order'}
                 </button>
               </div>
               {addMedError && <div className={styles.addMedError}>{addMedError}</div>}
@@ -836,12 +765,8 @@ export default function PatientSearchPage() {
         {selected && (
           <div className={styles.notesSection}>
             <h2 className={styles.notesSectionTitle}>Notes</h2>
-            {notesLoading && (
-              <p className={styles.loading}>Loading notes…</p>
-            )}
-            {notesError && (
-              <div className={styles.error}>{notesError}</div>
-            )}
+            {notesLoading && <p className={styles.loading}>Loading notes…</p>}
+            {notesError && <div className={styles.error}>{notesError}</div>}
             {!notesLoading && !notesError && notes.length === 0 && (
               <p className={styles.empty}>No notes found.</p>
             )}
@@ -901,9 +826,11 @@ export default function PatientSearchPage() {
               <button
                 className={styles.addNoteBtn}
                 onClick={addNote}
-                disabled={addNoteLoading || newNoteTitle.trim().length < 1 || newNoteText.trim().length < 1}
+                disabled={
+                  addNoteLoading || newNoteTitle.trim().length < 1 || newNoteText.trim().length < 1
+                }
               >
-                {addNoteLoading ? "Saving…" : "Save Note"}
+                {addNoteLoading ? 'Saving…' : 'Save Note'}
               </button>
               {addNoteError && <div className={styles.addNoteError}>{addNoteError}</div>}
               {addNoteSuccess && <div className={styles.addNoteSuccess}>{addNoteSuccess}</div>}
@@ -915,12 +842,8 @@ export default function PatientSearchPage() {
         {selected && (
           <div className={styles.problemsSection}>
             <h2 className={styles.problemsSectionTitle}>Problem List</h2>
-            {problemsLoading && (
-              <p className={styles.loading}>Loading problems…</p>
-            )}
-            {problemsError && (
-              <div className={styles.error}>{problemsError}</div>
-            )}
+            {problemsLoading && <p className={styles.loading}>Loading problems…</p>}
+            {problemsError && <div className={styles.error}>{problemsError}</div>}
             {!problemsLoading && !problemsError && problems.length === 0 && (
               <p className={styles.empty}>No problems found.</p>
             )}
@@ -938,18 +861,19 @@ export default function PatientSearchPage() {
                     <tr key={p.id} className={styles.problemsRow}>
                       <td className={styles.problemsTd}>{p.text}</td>
                       <td className={styles.problemsTdStatus}>{p.status}</td>
-                      <td className={styles.problemsTdOnset}>{p.onset || "—"}</td>
+                      <td className={styles.problemsTdOnset}>{p.onset || '—'}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             )}
-            
+
             {/* Phase 9B: Add Problem form */}
             <div className={styles.addProblemForm}>
               <h3 className={styles.addProblemTitle}>Add Problem</h3>
               <p className={styles.addProblemInfo}>
-                Problem creation requires full diagnosis code validation and is currently under review. 
+                Problem creation requires full diagnosis code validation and is currently under
+                review.
                 <br />
                 <strong>Data Input:</strong> This form will be fully enabled in a future phase.
               </p>
@@ -966,14 +890,16 @@ export default function PatientSearchPage() {
                 onClick={addProblem}
                 disabled={addProblemLoading || newProblemText.trim().length < 2}
               >
-                {addProblemLoading ? "Submitting…" : "Try Add Problem"}
+                {addProblemLoading ? 'Submitting…' : 'Try Add Problem'}
               </button>
               {addProblemError && (
                 <div className={styles.addProblemError}>
                   <strong>Not Yet Implemented:</strong> {addProblemError}
                 </div>
               )}
-              {addProblemSuccess && <div className={styles.addProblemSuccess}>{addProblemSuccess}</div>}
+              {addProblemSuccess && (
+                <div className={styles.addProblemSuccess}>{addProblemSuccess}</div>
+              )}
             </div>
           </div>
         )}
@@ -985,7 +911,7 @@ export default function PatientSearchPage() {
         {!loading && !error && count !== null && (
           <>
             <p className={styles.resultCount}>
-              {count} result{count !== 1 ? "s" : ""}
+              {count} result{count !== 1 ? 's' : ''}
             </p>
             {count === 0 ? (
               <p className={styles.empty}>No patients found.</p>
@@ -999,7 +925,7 @@ export default function PatientSearchPage() {
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") selectPatient(pt);
+                      if (e.key === 'Enter' || e.key === ' ') selectPatient(pt);
                     }}
                   >
                     <span className={styles.resultName}>{pt.name}</span>

@@ -1,6 +1,7 @@
 # Phase 429 Notes
 
 ## Decisions
+
 - Uses dynamic import with vi.resetModules() to test each mode in isolation
 - Env vars snapshotted/restored per test to prevent cross-contamination
 - Mode property matrix covers all 4x4 combinations parametrically

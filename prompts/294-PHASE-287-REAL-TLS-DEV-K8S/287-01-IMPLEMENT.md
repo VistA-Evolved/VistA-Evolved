@@ -1,6 +1,7 @@
 # Phase 287 — Real TLS in Dev + K8s (IMPLEMENT)
 
 ## Goal
+
 Enable HTTPS everywhere: local development via Caddy auto-TLS, production via
 cert-manager + nginx. Eliminate plain-HTTP dev habits that mask cookie/CORS bugs.
 
@@ -19,6 +20,7 @@ cert-manager + nginx. Eliminate plain-HTTP dev habits that mask cookie/CORS bugs
 9. Create verification script `scripts/verify-phase287-tls.ps1`
 
 ## Files Touched
+
 - `infra/tls/Caddyfile` (NEW)
 - `infra/tls/docker-compose.tls.yml` (NEW)
 - `infra/tls/mkcert-bootstrap.ps1` (NEW)

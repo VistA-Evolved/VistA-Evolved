@@ -3,6 +3,7 @@
 ## Scope
 
 End-to-end verification of all Phase 10 subphases:
+
 - 10A: CPRS Inventory Extraction
 - 10B: CPRS Contract Generation
 - 10C: CPRS Replica Shell (Web UI)
@@ -59,5 +60,6 @@ Write-Host "Phase 10 FULL VERIFY complete."
 ```
 
 ## Pass criteria
+
 All file checks pass. Both `pnpm -C apps/web build` and `pnpm -C apps/api build` exit 0.
 Generator script runs without errors.

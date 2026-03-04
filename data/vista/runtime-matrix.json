@@ -193,7 +193,16 @@
       "vistaAdapter": "apps/api/src/adapters/clinical-engine/vista-adapter.ts",
       "stubAdapter": "apps/api/src/adapters/clinical-engine/stub-adapter.ts",
       "envVar": "ADAPTER_CLINICAL_ENGINE",
-      "requiredDomains": ["patient", "allergies", "vitals", "notes", "medications", "problems", "orders", "labs"]
+      "requiredDomains": [
+        "patient",
+        "allergies",
+        "vitals",
+        "notes",
+        "medications",
+        "problems",
+        "orders",
+        "labs"
+      ]
     },
     "scheduling": {
       "vistaAdapter": "apps/api/src/adapters/scheduling/vista-adapter.ts",

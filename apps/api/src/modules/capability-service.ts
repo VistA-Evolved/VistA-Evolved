@@ -10,18 +10,18 @@
  * UI rendering (feature toggles, "integration pending" badges).
  */
 
-import { readFileSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
-import { log } from "../lib/logger.js";
-import { isModuleEnabled } from "./module-registry.js";
-import { getAdapter } from "../adapters/adapter-loader.js";
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { log } from '../lib/logger.js';
+import { isModuleEnabled } from './module-registry.js';
+import { getAdapter } from '../adapters/adapter-loader.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type CapabilityStatus = "live" | "pending" | "disabled" | "external";
+export type CapabilityStatus = 'live' | 'pending' | 'disabled' | 'external';
 
 export interface CapabilityDefinition {
   status: CapabilityStatus;
@@ -57,7 +57,7 @@ export interface ResolvedCapability {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const CONFIG_ROOT = join(__dirname, "..", "..", "..", "..", "config");
+const CONFIG_ROOT = join(__dirname, '..', '..', '..', '..', 'config');
 
 let capabilityDefinitions: Record<string, CapabilityDefinition> = {};
 
@@ -67,15 +67,15 @@ let capabilityDefinitions: Record<string, CapabilityDefinition> = {};
 
 export function initCapabilityService(): void {
   try {
-    const capsPath = join(CONFIG_ROOT, "capabilities.json");
-    const capsData = JSON.parse(readFileSync(capsPath, "utf-8"));
+    const capsPath = join(CONFIG_ROOT, 'capabilities.json');
+    const capsData = JSON.parse(readFileSync(capsPath, 'utf-8'));
     capabilityDefinitions = capsData.capabilities || {};
 
-    log.info("Capability service initialized", {
+    log.info('Capability service initialized', {
       capabilityCount: Object.keys(capabilityDefinitions).length,
     });
   } catch (err: any) {
-    log.warn("Failed to load capabilities.json, using empty set", {
+    log.warn('Failed to load capabilities.json, using empty set', {
       error: err.message,
     });
     capabilityDefinitions = {};
@@ -99,7 +99,7 @@ export function getCapabilityDefinitions(): Record<string, CapabilityDefinition>
  * 2. If adapter is required but unavailable → capability is "pending"
  * 3. Otherwise → use configured status
  */
-export function resolveCapabilities(tenantId: string = "default"): ResolvedCapability[] {
+export function resolveCapabilities(tenantId: string = 'default'): ResolvedCapability[] {
   const results: ResolvedCapability[] = [];
 
   for (const [name, def] of Object.entries(capabilityDefinitions)) {
@@ -108,19 +108,19 @@ export function resolveCapabilities(tenantId: string = "default"): ResolvedCapab
 
     // 1. Check module enablement
     if (!isModuleEnabled(def.module, tenantId)) {
-      effectiveStatus = "disabled";
+      effectiveStatus = 'disabled';
       reason = `Module '${def.module}' is not enabled for tenant '${tenantId}'`;
     }
     // 2. Check adapter availability (only if module is enabled)
     else if (def.adapter) {
       const adapter = getAdapter(def.adapter);
       if (!adapter) {
-        effectiveStatus = "pending";
+        effectiveStatus = 'pending';
         reason = `Adapter '${def.adapter}' is not loaded`;
       } else if (adapter._isStub) {
         // Stub adapter → mark as pending unless already pending
-        if (effectiveStatus === "live") {
-          effectiveStatus = "pending";
+        if (effectiveStatus === 'live') {
+          effectiveStatus = 'pending';
           reason = `Adapter '${def.adapter}' is using stub implementation`;
         }
       }
@@ -146,7 +146,7 @@ export function resolveCapabilities(tenantId: string = "default"): ResolvedCapab
  */
 export function isCapabilityAvailable(
   capabilityName: string,
-  tenantId: string = "default"
+  tenantId: string = 'default'
 ): boolean {
   const def = capabilityDefinitions[capabilityName];
   if (!def) return false;
@@ -160,14 +160,14 @@ export function isCapabilityAvailable(
     if (!adapter || adapter._isStub) return false;
   }
 
-  return def.status === "live" || def.status === "external";
+  return def.status === 'live' || def.status === 'external';
 }
 
 /**
  * Get capabilities grouped by module (for UI rendering).
  */
 export function getCapabilitiesByModule(
-  tenantId: string = "default"
+  tenantId: string = 'default'
 ): Record<string, ResolvedCapability[]> {
   const all = resolveCapabilities(tenantId);
   const grouped: Record<string, ResolvedCapability[]> = {};
@@ -183,7 +183,7 @@ export function getCapabilitiesByModule(
 /**
  * Get summary stats for capabilities (admin dashboard).
  */
-export function getCapabilitySummary(tenantId: string = "default"): {
+export function getCapabilitySummary(tenantId: string = 'default'): {
   total: number;
   live: number;
   pending: number;
@@ -206,9 +206,9 @@ export function getCapabilitySummary(tenantId: string = "default"): {
     if (!summary.byModule[cap.module]) {
       summary.byModule[cap.module] = { live: 0, pending: 0, disabled: 0 };
     }
-    if (cap.effectiveStatus === "live" || cap.effectiveStatus === "external") {
+    if (cap.effectiveStatus === 'live' || cap.effectiveStatus === 'external') {
       summary.byModule[cap.module].live++;
-    } else if (cap.effectiveStatus === "pending") {
+    } else if (cap.effectiveStatus === 'pending') {
       summary.byModule[cap.module].pending++;
     } else {
       summary.byModule[cap.module].disabled++;

@@ -9,6 +9,7 @@
 5. Verify provisioning status endpoint returns correct routine health
 
 ## Acceptance Criteria
+
 - [ ] All production-mode runtime guards enforce PG requirement
 - [ ] OIDC mandatory in rc/prod mode
 - [ ] Cookie secure flags aligned with PLATFORM_RUNTIME_MODE

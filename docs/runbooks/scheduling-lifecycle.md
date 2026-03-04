@@ -10,14 +10,14 @@
 Phase 139 adds six new scheduling endpoints and a clinic preferences table
 on top of the existing Phases 63/123/131 scheduling infrastructure:
 
-| Endpoint | Method | Purpose |
-|----------|--------|---------|
-| `/scheduling/appointments/:id/checkin` | POST | Transition to `checked_in` |
-| `/scheduling/appointments/:id/checkout` | POST | Transition to `completed` |
-| `/scheduling/requests/:id/approve` | POST | Approve pending request |
-| `/scheduling/requests/:id/reject` | POST | Reject pending request |
-| `/scheduling/clinic/:ien/preferences` | GET | Read clinic scheduling config |
-| `/scheduling/clinic/:ien/preferences` | PUT | Update clinic scheduling config |
+| Endpoint                                | Method | Purpose                         |
+| --------------------------------------- | ------ | ------------------------------- |
+| `/scheduling/appointments/:id/checkin`  | POST   | Transition to `checked_in`      |
+| `/scheduling/appointments/:id/checkout` | POST   | Transition to `completed`       |
+| `/scheduling/requests/:id/approve`      | POST   | Approve pending request         |
+| `/scheduling/requests/:id/reject`       | POST   | Reject pending request          |
+| `/scheduling/clinic/:ien/preferences`   | GET    | Read clinic scheduling config   |
+| `/scheduling/clinic/:ien/preferences`   | PUT    | Update clinic scheduling config |
 
 Total scheduling endpoints: **25** (19 existing + 6 new).
 
@@ -33,12 +33,12 @@ Total scheduling endpoints: **25** (19 existing + 6 new).
 
 ## VistA Grounding
 
-| Action | Target RPC | Sandbox Status |
-|--------|-----------|----------------|
-| Check-in | `SDOE UPDATE ENCOUNTER` | integration_pending |
-| Check-out | `SDOE UPDATE ENCOUNTER` | integration_pending |
-| Approve/Reject | N/A (local triage) | live |
-| Clinic prefs | N/A (overlay config) | live |
+| Action         | Target RPC              | Sandbox Status      |
+| -------------- | ----------------------- | ------------------- |
+| Check-in       | `SDOE UPDATE ENCOUNTER` | integration_pending |
+| Check-out      | `SDOE UPDATE ENCOUNTER` | integration_pending |
+| Approve/Reject | N/A (local triage)      | live                |
+| Clinic prefs   | N/A (overlay config)    | live                |
 
 Check-in and check-out record lifecycle transitions in Postgres. VistA
 writeback via `SDOE UPDATE ENCOUNTER` is the migration target when moving
@@ -87,12 +87,12 @@ Valid transitions are enforced by `isValidTransition()` in
 
 ## Audit Actions (immutable-audit.ts)
 
-| Action | Trigger |
-|--------|---------|
-| `scheduling.checkin` | POST checkin |
-| `scheduling.checkout` | POST checkout |
-| `scheduling.approve` | POST approve |
-| `scheduling.reject` | POST reject |
+| Action                          | Trigger         |
+| ------------------------------- | --------------- |
+| `scheduling.checkin`            | POST checkin    |
+| `scheduling.checkout`           | POST checkout   |
+| `scheduling.approve`            | POST approve    |
+| `scheduling.reject`             | POST reject     |
 | `scheduling.clinic_preferences` | PUT preferences |
 
 ---
@@ -100,6 +100,7 @@ Valid transitions are enforced by `isValidTransition()` in
 ## Capabilities (capabilities.json)
 
 Five new entries added:
+
 - `scheduling.checkin` (configured, targets SDOE UPDATE ENCOUNTER)
 - `scheduling.checkout` (configured, targets SDOE UPDATE ENCOUNTER)
 - `scheduling.request.approve` (live)
@@ -160,14 +161,14 @@ curl -X PUT http://localhost:3001/scheduling/clinic/44/preferences \
 
 ## Files Changed
 
-| File | Change |
-|------|--------|
-| `apps/api/src/routes/scheduling/index.ts` | +6 endpoints |
-| `apps/api/src/platform/pg/pg-schema.ts` | +pgClinicPreferences |
-| `apps/api/src/platform/pg/pg-migrate.ts` | +migration v16 + RLS |
-| `apps/api/src/platform/pg/repo/pg-clinic-preferences-repo.ts` | New repo |
-| `apps/api/src/lib/immutable-audit.ts` | +5 audit actions |
-| `config/capabilities.json` | +5 capabilities |
-| `apps/web/src/app/cprs/scheduling/page.tsx` | +approve/reject/checkin/checkout UI |
-| `apps/portal/src/app/dashboard/appointments/page.tsx` | +lifecycle status display |
-| `scripts/vista/inventory-scheduling.mjs` | New inventory script |
+| File                                                          | Change                              |
+| ------------------------------------------------------------- | ----------------------------------- |
+| `apps/api/src/routes/scheduling/index.ts`                     | +6 endpoints                        |
+| `apps/api/src/platform/pg/pg-schema.ts`                       | +pgClinicPreferences                |
+| `apps/api/src/platform/pg/pg-migrate.ts`                      | +migration v16 + RLS                |
+| `apps/api/src/platform/pg/repo/pg-clinic-preferences-repo.ts` | New repo                            |
+| `apps/api/src/lib/immutable-audit.ts`                         | +5 audit actions                    |
+| `config/capabilities.json`                                    | +5 capabilities                     |
+| `apps/web/src/app/cprs/scheduling/page.tsx`                   | +approve/reject/checkin/checkout UI |
+| `apps/portal/src/app/dashboard/appointments/page.tsx`         | +lifecycle status display           |
+| `scripts/vista/inventory-scheduling.mjs`                      | New inventory script                |

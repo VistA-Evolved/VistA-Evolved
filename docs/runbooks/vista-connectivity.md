@@ -18,6 +18,7 @@ docker compose --profile dev up -d
 ```
 
 Expected output:
+
 ```
 [+] Running 1/1
  ✓ Container wv  Started
@@ -45,6 +46,7 @@ Test-NetConnection 127.0.0.1 -Port 9430
 ```
 
 Expected output (if sandbox is ready):
+
 ```
 ComputerName     : 127.0.0.1
 RemoteAddress    : 127.0.0.1
@@ -64,6 +66,7 @@ pnpm -C apps/api dev
 ```
 
 Expected output (API starts):
+
 ```
 Server listening on http://127.0.0.1:3001
 ```
@@ -77,6 +80,7 @@ curl http://127.0.0.1:3001/vista/ping -UseBasicParsing
 ### Case A: Sandbox is reachable
 
 Expected output:
+
 ```
 StatusCode        : 200
 StatusDescription : OK
@@ -88,6 +92,7 @@ This confirms the API successfully connected to the VistA RPC port.
 ### Case B: Sandbox is not reachable
 
 Expected output:
+
 ```
 StatusCode        : 200
 StatusDescription : OK
@@ -95,6 +100,7 @@ Content           : {"ok":false,"vista":"unreachable","error":"<reason>","port":
 ```
 
 Common reasons for unreachability:
+
 - Container not running: `docker ps` to check; `docker compose up -d` to start
 - Port 9430 blocked: `Test-NetConnection 127.0.0.1 -Port 9430` to verify
 - Container still initializing: Wait 30 seconds and retry
@@ -108,24 +114,24 @@ curl http://127.0.0.1:3001/health -UseBasicParsing
 ```
 
 Expected output:
+
 ```
 Content           : {"ok":true}
 ```
 
 ## Interpretation
 
-| Endpoint | Status | Meaning |
-|----------|--------|---------|
-| GET /health | `{"ok":true}` | API is running |
-| GET /vista/ping | `{"ok":true,"vista":"reachable",...}` | **API can reach VistA RPC port** ✅ |
-| GET /vista/ping | `{"ok":false,"vista":"unreachable",...}` | VistA sandbox not reachable ❌ |
+| Endpoint        | Status                                   | Meaning                             |
+| --------------- | ---------------------------------------- | ----------------------------------- |
+| GET /health     | `{"ok":true}`                            | API is running                      |
+| GET /vista/ping | `{"ok":true,"vista":"reachable",...}`    | **API can reach VistA RPC port** ✅ |
+| GET /vista/ping | `{"ok":false,"vista":"unreachable",...}` | VistA sandbox not reachable ❌      |
 
 ## Next Steps (Phase 3+)
 
 1. **RPC login**: Once connectivity is confirmed, implement RPC login using mg-dbx-napi.
    - Locate VistA credentials (typically in WorldVistA image docs).
    - Add them to environment variables (.env) or secrets manager (not committed to repo).
-   
 2. **Simple RPC call**: Execute a basic VistA RPC (e.g., `XUS AV CODE`) to validate authentication.
 
 3. **Patient lookup**: Build a `/vista/patients` endpoint that queries the PATIENT file using RPC.
@@ -135,14 +141,17 @@ See `services/vista/README.md` for links to Phase 3+ planning.
 ## Troubleshooting
 
 ### curl returns 404
+
 - API may not recognize the route. Verify apps/api/src/index.ts contains the /vista/ping handler.
 - Restart API: `Ctrl+C` in running pnpm terminal, then `pnpm -C apps/api dev` again.
 
 ### docker container exits immediately
+
 - Check logs: `docker logs wv`
 - May be a broken image; try pulling fresh: `docker pull worldvista/worldvista-ehr:latest`
 
 ### Port 9430 firewall blocked (Windows)
+
 - Check Windows Firewall: `netsh advfirewall firewall show rule name="all" | findstr 9430`
 - If needed, add firewall rule (requires admin):
   ```powershell
@@ -150,6 +159,7 @@ See `services/vista/README.md` for links to Phase 3+ planning.
   ```
 
 ### Port 3001 already in use (API won't start)
+
 - Find process: `Get-NetTCPConnection -LocalPort 3001 | Select-Object -Expand OwningProcess`
 - Kill it: `taskkill /PID <PID> /F`
 - Or use a different port: `$env:PORT=3002; pnpm -C apps/api dev`

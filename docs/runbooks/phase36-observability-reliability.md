@@ -8,12 +8,12 @@
 
 ## 1. Prerequisites
 
-| Component | Version | Purpose |
-|-----------|---------|---------|
-| Docker Desktop | 4.x+ | Runs observability containers |
-| k6 | 0.50+ | Load / smoke testing |
-| Node.js | 20+ | API runtime |
-| pnpm | 9+ | Package manager |
+| Component      | Version | Purpose                       |
+| -------------- | ------- | ----------------------------- |
+| Docker Desktop | 4.x+    | Runs observability containers |
+| k6             | 0.50+   | Load / smoke testing          |
+| Node.js        | 20+     | API runtime                   |
+| pnpm           | 9+      | Package manager               |
 
 ---
 
@@ -28,11 +28,11 @@ docker compose up -d
 
 This starts three containers:
 
-| Service | Port(s) | Purpose |
-|---------|---------|---------|
+| Service            | Port(s)                                      | Purpose                                |
+| ------------------ | -------------------------------------------- | -------------------------------------- |
 | **otel-collector** | 4317 (gRPC), 4318 (HTTP), 8889 (Prom scrape) | Receives traces + metrics from the API |
-| **jaeger** | 16686 (UI) | Distributed trace viewer |
-| **prometheus** | 9090 (UI) | Metrics storage + queries |
+| **jaeger**         | 16686 (UI)                                   | Distributed trace viewer               |
+| **prometheus**     | 9090 (UI)                                    | Metrics storage + queries              |
 
 ### 2b. Enable tracing in the API
 
@@ -71,24 +71,25 @@ npx tsx --env-file=.env.local src/index.ts
 
 ### HTTP Metrics
 
-| Metric | Type | Labels | Description |
-|--------|------|--------|-------------|
-| `http_request_duration_seconds` | Histogram | method, route, status_code | Request latency |
-| `http_requests_total` | Counter | method, route, status_code | Total requests |
-| `http_active_requests` | Gauge | -- | In-flight requests |
+| Metric                          | Type      | Labels                     | Description        |
+| ------------------------------- | --------- | -------------------------- | ------------------ |
+| `http_request_duration_seconds` | Histogram | method, route, status_code | Request latency    |
+| `http_requests_total`           | Counter   | method, route, status_code | Total requests     |
+| `http_active_requests`          | Gauge     | --                         | In-flight requests |
 
 ### RPC Metrics
 
-| Metric | Type | Labels | Description |
-|--------|------|--------|-------------|
-| `rpc_call_duration_seconds` | Histogram | rpc_name, outcome | VistA RPC latency |
-| `rpc_calls_total` | Counter | rpc_name, outcome | Total RPC calls |
-| `circuit_breaker_state` | Gauge | -- | 0=closed, 1=open, 2=half-open |
-| `circuit_breaker_trips_total` | Counter | -- | Times CB opened |
+| Metric                        | Type      | Labels            | Description                   |
+| ----------------------------- | --------- | ----------------- | ----------------------------- |
+| `rpc_call_duration_seconds`   | Histogram | rpc_name, outcome | VistA RPC latency             |
+| `rpc_calls_total`             | Counter   | rpc_name, outcome | Total RPC calls               |
+| `circuit_breaker_state`       | Gauge     | --                | 0=closed, 1=open, 2=half-open |
+| `circuit_breaker_trips_total` | Counter   | --                | Times CB opened               |
 
 ### System Metrics
 
 Collected automatically by `prom-client`:
+
 - `process_cpu_seconds_total`
 - `nodejs_heap_size_total_bytes`
 - `nodejs_active_handles_total`
@@ -166,11 +167,11 @@ brew install k6
 
 ### Test descriptions
 
-| File | VUs | Duration | What it tests |
-|------|-----|----------|---------------|
-| `smoke-login.js` | 2 | 30s | Health, login, session, logout |
-| `smoke-reads.js` | 2 | 30s | Patient search, demographics, allergies, vitals |
-| `smoke-write.js` | 1 | 3 iters | Add allergy (may fail on sandbox) |
+| File             | VUs | Duration | What it tests                                   |
+| ---------------- | --- | -------- | ----------------------------------------------- |
+| `smoke-login.js` | 2   | 30s      | Health, login, session, logout                  |
+| `smoke-reads.js` | 2   | 30s      | Patient search, demographics, allergies, vitals |
+| `smoke-write.js` | 1   | 3 iters  | Add allergy (may fail on sandbox)               |
 
 ---
 
@@ -204,12 +205,12 @@ which causes the load balancer to stop routing traffic to that pod.
 
 ## 8. Environment Variables (Phase 36)
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `OTEL_ENABLED` | `false` | Enable OpenTelemetry traces + metrics |
-| `OTEL_EXPORTER_OTLP_ENDPOINT` | `http://localhost:4318` | OTel Collector endpoint |
-| `OTEL_SERVICE_NAME` | `vista-evolved-api` | Service name in traces |
-| `SHUTDOWN_DRAIN_TIMEOUT_MS` | `30000` | Drain timeout before forced exit |
+| Variable                      | Default                 | Description                           |
+| ----------------------------- | ----------------------- | ------------------------------------- |
+| `OTEL_ENABLED`                | `false`                 | Enable OpenTelemetry traces + metrics |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | `http://localhost:4318` | OTel Collector endpoint               |
+| `OTEL_SERVICE_NAME`           | `vista-evolved-api`     | Service name in traces                |
+| `SHUTDOWN_DRAIN_TIMEOUT_MS`   | `30000`                 | Drain timeout before forced exit      |
 
 ---
 

@@ -4852,10 +4852,7 @@
     }
   ],
   "byFolder": {
-    "BA": [
-      "frmBALocalDiagnoses",
-      "frmBAOptionsDiagnoses"
-    ],
+    "BA": ["frmBALocalDiagnoses", "frmBAOptionsDiagnoses"],
     "Consults": [
       "frmConsMedRslt",
       "frm513Print",
@@ -5135,16 +5132,9 @@
       "frmTemplateView",
       "fraTemplateFieldButton"
     ],
-    "Tools": [
-      "frmRPCLog"
-    ],
-    "Vitals": [
-      "frmVitalsDate"
-    ],
-    "Womens Health": [
-      "frmWVEIEReasonsDlg",
-      "frmWVPregLacStatusUpdate"
-    ],
+    "Tools": ["frmRPCLog"],
+    "Vitals": ["frmVitalsDate"],
+    "Womens Health": ["frmWVEIEReasonsDlg", "frmWVPregLacStatusUpdate"],
     "XE8": [
       "frmProgress",
       "va508CollectionEditor",

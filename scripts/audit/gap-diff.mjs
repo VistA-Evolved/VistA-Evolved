@@ -10,15 +10,15 @@
  *     --out    artifacts/phase145/gap-diff.json
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
-import { dirname } from "node:path";
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { dirname } from 'node:path';
 
 function stripBom(s) {
   return s.charCodeAt(0) === 0xfeff ? s.slice(1) : s;
 }
 
 function readJson(p) {
-  return JSON.parse(stripBom(readFileSync(p, "utf8")));
+  return JSON.parse(stripBom(readFileSync(p, 'utf8')));
 }
 
 function parseArgs() {
@@ -28,9 +28,9 @@ function parseArgs() {
     return idx >= 0 ? args[idx + 1] : undefined;
   };
   return {
-    before: get("before") || "artifacts/phase145/system-gap-matrix.before.json",
-    after: get("after") || "artifacts/phase145/system-gap-matrix.after.json",
-    out: get("out") || "artifacts/phase145/gap-diff.json",
+    before: get('before') || 'artifacts/phase145/system-gap-matrix.before.json',
+    after: get('after') || 'artifacts/phase145/system-gap-matrix.after.json',
+    out: get('out') || 'artifacts/phase145/gap-diff.json',
   };
 }
 
@@ -125,7 +125,7 @@ function diffPersistence(beforeAudit, afterAudit) {
 
   // Extract from DATABASE_POSTURE domain if available
   function extractDbPosture(domains) {
-    const dbDomain = domains.find((d) => d.domain === "DATABASE_POSTURE");
+    const dbDomain = domains.find((d) => d.domain === 'DATABASE_POSTURE');
     if (!dbDomain) return {};
     const metrics = {};
     for (const ev of dbDomain.evidence || []) {
@@ -156,14 +156,8 @@ function main() {
   const persistenceDiff = diffPersistence(bMatrix, aMatrix);
 
   // Aggregate gap counts
-  const bGapCount = (bMatrix.domains || []).reduce(
-    (s, d) => s + (d.topGaps || []).length,
-    0
-  );
-  const aGapCount = (aMatrix.domains || []).reduce(
-    (s, d) => s + (d.topGaps || []).length,
-    0
-  );
+  const bGapCount = (bMatrix.domains || []).reduce((s, d) => s + (d.topGaps || []).length, 0);
+  const aGapCount = (aMatrix.domains || []).reduce((s, d) => s + (d.topGaps || []).length, 0);
 
   // Count by severity
   function severityCounts(domains) {
@@ -209,16 +203,26 @@ function main() {
   };
 
   mkdirSync(dirname(out), { recursive: true });
-  writeFileSync(out, JSON.stringify(diff, null, 2) + "\n");
+  writeFileSync(out, JSON.stringify(diff, null, 2) + '\n');
   console.log(`Gap diff written to ${out}`);
   console.log(`  Domains: ${diff.summary.domainsBeforeCount} -> ${diff.summary.domainsAfterCount}`);
-  console.log(`  Gaps: ${bGapCount} -> ${aGapCount} (delta: ${aGapCount - bGapCount >= 0 ? "+" : ""}${aGapCount - bGapCount})`);
+  console.log(
+    `  Gaps: ${bGapCount} -> ${aGapCount} (delta: ${aGapCount - bGapCount >= 0 ? '+' : ''}${aGapCount - bGapCount})`
+  );
   console.log(`  Severity before: high=${bSev.high} med=${bSev.med} low=${bSev.low}`);
   console.log(`  Severity after:  high=${aSev.high} med=${aSev.med} low=${aSev.low}`);
-  console.log(`  Domains added: ${domainDiff.added.length}, removed: ${domainDiff.removed.length}, status changed: ${domainDiff.statusChanges.length}`);
-  console.log(`  Gaps added: ${gapDiff.gapsAdded.length}, removed: ${gapDiff.gapsRemoved.length}, severity changed: ${gapDiff.severityChanges.length}`);
-  console.log(`  Map stores: ${persistenceDiff.mapStoreCountBefore ?? "?"} -> ${persistenceDiff.mapStoreCountAfter ?? "?"}`);
-  console.log(`  High-risk maps: ${persistenceDiff.highRiskBefore ?? "?"} -> ${persistenceDiff.highRiskAfter ?? "?"}`);
+  console.log(
+    `  Domains added: ${domainDiff.added.length}, removed: ${domainDiff.removed.length}, status changed: ${domainDiff.statusChanges.length}`
+  );
+  console.log(
+    `  Gaps added: ${gapDiff.gapsAdded.length}, removed: ${gapDiff.gapsRemoved.length}, severity changed: ${gapDiff.severityChanges.length}`
+  );
+  console.log(
+    `  Map stores: ${persistenceDiff.mapStoreCountBefore ?? '?'} -> ${persistenceDiff.mapStoreCountAfter ?? '?'}`
+  );
+  console.log(
+    `  High-risk maps: ${persistenceDiff.highRiskBefore ?? '?'} -> ${persistenceDiff.highRiskAfter ?? '?'}`
+  );
 }
 
 main();

@@ -9,13 +9,13 @@
  * Max 5000 entries, FIFO eviction. No persistence — resets on restart.
  */
 
-import { createHash, randomUUID } from "node:crypto";
-import type { RpcTraceEntry, RpcTraceStats } from "./types.js";
+import { createHash, randomUUID } from 'node:crypto';
+import type { RpcTraceEntry, RpcTraceStats } from './types.js';
 
 /* ── Config ───────────────────────────────────────────────── */
 
 const MAX_BUFFER_SIZE = Number(process.env.RPC_TRACE_BUFFER_SIZE || 5000);
-const ENABLED = process.env.RPC_TRACE_ENABLED !== "false"; // on by default
+const ENABLED = process.env.RPC_TRACE_ENABLED !== 'false'; // on by default
 
 /* ── Ring Buffer ──────────────────────────────────────────── */
 
@@ -29,8 +29,8 @@ let totalRecorded = 0;
  * Hash a DUZ so traces never contain raw user identifiers.
  */
 function hashDuz(duz: string): string {
-  if (!duz) return "unknown";
-  return createHash("sha256").update(`rpc-trace-${duz}`).digest("hex").slice(0, 16);
+  if (!duz) return 'unknown';
+  return createHash('sha256').update(`rpc-trace-${duz}`).digest('hex').slice(0, 16);
 }
 
 /**
@@ -41,13 +41,13 @@ function hashDuz(duz: string): string {
  */
 function sanitizeParams(params: string[]): string[] {
   return params.map((p, i) => {
-    if (!p) return "";
+    if (!p) return '';
     // First param is often DFN — always redact
     if (i === 0 && /^\d+$/.test(p)) return `dfn:${p.slice(0, 1)}***`;
     // SSN pattern
-    if (/\d{3}-?\d{2}-?\d{4}/.test(p)) return "***-**-****";
+    if (/\d{3}-?\d{2}-?\d{4}/.test(p)) return '***-**-****';
     // Truncate long strings
-    if (p.length > 50) return p.slice(0, 50) + "...";
+    if (p.length > 50) return p.slice(0, 50) + '...';
     return p;
   });
 }
@@ -76,7 +76,7 @@ export function recordRpcTrace(opts: RecordRpcOptions): void {
 
   const entry: RpcTraceEntry = {
     id: randomUUID(),
-    requestId: opts.requestId || "unknown",
+    requestId: opts.requestId || 'unknown',
     traceId: opts.traceId,
     rpcName: opts.rpcName,
     params: sanitizeParams(opts.params),
@@ -84,7 +84,7 @@ export function recordRpcTrace(opts: RecordRpcOptions): void {
     success: opts.success,
     error: opts.error?.slice(0, 200),
     responseLines: opts.responseLines,
-    duzHash: hashDuz(opts.duz || ""),
+    duzHash: hashDuz(opts.duz || ''),
     timestamp: new Date().toISOString(),
     httpRoute: opts.httpRoute,
     httpMethod: opts.httpMethod,

@@ -1,11 +1,13 @@
 # Phase 321 — W14-P5: X12 Gateway Service
 
 ## User Request
+
 Build an inbound X12 gateway service: raw X12 wire-format parser, ISA/GS/ST
 envelope validation, 999/TA1 acknowledgment generation, inbound transaction routing
 with pluggable handlers, and durable control number tracking for duplicate detection.
 
 ## Implementation Steps
+
 1. Created `apps/api/src/rcm/edi/x12-gateway.ts` (~550 lines):
    - **Raw X12 parser** (`parseX12`): detects delimiters from ISA bytes 3/104/105,
      splits segments, builds typed `X12Interchange` with nested functional groups
@@ -20,7 +22,7 @@ with pluggable handlers, and durable control number tracking for duplicate detec
    - **Transaction router** (`routeInboundInterchange`): Dispatches each ST-SE set
      to registered handlers. Generates TA1 + 999 acks post-routing.
    - **Control number store**: 100K-entry FIFO Map for ISA/GS/ST duplicate detection.
-   - **Full pipeline** (`processInboundX12`): parse → duplicate check → record → 
+   - **Full pipeline** (`processInboundX12`): parse → duplicate check → record →
      validate → route in one call.
    - **Segment query helpers**: findSegments, getElement, findFirstSegment,
      mapTransactionSetType.
@@ -31,19 +33,21 @@ with pluggable handlers, and durable control number tracking for duplicate detec
    - POST /x12/gateway/validate — parse + validate
    - POST /x12/gateway/ack/ta1 — TA1 generation
    - POST /x12/gateway/ack/999 — 999 generation
-   - GET  /x12/gateway/handlers — handler registry
-   - GET  /x12/gateway/control-numbers — tracking stats
+   - GET /x12/gateway/handlers — handler registry
+   - GET /x12/gateway/control-numbers — tracking stats
    - DELETE /x12/gateway/control-numbers — clear store
-   - GET  /x12/gateway/health — gateway health
+   - GET /x12/gateway/health — gateway health
 
 3. Wired into register-routes.ts, security.ts (admin auth), store-policy.ts (2 stores)
 
 ## Verification
+
 - `npx tsc --noEmit` — clean (0 errors)
 - All routes admin-gated
 - 2 store-policy entries (cache + registry)
 
 ## Files Touched
+
 - apps/api/src/rcm/edi/x12-gateway.ts (NEW)
 - apps/api/src/routes/x12-gateway.ts (NEW)
 - apps/api/src/server/register-routes.ts (import + register)

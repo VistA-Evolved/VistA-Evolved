@@ -12,6 +12,7 @@
 ## Context
 
 VistA-Evolved needs video telehealth that:
+
 - Integrates with clinical encounters
 - Supports clinician + patient join flows
 - Is self-hostable for data sovereignty
@@ -57,9 +58,9 @@ interface TelehealthProvider {
 
 ## Alternatives Rejected
 
-| Option | Reason |
-|--------|--------|
-| Zoom SDK | Per-seat licensing, not self-hostable |
-| Twilio Video | Usage-based pricing, vendor dependency |
-| Daily.co | Commercial, less self-hosting support |
-| BigBlueButton | Education-focused, heavier than Jitsi |
+| Option        | Reason                                 |
+| ------------- | -------------------------------------- |
+| Zoom SDK      | Per-seat licensing, not self-hostable  |
+| Twilio Video  | Usage-based pricing, vendor dependency |
+| Daily.co      | Commercial, less self-hosting support  |
+| BigBlueButton | Education-focused, heavier than Jitsi  |

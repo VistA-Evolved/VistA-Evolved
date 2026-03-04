@@ -31,23 +31,24 @@ $content -match 'ORQQPL PROBLEM LIST'   # should be True
 
 ## RPC count verification
 
-| Domain | Expected RPCs | Prefix(es) |
-|--------|---------------|------------|
-| problems | 25 | ORQQPL* |
-| meds | 59 | ORWPS*, ORWDPS* |
-| notes | 111 | TIU*, ORWTIU* |
-| orders | 135 | ORWDX*, ORWOR*, ORWORR* |
-| labs | 36 | ORWLRR*, ORWDLR* |
-| reports | 38 | ORWRP*, ORWSR* |
+| Domain   | Expected RPCs | Prefix(es)               |
+| -------- | ------------- | ------------------------ |
+| problems | 25            | ORQQPL\*                 |
+| meds     | 59            | ORWPS*, ORWDPS*          |
+| notes    | 111           | TIU*, ORWTIU*            |
+| orders   | 135           | ORWDX*, ORWOR*, ORWORR\* |
+| labs     | 36            | ORWLRR*, ORWDLR*         |
+| reports  | 38            | ORWRP*, ORWSR*           |
 
 ## Manual spot-checks
 
-| Check | Expected |
-|-------|----------|
-| Each route file has Fastify plugin export | `export default async function` |
-| Catalog endpoint exists | `GET /vista/{domain}/rpcs` returns RPC list |
-| Stub endpoints return not-implemented | `{ ok: false, error: "Not implemented" }` |
-| index.ts barrel registers all 6 plugins | `registerDomainRoutes` function |
+| Check                                     | Expected                                    |
+| ----------------------------------------- | ------------------------------------------- |
+| Each route file has Fastify plugin export | `export default async function`             |
+| Catalog endpoint exists                   | `GET /vista/{domain}/rpcs` returns RPC list |
+| Stub endpoints return not-implemented     | `{ ok: false, error: "Not implemented" }`   |
+| index.ts barrel registers all 6 plugins   | `registerDomainRoutes` function             |
 
 ## Pass criteria
+
 Generator runs. `pnpm -C apps/api build` exits 0. All 7 route files present with correct RPC counts.

@@ -22,9 +22,8 @@ import { API_BASE } from '@/lib/api-config';
  *   - Server-side binding means the token is cryptographically tied to the session
  */
 
-
 /** In-memory CSRF token cache. Cleared on logout or page unload. */
-let _token: string = "";
+let _token: string = '';
 
 /**
  * Set the CSRF token (called after login or session check).
@@ -42,7 +41,7 @@ export async function getCsrfToken(): Promise<string> {
   // Try to fetch from the dedicated endpoint
   try {
     const res = await fetch(`${API_BASE}/auth/csrf-token`, {
-      credentials: "include",
+      credentials: 'include',
     });
     if (res.ok) {
       const data = await res.json();
@@ -54,7 +53,7 @@ export async function getCsrfToken(): Promise<string> {
   } catch {
     // Server unreachable — return empty
   }
-  return "";
+  return '';
 }
 
 /**
@@ -71,12 +70,12 @@ export function getCsrfTokenSync(): string {
  * Usage: `headers: { 'content-type': 'application/json', ...csrfHeaders() }`
  */
 export function csrfHeaders(): Record<string, string> {
-  return _token ? { "x-csrf-token": _token } : {};
+  return _token ? { 'x-csrf-token': _token } : {};
 }
 
 /**
  * Clear the cached CSRF token (on logout).
  */
 export function clearCsrfToken(): void {
-  _token = "";
+  _token = '';
 }

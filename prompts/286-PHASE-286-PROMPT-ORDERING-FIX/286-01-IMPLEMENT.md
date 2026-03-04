@@ -1,6 +1,7 @@
 # Phase 286 — Prompt Ordering Collision Fix + Index Regeneration (IMPLEMENT)
 
 ## Goal
+
 Eliminate prompt folder-prefix collisions so filesystem sort and tooling cannot
 execute or index phases out of order.
 
@@ -27,6 +28,7 @@ execute or index phases out of order.
 5. Generate `prompts/PROMPTS_INDEX.md` with sorted phase table
 
 ## Files Touched
+
 - `scripts/prompts-audit.mjs` (NEW)
 - `prompts/PROMPTS_INDEX.md` (NEW)
 - `prompts/WAVE_11_MANIFEST.md` (NEW)

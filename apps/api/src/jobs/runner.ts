@@ -13,28 +13,26 @@
  *  B. Standalone — via `worker-entrypoint.ts` for `pnpm api:worker`
  */
 
-import { run, parseCronItems, type Runner, type TaskList, type Task, type CronItem } from "graphile-worker";
-import { getPgPool, isPgConfigured } from "../platform/pg/index.js";
 import {
-  JOB_NAMES,
-  type JobName,
-  getJobCronSchedule,
-} from "./registry.js";
-import {
-  validateJobPayload,
-  logJobStart,
-  logJobFinish,
-  redactErrorMessage,
-} from "./governance.js";
-import { log } from "../lib/logger.js";
+  run,
+  parseCronItems,
+  type Runner,
+  type TaskList,
+  type Task,
+  type CronItem,
+} from 'graphile-worker';
+import { getPgPool, isPgConfigured } from '../platform/pg/index.js';
+import { JOB_NAMES, type JobName, getJobCronSchedule } from './registry.js';
+import { validateJobPayload, logJobStart, logJobFinish, redactErrorMessage } from './governance.js';
+import { log } from '../lib/logger.js';
 
 /* ── Task Imports ──────────────────────────────────────────── */
 
-import { handleEligibilityCheckPoll } from "./tasks/eligibility-check-poll.js";
-import { handleClaimStatusPoll } from "./tasks/claim-status-poll.js";
-import { handleEvidenceStalenessScan } from "./tasks/evidence-staleness-scan.js";
-import { handleRetentionCleanup } from "./tasks/retention-cleanup.js";
-import { handlePgBackup } from "./tasks/pg-backup.js";
+import { handleEligibilityCheckPoll } from './tasks/eligibility-check-poll.js';
+import { handleClaimStatusPoll } from './tasks/claim-status-poll.js';
+import { handleEvidenceStalenessScan } from './tasks/evidence-staleness-scan.js';
+import { handleRetentionCleanup } from './tasks/retention-cleanup.js';
+import { handlePgBackup } from './tasks/pg-backup.js';
 
 /* ── Governance Wrapper ────────────────────────────────────── */
 
@@ -46,7 +44,7 @@ import { handlePgBackup } from "./tasks/pg-backup.js";
  */
 function governedTask(
   jobName: JobName,
-  handler: (payload: Record<string, unknown>) => Promise<void>,
+  handler: (payload: Record<string, unknown>) => Promise<void>
 ): Task {
   return async (payload: unknown, helpers) => {
     const rawPayload = (payload ?? {}) as Record<string, unknown>;
@@ -84,24 +82,18 @@ function buildTaskList(): TaskList {
   return {
     [JOB_NAMES.ELIGIBILITY_CHECK_POLL]: governedTask(
       JOB_NAMES.ELIGIBILITY_CHECK_POLL,
-      handleEligibilityCheckPoll,
+      handleEligibilityCheckPoll
     ),
-    [JOB_NAMES.CLAIM_STATUS_POLL]: governedTask(
-      JOB_NAMES.CLAIM_STATUS_POLL,
-      handleClaimStatusPoll,
-    ),
+    [JOB_NAMES.CLAIM_STATUS_POLL]: governedTask(JOB_NAMES.CLAIM_STATUS_POLL, handleClaimStatusPoll),
     [JOB_NAMES.EVIDENCE_STALENESS_SCAN]: governedTask(
       JOB_NAMES.EVIDENCE_STALENESS_SCAN,
-      handleEvidenceStalenessScan,
+      handleEvidenceStalenessScan
     ),
     [JOB_NAMES.RETENTION_CLEANUP]: governedTask(
       JOB_NAMES.RETENTION_CLEANUP,
-      handleRetentionCleanup,
+      handleRetentionCleanup
     ),
-    [JOB_NAMES.PG_BACKUP]: governedTask(
-      JOB_NAMES.PG_BACKUP,
-      handlePgBackup,
-    ),
+    [JOB_NAMES.PG_BACKUP]: governedTask(JOB_NAMES.PG_BACKUP, handlePgBackup),
   };
 }
 
@@ -120,9 +112,9 @@ function buildCronItems() {
           backfillPeriod: 0,
           maxAttempts: 3,
           jobKey: `cron-${name}`,
-          jobKeyMode: "replace",
+          jobKeyMode: 'replace',
         },
-        payload: { tenantId: "default" },
+        payload: { tenantId: 'default' },
         identifier: `cron-${name}`,
       });
     }
@@ -148,25 +140,24 @@ export async function startJobRunner(opts?: {
 }): Promise<Runner> {
   if (!isPgConfigured()) {
     throw new Error(
-      "Cannot start job runner: PLATFORM_PG_URL is not set. " +
-      "Graphile Worker requires a PostgreSQL database.",
+      'Cannot start job runner: PLATFORM_PG_URL is not set. ' +
+        'Graphile Worker requires a PostgreSQL database.'
     );
   }
 
   if (runner) {
-    log.warn("Job runner already started, returning existing instance");
+    log.warn('Job runner already started, returning existing instance');
     return runner;
   }
 
   const concurrency =
-    opts?.concurrency ??
-    (parseInt(process.env.JOB_WORKER_CONCURRENCY ?? "5", 10) || 5);
+    opts?.concurrency ?? (parseInt(process.env.JOB_WORKER_CONCURRENCY ?? '5', 10) || 5);
 
   const pgPool = getPgPool();
   const taskList = buildTaskList();
   const cronItems = buildCronItems();
 
-  log.info("Starting Graphile Worker job runner", {
+  log.info('Starting Graphile Worker job runner', {
     concurrency,
     taskCount: Object.keys(taskList).length,
     cronCount: cronItems.length,
@@ -179,23 +170,23 @@ export async function startJobRunner(opts?: {
     concurrency,
     noHandleSignals: opts?.noHandleSignals ?? false,
     // graphile-worker creates its own schema; default "graphile_worker"
-    schema: process.env.JOB_WORKER_SCHEMA ?? "graphile_worker",
+    schema: process.env.JOB_WORKER_SCHEMA ?? 'graphile_worker',
     // Poll interval for new jobs (ms)
-    pollInterval: parseInt(process.env.JOB_WORKER_POLL_INTERVAL ?? "2000", 10) || 2000,
+    pollInterval: parseInt(process.env.JOB_WORKER_POLL_INTERVAL ?? '2000', 10) || 2000,
   });
 
   // Listen for events
-  runner.events.on("job:success", ({ job }) => {
-    log.debug("Job succeeded", {
+  runner.events.on('job:success', ({ job }) => {
+    log.debug('Job succeeded', {
       jobId: job.id,
       task: job.task_identifier,
       attempts: job.attempts,
     });
   });
 
-  runner.events.on("job:error", ({ job, error }) => {
+  runner.events.on('job:error', ({ job, error }) => {
     const errMsg = error instanceof Error ? error.message : String(error);
-    log.warn("Job errored", {
+    log.warn('Job errored', {
       jobId: job.id,
       task: job.task_identifier,
       attempts: job.attempts,
@@ -203,9 +194,9 @@ export async function startJobRunner(opts?: {
     });
   });
 
-  runner.events.on("job:failed", ({ job, error }) => {
+  runner.events.on('job:failed', ({ job, error }) => {
     const errMsg = error instanceof Error ? error.message : String(error);
-    log.error("Job permanently failed", {
+    log.error('Job permanently failed', {
       jobId: job.id,
       task: job.task_identifier,
       maxAttempts: job.max_attempts,
@@ -213,7 +204,7 @@ export async function startJobRunner(opts?: {
     });
   });
 
-  log.info("Graphile Worker job runner started", { concurrency });
+  log.info('Graphile Worker job runner started', { concurrency });
   return runner;
 }
 
@@ -223,14 +214,14 @@ export async function startJobRunner(opts?: {
  */
 export async function stopJobRunner(): Promise<void> {
   if (!runner) return;
-  log.info("Stopping Graphile Worker job runner...");
+  log.info('Stopping Graphile Worker job runner...');
   try {
     await runner.stop();
   } catch (err: any) {
-    log.warn("Error stopping job runner", { error: err.message });
+    log.warn('Error stopping job runner', { error: err.message });
   }
   runner = null;
-  log.info("Graphile Worker job runner stopped");
+  log.info('Graphile Worker job runner stopped');
 }
 
 /**

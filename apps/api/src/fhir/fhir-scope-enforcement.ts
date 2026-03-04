@@ -16,10 +16,9 @@
  * the launch context (fhirPrincipal.patientContext).
  */
 
-import type { FastifyRequest, FastifyReply } from "fastify";
-import type { FhirPrincipal } from "./fhir-bearer-auth.js";
-import type { FhirOperationOutcome } from "./types.js";
-import { log } from "../lib/logger.js";
+import type { FastifyRequest, FastifyReply } from 'fastify';
+import type { FhirOperationOutcome } from './types.js';
+import { log } from '../lib/logger.js';
 
 /* ================================================================== */
 /* Types                                                                */
@@ -27,22 +26,22 @@ import { log } from "../lib/logger.js";
 
 /** FHIR resource types we serve. */
 export type FhirResourceType =
-  | "Patient"
-  | "AllergyIntolerance"
-  | "Condition"
-  | "Observation"
-  | "MedicationRequest"
-  | "DocumentReference"
-  | "Encounter";
+  | 'Patient'
+  | 'AllergyIntolerance'
+  | 'Condition'
+  | 'Observation'
+  | 'MedicationRequest'
+  | 'DocumentReference'
+  | 'Encounter';
 
 /** Scope context levels in SMART. */
-type ScopeContext = "patient" | "user" | "system";
+type ScopeContext = 'patient' | 'user' | 'system';
 
 /** Parsed SMART scope. */
 interface ParsedScope {
   context: ScopeContext;
   resourceType: string; // Resource type or "*"
-  permission: string;   // "read", "write", or "*"
+  permission: string; // "read", "write", or "*"
 }
 
 /* ================================================================== */
@@ -69,7 +68,7 @@ export function parseScope(scope: string): ParsedScope | null {
  */
 export function checkScopeAccess(
   scopes: string[],
-  resourceType: FhirResourceType,
+  resourceType: FhirResourceType
 ): { granted: boolean; context: ScopeContext | null; matchedScope: string | null } {
   let bestMatch: { context: ScopeContext; scope: string } | null = null;
 
@@ -78,10 +77,10 @@ export function checkScopeAccess(
     if (!parsed) continue;
 
     // Must grant read or wildcard permission
-    if (parsed.permission !== "read" && parsed.permission !== "*") continue;
+    if (parsed.permission !== 'read' && parsed.permission !== '*') continue;
 
     // Must match resource type or be wildcard
-    if (parsed.resourceType !== "*" && parsed.resourceType !== resourceType) continue;
+    if (parsed.resourceType !== '*' && parsed.resourceType !== resourceType) continue;
 
     // Prefer exact resource match over wildcard
     if (!bestMatch || parsed.resourceType === resourceType) {
@@ -99,27 +98,31 @@ export function checkScopeAccess(
 /* Scope enforcement middleware                                          */
 /* ================================================================== */
 
-const FHIR_CONTENT_TYPE = "application/fhir+json; charset=utf-8";
+const FHIR_CONTENT_TYPE = 'application/fhir+json; charset=utf-8';
 
 function scopeOperationOutcome(resourceType: string, scopes: string[]): FhirOperationOutcome {
   return {
-    resourceType: "OperationOutcome",
-    issue: [{
-      severity: "error",
-      code: "forbidden",
-      diagnostics: `Insufficient scope for ${resourceType}. Required: patient/${resourceType}.read or user/${resourceType}.read. Granted scopes: ${scopes.join(" ")}`,
-    }],
+    resourceType: 'OperationOutcome',
+    issue: [
+      {
+        severity: 'error',
+        code: 'forbidden',
+        diagnostics: `Insufficient scope for ${resourceType}. Required: patient/${resourceType}.read or user/${resourceType}.read. Granted scopes: ${scopes.join(' ')}`,
+      },
+    ],
   };
 }
 
 function patientContextOutcome(patientDfn: string, context: string): FhirOperationOutcome {
   return {
-    resourceType: "OperationOutcome",
-    issue: [{
-      severity: "error",
-      code: "forbidden",
-      diagnostics: `Patient-level scope restricts access to patient ${context}; requested patient ${patientDfn}`,
-    }],
+    resourceType: 'OperationOutcome',
+    issue: [
+      {
+        severity: 'error',
+        code: 'forbidden',
+        diagnostics: `Patient-level scope restricts access to patient ${context}; requested patient ${patientDfn}`,
+      },
+    ],
   };
 }
 
@@ -138,7 +141,7 @@ export function enforceFhirScope(
   request: FastifyRequest,
   reply: FastifyReply,
   resourceType: FhirResourceType,
-  patientDfn?: string | null,
+  patientDfn?: string | null
 ): boolean {
   const principal = request.fhirPrincipal;
 
@@ -146,39 +149,39 @@ export function enforceFhirScope(
   if (!principal) return true;
 
   // Session-authenticated users get implicit user/*.read — always allowed
-  if (principal.authMethod === "session") return true;
+  if (principal.authMethod === 'session') return true;
 
   const { granted, context, matchedScope } = checkScopeAccess(principal.scopes, resourceType);
 
   if (!granted) {
-    log.warn("FHIR scope denied", {
+    log.warn('FHIR scope denied', {
       sub: principal.sub,
       resourceType,
       scopes: principal.scopes,
     });
     reply
       .status(403)
-      .header("content-type", FHIR_CONTENT_TYPE)
+      .header('content-type', FHIR_CONTENT_TYPE)
       .send(scopeOperationOutcome(resourceType, principal.scopes));
     return false;
   }
 
   // Patient-level scope: restrict to launch patient context
-  if (context === "patient" && patientDfn) {
+  if (context === 'patient' && patientDfn) {
     if (principal.patientContext && principal.patientContext !== patientDfn) {
-      log.warn("FHIR patient context mismatch", {
+      log.warn('FHIR patient context mismatch', {
         sub: principal.sub,
         requested: patientDfn,
         context: principal.patientContext,
       });
       reply
         .status(403)
-        .header("content-type", FHIR_CONTENT_TYPE)
+        .header('content-type', FHIR_CONTENT_TYPE)
         .send(patientContextOutcome(patientDfn, principal.patientContext));
       return false;
     }
   }
 
-  log.debug("FHIR scope granted", { sub: principal.sub, resourceType, scope: matchedScope });
+  log.debug('FHIR scope granted', { sub: principal.sub, resourceType, scope: matchedScope });
   return true;
 }

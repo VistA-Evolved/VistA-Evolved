@@ -12,39 +12,47 @@
  * tracks natively (submission/remit/appeal states are clearinghouse-side).
  */
 
-import { randomUUID } from "node:crypto";
+import { randomUUID } from 'node:crypto';
 
 /* ── Claim Lifecycle States ─────────────────────────────────── */
 
 export type ClaimStatus =
-  | "draft"
-  | "validated"
-  | "ready_to_submit"
-  | "submitted"
-  | "accepted"
-  | "rejected"
-  | "paid"
-  | "denied"
-  | "appealed"
-  | "closed";
+  | 'draft'
+  | 'validated'
+  | 'ready_to_submit'
+  | 'submitted'
+  | 'accepted'
+  | 'rejected'
+  | 'paid'
+  | 'denied'
+  | 'appealed'
+  | 'closed';
 
 export const CLAIM_STATUS_ORDER: ClaimStatus[] = [
-  "draft", "validated", "ready_to_submit", "submitted", "accepted",
-  "rejected", "paid", "denied", "appealed", "closed",
+  'draft',
+  'validated',
+  'ready_to_submit',
+  'submitted',
+  'accepted',
+  'rejected',
+  'paid',
+  'denied',
+  'appealed',
+  'closed',
 ];
 
 /** Valid transitions — key = from, values = allowed to states */
 export const CLAIM_TRANSITIONS: Record<ClaimStatus, ClaimStatus[]> = {
-  draft:           ["validated", "closed"],
-  validated:       ["ready_to_submit", "submitted", "draft", "closed"],
-  ready_to_submit: ["submitted", "validated", "draft", "closed"],
-  submitted:       ["accepted", "rejected", "closed"],
-  accepted:        ["paid", "denied", "closed"],
-  rejected:        ["draft", "appealed", "closed"],
-  paid:            ["closed"],
-  denied:          ["appealed", "closed"],
-  appealed:        ["accepted", "rejected", "paid", "denied", "closed"],
-  closed:          [],
+  draft: ['validated', 'closed'],
+  validated: ['ready_to_submit', 'submitted', 'draft', 'closed'],
+  ready_to_submit: ['submitted', 'validated', 'draft', 'closed'],
+  submitted: ['accepted', 'rejected', 'closed'],
+  accepted: ['paid', 'denied', 'closed'],
+  rejected: ['draft', 'appealed', 'closed'],
+  paid: ['closed'],
+  denied: ['appealed', 'closed'],
+  appealed: ['accepted', 'rejected', 'paid', 'denied', 'closed'],
+  closed: [],
 };
 
 export function isValidTransition(from: ClaimStatus, to: ClaimStatus): boolean {
@@ -53,21 +61,21 @@ export function isValidTransition(from: ClaimStatus, to: ClaimStatus): boolean {
 
 /* ── Claim Types ────────────────────────────────────────────── */
 
-export type ClaimType = "professional" | "institutional" | "dental" | "pharmacy";
+export type ClaimType = 'professional' | 'institutional' | 'dental' | 'pharmacy';
 
 export interface DiagnosisCode {
-  code: string;        // e.g. "J06.9"
-  codeSystem: "ICD10"; // only ICD-10 for now
-  qualifier: "principal" | "admitting" | "other";
+  code: string; // e.g. "J06.9"
+  codeSystem: 'ICD10'; // only ICD-10 for now
+  qualifier: 'principal' | 'admitting' | 'other';
   description?: string;
 }
 
 export interface ProcedureCode {
-  code: string;        // CPT or HCPCS
-  codeSystem: "CPT" | "HCPCS";
+  code: string; // CPT or HCPCS
+  codeSystem: 'CPT' | 'HCPCS';
   modifiers?: string[];
   units: number;
-  charge: number;      // in cents
+  charge: number; // in cents
   dateOfService: string; // ISO date
   description?: string;
 }
@@ -83,7 +91,7 @@ export interface ClaimLine {
 export interface ClaimAuditEntry {
   timestamp: string;
   action: string;
-  actor: string;       // DUZ or system
+  actor: string; // DUZ or system
   fromStatus?: ClaimStatus;
   toStatus?: ClaimStatus;
   detail?: string;
@@ -97,58 +105,58 @@ export interface Claim {
 
   // Patient
   patientDfn: string;
-  patientName?: string;      // redacted in logs
-  patientDob?: string;       // redacted in logs
+  patientName?: string; // redacted in logs
+  patientDob?: string; // redacted in logs
   patientFirstName?: string; // for EDI 837 subscriber/patient segment
-  patientLastName?: string;  // for EDI 837 subscriber/patient segment
-  patientGender?: string;    // M/F/U
-  subscriberId?: string;     // insurance subscriber ID
+  patientLastName?: string; // for EDI 837 subscriber/patient segment
+  patientGender?: string; // M/F/U
+  subscriberId?: string; // insurance subscriber ID
 
   // Provider
   billingProviderNpi?: string;
   renderingProviderNpi?: string;
   facilityNpi?: string;
-  facilityName?: string;     // for EDI 837 billing provider segment
-  facilityTaxId?: string;    // for EDI 837 billing provider segment
+  facilityName?: string; // for EDI 837 billing provider segment
+  facilityTaxId?: string; // for EDI 837 billing provider segment
 
   // Payer
   payerId: string;
   payerName?: string;
-  payerClaimId?: string;     // assigned by payer after submission
+  payerClaimId?: string; // assigned by payer after submission
 
   // Clinical
   dateOfService: string;
   diagnoses: DiagnosisCode[];
   lines: ClaimLine[];
-  totalCharge: number;       // sum of line charges, in cents
+  totalCharge: number; // sum of line charges, in cents
 
   // EDI
   ediTransactionId?: string; // X12 837 control number
-  connectorId?: string;      // which connector submitted
+  connectorId?: string; // which connector submitted
   submittedAt?: string;
   responseReceivedAt?: string;
 
   // Remittance
-  paidAmount?: number;        // in cents
-  adjustmentAmount?: number;  // in cents
+  paidAmount?: number; // in cents
+  adjustmentAmount?: number; // in cents
   patientResponsibility?: number; // in cents
   remitDate?: string;
 
   // VistA grounding
-  vistaChargeIen?: string;   // ^IB(350,IEN)
-  vistaArIen?: string;       // ^PRCA(430,IEN)
+  vistaChargeIen?: string; // ^IB(350,IEN)
+  vistaArIen?: string; // ^PRCA(430,IEN)
 
   // Lifecycle tracking
-  validationResult?: unknown;   // ValidationResult from validation engine
-  pipelineEntryId?: string;     // links to EDI pipeline entry
+  validationResult?: unknown; // ValidationResult from validation engine
+  pipelineEntryId?: string; // links to EDI pipeline entry
 
   // Export / submission safety (Phase 40)
-  exportArtifactPath?: string;  // path to exported EDI bundle (when CLAIM_SUBMISSION_ENABLED=false)
-  isDemo: boolean;              // true if created in demo/sandbox mode — blocked from real submission
+  exportArtifactPath?: string; // path to exported EDI bundle (when CLAIM_SUBMISSION_ENABLED=false)
+  isDemo: boolean; // true if created in demo/sandbox mode — blocked from real submission
   submissionSafetyMode: 'live' | 'export_only'; // resolved at submit time from CLAIM_SUBMISSION_ENABLED
 
   // Metadata
-  isMock: boolean;           // true if generated in sandbox
+  isMock: boolean; // true if generated in sandbox
   auditTrail: ClaimAuditEntry[];
   createdAt: string;
   updatedAt: string;
@@ -185,13 +193,15 @@ export function createDraftClaim(params: {
 }): Claim {
   const now = new Date().toISOString();
   const linesList = params.lines ?? [];
-  const totalCharge = params.totalCharge ?? linesList.reduce((sum, l) => sum + (l.procedure?.charge ?? (l as any).chargeAmount ?? 0), 0);
+  const totalCharge =
+    params.totalCharge ??
+    linesList.reduce((sum, l) => sum + (l.procedure?.charge ?? (l as any).chargeAmount ?? 0), 0);
 
   return {
     id: randomUUID(),
     tenantId: params.tenantId,
-    claimType: params.claimType ?? "professional",
-    status: "draft",
+    claimType: params.claimType ?? 'professional',
+    status: 'draft',
     patientDfn: params.patientDfn,
     patientName: params.patientName,
     patientDob: params.patientDob,
@@ -214,14 +224,16 @@ export function createDraftClaim(params: {
     totalCharge,
     isMock: params.isMock ?? false,
     isDemo: params.isDemo ?? false,
-    submissionSafetyMode: (process.env.CLAIM_SUBMISSION_ENABLED === 'true') ? 'live' : 'export_only',
-    auditTrail: [{
-      timestamp: now,
-      action: "claim.created",
-      actor: params.actor,
-      toStatus: "draft",
-      detail: "Draft claim created",
-    }],
+    submissionSafetyMode: process.env.CLAIM_SUBMISSION_ENABLED === 'true' ? 'live' : 'export_only',
+    auditTrail: [
+      {
+        timestamp: now,
+        action: 'claim.created',
+        actor: params.actor,
+        toStatus: 'draft',
+        detail: 'Draft claim created',
+      },
+    ],
     createdAt: now,
     updatedAt: now,
   };
@@ -231,7 +243,7 @@ export function transitionClaim(
   claim: Claim,
   toStatus: ClaimStatus,
   actor: string,
-  detail?: string,
+  detail?: string
 ): Claim {
   if (!isValidTransition(claim.status, toStatus)) {
     throw new Error(`Invalid transition: ${claim.status} → ${toStatus}`);

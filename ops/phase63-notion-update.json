@@ -15,12 +15,7 @@
     "SD W/L RETRIVE HOSP LOC(#44)",
     "SD W/L RETRIVE PERSON(200)"
   ],
-  "rpcsTargeted": [
-    "SDEC APPADD",
-    "SDEC APPDEL",
-    "SDEC APPSLOTS",
-    "SDEC EDITAPPT"
-  ],
+  "rpcsTargeted": ["SDEC APPADD", "SDEC APPDEL", "SDEC APPSLOTS", "SDEC EDITAPPT"],
   "filesChanged": [
     "apps/api/src/adapters/scheduling/interface.ts",
     "apps/api/src/adapters/scheduling/vista-adapter.ts",

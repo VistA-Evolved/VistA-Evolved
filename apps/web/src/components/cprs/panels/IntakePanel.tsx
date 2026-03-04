@@ -76,7 +76,6 @@ interface ReviewData {
 /* Constants                                                            */
 /* ------------------------------------------------------------------ */
 
-
 const STATUS_LABELS: Record<string, string> = {
   not_started: 'Not Started',
   in_progress: 'In Progress',
@@ -108,7 +107,9 @@ const SEVERITY_STYLES: Record<string, { bg: string; fg: string; icon: string }> 
 /* Component                                                            */
 /* ------------------------------------------------------------------ */
 
-interface Props { dfn: string; }
+interface Props {
+  dfn: string;
+}
 
 type Tab = 'list' | 'review';
 
@@ -146,7 +147,9 @@ export default function IntakePanel({ dfn }: Props) {
     }
   }, [dfn]);
 
-  useEffect(() => { fetchSessions(); }, [fetchSessions]);
+  useEffect(() => {
+    fetchSessions();
+  }, [fetchSessions]);
 
   /* ---- Open review ---- */
   const openReview = useCallback(async (sessionId: string) => {
@@ -285,15 +288,20 @@ export default function IntakePanel({ dfn }: Props) {
       </div>
 
       {actionMsg && (
-        <p style={{
-          color: actionMsg.startsWith('Error') ? 'var(--cprs-danger)' : 'var(--cprs-success)',
-          fontSize: 12, margin: '4px 0',
-        }}>
+        <p
+          style={{
+            color: actionMsg.startsWith('Error') ? 'var(--cprs-danger)' : 'var(--cprs-success)',
+            fontSize: 12,
+            margin: '4px 0',
+          }}
+        >
           {actionMsg}
         </p>
       )}
 
-      {error && <p style={{ color: 'var(--cprs-danger)', fontSize: 12, margin: '4px 0' }}>{error}</p>}
+      {error && (
+        <p style={{ color: 'var(--cprs-danger)', fontSize: 12, margin: '4px 0' }}>{error}</p>
+      )}
 
       {/* ============ LIST TAB ============ */}
       {tab === 'list' && (
@@ -317,17 +325,24 @@ export default function IntakePanel({ dfn }: Props) {
                 {sessions
                   .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
                   .map((s) => (
-                    <tr key={s.id} style={selectedId === s.id ? { background: 'var(--cprs-selected)' } : undefined}>
+                    <tr
+                      key={s.id}
+                      style={
+                        selectedId === s.id ? { background: 'var(--cprs-selected)' } : undefined
+                      }
+                    >
                       <td>
-                        <span style={{
-                          display: 'inline-block',
-                          padding: '2px 6px',
-                          borderRadius: 3,
-                          fontSize: 11,
-                          fontWeight: 600,
-                          color: STATUS_COLORS[s.status] ?? '#666',
-                          border: `1px solid ${STATUS_COLORS[s.status] ?? '#ccc'}`,
-                        }}>
+                        <span
+                          style={{
+                            display: 'inline-block',
+                            padding: '2px 6px',
+                            borderRadius: 3,
+                            fontSize: 11,
+                            fontWeight: 600,
+                            color: STATUS_COLORS[s.status] ?? '#666',
+                            border: `1px solid ${STATUS_COLORS[s.status] ?? '#ccc'}`,
+                          }}
+                        >
                           {STATUS_LABELS[s.status] ?? s.status}
                         </span>
                       </td>
@@ -335,8 +350,15 @@ export default function IntakePanel({ dfn }: Props) {
                       <td>{new Date(s.createdAt).toLocaleString()}</td>
                       <td>{new Date(s.updatedAt).toLocaleString()}</td>
                       <td>
-                        {(s.status === 'submitted' || s.status === 'clinician_reviewed' || s.status === 'filed' || s.status === 'filed_pending_integration') && (
-                          <button className={styles.btn} onClick={() => openReview(s.id)} style={{ fontSize: 11, padding: '2px 8px' }}>
+                        {(s.status === 'submitted' ||
+                          s.status === 'clinician_reviewed' ||
+                          s.status === 'filed' ||
+                          s.status === 'filed_pending_integration') && (
+                          <button
+                            className={styles.btn}
+                            onClick={() => openReview(s.id)}
+                            style={{ fontSize: 11, padding: '2px 8px' }}
+                          >
                             {s.status === 'submitted' ? 'Review' : 'View'}
                           </button>
                         )}
@@ -360,27 +382,32 @@ export default function IntakePanel({ dfn }: Props) {
             <div>
               {/* Red Flags Banner */}
               {review.summary.sections.redFlags.length > 0 && (
-                <div style={{
-                  border: '2px solid #d13438',
-                  borderRadius: 6,
-                  padding: '8px 12px',
-                  marginBottom: 12,
-                  background: '#fde7e9',
-                }}>
+                <div
+                  style={{
+                    border: '2px solid #d13438',
+                    borderRadius: 6,
+                    padding: '8px 12px',
+                    marginBottom: 12,
+                    background: '#fde7e9',
+                  }}
+                >
                   <div style={{ fontWeight: 700, fontSize: 13, color: '#d13438', marginBottom: 4 }}>
                     RED FLAGS ({review.summary.sections.redFlags.length})
                   </div>
                   {review.summary.sections.redFlags.map((rf, i) => {
                     const sev = SEVERITY_STYLES[rf.severity] ?? SEVERITY_STYLES.info;
                     return (
-                      <div key={i} style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 6,
-                        padding: '3px 0',
-                        fontSize: 12,
-                        color: sev.fg,
-                      }}>
+                      <div
+                        key={i}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 6,
+                          padding: '3px 0',
+                          fontSize: 12,
+                          color: sev.fg,
+                        }}
+                      >
                         <span>{sev.icon}</span>
                         <strong>{rf.severity.toUpperCase()}:</strong>
                         <span>{rf.flag}</span>
@@ -391,28 +418,39 @@ export default function IntakePanel({ dfn }: Props) {
               )}
 
               {/* Session Info */}
-              <div style={{ display: 'flex', gap: 16, marginBottom: 12, fontSize: 12, color: '#666' }}>
+              <div
+                style={{ display: 'flex', gap: 16, marginBottom: 12, fontSize: 12, color: '#666' }}
+              >
                 <span>Session: {review.session.id.slice(0, 8)}...</span>
-                <span>Status: <strong>{STATUS_LABELS[review.session.status] ?? review.session.status}</strong></span>
+                <span>
+                  Status:{' '}
+                  <strong>{STATUS_LABELS[review.session.status] ?? review.session.status}</strong>
+                </span>
                 <span>Language: {review.session.language}</span>
                 {review.session.context.chiefComplaint && (
-                  <span>CC: <strong>{review.session.context.chiefComplaint}</strong></span>
+                  <span>
+                    CC: <strong>{review.session.context.chiefComplaint}</strong>
+                  </span>
                 )}
               </div>
 
               {/* Contradictions */}
               {review.summary.sections.contradictions.length > 0 && (
-                <div style={{
-                  border: '1px solid #c58a07',
-                  borderRadius: 4,
-                  padding: '6px 10px',
-                  marginBottom: 12,
-                  background: '#fff4ce',
-                  fontSize: 12,
-                }}>
+                <div
+                  style={{
+                    border: '1px solid #c58a07',
+                    borderRadius: 4,
+                    padding: '6px 10px',
+                    marginBottom: 12,
+                    background: '#fff4ce',
+                    fontSize: 12,
+                  }}
+                >
                   <strong>Contradictions detected:</strong>
                   {review.summary.sections.contradictions.map((c, i) => (
-                    <div key={i} style={{ marginTop: 2 }}>- {c.description}</div>
+                    <div key={i} style={{ marginTop: 2 }}>
+                      - {c.description}
+                    </div>
                   ))}
                 </div>
               )}
@@ -420,38 +458,63 @@ export default function IntakePanel({ dfn }: Props) {
               {/* Split pane: HPI + ROS on left, Answers on right */}
               <div className={styles.splitPane}>
                 <div className={styles.splitLeft}>
-                  <div className={styles.panelTitle} style={{ fontSize: 13 }}>HPI Narrative</div>
-                  <div style={{
-                    fontSize: 12,
-                    lineHeight: 1.5,
-                    whiteSpace: 'pre-wrap',
-                    padding: '6px 8px',
-                    background: 'var(--cprs-bg, #f5f5f5)',
-                    borderRadius: 4,
-                    marginBottom: 10,
-                    maxHeight: 200,
-                    overflowY: 'auto',
-                  }}>
+                  <div className={styles.panelTitle} style={{ fontSize: 13 }}>
+                    HPI Narrative
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      lineHeight: 1.5,
+                      whiteSpace: 'pre-wrap',
+                      padding: '6px 8px',
+                      background: 'var(--cprs-bg, #f5f5f5)',
+                      borderRadius: 4,
+                      marginBottom: 10,
+                      maxHeight: 200,
+                      overflowY: 'auto',
+                    }}
+                  >
                     {review.summary.sections.hpiNarrative || '(No HPI narrative generated)'}
                   </div>
 
                   {/* ROS table */}
-                  <div className={styles.panelTitle} style={{ fontSize: 13 }}>Review of Systems</div>
+                  <div className={styles.panelTitle} style={{ fontSize: 13 }}>
+                    Review of Systems
+                  </div>
                   {review.summary.sections.reviewOfSystems.length > 0 ? (
                     <table className={styles.dataTable} style={{ fontSize: 11 }}>
-                      <thead><tr><th>System</th><th>Status</th><th>Findings</th></tr></thead>
+                      <thead>
+                        <tr>
+                          <th>System</th>
+                          <th>Status</th>
+                          <th>Findings</th>
+                        </tr>
+                      </thead>
                       <tbody>
                         {review.summary.sections.reviewOfSystems.map((ros) => (
-                          <tr key={ros.system} style={
-                            ros.status === 'positive' ? { background: '#fff4ce' } : undefined
-                          }>
+                          <tr
+                            key={ros.system}
+                            style={
+                              ros.status === 'positive' ? { background: '#fff4ce' } : undefined
+                            }
+                          >
                             <td style={{ fontWeight: 600 }}>{ros.system}</td>
                             <td>
-                              <span style={{
-                                color: ros.status === 'positive' ? '#c58a07'
-                                  : ros.status === 'negative' ? '#107c10' : '#999',
-                              }}>
-                                {ros.status === 'positive' ? '+' : ros.status === 'negative' ? '-' : '?'}
+                              <span
+                                style={{
+                                  color:
+                                    ros.status === 'positive'
+                                      ? '#c58a07'
+                                      : ros.status === 'negative'
+                                        ? '#107c10'
+                                        : '#999',
+                                }}
+                              >
+                                {ros.status === 'positive'
+                                  ? '+'
+                                  : ros.status === 'negative'
+                                    ? '-'
+                                    : '?'}
                               </span>
                             </td>
                             <td>{ros.findings}</td>
@@ -468,16 +531,26 @@ export default function IntakePanel({ dfn }: Props) {
                     review.summary.sections.medicationsDelta.discontinuedMedications.length > 0 ||
                     review.summary.sections.medicationsDelta.changedMedications.length > 0) && (
                     <div style={{ marginTop: 10 }}>
-                      <div className={styles.panelTitle} style={{ fontSize: 13 }}>Medication Changes</div>
+                      <div className={styles.panelTitle} style={{ fontSize: 13 }}>
+                        Medication Changes
+                      </div>
                       <div style={{ fontSize: 11 }}>
                         {review.summary.sections.medicationsDelta.newMedications.map((m) => (
-                          <div key={m} style={{ color: '#107c10' }}>+ {m}</div>
+                          <div key={m} style={{ color: '#107c10' }}>
+                            + {m}
+                          </div>
                         ))}
-                        {review.summary.sections.medicationsDelta.discontinuedMedications.map((m) => (
-                          <div key={m} style={{ color: '#d13438' }}>- {m}</div>
-                        ))}
+                        {review.summary.sections.medicationsDelta.discontinuedMedications.map(
+                          (m) => (
+                            <div key={m} style={{ color: '#d13438' }}>
+                              - {m}
+                            </div>
+                          )
+                        )}
                         {review.summary.sections.medicationsDelta.changedMedications.map((m) => (
-                          <div key={m} style={{ color: '#c58a07' }}>~ {m}</div>
+                          <div key={m} style={{ color: '#c58a07' }}>
+                            ~ {m}
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -487,13 +560,19 @@ export default function IntakePanel({ dfn }: Props) {
                   {(review.summary.sections.allergiesDelta.newAllergies.length > 0 ||
                     review.summary.sections.allergiesDelta.resolvedAllergies.length > 0) && (
                     <div style={{ marginTop: 10 }}>
-                      <div className={styles.panelTitle} style={{ fontSize: 13 }}>Allergy Changes</div>
+                      <div className={styles.panelTitle} style={{ fontSize: 13 }}>
+                        Allergy Changes
+                      </div>
                       <div style={{ fontSize: 11 }}>
                         {review.summary.sections.allergiesDelta.newAllergies.map((a) => (
-                          <div key={a} style={{ color: '#d13438' }}>+ NEW: {a}</div>
+                          <div key={a} style={{ color: '#d13438' }}>
+                            + NEW: {a}
+                          </div>
                         ))}
                         {review.summary.sections.allergiesDelta.resolvedAllergies.map((a) => (
-                          <div key={a} style={{ color: '#107c10' }}>Resolved: {a}</div>
+                          <div key={a} style={{ color: '#107c10' }}>
+                            Resolved: {a}
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -501,31 +580,42 @@ export default function IntakePanel({ dfn }: Props) {
                 </div>
 
                 <div className={styles.splitRight}>
-                  <div className={styles.panelTitle} style={{ fontSize: 13 }}>Patient Answers</div>
+                  <div className={styles.panelTitle} style={{ fontSize: 13 }}>
+                    Patient Answers
+                  </div>
                   {review.questionnaireResponse.item.length === 0 && (
                     <p className={styles.emptyText}>No answers recorded</p>
                   )}
                   <div style={{ maxHeight: 400, overflowY: 'auto' }}>
                     {review.questionnaireResponse.item.map((qi) => (
-                      <div key={qi.linkId} style={{
-                        padding: '4px 8px',
-                        borderBottom: '1px solid var(--cprs-border, #e5e5e5)',
-                        fontSize: 12,
-                      }}>
-                        <div style={{ fontWeight: 600, color: '#333' }}>
-                          {qi.text ?? qi.linkId}
-                        </div>
+                      <div
+                        key={qi.linkId}
+                        style={{
+                          padding: '4px 8px',
+                          borderBottom: '1px solid var(--cprs-border, #e5e5e5)',
+                          fontSize: 12,
+                        }}
+                      >
+                        <div style={{ fontWeight: 600, color: '#333' }}>{qi.text ?? qi.linkId}</div>
                         <div style={{ color: '#555', marginTop: 2 }}>
-                          {qi.answer && qi.answer.length > 0
-                            ? qi.answer.map((a, i) => {
-                                const val = (a as any).valueString
-                                  ?? (a as any).valueBoolean?.toString()
-                                  ?? (a as any).valueInteger?.toString()
-                                  ?? (a as any).valueCoding?.display
-                                  ?? JSON.stringify(a);
-                                return <span key={i}>{i > 0 ? ', ' : ''}{val}</span>;
-                              })
-                            : <em style={{ color: '#999' }}>Not answered</em>}
+                          {qi.answer && qi.answer.length > 0 ? (
+                            qi.answer.map((a, i) => {
+                              const val =
+                                (a as any).valueString ??
+                                (a as any).valueBoolean?.toString() ??
+                                (a as any).valueInteger?.toString() ??
+                                (a as any).valueCoding?.display ??
+                                JSON.stringify(a);
+                              return (
+                                <span key={i}>
+                                  {i > 0 ? ', ' : ''}
+                                  {val}
+                                </span>
+                              );
+                            })
+                          ) : (
+                            <em style={{ color: '#999' }}>Not answered</em>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -536,19 +626,23 @@ export default function IntakePanel({ dfn }: Props) {
               {/* Draft Note Preview */}
               {review.summary.draftNoteText && (
                 <div style={{ marginTop: 12 }}>
-                  <div className={styles.panelTitle} style={{ fontSize: 13 }}>Draft Note</div>
-                  <pre style={{
-                    fontSize: 11,
-                    lineHeight: 1.4,
-                    whiteSpace: 'pre-wrap',
-                    padding: '8px 10px',
-                    background: 'var(--cprs-bg, #f5f5f5)',
-                    borderRadius: 4,
-                    border: '1px solid var(--cprs-border, #e5e5e5)',
-                    maxHeight: 250,
-                    overflowY: 'auto',
-                    fontFamily: 'Consolas, monospace',
-                  }}>
+                  <div className={styles.panelTitle} style={{ fontSize: 13 }}>
+                    Draft Note
+                  </div>
+                  <pre
+                    style={{
+                      fontSize: 11,
+                      lineHeight: 1.4,
+                      whiteSpace: 'pre-wrap',
+                      padding: '8px 10px',
+                      background: 'var(--cprs-bg, #f5f5f5)',
+                      borderRadius: 4,
+                      border: '1px solid var(--cprs-border, #e5e5e5)',
+                      maxHeight: 250,
+                      overflowY: 'auto',
+                      fontFamily: 'Consolas, monospace',
+                    }}
+                  >
                     {review.summary.draftNoteText}
                   </pre>
                 </div>
@@ -566,24 +660,20 @@ export default function IntakePanel({ dfn }: Props) {
                   </button>
                 )}
                 {review.session.status === 'clinician_reviewed' && (
-                  <button
-                    className={styles.btnPrimary}
-                    onClick={handleFile}
-                    disabled={actionBusy}
-                  >
+                  <button className={styles.btnPrimary} onClick={handleFile} disabled={actionBusy}>
                     {actionBusy ? 'Filing...' : 'File to VistA'}
                   </button>
                 )}
-                <button
-                  className={styles.btn}
-                  onClick={handleExport}
-                  disabled={actionBusy}
-                >
+                <button className={styles.btn} onClick={handleExport} disabled={actionBusy}>
                   Export Draft Note
                 </button>
                 <button
                   className={styles.btn}
-                  onClick={() => { setTab('list'); setReview(null); setSelectedId(null); }}
+                  onClick={() => {
+                    setTab('list');
+                    setReview(null);
+                    setSelectedId(null);
+                  }}
                 >
                   Back to List
                 </button>

@@ -3,14 +3,14 @@
 
 api:
   image:
-    tag: ""  # Must be set per release
+    tag: '' # Must be set per release
   replicas: 3
   resources:
     requests:
       cpu: 500m
       memory: 1Gi
     limits:
-      cpu: "2"
+      cpu: '2'
       memory: 2Gi
   autoscaling:
     enabled: true
@@ -21,11 +21,11 @@ api:
 vista:
   enabled: true
   image:
-    tag: ""  # Must be set per release
+    tag: '' # Must be set per release
 
 backup:
   enabled: true
-  schedule: "0 2 * * *"
+  schedule: '0 2 * * *'
   retention:
     keepDays: 30
 

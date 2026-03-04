@@ -6,23 +6,23 @@
  */
 
 interface DataSourceBadgeProps {
-  source: "ehr" | "pending" | "local";
+  source: 'ehr' | 'pending' | 'local';
   label?: string;
 }
 
 export function DataSourceBadge({ source, label }: DataSourceBadgeProps) {
   const config = {
     ehr: {
-      className: "badge badge-ehr",
-      text: label || "Live — Health System",
+      className: 'badge badge-ehr',
+      text: label || 'Live — Health System',
     },
     pending: {
-      className: "badge badge-pending",
-      text: label || "Integration Pending",
+      className: 'badge badge-pending',
+      text: label || 'Integration Pending',
     },
     local: {
-      className: "badge badge-skeleton",
-      text: label || "Local Data",
+      className: 'badge badge-skeleton',
+      text: label || 'Local Data',
     },
   };
 

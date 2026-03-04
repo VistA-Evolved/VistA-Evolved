@@ -1,4 +1,5 @@
 # Phase 307 -- W12-P9 NOTES
+
 ## Telehealth Provider Hardening
 
 ### Architecture Decisions
@@ -25,12 +26,14 @@
    module that may later use the command bus for ORWPCE SAVE writes.
 
 ### VistA RPCs Referenced
+
 - ORWPCE HASVISIT (read, registered) — Check if encounter exists
 - ORWPCE GET VISIT (read, registered) — Get visit detail
 - ORWPCE SAVE (write, registered) — Create/update encounter (integration-pending)
 - SDOE LIST ENCOUNTERS FOR PAT (read, exception) — List encounters
 
 ### Store Registrations (store-policy.ts)
+
 - telehealth-encounter-links: operational, in_memory_only, max 2K
 - telehealth-consent-records: operational, in_memory_only, max 2K
 - telehealth-heartbeats: ephemeral, in_memory_only, max 2K

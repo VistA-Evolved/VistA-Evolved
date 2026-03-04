@@ -27,6 +27,7 @@ pnpm test
 ```
 
 CI workflow `ci-pr-gates.yml` runs automatically on PR:
+
 - TypeScript build + Vitest
 - QA gauntlet (FAST suite)
 - Secret scan (gitleaks)
@@ -36,6 +37,7 @@ CI workflow `ci-pr-gates.yml` runs automatically on PR:
 ## Step 2: Merge to Main
 
 CI on main triggers `cd-deploy.yml`:
+
 1. Builds 3 Docker images (api, web, portal)
 2. Pushes to GHCR with `sha-<short>` + `latest` tags
 3. Trivy vulnerability scan (CRITICAL/HIGH threshold)
@@ -50,6 +52,7 @@ CI on main triggers `cd-deploy.yml`:
 ```
 
 ArgoCD auto-syncs staging. Verify via:
+
 ```powershell
 .\infra\scripts\argocd-portforward.ps1
 # Open http://localhost:8080 -> check staging Application health

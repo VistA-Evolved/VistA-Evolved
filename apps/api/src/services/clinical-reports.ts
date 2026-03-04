@@ -13,9 +13,6 @@
 
 import { log } from "../lib/logger.js";
 import { audit, type AuditAction } from "../lib/audit.js";
-import {
-  safeCallRpc,
-} from "../lib/rpc-resilience.js";
 import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
 import { validateCredentials } from "../vista/config.js";
 import { recordAnalyticsEvent } from "./analytics-store.js";

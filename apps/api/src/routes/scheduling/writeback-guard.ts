@@ -22,21 +22,25 @@
  *   - vista_direct: Full SDES writeback. Truth gate mandatory.
  */
 
-import { log } from "../../lib/logger.js";
-import { immutableAudit } from "../../lib/immutable-audit.js";
-import { getAdapter } from "../../adapters/adapter-loader.js";
-import type { SchedulingAdapter, TruthGateResult, SchedulingMode } from "../../adapters/scheduling/interface.js";
+import { log } from '../../lib/logger.js';
+import { immutableAudit } from '../../lib/immutable-audit.js';
+import { getAdapter } from '../../adapters/adapter-loader.js';
+import type {
+  SchedulingAdapter,
+  TruthGateResult,
+  SchedulingMode,
+} from '../../adapters/scheduling/interface.js';
 
 // ── Types ───────────────────────────────────────────────────
 
 export type WritebackStatus =
-  | "requested"          // Patient submitted request
-  | "pending_approval"   // In staff queue
-  | "approved"           // Staff approved, VistA writeback pending
-  | "scheduled"          // VistA confirmed (truth gate passed)
-  | "failed"             // Writeback attempted but failed
-  | "cancelled"          // Cancelled
-  | "integration_pending"; // Infrastructure not ready
+  | 'requested' // Patient submitted request
+  | 'pending_approval' // In staff queue
+  | 'approved' // Staff approved, VistA writeback pending
+  | 'scheduled' // VistA confirmed (truth gate passed)
+  | 'failed' // Writeback attempted but failed
+  | 'cancelled' // Cancelled
+  | 'integration_pending'; // Infrastructure not ready
 
 export interface WritebackResult {
   ok: boolean;
@@ -51,7 +55,7 @@ export interface WritebackResult {
 export interface WritebackPolicy {
   requireTruthGate: boolean;
   allowDirectWriteback: boolean;
-  mode: SchedulingMode["mode"];
+  mode: SchedulingMode['mode'];
   detail: string;
 }
 
@@ -91,7 +95,7 @@ let _writebackRepo: WritebackRepo | null = null;
  */
 export function initWritebackGuardRepo(repo: WritebackRepo): void {
   _writebackRepo = repo;
-  log.info("Scheduling writeback store wired to PG (W41-P4)");
+  log.info('Scheduling writeback store wired to PG (W41-P4)');
 }
 
 /**
@@ -106,26 +110,30 @@ export async function rehydrateWritebackEntries(tenantId: string): Promise<void>
         writebackEntries.set(row.id, row as WritebackEntry);
       }
     }
-    log.info("Scheduling writeback entries rehydrated from PG", { count: rows.length });
-  } catch (e) { log.warn("Scheduling writeback rehydration failed", { error: String(e) }); }
+    log.info('Scheduling writeback entries rehydrated from PG', { count: rows.length });
+  } catch (e) {
+    log.warn('Scheduling writeback rehydration failed', { error: String(e) });
+  }
 }
 
 function persistWritebackEntry(entry: WritebackEntry): void {
   if (!_writebackRepo) return;
-  void _writebackRepo.upsert({
-    id: entry.id,
-    tenantId: entry.tenantId,
-    appointmentRef: entry.appointmentRef,
-    patientDfn: entry.patientDfn,
-    clinicIen: entry.clinicIen || null,
-    status: entry.status,
-    truthGateResult: entry.truthGateResult ? JSON.stringify(entry.truthGateResult) : null,
-    vistaIen: entry.vistaIen || null,
-    attempts: entry.attempts,
-    lastAttemptAt: entry.lastAttemptAt || null,
-    createdAt: entry.createdAt,
-    updatedAt: entry.updatedAt,
-  }).catch((e: unknown) => log.warn("Scheduling writeback persist failed", { error: String(e) }));
+  void _writebackRepo
+    .upsert({
+      id: entry.id,
+      tenantId: entry.tenantId,
+      appointmentRef: entry.appointmentRef,
+      patientDfn: entry.patientDfn,
+      clinicIen: entry.clinicIen || null,
+      status: entry.status,
+      truthGateResult: entry.truthGateResult ? JSON.stringify(entry.truthGateResult) : null,
+      vistaIen: entry.vistaIen || null,
+      attempts: entry.attempts,
+      lastAttemptAt: entry.lastAttemptAt || null,
+      createdAt: entry.createdAt,
+      updatedAt: entry.updatedAt,
+    })
+    .catch((e: unknown) => log.warn('Scheduling writeback persist failed', { error: String(e) }));
 }
 
 export function getWritebackEntryCount(): number {
@@ -139,7 +147,7 @@ export function getWritebackEntries(): WritebackEntry[] {
 /** Evict completed/failed/cancelled entries older than TTL */
 function evictStaleWritebackEntries(): void {
   const now = Date.now();
-  const terminalStatuses: WritebackStatus[] = ["scheduled", "failed", "cancelled"];
+  const terminalStatuses: WritebackStatus[] = ['scheduled', 'failed', 'cancelled'];
   for (const [id, e] of writebackEntries) {
     const age = now - new Date(e.createdAt).getTime();
     if (age > WRITEBACK_TTL_MS && terminalStatuses.includes(e.status)) {
@@ -147,8 +155,9 @@ function evictStaleWritebackEntries(): void {
     }
   }
   if (writebackEntries.size > WRITEBACK_MAX_SIZE) {
-    const oldest = [...writebackEntries.entries()]
-      .sort((a, b) => new Date(a[1].createdAt).getTime() - new Date(b[1].createdAt).getTime());
+    const oldest = [...writebackEntries.entries()].sort(
+      (a, b) => new Date(a[1].createdAt).getTime() - new Date(b[1].createdAt).getTime()
+    );
     while (writebackEntries.size > WRITEBACK_MAX_SIZE && oldest.length) {
       writebackEntries.delete(oldest.shift()![0]);
     }
@@ -169,10 +178,10 @@ async function resolveMode(): Promise<SchedulingMode> {
   if (cachedMode && now - cachedModeAt < MODE_CACHE_TTL) return cachedMode;
 
   try {
-    const adapter = getAdapter("scheduling") as SchedulingAdapter;
-    if (adapter && typeof adapter.getSchedulingMode === "function") {
+    const adapter = getAdapter('scheduling') as SchedulingAdapter;
+    if (adapter && typeof adapter.getSchedulingMode === 'function') {
       const result = await adapter.getSchedulingMode();
-      if (result && typeof result === "object" && "data" in result && (result as any).data) {
+      if (result && typeof result === 'object' && 'data' in result && (result as any).data) {
         cachedMode = (result as any).data;
       } else {
         cachedMode = result as unknown as SchedulingMode;
@@ -189,8 +198,8 @@ async function resolveMode(): Promise<SchedulingMode> {
     sdesInstalled: false,
     sdoeInstalled: false,
     sdwlInstalled: false,
-    mode: "request_only",
-    detail: "Mode resolution failed — defaulting to request_only",
+    mode: 'request_only',
+    detail: 'Mode resolution failed — defaulting to request_only',
   };
 }
 
@@ -198,7 +207,7 @@ export async function getWritebackPolicy(): Promise<WritebackPolicy> {
   const mode = await resolveMode();
   return {
     requireTruthGate: true, // Always require truth gate
-    allowDirectWriteback: mode.mode === "vista_direct",
+    allowDirectWriteback: mode.mode === 'vista_direct',
     mode: mode.mode,
     detail: mode.detail,
   };
@@ -214,25 +223,26 @@ export async function enforceTruthGate(
   appointmentRef: string,
   patientDfn: string,
   tenantId: string,
-  actorDuz: string,
+  actorDuz: string
 ): Promise<WritebackResult> {
   const rpcUsed: string[] = [];
 
   try {
-    const adapter = getAdapter("scheduling") as SchedulingAdapter;
-    if (!adapter || typeof adapter.verifyAppointment !== "function") {
+    const adapter = getAdapter('scheduling') as SchedulingAdapter;
+    if (!adapter || typeof adapter.verifyAppointment !== 'function') {
       return {
         ok: false,
-        status: "integration_pending",
-        error: "Scheduling adapter not available",
-        nextSteps: ["Configure ADAPTER_SCHEDULING=vista", "Verify SDES RPCs installed"],
+        status: 'integration_pending',
+        error: 'Scheduling adapter not available',
+        nextSteps: ['Configure ADAPTER_SCHEDULING=vista', 'Verify SDES RPCs installed'],
       };
     }
 
     const rawResult = await adapter.verifyAppointment(appointmentRef, patientDfn);
-    const gateResult: TruthGateResult = (rawResult && typeof rawResult === "object" && "data" in rawResult && (rawResult as any).data)
-      ? (rawResult as any).data
-      : rawResult as unknown as TruthGateResult;
+    const gateResult: TruthGateResult =
+      rawResult && typeof rawResult === 'object' && 'data' in rawResult && (rawResult as any).data
+        ? (rawResult as any).data
+        : (rawResult as unknown as TruthGateResult);
     if (gateResult.rpcUsed) rpcUsed.push(gateResult.rpcUsed);
 
     // Update tracking entry
@@ -243,21 +253,23 @@ export async function enforceTruthGate(
       entry.lastAttemptAt = new Date().toISOString();
       entry.updatedAt = new Date().toISOString();
       if (gateResult.passed) {
-        entry.status = "scheduled";
+        entry.status = 'scheduled';
         entry.vistaIen = gateResult.vistaIen;
       }
       persistWritebackEntry(entry);
     }
 
-    immutableAudit("scheduling.truth_gate", gateResult.passed ? "success" : "failure",
+    immutableAudit(
+      'scheduling.truth_gate',
+      gateResult.passed ? 'success' : 'failure',
       { sub: actorDuz },
-      { tenantId, detail: { appointmentRef, passed: gateResult.passed, rpcUsed } },
+      { tenantId, detail: { appointmentRef, passed: gateResult.passed, rpcUsed } }
     );
 
     if (gateResult.passed) {
       return {
         ok: true,
-        status: "scheduled",
+        status: 'scheduled',
         truthGate: gateResult,
         vistaIen: gateResult.vistaIen,
         rpcUsed,
@@ -266,22 +278,22 @@ export async function enforceTruthGate(
 
     return {
       ok: false,
-      status: "approved",  // Stays approved, NOT scheduled
+      status: 'approved', // Stays approved, NOT scheduled
       truthGate: gateResult,
       rpcUsed,
-      error: "Truth gate did not confirm VistA booking",
+      error: 'Truth gate did not confirm VistA booking',
       nextSteps: [
-        "VistA appointment may not exist yet",
-        "Retry verification after manual VistA booking",
-        "Contact clinic staff for manual confirmation",
+        'VistA appointment may not exist yet',
+        'Retry verification after manual VistA booking',
+        'Contact clinic staff for manual confirmation',
       ],
     };
   } catch (err: any) {
-    log.warn("Truth gate enforcement error", { error: err.message, appointmentRef });
+    log.warn('Truth gate enforcement error', { error: err.message, appointmentRef });
     return {
       ok: false,
-      status: "failed",
-      error: "Truth gate verification failed",
+      status: 'failed',
+      error: 'Truth gate verification failed',
       rpcUsed,
     };
   }
@@ -293,7 +305,7 @@ export function trackWriteback(
   appointmentRef: string,
   patientDfn: string,
   tenantId: string,
-  clinicIen?: string,
+  clinicIen?: string
 ): WritebackEntry {
   const now = new Date().toISOString();
   const entry: WritebackEntry = {
@@ -302,7 +314,7 @@ export function trackWriteback(
     appointmentRef,
     patientDfn,
     clinicIen,
-    status: "pending_approval",
+    status: 'pending_approval',
     attempts: 0,
     createdAt: now,
     updatedAt: now,
@@ -314,7 +326,7 @@ export function trackWriteback(
 
 export function updateWritebackStatus(
   appointmentRef: string,
-  status: WritebackStatus,
+  status: WritebackStatus
 ): WritebackEntry | null {
   const entry = writebackEntries.get(appointmentRef);
   if (!entry) return null;

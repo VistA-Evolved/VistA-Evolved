@@ -17,12 +17,12 @@ cron task (`pg_backup`) that runs `pg_dump` daily.
 
 ### Configuration
 
-| Env Var | Default | Description |
-|---------|---------|-------------|
-| `PG_BACKUP_DIR` | `artifacts/backups/pg` | Directory for backup files |
-| `PG_BACKUP_RETAIN_COUNT` | `7` | Max backups to keep |
-| `JOB_CRON_PG_BACKUP` | `0 1 * * *` | Cron schedule (Graphile format) |
-| `JOB_CRON_PG_BACKUP` | `disabled` | Set to disable automatic backups |
+| Env Var                  | Default                | Description                      |
+| ------------------------ | ---------------------- | -------------------------------- |
+| `PG_BACKUP_DIR`          | `artifacts/backups/pg` | Directory for backup files       |
+| `PG_BACKUP_RETAIN_COUNT` | `7`                    | Max backups to keep              |
+| `JOB_CRON_PG_BACKUP`     | `0 1 * * *`            | Cron schedule (Graphile format)  |
+| `JOB_CRON_PG_BACKUP`     | `disabled`             | Set to disable automatic backups |
 
 ### Prerequisites
 
@@ -88,11 +88,11 @@ grep "CREATE TABLE" artifacts/backups/pg/ve-platform-*.sql | wc -l
 
 ## Monitoring
 
-| Check | How |
-|-------|-----|
-| Last backup age | `GET /hardening/backup-status` → `lastBackup.timestamp` |
-| Backup count | `GET /hardening/backup-status` → `backupCount` |
-| Job failures | `GET /rcm/workqueues/stats` or check `graphile_worker._private_jobs` |
+| Check           | How                                                                  |
+| --------------- | -------------------------------------------------------------------- |
+| Last backup age | `GET /hardening/backup-status` → `lastBackup.timestamp`              |
+| Backup count    | `GET /hardening/backup-status` → `backupCount`                       |
+| Job failures    | `GET /rcm/workqueues/stats` or check `graphile_worker._private_jobs` |
 
 ## Disaster Recovery
 
@@ -121,6 +121,7 @@ docker compose -f services/platform-db/docker-compose.yml start
 ## PITR (Point-in-Time Recovery)
 
 For production deployments requiring PITR:
+
 1. Enable WAL archiving in `postgresql.conf`
 2. Set `archive_mode = on`
 3. Configure `archive_command` to copy WAL files to backup storage

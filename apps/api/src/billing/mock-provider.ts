@@ -17,7 +17,7 @@ import type {
   UsageSummary,
   Invoice,
   MeterEvent,
-} from "./types.js";
+} from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Built-in plans                                                      */
@@ -25,48 +25,60 @@ import type {
 
 const MOCK_PLANS: Plan[] = [
   {
-    id: "plan_free",
-    name: "Community (Free)",
-    tier: "free",
+    id: 'plan_free',
+    name: 'Community (Free)',
+    tier: 'free',
     basePriceCents: 0,
     includedPhysicians: 2,
     perPhysicianCents: 0,
     apiCallLimit: 10_000,
-    modulesIncluded: ["kernel", "clinical"],
-    description: "Free tier for small practices and evaluation.",
+    modulesIncluded: ['kernel', 'clinical'],
+    description: 'Free tier for small practices and evaluation.',
   },
   {
-    id: "plan_starter",
-    name: "Starter",
-    tier: "starter",
+    id: 'plan_starter',
+    name: 'Starter',
+    tier: 'starter',
     basePriceCents: 29900, // $299/mo
     includedPhysicians: 5,
     perPhysicianCents: 4900, // $49/physician
     apiCallLimit: 100_000,
-    modulesIncluded: ["kernel", "clinical", "portal", "scheduling"],
-    description: "Small practice plan with patient portal.",
+    modulesIncluded: ['kernel', 'clinical', 'portal', 'scheduling'],
+    description: 'Small practice plan with patient portal.',
   },
   {
-    id: "plan_professional",
-    name: "Professional",
-    tier: "professional",
+    id: 'plan_professional',
+    name: 'Professional',
+    tier: 'professional',
     basePriceCents: 99900, // $999/mo
     includedPhysicians: 25,
     perPhysicianCents: 3900, // $39/physician
     apiCallLimit: 1_000_000,
-    modulesIncluded: ["kernel", "clinical", "portal", "scheduling", "imaging", "rcm", "telehealth"],
-    description: "Mid-size practice with imaging and billing.",
+    modulesIncluded: ['kernel', 'clinical', 'portal', 'scheduling', 'imaging', 'rcm', 'telehealth'],
+    description: 'Mid-size practice with imaging and billing.',
   },
   {
-    id: "plan_enterprise",
-    name: "Enterprise",
-    tier: "enterprise",
+    id: 'plan_enterprise',
+    name: 'Enterprise',
+    tier: 'enterprise',
     basePriceCents: 499900, // $4,999/mo
     includedPhysicians: 100,
     perPhysicianCents: 2900, // $29/physician
     apiCallLimit: 0, // unlimited
-    modulesIncluded: ["kernel", "clinical", "portal", "scheduling", "imaging", "rcm", "telehealth", "analytics", "interop", "ai", "iam"],
-    description: "Full suite for hospitals and health systems.",
+    modulesIncluded: [
+      'kernel',
+      'clinical',
+      'portal',
+      'scheduling',
+      'imaging',
+      'rcm',
+      'telehealth',
+      'analytics',
+      'interop',
+      'ai',
+      'iam',
+    ],
+    description: 'Full suite for hospitals and health systems.',
   },
 ];
 
@@ -92,7 +104,7 @@ function periodEnd(): string {
 /* ------------------------------------------------------------------ */
 
 export class MockBillingProvider implements BillingProvider {
-  readonly name = "mock";
+  readonly name = 'mock';
 
   async listPlans(): Promise<Plan[]> {
     return [...MOCK_PLANS];
@@ -110,7 +122,7 @@ export class MockBillingProvider implements BillingProvider {
       id: `sub_mock_${tenantId}_${Date.now()}`,
       tenantId,
       planId,
-      status: "active",
+      status: 'active',
       currentPeriodStart: now(),
       currentPeriodEnd: periodEnd(),
       cancelAtPeriodEnd: false,
@@ -144,7 +156,7 @@ export class MockBillingProvider implements BillingProvider {
     if (!existing) throw new Error(`No subscription for tenant: ${tenantId}`);
     const updated: Subscription = {
       ...existing,
-      status: cancelAtPeriodEnd ? existing.status : "canceled" as SubscriptionStatus,
+      status: cancelAtPeriodEnd ? existing.status : ('canceled' as SubscriptionStatus),
       cancelAtPeriodEnd,
       updatedAt: now(),
     };
@@ -162,7 +174,11 @@ export class MockBillingProvider implements BillingProvider {
     tenantCounters.set(record.event, current + record.quantity);
   }
 
-  async getUsageSummary(tenantId: string, periodStart: string, periodEnd: string): Promise<UsageSummary> {
+  async getUsageSummary(
+    tenantId: string,
+    periodStart: string,
+    periodEnd: string
+  ): Promise<UsageSummary> {
     const tenantCounters = usageCounters.get(tenantId);
     const counters: Record<MeterEvent, number> = {
       api_call: 0,
@@ -192,7 +208,7 @@ export class MockBillingProvider implements BillingProvider {
   }
 
   async healthCheck(): Promise<{ ok: boolean; provider: string; details?: string }> {
-    return { ok: true, provider: "mock", details: "Mock billing provider (dev/test)" };
+    return { ok: true, provider: 'mock', details: 'Mock billing provider (dev/test)' };
   }
 }
 

@@ -17,22 +17,26 @@ function getArg(name, def) {
   return idx >= 0 && args[idx + 1] ? args[idx + 1] : def;
 }
 
-const BASE = getArg("--base", "http://127.0.0.1:3001");
-const CONCURRENCY = parseInt(getArg("--concurrency", "5"), 10);
-const ROUNDS = parseInt(getArg("--rounds", "10"), 10);
+const BASE = getArg('--base', 'http://127.0.0.1:3001');
+const CONCURRENCY = parseInt(getArg('--concurrency', '5'), 10);
+const ROUNDS = parseInt(getArg('--rounds', '10'), 10);
 
 /** Endpoints to test (public + authenticated) */
 const ENDPOINTS = [
-  { name: "GET /health", path: "/health", auth: false },
-  { name: "GET /ready", path: "/ready", auth: false },
-  { name: "GET /metrics", path: "/metrics", auth: false },
-  { name: "GET /version", path: "/version", auth: false },
+  { name: 'GET /health', path: '/health', auth: false },
+  { name: 'GET /ready', path: '/ready', auth: false },
+  { name: 'GET /metrics', path: '/metrics', auth: false },
+  { name: 'GET /version', path: '/version', auth: false },
 ];
 
 /** Authenticated endpoints (need session cookie) */
 const AUTH_ENDPOINTS = [
-  { name: "GET /vista/default-patient-list", path: "/vista/default-patient-list", auth: true },
-  { name: "GET /vista/patient-search?term=CARTER", path: "/vista/patient-search?term=CARTER", auth: true },
+  { name: 'GET /vista/default-patient-list', path: '/vista/default-patient-list', auth: true },
+  {
+    name: 'GET /vista/patient-search?term=CARTER',
+    path: '/vista/patient-search?term=CARTER',
+    auth: true,
+  },
 ];
 
 /** Results storage */
@@ -45,7 +49,7 @@ function initResults(name) {
 async function hitEndpoint(endpoint, cookie) {
   const url = `${BASE}${endpoint.path}`;
   const headers = {};
-  if (cookie) headers["Cookie"] = cookie;
+  if (cookie) headers['Cookie'] = cookie;
 
   const start = performance.now();
   try {
@@ -76,28 +80,27 @@ function percentile(arr, p) {
 }
 
 function printResults() {
-  console.log("\n" + "=".repeat(80));
-  console.log("  LOAD TEST RESULTS");
-  console.log("=".repeat(80));
+  console.log('\n' + '='.repeat(80));
+  console.log('  LOAD TEST RESULTS');
+  console.log('='.repeat(80));
   console.log(`  Base URL: ${BASE}`);
   console.log(`  Concurrency: ${CONCURRENCY}  |  Rounds: ${ROUNDS}`);
-  console.log("-".repeat(80));
+  console.log('-'.repeat(80));
   console.log(
-    "  Endpoint".padEnd(45) +
-    "Total".padStart(6) +
-    "OK".padStart(6) +
-    "Err".padStart(6) +
-    "Avg(ms)".padStart(10) +
-    "P50(ms)".padStart(10) +
-    "P95(ms)".padStart(10)
+    '  Endpoint'.padEnd(45) +
+      'Total'.padStart(6) +
+      'OK'.padStart(6) +
+      'Err'.padStart(6) +
+      'Avg(ms)'.padStart(10) +
+      'P50(ms)'.padStart(10) +
+      'P95(ms)'.padStart(10)
   );
-  console.log("-".repeat(80));
+  console.log('-'.repeat(80));
 
   let allOk = true;
   for (const [name, r] of Object.entries(results)) {
-    const avg = r.latencies.length > 0
-      ? (r.latencies.reduce((a, b) => a + b, 0) / r.latencies.length)
-      : 0;
+    const avg =
+      r.latencies.length > 0 ? r.latencies.reduce((a, b) => a + b, 0) / r.latencies.length : 0;
     const p50 = percentile(r.latencies, 50);
     const p95 = percentile(r.latencies, 95);
 
@@ -105,18 +108,18 @@ function printResults() {
 
     console.log(
       `  ${name}`.padEnd(45) +
-      `${r.total}`.padStart(6) +
-      `${r.success}`.padStart(6) +
-      `${r.errors}`.padStart(6) +
-      `${avg.toFixed(1)}`.padStart(10) +
-      `${p50.toFixed(1)}`.padStart(10) +
-      `${p95.toFixed(1)}`.padStart(10)
+        `${r.total}`.padStart(6) +
+        `${r.success}`.padStart(6) +
+        `${r.errors}`.padStart(6) +
+        `${avg.toFixed(1)}`.padStart(10) +
+        `${p50.toFixed(1)}`.padStart(10) +
+        `${p95.toFixed(1)}`.padStart(10)
     );
   }
 
-  console.log("=".repeat(80));
-  console.log(allOk ? "  ✓ All endpoints healthy" : "  ✗ Some endpoints had errors");
-  console.log("");
+  console.log('='.repeat(80));
+  console.log(allOk ? '  ✓ All endpoints healthy' : '  ✗ Some endpoints had errors');
+  console.log('');
 
   return allOk;
 }
@@ -124,16 +127,16 @@ function printResults() {
 async function login() {
   try {
     const res = await fetch(`${BASE}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        accessCode: process.env.VISTA_ACCESS_CODE || "PROV123",
-        verifyCode: process.env.VISTA_VERIFY_CODE || "PROV123!!",
+        accessCode: process.env.VISTA_ACCESS_CODE || 'PROV123',
+        verifyCode: process.env.VISTA_VERIFY_CODE || 'PROV123!!',
       }),
     });
 
     // Extract Set-Cookie header
-    const setCookie = res.headers.get("set-cookie");
+    const setCookie = res.headers.get('set-cookie');
     if (setCookie) {
       // Extract just the cookie name=value
       const match = setCookie.match(/^([^;]+)/);
@@ -141,13 +144,13 @@ async function login() {
     }
     return null;
   } catch (err) {
-    console.error("  Login failed:", err.message);
+    console.error('  Login failed:', err.message);
     return null;
   }
 }
 
 async function main() {
-  console.log("Phase 16 — Load Test Harness");
+  console.log('Phase 16 — Load Test Harness');
   console.log(`  Target: ${BASE}`);
   console.log(`  Concurrency: ${CONCURRENCY}, Rounds: ${ROUNDS}\n`);
 
@@ -157,12 +160,12 @@ async function main() {
   }
 
   // Login for authenticated endpoints
-  console.log("  Authenticating...");
+  console.log('  Authenticating...');
   const cookie = await login();
   if (!cookie) {
-    console.log("  ⚠ Login failed — will only test public endpoints.\n");
+    console.log('  ⚠ Login failed — will only test public endpoints.\n');
   } else {
-    console.log("  ✓ Authenticated successfully.\n");
+    console.log('  ✓ Authenticated successfully.\n');
   }
 
   // Run rounds
@@ -195,6 +198,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error("Load test error:", err);
+  console.error('Load test error:', err);
   process.exit(1);
 });

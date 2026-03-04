@@ -40,28 +40,29 @@ apps/web/src/app/cprs/admin/alignment/
 
 ## API Endpoints (all admin-only)
 
-| Method | Path                                          | Purpose |
-|--------|-----------------------------------------------|---------|
-| GET    | /admin/alignment/score                        | Global + per-panel scores |
-| GET    | /admin/alignment/gates                        | Run 8 verification gates |
+| Method | Path                                          | Purpose                                 |
+| ------ | --------------------------------------------- | --------------------------------------- |
+| GET    | /admin/alignment/score                        | Global + per-panel scores               |
+| GET    | /admin/alignment/gates                        | Run 8 verification gates                |
 | GET    | /admin/alignment/summary                      | Combined score + gates + tripwire stats |
-| GET    | /admin/alignment/snapshots                    | List golden snapshots |
-| POST   | /admin/alignment/snapshots                    | Capture new snapshot |
-| GET    | /admin/alignment/snapshots/:id                | Get snapshot detail |
-| DELETE | /admin/alignment/snapshots/:id                | Delete snapshot |
-| POST   | /admin/alignment/snapshots/compare            | Compare two snapshots |
-| GET    | /admin/alignment/tripwires                    | List tripwires |
-| POST   | /admin/alignment/tripwires                    | Create tripwire |
-| POST   | /admin/alignment/tripwires/seed               | Seed 5 default tripwires |
-| PUT    | /admin/alignment/tripwires/:id/toggle         | Enable/disable |
-| DELETE | /admin/alignment/tripwires/:id                | Delete tripwire |
-| GET    | /admin/alignment/tripwires/events             | List tripwire events |
-| POST   | /admin/alignment/tripwires/events/:id/resolve | Resolve event |
-| GET    | /admin/alignment/tripwires/stats              | Tripwire statistics |
+| GET    | /admin/alignment/snapshots                    | List golden snapshots                   |
+| POST   | /admin/alignment/snapshots                    | Capture new snapshot                    |
+| GET    | /admin/alignment/snapshots/:id                | Get snapshot detail                     |
+| DELETE | /admin/alignment/snapshots/:id                | Delete snapshot                         |
+| POST   | /admin/alignment/snapshots/compare            | Compare two snapshots                   |
+| GET    | /admin/alignment/tripwires                    | List tripwires                          |
+| POST   | /admin/alignment/tripwires                    | Create tripwire                         |
+| POST   | /admin/alignment/tripwires/seed               | Seed 5 default tripwires                |
+| PUT    | /admin/alignment/tripwires/:id/toggle         | Enable/disable                          |
+| DELETE | /admin/alignment/tripwires/:id                | Delete tripwire                         |
+| GET    | /admin/alignment/tripwires/events             | List tripwire events                    |
+| POST   | /admin/alignment/tripwires/events/:id/resolve | Resolve event                           |
+| GET    | /admin/alignment/tripwires/stats              | Tripwire statistics                     |
 
 ## Scoring Formula
 
-**Panel Score** = (wiredRpcs / totalRpcs) * 80 + routeHealth(10) + tripwireBonus(10)
+**Panel Score** = (wiredRpcs / totalRpcs) \* 80 + routeHealth(10) + tripwireBonus(10)
+
 - Panels with no VistA RPCs (Telehealth, AI, Intake) score 100 by definition
 - VistA-linked panels are double-weighted in global score
 

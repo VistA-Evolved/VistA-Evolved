@@ -14,12 +14,12 @@
  * Usage: npx tsx scripts/cprs/extractDelphiRpcs.ts
  */
 
-import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync, existsSync } from "fs";
-import { join, relative, extname, basename } from "path";
+import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { join, relative, extname, basename } from 'path';
 
 const ROOT = process.cwd();
-const DELPHI_ROOT = join(ROOT, "reference", "cprs");
-const OUT_DIR = join(ROOT, "artifacts", "cprs");
+const DELPHI_ROOT = join(ROOT, 'reference', 'cprs');
+const OUT_DIR = join(ROOT, 'artifacts', 'cprs');
 
 interface RpcRef {
   rpcName: string;
@@ -34,7 +34,7 @@ interface RpcSummary {
   files: string[];
 }
 
-const SKIP_DIRS = new Set([".git", "node_modules", "dcu", "__history"]);
+const SKIP_DIRS = new Set(['.git', 'node_modules', 'dcu', '__history']);
 
 function collectPasFiles(dir: string): string[] {
   const results: string[] = [];
@@ -46,7 +46,7 @@ function collectPasFiles(dir: string): string[] {
       const stat = statSync(full);
       if (stat.isDirectory()) {
         results.push(...collectPasFiles(full));
-      } else if (stat.isFile() && extname(entry).toLowerCase() === ".pas") {
+      } else if (stat.isFile() && extname(entry).toLowerCase() === '.pas') {
         results.push(full);
       }
     } catch {
@@ -59,27 +59,27 @@ function collectPasFiles(dir: string): string[] {
 // Patterns that extract RPC names from Delphi source
 const RPC_PATTERNS: { re: RegExp; name: string }[] = [
   // sCallV('RPC NAME', [...])  / CallV / tCallV
-  { re: /(?:sCallV|CallV|tCallV)\s*\(\s*'([^']+)'/gi, name: "sCallV" },
+  { re: /(?:sCallV|CallV|tCallV)\s*\(\s*'([^']+)'/gi, name: 'sCallV' },
   // RPCBrokerV.RemoteProcedure := 'RPC NAME'
-  { re: /RemoteProcedure\s*:=\s*'([^']+)'/gi, name: "RemoteProcedure" },
+  { re: /RemoteProcedure\s*:=\s*'([^']+)'/gi, name: 'RemoteProcedure' },
   // SetParams('RPC NAME', ...) -- some variants
-  { re: /SetParams\s*\(\s*'([^']+)'/gi, name: "SetParams" },
+  { re: /SetParams\s*\(\s*'([^']+)'/gi, name: 'SetParams' },
   // Broker.Param[0].Value := 'RPC NAME' after RemoteProcedure -- handled by RemoteProcedure pattern
   // String constants like PARAM_RPC = 'RPC NAME'
-  { re: /=\s*'(OR[A-Z][A-Z0-9 ]{3,50})'/g, name: "ORConstant" },
-  { re: /=\s*'(TIU [A-Z0-9 ]{3,50})'/g, name: "TIUConstant" },
-  { re: /=\s*'(GMV [A-Z0-9 ]{3,50})'/g, name: "GMVConstant" },
-  { re: /=\s*'(XUS [A-Z0-9 ]{3,50})'/g, name: "XUSConstant" },
-  { re: /=\s*'(XWB [A-Z0-9 ]{3,50})'/g, name: "XWBConstant" },
-  { re: /=\s*'(MAG[A-Z0-9]? [A-Z0-9 ]{3,50})'/g, name: "MAGConstant" },
-  { re: /=\s*'(GMRA[A-Z0-9 ]{3,50})'/g, name: "GMRAConstant" },
+  { re: /=\s*'(OR[A-Z][A-Z0-9 ]{3,50})'/g, name: 'ORConstant' },
+  { re: /=\s*'(TIU [A-Z0-9 ]{3,50})'/g, name: 'TIUConstant' },
+  { re: /=\s*'(GMV [A-Z0-9 ]{3,50})'/g, name: 'GMVConstant' },
+  { re: /=\s*'(XUS [A-Z0-9 ]{3,50})'/g, name: 'XUSConstant' },
+  { re: /=\s*'(XWB [A-Z0-9 ]{3,50})'/g, name: 'XWBConstant' },
+  { re: /=\s*'(MAG[A-Z0-9]? [A-Z0-9 ]{3,50})'/g, name: 'MAGConstant' },
+  { re: /=\s*'(GMRA[A-Z0-9 ]{3,50})'/g, name: 'GMRAConstant' },
 ];
 
 // Filter out things that clearly aren't RPC names
 function isLikelyRpc(name: string): boolean {
   if (name.length < 4 || name.length > 60) return false;
   // Must contain a space (all VistA RPCs have spaces)
-  if (!name.includes(" ")) return false;
+  if (!name.includes(' ')) return false;
   // Must start with an alpha char
   if (!/^[A-Z]/i.test(name)) return false;
   // Filter out common false positives
@@ -89,17 +89,21 @@ function isLikelyRpc(name: string): boolean {
 
 function main() {
   if (!existsSync(DELPHI_ROOT)) {
-    console.log("WARNING: reference/cprs/ not found -- generating empty extraction");
+    console.log('WARNING: reference/cprs/ not found -- generating empty extraction');
     mkdirSync(OUT_DIR, { recursive: true });
     writeFileSync(
-      join(OUT_DIR, "delphi-rpcs.json"),
-      JSON.stringify({ _meta: { source: "reference/cprs/", status: "directory-not-found" }, rpcs: [], refs: [] }, null, 2),
+      join(OUT_DIR, 'delphi-rpcs.json'),
+      JSON.stringify(
+        { _meta: { source: 'reference/cprs/', status: 'directory-not-found' }, rpcs: [], refs: [] },
+        null,
+        2
+      )
     );
-    console.log("Output: artifacts/cprs/delphi-rpcs.json (empty)");
+    console.log('Output: artifacts/cprs/delphi-rpcs.json (empty)');
     return;
   }
 
-  console.log("Scanning Delphi .pas files...");
+  console.log('Scanning Delphi .pas files...');
   const files = collectPasFiles(DELPHI_ROOT);
   console.log(`  Found ${files.length} .pas files`);
 
@@ -108,18 +112,18 @@ function main() {
   for (const file of files) {
     let content: string;
     try {
-      content = readFileSync(file, "utf-8");
+      content = readFileSync(file, 'utf-8');
     } catch {
       // binary or encoding issue
       try {
-        content = readFileSync(file, "latin1");
+        content = readFileSync(file, 'latin1');
       } catch {
         continue;
       }
     }
 
-    const rel = relative(DELPHI_ROOT, file).replace(/\\/g, "/");
-    const lines = content.split("\n");
+    const rel = relative(DELPHI_ROOT, file).replace(/\\/g, '/');
+    const lines = content.split('\n');
 
     for (let i = 0; i < lines.length; i++) {
       for (const pat of RPC_PATTERNS) {
@@ -163,7 +167,7 @@ function main() {
 
   const output = {
     _meta: {
-      source: "reference/cprs/",
+      source: 'reference/cprs/',
       extractedAt: new Date().toISOString(),
       pasFilesScanned: files.length,
       totalReferences: allRefs.length,
@@ -173,7 +177,7 @@ function main() {
     refs: allRefs,
   };
 
-  writeFileSync(join(OUT_DIR, "delphi-rpcs.json"), JSON.stringify(output, null, 2));
+  writeFileSync(join(OUT_DIR, 'delphi-rpcs.json'), JSON.stringify(output, null, 2));
   console.log(`\nExtracted ${rpcs.length} unique RPCs from ${allRefs.length} references`);
   console.log(`Output: artifacts/cprs/delphi-rpcs.json`);
 }

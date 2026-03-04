@@ -14,14 +14,8 @@
  * Usage: npx tsx scripts/governance/buildPendingTargetsIndex.ts
  */
 
-import {
-  readdirSync,
-  statSync,
-  readFileSync,
-  writeFileSync,
-  mkdirSync,
-} from "fs";
-import { join, relative, extname } from "path";
+import { readdirSync, statSync, readFileSync, writeFileSync, mkdirSync } from 'fs';
+import { join, relative, extname } from 'path';
 
 const ROOT = process.cwd();
 
@@ -31,7 +25,7 @@ interface PendingEntry {
   screenOrRoute: string;
   rpcs: string[];
   uiText: string | null;
-  kind: "api-response" | "ui-display" | "type-def" | "other";
+  kind: 'api-response' | 'ui-display' | 'type-def' | 'other';
 }
 
 const entries: PendingEntry[] = [];
@@ -44,7 +38,7 @@ function walkDir(dir: string, exts: string[]): string[] {
   const results: string[] = [];
   if (!statSync(dir).isDirectory()) return results;
   for (const entry of readdirSync(dir)) {
-    if (entry === "node_modules" || entry === ".next" || entry === "dist") continue;
+    if (entry === 'node_modules' || entry === '.next' || entry === 'dist') continue;
     const fullPath = join(dir, entry);
     const stat = statSync(fullPath);
     if (stat.isDirectory()) {
@@ -57,7 +51,7 @@ function walkDir(dir: string, exts: string[]): string[] {
 }
 
 function inferScreenOrRoute(filePath: string): string {
-  const rel = relative(ROOT, filePath).replace(/\\/g, "/");
+  const rel = relative(ROOT, filePath).replace(/\\/g, '/');
 
   // API route files
   const routeMatch = rel.match(/apps\/api\/src\/routes\/(.+)\.(ts|js)/);
@@ -89,7 +83,7 @@ function inferScreenOrRoute(filePath: string): string {
 function extractRpcs(lines: string[], lineIdx: number): string[] {
   const rpcs: string[] = [];
   // Check current line and a few lines after for array content
-  const window = lines.slice(lineIdx, Math.min(lineIdx + 5, lines.length)).join(" ");
+  const window = lines.slice(lineIdx, Math.min(lineIdx + 5, lines.length)).join(' ');
   const rpcMatches = window.matchAll(/"([A-Z][A-Z0-9 ]+[A-Z0-9])"/g);
   for (const m of rpcMatches) {
     if (m[1].length > 3) rpcs.push(m[1]);
@@ -101,10 +95,7 @@ function extractRpcs(lines: string[], lineIdx: number): string[] {
  * Extract UI text from nearby integration-pending strings.
  */
 function extractUiText(lines: string[], lineIdx: number): string | null {
-  const window = lines.slice(
-    Math.max(0, lineIdx - 3),
-    Math.min(lineIdx + 5, lines.length),
-  );
+  const window = lines.slice(Math.max(0, lineIdx - 3), Math.min(lineIdx + 5, lines.length));
   for (const line of window) {
     // Title attributes
     const titleMatch = line.match(/title="([^"]*(?:pending|integration)[^"]*)"/i);
@@ -112,50 +103,47 @@ function extractUiText(lines: string[], lineIdx: number): string | null {
 
     // String literals with pending
     const strMatch = line.match(
-      /[`"']([^`"']*(?:integration.pending|pending.target)[^`"']*)[`"']/i,
+      /[`"']([^`"']*(?:integration.pending|pending.target)[^`"']*)[`"']/i
     );
     if (strMatch) return strMatch[1];
   }
   return null;
 }
 
-function classifyEntry(filePath: string, line: string): PendingEntry["kind"] {
-  const rel = relative(ROOT, filePath).replace(/\\/g, "/");
-  if (rel.includes("routes/") || rel.includes("api/")) {
-    if (line.includes("pendingTargets:") && (line.includes("[") || line.includes("]"))) {
-      return "api-response";
+function classifyEntry(filePath: string, line: string): PendingEntry['kind'] {
+  const rel = relative(ROOT, filePath).replace(/\\/g, '/');
+  if (rel.includes('routes/') || rel.includes('api/')) {
+    if (line.includes('pendingTargets:') && (line.includes('[') || line.includes(']'))) {
+      return 'api-response';
     }
   }
-  if (line.match(/:\s*(string\[\]|PendingTarget)/)) return "type-def";
-  if (rel.includes("Panel") || rel.includes("page.tsx") || rel.includes("Modal")) {
-    return "ui-display";
+  if (line.match(/:\s*(string\[\]|PendingTarget)/)) return 'type-def';
+  if (rel.includes('Panel') || rel.includes('page.tsx') || rel.includes('Modal')) {
+    return 'ui-display';
   }
-  return "other";
+  return 'other';
 }
 
 /* ------------------------------------------------------------------ */
 /* Scan files                                                          */
 /* ------------------------------------------------------------------ */
 
-const scanDirs = [
-  join(ROOT, "apps", "web", "src"),
-  join(ROOT, "apps", "api", "src"),
-];
+const scanDirs = [join(ROOT, 'apps', 'web', 'src'), join(ROOT, 'apps', 'api', 'src')];
 
 for (const dir of scanDirs) {
-  const files = walkDir(dir, [".ts", ".tsx"]);
+  const files = walkDir(dir, ['.ts', '.tsx']);
 
   for (const filePath of files) {
-    const content = readFileSync(filePath, "utf-8");
-    const lines = content.split("\n");
+    const content = readFileSync(filePath, 'utf-8');
+    const lines = content.split('\n');
 
     for (let i = 0; i < lines.length; i++) {
-      if (lines[i].includes("pendingTargets") || lines[i].includes("pendingTarget")) {
+      if (lines[i].includes('pendingTargets') || lines[i].includes('pendingTarget')) {
         // Skip pure import/comment lines
-        if (lines[i].trim().startsWith("//") && !lines[i].includes("pendingTargets:")) continue;
-        if (lines[i].trim().startsWith("import ")) continue;
+        if (lines[i].trim().startsWith('//') && !lines[i].includes('pendingTargets:')) continue;
+        if (lines[i].trim().startsWith('import ')) continue;
 
-        const rel = relative(ROOT, filePath).replace(/\\/g, "/");
+        const rel = relative(ROOT, filePath).replace(/\\/g, '/');
         const rpcs = extractRpcs(lines, i);
         const uiText = extractUiText(lines, i);
         const kind = classifyEntry(filePath, lines[i]);
@@ -177,9 +165,9 @@ for (const dir of scanDirs) {
 /* Summary stats                                                       */
 /* ------------------------------------------------------------------ */
 
-const apiResponses = entries.filter((e) => e.kind === "api-response");
-const uiDisplays = entries.filter((e) => e.kind === "ui-display");
-const typeDefs = entries.filter((e) => e.kind === "type-def");
+const apiResponses = entries.filter((e) => e.kind === 'api-response');
+const uiDisplays = entries.filter((e) => e.kind === 'ui-display');
+const typeDefs = entries.filter((e) => e.kind === 'type-def');
 
 const allRpcs = new Set<string>();
 for (const entry of entries) {
@@ -193,7 +181,7 @@ const summary = {
   apiResponses: apiResponses.length,
   uiDisplays: uiDisplays.length,
   typeDefs: typeDefs.length,
-  other: entries.filter((e) => e.kind === "other").length,
+  other: entries.filter((e) => e.kind === 'other').length,
   uniqueRpcs: allRpcs.size,
   rpcsReferenced: [...allRpcs].sort(),
   entriesWithRpcs: nonEmptyRpcEntries.length,
@@ -203,7 +191,7 @@ const summary = {
 /* Output                                                              */
 /* ------------------------------------------------------------------ */
 
-console.log("\n=== PendingTargets Index (Phase 73) ===\n");
+console.log('\n=== PendingTargets Index (Phase 73) ===\n');
 console.log(`  Total occurrences: ${summary.totalOccurrences}`);
 console.log(`  API responses:     ${summary.apiResponses}`);
 console.log(`  UI displays:       ${summary.uiDisplays}`);
@@ -214,14 +202,14 @@ for (const rpc of summary.rpcsReferenced) {
   console.log(`    - ${rpc}`);
 }
 
-const artifactDir = join(ROOT, "artifacts", "governance");
+const artifactDir = join(ROOT, 'artifacts', 'governance');
 mkdirSync(artifactDir, { recursive: true });
 writeFileSync(
-  join(artifactDir, "pending-targets-index.json"),
+  join(artifactDir, 'pending-targets-index.json'),
   JSON.stringify(
     {
       _meta: {
-        gate: "pending-targets-index",
+        gate: 'pending-targets-index',
         phase: 73,
         timestamp: new Date().toISOString(),
       },
@@ -229,8 +217,8 @@ writeFileSync(
       entries,
     },
     null,
-    2,
-  ),
+    2
+  )
 );
 
 console.log(`\n  Output: artifacts/governance/pending-targets-index.json`);

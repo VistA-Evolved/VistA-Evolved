@@ -15,13 +15,13 @@ from in-memory cache stores + restart-durability gate update.
 
 ## Target Tables (PG migration v11)
 
-| # | PG Table                  | Source Store                        | SQLite Predecessor |
-|---|---------------------------|-------------------------------------|--------------------|
-| 1 | portal_message            | portal-messaging.ts                 | Yes (Phase 115)    |
-| 2 | portal_access_log         | access-log-store.ts                 | Yes (Phase 121)    |
-| 3 | portal_patient_setting    | portal-settings.ts                  | No (new)           |
-| 4 | telehealth_room           | room-store.ts                       | Yes (Phase 115)    |
-| 5 | telehealth_room_event     | room-store.ts (event sub-table)     | No (new)           |
+| #   | PG Table               | Source Store                    | SQLite Predecessor |
+| --- | ---------------------- | ------------------------------- | ------------------ |
+| 1   | portal_message         | portal-messaging.ts             | Yes (Phase 115)    |
+| 2   | portal_access_log      | access-log-store.ts             | Yes (Phase 121)    |
+| 3   | portal_patient_setting | portal-settings.ts              | No (new)           |
+| 4   | telehealth_room        | room-store.ts                   | Yes (Phase 115)    |
+| 5   | telehealth_room_event  | room-store.ts (event sub-table) | No (new)           |
 
 ## Implementation Steps
 

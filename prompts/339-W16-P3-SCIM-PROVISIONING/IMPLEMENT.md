@@ -1,10 +1,12 @@
 # Phase 339 — W16-P3 — SCIM Provisioning — IMPLEMENT
 
 ## Objective
+
 Implement SCIM 2.0 (RFC 7643/7644) provisioning endpoints for automated
 user/group lifecycle from external IdPs (Azure AD, Okta, OneLogin).
 
 ## What Changed
+
 1. **`apps/api/src/auth/scim-server.ts`** — In-process SCIM connector
    - Full `InProcessScimConnector` implementing `ScimConnector` interface
    - In-memory stores for SCIM users + groups (DB-backed when PG available)
@@ -39,6 +41,7 @@ user/group lifecycle from external IdPs (Azure AD, Okta, OneLogin).
 4. **Updated `middleware/security.ts`** — AUTH_RULES for `/scim/` routes
 
 ## Files Touched
+
 - `apps/api/src/auth/scim-server.ts` (NEW)
 - `apps/api/src/routes/scim-routes.ts` (NEW)
 - `apps/api/src/platform/pg/pg-migrate.ts` (EDIT — add v34)

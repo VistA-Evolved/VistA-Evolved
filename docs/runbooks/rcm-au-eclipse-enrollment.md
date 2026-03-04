@@ -10,14 +10,14 @@ Authentication uses PRODA (Provider Digital Access) with PKI certificates.
 
 ## Prerequisites
 
-| Item | Environment Variable | Required |
-|------|---------------------|----------|
-| PRODA organisation ID | `ECLIPSE_PRODA_ORG_ID` | Yes |
-| PRODA device name | `ECLIPSE_DEVICE_NAME` | Yes |
-| PKI device certificate | `ECLIPSE_CERT_PATH` | Yes |
-| Medicare provider number | `ECLIPSE_PROVIDER_NUMBER` | Yes |
-| HPI-I | `ECLIPSE_HPI_I` | Optional |
-| API endpoint | `ECLIPSE_API_ENDPOINT` | No (defaults to PRODA) |
+| Item                     | Environment Variable      | Required               |
+| ------------------------ | ------------------------- | ---------------------- |
+| PRODA organisation ID    | `ECLIPSE_PRODA_ORG_ID`    | Yes                    |
+| PRODA device name        | `ECLIPSE_DEVICE_NAME`     | Yes                    |
+| PKI device certificate   | `ECLIPSE_CERT_PATH`       | Yes                    |
+| Medicare provider number | `ECLIPSE_PROVIDER_NUMBER` | Yes                    |
+| HPI-I                    | `ECLIPSE_HPI_I`           | Optional               |
+| API endpoint             | `ECLIPSE_API_ENDPOINT`    | No (defaults to PRODA) |
 
 ## Enrollment Steps
 
@@ -71,21 +71,21 @@ Authentication uses PRODA (Provider Digital Access) with PKI certificates.
 ECLIPSE uses **AU proprietary format** (HL7v2/XML), NOT X12. The connector
 maps logical transaction types to AU-specific claim structures:
 
-| Logical | AU Equivalent |
-|---------|--------------|
-| 837P | Medicare bulk-bill / patient claim |
-| 837I | Hospital claim (DRG-based) |
-| 270 | Medicare benefit enquiry |
-| 276 | Claim status enquiry |
+| Logical | AU Equivalent                      |
+| ------- | ---------------------------------- |
+| 837P    | Medicare bulk-bill / patient claim |
+| 837I    | Hospital claim (DRG-based)         |
+| 270     | Medicare benefit enquiry           |
+| 276     | Claim status enquiry               |
 
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| PRODA token failure | Check org ID + device name; regenerate cert if expired |
-| Invalid MBS item | Verify item number against current MBS schedule |
-| Provider number mismatch | Ensure provider number matches PRODA org |
-| TLS handshake error | Certificate may have been revoked; regenerate via PRODA |
+| Issue                    | Solution                                                |
+| ------------------------ | ------------------------------------------------------- |
+| PRODA token failure      | Check org ID + device name; regenerate cert if expired  |
+| Invalid MBS item         | Verify item number against current MBS schedule         |
+| Provider number mismatch | Ensure provider number matches PRODA org                |
+| TLS handshake error      | Certificate may have been revoked; regenerate via PRODA |
 
 ## References
 

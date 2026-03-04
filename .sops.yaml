@@ -12,9 +12,9 @@
 creation_rules:
   # Dev/staging secrets use the team age key
   - path_regex: infra/secrets/dev/.*\.yaml$
-    age: "age1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"  # REPLACE with real team public key
+    age: 'age1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq' # REPLACE with real team public key
   - path_regex: infra/secrets/staging/.*\.yaml$
-    age: "age1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"  # REPLACE with real team public key
+    age: 'age1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq' # REPLACE with real team public key
   # Production secrets use a separate key (rotated quarterly)
   - path_regex: infra/secrets/prod/.*\.yaml$
-    age: "age1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"  # REPLACE with real prod public key
+    age: 'age1qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq' # REPLACE with real prod public key

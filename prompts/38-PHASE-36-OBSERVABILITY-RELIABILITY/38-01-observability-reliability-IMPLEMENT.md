@@ -3,6 +3,7 @@
 ## User Request
 
 Implement production-grade observability + reliability without leaking PHI:
+
 - Tracing (OpenTelemetry + Jaeger v2)
 - Metrics (/metrics, Prometheus scraping)
 - Structured logs with correlation IDs (already have; bridge to OTel)
@@ -13,6 +14,7 @@ Implement production-grade observability + reliability without leaking PHI:
 ## Inventory (Pre-Implementation)
 
 ### What Exists
+
 - Custom structured JSON logger (`lib/logger.ts`) with request ID via `AsyncLocalStorage`
 - `/health`, `/ready`, `/version`, `/metrics` (JSON-only, no Prometheus format)
 - Circuit breaker in `rpc-resilience.ts` (5 failures -> open, 30s half-open)
@@ -21,6 +23,7 @@ Implement production-grade observability + reliability without leaking PHI:
 - Per-RPC metrics: calls, successes, failures, timeouts, p95 (in-memory)
 
 ### Gaps
+
 - No Prometheus exposition format (`text/plain; version=0.4.0`)
 - No OpenTelemetry SDK / distributed tracing / OTLP export
 - No Jaeger, Prometheus, or OTel Collector containers
@@ -32,10 +35,12 @@ Implement production-grade observability + reliability without leaking PHI:
 ## Implementation Steps
 
 ### Step 0: Prompt capture
+
 - Create `prompts/38-PHASE-36-OBSERVABILITY-RELIABILITY/`
 - This file + verify file
 
 ### Step 1: Infra (Docker Compose)
+
 - `services/observability/docker-compose.yml`:
   - otel-collector (otel/opentelemetry-collector-contrib)
   - jaeger (jaegertracing/jaeger:2)
@@ -44,6 +49,7 @@ Implement production-grade observability + reliability without leaking PHI:
 - `services/observability/prometheus.yml`
 
 ### Step 2: API Instrumentation
+
 - Install: `@opentelemetry/sdk-node`, `@opentelemetry/auto-instrumentations-node`,
   `@opentelemetry/exporter-trace-otlp-http`, `prom-client`
 - `apps/api/src/telemetry/tracing.ts`: OTel SDK setup, auto-instrument Fastify + net
@@ -53,26 +59,31 @@ Implement production-grade observability + reliability without leaking PHI:
 - Response headers: `X-Trace-Id`
 
 ### Step 3: Reliability Hardening
+
 - Add graceful shutdown drain timeout (30s max)
 - Ensure circuit breaker + timeout cover all RPC paths
 - Add explicit `AbortController` timeout on RPC socket operations
 - Health check: include VistA probe + circuit breaker state + OTel status
 
 ### Step 4: k6 Smoke Suite
+
 - `tests/k6/smoke-login.js`
 - `tests/k6/smoke-reads.js` (patient search, demographics, allergies, vitals, meds)
 - `tests/k6/smoke-write.js` (add allergy -- may fail on sandbox, that's OK)
 - `tests/k6/run-smoke.sh` (wrapper)
 
 ### Step 5: Docs
+
 - `docs/runbooks/phase36-observability-reliability.md`
 - Update AGENTS.md
 
 ### Step 6: Verifier
+
 - `scripts/verify-phase1-to-phase36.ps1`
 - Update `scripts/verify-latest.ps1`
 
 ## Files Touched
+
 - `apps/api/package.json` (new deps)
 - `apps/api/src/index.ts` (tracing init, /metrics/prometheus route)
 - `apps/api/src/telemetry/tracing.ts` (new)
@@ -92,4 +103,5 @@ Implement production-grade observability + reliability without leaking PHI:
 - `scripts/verify-latest.ps1` (update pointer)
 
 ## Verification
+
 Run `scripts/verify-latest.ps1 -SkipDocker` and confirm all Phase 36 gates pass.

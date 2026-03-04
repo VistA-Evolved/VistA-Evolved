@@ -25,13 +25,13 @@ and a single-char-typo risk. Wave 40 hygiene requires a single source of truth.
 
 ## Files Changed
 
-| File | Action |
-|------|--------|
-| `apps/web/src/lib/api-config.ts` | NEW — canonical API_BASE + WS_BASE |
-| `apps/portal/src/lib/api-config.ts` | NEW — canonical API_BASE |
-| `scripts/codemod-centralise-api-base.mjs` | NEW — one-time codemod tool |
-| `scripts/qa-gates/no-hardcoded-localhost.mjs` | NEW — CI lint gate |
-| 109 source files across web + portal | MODIFIED — codemod replacements |
+| File                                          | Action                             |
+| --------------------------------------------- | ---------------------------------- |
+| `apps/web/src/lib/api-config.ts`              | NEW — canonical API_BASE + WS_BASE |
+| `apps/portal/src/lib/api-config.ts`           | NEW — canonical API_BASE           |
+| `scripts/codemod-centralise-api-base.mjs`     | NEW — one-time codemod tool        |
+| `scripts/qa-gates/no-hardcoded-localhost.mjs` | NEW — CI lint gate                 |
+| 109 source files across web + portal          | MODIFIED — codemod replacements    |
 
 ## Decisions
 

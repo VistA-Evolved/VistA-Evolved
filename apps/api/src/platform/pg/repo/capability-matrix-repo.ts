@@ -13,33 +13,29 @@
  * need to change their imports for type definitions.
  */
 
-import { randomUUID } from "node:crypto";
-import { eq, and, sql, desc } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import {
-  capabilityMatrixCell,
-  capabilityMatrixEvidence,
-  payerAuditEvent,
-} from "../pg-schema.js";
+import { randomUUID } from 'node:crypto';
+import { eq, and, sql } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { capabilityMatrixCell, capabilityMatrixEvidence, payerAuditEvent } from '../pg-schema.js';
 
 /* ----------------------------------------------------------------
  *  Types (aligned with rcm/payerOps/capability-matrix.ts)
  * ---------------------------------------------------------------- */
 
 export type CapabilityType =
-  | "eligibility"
-  | "loa"
-  | "claims_submit"
-  | "claim_status"
-  | "remittance";
+  | 'eligibility'
+  | 'loa'
+  | 'claims_submit'
+  | 'claim_status'
+  | 'remittance';
 
-export type CapabilityMode = "manual" | "portal" | "api" | "rpa_planned";
+export type CapabilityMode = 'manual' | 'portal' | 'api' | 'rpa_planned';
 
-export type CapabilityMaturity = "none" | "planned" | "in_progress" | "active";
+export type CapabilityMaturity = 'none' | 'planned' | 'in_progress' | 'active';
 
 export interface CapabilityEvidence {
   id: string;
-  type: "url" | "internal_note" | "runbook_ref";
+  type: 'url' | 'internal_note' | 'runbook_ref';
   value: string;
   addedBy: string;
   addedAt: string;
@@ -64,16 +60,12 @@ export type EvidenceRow = typeof capabilityMatrixEvidence.$inferSelect;
  *  Core CRUD
  * ---------------------------------------------------------------- */
 
-function cellKey(payerId: string, capability: CapabilityType): string {
-  return `${payerId}::${capability}`;
-}
-
 /**
  * Get a single capability cell with its evidence.
  */
 export async function getCapability(
   payerId: string,
-  capability: CapabilityType,
+  capability: CapabilityType
 ): Promise<PayerCapability | undefined> {
   const db = getPgDb();
   const cells = await db
@@ -82,8 +74,8 @@ export async function getCapability(
     .where(
       and(
         eq(capabilityMatrixCell.payerId, payerId),
-        eq(capabilityMatrixCell.capability, capability),
-      ),
+        eq(capabilityMatrixCell.capability, capability)
+      )
     );
   const cell = cells[0];
   if (!cell) return undefined;
@@ -99,9 +91,7 @@ export async function getCapability(
 /**
  * Get all capabilities for a payer.
  */
-export async function getPayerCapabilities(
-  payerId: string,
-): Promise<PayerCapability[]> {
+export async function getPayerCapabilities(payerId: string): Promise<PayerCapability[]> {
   const db = getPgDb();
   const cells = await db
     .select()
@@ -151,7 +141,7 @@ export async function setCapability(
   maturity: CapabilityMaturity,
   updatedBy: string,
   operationalNotes?: string,
-  tenantId?: string,
+  tenantId?: string
 ): Promise<PayerCapability> {
   const db = getPgDb();
   const now = new Date().toISOString();
@@ -163,20 +153,20 @@ export async function setCapability(
     .where(
       and(
         eq(capabilityMatrixCell.payerId, payerId),
-        eq(capabilityMatrixCell.capability, capability),
-      ),
+        eq(capabilityMatrixCell.capability, capability)
+      )
     );
   const existing = cells[0];
 
   if (existing) {
     // If trying to set "active", check evidence exists
-    if (maturity === "active") {
+    if (maturity === 'active') {
       const evCount = await db
         .select({ count: sql<number>`count(*)::int` })
         .from(capabilityMatrixEvidence)
         .where(eq(capabilityMatrixEvidence.cellId, existing.id));
       if ((evCount[0]?.count ?? 0) === 0) {
-        maturity = "in_progress";
+        maturity = 'in_progress';
       }
     }
 
@@ -195,12 +185,12 @@ export async function setCapability(
     // Audit
     await db.insert(payerAuditEvent).values({
       id: randomUUID(),
-      tenantId: tenantId ?? "default",
-      actorType: "user",
+      tenantId: tenantId ?? 'default',
+      actorType: 'user',
       actorId: updatedBy,
-      entityType: "capability_matrix_cell",
+      entityType: 'capability_matrix_cell',
       entityId: existing.id,
-      action: "update",
+      action: 'update',
       beforeJson: JSON.parse(JSON.stringify(existing)),
       afterJson: { payerId, capability, mode, maturity },
       reason: `Updated ${capability} for ${payerName}`,
@@ -210,13 +200,13 @@ export async function setCapability(
   } else {
     const id = randomUUID();
     // New cell: if maturity="active" but no evidence yet, auto-downgrade
-    if (maturity === "active") {
-      maturity = "in_progress";
+    if (maturity === 'active') {
+      maturity = 'in_progress';
     }
 
     await db.insert(capabilityMatrixCell).values({
       id,
-      tenantId: tenantId ?? "default",
+      tenantId: tenantId ?? 'default',
       payerId,
       payerName,
       capability,
@@ -231,12 +221,12 @@ export async function setCapability(
     // Audit
     await db.insert(payerAuditEvent).values({
       id: randomUUID(),
-      tenantId: tenantId ?? "default",
-      actorType: "user",
+      tenantId: tenantId ?? 'default',
+      actorType: 'user',
       actorId: updatedBy,
-      entityType: "capability_matrix_cell",
+      entityType: 'capability_matrix_cell',
       entityId: id,
-      action: "create",
+      action: 'create',
       beforeJson: null,
       afterJson: { payerId, capability, mode, maturity },
       reason: `Created ${capability} for ${payerName}`,
@@ -254,9 +244,9 @@ export async function setCapability(
 export async function addEvidence(
   payerId: string,
   capability: CapabilityType,
-  evidence: { type: "url" | "internal_note" | "runbook_ref"; value: string },
+  evidence: { type: 'url' | 'internal_note' | 'runbook_ref'; value: string },
   addedBy: string,
-  tenantId?: string,
+  tenantId?: string
 ): Promise<PayerCapability | undefined> {
   const db = getPgDb();
   const cells = await db
@@ -265,8 +255,8 @@ export async function addEvidence(
     .where(
       and(
         eq(capabilityMatrixCell.payerId, payerId),
-        eq(capabilityMatrixCell.capability, capability),
-      ),
+        eq(capabilityMatrixCell.capability, capability)
+      )
     );
   const cell = cells[0];
   if (!cell) return undefined;
@@ -294,7 +284,7 @@ export async function addEvidence(
 export async function removeEvidence(
   payerId: string,
   capability: CapabilityType,
-  evidenceId: string,
+  evidenceId: string
 ): Promise<PayerCapability | undefined> {
   const db = getPgDb();
   const cells = await db
@@ -303,8 +293,8 @@ export async function removeEvidence(
     .where(
       and(
         eq(capabilityMatrixCell.payerId, payerId),
-        eq(capabilityMatrixCell.capability, capability),
-      ),
+        eq(capabilityMatrixCell.capability, capability)
+      )
     );
   const cell = cells[0];
   if (!cell) return undefined;
@@ -313,10 +303,7 @@ export async function removeEvidence(
   await db
     .delete(capabilityMatrixEvidence)
     .where(
-      and(
-        eq(capabilityMatrixEvidence.id, evidenceId),
-        eq(capabilityMatrixEvidence.cellId, cell.id),
-      ),
+      and(eq(capabilityMatrixEvidence.id, evidenceId), eq(capabilityMatrixEvidence.cellId, cell.id))
     );
 
   // Check remaining evidence count
@@ -325,10 +312,10 @@ export async function removeEvidence(
     .from(capabilityMatrixEvidence)
     .where(eq(capabilityMatrixEvidence.cellId, cell.id));
 
-  if ((evCount[0]?.count ?? 0) === 0 && cell.maturity === "active") {
+  if ((evCount[0]?.count ?? 0) === 0 && cell.maturity === 'active') {
     await db
       .update(capabilityMatrixCell)
-      .set({ maturity: "in_progress", updatedAt: new Date() } as any)
+      .set({ maturity: 'in_progress', updatedAt: new Date() } as any)
       .where(eq(capabilityMatrixCell.id, cell.id));
   }
 
@@ -342,14 +329,14 @@ export async function initPayerCapabilities(
   payerId: string,
   payerName: string,
   updatedBy: string,
-  tenantId?: string,
+  tenantId?: string
 ): Promise<PayerCapability[]> {
   const types: CapabilityType[] = [
-    "eligibility",
-    "loa",
-    "claims_submit",
-    "claim_status",
-    "remittance",
+    'eligibility',
+    'loa',
+    'claims_submit',
+    'claim_status',
+    'remittance',
   ];
   const results: PayerCapability[] = [];
   for (const cap of types) {
@@ -359,11 +346,11 @@ export async function initPayerCapabilities(
         payerId,
         payerName,
         cap,
-        "manual",
-        "none",
+        'manual',
+        'none',
         updatedBy,
         undefined,
-        tenantId,
+        tenantId
       );
       results.push(created);
     } else {
@@ -384,9 +371,7 @@ export async function getMatrixStats(): Promise<{
 }> {
   const db = getPgDb();
 
-  const total = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(capabilityMatrixCell);
+  const total = await db.select({ count: sql<number>`count(*)::int` }).from(capabilityMatrixCell);
 
   const maturityRows = await db
     .select({
@@ -426,10 +411,7 @@ export async function getMatrixStats(): Promise<{
  *  Internal helpers
  * ---------------------------------------------------------------- */
 
-function cellToPayerCapability(
-  cell: CellRow,
-  evidenceRows: EvidenceRow[],
-): PayerCapability {
+function cellToPayerCapability(cell: CellRow, evidenceRows: EvidenceRow[]): PayerCapability {
   return {
     payerId: cell.payerId,
     payerName: cell.payerName,
@@ -438,13 +420,13 @@ function cellToPayerCapability(
     maturity: cell.maturity as CapabilityMaturity,
     evidence: evidenceRows.map((e) => ({
       id: e.id,
-      type: e.evidenceType as "url" | "internal_note" | "runbook_ref",
+      type: e.evidenceType as 'url' | 'internal_note' | 'runbook_ref',
       value: e.value,
       addedBy: e.addedBy,
-      addedAt: typeof e.addedAt === "string" ? e.addedAt : e.addedAt.toISOString(),
+      addedAt: typeof e.addedAt === 'string' ? e.addedAt : e.addedAt.toISOString(),
     })),
     operationalNotes: cell.operationalNotes ?? undefined,
     updatedBy: cell.updatedBy,
-    updatedAt: typeof cell.updatedAt === "string" ? cell.updatedAt : cell.updatedAt.toISOString(),
+    updatedAt: typeof cell.updatedAt === 'string' ? cell.updatedAt : cell.updatedAt.toISOString(),
   };
 }

@@ -6,18 +6,18 @@
 
 ## Phase Map
 
-| Phase ID | Folder Prefix | Slug | Title | Status | Dependencies |
-|----------|---------------|------|-------|--------|--------------|
-| 299 | 299 | W12-P1 | Manifest + Scope Matrix + OSS Reuse ADRs | Planned | -- |
-| 300 | 300 | W12-P2 | Clinical Writeback Command Bus | Planned | P299 |
-| 301 | 301 | W12-P3 | TIU Notes Writeback (draft/edit/sign) | Planned | P300 |
-| 302 | 302 | W12-P4 | Orders Writeback Core (create/discontinue) | Planned | P300 |
-| 303 | 303 | W12-P5 | Pharmacy Deep Writeback | Planned | P302 |
-| 304 | 304 | W12-P6 | Lab Deep Writeback | Planned | P302 |
-| 305 | 305 | W12-P7 | Inpatient ADT Writeback + Bedboard | Planned | P300 |
-| 306 | 306 | W12-P8 | Imaging/PACS Production Validation | Planned | P302 |
-| 307 | 307 | W12-P9 | Telehealth Provider Hardening | Planned | P300 |
-| 308 | 308 | W12-P10 | Departmental Certification Runner | Planned | P301-P307 |
+| Phase ID | Folder Prefix | Slug    | Title                                      | Status  | Dependencies |
+| -------- | ------------- | ------- | ------------------------------------------ | ------- | ------------ |
+| 299      | 299           | W12-P1  | Manifest + Scope Matrix + OSS Reuse ADRs   | Planned | --           |
+| 300      | 300           | W12-P2  | Clinical Writeback Command Bus             | Planned | P299         |
+| 301      | 301           | W12-P3  | TIU Notes Writeback (draft/edit/sign)      | Planned | P300         |
+| 302      | 302           | W12-P4  | Orders Writeback Core (create/discontinue) | Planned | P300         |
+| 303      | 303           | W12-P5  | Pharmacy Deep Writeback                    | Planned | P302         |
+| 304      | 304           | W12-P6  | Lab Deep Writeback                         | Planned | P302         |
+| 305      | 305           | W12-P7  | Inpatient ADT Writeback + Bedboard         | Planned | P300         |
+| 306      | 306           | W12-P8  | Imaging/PACS Production Validation         | Planned | P302         |
+| 307      | 307           | W12-P9  | Telehealth Provider Hardening              | Planned | P300         |
+| 308      | 308           | W12-P10 | Departmental Certification Runner          | Planned | P301-P307    |
 
 ## Dependency Graph
 
@@ -36,16 +36,17 @@ P299 (Manifest + Scope Matrix)
 
 ## ADR References
 
-| ADR | Path | Decision |
-|-----|------|----------|
-| PACS Viewer | docs/adrs/ADR-PACS-viewer.md | Keep OHIF |
-| DICOM Store | docs/adrs/ADR-DICOM-store.md | Keep Orthanc |
+| ADR                  | Path                                  | Decision                        |
+| -------------------- | ------------------------------------- | ------------------------------- |
+| PACS Viewer          | docs/adrs/ADR-PACS-viewer.md          | Keep OHIF                       |
+| DICOM Store          | docs/adrs/ADR-DICOM-store.md          | Keep Orthanc                    |
 | Telehealth Providers | docs/adrs/ADR-telehealth-providers.md | Keep Jitsi + provider interface |
-| HL7 Ops | docs/adrs/ADR-HL7-ops.md | Keep built-in HL7 engine |
+| HL7 Ops              | docs/adrs/ADR-HL7-ops.md              | Keep built-in HL7 engine        |
 
 ## Existing Code Inventory (pre-Wave 12)
 
 ### Writeback Routes Already Present
+
 - **Notes (TIU):** create, sign, addendum, edit in `tiu-notes.ts` + `wave2-routes.ts`
 - **Orders (OR):** draft, verify, dc, flag, sign, lab quick-order in `orders-cpoe.ts` + `wave2-routes.ts`
 - **Pharmacy (PS):** quick-order med in `wave2-routes.ts`, active meds read
@@ -55,6 +56,7 @@ P299 (Manifest + Scope Matrix)
 - **Scheduling:** create/cancel/checkin/checkout in `scheduling/index.ts`
 
 ### Safety Infrastructure Already Present
+
 - **Idempotency:** DB-backed middleware in `middleware/idempotency.ts` (24h TTL)
 - **Audit:** 3 hash-chained audit trails (immutable, imaging, RCM)
 - **Feature Flags:** `tenant_feature_flag` PG table + admin API
@@ -63,6 +65,7 @@ P299 (Manifest + Scope Matrix)
 - **Store Policy:** 50+ stores registered with classification/durability
 
 ### What Wave 12 Adds
+
 - **Command Bus:** Unified safety wrapper for ALL writebacks (not just idempotency)
 - **Dry-run mode:** Record intended RPC call without executing
 - **Contract tests:** Record/replay fixtures for write RPCs

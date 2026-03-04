@@ -1,6 +1,7 @@
 # Phase 290 -- Interop Certification Harness (IMPLEMENT)
 
 ## Goal
+
 Create a structured interop certification harness that validates FHIR R4
 conformance, SMART-on-FHIR readiness, and HL7v2 message pack correctness
 against formal test assertions.
@@ -20,6 +21,7 @@ against formal test assertions.
 4. Create verifier + evidence
 
 ## Files Touched
+
 - `tests/interop/fhir-conformance.mjs` (NEW)
 - `tests/interop/smart-readiness.mjs` (NEW)
 - `tests/interop/hl7-pack-suite.mjs` (NEW)

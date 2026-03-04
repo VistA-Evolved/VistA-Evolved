@@ -17,7 +17,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
 
-
 async function apiFetch(path: string) {
   const res = await fetch(`${API_BASE}${path}`, {
     credentials: 'include',
@@ -109,12 +108,7 @@ const S = {
           : status === 'oos'
             ? '2px solid #e53e3e'
             : '2px dashed #cbd5e0',
-      background:
-        status === 'occupied'
-          ? '#ebf4ff'
-          : status === 'oos'
-            ? '#fff5f5'
-            : '#f7fafc',
+      background: status === 'occupied' ? '#ebf4ff' : status === 'oos' ? '#fff5f5' : '#f7fafc',
       textAlign: 'center' as const,
       minHeight: '90px',
       display: 'flex',
@@ -268,9 +262,7 @@ export default function InpatientBedboardPage() {
       <div style={S.header}>
         <div>
           <h1 style={S.title}>Bed Board</h1>
-          <p style={S.subtitle}>
-            Visual bed occupancy view | Select a ward to view bed grid
-          </p>
+          <p style={S.subtitle}>Visual bed occupancy view | Select a ward to view bed grid</p>
         </div>
         <button style={S.refreshBtn} onClick={loadWards}>
           Refresh
@@ -289,9 +281,7 @@ export default function InpatientBedboardPage() {
               <button
                 key={w.ien}
                 style={S.wardBtn(selectedWard === w.ien)}
-                onClick={() =>
-                  setSelectedWard(selectedWard === w.ien ? null : w.ien)
-                }
+                onClick={() => setSelectedWard(selectedWard === w.ien ? null : w.ien)}
               >
                 {w.name} ({w.patientCount})
               </button>
@@ -326,10 +316,8 @@ export default function InpatientBedboardPage() {
 
               {pendingTargets.length > 0 && (
                 <div style={S.pending}>
-                  Note: Only occupied beds shown. Empty/out-of-service bed
-                  data requires{' '}
-                  <strong>{pendingTargets.join(', ')}</strong> RPC
-                  (ZVEADT.m not yet installed).
+                  Note: Only occupied beds shown. Empty/out-of-service bed data requires{' '}
+                  <strong>{pendingTargets.join(', ')}</strong> RPC (ZVEADT.m not yet installed).
                 </div>
               )}
 
@@ -368,17 +356,13 @@ export default function InpatientBedboardPage() {
                       <div style={S.bedRoom}>{bed.roomBed}</div>
                       {bed.status === 'occupied' ? (
                         <>
-                          <div style={S.bedInitials}>
-                            {bed.patientInitials || '--'}
-                          </div>
+                          <div style={S.bedInitials}>{bed.patientInitials || '--'}</div>
                           <div style={S.bedName} title={bed.patientName || ''}>
                             {bed.patientName || 'Unknown'}
                           </div>
                         </>
                       ) : bed.status === 'oos' ? (
-                        <div style={{ ...S.bedEmpty, color: '#e53e3e' }}>
-                          Out of Service
-                        </div>
+                        <div style={{ ...S.bedEmpty, color: '#e53e3e' }}>Out of Service</div>
                       ) : (
                         <div style={S.bedEmpty}>Available</div>
                       )}

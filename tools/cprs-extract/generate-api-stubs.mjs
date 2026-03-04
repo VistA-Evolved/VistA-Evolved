@@ -25,11 +25,11 @@ const ROUTES_DIR = join(ROOT, 'apps', 'api', 'src', 'routes');
 // ── Domain classification by RPC name prefix ─────────────────────────
 const DOMAIN_RULES = [
   { domain: 'problems', prefixes: ['ORQQPL'] },
-  { domain: 'meds',     prefixes: ['ORWPS', 'ORWDPS'] },
-  { domain: 'notes',    prefixes: ['TIU', 'ORWTIU'] },
-  { domain: 'orders',   prefixes: ['ORWDX', 'ORWOR', 'ORWORR'] },
-  { domain: 'labs',     prefixes: ['ORWLRR', 'ORWDLR'] },
-  { domain: 'reports',  prefixes: ['ORWRP', 'ORWSR'] },
+  { domain: 'meds', prefixes: ['ORWPS', 'ORWDPS'] },
+  { domain: 'notes', prefixes: ['TIU', 'ORWTIU'] },
+  { domain: 'orders', prefixes: ['ORWDX', 'ORWOR', 'ORWORR'] },
+  { domain: 'labs', prefixes: ['ORWLRR', 'ORWDLR'] },
+  { domain: 'reports', prefixes: ['ORWRP', 'ORWSR'] },
 ];
 
 /** Classify a single RPC name into a domain (or null if unclassified). */
@@ -44,7 +44,10 @@ function classifyRpc(rpcName) {
 
 /** Turn an RPC name into a URL-safe slug: "ORQQPL PROBLEM LIST" → "orqqpl-problem-list" */
 function rpcSlug(name) {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 }
 
 /** Turn an RPC name into a TypeScript-safe identifier: "ORQQPL PROBLEM LIST" → "orqqplProblemList" */
@@ -85,7 +88,9 @@ function generateDomainFile(domain, rpcs) {
   lines.push(`/** All RPCs in the ${domain} domain. */`);
   lines.push(`export const ${domain.toUpperCase()}_RPCS: ${capitalize(domain)}Rpc[] = [`);
   for (const rpc of rpcs) {
-    lines.push(`  { name: ${JSON.stringify(rpc.name)}, slug: ${JSON.stringify(rpc.slug)}, isContext: ${rpc.isContext}, referenceCount: ${rpc.referenceCount} },`);
+    lines.push(
+      `  { name: ${JSON.stringify(rpc.name)}, slug: ${JSON.stringify(rpc.slug)}, isContext: ${rpc.isContext}, referenceCount: ${rpc.referenceCount} },`
+    );
   }
   lines.push(`];`);
   lines.push(``);
@@ -109,7 +114,9 @@ function generateDomainFile(domain, rpcs) {
   lines.push(` * Routes: GET /vista/${domain}/rpc/:slug`);
   lines.push(` *         GET /vista/${domain}/rpcs  (catalog listing)`);
   lines.push(` */`);
-  lines.push(`export default async function ${domain}Routes(server: FastifyInstance): Promise<void> {`);
+  lines.push(
+    `export default async function ${domain}Routes(server: FastifyInstance): Promise<void> {`
+  );
   lines.push(``);
   lines.push(`  // ── Catalog listing ───────────────────────────────────────────`);
   lines.push(`  server.get("/vista/${domain}/rpcs", async () => {`);
@@ -126,15 +133,21 @@ function generateDomainFile(domain, rpcs) {
   lines.push(`  // ── Individual RPC stubs ──────────────────────────────────────`);
   for (const rpc of rpcs) {
     lines.push(``);
-    lines.push(`  /** Stub for ${rpc.name} (${rpc.referenceCount} call site${rpc.referenceCount !== 1 ? 's' : ''} in CPRS) */`);
-    lines.push(`  server.get("/vista/${domain}/rpc/${rpc.slug}", async (): Promise<StubResponse> => {`);
+    lines.push(
+      `  /** Stub for ${rpc.name} (${rpc.referenceCount} call site${rpc.referenceCount !== 1 ? 's' : ''} in CPRS) */`
+    );
+    lines.push(
+      `  server.get("/vista/${domain}/rpc/${rpc.slug}", async (): Promise<StubResponse> => {`
+    );
     lines.push(`    return {`);
     lines.push(`      ok: false,`);
     lines.push(`      error: "Not implemented",`);
     lines.push(`      rpcName: ${JSON.stringify(rpc.name)},`);
     lines.push(`      domain: "${domain}",`);
     lines.push(`      slug: "${rpc.slug}",`);
-    lines.push(`      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",`);
+    lines.push(
+      `      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",`
+    );
     lines.push(`    };`);
     lines.push(`  });`);
   }
@@ -169,7 +182,9 @@ function generateIndexFile(domains) {
   lines.push(``);
 
   lines.push(`/** Register all domain route plugins on the server. */`);
-  lines.push(`export async function registerDomainRoutes(server: FastifyInstance): Promise<void> {`);
+  lines.push(
+    `export async function registerDomainRoutes(server: FastifyInstance): Promise<void> {`
+  );
   for (const d of domains) {
     lines.push(`  await server.register(${d}Routes);`);
   }

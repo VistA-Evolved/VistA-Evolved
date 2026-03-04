@@ -7,9 +7,9 @@
  * re-reading the full audit trail.
  */
 
-import { createHash } from "crypto";
-import type { AuditShipManifest } from "./types.js";
-import { randomUUID } from "crypto";
+import { createHash } from 'crypto';
+import type { AuditShipManifest } from './types.js';
+import { randomUUID } from 'crypto';
 
 /**
  * Build a manifest for a chunk of audit JSONL lines.
@@ -22,28 +22,32 @@ import { randomUUID } from "crypto";
 export function buildManifest(
   tenantId: string,
   objectKey: string,
-  lines: string[],
+  lines: string[]
 ): AuditShipManifest {
   // Compute SHA-256 of the full chunk content
-  const chunkContent = lines.join("\n") + "\n";
-  const contentHash = createHash("sha256").update(chunkContent).digest("hex");
-  const byteSize = Buffer.byteLength(chunkContent, "utf-8");
+  const chunkContent = lines.join('\n') + '\n';
+  const contentHash = createHash('sha256').update(chunkContent).digest('hex');
+  const byteSize = Buffer.byteLength(chunkContent, 'utf-8');
 
   // Extract seq and hash from first/last entries
   let firstSeq = 0;
   let lastSeq = 0;
-  let lastEntryHash = "";
+  let lastEntryHash = '';
 
   try {
     const firstEntry = JSON.parse(lines[0]);
     firstSeq = firstEntry.seq || 0;
-  } catch { /* malformed line — seq stays 0 */ }
+  } catch {
+    /* malformed line — seq stays 0 */
+  }
 
   try {
     const lastEntry = JSON.parse(lines[lines.length - 1]);
     lastSeq = lastEntry.seq || 0;
-    lastEntryHash = lastEntry.hash || "";
-  } catch { /* malformed line */ }
+    lastEntryHash = lastEntry.hash || '';
+  } catch {
+    /* malformed line */
+  }
 
   return {
     id: randomUUID(),
@@ -68,21 +72,30 @@ export function buildManifest(
  */
 export function verifyChunkManifest(
   chunkContent: string,
-  manifest: AuditShipManifest,
+  manifest: AuditShipManifest
 ): { valid: boolean; error?: string } {
-  const computedHash = createHash("sha256").update(chunkContent).digest("hex");
+  const computedHash = createHash('sha256').update(chunkContent).digest('hex');
   if (computedHash !== manifest.contentHash) {
-    return { valid: false, error: `Content hash mismatch: expected ${manifest.contentHash}, got ${computedHash}` };
+    return {
+      valid: false,
+      error: `Content hash mismatch: expected ${manifest.contentHash}, got ${computedHash}`,
+    };
   }
 
-  const lines = chunkContent.trimEnd().split("\n").filter(Boolean);
+  const lines = chunkContent.trimEnd().split('\n').filter(Boolean);
   if (lines.length !== manifest.entryCount) {
-    return { valid: false, error: `Entry count mismatch: expected ${manifest.entryCount}, got ${lines.length}` };
+    return {
+      valid: false,
+      error: `Entry count mismatch: expected ${manifest.entryCount}, got ${lines.length}`,
+    };
   }
 
-  const byteSize = Buffer.byteLength(chunkContent, "utf-8");
+  const byteSize = Buffer.byteLength(chunkContent, 'utf-8');
   if (byteSize !== manifest.byteSize) {
-    return { valid: false, error: `Byte size mismatch: expected ${manifest.byteSize}, got ${byteSize}` };
+    return {
+      valid: false,
+      error: `Byte size mismatch: expected ${manifest.byteSize}, got ${byteSize}`,
+    };
   }
 
   return { valid: true };

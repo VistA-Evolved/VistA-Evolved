@@ -20,11 +20,13 @@
    Clinical, and Site Contact must all sign.
 
 ## Dependencies
+
 - Phase 246: Pilot hardening (site-config + preflight)
 - Phases 248-255: All Wave 7 verifiers and drill scripts
 - All existing runbooks referenced in the kit
 
 ## What This Phase Does NOT Do
+
 - Does not modify existing pilot infrastructure
 - Does not add new API endpoints
 - Does not modify the preflight engine

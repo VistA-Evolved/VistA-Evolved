@@ -88,7 +88,9 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
     }
   }, []);
 
-  useEffect(() => { fetchData(); }, [fetchData]);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const reviewRefill = async (refillId: string, action: 'approve' | 'deny') => {
     try {
@@ -96,10 +98,15 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
-        body: JSON.stringify({ action, note: `${action === 'approve' ? 'Approved' : 'Denied'} via CPRS` }),
+        body: JSON.stringify({
+          action,
+          note: `${action === 'approve' ? 'Approved' : 'Denied'} via CPRS`,
+        }),
       });
       if (res.ok) fetchData();
-    } catch { /* swallow */ }
+    } catch {
+      /* swallow */
+    }
   };
 
   const replyToMessage = async (msgId: string) => {
@@ -113,7 +120,9 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
         body: JSON.stringify({ body }),
       });
       fetchData();
-    } catch { /* swallow */ }
+    } catch {
+      /* swallow */
+    }
   };
 
   const subTabs: { key: ActiveSubTab; label: string; count: number }[] = [
@@ -124,8 +133,16 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
 
   return (
     <div style={{ padding: 8 }}>
-      <div style={{ display: 'flex', gap: 4, marginBottom: 8, borderBottom: '1px solid var(--cprs-border, #ccc)', paddingBottom: 4 }}>
-        {subTabs.map(st => (
+      <div
+        style={{
+          display: 'flex',
+          gap: 4,
+          marginBottom: 8,
+          borderBottom: '1px solid var(--cprs-border, #ccc)',
+          paddingBottom: 4,
+        }}
+      >
+        {subTabs.map((st) => (
           <button
             key={st.key}
             onClick={() => setActiveSubTab(st.key)}
@@ -133,17 +150,39 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
               padding: '4px 12px',
               fontSize: 12,
               border: 'none',
-              borderBottom: activeSubTab === st.key ? '2px solid var(--cprs-accent, #2563eb)' : '2px solid transparent',
+              borderBottom:
+                activeSubTab === st.key
+                  ? '2px solid var(--cprs-accent, #2563eb)'
+                  : '2px solid transparent',
               background: 'transparent',
               cursor: 'pointer',
               fontWeight: activeSubTab === st.key ? 600 : 400,
               color: 'var(--cprs-text, #333)',
             }}
           >
-            {st.label} {st.count > 0 && <span style={{ background: '#ef4444', color: '#fff', borderRadius: 8, padding: '1px 5px', fontSize: 10, marginLeft: 4 }}>{st.count}</span>}
+            {st.label}{' '}
+            {st.count > 0 && (
+              <span
+                style={{
+                  background: '#ef4444',
+                  color: '#fff',
+                  borderRadius: 8,
+                  padding: '1px 5px',
+                  fontSize: 10,
+                  marginLeft: 4,
+                }}
+              >
+                {st.count}
+              </span>
+            )}
           </button>
         ))}
-        <button onClick={fetchData} style={{ marginLeft: 'auto', fontSize: 11, padding: '2px 8px', cursor: 'pointer' }}>Refresh</button>
+        <button
+          onClick={fetchData}
+          style={{ marginLeft: 'auto', fontSize: 11, padding: '2px 8px', cursor: 'pointer' }}
+        >
+          Refresh
+        </button>
       </div>
 
       {loading && <p className={styles.emptyText}>Loading...</p>}
@@ -156,7 +195,9 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
           ) : (
             <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid var(--cprs-border, #ccc)', textAlign: 'left' }}>
+                <tr
+                  style={{ borderBottom: '1px solid var(--cprs-border, #ccc)', textAlign: 'left' }}
+                >
                   <th style={{ padding: '4px 8px' }}>From</th>
                   <th style={{ padding: '4px 8px' }}>Subject</th>
                   <th style={{ padding: '4px 8px' }}>Sent</th>
@@ -164,13 +205,20 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
                 </tr>
               </thead>
               <tbody>
-                {messages.map(m => (
+                {messages.map((m) => (
                   <tr key={m.id} style={{ borderBottom: '1px solid var(--cprs-border, #eee)' }}>
                     <td style={{ padding: '4px 8px' }}>{m.senderName}</td>
                     <td style={{ padding: '4px 8px' }}>{m.subject}</td>
-                    <td style={{ padding: '4px 8px' }}>{new Date(m.sentAt).toLocaleDateString()}</td>
                     <td style={{ padding: '4px 8px' }}>
-                      <button onClick={() => replyToMessage(m.id)} style={{ fontSize: 11, cursor: 'pointer' }}>Reply</button>
+                      {new Date(m.sentAt).toLocaleDateString()}
+                    </td>
+                    <td style={{ padding: '4px 8px' }}>
+                      <button
+                        onClick={() => replyToMessage(m.id)}
+                        style={{ fontSize: 11, cursor: 'pointer' }}
+                      >
+                        Reply
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -187,7 +235,9 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
           ) : (
             <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid var(--cprs-border, #ccc)', textAlign: 'left' }}>
+                <tr
+                  style={{ borderBottom: '1px solid var(--cprs-border, #ccc)', textAlign: 'left' }}
+                >
                   <th style={{ padding: '4px 8px' }}>Patient</th>
                   <th style={{ padding: '4px 8px' }}>Medication</th>
                   <th style={{ padding: '4px 8px' }}>Status</th>
@@ -197,20 +247,37 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
                 </tr>
               </thead>
               <tbody>
-                {refills.map(r => (
+                {refills.map((r) => (
                   <tr key={r.id} style={{ borderBottom: '1px solid var(--cprs-border, #eee)' }}>
                     <td style={{ padding: '4px 8px' }}>{r.patientName}</td>
                     <td style={{ padding: '4px 8px' }}>{r.medicationName}</td>
                     <td style={{ padding: '4px 8px' }}>{r.status}</td>
                     <td style={{ padding: '4px 8px' }}>
-                      <span style={{ fontSize: 10, color: r.vistaSync === 'filed' ? '#16a34a' : '#d97706' }}>
+                      <span
+                        style={{
+                          fontSize: 10,
+                          color: r.vistaSync === 'filed' ? '#16a34a' : '#d97706',
+                        }}
+                      >
                         {r.vistaSync}
                       </span>
                     </td>
-                    <td style={{ padding: '4px 8px' }}>{new Date(r.requestedAt).toLocaleDateString()}</td>
+                    <td style={{ padding: '4px 8px' }}>
+                      {new Date(r.requestedAt).toLocaleDateString()}
+                    </td>
                     <td style={{ padding: '4px 8px', display: 'flex', gap: 4 }}>
-                      <button onClick={() => reviewRefill(r.id, 'approve')} style={{ fontSize: 11, color: '#16a34a', cursor: 'pointer' }}>Approve</button>
-                      <button onClick={() => reviewRefill(r.id, 'deny')} style={{ fontSize: 11, color: '#ef4444', cursor: 'pointer' }}>Deny</button>
+                      <button
+                        onClick={() => reviewRefill(r.id, 'approve')}
+                        style={{ fontSize: 11, color: '#16a34a', cursor: 'pointer' }}
+                      >
+                        Approve
+                      </button>
+                      <button
+                        onClick={() => reviewRefill(r.id, 'deny')}
+                        style={{ fontSize: 11, color: '#ef4444', cursor: 'pointer' }}
+                      >
+                        Deny
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -227,7 +294,9 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
           ) : (
             <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ borderBottom: '1px solid var(--cprs-border, #ccc)', textAlign: 'left' }}>
+                <tr
+                  style={{ borderBottom: '1px solid var(--cprs-border, #ccc)', textAlign: 'left' }}
+                >
                   <th style={{ padding: '4px 8px' }}>Patient</th>
                   <th style={{ padding: '4px 8px' }}>Category</th>
                   <th style={{ padding: '4px 8px' }}>Priority</th>
@@ -236,17 +305,28 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
                 </tr>
               </thead>
               <tbody>
-                {tasks.map(t => (
+                {tasks.map((t) => (
                   <tr key={t.id} style={{ borderBottom: '1px solid var(--cprs-border, #eee)' }}>
                     <td style={{ padding: '4px 8px' }}>{t.patientName}</td>
                     <td style={{ padding: '4px 8px' }}>{t.category.replace(/_/g, ' ')}</td>
                     <td style={{ padding: '4px 8px' }}>
-                      <span style={{ color: t.priority === 'urgent' ? '#ef4444' : t.priority === 'high' ? '#d97706' : '#6b7280' }}>
+                      <span
+                        style={{
+                          color:
+                            t.priority === 'urgent'
+                              ? '#ef4444'
+                              : t.priority === 'high'
+                                ? '#d97706'
+                                : '#6b7280',
+                        }}
+                      >
                         {t.priority}
                       </span>
                     </td>
                     <td style={{ padding: '4px 8px' }}>{t.title}</td>
-                    <td style={{ padding: '4px 8px' }}>{new Date(t.createdAt).toLocaleDateString()}</td>
+                    <td style={{ padding: '4px 8px' }}>
+                      {new Date(t.createdAt).toLocaleDateString()}
+                    </td>
                   </tr>
                 ))}
               </tbody>

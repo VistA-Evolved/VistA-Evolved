@@ -13,8 +13,16 @@ import { API_BASE } from '@/lib/api-config';
 
 const LOCAL_TEMPLATES = [
   { id: 't-soap', name: 'SOAP Note', text: 'S: \nO: \nA: \nP: \n' },
-  { id: 't-progress', name: 'Progress Note', text: 'Date: \nProvider: \n\nSubjective:\n\nObjective:\n\nAssessment:\n\nPlan:\n' },
-  { id: 't-telephone', name: 'Telephone Encounter', text: 'Call from: \nReason: \nAdvice given: \nFollow-up: \n' },
+  {
+    id: 't-progress',
+    name: 'Progress Note',
+    text: 'Date: \nProvider: \n\nSubjective:\n\nObjective:\n\nAssessment:\n\nPlan:\n',
+  },
+  {
+    id: 't-telephone',
+    name: 'Telephone Encounter',
+    text: 'Call from: \nReason: \nAdvice given: \nFollow-up: \n',
+  },
   { id: 't-addendum', name: 'Addendum', text: 'ADDENDUM:\n\n' },
   { id: 't-brief', name: 'Brief Note', text: '' },
 ];
@@ -34,7 +42,9 @@ function statusBadge(status: string) {
   return { label: status || 'Unknown', color: 'var(--cprs-muted, #6c757d)' };
 }
 
-interface Props { dfn: string; }
+interface Props {
+  dfn: string;
+}
 
 export default function NotesPanel({ dfn }: Props) {
   const cache = useDataCache();
@@ -81,7 +91,9 @@ export default function NotesPanel({ dfn }: Props) {
     return [...facilityTemplates, ...localOnly];
   }, [noteTemplates, isFeatureEnabled]);
 
-  useEffect(() => { cache.fetchDomain(dfn, 'notes'); }, [dfn]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    cache.fetchDomain(dfn, 'notes');
+  }, [dfn]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const notes = cache.getDomain(dfn, 'notes');
   const loading = cache.isLoading(dfn, 'notes');
@@ -98,29 +110,36 @@ export default function NotesPanel({ dfn }: Props) {
         } else if (data.defaultTitles?.length) {
           setVistaTitles(data.defaultTitles);
         }
-      } catch { /* titles fetch is best-effort */ }
+      } catch {
+        /* titles fetch is best-effort */
+      }
     }
     loadTitles();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fetch note text when a note is selected
-  const fetchNoteText = useCallback(async (noteId: string) => {
-    setViewText(null);
-    setViewTextLoading(true);
-    try {
-      const res = await fetch(`${API_BASE}/vista/cprs/notes/text?ien=${noteId}`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.ok) {
-        setViewText(data.text);
-      } else {
-        setViewText(`[Error loading note text: ${data.error || 'Unknown error'}]`);
+  const fetchNoteText = useCallback(
+    async (noteId: string) => {
+      setViewText(null);
+      setViewTextLoading(true);
+      try {
+        const res = await fetch(`${API_BASE}/vista/cprs/notes/text?ien=${noteId}`, {
+          credentials: 'include',
+        });
+        const data = await res.json();
+        if (data.ok) {
+          setViewText(data.text);
+        } else {
+          setViewText(`[Error loading note text: ${data.error || 'Unknown error'}]`);
+        }
+      } catch (e: unknown) {
+        setViewText(`[Error: ${(e as Error).message}]`);
+      } finally {
+        setViewTextLoading(false);
       }
-    } catch (e: unknown) {
-      setViewText(`[Error: ${(e as Error).message}]`);
-    } finally {
-      setViewTextLoading(false);
-    }
-  }, [API_BASE]);
+    },
+    [API_BASE]
+  );
 
   function handleSelectNote(n: Note) {
     setSelected(n);
@@ -239,7 +258,10 @@ export default function NotesPanel({ dfn }: Props) {
     }
   }
 
-  const isUnsigned = selected && !selected.status?.toLowerCase().includes('completed') && !selected.status?.toLowerCase().includes('signed');
+  const isUnsigned =
+    selected &&
+    !selected.status?.toLowerCase().includes('completed') &&
+    !selected.status?.toLowerCase().includes('signed');
 
   return (
     <div>
@@ -252,24 +274,74 @@ export default function NotesPanel({ dfn }: Props) {
           Refresh
         </button>
         {selected && isUnsigned && (
-          <button className={styles.btn} onClick={() => { setShowSignDialog(!showSignDialog); setShowAddendum(false); }}>
+          <button
+            className={styles.btn}
+            onClick={() => {
+              setShowSignDialog(!showSignDialog);
+              setShowAddendum(false);
+            }}
+          >
             Sign
           </button>
         )}
         {selected && (
-          <button className={styles.btn} onClick={() => { setShowAddendum(!showAddendum); setShowSignDialog(false); }}>
+          <button
+            className={styles.btn}
+            onClick={() => {
+              setShowAddendum(!showAddendum);
+              setShowSignDialog(false);
+            }}
+          >
             + Addendum
           </button>
         )}
       </div>
 
-      {saveMsg && <p style={{ color: saveMsg.startsWith('Error') ? 'var(--cprs-danger)' : 'var(--cprs-success)', fontSize: 12, margin: '4px 0' }}>{saveMsg}</p>}
-      {signMsg && <p style={{ color: signMsg.startsWith('Error') ? 'var(--cprs-danger)' : 'var(--cprs-success)', fontSize: 12, margin: '4px 0' }}>{signMsg}</p>}
-      {addendumMsg && <p style={{ color: addendumMsg.startsWith('Error') ? 'var(--cprs-danger)' : 'var(--cprs-success)', fontSize: 12, margin: '4px 0' }}>{addendumMsg}</p>}
+      {saveMsg && (
+        <p
+          style={{
+            color: saveMsg.startsWith('Error') ? 'var(--cprs-danger)' : 'var(--cprs-success)',
+            fontSize: 12,
+            margin: '4px 0',
+          }}
+        >
+          {saveMsg}
+        </p>
+      )}
+      {signMsg && (
+        <p
+          style={{
+            color: signMsg.startsWith('Error') ? 'var(--cprs-danger)' : 'var(--cprs-success)',
+            fontSize: 12,
+            margin: '4px 0',
+          }}
+        >
+          {signMsg}
+        </p>
+      )}
+      {addendumMsg && (
+        <p
+          style={{
+            color: addendumMsg.startsWith('Error') ? 'var(--cprs-danger)' : 'var(--cprs-success)',
+            fontSize: 12,
+            margin: '4px 0',
+          }}
+        >
+          {addendumMsg}
+        </p>
+      )}
 
       {/* --- Sign Dialog --- */}
       {showSignDialog && selected && (
-        <div style={{ border: '1px solid var(--cprs-border)', padding: 12, marginBottom: 8, borderRadius: 4, background: 'var(--cprs-bg-alt, #f8f9fa)' }}>
+        <div
+          style={{
+            border: '1px solid var(--cprs-border)',
+            padding: 12,
+            marginBottom: 8,
+            borderRadius: 4,
+            background: 'var(--cprs-bg-alt, #f8f9fa)',
+          }}
+        >
           <div style={{ fontWeight: 600, marginBottom: 8 }}>Sign Note: {selected.title}</div>
           <div className={styles.formGroup}>
             <label>Electronic Signature Code</label>
@@ -283,17 +355,37 @@ export default function NotesPanel({ dfn }: Props) {
             />
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button className={styles.btnPrimary} onClick={handleSign} disabled={signLoading || !esCode.trim()}>
+            <button
+              className={styles.btnPrimary}
+              onClick={handleSign}
+              disabled={signLoading || !esCode.trim()}
+            >
               {signLoading ? 'Signing...' : 'Apply Signature'}
             </button>
-            <button className={styles.btn} onClick={() => { setShowSignDialog(false); setEsCode(''); }}>Cancel</button>
+            <button
+              className={styles.btn}
+              onClick={() => {
+                setShowSignDialog(false);
+                setEsCode('');
+              }}
+            >
+              Cancel
+            </button>
           </div>
         </div>
       )}
 
       {/* --- Addendum Form --- */}
       {showAddendum && selected && (
-        <div style={{ border: '1px solid var(--cprs-border)', padding: 12, marginBottom: 8, borderRadius: 4, background: 'var(--cprs-bg-alt, #f8f9fa)' }}>
+        <div
+          style={{
+            border: '1px solid var(--cprs-border)',
+            padding: 12,
+            marginBottom: 8,
+            borderRadius: 4,
+            background: 'var(--cprs-bg-alt, #f8f9fa)',
+          }}
+        >
           <div style={{ fontWeight: 600, marginBottom: 8 }}>Addendum to: {selected.title}</div>
           <div className={styles.formGroup}>
             <label>Addendum Text</label>
@@ -306,17 +398,36 @@ export default function NotesPanel({ dfn }: Props) {
             />
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button className={styles.btnPrimary} onClick={handleAddendum} disabled={addendumLoading || !addendumText.trim()}>
+            <button
+              className={styles.btnPrimary}
+              onClick={handleAddendum}
+              disabled={addendumLoading || !addendumText.trim()}
+            >
               {addendumLoading ? 'Saving...' : 'Save Addendum'}
             </button>
-            <button className={styles.btn} onClick={() => { setShowAddendum(false); setAddendumText(''); }}>Cancel</button>
+            <button
+              className={styles.btn}
+              onClick={() => {
+                setShowAddendum(false);
+                setAddendumText('');
+              }}
+            >
+              Cancel
+            </button>
           </div>
         </div>
       )}
 
       {/* --- New Note Form --- */}
       {showNewNote && (
-        <div style={{ border: '1px solid var(--cprs-border)', padding: 12, marginBottom: 8, borderRadius: 4 }}>
+        <div
+          style={{
+            border: '1px solid var(--cprs-border)',
+            padding: 12,
+            marginBottom: 8,
+            borderRadius: 4,
+          }}
+        >
           <div className={styles.formGroup}>
             <label>Template</label>
             <div className={styles.templateList}>
@@ -340,24 +451,50 @@ export default function NotesPanel({ dfn }: Props) {
                 onChange={(e) => setSelectedTitleIen(e.target.value)}
               >
                 {vistaTitles.map((t) => (
-                  <option key={t.ien} value={t.ien}>{t.name}</option>
+                  <option key={t.ien} value={t.ien}>
+                    {t.name}
+                  </option>
                 ))}
               </select>
             </div>
           )}
           <div className={styles.formGroup}>
             <label>Title</label>
-            <input className={styles.formInput} value={noteTitle} onChange={(e) => setNoteTitle(e.target.value)} placeholder="Note title (display)" />
+            <input
+              className={styles.formInput}
+              value={noteTitle}
+              onChange={(e) => setNoteTitle(e.target.value)}
+              placeholder="Note title (display)"
+            />
           </div>
           <div className={styles.formGroup}>
             <label>Text</label>
-            <textarea className={styles.formTextarea} value={noteText} onChange={(e) => setNoteText(e.target.value)} rows={10} placeholder="Enter note text..." />
+            <textarea
+              className={styles.formTextarea}
+              value={noteText}
+              onChange={(e) => setNoteText(e.target.value)}
+              rows={10}
+              placeholder="Enter note text..."
+            />
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
-            <button className={styles.btnPrimary} onClick={handleSaveNote} disabled={saving || !noteText.trim()}>
+            <button
+              className={styles.btnPrimary}
+              onClick={handleSaveNote}
+              disabled={saving || !noteText.trim()}
+            >
               {saving ? 'Saving...' : 'Save Note'}
             </button>
-            <button className={styles.btn} onClick={() => { setShowNewNote(false); setNoteTitle(''); setNoteText(''); }}>Cancel</button>
+            <button
+              className={styles.btn}
+              onClick={() => {
+                setShowNewNote(false);
+                setNoteTitle('');
+                setNoteText('');
+              }}
+            >
+              Cancel
+            </button>
           </div>
         </div>
       )}
@@ -369,7 +506,14 @@ export default function NotesPanel({ dfn }: Props) {
           {!loading && notes.length === 0 && <p className={styles.emptyText}>No notes on record</p>}
           {!loading && notes.length > 0 && (
             <table className={styles.dataTable}>
-              <thead><tr><th>Title</th><th>Date</th><th>Author</th><th>Status</th></tr></thead>
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Date</th>
+                  <th>Author</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
               <tbody>
                 {notes.map((n) => {
                   const badge = statusBadge(n.status);
@@ -377,12 +521,18 @@ export default function NotesPanel({ dfn }: Props) {
                     <tr
                       key={n.id}
                       onClick={() => handleSelectNote(n)}
-                      style={selected?.id === n.id ? { background: 'var(--cprs-selected)' } : undefined}
+                      style={
+                        selected?.id === n.id ? { background: 'var(--cprs-selected)' } : undefined
+                      }
                     >
                       <td>{n.title}</td>
                       <td>{n.date}</td>
                       <td>{n.author}</td>
-                      <td><span style={{ color: badge.color, fontSize: 11, fontWeight: 600 }}>{badge.label}</span></td>
+                      <td>
+                        <span style={{ color: badge.color, fontSize: 11, fontWeight: 600 }}>
+                          {badge.label}
+                        </span>
+                      </td>
                     </tr>
                   );
                 })}
@@ -394,16 +544,30 @@ export default function NotesPanel({ dfn }: Props) {
           {selected ? (
             <div>
               <div className={styles.panelTitle}>Note Detail</div>
-              <div className={styles.formGroup}><label>Title</label><div>{selected.title}</div></div>
-              <div className={styles.formGroup}><label>Date</label><div>{selected.date}</div></div>
-              <div className={styles.formGroup}><label>Author</label><div>{selected.author}</div></div>
-              <div className={styles.formGroup}><label>Location</label><div>{selected.location}</div></div>
+              <div className={styles.formGroup}>
+                <label>Title</label>
+                <div>{selected.title}</div>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Date</label>
+                <div>{selected.date}</div>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Author</label>
+                <div>{selected.author}</div>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Location</label>
+                <div>{selected.location}</div>
+              </div>
               <div className={styles.formGroup}>
                 <label>Status</label>
                 <div>
                   {(() => {
                     const badge = statusBadge(selected.status);
-                    return <span style={{ color: badge.color, fontWeight: 600 }}>{badge.label}</span>;
+                    return (
+                      <span style={{ color: badge.color, fontWeight: 600 }}>{badge.label}</span>
+                    );
                   })()}
                 </div>
               </div>
@@ -411,7 +575,19 @@ export default function NotesPanel({ dfn }: Props) {
                 <label>Note Text</label>
                 {viewTextLoading && <p className={styles.loadingText}>Loading note text...</p>}
                 {!viewTextLoading && viewText !== null && (
-                  <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace', fontSize: 12, background: 'var(--cprs-bg-alt, #f8f9fa)', padding: 8, borderRadius: 4, maxHeight: 400, overflow: 'auto', border: '1px solid var(--cprs-border)' }}>
+                  <pre
+                    style={{
+                      whiteSpace: 'pre-wrap',
+                      fontFamily: 'monospace',
+                      fontSize: 12,
+                      background: 'var(--cprs-bg-alt, #f8f9fa)',
+                      padding: 8,
+                      borderRadius: 4,
+                      maxHeight: 400,
+                      overflow: 'auto',
+                      border: '1px solid var(--cprs-border)',
+                    }}
+                  >
                     {viewText}
                   </pre>
                 )}

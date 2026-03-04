@@ -19,7 +19,7 @@ import type {
   EnrollmentPacket,
 } from './types.js';
 import type { Payer, PayerCountry } from '../domain/payer.js';
-import { upsertPayer, getPayer, listPayers } from '../payer-registry/registry.js';
+import { upsertPayer } from '../payer-registry/registry.js';
 import { appendRcmAudit } from '../audit/rcm-audit.js';
 
 /* ── In-memory Directory Store ──────────────────────────────── */
@@ -29,7 +29,9 @@ const enrollmentStore = new Map<string, EnrollmentPacket>();
 
 /* Phase 146: DB repo wiring */
 let directoryDbRepo: { upsert(d: any): Promise<any> } | null = null;
-export function initDirectoryStoreRepo(repo: typeof directoryDbRepo): void { directoryDbRepo = repo; }
+export function initDirectoryStoreRepo(repo: typeof directoryDbRepo): void {
+  directoryDbRepo = repo;
+}
 const refreshHistory: Array<{
   importerId: string;
   timestamp: string;
@@ -50,7 +52,9 @@ export function normalizeImportResults(results: ImportResult[]): DirectoryPayer[
       const existing = merged.get(payer.payerId);
       if (existing) {
         // Merge channels (deduplicate by type+connectorId)
-        const channelKeys = new Set(existing.channels.map(c => `${c.type}:${c.connectorId ?? ''}`));
+        const channelKeys = new Set(
+          existing.channels.map((c) => `${c.type}:${c.connectorId ?? ''}`)
+        );
         for (const ch of payer.channels) {
           const key = `${ch.type}:${ch.connectorId ?? ''}`;
           if (!channelKeys.has(key)) {
@@ -83,11 +87,11 @@ export function normalizeImportResults(results: ImportResult[]): DirectoryPayer[
 export function computeDiff(
   importerId: string,
   newPayers: DirectoryPayer[],
-  currentPayers?: DirectoryPayer[],
+  currentPayers?: DirectoryPayer[]
 ): DirectoryDiffResult {
   const current = currentPayers ?? Array.from(directoryStore.values());
-  const currentMap = new Map(current.map(p => [p.payerId, p]));
-  const newMap = new Map(newPayers.map(p => [p.payerId, p]));
+  const currentMap = new Map(current.map((p) => [p.payerId, p]));
+  const newMap = new Map(newPayers.map((p) => [p.payerId, p]));
 
   const added: PayerDiffEntry[] = [];
   const removed: PayerDiffEntry[] = [];
@@ -102,7 +106,12 @@ export function computeDiff(
     } else {
       const changedFields = diffFields(oldP, newP);
       if (changedFields.length > 0) {
-        modified.push({ payerId: id, displayName: newP.displayName, change: 'modified', fields: changedFields });
+        modified.push({
+          payerId: id,
+          displayName: newP.displayName,
+          change: 'modified',
+          fields: changedFields,
+        });
       } else {
         unchanged++;
       }
@@ -133,10 +142,12 @@ function diffFields(a: DirectoryPayer, b: DirectoryPayer): string[] {
   if (a.integrationMode !== b.integrationMode) fields.push('integrationMode');
   if (a.payerType !== b.payerType) fields.push('payerType');
   if (a.channels.length !== b.channels.length) fields.push('channels');
-  if (a.supportedTransactions.length !== b.supportedTransactions.length) fields.push('supportedTransactions');
+  if (a.supportedTransactions.length !== b.supportedTransactions.length)
+    fields.push('supportedTransactions');
   if (a.category !== b.category) fields.push('category');
   if (a.parentOrg !== b.parentOrg) fields.push('parentOrg');
-  if (JSON.stringify(a.payerIdsByNetwork) !== JSON.stringify(b.payerIdsByNetwork)) fields.push('payerIdsByNetwork');
+  if (JSON.stringify(a.payerIdsByNetwork) !== JSON.stringify(b.payerIdsByNetwork))
+    fields.push('payerIdsByNetwork');
   return fields;
 }
 
@@ -154,7 +165,17 @@ export function applyDirectoryToRegistry(payers: DirectoryPayer[]): number {
     directoryStore.set(dp.payerId, dp);
 
     // Phase 146: Write-through to PG
-    directoryDbRepo?.upsert({ id: dp.payerId, tenantId: 'default', payerId: dp.payerId, field: 'directory', value: JSON.stringify(dp), source: 'import', createdAt: new Date().toISOString() }).catch(() => {});
+    directoryDbRepo
+      ?.upsert({
+        id: dp.payerId,
+        tenantId: 'default',
+        payerId: dp.payerId,
+        field: 'directory',
+        value: JSON.stringify(dp),
+        source: 'import',
+        createdAt: new Date().toISOString(),
+      })
+      .catch(() => {});
 
     count++;
   }
@@ -168,12 +189,13 @@ function directoryPayerToRegistryPayer(dp: DirectoryPayer): Payer {
     country: dp.country,
     integrationMode: dp.integrationMode,
     status: dp.status,
-    clearinghousePayerId: dp.payerIdsByNetwork.availityPayerId
-      ?? dp.payerIdsByNetwork.officeAllyPayerId
-      ?? dp.payerIdsByNetwork.stediPayerId,
+    clearinghousePayerId:
+      dp.payerIdsByNetwork.availityPayerId ??
+      dp.payerIdsByNetwork.officeAllyPayerId ??
+      dp.payerIdsByNetwork.stediPayerId,
     naic: dp.payerIdsByNetwork.naicCode,
     philhealthCode: dp.payerIdsByNetwork.philhealthCode,
-    endpoints: dp.channels.map(ch => ({
+    endpoints: dp.channels.map((ch) => ({
       purpose: 'claims' as const,
       protocol: channelToProtocol(ch.type),
       url: ch.endpoint,
@@ -191,12 +213,18 @@ function directoryPayerToRegistryPayer(dp: DirectoryPayer): Payer {
 
 function channelToProtocol(type: string): 'edi_sftp' | 'edi_https' | 'soap' | 'rest' | 'portal' {
   switch (type) {
-    case 'EDI_CLEARINGHOUSE': return 'edi_https';
-    case 'DIRECT_API': return 'rest';
-    case 'NATIONAL_GATEWAY': return 'rest';
-    case 'FHIR_R4': return 'rest';
-    case 'PORTAL_BATCH': return 'portal';
-    default: return 'portal';
+    case 'EDI_CLEARINGHOUSE':
+      return 'edi_https';
+    case 'DIRECT_API':
+      return 'rest';
+    case 'NATIONAL_GATEWAY':
+      return 'rest';
+    case 'FHIR_R4':
+      return 'rest';
+    case 'PORTAL_BATCH':
+      return 'portal';
+    default:
+      return 'portal';
   }
 }
 
@@ -212,7 +240,7 @@ function channelToProtocol(type: string): 'edi_sftp' | 'edi_https' | 'soap' | 'r
  */
 export function runDirectoryRefresh(
   results: ImportResult[],
-  userId: string,
+  userId: string
 ): {
   normalized: DirectoryPayer[];
   diff: DirectoryDiffResult;
@@ -257,11 +285,11 @@ export function listDirectoryPayers(filter?: {
 }): { payers: DirectoryPayer[]; total: number } {
   let result = Array.from(directoryStore.values());
 
-  if (filter?.country) result = result.filter(p => p.country === filter.country);
-  if (filter?.payerType) result = result.filter(p => p.payerType === filter.payerType);
+  if (filter?.country) result = result.filter((p) => p.country === filter.country);
+  if (filter?.payerType) result = result.filter((p) => p.payerType === filter.payerType);
   if (filter?.search) {
     const q = filter.search.toLowerCase();
-    result = result.filter(p => {
+    result = result.filter((p) => {
       const haystack = [p.displayName, p.payerId, ...(p.aliases ?? [])].join(' ').toLowerCase();
       return haystack.includes(q);
     });
@@ -321,7 +349,7 @@ export function listEnrollmentPackets(filter?: {
 }): { packets: EnrollmentPacket[]; total: number } {
   let result = Array.from(enrollmentStore.values());
 
-  if (filter?.status) result = result.filter(p => p.enrollmentStatus === filter.status);
+  if (filter?.status) result = result.filter((p) => p.enrollmentStatus === filter.status);
 
   const total = result.length;
   const offset = filter?.offset ?? 0;

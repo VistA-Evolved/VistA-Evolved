@@ -20,7 +20,7 @@
  * but uses a demo/dev signing approach.
  */
 
-import { createHash, randomBytes } from "node:crypto";
+import { createHash } from "node:crypto";
 import { log } from "../lib/logger.js";
 
 /* ------------------------------------------------------------------ */

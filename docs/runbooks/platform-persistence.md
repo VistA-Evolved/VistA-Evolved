@@ -23,20 +23,21 @@ The platform DB initializes automatically on server startup:
 
 ## Tables
 
-| Table | Purpose |
-|-------|---------|
-| `payer` | Canonical payer records |
-| `tenant_payer` | Per-tenant payer overrides |
-| `payer_capability` | Payer capability matrix |
-| `payer_task` | Payer onboarding tasks |
-| `payer_evidence_snapshot` | Evidence ingest history |
-| `payer_audit_event` | Append-only audit trail |
+| Table                     | Purpose                    |
+| ------------------------- | -------------------------- |
+| `payer`                   | Canonical payer records    |
+| `tenant_payer`            | Per-tenant payer overrides |
+| `payer_capability`        | Payer capability matrix    |
+| `payer_task`              | Payer onboarding tasks     |
+| `payer_evidence_snapshot` | Evidence ingest history    |
+| `payer_audit_event`       | Append-only audit trail    |
 
 ## Admin UI
 
 Navigate to: **Admin Console > Payer DB**
 
 Four tabs:
+
 - **Payers**: Search, browse, click to view capabilities
 - **Capabilities**: View/edit capability matrix per payer (reason required)
 - **Evidence**: Ingest JSON snapshots, review diffs, promote
@@ -46,25 +47,25 @@ Four tabs:
 
 All under `/admin/payer-db/`:
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/payers` | List/search payers |
-| GET | `/payers/:id` | Get payer by ID |
-| POST | `/payers` | Create payer |
-| PUT | `/payers/:id` | Update payer |
-| GET | `/payers/:id/capabilities` | List capabilities |
-| PUT | `/payers/:id/capabilities` | Set capability (reason required) |
-| GET | `/payers/:id/tasks` | List tasks |
-| POST | `/payers/:id/tasks` | Create task |
-| PUT | `/payers/:id/tasks/:taskId` | Update task status |
-| GET | `/payers/:id/audit` | Payer audit trail |
-| GET | `/evidence` | List evidence snapshots |
-| POST | `/evidence/ingest-json` | Ingest JSON snapshot |
-| POST | `/evidence/:id/promote` | Promote snapshot |
-| GET | `/tenant/:tenantId/payers` | Tenant payer overrides |
-| POST | `/tenant/:tenantId/payers` | Upsert tenant payer config |
-| GET | `/audit` | Global audit trail |
-| GET | `/audit/stats` | Audit statistics |
+| Method | Path                        | Description                      |
+| ------ | --------------------------- | -------------------------------- |
+| GET    | `/payers`                   | List/search payers               |
+| GET    | `/payers/:id`               | Get payer by ID                  |
+| POST   | `/payers`                   | Create payer                     |
+| PUT    | `/payers/:id`               | Update payer                     |
+| GET    | `/payers/:id/capabilities`  | List capabilities                |
+| PUT    | `/payers/:id/capabilities`  | Set capability (reason required) |
+| GET    | `/payers/:id/tasks`         | List tasks                       |
+| POST   | `/payers/:id/tasks`         | Create task                      |
+| PUT    | `/payers/:id/tasks/:taskId` | Update task status               |
+| GET    | `/payers/:id/audit`         | Payer audit trail                |
+| GET    | `/evidence`                 | List evidence snapshots          |
+| POST   | `/evidence/ingest-json`     | Ingest JSON snapshot             |
+| POST   | `/evidence/:id/promote`     | Promote snapshot                 |
+| GET    | `/tenant/:tenantId/payers`  | Tenant payer overrides           |
+| POST   | `/tenant/:tenantId/payers`  | Upsert tenant payer config       |
+| GET    | `/audit`                    | Global audit trail               |
+| GET    | `/audit/stats`              | Audit statistics                 |
 
 ## Evidence Pipeline
 
@@ -91,19 +92,24 @@ Returns: `{ ok, inserted, updated, skipped, failures }`
 ## Troubleshooting
 
 ### Database locked
+
 SQLite WAL mode handles concurrent reads, but only one writer at a time.
 If you see "database is locked", check for long-running transactions.
 
 ### Seed not running
+
 Seed only runs if payer table is empty. To re-seed, delete `data/platform.db`
 and restart the server.
 
 ### BOM in JSON files
+
 PowerShell `Set-Content -Encoding UTF8` adds a BOM. The seed function strips
 it automatically (BUG-064).
 
 ### Native module build failure
+
 `better-sqlite3` requires node-gyp. Ensure you have:
+
 - Python 3.x
 - Visual Studio Build Tools (Windows)
 - Run `pnpm install` from repo root

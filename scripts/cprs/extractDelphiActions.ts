@@ -13,19 +13,25 @@
  * Usage: npx tsx scripts/cprs/extractDelphiActions.ts
  */
 
-import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync, existsSync } from "fs";
-import { join, relative, extname } from "path";
+import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { join, relative, extname } from 'path';
 
 const ROOT = process.cwd();
-const DELPHI_ROOT = join(ROOT, "reference", "cprs");
-const CHART_ROOT = join(DELPHI_ROOT, "Packages", "Order Entry Results Reporting", "CPRS", "CPRS-Chart");
-const OUT_DIR = join(ROOT, "artifacts", "cprs");
+const DELPHI_ROOT = join(ROOT, 'reference', 'cprs');
+const CHART_ROOT = join(
+  DELPHI_ROOT,
+  'Packages',
+  'Order Entry Results Reporting',
+  'CPRS',
+  'CPRS-Chart'
+);
+const OUT_DIR = join(ROOT, 'artifacts', 'cprs');
 
-const SKIP_DIRS = new Set([".git", "node_modules", "dcu", "__history"]);
+const SKIP_DIRS = new Set(['.git', 'node_modules', 'dcu', '__history']);
 
 interface DelphiAction {
   identifier: string;
-  kind: "menuItem" | "action" | "popupItem" | "toolButton" | "handler";
+  kind: 'menuItem' | 'action' | 'popupItem' | 'toolButton' | 'handler';
   handler?: string;
   caption?: string;
   sourceFile: string;
@@ -45,7 +51,9 @@ function collectFiles(dir: string, ext: string): string[] {
       } else if (stat.isFile() && extname(entry).toLowerCase() === ext) {
         results.push(full);
       }
-    } catch { continue; }
+    } catch {
+      continue;
+    }
   }
   return results;
 }
@@ -54,11 +62,15 @@ function main() {
   const scanRoot = existsSync(CHART_ROOT) ? CHART_ROOT : DELPHI_ROOT;
 
   if (!existsSync(scanRoot)) {
-    console.log("WARNING: reference/cprs/ not found -- generating empty extraction");
+    console.log('WARNING: reference/cprs/ not found -- generating empty extraction');
     mkdirSync(OUT_DIR, { recursive: true });
     writeFileSync(
-      join(OUT_DIR, "delphi-actions.json"),
-      JSON.stringify({ _meta: { source: scanRoot, status: "directory-not-found" }, actions: [] }, null, 2),
+      join(OUT_DIR, 'delphi-actions.json'),
+      JSON.stringify(
+        { _meta: { source: scanRoot, status: 'directory-not-found' }, actions: [] },
+        null,
+        2
+      )
     );
     return;
   }
@@ -68,20 +80,26 @@ function main() {
   const actions: DelphiAction[] = [];
 
   // Scan .dfm files for UI components
-  const dfmFiles = collectFiles(scanRoot, ".dfm");
+  const dfmFiles = collectFiles(scanRoot, '.dfm');
   console.log(`  Found ${dfmFiles.length} .dfm files`);
 
   for (const file of dfmFiles) {
     let content: string;
-    try { content = readFileSync(file, "utf-8"); } catch {
-      try { content = readFileSync(file, "latin1"); } catch { continue; }
+    try {
+      content = readFileSync(file, 'utf-8');
+    } catch {
+      try {
+        content = readFileSync(file, 'latin1');
+      } catch {
+        continue;
+      }
     }
-    const rel = relative(DELPHI_ROOT, file).replace(/\\/g, "/");
-    const lines = content.split("\n");
+    const rel = relative(DELPHI_ROOT, file).replace(/\\/g, '/');
+    const lines = content.split('\n');
 
-    let currentComponent = "";
-    let currentKind: DelphiAction["kind"] = "handler";
-    let currentCaption = "";
+    let currentComponent = '';
+    let currentKind: DelphiAction['kind'] = 'handler';
+    let currentCaption = '';
     let componentLine = 0;
 
     for (let i = 0; i < lines.length; i++) {
@@ -93,26 +111,26 @@ function main() {
         const [, name, typeName] = objMatch;
         if (/MenuItem/i.test(typeName)) {
           currentComponent = name;
-          currentKind = "menuItem";
-          currentCaption = "";
+          currentKind = 'menuItem';
+          currentCaption = '';
           componentLine = i + 1;
         } else if (/Action$/i.test(typeName)) {
           currentComponent = name;
-          currentKind = "action";
-          currentCaption = "";
+          currentKind = 'action';
+          currentCaption = '';
           componentLine = i + 1;
         } else if (/PopupMenu|PopupItem/i.test(typeName)) {
           currentComponent = name;
-          currentKind = "popupItem";
-          currentCaption = "";
+          currentKind = 'popupItem';
+          currentCaption = '';
           componentLine = i + 1;
         } else if (/ToolButton/i.test(typeName)) {
           currentComponent = name;
-          currentKind = "toolButton";
-          currentCaption = "";
+          currentKind = 'toolButton';
+          currentCaption = '';
           componentLine = i + 1;
         } else {
-          currentComponent = "";
+          currentComponent = '';
         }
         continue;
       }
@@ -136,36 +154,47 @@ function main() {
         }
 
         // end of component
-        if (line === "end") {
-          currentComponent = "";
+        if (line === 'end') {
+          currentComponent = '';
         }
       }
     }
   }
 
   // Scan .pas files for procedure handlers that match action patterns
-  const pasFiles = collectFiles(scanRoot, ".pas");
+  const pasFiles = collectFiles(scanRoot, '.pas');
   console.log(`  Found ${pasFiles.length} .pas files`);
 
-  const handlerPattern = /^procedure\s+\w+\.(mnu\w+Click|act\w+Execute|pop\w+Click|btn\w+Click|cmd\w+Click)/i;
+  const handlerPattern =
+    /^procedure\s+\w+\.(mnu\w+Click|act\w+Execute|pop\w+Click|btn\w+Click|cmd\w+Click)/i;
 
   for (const file of pasFiles) {
     let content: string;
-    try { content = readFileSync(file, "utf-8"); } catch {
-      try { content = readFileSync(file, "latin1"); } catch { continue; }
+    try {
+      content = readFileSync(file, 'utf-8');
+    } catch {
+      try {
+        content = readFileSync(file, 'latin1');
+      } catch {
+        continue;
+      }
     }
-    const rel = relative(DELPHI_ROOT, file).replace(/\\/g, "/");
-    const lines = content.split("\n");
+    const rel = relative(DELPHI_ROOT, file).replace(/\\/g, '/');
+    const lines = content.split('\n');
 
     for (let i = 0; i < lines.length; i++) {
       const m = lines[i].match(handlerPattern);
       if (m) {
         // Only add if not already captured from .dfm
         const handlerName = m[1];
-        if (!actions.some((a) => a.handler === handlerName && a.sourceFile.replace(".dfm", ".pas") === rel)) {
+        if (
+          !actions.some(
+            (a) => a.handler === handlerName && a.sourceFile.replace('.dfm', '.pas') === rel
+          )
+        ) {
           actions.push({
             identifier: handlerName,
-            kind: "handler",
+            kind: 'handler',
             handler: handlerName,
             sourceFile: rel,
             line: i + 1,
@@ -188,7 +217,7 @@ function main() {
     actions: actions.sort((a, b) => a.identifier.localeCompare(b.identifier)),
   };
 
-  writeFileSync(join(OUT_DIR, "delphi-actions.json"), JSON.stringify(output, null, 2));
+  writeFileSync(join(OUT_DIR, 'delphi-actions.json'), JSON.stringify(output, null, 2));
   console.log(`\nExtracted ${actions.length} UI actions`);
   console.log(`Output: artifacts/cprs/delphi-actions.json`);
 }

@@ -30,21 +30,23 @@ Browser/Portal --> Fastify API --> VistA RPC Broker (port 9430)
 
 ### Configuration
 
-| Env Var | Default | Description |
-|---------|---------|-------------|
-| `LOG_LEVEL` | `info` | Minimum log level: trace, debug, info, warn, error, fatal |
-| `LOG_JSON` | `true` | JSON structured output (disable for dev readability) |
-| `VISTA_DEBUG` | `false` | Enable RPC broker debug-level hex dumps |
+| Env Var       | Default | Description                                               |
+| ------------- | ------- | --------------------------------------------------------- |
+| `LOG_LEVEL`   | `info`  | Minimum log level: trace, debug, info, warn, error, fatal |
+| `LOG_JSON`    | `true`  | JSON structured output (disable for dev readability)      |
+| `VISTA_DEBUG` | `false` | Enable RPC broker debug-level hex dumps                   |
 
 ### PHI Redaction
 
 All log output passes through the centralized PHI redaction engine (`phi-redaction.ts`).
 
 **Blocked field categories:**
+
 - **Credential fields** (17): accessCode, verifyCode, password, secret, token, sessionToken, avPlain, access_code, verify_code, authorization, cookie, set-cookie, x-service-key, api_key, apikey
 - **PHI fields** (24): ssn, socialSecurityNumber, dob, dateOfBirth, noteText, noteContent, problemText, patientName, memberName, subscriberName, memberId, subscriberId, insuranceId, policyId, medicareNum, medicaidNum, address, streetAddress, phoneNumber, phone, email, emailAddress, etc.
 
 **Inline patterns scrubbed:**
+
 - Access;Verify code pairs
 - Bearer tokens (20+ chars)
 - 64-char hex session tokens
@@ -55,6 +57,7 @@ All log output passes through the centralized PHI redaction engine (`phi-redacti
 ### Request Correlation
 
 Every HTTP request gets a UUID correlation ID via `AsyncLocalStorage`. This ID appears in:
+
 - Every log entry as `requestId`
 - OTel spans as attributes
 - Audit entries
@@ -75,29 +78,30 @@ Returns Prometheus text exposition format. No authentication required (in `AUTH_
 
 ### Available Metrics
 
-| Metric | Type | Labels | Description |
-|--------|------|--------|-------------|
-| `http_request_duration_seconds` | Histogram | method, route, status_code | HTTP request latency |
-| `http_requests_total` | Counter | method, route, status_code | Total HTTP requests |
-| `http_active_requests` | Gauge | — | In-flight requests |
-| `vista_rpc_call_duration_seconds` | Histogram | rpc_name, outcome | VistA RPC latency |
-| `vista_rpc_calls_total` | Counter | rpc_name, outcome | Total RPC calls |
-| `vista_circuit_breaker_state` | Gauge | — | CB state (0/1/2) |
-| `vista_circuit_breaker_trips_total` | Counter | — | CB trip count |
-| `vista_errors_total` | Counter | category | Error count |
-| `vista_active_sessions` | Gauge | — | Active sessions |
-| `vista_rpc_cache_size` | Gauge | — | RPC cache entries |
-| `vista_immutable_audit_chain_length` | Gauge | — | Audit chain size |
-| `rcm_claims_total` | Gauge | status | Claims by lifecycle status |
-| `rcm_pipeline_depth` | Gauge | stage | EDI pipeline depth |
-| `rcm_connector_call_duration_seconds` | Histogram | connector_id, operation | Connector latency |
-| `rcm_connector_calls_total` | Counter | connector_id, operation, outcome | Connector call count |
-| `rcm_connector_health` | Gauge | connector_id | Connector health (1/0) |
-| `unified_audit_entries_total` | Gauge | source | Audit entries per store |
+| Metric                                | Type      | Labels                           | Description                |
+| ------------------------------------- | --------- | -------------------------------- | -------------------------- |
+| `http_request_duration_seconds`       | Histogram | method, route, status_code       | HTTP request latency       |
+| `http_requests_total`                 | Counter   | method, route, status_code       | Total HTTP requests        |
+| `http_active_requests`                | Gauge     | —                                | In-flight requests         |
+| `vista_rpc_call_duration_seconds`     | Histogram | rpc_name, outcome                | VistA RPC latency          |
+| `vista_rpc_calls_total`               | Counter   | rpc_name, outcome                | Total RPC calls            |
+| `vista_circuit_breaker_state`         | Gauge     | —                                | CB state (0/1/2)           |
+| `vista_circuit_breaker_trips_total`   | Counter   | —                                | CB trip count              |
+| `vista_errors_total`                  | Counter   | category                         | Error count                |
+| `vista_active_sessions`               | Gauge     | —                                | Active sessions            |
+| `vista_rpc_cache_size`                | Gauge     | —                                | RPC cache entries          |
+| `vista_immutable_audit_chain_length`  | Gauge     | —                                | Audit chain size           |
+| `rcm_claims_total`                    | Gauge     | status                           | Claims by lifecycle status |
+| `rcm_pipeline_depth`                  | Gauge     | stage                            | EDI pipeline depth         |
+| `rcm_connector_call_duration_seconds` | Histogram | connector_id, operation          | Connector latency          |
+| `rcm_connector_calls_total`           | Counter   | connector_id, operation, outcome | Connector call count       |
+| `rcm_connector_health`                | Gauge     | connector_id                     | Connector health (1/0)     |
+| `unified_audit_entries_total`         | Gauge     | source                           | Audit entries per store    |
 
 ### Route Sanitization
 
 All route labels pass through `sanitizeRoute()`:
+
 - Query strings stripped
 - UUIDs replaced with `:id`
 - Numeric path segments replaced with `:id`
@@ -108,11 +112,11 @@ This prevents Prometheus label cardinality explosion.
 
 ### Configuration
 
-| Env Var | Default | Description |
-|---------|---------|-------------|
-| `OTEL_ENABLED` | `false` | Enable OTel SDK |
-| `OTEL_EXPORTER_OTLP_ENDPOINT` | `http://localhost:4318` | Collector endpoint |
-| `OTEL_SERVICE_NAME` | `vista-evolved-api` | Service name in traces |
+| Env Var                       | Default                 | Description            |
+| ----------------------------- | ----------------------- | ---------------------- |
+| `OTEL_ENABLED`                | `false`                 | Enable OTel SDK        |
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | `http://localhost:4318` | Collector endpoint     |
+| `OTEL_SERVICE_NAME`           | `vista-evolved-api`     | Service name in traces |
 
 ### Trace Propagation
 
@@ -125,7 +129,7 @@ This prevents Prometheus label cardinality explosion.
 
 - OTel collector config strips request/response bodies
 - API-side instrumentation avoids capturing bodies
-- Patient.* attributes stripped by collector processor
+- Patient.\* attributes stripped by collector processor
 
 ## Unified Audit
 
@@ -138,11 +142,11 @@ GET /audit/unified/stats
 
 ### Three Audit Stores
 
-| Store | Location | Max Entries | Eviction |
-|-------|----------|-------------|----------|
-| Immutable (general) | `immutable-audit.ts` | 10,000 | Ring buffer |
-| Imaging | `imaging-audit.ts` | 10,000 | Ring buffer |
-| RCM | `rcm-audit.ts` | 20,000 | FIFO splice |
+| Store               | Location             | Max Entries | Eviction    |
+| ------------------- | -------------------- | ----------- | ----------- |
+| Immutable (general) | `immutable-audit.ts` | 10,000      | Ring buffer |
+| Imaging             | `imaging-audit.ts`   | 10,000      | Ring buffer |
+| RCM                 | `rcm-audit.ts`       | 20,000      | FIFO splice |
 
 All stores are hash-chained (SHA-256) with tamper detection.
 
@@ -150,12 +154,12 @@ All stores are hash-chained (SHA-256) with tamper detection.
 
 ### Configuration
 
-| Env Var | Default | Description |
-|---------|---------|-------------|
-| `RCM_CB_THRESHOLD` | `5` | Failures before open |
-| `RCM_CB_RESET_MS` | `60000` | Open duration before half-open |
-| `RCM_CONNECTOR_RETRIES` | `2` | Max retries per call |
-| `RCM_CONNECTOR_RETRY_DELAY_MS` | `2000` | Base retry delay (exponential backoff) |
+| Env Var                        | Default | Description                            |
+| ------------------------------ | ------- | -------------------------------------- |
+| `RCM_CB_THRESHOLD`             | `5`     | Failures before open                   |
+| `RCM_CB_RESET_MS`              | `60000` | Open duration before half-open         |
+| `RCM_CONNECTOR_RETRIES`        | `2`     | Max retries per call                   |
+| `RCM_CONNECTOR_RETRY_DELAY_MS` | `2000`  | Base retry delay (exponential backoff) |
 
 ### Admin Endpoints
 
@@ -167,13 +171,13 @@ POST /admin/connector-cb/reset      -- Reset specific or all CBs
 
 ## Alerting Recommendations
 
-| Alert | Condition | Severity |
-|-------|-----------|----------|
-| VistA CB Open | `vista_circuit_breaker_state == 1` for 2m | Critical |
-| Connector Down | `rcm_connector_health == 0` for 5m | High |
-| High Error Rate | `rate(vista_errors_total[5m]) > 10` | High |
-| Audit Chain Broken | `/audit/unified/stats` chainValid=false | Critical |
-| Pipeline Backlog | `rcm_pipeline_depth{stage="enqueue"} > 100` | Medium |
+| Alert              | Condition                                   | Severity |
+| ------------------ | ------------------------------------------- | -------- |
+| VistA CB Open      | `vista_circuit_breaker_state == 1` for 2m   | Critical |
+| Connector Down     | `rcm_connector_health == 0` for 5m          | High     |
+| High Error Rate    | `rate(vista_errors_total[5m]) > 10`         | High     |
+| Audit Chain Broken | `/audit/unified/stats` chainValid=false     | Critical |
+| Pipeline Backlog   | `rcm_pipeline_depth{stage="enqueue"} > 100` | Medium   |
 
 ---
 
@@ -184,13 +188,14 @@ POST /admin/connector-cb/reset      -- Reset specific or all CBs
 Every inbound request gets a **correlation ID** (UUID v4) assigned in the
 `onRequest` hook of `security.ts`. The same value is returned as:
 
-| Header | Description |
-|--------|-------------|
-| `X-Request-Id` | Primary request identifier |
+| Header             | Description                                    |
+| ------------------ | ---------------------------------------------- |
+| `X-Request-Id`     | Primary request identifier                     |
 | `X-Correlation-Id` | Same value, for downstream service propagation |
-| `X-Trace-Id` | OTel trace ID (when tracing is enabled) |
+| `X-Trace-Id`       | OTel trace ID (when tracing is enabled)        |
 
 The correlation ID auto-propagates to:
+
 - Structured logs via `AsyncLocalStorage` in `logger.ts`
 - Audit events via `getRequestId()` fallback in `audit.ts`
 - OTel spans via W3C Trace Context
@@ -208,13 +213,13 @@ stdout without needing an OTel Collector running.
 
 ### New Metrics (Phase 133)
 
-| Metric | Type | Labels | Description |
-|--------|------|--------|-------------|
-| `db_pool_in_use` | Gauge | — | Active PG connections (total - idle) |
-| `db_pool_total` | Gauge | — | Total PG pool connections |
-| `db_pool_waiting` | Gauge | — | Queued PG connection requests |
-| `db_query_duration_seconds` | Histogram | operation | Query latency |
-| `audit_events_total` | Counter | action_prefix | Audit events emitted |
+| Metric                      | Type      | Labels        | Description                          |
+| --------------------------- | --------- | ------------- | ------------------------------------ |
+| `db_pool_in_use`            | Gauge     | —             | Active PG connections (total - idle) |
+| `db_pool_total`             | Gauge     | —             | Total PG pool connections            |
+| `db_pool_waiting`           | Gauge     | —             | Queued PG connection requests        |
+| `db_query_duration_seconds` | Histogram | operation     | Query latency                        |
+| `audit_events_total`        | Counter   | action_prefix | Audit events emitted                 |
 
 Pool stats are collected every 15s from `pg.Pool` when PG is configured.
 
@@ -224,9 +229,9 @@ Pool stats are collected every 15s from `pg.Pool` when PG is configured.
 is evaluated against `SLO_P95_BUDGET_MS` (default 500ms). Violations
 increment `slo_request_budget_violations`.
 
-| Env Var | Default | Description |
-|---------|---------|-------------|
-| `SLO_P95_BUDGET_MS` | `500` | P95 latency budget in milliseconds |
+| Env Var             | Default | Description                        |
+| ------------------- | ------- | ---------------------------------- |
+| `SLO_P95_BUDGET_MS` | `500`   | P95 latency budget in milliseconds |
 
 ### CI Gate G15
 

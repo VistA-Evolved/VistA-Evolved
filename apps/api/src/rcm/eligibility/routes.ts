@@ -18,7 +18,7 @@
  * Mutations wired to appendRcmAudit.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import {
   insertEligibilityCheck,
   getEligibilityCheckById,
@@ -29,50 +29,58 @@ import {
   listClaimStatusChecks,
   getClaimStatusTimeline,
   getClaimStatusStats,
-} from "./store.js";
-import { appendRcmAudit } from "../audit/rcm-audit.js";
-import { getPayerAdapterForMode, listPayerAdapters } from "../adapters/payer-adapter.js";
-import { getJobQueue } from "../jobs/queue.js";
-import { log } from "../../lib/logger.js";
-import type {
-  EligibilityProvenance,
-  ClaimStatusProvenance,
-} from "./types.js";
+} from './store.js';
+import { appendRcmAudit } from '../audit/rcm-audit.js';
+import { getPayerAdapterForMode, listPayerAdapters } from '../adapters/payer-adapter.js';
+import { getJobQueue } from '../jobs/queue.js';
+import { log } from '../../lib/logger.js';
+import type { EligibilityProvenance, ClaimStatusProvenance } from './types.js';
 
 /* ── Session helper ────────────────────────────────────────── */
 
 function getSession(request: FastifyRequest): { duz: string; tenantId: string } {
   const s = (request as any).session;
   return {
-    duz: s?.duz ?? "system",
-    tenantId: s?.tenantId ?? "default",
+    duz: s?.duz ?? 'system',
+    tenantId: s?.tenantId ?? 'default',
   };
 }
 
 /* ── Provenance validation ─────────────────────────────────── */
 
-const VALID_ELIG_PROVENANCES = new Set<string>(["MANUAL", "SANDBOX", "EDI_270_271", "CLEARINGHOUSE", "PORTAL"]);
-const VALID_CSTAT_PROVENANCES = new Set<string>(["MANUAL", "SANDBOX", "EDI_276_277", "CLEARINGHOUSE", "PORTAL"]);
+const VALID_ELIG_PROVENANCES = new Set<string>([
+  'MANUAL',
+  'SANDBOX',
+  'EDI_270_271',
+  'CLEARINGHOUSE',
+  'PORTAL',
+]);
+const VALID_CSTAT_PROVENANCES = new Set<string>([
+  'MANUAL',
+  'SANDBOX',
+  'EDI_276_277',
+  'CLEARINGHOUSE',
+  'PORTAL',
+]);
 
 /* ── Route Registration ────────────────────────────────────── */
 
 export default async function eligibilityRoutes(server: FastifyInstance): Promise<void> {
-
   /* ================================================================ */
   /* ELIGIBILITY ENDPOINTS                                            */
   /* ================================================================ */
 
   /** POST /rcm/eligibility/check — Run eligibility check */
-  server.post("/rcm/eligibility/check", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/eligibility/check', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const { duz, tenantId } = getSession(request);
 
     // Validate required fields
     if (!body.patientDfn || !body.payerId) {
-      return reply.status(400).send({ ok: false, error: "patientDfn and payerId are required" });
+      return reply.status(400).send({ ok: false, error: 'patientDfn and payerId are required' });
     }
 
-    const provenance: EligibilityProvenance = body.provenance ?? "SANDBOX";
+    const provenance: EligibilityProvenance = body.provenance ?? 'SANDBOX';
     if (!VALID_ELIG_PROVENANCES.has(provenance)) {
       return reply.status(400).send({ ok: false, error: `Invalid provenance: ${provenance}` });
     }
@@ -80,7 +88,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     const start = Date.now();
 
     // MANUAL provenance: user enters result directly
-    if (provenance === "MANUAL") {
+    if (provenance === 'MANUAL') {
       const manual = body.manualResult || {};
       const record = await insertEligibilityCheck({
         patientDfn: String(body.patientDfn),
@@ -88,9 +96,9 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         subscriberId: body.subscriberId ?? null,
         memberId: body.memberId ?? null,
         dateOfService: body.dateOfService ?? null,
-        provenance: "MANUAL",
+        provenance: 'MANUAL',
         eligible: manual.eligible ?? null,
-        status: "completed",
+        status: 'completed',
         responseJson: JSON.stringify({ ...manual, enteredBy: duz }),
         errorMessage: null,
         responseMs: Date.now() - start,
@@ -98,17 +106,17 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         tenantId,
       });
 
-      appendRcmAudit("eligibility.checked", {
+      appendRcmAudit('eligibility.checked', {
         payerId: body.payerId,
         userId: duz,
-        detail: { checkId: record.id, provenance: "MANUAL", eligible: manual.eligible },
+        detail: { checkId: record.id, provenance: 'MANUAL', eligible: manual.eligible },
       });
 
       return reply.status(201).send({ ok: true, check: record });
     }
 
     // EDI stub provenances: return integration-pending without external call
-    if (provenance === "EDI_270_271" || provenance === "CLEARINGHOUSE") {
+    if (provenance === 'EDI_270_271' || provenance === 'CLEARINGHOUSE') {
       const record = await insertEligibilityCheck({
         patientDfn: String(body.patientDfn),
         payerId: String(body.payerId),
@@ -117,15 +125,15 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         dateOfService: body.dateOfService ?? null,
         provenance,
         eligible: null,
-        status: "integration_pending",
+        status: 'integration_pending',
         responseJson: JSON.stringify({
           integrationPending: true,
-          transactionSet: "270/271",
-          description: "EDI clearinghouse enrollment required for live eligibility inquiry",
+          transactionSet: '270/271',
+          description: 'EDI clearinghouse enrollment required for live eligibility inquiry',
           requirements: [
-            "Clearinghouse enrollment",
-            "Trading partner agreement",
-            "HIPAA 5010 certification",
+            'Clearinghouse enrollment',
+            'Trading partner agreement',
+            'HIPAA 5010 certification',
           ],
         }),
         errorMessage: null,
@@ -134,10 +142,10 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         tenantId,
       });
 
-      appendRcmAudit("eligibility.checked", {
+      appendRcmAudit('eligibility.checked', {
         payerId: body.payerId,
         userId: duz,
-        detail: { checkId: record.id, provenance, status: "integration_pending" },
+        detail: { checkId: record.id, provenance, status: 'integration_pending' },
       });
 
       return reply.status(201).send({ ok: true, check: record });
@@ -145,7 +153,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
 
     // SANDBOX / PORTAL: use adapter
     try {
-      const adapter = getPayerAdapterForMode(provenance === "SANDBOX" ? "sandbox" : "portal");
+      const adapter = getPayerAdapterForMode(provenance === 'SANDBOX' ? 'sandbox' : 'portal');
       if (!adapter) {
         const record = await insertEligibilityCheck({
           patientDfn: String(body.patientDfn),
@@ -155,7 +163,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
           dateOfService: body.dateOfService ?? null,
           provenance,
           eligible: null,
-          status: "failed",
+          status: 'failed',
           responseJson: null,
           errorMessage: `No adapter available for provenance: ${provenance}`,
           responseMs: Date.now() - start,
@@ -182,7 +190,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         dateOfService: body.dateOfService ?? null,
         provenance,
         eligible: response.eligible,
-        status: "completed",
+        status: 'completed',
         responseJson: JSON.stringify(response),
         errorMessage: null,
         responseMs: Date.now() - start,
@@ -190,7 +198,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         tenantId,
       });
 
-      appendRcmAudit("eligibility.checked", {
+      appendRcmAudit('eligibility.checked', {
         payerId: body.payerId,
         userId: duz,
         detail: { checkId: record.id, provenance, eligible: response.eligible },
@@ -207,7 +215,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         dateOfService: body.dateOfService ?? null,
         provenance,
         eligible: null,
-        status: "failed",
+        status: 'failed',
         responseJson: null,
         errorMessage: errMsg,
         responseMs: Date.now() - start,
@@ -215,38 +223,38 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         tenantId,
       });
 
-      log.warn("Eligibility check failed", { payerId: body.payerId, error: errMsg });
+      log.warn('Eligibility check failed', { payerId: body.payerId, error: errMsg });
       return reply.status(200).send({ ok: true, check: record });
     }
   });
 
   /** GET /rcm/eligibility/history — Paginated history */
-  server.get("/rcm/eligibility/history", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/eligibility/history', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     const result = await listEligibilityChecks({
       patientDfn: q.patientDfn,
       payerId: q.payerId,
       provenance: q.provenance,
       tenantId: q.tenantId,
-      limit: parseInt(q.limit ?? "50", 10) || 50,
-      offset: parseInt(q.offset ?? "0", 10) || 0,
+      limit: parseInt(q.limit ?? '50', 10) || 50,
+      offset: parseInt(q.offset ?? '0', 10) || 0,
     });
     return reply.send({ ok: true, ...result });
   });
 
   /** GET /rcm/eligibility/stats — Aggregate statistics */
-  server.get("/rcm/eligibility/stats", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/eligibility/stats', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     const stats = await getEligibilityStats(q.tenantId);
     return reply.send({ ok: true, stats });
   });
 
   /** GET /rcm/eligibility/:id — Get single check */
-  server.get("/rcm/eligibility/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/eligibility/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const check = await getEligibilityCheckById(id);
     if (!check) {
-      return reply.status(404).send({ ok: false, error: "Eligibility check not found" });
+      return reply.status(404).send({ ok: false, error: 'Eligibility check not found' });
     }
     return reply.send({ ok: true, check });
   });
@@ -256,15 +264,15 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
   /* ================================================================ */
 
   /** POST /rcm/claim-status/check — Run claim status check */
-  server.post("/rcm/claim-status/check", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/claim-status/check', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const { duz, tenantId } = getSession(request);
 
     if (!body.claimRef || !body.payerId) {
-      return reply.status(400).send({ ok: false, error: "claimRef and payerId are required" });
+      return reply.status(400).send({ ok: false, error: 'claimRef and payerId are required' });
     }
 
-    const provenance: ClaimStatusProvenance = body.provenance ?? "SANDBOX";
+    const provenance: ClaimStatusProvenance = body.provenance ?? 'SANDBOX';
     if (!VALID_CSTAT_PROVENANCES.has(provenance)) {
       return reply.status(400).send({ ok: false, error: `Invalid provenance: ${provenance}` });
     }
@@ -272,17 +280,17 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     const start = Date.now();
 
     // MANUAL provenance
-    if (provenance === "MANUAL") {
+    if (provenance === 'MANUAL') {
       const manual = body.manualResult || {};
       const record = await insertClaimStatusCheck({
         claimRef: String(body.claimRef),
         payerId: String(body.payerId),
         payerClaimId: body.payerClaimId ?? null,
-        provenance: "MANUAL",
+        provenance: 'MANUAL',
         claimStatus: manual.claimStatus ?? null,
         adjudicationDate: manual.adjudicationDate ?? null,
         paidAmountCents: manual.paidAmountCents ?? null,
-        status: "completed",
+        status: 'completed',
         responseJson: JSON.stringify({ ...manual, enteredBy: duz }),
         errorMessage: null,
         responseMs: Date.now() - start,
@@ -290,18 +298,18 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         tenantId,
       });
 
-      appendRcmAudit("claim_status.checked", {
+      appendRcmAudit('claim_status.checked', {
         claimId: body.claimRef,
         payerId: body.payerId,
         userId: duz,
-        detail: { checkId: record.id, provenance: "MANUAL", claimStatus: manual.claimStatus },
+        detail: { checkId: record.id, provenance: 'MANUAL', claimStatus: manual.claimStatus },
       });
 
       return reply.status(201).send({ ok: true, check: record });
     }
 
     // EDI stub provenances
-    if (provenance === "EDI_276_277" || provenance === "CLEARINGHOUSE") {
+    if (provenance === 'EDI_276_277' || provenance === 'CLEARINGHOUSE') {
       const record = await insertClaimStatusCheck({
         claimRef: String(body.claimRef),
         payerId: String(body.payerId),
@@ -310,15 +318,15 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         claimStatus: null,
         adjudicationDate: null,
         paidAmountCents: null,
-        status: "integration_pending",
+        status: 'integration_pending',
         responseJson: JSON.stringify({
           integrationPending: true,
-          transactionSet: "276/277",
-          description: "EDI clearinghouse enrollment required for live claim status inquiry",
+          transactionSet: '276/277',
+          description: 'EDI clearinghouse enrollment required for live claim status inquiry',
           requirements: [
-            "Clearinghouse enrollment with 276/277",
-            "Payer trading partner agreement",
-            "HIPAA 5010 certification",
+            'Clearinghouse enrollment with 276/277',
+            'Payer trading partner agreement',
+            'HIPAA 5010 certification',
           ],
         }),
         errorMessage: null,
@@ -327,11 +335,11 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         tenantId,
       });
 
-      appendRcmAudit("claim_status.checked", {
+      appendRcmAudit('claim_status.checked', {
         claimId: body.claimRef,
         payerId: body.payerId,
         userId: duz,
-        detail: { checkId: record.id, provenance, status: "integration_pending" },
+        detail: { checkId: record.id, provenance, status: 'integration_pending' },
       });
 
       return reply.status(201).send({ ok: true, check: record });
@@ -339,7 +347,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
 
     // SANDBOX / PORTAL: use adapter
     try {
-      const adapter = getPayerAdapterForMode(provenance === "SANDBOX" ? "sandbox" : "portal");
+      const adapter = getPayerAdapterForMode(provenance === 'SANDBOX' ? 'sandbox' : 'portal');
       if (!adapter) {
         const record = await insertClaimStatusCheck({
           claimRef: String(body.claimRef),
@@ -349,7 +357,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
           claimStatus: null,
           adjudicationDate: null,
           paidAmountCents: null,
-          status: "failed",
+          status: 'failed',
           responseJson: null,
           errorMessage: `No adapter available for provenance: ${provenance}`,
           responseMs: Date.now() - start,
@@ -366,9 +374,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         tenantId,
       });
 
-      const paidCents = response.paidAmount != null
-        ? Math.round(response.paidAmount * 100)
-        : null;
+      const paidCents = response.paidAmount != null ? Math.round(response.paidAmount * 100) : null;
 
       const record = await insertClaimStatusCheck({
         claimRef: String(body.claimRef),
@@ -378,7 +384,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         claimStatus: response.status,
         adjudicationDate: response.adjudicationDate ?? null,
         paidAmountCents: paidCents,
-        status: "completed",
+        status: 'completed',
         responseJson: JSON.stringify(response),
         errorMessage: null,
         responseMs: Date.now() - start,
@@ -386,7 +392,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         tenantId,
       });
 
-      appendRcmAudit("claim_status.checked", {
+      appendRcmAudit('claim_status.checked', {
         claimId: body.claimRef,
         payerId: body.payerId,
         userId: duz,
@@ -404,7 +410,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         claimStatus: null,
         adjudicationDate: null,
         paidAmountCents: null,
-        status: "failed",
+        status: 'failed',
         responseJson: null,
         errorMessage: errMsg,
         responseMs: Date.now() - start,
@@ -412,85 +418,88 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         tenantId,
       });
 
-      log.warn("Claim status check failed", { claimRef: body.claimRef, error: errMsg });
+      log.warn('Claim status check failed', { claimRef: body.claimRef, error: errMsg });
       return reply.status(200).send({ ok: true, check: record });
     }
   });
 
   /** POST /rcm/claim-status/schedule — Schedule recurring poll via job queue */
-  server.post("/rcm/claim-status/schedule", async (request: FastifyRequest, reply: FastifyReply) => {
-    const body = (request.body as any) || {};
-    const { duz } = getSession(request);
+  server.post(
+    '/rcm/claim-status/schedule',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const body = (request.body as any) || {};
+      const { duz } = getSession(request);
 
-    if (!body.claimRef || !body.payerId) {
-      return reply.status(400).send({ ok: false, error: "claimRef and payerId are required" });
-    }
+      if (!body.claimRef || !body.payerId) {
+        return reply.status(400).send({ ok: false, error: 'claimRef and payerId are required' });
+      }
 
-    const queue = getJobQueue();
-    const jobResult = await queue.enqueue({
-      type: "STATUS_POLL",
-      payload: {
+      const queue = getJobQueue();
+      const jobResult = await queue.enqueue({
+        type: 'STATUS_POLL',
+        payload: {
+          claimId: body.claimRef,
+          payerCode: body.payerId,
+          payerClaimId: body.payerClaimId,
+          integrationMode: 'sandbox',
+        },
+        priority: Math.max(0, Math.min(9, parseInt(body.priority ?? '5', 10) || 5)),
+      });
+
+      appendRcmAudit('claim_status.scheduled', {
         claimId: body.claimRef,
-        payerCode: body.payerId,
-        payerClaimId: body.payerClaimId,
-        integrationMode: "sandbox",
-      },
-      priority: Math.max(0, Math.min(9, parseInt(body.priority ?? "5", 10) || 5)),
-    });
+        payerId: body.payerId,
+        userId: duz,
+        detail: { jobId: jobResult, maxPolls: body.maxPolls },
+      });
 
-    appendRcmAudit("claim_status.scheduled", {
-      claimId: body.claimRef,
-      payerId: body.payerId,
-      userId: duz,
-      detail: { jobId: jobResult, maxPolls: body.maxPolls },
-    });
-
-    return reply.status(201).send({
-      ok: true,
-      scheduled: true,
-      jobId: jobResult,
-      claimRef: body.claimRef,
-      payerId: body.payerId,
-    });
-  });
+      return reply.status(201).send({
+        ok: true,
+        scheduled: true,
+        jobId: jobResult,
+        claimRef: body.claimRef,
+        payerId: body.payerId,
+      });
+    }
+  );
 
   /** GET /rcm/claim-status/history — Paginated history */
-  server.get("/rcm/claim-status/history", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/claim-status/history', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     const result = await listClaimStatusChecks({
       claimRef: q.claimRef,
       payerId: q.payerId,
       provenance: q.provenance,
       tenantId: q.tenantId,
-      limit: parseInt(q.limit ?? "50", 10) || 50,
-      offset: parseInt(q.offset ?? "0", 10) || 0,
+      limit: parseInt(q.limit ?? '50', 10) || 50,
+      offset: parseInt(q.offset ?? '0', 10) || 0,
     });
     return reply.send({ ok: true, ...result });
   });
 
   /** GET /rcm/claim-status/timeline — Claim-specific timeline */
-  server.get("/rcm/claim-status/timeline", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/claim-status/timeline', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     if (!q.claimRef) {
-      return reply.status(400).send({ ok: false, error: "claimRef query parameter required" });
+      return reply.status(400).send({ ok: false, error: 'claimRef query parameter required' });
     }
     const timeline = await getClaimStatusTimeline(q.claimRef, q.tenantId);
     return reply.send({ ok: true, claimRef: q.claimRef, timeline, total: timeline.length });
   });
 
   /** GET /rcm/claim-status/stats — Aggregate statistics */
-  server.get("/rcm/claim-status/stats", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/claim-status/stats', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     const stats = await getClaimStatusStats(q.tenantId);
     return reply.send({ ok: true, stats });
   });
 
   /** GET /rcm/claim-status/:id — Get single check */
-  server.get("/rcm/claim-status/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/claim-status/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const check = await getClaimStatusCheckById(id);
     if (!check) {
-      return reply.status(404).send({ ok: false, error: "Claim status check not found" });
+      return reply.status(404).send({ ok: false, error: 'Claim status check not found' });
     }
     return reply.send({ ok: true, check });
   });
@@ -500,22 +509,22 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
   /* ================================================================ */
 
   /** GET /rcm/eligibility-adapters — List available adapters */
-  server.get("/rcm/eligibility-adapters", async (_request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/eligibility-adapters', async (_request: FastifyRequest, reply: FastifyReply) => {
     const adapters = listPayerAdapters();
     return reply.send({
       ok: true,
       adapters,
       availableProvenances: {
-        eligibility: ["MANUAL", "SANDBOX", "EDI_270_271", "CLEARINGHOUSE", "PORTAL"],
-        claimStatus: ["MANUAL", "SANDBOX", "EDI_276_277", "CLEARINGHOUSE", "PORTAL"],
+        eligibility: ['MANUAL', 'SANDBOX', 'EDI_270_271', 'CLEARINGHOUSE', 'PORTAL'],
+        claimStatus: ['MANUAL', 'SANDBOX', 'EDI_276_277', 'CLEARINGHOUSE', 'PORTAL'],
       },
       integrationStatus: {
-        MANUAL: "available",
-        SANDBOX: "available",
-        EDI_270_271: "integration_pending",
-        EDI_276_277: "integration_pending",
-        CLEARINGHOUSE: "integration_pending",
-        PORTAL: "integration_pending",
+        MANUAL: 'available',
+        SANDBOX: 'available',
+        EDI_270_271: 'integration_pending',
+        EDI_276_277: 'integration_pending',
+        CLEARINGHOUSE: 'integration_pending',
+        PORTAL: 'integration_pending',
       },
     });
   });

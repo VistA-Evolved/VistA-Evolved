@@ -19,6 +19,7 @@ Production Data Flow:
 ## 1. Automated Backup
 
 ### Run manually
+
 ```bash
 # Requires PLATFORM_PG_URL environment variable
 node scripts/dr/backup.mjs
@@ -31,6 +32,7 @@ node scripts/dr/backup.mjs --pg-url postgresql://user:pass@host:5432/db
 ```
 
 ### Output
+
 ```
 backups/<timestamp>/
   platform-pg.sql     -- pg_dump plain-text (--clean --if-exists)
@@ -38,6 +40,7 @@ backups/<timestamp>/
 ```
 
 ### Manifest structure
+
 ```json
 {
   "version": 1,
@@ -56,6 +59,7 @@ backups/<timestamp>/
 ## 2. Automated Restore Verification
 
 ### Run manually
+
 ```bash
 # Restore + verify from a backup directory
 node scripts/dr/restore-verify.mjs --from ./backups/<timestamp>/
@@ -65,6 +69,7 @@ node scripts/dr/restore-verify.mjs --from ./backups/<timestamp>/ --keep-schema
 ```
 
 ### What it does
+
 1. Creates temporary `dr_verify` schema
 2. Restores `platform-pg.sql` into it
 3. Runs 5 phases of durability probes:
@@ -77,19 +82,22 @@ node scripts/dr/restore-verify.mjs --from ./backups/<timestamp>/ --keep-schema
 5. Writes results to `artifacts/dr-restore-verify.json`
 
 ### Exit codes
-| Code | Meaning |
-|------|---------|
-| 0 | All probes pass |
-| 1 | Configuration error |
-| 2 | Restore failed |
-| 3 | One or more durability probes failed |
+
+| Code | Meaning                              |
+| ---- | ------------------------------------ |
+| 0    | All probes pass                      |
+| 1    | Configuration error                  |
+| 2    | Restore failed                       |
+| 3    | One or more durability probes failed |
 
 ## 3. PITR Posture (WAL-based Point-in-Time Recovery)
 
 ### Current state
+
 The Docker dev environment uses default PostgreSQL settings (`wal_level=replica` by default in PG 16, but `archive_mode=off`). Logical backups via `pg_dump` are the primary DR mechanism.
 
 ### Production requirements for PITR
+
 ```ini
 # postgresql.conf additions for production PITR:
 wal_level = replica                    # Already default in PG 16
@@ -99,6 +107,7 @@ max_wal_senders = 5                    # For pg_basebackup
 ```
 
 ### PITR restore procedure
+
 ```bash
 # 1. Stop the database
 pg_ctl stop -D /data
@@ -115,7 +124,9 @@ pg_ctl start -D /data
 ```
 
 ### Monitoring WAL posture
+
 The backup script automatically checks WAL settings and reports in `manifest.json`:
+
 ```json
 "walPosture": {
   "wal_level": "replica",
@@ -127,7 +138,9 @@ The backup script automatically checks WAL settings and reports in `manifest.jso
 ## 4. CI/CD Integration
 
 ### Nightly DR drill
+
 The `.github/workflows/dr-nightly.yml` workflow runs at 03:00 UTC:
+
 1. Spins up PostgreSQL 16 service container
 2. Runs PG migrations
 3. Creates backup
@@ -135,10 +148,13 @@ The `.github/workflows/dr-nightly.yml` workflow runs at 03:00 UTC:
 5. Uploads results artifact (7-day retention)
 
 ### Manual drill
+
 Trigger via GitHub Actions "Run workflow" button on the `dr-nightly` workflow.
 
 ### Gauntlet integration
+
 G16 (DR Chaos Gate) runs in RC and FULL suites. It validates:
+
 - DR scripts exist and are well-formed
 - CI workflow exists
 - No PHI in DR artifacts
@@ -148,6 +164,7 @@ G16 (DR Chaos Gate) runs in RC and FULL suites. It validates:
 ## 5. Recovery Procedures
 
 ### Scenario: Complete database loss
+
 ```bash
 # 1. Identify latest backup
 ls -la backups/
@@ -164,14 +181,18 @@ node scripts/dr/restore-verify.mjs --from backups/<latest>/
 ```
 
 ### Scenario: Schema drift detected
+
 If restore-verify reports schema drift:
+
 1. Check if pending migrations need to run
 2. Compare migration versions in `_platform_migrations` table
 3. Run `pg-migrate.ts` to apply missing migrations
 4. Re-run backup + verify
 
 ### Scenario: RLS missing after restore
+
 If restore-verify reports RLS failures:
+
 1. RLS policies are created by `pg-migrate.ts` migration v7+
 2. Run the API with `PLATFORM_PG_RLS_ENABLED=true` to trigger `applyRlsPolicies()`
 3. Verify: `SELECT tablename, policyname FROM pg_policies WHERE policyname = 'tenant_isolation';`
@@ -186,10 +207,10 @@ If restore-verify reports RLS failures:
 
 ## 7. Monitoring Checklist
 
-| Check | Frequency | Owner |
-|-------|-----------|-------|
-| Nightly DR drill passes | Daily (CI) | SRE |
-| Backup size trending | Weekly | DBA |
-| WAL archive growing | Daily (if PITR enabled) | DBA |
-| RLS policy count stable | Per-release (G16) | Security |
-| Recovery time < target | Quarterly drill | SRE |
+| Check                   | Frequency               | Owner    |
+| ----------------------- | ----------------------- | -------- |
+| Nightly DR drill passes | Daily (CI)              | SRE      |
+| Backup size trending    | Weekly                  | DBA      |
+| WAL archive growing     | Daily (if PITR enabled) | DBA      |
+| RLS policy count stable | Per-release (G16)       | Security |
+| Recovery time < target  | Quarterly drill         | SRE      |

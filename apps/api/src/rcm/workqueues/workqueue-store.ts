@@ -16,12 +16,7 @@
 
 export type WorkqueueType = 'rejection' | 'denial' | 'missing_info';
 
-export type WorkqueueItemStatus =
-  | 'open'
-  | 'in_progress'
-  | 'resolved'
-  | 'escalated'
-  | 'dismissed';
+export type WorkqueueItemStatus = 'open' | 'in_progress' | 'resolved' | 'escalated' | 'dismissed';
 
 export interface WorkqueueItem {
   id: string;
@@ -168,7 +163,7 @@ export async function createWorkqueueItem(params: {
     });
     return rowToItem(row);
   }
-  throw new Error("Workqueue store not initialized (DB not ready)");
+  throw new Error('Workqueue store not initialized (DB not ready)');
 }
 
 export async function getWorkqueueItem(id: string): Promise<WorkqueueItem | undefined> {
@@ -179,7 +174,10 @@ export async function getWorkqueueItem(id: string): Promise<WorkqueueItem | unde
   return undefined;
 }
 
-export async function updateWorkqueueItem(id: string, updates: Partial<WorkqueueItem>): Promise<WorkqueueItem | undefined> {
+export async function updateWorkqueueItem(
+  id: string,
+  updates: Partial<WorkqueueItem>
+): Promise<WorkqueueItem | undefined> {
   if (_repo) {
     const row = await _repo.updateWorkItem(id, updates as any);
     return row ? rowToItem(row) : undefined;
@@ -240,8 +238,8 @@ export async function getWorkqueueStats(tenantId?: string): Promise<{
  * Returns the number of non-resolved items matching the criteria.
  */
 export async function countWorkqueueItemsBySource(
-  sourceType: WorkqueueItem["sourceType"],
-  sourceId: string,
+  sourceType: WorkqueueItem['sourceType'],
+  sourceId: string
 ): Promise<number> {
   if (_repo) {
     const result = await _repo.listWorkItems({

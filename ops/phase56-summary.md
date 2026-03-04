@@ -3,11 +3,14 @@
 ## What Changed
 
 ### A. Wave Plan (artifacts/cprs/wave56-plan.json)
+
 - Machine-readable plan: 6 screens, 18 actions (16 wired, 2 integration-pending)
 - Screens: cover-sheet, problems-tab, meds-tab, orders-tab, notes-tab, labs-tab
 
 ### B. API Endpoints (apps/api/src/routes/cprs/wave1-routes.ts)
+
 New Fastify plugin with 6 endpoints:
+
 - `GET /vista/cprs/orders-summary` -- ORWORB UNSIG ORDERS
 - `GET /vista/cprs/appointments` -- integration-pending (SD API)
 - `GET /vista/cprs/reminders` -- integration-pending (ORQQPX)
@@ -18,12 +21,14 @@ New Fastify plugin with 6 endpoints:
 Registered in index.ts after migration routes.
 
 ### C. Action Registry (apps/web/src/actions/actionRegistry.ts)
+
 - Added `endpoint?: string` field to CprsAction interface
 - Added endpoint URLs to all relevant existing actions
 - Added 4 new CoverSheet actions: cover.load-labs, cover.load-orders, cover.load-appointments (pending), cover.load-reminders (pending)
 - Total actions: 52 (50 wired, 2 integration-pending, 2 stub)
 
 ### D. Cover Sheet Panel (apps/web/src/components/cprs/panels/CoverSheetPanel.tsx)
+
 - Expanded from 6 to 9 sections: +Recent Labs, +Orders Summary, +Appointments (pending), +Clinical Reminders (pending)
 - Integration-pending sections show PENDING badge; clicking opens IntegrationPendingModal
 - Labs section uses existing data-cache labs fetcher
@@ -31,25 +36,30 @@ Registered in index.ts after migration routes.
 - Panel heights now persist to localStorage via cprs-ui-state
 
 ### E. IntegrationPendingModal (apps/web/src/components/cprs/IntegrationPendingModal.tsx)
+
 - New modal showing target RPCs, Vivian presence badges, next steps
 - Prevents dead clicks: every pending action surfaces this instead of silently failing
 
 ### F. Cover Sheet Layout Manager (apps/web/src/components/cprs/CoverSheetLayoutManager.tsx)
+
 - Toolbar showing panel count and custom height count
 - Reset Layout button restores all panel heights to defaults
 - Integrated above cover sheet grid in chart page
 
 ### G. Action Inspector (apps/web/src/components/cprs/ActionInspector.tsx)
+
 - Dev-only overlay (hidden in production)
 - Shows action->endpoint->RPC mappings filtered by current tab
 - Toggle via Ctrl+Shift+J
 - Stats bar: total/wired/pending/stub/RPCs
 
 ### H. UI State Store (apps/web/src/stores/cprs-ui-state.tsx)
+
 - Default layout expanded to 9 panels (added labs, orders, appointments)
 - Added `resetCoverSheetLayout()` method
 
 ### I. CSS (apps/web/src/components/cprs/cprs.module.css)
+
 - Added `.pendingBadge` class
 
 ## How to Test Manually
@@ -82,6 +92,7 @@ Registered in index.ts after migration routes.
 ```
 
 ## Follow-ups
+
 - Wave 2: WRITE actions (add problem, add allergy, create note, save order)
 - Wire appointments when SD APPOINTMENT files are populated in sandbox
 - Wire clinical reminders when PXRM package config is loaded

@@ -10,10 +10,10 @@
  * Every response includes rpcUsed[], pendingTargets[], source.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { requireSession } from "../../auth/auth-routes.js";
-import { safeCallRpc } from "../../lib/rpc-resilience.js";
-import { log } from "../../lib/logger.js";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../../auth/auth-routes.js';
+import { safeCallRpc } from '../../lib/rpc-resilience.js';
+import { log } from '../../lib/logger.js';
 import { safeErr } from '../../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
@@ -37,15 +37,15 @@ function parseImmunList(lines: string[]): Array<{
   }> = [];
   for (const line of lines) {
     if (!line?.trim()) continue;
-    const parts = line.split("^");
-    const ien = parts[0]?.trim() || "";
+    const parts = line.split('^');
+    const ien = parts[0]?.trim() || '';
     if (!ien) continue;
     results.push({
       ien,
-      name: parts[1]?.trim() || "",
-      dateTime: parts[2]?.trim() || "",
-      reaction: parts[3]?.trim() || "",
-      inverseDt: parts[4]?.trim() || "",
+      name: parts[1]?.trim() || '',
+      dateTime: parts[2]?.trim() || '',
+      reaction: parts[3]?.trim() || '',
+      inverseDt: parts[4]?.trim() || '',
     });
   }
   return results;
@@ -56,10 +56,10 @@ function parseCatalog(lines: string[]): Array<{ ien: string; name: string }> {
   const results: Array<{ ien: string; name: string }> = [];
   for (const line of lines) {
     if (!line?.trim()) continue;
-    const parts = line.split("^");
-    const ien = parts[0]?.trim() || "";
+    const parts = line.split('^');
+    const ien = parts[0]?.trim() || '';
     if (!ien) continue;
-    results.push({ ien, name: parts[1]?.trim() || "" });
+    results.push({ ien, name: parts[1]?.trim() || '' });
   }
   return results;
 }
@@ -68,41 +68,39 @@ function parseCatalog(lines: string[]): Array<{ ien: string; name: string }> {
 /* Routes                                                               */
 /* ------------------------------------------------------------------ */
 
-export default async function immunizationsRoutes(
-  server: FastifyInstance
-): Promise<void> {
+export default async function immunizationsRoutes(server: FastifyInstance): Promise<void> {
   /**
    * GET /vista/immunizations?dfn=N
    * Returns patient immunization history from VistA ORQQPX IMMUN LIST.
    */
-  server.get("/vista/immunizations", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+  server.get('/vista/immunizations', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     const dfn = (request.query as any)?.dfn;
     if (!dfn) {
-      return reply.status(400).send({ ok: false, error: "dfn query parameter required" });
+      return reply.status(400).send({ ok: false, error: 'dfn query parameter required' });
     }
 
     try {
-      const lines = await safeCallRpc("ORQQPX IMMUN LIST", [String(dfn)]);
+      const lines = await safeCallRpc('ORQQPX IMMUN LIST', [String(dfn)]);
       const results = parseImmunList(lines);
       return reply.send({
         ok: true,
-        source: "vista",
+        source: 'vista',
         count: results.length,
         results,
-        rpcUsed: ["ORQQPX IMMUN LIST"],
+        rpcUsed: ['ORQQPX IMMUN LIST'],
         pendingTargets: [],
       });
     } catch (err: any) {
-      log.warn("ORQQPX IMMUN LIST failed -- returning integration-pending", { err: err.message });
+      log.warn('ORQQPX IMMUN LIST failed -- returning integration-pending', { err: err.message });
       return reply.send({
         ok: true,
-        source: "vista",
+        source: 'vista',
         count: 0,
         results: [],
         rpcUsed: [],
-        pendingTargets: ["ORQQPX IMMUN LIST"],
-        _integration: "pending",
+        pendingTargets: ['ORQQPX IMMUN LIST'],
+        _integration: 'pending',
         _error: safeErr(err),
       });
     }
@@ -112,34 +110,39 @@ export default async function immunizationsRoutes(
    * GET /vista/immunizations/catalog
    * Returns immunization type picker list from PXVIMM IMM SHORT LIST.
    */
-  server.get("/vista/immunizations/catalog", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+  server.get(
+    '/vista/immunizations/catalog',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
 
-    try {
-      const lines = await safeCallRpc("PXVIMM IMM SHORT LIST", []);
-      const results = parseCatalog(lines);
-      return reply.send({
-        ok: true,
-        source: "vista",
-        count: results.length,
-        results,
-        rpcUsed: ["PXVIMM IMM SHORT LIST"],
-        pendingTargets: [],
-      });
-    } catch (err: any) {
-      log.warn("PXVIMM IMM SHORT LIST failed -- returning integration-pending", { err: err.message });
-      return reply.send({
-        ok: true,
-        source: "vista",
-        count: 0,
-        results: [],
-        rpcUsed: [],
-        pendingTargets: ["PXVIMM IMM SHORT LIST"],
-        _integration: "pending",
-        _error: safeErr(err),
-      });
+      try {
+        const lines = await safeCallRpc('PXVIMM IMM SHORT LIST', []);
+        const results = parseCatalog(lines);
+        return reply.send({
+          ok: true,
+          source: 'vista',
+          count: results.length,
+          results,
+          rpcUsed: ['PXVIMM IMM SHORT LIST'],
+          pendingTargets: [],
+        });
+      } catch (err: any) {
+        log.warn('PXVIMM IMM SHORT LIST failed -- returning integration-pending', {
+          err: err.message,
+        });
+        return reply.send({
+          ok: true,
+          source: 'vista',
+          count: 0,
+          results: [],
+          rpcUsed: [],
+          pendingTargets: ['PXVIMM IMM SHORT LIST'],
+          _integration: 'pending',
+          _error: safeErr(err),
+        });
+      }
     }
-  });
+  );
 
   /**
    * POST /vista/immunizations?dfn=N
@@ -147,29 +150,32 @@ export default async function immunizationsRoutes(
    * Target: PX SAVE DATA (complex PCE encounter save, requires visit context).
    * Returns honest pending posture with target RPC info.
    */
-  server.post("/vista/immunizations", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+  server.post('/vista/immunizations', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     const dfn = (request.query as any)?.dfn;
     if (!dfn) {
-      return reply.status(400).send({ ok: false, error: "dfn query parameter required" });
+      return reply.status(400).send({ ok: false, error: 'dfn query parameter required' });
     }
 
     return reply.status(202).send({
       ok: false,
-      status: "integration-pending",
-      message: "Add immunization requires PCE encounter context (PX SAVE DATA). Deferred to Phase 65B.",
+      status: 'integration-pending',
+      message:
+        'Add immunization requires PCE encounter context (PX SAVE DATA). Deferred to Phase 65B.',
       rpcUsed: [],
       pendingTargets: [
-        "PX SAVE DATA",
-        "PXVIMM ADMIN ROUTE",
-        "PXVIMM ADMIN SITE",
-        "PXVIMM INFO SOURCE",
+        'PX SAVE DATA',
+        'PXVIMM ADMIN ROUTE',
+        'PXVIMM ADMIN SITE',
+        'PXVIMM INFO SOURCE',
       ],
       vistaGrounding: {
-        vistaFiles: ["V IMMUNIZATION (9000010.11)", "IMMUNIZATION (9999999.14)"],
-        targetRoutines: ["PXRPC", "PXVRPC2"],
-        migrationPath: "Phase 65B: wire PX SAVE DATA with encounter/visit IEN + immunization IEN + admin route/site",
-        sandboxNote: "WorldVistA Docker has IMMUNIZATION file entries but PCE encounter save is untested in sandbox",
+        vistaFiles: ['V IMMUNIZATION (9000010.11)', 'IMMUNIZATION (9999999.14)'],
+        targetRoutines: ['PXRPC', 'PXVRPC2'],
+        migrationPath:
+          'Phase 65B: wire PX SAVE DATA with encounter/visit IEN + immunization IEN + admin route/site',
+        sandboxNote:
+          'WorldVistA Docker has IMMUNIZATION file entries but PCE encounter save is untested in sandbox',
       },
     });
   });

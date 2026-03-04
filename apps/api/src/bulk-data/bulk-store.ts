@@ -2,8 +2,8 @@
  * Phase 404 (W23-P6): Bulk Data — Store
  */
 
-import { randomBytes } from "crypto";
-import type { BulkJob, BulkJobFilter, BulkDataDashboardStats } from "./types.js";
+import { randomBytes } from 'crypto';
+import type { BulkJob, BulkJobFilter, BulkDataDashboardStats } from './types.js';
 
 const MAX_JOBS = 5_000;
 
@@ -17,14 +17,14 @@ function enforceMax<T>(store: Map<string, T>, max: number): void {
 }
 
 function genId(prefix: string): string {
-  return `${prefix}-${randomBytes(8).toString("hex")}`;
+  return `${prefix}-${randomBytes(8).toString('hex')}`;
 }
 
 // ─── Job CRUD ──────────────────────────────────────────────
 
 export function createBulkJob(input: {
   tenantId: string;
-  direction: "export" | "import";
+  direction: 'export' | 'import';
   filter: BulkJobFilter;
   requestedBy: string;
   metadata?: Record<string, unknown>;
@@ -32,10 +32,10 @@ export function createBulkJob(input: {
   enforceMax(jobStore, MAX_JOBS);
   const now = new Date().toISOString();
   const job: BulkJob = {
-    id: genId("bulk"),
+    id: genId('bulk'),
     tenantId: input.tenantId,
     direction: input.direction,
-    status: "queued",
+    status: 'queued',
     filter: input.filter,
     outputs: [],
     requestedBy: input.requestedBy,
@@ -52,7 +52,10 @@ export function getBulkJob(id: string): BulkJob | undefined {
   return jobStore.get(id);
 }
 
-export function listBulkJobs(tenantId: string, opts?: { direction?: string; status?: string }): BulkJob[] {
+export function listBulkJobs(
+  tenantId: string,
+  opts?: { direction?: string; status?: string }
+): BulkJob[] {
   let results = Array.from(jobStore.values()).filter((j) => j.tenantId === tenantId);
   if (opts?.direction) results = results.filter((j) => j.direction === opts.direction);
   if (opts?.status) results = results.filter((j) => j.status === opts.status);
@@ -70,8 +73,8 @@ export function updateBulkJob(id: string, patch: Partial<BulkJob>): BulkJob | un
 export function cancelBulkJob(id: string): BulkJob | undefined {
   const rec = jobStore.get(id);
   if (!rec) return undefined;
-  if (rec.status === "completed" || rec.status === "failed") return undefined;
-  rec.status = "cancelled";
+  if (rec.status === 'completed' || rec.status === 'failed') return undefined;
+  rec.status = 'cancelled';
   rec.completedAt = new Date().toISOString();
   jobStore.set(id, rec);
   return rec;
@@ -85,15 +88,15 @@ export function simulateJobProgress(id: string): BulkJob | undefined {
   const rec = jobStore.get(id);
   if (!rec) return undefined;
 
-  if (rec.status === "queued") {
-    rec.status = "in-progress";
+  if (rec.status === 'queued') {
+    rec.status = 'in-progress';
     rec.startedAt = new Date().toISOString();
     rec.totalResources = Math.floor(Math.random() * 1000) + 10;
-  } else if (rec.status === "in-progress") {
-    rec.status = "completed";
+  } else if (rec.status === 'in-progress') {
+    rec.status = 'completed';
     rec.completedAt = new Date().toISOString();
     rec.processedResources = rec.totalResources;
-    const types = rec.filter.resourceTypes || ["Patient"];
+    const types = rec.filter.resourceTypes || ['Patient'];
     rec.outputs = types.map((t) => ({
       type: t,
       url: `/bulk-data/jobs/${rec.id}/output/${t.toLowerCase()}.ndjson`,
@@ -113,10 +116,14 @@ export function getBulkDataDashboardStats(tenantId: string): BulkDataDashboardSt
   const jobs = Array.from(jobStore.values()).filter((j) => j.tenantId === tenantId);
   return {
     totalJobs: jobs.length,
-    activeJobs: jobs.filter((j) => j.status === "queued" || j.status === "in-progress").length,
-    completedJobs: jobs.filter((j) => j.status === "completed").length,
-    failedJobs: jobs.filter((j) => j.status === "failed").length,
-    totalResourcesExported: jobs.filter((j) => j.direction === "export" && j.status === "completed").reduce((s, j) => s + j.processedResources, 0),
-    totalResourcesImported: jobs.filter((j) => j.direction === "import" && j.status === "completed").reduce((s, j) => s + j.processedResources, 0),
+    activeJobs: jobs.filter((j) => j.status === 'queued' || j.status === 'in-progress').length,
+    completedJobs: jobs.filter((j) => j.status === 'completed').length,
+    failedJobs: jobs.filter((j) => j.status === 'failed').length,
+    totalResourcesExported: jobs
+      .filter((j) => j.direction === 'export' && j.status === 'completed')
+      .reduce((s, j) => s + j.processedResources, 0),
+    totalResourcesImported: jobs
+      .filter((j) => j.direction === 'import' && j.status === 'completed')
+      .reduce((s, j) => s + j.processedResources, 0),
   };
 }

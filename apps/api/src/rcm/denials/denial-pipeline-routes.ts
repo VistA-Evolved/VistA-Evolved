@@ -21,7 +21,11 @@ import {
   normalizeCodes,
   classifyRemittanceLine,
 } from './denial-pipeline-hardener.js';
-import type { NormalizedRemittance, NormalizedPaymentLine, PaymentCode } from '../reconciliation/types.js';
+import type {
+  NormalizedRemittance,
+  NormalizedPaymentLine,
+  PaymentCode,
+} from '../reconciliation/types.js';
 import type { PostingApprovalStatus } from './denial-pipeline-hardener.js';
 
 export async function denialPipelineRoutes(server: FastifyInstance): Promise<void> {
@@ -63,7 +67,7 @@ export async function denialPipelineRoutes(server: FastifyInstance): Promise<voi
     return reply.send({
       ok: true,
       count: batches.length,
-      batches: batches.map(b => ({
+      batches: batches.map((b) => ({
         id: b.id,
         payerId: b.payerId,
         checkNumber: b.checkNumber,
@@ -108,7 +112,7 @@ export async function denialPipelineRoutes(server: FastifyInstance): Promise<voi
         totalBilled: batch.totalBilled,
         totalPaid: batch.totalPaid,
         status: batch.status,
-        stagingEntries: batch.stagingEntries.map(e => ({
+        stagingEntries: batch.stagingEntries.map((e) => ({
           id: e.id,
           claimRef: e.classifiedLine.claimRef,
           classification: e.classifiedLine.classification,
@@ -140,7 +144,7 @@ export async function denialPipelineRoutes(server: FastifyInstance): Promise<voi
       batchId: batch.id,
       status: batch.status,
       approvedCount: batch.stagingEntries.filter(
-        e => e.approvalStatus === 'approved' || e.approvalStatus === 'auto_approved'
+        (e) => e.approvalStatus === 'approved' || e.approvalStatus === 'auto_approved'
       ).length,
     });
   });
@@ -153,13 +157,13 @@ export async function denialPipelineRoutes(server: FastifyInstance): Promise<voi
     const entries = listStagingEntries(
       query.batchId,
       query.status as PostingApprovalStatus | undefined,
-      Number(query.limit) || 100,
+      Number(query.limit) || 100
     );
 
     return reply.send({
       ok: true,
       count: entries.length,
-      entries: entries.map(e => ({
+      entries: entries.map((e) => ({
         id: e.id,
         batchId: e.remittanceBatchId,
         claimRef: e.classifiedLine.claimRef,

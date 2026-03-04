@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
@@ -8,11 +8,29 @@ import { API_BASE as API } from '@/lib/api-config';
 /* Types                                                                */
 /* ------------------------------------------------------------------ */
 
-interface Ward { ien: string; name: string }
-interface Team { ien: string; name: string }
-interface Specialty { ien: string; name: string }
-interface PatientEntry { dfn: string; name: string }
-interface AdmissionEntry { dfn: string; name: string; admitDate: string; ward: string; roomBed: string }
+interface Ward {
+  ien: string;
+  name: string;
+}
+interface Team {
+  ien: string;
+  name: string;
+}
+interface Specialty {
+  ien: string;
+  name: string;
+}
+interface PatientEntry {
+  dfn: string;
+  name: string;
+}
+interface AdmissionEntry {
+  dfn: string;
+  name: string;
+  admitDate: string;
+  ward: string;
+  roomBed: string;
+}
 interface ApiResponse<T> {
   ok: boolean;
   source?: string;
@@ -28,16 +46,32 @@ interface ApiResponse<T> {
 /* Shared fetcher                                                        */
 /* ------------------------------------------------------------------ */
 
-
 async function apiFetch<T>(path: string): Promise<ApiResponse<T>> {
   try {
-    const res = await fetch(`${API}${path}`, { credentials: 'include', headers: { ...csrfHeaders() } });
+    const res = await fetch(`${API}${path}`, {
+      credentials: 'include',
+      headers: { ...csrfHeaders() },
+    });
     if (!res.ok) {
-      return { ok: false, count: 0, results: [], rpcUsed: [], pendingTargets: [], _error: `HTTP ${res.status}` };
+      return {
+        ok: false,
+        count: 0,
+        results: [],
+        rpcUsed: [],
+        pendingTargets: [],
+        _error: `HTTP ${res.status}`,
+      };
     }
     return await res.json();
   } catch (err: any) {
-    return { ok: false, count: 0, results: [], rpcUsed: [], pendingTargets: [], _error: err.message };
+    return {
+      ok: false,
+      count: 0,
+      results: [],
+      rpcUsed: [],
+      pendingTargets: [],
+      _error: err.message,
+    };
   }
 }
 
@@ -47,10 +81,17 @@ async function apiFetch<T>(path: string): Promise<ApiResponse<T>> {
 
 function IntegrationPendingBanner({ label, targets }: { label: string; targets: string[] }) {
   return (
-    <div style={{
-      background: '#fef3c7', border: '1px solid #f59e0b', borderRadius: 4, padding: '8px 12px',
-      margin: '8px 0', fontSize: 12, color: '#92400e',
-    }}>
+    <div
+      style={{
+        background: '#fef3c7',
+        border: '1px solid #f59e0b',
+        borderRadius: 4,
+        padding: '8px 12px',
+        margin: '8px 0',
+        fontSize: 12,
+        color: '#92400e',
+      }}
+    >
       <strong>Integration Pending:</strong> {label}
       {targets.length > 0 && (
         <span style={{ marginLeft: 8 }}>
@@ -63,21 +104,29 @@ function IntegrationPendingBanner({ label, targets }: { label: string; targets: 
 
 function LoadingRow() {
   return (
-    <tr><td colSpan={4} style={{ padding: 12, textAlign: 'center', color: '#6b7280', fontSize: 12 }}>
-      Loading from VistA...
-    </td></tr>
+    <tr>
+      <td colSpan={4} style={{ padding: 12, textAlign: 'center', color: '#6b7280', fontSize: 12 }}>
+        Loading from VistA...
+      </td>
+    </tr>
   );
 }
 
 function EmptyRow({ message }: { message: string }) {
   return (
-    <tr><td colSpan={4} style={{ padding: 12, textAlign: 'center', color: '#9ca3af', fontSize: 12 }}>
-      {message}
-    </td></tr>
+    <tr>
+      <td colSpan={4} style={{ padding: 12, textAlign: 'center', color: '#9ca3af', fontSize: 12 }}>
+        {message}
+      </td>
+    </tr>
   );
 }
 
-function PatientTable({ patients, loading, emptyMsg }: {
+function PatientTable({
+  patients,
+  loading,
+  emptyMsg,
+}: {
   patients: PatientEntry[];
   loading: boolean;
   emptyMsg: string;
@@ -91,15 +140,18 @@ function PatientTable({ patients, loading, emptyMsg }: {
         </tr>
       </thead>
       <tbody>
-        {loading ? <LoadingRow /> :
-          patients.length === 0 ? <EmptyRow message={emptyMsg} /> :
+        {loading ? (
+          <LoadingRow />
+        ) : patients.length === 0 ? (
+          <EmptyRow message={emptyMsg} />
+        ) : (
           patients.map((p) => (
             <tr key={p.dfn} style={{ borderBottom: '1px solid #f3f4f6' }}>
               <td style={{ padding: '4px 8px' }}>{p.dfn}</td>
               <td style={{ padding: '4px 8px' }}>{p.name}</td>
             </tr>
           ))
-        }
+        )}
       </tbody>
     </table>
   );
@@ -132,18 +184,25 @@ function WardCensusTab() {
 
   const loadWardPatients = useCallback((wardIen: string) => {
     setSelectedWard(wardIen);
-    if (!wardIen) { setPatients([]); return; }
+    if (!wardIen) {
+      setPatients([]);
+      return;
+    }
     setPatientsLoading(true);
-    apiFetch<PatientEntry>(`/vista/adt/ward-patients?ward=${encodeURIComponent(wardIen)}`).then((r) => {
-      setPatients(r.results);
-      setPatientsPending(r.pendingTargets || []);
-      setPatientsLoading(false);
-    });
+    apiFetch<PatientEntry>(`/vista/adt/ward-patients?ward=${encodeURIComponent(wardIen)}`).then(
+      (r) => {
+        setPatients(r.results);
+        setPatientsPending(r.pendingTargets || []);
+        setPatientsLoading(false);
+      }
+    );
   }, []);
 
   return (
     <div>
-      {wardsPending.length > 0 && <IntegrationPendingBanner label="Ward list" targets={wardsPending} />}
+      {wardsPending.length > 0 && (
+        <IntegrationPendingBanner label="Ward list" targets={wardsPending} />
+      )}
       <div style={{ marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
         <label style={{ fontSize: 12, fontWeight: 600 }}>Ward:</label>
         <select
@@ -154,12 +213,16 @@ function WardCensusTab() {
         >
           <option value="">{wardsLoading ? 'Loading wards...' : '-- Select Ward --'}</option>
           {wards.map((w) => (
-            <option key={w.ien} value={w.ien}>{w.name}</option>
+            <option key={w.ien} value={w.ien}>
+              {w.name}
+            </option>
           ))}
         </select>
         {wardsError && <span style={{ color: '#ef4444', fontSize: 11 }}>{wardsError}</span>}
       </div>
-      {patientsPending.length > 0 && <IntegrationPendingBanner label="Ward patient list" targets={patientsPending} />}
+      {patientsPending.length > 0 && (
+        <IntegrationPendingBanner label="Ward patient list" targets={patientsPending} />
+      )}
       {selectedWard && (
         <PatientTable
           patients={patients}
@@ -190,7 +253,9 @@ function MyPatientsTab() {
 
   return (
     <div>
-      {pending.length > 0 && <IntegrationPendingBanner label="Provider patients" targets={pending} />}
+      {pending.length > 0 && (
+        <IntegrationPendingBanner label="Provider patients" targets={pending} />
+      )}
       <PatientTable patients={patients} loading={loading} emptyMsg="No patients assigned to you" />
     </div>
   );
@@ -221,18 +286,25 @@ function TeamPatientsTab() {
 
   const loadTeamPatients = useCallback((teamIen: string) => {
     setSelectedTeam(teamIen);
-    if (!teamIen) { setPatients([]); return; }
+    if (!teamIen) {
+      setPatients([]);
+      return;
+    }
     setPatientsLoading(true);
-    apiFetch<PatientEntry>(`/vista/adt/team-patients?team=${encodeURIComponent(teamIen)}`).then((r) => {
-      setPatients(r.results);
-      setPatientsPending(r.pendingTargets || []);
-      setPatientsLoading(false);
-    });
+    apiFetch<PatientEntry>(`/vista/adt/team-patients?team=${encodeURIComponent(teamIen)}`).then(
+      (r) => {
+        setPatients(r.results);
+        setPatientsPending(r.pendingTargets || []);
+        setPatientsLoading(false);
+      }
+    );
   }, []);
 
   return (
     <div>
-      {teamsPending.length > 0 && <IntegrationPendingBanner label="Team list" targets={teamsPending} />}
+      {teamsPending.length > 0 && (
+        <IntegrationPendingBanner label="Team list" targets={teamsPending} />
+      )}
       <div style={{ marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
         <label style={{ fontSize: 12, fontWeight: 600 }}>Team:</label>
         <select
@@ -243,11 +315,15 @@ function TeamPatientsTab() {
         >
           <option value="">{teamsLoading ? 'Loading teams...' : '-- Select Team --'}</option>
           {teams.map((t) => (
-            <option key={t.ien} value={t.ien}>{t.name}</option>
+            <option key={t.ien} value={t.ien}>
+              {t.name}
+            </option>
           ))}
         </select>
       </div>
-      {patientsPending.length > 0 && <IntegrationPendingBanner label="Team patients" targets={patientsPending} />}
+      {patientsPending.length > 0 && (
+        <IntegrationPendingBanner label="Team patients" targets={patientsPending} />
+      )}
       {selectedTeam && (
         <PatientTable
           patients={patients}
@@ -284,9 +360,14 @@ function SpecialtyTab() {
 
   const loadSpecialtyPatients = useCallback((specIen: string) => {
     setSelectedSpec(specIen);
-    if (!specIen) { setPatients([]); return; }
+    if (!specIen) {
+      setPatients([]);
+      return;
+    }
     setPatientsLoading(true);
-    apiFetch<PatientEntry>(`/vista/adt/specialty-patients?specialty=${encodeURIComponent(specIen)}`).then((r) => {
+    apiFetch<PatientEntry>(
+      `/vista/adt/specialty-patients?specialty=${encodeURIComponent(specIen)}`
+    ).then((r) => {
       setPatients(r.results);
       setPatientsPending(r.pendingTargets || []);
       setPatientsLoading(false);
@@ -295,7 +376,9 @@ function SpecialtyTab() {
 
   return (
     <div>
-      {specPending.length > 0 && <IntegrationPendingBanner label="Specialty list" targets={specPending} />}
+      {specPending.length > 0 && (
+        <IntegrationPendingBanner label="Specialty list" targets={specPending} />
+      )}
       <div style={{ marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
         <label style={{ fontSize: 12, fontWeight: 600 }}>Specialty:</label>
         <select
@@ -306,11 +389,15 @@ function SpecialtyTab() {
         >
           <option value="">{specLoading ? 'Loading...' : '-- Select Specialty --'}</option>
           {specialties.map((s) => (
-            <option key={s.ien} value={s.ien}>{s.name}</option>
+            <option key={s.ien} value={s.ien}>
+              {s.name}
+            </option>
           ))}
         </select>
       </div>
-      {patientsPending.length > 0 && <IntegrationPendingBanner label="Specialty patients" targets={patientsPending} />}
+      {patientsPending.length > 0 && (
+        <IntegrationPendingBanner label="Specialty patients" targets={patientsPending} />
+      )}
       {selectedSpec && (
         <PatientTable
           patients={patients}
@@ -334,16 +421,20 @@ function AdmissionHistoryTab({ dfn }: { dfn: string }) {
   useEffect(() => {
     if (!dfn) return;
     setLoading(true);
-    apiFetch<AdmissionEntry>(`/vista/adt/admission-list?dfn=${encodeURIComponent(dfn)}`).then((r) => {
-      setAdmissions(r.results);
-      setPending(r.pendingTargets || []);
-      setLoading(false);
-    });
+    apiFetch<AdmissionEntry>(`/vista/adt/admission-list?dfn=${encodeURIComponent(dfn)}`).then(
+      (r) => {
+        setAdmissions(r.results);
+        setPending(r.pendingTargets || []);
+        setLoading(false);
+      }
+    );
   }, [dfn]);
 
   return (
     <div>
-      {pending.length > 0 && <IntegrationPendingBanner label="Admission history" targets={pending} />}
+      {pending.length > 0 && (
+        <IntegrationPendingBanner label="Admission history" targets={pending} />
+      )}
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
         <thead>
           <tr style={{ background: '#f3f4f6', borderBottom: '1px solid #e5e7eb' }}>
@@ -354,8 +445,11 @@ function AdmissionHistoryTab({ dfn }: { dfn: string }) {
           </tr>
         </thead>
         <tbody>
-          {loading ? <LoadingRow /> :
-            admissions.length === 0 ? <EmptyRow message="No admission history found" /> :
+          {loading ? (
+            <LoadingRow />
+          ) : admissions.length === 0 ? (
+            <EmptyRow message="No admission history found" />
+          ) : (
             admissions.map((a, i) => (
               <tr key={`${a.dfn}-${i}`} style={{ borderBottom: '1px solid #f3f4f6' }}>
                 <td style={{ padding: '4px 8px' }}>{a.admitDate}</td>
@@ -364,7 +458,7 @@ function AdmissionHistoryTab({ dfn }: { dfn: string }) {
                 <td style={{ padding: '4px 8px' }}>{a.name}</td>
               </tr>
             ))
-          }
+          )}
         </tbody>
       </table>
     </div>
@@ -391,37 +485,58 @@ export default function ADTPanel({ dfn }: { dfn: string }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* Header */}
-      <div style={{
-        display: 'flex', alignItems: 'center', padding: '8px 12px',
-        borderBottom: '1px solid var(--cprs-border, #e5e7eb)',
-        background: 'var(--cprs-surface, #f9fafb)',
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '8px 12px',
+          borderBottom: '1px solid var(--cprs-border, #e5e7eb)',
+          background: 'var(--cprs-surface, #f9fafb)',
+        }}
+      >
         <h2 style={{ fontSize: 14, fontWeight: 600, margin: 0, marginRight: 16 }}>
           ADT / Inpatient Lists
         </h2>
-        <span style={{
-          fontSize: 10, color: '#6b7280', padding: '2px 6px',
-          background: '#e5e7eb', borderRadius: 3,
-        }}>
+        <span
+          style={{
+            fontSize: 10,
+            color: '#6b7280',
+            padding: '2px 6px',
+            background: '#e5e7eb',
+            borderRadius: 3,
+          }}
+        >
           Phase 67 -- VistA-first read posture
         </span>
       </div>
 
       {/* Sub-tab strip */}
-      <div style={{
-        display: 'flex', borderBottom: '1px solid var(--cprs-border, #e5e7eb)',
-        background: 'var(--cprs-surface, #fff)',
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          borderBottom: '1px solid var(--cprs-border, #e5e7eb)',
+          background: 'var(--cprs-surface, #fff)',
+        }}
+      >
         {SUB_TABS.map((t) => (
           <button
             key={t.key}
             onClick={() => setActiveTab(t.key)}
             style={{
-              padding: '6px 14px', fontSize: 12, border: 'none', cursor: 'pointer',
+              padding: '6px 14px',
+              fontSize: 12,
+              border: 'none',
+              cursor: 'pointer',
               background: activeTab === t.key ? 'var(--cprs-selected, #dbeafe)' : 'transparent',
-              color: activeTab === t.key ? 'var(--cprs-text, #1e3a5f)' : 'var(--cprs-text-muted, #6b7280)',
+              color:
+                activeTab === t.key
+                  ? 'var(--cprs-text, #1e3a5f)'
+                  : 'var(--cprs-text-muted, #6b7280)',
               fontWeight: activeTab === t.key ? 600 : 400,
-              borderBottom: activeTab === t.key ? '2px solid var(--cprs-accent, #2563eb)' : '2px solid transparent',
+              borderBottom:
+                activeTab === t.key
+                  ? '2px solid var(--cprs-accent, #2563eb)'
+                  : '2px solid transparent',
             }}
           >
             {t.label}

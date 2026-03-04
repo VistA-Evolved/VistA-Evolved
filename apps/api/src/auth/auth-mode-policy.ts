@@ -19,17 +19,17 @@
  * overlay that enforces "you MUST have configured one of them in prod".
  */
 
-import { getRuntimeMode, requiresPg } from "../platform/runtime-mode.js";
-import { getOidcConfig } from "./oidc-provider.js";
-import { log } from "../lib/logger.js";
+import { getRuntimeMode, requiresPg } from '../platform/runtime-mode.js';
+import { getOidcConfig } from './oidc-provider.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type AuthMode = "oidc" | "dev_local";
+export type AuthMode = 'oidc' | 'dev_local';
 
-const VALID_AUTH_MODES: readonly AuthMode[] = ["oidc", "dev_local"] as const;
+const VALID_AUTH_MODES: readonly AuthMode[] = ['oidc', 'dev_local'] as const;
 
 /* ------------------------------------------------------------------ */
 /* Resolution                                                          */
@@ -44,12 +44,12 @@ let cachedAuthMode: AuthMode | null = null;
 export function getAuthMode(): AuthMode {
   if (cachedAuthMode) return cachedAuthMode;
 
-  const raw = (process.env.AUTH_MODE || "dev_local").toLowerCase().trim();
+  const raw = (process.env.AUTH_MODE || 'dev_local').toLowerCase().trim();
   if (VALID_AUTH_MODES.includes(raw as AuthMode)) {
     cachedAuthMode = raw as AuthMode;
   } else {
-    log.warn("Invalid AUTH_MODE value, falling back to dev_local", { raw });
-    cachedAuthMode = "dev_local";
+    log.warn('Invalid AUTH_MODE value, falling back to dev_local', { raw });
+    cachedAuthMode = 'dev_local';
   }
 
   return cachedAuthMode;
@@ -59,14 +59,14 @@ export function getAuthMode(): AuthMode {
  * True when auth mode is OIDC (enterprise SSO required).
  */
 export function isOidcRequired(): boolean {
-  return getAuthMode() === "oidc";
+  return getAuthMode() === 'oidc';
 }
 
 /**
  * True when dev_local VistA RPC auth is the active mode.
  */
 export function isDevLocalAuth(): boolean {
-  return getAuthMode() === "dev_local";
+  return getAuthMode() === 'dev_local';
 }
 
 /* ------------------------------------------------------------------ */
@@ -101,46 +101,46 @@ export function validateAuthMode(): AuthModeValidation {
   const errors: string[] = [];
 
   // rc/prod require OIDC
-  if (isProduction && mode !== "oidc") {
+  if (isProduction && mode !== 'oidc') {
     errors.push(
       `AUTH_MODE=${mode} is not allowed in ${runtimeMode} runtime mode. ` +
-      `Set AUTH_MODE=oidc for production/release-candidate deployments.`
+        `Set AUTH_MODE=oidc for production/release-candidate deployments.`
     );
   }
 
   // If OIDC mode, verify it's actually configured
-  if (mode === "oidc" && !oidcConfigured) {
+  if (mode === 'oidc' && !oidcConfigured) {
     if (isProduction) {
       errors.push(
         `AUTH_MODE=oidc requires OIDC_ENABLED=true with valid OIDC configuration. ` +
-        `Set OIDC_ISSUER, OIDC_CLIENT_ID, and OIDC_ENABLED=true.`
+          `Set OIDC_ISSUER, OIDC_CLIENT_ID, and OIDC_ENABLED=true.`
       );
     } else {
       warnings.push(
-        "AUTH_MODE=oidc but OIDC_ENABLED is not true. " +
-        "OIDC auth will not function until configured."
+        'AUTH_MODE=oidc but OIDC_ENABLED is not true. ' +
+          'OIDC auth will not function until configured.'
       );
     }
   }
 
   // dev_local in non-dev environment: warn
-  if (mode === "dev_local" && runtimeMode === "test") {
+  if (mode === 'dev_local' && runtimeMode === 'test') {
     warnings.push(
-      "AUTH_MODE=dev_local in test mode. Consider AUTH_MODE=oidc for " +
-      "integration tests that validate the full auth flow."
+      'AUTH_MODE=dev_local in test mode. Consider AUTH_MODE=oidc for ' +
+        'integration tests that validate the full auth flow.'
     );
   }
 
   const valid = errors.length === 0;
 
   if (warnings.length > 0) {
-    log.warn("Auth mode validation warnings", { mode, runtimeMode, warnings });
+    log.warn('Auth mode validation warnings', { mode, runtimeMode, warnings });
   }
 
   if (!valid) {
-    log.error("Auth mode validation FAILED", { mode, runtimeMode, errors });
+    log.error('Auth mode validation FAILED', { mode, runtimeMode, errors });
   } else {
-    log.info("Auth mode validated", { mode, runtimeMode, oidcConfigured });
+    log.info('Auth mode validated', { mode, runtimeMode, oidcConfigured });
   }
 
   return { valid, mode, runtimeMode, oidcConfigured, warnings, errors };
@@ -154,8 +154,8 @@ export function enforceAuthMode(): void {
   const result = validateAuthMode();
   if (!result.valid) {
     throw new Error(
-      `Auth mode validation failed: ${result.errors.join("; ")}. ` +
-      `Current: AUTH_MODE=${result.mode}, PLATFORM_RUNTIME_MODE=${result.runtimeMode}`
+      `Auth mode validation failed: ${result.errors.join('; ')}. ` +
+        `Current: AUTH_MODE=${result.mode}, PLATFORM_RUNTIME_MODE=${result.runtimeMode}`
     );
   }
 }
@@ -173,7 +173,7 @@ export function getAuthModeStatus(): {
   const runtimeMode = getRuntimeMode();
   const oidcConfigured = getOidcConfig().enabled;
   const isProduction = requiresPg();
-  const compliant = !isProduction || (mode === "oidc" && oidcConfigured);
+  const compliant = !isProduction || (mode === 'oidc' && oidcConfigured);
 
   return { mode, runtimeMode, oidcConfigured, compliant };
 }

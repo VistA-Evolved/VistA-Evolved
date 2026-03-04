@@ -37,12 +37,11 @@
  * Auth: session-based; admin for service/rule/app management.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { requireSession } from "../auth/auth-routes.js";
-import { log } from "../lib/logger.js";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
+import { log } from '../lib/logger.js';
 import {
   listCdsServices,
-  getCdsService,
   registerCdsService,
   unregisterCdsService,
   listCdsRules,
@@ -65,47 +64,54 @@ import {
   logFeedback,
   getFeedbackLog,
   getInvocationLog,
-} from "./cds-store.js";
+} from './cds-store.js';
 
 export default async function cdsHooksRoutes(server: FastifyInstance) {
   // ---- CDS Services (Discovery) ----
 
-  server.get("/cds/services", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/cds/services', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const services = listCdsServices();
     return { ok: true, services };
   });
 
-  server.post("/cds/services", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+  server.post('/cds/services', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     const body = (request.body as any) || {};
     const { id, hook, title, description, prefetch, useCqfRuler } = body;
     if (!id || !hook || !title) {
-      return reply.code(400).send({ ok: false, error: "id, hook, and title required" });
+      return reply.code(400).send({ ok: false, error: 'id, hook, and title required' });
     }
-    const svc = registerCdsService({ id, hook, title, description: description || "", prefetch, useCqfRuler });
+    const svc = registerCdsService({
+      id,
+      hook,
+      title,
+      description: description || '',
+      prefetch,
+      useCqfRuler,
+    });
     return reply.code(201).send({ ok: true, service: svc });
   });
 
-  server.delete("/cds/services/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+  server.delete('/cds/services/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const deleted = unregisterCdsService(id);
     if (!deleted) {
-      return reply.code(404).send({ ok: false, error: "Service not found" });
+      return reply.code(404).send({ ok: false, error: 'Service not found' });
     }
     return { ok: true };
   });
 
   // ---- CDS Hook Invocation ----
 
-  server.post("/cds/services/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/cds/services/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const { hookInstance, hook, context, prefetch, fhirServer, fhirAuthorization } = body;
     if (!hookInstance || !hook) {
-      return reply.code(400).send({ ok: false, error: "hookInstance and hook required" });
+      return reply.code(400).send({ ok: false, error: 'hookInstance and hook required' });
     }
     const response = await invokeHook(
       id,
@@ -118,12 +124,12 @@ export default async function cdsHooksRoutes(server: FastifyInstance) {
 
   // ---- CDS Feedback ----
 
-  server.post("/cds/feedback", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/cds/feedback', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const body = (request.body as any) || {};
     const { card, outcome, overrideReason } = body;
     if (!card || !outcome) {
-      return reply.code(400).send({ ok: false, error: "card and outcome required" });
+      return reply.code(400).send({ ok: false, error: 'card and outcome required' });
     }
     logFeedback(
       { card, outcome, overrideReason, outcomeTimestamp: new Date().toISOString() },
@@ -133,7 +139,7 @@ export default async function cdsHooksRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  server.get("/cds/invocations", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/cds/invocations', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { limit } = request.query as { limit?: string };
     const log = getInvocationLog(limit ? parseInt(limit, 10) : 100);
@@ -142,80 +148,96 @@ export default async function cdsHooksRoutes(server: FastifyInstance) {
 
   // ---- CDS Rules ----
 
-  server.get("/cds/rules", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/cds/rules', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const rules = listCdsRules(session.tenantId);
     return { ok: true, rules };
   });
 
-  server.post("/cds/rules", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/cds/rules', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const body = (request.body as any) || {};
-    const { name, description, hook, priority, conditions, cardTemplate, enabled, engine, cqlLibraryName, cqlLibraryVersion, contentPackId } = body;
+    const {
+      name,
+      description,
+      hook,
+      priority,
+      conditions,
+      cardTemplate,
+      enabled,
+      engine,
+      cqlLibraryName,
+      cqlLibraryVersion,
+      contentPackId,
+    } = body;
     if (!name || !hook || !conditions || !cardTemplate) {
-      return reply.code(400).send({ ok: false, error: "name, hook, conditions, and cardTemplate required" });
+      return reply
+        .code(400)
+        .send({ ok: false, error: 'name, hook, conditions, and cardTemplate required' });
     }
     try {
       const rule = createCdsRule({
         tenantId: session.tenantId,
         name,
-        description: description || "",
+        description: description || '',
         hook,
         priority: priority ?? 100,
         conditions,
         cardTemplate,
         enabled: enabled !== false,
-        engine: engine || "native",
+        engine: engine || 'native',
         cqlLibraryName: cqlLibraryName || null,
         cqlLibraryVersion: cqlLibraryVersion || null,
         contentPackId: contentPackId || null,
       });
       return reply.code(201).send({ ok: true, rule });
     } catch (err: any) {
-      log.error("CDS rule creation failed", { error: err instanceof Error ? err.message : String(err) });
-      return reply.code(409).send({ ok: false, error: "Internal error" });
+      log.error('CDS rule creation failed', {
+        error: err instanceof Error ? err.message : String(err),
+      });
+      return reply.code(409).send({ ok: false, error: 'Internal error' });
     }
   });
 
-  server.get("/cds/rules/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/cds/rules/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const rule = getCdsRule(id);
     if (!rule) {
-      return reply.code(404).send({ ok: false, error: "Rule not found" });
+      return reply.code(404).send({ ok: false, error: 'Rule not found' });
     }
     return { ok: true, rule };
   });
 
-  server.put("/cds/rules/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.put('/cds/rules/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const updated = updateCdsRule(id, body);
     if (!updated) {
-      return reply.code(404).send({ ok: false, error: "Rule not found" });
+      return reply.code(404).send({ ok: false, error: 'Rule not found' });
     }
     return { ok: true, rule: updated };
   });
 
-  server.delete("/cds/rules/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.delete('/cds/rules/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const deleted = deleteCdsRule(id);
     if (!deleted) {
-      return reply.code(404).send({ ok: false, error: "Rule not found" });
+      return reply.code(404).send({ ok: false, error: 'Rule not found' });
     }
     return { ok: true };
   });
 
   // ---- CQF Ruler Config ----
 
-  server.get("/cds/cqf/config", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/cds/cqf/config', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     return { ok: true, config: getCqfRulerConfig() };
   });
 
-  server.put("/cds/cqf/config", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.put('/cds/cqf/config', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const body = (request.body as any) || {};
     setCqfRulerConfig(body);
@@ -224,85 +246,87 @@ export default async function cdsHooksRoutes(server: FastifyInstance) {
 
   // ---- SMART Apps ----
 
-  server.get("/cds/smart/apps", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/cds/smart/apps', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const apps = listSmartApps(session.tenantId);
     return { ok: true, apps };
   });
 
-  server.post("/cds/smart/apps", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/cds/smart/apps', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const body = (request.body as any) || {};
     const { name, description, launchUrl, scopes, iconUrl, allowedHooks, enabled } = body;
     if (!name || !launchUrl) {
-      return reply.code(400).send({ ok: false, error: "name and launchUrl required" });
+      return reply.code(400).send({ ok: false, error: 'name and launchUrl required' });
     }
     try {
       const app = createSmartApp({
         tenantId: session.tenantId,
         name,
-        description: description || "",
+        description: description || '',
         launchUrl,
-        scopes: scopes || ["launch", "patient/Patient.read"],
+        scopes: scopes || ['launch', 'patient/Patient.read'],
         iconUrl: iconUrl || null,
         allowedHooks: allowedHooks || [],
         enabled: enabled !== false,
       });
       return reply.code(201).send({ ok: true, app });
     } catch (err: any) {
-      log.error("SMART app creation failed", { error: err instanceof Error ? err.message : String(err) });
-      return reply.code(409).send({ ok: false, error: "Internal error" });
+      log.error('SMART app creation failed', {
+        error: err instanceof Error ? err.message : String(err),
+      });
+      return reply.code(409).send({ ok: false, error: 'Internal error' });
     }
   });
 
-  server.get("/cds/smart/apps/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/cds/smart/apps/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const app = getSmartApp(id);
     if (!app) {
-      return reply.code(404).send({ ok: false, error: "SMART app not found" });
+      return reply.code(404).send({ ok: false, error: 'SMART app not found' });
     }
     return { ok: true, app };
   });
 
-  server.put("/cds/smart/apps/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.put('/cds/smart/apps/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const updated = updateSmartApp(id, body);
     if (!updated) {
-      return reply.code(404).send({ ok: false, error: "SMART app not found" });
+      return reply.code(404).send({ ok: false, error: 'SMART app not found' });
     }
     return { ok: true, app: updated };
   });
 
-  server.delete("/cds/smart/apps/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.delete('/cds/smart/apps/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const deleted = deleteSmartApp(id);
     if (!deleted) {
-      return reply.code(404).send({ ok: false, error: "SMART app not found" });
+      return reply.code(404).send({ ok: false, error: 'SMART app not found' });
     }
     return { ok: true };
   });
 
   // ---- SMART Launch ----
 
-  server.post("/cds/smart/launch", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/cds/smart/launch', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const body = (request.body as any) || {};
     const { appId, patientDfn, encounterIen, intent } = body;
     if (!appId || !patientDfn) {
-      return reply.code(400).send({ ok: false, error: "appId and patientDfn required" });
+      return reply.code(400).send({ ok: false, error: 'appId and patientDfn required' });
     }
     const app = getSmartApp(appId);
     if (!app) {
-      return reply.code(404).send({ ok: false, error: "SMART app not found" });
+      return reply.code(404).send({ ok: false, error: 'SMART app not found' });
     }
     if (!app.enabled) {
-      return reply.code(403).send({ ok: false, error: "SMART app is disabled" });
+      return reply.code(403).send({ ok: false, error: 'SMART app is disabled' });
     }
-    const fhirServerUrl = process.env.FHIR_SERVER_URL || "http://localhost:3001/fhir";
+    const fhirServerUrl = process.env.FHIR_SERVER_URL || 'http://localhost:3001/fhir';
     const ctx = createLaunchContext({
       patientDfn,
       encounterIen: encounterIen || null,
@@ -314,35 +338,38 @@ export default async function cdsHooksRoutes(server: FastifyInstance) {
     return reply.code(201).send({ ok: true, launchContext: ctx, launchUrl });
   });
 
-  server.get("/cds/smart/launch/:token", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/cds/smart/launch/:token', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { token } = request.params as { token: string };
     const ctx = resolveLaunchContext(token);
     if (!ctx) {
-      return reply.code(404).send({ ok: false, error: "Launch context not found or expired" });
+      return reply.code(404).send({ ok: false, error: 'Launch context not found or expired' });
     }
     return { ok: true, launchContext: ctx };
   });
 
-  server.post("/cds/smart/launch/:token/consume", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const { token } = request.params as { token: string };
-    const ctx = consumeLaunchContext(token);
-    if (!ctx) {
-      return reply.code(404).send({ ok: false, error: "Launch context not found or expired" });
+  server.post(
+    '/cds/smart/launch/:token/consume',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const { token } = request.params as { token: string };
+      const ctx = consumeLaunchContext(token);
+      if (!ctx) {
+        return reply.code(404).send({ ok: false, error: 'Launch context not found or expired' });
+      }
+      return { ok: true, launchContext: ctx };
     }
-    return { ok: true, launchContext: ctx };
-  });
+  );
 
   // ---- Dashboard ----
 
-  server.get("/cds/dashboard", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/cds/dashboard', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const stats = getCdsDashboardStats(session.tenantId);
     return { ok: true, stats };
   });
 
-  server.get("/cds/feedback-log", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/cds/feedback-log', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { limit } = request.query as { limit?: string };
     const log = getFeedbackLog(limit ? parseInt(limit, 10) : 100);

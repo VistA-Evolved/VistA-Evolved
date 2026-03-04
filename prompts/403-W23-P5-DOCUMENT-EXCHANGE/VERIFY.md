@@ -1,6 +1,7 @@
 # 403-99-VERIFY — Document Exchange
 
 ## Verification Gates
+
 1. Types export DocumentReference, DocumentSubmissionSet
 2. SHA-256 content hashing on document create
 3. FIFO eviction, search by description/category/type/author

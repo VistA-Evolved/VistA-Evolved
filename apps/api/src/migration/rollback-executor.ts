@@ -6,11 +6,11 @@
  * and producing a drill report.
  */
 
-import { randomBytes } from "crypto";
+import { randomBytes } from 'crypto';
 
 // ── Types ──────────────────────────────────────────────────────────
 
-export type RollbackStepStatus = "pending" | "running" | "completed" | "failed" | "skipped";
+export type RollbackStepStatus = 'pending' | 'running' | 'completed' | 'failed' | 'skipped';
 
 export interface RollbackStep {
   id: string;
@@ -26,8 +26,8 @@ export interface RollbackStep {
 
 export interface RollbackDrill {
   id: string;
-  type: "drill" | "actual";
-  status: "pending" | "running" | "completed" | "failed";
+  type: 'drill' | 'actual';
+  status: 'pending' | 'running' | 'completed' | 'failed';
   createdAt: string;
   completedAt?: string;
   totalDurationMs?: number;
@@ -42,7 +42,7 @@ export interface RollbackReport {
   completedSteps: number;
   failedSteps: number;
   totalDurationMs: number;
-  meetsRto: boolean;       // RTO = Recovery Time Objective
+  meetsRto: boolean; // RTO = Recovery Time Objective
   rtoTargetMs: number;
   stepTimings: Array<{ name: string; durationMs: number }>;
 }
@@ -55,14 +55,62 @@ const drills = new Map<string, RollbackDrill>();
 
 function createDefaultSteps(): RollbackStep[] {
   return [
-    { id: "rs1", order: 1, name: "halt-traffic", description: "Stop routing traffic to VistA-Evolved", status: "pending" },
-    { id: "rs2", order: 2, name: "verify-vista-health", description: "Confirm VistA instance is healthy and accessible", status: "pending" },
-    { id: "rs3", order: 3, name: "switch-dns", description: "Point DNS/load balancer back to VistA-only endpoints", status: "pending" },
-    { id: "rs4", order: 4, name: "verify-vista-reads", description: "Validate core VistA read operations work", status: "pending" },
-    { id: "rs5", order: 5, name: "verify-vista-writes", description: "Validate VistA write operations work", status: "pending" },
-    { id: "rs6", order: 6, name: "notify-users", description: "Send rollback notification to clinical users", status: "pending" },
-    { id: "rs7", order: 7, name: "archive-logs", description: "Archive VistA-Evolved logs for post-mortem", status: "pending" },
-    { id: "rs8", order: 8, name: "final-verification", description: "Run post-rollback smoke tests", status: "pending" },
+    {
+      id: 'rs1',
+      order: 1,
+      name: 'halt-traffic',
+      description: 'Stop routing traffic to VistA-Evolved',
+      status: 'pending',
+    },
+    {
+      id: 'rs2',
+      order: 2,
+      name: 'verify-vista-health',
+      description: 'Confirm VistA instance is healthy and accessible',
+      status: 'pending',
+    },
+    {
+      id: 'rs3',
+      order: 3,
+      name: 'switch-dns',
+      description: 'Point DNS/load balancer back to VistA-only endpoints',
+      status: 'pending',
+    },
+    {
+      id: 'rs4',
+      order: 4,
+      name: 'verify-vista-reads',
+      description: 'Validate core VistA read operations work',
+      status: 'pending',
+    },
+    {
+      id: 'rs5',
+      order: 5,
+      name: 'verify-vista-writes',
+      description: 'Validate VistA write operations work',
+      status: 'pending',
+    },
+    {
+      id: 'rs6',
+      order: 6,
+      name: 'notify-users',
+      description: 'Send rollback notification to clinical users',
+      status: 'pending',
+    },
+    {
+      id: 'rs7',
+      order: 7,
+      name: 'archive-logs',
+      description: 'Archive VistA-Evolved logs for post-mortem',
+      status: 'pending',
+    },
+    {
+      id: 'rs8',
+      order: 8,
+      name: 'final-verification',
+      description: 'Run post-rollback smoke tests',
+      status: 'pending',
+    },
   ];
 }
 
@@ -71,12 +119,12 @@ function createDefaultSteps(): RollbackStep[] {
 const RTO_TARGET_MS = 30 * 60 * 1000; // 30 minutes default RTO
 
 export class RollbackExecutor {
-  createDrill(userId: string, type: "drill" | "actual" = "drill"): RollbackDrill {
-    const id = `rb-${randomBytes(6).toString("hex")}`;
+  createDrill(userId: string, type: 'drill' | 'actual' = 'drill'): RollbackDrill {
+    const id = `rb-${randomBytes(6).toString('hex')}`;
     const drill: RollbackDrill = {
       id,
       type,
-      status: "pending",
+      status: 'pending',
       createdAt: new Date().toISOString(),
       createdBy: userId,
       steps: createDefaultSteps(),
@@ -100,8 +148,8 @@ export class RollbackExecutor {
    */
   startDrill(drillId: string): boolean {
     const drill = drills.get(drillId);
-    if (!drill || drill.status !== "pending") return false;
-    drill.status = "running";
+    if (!drill || drill.status !== 'pending') return false;
+    drill.status = 'running';
     return true;
   }
 
@@ -110,10 +158,10 @@ export class RollbackExecutor {
    */
   startStep(drillId: string, stepId: string): boolean {
     const drill = drills.get(drillId);
-    if (!drill || drill.status !== "running") return false;
+    if (!drill || drill.status !== 'running') return false;
     const step = drill.steps.find((s) => s.id === stepId);
-    if (!step || step.status !== "pending") return false;
-    step.status = "running";
+    if (!step || step.status !== 'pending') return false;
+    step.status = 'running';
     step.startedAt = new Date().toISOString();
     return true;
   }
@@ -127,7 +175,7 @@ export class RollbackExecutor {
     const step = drill.steps.find((s) => s.id === stepId);
     if (!step) return false;
 
-    step.status = passed ? "completed" : "failed";
+    step.status = passed ? 'completed' : 'failed';
     step.completedAt = new Date().toISOString();
     step.durationMs = step.startedAt
       ? new Date(step.completedAt).getTime() - new Date(step.startedAt).getTime()
@@ -135,11 +183,14 @@ export class RollbackExecutor {
     if (error) step.error = error;
 
     // If all steps done, generate report
-    const allDone = drill.steps.every((s) => s.status === "completed" || s.status === "failed" || s.status === "skipped");
+    const allDone = drill.steps.every(
+      (s) => s.status === 'completed' || s.status === 'failed' || s.status === 'skipped'
+    );
     if (allDone) {
-      drill.status = drill.steps.some((s) => s.status === "failed") ? "failed" : "completed";
+      drill.status = drill.steps.some((s) => s.status === 'failed') ? 'failed' : 'completed';
       drill.completedAt = new Date().toISOString();
-      drill.totalDurationMs = new Date(drill.completedAt).getTime() - new Date(drill.createdAt).getTime();
+      drill.totalDurationMs =
+        new Date(drill.completedAt).getTime() - new Date(drill.createdAt).getTime();
       drill.report = this.generateReport(drill);
     }
 
@@ -156,8 +207,8 @@ export class RollbackExecutor {
     return {
       drillId: drill.id,
       totalSteps: drill.steps.length,
-      completedSteps: drill.steps.filter((s) => s.status === "completed").length,
-      failedSteps: drill.steps.filter((s) => s.status === "failed").length,
+      completedSteps: drill.steps.filter((s) => s.status === 'completed').length,
+      failedSteps: drill.steps.filter((s) => s.status === 'failed').length,
       totalDurationMs: totalMs,
       meetsRto: totalMs <= RTO_TARGET_MS,
       rtoTargetMs: RTO_TARGET_MS,

@@ -9,15 +9,15 @@
  * where the answer should be filed (future integration).
  */
 
-import { eq, and, asc } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { pgIntakeQuestionSchema } from "../pg-schema.js";
-import { randomBytes } from "node:crypto";
+import { eq, and, asc } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { pgIntakeQuestionSchema } from '../pg-schema.js';
+import { randomBytes } from 'node:crypto';
 
 export type IntakeQuestionRow = typeof pgIntakeQuestionSchema.$inferSelect;
 
 function genId(): string {
-  return randomBytes(16).toString("hex");
+  return randomBytes(16).toString('hex');
 }
 
 function now(): string {
@@ -44,23 +44,18 @@ export async function getQuestionsByLocale(
 }
 
 /** Get all questions (all locales) for admin view */
-export async function getAllQuestions(
-  tenantId: string
-): Promise<IntakeQuestionRow[]> {
+export async function getAllQuestions(tenantId: string): Promise<IntakeQuestionRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(pgIntakeQuestionSchema)
     .where(eq(pgIntakeQuestionSchema.tenantId, tenantId))
-    .orderBy(
-      asc(pgIntakeQuestionSchema.questionKey),
-      asc(pgIntakeQuestionSchema.locale)
-    );
+    .orderBy(asc(pgIntakeQuestionSchema.questionKey), asc(pgIntakeQuestionSchema.locale));
 }
 
 /** Insert a new question definition */
 export async function insertQuestion(
-  data: Omit<IntakeQuestionRow, "id" | "createdAt" | "updatedAt">
+  data: Omit<IntakeQuestionRow, 'id' | 'createdAt' | 'updatedAt'>
 ): Promise<IntakeQuestionRow> {
   const db = getPgDb();
   const row: IntakeQuestionRow = {
@@ -76,7 +71,19 @@ export async function insertQuestion(
 /** Update an existing question */
 export async function updateQuestion(
   id: string,
-  patch: Partial<Pick<IntakeQuestionRow, "questionText" | "questionType" | "optionsJson" | "displayOrder" | "required" | "active" | "category" | "vistaFieldTarget">>
+  patch: Partial<
+    Pick<
+      IntakeQuestionRow,
+      | 'questionText'
+      | 'questionType'
+      | 'optionsJson'
+      | 'displayOrder'
+      | 'required'
+      | 'active'
+      | 'category'
+      | 'vistaFieldTarget'
+    >
+  >
 ): Promise<void> {
   const db = getPgDb();
   await db
@@ -116,118 +123,124 @@ function getDefaultQuestions(tenantId: string): IntakeQuestionRow[] {
     texts: { en: string; fil: string; es: string };
   }> = [
     {
-      key: "reason_for_visit",
-      category: "chief_complaint",
-      type: "text",
+      key: 'reason_for_visit',
+      category: 'chief_complaint',
+      type: 'text',
       order: 1,
       required: true,
-      vistaTarget: "TIU(8925) CHIEF COMPLAINT",
+      vistaTarget: 'TIU(8925) CHIEF COMPLAINT',
       texts: {
-        en: "What is the reason for your visit today?",
-        fil: "Ano ang dahilan ng iyong pagbisita ngayon?",
-        es: "Cual es el motivo de su visita hoy?",
+        en: 'What is the reason for your visit today?',
+        fil: 'Ano ang dahilan ng iyong pagbisita ngayon?',
+        es: 'Cual es el motivo de su visita hoy?',
       },
     },
     {
-      key: "symptom_duration",
-      category: "chief_complaint",
-      type: "select",
+      key: 'symptom_duration',
+      category: 'chief_complaint',
+      type: 'select',
       order: 2,
       required: true,
-      options: ["Less than 1 week", "1-4 weeks", "1-3 months", "More than 3 months"],
+      options: ['Less than 1 week', '1-4 weeks', '1-3 months', 'More than 3 months'],
       texts: {
-        en: "How long have you had these symptoms?",
-        fil: "Gaano na katagal ang mga sintomas na ito?",
-        es: "Cuanto tiempo ha tenido estos sintomas?",
+        en: 'How long have you had these symptoms?',
+        fil: 'Gaano na katagal ang mga sintomas na ito?',
+        es: 'Cuanto tiempo ha tenido estos sintomas?',
       },
     },
     {
-      key: "known_allergies",
-      category: "allergies",
-      type: "yes_no_detail",
+      key: 'known_allergies',
+      category: 'allergies',
+      type: 'yes_no_detail',
       order: 3,
       required: true,
-      vistaTarget: "GMR ALLERGY(120.8)",
+      vistaTarget: 'GMR ALLERGY(120.8)',
       texts: {
-        en: "Do you have any known allergies to medications, food, or environmental factors?",
-        fil: "Mayroon ka bang mga kilalang allergy sa gamot, pagkain, o kapaligiran?",
-        es: "Tiene alguna alergia conocida a medicamentos, alimentos o factores ambientales?",
+        en: 'Do you have any known allergies to medications, food, or environmental factors?',
+        fil: 'Mayroon ka bang mga kilalang allergy sa gamot, pagkain, o kapaligiran?',
+        es: 'Tiene alguna alergia conocida a medicamentos, alimentos o factores ambientales?',
       },
     },
     {
-      key: "current_medications",
-      category: "medications",
-      type: "yes_no_detail",
+      key: 'current_medications',
+      category: 'medications',
+      type: 'yes_no_detail',
       order: 4,
       required: true,
-      vistaTarget: "PRESCRIPTION(52)",
+      vistaTarget: 'PRESCRIPTION(52)',
       texts: {
-        en: "Are you currently taking any medications (including over-the-counter and supplements)?",
-        fil: "Kasalukuyan ka bang umiinom ng anumang gamot (kasama ang over-the-counter at supplements)?",
-        es: "Esta tomando algun medicamento actualmente (incluidos los de venta libre y suplementos)?",
+        en: 'Are you currently taking any medications (including over-the-counter and supplements)?',
+        fil: 'Kasalukuyan ka bang umiinom ng anumang gamot (kasama ang over-the-counter at supplements)?',
+        es: 'Esta tomando algun medicamento actualmente (incluidos los de venta libre y suplementos)?',
       },
     },
     {
-      key: "medical_history",
-      category: "history",
-      type: "multiselect",
+      key: 'medical_history',
+      category: 'history',
+      type: 'multiselect',
       order: 5,
       required: false,
-      vistaTarget: "PROBLEM(9000011)",
+      vistaTarget: 'PROBLEM(9000011)',
       options: [
-        "Diabetes", "Hypertension", "Heart Disease", "Asthma/COPD",
-        "Cancer", "Stroke", "Kidney Disease", "Mental Health Condition",
-        "None of the above",
+        'Diabetes',
+        'Hypertension',
+        'Heart Disease',
+        'Asthma/COPD',
+        'Cancer',
+        'Stroke',
+        'Kidney Disease',
+        'Mental Health Condition',
+        'None of the above',
       ],
       texts: {
-        en: "Do you have any of the following conditions? (Select all that apply)",
-        fil: "Mayroon ka ba ng alinman sa mga sumusunod na kondisyon? (Piliin lahat ng naaangkop)",
-        es: "Tiene alguna de las siguientes condiciones? (Seleccione todas las que apliquen)",
+        en: 'Do you have any of the following conditions? (Select all that apply)',
+        fil: 'Mayroon ka ba ng alinman sa mga sumusunod na kondisyon? (Piliin lahat ng naaangkop)',
+        es: 'Tiene alguna de las siguientes condiciones? (Seleccione todas las que apliquen)',
       },
     },
     {
-      key: "pain_level",
-      category: "vitals",
-      type: "scale",
+      key: 'pain_level',
+      category: 'vitals',
+      type: 'scale',
       order: 6,
       required: false,
-      vistaTarget: "GMR VITAL MEASUREMENT(120.5) PAIN",
+      vistaTarget: 'GMR VITAL MEASUREMENT(120.5) PAIN',
       texts: {
-        en: "On a scale of 0-10, what is your current pain level?",
-        fil: "Sa iskor na 0-10, ano ang iyong kasalukuyang antas ng sakit?",
-        es: "En una escala del 0 al 10, cual es su nivel de dolor actual?",
+        en: 'On a scale of 0-10, what is your current pain level?',
+        fil: 'Sa iskor na 0-10, ano ang iyong kasalukuyang antas ng sakit?',
+        es: 'En una escala del 0 al 10, cual es su nivel de dolor actual?',
       },
     },
     {
-      key: "smoking_status",
-      category: "social_history",
-      type: "select",
+      key: 'smoking_status',
+      category: 'social_history',
+      type: 'select',
       order: 7,
       required: false,
-      vistaTarget: "HEALTH FACTORS(9000010.23)",
-      options: ["Never smoked", "Former smoker", "Current smoker", "E-cigarette/vape user"],
+      vistaTarget: 'HEALTH FACTORS(9000010.23)',
+      options: ['Never smoked', 'Former smoker', 'Current smoker', 'E-cigarette/vape user'],
       texts: {
-        en: "What is your smoking/tobacco status?",
-        fil: "Ano ang iyong katayuan sa paninigarilyo/tabako?",
-        es: "Cual es su estado de tabaquismo?",
+        en: 'What is your smoking/tobacco status?',
+        fil: 'Ano ang iyong katayuan sa paninigarilyo/tabako?',
+        es: 'Cual es su estado de tabaquismo?',
       },
     },
     {
-      key: "additional_concerns",
-      category: "general",
-      type: "textarea",
+      key: 'additional_concerns',
+      category: 'general',
+      type: 'textarea',
       order: 8,
       required: false,
       texts: {
-        en: "Is there anything else you would like your provider to know?",
-        fil: "May iba pa ba kayong gustong ipaalam sa inyong doktor?",
-        es: "Hay algo mas que le gustaria que su medico supiera?",
+        en: 'Is there anything else you would like your provider to know?',
+        fil: 'May iba pa ba kayong gustong ipaalam sa inyong doktor?',
+        es: 'Hay algo mas que le gustaria que su medico supiera?',
       },
     },
   ];
 
   for (const def of defs) {
-    for (const locale of ["en", "fil", "es"] as const) {
+    for (const locale of ['en', 'fil', 'es'] as const) {
       questions.push({
         id: genId(),
         tenantId,
@@ -236,11 +249,11 @@ function getDefaultQuestions(tenantId: string): IntakeQuestionRow[] {
         category: def.category,
         questionText: def.texts[locale],
         questionType: def.type,
-        optionsJson: def.options ? JSON.stringify(
-          locale === "en"
-            ? def.options
-            : def.options // Options stay in English for now — translation is a future enhancement
-        ) : null,
+        optionsJson: def.options
+          ? JSON.stringify(
+              locale === 'en' ? def.options : def.options // Options stay in English for now — translation is a future enhancement
+            )
+          : null,
         displayOrder: def.order,
         required: def.required,
         active: true,

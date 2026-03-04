@@ -91,14 +91,14 @@ export interface VistaSwapBoundary {
   label: string;
 
   /** Version of the swap boundary contract */
-  contractVersion: "1.0.0";
+  contractVersion: '1.0.0';
 
   /** Connection parameters */
   connection: {
     host: string;
     port: number;
     /** Protocol: always "xwb" for XWB RPC Broker */
-    protocol: "xwb";
+    protocol: 'xwb';
   };
 
   /** Required capabilities */
@@ -116,7 +116,7 @@ export interface VistaSwapBoundary {
   /** Security posture */
   security: {
     /** Credentials source: "env" (environment variables) or "secrets" (Docker/K8s secrets) */
-    credentialSource: "env" | "secrets";
+    credentialSource: 'env' | 'secrets';
     /** Whether default/demo credentials are present (should be false in prod) */
     hasDefaultCredentials: boolean;
     /** Whether SSH is exposed (should be false in prod) */
@@ -128,9 +128,9 @@ export interface VistaSwapBoundary {
   /** Health probes */
   probes: {
     /** TCP probe endpoint (for Docker HEALTHCHECK / K8s readiness) */
-    readiness: { type: "tcp"; port: number };
+    readiness: { type: 'tcp'; port: number };
     /** More thorough health check (optional: RPC-based) */
-    liveness?: { type: "rpc"; rpcName: string };
+    liveness?: { type: 'rpc'; rpcName: string };
   };
 }
 
@@ -149,13 +149,13 @@ function parsePort(fallback: number): number {
 /** Build a swap boundary descriptor for the dev sandbox */
 export function devSandboxBoundary(): VistaSwapBoundary {
   return {
-    instanceId: "worldvista-docker-sandbox",
-    label: "WorldVistA Docker Sandbox",
-    contractVersion: "1.0.0",
+    instanceId: 'worldvista-docker-sandbox',
+    label: 'WorldVistA Docker Sandbox',
+    contractVersion: '1.0.0',
     connection: {
-      host: process.env.VISTA_HOST || "127.0.0.1",
+      host: process.env.VISTA_HOST || '127.0.0.1',
       port: parsePort(9430),
-      protocol: "xwb",
+      protocol: 'xwb',
     },
     capabilities: {
       tcpProbe: true,
@@ -164,14 +164,14 @@ export function devSandboxBoundary(): VistaSwapBoundary {
       rpcRead: true,
     },
     security: {
-      credentialSource: "env",
+      credentialSource: 'env',
       hasDefaultCredentials: true, // WorldVistA ships with sandbox demo accounts
-      sshExposed: true,           // WorldVistA exposes port 22
-      brokerBind: "0.0.0.0",
+      sshExposed: true, // WorldVistA exposes port 22
+      brokerBind: '0.0.0.0',
     },
     probes: {
-      readiness: { type: "tcp", port: parsePort(9430) },
-      liveness: { type: "rpc", rpcName: "XUS SIGNON SETUP" },
+      readiness: { type: 'tcp', port: parsePort(9430) },
+      liveness: { type: 'rpc', rpcName: 'XUS SIGNON SETUP' },
     },
   };
 }
@@ -179,13 +179,13 @@ export function devSandboxBoundary(): VistaSwapBoundary {
 /** Build a swap boundary descriptor for the distro lane */
 export function distroLaneBoundary(): VistaSwapBoundary {
   return {
-    instanceId: "vista-distro-lane",
-    label: "VistA Distro Lane (Production)",
-    contractVersion: "1.0.0",
+    instanceId: 'vista-distro-lane',
+    label: 'VistA Distro Lane (Production)',
+    contractVersion: '1.0.0',
     connection: {
-      host: process.env.VISTA_HOST || "127.0.0.1",
+      host: process.env.VISTA_HOST || '127.0.0.1',
       port: parsePort(9431),
-      protocol: "xwb",
+      protocol: 'xwb',
     },
     capabilities: {
       tcpProbe: true,
@@ -194,14 +194,14 @@ export function distroLaneBoundary(): VistaSwapBoundary {
       rpcRead: true,
     },
     security: {
-      credentialSource: "env",
+      credentialSource: 'env',
       hasDefaultCredentials: false, // No baked-in credentials
-      sshExposed: false,           // SSH disabled
-      brokerBind: "0.0.0.0",
+      sshExposed: false, // SSH disabled
+      brokerBind: '0.0.0.0',
     },
     probes: {
-      readiness: { type: "tcp", port: parsePort(9431) },
-      liveness: { type: "rpc", rpcName: "XUS SIGNON SETUP" },
+      readiness: { type: 'tcp', port: parsePort(9431) },
+      liveness: { type: 'rpc', rpcName: 'XUS SIGNON SETUP' },
     },
   };
 }
@@ -211,9 +211,11 @@ export function activeSwapBoundary(): VistaSwapBoundary {
   const port = parsePort(9430);
   // Heuristic: port 9431 = distro lane, 9430 = dev sandbox
   // In practice, the VISTA_INSTANCE_ID env var is more reliable
-  const instanceId = process.env.VISTA_INSTANCE_ID || (port === 9431 ? "vista-distro-lane" : "worldvista-docker-sandbox");
+  const instanceId =
+    process.env.VISTA_INSTANCE_ID ||
+    (port === 9431 ? 'vista-distro-lane' : 'worldvista-docker-sandbox');
 
-  if (instanceId === "vista-distro-lane") {
+  if (instanceId === 'vista-distro-lane') {
     return distroLaneBoundary();
   }
   return devSandboxBoundary();
@@ -238,13 +240,13 @@ export function validateSwapBoundary(
     failures.push(`TCP probe failed on ${boundary.connection.host}:${boundary.connection.port}`);
   }
   if (boundary.capabilities.rpcAuth && !probeResults.authOk) {
-    failures.push("RPC authentication failed (XUS SIGNON SETUP + XUS AV CODE)");
+    failures.push('RPC authentication failed (XUS SIGNON SETUP + XUS AV CODE)');
   }
   if (boundary.capabilities.cprsContext && !probeResults.contextOk) {
     failures.push('CPRS context failed (XWB CREATE CONTEXT for "OR CPRS GUI CHART")');
   }
   if (boundary.capabilities.rpcRead && !probeResults.rpcReadOk) {
-    failures.push("Basic RPC read failed (could not call any read RPC)");
+    failures.push('Basic RPC read failed (could not call any read RPC)');
   }
 
   return failures;

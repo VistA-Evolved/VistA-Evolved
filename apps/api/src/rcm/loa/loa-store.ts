@@ -15,15 +15,14 @@
  * VistA encounters/orders remain the authoritative source.
  */
 
-import { randomUUID } from "node:crypto";
+import { randomUUID } from 'node:crypto';
 import type {
   LoaRequest,
   LoaStatus,
   LoaSubmissionMode,
   LoaChecklistItem,
   LoaAttachment,
-  LoaAuditEntry,
-} from "./loa-types.js";
+} from './loa-types.js';
 
 /* ── DB repo interface (lazy-wired at startup) ─────────────── */
 
@@ -55,8 +54,8 @@ export function createLoaRequest(params: {
   patientName?: string;
   encounterDate: string;
   encounterIen?: string;
-  diagnosisCodes?: LoaRequest["diagnosisCodes"];
-  procedureCodes?: LoaRequest["procedureCodes"];
+  diagnosisCodes?: LoaRequest['diagnosisCodes'];
+  procedureCodes?: LoaRequest['procedureCodes'];
   providerName?: string;
   providerDuz?: string;
   facilityName?: string;
@@ -71,17 +70,17 @@ export function createLoaRequest(params: {
   const id = randomUUID();
 
   const defaultChecklist: LoaChecklistItem[] = [
-    { id: "chk-1", label: "Verify patient HMO membership and card number", completed: false },
-    { id: "chk-2", label: "Confirm diagnosis codes from VistA encounter", completed: false },
-    { id: "chk-3", label: "Confirm procedure codes from VistA order", completed: false },
-    { id: "chk-4", label: "Attach clinical justification (if required)", completed: false },
-    { id: "chk-5", label: "Submit LOA request to payer", completed: false },
-    { id: "chk-6", label: "Record LOA reference number", completed: false },
+    { id: 'chk-1', label: 'Verify patient HMO membership and card number', completed: false },
+    { id: 'chk-2', label: 'Confirm diagnosis codes from VistA encounter', completed: false },
+    { id: 'chk-3', label: 'Confirm procedure codes from VistA order', completed: false },
+    { id: 'chk-4', label: 'Attach clinical justification (if required)', completed: false },
+    { id: 'chk-5', label: 'Submit LOA request to payer', completed: false },
+    { id: 'chk-6', label: 'Record LOA reference number', completed: false },
   ];
 
-  if (params.submissionMode === "portal" && params.portalUrl) {
+  if (params.submissionMode === 'portal' && params.portalUrl) {
     defaultChecklist.splice(4, 0, {
-      id: "chk-portal",
+      id: 'chk-portal',
       label: `Open provider portal: ${params.portalUrl}`,
       completed: false,
     });
@@ -90,7 +89,7 @@ export function createLoaRequest(params: {
   const loa: LoaRequest = {
     id,
     tenantId: params.tenantId,
-    status: "draft",
+    status: 'draft',
     submissionMode: params.submissionMode,
     patientDfn: params.patientDfn,
     patientName: params.patientName,
@@ -107,13 +106,15 @@ export function createLoaRequest(params: {
     attachments: [],
     checklist: defaultChecklist,
     portalUrl: params.portalUrl,
-    auditTrail: [{
-      timestamp: now,
-      action: "loa.created",
-      actor: params.createdBy,
-      toStatus: "draft",
-      detail: "LOA request created",
-    }],
+    auditTrail: [
+      {
+        timestamp: now,
+        action: 'loa.created',
+        actor: params.createdBy,
+        toStatus: 'draft',
+        detail: 'LOA request created',
+      },
+    ],
     createdBy: params.createdBy,
     createdAt: now,
     updatedAt: now,
@@ -126,7 +127,20 @@ export function createLoaRequest(params: {
   tenantLoaIndex.get(params.tenantId)!.add(id);
 
   // Phase 146: Write-through to PG
-  dbRepo?.upsert({ id, tenantId: params.tenantId, payerId: params.payerId, patientDfn: params.patientDfn, patientName: params.patientName, status: 'draft', submittedAt: null, metadataJson: JSON.stringify(loa), createdAt: now, updatedAt: now }).catch(() => {});
+  dbRepo
+    ?.upsert({
+      id,
+      tenantId: params.tenantId,
+      payerId: params.payerId,
+      patientDfn: params.patientDfn,
+      patientName: params.patientName,
+      status: 'draft',
+      submittedAt: null,
+      metadataJson: JSON.stringify(loa),
+      createdAt: now,
+      updatedAt: now,
+    })
+    .catch(() => {});
 
   return loa;
 }
@@ -146,20 +160,20 @@ export function listLoaRequests(
     assignedTo?: string;
     limit?: number;
     offset?: number;
-  },
+  }
 ): { loas: LoaRequest[]; total: number } {
   const ids = tenantLoaIndex.get(tenantId);
   if (!ids) return { loas: [], total: 0 };
 
   let result = Array.from(ids)
-    .map(id => loaStore.get(id)!)
+    .map((id) => loaStore.get(id)!)
     .filter(Boolean)
     .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 
-  if (filters?.status) result = result.filter(l => l.status === filters.status);
-  if (filters?.payerId) result = result.filter(l => l.payerId === filters.payerId);
-  if (filters?.patientDfn) result = result.filter(l => l.patientDfn === filters.patientDfn);
-  if (filters?.assignedTo) result = result.filter(l => l.assignedTo === filters.assignedTo);
+  if (filters?.status) result = result.filter((l) => l.status === filters.status);
+  if (filters?.payerId) result = result.filter((l) => l.payerId === filters.payerId);
+  if (filters?.patientDfn) result = result.filter((l) => l.patientDfn === filters.patientDfn);
+  if (filters?.assignedTo) result = result.filter((l) => l.assignedTo === filters.assignedTo);
 
   const total = result.length;
   const offset = filters?.offset ?? 0;
@@ -191,19 +205,19 @@ export function transitionLoa(
     approvedDate?: string;
     expirationDate?: string;
     denialReason?: string;
-  },
+  }
 ): LoaRequest {
   const loa = loaStore.get(id);
   if (!loa) throw new Error(`LOA not found: ${id}`);
 
   // Import transition check inline to avoid circular
   const transitions: Record<LoaStatus, LoaStatus[]> = {
-    draft:     ["submitted", "cancelled"],
-    submitted: ["pending", "approved", "denied", "cancelled"],
-    pending:   ["approved", "denied", "expired", "cancelled"],
-    approved:  ["expired"],
-    denied:    ["draft"],
-    expired:   ["draft"],
+    draft: ['submitted', 'cancelled'],
+    submitted: ['pending', 'approved', 'denied', 'cancelled'],
+    pending: ['approved', 'denied', 'expired', 'cancelled'],
+    approved: ['expired'],
+    denied: ['draft'],
+    expired: ['draft'],
     cancelled: [],
   };
 
@@ -236,7 +250,15 @@ export function transitionLoa(
   loaStore.set(id, updated);
 
   // Phase 146: Write-through status transition
-  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt, metadataJson: JSON.stringify(updated) }).catch(() => {});
+  dbRepo
+    ?.upsert({
+      id,
+      tenantId: updated.tenantId ?? 'default',
+      status: updated.status,
+      updatedAt: updated.updatedAt,
+      metadataJson: JSON.stringify(updated),
+    })
+    .catch(() => {});
 
   return updated;
 }
@@ -245,7 +267,7 @@ export function updateLoaChecklist(
   id: string,
   checklistItemId: string,
   completed: boolean,
-  actor: string,
+  actor: string
 ): LoaRequest {
   const loa = loaStore.get(id);
   if (!loa) throw new Error(`LOA not found: ${id}`);
@@ -254,18 +276,23 @@ export function updateLoaChecklist(
   const updated: LoaRequest = {
     ...loa,
     updatedAt: now,
-    checklist: loa.checklist.map(item =>
+    checklist: loa.checklist.map((item) =>
       item.id === checklistItemId
-        ? { ...item, completed, completedAt: completed ? now : undefined, completedBy: completed ? actor : undefined }
-        : item,
+        ? {
+            ...item,
+            completed,
+            completedAt: completed ? now : undefined,
+            completedBy: completed ? actor : undefined,
+          }
+        : item
     ),
     auditTrail: [
       ...loa.auditTrail,
       {
         timestamp: now,
-        action: "loa.checklist_updated",
+        action: 'loa.checklist_updated',
         actor,
-        detail: `Checklist item ${checklistItemId} ${completed ? "completed" : "unchecked"}`,
+        detail: `Checklist item ${checklistItemId} ${completed ? 'completed' : 'unchecked'}`,
       },
     ],
   };
@@ -273,16 +300,20 @@ export function updateLoaChecklist(
   loaStore.set(id, updated);
 
   // Phase 146: Write-through checklist update
-  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt, metadataJson: JSON.stringify(updated) }).catch(() => {});
+  dbRepo
+    ?.upsert({
+      id,
+      tenantId: updated.tenantId ?? 'default',
+      status: updated.status,
+      updatedAt: updated.updatedAt,
+      metadataJson: JSON.stringify(updated),
+    })
+    .catch(() => {});
 
   return updated;
 }
 
-export function addLoaAttachment(
-  id: string,
-  attachment: LoaAttachment,
-  actor: string,
-): LoaRequest {
+export function addLoaAttachment(id: string, attachment: LoaAttachment, actor: string): LoaRequest {
   const loa = loaStore.get(id);
   if (!loa) throw new Error(`LOA not found: ${id}`);
 
@@ -295,7 +326,7 @@ export function addLoaAttachment(
       ...loa.auditTrail,
       {
         timestamp: now,
-        action: "loa.attachment_added",
+        action: 'loa.attachment_added',
         actor,
         detail: `Attachment added: ${attachment.filename} (${attachment.category})`,
       },
@@ -305,7 +336,15 @@ export function addLoaAttachment(
   loaStore.set(id, updated);
 
   // Phase 146: Write-through attachment
-  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt, metadataJson: JSON.stringify(updated) }).catch(() => {});
+  dbRepo
+    ?.upsert({
+      id,
+      tenantId: updated.tenantId ?? 'default',
+      status: updated.status,
+      updatedAt: updated.updatedAt,
+      metadataJson: JSON.stringify(updated),
+    })
+    .catch(() => {});
 
   return updated;
 }
@@ -323,7 +362,7 @@ export function assignLoa(id: string, assignedTo: string, actor: string): LoaReq
       ...loa.auditTrail,
       {
         timestamp: now,
-        action: "loa.assigned",
+        action: 'loa.assigned',
         actor,
         detail: `Assigned to ${assignedTo}`,
       },
@@ -333,7 +372,15 @@ export function assignLoa(id: string, assignedTo: string, actor: string): LoaReq
   loaStore.set(id, updated);
 
   // Phase 146: Write-through assignment
-  dbRepo?.upsert({ id, tenantId: updated.tenantId ?? 'default', status: updated.status, updatedAt: updated.updatedAt, metadataJson: JSON.stringify(updated) }).catch(() => {});
+  dbRepo
+    ?.upsert({
+      id,
+      tenantId: updated.tenantId ?? 'default',
+      status: updated.status,
+      updatedAt: updated.updatedAt,
+      metadataJson: JSON.stringify(updated),
+    })
+    .catch(() => {});
 
   return updated;
 }

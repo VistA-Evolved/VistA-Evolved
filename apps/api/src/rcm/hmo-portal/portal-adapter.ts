@@ -27,9 +27,9 @@ import type {
   LoaPacket,
   HmoClaimPacket,
   VaultRef,
-} from "./types.js";
-import { generateLoaExports } from "./loa-engine.js";
-import { exportHmoPacketJson, exportHmoPacketText } from "./hmo-packet-builder.js";
+} from './types.js';
+import { generateLoaExports } from './loa-engine.js';
+import { exportHmoPacketJson, exportHmoPacketText } from './hmo-packet-builder.js';
 
 /* ── Manual Assisted Base ───────────────────────────────────── */
 
@@ -50,7 +50,7 @@ export interface ManualAdapterConfig {
 export class ManualAssistedAdapter implements PortalAdapter {
   readonly payerId: PortalCapableHmoId;
   readonly adapterName: string;
-  readonly mode: PortalAdapterMode = "manual_assisted";
+  readonly mode: PortalAdapterMode = 'manual_assisted';
   readonly portalBaseUrl: string;
 
   protected readonly config: ManualAdapterConfig;
@@ -62,15 +62,12 @@ export class ManualAssistedAdapter implements PortalAdapter {
     this.portalBaseUrl = config.portalBaseUrl;
   }
 
-  async submitLOA(
-    packet: LoaPacket,
-    _vaultRef?: VaultRef,
-  ): Promise<PortalSubmitResult> {
-    const exports = generateLoaExports(packet, ["json", "pdf_text"]);
+  async submitLOA(packet: LoaPacket, _vaultRef?: VaultRef): Promise<PortalSubmitResult> {
+    const exports = generateLoaExports(packet, ['json', 'pdf_text']);
 
     return {
       ok: true,
-      method: "manual_download",
+      method: 'manual_download',
       portalUrl: this.config.loaDeepLink ?? this.portalBaseUrl,
       instructions: [
         `1. Download the LOA packet files listed below.`,
@@ -88,16 +85,13 @@ export class ManualAssistedAdapter implements PortalAdapter {
     };
   }
 
-  async submitClaim(
-    packet: HmoClaimPacket,
-    _vaultRef?: VaultRef,
-  ): Promise<PortalSubmitResult> {
+  async submitClaim(packet: HmoClaimPacket, _vaultRef?: VaultRef): Promise<PortalSubmitResult> {
     const jsonExport = exportHmoPacketJson(packet);
     const textExport = exportHmoPacketText(packet);
 
     return {
       ok: true,
-      method: "manual_download",
+      method: 'manual_download',
       portalUrl: this.config.claimsDeepLink ?? this.portalBaseUrl,
       instructions: [
         `1. Download the claim packet files listed below.`,
@@ -107,38 +101,32 @@ export class ManualAssistedAdapter implements PortalAdapter {
         `${this.config.claimInstructions.length + 4}. After submission, update the submission status to "claim_submitted_manual".`,
       ],
       exportFiles: [
-        { filename: jsonExport.filename, format: "json", sizeBytes: jsonExport.sizeBytes },
-        { filename: textExport.filename, format: "text", sizeBytes: textExport.sizeBytes },
+        { filename: jsonExport.filename, format: 'json', sizeBytes: jsonExport.sizeBytes },
+        { filename: textExport.filename, format: 'text', sizeBytes: textExport.sizeBytes },
       ],
       trackingRef: `manual-claim-${packet.packetId}`,
     };
   }
 
-  async checkStatus(
-    _claimId: string,
-    _vaultRef?: VaultRef,
-  ): Promise<PortalStatusResult> {
+  async checkStatus(_claimId: string, _vaultRef?: VaultRef): Promise<PortalStatusResult> {
     return {
       ok: true,
-      status: "unknown",
+      status: 'unknown',
       checkedViaApi: false,
       checkedAt: new Date().toISOString(),
       message: [
-        "Manual status check required.",
+        'Manual status check required.',
         ...this.config.statusInstructions,
         `Portal: ${this.config.statusDeepLink ?? this.portalBaseUrl}`,
-      ].join(" "),
+      ].join(' '),
     };
   }
 
-  async downloadRemit(
-    _claimId: string,
-    _vaultRef?: VaultRef,
-  ): Promise<PortalRemitResult> {
+  async downloadRemit(_claimId: string, _vaultRef?: VaultRef): Promise<PortalRemitResult> {
     return {
       ok: true,
       available: false,
-      method: "manual_download",
+      method: 'manual_download',
       portalUrl: this.config.remittanceDeepLink ?? this.portalBaseUrl,
       instructions: [
         `1. Navigate to: ${this.config.remittanceDeepLink ?? this.portalBaseUrl}`,

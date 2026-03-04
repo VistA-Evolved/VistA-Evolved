@@ -6,9 +6,7 @@
   "title": "Patient Health Questionnaire-9 (PHQ-9)",
   "status": "active",
   "description": "Over the last 2 weeks, how often have you been bothered by any of the following problems?",
-  "code": [
-    { "system": "http://loinc.org", "code": "44249-1", "display": "PHQ-9 total score" }
-  ],
+  "code": [{ "system": "http://loinc.org", "code": "44249-1", "display": "PHQ-9 total score" }],
   "item": [
     {
       "linkId": "phq9-1",

@@ -229,8 +229,24 @@
     "total": 18
   },
   "productionReadiness": {
-    "readyForProduction": ["ORWDAL32 SAVE ALLERGY", "GMV ADD VM", "TIU CREATE RECORD", "TIU SET RECORD TEXT", "ORQQPL ADD SAVE", "ZVE MAIL SEND", "ZVE MAIL MANAGE"],
-    "requiresSupervision": ["ORWDX SAVE", "ORWDXA DC", "ORWDXA FLAG", "ORWDXA VERIFY", "ORWOR1 SIG", "ORWLRR ACK", "ORWPCE SAVE"],
+    "readyForProduction": [
+      "ORWDAL32 SAVE ALLERGY",
+      "GMV ADD VM",
+      "TIU CREATE RECORD",
+      "TIU SET RECORD TEXT",
+      "ORQQPL ADD SAVE",
+      "ZVE MAIL SEND",
+      "ZVE MAIL MANAGE"
+    ],
+    "requiresSupervision": [
+      "ORWDX SAVE",
+      "ORWDXA DC",
+      "ORWDXA FLAG",
+      "ORWDXA VERIFY",
+      "ORWOR1 SIG",
+      "ORWLRR ACK",
+      "ORWPCE SAVE"
+    ],
     "devTestOnly": ["ORWDXM AUTOACK", "ORQQCN2 MED RESULTS"],
     "notAvailable": ["ORQQPL EDIT SAVE"]
   }

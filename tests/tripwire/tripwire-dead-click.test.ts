@@ -19,13 +19,13 @@
 /* ------------------------------------------------------------------ */
 
 type ClickAction =
-  | "navigated"
-  | "dialog"
-  | "network"
-  | "state-change"
-  | "pending-labeled"
-  | "disabled-with-tooltip"
-  | "dead-click";
+  | 'navigated'
+  | 'dialog'
+  | 'network'
+  | 'state-change'
+  | 'pending-labeled'
+  | 'disabled-with-tooltip'
+  | 'dead-click';
 
 interface ClickClassification {
   action: ClickAction;
@@ -51,47 +51,47 @@ interface SimulatedClickContext {
 function classifyClick(ctx: SimulatedClickContext): ClickClassification {
   // Check disabled-with-tooltip first
   if (ctx.isDisabled && ctx.tooltipText && ctx.tooltipText.length > 2) {
-    return { action: "disabled-with-tooltip", details: ctx.tooltipText };
+    return { action: 'disabled-with-tooltip', details: ctx.tooltipText };
   }
 
   // Navigation
   if (ctx.urlChanged) {
-    return { action: "navigated", details: "URL changed" };
+    return { action: 'navigated', details: 'URL changed' };
   }
 
   // Network
   if (ctx.networkFired) {
-    return { action: "network", details: "XHR/fetch observed" };
+    return { action: 'network', details: 'XHR/fetch observed' };
   }
 
   // Dialog/modal
   if (ctx.dialogOpened) {
-    return { action: "dialog", details: "Modal/dialog opened" };
+    return { action: 'dialog', details: 'Modal/dialog opened' };
   }
 
   // Popover
   if (ctx.popoverOpened) {
-    return { action: "dialog", details: "Popover/dropdown opened" };
+    return { action: 'dialog', details: 'Popover/dropdown opened' };
   }
 
   // Toast
   if (ctx.toastAppeared) {
-    return { action: "state-change", details: "Toast/notification appeared" };
+    return { action: 'state-change', details: 'Toast/notification appeared' };
   }
 
   // Content change
   if (ctx.contentChanged) {
-    const pendingMatch = (ctx.contentAfter || "").match(
-      /pending|integration.*pending|not\s+available|coming\s+soon/i,
+    const pendingMatch = (ctx.contentAfter || '').match(
+      /pending|integration.*pending|not\s+available|coming\s+soon/i
     );
     if (pendingMatch) {
-      return { action: "pending-labeled", details: pendingMatch[0] };
+      return { action: 'pending-labeled', details: pendingMatch[0] };
     }
-    return { action: "state-change" };
+    return { action: 'state-change' };
   }
 
   // Dead click -- no observable effect
-  return { action: "dead-click", details: "No observable effect" };
+  return { action: 'dead-click', details: 'No observable effect' };
 }
 
 /* ------------------------------------------------------------------ */
@@ -122,7 +122,7 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
   }
 
   // ---- Tripwire 1: Dead click MUST be detected ----
-  test("dead click (no effect) -> classified as dead-click", () => {
+  test('dead click (no effect) -> classified as dead-click', () => {
     const result = classifyClick({
       urlChanged: false,
       networkFired: false,
@@ -132,11 +132,11 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
       contentChanged: false,
       isDisabled: false,
     });
-    assert(result.action === "dead-click", `Expected dead-click, got ${result.action}`);
+    assert(result.action === 'dead-click', `Expected dead-click, got ${result.action}`);
   });
 
   // ---- Tripwire 2: Navigation click must NOT be dead ----
-  test("navigation click -> classified as navigated", () => {
+  test('navigation click -> classified as navigated', () => {
     const result = classifyClick({
       urlChanged: true,
       networkFired: false,
@@ -146,12 +146,12 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
       contentChanged: false,
       isDisabled: false,
     });
-    assert(result.action === "navigated", `Expected navigated, got ${result.action}`);
-    assert(result.action !== "dead-click", "Should not be dead-click");
+    assert(result.action === 'navigated', `Expected navigated, got ${result.action}`);
+    assert(result.action !== 'dead-click', 'Should not be dead-click');
   });
 
   // ---- Tripwire 3: Network click must NOT be dead ----
-  test("network click -> classified as network", () => {
+  test('network click -> classified as network', () => {
     const result = classifyClick({
       urlChanged: false,
       networkFired: true,
@@ -161,11 +161,11 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
       contentChanged: false,
       isDisabled: false,
     });
-    assert(result.action === "network", `Expected network, got ${result.action}`);
+    assert(result.action === 'network', `Expected network, got ${result.action}`);
   });
 
   // ---- Tripwire 4: Dialog click must NOT be dead ----
-  test("dialog click -> classified as dialog", () => {
+  test('dialog click -> classified as dialog', () => {
     const result = classifyClick({
       urlChanged: false,
       networkFired: false,
@@ -175,11 +175,11 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
       contentChanged: false,
       isDisabled: false,
     });
-    assert(result.action === "dialog", `Expected dialog, got ${result.action}`);
+    assert(result.action === 'dialog', `Expected dialog, got ${result.action}`);
   });
 
   // ---- Tripwire 5: Disabled with tooltip must NOT be dead ----
-  test("disabled-with-tooltip -> classified correctly", () => {
+  test('disabled-with-tooltip -> classified correctly', () => {
     const result = classifyClick({
       urlChanged: false,
       networkFired: false,
@@ -188,16 +188,16 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
       toastAppeared: false,
       contentChanged: false,
       isDisabled: true,
-      tooltipText: "Feature requires VistA ORWDX LOCK RPC",
+      tooltipText: 'Feature requires VistA ORWDX LOCK RPC',
     });
     assert(
-      result.action === "disabled-with-tooltip",
-      `Expected disabled-with-tooltip, got ${result.action}`,
+      result.action === 'disabled-with-tooltip',
+      `Expected disabled-with-tooltip, got ${result.action}`
     );
   });
 
   // ---- Tripwire 6: Pending label must NOT be dead ----
-  test("pending-labeled content change -> classified as pending-labeled", () => {
+  test('pending-labeled content change -> classified as pending-labeled', () => {
     const result = classifyClick({
       urlChanged: false,
       networkFired: false,
@@ -205,14 +205,14 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
       popoverOpened: false,
       toastAppeared: false,
       contentChanged: true,
-      contentAfter: "This feature is integration pending - awaiting VistA RPC",
+      contentAfter: 'This feature is integration pending - awaiting VistA RPC',
       isDisabled: false,
     });
-    assert(result.action === "pending-labeled", `Expected pending-labeled, got ${result.action}`);
+    assert(result.action === 'pending-labeled', `Expected pending-labeled, got ${result.action}`);
   });
 
   // ---- Tripwire 7: State change must NOT be dead ----
-  test("content state-change -> classified as state-change", () => {
+  test('content state-change -> classified as state-change', () => {
     const result = classifyClick({
       urlChanged: false,
       networkFired: false,
@@ -220,14 +220,14 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
       popoverOpened: false,
       toastAppeared: false,
       contentChanged: true,
-      contentAfter: "New data loaded successfully",
+      contentAfter: 'New data loaded successfully',
       isDisabled: false,
     });
-    assert(result.action === "state-change", `Expected state-change, got ${result.action}`);
+    assert(result.action === 'state-change', `Expected state-change, got ${result.action}`);
   });
 
   // ---- Tripwire 8: Toast detection works ----
-  test("toast notification -> classified as state-change", () => {
+  test('toast notification -> classified as state-change', () => {
     const result = classifyClick({
       urlChanged: false,
       networkFired: false,
@@ -237,11 +237,11 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
       contentChanged: false,
       isDisabled: false,
     });
-    assert(result.action === "state-change", `Expected state-change, got ${result.action}`);
+    assert(result.action === 'state-change', `Expected state-change, got ${result.action}`);
   });
 
   // ---- Tripwire 9: Disabled WITHOUT tooltip is NOT protected ----
-  test("disabled without tooltip -> classified as dead-click", () => {
+  test('disabled without tooltip -> classified as dead-click', () => {
     const result = classifyClick({
       urlChanged: false,
       networkFired: false,
@@ -250,13 +250,13 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
       toastAppeared: false,
       contentChanged: false,
       isDisabled: true,
-      tooltipText: "", // Empty tooltip -- not sufficient
+      tooltipText: '', // Empty tooltip -- not sufficient
     });
-    assert(result.action === "dead-click", `Expected dead-click, got ${result.action}`);
+    assert(result.action === 'dead-click', `Expected dead-click, got ${result.action}`);
   });
 
   // ---- Tripwire 10: Bidirectional proof -- add effect, remove effect ----
-  test("bidirectional: dead -> add network -> alive -> remove network -> dead", () => {
+  test('bidirectional: dead -> add network -> alive -> remove network -> dead', () => {
     // Start dead
     const ctx: SimulatedClickContext = {
       urlChanged: false,
@@ -267,15 +267,15 @@ function runTripwireTests(): { passed: number; failed: number; results: string[]
       contentChanged: false,
       isDisabled: false,
     };
-    assert(classifyClick(ctx).action === "dead-click", "Should start dead");
+    assert(classifyClick(ctx).action === 'dead-click', 'Should start dead');
 
     // Add effect
     ctx.networkFired = true;
-    assert(classifyClick(ctx).action === "network", "Should be alive with network");
+    assert(classifyClick(ctx).action === 'network', 'Should be alive with network');
 
     // Remove effect
     ctx.networkFired = false;
-    assert(classifyClick(ctx).action === "dead-click", "Should be dead again");
+    assert(classifyClick(ctx).action === 'dead-click', 'Should be dead again');
   });
 
   return { passed, failed, results };

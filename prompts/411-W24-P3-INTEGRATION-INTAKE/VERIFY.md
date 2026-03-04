@@ -1,6 +1,7 @@
 # Phase 411 — W24-P3: Customer Integration Intake Model — VERIFY
 
 ## Gates
+
 1. `apps/api/src/pilots/intake/types.ts` exists with IntegrationIntake type
 2. `apps/api/src/pilots/intake/intake-store.ts` exists with CRUD functions
 3. `apps/api/src/pilots/intake/config-generator.ts` exists with generateConfigFromIntake
@@ -11,7 +12,9 @@
 8. No PHI in any source file
 
 ## Verification Command
+
 ```powershell
 .\scripts\verify-wave24-pilots.ps1
 ```
+
 Section 6 (Integration Intake) must pass all gates.

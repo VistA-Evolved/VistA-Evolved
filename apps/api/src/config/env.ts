@@ -9,7 +9,7 @@
  *   // ENV.VISTA_HOST, ENV.PORT, etc. — all typed + validated
  */
 
-import { z } from "zod";
+import { z } from 'zod';
 
 /* ------------------------------------------------------------------ */
 /* Schema                                                              */
@@ -17,34 +17,42 @@ import { z } from "zod";
 
 const envSchema = z.object({
   // ---- Server ----
-  NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
+  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().int().min(1).max(65535).default(3001),
-  HOST: z.string().default("127.0.0.1"),
+  HOST: z.string().default('127.0.0.1'),
 
   // ---- VistA RPC Broker ----
-  VISTA_HOST: z.string().default("127.0.0.1"),
+  VISTA_HOST: z.string().default('127.0.0.1'),
   VISTA_PORT: z.coerce.number().int().min(1).max(65535).default(9430),
-  VISTA_ACCESS_CODE: z.string().min(1, "VISTA_ACCESS_CODE is required").optional(),
-  VISTA_VERIFY_CODE: z.string().min(1, "VISTA_VERIFY_CODE is required").optional(),
-  VISTA_CONTEXT: z.string().default("OR CPRS GUI CHART"),
+  VISTA_ACCESS_CODE: z.string().min(1, 'VISTA_ACCESS_CODE is required').optional(),
+  VISTA_VERIFY_CODE: z.string().min(1, 'VISTA_VERIFY_CODE is required').optional(),
+  VISTA_CONTEXT: z.string().default('OR CPRS GUI CHART'),
 
   // ---- Build metadata ----
-  BUILD_SHA: z.string().default("dev"),
-  BUILD_TIME: z.string().default("unknown"),
+  BUILD_SHA: z.string().default('dev'),
+  BUILD_TIME: z.string().default('unknown'),
 
   // ---- Security ----
   ALLOWED_ORIGINS: z.string().optional(),
-  SESSION_COOKIE: z.string().default("ehr_session"),
-  SESSION_ABSOLUTE_TTL_MS: z.coerce.number().int().positive().default(8 * 60 * 60 * 1000),
-  SESSION_IDLE_TTL_MS: z.coerce.number().int().positive().default(30 * 60 * 1000),
+  SESSION_COOKIE: z.string().default('ehr_session'),
+  SESSION_ABSOLUTE_TTL_MS: z.coerce
+    .number()
+    .int()
+    .positive()
+    .default(8 * 60 * 60 * 1000),
+  SESSION_IDLE_TTL_MS: z.coerce
+    .number()
+    .int()
+    .positive()
+    .default(30 * 60 * 1000),
 
   // ---- Logging ----
-  LOG_LEVEL: z.enum(["trace", "debug", "info", "warn", "error", "fatal"]).default("info"),
-  LOG_FORMAT: z.enum(["json", "text"]).default("json"),
+  LOG_LEVEL: z.enum(['trace', 'debug', 'info', 'warn', 'error', 'fatal']).default('info'),
+  LOG_FORMAT: z.enum(['json', 'text']).default('json'),
 
   // ---- Audit ----
-  AUDIT_SINK: z.enum(["memory", "file", "stdout"]).default("memory"),
-  AUDIT_FILE_PATH: z.string().default("logs/audit.jsonl"),
+  AUDIT_SINK: z.enum(['memory', 'file', 'stdout']).default('memory'),
+  AUDIT_FILE_PATH: z.string().default('logs/audit.jsonl'),
   AUDIT_MAX_ENTRIES: z.coerce.number().int().positive().default(5000),
   AUDIT_RETENTION_DAYS: z.coerce.number().int().min(0).default(365),
 
@@ -85,10 +93,10 @@ export function getEnv(): EnvConfig {
 
   const result = envSchema.safeParse(process.env);
   if (!result.success) {
-    const errors = result.error.issues
-      .map((i) => `  ${i.path.join(".")}: ${i.message}`)
-      .join("\n");
-    throw new Error(`Environment validation failed:\n${errors}\n\nSee apps/api/.env.example for reference.`);
+    const errors = result.error.issues.map((i) => `  ${i.path.join('.')}: ${i.message}`).join('\n');
+    throw new Error(
+      `Environment validation failed:\n${errors}\n\nSee apps/api/.env.example for reference.`
+    );
   }
 
   _env = result.data;

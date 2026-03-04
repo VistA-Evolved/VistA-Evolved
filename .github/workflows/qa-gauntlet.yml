@@ -5,13 +5,13 @@ on:
     branches: [main, develop]
   schedule:
     # Nightly at 02:00 UTC
-    - cron: "0 2 * * *"
+    - cron: '0 2 * * *'
   workflow_dispatch:
     inputs:
       suite:
-        description: "Suite to run (fast/rc/full)"
+        description: 'Suite to run (fast/rc/full)'
         required: false
-        default: "rc"
+        default: 'rc'
 
 concurrency:
   group: qa-gauntlet-${{ github.ref }}
@@ -29,11 +29,11 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "24.13.0"
+          node-version: '24.13.0'
 
       - uses: pnpm/action-setup@v4
         with:
-          version: "10.29.2"
+          version: '10.29.2'
 
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -71,11 +71,11 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "24.13.0"
+          node-version: '24.13.0'
 
       - uses: pnpm/action-setup@v4
         with:
-          version: "10.29.2"
+          version: '10.29.2'
 
       - name: Get pnpm store directory
         id: pnpm-cache

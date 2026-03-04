@@ -64,37 +64,42 @@ curl http://127.0.0.1:3001/health
 
 ## 5. Connection Details
 
-| Setting | Dev Default | Production |
-|---------|-------------|------------|
-| Host | 127.0.0.1 | RDS/Aurora endpoint |
-| Port | 5433 | 5432 |
-| Database | ve_platform | ve_platform |
-| User | ve_api | ve_api (IAM auth recommended) |
-| Password | `ve_dev_only_change_in_prod` | From secrets manager |
-| SSL | Off | `sslmode=require` |
-| Pool min | 2 | 2 |
-| Pool max | 10 | 20 |
-| RLS | Off | `PLATFORM_DB_RLS_ENABLED=true` |
+| Setting  | Dev Default                  | Production                     |
+| -------- | ---------------------------- | ------------------------------ |
+| Host     | 127.0.0.1                    | RDS/Aurora endpoint            |
+| Port     | 5433                         | 5432                           |
+| Database | ve_platform                  | ve_platform                    |
+| User     | ve_api                       | ve_api (IAM auth recommended)  |
+| Password | `ve_dev_only_change_in_prod` | From secrets manager           |
+| SSL      | Off                          | `sslmode=require`              |
+| Pool min | 2                            | 2                              |
+| Pool max | 10                           | 20                             |
+| RLS      | Off                          | `PLATFORM_DB_RLS_ENABLED=true` |
 
 ## 6. Troubleshooting
 
 ### Port conflict
+
 If port 5433 is taken, edit `services/platform-db/docker-compose.yml` and
 update `PLATFORM_PG_URL` in `.env.local` accordingly.
 
 ### Reset database
+
 ```powershell
 docker compose -f services/platform-db/docker-compose.yml down -v
 docker compose -f services/platform-db/docker-compose.yml up -d
 ```
 
 ### View logs
+
 ```powershell
 docker logs ve-platform-db -f
 ```
 
 ### RLS debugging
+
 If RLS is enabled and queries return empty:
+
 1. Check that `SET app.current_tenant_id` is being called per-connection
 2. Verify the tenant_id value matches what's in the table
 3. Disable RLS temporarily: `PLATFORM_PG_RLS_ENABLED=false`

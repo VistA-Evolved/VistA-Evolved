@@ -1,11 +1,13 @@
 # Phase 17 — Multi-Tenant Control Plane VERIFY
 
 ## Verification Steps
+
 1. Run `scripts/verify-phase17-multitenant-control-plane.ps1` from repo root
 2. Expect: all PASS, 0 FAIL, 0 WARN
 3. Confirm TypeScript compiles clean: `pnpm exec tsc --noEmit` in both apps
 
 ## What the verifier checks
+
 - Tenant config file exists with TenantConfig interface
 - Admin routes file exists with CRUD endpoints
 - SessionData includes tenantId

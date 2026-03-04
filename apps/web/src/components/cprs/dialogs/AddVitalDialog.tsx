@@ -7,7 +7,6 @@ import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
-
 const VITAL_TYPES = [
   { value: '1', label: 'Temperature' },
   { value: '2', label: 'Pulse' },
@@ -38,14 +37,21 @@ export default function AddVitalDialog() {
   const [syncStatus, setSyncStatus] = useState<'synced' | 'local' | ''>('');
 
   async function handleSave() {
-    if (!value.trim()) { setError('Value is required'); return; }
+    if (!value.trim()) {
+      setError('Value is required');
+      return;
+    }
     setSaving(true);
     setError('');
 
     try {
       const res = await fetch(`${API_BASE}/vista/cprs/vitals/add`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `vital-${dfn}-${Date.now()}`, ...csrfHeaders() },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Idempotency-Key': `vital-${dfn}-${Date.now()}`,
+          ...csrfHeaders(),
+        },
         credentials: 'include',
         body: JSON.stringify({ dfn, vitalType, value, units }),
       });
@@ -71,7 +77,7 @@ export default function AddVitalDialog() {
   }
 
   function saveLocal() {
-    const label = VITAL_TYPES.find(v => v.value === vitalType)?.label ?? 'Vital';
+    const label = VITAL_TYPES.find((v) => v.value === vitalType)?.label ?? 'Vital';
     const draft: Vital = {
       type: label,
       value: value.trim(),
@@ -86,44 +92,83 @@ export default function AddVitalDialog() {
   if (!dfn) return null;
 
   return (
-    <div className={styles.modalOverlay} onClick={(e) => e.target === e.currentTarget && closeModal()}>
+    <div
+      className={styles.modalOverlay}
+      onClick={(e) => e.target === e.currentTarget && closeModal()}
+    >
       <div className={styles.modalContent} style={{ maxWidth: 460 }}>
         <div className={styles.modalHeader}>
           <span>Add Vital Measurement</span>
-          <button onClick={closeModal} style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer' }}>&times;</button>
+          <button
+            onClick={closeModal}
+            style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer' }}
+          >
+            &times;
+          </button>
         </div>
         <div className={styles.modalBody}>
           {error && <div className={styles.errorText}>{error}</div>}
           {success && (
-            <div style={{
-              padding: '6px 10px', borderRadius: 4, marginBottom: 8, fontSize: 12,
-              background: syncStatus === 'synced' ? '#d4edda' : '#fff3cd',
-              border: syncStatus === 'synced' ? '1px solid #28a745' : '1px solid #ffc107',
-            }}>
-              {syncStatus === 'synced' ? 'Vital saved to VistA' : 'Vital saved as local draft (VistA sync pending)'}
+            <div
+              style={{
+                padding: '6px 10px',
+                borderRadius: 4,
+                marginBottom: 8,
+                fontSize: 12,
+                background: syncStatus === 'synced' ? '#d4edda' : '#fff3cd',
+                border: syncStatus === 'synced' ? '1px solid #28a745' : '1px solid #ffc107',
+              }}
+            >
+              {syncStatus === 'synced'
+                ? 'Vital saved to VistA'
+                : 'Vital saved as local draft (VistA sync pending)'}
             </div>
           )}
 
           <div className={styles.formGroup}>
             <label>Vital Type *</label>
-            <select className={styles.formSelect} value={vitalType} onChange={(e) => setVitalType(e.target.value)}>
-              {VITAL_TYPES.map(v => <option key={v.value} value={v.value}>{v.label}</option>)}
+            <select
+              className={styles.formSelect}
+              value={vitalType}
+              onChange={(e) => setVitalType(e.target.value)}
+            >
+              {VITAL_TYPES.map((v) => (
+                <option key={v.value} value={v.value}>
+                  {v.label}
+                </option>
+              ))}
             </select>
           </div>
 
           <div className={styles.formGroup}>
             <label>Value *</label>
-            <input className={styles.formInput} value={value} onChange={(e) => setValue(e.target.value)} placeholder="e.g., 72, 120/80" />
+            <input
+              className={styles.formInput}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder="e.g., 72, 120/80"
+            />
           </div>
 
           <div className={styles.formGroup}>
             <label>Units</label>
-            <input className={styles.formInput} value={units} onChange={(e) => setUnits(e.target.value)} placeholder="e.g., bpm, mmHg" />
+            <input
+              className={styles.formInput}
+              value={units}
+              onChange={(e) => setUnits(e.target.value)}
+              placeholder="e.g., bpm, mmHg"
+            />
           </div>
 
           <div className={styles.modalFooter}>
-            <button className={styles.btn} onClick={closeModal}>Cancel</button>
-            <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={handleSave} disabled={saving}>
+            <button className={styles.btn} onClick={closeModal}>
+              Cancel
+            </button>
+            <button
+              className={`${styles.btn} ${styles.btnPrimary}`}
+              onClick={handleSave}
+              disabled={saving}
+            >
               {saving ? 'Saving...' : 'Save Vital'}
             </button>
           </div>

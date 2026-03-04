@@ -10,40 +10,40 @@
  * department membership → ABAC further constrains by attributes.
  */
 
-import { randomUUID } from "node:crypto";
-import type { DepartmentType } from "../services/facility-service.js";
+import { randomUUID } from 'node:crypto';
+import type { DepartmentType } from '../services/facility-service.js';
 
 // ─── Types ───────────────────────────────────────────────
 
 export type DeptRoleAction =
-  | "view_patient"
-  | "edit_patient"
-  | "write_orders"
-  | "sign_orders"
-  | "administer_meds"
-  | "view_imaging"
-  | "order_imaging"
-  | "view_labs"
-  | "order_labs"
-  | "write_notes"
-  | "sign_notes"
-  | "view_schedule"
-  | "manage_schedule"
-  | "triage"
-  | "discharge"
-  | "admit"
-  | "transfer"
-  | "prescribe"
-  | "dispense"
-  | "view_vitals"
-  | "record_vitals"
-  | "manage_department"
-  | "view_reports"
-  | "manage_templates"
-  | "view_billing"
-  | "manage_billing"
-  | "telehealth_initiate"
-  | "break_glass";
+  | 'view_patient'
+  | 'edit_patient'
+  | 'write_orders'
+  | 'sign_orders'
+  | 'administer_meds'
+  | 'view_imaging'
+  | 'order_imaging'
+  | 'view_labs'
+  | 'order_labs'
+  | 'write_notes'
+  | 'sign_notes'
+  | 'view_schedule'
+  | 'manage_schedule'
+  | 'triage'
+  | 'discharge'
+  | 'admit'
+  | 'transfer'
+  | 'prescribe'
+  | 'dispense'
+  | 'view_vitals'
+  | 'record_vitals'
+  | 'manage_department'
+  | 'view_reports'
+  | 'manage_templates'
+  | 'view_billing'
+  | 'manage_billing'
+  | 'telehealth_initiate'
+  | 'break_glass';
 
 export interface DeptRoleTemplate {
   id: string;
@@ -55,7 +55,7 @@ export interface DeptRoleTemplate {
   deniedActions: DeptRoleAction[];
   constraints: Record<string, unknown>;
   isDefault: boolean;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
   createdAt: string;
   updatedAt: string;
 }
@@ -69,7 +69,7 @@ export interface DeptRoleMembership {
   grantedBy: string;
   grantedAt: string;
   expiresAt: string | null;
-  status: "active" | "revoked" | "expired";
+  status: 'active' | 'revoked' | 'expired';
 }
 
 export interface DeptAccessDecision {
@@ -91,143 +91,256 @@ const DEFAULT_TEMPLATES: Array<{
 }> = [
   // Emergency Department
   {
-    departmentType: "emergency",
-    role: "provider",
+    departmentType: 'emergency',
+    role: 'provider',
     allowedActions: [
-      "view_patient", "edit_patient", "write_orders", "sign_orders",
-      "view_imaging", "order_imaging", "view_labs", "order_labs",
-      "write_notes", "sign_notes", "triage", "discharge", "admit",
-      "prescribe", "view_vitals", "record_vitals", "view_reports",
-      "break_glass",
+      'view_patient',
+      'edit_patient',
+      'write_orders',
+      'sign_orders',
+      'view_imaging',
+      'order_imaging',
+      'view_labs',
+      'order_labs',
+      'write_notes',
+      'sign_notes',
+      'triage',
+      'discharge',
+      'admit',
+      'prescribe',
+      'view_vitals',
+      'record_vitals',
+      'view_reports',
+      'break_glass',
     ],
-    deniedActions: ["manage_billing", "manage_department"],
+    deniedActions: ['manage_billing', 'manage_department'],
   },
   {
-    departmentType: "emergency",
-    role: "nurse",
+    departmentType: 'emergency',
+    role: 'nurse',
     allowedActions: [
-      "view_patient", "edit_patient", "view_imaging", "view_labs",
-      "write_notes", "triage", "view_vitals", "record_vitals",
-      "administer_meds", "view_schedule",
+      'view_patient',
+      'edit_patient',
+      'view_imaging',
+      'view_labs',
+      'write_notes',
+      'triage',
+      'view_vitals',
+      'record_vitals',
+      'administer_meds',
+      'view_schedule',
     ],
-    deniedActions: ["sign_orders", "prescribe", "manage_billing", "manage_department"],
+    deniedActions: ['sign_orders', 'prescribe', 'manage_billing', 'manage_department'],
   },
   // Inpatient
   {
-    departmentType: "inpatient",
-    role: "provider",
+    departmentType: 'inpatient',
+    role: 'provider',
     allowedActions: [
-      "view_patient", "edit_patient", "write_orders", "sign_orders",
-      "view_imaging", "order_imaging", "view_labs", "order_labs",
-      "write_notes", "sign_notes", "discharge", "admit", "transfer",
-      "prescribe", "view_vitals", "record_vitals", "view_reports",
+      'view_patient',
+      'edit_patient',
+      'write_orders',
+      'sign_orders',
+      'view_imaging',
+      'order_imaging',
+      'view_labs',
+      'order_labs',
+      'write_notes',
+      'sign_notes',
+      'discharge',
+      'admit',
+      'transfer',
+      'prescribe',
+      'view_vitals',
+      'record_vitals',
+      'view_reports',
     ],
-    deniedActions: ["manage_billing"],
+    deniedActions: ['manage_billing'],
   },
   {
-    departmentType: "inpatient",
-    role: "nurse",
+    departmentType: 'inpatient',
+    role: 'nurse',
     allowedActions: [
-      "view_patient", "edit_patient", "view_imaging", "view_labs",
-      "write_notes", "view_vitals", "record_vitals", "administer_meds",
-      "view_schedule",
+      'view_patient',
+      'edit_patient',
+      'view_imaging',
+      'view_labs',
+      'write_notes',
+      'view_vitals',
+      'record_vitals',
+      'administer_meds',
+      'view_schedule',
     ],
-    deniedActions: ["sign_orders", "prescribe", "manage_billing"],
+    deniedActions: ['sign_orders', 'prescribe', 'manage_billing'],
   },
   // Outpatient / Primary Care
   {
-    departmentType: "outpatient",
-    role: "provider",
+    departmentType: 'outpatient',
+    role: 'provider',
     allowedActions: [
-      "view_patient", "edit_patient", "write_orders", "sign_orders",
-      "view_imaging", "order_imaging", "view_labs", "order_labs",
-      "write_notes", "sign_notes", "prescribe", "view_vitals",
-      "record_vitals", "view_schedule", "manage_schedule",
-      "telehealth_initiate", "view_reports",
+      'view_patient',
+      'edit_patient',
+      'write_orders',
+      'sign_orders',
+      'view_imaging',
+      'order_imaging',
+      'view_labs',
+      'order_labs',
+      'write_notes',
+      'sign_notes',
+      'prescribe',
+      'view_vitals',
+      'record_vitals',
+      'view_schedule',
+      'manage_schedule',
+      'telehealth_initiate',
+      'view_reports',
     ],
-    deniedActions: ["admit", "transfer", "manage_billing"],
+    deniedActions: ['admit', 'transfer', 'manage_billing'],
   },
   {
-    departmentType: "primary_care",
-    role: "provider",
+    departmentType: 'primary_care',
+    role: 'provider',
     allowedActions: [
-      "view_patient", "edit_patient", "write_orders", "sign_orders",
-      "view_imaging", "order_imaging", "view_labs", "order_labs",
-      "write_notes", "sign_notes", "prescribe", "view_vitals",
-      "record_vitals", "view_schedule", "manage_schedule",
-      "telehealth_initiate", "view_reports",
+      'view_patient',
+      'edit_patient',
+      'write_orders',
+      'sign_orders',
+      'view_imaging',
+      'order_imaging',
+      'view_labs',
+      'order_labs',
+      'write_notes',
+      'sign_notes',
+      'prescribe',
+      'view_vitals',
+      'record_vitals',
+      'view_schedule',
+      'manage_schedule',
+      'telehealth_initiate',
+      'view_reports',
     ],
-    deniedActions: ["admit", "transfer", "manage_billing"],
+    deniedActions: ['admit', 'transfer', 'manage_billing'],
   },
   // Radiology
   {
-    departmentType: "radiology",
-    role: "provider",
+    departmentType: 'radiology',
+    role: 'provider',
     allowedActions: [
-      "view_patient", "view_imaging", "order_imaging", "write_notes",
-      "sign_notes", "view_labs", "view_vitals", "view_reports",
-      "manage_templates",
+      'view_patient',
+      'view_imaging',
+      'order_imaging',
+      'write_notes',
+      'sign_notes',
+      'view_labs',
+      'view_vitals',
+      'view_reports',
+      'manage_templates',
     ],
-    deniedActions: ["prescribe", "admit", "discharge", "manage_billing"],
+    deniedActions: ['prescribe', 'admit', 'discharge', 'manage_billing'],
   },
   // Laboratory
   {
-    departmentType: "laboratory",
-    role: "provider",
+    departmentType: 'laboratory',
+    role: 'provider',
     allowedActions: [
-      "view_patient", "view_labs", "order_labs", "write_notes",
-      "sign_notes", "view_vitals", "view_reports", "manage_templates",
+      'view_patient',
+      'view_labs',
+      'order_labs',
+      'write_notes',
+      'sign_notes',
+      'view_vitals',
+      'view_reports',
+      'manage_templates',
     ],
-    deniedActions: ["prescribe", "admit", "discharge", "order_imaging", "manage_billing"],
+    deniedActions: ['prescribe', 'admit', 'discharge', 'order_imaging', 'manage_billing'],
   },
   // Pharmacy
   {
-    departmentType: "pharmacy",
-    role: "pharmacist",
+    departmentType: 'pharmacy',
+    role: 'pharmacist',
     allowedActions: [
-      "view_patient", "view_labs", "view_vitals", "dispense",
-      "view_reports", "write_notes",
+      'view_patient',
+      'view_labs',
+      'view_vitals',
+      'dispense',
+      'view_reports',
+      'write_notes',
     ],
     deniedActions: [
-      "sign_orders", "admit", "discharge", "order_imaging", "triage",
-      "manage_billing",
+      'sign_orders',
+      'admit',
+      'discharge',
+      'order_imaging',
+      'triage',
+      'manage_billing',
     ],
   },
   // Surgery
   {
-    departmentType: "surgery",
-    role: "provider",
+    departmentType: 'surgery',
+    role: 'provider',
     allowedActions: [
-      "view_patient", "edit_patient", "write_orders", "sign_orders",
-      "view_imaging", "order_imaging", "view_labs", "order_labs",
-      "write_notes", "sign_notes", "admit", "discharge", "prescribe",
-      "view_vitals", "record_vitals", "view_reports",
+      'view_patient',
+      'edit_patient',
+      'write_orders',
+      'sign_orders',
+      'view_imaging',
+      'order_imaging',
+      'view_labs',
+      'order_labs',
+      'write_notes',
+      'sign_notes',
+      'admit',
+      'discharge',
+      'prescribe',
+      'view_vitals',
+      'record_vitals',
+      'view_reports',
     ],
-    deniedActions: ["manage_billing"],
+    deniedActions: ['manage_billing'],
   },
   // Mental Health
   {
-    departmentType: "mental_health",
-    role: "provider",
+    departmentType: 'mental_health',
+    role: 'provider',
     allowedActions: [
-      "view_patient", "edit_patient", "write_orders", "sign_orders",
-      "view_labs", "order_labs", "write_notes", "sign_notes",
-      "prescribe", "view_vitals", "view_schedule", "manage_schedule",
-      "telehealth_initiate", "view_reports",
+      'view_patient',
+      'edit_patient',
+      'write_orders',
+      'sign_orders',
+      'view_labs',
+      'order_labs',
+      'write_notes',
+      'sign_notes',
+      'prescribe',
+      'view_vitals',
+      'view_schedule',
+      'manage_schedule',
+      'telehealth_initiate',
+      'view_reports',
     ],
-    deniedActions: ["admit", "manage_billing", "order_imaging"],
+    deniedActions: ['admit', 'manage_billing', 'order_imaging'],
   },
   // Administration
   {
-    departmentType: "administration",
-    role: "clerk",
+    departmentType: 'administration',
+    role: 'clerk',
     allowedActions: [
-      "view_schedule", "manage_schedule", "view_billing", "manage_billing",
-      "view_reports", "manage_department",
+      'view_schedule',
+      'manage_schedule',
+      'view_billing',
+      'manage_billing',
+      'view_reports',
+      'manage_department',
     ],
     deniedActions: [
-      "view_patient", "edit_patient", "write_orders", "sign_orders",
-      "prescribe", "administer_meds",
+      'view_patient',
+      'edit_patient',
+      'write_orders',
+      'sign_orders',
+      'prescribe',
+      'administer_meds',
     ],
   },
 ];
@@ -249,7 +362,7 @@ export function seedDefaultTemplates(tenantId: string): DeptRoleTemplate[] {
         t.tenantId === tenantId &&
         t.departmentType === def.departmentType &&
         t.role === def.role &&
-        t.isDefault,
+        t.isDefault
     );
     if (existing) {
       seeded.push(existing);
@@ -266,7 +379,7 @@ export function seedDefaultTemplates(tenantId: string): DeptRoleTemplate[] {
       deniedActions: def.deniedActions,
       constraints: {},
       isDefault: true,
-      status: "active",
+      status: 'active',
       createdAt: now,
       updatedAt: now,
     };
@@ -279,7 +392,7 @@ export function seedDefaultTemplates(tenantId: string): DeptRoleTemplate[] {
 
 export function createTemplate(
   tenantId: string,
-  input: Omit<DeptRoleTemplate, "id" | "tenantId" | "isDefault" | "createdAt" | "updatedAt">,
+  input: Omit<DeptRoleTemplate, 'id' | 'tenantId' | 'isDefault' | 'createdAt' | 'updatedAt'>
 ): DeptRoleTemplate {
   const now = new Date().toISOString();
   const t: DeptRoleTemplate = {
@@ -301,20 +414,22 @@ export function getTemplate(id: string): DeptRoleTemplate | undefined {
 export function listTemplates(
   tenantId: string,
   departmentType?: DepartmentType,
-  role?: string,
+  role?: string
 ): DeptRoleTemplate[] {
   return Array.from(templateStore.values()).filter(
     (t) =>
       t.tenantId === tenantId &&
-      t.status === "active" &&
+      t.status === 'active' &&
       (!departmentType || t.departmentType === departmentType) &&
-      (!role || t.role === role),
+      (!role || t.role === role)
   );
 }
 
 export function updateTemplate(
   id: string,
-  patch: Partial<Pick<DeptRoleTemplate, "name" | "allowedActions" | "deniedActions" | "constraints" | "status">>,
+  patch: Partial<
+    Pick<DeptRoleTemplate, 'name' | 'allowedActions' | 'deniedActions' | 'constraints' | 'status'>
+  >
 ): DeptRoleTemplate | undefined {
   const existing = templateStore.get(id);
   if (!existing) return undefined;
@@ -331,7 +446,7 @@ export function updateTemplate(
 
 export function assignMembership(
   tenantId: string,
-  input: Omit<DeptRoleMembership, "id" | "tenantId" | "grantedAt">,
+  input: Omit<DeptRoleMembership, 'id' | 'tenantId' | 'grantedAt'>
 ): DeptRoleMembership {
   const m: DeptRoleMembership = {
     id: randomUUID(),
@@ -346,23 +461,23 @@ export function assignMembership(
 export function listMemberships(
   tenantId: string,
   userId?: string,
-  departmentId?: string,
+  departmentId?: string
 ): DeptRoleMembership[] {
   const now = new Date();
   return Array.from(membershipStore.values()).filter(
     (m) =>
       m.tenantId === tenantId &&
-      m.status === "active" &&
+      m.status === 'active' &&
       (!m.expiresAt || new Date(m.expiresAt) > now) &&
       (!userId || m.userId === userId) &&
-      (!departmentId || m.departmentId === departmentId),
+      (!departmentId || m.departmentId === departmentId)
   );
 }
 
 export function revokeMembership(id: string): boolean {
   const m = membershipStore.get(id);
   if (!m) return false;
-  m.status = "revoked";
+  m.status = 'revoked';
   return true;
 }
 
@@ -372,7 +487,7 @@ export function evaluateDeptAccess(
   tenantId: string,
   userId: string,
   departmentId: string,
-  action: DeptRoleAction,
+  action: DeptRoleAction
 ): DeptAccessDecision {
   // Find active memberships for this user + department
   const memberships = listMemberships(tenantId, userId, departmentId);
@@ -382,7 +497,7 @@ export function evaluateDeptAccess(
       action,
       departmentId,
       templateId: null,
-      reason: "No active department membership",
+      reason: 'No active department membership',
       constraints: {},
     };
   }
@@ -390,7 +505,7 @@ export function evaluateDeptAccess(
   // Check each membership's template
   for (const membership of memberships) {
     const template = templateStore.get(membership.templateId);
-    if (!template || template.status !== "active") continue;
+    if (!template || template.status !== 'active') continue;
 
     // Explicit deny takes precedence
     if (template.deniedActions.includes(action)) {

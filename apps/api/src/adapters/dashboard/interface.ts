@@ -11,8 +11,8 @@ export interface ClinicalRule {
   id: string;
   name: string;
   description: string;
-  category: "alert" | "reminder" | "order-check" | "documentation";
-  severity: "info" | "warning" | "critical";
+  category: 'alert' | 'reminder' | 'order-check' | 'documentation';
+  severity: 'info' | 'warning' | 'critical';
   enabled: boolean;
   conditions: Record<string, unknown>;
 }
@@ -21,7 +21,7 @@ export interface RuleEvaluation {
   ruleId: string;
   ruleName: string;
   triggered: boolean;
-  severity: "info" | "warning" | "critical";
+  severity: 'info' | 'warning' | 'critical';
   message: string;
   evaluatedAt: string;
   data?: Record<string, unknown>;
@@ -31,7 +31,7 @@ export interface ClinicalAlert {
   id: string;
   ruleId: string;
   patientDfn: string;
-  severity: "info" | "warning" | "critical";
+  severity: 'info' | 'warning' | 'critical';
   message: string;
   acknowledged: boolean;
   createdAt: string;
@@ -73,5 +73,5 @@ export interface DashboardAdapter {
   getPatientLists(): Promise<DashboardResult<PatientList[]>>;
 
   /** Health check for the dashboard service */
-  health(): Promise<{ status: "connected" | "unreachable" | "stub"; detail?: string }>;
+  health(): Promise<{ status: 'connected' | 'unreachable' | 'stub'; detail?: string }>;
 }

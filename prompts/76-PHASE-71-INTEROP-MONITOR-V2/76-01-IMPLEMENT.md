@@ -10,6 +10,7 @@ files/RPCs.
 ## Inventory (Pre-Edit)
 
 ### Files Inspected
+
 - `services/vista/ZVEMIOP.m` — Already complete: 6 RPCs reading real globals
 - `services/vista/ZVEMINS.m` — Already complete: registers all 6 RPCs in file 8994
 - `services/vista/VEMCTX3.m` — GAP: only 4 of 6 RPCs added to context
@@ -20,14 +21,15 @@ files/RPCs.
 - `apps/web/src/actions/actionRegistry.ts` — GAP: missing 2 Phase 58 actions
 
 ### VistA Globals Read by ZVEMIOP.m
-| RPC | Global(s) | File# | Purpose |
-|-----|-----------|-------|---------|
-| VE INTEROP HL7 LINKS | ^HLCS(870) | 870 | HL7 Logical Link status |
-| VE INTEROP HL7 MSGS | ^HLMA | 773 | Message Admin (time-windowed) |
-| VE INTEROP HLO STATUS | ^HLD(779.1/779.2/779.4/779.9) | 779.* | HLO engine config |
-| VE INTEROP QUEUE DEPTH | ^HLMA, ^HLB | 773, 778 | Pending/error queue counts |
-| VE INTEROP MSG LIST | ^HLMA, ^HL(772) | 773, 772 | Filtered message list |
-| VE INTEROP MSG DETAIL | ^HLMA, ^HL(772) | 773, 772 | Single message + segment counts |
+
+| RPC                    | Global(s)                     | File#    | Purpose                         |
+| ---------------------- | ----------------------------- | -------- | ------------------------------- |
+| VE INTEROP HL7 LINKS   | ^HLCS(870)                    | 870      | HL7 Logical Link status         |
+| VE INTEROP HL7 MSGS    | ^HLMA                         | 773      | Message Admin (time-windowed)   |
+| VE INTEROP HLO STATUS  | ^HLD(779.1/779.2/779.4/779.9) | 779.\*   | HLO engine config               |
+| VE INTEROP QUEUE DEPTH | ^HLMA, ^HLB                   | 773, 778 | Pending/error queue counts      |
+| VE INTEROP MSG LIST    | ^HLMA, ^HL(772)               | 773, 772 | Filtered message list           |
+| VE INTEROP MSG DETAIL  | ^HLMA, ^HL(772)               | 773, 772 | Single message + segment counts |
 
 ## Implementation Steps
 
@@ -47,6 +49,7 @@ files/RPCs.
 Run `scripts/verify-phase71-interop.ps1` — checks all gates.
 
 ## Files Touched
+
 - `services/vista/VEMCTX3.m`
 - `scripts/install-interop-rpcs.ps1`
 - `config/capabilities.json`

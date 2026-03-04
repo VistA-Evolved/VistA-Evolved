@@ -1,9 +1,11 @@
 # ADR: Analytics Stack
 
 ## Status
+
 Accepted
 
 ## Context
+
 VistA-Evolved needs a scalable analytics layer for operational dashboards,
 quality metrics, and RCM reporting. Options considered:
 

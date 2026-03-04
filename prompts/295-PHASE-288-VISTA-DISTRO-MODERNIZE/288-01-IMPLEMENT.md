@@ -1,6 +1,7 @@
 # Phase 288 -- VistA Distro Modernization (IMPLEMENT)
 
 ## Goal
+
 Modernize the VistA distro lane (Phase 148) with pinned commit references,
 Synthea patient seeding support, a CI build-validation job, and a Dockerfile
 lint pass.
@@ -17,6 +18,7 @@ lint pass.
 6. Create verifier + evidence
 
 ## Files Touched
+
 - `services/vista-distro/build.env` (MODIFIED - pin commit)
 - `services/vista-distro/Dockerfile` (MODIFIED - layer optimization + build metadata)
 - `services/vista-distro/synthea-seed/seed-synthea.ps1` (NEW)

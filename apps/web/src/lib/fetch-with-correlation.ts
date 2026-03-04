@@ -13,7 +13,6 @@ import { API_BASE } from '@/lib/api-config';
  *   console.log(res.correlationId); // from X-Request-Id response header
  */
 
-
 /* ------------------------------------------------------------------ */
 /* Correlation ID generator                                            */
 /* ------------------------------------------------------------------ */
@@ -53,7 +52,7 @@ export interface CorrelatedResponse<T = unknown> {
  */
 export async function correlatedFetch<T = unknown>(
   path: string,
-  opts?: RequestInit & { correlationId?: string },
+  opts?: RequestInit & { correlationId?: string }
 ): Promise<CorrelatedResponse<T>> {
   const correlationId = opts?.correlationId ?? generateCorrelationId();
 
@@ -78,7 +77,7 @@ export async function correlatedFetch<T = unknown>(
       `API ${res.status}: ${res.statusText}`,
       res.status,
       serverCorrelationId ?? correlationId,
-      traceId,
+      traceId
     );
   }
 
@@ -107,7 +106,7 @@ export async function correlatedGet<T>(path: string): Promise<T> {
  */
 export async function correlatedPost<T>(
   path: string,
-  body: unknown,
+  body: unknown
 ): Promise<CorrelatedResponse<T>> {
   return correlatedFetch<T>(path, {
     method: 'POST',
@@ -125,7 +124,7 @@ export class CorrelatedError extends Error {
     message: string,
     public readonly status: number,
     public readonly correlationId: string,
-    public readonly traceId: string | null,
+    public readonly traceId: string | null
   ) {
     super(message);
     this.name = 'CorrelatedError';

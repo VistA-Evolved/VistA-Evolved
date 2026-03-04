@@ -10,39 +10,39 @@
 /* ─── X12 Transaction Set identifiers ──────────────────────────────── */
 
 export type X12TransactionSet =
-  | '837P'   // Professional claim
-  | '837I'   // Institutional claim
-  | '835'    // Electronic Remittance Advice (ERA)
-  | '270'    // Eligibility inquiry
-  | '271'    // Eligibility response
-  | '276'    // Claim status inquiry
-  | '277'    // Claim status response
-  | '275'    // Additional information to support a claim
-  | '278'    // Prior authorization request/response
-  | '999'    // Implementation acknowledgment
-  | '997'    // Functional acknowledgment (legacy)
-  | 'TA1';   // Interchange acknowledgment
+  | '837P' // Professional claim
+  | '837I' // Institutional claim
+  | '835' // Electronic Remittance Advice (ERA)
+  | '270' // Eligibility inquiry
+  | '271' // Eligibility response
+  | '276' // Claim status inquiry
+  | '277' // Claim status response
+  | '275' // Additional information to support a claim
+  | '278' // Prior authorization request/response
+  | '999' // Implementation acknowledgment
+  | '997' // Functional acknowledgment (legacy)
+  | 'TA1'; // Interchange acknowledgment
 
 /* ─── Envelope types ─────────────────────────────────────────────── */
 
 export interface IsaEnvelope {
-  senderId: string;       // ISA06 - Interchange sender ID
-  receiverId: string;     // ISA08 - Interchange receiver ID
+  senderId: string; // ISA06 - Interchange sender ID
+  receiverId: string; // ISA08 - Interchange receiver ID
   senderQualifier: string; // ISA05 - usually 'ZZ' or '30'
   receiverQualifier: string; // ISA07
-  controlNumber: string;  // ISA13 - unique per interchange
-  date: string;           // ISA09 - YYMMDD
-  time: string;           // ISA10 - HHMM
-  versionNumber: string;  // ISA12 - '00501' for 5010
+  controlNumber: string; // ISA13 - unique per interchange
+  date: string; // ISA09 - YYMMDD
+  time: string; // ISA10 - HHMM
+  versionNumber: string; // ISA12 - '00501' for 5010
   usageIndicator: 'T' | 'P'; // ISA15 - Test or Production
 }
 
 export interface GsEnvelope {
-  functionalCode: string;  // GS01 - HC, HP, FA, HN, etc.
-  senderId: string;        // GS02
-  receiverId: string;      // GS03
-  controlNumber: string;   // GS06
-  versionCode: string;     // GS08 - '005010X222A1' for 837P, etc.
+  functionalCode: string; // GS01 - HC, HP, FA, HN, etc.
+  senderId: string; // GS02
+  receiverId: string; // GS03
+  controlNumber: string; // GS06
+  versionCode: string; // GS08 - '005010X222A1' for 837P, etc.
 }
 
 /* ─── Claims (837P / 837I) ──────────────────────────────────────── */
@@ -72,7 +72,7 @@ export interface EdiClaim837 {
     memberId: string;
     firstName: string;
     lastName: string;
-    dob?: string;        // CCYYMMDD
+    dob?: string; // CCYYMMDD
     gender?: 'M' | 'F' | 'U';
     groupNumber?: string;
     address?: EdiAddress;
@@ -87,10 +87,10 @@ export interface EdiClaim837 {
     relationshipCode: string;
   };
   claimInfo: {
-    claimId: string;         // CLM01 - provider's claim number
+    claimId: string; // CLM01 - provider's claim number
     totalChargeAmount: number;
-    facilityCode: string;    // CLM05-1
-    frequencyCode: string;   // CLM05-3 - '1' original, '7' replacement, '8' void
+    facilityCode: string; // CLM05-1
+    frequencyCode: string; // CLM05-3 - '1' original, '7' replacement, '8' void
     providerSignature: boolean;
     assignmentOfBenefits: boolean;
     releaseOfInfo: string;
@@ -117,18 +117,18 @@ export interface EdiDiagnosisCode {
 
 export interface EdiServiceLine {
   lineNumber: number;
-  procedureCode: string;     // CPT/HCPCS
-  modifiers?: string[];      // up to 4
+  procedureCode: string; // CPT/HCPCS
+  modifiers?: string[]; // up to 4
   chargeAmount: number;
   units: number;
-  unitType: string;          // 'UN' = unit, 'MJ' = minutes
-  serviceDate: string;       // CCYYMMDD
+  unitType: string; // 'UN' = unit, 'MJ' = minutes
+  serviceDate: string; // CCYYMMDD
   serviceDateEnd?: string;
-  placeOfService: string;    // '11' office, '21' inpatient, '22' outpatient, etc.
+  placeOfService: string; // '11' office, '21' inpatient, '22' outpatient, etc.
   renderingProviderNpi?: string;
   diagnosisPointers: number[]; // 1-based indices into diagnosisCodes[]
-  revenueCode?: string;      // 837I only (UB-04 revenue codes)
-  ndcCode?: string;          // National Drug Code (for drug claims)
+  revenueCode?: string; // 837I only (UB-04 revenue codes)
+  ndcCode?: string; // National Drug Code (for drug claims)
 }
 
 /* ─── Remittance Advice (835) ─────────────────────────────────────── */
@@ -137,7 +137,7 @@ export interface EdiRemittance835 {
   transactionSet: '835';
   controlNumber: string;
   checkOrEftNumber: string;
-  paymentDate: string;       // CCYYMMDD
+  paymentDate: string; // CCYYMMDD
   totalPaymentAmount: number;
   payerInfo: {
     name: string;
@@ -166,7 +166,7 @@ export interface EdiClaimPayment {
 
 export interface EdiRemitAdjustment {
   groupCode: 'CO' | 'PR' | 'OA' | 'PI' | 'CR';
-  reasonCode: string;   // CARC code e.g., '45', '29', '1'
+  reasonCode: string; // CARC code e.g., '45', '29', '1'
   amount: number;
 }
 
@@ -235,8 +235,8 @@ export interface EdiClaimStatusResponse277 {
   transactionSet: '277';
   controlNumber: string;
   referenceControlNumber: string;
-  claimStatusCode: string;        // A0..A8, E0..E4, etc.
-  claimStatusCategory: string;    // See X12 278 category codes
+  claimStatusCode: string; // A0..A8, E0..E4, etc.
+  claimStatusCategory: string; // See X12 278 category codes
   statusDate: string;
   totalChargedAmount?: number;
   paidAmount?: number;
@@ -279,8 +279,8 @@ export interface EdiAttachment275 {
   claimId: string;
   payerId: string;
   attachmentType: 'clinical' | 'certification' | 'report';
-  contentType: string;         // MIME type of the attachment
-  content: string;             // base64-encoded document
+  contentType: string; // MIME type of the attachment
+  content: string; // base64-encoded document
   description?: string;
 }
 
@@ -299,7 +299,7 @@ export interface EdiAcknowledgment {
 export interface EdiResponseError {
   code: string;
   description: string;
-  location?: string;  // segment/element reference
+  location?: string; // segment/element reference
   severity: 'info' | 'warning' | 'error' | 'fatal';
 }
 
@@ -317,26 +317,26 @@ export type EdiTransaction =
 /* ─── Pipeline tracking ──────────────────────────────────────────── */
 
 export type PipelineStage =
-  | 'build'       // Internal claim → EDI representation
-  | 'validate'    // Syntax + business rule validation
-  | 'enqueue'     // Placed in outbound queue
-  | 'transmit'    // Sent to payer/clearinghouse
+  | 'build' // Internal claim → EDI representation
+  | 'validate' // Syntax + business rule validation
+  | 'enqueue' // Placed in outbound queue
+  | 'transmit' // Sent to payer/clearinghouse
   | 'ack_pending' // Awaiting 999/TA1
-  | 'ack_received'// Got acknowledgment
-  | 'response'    // Got substantive response (835, 271, 277)
-  | 'reconciled'  // Matched back to source claim
-  | 'error'       // Pipeline error at any stage
-  | 'cancelled';  // Cancelled before transmission
+  | 'ack_received' // Got acknowledgment
+  | 'response' // Got substantive response (835, 271, 277)
+  | 'reconciled' // Matched back to source claim
+  | 'error' // Pipeline error at any stage
+  | 'cancelled'; // Cancelled before transmission
 
 export interface PipelineEntry {
   id: string;
   claimId: string;
   transactionSet: X12TransactionSet;
   stage: PipelineStage;
-  connectorId: string;        // which connector handled it
+  connectorId: string; // which connector handled it
   payerId: string;
-  outboundPayload?: string;   // serialized EDI (for audit, not stored long-term)
-  inboundPayload?: string;    // response EDI
+  outboundPayload?: string; // serialized EDI (for audit, not stored long-term)
+  inboundPayload?: string; // response EDI
   acknowledgment?: EdiAcknowledgment;
   errors: EdiResponseError[];
   attempts: number;

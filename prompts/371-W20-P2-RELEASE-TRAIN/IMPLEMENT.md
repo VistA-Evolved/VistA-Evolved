@@ -1,6 +1,7 @@
 # Phase 371 — W20-P2 IMPLEMENT: Release Train Governance
 
 ## User Request
+
 Build release train governance: change windows, approvals, rollback, comms templates,
 maintenance notifications.
 
@@ -14,6 +15,7 @@ maintenance notifications.
 5. Add PG migration for release event tables
 
 ## Files Touched
+
 - apps/api/src/services/release-train-service.ts
 - apps/api/src/routes/release-train-routes.ts
 - apps/api/src/server/register-routes.ts

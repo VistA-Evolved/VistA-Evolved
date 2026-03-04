@@ -7,9 +7,9 @@
  * Uses Drizzle ORM + pg-core for type-safe queries.
  */
 
-import { eq, and, desc, sql } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { pgRcmClaim, pgRcmRemittance } from "../pg-schema.js";
+import { eq, and, desc, sql } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { pgRcmClaim, pgRcmRemittance } from '../pg-schema.js';
 
 export type RcmClaimRow = typeof pgRcmClaim.$inferSelect;
 export type RcmRemittanceRow = typeof pgRcmRemittance.$inferSelect;
@@ -64,8 +64,8 @@ export async function insertClaim(data: {
   await db.insert(pgRcmClaim).values({
     id: data.id,
     tenantId: data.tenantId,
-    claimType: data.claimType ?? "professional",
-    status: data.status ?? "draft",
+    claimType: data.claimType ?? 'professional',
+    status: data.status ?? 'draft',
     patientDfn: data.patientDfn,
     patientName: data.patientName ?? null,
     patientDob: data.patientDob ?? null,
@@ -82,8 +82,8 @@ export async function insertClaim(data: {
     payerName: data.payerName ?? null,
     payerClaimId: data.payerClaimId ?? null,
     dateOfService: data.dateOfService,
-    diagnosesJson: data.diagnosesJson ?? "[]",
-    linesJson: data.linesJson ?? "[]",
+    diagnosesJson: data.diagnosesJson ?? '[]',
+    linesJson: data.linesJson ?? '[]',
     totalCharge: data.totalCharge ?? 0,
     ediTransactionId: data.ediTransactionId ?? null,
     connectorId: data.connectorId ?? null,
@@ -99,9 +99,9 @@ export async function insertClaim(data: {
     pipelineEntryId: data.pipelineEntryId ?? null,
     exportArtifactPath: data.exportArtifactPath ?? null,
     isDemo: data.isDemo ?? false,
-    submissionSafetyMode: data.submissionSafetyMode ?? "export_only",
+    submissionSafetyMode: data.submissionSafetyMode ?? 'export_only',
     isMock: data.isMock ?? false,
-    auditTrailJson: data.auditTrailJson ?? "[]",
+    auditTrailJson: data.auditTrailJson ?? '[]',
     createdAt: data.createdAt,
     updatedAt: data.updatedAt,
   });
@@ -117,7 +117,7 @@ export async function findClaimById(id: string): Promise<RcmClaimRow | undefined
 
 export async function findClaimsByTenant(
   tenantId: string,
-  opts?: { status?: string; patientDfn?: string; payerId?: string; limit?: number; offset?: number },
+  opts?: { status?: string; patientDfn?: string; payerId?: string; limit?: number; offset?: number }
 ): Promise<RcmClaimRow[]> {
   const db = getPgDb();
   const conditions = [eq(pgRcmClaim.tenantId, tenantId)];
@@ -128,7 +128,9 @@ export async function findClaimsByTenant(
   const limit = opts?.limit ?? 50;
   const offset = opts?.offset ?? 0;
 
-  return db.select().from(pgRcmClaim)
+  return db
+    .select()
+    .from(pgRcmClaim)
     .where(and(...conditions))
     .orderBy(desc(pgRcmClaim.updatedAt))
     .limit(limit)
@@ -137,35 +139,40 @@ export async function findClaimsByTenant(
 
 export async function countClaimsByTenant(tenantId: string): Promise<number> {
   const db = getPgDb();
-  const result = await db.select({ count: sql<number>`count(*)` })
+  const result = await db
+    .select({ count: sql<number>`count(*)` })
     .from(pgRcmClaim)
     .where(eq(pgRcmClaim.tenantId, tenantId));
   return result[0]?.count ?? 0;
 }
 
-export async function updateClaim(id: string, updates: Partial<{
-  status: string;
-  payerClaimId: string;
-  ediTransactionId: string;
-  connectorId: string;
-  submittedAt: string;
-  responseReceivedAt: string;
-  paidAmount: number;
-  adjustmentAmount: number;
-  patientResponsibility: number;
-  remitDate: string;
-  validationResultJson: string;
-  pipelineEntryId: string;
-  exportArtifactPath: string;
-  submissionSafetyMode: string;
-  auditTrailJson: string;
-  diagnosesJson: string;
-  linesJson: string;
-  totalCharge: number;
-}>): Promise<RcmClaimRow | undefined> {
+export async function updateClaim(
+  id: string,
+  updates: Partial<{
+    status: string;
+    payerClaimId: string;
+    ediTransactionId: string;
+    connectorId: string;
+    submittedAt: string;
+    responseReceivedAt: string;
+    paidAmount: number;
+    adjustmentAmount: number;
+    patientResponsibility: number;
+    remitDate: string;
+    validationResultJson: string;
+    pipelineEntryId: string;
+    exportArtifactPath: string;
+    submissionSafetyMode: string;
+    auditTrailJson: string;
+    diagnosesJson: string;
+    linesJson: string;
+    totalCharge: number;
+  }>
+): Promise<RcmClaimRow | undefined> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  await db.update(pgRcmClaim)
+  await db
+    .update(pgRcmClaim)
     .set({ ...updates, updatedAt: now } as any)
     .where(eq(pgRcmClaim.id, id));
   return findClaimById(id);
@@ -208,7 +215,7 @@ export async function insertRemittance(data: {
   await db.insert(pgRcmRemittance).values({
     id: data.id,
     tenantId: data.tenantId,
-    status: data.status ?? "received",
+    status: data.status ?? 'received',
     ediTransactionId: data.ediTransactionId ?? null,
     checkNumber: data.checkNumber ?? null,
     checkDate: data.checkDate ?? null,
@@ -222,7 +229,7 @@ export async function insertRemittance(data: {
     totalPaid: data.totalPaid,
     totalAdjusted: data.totalAdjusted,
     totalPatientResponsibility: data.totalPatientResponsibility,
-    serviceLinesJson: data.serviceLinesJson ?? "[]",
+    serviceLinesJson: data.serviceLinesJson ?? '[]',
     isMock: data.isMock ?? false,
     importedAt: data.importedAt,
     matchedAt: data.matchedAt ?? null,
@@ -243,25 +250,31 @@ export async function findRemittanceById(id: string): Promise<RcmRemittanceRow |
 export async function findRemittancesByTenant(
   tenantId: string,
   limit = 50,
-  offset = 0,
+  offset = 0
 ): Promise<RcmRemittanceRow[]> {
   const db = getPgDb();
-  return db.select().from(pgRcmRemittance)
+  return db
+    .select()
+    .from(pgRcmRemittance)
     .where(eq(pgRcmRemittance.tenantId, tenantId))
     .orderBy(desc(pgRcmRemittance.importedAt))
     .limit(limit)
     .offset(offset);
 }
 
-export async function updateRemittance(id: string, updates: Partial<{
-  status: string;
-  claimId: string;
-  matchedAt: string;
-  postedAt: string;
-}>): Promise<RcmRemittanceRow | undefined> {
+export async function updateRemittance(
+  id: string,
+  updates: Partial<{
+    status: string;
+    claimId: string;
+    matchedAt: string;
+    postedAt: string;
+  }>
+): Promise<RcmRemittanceRow | undefined> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  await db.update(pgRcmRemittance)
+  await db
+    .update(pgRcmRemittance)
     .set({ ...updates, updatedAt: now } as any)
     .where(eq(pgRcmRemittance.id, id));
   return findRemittanceById(id);
@@ -275,7 +288,8 @@ export async function countAllRemittances(): Promise<number> {
 
 export async function countRemittancesByTenant(tenantId: string): Promise<number> {
   const db = getPgDb();
-  const result = await db.select({ count: sql<number>`count(*)` })
+  const result = await db
+    .select({ count: sql<number>`count(*)` })
     .from(pgRcmRemittance)
     .where(eq(pgRcmRemittance.tenantId, tenantId));
   return result[0]?.count ?? 0;

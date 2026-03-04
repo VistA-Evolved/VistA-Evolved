@@ -4,15 +4,15 @@
  * Phase 241 (Wave 6 P4): Common types for message pack modules.
  */
 
-import type { Hl7Message, Hl7Ack } from "../types.js";
-import type { Hl7Route } from "../routing/types.js";
+import type { Hl7Message } from '../types.js';
+import type { Hl7Route } from '../routing/types.js';
 
 /* ------------------------------------------------------------------ */
 /*  Validation                                                         */
 /* ------------------------------------------------------------------ */
 
 /** Severity of a validation issue */
-export type ValidationSeverity = "error" | "warning" | "info";
+export type ValidationSeverity = 'error' | 'warning' | 'info';
 
 /** A single validation issue */
 export interface ValidationIssue {

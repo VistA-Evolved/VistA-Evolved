@@ -2,7 +2,7 @@
 
 import { use } from 'react';
 import { notFound } from 'next/navigation';
-import { tabBySlug, CHART_TABS } from '@/lib/chart-types';
+import { tabBySlug } from '@/lib/chart-types';
 import MenuBar from '@/components/chart/MenuBar';
 import PatientHeader from '@/components/chart/PatientHeader';
 import TabStrip from '@/components/chart/TabStrip';

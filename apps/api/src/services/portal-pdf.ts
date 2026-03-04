@@ -43,7 +43,6 @@ export function buildTextPdf(title: string, sections: { heading: string; lines: 
   contentLines.push("/F1 10 Tf");
 
   let y = 755;
-  const pageHeight = 800;
   const marginBottom = 50;
 
   for (const section of sections) {

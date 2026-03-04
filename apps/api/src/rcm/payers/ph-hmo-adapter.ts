@@ -22,7 +22,7 @@ import {
   type PhHmo,
   type HmoCapabilityStatus,
   type HmoIntegrationMode,
-} from "./ph-hmo-registry.js";
+} from './ph-hmo-registry.js';
 
 /* ── Types ──────────────────────────────────────────────────── */
 
@@ -89,19 +89,19 @@ export interface AdapterCapabilityReport {
 /* ── LOA Request Packet Generation ──────────────────────────── */
 
 const COMMON_LOA_FIELDS = [
-  "Member ID / HMO card number",
-  "Patient full name",
-  "Date of birth",
-  "Primary diagnosis (ICD-10)",
-  "Requested procedure(s) (CPT/HCPCS)",
-  "Attending physician name and PRC license",
-  "Admitting facility name and PhilHealth accreditation no.",
-  "Date of service / admission date",
-  "Clinical justification / medical necessity",
+  'Member ID / HMO card number',
+  'Patient full name',
+  'Date of birth',
+  'Primary diagnosis (ICD-10)',
+  'Requested procedure(s) (CPT/HCPCS)',
+  'Attending physician name and PRC license',
+  'Admitting facility name and PhilHealth accreditation no.',
+  'Date of service / admission date',
+  'Clinical justification / medical necessity',
 ];
 
 function getPortalUrl(hmo: PhHmo): string | undefined {
-  const portalEvidence = hmo.evidence.find(e => e.kind === "provider_portal");
+  const portalEvidence = hmo.evidence.find((e) => e.kind === 'provider_portal');
   return portalEvidence?.url;
 }
 
@@ -112,20 +112,22 @@ export function createLoaRequestPacket(payerId: string): LoaRequestPacket | null
   const portalUrl = getPortalUrl(hmo);
   const instructions: string[] = [];
 
-  if (hmo.integrationMode === "portal" && portalUrl) {
+  if (hmo.integrationMode === 'portal' && portalUrl) {
     instructions.push(`1. Open provider portal: ${portalUrl}`);
-    instructions.push("2. Log in with facility credentials (NOT stored in system)");
-    instructions.push("3. Navigate to LOA / Letter of Authorization section");
-    instructions.push("4. Fill in required fields from this packet");
-    instructions.push("5. Submit and note the LOA reference number");
-    instructions.push("6. Update VistA encounter with LOA reference");
+    instructions.push('2. Log in with facility credentials (NOT stored in system)');
+    instructions.push('3. Navigate to LOA / Letter of Authorization section');
+    instructions.push('4. Fill in required fields from this packet');
+    instructions.push('5. Submit and note the LOA reference number');
+    instructions.push('6. Update VistA encounter with LOA reference');
   } else {
     instructions.push(`1. Contact ${hmo.legalName} through their designated channel`);
-    instructions.push("2. Provide all required fields listed below");
-    instructions.push("3. Request LOA reference number");
-    instructions.push("4. Document response and LOA number in VistA encounter");
-    if (hmo.status === "contracting_needed") {
-      instructions.push("NOTE: Provider accreditation with this HMO may not yet be established. Complete contracting first.");
+    instructions.push('2. Provide all required fields listed below');
+    instructions.push('3. Request LOA reference number');
+    instructions.push('4. Document response and LOA number in VistA encounter');
+    if (hmo.status === 'contracting_needed') {
+      instructions.push(
+        'NOTE: Provider accreditation with this HMO may not yet be established. Complete contracting first.'
+      );
     }
   }
 
@@ -137,12 +139,12 @@ export function createLoaRequestPacket(payerId: string): LoaRequestPacket | null
     requiredFields: [...COMMON_LOA_FIELDS],
     instructions,
     template: {
-      memberIdPlaceholder: "[Enter member ID from HMO card]",
-      diagnosisPlaceholder: "[Enter ICD-10 code from VistA encounter]",
-      procedurePlaceholder: "[Enter CPT/HCPCS from VistA order]",
-      facilityPlaceholder: "[Auto-fill from VistA site config]",
-      providerPlaceholder: "[Auto-fill from VistA provider file]",
-      dateOfServicePlaceholder: "[Auto-fill from VistA encounter date]",
+      memberIdPlaceholder: '[Enter member ID from HMO card]',
+      diagnosisPlaceholder: '[Enter ICD-10 code from VistA encounter]',
+      procedurePlaceholder: '[Enter CPT/HCPCS from VistA order]',
+      facilityPlaceholder: '[Auto-fill from VistA site config]',
+      providerPlaceholder: '[Auto-fill from VistA provider file]',
+      dateOfServicePlaceholder: '[Auto-fill from VistA encounter date]',
     },
     generatedAt: new Date().toISOString(),
   };
@@ -151,16 +153,16 @@ export function createLoaRequestPacket(payerId: string): LoaRequestPacket | null
 /* ── Claim Packet Generation ────────────────────────────────── */
 
 const COMMON_CLAIM_FIELDS = [
-  "LOA number / authorization reference",
-  "Member ID / HMO card number",
-  "Patient full name",
-  "Diagnosis codes (ICD-10) — all applicable",
-  "Procedure codes (CPT/HCPCS) — all billable",
-  "Total charges per line item",
-  "Date(s) of service",
-  "Admitting/attending physician name and PRC license",
-  "Facility name and accreditation number",
-  "Supporting documents (labs, imaging reports if required)",
+  'LOA number / authorization reference',
+  'Member ID / HMO card number',
+  'Patient full name',
+  'Diagnosis codes (ICD-10) — all applicable',
+  'Procedure codes (CPT/HCPCS) — all billable',
+  'Total charges per line item',
+  'Date(s) of service',
+  'Admitting/attending physician name and PRC license',
+  'Facility name and accreditation number',
+  'Supporting documents (labs, imaging reports if required)',
 ];
 
 export function createClaimPacket(payerId: string): ClaimPacket | null {
@@ -170,20 +172,20 @@ export function createClaimPacket(payerId: string): ClaimPacket | null {
   const portalUrl = getPortalUrl(hmo);
   const instructions: string[] = [];
 
-  if (hmo.integrationMode === "portal" && portalUrl) {
+  if (hmo.integrationMode === 'portal' && portalUrl) {
     instructions.push(`1. Open provider portal: ${portalUrl}`);
-    instructions.push("2. Navigate to Claims Submission section");
-    instructions.push("3. Enter LOA number to pre-populate claim");
-    instructions.push("4. Verify all line items match VistA encounter data");
-    instructions.push("5. Attach required supporting documents");
-    instructions.push("6. Submit and record claim tracking number in VistA");
+    instructions.push('2. Navigate to Claims Submission section');
+    instructions.push('3. Enter LOA number to pre-populate claim');
+    instructions.push('4. Verify all line items match VistA encounter data');
+    instructions.push('5. Attach required supporting documents');
+    instructions.push('6. Submit and record claim tracking number in VistA');
   } else {
     instructions.push(`1. Prepare claim packet for ${hmo.legalName}`);
-    instructions.push("2. Include all required fields and supporting documents");
-    instructions.push("3. Submit through designated channel (email/fax/courier)");
-    instructions.push("4. Record submission date and tracking info in VistA");
-    if (hmo.capabilities.claimStatus === "unknown_publicly") {
-      instructions.push("NOTE: Claim status tracking method unknown -- follow up manually");
+    instructions.push('2. Include all required fields and supporting documents');
+    instructions.push('3. Submit through designated channel (email/fax/courier)');
+    instructions.push('4. Record submission date and tracking info in VistA');
+    if (hmo.capabilities.claimStatus === 'unknown_publicly') {
+      instructions.push('NOTE: Claim status tracking method unknown -- follow up manually');
     }
   }
 
@@ -195,14 +197,14 @@ export function createClaimPacket(payerId: string): ClaimPacket | null {
     requiredFields: [...COMMON_CLAIM_FIELDS],
     instructions,
     template: {
-      loaNumberPlaceholder: "[Enter LOA number from authorization]",
-      memberIdPlaceholder: "[Enter member ID from HMO card]",
-      diagnosisCodes: "[Auto-fill from VistA encounter diagnoses]",
-      procedureCodes: "[Auto-fill from VistA encounter procedures]",
-      totalCharges: "[Auto-fill from VistA charges]",
-      dateOfService: "[Auto-fill from VistA encounter date]",
-      facilityPlaceholder: "[Auto-fill from VistA site config]",
-      providerPlaceholder: "[Auto-fill from VistA provider file]",
+      loaNumberPlaceholder: '[Enter LOA number from authorization]',
+      memberIdPlaceholder: '[Enter member ID from HMO card]',
+      diagnosisCodes: '[Auto-fill from VistA encounter diagnoses]',
+      procedureCodes: '[Auto-fill from VistA encounter procedures]',
+      totalCharges: '[Auto-fill from VistA charges]',
+      dateOfService: '[Auto-fill from VistA encounter date]',
+      facilityPlaceholder: '[Auto-fill from VistA site config]',
+      providerPlaceholder: '[Auto-fill from VistA provider file]',
     },
     generatedAt: new Date().toISOString(),
   };
@@ -211,15 +213,15 @@ export function createClaimPacket(payerId: string): ClaimPacket | null {
 /* ── Capability Report ──────────────────────────────────────── */
 
 function capabilityMethod(status: HmoCapabilityStatus, mode: HmoIntegrationMode): string {
-  if (status === "portal") return "Provider portal login";
-  if (status === "available") return mode === "portal" ? "Provider portal" : "Direct contact";
-  if (status === "manual") return "Manual process (phone/fax/email)";
-  if (status === "unknown_publicly") return "Unknown -- contracting needed";
-  return "Not available";
+  if (status === 'portal') return 'Provider portal login';
+  if (status === 'available') return mode === 'portal' ? 'Provider portal' : 'Direct contact';
+  if (status === 'manual') return 'Manual process (phone/fax/email)';
+  if (status === 'unknown_publicly') return 'Unknown -- contracting needed';
+  return 'Not available';
 }
 
 function isActionable(status: HmoCapabilityStatus): boolean {
-  return status === "available" || status === "portal" || status === "manual";
+  return status === 'available' || status === 'portal' || status === 'manual';
 }
 
 export function getAdapterCapabilityReport(payerId: string): AdapterCapabilityReport | null {
@@ -259,7 +261,7 @@ export function getAdapterCapabilityReport(payerId: string): AdapterCapabilityRe
       },
     },
     contractingTasks: hmo.contractingTasks ?? [],
-    evidence: hmo.evidence.map(e => ({ kind: e.kind, url: e.url, title: e.title })),
+    evidence: hmo.evidence.map((e) => ({ kind: e.kind, url: e.url, title: e.title })),
   };
 }
 
@@ -275,6 +277,6 @@ export function getAllCapabilityReports(filter?: {
   });
 
   return hmos
-    .map(h => getAdapterCapabilityReport(h.payerId))
+    .map((h) => getAdapterCapabilityReport(h.payerId))
     .filter((r): r is AdapterCapabilityReport => r !== null);
 }

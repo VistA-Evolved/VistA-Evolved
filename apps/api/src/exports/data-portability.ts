@@ -11,21 +11,16 @@
  * Does NOT modify existing export-engine.ts, export-formats.ts, or fhir/ files.
  */
 
-import * as crypto from "node:crypto";
-import { log } from "../lib/logger.js";
+import * as crypto from 'node:crypto';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
-export type BulkExportStatus =
-  | "accepted"
-  | "in-progress"
-  | "completed"
-  | "failed"
-  | "expired";
+export type BulkExportStatus = 'accepted' | 'in-progress' | 'completed' | 'failed' | 'expired';
 
-export type BulkExportLevel = "system" | "patient" | "group";
+export type BulkExportLevel = 'system' | 'patient' | 'group';
 
 export interface BulkExportJob {
   id: string;
@@ -79,8 +74,8 @@ export interface PatientChartBundle {
   id: string;
   patientDfn: string;
   tenantId: string;
-  format: "fhir-bundle" | "fhir-ndjson" | "summary-json";
-  status: "generating" | "completed" | "failed";
+  format: 'fhir-bundle' | 'fhir-ndjson' | 'summary-json';
+  status: 'generating' | 'completed' | 'failed';
   resourceCount: number;
   sections: PatientChartSection[];
   /** SHA-256 of the bundle content */
@@ -93,18 +88,18 @@ export interface PatientChartSection {
   name: string;
   resourceType: string;
   count: number;
-  status: "included" | "empty" | "integration-pending" | "error";
+  status: 'included' | 'empty' | 'integration-pending' | 'error';
 }
 
 export type TenantExportScope =
-  | "clinical"
-  | "rcm"
-  | "audit"
-  | "analytics"
-  | "platform"
-  | "imaging"
-  | "integrations"
-  | "all";
+  | 'clinical'
+  | 'rcm'
+  | 'audit'
+  | 'analytics'
+  | 'platform'
+  | 'imaging'
+  | 'integrations'
+  | 'all';
 
 export interface TenantExportJob {
   id: string;
@@ -112,7 +107,7 @@ export interface TenantExportJob {
   requestedBy: string;
   scopes: TenantExportScope[];
   status: BulkExportStatus;
-  format: "json" | "ndjson" | "csv";
+  format: 'json' | 'ndjson' | 'csv';
   outputFiles: TenantExportOutputFile[];
   manifest?: ExportManifest;
   progress: number;
@@ -135,33 +130,33 @@ export interface TenantExportOutputFile {
 /* ------------------------------------------------------------------ */
 
 export const SUPPORTED_FHIR_RESOURCE_TYPES = [
-  "Patient",
-  "AllergyIntolerance",
-  "Condition",
-  "Observation",
-  "MedicationRequest",
-  "DocumentReference",
-  "Encounter",
+  'Patient',
+  'AllergyIntolerance',
+  'Condition',
+  'Observation',
+  'MedicationRequest',
+  'DocumentReference',
+  'Encounter',
 ] as const;
 
 export const PATIENT_CHART_SECTIONS = [
-  { name: "Demographics", resourceType: "Patient" },
-  { name: "Allergies", resourceType: "AllergyIntolerance" },
-  { name: "Problems", resourceType: "Condition" },
-  { name: "Vitals", resourceType: "Observation" },
-  { name: "Medications", resourceType: "MedicationRequest" },
-  { name: "Notes", resourceType: "DocumentReference" },
-  { name: "Encounters", resourceType: "Encounter" },
+  { name: 'Demographics', resourceType: 'Patient' },
+  { name: 'Allergies', resourceType: 'AllergyIntolerance' },
+  { name: 'Problems', resourceType: 'Condition' },
+  { name: 'Vitals', resourceType: 'Observation' },
+  { name: 'Medications', resourceType: 'MedicationRequest' },
+  { name: 'Notes', resourceType: 'DocumentReference' },
+  { name: 'Encounters', resourceType: 'Encounter' },
 ] as const;
 
 export const TENANT_EXPORT_SCOPES: TenantExportScope[] = [
-  "clinical",
-  "rcm",
-  "audit",
-  "analytics",
-  "platform",
-  "imaging",
-  "integrations",
+  'clinical',
+  'rcm',
+  'audit',
+  'analytics',
+  'platform',
+  'imaging',
+  'integrations',
 ];
 
 /* ------------------------------------------------------------------ */
@@ -187,7 +182,7 @@ let _exportRepo: ExportRepo | null = null;
  */
 export function initBulkExportRepo(repo: ExportRepo): void {
   _exportRepo = repo;
-  log.info("Bulk export store wired to PG (W41-P6)");
+  log.info('Bulk export store wired to PG (W41-P6)');
 }
 
 /**
@@ -200,45 +195,53 @@ export async function rehydrateBulkExportJobs(tenantId: string): Promise<void> {
     for (const row of rows) {
       if (!bulkExportJobs.has(row.id)) {
         // Parse JSON fields
-        for (const field of ["resourceTypes", "outputFiles", "manifest"]) {
-          if (typeof (row as any)[field] === "string") {
-            try { (row as any)[field] = JSON.parse((row as any)[field]); } catch { /* keep as-is */ }
+        for (const field of ['resourceTypes', 'outputFiles', 'manifest']) {
+          if (typeof (row as any)[field] === 'string') {
+            try {
+              (row as any)[field] = JSON.parse((row as any)[field]);
+            } catch {
+              /* keep as-is */
+            }
           }
         }
         bulkExportJobs.set(row.id, row as BulkExportJob);
       }
     }
-    log.info("Bulk export jobs rehydrated from PG", { count: rows.length });
-  } catch (e) { log.warn("Bulk export rehydration failed", { error: String(e) }); }
+    log.info('Bulk export jobs rehydrated from PG', { count: rows.length });
+  } catch (e) {
+    log.warn('Bulk export rehydration failed', { error: String(e) });
+  }
 }
 
 function persistBulkExportJob(job: BulkExportJob): void {
   if (!_exportRepo) return;
-  void _exportRepo.upsert({
-    id: job.id,
-    tenantId: job.tenantId,
-    level: job.level,
-    subjectId: job.subjectId || null,
-    requestedBy: job.requestedBy,
-    status: job.status,
-    resourceTypes: JSON.stringify(job.resourceTypes),
-    since: job.since || null,
-    outputFiles: JSON.stringify(job.outputFiles),
-    manifest: job.manifest ? JSON.stringify(job.manifest) : null,
-    progress: job.progress,
-    error: job.error || null,
-    createdAt: job.createdAt,
-    updatedAt: job.updatedAt,
-    completedAt: job.completedAt || null,
-  }).catch((e: unknown) => log.warn("Bulk export persist failed", { error: String(e) }));
+  void _exportRepo
+    .upsert({
+      id: job.id,
+      tenantId: job.tenantId,
+      level: job.level,
+      subjectId: job.subjectId || null,
+      requestedBy: job.requestedBy,
+      status: job.status,
+      resourceTypes: JSON.stringify(job.resourceTypes),
+      since: job.since || null,
+      outputFiles: JSON.stringify(job.outputFiles),
+      manifest: job.manifest ? JSON.stringify(job.manifest) : null,
+      progress: job.progress,
+      error: job.error || null,
+      createdAt: job.createdAt,
+      updatedAt: job.updatedAt,
+      completedAt: job.completedAt || null,
+    })
+    .catch((e: unknown) => log.warn('Bulk export persist failed', { error: String(e) }));
 }
 
 function genId(prefix: string): string {
-  return `${prefix}-${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
+  return `${prefix}-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
 }
 
 function hashContent(content: string): string {
-  return crypto.createHash("sha256").update(content).digest("hex");
+  return crypto.createHash('sha256').update(content).digest('hex');
 }
 
 /* ------------------------------------------------------------------ */
@@ -259,20 +262,19 @@ export function kickoffBulkExport(params: {
 }): BulkExportJob {
   const now = new Date().toISOString();
 
-  const types =
-    params.resourceTypes?.length
-      ? params.resourceTypes.filter((t) =>
-          (SUPPORTED_FHIR_RESOURCE_TYPES as readonly string[]).includes(t),
-        )
-      : [...SUPPORTED_FHIR_RESOURCE_TYPES];
+  const types = params.resourceTypes?.length
+    ? params.resourceTypes.filter((t) =>
+        (SUPPORTED_FHIR_RESOURCE_TYPES as readonly string[]).includes(t)
+      )
+    : [...SUPPORTED_FHIR_RESOURCE_TYPES];
 
   const job: BulkExportJob = {
-    id: genId("bulk"),
+    id: genId('bulk'),
     level: params.level,
     subjectId: params.subjectId,
     tenantId: params.tenantId,
     requestedBy: params.requestedBy,
-    status: "accepted",
+    status: 'accepted',
     resourceTypes: types,
     since: params.since,
     outputFiles: [],
@@ -287,7 +289,7 @@ export function kickoffBulkExport(params: {
   // Simulate async processing (in production, delegate to worker queue)
   setTimeout(() => processBulkExport(job.id), 100);
 
-  log.info("Bulk export kicked off", {
+  log.info('Bulk export kicked off', {
     jobId: job.id,
     level: params.level,
     types: types.length,
@@ -301,7 +303,7 @@ function processBulkExport(jobId: string): void {
   const job = bulkExportJobs.get(jobId);
   if (!job) return;
 
-  job.status = "in-progress";
+  job.status = 'in-progress';
   job.progress = 10;
   job.updatedAt = new Date().toISOString();
 
@@ -324,7 +326,7 @@ function processBulkExport(jobId: string): void {
 
   job.outputFiles = files;
   job.progress = 100;
-  job.status = "completed";
+  job.status = 'completed';
   job.completedAt = new Date().toISOString();
   job.updatedAt = job.completedAt;
 
@@ -332,7 +334,7 @@ function processBulkExport(jobId: string): void {
   job.manifest = buildExportManifest(job.id, job.tenantId, files);
   persistBulkExportJob(job);
 
-  log.info("Bulk export completed", {
+  log.info('Bulk export completed', {
     jobId: job.id,
     files: files.length,
   });
@@ -342,9 +344,7 @@ export function getBulkExportJob(id: string): BulkExportJob | undefined {
   return bulkExportJobs.get(id);
 }
 
-export function listBulkExportJobs(
-  tenantId?: string,
-): BulkExportJob[] {
+export function listBulkExportJobs(tenantId?: string): BulkExportJob[] {
   const all = Array.from(bulkExportJobs.values());
   if (tenantId) return all.filter((j) => j.tenantId === tenantId);
   return all;
@@ -365,33 +365,33 @@ export function deleteBulkExportJob(id: string): boolean {
 export function generatePatientChart(params: {
   patientDfn: string;
   tenantId: string;
-  format?: "fhir-bundle" | "fhir-ndjson" | "summary-json";
+  format?: 'fhir-bundle' | 'fhir-ndjson' | 'summary-json';
 }): PatientChartBundle {
   const now = new Date().toISOString();
-  const format = params.format || "fhir-bundle";
+  const format = params.format || 'fhir-bundle';
 
   const sections: PatientChartSection[] = PATIENT_CHART_SECTIONS.map((s) => ({
     name: s.name,
     resourceType: s.resourceType,
     count: 0,
-    status: "integration-pending" as const,
+    status: 'integration-pending' as const,
   }));
 
   // Mark Demographics as included (always available)
-  const demoSection = sections.find((s) => s.name === "Demographics");
+  const demoSection = sections.find((s) => s.name === 'Demographics');
   if (demoSection) {
     demoSection.count = 1;
-    demoSection.status = "included";
+    demoSection.status = 'included';
   }
 
   const totalResources = sections.reduce((sum, s) => sum + s.count, 0);
 
   const bundle: PatientChartBundle = {
-    id: genId("chart"),
+    id: genId('chart'),
     patientDfn: params.patientDfn,
     tenantId: params.tenantId,
     format,
-    status: "completed",
+    status: 'completed',
     resourceCount: totalResources,
     sections,
     contentHash: hashContent(JSON.stringify(sections)),
@@ -400,7 +400,7 @@ export function generatePatientChart(params: {
   };
 
   patientChartBundles.set(bundle.id, bundle);
-  log.info("Patient chart generated", {
+  log.info('Patient chart generated', {
     chartId: bundle.id,
     sections: sections.length,
     resources: totalResources,
@@ -409,15 +409,11 @@ export function generatePatientChart(params: {
   return bundle;
 }
 
-export function getPatientChart(
-  id: string,
-): PatientChartBundle | undefined {
+export function getPatientChart(id: string): PatientChartBundle | undefined {
   return patientChartBundles.get(id);
 }
 
-export function listPatientCharts(
-  tenantId?: string,
-): PatientChartBundle[] {
+export function listPatientCharts(tenantId?: string): PatientChartBundle[] {
   const all = Array.from(patientChartBundles.values());
   if (tenantId) return all.filter((c) => c.tenantId === tenantId);
   return all;
@@ -434,19 +430,18 @@ export function kickoffTenantExport(params: {
   tenantId: string;
   requestedBy: string;
   scopes?: TenantExportScope[];
-  format?: "json" | "ndjson" | "csv";
+  format?: 'json' | 'ndjson' | 'csv';
 }): TenantExportJob {
   const now = new Date().toISOString();
-  const scopes =
-    params.scopes?.length ? params.scopes : TENANT_EXPORT_SCOPES;
+  const scopes = params.scopes?.length ? params.scopes : TENANT_EXPORT_SCOPES;
 
   const job: TenantExportJob = {
-    id: genId("texport"),
+    id: genId('texport'),
     tenantId: params.tenantId,
     requestedBy: params.requestedBy,
     scopes,
-    status: "accepted",
-    format: params.format || "json",
+    status: 'accepted',
+    format: params.format || 'json',
     outputFiles: [],
     progress: 0,
     createdAt: now,
@@ -458,7 +453,7 @@ export function kickoffTenantExport(params: {
   // Simulate async processing
   setTimeout(() => processTenantExport(job.id), 100);
 
-  log.info("Tenant export kicked off", {
+  log.info('Tenant export kicked off', {
     jobId: job.id,
     tenantId: params.tenantId,
     scopes: scopes.length,
@@ -471,7 +466,7 @@ function processTenantExport(jobId: string): void {
   const job = tenantExportJobs.get(jobId);
   if (!job) return;
 
-  job.status = "in-progress";
+  job.status = 'in-progress';
   job.progress = 10;
   job.updatedAt = new Date().toISOString();
 
@@ -498,7 +493,7 @@ function processTenantExport(jobId: string): void {
 
   job.outputFiles = files;
   job.progress = 100;
-  job.status = "completed";
+  job.status = 'completed';
   job.completedAt = new Date().toISOString();
   job.updatedAt = job.completedAt;
 
@@ -511,21 +506,17 @@ function processTenantExport(jobId: string): void {
   }));
   job.manifest = buildExportManifest(job.id, job.tenantId, bulkFiles);
 
-  log.info("Tenant export completed", {
+  log.info('Tenant export completed', {
     jobId: job.id,
     files: files.length,
   });
 }
 
-export function getTenantExportJob(
-  id: string,
-): TenantExportJob | undefined {
+export function getTenantExportJob(id: string): TenantExportJob | undefined {
   return tenantExportJobs.get(id);
 }
 
-export function listTenantExportJobs(
-  tenantId?: string,
-): TenantExportJob[] {
+export function listTenantExportJobs(tenantId?: string): TenantExportJob[] {
   const all = Array.from(tenantExportJobs.values());
   if (tenantId) return all.filter((j) => j.tenantId === tenantId);
   return all;
@@ -543,12 +534,12 @@ function buildExportManifest(
     count: number;
     contentHash: string;
     byteSize: number;
-  }>,
+  }>
 ): ExportManifest {
   const totalResources = files.reduce((sum, f) => sum + f.count, 0);
   const totalBytes = files.reduce((sum, f) => sum + f.byteSize, 0);
 
-  const concatenatedHashes = files.map((f) => f.contentHash).join("");
+  const concatenatedHashes = files.map((f) => f.contentHash).join('');
   const manifestHash = hashContent(concatenatedHashes);
 
   return {
@@ -575,9 +566,7 @@ export function verifyExportManifest(manifest: ExportManifest): {
   valid: boolean;
   detail: string;
 } {
-  const concatenatedHashes = manifest.files
-    .map((f) => f.contentHash)
-    .join("");
+  const concatenatedHashes = manifest.files.map((f) => f.contentHash).join('');
   const expectedHash = hashContent(concatenatedHashes);
 
   if (expectedHash !== manifest.manifestHash) {
@@ -587,5 +576,5 @@ export function verifyExportManifest(manifest: ExportManifest): {
     };
   }
 
-  return { valid: true, detail: "Manifest hash verified" };
+  return { valid: true, detail: 'Manifest hash verified' };
 }

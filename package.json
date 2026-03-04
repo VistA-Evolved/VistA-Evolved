@@ -22,6 +22,12 @@
     }
   },
   "scripts": {
+    "lint": "eslint \"apps/api/src/**/*.{ts,tsx}\" \"packages/**/*.{ts,tsx}\" --max-warnings 0",
+    "lint:ci": "eslint \"apps/api/src/**/*.{ts,tsx}\" \"packages/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint \"apps/api/src/**/*.{ts,tsx}\" \"packages/**/*.{ts,tsx}\" --fix",
+    "lint:all": "pnpm -r lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "dev": "pnpm -r dev",
     "build": "pnpm -r build",
     "cprs:extract": "node tools/cprs-extract/run-all.mjs",
@@ -50,6 +56,17 @@
     "qa:rpc-trace:record": "node scripts/qa/rpc-trace-manager.mjs record",
     "qa:journeys:clinic-day": "node scripts/qa/clinic-day-runner.mjs",
     "validate:specialty-packs": "node scripts/qa/validate-specialty-packs.mjs",
-    "audit:system": "node scripts/audit/system-audit.mjs"
+    "audit:system": "node scripts/audit/system-audit.mjs",
+    "verify:vista": "pnpm -C apps/api exec tsx ../../scripts/verify-vista.ts"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-security": "^4.0.0",
+    "prettier": "^3.8.1"
   }
 }

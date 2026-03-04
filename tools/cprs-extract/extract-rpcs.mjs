@@ -26,48 +26,48 @@ import { globPasFiles, CPRS_CHART_DIR, OUTPUT_DIR } from './lib/paths.mjs';
  * Known screen → tab mappings derived from CPRS tab constants + form names.
  */
 const SCREEN_MAP = {
-  fCover:    { screen: 'Cover Sheet',         tab: 'CT_COVER' },
-  fProbs:    { screen: 'Problem List',         tab: 'CT_PROBLEMS' },
-  fMeds:     { screen: 'Medications',          tab: 'CT_MEDS' },
-  fNotes:    { screen: 'Progress Notes',       tab: 'CT_NOTES' },
-  fConsults: { screen: 'Consults',             tab: 'CT_CONSULTS' },
-  fDCSumm:   { screen: 'Discharge Summaries',  tab: 'CT_DCSUMM' },
-  fLabs:     { screen: 'Laboratory',           tab: 'CT_LABS' },
-  fReports:  { screen: 'Reports',              tab: 'CT_REPORTS' },
-  fSurgery:  { screen: 'Surgery',              tab: 'CT_SURGERY' },
-  fGraphs:   { screen: 'Graphs',               tab: 'CT_GRAPHS' },
-  fvit:      { screen: 'Vitals',               tab: 'CT_VITALS' },
-  fVitals:   { screen: 'Vitals',               tab: 'CT_VITALS' },
-  fPtSel:    { screen: 'Patient Selection',    tab: null },
-  fFrame:    { screen: 'Main Frame',           tab: null },
-  fEncnt:    { screen: 'Encounter',            tab: null },
-  fReview:   { screen: 'Review/Sign',          tab: null },
+  fCover: { screen: 'Cover Sheet', tab: 'CT_COVER' },
+  fProbs: { screen: 'Problem List', tab: 'CT_PROBLEMS' },
+  fMeds: { screen: 'Medications', tab: 'CT_MEDS' },
+  fNotes: { screen: 'Progress Notes', tab: 'CT_NOTES' },
+  fConsults: { screen: 'Consults', tab: 'CT_CONSULTS' },
+  fDCSumm: { screen: 'Discharge Summaries', tab: 'CT_DCSUMM' },
+  fLabs: { screen: 'Laboratory', tab: 'CT_LABS' },
+  fReports: { screen: 'Reports', tab: 'CT_REPORTS' },
+  fSurgery: { screen: 'Surgery', tab: 'CT_SURGERY' },
+  fGraphs: { screen: 'Graphs', tab: 'CT_GRAPHS' },
+  fvit: { screen: 'Vitals', tab: 'CT_VITALS' },
+  fVitals: { screen: 'Vitals', tab: 'CT_VITALS' },
+  fPtSel: { screen: 'Patient Selection', tab: null },
+  fFrame: { screen: 'Main Frame', tab: null },
+  fEncnt: { screen: 'Encounter', tab: null },
+  fReview: { screen: 'Review/Sign', tab: null },
 
   // r* files are RPC wrappers for specific domains
-  rCore:     { screen: 'Core/Shared',          tab: null },
-  rCover:    { screen: 'Cover Sheet',          tab: 'CT_COVER' },
-  rProbs:    { screen: 'Problem List',         tab: 'CT_PROBLEMS' },
-  rMeds:     { screen: 'Medications',          tab: 'CT_MEDS' },
-  rTIU:      { screen: 'Progress Notes (TIU)', tab: 'CT_NOTES' },
-  rDCSumm:   { screen: 'Discharge Summaries',  tab: 'CT_DCSUMM' },
-  rLabs:     { screen: 'Laboratory',           tab: 'CT_LABS' },
-  rReports:  { screen: 'Reports',              tab: 'CT_REPORTS' },
-  rSurgery:  { screen: 'Surgery',              tab: 'CT_SURGERY' },
-  rGraphs:   { screen: 'Graphs',               tab: null },
-  rMisc:     { screen: 'Miscellaneous',        tab: null },
-  rECS:      { screen: 'Event Capture',        tab: null },
-  rReminders: { screen: 'Reminders',           tab: null },
-  rEventHooks: { screen: 'Event Hooks',        tab: null },
-  rOTH:      { screen: 'OTH',                  tab: null },
+  rCore: { screen: 'Core/Shared', tab: null },
+  rCover: { screen: 'Cover Sheet', tab: 'CT_COVER' },
+  rProbs: { screen: 'Problem List', tab: 'CT_PROBLEMS' },
+  rMeds: { screen: 'Medications', tab: 'CT_MEDS' },
+  rTIU: { screen: 'Progress Notes (TIU)', tab: 'CT_NOTES' },
+  rDCSumm: { screen: 'Discharge Summaries', tab: 'CT_DCSUMM' },
+  rLabs: { screen: 'Laboratory', tab: 'CT_LABS' },
+  rReports: { screen: 'Reports', tab: 'CT_REPORTS' },
+  rSurgery: { screen: 'Surgery', tab: 'CT_SURGERY' },
+  rGraphs: { screen: 'Graphs', tab: null },
+  rMisc: { screen: 'Miscellaneous', tab: null },
+  rECS: { screen: 'Event Capture', tab: null },
+  rReminders: { screen: 'Reminders', tab: null },
+  rEventHooks: { screen: 'Event Hooks', tab: null },
+  rOTH: { screen: 'OTH', tab: null },
 
   // Orders subdirectory
-  fOrders:   { screen: 'Orders',               tab: 'CT_ORDERS' },
-  rOrders:   { screen: 'Orders',               tab: 'CT_ORDERS' },
-  rODMeds:   { screen: 'Orders - Medications', tab: 'CT_ORDERS' },
-  rODLab:    { screen: 'Orders - Lab',         tab: 'CT_ORDERS' },
-  rODRad:    { screen: 'Orders - Radiology',   tab: 'CT_ORDERS' },
-  rODDiet:   { screen: 'Orders - Diet',        tab: 'CT_ORDERS' },
-  rODAllergy: { screen: 'Orders - Allergy',    tab: 'CT_ORDERS' },
+  fOrders: { screen: 'Orders', tab: 'CT_ORDERS' },
+  rOrders: { screen: 'Orders', tab: 'CT_ORDERS' },
+  rODMeds: { screen: 'Orders - Medications', tab: 'CT_ORDERS' },
+  rODLab: { screen: 'Orders - Lab', tab: 'CT_ORDERS' },
+  rODRad: { screen: 'Orders - Radiology', tab: 'CT_ORDERS' },
+  rODDiet: { screen: 'Orders - Diet', tab: 'CT_ORDERS' },
+  rODAllergy: { screen: 'Orders - Allergy', tab: 'CT_ORDERS' },
 };
 
 /**
@@ -115,11 +115,15 @@ function extractRpcsFromPas(src, relPath) {
   }
 
   // Pattern 4: Literal RPC names in string constants: 'ORWPT ...' etc.
-  const constRe = /'((?:ORW|ORWU|ORWD|ORWDAL|ORWOR|ORWPS|ORWPT|ORQPT|ORB|ORVAA|TIU|GMR|GMRA|XUS|DG|PXRM|SR|SD|ORBSMART|ORWRP|ORWMC|ORWTPP|ORWTPO|ORWTPN|ORIMO|ORWPCE|ORWGRPC|ORWCV|ORWCH)[A-Z0-9 _]*[A-Z0-9])'/g;
+  const constRe =
+    /'((?:ORW|ORWU|ORWD|ORWDAL|ORWOR|ORWPS|ORWPT|ORQPT|ORB|ORVAA|TIU|GMR|GMRA|XUS|DG|PXRM|SR|SD|ORBSMART|ORWRP|ORWMC|ORWTPP|ORWTPO|ORWTPN|ORIMO|ORWPCE|ORWGRPC|ORWCV|ORWCH)[A-Z0-9 _]*[A-Z0-9])'/g;
   while ((m = constRe.exec(src)) !== null) {
     // Avoid duplicates from CallV matches
     const name = m[1].trim();
-    if (name.length >= 5 && !rpcs.some((r) => r.rpcName === name && r.line === src.slice(0, m.index).split('\n').length)) {
+    if (
+      name.length >= 5 &&
+      !rpcs.some((r) => r.rpcName === name && r.line === src.slice(0, m.index).split('\n').length)
+    ) {
       rpcs.push({
         rpcName: name,
         pattern: 'string-constant',
@@ -274,12 +278,12 @@ function generateCoverageReport(catalog, registry, formsResult, tabsResult, menu
   lines.push('');
 
   lines.push('## Extraction Patterns Used', '');
-  lines.push('- `sCallV(\'RPC NAME\', [...])` — single-value RPC call');
-  lines.push('- `tCallV(result, \'RPC NAME\', [...])` — list RPC call');
-  lines.push('- `CallV(\'RPC NAME\', [...])` — standard RPC call');
-  lines.push('- `CallVistA(\'RPC NAME\', [...], ...)` — newer call pattern');
-  lines.push('- `RemoteProcedure := \'RPC NAME\'` — direct broker assignment');
-  lines.push('- `CreateContext(\'CONTEXT\')` — security context establishment');
+  lines.push("- `sCallV('RPC NAME', [...])` — single-value RPC call");
+  lines.push("- `tCallV(result, 'RPC NAME', [...])` — list RPC call");
+  lines.push("- `CallV('RPC NAME', [...])` — standard RPC call");
+  lines.push("- `CallVistA('RPC NAME', [...], ...)` — newer call pattern");
+  lines.push("- `RemoteProcedure := 'RPC NAME'` — direct broker assignment");
+  lines.push("- `CreateContext('CONTEXT')` — security context establishment");
   lines.push('- String constants matching known RPC prefixes (ORW*, TIU*, GMR*, etc.)');
   lines.push('');
 
@@ -353,34 +357,51 @@ export async function extractRpcs(formsResult, tabsResult, menusResult) {
   const registry = buildScreenRegistry(allRpcs);
 
   // Generate coverage report
-  const coverageReport = generateCoverageReport(catalog, registry, formsResult, tabsResult, menusResult);
+  const coverageReport = generateCoverageReport(
+    catalog,
+    registry,
+    formsResult,
+    tabsResult,
+    menusResult
+  );
 
   await mkdir(OUTPUT_DIR, { recursive: true });
   await Promise.all([
     writeFile(join(OUTPUT_DIR, 'rpc_catalog.json'), JSON.stringify(catalog, null, 2)),
-    writeFile(join(OUTPUT_DIR, 'screen_registry.json'), JSON.stringify({
-      _meta: {
-        source: 'reference/cprs/Packages/Order Entry Results Reporting/CPRS/CPRS-Chart/',
-        extractedAt: new Date().toISOString(),
-        description: 'CPRS screen → action → RPC name mapping',
-      },
-      screens: registry,
-      summary: {
-        screenCount: Object.keys(registry).length,
-        totalUniqueRpcs: catalog.summary.uniqueRpcCount,
-      },
-    }, null, 2)),
+    writeFile(
+      join(OUTPUT_DIR, 'screen_registry.json'),
+      JSON.stringify(
+        {
+          _meta: {
+            source: 'reference/cprs/Packages/Order Entry Results Reporting/CPRS/CPRS-Chart/',
+            extractedAt: new Date().toISOString(),
+            description: 'CPRS screen → action → RPC name mapping',
+          },
+          screens: registry,
+          summary: {
+            screenCount: Object.keys(registry).length,
+            totalUniqueRpcs: catalog.summary.uniqueRpcCount,
+          },
+        },
+        null,
+        2
+      )
+    ),
     writeFile(join(OUTPUT_DIR, 'coverage_report.md'), coverageReport),
   ]);
 
-  console.log(`  ✓ rpc_catalog.json — ${catalog.summary.uniqueRpcCount} unique RPCs across ${catalog.summary.totalCallSites} call sites`);
+  console.log(
+    `  ✓ rpc_catalog.json — ${catalog.summary.uniqueRpcCount} unique RPCs across ${catalog.summary.totalCallSites} call sites`
+  );
   console.log(`  ✓ screen_registry.json — ${Object.keys(registry).length} screens mapped`);
   console.log(`  ✓ coverage_report.md — summary generated`);
 
   return { catalog, registry };
 }
 
-if (import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}` ||
-    process.argv[1]?.endsWith('extract-rpcs.mjs')) {
+if (
+  import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}` ||
+  process.argv[1]?.endsWith('extract-rpcs.mjs')
+) {
   extractRpcs().catch(console.error);
 }

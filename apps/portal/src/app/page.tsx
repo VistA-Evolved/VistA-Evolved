@@ -7,46 +7,43 @@
  * No VA terminology in patient-facing UI.
  */
 
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { API_BASE } from '@/lib/api-config';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const isDev = process.env.NODE_ENV !== "production";
+  const isDev = process.env.NODE_ENV !== 'production';
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError("");
+    setError('');
     setLoading(true);
 
     try {
-      const res = await fetch(
-        `${API_BASE}/portal/auth/login`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
-        }
-      );
+      const res = await fetch(`${API_BASE}/portal/auth/login`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
 
       if (!res.ok) {
-        const body = await res.json().catch(() => ({ error: "Login failed" }));
-        setError(body.error || "Login failed");
+        const body = await res.json().catch(() => ({ error: 'Login failed' }));
+        setError(body.error || 'Login failed');
         return;
       }
 
-      router.push("/dashboard");
+      router.push('/dashboard');
     } catch {
-      setError("Unable to connect to server");
+      setError('Unable to connect to server');
     } finally {
       setLoading(false);
     }
@@ -86,9 +83,9 @@ export default function LoginPage() {
           {error && (
             <div
               style={{
-                color: "var(--portal-danger)",
-                fontSize: "0.8125rem",
-                marginBottom: "0.75rem",
+                color: 'var(--portal-danger)',
+                fontSize: '0.8125rem',
+                marginBottom: '0.75rem',
               }}
             >
               {error}
@@ -98,10 +95,10 @@ export default function LoginPage() {
           <button
             type="submit"
             className="btn btn-primary"
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             disabled={loading}
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
@@ -109,8 +106,7 @@ export default function LoginPage() {
           <div className="sandbox-hint">
             <strong>Development mode</strong>
             <br />
-            Use <code>patient1</code> / <code>patient1</code> to sign in as a
-            demo patient.
+            Use <code>patient1</code> / <code>patient1</code> to sign in as a demo patient.
           </div>
         )}
       </div>

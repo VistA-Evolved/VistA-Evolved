@@ -16,12 +16,15 @@
 
 import type { Remittance, RemitServiceLine, RemitAdjustment } from '../domain/remit.js';
 import {
-  storeRemittance, matchRemittanceToClaim, getClaim, updateClaim,
+  storeRemittance,
+  matchRemittanceToClaim,
+  getClaim,
+  updateClaim,
 } from '../domain/claim-store.js';
 import { transitionClaim } from '../domain/claim.js';
 import { createWorkqueueItem } from '../workqueues/workqueue-store.js';
 import { appendRcmAudit } from '../audit/rcm-audit.js';
-import { lookupCarc, buildActionRecommendation, lookupRarc } from '../reference/carc-rarc.js';
+import { lookupCarc, buildActionRecommendation } from '../reference/carc-rarc.js';
 
 /* ── Input Types ───────────────────────────────────────────── */
 
@@ -42,10 +45,10 @@ export interface RemitIngestInput {
   totalPatientResponsibility?: number;
 
   /** Claim linkage */
-  claimId?: string;           // our internal ID if known
-  payerClaimId?: string;      // payer's claim reference number
+  claimId?: string; // our internal ID if known
+  payerClaimId?: string; // payer's claim reference number
   patientDfn?: string;
-  ediControlNumber?: string;  // 835 control number
+  ediControlNumber?: string; // 835 control number
 
   /** Service lines with adjustments */
   serviceLines?: RemitServiceLineInput[];
@@ -89,7 +92,9 @@ const processedRemittances = new Map<string, Remittance>();
 
 /* Phase 146: DB repo wiring */
 let remitProcDbRepo: { upsert(d: any): Promise<any> } | null = null;
-export function initRemitProcessorRepo(repo: typeof remitProcDbRepo): void { remitProcDbRepo = repo; }
+export function initRemitProcessorRepo(repo: typeof remitProcDbRepo): void {
+  remitProcDbRepo = repo;
+}
 
 /* ── Ingestion ─────────────────────────────────────────────── */
 
@@ -99,20 +104,27 @@ export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIn
   if (existingId) {
     const remit = processedRemittances.get(existingId);
     if (remit) {
-      return { ok: true, remittance: remit, claimMatched: false, claimTransitioned: false, workqueueItemsCreated: 0, idempotent: true };
+      return {
+        ok: true,
+        remittance: remit,
+        claimMatched: false,
+        claimTransitioned: false,
+        workqueueItemsCreated: 0,
+        idempotent: true,
+      };
     }
   }
 
   const now = new Date().toISOString();
 
   // Build service lines
-  const serviceLines: RemitServiceLine[] = (input.serviceLines ?? []).map(sl => ({
+  const serviceLines: RemitServiceLine[] = (input.serviceLines ?? []).map((sl) => ({
     lineNumber: sl.lineNumber,
     procedureCode: sl.procedureCode,
     chargedAmount: sl.chargedAmount,
     paidAmount: sl.paidAmount,
     patientResponsibility: sl.patientResponsibility ?? 0,
-    adjustments: (sl.adjustments ?? []).map(adj => ({
+    adjustments: (sl.adjustments ?? []).map((adj) => ({
       groupCode: adj.groupCode as RemitAdjustment['groupCode'],
       reasonCode: adj.reasonCode,
       amount: adj.amount,
@@ -123,9 +135,11 @@ export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIn
   }));
 
   // Calculate totals if not provided
-  const totalAdjusted = input.totalAdjusted ??
+  const totalAdjusted =
+    input.totalAdjusted ??
     serviceLines.reduce((sum, sl) => sum + sl.adjustments.reduce((s, a) => s + a.amount, 0), 0);
-  const totalPatientResp = input.totalPatientResponsibility ??
+  const totalPatientResp =
+    input.totalPatientResponsibility ??
     serviceLines.reduce((sum, sl) => sum + sl.patientResponsibility, 0);
 
   const remittance: Remittance = {
@@ -157,7 +171,15 @@ export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIn
   remitIdempotencyIndex.set(input.idempotencyKey, remittance.id);
 
   // Phase 146: Write-through to PG
-  remitProcDbRepo?.upsert({ id: remittance.id, tenantId: (remittance as any).tenantId ?? 'default', source: input.idempotencyKey, status: 'processed', createdAt: new Date().toISOString() }).catch(() => {});
+  remitProcDbRepo
+    ?.upsert({
+      id: remittance.id,
+      tenantId: (remittance as any).tenantId ?? 'default',
+      source: input.idempotencyKey,
+      status: 'processed',
+      createdAt: new Date().toISOString(),
+    })
+    .catch(() => {});
 
   // Auto-match to claim
   let claimMatched = false;
@@ -174,10 +196,14 @@ export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIn
     if (claim) {
       // Determine if this is a full pay, partial pay, or denial
       const isDenied = input.totalPaid === 0 && input.totalCharged > 0;
-      const isPartialDeny = input.totalPaid > 0 && input.totalPaid < input.totalCharged;
 
       if (isDenied && (claim.status === 'accepted' || claim.status === 'submitted')) {
-        const updated = transitionClaim(claim, 'denied', 'system', '835 remittance: zero payment (denied)');
+        const updated = transitionClaim(
+          claim,
+          'denied',
+          'system',
+          '835 remittance: zero payment (denied)'
+        );
         updated.paidAmount = 0;
         updated.adjustmentAmount = totalAdjusted;
         updated.patientResponsibility = totalPatientResp;
@@ -185,7 +211,12 @@ export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIn
         updateClaim(updated);
         claimTransitioned = true;
       } else if (!isDenied && (claim.status === 'accepted' || claim.status === 'submitted')) {
-        const updated = transitionClaim(claim, 'paid', 'system', `835 remittance: payment ${input.totalPaid} cents`);
+        const updated = transitionClaim(
+          claim,
+          'paid',
+          'system',
+          `835 remittance: payment ${input.totalPaid} cents`
+        );
         updated.paidAmount = input.totalPaid;
         updated.adjustmentAmount = totalAdjusted;
         updated.patientResponsibility = totalPatientResp;
@@ -259,7 +290,8 @@ export function getRemitProcessorStats(): {
   let matched = 0;
   let unmatched = 0;
   for (const r of processedRemittances.values()) {
-    if (r.claimId) matched++; else unmatched++;
+    if (r.claimId) matched++;
+    else unmatched++;
   }
   return { processed: processedRemittances.size, matched, unmatched };
 }

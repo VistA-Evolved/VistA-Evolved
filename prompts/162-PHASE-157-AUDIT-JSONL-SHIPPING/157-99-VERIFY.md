@@ -1,11 +1,13 @@
 # Phase 157 — Audit JSONL Shipping to Object Store (VERIFY)
 
 ## Prerequisites
+
 - API server running
 - MinIO container running (or AUDIT_SHIP_ENABLED=false for dry-run)
 - Admin session cookie
 
 ## Verification Gates
+
 1. TypeScript compiles clean
 2. PG migration v22 applies (audit_ship_offset + audit_ship_manifest tables)
 3. SQLite migration applies (same tables)

@@ -20,7 +20,7 @@
  * Mutations wired to appendRcmAudit.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import {
   createDenialCase,
   getDenialById,
@@ -33,10 +33,10 @@ import {
   createResubmission,
   listResubmissions,
   getDenialStats,
-} from "./denial-store.js";
-import { generateAppealPacket, generateAppealPacketHtml } from "./appeal-packet.js";
-import { importRemittanceDenials } from "./edi-import.js";
-import { appendRcmAudit } from "../audit/rcm-audit.js";
+} from './denial-store.js';
+import { generateAppealPacket, generateAppealPacketHtml } from './appeal-packet.js';
+import { importRemittanceDenials } from './edi-import.js';
+import { appendRcmAudit } from '../audit/rcm-audit.js';
 import {
   CreateDenialSchema,
   UpdateDenialSchema,
@@ -45,25 +45,24 @@ import {
   CreateResubmissionSchema,
   Import835BatchSchema,
   isValidDenialTransition,
-} from "./types.js";
-import type { DenialStatus } from "./types.js";
+} from './types.js';
+import type { DenialStatus } from './types.js';
 
 /* ── Session helper ────────────────────────────────────────── */
 
 function getSession(request: FastifyRequest): { duz: string; tenantId: string } {
   const s = (request as any).session;
   return {
-    duz: s?.duz ?? "system",
-    tenantId: s?.tenantId ?? "default",
+    duz: s?.duz ?? 'system',
+    tenantId: s?.tenantId ?? 'default',
   };
 }
 
 /* ── Route Registration ────────────────────────────────────── */
 
 export default async function denialRoutes(server: FastifyInstance): Promise<void> {
-
   /* ── List Denials (Work Queue) ─────────────────────────── */
-  server.get("/rcm/denials", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/denials', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     const parsed = DenialListQuerySchema.safeParse(q);
     if (!parsed.success) {
@@ -74,7 +73,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
   });
 
   /* ── Create Denial (Manual Intake) ─────────────────────── */
-  server.post("/rcm/denials", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/denials', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const parsed = CreateDenialSchema.safeParse(body);
     if (!parsed.success) {
@@ -83,7 +82,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     const { duz } = getSession(request);
     const denial = await createDenialCase(parsed.data, duz);
 
-    appendRcmAudit("denial.created", {
+    appendRcmAudit('denial.created', {
       claimId: denial.claimRef,
       payerId: denial.payerId,
       userId: duz,
@@ -94,17 +93,17 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
   });
 
   /* ── Dashboard Stats ───────────────────────────────────── */
-  server.get("/rcm/denials/stats", async (_request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/denials/stats', async (_request: FastifyRequest, reply: FastifyReply) => {
     const stats = await getDenialStats();
     return reply.send({ ok: true, stats });
   });
 
   /* ── Get Denial Detail ─────────────────────────────────── */
-  server.get("/rcm/denials/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/denials/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const denial = await getDenialById(id);
     if (!denial) {
-      return reply.status(404).send({ ok: false, error: "Denial not found" });
+      return reply.status(404).send({ ok: false, error: 'Denial not found' });
     }
     const actions = await listDenialActions(id);
     const attachments = await listAttachments(id);
@@ -113,7 +112,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
   });
 
   /* ── Update Denial ─────────────────────────────────────── */
-  server.patch("/rcm/denials/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.patch('/rcm/denials/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const parsed = UpdateDenialSchema.safeParse(body);
@@ -125,7 +124,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     if (parsed.data.denialStatus) {
       const existing = await getDenialById(id);
       if (!existing) {
-        return reply.status(404).send({ ok: false, error: "Denial not found" });
+        return reply.status(404).send({ ok: false, error: 'Denial not found' });
       }
       if (!isValidDenialTransition(existing.denialStatus, parsed.data.denialStatus)) {
         return reply.status(400).send({
@@ -139,7 +138,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     const { reason, ...updates } = parsed.data;
     const denial = await updateDenialCase(id, updates, duz, reason);
     if (!denial) {
-      return reply.status(404).send({ ok: false, error: "Denial not found" });
+      return reply.status(404).send({ ok: false, error: 'Denial not found' });
     }
 
     // Map status to audit action
@@ -155,7 +154,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
   });
 
   /* ── Add Action ────────────────────────────────────────── */
-  server.post("/rcm/denials/:id/actions", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/denials/:id/actions', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const parsed = CreateDenialActionSchema.safeParse(body);
@@ -165,7 +164,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
 
     const denial = await getDenialById(id);
     if (!denial) {
-      return reply.status(404).send({ ok: false, error: "Denial not found" });
+      return reply.status(404).send({ ok: false, error: 'Denial not found' });
     }
 
     const { duz } = getSession(request);
@@ -174,7 +173,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
 
     const action = await addDenialAction(id, duz, parsed.data.actionType, payload);
 
-    appendRcmAudit("denial.action_added", {
+    appendRcmAudit('denial.action_added', {
       claimId: denial.claimRef,
       payerId: denial.payerId,
       userId: duz,
@@ -185,101 +184,110 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
   });
 
   /* ── List Actions ──────────────────────────────────────── */
-  server.get("/rcm/denials/:id/actions", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/denials/:id/actions', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const denial = await getDenialById(id);
     if (!denial) {
-      return reply.status(404).send({ ok: false, error: "Denial not found" });
+      return reply.status(404).send({ ok: false, error: 'Denial not found' });
     }
     const actions = await listDenialActions(id);
     return reply.send({ ok: true, actions });
   });
 
   /* ── Add Attachment Reference ──────────────────────────── */
-  server.post("/rcm/denials/:id/attachments", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
+  server.post(
+    '/rcm/denials/:id/attachments',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
 
-    if (!body.label || !body.refType) {
-      return reply.status(400).send({ ok: false, error: "label and refType required" });
+      if (!body.label || !body.refType) {
+        return reply.status(400).send({ ok: false, error: 'label and refType required' });
+      }
+
+      const denial = await getDenialById(id);
+      if (!denial) {
+        return reply.status(404).send({ ok: false, error: 'Denial not found' });
+      }
+
+      const { duz } = getSession(request);
+      const attachment = await addAttachment(
+        id,
+        body.label,
+        body.refType,
+        body.storedPath ?? null,
+        body.sha256 ?? null,
+        duz
+      );
+
+      appendRcmAudit('denial.attachment_added', {
+        claimId: denial.claimRef,
+        payerId: denial.payerId,
+        userId: duz,
+        detail: { denialId: id, attachmentId: attachment.id, label: body.label },
+      });
+
+      return reply.status(201).send({ ok: true, attachment });
     }
-
-    const denial = await getDenialById(id);
-    if (!denial) {
-      return reply.status(404).send({ ok: false, error: "Denial not found" });
-    }
-
-    const { duz } = getSession(request);
-    const attachment = await addAttachment(
-      id,
-      body.label,
-      body.refType,
-      body.storedPath ?? null,
-      body.sha256 ?? null,
-      duz,
-    );
-
-    appendRcmAudit("denial.attachment_added", {
-      claimId: denial.claimRef,
-      payerId: denial.payerId,
-      userId: duz,
-      detail: { denialId: id, attachmentId: attachment.id, label: body.label },
-    });
-
-    return reply.status(201).send({ ok: true, attachment });
-  });
+  );
 
   /* ── List Attachments ──────────────────────────────────── */
-  server.get("/rcm/denials/:id/attachments", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const denial = await getDenialById(id);
-    if (!denial) {
-      return reply.status(404).send({ ok: false, error: "Denial not found" });
+  server.get(
+    '/rcm/denials/:id/attachments',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const denial = await getDenialById(id);
+      if (!denial) {
+        return reply.status(404).send({ ok: false, error: 'Denial not found' });
+      }
+      const attachments = await listAttachments(id);
+      return reply.send({ ok: true, attachments });
     }
-    const attachments = await listAttachments(id);
-    return reply.send({ ok: true, attachments });
-  });
+  );
 
   /* ── Generate Appeal Packet ────────────────────────────── */
-  server.post("/rcm/denials/:id/appeal-packet", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const denial = await getDenialById(id);
-    if (!denial) {
-      return reply.status(404).send({ ok: false, error: "Denial not found" });
+  server.post(
+    '/rcm/denials/:id/appeal-packet',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const denial = await getDenialById(id);
+      if (!denial) {
+        return reply.status(404).send({ ok: false, error: 'Denial not found' });
+      }
+
+      const { duz } = getSession(request);
+      const body = (request.body as any) || {};
+      const format = body.format ?? 'json'; // "json" | "html"
+
+      const actions = await listDenialActions(id);
+      const attachments = await listAttachments(id);
+      const payerName = denial.payerId; // TODO: resolve from payer registry
+      const packet = generateAppealPacket(denial, actions, attachments, payerName);
+
+      // Record packet generation as action
+      await addDenialAction(id, duz, 'GENERATE_APPEAL_PACKET', {
+        format,
+        generatedAt: packet.generatedAt,
+      });
+
+      appendRcmAudit('denial.packet_generated', {
+        claimId: denial.claimRef,
+        payerId: denial.payerId,
+        userId: duz,
+        detail: { denialId: id, format },
+      });
+
+      if (format === 'html') {
+        const html = generateAppealPacketHtml(denial, actions, attachments, payerName);
+        return reply.type('text/html').send(html);
+      }
+
+      return reply.send({ ok: true, packet });
     }
-
-    const { duz } = getSession(request);
-    const body = (request.body as any) || {};
-    const format = body.format ?? "json"; // "json" | "html"
-
-    const actions = await listDenialActions(id);
-    const attachments = await listAttachments(id);
-    const payerName = denial.payerId; // TODO: resolve from payer registry
-    const packet = generateAppealPacket(denial, actions, attachments, payerName);
-
-    // Record packet generation as action
-    await addDenialAction(id, duz, "GENERATE_APPEAL_PACKET", {
-      format,
-      generatedAt: packet.generatedAt,
-    });
-
-    appendRcmAudit("denial.packet_generated", {
-      claimId: denial.claimRef,
-      payerId: denial.payerId,
-      userId: duz,
-      detail: { denialId: id, format },
-    });
-
-    if (format === "html") {
-      const html = generateAppealPacketHtml(denial, actions, attachments, payerName);
-      return reply.type("text/html").send(html);
-    }
-
-    return reply.send({ ok: true, packet });
-  });
+  );
 
   /* ── Create Resubmission ───────────────────────────────── */
-  server.post("/rcm/denials/:id/resubmit", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/denials/:id/resubmit', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const parsed = CreateResubmissionSchema.safeParse(body);
@@ -289,7 +297,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
 
     const denial = await getDenialById(id);
     if (!denial) {
-      return reply.status(404).send({ ok: false, error: "Denial not found" });
+      return reply.status(404).send({ ok: false, error: 'Denial not found' });
     }
 
     const { duz } = getSession(request);
@@ -299,15 +307,20 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
       parsed.data.referenceNumber ?? null,
       parsed.data.followUpDate ?? null,
       parsed.data.notes ?? null,
-      duz,
+      duz
     );
 
     // Transition to RESUBMITTED if currently APPEALING or TRIAGED
-    if (denial.denialStatus === "APPEALING" || denial.denialStatus === "TRIAGED") {
-      await updateDenialCase(id, { denialStatus: "RESUBMITTED" as DenialStatus }, duz, "Resubmission created");
+    if (denial.denialStatus === 'APPEALING' || denial.denialStatus === 'TRIAGED') {
+      await updateDenialCase(
+        id,
+        { denialStatus: 'RESUBMITTED' as DenialStatus },
+        duz,
+        'Resubmission created'
+      );
     }
 
-    appendRcmAudit("denial.resubmitted", {
+    appendRcmAudit('denial.resubmitted', {
       claimId: denial.claimRef,
       payerId: denial.payerId,
       userId: duz,
@@ -318,18 +331,21 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
   });
 
   /* ── List Resubmissions ────────────────────────────────── */
-  server.get("/rcm/denials/:id/resubmissions", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const denial = await getDenialById(id);
-    if (!denial) {
-      return reply.status(404).send({ ok: false, error: "Denial not found" });
+  server.get(
+    '/rcm/denials/:id/resubmissions',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const denial = await getDenialById(id);
+      if (!denial) {
+        return reply.status(404).send({ ok: false, error: 'Denial not found' });
+      }
+      const resubmissions = await listResubmissions(id);
+      return reply.send({ ok: true, resubmissions });
     }
-    const resubmissions = await listResubmissions(id);
-    return reply.send({ ok: true, resubmissions });
-  });
+  );
 
   /* ── Batch Import from 835 ────────────────────────────── */
-  server.post("/rcm/denials/import/835", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/denials/import/835', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const parsed = Import835BatchSchema.safeParse(body);
     if (!parsed.success) {
@@ -339,7 +355,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     const { duz } = getSession(request);
     const result = await importRemittanceDenials(parsed.data, duz);
 
-    appendRcmAudit("denial.imported", {
+    appendRcmAudit('denial.imported', {
       userId: duz,
       detail: {
         imported: result.imported,
@@ -358,13 +374,21 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
 
 function mapStatusToAuditAction(status?: DenialStatus) {
   switch (status) {
-    case "TRIAGED": return "denial.triaged" as const;
-    case "APPEALING": return "denial.appealing" as const;
-    case "RESUBMITTED": return "denial.resubmitted" as const;
-    case "PAID": return "denial.resolved" as const;
-    case "PARTIAL": return "denial.resolved" as const;
-    case "WRITEOFF": return "denial.writeoff" as const;
-    case "CLOSED": return "denial.closed" as const;
-    default: return "denial.updated" as const;
+    case 'TRIAGED':
+      return 'denial.triaged' as const;
+    case 'APPEALING':
+      return 'denial.appealing' as const;
+    case 'RESUBMITTED':
+      return 'denial.resubmitted' as const;
+    case 'PAID':
+      return 'denial.resolved' as const;
+    case 'PARTIAL':
+      return 'denial.resolved' as const;
+    case 'WRITEOFF':
+      return 'denial.writeoff' as const;
+    case 'CLOSED':
+      return 'denial.closed' as const;
+    default:
+      return 'denial.updated' as const;
   }
 }

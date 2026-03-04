@@ -16,29 +16,24 @@
  *  - rcm/edi/remit-processor.ts — ingestRemittance
  */
 
-import crypto from "node:crypto";
-import type {
-  X12TransactionSet,
-  IsaEnvelope,
-  GsEnvelope,
-} from "./types.js";
+import type { X12TransactionSet, IsaEnvelope, GsEnvelope } from './types.js';
 
 /* ═══════════════════════════════════════════════════════════════════
    1. RAW X12 PARSER
    ═══════════════════════════════════════════════════════════════════ */
 
 export interface X12Segment {
-  id: string;           // segment identifier (ISA, GS, ST, BHT, CLP, etc.)
-  elements: string[];   // element values (index 0 = segment ID)
-  raw: string;          // original segment text
-  position: number;     // 0-based position in interchange
+  id: string; // segment identifier (ISA, GS, ST, BHT, CLP, etc.)
+  elements: string[]; // element values (index 0 = segment ID)
+  raw: string; // original segment text
+  position: number; // 0-based position in interchange
 }
 
 export interface X12TransactionSetParsed {
   controlNumber: string; // ST02
   transactionSet: string; // ST01 (837, 835, 999, etc.)
   segments: X12Segment[];
-  segmentCount: number;  // SE01 (declared count)
+  segmentCount: number; // SE01 (declared count)
 }
 
 export interface X12FunctionalGroup {
@@ -70,7 +65,7 @@ export interface X12ParseError {
   message: string;
   segment?: string;
   position?: number;
-  severity: "fatal" | "error" | "warning";
+  severity: 'fatal' | 'error' | 'warning';
 }
 
 /**
@@ -87,14 +82,22 @@ export function parseX12(rawText: string): X12ParseResult {
   if (text.length < 106) {
     return {
       ok: false,
-      errors: [{ code: "PARSE-001", message: "Input too short for ISA segment (need 106+ chars)", severity: "fatal" }],
+      errors: [
+        {
+          code: 'PARSE-001',
+          message: 'Input too short for ISA segment (need 106+ chars)',
+          severity: 'fatal',
+        },
+      ],
     };
   }
 
-  if (!text.startsWith("ISA")) {
+  if (!text.startsWith('ISA')) {
     return {
       ok: false,
-      errors: [{ code: "PARSE-002", message: "Input does not start with ISA segment", severity: "fatal" }],
+      errors: [
+        { code: 'PARSE-002', message: 'Input does not start with ISA segment', severity: 'fatal' },
+      ],
     };
   }
 
@@ -104,7 +107,10 @@ export function parseX12(rawText: string): X12ParseResult {
   const segTerminator = text[105];
 
   // Split all segments
-  const segmentTexts = text.split(segTerminator).map((s) => s.replace(/^\s+|\s+$/g, "")).filter(Boolean);
+  const segmentTexts = text
+    .split(segTerminator)
+    .map((s) => s.replace(/^\s+|\s+$/g, ''))
+    .filter(Boolean);
 
   const segments: X12Segment[] = segmentTexts.map((raw, i) => {
     const elements = raw.split(elementSep);
@@ -114,26 +120,36 @@ export function parseX12(rawText: string): X12ParseResult {
   if (segments.length < 4) {
     return {
       ok: false,
-      errors: [{ code: "PARSE-003", message: "Too few segments for a valid interchange", severity: "fatal" }],
+      errors: [
+        {
+          code: 'PARSE-003',
+          message: 'Too few segments for a valid interchange',
+          severity: 'fatal',
+        },
+      ],
     };
   }
 
   // Parse ISA envelope
   const isaElements = segments[0].elements;
   if (isaElements.length < 17) {
-    errors.push({ code: "PARSE-004", message: `ISA has ${isaElements.length} elements, expected 17`, severity: "error" });
+    errors.push({
+      code: 'PARSE-004',
+      message: `ISA has ${isaElements.length} elements, expected 17`,
+      severity: 'error',
+    });
   }
 
   const isaEnvelope: IsaEnvelope = {
-    senderQualifier: (isaElements[5] || "").trim(),
-    senderId: (isaElements[6] || "").trim(),
-    receiverQualifier: (isaElements[7] || "").trim(),
-    receiverId: (isaElements[8] || "").trim(),
-    date: (isaElements[9] || "").trim(),
-    time: (isaElements[10] || "").trim(),
-    versionNumber: (isaElements[12] || "").trim(),
-    controlNumber: (isaElements[13] || "").trim(),
-    usageIndicator: ((isaElements[15] || "T").trim() as "T" | "P"),
+    senderQualifier: (isaElements[5] || '').trim(),
+    senderId: (isaElements[6] || '').trim(),
+    receiverQualifier: (isaElements[7] || '').trim(),
+    receiverId: (isaElements[8] || '').trim(),
+    date: (isaElements[9] || '').trim(),
+    time: (isaElements[10] || '').trim(),
+    versionNumber: (isaElements[12] || '').trim(),
+    controlNumber: (isaElements[13] || '').trim(),
+    usageIndicator: (isaElements[15] || 'T').trim() as 'T' | 'P',
   };
 
   // Parse functional groups and transaction sets
@@ -144,37 +160,37 @@ export function parseX12(rawText: string): X12ParseResult {
   for (let i = 1; i < segments.length; i++) {
     const seg = segments[i];
 
-    if (seg.id === "GS") {
+    if (seg.id === 'GS') {
       currentGroup = {
         envelope: {
-          functionalCode: (seg.elements[1] || "").trim(),
-          senderId: (seg.elements[2] || "").trim(),
-          receiverId: (seg.elements[3] || "").trim(),
-          controlNumber: (seg.elements[6] || "").trim(),
-          versionCode: (seg.elements[8] || "").trim(),
+          functionalCode: (seg.elements[1] || '').trim(),
+          senderId: (seg.elements[2] || '').trim(),
+          receiverId: (seg.elements[3] || '').trim(),
+          controlNumber: (seg.elements[6] || '').trim(),
+          versionCode: (seg.elements[8] || '').trim(),
         },
         transactionSets: [],
-        controlNumber: "",
+        controlNumber: '',
         declaredTxCount: 0,
       };
-    } else if (seg.id === "GE" && currentGroup) {
-      currentGroup.declaredTxCount = parseInt(seg.elements[1] || "0", 10);
-      currentGroup.controlNumber = (seg.elements[2] || "").trim();
+    } else if (seg.id === 'GE' && currentGroup) {
+      currentGroup.declaredTxCount = parseInt(seg.elements[1] || '0', 10);
+      currentGroup.controlNumber = (seg.elements[2] || '').trim();
       functionalGroups.push(currentGroup);
       currentGroup = null;
-    } else if (seg.id === "ST" && currentGroup) {
+    } else if (seg.id === 'ST' && currentGroup) {
       currentTx = {
-        transactionSet: (seg.elements[1] || "").trim(),
-        controlNumber: (seg.elements[2] || "").trim(),
+        transactionSet: (seg.elements[1] || '').trim(),
+        controlNumber: (seg.elements[2] || '').trim(),
         segments: [seg],
         segmentCount: 0,
       };
-    } else if (seg.id === "SE" && currentTx && currentGroup) {
-      currentTx.segmentCount = parseInt(seg.elements[1] || "0", 10);
+    } else if (seg.id === 'SE' && currentTx && currentGroup) {
+      currentTx.segmentCount = parseInt(seg.elements[1] || '0', 10);
       currentTx.segments.push(seg);
       currentGroup.transactionSets.push(currentTx);
       currentTx = null;
-    } else if (seg.id === "IEA") {
+    } else if (seg.id === 'IEA') {
       // Interchange trailer — handled below
     } else if (currentTx) {
       currentTx.segments.push(seg);
@@ -182,9 +198,9 @@ export function parseX12(rawText: string): X12ParseResult {
   }
 
   // Parse IEA
-  const ieaSeg = segments.find((s) => s.id === "IEA");
-  const declaredGroupCount = ieaSeg ? parseInt(ieaSeg.elements[1] || "0", 10) : 0;
-  const ieaControlNumber = ieaSeg ? (ieaSeg.elements[2] || "").trim() : "";
+  const ieaSeg = segments.find((s) => s.id === 'IEA');
+  const declaredGroupCount = ieaSeg ? parseInt(ieaSeg.elements[1] || '0', 10) : 0;
+  const ieaControlNumber = ieaSeg ? (ieaSeg.elements[2] || '').trim() : '';
 
   const interchange: X12Interchange = {
     envelope: isaEnvelope,
@@ -197,9 +213,8 @@ export function parseX12(rawText: string): X12ParseResult {
     rawText: text,
   };
 
-  return { ok: errors.every((e) => e.severity !== "fatal"), interchange, errors };
+  return { ok: errors.every((e) => e.severity !== 'fatal'), interchange, errors };
 }
-
 
 /* ═══════════════════════════════════════════════════════════════════
    2. ENVELOPE VALIDATION
@@ -211,8 +226,8 @@ export interface EnvelopeValidationResult {
   warnings: X12ParseError[];
 }
 
-const ISA_VERSION_CODES = new Set(["00501", "00401", "00402"]);
-const GS_FUNCTIONAL_CODES = new Set(["HC", "HP", "FA", "HN", "HI", "HS", "HR", "HB", "DX", "TX"]);
+const ISA_VERSION_CODES = new Set(['00501', '00401', '00402']);
+const GS_FUNCTIONAL_CODES = new Set(['HC', 'HP', 'FA', 'HN', 'HI', 'HS', 'HR', 'HB', 'DX', 'TX']);
 
 export function validateEnvelope(interchange: X12Interchange): EnvelopeValidationResult {
   const errors: X12ParseError[] = [];
@@ -221,36 +236,48 @@ export function validateEnvelope(interchange: X12Interchange): EnvelopeValidatio
 
   // ISA field validations
   if (!ISA_VERSION_CODES.has(isa.versionNumber)) {
-    errors.push({ code: "ENV-001", message: `Unsupported ISA version: ${isa.versionNumber}`, severity: "error" });
+    errors.push({
+      code: 'ENV-001',
+      message: `Unsupported ISA version: ${isa.versionNumber}`,
+      severity: 'error',
+    });
   }
   if (isa.senderId.length === 0) {
-    errors.push({ code: "ENV-002", message: "ISA06 sender ID is empty", severity: "error" });
+    errors.push({ code: 'ENV-002', message: 'ISA06 sender ID is empty', severity: 'error' });
   }
   if (isa.receiverId.length === 0) {
-    errors.push({ code: "ENV-003", message: "ISA08 receiver ID is empty", severity: "error" });
+    errors.push({ code: 'ENV-003', message: 'ISA08 receiver ID is empty', severity: 'error' });
   }
   if (!/^\d{9}$/.test(isa.controlNumber)) {
-    errors.push({ code: "ENV-004", message: `ISA13 control number must be 9 digits: ${isa.controlNumber}`, severity: "error" });
+    errors.push({
+      code: 'ENV-004',
+      message: `ISA13 control number must be 9 digits: ${isa.controlNumber}`,
+      severity: 'error',
+    });
   }
-  if (isa.usageIndicator !== "T" && isa.usageIndicator !== "P") {
-    errors.push({ code: "ENV-005", message: `ISA15 must be T or P: ${isa.usageIndicator}`, severity: "error" });
+  if (isa.usageIndicator !== 'T' && isa.usageIndicator !== 'P') {
+    errors.push({
+      code: 'ENV-005',
+      message: `ISA15 must be T or P: ${isa.usageIndicator}`,
+      severity: 'error',
+    });
   }
 
   // IEA count check
   if (interchange.declaredGroupCount !== interchange.functionalGroups.length) {
     errors.push({
-      code: "ENV-006",
+      code: 'ENV-006',
       message: `IEA01 declares ${interchange.declaredGroupCount} groups but found ${interchange.functionalGroups.length}`,
-      severity: "error",
+      severity: 'error',
     });
   }
 
   // IEA control number must match ISA
   if (interchange.controlNumber !== isa.controlNumber) {
     errors.push({
-      code: "ENV-007",
+      code: 'ENV-007',
       message: `IEA02 (${interchange.controlNumber}) does not match ISA13 (${isa.controlNumber})`,
-      severity: "error",
+      severity: 'error',
     });
   }
 
@@ -258,23 +285,23 @@ export function validateEnvelope(interchange: X12Interchange): EnvelopeValidatio
   for (const group of interchange.functionalGroups) {
     if (!GS_FUNCTIONAL_CODES.has(group.envelope.functionalCode)) {
       warnings.push({
-        code: "ENV-010",
+        code: 'ENV-010',
         message: `Unknown GS01 functional code: ${group.envelope.functionalCode}`,
-        severity: "warning",
+        severity: 'warning',
       });
     }
     if (group.declaredTxCount !== group.transactionSets.length) {
       errors.push({
-        code: "ENV-011",
+        code: 'ENV-011',
         message: `GE01 declares ${group.declaredTxCount} TXs but group has ${group.transactionSets.length}`,
-        severity: "error",
+        severity: 'error',
       });
     }
     if (group.controlNumber !== group.envelope.controlNumber) {
       errors.push({
-        code: "ENV-012",
+        code: 'ENV-012',
         message: `GE02 (${group.controlNumber}) does not match GS06 (${group.envelope.controlNumber})`,
-        severity: "error",
+        severity: 'error',
       });
     }
 
@@ -283,9 +310,9 @@ export function validateEnvelope(interchange: X12Interchange): EnvelopeValidatio
       const actualCount = tx.segments.length;
       if (tx.segmentCount !== actualCount) {
         errors.push({
-          code: "ENV-020",
+          code: 'ENV-020',
           message: `SE01 declares ${tx.segmentCount} segments but found ${actualCount} in ST ${tx.controlNumber}`,
-          severity: "error",
+          severity: 'error',
         });
       }
     }
@@ -297,7 +324,6 @@ export function validateEnvelope(interchange: X12Interchange): EnvelopeValidatio
     warnings,
   };
 }
-
 
 /* ═══════════════════════════════════════════════════════════════════
    3. 999 / TA1 ACKNOWLEDGMENT GENERATION
@@ -320,7 +346,7 @@ export function generateTA1(
   interchange: X12Interchange,
   accepted: boolean,
   options: AckGenerationOptions,
-  errorCode?: string,
+  errorCode?: string
 ): string {
   const isa = interchange.envelope;
   const sep = interchange.elementSeparator;
@@ -333,20 +359,20 @@ export function generateTA1(
   // TA1 responds FROM us TO original sender
   const isaLine = buildISA(
     options.senderId,
-    options.senderQualifier || "ZZ",
+    options.senderQualifier || 'ZZ',
     isa.senderId,
     isa.senderQualifier,
     date,
     time,
     ctrlNum,
     isa.usageIndicator,
-    sep,
+    sep
   );
 
   // TA1 segment: interchange control number, date, time, ack code, note code
   // Ack codes: A = Accepted, R = Rejected, E = Accepted with errors
-  const ackCode = accepted ? "A" : "R";
-  const noteCode = errorCode || (accepted ? "000" : "022"); // 022 = invalid ISA control number
+  const ackCode = accepted ? 'A' : 'R';
+  const noteCode = errorCode || (accepted ? '000' : '022'); // 022 = invalid ISA control number
   const ta1 = `TA1${sep}${isa.controlNumber}${sep}${isa.date}${sep}${isa.time}${sep}${ackCode}${sep}${noteCode}`;
 
   const ieaLine = `IEA${sep}0${sep}${padControlNumber(ctrlNum)}`;
@@ -361,7 +387,7 @@ export function generateTA1(
 export function generate999(
   interchange: X12Interchange,
   validationResult: EnvelopeValidationResult,
-  options: AckGenerationOptions,
+  options: AckGenerationOptions
 ): string {
   const isa = interchange.envelope;
   const sep = interchange.elementSeparator;
@@ -374,17 +400,19 @@ export function generate999(
   const lines: string[] = [];
 
   // ISA: from us to original sender
-  lines.push(buildISA(
-    options.senderId,
-    options.senderQualifier || "ZZ",
-    isa.senderId,
-    isa.senderQualifier,
-    date,
-    time,
-    ctrlNum,
-    isa.usageIndicator,
-    sep,
-  ));
+  lines.push(
+    buildISA(
+      options.senderId,
+      options.senderQualifier || 'ZZ',
+      isa.senderId,
+      isa.senderQualifier,
+      date,
+      time,
+      ctrlNum,
+      isa.usageIndicator,
+      sep
+    )
+  );
 
   let gsCounter = 0;
   for (const group of interchange.functionalGroups) {
@@ -392,7 +420,9 @@ export function generate999(
     const gsCtrl = padControlNumber(String(gsCounter));
 
     // GS for 999 response
-    lines.push(`GS${sep}FA${sep}${options.senderId}${sep}${group.envelope.senderId}${sep}${formatGSDate(now)}${sep}${formatGSTime(now)}${sep}${gsCtrl}${sep}X${sep}005010X231A1`);
+    lines.push(
+      `GS${sep}FA${sep}${options.senderId}${sep}${group.envelope.senderId}${sep}${formatGSDate(now)}${sep}${formatGSTime(now)}${sep}${gsCtrl}${sep}X${sep}005010X231A1`
+    );
 
     // One ST per functional group (correct X12 999 structure)
     const stCtrl = padST(String(gsCounter));
@@ -401,7 +431,9 @@ export function generate999(
     lines.push(`ST${sep}999${sep}${stCtrl}${sep}005010X231A1`);
 
     // AK1: functional group header acknowledgment (once per group)
-    lines.push(`AK1${sep}${group.envelope.functionalCode}${sep}${group.envelope.controlNumber}${sep}${group.envelope.versionCode}`);
+    lines.push(
+      `AK1${sep}${group.envelope.functionalCode}${sep}${group.envelope.controlNumber}${sep}${group.envelope.versionCode}`
+    );
     segCount++;
 
     // AK2/IK5 pairs for each transaction set in this group
@@ -414,12 +446,14 @@ export function generate999(
 
       if (!txAccepted && override?.errorCode) {
         // IK3: segment error
-        lines.push(`IK3${sep}${override.errorCode}${sep}1${sep}${override.errorMsg || "Error"}${sep}5`);
+        lines.push(
+          `IK3${sep}${override.errorCode}${sep}1${sep}${override.errorMsg || 'Error'}${sep}5`
+        );
         segCount++;
       }
 
       // IK5: transaction set ack trailer
-      const ik5Code = txAccepted ? "A" : "R";
+      const ik5Code = txAccepted ? 'A' : 'R';
       lines.push(`IK5${sep}${ik5Code}`);
       segCount++;
     }
@@ -431,7 +465,7 @@ export function generate999(
       return ov ? ov.accepted : validationResult.valid;
     }).length;
     const ak9AllAccepted = accepted999 === txTotal;
-    const ak9Code = ak9AllAccepted ? "A" : (accepted999 === 0 ? "R" : "P");
+    const ak9Code = ak9AllAccepted ? 'A' : accepted999 === 0 ? 'R' : 'P';
     lines.push(`AK9${sep}${ak9Code}${sep}${txTotal}${sep}${txTotal}${sep}${accepted999}`);
     segCount++;
 
@@ -446,7 +480,6 @@ export function generate999(
   return lines.join(term) + term;
 }
 
-
 /* ═══════════════════════════════════════════════════════════════════
    4. INBOUND TRANSACTION ROUTER
    ═══════════════════════════════════════════════════════════════════ */
@@ -454,7 +487,7 @@ export function generate999(
 export type TransactionHandler = (
   tx: X12TransactionSetParsed,
   group: X12FunctionalGroup,
-  interchange: X12Interchange,
+  interchange: X12Interchange
 ) => Promise<RoutingResult>;
 
 export interface RoutingResult {
@@ -490,7 +523,7 @@ export function getRegisteredHandlers(): string[] {
  */
 export async function routeInboundInterchange(
   interchange: X12Interchange,
-  ackOptions: AckGenerationOptions,
+  ackOptions: AckGenerationOptions
 ): Promise<GatewayRoutingResult> {
   const results: RoutingResult[] = [];
 
@@ -507,7 +540,7 @@ export async function routeInboundInterchange(
             transactionSet: tx.transactionSet,
             controlNumber: tx.controlNumber,
             accepted: false,
-            error: err.message || "handler_error",
+            error: err.message || 'handler_error',
           });
         }
       } else {
@@ -528,7 +561,7 @@ export async function routeInboundInterchange(
   for (const r of results) {
     overrides.set(r.controlNumber, {
       accepted: r.accepted,
-      errorCode: r.accepted ? undefined : "5",
+      errorCode: r.accepted ? undefined : '5',
       errorMsg: r.error,
     });
   }
@@ -546,14 +579,13 @@ export async function routeInboundInterchange(
   };
 }
 
-
 /* ═══════════════════════════════════════════════════════════════════
    5. CONTROL NUMBER TRACKING (duplicate detection)
    ═══════════════════════════════════════════════════════════════════ */
 
 interface ControlNumberEntry {
   controlNumber: string;
-  type: "isa" | "gs" | "st";
+  type: 'isa' | 'gs' | 'st';
   senderId: string;
   receivedAt: string;
   transactionSet?: string;
@@ -571,9 +603,9 @@ function controlNumberKey(type: string, senderId: string, controlNumber: string)
  * Returns true if this is a DUPLICATE.
  */
 export function isDuplicateControlNumber(
-  type: "isa" | "gs" | "st",
+  type: 'isa' | 'gs' | 'st',
   senderId: string,
-  controlNumber: string,
+  controlNumber: string
 ): boolean {
   return controlNumberStore.has(controlNumberKey(type, senderId, controlNumber));
 }
@@ -582,10 +614,10 @@ export function isDuplicateControlNumber(
  * Record a control number as seen.
  */
 export function recordControlNumber(
-  type: "isa" | "gs" | "st",
+  type: 'isa' | 'gs' | 'st',
   senderId: string,
   controlNumber: string,
-  transactionSet?: string,
+  transactionSet?: string
 ): void {
   // Evict oldest if at capacity (simple FIFO)
   if (controlNumberStore.size >= MAX_CONTROL_NUMBERS) {
@@ -622,7 +654,7 @@ export function clearControlNumbers(): void {
  */
 export async function processInboundX12(
   rawText: string,
-  ackOptions: AckGenerationOptions,
+  ackOptions: AckGenerationOptions
 ): Promise<{
   parseResult: X12ParseResult;
   validationResult?: EnvelopeValidationResult;
@@ -637,10 +669,14 @@ export async function processInboundX12(
   const interchange = parseResult.interchange;
 
   // Check for duplicate interchange
-  const dup = isDuplicateControlNumber("isa", interchange.envelope.senderId, interchange.envelope.controlNumber);
+  const dup = isDuplicateControlNumber(
+    'isa',
+    interchange.envelope.senderId,
+    interchange.envelope.controlNumber
+  );
   if (dup) {
     // Still generate TA1 but flag as duplicate
-    const ta1 = generateTA1(interchange, false, ackOptions, "025"); // 025 = duplicate ISA13
+    const ta1 = generateTA1(interchange, false, ackOptions, '025'); // 025 = duplicate ISA13
     return {
       parseResult,
       isDuplicate: true,
@@ -654,11 +690,11 @@ export async function processInboundX12(
   }
 
   // Record control numbers
-  recordControlNumber("isa", interchange.envelope.senderId, interchange.envelope.controlNumber);
+  recordControlNumber('isa', interchange.envelope.senderId, interchange.envelope.controlNumber);
   for (const group of interchange.functionalGroups) {
-    recordControlNumber("gs", interchange.envelope.senderId, group.envelope.controlNumber);
+    recordControlNumber('gs', interchange.envelope.senderId, group.envelope.controlNumber);
     for (const tx of group.transactionSets) {
-      recordControlNumber("st", interchange.envelope.senderId, tx.controlNumber, tx.transactionSet);
+      recordControlNumber('st', interchange.envelope.senderId, tx.controlNumber, tx.transactionSet);
     }
   }
 
@@ -672,7 +708,6 @@ export async function processInboundX12(
   return { parseResult, validationResult, routingResult, isDuplicate: false };
 }
 
-
 /* ═══════════════════════════════════════════════════════════════════
    6. X12 SEGMENT QUERY HELPERS
    ═══════════════════════════════════════════════════════════════════ */
@@ -684,39 +719,44 @@ export function findSegments(tx: X12TransactionSetParsed, segId: string): X12Seg
 
 /** Get a specific element value from a segment (1-based index) */
 export function getElement(segment: X12Segment, index: number): string {
-  return (segment.elements[index] || "").trim();
+  return (segment.elements[index] || '').trim();
 }
 
 /** Find the first segment with a given ID */
-export function findFirstSegment(tx: X12TransactionSetParsed, segId: string): X12Segment | undefined {
+export function findFirstSegment(
+  tx: X12TransactionSetParsed,
+  segId: string
+): X12Segment | undefined {
   return tx.segments.find((s) => s.id === segId);
 }
 
 /** Map transaction set identifier to X12TransactionSet type */
-export function mapTransactionSetType(stCode: string, gsVersionCode?: string): X12TransactionSet | undefined {
+export function mapTransactionSetType(
+  stCode: string,
+  gsVersionCode?: string
+): X12TransactionSet | undefined {
   const MAP: Record<string, X12TransactionSet> = {
-    "837P": "837P",
-    "837I": "837I",
-    "835": "835",
-    "270": "270",
-    "271": "271",
-    "276": "276",
-    "277": "277",
-    "278": "278",
-    "275": "275",
-    "999": "999",
-    "997": "997",
-    "TA1": "TA1",
+    '837P': '837P',
+    '837I': '837I',
+    '835': '835',
+    '270': '270',
+    '271': '271',
+    '276': '276',
+    '277': '277',
+    '278': '278',
+    '275': '275',
+    '999': '999',
+    '997': '997',
+    TA1: 'TA1',
   };
   // Bare "837" — disambiguate via GS08 version code (HP=professional, HI=institutional)
-  if (stCode === "837") {
-    if (gsVersionCode?.includes("HP") || gsVersionCode?.includes("837P")) return "837P";
-    if (gsVersionCode?.includes("HI") || gsVersionCode?.includes("837I")) return "837I";
-    return "837P"; // default to professional when ambiguous
+  if (stCode === '837') {
+    if (gsVersionCode?.includes('HP') || gsVersionCode?.includes('837P')) return '837P';
+    if (gsVersionCode?.includes('HI') || gsVersionCode?.includes('837I')) return '837I';
+    return '837P'; // default to professional when ambiguous
   }
   return MAP[stCode];
 }
-
 
 /* ═══════════════════════════════════════════════════════════════════
    INTERNAL HELPERS
@@ -726,34 +766,34 @@ let _ctrlSeq = Math.floor(Math.random() * 900000000);
 
 function generateControlNumber(): string {
   _ctrlSeq = (_ctrlSeq + 1) % 999999999;
-  return String(_ctrlSeq).padStart(9, "0");
+  return String(_ctrlSeq).padStart(9, '0');
 }
 
 function padControlNumber(num: string): string {
-  return num.padStart(9, "0");
+  return num.padStart(9, '0');
 }
 
 function padST(num: string): string {
-  return num.padStart(4, "0");
+  return num.padStart(4, '0');
 }
 
 function formatISADate(d: Date): string {
   const yy = String(d.getFullYear()).slice(-2);
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
   return `${yy}${mm}${dd}`;
 }
 
 function formatISATime(d: Date): string {
-  const hh = String(d.getHours()).padStart(2, "0");
-  const mm = String(d.getMinutes()).padStart(2, "0");
+  const hh = String(d.getHours()).padStart(2, '0');
+  const mm = String(d.getMinutes()).padStart(2, '0');
   return `${hh}${mm}`;
 }
 
 function formatGSDate(d: Date): string {
   const yyyy = String(d.getFullYear());
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
   return `${yyyy}${mm}${dd}`;
 }
 
@@ -769,28 +809,28 @@ function buildISA(
   date: string,
   time: string,
   controlNumber: string,
-  usageIndicator: "T" | "P",
-  sep: string,
+  usageIndicator: 'T' | 'P',
+  sep: string
 ): string {
   // ISA segments are fixed-width with trailing spaces
-  const pad = (s: string, len: number) => s.padEnd(len, " ").slice(0, len);
+  const pad = (s: string, len: number) => s.padEnd(len, ' ').slice(0, len);
   return [
-    "ISA",
-    "00",          // ISA01 - Auth info qualifier
-    pad("", 10),   // ISA02 - Auth info
-    "00",          // ISA03 - Security info qualifier
-    pad("", 10),   // ISA04 - Security info
-    pad(senderQual, 2),    // ISA05
-    pad(senderId, 15),     // ISA06
-    pad(receiverQual, 2),  // ISA07
-    pad(receiverId, 15),   // ISA08
-    date,                  // ISA09
-    time,                  // ISA10
-    "^",                   // ISA11 - Repetition separator
-    "00501",               // ISA12 - Version
+    'ISA',
+    '00', // ISA01 - Auth info qualifier
+    pad('', 10), // ISA02 - Auth info
+    '00', // ISA03 - Security info qualifier
+    pad('', 10), // ISA04 - Security info
+    pad(senderQual, 2), // ISA05
+    pad(senderId, 15), // ISA06
+    pad(receiverQual, 2), // ISA07
+    pad(receiverId, 15), // ISA08
+    date, // ISA09
+    time, // ISA10
+    '^', // ISA11 - Repetition separator
+    '00501', // ISA12 - Version
     padControlNumber(controlNumber), // ISA13
-    "0",                   // ISA14 - Ack requested
-    usageIndicator,        // ISA15
-    ":",                   // ISA16 - Sub-element separator
+    '0', // ISA14 - Ack requested
+    usageIndicator, // ISA15
+    ':', // ISA16 - Sub-element separator
   ].join(sep);
 }

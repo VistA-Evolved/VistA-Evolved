@@ -3,6 +3,7 @@
 ## User Request
 
 Implement a CPRS Replica UI shell in apps/web:
+
 - Bottom tab strip based on design/contracts/cprs/v1/tabs.json
 - Menu bar based on menus.json
 - Patient chart shell route: /chart/[dfn]/[tab]

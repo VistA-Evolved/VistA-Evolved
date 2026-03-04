@@ -10,15 +10,15 @@ and capture before/after evidence.
 
 ### Folder Renames (7 folders via `git mv`)
 
-| Before | After | Reason |
-|--------|-------|--------|
-| `283-migration-templates` | `283-PHASE-283-MIGRATION-TEMPLATES` | Shadow folder → compliant |
-| `284-billing-metering` | `284-PHASE-284-BILLING-METERING` | Shadow folder → compliant |
+| Before                      | After                                 | Reason                    |
+| --------------------------- | ------------------------------------- | ------------------------- |
+| `283-migration-templates`   | `283-PHASE-283-MIGRATION-TEMPLATES`   | Shadow folder → compliant |
+| `284-billing-metering`      | `284-PHASE-284-BILLING-METERING`      | Shadow folder → compliant |
 | `285-feature-flags-upgrade` | `285-PHASE-285-FEATURE-FLAGS-UPGRADE` | Shadow folder → compliant |
-| `286-PROMPT-ORDERING-FIX` | `286-PHASE-286-PROMPT-ORDERING-FIX` | Shadow folder → compliant |
-| `263-WAVE8-INTEGRITY-AUDIT` | `263-WAVE-8-INTEGRITY-AUDIT` | Wave-audit normalization |
-| `290-WAVE9-INTEGRITY-AUDIT` | `290-WAVE-9-INTEGRITY-AUDIT` | Wave-audit normalization |
-| `326-W14-INTEGRITY-AUDIT` | `326-WAVE-14-INTEGRITY-AUDIT` | Wave-audit normalization |
+| `286-PROMPT-ORDERING-FIX`   | `286-PHASE-286-PROMPT-ORDERING-FIX`   | Shadow folder → compliant |
+| `263-WAVE8-INTEGRITY-AUDIT` | `263-WAVE-8-INTEGRITY-AUDIT`          | Wave-audit normalization  |
+| `290-WAVE9-INTEGRITY-AUDIT` | `290-WAVE-9-INTEGRITY-AUDIT`          | Wave-audit normalization  |
+| `326-W14-INTEGRITY-AUDIT`   | `326-WAVE-14-INTEGRITY-AUDIT`         | Wave-audit normalization  |
 
 ### Heading Fixes
 
@@ -28,6 +28,7 @@ and capture before/after evidence.
 ### NOTES.md Additions
 
 Added `NOTES.md` to 4 folders that lacked them:
+
 - `263-WAVE-8-INTEGRITY-AUDIT/263-NOTES.md`
 - `286-PHASE-286-PROMPT-ORDERING-FIX/286-NOTES.md`
 - `290-WAVE-9-INTEGRITY-AUDIT/290-NOTES.md`
@@ -48,12 +49,12 @@ Added `NOTES.md` to 4 folders that lacked them:
 
 ### Collision Resolution
 
-| Phase | Collision | Resolution |
-|-------|-----------|------------|
-| 263 | `260-PHASE-263` vs `263-PHASE-263` | Moved 263 to `WAVE-8` naming (no PHASE claim) |
-| 290 | `297-PHASE-290` vs `290-PHASE-290` | Moved 290 to `WAVE-9` naming (no PHASE claim) |
-| 283 | `281-PHASE-283` vs `283-PHASE-283` | Legacy structural — WARN only |
-| 284 | `282-PHASE-284` vs `284-PHASE-284` | Legacy structural — WARN only |
+| Phase | Collision                          | Resolution                                    |
+| ----- | ---------------------------------- | --------------------------------------------- |
+| 263   | `260-PHASE-263` vs `263-PHASE-263` | Moved 263 to `WAVE-8` naming (no PHASE claim) |
+| 290   | `297-PHASE-290` vs `290-PHASE-290` | Moved 290 to `WAVE-9` naming (no PHASE claim) |
+| 283   | `281-PHASE-283` vs `283-PHASE-283` | Legacy structural — WARN only                 |
+| 284   | `282-PHASE-284` vs `284-PHASE-284` | Legacy structural — WARN only                 |
 
 ## Known Residual WARNs
 

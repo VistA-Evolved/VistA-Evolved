@@ -3,10 +3,12 @@
 ## What Changed
 
 ### New Files
+
 - `apps/api/src/rcm/edi/x12-serializer.ts` -- X12 5010 wire-format scaffold serializer (837P/I, 270)
 - `apps/api/src/rcm/edi/ph-eclaims-serializer.ts` -- PhilHealth eClaims CF1-CF4 bundle generator
 
 ### Modified Files
+
 - `apps/api/src/rcm/domain/claim.ts` -- Added `ready_to_submit` status, `isDemo`, `submissionSafetyMode`, `exportArtifactPath` fields
 - `apps/api/src/rcm/rcm-routes.ts` -- Submission safety gate, PATCH payer, CSV import, export endpoint, submission-safety status
 - `apps/api/src/rcm/validation/engine.ts` -- 3 authorization rules (AUTH-001/002/003)
@@ -19,6 +21,7 @@
 - `.gitignore` -- Added data/rcm-exports/
 
 ### New Documentation
+
 - `scripts/verify-phase40-payer-connectivity.ps1` -- 53-gate verifier
 - `docs/runbooks/rcm-payer-connectivity-phase40.md` -- Full runbook
 - `prompts/44-PHASE-40-PAYER-CONNECTIVITY/prompt.md` -- Prompt capture

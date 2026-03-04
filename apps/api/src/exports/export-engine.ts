@@ -15,22 +15,17 @@
  * provides a unified alternative.
  */
 
-import { randomBytes } from "node:crypto";
-import { log } from "../lib/logger.js";
-import { audit, type AuditAction } from "../lib/audit.js";
-import { formatRows, type ExportV2Format, SUPPORTED_FORMATS } from "./export-formats.js";
-import { getSource } from "./export-sources.js";
+import { randomBytes } from 'node:crypto';
+import { log } from '../lib/logger.js';
+import { audit, type AuditAction } from '../lib/audit.js';
+import { formatRows, type ExportV2Format, SUPPORTED_FORMATS } from './export-formats.js';
+import { getSource } from './export-sources.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type ExportJobStatus =
-  | "queued"
-  | "processing"
-  | "completed"
-  | "failed"
-  | "expired";
+export type ExportJobStatus = 'queued' | 'processing' | 'completed' | 'failed' | 'expired';
 
 export interface ExportV2Job {
   id: string;
@@ -83,7 +78,7 @@ const EXPORT_V2_CONFIG = {
   maxRowsPerExport: Number(process.env.EXPORT_V2_MAX_ROWS || 100_000),
   maxConcurrentPerUser: Number(process.env.EXPORT_V2_MAX_CONCURRENT || 3),
   jobRetentionMs: Number(process.env.EXPORT_V2_RETENTION_MS || 24 * 60 * 60 * 1000),
-  allowPhiExport: process.env.EXPORT_ALLOW_PHI === "true",
+  allowPhiExport: process.env.EXPORT_ALLOW_PHI === 'true',
 };
 
 /* ------------------------------------------------------------------ */
@@ -94,7 +89,7 @@ const jobs = new Map<string, ExportV2Job>();
 let purgeTimer: ReturnType<typeof setInterval> | null = null;
 
 function generateJobId(): string {
-  return `exp-${Date.now()}-${randomBytes(4).toString("hex")}`;
+  return `exp-${Date.now()}-${randomBytes(4).toString('hex')}`;
 }
 
 function purgeExpired(): void {
@@ -127,11 +122,11 @@ export function stopExportPurge(): void {
 
 export function checkExportV2Policy(
   actor: { duz: string; role?: string },
-  sourceId: string,
+  sourceId: string
 ): ExportPolicyCheck {
   // Must be admin
-  if (actor.role !== "admin") {
-    return { allowed: false, reason: "Export requires admin role" };
+  if (actor.role !== 'admin') {
+    return { allowed: false, reason: 'Export requires admin role' };
   }
 
   // Source must exist
@@ -142,17 +137,18 @@ export function checkExportV2Policy(
 
   // PHI gate
   if (source.containsPhi && !EXPORT_V2_CONFIG.allowPhiExport) {
-    return { allowed: false, reason: "PHI export is disabled" };
+    return { allowed: false, reason: 'PHI export is disabled' };
   }
 
   // Concurrent job limit
   const active = Array.from(jobs.values()).filter(
-    (j) =>
-      j.requestedBy.duz === actor.duz &&
-      (j.status === "queued" || j.status === "processing"),
+    (j) => j.requestedBy.duz === actor.duz && (j.status === 'queued' || j.status === 'processing')
   );
   if (active.length >= EXPORT_V2_CONFIG.maxConcurrentPerUser) {
-    return { allowed: false, reason: `Maximum concurrent exports reached (${EXPORT_V2_CONFIG.maxConcurrentPerUser})` };
+    return {
+      allowed: false,
+      reason: `Maximum concurrent exports reached (${EXPORT_V2_CONFIG.maxConcurrentPerUser})`,
+    };
   }
 
   return { allowed: true };
@@ -168,22 +164,24 @@ export function checkExportV2Policy(
 export async function createExportJob(
   actor: { duz: string; name?: string; role?: string },
   tenantId: string,
-  request: CreateExportRequest,
+  request: CreateExportRequest
 ): Promise<ExportV2Job> {
   if (!SUPPORTED_FORMATS.includes(request.format)) {
-    throw new Error(`Unsupported format: ${request.format}. Supported: ${SUPPORTED_FORMATS.join(", ")}`);
+    throw new Error(
+      `Unsupported format: ${request.format}. Supported: ${SUPPORTED_FORMATS.join(', ')}`
+    );
   }
 
   const policy = checkExportV2Policy(actor, request.sourceId);
   if (!policy.allowed) {
-    throw new Error(policy.reason || "Export not allowed");
+    throw new Error(policy.reason || 'Export not allowed');
   }
 
   const job: ExportV2Job = {
     id: generateJobId(),
     sourceId: request.sourceId,
     format: request.format,
-    status: "queued",
+    status: 'queued',
     requestedBy: actor,
     tenantId,
     createdAt: new Date().toISOString(),
@@ -193,7 +191,7 @@ export async function createExportJob(
 
   jobs.set(job.id, job);
 
-  audit("export.request" as AuditAction, "success", actor, {
+  audit('export.request' as AuditAction, 'success', actor, {
     detail: { jobId: job.id, sourceId: request.sourceId, format: request.format },
   });
 
@@ -206,13 +204,13 @@ export async function createExportJob(
 async function executeJob(job: ExportV2Job): Promise<void> {
   const source = getSource(job.sourceId);
   if (!source) {
-    job.status = "failed";
+    job.status = 'failed';
     job.error = `Source not found: ${job.sourceId}`;
     job.completedAt = new Date().toISOString();
     return;
   }
 
-  job.status = "processing";
+  job.status = 'processing';
   job.progress = 10;
 
   try {
@@ -231,10 +229,10 @@ async function executeJob(job: ExportV2Job): Promise<void> {
     job.extension = result.extension;
     job.rowCount = result.rowCount;
     job.progress = 100;
-    job.status = "completed";
+    job.status = 'completed';
     job.completedAt = new Date().toISOString();
 
-    audit("export.download" as AuditAction, "success", job.requestedBy, {
+    audit('export.download' as AuditAction, 'success', job.requestedBy, {
       detail: {
         jobId: job.id,
         sourceId: job.sourceId,
@@ -243,18 +241,18 @@ async function executeJob(job: ExportV2Job): Promise<void> {
       },
     });
 
-    log.info("Export v2 job completed", {
+    log.info('Export v2 job completed', {
       jobId: job.id,
       sourceId: job.sourceId,
       rowCount: job.rowCount,
     });
   } catch (err: any) {
-    job.status = "failed";
-    job.error = err.message || "Unknown error";
+    job.status = 'failed';
+    job.error = err.message || 'Unknown error';
     job.completedAt = new Date().toISOString();
     job.progress = 100;
 
-    log.error("Export v2 job failed", { jobId: job.id, error: err.message });
+    log.error('Export v2 job failed', { jobId: job.id, error: err.message });
   }
 }
 
@@ -295,8 +293,8 @@ export function getExportStats(): {
   const all = Array.from(jobs.values());
   return {
     totalJobs: all.length,
-    completed: all.filter((j) => j.status === "completed").length,
-    failed: all.filter((j) => j.status === "failed").length,
-    active: all.filter((j) => j.status === "queued" || j.status === "processing").length,
+    completed: all.filter((j) => j.status === 'completed').length,
+    failed: all.filter((j) => j.status === 'failed').length,
+    active: all.filter((j) => j.status === 'queued' || j.status === 'processing').length,
   };
 }

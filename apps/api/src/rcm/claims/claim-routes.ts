@@ -20,7 +20,7 @@
  * Mutations wired to appendRcmAudit.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import {
   createClaimCase,
   getClaimCase,
@@ -34,10 +34,10 @@ import {
   listDenials,
   getClaimCaseStats,
   getStoreInfo,
-} from "./claim-store.js";
-import { scrubClaim, getAvailableRulePacks } from "./scrubber.js";
-import { appendRcmAudit } from "../audit/rcm-audit.js";
-import type { ClaimLifecycleStatus } from "./claim-types.js";
+} from './claim-store.js';
+import { scrubClaim, getAvailableRulePacks } from './scrubber.js';
+import { appendRcmAudit } from '../audit/rcm-audit.js';
+import type { ClaimLifecycleStatus } from './claim-types.js';
 
 /* ── Helper: extract session ───────────────────────────────── */
 
@@ -52,7 +52,6 @@ function getSession(request: FastifyRequest): { duz: string; tenantId: string } 
 /* ── Route Registration ────────────────────────────────────── */
 
 export default async function claimLifecycleRoutes(server: FastifyInstance): Promise<void> {
-
   /* ── List Claim Cases (Queue) ──────────────────────────── */
   server.get('/rcm/claims/lifecycle', async (request: FastifyRequest, reply: FastifyReply) => {
     const { tenantId } = getSession(request);
@@ -121,7 +120,13 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
       claimId: cc.id,
       payerId: cc.payerId,
       userId: duz,
-      detail: { source: cc.philhealthDraftId ? 'philhealth_draft' : cc.loaCaseId ? 'loa_approval' : 'manual' },
+      detail: {
+        source: cc.philhealthDraftId
+          ? 'philhealth_draft'
+          : cc.loaCaseId
+            ? 'loa_approval'
+            : 'manual',
+      },
     });
 
     return reply.status(201).send({ ok: true, claimCase: cc });
@@ -136,223 +141,260 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
   });
 
   /* ── Update Claim Case Fields ──────────────────────────── */
-  server.patch('/rcm/claims/lifecycle/:id', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { duz } = getSession(request);
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
+  server.patch(
+    '/rcm/claims/lifecycle/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { duz } = getSession(request);
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
 
-    const existing = getClaimCase(id);
-    if (!existing) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
+      const existing = getClaimCase(id);
+      if (!existing) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
 
-    // Only allow updates in editable states
-    const editableStates: ClaimLifecycleStatus[] = ['draft', 'scrub_failed', 'returned_to_provider'];
-    if (!editableStates.includes(existing.lifecycleStatus)) {
-      return reply.status(409).send({
-        ok: false,
-        error: `Cannot edit claim in ${existing.lifecycleStatus} state`,
-      });
+      // Only allow updates in editable states
+      const editableStates: ClaimLifecycleStatus[] = [
+        'draft',
+        'scrub_failed',
+        'returned_to_provider',
+      ];
+      if (!editableStates.includes(existing.lifecycleStatus)) {
+        return reply.status(409).send({
+          ok: false,
+          error: `Cannot edit claim in ${existing.lifecycleStatus} state`,
+        });
+      }
+
+      // Strip immutable fields from body
+      delete body.id;
+      delete body.tenantId;
+      delete body.createdAt;
+      delete body.lifecycleStatus;
+      delete body.events;
+      delete body.scrubHistory;
+
+      const updated = updateClaimCase(id, body);
+      if (!updated) return reply.status(500).send({ ok: false, error: 'Update failed' });
+
+      appendRcmAudit('claim.updated', { claimId: id, userId: duz });
+      return reply.send({ ok: true, claimCase: updated });
     }
-
-    // Strip immutable fields from body
-    delete body.id;
-    delete body.tenantId;
-    delete body.createdAt;
-    delete body.lifecycleStatus;
-    delete body.events;
-    delete body.scrubHistory;
-
-    const updated = updateClaimCase(id, body);
-    if (!updated) return reply.status(500).send({ ok: false, error: 'Update failed' });
-
-    appendRcmAudit('claim.updated', { claimId: id, userId: duz });
-    return reply.send({ ok: true, claimCase: updated });
-  });
+  );
 
   /* ── Transition Lifecycle State ────────────────────────── */
-  server.put('/rcm/claims/lifecycle/:id/transition', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { duz } = getSession(request);
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
+  server.put(
+    '/rcm/claims/lifecycle/:id/transition',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { duz } = getSession(request);
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
 
-    if (!body.toStatus) {
-      return reply.status(400).send({ ok: false, error: 'toStatus is required' });
+      if (!body.toStatus) {
+        return reply.status(400).send({ ok: false, error: 'toStatus is required' });
+      }
+
+      const result = transitionClaimCase(id, body.toStatus, duz, body.detail);
+      if (!result.ok) {
+        return reply.status(409).send({ ok: false, error: result.error });
+      }
+
+      appendRcmAudit('claim.transition', {
+        claimId: id,
+        userId: duz,
+        detail: { toStatus: body.toStatus },
+      });
+
+      return reply.send({ ok: true, claimCase: result.claimCase });
     }
-
-    const result = transitionClaimCase(id, body.toStatus, duz, body.detail);
-    if (!result.ok) {
-      return reply.status(409).send({ ok: false, error: result.error });
-    }
-
-    appendRcmAudit('claim.transition', {
-      claimId: id,
-      userId: duz,
-      detail: { toStatus: body.toStatus },
-    });
-
-    return reply.send({ ok: true, claimCase: result.claimCase });
-  });
+  );
 
   /* ── Run Scrubber ──────────────────────────────────────── */
-  server.post('/rcm/claims/lifecycle/:id/scrub', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { duz } = getSession(request);
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
+  server.post(
+    '/rcm/claims/lifecycle/:id/scrub',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { duz } = getSession(request);
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
 
-    const cc = getClaimCase(id);
-    if (!cc) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
+      const cc = getClaimCase(id);
+      if (!cc) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
 
-    // Run scrubber
-    const scrubResult = scrubClaim(cc, {
-      packs: body.packs,
-      forcePack: body.forcePack,
-      actor: duz,
-    });
-
-    // Record result on the claim case
-    const updated = recordScrubResult(id, scrubResult);
-    if (!updated) return reply.status(500).send({ ok: false, error: 'Failed to record scrub result' });
-
-    // Auto-transition based on outcome
-    const scrubStates: ClaimLifecycleStatus[] = ['ready_for_scrub', 'draft', 'scrub_failed'];
-    if (scrubStates.includes(updated.lifecycleStatus)) {
-      const newStatus: ClaimLifecycleStatus = scrubResult.outcome === 'fail' ? 'scrub_failed' : 'scrub_passed';
-      // Only transition if valid
-      const transResult = transitionClaimCase(id, newStatus, 'system', {
-        scrubOutcome: scrubResult.outcome,
-        findingsCount: scrubResult.findings.length,
+      // Run scrubber
+      const scrubResult = scrubClaim(cc, {
+        packs: body.packs,
+        forcePack: body.forcePack,
+        actor: duz,
       });
-      if (transResult.ok) {
-        appendRcmAudit('claim.transition', {
-          claimId: id,
-          userId: 'system',
-          detail: { toStatus: newStatus, trigger: 'scrub_auto' },
+
+      // Record result on the claim case
+      const updated = recordScrubResult(id, scrubResult);
+      if (!updated)
+        return reply.status(500).send({ ok: false, error: 'Failed to record scrub result' });
+
+      // Auto-transition based on outcome
+      const scrubStates: ClaimLifecycleStatus[] = ['ready_for_scrub', 'draft', 'scrub_failed'];
+      if (scrubStates.includes(updated.lifecycleStatus)) {
+        const newStatus: ClaimLifecycleStatus =
+          scrubResult.outcome === 'fail' ? 'scrub_failed' : 'scrub_passed';
+        // Only transition if valid
+        const transResult = transitionClaimCase(id, newStatus, 'system', {
+          scrubOutcome: scrubResult.outcome,
+          findingsCount: scrubResult.findings.length,
         });
+        if (transResult.ok) {
+          appendRcmAudit('claim.transition', {
+            claimId: id,
+            userId: 'system',
+            detail: { toStatus: newStatus, trigger: 'scrub_auto' },
+          });
 
-        return reply.send({ ok: true, scrubResult, claimCase: transResult.claimCase });
+          return reply.send({ ok: true, scrubResult, claimCase: transResult.claimCase });
+        }
       }
+
+      appendRcmAudit('validation.run', {
+        claimId: id,
+        userId: duz,
+        detail: { outcome: scrubResult.outcome, rulesEvaluated: scrubResult.rulesEvaluated },
+      });
+
+      return reply.send({ ok: true, scrubResult, claimCase: updated });
     }
-
-    appendRcmAudit('validation.run', {
-      claimId: id,
-      userId: duz,
-      detail: { outcome: scrubResult.outcome, rulesEvaluated: scrubResult.rulesEvaluated },
-    });
-
-    return reply.send({ ok: true, scrubResult, claimCase: updated });
-  });
+  );
 
   /* ── Add Attachment ────────────────────────────────────── */
-  server.post('/rcm/claims/lifecycle/:id/attachments', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { duz } = getSession(request);
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
+  server.post(
+    '/rcm/claims/lifecycle/:id/attachments',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { duz } = getSession(request);
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
 
-    if (!body.category || !body.filename) {
-      return reply.status(400).send({ ok: false, error: 'category and filename are required' });
+      if (!body.category || !body.filename) {
+        return reply.status(400).send({ ok: false, error: 'category and filename are required' });
+      }
+
+      const updated = addAttachment(
+        id,
+        {
+          category: body.category,
+          filename: body.filename,
+          mimeType: body.mimeType ?? 'application/octet-stream',
+          sizeBytes: body.sizeBytes ?? 0,
+          storageRef: body.storageRef,
+          uploadedBy: duz,
+          uploadedAt: new Date().toISOString(),
+          autoGenerated: body.autoGenerated ?? false,
+        },
+        duz
+      );
+
+      if (!updated) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
+
+      appendRcmAudit('claim.updated', {
+        claimId: id,
+        userId: duz,
+        detail: { action: 'attachment_added', category: body.category },
+      });
+
+      return reply.status(201).send({ ok: true, claimCase: updated });
     }
-
-    const updated = addAttachment(id, {
-      category: body.category,
-      filename: body.filename,
-      mimeType: body.mimeType ?? 'application/octet-stream',
-      sizeBytes: body.sizeBytes ?? 0,
-      storageRef: body.storageRef,
-      uploadedBy: duz,
-      uploadedAt: new Date().toISOString(),
-      autoGenerated: body.autoGenerated ?? false,
-    }, duz);
-
-    if (!updated) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
-
-    appendRcmAudit('claim.updated', {
-      claimId: id,
-      userId: duz,
-      detail: { action: 'attachment_added', category: body.category },
-    });
-
-    return reply.status(201).send({ ok: true, claimCase: updated });
-  });
+  );
 
   /* ── Record Denial ─────────────────────────────────────── */
-  server.post('/rcm/claims/lifecycle/:id/denials', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { duz } = getSession(request);
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
+  server.post(
+    '/rcm/claims/lifecycle/:id/denials',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { duz } = getSession(request);
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
 
-    if (!body.source || !body.reasonCode || !body.reasonDescription) {
-      return reply.status(400).send({
-        ok: false,
-        error: 'source, reasonCode, and reasonDescription are required',
+      if (!body.source || !body.reasonCode || !body.reasonDescription) {
+        return reply.status(400).send({
+          ok: false,
+          error: 'source, reasonCode, and reasonDescription are required',
+        });
+      }
+
+      const denial = addDenial(id, {
+        source: body.source,
+        reasonCode: body.reasonCode,
+        reasonDescription: body.reasonDescription,
+        reasonCategory: body.reasonCategory,
+        denialAmount: body.denialAmount,
+        deniedAt: body.deniedAt ?? new Date().toISOString(),
+        recommendedAction: body.recommendedAction,
+        fieldToFix: body.fieldToFix,
+        assignedTo: body.assignedTo,
       });
+
+      if (!denial) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
+
+      appendRcmAudit('claim.denied', {
+        claimId: id,
+        userId: duz,
+        detail: { reasonCode: body.reasonCode, source: body.source },
+      });
+
+      return reply.status(201).send({ ok: true, denial });
     }
-
-    const denial = addDenial(id, {
-      source: body.source,
-      reasonCode: body.reasonCode,
-      reasonDescription: body.reasonDescription,
-      reasonCategory: body.reasonCategory,
-      denialAmount: body.denialAmount,
-      deniedAt: body.deniedAt ?? new Date().toISOString(),
-      recommendedAction: body.recommendedAction,
-      fieldToFix: body.fieldToFix,
-      assignedTo: body.assignedTo,
-    });
-
-    if (!denial) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
-
-    appendRcmAudit('claim.denied', {
-      claimId: id,
-      userId: duz,
-      detail: { reasonCode: body.reasonCode, source: body.source },
-    });
-
-    return reply.status(201).send({ ok: true, denial });
-  });
+  );
 
   /* ── Resolve Denial ────────────────────────────────────── */
-  server.put('/rcm/claims/lifecycle/denials/:denialId/resolve', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { duz } = getSession(request);
-    const { denialId } = request.params as { denialId: string };
-    const body = (request.body as any) || {};
+  server.put(
+    '/rcm/claims/lifecycle/denials/:denialId/resolve',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { duz } = getSession(request);
+      const { denialId } = request.params as { denialId: string };
+      const body = (request.body as any) || {};
 
-    const resolved = resolveDenial(denialId, duz, body.resolutionNote ?? '');
-    if (!resolved) return reply.status(404).send({ ok: false, error: 'Denial not found' });
+      const resolved = resolveDenial(denialId, duz, body.resolutionNote ?? '');
+      if (!resolved) return reply.status(404).send({ ok: false, error: 'Denial not found' });
 
-    appendRcmAudit('workqueue.resolved', {
-      claimId: resolved.claimCaseId,
-      userId: duz,
-      detail: { denialId, resolution: 'resolved' },
-    });
+      appendRcmAudit('workqueue.resolved', {
+        claimId: resolved.claimCaseId,
+        userId: duz,
+        detail: { denialId, resolution: 'resolved' },
+      });
 
-    return reply.send({ ok: true, denial: resolved });
-  });
+      return reply.send({ ok: true, denial: resolved });
+    }
+  );
 
   /* ── List Denials (Workbench) ──────────────────────────── */
-  server.get('/rcm/claims/lifecycle/denials', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { tenantId } = getSession(request);
-    const q = (request.query as any) || {};
+  server.get(
+    '/rcm/claims/lifecycle/denials',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { tenantId } = getSession(request);
+      const q = (request.query as any) || {};
 
-    const result = listDenials({
-      tenantId,
-      resolved: q.resolved === 'true' ? true : q.resolved === 'false' ? false : undefined,
-      source: q.source,
-      limit: q.limit ? parseInt(q.limit, 10) : 50,
-      offset: q.offset ? parseInt(q.offset, 10) : 0,
-    });
+      const result = listDenials({
+        tenantId,
+        resolved: q.resolved === 'true' ? true : q.resolved === 'false' ? false : undefined,
+        source: q.source,
+        limit: q.limit ? parseInt(q.limit, 10) : 50,
+        offset: q.offset ? parseInt(q.offset, 10) : 0,
+      });
 
-    return reply.send({ ok: true, ...result });
-  });
+      return reply.send({ ok: true, ...result });
+    }
+  );
 
   /* ── Stats ─────────────────────────────────────────────── */
-  server.get('/rcm/claims/lifecycle/stats', async (request: FastifyRequest, reply: FastifyReply) => {
-    const { tenantId } = getSession(request);
-    const stats = getClaimCaseStats(tenantId);
-    const storeInfo = getStoreInfo();
-    return reply.send({ ok: true, stats, storeInfo });
-  });
+  server.get(
+    '/rcm/claims/lifecycle/stats',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { tenantId } = getSession(request);
+      const stats = getClaimCaseStats(tenantId);
+      const storeInfo = getStoreInfo();
+      return reply.send({ ok: true, stats, storeInfo });
+    }
+  );
 
   /* ── Available Scrubber Packs ──────────────────────────── */
-  server.get('/rcm/claims/lifecycle/scrubber/packs', async (_request: FastifyRequest, reply: FastifyReply) => {
-    return reply.send({ ok: true, packs: getAvailableRulePacks() });
-  });
+  server.get(
+    '/rcm/claims/lifecycle/scrubber/packs',
+    async (_request: FastifyRequest, reply: FastifyReply) => {
+      return reply.send({ ok: true, packs: getAvailableRulePacks() });
+    }
+  );
 }

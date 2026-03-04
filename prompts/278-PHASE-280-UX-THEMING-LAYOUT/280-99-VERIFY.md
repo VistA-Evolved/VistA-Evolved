@@ -1,6 +1,7 @@
 # Phase 280 — VERIFY: UX Theming & Layout Convergence
 
 ## Gates
+
 1. CPRSUIProvider sets `data-theme` attribute via useEffect
 2. System theme detection (matchMedia listener) is wired
 3. `apps/web/src/lib/theme-tokens.ts` exports theme packs

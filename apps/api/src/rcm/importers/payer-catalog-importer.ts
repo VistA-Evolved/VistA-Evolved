@@ -10,7 +10,7 @@
  *   (Future: ClearinghouseRosterImporter, GovernmentRegistryImporter)
  */
 
-import type { Payer, IntegrationMode, PayerCountry, PayerStatus } from "../domain/payer.js";
+import type { Payer, IntegrationMode, PayerCountry, PayerStatus } from '../domain/payer.js';
 
 /* ── Importer Interface ────────────────────────────────────── */
 
@@ -23,13 +23,16 @@ export interface PayerImportResult {
 
 export interface PayerCatalogImporter {
   readonly name: string;
-  readonly sourceType: "csv" | "json" | "api" | "registry";
+  readonly sourceType: 'csv' | 'json' | 'api' | 'registry';
 
   /** Validate the import source before processing */
   validate(source: string): { valid: boolean; error?: string; rowCount?: number };
 
   /** Parse and return payer objects (does not persist) */
-  parse(source: string, defaults?: Partial<Payer>): {
+  parse(
+    source: string,
+    defaults?: Partial<Payer>
+  ): {
     payers: Payer[];
     errors: Array<{ row: number; error: string }>;
   };
@@ -38,9 +41,9 @@ export interface PayerCatalogImporter {
 /* ── CSV Importer ──────────────────────────────────────────── */
 
 export interface CsvColumnMapping {
-  payerId: string;         // column name for payerId (required)
-  name: string;            // column name for name (required)
-  country?: string;        // column name for country
+  payerId: string; // column name for payerId (required)
+  name: string; // column name for name (required)
+  country?: string; // column name for country
   integrationMode?: string;
   status?: string;
   category?: string;
@@ -48,36 +51,36 @@ export interface CsvColumnMapping {
   naic?: string;
   enrollmentRequired?: string;
   enrollmentNotes?: string;
-  aliases?: string;        // comma-separated in cell
+  aliases?: string; // comma-separated in cell
 }
 
 const DEFAULT_CSV_MAPPING: CsvColumnMapping = {
-  payerId: "payerId",
-  name: "name",
-  country: "country",
-  integrationMode: "integrationMode",
-  status: "status",
-  category: "category",
-  clearinghousePayerId: "clearinghousePayerId",
-  naic: "naic",
-  enrollmentRequired: "enrollmentRequired",
-  enrollmentNotes: "enrollmentNotes",
-  aliases: "aliases",
+  payerId: 'payerId',
+  name: 'name',
+  country: 'country',
+  integrationMode: 'integrationMode',
+  status: 'status',
+  category: 'category',
+  clearinghousePayerId: 'clearinghousePayerId',
+  naic: 'naic',
+  enrollmentRequired: 'enrollmentRequired',
+  enrollmentNotes: 'enrollmentNotes',
+  aliases: 'aliases',
 };
 
 export class CsvPayerImporter implements PayerCatalogImporter {
-  readonly name = "csv-payer-importer";
-  readonly sourceType = "csv" as const;
+  readonly name = 'csv-payer-importer';
+  readonly sourceType = 'csv' as const;
 
   constructor(private mapping: CsvColumnMapping = DEFAULT_CSV_MAPPING) {}
 
   validate(csv: string): { valid: boolean; error?: string; rowCount?: number } {
-    if (!csv || csv.trim().length === 0) return { valid: false, error: "Empty CSV" };
-    const lines = csv.trim().split("\n");
-    if (lines.length < 2) return { valid: false, error: "CSV must have header + at least 1 row" };
+    if (!csv || csv.trim().length === 0) return { valid: false, error: 'Empty CSV' };
+    const lines = csv.trim().split('\n');
+    if (lines.length < 2) return { valid: false, error: 'CSV must have header + at least 1 row' };
 
     const headers = this.parseCsvLine(lines[0]);
-    const lcHeaders = headers.map(h => h.toLowerCase().trim());
+    const lcHeaders = headers.map((h) => h.toLowerCase().trim());
 
     if (!lcHeaders.includes(this.mapping.payerId.toLowerCase())) {
       return { valid: false, error: `Missing required column: ${this.mapping.payerId}` };
@@ -89,16 +92,19 @@ export class CsvPayerImporter implements PayerCatalogImporter {
     return { valid: true, rowCount: lines.length - 1 };
   }
 
-  parse(csv: string, defaults?: Partial<Payer>): {
+  parse(
+    csv: string,
+    defaults?: Partial<Payer>
+  ): {
     payers: Payer[];
     errors: Array<{ row: number; error: string }>;
   } {
     const payers: Payer[] = [];
     const errors: Array<{ row: number; error: string }> = [];
-    const lines = csv.trim().split("\n");
+    const lines = csv.trim().split('\n');
     if (lines.length < 2) return { payers, errors };
 
-    const headers = this.parseCsvLine(lines[0]).map(h => h.trim());
+    const headers = this.parseCsvLine(lines[0]).map((h) => h.trim());
     const headerIndex = new Map<string, number>();
     headers.forEach((h, i) => headerIndex.set(h.toLowerCase(), i));
 
@@ -117,16 +123,18 @@ export class CsvPayerImporter implements PayerCatalogImporter {
         const name = getCol(cols, this.mapping.name);
 
         if (!payerId || !name) {
-          errors.push({ row: i + 1, error: "Missing payerId or name" });
+          errors.push({ row: i + 1, error: 'Missing payerId or name' });
           continue;
         }
 
-        const country = (getCol(cols, this.mapping.country) as PayerCountry) ??
-                         defaults?.country ?? "US";
-        const integrationMode = (getCol(cols, this.mapping.integrationMode) as IntegrationMode) ??
-                                defaults?.integrationMode ?? "not_classified";
-        const status = (getCol(cols, this.mapping.status) as PayerStatus) ??
-                       defaults?.status ?? "active";
+        const country =
+          (getCol(cols, this.mapping.country) as PayerCountry) ?? defaults?.country ?? 'US';
+        const integrationMode =
+          (getCol(cols, this.mapping.integrationMode) as IntegrationMode) ??
+          defaults?.integrationMode ??
+          'not_classified';
+        const status =
+          (getCol(cols, this.mapping.status) as PayerStatus) ?? defaults?.status ?? 'active';
         const aliasStr = getCol(cols, this.mapping.aliases);
 
         payers.push({
@@ -138,10 +146,17 @@ export class CsvPayerImporter implements PayerCatalogImporter {
           category: getCol(cols, this.mapping.category) ?? defaults?.category,
           clearinghousePayerId: getCol(cols, this.mapping.clearinghousePayerId),
           naic: getCol(cols, this.mapping.naic),
-          enrollmentRequired: (getCol(cols, this.mapping.enrollmentRequired) === "true") ||
-                              defaults?.enrollmentRequired || false,
+          enrollmentRequired:
+            getCol(cols, this.mapping.enrollmentRequired) === 'true' ||
+            defaults?.enrollmentRequired ||
+            false,
           enrollmentNotes: getCol(cols, this.mapping.enrollmentNotes),
-          aliases: aliasStr ? aliasStr.split(",").map(a => a.trim()).filter(Boolean) : undefined,
+          aliases: aliasStr
+            ? aliasStr
+                .split(',')
+                .map((a) => a.trim())
+                .filter(Boolean)
+            : undefined,
           endpoints: [],
           createdAt: now,
           updatedAt: now,
@@ -156,7 +171,7 @@ export class CsvPayerImporter implements PayerCatalogImporter {
 
   private parseCsvLine(line: string): string[] {
     const result: string[] = [];
-    let current = "";
+    let current = '';
     let inQuotes = false;
 
     for (let i = 0; i < line.length; i++) {
@@ -168,9 +183,9 @@ export class CsvPayerImporter implements PayerCatalogImporter {
         } else {
           inQuotes = !inQuotes;
         }
-      } else if (ch === "," && !inQuotes) {
+      } else if (ch === ',' && !inQuotes) {
         result.push(current);
-        current = "";
+        current = '';
       } else {
         current += ch;
       }
@@ -183,21 +198,24 @@ export class CsvPayerImporter implements PayerCatalogImporter {
 /* ── JSON Importer ─────────────────────────────────────────── */
 
 export class JsonPayerImporter implements PayerCatalogImporter {
-  readonly name = "json-payer-importer";
-  readonly sourceType = "json" as const;
+  readonly name = 'json-payer-importer';
+  readonly sourceType = 'json' as const;
 
   validate(source: string): { valid: boolean; error?: string; rowCount?: number } {
     try {
       const data = JSON.parse(source);
       const arr = Array.isArray(data) ? data : data.payers;
-      if (!Array.isArray(arr)) return { valid: false, error: "Expected array or {payers:[...]}" };
+      if (!Array.isArray(arr)) return { valid: false, error: 'Expected array or {payers:[...]}' };
       return { valid: true, rowCount: arr.length };
     } catch (e) {
       return { valid: false, error: `Invalid JSON: ${String(e)}` };
     }
   }
 
-  parse(source: string, defaults?: Partial<Payer>): {
+  parse(
+    source: string,
+    defaults?: Partial<Payer>
+  ): {
     payers: Payer[];
     errors: Array<{ row: number; error: string }>;
   } {
@@ -207,20 +225,20 @@ export class JsonPayerImporter implements PayerCatalogImporter {
 
     try {
       const data = JSON.parse(source);
-      const arr: any[] = Array.isArray(data) ? data : data.payers ?? [];
+      const arr: any[] = Array.isArray(data) ? data : (data.payers ?? []);
 
       for (let i = 0; i < arr.length; i++) {
         const p = arr[i];
         if (!p.payerId || !p.name) {
-          errors.push({ row: i + 1, error: "Missing payerId or name" });
+          errors.push({ row: i + 1, error: 'Missing payerId or name' });
           continue;
         }
         payers.push({
           payerId: p.payerId,
           name: p.name,
-          country: p.country ?? defaults?.country ?? "US",
-          integrationMode: p.integrationMode ?? defaults?.integrationMode ?? "not_classified",
-          status: p.status ?? defaults?.status ?? "active",
+          country: p.country ?? defaults?.country ?? 'US',
+          integrationMode: p.integrationMode ?? defaults?.integrationMode ?? 'not_classified',
+          status: p.status ?? defaults?.status ?? 'active',
           category: p.category ?? defaults?.category,
           clearinghousePayerId: p.clearinghousePayerId,
           naic: p.naic,

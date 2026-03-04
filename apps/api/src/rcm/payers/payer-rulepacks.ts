@@ -8,13 +8,12 @@
  * Source: data/payers/ph-hmo-rulepacks.json
  */
 
-import { readFileSync, existsSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const __dirname_resolved = typeof __dirname !== "undefined"
-  ? __dirname
-  : dirname(fileURLToPath(import.meta.url));
+const __dirname_resolved =
+  typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
 
 /* ── Types ──────────────────────────────────────────────────── */
 
@@ -25,7 +24,7 @@ export interface PayerRulepack {
   loa: {
     requiredFields: string[];
     optionalFields: string[];
-    turnaroundSla?: string;           // e.g. "24h" — only if evidence
+    turnaroundSla?: string; // e.g. "24h" — only if evidence
     turnaroundSlaEvidence?: string;
     notes: string;
   };
@@ -33,7 +32,7 @@ export interface PayerRulepack {
   claims: {
     requiredFields: string[];
     requiredDocuments: string[];
-    filingDeadlineDays?: number;     // only if evidence
+    filingDeadlineDays?: number; // only if evidence
     filingDeadlineEvidence?: string;
     notes: string;
   };
@@ -45,13 +44,13 @@ export interface PayerRulepack {
       suggestedAction: string;
       evidence?: string;
     }>;
-    appealWindowDays?: number;        // only if evidence
+    appealWindowDays?: number; // only if evidence
     appealWindowEvidence?: string;
     notes: string;
   };
 
   exclusions: {
-    known: string[];                  // known exclusions (with evidence)
+    known: string[]; // known exclusions (with evidence)
     notes: string;
   };
 }
@@ -72,7 +71,9 @@ const rulepackStore = new Map<string, PayerRulepack>();
 
 /* Phase 146: DB repo wiring */
 let rulepackDbRepo: { upsert(d: any): Promise<any> } | null = null;
-export function initRulepackStoreRepo(repo: typeof rulepackDbRepo): void { rulepackDbRepo = repo; }
+export function initRulepackStoreRepo(repo: typeof rulepackDbRepo): void {
+  rulepackDbRepo = repo;
+}
 let loaded = false;
 
 /* ── Loading ────────────────────────────────────────────────── */
@@ -80,8 +81,8 @@ let loaded = false;
 export function loadPayerRulepacks(): { ok: boolean; count: number; error?: string } {
   if (loaded) return { ok: true, count: rulepackStore.size };
 
-  const repoRoot = join(__dirname_resolved, "..", "..", "..", "..", "..");
-  const path = join(repoRoot, "data", "payers", "ph-hmo-rulepacks.json");
+  const repoRoot = join(__dirname_resolved, '..', '..', '..', '..', '..');
+  const path = join(repoRoot, 'data', 'payers', 'ph-hmo-rulepacks.json');
 
   if (!existsSync(path)) {
     loaded = true;
@@ -89,7 +90,7 @@ export function loadPayerRulepacks(): { ok: boolean; count: number; error?: stri
   }
 
   try {
-    const raw = readFileSync(path, "utf-8");
+    const raw = readFileSync(path, 'utf-8');
     const clean = raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw;
     const data: PayerRulepacksData = JSON.parse(clean);
 
@@ -97,15 +98,28 @@ export function loadPayerRulepacks(): { ok: boolean; count: number; error?: stri
       rulepackStore.set(rp.payerId, rp);
 
       // Phase 146: Write-through to PG
-      rulepackDbRepo?.upsert({ id: rp.payerId, tenantId: 'default', payerId: rp.payerId, name: (rp as any).name ?? rp.payerId, rulesJson: JSON.stringify((rp as any).rules ?? []), active: true, createdAt: new Date().toISOString() }).catch(() => {});
-
+      rulepackDbRepo
+        ?.upsert({
+          id: rp.payerId,
+          tenantId: 'default',
+          payerId: rp.payerId,
+          name: (rp as any).name ?? rp.payerId,
+          rulesJson: JSON.stringify((rp as any).rules ?? []),
+          active: true,
+          createdAt: new Date().toISOString(),
+        })
+        .catch(() => {});
     }
 
     loaded = true;
     return { ok: true, count: rulepackStore.size };
   } catch (err) {
     loaded = true;
-    return { ok: false, count: 0, error: `Parse error: ${err instanceof Error ? err.message : String(err)}` };
+    return {
+      ok: false,
+      count: 0,
+      error: `Parse error: ${err instanceof Error ? err.message : String(err)}`,
+    };
   }
 }
 
@@ -132,9 +146,9 @@ export function getRulepackStats(): {
   const all = Array.from(rulepackStore.values());
   return {
     total: all.length,
-    withLoaSla: all.filter(r => r.loa.turnaroundSla).length,
-    withFilingDeadline: all.filter(r => r.claims.filingDeadlineDays).length,
-    withDenialPatterns: all.filter(r => r.denials.knownPatterns.length > 0).length,
-    withExclusions: all.filter(r => r.exclusions.known.length > 0).length,
+    withLoaSla: all.filter((r) => r.loa.turnaroundSla).length,
+    withFilingDeadline: all.filter((r) => r.claims.filingDeadlineDays).length,
+    withDenialPatterns: all.filter((r) => r.denials.knownPatterns.length > 0).length,
+    withExclusions: all.filter((r) => r.exclusions.known.length > 0).length,
   };
 }

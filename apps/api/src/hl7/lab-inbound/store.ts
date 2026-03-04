@@ -10,8 +10,8 @@
  * store provides visibility and manual reconciliation.
  */
 
-import type { InboundLabResult, LabFilingStatus, LabValidationResult } from "./types.js";
-import { log } from "../../lib/logger.js";
+import type { InboundLabResult, LabFilingStatus, LabValidationResult } from './types.js';
+import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Store                                                                */
@@ -25,16 +25,16 @@ const MAX_STORE_SIZE = 5000;
 /* ------------------------------------------------------------------ */
 
 let dailyCounter = 0;
-let lastCounterDate = "";
+let lastCounterDate = '';
 
 function generateLabId(): string {
-  const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   if (today !== lastCounterDate) {
     dailyCounter = 0;
     lastCounterDate = today;
   }
   dailyCounter++;
-  return `LR-${today}-${String(dailyCounter).padStart(4, "0")}`;
+  return `LR-${today}-${String(dailyCounter).padStart(4, '0')}`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -42,21 +42,24 @@ function generateLabId(): string {
 /* ------------------------------------------------------------------ */
 
 /** Stage a new inbound lab result. Returns the generated ID. */
-export function stageLabResult(result: Omit<InboundLabResult, "id">): string {
+export function stageLabResult(result: Omit<InboundLabResult, 'id'>): string {
   if (labStore.size >= MAX_STORE_SIZE) {
     // Evict oldest received result
     let oldestKey: string | undefined;
     let oldestTime = Infinity;
     for (const [key, val] of labStore) {
       const t = new Date(val.receivedAt).getTime();
-      if (t < oldestTime) { oldestTime = t; oldestKey = key; }
+      if (t < oldestTime) {
+        oldestTime = t;
+        oldestKey = key;
+      }
     }
     if (oldestKey) labStore.delete(oldestKey);
   }
 
   const id = generateLabId();
   labStore.set(id, { ...result, id } as InboundLabResult);
-  log.info("Lab result staged", { id, filler: result.fillerOrderNumber, status: result.status });
+  log.info('Lab result staged', { id, filler: result.fillerOrderNumber, status: result.status });
   return id;
 }
 
@@ -74,9 +77,10 @@ export function listLabResults(filter?: {
 }): InboundLabResult[] {
   let results = Array.from(labStore.values());
 
-  if (filter?.status) results = results.filter(r => r.status === filter.status);
-  if (filter?.matchedDfn) results = results.filter(r => r.matchedDfn === filter.matchedDfn);
-  if (filter?.sendingFacility) results = results.filter(r => r.sendingFacility === filter.sendingFacility);
+  if (filter?.status) results = results.filter((r) => r.status === filter.status);
+  if (filter?.matchedDfn) results = results.filter((r) => r.matchedDfn === filter.matchedDfn);
+  if (filter?.sendingFacility)
+    results = results.filter((r) => r.sendingFacility === filter.sendingFacility);
 
   // Sort newest first
   results.sort((a, b) => new Date(b.receivedAt).getTime() - new Date(a.receivedAt).getTime());
@@ -86,23 +90,27 @@ export function listLabResults(filter?: {
 }
 
 /** Update the status of a staged result. */
-export function updateLabStatus(id: string, status: LabFilingStatus, detail?: Partial<InboundLabResult>): boolean {
+export function updateLabStatus(
+  id: string,
+  status: LabFilingStatus,
+  detail?: Partial<InboundLabResult>
+): boolean {
   const existing = labStore.get(id);
   if (!existing) return false;
 
   existing.status = status;
   if (detail) Object.assign(existing, detail);
 
-  if (status === "validated") existing.validatedAt = new Date().toISOString();
-  if (status === "filed") existing.filedAt = new Date().toISOString();
+  if (status === 'validated') existing.validatedAt = new Date().toISOString();
+  if (status === 'filed') existing.filedAt = new Date().toISOString();
 
-  log.info("Lab result status updated", { id, status });
+  log.info('Lab result status updated', { id, status });
   return true;
 }
 
 /** Get quarantined (unmatched / failed) results. */
 export function getQuarantinedResults(): InboundLabResult[] {
-  return listLabResults({ status: "quarantined" });
+  return listLabResults({ status: 'quarantined' });
 }
 
 /** Link an unmatched result to a patient DFN. */
@@ -111,8 +119,8 @@ export function linkLabToPatient(id: string, dfn: string): boolean {
   if (!existing) return false;
 
   existing.matchedDfn = dfn;
-  if (existing.status === "quarantined") existing.status = "validated";
-  log.info("Lab result linked to patient", { id, dfn });
+  if (existing.status === 'quarantined') existing.status = 'validated';
+  log.info('Lab result linked to patient', { id, dfn });
   return true;
 }
 
@@ -134,25 +142,27 @@ export function getLabStoreStats(): {
 /* ------------------------------------------------------------------ */
 
 /** Validate an inbound lab result before staging. */
-export function validateLabResult(result: Omit<InboundLabResult, "id">): LabValidationResult {
+export function validateLabResult(result: Omit<InboundLabResult, 'id'>): LabValidationResult {
   const errors: string[] = [];
   const warnings: string[] = [];
 
-  if (!result.fillerOrderNumber) errors.push("Missing filler order number (OBR-3)");
-  if (!result.universalServiceId) errors.push("Missing universal service ID (OBR-4)");
-  if (!result.messageControlId) errors.push("Missing message control ID (MSH-10)");
-  if (!result.sendingApp) errors.push("Missing sending application (MSH-3)");
-  if (!result.patientExternalId) errors.push("Missing patient external ID (PID-3)");
-  if (!result.results || result.results.length === 0) errors.push("No observation results (OBX segments)");
+  if (!result.fillerOrderNumber) errors.push('Missing filler order number (OBR-3)');
+  if (!result.universalServiceId) errors.push('Missing universal service ID (OBR-4)');
+  if (!result.messageControlId) errors.push('Missing message control ID (MSH-10)');
+  if (!result.sendingApp) errors.push('Missing sending application (MSH-3)');
+  if (!result.patientExternalId) errors.push('Missing patient external ID (PID-3)');
+  if (!result.results || result.results.length === 0)
+    errors.push('No observation results (OBX segments)');
 
-  if (!result.matchedDfn) warnings.push("No matched VistA DFN — will be quarantined");
-  if (!result.accessionNumber) warnings.push("No accession number (OBR-20) — may complicate VistA filing");
-  if (!result.specimen) warnings.push("No specimen information");
-  if (result.resultStatus === "P") warnings.push("Preliminary result — may be updated");
+  if (!result.matchedDfn) warnings.push('No matched VistA DFN — will be quarantined');
+  if (!result.accessionNumber)
+    warnings.push('No accession number (OBR-20) — may complicate VistA filing');
+  if (!result.specimen) warnings.push('No specimen information');
+  if (result.resultStatus === 'P') warnings.push('Preliminary result — may be updated');
 
   for (const obs of result.results || []) {
     if (!obs.observationId) errors.push(`OBX set ${obs.setId}: Missing observation ID (OBX-3)`);
-    if (!obs.value && obs.resultStatus !== "X") warnings.push(`OBX set ${obs.setId}: Empty value`);
+    if (!obs.value && obs.resultStatus !== 'X') warnings.push(`OBX set ${obs.setId}: Empty value`);
   }
 
   return { valid: errors.length === 0, errors, warnings };
@@ -166,5 +176,5 @@ export function validateLabResult(result: Omit<InboundLabResult, "id">): LabVali
 export function _resetLabStore(): void {
   labStore.clear();
   dailyCounter = 0;
-  lastCounterDate = "";
+  lastCounterDate = '';
 }

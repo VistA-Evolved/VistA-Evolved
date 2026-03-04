@@ -1,9 +1,11 @@
 # ADR: Reporting Model
 
 ## Status
+
 Accepted
 
 ## Context
+
 Operational and clinical dashboards need a delivery mechanism. Options:
 
 1. **External BI embed (Metabase iframe / Superset embed)** — rich

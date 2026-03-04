@@ -12,7 +12,7 @@
  *   OIDC_ENABLED     — "true" to enable OIDC (default: "false" for backward compat)
  */
 
-import { log } from "../lib/logger.js";
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -80,9 +80,9 @@ let cachedConfig: OidcConfig | null = null;
 export function getOidcConfig(): OidcConfig {
   if (cachedConfig) return cachedConfig;
 
-  const enabled = (process.env.OIDC_ENABLED || "").toLowerCase().trim() === "true";
-  const issuer = process.env.OIDC_ISSUER || "http://localhost:8180/realms/vista-evolved";
-  const clientId = process.env.OIDC_CLIENT_ID || "vista-evolved-api";
+  const enabled = (process.env.OIDC_ENABLED || '').toLowerCase().trim() === 'true';
+  const issuer = process.env.OIDC_ISSUER || 'http://localhost:8180/realms/vista-evolved';
+  const clientId = process.env.OIDC_CLIENT_ID || 'vista-evolved-api';
   const jwksUri = process.env.OIDC_JWKS_URI || `${issuer}/protocol/openid-connect/certs`;
   const audience = process.env.OIDC_AUDIENCE || clientId;
 
@@ -115,15 +115,15 @@ export async function fetchDiscovery(): Promise<OidcDiscovery | null> {
     const url = `${config.issuer}/.well-known/openid-configuration`;
     const resp = await fetch(url, { signal: AbortSignal.timeout(5000) });
     if (!resp.ok) {
-      log.warn("OIDC discovery fetch failed", { status: resp.status, url });
+      log.warn('OIDC discovery fetch failed', { status: resp.status, url });
       return discoveryCache; // Return stale cache if available
     }
     discoveryCache = (await resp.json()) as OidcDiscovery;
     discoveryFetchedAt = now;
-    log.info("OIDC discovery refreshed", { issuer: discoveryCache.issuer });
+    log.info('OIDC discovery refreshed', { issuer: discoveryCache.issuer });
     return discoveryCache;
   } catch (err: any) {
-    log.warn("OIDC discovery fetch error", { error: err.message });
+    log.warn('OIDC discovery fetch error', { error: err.message });
     return discoveryCache; // Return stale cache
   }
 }
@@ -159,8 +159,8 @@ export function mapClaimsToUserMeta(claims: OidcTokenClaims): {
     duz: claims.duz || claims.sub,
     userName: claims.name || claims.preferred_username || claims.sub,
     roles,
-    facilityStation: claims.facility_station || "",
-    tenantId: claims.tenant_id || "default",
+    facilityStation: claims.facility_station || '',
+    tenantId: claims.tenant_id || 'default',
   };
 }
 
@@ -188,8 +188,8 @@ export interface OidcConfigValidation {
  */
 export function validateOidcConfig(): OidcConfigValidation {
   // Avoid importing runtime-mode to prevent circular deps — inline check
-  const mode = (process.env.PLATFORM_RUNTIME_MODE || "dev").toLowerCase().trim();
-  const isRcProd = mode === "rc" || mode === "prod";
+  const mode = (process.env.PLATFORM_RUNTIME_MODE || 'dev').toLowerCase().trim();
+  const isRcProd = mode === 'rc' || mode === 'prod';
 
   const config = getOidcConfig();
   const errors: string[] = [];
@@ -202,7 +202,7 @@ export function validateOidcConfig(): OidcConfigValidation {
   if (config.enabled) {
     // Issuer must be explicitly set (not the localhost default)
     if (!process.env.OIDC_ISSUER) {
-      const msg = "OIDC_ISSUER not set -- using default localhost. Set it to your IdP issuer URL.";
+      const msg = 'OIDC_ISSUER not set -- using default localhost. Set it to your IdP issuer URL.';
       isRcProd ? errors.push(msg) : warnings.push(msg);
     }
 
@@ -214,7 +214,7 @@ export function validateOidcConfig(): OidcConfigValidation {
 
     // JWKS URI should be derivable
     if (!process.env.OIDC_JWKS_URI && !process.env.OIDC_ISSUER) {
-      warnings.push("OIDC_JWKS_URI not set and OIDC_ISSUER not set -- JWKS cannot be resolved.");
+      warnings.push('OIDC_JWKS_URI not set and OIDC_ISSUER not set -- JWKS cannot be resolved.');
     }
   }
 

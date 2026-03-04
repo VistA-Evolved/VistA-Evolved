@@ -4,21 +4,20 @@
  * Admin-only endpoints for SIEM configuration, alert rules, and triggers.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { getSiemStatus, flushEvents, type SiemSeverity } from "../auth/siem-sink.js";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { getSiemStatus, flushEvents, type SiemSeverity } from '../auth/siem-sink.js';
 import {
   getAlertRules,
   getAlertTriggers,
   getAlertStats,
   enableAlertRule,
-} from "../auth/security-alerts.js";
+} from '../auth/security-alerts.js';
 
 export async function siemRoutes(app: FastifyInstance): Promise<void> {
-
   /**
    * GET /siem/status — SIEM sink status.
    */
-  app.get("/siem/status", async (_request: FastifyRequest, reply: FastifyReply) => {
+  app.get('/siem/status', async (_request: FastifyRequest, reply: FastifyReply) => {
     const status = getSiemStatus();
     const stats = getAlertStats();
     return reply.send({ ok: true, ...status, alerts: stats });
@@ -27,7 +26,7 @@ export async function siemRoutes(app: FastifyInstance): Promise<void> {
   /**
    * POST /siem/flush — Force flush event buffer.
    */
-  app.post("/siem/flush", async (_request: FastifyRequest, reply: FastifyReply) => {
+  app.post('/siem/flush', async (_request: FastifyRequest, reply: FastifyReply) => {
     const result = await flushEvents();
     return reply.send({ ok: true, ...result });
   });
@@ -35,7 +34,7 @@ export async function siemRoutes(app: FastifyInstance): Promise<void> {
   /**
    * GET /siem/rules — List alert rules.
    */
-  app.get("/siem/rules", async (_request: FastifyRequest, reply: FastifyReply) => {
+  app.get('/siem/rules', async (_request: FastifyRequest, reply: FastifyReply) => {
     const rules = getAlertRules();
     return reply.send({
       ok: true,
@@ -57,13 +56,13 @@ export async function siemRoutes(app: FastifyInstance): Promise<void> {
   /**
    * PUT /siem/rules/:id/toggle — Enable/disable an alert rule.
    */
-  app.put("/siem/rules/:id/toggle", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.put('/siem/rules/:id/toggle', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as { enabled?: boolean }) || {};
     const enabled = body.enabled ?? true;
     const updated = enableAlertRule(id, enabled);
     if (!updated) {
-      return reply.code(404).send({ ok: false, error: "Rule not found" });
+      return reply.code(404).send({ ok: false, error: 'Rule not found' });
     }
     return reply.send({ ok: true, ruleId: id, enabled });
   });
@@ -71,7 +70,7 @@ export async function siemRoutes(app: FastifyInstance): Promise<void> {
   /**
    * GET /siem/triggers — List alert triggers.
    */
-  app.get("/siem/triggers", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.get('/siem/triggers', async (request: FastifyRequest, reply: FastifyReply) => {
     const query = request.query as {
       ruleId?: string;
       severity?: SiemSeverity;
@@ -88,7 +87,7 @@ export async function siemRoutes(app: FastifyInstance): Promise<void> {
   /**
    * GET /siem/stats — Alert statistics.
    */
-  app.get("/siem/stats", async (_request: FastifyRequest, reply: FastifyReply) => {
+  app.get('/siem/stats', async (_request: FastifyRequest, reply: FastifyReply) => {
     const stats = getAlertStats();
     return reply.send({ ok: true, ...stats });
   });

@@ -3,12 +3,14 @@
 ## What Changed
 
 ### New Module: Payer Directory Engine (`apps/api/src/rcm/payerDirectory/`)
+
 - **types.ts**: Canonical schema -- DirectoryPayer, PayerImporter interface, ImportResult, DirectoryDiffResult, EnrollmentPacket, RouteSelection, RouteNotFound
 - **normalization.ts**: Full pipeline -- normalize, diff, apply to registry, enrollment CRUD, directory stats, refresh history
 - **routing.ts**: Claim routing engine -- jurisdiction + payer -> best connector, with ROUTE_NOT_FOUND + remediation steps
 - **importers/index.ts**: Central registry -- runAllImporters, runImportersByCountry, listImporters, getImporter
 
 ### 6 Authoritative Importers
+
 - `ph-insurance-commission`: 28 PH payers (PhilHealth + 27 IC-registered HMOs)
 - `au-apra`: 22 AU payers (Medicare AU + DVA + 20 APRA-registered private insurers)
 - `us-clearinghouse`: 8 US payers (3 networks + 5 federal payers) + file-drop CSV/JSON import
@@ -17,25 +19,30 @@
 - `sg-nz-gateways`: 5 payers (3 SG + 2 NZ)
 
 ### Reference Source Snapshots
+
 - `reference/payer-sources/philippines/ic-hmo-list.json` -- 27 IC HMOs
 - `reference/payer-sources/australia/apra-insurers.json` -- 20 APRA insurers
 
 ### 15 New API Endpoints (added to rcm-routes.ts)
+
 - Directory: GET stats, importers, history, payers, payers/:id; POST refresh, import/:id
 - Enrollment: GET list, GET/:payerId, POST/:payerId
 - Routing: POST claims/:id/route, GET routing/resolve
 
 ### 6 New Audit Actions
+
 - directory.refreshed, directory.import_failed
 - enrollment.created, enrollment.updated
 - route.resolved, route.not_found
 
 ### UI: Payer Directory Tab (9th tab in RCM page)
+
 - 4 sub-tabs: Directory Payers, Importers, Enrollment Packets, Refresh History
 - Country filter (All/US/PH/AU/SG/NZ)
 - Refresh Directory button
 
 ### Unit Tests
+
 - `apps/api/tests/payer-directory.test.ts` -- importers, normalization, diff, routing, enrollment, end-to-end refresh
 
 ## How to Test Manually
@@ -70,6 +77,7 @@ cd apps/api && pnpm exec vitest run tests/payer-directory.test.ts
 ```
 
 ## Follow-ups
+
 - Production importer automation (scheduled directory refresh)
 - OPA policy integration for directory admin access
 - Real clearinghouse roster file parsing (Availity 271 response)

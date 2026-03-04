@@ -9,7 +9,7 @@
  * 5. Phase 176: All table lists derive from CANONICAL_RLS_TABLES
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from 'vitest';
 import {
   requireTenantId,
   assertTenantMatch,
@@ -17,46 +17,46 @@ import {
   TENANT_SCOPED_TABLES,
   GLOBAL_TABLES,
   PENDING_TENANT_ID_TABLES,
-} from "../src/platform/pg/repo/tenant-guard.js";
-import { CANONICAL_RLS_TABLES } from "../src/platform/pg/pg-migrate.js";
+} from '../src/platform/pg/repo/tenant-guard.js';
+import { CANONICAL_RLS_TABLES } from '../src/platform/pg/pg-migrate.js';
 
-describe("Phase 122: Tenant Isolation Guards", () => {
+describe('Phase 122: Tenant Isolation Guards', () => {
   /* ── requireTenantId ─────────────────────────────── */
 
-  describe("requireTenantId", () => {
-    it("passes with a valid tenant ID", () => {
-      expect(() => requireTenantId("tenant-1")).not.toThrow();
-      expect(() => requireTenantId("default")).not.toThrow();
+  describe('requireTenantId', () => {
+    it('passes with a valid tenant ID', () => {
+      expect(() => requireTenantId('tenant-1')).not.toThrow();
+      expect(() => requireTenantId('default')).not.toThrow();
     });
 
-    it("throws TenantIsolationError on empty string", () => {
-      expect(() => requireTenantId("")).toThrow(TenantIsolationError);
+    it('throws TenantIsolationError on empty string', () => {
+      expect(() => requireTenantId('')).toThrow(TenantIsolationError);
     });
 
-    it("throws TenantIsolationError on null", () => {
+    it('throws TenantIsolationError on null', () => {
       expect(() => requireTenantId(null)).toThrow(TenantIsolationError);
     });
 
-    it("throws TenantIsolationError on undefined", () => {
+    it('throws TenantIsolationError on undefined', () => {
       expect(() => requireTenantId(undefined)).toThrow(TenantIsolationError);
     });
 
-    it("throws TenantIsolationError on whitespace-only string", () => {
-      expect(() => requireTenantId("  ")).toThrow(TenantIsolationError);
+    it('throws TenantIsolationError on whitespace-only string', () => {
+      expect(() => requireTenantId('  ')).toThrow(TenantIsolationError);
     });
 
-    it("includes context in error message", () => {
+    it('includes context in error message', () => {
       try {
-        requireTenantId("", "testFunction");
+        requireTenantId('', 'testFunction');
         expect.unreachable();
       } catch (err) {
-        expect((err as Error).message).toContain("testFunction");
+        expect((err as Error).message).toContain('testFunction');
       }
     });
 
-    it("error has statusCode 403", () => {
+    it('error has statusCode 403', () => {
       try {
-        requireTenantId("");
+        requireTenantId('');
         expect.unreachable();
       } catch (err) {
         expect((err as TenantIsolationError).statusCode).toBe(403);
@@ -66,67 +66,67 @@ describe("Phase 122: Tenant Isolation Guards", () => {
 
   /* ── assertTenantMatch ───────────────────────────── */
 
-  describe("assertTenantMatch", () => {
-    it("passes when tenantId matches", () => {
-      const row = { id: "r1", tenantId: "tenant-1", data: "foo" };
-      expect(assertTenantMatch(row, "tenant-1")).toBe(row);
+  describe('assertTenantMatch', () => {
+    it('passes when tenantId matches', () => {
+      const row = { id: 'r1', tenantId: 'tenant-1', data: 'foo' };
+      expect(assertTenantMatch(row, 'tenant-1')).toBe(row);
     });
 
-    it("passes for global rows (tenantId = null)", () => {
-      const row = { id: "r1", tenantId: null, data: "foo" };
-      expect(assertTenantMatch(row, "tenant-1")).toBe(row);
+    it('passes for global rows (tenantId = null)', () => {
+      const row = { id: 'r1', tenantId: null, data: 'foo' };
+      expect(assertTenantMatch(row, 'tenant-1')).toBe(row);
     });
 
-    it("passes for global rows (tenantId = undefined)", () => {
-      const row = { id: "r1", data: "foo" }; // no tenantId property
-      expect(assertTenantMatch(row as any, "tenant-1")).toBe(row);
+    it('passes for global rows (tenantId = undefined)', () => {
+      const row = { id: 'r1', data: 'foo' }; // no tenantId property
+      expect(assertTenantMatch(row as any, 'tenant-1')).toBe(row);
     });
 
-    it("BLOCKS cross-tenant access (tenant A reads tenant B)", () => {
-      const row = { id: "r1", tenantId: "tenant-B", data: "secret" };
-      expect(() => assertTenantMatch(row, "tenant-A")).toThrow(TenantIsolationError);
+    it('BLOCKS cross-tenant access (tenant A reads tenant B)', () => {
+      const row = { id: 'r1', tenantId: 'tenant-B', data: 'secret' };
+      expect(() => assertTenantMatch(row, 'tenant-A')).toThrow(TenantIsolationError);
     });
 
-    it("error message includes both tenant IDs", () => {
-      const row = { id: "r1", tenantId: "tenant-B" };
+    it('error message includes both tenant IDs', () => {
+      const row = { id: 'r1', tenantId: 'tenant-B' };
       try {
-        assertTenantMatch(row, "tenant-A");
+        assertTenantMatch(row, 'tenant-A');
         expect.unreachable();
       } catch (err) {
         const msg = (err as Error).message;
-        expect(msg).toContain("tenant-B");
-        expect(msg).toContain("tenant-A");
+        expect(msg).toContain('tenant-B');
+        expect(msg).toContain('tenant-A');
       }
     });
 
-    it("includes context in mismatch error", () => {
-      const row = { id: "r1", tenantId: "tenant-B" };
+    it('includes context in mismatch error', () => {
+      const row = { id: 'r1', tenantId: 'tenant-B' };
       try {
-        assertTenantMatch(row, "tenant-A", "rcm_claim");
+        assertTenantMatch(row, 'tenant-A', 'rcm_claim');
         expect.unreachable();
       } catch (err) {
-        expect((err as Error).message).toContain("rcm_claim");
+        expect((err as Error).message).toContain('rcm_claim');
       }
     });
   });
 
   /* ── Table inventory ─────────────────────────────── */
 
-  describe("Table inventory", () => {
-    it("TENANT_SCOPED_TABLES has >100 entries (derived from canonical list)", () => {
+  describe('Table inventory', () => {
+    it('TENANT_SCOPED_TABLES has >100 entries (derived from canonical list)', () => {
       expect(TENANT_SCOPED_TABLES.length).toBeGreaterThan(100);
     });
 
-    it("GLOBAL_TABLES has entries", () => {
+    it('GLOBAL_TABLES has entries', () => {
       expect(GLOBAL_TABLES.length).toBeGreaterThan(0);
     });
 
-    it("PENDING_TENANT_ID_TABLES is empty (all tables now have tenant_id)", () => {
+    it('PENDING_TENANT_ID_TABLES is empty (all tables now have tenant_id)', () => {
       expect(PENDING_TENANT_ID_TABLES.length).toBe(0);
     });
 
-    it("TENANT_SCOPED_TABLES + GLOBAL_TABLES = CANONICAL_RLS_TABLES", () => {
-      const combined = new Set([...TENANT_SCOPED_TABLES, ...GLOBAL_TABLES as readonly string[]]);
+    it('TENANT_SCOPED_TABLES + GLOBAL_TABLES = CANONICAL_RLS_TABLES', () => {
+      const combined = new Set([...TENANT_SCOPED_TABLES, ...(GLOBAL_TABLES as readonly string[])]);
       const canonical = new Set(CANONICAL_RLS_TABLES);
       expect(combined.size).toBe(canonical.size);
       for (const t of canonical) {
@@ -134,21 +134,21 @@ describe("Phase 122: Tenant Isolation Guards", () => {
       }
     });
 
-    it("no overlap between global and scoped tables", () => {
+    it('no overlap between global and scoped tables', () => {
       const scopedSet = new Set(TENANT_SCOPED_TABLES);
       for (const g of GLOBAL_TABLES) {
         expect(scopedSet.has(g as any)).toBe(false);
       }
     });
 
-    it("no overlap between pending and scoped tables", () => {
+    it('no overlap between pending and scoped tables', () => {
       const scopedSet = new Set(TENANT_SCOPED_TABLES as readonly string[]);
       for (const p of PENDING_TENANT_ID_TABLES) {
         expect(scopedSet.has(p)).toBe(false);
       }
     });
 
-    it("no overlap between pending and global tables", () => {
+    it('no overlap between pending and global tables', () => {
       const globalSet = new Set(GLOBAL_TABLES as readonly string[]);
       for (const p of PENDING_TENANT_ID_TABLES) {
         expect(globalSet.has(p)).toBe(false);
@@ -158,47 +158,47 @@ describe("Phase 122: Tenant Isolation Guards", () => {
 
   /* ── TenantIsolationError ────────────────────────── */
 
-  describe("TenantIsolationError", () => {
-    it("is an Error subclass", () => {
-      const err = new TenantIsolationError("test");
+  describe('TenantIsolationError', () => {
+    it('is an Error subclass', () => {
+      const err = new TenantIsolationError('test');
       expect(err).toBeInstanceOf(Error);
-      expect(err.name).toBe("TenantIsolationError");
+      expect(err.name).toBe('TenantIsolationError');
       expect(err.statusCode).toBe(403);
     });
   });
 
   /* ── Cross-tenant leakage simulation ─────────────── */
 
-  describe("Cross-tenant leakage prevention", () => {
-    it("tenant A cannot read tenant B claim via PK lookup guard", () => {
+  describe('Cross-tenant leakage prevention', () => {
+    it('tenant A cannot read tenant B claim via PK lookup guard', () => {
       // Simulate: tenant B owns claim-123
       const tenantBClaim = {
-        id: "claim-123",
-        tenantId: "hospital-B",
-        patientDfn: "3",
-        status: "draft",
+        id: 'claim-123',
+        tenantId: 'hospital-B',
+        patientDfn: '3',
+        status: 'draft',
       };
 
       // Tenant A tries to access it
-      expect(() =>
-        assertTenantMatch(tenantBClaim, "hospital-A", "rcm_claim"),
-      ).toThrow(TenantIsolationError);
+      expect(() => assertTenantMatch(tenantBClaim, 'hospital-A', 'rcm_claim')).toThrow(
+        TenantIsolationError
+      );
     });
 
-    it("tenant A CAN read their own claim via PK lookup guard", () => {
+    it('tenant A CAN read their own claim via PK lookup guard', () => {
       const tenantAClaim = {
-        id: "claim-456",
-        tenantId: "hospital-A",
-        patientDfn: "5",
-        status: "submitted",
+        id: 'claim-456',
+        tenantId: 'hospital-A',
+        patientDfn: '5',
+        status: 'submitted',
       };
 
-      expect(assertTenantMatch(tenantAClaim, "hospital-A")).toBe(tenantAClaim);
+      expect(assertTenantMatch(tenantAClaim, 'hospital-A')).toBe(tenantAClaim);
     });
 
-    it("requireTenantId + assertTenantMatch together form a complete guard", () => {
-      const tenantId = "hospital-A";
-      const row = { id: "wq-1", tenantId: "hospital-B" };
+    it('requireTenantId + assertTenantMatch together form a complete guard', () => {
+      const tenantId = 'hospital-A';
+      const row = { id: 'wq-1', tenantId: 'hospital-B' };
 
       // Step 1: requireTenantId passes (valid tenant)
       expect(() => requireTenantId(tenantId)).not.toThrow();

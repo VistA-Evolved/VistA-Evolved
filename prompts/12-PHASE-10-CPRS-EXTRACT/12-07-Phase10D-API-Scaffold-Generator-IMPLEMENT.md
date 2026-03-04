@@ -1,6 +1,7 @@
 # Phase 10D — API Scaffold Generator (IMPLEMENT)
 
 ## User Request
+
 In apps/api, add a scaffold generator that reads `design/contracts/cprs/v1/rpc_catalog.json`
 and creates typed endpoint stubs per domain (problems, meds, notes, orders, labs, reports).
 Each stub calls the existing rpcBrokerClient with the correct RPC name and params placeholder.
@@ -35,6 +36,7 @@ Include a "not implemented" response until wired.
 5. **npm script** — `cprs:generate-stubs` in root package.json
 
 ## Files Touched
+
 - `tools/cprs-extract/generate-api-stubs.mjs` (new)
 - `apps/api/src/routes/problems.ts` (generated)
 - `apps/api/src/routes/meds.ts` (generated)
@@ -48,6 +50,7 @@ Include a "not implemented" response until wired.
 - `prompts/12-PHASE-10-CPRS-EXTRACT/12-03-api-scaffold-IMPLEMENT.md` (this file)
 
 ## Verification
+
 - `pnpm run cprs:generate-stubs` completes without errors
 - `pnpm -C apps/api build` compiles clean
 - Generated files contain correct RPC names per domain

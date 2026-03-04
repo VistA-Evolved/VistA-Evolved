@@ -16,15 +16,9 @@
  * No PHI: params are sanitized, DUZ is hashed, DFN is redacted.
  */
 
-import { createHash, randomUUID } from "node:crypto";
-import {
-  writeFileSync,
-  readFileSync,
-  mkdirSync,
-  existsSync,
-  readdirSync,
-} from "node:fs";
-import { join } from "node:path";
+import { randomUUID } from 'node:crypto';
+import { writeFileSync, readFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
 
 /* ── Types ────────────────────────────────────────────────── */
 
@@ -85,7 +79,7 @@ export interface CompareResult {
 }
 
 export interface CompareDiff {
-  type: "missing" | "extra" | "order" | "success_mismatch";
+  type: 'missing' | 'extra' | 'order' | 'success_mismatch';
   seq: number;
   rpcName: string;
   detail: string;
@@ -93,41 +87,31 @@ export interface CompareDiff {
 
 /* ── Constants ────────────────────────────────────────────── */
 
-const CONTRACT_VERSION = "1.0.0";
+const CONTRACT_VERSION = '1.0.0';
 
 /**
  * Pre-defined workflow templates. Each lists the expected RPC call
  * sequence. Used as documentation and for generating golden traces.
  */
-export const WORKFLOW_TEMPLATES: Record<
-  string,
-  { description: string; expectedRpcs: string[] }
-> = {
-  "patient-search": {
-    description: "Search for a patient and load demographics",
+export const WORKFLOW_TEMPLATES: Record<string, { description: string; expectedRpcs: string[] }> = {
+  'patient-search': {
+    description: 'Search for a patient and load demographics',
+    expectedRpcs: ['ORWPT LIST ALL', 'ORWPT SELECT'],
+  },
+  'note-create-sign': {
+    description: 'Create a TIU note, set text, and sign',
     expectedRpcs: [
-      "ORWPT LIST ALL",
-      "ORWPT SELECT",
+      'TIU PERSONAL TITLE LIST',
+      'TIU CREATE RECORD',
+      'TIU SET DOCUMENT TEXT',
+      'TIU LOCK RECORD',
+      'TIU SIGN RECORD',
+      'TIU UNLOCK RECORD',
     ],
   },
-  "note-create-sign": {
-    description: "Create a TIU note, set text, and sign",
-    expectedRpcs: [
-      "TIU PERSONAL TITLE LIST",
-      "TIU CREATE RECORD",
-      "TIU SET DOCUMENT TEXT",
-      "TIU LOCK RECORD",
-      "TIU SIGN RECORD",
-      "TIU UNLOCK RECORD",
-    ],
-  },
-  "order-place": {
-    description: "Lock patient, place a quick order, unlock",
-    expectedRpcs: [
-      "ORWDX LOCK",
-      "ORWDXM AUTOACK",
-      "ORWDX UNLOCK",
-    ],
+  'order-place': {
+    description: 'Lock patient, place a quick order, unlock',
+    expectedRpcs: ['ORWDX LOCK', 'ORWDXM AUTOACK', 'ORWDX UNLOCK'],
   },
 };
 
@@ -143,7 +127,7 @@ const MAX_COMPLETED = 100;
 export function startTraceSession(
   workflow: string,
   description?: string,
-  instanceId?: string,
+  instanceId?: string
 ): TraceSession {
   const session: TraceSession = {
     id: randomUUID(),
@@ -152,7 +136,7 @@ export function startTraceSession(
     startedAt: new Date().toISOString(),
     endedAt: null,
     entries: [],
-    instanceId: instanceId || "unknown",
+    instanceId: instanceId || 'unknown',
     contractVersion: CONTRACT_VERSION,
   };
   activeSessions.set(session.id, session);
@@ -164,7 +148,7 @@ export function startTraceSession(
  */
 export function recordTraceEntry(
   sessionId: string,
-  entry: Omit<ContractTraceEntry, "id" | "seq" | "timestamp">,
+  entry: Omit<ContractTraceEntry, 'id' | 'seq' | 'timestamp'>
 ): ContractTraceEntry | null {
   const session = activeSessions.get(sessionId);
   if (!session) return null;
@@ -184,7 +168,7 @@ export function recordTraceEntry(
  */
 export function endTraceSession(
   sessionId: string,
-  opts?: { writeToDisk?: boolean; outputDir?: string },
+  opts?: { writeToDisk?: boolean; outputDir?: string }
 ): TraceSession | null {
   const session = activeSessions.get(sessionId);
   if (!session) return null;
@@ -233,13 +217,9 @@ export function getCompletedSessions(limit = 20): TraceSession[] {
 
 /* ── File I/O ─────────────────────────────────────────────── */
 
-const DEFAULT_TRACE_DIR = join(
-  process.cwd(),
-  "data",
-  "rpc-traces",
-);
+const DEFAULT_TRACE_DIR = join(process.cwd(), 'data', 'rpc-traces');
 
-const GOLDEN_DIR = join(DEFAULT_TRACE_DIR, "golden");
+const GOLDEN_DIR = join(DEFAULT_TRACE_DIR, 'golden');
 
 /**
  * Write a session to a JSONL file.
@@ -248,14 +228,14 @@ function writeSessionToFile(session: TraceSession, outputDir?: string): string {
   const dir = outputDir || DEFAULT_TRACE_DIR;
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 
-  const ts = session.startedAt.replace(/[:.]/g, "-").replace("Z", "");
+  const ts = session.startedAt.replace(/[:.]/g, '-').replace('Z', '');
   const filename = `${session.workflow}_${ts}.jsonl`;
   const filepath = join(dir, filename);
 
   const lines = session.entries.map((e) => JSON.stringify(e));
   // Prepend session metadata as first line
   const meta = JSON.stringify({
-    _type: "session_meta",
+    _type: 'session_meta',
     id: session.id,
     workflow: session.workflow,
     description: session.description,
@@ -265,7 +245,7 @@ function writeSessionToFile(session: TraceSession, outputDir?: string): string {
     contractVersion: session.contractVersion,
     entryCount: session.entries.length,
   });
-  writeFileSync(filepath, [meta, ...lines].join("\n") + "\n", "utf-8");
+  writeFileSync(filepath, [meta, ...lines].join('\n') + '\n', 'utf-8');
   return filepath;
 }
 
@@ -285,20 +265,18 @@ export function loadGoldenTrace(workflow: string): TraceSession | null {
 
   // Find the latest golden file for this workflow
   const files = readdirSync(GOLDEN_DIR)
-    .filter((f) => f.startsWith(workflow + "_") && f.endsWith(".jsonl"))
+    .filter((f) => f.startsWith(workflow + '_') && f.endsWith('.jsonl'))
     .sort()
     .reverse();
 
   if (files.length === 0) return null;
 
   const filepath = join(GOLDEN_DIR, files[0]);
-  const lines = readFileSync(filepath, "utf-8").trim().split("\n");
+  const lines = readFileSync(filepath, 'utf-8').trim().split('\n');
   if (lines.length === 0) return null;
 
   const meta = JSON.parse(lines[0]);
-  const entries: ContractTraceEntry[] = lines
-    .slice(1)
-    .map((l) => JSON.parse(l));
+  const entries: ContractTraceEntry[] = lines.slice(1).map((l) => JSON.parse(l));
 
   return {
     id: meta.id,
@@ -319,11 +297,10 @@ export function listGoldenTraces(): { workflow: string; file: string; entryCount
   if (!existsSync(GOLDEN_DIR)) return [];
 
   return readdirSync(GOLDEN_DIR)
-    .filter((f) => f.endsWith(".jsonl"))
+    .filter((f) => f.endsWith('.jsonl'))
     .map((f) => {
       try {
-        const firstLine = readFileSync(join(GOLDEN_DIR, f), "utf-8")
-          .split("\n")[0];
+        const firstLine = readFileSync(join(GOLDEN_DIR, f), 'utf-8').split('\n')[0];
         const meta = JSON.parse(firstLine);
         return {
           workflow: meta.workflow,
@@ -331,7 +308,7 @@ export function listGoldenTraces(): { workflow: string; file: string; entryCount
           entryCount: meta.entryCount,
         };
       } catch {
-        return { workflow: f.split("_")[0], file: f, entryCount: -1 };
+        return { workflow: f.split('_')[0], file: f, entryCount: -1 };
       }
     });
 }
@@ -351,10 +328,7 @@ export function listGoldenTraces(): { workflow: string; file: string; entryCount
  *   - Response line counts (data varies)
  *   - Exact timestamps
  */
-export function compareTraces(
-  actual: TraceSession,
-  golden: TraceSession,
-): CompareResult {
+export function compareTraces(actual: TraceSession, golden: TraceSession): CompareResult {
   const diffs: CompareDiff[] = [];
   const goldenRpcs = golden.entries.map((e) => e.rpcName);
   const actualRpcs = actual.entries.map((e) => e.rpcName);
@@ -371,7 +345,7 @@ export function compareTraces(
     if (!g && a) {
       // Extra RPC in actual
       diffs.push({
-        type: "extra",
+        type: 'extra',
         seq: i,
         rpcName: a,
         detail: `Extra RPC at position ${i}: ${a}`,
@@ -379,7 +353,7 @@ export function compareTraces(
     } else if (g && !a) {
       // Missing RPC in actual
       diffs.push({
-        type: "missing",
+        type: 'missing',
         seq: i,
         rpcName: g,
         detail: `Missing RPC at position ${i}: ${g} (expected from golden)`,
@@ -387,7 +361,7 @@ export function compareTraces(
     } else if (g !== a) {
       // Wrong RPC at this position
       diffs.push({
-        type: "order",
+        type: 'order',
         seq: i,
         rpcName: a!,
         detail: `Position ${i}: expected ${g}, got ${a}`,
@@ -399,7 +373,7 @@ export function compareTraces(
       const aEntry = actual.entries[i];
       if (gEntry.success !== aEntry.success) {
         diffs.push({
-          type: "success_mismatch",
+          type: 'success_mismatch',
           seq: i,
           rpcName: a!,
           detail: `${a}: golden=${gEntry.success}, actual=${aEntry.success}`,
@@ -411,12 +385,10 @@ export function compareTraces(
     }
   }
 
-  const extraRpcs = actualRpcs.length > goldenRpcs.length
-    ? actualRpcs.length - goldenRpcs.length
-    : 0;
-  const missingRpcs = goldenRpcs.length > actualRpcs.length
-    ? goldenRpcs.length - actualRpcs.length
-    : 0;
+  const extraRpcs =
+    actualRpcs.length > goldenRpcs.length ? actualRpcs.length - goldenRpcs.length : 0;
+  const missingRpcs =
+    goldenRpcs.length > actualRpcs.length ? goldenRpcs.length - actualRpcs.length : 0;
 
   return {
     passed: diffs.length === 0,

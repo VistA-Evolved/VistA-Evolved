@@ -6,9 +6,7 @@
   "title": "Alcohol Use Disorders Identification Test - Consumption (AUDIT-C)",
   "status": "active",
   "description": "3-item alcohol screening instrument. Scoring: Men >= 4 positive, Women >= 3 positive.",
-  "code": [
-    { "system": "http://loinc.org", "code": "75624-2", "display": "AUDIT-C total score" }
-  ],
+  "code": [{ "system": "http://loinc.org", "code": "75624-2", "display": "AUDIT-C total score" }],
   "item": [
     {
       "linkId": "auditc-1",

@@ -32,19 +32,21 @@ deployments that require OpenHIE compliance.
 
 ## Alternatives Considered
 
-| Option | Pros | Cons |
-|--------|------|------|
-| Internal only | Simple, no external deps | No OpenHIE compliance |
-| OpenHIM only | Full OpenHIE stack | Heavy for simple deployments |
-| **Hybrid (chosen)** | Flexibility, progressive adoption | Two code paths to maintain |
+| Option              | Pros                              | Cons                         |
+| ------------------- | --------------------------------- | ---------------------------- |
+| Internal only       | Simple, no external deps          | No OpenHIE compliance        |
+| OpenHIM only        | Full OpenHIE stack                | Heavy for simple deployments |
+| **Hybrid (chosen)** | Flexibility, progressive adoption | Two code paths to maintain   |
 
 ## Consequences
 
 **Positive:**
+
 - Works for all deployment sizes (clinic to national HIE)
 - OpenHIM adapter is opt-in, no overhead when not used
 - Channel/transform model is testable without external services
 
 **Negative:**
+
 - Must maintain internal gateway + OpenHIM adapter
 - OpenHIM upgrades may require adapter updates

@@ -6,9 +6,7 @@
   "title": "Columbia Suicide Severity Rating Scale (C-SSRS) Screening",
   "status": "active",
   "description": "Screening version of the Columbia Suicide Severity Rating Scale. Binary yes/no for suicidal ideation and behavior.",
-  "code": [
-    { "system": "http://loinc.org", "code": "93373-4", "display": "C-SSRS screening" }
-  ],
+  "code": [{ "system": "http://loinc.org", "code": "93373-4", "display": "C-SSRS screening" }],
   "item": [
     {
       "linkId": "cssrs-1",

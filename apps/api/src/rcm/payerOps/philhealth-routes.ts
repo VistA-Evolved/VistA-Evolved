@@ -27,7 +27,7 @@
  * for review and facility readiness. It does NOT submit to PhilHealth.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 
 import {
   createPhilHealthClaimDraft,
@@ -43,50 +43,56 @@ import {
   removeProviderAccreditation,
   updateReadinessItem,
   getPhilHealthStats,
-} from "./philhealth-store.js";
+} from './philhealth-store.js';
 
-import { validatePhilHealthClaimDraft } from "./philhealth-validator.js";
-import { appendRcmAudit } from "../audit/rcm-audit.js";
-import type { PhilHealthClaimStatus } from "./philhealth-types.js";
+import { validatePhilHealthClaimDraft } from './philhealth-validator.js';
+import { appendRcmAudit } from '../audit/rcm-audit.js';
+import type { PhilHealthClaimStatus } from './philhealth-types.js';
 
 /* ── Session helper ─────────────────────────────────────────── */
 
 function sessionActor(request: FastifyRequest): string {
   const s = (request as any).session;
-  return s?.userName || s?.duz || "unknown";
+  return s?.userName || s?.duz || 'unknown';
 }
 
 /* ── Default facility ID (single-tenant sandbox) ────────────── */
 
-const DEFAULT_FACILITY_ID = process.env.PHILHEALTH_FACILITY_CODE || "DEFAULT";
+const DEFAULT_FACILITY_ID = process.env.PHILHEALTH_FACILITY_CODE || 'DEFAULT';
 
 /* ── Route Registration ─────────────────────────────────────── */
 
 export default async function philhealthRoutes(server: FastifyInstance): Promise<void> {
-
   /* ── Stats ────────────────────────────────────────────────── */
 
-  server.get("/rcm/philhealth/stats", async (_request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/philhealth/stats', async (_request: FastifyRequest, reply: FastifyReply) => {
     const stats = getPhilHealthStats();
     return reply.send({ ok: true, ...stats });
   });
 
   /* ── Create Claim Draft ───────────────────────────────────── */
 
-  server.post("/rcm/philhealth/claims", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/philhealth/claims', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const actor = sessionActor(request);
 
-    if (!body.patientLastName || !body.patientFirstName || !body.philhealthPin || !body.admissionDate || !body.patientType) {
+    if (
+      !body.patientLastName ||
+      !body.patientFirstName ||
+      !body.philhealthPin ||
+      !body.admissionDate ||
+      !body.patientType
+    ) {
       return reply.status(400).send({
         ok: false,
-        error: "Required: patientLastName, patientFirstName, philhealthPin, admissionDate, patientType",
+        error:
+          'Required: patientLastName, patientFirstName, philhealthPin, admissionDate, patientType',
       });
     }
 
     const draft = createPhilHealthClaimDraft({
       facilityId: body.facilityId || DEFAULT_FACILITY_ID,
-      patientDfn: body.patientDfn || "",
+      patientDfn: body.patientDfn || '',
       patientLastName: body.patientLastName,
       patientFirstName: body.patientFirstName,
       patientMiddleName: body.patientMiddleName,
@@ -104,11 +110,11 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
       createdBy: actor,
     });
 
-    appendRcmAudit("claim.created", {
+    appendRcmAudit('claim.created', {
       claimId: draft.id,
       userId: actor,
       patientDfn: body.patientDfn,
-      detail: { source: "philhealth-eclaims3", patientType: draft.patientType },
+      detail: { source: 'philhealth-eclaims3', patientType: draft.patientType },
     });
 
     return reply.status(201).send({ ok: true, draft });
@@ -116,7 +122,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
 
   /* ── List Claim Drafts ────────────────────────────────────── */
 
-  server.get("/rcm/philhealth/claims", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/philhealth/claims', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     const drafts = listPhilHealthClaimDrafts({
       facilityId: q.facilityId,
@@ -128,147 +134,164 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
 
   /* ── Get Claim Draft ──────────────────────────────────────── */
 
-  server.get("/rcm/philhealth/claims/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/philhealth/claims/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const draft = getPhilHealthClaimDraft(id);
-    if (!draft) return reply.status(404).send({ ok: false, error: "Claim draft not found" });
+    if (!draft) return reply.status(404).send({ ok: false, error: 'Claim draft not found' });
     return reply.send({ ok: true, draft });
   });
 
   /* ── Patch Claim Draft ────────────────────────────────────── */
 
-  server.patch("/rcm/philhealth/claims/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
-    const actor = sessionActor(request);
+  server.patch(
+    '/rcm/philhealth/claims/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
+      const actor = sessionActor(request);
 
-    const result = patchPhilHealthClaimDraft(id, body);
-    if (!result.ok) return reply.status(400).send(result);
+      const result = patchPhilHealthClaimDraft(id, body);
+      if (!result.ok) return reply.status(400).send(result);
 
-    appendRcmAudit("claim.updated", {
-      claimId: id,
-      userId: actor,
-      detail: { source: "philhealth-eclaims3", fields: Object.keys(body) },
-    });
+      appendRcmAudit('claim.updated', {
+        claimId: id,
+        userId: actor,
+        detail: { source: 'philhealth-eclaims3', fields: Object.keys(body) },
+      });
 
-    return reply.send({ ok: true, draft: result.draft });
-  });
+      return reply.send({ ok: true, draft: result.draft });
+    }
+  );
 
   /* ── Transition Status ────────────────────────────────────── */
 
-  server.put("/rcm/philhealth/claims/:id/status", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
-    const actor = sessionActor(request);
+  server.put(
+    '/rcm/philhealth/claims/:id/status',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
+      const actor = sessionActor(request);
 
-    if (!body.status) {
-      return reply.status(400).send({ ok: false, error: "Required: status" });
+      if (!body.status) {
+        return reply.status(400).send({ ok: false, error: 'Required: status' });
+      }
+
+      const result = transitionPhilHealthClaimStatus(id, body.status, actor, body.reason);
+      if (!result.ok) return reply.status(400).send(result);
+
+      appendRcmAudit('claim.transition', {
+        claimId: id,
+        userId: actor,
+        detail: { source: 'philhealth-eclaims3', toStatus: body.status, reason: body.reason },
+      });
+
+      return reply.send({ ok: true, draft: result.draft });
     }
-
-    const result = transitionPhilHealthClaimStatus(id, body.status, actor, body.reason);
-    if (!result.ok) return reply.status(400).send(result);
-
-    appendRcmAudit("claim.transition", {
-      claimId: id,
-      userId: actor,
-      detail: { source: "philhealth-eclaims3", toStatus: body.status, reason: body.reason },
-    });
-
-    return reply.send({ ok: true, draft: result.draft });
-  });
+  );
 
   /* ── Validate ─────────────────────────────────────────────── */
 
-  server.post("/rcm/philhealth/claims/:id/validate", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const draft = getPhilHealthClaimDraft(id);
-    if (!draft) return reply.status(404).send({ ok: false, error: "Claim draft not found" });
+  server.post(
+    '/rcm/philhealth/claims/:id/validate',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const draft = getPhilHealthClaimDraft(id);
+      if (!draft) return reply.status(404).send({ ok: false, error: 'Claim draft not found' });
 
-    const result = validatePhilHealthClaimDraft(draft);
+      const result = validatePhilHealthClaimDraft(draft);
 
-    appendRcmAudit("validation.run", {
-      claimId: id,
-      userId: sessionActor(request),
-      detail: {
-        source: "philhealth-eclaims3",
-        valid: result.valid,
-        errorCount: result.errors.length,
-        warningCount: result.warnings.length,
-        eclaims3: result.eclaims3Compliance,
-      },
-    });
+      appendRcmAudit('validation.run', {
+        claimId: id,
+        userId: sessionActor(request),
+        detail: {
+          source: 'philhealth-eclaims3',
+          valid: result.valid,
+          errorCount: result.errors.length,
+          warningCount: result.warnings.length,
+          eclaims3: result.eclaims3Compliance,
+        },
+      });
 
-    return reply.send({ ok: true, validation: result });
-  });
+      return reply.send({ ok: true, validation: result });
+    }
+  );
 
   /* ── Export Package ───────────────────────────────────────── */
 
-  server.post("/rcm/philhealth/claims/:id/export", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const actor = sessionActor(request);
-    const signingKey = process.env.PHILHEALTH_SOA_SIGNING_KEY;
+  server.post(
+    '/rcm/philhealth/claims/:id/export',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const actor = sessionActor(request);
+      const signingKey = process.env.PHILHEALTH_SOA_SIGNING_KEY;
 
-    const result = generateExportPackage(id, actor, signingKey);
-    if (!result.ok) return reply.status(400).send(result);
+      const result = generateExportPackage(id, actor, signingKey);
+      if (!result.ok) return reply.status(400).send(result);
 
-    appendRcmAudit("claim.exported", {
-      claimId: id,
-      userId: actor,
-      detail: {
-        source: "philhealth-eclaims3",
-        exportId: result.manifest?.exportId,
-        fileCount: result.manifest?.files.length,
-        version: "3.0",
-      },
-    });
+      appendRcmAudit('claim.exported', {
+        claimId: id,
+        userId: actor,
+        detail: {
+          source: 'philhealth-eclaims3',
+          exportId: result.manifest?.exportId,
+          fileCount: result.manifest?.files.length,
+          version: '3.0',
+        },
+      });
 
-    return reply.send({
-      ok: true,
-      manifest: result.manifest,
-      draft: result.draft,
-      _notice: "NOT CERTIFIED: This export is for review only. PhilHealth submission requires facility certification.",
-    });
-  });
+      return reply.send({
+        ok: true,
+        manifest: result.manifest,
+        draft: result.draft,
+        _notice:
+          'NOT CERTIFIED: This export is for review only. PhilHealth submission requires facility certification.',
+      });
+    }
+  );
 
   /* ── Test Upload (Simulated) ──────────────────────────────── */
 
-  server.post("/rcm/philhealth/claims/:id/test-upload", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { id } = request.params as { id: string };
-    const actor = sessionActor(request);
+  server.post(
+    '/rcm/philhealth/claims/:id/test-upload',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { id } = request.params as { id: string };
+      const actor = sessionActor(request);
 
-    // Run validation first to determine errors/warnings
-    const draft = getPhilHealthClaimDraft(id);
-    if (!draft) return reply.status(404).send({ ok: false, error: "Claim draft not found" });
+      // Run validation first to determine errors/warnings
+      const draft = getPhilHealthClaimDraft(id);
+      if (!draft) return reply.status(404).send({ ok: false, error: 'Claim draft not found' });
 
-    const validation = validatePhilHealthClaimDraft(draft);
-    const valErrors = validation.errors.map(e => `${e.field}: ${e.message}`);
-    const valWarnings = validation.warnings.map(w => `${w.field}: ${w.message}`);
+      const validation = validatePhilHealthClaimDraft(draft);
+      const valErrors = validation.errors.map((e) => `${e.field}: ${e.message}`);
+      const valWarnings = validation.warnings.map((w) => `${w.field}: ${w.message}`);
 
-    const result = simulateTestUpload(id, actor, valErrors, valWarnings);
-    if (!result.ok) return reply.status(400).send(result);
+      const result = simulateTestUpload(id, actor, valErrors, valWarnings);
+      if (!result.ok) return reply.status(400).send(result);
 
-    appendRcmAudit("gateway.probe", {
-      claimId: id,
-      userId: actor,
-      detail: {
-        source: "philhealth-eclaims3-test-upload",
-        simulated: true,
-        tcn: result.result?.transmittalControlNumber,
-        passed: result.result?.validationPassed,
-      },
-    });
+      appendRcmAudit('gateway.probe', {
+        claimId: id,
+        userId: actor,
+        detail: {
+          source: 'philhealth-eclaims3-test-upload',
+          simulated: true,
+          tcn: result.result?.transmittalControlNumber,
+          passed: result.result?.validationPassed,
+        },
+      });
 
-    return reply.send({
-      ok: true,
-      result: result.result,
-      draft: result.draft,
-      _notice: "SIMULATED: This test upload was simulated locally. No data was sent to PhilHealth.",
-    });
-  });
+      return reply.send({
+        ok: true,
+        result: result.result,
+        draft: result.draft,
+        _notice:
+          'SIMULATED: This test upload was simulated locally. No data was sent to PhilHealth.',
+      });
+    }
+  );
 
   /* ── Get Facility Setup ───────────────────────────────────── */
 
-  server.get("/rcm/philhealth/setup", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/rcm/philhealth/setup', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     const facilityId = q.facilityId || DEFAULT_FACILITY_ID;
     const setup = getOrCreateFacilitySetup(facilityId);
@@ -277,17 +300,17 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
 
   /* ── Update Facility Setup ────────────────────────────────── */
 
-  server.patch("/rcm/philhealth/setup", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.patch('/rcm/philhealth/setup', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const actor = sessionActor(request);
     const facilityId = body.facilityId || DEFAULT_FACILITY_ID;
 
     const setup = updateFacilitySetup(facilityId, body);
 
-    appendRcmAudit("enrollment.updated", {
+    appendRcmAudit('enrollment.updated', {
       userId: actor,
-      payerId: "PH-PHIC",
-      detail: { source: "philhealth-setup", facilityId, fields: Object.keys(body) },
+      payerId: 'PH-PHIC',
+      detail: { source: 'philhealth-setup', facilityId, fields: Object.keys(body) },
     });
 
     return reply.send({ ok: true, setup });
@@ -295,67 +318,78 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
 
   /* ── Add Provider Accreditation ───────────────────────────── */
 
-  server.post("/rcm/philhealth/setup/providers", async (request: FastifyRequest, reply: FastifyReply) => {
-    const body = (request.body as any) || {};
-    const actor = sessionActor(request);
-    const facilityId = body.facilityId || DEFAULT_FACILITY_ID;
+  server.post(
+    '/rcm/philhealth/setup/providers',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const body = (request.body as any) || {};
+      const actor = sessionActor(request);
+      const facilityId = body.facilityId || DEFAULT_FACILITY_ID;
 
-    if (!body.providerName || !body.prcLicenseNumber) {
-      return reply.status(400).send({ ok: false, error: "Required: providerName, prcLicenseNumber" });
+      if (!body.providerName || !body.prcLicenseNumber) {
+        return reply
+          .status(400)
+          .send({ ok: false, error: 'Required: providerName, prcLicenseNumber' });
+      }
+
+      const setup = addProviderAccreditation(facilityId, {
+        providerName: body.providerName,
+        prcLicenseNumber: body.prcLicenseNumber,
+        philhealthAccreditationNumber: body.philhealthAccreditationNumber,
+        specialty: body.specialty,
+        expiryDate: body.expiryDate,
+      });
+
+      appendRcmAudit('enrollment.created', {
+        userId: actor,
+        payerId: 'PH-PHIC',
+        detail: { source: 'philhealth-provider-accreditation', prc: body.prcLicenseNumber },
+      });
+
+      return reply.send({ ok: true, setup });
     }
-
-    const setup = addProviderAccreditation(facilityId, {
-      providerName: body.providerName,
-      prcLicenseNumber: body.prcLicenseNumber,
-      philhealthAccreditationNumber: body.philhealthAccreditationNumber,
-      specialty: body.specialty,
-      expiryDate: body.expiryDate,
-    });
-
-    appendRcmAudit("enrollment.created", {
-      userId: actor,
-      payerId: "PH-PHIC",
-      detail: { source: "philhealth-provider-accreditation", prc: body.prcLicenseNumber },
-    });
-
-    return reply.send({ ok: true, setup });
-  });
+  );
 
   /* ── Remove Provider Accreditation ────────────────────────── */
 
-  server.delete("/rcm/philhealth/setup/providers/:prc", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { prc } = request.params as { prc: string };
-    const actor = sessionActor(request);
-    const q = (request.query as any) || {};
-    const facilityId = q.facilityId || DEFAULT_FACILITY_ID;
+  server.delete(
+    '/rcm/philhealth/setup/providers/:prc',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { prc } = request.params as { prc: string };
+      const actor = sessionActor(request);
+      const q = (request.query as any) || {};
+      const facilityId = q.facilityId || DEFAULT_FACILITY_ID;
 
-    const setup = removeProviderAccreditation(facilityId, prc);
+      const setup = removeProviderAccreditation(facilityId, prc);
 
-    appendRcmAudit("enrollment.updated", {
-      userId: actor,
-      payerId: "PH-PHIC",
-      detail: { source: "philhealth-provider-removed", prc },
-    });
+      appendRcmAudit('enrollment.updated', {
+        userId: actor,
+        payerId: 'PH-PHIC',
+        detail: { source: 'philhealth-provider-removed', prc },
+      });
 
-    return reply.send({ ok: true, setup });
-  });
+      return reply.send({ ok: true, setup });
+    }
+  );
 
   /* ── Toggle Readiness Checklist Item ──────────────────────── */
 
-  server.put("/rcm/philhealth/setup/readiness/:itemId", async (request: FastifyRequest, reply: FastifyReply) => {
-    const { itemId } = request.params as { itemId: string };
-    const body = (request.body as any) || {};
-    const actor = sessionActor(request);
-    const facilityId = body.facilityId || DEFAULT_FACILITY_ID;
+  server.put(
+    '/rcm/philhealth/setup/readiness/:itemId',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { itemId } = request.params as { itemId: string };
+      const body = (request.body as any) || {};
+      const actor = sessionActor(request);
+      const facilityId = body.facilityId || DEFAULT_FACILITY_ID;
 
-    const setup = updateReadinessItem(facilityId, itemId, !!body.completed, actor);
+      const setup = updateReadinessItem(facilityId, itemId, !!body.completed, actor);
 
-    appendRcmAudit("gateway.readiness_checked", {
-      userId: actor,
-      payerId: "PH-PHIC",
-      detail: { source: "philhealth-readiness", itemId, completed: !!body.completed },
-    });
+      appendRcmAudit('gateway.readiness_checked', {
+        userId: actor,
+        payerId: 'PH-PHIC',
+        detail: { source: 'philhealth-readiness', itemId, completed: !!body.completed },
+      });
 
-    return reply.send({ ok: true, setup });
-  });
+      return reply.send({ ok: true, setup });
+    }
+  );
 }

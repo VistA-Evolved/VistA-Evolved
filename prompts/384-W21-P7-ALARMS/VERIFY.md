@@ -1,6 +1,7 @@
 # Phase 384 — W21-P7 VERIFY: Alarms Pipeline
 
 ## Verification Gates
+
 1. alarm-types.ts exports DeviceAlarm, AlarmRoutingRule, AlarmAcknowledgment, AlarmStats
 2. AlarmPriority: low | medium | high | crisis
 3. AlarmState: active | latched | acknowledged | resolved | escalated

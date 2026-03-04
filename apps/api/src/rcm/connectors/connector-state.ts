@@ -14,17 +14,13 @@
  * hammering external payer endpoints.
  */
 
-import { getAllConnectors, type RcmConnector } from "./types.js";
-import { getAllPayerAdapters, type PayerAdapter } from "../adapters/payer-adapter.js";
-import { log } from "../../lib/logger.js";
+import { getAllConnectors, type RcmConnector } from './types.js';
+import { getAllPayerAdapters, type PayerAdapter } from '../adapters/payer-adapter.js';
+import { log } from '../../lib/logger.js';
 
 /* ── State Model ───────────────────────────────────────────── */
 
-export type ConnectorHealthState =
-  | "connected"
-  | "degraded"
-  | "disconnected"
-  | "pending";
+export type ConnectorHealthState = 'connected' | 'degraded' | 'disconnected' | 'pending';
 
 export interface ConnectorStateEntry {
   connectorId: string;
@@ -67,12 +63,15 @@ export interface AdapterStateEntry {
 const PROBE_COOLDOWN_MS = 60_000; // 1 minute between probes per connector
 const DEGRADED_LATENCY_MS = 5_000; // >5s = degraded
 
-const probeCache = new Map<string, {
-  state: ConnectorHealthState;
-  probedAt: number;
-  latencyMs: number;
-  error: string | null;
-}>();
+const probeCache = new Map<
+  string,
+  {
+    state: ConnectorHealthState;
+    probedAt: number;
+    latencyMs: number;
+    error: string | null;
+  }
+>();
 
 /* ── Probe Functions ───────────────────────────────────────── */
 
@@ -81,7 +80,7 @@ async function probeConnector(connector: RcmConnector): Promise<ConnectorStateEn
   const now = Date.now();
 
   // Rate-limit probes
-  if (cached && (now - cached.probedAt) < PROBE_COOLDOWN_MS) {
+  if (cached && now - cached.probedAt < PROBE_COOLDOWN_MS) {
     return {
       connectorId: connector.id,
       connectorName: connector.name,
@@ -100,16 +99,16 @@ async function probeConnector(connector: RcmConnector): Promise<ConnectorStateEn
 
     let state: ConnectorHealthState;
     if (result.healthy) {
-      state = latencyMs > DEGRADED_LATENCY_MS ? "degraded" : "connected";
+      state = latencyMs > DEGRADED_LATENCY_MS ? 'degraded' : 'connected';
     } else {
-      state = "disconnected";
+      state = 'disconnected';
     }
 
     probeCache.set(connector.id, {
       state,
       probedAt: Date.now(),
       latencyMs,
-      error: result.healthy ? null : (result.details ?? "Health check returned unhealthy"),
+      error: result.healthy ? null : (result.details ?? 'Health check returned unhealthy'),
     });
 
     return {
@@ -126,7 +125,7 @@ async function probeConnector(connector: RcmConnector): Promise<ConnectorStateEn
     const latencyMs = Date.now() - start;
 
     probeCache.set(connector.id, {
-      state: "disconnected",
+      state: 'disconnected',
       probedAt: Date.now(),
       latencyMs,
       error: errMsg,
@@ -135,14 +134,17 @@ async function probeConnector(connector: RcmConnector): Promise<ConnectorStateEn
     return {
       connectorId: connector.id,
       connectorName: connector.name,
-      state: "disconnected",
+      state: 'disconnected',
       lastProbeAt: new Date().toISOString(),
       lastProbeLatencyMs: latencyMs,
       lastError: errMsg,
       supportedModes: connector.supportedModes,
       pendingTarget: {
         reason: `Connector health check failed: ${errMsg}`,
-        configRequired: [`${connector.id.toUpperCase()}_ENDPOINT`, `${connector.id.toUpperCase()}_API_KEY`],
+        configRequired: [
+          `${connector.id.toUpperCase()}_ENDPOINT`,
+          `${connector.id.toUpperCase()}_API_KEY`,
+        ],
         migrationPath: `Configure ${connector.name} connection parameters in .env.local`,
       },
     };
@@ -153,7 +155,7 @@ async function probeAdapter(adapter: PayerAdapter): Promise<AdapterStateEntry> {
   const cached = probeCache.get(`adapter:${adapter.config.id}`);
   const now = Date.now();
 
-  if (cached && (now - cached.probedAt) < PROBE_COOLDOWN_MS) {
+  if (cached && now - cached.probedAt < PROBE_COOLDOWN_MS) {
     return {
       adapterId: adapter.config.id,
       adapterName: adapter.config.name,
@@ -171,15 +173,15 @@ async function probeAdapter(adapter: PayerAdapter): Promise<AdapterStateEntry> {
     return {
       adapterId: adapter.config.id,
       adapterName: adapter.config.name,
-      state: "disconnected",
+      state: 'disconnected',
       lastProbeAt: new Date().toISOString(),
       lastProbeLatencyMs: 0,
-      lastError: "Adapter disabled",
+      lastError: 'Adapter disabled',
       supportedModes: adapter.config.supportedModes,
       enabled: false,
       rateLimits: adapter.config.rateLimits,
       pendingTarget: {
-        reason: "Adapter is disabled in current configuration",
+        reason: 'Adapter is disabled in current configuration',
         configRequired: adapter.config.requiredEnvVars ?? [],
         migrationPath: `Set environment variables and enable adapter ${adapter.config.id}`,
       },
@@ -193,16 +195,16 @@ async function probeAdapter(adapter: PayerAdapter): Promise<AdapterStateEntry> {
 
     let state: ConnectorHealthState;
     if (result.healthy) {
-      state = latencyMs > DEGRADED_LATENCY_MS ? "degraded" : "connected";
+      state = latencyMs > DEGRADED_LATENCY_MS ? 'degraded' : 'connected';
     } else {
-      state = "disconnected";
+      state = 'disconnected';
     }
 
     probeCache.set(`adapter:${adapter.config.id}`, {
       state,
       probedAt: Date.now(),
       latencyMs,
-      error: result.healthy ? null : (result.details ?? "Unhealthy"),
+      error: result.healthy ? null : (result.details ?? 'Unhealthy'),
     });
 
     return {
@@ -219,7 +221,7 @@ async function probeAdapter(adapter: PayerAdapter): Promise<AdapterStateEntry> {
   } catch (err: unknown) {
     const errMsg = err instanceof Error ? err.message : String(err);
     probeCache.set(`adapter:${adapter.config.id}`, {
-      state: "disconnected",
+      state: 'disconnected',
       probedAt: Date.now(),
       latencyMs: Date.now() - start,
       error: errMsg,
@@ -228,7 +230,7 @@ async function probeAdapter(adapter: PayerAdapter): Promise<AdapterStateEntry> {
     return {
       adapterId: adapter.config.id,
       adapterName: adapter.config.name,
-      state: "disconnected",
+      state: 'disconnected',
       lastProbeAt: new Date().toISOString(),
       lastProbeLatencyMs: Date.now() - start,
       lastError: errMsg,
@@ -257,15 +259,15 @@ export async function getAllConnectorStates(): Promise<ConnectorStateEntry[]> {
   for (const connector of connectors.values()) {
     try {
       entries.push(await probeConnector(connector));
-    } catch (err) {
-      log.warn("Connector probe failed", { connectorId: connector.id });
+    } catch (_err) {
+      log.warn('Connector probe failed', { connectorId: connector.id });
       entries.push({
         connectorId: connector.id,
         connectorName: connector.name,
-        state: "pending",
+        state: 'pending',
         lastProbeAt: null,
         lastProbeLatencyMs: null,
-        lastError: "Probe threw unexpectedly",
+        lastError: 'Probe threw unexpectedly',
         supportedModes: connector.supportedModes,
       });
     }
@@ -284,15 +286,15 @@ export async function getAllAdapterStates(): Promise<AdapterStateEntry[]> {
   for (const adapter of adapters.values()) {
     try {
       entries.push(await probeAdapter(adapter));
-    } catch (err) {
-      log.warn("Adapter probe failed", { adapterId: adapter.config.id });
+    } catch (_err) {
+      log.warn('Adapter probe failed', { adapterId: adapter.config.id });
       entries.push({
         adapterId: adapter.config.id,
         adapterName: adapter.config.name,
-        state: "pending",
+        state: 'pending',
         lastProbeAt: null,
         lastProbeLatencyMs: null,
-        lastError: "Probe threw unexpectedly",
+        lastError: 'Probe threw unexpectedly',
         supportedModes: adapter.config.supportedModes,
         enabled: adapter.config.enabled,
         rateLimits: adapter.config.rateLimits,
@@ -340,8 +342,8 @@ export async function getConnectorStateSummary(): Promise<{
       disconnected: connectorCounts.disconnected,
       pending: connectorCounts.pending,
       totalAdapters: adapters.length,
-      adaptersEnabled: adapters.filter(a => a.enabled).length,
-      adaptersHealthy: adapters.filter(a => a.state === "connected").length,
+      adaptersEnabled: adapters.filter((a) => a.enabled).length,
+      adaptersHealthy: adapters.filter((a) => a.state === 'connected').length,
     },
   };
 }

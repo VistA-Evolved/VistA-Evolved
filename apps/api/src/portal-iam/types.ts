@@ -43,7 +43,7 @@ export interface PortalUser {
   lastLoginAt: string | null;
 }
 
-export type PortalUserStatus = "active" | "locked" | "disabled" | "pending_verification";
+export type PortalUserStatus = 'active' | 'locked' | 'disabled' | 'pending_verification';
 
 /* ------------------------------------------------------------------ */
 /* Patient Profile Mapping                                              */
@@ -60,7 +60,7 @@ export interface PatientProfile {
   /** Whether this is the user's own record */
   isSelf: boolean;
   /** Access level granted */
-  accessLevel: "full" | "read_only" | "limited";
+  accessLevel: 'full' | 'read_only' | 'limited';
   /** When the mapping was established */
   enrolledAt: string;
   /** Verification status */
@@ -68,13 +68,13 @@ export interface PatientProfile {
 }
 
 export type PatientRelationship =
-  | "self"
-  | "parent"
-  | "guardian"
-  | "spouse"
-  | "caregiver"
-  | "legal_representative"
-  | "power_of_attorney";
+  | 'self'
+  | 'parent'
+  | 'guardian'
+  | 'spouse'
+  | 'caregiver'
+  | 'legal_representative'
+  | 'power_of_attorney';
 
 /* ------------------------------------------------------------------ */
 /* Proxy Invitation                                                     */
@@ -91,7 +91,7 @@ export interface ProxyInvitation {
   /** Desired relationship */
   relationship: PatientRelationship;
   /** Desired access level */
-  requestedAccessLevel: "full" | "read_only" | "limited";
+  requestedAccessLevel: 'full' | 'read_only' | 'limited';
   /** Invitation status */
   status: InvitationStatus;
   /** Reason/justification for proxy request */
@@ -108,7 +108,13 @@ export interface ProxyInvitation {
   expiresAt: string;
 }
 
-export type InvitationStatus = "pending" | "accepted" | "declined" | "expired" | "cancelled" | "blocked_by_policy";
+export type InvitationStatus =
+  | 'pending'
+  | 'accepted'
+  | 'declined'
+  | 'expired'
+  | 'cancelled'
+  | 'blocked_by_policy';
 
 export interface PolicyResult {
   allowed: boolean;
@@ -127,7 +133,7 @@ export interface DeviceSession {
   /** Session token (only stored hashed in device record) */
   tokenHash: string;
   /** Device info */
-  deviceType: "browser" | "mobile" | "tablet" | "unknown";
+  deviceType: 'browser' | 'mobile' | 'tablet' | 'unknown';
   /** User agent string (truncated) */
   userAgent: string;
   /** IP address (anonymized in production) */
@@ -167,27 +173,27 @@ export interface AccessLogEntry {
 }
 
 export type AccessLogEventType =
-  | "sign_in"
-  | "sign_out"
-  | "session_expired"
-  | "view_record_section"
-  | "export_record"
-  | "share_code_create"
-  | "share_code_redeem"
-  | "proxy_switch"
-  | "message_send"
-  | "message_read"
-  | "refill_request"
-  | "appointment_request"
-  | "appointment_cancel"
-  | "intake_start"
-  | "intake_submit"
-  | "password_change"
-  | "mfa_setup"
-  | "mfa_verify"
-  | "profile_update"
-  | "proxy_invitation_sent"
-  | "proxy_invitation_response";
+  | 'sign_in'
+  | 'sign_out'
+  | 'session_expired'
+  | 'view_record_section'
+  | 'export_record'
+  | 'share_code_create'
+  | 'share_code_redeem'
+  | 'proxy_switch'
+  | 'message_send'
+  | 'message_read'
+  | 'refill_request'
+  | 'appointment_request'
+  | 'appointment_cancel'
+  | 'intake_start'
+  | 'intake_submit'
+  | 'password_change'
+  | 'mfa_setup'
+  | 'mfa_verify'
+  | 'profile_update'
+  | 'proxy_invitation_sent'
+  | 'proxy_invitation_response';
 
 /* ------------------------------------------------------------------ */
 /* Auth Request/Response Shapes                                         */

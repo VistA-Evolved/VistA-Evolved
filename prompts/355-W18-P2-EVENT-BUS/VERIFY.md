@@ -1,6 +1,7 @@
 # Phase 355 — W18-P2: VERIFY
 
 ## Gates
+
 1. Event bus service file exists
 2. 5 event types defined
 3. Event schema has all required fields

@@ -9,22 +9,23 @@
  *   node scripts/clinical/clinical-readiness-scan.mjs [--json] [--domain <domain>]
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const ROOT = join(__dirname, "..", "..");
+const ROOT = join(__dirname, '..', '..');
 
 // ── Parse store-policy.ts ──────────────────────────────────────────
 
 function parseStorePolicy() {
-  const raw = readFileSync(join(ROOT, "apps/api/src/platform/store-policy.ts"), "utf-8");
+  const raw = readFileSync(join(ROOT, 'apps/api/src/platform/store-policy.ts'), 'utf-8');
 
   const stores = [];
   // Match store entry objects: { id: "...", file: "...", ... }
-  const entryRe = /\{\s*\n\s*id:\s*"([^"]+)",\s*\n\s*file:\s*"([^"]+)",\s*\n\s*variable:\s*"([^"]+)",\s*\n\s*description:\s*"([^"]*)",\s*\n\s*classification:\s*"([^"]+)"/gs;
+  const entryRe =
+    /\{\s*\n\s*id:\s*"([^"]+)",\s*\n\s*file:\s*"([^"]+)",\s*\n\s*variable:\s*"([^"]+)",\s*\n\s*description:\s*"([^"]*)",\s*\n\s*classification:\s*"([^"]+)"/gs;
 
   let m;
   while ((m = entryRe.exec(raw)) !== null) {
@@ -33,28 +34,37 @@ function parseStorePolicy() {
     // Extract durability
     const durRe = new RegExp(
       `id:\\s*"${id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[\\s\\S]*?durability:\\s*"([^"]+)"`,
-      "m"
+      'm'
     );
     const durMatch = raw.match(durRe);
-    const durability = durMatch ? durMatch[1] : "unknown";
+    const durability = durMatch ? durMatch[1] : 'unknown';
 
     // Extract migration target
     const migRe = new RegExp(
       `id:\\s*"${id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[\\s\\S]*?migrationTarget:\\s*"([^"]*)"`,
-      "m"
+      'm'
     );
     const migMatch = raw.match(migRe);
-    const migrationTarget = migMatch ? migMatch[1] : "";
+    const migrationTarget = migMatch ? migMatch[1] : '';
 
     // Extract domain
     const domRe = new RegExp(
       `id:\\s*"${id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[\\s\\S]*?domain:\\s*"([^"]*)"`,
-      "m"
+      'm'
     );
     const domMatch = raw.match(domRe);
-    const domain = domMatch ? domMatch[1] : "unknown";
+    const domain = domMatch ? domMatch[1] : 'unknown';
 
-    stores.push({ id, file, variable, description, classification, durability, migrationTarget, domain });
+    stores.push({
+      id,
+      file,
+      variable,
+      description,
+      classification,
+      durability,
+      migrationTarget,
+      domain,
+    });
   }
 
   return stores;
@@ -64,7 +74,7 @@ function parseStorePolicy() {
 
 function parseRpcRegistry() {
   try {
-    const raw = readFileSync(join(ROOT, "apps/api/src/vista/rpcRegistry.ts"), "utf-8");
+    const raw = readFileSync(join(ROOT, 'apps/api/src/vista/rpcRegistry.ts'), 'utf-8');
     const rpcs = [];
     const rpcRe = /["']([A-Z][A-Z0-9 ]+)["']\s*:\s*\{/g;
     let m;
@@ -82,18 +92,50 @@ function parseRpcRegistry() {
 function getVistaAlignment(domain) {
   const alignmentMap = {
     clinical: {
-      edis: { rpc: "EDIS RPCs", status: "integration_pending", note: "VistA EDIS (Emergency Department Integration Software) not available in sandbox" },
-      surgery: { rpc: "SRS RPCs", status: "integration_pending", note: "VistA Surgery package File 130, 131.7" },
-      icu: { rpc: "GMRV VITALS RPCs", status: "partial", note: "GMRV MARK VITALS available; ICU-specific flowsheet RPCs limited" },
+      edis: {
+        rpc: 'EDIS RPCs',
+        status: 'integration_pending',
+        note: 'VistA EDIS (Emergency Department Integration Software) not available in sandbox',
+      },
+      surgery: {
+        rpc: 'SRS RPCs',
+        status: 'integration_pending',
+        note: 'VistA Surgery package File 130, 131.7',
+      },
+      icu: {
+        rpc: 'GMRV VITALS RPCs',
+        status: 'partial',
+        note: 'GMRV MARK VITALS available; ICU-specific flowsheet RPCs limited',
+      },
     },
     devices: {
-      equipment: { rpc: "Equipment File 6914", status: "integration_pending", note: "VistA Equipment file not populated in sandbox" },
-      vitals: { rpc: "GMRC SAVE VITALS", status: "integration_pending", note: "Target for device observation writeback" },
+      equipment: {
+        rpc: 'Equipment File 6914',
+        status: 'integration_pending',
+        note: 'VistA Equipment file not populated in sandbox',
+      },
+      vitals: {
+        rpc: 'GMRC SAVE VITALS',
+        status: 'integration_pending',
+        note: 'Target for device observation writeback',
+      },
     },
     radiology: {
-      orders: { rpc: "ORWDXR NEW ORDER", status: "integration_pending", note: "Radiology order placement via CPRS" },
-      reports: { rpc: "TIU CREATE RECORD", status: "available", note: "TIU note creation available for rad reports" },
-      accession: { rpc: "RA ASSIGN ACC#", status: "integration_pending", note: "Native accession number generator" },
+      orders: {
+        rpc: 'ORWDXR NEW ORDER',
+        status: 'integration_pending',
+        note: 'Radiology order placement via CPRS',
+      },
+      reports: {
+        rpc: 'TIU CREATE RECORD',
+        status: 'available',
+        note: 'TIU note creation available for rad reports',
+      },
+      accession: {
+        rpc: 'RA ASSIGN ACC#',
+        status: 'integration_pending',
+        note: 'Native accession number generator',
+      },
     },
   };
 
@@ -103,32 +145,32 @@ function getVistaAlignment(domain) {
 // ── Classify stores into domains ───────────────────────────────────
 
 function classifyStore(store) {
-  if (store.file.startsWith("service-lines/ed/")) return "ed";
-  if (store.file.startsWith("service-lines/or/")) return "or";
-  if (store.file.startsWith("service-lines/icu/")) return "icu";
-  if (store.file.startsWith("devices/")) return "devices";
-  if (store.file.startsWith("radiology/")) return "radiology";
-  return "other";
+  if (store.file.startsWith('service-lines/ed/')) return 'ed';
+  if (store.file.startsWith('service-lines/or/')) return 'or';
+  if (store.file.startsWith('service-lines/icu/')) return 'icu';
+  if (store.file.startsWith('devices/')) return 'devices';
+  if (store.file.startsWith('radiology/')) return 'radiology';
+  return 'other';
 }
 
 // ── Main ───────────────────────────────────────────────────────────
 
 const args = process.argv.slice(2);
-const jsonMode = args.includes("--json");
-const domainFilter = args.includes("--domain") ? args[args.indexOf("--domain") + 1] : null;
+const jsonMode = args.includes('--json');
+const domainFilter = args.includes('--domain') ? args[args.indexOf('--domain') + 1] : null;
 
 const allStores = parseStorePolicy();
 const rpcs = parseRpcRegistry();
 
 // Filter to service-line/device/radiology stores
-const targetDomains = ["ed", "or", "icu", "devices", "radiology"];
-let targetStores = allStores.filter(s => {
+const targetDomains = ['ed', 'or', 'icu', 'devices', 'radiology'];
+let targetStores = allStores.filter((s) => {
   const d = classifyStore(s);
   return targetDomains.includes(d);
 });
 
 if (domainFilter) {
-  targetStores = targetStores.filter(s => classifyStore(s) === domainFilter);
+  targetStores = targetStores.filter((s) => classifyStore(s) === domainFilter);
 }
 
 // Build scan result
@@ -146,9 +188,9 @@ const scanResult = {
   },
   domains: {},
   vistaAlignment: {
-    clinical: getVistaAlignment("clinical"),
-    devices: getVistaAlignment("devices"),
-    radiology: getVistaAlignment("radiology"),
+    clinical: getVistaAlignment('clinical'),
+    devices: getVistaAlignment('devices'),
+    radiology: getVistaAlignment('radiology'),
   },
   rpcRegistryCount: rpcs.length,
   gaps: [],
@@ -156,33 +198,33 @@ const scanResult = {
 
 for (const store of targetStores) {
   const domain = classifyStore(store);
-  const key = `${store.classification}_${store.durability}`.replace(/ /g, "_");
+  const key = `${store.classification}_${store.durability}`.replace(/ /g, '_');
 
-  if (store.classification === "critical" && store.durability === "in_memory_only") {
+  if (store.classification === 'critical' && store.durability === 'in_memory_only') {
     scanResult.summary.critical_in_memory++;
     scanResult.gaps.push({
       storeId: store.id,
-      severity: "HIGH",
-      reason: "Critical store with no PG backing - data lost on restart",
+      severity: 'HIGH',
+      reason: 'Critical store with no PG backing - data lost on restart',
       migrationTarget: store.migrationTarget,
     });
-  } else if (store.classification === "critical" && store.durability === "pg_backed") {
+  } else if (store.classification === 'critical' && store.durability === 'pg_backed') {
     scanResult.summary.critical_pg_backed++;
-  } else if (store.classification === "operational") {
+  } else if (store.classification === 'operational') {
     scanResult.summary.operational_in_memory++;
-  } else if (store.classification === "clinical_data") {
+  } else if (store.classification === 'clinical_data') {
     scanResult.summary.clinical_in_memory++;
     scanResult.gaps.push({
       storeId: store.id,
-      severity: "MEDIUM",
-      reason: "Clinical data store with no PG backing",
+      severity: 'MEDIUM',
+      reason: 'Clinical data store with no PG backing',
       migrationTarget: store.migrationTarget,
     });
-  } else if (store.classification === "cache") {
+  } else if (store.classification === 'cache') {
     scanResult.summary.cache_in_memory++;
-  } else if (store.classification === "registry") {
+  } else if (store.classification === 'registry') {
     scanResult.summary.registry_in_memory++;
-  } else if (store.classification === "audit") {
+  } else if (store.classification === 'audit') {
     scanResult.summary.audit_in_memory++;
   }
 
@@ -198,7 +240,10 @@ for (const store of targetStores) {
     migrationTarget: store.migrationTarget,
   });
   scanResult.domains[domain].storeCount++;
-  if (store.durability === "in_memory_only" && (store.classification === "critical" || store.classification === "clinical_data")) {
+  if (
+    store.durability === 'in_memory_only' &&
+    (store.classification === 'critical' || store.classification === 'clinical_data')
+  ) {
     scanResult.domains[domain].gapCount++;
   }
 }
@@ -208,11 +253,13 @@ for (const store of targetStores) {
 if (jsonMode) {
   process.stdout.write(JSON.stringify(scanResult, null, 2));
 } else {
-  console.log("=== Clinical Readiness Scan Matrix (Phase 522, W38-C1) ===\n");
-  console.log(`Scanned: ${scanResult.totalStoresScanned} stores across ${Object.keys(scanResult.domains).length} domains`);
+  console.log('=== Clinical Readiness Scan Matrix (Phase 522, W38-C1) ===\n');
+  console.log(
+    `Scanned: ${scanResult.totalStoresScanned} stores across ${Object.keys(scanResult.domains).length} domains`
+  );
   console.log(`RPC Registry: ${scanResult.rpcRegistryCount} registered RPCs\n`);
 
-  console.log("--- Summary ---");
+  console.log('--- Summary ---');
   console.log(`  Critical (in-memory):    ${scanResult.summary.critical_in_memory} -- HIGH RISK`);
   console.log(`  Critical (PG-backed):    ${scanResult.summary.critical_pg_backed}`);
   console.log(`  Clinical (in-memory):    ${scanResult.summary.clinical_in_memory} -- MEDIUM RISK`);
@@ -223,17 +270,21 @@ if (jsonMode) {
   console.log();
 
   for (const [domain, info] of Object.entries(scanResult.domains)) {
-    console.log(`--- ${domain.toUpperCase()} (${info.storeCount} stores, ${info.gapCount} gaps) ---`);
+    console.log(
+      `--- ${domain.toUpperCase()} (${info.storeCount} stores, ${info.gapCount} gaps) ---`
+    );
     for (const s of info.stores) {
-      const flag = s.durability === "in_memory_only" && (s.classification === "critical" || s.classification === "clinical_data")
-        ? " *** GAP ***"
-        : "";
+      const flag =
+        s.durability === 'in_memory_only' &&
+        (s.classification === 'critical' || s.classification === 'clinical_data')
+          ? ' *** GAP ***'
+          : '';
       console.log(`  ${s.id}: ${s.classification} / ${s.durability}${flag}`);
     }
     console.log();
   }
 
-  console.log("--- VistA Alignment ---");
+  console.log('--- VistA Alignment ---');
   for (const [domain, alignment] of Object.entries(scanResult.vistaAlignment)) {
     console.log(`  ${domain}:`);
     for (const [key, info] of Object.entries(alignment)) {
@@ -251,11 +302,11 @@ if (jsonMode) {
 }
 
 // Write evidence JSON
-const evidenceDir = join(ROOT, "artifacts", "wave-38");
+const evidenceDir = join(ROOT, 'artifacts', 'wave-38');
 try {
   mkdirSync(evidenceDir, { recursive: true });
   writeFileSync(
-    join(evidenceDir, "clinical-readiness-scan.json"),
+    join(evidenceDir, 'clinical-readiness-scan.json'),
     JSON.stringify(scanResult, null, 2)
   );
   if (!jsonMode) {

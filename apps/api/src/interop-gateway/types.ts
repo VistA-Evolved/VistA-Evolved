@@ -8,14 +8,22 @@
 
 // ─── Channel Configuration ─────────────────────────────────
 
-export type ChannelDirection = "inbound" | "outbound" | "bidirectional";
-export type ChannelProtocol = "fhir-rest" | "hl7v2-mllp" | "hl7v2-http" | "xds-soap" | "sftp" | "s3" | "webhook" | "openhim";
-export type ChannelStatus = "active" | "paused" | "error" | "disabled";
+export type ChannelDirection = 'inbound' | 'outbound' | 'bidirectional';
+export type ChannelProtocol =
+  | 'fhir-rest'
+  | 'hl7v2-mllp'
+  | 'hl7v2-http'
+  | 'xds-soap'
+  | 'sftp'
+  | 's3'
+  | 'webhook'
+  | 'openhim';
+export type ChannelStatus = 'active' | 'paused' | 'error' | 'disabled';
 
 export interface ChannelEndpoint {
   url: string;
   protocol: ChannelProtocol;
-  authType: "none" | "basic" | "bearer" | "mtls" | "apikey";
+  authType: 'none' | 'basic' | 'bearer' | 'mtls' | 'apikey';
   headers?: Record<string, string>;
   tlsCertId?: string | null;
 }
@@ -38,15 +46,15 @@ export interface GatewayChannel {
 // ─── Transform Pipeline ────────────────────────────────────
 
 export type TransformType =
-  | "hl7v2-to-fhir"
-  | "fhir-to-hl7v2"
-  | "csv-to-fhir"
-  | "fhir-to-cda"
-  | "cda-to-fhir"
-  | "fhir-to-xds"
-  | "xds-to-fhir"
-  | "passthrough"
-  | "custom";
+  | 'hl7v2-to-fhir'
+  | 'fhir-to-hl7v2'
+  | 'csv-to-fhir'
+  | 'fhir-to-cda'
+  | 'cda-to-fhir'
+  | 'fhir-to-xds'
+  | 'xds-to-fhir'
+  | 'passthrough'
+  | 'custom';
 
 export interface TransformStep {
   order: number;
@@ -66,7 +74,7 @@ export interface TransformPipeline {
 
 // ─── Transaction Audit ─────────────────────────────────────
 
-export type TransactionStatus = "pending" | "processing" | "completed" | "failed" | "rejected";
+export type TransactionStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'rejected';
 
 export interface GatewayTransaction {
   id: string;
@@ -86,7 +94,7 @@ export interface GatewayTransaction {
 
 // ─── Mediator ──────────────────────────────────────────────
 
-export type MediatorType = "internal" | "openhim";
+export type MediatorType = 'internal' | 'openhim';
 
 export interface MediatorConfig {
   id: string;

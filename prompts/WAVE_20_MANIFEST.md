@@ -7,24 +7,24 @@
 
 ## Phase Map
 
-| Wave Phase | Resolved ID | Title | Prompt Folder |
-|------------|-------------|-------|---------------|
-| W20-P1 | 370 | Reservation + Manifest + GA Checklist | `370-W20-P1-MANIFEST-GA-CHECKLIST` |
-| W20-P2 | 371 | Release Train Governance | `371-W20-P2-RELEASE-TRAIN` |
-| W20-P3 | 372 | Customer Success Tooling | `372-W20-P3-CUSTOMER-SUCCESS` |
-| W20-P4 | 373 | Support Ops Automation | `373-W20-P4-SUPPORT-OPS` |
-| W20-P5 | 374 | External Validation Harness | `374-W20-P5-EXTERNAL-VALIDATION` |
-| W20-P6 | 375 | Data Rights Operations | `375-W20-P6-DATA-RIGHTS` |
-| W20-P7 | 376 | GA Certification Runner | `376-W20-P7-GA-CERT-RUNNER` |
-| W20-P8 | 377 | GA Evidence Bundle + Trust Center | `377-W20-P8-TRUST-CENTER` |
+| Wave Phase | Resolved ID | Title                                 | Prompt Folder                      |
+| ---------- | ----------- | ------------------------------------- | ---------------------------------- |
+| W20-P1     | 370         | Reservation + Manifest + GA Checklist | `370-W20-P1-MANIFEST-GA-CHECKLIST` |
+| W20-P2     | 371         | Release Train Governance              | `371-W20-P2-RELEASE-TRAIN`         |
+| W20-P3     | 372         | Customer Success Tooling              | `372-W20-P3-CUSTOMER-SUCCESS`      |
+| W20-P4     | 373         | Support Ops Automation                | `373-W20-P4-SUPPORT-OPS`           |
+| W20-P5     | 374         | External Validation Harness           | `374-W20-P5-EXTERNAL-VALIDATION`   |
+| W20-P6     | 375         | Data Rights Operations                | `375-W20-P6-DATA-RIGHTS`           |
+| W20-P7     | 376         | GA Certification Runner               | `376-W20-P7-GA-CERT-RUNNER`        |
+| W20-P8     | 377         | GA Evidence Bundle + Trust Center     | `377-W20-P8-TRUST-CENTER`          |
 
 ## ADR Index
 
-| ADR | Path |
-|-----|------|
-| GA Readiness Model | `docs/decisions/ADR-GA-READINESS-MODEL.md` |
+| ADR                      | Path                                             |
+| ------------------------ | ------------------------------------------------ |
+| GA Readiness Model       | `docs/decisions/ADR-GA-READINESS-MODEL.md`       |
 | Release Train Governance | `docs/decisions/ADR-RELEASE-TRAIN-GOVERNANCE.md` |
-| Data Rights Operations | `docs/decisions/ADR-DATA-RIGHTS-OPERATIONS.md` |
+| Data Rights Operations   | `docs/decisions/ADR-DATA-RIGHTS-OPERATIONS.md`   |
 
 ## Dependencies & Run Order
 

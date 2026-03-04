@@ -12,26 +12,29 @@ VistA-Evolved exchanges X12 files with payers and clearinghouses via multiple tr
 
 ### Transport Protocols
 
-| Protocol | Use Case | Prevalence |
-|----------|----------|------------|
-| **SFTP** | Batch file exchange (837 submit, 835 retrieve) | Most common US clearinghouse pattern |
-| **HTTPS REST API** | Real-time eligibility (270/271), modern clearinghouses (Stedi, Availity) | Growing rapidly |
-| **AS2** | EDI exchange with MDN receipts | Legacy, declining (Walmart-era) |
-| **Direct MLLP** | HL7v2 point-to-point (not X12) | Handled by HL7 engine |
+| Protocol           | Use Case                                                                 | Prevalence                           |
+| ------------------ | ------------------------------------------------------------------------ | ------------------------------------ |
+| **SFTP**           | Batch file exchange (837 submit, 835 retrieve)                           | Most common US clearinghouse pattern |
+| **HTTPS REST API** | Real-time eligibility (270/271), modern clearinghouses (Stedi, Availity) | Growing rapidly                      |
+| **AS2**            | EDI exchange with MDN receipts                                           | Legacy, declining (Walmart-era)      |
+| **Direct MLLP**    | HL7v2 point-to-point (not X12)                                           | Handled by HL7 engine                |
 
 ### Implementation Options
 
 #### Option A: ssh2 (npm) for SFTP
+
 - **License:** MIT
 - **Pros:** Pure JS, no native deps, well-maintained (9M weekly downloads), supports password + key auth
 - **Cons:** We own retry/circuit-breaker logic
 
 #### Option B: as2-lib (npm) for AS2
+
 - **License:** Apache 2.0
 - **Pros:** Standards-compliant, MDN handling
 - **Cons:** Very niche, low download count, AS2 is declining
 
 #### Option C: Custom HTTPS Adapters (Current Pattern)
+
 - **License:** Project-owned
 - **Pros:** Already have adapter scaffolds for Availity, Stedi, Office Ally, PhilHealth, etc.
 - **Cons:** Each adapter is independent — no shared HTTP transport layer
@@ -41,6 +44,7 @@ VistA-Evolved exchanges X12 files with payers and clearinghouses via multiple tr
 **Implement SFTP + HTTPS adapters; stub AS2 with documentation.**
 
 Rationale:
+
 1. **SFTP** (via `ssh2` npm package) is the highest-priority transport — most US clearinghouses (Office Ally, Change Healthcare, Availity batch) use SFTP for 837/835 exchange.
 2. **HTTPS REST** adapters already exist as scaffolds — harden with shared retry/auth patterns.
 3. **AS2** is legacy and declining. Stub the interface with a clear migration path documented in the runbook. Implement only if a specific customer requires it.

@@ -19,15 +19,15 @@
  * - Participants tracked by role, not by DFN
  */
 
-import { randomBytes } from "node:crypto";
+import { randomBytes } from 'node:crypto';
 import type {
   TelehealthRoom,
   RoomStatus,
   WaitingRoomState,
   WaitingRoomStatus,
   ParticipantRole,
-} from "./types.js";
-import { log } from "../lib/logger.js";
+} from './types.js';
+import { log } from '../lib/logger.js';
 
 /** Log DB persistence failures at warn level instead of silently swallowing. */
 function dbWarn(op: string, err: unknown): void {
@@ -90,27 +90,31 @@ function participantsToJson(p: Map<string, { role: ParticipantRole; joinedAt: st
   return JSON.stringify(obj);
 }
 
-function jsonToParticipants(json: string): Map<string, { role: ParticipantRole; joinedAt: string }> {
+function jsonToParticipants(
+  json: string
+): Map<string, { role: ParticipantRole; joinedAt: string }> {
   const m = new Map<string, { role: ParticipantRole; joinedAt: string }>();
   try {
-    const obj = JSON.parse(json || "{}");
+    const obj = JSON.parse(json || '{}');
     for (const [k, v] of Object.entries(obj)) {
       m.set(k, v as { role: ParticipantRole; joinedAt: string });
     }
-  } catch (e) { dbWarn("persist", e); }
+  } catch (e) {
+    dbWarn('persist', e);
+  }
   return m;
 }
 
 function rowToEntry(row: any): RoomEntry {
   return {
     roomId: row.id,
-    appointmentId: row.appointmentId ?? "",
+    appointmentId: row.appointmentId ?? '',
     status: row.roomStatus as RoomStatus,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
     expiresAt: row.expiresAt,
     participants: jsonToParticipants(row.participantsJson),
-    accessToken: row.accessToken ?? "",
+    accessToken: row.accessToken ?? '',
     // Extra DB fields available for future queries:
     // patientDfn: row.patientDfn, providerDuz: row.providerDuz,
     // providerName: row.providerName, meetingUrl: row.meetingUrl,
@@ -125,8 +129,14 @@ async function getEntry(roomId: string): Promise<RoomEntry | null> {
   if (_repo) {
     try {
       const row = await Promise.resolve(_repo.findRoomById(roomId));
-      if (row) { const e = rowToEntry(row); rooms.set(roomId, e); return e; }
-    } catch (e) { dbWarn("persist", e); }
+      if (row) {
+        const e = rowToEntry(row);
+        rooms.set(roomId, e);
+        return e;
+      }
+    } catch (e) {
+      dbWarn('persist', e);
+    }
   }
   return null;
 }
@@ -134,12 +144,14 @@ async function getEntry(roomId: string): Promise<RoomEntry | null> {
 function persistEntry(entry: RoomEntry): void {
   rooms.set(entry.roomId, entry);
   if (_repo) {
-    Promise.resolve(_repo.updateRoom(entry.roomId, {
-      roomStatus: entry.status,
-      participantsJson: participantsToJson(entry.participants),
-      actualStart: entry.status === "active" ? new Date().toISOString() : undefined,
-      actualEnd: entry.status === "ended" ? new Date().toISOString() : undefined,
-    })).catch(e => dbWarn("persist", e));
+    Promise.resolve(
+      _repo.updateRoom(entry.roomId, {
+        roomStatus: entry.status,
+        participantsJson: participantsToJson(entry.participants),
+        actualStart: entry.status === 'active' ? new Date().toISOString() : undefined,
+        actualEnd: entry.status === 'ended' ? new Date().toISOString() : undefined,
+      })
+    ).catch((e) => dbWarn('persist', e));
   }
 }
 
@@ -150,13 +162,13 @@ function persistEntry(entry: RoomEntry): void {
 export function createRoom(appointmentId: string, roomId: string): TelehealthRoom {
   if (rooms.size >= MAX_ROOMS) {
     for (const [id, room] of rooms) {
-      if (room.status === "ended") {
+      if (room.status === 'ended') {
         rooms.delete(id);
         if (rooms.size < MAX_ROOMS) break;
       }
     }
     if (rooms.size >= MAX_ROOMS) {
-      throw new Error("Maximum concurrent telehealth rooms reached");
+      throw new Error('Maximum concurrent telehealth rooms reached');
     }
   }
 
@@ -164,28 +176,30 @@ export function createRoom(appointmentId: string, roomId: string): TelehealthRoo
   const entry: RoomEntry = {
     roomId,
     appointmentId,
-    status: "created",
+    status: 'created',
     createdAt: now,
     updatedAt: now,
     expiresAt: new Date(Date.now() + MAX_ROOM_TTL_MS).toISOString(),
     participants: new Map(),
-    accessToken: randomBytes(24).toString("hex"),
+    accessToken: randomBytes(24).toString('hex'),
   };
 
   rooms.set(roomId, entry);
   if (_repo) {
-    Promise.resolve(_repo.insertRoom({
-      id: roomId,
-      appointmentId,
-      patientDfn: "",
-      providerDuz: "",
-      roomStatus: "created",
-      accessToken: entry.accessToken,
-      expiresAt: entry.expiresAt,
-      scheduledStart: now,
-    })).catch(e => dbWarn("persist", e));
+    Promise.resolve(
+      _repo.insertRoom({
+        id: roomId,
+        appointmentId,
+        patientDfn: '',
+        providerDuz: '',
+        roomStatus: 'created',
+        accessToken: entry.accessToken,
+        expiresAt: entry.expiresAt,
+        scheduledStart: now,
+      })
+    ).catch((e) => dbWarn('persist', e));
   }
-  log.info("Telehealth room created", { roomId, appointmentId });
+  log.info('Telehealth room created', { roomId, appointmentId });
   return toPublicRoom(entry);
 }
 
@@ -202,8 +216,11 @@ export async function getRoom(roomId: string): Promise<TelehealthRoom | null> {
 export async function getRoomByAppointment(appointmentId: string): Promise<TelehealthRoom | null> {
   // Check cache first
   for (const entry of rooms.values()) {
-    if (entry.appointmentId === appointmentId && entry.status !== "ended") {
-      if (isExpired(entry)) { expireRoom(entry); continue; }
+    if (entry.appointmentId === appointmentId && entry.status !== 'ended') {
+      if (isExpired(entry)) {
+        expireRoom(entry);
+        continue;
+      }
       return toPublicRoom(entry);
     }
   }
@@ -218,20 +235,28 @@ export async function getRoomByAppointment(appointmentId: string): Promise<Teleh
           return toPublicRoom(e);
         }
       }
-    } catch (e) { dbWarn("persist", e); }
+    } catch (e) {
+      dbWarn('persist', e);
+    }
   }
   return null;
 }
 
-export async function updateRoomStatus(roomId: string, status: RoomStatus): Promise<TelehealthRoom | null> {
+export async function updateRoomStatus(
+  roomId: string,
+  status: RoomStatus
+): Promise<TelehealthRoom | null> {
   const entry = await getEntry(roomId);
   if (!entry) return null;
-  if (isExpired(entry)) { expireRoom(entry); return null; }
+  if (isExpired(entry)) {
+    expireRoom(entry);
+    return null;
+  }
 
   entry.status = status;
   entry.updatedAt = new Date().toISOString();
   persistEntry(entry);
-  log.info("Telehealth room status updated", { roomId, status });
+  log.info('Telehealth room status updated', { roomId, status });
   return toPublicRoom(entry);
 }
 
@@ -247,27 +272,27 @@ export async function joinRoom(
   entry.participants.set(participantId, { role, joinedAt: now });
   entry.updatedAt = now;
 
-  const hasPatient = [...entry.participants.values()].some((p) => p.role === "patient");
-  const hasProvider = [...entry.participants.values()].some((p) => p.role === "provider");
+  const hasPatient = [...entry.participants.values()].some((p) => p.role === 'patient');
+  const hasProvider = [...entry.participants.values()].some((p) => p.role === 'provider');
 
   if (hasPatient && hasProvider) {
-    entry.status = "active";
+    entry.status = 'active';
   } else if (hasPatient || hasProvider) {
-    entry.status = "waiting";
+    entry.status = 'waiting';
   }
 
   persistEntry(entry);
-  log.info("Telehealth room joined", { roomId, role });
+  log.info('Telehealth room joined', { roomId, role });
   return toWaitingState(entry);
 }
 
 export async function endRoom(roomId: string): Promise<TelehealthRoom | null> {
   const entry = await getEntry(roomId);
   if (!entry) return null;
-  entry.status = "ended";
+  entry.status = 'ended';
   entry.updatedAt = new Date().toISOString();
   persistEntry(entry);
-  log.info("Telehealth room ended", { roomId });
+  log.info('Telehealth room ended', { roomId });
   return toPublicRoom(entry);
 }
 
@@ -304,17 +329,24 @@ export async function listActiveRooms(): Promise<TelehealthRoom[]> {
   if (_repo) {
     try {
       const rows = await Promise.resolve(_repo.findActiveRooms());
-      return (Array.isArray(rows) ? rows : []).map((r: any) => {
-        const e = rowToEntry(r);
-        if (isExpired(e)) return null;
-        return toPublicRoom(e);
-      }).filter(Boolean) as TelehealthRoom[];
-    } catch (e) { dbWarn("persist", e); }
+      return (Array.isArray(rows) ? rows : [])
+        .map((r: any) => {
+          const e = rowToEntry(r);
+          if (isExpired(e)) return null;
+          return toPublicRoom(e);
+        })
+        .filter(Boolean) as TelehealthRoom[];
+    } catch (e) {
+      dbWarn('persist', e);
+    }
   }
   const result: TelehealthRoom[] = [];
   for (const entry of rooms.values()) {
-    if (isExpired(entry)) { expireRoom(entry); continue; }
-    if (entry.status !== "ended") result.push(toPublicRoom(entry));
+    if (isExpired(entry)) {
+      expireRoom(entry);
+      continue;
+    }
+    if (entry.status !== 'ended') result.push(toPublicRoom(entry));
   }
   return result;
 }
@@ -326,13 +358,24 @@ export function getRoomStats(): {
   active: number;
   ended: number;
 } {
-  let created = 0, waiting = 0, active = 0, ended = 0;
+  let created = 0,
+    waiting = 0,
+    active = 0,
+    ended = 0;
   for (const entry of rooms.values()) {
     switch (entry.status) {
-      case "created": created++; break;
-      case "waiting": waiting++; break;
-      case "active": active++; break;
-      case "ended": ended++; break;
+      case 'created':
+        created++;
+        break;
+      case 'waiting':
+        waiting++;
+        break;
+      case 'active':
+        active++;
+        break;
+      case 'ended':
+        ended++;
+        break;
     }
   }
   return { total: rooms.size, created, waiting, active, ended };
@@ -347,14 +390,14 @@ function isExpired(entry: RoomEntry): boolean {
 }
 
 function expireRoom(entry: RoomEntry): void {
-  if (entry.status !== "ended") {
-    entry.status = "ended";
+  if (entry.status !== 'ended') {
+    entry.status = 'ended';
     entry.updatedAt = new Date().toISOString();
     rooms.set(entry.roomId, entry);
     if (_repo) {
-      Promise.resolve(_repo.expireRoom(entry.roomId)).catch(e => dbWarn("persist", e));
+      Promise.resolve(_repo.expireRoom(entry.roomId)).catch((e) => dbWarn('persist', e));
     }
-    log.info("Telehealth room expired", { roomId: entry.roomId });
+    log.info('Telehealth room expired', { roomId: entry.roomId });
   }
 }
 
@@ -370,15 +413,15 @@ function toPublicRoom(entry: RoomEntry): TelehealthRoom {
 }
 
 function toWaitingState(entry: RoomEntry): WaitingRoomState {
-  const patientEntry = [...entry.participants.values()].find((p) => p.role === "patient");
-  const providerEntry = [...entry.participants.values()].find((p) => p.role === "provider");
+  const patientEntry = [...entry.participants.values()].find((p) => p.role === 'patient');
+  const providerEntry = [...entry.participants.values()].find((p) => p.role === 'provider');
 
-  let waitingStatus: WaitingRoomStatus = "not_started";
-  if (entry.status === "active") waitingStatus = "in_progress";
-  else if (entry.status === "ended") waitingStatus = "completed";
-  else if (patientEntry && providerEntry) waitingStatus = "in_progress";
-  else if (patientEntry) waitingStatus = "patient_waiting";
-  else if (providerEntry) waitingStatus = "provider_joined";
+  let waitingStatus: WaitingRoomStatus = 'not_started';
+  if (entry.status === 'active') waitingStatus = 'in_progress';
+  else if (entry.status === 'ended') waitingStatus = 'completed';
+  else if (patientEntry && providerEntry) waitingStatus = 'in_progress';
+  else if (patientEntry) waitingStatus = 'patient_waiting';
+  else if (providerEntry) waitingStatus = 'provider_joined';
 
   return {
     roomId: entry.roomId,
@@ -398,24 +441,24 @@ export function startRoomCleanup(): void {
   cleanupTimer = setInterval(() => {
     // DB-side cleanup
     if (_repo) {
-      Promise.resolve(_repo.cleanupExpiredRooms()).catch(e => dbWarn("persist", e));
+      Promise.resolve(_repo.cleanupExpiredRooms()).catch((e) => dbWarn('persist', e));
     }
     // Cache-side cleanup
     let expired = 0;
     for (const entry of rooms.values()) {
-      if (isExpired(entry) && entry.status !== "ended") {
+      if (isExpired(entry) && entry.status !== 'ended') {
         expireRoom(entry);
         expired++;
       }
     }
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
     for (const [id, entry] of rooms) {
-      if (entry.status === "ended" && entry.updatedAt < oneHourAgo) {
+      if (entry.status === 'ended' && entry.updatedAt < oneHourAgo) {
         rooms.delete(id);
       }
     }
     if (expired > 0) {
-      log.info("Telehealth room cleanup", { expired });
+      log.info('Telehealth room cleanup', { expired });
     }
   }, CLEANUP_INTERVAL_MS);
 }

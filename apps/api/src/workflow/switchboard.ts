@@ -6,7 +6,7 @@
  * dashboard view of all active workflows across the system.
  */
 
-import { StateMachine, type TransitionEvent } from "./fsm.js";
+import { StateMachine, type TransitionEvent } from './fsm.js';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -115,7 +115,7 @@ export function recordTransition(
   from: string,
   to: string,
   actor: string,
-  detail?: string,
+  detail?: string
 ): TransitionEvent {
   const reg = registry.get(workflowName);
   if (!reg) {
@@ -142,7 +142,7 @@ export function recordTransition(
  * Get recent transition events, optionally filtered by workflow name.
  */
 export function getRecentEvents(
-  opts: { workflow?: string; limit?: number } = {},
+  opts: { workflow?: string; limit?: number } = {}
 ): TransitionEvent[] {
   const limit = opts.limit ?? 100;
   let events = eventLog;

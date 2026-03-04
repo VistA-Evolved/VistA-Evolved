@@ -7,8 +7,7 @@
  * In-memory for fast access; PG for durability (when wired).
  */
 
-import { randomUUID } from "crypto";
-import { createHash } from "crypto";
+import { randomUUID } from 'crypto';
 import type {
   ClinicalCommand,
   CommandAttempt,
@@ -16,9 +15,9 @@ import type {
   CommandStatus,
   SubmitCommandRequest,
   DryRunTranscript,
-} from "./types.js";
-import { INTENT_DOMAIN_MAP } from "./types.js";
-import { log } from "../lib/logger.js";
+} from './types.js';
+import { INTENT_DOMAIN_MAP } from './types.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* PG write-through repo (wired from lifecycle.ts)                     */
@@ -46,14 +45,14 @@ export function initCommandStoreRepos(repos: {
   _cmdRepo = repos.commandRepo;
   _attemptRepo = repos.attemptRepo;
   _resultRepo = repos.resultRepo;
-  log.info("Command store repos wired to PG (W41-P1)");
+  log.info('Command store repos wired to PG (W41-P1)');
 }
 
 /** Rehydrate in-memory maps from PG on startup. */
 export async function rehydrateCommandStore(tenantId?: string): Promise<number> {
   if (!_cmdRepo) return 0;
   try {
-    const rows = await _cmdRepo.findByTenant(tenantId || "default", { limit: MAX_COMMANDS });
+    const rows = await _cmdRepo.findByTenant(tenantId || 'default', { limit: MAX_COMMANDS });
     let count = 0;
     for (const row of rows) {
       if (!commands.has(row.id)) {
@@ -82,7 +81,7 @@ export async function rehydrateCommandStore(tenantId?: string): Promise<number> 
     log.info(`Command store rehydrated ${count} commands from PG`);
     return count;
   } catch (err: any) {
-    log.warn("Command store rehydration failed", { error: err.message });
+    log.warn('Command store rehydration failed', { error: err.message });
     return 0;
   }
 }
@@ -90,37 +89,42 @@ export async function rehydrateCommandStore(tenantId?: string): Promise<number> 
 /** Fire-and-forget PG persist for a command */
 function persistCommand(cmd: ClinicalCommand): void {
   if (!_cmdRepo) return;
-  void _cmdRepo.upsert({
-    id: cmd.id,
-    tenantId: cmd.tenantId,
-    patientRefHash: cmd.patientRefHash,
-    domain: cmd.domain,
-    intent: cmd.intent,
-    payloadJson: typeof cmd.payloadJson === "string" ? cmd.payloadJson : JSON.stringify(cmd.payloadJson),
-    idempotencyKey: cmd.idempotencyKey,
-    status: cmd.status,
-    createdAt: cmd.createdAt,
-    createdBy: cmd.createdBy,
-    correlationId: cmd.correlationId,
-    attemptCount: cmd.attemptCount,
-    lastError: cmd.lastError || null,
-    dryRunTranscript: cmd.dryRunTranscript ? JSON.stringify(cmd.dryRunTranscript) : null,
-  }).catch((e: any) => log.warn("PG command persist failed", { error: String(e) }));
+  void _cmdRepo
+    .upsert({
+      id: cmd.id,
+      tenantId: cmd.tenantId,
+      patientRefHash: cmd.patientRefHash,
+      domain: cmd.domain,
+      intent: cmd.intent,
+      payloadJson:
+        typeof cmd.payloadJson === 'string' ? cmd.payloadJson : JSON.stringify(cmd.payloadJson),
+      idempotencyKey: cmd.idempotencyKey,
+      status: cmd.status,
+      createdAt: cmd.createdAt,
+      createdBy: cmd.createdBy,
+      correlationId: cmd.correlationId,
+      attemptCount: cmd.attemptCount,
+      lastError: cmd.lastError || null,
+      dryRunTranscript: cmd.dryRunTranscript ? JSON.stringify(cmd.dryRunTranscript) : null,
+    })
+    .catch((e: any) => log.warn('PG command persist failed', { error: String(e) }));
 }
 
 /** Fire-and-forget PG persist for an attempt */
 function persistAttempt(attempt: CommandAttempt): void {
   if (!_attemptRepo) return;
   // PG table: id=SERIAL (omit), no tenant_id, columns: error_class, error_detail_redacted, ended_at
-  void _attemptRepo.insert({
-    commandId: attempt.commandId,
-    attemptNo: attempt.attemptNo,
-    status: attempt.status,
-    errorClass: attempt.errorClass || null,
-    errorDetailRedacted: attempt.errorDetailRedacted || null,
-    startedAt: attempt.startedAt,
-    endedAt: attempt.endedAt || null,
-  }).catch((e: any) => log.warn("PG attempt persist failed", { error: String(e) }));
+  void _attemptRepo
+    .insert({
+      commandId: attempt.commandId,
+      attemptNo: attempt.attemptNo,
+      status: attempt.status,
+      errorClass: attempt.errorClass || null,
+      errorDetailRedacted: attempt.errorDetailRedacted || null,
+      startedAt: attempt.startedAt,
+      endedAt: attempt.endedAt || null,
+    })
+    .catch((e: any) => log.warn('PG attempt persist failed', { error: String(e) }));
 }
 
 /** Fire-and-forget PG persist for a result */
@@ -129,17 +133,25 @@ function persistResult(result: CommandResult): void {
   // PG table PK is command_id (no id column, no tenant_id column).
   // GenericPgRepo.upsert uses ON CONFLICT (id) which won't work here,
   // so we use raw query with ON CONFLICT (command_id).
-  const vistaRefs = typeof result.vistaRefs === "string" ? result.vistaRefs : JSON.stringify(result.vistaRefs || {});
-  const resultSummary = typeof result.resultSummary === "string" ? result.resultSummary : JSON.stringify(result.resultSummary || {});
-  void _resultRepo.query(
-    `INSERT INTO clinical_command_result (command_id, vista_refs, result_summary, completed_at)
+  const vistaRefs =
+    typeof result.vistaRefs === 'string'
+      ? result.vistaRefs
+      : JSON.stringify(result.vistaRefs || {});
+  const resultSummary =
+    typeof result.resultSummary === 'string'
+      ? result.resultSummary
+      : JSON.stringify(result.resultSummary || {});
+  void _resultRepo
+    .query(
+      `INSERT INTO clinical_command_result (command_id, vista_refs, result_summary, completed_at)
      VALUES ($1, $2, $3, NOW())
      ON CONFLICT (command_id) DO UPDATE SET
        vista_refs = EXCLUDED.vista_refs,
        result_summary = EXCLUDED.result_summary,
        completed_at = EXCLUDED.completed_at`,
-    [result.commandId, vistaRefs, resultSummary],
-  ).catch((e: any) => log.warn("PG result persist failed", { error: String(e) }));
+      [result.commandId, vistaRefs, resultSummary]
+    )
+    .catch((e: any) => log.warn('PG result persist failed', { error: String(e) }));
 }
 
 /* ------------------------------------------------------------------ */
@@ -164,8 +176,9 @@ function compositeKey(tenantId: string, idempotencyKey: string): string {
 
 function pruneOldest(): void {
   if (commands.size <= MAX_COMMANDS) return;
-  const sorted = [...commands.entries()]
-    .sort((a, b) => a[1].createdAt.localeCompare(b[1].createdAt));
+  const sorted = [...commands.entries()].sort((a, b) =>
+    a[1].createdAt.localeCompare(b[1].createdAt)
+  );
   for (let i = 0; i < PRUNE_BATCH && i < sorted.length; i++) {
     const [id] = sorted[i];
     commands.delete(id);
@@ -190,9 +203,7 @@ export function createCommand(req: SubmitCommandRequest): {
   // Validate domain matches intent
   const expectedDomain = INTENT_DOMAIN_MAP[req.intent];
   if (expectedDomain !== req.domain) {
-    throw new Error(
-      `Intent ${req.intent} belongs to domain ${expectedDomain}, not ${req.domain}`,
-    );
+    throw new Error(`Intent ${req.intent} belongs to domain ${expectedDomain}, not ${req.domain}`);
   }
 
   // Check idempotency
@@ -218,7 +229,7 @@ export function createCommand(req: SubmitCommandRequest): {
     intent: req.intent,
     payloadJson: req.payload,
     idempotencyKey: req.idempotencyKey,
-    status: "pending",
+    status: 'pending',
     createdAt: new Date().toISOString(),
     createdBy: req.createdBy,
     correlationId: req.correlationId || randomUUID(),
@@ -245,7 +256,7 @@ export function getCommand(id: string): ClinicalCommand | undefined {
 export function updateCommandStatus(
   id: string,
   status: CommandStatus,
-  error?: string,
+  error?: string
 ): ClinicalCommand | undefined {
   const cmd = commands.get(id);
   if (!cmd) return undefined;
@@ -258,14 +269,11 @@ export function updateCommandStatus(
 /**
  * Set the dry-run transcript on a command.
  */
-export function setDryRunTranscript(
-  id: string,
-  transcript: DryRunTranscript,
-): void {
+export function setDryRunTranscript(id: string, transcript: DryRunTranscript): void {
   const cmd = commands.get(id);
   if (cmd) {
     cmd.dryRunTranscript = transcript;
-    cmd.status = "dry_run";
+    cmd.status = 'dry_run';
     persistCommand(cmd);
   }
 }

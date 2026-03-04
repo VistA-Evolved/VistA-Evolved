@@ -14,6 +14,7 @@
 ## Existing Infrastructure Inventory
 
 ### Auth/Policy (extends in W16-P2, P3, P4)
+
 - `auth/policy-engine.ts` -- RBAC with ~40 action mappings, admin superuser bypass
 - `auth/session-store.ts` -- DB-backed sessions, CSRF synchronizer tokens
 - `auth/scim-connector.ts` -- PLACEHOLDER interfaces + StubScimConnector
@@ -23,11 +24,13 @@
 - `auth/rbac.ts` -- Role definitions
 
 ### Audit (extends in W16-P8)
+
 - `lib/immutable-audit.ts` -- SHA-256 hash-chained audit, JSONL file + ring buffer
 - `audit-shipping/` -- S3/MinIO audit shipper (Phase 157)
 - `services/imaging-audit.ts` -- Separate imaging audit chain
 - `rcm/audit/rcm-audit.ts` -- Separate RCM audit chain
 
 ### Security Middleware (extends in W16-P6)
+
 - `middleware/security.ts` -- AUTH_RULES, rate limiting, CORS, CSRF
 - `auth/auth-mode-policy.ts` -- rc/prod mode enforcement

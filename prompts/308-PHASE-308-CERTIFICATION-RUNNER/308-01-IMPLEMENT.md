@@ -1,12 +1,15 @@
 # Phase 308 -- W12-P10 IMPLEMENT
+
 ## Departmental Certification Runner
 
 ### Goal
+
 Create a comprehensive certification runner that validates the entire clinical
 writeback system end-to-end: command bus, all 6 domain executors, telehealth
 hardening modules, feature gates, and safety guards.
 
 ### Steps
+
 1. Create `writeback/certification-runner.ts` with 17 certification checks:
    - 4 infrastructure: command bus, gates, audit actions, store policy
    - 6 domain: TIU, ORDERS, PHARM, LAB, ADT, IMG executor validation + dry-run
@@ -18,8 +21,9 @@ hardening modules, feature gates, and safety guards.
 5. Create evidence + verifier
 
 ### Files Touched
+
 - apps/api/src/writeback/certification-runner.ts (NEW)
-- apps/api/src/writeback/__tests__/certification-contract.test.ts (NEW)
+- apps/api/src/writeback/**tests**/certification-contract.test.ts (NEW)
 - apps/api/src/writeback/writeback-routes.ts (MODIFIED — +2 endpoints)
 - apps/api/src/writeback/index.ts (MODIFIED — +certification exports)
 - prompts/308-PHASE-308-CERTIFICATION-RUNNER/308-01-IMPLEMENT.md

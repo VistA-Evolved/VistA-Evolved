@@ -7,6 +7,7 @@
 ## Context
 
 VistA-Evolved serves multiple user populations:
+
 - **Legacy VistA users** prefer a familiar CPRS-like layout (sidebar nav,
   tabbed panels, dense data display)
 - **Modern users** prefer contemporary UX (card-based, responsive, richer
@@ -43,14 +44,14 @@ override capability.**
 
 ### Theme Tokens
 
-| Token Category | Examples |
-|----------------|----------|
-| **Color** | `--color-primary`, `--color-bg`, `--color-surface`, `--color-text`, `--color-border`, `--color-error`, `--color-warning`, `--color-success` |
-| **Typography** | `--font-family`, `--font-size-base`, `--font-size-sm`, `--font-weight-heading` |
-| **Spacing** | `--space-xs`, `--space-sm`, `--space-md`, `--space-lg` |
-| **Density** | `--density-mode` (`compact` / `normal` / `comfortable`) — controls padding, row height, font scaling |
-| **Layout** | `--sidebar-width`, `--panel-border-radius`, `--nav-style` (`tabs` / `sidebar` / `breadcrumb`) |
-| **Brand** | `--brand-logo-url`, `--brand-name`, `--brand-accent` |
+| Token Category | Examples                                                                                                                                    |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Color**      | `--color-primary`, `--color-bg`, `--color-surface`, `--color-text`, `--color-border`, `--color-error`, `--color-warning`, `--color-success` |
+| **Typography** | `--font-family`, `--font-size-base`, `--font-size-sm`, `--font-weight-heading`                                                              |
+| **Spacing**    | `--space-xs`, `--space-sm`, `--space-md`, `--space-lg`                                                                                      |
+| **Density**    | `--density-mode` (`compact` / `normal` / `comfortable`) — controls padding, row height, font scaling                                        |
+| **Layout**     | `--sidebar-width`, `--panel-border-radius`, `--nav-style` (`tabs` / `sidebar` / `breadcrumb`)                                               |
+| **Brand**      | `--brand-logo-url`, `--brand-name`, `--brand-accent`                                                                                        |
 
 ### Preset Modes
 
@@ -77,6 +78,7 @@ override capability.**
 ### Tenant Override
 
 Tenants can override any token via `POST /admin/tenant-config`:
+
 ```json
 {
   "theme": {

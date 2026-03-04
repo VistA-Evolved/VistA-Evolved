@@ -3,22 +3,27 @@
 ## What Changed
 
 ### New CI Workflows
+
 - **`.github/workflows/ci-verify.yml`** -- Typecheck, unit tests, prompts ordering gate, RPC registry gate, module toggle integrity. Evidence pack on push to main.
 - **`.github/workflows/ci-security.yml`** -- Secret scan + dependency audit. Weekly schedule + PR/push triggers.
 
 ### New Quality Gate Scripts
+
 - **`scripts/check-prompts-ordering.ts`** -- Validates prompts/ directory: no duplicate prefixes, no gaps, all folders have .md files, naming pattern enforced.
 - **`scripts/check-rpc-registry.ts`** -- Cross-checks all callRpc/safeCallRpc calls against rpcRegistry.ts and Vivian index. 69 RPCs + 14 exceptions verified against 3,747 Vivian RPCs.
 - **`scripts/check-module-gates.ts`** -- Validates module toggle integrity: route patterns compile, SKU refs valid, no circular deps, FULL_SUITE complete.
 
 ### Evidence Pack Generator
+
 - **`scripts/generate-evidence-pack.ts`** -- Runs all 6 gates, outputs to `docs/evidence/<build-id>/` with JSON results + summary.md.
 
 ### Docs
+
 - **`docs/runbooks/ci-and-evidence-pack.md`** -- Full runbook for CI + gates + evidence pack.
 - **`docs/evidence/README.md`** -- Evidence directory README.
 
 ### Prompt
+
 - **`prompts/52-PHASE-47-CI-EVIDENCE-QUALITY-GATES/01-implement.md`**
 
 ## How to Test Manually

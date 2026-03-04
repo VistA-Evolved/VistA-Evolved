@@ -3,6 +3,7 @@
 ## What Changed
 
 ### A. Authentication & Sessions
+
 - Real VistA credential authentication via XWB protocol
 - `authenticateUser()` in rpcBrokerClient.ts — temp TCP connection for auth
 - In-memory session store with 8-hour TTL, 5-min cleanup
@@ -12,25 +13,30 @@
 - Login page rewritten with real auth flow + redirect
 
 ### B. Inbox / Tasks
+
 - `GET /vista/inbox` — aggregates ORWORB UNSIG ORDERS + ORWORB FASTUSER
 - Full inbox page at /cprs/inbox with type filtering, acknowledge, open-chart
 
 ### C. Order Workflow State Machine
+
 - Order statuses: draft → unsigned → signed → released / discontinued / cancelled
 - `signOrder()` and `releaseOrder()` methods in DataCache
 - Quick-order template page at /cprs/order-sets (12 templates, 4 categories)
 
 ### D. Results Workflow
+
 - Labs panel: flag severity (critical HH/LL red, abnormal H/L orange)
 - Filter modes: all, abnormal only, unacknowledged
 - Acknowledge all button, summary line
 
 ### E. Remote Data Viewer
+
 - Full page at /cprs/remote-data-viewer (replaces modal-only)
 - Facility list, 8 domain selectors, query interface
 - Architecture docs for CIRN/FHIR integration
 
 ### F. Legacy Console WebSocket
+
 - WebSocket at /ws/console with token auth + RBAC (admin/provider)
 - JSON protocol: rpc, api, ping message types
 - Audit logging (in-memory, max 500), GET /admin/audit-log
@@ -38,6 +44,7 @@
 - Console modal: WS with HTTP fallback, connection indicator
 
 ### G. Modern UI Toggle
+
 - Layout mode: Classic CPRS / Modern (sidebar nav replaces tab strip)
 - Extended density: comfortable, compact, balanced, dense
 - Persisted in localStorage

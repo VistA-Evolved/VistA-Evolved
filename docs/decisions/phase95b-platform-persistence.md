@@ -2,7 +2,7 @@
 
 **Status:** Accepted  
 **Date:** 2025-01-20  
-**Decision Makers:** Engineering Team  
+**Decision Makers:** Engineering Team
 
 ## Context
 
@@ -60,14 +60,14 @@ Six tables: `payer`, `tenant_payer`, `payer_capability`, `payer_task`,
 
 ## File Inventory
 
-| File | Purpose |
-|------|---------|
-| `apps/api/src/platform/db/schema.ts` | Drizzle table definitions |
-| `apps/api/src/platform/db/db.ts` | SQLite connection singleton |
-| `apps/api/src/platform/db/migrate.ts` | Idempotent SQL migrations |
-| `apps/api/src/platform/db/seed.ts` | Seed from data/payers/*.json |
-| `apps/api/src/platform/db/init.ts` | Startup entrypoint |
-| `apps/api/src/platform/db/repo/*.ts` | 6 repository modules |
-| `apps/api/src/platform/payers/evidence-ingest.ts` | Evidence pipeline |
-| `apps/api/src/routes/admin-payer-db-routes.ts` | Admin REST endpoints |
-| `apps/web/src/app/cprs/admin/payer-db/page.tsx` | Admin UI |
+| File                                              | Purpose                       |
+| ------------------------------------------------- | ----------------------------- |
+| `apps/api/src/platform/db/schema.ts`              | Drizzle table definitions     |
+| `apps/api/src/platform/db/db.ts`                  | SQLite connection singleton   |
+| `apps/api/src/platform/db/migrate.ts`             | Idempotent SQL migrations     |
+| `apps/api/src/platform/db/seed.ts`                | Seed from data/payers/\*.json |
+| `apps/api/src/platform/db/init.ts`                | Startup entrypoint            |
+| `apps/api/src/platform/db/repo/*.ts`              | 6 repository modules          |
+| `apps/api/src/platform/payers/evidence-ingest.ts` | Evidence pipeline             |
+| `apps/api/src/routes/admin-payer-db-routes.ts`    | Admin REST endpoints          |
+| `apps/web/src/app/cprs/admin/payer-db/page.tsx`   | Admin UI                      |

@@ -36,59 +36,61 @@ VistA filing (future):
 
 ### Task Categories
 
-| Category | Source | Auto-generated |
-|----------|--------|---------------|
-| appointment_reminder | portal-appointments | Yes |
-| message_unread | portal-messaging | Yes |
-| refill_status | portal-refills | Yes |
-| form_due | Staff / system | Staff-created |
-| lab_result | Future VistA integration | System |
-| general | Staff | Staff-created |
+| Category             | Source                   | Auto-generated |
+| -------------------- | ------------------------ | -------------- |
+| appointment_reminder | portal-appointments      | Yes            |
+| message_unread       | portal-messaging         | Yes            |
+| refill_status        | portal-refills           | Yes            |
+| form_due             | Staff / system           | Staff-created  |
+| lab_result           | Future VistA integration | System         |
+| general              | Staff                    | Staff-created  |
 
 ## API Endpoints
 
 ### Patient-facing (portal auth)
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | /portal/refills | List patient's refill requests |
-| POST | /portal/refills | Submit refill request |
-| POST | /portal/refills/:id/cancel | Cancel pending refill |
-| GET | /portal/tasks | List patient tasks (filter by status/category) |
-| GET | /portal/tasks/counts | Badge counts by category |
-| POST | /portal/tasks/:id/dismiss | Dismiss a task |
-| POST | /portal/tasks/:id/complete | Mark task complete |
+| Method | Path                       | Description                                    |
+| ------ | -------------------------- | ---------------------------------------------- |
+| GET    | /portal/refills            | List patient's refill requests                 |
+| POST   | /portal/refills            | Submit refill request                          |
+| POST   | /portal/refills/:id/cancel | Cancel pending refill                          |
+| GET    | /portal/tasks              | List patient tasks (filter by status/category) |
+| GET    | /portal/tasks/counts       | Badge counts by category                       |
+| POST   | /portal/tasks/:id/dismiss  | Dismiss a task                                 |
+| POST   | /portal/tasks/:id/complete | Mark task complete                             |
 
 ### Staff-facing (CPRS shell / portal auth)
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | /portal/staff/refills | Pending refill queue |
-| POST | /portal/staff/refills/:id/review | Approve/deny with note |
-| GET | /portal/staff/tasks | All active tasks across patients |
-| GET | /portal/staff/messages | Unread patient message queue |
-| POST | /portal/staff/messages/:id/reply | Clinician reply to patient |
+| Method | Path                             | Description                      |
+| ------ | -------------------------------- | -------------------------------- |
+| GET    | /portal/staff/refills            | Pending refill queue             |
+| POST   | /portal/staff/refills/:id/review | Approve/deny with note           |
+| GET    | /portal/staff/tasks              | All active tasks across patients |
+| GET    | /portal/staff/messages           | Unread patient message queue     |
+| POST   | /portal/staff/messages/:id/reply | Clinician reply to patient       |
 
 ## CPRS Integration
 
 New **Tasks** tab (CT_TASKS, id: 14) in the CPRS chart tab strip with
 three sub-tabs:
+
 - **Messages**: Unread patient messages with reply action
 - **Refills**: Pending refill requests with approve/deny actions
 - **Tasks**: Active tasks with priority sorting
 
 ## Abuse Controls
 
-| Control | Value | Configurable via |
-|---------|-------|-----------------|
-| Message rate limit | 10/hour per patient | Code constant |
-| Refill rate limit | 5/hour per patient | Code constant |
-| Blocklist words | From `PORTAL_BLOCKLIST_WORDS` env | Comma-separated |
-| Attachments | OFF by default | `PORTAL_ATTACHMENTS_ENABLED=true` |
+| Control            | Value                             | Configurable via                  |
+| ------------------ | --------------------------------- | --------------------------------- |
+| Message rate limit | 10/hour per patient               | Code constant                     |
+| Refill rate limit  | 5/hour per patient                | Code constant                     |
+| Blocklist words    | From `PORTAL_BLOCKLIST_WORDS` env | Comma-separated                   |
+| Attachments        | OFF by default                    | `PORTAL_ATTACHMENTS_ENABLED=true` |
 
 ## Files Changed
 
 ### API (apps/api/src/)
+
 - `services/portal-messaging.ts` — Phase 32 enhancements (proxy, clinician reply, abuse controls)
 - `services/portal-refills.ts` — NEW: Refill request service
 - `services/portal-tasks.ts` — NEW: Tasks/notifications service
@@ -96,6 +98,7 @@ three sub-tabs:
 - `routes/portal-core.ts` — Added 10 new route handlers
 
 ### CPRS Web (apps/web/src/)
+
 - `components/cprs/panels/MessagingTasksPanel.tsx` — NEW: Staff panel
 - `components/cprs/panels/index.ts` — Barrel export
 - `components/cprs/CPRSTabStrip.tsx` — tasks module mapping
@@ -103,6 +106,7 @@ three sub-tabs:
 - `lib/contracts/data/tabs.json` — CT_TASKS entry (id: 14)
 
 ### Portal (apps/portal/src/)
+
 - `app/dashboard/refills/page.tsx` — NEW: Refill requests page
 - `app/dashboard/tasks/page.tsx` — NEW: Tasks page
 - `app/dashboard/medications/page.tsx` — Updated refills section link
@@ -141,12 +145,14 @@ curl http://localhost:3001/portal/staff/tasks -b cookies.txt
 ## VistA-First Migration Path
 
 ### Refills → VistA
+
 1. Check `PSO RENEW` RPC availability via capability cache
 2. If available: call with medication IEN + patient DFN
 3. Store VistA IEN in `vistaRef`, set `vistaSync: "filed"`
 4. If unavailable: keep `vistaSync: "pending_filing"` banner
 
 ### Tasks → VistA ORB Notifications
+
 1. Map task categories to ORB notification types
 2. Read via `ORB SORT METHOD` / `ORB LIST` RPCs
 3. Merge portal tasks with VistA notifications

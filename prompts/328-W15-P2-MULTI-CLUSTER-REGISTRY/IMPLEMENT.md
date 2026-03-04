@@ -1,10 +1,12 @@
 # Phase 328 — W15-P2: Multi-Cluster Registry (IMPLEMENT)
 
 ## User Request
+
 Implement multi-cluster registry and tenant placement engine as the control plane
 for multi-region deployment.
 
 ## Implementation Steps
+
 1. Create `apps/api/src/services/multi-cluster-registry.ts`:
    - PlatformCluster type: id, name, region, regionTier, kubeContextRef, status, pgConnectionRef, vistaPlacementMode, maxTenants, currentTenantCount, metadata
    - TenantPlacement type: id, tenantId, clusterId, region, placementReason, dataResidencyConstraint, planTier, active
@@ -24,6 +26,7 @@ for multi-region deployment.
 4. Wire into security.ts AUTH_RULES, register-routes.ts, store-policy.ts, CANONICAL_RLS_TABLES
 
 ## Verification Steps
+
 - `npx tsc --noEmit` from apps/api — 0 errors
 - AUTH_RULES contains /platform/clusters/, /platform/tenants/, /platform/placements
 - Migration v32 exists with both CREATE TABLE statements
@@ -32,6 +35,7 @@ for multi-region deployment.
 - register-routes.ts imports and registers multiClusterRoutes
 
 ## Files Touched
+
 - apps/api/src/services/multi-cluster-registry.ts (NEW)
 - apps/api/src/routes/multi-cluster-routes.ts (NEW)
 - apps/api/src/platform/pg/pg-migrate.ts (migration v32 + RLS tables)

@@ -15,22 +15,22 @@
  *   npx tsx scripts/ops/generateEvidencePack.ts [--skip-docker] [--skip-api]
  */
 
-import { execSync } from "node:child_process";
-import * as fs from "node:fs";
-import * as path from "node:path";
-import * as crypto from "node:crypto";
-import { fileURLToPath } from "node:url";
-import { runBackupDrillEvidence } from "./backup-drill-evidence.js";
-import { runPerfBudgetSmoke } from "./perf-budget-smoke.js";
+import { execSync } from 'node:child_process';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import * as crypto from 'node:crypto';
+import { fileURLToPath } from 'node:url';
+import { runBackupDrillEvidence } from './backup-drill-evidence.js';
+import { runPerfBudgetSmoke } from './perf-budget-smoke.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const ROOT = path.resolve(__dirname, "../..");
-const EVIDENCE_ROOT = path.join(ROOT, "artifacts/evidence/phase75");
+const ROOT = path.resolve(__dirname, '../..');
+const EVIDENCE_ROOT = path.join(ROOT, 'artifacts/evidence/phase75');
 
 interface StageResult {
   stage: string;
-  status: "pass" | "fail" | "skip" | "warn";
+  status: 'pass' | 'fail' | 'skip' | 'warn';
   durationMs: number;
   artifacts: string[];
   detail: string;
@@ -67,18 +67,21 @@ function ensureDir(dir: string): void {
 }
 
 function sha256File(filePath: string): string {
-  if (!fs.existsSync(filePath)) return "(missing)";
+  if (!fs.existsSync(filePath)) return '(missing)';
   const buf = fs.readFileSync(filePath);
-  return crypto.createHash("sha256").update(buf).digest("hex");
+  return crypto.createHash('sha256').update(buf).digest('hex');
 }
 
 function gitInfo(): { sha: string; branch: string } {
   try {
-    const sha = execSync("git rev-parse --short HEAD", { cwd: ROOT, encoding: "utf-8" }).trim();
-    const branch = execSync("git rev-parse --abbrev-ref HEAD", { cwd: ROOT, encoding: "utf-8" }).trim();
+    const sha = execSync('git rev-parse --short HEAD', { cwd: ROOT, encoding: 'utf-8' }).trim();
+    const branch = execSync('git rev-parse --abbrev-ref HEAD', {
+      cwd: ROOT,
+      encoding: 'utf-8',
+    }).trim();
     return { sha, branch };
   } catch {
-    return { sha: "unknown", branch: "unknown" };
+    return { sha: 'unknown', branch: 'unknown' };
   }
 }
 
@@ -92,17 +95,17 @@ async function stageSanityChecks(): Promise<StageResult> {
 
   // Check critical files exist
   const criticalFiles = [
-    "config/performance-budgets.json",
-    "config/modules.json",
-    "config/skus.json",
-    "config/capabilities.json",
-    "scripts/ops/backup-drill.ps1",
-    "scripts/ops/restore-drill.ps1",
-    "scripts/ops/generate-sbom.ps1",
-    "docs/decisions/ADR-security-controls-v1.md",
-    "apps/api/src/middleware/security.ts",
-    "apps/api/src/lib/immutable-audit.ts",
-    "apps/api/src/auth/policy-engine.ts",
+    'config/performance-budgets.json',
+    'config/modules.json',
+    'config/skus.json',
+    'config/capabilities.json',
+    'scripts/ops/backup-drill.ps1',
+    'scripts/ops/restore-drill.ps1',
+    'scripts/ops/generate-sbom.ps1',
+    'docs/decisions/ADR-security-controls-v1.md',
+    'apps/api/src/middleware/security.ts',
+    'apps/api/src/lib/immutable-audit.ts',
+    'apps/api/src/auth/policy-engine.ts',
   ];
 
   for (const f of criticalFiles) {
@@ -112,10 +115,12 @@ async function stageSanityChecks(): Promise<StageResult> {
 
   // Validate performance-budgets.json is parseable
   try {
-    const budgets = JSON.parse(fs.readFileSync(path.join(ROOT, "config/performance-budgets.json"), "utf-8"));
-    checks.push({ name: "perf-budgets-parseable", ok: !!budgets.apiLatencyBudgets });
+    const budgets = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'config/performance-budgets.json'), 'utf-8')
+    );
+    checks.push({ name: 'perf-budgets-parseable', ok: !!budgets.apiLatencyBudgets });
   } catch {
-    checks.push({ name: "perf-budgets-parseable", ok: false });
+    checks.push({ name: 'perf-budgets-parseable', ok: false });
   }
 
   // Write sanity report
@@ -125,15 +130,15 @@ async function stageSanityChecks(): Promise<StageResult> {
     passCount: checks.filter((c) => c.ok).length,
     totalCount: checks.length,
   };
-  const sanityPath = path.join(EVIDENCE_ROOT, "sanity-checks.json");
+  const sanityPath = path.join(EVIDENCE_ROOT, 'sanity-checks.json');
   ensureDir(path.dirname(sanityPath));
   fs.writeFileSync(sanityPath, JSON.stringify(sanityReport, null, 2));
   artifacts.push(sanityPath);
 
   const allPassed = checks.every((c) => c.ok);
   return {
-    stage: "sanity-checks",
-    status: allPassed ? "pass" : "warn",
+    stage: 'sanity-checks',
+    status: allPassed ? 'pass' : 'warn',
     durationMs: Date.now() - start,
     artifacts,
     detail: `${sanityReport.passCount}/${sanityReport.totalCount} checks passed`,
@@ -148,21 +153,21 @@ async function stagePerfSmoke(skipApi: boolean): Promise<StageResult> {
   const artifacts: string[] = [];
 
   try {
-    const report = await runPerfBudgetSmoke("http://localhost:3001", skipApi);
-    const evidencePath = path.join(EVIDENCE_ROOT, "perf/perf-budget-evidence.json");
+    const report = await runPerfBudgetSmoke('http://localhost:3001', skipApi);
+    const evidencePath = path.join(EVIDENCE_ROOT, 'perf/perf-budget-evidence.json');
     if (fs.existsSync(evidencePath)) artifacts.push(evidencePath);
 
     return {
-      stage: "perf-budget-smoke",
-      status: report.summary.overallPass ? "pass" : "warn",
+      stage: 'perf-budget-smoke',
+      status: report.summary.overallPass ? 'pass' : 'warn',
       durationMs: Date.now() - start,
       artifacts,
-      detail: `${report.summary.passed}/${report.summary.total} within budget${skipApi ? " (config-only mode)" : ""}`,
+      detail: `${report.summary.passed}/${report.summary.total} within budget${skipApi ? ' (config-only mode)' : ''}`,
     };
   } catch (err: any) {
     return {
-      stage: "perf-budget-smoke",
-      status: "fail",
+      stage: 'perf-budget-smoke',
+      status: 'fail',
       durationMs: Date.now() - start,
       artifacts,
       detail: err.message || String(err),
@@ -176,15 +181,17 @@ async function stagePerfSmoke(skipApi: boolean): Promise<StageResult> {
 async function stageSbom(): Promise<StageResult> {
   const start = Date.now();
   const artifacts: string[] = [];
-  const sbomDir = path.join(EVIDENCE_ROOT, "sbom");
+  const sbomDir = path.join(EVIDENCE_ROOT, 'sbom');
   ensureDir(sbomDir);
 
   try {
-    const sbomScript = path.join(ROOT, "scripts/ops/generate-sbom.ps1");
-    execSync(
-      `powershell -ExecutionPolicy Bypass -File "${sbomScript}" -OutputDir "${sbomDir}"`,
-      { cwd: ROOT, encoding: "utf-8", timeout: 120_000, stdio: ["pipe", "pipe", "pipe"] }
-    );
+    const sbomScript = path.join(ROOT, 'scripts/ops/generate-sbom.ps1');
+    execSync(`powershell -ExecutionPolicy Bypass -File "${sbomScript}" -OutputDir "${sbomDir}"`, {
+      cwd: ROOT,
+      encoding: 'utf-8',
+      timeout: 120_000,
+      stdio: ['pipe', 'pipe', 'pipe'],
+    });
 
     // Enumerate generated files
     if (fs.existsSync(sbomDir)) {
@@ -193,21 +200,23 @@ async function stageSbom(): Promise<StageResult> {
       }
     }
 
-    const sbomExists = fs.existsSync(path.join(sbomDir, "sbom.json"));
+    const sbomExists = fs.existsSync(path.join(sbomDir, 'sbom.json'));
     return {
-      stage: "sbom-generation",
-      status: sbomExists ? "pass" : "warn",
+      stage: 'sbom-generation',
+      status: sbomExists ? 'pass' : 'warn',
       durationMs: Date.now() - start,
       artifacts,
-      detail: sbomExists ? `SBOM generated (${artifacts.length} files)` : "SBOM generation produced warnings",
+      detail: sbomExists
+        ? `SBOM generated (${artifacts.length} files)`
+        : 'SBOM generation produced warnings',
     };
   } catch (err: any) {
     return {
-      stage: "sbom-generation",
-      status: "warn",
+      stage: 'sbom-generation',
+      status: 'warn',
       durationMs: Date.now() - start,
       artifacts,
-      detail: `SBOM generation had issues: ${err.message?.slice(0, 200) || "unknown"}`,
+      detail: `SBOM generation had issues: ${err.message?.slice(0, 200) || 'unknown'}`,
     };
   }
 }
@@ -223,7 +232,7 @@ async function stageBackupRestore(skipDocker: boolean): Promise<StageResult> {
     const report = await runBackupDrillEvidence(skipDocker);
 
     // Collect evidence artifacts
-    const backupEvidenceDir = path.join(EVIDENCE_ROOT, "backup");
+    const backupEvidenceDir = path.join(EVIDENCE_ROOT, 'backup');
     if (fs.existsSync(backupEvidenceDir)) {
       for (const f of fs.readdirSync(backupEvidenceDir)) {
         artifacts.push(path.join(backupEvidenceDir, f));
@@ -231,16 +240,16 @@ async function stageBackupRestore(skipDocker: boolean): Promise<StageResult> {
     }
 
     return {
-      stage: "backup-restore-drill",
-      status: report.pass ? "pass" : "warn",
+      stage: 'backup-restore-drill',
+      status: report.pass ? 'pass' : 'warn',
       durationMs: Date.now() - start,
       artifacts,
       detail: report.summary,
     };
   } catch (err: any) {
     return {
-      stage: "backup-restore-drill",
-      status: "fail",
+      stage: 'backup-restore-drill',
+      status: 'fail',
       durationMs: Date.now() - start,
       artifacts,
       detail: err.message || String(err),
@@ -255,30 +264,30 @@ async function stageSecurityControls(): Promise<StageResult> {
   const start = Date.now();
   const artifacts: string[] = [];
 
-  const adrPath = path.join(ROOT, "docs/decisions/ADR-security-controls-v1.md");
+  const adrPath = path.join(ROOT, 'docs/decisions/ADR-security-controls-v1.md');
   if (!fs.existsSync(adrPath)) {
     return {
-      stage: "security-controls",
-      status: "fail",
+      stage: 'security-controls',
+      status: 'fail',
       durationMs: Date.now() - start,
       artifacts,
-      detail: "ADR-security-controls-v1.md not found",
+      detail: 'ADR-security-controls-v1.md not found',
     };
   }
 
-  const content = fs.readFileSync(adrPath, "utf-8");
+  const content = fs.readFileSync(adrPath, 'utf-8');
 
   // Validate required sections exist
   const requiredSections = [
-    "Audit Integrity",
-    "Least Privilege",
-    "Session Security",
-    "Log Redaction",
-    "SBOM",
-    "Backup",
-    "Performance Budgets",
-    "Network Security",
-    "Known Gaps",
+    'Audit Integrity',
+    'Least Privilege',
+    'Session Security',
+    'Log Redaction',
+    'SBOM',
+    'Backup',
+    'Performance Budgets',
+    'Network Security',
+    'Known Gaps',
   ];
 
   const found: string[] = [];
@@ -292,7 +301,7 @@ async function stageSecurityControls(): Promise<StageResult> {
   }
 
   // Verify NO regulatory compliance claims
-  const forbidden = "hipaa " + "compliant"; // split to avoid tripping anti-pattern scanners
+  const forbidden = 'hipaa ' + 'compliant'; // split to avoid tripping anti-pattern scanners
   const noHipaaClaimOk = !content.toLowerCase().includes(forbidden);
 
   // Write validation report
@@ -304,14 +313,14 @@ async function stageSecurityControls(): Promise<StageResult> {
     noHipaaClaimInAdr: noHipaaClaimOk,
     controlCount: (content.match(/\| [A-Z]{2}-\d+ \|/g) || []).length,
   };
-  const reportPath = path.join(EVIDENCE_ROOT, "security-controls-validation.json");
+  const reportPath = path.join(EVIDENCE_ROOT, 'security-controls-validation.json');
   fs.writeFileSync(reportPath, JSON.stringify(secReport, null, 2));
   artifacts.push(reportPath);
 
   const allSectionsOk = missing.length === 0;
   return {
-    stage: "security-controls",
-    status: allSectionsOk && noHipaaClaimOk ? "pass" : "fail",
+    stage: 'security-controls',
+    status: allSectionsOk && noHipaaClaimOk ? 'pass' : 'fail',
     durationMs: Date.now() - start,
     artifacts,
     detail: `${found.length}/${requiredSections.length} sections, ${secReport.controlCount} controls, no-HIPAA-claim=${noHipaaClaimOk}`,
@@ -331,26 +340,26 @@ export async function generateEvidencePack(options: {
   const git = gitInfo();
   const stages: StageResult[] = [];
 
-  console.log("\n=== Phase 75: Go-Live Evidence Pack Generator ===\n");
+  console.log('\n=== Phase 75: Go-Live Evidence Pack Generator ===\n');
 
   // Run stages sequentially
-  console.log("[1/5] Sanity checks...");
+  console.log('[1/5] Sanity checks...');
   stages.push(await stageSanityChecks());
   console.log(`  -> ${stages[stages.length - 1].status}: ${stages[stages.length - 1].detail}`);
 
-  console.log("[2/5] Performance budget smoke...");
+  console.log('[2/5] Performance budget smoke...');
   stages.push(await stagePerfSmoke(options.skipApi ?? false));
   console.log(`  -> ${stages[stages.length - 1].status}: ${stages[stages.length - 1].detail}`);
 
-  console.log("[3/5] SBOM generation...");
+  console.log('[3/5] SBOM generation...');
   stages.push(await stageSbom());
   console.log(`  -> ${stages[stages.length - 1].status}: ${stages[stages.length - 1].detail}`);
 
-  console.log("[4/5] Backup/restore drill...");
+  console.log('[4/5] Backup/restore drill...');
   stages.push(await stageBackupRestore(options.skipDocker ?? false));
   console.log(`  -> ${stages[stages.length - 1].status}: ${stages[stages.length - 1].detail}`);
 
-  console.log("[5/5] Security controls validation...");
+  console.log('[5/5] Security controls validation...');
   stages.push(await stageSecurityControls());
   console.log(`  -> ${stages[stages.length - 1].status}: ${stages[stages.length - 1].detail}`);
 
@@ -365,17 +374,17 @@ export async function generateEvidencePack(options: {
     }));
 
   // Summary
-  const passed = stages.filter((s) => s.status === "pass").length;
-  const failed = stages.filter((s) => s.status === "fail").length;
-  const skipped = stages.filter((s) => s.status === "skip").length;
-  const warnings = stages.filter((s) => s.status === "warn").length;
+  const passed = stages.filter((s) => s.status === 'pass').length;
+  const failed = stages.filter((s) => s.status === 'fail').length;
+  const skipped = stages.filter((s) => s.status === 'skip').length;
+  const warnings = stages.filter((s) => s.status === 'warn').length;
 
   const manifest: EvidenceManifest = {
     _meta: {
       phase: 75,
-      version: "1.0.0",
+      version: '1.0.0',
       generatedAt: new Date().toISOString(),
-      generatedBy: "generateEvidencePack.ts",
+      generatedBy: 'generateEvidencePack.ts',
       gitSha: git.sha,
       gitBranch: git.branch,
       totalDurationMs: Date.now() - totalStart,
@@ -393,7 +402,7 @@ export async function generateEvidencePack(options: {
   };
 
   // Write manifest
-  const manifestPath = path.join(EVIDENCE_ROOT, "manifest.json");
+  const manifestPath = path.join(EVIDENCE_ROOT, 'manifest.json');
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 
   console.log(`\n=== Evidence Pack Complete ===`);
@@ -401,15 +410,15 @@ export async function generateEvidencePack(options: {
   console.log(`  Artifacts: ${artifactInventory.length}`);
   console.log(`  Duration: ${manifest._meta.totalDurationMs}ms`);
   console.log(`  Manifest: ${manifestPath}`);
-  console.log(`  Overall: ${manifest.summary.overallPass ? "PASS" : "FAIL"}\n`);
+  console.log(`  Overall: ${manifest.summary.overallPass ? 'PASS' : 'FAIL'}\n`);
 
   return manifest;
 }
 
 // CLI entry point
-if (process.argv[1]?.endsWith("generateEvidencePack.ts")) {
-  const skipDocker = process.argv.includes("--skip-docker");
-  const skipApi = process.argv.includes("--skip-api");
+if (process.argv[1]?.endsWith('generateEvidencePack.ts')) {
+  const skipDocker = process.argv.includes('--skip-docker');
+  const skipApi = process.argv.includes('--skip-api');
 
   generateEvidencePack({ skipDocker, skipApi }).then((m) => {
     process.exit(m.summary.overallPass ? 0 : 1);

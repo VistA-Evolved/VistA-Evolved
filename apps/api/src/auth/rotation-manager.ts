@@ -11,14 +11,13 @@
  *   4. After grace period, mark as "expired"
  */
 
-import { log } from "../lib/logger.js";
+import { log } from '../lib/logger.js';
 import {
   resolveKeyProvider,
   generateKey,
   type KeyProvider,
   type KeyMetadata,
-  type KeyStatus,
-} from "./key-provider.js";
+} from './key-provider.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -87,8 +86,8 @@ export function getRotationHistory(keyId?: string): RotationEvent[] {
  */
 export async function rotateKey(
   keyId: string,
-  reason = "scheduled",
-  provider?: KeyProvider,
+  reason = 'scheduled',
+  provider?: KeyProvider
 ): Promise<RotationEvent> {
   const kp = provider ?? resolveKeyProvider();
   const policy = rotationPolicies.get(keyId);
@@ -97,13 +96,13 @@ export async function rotateKey(
   // Find current active key
   const allKeys = await kp.listKeys();
   const keyVersions = allKeys.filter((k) => k.keyId === keyId);
-  const activeVersion = keyVersions.find((k) => k.status === "active");
+  const activeVersion = keyVersions.find((k) => k.status === 'active');
 
   // Generate new key
   const newKey = generateKey(keyLen);
   const newMeta = await kp.putKey(keyId, newKey, {
-    algorithm: policy?.algorithm ?? "aes-256-gcm",
-    status: "active",
+    algorithm: policy?.algorithm ?? 'aes-256-gcm',
+    status: 'active',
   });
 
   // Zero out new key buffer after storage
@@ -111,7 +110,7 @@ export async function rotateKey(
 
   // Retire previous active version
   if (activeVersion) {
-    await kp.setKeyStatus(keyId, activeVersion.version, "retiring");
+    await kp.setKeyStatus(keyId, activeVersion.version, 'retiring');
   }
 
   const event: RotationEvent = {
@@ -127,7 +126,7 @@ export async function rotateKey(
     rotationEvents.shift();
   }
 
-  log.info("Key rotated", {
+  log.info('Key rotated', {
     keyId,
     newVersion: newMeta.version,
     oldVersion: activeVersion?.version ?? 0,
@@ -146,7 +145,7 @@ export async function expireRetiringKeys(provider?: KeyProvider): Promise<number
   let expired = 0;
 
   for (const keyMeta of allKeys) {
-    if (keyMeta.status !== "retiring") continue;
+    if (keyMeta.status !== 'retiring') continue;
     const policy = rotationPolicies.get(keyMeta.keyId);
     const gracePeriod = policy?.gracePeriodMs ?? DEFAULT_GRACE_PERIOD_MS;
 
@@ -155,9 +154,9 @@ export async function expireRetiringKeys(provider?: KeyProvider): Promise<number
       : new Date(keyMeta.createdAt).getTime();
 
     if (Date.now() - rotatedAt > gracePeriod) {
-      await kp.setKeyStatus(keyMeta.keyId, keyMeta.version, "expired");
+      await kp.setKeyStatus(keyMeta.keyId, keyMeta.version, 'expired');
       expired++;
-      log.info("Key expired", { keyId: keyMeta.keyId, version: keyMeta.version });
+      log.info('Key expired', { keyId: keyMeta.keyId, version: keyMeta.version });
     }
   }
 
@@ -173,7 +172,7 @@ export async function checkRotationDue(provider?: KeyProvider): Promise<KeyMetad
   const due: KeyMetadata[] = [];
 
   for (const keyMeta of allKeys) {
-    if (keyMeta.status !== "active") continue;
+    if (keyMeta.status !== 'active') continue;
     const policy = rotationPolicies.get(keyMeta.keyId);
     if (!policy) continue;
 
@@ -214,7 +213,7 @@ export async function getRotationStatus(provider?: KeyProvider): Promise<{
   }
 
   const keys = Array.from(grouped.entries()).map(([keyId, versions]) => {
-    const active = versions.find((v) => v.status === "active");
+    const active = versions.find((v) => v.status === 'active');
     const lastEvent = rotationEvents.filter((e) => e.keyId === keyId).pop();
     return {
       keyId,
@@ -236,18 +235,21 @@ export async function getRotationStatus(provider?: KeyProvider): Promise<{
  * Initialize default rotation policies from env vars.
  */
 export function initDefaultRotationPolicies(): void {
-  const interval = parseInt(process.env.KEY_ROTATION_INTERVAL_MS || String(DEFAULT_ROTATION_INTERVAL_MS), 10);
+  const interval = parseInt(
+    process.env.KEY_ROTATION_INTERVAL_MS || String(DEFAULT_ROTATION_INTERVAL_MS),
+    10
+  );
   const grace = parseInt(process.env.KEY_ROTATION_GRACE_MS || String(DEFAULT_GRACE_PERIOD_MS), 10);
 
   // Register policies for well-known key IDs
-  const wellKnownKeys = ["session", "audit", "envelope", "csrf"];
+  const wellKnownKeys = ['session', 'audit', 'envelope', 'csrf'];
   for (const keyId of wellKnownKeys) {
     registerRotationPolicy({
       keyId,
       rotationIntervalMs: interval,
       gracePeriodMs: grace,
       keyLengthBytes: 32,
-      algorithm: "aes-256-gcm",
+      algorithm: 'aes-256-gcm',
     });
   }
 }

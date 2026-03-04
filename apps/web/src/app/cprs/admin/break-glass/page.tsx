@@ -7,7 +7,6 @@ import { csrfHeaders } from '@/lib/csrf';
 import styles from '@/components/cprs/cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
-
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
@@ -85,15 +84,17 @@ function StatusBadge({ status }: { status: string }) {
     denied: '#dc2626',
   };
   return (
-    <span style={{
-      display: 'inline-block',
-      padding: '2px 8px',
-      borderRadius: 4,
-      fontSize: 12,
-      fontWeight: 600,
-      color: '#fff',
-      backgroundColor: colors[status] || '#6b7280',
-    }}>
+    <span
+      style={{
+        display: 'inline-block',
+        padding: '2px 8px',
+        borderRadius: 4,
+        fontSize: 12,
+        fontWeight: 600,
+        color: '#fff',
+        backgroundColor: colors[status] || '#6b7280',
+      }}
+    >
       {status.toUpperCase()}
     </span>
   );
@@ -105,7 +106,7 @@ function StatusBadge({ status }: { status: string }) {
 
 export default function BreakGlassPage() {
   const router = useRouter();
-  const { authenticated, ready, user, hasRole } = useSession();
+  const { authenticated, ready, hasRole } = useSession();
   const [tab, setTab] = useState<'sessions' | 'posture' | 'request'>('sessions');
 
   // Sessions state
@@ -164,8 +165,11 @@ export default function BreakGlassPage() {
       const res = await apiFetch('/admin/iam/posture');
       const data = await res.json();
       if (data.ok) setPosture(data);
-    } catch { /* ignore */ }
-    finally { setPostureLoading(false); }
+    } catch {
+      /* ignore */
+    } finally {
+      setPostureLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -187,7 +191,7 @@ export default function BreakGlassPage() {
         body: JSON.stringify({ sessionId, ttlMinutes: 30 }),
       });
       const data = await res.json();
-      setActionMsg(data.ok ? 'Approved' : (data.error || 'Failed'));
+      setActionMsg(data.ok ? 'Approved' : data.error || 'Failed');
       loadSessions();
     } catch (e: any) {
       setActionMsg(e.message);
@@ -202,7 +206,7 @@ export default function BreakGlassPage() {
         body: JSON.stringify({ sessionId }),
       });
       const data = await res.json();
-      setActionMsg(data.ok ? 'Denied' : (data.error || 'Failed'));
+      setActionMsg(data.ok ? 'Denied' : data.error || 'Failed');
       loadSessions();
     } catch (e: any) {
       setActionMsg(e.message);
@@ -217,7 +221,7 @@ export default function BreakGlassPage() {
         body: JSON.stringify({ sessionId }),
       });
       const data = await res.json();
-      setActionMsg(data.ok ? 'Revoked' : (data.error || 'Failed'));
+      setActionMsg(data.ok ? 'Revoked' : data.error || 'Failed');
       loadSessions();
     } catch (e: any) {
       setActionMsg(e.message);
@@ -304,7 +308,15 @@ export default function BreakGlassPage() {
       </div>
 
       {actionMsg && (
-        <div style={{ padding: 8, marginBottom: 12, background: '#1e293b', borderRadius: 4, fontSize: 13 }}>
+        <div
+          style={{
+            padding: 8,
+            marginBottom: 12,
+            background: '#1e293b',
+            borderRadius: 4,
+            fontSize: 13,
+          }}
+        >
           {actionMsg}
         </div>
       )}
@@ -351,9 +363,14 @@ export default function BreakGlassPage() {
               </div>
 
               <div style={{ fontSize: 13, marginBottom: 4 }}>
-                <strong>Module:</strong> {s.targetModule} &middot;{' '}
-                <strong>Permission:</strong> {s.targetPermission}
-                {s.patientDfn && <> &middot; <strong>Patient:</strong> DFN {s.patientDfn}</>}
+                <strong>Module:</strong> {s.targetModule} &middot; <strong>Permission:</strong>{' '}
+                {s.targetPermission}
+                {s.patientDfn && (
+                  <>
+                    {' '}
+                    &middot; <strong>Patient:</strong> DFN {s.patientDfn}
+                  </>
+                )}
               </div>
 
               <div style={{ fontSize: 13, color: '#d1d5db', marginBottom: 8 }}>
@@ -379,13 +396,27 @@ export default function BreakGlassPage() {
                   <>
                     <button
                       onClick={() => handleApprove(s.id)}
-                      style={{ padding: '4px 12px', background: '#22c55e', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}
+                      style={{
+                        padding: '4px 12px',
+                        background: '#22c55e',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 4,
+                        cursor: 'pointer',
+                      }}
                     >
                       Approve
                     </button>
                     <button
                       onClick={() => handleDeny(s.id)}
-                      style={{ padding: '4px 12px', background: '#dc2626', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}
+                      style={{
+                        padding: '4px 12px',
+                        background: '#dc2626',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 4,
+                        cursor: 'pointer',
+                      }}
                     >
                       Deny
                     </button>
@@ -394,7 +425,14 @@ export default function BreakGlassPage() {
                 {s.status === 'active' && (
                   <button
                     onClick={() => handleRevoke(s.id)}
-                    style={{ padding: '4px 12px', background: '#ef4444', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer' }}
+                    style={{
+                      padding: '4px 12px',
+                      background: '#ef4444',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: 4,
+                      cursor: 'pointer',
+                    }}
                   >
                     Revoke
                   </button>
@@ -413,12 +451,26 @@ export default function BreakGlassPage() {
           {posture && (
             <div style={{ display: 'grid', gap: 12 }}>
               {/* Auth Mode */}
-              <div style={{ border: '1px solid #333', borderRadius: 6, padding: 12, background: '#0f172a' }}>
+              <div
+                style={{
+                  border: '1px solid #333',
+                  borderRadius: 6,
+                  padding: 12,
+                  background: '#0f172a',
+                }}
+              >
                 <h4 style={{ margin: '0 0 8px' }}>Auth Mode</h4>
                 <div style={{ fontSize: 13 }}>
-                  <div><strong>Mode:</strong> {posture.authMode.mode}</div>
-                  <div><strong>Runtime:</strong> {posture.authMode.runtimeMode}</div>
-                  <div><strong>OIDC Configured:</strong> {posture.authMode.oidcConfigured ? 'Yes' : 'No'}</div>
+                  <div>
+                    <strong>Mode:</strong> {posture.authMode.mode}
+                  </div>
+                  <div>
+                    <strong>Runtime:</strong> {posture.authMode.runtimeMode}
+                  </div>
+                  <div>
+                    <strong>OIDC Configured:</strong>{' '}
+                    {posture.authMode.oidcConfigured ? 'Yes' : 'No'}
+                  </div>
                   <div>
                     <strong>Compliant:</strong>{' '}
                     <span style={{ color: posture.authMode.compliant ? '#22c55e' : '#ef4444' }}>
@@ -429,24 +481,53 @@ export default function BreakGlassPage() {
               </div>
 
               {/* Role Mapping */}
-              <div style={{ border: '1px solid #333', borderRadius: 6, padding: 12, background: '#0f172a' }}>
+              <div
+                style={{
+                  border: '1px solid #333',
+                  borderRadius: 6,
+                  padding: 12,
+                  background: '#0f172a',
+                }}
+              >
                 <h4 style={{ margin: '0 0 8px' }}>Role Mapping</h4>
                 <div style={{ fontSize: 13 }}>
-                  <div><strong>Mappings:</strong> {posture.roleMapping.mappingCount}</div>
-                  <div><strong>Custom:</strong> {posture.roleMapping.isCustom ? 'Yes' : 'No (defaults)'}</div>
-                  <div><strong>Fallback Role:</strong> {posture.roleMapping.fallbackRole}</div>
+                  <div>
+                    <strong>Mappings:</strong> {posture.roleMapping.mappingCount}
+                  </div>
+                  <div>
+                    <strong>Custom:</strong>{' '}
+                    {posture.roleMapping.isCustom ? 'Yes' : 'No (defaults)'}
+                  </div>
+                  <div>
+                    <strong>Fallback Role:</strong> {posture.roleMapping.fallbackRole}
+                  </div>
                 </div>
               </div>
 
               {/* Break-Glass Stats */}
-              <div style={{ border: '1px solid #333', borderRadius: 6, padding: 12, background: '#0f172a' }}>
+              <div
+                style={{
+                  border: '1px solid #333',
+                  borderRadius: 6,
+                  padding: 12,
+                  background: '#0f172a',
+                }}
+              >
                 <h4 style={{ margin: '0 0 8px' }}>Break-Glass</h4>
                 <div style={{ fontSize: 13 }}>
-                  <div><strong>Total Sessions:</strong> {posture.breakGlass.total}</div>
-                  <div><strong>Active:</strong> {posture.breakGlass.activeCount}</div>
-                  <div><strong>Pending:</strong> {posture.breakGlass.pendingCount}</div>
+                  <div>
+                    <strong>Total Sessions:</strong> {posture.breakGlass.total}
+                  </div>
+                  <div>
+                    <strong>Active:</strong> {posture.breakGlass.activeCount}
+                  </div>
+                  <div>
+                    <strong>Pending:</strong> {posture.breakGlass.pendingCount}
+                  </div>
                   {Object.entries(posture.breakGlass.byStatus).map(([k, v]) => (
-                    <div key={k}><strong>{k}:</strong> {v}</div>
+                    <div key={k}>
+                      <strong>{k}:</strong> {v}
+                    </div>
                   ))}
                 </div>
               </div>
@@ -461,40 +542,77 @@ export default function BreakGlassPage() {
           <h3>Request Break-Glass Access</h3>
           <div style={{ display: 'grid', gap: 12, maxWidth: 500 }}>
             <div>
-              <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>Target Module</label>
+              <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>
+                Target Module
+              </label>
               <input
                 value={reqModule}
                 onChange={(e) => setReqModule(e.target.value)}
                 placeholder="e.g., imaging, clinical, rcm"
-                style={{ width: '100%', padding: 8, background: '#1e293b', border: '1px solid #333', borderRadius: 4, color: '#fff' }}
+                style={{
+                  width: '100%',
+                  padding: 8,
+                  background: '#1e293b',
+                  border: '1px solid #333',
+                  borderRadius: 4,
+                  color: '#fff',
+                }}
               />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>Target Permission</label>
+              <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>
+                Target Permission
+              </label>
               <input
                 value={reqPermission}
                 onChange={(e) => setReqPermission(e.target.value)}
                 placeholder="e.g., imaging_admin, full_access"
-                style={{ width: '100%', padding: 8, background: '#1e293b', border: '1px solid #333', borderRadius: 4, color: '#fff' }}
+                style={{
+                  width: '100%',
+                  padding: 8,
+                  background: '#1e293b',
+                  border: '1px solid #333',
+                  borderRadius: 4,
+                  color: '#fff',
+                }}
               />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>Patient DFN (optional)</label>
+              <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>
+                Patient DFN (optional)
+              </label>
               <input
                 value={reqPatientDfn}
                 onChange={(e) => setReqPatientDfn(e.target.value)}
                 placeholder="e.g., 3"
-                style={{ width: '100%', padding: 8, background: '#1e293b', border: '1px solid #333', borderRadius: 4, color: '#fff' }}
+                style={{
+                  width: '100%',
+                  padding: 8,
+                  background: '#1e293b',
+                  border: '1px solid #333',
+                  borderRadius: 4,
+                  color: '#fff',
+                }}
               />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>Reason (min 10 characters)</label>
+              <label style={{ display: 'block', fontSize: 13, marginBottom: 4 }}>
+                Reason (min 10 characters)
+              </label>
               <textarea
                 value={reqReason}
                 onChange={(e) => setReqReason(e.target.value)}
                 placeholder="Describe the clinical emergency or operational need..."
                 rows={3}
-                style={{ width: '100%', padding: 8, background: '#1e293b', border: '1px solid #333', borderRadius: 4, color: '#fff', resize: 'vertical' }}
+                style={{
+                  width: '100%',
+                  padding: 8,
+                  background: '#1e293b',
+                  border: '1px solid #333',
+                  borderRadius: 4,
+                  color: '#fff',
+                  resize: 'vertical',
+                }}
               />
             </div>
             <button
@@ -508,7 +626,8 @@ export default function BreakGlassPage() {
                 borderRadius: 4,
                 cursor: 'pointer',
                 fontWeight: 600,
-                opacity: reqSubmitting || !reqModule || !reqPermission || reqReason.length < 10 ? 0.5 : 1,
+                opacity:
+                  reqSubmitting || !reqModule || !reqPermission || reqReason.length < 10 ? 0.5 : 1,
               }}
             >
               {reqSubmitting ? 'Submitting...' : 'Submit Request'}

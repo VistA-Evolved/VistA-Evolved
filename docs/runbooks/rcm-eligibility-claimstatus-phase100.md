@@ -5,13 +5,13 @@
 Adapter-first framework for verifying patient eligibility and tracking
 claim status. Three adapter tiers:
 
-| Adapter | Provenance | Status | Description |
-|---------|-----------|--------|-------------|
-| Manual | MANUAL | Available | User-entered results (phone/portal verified) |
-| Sandbox | SANDBOX | Available | Deterministic simulation for dev/test |
-| EDI 270/271 | EDI_270_271 | Integration Pending | ANSI X12 eligibility inquiry |
-| EDI 276/277 | EDI_276_277 | Integration Pending | ANSI X12 claim status inquiry |
-| Clearinghouse | CLEARINGHOUSE | Integration Pending | Clearinghouse-routed transactions |
+| Adapter       | Provenance    | Status              | Description                                  |
+| ------------- | ------------- | ------------------- | -------------------------------------------- |
+| Manual        | MANUAL        | Available           | User-entered results (phone/portal verified) |
+| Sandbox       | SANDBOX       | Available           | Deterministic simulation for dev/test        |
+| EDI 270/271   | EDI_270_271   | Integration Pending | ANSI X12 eligibility inquiry                 |
+| EDI 276/277   | EDI_276_277   | Integration Pending | ANSI X12 claim status inquiry                |
+| Clearinghouse | CLEARINGHOUSE | Integration Pending | Clearinghouse-routed transactions            |
 
 ## Architecture
 
@@ -54,6 +54,7 @@ User/Scheduler --> POST /rcm/eligibility/check
 ### Provenance Tracking
 
 Every result records its source adapter:
+
 - **MANUAL**: Staff verified by phone/portal and entered result
 - **SANDBOX**: Deterministic simulation (isTestData=true)
 - **EDI_270_271**: Will use ANSI X12 270/271 when clearinghouse enrolled
@@ -64,29 +65,29 @@ Every result records its source adapter:
 
 ### Eligibility
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | /rcm/eligibility/check | Run eligibility check |
-| GET | /rcm/eligibility/history | Paginated check history |
-| GET | /rcm/eligibility/stats | Aggregate statistics |
-| GET | /rcm/eligibility/:id | Get single check |
+| Method | Path                     | Description             |
+| ------ | ------------------------ | ----------------------- |
+| POST   | /rcm/eligibility/check   | Run eligibility check   |
+| GET    | /rcm/eligibility/history | Paginated check history |
+| GET    | /rcm/eligibility/stats   | Aggregate statistics    |
+| GET    | /rcm/eligibility/:id     | Get single check        |
 
 ### Claim Status
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | /rcm/claim-status/check | Run claim status check |
-| POST | /rcm/claim-status/schedule | Schedule recurring poll (job queue) |
-| GET | /rcm/claim-status/history | Paginated check history |
-| GET | /rcm/claim-status/timeline | Claim-specific status timeline |
-| GET | /rcm/claim-status/stats | Aggregate statistics |
-| GET | /rcm/claim-status/:id | Get single check |
+| Method | Path                       | Description                         |
+| ------ | -------------------------- | ----------------------------------- |
+| POST   | /rcm/claim-status/check    | Run claim status check              |
+| POST   | /rcm/claim-status/schedule | Schedule recurring poll (job queue) |
+| GET    | /rcm/claim-status/history  | Paginated check history             |
+| GET    | /rcm/claim-status/timeline | Claim-specific status timeline      |
+| GET    | /rcm/claim-status/stats    | Aggregate statistics                |
+| GET    | /rcm/claim-status/:id      | Get single check                    |
 
 ### Adapters
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | /rcm/eligibility-adapters | List all adapters + integration status |
+| Method | Path                      | Description                            |
+| ------ | ------------------------- | -------------------------------------- |
+| GET    | /rcm/eligibility-adapters | List all adapters + integration status |
 
 ## Manual Testing
 
@@ -155,17 +156,17 @@ Tables O and P added to `apps/api/src/platform/db/schema.ts` and
 
 ## Files
 
-| File | Purpose |
-|------|---------|
-| apps/api/src/rcm/eligibility/types.ts | Domain types + provenance enums |
-| apps/api/src/rcm/eligibility/store.ts | SQLite CRUD + stats + timeline |
-| apps/api/src/rcm/eligibility/routes.ts | API route handlers |
-| apps/api/src/rcm/eligibility/manual-adapter.ts | Manual entry adapter |
-| apps/api/src/rcm/eligibility/edi-stub-adapters.ts | EDI 270/271 + 276/277 stubs |
-| apps/api/src/platform/db/schema.ts | Tables O, P added |
-| apps/api/src/platform/db/migrate.ts | DDL + indexes for O, P |
-| apps/api/src/index.ts | Route registration |
-| apps/web/src/app/cprs/admin/rcm/page.tsx | UI tabs (Eligibility + Claim Status) |
+| File                                              | Purpose                              |
+| ------------------------------------------------- | ------------------------------------ |
+| apps/api/src/rcm/eligibility/types.ts             | Domain types + provenance enums      |
+| apps/api/src/rcm/eligibility/store.ts             | SQLite CRUD + stats + timeline       |
+| apps/api/src/rcm/eligibility/routes.ts            | API route handlers                   |
+| apps/api/src/rcm/eligibility/manual-adapter.ts    | Manual entry adapter                 |
+| apps/api/src/rcm/eligibility/edi-stub-adapters.ts | EDI 270/271 + 276/277 stubs          |
+| apps/api/src/platform/db/schema.ts                | Tables O, P added                    |
+| apps/api/src/platform/db/migrate.ts               | DDL + indexes for O, P               |
+| apps/api/src/index.ts                             | Route registration                   |
+| apps/web/src/app/cprs/admin/rcm/page.tsx          | UI tabs (Eligibility + Claim Status) |
 
 ## Migration to Production EDI
 

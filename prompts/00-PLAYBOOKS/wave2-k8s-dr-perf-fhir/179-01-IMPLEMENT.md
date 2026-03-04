@@ -28,6 +28,7 @@ Every queue item ends with a verify gate; fix before proceeding.
 ## Implementation Steps
 
 ### Infrastructure (Q179–Q184)
+
 1. Create `infra/helm/ve-shared/` chart with 11 templates
 2. Create `infra/helm/ve-tenant/` chart with 9 templates
 3. Create `infra/environments/` overlays (dev, staging, prod)
@@ -36,11 +37,13 @@ Every queue item ends with a verify gate; fix before proceeding.
 6. Add .sops.yaml + dev secrets template + rotate script
 
 ### Backup & DR (Q185–Q187)
+
 7. backup-pg.ps1 (full/wal/restore modes)
 8. backup-yottadb.ps1 (online/offline/restore modes)
 9. dr-drill.ps1 (7-step automated drill + JSON evidence)
 
 ### Observability & Perf (Q188–Q192)
+
 10. Grafana dashboard JSON (6 panels) + Prometheus alerts YAML (7 rules)
 11. Performance tuning runbook
 12. k6 smoke-fhir.js + load-mixed.js
@@ -48,6 +51,7 @@ Every queue item ends with a verify gate; fix before proceeding.
 14. HPA + PDB in tenant chart verified
 
 ### FHIR R4 (Q193–Q196)
+
 15. EncounterRecord type + adapter methods + VistA ORWCV VST mapper
 16. FhirEncounter type + toFhirEncounter mapper + /fhir/Encounter route
 17. fhir-cache.ts (ETag, 304, TTL, per-user keys)
@@ -57,6 +61,7 @@ Every queue item ends with a verify gate; fix before proceeding.
 ## Verification Steps
 
 Each queue item verified individually:
+
 - Q179: `helm lint` passes for both charts
 - Q180: Dockerfile builds, build-images.ps1 validates 5 checks per image
 - Q181–Q182: `helm template` renders clean YAML
@@ -69,6 +74,7 @@ Each queue item verified individually:
 ## Files Touched
 
 ### Created
+
 - `infra/helm/ve-shared/` (Chart.yaml, values.yaml, 11 templates)
 - `infra/helm/ve-tenant/` (Chart.yaml, values.yaml, 9 templates)
 - `infra/environments/` (dev.yaml, staging.yaml, prod.yaml)
@@ -88,6 +94,7 @@ Each queue item verified individually:
 - `docs/runbooks/performance-tuning.md`
 
 ### Modified
+
 - `apps/api/src/adapters/types.ts` (EncounterRecord)
 - `apps/api/src/adapters/clinical-engine/interface.ts` (getEncounters)
 - `apps/api/src/adapters/clinical-engine/stub-adapter.ts` (getEncounters stub)

@@ -9,15 +9,15 @@
 
 ## 1. Data Boundary — Authoritative Sources
 
-| Data Class | Authoritative Source | Read Model Allowed? | Notes |
-|------------|---------------------|---------------------|-------|
-| **Clinical data** (vitals, orders, notes, allergies, meds, labs) | **VistA / YottaDB** | Yes (short-TTL cache in API memory) | Never duplicate into Platform DB. Always call VistA RPCs. |
-| **Patient demographics** | **VistA** (file 2) | Yes (API cache, 5-min TTL) | Never store PII in Platform DB. |
-| **Platform state** (payers, denials, recon, eligibility, claims, sessions, audit, config) | **PostgreSQL** (Platform DB) | N/A — this IS the source | Multi-tenant, ACID, horizontally scalable. |
-| **Evidence / EDI exports / uploads** | **Object storage** (S3/MinIO) | Metadata in Postgres, blobs in storage | Local FS (`data/`) in dev; MinIO or S3 in prod. |
-| **Audit trails** | **Dual sink**: Postgres (queryable) + JSONL (tamper-evident archive) | N/A — append-only in both | Hash-chained entries written to both. |
-| **Analytics (de-identified)** | **ROcto/YottaDB** (SQL analytics) | Yes — read-only for BI tools | No PHI. ETL from Postgres aggregations. |
-| **Tenant configuration** | **PostgreSQL** | Cached in API memory (5-min TTL) | Source of truth in DB; cache for performance. |
+| Data Class                                                                                | Authoritative Source                                                 | Read Model Allowed?                    | Notes                                                     |
+| ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------- | --------------------------------------------------------- |
+| **Clinical data** (vitals, orders, notes, allergies, meds, labs)                          | **VistA / YottaDB**                                                  | Yes (short-TTL cache in API memory)    | Never duplicate into Platform DB. Always call VistA RPCs. |
+| **Patient demographics**                                                                  | **VistA** (file 2)                                                   | Yes (API cache, 5-min TTL)             | Never store PII in Platform DB.                           |
+| **Platform state** (payers, denials, recon, eligibility, claims, sessions, audit, config) | **PostgreSQL** (Platform DB)                                         | N/A — this IS the source               | Multi-tenant, ACID, horizontally scalable.                |
+| **Evidence / EDI exports / uploads**                                                      | **Object storage** (S3/MinIO)                                        | Metadata in Postgres, blobs in storage | Local FS (`data/`) in dev; MinIO or S3 in prod.           |
+| **Audit trails**                                                                          | **Dual sink**: Postgres (queryable) + JSONL (tamper-evident archive) | N/A — append-only in both              | Hash-chained entries written to both.                     |
+| **Analytics (de-identified)**                                                             | **ROcto/YottaDB** (SQL analytics)                                    | Yes — read-only for BI tools           | No PHI. ETL from Postgres aggregations.                   |
+| **Tenant configuration**                                                                  | **PostgreSQL**                                                       | Cached in API memory (5-min TTL)       | Source of truth in DB; cache for performance.             |
 
 ### Clinical vs Platform Boundary Rule
 
@@ -58,6 +58,7 @@
 ### 2.2 Future: Database-per-Tenant
 
 When a large enterprise tenant needs data isolation:
+
 1. Create a dedicated Postgres database
 2. Point their `tenant_id` config to the dedicated connection string
 3. The PlatformStore routes queries based on tenant config
@@ -69,6 +70,7 @@ This is architecturally supported but not implemented in Phase 101.
 ## 3. Database Schema Conventions
 
 ### Naming
+
 - Tables: `snake_case` (e.g., `eligibility_check`, `platform_audit_event`)
 - Columns: `snake_case` (e.g., `tenant_id`, `created_at`)
 - Primary keys: `id TEXT` (UUID v4, prefixed where useful: `elig-`, `cstat-`)
@@ -76,6 +78,7 @@ This is architecturally supported but not implemented in Phase 101.
 - JSON columns: `JSONB` (Postgres native JSON)
 
 ### Required columns on every table
+
 ```sql
 id           TEXT PRIMARY KEY,       -- UUID
 tenant_id    TEXT NOT NULL,          -- tenant isolation
@@ -84,6 +87,7 @@ updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
 ```
 
 ### Soft deletes
+
 Prefer `deleted_at TIMESTAMPTZ` over physical DELETE for audit trail preservation.
 
 ---
@@ -183,6 +187,7 @@ accepts any action string from any domain.
 - Keys expire after 24 hours (configurable via `IDEMPOTENCY_TTL_MS`)
 
 ### Phase 101 Scope
+
 - Table + cleanup job created
 - Middleware documented but activation is Phase 102+
 
@@ -197,6 +202,7 @@ accepts any action string from any domain.
 - After max retries (5): `status = 'failed'`
 
 ### Phase 101 Scope
+
 - Table + types created
 - Poller infrastructure laid out but disabled (no consumers yet)
 
@@ -205,6 +211,7 @@ accepts any action string from any domain.
 ## 8. Connection Management
 
 ### Dev (Docker Compose)
+
 ```
 Host: 127.0.0.1
 Port: 5433 (non-default to avoid conflicts with local Postgres)
@@ -214,6 +221,7 @@ Password: dev-only-password (from .env.local, not committed)
 ```
 
 ### Production
+
 ```
 PLATFORM_PG_URL=postgres://user:pass@host:5432/ve_platform?sslmode=require
 PLATFORM_PG_POOL_MIN=2
@@ -222,6 +230,7 @@ PLATFORM_PG_RLS_ENABLED=true
 ```
 
 ### Connection Pool
+
 - Uses `node-postgres` (`pg`) driver with Drizzle ORM
 - Min 2, Max 20 connections (configurable)
 - Idle timeout: 30s
@@ -241,6 +250,7 @@ PLATFORM_PG_RLS_ENABLED=true
 4. **Phase 104**: Remove SQLite dependency. Postgres is sole platform DB.
 
 ### Rollback Safety
+
 - Each phase is independently revertible
 - SQLite is never removed until Postgres is proven in production
 - Feature flags gate which DB backend is active
@@ -249,10 +259,10 @@ PLATFORM_PG_RLS_ENABLED=true
 
 ## 10. Technology Choices
 
-| Concern | Choice | Rationale |
-|---------|--------|-----------|
-| ORM | **Drizzle ORM** (existing) | Already in `package.json`, team knows it, supports SQLite + Postgres |
-| Driver | **`pg`** (node-postgres) | Most mature Node.js Postgres driver, Drizzle native support |
-| Migrations | **Drizzle Kit** (existing) + raw SQL | `drizzle-kit` for schema gen, custom runner for RLS/triggers |
-| Connection pool | **`pg.Pool`** built-in | No additional dependency needed |
-| Schema definition | **`drizzle-orm/pg-core`** | Postgres-native types (TIMESTAMPTZ, JSONB, TEXT) |
+| Concern           | Choice                               | Rationale                                                            |
+| ----------------- | ------------------------------------ | -------------------------------------------------------------------- |
+| ORM               | **Drizzle ORM** (existing)           | Already in `package.json`, team knows it, supports SQLite + Postgres |
+| Driver            | **`pg`** (node-postgres)             | Most mature Node.js Postgres driver, Drizzle native support          |
+| Migrations        | **Drizzle Kit** (existing) + raw SQL | `drizzle-kit` for schema gen, custom runner for RLS/triggers         |
+| Connection pool   | **`pg.Pool`** built-in               | No additional dependency needed                                      |
+| Schema definition | **`drizzle-orm/pg-core`**            | Postgres-native types (TIMESTAMPTZ, JSONB, TEXT)                     |

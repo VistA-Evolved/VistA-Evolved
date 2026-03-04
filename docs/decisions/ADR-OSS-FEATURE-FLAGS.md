@@ -18,6 +18,7 @@ with `rollout_percentage` and `user_targeting_rules` columns. This has **not yet
 been implemented**.
 
 ### What is missing
+
 - No gradual rollout percentages (all-or-nothing)
 - No user-level targeting (only tenant-level)
 - No external flag service integration
@@ -26,13 +27,13 @@ been implemented**.
 
 ## Options Considered
 
-| Option | License | Pros | Cons |
-|--------|---------|------|------|
-| **Unleash** | Apache-2.0 | Self-hosted, SDKs, gradual rollout, A/B, segments | New service to deploy |
-| **Flagsmith** | BSD-3 | Self-hosted, REST+SSE, segments, environments | Smaller community |
-| **LaunchDarkly** | Proprietary | Best UX, real-time, SDKs | SaaS-only, cost, PHI concerns |
-| **Extend existing DB** | N/A | Zero deps, in-process, DB-backed | Must build rollout/targeting |
-| **Provider-agnostic + Unleash** | Apache-2.0 | Best of both | Operational complexity |
+| Option                          | License     | Pros                                              | Cons                          |
+| ------------------------------- | ----------- | ------------------------------------------------- | ----------------------------- |
+| **Unleash**                     | Apache-2.0  | Self-hosted, SDKs, gradual rollout, A/B, segments | New service to deploy         |
+| **Flagsmith**                   | BSD-3       | Self-hosted, REST+SSE, segments, environments     | Smaller community             |
+| **LaunchDarkly**                | Proprietary | Best UX, real-time, SDKs                          | SaaS-only, cost, PHI concerns |
+| **Extend existing DB**          | N/A         | Zero deps, in-process, DB-backed                  | Must build rollout/targeting  |
+| **Provider-agnostic + Unleash** | Apache-2.0  | Best of both                                      | Operational complexity        |
 
 ## Decision
 
@@ -40,6 +41,7 @@ been implemented**.
 Unleash adapter behind a `FeatureFlagProvider` interface.**
 
 ### Architecture
+
 - **Policy layer** (existing): `tenant_feature_flag` table + module entitlements
   remain the source of truth for "is this module/feature available to this tenant"
 - **Runtime evaluation layer** (new): `FeatureFlagProvider` interface handles
@@ -50,12 +52,14 @@ Unleash adapter behind a `FeatureFlagProvider` interface.**
     with local caching + fail-safe defaults
 
 ### Why this layered approach
+
 - DB flags are the gatekeeper for "is this feature allowed at all"
 - Runtime provider handles "is this feature active right now for this user"
 - If Unleash is down, DB flags are the safe fallback
 - Healthcare environments that can't run Unleash use Db provider only
 
 ### Unleash as optional OSS choice
+
 - Apache-2.0 license, self-hosted
 - Tenant scoping via Unleash contexts (`tenantId` constraint)
 - SDK caching means no network dependency for hot-path evaluation

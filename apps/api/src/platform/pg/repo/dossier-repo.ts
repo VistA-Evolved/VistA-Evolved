@@ -7,14 +7,10 @@
  * or "onboarding_task". Optimistic concurrency via version column.
  */
 
-import { randomUUID } from "node:crypto";
-import { eq, and, sql, desc } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import {
-  payerDossier,
-  payerOnboardingTask,
-  payerAuditEvent,
-} from "../pg-schema.js";
+import { randomUUID } from 'node:crypto';
+import { eq, and, sql, desc } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { payerDossier, payerOnboardingTask, payerAuditEvent } from '../pg-schema.js';
 
 /* ── Inferred types ──────────────────────────────────────── */
 
@@ -33,7 +29,7 @@ export async function findDossierById(id: string): Promise<DossierRow | undefine
 
 export async function findDossierByPayer(
   tenantId: string,
-  payerId: string,
+  payerId: string
 ): Promise<DossierRow | undefined> {
   const db = getPgDb();
   const rows = await db
@@ -43,12 +39,15 @@ export async function findDossierByPayer(
   return rows[0];
 }
 
-export async function listDossiers(tenantId: string, filters?: {
-  status?: string;
-  countryCode?: string;
-  limit?: number;
-  offset?: number;
-}): Promise<{ rows: DossierRow[]; total: number }> {
+export async function listDossiers(
+  tenantId: string,
+  filters?: {
+    status?: string;
+    countryCode?: string;
+    limit?: number;
+    offset?: number;
+  }
+): Promise<{ rows: DossierRow[]; total: number }> {
   const db = getPgDb();
   const conditions: ReturnType<typeof eq>[] = [eq(payerDossier.tenantId, tenantId)];
 
@@ -60,17 +59,26 @@ export async function listDossiers(tenantId: string, filters?: {
   const offset = filters?.offset ?? 0;
 
   const [rows, [{ count }]] = await Promise.all([
-    db.select().from(payerDossier).where(where).orderBy(desc(payerDossier.createdAt)).limit(limit).offset(offset),
-    db.select({ count: sql<number>`count(*)::int` }).from(payerDossier).where(where),
+    db
+      .select()
+      .from(payerDossier)
+      .where(where)
+      .orderBy(desc(payerDossier.createdAt))
+      .limit(limit)
+      .offset(offset),
+    db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(payerDossier)
+      .where(where),
   ]);
 
   return { rows, total: count };
 }
 
 export async function insertDossier(
-  data: Omit<DossierInsert, "id" | "createdAt" | "updatedAt">,
+  data: Omit<DossierInsert, 'id' | 'createdAt' | 'updatedAt'>,
   reason: string,
-  actor?: string,
+  actor?: string
 ): Promise<DossierRow> {
   const db = getPgDb();
   const id = `dos_${randomUUID().slice(0, 12)}`;
@@ -83,12 +91,12 @@ export async function insertDossier(
 
   await db.insert(payerAuditEvent).values({
     id: randomUUID(),
-    tenantId: data.tenantId ?? "default",
-    actorType: actor ? "user" : "system",
-    actorId: actor ?? "system",
-    entityType: "dossier",
+    tenantId: data.tenantId ?? 'default',
+    actorType: actor ? 'user' : 'system',
+    actorId: actor ?? 'system',
+    entityType: 'dossier',
     entityId: id,
-    action: "create",
+    action: 'create',
     beforeJson: null,
     afterJson: created,
     reason,
@@ -102,15 +110,15 @@ export async function updateDossier(
   updates: Partial<DossierInsert>,
   reason: string,
   actor?: string,
-  expectedVersion?: number,
+  expectedVersion?: number
 ): Promise<DossierRow> {
   const db = getPgDb();
 
   const [before] = await db.select().from(payerDossier).where(eq(payerDossier.id, id));
-  if (!before) throw Object.assign(new Error("Dossier not found"), { statusCode: 404 });
+  if (!before) throw Object.assign(new Error('Dossier not found'), { statusCode: 404 });
 
   if (expectedVersion !== undefined && before.version !== expectedVersion) {
-    throw Object.assign(new Error("CONCURRENCY_CONFLICT"), { statusCode: 409 });
+    throw Object.assign(new Error('CONCURRENCY_CONFLICT'), { statusCode: 409 });
   }
 
   const [updated] = await db
@@ -127,11 +135,11 @@ export async function updateDossier(
   await db.insert(payerAuditEvent).values({
     id: randomUUID(),
     tenantId: before.tenantId,
-    actorType: actor ? "user" : "system",
-    actorId: actor ?? "system",
-    entityType: "dossier",
+    actorType: actor ? 'user' : 'system',
+    actorId: actor ?? 'system',
+    entityType: 'dossier',
     entityId: id,
-    action: "update",
+    action: 'update',
     beforeJson: before,
     afterJson: updated,
     reason,
@@ -142,9 +150,7 @@ export async function updateDossier(
 
 /* ── Onboarding Task CRUD ───────────────────────────────── */
 
-export async function listOnboardingTasks(
-  dossierId: string,
-): Promise<OnboardingTaskRow[]> {
+export async function listOnboardingTasks(dossierId: string): Promise<OnboardingTaskRow[]> {
   const db = getPgDb();
   return db
     .select()
@@ -160,9 +166,9 @@ export async function findOnboardingTaskById(id: string): Promise<OnboardingTask
 }
 
 export async function insertOnboardingTask(
-  data: Omit<OnboardingTaskInsert, "id" | "createdAt" | "updatedAt">,
+  data: Omit<OnboardingTaskInsert, 'id' | 'createdAt' | 'updatedAt'>,
   reason: string,
-  actor?: string,
+  actor?: string
 ): Promise<OnboardingTaskRow> {
   const db = getPgDb();
   const id = `otask_${randomUUID().slice(0, 12)}`;
@@ -175,12 +181,12 @@ export async function insertOnboardingTask(
 
   await db.insert(payerAuditEvent).values({
     id: randomUUID(),
-    tenantId: data.tenantId ?? "default",
-    actorType: actor ? "user" : "system",
-    actorId: actor ?? "system",
-    entityType: "onboarding_task",
+    tenantId: data.tenantId ?? 'default',
+    actorType: actor ? 'user' : 'system',
+    actorId: actor ?? 'system',
+    entityType: 'onboarding_task',
     entityId: id,
-    action: "create",
+    action: 'create',
     beforeJson: null,
     afterJson: created,
     reason,
@@ -194,15 +200,18 @@ export async function updateOnboardingTask(
   updates: Partial<OnboardingTaskInsert>,
   reason: string,
   actor?: string,
-  expectedVersion?: number,
+  expectedVersion?: number
 ): Promise<OnboardingTaskRow> {
   const db = getPgDb();
 
-  const [before] = await db.select().from(payerOnboardingTask).where(eq(payerOnboardingTask.id, id));
-  if (!before) throw Object.assign(new Error("Onboarding task not found"), { statusCode: 404 });
+  const [before] = await db
+    .select()
+    .from(payerOnboardingTask)
+    .where(eq(payerOnboardingTask.id, id));
+  if (!before) throw Object.assign(new Error('Onboarding task not found'), { statusCode: 404 });
 
   if (expectedVersion !== undefined && before.version !== expectedVersion) {
-    throw Object.assign(new Error("CONCURRENCY_CONFLICT"), { statusCode: 409 });
+    throw Object.assign(new Error('CONCURRENCY_CONFLICT'), { statusCode: 409 });
   }
 
   const [updated] = await db
@@ -218,11 +227,11 @@ export async function updateOnboardingTask(
   await db.insert(payerAuditEvent).values({
     id: randomUUID(),
     tenantId: before.tenantId,
-    actorType: actor ? "user" : "system",
-    actorId: actor ?? "system",
-    entityType: "onboarding_task",
+    actorType: actor ? 'user' : 'system',
+    actorId: actor ?? 'system',
+    entityType: 'onboarding_task',
     entityId: id,
-    action: "update",
+    action: 'update',
     beforeJson: before,
     afterJson: updated,
     reason,
@@ -234,13 +243,13 @@ export async function updateOnboardingTask(
 export async function completeOnboardingTask(
   id: string,
   reason: string,
-  actor: string,
+  actor: string
 ): Promise<OnboardingTaskRow> {
   return updateOnboardingTask(
     id,
-    { status: "completed", completedAt: new Date(), completedBy: actor },
+    { status: 'completed', completedAt: new Date(), completedBy: actor },
     reason,
-    actor,
+    actor
   );
 }
 
@@ -254,7 +263,7 @@ export async function refreshCompletenessScore(dossierId: string): Promise<numbe
   const tasks = await listOnboardingTasks(dossierId);
   if (tasks.length === 0) return 0;
 
-  const completed = tasks.filter(t => t.status === "completed").length;
+  const completed = tasks.filter((t) => t.status === 'completed').length;
   const score = Math.round((completed / tasks.length) * 100);
 
   const db = getPgDb();
@@ -268,23 +277,70 @@ export async function refreshCompletenessScore(dossierId: string): Promise<numbe
 
 /* ── Seed default onboarding tasks for a connector type ─── */
 
-const DEFAULT_ONBOARDING_TASKS: Record<string, Array<{ taskType: string; title: string; description: string }>> = {
+const DEFAULT_ONBOARDING_TASKS: Record<
+  string,
+  Array<{ taskType: string; title: string; description: string }>
+> = {
   clearinghouse_edi: [
-    { taskType: "credentials", title: "Obtain EDI credentials", description: "Request payer ID + submitter ID from clearinghouse" },
-    { taskType: "enrollment", title: "Complete payer enrollment", description: "Submit enrollment form via clearinghouse portal" },
-    { taskType: "test_claim", title: "Submit test claim", description: "Send a test 837P and verify 999 acknowledgement" },
-    { taskType: "go_live", title: "Go-live approval", description: "Confirm production readiness with ops team" },
+    {
+      taskType: 'credentials',
+      title: 'Obtain EDI credentials',
+      description: 'Request payer ID + submitter ID from clearinghouse',
+    },
+    {
+      taskType: 'enrollment',
+      title: 'Complete payer enrollment',
+      description: 'Submit enrollment form via clearinghouse portal',
+    },
+    {
+      taskType: 'test_claim',
+      title: 'Submit test claim',
+      description: 'Send a test 837P and verify 999 acknowledgement',
+    },
+    {
+      taskType: 'go_live',
+      title: 'Go-live approval',
+      description: 'Confirm production readiness with ops team',
+    },
   ],
   government_portal: [
-    { taskType: "credentials", title: "Obtain portal credentials", description: "Register facility and get API credentials" },
-    { taskType: "facility_setup", title: "Complete facility setup", description: "Configure facility code and provider details" },
-    { taskType: "test_submission", title: "Submit test claim", description: "Submit claim in test mode and verify response" },
-    { taskType: "go_live", title: "Go-live approval", description: "Enable production submission after verification" },
+    {
+      taskType: 'credentials',
+      title: 'Obtain portal credentials',
+      description: 'Register facility and get API credentials',
+    },
+    {
+      taskType: 'facility_setup',
+      title: 'Complete facility setup',
+      description: 'Configure facility code and provider details',
+    },
+    {
+      taskType: 'test_submission',
+      title: 'Submit test claim',
+      description: 'Submit claim in test mode and verify response',
+    },
+    {
+      taskType: 'go_live',
+      title: 'Go-live approval',
+      description: 'Enable production submission after verification',
+    },
   ],
   manual: [
-    { taskType: "contacts", title: "Collect payer contacts", description: "Gather submission contacts and claim addresses" },
-    { taskType: "forms", title: "Prepare claim forms", description: "Download and configure required claim form templates" },
-    { taskType: "test_submission", title: "Submit test claim", description: "Mail/fax a test claim and track response" },
+    {
+      taskType: 'contacts',
+      title: 'Collect payer contacts',
+      description: 'Gather submission contacts and claim addresses',
+    },
+    {
+      taskType: 'forms',
+      title: 'Prepare claim forms',
+      description: 'Download and configure required claim form templates',
+    },
+    {
+      taskType: 'test_submission',
+      title: 'Submit test claim',
+      description: 'Mail/fax a test claim and track response',
+    },
   ],
 };
 
@@ -297,7 +353,7 @@ export async function seedOnboardingTasks(
   integrationMode: string,
   tenantId: string,
   payerId: string,
-  actor?: string,
+  actor?: string
 ): Promise<OnboardingTaskRow[]> {
   const existing = await listOnboardingTasks(dossierId);
   if (existing.length > 0) return existing;
@@ -315,11 +371,11 @@ export async function seedOnboardingTasks(
         taskType: t.taskType,
         title: t.title,
         description: t.description,
-        status: "pending",
+        status: 'pending',
         sortOrder: i + 1,
       },
       `Seeded from ${integrationMode} template`,
-      actor,
+      actor
     );
     tasks.push(created);
   }

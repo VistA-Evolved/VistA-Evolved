@@ -8,9 +8,9 @@
  * Message content never appears in logs.
  */
 
-import { log } from "../../lib/logger.js";
-import type { TransformStep, TransformResult } from "./types.js";
-import { HL7_SEGMENT_SEP } from "../types.js";
+import { log } from '../../lib/logger.js';
+import type { TransformStep, TransformResult } from './types.js';
+import { HL7_SEGMENT_SEP } from '../types.js';
 
 /**
  * Run the transform pipeline on a message.
@@ -19,10 +19,7 @@ import { HL7_SEGMENT_SEP } from "../types.js";
  * @param steps - Ordered transform steps
  * @returns Transform result with modified message text
  */
-export function runTransformPipeline(
-  messageText: string,
-  steps: TransformStep[],
-): TransformResult {
+export function runTransformPipeline(messageText: string, steps: TransformStep[]): TransformResult {
   let current = messageText;
   const appliedSteps: string[] = [];
   const skippedSteps: string[] = [];
@@ -47,8 +44,8 @@ export function runTransformPipeline(
   }
 
   if (appliedSteps.length > 0) {
-    log.info("HL7 transforms applied", {
-      component: "hl7-transform",
+    log.info('HL7 transforms applied', {
+      component: 'hl7-transform',
       applied: appliedSteps,
       skipped: skippedSteps,
     });
@@ -74,18 +71,18 @@ interface StepResult {
 
 function applyStep(text: string, step: TransformStep): StepResult {
   switch (step.op) {
-    case "remove-segment":
+    case 'remove-segment':
       return removeSegment(text, step.params);
-    case "filter-segments":
+    case 'filter-segments':
       return filterSegments(text, step.params);
-    case "set-field":
+    case 'set-field':
       return setField(text, step.params);
-    case "replace-value":
+    case 'replace-value':
       return replaceValue(text, step.params);
-    case "copy-field":
+    case 'copy-field':
       return copyField(text, step.params);
-    case "custom":
-      return { text, applied: false, warning: "Custom transforms not yet implemented" };
+    case 'custom':
+      return { text, applied: false, warning: 'Custom transforms not yet implemented' };
     default:
       return { text, applied: false, warning: `Unknown op: ${step.op}` };
   }
@@ -97,10 +94,10 @@ function applyStep(text: string, step: TransformStep): StepResult {
  */
 function removeSegment(text: string, params: Record<string, unknown>): StepResult {
   const segName = params.segmentName as string;
-  if (!segName) return { text, applied: false, warning: "Missing segmentName param" };
+  if (!segName) return { text, applied: false, warning: 'Missing segmentName param' };
 
   const segments = text.split(HL7_SEGMENT_SEP);
-  const filtered = segments.filter((s) => !s.startsWith(segName + "|") && s !== segName);
+  const filtered = segments.filter((s) => !s.startsWith(segName + '|') && s !== segName);
   const newText = filtered.join(HL7_SEGMENT_SEP);
   const removed = segments.length - filtered.length;
 
@@ -117,12 +114,12 @@ function removeSegment(text: string, params: Record<string, unknown>): StepResul
  */
 function filterSegments(text: string, params: Record<string, unknown>): StepResult {
   const keep = new Set(params.keep as string[]);
-  if (keep.size === 0) return { text, applied: false, warning: "Empty keep list" };
-  keep.add("MSH"); // Always keep MSH
+  if (keep.size === 0) return { text, applied: false, warning: 'Empty keep list' };
+  keep.add('MSH'); // Always keep MSH
 
   const segments = text.split(HL7_SEGMENT_SEP);
   const filtered = segments.filter((s) => {
-    const name = s.split("|")[0] || "";
+    const name = s.split('|')[0] || '';
     return keep.has(name);
   });
 
@@ -142,20 +139,20 @@ function setField(text: string, params: Record<string, unknown>): StepResult {
   const value = params.value as string;
 
   if (!segName || fieldIdx === undefined || value === undefined) {
-    return { text, applied: false, warning: "Missing params for set-field" };
+    return { text, applied: false, warning: 'Missing params for set-field' };
   }
 
   const segments = text.split(HL7_SEGMENT_SEP);
   let applied = false;
 
   const updated = segments.map((seg) => {
-    if (!seg.startsWith(segName + "|")) return seg;
-    const fields = seg.split("|");
+    if (!seg.startsWith(segName + '|')) return seg;
+    const fields = seg.split('|');
     if (fieldIdx < fields.length) {
       fields[fieldIdx] = value;
       applied = true;
     }
-    return fields.join("|");
+    return fields.join('|');
   });
 
   return { text: updated.join(HL7_SEGMENT_SEP), applied };
@@ -169,17 +166,17 @@ function replaceValue(text: string, params: Record<string, unknown>): StepResult
   const find = params.find as string;
   const replace = params.replace as string;
 
-  if (!find) return { text, applied: false, warning: "Missing find param" };
+  if (!find) return { text, applied: false, warning: 'Missing find param' };
 
   const segFilter = params.segmentName as string | undefined;
   const segments = text.split(HL7_SEGMENT_SEP);
   let applied = false;
 
   const updated = segments.map((seg) => {
-    if (segFilter && !seg.startsWith(segFilter + "|")) return seg;
+    if (segFilter && !seg.startsWith(segFilter + '|')) return seg;
     if (seg.includes(find)) {
       applied = true;
-      return seg.replaceAll(find, replace ?? "");
+      return seg.replaceAll(find, replace ?? '');
     }
     return seg;
   });
@@ -198,32 +195,33 @@ function copyField(text: string, params: Record<string, unknown>): StepResult {
   const toField = params.toField as number;
 
   if (!fromSeg || !toSeg || fromField === undefined || toField === undefined) {
-    return { text, applied: false, warning: "Missing params for copy-field" };
+    return { text, applied: false, warning: 'Missing params for copy-field' };
   }
 
   const segments = text.split(HL7_SEGMENT_SEP);
 
   // Find source value
-  let sourceValue = "";
+  let sourceValue = '';
   for (const seg of segments) {
-    if (seg.startsWith(fromSeg + "|")) {
-      const fields = seg.split("|");
-      sourceValue = fields[fromField] || "";
+    if (seg.startsWith(fromSeg + '|')) {
+      const fields = seg.split('|');
+      sourceValue = fields[fromField] || '';
       break;
     }
   }
 
-  if (!sourceValue) return { text, applied: false, warning: `Source ${fromSeg}-${fromField} empty` };
+  if (!sourceValue)
+    return { text, applied: false, warning: `Source ${fromSeg}-${fromField} empty` };
 
   // Set target value
   let applied = false;
   const updated = segments.map((seg) => {
-    if (!seg.startsWith(toSeg + "|")) return seg;
-    const fields = seg.split("|");
-    while (fields.length <= toField) fields.push("");
+    if (!seg.startsWith(toSeg + '|')) return seg;
+    const fields = seg.split('|');
+    while (fields.length <= toField) fields.push('');
     fields[toField] = sourceValue;
     applied = true;
-    return fields.join("|");
+    return fields.join('|');
   });
 
   return { text: updated.join(HL7_SEGMENT_SEP), applied };

@@ -7,10 +7,10 @@ portal-to-clinic messaging posture that bridges to MailMan when available.
 
 ## VistA RPCs Used
 
-| RPC | Routine | Auth | Purpose |
-|-----|---------|------|---------|
-| `DSIC SEND MAIL MSG` | DSICXM.m | AGREEMENT | Send message via XMXAPI |
-| `ORQQXMB MAIL GROUPS` | ORQQXQA.m | RESTRICTED | List mail groups |
+| RPC                   | Routine   | Auth       | Purpose                 |
+| --------------------- | --------- | ---------- | ----------------------- |
+| `DSIC SEND MAIL MSG`  | DSICXM.m  | AGREEMENT  | Send message via XMXAPI |
+| `ORQQXMB MAIL GROUPS` | ORQQXQA.m | RESTRICTED | List mail groups        |
 
 ### Read-Inbox Gap
 
@@ -68,33 +68,33 @@ Recipients support prefixes: plain DUZ, `G.groupname`, `I:DUZ` (info copy),
 
 ## API Endpoints
 
-| Method | Path | Auth | Purpose |
-|--------|------|------|---------|
-| GET | `/messaging/inbox` | session | Clinician inbox |
-| GET | `/messaging/sent` | session | Clinician sent |
-| GET | `/messaging/message/:id` | session | Read message |
-| GET | `/messaging/thread/:threadId` | session | Thread view |
-| POST | `/messaging/message/:id/read` | session | Mark as read |
-| POST | `/messaging/compose` | session | Compose + send |
-| GET | `/messaging/mail-groups` | session | List mail groups |
-| POST | `/messaging/portal/send` | none* | Portal send |
-| GET | `/messaging/portal/inbox` | none* | Portal inbox |
-| GET | `/messaging/health` | session | Service health |
+| Method | Path                          | Auth    | Purpose          |
+| ------ | ----------------------------- | ------- | ---------------- |
+| GET    | `/messaging/inbox`            | session | Clinician inbox  |
+| GET    | `/messaging/sent`             | session | Clinician sent   |
+| GET    | `/messaging/message/:id`      | session | Read message     |
+| GET    | `/messaging/thread/:threadId` | session | Thread view      |
+| POST   | `/messaging/message/:id/read` | session | Mark as read     |
+| POST   | `/messaging/compose`          | session | Compose + send   |
+| GET    | `/messaging/mail-groups`      | session | List mail groups |
+| POST   | `/messaging/portal/send`      | none\*  | Portal send      |
+| GET    | `/messaging/portal/inbox`     | none\*  | Portal inbox     |
+| GET    | `/messaging/health`           | session | Service health   |
 
-*Portal routes perform own session validation in handler.
+\*Portal routes perform own session validation in handler.
 
 ## Files Changed
 
-| File | Change |
-|------|--------|
-| `apps/api/src/services/secure-messaging.ts` | NEW -- core service |
-| `apps/api/src/routes/messaging/index.ts` | NEW -- 10 endpoints |
-| `apps/api/src/lib/immutable-audit.ts` | EDIT -- 3 audit actions |
-| `apps/api/src/middleware/security.ts` | EDIT -- 2 AUTH_RULES |
-| `apps/api/src/index.ts` | EDIT -- wire routes |
-| `apps/web/src/app/cprs/messages/page.tsx` | NEW -- clinician UI |
-| `apps/portal/src/app/dashboard/messages/page.tsx` | EDIT -- MailMan bridge |
-| `config/capabilities.json` | EDIT -- 5 capabilities |
+| File                                              | Change                  |
+| ------------------------------------------------- | ----------------------- |
+| `apps/api/src/services/secure-messaging.ts`       | NEW -- core service     |
+| `apps/api/src/routes/messaging/index.ts`          | NEW -- 10 endpoints     |
+| `apps/api/src/lib/immutable-audit.ts`             | EDIT -- 3 audit actions |
+| `apps/api/src/middleware/security.ts`             | EDIT -- 2 AUTH_RULES    |
+| `apps/api/src/index.ts`                           | EDIT -- wire routes     |
+| `apps/web/src/app/cprs/messages/page.tsx`         | NEW -- clinician UI     |
+| `apps/portal/src/app/dashboard/messages/page.tsx` | EDIT -- MailMan bridge  |
+| `config/capabilities.json`                        | EDIT -- 5 capabilities  |
 
 ## Migration Path
 

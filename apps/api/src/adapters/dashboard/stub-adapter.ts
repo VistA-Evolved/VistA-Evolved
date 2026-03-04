@@ -12,12 +12,12 @@ import type {
   RuleEvaluation,
   ClinicalAlert,
   PatientList,
-} from "./interface.js";
+} from './interface.js';
 
 const PENDING = <T>(): DashboardResult<T> => ({
   ok: false,
   pending: true,
-  error: "Dashboard service not configured -- using stub adapter",
+  error: 'Dashboard service not configured -- using stub adapter',
 });
 
 export class StubDashboardAdapter implements DashboardAdapter {
@@ -38,6 +38,6 @@ export class StubDashboardAdapter implements DashboardAdapter {
   }
 
   async health() {
-    return { status: "stub" as const, detail: "Stub adapter active" };
+    return { status: 'stub' as const, detail: 'Stub adapter active' };
   }
 }

@@ -9,14 +9,10 @@
  * with target RPC documentation.
  */
 
-import { getPhHmo, initPhHmoRegistry } from "../payers/ph-hmo-registry.js";
-import { createLoaRequestPacket } from "../payers/ph-hmo-adapter.js";
-import {
-  createLoaRequest,
-  getLoaRequest,
-  transitionLoa,
-} from "./loa-store.js";
-import type { LoaRequest, LoaSubmissionMode } from "./loa-types.js";
+import { getPhHmo, initPhHmoRegistry } from '../payers/ph-hmo-registry.js';
+import { createLoaRequestPacket } from '../payers/ph-hmo-adapter.js';
+import { createLoaRequest, getLoaRequest, transitionLoa } from './loa-store.js';
+import type { LoaRequest, LoaSubmissionMode } from './loa-types.js';
 
 /* ── Ensure registry loaded ─────────────────────────────────── */
 
@@ -38,43 +34,43 @@ export function resolveSubmissionMode(payerId: string): {
   ensureRegistry();
   const hmo = getPhHmo(payerId);
   if (!hmo) {
-    return { mode: "manual", instructions: ["Unknown payer -- use manual submission"] };
+    return { mode: 'manual', instructions: ['Unknown payer -- use manual submission'] };
   }
 
-  if (hmo.integrationMode === "portal") {
-    const portalEvidence = hmo.evidence.find(e => e.kind === "provider_portal");
+  if (hmo.integrationMode === 'portal') {
+    const portalEvidence = hmo.evidence.find((e) => e.kind === 'provider_portal');
     return {
-      mode: "portal",
+      mode: 'portal',
       portalUrl: portalEvidence?.url,
       instructions: [
-        `Open provider portal: ${portalEvidence?.url ?? "URL not available"}`,
-        "Log in with facility credentials (NOT stored in system)",
-        "Navigate to LOA / Letter of Authorization section",
-        "Fill in required fields from LOA packet",
-        "Submit and record the LOA reference number",
+        `Open provider portal: ${portalEvidence?.url ?? 'URL not available'}`,
+        'Log in with facility credentials (NOT stored in system)',
+        'Navigate to LOA / Letter of Authorization section',
+        'Fill in required fields from LOA packet',
+        'Submit and record the LOA reference number',
       ],
     };
   }
 
-  if (hmo.integrationMode === "email") {
+  if (hmo.integrationMode === 'email') {
     return {
-      mode: "email",
+      mode: 'email',
       instructions: [
         `Prepare email to ${hmo.legalName}`,
-        "Attach LOA packet with all required fields",
-        "Include clinical justification documents",
-        "Send and track response",
+        'Attach LOA packet with all required fields',
+        'Include clinical justification documents',
+        'Send and track response',
       ],
     };
   }
 
   return {
-    mode: "manual",
+    mode: 'manual',
     instructions: [
       `Contact ${hmo.legalName} through their designated channel`,
-      "Provide all required fields from LOA packet",
-      "Request LOA reference number",
-      "Document response in system",
+      'Provide all required fields from LOA packet',
+      'Request LOA reference number',
+      'Document response in system',
     ],
   };
 }
@@ -87,8 +83,8 @@ export function createLoaWithPayerDefaults(params: {
   patientName?: string;
   encounterDate: string;
   encounterIen?: string;
-  diagnosisCodes?: LoaRequest["diagnosisCodes"];
-  procedureCodes?: LoaRequest["procedureCodes"];
+  diagnosisCodes?: LoaRequest['diagnosisCodes'];
+  procedureCodes?: LoaRequest['procedureCodes'];
   providerName?: string;
   providerDuz?: string;
   facilityName?: string;
@@ -118,7 +114,7 @@ export function generateLoaPacketForRequest(loaId: string): {
   error?: string;
 } {
   const loa = getLoaRequest(loaId);
-  if (!loa) return { ok: false, instructions: [], error: "LOA request not found" };
+  if (!loa) return { ok: false, instructions: [], error: 'LOA request not found' };
 
   ensureRegistry();
   const packet = createLoaRequestPacket(loa.payerId);
@@ -137,12 +133,8 @@ export function generateLoaPacketForRequest(loaId: string): {
 
 /* ── Submit LOA (transition + audit) ────────────────────────── */
 
-export function submitLoa(
-  loaId: string,
-  actor: string,
-  detail?: string,
-): LoaRequest {
-  return transitionLoa(loaId, "submitted", actor, detail ?? "LOA submitted to payer");
+export function submitLoa(loaId: string, actor: string, detail?: string): LoaRequest {
+  return transitionLoa(loaId, 'submitted', actor, detail ?? 'LOA submitted to payer');
 }
 
 /* ── Record payer response ──────────────────────────────────── */
@@ -152,21 +144,17 @@ export function recordLoaApproval(
   loaReferenceNumber: string,
   approvedDate: string,
   expirationDate: string | undefined,
-  actor: string,
+  actor: string
 ): LoaRequest {
-  return transitionLoa(loaId, "approved", actor, `Approved: ${loaReferenceNumber}`, {
+  return transitionLoa(loaId, 'approved', actor, `Approved: ${loaReferenceNumber}`, {
     loaReferenceNumber,
     approvedDate,
     expirationDate,
   });
 }
 
-export function recordLoaDenial(
-  loaId: string,
-  denialReason: string,
-  actor: string,
-): LoaRequest {
-  return transitionLoa(loaId, "denied", actor, `Denied: ${denialReason}`, {
+export function recordLoaDenial(loaId: string, denialReason: string, actor: string): LoaRequest {
+  return transitionLoa(loaId, 'denied', actor, `Denied: ${denialReason}`, {
     denialReason,
   });
 }

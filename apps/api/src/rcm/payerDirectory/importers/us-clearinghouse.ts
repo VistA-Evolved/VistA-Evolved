@@ -15,7 +15,7 @@
  *   US-NETWORK-AVAILITY, US-CLEARINGHOUSE-OFFICEALLY
  */
 
-import type { PayerImporter, ImportResult, DirectoryPayer, RegulatorySource } from '../types.js';
+import type { PayerImporter, ImportResult, DirectoryPayer } from '../types.js';
 
 const NOW = () => new Date().toISOString();
 
@@ -28,18 +28,21 @@ function buildNetworkEntities(now: string): DirectoryPayer[] {
       displayName: 'Availity Health Information Network',
       country: 'US',
       payerType: 'NETWORK',
-      channels: [{
-        type: 'EDI_CLEARINGHOUSE',
-        connectorId: 'availity',
-        endpoint: 'https://apps.availity.com',
-        notes: 'Availity EDI gateway — routes to 2000+ US payers',
-      }],
+      channels: [
+        {
+          type: 'EDI_CLEARINGHOUSE',
+          connectorId: 'availity',
+          endpoint: 'https://apps.availity.com',
+          notes: 'Availity EDI gateway — routes to 2000+ US payers',
+        },
+      ],
       supportedTransactions: ['837P', '837I', '835', '270', '271', '276', '277', '278', '999'],
       payerIdsByNetwork: { availityPayerId: 'AVAILITY' },
       integrationMode: 'clearinghouse_edi',
       status: 'active',
       category: 'network',
-      notes: 'Gateway for US EDI transactions. Individual payer IDs resolved via Availity payer directory.',
+      notes:
+        'Gateway for US EDI transactions. Individual payer IDs resolved via Availity payer directory.',
       createdAt: now,
       updatedAt: now,
     },
@@ -48,12 +51,14 @@ function buildNetworkEntities(now: string): DirectoryPayer[] {
       displayName: 'Office Ally Clearinghouse',
       country: 'US',
       payerType: 'CLEARINGHOUSE',
-      channels: [{
-        type: 'EDI_CLEARINGHOUSE',
-        connectorId: 'officeally',
-        endpoint: 'https://pm.officeally.com',
-        notes: 'Office Ally EDI — free-tier clearinghouse for small practices',
-      }],
+      channels: [
+        {
+          type: 'EDI_CLEARINGHOUSE',
+          connectorId: 'officeally',
+          endpoint: 'https://pm.officeally.com',
+          notes: 'Office Ally EDI — free-tier clearinghouse for small practices',
+        },
+      ],
       supportedTransactions: ['837P', '837I', '835', '270', '271', '276', '277', '999'],
       payerIdsByNetwork: { officeAllyPayerId: 'OFFICEALLY' },
       integrationMode: 'clearinghouse_edi',
@@ -68,12 +73,14 @@ function buildNetworkEntities(now: string): DirectoryPayer[] {
       displayName: 'Stedi EDI Platform',
       country: 'US',
       payerType: 'CLEARINGHOUSE',
-      channels: [{
-        type: 'EDI_CLEARINGHOUSE',
-        connectorId: 'stedi',
-        endpoint: 'https://api.stedi.com',
-        notes: 'Stedi API-first EDI platform',
-      }],
+      channels: [
+        {
+          type: 'EDI_CLEARINGHOUSE',
+          connectorId: 'stedi',
+          endpoint: 'https://api.stedi.com',
+          notes: 'Stedi API-first EDI platform',
+        },
+      ],
       supportedTransactions: ['837P', '837I', '835', '270', '271', '276', '277', '278', '999'],
       payerIdsByNetwork: { stediPayerId: 'STEDI' },
       integrationMode: 'clearinghouse_edi',
@@ -177,19 +184,25 @@ interface ClearinghousePayerRow {
 }
 
 function parseCSV(csv: string): ClearinghousePayerRow[] {
-  const lines = csv.split('\n').filter(l => l.trim().length > 0);
+  const lines = csv.split('\n').filter((l) => l.trim().length > 0);
   if (lines.length < 2) return [];
 
-  const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
-  return lines.slice(1).map(line => {
-    const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
+  const headers = lines[0].split(',').map((h) => h.trim().replace(/"/g, ''));
+  return lines.slice(1).map((line) => {
+    const values = line.split(',').map((v) => v.trim().replace(/"/g, ''));
     const row: Record<string, string> = {};
-    headers.forEach((h, i) => { row[h] = values[i] ?? ''; });
+    headers.forEach((h, i) => {
+      row[h] = values[i] ?? '';
+    });
     return row as unknown as ClearinghousePayerRow;
   });
 }
 
-function rowToDirectoryPayer(row: ClearinghousePayerRow, networkId: string, now: string): DirectoryPayer | null {
+function rowToDirectoryPayer(
+  row: ClearinghousePayerRow,
+  networkId: string,
+  now: string
+): DirectoryPayer | null {
   const id = row.payerId ?? row.payer_id;
   const name = row.name ?? row.payer_name;
   if (!id || !name) return null;
@@ -204,11 +217,13 @@ function rowToDirectoryPayer(row: ClearinghousePayerRow, networkId: string, now:
     displayName: name,
     country: 'US',
     payerType: 'PRIVATE',
-    channels: [{
-      type: 'EDI_CLEARINGHOUSE',
-      connectorId: networkId,
-      receiverId: row.receiverId ?? row.receiver_id,
-    }],
+    channels: [
+      {
+        type: 'EDI_CLEARINGHOUSE',
+        connectorId: networkId,
+        receiverId: row.receiverId ?? row.receiver_id,
+      },
+    ],
     supportedTransactions: ['837P', '835', '270', '271', '999'],
     payerIdsByNetwork: netIds,
     integrationMode: 'clearinghouse_edi',
@@ -259,7 +274,7 @@ export const usClearinghouseImporter: PayerImporter = {
     }
 
     const payers = rows
-      .map(r => rowToDirectoryPayer(r, 'clearinghouse', now))
+      .map((r) => rowToDirectoryPayer(r, 'clearinghouse', now))
       .filter((p): p is DirectoryPayer => p !== null);
 
     return {
@@ -288,7 +303,7 @@ export const usAvailityImporter: PayerImporter = {
     return {
       importerId: this.id,
       country: 'US',
-      payers: buildNetworkEntities(now).filter(p => p.payerId === 'US-NETWORK-AVAILITY'),
+      payers: buildNetworkEntities(now).filter((p) => p.payerId === 'US-NETWORK-AVAILITY'),
       source: { authority: 'Availity', documentTitle: 'Availity network entity seed' },
       importedAt: now,
       errors: [],
@@ -312,7 +327,7 @@ export const usAvailityImporter: PayerImporter = {
     }
 
     const payers = rows
-      .map(r => rowToDirectoryPayer(r, 'availity', now))
+      .map((r) => rowToDirectoryPayer(r, 'availity', now))
       .filter((p): p is DirectoryPayer => p !== null);
 
     return {
@@ -342,7 +357,7 @@ export const usOfficeAllyImporter: PayerImporter = {
     return {
       importerId: this.id,
       country: 'US',
-      payers: buildNetworkEntities(now).filter(p => p.payerId === 'US-CLEARINGHOUSE-OFFICEALLY'),
+      payers: buildNetworkEntities(now).filter((p) => p.payerId === 'US-CLEARINGHOUSE-OFFICEALLY'),
       source: { authority: 'Office Ally', documentTitle: 'Office Ally network entity seed' },
       importedAt: now,
       errors: [],
@@ -366,7 +381,7 @@ export const usOfficeAllyImporter: PayerImporter = {
     }
 
     const payers = rows
-      .map(r => rowToDirectoryPayer(r, 'officeally', now))
+      .map((r) => rowToDirectoryPayer(r, 'officeally', now))
       .filter((p): p is DirectoryPayer => p !== null);
 
     return {

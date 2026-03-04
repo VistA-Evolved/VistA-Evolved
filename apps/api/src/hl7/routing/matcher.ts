@@ -5,9 +5,9 @@
  * Evaluates all enabled routes in priority order and returns matches.
  */
 
-import type { Hl7Message } from "../types.js";
-import type { Hl7Route, RouteFilter } from "./types.js";
-import { listEnabledRoutes, recordMatch } from "./registry.js";
+import type { Hl7Message } from '../types.js';
+import type { Hl7Route, RouteFilter } from './types.js';
+import { listEnabledRoutes, recordMatch } from './registry.js';
 
 /**
  * Find all routes that match a given message.
@@ -84,18 +84,18 @@ export function matchesFilter(message: Hl7Message, filter: RouteFilter): boolean
  * Supports exact match ("ADT^A01") and wildcard ("ADT^*", "ADT").
  */
 function matchMessageType(messageType: string, pattern: string): boolean {
-  if (pattern === "*") return true;
+  if (pattern === '*') return true;
   if (pattern === messageType) return true;
 
   // Wildcard: "ADT^*" matches "ADT^A01", "ADT^A02", etc.
-  if (pattern.endsWith("^*")) {
+  if (pattern.endsWith('^*')) {
     const prefix = pattern.slice(0, -2);
-    return messageType.startsWith(prefix + "^");
+    return messageType.startsWith(prefix + '^');
   }
 
   // Partial: "ADT" matches "ADT^A01"
-  if (!pattern.includes("^")) {
-    return messageType.startsWith(pattern + "^") || messageType === pattern;
+  if (!pattern.includes('^')) {
+    return messageType.startsWith(pattern + '^') || messageType === pattern;
   }
 
   return false;

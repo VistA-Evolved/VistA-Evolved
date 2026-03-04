@@ -10,37 +10,49 @@
  * Usage:
  *   node scripts/rcm/rcm-readiness-scan.mjs
  */
-import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
-import { join, basename } from "node:path";
-import { createHash } from "node:crypto";
+import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { join, basename } from 'node:path';
+import { createHash } from 'node:crypto';
 
-const ROOT = new URL("../../", import.meta.url).pathname.replace(/^\/([A-Z]:)/, "$1");
+const ROOT = new URL('../../', import.meta.url).pathname.replace(/^\/([A-Z]:)/, '$1');
 
 /* ── Helpers ─────────────────────────────────────────────────── */
 
 function readSafe(p) {
-  try { return readFileSync(p, "utf-8"); } catch { return ""; }
+  try {
+    return readFileSync(p, 'utf-8');
+  } catch {
+    return '';
+  }
 }
 
-function fileExists(p) { return existsSync(p); }
+function fileExists(p) {
+  return existsSync(p);
+}
 
 function listDir(p) {
-  try { return readdirSync(p, { withFileTypes: true }); } catch { return []; }
+  try {
+    return readdirSync(p, { withFileTypes: true });
+  } catch {
+    return [];
+  }
 }
 
 /* ── Scan connectors ─────────────────────────────────────────── */
 
 function scanConnectors() {
-  const dir = join(ROOT, "apps/api/src/rcm/connectors");
-  const entries = listDir(dir).filter(d => d.isFile() && d.name.endsWith(".ts") && d.name !== "types.ts");
+  const dir = join(ROOT, 'apps/api/src/rcm/connectors');
+  const entries = listDir(dir).filter(
+    (d) => d.isFile() && d.name.endsWith('.ts') && d.name !== 'types.ts'
+  );
   const connectors = [];
 
   for (const entry of entries) {
     const content = readSafe(join(dir, entry.name));
-    const id = entry.name.replace(/\.ts$/, "");
+    const id = entry.name.replace(/\.ts$/, '');
 
     // Detect implementation status
-    let status = "implemented";
+    let status = 'implemented';
     const hasIntegrationPending = /integration[_-]pending/i.test(content);
     const hasStubReturn = /return\s*\{[^}]*success:\s*false[^}]*feature[-_]flag/i.test(content);
     const hasTodoPlaceholder = /TODO|FIXME|placeholder|scaffold/i.test(content);
@@ -49,13 +61,13 @@ function scanConnectors() {
     const implementsInterface = /implements\s+RcmConnector/i.test(content);
 
     if (!implementsInterface) {
-      status = "helper"; // Not a connector
+      status = 'helper'; // Not a connector
     } else if (hasStubReturn && !hasRealHttpCall) {
-      status = "stub";
+      status = 'stub';
     } else if (hasIntegrationPending) {
-      status = "integration_pending";
+      status = 'integration_pending';
     } else if (hasEnvCreds && !hasRealHttpCall) {
-      status = "needs_credentials";
+      status = 'needs_credentials';
     }
 
     const supportedModes = [];
@@ -84,7 +96,7 @@ function scanConnectors() {
       hasEnvCreds,
       hasRealHttpCall,
       hasTodoPlaceholder,
-      lineCount: content.split("\n").length,
+      lineCount: content.split('\n').length,
     });
   }
 
@@ -94,8 +106,8 @@ function scanConnectors() {
 /* ── Scan payer data ─────────────────────────────────────────── */
 
 function scanPayerData() {
-  const dir = join(ROOT, "data/payers");
-  const files = listDir(dir).filter(d => d.isFile() && d.name.endsWith(".json"));
+  const dir = join(ROOT, 'data/payers');
+  const files = listDir(dir).filter((d) => d.isFile() && d.name.endsWith('.json'));
   const payers = [];
 
   for (const f of files) {
@@ -106,13 +118,15 @@ function scanPayerData() {
       for (const p of list) {
         payers.push({
           id: p.id || p.payerId || f.name,
-          name: p.name || p.canonicalName || "unknown",
-          country: p.country || p.countryCode || "??",
-          integrationMode: p.integrationMode || "not_classified",
+          name: p.name || p.canonicalName || 'unknown',
+          country: p.country || p.countryCode || '??',
+          integrationMode: p.integrationMode || 'not_classified',
           source: `data/payers/${f.name}`,
         });
       }
-    } catch { /* skip malformed */ }
+    } catch {
+      /* skip malformed */
+    }
   }
 
   return payers;
@@ -121,11 +135,11 @@ function scanPayerData() {
 /* ── Scan country packs ──────────────────────────────────────── */
 
 function scanCountryPacks() {
-  const dir = join(ROOT, "country-packs");
+  const dir = join(ROOT, 'country-packs');
   const packs = [];
 
-  for (const d of listDir(dir).filter(e => e.isDirectory())) {
-    const valuesPath = join(dir, d.name, "values.json");
+  for (const d of listDir(dir).filter((e) => e.isDirectory())) {
+    const valuesPath = join(dir, d.name, 'values.json');
     if (!fileExists(valuesPath)) continue;
     try {
       const raw = readSafe(valuesPath);
@@ -133,15 +147,17 @@ function scanCountryPacks() {
       packs.push({
         countryCode: data.countryCode || d.name,
         countryName: data.countryName || d.name,
-        status: data.status || "unknown",
+        status: data.status || 'unknown',
         enabledModules: data.enabledModules || [],
         payerModules: data.payerModules || [],
         featureFlags: data.featureFlags || {},
-        rcmEnabled: (data.enabledModules || []).includes("rcm"),
+        rcmEnabled: (data.enabledModules || []).includes('rcm'),
         x12Enabled: data.featureFlags?.x12_edi_enabled || false,
         philhealthEnabled: data.featureFlags?.philhealth_eclaims || false,
       });
-    } catch { /* skip */ }
+    } catch {
+      /* skip */
+    }
   }
 
   return packs;
@@ -151,14 +167,16 @@ function scanCountryPacks() {
 
 function analyzeReadiness(connectors, payers, packs) {
   const issues = [];
-  const connectorIndex = new Map(connectors.filter(c => c.implementsInterface).map(c => [c.id, c]));
+  const connectorIndex = new Map(
+    connectors.filter((c) => c.implementsInterface).map((c) => [c.id, c])
+  );
 
   // Check: connector claims "implemented" but is clearly a stub
   for (const c of connectors) {
-    if (c.status === "implemented" && c.hasTodoPlaceholder && !c.hasRealHttpCall) {
+    if (c.status === 'implemented' && c.hasTodoPlaceholder && !c.hasRealHttpCall) {
       issues.push({
-        severity: "error",
-        category: "connector-false-positive",
+        severity: 'error',
+        category: 'connector-false-positive',
         id: c.id,
         message: `Connector '${c.id}' marked implemented but has TODO/placeholder markers and no real HTTP calls`,
       });
@@ -168,15 +186,16 @@ function analyzeReadiness(connectors, payers, packs) {
   // Check: country pack enables RCM but no connector strategy
   for (const pack of packs) {
     if (pack.rcmEnabled) {
-      const hasConnector = connectors.some(c =>
-        c.implementsInterface &&
-        (c.id.includes(pack.countryCode.toLowerCase()) ||
-         c.supportedModes.some(m => m.includes(pack.countryCode.toLowerCase())))
+      const hasConnector = connectors.some(
+        (c) =>
+          c.implementsInterface &&
+          (c.id.includes(pack.countryCode.toLowerCase()) ||
+            c.supportedModes.some((m) => m.includes(pack.countryCode.toLowerCase())))
       );
       if (!hasConnector && !pack.x12Enabled && !pack.philhealthEnabled) {
         issues.push({
-          severity: "warning",
-          category: "pack-no-connector",
+          severity: 'warning',
+          category: 'pack-no-connector',
           id: pack.countryCode,
           message: `Country pack '${pack.countryCode}' enables RCM module but no connector strategy found`,
         });
@@ -190,7 +209,7 @@ function analyzeReadiness(connectors, payers, packs) {
 /* ── Generate matrix ─────────────────────────────────────────── */
 
 function generateMatrix() {
-  console.log("=== RCM Readiness Scan (Phase 513) ===\n");
+  console.log('=== RCM Readiness Scan (Phase 513) ===\n');
 
   const connectors = scanConnectors();
   console.log(`Scanned ${connectors.length} connector files`);
@@ -210,44 +229,47 @@ function generateMatrix() {
     wave: 37,
     summary: {
       connectors: {
-        total: connectors.filter(c => c.implementsInterface).length,
-        implemented: connectors.filter(c => c.status === "implemented").length,
-        stub: connectors.filter(c => c.status === "stub").length,
-        integrationPending: connectors.filter(c => c.status === "integration_pending").length,
-        needsCredentials: connectors.filter(c => c.status === "needs_credentials").length,
+        total: connectors.filter((c) => c.implementsInterface).length,
+        implemented: connectors.filter((c) => c.status === 'implemented').length,
+        stub: connectors.filter((c) => c.status === 'stub').length,
+        integrationPending: connectors.filter((c) => c.status === 'integration_pending').length,
+        needsCredentials: connectors.filter((c) => c.status === 'needs_credentials').length,
       },
       payers: {
         total: payers.length,
         byCountry: Object.fromEntries(
           Object.entries(
-            payers.reduce((acc, p) => { acc[p.country] = (acc[p.country] || 0) + 1; return acc; }, {})
+            payers.reduce((acc, p) => {
+              acc[p.country] = (acc[p.country] || 0) + 1;
+              return acc;
+            }, {})
           )
         ),
       },
       countryPacks: {
         total: packs.length,
-        rcmEnabled: packs.filter(p => p.rcmEnabled).length,
+        rcmEnabled: packs.filter((p) => p.rcmEnabled).length,
       },
       issues: {
-        errors: issues.filter(i => i.severity === "error").length,
-        warnings: issues.filter(i => i.severity === "warning").length,
+        errors: issues.filter((i) => i.severity === 'error').length,
+        warnings: issues.filter((i) => i.severity === 'warning').length,
       },
     },
-    connectors: connectors.filter(c => c.implementsInterface),
-    helpers: connectors.filter(c => !c.implementsInterface),
+    connectors: connectors.filter((c) => c.implementsInterface),
+    helpers: connectors.filter((c) => !c.implementsInterface),
     payers,
     countryPacks: packs,
     issues,
   };
 
   // Write JSON
-  const jsonDir = join(ROOT, "data/rcm");
+  const jsonDir = join(ROOT, 'data/rcm');
   if (!existsSync(jsonDir)) mkdirSync(jsonDir, { recursive: true });
-  writeFileSync(join(jsonDir, "rcm-readiness-matrix.json"), JSON.stringify(matrix, null, 2));
-  console.log("Wrote data/rcm/rcm-readiness-matrix.json");
+  writeFileSync(join(jsonDir, 'rcm-readiness-matrix.json'), JSON.stringify(matrix, null, 2));
+  console.log('Wrote data/rcm/rcm-readiness-matrix.json');
 
   // Write markdown
-  const mdDir = join(ROOT, "docs/rcm");
+  const mdDir = join(ROOT, 'docs/rcm');
   if (!existsSync(mdDir)) mkdirSync(mdDir, { recursive: true });
 
   let md = `# RCM Integration Readiness Matrix\n\n`;
@@ -271,14 +293,14 @@ function generateMatrix() {
   md += `| ID | Status | Modes | Transactions | Env Creds | HTTP Calls | Lines |\n`;
   md += `|----|--------|-------|-------------|-----------|------------|-------|\n`;
   for (const c of matrix.connectors) {
-    md += `| ${c.id} | ${c.status} | ${c.supportedModes.join(", ") || "-"} | ${c.supportedTransactions.join(", ") || "-"} | ${c.hasEnvCreds ? "Y" : "N"} | ${c.hasRealHttpCall ? "Y" : "N"} | ${c.lineCount} |\n`;
+    md += `| ${c.id} | ${c.status} | ${c.supportedModes.join(', ') || '-'} | ${c.supportedTransactions.join(', ') || '-'} | ${c.hasEnvCreds ? 'Y' : 'N'} | ${c.hasRealHttpCall ? 'Y' : 'N'} | ${c.lineCount} |\n`;
   }
 
   md += `\n## Country Packs\n\n`;
   md += `| Code | Name | RCM | X12 | PhilHealth | Status |\n`;
   md += `|------|------|-----|-----|------------|--------|\n`;
   for (const p of matrix.countryPacks) {
-    md += `| ${p.countryCode} | ${p.countryName} | ${p.rcmEnabled ? "Y" : "N"} | ${p.x12Enabled ? "Y" : "N"} | ${p.philhealthEnabled ? "Y" : "N"} | ${p.status} |\n`;
+    md += `| ${p.countryCode} | ${p.countryName} | ${p.rcmEnabled ? 'Y' : 'N'} | ${p.x12Enabled ? 'Y' : 'N'} | ${p.philhealthEnabled ? 'Y' : 'N'} | ${p.status} |\n`;
   }
 
   if (issues.length > 0) {
@@ -290,23 +312,23 @@ function generateMatrix() {
     }
   }
 
-  writeFileSync(join(mdDir, "rcm-readiness-matrix.md"), md);
-  console.log("Wrote docs/rcm/rcm-readiness-matrix.md");
+  writeFileSync(join(mdDir, 'rcm-readiness-matrix.md'), md);
+  console.log('Wrote docs/rcm/rcm-readiness-matrix.md');
 
   // Print summary
-  console.log("\n--- Readiness Summary ---");
+  console.log('\n--- Readiness Summary ---');
   for (const [k, v] of Object.entries(matrix.summary.connectors)) {
     console.log(`  Connectors ${k}: ${v}`);
   }
   for (const i of issues) {
-    const icon = i.severity === "error" ? "FAIL" : "WARN";
+    const icon = i.severity === 'error' ? 'FAIL' : 'WARN';
     console.log(`  ${icon}  ${i.message}`);
   }
 
-  if (issues.filter(i => i.severity === "error").length > 0) {
-    console.log("\n  RESULT: ERRORS FOUND");
+  if (issues.filter((i) => i.severity === 'error').length > 0) {
+    console.log('\n  RESULT: ERRORS FOUND');
   } else {
-    console.log("\n  RESULT: PASS (no errors)");
+    console.log('\n  RESULT: PASS (no errors)');
   }
 
   return matrix;

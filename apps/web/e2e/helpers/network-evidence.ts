@@ -11,9 +11,9 @@
  *   await evidence.flush("artifacts/verify/phase74/e2e/network.json");
  */
 
-import { type Page } from "@playwright/test";
-import * as fs from "fs";
-import * as path from "path";
+import { type Page } from '@playwright/test';
+import * as fs from 'fs';
+import * as path from 'path';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -82,7 +82,7 @@ function isApiRequest(url: string): boolean {
 export class NetworkEvidence {
   private page: Page;
   private entries: NetworkEntry[] = [];
-  private currentContext = "unknown";
+  private currentContext = 'unknown';
   private requestTimings = new Map<string, number>();
   private listening = false;
 
@@ -100,13 +100,13 @@ export class NetworkEvidence {
     if (this.listening) return;
     this.listening = true;
 
-    this.page.on("request", (req) => {
+    this.page.on('request', (req) => {
       if (isApiRequest(req.url())) {
         this.requestTimings.set(req.url() + req.method(), Date.now());
       }
     });
 
-    this.page.on("response", async (res) => {
+    this.page.on('response', async (res) => {
       const req = res.request();
       const url = req.url();
       if (!isApiRequest(url)) return;
@@ -127,7 +127,7 @@ export class NetworkEvidence {
 
       this.entries.push({
         timestamp: new Date().toISOString(),
-        url: url.replace(/https?:\/\/[^/]+/, ""), // strip host for privacy
+        url: url.replace(/https?:\/\/[^/]+/, ''), // strip host for privacy
         method: req.method(),
         status: res.status(),
         durationMs: Date.now() - startTime,
@@ -171,7 +171,7 @@ export class NetworkEvidence {
 
     return {
       _meta: {
-        tool: "phase74-network-evidence",
+        tool: 'phase74-network-evidence',
         generatedAt: new Date().toISOString(),
         totalRequests: this.entries.length,
         apiRequests: this.entries.length,
@@ -181,9 +181,8 @@ export class NetworkEvidence {
       summary: {
         byMethod,
         byStatus,
-        avgDurationMs: this.entries.length > 0
-          ? Math.round(totalDuration / this.entries.length)
-          : 0,
+        avgDurationMs:
+          this.entries.length > 0 ? Math.round(totalDuration / this.entries.length) : 0,
         totalTransferBytes: totalBytes,
       },
     };
@@ -196,6 +195,6 @@ export class NetworkEvidence {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
-    fs.writeFileSync(outputPath, JSON.stringify(report, null, 2), "utf-8");
+    fs.writeFileSync(outputPath, JSON.stringify(report, null, 2), 'utf-8');
   }
 }

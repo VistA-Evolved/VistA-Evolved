@@ -39,11 +39,11 @@ draft
 
 ### Transition Gates
 
-| Gate | Rule |
-|------|------|
-| → ready_for_submission | Last scrub must be PASS or WARN |
-| → payer_acknowledged/paid/denied | Must include evidenceRef or payerClaimNumber |
-| PATCH (edit) | Only in draft, scrub_failed, or returned_to_provider |
+| Gate                             | Rule                                                 |
+| -------------------------------- | ---------------------------------------------------- |
+| → ready_for_submission           | Last scrub must be PASS or WARN                      |
+| → payer_acknowledged/paid/denied | Must include evidenceRef or payerClaimNumber         |
+| PATCH (edit)                     | Only in draft, scrub_failed, or returned_to_provider |
 
 ## Scrubber Engine
 
@@ -51,51 +51,51 @@ Deterministic: same input → same output. No randomness, no external calls.
 
 ### Rule Packs
 
-| Pack | Rules | Auto-Select When |
-|------|-------|------------------|
-| core | 8 rules | Always applied |
-| philhealth | 5 rules | payerType=government or memberPin present |
-| us_core | 3 rules | billingProviderNpi present or 5-digit payerId |
+| Pack       | Rules   | Auto-Select When                              |
+| ---------- | ------- | --------------------------------------------- |
+| core       | 8 rules | Always applied                                |
+| philhealth | 5 rules | payerType=government or memberPin present     |
+| us_core    | 3 rules | billingProviderNpi present or 5-digit payerId |
 
 ### Core Rules
 
-| Rule ID | Severity | Check |
-|---------|----------|-------|
-| core.patient_id | error | Patient DFN present |
-| core.payer_id | error | Payer ID present |
-| core.date_of_service | error | DOS present + not future |
-| core.diagnosis_present | error | At least 1 diagnosis |
-| core.primary_diagnosis | warning | One diagnosis marked primary |
-| core.procedure_present | error | At least 1 procedure |
-| core.charge_positive | error | totalCharge > 0 |
-| core.subscriber_id | warning | subscriberId or memberPin present |
+| Rule ID                | Severity | Check                             |
+| ---------------------- | -------- | --------------------------------- |
+| core.patient_id        | error    | Patient DFN present               |
+| core.payer_id          | error    | Payer ID present                  |
+| core.date_of_service   | error    | DOS present + not future          |
+| core.diagnosis_present | error    | At least 1 diagnosis              |
+| core.primary_diagnosis | warning  | One diagnosis marked primary      |
+| core.procedure_present | error    | At least 1 procedure              |
+| core.charge_positive   | error    | totalCharge > 0                   |
+| core.subscriber_id     | warning  | subscriberId or memberPin present |
 
 ### PhilHealth Rules
 
-| Rule ID | Severity | Check |
-|---------|----------|-------|
-| ph.member_pin | error | PhilHealth member PIN |
-| ph.esoa_required | error | eSOA attachment for DOS >= 2026-04-01 |
-| ph.facility_code | error | PhilHealth facility code |
-| ph.icd10_required | error | All diagnoses are ICD-10 |
-| ph.rvs_code | warning | Professional claims use RVS codes |
+| Rule ID           | Severity | Check                                 |
+| ----------------- | -------- | ------------------------------------- |
+| ph.member_pin     | error    | PhilHealth member PIN                 |
+| ph.esoa_required  | error    | eSOA attachment for DOS >= 2026-04-01 |
+| ph.facility_code  | error    | PhilHealth facility code              |
+| ph.icd10_required | error    | All diagnoses are ICD-10              |
+| ph.rvs_code       | warning  | Professional claims use RVS codes     |
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | /rcm/claims/lifecycle | List claim cases (queue) |
-| POST | /rcm/claims/lifecycle | Create claim case |
-| GET | /rcm/claims/lifecycle/:id | Get claim detail |
-| PATCH | /rcm/claims/lifecycle/:id | Update editable fields |
-| PUT | /rcm/claims/lifecycle/:id/transition | Transition state |
-| POST | /rcm/claims/lifecycle/:id/scrub | Run scrubber |
-| POST | /rcm/claims/lifecycle/:id/attachments | Add attachment |
-| POST | /rcm/claims/lifecycle/:id/denials | Record denial |
-| PUT | /rcm/claims/lifecycle/denials/:id/resolve | Resolve denial |
-| GET | /rcm/claims/lifecycle/denials | List denials (workbench) |
-| GET | /rcm/claims/lifecycle/stats | Statistics |
-| GET | /rcm/claims/lifecycle/scrubber/packs | Available rule packs |
+| Method | Path                                      | Description              |
+| ------ | ----------------------------------------- | ------------------------ |
+| GET    | /rcm/claims/lifecycle                     | List claim cases (queue) |
+| POST   | /rcm/claims/lifecycle                     | Create claim case        |
+| GET    | /rcm/claims/lifecycle/:id                 | Get claim detail         |
+| PATCH  | /rcm/claims/lifecycle/:id                 | Update editable fields   |
+| PUT    | /rcm/claims/lifecycle/:id/transition      | Transition state         |
+| POST   | /rcm/claims/lifecycle/:id/scrub           | Run scrubber             |
+| POST   | /rcm/claims/lifecycle/:id/attachments     | Add attachment           |
+| POST   | /rcm/claims/lifecycle/:id/denials         | Record denial            |
+| PUT    | /rcm/claims/lifecycle/denials/:id/resolve | Resolve denial           |
+| GET    | /rcm/claims/lifecycle/denials             | List denials (workbench) |
+| GET    | /rcm/claims/lifecycle/stats               | Statistics               |
+| GET    | /rcm/claims/lifecycle/scrubber/packs      | Available rule packs     |
 
 ## Storage
 

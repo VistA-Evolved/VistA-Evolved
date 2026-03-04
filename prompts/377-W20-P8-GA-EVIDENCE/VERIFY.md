@@ -1,6 +1,7 @@
 # 377-99-VERIFY --- GA Evidence Bundle + Trust Center (W20-P8)
 
 ## Verification Steps
+
 1. tsc --noEmit clean
 2. GET /ga/evidence/bundle -- returns collected evidence metadata
 3. GET /ga/evidence/trust-center -- returns trust center export

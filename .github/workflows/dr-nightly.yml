@@ -1,8 +1,8 @@
 name: DR Nightly
 on:
   schedule:
-    - cron: "0 3 * * *"   # 03:00 UTC daily
-  workflow_dispatch:       # Manual trigger for ad-hoc drills
+    - cron: '0 3 * * *' # 03:00 UTC daily
+  workflow_dispatch: # Manual trigger for ad-hoc drills
 
 permissions:
   contents: read
@@ -39,7 +39,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "24.13.0"
+          node-version: '24.13.0'
           cache: pnpm
 
       - name: Install dependencies

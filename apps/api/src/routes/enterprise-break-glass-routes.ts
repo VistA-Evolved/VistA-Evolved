@@ -16,8 +16,8 @@
  * be relaxed to session-level for self-service with admin approval.
  */
 
-import type { FastifyInstance } from "fastify";
-import { requireSession, requireRole } from "../auth/auth-routes.js";
+import type { FastifyInstance } from 'fastify';
+import { requireSession, requireRole } from '../auth/auth-routes.js';
 import {
   requestBreakGlass,
   approveBreakGlass,
@@ -26,12 +26,11 @@ import {
   getBreakGlassSession,
   listBreakGlassSessions,
   getBreakGlassStats,
-} from "../auth/enterprise-break-glass.js";
-import { getAuthModeStatus } from "../auth/auth-mode-policy.js";
-import { getIdpRoleMappings } from "../auth/idp-role-mapper.js";
+} from '../auth/enterprise-break-glass.js';
+import { getAuthModeStatus } from '../auth/auth-mode-policy.js';
+import { getIdpRoleMappings } from '../auth/idp-role-mapper.js';
 
 export default async function enterpriseBreakGlassRoutes(server: FastifyInstance): Promise<void> {
-
   /* ---------------------------------------------------------------- */
   /* Break-glass request                                              */
   /* ---------------------------------------------------------------- */
@@ -40,7 +39,7 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
    * POST /admin/break-glass/request — Request break-glass access.
    * Any admin user can submit a request.
    */
-  server.post("/admin/break-glass/request", async (request, reply) => {
+  server.post('/admin/break-glass/request', async (request, reply) => {
     const session = await requireSession(request, reply);
     // Auth gateway enforces admin for /admin/* routes
 
@@ -50,14 +49,14 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
     if (!targetModule || !targetPermission) {
       return reply.code(400).send({
         ok: false,
-        error: "targetModule and targetPermission are required",
+        error: 'targetModule and targetPermission are required',
       });
     }
 
-    if (!reason || typeof reason !== "string") {
+    if (!reason || typeof reason !== 'string') {
       return reply.code(400).send({
         ok: false,
-        error: "reason is required (string, min 10 characters)",
+        error: 'reason is required (string, min 10 characters)',
       });
     }
 
@@ -88,15 +87,15 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
    * POST /admin/break-glass/approve — Approve a pending break-glass request.
    * Admin only. Self-approval is blocked.
    */
-  server.post("/admin/break-glass/approve", async (request, reply) => {
+  server.post('/admin/break-glass/approve', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     const body = (request.body as any) || {};
     const { sessionId, ttlMinutes } = body;
 
     if (!sessionId) {
-      return reply.code(400).send({ ok: false, error: "sessionId is required" });
+      return reply.code(400).send({ ok: false, error: 'sessionId is required' });
     }
 
     const result = approveBreakGlass({
@@ -122,15 +121,15 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
    * POST /admin/break-glass/deny — Deny a pending break-glass request.
    * Admin only.
    */
-  server.post("/admin/break-glass/deny", async (request, reply) => {
+  server.post('/admin/break-glass/deny', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     const body = (request.body as any) || {};
     const { sessionId } = body;
 
     if (!sessionId) {
-      return reply.code(400).send({ ok: false, error: "sessionId is required" });
+      return reply.code(400).send({ ok: false, error: 'sessionId is required' });
     }
 
     const result = denyBreakGlass({
@@ -155,15 +154,15 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
    * POST /admin/break-glass/revoke — Revoke an active break-glass session.
    * Admin only.
    */
-  server.post("/admin/break-glass/revoke", async (request, reply) => {
+  server.post('/admin/break-glass/revoke', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     const body = (request.body as any) || {};
     const { sessionId } = body;
 
     if (!sessionId) {
-      return reply.code(400).send({ ok: false, error: "sessionId is required" });
+      return reply.code(400).send({ ok: false, error: 'sessionId is required' });
     }
 
     const result = revokeBreakGlass({
@@ -188,9 +187,9 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
    * GET /admin/break-glass/active — List break-glass sessions.
    * Admin only. Optional query: ?status=active|pending|expired|revoked|denied
    */
-  server.get("/admin/break-glass/active", async (request, reply) => {
+  server.get('/admin/break-glass/active', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     const query = request.query as Record<string, string>;
     const sessions = listBreakGlassSessions({
@@ -214,9 +213,9 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
    * GET /admin/break-glass/stats — Break-glass summary statistics.
    * Admin only.
    */
-  server.get("/admin/break-glass/stats", async (request, reply) => {
+  server.get('/admin/break-glass/stats', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     const stats = getBreakGlassStats();
     return { ok: true, stats };
@@ -230,15 +229,15 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
    * GET /admin/break-glass/session/:id — Get a specific break-glass session.
    * Admin only.
    */
-  server.get("/admin/break-glass/session/:id", async (request, reply) => {
+  server.get('/admin/break-glass/session/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     const { id } = request.params as { id: string };
     const bgSession = getBreakGlassSession(id);
 
     if (!bgSession) {
-      return reply.code(404).send({ ok: false, error: "Break-glass session not found" });
+      return reply.code(404).send({ ok: false, error: 'Break-glass session not found' });
     }
 
     return { ok: true, session: bgSession };
@@ -252,9 +251,9 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
    * GET /admin/iam/posture — Enterprise IAM posture summary.
    * Admin only. Returns auth mode, role mapping, break-glass status.
    */
-  server.get("/admin/iam/posture", async (request, reply) => {
+  server.get('/admin/iam/posture', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     const authMode = getAuthModeStatus();
     const roleMapping = getIdpRoleMappings();

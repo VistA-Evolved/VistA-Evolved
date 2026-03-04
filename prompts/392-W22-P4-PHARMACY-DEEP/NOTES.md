@@ -21,6 +21,7 @@
   Actual step-up enforcement defers to Phase 338 step-up middleware.
 
 ## VistA RPC Targets
+
 - `ORWDX SAVE` -- place order (available via writeback executor)
 - `ORWDXA DC` -- discontinue order (available via writeback executor)
 - `PSB MED LOG` -- record administration (integration-pending, PSB package)

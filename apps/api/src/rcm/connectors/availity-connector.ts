@@ -20,23 +20,32 @@
  *   AVAILITY_CUSTOMER_ID (assigned on enrollment)
  */
 
-import type { RcmConnector, ConnectorResult } from "./types.js";
-import type { X12TransactionSet } from "../edi/types.js";
+import type { RcmConnector, ConnectorResult } from './types.js';
+import type { X12TransactionSet } from '../edi/types.js';
 
 export class AvailityConnector implements RcmConnector {
-  readonly id = "availity";
-  readonly name = "Availity Health Information Network";
-  readonly supportedModes = ["clearinghouse_edi", "direct_api"];
+  readonly id = 'availity';
+  readonly name = 'Availity Health Information Network';
+  readonly supportedModes = ['clearinghouse_edi', 'direct_api'];
   readonly supportedTransactions: X12TransactionSet[] = [
-    "837P", "837I", "835", "270", "271", "276", "277", "278", "999", "TA1",
+    '837P',
+    '837I',
+    '835',
+    '270',
+    '271',
+    '276',
+    '277',
+    '278',
+    '999',
+    'TA1',
   ];
 
   private configured = false;
   private config = {
-    apiEndpoint: process.env.AVAILITY_API_ENDPOINT ?? "https://api.availity.com/availity/v1",
-    clientId: process.env.AVAILITY_CLIENT_ID ?? "",
-    clientSecret: process.env.AVAILITY_CLIENT_SECRET ?? "",
-    customerId: process.env.AVAILITY_CUSTOMER_ID ?? "",
+    apiEndpoint: process.env.AVAILITY_API_ENDPOINT ?? 'https://api.availity.com/availity/v1',
+    clientId: process.env.AVAILITY_CLIENT_ID ?? '',
+    clientSecret: process.env.AVAILITY_CLIENT_SECRET ?? '',
+    customerId: process.env.AVAILITY_CUSTOMER_ID ?? '',
   };
 
   async initialize(): Promise<void> {
@@ -46,23 +55,26 @@ export class AvailityConnector implements RcmConnector {
   async submit(
     transactionSet: X12TransactionSet,
     payload: string,
-    metadata: Record<string, string>,
+    metadata: Record<string, string>
   ): Promise<ConnectorResult> {
     if (!this.configured) {
       return {
         success: false,
-        errors: [{
-          code: "AVAIL-NOT-CONFIGURED",
-          description: "Availity connector not configured. Set AVAILITY_CLIENT_ID + AVAILITY_CLIENT_SECRET. Enrollment: https://www.availity.com/",
-          severity: "error",
-        }],
+        errors: [
+          {
+            code: 'AVAIL-NOT-CONFIGURED',
+            description:
+              'Availity connector not configured. Set AVAILITY_CLIENT_ID + AVAILITY_CLIENT_SECRET. Enrollment: https://www.availity.com/',
+            severity: 'error',
+          },
+        ],
         metadata: {
-          targetSystem: "Availity Health Information Network",
-          enrollmentUrl: "https://www.availity.com/",
-          apiDocsUrl: "https://developer.availity.com/",
-          requiredEnvVars: "AVAILITY_CLIENT_ID,AVAILITY_CLIENT_SECRET,AVAILITY_CUSTOMER_ID",
+          targetSystem: 'Availity Health Information Network',
+          enrollmentUrl: 'https://www.availity.com/',
+          apiDocsUrl: 'https://developer.availity.com/',
+          requiredEnvVars: 'AVAILITY_CLIENT_ID,AVAILITY_CLIENT_SECRET,AVAILITY_CUSTOMER_ID',
           transactionSet,
-          integrationStatus: "integration-ready",
+          integrationStatus: 'integration-ready',
         },
       };
     }
@@ -73,15 +85,17 @@ export class AvailityConnector implements RcmConnector {
     // 3. Parse async response / poll for ack
     return {
       success: false,
-      errors: [{
-        code: "AVAIL-NOT-IMPLEMENTED",
-        description: `Availity ${transactionSet} submission requires live API credentials and payer-specific enrollment.`,
-        severity: "error",
-      }],
+      errors: [
+        {
+          code: 'AVAIL-NOT-IMPLEMENTED',
+          description: `Availity ${transactionSet} submission requires live API credentials and payer-specific enrollment.`,
+          severity: 'error',
+        },
+      ],
       metadata: {
-        targetSystem: "Availity Health Information Network",
+        targetSystem: 'Availity Health Information Network',
         transactionSet,
-        integrationStatus: "integration-ready",
+        integrationStatus: 'integration-ready',
       },
     };
   }
@@ -89,20 +103,24 @@ export class AvailityConnector implements RcmConnector {
   async checkStatus(transactionId: string): Promise<ConnectorResult> {
     return {
       success: false,
-      errors: [{
-        code: "AVAIL-STATUS-PENDING",
-        description: "Availity status check: GET /v1/claims/{id}. Requires live credentials.",
-        severity: "info",
-      }],
-      metadata: { transactionId, integrationStatus: "integration-ready" },
+      errors: [
+        {
+          code: 'AVAIL-STATUS-PENDING',
+          description: 'Availity status check: GET /v1/claims/{id}. Requires live credentials.',
+          severity: 'info',
+        },
+      ],
+      metadata: { transactionId, integrationStatus: 'integration-ready' },
     };
   }
 
-  async fetchResponses(since?: string): Promise<Array<{
-    transactionSet: X12TransactionSet;
-    payload: string;
-    receivedAt: string;
-  }>> {
+  async fetchResponses(since?: string): Promise<
+    Array<{
+      transactionSet: X12TransactionSet;
+      payload: string;
+      receivedAt: string;
+    }>
+  > {
     return [];
   }
 
@@ -110,13 +128,14 @@ export class AvailityConnector implements RcmConnector {
     if (!this.configured) {
       return {
         healthy: false,
-        details: "Availity: not configured. Set AVAILITY_CLIENT_ID + AVAILITY_CLIENT_SECRET. Enrollment: https://www.availity.com/",
+        details:
+          'Availity: not configured. Set AVAILITY_CLIENT_ID + AVAILITY_CLIENT_SECRET. Enrollment: https://www.availity.com/',
       };
     }
     // Would do: POST /oauth2/token to verify credentials
     return {
       healthy: false,
-      details: "Availity: configured but OAuth2 token validation requires live connection.",
+      details: 'Availity: configured but OAuth2 token validation requires live connection.',
     };
   }
 

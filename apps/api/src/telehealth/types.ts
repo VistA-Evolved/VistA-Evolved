@@ -16,7 +16,7 @@
 /* Room lifecycle                                                       */
 /* ------------------------------------------------------------------ */
 
-export type RoomStatus = "created" | "waiting" | "active" | "ended";
+export type RoomStatus = 'created' | 'waiting' | 'active' | 'ended';
 
 export interface TelehealthRoom {
   /** Opaque room identifier (no PHI) */
@@ -39,7 +39,7 @@ export interface TelehealthRoom {
 /* Participant roles                                                     */
 /* ------------------------------------------------------------------ */
 
-export type ParticipantRole = "patient" | "provider" | "interpreter" | "caregiver";
+export type ParticipantRole = 'patient' | 'provider' | 'interpreter' | 'caregiver';
 
 export interface RoomParticipant {
   /** Display name shown in video UI */
@@ -90,10 +90,7 @@ export interface TelehealthProvider {
    * Generate a join URL for a participant.
    * URL must be short-lived and role-aware.
    */
-  joinUrl(
-    roomId: string,
-    participant: RoomParticipant
-  ): Promise<JoinUrlResult>;
+  joinUrl(roomId: string, participant: RoomParticipant): Promise<JoinUrlResult>;
 
   /**
    * End/destroy a room. Provider should clean up resources.
@@ -112,11 +109,11 @@ export interface TelehealthProvider {
 /* ------------------------------------------------------------------ */
 
 export interface DeviceCheckResult {
-  camera: "granted" | "denied" | "not_found" | "unknown";
-  microphone: "granted" | "denied" | "not_found" | "unknown";
-  speaker: "available" | "not_found" | "unknown";
-  browser: "supported" | "unsupported";
-  network: "good" | "fair" | "poor" | "unknown";
+  camera: 'granted' | 'denied' | 'not_found' | 'unknown';
+  microphone: 'granted' | 'denied' | 'not_found' | 'unknown';
+  speaker: 'available' | 'not_found' | 'unknown';
+  browser: 'supported' | 'unsupported';
+  network: 'good' | 'fair' | 'poor' | 'unknown';
   webrtc: boolean;
   /** Overall readiness */
   ready: boolean;
@@ -129,11 +126,11 @@ export interface DeviceCheckResult {
 /* ------------------------------------------------------------------ */
 
 export type WaitingRoomStatus =
-  | "not_started"       // Room exists but visit hasn't begun
-  | "patient_waiting"   // Patient is in the waiting room
-  | "provider_joined"   // Provider has connected
-  | "in_progress"       // Both parties connected
-  | "completed";        // Visit ended
+  | 'not_started' // Room exists but visit hasn't begun
+  | 'patient_waiting' // Patient is in the waiting room
+  | 'provider_joined' // Provider has connected
+  | 'in_progress' // Both parties connected
+  | 'completed'; // Visit ended
 
 export interface WaitingRoomState {
   roomId: string;

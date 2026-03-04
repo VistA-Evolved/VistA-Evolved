@@ -6,6 +6,7 @@
 - **Dependencies**: Phase 424 (runtime matrix, drift detection functions)
 
 ## Key Decisions
+
 1. Probe script uses Node.js `fetch()` to call the running API rather than
    connecting to VistA directly. This validates the full stack including
    auth context setup and RPC broker connection.

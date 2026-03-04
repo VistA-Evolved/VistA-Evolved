@@ -24,10 +24,18 @@ interface PaymentRepos {
   batchRepo: { upsert(data: any): Promise<any>; update(id: string, u: any): Promise<any> } | null;
   lineRepo: { upsert(data: any): Promise<any>; update(id: string, u: any): Promise<any> } | null;
   postingRepo: { insert(data: any): Promise<any> } | null;
-  underpaymentRepo: { upsert(data: any): Promise<any>; update(id: string, u: any): Promise<any> } | null;
+  underpaymentRepo: {
+    upsert(data: any): Promise<any>;
+    update(id: string, u: any): Promise<any>;
+  } | null;
 }
 
-const pgRepos: PaymentRepos = { batchRepo: null, lineRepo: null, postingRepo: null, underpaymentRepo: null };
+const pgRepos: PaymentRepos = {
+  batchRepo: null,
+  lineRepo: null,
+  postingRepo: null,
+  underpaymentRepo: null,
+};
 
 export function initPaymentStoreRepos(repos: Partial<PaymentRepos>): void {
   if (repos.batchRepo) pgRepos.batchRepo = repos.batchRepo;
@@ -102,7 +110,19 @@ export function createBatch(params: CreateBatchParams): RemittanceBatch {
   addToIndex(payerBatchIndex, params.payerId, batch.id);
 
   // Phase 146: Write-through to PG
-  pgRepos.batchRepo?.upsert({ id: batch.id, tenantId: params.tenantId, payerId: params.payerId, payerName: params.payerName, paymentMethod: params.sourceMode, status: 'received', source: params.sourceMode, createdAt: now, updatedAt: now }).catch(() => {});
+  pgRepos.batchRepo
+    ?.upsert({
+      id: batch.id,
+      tenantId: params.tenantId,
+      payerId: params.payerId,
+      payerName: params.payerName,
+      paymentMethod: params.sourceMode,
+      status: 'received',
+      source: params.sourceMode,
+      createdAt: now,
+      updatedAt: now,
+    })
+    .catch(() => {});
 
   return batch;
 }
@@ -111,7 +131,10 @@ export function getBatch(id: string): RemittanceBatch | undefined {
   return batches.get(id);
 }
 
-export function updateBatch(id: string, updates: Partial<RemittanceBatch>): RemittanceBatch | undefined {
+export function updateBatch(
+  id: string,
+  updates: Partial<RemittanceBatch>
+): RemittanceBatch | undefined {
   const batch = batches.get(id);
   if (!batch) return undefined;
 
@@ -144,11 +167,11 @@ export function listBatches(filters: {
   if (!tenantSet) return { items: [], total: 0 };
 
   let items = Array.from(tenantSet)
-    .map(id => batches.get(id)!)
+    .map((id) => batches.get(id)!)
     .filter(Boolean);
 
-  if (filters.status) items = items.filter(b => b.status === filters.status);
-  if (filters.payerId) items = items.filter(b => b.payerId === filters.payerId);
+  if (filters.status) items = items.filter((b) => b.status === filters.status);
+  if (filters.payerId) items = items.filter((b) => b.payerId === filters.payerId);
 
   items.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
@@ -170,7 +193,16 @@ export function addLine(line: Omit<RemittanceLine, 'id'>): RemittanceLine {
   }
 
   // Phase 146: Write-through to PG
-  pgRepos.lineRepo?.upsert({ id: full.id, tenantId: (full as any).tenantId, batchId: full.batchId, claimCaseId: full.matchedClaimCaseId ?? null, lineNumber: full.lineNumber, matchStatus: full.matchStatus }).catch(() => {});
+  pgRepos.lineRepo
+    ?.upsert({
+      id: full.id,
+      tenantId: (full as any).tenantId,
+      batchId: full.batchId,
+      claimCaseId: full.matchedClaimCaseId ?? null,
+      lineNumber: full.lineNumber,
+      matchStatus: full.matchStatus,
+    })
+    .catch(() => {});
 
   return full;
 }
@@ -179,7 +211,10 @@ export function getLine(id: string): RemittanceLine | undefined {
   return lines.get(id);
 }
 
-export function updateLine(id: string, updates: Partial<RemittanceLine>): RemittanceLine | undefined {
+export function updateLine(
+  id: string,
+  updates: Partial<RemittanceLine>
+): RemittanceLine | undefined {
   const line = lines.get(id);
   if (!line) return undefined;
 
@@ -213,10 +248,10 @@ export function listLines(filters: {
   if (!lineSet) return { items: [], total: 0 };
 
   let items = Array.from(lineSet)
-    .map(id => lines.get(id)!)
+    .map((id) => lines.get(id)!)
     .filter(Boolean);
 
-  if (filters.matchStatus) items = items.filter(l => l.matchStatus === filters.matchStatus);
+  if (filters.matchStatus) items = items.filter((l) => l.matchStatus === filters.matchStatus);
 
   items.sort((a, b) => a.lineNumber - b.lineNumber);
 
@@ -231,7 +266,7 @@ export function getLinesForClaim(claimCaseId: string): RemittanceLine[] {
   const lineSet = claimLineIndex.get(claimCaseId);
   if (!lineSet) return [];
   return Array.from(lineSet)
-    .map(id => lines.get(id)!)
+    .map((id) => lines.get(id)!)
     .filter(Boolean);
 }
 
@@ -263,19 +298,28 @@ export function recordPosting(posting: Omit<PaymentPostingEvent, 'id'>): Payment
   addToIndex(tenantPostingIndex, full.tenantId, full.id);
 
   // Phase 146: Write-through to PG
-  pgRepos.postingRepo?.insert({ id: full.id, tenantId: full.tenantId, claimCaseId: full.claimCaseId, batchId: full.batchId, amount: (full as any).amount ?? 0, postedAt: (full as any).postedAt ?? new Date().toISOString() }).catch(() => {});
+  pgRepos.postingRepo
+    ?.insert({
+      id: full.id,
+      tenantId: full.tenantId,
+      claimCaseId: full.claimCaseId,
+      batchId: full.batchId,
+      amount: (full as any).amount ?? 0,
+      postedAt: (full as any).postedAt ?? new Date().toISOString(),
+    })
+    .catch(() => {});
 
   return full;
 }
 
 export function getPostingsForClaim(claimCaseId: string): PaymentPostingEvent[] {
-  return Array.from(postings.values()).filter(p => p.claimCaseId === claimCaseId);
+  return Array.from(postings.values()).filter((p) => p.claimCaseId === claimCaseId);
 }
 
 /* ── Underpayment Cases ────────────────────────────────────── */
 
 export function createUnderpayment(
-  data: Omit<UnderpaymentCase, 'id' | 'createdAt' | 'status'>,
+  data: Omit<UnderpaymentCase, 'id' | 'createdAt' | 'status'>
 ): UnderpaymentCase {
   const uc: UnderpaymentCase = {
     ...data,
@@ -287,7 +331,19 @@ export function createUnderpayment(
   addToIndex(tenantUnderpaymentIndex, uc.tenantId, uc.id);
 
   // Phase 146: Write-through to PG
-  pgRepos.underpaymentRepo?.upsert({ id: uc.id, tenantId: uc.tenantId, claimId: (uc as any).claimId ?? (uc as any).claimCaseId ?? '', payerId: uc.payerId, expectedAmount: uc.expectedAmount, paidAmount: uc.paidAmount, variance: (uc as any).variance ?? (uc.expectedAmount - uc.paidAmount), status: uc.status, createdAt: uc.createdAt }).catch(() => {});
+  pgRepos.underpaymentRepo
+    ?.upsert({
+      id: uc.id,
+      tenantId: uc.tenantId,
+      claimId: (uc as any).claimId ?? (uc as any).claimCaseId ?? '',
+      payerId: uc.payerId,
+      expectedAmount: uc.expectedAmount,
+      paidAmount: uc.paidAmount,
+      variance: (uc as any).variance ?? uc.expectedAmount - uc.paidAmount,
+      status: uc.status,
+      createdAt: uc.createdAt,
+    })
+    .catch(() => {});
 
   return uc;
 }
@@ -298,7 +354,9 @@ export function getUnderpayment(id: string): UnderpaymentCase | undefined {
 
 export function updateUnderpayment(
   id: string,
-  updates: Partial<Pick<UnderpaymentCase, 'status' | 'resolvedAt' | 'resolvedBy' | 'resolutionNote'>>,
+  updates: Partial<
+    Pick<UnderpaymentCase, 'status' | 'resolvedAt' | 'resolvedBy' | 'resolutionNote'>
+  >
 ): UnderpaymentCase | undefined {
   const uc = underpayments.get(id);
   if (!uc) return undefined;
@@ -322,11 +380,11 @@ export function listUnderpayments(filters: {
   if (!tenantSet) return { items: [], total: 0 };
 
   let items = Array.from(tenantSet)
-    .map(id => underpayments.get(id)!)
+    .map((id) => underpayments.get(id)!)
     .filter(Boolean);
 
-  if (filters.status) items = items.filter(u => u.status === filters.status);
-  if (filters.payerId) items = items.filter(u => u.payerId === filters.payerId);
+  if (filters.status) items = items.filter((u) => u.status === filters.status);
+  if (filters.payerId) items = items.filter((u) => u.payerId === filters.payerId);
 
   items.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
@@ -360,7 +418,7 @@ export function getBatchesForPayer(payerId: string): RemittanceBatch[] {
   const batchSet = payerBatchIndex.get(payerId);
   if (!batchSet) return [];
   return Array.from(batchSet)
-    .map(id => batches.get(id)!)
+    .map((id) => batches.get(id)!)
     .filter(Boolean);
 }
 
@@ -369,7 +427,7 @@ export function getAllLinesForBatch(batchId: string): RemittanceLine[] {
   const lineSet = batchLineIndex.get(batchId);
   if (!lineSet) return [];
   return Array.from(lineSet)
-    .map(id => lines.get(id)!)
+    .map((id) => lines.get(id)!)
     .filter(Boolean);
 }
 

@@ -10,11 +10,11 @@ simultaneously, capturing field-level discrepancies.
 
 ## Modes
 
-| Mode | Behavior |
-|------|----------|
-| `off` | Default. VistA only, no secondary execution |
-| `shadow` | VistA response returned, secondary runs silently; discrepancies logged |
-| `compare` | Both results returned side-by-side for manual review |
+| Mode      | Behavior                                                               |
+| --------- | ---------------------------------------------------------------------- |
+| `off`     | Default. VistA only, no secondary execution                            |
+| `shadow`  | VistA response returned, secondary runs silently; discrepancies logged |
+| `compare` | Both results returned side-by-side for manual review                   |
 
 ## Configuration
 
@@ -33,11 +33,11 @@ curl -X POST http://localhost:3001/migration/dual-run/mode \
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/migration/dual-run/status` | Current mode + comparison stats |
-| POST | `/migration/dual-run/mode` | Set dual-run mode |
-| GET | `/migration/dual-run/comparisons?limit=50` | Recent comparison log |
+| Method | Path                                       | Description                     |
+| ------ | ------------------------------------------ | ------------------------------- |
+| GET    | `/migration/dual-run/status`               | Current mode + comparison stats |
+| POST   | `/migration/dual-run/mode`                 | Set dual-run mode               |
+| GET    | `/migration/dual-run/comparisons?limit=50` | Recent comparison log           |
 
 ## How It Works
 
@@ -54,9 +54,7 @@ curl -X POST http://localhost:3001/migration/dual-run/mode \
   "id": "dr-1",
   "operation": "patient-lookup",
   "match": false,
-  "discrepancies": [
-    { "field": "lastName", "primary": "SMITH", "secondary": "Smith" }
-  ],
+  "discrepancies": [{ "field": "lastName", "primary": "SMITH", "secondary": "Smith" }],
   "primaryDurationMs": 45,
   "secondaryDurationMs": 12
 }

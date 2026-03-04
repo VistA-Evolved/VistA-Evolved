@@ -11,8 +11,8 @@
  * the adapter returns current status which is idempotent.
  */
 
-import type { ClaimStatusPollPayload } from "../registry.js";
-import { log } from "../../lib/logger.js";
+import type { ClaimStatusPollPayload } from '../registry.js';
+import { log } from '../../lib/logger.js';
 
 /**
  * Process a batch of pending claim status checks.
@@ -22,20 +22,14 @@ import { log } from "../../lib/logger.js";
  *  2. For each, invoke the payer adapter's checkClaimStatus
  *  3. Log results (store update deferred to future phase)
  */
-export async function handleClaimStatusPoll(
-  payload: Record<string, unknown>,
-): Promise<void> {
+export async function handleClaimStatusPoll(payload: Record<string, unknown>): Promise<void> {
   const p = payload as ClaimStatusPollPayload;
   const { tenantId, payerId, claimRef, batchSize } = p;
 
-  log.info("claim_status_poll: starting", { tenantId, payerId, batchSize });
+  log.info('claim_status_poll: starting', { tenantId, payerId, batchSize });
 
-  const { listClaimStatusChecks } = await import(
-    "../../rcm/eligibility/store.js"
-  );
-  const { getPayerAdapterForMode } = await import(
-    "../../rcm/adapters/payer-adapter.js"
-  );
+  const { listClaimStatusChecks } = await import('../../rcm/eligibility/store.js');
+  const { getPayerAdapterForMode } = await import('../../rcm/adapters/payer-adapter.js');
 
   // 1. Fetch pending status checks
   const { items: pending } = await listClaimStatusChecks({
@@ -46,14 +40,14 @@ export async function handleClaimStatusPoll(
   });
 
   if (pending.length === 0) {
-    log.debug("claim_status_poll: no pending checks", { tenantId });
+    log.debug('claim_status_poll: no pending checks', { tenantId });
     return;
   }
 
   // 2. Get adapter — use sandbox mode for now (mode derived from payer config in future)
-  const adapter = getPayerAdapterForMode("sandbox");
+  const adapter = getPayerAdapterForMode('sandbox');
   if (!adapter) {
-    log.warn("claim_status_poll: no adapter for sandbox mode");
+    log.warn('claim_status_poll: no adapter for sandbox mode');
     return;
   }
 
@@ -70,21 +64,21 @@ export async function handleClaimStatusPoll(
       });
 
       processed++;
-      log.debug("claim_status_poll: check processed", {
+      log.debug('claim_status_poll: check processed', {
         checkId: check.id,
         claimStatus: response.status,
       });
     } catch (err) {
       failed++;
       const errMsg = err instanceof Error ? err.message : String(err);
-      log.warn("claim_status_poll: check failed", {
+      log.warn('claim_status_poll: check failed', {
         checkId: check.id,
         error: errMsg,
       });
     }
   }
 
-  log.info("claim_status_poll: batch complete", {
+  log.info('claim_status_poll: batch complete', {
     tenantId,
     total: pending.length,
     processed,

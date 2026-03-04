@@ -1,6 +1,7 @@
 # Phase 120 — Full System Audit + Evidence-Based Gap Matrix (VERIFY)
 
 ## Gates
+
 1. `pnpm audit:system` exits 0
 2. `artifacts/system-audit.json` is valid JSON with all 9 sections
 3. `qa/gauntlet/system-gap-matrix.json` is valid JSON with 19+ domains

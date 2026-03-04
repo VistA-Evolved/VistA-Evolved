@@ -1,10 +1,13 @@
 # ADR: Plugin Model
 
 ## Status
+
 Accepted
 
 ## Context
+
 VistA-Evolved needs an extension mechanism that allows:
+
 - Third-party integrations without forking core
 - Safe execution with resource limits
 - Audit trail for install/uninstall actions
@@ -12,12 +15,14 @@ VistA-Evolved needs an extension mechanism that allows:
 - Both backend (event consumers, validators) and UI (tiles, widgets) extensions
 
 Options considered:
+
 1. **Department Packs only** (Phase 349) -- config packs, not code execution
 2. **Dynamic plugins with signing** -- code execution with trust verification
 3. **WebAssembly sandboxing** -- strongest isolation but complex
 4. **Iframe-only UI plugins** -- simple containment for frontend
 
 ## Decision
+
 - **Signed plugin manifests with controlled extension points.**
 - Backend plugins:
   - Manifest: name, version, permissions, entry points (event consumers, validators, transformers)
@@ -39,6 +44,7 @@ Options considered:
   - Both coexist; packs may reference plugins they require
 
 ## Consequences
+
 - Plugin signing prevents tampered code from executing.
 - Extension points are explicit -- plugins cannot monkey-patch core.
 - UI extensions use React portals (not iframes) for performance.

@@ -17,36 +17,35 @@
  * Production: migrate to INSERT-only DB table.
  */
 
-import { createHash } from "node:crypto";
-import { sanitizeAuditDetail as centralSanitize } from "../../lib/phi-redaction.js";
-import { appendFileSync, mkdirSync, existsSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { createHash } from 'node:crypto';
+import { sanitizeAuditDetail as centralSanitize } from '../../lib/phi-redaction.js';
+import { appendFileSync, mkdirSync, existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const __dirname_resolved = typeof __dirname !== "undefined"
-  ? __dirname
-  : dirname(fileURLToPath(import.meta.url));
+const __dirname_resolved =
+  typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
 
-const REPO_ROOT = join(__dirname_resolved, "..", "..", "..", "..", "..");
-const AUDIT_DIR = join(REPO_ROOT, "logs");
-const AUDIT_FILE = join(AUDIT_DIR, "payer-audit.jsonl");
+const REPO_ROOT = join(__dirname_resolved, '..', '..', '..', '..', '..');
+const AUDIT_DIR = join(REPO_ROOT, 'logs');
+const AUDIT_FILE = join(AUDIT_DIR, 'payer-audit.jsonl');
 
 /* ── Types ──────────────────────────────────────────────────── */
 
 export type PayerAuditAction =
-  | "payer.imported"
-  | "payer.capabilities_updated"
-  | "payer.tasks_updated"
-  | "payer.status_changed"
-  | "payer.evidence_added"
-  | "payer.evidence_removed"
-  | "payer.tenant_override_set"
-  | "payer.tenant_override_removed"
-  | "payer.adapter_enabled"
-  | "payer.adapter_disabled"
-  | "payer.registry_imported"
-  | "payer.registry_validated"
-  | "payer.watcher_triggered";
+  | 'payer.imported'
+  | 'payer.capabilities_updated'
+  | 'payer.tasks_updated'
+  | 'payer.status_changed'
+  | 'payer.evidence_added'
+  | 'payer.evidence_removed'
+  | 'payer.tenant_override_set'
+  | 'payer.tenant_override_removed'
+  | 'payer.adapter_enabled'
+  | 'payer.adapter_disabled'
+  | 'payer.registry_imported'
+  | 'payer.registry_validated'
+  | 'payer.watcher_triggered';
 
 export interface PayerAuditEvent {
   id: string;
@@ -70,27 +69,27 @@ export interface PayerAuditEvent {
 
 const MAX_RING_SIZE = 10_000;
 const auditRing: PayerAuditEvent[] = [];
-let lastHash = "GENESIS";
+let lastHash = 'GENESIS';
 let counter = 0;
 
 /* ── Helpers ────────────────────────────────────────────────── */
 
 function sanitizeDetail(detail: unknown): unknown {
   if (detail === null || detail === undefined) return detail;
-  if (typeof detail === "string") {
+  if (typeof detail === 'string') {
     // For string detail: run inline PHI pattern scrub
     return detail
-      .replace(/\b\d{3}-\d{2}-\d{4}\b/g, "[SSN-REDACTED]")
-      .replace(/\b\d{4}-\d{2}-\d{2}T/g, "[DATE]T");
+      .replace(/\b\d{3}-\d{2}-\d{4}\b/g, '[SSN-REDACTED]')
+      .replace(/\b\d{4}-\d{2}-\d{2}T/g, '[DATE]T');
   }
-  if (typeof detail === "object") {
+  if (typeof detail === 'object') {
     // Phase 151: delegate to centralized PHI sanitizer for objects
     return centralSanitize(detail as Record<string, unknown>) ?? detail;
   }
   return detail;
 }
 
-function computeHash(entry: Omit<PayerAuditEvent, "hash">): string {
+function computeHash(entry: Omit<PayerAuditEvent, 'hash'>): string {
   const payload = JSON.stringify({
     id: entry.id,
     timestamp: entry.timestamp,
@@ -103,7 +102,7 @@ function computeHash(entry: Omit<PayerAuditEvent, "hash">): string {
     reason: entry.reason,
     prevHash: entry.prevHash,
   });
-  return createHash("sha256").update(payload).digest("hex");
+  return createHash('sha256').update(payload).digest('hex');
 }
 
 function ensureAuditDir(): void {
@@ -126,20 +125,21 @@ export function appendPayerAudit(params: {
   counter++;
   const now = new Date().toISOString();
 
-  const entry: Omit<PayerAuditEvent, "hash"> = {
-    id: `paudit-${counter}-${now.replace(/[:.]/g, "")}`,
+  const entry: Omit<PayerAuditEvent, 'hash'> = {
+    id: `paudit-${counter}-${now.replace(/[:.]/g, '')}`,
     timestamp: now,
     action: params.action,
     actor: params.actor,
-    tenantId: params.tenantId ?? "global",
+    tenantId: params.tenantId ?? 'global',
     payerId: params.payerId,
     before: sanitizeDetail(params.before),
     after: sanitizeDetail(params.after),
     reason: params.reason,
     evidenceLink: params.evidenceLink,
-    detail: typeof params.detail === "string"
-      ? sanitizeDetail(params.detail) as string | undefined
-      : params.detail,
+    detail:
+      typeof params.detail === 'string'
+        ? (sanitizeDetail(params.detail) as string | undefined)
+        : params.detail,
     prevHash: lastHash,
   };
 
@@ -157,7 +157,7 @@ export function appendPayerAudit(params: {
   // Append to file
   try {
     ensureAuditDir();
-    appendFileSync(AUDIT_FILE, JSON.stringify(event) + "\n", "utf-8");
+    appendFileSync(AUDIT_FILE, JSON.stringify(event) + '\n', 'utf-8');
   } catch {
     // Non-fatal: file write failure doesn't block operation
   }
@@ -167,11 +167,14 @@ export function appendPayerAudit(params: {
 
 /* ── Query ──────────────────────────────────────────────────── */
 
-export function getPayerAuditTrail(payerId: string, options?: {
-  limit?: number;
-  offset?: number;
-}): { events: PayerAuditEvent[]; total: number } {
-  const filtered = auditRing.filter(e => e.payerId === payerId);
+export function getPayerAuditTrail(
+  payerId: string,
+  options?: {
+    limit?: number;
+    offset?: number;
+  }
+): { events: PayerAuditEvent[]; total: number } {
+  const filtered = auditRing.filter((e) => e.payerId === payerId);
   filtered.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
 
   const total = filtered.length;
@@ -181,11 +184,14 @@ export function getPayerAuditTrail(payerId: string, options?: {
   return { events: filtered.slice(offset, offset + limit), total };
 }
 
-export function getPayerAuditByTenant(tenantId: string, options?: {
-  limit?: number;
-  offset?: number;
-}): { events: PayerAuditEvent[]; total: number } {
-  const filtered = auditRing.filter(e => e.tenantId === tenantId);
+export function getPayerAuditByTenant(
+  tenantId: string,
+  options?: {
+    limit?: number;
+    offset?: number;
+  }
+): { events: PayerAuditEvent[]; total: number } {
+  const filtered = auditRing.filter((e) => e.tenantId === tenantId);
   filtered.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
 
   const total = filtered.length;
@@ -202,7 +208,7 @@ export function getAllPayerAudit(options?: {
 }): { events: PayerAuditEvent[]; total: number } {
   let filtered = [...auditRing];
   if (options?.action) {
-    filtered = filtered.filter(e => e.action === options.action);
+    filtered = filtered.filter((e) => e.action === options.action);
   }
   filtered.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
 
@@ -222,7 +228,7 @@ export function verifyPayerAuditChain(): {
   message: string;
 } {
   if (auditRing.length === 0) {
-    return { ok: true, checked: 0, message: "Empty audit trail" };
+    return { ok: true, checked: 0, message: 'Empty audit trail' };
   }
 
   for (let i = 0; i < auditRing.length; i++) {
@@ -247,11 +253,20 @@ export function verifyPayerAuditChain(): {
     }
 
     if (i > 0 && entry.prevHash !== auditRing[i - 1].hash) {
-      return { ok: false, checked: i, brokenAt: i, message: `Chain break at index ${i}: prevHash mismatch` };
+      return {
+        ok: false,
+        checked: i,
+        brokenAt: i,
+        message: `Chain break at index ${i}: prevHash mismatch`,
+      };
     }
   }
 
-  return { ok: true, checked: auditRing.length, message: `Chain verified: ${auditRing.length} entries` };
+  return {
+    ok: true,
+    checked: auditRing.length,
+    message: `Chain verified: ${auditRing.length} entries`,
+  };
 }
 
 /* ── Stats ──────────────────────────────────────────────────── */

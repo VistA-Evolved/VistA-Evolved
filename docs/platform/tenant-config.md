@@ -36,14 +36,14 @@ the admin API. Layer 5 controls CPRS UI details.
 
 ```typescript
 interface MarketplaceTenantConfig {
-  tenantId: string;              // Unique tenant ID
-  facilityName: string;          // Human-readable name
+  tenantId: string; // Unique tenant ID
+  facilityName: string; // Human-readable name
   jurisdiction: JurisdictionPack; // Regulatory context
-  enabledModules: string[];      // System-level module IDs
+  enabledModules: string[]; // System-level module IDs
   connectors: ConnectorConfig[]; // Connector configurations
   customSettings: Record<string, string | number | boolean>;
-  createdAt: string;             // ISO 8601
-  updatedAt: string;             // ISO 8601
+  createdAt: string; // ISO 8601
+  updatedAt: string; // ISO 8601
 }
 ```
 
@@ -52,19 +52,21 @@ interface MarketplaceTenantConfig {
 Jurisdiction packs set regulatory defaults, connector templates, and
 locale-specific settings for a tenant.
 
-| Pack | Name | Description |
-|------|------|-------------|
-| `us` | United States | HIPAA, CMS billing, X12 5010 EDI, US clearinghouses |
-| `ph` | Philippines | PhilHealth eClaims, DOH reporting, Philippine HMOs |
-| `global` | Global / Generic | Minimal regulatory assumptions, adaptable |
-| `sandbox` | Sandbox / Dev | All features, simulated connectors, relaxed validation |
+| Pack      | Name             | Description                                            |
+| --------- | ---------------- | ------------------------------------------------------ |
+| `us`      | United States    | HIPAA, CMS billing, X12 5010 EDI, US clearinghouses    |
+| `ph`      | Philippines      | PhilHealth eClaims, DOH reporting, Philippine HMOs     |
+| `global`  | Global / Generic | Minimal regulatory assumptions, adaptable              |
+| `sandbox` | Sandbox / Dev    | All features, simulated connectors, relaxed validation |
 
 ### What a jurisdiction pack sets:
+
 - **Default connectors** -- pre-configured integrations for the market
 - **Custom settings** -- currency, date format, regulatory flags
 - **Validation rules** -- claim validation strictness (future)
 
 ### Changing jurisdiction
+
 Changing a tenant's jurisdiction **resets** connector settings and custom
 settings to the new pack's defaults. This is intentional -- connectors are
 market-specific.
@@ -75,8 +77,8 @@ Connectors represent external integrations (clearinghouses, PACS, etc.):
 
 ```typescript
 interface ConnectorConfig {
-  type: string;     // e.g., "clearinghouse", "pacs", "philhealth"
-  name: string;     // Display name
+  type: string; // e.g., "clearinghouse", "pacs", "philhealth"
+  name: string; // Display name
   enabled: boolean; // Active toggle
   settings: Record<string, string | number | boolean>; // Non-secret config
 }
@@ -87,14 +89,15 @@ interface ConnectorConfig {
 **Connector secrets are NEVER stored in tenant config.** Secrets (API keys,
 tokens, certificates) are managed via environment variables:
 
-| Env Var | Purpose |
-|---------|---------|
-| `PHILHEALTH_API_TOKEN` | PhilHealth eClaims API authentication |
-| `CLEARINGHOUSE_API_KEY` | EDI clearinghouse API key |
-| `IMAGING_INGEST_WEBHOOK_SECRET` | Orthanc webhook auth |
-| `OIDC_CLIENT_SECRET` | OIDC provider client secret |
+| Env Var                         | Purpose                               |
+| ------------------------------- | ------------------------------------- |
+| `PHILHEALTH_API_TOKEN`          | PhilHealth eClaims API authentication |
+| `CLEARINGHOUSE_API_KEY`         | EDI clearinghouse API key             |
+| `IMAGING_INGEST_WEBHOOK_SECRET` | Orthanc webhook auth                  |
+| `OIDC_CLIENT_SECRET`            | OIDC provider client secret           |
 
 This ensures:
+
 - No secrets in git (`.env.local` is git-ignored)
 - No secrets in API responses
 - Secrets can be rotated without tenant config changes
@@ -102,12 +105,14 @@ This ensures:
 ## API Reference
 
 ### Get tenant config
+
 ```
 GET /api/marketplace/config?tenantId=default
 Authorization: session cookie (admin role)
 ```
 
 ### Update tenant config
+
 ```
 PUT /api/marketplace/config
 Content-Type: application/json
@@ -120,6 +125,7 @@ Content-Type: application/json
 ```
 
 ### Update connectors only
+
 ```
 PATCH /api/marketplace/connectors
 Content-Type: application/json
@@ -132,6 +138,7 @@ Content-Type: application/json
 ```
 
 ### Change jurisdiction
+
 ```
 PATCH /api/marketplace/jurisdiction
 Content-Type: application/json
@@ -142,11 +149,13 @@ Content-Type: application/json
 ```
 
 ### List jurisdiction packs
+
 ```
 GET /api/marketplace/jurisdictions
 ```
 
 ### Summary stats
+
 ```
 GET /api/marketplace/summary
 ```
@@ -156,11 +165,11 @@ GET /api/marketplace/summary
 A `"default"` tenant is automatically seeded at startup from environment
 variables:
 
-| Env Var | Default | Description |
-|---------|---------|-------------|
-| `DEPLOY_SKU` | `FULL_SUITE` | Which SKU profile to use |
-| `TENANT_JURISDICTION` | `sandbox` | Jurisdiction pack |
-| `FACILITY_NAME` | `VistA-Evolved Sandbox` | Facility display name |
+| Env Var               | Default                 | Description              |
+| --------------------- | ----------------------- | ------------------------ |
+| `DEPLOY_SKU`          | `FULL_SUITE`            | Which SKU profile to use |
+| `TENANT_JURISDICTION` | `sandbox`               | Jurisdiction pack        |
+| `FACILITY_NAME`       | `VistA-Evolved Sandbox` | Facility display name    |
 
 ## Admin UI
 
@@ -180,6 +189,7 @@ marketplace config uses **system-level** module IDs (`clinical`, `imaging`,
 `rcm`, etc.) for coarse platform packaging.
 
 These coexist at different granularity levels:
+
 - System-level `clinical` module being disabled blocks ALL clinical routes
 - Tab-level `problems` being disabled hides the Problems tab but other
   clinical tabs still work

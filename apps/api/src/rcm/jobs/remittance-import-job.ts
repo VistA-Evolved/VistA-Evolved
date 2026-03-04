@@ -12,22 +12,21 @@
  * No external payer calls — processes already-received remittance data.
  */
 
-import { appendRcmAudit } from "../audit/rcm-audit.js";
-import { log } from "../../lib/logger.js";
-import type { RcmJobType } from "./queue.js";
+import { appendRcmAudit } from '../audit/rcm-audit.js';
+import { log } from '../../lib/logger.js';
+import type { RcmJobType } from './queue.js';
 
 /* ── Config ────────────────────────────────────────────────── */
 
 /** Underpayment threshold: if paid < (billed * threshold), flag as underpayment */
-const UNDERPAYMENT_THRESHOLD =
-  parseFloat(process.env.RCM_UNDERPAYMENT_THRESHOLD ?? "0.95") || 0.95;
+const UNDERPAYMENT_THRESHOLD = parseFloat(process.env.RCM_UNDERPAYMENT_THRESHOLD ?? '0.95') || 0.95;
 
 const REMITTANCE_IMPORT_INTERVAL_MS =
-  parseInt(process.env.RCM_REMITTANCE_IMPORT_INTERVAL_MS ?? "1800000", 10) || 1_800_000; // 30 min
+  parseInt(process.env.RCM_REMITTANCE_IMPORT_INTERVAL_MS ?? '1800000', 10) || 1_800_000; // 30 min
 const REMITTANCE_IMPORT_RATE_LIMIT =
-  parseInt(process.env.RCM_REMITTANCE_IMPORT_RATE_LIMIT ?? "10", 10) || 10;
+  parseInt(process.env.RCM_REMITTANCE_IMPORT_RATE_LIMIT ?? '10', 10) || 10;
 
-export const REMITTANCE_IMPORT_JOB_TYPE: RcmJobType = "REMITTANCE_IMPORT";
+export const REMITTANCE_IMPORT_JOB_TYPE: RcmJobType = 'REMITTANCE_IMPORT';
 
 /* ── Result Types ──────────────────────────────────────────── */
 
@@ -52,9 +51,10 @@ export interface RemittanceImportResult {
  *   - parserVersion: optional (default "1.0.0")
  *   - importedBy: actor who triggered the import
  */
-export async function handleRemittanceImportJob(
-  job: { id: string; payload: Record<string, unknown> },
-): Promise<Record<string, unknown>> {
+export async function handleRemittanceImportJob(job: {
+  id: string;
+  payload: Record<string, unknown>;
+}): Promise<Record<string, unknown>> {
   const now = new Date().toISOString();
   const result: RemittanceImportResult = {
     processedAt: now,
@@ -68,10 +68,10 @@ export async function handleRemittanceImportJob(
 
   const {
     entries = [],
-    sourceType = "EDI_835",
+    sourceType = 'EDI_835',
     originalFilename,
-    parserVersion = "1.0.0",
-    importedBy = "system",
+    parserVersion = '1.0.0',
+    importedBy = 'system',
   } = job.payload as {
     entries?: Array<{
       claimRef: string;
@@ -95,15 +95,14 @@ export async function handleRemittanceImportJob(
   };
 
   if (!Array.isArray(entries) || entries.length === 0) {
-    result.errors.push("No entries in payload");
+    result.errors.push('No entries in payload');
     return result as unknown as Record<string, unknown>;
   }
 
   try {
     // Dynamic import to avoid circular dependencies
-    const { createRemittanceImport, createPaymentRecord } = await import(
-      "../reconciliation/recon-store.js"
-    );
+    const { createRemittanceImport, createPaymentRecord } =
+      await import('../reconciliation/recon-store.js');
 
     // Step 1: Create remittance import record
     const totalPaid = entries.reduce((sum, e) => sum + (e.paidAmount ?? 0), 0);
@@ -130,9 +129,12 @@ export async function handleRemittanceImportJob(
           payerId: entry.payerId,
           billedAmountCents: Math.round(entry.billedAmount * 100),
           paidAmountCents: Math.round(entry.paidAmount * 100),
-          allowedAmountCents: entry.allowedAmount != null ? Math.round(entry.allowedAmount * 100) : undefined,
-          patientRespCents: entry.patientResp != null ? Math.round(entry.patientResp * 100) : undefined,
-          adjustmentAmountCents: entry.adjustmentAmount != null ? Math.round(entry.adjustmentAmount * 100) : undefined,
+          allowedAmountCents:
+            entry.allowedAmount != null ? Math.round(entry.allowedAmount * 100) : undefined,
+          patientRespCents:
+            entry.patientResp != null ? Math.round(entry.patientResp * 100) : undefined,
+          adjustmentAmountCents:
+            entry.adjustmentAmount != null ? Math.round(entry.adjustmentAmount * 100) : undefined,
           traceNumber: entry.traceNumber,
           checkNumber: entry.checkNumber,
           postedDate: entry.postedDate,
@@ -144,20 +146,20 @@ export async function handleRemittanceImportJob(
         result.paymentRecordsCreated++;
       } catch (entryErr) {
         result.errors.push(
-          `Entry ${i} (${entry.claimRef}): ${entryErr instanceof Error ? entryErr.message : String(entryErr)}`,
+          `Entry ${i} (${entry.claimRef}): ${entryErr instanceof Error ? entryErr.message : String(entryErr)}`
         );
       }
     }
 
     // Step 3: Attempt matching via matching engine
     try {
-      const { runBatchMatch } = await import("../reconciliation/matching-engine.js");
+      const { runBatchMatch } = await import('../reconciliation/matching-engine.js');
       const matchResult = await runBatchMatch(importRecord.id);
       result.matchesAttempted = matchResult.attempted;
       result.matchesSucceeded = matchResult.matched;
     } catch (matchErr) {
       result.errors.push(
-        `Matching: ${matchErr instanceof Error ? matchErr.message : String(matchErr)}`,
+        `Matching: ${matchErr instanceof Error ? matchErr.message : String(matchErr)}`
       );
     }
 
@@ -167,12 +169,12 @@ export async function handleRemittanceImportJob(
       result.underpaymentCasesCreated = underpayments;
     } catch (upErr) {
       result.errors.push(
-        `Underpayment detection: ${upErr instanceof Error ? upErr.message : String(upErr)}`,
+        `Underpayment detection: ${upErr instanceof Error ? upErr.message : String(upErr)}`
       );
     }
 
     // Audit trail
-    appendRcmAudit("remittance.import_processed", {
+    appendRcmAudit('remittance.import_processed', {
       userId: String(importedBy),
       detail: {
         importId: importRecord.id,
@@ -186,7 +188,7 @@ export async function handleRemittanceImportJob(
       },
     });
 
-    log.info("Remittance import job completed", {
+    log.info('Remittance import job completed', {
       importId: importRecord.id,
       payments: result.paymentRecordsCreated,
       matched: result.matchesSucceeded,
@@ -195,7 +197,7 @@ export async function handleRemittanceImportJob(
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     result.errors.push(`Import failed: ${msg}`);
-    log.warn("Remittance import job failed", { error: msg, jobId: job.id });
+    log.warn('Remittance import job failed', { error: msg, jobId: job.id });
   }
 
   return result as unknown as Record<string, unknown>;
@@ -207,16 +209,15 @@ export async function handleRemittanceImportJob(
  * create an underpayment case.
  */
 async function detectUnderpayments(importId: string): Promise<number> {
-  const { listPaymentsByImport, createUnderpaymentCase } = await import(
-    "../reconciliation/recon-store.js"
-  );
+  const { listPaymentsByImport, createUnderpaymentCase } =
+    await import('../reconciliation/recon-store.js');
 
   const payments = await listPaymentsByImport(importId);
   let created = 0;
 
   for (const payment of payments) {
     if (
-      payment.status === "MATCHED" &&
+      payment.status === 'MATCHED' &&
       payment.billedAmountCents > 0 &&
       payment.paidAmountCents < payment.billedAmountCents * UNDERPAYMENT_THRESHOLD
     ) {
@@ -225,7 +226,7 @@ async function detectUnderpayments(importId: string): Promise<number> {
           claimRef: payment.claimRef,
           paymentId: payment.id,
           payerId: payment.payerId,
-          expectedAmountModel: "BILLED_AMOUNT",
+          expectedAmountModel: 'BILLED_AMOUNT',
           expectedAmountCents: payment.billedAmountCents,
           paidAmountCents: payment.paidAmountCents,
         });
@@ -248,10 +249,10 @@ async function detectUnderpayments(importId: string): Promise<number> {
 export function getRemittanceImportConfig() {
   return {
     type: REMITTANCE_IMPORT_JOB_TYPE,
-    label: "Remittance Import Processor",
+    label: 'Remittance Import Processor',
     intervalMs: REMITTANCE_IMPORT_INTERVAL_MS,
     rateLimitPerHour: REMITTANCE_IMPORT_RATE_LIMIT,
-    enabled: (process.env.RCM_REMITTANCE_IMPORT_ENABLED ?? "false") === "true",
+    enabled: (process.env.RCM_REMITTANCE_IMPORT_ENABLED ?? 'false') === 'true',
     handler: handleRemittanceImportJob,
   };
 }

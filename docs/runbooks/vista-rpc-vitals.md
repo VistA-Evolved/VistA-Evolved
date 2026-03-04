@@ -6,13 +6,13 @@
 
 ## RPC Used
 
-| Field | Value |
-|-------|-------|
-| **RPC Name** | `ORQQVI VITALS` |
-| **Routine** | `VITALS^ORQQVI` |
-| **Context** | `OR CPRS GUI CHART` |
+| Field          | Value                                                         |
+| -------------- | ------------------------------------------------------------- |
+| **RPC Name**   | `ORQQVI VITALS`                                               |
+| **Routine**    | `VITALS^ORQQVI`                                               |
+| **Context**    | `OR CPRS GUI CHART`                                           |
 | **Parameters** | DFN (patient IEN), ORSDT (start date FM), OREDT (end date FM) |
-| **Returns** | Array: `ien^type^value^datetime` per line |
+| **Returns**    | Array: `ien^type^value^datetime` per line                     |
 
 ### Alternative RPC
 
@@ -69,15 +69,15 @@ GET /vista/vitals?dfn=<dfn>
 
 ## Vital Type Abbreviations
 
-| Abbreviation | Vital Sign |
-|-------------|------------|
-| T | Temperature |
-| P | Pulse |
-| R | Respiration |
-| BP | Blood Pressure |
-| HT | Height |
-| WT | Weight |
-| PN | Pain |
+| Abbreviation | Vital Sign     |
+| ------------ | -------------- |
+| T            | Temperature    |
+| P            | Pulse          |
+| R            | Respiration    |
+| BP           | Blood Pressure |
+| HT           | Height         |
+| WT           | Weight         |
+| PN           | Pain           |
 
 ---
 

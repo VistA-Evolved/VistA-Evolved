@@ -17,10 +17,10 @@
 /* ── Types ───────────────────────────────────────────────── */
 
 export interface X12Delimiters {
-  element: string;     // Usually '*'
-  component: string;   // Usually ':'
-  segment: string;     // Usually '~'
-  repetition: string;  // Usually '^'
+  element: string; // Usually '*'
+  component: string; // Usually ':'
+  segment: string; // Usually '~'
+  repetition: string; // Usually '^'
 }
 
 export interface X12Segment {
@@ -61,7 +61,7 @@ export interface Parsed835Line {
   postedDate?: string;
   traceNumber?: string;
   checkNumber?: string;
-  codes: Array<{ type: "CARC" | "RARC" | "OTHER"; code: string; description?: string }>;
+  codes: Array<{ type: 'CARC' | 'RARC' | 'OTHER'; code: string; description?: string }>;
 }
 
 export interface Parsed835 {
@@ -102,7 +102,7 @@ export interface Parsed277 {
  */
 export function detectDelimiters(raw: string): X12Delimiters | null {
   // Find ISA header
-  const isaIdx = raw.indexOf("ISA");
+  const isaIdx = raw.indexOf('ISA');
   if (isaIdx === -1) return null;
 
   const header = raw.substring(isaIdx);
@@ -114,7 +114,7 @@ export function detectDelimiters(raw: string): X12Delimiters | null {
 
   // Repetition separator is ISA11 (after 10 element separators)
   const isaElements = header.substring(0, 106).split(element);
-  const repetition = isaElements.length > 11 ? isaElements[11]?.charAt(0) ?? "^" : "^";
+  const repetition = isaElements.length > 11 ? (isaElements[11]?.charAt(0) ?? '^') : '^';
 
   return { element, component, segment, repetition };
 }
@@ -122,22 +122,24 @@ export function detectDelimiters(raw: string): X12Delimiters | null {
 /**
  * Tokenize raw X12 into segments.
  */
-export function tokenize(raw: string): { segments: X12Segment[]; delimiters: X12Delimiters } | null {
+export function tokenize(
+  raw: string
+): { segments: X12Segment[]; delimiters: X12Delimiters } | null {
   const delimiters = detectDelimiters(raw);
   if (!delimiters) return null;
 
   // Clean up: remove newlines/carriage returns that are not the segment terminator
   let cleaned = raw;
-  if (delimiters.segment !== "\n" && delimiters.segment !== "\r") {
-    cleaned = raw.replace(/[\r\n]+/g, "");
+  if (delimiters.segment !== '\n' && delimiters.segment !== '\r') {
+    cleaned = raw.replace(/[\r\n]+/g, '');
   }
 
-  const rawSegments = cleaned.split(delimiters.segment).filter(s => s.trim().length > 0);
-  const segments: X12Segment[] = rawSegments.map(s => {
+  const rawSegments = cleaned.split(delimiters.segment).filter((s) => s.trim().length > 0);
+  const segments: X12Segment[] = rawSegments.map((s) => {
     const trimmed = s.trim();
     const elements = trimmed.split(delimiters.element);
     return {
-      id: elements[0] ?? "",
+      id: elements[0] ?? '',
       elements,
       raw: trimmed,
     };
@@ -154,7 +156,7 @@ export function tokenize(raw: string): { segments: X12Segment[]; delimiters: X12
 export function parseEnvelopes(raw: string): X12ParseResult {
   const tokenized = tokenize(raw);
   if (!tokenized) {
-    return { ok: false, envelopes: [], errors: ["Failed to detect X12 delimiters"] };
+    return { ok: false, envelopes: [], errors: ['Failed to detect X12 delimiters'] };
   }
 
   const { segments, delimiters } = tokenized;
@@ -168,37 +170,37 @@ export function parseEnvelopes(raw: string): X12ParseResult {
 
   for (const seg of segments) {
     switch (seg.id) {
-      case "ISA":
+      case 'ISA':
         isa = seg;
         break;
-      case "GS":
+      case 'GS':
         gs = seg;
         break;
-      case "ST":
+      case 'ST':
         st = seg;
         txSegments = [];
         break;
-      case "SE":
+      case 'SE':
         if (st && gs && isa) {
           envelopes.push({
             delimiters,
             isa,
             gs,
             st,
-            transactionSetCode: st.elements[1] ?? "",
+            transactionSetCode: st.elements[1] ?? '',
             segments: txSegments,
             se: seg,
-            ge: { id: "GE", elements: [], raw: "" }, // Filled below
-            iea: { id: "IEA", elements: [], raw: "" },
+            ge: { id: 'GE', elements: [], raw: '' }, // Filled below
+            iea: { id: 'IEA', elements: [], raw: '' },
           });
         }
         st = null;
         txSegments = [];
         break;
-      case "GE":
+      case 'GE':
         if (envelopes.length > 0) envelopes[envelopes.length - 1].ge = seg;
         break;
-      case "IEA":
+      case 'IEA':
         if (envelopes.length > 0) envelopes[envelopes.length - 1].iea = seg;
         break;
       default:
@@ -213,7 +215,7 @@ export function parseEnvelopes(raw: string): X12ParseResult {
 /* ── 835 Normalizer ──────────────────────────────────────── */
 
 function findElement(seg: X12Segment, idx: number): string {
-  return seg.elements[idx] ?? "";
+  return seg.elements[idx] ?? '';
 }
 
 /**
@@ -222,19 +224,19 @@ function findElement(seg: X12Segment, idx: number): string {
 export function normalize835(envelope: X12ParsedEnvelope): Parsed835 {
   const errors: string[] = [];
   const lines: Parsed835Line[] = [];
-  let payerId = "";
-  let payeeName = "";
-  let checkNumber = "";
+  let payerId = '';
+  let payeeName = '';
+  let checkNumber = '';
   let totalPaid = 0;
   let totalBilled = 0;
 
   // Walk segments
-  let currentClaimRef = "";
+  let currentClaimRef = '';
   let currentBilled = 0;
   let currentPaid = 0;
   let currentAllowed: number | undefined;
   let currentAdjustment: number | undefined;
-  let currentCodes: Parsed835Line["codes"] = [];
+  let currentCodes: Parsed835Line['codes'] = [];
   let inClaim = false;
   let serviceDate: string | undefined;
 
@@ -254,7 +256,7 @@ export function normalize835(envelope: X12ParsedEnvelope): Parsed835 {
       totalPaid += currentPaid;
       totalBilled += currentBilled;
     }
-    currentClaimRef = "";
+    currentClaimRef = '';
     currentBilled = 0;
     currentPaid = 0;
     currentAllowed = undefined;
@@ -266,26 +268,26 @@ export function normalize835(envelope: X12ParsedEnvelope): Parsed835 {
 
   for (const seg of envelope.segments) {
     switch (seg.id) {
-      case "N1":
+      case 'N1':
         // N1*PR = Payer, N1*PE = Payee
-        if (findElement(seg, 1) === "PR") {
+        if (findElement(seg, 1) === 'PR') {
           payerId = findElement(seg, 3) || findElement(seg, 2);
-        } else if (findElement(seg, 1) === "PE") {
+        } else if (findElement(seg, 1) === 'PE') {
           payeeName = findElement(seg, 2);
         }
         break;
 
-      case "BPR":
+      case 'BPR':
         // BPR*I = Total payment amount
         totalPaid = parseFloat(findElement(seg, 2)) || 0;
         break;
 
-      case "TRN":
+      case 'TRN':
         // Check/EFT trace number
         checkNumber = findElement(seg, 2);
         break;
 
-      case "CLP":
+      case 'CLP':
         // Start of a new claim
         flushClaim();
         inClaim = true;
@@ -294,18 +296,18 @@ export function normalize835(envelope: X12ParsedEnvelope): Parsed835 {
         currentPaid = parseFloat(findElement(seg, 4)) || 0;
         break;
 
-      case "SVC":
+      case 'SVC':
         // Service line (within a claim)
         // Accumulate allowed amount if present
         {
           const lineAllowed = parseFloat(findElement(seg, 2)) || 0;
-          const linePaid = parseFloat(findElement(seg, 3)) || 0;
+          parseFloat(findElement(seg, 3)); // linePaid consumed by accumulation
           if (currentAllowed === undefined) currentAllowed = 0;
           currentAllowed += lineAllowed;
         }
         break;
 
-      case "CAS":
+      case 'CAS':
         // Adjustment codes
         {
           const groupCode = findElement(seg, 1); // CO, PR, OA, etc.
@@ -313,7 +315,7 @@ export function normalize835(envelope: X12ParsedEnvelope): Parsed835 {
             const code = findElement(seg, i);
             const amount = parseFloat(findElement(seg, i + 1)) || 0;
             if (code) {
-              currentCodes.push({ type: "CARC", code, description: `Group: ${groupCode}` });
+              currentCodes.push({ type: 'CARC', code, description: `Group: ${groupCode}` });
               if (currentAdjustment === undefined) currentAdjustment = 0;
               currentAdjustment += amount;
             }
@@ -321,9 +323,9 @@ export function normalize835(envelope: X12ParsedEnvelope): Parsed835 {
         }
         break;
 
-      case "DTM":
+      case 'DTM':
         // Date reference
-        if (findElement(seg, 1) === "232" || findElement(seg, 1) === "233") {
+        if (findElement(seg, 1) === '232' || findElement(seg, 1) === '233') {
           serviceDate = findElement(seg, 2);
         }
         break;
@@ -349,28 +351,28 @@ export function normalize277(envelope: X12ParsedEnvelope): Parsed277 {
   const errors: string[] = [];
   const statuses: Parsed277Status[] = [];
 
-  let currentClaimRef = "";
-  let currentPayerId = "";
+  let currentClaimRef = '';
+  let currentPayerId = '';
 
   for (const seg of envelope.segments) {
     switch (seg.id) {
-      case "TRN":
+      case 'TRN':
         currentClaimRef = findElement(seg, 2);
         break;
 
-      case "N1":
-        if (findElement(seg, 1) === "PR") {
+      case 'N1':
+        if (findElement(seg, 1) === 'PR') {
           currentPayerId = findElement(seg, 3) || findElement(seg, 2);
         }
         break;
 
-      case "STC":
+      case 'STC':
         // Status line: STC*category:code*date
         {
           const composite = findElement(seg, 1);
           const parts = composite.split(envelope.delimiters.component);
-          const statusCategory = parts[0] ?? "";
-          const statusCode = parts[1] ?? "";
+          const statusCategory = parts[0] ?? '';
+          const statusCode = parts[1] ?? '';
           const statusDate = findElement(seg, 2);
           const totalCharged = parseFloat(findElement(seg, 4)) || undefined;
           const totalPaid = parseFloat(findElement(seg, 5)) || undefined;
@@ -406,7 +408,11 @@ export interface X12IngestResult {
  * Parse a raw X12 wire format string and return normalized results.
  * Handles 835, 277, and returns raw segments for unknown types.
  */
-export function parseX12Wire(raw: string): { ok: boolean; results: X12IngestResult[]; errors: string[] } {
+export function parseX12Wire(raw: string): {
+  ok: boolean;
+  results: X12IngestResult[];
+  errors: string[];
+} {
   const { ok, envelopes, errors } = parseEnvelopes(raw);
   if (!ok) return { ok: false, results: [], errors };
 
@@ -420,10 +426,10 @@ export function parseX12Wire(raw: string): { ok: boolean; results: X12IngestResu
     };
 
     switch (env.transactionSetCode) {
-      case "835":
+      case '835':
         base.parsed835 = normalize835(env);
         break;
-      case "277":
+      case '277':
         base.parsed277 = normalize277(env);
         break;
       // 837, 999, 270, 271 — return raw envelope for now

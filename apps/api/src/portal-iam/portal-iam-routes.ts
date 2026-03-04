@@ -31,8 +31,8 @@
  * NOT the clinician session. The global auth gateway skips /portal/* routes.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { randomBytes, createHash } from "node:crypto";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { randomBytes } from 'node:crypto';
 import {
   createUser,
   authenticateUser,
@@ -51,8 +51,7 @@ import {
   revokeAllDeviceSessions,
   createDeviceSession,
   getIamStats,
-  IAM_CONFIG,
-} from "./portal-user-store.js";
+} from './portal-user-store.js';
 import {
   createProxyInvitation,
   respondToInvitation,
@@ -60,12 +59,12 @@ import {
   getInvitationsForUser,
   getInvitationsForPatient,
   getProxyInvitationStats,
-} from "./proxy-store.js";
-import { getAccessLog, logSignIn, logSignOut, getAccessLogStats } from "./access-log-store.js";
-import { generateCsrfToken, validateCsrf } from "./csrf.js";
-import { portalAudit } from "../services/portal-audit.js";
-import { log } from "../lib/logger.js";
-import type { PortalUser } from "./types.js";
+} from './proxy-store.js';
+import { getAccessLog, logSignIn, logSignOut, getAccessLogStats } from './access-log-store.js';
+import { generateCsrfToken, validateCsrf } from './csrf.js';
+import { portalAudit } from '../services/portal-audit.js';
+import { log } from '../lib/logger.js';
+import type { PortalUser } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* IAM Session Store (separate from Phase 26 portal session)            */
@@ -87,7 +86,7 @@ interface IamSession {
 }
 
 const iamSessions = new Map<string, IamSession>();
-const IAM_COOKIE = "portal_iam_session";
+const IAM_COOKIE = 'portal_iam_session';
 const IAM_SESSION_TTL_MS = 30 * 60 * 1000; // 30 min absolute
 const IAM_IDLE_TTL_MS = 15 * 60 * 1000; // 15 min idle
 
@@ -109,7 +108,7 @@ setInterval(() => {
 /* ------------------------------------------------------------------ */
 
 function createIamSession(user: PortalUser): string {
-  const token = randomBytes(32).toString("hex");
+  const token = randomBytes(32).toString('hex');
   const selfProfile = user.patientProfiles.find((p) => p.isSelf);
   const nowMs = Date.now();
   iamSessions.set(token, {
@@ -148,17 +147,19 @@ export function getIamSession(request: FastifyRequest): IamSession | null {
 function requireIamSession(request: FastifyRequest, reply: FastifyReply): IamSession {
   const session = getIamSession(request);
   if (!session) {
-    reply.code(401).send({ ok: false, error: "Not authenticated" });
-    throw new Error("No IAM session");
+    reply.code(401).send({ ok: false, error: 'Not authenticated' });
+    throw new Error('No IAM session');
   }
   return session;
 }
 
 const IAM_COOKIE_OPTS = {
-  path: "/",
+  path: '/',
   httpOnly: true,
-  sameSite: "strict" as const,
-  secure: process.env.NODE_ENV === "production" || ["rc","prod"].includes((process.env.PLATFORM_RUNTIME_MODE || "").toLowerCase().trim()),
+  sameSite: 'strict' as const,
+  secure:
+    process.env.NODE_ENV === 'production' ||
+    ['rc', 'prod'].includes((process.env.PLATFORM_RUNTIME_MODE || '').toLowerCase().trim()),
   maxAge: Math.floor(IAM_SESSION_TTL_MS / 1000),
 };
 
@@ -194,16 +195,15 @@ setInterval(() => {
 /* ------------------------------------------------------------------ */
 
 export default async function portalIamRoutes(server: FastifyInstance): Promise<void> {
-
   /* ================================================================ */
   /* CSRF Token                                                        */
   /* ================================================================ */
 
-  server.get("/portal/iam/csrf-token", async (request, reply) => {
+  server.get('/portal/iam/csrf-token', async (request, reply) => {
     // Phase 132: Return session-bound CSRF secret (no more cookie)
     const session = getIamSession(request);
     if (!session) {
-      return reply.code(401).send({ ok: false, error: "Not authenticated" });
+      return reply.code(401).send({ ok: false, error: 'Not authenticated' });
     }
     return { ok: true, csrfToken: session.csrfSecret };
   });
@@ -212,10 +212,10 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
   /* Registration                                                      */
   /* ================================================================ */
 
-  server.post("/portal/iam/register", async (request, reply) => {
+  server.post('/portal/iam/register', async (request, reply) => {
     const ip = request.ip;
     if (!checkIamRate(ip)) {
-      reply.code(429).send({ ok: false, error: "Too many requests. Try again later." });
+      reply.code(429).send({ ok: false, error: 'Too many requests. Try again later.' });
       return;
     }
 
@@ -223,14 +223,17 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
     const { username, email, password, displayName, patientDfn, patientName } = body;
 
     if (!username || !email || !password || !displayName) {
-      reply.code(400).send({ ok: false, error: "Missing required fields: username, email, password, displayName" });
+      reply.code(400).send({
+        ok: false,
+        error: 'Missing required fields: username, email, password, displayName',
+      });
       return;
     }
 
     // Validate password strength
     const pwCheck = validatePasswordStrength(password);
     if (!pwCheck.valid) {
-      reply.code(400).send({ ok: false, error: "Password too weak", details: pwCheck.errors });
+      reply.code(400).send({ ok: false, error: 'Password too weak', details: pwCheck.errors });
       return;
     }
 
@@ -243,8 +246,8 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
         patientDfn && patientName ? { dfn: patientDfn, name: patientName } : undefined
       );
 
-      portalAudit("portal.login", "success", patientDfn ?? "none", {
-        detail: { action: "register", userId: user.id },
+      portalAudit('portal.login', 'success', patientDfn ?? 'none', {
+        detail: { action: 'register', userId: user.id },
       });
 
       reply.code(201).send({
@@ -257,8 +260,8 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
           status: user.status,
         },
       });
-    } catch (err: any) {
-      reply.code(409).send({ ok: false, error: "Registration failed" });
+    } catch (_err: any) {
+      reply.code(409).send({ ok: false, error: 'Registration failed' });
     }
   });
 
@@ -266,10 +269,10 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
   /* Login                                                             */
   /* ================================================================ */
 
-  server.post("/portal/iam/login", async (request, reply) => {
+  server.post('/portal/iam/login', async (request, reply) => {
     const ip = request.ip;
     if (!checkIamRate(ip)) {
-      reply.code(429).send({ ok: false, error: "Too many requests. Try again later." });
+      reply.code(429).send({ ok: false, error: 'Too many requests. Try again later.' });
       return;
     }
 
@@ -277,28 +280,28 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
     const { username, password, totpCode } = body;
 
     if (!username || !password) {
-      reply.code(400).send({ ok: false, error: "Missing username or password" });
+      reply.code(400).send({ ok: false, error: 'Missing username or password' });
       return;
     }
 
     const result = await authenticateUser(username, password);
     if (!result.success || !result.user) {
-      portalAudit("portal.login.failed", "failure", "unknown", {
+      portalAudit('portal.login.failed', 'failure', 'unknown', {
         detail: { username, ip },
       });
-      reply.code(401).send({ ok: false, error: result.error || "Authentication failed" });
+      reply.code(401).send({ ok: false, error: result.error || 'Authentication failed' });
       return;
     }
 
     // MFA check
     if (result.requiresMfa) {
       if (!totpCode) {
-        reply.code(200).send({ ok: true, requiresMfa: true, message: "TOTP code required" });
+        reply.code(200).send({ ok: true, requiresMfa: true, message: 'TOTP code required' });
         return;
       }
       const mfaValid = confirmMfa(result.user.id, totpCode);
       if (!mfaValid) {
-        reply.code(401).send({ ok: false, error: "Invalid TOTP code" });
+        reply.code(401).send({ ok: false, error: 'Invalid TOTP code' });
         return;
       }
     }
@@ -307,64 +310,62 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
     const token = createIamSession(result.user);
 
     // Track device
-    const ua = request.headers["user-agent"] ?? "unknown";
+    const ua = request.headers['user-agent'] ?? 'unknown';
     createDeviceSession(result.user.id, token, {
-      userAgent: typeof ua === "string" ? ua : ua[0] ?? "unknown",
+      userAgent: typeof ua === 'string' ? ua : (ua[0] ?? 'unknown'),
       ipAddress: ip,
     });
 
     // Log access
     logSignIn(result.user.id, result.user.displayName, { ip });
 
-    portalAudit("portal.login", "success", result.user.patientProfiles[0]?.patientDfn ?? "none", {
+    portalAudit('portal.login', 'success', result.user.patientProfiles[0]?.patientDfn ?? 'none', {
       detail: { userId: result.user.id },
     });
 
-    return reply
-      .setCookie(IAM_COOKIE, token, IAM_COOKIE_OPTS)
-      .send({
-        ok: true,
-        user: {
-          id: result.user.id,
-          username: result.user.username,
-          displayName: result.user.displayName,
-          profiles: result.user.patientProfiles.map((p) => ({
-            id: p.id,
-            patientDfn: p.patientDfn,
-            patientName: p.patientName,
-            relationship: p.relationship,
-            isSelf: p.isSelf,
-            accessLevel: p.accessLevel,
-          })),
-          mfaEnabled: result.user.mfaEnabled,
-        },
-      });
+    return reply.setCookie(IAM_COOKIE, token, IAM_COOKIE_OPTS).send({
+      ok: true,
+      user: {
+        id: result.user.id,
+        username: result.user.username,
+        displayName: result.user.displayName,
+        profiles: result.user.patientProfiles.map((p) => ({
+          id: p.id,
+          patientDfn: p.patientDfn,
+          patientName: p.patientName,
+          relationship: p.relationship,
+          isSelf: p.isSelf,
+          accessLevel: p.accessLevel,
+        })),
+        mfaEnabled: result.user.mfaEnabled,
+      },
+    });
   });
 
   /* ================================================================ */
   /* Logout                                                            */
   /* ================================================================ */
 
-  server.post("/portal/iam/logout", async (request, reply) => {
+  server.post('/portal/iam/logout', async (request, reply) => {
     const session = getIamSession(request);
     if (session) {
       logSignOut(session.userId, session.displayName);
       iamSessions.delete(session.token);
-      portalAudit("portal.logout", "success", session.patientDfn ?? "none", {
+      portalAudit('portal.logout', 'success', session.patientDfn ?? 'none', {
         detail: { userId: session.userId },
       });
     }
-    reply.clearCookie(IAM_COOKIE, { path: "/" }).send({ ok: true });
+    reply.clearCookie(IAM_COOKIE, { path: '/' }).send({ ok: true });
   });
 
   /* ================================================================ */
   /* Session                                                           */
   /* ================================================================ */
 
-  server.get("/portal/iam/session", async (request, reply) => {
+  server.get('/portal/iam/session', async (request, reply) => {
     const session = getIamSession(request);
     if (!session) {
-      reply.code(401).send({ ok: false, error: "Not authenticated" });
+      reply.code(401).send({ ok: false, error: 'Not authenticated' });
       return;
     }
 
@@ -377,14 +378,15 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
         patientDfn: session.patientDfn,
         patientName: session.patientName,
         activeProfileId: session.activeProfileId,
-        profiles: user?.patientProfiles.map((p) => ({
-          id: p.id,
-          patientDfn: p.patientDfn,
-          patientName: p.patientName,
-          relationship: p.relationship,
-          isSelf: p.isSelf,
-          accessLevel: p.accessLevel,
-        })) ?? [],
+        profiles:
+          user?.patientProfiles.map((p) => ({
+            id: p.id,
+            patientDfn: p.patientDfn,
+            patientName: p.patientName,
+            relationship: p.relationship,
+            isSelf: p.isSelf,
+            accessLevel: p.accessLevel,
+          })) ?? [],
         mfaEnabled: user?.mfaEnabled ?? false,
       },
     };
@@ -394,7 +396,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
   /* Password Change                                                   */
   /* ================================================================ */
 
-  server.post("/portal/iam/password/change", async (request, reply) => {
+  server.post('/portal/iam/password/change', async (request, reply) => {
     const session = requireIamSession(request, reply);
     if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
@@ -402,13 +404,13 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
     const { currentPassword, newPassword } = body;
 
     if (!currentPassword || !newPassword) {
-      reply.code(400).send({ ok: false, error: "Missing currentPassword or newPassword" });
+      reply.code(400).send({ ok: false, error: 'Missing currentPassword or newPassword' });
       return;
     }
 
     const pwCheck = validatePasswordStrength(newPassword);
     if (!pwCheck.valid) {
-      reply.code(400).send({ ok: false, error: "New password too weak", details: pwCheck.errors });
+      reply.code(400).send({ ok: false, error: 'New password too weak', details: pwCheck.errors });
       return;
     }
 
@@ -418,17 +420,17 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
       return;
     }
 
-    return { ok: true, message: "Password changed successfully" };
+    return { ok: true, message: 'Password changed successfully' };
   });
 
   /* ================================================================ */
   /* Password Reset Request                                            */
   /* ================================================================ */
 
-  server.post("/portal/iam/password/reset", async (request, reply) => {
+  server.post('/portal/iam/password/reset', async (request, reply) => {
     const ip = request.ip;
     if (!checkIamRate(ip)) {
-      reply.code(429).send({ ok: false, error: "Too many requests" });
+      reply.code(429).send({ ok: false, error: 'Too many requests' });
       return;
     }
 
@@ -436,7 +438,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
     const { email } = body;
 
     if (!email) {
-      reply.code(400).send({ ok: false, error: "Missing email" });
+      reply.code(400).send({ ok: false, error: 'Missing email' });
       return;
     }
 
@@ -445,30 +447,32 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
       const token = generatePasswordResetToken(user.id);
       // In production: send token via email. For dev: log it.
       if (token) {
-        log.info(`Password reset token generated for ${user.id} (dev only): ${token.slice(0, 8)}...`);
+        log.info(
+          `Password reset token generated for ${user.id} (dev only): ${token.slice(0, 8)}...`
+        );
       }
     }
 
     // Always return success to avoid leaking registered emails
-    return { ok: true, message: "If the email is registered, a reset link has been sent." };
+    return { ok: true, message: 'If the email is registered, a reset link has been sent.' };
   });
 
   /* ================================================================ */
   /* Password Reset Confirm                                            */
   /* ================================================================ */
 
-  server.post("/portal/iam/password/confirm", async (request, reply) => {
+  server.post('/portal/iam/password/confirm', async (request, reply) => {
     const body = (request.body as any) || {};
     const { token, newPassword } = body;
 
     if (!token || !newPassword) {
-      reply.code(400).send({ ok: false, error: "Missing token or newPassword" });
+      reply.code(400).send({ ok: false, error: 'Missing token or newPassword' });
       return;
     }
 
     const pwCheck = validatePasswordStrength(newPassword);
     if (!pwCheck.valid) {
-      reply.code(400).send({ ok: false, error: "Password too weak", details: pwCheck.errors });
+      reply.code(400).send({ ok: false, error: 'Password too weak', details: pwCheck.errors });
       return;
     }
 
@@ -478,25 +482,25 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
       return;
     }
 
-    return { ok: true, message: "Password reset successfully" };
+    return { ok: true, message: 'Password reset successfully' };
   });
 
   /* ================================================================ */
   /* MFA Setup                                                         */
   /* ================================================================ */
 
-  server.post("/portal/iam/mfa/setup", async (request, reply) => {
+  server.post('/portal/iam/mfa/setup', async (request, reply) => {
     const session = requireIamSession(request, reply);
     if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     if (!isMfaEnabled()) {
-      reply.code(400).send({ ok: false, error: "MFA is not enabled on this instance" });
+      reply.code(400).send({ ok: false, error: 'MFA is not enabled on this instance' });
       return;
     }
 
     const result = setupMfa(session.userId);
     if (!result) {
-      reply.code(400).send({ ok: false, error: "Failed to setup MFA" });
+      reply.code(400).send({ ok: false, error: 'Failed to setup MFA' });
       return;
     }
 
@@ -509,7 +513,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
     };
   });
 
-  server.post("/portal/iam/mfa/confirm", async (request, reply) => {
+  server.post('/portal/iam/mfa/confirm', async (request, reply) => {
     const session = requireIamSession(request, reply);
     if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
@@ -517,36 +521,36 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
     const { code } = body;
 
     if (!code) {
-      reply.code(400).send({ ok: false, error: "Missing TOTP code" });
+      reply.code(400).send({ ok: false, error: 'Missing TOTP code' });
       return;
     }
 
     const ok = confirmMfa(session.userId, code);
     if (!ok) {
-      reply.code(400).send({ ok: false, error: "Invalid TOTP code" });
+      reply.code(400).send({ ok: false, error: 'Invalid TOTP code' });
       return;
     }
 
-    return { ok: true, message: "MFA enabled successfully" };
+    return { ok: true, message: 'MFA enabled successfully' };
   });
 
-  server.post("/portal/iam/mfa/disable", async (request, reply) => {
+  server.post('/portal/iam/mfa/disable', async (request, reply) => {
     const session = requireIamSession(request, reply);
     if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     disableMfa(session.userId);
-    return { ok: true, message: "MFA disabled" };
+    return { ok: true, message: 'MFA disabled' };
   });
 
   /* ================================================================ */
   /* Patient Profiles                                                  */
   /* ================================================================ */
 
-  server.get("/portal/iam/profiles", async (request, reply) => {
+  server.get('/portal/iam/profiles', async (request, reply) => {
     const session = requireIamSession(request, reply);
     const user = getUserById(session.userId);
     if (!user) {
-      reply.code(404).send({ ok: false, error: "User not found" });
+      reply.code(404).send({ ok: false, error: 'User not found' });
       return;
     }
 
@@ -565,24 +569,24 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
     };
   });
 
-  server.delete("/portal/iam/profiles/:id", async (request, reply) => {
+  server.delete('/portal/iam/profiles/:id', async (request, reply) => {
     const session = requireIamSession(request, reply);
     if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     const { id } = request.params as { id: string };
     const user = getUserById(session.userId);
     if (!user) {
-      reply.code(404).send({ ok: false, error: "User not found" });
+      reply.code(404).send({ ok: false, error: 'User not found' });
       return;
     }
 
     const profile = user.patientProfiles.find((p) => p.id === id);
     if (!profile) {
-      reply.code(404).send({ ok: false, error: "Profile not found" });
+      reply.code(404).send({ ok: false, error: 'Profile not found' });
       return;
     }
     if (profile.isSelf) {
-      reply.code(400).send({ ok: false, error: "Cannot remove self profile" });
+      reply.code(400).send({ ok: false, error: 'Cannot remove self profile' });
       return;
     }
 
@@ -597,7 +601,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
   /* Device Sessions                                                   */
   /* ================================================================ */
 
-  server.get("/portal/iam/devices", async (request, reply) => {
+  server.get('/portal/iam/devices', async (request, reply) => {
     const session = requireIamSession(request, reply);
     const devices = listDeviceSessions(session.userId);
 
@@ -615,21 +619,21 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
     };
   });
 
-  server.post("/portal/iam/devices/:id/revoke", async (request, reply) => {
+  server.post('/portal/iam/devices/:id/revoke', async (request, reply) => {
     const session = requireIamSession(request, reply);
     if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     const { id } = request.params as { id: string };
     const ok = revokeDeviceSession(session.userId, id);
     if (!ok) {
-      reply.code(404).send({ ok: false, error: "Device session not found" });
+      reply.code(404).send({ ok: false, error: 'Device session not found' });
       return;
     }
 
     return { ok: true };
   });
 
-  server.post("/portal/iam/devices/revoke-all", async (request, reply) => {
+  server.post('/portal/iam/devices/revoke-all', async (request, reply) => {
     const session = requireIamSession(request, reply);
     if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
@@ -641,15 +645,26 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
   /* Proxy Invitations                                                 */
   /* ================================================================ */
 
-  server.post("/portal/iam/proxy/invite", async (request, reply) => {
+  server.post('/portal/iam/proxy/invite', async (request, reply) => {
     const session = requireIamSession(request, reply);
     if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     const body = (request.body as any) || {};
-    const { patientDfn, patientName, relationship, accessLevel, reason, verificationDocRef, patientAge } = body;
+    const {
+      patientDfn,
+      patientName,
+      relationship,
+      accessLevel,
+      reason,
+      verificationDocRef,
+      patientAge,
+    } = body;
 
     if (!patientDfn || !patientName || !relationship || !reason) {
-      reply.code(400).send({ ok: false, error: "Missing required fields: patientDfn, patientName, relationship, reason" });
+      reply.code(400).send({
+        ok: false,
+        error: 'Missing required fields: patientDfn, patientName, relationship, reason',
+      });
       return;
     }
 
@@ -660,35 +675,35 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
         patientDfn,
         patientName,
         relationship,
-        requestedAccessLevel: accessLevel || "read_only",
+        requestedAccessLevel: accessLevel || 'read_only',
         reason,
         verificationDocRef,
         patientAge,
       });
 
       return { ok: true, invitation };
-    } catch (err: any) {
-      reply.code(400).send({ ok: false, error: "Invalid proxy invitation request" });
+    } catch (_err: any) {
+      reply.code(400).send({ ok: false, error: 'Invalid proxy invitation request' });
     }
   });
 
-  server.get("/portal/iam/proxy/invitations", async (request, reply) => {
+  server.get('/portal/iam/proxy/invitations', async (request, reply) => {
     const session = requireIamSession(request, reply);
     const invitations = getInvitationsForUser(session.userId);
     return { ok: true, invitations };
   });
 
-  server.get("/portal/iam/proxy/invitations/for-patient", async (request, reply) => {
+  server.get('/portal/iam/proxy/invitations/for-patient', async (request, reply) => {
     const session = requireIamSession(request, reply);
     if (!session.patientDfn) {
-      reply.code(400).send({ ok: false, error: "No patient profile linked" });
+      reply.code(400).send({ ok: false, error: 'No patient profile linked' });
       return;
     }
     const invitations = getInvitationsForPatient(session.patientDfn);
     return { ok: true, invitations };
   });
 
-  server.post("/portal/iam/proxy/invitations/:id/respond", async (request, reply) => {
+  server.post('/portal/iam/proxy/invitations/:id/respond', async (request, reply) => {
     const session = requireIamSession(request, reply);
     if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
@@ -696,28 +711,28 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
     const body = (request.body as any) || {};
     const { response } = body;
 
-    if (response !== "accepted" && response !== "declined") {
+    if (response !== 'accepted' && response !== 'declined') {
       reply.code(400).send({ ok: false, error: "Response must be 'accepted' or 'declined'" });
       return;
     }
 
     const result = respondToInvitation(id, response, session.userId);
     if (!result) {
-      reply.code(404).send({ ok: false, error: "Invitation not found or not pending" });
+      reply.code(404).send({ ok: false, error: 'Invitation not found or not pending' });
       return;
     }
 
     return { ok: true, invitation: result };
   });
 
-  server.post("/portal/iam/proxy/invitations/:id/cancel", async (request, reply) => {
+  server.post('/portal/iam/proxy/invitations/:id/cancel', async (request, reply) => {
     const session = requireIamSession(request, reply);
     if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     const { id } = request.params as { id: string };
     const ok = cancelInvitation(id, session.userId);
     if (!ok) {
-      reply.code(404).send({ ok: false, error: "Invitation not found or not pending" });
+      reply.code(404).send({ ok: false, error: 'Invitation not found or not pending' });
       return;
     }
 
@@ -728,7 +743,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
   /* Access Log (Patient-Visible)                                      */
   /* ================================================================ */
 
-  server.get("/portal/iam/activity", async (request, reply) => {
+  server.get('/portal/iam/activity', async (request, reply) => {
     const session = requireIamSession(request, reply);
     const query = request.query as any;
 
@@ -746,7 +761,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
   /* Admin Stats                                                       */
   /* ================================================================ */
 
-  server.get("/portal/iam/stats", async (request, reply) => {
+  server.get('/portal/iam/stats', async (request, reply) => {
     // In production, restrict to admin role
     return {
       ok: true,

@@ -17,7 +17,6 @@ import { useState, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
 
-
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
 /* ------------------------------------------------------------------ */
@@ -35,15 +34,6 @@ interface AIResponseData {
   latencyMs: number;
   responseId: string;
   generatedAt: string;
-}
-
-interface AIModel {
-  id: string;
-  name: string;
-  provider: string;
-  deployment: string;
-  status: string;
-  allowedUseCases: string[];
 }
 
 interface AuditEvent {
@@ -127,14 +117,17 @@ function IntakeSummaryTab({ dfn }: { dfn: string }) {
     }
   }, [dfn]);
 
-  const handleConfirm = useCallback(async (accept: boolean) => {
-    if (!auditEventId) return;
-    await apiFetch(`/ai/confirm/${auditEventId}`, {
-      method: 'POST',
-      body: JSON.stringify({ confirmed: accept }),
-    });
-    setConfirmed(accept);
-  }, [auditEventId]);
+  const handleConfirm = useCallback(
+    async (accept: boolean) => {
+      if (!auditEventId) return;
+      await apiFetch(`/ai/confirm/${auditEventId}`, {
+        method: 'POST',
+        body: JSON.stringify({ confirmed: accept }),
+      });
+      setConfirmed(accept);
+    },
+    [auditEventId]
+  );
 
   return (
     <div style={{ padding: 16 }}>
@@ -148,8 +141,12 @@ function IntakeSummaryTab({ dfn }: { dfn: string }) {
         onClick={generateSummary}
         disabled={loading}
         style={{
-          padding: '6px 16px', background: '#2563eb', color: '#fff',
-          border: 'none', borderRadius: 4, cursor: loading ? 'wait' : 'pointer',
+          padding: '6px 16px',
+          background: '#2563eb',
+          color: '#fff',
+          border: 'none',
+          borderRadius: 4,
+          cursor: loading ? 'wait' : 'pointer',
           fontSize: 13,
         }}
       >
@@ -157,7 +154,16 @@ function IntakeSummaryTab({ dfn }: { dfn: string }) {
       </button>
 
       {error && (
-        <div style={{ margin: '12px 0', padding: 8, background: '#fee2e2', borderRadius: 4, color: '#b91c1c', fontSize: 13 }}>
+        <div
+          style={{
+            margin: '12px 0',
+            padding: 8,
+            background: '#fee2e2',
+            borderRadius: 4,
+            color: '#b91c1c',
+            fontSize: 13,
+          }}
+        >
           {error}
         </div>
       )}
@@ -165,31 +171,56 @@ function IntakeSummaryTab({ dfn }: { dfn: string }) {
       {result && (
         <div style={{ marginTop: 12 }}>
           {result.requiresConfirmation && confirmed === null && (
-            <div style={{ padding: 8, background: '#fef3c7', borderRadius: 4, marginBottom: 8, fontSize: 13 }}>
+            <div
+              style={{
+                padding: 8,
+                background: '#fef3c7',
+                borderRadius: 4,
+                marginBottom: 8,
+                fontSize: 13,
+              }}
+            >
               ⚠ This draft requires your confirmation before clinical use.
             </div>
           )}
 
-          <div style={{
-            background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6,
-            padding: 12, fontSize: 13, whiteSpace: 'pre-wrap', lineHeight: 1.5,
-          }}>
+          <div
+            style={{
+              background: '#f8fafc',
+              border: '1px solid #e2e8f0',
+              borderRadius: 6,
+              padding: 12,
+              fontSize: 13,
+              whiteSpace: 'pre-wrap',
+              lineHeight: 1.5,
+            }}
+          >
             {result.text}
           </div>
 
           <div style={{ marginTop: 8, display: 'flex', gap: 8, alignItems: 'center' }}>
-            <span style={{
-              fontSize: 11, padding: '2px 6px', borderRadius: 3,
-              background: result.confidence === 'high' ? '#d1fae5' :
-                result.confidence === 'medium' ? '#fef3c7' : '#fee2e2',
-            }}>
+            <span
+              style={{
+                fontSize: 11,
+                padding: '2px 6px',
+                borderRadius: 3,
+                background:
+                  result.confidence === 'high'
+                    ? '#d1fae5'
+                    : result.confidence === 'medium'
+                      ? '#fef3c7'
+                      : '#fee2e2',
+              }}
+            >
               Confidence: {result.confidence}
             </span>
             <span style={{ fontSize: 11, color: '#666' }}>
               Model: {result.modelId} | {result.latencyMs}ms | {result.citations.length} citations
             </span>
             {result.wasRedacted && (
-              <span style={{ fontSize: 11, padding: '2px 6px', background: '#dbeafe', borderRadius: 3 }}>
+              <span
+                style={{ fontSize: 11, padding: '2px 6px', background: '#dbeafe', borderRadius: 3 }}
+              >
                 PHI Redacted
               </span>
             )}
@@ -197,7 +228,9 @@ function IntakeSummaryTab({ dfn }: { dfn: string }) {
 
           {result.safetyWarnings.length > 0 && (
             <div style={{ marginTop: 8, fontSize: 12, color: '#b45309' }}>
-              {result.safetyWarnings.map((w, i) => <div key={i}>⚠ {w}</div>)}
+              {result.safetyWarnings.map((w, i) => (
+                <div key={i}>⚠ {w}</div>
+              ))}
             </div>
           )}
 
@@ -210,7 +243,9 @@ function IntakeSummaryTab({ dfn }: { dfn: string }) {
                 {result.citations.map((c, i) => (
                   <li key={i}>
                     <strong>{c.source}</strong> ({c.category})
-                    {c.snippet && <span style={{ color: '#666' }}> — {c.snippet.slice(0, 100)}</span>}
+                    {c.snippet && (
+                      <span style={{ color: '#666' }}> — {c.snippet.slice(0, 100)}</span>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -221,20 +256,38 @@ function IntakeSummaryTab({ dfn }: { dfn: string }) {
             <div style={{ marginTop: 12, display: 'flex', gap: 8 }}>
               <button
                 onClick={() => handleConfirm(true)}
-                style={{ padding: '6px 16px', background: '#16a34a', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: 13 }}
+                style={{
+                  padding: '6px 16px',
+                  background: '#16a34a',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: 4,
+                  cursor: 'pointer',
+                  fontSize: 13,
+                }}
               >
                 ✓ Accept Draft
               </button>
               <button
                 onClick={() => handleConfirm(false)}
-                style={{ padding: '6px 16px', background: '#dc2626', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: 13 }}
+                style={{
+                  padding: '6px 16px',
+                  background: '#dc2626',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: 4,
+                  cursor: 'pointer',
+                  fontSize: 13,
+                }}
               >
                 ✗ Reject Draft
               </button>
             </div>
           )}
           {confirmed === true && (
-            <div style={{ marginTop: 8, color: '#16a34a', fontSize: 13 }}>✓ Draft accepted — ready for clinical use</div>
+            <div style={{ marginTop: 8, color: '#16a34a', fontSize: 13 }}>
+              ✓ Draft accepted — ready for clinical use
+            </div>
           )}
           {confirmed === false && (
             <div style={{ marginTop: 8, color: '#dc2626', fontSize: 13 }}>✗ Draft rejected</div>
@@ -303,36 +356,111 @@ function LabEducationTab({ dfn }: { dfn: string }) {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, maxWidth: 500 }}>
         <div>
           <label style={{ fontSize: 12, display: 'block', marginBottom: 2 }}>Test Name *</label>
-          <input value={labName} onChange={(e) => setLabName(e.target.value)} placeholder="e.g., HbA1c" style={{ width: '100%', padding: 4, fontSize: 13, border: '1px solid #ccc', borderRadius: 3 }} />
+          <input
+            value={labName}
+            onChange={(e) => setLabName(e.target.value)}
+            placeholder="e.g., HbA1c"
+            style={{
+              width: '100%',
+              padding: 4,
+              fontSize: 13,
+              border: '1px solid #ccc',
+              borderRadius: 3,
+            }}
+          />
         </div>
         <div>
           <label style={{ fontSize: 12, display: 'block', marginBottom: 2 }}>Result Value</label>
-          <input value={labValue} onChange={(e) => setLabValue(e.target.value)} placeholder="e.g., 7.2" style={{ width: '100%', padding: 4, fontSize: 13, border: '1px solid #ccc', borderRadius: 3 }} />
+          <input
+            value={labValue}
+            onChange={(e) => setLabValue(e.target.value)}
+            placeholder="e.g., 7.2"
+            style={{
+              width: '100%',
+              padding: 4,
+              fontSize: 13,
+              border: '1px solid #ccc',
+              borderRadius: 3,
+            }}
+          />
         </div>
         <div>
           <label style={{ fontSize: 12, display: 'block', marginBottom: 2 }}>Units</label>
-          <input value={labUnits} onChange={(e) => setLabUnits(e.target.value)} placeholder="e.g., %" style={{ width: '100%', padding: 4, fontSize: 13, border: '1px solid #ccc', borderRadius: 3 }} />
+          <input
+            value={labUnits}
+            onChange={(e) => setLabUnits(e.target.value)}
+            placeholder="e.g., %"
+            style={{
+              width: '100%',
+              padding: 4,
+              fontSize: 13,
+              border: '1px solid #ccc',
+              borderRadius: 3,
+            }}
+          />
         </div>
         <div>
           <label style={{ fontSize: 12, display: 'block', marginBottom: 2 }}>Reference Range</label>
-          <input value={refRange} onChange={(e) => setRefRange(e.target.value)} placeholder="e.g., &lt;5.7%" style={{ width: '100%', padding: 4, fontSize: 13, border: '1px solid #ccc', borderRadius: 3 }} />
+          <input
+            value={refRange}
+            onChange={(e) => setRefRange(e.target.value)}
+            placeholder="e.g., &lt;5.7%"
+            style={{
+              width: '100%',
+              padding: 4,
+              fontSize: 13,
+              border: '1px solid #ccc',
+              borderRadius: 3,
+            }}
+          />
         </div>
       </div>
 
       <button
         onClick={handleExplain}
         disabled={loading || !labName.trim()}
-        style={{ marginTop: 8, padding: '6px 16px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: 4, cursor: loading ? 'wait' : 'pointer', fontSize: 13 }}
+        style={{
+          marginTop: 8,
+          padding: '6px 16px',
+          background: '#2563eb',
+          color: '#fff',
+          border: 'none',
+          borderRadius: 4,
+          cursor: loading ? 'wait' : 'pointer',
+          fontSize: 13,
+        }}
       >
         {loading ? 'Generating...' : 'Explain for Patient'}
       </button>
 
       {error && (
-        <div style={{ margin: '12px 0', padding: 8, background: '#fee2e2', borderRadius: 4, color: '#b91c1c', fontSize: 13 }}>{error}</div>
+        <div
+          style={{
+            margin: '12px 0',
+            padding: 8,
+            background: '#fee2e2',
+            borderRadius: 4,
+            color: '#b91c1c',
+            fontSize: 13,
+          }}
+        >
+          {error}
+        </div>
       )}
 
       {explanation && (
-        <div style={{ marginTop: 12, background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 6, padding: 12, fontSize: 13, whiteSpace: 'pre-wrap', lineHeight: 1.5 }}>
+        <div
+          style={{
+            marginTop: 12,
+            background: '#f0fdf4',
+            border: '1px solid #bbf7d0',
+            borderRadius: 6,
+            padding: 12,
+            fontSize: 13,
+            whiteSpace: 'pre-wrap',
+            lineHeight: 1.5,
+          }}
+        >
           {explanation}
         </div>
       )}
@@ -375,17 +503,44 @@ function AuditTab() {
       <button
         onClick={loadAudit}
         disabled={loading}
-        style={{ padding: '6px 16px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer', fontSize: 13, marginBottom: 12 }}
+        style={{
+          padding: '6px 16px',
+          background: '#2563eb',
+          color: '#fff',
+          border: 'none',
+          borderRadius: 4,
+          cursor: 'pointer',
+          fontSize: 13,
+          marginBottom: 12,
+        }}
       >
         {loading ? 'Loading...' : 'Load Audit Data'}
       </button>
 
       {error && (
-        <div style={{ padding: 8, background: '#fee2e2', borderRadius: 4, color: '#b91c1c', fontSize: 13, marginBottom: 8 }}>{error}</div>
+        <div
+          style={{
+            padding: 8,
+            background: '#fee2e2',
+            borderRadius: 4,
+            color: '#b91c1c',
+            fontSize: 13,
+            marginBottom: 8,
+          }}
+        >
+          {error}
+        </div>
       )}
 
       {stats && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 16 }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: 8,
+            marginBottom: 16,
+          }}
+        >
           <div style={{ padding: 8, background: '#f0f9ff', borderRadius: 4, textAlign: 'center' }}>
             <div style={{ fontSize: 20, fontWeight: 'bold' }}>{stats.totalEvents}</div>
             <div style={{ fontSize: 11, color: '#666' }}>Total Events</div>
@@ -399,7 +554,9 @@ function AuditTab() {
             <div style={{ fontSize: 11, color: '#666' }}>Blocked</div>
           </div>
           <div style={{ padding: 8, background: '#ede9fe', borderRadius: 4, textAlign: 'center' }}>
-            <div style={{ fontSize: 20, fontWeight: 'bold' }}>{(stats.confirmationRate * 100).toFixed(0)}%</div>
+            <div style={{ fontSize: 20, fontWeight: 'bold' }}>
+              {(stats.confirmationRate * 100).toFixed(0)}%
+            </div>
             <div style={{ fontSize: 11, color: '#666' }}>Confirmation Rate</div>
           </div>
         </div>
@@ -424,11 +581,19 @@ function AuditTab() {
                 <td style={{ padding: 4 }}>{e.useCase}</td>
                 <td style={{ padding: 4 }}>{e.modelId}</td>
                 <td style={{ padding: 4 }}>
-                  <span style={{
-                    padding: '1px 4px', borderRadius: 3, fontSize: 11,
-                    background: e.outcome === 'success' ? '#d1fae5' :
-                      e.outcome === 'blocked' ? '#fee2e2' : '#fef3c7',
-                  }}>
+                  <span
+                    style={{
+                      padding: '1px 4px',
+                      borderRadius: 3,
+                      fontSize: 11,
+                      background:
+                        e.outcome === 'success'
+                          ? '#d1fae5'
+                          : e.outcome === 'blocked'
+                            ? '#fee2e2'
+                            : '#fef3c7',
+                    }}
+                  >
                     {e.outcome}
                   </span>
                 </td>
@@ -483,8 +648,17 @@ export default function AIAssistPanel({ dfn }: { dfn: string }) {
       </div>
 
       {/* Governance banner */}
-      <div style={{ padding: '4px 16px', background: '#eff6ff', borderBottom: '1px solid #dbeafe', fontSize: 11, color: '#1e40af' }}>
-        AI Assist — Governed | No diagnosis, treatment plans, or prescribing guidance | All outputs audited | Clinician confirmation required for clinical drafts
+      <div
+        style={{
+          padding: '4px 16px',
+          background: '#eff6ff',
+          borderBottom: '1px solid #dbeafe',
+          fontSize: 11,
+          color: '#1e40af',
+        }}
+      >
+        AI Assist — Governed | No diagnosis, treatment plans, or prescribing guidance | All outputs
+        audited | Clinician confirmation required for clinical drafts
       </div>
 
       {/* Tab content */}

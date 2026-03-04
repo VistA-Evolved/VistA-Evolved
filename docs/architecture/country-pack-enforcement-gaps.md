@@ -34,6 +34,7 @@ to `TenantConfig` interface, PG migration, DB repo update, and resolve at
 session creation / request time.
 
 **Files affected**:
+
 - `apps/api/src/config/tenant-config.ts` — add fields to TenantConfig interface
 - `apps/api/src/platform/db/repo/tenant-config-repo.ts` — DB column mapping
 - `apps/api/src/platform/db/migrate.ts` — ALTER TABLE migration
@@ -51,11 +52,13 @@ tenant's country pack.
 own hardcoded defaults rather than using the pack as the single source of truth.
 
 **Remediation**: P3 (Phase 493) — Create a Fastify `onRequest` hook that:
+
 1. Reads `session.tenantId` → `TenantConfig.countryPackId`
 2. Resolves `getCountryPack(countryPackId)` → `CountryPackValues`
 3. Decorates `request.countryPolicy` with effective values (merged pack + tenant overrides)
 
 **Files affected**:
+
 - `apps/api/src/middleware/country-policy-hook.ts` — new file
 - `apps/api/src/server/register-routes.ts` — register the hook
 
@@ -77,6 +80,7 @@ profile. Consent UX adapts: all-or-nothing shows a single toggle; category
 shows per-category toggles; item-level shows granular controls.
 
 **Files affected**:
+
 - `apps/api/src/services/consent-engine.ts` — accept pack profile parameter
 - `apps/api/src/routes/consent-routes.ts` — read pack from request context
 - `apps/api/src/consent-pou/consent-routes.ts` — same
@@ -97,6 +101,7 @@ FHIR exports against the pack's `dataResidency.region` and
 `crossBorderTransferAllowed` flag.
 
 **Files affected**:
+
 - `apps/api/src/routes/data-residency-routes.ts` — read pack config
 - `apps/api/src/audit-shipping/shipper.ts` — validate bucket region vs pack region
 - `apps/api/src/routes/data-portability-routes.ts` — check dataExportRestricted
@@ -114,11 +119,13 @@ mechanism for patients to request data access, export, or erasure per GDPR/DPA
 requirements.
 
 **Remediation**: P6 (Phase 496) — Implement:
+
 1. Retention policy enforcement (soft-delete gating based on pack retention min/max)
 2. DSAR request API (submit, track, fulfill access/erasure requests)
 3. Audit retention enforcement using `auditRetentionDays`
 
 **Files affected**:
+
 - `apps/api/src/services/retention-engine.ts` — new file
 - `apps/api/src/routes/dsar-routes.ts` — new file
 - `apps/api/src/audit-shipping/shipper.ts` — respect auditRetentionDays
@@ -136,12 +143,14 @@ locales have complete message coverage.
 all UI strings exist. Missing translations silently fall back to English keys.
 
 **Remediation**: P7 (Phase 497) — CI-time gate that:
+
 1. Reads each pack's `supportedLocales`
 2. For each locale, checks that a message bundle exists and all base (en) keys
    are present
 3. Reports coverage percentage per locale per pack
 
 **Files affected**:
+
 - `scripts/qa-gates/i18n-coverage-gate.mjs` — new file
 - `qa/gauntlet/cli.mjs` — add i18n gate to RC suite
 
@@ -157,12 +166,14 @@ during RPC calls. No automated test exists for character encoding round-trips.
 or clinical data risk data corruption.
 
 **Remediation**: P8 (Phase 498) — UTF-8 round-trip test harness that:
+
 1. Writes known strings via RPC to VistA M globals
 2. Reads them back and compares
 3. Classifies character ranges: Latin-1, Latin-Extended, CJK, emoji
 4. Reports which ranges survive, which are corrupted, which are rejected
 
 **Files affected**:
+
 - `apps/api/src/vista/utf8-roundtrip.ts` — new file
 - `scripts/verify-utf8-roundtrip.ps1` — new file
 
@@ -170,15 +181,15 @@ or clinical data risk data corruption.
 
 ## Priority Ordering
 
-| Priority | Gap | Phase | Impact | Effort |
-|----------|-----|-------|--------|--------|
-| 1 | Tenant binding (no countryPackId on config) | P2 | Blocks all pack-based enforcement | Low |
-| 2 | No request-scoped policy resolution | P3 | Blocks all runtime enforcement | Medium |
-| 3 | Consent disconnected from pack | P4 | Country-specific consent flows broken | Medium |
-| 4 | Data residency not enforced | P5 | Compliance risk for PH/GH | Medium |
-| 5 | No retention / DSAR | P6 | GDPR/DPA non-compliance | High |
-| 6 | i18n not validated | P7 | Silent missing translations | Low |
-| 7 | UTF-8 not tested | P8 | Data corruption risk | Low |
+| Priority | Gap                                         | Phase | Impact                                | Effort |
+| -------- | ------------------------------------------- | ----- | ------------------------------------- | ------ |
+| 1        | Tenant binding (no countryPackId on config) | P2    | Blocks all pack-based enforcement     | Low    |
+| 2        | No request-scoped policy resolution         | P3    | Blocks all runtime enforcement        | Medium |
+| 3        | Consent disconnected from pack              | P4    | Country-specific consent flows broken | Medium |
+| 4        | Data residency not enforced                 | P5    | Compliance risk for PH/GH             | Medium |
+| 5        | No retention / DSAR                         | P6    | GDPR/DPA non-compliance               | High   |
+| 6        | i18n not validated                          | P7    | Silent missing translations           | Low    |
+| 7        | UTF-8 not tested                            | P8    | Data corruption risk                  | Low    |
 
 ---
 

@@ -9,41 +9,38 @@
  * provides persistent, reconciliation-ready storage.
  */
 
-import { randomUUID } from "node:crypto";
-import { eq, and, desc, count, lte, gte, sql } from "drizzle-orm";
-import { getPgDb } from "../../platform/pg/pg-db.js";
-import {
-  claimDraft,
-  claimLifecycleEvent,
-} from "../../platform/pg/pg-schema.js";
+import { randomUUID } from 'node:crypto';
+import { eq, and, desc, count, lte, gte, sql } from 'drizzle-orm';
+import { getPgDb } from '../../platform/pg/pg-db.js';
+import { claimDraft, claimLifecycleEvent } from '../../platform/pg/pg-schema.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
 export type ClaimDraftStatus =
-  | "draft"
-  | "scrubbed"
-  | "ready"
-  | "submitted"
-  | "accepted"
-  | "rejected"
-  | "paid"
-  | "denied"
-  | "appealed"
-  | "closed";
+  | 'draft'
+  | 'scrubbed'
+  | 'ready'
+  | 'submitted'
+  | 'accepted'
+  | 'rejected'
+  | 'paid'
+  | 'denied'
+  | 'appealed'
+  | 'closed';
 
 export const VALID_TRANSITIONS: Record<ClaimDraftStatus, ClaimDraftStatus[]> = {
-  draft:     ["scrubbed", "closed"],
-  scrubbed:  ["ready", "draft", "closed"],
-  ready:     ["submitted", "scrubbed", "draft", "closed"],
-  submitted: ["accepted", "rejected", "closed"],
-  accepted:  ["paid", "denied", "closed"],
-  rejected:  ["draft", "appealed", "closed"],
-  paid:      ["closed"],
-  denied:    ["appealed", "closed"],
-  appealed:  ["accepted", "rejected", "paid", "denied", "closed"],
-  closed:    [],
+  draft: ['scrubbed', 'closed'],
+  scrubbed: ['ready', 'draft', 'closed'],
+  ready: ['submitted', 'scrubbed', 'draft', 'closed'],
+  submitted: ['accepted', 'rejected', 'closed'],
+  accepted: ['paid', 'denied', 'closed'],
+  rejected: ['draft', 'appealed', 'closed'],
+  paid: ['closed'],
+  denied: ['appealed', 'closed'],
+  appealed: ['accepted', 'rejected', 'paid', 'denied', 'closed'],
+  closed: [],
 };
 
 export function isValidDraftTransition(from: ClaimDraftStatus, to: ClaimDraftStatus): boolean {
@@ -133,7 +130,11 @@ export interface CreateClaimDraftInput {
 
 function safeJsonParse<T>(val: string | null | undefined, fallback: T): T {
   if (!val) return fallback;
-  try { return JSON.parse(val); } catch { return fallback; }
+  try {
+    return JSON.parse(val);
+  } catch {
+    return fallback;
+  }
 }
 
 function parseDraft(row: any): ClaimDraftRow {
@@ -203,67 +204,71 @@ export async function createClaimDraft(input: CreateClaimDraftInput): Promise<Cl
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || "default";
+  const tenantId = input.tenantId || 'default';
 
   // Idempotency check: if key provided and already exists, return existing
   if (input.idempotencyKey) {
     const existingRows = await db
       .select()
       .from(claimDraft)
-      .where(and(
-        eq(claimDraft.tenantId, tenantId),
-        eq(claimDraft.idempotencyKey, input.idempotencyKey),
-      ));
+      .where(
+        and(eq(claimDraft.tenantId, tenantId), eq(claimDraft.idempotencyKey, input.idempotencyKey))
+      );
     if (existingRows[0]) return parseDraft(existingRows[0]);
   }
 
   const lines = input.lines ?? [];
-  const totalCharge = input.totalChargeCents ??
+  const totalCharge =
+    input.totalChargeCents ??
     lines.reduce((sum: number, l: any) => sum + (l.procedure?.charge ?? l.chargeAmount ?? 0), 0);
 
-  const auditEntry = [{
-    timestamp: now,
-    action: "draft.created",
-    actor: input.createdBy,
-    toStatus: "draft",
-    detail: "Claim draft created",
-  }];
+  const auditEntry = [
+    {
+      timestamp: now,
+      action: 'draft.created',
+      actor: input.createdBy,
+      toStatus: 'draft',
+      detail: 'Claim draft created',
+    },
+  ];
 
-  await db.insert(claimDraft)
-    .values({
-      id,
-      tenantId,
-      idempotencyKey: input.idempotencyKey || null,
-      status: "draft",
-      claimType: input.claimType || "professional",
-      encounterId: input.encounterId || null,
-      patientId: input.patientId,
-      patientName: input.patientName || null,
-      providerId: input.providerId,
-      billingProviderId: input.billingProviderId || null,
-      payerId: input.payerId,
-      payerName: input.payerName || null,
-      dateOfService: input.dateOfService,
-      diagnosesJson: JSON.stringify(input.diagnoses || []),
-      linesJson: JSON.stringify(lines),
-      attachmentsJson: JSON.stringify(input.attachments || []),
-      totalChargeCents: totalCharge,
-      vistaChargeIen: input.vistaChargeIen || null,
-      vistaArIen: input.vistaArIen || null,
-      metadataJson: JSON.stringify(input.metadata || {}),
-      auditJson: JSON.stringify(auditEntry),
-      createdAt: now,
-      updatedAt: now,
-      createdBy: input.createdBy,
-    });
+  await db.insert(claimDraft).values({
+    id,
+    tenantId,
+    idempotencyKey: input.idempotencyKey || null,
+    status: 'draft',
+    claimType: input.claimType || 'professional',
+    encounterId: input.encounterId || null,
+    patientId: input.patientId,
+    patientName: input.patientName || null,
+    providerId: input.providerId,
+    billingProviderId: input.billingProviderId || null,
+    payerId: input.payerId,
+    payerName: input.payerName || null,
+    dateOfService: input.dateOfService,
+    diagnosesJson: JSON.stringify(input.diagnoses || []),
+    linesJson: JSON.stringify(lines),
+    attachmentsJson: JSON.stringify(input.attachments || []),
+    totalChargeCents: totalCharge,
+    vistaChargeIen: input.vistaChargeIen || null,
+    vistaArIen: input.vistaArIen || null,
+    metadataJson: JSON.stringify(input.metadata || {}),
+    auditJson: JSON.stringify(auditEntry),
+    createdAt: now,
+    updatedAt: now,
+    createdBy: input.createdBy,
+  });
 
   // Record lifecycle event
-  await recordLifecycleEvent(tenantId, id, null, "draft", input.createdBy, "Claim draft created");
+  await recordLifecycleEvent(tenantId, id, null, 'draft', input.createdBy, 'Claim draft created');
 
   return (await getClaimDraftById(tenantId, id))!;
 }
 
-export async function getClaimDraftById(tenantId: string, id: string): Promise<ClaimDraftRow | null> {
+export async function getClaimDraftById(
+  tenantId: string,
+  id: string
+): Promise<ClaimDraftRow | null> {
   const db = getPgDb();
   const rows = await db
     .select()
@@ -284,7 +289,7 @@ export async function listClaimDrafts(
     dateTo?: string;
   },
   limit: number = 100,
-  offset: number = 0,
+  offset: number = 0
 ): Promise<ClaimDraftRow[]> {
   const db = getPgDb();
   const conditions = [eq(claimDraft.tenantId, tenantId)];
@@ -308,16 +313,26 @@ export async function listClaimDrafts(
 export async function updateClaimDraft(
   tenantId: string,
   id: string,
-  updates: Partial<Pick<CreateClaimDraftInput,
-    "patientName" | "providerId" | "billingProviderId" | "payerName" |
-    "diagnoses" | "lines" | "attachments" | "totalChargeCents" | "metadata"
-  >>,
-  actor: string,
+  updates: Partial<
+    Pick<
+      CreateClaimDraftInput,
+      | 'patientName'
+      | 'providerId'
+      | 'billingProviderId'
+      | 'payerName'
+      | 'diagnoses'
+      | 'lines'
+      | 'attachments'
+      | 'totalChargeCents'
+      | 'metadata'
+    >
+  >,
+  actor: string
 ): Promise<ClaimDraftRow | null> {
   const db = getPgDb();
   const existing = await getClaimDraftById(tenantId, id);
   if (!existing) return null;
-  if (existing.status !== "draft" && existing.status !== "scrubbed") {
+  if (existing.status !== 'draft' && existing.status !== 'scrubbed') {
     throw new Error(`Cannot update claim in status: ${existing.status}`);
   }
 
@@ -326,27 +341,36 @@ export async function updateClaimDraft(
 
   if (updates.patientName !== undefined) setClause.patientName = updates.patientName;
   if (updates.providerId !== undefined) setClause.providerId = updates.providerId;
-  if (updates.billingProviderId !== undefined) setClause.billingProviderId = updates.billingProviderId;
+  if (updates.billingProviderId !== undefined)
+    setClause.billingProviderId = updates.billingProviderId;
   if (updates.payerName !== undefined) setClause.payerName = updates.payerName;
   if (updates.diagnoses !== undefined) setClause.diagnosesJson = JSON.stringify(updates.diagnoses);
   if (updates.lines !== undefined) {
     setClause.linesJson = JSON.stringify(updates.lines);
     if (updates.totalChargeCents === undefined) {
       setClause.totalChargeCents = updates.lines.reduce(
-        (sum: number, l: any) => sum + (l.procedure?.charge ?? l.chargeAmount ?? 0), 0
+        (sum: number, l: any) => sum + (l.procedure?.charge ?? l.chargeAmount ?? 0),
+        0
       );
     }
   }
-  if (updates.attachments !== undefined) setClause.attachmentsJson = JSON.stringify(updates.attachments);
+  if (updates.attachments !== undefined)
+    setClause.attachmentsJson = JSON.stringify(updates.attachments);
   if (updates.totalChargeCents !== undefined) setClause.totalChargeCents = updates.totalChargeCents;
   if (updates.metadata !== undefined) setClause.metadataJson = JSON.stringify(updates.metadata);
 
   // Append audit entry
-  const auditEntry = { timestamp: now, action: "draft.updated", actor, detail: "Claim draft updated" };
+  const auditEntry = {
+    timestamp: now,
+    action: 'draft.updated',
+    actor,
+    detail: 'Claim draft updated',
+  };
   const auditTrail = [...existing.audit, auditEntry];
   setClause.auditJson = JSON.stringify(auditTrail);
 
-  await db.update(claimDraft)
+  await db
+    .update(claimDraft)
     .set(setClause)
     .where(and(eq(claimDraft.tenantId, tenantId), eq(claimDraft.id, id)));
 
@@ -368,7 +392,7 @@ export async function transitionClaimDraft(
     paidAmountCents?: number;
     adjustmentCents?: number;
     patientRespCents?: number;
-  },
+  }
 ): Promise<ClaimDraftRow | null> {
   const existing = await getClaimDraftById(tenantId, id);
   if (!existing) return null;
@@ -382,19 +406,19 @@ export async function transitionClaimDraft(
   const setClause: Record<string, any> = { status: toStatus, updatedAt: now };
 
   // Status-specific fields
-  if (toStatus === "submitted") setClause.submittedAt = now;
-  if (toStatus === "paid") {
+  if (toStatus === 'submitted') setClause.submittedAt = now;
+  if (toStatus === 'paid') {
     setClause.paidAt = now;
     if (opts?.paidAmountCents !== undefined) setClause.paidAmountCents = opts.paidAmountCents;
     if (opts?.adjustmentCents !== undefined) setClause.adjustmentCents = opts.adjustmentCents;
     if (opts?.patientRespCents !== undefined) setClause.patientRespCents = opts.patientRespCents;
   }
-  if (toStatus === "denied") {
+  if (toStatus === 'denied') {
     setClause.deniedAt = now;
     if (opts?.denialCode) setClause.denialCode = opts.denialCode;
     if (opts?.reason) setClause.denialReason = opts.reason;
   }
-  if (toStatus === "closed") setClause.closedAt = now;
+  if (toStatus === 'closed') setClause.closedAt = now;
 
   // Append audit
   const auditEntry = {
@@ -408,12 +432,21 @@ export async function transitionClaimDraft(
   const auditTrail = [...existing.audit, auditEntry];
   setClause.auditJson = JSON.stringify(auditTrail);
 
-  await db.update(claimDraft)
+  await db
+    .update(claimDraft)
     .set(setClause)
     .where(and(eq(claimDraft.tenantId, tenantId), eq(claimDraft.id, id)));
 
   // Record lifecycle event
-  await recordLifecycleEvent(tenantId, id, existing.status, toStatus, actor, opts?.reason, opts?.denialCode);
+  await recordLifecycleEvent(
+    tenantId,
+    id,
+    existing.status,
+    toStatus,
+    actor,
+    opts?.reason,
+    opts?.denialCode
+  );
 
   return getClaimDraftById(tenantId, id);
 }
@@ -427,9 +460,9 @@ export async function recordDenial(
   id: string,
   denialCode: string,
   denialReason: string,
-  actor: string,
+  actor: string
 ): Promise<ClaimDraftRow | null> {
-  return transitionClaimDraft(tenantId, id, "denied", actor, {
+  return transitionClaimDraft(tenantId, id, 'denied', actor, {
     denialCode,
     reason: denialReason,
   });
@@ -443,11 +476,11 @@ export async function createResubmission(
   tenantId: string,
   originalId: string,
   actor: string,
-  overrides?: Partial<CreateClaimDraftInput>,
+  overrides?: Partial<CreateClaimDraftInput>
 ): Promise<ClaimDraftRow | null> {
   const original = await getClaimDraftById(tenantId, originalId);
   if (!original) return null;
-  if (original.status !== "denied" && original.status !== "rejected") {
+  if (original.status !== 'denied' && original.status !== 'rejected') {
     throw new Error(`Cannot resubmit claim in status: ${original.status}`);
   }
 
@@ -456,50 +489,51 @@ export async function createResubmission(
   const now = new Date().toISOString();
   const resubCount = original.resubmissionCount + 1;
 
-  const auditEntry = [{
-    timestamp: now,
-    action: "draft.resubmission_created",
-    actor,
-    detail: `Resubmission #${resubCount} of claim ${originalId}`,
-  }];
+  const auditEntry = [
+    {
+      timestamp: now,
+      action: 'draft.resubmission_created',
+      actor,
+      detail: `Resubmission #${resubCount} of claim ${originalId}`,
+    },
+  ];
 
-  await db.insert(claimDraft)
-    .values({
-      id,
-      tenantId,
-      idempotencyKey: null,
-      status: "draft",
-      claimType: original.claimType,
-      encounterId: original.encounterId,
-      patientId: overrides?.patientId || original.patientId,
-      patientName: overrides?.patientName || original.patientName,
-      providerId: overrides?.providerId || original.providerId,
-      billingProviderId: overrides?.billingProviderId || original.billingProviderId,
-      payerId: overrides?.payerId || original.payerId,
-      payerName: overrides?.payerName || original.payerName,
-      dateOfService: original.dateOfService,
-      diagnosesJson: JSON.stringify(overrides?.diagnoses || original.diagnoses),
-      linesJson: JSON.stringify(overrides?.lines || original.lines),
-      attachmentsJson: JSON.stringify(overrides?.attachments || original.attachments),
-      totalChargeCents: overrides?.totalChargeCents ?? original.totalChargeCents,
-      resubmissionOf: originalId,
-      resubmissionCount: resubCount,
-      vistaChargeIen: original.vistaChargeIen,
-      vistaArIen: original.vistaArIen,
-      metadataJson: JSON.stringify(overrides?.metadata || original.metadata),
-      auditJson: JSON.stringify(auditEntry),
-      createdAt: now,
-      updatedAt: now,
-      createdBy: actor,
-    });
+  await db.insert(claimDraft).values({
+    id,
+    tenantId,
+    idempotencyKey: null,
+    status: 'draft',
+    claimType: original.claimType,
+    encounterId: original.encounterId,
+    patientId: overrides?.patientId || original.patientId,
+    patientName: overrides?.patientName || original.patientName,
+    providerId: overrides?.providerId || original.providerId,
+    billingProviderId: overrides?.billingProviderId || original.billingProviderId,
+    payerId: overrides?.payerId || original.payerId,
+    payerName: overrides?.payerName || original.payerName,
+    dateOfService: original.dateOfService,
+    diagnosesJson: JSON.stringify(overrides?.diagnoses || original.diagnoses),
+    linesJson: JSON.stringify(overrides?.lines || original.lines),
+    attachmentsJson: JSON.stringify(overrides?.attachments || original.attachments),
+    totalChargeCents: overrides?.totalChargeCents ?? original.totalChargeCents,
+    resubmissionOf: originalId,
+    resubmissionCount: resubCount,
+    vistaChargeIen: original.vistaChargeIen,
+    vistaArIen: original.vistaArIen,
+    metadataJson: JSON.stringify(overrides?.metadata || original.metadata),
+    auditJson: JSON.stringify(auditEntry),
+    createdAt: now,
+    updatedAt: now,
+    createdBy: actor,
+  });
 
   // Transition original to appealed
-  await transitionClaimDraft(tenantId, originalId, "appealed", actor, {
+  await transitionClaimDraft(tenantId, originalId, 'appealed', actor, {
     reason: `Resubmitted as ${id}`,
   });
 
   // Record lifecycle event on new draft
-  await recordLifecycleEvent(tenantId, id, null, "draft", actor, `Resubmission of ${originalId}`);
+  await recordLifecycleEvent(tenantId, id, null, 'draft', actor, `Resubmission of ${originalId}`);
 
   return getClaimDraftById(tenantId, id);
 }
@@ -508,7 +542,7 @@ export async function setAppealPacket(
   tenantId: string,
   id: string,
   appealPacketRef: string,
-  actor: string,
+  actor: string
 ): Promise<ClaimDraftRow | null> {
   const existing = await getClaimDraftById(tenantId, id);
   if (!existing) return null;
@@ -517,13 +551,14 @@ export async function setAppealPacket(
   const now = new Date().toISOString();
   const auditEntry = {
     timestamp: now,
-    action: "draft.appeal_packet_set",
+    action: 'draft.appeal_packet_set',
     actor,
     detail: `Appeal packet: ${appealPacketRef}`,
   };
   const auditTrail = [...existing.audit, auditEntry];
 
-  await db.update(claimDraft)
+  await db
+    .update(claimDraft)
     .set({
       appealPacketRef,
       updatedAt: now,
@@ -538,14 +573,11 @@ export async function setAppealPacket(
 /* Scrub Score Update                                                  */
 /* ------------------------------------------------------------------ */
 
-export async function updateScrubScore(
-  tenantId: string,
-  id: string,
-  score: number,
-): Promise<void> {
+export async function updateScrubScore(tenantId: string, id: string, score: number): Promise<void> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  await db.update(claimDraft)
+  await db
+    .update(claimDraft)
     .set({ scrubScore: score, lastScrubAt: now, updatedAt: now })
     .where(and(eq(claimDraft.tenantId, tenantId), eq(claimDraft.id, id)));
 }
@@ -562,37 +594,38 @@ async function recordLifecycleEvent(
   actor: string,
   reason?: string,
   denialCode?: string,
-  resubmissionRef?: string,
+  resubmissionRef?: string
 ): Promise<void> {
   const db = getPgDb();
-  await db.insert(claimLifecycleEvent)
-    .values({
-      id: randomUUID(),
-      claimDraftId,
-      tenantId,
-      fromStatus: fromStatus || null,
-      toStatus,
-      actor,
-      reason: reason || null,
-      denialCode: denialCode || null,
-      resubmissionRef: resubmissionRef || null,
-      detailJson: "{}",
-      occurredAt: new Date().toISOString(),
-    });
+  await db.insert(claimLifecycleEvent).values({
+    id: randomUUID(),
+    claimDraftId,
+    tenantId,
+    fromStatus: fromStatus || null,
+    toStatus,
+    actor,
+    reason: reason || null,
+    denialCode: denialCode || null,
+    resubmissionRef: resubmissionRef || null,
+    detailJson: '{}',
+    occurredAt: new Date().toISOString(),
+  });
 }
 
 export async function getLifecycleEvents(
   tenantId: string,
-  claimDraftId: string,
+  claimDraftId: string
 ): Promise<ClaimLifecycleEventRow[]> {
   const db = getPgDb();
   const rows = await db
     .select()
     .from(claimLifecycleEvent)
-    .where(and(
-      eq(claimLifecycleEvent.tenantId, tenantId),
-      eq(claimLifecycleEvent.claimDraftId, claimDraftId),
-    ))
+    .where(
+      and(
+        eq(claimLifecycleEvent.tenantId, tenantId),
+        eq(claimLifecycleEvent.claimDraftId, claimDraftId)
+      )
+    )
     .orderBy(claimLifecycleEvent.occurredAt);
   return rows.map(parseEvent);
 }
@@ -631,16 +664,13 @@ export async function getClaimDraftStats(tenantId: string): Promise<{
     byStatus[(r as any).status] = (r as any).cnt;
   }
 
-  const deniedCount = byStatus["denied"] ?? 0;
+  const deniedCount = byStatus['denied'] ?? 0;
 
   // Avg scrub score
   const avgRows = await db
     .select({ avg: sql<number>`AVG(scrub_score)` })
     .from(claimDraft)
-    .where(and(
-      eq(claimDraft.tenantId, tenantId),
-      sql`scrub_score IS NOT NULL`,
-    ));
+    .where(and(eq(claimDraft.tenantId, tenantId), sql`scrub_score IS NOT NULL`));
   const avgScrubScore = (avgRows[0] as any)?.avg ?? null;
 
   // Totals
@@ -666,17 +696,22 @@ export async function getClaimDraftStats(tenantId: string): Promise<{
 /**
  * Aging report: claims in denied/rejected status for > N days.
  */
-export async function getAgingDenials(tenantId: string, olderThanDays: number = 30): Promise<ClaimDraftRow[]> {
+export async function getAgingDenials(
+  tenantId: string,
+  olderThanDays: number = 30
+): Promise<ClaimDraftRow[]> {
   const db = getPgDb();
   const cutoff = new Date(Date.now() - olderThanDays * 86400000).toISOString();
   const rows = await db
     .select()
     .from(claimDraft)
-    .where(and(
-      eq(claimDraft.tenantId, tenantId),
-      sql`status IN ('denied', 'rejected')`,
-      lte(claimDraft.deniedAt, cutoff),
-    ))
+    .where(
+      and(
+        eq(claimDraft.tenantId, tenantId),
+        sql`status IN ('denied', 'rejected')`,
+        lte(claimDraft.deniedAt, cutoff)
+      )
+    )
     .orderBy(claimDraft.deniedAt);
   return rows.map(parseDraft);
 }

@@ -9,6 +9,7 @@ from **April 1, 2026**. eClaims 2.5 and earlier versions will be disabled on
 March 31, 2026.
 
 Key changes from eClaims 2.x:
+
 - **Electronic SOA only** — scanned PDF SOAs are rejected
 - **TLS client certificates** required for API authentication
 - **API endpoint migration** to `/api/v3`
@@ -16,15 +17,15 @@ Key changes from eClaims 2.x:
 
 ## Prerequisites
 
-| Item | Environment Variable | Required |
-|------|---------------------|----------|
-| Facility accreditation code | `PHILHEALTH_FACILITY_CODE` | Yes |
-| eClaims 3.0 API token | `PHILHEALTH_API_TOKEN` | Yes |
-| TLS client certificate | `PHILHEALTH_CERT_PATH` | Yes |
-| TLS private key | `PHILHEALTH_CERT_KEY_PATH` | Yes |
-| SOA signing key | `PHILHEALTH_SOA_SIGNING_KEY` | Recommended |
-| API endpoint | `PHILHEALTH_API_ENDPOINT` | No (defaults to v3) |
-| Test mode | `PHILHEALTH_TEST_MODE` | No (defaults to true) |
+| Item                        | Environment Variable         | Required              |
+| --------------------------- | ---------------------------- | --------------------- |
+| Facility accreditation code | `PHILHEALTH_FACILITY_CODE`   | Yes                   |
+| eClaims 3.0 API token       | `PHILHEALTH_API_TOKEN`       | Yes                   |
+| TLS client certificate      | `PHILHEALTH_CERT_PATH`       | Yes                   |
+| TLS private key             | `PHILHEALTH_CERT_KEY_PATH`   | Yes                   |
+| SOA signing key             | `PHILHEALTH_SOA_SIGNING_KEY` | Recommended           |
+| API endpoint                | `PHILHEALTH_API_ENDPOINT`    | No (defaults to v3)   |
+| Test mode                   | `PHILHEALTH_TEST_MODE`       | No (defaults to true) |
 
 ## Enrollment Steps
 
@@ -83,19 +84,19 @@ Key changes from eClaims 2.x:
 
 ## Deadlines
 
-| Date | Event |
-|------|-------|
-| 2026-03-31 | eClaims 2.5 and earlier DISABLED |
+| Date       | Event                                    |
+| ---------- | ---------------------------------------- |
+| 2026-03-31 | eClaims 2.5 and earlier DISABLED         |
 | 2026-04-01 | eClaims 3.0 REQUIRED for all submissions |
 
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| SOA_FORMAT_INVALID | Use electronic SOA generator, not scanned PDFs |
-| TLS handshake failure | Check cert path/key pair; regenerate if expired |
-| 403 Forbidden | Verify facility code is active and API token valid |
-| 429 Too Many Requests | Implement backoff; check rate limit headers |
+| Issue                 | Solution                                           |
+| --------------------- | -------------------------------------------------- |
+| SOA_FORMAT_INVALID    | Use electronic SOA generator, not scanned PDFs     |
+| TLS handshake failure | Check cert path/key pair; regenerate if expired    |
+| 403 Forbidden         | Verify facility code is active and API token valid |
+| 429 Too Many Requests | Implement backoff; check rate limit headers        |
 
 ## References
 

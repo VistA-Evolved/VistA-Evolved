@@ -108,83 +108,263 @@
     "encounter_read": {
       "status": "live",
       "rpcs": [
-        { "name": "ORWPCE GET VISIT", "ien": 683, "purpose": "Get encounter data for a visit", "sandbox": "available" },
-        { "name": "ORWPCE DIAG", "ien": 320, "purpose": "Get diagnoses for encounter", "sandbox": "available" },
-        { "name": "ORWPCE PROC", "ien": 321, "purpose": "Get procedures for encounter", "sandbox": "available" },
-        { "name": "ORWPCE VISIT", "ien": 322, "purpose": "Get visit details", "sandbox": "available" },
-        { "name": "ORWPCE PCE4NOTE", "ien": 329, "purpose": "Get PCE data linked to a note", "sandbox": "available" },
-        { "name": "ORWPCE HASVISIT", "ien": 739, "purpose": "Check if note has linked visit", "sandbox": "available" },
-        { "name": "ORWPCE GETSVC", "ien": 831, "purpose": "Get service connected conditions", "sandbox": "available" }
+        {
+          "name": "ORWPCE GET VISIT",
+          "ien": 683,
+          "purpose": "Get encounter data for a visit",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE DIAG",
+          "ien": 320,
+          "purpose": "Get diagnoses for encounter",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE PROC",
+          "ien": 321,
+          "purpose": "Get procedures for encounter",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE VISIT",
+          "ien": 322,
+          "purpose": "Get visit details",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE PCE4NOTE",
+          "ien": 329,
+          "purpose": "Get PCE data linked to a note",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE HASVISIT",
+          "ien": 739,
+          "purpose": "Check if note has linked visit",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE GETSVC",
+          "ien": 831,
+          "purpose": "Get service connected conditions",
+          "sandbox": "available"
+        }
       ]
     },
     "encounter_write": {
       "status": "live",
       "rpcs": [
-        { "name": "ORWPCE SAVE", "ien": 336, "purpose": "Save encounter data (write-back)", "sandbox": "available" }
+        {
+          "name": "ORWPCE SAVE",
+          "ien": 336,
+          "purpose": "Save encounter data (write-back)",
+          "sandbox": "available"
+        }
       ]
     },
     "encounter_lookup": {
       "status": "live",
       "rpcs": [
-        { "name": "ORWPCE4 LEX", "ien": 2930, "purpose": "ICD-10/lexicon search", "sandbox": "available" },
-        { "name": "ORWPCE LEX", "ien": 340, "purpose": "Lexicon search (older)", "sandbox": "available" },
-        { "name": "ORWPCE LEXCODE", "ien": 341, "purpose": "Get code for lexicon entry", "sandbox": "available" },
-        { "name": "ORWPCE ACTIVE CODE", "ien": 1555, "purpose": "Check if ICD code is active", "sandbox": "available" },
-        { "name": "ORWPCE ICDVER", "ien": 2924, "purpose": "Get ICD version date", "sandbox": "available" },
-        { "name": "ORWPCE I10IMPDT", "ien": 2947, "purpose": "ICD-10 implementation date", "sandbox": "available" },
-        { "name": "ORWPCE GET DX TEXT", "ien": 2837, "purpose": "Get diagnosis display text", "sandbox": "available" }
+        {
+          "name": "ORWPCE4 LEX",
+          "ien": 2930,
+          "purpose": "ICD-10/lexicon search",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE LEX",
+          "ien": 340,
+          "purpose": "Lexicon search (older)",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE LEXCODE",
+          "ien": 341,
+          "purpose": "Get code for lexicon entry",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE ACTIVE CODE",
+          "ien": 1555,
+          "purpose": "Check if ICD code is active",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE ICDVER",
+          "ien": 2924,
+          "purpose": "Get ICD version date",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE I10IMPDT",
+          "ien": 2947,
+          "purpose": "ICD-10 implementation date",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE GET DX TEXT",
+          "ien": 2837,
+          "purpose": "Get diagnosis display text",
+          "sandbox": "available"
+        }
       ]
     },
     "encounter_clinical": {
       "status": "live",
       "rpcs": [
-        { "name": "ORWPCE IMM", "ien": 447, "purpose": "Immunizations for encounter", "sandbox": "available" },
-        { "name": "ORWPCE SK", "ien": 448, "purpose": "Skin tests for encounter", "sandbox": "available" },
-        { "name": "ORWPCE PED", "ien": 449, "purpose": "Patient education for encounter", "sandbox": "available" },
-        { "name": "ORWPCE HF", "ien": 450, "purpose": "Health factors for encounter", "sandbox": "available" },
-        { "name": "ORWPCE TRT", "ien": 451, "purpose": "Treatments for encounter", "sandbox": "available" },
-        { "name": "ORWPCE XAM", "ien": 452, "purpose": "Exams for encounter", "sandbox": "available" }
+        {
+          "name": "ORWPCE IMM",
+          "ien": 447,
+          "purpose": "Immunizations for encounter",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE SK",
+          "ien": 448,
+          "purpose": "Skin tests for encounter",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE PED",
+          "ien": 449,
+          "purpose": "Patient education for encounter",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE HF",
+          "ien": 450,
+          "purpose": "Health factors for encounter",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE TRT",
+          "ien": 451,
+          "purpose": "Treatments for encounter",
+          "sandbox": "available"
+        },
+        {
+          "name": "ORWPCE XAM",
+          "ien": 452,
+          "purpose": "Exams for encounter",
+          "sandbox": "available"
+        }
       ]
     },
     "ibd_forms": {
       "status": "live",
       "note": "IBD (Integrated Billing Data) form RPCs -- capture billing data at encounter",
       "rpcs": [
-        { "name": "IBD EXPAND FORMID", "ien": 70, "purpose": "Expand billing form ID", "sandbox": "available" },
-        { "name": "IBD GET FORMSPEC", "ien": 71, "purpose": "Get billing form specification", "sandbox": "available" },
-        { "name": "IBD GET INPUT OBJECT BY CLINIC", "ien": 72, "purpose": "Get billing input objects for clinic", "sandbox": "available" },
-        { "name": "IBD GET ALL PCE DATA", "ien": 113, "purpose": "Get all PCE data for billing", "sandbox": "available" },
-        { "name": "IBD VALIDATE USER", "ien": 76, "purpose": "Validate user for billing", "sandbox": "available" }
+        {
+          "name": "IBD EXPAND FORMID",
+          "ien": 70,
+          "purpose": "Expand billing form ID",
+          "sandbox": "available"
+        },
+        {
+          "name": "IBD GET FORMSPEC",
+          "ien": 71,
+          "purpose": "Get billing form specification",
+          "sandbox": "available"
+        },
+        {
+          "name": "IBD GET INPUT OBJECT BY CLINIC",
+          "ien": 72,
+          "purpose": "Get billing input objects for clinic",
+          "sandbox": "available"
+        },
+        {
+          "name": "IBD GET ALL PCE DATA",
+          "ien": 113,
+          "purpose": "Get all PCE data for billing",
+          "sandbox": "available"
+        },
+        {
+          "name": "IBD VALIDATE USER",
+          "ien": 76,
+          "purpose": "Validate user for billing",
+          "sandbox": "available"
+        }
       ]
     },
     "insurance_query": {
       "status": "live",
       "rpcs": [
-        { "name": "IBCN INSURANCE QUERY", "ien": 1497, "purpose": "Query patient insurance coverage", "sandbox": "available" },
-        { "name": "IBCN INSURANCE QUERY TASK", "ien": 1498, "purpose": "Tasked insurance query", "sandbox": "available" }
+        {
+          "name": "IBCN INSURANCE QUERY",
+          "ien": 1497,
+          "purpose": "Query patient insurance coverage",
+          "sandbox": "available"
+        },
+        {
+          "name": "IBCN INSURANCE QUERY TASK",
+          "ien": 1498,
+          "purpose": "Tasked insurance query",
+          "sandbox": "available"
+        }
       ]
     },
     "pharmacy_billing": {
       "status": "live",
       "rpcs": [
-        { "name": "IBARXM QUERY ONLY", "ien": 769, "purpose": "Pharmacy billing query", "sandbox": "available" },
-        { "name": "IBARXM TRANS DATA", "ien": 770, "purpose": "Pharmacy transaction data", "sandbox": "available" },
-        { "name": "IBARXM TRANS BILL", "ien": 1117, "purpose": "Pharmacy billing transaction", "sandbox": "available" }
+        {
+          "name": "IBARXM QUERY ONLY",
+          "ien": 769,
+          "purpose": "Pharmacy billing query",
+          "sandbox": "available"
+        },
+        {
+          "name": "IBARXM TRANS DATA",
+          "ien": 770,
+          "purpose": "Pharmacy transaction data",
+          "sandbox": "available"
+        },
+        {
+          "name": "IBARXM TRANS BILL",
+          "ien": 1117,
+          "purpose": "Pharmacy billing transaction",
+          "sandbox": "available"
+        }
       ]
     },
     "ib_means_test": {
       "status": "live",
       "rpcs": [
-        { "name": "IBO MT LTC COPAY QUERY", "ien": 1320, "purpose": "Means test / LTC copay query", "sandbox": "available" },
-        { "name": "DGBT CLAIM DEDUCTIBLE PAID", "ien": 2911, "purpose": "Claim deductible status", "sandbox": "available" }
+        {
+          "name": "IBO MT LTC COPAY QUERY",
+          "ien": 1320,
+          "purpose": "Means test / LTC copay query",
+          "sandbox": "available"
+        },
+        {
+          "name": "DGBT CLAIM DEDUCTIBLE PAID",
+          "ien": 2911,
+          "purpose": "Claim deductible status",
+          "sandbox": "available"
+        }
       ]
     },
     "scheduling": {
       "status": "live",
       "rpcs": [
-        { "name": "SD W/L RETRIVE FULL DATA", "ien": 1293, "purpose": "Wait list full data", "sandbox": "available" },
-        { "name": "SD W/L RETRIVE BRIEF", "ien": 1295, "purpose": "Wait list brief", "sandbox": "available" },
-        { "name": "SD W/L RETRIVE HOSP LOC(#44)", "ien": 1300, "purpose": "Wait list by location", "sandbox": "available" }
+        {
+          "name": "SD W/L RETRIVE FULL DATA",
+          "ien": 1293,
+          "purpose": "Wait list full data",
+          "sandbox": "available"
+        },
+        {
+          "name": "SD W/L RETRIVE BRIEF",
+          "ien": 1295,
+          "purpose": "Wait list brief",
+          "sandbox": "available"
+        },
+        {
+          "name": "SD W/L RETRIVE HOSP LOC(#44)",
+          "ien": 1300,
+          "purpose": "Wait list by location",
+          "sandbox": "available"
+        }
       ]
     },
     "ib_claims_processing": {

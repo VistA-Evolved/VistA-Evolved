@@ -3,22 +3,39 @@
  */
 
 /** Partner integration type */
-export type PartnerType = "hl7" | "x12" | "device" | "hie" | "fhir";
+export type PartnerType = 'hl7' | 'x12' | 'device' | 'hie' | 'fhir';
 
 /** Transport mechanism */
-export type TransportType = "mllp" | "https" | "sftp" | "tcp" | "websocket" | "direct";
+export type TransportType = 'mllp' | 'https' | 'sftp' | 'tcp' | 'websocket' | 'direct';
 
 /** Security posture level */
-export type SecurityPosture = "tls_mutual" | "tls_server" | "vpn" | "cleartext_dev";
+export type SecurityPosture = 'tls_mutual' | 'tls_server' | 'vpn' | 'cleartext_dev';
 
 /** Intake status */
-export type IntakeStatus = "draft" | "submitted" | "config_generated" | "cert_pending" | "cert_passed" | "cert_failed" | "live";
+export type IntakeStatus =
+  | 'draft'
+  | 'submitted'
+  | 'config_generated'
+  | 'cert_pending'
+  | 'cert_passed'
+  | 'cert_failed'
+  | 'live';
 
 /** Message type for HL7 */
-export type Hl7MessageType = "ADT" | "ORM" | "ORU" | "RDS" | "OMP" | "SIU" | "MDM" | "DFT";
+export type Hl7MessageType = 'ADT' | 'ORM' | 'ORU' | 'RDS' | 'OMP' | 'SIU' | 'MDM' | 'DFT';
 
 /** Message type for X12 */
-export type X12TransactionSet = "837P" | "837I" | "835" | "270" | "271" | "276" | "277" | "278" | "999" | "TA1";
+export type X12TransactionSet =
+  | '837P'
+  | '837I'
+  | '835'
+  | '270'
+  | '271'
+  | '276'
+  | '277'
+  | '278'
+  | '999'
+  | 'TA1';
 
 /** Integration intake record */
 export interface IntegrationIntake {
@@ -27,7 +44,7 @@ export interface IntegrationIntake {
   facilityId: string;
   partnerName: string;
   partnerType: PartnerType;
-  environment: "test" | "prod";
+  environment: 'test' | 'prod';
   transport: TransportType;
   securityPosture: SecurityPosture;
 

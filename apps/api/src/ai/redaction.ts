@@ -20,30 +20,55 @@ interface RedactionPattern {
 
 const REDACTION_PATTERNS: RedactionPattern[] = [
   // SSN (various formats)
-  { name: "SSN", pattern: /\b\d{3}-\d{2}-\d{4}\b/g, replacement: "[SSN-REDACTED]" },
-  { name: "SSN-no-dash", pattern: /\b\d{9}\b/g, replacement: "[SSN-REDACTED]" },
+  { name: 'SSN', pattern: /\b\d{3}-\d{2}-\d{4}\b/g, replacement: '[SSN-REDACTED]' },
+  { name: 'SSN-no-dash', pattern: /\b\d{9}\b/g, replacement: '[SSN-REDACTED]' },
 
   // Phone numbers
-  { name: "Phone", pattern: /\b\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g, replacement: "[PHONE-REDACTED]" },
+  {
+    name: 'Phone',
+    pattern: /\b\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b/g,
+    replacement: '[PHONE-REDACTED]',
+  },
 
   // Email addresses
-  { name: "Email", pattern: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g, replacement: "[EMAIL-REDACTED]" },
+  {
+    name: 'Email',
+    pattern: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
+    replacement: '[EMAIL-REDACTED]',
+  },
 
   // Dates of birth (various formats)
-  { name: "DOB", pattern: /\b(DOB|Date of Birth|Born|Birth Date):\s*\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}\b/gi, replacement: "[DOB-REDACTED]" },
+  {
+    name: 'DOB',
+    pattern: /\b(DOB|Date of Birth|Born|Birth Date):\s*\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}\b/gi,
+    replacement: '[DOB-REDACTED]',
+  },
 
   // MRN / Medical Record Numbers
-  { name: "MRN", pattern: /\b(MRN|Medical Record|Record #|Chart #):\s*\d+\b/gi, replacement: "[MRN-REDACTED]" },
+  {
+    name: 'MRN',
+    pattern: /\b(MRN|Medical Record|Record #|Chart #):\s*\d+\b/gi,
+    replacement: '[MRN-REDACTED]',
+  },
 
   // Street addresses (basic heuristic)
-  { name: "Address", pattern: /\b\d{1,5}\s+[A-Z][a-z]+\s+(St|Street|Ave|Avenue|Blvd|Boulevard|Rd|Road|Dr|Drive|Ln|Lane|Ct|Court|Way|Pl|Place)\b/gi, replacement: "[ADDRESS-REDACTED]" },
+  {
+    name: 'Address',
+    pattern:
+      /\b\d{1,5}\s+[A-Z][a-z]+\s+(St|Street|Ave|Avenue|Blvd|Boulevard|Rd|Road|Dr|Drive|Ln|Lane|Ct|Court|Way|Pl|Place)\b/gi,
+    replacement: '[ADDRESS-REDACTED]',
+  },
 
   // Patient names following common labels
-  { name: "PatientName", pattern: /\b(Patient|Name|Patient Name):\s*[A-Z][A-Za-z'-]+,?\s*[A-Z][A-Za-z'-]*/gi, replacement: "[NAME-REDACTED]" },
+  {
+    name: 'PatientName',
+    pattern: /\b(Patient|Name|Patient Name):\s*[A-Z][A-Za-z'-]+,?\s*[A-Z][A-Za-z'-]*/gi,
+    replacement: '[NAME-REDACTED]',
+  },
 
   // DFN / DUZ identifiers
-  { name: "DFN", pattern: /\bDFN[:\s]*\d+\b/gi, replacement: "[DFN-REDACTED]" },
-  { name: "DUZ", pattern: /\bDUZ[:\s]*\d+\b/gi, replacement: "[DUZ-REDACTED]" },
+  { name: 'DFN', pattern: /\bDFN[:\s]*\d+\b/gi, replacement: '[DFN-REDACTED]' },
+  { name: 'DUZ', pattern: /\bDUZ[:\s]*\d+\b/gi, replacement: '[DUZ-REDACTED]' },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -112,9 +137,10 @@ export function detectPhi(text: string): { phiDetected: boolean; categories: str
  * Redact PHI from a structured context object (RAG chunks).
  * Applied per-chunk so citations remain traceable.
  */
-export function redactContext(
-  chunks: Array<{ content: string; label: string }>
-): { chunks: Array<{ content: string; label: string }>; totalRedactions: number } {
+export function redactContext(chunks: Array<{ content: string; label: string }>): {
+  chunks: Array<{ content: string; label: string }>;
+  totalRedactions: number;
+} {
   let totalRedactions = 0;
   const redacted = chunks.map((chunk) => {
     const result = redactPhi(chunk.content);

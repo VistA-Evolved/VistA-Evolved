@@ -4,16 +4,16 @@
 
 ## Phase Queue
 
-| Phase | ID  | Slug                        | Title                                           | Depends |
-|-------|-----|-----------------------------|------------------------------------------------|---------|
+| Phase  | ID  | Slug                        | Title                                              | Depends |
+| ------ | --- | --------------------------- | -------------------------------------------------- | ------- |
 | W13-P1 | 309 | manifest-country-pack-adrs  | Manifest + Country-Pack Model ADRs + Market Matrix | —       |
-| W13-P2 | 310 | localization-completion     | Localization Completion (i18n, RTL, locale fmt) | 309     |
-| W13-P3 | 311 | data-residency-region       | Data Residency & Region Routing                 | 309     |
-| W13-P4 | 312 | privacy-consent-controls    | Privacy/Consent Controls                        | 309     |
-| W13-P5 | 313 | terminology-strategy        | Terminology Strategy (pluggable service)        | 309     |
-| W13-P6 | 314 | country-packs               | Country Packs (US/PH/GH baseline)               | 309–313 |
-| W13-P7 | 315 | compliance-evidence-mapping  | Compliance Evidence Mapping (control matrix)    | 314     |
-| W13-P8 | 316 | trust-center-pack           | Procurement/Trust Center Pack                   | 315     |
+| W13-P2 | 310 | localization-completion     | Localization Completion (i18n, RTL, locale fmt)    | 309     |
+| W13-P3 | 311 | data-residency-region       | Data Residency & Region Routing                    | 309     |
+| W13-P4 | 312 | privacy-consent-controls    | Privacy/Consent Controls                           | 309     |
+| W13-P5 | 313 | terminology-strategy        | Terminology Strategy (pluggable service)           | 309     |
+| W13-P6 | 314 | country-packs               | Country Packs (US/PH/GH baseline)                  | 309–313 |
+| W13-P7 | 315 | compliance-evidence-mapping | Compliance Evidence Mapping (control matrix)       | 314     |
+| W13-P8 | 316 | trust-center-pack           | Procurement/Trust Center Pack                      | 315     |
 
 ## Definition of Done
 

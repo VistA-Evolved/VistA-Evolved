@@ -12,10 +12,10 @@
  * Security: iss, aud, exp, signature all validated via jwt-validator.ts.
  */
 
-import type { FastifyRequest } from "fastify";
-import { getOidcConfig } from "../auth/oidc-provider.js";
-import { validateJwt, type JwtValidationResult } from "../auth/jwt-validator.js";
-import { log } from "../lib/logger.js";
+import type { FastifyRequest } from 'fastify';
+import { getOidcConfig } from '../auth/oidc-provider.js';
+import { validateJwt, type JwtValidationResult } from '../auth/jwt-validator.js';
+import { log } from '../lib/logger.js';
 
 /* ================================================================== */
 /* Types                                                                */
@@ -23,7 +23,7 @@ import { log } from "../lib/logger.js";
 
 export interface FhirPrincipal {
   /** Auth method used */
-  authMethod: "session" | "bearer";
+  authMethod: 'session' | 'bearer';
   /** User subject identifier (DUZ for session, sub for JWT) */
   sub: string;
   /** VistA DUZ (from session or JWT claim) */
@@ -44,7 +44,7 @@ export interface FhirPrincipal {
 /* Request augmentation                                                 */
 /* ================================================================== */
 
-declare module "fastify" {
+declare module 'fastify' {
   interface FastifyRequest {
     /** FHIR principal — set by fhir auth middleware for /fhir/* routes */
     fhirPrincipal?: FhirPrincipal;
@@ -61,7 +61,7 @@ declare module "fastify" {
  */
 export function extractBearerToken(request: FastifyRequest): string | null {
   const auth = request.headers.authorization;
-  if (typeof auth === "string" && auth.startsWith("Bearer ")) {
+  if (typeof auth === 'string' && auth.startsWith('Bearer ')) {
     const token = auth.slice(7).trim();
     return token.length > 0 ? token : null;
   }
@@ -74,24 +74,24 @@ export function extractBearerToken(request: FastifyRequest): string | null {
  * Returns a FhirPrincipal if the token is valid, or an error string.
  * This delegates to jwt-validator.ts for full cryptographic validation.
  */
-export async function validateFhirBearerToken(token: string): Promise<
-  { ok: true; principal: FhirPrincipal } | { ok: false; error: string }
-> {
+export async function validateFhirBearerToken(
+  token: string
+): Promise<{ ok: true; principal: FhirPrincipal } | { ok: false; error: string }> {
   const config = getOidcConfig();
   if (!config.enabled) {
-    return { ok: false, error: "OIDC is not enabled; bearer tokens not accepted" };
+    return { ok: false, error: 'OIDC is not enabled; bearer tokens not accepted' };
   }
 
   // Full JWT validation (signature + iss + aud + exp)
   const result: JwtValidationResult = await validateJwt(token);
   if (!result.valid || !result.claims) {
-    return { ok: false, error: result.error || "Invalid token" };
+    return { ok: false, error: result.error || 'Invalid token' };
   }
 
   const claims = result.claims;
 
   // Extract SMART scopes from the "scope" claim (space-separated string)
-  const scopeStr = typeof claims.scope === "string" ? claims.scope : "";
+  const scopeStr = typeof claims.scope === 'string' ? claims.scope : '';
   const scopes = scopeStr.split(/\s+/).filter(Boolean);
 
   // Extract roles
@@ -103,20 +103,20 @@ export async function validateFhirBearerToken(token: string): Promise<
   }
 
   // Extract patient context from launch context (SMART EHR launch)
-  const patientContext = typeof claims.patient === "string" ? claims.patient : undefined;
+  const patientContext = typeof claims.patient === 'string' ? claims.patient : undefined;
 
   const principal: FhirPrincipal = {
-    authMethod: "bearer",
+    authMethod: 'bearer',
     sub: claims.sub,
     duz: (claims.duz as string) || claims.sub,
     userName: (claims.name as string) || (claims.preferred_username as string) || claims.sub,
     roles,
     scopes,
-    tenantId: (claims.tenant_id as string) || "default",
+    tenantId: (claims.tenant_id as string) || 'default',
     patientContext,
   };
 
-  log.debug("FHIR bearer token validated", {
+  log.debug('FHIR bearer token validated', {
     sub: principal.sub,
     scopes: scopes.length,
     patientCtx: !!patientContext,
@@ -136,12 +136,12 @@ export function principalFromSession(session: {
   tenantId?: string;
 }): FhirPrincipal {
   return {
-    authMethod: "session",
+    authMethod: 'session',
     sub: session.duz,
     duz: session.duz,
     userName: session.userName,
     roles: [session.role],
-    scopes: ["user/*.read"], // Session users get full user-level read access
-    tenantId: session.tenantId || "default",
+    scopes: ['user/*.read'], // Session users get full user-level read access
+    tenantId: session.tenantId || 'default',
   };
 }

@@ -91,17 +91,18 @@ NOT_STARTED -> IN_PROGRESS -> TESTING -> LIVE
 
 ## Status Descriptions
 
-| Status | Meaning |
-|--------|---------|
-| NOT_STARTED | Enrollment not begun |
-| IN_PROGRESS | Paperwork/registration submitted |
-| TESTING | Test claims being exchanged |
-| LIVE | Production submission active |
-| SUSPENDED | Temporarily suspended (re-certification needed) |
+| Status      | Meaning                                         |
+| ----------- | ----------------------------------------------- |
+| NOT_STARTED | Enrollment not begun                            |
+| IN_PROGRESS | Paperwork/registration submitted                |
+| TESTING     | Test claims being exchanged                     |
+| LIVE        | Production submission active                    |
+| SUSPENDED   | Temporarily suspended (re-certification needed) |
 
 ## Audit Trail
 
 All enrollment creates and updates are logged to the RCM audit trail:
+
 - `enrollment.created` -- new packet
 - `enrollment.updated` -- status or content change
 

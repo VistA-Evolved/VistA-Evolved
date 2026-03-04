@@ -1,6 +1,7 @@
 # Phase 272 — VERIFY: Certification Evidence Bundle v2
 
 ## Gates
+
 1. `scripts/generate-certification-evidence-v2.mjs` exists and is executable
 2. Script orchestrates >= 8 evidence sections
 3. Output includes `bundle-index.json` with section metadata

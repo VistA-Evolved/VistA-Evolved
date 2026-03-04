@@ -321,8 +321,17 @@
           "id": "mha-instrument-admin",
           "name": "Instrument Administration",
           "description": "Administer standardized instruments to patients. Auto-score and store results.",
-          "vistaFiles": ["MH TESTS AND SURVEYS(601.71)", "MH INSTRUMENT(601.72)", "MH RESULTS(601.84)"],
-          "targetRpcs": ["YTT GET INSTRUMENT", "YTQZ LISTTESTS", "YTT SAVE RESULTS", "YTQZ RESULTLIST"],
+          "vistaFiles": [
+            "MH TESTS AND SURVEYS(601.71)",
+            "MH INSTRUMENT(601.72)",
+            "MH RESULTS(601.84)"
+          ],
+          "targetRpcs": [
+            "YTT GET INSTRUMENT",
+            "YTQZ LISTTESTS",
+            "YTT SAVE RESULTS",
+            "YTQZ RESULTLIST"
+          ],
           "priority": "p0-critical",
           "migrationStatus": "not-started",
           "coverage": {
@@ -469,7 +478,12 @@
           "name": "Appointment Book / Grid View",
           "description": "Visual grid of clinic slots. Drag-and-drop appointment scheduling.",
           "vistaFiles": ["HOSPITAL LOCATION(44)", "PATIENT APPOINTMENT(2.98)"],
-          "targetRpcs": ["SDES GET CLINIC DETAILS", "SDES GET APPT TYPES", "SDES MAKE APPOINTMENT", "SDES CANCEL APPOINTMENT"],
+          "targetRpcs": [
+            "SDES GET CLINIC DETAILS",
+            "SDES GET APPT TYPES",
+            "SDES MAKE APPOINTMENT",
+            "SDES CANCEL APPOINTMENT"
+          ],
           "priority": "p0-critical",
           "migrationStatus": "scaffold",
           "coverage": {
@@ -600,7 +614,13 @@
           "name": "Cover Sheet",
           "description": "Patient summary with active problems, allergies, meds, vitals, recent labs, orders, appointments.",
           "vistaFiles": ["PROBLEM(9000011)", "PATIENT ALLERGY(120.8)", "ORDER(100)"],
-          "targetRpcs": ["ORQQPL LIST", "ORQQAL LIST", "ORWPS ACTIVE", "ORQQVI VITALS", "ORWOR RESULT"],
+          "targetRpcs": [
+            "ORQQPL LIST",
+            "ORQQAL LIST",
+            "ORWPS ACTIVE",
+            "ORQQVI VITALS",
+            "ORWOR RESULT"
+          ],
           "priority": "p0-critical",
           "migrationStatus": "api-wired",
           "coverage": {
@@ -692,7 +712,12 @@
           "name": "TIU Notes",
           "description": "Progress notes, consult results, discharge summaries. Create, edit, sign, co-sign.",
           "vistaFiles": ["TIU DOCUMENT(8925)"],
-          "targetRpcs": ["TIU GET RECORD TEXT", "TIU CREATE RECORD", "TIU SET DOCUMENT TEXT", "TIU SIGN RECORD"],
+          "targetRpcs": [
+            "TIU GET RECORD TEXT",
+            "TIU CREATE RECORD",
+            "TIU SET DOCUMENT TEXT",
+            "TIU SIGN RECORD"
+          ],
           "priority": "p0-critical",
           "migrationStatus": "writeback",
           "coverage": {
@@ -896,7 +921,12 @@
           "name": "Discharge Summary",
           "description": "Free-text discharge summary linked to admission. TIU document type = Discharge Summary.",
           "vistaFiles": ["TIU DOCUMENT(8925)", "TIU DOCUMENT DEFINITION(8925.1)"],
-          "targetRpcs": ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT", "TIU SIGN RECORD", "TIU DOCUMENTS BY CONTEXT"],
+          "targetRpcs": [
+            "TIU CREATE RECORD",
+            "TIU SET DOCUMENT TEXT",
+            "TIU SIGN RECORD",
+            "TIU DOCUMENTS BY CONTEXT"
+          ],
           "priority": "p1-high",
           "migrationStatus": "scaffold",
           "coverage": {

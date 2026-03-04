@@ -7,10 +7,10 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  description: "VistA-Evolved tenant workloads (one Application per tenant)"
+  description: 'VistA-Evolved tenant workloads (one Application per tenant)'
 
   sourceRepos:
-    - '*'  # Tighten to actual repo URL for production
+    - '*' # Tighten to actual repo URL for production
 
   # Tenant namespaces follow the pattern ve-tenant-*
   destinations:

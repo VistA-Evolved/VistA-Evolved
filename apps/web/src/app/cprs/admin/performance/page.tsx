@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from 'react';
 import { API_BASE as API } from '@/lib/api-config';
 
 /* ================================================================== */
 /*  Phase 162 — Performance + UX Speed Pass Admin Dashboard            */
 /* ================================================================== */
 
-type Tab = "summary" | "profiles" | "budgets" | "slow";
+type Tab = 'summary' | 'profiles' | 'budgets' | 'slow';
 
 interface PerfSummary {
   totalRoutes: number;
@@ -49,9 +49,8 @@ interface SlowQuery {
   timestamp: string;
 }
 
-
 async function apiFetch(path: string, opts?: RequestInit) {
-  const res = await fetch(`${API}${path}`, { credentials: "include", ...opts });
+  const res = await fetch(`${API}${path}`, { credentials: 'include', ...opts });
   return res.json();
 }
 
@@ -62,36 +61,67 @@ function SummaryTab() {
   const [summary, setSummary] = useState<PerfSummary | null>(null);
 
   const load = useCallback(async () => {
-    const data = await apiFetch("/admin/performance/summary");
+    const data = await apiFetch('/admin/performance/summary');
     if (data.ok) setSummary(data.summary);
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   if (!summary) return <p className="p-4 text-sm text-gray-500">Loading...</p>;
 
   const scoreColor =
-    summary.healthScore >= 80 ? "text-green-600" :
-    summary.healthScore >= 50 ? "text-yellow-600" : "text-red-600";
+    summary.healthScore >= 80
+      ? 'text-green-600'
+      : summary.healthScore >= 50
+        ? 'text-yellow-600'
+        : 'text-red-600';
 
   return (
     <div className="p-4 space-y-4">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard label="Health Score" value={`${summary.healthScore}/100`} className={scoreColor} />
+        <StatCard
+          label="Health Score"
+          value={`${summary.healthScore}/100`}
+          className={scoreColor}
+        />
         <StatCard label="System P95" value={`${summary.systemP95Ms.toFixed(0)} ms`} />
         <StatCard label="System Avg" value={`${summary.systemAvgMs.toFixed(0)} ms`} />
         <StatCard label="Routes Profiled" value={String(summary.totalRoutes)} />
-        <StatCard label="Slow Routes" value={String(summary.slowRouteCount)} className={summary.slowRouteCount > 0 ? "text-yellow-600" : ""} />
-        <StatCard label="Budget Violations" value={String(summary.budgetViolations)} className={summary.budgetViolations > 0 ? "text-red-600" : ""} />
-        <StatCard label="Budget Warnings" value={String(summary.budgetWarnings)} className={summary.budgetWarnings > 0 ? "text-yellow-600" : ""} />
+        <StatCard
+          label="Slow Routes"
+          value={String(summary.slowRouteCount)}
+          className={summary.slowRouteCount > 0 ? 'text-yellow-600' : ''}
+        />
+        <StatCard
+          label="Budget Violations"
+          value={String(summary.budgetViolations)}
+          className={summary.budgetViolations > 0 ? 'text-red-600' : ''}
+        />
+        <StatCard
+          label="Budget Warnings"
+          value={String(summary.budgetWarnings)}
+          className={summary.budgetWarnings > 0 ? 'text-yellow-600' : ''}
+        />
         <StatCard label="Budgets Defined" value={String(summary.budgetCount)} />
       </div>
-      <button onClick={load} className="px-3 py-1 bg-blue-600 text-white rounded text-sm">Refresh</button>
+      <button onClick={load} className="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+        Refresh
+      </button>
     </div>
   );
 }
 
-function StatCard({ label, value, className = "" }: { label: string; value: string; className?: string }) {
+function StatCard({
+  label,
+  value,
+  className = '',
+}: {
+  label: string;
+  value: string;
+  className?: string;
+}) {
   return (
     <div className="border rounded p-3">
       <div className="text-xs text-gray-500 uppercase">{label}</div>
@@ -107,20 +137,26 @@ function ProfilesTab() {
   const [profiles, setProfiles] = useState<RouteProfile[]>([]);
 
   const load = useCallback(async () => {
-    const data = await apiFetch("/admin/performance/profiles");
+    const data = await apiFetch('/admin/performance/profiles');
     if (data.ok) setProfiles(data.profiles ?? []);
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   return (
     <div className="p-4">
       <div className="flex items-center gap-2 mb-3">
         <h3 className="text-sm font-semibold">Route Profiles</h3>
-        <button onClick={load} className="px-2 py-0.5 bg-gray-200 rounded text-xs">Refresh</button>
+        <button onClick={load} className="px-2 py-0.5 bg-gray-200 rounded text-xs">
+          Refresh
+        </button>
       </div>
       {profiles.length === 0 ? (
-        <p className="text-sm text-gray-500">No route profiles recorded yet. Profiles appear as API requests are made.</p>
+        <p className="text-sm text-gray-500">
+          No route profiles recorded yet. Profiles appear as API requests are made.
+        </p>
       ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full text-xs border">
@@ -161,19 +197,21 @@ function ProfilesTab() {
 
 function BudgetBadge({ status }: { status: string }) {
   const colors: Record<string, string> = {
-    within: "bg-green-100 text-green-800",
-    warning: "bg-yellow-100 text-yellow-800",
-    exceeded: "bg-red-100 text-red-800",
+    within: 'bg-green-100 text-green-800',
+    warning: 'bg-yellow-100 text-yellow-800',
+    exceeded: 'bg-red-100 text-red-800',
   };
   return (
-    <span className={`px-2 py-0.5 rounded text-xs ${colors[status] ?? "bg-gray-100 text-gray-600"}`}>
+    <span
+      className={`px-2 py-0.5 rounded text-xs ${colors[status] ?? 'bg-gray-100 text-gray-600'}`}
+    >
       {status}
     </span>
   );
 }
 
 function formatBytes(bytes: number): string {
-  if (bytes === 0) return "0 B";
+  if (bytes === 0) return '0 B';
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1048576) return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / 1048576).toFixed(1)} MB`;
@@ -184,25 +222,27 @@ function formatBytes(bytes: number): string {
 /* ------------------------------------------------------------------ */
 function BudgetsTab() {
   const [budgets, setBudgets] = useState<PerfBudget[]>([]);
-  const [form, setForm] = useState({ routePattern: "", method: "*", maxMs: "2000", maxBytes: "0" });
+  const [form, setForm] = useState({ routePattern: '', method: '*', maxMs: '2000', maxBytes: '0' });
 
   const load = useCallback(async () => {
-    const data = await apiFetch("/admin/performance/budgets");
+    const data = await apiFetch('/admin/performance/budgets');
     if (data.ok) setBudgets(data.budgets ?? []);
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const seed = async () => {
-    await apiFetch("/admin/performance/budgets/seed", { method: "POST" });
+    await apiFetch('/admin/performance/budgets/seed', { method: 'POST' });
     load();
   };
 
   const addBudget = async () => {
     if (!form.routePattern) return;
-    await apiFetch("/admin/performance/budgets", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    await apiFetch('/admin/performance/budgets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         routePattern: form.routePattern,
         method: form.method,
@@ -210,12 +250,12 @@ function BudgetsTab() {
         maxBytes: Number(form.maxBytes),
       }),
     });
-    setForm({ routePattern: "", method: "*", maxMs: "2000", maxBytes: "0" });
+    setForm({ routePattern: '', method: '*', maxMs: '2000', maxBytes: '0' });
     load();
   };
 
   const remove = async (id: string) => {
-    await apiFetch(`/admin/performance/budgets/${id}`, { method: "DELETE" });
+    await apiFetch(`/admin/performance/budgets/${id}`, { method: 'DELETE' });
     load();
   };
 
@@ -223,30 +263,57 @@ function BudgetsTab() {
     <div className="p-4 space-y-4">
       <div className="flex items-center gap-2">
         <h3 className="text-sm font-semibold">Performance Budgets</h3>
-        <button onClick={seed} className="px-2 py-0.5 bg-blue-600 text-white rounded text-xs">Seed Defaults</button>
-        <button onClick={load} className="px-2 py-0.5 bg-gray-200 rounded text-xs">Refresh</button>
+        <button onClick={seed} className="px-2 py-0.5 bg-blue-600 text-white rounded text-xs">
+          Seed Defaults
+        </button>
+        <button onClick={load} className="px-2 py-0.5 bg-gray-200 rounded text-xs">
+          Refresh
+        </button>
       </div>
       <div className="flex items-end gap-2 text-xs">
         <label>
           Pattern
-          <input value={form.routePattern} onChange={(e) => setForm({ ...form, routePattern: e.target.value })} className="block border rounded px-2 py-1 w-48" placeholder="/vista/" />
+          <input
+            value={form.routePattern}
+            onChange={(e) => setForm({ ...form, routePattern: e.target.value })}
+            className="block border rounded px-2 py-1 w-48"
+            placeholder="/vista/"
+          />
         </label>
         <label>
           Method
-          <input value={form.method} onChange={(e) => setForm({ ...form, method: e.target.value })} className="block border rounded px-2 py-1 w-20" />
+          <input
+            value={form.method}
+            onChange={(e) => setForm({ ...form, method: e.target.value })}
+            className="block border rounded px-2 py-1 w-20"
+          />
         </label>
         <label>
           Max Ms
-          <input value={form.maxMs} onChange={(e) => setForm({ ...form, maxMs: e.target.value })} className="block border rounded px-2 py-1 w-20" type="number" />
+          <input
+            value={form.maxMs}
+            onChange={(e) => setForm({ ...form, maxMs: e.target.value })}
+            className="block border rounded px-2 py-1 w-20"
+            type="number"
+          />
         </label>
         <label>
           Max Bytes
-          <input value={form.maxBytes} onChange={(e) => setForm({ ...form, maxBytes: e.target.value })} className="block border rounded px-2 py-1 w-24" type="number" />
+          <input
+            value={form.maxBytes}
+            onChange={(e) => setForm({ ...form, maxBytes: e.target.value })}
+            className="block border rounded px-2 py-1 w-24"
+            type="number"
+          />
         </label>
-        <button onClick={addBudget} className="px-3 py-1 bg-green-600 text-white rounded">Add</button>
+        <button onClick={addBudget} className="px-3 py-1 bg-green-600 text-white rounded">
+          Add
+        </button>
       </div>
       {budgets.length === 0 ? (
-        <p className="text-sm text-gray-500">No budgets defined. Click &quot;Seed Defaults&quot; to create standard budgets.</p>
+        <p className="text-sm text-gray-500">
+          No budgets defined. Click &quot;Seed Defaults&quot; to create standard budgets.
+        </p>
       ) : (
         <table className="min-w-full text-xs border">
           <thead className="bg-gray-50">
@@ -268,9 +335,11 @@ function BudgetsTab() {
                 <td className="p-2 text-right">{b.maxMs}</td>
                 <td className="p-2 text-right">{(b.warningThreshold * 100).toFixed(0)}%</td>
                 <td className="p-2 text-right">{formatBytes(b.maxBytes)}</td>
-                <td className="p-2">{b.enforce ? "Yes" : "No"}</td>
+                <td className="p-2">{b.enforce ? 'Yes' : 'No'}</td>
                 <td className="p-2">
-                  <button onClick={() => remove(b.id)} className="text-red-600 hover:underline">Delete</button>
+                  <button onClick={() => remove(b.id)} className="text-red-600 hover:underline">
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -288,17 +357,21 @@ function SlowQueriesTab() {
   const [queries, setQueries] = useState<SlowQuery[]>([]);
 
   const load = useCallback(async () => {
-    const data = await apiFetch("/admin/performance/slow-queries");
+    const data = await apiFetch('/admin/performance/slow-queries');
     if (data.ok) setQueries(data.queries ?? []);
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   return (
     <div className="p-4">
       <div className="flex items-center gap-2 mb-3">
         <h3 className="text-sm font-semibold">Slow Query Log</h3>
-        <button onClick={load} className="px-2 py-0.5 bg-gray-200 rounded text-xs">Refresh</button>
+        <button onClick={load} className="px-2 py-0.5 bg-gray-200 rounded text-xs">
+          Refresh
+        </button>
       </div>
       {queries.length === 0 ? (
         <p className="text-sm text-gray-500">No slow queries recorded.</p>
@@ -332,13 +405,13 @@ function SlowQueriesTab() {
 /*  Main Page                                                          */
 /* ------------------------------------------------------------------ */
 export default function PerformanceDashboardPage() {
-  const [tab, setTab] = useState<Tab>("summary");
+  const [tab, setTab] = useState<Tab>('summary');
 
   const tabs: { key: Tab; label: string }[] = [
-    { key: "summary", label: "Summary" },
-    { key: "profiles", label: "Route Profiles" },
-    { key: "budgets", label: "Budgets" },
-    { key: "slow", label: "Slow Queries" },
+    { key: 'summary', label: 'Summary' },
+    { key: 'profiles', label: 'Route Profiles' },
+    { key: 'budgets', label: 'Budgets' },
+    { key: 'slow', label: 'Slow Queries' },
   ];
 
   return (
@@ -353,17 +426,19 @@ export default function PerformanceDashboardPage() {
             key={t.key}
             onClick={() => setTab(t.key)}
             className={`px-4 py-2 text-sm font-medium border-b-2 ${
-              tab === t.key ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500 hover:text-gray-700"
+              tab === t.key
+                ? 'border-blue-600 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
             {t.label}
           </button>
         ))}
       </div>
-      {tab === "summary" && <SummaryTab />}
-      {tab === "profiles" && <ProfilesTab />}
-      {tab === "budgets" && <BudgetsTab />}
-      {tab === "slow" && <SlowQueriesTab />}
+      {tab === 'summary' && <SummaryTab />}
+      {tab === 'profiles' && <ProfilesTab />}
+      {tab === 'budgets' && <BudgetsTab />}
+      {tab === 'slow' && <SlowQueriesTab />}
     </div>
   );
 }

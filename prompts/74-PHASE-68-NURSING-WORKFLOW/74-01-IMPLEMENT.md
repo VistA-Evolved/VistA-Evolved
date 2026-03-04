@@ -1,12 +1,15 @@
 # Phase 68 (Prompt 74) -- IMPLEMENT: Nursing Workflow v1
 
 ## User Request
+
 Add nursing-facing workflows without inventing parallel clinical logic:
+
 - Nursing task list (shift-based)
 - Nursing documentation entry points (vitals exist; expand nursing notes posture)
 - MAR posture (read-only if BCMA not present)
 
 ## Implementation Steps
+
 1. Create `artifacts/phase68/nursing-plan.json` -- identifies RPCs, BCMA absence, pending posture
 2. Create API routes `apps/api/src/routes/nursing/index.ts` -- 7 endpoints (4 read, 3 pending)
 3. Create UI panel `apps/web/src/components/cprs/panels/NursingPanel.tsx` -- 4 sub-tabs
@@ -17,6 +20,7 @@ Add nursing-facing workflows without inventing parallel clinical logic:
 8. Create verification script `scripts/verify-phase68-nursing.ps1`
 
 ## Verification Steps
+
 - API TSC: 0 errors
 - Web TSC: 0 errors
 - Phase 68 verify script: all gates PASS
@@ -24,6 +28,7 @@ Add nursing-facing workflows without inventing parallel clinical logic:
 - BCMA/MAR explicitly integration-pending
 
 ## Files Touched
+
 - `artifacts/phase68/nursing-plan.json`
 - `apps/api/src/routes/nursing/index.ts`
 - `apps/api/src/index.ts`

@@ -17,7 +17,6 @@ import { csrfHeaders } from '@/lib/csrf';
 import styles from '@/components/cprs/cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
-
 type Tab = 'enrollments' | 'loa' | 'credentials' | 'adapters';
 
 async function apiFetch(path: string, opts?: RequestInit) {
@@ -35,8 +34,12 @@ export default function PayerOpsPage() {
   const [stats, setStats] = useState<any>(null);
 
   useEffect(() => {
-    apiFetch('/rcm/payerops/health').then(setHealth).catch(() => {});
-    apiFetch('/rcm/payerops/stats').then(d => setStats(d?.stats)).catch(() => {});
+    apiFetch('/rcm/payerops/health')
+      .then(setHealth)
+      .catch(() => {});
+    apiFetch('/rcm/payerops/stats')
+      .then((d) => setStats(d?.stats))
+      .catch(() => {});
   }, []);
 
   const tabs: { id: Tab; label: string }[] = [
@@ -48,7 +51,15 @@ export default function PayerOpsPage() {
 
   return (
     <div className={styles.cprsPage}>
-      <div style={{ padding: '16px 24px', borderBottom: '1px solid #dee2e6', display: 'flex', alignItems: 'center', gap: 16 }}>
+      <div
+        style={{
+          padding: '16px 24px',
+          borderBottom: '1px solid #dee2e6',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 16,
+        }}
+      >
         <h2 style={{ margin: 0, fontSize: 18 }}>Payer Operations</h2>
         {health && (
           <span style={{ fontSize: 11, color: health.ok ? '#198754' : '#dc3545', fontWeight: 600 }}>
@@ -60,18 +71,32 @@ export default function PayerOpsPage() {
             ENCRYPTION DEGRADED
           </span>
         )}
-        <span style={{ marginLeft: 'auto', fontSize: 11, color: '#6c757d' }}>Phase 87 -- PayerOps</span>
+        <span style={{ marginLeft: 'auto', fontSize: 11, color: '#6c757d' }}>
+          Phase 87 -- PayerOps
+        </span>
       </div>
 
       {/* Stats Summary */}
       {stats && (
-        <div style={{
-          display: 'flex', gap: 24, padding: '10px 24px', borderBottom: '1px solid #dee2e6',
-          background: '#f8f9fa', fontSize: 12,
-        }}>
-          <span>Enrollments: <strong>{stats.enrollments?.total ?? 0}</strong></span>
-          <span>LOA Cases: <strong>{stats.loaCases?.total ?? 0}</strong></span>
-          <span>Credentials: <strong>{stats.credentials?.total ?? 0}</strong></span>
+        <div
+          style={{
+            display: 'flex',
+            gap: 24,
+            padding: '10px 24px',
+            borderBottom: '1px solid #dee2e6',
+            background: '#f8f9fa',
+            fontSize: 12,
+          }}
+        >
+          <span>
+            Enrollments: <strong>{stats.enrollments?.total ?? 0}</strong>
+          </span>
+          <span>
+            LOA Cases: <strong>{stats.loaCases?.total ?? 0}</strong>
+          </span>
+          <span>
+            Credentials: <strong>{stats.credentials?.total ?? 0}</strong>
+          </span>
           {(stats.credentials?.expiringSoon ?? 0) > 0 && (
             <span style={{ color: '#dc3545' }}>
               Expiring Soon: <strong>{stats.credentials.expiringSoon}</strong>
@@ -82,14 +107,18 @@ export default function PayerOpsPage() {
 
       {/* Tabs */}
       <div style={{ display: 'flex', borderBottom: '1px solid #dee2e6', background: '#f8f9fa' }}>
-        {tabs.map(t => (
+        {tabs.map((t) => (
           <button
             key={t.id}
             onClick={() => setTab(t.id)}
             style={{
-              padding: '8px 16px', border: 'none', background: tab === t.id ? '#fff' : 'transparent',
+              padding: '8px 16px',
+              border: 'none',
+              background: tab === t.id ? '#fff' : 'transparent',
               borderBottom: tab === t.id ? '2px solid #0d6efd' : '2px solid transparent',
-              cursor: 'pointer', fontSize: 13, fontWeight: tab === t.id ? 600 : 400,
+              cursor: 'pointer',
+              fontSize: 13,
+              fontWeight: tab === t.id ? 600 : 400,
               color: tab === t.id ? '#0d6efd' : '#495057',
             }}
           >
@@ -119,16 +148,25 @@ function EnrollmentsTab() {
   const load = useCallback(() => {
     setLoading(true);
     apiFetch('/rcm/payerops/enrollments')
-      .then(d => setEnrollments(d?.enrollments || []))
+      .then((d) => setEnrollments(d?.enrollments || []))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 12,
+        }}
+      >
         <h3 style={{ margin: 0, fontSize: 15 }}>Facility-Payer Enrollments</h3>
         <button
           onClick={() => setShowForm(!showForm)}
@@ -138,7 +176,14 @@ function EnrollmentsTab() {
         </button>
       </div>
 
-      {showForm && <EnrollmentForm onCreated={() => { setShowForm(false); load(); }} />}
+      {showForm && (
+        <EnrollmentForm
+          onCreated={() => {
+            setShowForm(false);
+            load();
+          }}
+        />
+      )}
 
       {loading ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>Loading...</p>
@@ -167,7 +212,14 @@ function EnrollmentsTab() {
                   <StatusBadge status={e.status} />
                 </td>
                 <td style={{ padding: '6px 8px' }}>
-                  <span style={{ fontSize: 11, padding: '2px 6px', background: '#e9ecef', borderRadius: 3 }}>
+                  <span
+                    style={{
+                      fontSize: 11,
+                      padding: '2px 6px',
+                      background: '#e9ecef',
+                      borderRadius: 3,
+                    }}
+                  >
                     {e.integrationMode}
                   </span>
                 </td>
@@ -213,38 +265,63 @@ function EnrollmentForm({ onCreated }: { onCreated: () => void }) {
   };
 
   return (
-    <div style={{ background: '#f8f9fa', padding: 12, borderRadius: 4, marginBottom: 12, fontSize: 12 }}>
+    <div
+      style={{
+        background: '#f8f9fa',
+        padding: 12,
+        borderRadius: 4,
+        marginBottom: 12,
+        fontSize: 12,
+      }}
+    >
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
         <label>
           Facility ID
-          <input value={facilityId} onChange={e => setFacilityId(e.target.value)}
-            style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          <input
+            value={facilityId}
+            onChange={(e) => setFacilityId(e.target.value)}
+            style={{ width: '100%', padding: 4, fontSize: 12 }}
+          />
         </label>
         <label>
           Facility Name
-          <input value={facilityName} onChange={e => setFacilityName(e.target.value)}
-            style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          <input
+            value={facilityName}
+            onChange={(e) => setFacilityName(e.target.value)}
+            style={{ width: '100%', padding: 4, fontSize: 12 }}
+          />
         </label>
         <label>
           Payer ID
-          <input value={payerId} onChange={e => setPayerId(e.target.value)}
-            style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          <input
+            value={payerId}
+            onChange={(e) => setPayerId(e.target.value)}
+            style={{ width: '100%', padding: 4, fontSize: 12 }}
+          />
         </label>
         <label>
           Payer Name
-          <input value={payerName} onChange={e => setPayerName(e.target.value)}
-            style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          <input
+            value={payerName}
+            onChange={(e) => setPayerName(e.target.value)}
+            style={{ width: '100%', padding: 4, fontSize: 12 }}
+          />
         </label>
       </div>
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
         <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <input type="radio" checked={mode === 'manual'} onChange={() => setMode('manual')} /> Manual
+          <input type="radio" checked={mode === 'manual'} onChange={() => setMode('manual')} />{' '}
+          Manual
         </label>
         <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <input type="radio" checked={mode === 'portal'} onChange={() => setMode('portal')} /> Portal
+          <input type="radio" checked={mode === 'portal'} onChange={() => setMode('portal')} />{' '}
+          Portal
         </label>
-        <button onClick={submit} disabled={submitting || !payerId || !payerName}
-          style={{ marginLeft: 'auto', padding: '4px 16px', fontSize: 12, cursor: 'pointer' }}>
+        <button
+          onClick={submit}
+          disabled={submitting || !payerId || !payerName}
+          style={{ marginLeft: 'auto', padding: '4px 16px', fontSize: 12, cursor: 'pointer' }}
+        >
           {submitting ? 'Creating...' : 'Create'}
         </button>
       </div>
@@ -263,12 +340,14 @@ function LOATab() {
   const load = useCallback(() => {
     setLoading(true);
     apiFetch('/rcm/payerops/loa')
-      .then(d => setCases(d?.loaCases || []))
+      .then((d) => setCases(d?.loaCases || []))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const generatePack = async (id: string) => {
     const data = await apiFetch(`/rcm/payerops/loa/${id}/pack`, { method: 'POST' });
@@ -277,7 +356,14 @@ function LOATab() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 12,
+        }}
+      >
         <h3 style={{ margin: 0, fontSize: 15 }}>Letter of Authorization (LOA) Cases</h3>
         <button
           onClick={() => setShowForm(!showForm)}
@@ -287,7 +373,14 @@ function LOATab() {
         </button>
       </div>
 
-      {showForm && <LOAForm onCreated={() => { setShowForm(false); load(); }} />}
+      {showForm && (
+        <LOAForm
+          onCreated={() => {
+            setShowForm(false);
+            load();
+          }}
+        />
+      )}
 
       {loading ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>Loading...</p>
@@ -311,13 +404,24 @@ function LOATab() {
           <tbody>
             {cases.map((c: any) => (
               <tr key={c.id} style={{ borderBottom: '1px solid #dee2e6' }}>
-                <td style={{ padding: '6px 8px', fontFamily: 'monospace', fontSize: 11 }}>{c.id.slice(0, 16)}...</td>
+                <td style={{ padding: '6px 8px', fontFamily: 'monospace', fontSize: 11 }}>
+                  {c.id.slice(0, 16)}...
+                </td>
                 <td style={{ padding: '6px 8px' }}>{c.patientDfn}</td>
                 <td style={{ padding: '6px 8px' }}>{c.payerName}</td>
                 <td style={{ padding: '6px 8px' }}>{c.requestType?.replace(/_/g, ' ')}</td>
-                <td style={{ padding: '6px 8px' }}><StatusBadge status={c.status} /></td>
                 <td style={{ padding: '6px 8px' }}>
-                  <span style={{ fontSize: 11, padding: '2px 6px', background: '#e9ecef', borderRadius: 3 }}>
+                  <StatusBadge status={c.status} />
+                </td>
+                <td style={{ padding: '6px 8px' }}>
+                  <span
+                    style={{
+                      fontSize: 11,
+                      padding: '2px 6px',
+                      background: '#e9ecef',
+                      borderRadius: 3,
+                    }}
+                  >
                     {c.submissionMode}
                   </span>
                 </td>
@@ -337,33 +441,78 @@ function LOATab() {
 
       {/* Submission Pack Modal */}
       {selectedPack && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000,
-        }}>
-          <div style={{
-            background: '#fff', borderRadius: 8, padding: 24, maxWidth: 600, maxHeight: '80vh',
-            overflow: 'auto', width: '90%',
-          }}>
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              background: '#fff',
+              borderRadius: 8,
+              padding: 24,
+              maxWidth: 600,
+              maxHeight: '80vh',
+              overflow: 'auto',
+              width: '90%',
+            }}
+          >
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
               <h3 style={{ margin: 0, fontSize: 16 }}>{selectedPack.title}</h3>
-              <button onClick={() => setSelectedPack(null)} style={{ cursor: 'pointer', border: 'none', background: 'none', fontSize: 18 }}>X</button>
+              <button
+                onClick={() => setSelectedPack(null)}
+                style={{ cursor: 'pointer', border: 'none', background: 'none', fontSize: 18 }}
+              >
+                X
+              </button>
             </div>
             {selectedPack.sections?.map((s: any, i: number) => (
               <div key={i} style={{ marginBottom: 12 }}>
                 <h4 style={{ margin: '0 0 4px', fontSize: 13, color: '#495057' }}>{s.heading}</h4>
-                <pre style={{ margin: 0, fontSize: 12, whiteSpace: 'pre-wrap', background: '#f8f9fa', padding: 8, borderRadius: 4 }}>{s.content}</pre>
+                <pre
+                  style={{
+                    margin: 0,
+                    fontSize: 12,
+                    whiteSpace: 'pre-wrap',
+                    background: '#f8f9fa',
+                    padding: 8,
+                    borderRadius: 4,
+                  }}
+                >
+                  {s.content}
+                </pre>
               </div>
             ))}
             <h4 style={{ fontSize: 13, color: '#495057', marginBottom: 4 }}>Checklist</h4>
             <ul style={{ fontSize: 12, paddingLeft: 20 }}>
               {selectedPack.checklist?.map((item: string, i: number) => (
-                <li key={i} style={{ marginBottom: 2 }}>{item}</li>
+                <li key={i} style={{ marginBottom: 2 }}>
+                  {item}
+                </li>
               ))}
             </ul>
             <h4 style={{ fontSize: 13, color: '#495057', marginBottom: 4 }}>Email Template</h4>
-            <pre style={{ fontSize: 11, whiteSpace: 'pre-wrap', background: '#f8f9fa', padding: 8, borderRadius: 4 }}>
-              Subject: {selectedPack.emailTemplate?.subject}{'\n\n'}{selectedPack.emailTemplate?.body}
+            <pre
+              style={{
+                fontSize: 11,
+                whiteSpace: 'pre-wrap',
+                background: '#f8f9fa',
+                padding: 8,
+                borderRadius: 4,
+              }}
+            >
+              Subject: {selectedPack.emailTemplate?.subject}
+              {'\n\n'}
+              {selectedPack.emailTemplate?.body}
             </pre>
           </div>
         </div>
@@ -403,34 +552,58 @@ function LOAForm({ onCreated }: { onCreated: () => void }) {
   };
 
   return (
-    <div style={{ background: '#f8f9fa', padding: 12, borderRadius: 4, marginBottom: 12, fontSize: 12 }}>
+    <div
+      style={{
+        background: '#f8f9fa',
+        padding: 12,
+        borderRadius: 4,
+        marginBottom: 12,
+        fontSize: 12,
+      }}
+    >
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
         <label>
           Facility ID
-          <input value={facilityId} onChange={e => setFacilityId(e.target.value)}
-            style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          <input
+            value={facilityId}
+            onChange={(e) => setFacilityId(e.target.value)}
+            style={{ width: '100%', padding: 4, fontSize: 12 }}
+          />
         </label>
         <label>
           Patient DFN
-          <input value={patientDfn} onChange={e => setPatientDfn(e.target.value)}
-            placeholder="VistA DFN" style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          <input
+            value={patientDfn}
+            onChange={(e) => setPatientDfn(e.target.value)}
+            placeholder="VistA DFN"
+            style={{ width: '100%', padding: 4, fontSize: 12 }}
+          />
         </label>
         <label>
           Payer ID
-          <input value={payerId} onChange={e => setPayerId(e.target.value)}
-            style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          <input
+            value={payerId}
+            onChange={(e) => setPayerId(e.target.value)}
+            style={{ width: '100%', padding: 4, fontSize: 12 }}
+          />
         </label>
         <label>
           Payer Name
-          <input value={payerName} onChange={e => setPayerName(e.target.value)}
-            style={{ width: '100%', padding: 4, fontSize: 12 }} />
+          <input
+            value={payerName}
+            onChange={(e) => setPayerName(e.target.value)}
+            style={{ width: '100%', padding: 4, fontSize: 12 }}
+          />
         </label>
       </div>
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
         <label>
           Type:
-          <select value={requestType} onChange={e => setRequestType(e.target.value)}
-            style={{ marginLeft: 4, fontSize: 12, padding: 2 }}>
+          <select
+            value={requestType}
+            onChange={(e) => setRequestType(e.target.value)}
+            style={{ marginLeft: 4, fontSize: 12, padding: 2 }}
+          >
             <option value="initial_loa">Initial LOA</option>
             <option value="extension">Extension</option>
             <option value="upgrade">Upgrade</option>
@@ -439,8 +612,11 @@ function LOAForm({ onCreated }: { onCreated: () => void }) {
             <option value="second_opinion">Second Opinion</option>
           </select>
         </label>
-        <button onClick={submit} disabled={submitting || !patientDfn || !payerId || !payerName}
-          style={{ marginLeft: 'auto', padding: '4px 16px', fontSize: 12, cursor: 'pointer' }}>
+        <button
+          onClick={submit}
+          disabled={submitting || !patientDfn || !payerId || !payerName}
+          style={{ marginLeft: 'auto', padding: '4px 16px', fontSize: 12, cursor: 'pointer' }}
+        >
           {submitting ? 'Creating...' : 'Create LOA'}
         </button>
       </div>
@@ -469,17 +645,25 @@ function CredentialsTab() {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   return (
     <div>
       <h3 style={{ margin: '0 0 12px', fontSize: 15 }}>Credential Vault</h3>
 
       {expiring.length > 0 && (
-        <div style={{
-          padding: '8px 12px', background: '#fff3cd', borderRadius: 4, marginBottom: 12,
-          fontSize: 12, color: '#664d03',
-        }}>
+        <div
+          style={{
+            padding: '8px 12px',
+            background: '#fff3cd',
+            borderRadius: 4,
+            marginBottom: 12,
+            fontSize: 12,
+            color: '#664d03',
+          }}
+        >
           <strong>Expiring Soon:</strong> {expiring.length} credential(s) expiring within 60 days.
           {expiring.map((c: any) => (
             <div key={c.id} style={{ marginTop: 4 }}>
@@ -493,7 +677,8 @@ function CredentialsTab() {
         <p style={{ fontSize: 13, color: '#6c757d' }}>Loading...</p>
       ) : credentials.length === 0 ? (
         <p style={{ fontSize: 13, color: '#6c757d' }}>
-          No credentials stored. Upload facility licenses, accreditation documents, and insurance certificates here.
+          No credentials stored. Upload facility licenses, accreditation documents, and insurance
+          certificates here.
         </p>
       ) : (
         <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
@@ -512,13 +697,25 @@ function CredentialsTab() {
               <tr key={c.id} style={{ borderBottom: '1px solid #dee2e6' }}>
                 <td style={{ padding: '6px 8px' }}>{c.title}</td>
                 <td style={{ padding: '6px 8px' }}>
-                  <span style={{ fontSize: 11, padding: '2px 6px', background: '#e9ecef', borderRadius: 3 }}>
+                  <span
+                    style={{
+                      fontSize: 11,
+                      padding: '2px 6px',
+                      background: '#e9ecef',
+                      borderRadius: 3,
+                    }}
+                  >
                     {c.docType?.replace(/_/g, ' ')}
                   </span>
                 </td>
                 <td style={{ padding: '6px 8px' }}>{c.facilityId}</td>
                 <td style={{ padding: '6px 8px' }}>{c.issuedBy || '--'}</td>
-                <td style={{ padding: '6px 8px', color: isExpiringSoon(c.expiryDate) ? '#dc3545' : undefined }}>
+                <td
+                  style={{
+                    padding: '6px 8px',
+                    color: isExpiringSoon(c.expiryDate) ? '#dc3545' : undefined,
+                  }}
+                >
                   {c.expiryDate?.split('T')[0] || '--'}
                 </td>
                 <td style={{ padding: '6px 8px' }}>{c.associatedPayerIds?.length ?? 0}</td>
@@ -539,7 +736,7 @@ function AdaptersTab() {
 
   useEffect(() => {
     apiFetch('/rcm/payerops/adapters')
-      .then(d => setAdapters(d?.adapters || []))
+      .then((d) => setAdapters(d?.adapters || []))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -548,8 +745,8 @@ function AdaptersTab() {
     <div>
       <h3 style={{ margin: '0 0 12px', fontSize: 15 }}>PayerOps Adapters</h3>
       <p style={{ fontSize: 12, color: '#6c757d', marginBottom: 12 }}>
-        All payer operations begin in MANUAL mode. Portal and API modes are available
-        per-payer when the payer provides integration capabilities.
+        All payer operations begin in MANUAL mode. Portal and API modes are available per-payer when
+        the payer provides integration capabilities.
       </p>
 
       {loading ? (
@@ -557,16 +754,27 @@ function AdaptersTab() {
       ) : (
         <div style={{ display: 'grid', gap: 12 }}>
           {adapters.map((a: any) => (
-            <div key={a.id} style={{
-              border: '1px solid #dee2e6', borderRadius: 4, padding: 12,
-            }}>
+            <div
+              key={a.id}
+              style={{
+                border: '1px solid #dee2e6',
+                borderRadius: 4,
+                padding: 12,
+              }}
+            >
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
                 <strong style={{ fontSize: 14 }}>{a.name}</strong>
-                <span style={{
-                  fontSize: 11, padding: '2px 8px', borderRadius: 3,
-                  background: a.mode === 'manual' ? '#fff3cd' : a.mode === 'portal' ? '#d1ecf1' : '#d4edda',
-                  color: a.mode === 'manual' ? '#664d03' : a.mode === 'portal' ? '#0c5460' : '#155724',
-                }}>
+                <span
+                  style={{
+                    fontSize: 11,
+                    padding: '2px 8px',
+                    borderRadius: 3,
+                    background:
+                      a.mode === 'manual' ? '#fff3cd' : a.mode === 'portal' ? '#d1ecf1' : '#d4edda',
+                    color:
+                      a.mode === 'manual' ? '#664d03' : a.mode === 'portal' ? '#0c5460' : '#155724',
+                  }}
+                >
                   {a.mode.toUpperCase()}
                 </span>
               </div>
@@ -587,15 +795,29 @@ function AdaptersTab() {
         </div>
       )}
 
-      <div style={{
-        marginTop: 24, padding: 12, background: '#f8f9fa', borderRadius: 4,
-        fontSize: 12, color: '#6c757d',
-      }}>
+      <div
+        style={{
+          marginTop: 24,
+          padding: 12,
+          background: '#f8f9fa',
+          borderRadius: 4,
+          fontSize: 12,
+          color: '#6c757d',
+        }}
+      >
         <strong>Integration Roadmap</strong>
         <ul style={{ margin: '8px 0 0', paddingLeft: 20 }}>
-          <li><strong>Manual</strong> (current) -- Print packs, checklists, email templates for all payers</li>
-          <li><strong>Portal</strong> (current) -- URL + step-by-step portal navigation guides</li>
-          <li><strong>API</strong> (future) -- Direct payer API integration when available (e.g., PhilHealth eClaims API)</li>
+          <li>
+            <strong>Manual</strong> (current) -- Print packs, checklists, email templates for all
+            payers
+          </li>
+          <li>
+            <strong>Portal</strong> (current) -- URL + step-by-step portal navigation guides
+          </li>
+          <li>
+            <strong>API</strong> (future) -- Direct payer API integration when available (e.g.,
+            PhilHealth eClaims API)
+          </li>
         </ul>
       </div>
     </div>
@@ -625,10 +847,16 @@ function StatusBadge({ status }: { status: string }) {
   };
   const c = colors[status] || { bg: '#e9ecef', fg: '#495057' };
   return (
-    <span style={{
-      fontSize: 11, padding: '2px 8px', borderRadius: 3, fontWeight: 600,
-      background: c.bg, color: c.fg,
-    }}>
+    <span
+      style={{
+        fontSize: 11,
+        padding: '2px 8px',
+        borderRadius: 3,
+        fontWeight: 600,
+        background: c.bg,
+        color: c.fg,
+      }}
+    >
       {status?.replace(/_/g, ' ')}
     </span>
   );

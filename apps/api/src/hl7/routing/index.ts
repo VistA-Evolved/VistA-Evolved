@@ -5,16 +5,16 @@
  * the routing message handler for the MLLP server.
  */
 
-import type { Hl7Message, Hl7Ack, MllpConnection } from "../types.js";
-import { messageSummary } from "../parser.js";
-import { ackAccept, ackError } from "../ack-generator.js";
-import { matchRoutes } from "./matcher.js";
-import { runTransformPipeline } from "./transform.js";
-import { dispatch, deadLetterUnroutable, shutdownDispatcher } from "./dispatcher.js";
-import { log } from "../../lib/logger.js";
+import type { Hl7Message, Hl7Ack, MllpConnection } from '../types.js';
+import { messageSummary } from '../parser.js';
+import { ackAccept, ackError } from '../ack-generator.js';
+import { matchRoutes } from './matcher.js';
+import { runTransformPipeline } from './transform.js';
+import { dispatch, deadLetterUnroutable } from './dispatcher.js';
+import { log } from '../../lib/logger.js';
 
 // Re-exports
-export * from "./types.js";
+export * from './types.js';
 export {
   addRoute,
   getRoute,
@@ -27,10 +27,10 @@ export {
   getDeadLetterQueue,
   getDeadLetterCount,
   clearDeadLetterQueue,
-} from "./registry.js";
-export { matchRoutes, matchesFilter } from "./matcher.js";
-export { runTransformPipeline } from "./transform.js";
-export { dispatch, deadLetterUnroutable, shutdownDispatcher } from "./dispatcher.js";
+} from './registry.js';
+export { matchRoutes, matchesFilter } from './matcher.js';
+export { runTransformPipeline } from './transform.js';
+export { dispatch, deadLetterUnroutable, shutdownDispatcher } from './dispatcher.js';
 
 /**
  * The routing message handler for the MLLP server.
@@ -40,20 +40,20 @@ export { dispatch, deadLetterUnroutable, shutdownDispatcher } from "./dispatcher
  */
 export async function routingMessageHandler(
   message: Hl7Message,
-  connection: MllpConnection,
+  connection: MllpConnection
 ): Promise<Hl7Ack> {
   // Find matching routes
   const matchedRoutes = matchRoutes(message);
 
   if (matchedRoutes.length === 0) {
     // No routes matched — dead-letter
-    deadLetterUnroutable(message, "No matching routes");
-    log.warn("HL7 message unroutable (dead-lettered)", {
-      component: "hl7-routing",
+    deadLetterUnroutable(message, 'No matching routes');
+    log.warn('HL7 message unroutable (dead-lettered)', {
+      component: 'hl7-routing',
       connectionId: connection.id,
       ...messageSummary(message),
     });
-    return ackError(message, "No matching routes configured");
+    return ackError(message, 'No matching routes configured');
   }
 
   // Process through first matching route (priority-ordered)
@@ -68,12 +68,12 @@ export async function routingMessageHandler(
     transformResult.messageText,
     route.destination,
     route.id,
-    message,
+    message
   );
 
   if (dispatchResult.ok) {
     return ackAccept(message);
   } else {
-    return ackError(message, dispatchResult.error || "Dispatch failed");
+    return ackError(message, dispatchResult.error || 'Dispatch failed');
   }
 }

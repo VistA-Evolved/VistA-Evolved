@@ -20,7 +20,7 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 min
 
 function loadHybridsMap(): any {
   const now = Date.now();
-  if (cachedMap && (now - cacheLoadedAt) < CACHE_TTL_MS) {
+  if (cachedMap && now - cacheLoadedAt < CACHE_TTL_MS) {
     return cachedMap;
   }
 
@@ -38,7 +38,9 @@ function loadHybridsMap(): any {
         cachedMap = JSON.parse(clean);
         cacheLoadedAt = now;
         return cachedMap;
-      } catch { /* try next */ }
+      } catch {
+        /* try next */
+      }
     }
   }
 

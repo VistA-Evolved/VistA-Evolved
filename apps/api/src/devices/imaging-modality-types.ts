@@ -55,17 +55,17 @@ export interface WorklistItem {
 }
 
 export type WorklistItemStatus =
-  | "scheduled"
-  | "in_progress"
-  | "completed"
-  | "discontinued"
-  | "cancelled";
+  | 'scheduled'
+  | 'in_progress'
+  | 'completed'
+  | 'discontinued'
+  | 'cancelled';
 
 // ---------------------------------------------------------------------------
 // MPPS — Modality Performed Procedure Step
 // ---------------------------------------------------------------------------
 
-export type MppsStatus = "IN PROGRESS" | "COMPLETED" | "DISCONTINUED";
+export type MppsStatus = 'IN PROGRESS' | 'COMPLETED' | 'DISCONTINUED';
 
 export interface MppsRecord {
   /** Internal ID */
@@ -146,7 +146,7 @@ export interface ModalityAeConfig {
   /** MPPS enabled */
   mppsEnabled: boolean;
   /** Last known status */
-  status: "active" | "offline" | "maintenance" | "decommissioned";
+  status: 'active' | 'offline' | 'maintenance' | 'decommissioned';
   /** Last successful C-ECHO timestamp */
   lastEcho?: string;
   /** Created at */

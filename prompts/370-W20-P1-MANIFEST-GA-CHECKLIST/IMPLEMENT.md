@@ -1,6 +1,7 @@
 # Phase 370 — W20-P1 IMPLEMENT: Reservation + Manifest + GA Readiness Checklist
 
 ## User Request
+
 Reserve phase range 370-377 for Wave 20. Create WAVE_20_MANIFEST.md, GA readiness
 checklist document, and a PowerShell script that verifies checklist evidence presence.
 
@@ -13,6 +14,7 @@ checklist document, and a PowerShell script that verifies checklist evidence pre
 5. Create ADR docs for Wave 20 decisions
 
 ## Files Touched
+
 - prompts/WAVE_20_MANIFEST.md
 - prompts/370-W20-P1-MANIFEST-GA-CHECKLIST/370-01-IMPLEMENT.md
 - prompts/370-W20-P1-MANIFEST-GA-CHECKLIST/370-99-VERIFY.md

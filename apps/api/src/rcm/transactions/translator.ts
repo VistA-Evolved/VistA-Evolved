@@ -32,16 +32,13 @@ export interface Translator {
   buildX12(
     transactionSet: X12TransactionSet,
     canonicalObject: Record<string, unknown>,
-    envelope: TransactionEnvelope,
+    envelope: TransactionEnvelope
   ): TranslatorResult;
 
   /**
    * Parse X12 wire format into a canonical response object.
    */
-  parseX12(
-    transactionSet: X12TransactionSet,
-    rawX12: string,
-  ): ParsedResponse;
+  parseX12(transactionSet: X12TransactionSet, rawX12: string): ParsedResponse;
 
   /**
    * Validate a canonical object before serialization.
@@ -49,7 +46,7 @@ export interface Translator {
    */
   validate(
     transactionSet: X12TransactionSet,
-    canonicalObject: Record<string, unknown>,
+    canonicalObject: Record<string, unknown>
   ): Array<{ field: string; message: string; severity: 'error' | 'warning' }>;
 }
 
@@ -73,7 +70,7 @@ export function getActiveTranslator(): Translator | undefined {
 }
 
 export function listTranslators(): Array<{ id: string; name: string; available: boolean }> {
-  return Array.from(translators.values()).map(t => ({
+  return Array.from(translators.values()).map((t) => ({
     id: t.id,
     name: t.name,
     available: t.isAvailable(),

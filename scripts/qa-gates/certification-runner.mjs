@@ -13,8 +13,8 @@
  *   node scripts/qa-gates/certification-runner.mjs
  */
 
-import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "fs";
-import { join } from "path";
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'fs';
+import { join } from 'path';
 
 const ROOT = process.cwd();
 
@@ -22,13 +22,13 @@ const ROOT = process.cwd();
 /* Load scenarios                                                      */
 /* ------------------------------------------------------------------ */
 
-const scenariosPath = join(ROOT, "config/certification-scenarios.json");
+const scenariosPath = join(ROOT, 'config/certification-scenarios.json');
 let scenarios;
 try {
-  const raw = readFileSync(scenariosPath, "utf-8");
+  const raw = readFileSync(scenariosPath, 'utf-8');
   scenarios = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
 } catch (err) {
-  console.error("Could not load certification-scenarios.json:", err.message);
+  console.error('Could not load certification-scenarios.json:', err.message);
   process.exit(1);
 }
 
@@ -41,21 +41,29 @@ function findTsFilesRecursive(dir) {
   try {
     for (const entry of readdirSync(dir, { withFileTypes: true })) {
       const full = join(dir, entry.name);
-      if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+      if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
         results.push(...findTsFilesRecursive(full));
-      } else if (entry.name.endsWith(".ts")) {
+      } else if (entry.name.endsWith('.ts')) {
         results.push(full);
       }
     }
-  } catch { /* skip */ }
+  } catch {
+    /* skip */
+  }
   return results;
 }
 
-const apiSrc = join(ROOT, "apps/api/src");
+const apiSrc = join(ROOT, 'apps/api/src');
 const apiFiles = findTsFilesRecursive(apiSrc);
-const apiSource = apiFiles.map(f => {
-  try { return readFileSync(f, "utf-8"); } catch { return ""; }
-}).join("\n");
+const apiSource = apiFiles
+  .map((f) => {
+    try {
+      return readFileSync(f, 'utf-8');
+    } catch {
+      return '';
+    }
+  })
+  .join('\n');
 
 // Extract route patterns (GET/POST/PUT/DELETE + path)
 const routePatterns = new Set();
@@ -69,9 +77,13 @@ while ((match = routeRegex.exec(apiSource)) !== null) {
 /* Load RPC registry                                                   */
 /* ------------------------------------------------------------------ */
 
-const rpcRegistryPath = join(ROOT, "apps/api/src/vista/rpcRegistry.ts");
-let rpcSource = "";
-try { rpcSource = readFileSync(rpcRegistryPath, "utf-8"); } catch { /* */ }
+const rpcRegistryPath = join(ROOT, 'apps/api/src/vista/rpcRegistry.ts');
+let rpcSource = '';
+try {
+  rpcSource = readFileSync(rpcRegistryPath, 'utf-8');
+} catch {
+  /* */
+}
 
 const rpcNames = new Set();
 const rpcRegex = /["']([A-Z][A-Z0-9 ]+[A-Z0-9])["']/g;
@@ -94,12 +106,12 @@ for (const scenario of scenarios) {
     totalSteps++;
 
     // Check route exists (fuzzy match — replace :param with wildcard)
-    const routeParts = step.route.split(" ");
+    const routeParts = step.route.split(' ');
     const method = routeParts[0];
-    const path = routeParts[1] || "";
-    const routeBase = path.replace(/:[^/]+/g, "").replace(/\/+$/, "");
-    const routeReachable = [...routePatterns].some(r => {
-      const rPath = r.split(" ")[1] || "";
+    const path = routeParts[1] || '';
+    const routeBase = path.replace(/:[^/]+/g, '').replace(/\/+$/, '');
+    const routeReachable = [...routePatterns].some((r) => {
+      const rPath = r.split(' ')[1] || '';
       return r.startsWith(method) && (rPath.includes(routeBase) || routeBase.includes(rPath));
     });
 
@@ -118,17 +130,17 @@ for (const scenario of scenarios) {
       rpc: step.rpc || null,
       routeReachable,
       rpcReachable,
-      status: reachable && rpcReachable ? "ready" : "pending",
+      status: reachable && rpcReachable ? 'ready' : 'pending',
     });
   }
 
-  const scenarioReady = stepResults.every(s => s.status === "ready");
+  const scenarioReady = stepResults.every((s) => s.status === 'ready');
   results.push({
     id: scenario.id,
     name: scenario.name,
     domain: scenario.domain,
-    status: scenarioReady ? "ready" : "partial",
-    readySteps: stepResults.filter(s => s.status === "ready").length,
+    status: scenarioReady ? 'ready' : 'partial',
+    readySteps: stepResults.filter((s) => s.status === 'ready').length,
     totalSteps: stepResults.length,
     steps: stepResults,
     regulatoryRef: scenario.regulatoryRef || [],
@@ -139,12 +151,12 @@ for (const scenario of scenarios) {
 /* Output                                                              */
 /* ------------------------------------------------------------------ */
 
-const readyScenarios = results.filter(r => r.status === "ready").length;
-const partialScenarios = results.filter(r => r.status === "partial").length;
+const readyScenarios = results.filter((r) => r.status === 'ready').length;
+const partialScenarios = results.filter((r) => r.status === 'partial').length;
 
 const report = {
   generatedAt: new Date().toISOString(),
-  gate: "e2e-certification",
+  gate: 'e2e-certification',
   scenarios: results,
   summary: {
     totalScenarios: scenarios.length,
@@ -156,20 +168,21 @@ const report = {
   },
 };
 
-const artifactDir = join(ROOT, "artifacts");
+const artifactDir = join(ROOT, 'artifacts');
 mkdirSync(artifactDir, { recursive: true });
-writeFileSync(
-  join(artifactDir, "certification-report.json"),
-  JSON.stringify(report, null, 2),
-);
+writeFileSync(join(artifactDir, 'certification-report.json'), JSON.stringify(report, null, 2));
 
 console.log(`\n=== E2E Certification Gate (Phase 278) ===\n`);
 for (const r of results) {
-  const icon = r.status === "ready" ? "READY" : "PARTIAL";
+  const icon = r.status === 'ready' ? 'READY' : 'PARTIAL';
   console.log(`  [${icon}] ${r.id} ${r.name} (${r.readySteps}/${r.totalSteps} steps)`);
 }
-console.log(`\n  Scenarios: ${readyScenarios} ready, ${partialScenarios} partial (of ${scenarios.length})`);
-console.log(`  Steps:     ${reachableSteps}/${totalSteps} reachable (${report.summary.coveragePercent}%)`);
+console.log(
+  `\n  Scenarios: ${readyScenarios} ready, ${partialScenarios} partial (of ${scenarios.length})`
+);
+console.log(
+  `  Steps:     ${reachableSteps}/${totalSteps} reachable (${report.summary.coveragePercent}%)`
+);
 console.log(`\n  Output: artifacts/certification-report.json\n`);
 
 // Gate: at least 50% of steps must be reachable

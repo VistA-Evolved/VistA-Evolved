@@ -1,6 +1,7 @@
 # Phase 164 — VERIFY
 
 ## Gates
+
 1. API TypeScript compiles clean
 2. Web TypeScript compiles clean
 3. certification-posture.ts exports checkCertificationPosture()

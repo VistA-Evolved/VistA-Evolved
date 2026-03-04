@@ -7,29 +7,29 @@
 
 ## Phase Map
 
-| Wave Phase | Resolved ID | Title | Prompt Folder |
-|------------|-------------|-------|---------------|
-| W21-P1 | 378 | Reservation + Manifest + OSS ADRs + Coverage Map | `378-W21-P1-MANIFEST-COVERAGE` |
-| W21-P2 | 379 | Edge Device Gateway | `379-W21-P2-EDGE-GATEWAY` |
-| W21-P3 | 380 | Device Registry + Patient/Location Association | `380-W21-P3-DEVICE-REGISTRY` |
-| W21-P4 | 381 | HL7 v2 Device/Lab Ingest (MLLP ORU/ORM) | `381-W21-P4-HL7V2-INGEST` |
-| W21-P5 | 382 | ASTM + POCT1-A Ingest | `382-W21-P5-ASTM-POCT` |
-| W21-P6 | 383 | IEEE 11073 SDC Ingest | `383-W21-P6-SDC-INGEST` |
-| W21-P7 | 384 | Alarms Pipeline (IHE PCD ACM) | `384-W21-P7-ALARMS` |
-| W21-P8 | 385 | Infusion / BCMA Safety Bridge | `385-W21-P8-INFUSION-BCMA` |
-| W21-P9 | 386 | Imaging Modality Connectivity (DICOM + MWL/MPPS) | `386-W21-P9-IMAGING-MODALITY` |
-| W21-P10 | 387 | Normalization (LOINC/UCUM + Device Codes) | `387-W21-P10-NORMALIZATION` |
-| W21-P11 | 388 | Device/Modality Certification Runner | `388-W21-P11-CERT-RUNNER` |
+| Wave Phase | Resolved ID | Title                                            | Prompt Folder                  |
+| ---------- | ----------- | ------------------------------------------------ | ------------------------------ |
+| W21-P1     | 378         | Reservation + Manifest + OSS ADRs + Coverage Map | `378-W21-P1-MANIFEST-COVERAGE` |
+| W21-P2     | 379         | Edge Device Gateway                              | `379-W21-P2-EDGE-GATEWAY`      |
+| W21-P3     | 380         | Device Registry + Patient/Location Association   | `380-W21-P3-DEVICE-REGISTRY`   |
+| W21-P4     | 381         | HL7 v2 Device/Lab Ingest (MLLP ORU/ORM)          | `381-W21-P4-HL7V2-INGEST`      |
+| W21-P5     | 382         | ASTM + POCT1-A Ingest                            | `382-W21-P5-ASTM-POCT`         |
+| W21-P6     | 383         | IEEE 11073 SDC Ingest                            | `383-W21-P6-SDC-INGEST`        |
+| W21-P7     | 384         | Alarms Pipeline (IHE PCD ACM)                    | `384-W21-P7-ALARMS`            |
+| W21-P8     | 385         | Infusion / BCMA Safety Bridge                    | `385-W21-P8-INFUSION-BCMA`     |
+| W21-P9     | 386         | Imaging Modality Connectivity (DICOM + MWL/MPPS) | `386-W21-P9-IMAGING-MODALITY`  |
+| W21-P10    | 387         | Normalization (LOINC/UCUM + Device Codes)        | `387-W21-P10-NORMALIZATION`    |
+| W21-P11    | 388         | Device/Modality Certification Runner             | `388-W21-P11-CERT-RUNNER`      |
 
 ## ADR Index
 
-| ADR | Path |
-|-----|------|
-| Edge Gateway | `docs/decisions/ADR-W21-EDGE-GATEWAY.md` |
+| ADR                | Path                                           |
+| ------------------ | ---------------------------------------------- |
+| Edge Gateway       | `docs/decisions/ADR-W21-EDGE-GATEWAY.md`       |
 | Integration Engine | `docs/decisions/ADR-W21-INTEGRATION-ENGINE.md` |
-| Imaging Stack | `docs/decisions/ADR-W21-IMAGING-STACK.md` |
-| SDC Posture | `docs/decisions/ADR-W21-SDC-POSTURE.md` |
-| POCT/ASTM | `docs/decisions/ADR-W21-POCT-ASTM.md` |
+| Imaging Stack      | `docs/decisions/ADR-W21-IMAGING-STACK.md`      |
+| SDC Posture        | `docs/decisions/ADR-W21-SDC-POSTURE.md`        |
+| POCT/ASTM          | `docs/decisions/ADR-W21-POCT-ASTM.md`          |
 
 ## Dependencies & Run Order
 

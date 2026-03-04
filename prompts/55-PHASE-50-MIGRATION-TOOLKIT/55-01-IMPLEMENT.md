@@ -1,6 +1,7 @@
 # Phase 50 -- Data Portability + Migration Toolkit
 
 ## User Request
+
 Build data portability/migration foundation: import/export pipelines, pluggable mapping DSL, admin UI, docs.
 
 ## Implementation Steps
@@ -36,6 +37,7 @@ Build data portability/migration foundation: import/export pipelines, pluggable 
 11. **Docs** -- migration-toolkit.md, source-connectors.md
 
 ## Verification Steps
+
 - tsc --noEmit clean
 - API starts with DEPLOY_SKU=FULL_SUITE
 - GET /migration/health returns ok
@@ -48,6 +50,7 @@ Build data portability/migration foundation: import/export pipelines, pluggable 
 ## Files Touched
 
 ### New files
+
 - `apps/api/src/migration/types.ts`
 - `apps/api/src/migration/mapping-engine.ts`
 - `apps/api/src/migration/migration-store.ts`
@@ -61,9 +64,10 @@ Build data portability/migration foundation: import/export pipelines, pluggable 
 - `prompts/55-PHASE-50-MIGRATION-TOOLKIT/prompt.md`
 
 ### Modified files
+
 - `apps/api/src/index.ts` -- import + register migrationRoutes
 - `apps/api/src/auth/rbac.ts` -- add migration:read/write/admin permissions
 - `apps/api/src/middleware/security.ts` -- add /migration/ AUTH_RULE
 - `config/modules.json` -- add migration module
 - `config/skus.json` -- add migration to FULL_SUITE
-- `config/capabilities.json` -- add migration.* capabilities
+- `config/capabilities.json` -- add migration.\* capabilities

@@ -1,19 +1,23 @@
 # Phase 23 — Imaging Workflow — VERIFY
 
 ## Prerequisites
+
 - Docker running with `imaging` profile: `docker compose --profile dev --profile imaging up -d`
 - API server running: `cd apps/api && npx tsx --env-file=.env.local src/index.ts`
 - Orthanc accessible at http://localhost:8042
 - OHIF accessible at http://localhost:3003
 
 ## Gate 1: TypeScript Compilation (API + Web)
+
 ```powershell
 cd apps/api; npx tsc --noEmit   # expect exit 0
 cd apps/web; npx tsc --noEmit   # expect exit 0
 ```
+
 **PASS criteria:** Both exit 0, no errors.
 
 ## Gate 2: Worklist Service Endpoints
+
 ```powershell
 # 2a. GET empty worklist
 curl.exe -s http://127.0.0.1:3001/imaging/worklist | ConvertFrom-Json
@@ -45,9 +49,11 @@ curl.exe -s -X PATCH "http://127.0.0.1:3001/imaging/worklist/<id>/status" `
 curl.exe -s "http://127.0.0.1:3001/imaging/worklist/<id>" | ConvertFrom-Json
 # expect: { ok: true, item: { ... } }
 ```
+
 **PASS criteria:** All 6 endpoints return expected JSON with `ok: true`.
 
 ## Gate 3: Ingest Reconciliation
+
 ```powershell
 # 3a. POST ingest callback (service auth via X-Service-Key header)
 curl.exe -s -X POST http://127.0.0.1:3001/imaging/ingest/callback `
@@ -78,17 +84,21 @@ curl.exe -s -X POST http://127.0.0.1:3001/imaging/ingest/callback `
 curl.exe -s "http://127.0.0.1:3001/imaging/ingest/unmatched" -b "ehr_session=<admin_session>"
 # expect: { ok: true, unmatched: [{ ... }] }
 ```
+
 **PASS criteria:** Accession-exact linking works when order exists. Service key auth enforced. Unmatched → quarantine.
 
 ## Gate 4: Chart Integration (Study Enrichment)
+
 ```powershell
 # After creating an order and ingesting a study with matching accession:
 curl.exe -s "http://127.0.0.1:3001/vista/imaging/studies?dfn=100022" -b "ehr_session=<session>"
 # Check response includes orderSummary and studies have linkedOrderId / orderLinked fields
 ```
+
 **PASS criteria:** Response contains `orderSummary` and studies with linkage data.
 
 ## Gate 5: UI Verification (Manual)
+
 1. Navigate to patient chart → Imaging tab
 2. **Tab bar visible** with Studies / Worklist / New Order tabs
 3. **New Order tab**: form renders with Procedure, Modality, Priority, Scheduled, Clinical Indication. Submit creates order.
@@ -97,12 +107,14 @@ curl.exe -s "http://127.0.0.1:3001/vista/imaging/studies?dfn=100022" -b "ehr_ses
 6. **OHIF Viewer**: click "Open in OHIF Viewer" still works on studies with UIDs
 
 ## Gate 6: Orthanc Lua Callback (Integration)
+
 1. Verify Lua script is mounted: `docker exec orthanc ls /etc/orthanc/on-stable-study.lua`
 2. Upload a test DICOM to Orthanc: `curl.exe -X POST http://localhost:8042/instances -d @test.dcm`
 3. Wait 60s (StableAge), check API logs for ingest callback receipt
 4. Verify study appears in linkages or unmatched queue
 
 ## Gate 7: Security
+
 - `/imaging/ingest/callback` rejects requests without `X-Service-Key`: returns 401
 - `/imaging/ingest/callback` rejects requests with wrong key: returns 401
 - `/imaging/ingest/unmatched` requires admin session
@@ -111,6 +123,7 @@ curl.exe -s "http://127.0.0.1:3001/vista/imaging/studies?dfn=100022" -b "ehr_ses
 - No hardcoded credentials outside login page
 
 ## Gate 8: Regression
+
 ```powershell
 # Existing Phase 22 imaging status endpoint still works
 curl.exe -s http://127.0.0.1:3001/vista/imaging/status | ConvertFrom-Json
@@ -126,6 +139,7 @@ curl.exe -s http://127.0.0.1:3001/imaging/orthanc/system -b "ehr_session=<sessio
 ```
 
 ## Gate 9: Documentation
+
 - [ ] `docs/runbooks/imaging-worklist.md` exists with API docs
 - [ ] `docs/runbooks/imaging-ingest-reconciliation.md` exists with architecture
 - [ ] `docs/runbooks/imaging-device-onboarding.md` exists with procedure
@@ -134,14 +148,15 @@ curl.exe -s http://127.0.0.1:3001/imaging/orthanc/system -b "ehr_session=<sessio
 - [ ] `AGENTS.md` updated with Phase 23 gotchas
 
 ## Summary
-| Gate | Description | Expected |
-|------|-------------|----------|
-| 1 | TypeScript compilation | 0 errors |
-| 2 | Worklist endpoints (6) | All return ok:true |
-| 3 | Ingest reconciliation | Link + quarantine work |
-| 4 | Chart integration | orderedSummary in response |
-| 5 | UI tabs + order form | Manual visual check |
-| 6 | Orthanc Lua callback | Study ingested via callback |
-| 7 | Security | Service auth enforced |
-| 8 | Regression | Phase 22 endpoints intact |
-| 9 | Documentation | All runbooks present |
+
+| Gate | Description            | Expected                    |
+| ---- | ---------------------- | --------------------------- |
+| 1    | TypeScript compilation | 0 errors                    |
+| 2    | Worklist endpoints (6) | All return ok:true          |
+| 3    | Ingest reconciliation  | Link + quarantine work      |
+| 4    | Chart integration      | orderedSummary in response  |
+| 5    | UI tabs + order form   | Manual visual check         |
+| 6    | Orthanc Lua callback   | Study ingested via callback |
+| 7    | Security               | Service auth enforced       |
+| 8    | Regression             | Phase 22 endpoints intact   |
+| 9    | Documentation          | All runbooks present        |

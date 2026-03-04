@@ -14,19 +14,14 @@
  * is NOT modified.
  */
 
-import * as crypto from "node:crypto";
-import { log } from "../lib/logger.js";
+import * as crypto from 'node:crypto';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
-export type IntegrationKind =
-  | "hl7v2"
-  | "fhir"
-  | "payer"
-  | "imaging"
-  | "oidc";
+export type IntegrationKind = 'hl7v2' | 'fhir' | 'payer' | 'imaging' | 'oidc';
 
 export interface IntegrationEndpointConfig {
   id: string;
@@ -41,27 +36,24 @@ export interface IntegrationEndpointConfig {
   options: Record<string, unknown>;
   /** Last probe result */
   probeResult?: {
-    status: "success" | "failure" | "timeout" | "untested";
+    status: 'success' | 'failure' | 'timeout' | 'untested';
     message?: string;
     latencyMs?: number;
     probedAt: string;
   };
 }
 
-export type IntegrationStepId =
-  | "integrations"
-  | "connectivity"
-  | "preflight";
+export type IntegrationStepId = 'integrations' | 'connectivity' | 'preflight';
 
 export const INTEGRATION_STEP_ORDER: IntegrationStepId[] = [
-  "integrations",
-  "connectivity",
-  "preflight",
+  'integrations',
+  'connectivity',
+  'preflight',
 ];
 
 export interface IntegrationStepData {
   step: IntegrationStepId;
-  status: "pending" | "in-progress" | "completed" | "skipped";
+  status: 'pending' | 'in-progress' | 'completed' | 'skipped';
   data?: Record<string, unknown>;
   completedAt?: string;
 }
@@ -90,9 +82,9 @@ export interface PreflightSummary {
 
 export interface PreflightCheck {
   name: string;
-  status: "pass" | "fail" | "warn" | "skip";
+  status: 'pass' | 'fail' | 'warn' | 'skip';
   message: string;
-  category: "connectivity" | "auth" | "data" | "config" | "security";
+  category: 'connectivity' | 'auth' | 'data' | 'config' | 'security';
 }
 
 /* ------------------------------------------------------------------ */
@@ -104,19 +96,16 @@ export const INTEGRATION_STEP_META: Record<
   { label: string; description: string }
 > = {
   integrations: {
-    label: "Integration Setup",
-    description:
-      "Configure HL7v2 endpoints, FHIR connections, payer adapters, and imaging devices",
+    label: 'Integration Setup',
+    description: 'Configure HL7v2 endpoints, FHIR connections, payer adapters, and imaging devices',
   },
   connectivity: {
-    label: "Connectivity Verification",
-    description:
-      "Probe all configured integration endpoints to verify reachability",
+    label: 'Connectivity Verification',
+    description: 'Probe all configured integration endpoints to verify reachability',
   },
   preflight: {
-    label: "Go-Live Preflight",
-    description:
-      "Run comprehensive pre-go-live checks covering auth, data, security, and config",
+    label: 'Go-Live Preflight',
+    description: 'Run comprehensive pre-go-live checks covering auth, data, security, and config',
   },
 };
 
@@ -127,7 +116,7 @@ export const INTEGRATION_STEP_META: Record<
 const integrationSessions = new Map<string, OnboardingIntegrationSession>();
 
 function genId(): string {
-  return `obi-${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
+  return `obi-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -136,24 +125,24 @@ function genId(): string {
 
 export function createIntegrationSession(
   onboardingSessionId: string,
-  tenantId: string,
+  tenantId: string
 ): OnboardingIntegrationSession {
   const now = new Date().toISOString();
   const session: OnboardingIntegrationSession = {
     id: genId(),
     onboardingSessionId,
     tenantId,
-    currentStep: "integrations",
+    currentStep: 'integrations',
     steps: INTEGRATION_STEP_ORDER.map((step) => ({
       step,
-      status: step === "integrations" ? "in-progress" : "pending",
+      status: step === 'integrations' ? 'in-progress' : 'pending',
     })),
     endpoints: [],
     createdAt: now,
     updatedAt: now,
   };
   integrationSessions.set(session.id, session);
-  log.info("Integration onboarding session created", {
+  log.info('Integration onboarding session created', {
     sessionId: session.id,
     onboardingSessionId,
     tenantId,
@@ -161,14 +150,12 @@ export function createIntegrationSession(
   return session;
 }
 
-export function getIntegrationSession(
-  id: string,
-): OnboardingIntegrationSession | undefined {
+export function getIntegrationSession(id: string): OnboardingIntegrationSession | undefined {
   return integrationSessions.get(id);
 }
 
 export function getIntegrationSessionByOnboarding(
-  onboardingSessionId: string,
+  onboardingSessionId: string
 ): OnboardingIntegrationSession | undefined {
   for (const s of integrationSessions.values()) {
     if (s.onboardingSessionId === onboardingSessionId) return s;
@@ -176,9 +163,7 @@ export function getIntegrationSessionByOnboarding(
   return undefined;
 }
 
-export function listIntegrationSessions(
-  tenantId?: string,
-): OnboardingIntegrationSession[] {
+export function listIntegrationSessions(tenantId?: string): OnboardingIntegrationSession[] {
   const all = Array.from(integrationSessions.values());
   if (tenantId) return all.filter((s) => s.tenantId === tenantId);
   return all;
@@ -187,14 +172,12 @@ export function listIntegrationSessions(
 /** Add or update an integration endpoint config */
 export function upsertEndpoint(
   sessionId: string,
-  endpoint: Omit<IntegrationEndpointConfig, "id"> & { id?: string },
+  endpoint: Omit<IntegrationEndpointConfig, 'id'> & { id?: string }
 ): OnboardingIntegrationSession | null {
   const session = integrationSessions.get(sessionId);
   if (!session) return null;
 
-  const id =
-    endpoint.id ||
-    `ep-${endpoint.kind}-${crypto.randomBytes(4).toString("hex")}`;
+  const id = endpoint.id || `ep-${endpoint.kind}-${crypto.randomBytes(4).toString('hex')}`;
   const existing = session.endpoints.findIndex((e) => e.id === id);
 
   const ep: IntegrationEndpointConfig = {
@@ -214,7 +197,7 @@ export function upsertEndpoint(
   }
 
   session.updatedAt = new Date().toISOString();
-  log.info("Integration endpoint upserted", {
+  log.info('Integration endpoint upserted', {
     sessionId,
     endpointId: id,
     kind: endpoint.kind,
@@ -225,7 +208,7 @@ export function upsertEndpoint(
 /** Remove an integration endpoint */
 export function removeEndpoint(
   sessionId: string,
-  endpointId: string,
+  endpointId: string
 ): OnboardingIntegrationSession | null {
   const session = integrationSessions.get(sessionId);
   if (!session) return null;
@@ -238,7 +221,7 @@ export function removeEndpoint(
 /** Advance to next integration step */
 export function advanceIntegrationStep(
   sessionId: string,
-  stepData?: Record<string, unknown>,
+  stepData?: Record<string, unknown>
 ): OnboardingIntegrationSession | null {
   const session = integrationSessions.get(sessionId);
   if (!session) return null;
@@ -246,11 +229,9 @@ export function advanceIntegrationStep(
   const now = new Date().toISOString();
   const currentIdx = INTEGRATION_STEP_ORDER.indexOf(session.currentStep);
 
-  const currentStepObj = session.steps.find(
-    (s) => s.step === session.currentStep,
-  );
+  const currentStepObj = session.steps.find((s) => s.step === session.currentStep);
   if (currentStepObj) {
-    currentStepObj.status = "completed";
+    currentStepObj.status = 'completed';
     currentStepObj.completedAt = now;
     if (stepData) currentStepObj.data = stepData;
   }
@@ -259,11 +240,11 @@ export function advanceIntegrationStep(
     const nextStep = INTEGRATION_STEP_ORDER[currentIdx + 1];
     session.currentStep = nextStep;
     const nextStepObj = session.steps.find((s) => s.step === nextStep);
-    if (nextStepObj) nextStepObj.status = "in-progress";
+    if (nextStepObj) nextStepObj.status = 'in-progress';
   }
 
   session.updatedAt = now;
-  log.info("Integration step advanced", {
+  log.info('Integration step advanced', {
     sessionId,
     currentStep: session.currentStep,
   });
@@ -272,7 +253,7 @@ export function advanceIntegrationStep(
 
 /** Run connectivity probes for all configured endpoints */
 export function probeEndpoints(
-  session: OnboardingIntegrationSession,
+  session: OnboardingIntegrationSession
 ): OnboardingIntegrationSession {
   const now = new Date().toISOString();
 
@@ -282,10 +263,10 @@ export function probeEndpoints(
     //   hl7v2 -> MLLP connect, fhir -> HTTP HEAD, payer -> connector health,
     //   imaging -> Orthanc /system, oidc -> .well-known/openid-configuration
     ep.probeResult = {
-      status: ep.host ? "success" : "failure",
+      status: ep.host ? 'success' : 'failure',
       message: ep.host
-        ? `Endpoint ${ep.kind} configured at ${ep.host}:${ep.port || "default"}`
-        : "No host configured",
+        ? `Endpoint ${ep.kind} configured at ${ep.host}:${ep.port || 'default'}`
+        : 'No host configured',
       latencyMs: Math.floor(Math.random() * 50) + 5,
       probedAt: now,
     };
@@ -296,104 +277,97 @@ export function probeEndpoints(
 }
 
 /** Run preflight checks and store results */
-export function runPreflight(
-  session: OnboardingIntegrationSession,
-): PreflightSummary {
+export function runPreflight(session: OnboardingIntegrationSession): PreflightSummary {
   const checks: PreflightCheck[] = [];
 
   // Check 1: At least one endpoint configured
   checks.push({
-    name: "endpoints-configured",
-    status: session.endpoints.length > 0 ? "pass" : "warn",
+    name: 'endpoints-configured',
+    status: session.endpoints.length > 0 ? 'pass' : 'warn',
     message:
       session.endpoints.length > 0
         ? `${session.endpoints.length} endpoint(s) configured`
-        : "No integration endpoints configured",
-    category: "config",
+        : 'No integration endpoints configured',
+    category: 'config',
   });
 
   // Check 2: All endpoints probed successfully
-  const probed = session.endpoints.filter(
-    (e) => e.probeResult?.status === "success",
-  );
+  const probed = session.endpoints.filter((e) => e.probeResult?.status === 'success');
   const unprobed = session.endpoints.filter(
-    (e) => !e.probeResult || e.probeResult.status === "untested",
+    (e) => !e.probeResult || e.probeResult.status === 'untested'
   );
   checks.push({
-    name: "endpoints-reachable",
+    name: 'endpoints-reachable',
     status:
       probed.length === session.endpoints.length && session.endpoints.length > 0
-        ? "pass"
+        ? 'pass'
         : unprobed.length > 0
-          ? "warn"
+          ? 'warn'
           : session.endpoints.length === 0
-            ? "skip"
-            : "fail",
+            ? 'skip'
+            : 'fail',
     message: `${probed.length}/${session.endpoints.length} endpoints reachable`,
-    category: "connectivity",
+    category: 'connectivity',
   });
 
   // Check 3: HL7v2 endpoint has message types defined
-  const hl7Eps = session.endpoints.filter((e) => e.kind === "hl7v2");
+  const hl7Eps = session.endpoints.filter((e) => e.kind === 'hl7v2');
   if (hl7Eps.length > 0) {
     const hasTypes = hl7Eps.every(
       (e) =>
-        Array.isArray(e.options.messageTypes) &&
-        (e.options.messageTypes as string[]).length > 0,
+        Array.isArray(e.options.messageTypes) && (e.options.messageTypes as string[]).length > 0
     );
     checks.push({
-      name: "hl7-message-types",
-      status: hasTypes ? "pass" : "warn",
+      name: 'hl7-message-types',
+      status: hasTypes ? 'pass' : 'warn',
       message: hasTypes
-        ? "All HL7v2 endpoints have message types configured"
-        : "Some HL7v2 endpoints missing message type configuration",
-      category: "config",
+        ? 'All HL7v2 endpoints have message types configured'
+        : 'Some HL7v2 endpoints missing message type configuration',
+      category: 'config',
     });
   }
 
   // Check 4: Payer endpoints have adapter specified
-  const payerEps = session.endpoints.filter((e) => e.kind === "payer");
+  const payerEps = session.endpoints.filter((e) => e.kind === 'payer');
   if (payerEps.length > 0) {
     const hasAdapter = payerEps.every((e) => e.options.adapterId);
     checks.push({
-      name: "payer-adapters",
-      status: hasAdapter ? "pass" : "warn",
+      name: 'payer-adapters',
+      status: hasAdapter ? 'pass' : 'warn',
       message: hasAdapter
-        ? "All payer endpoints have adapters configured"
-        : "Some payer endpoints missing adapter configuration",
-      category: "config",
+        ? 'All payer endpoints have adapters configured'
+        : 'Some payer endpoints missing adapter configuration',
+      category: 'config',
     });
   }
 
   // Check 5: TLS enabled for production endpoints
-  const nonTls = session.endpoints.filter(
-    (e) => !e.tlsEnabled && e.kind !== "imaging",
-  );
+  const nonTls = session.endpoints.filter((e) => !e.tlsEnabled && e.kind !== 'imaging');
   checks.push({
-    name: "tls-coverage",
-    status: nonTls.length === 0 ? "pass" : "warn",
+    name: 'tls-coverage',
+    status: nonTls.length === 0 ? 'pass' : 'warn',
     message:
       nonTls.length === 0
-        ? "All non-imaging endpoints use TLS"
+        ? 'All non-imaging endpoints use TLS'
         : `${nonTls.length} endpoint(s) without TLS -- review for production`,
-    category: "security",
+    category: 'security',
   });
 
   // Check 6: Linked onboarding session exists
   checks.push({
-    name: "onboarding-linked",
-    status: session.onboardingSessionId ? "pass" : "fail",
+    name: 'onboarding-linked',
+    status: session.onboardingSessionId ? 'pass' : 'fail',
     message: session.onboardingSessionId
       ? `Linked to onboarding session ${session.onboardingSessionId}`
-      : "Not linked to any onboarding session",
-    category: "config",
+      : 'Not linked to any onboarding session',
+    category: 'config',
   });
 
   const summary: PreflightSummary = {
     totalChecks: checks.length,
-    passed: checks.filter((c) => c.status === "pass").length,
-    failed: checks.filter((c) => c.status === "fail").length,
-    warnings: checks.filter((c) => c.status === "warn").length,
+    passed: checks.filter((c) => c.status === 'pass').length,
+    failed: checks.filter((c) => c.status === 'fail').length,
+    warnings: checks.filter((c) => c.status === 'warn').length,
     checks,
     runAt: new Date().toISOString(),
   };
@@ -402,7 +376,7 @@ export function runPreflight(
   session.updatedAt = new Date().toISOString();
   integrationSessions.set(session.id, session);
 
-  log.info("Integration preflight completed", {
+  log.info('Integration preflight completed', {
     sessionId: session.id,
     passed: summary.passed,
     failed: summary.failed,
@@ -425,33 +399,29 @@ export function listIntegrationKinds(): Array<{
 }> {
   return [
     {
-      kind: "hl7v2",
-      label: "HL7v2 / MLLP",
-      description:
-        "HL7v2 ADT/ORM/ORU/SIU messages via MLLP (Minimal Lower Layer Protocol)",
+      kind: 'hl7v2',
+      label: 'HL7v2 / MLLP',
+      description: 'HL7v2 ADT/ORM/ORU/SIU messages via MLLP (Minimal Lower Layer Protocol)',
     },
     {
-      kind: "fhir",
-      label: "FHIR R4",
-      description: "HL7 FHIR R4 REST API endpoint for interoperability",
+      kind: 'fhir',
+      label: 'FHIR R4',
+      description: 'HL7 FHIR R4 REST API endpoint for interoperability',
     },
     {
-      kind: "payer",
-      label: "Payer / Clearinghouse",
-      description:
-        "Payer adapter for claims submission, eligibility, and ERA processing",
+      kind: 'payer',
+      label: 'Payer / Clearinghouse',
+      description: 'Payer adapter for claims submission, eligibility, and ERA processing',
     },
     {
-      kind: "imaging",
-      label: "Imaging / DICOM",
-      description:
-        "Orthanc PACS, DICOMweb, and OHIF viewer connectivity",
+      kind: 'imaging',
+      label: 'Imaging / DICOM',
+      description: 'Orthanc PACS, DICOMweb, and OHIF viewer connectivity',
     },
     {
-      kind: "oidc",
-      label: "OIDC / Identity Provider",
-      description:
-        "OpenID Connect identity provider (Keycloak, Azure AD, Okta, etc.)",
+      kind: 'oidc',
+      label: 'OIDC / Identity Provider',
+      description: 'OpenID Connect identity provider (Keycloak, Azure AD, Okta, etc.)',
     },
   ];
 }

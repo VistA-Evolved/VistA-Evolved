@@ -14,18 +14,23 @@
  * unless EXPORT_ALLOW_PHI=true is set in env.
  */
 
-import { EXPORT_CONFIG, type ExportFormat } from "../config/report-config.js";
-import { audit, type AuditAction } from "./audit.js";
-import { log } from "./logger.js";
-import { safeErr } from "./safe-error.js";
+import { EXPORT_CONFIG, type ExportFormat } from '../config/report-config.js';
+import { audit, type AuditAction } from './audit.js';
+import { log } from './logger.js';
+import { safeErr } from './safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type ExportJobStatus = "pending" | "processing" | "completed" | "failed" | "expired";
+export type ExportJobStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'expired';
 
-export type ExportReportType = "operations" | "integrations" | "audit" | "clinical-activity" | "clinical";
+export type ExportReportType =
+  | 'operations'
+  | 'integrations'
+  | 'audit'
+  | 'clinical-activity'
+  | 'clinical';
 
 export interface ExportJob {
   id: string;
@@ -65,8 +70,13 @@ export interface ExportPolicyResult {
 const exportJobs = new Map<string, ExportJob>();
 
 /* Phase 146: DB repo wiring */
-let exportDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
-export function initExportStoreRepo(repo: typeof exportDbRepo): void { exportDbRepo = repo; }
+let exportDbRepo: {
+  upsert(d: any): Promise<any>;
+  update?(id: string, u: any): Promise<any>;
+} | null = null;
+export function initExportStoreRepo(repo: typeof exportDbRepo): void {
+  exportDbRepo = repo;
+}
 let exportSeq = 0;
 
 /** Purge expired jobs (older than retention window). */
@@ -91,34 +101,47 @@ export function checkExportPolicy(
   actor: { duz: string; role?: string },
   reportType: ExportReportType,
   format: ExportFormat,
-  rowEstimate: number,
+  rowEstimate: number
 ): ExportPolicyResult {
   // Must be admin
-  if (EXPORT_CONFIG.requireAdmin && actor.role !== "admin") {
-    return { allowed: false, reason: "Export requires admin role" };
+  if (EXPORT_CONFIG.requireAdmin && actor.role !== 'admin') {
+    return { allowed: false, reason: 'Export requires admin role' };
   }
 
   // Format check
   if (!EXPORT_CONFIG.allowedFormats.includes(format)) {
-    return { allowed: false, reason: `Format '${format}' is not allowed. Allowed: ${EXPORT_CONFIG.allowedFormats.join(", ")}` };
+    return {
+      allowed: false,
+      reason: `Format '${format}' is not allowed. Allowed: ${EXPORT_CONFIG.allowedFormats.join(', ')}`,
+    };
   }
 
   // Row limit
   if (rowEstimate > EXPORT_CONFIG.maxExportRows) {
-    return { allowed: false, reason: `Export would produce ${rowEstimate} rows (max: ${EXPORT_CONFIG.maxExportRows})` };
+    return {
+      allowed: false,
+      reason: `Export would produce ${rowEstimate} rows (max: ${EXPORT_CONFIG.maxExportRows})`,
+    };
   }
 
   // PHI check — clinical report exports blocked unless PHI export is enabled
-  if (reportType === "clinical" && !EXPORT_CONFIG.allowPhiExport) {
-    return { allowed: false, reason: "Clinical data export is disabled (EXPORT_ALLOW_PHI=false). Only summary statistics are available." };
+  if (reportType === 'clinical' && !EXPORT_CONFIG.allowPhiExport) {
+    return {
+      allowed: false,
+      reason:
+        'Clinical data export is disabled (EXPORT_ALLOW_PHI=false). Only summary statistics are available.',
+    };
   }
 
   // Concurrent job limit
   const activeJobs = Array.from(exportJobs.values()).filter(
-    (j) => j.requestedBy.duz === actor.duz && (j.status === "pending" || j.status === "processing"),
+    (j) => j.requestedBy.duz === actor.duz && (j.status === 'pending' || j.status === 'processing')
   );
   if (activeJobs.length >= EXPORT_CONFIG.maxConcurrentJobsPerUser) {
-    return { allowed: false, reason: `Max concurrent exports reached (${EXPORT_CONFIG.maxConcurrentJobsPerUser})` };
+    return {
+      allowed: false,
+      reason: `Max concurrent exports reached (${EXPORT_CONFIG.maxConcurrentJobsPerUser})`,
+    };
   }
 
   return { allowed: true };
@@ -133,19 +156,19 @@ export function checkExportPolicy(
  * Uses the keys from the first row as headers.
  */
 export function generateCsv(rows: Record<string, unknown>[]): string {
-  if (rows.length === 0) return "";
+  if (rows.length === 0) return '';
   const headers = Object.keys(rows[0]);
   const escape = (val: unknown): string => {
-    const s = String(val ?? "");
-    return s.includes(",") || s.includes('"') || s.includes("\n")
+    const s = String(val ?? '');
+    return s.includes(',') || s.includes('"') || s.includes('\n')
       ? `"${s.replace(/"/g, '""')}"`
       : s;
   };
   const lines = [
-    headers.join(","),
-    ...rows.map((row) => headers.map((h) => escape(row[h])).join(",")),
+    headers.join(','),
+    ...rows.map((row) => headers.map((h) => escape(row[h])).join(',')),
   ];
-  return lines.join("\n");
+  return lines.join('\n');
 }
 
 /**
@@ -166,7 +189,7 @@ export function createExportJob(
   actor: { duz: string; name?: string; role?: string },
   reportType: ExportReportType,
   format: ExportFormat,
-  filters?: Record<string, unknown>,
+  filters?: Record<string, unknown>
 ): ExportJob {
   purgeExpired();
 
@@ -175,7 +198,7 @@ export function createExportJob(
     requestedBy: actor,
     reportType,
     format,
-    status: "pending",
+    status: 'pending',
     requestedAt: new Date().toISOString(),
     filters,
   };
@@ -183,14 +206,23 @@ export function createExportJob(
   exportJobs.set(job.id, job);
 
   // Phase 146: Write-through to PG
-  exportDbRepo?.upsert({ id: job.id, tenantId: 'default', userId: (actor as any).sub ?? (actor as any).duz ?? '', format, status: job.status, createdAt: job.requestedAt }).catch(() => {});
+  exportDbRepo
+    ?.upsert({
+      id: job.id,
+      tenantId: 'default',
+      userId: (actor as any).sub ?? (actor as any).duz ?? '',
+      format,
+      status: job.status,
+      createdAt: job.requestedAt,
+    })
+    .catch(() => {});
 
   // Audit the request
-  audit("export.request" as AuditAction, "success", actor, {
+  audit('export.request' as AuditAction, 'success', actor, {
     detail: { jobId: job.id, reportType, format, filters },
   });
 
-  log.info("Export job created", { jobId: job.id, reportType, format });
+  log.info('Export job created', { jobId: job.id, reportType, format });
 
   return job;
 }
@@ -198,46 +230,43 @@ export function createExportJob(
 /**
  * Execute an export job by generating the data from the provided rows.
  */
-export function executeExportJob(
-  jobId: string,
-  rows: Record<string, unknown>[],
-): ExportJob {
+export function executeExportJob(jobId: string, rows: Record<string, unknown>[]): ExportJob {
   const job = exportJobs.get(jobId);
   if (!job) throw new Error(`Export job ${jobId} not found`);
 
-  job.status = "processing";
+  job.status = 'processing';
 
   try {
     // Enforce row limit
     const limited = rows.slice(0, EXPORT_CONFIG.maxExportRows);
 
-    if (job.format === "csv") {
+    if (job.format === 'csv') {
       job.data = generateCsv(limited);
-      job.mimeType = "text/csv";
+      job.mimeType = 'text/csv';
     } else {
       job.data = generateJson(limited);
-      job.mimeType = "application/json";
+      job.mimeType = 'application/json';
     }
 
     job.rowCount = limited.length;
-    job.status = "completed";
+    job.status = 'completed';
     job.completedAt = new Date().toISOString();
 
-    audit("export.download" as AuditAction, "success", job.requestedBy, {
+    audit('export.download' as AuditAction, 'success', job.requestedBy, {
       detail: { jobId, rowCount: job.rowCount, format: job.format, reportType: job.reportType },
     });
 
-    log.info("Export job completed", { jobId, rowCount: job.rowCount });
+    log.info('Export job completed', { jobId, rowCount: job.rowCount });
   } catch (err: any) {
-    job.status = "failed";
+    job.status = 'failed';
     job.error = safeErr(err);
     job.completedAt = new Date().toISOString();
 
-    audit("export.download" as AuditAction, "error", job.requestedBy, {
+    audit('export.download' as AuditAction, 'error', job.requestedBy, {
       detail: { jobId, error: err.message },
     });
 
-    log.error("Export job failed", { jobId, error: err.message });
+    log.error('Export job failed', { jobId, error: err.message });
   }
 
   return job;

@@ -32,58 +32,64 @@ const CURRENCY = flags.currency ?? 'USD';
 const LOCALE = flags.locale ?? 'en';
 
 if (!COUNTRY || COUNTRY.length !== 2) {
-  console.error('Usage: node scripts/rcm/generate-country-pack.mjs --country=XX --name="Country Name" [--currency=XXX] [--locale=xx]');
+  console.error(
+    'Usage: node scripts/rcm/generate-country-pack.mjs --country=XX --name="Country Name" [--currency=XXX] [--locale=xx]'
+  );
   process.exit(1);
 }
 
 /* ── Templates ──────────────────────────────────────────────── */
 
 function generateSeedJson() {
-  return JSON.stringify({
-    _meta: {
-      description: `${NAME} payer registry seed data`,
-      source: 'VistA-Evolved country pack generator (Phase 521)',
-      lastUpdated: new Date().toISOString().split('T')[0],
-      notes: `Scaffold — populate with actual ${NAME} payers`,
+  return JSON.stringify(
+    {
+      _meta: {
+        description: `${NAME} payer registry seed data`,
+        source: 'VistA-Evolved country pack generator (Phase 521)',
+        lastUpdated: new Date().toISOString().split('T')[0],
+        notes: `Scaffold — populate with actual ${NAME} payers`,
+      },
+      payers: [
+        {
+          payerId: `${COUNTRY}-GOV-001`,
+          name: `${NAME} Government Health Insurance`,
+          country: COUNTRY,
+          integrationMode: 'government_portal',
+          status: 'active',
+          category: 'government',
+          enrollmentRequired: true,
+          enrollmentNotes: `Register with ${NAME} national health authority`,
+          endpoints: [
+            {
+              purpose: 'claims',
+              protocol: 'rest',
+              url: `https://api.health.gov.${COUNTRY.toLowerCase()}/claims/v1`,
+              notes: 'Production endpoint — requires facility registration',
+            },
+          ],
+          aliases: [],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        {
+          payerId: `${COUNTRY}-PVT-001`,
+          name: `${NAME} Private Insurer Example`,
+          country: COUNTRY,
+          integrationMode: 'not_classified',
+          status: 'active',
+          category: 'commercial',
+          enrollmentRequired: true,
+          enrollmentNotes: 'Contact provider relations for EDI enrollment',
+          endpoints: [],
+          aliases: [],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      ],
     },
-    payers: [
-      {
-        payerId: `${COUNTRY}-GOV-001`,
-        name: `${NAME} Government Health Insurance`,
-        country: COUNTRY,
-        integrationMode: 'government_portal',
-        status: 'active',
-        category: 'government',
-        enrollmentRequired: true,
-        enrollmentNotes: `Register with ${NAME} national health authority`,
-        endpoints: [
-          {
-            purpose: 'claims',
-            protocol: 'rest',
-            url: `https://api.health.gov.${COUNTRY.toLowerCase()}/claims/v1`,
-            notes: 'Production endpoint — requires facility registration',
-          },
-        ],
-        aliases: [],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-      {
-        payerId: `${COUNTRY}-PVT-001`,
-        name: `${NAME} Private Insurer Example`,
-        country: COUNTRY,
-        integrationMode: 'not_classified',
-        status: 'active',
-        category: 'commercial',
-        enrollmentRequired: true,
-        enrollmentNotes: 'Contact provider relations for EDI enrollment',
-        endpoints: [],
-        aliases: [],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-    ],
-  }, null, 2);
+    null,
+    2
+  );
 }
 
 function generateValidationRules() {
@@ -234,25 +240,74 @@ export const ${COUNTRY.toLowerCase()}ScrubberPack = {
 }
 
 function generateConformanceChecklist() {
-  return JSON.stringify({
-    country: COUNTRY,
-    name: NAME,
-    currency: CURRENCY,
-    locale: LOCALE,
-    generatedAt: new Date().toISOString(),
-    conformanceChecklist: [
-      { id: 'CONF-001', area: 'currency', check: `All amounts use ${CURRENCY}`, status: 'pending' },
-      { id: 'CONF-002', area: 'locale', check: `Date formats match ${LOCALE} locale`, status: 'pending' },
-      { id: 'CONF-003', area: 'claim_format', check: 'Claim structure matches national spec', status: 'pending' },
-      { id: 'CONF-004', area: 'payer_mapping', check: 'At least 1 payer seed record exists', status: 'pending' },
-      { id: 'CONF-005', area: 'privacy_flags', check: 'PHI redaction rules configured', status: 'pending' },
-      { id: 'CONF-006', area: 'connector', check: 'Connector stub exists and registered', status: 'pending' },
-      { id: 'CONF-007', area: 'validation', check: 'Country-specific validation rules defined', status: 'pending' },
-      { id: 'CONF-008', area: 'scrubber', check: 'Scrubber pack defined', status: 'pending' },
-      { id: 'CONF-009', area: 'seed_data', check: 'Payer seed JSON schema valid', status: 'pending' },
-      { id: 'CONF-010', area: 'documentation', check: 'Runbook for country onboarding exists', status: 'pending' },
-    ],
-  }, null, 2);
+  return JSON.stringify(
+    {
+      country: COUNTRY,
+      name: NAME,
+      currency: CURRENCY,
+      locale: LOCALE,
+      generatedAt: new Date().toISOString(),
+      conformanceChecklist: [
+        {
+          id: 'CONF-001',
+          area: 'currency',
+          check: `All amounts use ${CURRENCY}`,
+          status: 'pending',
+        },
+        {
+          id: 'CONF-002',
+          area: 'locale',
+          check: `Date formats match ${LOCALE} locale`,
+          status: 'pending',
+        },
+        {
+          id: 'CONF-003',
+          area: 'claim_format',
+          check: 'Claim structure matches national spec',
+          status: 'pending',
+        },
+        {
+          id: 'CONF-004',
+          area: 'payer_mapping',
+          check: 'At least 1 payer seed record exists',
+          status: 'pending',
+        },
+        {
+          id: 'CONF-005',
+          area: 'privacy_flags',
+          check: 'PHI redaction rules configured',
+          status: 'pending',
+        },
+        {
+          id: 'CONF-006',
+          area: 'connector',
+          check: 'Connector stub exists and registered',
+          status: 'pending',
+        },
+        {
+          id: 'CONF-007',
+          area: 'validation',
+          check: 'Country-specific validation rules defined',
+          status: 'pending',
+        },
+        { id: 'CONF-008', area: 'scrubber', check: 'Scrubber pack defined', status: 'pending' },
+        {
+          id: 'CONF-009',
+          area: 'seed_data',
+          check: 'Payer seed JSON schema valid',
+          status: 'pending',
+        },
+        {
+          id: 'CONF-010',
+          area: 'documentation',
+          check: 'Runbook for country onboarding exists',
+          status: 'pending',
+        },
+      ],
+    },
+    null,
+    2
+  );
 }
 
 /* ── File Output ────────────────────────────────────────────── */
@@ -299,4 +354,6 @@ console.log(`  1. Edit data/payers/${COUNTRY.toLowerCase()}_core.json with real 
 console.log(`  2. Add ${COUNTRY.toLowerCase()}_core.json to payer-registry seedFiles array`);
 console.log(`  3. Implement connector transport in ${COUNTRY.toLowerCase()}-connector.ts`);
 console.log(`  4. Add validation rules to engine.ts countrySpecificRules`);
-console.log(`  5. Run conformance runner: node scripts/rcm/country-conformance-runner.mjs --country=${COUNTRY}`);
+console.log(
+  `  5. Run conformance runner: node scripts/rcm/country-conformance-runner.mjs --country=${COUNTRY}`
+);

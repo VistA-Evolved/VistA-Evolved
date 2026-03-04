@@ -1,7 +1,9 @@
 # Phase 139 — IMPLEMENT: Scheduling Lifecycle + Clinic Resources + Portal Integration
 
 ## User Request
+
 Wire real SD scheduling flows where VistA RPCs exist. Eliminate "SD scheduling RPCs named but sandbox data sparse" by:
+
 - Implementing check-in / check-out lifecycle actions
 - Adding request queue triage (approve/reject) for clinician workflow
 - Adding tenant-scoped clinic preferences (PG, RLS-enforced)
@@ -10,6 +12,7 @@ Wire real SD scheduling flows where VistA RPCs exist. Eliminate "SD scheduling R
 - Enhancing admin scheduling UI with action buttons
 
 ## Implementation Steps
+
 1. PG migration v16: `clinic_preferences` table (tenant_id, clinic_ien, timezone, slot_duration, display_config)
 2. PG schema + repo for clinic preferences
 3. New API endpoints:
@@ -27,12 +30,14 @@ Wire real SD scheduling flows where VistA RPCs exist. Eliminate "SD scheduling R
 9. Runbook: docs/runbooks/scheduling-lifecycle.md
 
 ## Verification
+
 - TSC clean
 - Next.js build clean
 - Vitest passes
 - Gauntlet FAST 4P/0F/1W, RC 15P/0F/1W
 
 ## Files Touched
+
 - apps/api/src/platform/pg/pg-migrate.ts (v16)
 - apps/api/src/platform/pg/pg-schema.ts (clinic_preferences)
 - apps/api/src/platform/pg/repo/pg-clinic-preferences-repo.ts (new)

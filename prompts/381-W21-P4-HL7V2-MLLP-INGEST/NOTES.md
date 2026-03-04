@@ -1,6 +1,7 @@
 # Phase 381 — W21-P4 NOTES
 
 ## Design Decisions
+
 - MLLP is handled as buffer extraction, not a TCP server; the edge gateway
   sidecar owns the TCP socket and POSTs parsed/raw HL7 via HTTP.
 - Parser treats all HL7 v2 as pipe-delimited by default but reads MSH-1 and

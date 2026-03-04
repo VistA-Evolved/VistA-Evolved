@@ -6,6 +6,7 @@ Generate structured design contracts from the extracted CPRS data so that
 downstream consumers (UI shell, API scaffolds) have a stable schema to build on.
 
 This phase validates and enriches the raw extraction output from Phase 10A:
+
 - Normalize the 6 JSON/MD output files under `design/contracts/cprs/v1/`
 - Ensure the schema is stable: `tabs.json`, `menus.json`, `forms.json`,
   `rpc_catalog.json`, `screen_registry.json`, `coverage_report.md`
@@ -25,10 +26,12 @@ This phase validates and enriches the raw extraction output from Phase 10A:
 4. **Coverage report** — `coverage_report.md` should list total counts and coverage %
 
 ## Preconditions
+
 - Phase 10A complete (extraction scripts exist and run)
 - `reference/cprs/` present (Delphi source tree)
 
 ## Files Touched
+
 - `design/contracts/cprs/v1/tabs.json` (validated)
 - `design/contracts/cprs/v1/menus.json` (validated)
 - `design/contracts/cprs/v1/forms.json` (validated)

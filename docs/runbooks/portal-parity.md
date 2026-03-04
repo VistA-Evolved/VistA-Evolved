@@ -3,6 +3,7 @@
 ## Overview
 
 Phase 140 closes the portal parity gap by adding:
+
 - **Documents page** — generate and download VistA-backed health documents with signed tokens
 - **Consents page** — manage patient consent decisions (HIPAA, research, telehealth, etc.)
 - **Nav entries** — immunizations, documents, and consents now appear in sidebar
@@ -11,6 +12,7 @@ Phase 140 closes the portal parity gap by adding:
 ## Architecture
 
 ### Document Center
+
 - `GET /portal/documents` — lists available document types (health summary, immunizations, medications, allergies, labs)
 - `POST /portal/documents/generate` — fetches VistA data and creates a signed download token (5-min TTL)
 - `GET /portal/documents/download/:token` — single-use signed token download (HMAC-SHA256)
@@ -18,6 +20,7 @@ Phase 140 closes the portal parity gap by adding:
 - Audit trail: `portal.document.list`, `portal.document.generate`, `portal.document.download`
 
 ### Consent Management
+
 - `GET /portal/consents` — returns all consent types merged with patient decisions
 - `POST /portal/consents` — records consent grant/revoke decision
 - PG-backed when `PLATFORM_PG_URL` is configured; in-memory fallback otherwise
@@ -26,11 +29,13 @@ Phase 140 closes the portal parity gap by adding:
 - Audit trail: `portal.consent.view`, `portal.consent.update`
 
 ### PG Tables (Migration v17)
+
 - `patient_consent` — consent decisions with type, status, signed_at, revoked_at, locale, version
 - `patient_portal_pref` — portal preferences (notifications, language, display)
 - Both are tenant-scoped with RLS policies
 
 ### Navigation
+
 - 3 new sidebar entries: Immunizations (💉), Documents (📑), Consents (✅)
 - i18n keys added for en, fil, es locales
 

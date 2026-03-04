@@ -13,7 +13,7 @@ on:
       - 'ops/drills/**'
       - 'apps/api/tests/resilience-certification.test.ts'
   schedule:
-    - cron: '0 4 * * *'  # Daily 04:00 UTC
+    - cron: '0 4 * * *' # Daily 04:00 UTC
 
 jobs:
   resilience-static:

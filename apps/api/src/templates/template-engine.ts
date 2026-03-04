@@ -6,7 +6,7 @@
  * Clinical truth lives in VistA via TIU RPCs.
  */
 
-import { randomUUID } from "node:crypto";
+import { randomUUID } from 'node:crypto';
 import type {
   ClinicalTemplate,
   TemplateVersionEvent,
@@ -14,9 +14,8 @@ import type {
   NoteBuilderInput,
   NoteBuilderOutput,
   TemplateSection,
-  TemplateField,
   TemplateStatus,
-} from "./types.js";
+} from './types.js';
 
 // ─── In-Memory Store (pg_backed via repo injection) ────────────────
 
@@ -47,7 +46,10 @@ export function setTemplateDbRepo(repo: TemplateDbRepo): void {
 
 export async function createTemplate(
   tenantId: string,
-  input: Omit<ClinicalTemplate, "id" | "tenantId" | "createdAt" | "updatedAt" | "version" | "status">,
+  input: Omit<
+    ClinicalTemplate,
+    'id' | 'tenantId' | 'createdAt' | 'updatedAt' | 'version' | 'status'
+  >,
   actor: string
 ): Promise<ClinicalTemplate> {
   const now = new Date().toISOString();
@@ -57,7 +59,7 @@ export async function createTemplate(
     id: randomUUID(),
     tenantId,
     version: 1,
-    status: "draft",
+    status: 'draft',
     createdAt: now,
     updatedAt: now,
   };
@@ -67,7 +69,7 @@ export async function createTemplate(
     void dbRepo.upsertTemplate(template);
   }
 
-  const event = buildVersionEvent(template, "created", actor);
+  const event = buildVersionEvent(template, 'created', actor);
   versionEventStore.push(event);
   if (dbRepo) void dbRepo.insertVersionEvent(event);
 
@@ -77,12 +79,24 @@ export async function createTemplate(
 export async function updateTemplate(
   tenantId: string,
   id: string,
-  updates: Partial<Pick<ClinicalTemplate, "name" | "description" | "specialty" | "setting" | "tags" | "sections" | "quickInsertSections" | "autoExpandRules">>,
+  updates: Partial<
+    Pick<
+      ClinicalTemplate,
+      | 'name'
+      | 'description'
+      | 'specialty'
+      | 'setting'
+      | 'tags'
+      | 'sections'
+      | 'quickInsertSections'
+      | 'autoExpandRules'
+    >
+  >,
   actor: string
 ): Promise<ClinicalTemplate | null> {
   const existing = templateStore.get(id);
   if (!existing || existing.tenantId !== tenantId) return null;
-  if (existing.status === "archived") return null;
+  if (existing.status === 'archived') return null;
 
   const updated: ClinicalTemplate = {
     ...existing,
@@ -94,7 +108,7 @@ export async function updateTemplate(
   templateStore.set(id, updated);
   if (dbRepo) void dbRepo.upsertTemplate(updated);
 
-  const event = buildVersionEvent(updated, "updated", actor);
+  const event = buildVersionEvent(updated, 'updated', actor);
   versionEventStore.push(event);
   if (dbRepo) void dbRepo.insertVersionEvent(event);
 
@@ -111,14 +125,14 @@ export async function publishTemplate(
 
   const published: ClinicalTemplate = {
     ...existing,
-    status: "published",
+    status: 'published',
     updatedAt: new Date().toISOString(),
   };
 
   templateStore.set(id, published);
   if (dbRepo) void dbRepo.upsertTemplate(published);
 
-  const event = buildVersionEvent(published, "published", actor);
+  const event = buildVersionEvent(published, 'published', actor);
   versionEventStore.push(event);
   if (dbRepo) void dbRepo.insertVersionEvent(event);
 
@@ -135,14 +149,14 @@ export async function archiveTemplate(
 
   const archived: ClinicalTemplate = {
     ...existing,
-    status: "archived",
+    status: 'archived',
     updatedAt: new Date().toISOString(),
   };
 
   templateStore.set(id, archived);
   if (dbRepo) void dbRepo.upsertTemplate(archived);
 
-  const event = buildVersionEvent(archived, "archived", actor);
+  const event = buildVersionEvent(archived, 'archived', actor);
   versionEventStore.push(event);
   if (dbRepo) void dbRepo.insertVersionEvent(event);
 
@@ -170,7 +184,7 @@ export async function listTemplates(
     results = results.filter((t) => t.specialty === filters.specialty);
   }
   if (filters?.setting) {
-    results = results.filter((t) => t.setting === filters.setting || t.setting === "any");
+    results = results.filter((t) => t.setting === filters.setting || t.setting === 'any');
   }
   if (filters?.status) {
     results = results.filter((t) => t.status === filters.status);
@@ -198,7 +212,7 @@ export async function getVersionHistory(
 
 export async function createQuickText(
   tenantId: string,
-  input: Omit<QuickText, "id" | "tenantId" | "createdAt" | "updatedAt" | "version">
+  input: Omit<QuickText, 'id' | 'tenantId' | 'createdAt' | 'updatedAt' | 'version'>
 ): Promise<QuickText> {
   const now = new Date().toISOString();
   const qt: QuickText = {
@@ -234,7 +248,7 @@ export async function listQuickTexts(
 export async function updateQuickText(
   tenantId: string,
   id: string,
-  updates: Partial<Pick<QuickText, "text" | "tags" | "specialty">>
+  updates: Partial<Pick<QuickText, 'text' | 'tags' | 'specialty'>>
 ): Promise<QuickText | null> {
   const existing = quickTextStore.get(id);
   if (!existing || existing.tenantId !== tenantId) return null;
@@ -263,8 +277,8 @@ export async function generateDraftNote(input: NoteBuilderInput): Promise<NoteBu
   const template = templateStore.get(input.templateId);
   if (!template) {
     return {
-      draftText: "",
-      mode: "local_draft",
+      draftText: '',
+      mode: 'local_draft',
       templateId: input.templateId,
       templateVersion: 0,
       sectionsRendered: 0,
@@ -282,17 +296,17 @@ export async function generateDraftNote(input: NoteBuilderInput): Promise<NoteBu
     }
   }
 
-  const draftText = lines.join("\n\n");
+  const draftText = lines.join('\n\n');
 
   // TIU draft posture: if TIU RPCs are available, this would call
   // TIU CREATE RECORD. For now, always local_draft with explicit migration target.
   return {
     draftText,
-    mode: "local_draft",
+    mode: 'local_draft',
     templateId: template.id,
     templateVersion: template.version,
     sectionsRendered,
-    migrationTarget: "TIU CREATE RECORD + TIU SET DOCUMENT TEXT",
+    migrationTarget: 'TIU CREATE RECORD + TIU SET DOCUMENT TEXT',
   };
 }
 
@@ -302,19 +316,19 @@ function renderSection(
 ): string {
   const lines: string[] = [];
 
-  if (section.type === "header") {
+  if (section.type === 'header') {
     lines.push(`=== ${section.title} ===`);
-    return lines.join("\n");
+    return lines.join('\n');
   }
 
   lines.push(`--- ${section.title} ---`);
 
   for (const field of section.fields.sort((a, b) => a.order - b.order)) {
     const val = values[field.key];
-    if (val !== undefined && val !== "" && val !== false) {
+    if (val !== undefined && val !== '' && val !== false) {
       if (Array.isArray(val)) {
-        lines.push(`${field.label}: ${val.join(", ")}`);
-      } else if (typeof val === "boolean") {
+        lines.push(`${field.label}: ${val.join(', ')}`);
+      } else if (typeof val === 'boolean') {
         lines.push(`${field.label}: Yes`);
       } else {
         lines.push(`${field.label}: ${val}`);
@@ -324,14 +338,17 @@ function renderSection(
     }
   }
 
-  return lines.join("\n");
+  return lines.join('\n');
 }
 
 // ─── Seed from Specialty Packs ─────────────────────────────────────
 
-export async function seedSpecialtyPack(tenantId: string, pack: {
-  templates: Array<Omit<ClinicalTemplate, "id" | "tenantId" | "createdAt" | "updatedAt">>;
-}): Promise<number> {
+export async function seedSpecialtyPack(
+  tenantId: string,
+  pack: {
+    templates: Array<Omit<ClinicalTemplate, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>>;
+  }
+): Promise<number> {
   let count = 0;
   const now = new Date().toISOString();
   for (const tpl of pack.templates) {
@@ -389,7 +406,7 @@ export function resetTemplateStore(): void {
 
 function buildVersionEvent(
   template: ClinicalTemplate,
-  action: TemplateVersionEvent["action"],
+  action: TemplateVersionEvent['action'],
   actor: string
 ): TemplateVersionEvent {
   return {

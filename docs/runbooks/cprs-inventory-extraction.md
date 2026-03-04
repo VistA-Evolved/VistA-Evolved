@@ -8,9 +8,9 @@ downstream phases (contract generation, UI shell, API scaffolding) consume.
 
 ## Inputs
 
-| Input | Path | Notes |
-|-------|------|-------|
-| CPRS Delphi source | `reference/cprs/` | Cloned separately; git-ignored |
+| Input              | Path                                                                     | Notes                            |
+| ------------------ | ------------------------------------------------------------------------ | -------------------------------- |
+| CPRS Delphi source | `reference/cprs/`                                                        | Cloned separately; git-ignored   |
 | CPRS-Chart subtree | `reference/cprs/Packages/Order Entry Results Reporting/CPRS/CPRS-Chart/` | Contains `.dfm` and `.pas` files |
 
 > The `reference/cprs/` directory is **not** committed to the repo. Clone the
@@ -24,6 +24,7 @@ pnpm run cprs:extract
 ```
 
 This executes `node tools/cprs-extract/run-all.mjs`, which orchestrates:
+
 1. `extract-tabs.mjs` — parses `fFrame.pas` + `uConst.pas` for tab definitions
 2. `extract-menus.mjs` — parses `.dfm`/`.pas` for menu labels and items
 3. `extract-forms.mjs` — enumerates all `.dfm` files with captions and components
@@ -33,14 +34,14 @@ This executes `node tools/cprs-extract/run-all.mjs`, which orchestrates:
 
 All files land in `design/contracts/cprs/v1/`:
 
-| File | Description | Expected size |
-|------|-------------|---------------|
-| `tabs.json` | 10 chart tabs with order, position, constants | ~560 lines |
-| `menus.json` | 1688 menu items across File/Edit/View/Tools/Help | ~19K lines |
-| `forms.json` | 323 forms with captions and component inventories | ~5.2K lines |
-| `rpc_catalog.json` | 975 unique RPCs with 1212 call-site references | ~13K lines |
-| `screen_registry.json` | 81 screens → action → RPC mapping | ~16K lines |
-| `coverage_report.md` | Summary of extraction statistics | ~170 lines |
+| File                   | Description                                       | Expected size |
+| ---------------------- | ------------------------------------------------- | ------------- |
+| `tabs.json`            | 10 chart tabs with order, position, constants     | ~560 lines    |
+| `menus.json`           | 1688 menu items across File/Edit/View/Tools/Help  | ~19K lines    |
+| `forms.json`           | 323 forms with captions and component inventories | ~5.2K lines   |
+| `rpc_catalog.json`     | 975 unique RPCs with 1212 call-site references    | ~13K lines    |
+| `screen_registry.json` | 81 screens → action → RPC mapping                 | ~16K lines    |
+| `coverage_report.md`   | Summary of extraction statistics                  | ~170 lines    |
 
 ## Validation
 
@@ -66,11 +67,11 @@ Write-Host "Tabs: $tabs (expect 10+), RPCs: $rpcs (expect 900+)"
 
 ## Common Failures
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| `ENOENT reference/cprs/...` | CPRS source not cloned | Clone CPRS repo into `reference/cprs/` |
-| `0 tabs found` | Path changed in Delphi source | Check `fFrame.pas` exists under CPRS-Chart |
-| `0 RPCs found` | `.pas` file glob missed | Verify `r*.pas` and other RPC-containing files exist |
+| Symptom                     | Cause                         | Fix                                                  |
+| --------------------------- | ----------------------------- | ---------------------------------------------------- |
+| `ENOENT reference/cprs/...` | CPRS source not cloned        | Clone CPRS repo into `reference/cprs/`               |
+| `0 tabs found`              | Path changed in Delphi source | Check `fFrame.pas` exists under CPRS-Chart           |
+| `0 RPCs found`              | `.pas` file glob missed       | Verify `r*.pas` and other RPC-containing files exist |
 
 ## No VA Terminology Check
 

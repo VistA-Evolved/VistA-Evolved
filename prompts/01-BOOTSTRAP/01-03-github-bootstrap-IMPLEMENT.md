@@ -2,6 +2,7 @@
 
 Goal:
 Prepare GitHub repo for a team:
+
 - labels
 - milestones
 - issue templates
@@ -9,11 +10,13 @@ Prepare GitHub repo for a team:
 - CI workflow that stays green early
 
 Rules:
+
 - Inventory first.
 - Do not require paid GitHub upgrades (branch rulesets may not enforce on private org).
 - Prefer “best effort” protections via team policy + PR workflow.
 
 Must create/ensure:
+
 - .github/ISSUE_TEMPLATE/bug_report.md
 - .github/ISSUE_TEMPLATE/feature_request.md
 - .github/ISSUE_TEMPLATE/documentation_request.md
@@ -23,5 +26,6 @@ Must create/ensure:
 - .github/workflows/codeql.yml (skip gracefully if no JS/TS detected)
 
 Deliverable:
+
 - list files created/modified
 - how to create labels/milestones manually (human checklist)

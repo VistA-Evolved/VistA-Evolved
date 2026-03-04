@@ -28,19 +28,19 @@ export const REPORT_CONFIG = {
 /* Export policy                                                        */
 /* ------------------------------------------------------------------ */
 
-export type ExportFormat = "csv" | "json";
+export type ExportFormat = 'csv' | 'json';
 
 export const EXPORT_CONFIG = {
   /** Maximum rows in a single export. Default: 10000 */
   maxExportRows: Number(process.env.EXPORT_MAX_ROWS || 10_000),
   /** Allowed export formats */
-  allowedFormats: ["csv", "json"] as ExportFormat[],
+  allowedFormats: ['csv', 'json'] as ExportFormat[],
   /** Require admin role for all exports. Default: true */
   requireAdmin: true,
   /** Export job retention (hours). After this, completed exports are purged. */
   jobRetentionHours: Number(process.env.EXPORT_RETENTION_HOURS || 24),
   /** PHI export allowed? Default: false — only summary/aggregate data */
-  allowPhiExport: process.env.EXPORT_ALLOW_PHI === "true",
+  allowPhiExport: process.env.EXPORT_ALLOW_PHI === 'true',
   /** Max concurrent export jobs per user */
   maxConcurrentJobsPerUser: Number(process.env.EXPORT_MAX_CONCURRENT || 3),
 } as const;

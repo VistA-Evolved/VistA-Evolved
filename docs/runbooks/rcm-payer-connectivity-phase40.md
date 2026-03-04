@@ -9,24 +9,25 @@ Phase 40 adds submission safety, X12 wire-format serialization, PhilHealth eClai
 **No claim is ever submitted to a real payer unless explicitly enabled.** The default behavior is export-only mode, where claims are serialized to X12 wire format and written to `data/rcm-exports/` as review artifacts.
 
 To enable live submission:
+
 ```bash
 CLAIM_SUBMISSION_ENABLED=true
 ```
 
 ## New Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/rcm/submission-safety` | Returns current submission safety status |
-| POST | `/rcm/claims/:id/export` | Export claim as X12 artifact (always works) |
-| PATCH | `/rcm/payers/:id` | Partial update a payer record |
-| POST | `/rcm/payers/import` | Import payers from CSV text |
+| Method | Path                     | Description                                 |
+| ------ | ------------------------ | ------------------------------------------- |
+| GET    | `/rcm/submission-safety` | Returns current submission safety status    |
+| POST   | `/rcm/claims/:id/export` | Export claim as X12 artifact (always works) |
+| PATCH  | `/rcm/payers/:id`        | Partial update a payer record               |
+| POST   | `/rcm/payers/import`     | Import payers from CSV text                 |
 
 ## Modified Endpoints
 
-| Method | Path | Change |
-|--------|------|--------|
-| POST | `/rcm/claims/:id/submit` | Now safety-gated. If CLAIM_SUBMISSION_ENABLED=false, exports artifact and transitions to `ready_to_submit` instead of submitting |
+| Method | Path                     | Change                                                                                                                           |
+| ------ | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| POST   | `/rcm/claims/:id/submit` | Now safety-gated. If CLAIM_SUBMISSION_ENABLED=false, exports artifact and transitions to `ready_to_submit` instead of submitting |
 
 ## New Claim States
 
@@ -42,6 +43,7 @@ CLAIM_SUBMISSION_ENABLED=true
 ## X12 Serializer
 
 The scaffold serializer (`x12-serializer.ts`) generates structurally correct X12 5010 wire format:
+
 - `serialize837(claim, options)` -- Generates 837P or 837I with ISA/GS/ST/SE/GE/IEA envelope
 - `serialize270(inquiry, options)` -- Generates 270 eligibility inquiry
 - `exportX12Bundle(payload, claimId, txSet)` -- Writes to `data/rcm-exports/`
@@ -51,6 +53,7 @@ Default `usageIndicator` is `'T'` (test) -- never `'P'` (production) unless expl
 ## PhilHealth eClaims Serializer
 
 `ph-eclaims-serializer.ts` transforms EdiClaim837 to PhilHealth CF1-CF4 JSON bundles:
+
 - CF1: Facility + patient info
 - CF2: Outpatient (837P) or inpatient (837I) claim details
 - CF3: Professional fees (inpatient only)
@@ -59,6 +62,7 @@ Default `usageIndicator` is `'T'` (test) -- never `'P'` (production) unless expl
 ## CSV Payer Import
 
 POST `/rcm/payers/import` with body:
+
 ```json
 {
   "csv": "payerId,name,country,integrationMode,status\nTEST01,Test Payer,US,clearinghouse_edi,active"
@@ -69,11 +73,11 @@ Required columns: `payerId`, `name`. Optional: `country`, `status`, `integration
 
 ## Validation Rules (Phase 40 additions)
 
-| Rule ID | Category | Description |
-|---------|----------|-------------|
+| Rule ID  | Category      | Description                               |
+| -------- | ------------- | ----------------------------------------- |
 | AUTH-001 | authorization | Prior auth check for high-cost procedures |
-| AUTH-002 | authorization | Demo claim submission block |
-| AUTH-003 | authorization | Submission safety mode indicator |
+| AUTH-002 | authorization | Demo claim submission block               |
+| AUTH-003 | authorization | Submission safety mode indicator          |
 
 ## Audit Actions (Phase 40 additions)
 

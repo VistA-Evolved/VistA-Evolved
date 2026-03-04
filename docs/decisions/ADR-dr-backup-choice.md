@@ -19,6 +19,7 @@ Current state:
 - **audit-shipping (Phase 157)**: S3/MinIO audit archive with manifest verification
 
 **What is missing:**
+
 - No Velero for K8s-native backup/restore
 - No automated WAL-based Point-In-Time Recovery (PITR)
 - Docker volume backups are manual (documented in runbook)
@@ -32,6 +33,7 @@ manifests for K8s-layer backup when cluster is operational. Add WAL archiving
 configuration for PG PITR.**
 
 Rationale:
+
 - Current `pg_dump` approach works and is tested
 - Velero adds K8s-native namespace/PV backup but requires a running cluster
 - WAL archiving enables PITR without changing the backup scripts
@@ -40,17 +42,18 @@ Rationale:
 
 ## Alternatives Considered
 
-| Option | License | Pros | Cons |
-|--------|---------|------|------|
-| **Velero** | Apache-2.0 | K8s-native, PV snapshots | Requires cluster + cloud provider plugin |
-| **pgBackRest** | MIT | Parallel backup, PITR, S3 native | New service to deploy and configure |
-| **Barman** | GPL-3.0 | Full PG backup management | GPL, heavy for our needs |
-| **pg_dump + scripts (current)** | N/A | Simple, works, tested | No PITR, no incremental |
-| **pg_dump + WAL + Velero** | N/A | Layered coverage | Multiple tools to configure |
+| Option                          | License    | Pros                             | Cons                                     |
+| ------------------------------- | ---------- | -------------------------------- | ---------------------------------------- |
+| **Velero**                      | Apache-2.0 | K8s-native, PV snapshots         | Requires cluster + cloud provider plugin |
+| **pgBackRest**                  | MIT        | Parallel backup, PITR, S3 native | New service to deploy and configure      |
+| **Barman**                      | GPL-3.0    | Full PG backup management        | GPL, heavy for our needs                 |
+| **pg_dump + scripts (current)** | N/A        | Simple, works, tested            | No PITR, no incremental                  |
+| **pg_dump + WAL + Velero**      | N/A        | Layered coverage                 | Multiple tools to configure              |
 
 ## Consequences
 
 **Positive:**
+
 - No new infrastructure immediately
 - WAL archiving is a PG configuration change (not a new service)
 - Velero manifests can be prepared now, deployed when cluster ready
@@ -58,12 +61,14 @@ Rationale:
 - backup-posture.ts continues to monitor backup health
 
 **Negative:**
+
 - pg_dump is full-backup only (no incremental)
 - WAL archiving requires S3 or local storage for WAL files
 - Velero restore is cluster-scoped — can't restore individual tables
 - Docker volume backups remain manual for dev environment
 
 **Migration path:**
+
 1. Phase 238: Decision locked (this ADR)
 2. Phase 246 (P9): Add `archive_command` to PG config for WAL archiving
 3. Phase 246 (P9): Add Velero CRDs + schedule manifests to Helm charts

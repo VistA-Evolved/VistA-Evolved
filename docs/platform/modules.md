@@ -13,19 +13,19 @@ per-SKU, or at runtime via the admin API.
 
 Every module is defined in `config/modules.json` with the following fields:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `name` | string | Human-readable display name |
-| `version` | string | SemVer version (e.g., `"1.0.0"`) |
-| `description` | string | What the module does |
-| `alwaysEnabled` | boolean | `true` only for `kernel` -- cannot be disabled |
-| `routePatterns` | string[] | Regex patterns for routes owned by this module |
-| `dependencies` | string[] | Other module IDs that must be enabled |
-| `adapters` | string[] | Adapter types required (e.g., `"clinical-engine"`) |
-| `services` | string[] | Internal service identifiers |
-| `permissions` | string[] | RBAC permissions required to access this module |
-| `dataStores` | DataStore[] | Data stores used by this module |
-| `healthCheckEndpoint` | string | HTTP path for module health check |
+| Field                 | Type        | Description                                        |
+| --------------------- | ----------- | -------------------------------------------------- |
+| `name`                | string      | Human-readable display name                        |
+| `version`             | string      | SemVer version (e.g., `"1.0.0"`)                   |
+| `description`         | string      | What the module does                               |
+| `alwaysEnabled`       | boolean     | `true` only for `kernel` -- cannot be disabled     |
+| `routePatterns`       | string[]    | Regex patterns for routes owned by this module     |
+| `dependencies`        | string[]    | Other module IDs that must be enabled              |
+| `adapters`            | string[]    | Adapter types required (e.g., `"clinical-engine"`) |
+| `services`            | string[]    | Internal service identifiers                       |
+| `permissions`         | string[]    | RBAC permissions required to access this module    |
+| `dataStores`          | DataStore[] | Data stores used by this module                    |
+| `healthCheckEndpoint` | string      | HTTP path for module health check                  |
 
 ### DataStore Object
 
@@ -38,6 +38,7 @@ Every module is defined in `config/modules.json` with the following fields:
 ```
 
 Supported `type` values:
+
 - `in-memory` -- In-process Map/Set (resets on restart)
 - `in-memory+jsonl` -- In-process + JSONL file sink
 - `vista` -- VistA M globals via RPC broker
@@ -47,35 +48,35 @@ Supported `type` values:
 
 ## Module List (13 modules)
 
-| ID | Name | Version | Always On | Dependencies |
-|----|------|---------|-----------|-------------|
-| `kernel` | Platform Kernel | 1.0.0 | Yes | none |
-| `clinical` | Clinician CPRS Shell | 1.0.0 | No | kernel |
-| `portal` | Patient Portal | 1.0.0 | No | kernel |
-| `telehealth` | Telehealth / Video Visits | 1.0.0 | No | kernel |
-| `imaging` | Imaging / PACS | 1.0.0 | No | kernel |
-| `analytics` | Analytics & Reports | 1.0.0 | No | kernel |
-| `interop` | Interop / HL7 / HLO | 1.0.0 | No | kernel |
-| `intake` | Intake OS / Questionnaires | 1.0.0 | No | kernel |
-| `ai` | AI Gateway | 1.0.0 | No | kernel |
-| `iam` | IAM / OIDC / Biometrics | 1.0.0 | No | kernel |
-| `rcm` | Revenue Cycle Management | 1.0.0 | No | kernel, clinical |
-| `scheduling` | Scheduling | 1.0.0 | No | kernel |
-| `migration` | Data Portability / Migration | 1.0.0 | No | kernel, clinical |
+| ID           | Name                         | Version | Always On | Dependencies     |
+| ------------ | ---------------------------- | ------- | --------- | ---------------- |
+| `kernel`     | Platform Kernel              | 1.0.0   | Yes       | none             |
+| `clinical`   | Clinician CPRS Shell         | 1.0.0   | No        | kernel           |
+| `portal`     | Patient Portal               | 1.0.0   | No        | kernel           |
+| `telehealth` | Telehealth / Video Visits    | 1.0.0   | No        | kernel           |
+| `imaging`    | Imaging / PACS               | 1.0.0   | No        | kernel           |
+| `analytics`  | Analytics & Reports          | 1.0.0   | No        | kernel           |
+| `interop`    | Interop / HL7 / HLO          | 1.0.0   | No        | kernel           |
+| `intake`     | Intake OS / Questionnaires   | 1.0.0   | No        | kernel           |
+| `ai`         | AI Gateway                   | 1.0.0   | No        | kernel           |
+| `iam`        | IAM / OIDC / Biometrics      | 1.0.0   | No        | kernel           |
+| `rcm`        | Revenue Cycle Management     | 1.0.0   | No        | kernel, clinical |
+| `scheduling` | Scheduling                   | 1.0.0   | No        | kernel           |
+| `migration`  | Data Portability / Migration | 1.0.0   | No        | kernel, clinical |
 
 ## SKU Profiles (7 SKUs)
 
 SKUs are predefined module bundles set via `DEPLOY_SKU` env var:
 
-| SKU | Included Modules |
-|-----|-----------------|
-| `FULL_SUITE` | All 13 modules |
-| `CLINICIAN_ONLY` | kernel, clinical, analytics |
-| `PORTAL_ONLY` | kernel, portal, intake |
-| `TELEHEALTH_ONLY` | kernel, telehealth, portal |
-| `RCM_ONLY` | kernel, clinical, rcm, analytics |
-| `IMAGING_ONLY` | kernel, clinical, imaging |
-| `INTEROP_ONLY` | kernel, interop, analytics |
+| SKU               | Included Modules                 |
+| ----------------- | -------------------------------- |
+| `FULL_SUITE`      | All 13 modules                   |
+| `CLINICIAN_ONLY`  | kernel, clinical, analytics      |
+| `PORTAL_ONLY`     | kernel, portal, intake           |
+| `TELEHEALTH_ONLY` | kernel, telehealth, portal       |
+| `RCM_ONLY`        | kernel, clinical, rcm, analytics |
+| `IMAGING_ONLY`    | kernel, clinical, imaging        |
+| `INTEROP_ONLY`    | kernel, interop, analytics       |
 
 ## Runtime Enforcement
 
@@ -107,11 +108,13 @@ The API returns 400 with specific dependency errors if validation fails.
 ## API Endpoints
 
 ### Public (session auth)
+
 - `GET /api/capabilities` -- resolved capabilities for tenant
 - `GET /api/capabilities/summary` -- live/pending/disabled counts
 - `GET /api/capabilities/by-module` -- grouped by module
 
 ### Admin (admin role checked in handler)
+
 - `GET /api/modules/status` -- module enablement status
 - `GET /api/modules/manifests` -- full module manifests (Phase 51)
 - `GET /api/modules/skus` -- available SKU profiles
@@ -120,6 +123,7 @@ The API returns 400 with specific dependency errors if validation fails.
 - `GET /api/adapters/list` -- all loaded adapters
 
 ### Marketplace (Phase 51, admin role)
+
 - `GET /api/marketplace/config` -- tenant marketplace config
 - `PUT /api/marketplace/config` -- update tenant marketplace config
 - `PATCH /api/marketplace/connectors` -- update connector settings

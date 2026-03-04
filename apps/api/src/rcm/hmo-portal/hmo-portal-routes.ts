@@ -27,7 +27,7 @@
  *   GET  /rcm/hmo-portal/submissions/stats         — Submission stats
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import {
   getPortalAdapter,
   listPortalAdapters,
@@ -36,20 +36,13 @@ import {
   type LoaPacket,
   type HmoClaimPacket,
   type HmoSubmissionStatus,
-} from "./types.js";
-import {
-  buildLoaPacket,
-  generateLoaExports,
-  getSpecialtyTemplate,
-  listSpecialtyTemplates,
-  type LoaPacketBuildOptions,
-} from "./loa-engine.js";
+} from './types.js';
+import { buildLoaPacket, generateLoaExports, listSpecialtyTemplates } from './loa-engine.js';
 import {
   buildHmoClaimPacket,
   exportHmoPacketJson,
   exportHmoPacketText,
-  type HmoPacketBuildOptions,
-} from "./hmo-packet-builder.js";
+} from './hmo-packet-builder.js';
 import {
   createSubmission,
   getSubmission,
@@ -59,7 +52,7 @@ import {
   addStaffNote,
   addExportFile,
   getSubmissionStats,
-} from "./submission-tracker.js";
+} from './submission-tracker.js';
 
 /* ── In-Memory Packet Caches ────────────────────────────────── */
 
@@ -70,13 +63,13 @@ const claimPacketCache = new Map<string, HmoClaimPacket>();
 
 export default async function hmoPortalRoutes(server: FastifyInstance): Promise<void> {
   /* ── GET /rcm/hmo-portal/status ───────────────────────────── */
-  server.get("/rcm/hmo-portal/status", async () => {
+  server.get('/rcm/hmo-portal/status', async () => {
     const adapters = listPortalAdapters();
     return {
       ok: true,
       phase: 97,
-      module: "hmo-portal-adapter",
-      mode: "manual_assisted",
+      module: 'hmo-portal-adapter',
+      mode: 'manual_assisted',
       portalCapableHmos: [...PORTAL_CAPABLE_HMOS],
       registeredAdapters: adapters.length,
       adapters,
@@ -84,65 +77,80 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── GET /rcm/hmo-portal/adapters ─────────────────────────── */
-  server.get("/rcm/hmo-portal/adapters", async () => {
+  server.get('/rcm/hmo-portal/adapters', async () => {
     return { ok: true, adapters: listPortalAdapters() };
   });
 
   /* ── GET /rcm/hmo-portal/adapters/:payerId ────────────────── */
-  server.get("/rcm/hmo-portal/adapters/:payerId", async (req: FastifyRequest, reply: FastifyReply) => {
-    const { payerId } = req.params as { payerId: string };
-    const adapter = getPortalAdapter(payerId);
-    if (!adapter) {
-      reply.code(404);
-      return { ok: false, error: `No adapter registered for ${payerId}` };
+  server.get(
+    '/rcm/hmo-portal/adapters/:payerId',
+    async (req: FastifyRequest, reply: FastifyReply) => {
+      const { payerId } = req.params as { payerId: string };
+      const adapter = getPortalAdapter(payerId);
+      if (!adapter) {
+        reply.code(404);
+        return { ok: false, error: `No adapter registered for ${payerId}` };
+      }
+      return {
+        ok: true,
+        payerId: adapter.payerId,
+        adapterName: adapter.adapterName,
+        mode: adapter.mode,
+        portalBaseUrl: adapter.portalBaseUrl,
+      };
     }
-    return {
-      ok: true,
-      payerId: adapter.payerId,
-      adapterName: adapter.adapterName,
-      mode: adapter.mode,
-      portalBaseUrl: adapter.portalBaseUrl,
-    };
-  });
+  );
 
   /* ── GET /rcm/hmo-portal/adapters/:payerId/health ─────────── */
-  server.get("/rcm/hmo-portal/adapters/:payerId/health", async (req: FastifyRequest, reply: FastifyReply) => {
-    const { payerId } = req.params as { payerId: string };
-    const adapter = getPortalAdapter(payerId);
-    if (!adapter) {
-      reply.code(404);
-      return { ok: false, error: `No adapter registered for ${payerId}` };
+  server.get(
+    '/rcm/hmo-portal/adapters/:payerId/health',
+    async (req: FastifyRequest, reply: FastifyReply) => {
+      const { payerId } = req.params as { payerId: string };
+      const adapter = getPortalAdapter(payerId);
+      if (!adapter) {
+        reply.code(404);
+        return { ok: false, error: `No adapter registered for ${payerId}` };
+      }
+      const health = await adapter.healthCheck();
+      return { ok: true, ...health };
     }
-    const health = await adapter.healthCheck();
-    return { ok: true, ...health };
-  });
+  );
 
   /* ── GET /rcm/hmo-portal/specialties ──────────────────────── */
-  server.get("/rcm/hmo-portal/specialties", async () => {
+  server.get('/rcm/hmo-portal/specialties', async () => {
     return { ok: true, templates: listSpecialtyTemplates() };
   });
 
   /* ── POST /rcm/hmo-portal/loa/build ──────────────────────── */
-  server.post("/rcm/hmo-portal/loa/build", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/hmo-portal/loa/build', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
-    const { loaRequest, specialty, admissionType, requestedServices, estimatedDays, estimatedCharges, attendingPhysicianLicense, facilityCode } = body;
+    const {
+      loaRequest,
+      specialty,
+      admissionType,
+      requestedServices,
+      estimatedDays,
+      estimatedCharges,
+      attendingPhysicianLicense,
+      facilityCode,
+    } = body;
 
     if (!loaRequest) {
       reply.code(400);
-      return { ok: false, error: "loaRequest is required." };
+      return { ok: false, error: 'loaRequest is required.' };
     }
     if (!specialty) {
       reply.code(400);
-      return { ok: false, error: "specialty is required." };
+      return { ok: false, error: 'specialty is required.' };
     }
 
     const session = (req as any).session;
-    const actor = session?.userName ?? session?.duz ?? "system";
+    const actor = session?.userName ?? session?.duz ?? 'system';
 
     const result = buildLoaPacket({
       loaRequest,
       specialty,
-      admissionType: admissionType ?? "outpatient",
+      admissionType: admissionType ?? 'outpatient',
       requestedServices: requestedServices ?? [],
       estimatedDays,
       estimatedCharges,
@@ -161,13 +169,13 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── POST /rcm/hmo-portal/loa/export ─────────────────────── */
-  server.post("/rcm/hmo-portal/loa/export", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/hmo-portal/loa/export', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { packetId, formats } = body;
 
     if (!packetId) {
       reply.code(400);
-      return { ok: false, error: "packetId is required." };
+      return { ok: false, error: 'packetId is required.' };
     }
 
     const packet = loaPacketCache.get(packetId);
@@ -181,13 +189,13 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── POST /rcm/hmo-portal/loa/submit ─────────────────────── */
-  server.post("/rcm/hmo-portal/loa/submit", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/hmo-portal/loa/submit', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { packetId } = body;
 
     if (!packetId) {
       reply.code(400);
-      return { ok: false, error: "packetId is required." };
+      return { ok: false, error: 'packetId is required.' };
     }
 
     const packet = loaPacketCache.get(packetId);
@@ -211,7 +219,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
 
     // Create submission record
     const session = (req as any).session;
-    const actor = session?.userName ?? session?.duz ?? "system";
+    const actor = session?.userName ?? session?.duz ?? 'system';
     const sub = createSubmission({
       payerId: packet.payerId,
       payerName: packet.payerName,
@@ -219,7 +227,12 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
       actor,
     });
     updateSubmissionFields(sub.id, { loaPacketId: packet.packetId });
-    transitionSubmission(sub.id, "loa_pending", actor, "LOA packet generated for manual portal submission.");
+    transitionSubmission(
+      sub.id,
+      'loa_pending',
+      actor,
+      'LOA packet generated for manual portal submission.'
+    );
     for (const f of result.exportFiles) {
       addExportFile(sub.id, f.filename);
     }
@@ -228,17 +241,31 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── POST /rcm/hmo-portal/claims/build ───────────────────── */
-  server.post("/rcm/hmo-portal/claims/build", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/hmo-portal/claims/build', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
-    const { claim, payerName, loaReferenceNumber, memberId, memberType, employerName, employerCode, facilityCode, accreditationNumber, tinNumber, specialty, charges, professionalFees } = body;
+    const {
+      claim,
+      payerName,
+      loaReferenceNumber,
+      memberId,
+      memberType,
+      employerName,
+      employerCode,
+      facilityCode,
+      accreditationNumber,
+      tinNumber,
+      specialty,
+      charges,
+      professionalFees,
+    } = body;
 
     if (!claim) {
       reply.code(400);
-      return { ok: false, error: "claim is required." };
+      return { ok: false, error: 'claim is required.' };
     }
 
     const session = (req as any).session;
-    const actor = session?.userName ?? session?.duz ?? "system";
+    const actor = session?.userName ?? session?.duz ?? 'system';
 
     const result = buildHmoClaimPacket({
       claim,
@@ -267,13 +294,13 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── POST /rcm/hmo-portal/claims/export ──────────────────── */
-  server.post("/rcm/hmo-portal/claims/export", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/hmo-portal/claims/export', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { packetId, format } = body;
 
     if (!packetId) {
       reply.code(400);
-      return { ok: false, error: "packetId is required." };
+      return { ok: false, error: 'packetId is required.' };
     }
 
     const packet = claimPacketCache.get(packetId);
@@ -282,19 +309,19 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
       return { ok: false, error: `Claim packet not found: ${packetId}` };
     }
 
-    const exportFn = format === "text" ? exportHmoPacketText : exportHmoPacketJson;
+    const exportFn = format === 'text' ? exportHmoPacketText : exportHmoPacketJson;
     const exported = exportFn(packet);
     return { ok: true, export: exported };
   });
 
   /* ── POST /rcm/hmo-portal/claims/submit ──────────────────── */
-  server.post("/rcm/hmo-portal/claims/submit", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/hmo-portal/claims/submit', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { packetId } = body;
 
     if (!packetId) {
       reply.code(400);
-      return { ok: false, error: "packetId is required." };
+      return { ok: false, error: 'packetId is required.' };
     }
 
     const packet = claimPacketCache.get(packetId);
@@ -317,7 +344,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     const result = await adapter.submitClaim(packet);
 
     const session = (req as any).session;
-    const actor = session?.userName ?? session?.duz ?? "system";
+    const actor = session?.userName ?? session?.duz ?? 'system';
     const sub = createSubmission({
       payerId: packet.payerId,
       payerName: packet.payerName,
@@ -326,10 +353,15 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     });
     updateSubmissionFields(sub.id, { claimPacketId: packet.packetId });
     // Advance through state machine to claim_exported
-    transitionSubmission(sub.id, "loa_pending", actor, "Claim submission initiated.");
-    transitionSubmission(sub.id, "loa_approved", actor, "LOA pre-approved for claim.");
-    transitionSubmission(sub.id, "claim_prepared", actor, "Claim packet built.");
-    transitionSubmission(sub.id, "claim_exported", actor, "Claim packet exported for portal submission.");
+    transitionSubmission(sub.id, 'loa_pending', actor, 'Claim submission initiated.');
+    transitionSubmission(sub.id, 'loa_approved', actor, 'LOA pre-approved for claim.');
+    transitionSubmission(sub.id, 'claim_prepared', actor, 'Claim packet built.');
+    transitionSubmission(
+      sub.id,
+      'claim_exported',
+      actor,
+      'Claim packet exported for portal submission.'
+    );
     for (const f of result.exportFiles) {
       addExportFile(sub.id, f.filename);
     }
@@ -338,13 +370,13 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── POST /rcm/hmo-portal/status-check ───────────────────── */
-  server.post("/rcm/hmo-portal/status-check", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/hmo-portal/status-check', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { payerId, claimId } = body;
 
     if (!payerId || !claimId) {
       reply.code(400);
-      return { ok: false, error: "payerId and claimId are required." };
+      return { ok: false, error: 'payerId and claimId are required.' };
     }
 
     const adapter = getPortalAdapter(payerId);
@@ -358,13 +390,13 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── POST /rcm/hmo-portal/remit-check ────────────────────── */
-  server.post("/rcm/hmo-portal/remit-check", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/rcm/hmo-portal/remit-check', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { payerId, claimId } = body;
 
     if (!payerId || !claimId) {
       reply.code(400);
-      return { ok: false, error: "payerId and claimId are required." };
+      return { ok: false, error: 'payerId and claimId are required.' };
     }
 
     const adapter = getPortalAdapter(payerId);
@@ -378,7 +410,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── GET /rcm/hmo-portal/submissions ──────────────────────── */
-  server.get("/rcm/hmo-portal/submissions", async (req: FastifyRequest) => {
+  server.get('/rcm/hmo-portal/submissions', async (req: FastifyRequest) => {
     const q = req.query as any;
     return {
       ok: true,
@@ -392,61 +424,70 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── GET /rcm/hmo-portal/submissions/stats ────────────────── */
-  server.get("/rcm/hmo-portal/submissions/stats", async () => {
+  server.get('/rcm/hmo-portal/submissions/stats', async () => {
     return { ok: true, stats: getSubmissionStats() };
   });
 
   /* ── GET /rcm/hmo-portal/submissions/:id ──────────────────── */
-  server.get("/rcm/hmo-portal/submissions/:id", async (req: FastifyRequest, reply: FastifyReply) => {
-    const { id } = req.params as { id: string };
-    const sub = getSubmission(id);
-    if (!sub) {
-      reply.code(404);
-      return { ok: false, error: "Submission not found." };
+  server.get(
+    '/rcm/hmo-portal/submissions/:id',
+    async (req: FastifyRequest, reply: FastifyReply) => {
+      const { id } = req.params as { id: string };
+      const sub = getSubmission(id);
+      if (!sub) {
+        reply.code(404);
+        return { ok: false, error: 'Submission not found.' };
+      }
+      return { ok: true, submission: sub };
     }
-    return { ok: true, submission: sub };
-  });
+  );
 
   /* ── PUT /rcm/hmo-portal/submissions/:id/status ───────────── */
-  server.put("/rcm/hmo-portal/submissions/:id/status", async (req: FastifyRequest, reply: FastifyReply) => {
-    const { id } = req.params as { id: string };
-    const body = (req.body as any) || {};
-    const { toStatus, detail } = body;
+  server.put(
+    '/rcm/hmo-portal/submissions/:id/status',
+    async (req: FastifyRequest, reply: FastifyReply) => {
+      const { id } = req.params as { id: string };
+      const body = (req.body as any) || {};
+      const { toStatus, detail } = body;
 
-    if (!toStatus) {
-      reply.code(400);
-      return { ok: false, error: "toStatus is required." };
+      if (!toStatus) {
+        reply.code(400);
+        return { ok: false, error: 'toStatus is required.' };
+      }
+
+      const session = (req as any).session;
+      const actor = session?.userName ?? session?.duz ?? 'system';
+
+      const result = transitionSubmission(id, toStatus, actor, detail);
+      if (!result.ok) {
+        reply.code(400);
+        return result;
+      }
+
+      return { ok: true, submission: result.record };
     }
-
-    const session = (req as any).session;
-    const actor = session?.userName ?? session?.duz ?? "system";
-
-    const result = transitionSubmission(id, toStatus, actor, detail);
-    if (!result.ok) {
-      reply.code(400);
-      return result;
-    }
-
-    return { ok: true, submission: result.record };
-  });
+  );
 
   /* ── POST /rcm/hmo-portal/submissions/:id/note ───────────── */
-  server.post("/rcm/hmo-portal/submissions/:id/note", async (req: FastifyRequest, reply: FastifyReply) => {
-    const { id } = req.params as { id: string };
-    const body = (req.body as any) || {};
-    const { note } = body;
+  server.post(
+    '/rcm/hmo-portal/submissions/:id/note',
+    async (req: FastifyRequest, reply: FastifyReply) => {
+      const { id } = req.params as { id: string };
+      const body = (req.body as any) || {};
+      const { note } = body;
 
-    if (!note) {
-      reply.code(400);
-      return { ok: false, error: "note is required." };
+      if (!note) {
+        reply.code(400);
+        return { ok: false, error: 'note is required.' };
+      }
+
+      const result = addStaffNote(id, note);
+      if (!result.ok) {
+        reply.code(404);
+        return result;
+      }
+
+      return { ok: true, message: 'Note added.' };
     }
-
-    const result = addStaffNote(id, note);
-    if (!result.ok) {
-      reply.code(404);
-      return result;
-    }
-
-    return { ok: true, message: "Note added." };
-  });
+  );
 }

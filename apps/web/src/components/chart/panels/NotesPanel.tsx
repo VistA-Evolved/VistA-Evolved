@@ -17,9 +17,21 @@ export default function NotesPanel({ dfn }: NotesPanelProps) {
   useEffect(() => {
     let cancelled = false;
     fetchNotes(dfn)
-      .then((n) => { if (!cancelled) { setNotes(n); setLoading(false); } })
-      .catch((e) => { if (!cancelled) { setError(e.message); setLoading(false); } });
-    return () => { cancelled = true; };
+      .then((n) => {
+        if (!cancelled) {
+          setNotes(n);
+          setLoading(false);
+        }
+      })
+      .catch((e) => {
+        if (!cancelled) {
+          setError(e.message);
+          setLoading(false);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [dfn]);
 
   return (

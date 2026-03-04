@@ -15,19 +15,19 @@
  *  10. Phase 139-144 are covered by generated tests
  */
 
-import { readFileSync, existsSync, readdirSync } from "node:fs";
-import { resolve, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import { resolve, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const __dirname = import.meta.dirname || fileURLToPath(new URL(".", import.meta.url));
-const ROOT = resolve(__dirname, "../../..");
+const __dirname = import.meta.dirname || fileURLToPath(new URL('.', import.meta.url));
+const ROOT = resolve(__dirname, '../../..');
 
-export const id = "G18_qa_ladder_v2";
-export const name = "QA Ladder V2 Infrastructure";
+export const id = 'G18_qa_ladder_v2';
+export const name = 'QA Ladder V2 Infrastructure';
 
 function rd(rel) {
   const p = resolve(ROOT, rel);
-  return existsSync(p) ? readFileSync(p, "utf8") : null;
+  return existsSync(p) ? readFileSync(p, 'utf8') : null;
 }
 
 function ls(rel) {
@@ -38,7 +38,7 @@ function ls(rel) {
 export async function run(opts = {}) {
   const start = Date.now();
   const details = [];
-  let status = "pass";
+  let status = 'pass';
   let p = 0;
   let f = 0;
 
@@ -48,7 +48,7 @@ export async function run(opts = {}) {
     } else {
       f++;
       details.push(`FAIL: ${label}`);
-      status = "fail";
+      status = 'fail';
     }
   }
 
@@ -58,81 +58,86 @@ export async function run(opts = {}) {
 
   // ── 1. Infrastructure Scripts ──
 
-  check("Phase registry script exists", rd("scripts/qa/phase-registry.mjs") !== null);
-  check("Test generator script exists", rd("scripts/qa/generate-phase-tests.mjs") !== null);
-  check("RPC trace manager script exists", rd("scripts/qa/rpc-trace-manager.mjs") !== null);
+  check('Phase registry script exists', rd('scripts/qa/phase-registry.mjs') !== null);
+  check('Test generator script exists', rd('scripts/qa/generate-phase-tests.mjs') !== null);
+  check('RPC trace manager script exists', rd('scripts/qa/rpc-trace-manager.mjs') !== null);
 
   // Validate they contain expected exports/functions
-  const registrySrc = rd("scripts/qa/phase-registry.mjs") || "";
-  check("Registry has classifyDomains", registrySrc.includes("classifyDomains"));
-  check("Registry has buildRegistry", registrySrc.includes("buildRegistry"));
-  check("Registry has domain patterns", registrySrc.includes("DOMAIN_PATTERNS"));
+  const registrySrc = rd('scripts/qa/phase-registry.mjs') || '';
+  check('Registry has classifyDomains', registrySrc.includes('classifyDomains'));
+  check('Registry has buildRegistry', registrySrc.includes('buildRegistry'));
+  check('Registry has domain patterns', registrySrc.includes('DOMAIN_PATTERNS'));
 
-  const generatorSrc = rd("scripts/qa/generate-phase-tests.mjs") || "";
-  check("Generator has Playwright journey gen", generatorSrc.includes("generatePlaywrightJourney"));
-  check("Generator has RPC replay gen", generatorSrc.includes("generateRpcReplayTests"));
-  check("Generator has restart resilience gen", generatorSrc.includes("generateRestartResilienceTests"));
+  const generatorSrc = rd('scripts/qa/generate-phase-tests.mjs') || '';
+  check('Generator has Playwright journey gen', generatorSrc.includes('generatePlaywrightJourney'));
+  check('Generator has RPC replay gen', generatorSrc.includes('generateRpcReplayTests'));
+  check(
+    'Generator has restart resilience gen',
+    generatorSrc.includes('generateRestartResilienceTests')
+  );
 
-  const traceMgr = rd("scripts/qa/rpc-trace-manager.mjs") || "";
-  check("Trace manager has verify command", traceMgr.includes("verify"));
-  check("Trace manager has record command", traceMgr.includes("record"));
+  const traceMgr = rd('scripts/qa/rpc-trace-manager.mjs') || '';
+  check('Trace manager has verify command', traceMgr.includes('verify'));
+  check('Trace manager has record command', traceMgr.includes('record'));
 
   // ── 2. Generated Test Files ──
 
-  const domainJourneys = ls("apps/web/e2e/domain-journeys").filter(
-    (f) => f.startsWith("domain-") && f.endsWith(".spec.ts")
+  const domainJourneys = ls('apps/web/e2e/domain-journeys').filter(
+    (f) => f.startsWith('domain-') && f.endsWith('.spec.ts')
   );
   check(`Domain journey specs exist (got ${domainJourneys.length})`, domainJourneys.length >= 1);
 
   // Validate journeys are non-empty and have real test bodies
   for (const file of domainJourneys) {
-    const content = rd(`apps/web/e2e/domain-journeys/${file}`) || "";
-    check(`${file}: has test.describe`, content.includes("test.describe"));
-    check(`${file}: has expect()`, content.includes("expect("));
+    const content = rd(`apps/web/e2e/domain-journeys/${file}`) || '';
+    check(`${file}: has test.describe`, content.includes('test.describe'));
+    check(`${file}: has expect()`, content.includes('expect('));
     check(`${file}: no empty test bodies`, !content.match(/test\([^)]+,\s*async.*\{\s*\}\)/));
   }
 
   // RPC replay tests
-  const rpcTests = ls("apps/api/tests/rpc-replay").filter((f) => f.endsWith(".test.ts"));
+  const rpcTests = ls('apps/api/tests/rpc-replay').filter((f) => f.endsWith('.test.ts'));
   check(`RPC replay tests exist (got ${rpcTests.length})`, rpcTests.length >= 1);
 
   if (rpcTests.length > 0) {
-    const rpcContent = rd(`apps/api/tests/rpc-replay/${rpcTests[0]}`) || "";
-    check("RPC replay has vitest imports", rpcContent.includes("import { describe"));
-    check("RPC replay references golden trace", rpcContent.includes("golden-trace"));
-    check("RPC replay has VistA skip logic", rpcContent.includes("vistaAvailable"));
+    const rpcContent = rd(`apps/api/tests/rpc-replay/${rpcTests[0]}`) || '';
+    check('RPC replay has vitest imports', rpcContent.includes('import { describe'));
+    check('RPC replay references golden trace', rpcContent.includes('golden-trace'));
+    check('RPC replay has VistA skip logic', rpcContent.includes('vistaAvailable'));
   }
 
   // Restart resilience tests
-  const restartTests = ls("apps/api/tests/restart-resilience").filter((f) => f.endsWith(".test.ts"));
+  const restartTests = ls('apps/api/tests/restart-resilience').filter((f) =>
+    f.endsWith('.test.ts')
+  );
   check(`Restart resilience tests exist (got ${restartTests.length})`, restartTests.length >= 1);
 
   if (restartTests.length > 0) {
-    const restartContent = rd(`apps/api/tests/restart-resilience/${restartTests[0]}`) || "";
-    check("Restart tests have health check", restartContent.includes("/health"));
-    check("Restart tests have concurrent requests", restartContent.includes("Promise.all"));
+    const restartContent = rd(`apps/api/tests/restart-resilience/${restartTests[0]}`) || '';
+    check('Restart tests have health check', restartContent.includes('/health'));
+    check('Restart tests have concurrent requests', restartContent.includes('Promise.all'));
   }
 
   // ── 3. Golden Trace Validation ──
 
-  const goldenTrace = rd("apps/api/tests/fixtures/rpc-golden-trace.json");
-  check("Golden trace file exists", goldenTrace !== null);
+  const goldenTrace = rd('apps/api/tests/fixtures/rpc-golden-trace.json');
+  check('Golden trace file exists', goldenTrace !== null);
 
   if (goldenTrace) {
     try {
       const trace = JSON.parse(goldenTrace);
       const wfCount = Object.keys(trace.workflows || {}).length;
       check(`Golden trace has 5+ workflows (got ${wfCount})`, wfCount >= 5);
-      check("Golden trace has registrySnapshot", !!trace.registrySnapshot);
+      check('Golden trace has registrySnapshot', !!trace.registrySnapshot);
 
       const criticalCount = trace.registrySnapshot?.criticalRpcs?.length || 0;
       check(`Critical RPCs >= 10 (got ${criticalCount})`, criticalCount >= 10);
 
       // No PHI
-      check("Golden trace: no SSN", !/\b\d{3}-\d{2}-\d{4}\b/.test(goldenTrace));
-      check("Golden trace: no credentials", !goldenTrace.toLowerCase().includes("prov123"));
+      check('Golden trace: no SSN', !/\b\d{3}-\d{2}-\d{4}\b/.test(goldenTrace));
+      check('Golden trace: no credentials', !goldenTrace.toLowerCase().includes('prov123'));
     } catch (e) {
-      check("Golden trace is valid JSON", false);
+      check('Golden trace is valid JSON', false);
     }
   }
 
@@ -140,12 +145,12 @@ export async function run(opts = {}) {
 
   // Check that phases 139-144 are represented
   const allGenerated = [
-    ...domainJourneys.map((f) => rd(`apps/web/e2e/domain-journeys/${f}`) || ""),
-    ...rpcTests.map((f) => rd(`apps/api/tests/rpc-replay/${f}`) || ""),
-    ...restartTests.map((f) => rd(`apps/api/tests/restart-resilience/${f}`) || ""),
-  ].join("\n");
+    ...domainJourneys.map((f) => rd(`apps/web/e2e/domain-journeys/${f}`) || ''),
+    ...rpcTests.map((f) => rd(`apps/api/tests/rpc-replay/${f}`) || ''),
+    ...restartTests.map((f) => rd(`apps/api/tests/restart-resilience/${f}`) || ''),
+  ].join('\n');
 
-  for (const phaseNum of ["139", "140", "141", "142", "143", "144"]) {
+  for (const phaseNum of ['139', '140', '141', '142', '143', '144']) {
     const found = allGenerated.includes(`Phase ${phaseNum}`);
     if (found) {
       check(`Phase ${phaseNum} covered in generated tests`, true);
@@ -158,10 +163,10 @@ export async function run(opts = {}) {
 
   let phiClean = true;
   if (/\b\d{3}-\d{2}-\d{4}\b/.test(allGenerated)) phiClean = false; // SSN
-  if (/PROV123/i.test(allGenerated)) phiClean = false;               // sandbox cred
-  if (/NURSE123/i.test(allGenerated)) phiClean = false;              // sandbox cred
-  if (/PHARM123/i.test(allGenerated)) phiClean = false;              // sandbox cred
-  check("No PHI in generated test files", phiClean);
+  if (/PROV123/i.test(allGenerated)) phiClean = false; // sandbox cred
+  if (/NURSE123/i.test(allGenerated)) phiClean = false; // sandbox cred
+  if (/PHARM123/i.test(allGenerated)) phiClean = false; // sandbox cred
+  check('No PHI in generated test files', phiClean);
 
   return {
     id,

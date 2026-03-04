@@ -30,12 +30,12 @@ scripts/generate-certification-evidence.mjs
 
 ## API Endpoints
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| GET | `/admin/certification/status` | admin | Certification readiness |
-| POST | `/admin/certification/generate` | admin | Trigger evidence generation |
-| GET | `/admin/certification/bundles` | admin | List generated bundles |
-| GET | `/admin/certification/bundle/:id` | admin | Get bundle manifest |
+| Method | Path                              | Auth  | Description                 |
+| ------ | --------------------------------- | ----- | --------------------------- |
+| GET    | `/admin/certification/status`     | admin | Certification readiness     |
+| POST   | `/admin/certification/generate`   | admin | Trigger evidence generation |
+| GET    | `/admin/certification/bundles`    | admin | List generated bundles      |
+| GET    | `/admin/certification/bundle/:id` | admin | Get bundle manifest         |
 
 ## Usage
 
@@ -81,19 +81,19 @@ Invoke-WebRequest -Uri http://127.0.0.1:3001/admin/certification/bundles `
 
 ## Evidence Sections
 
-| Section | What It Collects | PHI Risk |
-|---------|-----------------|----------|
-| Quality Gates | TypeScript, secret scan, PHI leak scan | None |
-| Posture Snapshots | 7 posture module readiness | None |
+| Section            | What It Collects                              | PHI Risk          |
+| ------------------ | --------------------------------------------- | ----------------- |
+| Quality Gates      | TypeScript, secret scan, PHI leak scan        | None              |
+| Posture Snapshots  | 7 posture module readiness                    | None              |
 | Audit Chain Status | 3 audit trail integrity (source + hash chain) | None (no entries) |
-| System Gap Matrix | Domain compliance gaps + evidence refs | None |
-| Compliance Docs | Doc inventory (not content) | None |
-| Config Snapshots | Module/SKU/capability hashes | None |
-| Runbook Coverage | Runbook file index | None |
-| Gauntlet Fast | Sanitized gate results | None |
-| Store Inventory | Store count/classification breakdown | None |
-| Architecture Docs | Doc presence inventory | None |
-| PHI Scan | Final bundle verification | None |
+| System Gap Matrix  | Domain compliance gaps + evidence refs        | None              |
+| Compliance Docs    | Doc inventory (not content)                   | None              |
+| Config Snapshots   | Module/SKU/capability hashes                  | None              |
+| Runbook Coverage   | Runbook file index                            | None              |
+| Gauntlet Fast      | Sanitized gate results                        | None              |
+| Store Inventory    | Store count/classification breakdown          | None              |
+| Architecture Docs  | Doc presence inventory                        | None              |
+| PHI Scan           | Final bundle verification                     | None              |
 
 ## Manifest Format
 

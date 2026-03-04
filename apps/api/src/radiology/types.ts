@@ -19,21 +19,31 @@
 // ── Radiology Order (extends Phase 23 worklist) ────────────
 
 export type RadOrderStatus =
-  | "ordered"
-  | "protocoled"
-  | "scheduled"
-  | "in_progress"
-  | "completed"
-  | "reported"
-  | "verified"
-  | "cancelled"
-  | "on_hold";
+  | 'ordered'
+  | 'protocoled'
+  | 'scheduled'
+  | 'in_progress'
+  | 'completed'
+  | 'reported'
+  | 'verified'
+  | 'cancelled'
+  | 'on_hold';
 
-export type RadPriority = "routine" | "stat" | "urgent" | "asap" | "wet_read";
+export type RadPriority = 'routine' | 'stat' | 'urgent' | 'asap' | 'wet_read';
 
 export type RadModality =
-  | "CR" | "CT" | "MR" | "US" | "NM" | "PT"
-  | "XA" | "RF" | "MG" | "DX" | "IO" | "OT";
+  | 'CR'
+  | 'CT'
+  | 'MR'
+  | 'US'
+  | 'NM'
+  | 'PT'
+  | 'XA'
+  | 'RF'
+  | 'MG'
+  | 'DX'
+  | 'IO'
+  | 'OT';
 
 export interface RadOrder {
   id: string;
@@ -77,14 +87,9 @@ export interface RadOrder {
 
 // ── Radiologist Reading Worklist ────────────────────────────
 
-export type ReadingStatus =
-  | "unread"
-  | "in_progress"
-  | "preliminary"
-  | "final"
-  | "addendum_pending";
+export type ReadingStatus = 'unread' | 'in_progress' | 'preliminary' | 'final' | 'addendum_pending';
 
-export type ReadingPriority = "routine" | "urgent" | "stat" | "critical";
+export type ReadingPriority = 'routine' | 'urgent' | 'stat' | 'critical';
 
 export interface ReadingWorklistItem {
   id: string;
@@ -112,13 +117,7 @@ export interface ReadingWorklistItem {
 
 // ── Radiology Report Lifecycle ──────────────────────────────
 
-export type ReportStatus =
-  | "draft"
-  | "preliminary"
-  | "final"
-  | "addendum"
-  | "amended"
-  | "cancelled";
+export type ReportStatus = 'draft' | 'preliminary' | 'final' | 'addendum' | 'amended' | 'cancelled';
 
 export interface RadReport {
   id: string;
@@ -193,11 +192,7 @@ export interface DoseRegistryEntry {
 
 // ── Critical Finding Alert ──────────────────────────────────
 
-export type RadCriticalAlertStatus =
-  | "active"
-  | "acknowledged"
-  | "communicated"
-  | "resolved";
+export type RadCriticalAlertStatus = 'active' | 'acknowledged' | 'communicated' | 'resolved';
 
 export interface RadCriticalAlert {
   id: string;
@@ -207,7 +202,7 @@ export interface RadCriticalAlert {
   patientDfn: string;
   finding: string;
   /** ACR Practice Parameter category */
-  category: "unexpected" | "urgent" | "emergent";
+  category: 'unexpected' | 'urgent' | 'emergent';
   status: RadCriticalAlertStatus;
   /** Provider to notify (ordering clinician) */
   notifyProviderDuz: string;
@@ -216,7 +211,7 @@ export interface RadCriticalAlert {
   communicatedToDuz: string | null;
   communicatedToName: string | null;
   communicatedAt: string | null;
-  communicationMethod: "direct_verbal" | "phone" | "secure_message" | "in_person" | null;
+  communicationMethod: 'direct_verbal' | 'phone' | 'secure_message' | 'in_person' | null;
   /** Acknowledgement */
   acknowledgedByDuz: string | null;
   acknowledgedByName: string | null;
@@ -267,9 +262,9 @@ export interface RadDashboardStats {
 }
 
 export interface RadWritebackPosture {
-  orderPlace: { rpc: string; status: "available" | "integration_pending"; note: string };
-  reportCreate: { rpc: string; status: "available" | "integration_pending"; note: string };
-  reportVerify: { rpc: string; status: "available" | "integration_pending"; note: string };
-  accessionAssign: { rpc: string; status: "available" | "integration_pending"; note: string };
-  vistaRadProc: { rpc: string; status: "available" | "integration_pending"; note: string };
+  orderPlace: { rpc: string; status: 'available' | 'integration_pending'; note: string };
+  reportCreate: { rpc: string; status: 'available' | 'integration_pending'; note: string };
+  reportVerify: { rpc: string; status: 'available' | 'integration_pending'; note: string };
+  accessionAssign: { rpc: string; status: 'available' | 'integration_pending'; note: string };
+  vistaRadProc: { rpc: string; status: 'available' | 'integration_pending'; note: string };
 }

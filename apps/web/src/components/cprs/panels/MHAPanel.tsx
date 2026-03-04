@@ -74,23 +74,22 @@ interface Props {
 /* Constants                                                            */
 /* ------------------------------------------------------------------ */
 
-
 const SEVERITY_COLORS: Record<string, string> = {
-  'minimal': '#4caf50',
-  'mild': '#8bc34a',
-  'moderate': '#ff9800',
+  minimal: '#4caf50',
+  mild: '#8bc34a',
+  moderate: '#ff9800',
   'moderately-severe': '#ff5722',
-  'severe': '#f44336',
+  severe: '#f44336',
   'below-threshold': '#4caf50',
-  'borderline': '#ff9800',
+  borderline: '#ff9800',
   'probable-ptsd': '#f44336',
   'no-risk': '#4caf50',
-  'low': '#8bc34a',
+  low: '#8bc34a',
   'low-risk': '#4caf50',
   'at-risk-female': '#ff9800',
   'at-risk': '#ff9800',
   'high-risk': '#f44336',
-  'high': '#f44336',
+  high: '#f44336',
 };
 
 /* ------------------------------------------------------------------ */
@@ -132,7 +131,9 @@ export default function MHAPanel({ dfn }: Props) {
   const fetchHistory = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/vista/mha/results?dfn=${dfn}`, { credentials: 'include' });
+      const res = await fetch(`${API_BASE}/vista/mha/results?dfn=${dfn}`, {
+        credentials: 'include',
+      });
       const json = await res.json();
       setHistory(json.localResults || []);
     } catch (err: any) {
@@ -149,7 +150,9 @@ export default function MHAPanel({ dfn }: Props) {
     setLoading(true);
     setLastResult(null);
     try {
-      const res = await fetch(`${API_BASE}/vista/mha/instruments/${id}`, { credentials: 'include' });
+      const res = await fetch(`${API_BASE}/vista/mha/instruments/${id}`, {
+        credentials: 'include',
+      });
       const json = await res.json();
       if (json.ok && json.instrument) {
         setSelectedInstrument(json.instrument);
@@ -238,9 +241,33 @@ export default function MHAPanel({ dfn }: Props) {
       </div>
 
       {error && (
-        <div style={{ background: '#3a0000', border: '1px solid #880000', padding: '8px 12px', margin: '8px 0', borderRadius: 4, fontSize: 12, color: '#ff8888' }}>
+        <div
+          style={{
+            background: '#3a0000',
+            border: '1px solid #880000',
+            padding: '8px 12px',
+            margin: '8px 0',
+            borderRadius: 4,
+            fontSize: 12,
+            color: '#ff8888',
+          }}
+        >
           {error}
-          <button onClick={() => setError(null)} style={{ marginLeft: 12, fontSize: 11, cursor: 'pointer', background: 'none', border: '1px solid #666', color: '#ccc', borderRadius: 3, padding: '2px 8px' }}>Dismiss</button>
+          <button
+            onClick={() => setError(null)}
+            style={{
+              marginLeft: 12,
+              fontSize: 11,
+              cursor: 'pointer',
+              background: 'none',
+              border: '1px solid #666',
+              color: '#ccc',
+              borderRadius: 3,
+              padding: '2px 8px',
+            }}
+          >
+            Dismiss
+          </button>
         </div>
       )}
 
@@ -249,10 +276,20 @@ export default function MHAPanel({ dfn }: Props) {
       {/* ----- Instruments tab ----- */}
       {tab === 'instruments' && !loading && (
         <div style={{ padding: '8px 0' }}>
-          <div style={{ background: '#2a2200', border: '1px solid #665500', padding: '8px 12px', margin: '0 0 8px', borderRadius: 4, fontSize: 12 }}>
+          <div
+            style={{
+              background: '#2a2200',
+              border: '1px solid #665500',
+              padding: '8px 12px',
+              margin: '0 0 8px',
+              borderRadius: 4,
+              fontSize: 12,
+            }}
+          >
             <strong style={{ color: '#ffcc00' }}>Integration Note</strong>
             <span style={{ color: '#d9c9a3', marginLeft: 8 }}>
-              Instruments loaded from local FHIR Questionnaire definitions. VistA YTT/YTQZ integration pending.
+              Instruments loaded from local FHIR Questionnaire definitions. VistA YTT/YTQZ
+              integration pending.
             </span>
           </div>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
@@ -283,7 +320,11 @@ export default function MHAPanel({ dfn }: Props) {
                 </tr>
               ))}
               {instruments.length === 0 && (
-                <tr><td colSpan={3} style={{ padding: 12, color: '#888' }}>No instruments loaded</td></tr>
+                <tr>
+                  <td colSpan={3} style={{ padding: 12, color: '#888' }}>
+                    No instruments loaded
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
@@ -298,14 +339,22 @@ export default function MHAPanel({ dfn }: Props) {
               <h3 style={{ margin: '0 0 8px', fontSize: 16 }}>
                 {selectedInstrument?.title} -- Completed
               </h3>
-              <div style={{
-                background: '#1a1a2e',
-                border: `2px solid ${SEVERITY_COLORS[lastResult.score.severity] || '#666'}`,
-                borderRadius: 8,
-                padding: 16,
-                marginBottom: 12,
-              }}>
-                <div style={{ fontSize: 28, fontWeight: 700, color: SEVERITY_COLORS[lastResult.score.severity] || '#ccc' }}>
+              <div
+                style={{
+                  background: '#1a1a2e',
+                  border: `2px solid ${SEVERITY_COLORS[lastResult.score.severity] || '#666'}`,
+                  borderRadius: 8,
+                  padding: 16,
+                  marginBottom: 12,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: 28,
+                    fontWeight: 700,
+                    color: SEVERITY_COLORS[lastResult.score.severity] || '#ccc',
+                  }}
+                >
                   {lastResult.score.totalScore} / {lastResult.score.maxScore}
                 </div>
                 <div style={{ fontSize: 14, color: '#ccc', marginTop: 4 }}>
@@ -315,7 +364,17 @@ export default function MHAPanel({ dfn }: Props) {
                   Severity: {lastResult.score.severity}
                 </div>
                 {lastResult.score.redFlag && (
-                  <div style={{ background: '#4a0000', border: '1px solid #ff0000', borderRadius: 4, padding: '8px 12px', marginTop: 8, color: '#ff4444', fontSize: 13 }}>
+                  <div
+                    style={{
+                      background: '#4a0000',
+                      border: '1px solid #ff0000',
+                      borderRadius: 4,
+                      padding: '8px 12px',
+                      marginTop: 8,
+                      color: '#ff4444',
+                      fontSize: 13,
+                    }}
+                  >
                     RED FLAG: {lastResult.score.redFlagReason || 'Safety concern identified'}
                   </div>
                 )}
@@ -327,7 +386,11 @@ export default function MHAPanel({ dfn }: Props) {
               </div>
               <button
                 className={styles.btn}
-                onClick={() => { setLastResult(null); setSelectedInstrument(null); setTab('instruments'); }}
+                onClick={() => {
+                  setLastResult(null);
+                  setSelectedInstrument(null);
+                  setTab('instruments');
+                }}
               >
                 Back to Instruments
               </button>
@@ -336,28 +399,51 @@ export default function MHAPanel({ dfn }: Props) {
             <div>
               <h3 style={{ margin: '0 0 4px', fontSize: 15 }}>{selectedInstrument.title}</h3>
               {selectedInstrument.description && (
-                <p style={{ color: '#aaa', fontSize: 12, margin: '0 0 12px' }}>{selectedInstrument.description}</p>
+                <p style={{ color: '#aaa', fontSize: 12, margin: '0 0 12px' }}>
+                  {selectedInstrument.description}
+                </p>
               )}
               {selectedInstrument.item.map((item, idx) => (
-                <div key={item.linkId} style={{ marginBottom: 16, padding: '8px 0', borderBottom: '1px solid #333' }}>
+                <div
+                  key={item.linkId}
+                  style={{ marginBottom: 16, padding: '8px 0', borderBottom: '1px solid #333' }}
+                >
                   <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 6 }}>
                     {idx + 1}. {item.text}
                   </div>
                   {item.answerOption && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 4, paddingLeft: 16 }}>
+                    <div
+                      style={{ display: 'flex', flexDirection: 'column', gap: 4, paddingLeft: 16 }}
+                    >
                       {item.answerOption.map((opt) => (
                         <label
                           key={opt.valueCoding.code}
-                          style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, cursor: 'pointer' }}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 8,
+                            fontSize: 13,
+                            cursor: 'pointer',
+                          }}
                         >
                           <input
                             type="radio"
                             name={item.linkId}
                             value={opt.valueCoding.code}
                             checked={answers[item.linkId] === opt.valueCoding.code}
-                            onChange={() => setAnswers((prev) => ({ ...prev, [item.linkId]: opt.valueCoding.code }))}
+                            onChange={() =>
+                              setAnswers((prev) => ({
+                                ...prev,
+                                [item.linkId]: opt.valueCoding.code,
+                              }))
+                            }
                           />
-                          <span style={{ color: answers[item.linkId] === opt.valueCoding.code ? '#fff' : '#bbb' }}>
+                          <span
+                            style={{
+                              color:
+                                answers[item.linkId] === opt.valueCoding.code ? '#fff' : '#bbb',
+                            }}
+                          >
                             {opt.valueCoding.display}
                           </span>
                         </label>
@@ -377,7 +463,10 @@ export default function MHAPanel({ dfn }: Props) {
                 </button>
                 <button
                   className={styles.btn}
-                  onClick={() => { setSelectedInstrument(null); setTab('instruments'); }}
+                  onClick={() => {
+                    setSelectedInstrument(null);
+                    setTab('instruments');
+                  }}
                 >
                   Cancel
                 </button>
@@ -428,13 +517,23 @@ export default function MHAPanel({ dfn }: Props) {
                       {r.severity}
                     </span>
                   </td>
-                  <td style={{ padding: '6px 8px', fontSize: 11, color: r.vistaFiled ? '#4caf50' : '#aa8800' }}>
+                  <td
+                    style={{
+                      padding: '6px 8px',
+                      fontSize: 11,
+                      color: r.vistaFiled ? '#4caf50' : '#aa8800',
+                    }}
+                  >
                     {r.vistaFiled ? 'Filed' : 'Pending'}
                   </td>
                 </tr>
               ))}
               {history.length === 0 && (
-                <tr><td colSpan={5} style={{ padding: 12, color: '#888' }}>No MH assessment history for this patient</td></tr>
+                <tr>
+                  <td colSpan={5} style={{ padding: 12, color: '#888' }}>
+                    No MH assessment history for this patient
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>

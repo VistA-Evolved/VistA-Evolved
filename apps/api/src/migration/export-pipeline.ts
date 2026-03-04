@@ -11,25 +11,17 @@
  *   - Export files are Base64-encoded in the job result
  */
 
-import { randomBytes, createCipheriv, createHash } from "node:crypto";
-import type {
-  MigrationJob,
-  ExportResult,
-  ExportBundleType,
-} from "./types.js";
-import {
-  getJob,
-  updateJob,
-  transitionJob,
-} from "./migration-store.js";
-import { log } from "../lib/logger.js";
+import { randomBytes, createCipheriv, createHash } from 'node:crypto';
+import type { ExportResult } from './types.js';
+import { getJob, updateJob, transitionJob } from './migration-store.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Config                                                              */
 /* ------------------------------------------------------------------ */
 
-const EXPORT_ENCRYPTION_KEY = process.env.MIGRATION_EXPORT_KEY ?? "";
-const ENCRYPTION_ALGO = "aes-256-gcm";
+const EXPORT_ENCRYPTION_KEY = process.env.MIGRATION_EXPORT_KEY ?? '';
+const ENCRYPTION_ALGO = 'aes-256-gcm';
 
 /* ------------------------------------------------------------------ */
 /* Patient summary builder                                             */
@@ -51,23 +43,33 @@ interface PatientSummaryOptions {
  */
 function buildPatientSummary(options: PatientSummaryOptions): Record<string, unknown> {
   return {
-    resourceType: "Bundle",
-    type: "document",
+    resourceType: 'Bundle',
+    type: 'document',
     meta: {
       generatedAt: new Date().toISOString(),
-      source: "VistA-Evolved",
-      version: "phase-50",
+      source: 'VistA-Evolved',
+      version: 'phase-50',
     },
     patient: {
-      dfn: options.dfn ?? "unknown",
-      note: "Production implementation would aggregate VistA RPC data here",
+      dfn: options.dfn ?? 'unknown',
+      note: 'Production implementation would aggregate VistA RPC data here',
     },
     sections: {
-      allergies: options.includeAllergies ? { status: "integration-pending", targetRpc: "ORQQAL LIST" } : undefined,
-      problems: options.includeProblems ? { status: "integration-pending", targetRpc: "ORQQPL LIST" } : undefined,
-      medications: options.includeMedications ? { status: "integration-pending", targetRpc: "ORWPS ACTIVE" } : undefined,
-      notes: options.includeNotes ? { status: "integration-pending", targetRpc: "TIU DOCUMENTS BY CONTEXT" } : undefined,
-      vitals: options.includeVitals ? { status: "integration-pending", targetRpc: "GMV V/M ALLDATA" } : undefined,
+      allergies: options.includeAllergies
+        ? { status: 'integration-pending', targetRpc: 'ORQQAL LIST' }
+        : undefined,
+      problems: options.includeProblems
+        ? { status: 'integration-pending', targetRpc: 'ORQQPL LIST' }
+        : undefined,
+      medications: options.includeMedications
+        ? { status: 'integration-pending', targetRpc: 'ORWPS ACTIVE' }
+        : undefined,
+      notes: options.includeNotes
+        ? { status: 'integration-pending', targetRpc: 'TIU DOCUMENTS BY CONTEXT' }
+        : undefined,
+      vitals: options.includeVitals
+        ? { status: 'integration-pending', targetRpc: 'GMV V/M ALLDATA' }
+        : undefined,
     },
   };
 }
@@ -82,18 +84,18 @@ function buildAuditExport(params?: {
   actions?: string[];
 }): Record<string, unknown> {
   return {
-    resourceType: "AuditExport",
+    resourceType: 'AuditExport',
     meta: {
       generatedAt: new Date().toISOString(),
-      source: "VistA-Evolved",
-      version: "phase-50",
+      source: 'VistA-Evolved',
+      version: 'phase-50',
       filters: {
         startDate: params?.startDate,
         endDate: params?.endDate,
         actions: params?.actions,
       },
     },
-    note: "Production implementation queries immutable-audit store. Sandbox returns this placeholder.",
+    note: 'Production implementation queries immutable-audit store. Sandbox returns this placeholder.',
     entries: [],
   };
 }
@@ -108,11 +110,11 @@ function buildAuditExport(params?: {
  */
 function encryptData(plaintext: string, key: string): { encrypted: string; keyId: string } {
   // Derive a 32-byte key from the passphrase
-  const derivedKey = createHash("sha256").update(key).digest();
+  const derivedKey = createHash('sha256').update(key).digest();
   const iv = randomBytes(12); // 96-bit IV for GCM
   const cipher = createCipheriv(ENCRYPTION_ALGO, derivedKey, iv);
 
-  let ciphertext = cipher.update(plaintext, "utf8");
+  let ciphertext = cipher.update(plaintext, 'utf8');
   ciphertext = Buffer.concat([ciphertext, cipher.final()]);
   const authTag = cipher.getAuthTag();
 
@@ -120,8 +122,8 @@ function encryptData(plaintext: string, key: string): { encrypted: string; keyId
   const combined = Buffer.concat([iv, authTag, ciphertext]);
 
   return {
-    encrypted: combined.toString("base64"),
-    keyId: createHash("sha256").update(key).digest("hex").substring(0, 16),
+    encrypted: combined.toString('base64'),
+    keyId: createHash('sha256').update(key).digest('hex').substring(0, 16),
   };
 }
 
@@ -132,7 +134,7 @@ function encryptData(plaintext: string, key: string): { encrypted: string; keyId
 export interface ExportOptions {
   dfn?: string;
   encrypt?: boolean;
-  format?: "json" | "csv";
+  format?: 'json' | 'csv';
   startDate?: string;
   endDate?: string;
   actions?: string[];
@@ -149,13 +151,13 @@ export interface ExportOptions {
  */
 export function runExport(
   jobId: string,
-  options?: ExportOptions,
+  options?: ExportOptions
 ): { ok: boolean; result?: ExportResult; error?: string } {
   const job = getJob(jobId);
-  if (!job) return { ok: false, error: "Job not found" };
-  if (job.direction !== "export") return { ok: false, error: "Job is not an export job" };
+  if (!job) return { ok: false, error: 'Job not found' };
+  if (job.direction !== 'export') return { ok: false, error: 'Job is not an export job' };
 
-  const t1 = transitionJob(jobId, "exporting");
+  const t1 = transitionJob(jobId, 'exporting');
   if (!t1.ok) return { ok: false, error: t1.error };
 
   try {
@@ -163,7 +165,7 @@ export function runExport(
     let recordCount = 0;
 
     switch (job.bundleType) {
-      case "patient-summary":
+      case 'patient-summary':
         data = buildPatientSummary({
           dfn: options?.dfn,
           includeAllergies: options?.includeAllergies ?? true,
@@ -175,7 +177,7 @@ export function runExport(
         recordCount = 1;
         break;
 
-      case "audit-export":
+      case 'audit-export':
         data = buildAuditExport({
           startDate: options?.startDate,
           endDate: options?.endDate,
@@ -184,17 +186,17 @@ export function runExport(
         recordCount = (data.entries as any[])?.length ?? 0;
         break;
 
-      case "clinical-data":
+      case 'clinical-data':
         data = {
-          resourceType: "ClinicalDataExport",
-          meta: { generatedAt: new Date().toISOString(), source: "VistA-Evolved" },
-          note: "Clinical data export -- production would aggregate multiple domains",
+          resourceType: 'ClinicalDataExport',
+          meta: { generatedAt: new Date().toISOString(), source: 'VistA-Evolved' },
+          note: 'Clinical data export -- production would aggregate multiple domains',
         };
         recordCount = 0;
         break;
 
       default:
-        transitionJob(jobId, "export-failed");
+        transitionJob(jobId, 'export-failed');
         updateJob(jobId, { error: `Unknown bundle type: ${job.bundleType}` });
         return { ok: false, error: `Unknown bundle type: ${job.bundleType}` };
     }
@@ -204,7 +206,7 @@ export function runExport(
 
     let resultData: string;
     let encrypted = false;
-    let encryptionMeta: ExportResult["encryptionMeta"];
+    let encryptionMeta: ExportResult['encryptionMeta'];
 
     if (shouldEncrypt) {
       const enc = encryptData(jsonStr, EXPORT_ENCRYPTION_KEY);
@@ -215,13 +217,13 @@ export function runExport(
         keyId: enc.keyId,
       };
     } else {
-      resultData = Buffer.from(jsonStr).toString("base64");
+      resultData = Buffer.from(jsonStr).toString('base64');
     }
 
-    const fileName = `${job.bundleType}-${job.id}-${Date.now()}.${encrypted ? "enc.json" : "json"}`;
+    const fileName = `${job.bundleType}-${job.id}-${Date.now()}.${encrypted ? 'enc.json' : 'json'}`;
 
     const exportResult: ExportResult = {
-      format: encrypted ? "encrypted-json" : "json",
+      format: encrypted ? 'encrypted-json' : 'json',
       fileName,
       recordCount,
       generatedAt: new Date().toISOString(),
@@ -230,10 +232,10 @@ export function runExport(
       encryptionMeta,
     };
 
-    transitionJob(jobId, "exported");
+    transitionJob(jobId, 'exported');
     updateJob(jobId, { exportResult });
 
-    log.info("Migration export complete", {
+    log.info('Migration export complete', {
       jobId,
       bundleType: job.bundleType,
       encrypted,
@@ -242,7 +244,7 @@ export function runExport(
 
     return { ok: true, result: exportResult };
   } catch (err: any) {
-    transitionJob(jobId, "export-failed");
+    transitionJob(jobId, 'export-failed');
     updateJob(jobId, { error: err.message });
     return { ok: false, error: err.message };
   }

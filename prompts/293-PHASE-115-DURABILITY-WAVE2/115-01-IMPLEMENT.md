@@ -25,19 +25,20 @@ across portal/telehealth/imaging/idempotency modules.
 
 Add 7 new tables to `schema.ts` and `migrate.ts`:
 
-| Table | Letter | Source Map |
-|-------|--------|-----------|
-| portal_message | AI | messageStore |
-| portal_appointment | AJ | appointmentStore |
-| telehealth_room | AK | rooms (+ participants sub-map) |
-| imaging_work_order | AL | worklistStore |
-| imaging_study_link | AM | linkageStore |
-| imaging_unmatched | AN | unmatchedStore |
-| idempotency_key | AO | memoryStore |
+| Table              | Letter | Source Map                     |
+| ------------------ | ------ | ------------------------------ |
+| portal_message     | AI     | messageStore                   |
+| portal_appointment | AJ     | appointmentStore               |
+| telehealth_room    | AK     | rooms (+ participants sub-map) |
+| imaging_work_order | AL     | worklistStore                  |
+| imaging_study_link | AM     | linkageStore                   |
+| imaging_unmatched  | AN     | unmatchedStore                 |
+| idempotency_key    | AO     | memoryStore                    |
 
 ### Step 3 -- Repository Layer
 
 Create repos in `platform/db/repo/`:
+
 - portal-message-repo.ts
 - portal-appointment-repo.ts
 - telehealth-room-repo.ts
@@ -48,6 +49,7 @@ Create repos in `platform/db/repo/`:
 ### Step 4 -- Store Rewrites
 
 Rewrite each store module to:
+
 1. Declare a typed repo slot: `let _repo: XxxRepo | null = null;`
 2. Export an `initXxxRepo(repo)` function
 3. On every mutating call: write to DB if `_repo`, else fall back to Map
@@ -55,6 +57,7 @@ Rewrite each store module to:
 5. Keep an ephemeral in-memory LRU/TTL cache for hot-path reads
 
 Files touched:
+
 - `services/portal-messaging.ts`
 - `services/portal-appointments.ts`
 - `telehealth/room-store.ts`
@@ -65,15 +68,16 @@ Files touched:
 ### Step 5 -- Wiring in index.ts
 
 Add lazy-init blocks after `initPlatformDb()` for each new repo:
+
 ```typescript
 // Phase 115: Wire portal-messaging to DB
 try {
-  const mod = await import("./platform/db/repo/portal-message-repo.js");
-  const { initMessageRepo } = await import("./services/portal-messaging.js");
+  const mod = await import('./platform/db/repo/portal-message-repo.js');
+  const { initMessageRepo } = await import('./services/portal-messaging.js');
   initMessageRepo(mod);
-  log.info("Portal messaging wired to DB");
+  log.info('Portal messaging wired to DB');
 } catch (e: any) {
-  log.warn("Portal messaging wire failed", { error: e.message });
+  log.warn('Portal messaging wire failed', { error: e.message });
 }
 // ... repeat for each module
 ```

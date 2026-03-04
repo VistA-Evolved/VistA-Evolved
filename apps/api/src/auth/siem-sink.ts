@@ -6,13 +6,13 @@
  * All events are PHI-redacted before export.
  */
 
-import { log } from "../lib/logger.js";
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type SiemTransportType = "webhook" | "syslog" | "s3" | "otlp" | "console" | "memory";
+export type SiemTransportType = 'webhook' | 'syslog' | 's3' | 'otlp' | 'console' | 'memory';
 
 export interface SiemEvent {
   /** Event ID. */
@@ -39,7 +39,7 @@ export interface SiemEvent {
   alertTriggered?: boolean;
 }
 
-export type SiemSeverity = "info" | "low" | "medium" | "high" | "critical";
+export type SiemSeverity = 'info' | 'low' | 'medium' | 'high' | 'critical';
 
 /** SIEM transport interface. */
 export interface SiemTransport {
@@ -62,27 +62,33 @@ export interface SiemTransport {
  * Webhook transport — sends events via HTTP POST.
  */
 export class WebhookSiemTransport implements SiemTransport {
-  readonly type: SiemTransportType = "webhook";
+  readonly type: SiemTransportType = 'webhook';
 
   constructor(
-    private readonly url: string = process.env.SIEM_WEBHOOK_URL || "",
-    private readonly headers: Record<string, string> = {},
+    private readonly url: string = process.env.SIEM_WEBHOOK_URL || '',
+    private readonly headers: Record<string, string> = {}
   ) {
     const token = process.env.SIEM_WEBHOOK_TOKEN;
     if (token) {
-      this.headers["Authorization"] = `Bearer ${token}`;
+      this.headers['Authorization'] = `Bearer ${token}`;
     }
   }
 
-  async init(): Promise<void> { /* no-op */ }
+  async init(): Promise<void> {
+    /* no-op */
+  }
 
   async send(events: SiemEvent[]): Promise<{ sent: number; errors: number }> {
     if (!this.url) return { sent: 0, errors: events.length };
 
     try {
       // Use dynamic import to avoid top-level dependency on specific http module
-      const payload = JSON.stringify({ events, count: events.length, timestamp: new Date().toISOString() });
-      log.debug("SIEM webhook send", { count: events.length });
+      const payload = JSON.stringify({
+        events,
+        count: events.length,
+        timestamp: new Date().toISOString(),
+      });
+      log.debug('SIEM webhook send', { count: events.length });
       // In production this would use fetch/http.request — stub for now
       void payload;
       return { sent: events.length, errors: 0 };
@@ -95,21 +101,25 @@ export class WebhookSiemTransport implements SiemTransport {
     return !!this.url;
   }
 
-  async close(): Promise<void> { /* no-op */ }
+  async close(): Promise<void> {
+    /* no-op */
+  }
 }
 
 /**
  * Syslog transport — RFC 5424 format (stub).
  */
 export class SyslogSiemTransport implements SiemTransport {
-  readonly type: SiemTransportType = "syslog";
+  readonly type: SiemTransportType = 'syslog';
 
   constructor(
-    private readonly host: string = process.env.SIEM_SYSLOG_HOST || "127.0.0.1",
-    private readonly port: number = parseInt(process.env.SIEM_SYSLOG_PORT || "514", 10),
+    private readonly host: string = process.env.SIEM_SYSLOG_HOST || '127.0.0.1',
+    _port: number = parseInt(process.env.SIEM_SYSLOG_PORT || '514', 10)
   ) {}
 
-  async init(): Promise<void> { /* UDP socket init would go here */ }
+  async init(): Promise<void> {
+    /* UDP socket init would go here */
+  }
 
   async send(events: SiemEvent[]): Promise<{ sent: number; errors: number }> {
     // RFC 5424 formatting stub
@@ -127,22 +137,26 @@ export class SyslogSiemTransport implements SiemTransport {
     return !!this.host;
   }
 
-  async close(): Promise<void> { /* no-op */ }
+  async close(): Promise<void> {
+    /* no-op */
+  }
 }
 
 /**
  * S3 JSONL transport — batches events to S3 as JSONL files.
  */
 export class S3SiemTransport implements SiemTransport {
-  readonly type: SiemTransportType = "s3";
+  readonly type: SiemTransportType = 's3';
   private buffer: SiemEvent[] = [];
 
   constructor(
-    private readonly bucket: string = process.env.SIEM_S3_BUCKET || "",
-    private readonly prefix: string = process.env.SIEM_S3_PREFIX || "siem/",
+    private readonly bucket: string = process.env.SIEM_S3_BUCKET || '',
+    _prefix: string = process.env.SIEM_S3_PREFIX || 'siem/'
   ) {}
 
-  async init(): Promise<void> { /* S3 client init */ }
+  async init(): Promise<void> {
+    /* S3 client init */
+  }
 
   async send(events: SiemEvent[]): Promise<{ sent: number; errors: number }> {
     this.buffer.push(...events);
@@ -164,13 +178,15 @@ export class S3SiemTransport implements SiemTransport {
  * OTLP transport — OpenTelemetry log exporter (stub).
  */
 export class OtlpSiemTransport implements SiemTransport {
-  readonly type: SiemTransportType = "otlp";
+  readonly type: SiemTransportType = 'otlp';
 
   constructor(
-    private readonly endpoint: string = process.env.OTEL_EXPORTER_OTLP_LOGS_ENDPOINT || "",
+    private readonly endpoint: string = process.env.OTEL_EXPORTER_OTLP_LOGS_ENDPOINT || ''
   ) {}
 
-  async init(): Promise<void> { /* OTLP client init */ }
+  async init(): Promise<void> {
+    /* OTLP client init */
+  }
 
   async send(events: SiemEvent[]): Promise<{ sent: number; errors: number }> {
     // Would convert to OTLP log records
@@ -181,17 +197,21 @@ export class OtlpSiemTransport implements SiemTransport {
     return !!this.endpoint;
   }
 
-  async close(): Promise<void> { /* no-op */ }
+  async close(): Promise<void> {
+    /* no-op */
+  }
 }
 
 /**
  * In-memory transport for testing.
  */
 export class MemorySiemTransport implements SiemTransport {
-  readonly type: SiemTransportType = "memory";
+  readonly type: SiemTransportType = 'memory';
   readonly events: SiemEvent[] = [];
 
-  async init(): Promise<void> { /* no-op */ }
+  async init(): Promise<void> {
+    /* no-op */
+  }
 
   async send(events: SiemEvent[]): Promise<{ sent: number; errors: number }> {
     this.events.push(...events);
@@ -215,7 +235,7 @@ export class MemorySiemTransport implements SiemTransport {
 let transports: SiemTransport[] = [];
 const eventBuffer: SiemEvent[] = [];
 const MAX_BUFFER = 5000;
-const FLUSH_INTERVAL_MS = parseInt(process.env.SIEM_FLUSH_INTERVAL_MS || "30000", 10);
+const FLUSH_INTERVAL_MS = parseInt(process.env.SIEM_FLUSH_INTERVAL_MS || '30000', 10);
 let flushTimer: ReturnType<typeof setInterval> | null = null;
 let eventIdCounter = 0;
 
@@ -223,23 +243,25 @@ let eventIdCounter = 0;
  * Initialize SIEM sink with configured transports.
  */
 export async function initSiemSink(): Promise<void> {
-  const configured = (process.env.SIEM_TRANSPORTS || "memory").split(",").map((t) => t.trim().toLowerCase());
+  const configured = (process.env.SIEM_TRANSPORTS || 'memory')
+    .split(',')
+    .map((t) => t.trim().toLowerCase());
 
   for (const transportType of configured) {
     switch (transportType) {
-      case "webhook":
+      case 'webhook':
         transports.push(new WebhookSiemTransport());
         break;
-      case "syslog":
+      case 'syslog':
         transports.push(new SyslogSiemTransport());
         break;
-      case "s3":
+      case 's3':
         transports.push(new S3SiemTransport());
         break;
-      case "otlp":
+      case 'otlp':
         transports.push(new OtlpSiemTransport());
         break;
-      case "memory":
+      case 'memory':
       default:
         transports.push(new MemorySiemTransport());
         break;
@@ -254,13 +276,13 @@ export async function initSiemSink(): Promise<void> {
   flushTimer = setInterval(() => void flushEvents(), FLUSH_INTERVAL_MS);
   if (flushTimer.unref) flushTimer.unref();
 
-  log.info("SIEM sink initialized", { transports: transports.map((t) => t.type) });
+  log.info('SIEM sink initialized', { transports: transports.map((t) => t.type) });
 }
 
 /**
  * Emit a SIEM event.
  */
-export function emitSiemEvent(event: Omit<SiemEvent, "id" | "timestamp">): SiemEvent {
+export function emitSiemEvent(event: Omit<SiemEvent, 'id' | 'timestamp'>): SiemEvent {
   const full: SiemEvent = {
     ...event,
     id: `siem-${++eventIdCounter}`,
@@ -328,11 +350,16 @@ function severityToSyslog(severity: SiemSeverity): number {
   // Facility 4 (auth) + severity
   const base = 4 * 8; // facility 4
   switch (severity) {
-    case "critical": return base + 2; // crit
-    case "high": return base + 3; // err
-    case "medium": return base + 4; // warning
-    case "low": return base + 5; // notice
-    case "info":
-    default: return base + 6; // info
+    case 'critical':
+      return base + 2; // crit
+    case 'high':
+      return base + 3; // err
+    case 'medium':
+      return base + 4; // warning
+    case 'low':
+      return base + 5; // notice
+    case 'info':
+    default:
+      return base + 6; // info
   }
 }

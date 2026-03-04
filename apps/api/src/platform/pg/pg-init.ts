@@ -15,9 +15,9 @@
  * Does NOT crash the server on failure — SQLite continues as fallback.
  */
 
-import { isPgConfigured, getPgDb, pgHealthCheck } from "./pg-db.js";
-import { runPgMigrations, applyRlsPolicies } from "./pg-migrate.js";
-import { pgSeedFromJsonFixtures } from "./pg-seed.js";
+import { isPgConfigured, getPgDb, pgHealthCheck } from './pg-db.js';
+import { runPgMigrations, applyRlsPolicies } from './pg-migrate.js';
+import { pgSeedFromJsonFixtures } from './pg-seed.js';
 
 let initialized = false;
 
@@ -37,11 +37,11 @@ export interface PlatformPgInitResult {
  */
 export async function initPlatformPg(): Promise<PlatformPgInitResult> {
   if (initialized) {
-    return { ok: true, reason: "already_initialized" };
+    return { ok: true, reason: 'already_initialized' };
   }
 
   if (!isPgConfigured()) {
-    return { ok: false, reason: "not_configured" };
+    return { ok: false, reason: 'not_configured' };
   }
 
   try {
@@ -51,7 +51,7 @@ export async function initPlatformPg(): Promise<PlatformPgInitResult> {
     if (!health.ok) {
       return {
         ok: false,
-        reason: "connection_failed",
+        reason: 'connection_failed',
         healthCheck: health,
         error: health.error,
       };
@@ -62,10 +62,10 @@ export async function initPlatformPg(): Promise<PlatformPgInitResult> {
     if (migrations.errors.length > 0) {
       return {
         ok: false,
-        reason: "migration_failed",
+        reason: 'migration_failed',
         migrations,
         healthCheck: health,
-        error: migrations.errors.join("; "),
+        error: migrations.errors.join('; '),
       };
     }
 
@@ -92,7 +92,7 @@ export async function initPlatformPg(): Promise<PlatformPgInitResult> {
     };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
-    return { ok: false, reason: "unexpected_error", error: msg };
+    return { ok: false, reason: 'unexpected_error', error: msg };
   }
 }
 

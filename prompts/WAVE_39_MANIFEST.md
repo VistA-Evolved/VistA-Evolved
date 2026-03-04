@@ -2,20 +2,20 @@
 
 ## Phase Map
 
-| Phase | Code | Title |
-|-------|------|-------|
-| 531 | P1 | VA + IHS UI Estate Catalog |
-| 532 | P2 | UI Parity Gap Gate (CI) |
-| 533 | P3 | Workflow State Switchboard |
-| 534 | P4 | Browser Terminal (xterm.js) |
-| 535 | P5 | MHA v1 (LForms questionnaire engine) |
-| 536 | P6 | MHA VistA Writeback (TIU) |
-| 537 | P7 | Clinical Procedures v1 (CP/MD) |
-| 538 | P8 | Imaging Capture + Attach (SIC-like) |
-| 539 | P9 | Scheduling Parity vs VSE |
-| 540 | P10 | JLV-style Longitudinal Viewer v1 |
-| 541 | P11 | VA GUI Hybrids Capability Map |
-| 542 | P12 | Acceptance Harness |
+| Phase | Code | Title                                |
+| ----- | ---- | ------------------------------------ |
+| 531   | P1   | VA + IHS UI Estate Catalog           |
+| 532   | P2   | UI Parity Gap Gate (CI)              |
+| 533   | P3   | Workflow State Switchboard           |
+| 534   | P4   | Browser Terminal (xterm.js)          |
+| 535   | P5   | MHA v1 (LForms questionnaire engine) |
+| 536   | P6   | MHA VistA Writeback (TIU)            |
+| 537   | P7   | Clinical Procedures v1 (CP/MD)       |
+| 538   | P8   | Imaging Capture + Attach (SIC-like)  |
+| 539   | P9   | Scheduling Parity vs VSE             |
+| 540   | P10  | JLV-style Longitudinal Viewer v1     |
+| 541   | P11  | VA GUI Hybrids Capability Map        |
+| 542   | P12  | Acceptance Harness                   |
 
 ## Scope
 

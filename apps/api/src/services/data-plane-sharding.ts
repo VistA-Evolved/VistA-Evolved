@@ -15,7 +15,6 @@
  */
 
 import { randomUUID } from "node:crypto";
-import { isPgConfigured, getPgPool } from "../platform/pg/pg-db.js";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 

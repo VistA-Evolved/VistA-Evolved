@@ -29,7 +29,6 @@ const VALID_FRAMEWORKS: RegulatoryFramework[] = ['HIPAA', 'DPA_PH', 'DPA_GH'];
 const VALID_STATUSES: ComplianceStatus[] = ['implemented', 'partial', 'planned', 'not_applicable'];
 
 export async function complianceRoutes(app: FastifyInstance): Promise<void> {
-
   // Full matrix
   app.get('/compliance/matrix', async (_request, _reply) => {
     const matrix = buildComplianceMatrix();
@@ -91,10 +90,7 @@ export async function complianceRoutes(app: FastifyInstance): Promise<void> {
 
   // Gaps: planned + partial requirements
   app.get('/compliance/gaps', async (_request, _reply) => {
-    const planned = [
-      ...getRequirementsByStatus('planned'),
-      ...getRequirementsByStatus('partial'),
-    ];
+    const planned = [...getRequirementsByStatus('planned'), ...getRequirementsByStatus('partial')];
     return {
       ok: true,
       count: planned.length,

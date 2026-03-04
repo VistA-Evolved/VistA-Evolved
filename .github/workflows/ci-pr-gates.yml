@@ -19,11 +19,11 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: "10.29.2"
+          version: '10.29.2'
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "24.13.0"
+          node-version: '24.13.0'
           cache: pnpm
 
       - name: Install dependencies
@@ -53,11 +53,11 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: "10.29.2"
+          version: '10.29.2'
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "24.13.0"
+          node-version: '24.13.0'
           cache: pnpm
 
       - name: Install dependencies
@@ -82,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Full history for gitleaks
+          fetch-depth: 0 # Full history for gitleaks
 
       - name: Run gitleaks
         uses: gitleaks/gitleaks-action@v2

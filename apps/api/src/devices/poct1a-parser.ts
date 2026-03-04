@@ -77,18 +77,18 @@ export interface Poct1aParseResult {
  * Returns empty string if not found.
  */
 function extractElement(xml: string, tag: string): string {
-  const re = new RegExp(`<${tag}[^>]*>([^<]*)</${tag}>`, "i");
+  const re = new RegExp(`<${tag}[^>]*>([^<]*)</${tag}>`, 'i');
   const match = xml.match(re);
-  return match ? match[1].trim() : "";
+  return match ? match[1].trim() : '';
 }
 
 /**
  * Extract an XML attribute value.
  */
 function extractAttribute(xml: string, tag: string, attr: string): string {
-  const re = new RegExp(`<${tag}[^>]*\\s${attr}\\s*=\\s*"([^"]*)"`, "i");
+  const re = new RegExp(`<${tag}[^>]*\\s${attr}\\s*=\\s*"([^"]*)"`, 'i');
   const match = xml.match(re);
-  return match ? match[1].trim() : "";
+  return match ? match[1].trim() : '';
 }
 
 /**
@@ -96,7 +96,7 @@ function extractAttribute(xml: string, tag: string, attr: string): string {
  */
 function extractBlocks(xml: string, tag: string): string[] {
   const blocks: string[] = [];
-  const re = new RegExp(`<${tag}[^>]*>[\\s\\S]*?</${tag}>`, "gi");
+  const re = new RegExp(`<${tag}[^>]*>[\\s\\S]*?</${tag}>`, 'gi');
   let match;
   while ((match = re.exec(xml)) !== null) {
     blocks.push(match[0]);
@@ -109,14 +109,14 @@ function extractBlocks(xml: string, tag: string): string[] {
 // ---------------------------------------------------------------------------
 
 function parseDevice(xml: string): Poct1aDevice {
-  const deviceBlocks = extractBlocks(xml, "Device");
+  const deviceBlocks = extractBlocks(xml, 'Device');
   const deviceXml = deviceBlocks[0] || xml;
 
   return {
-    manufacturer: extractElement(deviceXml, "Manufacturer"),
-    model: extractElement(deviceXml, "Model"),
-    serialNumber: extractElement(deviceXml, "SerialNumber"),
-    softwareVersion: extractElement(deviceXml, "SoftwareVersion"),
+    manufacturer: extractElement(deviceXml, 'Manufacturer'),
+    model: extractElement(deviceXml, 'Model'),
+    serialNumber: extractElement(deviceXml, 'SerialNumber'),
+    softwareVersion: extractElement(deviceXml, 'SoftwareVersion'),
   };
 }
 
@@ -125,15 +125,15 @@ function parseDevice(xml: string): Poct1aDevice {
 // ---------------------------------------------------------------------------
 
 function parsePatient(xml: string): Poct1aPatient {
-  const patientBlocks = extractBlocks(xml, "Patient");
+  const patientBlocks = extractBlocks(xml, 'Patient');
   const patientXml = patientBlocks[0] || xml;
 
   return {
-    patientId: extractElement(patientXml, "PatientId"),
-    lastName: extractElement(patientXml, "LastName"),
-    firstName: extractElement(patientXml, "FirstName"),
-    dateOfBirth: extractElement(patientXml, "DateOfBirth"),
-    gender: extractElement(patientXml, "Gender"),
+    patientId: extractElement(patientXml, 'PatientId'),
+    lastName: extractElement(patientXml, 'LastName'),
+    firstName: extractElement(patientXml, 'FirstName'),
+    dateOfBirth: extractElement(patientXml, 'DateOfBirth'),
+    gender: extractElement(patientXml, 'Gender'),
   };
 }
 
@@ -143,23 +143,24 @@ function parsePatient(xml: string): Poct1aPatient {
 
 function parseResult(resultXml: string): Poct1aResult {
   // Try attribute-based analyte: <Analyte code="GLU" name="Glucose"/>
-  let analyteCode = extractAttribute(resultXml, "Analyte", "code");
-  let analyteName = extractAttribute(resultXml, "Analyte", "name");
+  let analyteCode = extractAttribute(resultXml, 'Analyte', 'code');
+  let analyteName = extractAttribute(resultXml, 'Analyte', 'name');
 
   // Fallback to element-based: <AnalyteCode>GLU</AnalyteCode>
-  if (!analyteCode) analyteCode = extractElement(resultXml, "AnalyteCode");
-  if (!analyteName) analyteName = extractElement(resultXml, "AnalyteName");
+  if (!analyteCode) analyteCode = extractElement(resultXml, 'AnalyteCode');
+  if (!analyteName) analyteName = extractElement(resultXml, 'AnalyteName');
   // Also try just <Analyte>CODE</Analyte> as simple element
-  if (!analyteCode) analyteCode = extractElement(resultXml, "Analyte");
+  if (!analyteCode) analyteCode = extractElement(resultXml, 'Analyte');
 
   return {
     analyteCode,
     analyteName,
-    value: extractElement(resultXml, "Value"),
-    unit: extractElement(resultXml, "Unit"),
-    flag: extractElement(resultXml, "Flag"),
-    referenceRange: extractElement(resultXml, "ReferenceRange"),
-    timestamp: extractElement(resultXml, "Timestamp") || extractElement(resultXml, "ResultTimestamp"),
+    value: extractElement(resultXml, 'Value'),
+    unit: extractElement(resultXml, 'Unit'),
+    flag: extractElement(resultXml, 'Flag'),
+    referenceRange: extractElement(resultXml, 'ReferenceRange'),
+    timestamp:
+      extractElement(resultXml, 'Timestamp') || extractElement(resultXml, 'ResultTimestamp'),
   };
 }
 
@@ -171,19 +172,19 @@ function parseObservation(obsXml: string): Poct1aObservation {
   const device = parseDevice(obsXml);
   const patient = parsePatient(obsXml);
 
-  const resultBlocks = extractBlocks(obsXml, "Result");
+  const resultBlocks = extractBlocks(obsXml, 'Result');
   const results = resultBlocks.map(parseResult);
 
   return {
     observationId:
-      extractElement(obsXml, "ObservationId") ||
-      extractAttribute(obsXml, "Observation", "id") ||
-      "",
+      extractElement(obsXml, 'ObservationId') ||
+      extractAttribute(obsXml, 'Observation', 'id') ||
+      '',
     device,
     patient,
     results,
-    operatorId: extractElement(obsXml, "OperatorId"),
-    timestamp: extractElement(obsXml, "Timestamp") || new Date().toISOString(),
+    operatorId: extractElement(obsXml, 'OperatorId'),
+    timestamp: extractElement(obsXml, 'Timestamp') || new Date().toISOString(),
   };
 }
 
@@ -201,21 +202,21 @@ export function parsePoct1a(xml: string): Poct1aParseResult {
   try {
     const trimmedXml = xml.trim();
     if (!trimmedXml) {
-      return { ok: false, observations: [], error: "Empty XML input" };
+      return { ok: false, observations: [], error: 'Empty XML input' };
     }
 
     // Extract all <Observation> blocks
-    let obsBlocks = extractBlocks(trimmedXml, "Observation");
+    let obsBlocks = extractBlocks(trimmedXml, 'Observation');
 
     // If no <Observation> blocks found, try treating the whole thing
     // as a single observation (some devices wrap differently)
     if (obsBlocks.length === 0) {
       // Check if there are <Result> elements at all
-      const resultBlocks = extractBlocks(trimmedXml, "Result");
+      const resultBlocks = extractBlocks(trimmedXml, 'Result');
       if (resultBlocks.length > 0) {
         obsBlocks = [trimmedXml];
       } else {
-        return { ok: false, observations: [], error: "No Observation or Result elements found" };
+        return { ok: false, observations: [], error: 'No Observation or Result elements found' };
       }
     }
 
@@ -229,7 +230,7 @@ export function parsePoct1a(xml: string): Poct1aParseResult {
     return {
       ok: false,
       observations: [],
-      error: err.message || "POCT1-A parse error",
+      error: err.message || 'POCT1-A parse error',
     };
   }
 }

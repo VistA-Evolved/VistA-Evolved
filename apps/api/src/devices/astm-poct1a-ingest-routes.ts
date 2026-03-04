@@ -6,14 +6,14 @@
  * data to these endpoints. Observations are stored in the device pipeline.
  */
 
-import type { FastifyInstance, FastifyRequest } from "fastify";
-import { parseAstm, type AstmParseResult } from "./astm-parser.js";
-import { parsePoct1a, type Poct1aParseResult } from "./poct1a-parser.js";
-import { storeObservation } from "./gateway-store.js";
-import type { DeviceObservation } from "./types.js";
-import * as crypto from "node:crypto";
+import type { FastifyInstance, FastifyRequest } from 'fastify';
+import { parseAstm, type AstmParseResult } from './astm-parser.js';
+import { parsePoct1a, type Poct1aParseResult } from './poct1a-parser.js';
+import { storeObservation } from './gateway-store.js';
+import type { DeviceObservation } from './types.js';
+import * as crypto from 'node:crypto';
 
-const DEFAULT_TENANT = "default";
+const DEFAULT_TENANT = 'default';
 const MAX_INGEST_LOG = 1000;
 
 // ---------------------------------------------------------------------------
@@ -51,7 +51,7 @@ const poct1aIngestLog: Poct1aIngestEntry[] = [];
 // ---------------------------------------------------------------------------
 
 function generateId(prefix: string): string {
-  return `${prefix}-${crypto.randomBytes(8).toString("hex")}`;
+  return `${prefix}-${crypto.randomBytes(8).toString('hex')}`;
 }
 
 function now(): string {
@@ -59,7 +59,7 @@ function now(): string {
 }
 
 function tenantId(request: FastifyRequest): string {
-  return (request.headers["x-tenant-id"] as string) || DEFAULT_TENANT;
+  return (request.headers['x-tenant-id'] as string) || DEFAULT_TENANT;
 }
 
 // ---------------------------------------------------------------------------
@@ -70,20 +70,22 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
   // -------------------------------------------------------------------------
   // POST /devices/astm/ingest — ASTM frame/record ingest
   // -------------------------------------------------------------------------
-  server.post("/devices/astm/ingest", async (request, reply) => {
+  server.post('/devices/astm/ingest', async (request, reply) => {
     const tenant = tenantId(request);
     const body = request.body as any;
 
     let rawData: string;
     let gatewayId: string | undefined;
 
-    if (body && typeof body === "object" && body.data) {
+    if (body && typeof body === 'object' && body.data) {
       rawData = body.data;
       gatewayId = body.gatewayId;
-    } else if (typeof body === "string") {
+    } else if (typeof body === 'string') {
       rawData = body;
     } else {
-      return reply.code(400).send({ ok: false, error: "Provide { data: '<astm>' } or raw ASTM text" });
+      return reply
+        .code(400)
+        .send({ ok: false, error: "Provide { data: '<astm>' } or raw ASTM text" });
     }
 
     const result: AstmParseResult = parseAstm(rawData);
@@ -93,18 +95,18 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
     if (result.ok && result.observations.length > 0) {
       for (const obs of result.observations) {
         const deviceObs: DeviceObservation = {
-          id: generateId("obs"),
-          gatewayId: gatewayId || "direct-astm",
-          deviceId: result.message?.senderId || "unknown",
+          id: generateId('obs'),
+          gatewayId: gatewayId || 'direct-astm',
+          deviceId: result.message?.senderId || 'unknown',
           patientId: obs.patientId || undefined,
           code: obs.testCode,
-          codeSystem: "ASTM",
+          codeSystem: 'ASTM',
           value: obs.value,
           unit: obs.units,
           flag: obs.abnormalFlag,
           referenceRange: obs.referenceRange,
           specimen: obs.specimenId,
-          sourceProtocol: "astm",
+          sourceProtocol: 'astm',
           observedAt: result.message?.timestamp || now(),
           ingestedAt: now(),
           normalized: false,
@@ -117,8 +119,8 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
 
     // Log the ingest
     const entry: AstmIngestEntry = {
-      id: generateId("astm-ing"),
-      senderId: result.message?.senderId || "",
+      id: generateId('astm-ing'),
+      senderId: result.message?.senderId || '',
       recordCount: result.message?.records.length || 0,
       observationCount: result.observations.length,
       frameCount: result.frameCount,
@@ -145,12 +147,14 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
   // -------------------------------------------------------------------------
   // POST /devices/astm/parse — Parse-only diagnostic (no storage)
   // -------------------------------------------------------------------------
-  server.post("/devices/astm/parse", async (request, reply) => {
+  server.post('/devices/astm/parse', async (request, reply) => {
     const body = request.body as any;
-    const rawData = typeof body === "string" ? body : body?.data;
+    const rawData = typeof body === 'string' ? body : body?.data;
 
     if (!rawData) {
-      return reply.code(400).send({ ok: false, error: "Provide { data: '<astm>' } or raw ASTM text" });
+      return reply
+        .code(400)
+        .send({ ok: false, error: "Provide { data: '<astm>' } or raw ASTM text" });
     }
 
     const result = parseAstm(rawData);
@@ -160,24 +164,28 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
   // -------------------------------------------------------------------------
   // GET /devices/astm/ingest-log — ASTM ingest history
   // -------------------------------------------------------------------------
-  server.get("/devices/astm/ingest-log", async (_request, reply) => {
-    return reply.send({ ok: true, entries: [...astmIngestLog].reverse(), count: astmIngestLog.length });
+  server.get('/devices/astm/ingest-log', async (_request, reply) => {
+    return reply.send({
+      ok: true,
+      entries: [...astmIngestLog].reverse(),
+      count: astmIngestLog.length,
+    });
   });
 
   // -------------------------------------------------------------------------
   // POST /devices/poct1a/ingest — POCT1-A XML ingest
   // -------------------------------------------------------------------------
-  server.post("/devices/poct1a/ingest", async (request, reply) => {
+  server.post('/devices/poct1a/ingest', async (request, reply) => {
     const tenant = tenantId(request);
     const body = request.body as any;
 
     let xmlData: string;
     let gatewayId: string | undefined;
 
-    if (body && typeof body === "object" && body.data) {
+    if (body && typeof body === 'object' && body.data) {
       xmlData = body.data;
       gatewayId = body.gatewayId;
-    } else if (typeof body === "string") {
+    } else if (typeof body === 'string') {
       xmlData = body;
     } else {
       return reply.code(400).send({ ok: false, error: "Provide { data: '<xml>' } or raw XML" });
@@ -191,17 +199,17 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
       for (const obs of result.observations) {
         for (const r of obs.results) {
           const deviceObs: DeviceObservation = {
-            id: generateId("obs"),
-            gatewayId: gatewayId || "direct-poct1a",
-            deviceId: obs.device.serialNumber || "unknown",
+            id: generateId('obs'),
+            gatewayId: gatewayId || 'direct-poct1a',
+            deviceId: obs.device.serialNumber || 'unknown',
             patientId: obs.patient.patientId || undefined,
             code: r.analyteCode,
-            codeSystem: "POCT1A",
+            codeSystem: 'POCT1A',
             value: r.value,
             unit: r.unit,
             flag: r.flag,
             referenceRange: r.referenceRange,
-            sourceProtocol: "poct1a",
+            sourceProtocol: 'poct1a',
             observedAt: r.timestamp || obs.timestamp,
             ingestedAt: now(),
             normalized: false,
@@ -215,15 +223,12 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
 
     // Log the ingest
     const firstDevice = result.observations[0]?.device;
-    const totalResults = result.observations.reduce(
-      (sum, o) => sum + o.results.length,
-      0
-    );
+    const totalResults = result.observations.reduce((sum, o) => sum + o.results.length, 0);
 
     const entry: Poct1aIngestEntry = {
-      id: generateId("poct-ing"),
-      deviceManufacturer: firstDevice?.manufacturer || "",
-      deviceModel: firstDevice?.model || "",
+      id: generateId('poct-ing'),
+      deviceManufacturer: firstDevice?.manufacturer || '',
+      deviceModel: firstDevice?.model || '',
       observationCount: result.observations.length,
       resultCount: totalResults,
       parseOk: result.ok,
@@ -246,9 +251,9 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
   // -------------------------------------------------------------------------
   // POST /devices/poct1a/parse — Parse-only diagnostic (no storage)
   // -------------------------------------------------------------------------
-  server.post("/devices/poct1a/parse", async (request, reply) => {
+  server.post('/devices/poct1a/parse', async (request, reply) => {
     const body = request.body as any;
-    const xmlData = typeof body === "string" ? body : body?.data;
+    const xmlData = typeof body === 'string' ? body : body?.data;
 
     if (!xmlData) {
       return reply.code(400).send({ ok: false, error: "Provide { data: '<xml>' } or raw XML" });
@@ -261,7 +266,11 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
   // -------------------------------------------------------------------------
   // GET /devices/poct1a/ingest-log — POCT1-A ingest history
   // -------------------------------------------------------------------------
-  server.get("/devices/poct1a/ingest-log", async (_request, reply) => {
-    return reply.send({ ok: true, entries: [...poct1aIngestLog].reverse(), count: poct1aIngestLog.length });
+  server.get('/devices/poct1a/ingest-log', async (_request, reply) => {
+    return reply.send({
+      ok: true,
+      entries: [...poct1aIngestLog].reverse(),
+      count: poct1aIngestLog.length,
+    });
   });
 }

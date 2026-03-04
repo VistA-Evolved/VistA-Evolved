@@ -20,7 +20,7 @@
  *   GET    /clearinghouse/health                 — transport layer health
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 import {
   listTransports,
   getTransport,
@@ -33,33 +33,32 @@ import {
   configureRateLimit,
   listRateLimits,
   getRateLimitStatus,
-} from "../rcm/connectors/clearinghouse-transport.js";
+} from '../rcm/connectors/clearinghouse-transport.js';
 
 export async function clearinghouseTransportRoutes(app: FastifyInstance): Promise<void> {
-
   // ─── Transport Providers ─────────────────────────────────────────
 
-  app.get("/clearinghouse/transports", async () => {
+  app.get('/clearinghouse/transports', async () => {
     const transports = listTransports();
     return { ok: true, count: transports.length, transports };
   });
 
-  app.post("/clearinghouse/transports/test/:id", async (request, reply) => {
+  app.post('/clearinghouse/transports/test/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const transport = getTransport(id);
     if (!transport) {
       reply.code(404);
-      return { ok: false, error: "transport_not_found" };
+      return { ok: false, error: 'transport_not_found' };
     }
 
     // Optionally configure before testing
     if (body.config) {
       try {
         transport.configure(body.config);
-      } catch (err: any) {
+      } catch (_err: any) {
         reply.code(400);
-        return { ok: false, error: "config_error" };
+        return { ok: false, error: 'config_error' };
       }
     }
 
@@ -69,11 +68,11 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
 
   // ─── Transport Profiles ──────────────────────────────────────────
 
-  app.post("/clearinghouse/profiles", async (request, reply) => {
+  app.post('/clearinghouse/profiles', async (request, reply) => {
     const body = (request.body as any) || {};
     if (!body.connectorId || !body.transportConfig) {
       reply.code(400);
-      return { ok: false, error: "connectorId and transportConfig are required" };
+      return { ok: false, error: 'connectorId and transportConfig are required' };
     }
 
     const profile = createTransportProfile({
@@ -88,34 +87,34 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
     return { ok: true, profile };
   });
 
-  app.get("/clearinghouse/profiles", async () => {
+  app.get('/clearinghouse/profiles', async () => {
     const profiles = listTransportProfiles();
     return { ok: true, count: profiles.length, profiles };
   });
 
-  app.get("/clearinghouse/profiles/:id", async (request, reply) => {
+  app.get('/clearinghouse/profiles/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const profile = getTransportProfile(id);
     if (!profile) {
       reply.code(404);
-      return { ok: false, error: "profile_not_found" };
+      return { ok: false, error: 'profile_not_found' };
     }
     return { ok: true, profile };
   });
 
-  app.delete("/clearinghouse/profiles/:id", async (request, reply) => {
+  app.delete('/clearinghouse/profiles/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const deleted = deleteTransportProfile(id);
     if (!deleted) {
       reply.code(404);
-      return { ok: false, error: "profile_not_found" };
+      return { ok: false, error: 'profile_not_found' };
     }
     return { ok: true, deleted: true };
   });
 
   // ─── Credential Vault ───────────────────────────────────────────
 
-  app.get("/clearinghouse/vault/status", async () => {
+  app.get('/clearinghouse/vault/status', async () => {
     const vault = getActiveVault();
     const health = await vault.healthCheck();
     const keys = await vault.listKeys();
@@ -130,11 +129,11 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
     };
   });
 
-  app.post("/clearinghouse/vault/credentials", async (request, reply) => {
+  app.post('/clearinghouse/vault/credentials', async (request, reply) => {
     const body = (request.body as any) || {};
     if (!body.key || !body.value || !body.type) {
       reply.code(400);
-      return { ok: false, error: "key, value, and type are required" };
+      return { ok: false, error: 'key, value, and type are required' };
     }
 
     const vault = getActiveVault();
@@ -145,45 +144,45 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
         type: body.type,
         metadata: body.metadata,
       });
-    } catch (err: any) {
+    } catch (_err: any) {
       reply.code(422);
-      return { ok: false, error: "vault_write_failed" };
+      return { ok: false, error: 'vault_write_failed' };
     }
 
     reply.code(201);
     return { ok: true, stored: true, key: body.key };
   });
 
-  app.delete("/clearinghouse/vault/credentials/:key", async (request, reply) => {
+  app.delete('/clearinghouse/vault/credentials/:key', async (request, reply) => {
     const { key } = request.params as { key: string };
     const vault = getActiveVault();
     const deleted = await vault.deleteCredential(key);
     if (!deleted) {
       reply.code(404);
-      return { ok: false, error: "credential_not_found" };
+      return { ok: false, error: 'credential_not_found' };
     }
     return { ok: true, deleted: true };
   });
 
   // ─── Rate Limiting ──────────────────────────────────────────────
 
-  app.get("/clearinghouse/rate-limits", async () => {
+  app.get('/clearinghouse/rate-limits', async () => {
     const limits = listRateLimits();
     return { ok: true, count: limits.length, rateLimits: limits };
   });
 
-  app.post("/clearinghouse/rate-limits", async (request, reply) => {
+  app.post('/clearinghouse/rate-limits', async (request, reply) => {
     const body = (request.body as any) || {};
     if (!body.connectorId || !body.maxTokens || !body.refillRatePerSec) {
       reply.code(400);
-      return { ok: false, error: "connectorId, maxTokens, and refillRatePerSec are required" };
+      return { ok: false, error: 'connectorId, maxTokens, and refillRatePerSec are required' };
     }
 
     configureRateLimit(body.connectorId, body.maxTokens, body.refillRatePerSec);
     return { ok: true, configured: true, connectorId: body.connectorId };
   });
 
-  app.get("/clearinghouse/rate-limits/:id", async (request) => {
+  app.get('/clearinghouse/rate-limits/:id', async (request) => {
     const { id } = request.params as { id: string };
     const status = getRateLimitStatus(id);
     return { ok: true, connectorId: id, ...status };
@@ -191,7 +190,7 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
 
   // ─── Health ─────────────────────────────────────────────────────
 
-  app.get("/clearinghouse/health", async () => {
+  app.get('/clearinghouse/health', async () => {
     const transports = listTransports();
     const profiles = listTransportProfiles();
     const limits = listRateLimits();

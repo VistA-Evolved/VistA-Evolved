@@ -1,203 +1,203 @@
 {
-    "payers":  [
-                   {
-                       "payerId":  "PH-PHIC",
-                       "name":  "Philippine Health Insurance Corporation (PhilHealth)",
-                       "integrationMode":  "government_portal",
-                       "status":  "active",
-                       "category":  "government"
-                   },
-                   {
-                       "payerId":  "PH-ASIANLIFE",
-                       "name":  "AsianLife and General Assurance Corporation",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-AVEGA",
-                       "name":  "Avega Managed Care, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-CAREHEALTH",
-                       "name":  "CareHealth Plus Systems International, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-CAREWELL",
-                       "name":  "Carewell Health Systems, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-CARITAS",
-                       "name":  "Caritas Health Shield, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-COCOLIFE",
-                       "name":  "Cocolife Health Care, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-EASTWEST",
-                       "name":  "EastWest Healthcare, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-FORTICARE",
-                       "name":  "Forticare Health Systems International, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-HEALTHMAINT",
-                       "name":  "Health Maintenance, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-HEALTHPLAN",
-                       "name":  "Health Plan Philippines, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-HEALTHFIRST",
-                       "name":  "HealthFirst Healthcare, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-ICARE",
-                       "name":  "i-Care Health Solutions, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-INSULAR",
-                       "name":  "Insular Health Care, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-INTELLICARE",
-                       "name":  "Intellicare Asia Corporation",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-KAISER-INTL",
-                       "name":  "Kaiser International Healthgroup, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-LIFEHEALTH",
-                       "name":  "Life and Health HMP, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-MAXICARE",
-                       "name":  "MaxiCare Healthcare Corp.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-MEDICARD",
-                       "name":  "MediCard Philippines, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-MEDILINK",
-                       "name":  "MediLink Network, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-METROCARE",
-                       "name":  "Metrocare Health Systems, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-PACIFIC-CROSS",
-                       "name":  "Pacific Cross Health Care, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-PHILCARE",
-                       "name":  "PhilCare, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-PHILBRITISH",
-                       "name":  "Philippine British Assurance Company, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-PHCP",
-                       "name":  "Philippine Health Care Providers, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-PHP",
-                       "name":  "Philippine Health Plan, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-STARCARE",
-                       "name":  "Starcare Health Systems, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   },
-                   {
-                       "payerId":  "PH-VALUCARE",
-                       "name":  "Value Care Health Systems, Inc.",
-                       "integrationMode":  "portal_batch",
-                       "status":  "active",
-                       "category":  "hmo"
-                   }
-               ],
-    "generatedAt":  "2026-02-20T15:37:05.8932246+08:00",
-    "source":  "data/payers/ph_hmos.json",
-    "total":  28
+  "payers": [
+    {
+      "payerId": "PH-PHIC",
+      "name": "Philippine Health Insurance Corporation (PhilHealth)",
+      "integrationMode": "government_portal",
+      "status": "active",
+      "category": "government"
+    },
+    {
+      "payerId": "PH-ASIANLIFE",
+      "name": "AsianLife and General Assurance Corporation",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-AVEGA",
+      "name": "Avega Managed Care, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-CAREHEALTH",
+      "name": "CareHealth Plus Systems International, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-CAREWELL",
+      "name": "Carewell Health Systems, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-CARITAS",
+      "name": "Caritas Health Shield, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-COCOLIFE",
+      "name": "Cocolife Health Care, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-EASTWEST",
+      "name": "EastWest Healthcare, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-FORTICARE",
+      "name": "Forticare Health Systems International, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-HEALTHMAINT",
+      "name": "Health Maintenance, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-HEALTHPLAN",
+      "name": "Health Plan Philippines, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-HEALTHFIRST",
+      "name": "HealthFirst Healthcare, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-ICARE",
+      "name": "i-Care Health Solutions, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-INSULAR",
+      "name": "Insular Health Care, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-INTELLICARE",
+      "name": "Intellicare Asia Corporation",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-KAISER-INTL",
+      "name": "Kaiser International Healthgroup, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-LIFEHEALTH",
+      "name": "Life and Health HMP, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-MAXICARE",
+      "name": "MaxiCare Healthcare Corp.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-MEDICARD",
+      "name": "MediCard Philippines, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-MEDILINK",
+      "name": "MediLink Network, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-METROCARE",
+      "name": "Metrocare Health Systems, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-PACIFIC-CROSS",
+      "name": "Pacific Cross Health Care, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-PHILCARE",
+      "name": "PhilCare, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-PHILBRITISH",
+      "name": "Philippine British Assurance Company, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-PHCP",
+      "name": "Philippine Health Care Providers, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-PHP",
+      "name": "Philippine Health Plan, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-STARCARE",
+      "name": "Starcare Health Systems, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    },
+    {
+      "payerId": "PH-VALUCARE",
+      "name": "Value Care Health Systems, Inc.",
+      "integrationMode": "portal_batch",
+      "status": "active",
+      "category": "hmo"
+    }
+  ],
+  "generatedAt": "2026-02-20T15:37:05.8932246+08:00",
+  "source": "data/payers/ph_hmos.json",
+  "total": 28
 }

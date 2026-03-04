@@ -2,7 +2,7 @@
  * Phase 160: Department Workflow Engine
  * In-memory store for workflow definitions and instances with step lifecycle.
  */
-import { randomUUID } from "node:crypto";
+import { randomUUID } from 'node:crypto';
 import type {
   WorkflowDefinition,
   WorkflowInstance,
@@ -10,8 +10,8 @@ import type {
   WorkflowInstanceStatus,
   WorkflowStepStatus,
   DepartmentPack,
-} from "./types.js";
-import { getAllDepartmentPacks } from "./department-packs.js";
+} from './types.js';
+import { getAllDepartmentPacks } from './department-packs.js';
 
 // ── In-memory stores ────────────────────────────────────────────────
 const definitionStore = new Map<string, WorkflowDefinition>();
@@ -20,16 +20,19 @@ const instanceStore = new Map<string, WorkflowInstance>();
 // ── Definitions CRUD ────────────────────────────────────────────────
 
 export function createDefinition(
-  input: Omit<WorkflowDefinition, "id" | "tenantId" | "version" | "status" | "createdAt" | "updatedAt">,
-  tenantId: string = "default",
-  createdBy?: string,
+  input: Omit<
+    WorkflowDefinition,
+    'id' | 'tenantId' | 'version' | 'status' | 'createdAt' | 'updatedAt'
+  >,
+  tenantId: string = 'default',
+  createdBy?: string
 ): WorkflowDefinition {
   const def: WorkflowDefinition = {
     ...input,
     id: randomUUID(),
     tenantId,
     version: 1,
-    status: "draft",
+    status: 'draft',
     createdBy,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -41,7 +44,7 @@ export function createDefinition(
 export function activateDefinition(defId: string): WorkflowDefinition | null {
   const def = definitionStore.get(defId);
   if (!def) return null;
-  def.status = "active";
+  def.status = 'active';
   def.updatedAt = new Date().toISOString();
   return def;
 }
@@ -49,7 +52,7 @@ export function activateDefinition(defId: string): WorkflowDefinition | null {
 export function archiveDefinition(defId: string): WorkflowDefinition | null {
   const def = definitionStore.get(defId);
   if (!def) return null;
-  def.status = "archived";
+  def.status = 'archived';
   def.updatedAt = new Date().toISOString();
   return def;
 }
@@ -58,7 +61,10 @@ export function getDefinition(defId: string): WorkflowDefinition | undefined {
   return definitionStore.get(defId);
 }
 
-export function listDefinitions(tenantId: string = "default", department?: string): WorkflowDefinition[] {
+export function listDefinitions(
+  tenantId: string = 'default',
+  department?: string
+): WorkflowDefinition[] {
   return Array.from(definitionStore.values())
     .filter((d) => d.tenantId === tenantId && (!department || d.department === department))
     .sort((a, b) => a.department.localeCompare(b.department));
@@ -69,10 +75,10 @@ export function listDefinitions(tenantId: string = "default", department?: strin
 export function startWorkflow(
   definitionId: string,
   patientDfn: string,
-  tenantId: string = "default",
+  tenantId: string = 'default',
   startedBy?: string,
   encounterRef?: string,
-  queueTicketId?: string,
+  queueTicketId?: string
 ): WorkflowInstance | null {
   const def = definitionStore.get(definitionId);
   if (!def) return null;
@@ -80,11 +86,11 @@ export function startWorkflow(
   const steps: WorkflowStepInstance[] = def.steps.map((s) => ({
     stepId: s.id,
     name: s.name,
-    status: "pending" as WorkflowStepStatus,
+    status: 'pending' as WorkflowStepStatus,
   }));
 
   // Auto-activate first step
-  if (steps.length > 0) steps[0].status = "active";
+  if (steps.length > 0) steps[0].status = 'active';
 
   const inst: WorkflowInstance = {
     id: randomUUID(),
@@ -94,7 +100,7 @@ export function startWorkflow(
     patientDfn,
     encounterRef,
     queueTicketId,
-    status: "in_progress",
+    status: 'in_progress',
     steps,
     startedAt: new Date().toISOString(),
     startedBy,
@@ -106,38 +112,38 @@ export function startWorkflow(
 export function advanceStep(
   instanceId: string,
   stepId: string,
-  action: "complete" | "skip",
+  action: 'complete' | 'skip',
   actorDuz?: string,
-  notes?: string,
+  notes?: string
 ): WorkflowInstance | null {
   const inst = instanceStore.get(instanceId);
-  if (!inst || inst.status !== "in_progress") return null;
+  if (!inst || inst.status !== 'in_progress') return null;
 
   const stepIndex = inst.steps.findIndex((s) => s.stepId === stepId);
   if (stepIndex === -1) return null;
 
   const step = inst.steps[stepIndex];
-  if (step.status !== "active" && step.status !== "pending") return null;
+  if (step.status !== 'active' && step.status !== 'pending') return null;
 
-  if (action === "complete") {
-    step.status = "completed";
+  if (action === 'complete') {
+    step.status = 'completed';
     step.completedAt = new Date().toISOString();
     step.completedBy = actorDuz;
     if (notes) step.notes = notes;
   } else {
-    step.status = "skipped";
-    step.skippedReason = notes || "Skipped";
+    step.status = 'skipped';
+    step.skippedReason = notes || 'Skipped';
   }
 
   // Auto-activate next pending step
-  const nextPending = inst.steps.find((s) => s.status === "pending");
+  const nextPending = inst.steps.find((s) => s.status === 'pending');
   if (nextPending) {
-    nextPending.status = "active";
+    nextPending.status = 'active';
   } else {
     // All steps done
-    const allDone = inst.steps.every((s) => s.status === "completed" || s.status === "skipped");
+    const allDone = inst.steps.every((s) => s.status === 'completed' || s.status === 'skipped');
     if (allDone) {
-      inst.status = "completed";
+      inst.status = 'completed';
       inst.completedAt = new Date().toISOString();
     }
   }
@@ -147,8 +153,8 @@ export function advanceStep(
 
 export function cancelWorkflow(instanceId: string): WorkflowInstance | null {
   const inst = instanceStore.get(instanceId);
-  if (!inst || inst.status === "completed" || inst.status === "cancelled") return null;
-  inst.status = "cancelled";
+  if (!inst || inst.status === 'completed' || inst.status === 'cancelled') return null;
+  inst.status = 'cancelled';
   inst.completedAt = new Date().toISOString();
   return inst;
 }
@@ -158,23 +164,26 @@ export function getInstance(instanceId: string): WorkflowInstance | undefined {
 }
 
 export function listInstances(
-  tenantId: string = "default",
+  tenantId: string = 'default',
   department?: string,
-  status?: WorkflowInstanceStatus,
+  status?: WorkflowInstanceStatus
 ): WorkflowInstance[] {
   return Array.from(instanceStore.values())
     .filter(
       (i) =>
         i.tenantId === tenantId &&
         (!department || i.department === department) &&
-        (!status || i.status === status),
+        (!status || i.status === status)
     )
     .sort((a, b) => new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime());
 }
 
 // ── Seed department packs ───────────────────────────────────────────
 
-export function seedDepartmentPacks(tenantId: string = "default"): { seeded: number; departments: number } {
+export function seedDepartmentPacks(tenantId: string = 'default'): {
+  seeded: number;
+  departments: number;
+} {
   const packs = getAllDepartmentPacks();
   let seeded = 0;
 
@@ -182,7 +191,7 @@ export function seedDepartmentPacks(tenantId: string = "default"): { seeded: num
     for (const wf of pack.workflows) {
       // Check if already exists
       const existing = Array.from(definitionStore.values()).find(
-        (d) => d.tenantId === tenantId && d.department === pack.department && d.name === wf.name,
+        (d) => d.tenantId === tenantId && d.department === pack.department && d.name === wf.name
       );
       if (existing) continue;
 
@@ -195,7 +204,7 @@ export function seedDepartmentPacks(tenantId: string = "default"): { seeded: num
           tags: wf.tags,
         },
         tenantId,
-        "system",
+        'system'
       );
       // Auto-activate seeded definitions
       activateDefinition(def.id);
@@ -212,11 +221,11 @@ export function getDepartmentPacks(): DepartmentPack[] {
     department: p.department,
     displayName: p.displayName,
     description: p.description,
-    workflows: listDefinitions("default", p.department),
+    workflows: listDefinitions('default', p.department),
   }));
 }
 
-export function getWorkflowStats(tenantId: string = "default"): {
+export function getWorkflowStats(tenantId: string = 'default'): {
   totalDefinitions: number;
   activeDefinitions: number;
   totalInstances: number;
@@ -232,10 +241,10 @@ export function getWorkflowStats(tenantId: string = "default"): {
 
   return {
     totalDefinitions: defs.length,
-    activeDefinitions: defs.filter((d) => d.status === "active").length,
+    activeDefinitions: defs.filter((d) => d.status === 'active').length,
     totalInstances: insts.length,
-    inProgress: insts.filter((i) => i.status === "in_progress").length,
-    completed: insts.filter((i) => i.status === "completed").length,
+    inProgress: insts.filter((i) => i.status === 'in_progress').length,
+    completed: insts.filter((i) => i.status === 'completed').length,
     byDepartment: byDept,
   };
 }

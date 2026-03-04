@@ -11,11 +11,11 @@ every CPRS RPC a discoverable API surface.
 
 ## Inputs
 
-| Input | Path | Notes |
-|-------|------|-------|
-| RPC catalog | `design/contracts/cprs/v1/rpc_catalog.json` | 975 RPCs from Phase 10A |
-| Screen registry | `design/contracts/cprs/v1/screen_registry.json` | Screen → RPC mapping |
-| Generator script | `tools/cprs-extract/generate-api-stubs.mjs` | Node ESM script |
+| Input            | Path                                            | Notes                   |
+| ---------------- | ----------------------------------------------- | ----------------------- |
+| RPC catalog      | `design/contracts/cprs/v1/rpc_catalog.json`     | 975 RPCs from Phase 10A |
+| Screen registry  | `design/contracts/cprs/v1/screen_registry.json` | Screen → RPC mapping    |
+| Generator script | `tools/cprs-extract/generate-api-stubs.mjs`     | Node ESM script         |
 
 ## Commands
 
@@ -25,6 +25,7 @@ pnpm run cprs:generate-stubs
 ```
 
 This executes `node tools/cprs-extract/generate-api-stubs.mjs`, which:
+
 1. Reads `rpc_catalog.json`
 2. Classifies RPCs into 6 domains by name prefix
 3. Generates one Fastify route plugin per domain
@@ -32,32 +33,33 @@ This executes `node tools/cprs-extract/generate-api-stubs.mjs`, which:
 
 ## Domain Classification
 
-| Domain | Prefix(es) | RPC Count |
-|--------|-----------|-----------|
-| problems | `ORQQPL*` | 25 |
-| meds | `ORWPS*`, `ORWDPS*` | 59 |
-| notes | `TIU*`, `ORWTIU*` | 111 |
-| orders | `ORWDX*`, `ORWOR*`, `ORWORR*` | 135 |
-| labs | `ORWLRR*`, `ORWDLR*` | 36 |
-| reports | `ORWRP*`, `ORWSR*` | 38 |
+| Domain   | Prefix(es)                    | RPC Count |
+| -------- | ----------------------------- | --------- |
+| problems | `ORQQPL*`                     | 25        |
+| meds     | `ORWPS*`, `ORWDPS*`           | 59        |
+| notes    | `TIU*`, `ORWTIU*`             | 111       |
+| orders   | `ORWDX*`, `ORWOR*`, `ORWORR*` | 135       |
+| labs     | `ORWLRR*`, `ORWDLR*`          | 36        |
+| reports  | `ORWRP*`, `ORWSR*`            | 38        |
 
 ## Expected Outputs
 
 All files generated in `apps/api/src/routes/`:
 
-| File | Description |
-|------|-------------|
-| `index.ts` | Barrel — `registerDomainRoutes()` registers all 6 plugins |
-| `problems.ts` | 25 RPC stubs + catalog endpoint |
-| `meds.ts` | 59 RPC stubs + catalog endpoint |
-| `notes.ts` | 111 RPC stubs + catalog endpoint |
-| `orders.ts` | 135 RPC stubs + catalog endpoint |
-| `labs.ts` | 36 RPC stubs + catalog endpoint |
-| `reports.ts` | 38 RPC stubs + catalog endpoint |
+| File          | Description                                               |
+| ------------- | --------------------------------------------------------- |
+| `index.ts`    | Barrel — `registerDomainRoutes()` registers all 6 plugins |
+| `problems.ts` | 25 RPC stubs + catalog endpoint                           |
+| `meds.ts`     | 59 RPC stubs + catalog endpoint                           |
+| `notes.ts`    | 111 RPC stubs + catalog endpoint                          |
+| `orders.ts`   | 135 RPC stubs + catalog endpoint                          |
+| `labs.ts`     | 36 RPC stubs + catalog endpoint                           |
+| `reports.ts`  | 38 RPC stubs + catalog endpoint                           |
 
 ### Route patterns
 
 Each domain provides:
+
 - `GET /vista/{domain}/rpcs` — lists all RPCs in the domain
 - `GET /vista/{domain}/rpc/{slug}` — individual RPC stub
 
@@ -104,12 +106,12 @@ pnpm -C apps/api build
 
 ## Common Failures
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| `ENOENT rpc_catalog.json` | Contracts not generated | Run `pnpm run cprs:extract` first |
-| TypeScript build error in routes | Fastify types missing | Run `pnpm -C apps/api install` |
-| 0 RPCs classified | Prefix rules changed | Check `DOMAIN_RULES` in `generate-api-stubs.mjs` |
-| Route conflict with existing endpoints | Slug collision | Generator uses domain-scoped paths — should not collide |
+| Symptom                                | Cause                   | Fix                                                     |
+| -------------------------------------- | ----------------------- | ------------------------------------------------------- |
+| `ENOENT rpc_catalog.json`              | Contracts not generated | Run `pnpm run cprs:extract` first                       |
+| TypeScript build error in routes       | Fastify types missing   | Run `pnpm -C apps/api install`                          |
+| 0 RPCs classified                      | Prefix rules changed    | Check `DOMAIN_RULES` in `generate-api-stubs.mjs`        |
+| Route conflict with existing endpoints | Slug collision          | Generator uses domain-scoped paths — should not collide |
 
 ## Wiring a Stub (next steps)
 

@@ -75,14 +75,14 @@
 
 ## 3. AI Model Registry
 
-| Model | Type | Deployment | Use Cases | PHI Handling |
-|-------|------|-----------|-----------|-------------|
-| **MedGemma** (Google) | Open-weight, medical | On-premises GPU | Differential diagnosis, med reconciliation, clinical Q&A | Safe — runs locally |
-| **Llama 3** (Meta) | Open-weight, general | On-premises GPU | Note summarization, coding assist, general NLP | Safe — runs locally |
-| **GPT-4o** (OpenAI) | Commercial, cloud | API call | Complex reasoning, multi-step clinical logic | **Requires de-identification** |
-| **Claude** (Anthropic) | Commercial, cloud | API call | Documentation assist, guideline synthesis | **Requires de-identification** |
-| **Whisper** (OpenAI) | Open-weight, speech | On-premises GPU | Ambient scribe (speech-to-text) | Safe — runs locally |
-| **Custom fine-tuned** | Site-specific | On-premises | Site-specific protocols, local formulary | Safe — runs locally |
+| Model                  | Type                 | Deployment      | Use Cases                                                | PHI Handling                   |
+| ---------------------- | -------------------- | --------------- | -------------------------------------------------------- | ------------------------------ |
+| **MedGemma** (Google)  | Open-weight, medical | On-premises GPU | Differential diagnosis, med reconciliation, clinical Q&A | Safe — runs locally            |
+| **Llama 3** (Meta)     | Open-weight, general | On-premises GPU | Note summarization, coding assist, general NLP           | Safe — runs locally            |
+| **GPT-4o** (OpenAI)    | Commercial, cloud    | API call        | Complex reasoning, multi-step clinical logic             | **Requires de-identification** |
+| **Claude** (Anthropic) | Commercial, cloud    | API call        | Documentation assist, guideline synthesis                | **Requires de-identification** |
+| **Whisper** (OpenAI)   | Open-weight, speech  | On-premises GPU | Ambient scribe (speech-to-text)                          | Safe — runs locally            |
+| **Custom fine-tuned**  | Site-specific        | On-premises     | Site-specific protocols, local formulary                 | Safe — runs locally            |
 
 ### Model Selection Policy
 
@@ -97,28 +97,28 @@
 
 ### 4.1 Clinical Decision Support (CDS)
 
-| Use Case | VistA Data Needed | RPCs | AI Model |
-|----------|-------------------|------|----------|
-| Differential diagnosis assist | Problems, vitals, labs, meds | `ORQQPL`, `ORQQVI VITALS`, `ORWLRR INTERIM`, `ORWPS ACTIVE` | MedGemma |
-| Drug interaction warning (enhanced) | Active meds, allergies | `ORWPS ACTIVE`, `ORQQAL LIST` | MedGemma |
-| Order set recommendation | Active problems, recent orders | `ORQQPL`, `ORWORR AGET` | MedGemma/Llama |
-| Lab result interpretation | Lab data, reference ranges | `ORWLRR INTERIM` | MedGemma |
+| Use Case                            | VistA Data Needed              | RPCs                                                        | AI Model       |
+| ----------------------------------- | ------------------------------ | ----------------------------------------------------------- | -------------- |
+| Differential diagnosis assist       | Problems, vitals, labs, meds   | `ORQQPL`, `ORQQVI VITALS`, `ORWLRR INTERIM`, `ORWPS ACTIVE` | MedGemma       |
+| Drug interaction warning (enhanced) | Active meds, allergies         | `ORWPS ACTIVE`, `ORQQAL LIST`                               | MedGemma       |
+| Order set recommendation            | Active problems, recent orders | `ORQQPL`, `ORWORR AGET`                                     | MedGemma/Llama |
+| Lab result interpretation           | Lab data, reference ranges     | `ORWLRR INTERIM`                                            | MedGemma       |
 
 ### 4.2 Documentation Assist
 
-| Use Case | VistA Data Needed | RPCs | AI Model |
-|----------|-------------------|------|----------|
-| Ambient scribe (speech → note) | — (audio input) | — | Whisper + Llama |
-| Note summarization | Note text | `TIU GET RECORD TEXT` | Llama 3 |
-| Discharge summary draft | All clinical data | Multiple RPCs | MedGemma |
+| Use Case                       | VistA Data Needed | RPCs                  | AI Model        |
+| ------------------------------ | ----------------- | --------------------- | --------------- |
+| Ambient scribe (speech → note) | — (audio input)   | —                     | Whisper + Llama |
+| Note summarization             | Note text         | `TIU GET RECORD TEXT` | Llama 3         |
+| Discharge summary draft        | All clinical data | Multiple RPCs         | MedGemma        |
 
 ### 4.3 Revenue Cycle / Coding
 
-| Use Case | VistA Data Needed | RPCs | AI Model |
-|----------|-------------------|------|----------|
-| ICD-10 code suggestion | Problems, notes | `ORQQPL`, `TIU GET RECORD TEXT` | GPT-4o (de-identified) |
-| CPT code recommendation | Orders, procedures | `ORWORR AGET` | GPT-4o (de-identified) |
-| Documentation completeness | Notes vs. problems list | `TIU DOCUMENTS BY CONTEXT`, `ORQQPL` | Llama 3 |
+| Use Case                   | VistA Data Needed       | RPCs                                 | AI Model               |
+| -------------------------- | ----------------------- | ------------------------------------ | ---------------------- |
+| ICD-10 code suggestion     | Problems, notes         | `ORQQPL`, `TIU GET RECORD TEXT`      | GPT-4o (de-identified) |
+| CPT code recommendation    | Orders, procedures      | `ORWORR AGET`                        | GPT-4o (de-identified) |
+| Documentation completeness | Notes vs. problems list | `TIU DOCUMENTS BY CONTEXT`, `ORQQPL` | Llama 3                |
 
 ---
 
@@ -127,18 +127,21 @@
 Every AI request passes through the safety layer:
 
 ### Pre-processing (before model call)
+
 1. **PHI scan** — detect and flag PHI in prompts headed for cloud models
 2. **De-identification** — strip names, dates, MRNs for cloud-bound queries
 3. **Prompt sanitization** — remove injection attempts, enforce prompt templates
 4. **Rate limiting** — prevent AI request floods (per-user, per-session)
 
 ### Post-processing (after model response)
+
 1. **Hallucination guard** — cross-reference AI suggestions against VistA data
 2. **Terminology validation** — verify ICD/SNOMED/RxNorm codes exist in VistA
 3. **Confidence scoring** — tag each suggestion with confidence level
 4. **Citation requirement** — AI must cite evidence sources (guidelines, patient data)
 
 ### Human-in-the-loop enforcement
+
 - AI suggestions are **always presented for review**, never auto-executed
 - Clinician must explicitly ACCEPT, REJECT, or MODIFY
 - Every decision is audit-logged with: suggestion, action taken, clinician DUZ, timestamp
@@ -150,14 +153,14 @@ Every AI request passes through the safety layer:
 
 The AI Gateway includes a terminology service for standardized coding:
 
-| Terminology | VistA Source | FileMan File | Use |
-|-------------|-------------|--------------|-----|
-| ICD-10-CM | Lexicon (LEX) | #80 ICD DIAGNOSIS | Diagnosis coding |
-| ICD-10-PCS | Lexicon (LEX) | #80.1 ICD OPERATION/PROCEDURE | Procedure coding |
-| SNOMED CT | Lexicon (LEX) | #757.01 EXPRESSIONS | Clinical concepts |
-| RxNorm | NDF (PSN) | #50.6 VA GENERIC | Drug identification |
-| LOINC | Lab (LR) | #95.3 LOINC | Lab test identification |
-| CPT | CPT (ICPT) | #81 CPT | Procedure billing |
+| Terminology | VistA Source  | FileMan File                  | Use                     |
+| ----------- | ------------- | ----------------------------- | ----------------------- |
+| ICD-10-CM   | Lexicon (LEX) | #80 ICD DIAGNOSIS             | Diagnosis coding        |
+| ICD-10-PCS  | Lexicon (LEX) | #80.1 ICD OPERATION/PROCEDURE | Procedure coding        |
+| SNOMED CT   | Lexicon (LEX) | #757.01 EXPRESSIONS           | Clinical concepts       |
+| RxNorm      | NDF (PSN)     | #50.6 VA GENERIC              | Drug identification     |
+| LOINC       | Lab (LR)      | #95.3 LOINC                   | Lab test identification |
+| CPT         | CPT (ICPT)    | #81 CPT                       | Procedure billing       |
 
 ---
 
@@ -200,15 +203,15 @@ Every AI interaction produces an audit record:
 
 ## 9. Implementation Roadmap
 
-| Step | Description | Priority | Phase |
-|------|-------------|----------|-------|
-| 1 | Document AI Gateway architecture (this doc) | **Done** | Phase 20 |
-| 2 | Build model registry data structure | LOW | Phase 22+ |
-| 3 | Build request router + audit middleware | LOW | Phase 22+ |
-| 4 | Integrate MedGemma for clinical Q&A | LOW | Phase 23+ |
-| 5 | Build RAG pipeline (patient context from VistA RPCs) | LOW | Phase 23+ |
-| 6 | Add terminology service (VistA file-backed) | LOW | Phase 23+ |
-| 7 | Build safety layer (PHI scan, de-id, hallucination guard) | LOW | Phase 24+ |
-| 8 | Ambient scribe (Whisper integration) | LOW | Phase 25+ |
-| 9 | CDS use cases (differential dx, med reconciliation) | LOW | Phase 25+ |
-| 10 | Coding assist (ICD/CPT suggestion) | LOW | Phase 26+ |
+| Step | Description                                               | Priority | Phase     |
+| ---- | --------------------------------------------------------- | -------- | --------- |
+| 1    | Document AI Gateway architecture (this doc)               | **Done** | Phase 20  |
+| 2    | Build model registry data structure                       | LOW      | Phase 22+ |
+| 3    | Build request router + audit middleware                   | LOW      | Phase 22+ |
+| 4    | Integrate MedGemma for clinical Q&A                       | LOW      | Phase 23+ |
+| 5    | Build RAG pipeline (patient context from VistA RPCs)      | LOW      | Phase 23+ |
+| 6    | Add terminology service (VistA file-backed)               | LOW      | Phase 23+ |
+| 7    | Build safety layer (PHI scan, de-id, hallucination guard) | LOW      | Phase 24+ |
+| 8    | Ambient scribe (Whisper integration)                      | LOW      | Phase 25+ |
+| 9    | CDS use cases (differential dx, med reconciliation)       | LOW      | Phase 25+ |
+| 10   | Coding assist (ICD/CPT suggestion)                        | LOW      | Phase 26+ |

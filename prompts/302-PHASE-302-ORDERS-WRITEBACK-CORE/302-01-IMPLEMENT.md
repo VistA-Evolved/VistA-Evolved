@@ -1,6 +1,7 @@
 # Phase 302 — Orders Writeback Core (W12-P4)
 
 ## User Request
+
 Implement the Orders domain writeback executor for the Clinical Writeback Command Bus,
 covering PLACE_ORDER, DISCONTINUE_ORDER, VERIFY_ORDER, SIGN_ORDER, and FLAG_ORDER intents.
 
@@ -25,6 +26,7 @@ covering PLACE_ORDER, DISCONTINUE_ORDER, VERIFY_ORDER, SIGN_ORDER, and FLAG_ORDE
 Run `scripts/verify-phase302-orders-writeback.ps1` — all gates must PASS.
 
 ## Files Touched
+
 - `apps/api/src/writeback/executors/orders-executor.ts` (NEW)
 - `apps/api/src/writeback/executors/index.ts` (MODIFIED)
 - `apps/api/src/writeback/__tests__/orders-contract.test.ts` (NEW)

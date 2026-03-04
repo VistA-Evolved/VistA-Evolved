@@ -8,37 +8,42 @@ executable test specifications.
 
 ## Components
 
-| Component | Path | Purpose |
-|-----------|------|---------|
-| Phase Index Builder | `scripts/build-phase-index.mjs` | Scans prompts/, extracts routes/RPCs/UI metadata |
-| Spec Generator | `scripts/generate-phase-qa.mjs` | Generates Playwright E2E + Vitest API specs |
-| Progressive Runner | `scripts/phase-qa-runner.mjs` | Run QA for single phase, range, or all |
-| Phase Index Gate | `scripts/qa-gates/phase-index-gate.mjs` | CI gate: validates phase-index.json consistency |
-| Phase Index | `docs/qa/phase-index.json` | Generated metadata for all phases |
+| Component           | Path                                    | Purpose                                          |
+| ------------------- | --------------------------------------- | ------------------------------------------------ |
+| Phase Index Builder | `scripts/build-phase-index.mjs`         | Scans prompts/, extracts routes/RPCs/UI metadata |
+| Spec Generator      | `scripts/generate-phase-qa.mjs`         | Generates Playwright E2E + Vitest API specs      |
+| Progressive Runner  | `scripts/phase-qa-runner.mjs`           | Run QA for single phase, range, or all           |
+| Phase Index Gate    | `scripts/qa-gates/phase-index-gate.mjs` | CI gate: validates phase-index.json consistency  |
+| Phase Index         | `docs/qa/phase-index.json`              | Generated metadata for all phases                |
 
 ## Usage
 
 ### Rebuild phase index
+
 ```bash
 pnpm qa:phase-index
 ```
 
 ### Regenerate test specs
+
 ```bash
 node scripts/generate-phase-qa.mjs
 ```
 
 ### Run QA for a specific phase
+
 ```bash
 pnpm qa:phase 12
 ```
 
 ### Run QA for a range of phases
+
 ```bash
 pnpm qa:range 1 20
 ```
 
 ### Run phase-audit suite (prompts ordering + phase-index integrity)
+
 ```bash
 pnpm qa:phase-audit
 ```
@@ -54,6 +59,7 @@ pnpm qa:phase-audit
 - API specs: `apps/api/tests/phases/phases-*.test.ts` (2 files)
 
 Each spec tests:
+
 - Route accessibility (no HTTP 500)
 - UI component presence (for UI phases)
 - Integration-pending compliance (no silent no-ops)
@@ -61,6 +67,7 @@ Each spec tests:
 ## Regeneration
 
 After adding a new phase to prompts/, regenerate:
+
 ```bash
 pnpm qa:phase-index && node scripts/generate-phase-qa.mjs
 ```

@@ -1,0 +1,6 @@
+﻿e2e/portal-phase27.spec.ts(30,11): error TS6196: 'LoginResult' is declared but never used.
+e2e/portal-phase27.spec.ts(626,9): error TS6133: 'gotRateLimited' is declared but its value is never read.
+e2e/portal-smoke.spec.ts(83,11): error TS6133: 'label' is declared but its value is never read.
+src/app/dashboard/exports/page.tsx(17,16): error TS6133: 'portalFetch' is declared but its value is never read.
+src/app/dashboard/health/page.tsx(63,10): error TS6133: 'medications' is declared but its value is never read.
+src/components/LanguageSwitcher.tsx(12,49): error TS6133: 'SupportedLocale' is declared but its value is never read.

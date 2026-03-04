@@ -19,10 +19,10 @@ sequentially and produce a machine-readable evidence artifact.
 
 ## Files Changed
 
-| File | Action |
-|------|--------|
-| `scripts/qa-rc.mjs` | NEW — RC gates runner |
-| `package.json` | MODIFIED — added `qa:rc` script |
+| File                | Action                          |
+| ------------------- | ------------------------------- |
+| `scripts/qa-rc.mjs` | NEW — RC gates runner           |
+| `package.json`      | MODIFIED — added `qa:rc` script |
 
 ## Decisions
 

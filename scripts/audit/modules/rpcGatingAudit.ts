@@ -8,12 +8,12 @@
  *   4. Orphan detection (registry entries never called in source)
  */
 
-import { readFileSync, readdirSync, statSync, existsSync } from "fs";
-import { join, relative, extname } from "path";
-import type { AuditModule, AuditFinding } from "../types.js";
+import { readFileSync, readdirSync, statSync, existsSync } from 'fs';
+import { join, relative, extname } from 'path';
+import type { AuditModule, AuditFinding } from '../types.js';
 
-const SCAN_EXTENSIONS = new Set([".ts", ".tsx", ".js", ".mjs"]);
-const SKIP_DIRS = new Set(["node_modules", ".next", ".git", "dist", ".turbo", "coverage", ".pnpm"]);
+const SCAN_EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.mjs']);
+const SKIP_DIRS = new Set(['node_modules', '.next', '.git', 'dist', '.turbo', 'coverage', '.pnpm']);
 
 function collectFiles(dir: string): string[] {
   const results: string[] = [];
@@ -32,35 +32,35 @@ function collectFiles(dir: string): string[] {
 }
 
 export const rpcGatingAudit: AuditModule = {
-  name: "rpcGatingAudit",
-  requires: "offline",
+  name: 'rpcGatingAudit',
+  requires: 'offline',
 
   async run(root: string): Promise<AuditFinding[]> {
     const findings: AuditFinding[] = [];
 
     // Load rpcRegistry source
-    const registryFile = join(root, "apps", "api", "src", "vista", "rpcRegistry.ts");
+    const registryFile = join(root, 'apps', 'api', 'src', 'vista', 'rpcRegistry.ts');
     if (!existsSync(registryFile)) {
       findings.push({
-        rule: "registry-exists",
-        status: "fail",
-        severity: "critical",
-        message: "rpcRegistry.ts not found",
+        rule: 'registry-exists',
+        status: 'fail',
+        severity: 'critical',
+        message: 'rpcRegistry.ts not found',
       });
       return findings;
     }
 
-    const registrySource = readFileSync(registryFile, "utf-8");
+    const registrySource = readFileSync(registryFile, 'utf-8');
 
     // Parse registry names
-    const registryStart = registrySource.indexOf("export const RPC_REGISTRY");
-    const exceptionsStart = registrySource.indexOf("export const RPC_EXCEPTIONS");
+    const registryStart = registrySource.indexOf('export const RPC_REGISTRY');
+    const exceptionsStart = registrySource.indexOf('export const RPC_EXCEPTIONS');
     if (registryStart === -1 || exceptionsStart === -1) {
       findings.push({
-        rule: "registry-parsed",
-        status: "fail",
-        severity: "critical",
-        message: "Could not find RPC_REGISTRY or RPC_EXCEPTIONS in source",
+        rule: 'registry-parsed',
+        status: 'fail',
+        severity: 'critical',
+        message: 'Could not find RPC_REGISTRY or RPC_EXCEPTIONS in source',
       });
       return findings;
     }
@@ -92,32 +92,32 @@ export const rpcGatingAudit: AuditModule = {
     ]);
 
     findings.push({
-      rule: "registry-parsed",
-      status: "pass",
-      severity: "info",
+      rule: 'registry-parsed',
+      status: 'pass',
+      severity: 'info',
       message: `Registry: ${registryNames.length} RPCs, ${exceptionNames.length} exceptions`,
     });
 
     // Load Vivian index if available
-    const vivianIndex = join(root, "data", "vista", "vivian", "rpc_index.json");
+    const vivianIndex = join(root, 'data', 'vista', 'vivian', 'rpc_index.json');
     let vivianNames: Set<string> | null = null;
     if (existsSync(vivianIndex)) {
-      const vivianData = JSON.parse(readFileSync(vivianIndex, "utf-8"));
+      const vivianData = JSON.parse(readFileSync(vivianIndex, 'utf-8'));
       vivianNames = new Set(
-        (vivianData.rpcs || []).map((r: { name: string }) => r.name.toUpperCase()),
+        (vivianData.rpcs || []).map((r: { name: string }) => r.name.toUpperCase())
       );
       findings.push({
-        rule: "vivian-loaded",
-        status: "pass",
-        severity: "info",
+        rule: 'vivian-loaded',
+        status: 'pass',
+        severity: 'info',
         message: `Loaded ${vivianNames.size} RPCs from Vivian index`,
       });
     } else {
       findings.push({
-        rule: "vivian-loaded",
-        status: "warn",
-        severity: "medium",
-        message: "Vivian index not found -- skipping Vivian cross-ref",
+        rule: 'vivian-loaded',
+        status: 'warn',
+        severity: 'medium',
+        message: 'Vivian index not found -- skipping Vivian cross-ref',
       });
     }
 
@@ -132,17 +132,17 @@ export const rpcGatingAudit: AuditModule = {
       }
       if (notInVivian.length === 0) {
         findings.push({
-          rule: "registry-in-vivian",
-          status: "pass",
-          severity: "info",
-          message: "All registry entries are in Vivian or exceptions",
+          rule: 'registry-in-vivian',
+          status: 'pass',
+          severity: 'info',
+          message: 'All registry entries are in Vivian or exceptions',
         });
       } else {
         findings.push({
-          rule: "registry-in-vivian",
-          status: "fail",
-          severity: "high",
-          message: `${notInVivian.length} entries not in Vivian or exceptions: ${notInVivian.join(", ")}`,
+          rule: 'registry-in-vivian',
+          status: 'fail',
+          severity: 'high',
+          message: `${notInVivian.length} entries not in Vivian or exceptions: ${notInVivian.join(', ')}`,
         });
       }
     }
@@ -156,37 +156,43 @@ export const rpcGatingAudit: AuditModule = {
     }
     if (emptyReasons.length === 0) {
       findings.push({
-        rule: "exception-reasons",
-        status: "pass",
-        severity: "info",
+        rule: 'exception-reasons',
+        status: 'pass',
+        severity: 'info',
         message: `All ${exceptionNames.length} exceptions have valid reasons`,
       });
     } else {
       findings.push({
-        rule: "exception-reasons",
-        status: "fail",
-        severity: "medium",
-        message: `Exceptions with missing reasons: ${emptyReasons.join(", ")}`,
+        rule: 'exception-reasons',
+        status: 'fail',
+        severity: 'medium',
+        message: `Exceptions with missing reasons: ${emptyReasons.join(', ')}`,
       });
     }
 
     // Check 3: scan source for callRpc patterns
-    const apiSrc = join(root, "apps", "api", "src");
+    const apiSrc = join(root, 'apps', 'api', 'src');
     const files = collectFiles(apiSrc);
-    const rpcCallPattern = /(?:callRpc|safeCallRpc|callRpcWithList|safeCallRpcWithList)\s*\(\s*["']([^"']+)["']/g;
+    const rpcCallPattern =
+      /(?:callRpc|safeCallRpc|callRpcWithList|safeCallRpcWithList)\s*\(\s*["']([^"']+)["']/g;
     const calledRpcs = new Set<string>();
     const ungatedRpcs: { name: string; file: string; line: number }[] = [];
 
     for (const file of files) {
       // Skip test files and the registry itself
-      const rel = relative(root, file).replace(/\\/g, "/");
-      if (rel.includes("rpcRegistry.ts") || rel.includes(".test.") || rel.includes("check-rpc-registry")) continue;
+      const rel = relative(root, file).replace(/\\/g, '/');
+      if (
+        rel.includes('rpcRegistry.ts') ||
+        rel.includes('.test.') ||
+        rel.includes('check-rpc-registry')
+      )
+        continue;
 
-      const content = readFileSync(file, "utf-8");
-      const lines = content.split("\n");
+      const content = readFileSync(file, 'utf-8');
+      const lines = content.split('\n');
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        if (line.trim().startsWith("//") || line.trim().startsWith("*")) continue;
+        if (line.trim().startsWith('//') || line.trim().startsWith('*')) continue;
         rpcCallPattern.lastIndex = 0;
         let cm: RegExpExecArray | null;
         while ((cm = rpcCallPattern.exec(line)) !== null) {
@@ -201,17 +207,17 @@ export const rpcGatingAudit: AuditModule = {
 
     if (ungatedRpcs.length === 0) {
       findings.push({
-        rule: "all-rpcs-gated",
-        status: "pass",
-        severity: "info",
+        rule: 'all-rpcs-gated',
+        status: 'pass',
+        severity: 'info',
         message: `All ${calledRpcs.size} called RPCs are in registry or exceptions`,
       });
     } else {
       for (const u of ungatedRpcs) {
         findings.push({
-          rule: "all-rpcs-gated",
-          status: "fail",
-          severity: "high",
+          rule: 'all-rpcs-gated',
+          status: 'fail',
+          severity: 'high',
           message: `Ungated RPC "${u.name}"`,
           file: u.file,
           line: u.line,
@@ -224,18 +230,18 @@ export const rpcGatingAudit: AuditModule = {
     const orphanRpcs = registryNames.filter((n) => !calledRpcs.has(n.toUpperCase()));
     if (orphanRpcs.length === 0) {
       findings.push({
-        rule: "no-orphan-rpcs",
-        status: "pass",
-        severity: "info",
-        message: "All registry entries are referenced in source",
+        rule: 'no-orphan-rpcs',
+        status: 'pass',
+        severity: 'info',
+        message: 'All registry entries are referenced in source',
       });
     } else {
       findings.push({
-        rule: "no-orphan-rpcs",
-        status: "warn",
-        severity: "low",
-        message: `${orphanRpcs.length} orphan RPC(s) in registry: ${orphanRpcs.join(", ")}`,
-        fix: "Remove unused entries or wire them to endpoints",
+        rule: 'no-orphan-rpcs',
+        status: 'warn',
+        severity: 'low',
+        message: `${orphanRpcs.length} orphan RPC(s) in registry: ${orphanRpcs.join(', ')}`,
+        fix: 'Remove unused entries or wire them to endpoints',
       });
     }
 

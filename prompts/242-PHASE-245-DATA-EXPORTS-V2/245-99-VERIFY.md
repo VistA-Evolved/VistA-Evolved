@@ -1,6 +1,7 @@
 # Phase 245 — Data Exports v2 — VERIFY
 
 ## Gates
+
 1. export-engine.ts exists with `createExportJob`, `getExportJob`, `listExportJobs`
 2. export-formats.ts exists with `formatCsv`, `formatJson`, `formatJsonl`
 3. export-sources.ts exists with `registerSource`, `getSources`
@@ -13,6 +14,7 @@
 10. Store registered in store-policy (if applicable)
 
 ## Run
+
 ```powershell
 .\scripts\verify-phase245-data-exports-v2.ps1
 ```

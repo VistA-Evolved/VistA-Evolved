@@ -3,11 +3,13 @@
 ## IMPLEMENT
 
 ### Goal
+
 Produce a comprehensive write-back feasibility report grading every clinical
 domain by VistA write-back readiness, identifying blockers, and establishing
 the pre-requisite matrix for W27 (Inpatient/Pharmacy/Lab Deep Writeback).
 
 ### Steps
+
 1. Audit all 18 classified write RPCs from `data/vista/rpc-safe-harbor-v2.json`
 2. Cross-reference each domain's RPCs against adapter interfaces, route endpoints,
    and sandbox test results
@@ -17,10 +19,12 @@ the pre-requisite matrix for W27 (Inpatient/Pharmacy/Lab Deep Writeback).
 6. Write `docs/vista/writeback-feasibility-report.md`
 
 ### Files Touched
+
 - `docs/vista/writeback-feasibility-report.md` (NEW)
 - `prompts/427-PHASE-427-WRITEBACK-FEASIBILITY/` (NEW)
 
 ### Data Sources
+
 - `data/vista/rpc-safe-harbor-v2.json` — 18 RPCs, 5 tiers
 - `data/vista/runtime-matrix.json` — domain requirements
 - `apps/api/src/vista/rpcRegistry.ts` — 137+ registered RPCs

@@ -1,6 +1,7 @@
 # Phase 283 — Verification
 
 ## Verification Steps
+
 1. TS build clean (apps/api)
 2. Theme-tokens.ts exports 6 built-in themes
 3. UI-prefs routes: GET/PUT /ui-prefs/theme endpoints exist
@@ -9,6 +10,7 @@
 6. No PHI in theme routes (only theme IDs and user DUZ)
 
 ## Acceptance Criteria
+
 - [ ] TS build CLEAN (0 errors)
 - [ ] 6 theme packs registered (modern-default, modern-dark, vista-legacy, openmrs, openemr, high-contrast)
 - [ ] Theme preference persisted to server via PUT /ui-prefs/theme

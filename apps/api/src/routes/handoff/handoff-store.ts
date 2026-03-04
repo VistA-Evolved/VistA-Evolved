@@ -15,7 +15,7 @@
  *   4. OR use MailMan bulletin for shift-to-shift notifications
  */
 
-import { randomBytes } from "crypto";
+import { randomBytes } from 'crypto';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -32,11 +32,18 @@ export interface TodoItem {
   id: string;
   text: string;
   completed: boolean;
-  priority: "low" | "normal" | "high" | "urgent";
+  priority: 'low' | 'normal' | 'high' | 'urgent';
 }
 
 export interface RiskFlag {
-  type: "falls" | "isolation" | "critical-labs" | "code-status" | "restraints" | "suicide-precautions" | "other";
+  type:
+    | 'falls'
+    | 'isolation'
+    | 'critical-labs'
+    | 'code-status'
+    | 'restraints'
+    | 'suicide-precautions'
+    | 'other';
   label: string;
   active: boolean;
   note?: string;
@@ -74,7 +81,7 @@ export interface HandoffReport {
   /** ISO timestamp of acceptance (null until accepted) */
   acceptedAt: string | null;
   /** Status lifecycle */
-  status: "draft" | "submitted" | "accepted" | "archived";
+  status: 'draft' | 'submitted' | 'accepted' | 'archived';
   /** Per-patient handoff data */
   patients: PatientHandoff[];
   /** Global shift notes (not patient-specific) */
@@ -88,16 +95,21 @@ export interface HandoffReport {
 const handoffStore = new Map<string, HandoffReport>();
 
 /* Phase 146: DB repo wiring */
-let handoffDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
-export function initHandoffStoreRepo(repo: typeof handoffDbRepo): void { handoffDbRepo = repo; }
+let handoffDbRepo: {
+  upsert(d: any): Promise<any>;
+  update?(id: string, u: any): Promise<any>;
+} | null = null;
+export function initHandoffStoreRepo(repo: typeof handoffDbRepo): void {
+  handoffDbRepo = repo;
+}
 
 /** Generate a unique handoff ID */
 function generateId(): string {
-  return `hoff-${Date.now()}-${randomBytes(4).toString("hex")}`;
+  return `hoff-${Date.now()}-${randomBytes(4).toString('hex')}`;
 }
 
 function generateTodoId(): string {
-  return `todo-${randomBytes(4).toString("hex")}`;
+  return `todo-${randomBytes(4).toString('hex')}`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -125,17 +137,28 @@ export function createHandoffReport(input: {
     createdAt: now,
     updatedAt: now,
     acceptedAt: null,
-    status: "draft",
-    patients: (input.patients || []).map(p => ({
+    status: 'draft',
+    patients: (input.patients || []).map((p) => ({
       ...p,
-      todos: p.todos.map(t => ({ ...t, id: t.id || generateTodoId() })),
+      todos: p.todos.map((t) => ({ ...t, id: t.id || generateTodoId() })),
     })),
-    shiftNotes: input.shiftNotes || "",
+    shiftNotes: input.shiftNotes || '',
   };
   handoffStore.set(report.id, report);
 
   // Phase 146: Write-through to PG
-  handoffDbRepo?.upsert({ id: report.id, tenantId: 'default', patientDfn: (report as any).patients?.[0]?.dfn ?? '', fromProvider: (report as any).author ?? '', toProvider: (report as any).assignee ?? '', content: JSON.stringify(report), status: report.status, createdAt: report.createdAt }).catch(() => {});
+  handoffDbRepo
+    ?.upsert({
+      id: report.id,
+      tenantId: 'default',
+      patientDfn: (report as any).patients?.[0]?.dfn ?? '',
+      fromProvider: (report as any).author ?? '',
+      toProvider: (report as any).assignee ?? '',
+      content: JSON.stringify(report),
+      status: report.status,
+      createdAt: report.createdAt,
+    })
+    .catch(() => {});
 
   return report;
 }
@@ -152,13 +175,13 @@ export function listHandoffReports(filters?: {
   let reports = [...handoffStore.values()];
   if (filters?.ward) {
     const w = filters.ward.toUpperCase();
-    reports = reports.filter(r => r.ward.toUpperCase() === w);
+    reports = reports.filter((r) => r.ward.toUpperCase() === w);
   }
   if (filters?.status) {
-    reports = reports.filter(r => r.status === filters.status);
+    reports = reports.filter((r) => r.status === filters.status);
   }
   if (filters?.createdByDuz) {
-    reports = reports.filter(r => r.createdBy.duz === filters.createdByDuz);
+    reports = reports.filter((r) => r.createdBy.duz === filters.createdByDuz);
   }
   // Most recent first
   reports.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
@@ -167,12 +190,12 @@ export function listHandoffReports(filters?: {
 
 export function updateHandoffReport(
   id: string,
-  updates: Partial<Pick<HandoffReport, "patients" | "shiftNotes" | "shiftLabel" | "status">>,
+  updates: Partial<Pick<HandoffReport, 'patients' | 'shiftNotes' | 'shiftLabel' | 'status'>>
 ): HandoffReport | undefined {
   const report = handoffStore.get(id);
   if (!report) return undefined;
   // Only draft/submitted can be updated
-  if (report.status === "archived") return undefined;
+  if (report.status === 'archived') return undefined;
 
   const updated: HandoffReport = {
     ...report,
@@ -181,9 +204,9 @@ export function updateHandoffReport(
   };
   // Ensure todo IDs exist
   if (updated.patients) {
-    updated.patients = updated.patients.map(p => ({
+    updated.patients = updated.patients.map((p) => ({
       ...p,
-      todos: p.todos.map(t => ({ ...t, id: t.id || generateTodoId() })),
+      todos: p.todos.map((t) => ({ ...t, id: t.id || generateTodoId() })),
     }));
   }
   handoffStore.set(id, updated);
@@ -192,10 +215,10 @@ export function updateHandoffReport(
 
 export function submitHandoffReport(id: string): HandoffReport | undefined {
   const report = handoffStore.get(id);
-  if (!report || report.status !== "draft") return undefined;
+  if (!report || report.status !== 'draft') return undefined;
   const updated: HandoffReport = {
     ...report,
-    status: "submitted",
+    status: 'submitted',
     updatedAt: new Date().toISOString(),
   };
   handoffStore.set(id, updated);
@@ -204,14 +227,14 @@ export function submitHandoffReport(id: string): HandoffReport | undefined {
 
 export function acceptHandoffReport(
   id: string,
-  acceptedBy: { duz: string; name: string },
+  acceptedBy: { duz: string; name: string }
 ): HandoffReport | undefined {
   const report = handoffStore.get(id);
-  if (!report || report.status !== "submitted") return undefined;
+  if (!report || report.status !== 'submitted') return undefined;
   const now = new Date().toISOString();
   const updated: HandoffReport = {
     ...report,
-    status: "accepted",
+    status: 'accepted',
     acceptedBy,
     acceptedAt: now,
     updatedAt: now,
@@ -222,10 +245,10 @@ export function acceptHandoffReport(
 
 export function archiveHandoffReport(id: string): HandoffReport | undefined {
   const report = handoffStore.get(id);
-  if (!report || report.status !== "accepted") return undefined;
+  if (!report || report.status !== 'accepted') return undefined;
   const updated: HandoffReport = {
     ...report,
-    status: "archived",
+    status: 'archived',
     updatedAt: new Date().toISOString(),
   };
   handoffStore.set(id, updated);

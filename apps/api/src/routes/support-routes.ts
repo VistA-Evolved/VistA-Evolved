@@ -16,9 +16,9 @@
  *   GET    /admin/support/stats             — Ticket statistics
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { requireSession } from "../auth/auth-routes.js";
-import { collectDiagnostics } from "../support/diagnostics.js";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
+import { collectDiagnostics } from '../support/diagnostics.js';
 import {
   createTicket,
   getTicket,
@@ -30,7 +30,7 @@ import {
   type TicketStatus,
   type TicketCategory,
   type TicketPriority,
-} from "../support/ticket-store.js";
+} from '../support/ticket-store.js';
 
 /* ------------------------------------------------------------------ */
 /*  Plugin                                                             */
@@ -38,7 +38,7 @@ import {
 
 export default async function supportRoutes(server: FastifyInstance): Promise<void> {
   /* ---- GET /admin/support/diagnostics ---- */
-  server.get("/admin/support/diagnostics", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/admin/support/diagnostics', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
@@ -47,7 +47,7 @@ export default async function supportRoutes(server: FastifyInstance): Promise<vo
   });
 
   /* ---- GET /admin/support/tickets ---- */
-  server.get("/admin/support/tickets", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/admin/support/tickets', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
@@ -62,13 +62,15 @@ export default async function supportRoutes(server: FastifyInstance): Promise<vo
   });
 
   /* ---- POST /admin/support/tickets ---- */
-  server.post("/admin/support/tickets", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/admin/support/tickets', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
     const body = (request.body as CreateTicketInput) || {};
     if (!body.title || !body.description || !body.category || !body.priority) {
-      return reply.code(400).send({ ok: false, error: "title, description, category, priority required" });
+      return reply
+        .code(400)
+        .send({ ok: false, error: 'title, description, category, priority required' });
     }
 
     const ticket = createTicket(body, session.duz);
@@ -76,46 +78,52 @@ export default async function supportRoutes(server: FastifyInstance): Promise<vo
   });
 
   /* ---- GET /admin/support/tickets/:id ---- */
-  server.get("/admin/support/tickets/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/admin/support/tickets/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
     const { id } = request.params as { id: string };
     const ticket = getTicket(id);
-    if (!ticket) return reply.code(404).send({ ok: false, error: "Ticket not found" });
+    if (!ticket) return reply.code(404).send({ ok: false, error: 'Ticket not found' });
     return reply.send({ ok: true, ticket });
   });
 
   /* ---- PATCH /admin/support/tickets/:id ---- */
-  server.patch("/admin/support/tickets/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    if (!session) return;
+  server.patch(
+    '/admin/support/tickets/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
 
-    const { id } = request.params as { id: string };
-    const body = (request.body as { status?: TicketStatus }) || {};
-    if (!body.status) return reply.code(400).send({ ok: false, error: "status required" });
+      const { id } = request.params as { id: string };
+      const body = (request.body as { status?: TicketStatus }) || {};
+      if (!body.status) return reply.code(400).send({ ok: false, error: 'status required' });
 
-    const ticket = updateTicketStatus(id, body.status);
-    if (!ticket) return reply.code(404).send({ ok: false, error: "Ticket not found" });
-    return reply.send({ ok: true, ticket });
-  });
+      const ticket = updateTicketStatus(id, body.status);
+      if (!ticket) return reply.code(404).send({ ok: false, error: 'Ticket not found' });
+      return reply.send({ ok: true, ticket });
+    }
+  );
 
   /* ---- POST /admin/support/tickets/:id/notes ---- */
-  server.post("/admin/support/tickets/:id/notes", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    if (!session) return;
+  server.post(
+    '/admin/support/tickets/:id/notes',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
 
-    const { id } = request.params as { id: string };
-    const body = (request.body as { text?: string }) || {};
-    if (!body.text) return reply.code(400).send({ ok: false, error: "text required" });
+      const { id } = request.params as { id: string };
+      const body = (request.body as { text?: string }) || {};
+      if (!body.text) return reply.code(400).send({ ok: false, error: 'text required' });
 
-    const ticket = addTicketNote(id, body.text, session.duz);
-    if (!ticket) return reply.code(404).send({ ok: false, error: "Ticket not found" });
-    return reply.send({ ok: true, ticket });
-  });
+      const ticket = addTicketNote(id, body.text, session.duz);
+      if (!ticket) return reply.code(404).send({ ok: false, error: 'Ticket not found' });
+      return reply.send({ ok: true, ticket });
+    }
+  );
 
   /* ---- GET /admin/support/stats ---- */
-  server.get("/admin/support/stats", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/admin/support/stats', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 

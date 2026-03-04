@@ -12,9 +12,9 @@
  * Auth: admin (enforced by AUTH_RULES pattern in security.ts).
  */
 
-import type { FastifyInstance } from "fastify";
-import { optionalRpc, getCapabilities } from "../vista/rpcCapabilities.js";
-import { log } from "../lib/logger.js";
+import type { FastifyInstance } from 'fastify';
+import { optionalRpc, getCapabilities } from '../vista/rpcCapabilities.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Provisioning manifest: what SHOULD be installed                     */
@@ -31,57 +31,51 @@ interface RoutineManifest {
 
 const PROVISIONING_MANIFEST: RoutineManifest[] = [
   {
-    routine: "ZVEMIOP",
-    file: "ZVEMIOP.m",
-    installer: "RUN^ZVEMINS",
+    routine: 'ZVEMIOP',
+    file: 'ZVEMIOP.m',
+    installer: 'RUN^ZVEMINS',
     rpcs: [
-      "VE INTEROP HL7 LINKS",
-      "VE INTEROP HL7 MSGS",
-      "VE INTEROP HLO STATUS",
-      "VE INTEROP QUEUE DEPTH",
-      "VE INTEROP MSG LIST",
-      "VE INTEROP MSG DETAIL",
+      'VE INTEROP HL7 LINKS',
+      'VE INTEROP HL7 MSGS',
+      'VE INTEROP HLO STATUS',
+      'VE INTEROP QUEUE DEPTH',
+      'VE INTEROP MSG LIST',
+      'VE INTEROP MSG DETAIL',
     ],
-    phase: "21",
-    description: "HL7/HLO interop monitor (6 read-only RPCs)",
+    phase: '21',
+    description: 'HL7/HLO interop monitor (6 read-only RPCs)',
   },
   {
-    routine: "ZVEMSGR",
-    file: "ZVEMSGR.m",
-    installer: "EN^ZVEMSIN",
-    rpcs: [
-      "ZVE MAIL FOLDERS",
-      "ZVE MAIL LIST",
-      "ZVE MAIL GET",
-      "ZVE MAIL SEND",
-      "ZVE MAIL MANAGE",
-    ],
-    phase: "70",
-    description: "MailMan RPC bridge (5 RPCs)",
+    routine: 'ZVEMSGR',
+    file: 'ZVEMSGR.m',
+    installer: 'EN^ZVEMSIN',
+    rpcs: ['ZVE MAIL FOLDERS', 'ZVE MAIL LIST', 'ZVE MAIL GET', 'ZVE MAIL SEND', 'ZVE MAIL MANAGE'],
+    phase: '70',
+    description: 'MailMan RPC bridge (5 RPCs)',
   },
   {
-    routine: "ZVERPC",
-    file: "ZVERPC.m",
-    installer: "INSTALL^ZVERPC",
-    rpcs: ["VE LIST RPCS"],
-    phase: "37B",
-    description: "RPC catalog lister",
+    routine: 'ZVERPC',
+    file: 'ZVERPC.m',
+    installer: 'INSTALL^ZVERPC',
+    rpcs: ['VE LIST RPCS'],
+    phase: '37B',
+    description: 'RPC catalog lister',
   },
   {
-    routine: "ZVERCMP",
-    file: "ZVERCMP.m",
-    installer: "INSTALL^ZVERCMP",
-    rpcs: ["VE RCM PROVIDER INFO"],
-    phase: "42",
-    description: "RCM provider info wrapper",
+    routine: 'ZVERCMP',
+    file: 'ZVERCMP.m',
+    installer: 'INSTALL^ZVERCMP',
+    rpcs: ['VE RCM PROVIDER INFO'],
+    phase: '42',
+    description: 'RCM provider info wrapper',
   },
   {
-    routine: "ZVEADT",
-    file: "ZVEADT.m",
-    installer: "INSTALL^ZVEADT",
-    rpcs: ["ZVEADT WARDS", "ZVEADT BEDS", "ZVEADT MVHIST"],
-    phase: "137",
-    description: "ADT ward census/bed board (3 RPCs)",
+    routine: 'ZVEADT',
+    file: 'ZVEADT.m',
+    installer: 'INSTALL^ZVEADT',
+    rpcs: ['ZVEADT WARDS', 'ZVEADT BEDS', 'ZVEADT MVHIST'],
+    phase: '137',
+    description: 'ADT ward census/bed board (3 RPCs)',
   },
 ];
 
@@ -89,9 +83,7 @@ const PROVISIONING_MANIFEST: RoutineManifest[] = [
 /* Route plugin                                                        */
 /* ------------------------------------------------------------------ */
 
-export default async function vistaProvisionRoutes(
-  server: FastifyInstance,
-): Promise<void> {
+export default async function vistaProvisionRoutes(server: FastifyInstance): Promise<void> {
   /**
    * GET /vista/provision/status
    *
@@ -102,7 +94,7 @@ export default async function vistaProvisionRoutes(
    *   - per-RPC availability status (checked via optionalRpc)
    *   - overall health (all RPCs available = "installed", some = "partial", none = "missing")
    */
-  server.get("/vista/provision/status", async (request) => {
+  server.get('/vista/provision/status', async (request) => {
     const routines = PROVISIONING_MANIFEST.map((m) => {
       const rpcStatus = m.rpcs.map((rpcName) => {
         const check = optionalRpc(rpcName);
@@ -114,9 +106,9 @@ export default async function vistaProvisionRoutes(
 
       const availableCount = rpcStatus.filter((r) => r.available).length;
       const totalCount = rpcStatus.length;
-      let health: "installed" | "partial" | "missing" = "missing";
-      if (availableCount === totalCount) health = "installed";
-      else if (availableCount > 0) health = "partial";
+      let health: 'installed' | 'partial' | 'missing' = 'missing';
+      if (availableCount === totalCount) health = 'installed';
+      else if (availableCount > 0) health = 'partial';
 
       return {
         routine: m.routine,
@@ -132,9 +124,9 @@ export default async function vistaProvisionRoutes(
     });
 
     const totalRoutines = routines.length;
-    const installedCount = routines.filter((r) => r.health === "installed").length;
-    const partialCount = routines.filter((r) => r.health === "partial").length;
-    const missingCount = routines.filter((r) => r.health === "missing").length;
+    const installedCount = routines.filter((r) => r.health === 'installed').length;
+    const partialCount = routines.filter((r) => r.health === 'partial').length;
+    const missingCount = routines.filter((r) => r.health === 'missing').length;
 
     const cap = getCapabilities();
     const cacheWarmed = cap !== null;
@@ -143,14 +135,14 @@ export default async function vistaProvisionRoutes(
     // available:true for everything (graceful degradation). Report "unknown"
     // instead of a falsely optimistic "fully-provisioned".
     const overallHealth = !cacheWarmed
-      ? "unknown"
+      ? 'unknown'
       : missingCount === 0 && partialCount === 0
-        ? "fully-provisioned"
+        ? 'fully-provisioned'
         : missingCount === totalRoutines
-          ? "unprovisioned"
-          : "partially-provisioned";
+          ? 'unprovisioned'
+          : 'partially-provisioned';
 
-    log.info("Provisioning status requested", {
+    log.info('Provisioning status requested', {
       overallHealth,
       installed: installedCount,
       partial: partialCount,
@@ -168,12 +160,12 @@ export default async function vistaProvisionRoutes(
         partial: partialCount,
         missing: missingCount,
       },
-      installCommand: "scripts/install-vista-routines.ps1",
+      installCommand: 'scripts/install-vista-routines.ps1',
       routines,
     };
   });
 
-  log.info("VistA provisioning status route registered (Phase 155)", {
-    routes: ["GET /vista/provision/status"],
+  log.info('VistA provisioning status route registered (Phase 155)', {
+    routes: ['GET /vista/provision/status'],
   });
 }

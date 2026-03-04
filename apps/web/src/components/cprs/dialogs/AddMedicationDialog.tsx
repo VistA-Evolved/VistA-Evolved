@@ -7,7 +7,6 @@ import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
-
 /* Quick-order IENs from Phase 8B */
 const QUICK_ORDERS = [
   { label: 'Acetaminophen Tab 325mg PO Q4H PRN', ien: 1628 },
@@ -42,7 +41,11 @@ export default function AddMedicationDialog() {
     try {
       const res = await fetch(`${API_BASE}/vista/cprs/meds/quick-order`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `med-qo-${dfn}-${Date.now()}`, ...csrfHeaders() },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Idempotency-Key': `med-qo-${dfn}-${Date.now()}`,
+          ...csrfHeaders(),
+        },
         credentials: 'include',
         body: JSON.stringify({ dfn, quickOrderIen: selectedQO }),
       });
@@ -51,13 +54,19 @@ export default function AddMedicationDialog() {
         setResult({ ok: true, msg: data.response || 'Order placed in VistA (ORWDXM AUTOACK).' });
         setTimeout(() => closeModal(), 1200);
       } else if (data.ok && data.mode === 'draft') {
-        setResult({ ok: true, msg: `Order saved as draft (VistA sync pending). Draft ID: ${data.draftId}` });
+        setResult({
+          ok: true,
+          msg: `Order saved as draft (VistA sync pending). Draft ID: ${data.draftId}`,
+        });
         setTimeout(() => closeModal(), 1200);
       } else {
         setResult({ ok: false, msg: data.error || 'Order failed.' });
       }
     } catch (err: unknown) {
-      setResult({ ok: false, msg: `Network error: ${err instanceof Error ? err.message : String(err)}` });
+      setResult({
+        ok: false,
+        msg: `Network error: ${err instanceof Error ? err.message : String(err)}`,
+      });
     } finally {
       setSubmitting(false);
     }
@@ -71,7 +80,12 @@ export default function AddMedicationDialog() {
       type: 'med',
       name: `${manualName.trim()} ${manualDose} ${manualRoute} ${manualSchedule}`.trim(),
       status: 'draft',
-      details: JSON.stringify({ name: manualName.trim(), dose: manualDose, route: manualRoute, schedule: manualSchedule }),
+      details: JSON.stringify({
+        name: manualName.trim(),
+        dose: manualDose,
+        route: manualRoute,
+        schedule: manualSchedule,
+      }),
       createdAt: new Date().toISOString(),
     });
     addLocalItem(dfn, 'medications', {
@@ -87,25 +101,49 @@ export default function AddMedicationDialog() {
   if (!dfn) return null;
 
   return (
-    <div className={styles.modalOverlay} onClick={(e) => e.target === e.currentTarget && closeModal()}>
+    <div
+      className={styles.modalOverlay}
+      onClick={(e) => e.target === e.currentTarget && closeModal()}
+    >
       <div className={styles.modalContent} style={{ maxWidth: 560 }}>
         <div className={styles.modalHeader}>
           <span>Add Medication Order</span>
-          <button onClick={closeModal} style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer' }}>&times;</button>
+          <button
+            onClick={closeModal}
+            style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer' }}
+          >
+            &times;
+          </button>
         </div>
         <div className={styles.modalBody}>
           {/* Mode selector */}
           <div className={styles.subTabs}>
-            <button className={`${styles.subTab} ${mode === 'quick' ? styles.active : ''}`} onClick={() => setMode('quick')}>Quick Order</button>
-            <button className={`${styles.subTab} ${mode === 'manual' ? styles.active : ''}`} onClick={() => setMode('manual')}>Manual Entry</button>
+            <button
+              className={`${styles.subTab} ${mode === 'quick' ? styles.active : ''}`}
+              onClick={() => setMode('quick')}
+            >
+              Quick Order
+            </button>
+            <button
+              className={`${styles.subTab} ${mode === 'manual' ? styles.active : ''}`}
+              onClick={() => setMode('manual')}
+            >
+              Manual Entry
+            </button>
           </div>
 
           {result && (
-            <div style={{ padding: '6px 10px', marginBottom: 8, borderRadius: 4, fontSize: 12,
-              background: result.ok ? '#d4edda' : '#f8d7da',
-              border: result.ok ? '1px solid #28a745' : '1px solid #dc3545',
-              color: result.ok ? '#155724' : '#721c24',
-            }}>
+            <div
+              style={{
+                padding: '6px 10px',
+                marginBottom: 8,
+                borderRadius: 4,
+                fontSize: 12,
+                background: result.ok ? '#d4edda' : '#f8d7da',
+                border: result.ok ? '1px solid #28a745' : '1px solid #dc3545',
+                color: result.ok ? '#155724' : '#721c24',
+              }}
+            >
               {result.msg}
             </div>
           )}
@@ -121,12 +159,20 @@ export default function AddMedicationDialog() {
                     key={qo.ien}
                     onClick={() => setSelectedQO(qo.ien)}
                     style={{
-                      padding: '6px 8px', cursor: 'pointer', borderRadius: 3, fontSize: 12, marginBottom: 2,
+                      padding: '6px 8px',
+                      cursor: 'pointer',
+                      borderRadius: 3,
+                      fontSize: 12,
+                      marginBottom: 2,
                       background: selectedQO === qo.ien ? 'var(--cprs-selected)' : undefined,
-                      border: selectedQO === qo.ien ? '1px solid var(--cprs-primary)' : '1px solid transparent',
+                      border:
+                        selectedQO === qo.ien
+                          ? '1px solid var(--cprs-primary)'
+                          : '1px solid transparent',
                     }}
                   >
-                    {qo.label} <span style={{ color: 'var(--cprs-text-muted)' }}>(IEN {qo.ien})</span>
+                    {qo.label}{' '}
+                    <span style={{ color: 'var(--cprs-text-muted)' }}>(IEN {qo.ien})</span>
                   </div>
                 ))}
               </div>
@@ -140,15 +186,30 @@ export default function AddMedicationDialog() {
               </p>
               <div className={styles.formGroup}>
                 <label>Medication Name *</label>
-                <input className={styles.formInput} value={manualName} onChange={(e) => setManualName(e.target.value)} placeholder="e.g. Lisinopril" autoFocus />
+                <input
+                  className={styles.formInput}
+                  value={manualName}
+                  onChange={(e) => setManualName(e.target.value)}
+                  placeholder="e.g. Lisinopril"
+                  autoFocus
+                />
               </div>
               <div className={styles.formGroup}>
                 <label>Dose</label>
-                <input className={styles.formInput} value={manualDose} onChange={(e) => setManualDose(e.target.value)} placeholder="e.g. 10mg" />
+                <input
+                  className={styles.formInput}
+                  value={manualDose}
+                  onChange={(e) => setManualDose(e.target.value)}
+                  placeholder="e.g. 10mg"
+                />
               </div>
               <div className={styles.formGroup}>
                 <label>Route</label>
-                <select className={styles.formSelect} value={manualRoute} onChange={(e) => setManualRoute(e.target.value)}>
+                <select
+                  className={styles.formSelect}
+                  value={manualRoute}
+                  onChange={(e) => setManualRoute(e.target.value)}
+                >
                   <option value="PO">PO (Oral)</option>
                   <option value="IV">IV (Intravenous)</option>
                   <option value="IM">IM (Intramuscular)</option>
@@ -159,19 +220,34 @@ export default function AddMedicationDialog() {
               </div>
               <div className={styles.formGroup}>
                 <label>Schedule</label>
-                <input className={styles.formInput} value={manualSchedule} onChange={(e) => setManualSchedule(e.target.value)} placeholder="e.g. Daily, BID, TID" />
+                <input
+                  className={styles.formInput}
+                  value={manualSchedule}
+                  onChange={(e) => setManualSchedule(e.target.value)}
+                  placeholder="e.g. Daily, BID, TID"
+                />
               </div>
             </>
           )}
         </div>
         <div className={styles.modalFooter}>
-          <button className={styles.btn} onClick={closeModal}>Cancel</button>
+          <button className={styles.btn} onClick={closeModal}>
+            Cancel
+          </button>
           {mode === 'quick' ? (
-            <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={handleSubmitQuickOrder} disabled={submitting || !selectedQO}>
+            <button
+              className={`${styles.btn} ${styles.btnPrimary}`}
+              onClick={handleSubmitQuickOrder}
+              disabled={submitting || !selectedQO}
+            >
               {submitting ? 'Ordering...' : 'Place Quick Order'}
             </button>
           ) : (
-            <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={handleSubmitManual} disabled={!manualName.trim()}>
+            <button
+              className={`${styles.btn} ${styles.btnPrimary}`}
+              onClick={handleSubmitManual}
+              disabled={!manualName.trim()}
+            >
               Save Draft Order
             </button>
           )}

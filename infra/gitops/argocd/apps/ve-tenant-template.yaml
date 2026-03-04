@@ -4,37 +4,37 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ve-tenant-TENANT_SLUG          # <-- replace TENANT_SLUG
+  name: ve-tenant-TENANT_SLUG # <-- replace TENANT_SLUG
   namespace: argocd
   labels:
     app.kubernetes.io/part-of: vista-evolved
     ve.layer: tenant
-    ve.tenant: TENANT_SLUG             # <-- replace TENANT_SLUG
+    ve.tenant: TENANT_SLUG # <-- replace TENANT_SLUG
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: ve-tenants
 
   source:
-    repoURL: https://github.com/YOUR-ORG/VistA-Evolved.git  # TODO: update to actual repo
+    repoURL: https://github.com/YOUR-ORG/VistA-Evolved.git # TODO: update to actual repo
     targetRevision: HEAD
     path: infra/helm/ve-tenant
     helm:
       # Layer values: defaults first, then tenant-specific overrides
       valueFiles:
         - ../../environments/dev/tenant.defaults.values.yaml
-        - ../../environments/dev/tenants/TENANT_SLUG.values.yaml  # <-- replace
+        - ../../environments/dev/tenants/TENANT_SLUG.values.yaml # <-- replace
 
       # Override tenant identity
       parameters:
         - name: tenantId
-          value: "TENANT_SLUG"         # <-- replace
+          value: 'TENANT_SLUG' # <-- replace
         - name: tenantSlug
-          value: "TENANT_SLUG"         # <-- replace
+          value: 'TENANT_SLUG' # <-- replace
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: ve-tenant-TENANT_SLUG   # <-- replace TENANT_SLUG
+    namespace: ve-tenant-TENANT_SLUG # <-- replace TENANT_SLUG
 
   syncPolicy:
     automated:

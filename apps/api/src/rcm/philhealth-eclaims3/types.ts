@@ -32,22 +32,25 @@
  * real PhilHealth API integration (which requires spec + certification).
  */
 export type EClaimsSubmissionStatus =
-  | "draft"
-  | "reviewed"
-  | "exported"
-  | "submitted_manual"
-  | "accepted"
-  | "denied"
-  | "appealed";
+  | 'draft'
+  | 'reviewed'
+  | 'exported'
+  | 'submitted_manual'
+  | 'accepted'
+  | 'denied'
+  | 'appealed';
 
-export const ECLAIMS_STATUS_TRANSITIONS: Record<EClaimsSubmissionStatus, EClaimsSubmissionStatus[]> = {
-  draft: ["reviewed"],
-  reviewed: ["exported", "draft"],
-  exported: ["submitted_manual", "reviewed"],
-  submitted_manual: ["accepted", "denied", "exported"],  // can re-export if portal rejects
-  accepted: [],                                           // terminal
-  denied: ["appealed", "draft"],                          // can re-draft or appeal
-  appealed: ["accepted", "denied"],                       // appeal resolves to accept or deny again
+export const ECLAIMS_STATUS_TRANSITIONS: Record<
+  EClaimsSubmissionStatus,
+  EClaimsSubmissionStatus[]
+> = {
+  draft: ['reviewed'],
+  reviewed: ['exported', 'draft'],
+  exported: ['submitted_manual', 'reviewed'],
+  submitted_manual: ['accepted', 'denied', 'exported'], // can re-export if portal rejects
+  accepted: [], // terminal
+  denied: ['appealed', 'draft'], // can re-draft or appeal
+  appealed: ['accepted', 'denied'], // appeal resolves to accept or deny again
 };
 
 /**
@@ -55,7 +58,7 @@ export const ECLAIMS_STATUS_TRANSITIONS: Record<EClaimsSubmissionStatus, EClaims
  * These statuses can NEVER be set by automation alone.
  */
 export function isManualOnlyTransition(to: EClaimsSubmissionStatus): boolean {
-  return ["submitted_manual", "accepted", "denied"].includes(to);
+  return ['submitted_manual', 'accepted', 'denied'].includes(to);
 }
 
 /* ── Claim Packet (normalized internal object) ──────────────── */
@@ -65,11 +68,11 @@ export interface ClaimPacketPatient {
   lastName: string;
   firstName: string;
   middleName?: string;
-  dob?: string;         // YYYY-MM-DD
-  sex?: "M" | "F";
+  dob?: string; // YYYY-MM-DD
+  sex?: 'M' | 'F';
   philhealthPin: string;
   memberPin?: string;
-  memberRelationship: "S" | "D" | "P";
+  memberRelationship: 'S' | 'D' | 'P';
 }
 
 export interface ClaimPacketFacility {
@@ -82,17 +85,24 @@ export interface ClaimPacketFacility {
 export interface ClaimPacketDiagnosis {
   icdCode: string;
   description?: string;
-  type: "primary" | "secondary";
+  type: 'primary' | 'secondary';
 }
 
 export interface ClaimPacketProcedure {
-  code: string;           // RVS or CPT
+  code: string; // RVS or CPT
   description?: string;
-  laterality?: "L" | "R" | "B";
+  laterality?: 'L' | 'R' | 'B';
 }
 
 export interface ClaimPacketCharge {
-  category: "room_board" | "drugs_meds" | "labs" | "imaging" | "supplies" | "professional_fee" | "other";
+  category:
+    | 'room_board'
+    | 'drugs_meds'
+    | 'labs'
+    | 'imaging'
+    | 'supplies'
+    | 'professional_fee'
+    | 'other';
   description: string;
   code?: string;
   quantity: number;
@@ -116,7 +126,7 @@ export interface ClaimPacket {
   /** Unique packet ID */
   packetId: string;
   /** eClaims version targeted */
-  eclaimsVersion: "3.0";
+  eclaimsVersion: '3.0';
   /** Source claim draft ID (from Phase 90 PhilHealth store) */
   sourceClaimDraftId: string;
   /** VistA encounter IEN (grounding) */
@@ -126,7 +136,7 @@ export interface ClaimPacket {
   /** Facility information */
   facility: ClaimPacketFacility;
   /** Encounter type */
-  patientType: "O" | "I";
+  patientType: 'O' | 'I';
   /** Admission/encounter date */
   admissionDate: string;
   /** Discharge date (inpatient) */
@@ -157,7 +167,7 @@ export interface ClaimPacket {
 
 /* ── Export Bundle ───────────────────────────────────────────── */
 
-export type ExportFormat = "json" | "pdf_text" | "xml_placeholder";
+export type ExportFormat = 'json' | 'pdf_text' | 'xml_placeholder';
 
 export interface ExportArtifact {
   format: ExportFormat;
@@ -180,7 +190,7 @@ export interface ExportBundle {
   /** Summary for the bundle manifest */
   summary: {
     patientName: string;
-    patientType: "O" | "I";
+    patientType: 'O' | 'I';
     admissionDate: string;
     totalCharges: number;
     diagnosisCount: number;
@@ -194,7 +204,7 @@ export interface ExportBundle {
 export interface DenialReason {
   code?: string;
   text: string;
-  category?: "documentation" | "eligibility" | "coding" | "timely_filing" | "other";
+  category?: 'documentation' | 'eligibility' | 'coding' | 'timely_filing' | 'other';
   recordedAt: string;
   recordedBy: string;
 }
@@ -273,40 +283,41 @@ export interface SpecAcquisitionGate {
   id: string;
   label: string;
   description: string;
-  status: "not_started" | "in_progress" | "blocked" | "completed";
+  status: 'not_started' | 'in_progress' | 'blocked' | 'completed';
   completedAt?: string;
   blockerNote?: string;
 }
 
 export const SPEC_ACQUISITION_GATES: SpecAcquisitionGate[] = [
   {
-    id: "obtain-schema",
-    label: "Obtain eClaims 3.0 Schema/Spec",
-    description: "Download or receive the official eClaims 3.0 XML/JSON schema from PhilHealth.",
-    status: "not_started",
+    id: 'obtain-schema',
+    label: 'Obtain eClaims 3.0 Schema/Spec',
+    description: 'Download or receive the official eClaims 3.0 XML/JSON schema from PhilHealth.',
+    status: 'not_started',
   },
   {
-    id: "validate-identifiers",
-    label: "Validate Required Identifiers",
-    description: "Confirm TIN, facility codes, accreditation numbers, PhilHealth PIN format requirements.",
-    status: "not_started",
+    id: 'validate-identifiers',
+    label: 'Validate Required Identifiers',
+    description:
+      'Confirm TIN, facility codes, accreditation numbers, PhilHealth PIN format requirements.',
+    status: 'not_started',
   },
   {
-    id: "sandbox-registration",
-    label: "eClaims 3.0 Sandbox Registration",
-    description: "Register facility for eClaims 3.0 sandbox/test environment access.",
-    status: "not_started",
+    id: 'sandbox-registration',
+    label: 'eClaims 3.0 Sandbox Registration',
+    description: 'Register facility for eClaims 3.0 sandbox/test environment access.',
+    status: 'not_started',
   },
   {
-    id: "sandbox-testing",
-    label: "Sandbox Test Submission",
-    description: "Submit test claim to PhilHealth sandbox, receive valid TCN.",
-    status: "not_started",
+    id: 'sandbox-testing',
+    label: 'Sandbox Test Submission',
+    description: 'Submit test claim to PhilHealth sandbox, receive valid TCN.',
+    status: 'not_started',
   },
   {
-    id: "certification",
-    label: "PhilHealth eClaims 3.0 Certification",
-    description: "Complete PhilHealth certification process for production submission.",
-    status: "not_started",
+    id: 'certification',
+    label: 'PhilHealth eClaims 3.0 Certification',
+    description: 'Complete PhilHealth certification process for production submission.',
+    status: 'not_started',
   },
 ];

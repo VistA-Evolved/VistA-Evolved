@@ -1,6 +1,7 @@
 # Phase 278 — End-to-End Certification Gates
 
 ## User Request
+
 Define structured certification scenarios that cover the critical clinical
 pathways (outpatient visit, portal session, imaging study, RCM claim, pharmacy,
 lab order). Build a cert runner that executes scenario checklists and produces
@@ -25,6 +26,7 @@ a structured pass/fail report.
    - Maps scenarios to regulatory requirements (ONC, HIPAA)
 
 ## Verification Steps
+
 - Scenarios JSON is well-formed with 12+ scenarios
 - Cert runner executes and produces report
 - Report identifies which scenarios are ready vs pending

@@ -25,11 +25,11 @@ All `/admin/payer-db/*` routes are protected by two layers:
 Every table has a `tenant_id` column (`TEXT NOT NULL DEFAULT 'default'`).
 Isolation is enforced through three mechanisms:
 
-| Layer | Mechanism | Where |
-|-------|-----------|-------|
-| Application | Repos filter by `tenant_id` | All PG repos |
-| Middleware | `X-Tenant-Id` header or session | `tenant-middleware.ts` |
-| Database | RLS policies (opt-in) | `pg-migrate.ts` |
+| Layer       | Mechanism                       | Where                  |
+| ----------- | ------------------------------- | ---------------------- |
+| Application | Repos filter by `tenant_id`     | All PG repos           |
+| Middleware  | `X-Tenant-Id` header or session | `tenant-middleware.ts` |
+| Database    | RLS policies (opt-in)           | `pg-migrate.ts`        |
 
 The `tenant-context.ts` sets `SET LOCAL app.current_tenant_id` on every
 PG client before executing queries. This enables Postgres RLS to enforce
@@ -50,10 +50,10 @@ are possible.
 
 Two audit subsystems coexist:
 
-| System | Table | Scope | Hash-Chained? |
-|--------|-------|-------|---------------|
-| Platform Audit | `platform_audit_event` | PG-only, cross-domain | Yes (SHA-256) |
-| Payer Audit | `payer_audit_event` | Both SQLite + PG | No (append-only triggers) |
+| System         | Table                  | Scope                 | Hash-Chained?             |
+| -------------- | ---------------------- | --------------------- | ------------------------- |
+| Platform Audit | `platform_audit_event` | PG-only, cross-domain | Yes (SHA-256)             |
+| Payer Audit    | `payer_audit_event`    | Both SQLite + PG      | No (append-only triggers) |
 
 ### 2.2 Append-Only Enforcement
 
@@ -87,11 +87,11 @@ and confirms each hash matches the computed value.
 
 ### 2.4 Retention Policy
 
-| Parameter | Default | Env Var |
-|-----------|---------|---------|
+| Parameter        | Default               | Env Var                         |
+| ---------------- | --------------------- | ------------------------------- |
 | Retention period | 395 days (~13 months) | `PLATFORM_AUDIT_RETENTION_DAYS` |
-| Auto-purge | disabled | `PLATFORM_AUDIT_AUTO_PURGE` |
-| Idempotency TTL | 24 hours | `IDEMPOTENCY_TTL_MS` |
+| Auto-purge       | disabled              | `PLATFORM_AUDIT_AUTO_PURGE`     |
+| Idempotency TTL  | 24 hours              | `IDEMPOTENCY_TTL_MS`            |
 
 **Export before deletion:** Use `GET /admin/payer-db/audit/export`
 with `since` and `until` query parameters to export entries as
@@ -159,12 +159,12 @@ records the DUZ of the user who made the change.
 
 The PG connection pool supports TLS via environment variables:
 
-| Env Var | Values | Description |
-|---------|--------|-------------|
-| `PLATFORM_PG_SSL` | `false` (default), `true`, `require`, `verify-ca`, `verify-full` | SSL mode |
-| `PLATFORM_PG_SSL_CA` | File path | CA certificate for `verify-ca`/`verify-full` |
-| `PLATFORM_PG_SSL_CERT` | File path | Client certificate (mutual TLS) |
-| `PLATFORM_PG_SSL_KEY` | File path | Client private key (mutual TLS) |
+| Env Var                | Values                                                           | Description                                  |
+| ---------------------- | ---------------------------------------------------------------- | -------------------------------------------- |
+| `PLATFORM_PG_SSL`      | `false` (default), `true`, `require`, `verify-ca`, `verify-full` | SSL mode                                     |
+| `PLATFORM_PG_SSL_CA`   | File path                                                        | CA certificate for `verify-ca`/`verify-full` |
+| `PLATFORM_PG_SSL_CERT` | File path                                                        | Client certificate (mutual TLS)              |
+| `PLATFORM_PG_SSL_KEY`  | File path                                                        | Client private key (mutual TLS)              |
 
 **SSL Modes:**
 
@@ -264,11 +264,11 @@ RLS policies apply to all 21 tenant-scoped tables:
 
 ### 6.3 Git-Ignored Secrets
 
-| File | Purpose | Git Status |
-|------|---------|-----------|
-| `.env.local` | Runtime credentials | `.gitignore`d |
-| `cookies.txt` | Test session cookies | `.gitignore`d |
-| `data/platform.db` | SQLite data | `.gitignore`d |
+| File               | Purpose              | Git Status    |
+| ------------------ | -------------------- | ------------- |
+| `.env.local`       | Runtime credentials  | `.gitignore`d |
+| `cookies.txt`      | Test session cookies | `.gitignore`d |
+| `data/platform.db` | SQLite data          | `.gitignore`d |
 
 ---
 
@@ -286,28 +286,28 @@ Migration v7 (`security_integrity_posture`) adds:
 
 ## 8. Compliance Mapping
 
-| Control | HIPAA Reference | Implementation |
-|---------|----------------|----------------|
-| Access control | 164.312(a)(1) | AUTH_RULES + in-handler requireRole |
-| Audit trail | 164.312(b) | Hash-chained platform_audit_event |
-| Integrity controls | 164.312(c)(1) | Append-only triggers + optimistic concurrency |
-| Transmission security | 164.312(e)(1) | TLS config (PLATFORM_PG_SSL) |
-| Authentication | 164.312(d) | Session-based auth + CSRF |
-| PHI minimum necessary | 164.502(b) | PHI sanitization in audit + analytics |
+| Control               | HIPAA Reference | Implementation                                |
+| --------------------- | --------------- | --------------------------------------------- |
+| Access control        | 164.312(a)(1)   | AUTH_RULES + in-handler requireRole           |
+| Audit trail           | 164.312(b)      | Hash-chained platform_audit_event             |
+| Integrity controls    | 164.312(c)(1)   | Append-only triggers + optimistic concurrency |
+| Transmission security | 164.312(e)(1)   | TLS config (PLATFORM_PG_SSL)                  |
+| Authentication        | 164.312(d)      | Session-based auth + CSRF                     |
+| PHI minimum necessary | 164.502(b)      | PHI sanitization in audit + analytics         |
 
 ---
 
 ## 9. Environment Variables Summary
 
-| Variable | Default | Purpose |
-|----------|---------|---------|
-| `PLATFORM_PG_URL` | (none) | PostgreSQL connection string |
-| `PLATFORM_PG_SSL` | `false` | SSL mode |
-| `PLATFORM_PG_SSL_CA` | (none) | CA certificate path |
-| `PLATFORM_PG_SSL_CERT` | (none) | Client certificate path |
-| `PLATFORM_PG_SSL_KEY` | (none) | Client private key path |
-| `PLATFORM_PG_RLS_ENABLED` | `false` | Enable Row-Level Security |
-| `PLATFORM_AUDIT_RETENTION_DAYS` | `395` | Audit retention period |
-| `PLATFORM_AUDIT_AUTO_PURGE` | `false` | Auto-purge expired entries |
-| `PLATFORM_PG_STATEMENT_TIMEOUT_MS` | `30000` | Max query time |
-| `PLATFORM_PG_IDLE_TX_TIMEOUT_MS` | `10000` | Idle transaction timeout |
+| Variable                           | Default | Purpose                      |
+| ---------------------------------- | ------- | ---------------------------- |
+| `PLATFORM_PG_URL`                  | (none)  | PostgreSQL connection string |
+| `PLATFORM_PG_SSL`                  | `false` | SSL mode                     |
+| `PLATFORM_PG_SSL_CA`               | (none)  | CA certificate path          |
+| `PLATFORM_PG_SSL_CERT`             | (none)  | Client certificate path      |
+| `PLATFORM_PG_SSL_KEY`              | (none)  | Client private key path      |
+| `PLATFORM_PG_RLS_ENABLED`          | `false` | Enable Row-Level Security    |
+| `PLATFORM_AUDIT_RETENTION_DAYS`    | `395`   | Audit retention period       |
+| `PLATFORM_AUDIT_AUTO_PURGE`        | `false` | Auto-purge expired entries   |
+| `PLATFORM_PG_STATEMENT_TIMEOUT_MS` | `30000` | Max query time               |
+| `PLATFORM_PG_IDLE_TX_TIMEOUT_MS`   | `10000` | Idle transaction timeout     |

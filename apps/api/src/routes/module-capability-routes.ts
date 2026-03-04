@@ -22,10 +22,10 @@
  *   GET  /api/marketplace/summary   — marketplace summary stats (Phase 51)
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { requireSession } from "../auth/auth-routes.js";
-import { log } from "../lib/logger.js";
-import { immutableAudit } from "../lib/immutable-audit.js";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
+import { log } from '../lib/logger.js';
+import { immutableAudit } from '../lib/immutable-audit.js';
 import {
   getModuleStatus,
   getSkuProfiles,
@@ -34,16 +34,13 @@ import {
   validateDependencies,
   getEnabledModules,
   getAllModuleManifests,
-} from "../modules/module-registry.js";
+} from '../modules/module-registry.js';
 import {
   resolveCapabilities,
   getCapabilitySummary,
   getCapabilitiesByModule,
-} from "../modules/capability-service.js";
-import {
-  getAdapterHealth,
-  getAllAdapters,
-} from "../adapters/adapter-loader.js";
+} from '../modules/capability-service.js';
+import { getAdapterHealth, getAllAdapters } from '../adapters/adapter-loader.js';
 import {
   getMarketplaceTenantConfig,
   upsertMarketplaceTenant,
@@ -51,7 +48,7 @@ import {
   getMarketplaceSummary,
   updateTenantConnectors,
   updateTenantJurisdiction,
-} from "../config/marketplace-tenant.js";
+} from '../config/marketplace-tenant.js';
 
 export default async function moduleCapabilityRoutes(server: FastifyInstance): Promise<void> {
   /* ---------------------------------------------------------------- */
@@ -59,11 +56,11 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   /* ---------------------------------------------------------------- */
 
   /** GET /api/capabilities — resolved capabilities for current tenant. */
-  server.get("/api/capabilities", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/api/capabilities', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    const tenantId = (session as any).tenantId || "default";
+    const tenantId = (session as any).tenantId || 'default';
     const capabilities = resolveCapabilities(tenantId);
 
     return {
@@ -74,11 +71,11 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   });
 
   /** GET /api/capabilities/summary — live/pending/disabled counts. */
-  server.get("/api/capabilities/summary", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/api/capabilities/summary', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    const tenantId = (session as any).tenantId || "default";
+    const tenantId = (session as any).tenantId || 'default';
     const summary = getCapabilitySummary(tenantId);
 
     return {
@@ -89,36 +86,39 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   });
 
   /** GET /api/capabilities/by-module — grouped capabilities. */
-  server.get("/api/capabilities/by-module", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    if (!session) return;
+  server.get(
+    '/api/capabilities/by-module',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
 
-    const tenantId = (session as any).tenantId || "default";
-    const grouped = getCapabilitiesByModule(tenantId);
+      const tenantId = (session as any).tenantId || 'default';
+      const grouped = getCapabilitiesByModule(tenantId);
 
-    return {
-      ok: true,
-      tenantId,
-      modules: grouped,
-    };
-  });
+      return {
+        ok: true,
+        tenantId,
+        modules: grouped,
+      };
+    }
+  );
 
   /* ---------------------------------------------------------------- */
   /* Admin: Module status & management                                 */
   /* ---------------------------------------------------------------- */
 
   /** GET /api/modules/status — module enablement status. */
-  server.get("/api/modules/status", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/api/modules/status', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
     // Admin check
-    if ((session as any).role !== "admin") {
-      reply.code(403).send({ ok: false, error: "Admin role required" });
+    if ((session as any).role !== 'admin') {
+      reply.code(403).send({ ok: false, error: 'Admin role required' });
       return;
     }
 
-    const tenantId = ((request.query as any)?.tenantId as string) || "default";
+    const tenantId = ((request.query as any)?.tenantId as string) || 'default';
     const status = getModuleStatus(tenantId);
     const depErrors = validateDependencies(getEnabledModules(tenantId));
 
@@ -132,12 +132,12 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   });
 
   /** GET /api/modules/skus — available SKU profiles. */
-  server.get("/api/modules/skus", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/api/modules/skus', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    if ((session as any).role !== "admin") {
-      reply.code(403).send({ ok: false, error: "Admin role required" });
+    if ((session as any).role !== 'admin') {
+      reply.code(403).send({ ok: false, error: 'Admin role required' });
       return;
     }
 
@@ -149,12 +149,12 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   });
 
   /** POST /api/modules/override — per-tenant module override. */
-  server.post("/api/modules/override", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/api/modules/override', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    if ((session as any).role !== "admin") {
-      reply.code(403).send({ ok: false, error: "Admin role required" });
+    if ((session as any).role !== 'admin') {
+      reply.code(403).send({ ok: false, error: 'Admin role required' });
       return;
     }
 
@@ -162,30 +162,35 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     const { tenantId, modules } = body;
 
     if (!tenantId) {
-      reply.code(400).send({ ok: false, error: "tenantId is required" });
+      reply.code(400).send({ ok: false, error: 'tenantId is required' });
       return;
     }
 
     // null → clear overrides, array → set overrides
     if (modules === null || modules === undefined) {
       setTenantModules(tenantId, null);
-      log.info("Cleared module overrides for tenant", { tenantId });
+      log.info('Cleared module overrides for tenant', { tenantId });
 
       // Immutable audit event
-      immutableAudit("module.override-clear", "success", {
-        sub: (session as any).duz,
-        name: (session as any).displayName,
-        roles: [(session as any).role],
-      }, {
-        tenantId,
-        detail: { action: "clear-overrides" },
-      });
+      immutableAudit(
+        'module.override-clear',
+        'success',
+        {
+          sub: (session as any).duz,
+          name: (session as any).displayName,
+          roles: [(session as any).role],
+        },
+        {
+          tenantId,
+          detail: { action: 'clear-overrides' },
+        }
+      );
 
       return { ok: true, message: `Overrides cleared for tenant '${tenantId}'` };
     }
 
     if (!Array.isArray(modules)) {
-      reply.code(400).send({ ok: false, error: "modules must be an array or null" });
+      reply.code(400).send({ ok: false, error: 'modules must be an array or null' });
       return;
     }
 
@@ -194,24 +199,29 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     if (depErrors.length > 0) {
       reply.code(400).send({
         ok: false,
-        error: "Dependency validation failed",
+        error: 'Dependency validation failed',
         details: depErrors,
       });
       return;
     }
 
     setTenantModules(tenantId, modules);
-    log.info("Applied module overrides for tenant", { tenantId, modules });
+    log.info('Applied module overrides for tenant', { tenantId, modules });
 
     // Immutable audit event
-    immutableAudit("module.toggle", "success", {
-      sub: (session as any).duz,
-      name: (session as any).displayName,
-      roles: [(session as any).role],
-    }, {
-      tenantId,
-      detail: { action: "set-overrides", modules },
-    });
+    immutableAudit(
+      'module.toggle',
+      'success',
+      {
+        sub: (session as any).duz,
+        name: (session as any).displayName,
+        roles: [(session as any).role],
+      },
+      {
+        tenantId,
+        detail: { action: 'set-overrides', modules },
+      }
+    );
 
     return {
       ok: true,
@@ -225,12 +235,12 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   /* ---------------------------------------------------------------- */
 
   /** GET /api/adapters/health — adapter health status. */
-  server.get("/api/adapters/health", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/api/adapters/health', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    if ((session as any).role !== "admin") {
-      reply.code(403).send({ ok: false, error: "Admin role required" });
+    if ((session as any).role !== 'admin') {
+      reply.code(403).send({ ok: false, error: 'Admin role required' });
       return;
     }
 
@@ -239,12 +249,12 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   });
 
   /** GET /api/adapters/list — all loaded adapters. */
-  server.get("/api/adapters/list", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/api/adapters/list', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    if ((session as any).role !== "admin") {
-      reply.code(403).send({ ok: false, error: "Admin role required" });
+    if ((session as any).role !== 'admin') {
+      reply.code(403).send({ ok: false, error: 'Admin role required' });
       return;
     }
 
@@ -263,16 +273,16 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   /* ---------------------------------------------------------------- */
 
   /** GET /api/modules/manifests — full module manifests with dependency status. */
-  server.get("/api/modules/manifests", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/api/modules/manifests', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    if ((session as any).role !== "admin") {
-      reply.code(403).send({ ok: false, error: "Admin role required" });
+    if ((session as any).role !== 'admin') {
+      reply.code(403).send({ ok: false, error: 'Admin role required' });
       return;
     }
 
-    const tenantId = ((request.query as any)?.tenantId as string) || "default";
+    const tenantId = ((request.query as any)?.tenantId as string) || 'default';
     const manifests = getAllModuleManifests(tenantId);
 
     return {
@@ -287,16 +297,16 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   /* ---------------------------------------------------------------- */
 
   /** GET /api/marketplace/config — marketplace tenant config. */
-  server.get("/api/marketplace/config", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/api/marketplace/config', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    if ((session as any).role !== "admin") {
-      reply.code(403).send({ ok: false, error: "Admin role required" });
+    if ((session as any).role !== 'admin') {
+      reply.code(403).send({ ok: false, error: 'Admin role required' });
       return;
     }
 
-    const tenantId = ((request.query as any)?.tenantId as string) || "default";
+    const tenantId = ((request.query as any)?.tenantId as string) || 'default';
     const config = getMarketplaceTenantConfig(tenantId);
 
     if (!config) {
@@ -308,20 +318,21 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   });
 
   /** PUT /api/marketplace/config — update marketplace tenant config. */
-  server.put("/api/marketplace/config", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.put('/api/marketplace/config', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    if ((session as any).role !== "admin") {
-      reply.code(403).send({ ok: false, error: "Admin role required" });
+    if ((session as any).role !== 'admin') {
+      reply.code(403).send({ ok: false, error: 'Admin role required' });
       return;
     }
 
     const body = (request.body as any) || {};
-    const { tenantId, facilityName, jurisdiction, enabledModules, connectors, customSettings } = body;
+    const { tenantId, facilityName, jurisdiction, enabledModules, connectors, customSettings } =
+      body;
 
     if (!tenantId) {
-      reply.code(400).send({ ok: false, error: "tenantId is required" });
+      reply.code(400).send({ ok: false, error: 'tenantId is required' });
       return;
     }
 
@@ -335,7 +346,9 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     });
 
     if (!result.ok) {
-      reply.code(400).send({ ok: false, error: "Dependency validation failed", details: result.errors });
+      reply
+        .code(400)
+        .send({ ok: false, error: 'Dependency validation failed', details: result.errors });
       return;
     }
 
@@ -343,79 +356,88 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   });
 
   /** PATCH /api/marketplace/connectors — update connector settings only. */
-  server.patch("/api/marketplace/connectors", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    if (!session) return;
+  server.patch(
+    '/api/marketplace/connectors',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
 
-    if ((session as any).role !== "admin") {
-      reply.code(403).send({ ok: false, error: "Admin role required" });
-      return;
+      if ((session as any).role !== 'admin') {
+        reply.code(403).send({ ok: false, error: 'Admin role required' });
+        return;
+      }
+
+      const body = (request.body as any) || {};
+      const { tenantId, connectors } = body;
+
+      if (!tenantId || !Array.isArray(connectors)) {
+        reply.code(400).send({ ok: false, error: 'tenantId and connectors[] are required' });
+        return;
+      }
+
+      const result = updateTenantConnectors(tenantId, connectors);
+      if (!result.ok) {
+        reply.code(404).send({ ok: false, error: result.error });
+        return;
+      }
+
+      return { ok: true, message: 'Connectors updated' };
     }
-
-    const body = (request.body as any) || {};
-    const { tenantId, connectors } = body;
-
-    if (!tenantId || !Array.isArray(connectors)) {
-      reply.code(400).send({ ok: false, error: "tenantId and connectors[] are required" });
-      return;
-    }
-
-    const result = updateTenantConnectors(tenantId, connectors);
-    if (!result.ok) {
-      reply.code(404).send({ ok: false, error: result.error });
-      return;
-    }
-
-    return { ok: true, message: "Connectors updated" };
-  });
+  );
 
   /** PATCH /api/marketplace/jurisdiction — change jurisdiction pack. */
-  server.patch("/api/marketplace/jurisdiction", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    if (!session) return;
+  server.patch(
+    '/api/marketplace/jurisdiction',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
 
-    if ((session as any).role !== "admin") {
-      reply.code(403).send({ ok: false, error: "Admin role required" });
-      return;
+      if ((session as any).role !== 'admin') {
+        reply.code(403).send({ ok: false, error: 'Admin role required' });
+        return;
+      }
+
+      const body = (request.body as any) || {};
+      const { tenantId, jurisdiction } = body;
+
+      if (!tenantId || !jurisdiction) {
+        reply.code(400).send({ ok: false, error: 'tenantId and jurisdiction are required' });
+        return;
+      }
+
+      const result = updateTenantJurisdiction(tenantId, jurisdiction);
+      if (!result.ok) {
+        reply.code(404).send({ ok: false, error: result.error });
+        return;
+      }
+
+      return { ok: true, message: `Jurisdiction changed to '${jurisdiction}'` };
     }
-
-    const body = (request.body as any) || {};
-    const { tenantId, jurisdiction } = body;
-
-    if (!tenantId || !jurisdiction) {
-      reply.code(400).send({ ok: false, error: "tenantId and jurisdiction are required" });
-      return;
-    }
-
-    const result = updateTenantJurisdiction(tenantId, jurisdiction);
-    if (!result.ok) {
-      reply.code(404).send({ ok: false, error: result.error });
-      return;
-    }
-
-    return { ok: true, message: `Jurisdiction changed to '${jurisdiction}'` };
-  });
+  );
 
   /** GET /api/marketplace/jurisdictions — available jurisdiction packs. */
-  server.get("/api/marketplace/jurisdictions", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    if (!session) return;
+  server.get(
+    '/api/marketplace/jurisdictions',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
 
-    if ((session as any).role !== "admin") {
-      reply.code(403).send({ ok: false, error: "Admin role required" });
-      return;
+      if ((session as any).role !== 'admin') {
+        reply.code(403).send({ ok: false, error: 'Admin role required' });
+        return;
+      }
+
+      return { ok: true, jurisdictions: getAvailableJurisdictions() };
     }
-
-    return { ok: true, jurisdictions: getAvailableJurisdictions() };
-  });
+  );
 
   /** GET /api/marketplace/summary — marketplace summary stats. */
-  server.get("/api/marketplace/summary", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/api/marketplace/summary', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    if ((session as any).role !== "admin") {
-      reply.code(403).send({ ok: false, error: "Admin role required" });
+    if ((session as any).role !== 'admin') {
+      reply.code(403).send({ ok: false, error: 'Admin role required' });
       return;
     }
 

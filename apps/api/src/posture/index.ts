@@ -12,20 +12,20 @@
  *   GET /posture/backup       -- Backup/restore gates only
  */
 
-import type { FastifyInstance } from "fastify";
-import { checkObservabilityPosture } from "./observability-posture.js";
-import { checkTenantIsolationPosture } from "./tenant-posture.js";
-import { checkPerfPosture } from "./perf-posture.js";
-import { checkBackupPosture } from "./backup-posture.js";
-import { checkDataPlanePosture } from "./data-plane-posture.js";
-import { checkAuditShippingPosture } from "./audit-shipping-posture.js";
-import { checkCertificationPosture } from "./certification-posture.js";
-import { checkSecurityCertPosture } from "./security-cert-posture.js";
-import { getStoreInventorySummary } from "../platform/store-policy.js";
+import type { FastifyInstance } from 'fastify';
+import { checkObservabilityPosture } from './observability-posture.js';
+import { checkTenantIsolationPosture } from './tenant-posture.js';
+import { checkPerfPosture } from './perf-posture.js';
+import { checkBackupPosture } from './backup-posture.js';
+import { checkDataPlanePosture } from './data-plane-posture.js';
+import { checkAuditShippingPosture } from './audit-shipping-posture.js';
+import { checkCertificationPosture } from './certification-posture.js';
+import { checkSecurityCertPosture } from './security-cert-posture.js';
+import { getStoreInventorySummary } from '../platform/store-policy.js';
 
 export default async function postureRoutes(server: FastifyInstance) {
   // Unified posture report
-  server.get("/posture", async () => {
+  server.get('/posture', async () => {
     const [observability, tenant, performance, backup] = await Promise.all([
       checkObservabilityPosture(),
       checkTenantIsolationPosture(),
@@ -75,16 +75,16 @@ export default async function postureRoutes(server: FastifyInstance) {
   });
 
   // Individual domain endpoints
-  server.get("/posture/observability", async () => {
+  server.get('/posture/observability', async () => {
     return { ok: true, ...(await checkObservabilityPosture()) };
   });
 
-  server.get("/posture/tenant", async () => {
+  server.get('/posture/tenant', async () => {
     return { ok: true, ...(await checkTenantIsolationPosture()) };
   });
 
   // Phase 122: Dedicated admin tenant posture endpoint
-  server.get("/admin/tenant-posture", async () => {
+  server.get('/admin/tenant-posture', async () => {
     const posture = await checkTenantIsolationPosture();
     return {
       ok: true,
@@ -98,31 +98,31 @@ export default async function postureRoutes(server: FastifyInstance) {
     };
   });
 
-  server.get("/posture/performance", async () => {
+  server.get('/posture/performance', async () => {
     return { ok: true, ...checkPerfPosture() };
   });
 
-  server.get("/posture/backup", async () => {
+  server.get('/posture/backup', async () => {
     return { ok: true, ...checkBackupPosture() };
   });
 
   // Phase 125: Data plane posture
-  server.get("/posture/data-plane", async () => {
+  server.get('/posture/data-plane', async () => {
     return { ok: true, ...checkDataPlanePosture() };
   });
 
   // Phase 157: Audit shipping posture
-  server.get("/posture/audit-shipping", async () => {
+  server.get('/posture/audit-shipping', async () => {
     return { ok: true, ...(await checkAuditShippingPosture()) };
   });
 
   // Phase 164: Certification / readiness posture
-  server.get("/posture/certification", async () => {
+  server.get('/posture/certification', async () => {
     return { ok: true, ...checkCertificationPosture() };
   });
 
   // Phase 136: Store policy posture
-  server.get("/posture/store-policy", async () => {
+  server.get('/posture/store-policy', async () => {
     const summary = getStoreInventorySummary();
     const pass = summary.criticalInMemoryCount === 0;
     return {
@@ -134,7 +134,7 @@ export default async function postureRoutes(server: FastifyInstance) {
   });
 
   // Phase 345: Wave 16 security certification posture
-  server.get("/posture/security-cert", async () => {
+  server.get('/posture/security-cert', async () => {
     return { ok: true, ...checkSecurityCertPosture() };
   });
 }

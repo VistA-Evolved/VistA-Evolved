@@ -4,6 +4,7 @@ Goal:
 GET /vista/notes?dfn=<dfn> returns notes list and UI displays it.
 
 Rules:
+
 - Do NOT modify rpcBrokerClient.ts unless Phase 4A breaks.
 - Use existing broker client.
 - Handle VistA error patterns: -1^message => ok:false.
@@ -17,15 +18,18 @@ Return:
 If no notes: ok:true count=0 results=[]
 
 UI:
+
 - Add Notes section/tab in patient workspace
 - Fetch notes when patient selected
 - Render list with title + date + author
 
 Docs:
+
 - docs/runbooks/vista-rpc-notes.md
 - Add BUG tracker entry if wire format differs from docs
 
 Deliverables:
+
 - file list
 - curl test example
 - expected JSON example

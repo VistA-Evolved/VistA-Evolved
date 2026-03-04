@@ -5,7 +5,9 @@ import { useDataCache, type LabResult } from '../../../stores/data-cache';
 import { useSession } from '../../../stores/session-context';
 import styles from '../cprs.module.css';
 
-interface Props { dfn: string; }
+interface Props {
+  dfn: string;
+}
 
 /** Determine if a flag indicates critical (HH/LL) vs abnormal (H/L) */
 function flagSeverity(flag?: string): 'critical' | 'abnormal' | 'normal' {
@@ -33,7 +35,9 @@ export default function LabsPanel({ dfn }: Props) {
   const [filterMode, setFilterMode] = useState<ResultFilter>('all');
   const [ackMode, setAckMode] = useState<string>(''); // 'real' | 'draft' | 'local' | ''
 
-  useEffect(() => { fetchDomain(dfn, 'labs'); }, [dfn, fetchDomain]);
+  useEffect(() => {
+    fetchDomain(dfn, 'labs');
+  }, [dfn, fetchDomain]);
 
   const labs = getDomain(dfn, 'labs');
   const loading = isLoading(dfn, 'labs');
@@ -53,7 +57,9 @@ export default function LabsPanel({ dfn }: Props) {
   function handleAcknowledge(id: string) {
     setAcknowledged((prev) => new Set(prev).add(id));
     // Server-side write-back
-    acknowledgeLabs(dfn, [id], acknowledgedBy).then((r) => setAckMode(r.mode)).catch(() => {});
+    acknowledgeLabs(dfn, [id], acknowledgedBy)
+      .then((r) => setAckMode(r.mode))
+      .catch(() => {});
   }
 
   function handleAcknowledgeAll() {
@@ -63,17 +69,38 @@ export default function LabsPanel({ dfn }: Props) {
       labs.forEach((l) => next.add(l.id));
       return next;
     });
-    acknowledgeLabs(dfn, ids, acknowledgedBy).then((r) => setAckMode(r.mode)).catch(() => {});
+    acknowledgeLabs(dfn, ids, acknowledgedBy)
+      .then((r) => setAckMode(r.mode))
+      .catch(() => {});
   }
 
   return (
     <div>
       <div className={styles.panelTitle}>Laboratory Results</div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '2px 0 8px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          margin: '2px 0 8px',
+        }}
+      >
         <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: 0 }}>
           Contract: ORWLRR INTERIM &bull; {labs.length} result{labs.length !== 1 ? 's' : ''}
-          {abnormalCount > 0 && <> &bull; <span style={{ color: '#fd7e14', fontWeight: 600 }}>{abnormalCount} abnormal</span></>}
-          {criticalCount > 0 && <> &bull; <span style={{ color: '#dc3545', fontWeight: 600 }}>{criticalCount} CRITICAL</span></>}
+          {abnormalCount > 0 && (
+            <>
+              {' '}
+              &bull;{' '}
+              <span style={{ color: '#fd7e14', fontWeight: 600 }}>{abnormalCount} abnormal</span>
+            </>
+          )}
+          {criticalCount > 0 && (
+            <>
+              {' '}
+              &bull;{' '}
+              <span style={{ color: '#dc3545', fontWeight: 600 }}>{criticalCount} CRITICAL</span>
+            </>
+          )}
           {unackCount > 0 && <> &bull; {unackCount} unacknowledged</>}
         </p>
         <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
@@ -88,7 +115,11 @@ export default function LabsPanel({ dfn }: Props) {
             <option value="unacknowledged">Unacknowledged</option>
           </select>
           {unackCount > 0 && (
-            <button className={styles.btn} style={{ fontSize: 10, padding: '2px 6px' }} onClick={handleAcknowledgeAll}>
+            <button
+              className={styles.btn}
+              style={{ fontSize: 10, padding: '2px 6px' }}
+              onClick={handleAcknowledgeAll}
+            >
               Ack All
             </button>
           )}
@@ -98,7 +129,14 @@ export default function LabsPanel({ dfn }: Props) {
       <div className={styles.splitPane}>
         <div className={styles.splitLeft}>
           <table className={styles.dataTable}>
-            <thead><tr><th>Test</th><th>Date</th><th>Flag</th><th>Status</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Test</th>
+                <th>Date</th>
+                <th>Flag</th>
+                <th>Status</th>
+              </tr>
+            </thead>
             <tbody>
               {filteredLabs.map((lab) => {
                 const severity = flagSeverity(lab.flag);
@@ -107,55 +145,100 @@ export default function LabsPanel({ dfn }: Props) {
                     key={lab.id}
                     onClick={() => setSelected(lab)}
                     style={{
-                      ...(selected?.id === lab.id ? { background: 'var(--cprs-selected)' } : undefined),
-                      ...(severity === 'critical' ? { borderLeft: '3px solid #dc3545' } : severity === 'abnormal' ? { borderLeft: '3px solid #fd7e14' } : undefined),
+                      ...(selected?.id === lab.id
+                        ? { background: 'var(--cprs-selected)' }
+                        : undefined),
+                      ...(severity === 'critical'
+                        ? { borderLeft: '3px solid #dc3545' }
+                        : severity === 'abnormal'
+                          ? { borderLeft: '3px solid #fd7e14' }
+                          : undefined),
                     }}
                   >
-                    <td style={{ fontWeight: severity !== 'normal' ? 600 : 400, color: flagColor(severity) }}>{lab.name}</td>
+                    <td
+                      style={{
+                        fontWeight: severity !== 'normal' ? 600 : 400,
+                        color: flagColor(severity),
+                      }}
+                    >
+                      {lab.name}
+                    </td>
                     <td>{lab.date || '—'}</td>
                     <td>
-                      {severity === 'critical'
-                        ? <span style={{ color: '#dc3545', fontWeight: 700, fontSize: 11 }}>{lab.flag}</span>
-                        : severity === 'abnormal'
-                        ? <span style={{ color: '#fd7e14', fontWeight: 600, fontSize: 11 }}>{lab.flag}</span>
-                        : <span style={{ color: 'var(--cprs-text-muted)', fontSize: 11 }}>—</span>
-                      }
+                      {severity === 'critical' ? (
+                        <span style={{ color: '#dc3545', fontWeight: 700, fontSize: 11 }}>
+                          {lab.flag}
+                        </span>
+                      ) : severity === 'abnormal' ? (
+                        <span style={{ color: '#fd7e14', fontWeight: 600, fontSize: 11 }}>
+                          {lab.flag}
+                        </span>
+                      ) : (
+                        <span style={{ color: 'var(--cprs-text-muted)', fontSize: 11 }}>—</span>
+                      )}
                     </td>
                     <td>
-                      {acknowledged.has(lab.id)
-                        ? <span className={`${styles.badge} ${styles.signed}`}>Ack&apos;d</span>
-                        : <span className={`${styles.badge} ${styles.unsigned}`}>{lab.status}</span>
-                      }
+                      {acknowledged.has(lab.id) ? (
+                        <span className={`${styles.badge} ${styles.signed}`}>Ack&apos;d</span>
+                      ) : (
+                        <span className={`${styles.badge} ${styles.unsigned}`}>{lab.status}</span>
+                      )}
                     </td>
                   </tr>
                 );
               })}
               {!loading && filteredLabs.length === 0 && (
-                <tr><td colSpan={4} style={{ textAlign: 'center', fontStyle: 'italic' }}>
-                  {filterMode === 'all' ? 'No lab results on file' : `No ${filterMode} results`}
-                </td></tr>
+                <tr>
+                  <td colSpan={4} style={{ textAlign: 'center', fontStyle: 'italic' }}>
+                    {filterMode === 'all' ? 'No lab results on file' : `No ${filterMode} results`}
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
-          {loading && <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', padding: 8 }}>Loading...</p>}
+          {loading && (
+            <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', padding: 8 }}>Loading...</p>
+          )}
         </div>
         <div className={styles.splitRight}>
           {selected ? (
             <div>
-              <div className={styles.panelTitle} style={{ color: flagColor(flagSeverity(selected.flag)) }}>
+              <div
+                className={styles.panelTitle}
+                style={{ color: flagColor(flagSeverity(selected.flag)) }}
+              >
                 {selected.name} — Detail
                 {flagSeverity(selected.flag) === 'critical' && (
-                  <span style={{ marginLeft: 8, fontSize: 10, background: '#dc3545', color: '#fff', padding: '1px 6px', borderRadius: 3 }}>CRITICAL</span>
+                  <span
+                    style={{
+                      marginLeft: 8,
+                      fontSize: 10,
+                      background: '#dc3545',
+                      color: '#fff',
+                      padding: '1px 6px',
+                      borderRadius: 3,
+                    }}
+                  >
+                    CRITICAL
+                  </span>
                 )}
               </div>
-              <div className={styles.formGroup}><label>Date</label><div>{selected.date || '—'}</div></div>
+              <div className={styles.formGroup}>
+                <label>Date</label>
+                <div>{selected.date || '—'}</div>
+              </div>
               <div className={styles.formGroup}>
                 <label>Status</label>
                 <div>
                   {flagSeverity(selected.flag) === 'critical' ? (
-                    <span style={{ color: '#dc3545', fontWeight: 700 }}>CRITICAL {selected.flag === 'HH' ? '(HIGH)' : selected.flag === 'LL' ? '(LOW)' : ''}</span>
+                    <span style={{ color: '#dc3545', fontWeight: 700 }}>
+                      CRITICAL{' '}
+                      {selected.flag === 'HH' ? '(HIGH)' : selected.flag === 'LL' ? '(LOW)' : ''}
+                    </span>
                   ) : flagSeverity(selected.flag) === 'abnormal' ? (
-                    <span style={{ color: '#fd7e14', fontWeight: 600 }}>{selected.flag === 'H' ? 'HIGH' : selected.flag === 'L' ? 'LOW' : 'ABNORMAL'}</span>
+                    <span style={{ color: '#fd7e14', fontWeight: 600 }}>
+                      {selected.flag === 'H' ? 'HIGH' : selected.flag === 'L' ? 'LOW' : 'ABNORMAL'}
+                    </span>
                   ) : (
                     <span className={`${styles.badge} ${styles.signed}`}>{selected.status}</span>
                   )}
@@ -163,8 +246,15 @@ export default function LabsPanel({ dfn }: Props) {
               </div>
               <div className={styles.formGroup}>
                 <label>Result</label>
-                <div style={{ fontFamily: 'monospace', fontWeight: 600, color: flagColor(flagSeverity(selected.flag)) }}>
-                  {selected.value}{selected.units ? ` ${selected.units}` : ''}
+                <div
+                  style={{
+                    fontFamily: 'monospace',
+                    fontWeight: 600,
+                    color: flagColor(flagSeverity(selected.flag)),
+                  }}
+                >
+                  {selected.value}
+                  {selected.units ? ` ${selected.units}` : ''}
                 </div>
               </div>
               {selected.refRange && (
@@ -181,16 +271,32 @@ export default function LabsPanel({ dfn }: Props) {
               )}
               {!acknowledged.has(selected.id) && (
                 <div>
-                  <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => handleAcknowledge(selected.id)} style={{ marginTop: 8 }}>
+                  <button
+                    className={`${styles.btn} ${styles.btnPrimary}`}
+                    onClick={() => handleAcknowledge(selected.id)}
+                    style={{ marginTop: 8 }}
+                  >
                     Acknowledge Result
                   </button>
                   <p style={{ fontSize: 10, color: 'var(--cprs-text-muted)', marginTop: 4 }}>
-                    Contract: ORWLRR ACK &bull; {ackMode === 'real' ? 'Synced to EHR' : ackMode === 'draft' ? 'Stored server-side (sync pending)' : 'Server-side acknowledgement'}
+                    Contract: ORWLRR ACK &bull;{' '}
+                    {ackMode === 'real'
+                      ? 'Synced to EHR'
+                      : ackMode === 'draft'
+                        ? 'Stored server-side (sync pending)'
+                        : 'Server-side acknowledgement'}
                   </p>
                 </div>
               )}
               {acknowledged.has(selected.id) && (
-                <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', marginTop: 8, fontStyle: 'italic' }}>
+                <p
+                  style={{
+                    fontSize: 11,
+                    color: 'var(--cprs-text-muted)',
+                    marginTop: 8,
+                    fontStyle: 'italic',
+                  }}
+                >
                   Result acknowledged.
                 </p>
               )}

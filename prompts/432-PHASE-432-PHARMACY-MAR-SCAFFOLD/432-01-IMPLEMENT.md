@@ -1,6 +1,7 @@
 # Phase 432 — Pharmacy / MAR / BCMA Adapter Scaffold (W27 P2)
 
 ## Objective
+
 Extend the ClinicalEngineAdapter with inpatient pharmacy, MAR (Medication
 Administration Record), and BCMA (Bar Code Medication Administration) types
 and methods. PSB/PSJ/BCMA packages are NOT available in the WorldVistA Docker
@@ -37,6 +38,7 @@ vistaGrounding metadata and migration paths.
    - `PSB VALIDATE ORDER` — BCMA scan-time validation
 
 ## Files Changed
+
 - `apps/api/src/adapters/types.ts` — +7 interfaces
 - `apps/api/src/adapters/clinical-engine/interface.ts` — +6 methods
 - `apps/api/src/adapters/clinical-engine/stub-adapter.ts` — +6 stubs

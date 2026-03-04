@@ -8,6 +8,7 @@
 ## 1. Overview
 
 The evidence pack builder scans the repository for:
+
 - `evidence/**` -- wave/phase verification outputs
 - `docs/runbooks/*.md` -- operational runbooks
 - `scripts/verify-*.ps1` -- phase verifiers
@@ -16,6 +17,7 @@ The evidence pack builder scans the repository for:
 - `prompts/` -- phase prompt folders
 
 It produces two artifacts in `artifacts/evidence-pack/`:
+
 1. **manifest.json** -- machine-readable inventory with SHA-256 checksums
 2. **EVIDENCE_INDEX.md** -- human-readable index for auditors
 
@@ -74,6 +76,7 @@ artifacts/evidence-pack/
 ## 4. Gap Detection
 
 The builder detects:
+
 - **Verifiers without evidence**: A `verify-phase290-*.ps1` exists but no
   `evidence/*/290/` directory has files
 - Gaps are reported as warnings by default; use `--strict` to fail on them

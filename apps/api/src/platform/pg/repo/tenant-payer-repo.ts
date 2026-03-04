@@ -6,35 +6,28 @@
  * Mirrors apps/api/src/platform/db/repo/tenant-payer-repo.ts using Postgres.
  */
 
-import { randomUUID } from "node:crypto";
-import { eq, and } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { tenantPayer, payerAuditEvent } from "../pg-schema.js";
+import { randomUUID } from 'node:crypto';
+import { eq, and } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { tenantPayer, payerAuditEvent } from '../pg-schema.js';
 
 export type TenantPayerRow = typeof tenantPayer.$inferSelect;
 
 export async function findTenantPayer(
   tenantId: string,
-  payerId: string,
+  payerId: string
 ): Promise<TenantPayerRow | undefined> {
   const db = getPgDb();
   const rows = await db
     .select()
     .from(tenantPayer)
-    .where(
-      and(eq(tenantPayer.tenantId, tenantId), eq(tenantPayer.payerId, payerId)),
-    );
+    .where(and(eq(tenantPayer.tenantId, tenantId), eq(tenantPayer.payerId, payerId)));
   return rows[0];
 }
 
-export async function listTenantPayers(
-  tenantId: string,
-): Promise<TenantPayerRow[]> {
+export async function listTenantPayers(tenantId: string): Promise<TenantPayerRow[]> {
   const db = getPgDb();
-  return db
-    .select()
-    .from(tenantPayer)
-    .where(eq(tenantPayer.tenantId, tenantId));
+  return db.select().from(tenantPayer).where(eq(tenantPayer.tenantId, tenantId));
 }
 
 export async function upsertTenantPayer(
@@ -46,7 +39,7 @@ export async function upsertTenantPayer(
     vaultRef?: string;
   },
   reason: string,
-  actor?: string,
+  actor?: string
 ): Promise<TenantPayerRow> {
   const db = getPgDb();
   const now = new Date().toISOString();
@@ -70,11 +63,11 @@ export async function upsertTenantPayer(
     await db.insert(payerAuditEvent).values({
       id: randomUUID(),
       tenantId: data.tenantId,
-      actorType: actor ? "user" : "system",
+      actorType: actor ? 'user' : 'system',
       actorId: actor ?? null,
-      entityType: "tenant_payer",
+      entityType: 'tenant_payer',
       entityId: existing.id,
-      action: "update",
+      action: 'update',
       beforeJson: JSON.parse(JSON.stringify(existing)),
       afterJson: JSON.parse(JSON.stringify(after)),
       reason,
@@ -90,7 +83,7 @@ export async function upsertTenantPayer(
       id,
       tenantId: data.tenantId,
       payerId: data.payerId,
-      status: data.status ?? "contracting_needed",
+      status: data.status ?? 'contracting_needed',
       notes: data.notes ?? null,
       vaultRef: data.vaultRef ?? null,
       createdAt: new Date(now),
@@ -103,11 +96,11 @@ export async function upsertTenantPayer(
     await db.insert(payerAuditEvent).values({
       id: randomUUID(),
       tenantId: data.tenantId,
-      actorType: actor ? "user" : "system",
+      actorType: actor ? 'user' : 'system',
       actorId: actor ?? null,
-      entityType: "tenant_payer",
+      entityType: 'tenant_payer',
       entityId: id,
-      action: "create",
+      action: 'create',
       beforeJson: null,
       afterJson: JSON.parse(JSON.stringify(created)),
       reason,

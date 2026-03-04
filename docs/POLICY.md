@@ -7,28 +7,28 @@
 
 ## 1. Allowed Documentation Roots
 
-| Path | Purpose | Committed? |
-|------|---------|------------|
-| `docs/POLICY.md` | This file | Yes |
-| `docs/INDEX.md` | Single curated entry point | Yes |
-| `docs/runbooks/**` | Step-by-step operational guides | Yes |
-| `docs/decisions/**` | Architecture Decision Records (ADRs) | Yes |
-| `docs/architecture/**` | Architecture specifications | Yes |
-| `docs/security/**` | Security documentation | Yes |
-| `docs/compliance/**` | Regulatory compliance docs | Yes |
-| `docs/vista/**` | VistA capability maps and grounding | Yes |
-| `docs/BUG-TRACKER.md` | Bug tracker (single file) | Yes |
-| `docs/README.md` | Docs readme | Yes |
+| Path                   | Purpose                              | Committed? |
+| ---------------------- | ------------------------------------ | ---------- |
+| `docs/POLICY.md`       | This file                            | Yes        |
+| `docs/INDEX.md`        | Single curated entry point           | Yes        |
+| `docs/runbooks/**`     | Step-by-step operational guides      | Yes        |
+| `docs/decisions/**`    | Architecture Decision Records (ADRs) | Yes        |
+| `docs/architecture/**` | Architecture specifications          | Yes        |
+| `docs/security/**`     | Security documentation               | Yes        |
+| `docs/compliance/**`   | Regulatory compliance docs           | Yes        |
+| `docs/vista/**`        | VistA capability maps and grounding  | Yes        |
+| `docs/BUG-TRACKER.md`  | Bug tracker (single file)            | Yes        |
+| `docs/README.md`       | Docs readme                          | Yes        |
 
 ## 2. Forbidden Roots (NEVER commit content here)
 
-| Path | Reason |
-|------|--------|
-| `reports/**` | Verification outputs are artifacts, not docs |
-| `docs/reports/**` | Same -- verification outputs belong in `/artifacts` |
-| `docs/verify/**` | Verification outputs are artifacts |
-| Any `*-verify-report.md` in `docs/` | Use `/artifacts` instead |
-| Any `*-verify-output*` anywhere | Use `/artifacts` instead |
+| Path                                | Reason                                              |
+| ----------------------------------- | --------------------------------------------------- |
+| `reports/**`                        | Verification outputs are artifacts, not docs        |
+| `docs/reports/**`                   | Same -- verification outputs belong in `/artifacts` |
+| `docs/verify/**`                    | Verification outputs are artifacts                  |
+| Any `*-verify-report.md` in `docs/` | Use `/artifacts` instead                            |
+| Any `*-verify-output*` anywhere     | Use `/artifacts` instead                            |
 
 ## 3. Artifact Output Rules
 

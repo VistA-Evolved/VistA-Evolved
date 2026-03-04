@@ -17,8 +17,8 @@ services:
     image: caddy:2-alpine
     container_name: ve-caddy-tls
     ports:
-      - "443:443"
-      - "80:80"
+      - '443:443'
+      - '80:80'
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy-data:/data
@@ -27,10 +27,10 @@ services:
       # - ./certs:/etc/caddy/certs:ro
     extra_hosts:
       # Allow Caddy to reach host-network services (API + Web)
-      - "host.docker.internal:host-gateway"
+      - 'host.docker.internal:host-gateway'
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "--no-check-certificate", "https://localhost/health"]
+      test: ['CMD', 'wget', '-q', '--spider', '--no-check-certificate', 'https://localhost/health']
       interval: 15s
       timeout: 5s
       retries: 3

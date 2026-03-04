@@ -4,7 +4,7 @@
 
 1. **Shared package in `packages/locale-utils`** — not duplicated between portal
    and web. Both apps can import from the workspace package.
-2. **Intl.* APIs only** — no moment.js, no date-fns, no luxon. Built-in APIs
+2. **Intl.\* APIs only** — no moment.js, no date-fns, no luxon. Built-in APIs
    are sufficient and zero-dependency.
 3. **RTL readiness, not RTL implementation** — infrastructure functions exist
    (`isRtlLocale`, `getTextDirection`) but no RTL locales are active yet.

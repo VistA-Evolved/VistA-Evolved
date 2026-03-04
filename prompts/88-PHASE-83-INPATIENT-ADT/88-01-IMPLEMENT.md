@@ -1,10 +1,12 @@
 # Phase 83 — Inpatient ADT + Census + Bedboard (IMPLEMENT)
 
 ## User Request
+
 Build enterprise-grade inpatient operations module: ADT/census/bedboard with
 VistA-first data grounding. Extends Phase 67 ADT API layer with new web UI.
 
 ## Scope
+
 A) 4 inpatient pages: census, bedboard, ADT workflow, movement timeline
 B) VistA grounding doc for FileMan files 2/42/405/43/45.7
 C) API: `/vista/inpatient/*` endpoints (7 total: 4 GET + 3 POST stubs)
@@ -13,6 +15,7 @@ E) RBAC + audit + no dead clicks
 F) Navigation entry in CPRSMenuBar Tools menu
 
 ## Implementation Steps
+
 1. Create `apps/api/src/routes/inpatient/index.ts` — 7 endpoints leveraging
    existing Phase 67 ADT RPCs (`ORQPT WARDS`, `ORQPT WARD PATIENTS`,
    `ORWPT16 ADMITLST`) plus new census enrichment
@@ -24,6 +27,7 @@ F) Navigation entry in CPRSMenuBar Tools menu
 7. Create verifier script
 
 ## Verification
+
 - `npx tsc --noEmit` clean in apps/api
 - `npx next build` clean in apps/web
 - All 4 tabs render
@@ -31,6 +35,7 @@ F) Navigation entry in CPRSMenuBar Tools menu
 - POST stubs return structured integration-pending
 
 ## Files Touched
+
 - `apps/api/src/routes/inpatient/index.ts` (new)
 - `apps/api/src/index.ts` (import + register)
 - `apps/web/src/app/cprs/inpatient/page.tsx` (new)

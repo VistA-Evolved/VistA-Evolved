@@ -1,6 +1,7 @@
 # Phase 266 — Safety Case Scaffold (W8-P1)
 
 ## User Request
+
 Create a living "safety case" that ties risks → controls → tests → evidence.
 
 ## Implementation Steps
@@ -11,6 +12,7 @@ Create a living "safety case" that ties risks → controls → tests → evidenc
 4. Link safety case from `/docs/INDEX.md`
 
 ## Verification Steps
+
 - Confirm safety case references RPC contract suite
 - Confirm audit verification job referenced
 - Confirm DR evidence referenced
@@ -18,6 +20,7 @@ Create a living "safety case" that ties risks → controls → tests → evidenc
 - Evidence captured under evidence/wave-8/P1-safety-case/
 
 ## Files Touched
+
 - docs/safety/SAFETY_CASE.md (new)
 - docs/safety/SAFETY_RELEASE_GATE.md (new)
 - docs/INDEX.md (updated)

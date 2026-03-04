@@ -7,10 +7,10 @@
  * for telehealth rooms. Append-only audit trail.
  */
 
-import { eq, desc, sql } from "drizzle-orm";
-import { randomUUID } from "node:crypto";
-import { getPgDb } from "../pg-db.js";
-import { pgTelehealthRoomEvent } from "../pg-schema.js";
+import { eq, desc, sql } from 'drizzle-orm';
+import { randomUUID } from 'node:crypto';
+import { getPgDb } from '../pg-db.js';
+import { pgTelehealthRoomEvent } from '../pg-schema.js';
 
 export type TelehealthRoomEventRow = typeof pgTelehealthRoomEvent.$inferSelect;
 
@@ -31,7 +31,7 @@ export async function insertRoomEvent(data: {
 
   await db.insert(pgTelehealthRoomEvent).values({
     id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     roomId: data.roomId,
     eventType: data.eventType,
     actorId: data.actorId ?? null,
@@ -48,14 +48,18 @@ export async function insertRoomEvent(data: {
 
 export async function findRoomEventById(id: string): Promise<TelehealthRoomEventRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(pgTelehealthRoomEvent)
+  const rows = await db
+    .select()
+    .from(pgTelehealthRoomEvent)
     .where(eq(pgTelehealthRoomEvent.id, id));
   return rows[0];
 }
 
 export async function findEventsByRoomId(roomId: string): Promise<TelehealthRoomEventRow[]> {
   const db = getPgDb();
-  return db.select().from(pgTelehealthRoomEvent)
+  return db
+    .select()
+    .from(pgTelehealthRoomEvent)
     .where(eq(pgTelehealthRoomEvent.roomId, roomId))
     .orderBy(desc(pgTelehealthRoomEvent.createdAt));
 }
@@ -64,7 +68,8 @@ export async function findEventsByRoomId(roomId: string): Promise<TelehealthRoom
 
 export async function countRoomEvents(roomId: string): Promise<number> {
   const db = getPgDb();
-  const result = await db.select({ count: sql<number>`count(*)` })
+  const result = await db
+    .select({ count: sql<number>`count(*)` })
     .from(pgTelehealthRoomEvent)
     .where(eq(pgTelehealthRoomEvent.roomId, roomId));
   return result[0]?.count ?? 0;

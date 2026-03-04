@@ -8,15 +8,15 @@
  * Patient DFN stored but NEVER included in audit or logs.
  */
 
-import { randomUUID } from "node:crypto";
-import { getPgDb } from "../../platform/pg/pg-db.js";
+import { randomUUID } from 'node:crypto';
+import { getPgDb } from '../../platform/pg/pg-db.js';
 import {
   remittanceImport,
   paymentRecord,
   reconciliationMatch,
   underpaymentCase,
-} from "../../platform/pg/pg-schema.js";
-import { eq, desc, asc, and, sql } from "drizzle-orm";
+} from '../../platform/pg/pg-schema.js';
+import { eq, desc, asc, and, sql } from 'drizzle-orm';
 import type {
   RemittanceImport,
   PaymentRecord,
@@ -30,18 +30,17 @@ import type {
   PaymentCode,
   RemittanceSourceType,
   ReconciliationStats,
-} from "./types.js";
+} from './types.js';
 
 /* ── Helpers ────────────────────────────────────────────────── */
 
-function toCents(dollars: number | undefined): number | undefined {
-  if (dollars === undefined) return undefined;
-  return Math.round(dollars * 100);
-}
-
 function safeJsonParse<T>(val: string | null | undefined, fallback: T): T {
   if (!val) return fallback;
-  try { return JSON.parse(val); } catch { return fallback; }
+  try {
+    return JSON.parse(val);
+  } catch {
+    return fallback;
+  }
 }
 
 function rowToImport(row: any): RemittanceImport {
@@ -199,7 +198,7 @@ export async function createPaymentRecord(opts: {
     createdAt: new Date(now),
     claimRef: opts.claimRef,
     payerId: opts.payerId,
-    status: "IMPORTED" as const,
+    status: 'IMPORTED' as const,
     billedAmountCents: opts.billedAmountCents,
     paidAmountCents: opts.paidAmountCents,
     allowedAmountCents: opts.allowedAmountCents ?? null,
@@ -224,7 +223,10 @@ export async function getPaymentById(id: string): Promise<PaymentRecord | null> 
   return rows[0] ? rowToPayment(rows[0]) : null;
 }
 
-export async function updatePaymentStatus(id: string, status: PaymentStatus): Promise<PaymentRecord | null> {
+export async function updatePaymentStatus(
+  id: string,
+  status: PaymentStatus
+): Promise<PaymentRecord | null> {
   const db = getPgDb();
   await db.update(paymentRecord).set({ status }).where(eq(paymentRecord.id, id));
   return getPaymentById(id);
@@ -244,21 +246,29 @@ export async function listPayments(query: PaymentListQuery): Promise<PaymentList
 
   if (query.status) conditions.push(eq(paymentRecord.status, query.status));
   if (query.payerId) conditions.push(eq(paymentRecord.payerId, query.payerId));
-  if (query.remittanceImportId) conditions.push(eq(paymentRecord.remittanceImportId, query.remittanceImportId));
+  if (query.remittanceImportId)
+    conditions.push(eq(paymentRecord.remittanceImportId, query.remittanceImportId));
 
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
-  const countRows = await db.select({ count: sql<number>`count(*)` })
-    .from(paymentRecord).where(whereClause);
+  const countRows = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(paymentRecord)
+    .where(whereClause);
   const total = (countRows[0] as any)?.count ?? 0;
 
-  const sortCol = query.sort === "paidAmountCents" ? paymentRecord.paidAmountCents
-    : query.sort === "claimRef" ? paymentRecord.claimRef
-    : paymentRecord.createdAt;
-  const orderFn = query.order === "asc" ? asc : desc;
+  const sortCol =
+    query.sort === 'paidAmountCents'
+      ? paymentRecord.paidAmountCents
+      : query.sort === 'claimRef'
+        ? paymentRecord.claimRef
+        : paymentRecord.createdAt;
+  const orderFn = query.order === 'asc' ? asc : desc;
 
   const offset = (query.page - 1) * query.limit;
-  const rows = await db.select().from(paymentRecord)
+  const rows = await db
+    .select()
+    .from(paymentRecord)
     .where(whereClause)
     .orderBy(orderFn(sortCol))
     .limit(query.limit)
@@ -275,7 +285,9 @@ export async function listPayments(query: PaymentListQuery): Promise<PaymentList
 
 export async function listPaymentsByImport(importId: string): Promise<PaymentRecord[]> {
   const db = getPgDb();
-  const rows = await db.select().from(paymentRecord)
+  const rows = await db
+    .select()
+    .from(paymentRecord)
     .where(eq(paymentRecord.remittanceImportId, importId))
     .orderBy(asc(paymentRecord.lineIndex));
   return rows.map(rowToPayment);
@@ -318,21 +330,31 @@ export async function getMatchById(id: string): Promise<ReconciliationMatch | nu
   return rows[0] ? rowToMatch(rows[0]) : null;
 }
 
-export async function confirmMatch(id: string, status: MatchStatus, actor: string, notes?: string): Promise<ReconciliationMatch | null> {
+export async function confirmMatch(
+  id: string,
+  status: MatchStatus,
+  actor: string,
+  notes?: string
+): Promise<ReconciliationMatch | null> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  await db.update(reconciliationMatch).set({
-    matchStatus: status,
-    confirmedBy: actor,
-    confirmedAt: new Date(now),
-    matchNotes: notes ?? null,
-  }).where(eq(reconciliationMatch.id, id));
+  await db
+    .update(reconciliationMatch)
+    .set({
+      matchStatus: status,
+      confirmedBy: actor,
+      confirmedAt: new Date(now),
+      matchNotes: notes ?? null,
+    })
+    .where(eq(reconciliationMatch.id, id));
   return getMatchById(id);
 }
 
 export async function listMatchesByPayment(paymentId: string): Promise<ReconciliationMatch[]> {
   const db = getPgDb();
-  const rows = await db.select().from(reconciliationMatch)
+  const rows = await db
+    .select()
+    .from(reconciliationMatch)
     .where(eq(reconciliationMatch.paymentId, paymentId))
     .orderBy(desc(reconciliationMatch.matchConfidence));
   return rows.map(rowToMatch);
@@ -340,7 +362,9 @@ export async function listMatchesByPayment(paymentId: string): Promise<Reconcili
 
 export async function listMatchesByStatus(status: MatchStatus): Promise<ReconciliationMatch[]> {
   const db = getPgDb();
-  const rows = await db.select().from(reconciliationMatch)
+  const rows = await db
+    .select()
+    .from(reconciliationMatch)
     .where(eq(reconciliationMatch.matchStatus, status))
     .orderBy(desc(reconciliationMatch.createdAt));
   return rows.map(rowToMatch);
@@ -372,7 +396,7 @@ export async function createUnderpaymentCase(opts: {
     expectedAmountCents: opts.expectedAmountCents,
     paidAmountCents: opts.paidAmountCents,
     deltaCents,
-    status: "NEW" as const,
+    status: 'NEW' as const,
     denialCaseId: null,
     resolvedAt: null,
     resolvedBy: null,
@@ -392,7 +416,7 @@ export async function getUnderpaymentById(id: string): Promise<UnderpaymentCase 
 export async function updateUnderpaymentCase(
   id: string,
   updates: { status?: UnderpaymentStatus; resolutionNote?: string; denialCaseId?: string },
-  actor: string,
+  actor: string
 ): Promise<UnderpaymentCase | null> {
   const db = getPgDb();
   const existing = await getUnderpaymentById(id);
@@ -403,7 +427,7 @@ export async function updateUnderpaymentCase(
   if (updates.status) setClause.status = updates.status;
   if (updates.resolutionNote !== undefined) setClause.resolutionNote = updates.resolutionNote;
   if (updates.denialCaseId) setClause.denialCaseId = updates.denialCaseId;
-  if (updates.status === "RESOLVED" || updates.status === "WRITTEN_OFF") {
+  if (updates.status === 'RESOLVED' || updates.status === 'WRITTEN_OFF') {
     setClause.resolvedAt = now;
     setClause.resolvedBy = actor;
   }
@@ -427,17 +451,24 @@ export async function listUnderpayments(query: UnderpaymentListQuery): Promise<{
 
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
 
-  const countRows = await db.select({ count: sql<number>`count(*)` })
-    .from(underpaymentCase).where(whereClause);
+  const countRows = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(underpaymentCase)
+    .where(whereClause);
   const total = (countRows[0] as any)?.count ?? 0;
 
-  const sortCol = query.sort === "deltaCents" ? underpaymentCase.deltaCents
-    : query.sort === "updatedAt" ? underpaymentCase.updatedAt
-    : underpaymentCase.createdAt;
-  const orderFn = query.order === "asc" ? asc : desc;
+  const sortCol =
+    query.sort === 'deltaCents'
+      ? underpaymentCase.deltaCents
+      : query.sort === 'updatedAt'
+        ? underpaymentCase.updatedAt
+        : underpaymentCase.createdAt;
+  const orderFn = query.order === 'asc' ? asc : desc;
 
   const offset = (query.page - 1) * query.limit;
-  const rows = await db.select().from(underpaymentCase)
+  const rows = await db
+    .select()
+    .from(underpaymentCase)
     .where(whereClause)
     .orderBy(orderFn(sortCol))
     .limit(query.limit)
@@ -459,15 +490,27 @@ export async function getReconciliationStats(): Promise<ReconciliationStats> {
 
   const importCountRows = await db.select({ count: sql<number>`count(*)` }).from(remittanceImport);
   const paymentCountRows = await db.select({ count: sql<number>`count(*)` }).from(paymentRecord);
-  const matchedCountRows = await db.select({ count: sql<number>`count(*)` }).from(paymentRecord)
-    .where(eq(paymentRecord.status, "MATCHED"));
-  const unmatchedCountRows = await db.select({ count: sql<number>`count(*)` }).from(paymentRecord)
-    .where(eq(paymentRecord.status, "UNMATCHED"));
-  const totalPaidRows = await db.select({ sum: sql<number>`COALESCE(SUM(paid_amount_cents), 0)` }).from(paymentRecord);
-  const underpayCountRows = await db.select({ count: sql<number>`count(*)` }).from(underpaymentCase);
-  const openUnderpayRows = await db.select({ count: sql<number>`count(*)` }).from(underpaymentCase)
-    .where(eq(underpaymentCase.status, "NEW"));
-  const totalDeltaRows = await db.select({ sum: sql<number>`COALESCE(SUM(delta_cents), 0)` }).from(underpaymentCase);
+  const matchedCountRows = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(paymentRecord)
+    .where(eq(paymentRecord.status, 'MATCHED'));
+  const unmatchedCountRows = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(paymentRecord)
+    .where(eq(paymentRecord.status, 'UNMATCHED'));
+  const totalPaidRows = await db
+    .select({ sum: sql<number>`COALESCE(SUM(paid_amount_cents), 0)` })
+    .from(paymentRecord);
+  const underpayCountRows = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(underpaymentCase);
+  const openUnderpayRows = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(underpaymentCase)
+    .where(eq(underpaymentCase.status, 'NEW'));
+  const totalDeltaRows = await db
+    .select({ sum: sql<number>`COALESCE(SUM(delta_cents), 0)` })
+    .from(underpaymentCase);
 
   return {
     totalImports: (importCountRows[0] as any)?.count ?? 0,

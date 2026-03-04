@@ -14,9 +14,9 @@
  * X12 parser (MIT-licensed) to be added in a future phase.
  */
 
-import { createHash } from "node:crypto";
-import { createDenialCaseWithProvenance, addDenialAction } from "./denial-store.js";
-import type { Import835BatchInput } from "./types.js";
+import { createHash } from 'node:crypto';
+import { createDenialCaseWithProvenance, addDenialAction } from './denial-store.js';
+import type { Import835BatchInput } from './types.js';
 
 export interface ImportResult {
   ok: boolean;
@@ -35,7 +35,7 @@ export interface ImportResult {
  */
 export async function importRemittanceDenials(
   input: Import835BatchInput,
-  actor: string,
+  actor: string
 ): Promise<ImportResult> {
   const result: ImportResult = {
     ok: true,
@@ -47,9 +47,7 @@ export async function importRemittanceDenials(
   };
 
   // Compute content hash for provenance
-  const contentHash = createHash("sha256")
-    .update(JSON.stringify(input.entries))
-    .digest("hex");
+  const contentHash = createHash('sha256').update(JSON.stringify(input.entries)).digest('hex');
 
   const importTimestamp = new Date().toISOString();
 
@@ -63,26 +61,30 @@ export async function importRemittanceDenials(
         continue;
       }
 
-      const denial = await createDenialCaseWithProvenance({
-        claimRef: entry.claimRef,
-        payerId: entry.payerId,
-        patientDfn: entry.patientDfn,
-        denialSource: "EDI_835",
-        denialCodes: entry.denialCodes,
-        billedAmount: entry.billedAmount,
-        paidAmount: entry.paidAmount,
-        allowedAmount: entry.allowedAmount,
-        adjustmentAmount: entry.adjustmentAmount,
-        receivedDate: entry.receivedDate ?? importTimestamp,
-      }, {
-        importFileHash: contentHash,
-        importTimestamp,
-        importParserVersion: input.parserVersion,
-      }, actor);
+      const denial = await createDenialCaseWithProvenance(
+        {
+          claimRef: entry.claimRef,
+          payerId: entry.payerId,
+          patientDfn: entry.patientDfn,
+          denialSource: 'EDI_835',
+          denialCodes: entry.denialCodes,
+          billedAmount: entry.billedAmount,
+          paidAmount: entry.paidAmount,
+          allowedAmount: entry.allowedAmount,
+          adjustmentAmount: entry.adjustmentAmount,
+          receivedDate: entry.receivedDate ?? importTimestamp,
+        },
+        {
+          importFileHash: contentHash,
+          importTimestamp,
+          importParserVersion: input.parserVersion,
+        },
+        actor
+      );
 
       // Add supplementary import action with entry-level detail
-      await addDenialAction(denial.id, actor, "IMPORT", {
-        source: "EDI_835",
+      await addDenialAction(denial.id, actor, 'IMPORT', {
+        source: 'EDI_835',
         importFileHash: contentHash,
         entryIndex: i,
         remittanceRef: entry.remittanceRef ?? null,

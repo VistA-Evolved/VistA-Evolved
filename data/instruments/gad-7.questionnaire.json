@@ -6,9 +6,7 @@
   "title": "Generalized Anxiety Disorder 7-item (GAD-7)",
   "status": "active",
   "description": "Over the last 2 weeks, how often have you been bothered by the following problems?",
-  "code": [
-    { "system": "http://loinc.org", "code": "69737-5", "display": "GAD-7 total score" }
-  ],
+  "code": [{ "system": "http://loinc.org", "code": "69737-5", "display": "GAD-7 total score" }],
   "item": [
     {
       "linkId": "gad7-1",

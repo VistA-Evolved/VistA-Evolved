@@ -6,7 +6,7 @@
  * and privacy stats.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import {
   addSensitivityTag,
   removeSensitivityTag,
@@ -16,15 +16,14 @@ import {
   queryAccessReasons,
   getPrivacyStats,
   type SensitivityCategory,
-} from "../auth/privacy-segmentation.js";
-import { getEffectivePolicy } from "../middleware/country-policy-hook.js";
+} from '../auth/privacy-segmentation.js';
+import { getEffectivePolicy } from '../middleware/country-policy-hook.js';
 
 export async function privacyRoutes(app: FastifyInstance): Promise<void> {
-
   /**
    * GET /privacy/tags — List sensitivity tags.
    */
-  app.get("/privacy/tags", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.get('/privacy/tags', async (request: FastifyRequest, reply: FastifyReply) => {
     const query = request.query as {
       tenantId?: string;
       patientDfn?: string;
@@ -38,22 +37,22 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   /**
    * POST /privacy/tags — Add a sensitivity tag.
    */
-  app.post("/privacy/tags", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.post('/privacy/tags', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const session = (request as any).session;
 
     if (!body.category) {
-      return reply.code(400).send({ ok: false, error: "category required" });
+      return reply.code(400).send({ ok: false, error: 'category required' });
     }
 
     const tag = addSensitivityTag({
-      tenantId: (body.tenantId as string) || session?.tenantId || "default",
+      tenantId: (body.tenantId as string) || session?.tenantId || 'default',
       patientDfn: body.patientDfn as string | undefined,
       recordType: body.recordType as string | undefined,
       recordId: body.recordId as string | undefined,
       category: body.category as SensitivityCategory,
-      appliedBy: session?.userName || session?.duz || "admin",
-      source: (body.source as string) || "manual",
+      appliedBy: session?.userName || session?.duz || 'admin',
+      source: (body.source as string) || 'manual',
       label: body.label as string | undefined,
     });
 
@@ -63,30 +62,30 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   /**
    * DELETE /privacy/tags/:id — Remove a sensitivity tag.
    */
-  app.delete("/privacy/tags/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.delete('/privacy/tags/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const session = (request as any).session;
-    const removed = removeSensitivityTag(id, session?.userName || session?.duz || "admin");
+    const removed = removeSensitivityTag(id, session?.userName || session?.duz || 'admin');
     return reply.send({ ok: removed, removed });
   });
 
   /**
    * POST /privacy/check-access — Check sensitivity access for a record.
    */
-  app.post("/privacy/check-access", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.post('/privacy/check-access', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const session = (request as any).session;
 
     if (!body.recordType || !body.recordId) {
-      return reply.code(400).send({ ok: false, error: "recordType and recordId required" });
+      return reply.code(400).send({ ok: false, error: 'recordType and recordId required' });
     }
 
     const result = checkSensitivityAccess(
-      (body.tenantId as string) || session?.tenantId || "default",
+      (body.tenantId as string) || session?.tenantId || 'default',
       body.recordType as string,
       body.recordId as string,
-      session?.role || "clerk",
-      !!(body.hasBreakGlass ?? false),
+      session?.role || 'clerk',
+      !!(body.hasBreakGlass ?? false)
     );
 
     return reply.send({ ok: true, ...result });
@@ -95,18 +94,20 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   /**
    * POST /privacy/access-reasons — Record access reason.
    */
-  app.post("/privacy/access-reasons", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.post('/privacy/access-reasons', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const session = (request as any).session;
 
     if (!body.reason || !body.patientDfn || !body.recordType || !body.recordId) {
-      return reply.code(400).send({ ok: false, error: "reason, patientDfn, recordType, and recordId required" });
+      return reply
+        .code(400)
+        .send({ ok: false, error: 'reason, patientDfn, recordType, and recordId required' });
     }
 
     const entry = recordAccessReason({
-      tenantId: (body.tenantId as string) || session?.tenantId || "default",
-      userId: session?.duz || "unknown",
-      userName: session?.userName || "unknown",
+      tenantId: (body.tenantId as string) || session?.tenantId || 'default',
+      userId: session?.duz || 'unknown',
+      userName: session?.userName || 'unknown',
       patientDfn: body.patientDfn as string,
       recordType: body.recordType as string,
       recordId: body.recordId as string,
@@ -121,7 +122,7 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   /**
    * GET /privacy/access-reasons — Query access reasons.
    */
-  app.get("/privacy/access-reasons", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.get('/privacy/access-reasons', async (request: FastifyRequest, reply: FastifyReply) => {
     const query = request.query as {
       tenantId?: string;
       userId?: string;
@@ -131,7 +132,8 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
     };
     const reasons = queryAccessReasons({
       ...query,
-      breakGlass: query.breakGlass === "true" ? true : query.breakGlass === "false" ? false : undefined,
+      breakGlass:
+        query.breakGlass === 'true' ? true : query.breakGlass === 'false' ? false : undefined,
       limit: query.limit ? parseInt(query.limit, 10) : undefined,
     });
     return reply.send({ ok: true, reasons, total: reasons.length });
@@ -140,7 +142,7 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   /**
    * GET /privacy/stats — Privacy statistics.
    */
-  app.get("/privacy/stats", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.get('/privacy/stats', async (request: FastifyRequest, reply: FastifyReply) => {
     const query = request.query as { tenantId?: string };
     const stats = getPrivacyStats(query.tenantId);
     return reply.send({ ok: true, ...stats });
@@ -150,7 +152,7 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
    * Phase 494 (W34-P4): GET /privacy/rights — Effective privacy rights from country pack.
    * Returns rightToErasure, dataPortability, breakGlassAllowed from the tenant's pack.
    */
-  app.get("/privacy/rights", async (request: FastifyRequest, reply: FastifyReply) => {
+  app.get('/privacy/rights', async (request: FastifyRequest, reply: FastifyReply) => {
     const policy = getEffectivePolicy(request);
     const reg = policy.pack?.regulatoryProfile;
     return reply.send({
@@ -162,13 +164,13 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
         dataPortability: reg?.dataPortability ?? false,
         breakGlassAllowed: reg?.breakGlassAllowed ?? true,
         consentRequired: reg?.consentRequired ?? true,
-        consentGranularity: reg?.consentGranularity ?? "category",
+        consentGranularity: reg?.consentGranularity ?? 'category',
         dataExportRestricted: reg?.dataExportRestricted ?? false,
         requiresConsentForTransfer: reg?.requiresConsentForTransfer ?? false,
         retentionMinYears: reg?.retentionMinYears ?? 6,
         retentionMaxYears: reg?.retentionMaxYears ?? null,
         auditRetentionDays: reg?.auditRetentionDays ?? 2190,
-        framework: reg?.framework ?? "HIPAA",
+        framework: reg?.framework ?? 'HIPAA',
       },
     });
   });

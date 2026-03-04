@@ -17,23 +17,23 @@
  *   - dry-run returns transcript without RPC execution
  */
 
-import { createHash } from "crypto";
-import type { ClinicalCommand, RpcExecutor, DryRunTranscript } from "../types.js";
-import { optionalRpc } from "../../vista/rpcCapabilities.js";
-import { safeCallRpc } from "../../lib/rpc-resilience.js";
-import { validateCredentials } from "../../vista/config.js";
-import { connect, disconnect, getDuz } from "../../vista/rpcBrokerClient.js";
-import { log } from "../../lib/logger.js";
+import { createHash } from 'crypto';
+import type { ClinicalCommand, RpcExecutor, DryRunTranscript } from '../types.js';
+import { optionalRpc } from '../../vista/rpcCapabilities.js';
+import { safeCallRpc } from '../../lib/rpc-resilience.js';
+import { validateCredentials } from '../../vista/config.js';
+import { connect, disconnect, getDuz } from '../../vista/rpcBrokerClient.js';
+import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Intent → RPC mapping                                                */
 /* ------------------------------------------------------------------ */
 
 const INTENT_RPC_MAP: Record<string, string[]> = {
-  CREATE_NOTE_DRAFT: ["TIU CREATE RECORD", "TIU SET DOCUMENT TEXT"],
-  UPDATE_NOTE_TEXT: ["TIU SET DOCUMENT TEXT"],
-  SIGN_NOTE: ["TIU LOCK RECORD", "TIU SIGN RECORD", "TIU UNLOCK RECORD"],
-  CREATE_ADDENDUM: ["TIU CREATE ADDENDUM RECORD", "TIU SET DOCUMENT TEXT"],
+  CREATE_NOTE_DRAFT: ['TIU CREATE RECORD', 'TIU SET DOCUMENT TEXT'],
+  UPDATE_NOTE_TEXT: ['TIU SET DOCUMENT TEXT'],
+  SIGN_NOTE: ['TIU LOCK RECORD', 'TIU SIGN RECORD', 'TIU UNLOCK RECORD'],
+  CREATE_ADDENDUM: ['TIU CREATE ADDENDUM RECORD', 'TIU SET DOCUMENT TEXT'],
 };
 
 /* ------------------------------------------------------------------ */
@@ -45,24 +45,22 @@ export const tiuExecutor: RpcExecutor = {
     vistaRefs: Record<string, string>;
     resultSummary: string;
   }> {
-    const p = command.payloadJson;
     const intent = command.intent;
 
     // Check RPC availability
     const rpcs = INTENT_RPC_MAP[intent];
     if (!rpcs) {
       throw Object.assign(new Error(`Unknown TIU intent: ${intent}`), {
-        errorClass: "permanent",
+        errorClass: 'permanent',
       });
     }
 
     for (const rpcName of rpcs) {
       const check = optionalRpc(rpcName);
       if (!check.available) {
-        throw Object.assign(
-          new Error(`RPC ${rpcName} not available: ${check.error}`),
-          { errorClass: "permanent" },
-        );
+        throw Object.assign(new Error(`RPC ${rpcName} not available: ${check.error}`), {
+          errorClass: 'permanent',
+        });
       }
     }
 
@@ -71,27 +69,31 @@ export const tiuExecutor: RpcExecutor = {
 
     try {
       switch (intent) {
-        case "CREATE_NOTE_DRAFT":
+        case 'CREATE_NOTE_DRAFT':
           return await execCreateDraft(command);
-        case "UPDATE_NOTE_TEXT":
+        case 'UPDATE_NOTE_TEXT':
           return await execUpdateText(command);
-        case "SIGN_NOTE":
+        case 'SIGN_NOTE':
           return await execSignNote(command);
-        case "CREATE_ADDENDUM":
+        case 'CREATE_ADDENDUM':
           return await execCreateAddendum(command);
         default:
           throw Object.assign(new Error(`Unimplemented TIU intent: ${intent}`), {
-            errorClass: "permanent",
+            errorClass: 'permanent',
           });
       }
     } finally {
-      try { disconnect(); } catch { /* best-effort */ }
+      try {
+        disconnect();
+      } catch {
+        /* best-effort */
+      }
     }
   },
 
   dryRun(command: ClinicalCommand): DryRunTranscript {
     const rpcs = INTENT_RPC_MAP[command.intent] || [];
-    const primaryRpc = rpcs[0] || "UNKNOWN";
+    const primaryRpc = rpcs[0] || 'UNKNOWN';
 
     // Build simulated params (no PHI — just structure)
     const params: Record<string, unknown> = {
@@ -106,7 +108,7 @@ export const tiuExecutor: RpcExecutor = {
     return {
       rpcName: primaryRpc,
       params,
-      simulatedResult: `Would execute ${rpcs.length} RPC(s): ${rpcs.join(" -> ")}`,
+      simulatedResult: `Would execute ${rpcs.length} RPC(s): ${rpcs.join(' -> ')}`,
       recordedAt: new Date().toISOString(),
     };
   },
@@ -121,44 +123,44 @@ async function execCreateDraft(cmd: ClinicalCommand): Promise<{
   resultSummary: string;
 }> {
   const p = cmd.payloadJson;
-  const dfn = String(p.dfn || "");
-  const titleIen = String(p.titleIen || "");
-  const text = String(p.text || "");
-  const visitStr = String(p.visitStr || "");
+  const dfn = String(p.dfn || '');
+  const titleIen = String(p.titleIen || '');
+  const text = String(p.text || '');
+  const visitStr = String(p.visitStr || '');
 
   if (!dfn || !titleIen) {
-    throw Object.assign(new Error("dfn and titleIen are required for CREATE_NOTE_DRAFT"), {
-      errorClass: "permanent",
+    throw Object.assign(new Error('dfn and titleIen are required for CREATE_NOTE_DRAFT'), {
+      errorClass: 'permanent',
     });
   }
 
   const duz = getDuz();
 
   // Step 1: TIU CREATE RECORD
-  const createResult = await safeCallRpc("TIU CREATE RECORD", [
-    dfn,       // patient DFN
-    titleIen,  // title IEN
-    "",        // visit date (empty = now)
-    "",        // visit IEN
-    visitStr,  // location visit string
-    "",        // SUPPRESS
-    duz,       // author DUZ
+  const createResult = await safeCallRpc('TIU CREATE RECORD', [
+    dfn, // patient DFN
+    titleIen, // title IEN
+    '', // visit date (empty = now)
+    '', // visit IEN
+    visitStr, // location visit string
+    '', // SUPPRESS
+    duz, // author DUZ
   ]);
 
   const docIen = Array.isArray(createResult)
     ? createResult[0]?.trim()
-    : String(createResult || "").trim();
+    : String(createResult || '').trim();
 
   if (!docIen || !/^\d+$/.test(docIen)) {
     throw Object.assign(
       new Error(`TIU CREATE RECORD returned invalid IEN: ${String(docIen).slice(0, 50)}`),
-      { errorClass: "permanent" },
+      { errorClass: 'permanent' }
     );
   }
 
   // Step 2: TIU SET DOCUMENT TEXT (if text provided)
   if (text) {
-    await safeCallRpc("TIU SET DOCUMENT TEXT", [docIen, text, "1"]);
+    await safeCallRpc('TIU SET DOCUMENT TEXT', [docIen, text, '1']);
   }
 
   log.info(`TIU CREATE_NOTE_DRAFT completed: docIen=${docIen}`);
@@ -174,16 +176,16 @@ async function execUpdateText(cmd: ClinicalCommand): Promise<{
   resultSummary: string;
 }> {
   const p = cmd.payloadJson;
-  const docIen = String(p.docIen || "");
-  const text = String(p.text || "");
+  const docIen = String(p.docIen || '');
+  const text = String(p.text || '');
 
   if (!docIen || !text) {
-    throw Object.assign(new Error("docIen and text are required for UPDATE_NOTE_TEXT"), {
-      errorClass: "permanent",
+    throw Object.assign(new Error('docIen and text are required for UPDATE_NOTE_TEXT'), {
+      errorClass: 'permanent',
     });
   }
 
-  await safeCallRpc("TIU SET DOCUMENT TEXT", [docIen, text, "1"]);
+  await safeCallRpc('TIU SET DOCUMENT TEXT', [docIen, text, '1']);
 
   log.info(`TIU UPDATE_NOTE_TEXT completed: docIen=${docIen}`);
 
@@ -198,36 +200,36 @@ async function execSignNote(cmd: ClinicalCommand): Promise<{
   resultSummary: string;
 }> {
   const p = cmd.payloadJson;
-  const docIen = String(p.docIen || "");
-  const esCode = String(p.esCode || "");
+  const docIen = String(p.docIen || '');
+  const esCode = String(p.esCode || '');
 
   if (!docIen) {
-    throw Object.assign(new Error("docIen is required for SIGN_NOTE"), {
-      errorClass: "permanent",
+    throw Object.assign(new Error('docIen is required for SIGN_NOTE'), {
+      errorClass: 'permanent',
     });
   }
 
   if (!esCode) {
-    throw Object.assign(new Error("esCode is required for SIGN_NOTE"), {
-      errorClass: "permanent",
+    throw Object.assign(new Error('esCode is required for SIGN_NOTE'), {
+      errorClass: 'permanent',
     });
   }
 
   // Hash the esCode for audit (never store raw)
-  const esHash = createHash("sha256").update(esCode).digest("hex").slice(0, 16);
+  const esHash = createHash('sha256').update(esCode).digest('hex').slice(0, 16);
 
   // Step 1: LOCK
-  const lockResult = await safeCallRpc("TIU LOCK RECORD", [docIen]);
-  const lockStr = Array.isArray(lockResult) ? lockResult.join("") : String(lockResult || "");
-  if (lockStr.includes("1") === false && !lockStr.startsWith("1")) {
+  const lockResult = await safeCallRpc('TIU LOCK RECORD', [docIen]);
+  const lockStr = Array.isArray(lockResult) ? lockResult.join('') : String(lockResult || '');
+  if (lockStr.includes('1') === false && !lockStr.startsWith('1')) {
     throw Object.assign(new Error(`TIU LOCK RECORD failed: ${lockStr.slice(0, 100)}`), {
-      errorClass: "transient",
+      errorClass: 'transient',
     });
   }
 
   try {
     // Step 2: SIGN
-    await safeCallRpc("TIU SIGN RECORD", [docIen, esCode]);
+    await safeCallRpc('TIU SIGN RECORD', [docIen, esCode]);
 
     log.info(`TIU SIGN_NOTE completed: docIen=${docIen} esHash=${esHash}`);
 
@@ -238,7 +240,7 @@ async function execSignNote(cmd: ClinicalCommand): Promise<{
   } finally {
     // Step 3: ALWAYS UNLOCK
     try {
-      await safeCallRpc("TIU UNLOCK RECORD", [docIen]);
+      await safeCallRpc('TIU UNLOCK RECORD', [docIen]);
     } catch (unlockErr) {
       log.warn(`TIU UNLOCK RECORD failed for docIen=${docIen} (best-effort): ${String(unlockErr)}`);
     }
@@ -250,31 +252,29 @@ async function execCreateAddendum(cmd: ClinicalCommand): Promise<{
   resultSummary: string;
 }> {
   const p = cmd.payloadJson;
-  const parentIen = String(p.parentIen || "");
-  const text = String(p.text || "");
+  const parentIen = String(p.parentIen || '');
+  const text = String(p.text || '');
 
   if (!parentIen) {
-    throw Object.assign(new Error("parentIen is required for CREATE_ADDENDUM"), {
-      errorClass: "permanent",
+    throw Object.assign(new Error('parentIen is required for CREATE_ADDENDUM'), {
+      errorClass: 'permanent',
     });
   }
 
   // Step 1: TIU CREATE ADDENDUM RECORD
-  const addResult = await safeCallRpc("TIU CREATE ADDENDUM RECORD", [parentIen]);
-  const addIen = Array.isArray(addResult)
-    ? addResult[0]?.trim()
-    : String(addResult || "").trim();
+  const addResult = await safeCallRpc('TIU CREATE ADDENDUM RECORD', [parentIen]);
+  const addIen = Array.isArray(addResult) ? addResult[0]?.trim() : String(addResult || '').trim();
 
   if (!addIen || !/^\d+$/.test(addIen)) {
     throw Object.assign(
       new Error(`TIU CREATE ADDENDUM RECORD returned invalid IEN: ${String(addIen).slice(0, 50)}`),
-      { errorClass: "permanent" },
+      { errorClass: 'permanent' }
     );
   }
 
   // Step 2: TIU SET DOCUMENT TEXT (if text provided)
   if (text) {
-    await safeCallRpc("TIU SET DOCUMENT TEXT", [addIen, text, "1"]);
+    await safeCallRpc('TIU SET DOCUMENT TEXT', [addIen, text, '1']);
   }
 
   log.info(`TIU CREATE_ADDENDUM completed: addendumIen=${addIen} parentIen=${parentIen}`);

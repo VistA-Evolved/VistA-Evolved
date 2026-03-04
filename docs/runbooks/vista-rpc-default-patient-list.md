@@ -25,7 +25,7 @@ VISTA_DEBUG=true
 ```
 
 > The credentials above are the default **PROVIDER,CLYDE WV** (DUZ 87) account
-> that ships with the `worldvista/worldvista-ehr` Docker image.  Other built-in
+> that ships with the `worldvista/worldvista-ehr` Docker image. Other built-in
 > accounts: `PHARM123`/`PHARM123!!` (PHARMACIST,LINDA WV) and
 > `NURSE123`/`NURSE123!!` (NURSE,HELEN WV).
 
@@ -54,6 +54,7 @@ Test-NetConnection 127.0.0.1 -Port 9430 -WarningAction SilentlyContinue
 ```
 
 Expected output:
+
 ```
 ComputerName     : 127.0.0.1
 RemoteAddress    : 127.0.0.1
@@ -62,6 +63,7 @@ TcpTestSucceeded : True
 ```
 
 If `TcpTestSucceeded` is `False`, wait a few more seconds or check sandbox logs:
+
 ```powershell
 docker logs wv
 ```
@@ -80,6 +82,7 @@ pnpm -C apps/api dev
 ```
 
 Expected output:
+
 ```
 Server listening on http://127.0.0.1:3001
 ```
@@ -105,13 +108,14 @@ curl "http://127.0.0.1:3001/vista/default-patient-list" -UseBasicParsing
 ```
 
 > `count: 0` is normal for a fresh WorldVistA sandbox — the PROVIDER,CLYDE WV
-> user has no default patient list configured.  The important signal is `ok: true`,
+> user has no default patient list configured. The important signal is `ok: true`,
 > which proves the full XWB handshake (TCPConnect → SIGNON SETUP → AV CODE →
 > CREATE CONTEXT → RPC) completed successfully.
 
 **Errors:**
 
 - **Missing credentials:**
+
   ```json
   {
     "ok": false,
@@ -121,6 +125,7 @@ curl "http://127.0.0.1:3001/vista/default-patient-list" -UseBasicParsing
   ```
 
 - **RPC Broker unreachable:**
+
   ```json
   {
     "ok": false,
@@ -141,12 +146,14 @@ curl "http://127.0.0.1:3001/vista/default-patient-list" -UseBasicParsing
 ## Troubleshooting
 
 ### Sandbox not starting
+
 ```powershell
 cd C:\Users\kmoul\OneDrive\Documents\GitHub\VistA-Evolved\services\vista
 docker compose --profile dev logs wv
 ```
 
 ### Port 9430 not responding
+
 - Ensure sandbox container is running: `docker ps`
 - Restart:
   ```powershell
@@ -155,10 +162,12 @@ docker compose --profile dev logs wv
   ```
 
 ### Sign-on fails ("Sign-on failed")
+
 - Verify `VISTA_ACCESS_CODE` and `VISTA_VERIFY_CODE` are correct in `.env.local`
 - Check VistA security logs in sandbox
 
 ### No results returned
+
 - Check that the RPC `ORQPT DEFAULT PATIENT LIST` is valid in your VistA instance
 - Confirm context `OR CPRS GUI CHART` is valid (set `VISTA_CONTEXT` in `.env.local`)
 

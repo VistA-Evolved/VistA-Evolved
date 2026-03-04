@@ -13,25 +13,21 @@
  *   GET    /auth/mfa/status           — get MFA enrollment/verification status
  */
 
-import type { FastifyInstance } from "fastify";
-import { getSession, listSessions } from "../auth/session-store.js";
-import { SESSION_CONFIG } from "../config/server-config.js";
+import type { FastifyInstance } from 'fastify';
+import { getSession, listSessions } from '../auth/session-store.js';
+import { SESSION_CONFIG } from '../config/server-config.js';
 import {
   getUserSessions,
   querySecurityEvents,
   getSecurityEventCounts,
-} from "../auth/session-security.js";
-import {
-  computeAssuranceLevel,
-  getActionsAtLevel,
-  type MfaState,
-} from "../auth/step-up-auth.js";
+} from '../auth/session-security.js';
+import { computeAssuranceLevel, getActionsAtLevel, type MfaState } from '../auth/step-up-auth.js';
 import {
   getEnrollment,
   MFA_ENFORCEMENT_ENABLED,
   roleRequiresMfa,
-} from "../auth/mfa-enforcement.js";
-import { log } from "../lib/logger.js";
+} from '../auth/mfa-enforcement.js';
+import { log } from '../lib/logger.js';
 
 const COOKIE_NAME = SESSION_CONFIG.cookieName;
 
@@ -40,22 +36,21 @@ function extractToken(request: any): string | null {
   const cookie = request.cookies?.[COOKIE_NAME];
   if (cookie) return cookie;
   const auth = request.headers.authorization;
-  if (typeof auth === "string" && auth.startsWith("Bearer ")) return auth.slice(7);
+  if (typeof auth === 'string' && auth.startsWith('Bearer ')) return auth.slice(7);
   return null;
 }
 
 export default async function sessionManagementRoutes(server: FastifyInstance): Promise<void> {
-
   /**
    * GET /auth/sessions — List active sessions for the current user.
    * Returns device fingerprint info, creation time, and MFA status.
    */
-  server.get("/auth/sessions", async (request, reply) => {
+  server.get('/auth/sessions', async (request, reply) => {
     const token = extractToken(request);
-    if (!token) return reply.code(401).send({ ok: false, error: "No session" });
+    if (!token) return reply.code(401).send({ ok: false, error: 'No session' });
 
     const session = await getSession(token);
-    if (!session) return reply.code(401).send({ ok: false, error: "Invalid session" });
+    if (!session) return reply.code(401).send({ ok: false, error: 'Invalid session' });
 
     const sessions = getUserSessions(session.duz);
 
@@ -80,28 +75,26 @@ export default async function sessionManagementRoutes(server: FastifyInstance): 
   /**
    * POST /auth/sessions/revoke-all — Revoke all sessions except current.
    */
-  server.post("/auth/sessions/revoke-all", async (request, reply) => {
+  server.post('/auth/sessions/revoke-all', async (request, reply) => {
     const token = extractToken(request);
-    if (!token) return reply.code(401).send({ ok: false, error: "No session" });
+    if (!token) return reply.code(401).send({ ok: false, error: 'No session' });
 
     const session = await getSession(token);
-    if (!session) return reply.code(401).send({ ok: false, error: "Invalid session" });
+    if (!session) return reply.code(401).send({ ok: false, error: 'Invalid session' });
 
     // Get all active sessions
     const allSessions = await listSessions();
-    const userSessions = allSessions.filter(
-      (s) => s.duz === session.duz && s.token !== "[redacted]",
-    );
+    allSessions.filter((s) => s.duz === session.duz && s.token !== '[redacted]');
 
     let revokedCount = 0;
     // Note: listSessions returns redacted tokens, so we can't revoke by token.
     // This is a best-effort revoke via the session security store.
     // In production, this would use the DB repo to revoke by user_id.
-    log.info("Revoke-all sessions requested", { userId: session.duz, tenantId: session.tenantId });
+    log.info('Revoke-all sessions requested', { userId: session.duz, tenantId: session.tenantId });
 
     return {
       ok: true,
-      message: "All other sessions revoked",
+      message: 'All other sessions revoked',
       revokedCount,
       remainingCount: 1, // current session
     };
@@ -111,15 +104,15 @@ export default async function sessionManagementRoutes(server: FastifyInstance): 
    * GET /auth/security-events — Session security event log.
    * Admin only.
    */
-  server.get("/auth/security-events", async (request, reply) => {
+  server.get('/auth/security-events', async (request, reply) => {
     const token = extractToken(request);
-    if (!token) return reply.code(401).send({ ok: false, error: "No session" });
+    if (!token) return reply.code(401).send({ ok: false, error: 'No session' });
 
     const session = await getSession(token);
-    if (!session) return reply.code(401).send({ ok: false, error: "Invalid session" });
+    if (!session) return reply.code(401).send({ ok: false, error: 'Invalid session' });
 
-    if (session.role !== "admin") {
-      return reply.code(403).send({ ok: false, error: "Admin role required" });
+    if (session.role !== 'admin') {
+      return reply.code(403).send({ ok: false, error: 'Admin role required' });
     }
 
     const query = request.query as Record<string, string>;
@@ -150,12 +143,12 @@ export default async function sessionManagementRoutes(server: FastifyInstance): 
   /**
    * GET /auth/step-up/status — Get current assurance level and required actions.
    */
-  server.get("/auth/step-up/status", async (request, reply) => {
+  server.get('/auth/step-up/status', async (request, reply) => {
     const token = extractToken(request);
-    if (!token) return reply.code(401).send({ ok: false, error: "No session" });
+    if (!token) return reply.code(401).send({ ok: false, error: 'No session' });
 
     const session = await getSession(token);
-    if (!session) return reply.code(401).send({ ok: false, error: "Invalid session" });
+    if (!session) return reply.code(401).send({ ok: false, error: 'Invalid session' });
 
     // Build MFA state from session context
     const mfaState: MfaState = {
@@ -173,8 +166,8 @@ export default async function sessionManagementRoutes(server: FastifyInstance): 
     return {
       ok: true,
       currentLevel,
-      elevatedActions: getActionsAtLevel("elevated"),
-      criticalActions: getActionsAtLevel("critical"),
+      elevatedActions: getActionsAtLevel('elevated'),
+      criticalActions: getActionsAtLevel('critical'),
       mfaEnrolled: mfaState.enrolled,
       sessionAge: Date.now() - session.createdAt,
     };
@@ -183,12 +176,12 @@ export default async function sessionManagementRoutes(server: FastifyInstance): 
   /**
    * GET /auth/mfa/status — Get MFA enrollment and enforcement status.
    */
-  server.get("/auth/mfa/status", async (request, reply) => {
+  server.get('/auth/mfa/status', async (request, reply) => {
     const token = extractToken(request);
-    if (!token) return reply.code(401).send({ ok: false, error: "No session" });
+    if (!token) return reply.code(401).send({ ok: false, error: 'No session' });
 
     const session = await getSession(token);
-    if (!session) return reply.code(401).send({ ok: false, error: "Invalid session" });
+    if (!session) return reply.code(401).send({ ok: false, error: 'Invalid session' });
 
     const enrollment = getEnrollment(session.tenantId, session.duz);
 
@@ -198,9 +191,7 @@ export default async function sessionManagementRoutes(server: FastifyInstance): 
       roleRequiresMfa: roleRequiresMfa(session.role),
       enrolled: enrollment?.enrolled ?? false,
       methods: enrollment?.methods ?? [],
-      enrolledAt: enrollment?.enrolledAt
-        ? new Date(enrollment.enrolledAt).toISOString()
-        : null,
+      enrolledAt: enrollment?.enrolledAt ? new Date(enrollment.enrolledAt).toISOString() : null,
       inGracePeriod: enrollment
         ? enrollment.graceExpiresAt > 0 && Date.now() < enrollment.graceExpiresAt
         : false,

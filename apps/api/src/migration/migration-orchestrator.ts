@@ -8,18 +8,13 @@
  * All operations support dry-run mode for safe pre-flight validation.
  */
 
-import type { ImportEntityType } from "./types.js";
+import type { ImportEntityType } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type MigrationStepStatus =
-  | "pending"
-  | "in-progress"
-  | "completed"
-  | "failed"
-  | "skipped";
+export type MigrationStepStatus = 'pending' | 'in-progress' | 'completed' | 'failed' | 'skipped';
 
 export interface MigrationStep {
   /** Entity type to import */
@@ -68,7 +63,7 @@ export interface MigrationEntityBatch {
 export type ImportHandler = (
   entityType: ImportEntityType,
   records: Record<string, string>[],
-  dryRun: boolean,
+  dryRun: boolean
 ) => Promise<{
   successCount: number;
   failureCount: number;
@@ -82,20 +77,20 @@ export type ImportHandler = (
 
 const ENTITY_DEPENDENCIES: Record<ImportEntityType, ImportEntityType[]> = {
   patient: [],
-  problem: ["patient"],
-  medication: ["patient"],
-  allergy: ["patient"],
-  appointment: ["patient"],
-  note: ["patient"],
+  problem: ['patient'],
+  medication: ['patient'],
+  allergy: ['patient'],
+  appointment: ['patient'],
+  note: ['patient'],
 };
 
 const ENTITY_LABELS: Record<ImportEntityType, string> = {
-  patient: "Patients",
-  problem: "Problems / Conditions",
-  medication: "Medications",
-  allergy: "Allergies",
-  appointment: "Appointments / Encounters",
-  note: "Notes / Documents",
+  patient: 'Patients',
+  problem: 'Problems / Conditions',
+  medication: 'Medications',
+  allergy: 'Allergies',
+  appointment: 'Appointments / Encounters',
+  note: 'Notes / Documents',
 };
 
 /**
@@ -142,7 +137,7 @@ export function createMigrationPlan(
     dryRun?: boolean;
     batchSize?: number;
     sourceDescription?: string;
-  },
+  }
 ): MigrationPlan {
   const dryRun = options?.dryRun ?? true;
   const batchSize = options?.batchSize ?? 100;
@@ -154,10 +149,7 @@ export function createMigrationPlan(
   // Build record count map
   const countMap = new Map<ImportEntityType, number>();
   for (const batch of batches) {
-    countMap.set(
-      batch.entityType,
-      (countMap.get(batch.entityType) ?? 0) + batch.records.length,
-    );
+    countMap.set(batch.entityType, (countMap.get(batch.entityType) ?? 0) + batch.records.length);
   }
 
   const steps: MigrationStep[] = ordered.map((entityType) => ({
@@ -165,7 +157,7 @@ export function createMigrationPlan(
     label: ENTITY_LABELS[entityType] ?? entityType,
     dependsOn: ENTITY_DEPENDENCIES[entityType].filter((d) => typeSet.has(d)),
     recordCount: countMap.get(entityType) ?? 0,
-    status: "pending" as MigrationStepStatus,
+    status: 'pending' as MigrationStepStatus,
     progress: { current: 0, total: countMap.get(entityType) ?? 0 },
   }));
 
@@ -175,10 +167,10 @@ export function createMigrationPlan(
   return {
     id: `plan-${ts}-${rand}`,
     createdAt: new Date().toISOString(),
-    sourceDescription: options?.sourceDescription ?? "Unknown source",
+    sourceDescription: options?.sourceDescription ?? 'Unknown source',
     dryRun,
     steps,
-    status: "pending",
+    status: 'pending',
     batchSize,
   };
 }
@@ -198,7 +190,7 @@ export async function executeMigrationPlan(
     onStepStart?: (step: MigrationStep) => void;
     onStepComplete?: (step: MigrationStep) => void;
     stopOnFailure?: boolean;
-  },
+  }
 ): Promise<MigrationPlan> {
   const stopOnFailure = options?.stopOnFailure ?? true;
 
@@ -210,27 +202,27 @@ export async function executeMigrationPlan(
     batchMap.set(batch.entityType, existing);
   }
 
-  plan.status = "in-progress";
+  plan.status = 'in-progress';
 
   for (const step of plan.steps) {
     // Check dependencies are met
     const depsOk = step.dependsOn.every((dep) => {
       const depStep = plan.steps.find((s) => s.entityType === dep);
-      return depStep?.status === "completed";
+      return depStep?.status === 'completed';
     });
 
     if (!depsOk) {
-      step.status = "skipped";
+      step.status = 'skipped';
       step.result = {
         successCount: 0,
         failureCount: 0,
         skippedCount: step.recordCount,
-        errors: ["Dependency not met"],
+        errors: ['Dependency not met'],
       };
       continue;
     }
 
-    step.status = "in-progress";
+    step.status = 'in-progress';
     options?.onStepStart?.(step);
 
     const records = batchMap.get(step.entityType) ?? [];
@@ -261,9 +253,9 @@ export async function executeMigrationPlan(
         errors: allErrors,
       };
 
-      step.status = totalFailure > 0 && stopOnFailure ? "failed" : "completed";
+      step.status = totalFailure > 0 && stopOnFailure ? 'failed' : 'completed';
     } catch (err) {
-      step.status = "failed";
+      step.status = 'failed';
       step.result = {
         successCount: 0,
         failureCount: step.recordCount,
@@ -274,16 +266,16 @@ export async function executeMigrationPlan(
 
     options?.onStepComplete?.(step);
 
-    if (step.status === "failed" && stopOnFailure) {
+    if (step.status === 'failed' && stopOnFailure) {
       // Skip remaining steps
       for (const remaining of plan.steps) {
-        if (remaining.status === "pending") {
-          remaining.status = "skipped";
+        if (remaining.status === 'pending') {
+          remaining.status = 'skipped';
           remaining.result = {
             successCount: 0,
             failureCount: 0,
             skippedCount: remaining.recordCount,
-            errors: ["Skipped due to earlier failure"],
+            errors: ['Skipped due to earlier failure'],
           };
         }
       }
@@ -292,11 +284,9 @@ export async function executeMigrationPlan(
   }
 
   // Set overall status
-  const hasFailure = plan.steps.some((s) => s.status === "failed");
-  const allDone = plan.steps.every(
-    (s) => s.status === "completed" || s.status === "skipped",
-  );
-  plan.status = hasFailure ? "failed" : allDone ? "completed" : "in-progress";
+  const hasFailure = plan.steps.some((s) => s.status === 'failed');
+  const allDone = plan.steps.every((s) => s.status === 'completed' || s.status === 'skipped');
+  plan.status = hasFailure ? 'failed' : allDone ? 'completed' : 'in-progress';
 
   return plan;
 }
@@ -305,7 +295,7 @@ export async function executeMigrationPlan(
  * List the dependency order for a set of entity types.
  */
 export function getDependencyOrder(
-  types: ImportEntityType[],
+  types: ImportEntityType[]
 ): { entityType: ImportEntityType; dependsOn: ImportEntityType[] }[] {
   const ordered = topologicalSort(types);
   return ordered.map((t) => ({

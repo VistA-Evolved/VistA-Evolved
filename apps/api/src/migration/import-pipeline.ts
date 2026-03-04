@@ -16,21 +16,16 @@ import type {
   DryRunRowResult,
   FieldMapping,
   ValidationResult,
-} from "./types.js";
-import {
-  parseCsv,
-  validateData,
-  mapRow,
-  mergeFieldMappings,
-} from "./mapping-engine.js";
+} from './types.js';
+import { parseCsv, validateData, mapRow, mergeFieldMappings } from './mapping-engine.js';
 import {
   getJob,
   updateJob,
   transitionJob,
   getTemplate,
   saveRollbackPlan,
-} from "./migration-store.js";
-import { log } from "../lib/logger.js";
+} from './migration-store.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Validate step                                                       */
@@ -46,42 +41,42 @@ export function runValidation(jobId: string): {
   error?: string;
 } {
   const job = getJob(jobId);
-  if (!job) return { ok: false, error: "Job not found" };
-  if (!job.rawData) return { ok: false, error: "No data uploaded" };
+  if (!job) return { ok: false, error: 'Job not found' };
+  if (!job.rawData) return { ok: false, error: 'No data uploaded' };
 
   // Transition to validating
-  const t1 = transitionJob(jobId, "validating");
+  const t1 = transitionJob(jobId, 'validating');
   if (!t1.ok) return { ok: false, error: t1.error };
 
   try {
     // Get mapping fields
     const fields = resolveFields(job);
     if (!fields.length) {
-      transitionJob(jobId, "validation-failed");
-      updateJob(jobId, { error: "No mapping template or fields configured" });
-      return { ok: false, error: "No mapping template or fields configured" };
+      transitionJob(jobId, 'validation-failed');
+      updateJob(jobId, { error: 'No mapping template or fields configured' });
+      return { ok: false, error: 'No mapping template or fields configured' };
     }
 
     // Parse CSV
     const { headers, rows } = parseCsv(job.rawData);
     if (rows.length === 0) {
-      transitionJob(jobId, "validation-failed");
-      updateJob(jobId, { error: "CSV has no data rows" });
-      return { ok: false, error: "CSV has no data rows" };
+      transitionJob(jobId, 'validation-failed');
+      updateJob(jobId, { error: 'CSV has no data rows' });
+      return { ok: false, error: 'CSV has no data rows' };
     }
 
     // Validate
     const validation = validateData(headers, rows, fields);
 
     if (validation.valid) {
-      transitionJob(jobId, "validated");
+      transitionJob(jobId, 'validated');
     } else {
-      transitionJob(jobId, "validation-failed");
+      transitionJob(jobId, 'validation-failed');
     }
 
     updateJob(jobId, { validation });
 
-    log.info("Migration validation complete", {
+    log.info('Migration validation complete', {
       jobId,
       valid: validation.valid,
       totalRows: validation.totalRows,
@@ -90,7 +85,7 @@ export function runValidation(jobId: string): {
 
     return { ok: true, validation };
   } catch (err: any) {
-    transitionJob(jobId, "validation-failed");
+    transitionJob(jobId, 'validation-failed');
     updateJob(jobId, { error: err.message });
     return { ok: false, error: err.message };
   }
@@ -110,10 +105,10 @@ export function runDryRun(jobId: string): {
   error?: string;
 } {
   const job = getJob(jobId);
-  if (!job) return { ok: false, error: "Job not found" };
-  if (!job.rawData) return { ok: false, error: "No data uploaded" };
+  if (!job) return { ok: false, error: 'Job not found' };
+  if (!job.rawData) return { ok: false, error: 'No data uploaded' };
 
-  const t1 = transitionJob(jobId, "dry-run");
+  const t1 = transitionJob(jobId, 'dry-run');
   if (!t1.ok) return { ok: false, error: t1.error };
 
   try {
@@ -133,21 +128,21 @@ export function runDryRun(jobId: string): {
         .filter((f) => f.required)
         .every((f) => {
           const val = mapped[f.target];
-          return val !== undefined && val !== "";
+          return val !== undefined && val !== '';
         });
 
       if (!hasRequiredFields) {
         dryRunRows.push({
           row: i + 1,
-          action: "skip",
-          reason: "Missing required fields",
+          action: 'skip',
+          reason: 'Missing required fields',
           mapped,
         });
         skipCount++;
       } else {
         dryRunRows.push({
           row: i + 1,
-          action: "create",
+          action: 'create',
           mapped,
         });
         createCount++;
@@ -162,10 +157,10 @@ export function runDryRun(jobId: string): {
       rows: dryRunRows,
     };
 
-    transitionJob(jobId, "dry-run-complete");
+    transitionJob(jobId, 'dry-run-complete');
     updateJob(jobId, { dryRunResult });
 
-    log.info("Migration dry-run complete", {
+    log.info('Migration dry-run complete', {
       jobId,
       totalRows: rows.length,
       createCount,
@@ -175,7 +170,7 @@ export function runDryRun(jobId: string): {
     return { ok: true, dryRun: dryRunResult };
   } catch (err: any) {
     // dry-run can't fail to a specific state, revert to validated
-    updateJob(jobId, { error: err.message, status: "validated" });
+    updateJob(jobId, { error: err.message, status: 'validated' });
     return { ok: false, error: err.message };
   }
 }
@@ -196,10 +191,10 @@ export function runImport(jobId: string): {
   error?: string;
 } {
   const job = getJob(jobId);
-  if (!job) return { ok: false, error: "Job not found" };
-  if (!job.rawData) return { ok: false, error: "No data uploaded" };
+  if (!job) return { ok: false, error: 'Job not found' };
+  if (!job.rawData) return { ok: false, error: 'No data uploaded' };
 
-  const t1 = transitionJob(jobId, "importing");
+  const t1 = transitionJob(jobId, 'importing');
   if (!t1.ok) return { ok: false, error: t1.error };
 
   try {
@@ -219,26 +214,26 @@ export function runImport(jobId: string): {
         .filter((f) => f.required)
         .every((f) => {
           const val = mapped[f.target];
-          return val !== undefined && val !== "";
+          return val !== undefined && val !== '';
         });
 
       if (!hasRequiredFields) {
         importRows.push({
           row: i + 1,
           success: false,
-          action: "skipped",
-          error: "Missing required fields",
+          action: 'skipped',
+          error: 'Missing required fields',
         });
         skippedCount++;
         continue;
       }
 
       // Sandbox: simulate creation with generated ID
-      const entityId = `sim-${job.entityType ?? "record"}-${i + 1}`;
+      const entityId = `sim-${job.entityType ?? 'record'}-${i + 1}`;
       importRows.push({
         row: i + 1,
         success: true,
-        action: "created",
+        action: 'created',
         entityId,
       });
       successCount++;
@@ -249,7 +244,7 @@ export function runImport(jobId: string): {
 
       // Update progress
       updateJob(jobId, {
-        progress: { current: i + 1, total: rows.length, phase: "importing" },
+        progress: { current: i + 1, total: rows.length, phase: 'importing' },
       });
     }
 
@@ -268,14 +263,14 @@ export function runImport(jobId: string): {
         jobId,
         createdEntities,
         canRollback: true,
-        reason: "Sandbox import -- simulated entities can be marked rolled back",
+        reason: 'Sandbox import -- simulated entities can be marked rolled back',
       });
     }
 
-    transitionJob(jobId, "imported");
+    transitionJob(jobId, 'imported');
     updateJob(jobId, { importResult, progress: undefined });
 
-    log.info("Migration import complete", {
+    log.info('Migration import complete', {
       jobId,
       successCount,
       failureCount,
@@ -284,7 +279,7 @@ export function runImport(jobId: string): {
 
     return { ok: true, result: importResult };
   } catch (err: any) {
-    transitionJob(jobId, "import-failed");
+    transitionJob(jobId, 'import-failed');
     updateJob(jobId, { error: err.message, progress: undefined });
     return { ok: false, error: err.message };
   }

@@ -13,12 +13,12 @@ import type {
   SubmissionResponse,
   DenialWorkflowResponse,
   AdapterHealthResult,
-} from "./payer-adapter.js";
+} from './payer-adapter.js';
 
 const CONFIG: PayerAdapterConfig = {
-  id: "sandbox",
-  name: "Sandbox Payer Adapter (Dev/Test)",
-  supportedModes: ["sandbox", "not_classified"],
+  id: 'sandbox',
+  name: 'Sandbox Payer Adapter (Dev/Test)',
+  supportedModes: ['sandbox', 'not_classified'],
   rateLimits: {
     eligibilityPerHour: 1000,
     claimStatusPerHour: 1000,
@@ -44,15 +44,15 @@ export class SandboxPayerAdapter implements PayerAdapter {
   }): Promise<EligibilityResponse> {
     return {
       eligible: true,
-      status: "active",
+      status: 'active',
       isTestData: true,
       payerId: params.payerId,
       payerName: `Sandbox Payer (${params.payerId})`,
       memberId: params.memberId ?? `SBX-${params.patientDfn}`,
-      coverageType: "HMO",
-      effectiveDate: "2024-01-01",
-      copay: { amount: 20, currency: "USD" },
-      deductible: { remaining: 500, total: 2000, currency: "USD" },
+      coverageType: 'HMO',
+      effectiveDate: '2024-01-01',
+      copay: { amount: 20, currency: 'USD' },
+      deductible: { remaining: 500, total: 2000, currency: 'USD' },
       checkedAt: new Date().toISOString(),
     };
   }
@@ -66,10 +66,10 @@ export class SandboxPayerAdapter implements PayerAdapter {
     return {
       claimId: params.claimId,
       payerClaimId: params.payerClaimId ?? `SBX-${params.claimId}`,
-      status: "pending",
+      status: 'pending',
       isTestData: true,
-      statusCode: "P1",
-      statusDescription: "Claim received, processing (sandbox simulation)",
+      statusCode: 'P1',
+      statusDescription: 'Claim received, processing (sandbox simulation)',
       checkedAt: new Date().toISOString(),
     };
   }
@@ -78,7 +78,7 @@ export class SandboxPayerAdapter implements PayerAdapter {
     claimId: string;
     payerId: string;
     payload: string;
-    transactionSet: "837P" | "837I";
+    transactionSet: '837P' | '837I';
     tenantId: string;
   }): Promise<SubmissionResponse> {
     return {
@@ -99,11 +99,11 @@ export class SandboxPayerAdapter implements PayerAdapter {
     return {
       appealCreated: false,
       recommendedActions: params.denialReasons.map(
-        (r) => `Review denial code ${r.code}: ${r.description}`,
+        (r) => `Review denial code ${r.code}: ${r.description}`
       ),
       automatedCorrections: [],
       escalationRequired: params.denialReasons.some(
-        (r) => r.code.startsWith("CO-") || r.code.startsWith("PR-"),
+        (r) => r.code.startsWith('CO-') || r.code.startsWith('PR-')
       ),
     };
   }
@@ -114,7 +114,7 @@ export class SandboxPayerAdapter implements PayerAdapter {
       adapterId: this.config.id,
       adapterName: this.config.name,
       latencyMs: 0,
-      details: "Sandbox adapter always healthy",
+      details: 'Sandbox adapter always healthy',
       checkedAt: new Date().toISOString(),
     };
   }

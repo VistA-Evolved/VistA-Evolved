@@ -9,21 +9,22 @@ and add tooling for container inspection, runtime selection, and drift detection
 
 ### New Files
 
-| File | Purpose |
-|------|---------|
-| `data/vista/runtime-matrix.json` | Machine-readable matrix: environments, runtime modes, domain requirements, adapter mapping |
-| `scripts/vista/inspect-container.ps1` | Probes a running VistA Docker container (status, routines, globals, broker) |
-| `scripts/vista/select-runtime.ps1` | Validates and optionally switches VistA runtime target (sandbox vs distro) |
+| File                                  | Purpose                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `data/vista/runtime-matrix.json`      | Machine-readable matrix: environments, runtime modes, domain requirements, adapter mapping |
+| `scripts/vista/inspect-container.ps1` | Probes a running VistA Docker container (status, routines, globals, broker)                |
+| `scripts/vista/select-runtime.ps1`    | Validates and optionally switches VistA runtime target (sandbox vs distro)                 |
 
 ### Modified Files
 
-| File | Change |
-|------|--------|
+| File                                    | Change                                                                                 |
+| --------------------------------------- | -------------------------------------------------------------------------------------- |
 | `apps/api/src/vista/rpcCapabilities.ts` | Added drift detection (`compareToBaseline`), `buildRuntimeMatrix()`, `getAllDomains()` |
 
 ## Runtime Matrix Structure
 
 The `runtime-matrix.json` defines:
+
 1. **Environments**: worldvista-docker (dev), vista-distro (staging), production
 2. **Runtime Modes**: dev/test/rc/prod with requirements (VistA, PG, OIDC, stubs)
 3. **Domain Requirements**: 18 domains with required/optional RPCs per mode
@@ -33,6 +34,7 @@ The `runtime-matrix.json` defines:
 
 `compareToBaseline(baseline)` compares live capability discovery against a saved
 baseline, producing a `DriftReport` with:
+
 - `regressions` -- RPCs that were available but are now missing
 - `newlyAvailable` -- RPCs that are new since baseline
 - `hasDrift` -- boolean flag for regression detection

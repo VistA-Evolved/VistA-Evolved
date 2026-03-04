@@ -3,16 +3,18 @@
 ## What Changed
 
 ### New Files
+
 - `apps/api/src/rcm/claims/claim-types.ts` — Enhanced domain types: ClaimCase (17-state lifecycle FSM), ClaimScrubResult, ClaimAttachment, ClaimEvent, DenialRecord
 - `apps/api/src/rcm/claims/claim-store.ts` — In-memory lifecycle store with state machine enforcement, transition gates, scrub/attachment/denial management
 - `apps/api/src/rcm/claims/scrubber.ts` — Deterministic scrubber engine with 3 rule packs (core: 8 rules, philhealth: 5 rules, us_core: 3 rules)
-- `apps/api/src/rcm/claims/claim-routes.ts` — 12 API routes under /rcm/claims/lifecycle/*
+- `apps/api/src/rcm/claims/claim-routes.ts` — 12 API routes under /rcm/claims/lifecycle/\*
 - `apps/web/src/app/cprs/admin/claims-queue/page.tsx` — Claims queue UI with stats, filters, create form, detail panel, scrub trigger
 - `apps/web/src/app/cprs/admin/denials/page.tsx` — Denials workbench UI with filters, resolve workflow, remediation guidance
 - `docs/runbooks/claims-lifecycle-v1.md` — Full runbook
 - `prompts/97-PHASE-91-CLAIMS-LIFECYCLE/91-01-IMPLEMENT.md` — Prompt file
 
 ### Modified Files
+
 - `apps/api/src/index.ts` — Import + register claimLifecycleRoutes
 - `apps/web/src/app/cprs/admin/layout.tsx` — Added Claims Queue + Denials nav entries
 

@@ -1,6 +1,7 @@
 # Phase 124 VERIFY — UI Dead-Click Zero + Stub Reduction
 
 ## Gates
+
 1. Prompt folder: 128-PHASE-124-DEADCLICK-ZERO/ exists with 2 files
 2. TypeScript: 0 errors across api/web/portal
 3. Dead-click markers: materially reduced from baseline

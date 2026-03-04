@@ -29,31 +29,31 @@ Copy the JSON block below and fill in each field:
 
 ## Field Reference
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `payerId` | Yes | Must match a payer ID from `data/payers/*.json` or the DB payer registry |
-| `method` | Yes | One of: `api`, `portal`, `manual`, `edi`, `fhir` |
-| `channel` | No | Transport: `sftp`, `https`, `soap`, `rest`, `portal_upload`, `manual_mail` |
-| `source` | Yes | URL or document reference proving this capability exists |
-| `sourceType` | No | One of: `url`, `document`, `screenshot`, `contact`, `manual`. Default: `url` |
-| `contactInfo` | No | Payer contact for integration support (phone, email) |
-| `submissionRequirements` | No | What the payer requires for submissions |
-| `supportedChannelsJson` | No | JSON array of supported channels |
-| `lastVerifiedAt` | No | ISO 8601 date when this was last verified |
-| `verifiedBy` | No | Name or DUZ of person who verified |
-| `status` | No | `unverified` (default), `verified`, `stale`, `archived` |
-| `confidence` | No | `confirmed`, `inferred`, `unknown` |
-| `notes` | No | Freeform notes about the research |
+| Field                    | Required | Description                                                                  |
+| ------------------------ | -------- | ---------------------------------------------------------------------------- |
+| `payerId`                | Yes      | Must match a payer ID from `data/payers/*.json` or the DB payer registry     |
+| `method`                 | Yes      | One of: `api`, `portal`, `manual`, `edi`, `fhir`                             |
+| `channel`                | No       | Transport: `sftp`, `https`, `soap`, `rest`, `portal_upload`, `manual_mail`   |
+| `source`                 | Yes      | URL or document reference proving this capability exists                     |
+| `sourceType`             | No       | One of: `url`, `document`, `screenshot`, `contact`, `manual`. Default: `url` |
+| `contactInfo`            | No       | Payer contact for integration support (phone, email)                         |
+| `submissionRequirements` | No       | What the payer requires for submissions                                      |
+| `supportedChannelsJson`  | No       | JSON array of supported channels                                             |
+| `lastVerifiedAt`         | No       | ISO 8601 date when this was last verified                                    |
+| `verifiedBy`             | No       | Name or DUZ of person who verified                                           |
+| `status`                 | No       | `unverified` (default), `verified`, `stale`, `archived`                      |
+| `confidence`             | No       | `confirmed`, `inferred`, `unknown`                                           |
+| `notes`                  | No       | Freeform notes about the research                                            |
 
 ## Method Guidelines
 
-| Method | When to Use | Evidence Source Examples |
-|--------|-------------|------------------------|
-| `edi` | Payer accepts X12 837/835 via clearinghouse or direct | Clearinghouse payer list, payer EDI companion guide |
-| `api` | Payer exposes a REST/SOAP API for submissions | API documentation URL, developer portal |
-| `portal` | Payer has a web portal for manual/batch upload | Portal login page, submission guide |
-| `fhir` | Payer supports FHIR-based workflows (Da Vinci, etc.) | FHIR endpoint URL, conformance statement |
-| `manual` | Paper/fax/mail only | Payer website confirming no electronic option |
+| Method   | When to Use                                           | Evidence Source Examples                            |
+| -------- | ----------------------------------------------------- | --------------------------------------------------- |
+| `edi`    | Payer accepts X12 837/835 via clearinghouse or direct | Clearinghouse payer list, payer EDI companion guide |
+| `api`    | Payer exposes a REST/SOAP API for submissions         | API documentation URL, developer portal             |
+| `portal` | Payer has a web portal for manual/batch upload        | Portal login page, submission guide                 |
+| `fhir`   | Payer supports FHIR-based workflows (Da Vinci, etc.)  | FHIR endpoint URL, conformance statement            |
+| `manual` | Paper/fax/mail only                                   | Payer website confirming no electronic option       |
 
 ## Confidence Levels
 

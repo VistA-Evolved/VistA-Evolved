@@ -1,4 +1,5 @@
 # Phase 308 -- W12-P10 NOTES
+
 ## Departmental Certification Runner
 
 ### Architecture Decisions
@@ -24,22 +25,23 @@
    is a runtime concern, not a code defect.
 
 ### What Gets Checked
-| Category | Check ID | What |
-|----------|----------|------|
-| infra | infra.command-bus | Command store operational |
-| infra | infra.gates | Feature gates configured |
-| infra | infra.audit | Audit actions registered |
-| infra | infra.store-policy | Store entries declared |
-| domain | domain.tiu | TIU executor registered + dry-run |
-| domain | domain.orders | Orders executor registered + dry-run |
-| domain | domain.pharm | Pharmacy executor registered + dry-run |
-| domain | domain.lab | Labs executor registered + dry-run |
-| domain | domain.adt | ADT executor registered + dry-run |
-| domain | domain.img | Imaging executor registered + dry-run |
-| telehealth | telehealth.encounter-link | Encounter link store operational |
-| telehealth | telehealth.consent | Consent posture config valid |
-| telehealth | telehealth.session-hardening | Hardening config valid |
-| safety | safety.dry-run | Dry-run default is ON |
-| safety | safety.kill-switch | Global kill-switch state |
-| safety | safety.intent-mapping | 19 intents across 6 domains |
-| safety | safety.phi-guard | patientRefHash used, not raw DFN |
+
+| Category   | Check ID                     | What                                   |
+| ---------- | ---------------------------- | -------------------------------------- |
+| infra      | infra.command-bus            | Command store operational              |
+| infra      | infra.gates                  | Feature gates configured               |
+| infra      | infra.audit                  | Audit actions registered               |
+| infra      | infra.store-policy           | Store entries declared                 |
+| domain     | domain.tiu                   | TIU executor registered + dry-run      |
+| domain     | domain.orders                | Orders executor registered + dry-run   |
+| domain     | domain.pharm                 | Pharmacy executor registered + dry-run |
+| domain     | domain.lab                   | Labs executor registered + dry-run     |
+| domain     | domain.adt                   | ADT executor registered + dry-run      |
+| domain     | domain.img                   | Imaging executor registered + dry-run  |
+| telehealth | telehealth.encounter-link    | Encounter link store operational       |
+| telehealth | telehealth.consent           | Consent posture config valid           |
+| telehealth | telehealth.session-hardening | Hardening config valid                 |
+| safety     | safety.dry-run               | Dry-run default is ON                  |
+| safety     | safety.kill-switch           | Global kill-switch state               |
+| safety     | safety.intent-mapping        | 19 intents across 6 domains            |
+| safety     | safety.phi-guard             | patientRefHash used, not raw DFN       |

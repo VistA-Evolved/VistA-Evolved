@@ -7,10 +7,10 @@
  * Uses Drizzle ORM + pg-core for type-safe queries against rcm_work_item table.
  */
 
-import { randomUUID } from "node:crypto";
-import { eq, and, sql, desc, asc } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { pgRcmWorkItem, pgRcmWorkItemEvent } from "../pg-schema.js";
+import { randomUUID } from 'node:crypto';
+import { eq, and, sql, desc, asc } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { pgRcmWorkItem, pgRcmWorkItemEvent } from '../pg-schema.js';
 
 export type WorkItemRow = typeof pgRcmWorkItem.$inferSelect;
 export type WorkItemEventRow = typeof pgRcmWorkItemEvent.$inferSelect;
@@ -38,13 +38,13 @@ export async function createWorkItem(data: {
   const db = getPgDb();
   const now = new Date().toISOString();
   const id = randomUUID();
-  const tid = data.tenantId ?? "default";
+  const tid = data.tenantId ?? 'default';
 
   await db.insert(pgRcmWorkItem).values({
     id,
     tenantId: tid,
     type: data.type,
-    status: "open",
+    status: 'open',
     claimId: data.claimId,
     payerId: data.payerId ?? null,
     payerName: data.payerName ?? null,
@@ -58,7 +58,7 @@ export async function createWorkItem(data: {
     sourceType: data.sourceType,
     sourceId: data.sourceId ?? null,
     sourceTimestamp: data.sourceTimestamp ?? null,
-    priority: data.priority ?? "medium",
+    priority: data.priority ?? 'medium',
     assignedTo: null,
     dueDate: null,
     resolvedAt: null,
@@ -74,7 +74,7 @@ export async function createWorkItem(data: {
   });
 
   // Audit event
-  await appendEvent(id, tid, "created", null, "open", "system", null);
+  await appendEvent(id, tid, 'created', null, 'open', 'system', null);
 
   const row = await findWorkItemById(id);
   return row!;
@@ -90,8 +90,7 @@ export async function findWorkItemById(id: string): Promise<WorkItemRow | undefi
 
 export async function findWorkItemsForClaim(claimId: string): Promise<WorkItemRow[]> {
   const db = getPgDb();
-  return db.select().from(pgRcmWorkItem)
-    .where(eq(pgRcmWorkItem.claimId, claimId));
+  return db.select().from(pgRcmWorkItem).where(eq(pgRcmWorkItem.claimId, claimId));
 }
 
 /* -- Update ---------------------------------------------------- */
@@ -120,7 +119,7 @@ export async function updateWorkItem(
     fieldToFix: string | null;
     triggeringRule: string | null;
   }>,
-  actor?: string,
+  actor?: string
 ): Promise<WorkItemRow | undefined> {
   const db = getPgDb();
   const existing = await findWorkItemById(id);
@@ -129,17 +128,30 @@ export async function updateWorkItem(
   const now = new Date().toISOString();
   const merged = { ...updates, updatedAt: now };
 
-  await db.update(pgRcmWorkItem)
-    .set(merged)
-    .where(eq(pgRcmWorkItem.id, id));
+  await db.update(pgRcmWorkItem).set(merged).where(eq(pgRcmWorkItem.id, id));
 
   // Audit status change
   if (updates.status && updates.status !== existing.status) {
-    await appendEvent(id, existing.tenantId, "status_changed", existing.status, updates.status, actor ?? "system", null);
+    await appendEvent(
+      id,
+      existing.tenantId,
+      'status_changed',
+      existing.status,
+      updates.status,
+      actor ?? 'system',
+      null
+    );
   }
   if (updates.assignedTo !== undefined && updates.assignedTo !== existing.assignedTo) {
-    await appendEvent(id, existing.tenantId, "assigned", null, null, actor ?? "system",
-      JSON.stringify({ assignedTo: updates.assignedTo }));
+    await appendEvent(
+      id,
+      existing.tenantId,
+      'assigned',
+      null,
+      null,
+      actor ?? 'system',
+      JSON.stringify({ assignedTo: updates.assignedTo })
+    );
   }
 
   return findWorkItemById(id);
@@ -174,7 +186,8 @@ export async function listWorkItems(filters?: {
   const where = conditions.length > 0 ? and(...conditions) : undefined;
 
   // Get total count
-  const countResult = await db.select({ count: sql<number>`count(*)` })
+  const countResult = await db
+    .select({ count: sql<number>`count(*)` })
     .from(pgRcmWorkItem)
     .where(where);
   const total = countResult[0]?.count ?? 0;
@@ -183,11 +196,13 @@ export async function listWorkItems(filters?: {
   const limit = filters?.limit ?? 50;
   const offset = filters?.offset ?? 0;
 
-  const rows = await db.select().from(pgRcmWorkItem)
+  const rows = await db
+    .select()
+    .from(pgRcmWorkItem)
     .where(where)
     .orderBy(
       sql`CASE ${pgRcmWorkItem.priority} WHEN 'critical' THEN 0 WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END`,
-      desc(pgRcmWorkItem.createdAt),
+      desc(pgRcmWorkItem.createdAt)
     )
     .limit(limit)
     .offset(offset);
@@ -206,14 +221,23 @@ export async function getWorkItemStats(tenantId?: string): Promise<{
   const db = getPgDb();
   const where = tenantId ? eq(pgRcmWorkItem.tenantId, tenantId) : undefined;
 
-  const rows = await db.select({
-    type: pgRcmWorkItem.type,
-    status: pgRcmWorkItem.status,
-    priority: pgRcmWorkItem.priority,
-  }).from(pgRcmWorkItem).where(where);
+  const rows = await db
+    .select({
+      type: pgRcmWorkItem.type,
+      status: pgRcmWorkItem.status,
+      priority: pgRcmWorkItem.priority,
+    })
+    .from(pgRcmWorkItem)
+    .where(where);
 
   const byType: Record<string, number> = { rejection: 0, denial: 0, missing_info: 0 };
-  const byStatus: Record<string, number> = { open: 0, in_progress: 0, resolved: 0, escalated: 0, dismissed: 0 };
+  const byStatus: Record<string, number> = {
+    open: 0,
+    in_progress: 0,
+    resolved: 0,
+    escalated: 0,
+    dismissed: 0,
+  };
   const byPriority: Record<string, number> = { critical: 0, high: 0, medium: 0, low: 0 };
 
   for (const row of rows) {
@@ -234,7 +258,7 @@ async function appendEvent(
   beforeStatus: string | null,
   afterStatus: string | null,
   actor: string,
-  detail: string | null,
+  detail: string | null
 ): Promise<void> {
   try {
     const db = getPgDb();
@@ -249,14 +273,18 @@ async function appendEvent(
       detail,
       createdAt: new Date().toISOString(),
     });
-  } catch { /* non-fatal -- audit failure must not break operations */ }
+  } catch {
+    /* non-fatal -- audit failure must not break operations */
+  }
 }
 
 /* -- Events listing -------------------------------------------- */
 
 export async function getEventsForWorkItem(workItemId: string): Promise<WorkItemEventRow[]> {
   const db = getPgDb();
-  return db.select().from(pgRcmWorkItemEvent)
+  return db
+    .select()
+    .from(pgRcmWorkItemEvent)
     .where(eq(pgRcmWorkItemEvent.workItemId, workItemId))
     .orderBy(asc(pgRcmWorkItemEvent.createdAt));
 }

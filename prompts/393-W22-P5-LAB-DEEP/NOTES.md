@@ -1,6 +1,7 @@
 # Phase 393 — W22-P5: Lab Deep Workflows — NOTES
 
 ## Design Decisions
+
 - **9-state lab order FSM** mirrors pharmacy FSM pattern: pending → collected →
   in_process → resulted → reviewed → verified → final, plus cancelled/on_hold.
 - **8-state specimen lifecycle** tracks chain-of-custody: ordered → collected →
@@ -18,6 +19,7 @@
   LR PHLEBOTOMY (integration_pending — not in sandbox RPCs).
 
 ## Existing Integrations Preserved
+
 - CPRS Wave1 `GET /vista/cprs/labs/chart` (ORWLRR CHART) — unchanged
 - CPRS Wave2 `POST /vista/cprs/labs/ack` (ORWLRR ACK) — unchanged
 - Writeback executor `PLACE_LAB_ORDER` / `ACK_LAB_RESULT` — unchanged

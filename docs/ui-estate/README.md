@@ -11,49 +11,49 @@ of each surface into VistA-Evolved.
 
 **Key files:**
 
-| File | Purpose |
-|------|---------|
-| `data/ui-estate/ui-estate.schema.json` | JSON Schema for catalog entries |
-| `data/ui-estate/va-ui-estate.json` | VA systems catalog (CPRS, BCMA, Imaging, MHA, etc.) |
-| `data/ui-estate/ihs-ui-estate.json` | IHS systems catalog (RPMS EHR, iCare, BPRM, BSDX) |
-| `data/ui-estate/ui-gap-report.json` | Auto-generated gap report (run build script) |
-| `scripts/ui-estate/build-ui-estate.mjs` | Gap report builder |
+| File                                    | Purpose                                             |
+| --------------------------------------- | --------------------------------------------------- |
+| `data/ui-estate/ui-estate.schema.json`  | JSON Schema for catalog entries                     |
+| `data/ui-estate/va-ui-estate.json`      | VA systems catalog (CPRS, BCMA, Imaging, MHA, etc.) |
+| `data/ui-estate/ihs-ui-estate.json`     | IHS systems catalog (RPMS EHR, iCare, BPRM, BSDX)   |
+| `data/ui-estate/ui-gap-report.json`     | Auto-generated gap report (run build script)        |
+| `scripts/ui-estate/build-ui-estate.mjs` | Gap report builder                                  |
 
 ## Coverage Model
 
 Each surface has 6 boolean coverage flags:
 
-| Flag | Meaning |
-|------|---------|
-| `present_ui` | A UI page or component exists in VistA-Evolved |
-| `present_api` | An API route exists for this surface's data |
-| `vista_rpc_wired` | The API calls VistA RPCs via rpcBrokerClient |
-| `writeback_ready` | Write operations (POST/PUT) are functional |
-| `tests_present` | E2E or API tests cover this surface |
-| `evidence_present` | Evidence artifacts exist for verification |
+| Flag               | Meaning                                        |
+| ------------------ | ---------------------------------------------- |
+| `present_ui`       | A UI page or component exists in VistA-Evolved |
+| `present_api`      | An API route exists for this surface's data    |
+| `vista_rpc_wired`  | The API calls VistA RPCs via rpcBrokerClient   |
+| `writeback_ready`  | Write operations (POST/PUT) are functional     |
+| `tests_present`    | E2E or API tests cover this surface            |
+| `evidence_present` | Evidence artifacts exist for verification      |
 
 A surface is considered **"covered"** if both `present_ui` AND
 `present_api` are true.
 
 ## Migration Status Ladder
 
-| Status | Meaning |
-|--------|---------|
-| `not-started` | No VistA-Evolved equivalent exists |
-| `scaffold` | UI/API skeleton exists but not wired to VistA |
-| `api-wired` | Read path works (GET returns VistA data) |
-| `writeback` | Write path works (POST/PUT modifies VistA) |
-| `parity` | Feature-complete vs legacy desktop |
-| `certified` | Verified by acceptance harness (Phase 542) |
+| Status        | Meaning                                       |
+| ------------- | --------------------------------------------- |
+| `not-started` | No VistA-Evolved equivalent exists            |
+| `scaffold`    | UI/API skeleton exists but not wired to VistA |
+| `api-wired`   | Read path works (GET returns VistA data)      |
+| `writeback`   | Write path works (POST/PUT modifies VistA)    |
+| `parity`      | Feature-complete vs legacy desktop            |
+| `certified`   | Verified by acceptance harness (Phase 542)    |
 
 ## Priority Levels
 
-| Priority | Meaning |
-|----------|---------|
-| `p0-critical` | Must have for go-live. Blocks clinical workflows. |
-| `p1-high` | Important for user adoption. Near-term target. |
-| `p2-medium` | Desirable. Can be deferred past initial launch. |
-| `p3-low` | Nice to have. May be replaced by different approach. |
+| Priority      | Meaning                                              |
+| ------------- | ---------------------------------------------------- |
+| `p0-critical` | Must have for go-live. Blocks clinical workflows.    |
+| `p1-high`     | Important for user adoption. Near-term target.       |
+| `p2-medium`   | Desirable. Can be deferred past initial launch.      |
+| `p3-low`      | Nice to have. May be replaced by different approach. |
 
 ## How to Update the Catalog
 

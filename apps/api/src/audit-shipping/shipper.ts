@@ -18,13 +18,18 @@
  *   audit/{tenantId}/YYYY/MM/DD/{timestamp}_{firstSeq}-{lastSeq}.manifest.json
  */
 
-import { existsSync, readFileSync } from "fs";
-import { createHash } from "crypto";
-import { log } from "../lib/logger.js";
-import { immutableAudit } from "../lib/immutable-audit.js";
-import { S3Client } from "./s3-client.js";
-import { buildManifest } from "./manifest.js";
-import type { AuditShipConfig, AuditShipOffset, AuditShipManifest, AuditShipStatus } from "./types.js";
+import { existsSync, readFileSync } from 'fs';
+import { createHash } from 'crypto';
+import { log } from '../lib/logger.js';
+import { immutableAudit } from '../lib/immutable-audit.js';
+import { S3Client } from './s3-client.js';
+import { buildManifest } from './manifest.js';
+import type {
+  AuditShipConfig,
+  AuditShipOffset,
+  AuditShipManifest,
+  AuditShipStatus,
+} from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Configuration                                                       */
@@ -32,19 +37,19 @@ import type { AuditShipConfig, AuditShipOffset, AuditShipManifest, AuditShipStat
 
 function loadConfig(): AuditShipConfig {
   return {
-    enabled: process.env.AUDIT_SHIP_ENABLED === "true",
-    endpoint: process.env.AUDIT_SHIP_ENDPOINT || "http://localhost:9000",
-    bucket: process.env.AUDIT_SHIP_BUCKET || "vista-evolved-audit",
-    accessKey: process.env.AUDIT_SHIP_ACCESS_KEY || "",
-    secretKey: process.env.AUDIT_SHIP_SECRET_KEY || "",
-    region: process.env.AUDIT_SHIP_REGION || "us-east-1",
+    enabled: process.env.AUDIT_SHIP_ENABLED === 'true',
+    endpoint: process.env.AUDIT_SHIP_ENDPOINT || 'http://localhost:9000',
+    bucket: process.env.AUDIT_SHIP_BUCKET || 'vista-evolved-audit',
+    accessKey: process.env.AUDIT_SHIP_ACCESS_KEY || '',
+    secretKey: process.env.AUDIT_SHIP_SECRET_KEY || '',
+    region: process.env.AUDIT_SHIP_REGION || 'us-east-1',
     intervalMs: Number(process.env.AUDIT_SHIP_INTERVAL_MS) || 300_000,
     chunkSize: Number(process.env.AUDIT_SHIP_CHUNK_SIZE) || 1000,
-    pathStyle: process.env.AUDIT_SHIP_PATH_STYLE !== "false", // default true for MinIO
+    pathStyle: process.env.AUDIT_SHIP_PATH_STYLE !== 'false', // default true for MinIO
   };
 }
 
-const AUDIT_FILE_PATH = process.env.IMMUTABLE_AUDIT_FILE_PATH || "logs/immutable-audit.jsonl";
+const AUDIT_FILE_PATH = process.env.IMMUTABLE_AUDIT_FILE_PATH || 'logs/immutable-audit.jsonl';
 
 /* ------------------------------------------------------------------ */
 /* In-memory state (offsets + manifests cached for API responses)       */
@@ -78,7 +83,7 @@ let dbRepo: DbRepo | null = null;
 export function setShipperDbRepo(repo: DbRepo): void {
   dbRepo = repo;
   // Load existing offsets from DB into memory
-  log.info("Audit shipper DB repo registered");
+  log.info('Audit shipper DB repo registered');
 }
 
 /* ------------------------------------------------------------------ */
@@ -115,7 +120,11 @@ function saveOffset(tenantId: string, source: string, offset: number, hash: stri
   };
   offsets.set(getOffsetKey(tenantId, source), entry);
   if (dbRepo) {
-    try { dbRepo.setOffset(entry); } catch { /* non-fatal */ }
+    try {
+      dbRepo.setOffset(entry);
+    } catch {
+      /* non-fatal */
+    }
   }
 }
 
@@ -140,8 +149,8 @@ function readNewLines(config: AuditShipConfig): Map<string, IndexedLine[]> {
     return result;
   }
 
-  const content = readFileSync(AUDIT_FILE_PATH, "utf-8");
-  const allLines = content.trimEnd().split("\n").filter(Boolean);
+  const content = readFileSync(AUDIT_FILE_PATH, 'utf-8');
+  const allLines = content.trimEnd().split('\n').filter(Boolean);
 
   // First pass: identify all tenants and their lines
   const tenantLines = new Map<string, IndexedLine[]>();
@@ -149,7 +158,7 @@ function readNewLines(config: AuditShipConfig): Map<string, IndexedLine[]> {
   for (let i = 0; i < allLines.length; i++) {
     try {
       const entry = JSON.parse(allLines[i]);
-      const tenantId = entry.tenantId || "default";
+      const tenantId = entry.tenantId || 'default';
       if (!tenantLines.has(tenantId)) {
         tenantLines.set(tenantId, []);
       }
@@ -180,9 +189,12 @@ function readNewLines(config: AuditShipConfig): Map<string, IndexedLine[]> {
 function chunkObjectKey(tenantId: string, firstSeq: number, lastSeq: number): string {
   const now = new Date();
   const yyyy = now.getUTCFullYear();
-  const mm = String(now.getUTCMonth() + 1).padStart(2, "0");
-  const dd = String(now.getUTCDate()).padStart(2, "0");
-  const ts = now.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const mm = String(now.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(now.getUTCDate()).padStart(2, '0');
+  const ts = now
+    .toISOString()
+    .replace(/[-:]/g, '')
+    .replace(/\.\d{3}/, '');
   return `audit/${tenantId}/${yyyy}/${mm}/${dd}/${ts}_${firstSeq}-${lastSeq}.jsonl`;
 }
 
@@ -201,7 +213,7 @@ export async function shipOneCycle(): Promise<{
   }
 
   if (!config.accessKey || !config.secretKey) {
-    return { ok: false, entriesShipped: 0, chunks: 0, errors: ["Missing S3 credentials"] };
+    return { ok: false, entriesShipped: 0, chunks: 0, errors: ['Missing S3 credentials'] };
   }
 
   const client = new S3Client({
@@ -227,11 +239,11 @@ export async function shipOneCycle(): Promise<{
     const lines = indexedLines.map((l) => l.raw);
 
     // Build chunk content
-    const chunkContent = lines.join("\n") + "\n";
-    const chunkBuffer = Buffer.from(chunkContent, "utf-8");
+    const chunkContent = lines.join('\n') + '\n';
+    const chunkBuffer = Buffer.from(chunkContent, 'utf-8');
 
     // Build manifest
-    const manifest = buildManifest(tenantId, "", lines);
+    const manifest = buildManifest(tenantId, '', lines);
     const objectKey = chunkObjectKey(tenantId, manifest.firstSeq, manifest.lastSeq);
     manifest.objectKey = objectKey;
 
@@ -243,28 +255,38 @@ export async function shipOneCycle(): Promise<{
     }
 
     // Upload manifest alongside chunk
-    const manifestKey = objectKey.replace(/\.jsonl$/, ".manifest.json");
-    const manifestResult = await client.putManifest(manifestKey, manifest as unknown as Record<string, unknown>);
+    const manifestKey = objectKey.replace(/\.jsonl$/, '.manifest.json');
+    const manifestResult = await client.putManifest(
+      manifestKey,
+      manifest as unknown as Record<string, unknown>
+    );
     if (!manifestResult.ok) {
-      log.warn("Manifest upload failed (non-fatal, chunk uploaded)", { manifestKey, error: manifestResult.error });
+      log.warn('Manifest upload failed (non-fatal, chunk uploaded)', {
+        manifestKey,
+        error: manifestResult.error,
+      });
     }
 
     // Update offset using the original file index (no re-read needed)
     const lastIndexedLine = indexedLines[indexedLines.length - 1];
-    const lastHash = createHash("sha256").update(lastIndexedLine.raw).digest("hex");
+    const lastHash = createHash('sha256').update(lastIndexedLine.raw).digest('hex');
     saveOffset(tenantId, AUDIT_FILE_PATH, lastIndexedLine.lineIdx + 1, lastHash);
 
     // Store manifest
     manifests.push(manifest);
     while (manifests.length > MAX_MANIFESTS) manifests.shift();
     if (dbRepo) {
-      try { dbRepo.insertManifest(manifest); } catch { /* non-fatal */ }
+      try {
+        dbRepo.insertManifest(manifest);
+      } catch {
+        /* non-fatal */
+      }
     }
 
     totalEntries += lines.length;
     totalChunks++;
 
-    log.info("Audit chunk shipped", {
+    log.info('Audit chunk shipped', {
       tenantId,
       objectKey,
       entryCount: lines.length,
@@ -277,23 +299,23 @@ export async function shipOneCycle(): Promise<{
 
   // Audit the shipping event itself
   immutableAudit(
-    "audit.export",
-    errors.length === 0 ? "success" : "error",
-    { sub: "system", name: "audit-shipper", roles: ["system"] },
+    'audit.export',
+    errors.length === 0 ? 'success' : 'error',
+    { sub: 'system', name: 'audit-shipper', roles: ['system'] },
     {
       detail: {
-        action: "audit_ship_cycle",
+        action: 'audit_ship_cycle',
         entriesShipped: totalEntries,
         chunksCreated: totalChunks,
         errors: errors.length,
       },
-    },
+    }
   );
 
   lastShipResult = {
     ok: errors.length === 0,
     entriesShipped: totalEntries,
-    error: errors.length > 0 ? errors.join("; ") : undefined,
+    error: errors.length > 0 ? errors.join('; ') : undefined,
   };
 
   return { ok: errors.length === 0, entriesShipped: totalEntries, chunks: totalChunks, errors };
@@ -306,13 +328,13 @@ export async function shipOneCycle(): Promise<{
 export function startShipperJob(): void {
   const config = loadConfig();
   if (!config.enabled) {
-    log.info("Audit shipper disabled (AUDIT_SHIP_ENABLED != true)");
+    log.info('Audit shipper disabled (AUDIT_SHIP_ENABLED != true)');
     return;
   }
 
   if (shipperTimer) return; // idempotent
 
-  log.info("Audit shipper job starting", {
+  log.info('Audit shipper job starting', {
     endpoint: config.endpoint,
     bucket: config.bucket,
     intervalMs: config.intervalMs,
@@ -324,7 +346,7 @@ export function startShipperJob(): void {
       shipperRunning = true;
       await shipOneCycle();
     } catch (err: any) {
-      log.error("Audit shipper initial cycle failed", { error: err.message });
+      log.error('Audit shipper initial cycle failed', { error: err.message });
     } finally {
       shipperRunning = false;
     }
@@ -337,7 +359,7 @@ export function startShipperJob(): void {
       shipperRunning = true;
       await shipOneCycle();
     } catch (err: any) {
-      log.error("Audit shipper cycle failed", { error: err.message });
+      log.error('Audit shipper cycle failed', { error: err.message });
     } finally {
       shipperRunning = false;
     }
@@ -352,7 +374,7 @@ export function stopShipperJob(): void {
     shipperTimer = null;
   }
   shipperRunning = false;
-  log.info("Audit shipper job stopped");
+  log.info('Audit shipper job stopped');
 }
 
 /* ------------------------------------------------------------------ */
@@ -374,7 +396,7 @@ export function getShipperStatus(): AuditShipStatus {
 
   return {
     enabled: config.enabled,
-    endpoint: config.enabled ? config.endpoint : "(disabled)",
+    endpoint: config.enabled ? config.endpoint : '(disabled)',
     bucket: config.bucket,
     region: config.region,
     lastShipByTenant,
@@ -396,8 +418,8 @@ export function getLastShipResult(): typeof lastShipResult {
 /** Check if S3 connectivity is healthy */
 export async function checkS3Connectivity(): Promise<{ ok: boolean; error?: string }> {
   const config = loadConfig();
-  if (!config.enabled) return { ok: false, error: "Shipper disabled" };
-  if (!config.accessKey || !config.secretKey) return { ok: false, error: "Missing credentials" };
+  if (!config.enabled) return { ok: false, error: 'Shipper disabled' };
+  if (!config.accessKey || !config.secretKey) return { ok: false, error: 'Missing credentials' };
 
   const client = new S3Client({
     endpoint: config.endpoint,

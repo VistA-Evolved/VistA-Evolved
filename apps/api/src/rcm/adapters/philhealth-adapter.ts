@@ -20,22 +20,18 @@ import type {
   SubmissionResponse,
   DenialWorkflowResponse,
   AdapterHealthResult,
-} from "./payer-adapter.js";
+} from './payer-adapter.js';
 
 const CONFIG: PayerAdapterConfig = {
-  id: "philhealth",
-  name: "PhilHealth eClaims Adapter (PH)",
-  supportedModes: ["government_portal"],
+  id: 'philhealth',
+  name: 'PhilHealth eClaims Adapter (PH)',
+  supportedModes: ['government_portal'],
   rateLimits: {
     eligibilityPerHour: 30,
     claimStatusPerHour: 20,
     submissionsPerHour: 50,
   },
-  requiredEnvVars: [
-    "PHILHEALTH_API_ENDPOINT",
-    "PHILHEALTH_API_TOKEN",
-    "PHILHEALTH_FACILITY_CODE",
-  ],
+  requiredEnvVars: ['PHILHEALTH_API_ENDPOINT', 'PHILHEALTH_API_TOKEN', 'PHILHEALTH_FACILITY_CODE'],
   enabled: Boolean(process.env.PHILHEALTH_API_ENDPOINT),
 };
 
@@ -62,18 +58,18 @@ export class PhilHealthAdapter implements PayerAdapter {
     if (!this.config.enabled) {
       return {
         eligible: false,
-        status: "unknown",
+        status: 'unknown',
         payerId: params.payerId,
-        payerName: "PhilHealth (not configured)",
+        payerName: 'PhilHealth (not configured)',
         checkedAt: new Date().toISOString(),
       };
     }
     // Production: call PhilHealth member eligibility API
     return {
       eligible: false,
-      status: "pending",
+      status: 'pending',
       payerId: params.payerId,
-      payerName: "PhilHealth",
+      payerName: 'PhilHealth',
       checkedAt: new Date().toISOString(),
     };
   }
@@ -87,15 +83,15 @@ export class PhilHealthAdapter implements PayerAdapter {
     if (!this.config.enabled) {
       return {
         claimId: params.claimId,
-        status: "unknown",
-        statusDescription: "PhilHealth API not configured",
+        status: 'unknown',
+        statusDescription: 'PhilHealth API not configured',
         checkedAt: new Date().toISOString(),
       };
     }
     return {
       claimId: params.claimId,
-      status: "unknown",
-      statusDescription: "PhilHealth claim status pending API configuration",
+      status: 'unknown',
+      statusDescription: 'PhilHealth claim status pending API configuration',
       checkedAt: new Date().toISOString(),
     };
   }
@@ -104,20 +100,22 @@ export class PhilHealthAdapter implements PayerAdapter {
     claimId: string;
     payerId: string;
     payload: string;
-    transactionSet: "837P" | "837I";
+    transactionSet: '837P' | '837I';
     tenantId: string;
   }): Promise<SubmissionResponse> {
     if (!this.config.enabled) {
       return {
         accepted: false,
-        errors: [{ code: "ADAPTER_DISABLED", description: "PhilHealth API not configured" }],
+        errors: [{ code: 'ADAPTER_DISABLED', description: 'PhilHealth API not configured' }],
         submittedAt: new Date().toISOString(),
       };
     }
     // Production: transform to CF1-CF4 bundles via ph-eclaims-serializer, submit
     return {
       accepted: false,
-      errors: [{ code: "NOT_IMPLEMENTED", description: "PhilHealth submission pending production config" }],
+      errors: [
+        { code: 'NOT_IMPLEMENTED', description: 'PhilHealth submission pending production config' },
+      ],
       submittedAt: new Date().toISOString(),
     };
   }
@@ -131,9 +129,9 @@ export class PhilHealthAdapter implements PayerAdapter {
     return {
       appealCreated: false,
       recommendedActions: [
-        "Review PhilHealth denial codes",
-        "Verify member eligibility and enrollment",
-        "Check CF1-CF4 form completeness",
+        'Review PhilHealth denial codes',
+        'Verify member eligibility and enrollment',
+        'Check CF1-CF4 form completeness',
       ],
       automatedCorrections: [],
       escalationRequired: true,
@@ -146,8 +144,8 @@ export class PhilHealthAdapter implements PayerAdapter {
       adapterId: this.config.id,
       adapterName: this.config.name,
       details: this.config.enabled
-        ? "PhilHealth API configured"
-        : "PhilHealth API not configured (set PHILHEALTH_API_ENDPOINT)",
+        ? 'PhilHealth API configured'
+        : 'PhilHealth API not configured (set PHILHEALTH_API_ENDPOINT)',
       checkedAt: new Date().toISOString(),
     };
   }

@@ -33,11 +33,11 @@ If the patient has no allergy assessment, the RPC returns:
 
 ## 2. Test Patient Data (WorldVistA Docker)
 
-| DFN | Allergen     | Severity | Reactions         |
-|-----|-------------|----------|-------------------|
-| 1   | PEANUT OIL  | SEVERE   | CHEST PAIN; HIVES |
-| 2   | PEANUT OIL  | (empty)  | HIVES             |
-| 3   | PROBALANCE  | MODERATE | RASH              |
+| DFN | Allergen   | Severity | Reactions         |
+| --- | ---------- | -------- | ----------------- |
+| 1   | PEANUT OIL | SEVERE   | CHEST PAIN; HIVES |
+| 2   | PEANUT OIL | (empty)  | HIVES             |
+| 3   | PROBALANCE | MODERATE | RASH              |
 
 Invalid DFN (e.g. 99999) → `^No Allergy Assessment`
 
@@ -77,8 +77,8 @@ When a patient is selected from search results:
 
 ## 5. Implementation Files
 
-| File | Change |
-|------|--------|
-| `apps/api/src/index.ts` | `GET /vista/allergies` endpoint |
-| `apps/web/src/app/patient-search/page.tsx` | Allergy fetch + render |
-| `apps/web/src/app/patient-search/page.module.css` | Allergy styles |
+| File                                              | Change                          |
+| ------------------------------------------------- | ------------------------------- |
+| `apps/api/src/index.ts`                           | `GET /vista/allergies` endpoint |
+| `apps/web/src/app/patient-search/page.tsx`        | Allergy fetch + render          |
+| `apps/web/src/app/patient-search/page.module.css` | Allergy styles                  |

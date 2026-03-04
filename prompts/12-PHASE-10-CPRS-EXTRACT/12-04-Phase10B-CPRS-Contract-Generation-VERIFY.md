@@ -47,4 +47,5 @@ $missing = $registryRpcs | Where-Object { $_ -notin $catalogNames }
 ```
 
 ## Pass criteria
+
 All contract files valid. Cross-reference has zero unexpected missing RPCs.

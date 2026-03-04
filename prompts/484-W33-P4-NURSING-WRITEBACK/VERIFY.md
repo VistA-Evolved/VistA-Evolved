@@ -1,6 +1,7 @@
 # Phase 484 — W33-P4 VERIFY: Nursing Writeback
 
 ## Gates
+
 1. **TypeScript** — `npx tsc --noEmit` passes from `apps/api`
 2. **Budget** — `integration-pending-budget.mjs` shows improvement (Δ ≤ 0)
 3. **Grep** — No raw `integration-pending` in the 5 converted handlers

@@ -1,6 +1,7 @@
 # Phase 394 -- W22-P6: Imaging/Radiology Deep Workflows -- VERIFY
 
 ## Verification Steps
+
 1. `pnpm exec tsc --noEmit` -- zero errors.
 2. 4 new files under `apps/api/src/radiology/`.
 3. 28 REST endpoints under `/radiology/*`.

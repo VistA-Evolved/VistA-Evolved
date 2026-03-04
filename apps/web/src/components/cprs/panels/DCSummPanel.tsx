@@ -5,8 +5,9 @@ import { useDataCache, type DCSummary } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
-
-interface Props { dfn: string; }
+interface Props {
+  dfn: string;
+}
 
 export default function DCSummPanel({ dfn }: Props) {
   const { fetchDomain, getDomain, isLoading } = useDataCache();
@@ -14,7 +15,9 @@ export default function DCSummPanel({ dfn }: Props) {
   const [fullText, setFullText] = useState<string>('');
   const [textLoading, setTextLoading] = useState(false);
 
-  useEffect(() => { fetchDomain(dfn, 'dcSummaries'); }, [dfn, fetchDomain]);
+  useEffect(() => {
+    fetchDomain(dfn, 'dcSummaries');
+  }, [dfn, fetchDomain]);
 
   const summaries = getDomain(dfn, 'dcSummaries');
   const loading = isLoading(dfn, 'dcSummaries');
@@ -44,7 +47,13 @@ export default function DCSummPanel({ dfn }: Props) {
       <div className={styles.splitPane}>
         <div className={styles.splitLeft}>
           <table className={styles.dataTable}>
-            <thead><tr><th>Title</th><th>Date</th><th>Status</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
             <tbody>
               {summaries.map((s) => (
                 <tr
@@ -55,35 +64,66 @@ export default function DCSummPanel({ dfn }: Props) {
                   <td>{s.title}</td>
                   <td>{s.date}</td>
                   <td>
-                    <span className={`${styles.badge} ${/unsigned/i.test(s.status) ? styles.unsigned : styles.signed}`}>
+                    <span
+                      className={`${styles.badge} ${/unsigned/i.test(s.status) ? styles.unsigned : styles.signed}`}
+                    >
                       {s.status}
                     </span>
                   </td>
                 </tr>
               ))}
               {!loading && summaries.length === 0 && (
-                <tr><td colSpan={3} style={{ textAlign: 'center', fontStyle: 'italic' }}>No discharge summaries on file</td></tr>
+                <tr>
+                  <td colSpan={3} style={{ textAlign: 'center', fontStyle: 'italic' }}>
+                    No discharge summaries on file
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
-          {loading && <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', padding: 8 }}>Loading...</p>}
+          {loading && (
+            <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', padding: 8 }}>Loading...</p>
+          )}
         </div>
         <div className={styles.splitRight}>
           {selected ? (
             <div>
               <div className={styles.panelTitle}>{selected.title}</div>
-              <div className={styles.formGroup}><label>Date</label><div>{selected.date}</div></div>
-              <div className={styles.formGroup}><label>Author</label><div>{selected.author}</div></div>
+              <div className={styles.formGroup}>
+                <label>Date</label>
+                <div>{selected.date}</div>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Author</label>
+                <div>{selected.author}</div>
+              </div>
               <div className={styles.formGroup}>
                 <label>Status</label>
                 <div>
-                  <span className={`${styles.badge} ${/unsigned/i.test(selected.status) ? styles.unsigned : styles.signed}`}>
+                  <span
+                    className={`${styles.badge} ${/unsigned/i.test(selected.status) ? styles.unsigned : styles.signed}`}
+                  >
                     {selected.status}
                   </span>
                 </div>
               </div>
-              <div style={{ marginTop: 8, padding: 8, border: '1px solid var(--cprs-border)', borderRadius: 4, background: 'var(--cprs-bg)' }}>
-                <pre style={{ fontFamily: 'monospace', fontSize: 12, whiteSpace: 'pre-wrap', margin: 0 }}>
+              <div
+                style={{
+                  marginTop: 8,
+                  padding: 8,
+                  border: '1px solid var(--cprs-border)',
+                  borderRadius: 4,
+                  background: 'var(--cprs-bg)',
+                }}
+              >
+                <pre
+                  style={{
+                    fontFamily: 'monospace',
+                    fontSize: 12,
+                    whiteSpace: 'pre-wrap',
+                    margin: 0,
+                  }}
+                >
                   {textLoading ? 'Loading...' : fullText}
                 </pre>
               </div>

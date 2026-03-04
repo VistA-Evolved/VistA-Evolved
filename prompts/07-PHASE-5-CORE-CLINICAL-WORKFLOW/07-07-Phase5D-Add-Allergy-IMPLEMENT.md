@@ -6,6 +6,7 @@ Add an allergy via RPC and refresh allergy list.
 This is the most fragile phase; enforce ALL lessons learned:
 
 Protocol / RPC encoding lessons:
+
 - XWB protocol is byte-exact (Lesson 1).
 - LIST parameter keys MUST be MUMPS-quoted strings (BUG-015):
   keys must be "\"GMRAGNT\"" etc.
@@ -20,6 +21,7 @@ Protocol / RPC encoding lessons:
 - Duplicate allergy returns -1^... and is expected (Lesson 7)
 
 Preconditions:
+
 - Phase 5C allergies view works
 - Broker client stable
 - You can search for allergen match entries (if required)
@@ -31,32 +33,36 @@ Body JSON:
 { "dfn":"1", "allergyText":"PENICILLIN" }
 
 Steps:
-1) Validate inputs:
+
+1. Validate inputs:
    - dfn numeric
    - allergyText length >= 2
-2) Use an allergy match RPC to get:
+2. Use an allergy match RPC to get:
    - allergen IEN
    - allergen name
    - source global (keep trailing comma)
-   Filter out header/category lines where source field is empty.
-3) Build the OREDITED list param with ALL required fields:
+     Filter out header/category lines where source field is empty.
+3. Build the OREDITED list param with ALL required fields:
    GMRAGNT, GMRATYPE, GMRANATR, GMRAORIG, GMRAORDT, GMRAOBHX
    - Keys must be quoted
    - Values in correct formats
-4) Call the save/update allergy RPC.
-5) If response is -1^duplicate, return ok:false with that error message.
+4. Call the save/update allergy RPC.
+5. If response is -1^duplicate, return ok:false with that error message.
 
 B) UI:
+
 - Add "Add Allergy" form
 - submit calls POST
 - on success refresh list by calling GET allergies
 
 C) Docs:
+
 - docs/runbooks/vista-rpc-add-allergy.md
 - include example curl POST + expected outputs
 - include duplicate behavior note
 
 Deliverables:
+
 - file list
 - curl POST test
 - expected output JSON

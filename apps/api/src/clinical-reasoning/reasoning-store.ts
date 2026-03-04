@@ -19,8 +19,8 @@ import type {
   PatientMeasureResult,
   PlanDefinition,
   QualityMeasure,
-} from "./types.js";
-import { randomBytes } from "crypto";
+} from './types.js';
+import { randomBytes } from 'crypto';
 
 const MAX_ITEMS = 10_000;
 
@@ -38,19 +38,23 @@ export function getCqlLibrary(id: string): CqlLibrary | undefined {
 }
 
 export function createCqlLibrary(
-  lib: Omit<CqlLibrary, "id" | "createdAt" | "updatedAt">
+  lib: Omit<CqlLibrary, 'id' | 'createdAt' | 'updatedAt'>
 ): CqlLibrary {
-  if (cqlLibraries.size >= MAX_ITEMS) throw new Error("CQL library store full");
+  if (cqlLibraries.size >= MAX_ITEMS) throw new Error('CQL library store full');
   // Check for duplicate name+version
   for (const existing of cqlLibraries.values()) {
-    if (existing.tenantId === lib.tenantId && existing.name === lib.name && existing.version === lib.version) {
+    if (
+      existing.tenantId === lib.tenantId &&
+      existing.name === lib.name &&
+      existing.version === lib.version
+    ) {
       throw new Error(`CQL library ${lib.name} v${lib.version} already exists`);
     }
   }
   const now = new Date().toISOString();
   const created: CqlLibrary = {
     ...lib,
-    id: randomBytes(12).toString("hex"),
+    id: randomBytes(12).toString('hex'),
     createdAt: now,
     updatedAt: now,
   };
@@ -60,7 +64,7 @@ export function createCqlLibrary(
 
 export function updateCqlLibrary(
   id: string,
-  patch: Partial<Omit<CqlLibrary, "id" | "createdAt" | "updatedAt" | "tenantId">>
+  patch: Partial<Omit<CqlLibrary, 'id' | 'createdAt' | 'updatedAt' | 'tenantId'>>
 ): CqlLibrary | undefined {
   const existing = cqlLibraries.get(id);
   if (!existing) return undefined;
@@ -94,13 +98,13 @@ export function getQualityMeasure(id: string): QualityMeasure | undefined {
 }
 
 export function createQualityMeasure(
-  measure: Omit<QualityMeasure, "id" | "createdAt" | "updatedAt">
+  measure: Omit<QualityMeasure, 'id' | 'createdAt' | 'updatedAt'>
 ): QualityMeasure {
-  if (qualityMeasures.size >= MAX_ITEMS) throw new Error("Quality measure store full");
+  if (qualityMeasures.size >= MAX_ITEMS) throw new Error('Quality measure store full');
   const now = new Date().toISOString();
   const created: QualityMeasure = {
     ...measure,
-    id: randomBytes(12).toString("hex"),
+    id: randomBytes(12).toString('hex'),
     createdAt: now,
     updatedAt: now,
   };
@@ -110,7 +114,7 @@ export function createQualityMeasure(
 
 export function updateQualityMeasure(
   id: string,
-  patch: Partial<Omit<QualityMeasure, "id" | "createdAt" | "updatedAt" | "tenantId">>
+  patch: Partial<Omit<QualityMeasure, 'id' | 'createdAt' | 'updatedAt' | 'tenantId'>>
 ): QualityMeasure | undefined {
   const existing = qualityMeasures.get(id);
   if (!existing) return undefined;
@@ -153,10 +157,10 @@ export function startMeasureEvaluation(
   periodStart: string,
   periodEnd: string
 ): MeasureEvalResult {
-  if (measureEvalResults.size >= MAX_ITEMS) throw new Error("Measure eval store full");
+  if (measureEvalResults.size >= MAX_ITEMS) throw new Error('Measure eval store full');
   const now = new Date().toISOString();
   const result: MeasureEvalResult = {
-    id: randomBytes(12).toString("hex"),
+    id: randomBytes(12).toString('hex'),
     tenantId,
     measureId,
     evaluatedAt: now,
@@ -165,7 +169,7 @@ export function startMeasureEvaluation(
     populations: [],
     performanceRate: null,
     totalPatients: 0,
-    status: "pending",
+    status: 'pending',
     error: null,
     durationMs: null,
   };
@@ -175,14 +179,14 @@ export function startMeasureEvaluation(
   const startMs = Date.now();
   setTimeout(() => {
     const existing = measureEvalResults.get(result.id);
-    if (!existing || existing.status !== "pending") return;
+    if (!existing || existing.status !== 'pending') return;
 
     const measure = qualityMeasures.get(measureId);
     if (!measure) {
       measureEvalResults.set(result.id, {
         ...existing,
-        status: "failed",
-        error: "Measure not found",
+        status: 'failed',
+        error: 'Measure not found',
         durationMs: Date.now() - startMs,
       });
       return;
@@ -196,13 +200,13 @@ export function startMeasureEvaluation(
 
     const populations = measure.populations.map((pop) => {
       switch (pop.code) {
-        case "initial-population":
+        case 'initial-population':
           return { code: pop.code, count: totalPop, memberDfns: [] };
-        case "denominator":
+        case 'denominator':
           return { code: pop.code, count: denominator, memberDfns: [] };
-        case "denominator-exclusion":
+        case 'denominator-exclusion':
           return { code: pop.code, count: denomExclusion, memberDfns: [] };
-        case "numerator":
+        case 'numerator':
           return { code: pop.code, count: numerator, memberDfns: [] };
         default:
           return { code: pop.code, count: 0, memberDfns: [] };
@@ -211,7 +215,7 @@ export function startMeasureEvaluation(
 
     measureEvalResults.set(result.id, {
       ...existing,
-      status: "completed",
+      status: 'completed',
       populations,
       totalPatients: totalPop,
       performanceRate: denominator > 0 ? numerator / denominator : null,
@@ -230,9 +234,7 @@ export function listPatientMeasureResults(
   tenantId: string,
   filters?: { measureId?: string; patientDfn?: string }
 ): PatientMeasureResult[] {
-  let results = [...patientMeasureResults.values()].filter(
-    (r) => r.tenantId === tenantId
-  );
+  let results = [...patientMeasureResults.values()].filter((r) => r.tenantId === tenantId);
   if (filters?.measureId) {
     results = results.filter((r) => r.measureId === filters.measureId);
   }
@@ -243,12 +245,12 @@ export function listPatientMeasureResults(
 }
 
 export function createPatientMeasureResult(
-  result: Omit<PatientMeasureResult, "id" | "evaluatedAt">
+  result: Omit<PatientMeasureResult, 'id' | 'evaluatedAt'>
 ): PatientMeasureResult {
-  if (patientMeasureResults.size >= MAX_ITEMS) throw new Error("Patient measure result store full");
+  if (patientMeasureResults.size >= MAX_ITEMS) throw new Error('Patient measure result store full');
   const created: PatientMeasureResult = {
     ...result,
-    id: randomBytes(12).toString("hex"),
+    id: randomBytes(12).toString('hex'),
     evaluatedAt: new Date().toISOString(),
   };
   patientMeasureResults.set(created.id, created);
@@ -269,13 +271,13 @@ export function getPlanDefinition(id: string): PlanDefinition | undefined {
 }
 
 export function createPlanDefinition(
-  plan: Omit<PlanDefinition, "id" | "createdAt" | "updatedAt">
+  plan: Omit<PlanDefinition, 'id' | 'createdAt' | 'updatedAt'>
 ): PlanDefinition {
-  if (planDefinitions.size >= MAX_ITEMS) throw new Error("PlanDefinition store full");
+  if (planDefinitions.size >= MAX_ITEMS) throw new Error('PlanDefinition store full');
   const now = new Date().toISOString();
   const created: PlanDefinition = {
     ...plan,
-    id: randomBytes(12).toString("hex"),
+    id: randomBytes(12).toString('hex'),
     createdAt: now,
     updatedAt: now,
   };
@@ -285,7 +287,7 @@ export function createPlanDefinition(
 
 export function updatePlanDefinition(
   id: string,
-  patch: Partial<Omit<PlanDefinition, "id" | "createdAt" | "updatedAt" | "tenantId">>
+  patch: Partial<Omit<PlanDefinition, 'id' | 'createdAt' | 'updatedAt' | 'tenantId'>>
 ): PlanDefinition | undefined {
   const existing = planDefinitions.get(id);
   if (!existing) return undefined;
@@ -319,13 +321,13 @@ export function getActivityDefinition(id: string): ActivityDefinition | undefine
 }
 
 export function createActivityDefinition(
-  def: Omit<ActivityDefinition, "id" | "createdAt" | "updatedAt">
+  def: Omit<ActivityDefinition, 'id' | 'createdAt' | 'updatedAt'>
 ): ActivityDefinition {
-  if (activityDefinitions.size >= MAX_ITEMS) throw new Error("ActivityDefinition store full");
+  if (activityDefinitions.size >= MAX_ITEMS) throw new Error('ActivityDefinition store full');
   const now = new Date().toISOString();
   const created: ActivityDefinition = {
     ...def,
-    id: randomBytes(12).toString("hex"),
+    id: randomBytes(12).toString('hex'),
     createdAt: now,
     updatedAt: now,
   };
@@ -335,7 +337,7 @@ export function createActivityDefinition(
 
 export function updateActivityDefinition(
   id: string,
-  patch: Partial<Omit<ActivityDefinition, "id" | "createdAt" | "updatedAt" | "tenantId">>
+  patch: Partial<Omit<ActivityDefinition, 'id' | 'createdAt' | 'updatedAt' | 'tenantId'>>
 ): ActivityDefinition | undefined {
   const existing = activityDefinitions.get(id);
   if (!existing) return undefined;
@@ -371,16 +373,16 @@ export function getMeasureReport(id: string): MeasureReport | undefined {
 export function generateMeasureReport(
   tenantId: string,
   evalResultId: string,
-  reportType: MeasureReport["reportType"],
-  qrdaVersion: MeasureReport["qrdaVersion"]
+  reportType: MeasureReport['reportType'],
+  qrdaVersion: MeasureReport['qrdaVersion']
 ): MeasureReport | undefined {
   const evalResult = measureEvalResults.get(evalResultId);
-  if (!evalResult || evalResult.status !== "completed") return undefined;
+  if (!evalResult || evalResult.status !== 'completed') return undefined;
 
-  if (measureReports.size >= MAX_ITEMS) throw new Error("Measure report store full");
+  if (measureReports.size >= MAX_ITEMS) throw new Error('Measure report store full');
 
   const report: MeasureReport = {
-    id: randomBytes(12).toString("hex"),
+    id: randomBytes(12).toString('hex'),
     tenantId,
     measureId: evalResult.measureId,
     reportType,
@@ -390,7 +392,7 @@ export function generateMeasureReport(
     performanceRate: evalResult.performanceRate,
     generatedAt: new Date().toISOString(),
     qrdaVersion,
-    exportStatus: "generated",
+    exportStatus: 'generated',
   };
   measureReports.set(report.id, report);
   return report;
@@ -408,25 +410,21 @@ export function getClinicalReasoningDashboardStats(
   const activities = listActivityDefinitions(tenantId);
   const reports = listMeasureReports(tenantId);
 
-  const completedEvals = evals.filter((e) => e.status === "completed");
-  const rates = completedEvals
-    .map((e) => e.performanceRate)
-    .filter((r): r is number => r !== null);
+  const completedEvals = evals.filter((e) => e.status === 'completed');
+  const rates = completedEvals.map((e) => e.performanceRate).filter((r): r is number => r !== null);
 
   return {
     totalLibraries: libs.length,
-    activeLibraries: libs.filter((l) => l.status === "active").length,
+    activeLibraries: libs.filter((l) => l.status === 'active').length,
     totalMeasures: measures.length,
-    activeMeasures: measures.filter((m) => m.status === "active").length,
+    activeMeasures: measures.filter((m) => m.status === 'active').length,
     totalEvaluations: evals.length,
     completedEvaluations: completedEvals.length,
-    failedEvaluations: evals.filter((e) => e.status === "failed").length,
+    failedEvaluations: evals.filter((e) => e.status === 'failed').length,
     totalPlanDefinitions: plans.length,
     totalActivityDefinitions: activities.length,
     totalReports: reports.length,
     averagePerformanceRate:
-      rates.length > 0
-        ? rates.reduce((a, b) => a + b, 0) / rates.length
-        : null,
+      rates.length > 0 ? rates.reduce((a, b) => a + b, 0) / rates.length : null,
   };
 }

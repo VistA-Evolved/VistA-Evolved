@@ -10,6 +10,7 @@ cross-border transfer validation, and transfer agreement management.
 ## Deliverables
 
 ### 1. Data Residency Module
+
 - **File:** `apps/api/src/platform/data-residency.ts`
 - `DataRegion` type (6 regions: us-east, us-west, ph-mnl, gh-acc, eu-fra, local)
 - `REGION_CATALOG` metadata (display name, country, status, cross-border rules)
@@ -19,6 +20,7 @@ cross-border transfer validation, and transfer agreement management.
 - `DataTransferAgreement` interface for cross-border data movement
 
 ### 2. Data Residency Routes
+
 - **File:** `apps/api/src/routes/data-residency-routes.ts`
 - `GET /residency/regions` — list all data regions with status
 - `GET /residency/regions/:region` — region details

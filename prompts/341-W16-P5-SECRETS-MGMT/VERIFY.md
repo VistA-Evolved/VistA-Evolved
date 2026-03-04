@@ -1,6 +1,7 @@
 # Phase 341 — W16-P5: VERIFY
 
 ## Gates
+
 1. tsc --noEmit clean
 2. KeyProvider interface with 3+ backends
 3. Envelope encryption uses AES-256-GCM

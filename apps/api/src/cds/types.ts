@@ -19,14 +19,14 @@
 // -- CDS Hooks 1.0 Types (HL7 spec) --
 
 export type CdsHookType =
-  | "patient-view"
-  | "order-select"
-  | "order-sign"
-  | "order-dispatch"
-  | "encounter-start"
-  | "encounter-discharge"
-  | "appointment-book"
-  | "medication-prescribe";
+  | 'patient-view'
+  | 'order-select'
+  | 'order-sign'
+  | 'order-dispatch'
+  | 'encounter-start'
+  | 'encounter-discharge'
+  | 'appointment-book'
+  | 'medication-prescribe';
 
 export interface CdsService {
   id: string;
@@ -56,7 +56,7 @@ export interface CdsHookRequest {
   prefetch?: Record<string, unknown>;
 }
 
-export type CardIndicator = "info" | "warning" | "critical";
+export type CardIndicator = 'info' | 'warning' | 'critical';
 
 export type CardSource = {
   label: string;
@@ -72,7 +72,7 @@ export interface CdsSuggestion {
 }
 
 export interface CdsSuggestionAction {
-  type: "create" | "update" | "delete";
+  type: 'create' | 'update' | 'delete';
   description: string;
   resource?: Record<string, unknown>;
 }
@@ -80,7 +80,7 @@ export interface CdsSuggestionAction {
 export interface CdsLink {
   label: string;
   url: string;
-  type: "absolute" | "smart";
+  type: 'absolute' | 'smart';
   appContext?: string;
 }
 
@@ -91,7 +91,7 @@ export interface CdsCard {
   indicator: CardIndicator;
   source: CardSource;
   suggestions?: CdsSuggestion[];
-  selectionBehavior?: "at-most-one" | "any";
+  selectionBehavior?: 'at-most-one' | 'any';
   overrideReasons?: Array<{ code: string; display: string }>;
   links?: CdsLink[];
 }
@@ -145,17 +145,17 @@ export interface SmartLaunchContext {
 // -- Native CDS Rule Engine --
 
 export type RuleConditionOperator =
-  | "equals"
-  | "not_equals"
-  | "greater_than"
-  | "less_than"
-  | "contains"
-  | "not_contains"
-  | "in"
-  | "not_in"
-  | "exists"
-  | "not_exists"
-  | "regex";
+  | 'equals'
+  | 'not_equals'
+  | 'greater_than'
+  | 'less_than'
+  | 'contains'
+  | 'not_contains'
+  | 'in'
+  | 'not_in'
+  | 'exists'
+  | 'not_exists'
+  | 'regex';
 
 export interface RuleCondition {
   field: string;
@@ -175,11 +175,11 @@ export interface CdsRuleDefinition {
   /** Conditions (all must be true -- AND logic) */
   conditions: RuleCondition[];
   /** Card to produce when conditions match */
-  cardTemplate: Omit<CdsCard, "uuid">;
+  cardTemplate: Omit<CdsCard, 'uuid'>;
   /** Whether this rule is active */
   enabled: boolean;
   /** Source: native (in-process) or cqf (external CQL) */
-  engine: "native" | "cqf";
+  engine: 'native' | 'cqf';
   /** CQL library name (if engine=cqf) */
   cqlLibraryName: string | null;
   cqlLibraryVersion: string | null;
@@ -193,7 +193,7 @@ export interface CdsRuleDefinition {
 
 export interface CdsFeedback {
   card: string; // card UUID
-  outcome: "accepted" | "overridden";
+  outcome: 'accepted' | 'overridden';
   overrideReason?: { code: string; display: string };
   outcomeTimestamp: string;
 }

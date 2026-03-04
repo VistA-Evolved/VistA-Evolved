@@ -16,6 +16,7 @@ Build the automated QA ladder that catches "verifier passes but product is broke
 ### Step 0 — Inventory
 
 Files inspected:
+
 - `qa/gauntlet/cli.mjs` — Gauntlet CLI (14 gates, G0-G13)
 - `qa/gauntlet/gates/g8-ui-dead-click.mjs` — Existing dead-click gate (source scan only)
 - `qa/gauntlet/gates/g13-imaging-scheduling-restart.mjs` — Most recent gate pattern
@@ -29,14 +30,16 @@ Files inspected:
 ### Step 1 — Workstream A: Playwright Journeys
 
 New file: `apps/web/e2e/qa-ladder-journeys.spec.ts`
+
 - Journey 1: Login → patient search → cover sheet → 3 tabs (allergies, vitals, problems)
-- Journey 2: Orders quick-order (navigate to order tab)  
+- Journey 2: Orders quick-order (navigate to order tab)
 - Journey 3: Portal login → inbox → telehealth
 - Dead-click detector: every click must produce navigation, state change, dialog, or "integration pending"
 
 ### Step 2 — Workstream B: Contract Tests
 
 New file: `apps/api/tests/qa-ladder-contracts.test.ts`
+
 - Schema validation for 10+ critical endpoints using Zod
 - Error shape uniformity ({ok: false, error: string})
 - No placeholder/stub responses on live paths
@@ -45,6 +48,7 @@ New file: `apps/api/tests/qa-ladder-contracts.test.ts`
 ### Step 3 — Workstream C: VistA RPC Golden Trace
 
 New file: `apps/api/tests/rpc-trace-replay.test.ts`
+
 - Records RPC sequence (names only, no params/PHI)
 - Golden baseline in `apps/api/tests/fixtures/rpc-golden-trace.json`
 - Sequence stability assertion
@@ -52,6 +56,7 @@ New file: `apps/api/tests/rpc-trace-replay.test.ts`
 ### Step 4 — Workstream D: Chaos/Restart
 
 New file: `apps/api/tests/chaos-restart.test.ts`
+
 - PG persistence after restart verification
 - Session survival check
 - Error shape during restart window
@@ -59,6 +64,7 @@ New file: `apps/api/tests/chaos-restart.test.ts`
 ### Step 5 — Workstream E: Visual Regression
 
 New file: `apps/web/e2e/visual-regression.spec.ts`
+
 - Screenshot key screens:
   - Login page
   - Patient search
@@ -68,6 +74,7 @@ New file: `apps/web/e2e/visual-regression.spec.ts`
 ### Step 6 — G14 Gauntlet Gate
 
 New file: `qa/gauntlet/gates/g14-qa-ladder.mjs`
+
 - Checks: spec files exist, test infrastructure present, no placeholder tests
 - Wire into SUITE_GATES.rc and SUITE_GATES.full in cli.mjs
 

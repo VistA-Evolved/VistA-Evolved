@@ -39,7 +39,7 @@ Persist imaging worklist/ingest and scheduling request/locks in Postgres with TT
    - PG schema has all 4 tables
    - PG migration v12 exists
    - All 4 PG repos exist with expected exports
-   - Stores have init*Repo functions
+   - Stores have init\*Repo functions
    - Index.ts wires PG repos
    - Barrel exports all 4 repos
    - RLS tenant list includes all 4 tables

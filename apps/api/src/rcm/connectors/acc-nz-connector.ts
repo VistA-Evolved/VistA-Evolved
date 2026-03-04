@@ -30,24 +30,22 @@
  *   ACC_NZ_PROVIDER_ID, ACC_NZ_SANDBOX_ENDPOINT
  */
 
-import type { RcmConnector, ConnectorResult } from "./types.js";
-import type { X12TransactionSet } from "../edi/types.js";
+import type { RcmConnector, ConnectorResult } from './types.js';
+import type { X12TransactionSet } from '../edi/types.js';
 
 export class AccNzConnector implements RcmConnector {
-  readonly id = "acc-nz";
-  readonly name = "ACC New Zealand Claim API";
-  readonly supportedModes = ["direct_api"];
-  readonly supportedTransactions: X12TransactionSet[] = [
-    "837P", "276", "277", "835",
-  ]; // Logical mapping; ACC uses REST/JSON, not X12
+  readonly id = 'acc-nz';
+  readonly name = 'ACC New Zealand Claim API';
+  readonly supportedModes = ['direct_api'];
+  readonly supportedTransactions: X12TransactionSet[] = ['837P', '276', '277', '835']; // Logical mapping; ACC uses REST/JSON, not X12
 
   private configured = false;
   private config = {
-    apiEndpoint: process.env.ACC_NZ_API_ENDPOINT ?? "https://api.acc.co.nz",
-    sandboxEndpoint: process.env.ACC_NZ_SANDBOX_ENDPOINT ?? "https://sandbox.api.acc.co.nz",
-    clientId: process.env.ACC_NZ_CLIENT_ID ?? "",
-    clientSecret: process.env.ACC_NZ_CLIENT_SECRET ?? "",
-    providerId: process.env.ACC_NZ_PROVIDER_ID ?? "",
+    apiEndpoint: process.env.ACC_NZ_API_ENDPOINT ?? 'https://api.acc.co.nz',
+    sandboxEndpoint: process.env.ACC_NZ_SANDBOX_ENDPOINT ?? 'https://sandbox.api.acc.co.nz',
+    clientId: process.env.ACC_NZ_CLIENT_ID ?? '',
+    clientSecret: process.env.ACC_NZ_CLIENT_SECRET ?? '',
+    providerId: process.env.ACC_NZ_PROVIDER_ID ?? '',
   };
 
   /** Rate limit: 50 requests/minute with exponential backoff */
@@ -62,25 +60,28 @@ export class AccNzConnector implements RcmConnector {
   async submit(
     transactionSet: X12TransactionSet,
     payload: string,
-    metadata: Record<string, string>,
+    metadata: Record<string, string>
   ): Promise<ConnectorResult> {
     if (!this.configured) {
       return {
         success: false,
-        errors: [{
-          code: "ACC-NZ-NOT-CONFIGURED",
-          description: "ACC NZ connector not configured. Register as treatment provider at https://www.acc.co.nz/for-providers/ then apply for API access.",
-          severity: "error",
-        }],
+        errors: [
+          {
+            code: 'ACC-NZ-NOT-CONFIGURED',
+            description:
+              'ACC NZ connector not configured. Register as treatment provider at https://www.acc.co.nz/for-providers/ then apply for API access.',
+            severity: 'error',
+          },
+        ],
         metadata: {
-          targetSystem: "ACC New Zealand",
-          enrollmentUrl: "https://www.acc.co.nz/for-providers/",
-          apiDocsUrl: "https://developer.acc.co.nz/",
-          sandboxUrl: "https://sandbox.api.acc.co.nz",
-          requiredEnvVars: "ACC_NZ_CLIENT_ID,ACC_NZ_CLIENT_SECRET,ACC_NZ_PROVIDER_ID",
-          wireFormat: "REST/JSON (not X12). Claims map to ACC claim lodgement schema.",
+          targetSystem: 'ACC New Zealand',
+          enrollmentUrl: 'https://www.acc.co.nz/for-providers/',
+          apiDocsUrl: 'https://developer.acc.co.nz/',
+          sandboxUrl: 'https://sandbox.api.acc.co.nz',
+          requiredEnvVars: 'ACC_NZ_CLIENT_ID,ACC_NZ_CLIENT_SECRET,ACC_NZ_PROVIDER_ID',
+          wireFormat: 'REST/JSON (not X12). Claims map to ACC claim lodgement schema.',
           transactionSet,
-          integrationStatus: "integration-ready",
+          integrationStatus: 'integration-ready',
         },
       };
     }
@@ -94,16 +95,18 @@ export class AccNzConnector implements RcmConnector {
     // Rate limit: 50 req/min with exponential backoff (maxRetries: 3)
     return {
       success: false,
-      errors: [{
-        code: "ACC-NZ-NOT-IMPLEMENTED",
-        description: `ACC NZ claim lodgement (create/park/submit workflow) requires live OAuth2 credentials. Sandbox: ${this.config.sandboxEndpoint}. Rate limit: ${this.rateLimitPerMinute} req/min.`,
-        severity: "error",
-      }],
+      errors: [
+        {
+          code: 'ACC-NZ-NOT-IMPLEMENTED',
+          description: `ACC NZ claim lodgement (create/park/submit workflow) requires live OAuth2 credentials. Sandbox: ${this.config.sandboxEndpoint}. Rate limit: ${this.rateLimitPerMinute} req/min.`,
+          severity: 'error',
+        },
+      ],
       metadata: {
-        targetSystem: "ACC New Zealand",
+        targetSystem: 'ACC New Zealand',
         transactionSet,
-        integrationStatus: "integration-ready",
-        claimWorkflow: "create-park-submit",
+        integrationStatus: 'integration-ready',
+        claimWorkflow: 'create-park-submit',
         rateLimitPerMinute: String(this.rateLimitPerMinute),
         maxRetries: String(this.maxRetries),
         baseRetryDelayMs: String(this.baseRetryDelayMs),
@@ -114,20 +117,24 @@ export class AccNzConnector implements RcmConnector {
   async checkStatus(transactionId: string): Promise<ConnectorResult> {
     return {
       success: false,
-      errors: [{
-        code: "ACC-NZ-STATUS-PENDING",
-        description: "ACC NZ status: GET /claims/v2/{claimNumber}. Requires live OAuth2 token.",
-        severity: "info",
-      }],
-      metadata: { transactionId, integrationStatus: "integration-ready" },
+      errors: [
+        {
+          code: 'ACC-NZ-STATUS-PENDING',
+          description: 'ACC NZ status: GET /claims/v2/{claimNumber}. Requires live OAuth2 token.',
+          severity: 'info',
+        },
+      ],
+      metadata: { transactionId, integrationStatus: 'integration-ready' },
     };
   }
 
-  async fetchResponses(since?: string): Promise<Array<{
-    transactionSet: X12TransactionSet;
-    payload: string;
-    receivedAt: string;
-  }>> {
+  async fetchResponses(since?: string): Promise<
+    Array<{
+      transactionSet: X12TransactionSet;
+      payload: string;
+      receivedAt: string;
+    }>
+  > {
     return [];
   }
 

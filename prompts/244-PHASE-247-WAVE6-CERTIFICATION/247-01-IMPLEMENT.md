@@ -1,6 +1,7 @@
 # Phase 247 — Wave 6 Certification Suite (IMPLEMENT)
 
 ## User Request
+
 Certify Wave 6 (P1-P9, phases 238-246) by collecting evidence,
 running all phase verifiers, generating a wave summary snapshot,
 and updating the wave manifest with final commit SHAs.
@@ -16,6 +17,7 @@ and updating the wave manifest with final commit SHAs.
 5. Update `scripts/verify-latest.ps1` to delegate to wave6 certification
 
 ## Files Touched
+
 - `scripts/verify-wave6-certification.ps1` (NEW)
 - `docs/waves/wave6-certification-snapshot.md` (NEW)
 - `docs/waves/WAVE6-MANIFEST.md` (EDIT)

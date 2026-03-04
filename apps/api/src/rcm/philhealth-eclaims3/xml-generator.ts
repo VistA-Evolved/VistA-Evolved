@@ -21,17 +21,17 @@ import type {
   XmlGeneratorInterface,
   XmlGeneratorResult,
   XmlValidationResult,
-} from "./types.js";
+} from './types.js';
 
 /* ── XML Escaping ───────────────────────────────────────────── */
 
 function escapeXml(s: string): string {
   return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
 }
 
 /* ── Placeholder Implementation ─────────────────────────────── */
@@ -48,24 +48,28 @@ export function generatePlaceholderXml(packet: ClaimPacket): XmlGeneratorResult 
   const lines: string[] = [];
 
   lines.push('<?xml version="1.0" encoding="UTF-8"?>');
-  lines.push("<!-- ============================================================ -->");
-  lines.push("<!-- SPEC_PENDING — NOT FOR PRODUCTION SUBMISSION                 -->");
-  lines.push("<!-- This XML is a structural placeholder for eClaims 3.0.        -->");
-  lines.push("<!-- Replace with schema-compliant output when spec is available.  -->");
-  lines.push("<!-- ============================================================ -->");
-  lines.push(`<eClaimsCF version="3.0" specStatus="PENDING" generatedAt="${escapeXml(packet.assembledAt)}">`);
+  lines.push('<!-- ============================================================ -->');
+  lines.push('<!-- SPEC_PENDING — NOT FOR PRODUCTION SUBMISSION                 -->');
+  lines.push('<!-- This XML is a structural placeholder for eClaims 3.0.        -->');
+  lines.push('<!-- Replace with schema-compliant output when spec is available.  -->');
+  lines.push('<!-- ============================================================ -->');
+  lines.push(
+    `<eClaimsCF version="3.0" specStatus="PENDING" generatedAt="${escapeXml(packet.assembledAt)}">`
+  );
 
   // CF1 — Facility + Patient
-  lines.push("  <CF1>");
+  lines.push('  <CF1>');
   lines.push(`    <FacilityCode>${escapeXml(packet.facility.facilityCode)}</FacilityCode>`);
   lines.push(`    <FacilityName>${escapeXml(packet.facility.facilityName)}</FacilityName>`);
   if (packet.facility.accreditationNumber) {
-    lines.push(`    <AccreditationNumber>${escapeXml(packet.facility.accreditationNumber)}</AccreditationNumber>`);
+    lines.push(
+      `    <AccreditationNumber>${escapeXml(packet.facility.accreditationNumber)}</AccreditationNumber>`
+    );
   }
   if (packet.facility.tinNumber) {
     lines.push(`    <TIN>${escapeXml(packet.facility.tinNumber)}</TIN>`);
   }
-  lines.push("    <Patient>");
+  lines.push('    <Patient>');
   lines.push(`      <LastName>${escapeXml(packet.patient.lastName)}</LastName>`);
   lines.push(`      <FirstName>${escapeXml(packet.patient.firstName)}</FirstName>`);
   if (packet.patient.middleName) {
@@ -82,35 +86,43 @@ export function generatePlaceholderXml(packet: ClaimPacket): XmlGeneratorResult 
     lines.push(`      <MemberPIN>${escapeXml(packet.patient.memberPin)}</MemberPIN>`);
   }
   lines.push(`      <MemberRelationship>${packet.patient.memberRelationship}</MemberRelationship>`);
-  lines.push("    </Patient>");
+  lines.push('    </Patient>');
   lines.push(`    <PatientType>${packet.patientType}</PatientType>`);
   lines.push(`    <AdmissionDate>${escapeXml(packet.admissionDate)}</AdmissionDate>`);
   if (packet.dischargeDate) {
     lines.push(`    <DischargeDate>${escapeXml(packet.dischargeDate)}</DischargeDate>`);
   }
-  lines.push("  </CF1>");
+  lines.push('  </CF1>');
 
   // CF2 — Diagnoses + Procedures
-  lines.push("  <CF2>");
-  lines.push(`    <ClaimType>${packet.patientType === "I" ? "inpatient" : "outpatient"}</ClaimType>`);
-  lines.push("    <Diagnoses>");
+  lines.push('  <CF2>');
+  lines.push(
+    `    <ClaimType>${packet.patientType === 'I' ? 'inpatient' : 'outpatient'}</ClaimType>`
+  );
+  lines.push('    <Diagnoses>');
   for (const dx of packet.diagnoses) {
-    lines.push(`      <Diagnosis type="${dx.type}" icdCode="${escapeXml(dx.icdCode)}"${dx.description ? ` description="${escapeXml(dx.description)}"` : ""} />`);
+    lines.push(
+      `      <Diagnosis type="${dx.type}" icdCode="${escapeXml(dx.icdCode)}"${dx.description ? ` description="${escapeXml(dx.description)}"` : ''} />`
+    );
   }
-  lines.push("    </Diagnoses>");
+  lines.push('    </Diagnoses>');
   if (packet.procedures.length > 0) {
-    lines.push("    <Procedures>");
+    lines.push('    <Procedures>');
     for (const proc of packet.procedures) {
-      lines.push(`      <Procedure code="${escapeXml(proc.code)}"${proc.description ? ` description="${escapeXml(proc.description)}"` : ""}${proc.laterality ? ` laterality="${proc.laterality}"` : ""} />`);
+      lines.push(
+        `      <Procedure code="${escapeXml(proc.code)}"${proc.description ? ` description="${escapeXml(proc.description)}"` : ''}${proc.laterality ? ` laterality="${proc.laterality}"` : ''} />`
+      );
     }
-    lines.push("    </Procedures>");
+    lines.push('    </Procedures>');
   }
-  lines.push(`    <TotalActualCharges>${packet.totals.totalCharges.toFixed(2)}</TotalActualCharges>`);
-  lines.push("  </CF2>");
+  lines.push(
+    `    <TotalActualCharges>${packet.totals.totalCharges.toFixed(2)}</TotalActualCharges>`
+  );
+  lines.push('  </CF2>');
 
   // CF3 — Professional Fees (if any)
   if (packet.professionalFees.length > 0) {
-    lines.push("  <CF3>");
+    lines.push('  <CF3>');
     for (const fee of packet.professionalFees) {
       lines.push(`    <ProfessionalFee>`);
       lines.push(`      <PhysicianName>${escapeXml(fee.physicianName)}</PhysicianName>`);
@@ -119,13 +131,15 @@ export function generatePlaceholderXml(packet: ClaimPacket): XmlGeneratorResult 
       lines.push(`      <ServiceDate>${escapeXml(fee.serviceDate)}</ServiceDate>`);
       lines.push(`    </ProfessionalFee>`);
     }
-    lines.push(`    <TotalProfessionalFees>${packet.totals.totalProfessionalFees.toFixed(2)}</TotalProfessionalFees>`);
-    lines.push("  </CF3>");
+    lines.push(
+      `    <TotalProfessionalFees>${packet.totals.totalProfessionalFees.toFixed(2)}</TotalProfessionalFees>`
+    );
+    lines.push('  </CF3>');
   }
 
   // CF4 — Charges (if any)
   if (packet.charges.length > 0) {
-    lines.push("  <CF4>");
+    lines.push('  <CF4>');
     for (const c of packet.charges) {
       lines.push(`    <ChargeItem category="${c.category}">`);
       lines.push(`      <Description>${escapeXml(c.description)}</Description>`);
@@ -135,32 +149,32 @@ export function generatePlaceholderXml(packet: ClaimPacket): XmlGeneratorResult 
       lines.push(`      <PatientShare>${c.patientShare.toFixed(2)}</PatientShare>`);
       lines.push(`    </ChargeItem>`);
     }
-    lines.push(`    <GrandTotal>${(packet.totals.totalCharges).toFixed(2)}</GrandTotal>`);
-    lines.push("  </CF4>");
+    lines.push(`    <GrandTotal>${packet.totals.totalCharges.toFixed(2)}</GrandTotal>`);
+    lines.push('  </CF4>');
   }
 
   // Case Rate (if applicable)
   if (packet.caseRateCode) {
-    lines.push("  <CaseRate>");
+    lines.push('  <CaseRate>');
     lines.push(`    <Code>${escapeXml(packet.caseRateCode)}</Code>`);
     if (packet.caseRateDescription) {
       lines.push(`    <Description>${escapeXml(packet.caseRateDescription)}</Description>`);
     }
-    lines.push("  </CaseRate>");
+    lines.push('  </CaseRate>');
   }
 
   // Metadata
-  lines.push("  <Metadata>");
+  lines.push('  <Metadata>');
   lines.push(`    <PacketId>${escapeXml(packet.packetId)}</PacketId>`);
   lines.push(`    <ContentHash>${packet.contentHash}</ContentHash>`);
   lines.push(`    <AssembledBy>${escapeXml(packet.assembledBy)}</AssembledBy>`);
   lines.push('    <SpecBased>false</SpecBased>');
-  lines.push("  </Metadata>");
+  lines.push('  </Metadata>');
 
-  lines.push("</eClaimsCF>");
+  lines.push('</eClaimsCF>');
 
-  const xml = lines.join("\n");
-  return { ok: false, reason: "eClaims 3.0 XML schema not yet available.", placeholderXml: xml };
+  const xml = lines.join('\n');
+  return { ok: false, reason: 'eClaims 3.0 XML schema not yet available.', placeholderXml: xml };
 }
 
 /* ── Placeholder Validator ──────────────────────────────────── */
@@ -169,13 +183,16 @@ export function validatePlaceholderXml(xml: string): XmlValidationResult {
   const errors: Array<{ path: string; message: string }> = [];
 
   if (!xml.includes('<?xml version="1.0"')) {
-    errors.push({ path: "/", message: "Missing XML declaration." });
+    errors.push({ path: '/', message: 'Missing XML declaration.' });
   }
-  if (!xml.includes("SPEC_PENDING")) {
-    errors.push({ path: "/", message: "Missing SPEC_PENDING marker — may be invalid placeholder." });
+  if (!xml.includes('SPEC_PENDING')) {
+    errors.push({
+      path: '/',
+      message: 'Missing SPEC_PENDING marker — may be invalid placeholder.',
+    });
   }
-  if (!xml.includes("<eClaimsCF")) {
-    errors.push({ path: "/eClaimsCF", message: "Missing root element." });
+  if (!xml.includes('<eClaimsCF')) {
+    errors.push({ path: '/eClaimsCF', message: 'Missing root element.' });
   }
 
   return {
@@ -189,7 +206,7 @@ export function validatePlaceholderXml(xml: string): XmlValidationResult {
 
 export const placeholderXmlGenerator: XmlGeneratorInterface = {
   specAvailable: false,
-  schemaVersion: "3.0-placeholder",
+  schemaVersion: '3.0-placeholder',
 
   generate(packet: ClaimPacket): XmlGeneratorResult {
     return generatePlaceholderXml(packet);

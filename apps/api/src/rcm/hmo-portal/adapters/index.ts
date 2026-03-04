@@ -5,11 +5,11 @@
  * Call initHmoPortalAdapters() at server startup.
  */
 
-export { maxicareAdapter } from "./maxicare.js";
-export { medicardAdapter } from "./medicard.js";
-export { intellicareAdapter } from "./intellicare.js";
-export { philcareAdapter } from "./philcare.js";
-export { valucareAdapter } from "./valucare.js";
+export { maxicareAdapter } from './maxicare.js';
+export { medicardAdapter } from './medicard.js';
+export { intellicareAdapter } from './intellicare.js';
+export { philcareAdapter } from './philcare.js';
+export { valucareAdapter } from './valucare.js';
 
 /** Call once at startup to register all adapters. Import triggers registration. */
 export function initHmoPortalAdapters(): void {

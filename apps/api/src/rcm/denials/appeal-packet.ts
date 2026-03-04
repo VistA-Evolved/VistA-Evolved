@@ -8,15 +8,19 @@
  * unless automation is installed via credential vault.
  */
 
-import type { DenialCase, DenialAction, DenialAttachment, AppealPacketMeta } from "./types.js";
-import { CARC_CODES, RARC_CODES } from "../reference/carc-rarc.js";
+import type { DenialCase, DenialAction, DenialAttachment, AppealPacketMeta } from './types.js';
+import { CARC_CODES, RARC_CODES } from '../reference/carc-rarc.js';
 
 /* ── Cover Letter Template ──────────────────────────────────── */
 
 function buildCoverLetterHtml(denial: DenialCase, payerName: string): string {
-  const date = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  const date = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
   const billedDollars = (denial.financials.billedAmountCents / 100).toFixed(2);
-  const codes = denial.denialCodes.map(c => `${c.type} ${c.code}`).join(", ");
+  const codes = denial.denialCodes.map((c) => `${c.type} ${c.code}`).join(', ');
 
   return `
 <div style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto; padding: 20px;">
@@ -32,9 +36,9 @@ function buildCoverLetterHtml(denial: DenialCase, payerName: string): string {
 
   <p><strong>RE: Appeal of Claim Denial</strong></p>
   <p><strong>Claim Reference:</strong> ${denial.claimRef}</p>
-  <p><strong>Denial Codes:</strong> ${codes || "N/A"}</p>
+  <p><strong>Denial Codes:</strong> ${codes || 'N/A'}</p>
   <p><strong>Billed Amount:</strong> $${billedDollars}</p>
-  <p><strong>Date of Denial:</strong> ${denial.receivedDate.split("T")[0]}</p>
+  <p><strong>Date of Denial:</strong> ${denial.receivedDate.split('T')[0]}</p>
 
   <p>Dear Claims Department,</p>
 
@@ -42,7 +46,7 @@ function buildCoverLetterHtml(denial: DenialCase, payerName: string): string {
   We believe this claim was denied in error and respectfully request a
   reconsideration of the determination.</p>
 
-  ${denial.denialNarrative ? `<p><strong>Provider Statement:</strong> ${escapeHtml(denial.denialNarrative)}</p>` : ""}
+  ${denial.denialNarrative ? `<p><strong>Provider Statement:</strong> ${escapeHtml(denial.denialNarrative)}</p>` : ''}
 
   <p>Please find the supporting documentation attached to this appeal packet.
   We request that this appeal be processed within the applicable timeframe
@@ -69,31 +73,35 @@ export function generateAppealPacket(
   denial: DenialCase,
   actions: DenialAction[],
   attachments: DenialAttachment[],
-  payerName: string,
+  payerName: string
 ): AppealPacketMeta {
   const coverLetterHtml = buildCoverLetterHtml(denial, payerName);
 
   // Build attachment checklist
   const requiredDocs = [
-    "Cover letter",
-    "Original claim",
-    "Denial notice / EOB",
-    "Clinical documentation",
-    "Prior authorization (if applicable)",
+    'Cover letter',
+    'Original claim',
+    'Denial notice / EOB',
+    'Clinical documentation',
+    'Prior authorization (if applicable)',
   ];
 
-  const attachmentChecklist = requiredDocs.map(label => ({
+  const attachmentChecklist = requiredDocs.map((label) => ({
     label,
-    present: label === "Cover letter" ? true
-      : attachments.some(a => a.label.toLowerCase().includes(label.toLowerCase().split(" ")[0])),
+    present:
+      label === 'Cover letter'
+        ? true
+        : attachments.some((a) =>
+            a.label.toLowerCase().includes(label.toLowerCase().split(' ')[0])
+          ),
   }));
 
   // Enrich denial codes with reference data
-  const enrichedCodes = denial.denialCodes.map(c => {
-    if (c.type === "CARC" && CARC_CODES[c.code]) {
+  const enrichedCodes = denial.denialCodes.map((c) => {
+    if (c.type === 'CARC' && CARC_CODES[c.code]) {
       return { ...c, description: c.description || CARC_CODES[c.code].description };
     }
-    if (c.type === "RARC" && RARC_CODES[c.code]) {
+    if (c.type === 'RARC' && RARC_CODES[c.code]) {
       return { ...c, description: c.description || RARC_CODES[c.code].description };
     }
     return c;
@@ -118,7 +126,7 @@ export function generateAppealPacket(
     },
     attachmentChecklist,
     timeline: actions,
-    note: "Credentials not stored; portal submission manual unless automation installed",
+    note: 'Credentials not stored; portal submission manual unless automation installed',
   };
 }
 
@@ -128,12 +136,14 @@ export function generateAppealPacketHtml(
   denial: DenialCase,
   actions: DenialAction[],
   attachments: DenialAttachment[],
-  payerName: string,
+  payerName: string
 ): string {
   const packet = generateAppealPacket(denial, actions, attachments, payerName);
   const billedDollars = (denial.financials.billedAmountCents / 100).toFixed(2);
-  const paidDollars = denial.financials.paidAmountCents !== undefined
-    ? (denial.financials.paidAmountCents / 100).toFixed(2) : "N/A";
+  const paidDollars =
+    denial.financials.paidAmountCents !== undefined
+      ? (denial.financials.paidAmountCents / 100).toFixed(2)
+      : 'N/A';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -160,7 +170,7 @@ export function generateAppealPacketHtml(
   </div>
 
   <h1>Appeal Packet</h1>
-  <p>Claim: <strong>${denial.claimRef}</strong> | Generated: ${packet.generatedAt.split("T")[0]}</p>
+  <p>Claim: <strong>${denial.claimRef}</strong> | Generated: ${packet.generatedAt.split('T')[0]}</p>
 
   <div class="section">
     <h2>1. Cover Letter</h2>
@@ -172,7 +182,7 @@ export function generateAppealPacketHtml(
     <table>
       <tr><th>Field</th><th>Value</th></tr>
       <tr><td>Claim Reference</td><td>${denial.claimRef}</td></tr>
-      <tr><td>VistA Claim IEN</td><td>${denial.vistaClaimIen ?? "N/A"}</td></tr>
+      <tr><td>VistA Claim IEN</td><td>${denial.vistaClaimIen ?? 'N/A'}</td></tr>
       <tr><td>Payer</td><td>${payerName} (${denial.payerId})</td></tr>
       <tr><td>Billed Amount</td><td>$${billedDollars}</td></tr>
       <tr><td>Paid Amount</td><td>$${paidDollars}</td></tr>
@@ -184,32 +194,39 @@ export function generateAppealPacketHtml(
     <h2>3. Denial Details</h2>
     <table>
       <tr><th>Type</th><th>Code</th><th>Description</th></tr>
-      ${packet.denialSummary.codes.map(c => `<tr><td>${c.type}</td><td>${c.code}</td><td>${escapeHtml(c.description ?? "")}</td></tr>`).join("\n      ")}
+      ${packet.denialSummary.codes.map((c) => `<tr><td>${c.type}</td><td>${c.code}</td><td>${escapeHtml(c.description ?? '')}</td></tr>`).join('\n      ')}
     </table>
-    ${denial.denialNarrative ? `<p><strong>Narrative:</strong> ${escapeHtml(denial.denialNarrative)}</p>` : ""}
-    <p><strong>Received:</strong> ${denial.receivedDate.split("T")[0]}
-    ${denial.deadlineDate ? ` | <strong>Deadline:</strong> ${denial.deadlineDate.split("T")[0]}` : ""}</p>
+    ${denial.denialNarrative ? `<p><strong>Narrative:</strong> ${escapeHtml(denial.denialNarrative)}</p>` : ''}
+    <p><strong>Received:</strong> ${denial.receivedDate.split('T')[0]}
+    ${denial.deadlineDate ? ` | <strong>Deadline:</strong> ${denial.deadlineDate.split('T')[0]}` : ''}</p>
   </div>
 
   <div class="section">
     <h2>4. Attachment Checklist</h2>
     <table>
       <tr><th>Document</th><th>Status</th></tr>
-      ${packet.attachmentChecklist.map(a =>
-        `<tr><td>${a.label}</td><td><span class="badge ${a.present ? "badge-present" : "badge-missing"}">${a.present ? "Present" : "Missing"}</span></td></tr>`
-      ).join("\n      ")}
+      ${packet.attachmentChecklist
+        .map(
+          (a) =>
+            `<tr><td>${a.label}</td><td><span class="badge ${a.present ? 'badge-present' : 'badge-missing'}">${a.present ? 'Present' : 'Missing'}</span></td></tr>`
+        )
+        .join('\n      ')}
     </table>
   </div>
 
   <div class="section">
     <h2>5. Timeline</h2>
-    ${actions.length === 0 ? "<p>No actions recorded yet.</p>" : ""}
-    ${actions.map(a => `
+    ${actions.length === 0 ? '<p>No actions recorded yet.</p>' : ''}
+    ${actions
+      .map(
+        (a) => `
     <div class="timeline-item">
-      <strong>${a.timestamp.split("T")[0]}</strong> — ${a.actionType}
-      ${a.actor ? ` by ${a.actor}` : ""}
-      ${a.previousStatus && a.newStatus && a.previousStatus !== a.newStatus ? ` (${a.previousStatus} → ${a.newStatus})` : ""}
-    </div>`).join("")}
+      <strong>${a.timestamp.split('T')[0]}</strong> — ${a.actionType}
+      ${a.actor ? ` by ${a.actor}` : ''}
+      ${a.previousStatus && a.newStatus && a.previousStatus !== a.newStatus ? ` (${a.previousStatus} → ${a.newStatus})` : ''}
+    </div>`
+      )
+      .join('')}
   </div>
 
   <div class="section" style="background: #fff3cd; padding: 10px; border-radius: 4px;">
@@ -223,8 +240,8 @@ export function generateAppealPacketHtml(
 
 function escapeHtml(str: string): string {
   return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }

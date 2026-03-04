@@ -1,10 +1,12 @@
 # Phase 324 — W14-P8: Integration Marketplace & Registry
 
 ## User Request
+
 Build a marketplace/registry for discovering, publishing, installing, and
 managing integration packages (connectors, templates, adapters).
 
 ## Implementation Steps
+
 1. **Service layer** (`services/integration-marketplace.ts`):
    - MarketplaceCategory: taxonomy for discovery (HL7v2, X12, FHIR, Imaging, RCM, Transport)
    - MarketplaceListing: published packages with SemVer versions, ratings, install counts
@@ -26,12 +28,14 @@ managing integration packages (connectors, templates, adapters).
    - store-policy.ts: 4 entries (categories/registry, listings/registry, reviews/cache, installs/critical)
 
 ## Verification Steps
+
 - `npx tsc --noEmit` — zero errors
 - 17 endpoints registered
 - Seed catalog: 6 categories + 6 listings with v1.0.0 published
 - Install/uninstall lifecycle works with count tracking
 
 ## Files Touched
+
 - `apps/api/src/services/integration-marketplace.ts` (NEW)
 - `apps/api/src/routes/marketplace.ts` (NEW)
 - `apps/api/src/server/register-routes.ts` (MODIFIED)

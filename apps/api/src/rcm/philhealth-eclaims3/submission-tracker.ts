@@ -14,7 +14,7 @@
  * Migration plan: PostgreSQL when multi-tenant persistence needed.
  */
 
-import { randomBytes } from "node:crypto";
+import { randomBytes } from 'node:crypto';
 import {
   ECLAIMS_STATUS_TRANSITIONS,
   isManualOnlyTransition,
@@ -22,12 +22,12 @@ import {
   type SubmissionRecord,
   type DenialReason,
   type ClaimPacket,
-} from "./types.js";
+} from './types.js';
 
 /* ── ID Generation ──────────────────────────────────────────── */
 
 function newSubmissionId(): string {
-  return `sub-${Date.now().toString(36)}-${randomBytes(6).toString("hex")}`;
+  return `sub-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
 /* ── In-Memory Store ────────────────────────────────────────── */
@@ -39,24 +39,26 @@ const byDraft = new Map<string, string>();
 const byPacket = new Map<string, string>();
 
 /* Phase 146: DB repo wiring */
-let phSubDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
-export function initPhSubmissionStoreRepo(repo: typeof phSubDbRepo): void { phSubDbRepo = repo; }
+let phSubDbRepo: {
+  upsert(d: any): Promise<any>;
+  update?(id: string, u: any): Promise<any>;
+} | null = null;
+export function initPhSubmissionStoreRepo(repo: typeof phSubDbRepo): void {
+  phSubDbRepo = repo;
+}
 
 /* ── CRUD ───────────────────────────────────────────────────── */
 
 /**
  * Create a new submission record for a claim packet.
  */
-export function createSubmission(
-  packet: ClaimPacket,
-  actor: string,
-): SubmissionRecord {
+export function createSubmission(packet: ClaimPacket, actor: string): SubmissionRecord {
   const now = new Date().toISOString();
   const record: SubmissionRecord = {
     id: newSubmissionId(),
     packetId: packet.packetId,
     sourceClaimDraftId: packet.sourceClaimDraftId,
-    status: "draft",
+    status: 'draft',
     exportBundleIds: [],
     denialReasons: [],
     staffNotes: [],
@@ -70,7 +72,16 @@ export function createSubmission(
   byPacket.set(record.packetId, record.id);
 
   // Phase 146: Write-through to PG
-  phSubDbRepo?.upsert({ id: record.id, tenantId: (record as any).tenantId ?? 'default', claimId: record.sourceClaimDraftId, packetId: record.packetId, status: record.status, submittedAt: record.createdAt }).catch(() => {});
+  phSubDbRepo
+    ?.upsert({
+      id: record.id,
+      tenantId: (record as any).tenantId ?? 'default',
+      claimId: record.sourceClaimDraftId,
+      packetId: record.packetId,
+      status: record.status,
+      submittedAt: record.createdAt,
+    })
+    .catch(() => {});
 
   return record;
 }
@@ -125,11 +136,11 @@ export function transitionSubmission(
   id: string,
   toStatus: EClaimsSubmissionStatus,
   actor: string,
-  detail?: string,
+  detail?: string
 ): TransitionResult {
   const record = submissions.get(id);
   if (!record) {
-    return { ok: false, error: "Submission not found." };
+    return { ok: false, error: 'Submission not found.' };
   }
 
   const allowed = ECLAIMS_STATUS_TRANSITIONS[record.status];
@@ -176,11 +187,11 @@ export function recordExportBundle(id: string, bundleId: string): boolean {
  */
 export function recordDenialReason(
   id: string,
-  reason: Omit<DenialReason, "recordedAt">,
+  reason: Omit<DenialReason, 'recordedAt'>
 ): TransitionResult {
   const record = submissions.get(id);
   if (!record) {
-    return { ok: false, error: "Submission not found." };
+    return { ok: false, error: 'Submission not found.' };
   }
 
   const now = new Date().toISOString();
@@ -202,13 +213,13 @@ export function recordDenialReason(
 export function recordAcceptance(
   id: string,
   tcn: string,
-  payerRefNumber?: string,
+  payerRefNumber?: string
 ): TransitionResult {
   const record = submissions.get(id);
   if (!record) {
-    return { ok: false, error: "Submission not found." };
+    return { ok: false, error: 'Submission not found.' };
   }
-  if (record.status !== "accepted") {
+  if (record.status !== 'accepted') {
     return { ok: false, error: "Can only record acceptance details when status is 'accepted'." };
   }
 
@@ -251,7 +262,7 @@ export function getSubmissionStats(): {
 
   for (const sub of submissions.values()) {
     byStatus[sub.status]++;
-    if (sub.status === "denied" && sub.updatedAt >= weekAgo) {
+    if (sub.status === 'denied' && sub.updatedAt >= weekAgo) {
       recentDenials++;
     }
   }

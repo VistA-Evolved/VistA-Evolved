@@ -1,0 +1,21 @@
+node_modules
+dist
+build
+.next
+out
+coverage
+pnpm-lock.yaml
+*.d.ts
+artifacts
+evidence
+data/platform.db
+data/rcm-exports
+logs
+services
+
+# Files with intentional non-standard YAML
+docs/contracts/intake/intake-contract-v1.yaml
+infra/helm
+
+# JSON files with comments (not valid JSON but intentional)
+infra/observability/grafana-dashboard-api.json

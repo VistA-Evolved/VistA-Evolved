@@ -52,22 +52,65 @@ export default function CPRSLoginPage() {
 
   if (!ready) {
     return (
-      <div className={styles.shell} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+      <div
+        className={styles.shell}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+        }}
+      >
         <p style={{ color: 'var(--cprs-text-muted)' }}>Checking session...</p>
       </div>
     );
   }
 
   return (
-    <div className={styles.shell} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-      <div style={{ width: 380, padding: 32, border: '1px solid var(--cprs-border)', borderRadius: 8, background: 'var(--cprs-surface)' }}>
-        <h1 style={{ fontSize: 20, margin: '0 0 4px', textAlign: 'center' }}>EHR &mdash; Evolved</h1>
-        <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)', textAlign: 'center', margin: '0 0 20px' }}>
+    <div
+      className={styles.shell}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+      }}
+    >
+      <div
+        style={{
+          width: 380,
+          padding: 32,
+          border: '1px solid var(--cprs-border)',
+          borderRadius: 8,
+          background: 'var(--cprs-surface)',
+        }}
+      >
+        <h1 style={{ fontSize: 20, margin: '0 0 4px', textAlign: 'center' }}>
+          EHR &mdash; Evolved
+        </h1>
+        <p
+          style={{
+            fontSize: 12,
+            color: 'var(--cprs-text-muted)',
+            textAlign: 'center',
+            margin: '0 0 20px',
+          }}
+        >
           CPRS Web Replica &bull; Sign On
         </p>
 
         {error && (
-          <div style={{ padding: '8px 12px', background: '#f8d7da', border: '1px solid #dc3545', borderRadius: 4, color: '#721c24', fontSize: 12, marginBottom: 12 }}>
+          <div
+            style={{
+              padding: '8px 12px',
+              background: '#f8d7da',
+              border: '1px solid #dc3545',
+              borderRadius: 4,
+              color: '#721c24',
+              fontSize: 12,
+              marginBottom: 12,
+            }}
+          >
             {error}
           </div>
         )}
@@ -105,13 +148,31 @@ export default function CPRSLoginPage() {
         </form>
 
         {process.env.NODE_ENV !== 'production' && (
-          <div style={{ marginTop: 16, padding: 8, background: 'var(--cprs-bg)', borderRadius: 4, fontSize: 11, color: 'var(--cprs-text-muted)' }}>
+          <div
+            style={{
+              marginTop: 16,
+              padding: 8,
+              background: 'var(--cprs-bg)',
+              borderRadius: 4,
+              fontSize: 11,
+              color: 'var(--cprs-text-muted)',
+            }}
+          >
             <strong>Sandbox accounts:</strong>
             <table style={{ width: '100%', marginTop: 4, fontSize: 10 }}>
               <tbody>
-                <tr><td>PROV123 / PROV123!!</td><td>Provider (Clyde)</td></tr>
-                <tr><td>NURSE123 / NURSE123!!</td><td>Nurse (Helen)</td></tr>
-                <tr><td>PHARM123 / PHARM123!!</td><td>Pharmacist (Linda)</td></tr>
+                <tr>
+                  <td>PROV123 / PROV123!!</td>
+                  <td>Provider (Clyde)</td>
+                </tr>
+                <tr>
+                  <td>NURSE123 / NURSE123!!</td>
+                  <td>Nurse (Helen)</td>
+                </tr>
+                <tr>
+                  <td>PHARM123 / PHARM123!!</td>
+                  <td>Pharmacist (Linda)</td>
+                </tr>
               </tbody>
             </table>
           </div>

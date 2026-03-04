@@ -3,6 +3,7 @@
 ## User Request
 
 Build a VistA-first patient portal "Digital Front Door" baseline:
+
 - View record (wire remaining pending endpoints: labs, consults, surgery, DC summaries, reports)
 - Download/share (already built Phase 31, confirm governance)
 - Proxy access (already built Phase 29, confirm)
@@ -15,6 +16,7 @@ Build a VistA-first patient portal "Digital Front Door" baseline:
 ## Key Finding -- Reuse Analysis
 
 The portal was ALREADY extensively built in Phases 26-33:
+
 - Full Next.js portal app (`apps/portal/`) with 15+ dashboard pages
 - Portal auth (dev mode, separate session cookie)
 - Portal IAM (registration, MFA, proxy, device sessions)
@@ -27,10 +29,13 @@ Phase 61 is NOT greenfield. It is an enhancement/governance pass.
 ## Implementation Steps
 
 ### Step A: ADR -- Reuse analysis
+
 - `docs/decisions/ADR-portal-reuse-v1.md`
 
 ### Step B: Wire 5 pending portal endpoints
+
 Replace stub responses with actual VistA RPC calls using existing `portalRpc()` helper:
+
 - `/portal/health/labs` -- ORWLRR INTERIM (params: DFN, startDate, endDate)
 - `/portal/health/consults` -- ORQQCN LIST (params: DFN, start, stop, service, status)
 - `/portal/health/surgery` -- ORWSR LIST (params: DFN, start, end, context, max)
@@ -38,16 +43,20 @@ Replace stub responses with actual VistA RPC calls using existing `portalRpc()` 
 - `/portal/health/reports` -- ORWRP REPORT TEXT (requires report ID param)
 
 ### Step C: Update Health Records UI
+
 - Replace placeholder "integration pending" sections with real data tables
 - Dynamic source badge based on `_integration` field
 
 ### Step D: AI assist governance
+
 - Add disclaimer banner and governance labels to AI help page
 
 ### Step E: Portal-plan.json artifact
+
 - Map each feature to endpoint + RPC + privacy classification
 
 ### Step F: Verifier script
+
 - `scripts/verify-phase61-portal.ps1`
 
 ### Step G: Runbook + ops artifacts

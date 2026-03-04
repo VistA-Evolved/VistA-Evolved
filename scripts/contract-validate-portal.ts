@@ -15,8 +15,8 @@
  * Exit 0 = all checks pass, Exit 1 = failures found
  */
 
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 // ---------- Minimal YAML parser (no deps) ----------
 // Handles up to 3 levels of nesting — enough for the contract file.
@@ -26,9 +26,9 @@ import { join } from "node:path";
 
 function parseSimpleYaml(text: string): Record<string, unknown> {
   const result: Record<string, unknown> = {};
-  let l0Key = "";
+  let l0Key = '';
   let l0Block: Record<string, unknown> = {};
-  let l1Key = "";
+  let l1Key = '';
   let l1Block: Record<string, unknown> = {};
   let inL0 = false;
   let inL1 = false;
@@ -50,8 +50,8 @@ function parseSimpleYaml(text: string): Record<string, unknown> {
     }
   }
 
-  for (const rawLine of text.split("\n")) {
-    const line = rawLine.replace(/\r$/, "");
+  for (const rawLine of text.split('\n')) {
+    const line = rawLine.replace(/\r$/, '');
 
     // Skip comments and blank lines
     if (/^\s*#/.test(line) || /^\s*$/.test(line)) continue;
@@ -63,8 +63,8 @@ function parseSimpleYaml(text: string): Record<string, unknown> {
     if (l0Match) {
       flushL0();
       const [, key, value] = l0Match;
-      if (value && value !== "" && !value.startsWith(">")) {
-        result[key] = value.replace(/^["']|["']$/g, "");
+      if (value && value !== '' && !value.startsWith('>')) {
+        result[key] = value.replace(/^["']|["']$/g, '');
       } else {
         l0Key = key;
         l0Block = {};
@@ -79,8 +79,8 @@ function parseSimpleYaml(text: string): Record<string, unknown> {
       if (l1Match) {
         flushL1();
         const [, key, value] = l1Match;
-        if (value && value !== "" && !value.startsWith(">")) {
-          l0Block[key] = value.replace(/^["']|["']$/g, "");
+        if (value && value !== '' && !value.startsWith('>')) {
+          l0Block[key] = value.replace(/^["']|["']$/g, '');
         } else {
           l1Key = key;
           l1Block = {};
@@ -95,7 +95,7 @@ function parseSimpleYaml(text: string): Record<string, unknown> {
       const l2Match = line.match(/^    ([a-z_]+):\s*(.*)/);
       if (l2Match) {
         const [, key, value] = l2Match;
-        l1Block[key] = value ? value.replace(/^["']|["']$/g, "") : true;
+        l1Block[key] = value ? value.replace(/^["']|["']$/g, '') : true;
         continue;
       }
     }
@@ -121,78 +121,63 @@ function check(name: string, ok: boolean, detail?: string) {
 
 // ---------- Main ----------
 
-const root = join(import.meta.dirname || __dirname, "..");
-const contractDir = join(root, "docs", "contracts", "portal");
+const root = join(import.meta.dirname || __dirname, '..');
+const contractDir = join(root, 'docs', 'contracts', 'portal');
 
 // 1. Parse portal-contract-v1.yaml
-let contractText = "";
+let contractText = '';
 try {
-  contractText = readFileSync(
-    join(contractDir, "portal-contract-v1.yaml"),
-    "utf-8"
-  );
-  check("YAML file readable", true);
+  contractText = readFileSync(join(contractDir, 'portal-contract-v1.yaml'), 'utf-8');
+  check('YAML file readable', true);
 } catch (e: any) {
-  check("YAML file readable", false, e.message);
+  check('YAML file readable', false, e.message);
 }
 
 let parsed: Record<string, unknown> = {};
 if (contractText) {
   try {
     parsed = parseSimpleYaml(contractText);
-    check("YAML parses successfully", Object.keys(parsed).length > 0);
+    check('YAML parses successfully', Object.keys(parsed).length > 0);
   } catch (e: any) {
-    check("YAML parses successfully", false, e.message);
+    check('YAML parses successfully', false, e.message);
   }
 }
 
 // 2. Required top-level keys
-const requiredTopKeys = ["version", "rules", "modules", "infrastructure"];
+const requiredTopKeys = ['version', 'rules', 'modules', 'infrastructure'];
 for (const key of requiredTopKeys) {
-  check(
-    `Top-level key: ${key}`,
-    key in parsed,
-    key in parsed ? undefined : `Missing key: ${key}`
-  );
+  check(`Top-level key: ${key}`, key in parsed, key in parsed ? undefined : `Missing key: ${key}`);
 }
 
 // 3. Required modules
 const requiredModules = [
-  "auth",
-  "dashboard",
-  "health_records",
-  "medications",
-  "messages",
-  "appointments",
-  "telehealth",
-  "profile",
+  'auth',
+  'dashboard',
+  'health_records',
+  'medications',
+  'messages',
+  'appointments',
+  'telehealth',
+  'profile',
 ];
 
 const modules = (parsed.modules || {}) as Record<string, unknown>;
 for (const mod of requiredModules) {
-  check(
-    `Module: ${mod}`,
-    mod in modules,
-    mod in modules ? undefined : `Missing module: ${mod}`
-  );
+  check(`Module: ${mod}`, mod in modules, mod in modules ? undefined : `Missing module: ${mod}`);
 }
 
 // 4. Required rules
 const requiredRules = [
-  "vista_first",
-  "no_va_terminology",
-  "no_parallel_engine",
-  "phi_safety",
-  "license_guardrails",
+  'vista_first',
+  'no_va_terminology',
+  'no_parallel_engine',
+  'phi_safety',
+  'license_guardrails',
 ];
 
 const rules = (parsed.rules || {}) as Record<string, unknown>;
 for (const rule of requiredRules) {
-  check(
-    `Rule: ${rule}`,
-    rule in rules,
-    rule in rules ? undefined : `Missing rule: ${rule}`
-  );
+  check(`Rule: ${rule}`, rule in rules, rule in rules ? undefined : `Missing rule: ${rule}`);
 }
 
 // 5. Each module has name, status, phase (check raw text for these)
@@ -201,53 +186,48 @@ for (const mod of requiredModules) {
     const modBlock = modules[mod] as Record<string, unknown>;
     check(
       `Module ${mod} has name`,
-      "name" in modBlock,
-      "name" in modBlock ? undefined : `Module ${mod} missing 'name'`
+      'name' in modBlock,
+      'name' in modBlock ? undefined : `Module ${mod} missing 'name'`
     );
     check(
       `Module ${mod} has status`,
-      "status" in modBlock,
-      "status" in modBlock ? undefined : `Module ${mod} missing 'status'`
+      'status' in modBlock,
+      'status' in modBlock ? undefined : `Module ${mod} missing 'status'`
     );
     check(
       `Module ${mod} has phase`,
-      "phase" in modBlock,
-      "phase" in modBlock ? undefined : `Module ${mod} missing 'phase'`
+      'phase' in modBlock,
+      'phase' in modBlock ? undefined : `Module ${mod} missing 'phase'`
     );
   }
 }
 
 // 6. Validate portal-capability-matrix.md
-let matrixText = "";
+let matrixText = '';
 try {
-  matrixText = readFileSync(
-    join(contractDir, "portal-capability-matrix.md"),
-    "utf-8"
-  );
-  check("Capability matrix readable", true);
+  matrixText = readFileSync(join(contractDir, 'portal-capability-matrix.md'), 'utf-8');
+  check('Capability matrix readable', true);
 } catch (e: any) {
-  check("Capability matrix readable", false, e.message);
+  check('Capability matrix readable', false, e.message);
 }
 
 const requiredMatrixModules = [
-  "Auth",
-  "Health Records",
-  "Messages",
-  "Appointments",
-  "Telehealth",
-  "Profile",
-  "Medications",
-  "Dashboard",
+  'Auth',
+  'Health Records',
+  'Messages',
+  'Appointments',
+  'Telehealth',
+  'Profile',
+  'Medications',
+  'Dashboard',
 ];
 
 for (const mod of requiredMatrixModules) {
-  const pattern = new RegExp(`##\\s+.*${mod}`, "i");
+  const pattern = new RegExp(`##\\s+.*${mod}`, 'i');
   check(
     `Matrix module: ${mod}`,
     pattern.test(matrixText),
-    pattern.test(matrixText)
-      ? undefined
-      : `Missing module heading: ${mod}`
+    pattern.test(matrixText) ? undefined : `Missing module heading: ${mod}`
   );
 }
 
@@ -256,20 +236,20 @@ for (const mod of requiredMatrixModules) {
 const passed = results.filter((r) => r.ok).length;
 const failed = results.filter((r) => !r.ok).length;
 
-console.log("\n=== Portal Contract Validation ===\n");
+console.log('\n=== Portal Contract Validation ===\n');
 
 for (const r of results) {
-  const tag = r.ok ? "\x1b[32m[PASS]\x1b[0m" : "\x1b[31m[FAIL]\x1b[0m";
-  const detail = r.detail ? ` - ${r.detail}` : "";
+  const tag = r.ok ? '\x1b[32m[PASS]\x1b[0m' : '\x1b[31m[FAIL]\x1b[0m';
+  const detail = r.detail ? ` - ${r.detail}` : '';
   console.log(`  ${tag} ${r.name}${detail}`);
 }
 
 console.log(`\n  PASS: ${passed}  FAIL: ${failed}\n`);
 
 if (failed > 0) {
-  console.log("  CONTRACT VALIDATION FAILED\n");
+  console.log('  CONTRACT VALIDATION FAILED\n');
   process.exit(1);
 } else {
-  console.log("  All contract checks passed.\n");
+  console.log('  All contract checks passed.\n');
   process.exit(0);
 }

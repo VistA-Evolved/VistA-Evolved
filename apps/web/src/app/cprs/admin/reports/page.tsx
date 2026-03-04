@@ -19,7 +19,6 @@ import { csrfHeaders } from '@/lib/csrf';
 import styles from '@/components/cprs/cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
-
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
@@ -31,14 +30,31 @@ interface OpsReport {
   uptime: number;
   process: { heapUsedMB: number; heapTotalMB: number; rssMB: number; pid: number };
   rpcHealth: {
-    circuitBreaker: { state: string; failures: number; totalCalls: number; totalFailures: number; totalTimeouts: number };
+    circuitBreaker: {
+      state: string;
+      failures: number;
+      totalCalls: number;
+      totalFailures: number;
+      totalTimeouts: number;
+    };
     cacheSize: number;
     totalRpcsCalled: number;
     totalSuccesses: number;
     totalFailures: number;
     totalTimeouts: number;
   };
-  rpcMetrics: Record<string, { calls: number; successes: number; failures: number; timeouts: number; avgDurationMs: number; p95DurationMs: number; lastCallAt: string }>;
+  rpcMetrics: Record<
+    string,
+    {
+      calls: number;
+      successes: number;
+      failures: number;
+      timeouts: number;
+      avgDurationMs: number;
+      p95DurationMs: number;
+      lastCallAt: string;
+    }
+  >;
 }
 
 interface IntReport {
@@ -46,16 +62,48 @@ interface IntReport {
   cached: boolean;
   timestamp: string;
   tenantId: string;
-  summary: { total: number; enabled: number; connected: number; disconnected: number; degraded: number; unknown: number; disabled: number };
+  summary: {
+    total: number;
+    enabled: number;
+    connected: number;
+    disconnected: number;
+    degraded: number;
+    unknown: number;
+    disabled: number;
+  };
   byType: Record<string, number>;
-  entries: Array<{ id: string; label: string; type: string; status: string; enabled: boolean; lastChecked: string | null; queueMetrics: { pending: number; processed: number; errors: number; avgLatencyMs: number } }>;
+  entries: Array<{
+    id: string;
+    label: string;
+    type: string;
+    status: string;
+    enabled: boolean;
+    lastChecked: string | null;
+    queueMetrics: { pending: number; processed: number; errors: number; avgLatencyMs: number };
+  }>;
 }
 
 interface AuditReport {
   ok: boolean;
-  stats: { total: number; byAction: Record<string, number>; byOutcome: Record<string, number>; oldestTimestamp: string | null; newestTimestamp: string | null };
+  stats: {
+    total: number;
+    byAction: Record<string, number>;
+    byOutcome: Record<string, number>;
+    oldestTimestamp: string | null;
+    newestTimestamp: string | null;
+  };
   page: { limit: number; returned: number };
-  events: Array<{ id: string; timestamp: string; action: string; outcome: string; actorDuz: string; actorName: string; actorRole: string; requestId?: string; patientDfn?: string }>;
+  events: Array<{
+    id: string;
+    timestamp: string;
+    action: string;
+    outcome: string;
+    actorDuz: string;
+    actorName: string;
+    actorRole: string;
+    requestId?: string;
+    patientDfn?: string;
+  }>;
 }
 
 interface ClinicalReport {
@@ -105,10 +153,27 @@ function formatUptime(seconds: number): string {
 
 function StatusDot({ status }: { status: string }) {
   const colors: Record<string, string> = {
-    connected: '#4caf50', closed: '#4caf50', open: '#f44336', 'half-open': '#ff9800',
-    disconnected: '#f44336', degraded: '#ff9800', unknown: '#9e9e9e', disabled: '#bdbdbd',
+    connected: '#4caf50',
+    closed: '#4caf50',
+    open: '#f44336',
+    'half-open': '#ff9800',
+    disconnected: '#f44336',
+    degraded: '#ff9800',
+    unknown: '#9e9e9e',
+    disabled: '#bdbdbd',
   };
-  return <span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: '50%', background: colors[status] ?? '#9e9e9e', marginRight: 6 }} />;
+  return (
+    <span
+      style={{
+        display: 'inline-block',
+        width: 10,
+        height: 10,
+        borderRadius: '50%',
+        background: colors[status] ?? '#9e9e9e',
+        marginRight: 6,
+      }}
+    />
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -145,7 +210,10 @@ export default function ReportsPage() {
       const url = `${API_BASE}/reports/${type}${queryParams ? `?${queryParams}` : ''}`;
       const res = await fetch(url, { credentials: 'include' });
       const data = await res.json();
-      if (!data.ok && data.error) { setError(data.error); return null; }
+      if (!data.ok && data.error) {
+        setError(data.error);
+        return null;
+      }
       return data;
     } catch (e: any) {
       setError(e.message || 'Failed to fetch report');
@@ -155,31 +223,50 @@ export default function ReportsPage() {
     }
   }, []);
 
-  const loadTab = useCallback(async (t: TabId) => {
-    switch (t) {
-      case 'operations': { const d = await fetchReport('operations'); if (d) setOpsReport(d); break; }
-      case 'integrations': { const d = await fetchReport('integrations'); if (d) setIntReport(d); break; }
-      case 'audit': {
-        const params = new URLSearchParams();
-        if (auditActionPrefix) params.set('actionPrefix', auditActionPrefix);
-        params.set('limit', String(auditLimit));
-        const d = await fetchReport('audit', params.toString());
-        if (d) setAuditReport(d);
-        break;
+  const loadTab = useCallback(
+    async (t: TabId) => {
+      switch (t) {
+        case 'operations': {
+          const d = await fetchReport('operations');
+          if (d) setOpsReport(d);
+          break;
+        }
+        case 'integrations': {
+          const d = await fetchReport('integrations');
+          if (d) setIntReport(d);
+          break;
+        }
+        case 'audit': {
+          const params = new URLSearchParams();
+          if (auditActionPrefix) params.set('actionPrefix', auditActionPrefix);
+          params.set('limit', String(auditLimit));
+          const d = await fetchReport('audit', params.toString());
+          if (d) setAuditReport(d);
+          break;
+        }
+        case 'clinical': {
+          const d = await fetchReport('clinical');
+          if (d) setClinicalReport(d);
+          break;
+        }
+        case 'exports': {
+          try {
+            const res = await fetch(`${API_BASE}/reports/export/jobs`, { credentials: 'include' });
+            const data = await res.json();
+            if (data.ok) setExportJobs(data.jobs);
+          } catch {
+            /* ignore */
+          }
+          break;
+        }
       }
-      case 'clinical': { const d = await fetchReport('clinical'); if (d) setClinicalReport(d); break; }
-      case 'exports': {
-        try {
-          const res = await fetch(`${API_BASE}/reports/export/jobs`, { credentials: 'include' });
-          const data = await res.json();
-          if (data.ok) setExportJobs(data.jobs);
-        } catch { /* ignore */ }
-        break;
-      }
-    }
-  }, [fetchReport, auditActionPrefix, auditLimit]);
+    },
+    [fetchReport, auditActionPrefix, auditLimit]
+  );
 
-  useEffect(() => { loadTab(tab); }, [tab, loadTab]);
+  useEffect(() => {
+    loadTab(tab);
+  }, [tab, loadTab]);
 
   /* ── Export handler ────────────────────────────────────────────── */
 
@@ -220,11 +307,19 @@ export default function ReportsPage() {
   /* ── Guard ─────────────────────────────────────────────────────── */
 
   if (!user) {
-    return <div className={styles.cprsPage}><p style={{ padding: 24 }}>Please log in to access reports.</p></div>;
+    return (
+      <div className={styles.cprsPage}>
+        <p style={{ padding: 24 }}>Please log in to access reports.</p>
+      </div>
+    );
   }
 
   if (!hasRole('admin')) {
-    return <div className={styles.cprsPage}><p style={{ padding: 24 }}>Admin role required to access reporting dashboard.</p></div>;
+    return (
+      <div className={styles.cprsPage}>
+        <p style={{ padding: 24 }}>Admin role required to access reporting dashboard.</p>
+      </div>
+    );
   }
 
   /* ── Render ────────────────────────────────────────────────────── */
@@ -234,12 +329,20 @@ export default function ReportsPage() {
       <div style={{ padding: '16px 24px', borderBottom: '1px solid #dee2e6' }}>
         <h2 style={{ margin: 0, fontSize: 18 }}>Reporting &amp; Export Governance</h2>
         <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6c757d' }}>
-          Phase 19 — Admin-only operations analytics. All report views and exports are fully audited.
+          Phase 19 — Admin-only operations analytics. All report views and exports are fully
+          audited.
         </p>
       </div>
 
       {/* Tab bar */}
-      <div style={{ display: 'flex', gap: 0, borderBottom: '2px solid #dee2e6', background: '#f8f9fa' }}>
+      <div
+        style={{
+          display: 'flex',
+          gap: 0,
+          borderBottom: '2px solid #dee2e6',
+          background: '#f8f9fa',
+        }}
+      >
         {(Object.keys(TAB_LABELS) as TabId[]).map((t) => (
           <button
             key={t}
@@ -262,17 +365,27 @@ export default function ReportsPage() {
 
       {/* Error */}
       {error && (
-        <div style={{ margin: '12px 24px', padding: 10, background: '#fff3cd', border: '1px solid #ffc107', borderRadius: 4, fontSize: 13 }}>
+        <div
+          style={{
+            margin: '12px 24px',
+            padding: 10,
+            background: '#fff3cd',
+            border: '1px solid #ffc107',
+            borderRadius: 4,
+            fontSize: 13,
+          }}
+        >
           {error}
         </div>
       )}
 
       {/* Loading */}
-      {loading && <p style={{ padding: '12px 24px', fontSize: 13, color: '#6c757d' }}>Loading report…</p>}
+      {loading && (
+        <p style={{ padding: '12px 24px', fontSize: 13, color: '#6c757d' }}>Loading report…</p>
+      )}
 
       {/* Tab content */}
       <div style={{ padding: '16px 24px', overflowY: 'auto', flex: 1 }}>
-
         {/* ── Operations ────────────────────────────────────── */}
         {tab === 'operations' && opsReport && (
           <div>
@@ -312,7 +425,11 @@ export default function ReportsPage() {
                   </tr>
                 ))}
                 {Object.keys(opsReport.rpcMetrics).length === 0 && (
-                  <tr><td colSpan={7} style={{ ...tdStyle, color: '#6c757d' }}>No RPC calls recorded yet</td></tr>
+                  <tr>
+                    <td colSpan={7} style={{ ...tdStyle, color: '#6c757d' }}>
+                      No RPC calls recorded yet
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </table>
@@ -326,9 +443,21 @@ export default function ReportsPage() {
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 16 }}>
               <StatCard label="Total" value={String(intReport.summary.total)} />
               <StatCard label="Enabled" value={String(intReport.summary.enabled)} />
-              <StatCard label="Connected" value={String(intReport.summary.connected)} color="#4caf50" />
-              <StatCard label="Disconnected" value={String(intReport.summary.disconnected)} color="#f44336" />
-              <StatCard label="Degraded" value={String(intReport.summary.degraded)} color="#ff9800" />
+              <StatCard
+                label="Connected"
+                value={String(intReport.summary.connected)}
+                color="#4caf50"
+              />
+              <StatCard
+                label="Disconnected"
+                value={String(intReport.summary.disconnected)}
+                color="#f44336"
+              />
+              <StatCard
+                label="Degraded"
+                value={String(intReport.summary.degraded)}
+                color="#ff9800"
+              />
               <StatCard label="Disabled" value={String(intReport.summary.disabled)} />
             </div>
             <h4 style={{ fontSize: 14, marginBottom: 8 }}>Integration Entries</h4>
@@ -349,7 +478,10 @@ export default function ReportsPage() {
                   <tr key={e.id} style={{ borderBottom: '1px solid #eee' }}>
                     <td style={tdStyle}>{e.label}</td>
                     <td style={tdStyle}>{e.type}</td>
-                    <td style={tdStyle}><StatusDot status={e.status} />{e.status}</td>
+                    <td style={tdStyle}>
+                      <StatusDot status={e.status} />
+                      {e.status}
+                    </td>
                     <td style={tdStyle}>{e.queueMetrics?.pending ?? 0}</td>
                     <td style={tdStyle}>{e.queueMetrics?.processed ?? 0}</td>
                     <td style={tdStyle}>{e.queueMetrics?.errors ?? 0}</td>
@@ -357,7 +489,11 @@ export default function ReportsPage() {
                   </tr>
                 ))}
                 {intReport.entries.length === 0 && (
-                  <tr><td colSpan={7} style={{ ...tdStyle, color: '#6c757d' }}>No integrations registered</td></tr>
+                  <tr>
+                    <td colSpan={7} style={{ ...tdStyle, color: '#6c757d' }}>
+                      No integrations registered
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </table>
@@ -380,16 +516,30 @@ export default function ReportsPage() {
                 value={auditActionPrefix}
                 onChange={(e) => setAuditActionPrefix(e.target.value)}
                 placeholder="e.g. clinical, phi, auth"
-                style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 180 }}
+                style={{
+                  padding: '4px 8px',
+                  fontSize: 12,
+                  border: '1px solid #ced4da',
+                  borderRadius: 3,
+                  width: 180,
+                }}
               />
               <label style={{ fontSize: 12 }}>Limit:</label>
               <input
                 type="number"
                 value={auditLimit}
                 onChange={(e) => setAuditLimit(Number(e.target.value) || 100)}
-                style={{ padding: '4px 8px', fontSize: 12, border: '1px solid #ced4da', borderRadius: 3, width: 60 }}
+                style={{
+                  padding: '4px 8px',
+                  fontSize: 12,
+                  border: '1px solid #ced4da',
+                  borderRadius: 3,
+                  width: 60,
+                }}
               />
-              <button onClick={() => loadTab('audit')} style={btnStyle}>Apply</button>
+              <button onClick={() => loadTab('audit')} style={btnStyle}>
+                Apply
+              </button>
             </div>
             <table style={{ width: '100%', fontSize: 11, borderCollapse: 'collapse' }}>
               <thead>
@@ -407,16 +557,24 @@ export default function ReportsPage() {
                     <td style={tdStyle}>{new Date(e.timestamp).toLocaleString()}</td>
                     <td style={tdStyle}>{e.action}</td>
                     <td style={tdStyle}>{e.outcome}</td>
-                    <td style={tdStyle}>{e.actorName} ({e.actorDuz})</td>
+                    <td style={tdStyle}>
+                      {e.actorName} ({e.actorDuz})
+                    </td>
                     <td style={tdStyle}>{e.patientDfn || '-'}</td>
                   </tr>
                 ))}
                 {auditReport.events.length === 0 && (
-                  <tr><td colSpan={5} style={{ ...tdStyle, color: '#6c757d' }}>No audit events match filters</td></tr>
+                  <tr>
+                    <td colSpan={5} style={{ ...tdStyle, color: '#6c757d' }}>
+                      No audit events match filters
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </table>
-            <p style={{ fontSize: 11, color: '#6c757d', marginTop: 8 }}>Showing {auditReport.page.returned} of {auditReport.stats.total} events</p>
+            <p style={{ fontSize: 11, color: '#6c757d', marginTop: 8 }}>
+              Showing {auditReport.page.returned} of {auditReport.stats.total} events
+            </p>
             <ExportBar reportType="audit" onExport={handleExport} exporting={exporting} />
           </div>
         )}
@@ -424,14 +582,29 @@ export default function ReportsPage() {
         {/* ── Clinical ──────────────────────────────────────── */}
         {tab === 'clinical' && clinicalReport && (
           <div>
-            <div style={{ padding: 10, background: '#e8f5e9', border: '1px solid #c8e6c9', borderRadius: 4, marginBottom: 16, fontSize: 12 }}>
+            <div
+              style={{
+                padding: 10,
+                background: '#e8f5e9',
+                border: '1px solid #c8e6c9',
+                borderRadius: 4,
+                marginBottom: 16,
+                fontSize: 12,
+              }}
+            >
               {clinicalReport.note}
             </div>
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 16 }}>
-              <StatCard label="Clinical Actions" value={String(clinicalReport.totalClinicalActions)} />
+              <StatCard
+                label="Clinical Actions"
+                value={String(clinicalReport.totalClinicalActions)}
+              />
               <StatCard label="PHI Access Events" value={String(clinicalReport.totalPhiAccess)} />
               <StatCard label="Unique Patients" value={String(clinicalReport.uniquePatientCount)} />
-              <StatCard label="Unique Providers" value={String(clinicalReport.uniqueProviderCount)} />
+              <StatCard
+                label="Unique Providers"
+                value={String(clinicalReport.uniqueProviderCount)}
+              />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               <div>
@@ -447,7 +620,9 @@ export default function ReportsPage() {
                       ))}
                     </tbody>
                   </table>
-                ) : <p style={{ fontSize: 12, color: '#6c757d' }}>No clinical actions recorded</p>}
+                ) : (
+                  <p style={{ fontSize: 12, color: '#6c757d' }}>No clinical actions recorded</p>
+                )}
               </div>
               <div>
                 <h4 style={{ fontSize: 13, marginBottom: 8 }}>PHI Access Counts</h4>
@@ -462,7 +637,9 @@ export default function ReportsPage() {
                       ))}
                     </tbody>
                   </table>
-                ) : <p style={{ fontSize: 12, color: '#6c757d' }}>No PHI access events recorded</p>}
+                ) : (
+                  <p style={{ fontSize: 12, color: '#6c757d' }}>No PHI access events recorded</p>
+                )}
               </div>
             </div>
           </div>
@@ -472,7 +649,16 @@ export default function ReportsPage() {
         {tab === 'exports' && (
           <div>
             {exportMsg && (
-              <div style={{ padding: 10, background: '#e3f2fd', border: '1px solid #90caf9', borderRadius: 4, marginBottom: 12, fontSize: 12 }}>
+              <div
+                style={{
+                  padding: 10,
+                  background: '#e3f2fd',
+                  border: '1px solid #90caf9',
+                  borderRadius: 4,
+                  marginBottom: 12,
+                  fontSize: 12,
+                }}
+              >
                 {exportMsg}
               </div>
             )}
@@ -502,11 +688,17 @@ export default function ReportsPage() {
                   </tr>
                 ))}
                 {exportJobs.length === 0 && (
-                  <tr><td colSpan={7} style={{ ...tdStyle, color: '#6c757d' }}>No export jobs</td></tr>
+                  <tr>
+                    <td colSpan={7} style={{ ...tdStyle, color: '#6c757d' }}>
+                      No export jobs
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </table>
-            <button onClick={() => loadTab('exports')} style={{ ...btnStyle, marginTop: 8 }}>Refresh</button>
+            <button onClick={() => loadTab('exports')} style={{ ...btnStyle, marginTop: 8 }}>
+              Refresh
+            </button>
           </div>
         )}
       </div>
@@ -520,19 +712,49 @@ export default function ReportsPage() {
 
 function StatCard({ label, value, color }: { label: string; value: string; color?: string }) {
   return (
-    <div style={{ padding: '10px 16px', background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 6, minWidth: 100, textAlign: 'center' }}>
+    <div
+      style={{
+        padding: '10px 16px',
+        background: '#f8f9fa',
+        border: '1px solid #dee2e6',
+        borderRadius: 6,
+        minWidth: 100,
+        textAlign: 'center',
+      }}
+    >
       <div style={{ fontSize: 11, color: '#6c757d', marginBottom: 2 }}>{label}</div>
       <div style={{ fontSize: 18, fontWeight: 700, color: color || '#212529' }}>{value}</div>
     </div>
   );
 }
 
-function ExportBar({ reportType, onExport, exporting }: { reportType: string; onExport: (rt: string, fmt: 'csv' | 'json') => void; exporting: boolean }) {
+function ExportBar({
+  reportType,
+  onExport,
+  exporting,
+}: {
+  reportType: string;
+  onExport: (rt: string, fmt: 'csv' | 'json') => void;
+  exporting: boolean;
+}) {
   return (
-    <div style={{ marginTop: 16, padding: '10px 0', borderTop: '1px solid #dee2e6', display: 'flex', gap: 8, alignItems: 'center' }}>
+    <div
+      style={{
+        marginTop: 16,
+        padding: '10px 0',
+        borderTop: '1px solid #dee2e6',
+        display: 'flex',
+        gap: 8,
+        alignItems: 'center',
+      }}
+    >
       <span style={{ fontSize: 12, color: '#6c757d' }}>Export:</span>
-      <button onClick={() => onExport(reportType, 'csv')} disabled={exporting} style={btnStyle}>CSV</button>
-      <button onClick={() => onExport(reportType, 'json')} disabled={exporting} style={btnStyle}>JSON</button>
+      <button onClick={() => onExport(reportType, 'csv')} disabled={exporting} style={btnStyle}>
+        CSV
+      </button>
+      <button onClick={() => onExport(reportType, 'json')} disabled={exporting} style={btnStyle}>
+        JSON
+      </button>
       {exporting && <span style={{ fontSize: 11, color: '#6c757d' }}>Exporting…</span>}
     </div>
   );
@@ -540,9 +762,20 @@ function ExportBar({ reportType, onExport, exporting }: { reportType: string; on
 
 /* ---- Inline styles (matches existing CPRS admin patterns) ---- */
 
-const thStyle: React.CSSProperties = { padding: '6px 10px', borderBottom: '2px solid #dee2e6', fontSize: 12, fontWeight: 600 };
+const thStyle: React.CSSProperties = {
+  padding: '6px 10px',
+  borderBottom: '2px solid #dee2e6',
+  fontSize: 12,
+  fontWeight: 600,
+};
 const tdStyle: React.CSSProperties = { padding: '5px 10px', fontSize: 12 };
 const btnStyle: React.CSSProperties = {
-  padding: '5px 14px', fontSize: 12, fontWeight: 500,
-  background: '#0d6efd', color: '#fff', border: 'none', borderRadius: 4, cursor: 'pointer',
+  padding: '5px 14px',
+  fontSize: 12,
+  fontWeight: 500,
+  background: '#0d6efd',
+  color: '#fff',
+  border: 'none',
+  borderRadius: 4,
+  cursor: 'pointer',
 };

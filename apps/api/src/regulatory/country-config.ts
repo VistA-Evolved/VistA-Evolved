@@ -12,10 +12,10 @@
  * 4. Supports country override (admin) with audit trail
  */
 
-import { createHash, randomUUID } from "crypto";
-import { setTenantCountry, getTenantCountry } from "./classification-engine.js";
-import { resolveFrameworksByCountry } from "./framework-registry.js";
-import type { RegulatoryFramework } from "./types.js";
+import { createHash, randomUUID } from 'crypto';
+import { setTenantCountry, getTenantCountry } from './classification-engine.js';
+import { resolveFrameworksByCountry } from './framework-registry.js';
+import type { RegulatoryFramework } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -54,7 +54,7 @@ export interface TenantRegulatoryConfig {
 export interface CountryAssignmentAudit {
   id: string;
   tenantId: string;
-  action: "assign" | "reassign" | "clear";
+  action: 'assign' | 'reassign' | 'clear';
   fromCountry: string | null;
   toCountry: string | null;
   actor: string;
@@ -79,16 +79,16 @@ const assignmentHistory: TenantCountryAssignment[] = [];
 
 /** Audit trail */
 const assignmentAudit: CountryAssignmentAudit[] = [];
-let lastAuditHash = "genesis";
+let lastAuditHash = 'genesis';
 
 /** Supported country codes (must have a country pack or framework definition) */
-const SUPPORTED_COUNTRIES = new Set(["US", "PH", "GH"]);
+const SUPPORTED_COUNTRIES = new Set(['US', 'PH', 'GH']);
 
 /* ------------------------------------------------------------------ */
 /* Internal                                                             */
 /* ------------------------------------------------------------------ */
 
-function computeAuditHash(entry: Omit<CountryAssignmentAudit, "hash">): string {
+function computeAuditHash(entry: Omit<CountryAssignmentAudit, 'hash'>): string {
   const payload = JSON.stringify({
     id: entry.id,
     tenantId: entry.tenantId,
@@ -98,21 +98,21 @@ function computeAuditHash(entry: Omit<CountryAssignmentAudit, "hash">): string {
     timestamp: entry.timestamp,
     prevHash: entry.prevHash,
   });
-  return createHash("sha256").update(payload).digest("hex").slice(0, 32);
+  return createHash('sha256').update(payload).digest('hex').slice(0, 32);
 }
 
 function appendAudit(
   tenantId: string,
-  action: "assign" | "reassign" | "clear",
+  action: 'assign' | 'reassign' | 'clear',
   fromCountry: string | null,
   toCountry: string | null,
   actor: string,
-  reason: string,
+  reason: string
 ): void {
   if (assignmentAudit.length >= MAX_AUDIT) {
     assignmentAudit.shift(); // FIFO
   }
-  const entry: Omit<CountryAssignmentAudit, "hash"> = {
+  const entry: Omit<CountryAssignmentAudit, 'hash'> = {
     id: randomUUID(),
     tenantId,
     action,
@@ -149,7 +149,7 @@ export function assignCountryToTenant(params: {
   }
 
   const existing = activeAssignments.get(params.tenantId);
-  const action = existing ? "reassign" : "assign";
+  const action = existing ? 'reassign' : 'assign';
   const previousCountry = existing?.countryCode || null;
 
   // Deactivate old assignment
@@ -217,9 +217,9 @@ export function clearTenantCountry(tenantId: string, clearedBy: string, reason: 
   activeAssignments.delete(tenantId);
 
   // Revert classification engine to default
-  setTenantCountry(tenantId, "US");
+  setTenantCountry(tenantId, 'US');
 
-  appendAudit(tenantId, "clear", existing.countryCode, null, clearedBy, reason);
+  appendAudit(tenantId, 'clear', existing.countryCode, null, clearedBy, reason);
   return true;
 }
 
@@ -233,20 +233,20 @@ export function resolveTenantRegulatoryConfig(tenantId: string): TenantRegulator
   const packAvailable = SUPPORTED_COUNTRIES.has(cc);
 
   // Derive regulatory constraints from primary framework
-  let consentModel = "category";
+  let consentModel = 'category';
   let retentionMinYears = 6;
-  let crossBorderPolicy = "blocked";
+  let crossBorderPolicy = 'blocked';
   let breachNotificationHours = 1440; // 60 days default (HIPAA)
 
-  if (cc === "PH") {
-    consentModel = "all-or-nothing";
+  if (cc === 'PH') {
+    consentModel = 'all-or-nothing';
     retentionMinYears = 5;
-    crossBorderPolicy = "allowed_with_consent";
+    crossBorderPolicy = 'allowed_with_consent';
     breachNotificationHours = 72;
-  } else if (cc === "GH") {
-    consentModel = "all-or-nothing";
+  } else if (cc === 'GH') {
+    consentModel = 'all-or-nothing';
     retentionMinYears = 5;
-    crossBorderPolicy = "allowed_with_consent";
+    crossBorderPolicy = 'allowed_with_consent';
     breachNotificationHours = 72;
   }
 
@@ -305,5 +305,5 @@ export function _resetCountryConfigStore(): void {
   activeAssignments.clear();
   assignmentHistory.length = 0;
   assignmentAudit.length = 0;
-  lastAuditHash = "genesis";
+  lastAuditHash = 'genesis';
 }

@@ -2,7 +2,7 @@
  * types.ts -- Module packaging validation types (Phase 163)
  */
 
-export type ValidationSeverity = "error" | "warning" | "info";
+export type ValidationSeverity = 'error' | 'warning' | 'info';
 
 export interface ValidationIssue {
   /** Unique issue code for programmatic handling */

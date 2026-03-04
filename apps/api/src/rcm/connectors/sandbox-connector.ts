@@ -11,7 +11,7 @@
 import type { X12TransactionSet } from '../edi/types.js';
 import type { RcmConnector, ConnectorResult } from './types.js';
 import { randomBytes } from 'node:crypto';
-import { serialize837, exportX12Bundle, type ExportBundleResult } from '../edi/x12-serializer.js';
+import { exportX12Bundle, type ExportBundleResult } from '../edi/x12-serializer.js';
 
 interface SandboxSubmission {
   id: string;
@@ -27,11 +27,26 @@ export class SandboxConnector implements RcmConnector {
   readonly id = 'sandbox';
   readonly name = 'Sandbox (Simulated Transport)';
   readonly supportedModes = [
-    'clearinghouse_edi', 'direct_api', 'portal_batch',
-    'government_portal', 'fhir_payer', 'not_classified',
+    'clearinghouse_edi',
+    'direct_api',
+    'portal_batch',
+    'government_portal',
+    'fhir_payer',
+    'not_classified',
   ];
   readonly supportedTransactions: X12TransactionSet[] = [
-    '837P', '837I', '835', '270', '271', '276', '277', '275', '278', '999', '997', 'TA1',
+    '837P',
+    '837I',
+    '835',
+    '270',
+    '271',
+    '276',
+    '277',
+    '275',
+    '278',
+    '999',
+    '997',
+    'TA1',
   ];
 
   private submissions = new Map<string, SandboxSubmission>();
@@ -39,7 +54,8 @@ export class SandboxConnector implements RcmConnector {
     transactionSet: X12TransactionSet;
     payload: string;
     receivedAt: string;
-  }> = [];  private exportedBundles: ExportBundleResult[] = [];
+  }> = [];
+  private exportedBundles: ExportBundleResult[] = [];
   /** Configurable rejection rate for testing error handling (0.0 – 1.0) */
   private rejectionRate: number;
 
@@ -55,7 +71,7 @@ export class SandboxConnector implements RcmConnector {
   async submit(
     transactionSet: X12TransactionSet,
     payload: string,
-    metadata: Record<string, string>,
+    metadata: Record<string, string>
   ): Promise<ConnectorResult> {
     const txId = `sbx-${Date.now()}-${randomBytes(4).toString('hex')}`;
     const rejected = Math.random() < this.rejectionRate;
@@ -74,11 +90,13 @@ export class SandboxConnector implements RcmConnector {
       return {
         success: false,
         transactionId: txId,
-        errors: [{
-          code: 'SBX-REJECT',
-          description: 'Sandbox simulated rejection (random) — retry or adjust claim',
-          severity: 'error',
-        }],
+        errors: [
+          {
+            code: 'SBX-REJECT',
+            description: 'Sandbox simulated rejection (random) — retry or adjust claim',
+            severity: 'error',
+          },
+        ],
         metadata: { connector: this.id, simulated: 'true' },
       };
     }
@@ -107,7 +125,9 @@ export class SandboxConnector implements RcmConnector {
     if (!entry) {
       return {
         success: false,
-        errors: [{ code: 'NOT_FOUND', description: 'Sandbox transaction not found', severity: 'error' }],
+        errors: [
+          { code: 'NOT_FOUND', description: 'Sandbox transaction not found', severity: 'error' },
+        ],
       };
     }
     return {
@@ -122,13 +142,15 @@ export class SandboxConnector implements RcmConnector {
     };
   }
 
-  async fetchResponses(since?: string): Promise<Array<{
-    transactionSet: X12TransactionSet;
-    payload: string;
-    receivedAt: string;
-  }>> {
+  async fetchResponses(since?: string): Promise<
+    Array<{
+      transactionSet: X12TransactionSet;
+      payload: string;
+      receivedAt: string;
+    }>
+  > {
     if (since) {
-      return this.simulatedResponses.filter(r => r.receivedAt >= since);
+      return this.simulatedResponses.filter((r) => r.receivedAt >= since);
     }
     return [...this.simulatedResponses];
   }
@@ -150,7 +172,7 @@ export class SandboxConnector implements RcmConnector {
   private generateSimulated835(claimTxId: string, metadata: Record<string, string>): void {
     const chargeAmount = parseFloat(metadata.chargeAmount ?? '100.00');
     const allowedAmount = chargeAmount * 0.8; // simulate 80% allowed
-    const paidAmount = allowedAmount * 0.7;   // simulate 70% of allowed
+    const paidAmount = allowedAmount * 0.7; // simulate 70% of allowed
 
     const response = {
       transactionSet: '835' as const,
@@ -207,11 +229,11 @@ export class SandboxConnector implements RcmConnector {
   private generateSimulated277(statusTxId: string): void {
     const statuses = ['A1', 'A2', 'A3', 'A4', 'A5'];
     const descriptions: Record<string, string> = {
-      'A1': 'Acknowledgement/Receipt - The claim/encounter has been received.',
-      'A2': 'Accepted for processing.',
-      'A3': 'Adjudicated - Payment or denial has been finalized.',
-      'A4': 'Forwarded to additional payer(s).',
-      'A5': 'Request additional information from submitter.',
+      A1: 'Acknowledgement/Receipt - The claim/encounter has been received.',
+      A2: 'Accepted for processing.',
+      A3: 'Adjudicated - Payment or denial has been finalized.',
+      A4: 'Forwarded to additional payer(s).',
+      A5: 'Request additional information from submitter.',
     };
     const status = statuses[Math.floor(Math.random() * statuses.length)];
 
@@ -240,7 +262,7 @@ export class SandboxConnector implements RcmConnector {
   async exportClaim(
     transactionSet: X12TransactionSet,
     payload: string,
-    claimId: string,
+    claimId: string
   ): Promise<ExportBundleResult> {
     const result = await exportX12Bundle(payload, claimId, transactionSet);
     this.exportedBundles.push(result);

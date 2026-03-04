@@ -30,7 +30,7 @@
  *   GET  /devices/imaging/audit               — Audit log
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import {
   createWorklistItem,
   getWorklistItem,
@@ -47,12 +47,12 @@ import {
   updateModalityEcho,
   getImagingModalityStats,
   getModalityAudit,
-} from "./imaging-modality-store.js";
+} from './imaging-modality-store.js';
 
-const DEFAULT_TENANT = "default";
+const DEFAULT_TENANT = 'default';
 
 function tenant(req: FastifyRequest): string {
-  return (req.headers["x-tenant-id"] as string) || DEFAULT_TENANT;
+  return (req.headers['x-tenant-id'] as string) || DEFAULT_TENANT;
 }
 
 export default async function imagingModalityRoutes(server: FastifyInstance): Promise<void> {
@@ -61,10 +61,21 @@ export default async function imagingModalityRoutes(server: FastifyInstance): Pr
   // -----------------------------------------------------------------------
 
   /** POST /devices/imaging/worklist */
-  server.post("/devices/imaging/worklist", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/devices/imaging/worklist', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
-    if (!body.accessionNumber || !body.patientDfn || !body.patientName || !body.requestedProcedure || !body.modality || !body.scheduledDateTime) {
-      return reply.code(400).send({ ok: false, error: "accessionNumber, patientDfn, patientName, requestedProcedure, modality, and scheduledDateTime required" });
+    if (
+      !body.accessionNumber ||
+      !body.patientDfn ||
+      !body.patientName ||
+      !body.requestedProcedure ||
+      !body.modality ||
+      !body.scheduledDateTime
+    ) {
+      return reply.code(400).send({
+        ok: false,
+        error:
+          'accessionNumber, patientDfn, patientName, requestedProcedure, modality, and scheduledDateTime required',
+      });
     }
     const item = createWorklistItem(tenant(req), {
       accessionNumber: body.accessionNumber,
@@ -87,7 +98,7 @@ export default async function imagingModalityRoutes(server: FastifyInstance): Pr
   });
 
   /** GET /devices/imaging/worklist */
-  server.get("/devices/imaging/worklist", async (req: FastifyRequest) => {
+  server.get('/devices/imaging/worklist', async (req: FastifyRequest) => {
     const q = req.query as any;
     const items = listWorklistItems(tenant(req), {
       modality: q.modality,
@@ -100,39 +111,50 @@ export default async function imagingModalityRoutes(server: FastifyInstance): Pr
   });
 
   /** GET /devices/imaging/worklist/:id */
-  server.get("/devices/imaging/worklist/:id", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/devices/imaging/worklist/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as any;
     const item = getWorklistItem(id);
-    if (!item) return reply.code(404).send({ ok: false, error: "worklist item not found" });
+    if (!item) return reply.code(404).send({ ok: false, error: 'worklist item not found' });
     return { ok: true, worklistItem: item };
   });
 
   /** PATCH /devices/imaging/worklist/:id/status */
-  server.patch("/devices/imaging/worklist/:id/status", async (req: FastifyRequest, reply: FastifyReply) => {
-    const { id } = req.params as any;
-    const body = (req.body as any) || {};
-    if (!body.status) return reply.code(400).send({ ok: false, error: "status required" });
-    const item = updateWorklistStatus(id, body.status);
-    if (!item) return reply.code(404).send({ ok: false, error: "worklist item not found" });
-    return { ok: true, worklistItem: item };
-  });
+  server.patch(
+    '/devices/imaging/worklist/:id/status',
+    async (req: FastifyRequest, reply: FastifyReply) => {
+      const { id } = req.params as any;
+      const body = (req.body as any) || {};
+      if (!body.status) return reply.code(400).send({ ok: false, error: 'status required' });
+      const item = updateWorklistStatus(id, body.status);
+      if (!item) return reply.code(404).send({ ok: false, error: 'worklist item not found' });
+      return { ok: true, worklistItem: item };
+    }
+  );
 
   // -----------------------------------------------------------------------
   // MPPS
   // -----------------------------------------------------------------------
 
   /** POST /devices/imaging/mpps — N-CREATE equivalent */
-  server.post("/devices/imaging/mpps", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/devices/imaging/mpps', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
-    if (!body.studyInstanceUid || !body.performingAeTitle || !body.modality || !body.startDateTime) {
-      return reply.code(400).send({ ok: false, error: "studyInstanceUid, performingAeTitle, modality, and startDateTime required" });
+    if (
+      !body.studyInstanceUid ||
+      !body.performingAeTitle ||
+      !body.modality ||
+      !body.startDateTime
+    ) {
+      return reply.code(400).send({
+        ok: false,
+        error: 'studyInstanceUid, performingAeTitle, modality, and startDateTime required',
+      });
     }
     const rec = createMppsRecord(tenant(req), {
       mppsInstanceUid: body.mppsInstanceUid,
       studyInstanceUid: body.studyInstanceUid,
       accessionNumber: body.accessionNumber,
       performingAeTitle: body.performingAeTitle,
-      status: body.status || "IN PROGRESS",
+      status: body.status || 'IN PROGRESS',
       modality: body.modality,
       procedureDescription: body.procedureDescription,
       startDateTime: body.startDateTime,
@@ -146,7 +168,7 @@ export default async function imagingModalityRoutes(server: FastifyInstance): Pr
   });
 
   /** GET /devices/imaging/mpps */
-  server.get("/devices/imaging/mpps", async (req: FastifyRequest) => {
+  server.get('/devices/imaging/mpps', async (req: FastifyRequest) => {
     const q = req.query as any;
     const recs = listMppsRecords(tenant(req), {
       status: q.status,
@@ -158,36 +180,41 @@ export default async function imagingModalityRoutes(server: FastifyInstance): Pr
   });
 
   /** GET /devices/imaging/mpps/:id */
-  server.get("/devices/imaging/mpps/:id", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/devices/imaging/mpps/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as any;
     const rec = getMppsRecord(id);
-    if (!rec) return reply.code(404).send({ ok: false, error: "MPPS record not found" });
+    if (!rec) return reply.code(404).send({ ok: false, error: 'MPPS record not found' });
     return { ok: true, mppsRecord: rec };
   });
 
   /** PATCH /devices/imaging/mpps/:id/status — N-SET equivalent */
-  server.patch("/devices/imaging/mpps/:id/status", async (req: FastifyRequest, reply: FastifyReply) => {
-    const { id } = req.params as any;
-    const body = (req.body as any) || {};
-    if (!body.status) return reply.code(400).send({ ok: false, error: "status required" });
-    const rec = updateMppsStatus(id, body.status, {
-      endDateTime: body.endDateTime,
-      seriesCount: body.seriesCount,
-      instanceCount: body.instanceCount,
-    });
-    if (!rec) return reply.code(404).send({ ok: false, error: "MPPS record not found" });
-    return { ok: true, mppsRecord: rec };
-  });
+  server.patch(
+    '/devices/imaging/mpps/:id/status',
+    async (req: FastifyRequest, reply: FastifyReply) => {
+      const { id } = req.params as any;
+      const body = (req.body as any) || {};
+      if (!body.status) return reply.code(400).send({ ok: false, error: 'status required' });
+      const rec = updateMppsStatus(id, body.status, {
+        endDateTime: body.endDateTime,
+        seriesCount: body.seriesCount,
+        instanceCount: body.instanceCount,
+      });
+      if (!rec) return reply.code(404).send({ ok: false, error: 'MPPS record not found' });
+      return { ok: true, mppsRecord: rec };
+    }
+  );
 
   // -----------------------------------------------------------------------
   // Modalities
   // -----------------------------------------------------------------------
 
   /** POST /devices/imaging/modalities */
-  server.post("/devices/imaging/modalities", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/devices/imaging/modalities', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     if (!body.aeTitle || !body.modality || !body.host || !body.port) {
-      return reply.code(400).send({ ok: false, error: "aeTitle, modality, host, and port required" });
+      return reply
+        .code(400)
+        .send({ ok: false, error: 'aeTitle, modality, host, and port required' });
     }
     const result = registerModality(tenant(req), {
       aeTitle: body.aeTitle,
@@ -199,12 +226,12 @@ export default async function imagingModalityRoutes(server: FastifyInstance): Pr
       mwlEnabled: body.mwlEnabled ?? true,
       mppsEnabled: body.mppsEnabled ?? true,
     });
-    if ("error" in result) return reply.code(409).send({ ok: false, error: result.error });
+    if ('error' in result) return reply.code(409).send({ ok: false, error: result.error });
     return reply.code(201).send({ ok: true, modality: result });
   });
 
   /** GET /devices/imaging/modalities */
-  server.get("/devices/imaging/modalities", async (req: FastifyRequest) => {
+  server.get('/devices/imaging/modalities', async (req: FastifyRequest) => {
     const q = req.query as any;
     const mods = listModalities(tenant(req), {
       modality: q.modality,
@@ -215,42 +242,51 @@ export default async function imagingModalityRoutes(server: FastifyInstance): Pr
   });
 
   /** GET /devices/imaging/modalities/:id */
-  server.get("/devices/imaging/modalities/:id", async (req: FastifyRequest, reply: FastifyReply) => {
-    const { id } = req.params as any;
-    const mod = getModality(id);
-    if (!mod) return reply.code(404).send({ ok: false, error: "modality not found" });
-    return { ok: true, modality: mod };
-  });
+  server.get(
+    '/devices/imaging/modalities/:id',
+    async (req: FastifyRequest, reply: FastifyReply) => {
+      const { id } = req.params as any;
+      const mod = getModality(id);
+      if (!mod) return reply.code(404).send({ ok: false, error: 'modality not found' });
+      return { ok: true, modality: mod };
+    }
+  );
 
   /** PATCH /devices/imaging/modalities/:id/status */
-  server.patch("/devices/imaging/modalities/:id/status", async (req: FastifyRequest, reply: FastifyReply) => {
-    const { id } = req.params as any;
-    const body = (req.body as any) || {};
-    if (!body.status) return reply.code(400).send({ ok: false, error: "status required" });
-    const mod = updateModalityStatus(id, body.status);
-    if (!mod) return reply.code(404).send({ ok: false, error: "modality not found" });
-    return { ok: true, modality: mod };
-  });
+  server.patch(
+    '/devices/imaging/modalities/:id/status',
+    async (req: FastifyRequest, reply: FastifyReply) => {
+      const { id } = req.params as any;
+      const body = (req.body as any) || {};
+      if (!body.status) return reply.code(400).send({ ok: false, error: 'status required' });
+      const mod = updateModalityStatus(id, body.status);
+      if (!mod) return reply.code(404).send({ ok: false, error: 'modality not found' });
+      return { ok: true, modality: mod };
+    }
+  );
 
   /** POST /devices/imaging/modalities/:id/echo — record C-ECHO success */
-  server.post("/devices/imaging/modalities/:id/echo", async (req: FastifyRequest, reply: FastifyReply) => {
-    const { id } = req.params as any;
-    const mod = updateModalityEcho(id);
-    if (!mod) return reply.code(404).send({ ok: false, error: "modality not found" });
-    return { ok: true, modality: mod };
-  });
+  server.post(
+    '/devices/imaging/modalities/:id/echo',
+    async (req: FastifyRequest, reply: FastifyReply) => {
+      const { id } = req.params as any;
+      const mod = updateModalityEcho(id);
+      if (!mod) return reply.code(404).send({ ok: false, error: 'modality not found' });
+      return { ok: true, modality: mod };
+    }
+  );
 
   // -----------------------------------------------------------------------
   // Stats & Audit
   // -----------------------------------------------------------------------
 
   /** GET /devices/imaging/stats */
-  server.get("/devices/imaging/stats", async (req: FastifyRequest) => {
+  server.get('/devices/imaging/stats', async (req: FastifyRequest) => {
     return { ok: true, stats: getImagingModalityStats(tenant(req)) };
   });
 
   /** GET /devices/imaging/audit */
-  server.get("/devices/imaging/audit", async (req: FastifyRequest) => {
+  server.get('/devices/imaging/audit', async (req: FastifyRequest) => {
     const q = req.query as any;
     const limit = q.limit ? Number(q.limit) : 200;
     return { ok: true, audit: getModalityAudit(tenant(req), limit) };

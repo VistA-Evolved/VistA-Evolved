@@ -15,7 +15,7 @@
  *   GET    /x12/gateway/health           — gateway health summary
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 import {
   parseX12,
   validateEnvelope,
@@ -25,21 +25,20 @@ import {
   getRegisteredHandlers,
   getControlNumberStats,
   clearControlNumbers,
-} from "../rcm/edi/x12-gateway.js";
+} from '../rcm/edi/x12-gateway.js';
 
-const DEFAULT_SENDER_ID = process.env.X12_GATEWAY_SENDER_ID || "VISTAEVOLVED";
-const DEFAULT_SENDER_QUAL = process.env.X12_GATEWAY_SENDER_QUAL || "ZZ";
+const DEFAULT_SENDER_ID = process.env.X12_GATEWAY_SENDER_ID || 'VISTAEVOLVED';
+const DEFAULT_SENDER_QUAL = process.env.X12_GATEWAY_SENDER_QUAL || 'ZZ';
 
 export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
-
   // ─── Full Inbound Processing ─────────────────────────────────────
 
-  app.post("/x12/gateway/ingest", async (request, reply) => {
+  app.post('/x12/gateway/ingest', async (request, reply) => {
     const body = (request.body as any) || {};
     const rawX12 = body.rawX12 || body.payload;
-    if (!rawX12 || typeof rawX12 !== "string") {
+    if (!rawX12 || typeof rawX12 !== 'string') {
       reply.code(400);
-      return { ok: false, error: "rawX12 string is required in request body" };
+      return { ok: false, error: 'rawX12 string is required in request body' };
     }
 
     const result = await processInboundX12(rawX12.trim(), {
@@ -49,14 +48,14 @@ export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
 
     if (!result.parseResult.ok) {
       reply.code(422);
-      return { ok: false, error: "parse_failed", errors: result.parseResult.errors };
+      return { ok: false, error: 'parse_failed', errors: result.parseResult.errors };
     }
 
     if (result.isDuplicate) {
       reply.code(409);
       return {
         ok: false,
-        error: "duplicate_interchange",
+        error: 'duplicate_interchange',
         controlNumber: result.parseResult.interchange?.envelope.controlNumber,
         ta1Ack: result.routingResult?.ta1Ack,
       };
@@ -68,7 +67,11 @@ export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
       totalTransactions: result.routingResult?.totalTransactions,
       results: result.routingResult?.results,
       validation: result.validationResult
-        ? { valid: result.validationResult.valid, errorCount: result.validationResult.errors.length, warningCount: result.validationResult.warnings.length }
+        ? {
+            valid: result.validationResult.valid,
+            errorCount: result.validationResult.errors.length,
+            warningCount: result.validationResult.warnings.length,
+          }
         : undefined,
       ta1Ack: result.routingResult?.ta1Ack,
       ack999: result.routingResult?.ack999,
@@ -77,12 +80,12 @@ export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
 
   // ─── Parse Only ──────────────────────────────────────────────────
 
-  app.post("/x12/gateway/parse", async (request, reply) => {
+  app.post('/x12/gateway/parse', async (request, reply) => {
     const body = (request.body as any) || {};
     const rawX12 = body.rawX12 || body.payload;
-    if (!rawX12 || typeof rawX12 !== "string") {
+    if (!rawX12 || typeof rawX12 !== 'string') {
       reply.code(400);
-      return { ok: false, error: "rawX12 string is required" };
+      return { ok: false, error: 'rawX12 string is required' };
     }
 
     const result = parseX12(rawX12.trim());
@@ -117,18 +120,18 @@ export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
 
   // ─── Validate Only ──────────────────────────────────────────────
 
-  app.post("/x12/gateway/validate", async (request, reply) => {
+  app.post('/x12/gateway/validate', async (request, reply) => {
     const body = (request.body as any) || {};
     const rawX12 = body.rawX12 || body.payload;
-    if (!rawX12 || typeof rawX12 !== "string") {
+    if (!rawX12 || typeof rawX12 !== 'string') {
       reply.code(400);
-      return { ok: false, error: "rawX12 string is required" };
+      return { ok: false, error: 'rawX12 string is required' };
     }
 
     const parseResult = parseX12(rawX12.trim());
     if (!parseResult.ok || !parseResult.interchange) {
       reply.code(422);
-      return { ok: false, error: "parse_failed", errors: parseResult.errors };
+      return { ok: false, error: 'parse_failed', errors: parseResult.errors };
     }
 
     const envResult = validateEnvelope(parseResult.interchange);
@@ -142,43 +145,48 @@ export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
 
   // ─── TA1 Generation ─────────────────────────────────────────────
 
-  app.post("/x12/gateway/ack/ta1", async (request, reply) => {
+  app.post('/x12/gateway/ack/ta1', async (request, reply) => {
     const body = (request.body as any) || {};
     const rawX12 = body.rawX12 || body.payload;
-    if (!rawX12 || typeof rawX12 !== "string") {
+    if (!rawX12 || typeof rawX12 !== 'string') {
       reply.code(400);
-      return { ok: false, error: "rawX12 string is required" };
+      return { ok: false, error: 'rawX12 string is required' };
     }
 
     const parseResult = parseX12(rawX12.trim());
     if (!parseResult.ok || !parseResult.interchange) {
       reply.code(422);
-      return { ok: false, error: "parse_failed", errors: parseResult.errors };
+      return { ok: false, error: 'parse_failed', errors: parseResult.errors };
     }
 
     const accepted = body.accepted !== false;
-    const ta1 = generateTA1(parseResult.interchange, accepted, {
-      senderId: body.senderId || DEFAULT_SENDER_ID,
-      senderQualifier: body.senderQualifier || DEFAULT_SENDER_QUAL,
-    }, body.errorCode);
+    const ta1 = generateTA1(
+      parseResult.interchange,
+      accepted,
+      {
+        senderId: body.senderId || DEFAULT_SENDER_ID,
+        senderQualifier: body.senderQualifier || DEFAULT_SENDER_QUAL,
+      },
+      body.errorCode
+    );
 
     return { ok: true, ta1 };
   });
 
   // ─── 999 Generation ─────────────────────────────────────────────
 
-  app.post("/x12/gateway/ack/999", async (request, reply) => {
+  app.post('/x12/gateway/ack/999', async (request, reply) => {
     const body = (request.body as any) || {};
     const rawX12 = body.rawX12 || body.payload;
-    if (!rawX12 || typeof rawX12 !== "string") {
+    if (!rawX12 || typeof rawX12 !== 'string') {
       reply.code(400);
-      return { ok: false, error: "rawX12 string is required" };
+      return { ok: false, error: 'rawX12 string is required' };
     }
 
     const parseResult = parseX12(rawX12.trim());
     if (!parseResult.ok || !parseResult.interchange) {
       reply.code(422);
-      return { ok: false, error: "parse_failed", errors: parseResult.errors };
+      return { ok: false, error: 'parse_failed', errors: parseResult.errors };
     }
 
     const envResult = validateEnvelope(parseResult.interchange);
@@ -192,31 +200,31 @@ export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
 
   // ─── Handler Registry ───────────────────────────────────────────
 
-  app.get("/x12/gateway/handlers", async () => {
+  app.get('/x12/gateway/handlers', async () => {
     const handlers = getRegisteredHandlers();
     return { ok: true, count: handlers.length, handlers };
   });
 
   // ─── Control Number Stats ───────────────────────────────────────
 
-  app.get("/x12/gateway/control-numbers", async () => {
+  app.get('/x12/gateway/control-numbers', async () => {
     const stats = getControlNumberStats();
     return { ok: true, ...stats };
   });
 
-  app.delete("/x12/gateway/control-numbers", async () => {
+  app.delete('/x12/gateway/control-numbers', async () => {
     clearControlNumbers();
     return { ok: true, cleared: true };
   });
 
   // ─── Health ─────────────────────────────────────────────────────
 
-  app.get("/x12/gateway/health", async () => {
+  app.get('/x12/gateway/health', async () => {
     const handlers = getRegisteredHandlers();
     const ctrlStats = getControlNumberStats();
     return {
       ok: true,
-      status: handlers.length > 0 ? "active" : "no_handlers",
+      status: handlers.length > 0 ? 'active' : 'no_handlers',
       registeredHandlers: handlers.length,
       handlerTypes: handlers,
       controlNumbersTracked: ctrlStats.total,

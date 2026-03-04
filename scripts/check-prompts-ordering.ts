@@ -17,28 +17,28 @@
  *   1 = hard failures found
  */
 
-import { readdirSync, statSync, existsSync, writeFileSync, mkdirSync } from "fs";
-import { join, basename, dirname } from "path";
+import { readdirSync, statSync, existsSync, writeFileSync, mkdirSync } from 'fs';
+import { join, basename, dirname } from 'path';
 
 const ROOT = process.cwd();
-const PROMPTS_DIR = join(ROOT, "prompts");
+const PROMPTS_DIR = join(ROOT, 'prompts');
 
 interface CheckResult {
   check: string;
-  status: "pass" | "fail" | "warn";
+  status: 'pass' | 'fail' | 'warn';
   message: string;
 }
 
 const results: CheckResult[] = [];
 
 function pass(check: string, message: string) {
-  results.push({ check, status: "pass", message });
+  results.push({ check, status: 'pass', message });
 }
 function fail(check: string, message: string) {
-  results.push({ check, status: "fail", message });
+  results.push({ check, status: 'fail', message });
 }
 function warn(check: string, message: string) {
-  results.push({ check, status: "warn", message });
+  results.push({ check, status: 'warn', message });
 }
 
 /* ------------------------------------------------------------------ */
@@ -46,7 +46,7 @@ function warn(check: string, message: string) {
 /* ------------------------------------------------------------------ */
 
 if (!existsSync(PROMPTS_DIR)) {
-  fail("prompts-dir-exists", "prompts/ directory not found");
+  fail('prompts-dir-exists', 'prompts/ directory not found');
   printAndExit();
 }
 
@@ -73,9 +73,9 @@ for (const folder of phaseFolders) {
   }
 }
 if (badNames.length === 0) {
-  pass("folder-naming", `All ${phaseFolders.length} phase folders follow NN-* naming`);
+  pass('folder-naming', `All ${phaseFolders.length} phase folders follow NN-* naming`);
 } else {
-  fail("folder-naming", `Bad folder names: ${badNames.join(", ")}`);
+  fail('folder-naming', `Bad folder names: ${badNames.join(', ')}`);
 }
 
 /* ------------------------------------------------------------------ */
@@ -88,7 +88,7 @@ for (const folder of entries) {
   if (match) {
     const prefix = match[1];
     // 00-* meta folders are allowed duplicates by convention
-    if (prefix === "00") continue;
+    if (prefix === '00') continue;
     if (!prefixMap.has(prefix)) prefixMap.set(prefix, []);
     prefixMap.get(prefix)!.push(folder);
   }
@@ -97,13 +97,13 @@ for (const folder of entries) {
 const duplicates: string[] = [];
 for (const [prefix, folders] of prefixMap) {
   if (folders.length > 1) {
-    duplicates.push(`${prefix}: [${folders.join(", ")}]`);
+    duplicates.push(`${prefix}: [${folders.join(', ')}]`);
   }
 }
 if (duplicates.length === 0) {
-  pass("no-duplicate-prefixes", `No duplicate numeric prefixes across ${prefixMap.size} folders`);
+  pass('no-duplicate-prefixes', `No duplicate numeric prefixes across ${prefixMap.size} folders`);
 } else {
-  fail("no-duplicate-prefixes", `Duplicate prefixes found: ${duplicates.join("; ")}`);
+  fail('no-duplicate-prefixes', `Duplicate prefixes found: ${duplicates.join('; ')}`);
 }
 
 /* ------------------------------------------------------------------ */
@@ -122,9 +122,12 @@ for (let i = 1; i < sortedPrefixes.length; i++) {
   }
 }
 if (gaps.length === 0) {
-  pass("no-gaps", `No gaps in prefix sequence (${sortedPrefixes[0]}..${sortedPrefixes[sortedPrefixes.length - 1]})`);
+  pass(
+    'no-gaps',
+    `No gaps in prefix sequence (${sortedPrefixes[0]}..${sortedPrefixes[sortedPrefixes.length - 1]})`
+  );
 } else {
-  warn("no-gaps", `Gaps in prefix sequence at: ${gaps.join(", ")} (non-blocking)`);
+  warn('no-gaps', `Gaps in prefix sequence at: ${gaps.join(', ')} (non-blocking)`);
 }
 
 /* ------------------------------------------------------------------ */
@@ -134,15 +137,15 @@ if (gaps.length === 0) {
 const emptyFolders: string[] = [];
 for (const folder of phaseFolders) {
   const folderPath = join(PROMPTS_DIR, folder);
-  const files = readdirSync(folderPath).filter((f) => f.endsWith(".md"));
+  const files = readdirSync(folderPath).filter((f) => f.endsWith('.md'));
   if (files.length === 0) {
     emptyFolders.push(folder);
   }
 }
 if (emptyFolders.length === 0) {
-  pass("has-content", `All ${phaseFolders.length} phase folders have .md files`);
+  pass('has-content', `All ${phaseFolders.length} phase folders have .md files`);
 } else {
-  fail("has-content", `Empty phase folders (no .md): ${emptyFolders.join(", ")}`);
+  fail('has-content', `Empty phase folders (no .md): ${emptyFolders.join(', ')}`);
 }
 
 /* ------------------------------------------------------------------ */
@@ -162,9 +165,9 @@ for (const folder of phaseFolders) {
   // Non-PHASE folders (like 01-BOOTSTRAP) are fine - no phase number to validate
 }
 if (phaseNumberMismatches.length === 0) {
-  pass("phase-numbers", "All phase numbers in folder names are valid");
+  pass('phase-numbers', 'All phase numbers in folder names are valid');
 } else {
-  fail("phase-numbers", `Invalid phase numbers: ${phaseNumberMismatches.join("; ")}`);
+  fail('phase-numbers', `Invalid phase numbers: ${phaseNumberMismatches.join('; ')}`);
 }
 
 /* ------------------------------------------------------------------ */
@@ -172,14 +175,14 @@ if (phaseNumberMismatches.length === 0) {
 /* ------------------------------------------------------------------ */
 
 function printAndExit() {
-  console.log("\n=== Prompts Ordering Gate (Phase 47) ===\n");
+  console.log('\n=== Prompts Ordering Gate (Phase 47) ===\n');
 
-  const passCount = results.filter((r) => r.status === "pass").length;
-  const failCount = results.filter((r) => r.status === "fail").length;
-  const warnCount = results.filter((r) => r.status === "warn").length;
+  const passCount = results.filter((r) => r.status === 'pass').length;
+  const failCount = results.filter((r) => r.status === 'fail').length;
+  const warnCount = results.filter((r) => r.status === 'warn').length;
 
   for (const r of results) {
-    const icon = r.status === "pass" ? "PASS" : r.status === "fail" ? "FAIL" : "WARN";
+    const icon = r.status === 'pass' ? 'PASS' : r.status === 'fail' ? 'FAIL' : 'WARN';
     console.log(`  [${icon}] ${r.check}: ${r.message}`);
   }
 
@@ -190,7 +193,11 @@ function printAndExit() {
     mkdirSync(dirname(process.env.EVIDENCE_OUTPUT), { recursive: true });
     writeFileSync(
       process.env.EVIDENCE_OUTPUT,
-      JSON.stringify({ gate: "prompts-ordering", results, summary: { passCount, failCount, warnCount } }, null, 2),
+      JSON.stringify(
+        { gate: 'prompts-ordering', results, summary: { passCount, failCount, warnCount } },
+        null,
+        2
+      )
     );
   }
 

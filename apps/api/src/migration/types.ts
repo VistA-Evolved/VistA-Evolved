@@ -9,67 +9,64 @@
 /* Enums & Literals                                                    */
 /* ------------------------------------------------------------------ */
 
-export type MigrationDirection = "import" | "export";
+export type MigrationDirection = 'import' | 'export';
 
 export type ImportEntityType =
-  | "patient"
-  | "problem"
-  | "medication"
-  | "allergy"
-  | "appointment"
-  | "note";
+  | 'patient'
+  | 'problem'
+  | 'medication'
+  | 'allergy'
+  | 'appointment'
+  | 'note';
 
-export type ExportBundleType =
-  | "patient-summary"
-  | "audit-export"
-  | "clinical-data";
+export type ExportBundleType = 'patient-summary' | 'audit-export' | 'clinical-data';
 
 export type MigrationJobStatus =
-  | "created"
-  | "validating"
-  | "validated"
-  | "validation-failed"
-  | "dry-run"
-  | "dry-run-complete"
-  | "importing"
-  | "imported"
-  | "import-failed"
-  | "exporting"
-  | "exported"
-  | "export-failed"
-  | "rolled-back";
+  | 'created'
+  | 'validating'
+  | 'validated'
+  | 'validation-failed'
+  | 'dry-run'
+  | 'dry-run-complete'
+  | 'importing'
+  | 'imported'
+  | 'import-failed'
+  | 'exporting'
+  | 'exported'
+  | 'export-failed'
+  | 'rolled-back';
 
 export type SourceFormat =
-  | "generic-csv"
-  | "openemr-csv"
-  | "fhir-bundle"
-  | "ccda"
-  | "epic-ccda"
-  | "cerner-ccda"
-  | "athena-ccda"
-  | "ecw-ccda"
-  | "practicefusion-ccda"
-  | "custom";
+  | 'generic-csv'
+  | 'openemr-csv'
+  | 'fhir-bundle'
+  | 'ccda'
+  | 'epic-ccda'
+  | 'cerner-ccda'
+  | 'athena-ccda'
+  | 'ecw-ccda'
+  | 'practicefusion-ccda'
+  | 'custom';
 
 /* ------------------------------------------------------------------ */
 /* Mapping DSL types                                                   */
 /* ------------------------------------------------------------------ */
 
 export type TransformFunction =
-  | "uppercase"
-  | "lowercase"
-  | "trim"
-  | "date-iso8601"
-  | "date-mmddyyyy"
-  | "date-yyyymmdd"
-  | "split-first"
-  | "split-last"
-  | "default"
-  | "map-value"
-  | "concat"
-  | "regex-extract"
-  | "number"
-  | "boolean";
+  | 'uppercase'
+  | 'lowercase'
+  | 'trim'
+  | 'date-iso8601'
+  | 'date-mmddyyyy'
+  | 'date-yyyymmdd'
+  | 'split-first'
+  | 'split-last'
+  | 'default'
+  | 'map-value'
+  | 'concat'
+  | 'regex-extract'
+  | 'number'
+  | 'boolean';
 
 export interface FieldTransform {
   fn: TransformFunction;
@@ -113,7 +110,7 @@ export interface MappingTemplate {
 /* Validation types                                                    */
 /* ------------------------------------------------------------------ */
 
-export type ValidationSeverity = "error" | "warning" | "info";
+export type ValidationSeverity = 'error' | 'warning' | 'info';
 
 export interface ValidationIssue {
   row?: number;
@@ -185,7 +182,7 @@ export interface MigrationJob {
 
 export interface DryRunRowResult {
   row: number;
-  action: "create" | "update" | "skip";
+  action: 'create' | 'update' | 'skip';
   reason?: string;
   mapped: Record<string, unknown>;
 }
@@ -201,7 +198,7 @@ export interface DryRunResult {
 export interface ImportRowResult {
   row: number;
   success: boolean;
-  action: "created" | "updated" | "skipped" | "failed";
+  action: 'created' | 'updated' | 'skipped' | 'failed';
   entityId?: string;
   error?: string;
 }
@@ -220,7 +217,7 @@ export interface ImportResult {
 /* ------------------------------------------------------------------ */
 
 export interface ExportResult {
-  format: "json" | "csv" | "encrypted-json";
+  format: 'json' | 'csv' | 'encrypted-json';
   fileName: string;
   recordCount: number;
   generatedAt: string;
@@ -250,11 +247,17 @@ export interface RollbackPlan {
 /* FHIR R4 types (Phase 456 — W30-P1)                                 */
 /* ------------------------------------------------------------------ */
 
-export type FhirImportStatus = "pending" | "validating" | "importing" | "completed" | "failed" | "partial";
+export type FhirImportStatus =
+  | 'pending'
+  | 'validating'
+  | 'importing'
+  | 'completed'
+  | 'failed'
+  | 'partial';
 
 export interface FhirMigrationBatch {
   id: string;
-  format: "fhir-r4";
+  format: 'fhir-r4';
   status: FhirImportStatus;
   createdAt: string;
   updatedAt: string;
@@ -272,7 +275,7 @@ export interface FhirMigrationError {
   resourceId?: string;
   field?: string;
   message: string;
-  severity: "error" | "warning";
+  severity: 'error' | 'warning';
 }
 
 export interface FhirImportResult {
@@ -292,13 +295,13 @@ export interface FhirResource {
 }
 
 export interface FhirBundle {
-  resourceType: "Bundle";
-  type: "collection" | "transaction" | "batch" | "document";
+  resourceType: 'Bundle';
+  type: 'collection' | 'transaction' | 'batch' | 'document';
   entry?: Array<{ resource?: FhirResource; fullUrl?: string }>;
 }
 
 export interface FhirPatient extends FhirResource {
-  resourceType: "Patient";
+  resourceType: 'Patient';
   name?: Array<{ family?: string; given?: string[]; text?: string }>;
   birthDate?: string;
   gender?: string;
@@ -306,7 +309,7 @@ export interface FhirPatient extends FhirResource {
 }
 
 export interface FhirCondition extends FhirResource {
-  resourceType: "Condition";
+  resourceType: 'Condition';
   subject?: { reference?: string };
   code?: { coding?: Array<{ system?: string; code?: string; display?: string }> };
   clinicalStatus?: { coding?: Array<{ code?: string }> };
@@ -314,15 +317,17 @@ export interface FhirCondition extends FhirResource {
 }
 
 export interface FhirMedicationRequest extends FhirResource {
-  resourceType: "MedicationRequest";
+  resourceType: 'MedicationRequest';
   subject?: { reference?: string };
-  medicationCodeableConcept?: { coding?: Array<{ system?: string; code?: string; display?: string }> };
+  medicationCodeableConcept?: {
+    coding?: Array<{ system?: string; code?: string; display?: string }>;
+  };
   status?: string;
   authoredOn?: string;
 }
 
 export interface FhirAllergyIntolerance extends FhirResource {
-  resourceType: "AllergyIntolerance";
+  resourceType: 'AllergyIntolerance';
   patient?: { reference?: string };
   code?: { coding?: Array<{ system?: string; code?: string; display?: string }> };
   type?: string;

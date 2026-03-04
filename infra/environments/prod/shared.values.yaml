@@ -20,7 +20,7 @@ ingress:
 keycloak:
   enabled: true
   external:
-    url: "https://auth.prod.example.com"
+    url: 'https://auth.prod.example.com'
 
 observability:
   enabled: true
@@ -39,4 +39,4 @@ policy:
 podSecurityStandards:
   enforce: restricted
 
-imageTag: ""  # Must be set per release -- never auto-deploy to prod
+imageTag: '' # Must be set per release -- never auto-deploy to prod

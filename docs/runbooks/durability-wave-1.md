@@ -13,35 +13,36 @@ requests.
 
 ### New SQLite Tables (5)
 
-| Letter | Table               | Purpose                              |
-|--------|---------------------|--------------------------------------|
-| AP     | `rcm_claim`         | RCM claim entities (Phase 38)        |
-| AQ     | `rcm_remittance`    | Remittance / EOB records             |
-| AR     | `rcm_claim_case`    | Claims lifecycle FSM (Phase 91)      |
-| AS     | `portal_access_log` | Patient-visible activity log          |
-| AT     | `scheduling_request`| Wait list / appointment requests     |
+| Letter | Table                | Purpose                          |
+| ------ | -------------------- | -------------------------------- |
+| AP     | `rcm_claim`          | RCM claim entities (Phase 38)    |
+| AQ     | `rcm_remittance`     | Remittance / EOB records         |
+| AR     | `rcm_claim_case`     | Claims lifecycle FSM (Phase 91)  |
+| AS     | `portal_access_log`  | Patient-visible activity log     |
+| AT     | `scheduling_request` | Wait list / appointment requests |
 
 ### Modified Store Files (4)
 
-| File                                     | Pattern                      |
-|------------------------------------------|------------------------------|
-| `rcm/domain/claim-store.ts`             | Hybrid: write-through + fallback |
-| `rcm/claims/claim-store.ts`             | Hybrid: write-through + fallback |
-| `portal-iam/access-log-store.ts`        | Hybrid: write-through + fallback |
-| `adapters/scheduling/vista-adapter.ts`  | Hybrid: write-through + fallback |
+| File                                   | Pattern                          |
+| -------------------------------------- | -------------------------------- |
+| `rcm/domain/claim-store.ts`            | Hybrid: write-through + fallback |
+| `rcm/claims/claim-store.ts`            | Hybrid: write-through + fallback |
+| `portal-iam/access-log-store.ts`       | Hybrid: write-through + fallback |
+| `adapters/scheduling/vista-adapter.ts` | Hybrid: write-through + fallback |
 
 ### New Repository Files (4)
 
-| File                                          | Functions                           |
-|-----------------------------------------------|-------------------------------------|
-| `platform/db/repo/rcm-claim-repo.ts`         | CRUD for claims + remittances       |
-| `platform/db/repo/rcm-claim-case-repo.ts`    | CRUD for claim lifecycle cases      |
-| `platform/db/repo/access-log-repo.ts`        | Insert + query + stats              |
-| `platform/db/repo/scheduling-request-repo.ts` | CRUD for scheduling requests        |
+| File                                          | Functions                      |
+| --------------------------------------------- | ------------------------------ |
+| `platform/db/repo/rcm-claim-repo.ts`          | CRUD for claims + remittances  |
+| `platform/db/repo/rcm-claim-case-repo.ts`     | CRUD for claim lifecycle cases |
+| `platform/db/repo/access-log-repo.ts`         | Insert + query + stats         |
+| `platform/db/repo/scheduling-request-repo.ts` | CRUD for scheduling requests   |
 
 ### Wiring (index.ts)
 
 Four new init blocks after `initPlatformDb()`:
+
 1. `initClaimStoreRepo` — RCM domain claims + remittances
 2. `initClaimCaseRepo` — RCM claims lifecycle FSM
 3. `initAccessLogRepo` — Portal access logs
@@ -68,11 +69,11 @@ ephemeral, TTL-based — 30s expiry).
 
 ## Metrics
 
-| Metric             | Before | After | Delta |
-|--------------------| ------:|------:|------:|
-| SQLite tables      |     41 |    46 |    +5 |
-| High-risk stores   |     49 |    40 |    -9 |
-| Total endpoints    |  1,196 | 1,196 |     0 |
+| Metric           | Before | After | Delta |
+| ---------------- | -----: | ----: | ----: |
+| SQLite tables    |     41 |    46 |    +5 |
+| High-risk stores |     49 |    40 |    -9 |
+| Total endpoints  |  1,196 | 1,196 |     0 |
 
 ## How to Test
 

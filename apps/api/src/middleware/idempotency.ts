@@ -16,8 +16,8 @@
  * IDEMPOTENCY_TTL_MS env var). Expired keys are pruned on each check.
  */
 
-import type { FastifyRequest, FastifyReply } from "fastify";
-import { log } from "../lib/logger.js";
+import type { FastifyRequest, FastifyReply } from 'fastify';
+import { log } from '../lib/logger.js';
 
 /** Log DB persistence failures at warn level instead of silently swallowing. */
 function dbWarn(op: string, err: unknown): void {
@@ -37,7 +37,9 @@ interface IdempotencyKeyData {
 }
 interface IdempotencyRepo {
   upsertKey(data: IdempotencyKeyData): any;
-  findByKey(compositeKey: string): IdempotencyKeyData | undefined | Promise<IdempotencyKeyData | undefined>;
+  findByKey(
+    compositeKey: string
+  ): IdempotencyKeyData | undefined | Promise<IdempotencyKeyData | undefined>;
   deleteKey(compositeKey: string): any;
   pruneExpiredKeys(): any;
 }
@@ -76,7 +78,11 @@ function pruneExpired(): void {
     }
   }
   if (_repo) {
-    try { void Promise.resolve(_repo.pruneExpiredKeys()).catch((e) => dbWarn("prune", e)); } catch (e) { dbWarn("prune", e); }
+    try {
+      void Promise.resolve(_repo.pruneExpiredKeys()).catch((e) => dbWarn('prune', e));
+    } catch (e) {
+      dbWarn('prune', e);
+    }
   }
 }
 
@@ -101,28 +107,29 @@ function compositeKey(tenantId: string, key: string): string {
 export function idempotencyGuard() {
   return async function idempotencyPreHandler(
     request: FastifyRequest,
-    reply: FastifyReply,
+    reply: FastifyReply
   ): Promise<void> {
     // Only guard mutation methods
     const method = request.method.toUpperCase();
-    if (!["POST", "PUT", "PATCH"].includes(method)) return;
+    if (!['POST', 'PUT', 'PATCH'].includes(method)) return;
 
     // Check for idempotency header (accepts both Idempotency-Key and X-Idempotency-Key)
-    const idempotencyKey = (request.headers["idempotency-key"] ?? request.headers["x-idempotency-key"]) as string | undefined;
+    const idempotencyKey = (request.headers['idempotency-key'] ??
+      request.headers['x-idempotency-key']) as string | undefined;
     if (!idempotencyKey) return; // No header = no deduplication
 
     // Validate key format (must be non-empty, max 128 chars)
     if (idempotencyKey.length > 128) {
       reply.status(400).send({
         ok: false,
-        error: "Idempotency-Key header must be <= 128 characters",
+        error: 'Idempotency-Key header must be <= 128 characters',
       });
       return;
     }
 
     // Get tenant from session (default if not available)
     const session = (request as any).session;
-    const tenantId = session?.tenantId ?? "default";
+    const tenantId = session?.tenantId ?? 'default';
     const cKey = compositeKey(tenantId, idempotencyKey);
 
     // Prune expired entries periodically
@@ -133,10 +140,7 @@ export function idempotencyGuard() {
     // Check if key exists and is not expired
     const cached = memoryStore.get(cKey);
     if (cached && cached.expiresAt > Date.now()) {
-      reply
-        .status(cached.statusCode)
-        .header("Idempotency-Replayed", "true")
-        .send(cached.body);
+      reply.status(cached.statusCode).header('Idempotency-Replayed', 'true').send(cached.body);
       return;
     }
     // Check DB if not in cache
@@ -145,7 +149,11 @@ export function idempotencyGuard() {
         const row = await _repo.findByKey(cKey);
         if (row && row.expiresAt > Date.now()) {
           let body: unknown = null;
-          try { body = JSON.parse(row.responseBody ?? ""); } catch { body = row.responseBody; }
+          try {
+            body = JSON.parse(row.responseBody ?? '');
+          } catch {
+            body = row.responseBody;
+          }
           const restored: CachedResponse = {
             statusCode: row.statusCode ?? 200,
             body,
@@ -155,11 +163,13 @@ export function idempotencyGuard() {
           memoryStore.set(cKey, restored);
           reply
             .status(restored.statusCode)
-            .header("Idempotency-Replayed", "true")
+            .header('Idempotency-Replayed', 'true')
             .send(restored.body);
           return;
         }
-      } catch (e) { dbWarn("persist", e); }
+      } catch (e) {
+        dbWarn('persist', e);
+      }
     }
 
     // Store a marker to detect concurrent duplicates
@@ -175,11 +185,13 @@ export function idempotencyGuard() {
         _repo.upsertKey({
           compositeKey: cKey,
           statusCode: 0,
-          responseBody: "",
+          responseBody: '',
           createdAt: marker.createdAt,
           expiresAt: marker.expiresAt,
         });
-      } catch (e) { dbWarn("persist", e); }
+      } catch (e) {
+        dbWarn('persist', e);
+      }
     }
 
     // On error, remove the marker so the request can be retried.
@@ -196,19 +208,27 @@ export function idempotencyGuard() {
               _repo.upsertKey({
                 compositeKey: cKey,
                 statusCode: reply.statusCode,
-                responseBody: existing.body != null ? JSON.stringify(existing.body) : "",
+                responseBody: existing.body != null ? JSON.stringify(existing.body) : '',
                 createdAt: existing.createdAt,
                 expiresAt: existing.expiresAt,
               });
-            } catch (e) { dbWarn("persist", e); }
+            } catch (e) {
+              dbWarn('persist', e);
+            }
           }
         }
       },
       () => {
         // On error, remove the marker so the request can be retried
         memoryStore.delete(cKey);
-        if (_repo) { try { _repo.deleteKey(cKey); } catch (e) { dbWarn("persist", e); } }
-      },
+        if (_repo) {
+          try {
+            _repo.deleteKey(cKey);
+          } catch (e) {
+            dbWarn('persist', e);
+          }
+        }
+      }
     );
   };
 }
@@ -220,21 +240,22 @@ export function idempotencyGuard() {
 export async function idempotencyOnSend(
   request: FastifyRequest,
   reply: FastifyReply,
-  payload: unknown,
+  payload: unknown
 ): Promise<unknown> {
-  const idempotencyKey = (request.headers["idempotency-key"] ?? request.headers["x-idempotency-key"]) as string | undefined;
+  const idempotencyKey = (request.headers['idempotency-key'] ??
+    request.headers['x-idempotency-key']) as string | undefined;
   if (!idempotencyKey) return payload;
 
   const method = request.method.toUpperCase();
-  if (!["POST", "PUT", "PATCH"].includes(method)) return payload;
+  if (!['POST', 'PUT', 'PATCH'].includes(method)) return payload;
 
   const session = (request as any).session;
-  const tenantId = session?.tenantId ?? "default";
+  const tenantId = session?.tenantId ?? 'default';
   const cKey = compositeKey(tenantId, idempotencyKey);
 
   // Parse the payload to store as JSON
   let body: unknown = null;
-  if (typeof payload === "string") {
+  if (typeof payload === 'string') {
     try {
       body = JSON.parse(payload);
     } catch {
@@ -254,11 +275,13 @@ export async function idempotencyOnSend(
         _repo.upsertKey({
           compositeKey: cKey,
           statusCode: reply.statusCode,
-          responseBody: body != null ? JSON.stringify(body) : "",
+          responseBody: body != null ? JSON.stringify(body) : '',
           createdAt: existing.createdAt,
           expiresAt: existing.expiresAt,
         });
-      } catch (e) { dbWarn("persist", e); }
+      } catch (e) {
+        dbWarn('persist', e);
+      }
     }
   }
 

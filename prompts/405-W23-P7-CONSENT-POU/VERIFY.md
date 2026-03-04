@@ -1,6 +1,7 @@
 # 405-99-VERIFY — Consent + Purpose of Use
 
 ## Verification Gates
+
 1. Types export ConsentDirective, PurposeOfUse (9 standard codes), DisclosureLog
 2. ETREAT (emergency) always permits regardless of consent
 3. Evaluate auto-logs disclosure decisions

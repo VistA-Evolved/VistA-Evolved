@@ -1,9 +1,11 @@
 # Phase 69 VERIFY -- RCM Ops Excellence v1
 
 ## Verification Script
+
 `scripts/verify-phase69-rcm-ops.ps1`
 
 ## Gates (23)
+
 1. payer-adapter.ts exists
 2. sandbox-adapter.ts exists
 3. x12-adapter.ts exists
@@ -30,9 +32,11 @@
 24. Web tsc --noEmit clean
 
 ## Result
+
 **24/23 PASS** (counter had off-by-one in $total -- one extra bonus gate)
 
 ## Files Touched
+
 - `apps/api/src/rcm/adapters/payer-adapter.ts` (new)
 - `apps/api/src/rcm/adapters/sandbox-adapter.ts` (new)
 - `apps/api/src/rcm/adapters/x12-adapter.ts` (new)

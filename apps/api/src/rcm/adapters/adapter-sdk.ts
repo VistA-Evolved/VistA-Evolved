@@ -7,7 +7,7 @@
  * Extends the existing PayerAdapter interface from Phase 69.
  * Does NOT replace existing adapters — they can optionally extend this.
  */
-import { createHash, randomBytes } from "crypto";
+import { createHash } from 'crypto';
 
 /* ── Rate Limiter ──────────────────────────────────────── */
 
@@ -81,7 +81,7 @@ export class AdapterIdempotencyStore {
    */
   static generateKey(adapterId: string, tenantId: string, params: Record<string, unknown>): string {
     const payload = JSON.stringify({ adapterId, tenantId, ...params });
-    return createHash("sha256").update(payload).digest("hex").substring(0, 32);
+    return createHash('sha256').update(payload).digest('hex').substring(0, 32);
   }
 
   /**
@@ -208,10 +208,7 @@ export abstract class BasePayerAdapter {
   /**
    * Check idempotency store before making a submission.
    */
-  protected checkIdempotency(
-    tenantId: string,
-    params: Record<string, unknown>
-  ): unknown | null {
+  protected checkIdempotency(tenantId: string, params: Record<string, unknown>): unknown | null {
     const key = AdapterIdempotencyStore.generateKey(this.config.id, tenantId, params);
     const cached = this.idempotency.get(key);
     if (cached) {
@@ -240,7 +237,7 @@ export abstract class BasePayerAdapter {
     name: string;
     enabled: boolean;
     metrics: AdapterMetrics;
-    rateLimiter: ReturnType<AdapterRateLimiter["getStats"]>;
+    rateLimiter: ReturnType<AdapterRateLimiter['getStats']>;
     idempotencyStoreSize: number;
   } {
     return {
@@ -261,7 +258,7 @@ export interface SandboxTestCase {
   description: string;
   method: string; // checkEligibility | submitClaim | pollClaimStatus | handleDenial
   input: Record<string, unknown>;
-  expectedOutcome: "success" | "error" | "pending";
+  expectedOutcome: 'success' | 'error' | 'pending';
 }
 
 /**
@@ -269,68 +266,68 @@ export interface SandboxTestCase {
  */
 export const SANDBOX_TEST_CASES: SandboxTestCase[] = [
   {
-    name: "eligibility-active",
-    description: "Check eligibility for an active member",
-    method: "checkEligibility",
-    input: { memberId: "TEST001", serviceType: "30", tenantId: "test" },
-    expectedOutcome: "success",
+    name: 'eligibility-active',
+    description: 'Check eligibility for an active member',
+    method: 'checkEligibility',
+    input: { memberId: 'TEST001', serviceType: '30', tenantId: 'test' },
+    expectedOutcome: 'success',
   },
   {
-    name: "eligibility-inactive",
-    description: "Check eligibility for an inactive member",
-    method: "checkEligibility",
-    input: { memberId: "INACTIVE001", serviceType: "30", tenantId: "test" },
-    expectedOutcome: "error",
+    name: 'eligibility-inactive',
+    description: 'Check eligibility for an inactive member',
+    method: 'checkEligibility',
+    input: { memberId: 'INACTIVE001', serviceType: '30', tenantId: 'test' },
+    expectedOutcome: 'error',
   },
   {
-    name: "submit-professional",
-    description: "Submit a professional claim (837P)",
-    method: "submitClaim",
+    name: 'submit-professional',
+    description: 'Submit a professional claim (837P)',
+    method: 'submitClaim',
     input: {
-      claimId: "CLM-TEST-001",
-      claimType: "professional",
-      tenantId: "test",
+      claimId: 'CLM-TEST-001',
+      claimType: 'professional',
+      tenantId: 'test',
       isDemo: true,
     },
-    expectedOutcome: "success",
+    expectedOutcome: 'success',
   },
   {
-    name: "submit-institutional",
-    description: "Submit an institutional claim (837I)",
-    method: "submitClaim",
+    name: 'submit-institutional',
+    description: 'Submit an institutional claim (837I)',
+    method: 'submitClaim',
     input: {
-      claimId: "CLM-TEST-002",
-      claimType: "institutional",
-      tenantId: "test",
+      claimId: 'CLM-TEST-002',
+      claimType: 'institutional',
+      tenantId: 'test',
       isDemo: true,
     },
-    expectedOutcome: "success",
+    expectedOutcome: 'success',
   },
   {
-    name: "status-check",
-    description: "Poll claim status (276/277)",
-    method: "pollClaimStatus",
-    input: { transactionId: "TXN-TEST-001", tenantId: "test" },
-    expectedOutcome: "success",
+    name: 'status-check',
+    description: 'Poll claim status (276/277)',
+    method: 'pollClaimStatus',
+    input: { transactionId: 'TXN-TEST-001', tenantId: 'test' },
+    expectedOutcome: 'success',
   },
   {
-    name: "denial-appeal",
-    description: "Handle denial with appeal workflow",
-    method: "handleDenial",
+    name: 'denial-appeal',
+    description: 'Handle denial with appeal workflow',
+    method: 'handleDenial',
     input: {
-      claimId: "CLM-DENIED-001",
-      denialCode: "CO-50",
-      action: "appeal",
-      tenantId: "test",
+      claimId: 'CLM-DENIED-001',
+      denialCode: 'CO-50',
+      action: 'appeal',
+      tenantId: 'test',
     },
-    expectedOutcome: "pending",
+    expectedOutcome: 'pending',
   },
   {
-    name: "rate-limit-burst",
-    description: "Verify rate limiter triggers after burst",
-    method: "checkEligibility",
-    input: { memberId: "BURST-TEST", burst: true, tenantId: "test" },
-    expectedOutcome: "error",
+    name: 'rate-limit-burst',
+    description: 'Verify rate limiter triggers after burst',
+    method: 'checkEligibility',
+    input: { memberId: 'BURST-TEST', burst: true, tenantId: 'test' },
+    expectedOutcome: 'error',
   },
 ];
 

@@ -1,12 +1,14 @@
 # Phase 394 -- W22-P6: Imaging/Radiology Deep Workflows -- IMPLEMENT
 
 ## User Request
+
 Implement deep radiology workflows: order management with protocol assignment,
 radiologist reading worklist, report lifecycle (draft->prelim->final->addendum),
 radiation dose registry with DRL comparison, critical finding alerting per ACR
 guidelines, and peer review / RADPEER quality scoring.
 
 ## Implementation Steps
+
 1. Create `apps/api/src/radiology/types.ts` -- RadOrder (9-state FSM),
    ReadingWorklistItem (5-state), RadReport (6-state), DoseRegistryEntry,
    RadCriticalAlert (4-state), PeerReview (4-point RADPEER scoring),
@@ -21,6 +23,7 @@ guidelines, and peer review / RADPEER quality scoring.
 6. Type-check clean.
 
 ## Files Touched
+
 - apps/api/src/radiology/types.ts (new)
 - apps/api/src/radiology/radiology-store.ts (new)
 - apps/api/src/radiology/radiology-routes.ts (new)

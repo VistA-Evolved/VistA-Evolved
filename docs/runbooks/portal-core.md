@@ -30,26 +30,27 @@ API (Fastify, port 3001)
 
 ## VistA RPC Mapping
 
-| Portal Feature | VistA RPC | Status |
-|---|---|---|
-| Allergies | ORQQAL LIST | ✅ Live |
-| Problems | ORWCH PROBLEM LIST | ✅ Live |
-| Vitals | ORQQVI VITALS | ✅ Live |
-| Medications | ORWPS ACTIVE | ✅ Live |
-| Demographics | ORWPT SELECT | ✅ Live |
-| Labs | ORWLRR INTERIM | ⏳ Integration pending |
-| Consults | ORQQCN LIST | ⏳ Integration pending |
-| Surgery | ORWSR LIST | ⏳ Integration pending |
-| DC Summaries | TIU DOCUMENTS BY CONTEXT | ⏳ Integration pending |
-| Reports | ORWRP REPORT TEXT | ⏳ Integration pending |
-| Messaging | XMXAPI / XMXMSGS | ⏳ In-memory (VistA mapping documented) |
-| Appointments | SD APPOINTMENT LIST | ⏳ Demo data (scheduling RPCs not in sandbox) |
-| Proxy | DGMP | ⏳ In-memory (VistA mapping documented) |
-| Sensitivity | DG SENSITIVE RECORD ACCESS | ⏳ Policy engine built, VistA hook planned |
+| Portal Feature | VistA RPC                  | Status                                        |
+| -------------- | -------------------------- | --------------------------------------------- |
+| Allergies      | ORQQAL LIST                | ✅ Live                                       |
+| Problems       | ORWCH PROBLEM LIST         | ✅ Live                                       |
+| Vitals         | ORQQVI VITALS              | ✅ Live                                       |
+| Medications    | ORWPS ACTIVE               | ✅ Live                                       |
+| Demographics   | ORWPT SELECT               | ✅ Live                                       |
+| Labs           | ORWLRR INTERIM             | ⏳ Integration pending                        |
+| Consults       | ORQQCN LIST                | ⏳ Integration pending                        |
+| Surgery        | ORWSR LIST                 | ⏳ Integration pending                        |
+| DC Summaries   | TIU DOCUMENTS BY CONTEXT   | ⏳ Integration pending                        |
+| Reports        | ORWRP REPORT TEXT          | ⏳ Integration pending                        |
+| Messaging      | XMXAPI / XMXMSGS           | ⏳ In-memory (VistA mapping documented)       |
+| Appointments   | SD APPOINTMENT LIST        | ⏳ Demo data (scheduling RPCs not in sandbox) |
+| Proxy          | DGMP                       | ⏳ In-memory (VistA mapping documented)       |
+| Sensitivity    | DG SENSITIVE RECORD ACCESS | ⏳ Policy engine built, VistA hook planned    |
 
 ## Key Routes
 
 ### Health Data (DFN-scoped, requires portal session)
+
 - `GET /portal/health/allergies` — Real VistA data
 - `GET /portal/health/problems` — Real VistA data
 - `GET /portal/health/vitals` — Real VistA data
@@ -62,10 +63,12 @@ API (Fastify, port 3001)
 - `GET /portal/health/reports` — Integration pending (ORWRP REPORT TEXT)
 
 ### PDF Export
+
 - `GET /portal/export/section/:section` — Single section PDF (allergies|problems|vitals|medications|demographics)
 - `GET /portal/export/full` — Full record bundle PDF
 
 ### Secure Messaging
+
 - `GET /portal/messages` — Inbox
 - `GET /portal/messages/drafts` — Draft list
 - `GET /portal/messages/sent` — Sent messages
@@ -78,6 +81,7 @@ API (Fastify, port 3001)
 - `POST /portal/messages/:id/attachments` — Add attachment
 
 ### Appointments
+
 - `GET /portal/appointments` — Upcoming + past
 - `GET /portal/appointments/:id` — Detail
 - `POST /portal/appointments/request` — Request new appointment
@@ -85,6 +89,7 @@ API (Fastify, port 3001)
 - `POST /portal/appointments/:id/reschedule` — Request reschedule
 
 ### Record Sharing
+
 - `GET /portal/shares` — List patient's shares (access codes stripped)
 - `POST /portal/shares` — Create share link (returns access code once)
 - `POST /portal/shares/:id/revoke` — Revoke share
@@ -92,10 +97,12 @@ API (Fastify, port 3001)
 - `POST /portal/share/verify/:token` — Public verify + fetch data
 
 ### Settings
+
 - `GET /portal/settings` — Current settings + language options
 - `PUT /portal/settings` — Update (language, notifications, display)
 
 ### Proxy Access
+
 - `GET /portal/proxy/list` — List proxies for patient
 - `POST /portal/proxy/grant` — Grant proxy
 - `POST /portal/proxy/revoke` — Revoke proxy

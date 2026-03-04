@@ -17,10 +17,7 @@
     "config/capabilities.json",
     "artifacts/phase64/mailman-plan.json"
   ],
-  "rpcsUsed": [
-    "DSIC SEND MAIL MSG",
-    "ORQQXMB MAIL GROUPS"
-  ],
+  "rpcsUsed": ["DSIC SEND MAIL MSG", "ORQQXMB MAIL GROUPS"],
   "followUps": [
     "ZVEMSGR.m for inbox read from VistA baskets",
     "Thread/reply via MailMan XMB threading",

@@ -148,7 +148,13 @@ export function generateElectronicSoa(input: SoaInput, signingKey?: string): Ele
       totalPhicCoverage: acc.totalPhicCoverage + item.phicCoverage,
       totalPatientShare: acc.totalPatientShare + item.patientShare,
     }),
-    { totalCharges: 0, totalDiscount: 0, totalNetAmount: 0, totalPhicCoverage: 0, totalPatientShare: 0 },
+    {
+      totalCharges: 0,
+      totalDiscount: 0,
+      totalNetAmount: 0,
+      totalPhicCoverage: 0,
+      totalPatientShare: 0,
+    }
   );
 
   // Round to 2 decimal places

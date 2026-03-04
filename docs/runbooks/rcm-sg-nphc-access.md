@@ -12,13 +12,13 @@ Authentication uses SingPass CorpPass with named-user authorization.
 
 ## Prerequisites
 
-| Item | Environment Variable | Required |
-|------|---------------------|----------|
-| CorpPass client ID | `NPHC_CORPPASS_CLIENT_ID` | Yes |
-| CorpPass client secret | `NPHC_CORPPASS_SECRET` | Yes |
-| MOH facility license | `NPHC_FACILITY_LICENSE` | Yes |
-| Authorized user NRIC hash | `NPHC_USER_NRIC_HASH` | Optional |
-| API endpoint | `NPHC_API_ENDPOINT` | No (defaults to api.nphc.gov.sg) |
+| Item                      | Environment Variable      | Required                         |
+| ------------------------- | ------------------------- | -------------------------------- |
+| CorpPass client ID        | `NPHC_CORPPASS_CLIENT_ID` | Yes                              |
+| CorpPass client secret    | `NPHC_CORPPASS_SECRET`    | Yes                              |
+| MOH facility license      | `NPHC_FACILITY_LICENSE`   | Yes                              |
+| Authorized user NRIC hash | `NPHC_USER_NRIC_HASH`     | Optional                         |
+| API endpoint              | `NPHC_API_ENDPOINT`       | No (defaults to api.nphc.gov.sg) |
 
 ## Enrollment Steps
 
@@ -63,30 +63,30 @@ audit traceability at the user level.
 
 ## Claim Types
 
-| Type | Description |
-|------|-------------|
-| MEDISAVE | MediSave account claims |
+| Type            | Description                      |
+| --------------- | -------------------------------- |
+| MEDISAVE        | MediSave account claims          |
 | MEDISHIELD_LIFE | MediShield Life insurance claims |
-| CHAS | Community Health Assist Scheme |
+| CHAS            | Community Health Assist Scheme   |
 
 ## Wire Format
 
 NPHC uses **REST/JSON** with MOH-specific schema, NOT X12. Logical mapping:
 
-| Logical | SG Equivalent |
-|---------|--------------|
-| 837P | MediSave/CHAS outpatient claim |
-| 837I | MediShield Life inpatient claim |
-| 270 | MediSave balance / eligibility check |
+| Logical | SG Equivalent                        |
+| ------- | ------------------------------------ |
+| 837P    | MediSave/CHAS outpatient claim       |
+| 837I    | MediShield Life inpatient claim      |
+| 270     | MediSave balance / eligibility check |
 
 ## Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| CorpPass token expired | Check token refresh; re-authorize if revoked |
-| Facility license not found | Verify license number with MOH portal |
-| 403 role mismatch | Check CorpPass user-role mapping for NPHC scope |
-| MediSave insufficient | Claim may be partially approved or denied |
+| Issue                      | Solution                                        |
+| -------------------------- | ----------------------------------------------- |
+| CorpPass token expired     | Check token refresh; re-authorize if revoked    |
+| Facility license not found | Verify license number with MOH portal           |
+| 403 role mismatch          | Check CorpPass user-role mapping for NPHC scope |
+| MediSave insufficient      | Claim may be partially approved or denied       |
 
 ## References
 

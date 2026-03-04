@@ -40,13 +40,17 @@ export const externalTranslatorAdapter: Translator = {
 
   validate(
     transactionSet: X12TransactionSet,
-    canonicalObject: Record<string, unknown>,
+    canonicalObject: Record<string, unknown>
   ): Array<{ field: string; message: string; severity: 'error' | 'warning' }> {
     // Basic structural checks — real validation done by external API
     const errors: Array<{ field: string; message: string; severity: 'error' | 'warning' }> = [];
 
     if (!canonicalObject || typeof canonicalObject !== 'object') {
-      errors.push({ field: 'root', message: 'Canonical object is missing or not an object', severity: 'error' });
+      errors.push({
+        field: 'root',
+        message: 'Canonical object is missing or not an object',
+        severity: 'error',
+      });
     }
 
     return errors;
@@ -55,7 +59,7 @@ export const externalTranslatorAdapter: Translator = {
   buildX12(
     transactionSet: X12TransactionSet,
     canonicalObject: Record<string, unknown>,
-    envelope: TransactionEnvelope,
+    envelope: TransactionEnvelope
   ): TranslatorResult {
     const cfg = getConfig();
 
@@ -96,10 +100,7 @@ export const externalTranslatorAdapter: Translator = {
     };
   },
 
-  parseX12(
-    transactionSet: X12TransactionSet,
-    rawX12: string,
-  ): ParsedResponse {
+  parseX12(transactionSet: X12TransactionSet, rawX12: string): ParsedResponse {
     const cfg = getConfig();
 
     if (!cfg.enabled || !cfg.endpoint) {
@@ -107,7 +108,13 @@ export const externalTranslatorAdapter: Translator = {
         transactionSet,
         canonical: {},
         accepted: false,
-        errors: [{ code: 'NOT_CONFIGURED', description: 'External translator not configured', severity: 'error' }],
+        errors: [
+          {
+            code: 'NOT_CONFIGURED',
+            description: 'External translator not configured',
+            severity: 'error',
+          },
+        ],
       };
     }
 
@@ -120,7 +127,13 @@ export const externalTranslatorAdapter: Translator = {
       transactionSet,
       canonical: { raw: rawX12, note: 'External translator parse not yet connected' },
       accepted: false,
-      errors: [{ code: 'SCAFFOLD', description: 'External translator scaffold — not connected', severity: 'warning' }],
+      errors: [
+        {
+          code: 'SCAFFOLD',
+          description: 'External translator scaffold — not connected',
+          severity: 'warning',
+        },
+      ],
     };
   },
 };

@@ -17,29 +17,23 @@
  * resilience features needed for production telehealth deployments.
  */
 
-import { log } from "../lib/logger.js";
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Configuration                                                        */
 /* ------------------------------------------------------------------ */
 
 /** How often heartbeats are expected (ms) */
-const HEARTBEAT_INTERVAL_MS = parseInt(
-  process.env.TELEHEALTH_HEARTBEAT_INTERVAL_MS || "15000",
-  10,
-);
+const HEARTBEAT_INTERVAL_MS = parseInt(process.env.TELEHEALTH_HEARTBEAT_INTERVAL_MS || '15000', 10);
 
 /** Grace period after last heartbeat before marking participant disconnected (ms) */
 const RECONNECTION_WINDOW_MS = parseInt(
-  process.env.TELEHEALTH_RECONNECTION_WINDOW_MS || "120000",
-  10,
+  process.env.TELEHEALTH_RECONNECTION_WINDOW_MS || '120000',
+  10
 );
 
 /** If ALL participants miss heartbeat for this long, auto-end the room (ms) */
-const AUTO_END_TIMEOUT_MS = parseInt(
-  process.env.TELEHEALTH_AUTO_END_TIMEOUT_MS || "300000",
-  10,
-);
+const AUTO_END_TIMEOUT_MS = parseInt(process.env.TELEHEALTH_AUTO_END_TIMEOUT_MS || '300000', 10);
 
 /** Check interval for stale session sweeper (ms) */
 const SWEEP_INTERVAL_MS = 60_000;
@@ -49,10 +43,10 @@ const SWEEP_INTERVAL_MS = 60_000;
 /* ------------------------------------------------------------------ */
 
 export type ParticipantConnectionState =
-  | "connected"
-  | "reconnecting"    // Heartbeat missed, within reconnection window
-  | "disconnected"    // Reconnection window expired
-  | "ended";          // Participant left
+  | 'connected'
+  | 'reconnecting' // Heartbeat missed, within reconnection window
+  | 'disconnected' // Reconnection window expired
+  | 'ended'; // Participant left
 
 export interface ParticipantHeartbeat {
   roomId: string;
@@ -60,13 +54,13 @@ export interface ParticipantHeartbeat {
   participantId: string;
   role: string;
   state: ParticipantConnectionState;
-  lastHeartbeatAt: string;  // ISO timestamp
-  connectedAt: string;      // ISO timestamp
-  disconnectedAt?: string;  // ISO timestamp
+  lastHeartbeatAt: string; // ISO timestamp
+  connectedAt: string; // ISO timestamp
+  disconnectedAt?: string; // ISO timestamp
   /** Number of reconnection events */
   reconnectionCount: number;
   /** Network quality signal (reported by client) */
-  networkQuality?: "good" | "fair" | "poor";
+  networkQuality?: 'good' | 'fair' | 'poor';
 }
 
 export interface SessionMetrics {
@@ -80,7 +74,7 @@ export interface SessionMetrics {
   /** Whether the session was auto-ended due to timeout */
   autoEnded: boolean;
   /** Average reported network quality */
-  avgNetworkQuality?: "good" | "fair" | "poor";
+  avgNetworkQuality?: 'good' | 'fair' | 'poor';
   /** ISO timestamp of first heartbeat */
   startedAt?: string;
   /** ISO timestamp of last heartbeat */
@@ -89,7 +83,7 @@ export interface SessionMetrics {
 
 export interface AutoEndCandidate {
   roomId: string;
-  reason: "all_disconnected" | "timeout" | "abandoned";
+  reason: 'all_disconnected' | 'timeout' | 'abandoned';
   lastActivityAt: string;
   silenceSeconds: number;
 }
@@ -120,7 +114,7 @@ export function recordHeartbeat(
   roomId: string,
   participantId: string,
   role: string,
-  networkQuality?: "good" | "fair" | "poor",
+  networkQuality?: 'good' | 'fair' | 'poor'
 ): ParticipantHeartbeat {
   // Enforce capacity
   if (!heartbeats.has(roomId) && heartbeats.size >= MAX_TRACKED_ROOMS) {
@@ -134,16 +128,17 @@ export function recordHeartbeat(
   const existing = roomMap.get(participantId);
   if (existing) {
     // Track reconnection if previously disconnected/reconnecting
-    const wasDisconnected =
-      existing.state === "disconnected" || existing.state === "reconnecting";
+    const wasDisconnected = existing.state === 'disconnected' || existing.state === 'reconnecting';
 
     existing.lastHeartbeatAt = now;
-    existing.state = "connected";
+    existing.state = 'connected';
     existing.networkQuality = networkQuality;
     if (wasDisconnected) {
       existing.reconnectionCount++;
       existing.disconnectedAt = undefined;
-      log.info(`Telehealth reconnected: room=${roomId} participant=${participantId} reconnections=${existing.reconnectionCount}`);
+      log.info(
+        `Telehealth reconnected: room=${roomId} participant=${participantId} reconnections=${existing.reconnectionCount}`
+      );
     }
     return existing;
   }
@@ -153,7 +148,7 @@ export function recordHeartbeat(
     roomId,
     participantId,
     role,
-    state: "connected",
+    state: 'connected',
     lastHeartbeatAt: now,
     connectedAt: now,
     reconnectionCount: 0,
@@ -162,7 +157,9 @@ export function recordHeartbeat(
   roomMap.set(participantId, hb);
   heartbeats.set(roomId, roomMap);
 
-  log.info(`Telehealth heartbeat: room=${roomId} participant=${participantId} role=${role} state=connected`);
+  log.info(
+    `Telehealth heartbeat: room=${roomId} participant=${participantId} role=${role} state=connected`
+  );
   return hb;
 }
 
@@ -171,7 +168,7 @@ export function recordHeartbeat(
  */
 export function markParticipantEnded(
   roomId: string,
-  participantId: string,
+  participantId: string
 ): ParticipantHeartbeat | undefined {
   const roomMap = heartbeats.get(roomId);
   if (!roomMap) return undefined;
@@ -179,7 +176,7 @@ export function markParticipantEnded(
   const hb = roomMap.get(participantId);
   if (!hb) return undefined;
 
-  hb.state = "ended";
+  hb.state = 'ended';
   hb.disconnectedAt = new Date().toISOString();
   return hb;
 }
@@ -223,10 +220,10 @@ export function getSessionMetrics(roomId: string): SessionMetrics {
 
   const durationMs = startedAt ? now - new Date(startedAt).getTime() : 0;
 
-  let avgNetworkQuality: "good" | "fair" | "poor" | undefined;
+  let avgNetworkQuality: 'good' | 'fair' | 'poor' | undefined;
   if (networkScores.length > 0) {
     const avg = networkScores.reduce((a, b) => a + b, 0) / networkScores.length;
-    avgNetworkQuality = avg >= 2.5 ? "good" : avg >= 1.5 ? "fair" : "poor";
+    avgNetworkQuality = avg >= 2.5 ? 'good' : avg >= 1.5 ? 'fair' : 'poor';
   }
 
   return {
@@ -254,23 +251,23 @@ export function sweepStaleSessions(): AutoEndCandidate[] {
     let lastActivity = 0;
 
     for (const [, hb] of roomMap) {
-      if (hb.state === "ended") continue;
+      if (hb.state === 'ended') continue;
 
       const lastHb = new Date(hb.lastHeartbeatAt).getTime();
       const elapsed = now - lastHb;
 
-      if (elapsed > RECONNECTION_WINDOW_MS && hb.state === "connected") {
-        hb.state = "reconnecting";
+      if (elapsed > RECONNECTION_WINDOW_MS && hb.state === 'connected') {
+        hb.state = 'reconnecting';
         hb.disconnectedAt = new Date().toISOString();
         log.info(`Telehealth reconnecting: room=${roomId} participant=${hb.participantId}`);
       }
 
-      if (elapsed > RECONNECTION_WINDOW_MS + AUTO_END_TIMEOUT_MS && hb.state === "reconnecting") {
-        hb.state = "disconnected";
+      if (elapsed > RECONNECTION_WINDOW_MS + AUTO_END_TIMEOUT_MS && hb.state === 'reconnecting') {
+        hb.state = 'disconnected';
         log.info(`Telehealth disconnected: room=${roomId} participant=${hb.participantId}`);
       }
 
-      if (hb.state !== "disconnected") {
+      if (hb.state !== 'disconnected') {
         allDisconnected = false;
       }
 
@@ -285,7 +282,7 @@ export function sweepStaleSessions(): AutoEndCandidate[] {
       if (silenceMs > AUTO_END_TIMEOUT_MS) {
         const candidate: AutoEndCandidate = {
           roomId,
-          reason: "all_disconnected",
+          reason: 'all_disconnected',
           lastActivityAt: new Date(lastActivity).toISOString(),
           silenceSeconds: Math.round(silenceMs / 1000),
         };
@@ -293,7 +290,10 @@ export function sweepStaleSessions(): AutoEndCandidate[] {
 
         if (autoEndCallback) {
           try {
-            autoEndCallback(roomId, `auto-end: all participants disconnected for ${candidate.silenceSeconds}s`);
+            autoEndCallback(
+              roomId,
+              `auto-end: all participants disconnected for ${candidate.silenceSeconds}s`
+            );
           } catch (err) {
             log.warn(`Auto-end callback failed: room=${roomId}`, { error: String(err) });
           }
@@ -319,10 +319,10 @@ export function startSessionSweeper(): void {
   if (sweepTimer) return;
   sweepTimer = setInterval(sweepStaleSessions, SWEEP_INTERVAL_MS);
   // Don't keep process alive
-  if (sweepTimer && typeof sweepTimer === "object" && "unref" in sweepTimer) {
+  if (sweepTimer && typeof sweepTimer === 'object' && 'unref' in sweepTimer) {
     sweepTimer.unref();
   }
-  log.info("Telehealth session sweeper started");
+  log.info('Telehealth session sweeper started');
 }
 
 /**
@@ -332,7 +332,7 @@ export function stopSessionSweeper(): void {
   if (sweepTimer) {
     clearInterval(sweepTimer);
     sweepTimer = null;
-    log.info("Telehealth session sweeper stopped");
+    log.info('Telehealth session sweeper stopped');
   }
 }
 

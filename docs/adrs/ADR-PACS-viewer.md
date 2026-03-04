@@ -36,8 +36,8 @@ layer (Orthanc). Options considered:
 
 ## Alternatives Rejected
 
-| Option | Reason |
-|--------|--------|
-| Custom viewer | Enormous effort, no clinical advantage |
-| dwv | Less feature-complete than OHIF, smaller community |
-| Cornerstone.js direct | OHIF already wraps it with clinical UI |
+| Option                | Reason                                             |
+| --------------------- | -------------------------------------------------- |
+| Custom viewer         | Enormous effort, no clinical advantage             |
+| dwv                   | Less feature-complete than OHIF, smaller community |
+| Cornerstone.js direct | OHIF already wraps it with clinical UI             |

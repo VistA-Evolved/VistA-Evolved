@@ -1,15 +1,18 @@
 # 398-01-IMPLEMENT -- Specialty Certification Runner (W22-P10)
 
 ## User Request
+
 Implement Phase 398: Specialty Certification Runner as the Wave 22 capstone verification phase.
 
 ## Implementation Steps
+
 1. Create `scripts/verify-wave22-specialty.ps1` -- Certification runner with 90+ gates covering all W22 phases
 2. Update `scripts/verify-latest.ps1` -- Delegate to wave22 runner
 3. Create prompt folder `398-W22-P10-CERT-RUNNER/` with IMPLEMENT, VERIFY, NOTES
 4. Create evidence folders for phases that lacked them
 
 ## Verification Gates (14 sections)
+
 - Section 1: P1 Manifest + 4 ADRs + specialty coverage map (6 gates)
 - Section 2: P2 Content Pack Framework -- files + types (7 gates)
 - Section 3: P3 Inpatient Core -- files + types (7 gates)
@@ -26,6 +29,7 @@ Implement Phase 398: Specialty Certification Runner as the Wave 22 capstone veri
 - Section 14: Prompt folders (10 gates)
 
 ## Files Touched
+
 - `scripts/verify-wave22-specialty.ps1` (new)
 - `scripts/verify-latest.ps1` (modified)
 - `prompts/398-W22-P10-CERT-RUNNER/398-01-IMPLEMENT.md` (new)

@@ -49,7 +49,10 @@ if (existsSync(snapshotPath) && existsSync(registryPath)) {
 
     // Drift check: snapshot total (registry + exceptions) vs code entries
     const drift = Math.abs(snapshotTotal - regCount);
-    check(`RPC drift <= 30 (snapshot: ${snapshotTotal}, code: ${regCount}, delta: ${drift})`, drift <= 30);
+    check(
+      `RPC drift <= 30 (snapshot: ${snapshotTotal}, code: ${regCount}, delta: ${drift})`,
+      drift <= 30
+    );
   } catch (e) {
     check(`Parse snapshot: ${e.message}`, false);
   }

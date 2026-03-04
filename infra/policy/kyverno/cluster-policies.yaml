@@ -22,7 +22,7 @@ spec:
               kinds:
                 - Pod
       validate:
-        message: "Privileged containers are not allowed."
+        message: 'Privileged containers are not allowed.'
         pattern:
           spec:
             containers:
@@ -53,7 +53,7 @@ spec:
               kinds:
                 - Pod
       validate:
-        message: "Host network, PID, and IPC namespaces are not allowed."
+        message: 'Host network, PID, and IPC namespaces are not allowed.'
         pattern:
           spec:
             =(hostNetwork): false
@@ -81,13 +81,13 @@ spec:
               kinds:
                 - Pod
       validate:
-        message: "HostPath volumes are not allowed."
+        message: 'HostPath volumes are not allowed.'
         deny:
           conditions:
             any:
               - key: "{{ request.object.spec.volumes[].hostPath || '' }}"
                 operator: NotEquals
-                value: ""
+                value: ''
 
 ---
 # ---- require-resource-limits ----
@@ -110,17 +110,17 @@ spec:
               kinds:
                 - Pod
       validate:
-        message: "All containers must have CPU and memory requests and limits."
+        message: 'All containers must have CPU and memory requests and limits.'
         pattern:
           spec:
             containers:
               - resources:
                   requests:
-                    memory: "?*"
-                    cpu: "?*"
+                    memory: '?*'
+                    cpu: '?*'
                   limits:
-                    memory: "?*"
-                    cpu: "?*"
+                    memory: '?*'
+                    cpu: '?*'
 
 ---
 # ---- require-probes ----
@@ -133,7 +133,7 @@ metadata:
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/severity: medium
 spec:
-  validationFailureAction: Audit  # Audit-only: some system pods don't have probes
+  validationFailureAction: Audit # Audit-only: some system pods don't have probes
   background: true
   rules:
     - name: require-probes
@@ -143,18 +143,18 @@ spec:
               kinds:
                 - Pod
               namespaces:
-                - "ve-tenant-*"
+                - 've-tenant-*'
       validate:
-        message: "Liveness and readiness probes are recommended for tenant pods."
+        message: 'Liveness and readiness probes are recommended for tenant pods.'
         pattern:
           spec:
             containers:
               - livenessProbe:
                   httpGet:
-                    path: "?*"
+                    path: '?*'
               - readinessProbe:
                   httpGet:
-                    path: "?*"
+                    path: '?*'
 
 ---
 # ---- require-labels ----
@@ -178,10 +178,10 @@ spec:
                 - Deployment
                 - StatefulSet
               namespaces:
-                - "ve-*"
+                - 've-*'
       validate:
-        message: "Deployments in VE namespaces must have app.kubernetes.io/part-of label."
+        message: 'Deployments in VE namespaces must have app.kubernetes.io/part-of label.'
         pattern:
           metadata:
             labels:
-              app.kubernetes.io/part-of: "?*"
+              app.kubernetes.io/part-of: '?*'

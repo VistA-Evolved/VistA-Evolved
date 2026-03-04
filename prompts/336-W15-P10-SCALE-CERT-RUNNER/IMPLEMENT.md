@@ -1,9 +1,11 @@
 # Phase 336 — W15-P10: Scale Certification Runner
 
 ## User Request
+
 Implement the scale certification runner as Phase 336 of Wave 15.
 
 ## Implementation Steps
+
 1. Create `apps/api/src/services/scale-cert-runner.ts` — 20 gate definitions
    across 8 categories, certification engine with scoring and verdict,
    profiles, schedules, trends, badges, evidence hashing
@@ -14,6 +16,7 @@ Implement the scale certification runner as Phase 336 of Wave 15.
 6. Type-check with tsc --noEmit
 
 ## Files Touched
+
 - `apps/api/src/services/scale-cert-runner.ts` (NEW)
 - `apps/api/src/routes/scale-cert-runner-routes.ts` (NEW)
 - `apps/api/src/middleware/security.ts` (MODIFIED — +1 AUTH_RULE)

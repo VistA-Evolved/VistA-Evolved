@@ -6,23 +6,23 @@
 
 ## 1. Data Classification
 
-| Data Category | Owner | Visibility | Consent Gate |
-|---|---|---|---|
-| **Intake answers (QR)** | Patient | Patient, assigned clinician, admin | Implicit (by submission) |
-| **Draft summary** | System-generated | Clinician who opens review, admin | N/A (derived) |
-| **Red flags** | System-generated | Clinician who opens review, admin | N/A (derived) |
-| **Event log** | System | Clinician (audit), admin | N/A (operational) |
-| **Filed note** | Clinician (author) | Standard VistA TIU access controls | VistA ACL |
-| **Kiosk resume token** | System | Bearer of token (single-use, 30min TTL) | N/A (ephemeral) |
+| Data Category           | Owner              | Visibility                              | Consent Gate             |
+| ----------------------- | ------------------ | --------------------------------------- | ------------------------ |
+| **Intake answers (QR)** | Patient            | Patient, assigned clinician, admin      | Implicit (by submission) |
+| **Draft summary**       | System-generated   | Clinician who opens review, admin       | N/A (derived)            |
+| **Red flags**           | System-generated   | Clinician who opens review, admin       | N/A (derived)            |
+| **Event log**           | System             | Clinician (audit), admin                | N/A (operational)        |
+| **Filed note**          | Clinician (author) | Standard VistA TIU access controls      | VistA ACL                |
+| **Kiosk resume token**  | System             | Bearer of token (single-use, 30min TTL) | N/A (ephemeral)          |
 
 ## 2. Access Control by Role
 
-| Actor | Create Session | Answer Questions | View Own Answers | Review Others | File to VistA | View Audit |
-|---|---|---|---|---|---|---|
-| **Patient (portal)** | Yes | Yes | Yes | No | No | No |
-| **Proxy (portal)** | Yes (subjectType=proxy) | Yes | Yes (own session) | No | No | No |
-| **Clinician** | No | No | No | Yes (submitted+) | Yes (reviewed only) | Yes |
-| **Admin** | No | No | No | Yes | Yes | Yes |
+| Actor                | Create Session          | Answer Questions | View Own Answers  | Review Others    | File to VistA       | View Audit |
+| -------------------- | ----------------------- | ---------------- | ----------------- | ---------------- | ------------------- | ---------- |
+| **Patient (portal)** | Yes                     | Yes              | Yes               | No               | No                  | No         |
+| **Proxy (portal)**   | Yes (subjectType=proxy) | Yes              | Yes (own session) | No               | No                  | No         |
+| **Clinician**        | No                      | No               | No                | Yes (submitted+) | Yes (reviewed only) | Yes        |
+| **Admin**            | No                      | No               | No                | Yes              | Yes                 | Yes        |
 
 ## 3. Proxy / Minor Intake
 
@@ -59,12 +59,12 @@
 
 ## 5. Session Expiry & Abandonment
 
-| Scenario | TTL | Action |
-|---|---|---|
-| Session idle (no activity) | 24 hours | Status -> expired |
-| Kiosk idle (no touch) | 5 minutes warning, 60s auto-save | Status preserved, kiosk resets |
-| Resume token | 30 minutes | Token invalidated |
-| Submitted, not reviewed | No expiry | Stays in clinician queue |
+| Scenario                   | TTL                              | Action                         |
+| -------------------------- | -------------------------------- | ------------------------------ |
+| Session idle (no activity) | 24 hours                         | Status -> expired              |
+| Kiosk idle (no touch)      | 5 minutes warning, 60s auto-save | Status preserved, kiosk resets |
+| Resume token               | 30 minutes                       | Token invalidated              |
+| Submitted, not reviewed    | No expiry                        | Stays in clinician queue       |
 
 ## 6. Filing Authorization
 

@@ -8,10 +8,10 @@
 
 Medication-related RPCs found via `^XWB(8994,"B")` scan:
 
-| RPC | IEN | Entry Point | Notes |
-|-----|-----|-------------|-------|
-| **ORWPS ACTIVE** | 347 | `ACTIVE^ORWPS` | Active inpatient & outpatient meds |
-| **ORWPS COVER** | 538 | `COVER3^C0PWPS` | Cover sheet meds (less detail) |
+| RPC               | IEN | Entry Point     | Notes                                      |
+| ----------------- | --- | --------------- | ------------------------------------------ |
+| **ORWPS ACTIVE**  | 347 | `ACTIVE^ORWPS`  | Active inpatient & outpatient meds         |
+| **ORWPS COVER**   | 538 | `COVER3^C0PWPS` | Cover sheet meds (less detail)             |
 | **ORWORR GETTXT** | 573 | `GETTXT^ORWORR` | Order display text (drug name + sig + qty) |
 
 ---
@@ -23,9 +23,11 @@ Medication-related RPCs found via `^XWB(8994,"B")` scan:
 **Response**: Multi-line, grouped by medication. Each med has:
 
 1. **Header line** starting with `~`:
+
    ```
    ~TYPE^rxIEN;kind^drugName^?^?^?^?^?^orderIEN^status^?^?^qty^?^?
    ```
+
    - `TYPE` = OP (outpatient), NV (non-VA), UD (unit dose), IV, CP (clinic)
    - `rxIEN;kind` = Pharmacy Rx IEN + type (`P`=pending, `R`=refill) + `;O`=outpatient
    - `drugName` = Drug name from `^PSDRUG` (empty in WorldVistA Docker — see note below)
@@ -38,6 +40,7 @@ Medication-related RPCs found via `^XWB(8994,"B")` scan:
    - `\ Sig: text` — instructions/sig
 
 ### Example (DFN=1):
+
 ```
 ~OP^11P;O^^^^^^^96^PENDING^^^30^^0
    Qty: 30
@@ -54,6 +57,7 @@ in ORWPS ACTIVE piece 2 is often empty. To resolve the drug name, call:
 **ORWORR GETTXT** with 1 LITERAL param — the order IEN.
 
 **Response** (3 lines):
+
 ```
 ACEBUTOLOL CAP,ORAL  200MG          ← Line 0: drug name + strength
 TAKE 1 CAPSULE BY MOUTH EVERY DAY   ← Line 1: sig
@@ -79,6 +83,7 @@ GET /vista/medications?dfn=1
 ```
 
 **Success response**:
+
 ```json
 {
   "ok": true,
@@ -96,6 +101,7 @@ GET /vista/medications?dfn=1
 ```
 
 **Validation error** (no dfn):
+
 ```json
 {
   "ok": false,

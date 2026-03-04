@@ -15,24 +15,18 @@
  *   POST /hl7/outbound/build     — Build an outbound HL7v2 message
  */
 
-import type { FastifyInstance } from "fastify";
-import { getHl7EngineStatus, getHl7Engine, isHl7EngineEnabled } from "../hl7/index.js";
-import {
-  convertHl7ToFhir,
-  listFhirConversions,
-} from "../hl7/fhir-bridge.js";
-import {
-  getChannelHealthSummary,
-  getRouteHealthSummary,
-} from "../hl7/channel-health.js";
+import type { FastifyInstance } from 'fastify';
+import { getHl7EngineStatus, getHl7Engine, isHl7EngineEnabled } from '../hl7/index.js';
+import { convertHl7ToFhir, listFhirConversions } from '../hl7/fhir-bridge.js';
+import { getChannelHealthSummary, getRouteHealthSummary } from '../hl7/channel-health.js';
 import {
   buildAdtMessage,
   buildOruMessage,
   buildOrmMessage,
   buildSiuMessage,
   listOutboundMessageTypes,
-} from "../hl7/outbound-builder.js";
-import { log } from "../lib/logger.js";
+} from '../hl7/outbound-builder.js';
+import { log } from '../lib/logger.js';
 
 export default async function hl7EngineRoutes(server: FastifyInstance): Promise<void> {
   /**
@@ -40,7 +34,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
    * Returns basic health status. Available without admin role so monitoring
    * systems can probe it.
    */
-  server.get("/hl7/health", async (_request, reply) => {
+  server.get('/hl7/health', async (_request, reply) => {
     const status = getHl7EngineStatus();
     const enabled = isHl7EngineEnabled();
 
@@ -58,12 +52,12 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
    * GET /hl7/connections — Active MLLP connections.
    * Admin-only (enforced by AUTH_RULES matching /hl7/* -> admin).
    */
-  server.get("/hl7/connections", async (_request, reply) => {
+  server.get('/hl7/connections', async (_request, reply) => {
     const engine = getHl7Engine();
     if (!engine) {
       return reply.code(503).send({
         ok: false,
-        error: "HL7 engine not running",
+        error: 'HL7 engine not running',
         connections: [],
       });
     }
@@ -91,7 +85,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
    * GET /hl7/status — Detailed engine status.
    * Admin-only (enforced by AUTH_RULES).
    */
-  server.get("/hl7/status", async (_request, reply) => {
+  server.get('/hl7/status', async (_request, reply) => {
     const status = getHl7EngineStatus();
     const enabled = isHl7EngineEnabled();
 
@@ -100,10 +94,10 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
       enabled,
       ...status,
       config: {
-        port: parseInt(process.env.HL7_MLLP_PORT || "2575", 10),
-        host: process.env.HL7_MLLP_HOST || "0.0.0.0",
-        maxConnections: parseInt(process.env.HL7_MLLP_MAX_CONNECTIONS || "100", 10),
-        tls: process.env.HL7_MLLP_TLS === "true",
+        port: parseInt(process.env.HL7_MLLP_PORT || '2575', 10),
+        host: process.env.HL7_MLLP_HOST || '0.0.0.0',
+        maxConnections: parseInt(process.env.HL7_MLLP_MAX_CONNECTIONS || '100', 10),
+        tls: process.env.HL7_MLLP_TLS === 'true',
       },
     });
   });
@@ -116,7 +110,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
    * GET /hl7/channel-health — Aggregated channel health summary.
    * Admin-only (enforced by AUTH_RULES matching /hl7/* -> admin).
    */
-  server.get("/hl7/channel-health", async (_request, reply) => {
+  server.get('/hl7/channel-health', async (_request, reply) => {
     const summary = getChannelHealthSummary();
     const routeHealth = getRouteHealthSummary();
     return reply.send({
@@ -133,7 +127,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
   /**
    * GET /hl7/fhir/conversions — List supported FHIR conversion types.
    */
-  server.get("/hl7/fhir/conversions", async (_request, reply) => {
+  server.get('/hl7/fhir/conversions', async (_request, reply) => {
     return reply.send({
       ok: true,
       conversions: listFhirConversions(),
@@ -144,9 +138,9 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
    * POST /hl7/fhir/convert — Convert an HL7v2 message to FHIR R4 bundle.
    * Body: { message: string } (raw HL7v2 pipe-delimited message)
    */
-  server.post("/hl7/fhir/convert", async (request, reply) => {
+  server.post('/hl7/fhir/convert', async (request, reply) => {
     const body = (request.body as any) || {};
-    if (!body.message || typeof body.message !== "string") {
+    if (!body.message || typeof body.message !== 'string') {
       return reply.code(400).send({
         ok: false,
         error: "Request body must include 'message' (string) containing an HL7v2 message",
@@ -157,13 +151,13 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
       const result = convertHl7ToFhir(body.message);
       return reply.send(result);
     } catch (err) {
-      log.error("FHIR conversion failed", {
-        component: "hl7-fhir-bridge",
+      log.error('FHIR conversion failed', {
+        component: 'hl7-fhir-bridge',
         error: (err as Error).message,
       });
       return reply.code(422).send({
         ok: false,
-        error: "FHIR conversion failed",
+        error: 'FHIR conversion failed',
       });
     }
   });
@@ -175,7 +169,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
   /**
    * GET /hl7/outbound/types — List supported outbound message types.
    */
-  server.get("/hl7/outbound/types", async (_request, reply) => {
+  server.get('/hl7/outbound/types', async (_request, reply) => {
     return reply.send({
       ok: true,
       types: listOutboundMessageTypes(),
@@ -186,30 +180,36 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
    * POST /hl7/outbound/build — Build an outbound HL7v2 message.
    * Body: { type: "ADT"|"ORU"|"ORM"|"SIU", data: {...} }
    */
-  server.post("/hl7/outbound/build", async (request, reply) => {
+  server.post('/hl7/outbound/build', async (request, reply) => {
     const body = (request.body as any) || {};
-    const type = (body.type || "").toUpperCase();
+    const type = (body.type || '').toUpperCase();
 
-    if (!body.config || typeof body.config !== "object" || !body.data || typeof body.data !== "object") {
+    if (
+      !body.config ||
+      typeof body.config !== 'object' ||
+      !body.data ||
+      typeof body.data !== 'object'
+    ) {
       return reply.code(400).send({
         ok: false,
-        error: "Request body must include 'type' (ADT|ORU|ORM|SIU), 'config' (OutboundConfig), and 'data' (object)",
+        error:
+          "Request body must include 'type' (ADT|ORU|ORM|SIU), 'config' (OutboundConfig), and 'data' (object)",
       });
     }
 
     try {
-      let result: import("../hl7/outbound-builder.js").OutboundResult;
+      let result: import('../hl7/outbound-builder.js').OutboundResult;
       switch (type) {
-        case "ADT":
+        case 'ADT':
           result = buildAdtMessage(body.config, body.data);
           break;
-        case "ORU":
+        case 'ORU':
           result = buildOruMessage(body.config, body.data);
           break;
-        case "ORM":
+        case 'ORM':
           result = buildOrmMessage(body.config, body.data);
           break;
-        case "SIU":
+        case 'SIU':
           result = buildSiuMessage(body.config, body.data);
           break;
         default:
@@ -220,13 +220,13 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
       }
       return reply.send({ ...result, type });
     } catch (err) {
-      log.error("Outbound message build failed", {
-        component: "hl7-outbound-builder",
+      log.error('Outbound message build failed', {
+        component: 'hl7-outbound-builder',
         error: (err as Error).message,
       });
       return reply.code(422).send({
         ok: false,
-        error: "Outbound message build failed",
+        error: 'Outbound message build failed',
       });
     }
   });

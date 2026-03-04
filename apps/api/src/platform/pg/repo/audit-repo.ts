@@ -6,26 +6,18 @@
  * Mirrors apps/api/src/platform/db/repo/audit-repo.ts using Postgres.
  */
 
-import { eq, and, or, like, ilike, sql, desc } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { payerAuditEvent } from "../pg-schema.js";
+import { eq, and, or, ilike, sql, desc } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { payerAuditEvent } from '../pg-schema.js';
 
 export type AuditRow = typeof payerAuditEvent.$inferSelect;
 
-export async function getAuditForEntity(
-  entityType: string,
-  entityId: string,
-): Promise<AuditRow[]> {
+export async function getAuditForEntity(entityType: string, entityId: string): Promise<AuditRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(payerAuditEvent)
-    .where(
-      and(
-        eq(payerAuditEvent.entityType, entityType),
-        eq(payerAuditEvent.entityId, entityId),
-      ),
-    )
+    .where(and(eq(payerAuditEvent.entityType, entityType), eq(payerAuditEvent.entityId, entityId)))
     .orderBy(desc(payerAuditEvent.createdAt));
 }
 
@@ -38,10 +30,7 @@ export async function getAuditForPayer(payerId: string): Promise<AuditRow[]> {
     .orderBy(desc(payerAuditEvent.createdAt));
 }
 
-export async function getAuditForTenant(
-  tenantId: string,
-  limit = 200,
-): Promise<AuditRow[]> {
+export async function getAuditForTenant(tenantId: string, limit = 200): Promise<AuditRow[]> {
   const db = getPgDb();
   return db
     .select()
@@ -53,11 +42,7 @@ export async function getAuditForTenant(
 
 export async function getRecentAudit(limit = 50): Promise<AuditRow[]> {
   const db = getPgDb();
-  return db
-    .select()
-    .from(payerAuditEvent)
-    .orderBy(desc(payerAuditEvent.createdAt))
-    .limit(limit);
+  return db.select().from(payerAuditEvent).orderBy(desc(payerAuditEvent.createdAt)).limit(limit);
 }
 
 export async function getAuditStats(): Promise<{
@@ -67,9 +52,7 @@ export async function getAuditStats(): Promise<{
 }> {
   const db = getPgDb();
 
-  const countResult = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(payerAuditEvent);
+  const countResult = await db.select({ count: sql<number>`count(*)::int` }).from(payerAuditEvent);
   const total = countResult[0]?.count ?? 0;
 
   const actionRows = await db
@@ -128,10 +111,7 @@ export async function searchAudit(filters: {
   if (filters.search) {
     const term = `%${filters.search}%`;
     conditions.push(
-      or(
-        ilike(payerAuditEvent.entityId, term),
-        ilike(payerAuditEvent.reason, term),
-      )!,
+      or(ilike(payerAuditEvent.entityId, term), ilike(payerAuditEvent.reason, term))!
     );
   }
 

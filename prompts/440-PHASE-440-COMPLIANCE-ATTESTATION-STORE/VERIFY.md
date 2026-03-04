@@ -1,6 +1,7 @@
 # Phase 440 — VERIFY: Compliance Attestation Store (W28 P2)
 
 ## Gates
+
 1. `attestation-store.ts` exists in `apps/api/src/regulatory/`
 2. Exports: createAttestation, getAttestation, listAttestations, revokeAttestation,
    checkExpiredAttestations, getAttestationSummary, verifyAttestationChain

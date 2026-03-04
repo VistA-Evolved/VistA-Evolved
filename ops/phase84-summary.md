@@ -1,6 +1,7 @@
 # Phase 84 — Nursing Documentation + Flowsheets — Summary
 
 ## What Changed
+
 - **7 new API endpoints** added to `apps/api/src/routes/nursing/index.ts`:
   - `GET /vista/nursing/critical-thresholds` — configurable safety thresholds
   - `GET /vista/nursing/patient-context` — ORWPT16 ID INFO with ORWPT fallback
@@ -20,12 +21,14 @@
 - **Phase 68 endpoints preserved intact** (vitals, vitals-range, notes, ward-patients, tasks, mar, mar/administer)
 
 ## Safety Features
+
 - Configurable critical thresholds: BP>=180, HR <50/>130, Temp <95/>103°F, Resp <8/>30, SpO2 <=90%, Pain >=8
 - Visual critical value highlighting with red borders and count badges
 - Due/overdue indicators based on 4-hour inpatient vitals schedule
 - Shift-based safety reminders: fall risk, skin integrity, pain, I&O
 
 ## How to Test Manually
+
 1. Start API: `cd apps/api && npx tsx --env-file=.env.local src/index.ts`
 2. Start web: `cd apps/web && npx next dev`
 3. Navigate to `/cprs/nursing`, enter patient DFN (e.g., 3)
@@ -35,10 +38,12 @@
 7. Check Tasks tab: overdue indicators, safety checklist
 
 ## Verifier Output
+
 - `scripts/verify-phase84-nursing.ps1`: **79/79 PASS**
 - `scripts/verify-latest.ps1`: **75/75 PASS**
 
 ## Follow-ups
+
 - Phase 84B: Build custom ZVENAS RPCs for assessments
 - Wire GMRIO RPCs for I&O when available in sandbox
 - TIU SIGN RECORD integration for note signing

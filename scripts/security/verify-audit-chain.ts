@@ -14,21 +14,19 @@
  *   1 = at least one chain broken or unreachable
  */
 
-import { createHash } from "crypto";
-import { existsSync, readFileSync } from "fs";
+import { createHash } from 'crypto';
+import { existsSync, readFileSync } from 'fs';
 
 /* ------------------------------------------------------------------ */
 /* Config                                                              */
 /* ------------------------------------------------------------------ */
 
-const API_URL = process.argv.includes("--api-url")
-  ? process.argv[process.argv.indexOf("--api-url") + 1]!
-  : "http://127.0.0.1:3001";
+const API_URL = process.argv.includes('--api-url')
+  ? process.argv[process.argv.indexOf('--api-url') + 1]!
+  : 'http://127.0.0.1:3001';
 
-const FILE_MODE = process.argv.includes("--file");
-const FILE_PATH = FILE_MODE
-  ? process.argv[process.argv.indexOf("--file") + 1]!
-  : "";
+const FILE_MODE = process.argv.includes('--file');
+const FILE_PATH = FILE_MODE ? process.argv[process.argv.indexOf('--file') + 1]! : '';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -56,17 +54,17 @@ interface AuditEntry {
 
 function verifyJsonlFile(filePath: string, subsystem: string): ChainResult {
   if (!existsSync(filePath)) {
-    return { subsystem, valid: true, totalEntries: 0, error: "File not found (empty chain)" };
+    return { subsystem, valid: true, totalEntries: 0, error: 'File not found (empty chain)' };
   }
 
-  const content = readFileSync(filePath, "utf-8");
-  const lines = content.trim().split("\n").filter(Boolean);
+  const content = readFileSync(filePath, 'utf-8');
+  const lines = content.trim().split('\n').filter(Boolean);
 
   if (lines.length === 0) {
     return { subsystem, valid: true, totalEntries: 0 };
   }
 
-  let prevHashExpected = "";
+  let prevHashExpected = '';
 
   for (let i = 0; i < lines.length; i++) {
     let entry: AuditEntry;
@@ -85,7 +83,7 @@ function verifyJsonlFile(filePath: string, subsystem: string): ChainResult {
     // Verify entry hash
     const { hash: storedHash, ...rest } = entry;
     const data = JSON.stringify(rest);
-    const expectedHash = createHash("sha256").update(data).digest("hex");
+    const expectedHash = createHash('sha256').update(data).digest('hex');
 
     // Note: hash computation may differ from the actual implementation
     // because different subsystems may include different fields.
@@ -116,8 +114,8 @@ function verifyJsonlFile(filePath: string, subsystem: string): ChainResult {
 async function verifyViaHttp(endpoint: string, subsystem: string): Promise<ChainResult> {
   try {
     const resp = await fetch(`${API_URL}${endpoint}`, {
-      method: "GET",
-      headers: { Accept: "application/json" },
+      method: 'GET',
+      headers: { Accept: 'application/json' },
     });
 
     if (resp.status === 401 || resp.status === 403) {
@@ -162,35 +160,37 @@ async function verifyViaHttp(endpoint: string, subsystem: string): Promise<Chain
 /* ------------------------------------------------------------------ */
 
 async function main(): Promise<void> {
-  console.log("\n=== Audit Chain Integrity Verifier (Phase 62) ===\n");
+  console.log('\n=== Audit Chain Integrity Verifier (Phase 62) ===\n');
 
   const results: ChainResult[] = [];
 
   if (FILE_MODE) {
     console.log(`Mode: FILE (${FILE_PATH})\n`);
-    results.push(verifyJsonlFile(FILE_PATH, "file"));
+    results.push(verifyJsonlFile(FILE_PATH, 'file'));
   } else {
     console.log(`Mode: HTTP (${API_URL})\n`);
 
     // Verify all known audit chain endpoints
     const endpoints = [
-      { path: "/iam/audit/verify", name: "immutable-audit" },
-      { path: "/imaging/audit/verify", name: "imaging-audit" },
-      { path: "/rcm/audit/verify", name: "rcm-audit" },
+      { path: '/iam/audit/verify', name: 'immutable-audit' },
+      { path: '/imaging/audit/verify', name: 'imaging-audit' },
+      { path: '/rcm/audit/verify', name: 'rcm-audit' },
     ];
 
     for (const ep of endpoints) {
       process.stdout.write(`  Checking ${ep.name}...`);
       const result = await verifyViaHttp(ep.path, ep.name);
       results.push(result);
-      const icon = result.valid ? "PASS" : "FAIL";
-      console.log(` [${icon}] (${result.totalEntries} entries${result.error ? `, ${result.error}` : ""})`);
+      const icon = result.valid ? 'PASS' : 'FAIL';
+      console.log(
+        ` [${icon}] (${result.totalEntries} entries${result.error ? `, ${result.error}` : ''})`
+      );
     }
 
     // Also check JSONL files if they exist locally
     const jsonlFiles = [
-      { path: "logs/immutable-audit.jsonl", name: "immutable-audit-file" },
-      { path: "logs/imaging-audit.jsonl", name: "imaging-audit-file" },
+      { path: 'logs/immutable-audit.jsonl', name: 'immutable-audit-file' },
+      { path: 'logs/imaging-audit.jsonl', name: 'imaging-audit-file' },
     ];
 
     for (const f of jsonlFiles) {
@@ -198,7 +198,7 @@ async function main(): Promise<void> {
         process.stdout.write(`  Checking ${f.name} (file)...`);
         const result = verifyJsonlFile(f.path, f.name);
         results.push(result);
-        const icon = result.valid ? "PASS" : "FAIL";
+        const icon = result.valid ? 'PASS' : 'FAIL';
         console.log(` [${icon}] (${result.totalEntries} entries)`);
       }
     }
@@ -208,9 +208,9 @@ async function main(): Promise<void> {
   const allValid = results.every((r) => r.valid);
   const broken = results.filter((r) => !r.valid);
 
-  console.log("\n--- Summary ---");
+  console.log('\n--- Summary ---');
   console.log(`  Subsystems checked: ${results.length}`);
-  console.log(`  All valid: ${allValid ? "YES" : "NO"}`);
+  console.log(`  All valid: ${allValid ? 'YES' : 'NO'}`);
 
   if (broken.length > 0) {
     console.log(`  Broken chains:`);
@@ -219,11 +219,11 @@ async function main(): Promise<void> {
     }
   }
 
-  console.log("");
+  console.log('');
   process.exit(allValid ? 0 : 1);
 }
 
 main().catch((err) => {
-  console.error("Fatal:", err);
+  console.error('Fatal:', err);
   process.exit(1);
 });

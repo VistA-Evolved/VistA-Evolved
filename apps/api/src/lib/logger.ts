@@ -13,19 +13,16 @@
  *   log.warn("RPC timeout", { rpcName: "ORWPT LIST ALL", durationMs: 12000 });
  */
 
-import { LOG_CONFIG, PHI_CONFIG } from "../config/server-config.js";
-import { AsyncLocalStorage } from "async_hooks";
-import { ALL_BLOCKED_FIELDS, INLINE_REDACT_PATTERNS as PHI_PATTERNS } from "./phi-redaction.js";
+import { LOG_CONFIG } from '../config/server-config.js';
+import { AsyncLocalStorage } from 'async_hooks';
+import { ALL_BLOCKED_FIELDS, INLINE_REDACT_PATTERNS as PHI_PATTERNS } from './phi-redaction.js';
 
 // Phase 36: lazy-load tracer to avoid circular imports
 let _getTraceId: (() => string) | null = null;
 let _getSpanId: (() => string) | null = null;
 
 /** Called once from index.ts after tracing.ts is loaded. */
-export function bridgeTracingToLogger(
-  getTraceId: () => string,
-  getSpanId: () => string,
-): void {
+export function bridgeTracingToLogger(getTraceId: () => string, getSpanId: () => string): void {
   _getTraceId = getTraceId;
   _getSpanId = getSpanId;
 }
@@ -34,7 +31,7 @@ export function bridgeTracingToLogger(
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-type LogLevel = "trace" | "debug" | "info" | "warn" | "error" | "fatal";
+type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal';
 
 interface LogEntry {
   timestamp: string;
@@ -76,13 +73,13 @@ const INLINE_REDACT_PATTERNS = PHI_PATTERNS;
  * Returns a new object — never mutates the input.
  */
 function redactObject(obj: unknown, depth = 0): unknown {
-  if (depth > 10) return "[MAX_DEPTH]";
+  if (depth > 10) return '[MAX_DEPTH]';
   if (obj === null || obj === undefined) return obj;
 
-  if (typeof obj === "string") {
+  if (typeof obj === 'string') {
     let s = obj;
     for (const { pattern: pat } of INLINE_REDACT_PATTERNS) {
-      s = s.replace(new RegExp(pat.source, pat.flags), "[REDACTED]");
+      s = s.replace(new RegExp(pat.source, pat.flags), '[REDACTED]');
     }
     return s;
   }
@@ -91,14 +88,14 @@ function redactObject(obj: unknown, depth = 0): unknown {
     return obj.map((item) => redactObject(item, depth + 1));
   }
 
-  if (typeof obj === "object") {
+  if (typeof obj === 'object') {
     const result: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
       const lk = key.toLowerCase();
       if (REDACT_FIELDS.has(key) || REDACT_FIELDS.has(lk)) {
-        result[key] = "[REDACTED]";
+        result[key] = '[REDACTED]';
       } else if ((LOG_CONFIG.redactHeaders as readonly string[]).includes(lk)) {
-        result[key] = "[REDACTED]";
+        result[key] = '[REDACTED]';
       } else {
         result[key] = redactObject(value, depth + 1);
       }
@@ -168,17 +165,23 @@ function emit(level: LogLevel, msg: string, meta?: Record<string, unknown>): voi
   }
 
   if (LOG_CONFIG.json) {
-    const fn = level === "error" || level === "fatal" ? console.error
-             : level === "warn" ? console.warn
-             : console.log;
+    const fn =
+      level === 'error' || level === 'fatal'
+        ? console.error
+        : level === 'warn'
+          ? console.warn
+          : console.log;
     fn(JSON.stringify(entry));
   } else {
     const prefix = `[${entry.timestamp}] ${level.toUpperCase().padEnd(5)}`;
-    const rid = entry.requestId ? ` [${entry.requestId}]` : "";
-    const metaStr = meta ? " " + JSON.stringify(redactObject(meta)) : "";
-    const fn = level === "error" || level === "fatal" ? console.error
-             : level === "warn" ? console.warn
-             : console.log;
+    const rid = entry.requestId ? ` [${entry.requestId}]` : '';
+    const metaStr = meta ? ' ' + JSON.stringify(redactObject(meta)) : '';
+    const fn =
+      level === 'error' || level === 'fatal'
+        ? console.error
+        : level === 'warn'
+          ? console.warn
+          : console.log;
     fn(`${prefix}${rid} ${msg}${metaStr}`);
   }
 }
@@ -188,21 +191,27 @@ function emit(level: LogLevel, msg: string, meta?: Record<string, unknown>): voi
 /* ------------------------------------------------------------------ */
 
 export const log = {
-  trace: (msg: string, meta?: Record<string, unknown>) => emit("trace", msg, meta),
-  debug: (msg: string, meta?: Record<string, unknown>) => emit("debug", msg, meta),
-  info:  (msg: string, meta?: Record<string, unknown>) => emit("info", msg, meta),
-  warn:  (msg: string, meta?: Record<string, unknown>) => emit("warn", msg, meta),
-  error: (msg: string, meta?: Record<string, unknown>) => emit("error", msg, meta),
-  fatal: (msg: string, meta?: Record<string, unknown>) => emit("fatal", msg, meta),
+  trace: (msg: string, meta?: Record<string, unknown>) => emit('trace', msg, meta),
+  debug: (msg: string, meta?: Record<string, unknown>) => emit('debug', msg, meta),
+  info: (msg: string, meta?: Record<string, unknown>) => emit('info', msg, meta),
+  warn: (msg: string, meta?: Record<string, unknown>) => emit('warn', msg, meta),
+  error: (msg: string, meta?: Record<string, unknown>) => emit('error', msg, meta),
+  fatal: (msg: string, meta?: Record<string, unknown>) => emit('fatal', msg, meta),
 
   /** Create a child logger with pre-bound context. */
   child: (context: Record<string, unknown>) => ({
-    trace: (msg: string, meta?: Record<string, unknown>) => emit("trace", msg, { ...context, ...meta }),
-    debug: (msg: string, meta?: Record<string, unknown>) => emit("debug", msg, { ...context, ...meta }),
-    info:  (msg: string, meta?: Record<string, unknown>) => emit("info", msg, { ...context, ...meta }),
-    warn:  (msg: string, meta?: Record<string, unknown>) => emit("warn", msg, { ...context, ...meta }),
-    error: (msg: string, meta?: Record<string, unknown>) => emit("error", msg, { ...context, ...meta }),
-    fatal: (msg: string, meta?: Record<string, unknown>) => emit("fatal", msg, { ...context, ...meta }),
+    trace: (msg: string, meta?: Record<string, unknown>) =>
+      emit('trace', msg, { ...context, ...meta }),
+    debug: (msg: string, meta?: Record<string, unknown>) =>
+      emit('debug', msg, { ...context, ...meta }),
+    info: (msg: string, meta?: Record<string, unknown>) =>
+      emit('info', msg, { ...context, ...meta }),
+    warn: (msg: string, meta?: Record<string, unknown>) =>
+      emit('warn', msg, { ...context, ...meta }),
+    error: (msg: string, meta?: Record<string, unknown>) =>
+      emit('error', msg, { ...context, ...meta }),
+    fatal: (msg: string, meta?: Record<string, unknown>) =>
+      emit('fatal', msg, { ...context, ...meta }),
   }),
 };
 

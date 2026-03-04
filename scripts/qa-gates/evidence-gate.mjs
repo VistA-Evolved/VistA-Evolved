@@ -16,31 +16,24 @@
  *   1 = failures found
  */
 
-import { readFileSync, readdirSync, existsSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
-const ROOT = resolve(import.meta.dirname, "../..");
-const PAYER_DATA_DIR = join(ROOT, "data", "payers");
-const CONNECTOR_DIR = join(ROOT, "apps", "api", "src", "rcm", "connectors");
-const EVIDENCE_DIR = join(ROOT, "data", "evidence");
-const DOCS_DIR = join(ROOT, "docs");
+const ROOT = resolve(import.meta.dirname, '../..');
+const PAYER_DATA_DIR = join(ROOT, 'data', 'payers');
+const CONNECTOR_DIR = join(ROOT, 'apps', 'api', 'src', 'rcm', 'connectors');
+const EVIDENCE_DIR = join(ROOT, 'data', 'evidence');
+const DOCS_DIR = join(ROOT, 'docs');
 
 const args = process.argv.slice(2);
-const strict = args.includes("--strict");
-const jsonOutput = args.includes("--json");
+const strict = args.includes('--strict');
+const jsonOutput = args.includes('--json');
 
 /** Integration modes that require evidence backing */
-const EVIDENCE_REQUIRED_MODES = new Set([
-  "direct_api",
-  "fhir_payer",
-  "government_portal",
-]);
+const EVIDENCE_REQUIRED_MODES = new Set(['direct_api', 'fhir_payer', 'government_portal']);
 
 /** Modes where evidence is recommended but not blocking */
-const EVIDENCE_RECOMMENDED_MODES = new Set([
-  "clearinghouse_edi",
-  "portal_batch",
-]);
+const EVIDENCE_RECOMMENDED_MODES = new Set(['clearinghouse_edi', 'portal_batch']);
 
 // ── Gate results ──────────────────────────────────────
 
@@ -53,35 +46,35 @@ const results = {
 
 function pass(gate, detail) {
   results.passed++;
-  results.checks.push({ gate, status: "PASS", detail });
+  results.checks.push({ gate, status: 'PASS', detail });
   if (!jsonOutput) console.log(`  PASS  ${gate}: ${detail}`);
 }
 
 function warn(gate, detail) {
   results.warned++;
-  results.checks.push({ gate, status: "WARN", detail });
+  results.checks.push({ gate, status: 'WARN', detail });
   if (!jsonOutput) console.log(`  WARN  ${gate}: ${detail}`);
 }
 
 function fail(gate, detail) {
   results.failed++;
-  results.checks.push({ gate, status: "FAIL", detail });
+  results.checks.push({ gate, status: 'FAIL', detail });
   if (!jsonOutput) console.log(`  FAIL  ${gate}: ${detail}`);
 }
 
 // ── Gate 1: Payer seed files — modes vs evidence ──────
 
 function checkPayerSeeds() {
-  if (!jsonOutput) console.log("\n== Gate 1: Payer Seed Evidence Coverage ==");
+  if (!jsonOutput) console.log('\n== Gate 1: Payer Seed Evidence Coverage ==');
 
   if (!existsSync(PAYER_DATA_DIR)) {
-    warn("payer-seeds", "data/payers/ directory not found");
+    warn('payer-seeds', 'data/payers/ directory not found');
     return;
   }
 
-  const seedFiles = readdirSync(PAYER_DATA_DIR).filter((f) => f.endsWith(".json"));
+  const seedFiles = readdirSync(PAYER_DATA_DIR).filter((f) => f.endsWith('.json'));
   if (seedFiles.length === 0) {
-    warn("payer-seeds", "No payer seed files found");
+    warn('payer-seeds', 'No payer seed files found');
     return;
   }
 
@@ -94,14 +87,14 @@ function checkPayerSeeds() {
   const gaps = [];
 
   for (const file of seedFiles) {
-    const raw = readFileSync(join(PAYER_DATA_DIR, file), "utf-8");
+    const raw = readFileSync(join(PAYER_DATA_DIR, file), 'utf-8');
     // Strip BOM (BUG-064)
     const clean = raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw;
     let data;
     try {
       data = JSON.parse(clean);
     } catch {
-      warn("payer-seeds", `Failed to parse ${file}`);
+      warn('payer-seeds', `Failed to parse ${file}`);
       continue;
     }
 
@@ -140,18 +133,21 @@ function checkPayerSeeds() {
     }
   }
 
-  pass("payer-seeds-loaded", `${totalPayers} payers across ${seedFiles.length} seed files`);
+  pass('payer-seeds-loaded', `${totalPayers} payers across ${seedFiles.length} seed files`);
 
   if (requiresEvidence === 0) {
-    pass("payer-evidence-required", "No payers require evidence (all not_classified or manual)");
+    pass('payer-evidence-required', 'No payers require evidence (all not_classified or manual)');
   } else if (missingEvidence === 0) {
-    pass("payer-evidence-coverage", `All ${requiresEvidence} evidence-required payers have backing`);
+    pass(
+      'payer-evidence-coverage',
+      `All ${requiresEvidence} evidence-required payers have backing`
+    );
   } else {
     const msg = `${missingEvidence}/${requiresEvidence} payers with api/fhir/portal mode lack evidence`;
     if (strict) {
-      fail("payer-evidence-coverage", msg);
+      fail('payer-evidence-coverage', msg);
     } else {
-      warn("payer-evidence-coverage", msg);
+      warn('payer-evidence-coverage', msg);
     }
     // List first 10 gaps
     for (const g of gaps.slice(0, 10)) {
@@ -167,15 +163,15 @@ function checkPayerSeeds() {
 // ── Gate 2: Connector code — undeclared endpoint references ──
 
 function checkConnectorEndpoints() {
-  if (!jsonOutput) console.log("\n== Gate 2: Connector Endpoint Declarations ==");
+  if (!jsonOutput) console.log('\n== Gate 2: Connector Endpoint Declarations ==');
 
   if (!existsSync(CONNECTOR_DIR)) {
-    warn("connector-dir", "connectors/ directory not found");
+    warn('connector-dir', 'connectors/ directory not found');
     return;
   }
 
   const connectorFiles = readdirSync(CONNECTOR_DIR).filter(
-    (f) => f.endsWith(".ts") && f !== "types.ts",
+    (f) => f.endsWith('.ts') && f !== 'types.ts'
   );
 
   // Scan for hardcoded external URLs in connector files
@@ -185,7 +181,7 @@ function checkConnectorEndpoints() {
   const externalUrls = [];
 
   for (const file of connectorFiles) {
-    const content = readFileSync(join(CONNECTOR_DIR, file), "utf-8");
+    const content = readFileSync(join(CONNECTOR_DIR, file), 'utf-8');
     const matches = content.match(urlPattern) ?? [];
 
     for (const url of matches) {
@@ -198,15 +194,15 @@ function checkConnectorEndpoints() {
 
   if (externalUrlCount === 0) {
     pass(
-      "connector-endpoints",
-      `${connectorFiles.length} connector files have no undeclared external URLs`,
+      'connector-endpoints',
+      `${connectorFiles.length} connector files have no undeclared external URLs`
     );
   } else {
     const msg = `${externalUrlCount} external URL(s) found in connector code`;
     if (strict) {
-      fail("connector-endpoints", msg);
+      fail('connector-endpoints', msg);
     } else {
-      warn("connector-endpoints", msg);
+      warn('connector-endpoints', msg);
     }
     for (const u of externalUrls.slice(0, 5)) {
       if (!jsonOutput) console.log(`  -> ${u.file}: ${u.url}`);
@@ -217,7 +213,7 @@ function checkConnectorEndpoints() {
 // ── Gate 3: Docs — ungrounded integration claims ──────
 
 function checkDocsGrounding() {
-  if (!jsonOutput) console.log("\n== Gate 3: Documentation Grounding ==");
+  if (!jsonOutput) console.log('\n== Gate 3: Documentation Grounding ==');
 
   const claimPatterns = [
     /supports?\s+real[- ]time\s+API/gi,
@@ -226,18 +222,18 @@ function checkDocsGrounding() {
     /direct\s+(?:API|FHIR)\s+submission/gi,
   ];
 
-  const runbookDir = join(DOCS_DIR, "runbooks");
+  const runbookDir = join(DOCS_DIR, 'runbooks');
   if (!existsSync(runbookDir)) {
-    warn("docs-grounding", "docs/runbooks/ not found");
+    warn('docs-grounding', 'docs/runbooks/ not found');
     return;
   }
 
-  const mdFiles = readdirSync(runbookDir).filter((f) => f.endsWith(".md"));
+  const mdFiles = readdirSync(runbookDir).filter((f) => f.endsWith('.md'));
   let ungroundedClaims = 0;
   const findings = [];
 
   for (const file of mdFiles) {
-    const content = readFileSync(join(runbookDir, file), "utf-8");
+    const content = readFileSync(join(runbookDir, file), 'utf-8');
     for (const pattern of claimPatterns) {
       pattern.lastIndex = 0;
       const match = pattern.exec(content);
@@ -256,13 +252,13 @@ function checkDocsGrounding() {
   }
 
   if (ungroundedClaims === 0) {
-    pass("docs-grounding", `${mdFiles.length} runbook files have no ungrounded integration claims`);
+    pass('docs-grounding', `${mdFiles.length} runbook files have no ungrounded integration claims`);
   } else {
     const msg = `${ungroundedClaims} ungrounded integration claim(s) in docs`;
     if (strict) {
-      fail("docs-grounding", msg);
+      fail('docs-grounding', msg);
     } else {
-      warn("docs-grounding", msg);
+      warn('docs-grounding', msg);
     }
     for (const f of findings.slice(0, 5)) {
       if (!jsonOutput) console.log(`  -> ${f.file}: "${f.claim}"`);
@@ -273,50 +269,34 @@ function checkDocsGrounding() {
 // ── Gate 4: Evidence template exists ──────────────────
 
 function checkTemplate() {
-  if (!jsonOutput) console.log("\n== Gate 4: Research Template ==");
+  if (!jsonOutput) console.log('\n== Gate 4: Research Template ==');
 
-  const templatePath = join(DOCS_DIR, "templates", "payer-evidence-template.md");
+  const templatePath = join(DOCS_DIR, 'templates', 'payer-evidence-template.md');
   if (existsSync(templatePath)) {
-    pass("evidence-template", "payer-evidence-template.md exists");
+    pass('evidence-template', 'payer-evidence-template.md exists');
   } else {
-    fail("evidence-template", "docs/templates/payer-evidence-template.md missing");
+    fail('evidence-template', 'docs/templates/payer-evidence-template.md missing');
   }
 }
 
 // ── Gate 5: Evidence route code exists ────────────────
 
 function checkRouteCode() {
-  if (!jsonOutput) console.log("\n== Gate 5: Evidence Route Code ==");
+  if (!jsonOutput) console.log('\n== Gate 5: Evidence Route Code ==');
 
-  const routePath = join(
-    ROOT,
-    "apps",
-    "api",
-    "src",
-    "rcm",
-    "evidence",
-    "evidence-routes.ts",
-  );
-  const repoPath = join(
-    ROOT,
-    "apps",
-    "api",
-    "src",
-    "rcm",
-    "evidence",
-    "evidence-registry-repo.ts",
-  );
+  const routePath = join(ROOT, 'apps', 'api', 'src', 'rcm', 'evidence', 'evidence-routes.ts');
+  const repoPath = join(ROOT, 'apps', 'api', 'src', 'rcm', 'evidence', 'evidence-registry-repo.ts');
 
   if (existsSync(routePath)) {
-    pass("evidence-routes", "evidence-routes.ts exists");
+    pass('evidence-routes', 'evidence-routes.ts exists');
   } else {
-    fail("evidence-routes", "evidence-routes.ts missing");
+    fail('evidence-routes', 'evidence-routes.ts missing');
   }
 
   if (existsSync(repoPath)) {
-    pass("evidence-repo", "evidence-registry-repo.ts exists");
+    pass('evidence-repo', 'evidence-registry-repo.ts exists');
   } else {
-    fail("evidence-repo", "evidence-registry-repo.ts missing");
+    fail('evidence-repo', 'evidence-registry-repo.ts missing');
   }
 }
 
@@ -325,11 +305,11 @@ function checkRouteCode() {
 const STALENESS_THRESHOLD_DAYS = 180;
 
 function checkStaleness() {
-  if (!jsonOutput) console.log("\n== Gate 6: Evidence Staleness ==");
+  if (!jsonOutput) console.log('\n== Gate 6: Evidence Staleness ==');
 
   const evidence = loadEvidenceEntries();
   if (evidence.length === 0) {
-    warn("staleness", "No evidence entries found to check");
+    warn('staleness', 'No evidence entries found to check');
     return;
   }
 
@@ -348,24 +328,27 @@ function checkStaleness() {
     const age = now - new Date(verifiedAt).getTime();
     if (age > thresholdMs) {
       stale++;
-      staleIds.push(entry.payerId || entry.payer_id || entry.id || "unknown");
+      staleIds.push(entry.payerId || entry.payer_id || entry.id || 'unknown');
     }
   }
 
   if (missing > 0) {
     const msg = `${missing}/${evidence.length} entries missing lastVerifiedAt`;
-    if (strict) fail("staleness", msg);
-    else warn("staleness", msg);
+    if (strict) fail('staleness', msg);
+    else warn('staleness', msg);
   }
 
   if (stale > 0) {
-    const msg = `${stale}/${evidence.length} entries stale (>${STALENESS_THRESHOLD_DAYS}d): ${staleIds.slice(0, 5).join(", ")}${staleIds.length > 5 ? "..." : ""}`;
-    if (strict) fail("staleness", msg);
-    else warn("staleness", msg);
+    const msg = `${stale}/${evidence.length} entries stale (>${STALENESS_THRESHOLD_DAYS}d): ${staleIds.slice(0, 5).join(', ')}${staleIds.length > 5 ? '...' : ''}`;
+    if (strict) fail('staleness', msg);
+    else warn('staleness', msg);
   }
 
   if (stale === 0 && missing === 0) {
-    pass("staleness", `All ${evidence.length} entries verified within ${STALENESS_THRESHOLD_DAYS}d`);
+    pass(
+      'staleness',
+      `All ${evidence.length} entries verified within ${STALENESS_THRESHOLD_DAYS}d`
+    );
   }
 }
 
@@ -375,12 +358,12 @@ function loadEvidenceEntries() {
   // Load from data/evidence/*.json if any exist
   if (!existsSync(EVIDENCE_DIR)) return [];
 
-  const files = readdirSync(EVIDENCE_DIR).filter((f) => f.endsWith(".json"));
+  const files = readdirSync(EVIDENCE_DIR).filter((f) => f.endsWith('.json'));
   const entries = [];
 
   for (const file of files) {
     try {
-      const raw = readFileSync(join(EVIDENCE_DIR, file), "utf-8");
+      const raw = readFileSync(join(EVIDENCE_DIR, file), 'utf-8');
       const clean = raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw;
       const data = JSON.parse(clean);
       if (Array.isArray(data)) {
@@ -401,8 +384,8 @@ function loadEvidenceEntries() {
 // ── Main ──────────────────────────────────────────────
 
 if (!jsonOutput) {
-  console.log("=== Evidence Gate -- Phase 112 ===");
-  console.log(`Mode: ${strict ? "STRICT" : "STANDARD"}`);
+  console.log('=== Evidence Gate -- Phase 112 ===');
+  console.log(`Mode: ${strict ? 'STRICT' : 'STANDARD'}`);
 }
 
 checkPayerSeeds();
@@ -413,7 +396,7 @@ checkRouteCode();
 checkStaleness();
 
 if (!jsonOutput) {
-  console.log("\n=== Summary ===");
+  console.log('\n=== Summary ===');
   console.log(`  PASS: ${results.passed}`);
   console.log(`  WARN: ${results.warned}`);
   console.log(`  FAIL: ${results.failed}`);

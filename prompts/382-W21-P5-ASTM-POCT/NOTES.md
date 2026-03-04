@@ -1,6 +1,7 @@
 # Phase 382 — W21-P5 NOTES
 
 ## Design Decisions
+
 - ASTM frame parser operates on string data, not raw byte buffers, because
   the edge gateway handles serial/TCP framing and forwards text via HTTP.
 - Checksum validation is lax: invalid checksum is flagged but doesn't reject

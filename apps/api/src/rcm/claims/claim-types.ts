@@ -39,28 +39,34 @@ export type ClaimLifecycleStatus =
 
 /** Valid transitions: from → allowed destinations */
 export const LIFECYCLE_TRANSITIONS: Record<ClaimLifecycleStatus, ClaimLifecycleStatus[]> = {
-  draft:                 ['ready_for_scrub', 'scrub_passed', 'scrub_failed', 'cancelled'],
-  ready_for_scrub:       ['scrub_passed', 'scrub_failed', 'cancelled'],
-  scrub_passed:          ['ready_for_submission', 'ready_for_scrub', 'cancelled'],
-  scrub_failed:          ['draft', 'ready_for_scrub', 'cancelled'],
-  ready_for_submission:  ['submitted_electronic', 'submitted_portal', 'submitted_manual', 'exported', 'cancelled'],
-  submitted_electronic:  ['payer_acknowledged', 'denied', 'returned_to_provider', 'cancelled'],
-  submitted_portal:      ['payer_acknowledged', 'denied', 'returned_to_provider', 'cancelled'],
-  submitted_manual:      ['payer_acknowledged', 'denied', 'returned_to_provider', 'cancelled'],
-  exported:              ['submitted_electronic', 'submitted_portal', 'submitted_manual', 'cancelled'],
-  payer_acknowledged:    ['paid_full', 'paid_partial', 'denied', 'returned_to_provider'],
-  paid_full:             ['closed'],
-  paid_partial:          ['appeal_in_progress', 'closed'],
-  denied:                ['appeal_in_progress', 'closed'],
-  returned_to_provider:  ['draft', 'cancelled'],
-  appeal_in_progress:    ['paid_full', 'paid_partial', 'denied', 'closed'],
-  closed:                [],
-  cancelled:             [],
+  draft: ['ready_for_scrub', 'scrub_passed', 'scrub_failed', 'cancelled'],
+  ready_for_scrub: ['scrub_passed', 'scrub_failed', 'cancelled'],
+  scrub_passed: ['ready_for_submission', 'ready_for_scrub', 'cancelled'],
+  scrub_failed: ['draft', 'ready_for_scrub', 'cancelled'],
+  ready_for_submission: [
+    'submitted_electronic',
+    'submitted_portal',
+    'submitted_manual',
+    'exported',
+    'cancelled',
+  ],
+  submitted_electronic: ['payer_acknowledged', 'denied', 'returned_to_provider', 'cancelled'],
+  submitted_portal: ['payer_acknowledged', 'denied', 'returned_to_provider', 'cancelled'],
+  submitted_manual: ['payer_acknowledged', 'denied', 'returned_to_provider', 'cancelled'],
+  exported: ['submitted_electronic', 'submitted_portal', 'submitted_manual', 'cancelled'],
+  payer_acknowledged: ['paid_full', 'paid_partial', 'denied', 'returned_to_provider'],
+  paid_full: ['closed'],
+  paid_partial: ['appeal_in_progress', 'closed'],
+  denied: ['appeal_in_progress', 'closed'],
+  returned_to_provider: ['draft', 'cancelled'],
+  appeal_in_progress: ['paid_full', 'paid_partial', 'denied', 'closed'],
+  closed: [],
+  cancelled: [],
 };
 
 export function isValidLifecycleTransition(
   from: ClaimLifecycleStatus,
-  to: ClaimLifecycleStatus,
+  to: ClaimLifecycleStatus
 ): boolean {
   return LIFECYCLE_TRANSITIONS[from]?.includes(to) ?? false;
 }
@@ -71,11 +77,11 @@ export type ScrubSeverity = 'error' | 'warning' | 'info';
 export type ScrubOutcome = 'pass' | 'warn' | 'fail';
 
 export interface ScrubFinding {
-  ruleId: string;          // e.g. "core.patient_id", "ph.esoa_required"
+  ruleId: string; // e.g. "core.patient_id", "ph.esoa_required"
   severity: ScrubSeverity;
-  field?: string;          // e.g. "subscriberId", "lines[0].procedure.code"
-  message: string;         // human-readable description
-  payerRulePack?: string;  // e.g. "philhealth", "us_medicare", "core"
+  field?: string; // e.g. "subscriberId", "lines[0].procedure.code"
+  message: string; // human-readable description
+  payerRulePack?: string; // e.g. "philhealth", "us_medicare", "core"
 }
 
 export interface ClaimScrubResult {
@@ -86,14 +92,14 @@ export interface ClaimScrubResult {
   rulesEvaluated: number;
   scrubDurationMs: number;
   scrubbedAt: string;
-  scrubbedBy: string;      // "system" or DUZ
+  scrubbedBy: string; // "system" or DUZ
 }
 
 /* ── Attachment Types ──────────────────────────────────────── */
 
 export type AttachmentCategory =
-  | 'soa'           // Statement of Account
-  | 'esoa'          // Electronic SOA (PhilHealth)
+  | 'soa' // Statement of Account
+  | 'esoa' // Electronic SOA (PhilHealth)
   | 'lab_result'
   | 'imaging_report'
   | 'clinical_abstract'
@@ -124,10 +130,10 @@ export interface ClaimAttachment {
 export interface ClaimEvent {
   id: string;
   claimCaseId: string;
-  eventType: string;          // e.g. "lifecycle.transition", "scrub.completed", "attachment.added"
+  eventType: string; // e.g. "lifecycle.transition", "scrub.completed", "attachment.added"
   fromStatus?: ClaimLifecycleStatus;
   toStatus?: ClaimLifecycleStatus;
-  actor: string;              // DUZ or "system"
+  actor: string; // DUZ or "system"
   /** Detail payload — PHI is redacted before storage */
   detail: Record<string, unknown>;
   timestamp: string;
@@ -136,25 +142,25 @@ export interface ClaimEvent {
 /* ── Denial Record ─────────────────────────────────────────── */
 
 export type DenialSource =
-  | 'payer_remit'       // from 835/remittance
-  | 'payer_status'      // from 277 status
-  | 'scrub_reject'      // from scrubber (pre-submission)
-  | 'portal_response'   // from payer portal
-  | 'manual';           // manually entered
+  | 'payer_remit' // from 835/remittance
+  | 'payer_status' // from 277 status
+  | 'scrub_reject' // from scrubber (pre-submission)
+  | 'portal_response' // from payer portal
+  | 'manual'; // manually entered
 
 export interface DenialRecord {
   id: string;
   claimCaseId: string;
   source: DenialSource;
-  reasonCode: string;         // CARC, PhilHealth denial code, or internal
+  reasonCode: string; // CARC, PhilHealth denial code, or internal
   reasonDescription: string;
-  reasonCategory?: string;    // CO/PR/OA/PI/CR
-  denialAmount?: number;      // in cents
+  reasonCategory?: string; // CO/PR/OA/PI/CR
+  denialAmount?: number; // in cents
   deniedAt: string;
   /** Remediation tracking */
   recommendedAction?: string;
   fieldToFix?: string;
-  assignedTo?: string;        // DUZ
+  assignedTo?: string; // DUZ
   resolvedAt?: string;
   resolvedBy?: string;
   resolutionNote?: string;
@@ -194,7 +200,7 @@ export interface ClaimCase {
   patientDob?: string;
   patientGender?: string;
   subscriberId?: string;
-  memberPin?: string;        // PhilHealth member PIN
+  memberPin?: string; // PhilHealth member PIN
 
   /* ── Provider ─────────────────────────────────────────── */
   billingProviderNpi?: string;
@@ -223,9 +229,9 @@ export interface ClaimCase {
     description?: string;
     modifiers?: string[];
     units: number;
-    chargeAmount: number;   // in cents
+    chargeAmount: number; // in cents
   }>;
-  totalCharge: number;       // in cents
+  totalCharge: number; // in cents
 
   /* ── Submission ───────────────────────────────────────── */
   submissionMethod?: 'electronic' | 'portal' | 'manual' | 'export_only';
@@ -234,7 +240,7 @@ export interface ClaimCase {
   payerAckTimestamp?: string;
 
   /* ── Financial ────────────────────────────────────────── */
-  paidAmount?: number;       // in cents
+  paidAmount?: number; // in cents
   adjustmentAmount?: number; // in cents
   patientResponsibility?: number; // in cents
   remitDate?: string;

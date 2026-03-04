@@ -15,25 +15,25 @@
  *   3. WARN if any count increases; PASS if stable or decreasing
  */
 
-import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
-import { resolve, dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
+import { resolve, dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, "../../..");
-const BASELINE_PATH = resolve(__dirname, "../stub-baseline.json");
+const ROOT = resolve(__dirname, '../../..');
+const BASELINE_PATH = resolve(__dirname, '../stub-baseline.json');
 
-export const id = "G20_no_new_stub_growth";
-export const name = "No New Stub Growth";
+export const id = 'G20_no_new_stub_growth';
+export const name = 'No New Stub Growth';
 
 function walkFiles(dir, exts, maxDepth = 10) {
   const results = [];
   if (!existsSync(dir) || maxDepth <= 0) return results;
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const full = join(dir, entry.name);
-    if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+    if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
       results.push(...walkFiles(full, exts, maxDepth - 1));
-    } else if (entry.isFile() && exts.some(e => entry.name.endsWith(e))) {
+    } else if (entry.isFile() && exts.some((e) => entry.name.endsWith(e))) {
       results.push(full);
     }
   }
@@ -52,17 +52,19 @@ function countMarkers(dirs) {
 
   for (const dir of dirs) {
     if (!existsSync(dir)) continue;
-    const files = walkFiles(dir, [".ts", ".tsx"]);
+    const files = walkFiles(dir, ['.ts', '.tsx']);
     for (const file of files) {
       try {
-        const content = readFileSync(file, "utf8");
-        const lines = content.split("\n");
+        const content = readFileSync(file, 'utf8');
+        const lines = content.split('\n');
         for (const line of lines) {
           for (const [key, re] of Object.entries(patterns)) {
             if (re.test(line)) counts[key]++;
           }
         }
-      } catch { /* skip unreadable */ }
+      } catch {
+        /* skip unreadable */
+      }
     }
   }
 
@@ -72,22 +74,24 @@ function countMarkers(dirs) {
 export async function run(opts = {}) {
   const start = Date.now();
   const details = [];
-  let status = "pass";
+  let status = 'pass';
 
   const dirs = [
-    resolve(ROOT, "apps/api/src"),
-    resolve(ROOT, "apps/web/src"),
-    resolve(ROOT, "apps/portal/src"),
+    resolve(ROOT, 'apps/api/src'),
+    resolve(ROOT, 'apps/web/src'),
+    resolve(ROOT, 'apps/portal/src'),
   ];
 
   const current = countMarkers(dirs);
-  details.push(`Current: stub=${current.stub} not_implemented=${current.not_implemented} integration_pending=${current.integration_pending}`);
+  details.push(
+    `Current: stub=${current.stub} not_implemented=${current.not_implemented} integration_pending=${current.integration_pending}`
+  );
 
   // Load or create baseline
   let baseline;
   if (existsSync(BASELINE_PATH)) {
     try {
-      const raw = readFileSync(BASELINE_PATH, "utf8");
+      const raw = readFileSync(BASELINE_PATH, 'utf8');
       baseline = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
     } catch {
       baseline = null;
@@ -95,11 +99,15 @@ export async function run(opts = {}) {
   }
 
   if (!baseline) {
-    details.push("FAIL: stub-baseline.json missing. Run: node qa/gauntlet/gates/g20-no-new-stub-growth.mjs --update-baseline");
-    return { id, name, status: "fail", details, durationMs: Date.now() - start };
+    details.push(
+      'FAIL: stub-baseline.json missing. Run: node qa/gauntlet/gates/g20-no-new-stub-growth.mjs --update-baseline'
+    );
+    return { id, name, status: 'fail', details, durationMs: Date.now() - start };
   }
 
-  details.push(`Baseline: stub=${baseline.counts.stub} not_implemented=${baseline.counts.not_implemented} integration_pending=${baseline.counts.integration_pending}`);
+  details.push(
+    `Baseline: stub=${baseline.counts.stub} not_implemented=${baseline.counts.not_implemented} integration_pending=${baseline.counts.integration_pending}`
+  );
 
   // Compare
   const increases = [];
@@ -115,31 +123,33 @@ export async function run(opts = {}) {
   }
 
   if (increases.length > 0) {
-    status = "warn";
+    status = 'warn';
     for (const inc of increases) {
       details.push(`WARN: ${inc}`);
     }
-    details.push("Stub/not_implemented counts increased. If intentional, update baseline with: node qa/gauntlet/gates/g20-no-new-stub-growth.mjs --update-baseline");
+    details.push(
+      'Stub/not_implemented counts increased. If intentional, update baseline with: node qa/gauntlet/gates/g20-no-new-stub-growth.mjs --update-baseline'
+    );
   } else {
-    details.push("PASS: No stub growth detected");
+    details.push('PASS: No stub growth detected');
   }
 
   return { id, name, status, details, durationMs: Date.now() - start };
 }
 
 // CLI: --update-baseline
-if (process.argv.includes("--update-baseline")) {
+if (process.argv.includes('--update-baseline')) {
   const dirs = [
-    resolve(ROOT, "apps/api/src"),
-    resolve(ROOT, "apps/web/src"),
-    resolve(ROOT, "apps/portal/src"),
+    resolve(ROOT, 'apps/api/src'),
+    resolve(ROOT, 'apps/web/src'),
+    resolve(ROOT, 'apps/portal/src'),
   ];
   const current = countMarkers(dirs);
   const baselineData = {
     generatedAt: new Date().toISOString(),
-    note: "Baseline for stub growth detection. Update with: node qa/gauntlet/gates/g20-no-new-stub-growth.mjs --update-baseline",
+    note: 'Baseline for stub growth detection. Update with: node qa/gauntlet/gates/g20-no-new-stub-growth.mjs --update-baseline',
     counts: current,
   };
-  writeFileSync(BASELINE_PATH, JSON.stringify(baselineData, null, 2) + "\n");
-  console.log("Baseline updated:", JSON.stringify(current));
+  writeFileSync(BASELINE_PATH, JSON.stringify(baselineData, null, 2) + '\n');
+  console.log('Baseline updated:', JSON.stringify(current));
 }

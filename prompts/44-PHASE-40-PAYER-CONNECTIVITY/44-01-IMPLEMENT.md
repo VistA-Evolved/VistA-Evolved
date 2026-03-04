@@ -1,9 +1,11 @@
 # Phase 40 — Payer Connectivity Platform (Adapters + Country Packs + Clearinghouse Slot)
 
 ## User Request
+
 Build payer connectivity as a modular, swappable connector system atop Phase 38/39 RCM foundation.
 
 ## Implementation Steps
+
 1. Inventory existing code (Phase 38: 28 endpoints, 4 connectors, 15 validation rules, 27 seed payers)
 2. Add CLAIM_SUBMISSION_ENABLED safety flag with hard-fail when disabled
 3. Add READY_TO_SUBMIT status + file-export connector for safe demo mode
@@ -18,6 +20,7 @@ Build payer connectivity as a modular, swappable connector system atop Phase 38/
 12. TypeScript compile + verify
 
 ## Verification Steps
+
 - verify-phase40-payer-connectivity.ps1 passes all gates
 - API starts cleanly with CLAIM_SUBMISSION_ENABLED=false
 - Submit attempt returns safe error when disabled
@@ -25,6 +28,7 @@ Build payer connectivity as a modular, swappable connector system atop Phase 38/
 - TypeScript compiles with 0 errors
 
 ## Files Touched
+
 - apps/api/src/rcm/domain/claim.ts (add READY_TO_SUBMIT status)
 - apps/api/src/rcm/domain/claim-store.ts (add export artifact store)
 - apps/api/src/rcm/payer-registry/registry.ts (CSV import, enrollment)

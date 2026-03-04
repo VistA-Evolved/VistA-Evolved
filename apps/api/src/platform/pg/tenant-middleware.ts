@@ -14,10 +14,10 @@
  * This is a Fastify decorateRequest + onRequest hook.
  */
 
-import { FastifyInstance, FastifyRequest } from "fastify";
+import { FastifyInstance, FastifyRequest } from 'fastify';
 
 // Extend Fastify request with tenantId
-declare module "fastify" {
+declare module 'fastify' {
   interface FastifyRequest {
     tenantId: string;
   }
@@ -29,12 +29,12 @@ declare module "fastify" {
  */
 export function registerTenantHook(server: FastifyInstance): void {
   // Decorate request with default tenantId
-  server.decorateRequest("tenantId", "default");
+  server.decorateRequest('tenantId', 'default');
 
-  server.addHook("onRequest", async (request: FastifyRequest) => {
+  server.addHook('onRequest', async (request: FastifyRequest) => {
     // Priority 1: Explicit header (for admin/service calls)
-    const headerTenant = request.headers["x-tenant-id"];
-    if (typeof headerTenant === "string" && headerTenant.trim().length > 0) {
+    const headerTenant = request.headers['x-tenant-id'];
+    if (typeof headerTenant === 'string' && headerTenant.trim().length > 0) {
       // Basic validation: no SQL injection chars
       if (!/[';\\]/.test(headerTenant)) {
         request.tenantId = headerTenant.trim();
@@ -44,12 +44,12 @@ export function registerTenantHook(server: FastifyInstance): void {
 
     // Priority 2: Session-derived tenant (if session middleware set it)
     const session = (request as any).session;
-    if (session?.tenantId && typeof session.tenantId === "string") {
+    if (session?.tenantId && typeof session.tenantId === 'string') {
       request.tenantId = session.tenantId;
       return;
     }
 
     // Priority 3: Default tenant
-    request.tenantId = "default";
+    request.tenantId = 'default';
   });
 }

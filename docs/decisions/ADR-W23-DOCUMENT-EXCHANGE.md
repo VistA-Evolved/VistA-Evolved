@@ -10,6 +10,7 @@ Document exchange is foundational for cross-org interoperability: referrals,
 discharge summaries, imaging reports, and lab results must flow between systems.
 
 Three approaches exist:
+
 - **IHE XDS.b** — mature, SOAP-based document registry/repository
 - **IHE MHD** — FHIR-based facade over XDS.b concepts
 - **FHIR-only** — DocumentReference + Bundle without IHE profiles
@@ -29,20 +30,22 @@ XDS.b integration is achievable via a bridge adapter.
 
 ## Alternatives Considered
 
-| Option | Pros | Cons |
-|--------|------|------|
-| XDS.b only | Full IHE compliance | SOAP complexity, heavy |
-| MHD only | FHIR-native + XDS semantics | Still needs XDS backend |
-| FHIR-only | Simplest | No IHE compliance path |
-| **FHIR-first + MHD alignment (chosen)** | Progressive, adaptable | Must maintain alignment |
+| Option                                  | Pros                        | Cons                    |
+| --------------------------------------- | --------------------------- | ----------------------- |
+| XDS.b only                              | Full IHE compliance         | SOAP complexity, heavy  |
+| MHD only                                | FHIR-native + XDS semantics | Still needs XDS backend |
+| FHIR-only                               | Simplest                    | No IHE compliance path  |
+| **FHIR-first + MHD alignment (chosen)** | Progressive, adaptable      | Must maintain alignment |
 
 ## Consequences
 
 **Positive:**
+
 - Simple FHIR API for US/modern deployments
 - MHD alignment enables XDS.b bridge for EU/IHE deployments
 - DocumentReference model is reusable across all exchange patterns
 
 **Negative:**
+
 - Full XDS.b compliance requires additional adapter work
 - Must track MHD profile updates

@@ -10,15 +10,14 @@
  * - Add new payers via API or seed file; classify integration mode; onboard.
  */
 
-import { readFileSync, existsSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import type { Payer, PayerFilter } from "../domain/payer.js";
-import { matchesPayer } from "../domain/payer.js";
+import { readFileSync, existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import type { Payer, PayerFilter } from '../domain/payer.js';
+import { matchesPayer } from '../domain/payer.js';
 
-const __dirname_resolved = typeof __dirname !== "undefined"
-  ? __dirname
-  : dirname(fileURLToPath(import.meta.url));
+const __dirname_resolved =
+  typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
 
 /* ── Store ──────────────────────────────────────────────────── */
 
@@ -29,13 +28,13 @@ let initialized = false;
 
 function loadSeedFile(relativePath: string): Payer[] {
   // Resolve relative to repo root (apps/api/src/rcm/payer-registry → ../../../../..)
-  const repoRoot = join(__dirname_resolved, "..", "..", "..", "..", "..");
+  const repoRoot = join(__dirname_resolved, '..', '..', '..', '..', '..');
   const fullPath = join(repoRoot, relativePath);
   if (!existsSync(fullPath)) {
     return [];
   }
   try {
-    const raw = readFileSync(fullPath, "utf-8");
+    const raw = readFileSync(fullPath, 'utf-8');
     const data = JSON.parse(raw);
     return Array.isArray(data.payers) ? data.payers : [];
   } catch {
@@ -47,11 +46,11 @@ export function initPayerRegistry(): void {
   if (initialized) return;
 
   const seedFiles = [
-    "data/payers/us_core.json",
-    "data/payers/ph_hmos.json",
-    "data/payers/au_core.json",
-    "data/payers/sg_core.json",
-    "data/payers/nz_core.json",
+    'data/payers/us_core.json',
+    'data/payers/ph_hmos.json',
+    'data/payers/au_core.json',
+    'data/payers/sg_core.json',
+    'data/payers/nz_core.json',
   ];
 
   for (const file of seedFiles) {
@@ -79,7 +78,7 @@ export function listPayers(filter?: PayerFilter): {
   let result = Array.from(payers.values());
 
   if (filter) {
-    result = result.filter(p => matchesPayer(p, filter));
+    result = result.filter((p) => matchesPayer(p, filter));
   }
 
   result.sort((a, b) => a.name.localeCompare(b.name));
@@ -91,8 +90,8 @@ export function listPayers(filter?: PayerFilter): {
 
   // Compute distinct values for filter UI
   const allPayers = Array.from(payers.values());
-  const countries = [...new Set(allPayers.map(p => p.country))].sort();
-  const integrationModes = [...new Set(allPayers.map(p => p.integrationMode))].sort();
+  const countries = [...new Set(allPayers.map((p) => p.country))].sort();
+  const integrationModes = [...new Set(allPayers.map((p) => p.integrationMode))].sort();
 
   return { payers: page, total, countries, integrationModes };
 }

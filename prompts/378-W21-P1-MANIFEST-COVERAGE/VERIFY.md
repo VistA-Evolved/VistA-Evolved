@@ -12,4 +12,5 @@
 5. **Prompt Folders**: Phase 378 prompt folder created with IMPLEMENT + VERIFY + NOTES.
 
 ## Evidence
+
 - /evidence/wave-21/378-manifest/ (reservation JSON snapshot, manifest snapshot)

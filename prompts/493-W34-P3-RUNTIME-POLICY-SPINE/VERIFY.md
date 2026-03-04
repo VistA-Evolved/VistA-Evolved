@@ -3,6 +3,7 @@
 ## Verification Gates
 
 ### Gate 1 — country-policy-hook.ts exists
+
 ```powershell
 if (-not (Test-Path "apps/api/src/middleware/country-policy-hook.ts")) {
   Write-Error "FAIL: country-policy-hook.ts not found"; exit 1
@@ -11,6 +12,7 @@ Write-Host "PASS: country-policy-hook.ts exists"
 ```
 
 ### Gate 2 — Hook exports countryPolicyHook
+
 ```powershell
 $hook = Get-Content apps/api/src/middleware/country-policy-hook.ts -Raw
 if ($hook -notmatch 'export.*countryPolicyHook') {
@@ -20,6 +22,7 @@ Write-Host "PASS: countryPolicyHook exported"
 ```
 
 ### Gate 3 — Hook reads countryPackId from tenant config
+
 ```powershell
 $hook = Get-Content apps/api/src/middleware/country-policy-hook.ts -Raw
 if ($hook -notmatch 'countryPackId') {
@@ -32,6 +35,7 @@ Write-Host "PASS: Hook resolves country policy from tenant"
 ```
 
 ### Gate 4 — Hook registered in register-routes.ts
+
 ```powershell
 $routes = Get-Content apps/api/src/server/register-routes.ts -Raw
 if ($routes -notmatch 'country-policy-hook|countryPolicyHook') {
@@ -41,6 +45,7 @@ Write-Host "PASS: Hook registered in server"
 ```
 
 ### Gate 5 — GET /country-policy/effective endpoint exists
+
 ```powershell
 $routes = Get-Content apps/api/src/routes/country-pack-routes.ts -Raw
 if ($routes -notmatch 'country-policy/effective|countryPolicy') {

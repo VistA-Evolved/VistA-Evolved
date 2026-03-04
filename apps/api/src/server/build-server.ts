@@ -5,9 +5,9 @@
  * plugins, routes, and inline handlers. Does NOT call listen().
  */
 
-import Fastify from "fastify";
-import { registerPlugins } from "./register-plugins.js";
-import { registerRoutes } from "./register-routes.js";
+import Fastify from 'fastify';
+import { registerPlugins } from './register-plugins.js';
+import { registerRoutes } from './register-routes.js';
 
 /**
  * Create and configure a Fastify server instance with all plugins and routes.

@@ -16,10 +16,7 @@
     "scripts/import-payer-registry.ps1",
     "scripts/verify-prompt-ordering.ps1"
   ],
-  "filesModified": [
-    "apps/api/src/index.ts",
-    "apps/web/src/app/cprs/admin/layout.tsx"
-  ],
+  "filesModified": ["apps/api/src/index.ts", "apps/web/src/app/cprs/admin/layout.tsx"],
   "endpoints": 13,
   "payerCount": 28,
   "auditType": "sha256-hash-chained-jsonl",

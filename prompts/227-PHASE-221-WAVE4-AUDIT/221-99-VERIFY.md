@@ -18,6 +18,7 @@
 - [ ] Convergence snapshot reflects actual phase count and HEAD
 
 ## Source
+
 - Audit requested by user for all Wave 4 changes (Q211-Q220)
 - Issues discovered via sub-agent deep analysis
 - Fixes validated via QA gates and spot-checks

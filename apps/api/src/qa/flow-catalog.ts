@@ -7,14 +7,14 @@
  * and provides a runner that executes flows against the API.
  */
 
-import { readFileSync, readdirSync, existsSync } from "node:fs";
-import { join, resolve } from "node:path";
-import type { QaFlow, QaFlowResult, QaStepResult } from "./types.js";
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+import type { QaFlow, QaFlowResult, QaStepResult } from './types.js';
 
 /* ── Config ───────────────────────────────────────────────── */
 
 const FLOWS_DIR = resolve(
-  process.env.QA_FLOWS_DIR || join(process.cwd(), "..", "..", "config", "qa-flows")
+  process.env.QA_FLOWS_DIR || join(process.cwd(), '..', '..', 'config', 'qa-flows')
 );
 
 /* ── Catalog ──────────────────────────────────────────────── */
@@ -32,11 +32,11 @@ export function loadFlowCatalog(): { loaded: number; errors: string[] } {
     return { loaded: 0, errors: [`Flows directory not found: ${FLOWS_DIR}`] };
   }
 
-  const files = readdirSync(FLOWS_DIR).filter((f) => f.endsWith(".json") && f !== "schema.json");
+  const files = readdirSync(FLOWS_DIR).filter((f) => f.endsWith('.json') && f !== 'schema.json');
 
   for (const file of files) {
     try {
-      let raw = readFileSync(join(FLOWS_DIR, file), "utf-8");
+      let raw = readFileSync(join(FLOWS_DIR, file), 'utf-8');
       // BOM strip (BUG-064)
       if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
       const flow: QaFlow = JSON.parse(raw);
@@ -46,8 +46,8 @@ export function loadFlowCatalog(): { loaded: number; errors: string[] } {
         continue;
       }
 
-      const validDomains = ["system", "auth", "clinical", "rcm", "imaging", "qa", "admin"];
-      const validPriorities = ["smoke", "regression", "deep"];
+      const validDomains = ['system', 'auth', 'clinical', 'rcm', 'imaging', 'qa', 'admin'];
+      const validPriorities = ['smoke', 'regression', 'deep'];
       if (flow.domain && !validDomains.includes(flow.domain)) {
         errors.push(`${file}: invalid domain '${flow.domain}'`);
       }
@@ -117,7 +117,9 @@ export async function executeFlow(
 
     // Resolve variables in path and body
     let path = resolveTemplate(step.path, vars);
-    const body = step.body ? JSON.parse(resolveTemplate(JSON.stringify(step.body), vars)) : undefined;
+    const body = step.body
+      ? JSON.parse(resolveTemplate(JSON.stringify(step.body), vars))
+      : undefined;
 
     try {
       if (step.delayMs) {
@@ -125,16 +127,16 @@ export async function executeFlow(
       }
 
       const url = `${baseUrl}${path}`;
-      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
       if (cookie) {
-        headers["Cookie"] = cookie;
+        headers['Cookie'] = cookie;
       }
       // Phase 132: Use session-bound CSRF token if available in vars
       // (extracted from login response body's csrfToken field),
       // otherwise fall back to fetching from /auth/csrf-token endpoint.
-      if (vars["csrfToken"]) {
-        headers["x-csrf-token"] = vars["csrfToken"];
-      } else if (cookie && step.method !== "GET") {
+      if (vars['csrfToken']) {
+        headers['x-csrf-token'] = vars['csrfToken'];
+      } else if (cookie && step.method !== 'GET') {
         // Last resort: try to get CSRF token from the dedicated endpoint
         try {
           const csrfRes = await fetch(`${baseUrl}/auth/csrf-token`, {
@@ -142,10 +144,12 @@ export async function executeFlow(
           });
           const csrfBody = await csrfRes.json().catch(() => ({}));
           if ((csrfBody as any).csrfToken) {
-            vars["csrfToken"] = (csrfBody as any).csrfToken;
-            headers["x-csrf-token"] = vars["csrfToken"];
+            vars['csrfToken'] = (csrfBody as any).csrfToken;
+            headers['x-csrf-token'] = vars['csrfToken'];
           }
-        } catch { /* CSRF fetch failed — continue without it */ }
+        } catch {
+          /* CSRF fetch failed — continue without it */
+        }
       }
 
       const res = await fetch(url, {
@@ -187,32 +191,34 @@ export async function executeFlow(
         step: step.step,
         description: step.description ?? `Step ${step.step}`,
         path,
-        status: passed ? "passed" : step.optional ? "skipped" : "failed",
+        status: passed ? 'passed' : step.optional ? 'skipped' : 'failed',
         durationMs,
         httpStatus: res.status,
-        error: !passed ? `Expected ${step.expectedStatus ?? "any 2xx"}, got ${res.status}${assertionFailed ? " + assertion failed" : ""}` : undefined,
+        error: !passed
+          ? `Expected ${step.expectedStatus ?? 'any 2xx'}, got ${res.status}${assertionFailed ? ' + assertion failed' : ''}`
+          : undefined,
         extracted: Object.keys(extracted).length > 0 ? extracted : undefined,
       });
 
       // Stop on non-optional failure
       if (!passed && !step.optional) break;
-    } catch (err) {
+    } catch (_err) {
       stepResults.push({
         step: step.step,
         description: step.description,
         path,
-        status: step.optional ? "skipped" : "failed",
+        status: step.optional ? 'skipped' : 'failed',
         durationMs: Date.now() - stepStart,
-        error: "Flow step execution failed",
+        error: 'Flow step execution failed',
       });
       if (!step.optional) break;
     }
   }
 
   const completedAt = new Date().toISOString();
-  const passedSteps = stepResults.filter((s) => s.status === "passed").length;
-  const failedSteps = stepResults.filter((s) => s.status === "failed").length;
-  const skippedSteps = stepResults.filter((s) => s.status === "skipped").length;
+  const passedSteps = stepResults.filter((s) => s.status === 'passed').length;
+  const failedSteps = stepResults.filter((s) => s.status === 'failed').length;
+  const skippedSteps = stepResults.filter((s) => s.status === 'skipped').length;
 
   return {
     flowId: flow.id,
@@ -224,7 +230,7 @@ export async function executeFlow(
     passedSteps,
     failedSteps,
     skippedSteps,
-    status: failedSteps === 0 ? "passed" : passedSteps > 0 ? "partial" : "failed",
+    status: failedSteps === 0 ? 'passed' : passedSteps > 0 ? 'partial' : 'failed',
     stepResults,
     variables: vars,
   };
@@ -243,7 +249,7 @@ function resolveTemplate(template: string, vars: Record<string, string>): string
  * Simple dot-path JSON accessor: "ok" or "data.items.0.id"
  */
 function resolveJsonPath(obj: any, path: string): any {
-  const parts = path.split(".");
+  const parts = path.split('.');
   let current = obj;
   for (const part of parts) {
     if (current == null) return undefined;

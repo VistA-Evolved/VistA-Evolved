@@ -27,14 +27,15 @@ Test-Path apps/web/src/lib/menu-data.ts
 
 ## Manual spot-checks
 
-| Check | Expected |
-|-------|----------|
-| Navigate to `/chart/100/cover` | Cover Sheet panel with 4 quadrants |
-| Bottom tab strip | 10 tabs: Cover Sheet through Reports |
-| Click "Problems" tab | Navigates to `/chart/100/problems`, shows problem list |
-| Menu bar | File / Edit / View / Tools / Help dropdowns |
-| Patient header | Shows patient name, DOB, sex from demographics API |
-| Unimplemented tabs (Labs, Orders, etc.) | Show "Not yet implemented" placeholder |
+| Check                                   | Expected                                               |
+| --------------------------------------- | ------------------------------------------------------ |
+| Navigate to `/chart/100/cover`          | Cover Sheet panel with 4 quadrants                     |
+| Bottom tab strip                        | 10 tabs: Cover Sheet through Reports                   |
+| Click "Problems" tab                    | Navigates to `/chart/100/problems`, shows problem list |
+| Menu bar                                | File / Edit / View / Tools / Help dropdowns            |
+| Patient header                          | Shows patient name, DOB, sex from demographics API     |
+| Unimplemented tabs (Labs, Orders, etc.) | Show "Not yet implemented" placeholder                 |
 
 ## Pass criteria
+
 `pnpm -C apps/web build` exits 0. All files present. Manual navigation works.

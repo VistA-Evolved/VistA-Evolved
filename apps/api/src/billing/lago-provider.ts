@@ -27,7 +27,7 @@ import type {
   Invoice,
   InvoiceLineItem,
   MeterEvent,
-} from "./types.js";
+} from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Config                                                              */
@@ -39,12 +39,12 @@ interface LagoConfig {
 }
 
 function loadLagoConfig(): LagoConfig {
-  const apiUrl = process.env.LAGO_API_URL || "http://localhost:3000";
-  const apiKey = process.env.LAGO_API_KEY || "";
+  const apiUrl = process.env.LAGO_API_URL || 'http://localhost:3000';
+  const apiKey = process.env.LAGO_API_KEY || '';
   if (!apiKey) {
-    throw new Error("LAGO_API_KEY env var is required for Lago billing provider");
+    throw new Error('LAGO_API_KEY env var is required for Lago billing provider');
   }
-  return { apiUrl: apiUrl.replace(/\/$/, ""), apiKey };
+  return { apiUrl: apiUrl.replace(/\/$/, ''), apiKey };
 }
 
 /* ------------------------------------------------------------------ */
@@ -54,26 +54,26 @@ function loadLagoConfig(): LagoConfig {
 async function lagoFetch(
   config: LagoConfig,
   path: string,
-  options: { method?: string; body?: unknown } = {},
+  options: { method?: string; body?: unknown } = {}
 ): Promise<any> {
   const url = `${config.apiUrl}/api/v1${path}`;
   const resp = await fetch(url, {
-    method: options.method || "GET",
+    method: options.method || 'GET',
     headers: {
       Authorization: `Bearer ${config.apiKey}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: options.body ? JSON.stringify(options.body) : undefined,
     signal: AbortSignal.timeout(15_000),
   });
 
   if (!resp.ok) {
-    const text = await resp.text().catch(() => "");
+    const text = await resp.text().catch(() => '');
     throw new Error(`Lago API ${resp.status} ${resp.statusText}: ${text.slice(0, 200)}`);
   }
 
-  const contentType = resp.headers.get("content-type") || "";
-  if (contentType.includes("application/json")) {
+  const contentType = resp.headers.get('content-type') || '';
+  if (contentType.includes('application/json')) {
     return resp.json();
   }
   return null;
@@ -87,31 +87,31 @@ function mapLagoPlan(lagoPlan: any): Plan {
   return {
     id: lagoPlan.lago_id || lagoPlan.code,
     name: lagoPlan.name || lagoPlan.code,
-    tier: (lagoPlan.metadata?.tier as any) || "custom",
+    tier: (lagoPlan.metadata?.tier as any) || 'custom',
     basePriceCents: lagoPlan.amount_cents ?? 0,
-    includedPhysicians: parseInt(lagoPlan.metadata?.included_physicians || "0", 10),
-    perPhysicianCents: parseInt(lagoPlan.metadata?.per_physician_cents || "0", 10),
-    apiCallLimit: parseInt(lagoPlan.metadata?.api_call_limit || "0", 10),
+    includedPhysicians: parseInt(lagoPlan.metadata?.included_physicians || '0', 10),
+    perPhysicianCents: parseInt(lagoPlan.metadata?.per_physician_cents || '0', 10),
+    apiCallLimit: parseInt(lagoPlan.metadata?.api_call_limit || '0', 10),
     modulesIncluded: lagoPlan.metadata?.modules_included
-      ? (lagoPlan.metadata.modules_included as string).split(",")
+      ? (lagoPlan.metadata.modules_included as string).split(',')
       : [],
-    description: lagoPlan.description || "",
+    description: lagoPlan.description || '',
   };
 }
 
 function mapLagoSubscription(lagoSub: any): Subscription {
   const statusMap: Record<string, SubscriptionStatus> = {
-    active: "active",
-    pending: "trialing",
-    terminated: "canceled",
+    active: 'active',
+    pending: 'trialing',
+    terminated: 'canceled',
   };
   return {
     id: lagoSub.lago_id || lagoSub.external_id,
     tenantId: lagoSub.external_customer_id,
     planId: lagoSub.plan_code,
-    status: statusMap[lagoSub.status] || "active",
+    status: statusMap[lagoSub.status] || 'active',
     currentPeriodStart: lagoSub.started_at || new Date().toISOString(),
-    currentPeriodEnd: lagoSub.ending_at || "",
+    currentPeriodEnd: lagoSub.ending_at || '',
     cancelAtPeriodEnd: lagoSub.canceled_at != null,
     createdAt: lagoSub.created_at || new Date().toISOString(),
     updatedAt: lagoSub.updated_at || new Date().toISOString(),
@@ -119,13 +119,13 @@ function mapLagoSubscription(lagoSub: any): Subscription {
 }
 
 function mapLagoInvoice(lagoInv: any): Invoice {
-  const statusMap: Record<string, Invoice["status"]> = {
-    draft: "draft",
-    finalized: "finalized",
-    voided: "void",
+  const statusMap: Record<string, Invoice['status']> = {
+    draft: 'draft',
+    finalized: 'finalized',
+    voided: 'void',
   };
   const lineItems: InvoiceLineItem[] = (lagoInv.fees || []).map((fee: any) => ({
-    description: fee.item?.name || fee.description || "Item",
+    description: fee.item?.name || fee.description || 'Item',
     quantity: fee.units || 1,
     unitPriceCents: fee.amount_cents || 0,
     amountCents: fee.amount_cents || 0,
@@ -133,17 +133,17 @@ function mapLagoInvoice(lagoInv: any): Invoice {
 
   return {
     id: lagoInv.lago_id,
-    tenantId: lagoInv.customer?.external_id || "",
-    subscriptionId: lagoInv.subscriptions?.[0]?.lago_id || "",
-    status: statusMap[lagoInv.status] || "draft",
+    tenantId: lagoInv.customer?.external_id || '',
+    subscriptionId: lagoInv.subscriptions?.[0]?.lago_id || '',
+    status: statusMap[lagoInv.status] || 'draft',
     amountCents: lagoInv.total_amount_cents ?? 0,
-    currency: lagoInv.currency || "USD",
-    periodStart: lagoInv.charges_from_datetime || "",
-    periodEnd: lagoInv.charges_to_datetime || "",
+    currency: lagoInv.currency || 'USD',
+    periodStart: lagoInv.charges_from_datetime || '',
+    periodEnd: lagoInv.charges_to_datetime || '',
     lineItems,
-    issuedAt: lagoInv.issuing_date || "",
-    dueAt: lagoInv.payment_due_date || "",
-    paidAt: lagoInv.payment_status === "succeeded" ? lagoInv.updated_at : undefined,
+    issuedAt: lagoInv.issuing_date || '',
+    dueAt: lagoInv.payment_due_date || '',
+    paidAt: lagoInv.payment_status === 'succeeded' ? lagoInv.updated_at : undefined,
   };
 }
 
@@ -152,7 +152,7 @@ function mapLagoInvoice(lagoInv: any): Invoice {
 /* ------------------------------------------------------------------ */
 
 export class LagoBillingProvider implements BillingProvider {
-  readonly name = "lago";
+  readonly name = 'lago';
   private config: LagoConfig;
 
   constructor() {
@@ -161,7 +161,7 @@ export class LagoBillingProvider implements BillingProvider {
 
   /* ---- Plans ---- */
   async listPlans(): Promise<Plan[]> {
-    const resp = await lagoFetch(this.config, "/plans");
+    const resp = await lagoFetch(this.config, '/plans');
     return (resp?.plans || []).map(mapLagoPlan);
   }
 
@@ -178,8 +178,8 @@ export class LagoBillingProvider implements BillingProvider {
   async createSubscription(tenantId: string, planId: string): Promise<Subscription> {
     // Ensure Lago customer exists
     try {
-      await lagoFetch(this.config, "/customers", {
-        method: "POST",
+      await lagoFetch(this.config, '/customers', {
+        method: 'POST',
         body: {
           customer: {
             external_id: tenantId,
@@ -191,8 +191,8 @@ export class LagoBillingProvider implements BillingProvider {
       // Customer may already exist — that's fine
     }
 
-    const resp = await lagoFetch(this.config, "/subscriptions", {
-      method: "POST",
+    const resp = await lagoFetch(this.config, '/subscriptions', {
+      method: 'POST',
       body: {
         subscription: {
           external_customer_id: tenantId,
@@ -209,7 +209,7 @@ export class LagoBillingProvider implements BillingProvider {
     try {
       const resp = await lagoFetch(
         this.config,
-        `/subscriptions?external_customer_id=${encodeURIComponent(tenantId)}&status=active`,
+        `/subscriptions?external_customer_id=${encodeURIComponent(tenantId)}&status=active`
       );
       const subs = resp?.subscriptions || [];
       return subs.length > 0 ? mapLagoSubscription(subs[0]) : null;
@@ -225,7 +225,7 @@ export class LagoBillingProvider implements BillingProvider {
     }
 
     const resp = await lagoFetch(this.config, `/subscriptions/${existing.id}`, {
-      method: "PUT",
+      method: 'PUT',
       body: {
         subscription: {
           plan_code: planId,
@@ -240,7 +240,7 @@ export class LagoBillingProvider implements BillingProvider {
     if (!existing) throw new Error(`No subscription for tenant: ${tenantId}`);
 
     const resp = await lagoFetch(this.config, `/subscriptions/${existing.id}`, {
-      method: "DELETE",
+      method: 'DELETE',
     });
     const sub = mapLagoSubscription(resp.subscription);
     sub.cancelAtPeriodEnd = cancelAtPeriodEnd;
@@ -249,8 +249,8 @@ export class LagoBillingProvider implements BillingProvider {
 
   /* ---- Metering ---- */
   async reportUsage(record: MeteringRecord): Promise<void> {
-    await lagoFetch(this.config, "/events", {
-      method: "POST",
+    await lagoFetch(this.config, '/events', {
+      method: 'POST',
       body: {
         event: {
           transaction_id: `${record.tenantId}_${record.event}_${Date.now()}`,
@@ -266,7 +266,11 @@ export class LagoBillingProvider implements BillingProvider {
     });
   }
 
-  async getUsageSummary(tenantId: string, periodStart: string, periodEnd: string): Promise<UsageSummary> {
+  async getUsageSummary(
+    tenantId: string,
+    periodStart: string,
+    periodEnd: string
+  ): Promise<UsageSummary> {
     // Lago doesn't have a direct usage summary endpoint — aggregate from events
     // For now, return empty counters (Lago handles aggregation internally for invoicing)
     const counters: Record<MeterEvent, number> = {
@@ -286,24 +290,24 @@ export class LagoBillingProvider implements BillingProvider {
   async listInvoices(tenantId: string): Promise<Invoice[]> {
     const resp = await lagoFetch(
       this.config,
-      `/invoices?external_customer_id=${encodeURIComponent(tenantId)}`,
+      `/invoices?external_customer_id=${encodeURIComponent(tenantId)}`
     );
     return (resp?.invoices || []).map(mapLagoInvoice);
   }
 
   async getCurrentInvoice(tenantId: string): Promise<Invoice | null> {
     const invoices = await this.listInvoices(tenantId);
-    const drafts = invoices.filter((i) => i.status === "draft");
+    const drafts = invoices.filter((i) => i.status === 'draft');
     return drafts.length > 0 ? drafts[0] : null;
   }
 
   /* ---- Health ---- */
   async healthCheck(): Promise<{ ok: boolean; provider: string; details?: string }> {
     try {
-      await lagoFetch(this.config, "/plans?per_page=1");
-      return { ok: true, provider: "lago", details: `Connected to ${this.config.apiUrl}` };
+      await lagoFetch(this.config, '/plans?per_page=1');
+      return { ok: true, provider: 'lago', details: `Connected to ${this.config.apiUrl}` };
     } catch (err: any) {
-      return { ok: false, provider: "lago", details: err.message?.slice(0, 200) };
+      return { ok: false, provider: 'lago', details: err.message?.slice(0, 200) };
     }
   }
 }

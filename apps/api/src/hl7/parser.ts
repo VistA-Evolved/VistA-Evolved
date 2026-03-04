@@ -13,11 +13,8 @@
  * MSH-1 is the field separator itself. MSH-2 is encoding characters.
  */
 
-import type { Hl7Message, Hl7Msh, Hl7Segment } from "./types.js";
-import {
-  HL7_FIELD_SEP,
-  HL7_SEGMENT_SEP,
-} from "./types.js";
+import type { Hl7Message, Hl7Msh, Hl7Segment } from './types.js';
+import { HL7_FIELD_SEP, HL7_SEGMENT_SEP } from './types.js';
 
 /**
  * Parse a raw HL7v2 message string into structured form.
@@ -29,10 +26,10 @@ export function parseMessage(raw: string): Hl7Message | null {
   if (!raw || raw.length < 8) return null;
 
   // Normalize line endings: \r\n -> \r, \n -> \r
-  const normalized = raw.replace(/\r\n/g, "\r").replace(/\n/g, "\r").trim();
+  const normalized = raw.replace(/\r\n/g, '\r').replace(/\n/g, '\r').trim();
 
   // Must start with MSH
-  if (!normalized.startsWith("MSH")) return null;
+  if (!normalized.startsWith('MSH')) return null;
 
   // Extract field separator from MSH-1 (character at position 3)
   const fieldSep = normalized[3];
@@ -47,7 +44,7 @@ export function parseMessage(raw: string): Hl7Message | null {
     const trimmed = segText.trim();
     const fields = trimmed.split(fieldSep);
     return {
-      name: fields[0] || "",
+      name: fields[0] || '',
       raw: trimmed,
       fields,
     };
@@ -55,7 +52,7 @@ export function parseMessage(raw: string): Hl7Message | null {
 
   // Extract MSH
   const mshSegment = segments[0];
-  if (!mshSegment || mshSegment.name !== "MSH") return null;
+  if (!mshSegment || mshSegment.name !== 'MSH') return null;
 
   const msh = parseMsh(mshSegment, fieldSep);
   if (!msh) return null;
@@ -94,7 +91,7 @@ function parseMsh(segment: Hl7Segment, fieldSep: string): Hl7Msh | null {
   // MSH is special: field separator IS MSH-1, so we need to re-parse
   const raw = segment.raw;
   // Find "MSH" + fieldSep, then the rest is encoding chars + fieldSep + fields
-  const prefix = "MSH" + fieldSep;
+  const prefix = 'MSH' + fieldSep;
   if (!raw.startsWith(prefix)) return null;
 
   const afterMsh = raw.substring(prefix.length);
@@ -112,16 +109,16 @@ function parseMsh(segment: Hl7Segment, fieldSep: string): Hl7Msh | null {
   return {
     fieldSeparator: fieldSep,
     encodingCharacters: encodingChars,
-    sendingApplication: fields[0] || "",
-    sendingFacility: fields[1] || "",
-    receivingApplication: fields[2] || "",
-    receivingFacility: fields[3] || "",
-    dateTime: fields[4] || "",
-    security: fields[5] || "",
-    messageType: fields[6] || "",
-    messageControlId: fields[7] || "",
-    processingId: fields[8] || "",
-    versionId: fields[9] || "",
+    sendingApplication: fields[0] || '',
+    sendingFacility: fields[1] || '',
+    receivingApplication: fields[2] || '',
+    receivingFacility: fields[3] || '',
+    dateTime: fields[4] || '',
+    security: fields[5] || '',
+    messageType: fields[6] || '',
+    messageControlId: fields[7] || '',
+    processingId: fields[8] || '',
+    versionId: fields[9] || '',
   };
 }
 
@@ -134,14 +131,14 @@ function parseMsh(segment: Hl7Segment, fieldSep: string): Hl7Msh | null {
  */
 export function getField(segment: Hl7Segment, fieldIndex: number): string {
   // For non-MSH segments, field 1 = index 1 in fields array (index 0 = segment name)
-  if (segment.name === "MSH") {
+  if (segment.name === 'MSH') {
     // MSH is special — MSH-1 is the separator, MSH-2 is encoding chars
     // Use the original fields but offset
-    if (fieldIndex <= 0) return "";
+    if (fieldIndex <= 0) return '';
     if (fieldIndex === 1) return HL7_FIELD_SEP;
-    return segment.fields[fieldIndex - 1] || "";
+    return segment.fields[fieldIndex - 1] || '';
   }
-  return segment.fields[fieldIndex] || "";
+  return segment.fields[fieldIndex] || '';
 }
 
 /**

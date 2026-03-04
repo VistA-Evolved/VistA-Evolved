@@ -15,8 +15,8 @@
  * Uses pre-authenticated session from auth.setup.ts.
  */
 
-import { test, expect, type Page, type Locator } from "@playwright/test";
-import { setupConsoleGate } from "./helpers/auth";
+import { test, expect, type Page, type Locator } from '@playwright/test';
+import { setupConsoleGate } from './helpers/auth';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -26,13 +26,13 @@ interface ClickAuditResult {
   selector: string;
   label: string;
   action:
-    | "navigated"
-    | "dialog"
-    | "network"
-    | "state-change"
-    | "pending-labeled"
-    | "disabled-with-tooltip"
-    | "dead-click";
+    | 'navigated'
+    | 'dialog'
+    | 'network'
+    | 'state-change'
+    | 'pending-labeled'
+    | 'disabled-with-tooltip'
+    | 'dead-click';
   details?: string;
 }
 
@@ -56,7 +56,7 @@ const DIALOG_SELECTOR = [
   "[class*='Modal']",
   "[class*='dialog']",
   "[class*='Dialog']",
-].join(", ");
+].join(', ');
 
 const POPOVER_SELECTOR = [
   "[role='listbox']",
@@ -66,7 +66,7 @@ const POPOVER_SELECTOR = [
   "[class*='Dropdown']",
   "[class*='popover']",
   "[class*='Popover']",
-].join(", ");
+].join(', ');
 
 const TOAST_SELECTOR = [
   "[class*='toast']",
@@ -76,26 +76,29 @@ const TOAST_SELECTOR = [
   "[class*='Notification']",
   "[class*='snackbar']",
   "[class*='Snackbar']",
-].join(", ");
+].join(', ');
 
 /** Labels to skip — meta-UI, theme, density controls, known menu-bar items */
 const SKIP_LABELS = /^(Theme|Density|Layout|Help|Tools|File|Edit|View|Window)[\s:]*$/i;
 
 /** Check if an element has a meaningful disabled state with tooltip/title */
 async function isDisabledWithTooltip(el: Locator): Promise<string | false> {
-  const disabled = await el.getAttribute("disabled").catch(() => null);
-  const ariaDisabled = await el.getAttribute("aria-disabled").catch(() => null);
-  if (disabled === null && ariaDisabled !== "true") return false;
+  const disabled = await el.getAttribute('disabled').catch(() => null);
+  const ariaDisabled = await el.getAttribute('aria-disabled').catch(() => null);
+  if (disabled === null && ariaDisabled !== 'true') return false;
 
-  const title = await el.getAttribute("title").catch(() => null);
-  const ariaLabel = await el.getAttribute("aria-label").catch(() => null);
+  const title = await el.getAttribute('title').catch(() => null);
+  const ariaLabel = await el.getAttribute('aria-label').catch(() => null);
   const tooltip = title || ariaLabel;
   if (tooltip && tooltip.length > 2) return tooltip;
 
   // Also check for a nested tooltip span
   const tooltipChild = el.locator("[class*='tooltip'], [class*='Tooltip']");
   if ((await tooltipChild.count()) > 0) {
-    const text = await tooltipChild.first().textContent().catch(() => null);
+    const text = await tooltipChild
+      .first()
+      .textContent()
+      .catch(() => null);
     if (text && text.length > 2) return text;
   }
 
@@ -118,13 +121,17 @@ async function auditClick(
     return {
       selector,
       label,
-      action: "disabled-with-tooltip",
+      action: 'disabled-with-tooltip',
       details: tooltipText,
     };
   }
 
   const beforeUrl = page.url();
-  const beforeBody = await page.locator("body").first().textContent().catch(() => "");
+  const beforeBody = await page
+    .locator('body')
+    .first()
+    .textContent()
+    .catch(() => '');
   const beforeDialogs = await page.locator(DIALOG_SELECTOR).count();
   const beforePopovers = await page.locator(POPOVER_SELECTOR).count();
 
@@ -133,10 +140,20 @@ async function auditClick(
   let networkFired = false;
   const isApiRequest = (url: string) => {
     // Only count requests to the API backend or same-origin fetch calls
-    if (url.includes('localhost:3001') || url.includes('/api/') || url.includes('/vista/') ||
-        url.includes('/auth/') || url.includes('/rcm/') || url.includes('/messaging/') ||
-        url.includes('/admin/') || url.includes('/telehealth/') || url.includes('/imaging/') ||
-        url.includes('/scheduling/') || url.includes('/analytics/') || url.includes('/iam/')) {
+    if (
+      url.includes('localhost:3001') ||
+      url.includes('/api/') ||
+      url.includes('/vista/') ||
+      url.includes('/auth/') ||
+      url.includes('/rcm/') ||
+      url.includes('/messaging/') ||
+      url.includes('/admin/') ||
+      url.includes('/telehealth/') ||
+      url.includes('/imaging/') ||
+      url.includes('/scheduling/') ||
+      url.includes('/analytics/') ||
+      url.includes('/iam/')
+    ) {
       return true;
     }
     return false;
@@ -144,63 +161,74 @@ async function auditClick(
   const networkHandler = (req: { url: () => string }) => {
     if (isApiRequest(req.url())) networkFired = true;
   };
-  page.on("request", networkHandler);
+  page.on('request', networkHandler);
 
   try {
     await el.click({ timeout: 3000 });
   } catch {
-    page.removeListener("request", networkHandler);
-    return { selector, label, action: "dead-click", details: "Click failed or element not interactive" };
+    page.removeListener('request', networkHandler);
+    return {
+      selector,
+      label,
+      action: 'dead-click',
+      details: 'Click failed or element not interactive',
+    };
   }
 
   // Wait for effects to settle
   await page.waitForTimeout(800);
-  page.removeListener("request", networkHandler);
+  page.removeListener('request', networkHandler);
 
   // Check 1: Navigation
   const afterUrl = page.url();
   if (afterUrl !== beforeUrl) {
-    return { selector, label, action: "navigated", details: `${beforeUrl} -> ${afterUrl}` };
+    return { selector, label, action: 'navigated', details: `${beforeUrl} -> ${afterUrl}` };
   }
 
   // Check 2: Network request fired
   if (networkFired) {
-    return { selector, label, action: "network", details: "XHR/fetch request observed" };
+    return { selector, label, action: 'network', details: 'XHR/fetch request observed' };
   }
 
   // Check 3: Dialog/modal opened
   const afterDialogs = await page.locator(DIALOG_SELECTOR).count();
   if (afterDialogs > beforeDialogs) {
-    await page.keyboard.press("Escape");
+    await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
-    return { selector, label, action: "dialog", details: "Modal/dialog opened" };
+    return { selector, label, action: 'dialog', details: 'Modal/dialog opened' };
   }
 
   // Check 4: Popover/dropdown/menu opened
   const afterPopovers = await page.locator(POPOVER_SELECTOR).count();
   if (afterPopovers > beforePopovers) {
-    await page.keyboard.press("Escape");
+    await page.keyboard.press('Escape');
     await page.waitForTimeout(200);
-    return { selector, label, action: "dialog", details: "Popover/dropdown opened" };
+    return { selector, label, action: 'dialog', details: 'Popover/dropdown opened' };
   }
 
   // Check 5: Toast/notification appeared
   const toastCount = await page.locator(TOAST_SELECTOR).count();
   if (toastCount > 0) {
-    return { selector, label, action: "state-change", details: "Toast/notification appeared" };
+    return { selector, label, action: 'state-change', details: 'Toast/notification appeared' };
   }
 
   // Check 6: Content changed (state change)
-  const afterBody = await page.locator("body").first().textContent().catch(() => "");
+  const afterBody = await page
+    .locator('body')
+    .first()
+    .textContent()
+    .catch(() => '');
   if (afterBody !== beforeBody) {
-    const pendingMatch = (afterBody || "").match(/pending|integration.*pending|not\s+available|coming\s+soon/i);
+    const pendingMatch = (afterBody || '').match(
+      /pending|integration.*pending|not\s+available|coming\s+soon/i
+    );
     if (pendingMatch) {
-      return { selector, label, action: "pending-labeled", details: pendingMatch[0] };
+      return { selector, label, action: 'pending-labeled', details: pendingMatch[0] };
     }
-    return { selector, label, action: "state-change" };
+    return { selector, label, action: 'state-change' };
   }
 
-  return { selector, label, action: "dead-click", details: "No observable effect" };
+  return { selector, label, action: 'dead-click', details: 'No observable effect' };
 }
 
 /**
@@ -216,15 +244,15 @@ async function auditScreen(
   const max = screen.maxElements ?? 15;
 
   // Build the interactive element selector
-  const scope = screen.scope ? `${screen.scope} ` : "";
+  const scope = screen.scope ? `${screen.scope} ` : '';
   const interactiveSelector = [
     `${scope}button:visible:not([disabled]):not([aria-disabled='true'])`,
     `${scope}[role='tab']:visible`,
     `${scope}a[href]:visible:not([href='#']):not([href=''])`,
-  ].join(", ");
+  ].join(', ');
 
   await page.goto(screen.url);
-  await page.waitForLoadState("domcontentloaded");
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForTimeout(2000);
 
   const elements = page.locator(interactiveSelector);
@@ -234,20 +262,20 @@ async function auditScreen(
     try {
       // Re-navigate to reset state between clicks
       await page.goto(screen.url);
-      await page.waitForLoadState("domcontentloaded");
+      await page.waitForLoadState('domcontentloaded');
       await page.waitForTimeout(1000);
 
       const el = page.locator(interactiveSelector).nth(i);
       const label = await el.textContent().catch(() => `element[${i}]`);
-      const trimmed = (label || "").trim().substring(0, 50);
+      const trimmed = (label || '').trim().substring(0, 50);
 
       // Skip meta-UI buttons
       if (SKIP_LABELS.test(trimmed)) continue;
 
       // Build a descriptive selector for reporting
-      const tagName = await el.evaluate((e) => e.tagName.toLowerCase()).catch(() => "?");
-      const role = await el.getAttribute("role").catch(() => null);
-      const testId = await el.getAttribute("data-testid").catch(() => null);
+      const tagName = await el.evaluate((e) => e.tagName.toLowerCase()).catch(() => '?');
+      const role = await el.getAttribute('role').catch(() => null);
+      const testId = await el.getAttribute('data-testid').catch(() => null);
       const selectorDesc = testId
         ? `[data-testid="${testId}"]`
         : role
@@ -255,14 +283,14 @@ async function auditScreen(
           : `${tagName}:nth(${i})`;
 
       const result = await auditClick(page, el, trimmed, selectorDesc);
-      if (result.action === "dead-click") {
+      if (result.action === 'dead-click') {
         failed.push(result);
       } else {
         passed.push(result);
       }
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
-      if (msg.includes("closed") || msg.includes("Target page")) break;
+      if (msg.includes('closed') || msg.includes('Target page')) break;
       // Skip individual element failures
     }
   }
@@ -275,33 +303,33 @@ async function auditScreen(
 /* ------------------------------------------------------------------ */
 
 const CHART_SCREENS: ScreenTarget[] = [
-  { name: "Cover Sheet", url: "/cprs/chart/3/cover", maxElements: 12 },
-  { name: "Problems", url: "/cprs/chart/3/problems", maxElements: 10 },
-  { name: "Meds", url: "/cprs/chart/3/meds", maxElements: 10 },
-  { name: "Orders", url: "/cprs/chart/3/orders", maxElements: 10 },
-  { name: "Notes", url: "/cprs/chart/3/notes", maxElements: 10 },
-  { name: "Labs", url: "/cprs/chart/3/labs", maxElements: 8 },
-  { name: "Imaging", url: "/cprs/chart/3/imaging", maxElements: 8 },
+  { name: 'Cover Sheet', url: '/cprs/chart/3/cover', maxElements: 12 },
+  { name: 'Problems', url: '/cprs/chart/3/problems', maxElements: 10 },
+  { name: 'Meds', url: '/cprs/chart/3/meds', maxElements: 10 },
+  { name: 'Orders', url: '/cprs/chart/3/orders', maxElements: 10 },
+  { name: 'Notes', url: '/cprs/chart/3/notes', maxElements: 10 },
+  { name: 'Labs', url: '/cprs/chart/3/labs', maxElements: 8 },
+  { name: 'Imaging', url: '/cprs/chart/3/imaging', maxElements: 8 },
 ];
 
 const NAV_SCREENS: ScreenTarget[] = [
-  { name: "Inbox", url: "/cprs/inbox", maxElements: 10 },
-  { name: "Messages", url: "/cprs/messages", maxElements: 10 },
-  { name: "Scheduling", url: "/cprs/scheduling", maxElements: 8 },
+  { name: 'Inbox', url: '/cprs/inbox', maxElements: 10 },
+  { name: 'Messages', url: '/cprs/messages', maxElements: 10 },
+  { name: 'Scheduling', url: '/cprs/scheduling', maxElements: 8 },
 ];
 
 const ADMIN_SCREENS: ScreenTarget[] = [
-  { name: "Admin Modules", url: "/cprs/admin/modules", maxElements: 12 },
-  { name: "Admin RCM", url: "/cprs/admin/rcm", maxElements: 12 },
-  { name: "Admin Analytics", url: "/cprs/admin/analytics", maxElements: 10 },
-  { name: "Admin Integrations", url: "/cprs/admin/integrations", maxElements: 10 },
+  { name: 'Admin Modules', url: '/cprs/admin/modules', maxElements: 12 },
+  { name: 'Admin RCM', url: '/cprs/admin/rcm', maxElements: 12 },
+  { name: 'Admin Analytics', url: '/cprs/admin/analytics', maxElements: 10 },
+  { name: 'Admin Integrations', url: '/cprs/admin/integrations', maxElements: 10 },
 ];
 
 /* ------------------------------------------------------------------ */
 /* Tests                                                               */
 /* ------------------------------------------------------------------ */
 
-test.describe("Phase 72 — Dead-Click Audit", () => {
+test.describe('Phase 72 — Dead-Click Audit', () => {
   test.setTimeout(600_000); // 10 min total — large crawl
 
   /* ---------- Chart screens ---------- */
@@ -314,7 +342,7 @@ test.describe("Phase 72 — Dead-Click Audit", () => {
       if (failed.length > 0) {
         const report = failed
           .map((f) => `  DEAD: "${f.label}" (${f.selector}) — ${f.details}`)
-          .join("\n");
+          .join('\n');
         const summary = `${failed.length} dead click(s) on ${screen.name} (${passed.length} passed):\n${report}`;
         expect(failed, summary).toHaveLength(0);
       }
@@ -332,7 +360,7 @@ test.describe("Phase 72 — Dead-Click Audit", () => {
       if (failed.length > 0) {
         const report = failed
           .map((f) => `  DEAD: "${f.label}" (${f.selector}) — ${f.details}`)
-          .join("\n");
+          .join('\n');
         const summary = `${failed.length} dead click(s) on ${screen.name} (${passed.length} passed):\n${report}`;
         expect(failed, summary).toHaveLength(0);
       }
@@ -350,7 +378,7 @@ test.describe("Phase 72 — Dead-Click Audit", () => {
       if (failed.length > 0) {
         const report = failed
           .map((f) => `  DEAD: "${f.label}" (${f.selector}) — ${f.details}`)
-          .join("\n");
+          .join('\n');
         const summary = `${failed.length} dead click(s) on ${screen.name} (${passed.length} passed):\n${report}`;
         expect(failed, summary).toHaveLength(0);
       }
@@ -360,53 +388,65 @@ test.describe("Phase 72 — Dead-Click Audit", () => {
   }
 
   /* ---------- Aggregate summary ---------- */
-  test("all chart tabs render non-empty content", async ({ page }) => {
+  test('all chart tabs render non-empty content', async ({ page }) => {
     const errors = setupConsoleGate(page);
 
     const tabSlugs = [
-      "cover", "problems", "meds", "orders", "notes", "consults",
-      "surgery", "dcsumm", "labs", "reports", "imaging",
-      "intake", "telehealth", "tasks", "aiassist",
+      'cover',
+      'problems',
+      'meds',
+      'orders',
+      'notes',
+      'consults',
+      'surgery',
+      'dcsumm',
+      'labs',
+      'reports',
+      'imaging',
+      'intake',
+      'telehealth',
+      'tasks',
+      'aiassist',
     ];
 
     const deadEnds: string[] = [];
 
     for (const slug of tabSlugs) {
       await page.goto(`/cprs/chart/3/${slug}`);
-      await page.waitForLoadState("domcontentloaded");
+      await page.waitForLoadState('domcontentloaded');
       await page.waitForTimeout(1500);
 
-      const bodyEl = page.locator("body").first();
-      const text = await bodyEl.textContent().catch(() => "");
+      const bodyEl = page.locator('body').first();
+      const text = await bodyEl.textContent().catch(() => '');
       if (!text?.trim().length || (text?.trim().length || 0) < 10) {
         deadEnds.push(`${slug}: blank or near-empty (${text?.length ?? 0} chars)`);
       }
     }
 
     if (deadEnds.length > 0) {
-      expect(deadEnds, `Dead-end tabs:\n${deadEnds.join("\n")}`).toHaveLength(0);
+      expect(deadEnds, `Dead-end tabs:\n${deadEnds.join('\n')}`).toHaveLength(0);
     }
 
-    expect(errors, "Console errors during tab crawl").toHaveLength(0);
+    expect(errors, 'Console errors during tab crawl').toHaveLength(0);
   });
 
   /* ---------- Pending elements must be labeled ---------- */
-  test("integration-pending elements include target RPC/file", async ({ page }) => {
+  test('integration-pending elements include target RPC/file', async ({ page }) => {
     const errors = setupConsoleGate(page);
 
     const urls = [
-      "/cprs/chart/3/cover",
-      "/cprs/chart/3/problems",
-      "/cprs/chart/3/meds",
-      "/cprs/chart/3/orders",
-      "/cprs/chart/3/imaging",
+      '/cprs/chart/3/cover',
+      '/cprs/chart/3/problems',
+      '/cprs/chart/3/meds',
+      '/cprs/chart/3/orders',
+      '/cprs/chart/3/imaging',
     ];
 
     const barePending: string[] = [];
 
     for (const url of urls) {
       await page.goto(url);
-      await page.waitForLoadState("domcontentloaded");
+      await page.waitForLoadState('domcontentloaded');
       await page.waitForTimeout(2000);
 
       // Find elements mentioning "pending" or "integration"
@@ -417,20 +457,24 @@ test.describe("Phase 72 — Dead-Click Audit", () => {
 
       for (let i = 0; i < count; i++) {
         const el = pendingEls.nth(i);
-        const text = await el.textContent().catch(() => "");
+        const text = await el.textContent().catch(() => '');
         // Must mention a target: RPC name, VistA file, or next-step
-        const hasTarget = (text || "").match(/RPC|VistA|file\b|queue|routine|ORWDX|GMRA|HL7|HLO|OR\s/i);
+        const hasTarget = (text || '').match(
+          /RPC|VistA|file\b|queue|routine|ORWDX|GMRA|HL7|HLO|OR\s/i
+        );
         if (!hasTarget && text && text.length < 100) {
-          barePending.push(`${url}: "${(text || "").trim().substring(0, 80)}"`);
+          barePending.push(`${url}: "${(text || '').trim().substring(0, 80)}"`);
         }
       }
     }
 
     // Bare pending messages without targets are allowed but logged
     if (barePending.length > 0) {
-      console.warn(`\n  WARN: ${barePending.length} pending message(s) without explicit target:\n  ${barePending.join("\n  ")}\n`);
+      console.warn(
+        `\n  WARN: ${barePending.length} pending message(s) without explicit target:\n  ${barePending.join('\n  ')}\n`
+      );
     }
 
-    expect(errors, "Console errors during pending audit").toHaveLength(0);
+    expect(errors, 'Console errors during pending audit').toHaveLength(0);
   });
 });

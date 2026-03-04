@@ -12,10 +12,10 @@ import type {
   RuleEvaluation,
   ClinicalAlert,
   PatientList,
-} from "./interface.js";
+} from './interface.js';
 
-const DASHBOARD_URL = process.env.DASHBOARD_URL || "http://localhost:3010";
-const TIMEOUT_MS = parseInt(process.env.DASHBOARD_TIMEOUT_MS || "5000", 10);
+const DASHBOARD_URL = process.env.DASHBOARD_URL || 'http://localhost:3010';
+const TIMEOUT_MS = parseInt(process.env.DASHBOARD_TIMEOUT_MS || '5000', 10);
 
 async function dashboardFetch<T>(path: string): Promise<DashboardResult<T>> {
   try {
@@ -24,7 +24,7 @@ async function dashboardFetch<T>(path: string): Promise<DashboardResult<T>> {
 
     const res = await fetch(`${DASHBOARD_URL}${path}`, {
       signal: controller.signal,
-      headers: { Accept: "application/json" },
+      headers: { Accept: 'application/json' },
     });
 
     clearTimeout(timer);
@@ -43,11 +43,13 @@ async function dashboardFetch<T>(path: string): Promise<DashboardResult<T>> {
 
 export class WorldVistaDashboardAdapter implements DashboardAdapter {
   async getRules(): Promise<DashboardResult<ClinicalRule[]>> {
-    return dashboardFetch<ClinicalRule[]>("/api/rules");
+    return dashboardFetch<ClinicalRule[]>('/api/rules');
   }
 
   async evaluateRules(patientDfn: string): Promise<DashboardResult<RuleEvaluation[]>> {
-    return dashboardFetch<RuleEvaluation[]>(`/api/rules/evaluate?dfn=${encodeURIComponent(patientDfn)}`);
+    return dashboardFetch<RuleEvaluation[]>(
+      `/api/rules/evaluate?dfn=${encodeURIComponent(patientDfn)}`
+    );
   }
 
   async getAlerts(patientDfn: string): Promise<DashboardResult<ClinicalAlert[]>> {
@@ -55,7 +57,7 @@ export class WorldVistaDashboardAdapter implements DashboardAdapter {
   }
 
   async getPatientLists(): Promise<DashboardResult<PatientList[]>> {
-    return dashboardFetch<PatientList[]>("/api/patient-lists");
+    return dashboardFetch<PatientList[]>('/api/patient-lists');
   }
 
   async health() {
@@ -67,11 +69,11 @@ export class WorldVistaDashboardAdapter implements DashboardAdapter {
       });
       clearTimeout(timer);
       return {
-        status: res.ok ? ("connected" as const) : ("unreachable" as const),
+        status: res.ok ? ('connected' as const) : ('unreachable' as const),
         detail: `HTTP ${res.status}`,
       };
     } catch {
-      return { status: "unreachable" as const, detail: "Connection failed" };
+      return { status: 'unreachable' as const, detail: 'Connection failed' };
     }
   }
 }

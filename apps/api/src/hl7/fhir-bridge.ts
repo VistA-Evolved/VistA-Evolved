@@ -17,38 +17,41 @@
  *   - Each function returns a FHIR Bundle of type "transaction"
  */
 
-import { randomUUID } from "crypto";
+import { randomUUID } from 'crypto';
 
 /* ── HL7 Segment Helpers (local copies to avoid circular import) ── */
 
 function getField(segmentLine: string, fieldIndex: number, isMsh = false): string {
-  const parts = segmentLine.split("|");
-  if (isMsh) return parts[fieldIndex - 1] ?? "";
-  return parts[fieldIndex] ?? "";
+  const parts = segmentLine.split('|');
+  if (isMsh) return parts[fieldIndex - 1] ?? '';
+  return parts[fieldIndex] ?? '';
 }
 
 function getComponent(field: string, componentIndex: number = 1): string {
-  return (field.split("^")[componentIndex - 1]) ?? "";
+  return field.split('^')[componentIndex - 1] ?? '';
 }
 
 function parseSegments(raw: string): string[] {
-  return raw.split(/\r?\n|\r/).map((s) => s.trim()).filter(Boolean);
+  return raw
+    .split(/\r?\n|\r/)
+    .map((s) => s.trim())
+    .filter(Boolean);
 }
 
 function findSegment(segments: string[], prefix: string): string | undefined {
-  return segments.find((s) => s.startsWith(prefix + "|"));
+  return segments.find((s) => s.startsWith(prefix + '|'));
 }
 
 function findAllSegments(segments: string[], prefix: string): string[] {
-  return segments.filter((s) => s.startsWith(prefix + "|"));
+  return segments.filter((s) => s.startsWith(prefix + '|'));
 }
 
 /* ── FHIR R4 Types (minimal subset) ───────────────────── */
 
 export interface FhirBundle {
-  resourceType: "Bundle";
+  resourceType: 'Bundle';
   id: string;
-  type: "transaction" | "message" | "collection";
+  type: 'transaction' | 'message' | 'collection';
   timestamp: string;
   entry: FhirBundleEntry[];
   meta?: { source?: string; tag?: Array<{ system: string; code: string }> };
@@ -70,7 +73,7 @@ export type FhirResource =
   | FhirMessageHeader;
 
 export interface FhirPatient {
-  resourceType: "Patient";
+  resourceType: 'Patient';
   id: string;
   identifier: Array<{ system: string; value: string }>;
   name?: Array<{ family: string; given: string[] }>;
@@ -79,7 +82,7 @@ export interface FhirPatient {
 }
 
 export interface FhirEncounter {
-  resourceType: "Encounter";
+  resourceType: 'Encounter';
   id: string;
   status: string;
   class: { system: string; code: string; display: string };
@@ -92,7 +95,7 @@ export interface FhirEncounter {
 }
 
 export interface FhirDiagnosticReport {
-  resourceType: "DiagnosticReport";
+  resourceType: 'DiagnosticReport';
   id: string;
   status: string;
   code: { coding: Array<{ system: string; code: string; display: string }> };
@@ -102,7 +105,7 @@ export interface FhirDiagnosticReport {
 }
 
 export interface FhirObservation {
-  resourceType: "Observation";
+  resourceType: 'Observation';
   id: string;
   status: string;
   code: { coding: Array<{ system: string; code: string; display: string }> };
@@ -113,7 +116,7 @@ export interface FhirObservation {
 }
 
 export interface FhirServiceRequest {
-  resourceType: "ServiceRequest";
+  resourceType: 'ServiceRequest';
   id: string;
   status: string;
   intent: string;
@@ -124,7 +127,7 @@ export interface FhirServiceRequest {
 }
 
 export interface FhirAppointment {
-  resourceType: "Appointment";
+  resourceType: 'Appointment';
   id: string;
   status: string;
   appointmentType?: { coding: Array<{ system: string; code: string }> };
@@ -138,7 +141,7 @@ export interface FhirAppointment {
 }
 
 export interface FhirMessageHeader {
-  resourceType: "MessageHeader";
+  resourceType: 'MessageHeader';
   id: string;
   eventCoding: { system: string; code: string };
   source: { name: string; endpoint: string };
@@ -162,36 +165,41 @@ function hl7DateToFhir(hl7Date: string): string {
   const yyyy = hl7Date.slice(0, 4);
   const mm = hl7Date.slice(4, 6);
   const dd = hl7Date.slice(6, 8);
-  const hh = hl7Date.slice(8, 10) || "00";
-  const min = hl7Date.slice(10, 12) || "00";
-  const ss = hl7Date.slice(12, 14) || "00";
+  const hh = hl7Date.slice(8, 10) || '00';
+  const min = hl7Date.slice(10, 12) || '00';
+  const ss = hl7Date.slice(12, 14) || '00';
   return `${yyyy}-${mm}-${dd}T${hh}:${min}:${ss}Z`;
 }
 
 function hl7GenderToFhir(hl7Gender: string): string {
   switch (hl7Gender.toUpperCase()) {
-    case "M": return "male";
-    case "F": return "female";
-    case "O": case "A": return "other";
-    default: return "unknown";
+    case 'M':
+      return 'male';
+    case 'F':
+      return 'female';
+    case 'O':
+    case 'A':
+      return 'other';
+    default:
+      return 'unknown';
   }
 }
 
 function makeBundle(entries: FhirBundleEntry[], source: string): FhirBundle {
   return {
-    resourceType: "Bundle",
+    resourceType: 'Bundle',
     id: randomUUID(),
-    type: "transaction",
+    type: 'transaction',
     timestamp: new Date().toISOString(),
     entry: entries,
     meta: {
       source: `urn:vista-evolved:hl7-fhir-bridge`,
-      tag: [{ system: "http://vista-evolved.org/fhir/tags", code: source }],
+      tag: [{ system: 'http://vista-evolved.org/fhir/tags', code: source }],
     },
   };
 }
 
-function entry(resource: FhirResource, method = "PUT"): FhirBundleEntry {
+function entry(resource: FhirResource, method = 'PUT'): FhirBundleEntry {
   return {
     fullUrl: `urn:uuid:${resource.id}`,
     resource,
@@ -204,11 +212,18 @@ function entry(resource: FhirResource, method = "PUT"): FhirBundleEntry {
 export function convertAdtToFhir(raw: string): FhirConversionResult {
   const warnings: string[] = [];
   const segments = parseSegments(raw);
-  const msh = findSegment(segments, "MSH");
-  const pid = findSegment(segments, "PID");
-  const pv1 = findSegment(segments, "PV1");
+  const msh = findSegment(segments, 'MSH');
+  const pid = findSegment(segments, 'PID');
+  const pv1 = findSegment(segments, 'PV1');
 
-  if (!msh) return { ok: false, bundle: null, sourceMessageType: "ADT", sourceControlId: "", warnings: ["Missing MSH segment"] };
+  if (!msh)
+    return {
+      ok: false,
+      bundle: null,
+      sourceMessageType: 'ADT',
+      sourceControlId: '',
+      warnings: ['Missing MSH segment'],
+    };
 
   const controlId = getField(msh, 10, true);
   const messageType = getField(msh, 9, true);
@@ -216,55 +231,60 @@ export function convertAdtToFhir(raw: string): FhirConversionResult {
 
   // Build Patient resource
   const patientId = randomUUID();
-  const mrn = pid ? getComponent(getField(pid, 3), 1) : "";
-  const assignAuth = pid ? getComponent(getField(pid, 3), 4) : "urn:oid:unknown";
-  const familyName = pid ? getComponent(getField(pid, 5), 1) : "";
-  const givenName = pid ? getComponent(getField(pid, 5), 2) : "";
-  const dob = pid ? getField(pid, 7) : "";
-  const gender = pid ? getField(pid, 8) : "";
+  const mrn = pid ? getComponent(getField(pid, 3), 1) : '';
+  const assignAuth = pid ? getComponent(getField(pid, 3), 4) : 'urn:oid:unknown';
+  const familyName = pid ? getComponent(getField(pid, 5), 1) : '';
+  const givenName = pid ? getComponent(getField(pid, 5), 2) : '';
+  const dob = pid ? getField(pid, 7) : '';
+  const gender = pid ? getField(pid, 8) : '';
 
-  if (!mrn) warnings.push("PID-3 (MRN) missing");
+  if (!mrn) warnings.push('PID-3 (MRN) missing');
 
   const patient: FhirPatient = {
-    resourceType: "Patient",
+    resourceType: 'Patient',
     id: patientId,
-    identifier: [{ system: assignAuth ? `urn:oid:${assignAuth}` : "urn:oid:unknown", value: mrn }],
+    identifier: [{ system: assignAuth ? `urn:oid:${assignAuth}` : 'urn:oid:unknown', value: mrn }],
     ...(familyName && { name: [{ family: familyName, given: givenName ? [givenName] : [] }] }),
     ...(gender && { gender: hl7GenderToFhir(gender) }),
-    ...(dob && dob.length >= 8 && { birthDate: `${dob.slice(0, 4)}-${dob.slice(4, 6)}-${dob.slice(6, 8)}` }),
+    ...(dob &&
+      dob.length >= 8 && { birthDate: `${dob.slice(0, 4)}-${dob.slice(4, 6)}-${dob.slice(6, 8)}` }),
   };
 
   // Build Encounter resource
   const encounterId = randomUUID();
-  const patientClass = pv1 ? getField(pv1, 2) : "IMP";
-  const location = pv1 ? getComponent(getField(pv1, 3), 1) : "";
-  const attendingId = pv1 ? getComponent(getField(pv1, 7), 1) : "";
-  const admitDate = pv1 ? getField(pv1, 44) : "";
-  const dischargeDate = pv1 ? getField(pv1, 45) : "";
+  const patientClass = pv1 ? getField(pv1, 2) : 'IMP';
+  const location = pv1 ? getComponent(getField(pv1, 3), 1) : '';
+  const attendingId = pv1 ? getComponent(getField(pv1, 7), 1) : '';
+  const admitDate = pv1 ? getField(pv1, 44) : '';
+  const dischargeDate = pv1 ? getField(pv1, 45) : '';
 
   const encounterClassMap: Record<string, { code: string; display: string }> = {
-    I: { code: "IMP", display: "inpatient" },
-    O: { code: "AMB", display: "ambulatory" },
-    E: { code: "EMER", display: "emergency" },
-    P: { code: "PRENC", display: "pre-admission" },
+    I: { code: 'IMP', display: 'inpatient' },
+    O: { code: 'AMB', display: 'ambulatory' },
+    E: { code: 'EMER', display: 'emergency' },
+    P: { code: 'PRENC', display: 'pre-admission' },
   };
   const encClass = encounterClassMap[patientClass] || { code: patientClass, display: patientClass };
 
   const encounterStatusMap: Record<string, string> = {
-    A01: "in-progress",
-    A02: "in-progress",
-    A03: "finished",
-    A08: "in-progress",
+    A01: 'in-progress',
+    A02: 'in-progress',
+    A03: 'finished',
+    A08: 'in-progress',
   };
 
   const encounter: FhirEncounter = {
-    resourceType: "Encounter",
+    resourceType: 'Encounter',
     id: encounterId,
-    status: encounterStatusMap[triggerEvent] || "unknown",
-    class: { system: "http://terminology.hl7.org/CodeSystem/v3-ActCode", ...encClass },
+    status: encounterStatusMap[triggerEvent] || 'unknown',
+    class: { system: 'http://terminology.hl7.org/CodeSystem/v3-ActCode', ...encClass },
     subject: { reference: `Patient/${patientId}` },
     ...(location && { location: [{ location: { display: location } }] }),
-    ...(attendingId && { participant: [{ individual: { reference: `Practitioner/${attendingId}`, display: attendingId } }] }),
+    ...(attendingId && {
+      participant: [
+        { individual: { reference: `Practitioner/${attendingId}`, display: attendingId } },
+      ],
+    }),
     period: {
       ...(admitDate && { start: hl7DateToFhir(admitDate) }),
       ...(dischargeDate && { end: hl7DateToFhir(dischargeDate) }),
@@ -272,7 +292,13 @@ export function convertAdtToFhir(raw: string): FhirConversionResult {
   };
 
   const bundle = makeBundle([entry(patient), entry(encounter)], `ADT^${triggerEvent}`);
-  return { ok: true, bundle, sourceMessageType: `ADT^${triggerEvent}`, sourceControlId: controlId, warnings };
+  return {
+    ok: true,
+    bundle,
+    sourceMessageType: `ADT^${triggerEvent}`,
+    sourceControlId: controlId,
+    warnings,
+  };
 }
 
 /* ── ORU → FHIR DiagnosticReport + Observation ─────────── */
@@ -280,24 +306,31 @@ export function convertAdtToFhir(raw: string): FhirConversionResult {
 export function convertOruToFhir(raw: string): FhirConversionResult {
   const warnings: string[] = [];
   const segments = parseSegments(raw);
-  const msh = findSegment(segments, "MSH");
-  const pid = findSegment(segments, "PID");
-  const obr = findSegment(segments, "OBR");
-  const obxSegments = findAllSegments(segments, "OBX");
+  const msh = findSegment(segments, 'MSH');
+  const pid = findSegment(segments, 'PID');
+  const obr = findSegment(segments, 'OBR');
+  const obxSegments = findAllSegments(segments, 'OBX');
 
-  if (!msh) return { ok: false, bundle: null, sourceMessageType: "ORU", sourceControlId: "", warnings: ["Missing MSH segment"] };
+  if (!msh)
+    return {
+      ok: false,
+      bundle: null,
+      sourceMessageType: 'ORU',
+      sourceControlId: '',
+      warnings: ['Missing MSH segment'],
+    };
 
   const controlId = getField(msh, 10, true);
   const patientId = randomUUID();
-  const mrn = pid ? getComponent(getField(pid, 3), 1) : "";
+  const mrn = pid ? getComponent(getField(pid, 3), 1) : '';
 
-  if (!mrn) warnings.push("PID-3 (MRN) missing");
-  if (!obr) warnings.push("OBR segment missing");
+  if (!mrn) warnings.push('PID-3 (MRN) missing');
+  if (!obr) warnings.push('OBR segment missing');
 
   const patient: FhirPatient = {
-    resourceType: "Patient",
+    resourceType: 'Patient',
     id: patientId,
-    identifier: [{ system: "urn:oid:unknown", value: mrn }],
+    identifier: [{ system: 'urn:oid:unknown', value: mrn }],
   };
 
   // Build Observations from OBX segments
@@ -313,21 +346,43 @@ export function convertOruToFhir(raw: string): FhirConversionResult {
     const obsFlag = getField(obx, 8);
     const obsStatus = getField(obx, 11);
 
-    const statusMap: Record<string, string> = { F: "final", P: "preliminary", C: "corrected", I: "registered" };
+    const statusMap: Record<string, string> = {
+      F: 'final',
+      P: 'preliminary',
+      C: 'corrected',
+      I: 'registered',
+    };
     const numVal = Number(obsValue);
 
     const observation: FhirObservation = {
-      resourceType: "Observation",
+      resourceType: 'Observation',
       id: obsId,
-      status: statusMap[obsStatus] || "unknown",
-      code: { coding: [{ system: "http://loinc.org", code: obsCode, display: obsName }] },
+      status: statusMap[obsStatus] || 'unknown',
+      code: { coding: [{ system: 'http://loinc.org', code: obsCode, display: obsName }] },
       subject: { reference: `Patient/${patientId}` },
       ...(!isNaN(numVal) && obsUnits
-        ? { valueQuantity: { value: numVal, unit: obsUnits, system: "http://unitsofmeasure.org", code: obsUnits } }
+        ? {
+            valueQuantity: {
+              value: numVal,
+              unit: obsUnits,
+              system: 'http://unitsofmeasure.org',
+              code: obsUnits,
+            },
+          }
         : { valueString: obsValue }),
-      ...(obsFlag && obsFlag !== "N" && {
-        interpretation: [{ coding: [{ system: "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation", code: obsFlag }] }],
-      }),
+      ...(obsFlag &&
+        obsFlag !== 'N' && {
+          interpretation: [
+            {
+              coding: [
+                {
+                  system: 'http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation',
+                  code: obsFlag,
+                },
+              ],
+            },
+          ],
+        }),
     };
     observationEntries.push(entry(observation));
     resultRefs.push({ reference: `Observation/${obsId}` });
@@ -335,23 +390,28 @@ export function convertOruToFhir(raw: string): FhirConversionResult {
 
   // Build DiagnosticReport
   const reportId = randomUUID();
-  const testCode = obr ? getComponent(getField(obr, 4), 1) : "";
-  const testName = obr ? getComponent(getField(obr, 4), 2) : "";
-  const resultStatus = obr ? getField(obr, 25) : "F";
-  const reportStatusMap: Record<string, string> = { F: "final", P: "preliminary", C: "corrected", I: "registered" };
+  const testCode = obr ? getComponent(getField(obr, 4), 1) : '';
+  const testName = obr ? getComponent(getField(obr, 4), 2) : '';
+  const resultStatus = obr ? getField(obr, 25) : 'F';
+  const reportStatusMap: Record<string, string> = {
+    F: 'final',
+    P: 'preliminary',
+    C: 'corrected',
+    I: 'registered',
+  };
 
   const report: FhirDiagnosticReport = {
-    resourceType: "DiagnosticReport",
+    resourceType: 'DiagnosticReport',
     id: reportId,
-    status: reportStatusMap[resultStatus] || "unknown",
-    code: { coding: [{ system: "http://loinc.org", code: testCode, display: testName }] },
+    status: reportStatusMap[resultStatus] || 'unknown',
+    code: { coding: [{ system: 'http://loinc.org', code: testCode, display: testName }] },
     subject: { reference: `Patient/${patientId}` },
     issued: new Date().toISOString(),
     result: resultRefs,
   };
 
-  const bundle = makeBundle([entry(patient), entry(report), ...observationEntries], "ORU^R01");
-  return { ok: true, bundle, sourceMessageType: "ORU^R01", sourceControlId: controlId, warnings };
+  const bundle = makeBundle([entry(patient), entry(report), ...observationEntries], 'ORU^R01');
+  return { ok: true, bundle, sourceMessageType: 'ORU^R01', sourceControlId: controlId, warnings };
 }
 
 /* ── ORM → FHIR ServiceRequest ─────────────────────────── */
@@ -359,48 +419,60 @@ export function convertOruToFhir(raw: string): FhirConversionResult {
 export function convertOrmToFhir(raw: string): FhirConversionResult {
   const warnings: string[] = [];
   const segments = parseSegments(raw);
-  const msh = findSegment(segments, "MSH");
-  const pid = findSegment(segments, "PID");
-  const orc = findSegment(segments, "ORC");
-  const obr = findSegment(segments, "OBR");
+  const msh = findSegment(segments, 'MSH');
+  const pid = findSegment(segments, 'PID');
+  const orc = findSegment(segments, 'ORC');
+  const obr = findSegment(segments, 'OBR');
 
-  if (!msh) return { ok: false, bundle: null, sourceMessageType: "ORM", sourceControlId: "", warnings: ["Missing MSH segment"] };
+  if (!msh)
+    return {
+      ok: false,
+      bundle: null,
+      sourceMessageType: 'ORM',
+      sourceControlId: '',
+      warnings: ['Missing MSH segment'],
+    };
 
   const controlId = getField(msh, 10, true);
   const patientId = randomUUID();
-  const mrn = pid ? getComponent(getField(pid, 3), 1) : "";
+  const mrn = pid ? getComponent(getField(pid, 3), 1) : '';
 
-  if (!mrn) warnings.push("PID-3 (MRN) missing");
-  if (!orc) warnings.push("ORC segment missing");
+  if (!mrn) warnings.push('PID-3 (MRN) missing');
+  if (!orc) warnings.push('ORC segment missing');
 
   const patient: FhirPatient = {
-    resourceType: "Patient",
+    resourceType: 'Patient',
     id: patientId,
-    identifier: [{ system: "urn:oid:unknown", value: mrn }],
+    identifier: [{ system: 'urn:oid:unknown', value: mrn }],
   };
 
-  const orderControl = orc ? getField(orc, 1) : "";
-  const placerOrder = orc ? getComponent(getField(orc, 2), 1) : "";
-  const orderedBy = orc ? getComponent(getField(orc, 12), 1) : "";
-  const orderDate = orc ? getField(orc, 9) : "";
-  const testCode = obr ? getComponent(getField(obr, 4), 1) : "";
-  const testName = obr ? getComponent(getField(obr, 4), 2) : "";
+  const orderControl = orc ? getField(orc, 1) : '';
+  const orderedBy = orc ? getComponent(getField(orc, 12), 1) : '';
+  const orderDate = orc ? getField(orc, 9) : '';
+  const testCode = obr ? getComponent(getField(obr, 4), 1) : '';
+  const testName = obr ? getComponent(getField(obr, 4), 2) : '';
 
-  const statusMap: Record<string, string> = { NW: "active", CA: "revoked", SC: "active", OC: "revoked", HD: "on-hold" };
+  const statusMap: Record<string, string> = {
+    NW: 'active',
+    CA: 'revoked',
+    SC: 'active',
+    OC: 'revoked',
+    HD: 'on-hold',
+  };
 
   const serviceRequest: FhirServiceRequest = {
-    resourceType: "ServiceRequest",
+    resourceType: 'ServiceRequest',
     id: randomUUID(),
-    status: statusMap[orderControl] || "unknown",
-    intent: "order",
-    code: { coding: [{ system: "http://loinc.org", code: testCode, display: testName }] },
+    status: statusMap[orderControl] || 'unknown',
+    intent: 'order',
+    code: { coding: [{ system: 'http://loinc.org', code: testCode, display: testName }] },
     subject: { reference: `Patient/${patientId}` },
     ...(orderDate && { authoredOn: hl7DateToFhir(orderDate) }),
     ...(orderedBy && { requester: { reference: `Practitioner/${orderedBy}` } }),
   };
 
-  const bundle = makeBundle([entry(patient), entry(serviceRequest)], "ORM^O01");
-  return { ok: true, bundle, sourceMessageType: "ORM^O01", sourceControlId: controlId, warnings };
+  const bundle = makeBundle([entry(patient), entry(serviceRequest)], 'ORM^O01');
+  return { ok: true, bundle, sourceMessageType: 'ORM^O01', sourceControlId: controlId, warnings };
 }
 
 /* ── SIU → FHIR Appointment ────────────────────────────── */
@@ -408,53 +480,77 @@ export function convertOrmToFhir(raw: string): FhirConversionResult {
 export function convertSiuToFhir(raw: string): FhirConversionResult {
   const warnings: string[] = [];
   const segments = parseSegments(raw);
-  const msh = findSegment(segments, "MSH");
-  const pid = findSegment(segments, "PID");
-  const sch = findSegment(segments, "SCH");
-  const ais = findSegment(segments, "AIS");
+  const msh = findSegment(segments, 'MSH');
+  const pid = findSegment(segments, 'PID');
+  const sch = findSegment(segments, 'SCH');
+  const ais = findSegment(segments, 'AIS');
 
-  if (!msh) return { ok: false, bundle: null, sourceMessageType: "SIU", sourceControlId: "", warnings: ["Missing MSH segment"] };
+  if (!msh)
+    return {
+      ok: false,
+      bundle: null,
+      sourceMessageType: 'SIU',
+      sourceControlId: '',
+      warnings: ['Missing MSH segment'],
+    };
 
   const controlId = getField(msh, 10, true);
   const messageType = getField(msh, 9, true);
   const triggerEvent = getComponent(messageType, 2);
 
   const patientId = randomUUID();
-  const mrn = pid ? getComponent(getField(pid, 3), 1) : "";
+  const mrn = pid ? getComponent(getField(pid, 3), 1) : '';
 
-  if (!mrn) warnings.push("PID-3 (MRN) missing");
+  if (!mrn) warnings.push('PID-3 (MRN) missing');
 
   const patient: FhirPatient = {
-    resourceType: "Patient",
+    resourceType: 'Patient',
     id: patientId,
-    identifier: [{ system: "urn:oid:unknown", value: mrn }],
+    identifier: [{ system: 'urn:oid:unknown', value: mrn }],
   };
 
-  const appointmentId = sch ? getComponent(getField(sch, 1), 1) : "";
-  const appointmentType = sch ? getComponent(getField(sch, 7), 1) : "";
+  const appointmentType = sch ? getComponent(getField(sch, 7), 1) : '';
   const duration = sch ? parseInt(getField(sch, 9), 10) : NaN;
-  const providerId = sch ? getComponent(getField(sch, 12), 1) : "";
-  const startTime = ais ? getField(ais, 4) : "";
+  const providerId = sch ? getComponent(getField(sch, 12), 1) : '';
+  const startTime = ais ? getField(ais, 4) : '';
 
   const statusMap: Record<string, string> = {
-    S12: "booked", S13: "booked", S14: "cancelled", S15: "cancelled", S26: "noshow",
+    S12: 'booked',
+    S13: 'booked',
+    S14: 'cancelled',
+    S15: 'cancelled',
+    S26: 'noshow',
   };
 
   const appointment: FhirAppointment = {
-    resourceType: "Appointment",
+    resourceType: 'Appointment',
     id: randomUUID(),
-    status: statusMap[triggerEvent] || "proposed",
-    ...(appointmentType && { appointmentType: { coding: [{ system: "http://vista-evolved.org/fhir/appointment-type", code: appointmentType }] } }),
+    status: statusMap[triggerEvent] || 'proposed',
+    ...(appointmentType && {
+      appointmentType: {
+        coding: [
+          { system: 'http://vista-evolved.org/fhir/appointment-type', code: appointmentType },
+        ],
+      },
+    }),
     ...(startTime && { start: hl7DateToFhir(startTime) }),
     ...(!isNaN(duration) && { minutesDuration: duration }),
     participant: [
-      { actor: { reference: `Patient/${patientId}` }, status: "accepted" },
-      ...(providerId ? [{ actor: { reference: `Practitioner/${providerId}` }, status: "accepted" }] : []),
+      { actor: { reference: `Patient/${patientId}` }, status: 'accepted' },
+      ...(providerId
+        ? [{ actor: { reference: `Practitioner/${providerId}` }, status: 'accepted' }]
+        : []),
     ],
   };
 
   const bundle = makeBundle([entry(patient), entry(appointment)], `SIU^${triggerEvent}`);
-  return { ok: true, bundle, sourceMessageType: `SIU^${triggerEvent}`, sourceControlId: controlId, warnings };
+  return {
+    ok: true,
+    bundle,
+    sourceMessageType: `SIU^${triggerEvent}`,
+    sourceControlId: controlId,
+    warnings,
+  };
 }
 
 /* ── Universal Converter ───────────────────────────────── */
@@ -464,22 +560,33 @@ export function convertSiuToFhir(raw: string): FhirConversionResult {
  * Returns a typed result with ok/bundle/warnings.
  */
 export function convertHl7ToFhir(raw: string): FhirConversionResult {
-  const firstLine = raw.split(/\r?\n|\r/)[0] ?? "";
-  if (!firstLine.startsWith("MSH")) {
-    return { ok: false, bundle: null, sourceMessageType: "unknown", sourceControlId: "", warnings: ["Not an HL7v2 message (no MSH)"] };
+  const firstLine = raw.split(/\r?\n|\r/)[0] ?? '';
+  if (!firstLine.startsWith('MSH')) {
+    return {
+      ok: false,
+      bundle: null,
+      sourceMessageType: 'unknown',
+      sourceControlId: '',
+      warnings: ['Not an HL7v2 message (no MSH)'],
+    };
   }
 
   const messageType = getField(firstLine, 9, true);
   const msgCode = getComponent(messageType, 1);
 
   switch (msgCode) {
-    case "ADT": return convertAdtToFhir(raw);
-    case "ORU": return convertOruToFhir(raw);
-    case "ORM": return convertOrmToFhir(raw);
-    case "SIU": return convertSiuToFhir(raw);
+    case 'ADT':
+      return convertAdtToFhir(raw);
+    case 'ORU':
+      return convertOruToFhir(raw);
+    case 'ORM':
+      return convertOrmToFhir(raw);
+    case 'SIU':
+      return convertSiuToFhir(raw);
     default:
       return {
-        ok: false, bundle: null,
+        ok: false,
+        bundle: null,
         sourceMessageType: messageType,
         sourceControlId: getField(firstLine, 10, true),
         warnings: [`Unsupported message type: ${msgCode}`],
@@ -495,16 +602,16 @@ export function listFhirConversions(): Array<{
   fhirResources: string[];
 }> {
   return [
-    { hl7Type: "ADT^A01", fhirResources: ["Patient", "Encounter"] },
-    { hl7Type: "ADT^A02", fhirResources: ["Patient", "Encounter"] },
-    { hl7Type: "ADT^A03", fhirResources: ["Patient", "Encounter"] },
-    { hl7Type: "ADT^A08", fhirResources: ["Patient", "Encounter"] },
-    { hl7Type: "ORU^R01", fhirResources: ["Patient", "DiagnosticReport", "Observation"] },
-    { hl7Type: "ORM^O01", fhirResources: ["Patient", "ServiceRequest"] },
-    { hl7Type: "SIU^S12", fhirResources: ["Patient", "Appointment"] },
-    { hl7Type: "SIU^S13", fhirResources: ["Patient", "Appointment"] },
-    { hl7Type: "SIU^S14", fhirResources: ["Patient", "Appointment"] },
-    { hl7Type: "SIU^S15", fhirResources: ["Patient", "Appointment"] },
-    { hl7Type: "SIU^S26", fhirResources: ["Patient", "Appointment"] },
+    { hl7Type: 'ADT^A01', fhirResources: ['Patient', 'Encounter'] },
+    { hl7Type: 'ADT^A02', fhirResources: ['Patient', 'Encounter'] },
+    { hl7Type: 'ADT^A03', fhirResources: ['Patient', 'Encounter'] },
+    { hl7Type: 'ADT^A08', fhirResources: ['Patient', 'Encounter'] },
+    { hl7Type: 'ORU^R01', fhirResources: ['Patient', 'DiagnosticReport', 'Observation'] },
+    { hl7Type: 'ORM^O01', fhirResources: ['Patient', 'ServiceRequest'] },
+    { hl7Type: 'SIU^S12', fhirResources: ['Patient', 'Appointment'] },
+    { hl7Type: 'SIU^S13', fhirResources: ['Patient', 'Appointment'] },
+    { hl7Type: 'SIU^S14', fhirResources: ['Patient', 'Appointment'] },
+    { hl7Type: 'SIU^S15', fhirResources: ['Patient', 'Appointment'] },
+    { hl7Type: 'SIU^S26', fhirResources: ['Patient', 'Appointment'] },
   ];
 }

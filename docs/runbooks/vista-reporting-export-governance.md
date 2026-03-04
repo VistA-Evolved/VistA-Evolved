@@ -7,33 +7,37 @@ a web-based reporting dashboard, and optional RCM placeholder surfaces.
 
 ## Endpoints
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| GET | `/reports/operations` | admin | RPC health, circuit breaker, process metrics |
-| GET | `/reports/integrations` | admin | Integration health summary + queue metrics |
-| GET | `/reports/audit` | admin | Audit event summary with filters |
-| GET | `/reports/clinical-activity` | admin | Clinical action counts (no PHI text) |
-| POST | `/reports/export` | admin | Create audited export job (CSV/JSON) |
-| GET | `/reports/export/jobs` | admin | List export jobs |
-| GET | `/reports/export/:jobId` | admin | Download completed export |
+| Method | Path                         | Auth  | Description                                  |
+| ------ | ---------------------------- | ----- | -------------------------------------------- |
+| GET    | `/reports/operations`        | admin | RPC health, circuit breaker, process metrics |
+| GET    | `/reports/integrations`      | admin | Integration health summary + queue metrics   |
+| GET    | `/reports/audit`             | admin | Audit event summary with filters             |
+| GET    | `/reports/clinical-activity` | admin | Clinical action counts (no PHI text)         |
+| POST   | `/reports/export`            | admin | Create audited export job (CSV/JSON)         |
+| GET    | `/reports/export/jobs`       | admin | List export jobs                             |
+| GET    | `/reports/export/:jobId`     | admin | Download completed export                    |
 
 ## Query Parameters
 
 ### /reports/audit
+
 - `actionPrefix` — filter events by action prefix (e.g., `clinical`, `phi`, `auth`)
 - `actorDuz` — filter by actor DUZ
 - `since` — ISO timestamp for time range start
 - `limit` — max events to return (default: 100, max: 500)
 
 ### /reports/integrations
+
 - `tenantId` — tenant to report on (default: `default`)
 
 ### /reports/export/jobs
+
 - `mine=true` — show only the requesting user's jobs
 
 ## Export Governance
 
 ### Policy Enforcement
+
 - Admin role required for all exports
 - Maximum row limit: 10,000 (configurable via `EXPORT_MAX_ROWS`)
 - Clinical data export disabled by default (`EXPORT_ALLOW_PHI=false`)
@@ -41,6 +45,7 @@ a web-based reporting dashboard, and optional RCM placeholder surfaces.
 - Export jobs auto-expire after 24 hours
 
 ### Export Flow
+
 1. `POST /reports/export` with `{ reportType, format, filters }`
 2. Policy check (role, format, row count, PHI flag)
 3. Job created + audit event `export.request`
@@ -49,35 +54,40 @@ a web-based reporting dashboard, and optional RCM placeholder surfaces.
 6. Download via `GET /reports/export/:jobId`
 
 ### Supported Formats
+
 - CSV (`text/csv`)
 - JSON (`application/json`)
 
 ## Configuration
 
 ### Environment Variables
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `REPORT_PAGE_SIZE` | 100 | Default report page size |
-| `REPORT_MAX_PAGE_SIZE` | 500 | Maximum rows per request |
-| `REPORT_OPS_CACHE_MS` | 30000 | Operations report cache TTL |
-| `REPORT_INT_CACHE_MS` | 30000 | Integrations report cache TTL |
-| `REPORT_CLIN_CACHE_MS` | 60000 | Clinical report cache TTL |
-| `REPORT_AUDIT_MAX_DAYS` | 90 | Max audit query range (days) |
-| `EXPORT_MAX_ROWS` | 10000 | Max rows in single export |
-| `EXPORT_RETENTION_HOURS` | 24 | Export job retention window |
-| `EXPORT_ALLOW_PHI` | false | Allow clinical data export |
-| `EXPORT_MAX_CONCURRENT` | 3 | Max concurrent exports per user |
+
+| Variable                 | Default | Description                     |
+| ------------------------ | ------- | ------------------------------- |
+| `REPORT_PAGE_SIZE`       | 100     | Default report page size        |
+| `REPORT_MAX_PAGE_SIZE`   | 500     | Maximum rows per request        |
+| `REPORT_OPS_CACHE_MS`    | 30000   | Operations report cache TTL     |
+| `REPORT_INT_CACHE_MS`    | 30000   | Integrations report cache TTL   |
+| `REPORT_CLIN_CACHE_MS`   | 60000   | Clinical report cache TTL       |
+| `REPORT_AUDIT_MAX_DAYS`  | 90      | Max audit query range (days)    |
+| `EXPORT_MAX_ROWS`        | 10000   | Max rows in single export       |
+| `EXPORT_RETENTION_HOURS` | 24      | Export job retention window     |
+| `EXPORT_ALLOW_PHI`       | false   | Allow clinical data export      |
+| `EXPORT_MAX_CONCURRENT`  | 3       | Max concurrent exports per user |
 
 ## Audit Action Types (Phase 19)
+
 - `report.generate` — report viewed via API
 - `export.request` — export job created
 - `export.download` — export data downloaded
 - `export.policy-check` — export denied by policy
 
 ## Feature Flags
+
 - `rcm.enabled` — gates the RCM placeholder UI (default: false)
 
 ## Web UI Pages
+
 - `/cprs/admin/reports` — Reporting dashboard with 5 tabs
 - `/cprs/admin/rcm` — RCM placeholder (feature-flagged)
 
@@ -117,9 +127,9 @@ curl http://127.0.0.1:3001/reports/export/JOB_ID -b cookies.txt
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| 403 on /reports/* | Not logged in as admin | Login with PROV123/PROV123!! |
-| Export denied: "Clinical data export is disabled" | PHI export off | Set `EXPORT_ALLOW_PHI=true` in .env.local |
-| Export denied: "Max concurrent exports reached" | Too many active jobs | Wait for jobs to complete or expire |
-| Empty RPC metrics | No RPCs called yet | Call a VistA endpoint first |
+| Symptom                                           | Cause                  | Fix                                       |
+| ------------------------------------------------- | ---------------------- | ----------------------------------------- |
+| 403 on /reports/\*                                | Not logged in as admin | Login with PROV123/PROV123!!              |
+| Export denied: "Clinical data export is disabled" | PHI export off         | Set `EXPORT_ALLOW_PHI=true` in .env.local |
+| Export denied: "Max concurrent exports reached"   | Too many active jobs   | Wait for jobs to complete or expire       |
+| Empty RPC metrics                                 | No RPCs called yet     | Call a VistA endpoint first               |

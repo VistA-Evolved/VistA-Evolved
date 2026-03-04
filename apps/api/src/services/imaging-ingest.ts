@@ -259,7 +259,7 @@ interface ReconcileResult {
 }
 
 async function reconcileStudy(payload: OrthancStableStudyPayload): Promise<ReconcileResult> {
-  const { orthancStudyId, studyInstanceUid, patientId, accessionNumber, modality } = payload;
+  const { orthancStudyId: _orthancStudyId, studyInstanceUid, patientId, accessionNumber, modality } = payload;
 
   // Idempotency guard: if this studyInstanceUid is already linked, return existing
   const existingLinkage = await getLinkageByStudyUid(studyInstanceUid);

@@ -88,7 +88,9 @@ function parseMenuItems(src, startOffset) {
     const enabledMatch = itemBlock.match(enabledRe);
 
     const caption = captionMatch
-      ? captionMatch[1].replace(/''/g, "'").replace(/#(\d+)/g, (_, code) => String.fromCharCode(parseInt(code)))
+      ? captionMatch[1]
+          .replace(/''/g, "'")
+          .replace(/#(\d+)/g, (_, code) => String.fromCharCode(parseInt(code)))
       : '';
 
     lineItems.push({
@@ -152,7 +154,7 @@ function decodeShortcut(value) {
   if (value & 0x2000) parts.push('Ctrl');
   if (value & 0x4000) parts.push('Shift');
   if (value & 0x8000) parts.push('Alt');
-  const key = value & 0xFF;
+  const key = value & 0xff;
   // Map common VK codes
   if (key >= 65 && key <= 90) parts.push(String.fromCharCode(key));
   else if (key >= 112 && key <= 123) parts.push(`F${key - 111}`);
@@ -203,11 +205,15 @@ export async function extractMenus() {
 
   await mkdir(OUTPUT_DIR, { recursive: true });
   await writeFile(join(OUTPUT_DIR, 'menus.json'), JSON.stringify(result, null, 2));
-  console.log(`  ✓ menus.json — ${result.summary.mainMenuCount} main menus, ${result.summary.popupMenuCount} popup menus, ${result.summary.totalMenuItemCount} total items`);
+  console.log(
+    `  ✓ menus.json — ${result.summary.mainMenuCount} main menus, ${result.summary.popupMenuCount} popup menus, ${result.summary.totalMenuItemCount} total items`
+  );
   return result;
 }
 
-if (import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}` ||
-    process.argv[1]?.endsWith('extract-menus.mjs')) {
+if (
+  import.meta.url === `file:///${process.argv[1].replace(/\\/g, '/')}` ||
+  process.argv[1]?.endsWith('extract-menus.mjs')
+) {
   extractMenus().catch(console.error);
 }

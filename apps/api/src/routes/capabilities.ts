@@ -16,18 +16,17 @@
  *   - Offline snapshot generator for capability baselining
  */
 
-import type { FastifyInstance } from "fastify";
+import type { FastifyInstance } from 'fastify';
 import {
   discoverCapabilities,
   getDomainCapabilities,
   buildRuntimeMatrix,
   compareToBaseline,
   KNOWN_RPCS,
-} from "../vista/rpcCapabilities.js";
-import { getFullRpcInventory } from "../vista/rpcRegistry.js";
+} from '../vista/rpcCapabilities.js';
+import { getFullRpcInventory } from '../vista/rpcRegistry.js';
 
 export default async function capabilityRoutes(server: FastifyInstance): Promise<void> {
-
   /**
    * GET /vista/rpc-capabilities
    *
@@ -46,11 +45,11 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
    *   knownRpcCount: 40,
    * }
    */
-  server.get("/vista/rpc-capabilities", async (request, reply) => {
+  server.get('/vista/rpc-capabilities', async (request, reply) => {
     const { refresh, domain } = request.query as { refresh?: string; domain?: string };
 
     try {
-      const caps = await discoverCapabilities(refresh === "true");
+      const caps = await discoverCapabilities(refresh === 'true');
 
       // Optional domain filter
       if (domain) {
@@ -70,9 +69,7 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
         domains[d] = getDomainCapabilities(d);
       }
 
-      const unexpectedMissing = caps.missingList.filter(
-        (r) => !caps.expectedMissing.includes(r)
-      );
+      const unexpectedMissing = caps.missingList.filter((r) => !caps.expectedMissing.includes(r));
 
       return {
         ok: true,
@@ -88,8 +85,8 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
         domains,
         knownRpcCount: KNOWN_RPCS.length,
       };
-    } catch (err: any) {
-      return reply.code(500).send({ ok: false, error: "Capability probe failed" });
+    } catch (_err: any) {
+      return reply.code(500).send({ ok: false, error: 'Capability probe failed' });
     }
   });
 
@@ -99,14 +96,14 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
    * Returns combined domain capability view with adapter + RPC readiness.
    * Requires prior capability discovery (calls discoverCapabilities if needed).
    */
-  server.get("/vista/runtime-matrix", async (_request, reply) => {
+  server.get('/vista/runtime-matrix', async (_request, reply) => {
     try {
       // Ensure we have discovered capabilities
       await discoverCapabilities();
       const matrix = buildRuntimeMatrix();
       return { ok: true, ...matrix };
-    } catch (err: any) {
-      return reply.code(500).send({ ok: false, error: "Runtime matrix build failed" });
+    } catch (_err: any) {
+      return reply.code(500).send({ ok: false, error: 'Runtime matrix build failed' });
     }
   });
 
@@ -116,21 +113,23 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
    * Compare current capabilities against provided baseline.
    * Body: { availableList: string[], missingList: string[], instanceId?: string }
    */
-  server.post("/vista/runtime-matrix/drift", async (request, reply) => {
+  server.post('/vista/runtime-matrix/drift', async (request, reply) => {
     const body = (request.body as any) || {};
     if (!body.availableList || !Array.isArray(body.availableList)) {
-      return reply.code(400).send({ ok: false, error: "Request body must include availableList array" });
+      return reply
+        .code(400)
+        .send({ ok: false, error: 'Request body must include availableList array' });
     }
 
     try {
       await discoverCapabilities();
       const report = compareToBaseline(body);
       if (!report) {
-        return reply.code(503).send({ ok: false, error: "No capability data available" });
+        return reply.code(503).send({ ok: false, error: 'No capability data available' });
       }
       return { ok: true, ...report };
-    } catch (err: any) {
-      return reply.code(500).send({ ok: false, error: "Drift comparison failed" });
+    } catch (_err: any) {
+      return reply.code(500).send({ ok: false, error: 'Drift comparison failed' });
     }
   });
 
@@ -147,11 +146,11 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
    *
    * ?refresh=true — force re-probe before building snapshot.
    */
-  server.get("/vista/capabilities", async (request, reply) => {
+  server.get('/vista/capabilities', async (request, reply) => {
     const { refresh } = request.query as { refresh?: string };
 
     try {
-      const caps = await discoverCapabilities(refresh === "true");
+      const caps = await discoverCapabilities(refresh === 'true');
       const inventory = getFullRpcInventory();
 
       // Build per-domain summaries
@@ -161,13 +160,11 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
         domains[d] = getDomainCapabilities(d);
       }
 
-      const unexpectedMissing = caps.missingList.filter(
-        (r) => !caps.expectedMissing.includes(r)
-      );
+      const unexpectedMissing = caps.missingList.filter((r) => !caps.expectedMissing.includes(r));
 
       return {
         ok: true,
-        snapshotVersion: "1.0.0",
+        snapshotVersion: '1.0.0',
         generatedAt: new Date().toISOString(),
         instanceId: caps.instanceId,
         discoveredAt: caps.discoveredAt,
@@ -190,10 +187,7 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
           totalRegistered: inventory.registry.length,
           totalExceptions: inventory.exceptions.length,
           domainBreakdown: Object.fromEntries(
-            domainNames.map((d) => [
-              d,
-              inventory.registry.filter((r) => r.domain === d).length,
-            ])
+            domainNames.map((d) => [d, inventory.registry.filter((r) => r.domain === d).length])
           ),
         },
 
@@ -203,8 +197,8 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
         // Raw per-RPC results (for offline diff)
         rpcs: caps.rpcs,
       };
-    } catch (err: any) {
-      return reply.code(500).send({ ok: false, error: "Capability snapshot failed" });
+    } catch (_err: any) {
+      return reply.code(500).send({ ok: false, error: 'Capability snapshot failed' });
     }
   });
 }

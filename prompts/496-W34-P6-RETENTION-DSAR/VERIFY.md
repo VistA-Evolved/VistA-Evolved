@@ -1,6 +1,7 @@
 # 496-99-VERIFY — Retention + DSAR Workflows
 
 ## Gates
+
 1. `retention-engine.ts` exports `validateRetention()` that reads pack config.
 2. `dsar-store.ts` exports CRUD for DSAR requests with lifecycle transitions.
 3. `/dsar/requests` POST creates a DSAR request enriched with pack rights.

@@ -11,6 +11,7 @@
 7. Output path is `data/vista/capability-snapshot.json`
 
 ## Verification
+
 ```powershell
 $cap = Get-Content apps/api/src/routes/capabilities.ts -Raw
 $cap -match '/vista/capabilities'         # Gate 1

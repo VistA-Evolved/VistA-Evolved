@@ -31,9 +31,7 @@
       "file": "apps/api/src/rcm/connectors/acc-nz-connector.ts",
       "status": "needs_credentials",
       "implementsInterface": true,
-      "supportedModes": [
-        "direct_api"
-      ],
+      "supportedModes": ["direct_api"],
       "supportedTransactions": [],
       "hasEnvCreds": true,
       "hasRealHttpCall": false,
@@ -45,10 +43,7 @@
       "file": "apps/api/src/rcm/connectors/availity-connector.ts",
       "status": "implemented",
       "implementsInterface": true,
-      "supportedModes": [
-        "clearinghouse_edi",
-        "direct_api"
-      ],
+      "supportedModes": ["clearinghouse_edi", "direct_api"],
       "supportedTransactions": [],
       "hasEnvCreds": true,
       "hasRealHttpCall": true,
@@ -60,9 +55,7 @@
       "file": "apps/api/src/rcm/connectors/clearinghouse-connector.ts",
       "status": "needs_credentials",
       "implementsInterface": true,
-      "supportedModes": [
-        "clearinghouse_edi"
-      ],
+      "supportedModes": ["clearinghouse_edi"],
       "supportedTransactions": [],
       "hasEnvCreds": true,
       "hasRealHttpCall": false,
@@ -74,9 +67,7 @@
       "file": "apps/api/src/rcm/connectors/eclipse-au-connector.ts",
       "status": "implemented",
       "implementsInterface": true,
-      "supportedModes": [
-        "government_portal"
-      ],
+      "supportedModes": ["government_portal"],
       "supportedTransactions": [],
       "hasEnvCreds": true,
       "hasRealHttpCall": true,
@@ -88,9 +79,7 @@
       "file": "apps/api/src/rcm/connectors/nphc-sg-connector.ts",
       "status": "implemented",
       "implementsInterface": true,
-      "supportedModes": [
-        "government_portal"
-      ],
+      "supportedModes": ["government_portal"],
       "supportedTransactions": [],
       "hasEnvCreds": true,
       "hasRealHttpCall": true,
@@ -102,9 +91,7 @@
       "file": "apps/api/src/rcm/connectors/officeally-connector.ts",
       "status": "implemented",
       "implementsInterface": true,
-      "supportedModes": [
-        "clearinghouse_edi"
-      ],
+      "supportedModes": ["clearinghouse_edi"],
       "supportedTransactions": [],
       "hasEnvCreds": true,
       "hasRealHttpCall": true,
@@ -116,9 +103,7 @@
       "file": "apps/api/src/rcm/connectors/philhealth-connector.ts",
       "status": "implemented",
       "implementsInterface": true,
-      "supportedModes": [
-        "government_portal"
-      ],
+      "supportedModes": ["government_portal"],
       "supportedTransactions": [],
       "hasEnvCreds": true,
       "hasRealHttpCall": true,
@@ -130,9 +115,7 @@
       "file": "apps/api/src/rcm/connectors/portal-batch-connector.ts",
       "status": "implemented",
       "implementsInterface": true,
-      "supportedModes": [
-        "portal_batch"
-      ],
+      "supportedModes": ["portal_batch"],
       "supportedTransactions": [],
       "hasEnvCreds": false,
       "hasRealHttpCall": false,
@@ -163,10 +146,7 @@
       "file": "apps/api/src/rcm/connectors/stedi-connector.ts",
       "status": "implemented",
       "implementsInterface": true,
-      "supportedModes": [
-        "clearinghouse_edi",
-        "direct_api"
-      ],
+      "supportedModes": ["clearinghouse_edi", "direct_api"],
       "supportedTransactions": [],
       "hasEnvCreds": true,
       "hasRealHttpCall": true,
@@ -320,9 +300,7 @@
         "rcm",
         "scheduling"
       ],
-      "payerModules": [
-        "ph_hmos"
-      ],
+      "payerModules": ["ph_hmos"],
       "featureFlags": {
         "x12_edi_enabled": false,
         "philhealth_eclaims": true,
@@ -355,9 +333,7 @@
         "rcm",
         "scheduling"
       ],
-      "payerModules": [
-        "us_core"
-      ],
+      "payerModules": ["us_core"],
       "featureFlags": {
         "x12_edi_enabled": true,
         "philhealth_eclaims": false,

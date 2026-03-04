@@ -11,14 +11,14 @@
  *   4. kms    — stub for cloud KMS (AWS/GCP/Azure)
  */
 
-import { createHash, randomBytes } from "node:crypto";
+import { createHash, randomBytes } from 'node:crypto';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-export type KeyProviderType = "env" | "file" | "vault" | "kms";
-export type KeyStatus = "active" | "retiring" | "expired" | "compromised";
+export type KeyProviderType = 'env' | 'file' | 'vault' | 'kms';
+export type KeyStatus = 'active' | 'retiring' | 'expired' | 'compromised';
 
 export interface KeyMetadata {
   /** Unique key identifier. */
@@ -69,21 +69,21 @@ export interface KeyProvider {
 /* ------------------------------------------------------------------ */
 
 export function keyFingerprint(key: Buffer): string {
-  return createHash("sha256").update(key).digest("hex").slice(0, 16);
+  return createHash('sha256').update(key).digest('hex').slice(0, 16);
 }
 
 function makeMetadata(
   keyId: string,
   key: Buffer,
   provider: KeyProviderType,
-  overrides?: Partial<KeyMetadata>,
+  overrides?: Partial<KeyMetadata>
 ): KeyMetadata {
   return {
     keyId,
     version: overrides?.version ?? 1,
     provider,
-    algorithm: overrides?.algorithm ?? "aes-256-gcm",
-    status: overrides?.status ?? "active",
+    algorithm: overrides?.algorithm ?? 'aes-256-gcm',
+    status: overrides?.status ?? 'active',
     createdAt: overrides?.createdAt ?? new Date().toISOString(),
     rotatedAt: overrides?.rotatedAt,
     expiresAt: overrides?.expiresAt,
@@ -96,17 +96,17 @@ function makeMetadata(
 /* ------------------------------------------------------------------ */
 
 export class EnvKeyProvider implements KeyProvider {
-  readonly type: KeyProviderType = "env";
+  readonly type: KeyProviderType = 'env';
   private keys = new Map<string, Map<number, KeyMaterial>>();
 
   constructor() {
     // Seed from env vars: KEY_<ID>=hex-encoded key
     for (const [k, v] of Object.entries(process.env)) {
-      if (k.startsWith("KEY_") && v) {
+      if (k.startsWith('KEY_') && v) {
         const keyId = k.slice(4).toLowerCase();
-        const buf = Buffer.from(v, "hex");
+        const buf = Buffer.from(v, 'hex');
         if (buf.length >= 16) {
-          const meta = makeMetadata(keyId, buf, "env");
+          const meta = makeMetadata(keyId, buf, 'env');
           const versions = new Map<number, KeyMaterial>();
           versions.set(1, { key: buf, metadata: meta });
           this.keys.set(keyId, versions);
@@ -122,7 +122,7 @@ export class EnvKeyProvider implements KeyProvider {
     // Return latest active version
     let latest: KeyMaterial | null = null;
     for (const km of versions.values()) {
-      if (km.metadata.status === "active") {
+      if (km.metadata.status === 'active') {
         if (!latest || km.metadata.version > latest.metadata.version) {
           latest = km;
         }
@@ -144,7 +144,7 @@ export class EnvKeyProvider implements KeyProvider {
   async putKey(keyId: string, key: Buffer, overrides?: Partial<KeyMetadata>): Promise<KeyMetadata> {
     const versions = this.keys.get(keyId) ?? new Map<number, KeyMaterial>();
     const nextVersion = Math.max(0, ...Array.from(versions.keys())) + 1;
-    const meta = makeMetadata(keyId, key, "env", { ...overrides, version: nextVersion });
+    const meta = makeMetadata(keyId, key, 'env', { ...overrides, version: nextVersion });
     versions.set(nextVersion, { key, metadata: meta });
     this.keys.set(keyId, versions);
     return meta;
@@ -167,10 +167,10 @@ export class EnvKeyProvider implements KeyProvider {
 /* ------------------------------------------------------------------ */
 
 export class FileKeyProvider implements KeyProvider {
-  readonly type: KeyProviderType = "file";
+  readonly type: KeyProviderType = 'file';
   private keys = new Map<string, Map<number, KeyMaterial>>();
 
-  constructor(private readonly keyDir: string = process.env.KEY_FILE_DIR || "./keys") {}
+  constructor(_keyDir: string = process.env.KEY_FILE_DIR || './keys') {}
 
   async getKey(keyId: string, version?: number): Promise<KeyMaterial | null> {
     const versions = this.keys.get(keyId);
@@ -178,7 +178,10 @@ export class FileKeyProvider implements KeyProvider {
     if (version !== undefined) return versions.get(version) ?? null;
     let latest: KeyMaterial | null = null;
     for (const km of versions.values()) {
-      if (km.metadata.status === "active" && (!latest || km.metadata.version > latest.metadata.version)) {
+      if (
+        km.metadata.status === 'active' &&
+        (!latest || km.metadata.version > latest.metadata.version)
+      ) {
         latest = km;
       }
     }
@@ -198,7 +201,7 @@ export class FileKeyProvider implements KeyProvider {
   async putKey(keyId: string, key: Buffer, overrides?: Partial<KeyMetadata>): Promise<KeyMetadata> {
     const versions = this.keys.get(keyId) ?? new Map<number, KeyMaterial>();
     const nextVersion = Math.max(0, ...Array.from(versions.keys())) + 1;
-    const meta = makeMetadata(keyId, key, "file", { ...overrides, version: nextVersion });
+    const meta = makeMetadata(keyId, key, 'file', { ...overrides, version: nextVersion });
     versions.set(nextVersion, { key, metadata: meta });
     this.keys.set(keyId, versions);
     return meta;
@@ -221,12 +224,12 @@ export class FileKeyProvider implements KeyProvider {
 /* ------------------------------------------------------------------ */
 
 export class VaultKeyProvider implements KeyProvider {
-  readonly type: KeyProviderType = "vault";
+  readonly type: KeyProviderType = 'vault';
   private keys = new Map<string, Map<number, KeyMaterial>>();
 
   constructor(
-    private readonly vaultUrl: string = process.env.VAULT_URL || "http://127.0.0.1:8200",
-    private readonly vaultToken: string = process.env.VAULT_TOKEN || "",
+    private readonly vaultUrl: string = process.env.VAULT_URL || 'http://127.0.0.1:8200',
+    private readonly vaultToken: string = process.env.VAULT_TOKEN || ''
   ) {}
 
   async getKey(keyId: string, version?: number): Promise<KeyMaterial | null> {
@@ -236,7 +239,10 @@ export class VaultKeyProvider implements KeyProvider {
     if (version !== undefined) return versions.get(version) ?? null;
     let latest: KeyMaterial | null = null;
     for (const km of versions.values()) {
-      if (km.metadata.status === "active" && (!latest || km.metadata.version > latest.metadata.version)) {
+      if (
+        km.metadata.status === 'active' &&
+        (!latest || km.metadata.version > latest.metadata.version)
+      ) {
         latest = km;
       }
     }
@@ -254,7 +260,7 @@ export class VaultKeyProvider implements KeyProvider {
   async putKey(keyId: string, key: Buffer, overrides?: Partial<KeyMetadata>): Promise<KeyMetadata> {
     const versions = this.keys.get(keyId) ?? new Map<number, KeyMaterial>();
     const nextVersion = Math.max(0, ...Array.from(versions.keys())) + 1;
-    const meta = makeMetadata(keyId, key, "vault", { ...overrides, version: nextVersion });
+    const meta = makeMetadata(keyId, key, 'vault', { ...overrides, version: nextVersion });
     versions.set(nextVersion, { key, metadata: meta });
     this.keys.set(keyId, versions);
     return meta;
@@ -277,12 +283,12 @@ export class VaultKeyProvider implements KeyProvider {
 /* ------------------------------------------------------------------ */
 
 export class KmsKeyProvider implements KeyProvider {
-  readonly type: KeyProviderType = "kms";
+  readonly type: KeyProviderType = 'kms';
   private keys = new Map<string, Map<number, KeyMaterial>>();
 
   constructor(
-    private readonly kmsRegion: string = process.env.KMS_REGION || "us-east-1",
-    private readonly kmsKeyArn: string = process.env.KMS_KEY_ARN || "",
+    _kmsRegion: string = process.env.KMS_REGION || 'us-east-1',
+    private readonly kmsKeyArn: string = process.env.KMS_KEY_ARN || ''
   ) {}
 
   async getKey(keyId: string, version?: number): Promise<KeyMaterial | null> {
@@ -291,7 +297,10 @@ export class KmsKeyProvider implements KeyProvider {
     if (version !== undefined) return versions.get(version) ?? null;
     let latest: KeyMaterial | null = null;
     for (const km of versions.values()) {
-      if (km.metadata.status === "active" && (!latest || km.metadata.version > latest.metadata.version)) {
+      if (
+        km.metadata.status === 'active' &&
+        (!latest || km.metadata.version > latest.metadata.version)
+      ) {
         latest = km;
       }
     }
@@ -309,7 +318,7 @@ export class KmsKeyProvider implements KeyProvider {
   async putKey(keyId: string, key: Buffer, overrides?: Partial<KeyMetadata>): Promise<KeyMetadata> {
     const versions = this.keys.get(keyId) ?? new Map<number, KeyMaterial>();
     const nextVersion = Math.max(0, ...Array.from(versions.keys())) + 1;
-    const meta = makeMetadata(keyId, key, "kms", { ...overrides, version: nextVersion });
+    const meta = makeMetadata(keyId, key, 'kms', { ...overrides, version: nextVersion });
     versions.set(nextVersion, { key, metadata: meta });
     this.keys.set(keyId, versions);
     return meta;
@@ -335,18 +344,18 @@ let activeProvider: KeyProvider | null = null;
 
 export function resolveKeyProvider(): KeyProvider {
   if (activeProvider) return activeProvider;
-  const providerType = (process.env.KEY_PROVIDER || "env").toLowerCase() as KeyProviderType;
+  const providerType = (process.env.KEY_PROVIDER || 'env').toLowerCase() as KeyProviderType;
   switch (providerType) {
-    case "file":
+    case 'file':
       activeProvider = new FileKeyProvider();
       break;
-    case "vault":
+    case 'vault':
       activeProvider = new VaultKeyProvider();
       break;
-    case "kms":
+    case 'kms':
       activeProvider = new KmsKeyProvider();
       break;
-    case "env":
+    case 'env':
     default:
       activeProvider = new EnvKeyProvider();
       break;

@@ -16,7 +16,7 @@ import type {
   NormalizedRemittance,
   NormalizedPaymentLine,
   PaymentCode,
-} from "./types.js";
+} from './types.js';
 
 /* ── Scaffold Parser (Structured JSON input) ────────────────── */
 
@@ -44,8 +44,8 @@ import type {
  * }
  */
 class ScaffoldEdi835Parser implements Edi835Parser {
-  readonly name = "scaffold-json";
-  readonly version = "1.0.0";
+  readonly name = 'scaffold-json';
+  readonly version = '1.0.0';
 
   parse(content: string): NormalizedRemittance {
     const errors: string[] = [];
@@ -56,14 +56,14 @@ class ScaffoldEdi835Parser implements Edi835Parser {
     } catch {
       return {
         lines: [],
-        payerId: "",
+        payerId: '',
         totalPaidAmount: 0,
         totalBilledAmount: 0,
-        parseErrors: ["Invalid JSON input"],
+        parseErrors: ['Invalid JSON input'],
       };
     }
 
-    const payerId = String(data.payerId ?? "UNKNOWN");
+    const payerId = String(data.payerId ?? 'UNKNOWN');
     const checkNumber = data.checkNumber ?? undefined;
     const rawLines = Array.isArray(data.lines) ? data.lines : [];
 
@@ -86,8 +86,8 @@ class ScaffoldEdi835Parser implements Edi835Parser {
         if (Array.isArray(entry.codes)) {
           for (const c of entry.codes) {
             codes.push({
-              type: (c.type === "CARC" || c.type === "RARC") ? c.type : "OTHER",
-              code: String(c.code ?? ""),
+              type: c.type === 'CARC' || c.type === 'RARC' ? c.type : 'OTHER',
+              code: String(c.code ?? ''),
               description: c.description,
             });
           }
@@ -100,7 +100,8 @@ class ScaffoldEdi835Parser implements Edi835Parser {
           paidAmount,
           allowedAmount: entry.allowedAmount != null ? Number(entry.allowedAmount) : undefined,
           patientResp: entry.patientResp != null ? Number(entry.patientResp) : undefined,
-          adjustmentAmount: entry.adjustmentAmount != null ? Number(entry.adjustmentAmount) : undefined,
+          adjustmentAmount:
+            entry.adjustmentAmount != null ? Number(entry.adjustmentAmount) : undefined,
           traceNumber: entry.traceNumber ?? undefined,
           checkNumber: entry.checkNumber ?? checkNumber,
           postedDate: entry.postedDate ?? undefined,
@@ -132,13 +133,15 @@ class ScaffoldEdi835Parser implements Edi835Parser {
 const parsers = new Map<string, Edi835Parser>();
 
 // Register built-in scaffold parser
-parsers.set("scaffold-json", new ScaffoldEdi835Parser());
+parsers.set('scaffold-json', new ScaffoldEdi835Parser());
 
 export function getParser(name?: string): Edi835Parser {
-  const key = name ?? "scaffold-json";
+  const key = name ?? 'scaffold-json';
   const parser = parsers.get(key);
   if (!parser) {
-    throw new Error(`EDI 835 parser not found: ${key}. Available: ${[...parsers.keys()].join(", ")}`);
+    throw new Error(
+      `EDI 835 parser not found: ${key}. Available: ${[...parsers.keys()].join(', ')}`
+    );
   }
   return parser;
 }

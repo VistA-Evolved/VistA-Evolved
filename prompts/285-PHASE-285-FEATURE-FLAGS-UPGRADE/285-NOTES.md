@@ -3,28 +3,33 @@
 ## Design Decisions
 
 ### Two-Layer Architecture
+
 - **Policy layer** (existing): tenant_feature_flag table + module entitlements
   remain source of truth for "is this feature available to this tenant"
 - **Runtime evaluation layer** (new): FeatureFlagProvider handles "is this
   feature active right now for this user" with rollout/targeting
 
 ### DB Provider as Default
+
 The DbFeatureFlagProvider reads directly from the existing tenant_feature_flag
 table. Zero new infrastructure needed. Deterministic SHA-256 hash ensures the
 same user always gets the same rollout bucket for a given flag.
 
 ### Unleash as Optional
+
 UnleashFeatureFlagProvider uses vanilla fetch (no npm deps) against Unleash's
 /client/features endpoint. Cache refreshes every 15s. Falls back to DB
 provider on cache miss. To deploy Unleash, add it to docker-compose.prod.yml
 under profiles: [flags].
 
 ### Rollout Percentage Column
+
 Added as INTEGER (0-100) with DEFAULT 100 (fully enabled). This is the
 simplest possible gradual rollout — percentage of users get the flag.
 Deterministic hashing means the same user always sees the same result.
 
 ### User Targeting JSONB
+
 Stored as array of UserTargetingRule objects. Each rule has field + operator +
 values. All rules must pass (AND logic). Supports: eq, neq, in, not_in,
 contains. Targeting is evaluated before rollout percentage.

@@ -9,7 +9,7 @@
  *   const list = await readThroughList(localMap, hydrated, () => pgRepo.findByTenant(tid));
  */
 
-import { isPgConfigured } from "./pg-db.js";
+import { isPgConfigured } from './pg-db.js';
 
 /* ------------------------------------------------------------------ */
 /* readThroughGet: single-item lookup with PG fallback                 */
@@ -27,7 +27,7 @@ import { isPgConfigured } from "./pg-db.js";
 export async function readThroughGet<T>(
   localMap: Map<string, T>,
   key: string,
-  pgFallback: () => Promise<T | null>,
+  pgFallback: () => Promise<T | null>
 ): Promise<T | null> {
   // 1. Map-first
   const cached = localMap.get(key);
@@ -65,7 +65,7 @@ export async function readThroughList<T>(
   localMap: Map<string, T>,
   hydratedRef: { value: boolean },
   pgListFn: () => Promise<T[]>,
-  keyExtractor: (item: T) => string,
+  keyExtractor: (item: T) => string
 ): Promise<T[]> {
   // If already hydrated or PG not configured, return Map contents
   if (hydratedRef.value || !isPgConfigured()) {
@@ -104,7 +104,7 @@ export interface HydrateTask {
  * @returns Summary of hydration results
  */
 export async function hydrateMapsFromPg(
-  tasks: HydrateTask[],
+  tasks: HydrateTask[]
 ): Promise<{ succeeded: string[]; failed: string[] }> {
   if (!isPgConfigured()) {
     return { succeeded: [], failed: [] };

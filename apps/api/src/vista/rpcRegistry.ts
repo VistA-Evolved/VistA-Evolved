@@ -12,7 +12,7 @@
  * Tags: "read" (no side effects), "write" (mutates VistA data), "auth" (broker protocol).
  */
 
-export type RpcTag = "read" | "write" | "auth" | "custom";
+export type RpcTag = 'read' | 'write' | 'auth' | 'custom';
 
 export interface RpcDefinition {
   /** Canonical RPC name exactly as registered in File 8994 */
@@ -31,227 +31,867 @@ export interface RpcDefinition {
 /* ------------------------------------------------------------------ */
 export const RPC_REGISTRY: RpcDefinition[] = [
   // --- Auth / Broker Protocol ---
-  { name: "XUS SIGNON SETUP",         domain: "auth",       tag: "auth",  description: "Broker sign-on handshake" },
-  { name: "XUS AV CODE",              domain: "auth",       tag: "auth",  description: "Access/verify code authentication" },
-  { name: "XWB CREATE CONTEXT",       domain: "auth",       tag: "auth",  description: "Set application context" },
-  { name: "XUS GET USER INFO",        domain: "auth",       tag: "auth",  description: "Get authenticated user metadata" },
+  {
+    name: 'XUS SIGNON SETUP',
+    domain: 'auth',
+    tag: 'auth',
+    description: 'Broker sign-on handshake',
+  },
+  {
+    name: 'XUS AV CODE',
+    domain: 'auth',
+    tag: 'auth',
+    description: 'Access/verify code authentication',
+  },
+  {
+    name: 'XWB CREATE CONTEXT',
+    domain: 'auth',
+    tag: 'auth',
+    description: 'Set application context',
+  },
+  {
+    name: 'XUS GET USER INFO',
+    domain: 'auth',
+    tag: 'auth',
+    description: 'Get authenticated user metadata',
+  },
 
   // --- Allergies ---
-  { name: "ORQQAL LIST",              domain: "allergies",  tag: "read",  description: "List patient allergies" },
-  { name: "ORWDAL32 ALLERGY MATCH",   domain: "allergies",  tag: "read",  description: "Search allergy reactants" },
-  { name: "ORWDAL32 SAVE ALLERGY",    domain: "allergies",  tag: "write", description: "Save new allergy" },
+  { name: 'ORQQAL LIST', domain: 'allergies', tag: 'read', description: 'List patient allergies' },
+  {
+    name: 'ORWDAL32 ALLERGY MATCH',
+    domain: 'allergies',
+    tag: 'read',
+    description: 'Search allergy reactants',
+  },
+  {
+    name: 'ORWDAL32 SAVE ALLERGY',
+    domain: 'allergies',
+    tag: 'write',
+    description: 'Save new allergy',
+  },
 
   // --- Billing / PCE ---
-  { name: "IBCN INSURANCE QUERY",     domain: "billing",    tag: "read",  description: "Query patient insurance" },
-  { name: "IBD GET ALL PCE DATA",     domain: "billing",    tag: "read",  description: "Get all PCE encounter data" },
-  { name: "IBD GET FORMSPEC",         domain: "billing",    tag: "read",  description: "Get encounter form specification" },
-  { name: "IBARXM QUERY ONLY",       domain: "billing",    tag: "read",  description: "Pharmacy billing query" },
-  { name: "IBO MT LTC COPAY QUERY",  domain: "billing",    tag: "read",  description: "Means Test / LTC copay query" },
-  { name: "ORWPCE VISIT",            domain: "billing",    tag: "read",  description: "Get PCE visit data" },
-  { name: "ORWPCE GET VISIT",        domain: "billing",    tag: "read",  description: "Get detailed visit" },
-  { name: "ORWPCE DIAG",             domain: "billing",    tag: "read",  description: "Get PCE diagnoses" },
-  { name: "ORWPCE PROC",             domain: "billing",    tag: "read",  description: "Get PCE procedures" },
-  { name: "ORWPCE PCE4NOTE",         domain: "billing",    tag: "read",  description: "Get PCE data for note" },
-  { name: "ORWPCE HASVISIT",         domain: "billing",    tag: "read",  description: "Check if visit exists" },
-  { name: "ORWPCE GETSVC",           domain: "billing",    tag: "read",  description: "Get service connected data" },
-  { name: "ORWPCE4 LEX",             domain: "billing",    tag: "read",  description: "Lexicon search (PCE)" },
-  { name: "ORWPCE LEXCODE",          domain: "billing",    tag: "read",  description: "Get lexicon code" },
-  { name: "ORWPCE ACTIVE CODE",      domain: "billing",    tag: "read",  description: "Check if code is active" },
-  { name: "ORWPCE SAVE",             domain: "billing",    tag: "write", description: "Save PCE encounter" },
+  {
+    name: 'IBCN INSURANCE QUERY',
+    domain: 'billing',
+    tag: 'read',
+    description: 'Query patient insurance',
+  },
+  {
+    name: 'IBD GET ALL PCE DATA',
+    domain: 'billing',
+    tag: 'read',
+    description: 'Get all PCE encounter data',
+  },
+  {
+    name: 'IBD GET FORMSPEC',
+    domain: 'billing',
+    tag: 'read',
+    description: 'Get encounter form specification',
+  },
+  {
+    name: 'IBARXM QUERY ONLY',
+    domain: 'billing',
+    tag: 'read',
+    description: 'Pharmacy billing query',
+  },
+  {
+    name: 'IBO MT LTC COPAY QUERY',
+    domain: 'billing',
+    tag: 'read',
+    description: 'Means Test / LTC copay query',
+  },
+  { name: 'ORWPCE VISIT', domain: 'billing', tag: 'read', description: 'Get PCE visit data' },
+  { name: 'ORWPCE GET VISIT', domain: 'billing', tag: 'read', description: 'Get detailed visit' },
+  { name: 'ORWPCE DIAG', domain: 'billing', tag: 'read', description: 'Get PCE diagnoses' },
+  { name: 'ORWPCE PROC', domain: 'billing', tag: 'read', description: 'Get PCE procedures' },
+  { name: 'ORWPCE PCE4NOTE', domain: 'billing', tag: 'read', description: 'Get PCE data for note' },
+  { name: 'ORWPCE HASVISIT', domain: 'billing', tag: 'read', description: 'Check if visit exists' },
+  {
+    name: 'ORWPCE GETSVC',
+    domain: 'billing',
+    tag: 'read',
+    description: 'Get service connected data',
+  },
+  { name: 'ORWPCE4 LEX', domain: 'billing', tag: 'read', description: 'Lexicon search (PCE)' },
+  { name: 'ORWPCE LEXCODE', domain: 'billing', tag: 'read', description: 'Get lexicon code' },
+  {
+    name: 'ORWPCE ACTIVE CODE',
+    domain: 'billing',
+    tag: 'read',
+    description: 'Check if code is active',
+  },
+  { name: 'ORWPCE SAVE', domain: 'billing', tag: 'write', description: 'Save PCE encounter' },
 
   // --- Consults ---
-  { name: "ORQQCN LIST",              domain: "consults",   tag: "read",  description: "List consults for patient" },
-  { name: "ORQQCN DETAIL",            domain: "consults",   tag: "read",  description: "Get consult detail" },
-  { name: "ORQQCN2 MED RESULTS",      domain: "consults",   tag: "write", description: "Complete consult with results" },
+  {
+    name: 'ORQQCN LIST',
+    domain: 'consults',
+    tag: 'read',
+    description: 'List consults for patient',
+  },
+  { name: 'ORQQCN DETAIL', domain: 'consults', tag: 'read', description: 'Get consult detail' },
+  {
+    name: 'ORQQCN2 MED RESULTS',
+    domain: 'consults',
+    tag: 'write',
+    description: 'Complete consult with results',
+  },
 
   // --- Custom VE RPCs ---
-  { name: "VE LIST RPCS",             domain: "catalog",    tag: "custom", description: "List all registered RPCs from File 8994" },
-  { name: "VE INTEROP HL7 LINKS",     domain: "interop",    tag: "custom", description: "List HL7 logical links" },
-  { name: "VE INTEROP HL7 MSGS",      domain: "interop",    tag: "custom", description: "List recent HL7 messages" },
-  { name: "VE INTEROP HLO STATUS",    domain: "interop",    tag: "custom", description: "HLO application status" },
-  { name: "VE INTEROP QUEUE DEPTH",   domain: "interop",    tag: "custom", description: "HL7 queue depths" },
-  { name: "VE INTEROP MSG LIST",      domain: "interop",    tag: "custom", description: "List HL7 messages with filters" },
-  { name: "VE INTEROP MSG DETAIL",    domain: "interop",    tag: "custom", description: "HL7 message metadata + segment summary" },
+  {
+    name: 'VE LIST RPCS',
+    domain: 'catalog',
+    tag: 'custom',
+    description: 'List all registered RPCs from File 8994',
+  },
+  {
+    name: 'VE INTEROP HL7 LINKS',
+    domain: 'interop',
+    tag: 'custom',
+    description: 'List HL7 logical links',
+  },
+  {
+    name: 'VE INTEROP HL7 MSGS',
+    domain: 'interop',
+    tag: 'custom',
+    description: 'List recent HL7 messages',
+  },
+  {
+    name: 'VE INTEROP HLO STATUS',
+    domain: 'interop',
+    tag: 'custom',
+    description: 'HLO application status',
+  },
+  {
+    name: 'VE INTEROP QUEUE DEPTH',
+    domain: 'interop',
+    tag: 'custom',
+    description: 'HL7 queue depths',
+  },
+  {
+    name: 'VE INTEROP MSG LIST',
+    domain: 'interop',
+    tag: 'custom',
+    description: 'List HL7 messages with filters',
+  },
+  {
+    name: 'VE INTEROP MSG DETAIL',
+    domain: 'interop',
+    tag: 'custom',
+    description: 'HL7 message metadata + segment summary',
+  },
 
   // --- Imaging ---
-  { name: "MAG4 REMOTE PROCEDURE",    domain: "imaging",    tag: "read",  description: "Imaging remote procedure call" },
-  { name: "MAG4 PAT GET IMAGES",      domain: "imaging",    tag: "read",  description: "Get patient images list" },
-  { name: "MAGG PAT PHOTOS",          domain: "imaging",    tag: "read",  description: "Get patient photos" },
-  { name: "RA DETAILED REPORT",       domain: "imaging",    tag: "read",  description: "Radiology detailed report" },
-  { name: "MAG4 ADD IMAGE",           domain: "imaging",    tag: "write", description: "Add image entry to VistA File 2005 (Phase 538: SIC capture)" },
-  { name: "MAG NEW SO ENTRY",         domain: "imaging",    tag: "write", description: "Create new storage object entry for image capture" },
-  { name: "MAG4 IMAGE",               domain: "imaging",    tag: "read",  description: "Get image metadata from File 2005" },
+  {
+    name: 'MAG4 REMOTE PROCEDURE',
+    domain: 'imaging',
+    tag: 'read',
+    description: 'Imaging remote procedure call',
+  },
+  {
+    name: 'MAG4 PAT GET IMAGES',
+    domain: 'imaging',
+    tag: 'read',
+    description: 'Get patient images list',
+  },
+  { name: 'MAGG PAT PHOTOS', domain: 'imaging', tag: 'read', description: 'Get patient photos' },
+  {
+    name: 'RA DETAILED REPORT',
+    domain: 'imaging',
+    tag: 'read',
+    description: 'Radiology detailed report',
+  },
+  {
+    name: 'MAG4 ADD IMAGE',
+    domain: 'imaging',
+    tag: 'write',
+    description: 'Add image entry to VistA File 2005 (Phase 538: SIC capture)',
+  },
+  {
+    name: 'MAG NEW SO ENTRY',
+    domain: 'imaging',
+    tag: 'write',
+    description: 'Create new storage object entry for image capture',
+  },
+  {
+    name: 'MAG4 IMAGE',
+    domain: 'imaging',
+    tag: 'read',
+    description: 'Get image metadata from File 2005',
+  },
 
   // --- Inbox ---
-  { name: "ORWORB UNSIG ORDERS",      domain: "inbox",      tag: "read",  description: "Get unsigned orders notifications" },
-  { name: "ORWORB FASTUSER",          domain: "inbox",      tag: "read",  description: "Get user notification info" },
+  {
+    name: 'ORWORB UNSIG ORDERS',
+    domain: 'inbox',
+    tag: 'read',
+    description: 'Get unsigned orders notifications',
+  },
+  {
+    name: 'ORWORB FASTUSER',
+    domain: 'inbox',
+    tag: 'read',
+    description: 'Get user notification info',
+  },
 
   // --- Labs ---
-  { name: "ORWLRR INTERIM",           domain: "labs",       tag: "read",  description: "Interim lab results" },
-  { name: "ORWLRR ACK",               domain: "labs",       tag: "write", description: "Acknowledge lab result" },
-  { name: "ORWLRR CHART",             domain: "labs",       tag: "read",  description: "Lab chart data" },
-  { name: "ORWLRR INTERIMG",          domain: "labs",       tag: "read",  description: "Interim lab results (imaging context)" },
+  { name: 'ORWLRR INTERIM', domain: 'labs', tag: 'read', description: 'Interim lab results' },
+  { name: 'ORWLRR ACK', domain: 'labs', tag: 'write', description: 'Acknowledge lab result' },
+  { name: 'ORWLRR CHART', domain: 'labs', tag: 'read', description: 'Lab chart data' },
+  {
+    name: 'ORWLRR INTERIMG',
+    domain: 'labs',
+    tag: 'read',
+    description: 'Interim lab results (imaging context)',
+  },
 
   // --- Medications ---
-  { name: "ORWPS ACTIVE",             domain: "medications", tag: "read",  description: "Active medications list" },
-  { name: "ORWORR GETTXT",            domain: "medications", tag: "read",  description: "Order result text" },
-  { name: "ORWDXM AUTOACK",           domain: "medications", tag: "write", description: "Quick-order medication auto-acknowledge" },
+  {
+    name: 'ORWPS ACTIVE',
+    domain: 'medications',
+    tag: 'read',
+    description: 'Active medications list',
+  },
+  { name: 'ORWORR GETTXT', domain: 'medications', tag: 'read', description: 'Order result text' },
+  {
+    name: 'ORWDXM AUTOACK',
+    domain: 'medications',
+    tag: 'write',
+    description: 'Quick-order medication auto-acknowledge',
+  },
 
   // --- Notes / DC Summaries ---
-  { name: "TIU DOCUMENTS BY CONTEXT", domain: "notes",      tag: "read",  description: "List documents by context" },
-  { name: "TIU CREATE RECORD",        domain: "notes",      tag: "write", description: "Create new TIU record" },
-  { name: "TIU SET DOCUMENT TEXT",     domain: "notes",      tag: "write", description: "Set document text body" },
-  { name: "TIU SET RECORD TEXT",       domain: "notes",      tag: "write", description: "Set record text body" },
-  { name: "TIU GET RECORD TEXT",       domain: "notes",      tag: "read",  description: "Get record text" },
+  {
+    name: 'TIU DOCUMENTS BY CONTEXT',
+    domain: 'notes',
+    tag: 'read',
+    description: 'List documents by context',
+  },
+  {
+    name: 'TIU CREATE RECORD',
+    domain: 'notes',
+    tag: 'write',
+    description: 'Create new TIU record',
+  },
+  {
+    name: 'TIU SET DOCUMENT TEXT',
+    domain: 'notes',
+    tag: 'write',
+    description: 'Set document text body',
+  },
+  {
+    name: 'TIU SET RECORD TEXT',
+    domain: 'notes',
+    tag: 'write',
+    description: 'Set record text body',
+  },
+  { name: 'TIU GET RECORD TEXT', domain: 'notes', tag: 'read', description: 'Get record text' },
   // Phase 60: TIU notes parity additions
-  { name: "TIU SIGN RECORD",          domain: "notes",      tag: "write", description: "Electronically sign TIU document" },
-  { name: "TIU LOCK RECORD",          domain: "notes",      tag: "write", description: "Lock TIU document for editing/signing" },
-  { name: "TIU UNLOCK RECORD",        domain: "notes",      tag: "write", description: "Unlock TIU document" },
-  { name: "TIU CREATE ADDENDUM RECORD", domain: "notes",    tag: "write", description: "Create addendum to TIU document" },
-  { name: "TIU REQUIRES COSIGNATURE", domain: "notes",      tag: "read",  description: "Check if document requires cosignature" },
-  { name: "TIU PERSONAL TITLE LIST",  domain: "notes",      tag: "read",  description: "Get user personal note title list" },
+  {
+    name: 'TIU SIGN RECORD',
+    domain: 'notes',
+    tag: 'write',
+    description: 'Electronically sign TIU document',
+  },
+  {
+    name: 'TIU LOCK RECORD',
+    domain: 'notes',
+    tag: 'write',
+    description: 'Lock TIU document for editing/signing',
+  },
+  { name: 'TIU UNLOCK RECORD', domain: 'notes', tag: 'write', description: 'Unlock TIU document' },
+  {
+    name: 'TIU CREATE ADDENDUM RECORD',
+    domain: 'notes',
+    tag: 'write',
+    description: 'Create addendum to TIU document',
+  },
+  {
+    name: 'TIU REQUIRES COSIGNATURE',
+    domain: 'notes',
+    tag: 'read',
+    description: 'Check if document requires cosignature',
+  },
+  {
+    name: 'TIU PERSONAL TITLE LIST',
+    domain: 'notes',
+    tag: 'read',
+    description: 'Get user personal note title list',
+  },
 
   // --- Orders ---
-  { name: "ORWDX LOCK",               domain: "orders",     tag: "write", description: "Lock patient for ordering" },
-  { name: "ORWDX UNLOCK",             domain: "orders",     tag: "write", description: "Unlock patient after ordering" },
-  { name: "ORWDX SAVE",               domain: "orders",     tag: "write", description: "Save order" },
-  { name: "ORWDXA DC",                domain: "orders",     tag: "write", description: "Discontinue order" },
-  { name: "ORWDXA FLAG",              domain: "orders",     tag: "write", description: "Flag order" },
-  { name: "ORWDXA VERIFY",            domain: "orders",     tag: "write", description: "Verify order" },
+  { name: 'ORWDX LOCK', domain: 'orders', tag: 'write', description: 'Lock patient for ordering' },
+  {
+    name: 'ORWDX UNLOCK',
+    domain: 'orders',
+    tag: 'write',
+    description: 'Unlock patient after ordering',
+  },
+  { name: 'ORWDX SAVE', domain: 'orders', tag: 'write', description: 'Save order' },
+  { name: 'ORWDXA DC', domain: 'orders', tag: 'write', description: 'Discontinue order' },
+  { name: 'ORWDXA FLAG', domain: 'orders', tag: 'write', description: 'Flag order' },
+  { name: 'ORWDXA VERIFY', domain: 'orders', tag: 'write', description: 'Verify order' },
   // Phase 59: CPOE parity additions
-  { name: "ORWORR AGET",              domain: "orders",     tag: "read",  description: "Get active orders by display group" },
-  { name: "ORWOR1 SIG",               domain: "orders",     tag: "write", description: "Electronically sign order(s)" },
-  { name: "ORWDXC ACCEPT",            domain: "orders",     tag: "read",  description: "Accept/get order check results" },
-  { name: "ORWDXC DISPLAY",           domain: "orders",     tag: "read",  description: "Display order check text" },
-  { name: "ORWDXC SAVECHK",           domain: "orders",     tag: "write", description: "Save/acknowledge order checks" },
-  { name: "ORWDX WRLST",              domain: "orders",     tag: "read",  description: "Write/order list for patient" },
+  {
+    name: 'ORWORR AGET',
+    domain: 'orders',
+    tag: 'read',
+    description: 'Get active orders by display group',
+  },
+  {
+    name: 'ORWOR1 SIG',
+    domain: 'orders',
+    tag: 'write',
+    description: 'Electronically sign order(s)',
+  },
+  {
+    name: 'ORWDXC ACCEPT',
+    domain: 'orders',
+    tag: 'read',
+    description: 'Accept/get order check results',
+  },
+  {
+    name: 'ORWDXC DISPLAY',
+    domain: 'orders',
+    tag: 'read',
+    description: 'Display order check text',
+  },
+  {
+    name: 'ORWDXC SAVECHK',
+    domain: 'orders',
+    tag: 'write',
+    description: 'Save/acknowledge order checks',
+  },
+  {
+    name: 'ORWDX WRLST',
+    domain: 'orders',
+    tag: 'read',
+    description: 'Write/order list for patient',
+  },
 
   // --- Patients ---
-  { name: "ORQPT DEFAULT PATIENT LIST", domain: "patients", tag: "read", description: "Default patient list" },
-  { name: "ORQPT DEFAULT LIST SOURCE",  domain: "patients", tag: "read", description: "Default patient list source configuration" },
-  { name: "ORWPT LIST ALL",           domain: "patients",   tag: "read",  description: "Search all patients" },
-  { name: "ORWPT SELECT",             domain: "patients",   tag: "read",  description: "Select patient demographics" },
-  { name: "ORWPT ID INFO",            domain: "patients",   tag: "read",  description: "Patient ID info (SSN, DOB, etc.)" },
-  { name: "ORWPT16 ID INFO",          domain: "patients",   tag: "read",  description: "Extended patient ID info" },
+  {
+    name: 'ORQPT DEFAULT PATIENT LIST',
+    domain: 'patients',
+    tag: 'read',
+    description: 'Default patient list',
+  },
+  {
+    name: 'ORQPT DEFAULT LIST SOURCE',
+    domain: 'patients',
+    tag: 'read',
+    description: 'Default patient list source configuration',
+  },
+  { name: 'ORWPT LIST ALL', domain: 'patients', tag: 'read', description: 'Search all patients' },
+  {
+    name: 'ORWPT SELECT',
+    domain: 'patients',
+    tag: 'read',
+    description: 'Select patient demographics',
+  },
+  {
+    name: 'ORWPT ID INFO',
+    domain: 'patients',
+    tag: 'read',
+    description: 'Patient ID info (SSN, DOB, etc.)',
+  },
+  {
+    name: 'ORWPT16 ID INFO',
+    domain: 'patients',
+    tag: 'read',
+    description: 'Extended patient ID info',
+  },
 
   // --- Problems ---
-  { name: "ORQQPL PROBLEM LIST",       domain: "problems",  tag: "read",  description: "Get problem list" },
-  { name: "ORQQPL4 LEX",              domain: "problems",   tag: "read",  description: "ICD/Lexicon search" },
-  { name: "ORQQPL ADD SAVE",          domain: "problems",   tag: "write", description: "Add problem" },
-  { name: "ORQQPL EDIT SAVE",         domain: "problems",   tag: "write", description: "Edit problem" },
-  { name: "ORWCH PROBLEM LIST",       domain: "problems",   tag: "read",  description: "Chart problem list" },
+  { name: 'ORQQPL PROBLEM LIST', domain: 'problems', tag: 'read', description: 'Get problem list' },
+  { name: 'ORQQPL4 LEX', domain: 'problems', tag: 'read', description: 'ICD/Lexicon search' },
+  { name: 'ORQQPL ADD SAVE', domain: 'problems', tag: 'write', description: 'Add problem' },
+  { name: 'ORQQPL EDIT SAVE', domain: 'problems', tag: 'write', description: 'Edit problem' },
+  {
+    name: 'ORWCH PROBLEM LIST',
+    domain: 'problems',
+    tag: 'read',
+    description: 'Chart problem list',
+  },
 
   // --- Remote Data ---
-  { name: "ORWCIRN FACILITIES",        domain: "remote",    tag: "read",  description: "Remote facility list" },
+  {
+    name: 'ORWCIRN FACILITIES',
+    domain: 'remote',
+    tag: 'read',
+    description: 'Remote facility list',
+  },
 
   // --- Reports ---
-  { name: "ORWRP REPORT LISTS",       domain: "reports",    tag: "read",  description: "Available report lists" },
-  { name: "ORWRP REPORT TEXT",        domain: "reports",    tag: "read",  description: "Get report text" },
+  {
+    name: 'ORWRP REPORT LISTS',
+    domain: 'reports',
+    tag: 'read',
+    description: 'Available report lists',
+  },
+  { name: 'ORWRP REPORT TEXT', domain: 'reports', tag: 'read', description: 'Get report text' },
 
   // --- Surgery ---
-  { name: "ORWSR LIST",               domain: "surgery",    tag: "read",  description: "Surgery case list" },
-  { name: "ORWSR RPTLIST",            domain: "surgery",    tag: "read",  description: "Surgery report list" },
+  { name: 'ORWSR LIST', domain: 'surgery', tag: 'read', description: 'Surgery case list' },
+  { name: 'ORWSR RPTLIST', domain: 'surgery', tag: 'read', description: 'Surgery report list' },
 
   // --- Vitals ---
-  { name: "GMV V/M ALLDATA",           domain: "vitals",     tag: "read",  description: "All vitals/measurements data" },
-  { name: "GMV ADD VM",               domain: "vitals",     tag: "write", description: "Add vital measurement" },
-  { name: "ORQQVI VITALS",            domain: "vitals",     tag: "read",  description: "Get patient vitals" },
-  { name: "ORQQVI VITALS FOR DATE RANGE", domain: "vitals", tag: "read",  description: "Vitals for date range (shift-based nursing view)" },
+  {
+    name: 'GMV V/M ALLDATA',
+    domain: 'vitals',
+    tag: 'read',
+    description: 'All vitals/measurements data',
+  },
+  { name: 'GMV ADD VM', domain: 'vitals', tag: 'write', description: 'Add vital measurement' },
+  { name: 'ORQQVI VITALS', domain: 'vitals', tag: 'read', description: 'Get patient vitals' },
+  {
+    name: 'ORQQVI VITALS FOR DATE RANGE',
+    domain: 'vitals',
+    tag: 'read',
+    description: 'Vitals for date range (shift-based nursing view)',
+  },
 
   // --- ADT / Inpatient (Phase 67: VistA-first ADT + inpatient lists) ---
-  { name: "ORQPT WARDS",                domain: "adt",            tag: "read",  description: "List all wards" },
-  { name: "ORQPT WARD PATIENTS",         domain: "adt",            tag: "read",  description: "Census: patients on a ward" },
-  { name: "ORQPT PROVIDER PATIENTS",     domain: "adt",            tag: "read",  description: "Provider inpatient list" },
-  { name: "ORQPT TEAMS",                 domain: "adt",            tag: "read",  description: "List available teams" },
-  { name: "ORQPT TEAM PATIENTS",         domain: "adt",            tag: "read",  description: "Team patient list" },
-  { name: "ORQPT SPECIALTIES",           domain: "adt",            tag: "read",  description: "List treating specialties" },
-  { name: "ORQPT SPECIALTY PATIENTS",    domain: "adt",            tag: "read",  description: "Specialty patient list" },
-  { name: "ORWU1 NEWLOC",               domain: "adt",            tag: "read",  description: "Location search/lookup" },
-  { name: "ORWPT16 ADMITLST",            domain: "adt",            tag: "read",  description: "Patient admission history list" },
+  { name: 'ORQPT WARDS', domain: 'adt', tag: 'read', description: 'List all wards' },
+  {
+    name: 'ORQPT WARD PATIENTS',
+    domain: 'adt',
+    tag: 'read',
+    description: 'Census: patients on a ward',
+  },
+  {
+    name: 'ORQPT PROVIDER PATIENTS',
+    domain: 'adt',
+    tag: 'read',
+    description: 'Provider inpatient list',
+  },
+  { name: 'ORQPT TEAMS', domain: 'adt', tag: 'read', description: 'List available teams' },
+  { name: 'ORQPT TEAM PATIENTS', domain: 'adt', tag: 'read', description: 'Team patient list' },
+  {
+    name: 'ORQPT SPECIALTIES',
+    domain: 'adt',
+    tag: 'read',
+    description: 'List treating specialties',
+  },
+  {
+    name: 'ORQPT SPECIALTY PATIENTS',
+    domain: 'adt',
+    tag: 'read',
+    description: 'Specialty patient list',
+  },
+  { name: 'ORWU1 NEWLOC', domain: 'adt', tag: 'read', description: 'Location search/lookup' },
+  {
+    name: 'ORWPT16 ADMITLST',
+    domain: 'adt',
+    tag: 'read',
+    description: 'Patient admission history list',
+  },
 
   // --- Phase 137: ZVEADT custom RPCs (expected missing until ZVEADT.m installed) ---
-  { name: "ZVEADT WARDS",               domain: "adt",            tag: "read",  description: "Ward census with bed counts (custom)" },
-  { name: "ZVEADT BEDS",                domain: "adt",            tag: "read",  description: "Bed-level occupancy for a ward (custom)" },
-  { name: "ZVEADT MVHIST",              domain: "adt",            tag: "read",  description: "Patient movement history from File 405 (custom)" },
+  {
+    name: 'ZVEADT WARDS',
+    domain: 'adt',
+    tag: 'read',
+    description: 'Ward census with bed counts (custom)',
+  },
+  {
+    name: 'ZVEADT BEDS',
+    domain: 'adt',
+    tag: 'read',
+    description: 'Bed-level occupancy for a ward (custom)',
+  },
+  {
+    name: 'ZVEADT MVHIST',
+    domain: 'adt',
+    tag: 'read',
+    description: 'Patient movement history from File 405 (custom)',
+  },
 
   // --- Clinical Reminders (Phase 78: VistA-first reminder evaluation) ---
-  { name: "ORQQPX REMINDERS LIST",       domain: "reminders",      tag: "read",  description: "Evaluate clinical reminders for patient (due/applicable list)" },
-  { name: "ORQQPX REMINDER DETAIL",      domain: "reminders",      tag: "read",  description: "Detailed info for a single clinical reminder" },
+  {
+    name: 'ORQQPX REMINDERS LIST',
+    domain: 'reminders',
+    tag: 'read',
+    description: 'Evaluate clinical reminders for patient (due/applicable list)',
+  },
+  {
+    name: 'ORQQPX REMINDER DETAIL',
+    domain: 'reminders',
+    tag: 'read',
+    description: 'Detailed info for a single clinical reminder',
+  },
 
   // --- Immunizations (Phase 65: VistA-first immunization history) ---
-  { name: "ORQQPX IMMUN LIST",          domain: "immunizations", tag: "read",  description: "Patient immunization history list" },
-  { name: "PXVIMM IMM SHORT LIST",       domain: "immunizations", tag: "read",  description: "Immunization type picker (short list)" },
+  {
+    name: 'ORQQPX IMMUN LIST',
+    domain: 'immunizations',
+    tag: 'read',
+    description: 'Patient immunization history list',
+  },
+  {
+    name: 'PXVIMM IMM SHORT LIST',
+    domain: 'immunizations',
+    tag: 'read',
+    description: 'Immunization type picker (short list)',
+  },
 
   // --- Messaging (Phase 70: ZVEMSGR.m MailMan RPC bridge) ---
-  { name: "ORQQXMB MAIL GROUPS",      domain: "messaging",  tag: "read",  description: "List MailMan mail groups for recipient selection" },
-  { name: "ZVE MAIL FOLDERS",         domain: "messaging",  tag: "read",  description: "List MailMan baskets/folders with counts (ZVEMSGR.m)" },
-  { name: "ZVE MAIL LIST",            domain: "messaging",  tag: "read",  description: "List messages in a MailMan basket (ZVEMSGR.m)" },
-  { name: "ZVE MAIL GET",             domain: "messaging",  tag: "read",  description: "Read MailMan message header+body+recipients (ZVEMSGR.m)" },
-  { name: "ZVE MAIL SEND",            domain: "messaging",  tag: "write", description: "Send MailMan message via XMXSEND with inline delivery (ZVEMSGR.m)" },
-  { name: "ZVE MAIL MANAGE",          domain: "messaging",  tag: "write", description: "Mark read/delete/move MailMan message (ZVEMSGR.m)" },
+  {
+    name: 'ORQQXMB MAIL GROUPS',
+    domain: 'messaging',
+    tag: 'read',
+    description: 'List MailMan mail groups for recipient selection',
+  },
+  {
+    name: 'ZVE MAIL FOLDERS',
+    domain: 'messaging',
+    tag: 'read',
+    description: 'List MailMan baskets/folders with counts (ZVEMSGR.m)',
+  },
+  {
+    name: 'ZVE MAIL LIST',
+    domain: 'messaging',
+    tag: 'read',
+    description: 'List messages in a MailMan basket (ZVEMSGR.m)',
+  },
+  {
+    name: 'ZVE MAIL GET',
+    domain: 'messaging',
+    tag: 'read',
+    description: 'Read MailMan message header+body+recipients (ZVEMSGR.m)',
+  },
+  {
+    name: 'ZVE MAIL SEND',
+    domain: 'messaging',
+    tag: 'write',
+    description: 'Send MailMan message via XMXSEND with inline delivery (ZVEMSGR.m)',
+  },
+  {
+    name: 'ZVE MAIL MANAGE',
+    domain: 'messaging',
+    tag: 'write',
+    description: 'Mark read/delete/move MailMan message (ZVEMSGR.m)',
+  },
 
   // --- Scheduling (Phase 37C: VistA scheduling adapter, enhanced Phase 123) ---
-  { name: "ORWCV VST",                      domain: "scheduling",  tag: "read",  description: "Cover sheet visit list for patient (VISIT #9000010)" },
-  { name: "SDOE LIST ENCOUNTERS FOR PAT",   domain: "scheduling",  tag: "read",  description: "List encounters/appointments for patient" },
-  { name: "SD W/L RETRIVE HOSP LOC(#44)",   domain: "scheduling",  tag: "read",  description: "Retrieve hospital locations for scheduling" },
-  { name: "SD W/L RETRIVE PERSON(200)",      domain: "scheduling",  tag: "read",  description: "Retrieve person file entries for scheduling" },
-  { name: "SDOE LIST ENCOUNTERS FOR DATES",  domain: "scheduling",  tag: "read",  description: "List encounters for date range" },
+  {
+    name: 'ORWCV VST',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'Cover sheet visit list for patient (VISIT #9000010)',
+  },
+  {
+    name: 'SDOE LIST ENCOUNTERS FOR PAT',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'List encounters/appointments for patient',
+  },
+  {
+    name: 'SD W/L RETRIVE HOSP LOC(#44)',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'Retrieve hospital locations for scheduling',
+  },
+  {
+    name: 'SD W/L RETRIVE PERSON(200)',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'Retrieve person file entries for scheduling',
+  },
+  {
+    name: 'SDOE LIST ENCOUNTERS FOR DATES',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'List encounters for date range',
+  },
   // Phase 123: SD* integration pack — new RPCs
-  { name: "SDOE GET GENERAL DATA",           domain: "scheduling",  tag: "read",  description: "Get encounter general data fields (date, clinic, type)" },
-  { name: "SDOE GET PROVIDERS",              domain: "scheduling",  tag: "read",  description: "Get providers assigned to an encounter" },
-  { name: "SDOE GET DIAGNOSES",              domain: "scheduling",  tag: "read",  description: "Get diagnoses associated with an encounter" },
-  { name: "SD W/L CREATE FILE",              domain: "scheduling",  tag: "write", description: "Create wait-list entry in VistA SD package" },
-  { name: "SD W/L RETRIVE FULL DATA",        domain: "scheduling",  tag: "read",  description: "Retrieve full wait-list data" },
+  {
+    name: 'SDOE GET GENERAL DATA',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'Get encounter general data fields (date, clinic, type)',
+  },
+  {
+    name: 'SDOE GET PROVIDERS',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'Get providers assigned to an encounter',
+  },
+  {
+    name: 'SDOE GET DIAGNOSES',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'Get diagnoses associated with an encounter',
+  },
+  {
+    name: 'SD W/L CREATE FILE',
+    domain: 'scheduling',
+    tag: 'write',
+    description: 'Create wait-list entry in VistA SD package',
+  },
+  {
+    name: 'SD W/L RETRIVE FULL DATA',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'Retrieve full wait-list data',
+  },
   // Phase 131: CPRS + SDVW RPCs
-  { name: "ORWPT APPTLST",                   domain: "scheduling",  tag: "read",  description: "CPRS cover sheet appointment list" },
-  { name: "SDVW MAKE APPT API APP",           domain: "scheduling",  tag: "write", description: "Real appointment creation via SDVW HL7 messaging" },
-  { name: "SDVW SDAPI APP",                   domain: "scheduling",  tag: "read",  description: "SDVW appointment list API" },
+  {
+    name: 'ORWPT APPTLST',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'CPRS cover sheet appointment list',
+  },
+  {
+    name: 'SDVW MAKE APPT API APP',
+    domain: 'scheduling',
+    tag: 'write',
+    description: 'Real appointment creation via SDVW HL7 messaging',
+  },
+  {
+    name: 'SDVW SDAPI APP',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'SDVW appointment list API',
+  },
   // Phase 131: SD W/L reference data RPCs
-  { name: "SD W/L PRIORITY",                  domain: "scheduling",  tag: "read",  description: "Wait-list priority reference data" },
-  { name: "SD W/L TYPE",                      domain: "scheduling",  tag: "read",  description: "Wait-list type reference data" },
-  { name: "SD W/L CURRENT STATUS",            domain: "scheduling",  tag: "read",  description: "Wait-list current status reference data" },
+  {
+    name: 'SD W/L PRIORITY',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'Wait-list priority reference data',
+  },
+  {
+    name: 'SD W/L TYPE',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'Wait-list type reference data',
+  },
+  {
+    name: 'SD W/L CURRENT STATUS',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'Wait-list current status reference data',
+  },
   // Phase 147: SDES scheduling depth RPCs
-  { name: "SDES GET APPTS BY PATIENT DFN3",   domain: "scheduling",  tag: "read",  description: "SDES patient appointment list by DFN" },
-  { name: "SDES GET CLIN AVAILABILITY",       domain: "scheduling",  tag: "read",  description: "SDES clinic availability slots" },
-  { name: "SDES GET APPT TYPES",              domain: "scheduling",  tag: "read",  description: "SDES appointment types from File 409.1" },
-  { name: "SDES GET CANCEL REASONS",          domain: "scheduling",  tag: "read",  description: "SDES cancellation reasons" },
-  { name: "SDES GET RESOURCE BY CLINIC",      domain: "scheduling",  tag: "read",  description: "SDES clinic resource/schedule info" },
-  { name: "SDES GET CLINIC INFO2",            domain: "scheduling",  tag: "read",  description: "SDES detailed clinic info from File 44" },
-  { name: "SDES GET APPT BY APPT IEN",        domain: "scheduling",  tag: "read",  description: "SDES single appointment detail by IEN (truth gate)" },
-  { name: "SDES CREATE APPOINTMENTS",         domain: "scheduling",  tag: "write", description: "SDES direct appointment booking" },
-  { name: "SDES CANCEL APPOINTMENT 2",        domain: "scheduling",  tag: "write", description: "SDES appointment cancellation" },
-  { name: "SDES CHECKIN",                     domain: "scheduling",  tag: "write", description: "SDES patient check-in" },
-  { name: "SDES CHECKOUT",                    domain: "scheduling",  tag: "write", description: "SDES patient checkout" },
+  {
+    name: 'SDES GET APPTS BY PATIENT DFN3',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'SDES patient appointment list by DFN',
+  },
+  {
+    name: 'SDES GET CLIN AVAILABILITY',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'SDES clinic availability slots',
+  },
+  {
+    name: 'SDES GET APPT TYPES',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'SDES appointment types from File 409.1',
+  },
+  {
+    name: 'SDES GET CANCEL REASONS',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'SDES cancellation reasons',
+  },
+  {
+    name: 'SDES GET RESOURCE BY CLINIC',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'SDES clinic resource/schedule info',
+  },
+  {
+    name: 'SDES GET CLINIC INFO2',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'SDES detailed clinic info from File 44',
+  },
+  {
+    name: 'SDES GET APPT BY APPT IEN',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'SDES single appointment detail by IEN (truth gate)',
+  },
+  {
+    name: 'SDES CREATE APPOINTMENTS',
+    domain: 'scheduling',
+    tag: 'write',
+    description: 'SDES direct appointment booking',
+  },
+  {
+    name: 'SDES CANCEL APPOINTMENT 2',
+    domain: 'scheduling',
+    tag: 'write',
+    description: 'SDES appointment cancellation',
+  },
+  {
+    name: 'SDES CHECKIN',
+    domain: 'scheduling',
+    tag: 'write',
+    description: 'SDES patient check-in',
+  },
+  {
+    name: 'SDES CHECKOUT',
+    domain: 'scheduling',
+    tag: 'write',
+    description: 'SDES patient checkout',
+  },
 
   // --- Scheduling Recall/Reminder (Phase 539: Scheduling Parity vs VSE) ---
-  { name: "SD RECALL LIST",                   domain: "scheduling",  tag: "read",  description: "List recall reminders for patient from File 403.5" },
-  { name: "SD RECALL GET",                    domain: "scheduling",  tag: "read",  description: "Get recall reminder detail from File 403.5" },
-  { name: "SDES GET RECALL ENTRIES",          domain: "scheduling",  tag: "read",  description: "SDES recall/reminder entries for patient" },
-  { name: "SD RECALL DATE CHECK",             domain: "scheduling",  tag: "read",  description: "Check recall compliance/overdue status" },
+  {
+    name: 'SD RECALL LIST',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'List recall reminders for patient from File 403.5',
+  },
+  {
+    name: 'SD RECALL GET',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'Get recall reminder detail from File 403.5',
+  },
+  {
+    name: 'SDES GET RECALL ENTRIES',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'SDES recall/reminder entries for patient',
+  },
+  {
+    name: 'SD RECALL DATE CHECK',
+    domain: 'scheduling',
+    tag: 'read',
+    description: 'Check recall compliance/overdue status',
+  },
 
   // --- Mental Health Assessment (Phase 535: MHA v1 instrument engine) ---
-  { name: "YTT GET INSTRUMENT",               domain: "mental-health", tag: "read",  description: "Fetch MH instrument definition (questions, scoring rules) from File 601.72" },
-  { name: "YTQZ LISTTESTS",                   domain: "mental-health", tag: "read",  description: "List available MH tests/instruments from File 601.71" },
-  { name: "YTT SAVE RESULTS",                 domain: "mental-health", tag: "write", description: "Store completed instrument results to File 601.84" },
-  { name: "YTQZ RESULTLIST",                  domain: "mental-health", tag: "read",  description: "Get historical MH results for a patient from File 601.84" },
-  { name: "YTQZ DETAILLIST",                  domain: "mental-health", tag: "read",  description: "Get detailed results for a specific MH administration" },
+  {
+    name: 'YTT GET INSTRUMENT',
+    domain: 'mental-health',
+    tag: 'read',
+    description: 'Fetch MH instrument definition (questions, scoring rules) from File 601.72',
+  },
+  {
+    name: 'YTQZ LISTTESTS',
+    domain: 'mental-health',
+    tag: 'read',
+    description: 'List available MH tests/instruments from File 601.71',
+  },
+  {
+    name: 'YTT SAVE RESULTS',
+    domain: 'mental-health',
+    tag: 'write',
+    description: 'Store completed instrument results to File 601.84',
+  },
+  {
+    name: 'YTQZ RESULTLIST',
+    domain: 'mental-health',
+    tag: 'read',
+    description: 'Get historical MH results for a patient from File 601.84',
+  },
+  {
+    name: 'YTQZ DETAILLIST',
+    domain: 'mental-health',
+    tag: 'read',
+    description: 'Get detailed results for a specific MH administration',
+  },
 
   // --- Clinical Procedures / Medicine (Phase 537: CP/MD v1) ---
-  { name: "MD CLIO",                           domain: "clinical-procedures", tag: "read",  description: "Primary Clinical Procedures CliO engine RPC (File 702)" },
-  { name: "MD TMDPROCEDURE",                   domain: "clinical-procedures", tag: "read",  description: "Procedure management for CP studies" },
-  { name: "MD TMDPATIENT",                     domain: "clinical-procedures", tag: "read",  description: "Patient context for CP/Medicine data" },
-  { name: "MD TMDNOTE",                        domain: "clinical-procedures", tag: "write", description: "TIU note linking for CP studies" },
-  { name: "MD TMDRECORDID",                    domain: "clinical-procedures", tag: "read",  description: "FileMan CRUD for CP records (File 702)" },
-  { name: "MD TMDOUTPUT",                      domain: "clinical-procedures", tag: "read",  description: "Report output for CP results" },
-  { name: "MD TMDCIDC",                        domain: "clinical-procedures", tag: "read",  description: "Procedures+diagnoses for CP clinics" },
-  { name: "MD TMDLEX",                         domain: "clinical-procedures", tag: "read",  description: "CPT/ICD lexicon search for CP" },
-  { name: "MD TMDWIDGET",                      domain: "clinical-procedures", tag: "read",  description: "Widget data for CP display" },
-  { name: "MD UTILITIES",                      domain: "clinical-procedures", tag: "read",  description: "MD package utility functions" },
-  { name: "ORQQCN ASSIGNABLE MED RESULTS",     domain: "clinical-procedures", tag: "read",  description: "Medicine results attachable to consult" },
-  { name: "ORQQCN ATTACH MED RESULTS",         domain: "clinical-procedures", tag: "write", description: "Attach medicine result to consult" },
-  { name: "ORQQCN GET MED RESULT DETAILS",     domain: "clinical-procedures", tag: "read",  description: "Detail of a medicine result" },
-  { name: "TIU IS THIS A CLINPROC?",           domain: "clinical-procedures", tag: "read",  description: "Check if TIU title is under CP class" },
-  { name: "TIU IDENTIFY CLINPROC CLASS",       domain: "clinical-procedures", tag: "read",  description: "Get CP class IEN from TIU" },
+  {
+    name: 'MD CLIO',
+    domain: 'clinical-procedures',
+    tag: 'read',
+    description: 'Primary Clinical Procedures CliO engine RPC (File 702)',
+  },
+  {
+    name: 'MD TMDPROCEDURE',
+    domain: 'clinical-procedures',
+    tag: 'read',
+    description: 'Procedure management for CP studies',
+  },
+  {
+    name: 'MD TMDPATIENT',
+    domain: 'clinical-procedures',
+    tag: 'read',
+    description: 'Patient context for CP/Medicine data',
+  },
+  {
+    name: 'MD TMDNOTE',
+    domain: 'clinical-procedures',
+    tag: 'write',
+    description: 'TIU note linking for CP studies',
+  },
+  {
+    name: 'MD TMDRECORDID',
+    domain: 'clinical-procedures',
+    tag: 'read',
+    description: 'FileMan CRUD for CP records (File 702)',
+  },
+  {
+    name: 'MD TMDOUTPUT',
+    domain: 'clinical-procedures',
+    tag: 'read',
+    description: 'Report output for CP results',
+  },
+  {
+    name: 'MD TMDCIDC',
+    domain: 'clinical-procedures',
+    tag: 'read',
+    description: 'Procedures+diagnoses for CP clinics',
+  },
+  {
+    name: 'MD TMDLEX',
+    domain: 'clinical-procedures',
+    tag: 'read',
+    description: 'CPT/ICD lexicon search for CP',
+  },
+  {
+    name: 'MD TMDWIDGET',
+    domain: 'clinical-procedures',
+    tag: 'read',
+    description: 'Widget data for CP display',
+  },
+  {
+    name: 'MD UTILITIES',
+    domain: 'clinical-procedures',
+    tag: 'read',
+    description: 'MD package utility functions',
+  },
+  {
+    name: 'ORQQCN ASSIGNABLE MED RESULTS',
+    domain: 'clinical-procedures',
+    tag: 'read',
+    description: 'Medicine results attachable to consult',
+  },
+  {
+    name: 'ORQQCN ATTACH MED RESULTS',
+    domain: 'clinical-procedures',
+    tag: 'write',
+    description: 'Attach medicine result to consult',
+  },
+  {
+    name: 'ORQQCN GET MED RESULT DETAILS',
+    domain: 'clinical-procedures',
+    tag: 'read',
+    description: 'Detail of a medicine result',
+  },
+  {
+    name: 'TIU IS THIS A CLINPROC?',
+    domain: 'clinical-procedures',
+    tag: 'read',
+    description: 'Check if TIU title is under CP class',
+  },
+  {
+    name: 'TIU IDENTIFY CLINPROC CLASS',
+    domain: 'clinical-procedures',
+    tag: 'read',
+    description: 'Get CP class IEN from TIU',
+  },
 ];
 
 /**
@@ -259,92 +899,336 @@ export const RPC_REGISTRY: RpcDefinition[] = [
  * Each must have an explanation of why it exists outside the index.
  */
 export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
-  { name: "VE LIST RPCS", reason: "Custom RPC installed by VistA-Evolved (ZVERPC.m) for File 8994 catalog listing" },
-  { name: "VE INTEROP HL7 LINKS", reason: "Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HL7 telemetry" },
-  { name: "VE INTEROP HL7 MSGS", reason: "Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HL7 telemetry" },
-  { name: "VE INTEROP HLO STATUS", reason: "Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HLO status" },
-  { name: "VE INTEROP QUEUE DEPTH", reason: "Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for queue monitoring" },
-  { name: "VE INTEROP MSG LIST", reason: "Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HL7 message listing (Phase 58)" },
-  { name: "VE INTEROP MSG DETAIL", reason: "Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HL7 message detail (Phase 58)" },
-  { name: "ORWCH PROBLEM LIST", reason: "Chart-specific problem list variant; may be absent from some Vivian snapshots" },
-  { name: "ORQQCN2 MED RESULTS", reason: "Consult med results RPC; present in CPRS source but absent from Vivian cross-reference" },
-  { name: "MAG4 REMOTE PROCEDURE", reason: "VistA Imaging remote procedure; absent from Vivian (MAG4 package has 27 other RPCs)" },
-  { name: "RA DETAILED REPORT", reason: "Radiology detailed report; absent from Vivian snapshot (RA package underrepresented)" },
-  { name: "ORWORB UNSIG ORDERS", reason: "Unsigned order notifications; Vivian has ORWORB UNSIG ORDERS FOLLOWUP but not this variant" },
-  { name: "ORWLRR ACK", reason: "Lab result acknowledgment; absent from Vivian (ORWLRR has 20 other RPCs)" },
-  { name: "TIU SET RECORD TEXT", reason: "TIU note text writer; absent from Vivian snapshot despite being core CPRS functionality" },
-  { name: "ORWCIRN FACILITIES", reason: "Remote facility list; Vivian has ORWCIRN FACLIST but not this exact name variant" },
-  { name: "VE RCM PROVIDER INFO", reason: "Custom RPC installed by VistA-Evolved (ZVERCMP.m) for provider NPI + facility identifiers (Phase 42)" },
-  { name: "ZVE MAIL FOLDERS", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan basket listing (Phase 70)" },
-  { name: "ZVE MAIL LIST", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message listing (Phase 70)" },
-  { name: "ZVE MAIL GET", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message detail (Phase 70)" },
-  { name: "ZVE MAIL SEND", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message send (Phase 70)" },
-  { name: "ZVE MAIL MANAGE", reason: "Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message management (Phase 70)" },
-  { name: "ORWPT16 ADMITLST", reason: "Admission list RPC; present in CPRS Delphi source but absent from some Vivian snapshots" },
-  { name: "ORWLRR INTERIMG", reason: "Interim lab results imaging variant; absent from Vivian snapshot (ORWLRR has 20+ RPCs)" },
-  { name: "ORWPT ID INFO", reason: "Patient ID info; present in CPRS source but absent from some Vivian snapshots" },
-  { name: "ORWPT16 ID INFO", reason: "Extended patient ID info; present in CPRS source but absent from Vivian" },
-  { name: "SDOE LIST ENCOUNTERS FOR PAT", reason: "Scheduling encounter list; SD package RPCs underrepresented in Vivian" },
-  { name: "SD W/L RETRIVE HOSP LOC(#44)", reason: "Scheduling hospital location lookup; SD package RPCs underrepresented in Vivian" },
-  { name: "SD W/L RETRIVE PERSON(200)", reason: "Scheduling person lookup; SD package RPCs underrepresented in Vivian" },
-  { name: "SDOE LIST ENCOUNTERS FOR DATES", reason: "Scheduling encounter date range list; SD package RPCs underrepresented in Vivian" },
+  {
+    name: 'VE LIST RPCS',
+    reason: 'Custom RPC installed by VistA-Evolved (ZVERPC.m) for File 8994 catalog listing',
+  },
+  {
+    name: 'VE INTEROP HL7 LINKS',
+    reason: 'Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HL7 telemetry',
+  },
+  {
+    name: 'VE INTEROP HL7 MSGS',
+    reason: 'Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HL7 telemetry',
+  },
+  {
+    name: 'VE INTEROP HLO STATUS',
+    reason: 'Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HLO status',
+  },
+  {
+    name: 'VE INTEROP QUEUE DEPTH',
+    reason: 'Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for queue monitoring',
+  },
+  {
+    name: 'VE INTEROP MSG LIST',
+    reason: 'Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HL7 message listing (Phase 58)',
+  },
+  {
+    name: 'VE INTEROP MSG DETAIL',
+    reason: 'Custom RPC installed by VistA-Evolved (ZVEMIOP.m) for HL7 message detail (Phase 58)',
+  },
+  {
+    name: 'ORWCH PROBLEM LIST',
+    reason: 'Chart-specific problem list variant; may be absent from some Vivian snapshots',
+  },
+  {
+    name: 'ORQQCN2 MED RESULTS',
+    reason:
+      'Consult med results RPC; present in CPRS source but absent from Vivian cross-reference',
+  },
+  {
+    name: 'MAG4 REMOTE PROCEDURE',
+    reason: 'VistA Imaging remote procedure; absent from Vivian (MAG4 package has 27 other RPCs)',
+  },
+  {
+    name: 'RA DETAILED REPORT',
+    reason: 'Radiology detailed report; absent from Vivian snapshot (RA package underrepresented)',
+  },
+  {
+    name: 'ORWORB UNSIG ORDERS',
+    reason:
+      'Unsigned order notifications; Vivian has ORWORB UNSIG ORDERS FOLLOWUP but not this variant',
+  },
+  {
+    name: 'ORWLRR ACK',
+    reason: 'Lab result acknowledgment; absent from Vivian (ORWLRR has 20 other RPCs)',
+  },
+  {
+    name: 'TIU SET RECORD TEXT',
+    reason:
+      'TIU note text writer; absent from Vivian snapshot despite being core CPRS functionality',
+  },
+  {
+    name: 'ORWCIRN FACILITIES',
+    reason: 'Remote facility list; Vivian has ORWCIRN FACLIST but not this exact name variant',
+  },
+  {
+    name: 'VE RCM PROVIDER INFO',
+    reason:
+      'Custom RPC installed by VistA-Evolved (ZVERCMP.m) for provider NPI + facility identifiers (Phase 42)',
+  },
+  {
+    name: 'ZVE MAIL FOLDERS',
+    reason:
+      'Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan basket listing (Phase 70)',
+  },
+  {
+    name: 'ZVE MAIL LIST',
+    reason:
+      'Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message listing (Phase 70)',
+  },
+  {
+    name: 'ZVE MAIL GET',
+    reason:
+      'Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message detail (Phase 70)',
+  },
+  {
+    name: 'ZVE MAIL SEND',
+    reason: 'Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message send (Phase 70)',
+  },
+  {
+    name: 'ZVE MAIL MANAGE',
+    reason:
+      'Custom RPC installed by VistA-Evolved (ZVEMSGR.m) for MailMan message management (Phase 70)',
+  },
+  {
+    name: 'ORWPT16 ADMITLST',
+    reason:
+      'Admission list RPC; present in CPRS Delphi source but absent from some Vivian snapshots',
+  },
+  {
+    name: 'ORWLRR INTERIMG',
+    reason:
+      'Interim lab results imaging variant; absent from Vivian snapshot (ORWLRR has 20+ RPCs)',
+  },
+  {
+    name: 'ORWPT ID INFO',
+    reason: 'Patient ID info; present in CPRS source but absent from some Vivian snapshots',
+  },
+  {
+    name: 'ORWPT16 ID INFO',
+    reason: 'Extended patient ID info; present in CPRS source but absent from Vivian',
+  },
+  {
+    name: 'SDOE LIST ENCOUNTERS FOR PAT',
+    reason: 'Scheduling encounter list; SD package RPCs underrepresented in Vivian',
+  },
+  {
+    name: 'SD W/L RETRIVE HOSP LOC(#44)',
+    reason: 'Scheduling hospital location lookup; SD package RPCs underrepresented in Vivian',
+  },
+  {
+    name: 'SD W/L RETRIVE PERSON(200)',
+    reason: 'Scheduling person lookup; SD package RPCs underrepresented in Vivian',
+  },
+  {
+    name: 'SDOE LIST ENCOUNTERS FOR DATES',
+    reason: 'Scheduling encounter date range list; SD package RPCs underrepresented in Vivian',
+  },
   // Phase 123: SD* integration pack — new exception entries
-  { name: "SDOE GET GENERAL DATA", reason: "SDOE encounter detail; SD package RPCs underrepresented in Vivian" },
-  { name: "SDOE GET PROVIDERS", reason: "SDOE encounter providers; SD package RPCs underrepresented in Vivian" },
-  { name: "SDOE GET DIAGNOSES", reason: "SDOE encounter diagnoses; SD package RPCs underrepresented in Vivian" },
-  { name: "SD W/L CREATE FILE", reason: "SD wait-list write; SD package RPCs underrepresented in Vivian" },
-  { name: "SD W/L RETRIVE FULL DATA", reason: "SD wait-list full data retrieval; SD package RPCs underrepresented in Vivian" },
+  {
+    name: 'SDOE GET GENERAL DATA',
+    reason: 'SDOE encounter detail; SD package RPCs underrepresented in Vivian',
+  },
+  {
+    name: 'SDOE GET PROVIDERS',
+    reason: 'SDOE encounter providers; SD package RPCs underrepresented in Vivian',
+  },
+  {
+    name: 'SDOE GET DIAGNOSES',
+    reason: 'SDOE encounter diagnoses; SD package RPCs underrepresented in Vivian',
+  },
+  {
+    name: 'SD W/L CREATE FILE',
+    reason: 'SD wait-list write; SD package RPCs underrepresented in Vivian',
+  },
+  {
+    name: 'SD W/L RETRIVE FULL DATA',
+    reason: 'SD wait-list full data retrieval; SD package RPCs underrepresented in Vivian',
+  },
   // Phase 131: CPRS + SDVW RPCs
-  { name: "ORWPT APPTLST", reason: "CPRS cover sheet apt list; present in CPRS but may be absent from some Vivian snapshots" },
-  { name: "SDVW MAKE APPT API APP", reason: "SDVW appointment creation; SD package RPCs underrepresented in Vivian" },
-  { name: "SDVW SDAPI APP", reason: "SDVW appointment API; SD package RPCs underrepresented in Vivian" },
-  { name: "SD W/L PRIORITY", reason: "SD wait-list priority ref; SD package RPCs underrepresented in Vivian" },
-  { name: "SD W/L TYPE", reason: "SD wait-list type ref; SD package RPCs underrepresented in Vivian" },
-  { name: "SD W/L CURRENT STATUS", reason: "SD wait-list status ref; SD package RPCs underrepresented in Vivian" },
+  {
+    name: 'ORWPT APPTLST',
+    reason:
+      'CPRS cover sheet apt list; present in CPRS but may be absent from some Vivian snapshots',
+  },
+  {
+    name: 'SDVW MAKE APPT API APP',
+    reason: 'SDVW appointment creation; SD package RPCs underrepresented in Vivian',
+  },
+  {
+    name: 'SDVW SDAPI APP',
+    reason: 'SDVW appointment API; SD package RPCs underrepresented in Vivian',
+  },
+  {
+    name: 'SD W/L PRIORITY',
+    reason: 'SD wait-list priority ref; SD package RPCs underrepresented in Vivian',
+  },
+  {
+    name: 'SD W/L TYPE',
+    reason: 'SD wait-list type ref; SD package RPCs underrepresented in Vivian',
+  },
+  {
+    name: 'SD W/L CURRENT STATUS',
+    reason: 'SD wait-list status ref; SD package RPCs underrepresented in Vivian',
+  },
   // Phase 147: SDES scheduling depth RPCs
-  { name: "SDES GET APPTS BY PATIENT DFN3", reason: "SDES patient appointments; SDES package not in Vivian index" },
-  { name: "SDES GET CLIN AVAILABILITY", reason: "SDES clinic availability; SDES package not in Vivian index" },
-  { name: "SDES GET APPT TYPES", reason: "SDES appointment types; SDES package not in Vivian index" },
-  { name: "SDES GET CANCEL REASONS", reason: "SDES cancel reasons; SDES package not in Vivian index" },
-  { name: "SDES GET RESOURCE BY CLINIC", reason: "SDES clinic resource; SDES package not in Vivian index" },
-  { name: "SDES GET CLINIC INFO2", reason: "SDES clinic info v2; SDES package not in Vivian index" },
-  { name: "SDES GET APPT BY APPT IEN", reason: "SDES single appointment; SDES package not in Vivian index" },
-  { name: "SDES CREATE APPOINTMENTS", reason: "SDES appointment booking; SDES package not in Vivian index" },
-  { name: "SDES CANCEL APPOINTMENT 2", reason: "SDES appointment cancel; SDES package not in Vivian index" },
-  { name: "SDES CHECKIN", reason: "SDES check-in; SDES package not in Vivian index" },
-  { name: "SDES CHECKOUT", reason: "SDES checkout; SDES package not in Vivian index" },
+  {
+    name: 'SDES GET APPTS BY PATIENT DFN3',
+    reason: 'SDES patient appointments; SDES package not in Vivian index',
+  },
+  {
+    name: 'SDES GET CLIN AVAILABILITY',
+    reason: 'SDES clinic availability; SDES package not in Vivian index',
+  },
+  {
+    name: 'SDES GET APPT TYPES',
+    reason: 'SDES appointment types; SDES package not in Vivian index',
+  },
+  {
+    name: 'SDES GET CANCEL REASONS',
+    reason: 'SDES cancel reasons; SDES package not in Vivian index',
+  },
+  {
+    name: 'SDES GET RESOURCE BY CLINIC',
+    reason: 'SDES clinic resource; SDES package not in Vivian index',
+  },
+  {
+    name: 'SDES GET CLINIC INFO2',
+    reason: 'SDES clinic info v2; SDES package not in Vivian index',
+  },
+  {
+    name: 'SDES GET APPT BY APPT IEN',
+    reason: 'SDES single appointment; SDES package not in Vivian index',
+  },
+  {
+    name: 'SDES CREATE APPOINTMENTS',
+    reason: 'SDES appointment booking; SDES package not in Vivian index',
+  },
+  {
+    name: 'SDES CANCEL APPOINTMENT 2',
+    reason: 'SDES appointment cancel; SDES package not in Vivian index',
+  },
+  { name: 'SDES CHECKIN', reason: 'SDES check-in; SDES package not in Vivian index' },
+  { name: 'SDES CHECKOUT', reason: 'SDES checkout; SDES package not in Vivian index' },
   // Phase 539: Recall/Reminder RPCs — File 403.5 not populated in WorldVistA Docker
-  { name: "SD RECALL LIST", reason: "SD Recall Reminders; File 403.5 namespace not populated in sandbox" },
-  { name: "SD RECALL GET", reason: "SD Recall detail; File 403.5 namespace not populated in sandbox" },
-  { name: "SDES GET RECALL ENTRIES", reason: "SDES recall entries; SDES package not in Vivian index" },
-  { name: "SD RECALL DATE CHECK", reason: "SD Recall compliance check; File 403.5 not populated in sandbox" },
+  {
+    name: 'SD RECALL LIST',
+    reason: 'SD Recall Reminders; File 403.5 namespace not populated in sandbox',
+  },
+  {
+    name: 'SD RECALL GET',
+    reason: 'SD Recall detail; File 403.5 namespace not populated in sandbox',
+  },
+  {
+    name: 'SDES GET RECALL ENTRIES',
+    reason: 'SDES recall entries; SDES package not in Vivian index',
+  },
+  {
+    name: 'SD RECALL DATE CHECK',
+    reason: 'SD Recall compliance check; File 403.5 not populated in sandbox',
+  },
   // Phase 137: ZVEADT custom RPCs — expected missing until ZVEADT.m installed
-  { name: "ZVEADT WARDS", reason: "Custom RPC installed by VistA-Evolved (ZVEADT.m) for ward census with bed counts (Phase 137)" },
-  { name: "ZVEADT BEDS", reason: "Custom RPC installed by VistA-Evolved (ZVEADT.m) for bed-level occupancy (Phase 137)" },
-  { name: "ZVEADT MVHIST", reason: "Custom RPC installed by VistA-Evolved (ZVEADT.m) for patient movement history from File 405 (Phase 137)" },
+  {
+    name: 'ZVEADT WARDS',
+    reason:
+      'Custom RPC installed by VistA-Evolved (ZVEADT.m) for ward census with bed counts (Phase 137)',
+  },
+  {
+    name: 'ZVEADT BEDS',
+    reason: 'Custom RPC installed by VistA-Evolved (ZVEADT.m) for bed-level occupancy (Phase 137)',
+  },
+  {
+    name: 'ZVEADT MVHIST',
+    reason:
+      'Custom RPC installed by VistA-Evolved (ZVEADT.m) for patient movement history from File 405 (Phase 137)',
+  },
   // Phase 138: BCMA/PSB RPCs — target RPCs for nursing MAR + eMAR integration (not in WorldVistA sandbox)
-  { name: "PSB MED LOG", reason: "BCMA medication log read/write — requires PSB package not available in WorldVistA Docker (Phase 138)" },
-  { name: "PSB ALLERGY", reason: "BCMA allergy check at med administration time — requires PSB package (Phase 138)" },
-  { name: "PSJBCMA", reason: "Barcode-to-medication lookup via PSJ BCMA routines — requires PSJ/PSB packages (Phase 138)" },
-  { name: "GMRIO RESULTS", reason: "I&O results from GMR(126) — RPC not exposed via OR CPRS GUI CHART context (Phase 138)" },
-  { name: "GMRIO ADD", reason: "I&O entry add — requires GMR IO package configuration (Phase 138)" },
+  {
+    name: 'PSB MED LOG',
+    reason:
+      'BCMA medication log read/write — requires PSB package not available in WorldVistA Docker (Phase 138)',
+  },
+  {
+    name: 'PSB ALLERGY',
+    reason: 'BCMA allergy check at med administration time — requires PSB package (Phase 138)',
+  },
+  {
+    name: 'PSJBCMA',
+    reason:
+      'Barcode-to-medication lookup via PSJ BCMA routines — requires PSJ/PSB packages (Phase 138)',
+  },
+  {
+    name: 'GMRIO RESULTS',
+    reason: 'I&O results from GMR(126) — RPC not exposed via OR CPRS GUI CHART context (Phase 138)',
+  },
+  {
+    name: 'GMRIO ADD',
+    reason: 'I&O entry add — requires GMR IO package configuration (Phase 138)',
+  },
   // Phase 431: DGPM ADT write RPCs — target RPCs for admission/transfer/discharge (not exposed in OR CPRS GUI CHART context)
-  { name: "DGPM NEW ADMISSION", reason: "ADT admission write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)" },
-  { name: "DGPM NEW TRANSFER", reason: "ADT transfer write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)" },
-  { name: "DGPM NEW DISCHARGE", reason: "ADT discharge write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)" },
+  {
+    name: 'DGPM NEW ADMISSION',
+    reason:
+      'ADT admission write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)',
+  },
+  {
+    name: 'DGPM NEW TRANSFER',
+    reason:
+      'ADT transfer write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)',
+  },
+  {
+    name: 'DGPM NEW DISCHARGE',
+    reason:
+      'ADT discharge write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)',
+  },
   // Phase 432: PSJ pharmacy verification RPCs — target RPCs for inpatient pharmacy verification (not in WorldVistA sandbox)
-  { name: "PSJ VERIFY", reason: "Inpatient pharmacy order verification — requires PSJ package not available in WorldVistA Docker (Phase 432)" },
-  { name: "PSJ ORDER STATUS", reason: "Inpatient pharmacy order status lookup — requires PSJ package (Phase 432)" },
-  { name: "PSB VALIDATE ORDER", reason: "BCMA order validation at scan time — requires PSB package (Phase 432)" },
+  {
+    name: 'PSJ VERIFY',
+    reason:
+      'Inpatient pharmacy order verification — requires PSJ package not available in WorldVistA Docker (Phase 432)',
+  },
+  {
+    name: 'PSJ ORDER STATUS',
+    reason: 'Inpatient pharmacy order status lookup — requires PSJ package (Phase 432)',
+  },
+  {
+    name: 'PSB VALIDATE ORDER',
+    reason: 'BCMA order validation at scan time — requires PSB package (Phase 432)',
+  },
   // Phase 433: Lab filing RPCs — target RPCs for HL7 ORU^R01 inbound lab result filing (not available via RPC)
-  { name: "LRFZX", reason: "Lab result filing routine — not an RPC, requires direct M call or custom ZVE wrapper (Phase 433)" },
-  { name: "LR VERIFY", reason: "Lab result verification — LR package not exposed via OR CPRS GUI CHART context (Phase 433)" },
+  {
+    name: 'LRFZX',
+    reason:
+      'Lab result filing routine — not an RPC, requires direct M call or custom ZVE wrapper (Phase 433)',
+  },
+  {
+    name: 'LR VERIFY',
+    reason:
+      'Lab result verification — LR package not exposed via OR CPRS GUI CHART context (Phase 433)',
+  },
   // Phase 434: ORWDXC session RPCs — referenced in CPRS Delphi but not yet called by VistA-Evolved
-  { name: "ORWDXC DELAY", reason: "Delay order checks for complex orders — CPRS Delphi references but not yet wired (Phase 434)" },
-  { name: "ORWDXC DELORD", reason: "Remove order from active check session — CPRS Delphi references (Phase 434)" },
-  { name: "ORWDXC FILLID", reason: "Get fill ID for duplicate therapy checks — requires pharmacy context (Phase 434)" },
-  { name: "ORWDXC ON", reason: "Check if order checking is enabled for site — CPRS Delphi references (Phase 434)" },
-  { name: "ORWDXC SESSION", reason: "Order check session management — CPRS Delphi references (Phase 434)" },
+  {
+    name: 'ORWDXC DELAY',
+    reason:
+      'Delay order checks for complex orders — CPRS Delphi references but not yet wired (Phase 434)',
+  },
+  {
+    name: 'ORWDXC DELORD',
+    reason: 'Remove order from active check session — CPRS Delphi references (Phase 434)',
+  },
+  {
+    name: 'ORWDXC FILLID',
+    reason: 'Get fill ID for duplicate therapy checks — requires pharmacy context (Phase 434)',
+  },
+  {
+    name: 'ORWDXC ON',
+    reason: 'Check if order checking is enabled for site — CPRS Delphi references (Phase 434)',
+  },
+  {
+    name: 'ORWDXC SESSION',
+    reason: 'Order check session management — CPRS Delphi references (Phase 434)',
+  },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -374,11 +1258,11 @@ export function assertKnownRpc(name: string): RpcDefinition {
   const def = RPC_REGISTRY.find((r) => r.name.toUpperCase() === upper);
   if (def) return def;
   if (EXCEPTION_SET.has(upper)) {
-    return { name, domain: "exception", tag: "custom", description: "Allowlisted exception" };
+    return { name, domain: 'exception', tag: 'custom', description: 'Allowlisted exception' };
   }
   throw new Error(
     `UNKNOWN RPC: "${name}" is not in rpcRegistry.ts or RPC_EXCEPTIONS. ` +
-    `Add it to the registry or allowlist it with an explanation.`
+      `Add it to the registry or allowlist it with an explanation.`
   );
 }
 
@@ -414,6 +1298,9 @@ export function getAllRegisteredRpcNames(): string[] {
 /**
  * Get the full registry + exceptions for verification.
  */
-export function getFullRpcInventory(): { registry: RpcDefinition[]; exceptions: typeof RPC_EXCEPTIONS } {
+export function getFullRpcInventory(): {
+  registry: RpcDefinition[];
+  exceptions: typeof RPC_EXCEPTIONS;
+} {
   return { registry: RPC_REGISTRY, exceptions: RPC_EXCEPTIONS };
 }

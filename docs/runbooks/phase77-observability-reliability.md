@@ -38,12 +38,14 @@ API (Fastify)                                                 ▼
 ## Key Components
 
 ### `apps/web/src/lib/fetch-with-correlation.ts` (NEW)
+
 - `correlatedFetch<T>(path, opts)` — full fetch with correlation
 - `correlatedGet<T>(path)` — GET shorthand (drops into `api.ts`)
 - `correlatedPost<T>(path, body)` — POST shorthand
 - `CorrelatedError` — Error class with correlationId + traceId
 
 ### `apps/api/src/telemetry/spans.ts` (NEW)
+
 - `withSpan(name, attrs, fn)` — async context manager
 - `withSpanSync(name, attrs, fn)` — sync context manager
 - `spanBusinessAction(name, attrs)` — generic span factory
@@ -54,6 +56,7 @@ API (Fastify)                                                 ▼
 - `endBusinessSpan(span, error?)` — safe span closer
 
 ### `apps/api/src/config/observability-config.ts` (NEW)
+
 - `OBSERVABILITY_CONFIG` — sampling rate, allowlists, SLO config
 - `getLatencyBudget(category, operation)` — budget lookup
 - `isWithinLatencyBudget(category, operation, durationMs)` — budget check
@@ -61,11 +64,13 @@ API (Fastify)                                                 ▼
 - `getAllLatencyBudgets()` — full budget map for evidence
 
 ### `apps/api/src/telemetry/metrics.ts` (ENHANCED)
+
 - `sloLatencyWithinBudget` gauge — % requests within p95 budget
 - `sloErrorBudgetRemaining` gauge — remaining error budget
 - `recordSloSample(category, durationMs, isError, p95Budget?)` — SLO recorder
 
 ### `apps/api/src/lib/phi-redaction.ts` (ENHANCED)
+
 - `assertNoPhiInAttributes(attrs)` — runtime PHI guard for spans
 - `assertNoPhiInMetricLabels(labels)` — PHI guard for metric labels
 
@@ -79,12 +84,12 @@ API (Fastify)                                                 ▼
 
 ## Env Vars
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `OTEL_ENABLED` | `false` | Enable OTel tracing |
-| `OTEL_SAMPLING_RATE` | `1.0` | Head-based sampling rate (0.0-1.0) |
-| `SLO_ERROR_BUDGET` | `0.001` | Max error rate before budget exhaustion |
-| `SLO_WINDOW_MS` | `3600000` | SLO evaluation window (1 hour) |
+| Variable             | Default   | Description                             |
+| -------------------- | --------- | --------------------------------------- |
+| `OTEL_ENABLED`       | `false`   | Enable OTel tracing                     |
+| `OTEL_SAMPLING_RATE` | `1.0`     | Head-based sampling rate (0.0-1.0)      |
+| `SLO_ERROR_BUDGET`   | `0.001`   | Max error rate before budget exhaustion |
+| `SLO_WINDOW_MS`      | `3600000` | SLO evaluation window (1 hour)          |
 
 ## Verification
 
@@ -93,6 +98,7 @@ API (Fastify)                                                 ▼
 ```
 
 69 gates across 6 categories:
+
 - A: Correlation ID (10 gates)
 - B: Tracing (12 gates)
 - C: Metrics + SLO (15 gates)

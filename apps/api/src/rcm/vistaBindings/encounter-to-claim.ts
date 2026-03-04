@@ -46,12 +46,12 @@ export interface VistaEncounterData {
     cptCode: string;
     modifiers?: string[];
     units: number;
-    charge: number;        // cents
+    charge: number; // cents
     dateOfService: string;
     description?: string;
   }>;
-  ibChargeIen?: string;    // from ^IB(350) if available
-  claimIen?: string;       // from ^DGCR(399) if available
+  ibChargeIen?: string; // from ^IB(350) if available
+  claimIen?: string; // from ^DGCR(399) if available
 }
 
 export interface BindingResult<T> {
@@ -88,9 +88,9 @@ export function buildClaimFromEncounterData(
     billingProviderNpi?: string;
     facilityName?: string;
     facilityTaxId?: string;
-  },
+  }
 ): Claim {
-  const diagnoses: DiagnosisCode[] = encounter.diagnoses.map(dx => ({
+  const diagnoses: DiagnosisCode[] = encounter.diagnoses.map((dx) => ({
     code: dx.code,
     codeSystem: 'ICD10' as const,
     qualifier: dx.qualifier,
@@ -146,7 +146,7 @@ export async function buildClaimFromVistaEncounter(
   visitIen: string,
   patientDfn: string,
   payerId: string,
-  actor: string,
+  actor: string
 ): Promise<BindingResult<Claim>> {
   // In the WorldVistA sandbox, PCE encounters have data but IB charges are empty.
   // We return integration-pending with full grounding metadata so the
@@ -175,13 +175,14 @@ export async function buildClaimFromVistaEncounter(
         '4. Map PCE data to VistaEncounterData using buildClaimFromEncounterData()',
         '5. Return the resulting Claim draft for payer submission',
       ].join('\n'),
-      sandboxNote: 'WorldVistA Docker sandbox has PCE encounters in ^AUPNVSIT/^AUPNVCPT/^AUPNVPOV. ' +
+      sandboxNote:
+        'WorldVistA Docker sandbox has PCE encounters in ^AUPNVSIT/^AUPNVCPT/^AUPNVPOV. ' +
         'IB charges (^IB(350)) and claims (^DGCR(399)) are empty. ' +
         'Production VistA with IB module will populate these.',
     },
     errors: [
       `Visit IEN ${visitIen}: IB charge binding not available in sandbox. ` +
-      'Use buildClaimFromEncounterData() with manually extracted PCE data.',
+        'Use buildClaimFromEncounterData() with manually extracted PCE data.',
     ],
   };
 }

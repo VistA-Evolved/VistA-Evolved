@@ -1,9 +1,11 @@
 # Phase 265 -- Pilot Hospital Hardening Pack (VERIFY)
 
 ## Verification Script
+
 scripts/verify-phase265-pilot-hardening-pack.ps1
 
 ## Gates (20)
+
 1. G01 -- sat-suite.ts exists
 2. G02 -- sat-routes.ts exists
 3. G03 -- test file exists
@@ -26,6 +28,7 @@ scripts/verify-phase265-pilot-hardening-pack.ps1
 20. G20 -- Prompt files present
 
 ## Run
+
 ```powershell
 .\scripts\verify-phase265-pilot-hardening-pack.ps1
 ```

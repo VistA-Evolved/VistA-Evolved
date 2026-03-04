@@ -16,13 +16,13 @@
  * Column mapping: camelCase JS properties are auto-converted to snake_case SQL columns.
  */
 
-import { getPgPool } from "../pg-db.js";
-import { log } from "../../../lib/logger.js";
+import { getPgPool } from '../pg-db.js';
+import { log } from '../../../lib/logger.js';
 
 /* ── Helpers ──────────────────────────────────────────────── */
 
 function camelToSnake(s: string): string {
-  return s.replace(/[A-Z]/g, (c) => "_" + c.toLowerCase());
+  return s.replace(/[A-Z]/g, (c) => '_' + c.toLowerCase());
 }
 
 function snakeToCamel(s: string): string {
@@ -71,10 +71,8 @@ export interface GenericPgRepo<T extends { id: string }> {
 
 /* ── Factory ─────────────────────────────────────────────── */
 
-export function createPgRepo<T extends { id: string }>(
-  tableName: string,
-): GenericPgRepo<T> {
-  assertSafeIdentifier(tableName, "tableName");
+export function createPgRepo<T extends { id: string }>(tableName: string): GenericPgRepo<T> {
+  assertSafeIdentifier(tableName, 'tableName');
   const pool = getPgPool();
 
   async function safeQuery(label: string, fn: () => Promise<any>): Promise<any> {
@@ -90,15 +88,15 @@ export function createPgRepo<T extends { id: string }>(
     async insert(data) {
       const row = objToRow(data as Record<string, unknown>);
       const cols = Object.keys(row);
-      cols.forEach((c) => assertSafeIdentifier(c, "insert.column"));
+      cols.forEach((c) => assertSafeIdentifier(c, 'insert.column'));
       const vals = Object.values(row);
-      const placeholders = cols.map((_, i) => `$${i + 1}`).join(", ");
-      const colStr = cols.join(", ");
+      const placeholders = cols.map((_, i) => `$${i + 1}`).join(', ');
+      const colStr = cols.join(', ');
 
-      return safeQuery("insert", async () => {
+      return safeQuery('insert', async () => {
         await pool.query(
           `INSERT INTO ${tableName} (${colStr}) VALUES (${placeholders}) ON CONFLICT (id) DO NOTHING`,
-          vals,
+          vals
         );
         return this.findById(data.id);
       });
@@ -107,92 +105,102 @@ export function createPgRepo<T extends { id: string }>(
     async upsert(data) {
       const row = objToRow(data as Record<string, unknown>);
       const cols = Object.keys(row);
-      cols.forEach((c) => assertSafeIdentifier(c, "upsert.column"));
+      cols.forEach((c) => assertSafeIdentifier(c, 'upsert.column'));
       const vals = Object.values(row);
-      const placeholders = cols.map((_, i) => `$${i + 1}`).join(", ");
-      const colStr = cols.join(", ");
+      const placeholders = cols.map((_, i) => `$${i + 1}`).join(', ');
+      const colStr = cols.join(', ');
       const updateCols = cols
-        .filter((c) => c !== "id")
+        .filter((c) => c !== 'id')
         .map((c) => `${c} = EXCLUDED.${c}`)
-        .join(", ");
+        .join(', ');
 
-      return safeQuery("upsert", async () => {
+      return safeQuery('upsert', async () => {
         await pool.query(
           `INSERT INTO ${tableName} (${colStr}) VALUES (${placeholders})
-           ON CONFLICT (id) DO UPDATE SET ${updateCols || "id = EXCLUDED.id"}`,
-          vals,
+           ON CONFLICT (id) DO UPDATE SET ${updateCols || 'id = EXCLUDED.id'}`,
+          vals
         );
         return this.findById(data.id);
       });
     },
 
     async findById(id) {
-      return safeQuery("findById", async () => {
+      return safeQuery('findById', async () => {
         const res = await pool.query(`SELECT * FROM ${tableName} WHERE id = $1`, [id]);
         return res.rows[0] ? rowToObj<T>(res.rows[0]) : null;
       });
     },
 
     async findByTenant(tenantId, opts) {
-      return safeQuery("findByTenant", async () => {
-        const limit = opts?.limit ?? 1000;
-        const offset = opts?.offset ?? 0;
-        const res = await pool.query(
-          `SELECT * FROM ${tableName} WHERE tenant_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`,
-          [tenantId, limit, offset],
-        );
-        return (res.rows || []).map((r: any) => rowToObj<T>(r));
-      }) ?? [];
+      return (
+        safeQuery('findByTenant', async () => {
+          const limit = opts?.limit ?? 1000;
+          const offset = opts?.offset ?? 0;
+          const res = await pool.query(
+            `SELECT * FROM ${tableName} WHERE tenant_id = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3`,
+            [tenantId, limit, offset]
+          );
+          return (res.rows || []).map((r: any) => rowToObj<T>(r));
+        }) ?? []
+      );
     },
 
     async findByField(field, value, tenantId) {
       const snakeField = camelToSnake(field);
-      assertSafeIdentifier(snakeField, "findByField.column");
-      return safeQuery("findByField", async () => {
-        const where = tenantId
-          ? `WHERE ${snakeField} = $1 AND tenant_id = $2`
-          : `WHERE ${snakeField} = $1`;
-        const params = tenantId ? [value, tenantId] : [value];
-        const res = await pool.query(`SELECT * FROM ${tableName} ${where}`, params);
-        return (res.rows || []).map((r: any) => rowToObj<T>(r));
-      }) ?? [];
+      assertSafeIdentifier(snakeField, 'findByField.column');
+      return (
+        safeQuery('findByField', async () => {
+          const where = tenantId
+            ? `WHERE ${snakeField} = $1 AND tenant_id = $2`
+            : `WHERE ${snakeField} = $1`;
+          const params = tenantId ? [value, tenantId] : [value];
+          const res = await pool.query(`SELECT * FROM ${tableName} ${where}`, params);
+          return (res.rows || []).map((r: any) => rowToObj<T>(r));
+        }) ?? []
+      );
     },
 
     async update(id, updates) {
       const row = objToRow(updates as Record<string, unknown>);
       const cols = Object.keys(row);
       if (cols.length === 0) return this.findById(id);
-      cols.forEach((c) => assertSafeIdentifier(c, "update.column"));
-      const sets = cols.map((c, i) => `${c} = $${i + 2}`).join(", ");
+      cols.forEach((c) => assertSafeIdentifier(c, 'update.column'));
+      const sets = cols.map((c, i) => `${c} = $${i + 2}`).join(', ');
       const vals = [id, ...Object.values(row)];
 
-      return safeQuery("update", async () => {
+      return safeQuery('update', async () => {
         await pool.query(`UPDATE ${tableName} SET ${sets} WHERE id = $1`, vals);
         return this.findById(id);
       });
     },
 
     async deleteById(id) {
-      return safeQuery("deleteById", async () => {
-        const res = await pool.query(`DELETE FROM ${tableName} WHERE id = $1`, [id]);
-        return (res.rowCount ?? 0) > 0;
-      }) ?? false;
+      return (
+        safeQuery('deleteById', async () => {
+          const res = await pool.query(`DELETE FROM ${tableName} WHERE id = $1`, [id]);
+          return (res.rowCount ?? 0) > 0;
+        }) ?? false
+      );
     },
 
     async count(tenantId) {
-      return safeQuery("count", async () => {
-        const where = tenantId ? `WHERE tenant_id = $1` : "";
-        const params = tenantId ? [tenantId] : [];
-        const res = await pool.query(`SELECT COUNT(*) as cnt FROM ${tableName} ${where}`, params);
-        return parseInt(res.rows[0]?.cnt ?? "0", 10);
-      }) ?? 0;
+      return (
+        safeQuery('count', async () => {
+          const where = tenantId ? `WHERE tenant_id = $1` : '';
+          const params = tenantId ? [tenantId] : [];
+          const res = await pool.query(`SELECT COUNT(*) as cnt FROM ${tableName} ${where}`, params);
+          return parseInt(res.rows[0]?.cnt ?? '0', 10);
+        }) ?? 0
+      );
     },
 
     async query(sqlStr, params) {
-      return safeQuery("query", async () => {
-        const res = await pool.query(sqlStr, params);
-        return (res.rows || []).map((r: any) => rowToObj<T>(r));
-      }) ?? [];
+      return (
+        safeQuery('query', async () => {
+          const res = await pool.query(sqlStr, params);
+          return (res.rows || []).map((r: any) => rowToObj<T>(r));
+        }) ?? []
+      );
     },
   };
 }

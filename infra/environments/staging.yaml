@@ -8,7 +8,7 @@ postgres:
   enabled: true
   storage:
     size: 20Gi
-  password: ""  # must be supplied via --set or SOPS-encrypted secret
+  password: '' # must be supplied via --set or SOPS-encrypted secret
 
 redis:
   enabled: true
@@ -23,11 +23,11 @@ ingress:
 
 keycloak:
   enabled: true
-  url: "https://auth.staging.example.com"
+  url: 'https://auth.staging.example.com'
 
 observability:
   enabled: true
-  otelCollectorEndpoint: "http://otel-collector.ve-system:4318"
+  otelCollectorEndpoint: 'http://otel-collector.ve-system:4318'
 
 minio:
   enabled: false
@@ -38,6 +38,6 @@ networkPolicies:
 vista:
   enabled: true
   port: 9430
-  instanceId: "staging-primary"
+  instanceId: 'staging-primary'
 
 runtimeMode: rc

@@ -9,20 +9,22 @@ operation within the Recovery Time Objective (RTO). Default RTO: 30 minutes.
 
 ## Drill Cadence
 
-| When | Type |
-|------|------|
-| Monthly | Automated drill via script |
-| Pre-cutover (T-7 days) | Full manual drill |
-| Pre-cutover (T-1 day) | Automated drill + manual verification |
+| When                   | Type                                  |
+| ---------------------- | ------------------------------------- |
+| Monthly                | Automated drill via script            |
+| Pre-cutover (T-7 days) | Full manual drill                     |
+| Pre-cutover (T-1 day)  | Automated drill + manual verification |
 
 ## Running a Drill
 
 ### Automated (simulated)
+
 ```powershell
 .\scripts\migration\rollback-drill.ps1
 ```
 
 ### Via API
+
 ```bash
 # Create drill
 curl -X POST http://localhost:3001/migration/rollback/drill \
@@ -40,16 +42,16 @@ curl -X POST http://localhost:3001/migration/rollback/:id/step/rs1/complete \
 
 ## Rollback Steps (8 total)
 
-| # | Step | Description |
-|---|------|-------------|
-| 1 | halt-traffic | Stop routing traffic to VistA-Evolved |
-| 2 | verify-vista-health | Confirm VistA instance is healthy |
-| 3 | switch-dns | Point DNS/LB back to VistA-only |
-| 4 | verify-reads | Validate VistA read operations |
-| 5 | verify-writes | Validate VistA write operations |
-| 6 | notify-users | Send rollback notification |
-| 7 | archive-logs | Archive VistA-Evolved logs for post-mortem |
-| 8 | final-verification | Post-rollback smoke tests |
+| #   | Step                | Description                                |
+| --- | ------------------- | ------------------------------------------ |
+| 1   | halt-traffic        | Stop routing traffic to VistA-Evolved      |
+| 2   | verify-vista-health | Confirm VistA instance is healthy          |
+| 3   | switch-dns          | Point DNS/LB back to VistA-only            |
+| 4   | verify-reads        | Validate VistA read operations             |
+| 5   | verify-writes       | Validate VistA write operations            |
+| 6   | notify-users        | Send rollback notification                 |
+| 7   | archive-logs        | Archive VistA-Evolved logs for post-mortem |
+| 8   | final-verification  | Post-rollback smoke tests                  |
 
 ## Success Criteria
 

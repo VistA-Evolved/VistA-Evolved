@@ -13,6 +13,7 @@ at this time.
 ## Context
 
 VistA-Evolved needs HL7v2 messaging for:
+
 - ADT (A01/A02/A03) inbound/outbound
 - ORM (O01) order transmission
 - ORU (R01) results ingest
@@ -57,8 +58,8 @@ Options considered:
 
 ## Alternatives Rejected
 
-| Option | Reason |
-|--------|--------|
+| Option                  | Reason                                           |
+| ----------------------- | ------------------------------------------------ |
 | NextGen Connect (Mirth) | Java dependency, operational overhead, premature |
-| HAPI FHIR | Java, overlaps with existing FHIR endpoints |
-| Cloud Healthcare API | Vendor lock-in, not self-hostable |
+| HAPI FHIR               | Java, overlaps with existing FHIR endpoints      |
+| Cloud Healthcare API    | Vendor lock-in, not self-hostable                |

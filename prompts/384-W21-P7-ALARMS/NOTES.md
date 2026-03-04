@@ -1,6 +1,7 @@
 # Phase 384 — W21-P7 NOTES
 
 ## Design Decisions
+
 - Priority order uses numeric mapping (low=0..crisis=3) for comparison.
 - Routing rules evaluated in rulePriority order, first match wins. This
   aligns with IHE PCD ACM's escalation model.

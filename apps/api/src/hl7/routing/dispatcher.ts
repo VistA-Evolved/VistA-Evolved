@@ -7,13 +7,13 @@
  * PHI safety: Only message metadata (control ID, type) logged on dispatch.
  */
 
-import * as crypto from "node:crypto";
-import { log } from "../../lib/logger.js";
-import type { RouteDestination, DispatchResult, DeadLetterEntry } from "./types.js";
-import type { Hl7Message } from "../types.js";
-import { MllpClient } from "../mllp-client.js";
-import { parseMessage, messageSummary } from "../parser.js";
-import { addToDeadLetter, recordDispatch, recordFailure } from "./registry.js";
+import * as crypto from 'node:crypto';
+import { log } from '../../lib/logger.js';
+import type { RouteDestination, DispatchResult, DeadLetterEntry } from './types.js';
+import type { Hl7Message } from '../types.js';
+import { MllpClient } from '../mllp-client.js';
+import { parseMessage } from '../parser.js';
+import { addToDeadLetter, recordDispatch, recordFailure } from './registry.js';
 
 /** Client pool for MLLP destinations (reuse connections). */
 const clientPool = new Map<string, MllpClient>();
@@ -30,7 +30,7 @@ export async function dispatch(
   messageText: string,
   destination: RouteDestination,
   routeId: string,
-  originalMessage: Hl7Message,
+  originalMessage: Hl7Message
 ): Promise<DispatchResult> {
   const start = Date.now();
 
@@ -38,17 +38,17 @@ export async function dispatch(
     let result: DispatchResult;
 
     switch (destination.type) {
-      case "mllp":
+      case 'mllp':
         result = await dispatchMllp(messageText, destination);
         break;
-      case "http":
+      case 'http':
         result = await dispatchHttp(messageText, destination);
         break;
-      case "vista-rpc":
+      case 'vista-rpc':
         result = dispatchVistaRpc(messageText, destination);
         break;
-      case "dead-letter":
-        result = dispatchDeadLetter(originalMessage, destination, "Routed to dead-letter");
+      case 'dead-letter':
+        result = dispatchDeadLetter(originalMessage, destination, 'Routed to dead-letter');
         break;
       default:
         result = {
@@ -63,8 +63,8 @@ export async function dispatch(
 
     if (result.ok) {
       recordDispatch(routeId, result.durationMs);
-      log.info("HL7 message dispatched", {
-        component: "hl7-dispatch",
+      log.info('HL7 message dispatched', {
+        component: 'hl7-dispatch',
         routeId,
         destinationId: destination.id,
         type: destination.type,
@@ -73,8 +73,8 @@ export async function dispatch(
       });
     } else {
       recordFailure(routeId);
-      log.warn("HL7 dispatch failed", {
-        component: "hl7-dispatch",
+      log.warn('HL7 dispatch failed', {
+        component: 'hl7-dispatch',
         routeId,
         destinationId: destination.id,
         type: destination.type,
@@ -87,8 +87,8 @@ export async function dispatch(
   } catch (err) {
     const durationMs = Date.now() - start;
     recordFailure(routeId);
-    log.error("HL7 dispatch error", {
-      component: "hl7-dispatch",
+    log.error('HL7 dispatch error', {
+      component: 'hl7-dispatch',
       routeId,
       destinationId: destination.id,
       error: (err as Error).message,
@@ -96,7 +96,7 @@ export async function dispatch(
     return {
       ok: false,
       destinationId: destination.id,
-      error: "HL7 dispatch error",
+      error: 'HL7 dispatch error',
       durationMs,
     };
   }
@@ -107,7 +107,7 @@ export async function dispatch(
  */
 export function deadLetterUnroutable(message: Hl7Message, reason: string): void {
   const entry: DeadLetterEntry = {
-    id: crypto.randomBytes(8).toString("hex"),
+    id: crypto.randomBytes(8).toString('hex'),
     messageType: message.messageType,
     messageControlId: message.messageControlId,
     sendingApplication: message.msh.sendingApplication,
@@ -122,10 +122,12 @@ export function deadLetterUnroutable(message: Hl7Message, reason: string): void 
  * Shut down all pooled MLLP clients.
  */
 export function shutdownDispatcher(): void {
-  for (const [id, client] of clientPool) {
+  for (const [_id, client] of clientPool) {
     try {
       client.disconnect();
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
   }
   clientPool.clear();
 }
@@ -134,19 +136,16 @@ export function shutdownDispatcher(): void {
 /*  Private — Dispatch by Type                                         */
 /* ------------------------------------------------------------------ */
 
-async function dispatchMllp(
-  messageText: string,
-  dest: RouteDestination,
-): Promise<DispatchResult> {
+async function dispatchMllp(messageText: string, dest: RouteDestination): Promise<DispatchResult> {
   // Parse target as host:port
-  const [host, portStr] = dest.target.split(":");
-  const port = parseInt(portStr || "2575", 10);
+  const [host, portStr] = dest.target.split(':');
+  const port = parseInt(portStr || '2575', 10);
 
   // Get or create pooled client
   let client = clientPool.get(dest.id);
   if (!client) {
     client = new MllpClient({
-      host: host || "127.0.0.1",
+      host: host || '127.0.0.1',
       port,
       responseTimeoutMs: dest.timeoutMs || 30_000,
     });
@@ -160,27 +159,21 @@ async function dispatchMllp(
     ok: true,
     destinationId: dest.id,
     ack: ackParsed
-      ? { message: ackText, ackCode: "AA", messageControlId: ackParsed.messageControlId }
+      ? { message: ackText, ackCode: 'AA', messageControlId: ackParsed.messageControlId }
       : undefined,
     durationMs: 0,
   };
 }
 
-async function dispatchHttp(
-  messageText: string,
-  dest: RouteDestination,
-): Promise<DispatchResult> {
+async function dispatchHttp(messageText: string, dest: RouteDestination): Promise<DispatchResult> {
   // HTTP POST to target URL
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(
-      () => controller.abort(),
-      dest.timeoutMs || 30_000,
-    );
+    const timeout = setTimeout(() => controller.abort(), dest.timeoutMs || 30_000);
 
     const response = await fetch(dest.target, {
-      method: "POST",
-      headers: { "Content-Type": "application/hl7-v2" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/hl7-v2' },
       body: messageText,
       signal: controller.signal,
     });
@@ -203,16 +196,13 @@ async function dispatchHttp(
   }
 }
 
-function dispatchVistaRpc(
-  _messageText: string,
-  dest: RouteDestination,
-): DispatchResult {
+function dispatchVistaRpc(_messageText: string, dest: RouteDestination): DispatchResult {
   // VistA RPC bridge — integration pending
   // Will be wired in Phase 241 (P4) with message pack handlers
   return {
     ok: false,
     destinationId: dest.id,
-    error: "VistA RPC bridge: integration pending",
+    error: 'VistA RPC bridge: integration pending',
     durationMs: 0,
   };
 }
@@ -220,7 +210,7 @@ function dispatchVistaRpc(
 function dispatchDeadLetter(
   message: Hl7Message,
   dest: RouteDestination,
-  reason: string,
+  reason: string
 ): DispatchResult {
   deadLetterUnroutable(message, reason);
   return {

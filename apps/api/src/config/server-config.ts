@@ -18,7 +18,7 @@ export const SESSION_CONFIG = {
   /** Cleanup interval for expired sessions (ms) */
   cleanupIntervalMs: Number(process.env.SESSION_CLEANUP_MS || 60 * 1000),
   /** Cookie name */
-  cookieName: "ehr_session",
+  cookieName: 'ehr_session',
   /** Rotate token on login to prevent fixation */
   rotateOnLogin: true,
 } as const;
@@ -27,19 +27,24 @@ export const SESSION_CONFIG = {
 /* Logging                                                             */
 /* ------------------------------------------------------------------ */
 
-export type LogLevel = "trace" | "debug" | "info" | "warn" | "error" | "fatal";
+export type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal';
 
 export const LOG_CONFIG = {
   /** Minimum log level. Default: info */
-  level: (process.env.LOG_LEVEL || "info") as LogLevel,
+  level: (process.env.LOG_LEVEL || 'info') as LogLevel,
   /** Emit JSON structured logs. Default: true */
-  json: process.env.LOG_FORMAT !== "text",
+  json: process.env.LOG_FORMAT !== 'text',
   /** Redact these header names from request logs */
-  redactHeaders: ["authorization", "cookie", "set-cookie"],
+  redactHeaders: ['authorization', 'cookie', 'set-cookie'],
   /** Redact these body field names from request logs */
   redactBodyFields: [
-    "accessCode", "verifyCode", "password", "secret",
-    "token", "sessionToken", "avPlain",
+    'accessCode',
+    'verifyCode',
+    'password',
+    'secret',
+    'token',
+    'sessionToken',
+    'avPlain',
   ],
 } as const;
 
@@ -52,10 +57,20 @@ export const PHI_CONFIG = {
   auditIncludesDfn: false,
   /** Never include these in any log output */
   neverLogFields: [
-    "ssn", "socialSecurityNumber", "dob", "dateOfBirth",
-    "noteText", "noteContent", "problemText",
+    'ssn',
+    'socialSecurityNumber',
+    'dob',
+    'dateOfBirth',
+    'noteText',
+    'noteContent',
+    'problemText',
     // Phase 151: patient identifiers
-    "dfn", "patientDfn", "patient_dfn", "patientName", "patient_name", "mrn",
+    'dfn',
+    'patientDfn',
+    'patient_dfn',
+    'patientName',
+    'patient_name',
+    'mrn',
   ],
 } as const;
 
@@ -63,15 +78,15 @@ export const PHI_CONFIG = {
 /* Audit                                                               */
 /* ------------------------------------------------------------------ */
 
-export type AuditSink = "memory" | "file" | "stdout";
+export type AuditSink = 'memory' | 'file' | 'stdout';
 
 export const AUDIT_CONFIG = {
   /** Where to write audit events. Default: memory (in-process array) */
-  sink: (process.env.AUDIT_SINK || "memory") as AuditSink,
+  sink: (process.env.AUDIT_SINK || 'memory') as AuditSink,
   /** Max in-memory audit entries before oldest are evicted */
   maxMemoryEntries: Number(process.env.AUDIT_MAX_ENTRIES || 5000),
   /** File path for file-based audit sink */
-  filePath: process.env.AUDIT_FILE_PATH || "logs/audit.jsonl",
+  filePath: process.env.AUDIT_FILE_PATH || 'logs/audit.jsonl',
   /** Retention period for audit entries (days). 0 = forever in memory */
   retentionDays: Number(process.env.AUDIT_RETENTION_DAYS || 365),
 } as const;
@@ -116,23 +131,24 @@ export const CACHE_CONFIG = {
 
 export const IMAGING_CONFIG = {
   /** Orthanc server base URL (DICOMweb + REST) */
-  orthancUrl: process.env.ORTHANC_URL || "http://localhost:8042",
+  orthancUrl: process.env.ORTHANC_URL || 'http://localhost:8042',
   /** OHIF viewer base URL */
-  ohifUrl: process.env.OHIF_URL || "http://localhost:3003",
+  ohifUrl: process.env.OHIF_URL || 'http://localhost:3003',
   /** DICOMweb root path on Orthanc */
-  dicomWebRoot: process.env.ORTHANC_DICOMWEB_ROOT || "/dicom-web",
+  dicomWebRoot: process.env.ORTHANC_DICOMWEB_ROOT || '/dicom-web',
   /** Proxy timeout for DICOMweb requests (ms) */
   proxyTimeoutMs: Number(process.env.IMAGING_PROXY_TIMEOUT_MS || 30_000),
   /** Cache TTL for QIDO-RS study list responses (ms). Default: 30s */
   qidoCacheTtlMs: Number(process.env.IMAGING_QIDO_CACHE_TTL_MS || 30_000),
   /** Enable demo upload endpoint (admin only). Default: false in prod */
-  enableDemoUpload: process.env.IMAGING_ENABLE_DEMO_UPLOAD === "true" ||
-    process.env.NODE_ENV !== "production",
+  enableDemoUpload:
+    process.env.IMAGING_ENABLE_DEMO_UPLOAD === 'true' || process.env.NODE_ENV !== 'production',
   /** Max DICOM upload size in bytes. Default: 512 MB */
   maxUploadBytes: Number(process.env.IMAGING_MAX_UPLOAD_BYTES || 512 * 1024 * 1024),
   // Phase 23: Ingest workflow
   /** Shared secret for Orthanc ingest webhook (X-Service-Key header) */
-  ingestWebhookSecret: process.env.IMAGING_INGEST_WEBHOOK_SECRET || "dev-imaging-ingest-key-change-in-production",
+  ingestWebhookSecret:
+    process.env.IMAGING_INGEST_WEBHOOK_SECRET || 'dev-imaging-ingest-key-change-in-production',
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -158,13 +174,13 @@ export const CSRF_CONFIG = {
    * Kept for backward compatibility with portal double-submit pattern.
    * EHR routes now use session-bound synchronizer token.
    */
-  cookieName: "ehr_csrf",
+  cookieName: 'ehr_csrf',
   /** CSRF header name sent by the client on mutation requests */
-  headerName: "x-csrf-token",
+  headerName: 'x-csrf-token',
   /** Token length in bytes (hex-encoded = 2x this) */
   tokenBytes: 32,
   /** Exempt methods (safe methods per HTTP spec) */
-  safeMethods: ["GET", "HEAD", "OPTIONS"] as readonly string[],
+  safeMethods: ['GET', 'HEAD', 'OPTIONS'] as readonly string[],
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -190,7 +206,7 @@ export const IDENTITY_HARDENING_CONFIG = {
   /** Step-up auth: MFA verification validity window (ms). Default: 15 min */
   stepUpMfaValidityMs: Number(process.env.STEP_UP_MFA_VALIDITY_MS || 15 * 60 * 1000),
   /** MFA enforcement enabled. Default: false (opt-in). */
-  mfaEnforcementEnabled: process.env.MFA_ENFORCEMENT_ENABLED === "true",
+  mfaEnforcementEnabled: process.env.MFA_ENFORCEMENT_ENABLED === 'true',
   /** MFA grace period for newly required users (ms). Default: 7 days */
   mfaGracePeriodMs: Number(process.env.MFA_GRACE_PERIOD_MS || 7 * 24 * 60 * 60 * 1000),
   /** MFA verification window (ms). Default: 15 min */

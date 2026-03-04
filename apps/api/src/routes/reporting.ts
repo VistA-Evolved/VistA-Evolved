@@ -26,13 +26,13 @@
  *   GET  /reports/export/:jobId     — download completed export
  */
 
-import type { FastifyInstance } from "fastify";
-import { requireSession, requireRole } from "../auth/auth-routes.js";
-import { audit, queryAuditEvents, getAuditStats, type AuditAction } from "../lib/audit.js";
-import { log } from "../lib/logger.js";
-import { getRpcHealthSummary } from "../lib/rpc-resilience.js";
-import { getIntegrationHealthSummary } from "../config/integration-registry.js";
-import { REPORT_CONFIG, EXPORT_CONFIG } from "../config/report-config.js";
+import type { FastifyInstance } from 'fastify';
+import { requireSession, requireRole } from '../auth/auth-routes.js';
+import { audit, queryAuditEvents, getAuditStats, type AuditAction } from '../lib/audit.js';
+import { log } from '../lib/logger.js';
+import { getRpcHealthSummary } from '../lib/rpc-resilience.js';
+import { getIntegrationHealthSummary } from '../config/integration-registry.js';
+import { REPORT_CONFIG, EXPORT_CONFIG } from '../config/report-config.js';
 import {
   checkExportPolicy,
   createExportJob,
@@ -40,8 +40,8 @@ import {
   getExportJob,
   listExportJobs,
   type ExportReportType,
-} from "../lib/export-governance.js";
-import type { ExportFormat } from "../config/report-config.js";
+} from '../lib/export-governance.js';
+import type { ExportFormat } from '../config/report-config.js';
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -50,7 +50,7 @@ import type { ExportFormat } from "../config/report-config.js";
 function auditActor(request: any): { duz: string; name?: string; role?: string } {
   const s = request.session;
   if (s) return { duz: s.duz, name: s.userName, role: s.role };
-  return { duz: "system" };
+  return { duz: 'system' };
 }
 
 /** Simple in-memory cache with TTL. */
@@ -86,16 +86,15 @@ function clampPageSize(requested?: number): number {
 /* ------------------------------------------------------------------ */
 
 export default async function reportingRoutes(server: FastifyInstance): Promise<void> {
-
   /* ── GET /reports/operations ─────────────────────────────────── */
-  server.get("/reports/operations", async (request, reply) => {
+  server.get('/reports/operations', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
-    const cached = getCached<object>("report:operations");
+    const cached = getCached<object>('report:operations');
     if (cached) {
-      audit("report.generate" as AuditAction, "success", auditActor(request), {
-        detail: { report: "operations", cached: true },
+      audit('report.generate' as AuditAction, 'success', auditActor(request), {
+        detail: { report: 'operations', cached: true },
       });
       return { ok: true, cached: true, ...cached };
     }
@@ -107,9 +106,9 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       process: {
-        heapUsedMB: Math.round(mem.heapUsed / 1024 / 1024 * 100) / 100,
-        heapTotalMB: Math.round(mem.heapTotal / 1024 / 1024 * 100) / 100,
-        rssMB: Math.round(mem.rss / 1024 / 1024 * 100) / 100,
+        heapUsedMB: Math.round((mem.heapUsed / 1024 / 1024) * 100) / 100,
+        heapTotalMB: Math.round((mem.heapTotal / 1024 / 1024) * 100) / 100,
+        rssMB: Math.round((mem.rss / 1024 / 1024) * 100) / 100,
         pid: process.pid,
       },
       rpcHealth: {
@@ -123,29 +122,29 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
       rpcMetrics: rpcHealth.rpcMetrics,
     };
 
-    setCache("report:operations", report, REPORT_CONFIG.operationsCacheTtlMs);
+    setCache('report:operations', report, REPORT_CONFIG.operationsCacheTtlMs);
 
-    audit("report.generate" as AuditAction, "success", auditActor(request), {
-      detail: { report: "operations", cached: false },
+    audit('report.generate' as AuditAction, 'success', auditActor(request), {
+      detail: { report: 'operations', cached: false },
     });
 
     return { ok: true, cached: false, ...report };
   });
 
   /* ── GET /reports/integrations ───────────────────────────────── */
-  server.get("/reports/integrations", async (request, reply) => {
+  server.get('/reports/integrations', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
-    const cached = getCached<object>("report:integrations");
+    const cached = getCached<object>('report:integrations');
     if (cached) {
-      audit("report.generate" as AuditAction, "success", auditActor(request), {
-        detail: { report: "integrations", cached: true },
+      audit('report.generate' as AuditAction, 'success', auditActor(request), {
+        detail: { report: 'integrations', cached: true },
       });
       return { ok: true, cached: true, ...cached };
     }
 
-    const tenantId = (request.query as any)?.tenantId || "default";
+    const tenantId = (request.query as any)?.tenantId || 'default';
     const health = getIntegrationHealthSummary(tenantId);
 
     const report = {
@@ -172,19 +171,19 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
       })),
     };
 
-    setCache("report:integrations", report, REPORT_CONFIG.integrationsCacheTtlMs);
+    setCache('report:integrations', report, REPORT_CONFIG.integrationsCacheTtlMs);
 
-    audit("report.generate" as AuditAction, "success", auditActor(request), {
-      detail: { report: "integrations", cached: false, tenantId },
+    audit('report.generate' as AuditAction, 'success', auditActor(request), {
+      detail: { report: 'integrations', cached: false, tenantId },
     });
 
     return { ok: true, cached: false, ...report };
   });
 
   /* ── GET /reports/audit ──────────────────────────────────────── */
-  server.get("/reports/audit", async (request, reply) => {
+  server.get('/reports/audit', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     const query = request.query as any;
     const limit = clampPageSize(query?.limit ? Number(query.limit) : undefined);
@@ -207,8 +206,12 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
       limit,
     });
 
-    audit("report.generate" as AuditAction, "success", auditActor(request), {
-      detail: { report: "audit", eventCount: events.length, filters: { actionPrefix, actorDuz, since: effectiveSince } },
+    audit('report.generate' as AuditAction, 'success', auditActor(request), {
+      detail: {
+        report: 'audit',
+        eventCount: events.length,
+        filters: { actionPrefix, actorDuz, since: effectiveSince },
+      },
     });
 
     return {
@@ -229,14 +232,14 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── GET /reports/clinical-activity ──────────────────────────── */
-  server.get("/reports/clinical-activity", async (request, reply) => {
+  server.get('/reports/clinical-activity', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
-    const cached = getCached<object>("report:clinical");
+    const cached = getCached<object>('report:clinical');
     if (cached) {
-      audit("report.generate" as AuditAction, "success", auditActor(request), {
-        detail: { report: "clinical", cached: true },
+      audit('report.generate' as AuditAction, 'success', auditActor(request), {
+        detail: { report: 'clinical', cached: true },
       });
       return { ok: true, cached: true, ...cached };
     }
@@ -250,24 +253,24 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
     let totalPhiAccess = 0;
 
     for (const event of allEvents) {
-      if (event.action.startsWith("clinical.")) {
+      if (event.action.startsWith('clinical.')) {
         clinicalCounts[event.action] = (clinicalCounts[event.action] || 0) + 1;
         totalClinicalActions++;
       }
-      if (event.action.startsWith("phi.")) {
+      if (event.action.startsWith('phi.')) {
         phiCounts[event.action] = (phiCounts[event.action] || 0) + 1;
         totalPhiAccess++;
       }
     }
 
     // Unique patients touched (by DFN, derived from audit events)
-    const uniquePatients = new Set(
-      allEvents.filter((e) => e.patientDfn).map((e) => e.patientDfn),
-    );
+    const uniquePatients = new Set(allEvents.filter((e) => e.patientDfn).map((e) => e.patientDfn));
 
     // Unique providers acting
     const uniqueProviders = new Set(
-      allEvents.filter((e) => e.actorDuz !== "anonymous" && e.actorDuz !== "system").map((e) => e.actorDuz),
+      allEvents
+        .filter((e) => e.actorDuz !== 'anonymous' && e.actorDuz !== 'system')
+        .map((e) => e.actorDuz)
     );
 
     const report = {
@@ -278,31 +281,37 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
       phiAccessCounts: phiCounts,
       uniquePatientCount: uniquePatients.size,
       uniqueProviderCount: uniqueProviders.size,
-      note: "Counts only — no PHI text is included in this report.",
+      note: 'Counts only — no PHI text is included in this report.',
     };
 
-    setCache("report:clinical", report, REPORT_CONFIG.clinicalCacheTtlMs);
+    setCache('report:clinical', report, REPORT_CONFIG.clinicalCacheTtlMs);
 
-    audit("report.generate" as AuditAction, "success", auditActor(request), {
-      detail: { report: "clinical", cached: false },
+    audit('report.generate' as AuditAction, 'success', auditActor(request), {
+      detail: { report: 'clinical', cached: false },
     });
 
     return { ok: true, cached: false, ...report };
   });
 
   /* ── POST /reports/export ────────────────────────────────────── */
-  server.post("/reports/export", async (request, reply) => {
+  server.post('/reports/export', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     const body = request.body as any;
     const reportType = body?.reportType as ExportReportType;
-    const format = (body?.format || "csv") as ExportFormat;
+    const format = (body?.format || 'csv') as ExportFormat;
     const filters = body?.filters || {};
 
-    if (!reportType || !["operations", "integrations", "audit", "clinical-activity", "clinical"].includes(reportType)) {
+    if (
+      !reportType ||
+      !['operations', 'integrations', 'audit', 'clinical-activity', 'clinical'].includes(reportType)
+    ) {
       reply.code(400);
-      return { ok: false, error: "reportType must be one of: operations, integrations, audit, clinical-activity" };
+      return {
+        ok: false,
+        error: 'reportType must be one of: operations, integrations, audit, clinical-activity',
+      };
     }
 
     const actor = auditActor(request);
@@ -313,7 +322,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
 
     try {
       switch (reportType) {
-        case "operations": {
+        case 'operations': {
           const health = getRpcHealthSummary();
           rows = Object.entries(health.rpcMetrics).map(([name, m]) => ({
             rpcName: name,
@@ -327,8 +336,8 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
           rowEstimate = rows.length;
           break;
         }
-        case "integrations": {
-          const tenantId = filters?.tenantId || "default";
+        case 'integrations': {
+          const tenantId = filters?.tenantId || 'default';
           const health = getIntegrationHealthSummary(tenantId);
           rows = health.entries.map((e: any) => ({
             id: e.id,
@@ -344,7 +353,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
           rowEstimate = rows.length;
           break;
         }
-        case "audit": {
+        case 'audit': {
           const events = queryAuditEvents({
             actionPrefix: filters?.actionPrefix,
             actorDuz: filters?.actorDuz,
@@ -360,27 +369,27 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
             actorName: e.actorName,
             actorRole: e.actorRole,
             requestId: e.requestId,
-            patientDfn: e.patientDfn || "",
+            patientDfn: e.patientDfn || '',
           }));
           rowEstimate = rows.length;
           break;
         }
-        case "clinical": {
+        case 'clinical': {
           // Clinical exports blocked by default (PHI policy)
           rowEstimate = 1;
           break;
         }
       }
     } catch (err: any) {
-      log.error("Report data generation failed", { reportType, error: err.message });
+      log.error('Report data generation failed', { reportType, error: err.message });
       reply.code(500);
-      return { ok: false, error: "Failed to generate report data" };
+      return { ok: false, error: 'Failed to generate report data' };
     }
 
     // Policy check
     const policy = checkExportPolicy(actor, reportType, format, rowEstimate);
     if (!policy.allowed) {
-      audit("export.policy-check" as AuditAction, "denied", actor, {
+      audit('export.policy-check' as AuditAction, 'denied', actor, {
         detail: { reportType, format, reason: policy.reason },
       });
       reply.code(403);
@@ -392,9 +401,9 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
     executeExportJob(job.id, rows);
 
     const result = getExportJob(job.id);
-    if (!result || result.status === "failed") {
+    if (!result || result.status === 'failed') {
       reply.code(500);
-      return { ok: false, error: result?.error || "Export failed" };
+      return { ok: false, error: result?.error || 'Export failed' };
     }
 
     return {
@@ -408,12 +417,12 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── GET /reports/export/jobs ────────────────────────────────── */
-  server.get("/reports/export/jobs", async (request, reply) => {
+  server.get('/reports/export/jobs', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     const query = request.query as any;
-    const duzFilter = query?.mine === "true" ? session.duz : undefined;
+    const duzFilter = query?.mine === 'true' ? session.duz : undefined;
     const jobs = listExportJobs(duzFilter);
 
     // Strip data field from listing
@@ -432,27 +441,30 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── GET /reports/export/:jobId ──────────────────────────────── */
-  server.get("/reports/export/:jobId", async (request, reply) => {
+  server.get('/reports/export/:jobId', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     const { jobId } = request.params as { jobId: string };
     const job = getExportJob(jobId);
 
     if (!job) {
       reply.code(404);
-      return { ok: false, error: "Export job not found" };
+      return { ok: false, error: 'Export job not found' };
     }
 
-    if (job.status !== "completed") {
-      return { ok: true, jobId: job.id, status: job.status, message: "Export not yet ready" };
+    if (job.status !== 'completed') {
+      return { ok: true, jobId: job.id, status: job.status, message: 'Export not yet ready' };
     }
 
     // Serve the data as a downloadable file
-    reply.header("Content-Type", job.mimeType || "application/octet-stream");
-    reply.header("Content-Disposition", `attachment; filename="${job.reportType}-${job.id}.${job.format}"`);
+    reply.header('Content-Type', job.mimeType || 'application/octet-stream');
+    reply.header(
+      'Content-Disposition',
+      `attachment; filename="${job.reportType}-${job.id}.${job.format}"`
+    );
 
-    audit("export.download" as AuditAction, "success", auditActor(request), {
+    audit('export.download' as AuditAction, 'success', auditActor(request), {
       detail: { jobId, format: job.format, rowCount: job.rowCount },
     });
 

@@ -7,12 +7,12 @@ on:
 
 concurrency:
   group: cd-deploy-${{ github.ref }}
-  cancel-in-progress: false  # Never cancel a deploy mid-flight
+  cancel-in-progress: false # Never cancel a deploy mid-flight
 
 permissions:
-  contents: write    # For GitOps promotion commits
-  packages: write    # For GHCR publish
-  id-token: write    # For cosign OIDC signing (optional)
+  contents: write # For GitOps promotion commits
+  packages: write # For GHCR publish
+  id-token: write # For cosign OIDC signing (optional)
 
 env:
   REGISTRY: ghcr.io
@@ -111,9 +111,9 @@ jobs:
       - name: Run Trivy (${{ matrix.image }})
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: "${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:${{ needs.build-images.outputs.image-tag }}"
+          image-ref: '${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}/${{ matrix.image }}:${{ needs.build-images.outputs.image-tag }}'
           format: json
-          output: "trivy-${{ matrix.image }}.json"
+          output: 'trivy-${{ matrix.image }}.json'
           severity: CRITICAL,HIGH
           exit-code: 1
 
@@ -121,8 +121,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: "trivy-${{ matrix.image }}"
-          path: "trivy-${{ matrix.image }}.json"
+          name: 'trivy-${{ matrix.image }}'
+          path: 'trivy-${{ matrix.image }}.json'
           retention-days: 30
 
   # ---- SBOM per image ----
@@ -196,13 +196,13 @@ jobs:
       - name: Create PR
         uses: peter-evans/create-pull-request@v7
         with:
-          title: "release: promote ${{ needs.build-images.outputs.image-tag }} to production"
+          title: 'release: promote ${{ needs.build-images.outputs.image-tag }} to production'
           body: |
             ## Production Promotion
             - Image tag: `${{ needs.build-images.outputs.image-tag }}`
             - Trivy scan: passed
             - SBOM: attached to workflow artifacts
-            
+
             **Merge this PR to deploy to production via ArgoCD.**
-          branch: "promote/prod-${{ needs.build-images.outputs.image-tag }}"
-          commit-message: "chore(gitops): promote ${{ needs.build-images.outputs.image-tag }} to prod"
+          branch: 'promote/prod-${{ needs.build-images.outputs.image-tag }}'
+          commit-message: 'chore(gitops): promote ${{ needs.build-images.outputs.image-tag }} to prod'

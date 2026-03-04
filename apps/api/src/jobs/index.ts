@@ -19,8 +19,8 @@ export {
   RetentionCleanupPayload,
   DEFAULT_CONCURRENCY,
   DEFAULT_CRON_SCHEDULES,
-} from "./registry.js";
-export type { JobName } from "./registry.js";
+} from './registry.js';
+export type { JobName } from './registry.js';
 
 // Governance: validation, run logging, PHI redaction
 export {
@@ -29,13 +29,8 @@ export {
   logJobFinish,
   redactErrorMessage,
   getRecentJobRuns,
-} from "./governance.js";
-export type { JobRunLogEntry, ValidateResult } from "./governance.js";
+} from './governance.js';
+export type { JobRunLogEntry, ValidateResult } from './governance.js';
 
 // Runner: lifecycle management
-export {
-  startJobRunner,
-  stopJobRunner,
-  isJobRunnerActive,
-  getAddJobFn,
-} from "./runner.js";
+export { startJobRunner, stopJobRunner, isJobRunnerActive, getAddJobFn } from './runner.js';

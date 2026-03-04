@@ -1,6 +1,7 @@
 # Phase 4A — Default Patient List (VERIFY — no changes)
 
 Verify:
+
 - sandbox up and 9430 reachable
 - /health ok:true
 - /vista/ping ok:true

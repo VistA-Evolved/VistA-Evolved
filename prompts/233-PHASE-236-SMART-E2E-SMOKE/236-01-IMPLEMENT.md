@@ -1,10 +1,12 @@
 # Phase 236 -- SMART App Launch E2E Smoke
 
 ## User Request
+
 Create a comprehensive end-to-end smoke test that validates the entire
 SMART-on-FHIR pipeline: discovery -> metadata -> auth -> scopes -> search -> paging.
 
 ## Implementation Steps
+
 1. Create fhir-smart-e2e-smoke.test.ts with 6 test sections
 2. Step 1: SMART Discovery -- buildSmartConfiguration validates structure
 3. Step 2: CapabilityStatement -- buildCapabilityStatement validates metadata
@@ -16,9 +18,11 @@ SMART-on-FHIR pipeline: discovery -> metadata -> auth -> scopes -> search -> pag
 9. Write 26 tests
 
 ## Verification Steps
+
 1. All 26 fhir-smart-e2e-smoke tests pass
 2. Full pipeline test exercises all Wave 5 modules end-to-end
 3. All module imports succeed (no circular deps)
 
 ## Files Touched
+
 - apps/api/tests/fhir-smart-e2e-smoke.test.ts (NEW)

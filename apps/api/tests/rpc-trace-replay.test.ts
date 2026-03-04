@@ -15,11 +15,11 @@
  * Run: pnpm exec vitest run tests/rpc-trace-replay.test.ts
  */
 
-import { describe, it, expect, beforeAll } from "vitest";
-import { readFileSync, existsSync } from "node:fs";
-import { resolve } from "node:path";
+import { describe, it, expect, beforeAll } from 'vitest';
+import { readFileSync, existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 
-const API = process.env.API_URL ?? "http://localhost:3001";
+const API = process.env.API_URL ?? 'http://localhost:3001';
 
 /* ------------------------------------------------------------------ */
 /* Load golden trace & registry                                         */
@@ -31,47 +31,47 @@ interface GoldenTrace {
   registrySnapshot: { criticalRpcs: string[] };
 }
 
-const GOLDEN_PATH = resolve(__dirname, "fixtures/rpc-golden-trace.json");
-const REGISTRY_PATH = resolve(__dirname, "../src/vista/rpcRegistry.ts");
+const GOLDEN_PATH = resolve(__dirname, 'fixtures/rpc-golden-trace.json');
+const REGISTRY_PATH = resolve(__dirname, '../src/vista/rpcRegistry.ts');
 
 let golden: GoldenTrace;
 let registrySource: string;
 
 beforeAll(() => {
-  expect(existsSync(GOLDEN_PATH), "Golden trace file missing").toBe(true);
-  expect(existsSync(REGISTRY_PATH), "rpcRegistry.ts missing").toBe(true);
+  expect(existsSync(GOLDEN_PATH), 'Golden trace file missing').toBe(true);
+  expect(existsSync(REGISTRY_PATH), 'rpcRegistry.ts missing').toBe(true);
 
-  const raw = readFileSync(GOLDEN_PATH, "utf-8");
-  golden = JSON.parse(raw.charCodeAt(0) === 0xFEFF ? raw.slice(1) : raw);
-  registrySource = readFileSync(REGISTRY_PATH, "utf-8");
+  const raw = readFileSync(GOLDEN_PATH, 'utf-8');
+  golden = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
+  registrySource = readFileSync(REGISTRY_PATH, 'utf-8');
 });
 
 /* ------------------------------------------------------------------ */
 /* PHI Safety: golden trace must not contain PHI                        */
 /* ------------------------------------------------------------------ */
 
-describe("Golden trace PHI safety", () => {
-  it("Golden trace file contains no patient data", () => {
-    const raw = readFileSync(GOLDEN_PATH, "utf-8");
+describe('Golden trace PHI safety', () => {
+  it('Golden trace file contains no patient data', () => {
+    const raw = readFileSync(GOLDEN_PATH, 'utf-8');
     // Must NOT contain SSN patterns
     expect(raw).not.toMatch(/\d{3}-\d{2}-\d{4}/);
     // Must NOT contain date of birth patterns in medical context
-    expect(raw.toLowerCase()).not.toContain("dob");
+    expect(raw.toLowerCase()).not.toContain('dob');
     // Must NOT contain access/verify codes
-    expect(raw).not.toContain("PROV123");
-    expect(raw).not.toContain("NURSE123");
-    expect(raw).not.toContain("PHARM123");
+    expect(raw).not.toContain('PROV123');
+    expect(raw).not.toContain('NURSE123');
+    expect(raw).not.toContain('PHARM123');
     // Must NOT contain patient names from sandbox
-    expect(raw.toUpperCase()).not.toContain("CARTER,DAVID");
-    expect(raw.toUpperCase()).not.toContain("PROVIDER,CLYDE");
+    expect(raw.toUpperCase()).not.toContain('CARTER,DAVID');
+    expect(raw.toUpperCase()).not.toContain('PROVIDER,CLYDE');
   });
 
-  it("Golden trace has only RPC names, no parameters or responses", () => {
+  it('Golden trace has only RPC names, no parameters or responses', () => {
     // Check that workflow entries only have rpcSequence arrays of strings
     for (const [name, wf] of Object.entries(golden.workflows)) {
       expect(Array.isArray(wf.rpcSequence), `${name}.rpcSequence is array`).toBe(true);
       for (const rpc of wf.rpcSequence) {
-        expect(typeof rpc, `${name} RPC entry must be string`).toBe("string");
+        expect(typeof rpc, `${name} RPC entry must be string`).toBe('string');
         // RPC names are uppercase alpha + spaces
         expect(rpc).toMatch(/^[A-Z0-9 /]+$/);
       }
@@ -83,8 +83,8 @@ describe("Golden trace PHI safety", () => {
 /* Registry alignment: golden RPCs exist in rpcRegistry.ts              */
 /* ------------------------------------------------------------------ */
 
-describe("Golden trace ↔ registry alignment", () => {
-  it("All golden workflow RPCs are registered", () => {
+describe('Golden trace ↔ registry alignment', () => {
+  it('All golden workflow RPCs are registered', () => {
     const missingRpcs: string[] = [];
 
     for (const [name, wf] of Object.entries(golden.workflows)) {
@@ -98,11 +98,11 @@ describe("Golden trace ↔ registry alignment", () => {
 
     expect(
       missingRpcs,
-      `RPCs in golden trace but not in registry:\n${missingRpcs.join("\n")}`
+      `RPCs in golden trace but not in registry:\n${missingRpcs.join('\n')}`
     ).toHaveLength(0);
   });
 
-  it("All critical RPCs from snapshot exist in registry", () => {
+  it('All critical RPCs from snapshot exist in registry', () => {
     const missing: string[] = [];
 
     for (const rpc of golden.registrySnapshot.criticalRpcs) {
@@ -111,13 +111,10 @@ describe("Golden trace ↔ registry alignment", () => {
       }
     }
 
-    expect(
-      missing,
-      `Critical RPCs missing from registry:\n${missing.join("\n")}`
-    ).toHaveLength(0);
+    expect(missing, `Critical RPCs missing from registry:\n${missing.join('\n')}`).toHaveLength(0);
   });
 
-  it("Registry has minimum RPC count (no accidental wipe)", () => {
+  it('Registry has minimum RPC count (no accidental wipe)', () => {
     // Count unique RPC names in RPC_REGISTRY
     const matches = registrySource.match(/name:\s*"[^"]+"/g) || [];
     // Should have at least 50 RPCs registered
@@ -132,28 +129,28 @@ describe("Golden trace ↔ registry alignment", () => {
 /* Sequence stability: workflow shapes haven't changed                   */
 /* ------------------------------------------------------------------ */
 
-describe("Workflow sequence stability", () => {
-  it("Login workflow requires auth RPCs in correct order", () => {
+describe('Workflow sequence stability', () => {
+  it('Login workflow requires auth RPCs in correct order', () => {
     const loginSeq = golden.workflows.login.rpcSequence;
     expect(loginSeq.length).toBeGreaterThanOrEqual(3);
-    expect(loginSeq[0]).toBe("XUS SIGNON SETUP");
-    expect(loginSeq[1]).toBe("XUS AV CODE");
-    expect(loginSeq).toContain("XWB CREATE CONTEXT");
-    expect(loginSeq).toContain("XUS GET USER INFO");
+    expect(loginSeq[0]).toBe('XUS SIGNON SETUP');
+    expect(loginSeq[1]).toBe('XUS AV CODE');
+    expect(loginSeq).toContain('XWB CREATE CONTEXT');
+    expect(loginSeq).toContain('XUS GET USER INFO');
   });
 
-  it("Cover sheet workflow fetches 5 data domains", () => {
+  it('Cover sheet workflow fetches 5 data domains', () => {
     const coverSeq = golden.workflows.coverSheet.rpcSequence;
     expect(coverSeq.length).toBeGreaterThanOrEqual(5);
     // Must include allergies, vitals, problems, meds, notes
-    expect(coverSeq).toContain("ORQQAL LIST");     // allergies
-    expect(coverSeq).toContain("GMV V/M ALLDATA"); // vitals
-    expect(coverSeq).toContain("ORQQPL PROBLEM LIST"); // problems
-    expect(coverSeq).toContain("ORWPS ACTIVE");    // medications
-    expect(coverSeq).toContain("TIU DOCUMENTS BY CONTEXT"); // notes
+    expect(coverSeq).toContain('ORQQAL LIST'); // allergies
+    expect(coverSeq).toContain('GMV V/M ALLDATA'); // vitals
+    expect(coverSeq).toContain('ORQQPL PROBLEM LIST'); // problems
+    expect(coverSeq).toContain('ORWPS ACTIVE'); // medications
+    expect(coverSeq).toContain('TIU DOCUMENTS BY CONTEXT'); // notes
   });
 
-  it("Each workflow has at least one RPC", () => {
+  it('Each workflow has at least one RPC', () => {
     for (const [name, wf] of Object.entries(golden.workflows)) {
       expect(
         wf.rpcSequence.length,
@@ -169,22 +166,26 @@ describe("Workflow sequence stability", () => {
 
 async function getSessionCookie(): Promise<string> {
   const res = await fetch(`${API}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      accessCode: process.env.VISTA_ACCESS_CODE ?? "PROV123",
-      verifyCode: process.env.VISTA_VERIFY_CODE ?? "PROV123!!",
+      accessCode: process.env.VISTA_ACCESS_CODE ?? 'PROV123',
+      verifyCode: process.env.VISTA_VERIFY_CODE ?? 'PROV123!!',
     }),
-    redirect: "manual",
+    redirect: 'manual',
   });
-  const setCookie = res.headers.get("set-cookie") ?? "";
-  return setCookie.split(",").map((c) => {
-    const m = c.trim().match(/^([^=]+=[^;]+)/);
-    return m?.[1] ?? "";
-  }).filter(Boolean).join("; ");
+  const setCookie = res.headers.get('set-cookie') ?? '';
+  return setCookie
+    .split(',')
+    .map((c) => {
+      const m = c.trim().match(/^([^=]+=[^;]+)/);
+      return m?.[1] ?? '';
+    })
+    .filter(Boolean)
+    .join('; ');
 }
 
-describe("Live RPC replay (requires running API)", () => {
+describe('Live RPC replay (requires running API)', () => {
   let cookie: string;
 
   beforeAll(async () => {
@@ -192,17 +193,17 @@ describe("Live RPC replay (requires running API)", () => {
       cookie = await getSessionCookie();
     } catch {
       // API not running — skip
-      cookie = "";
+      cookie = '';
     }
   });
 
   const workflowEndpoints = [
-    { workflow: "allergies", endpoint: "/vista/allergies?dfn=3" },
-    { workflow: "vitals", endpoint: "/vista/vitals?dfn=3" },
-    { workflow: "problems", endpoint: "/vista/problems?dfn=3" },
-    { workflow: "medications", endpoint: "/vista/medications?dfn=3" },
-    { workflow: "notes", endpoint: "/vista/notes?dfn=3" },
-    { workflow: "patientSearch", endpoint: "/vista/patient-search?q=ZZ" },
+    { workflow: 'allergies', endpoint: '/vista/allergies?dfn=3' },
+    { workflow: 'vitals', endpoint: '/vista/vitals?dfn=3' },
+    { workflow: 'problems', endpoint: '/vista/problems?dfn=3' },
+    { workflow: 'medications', endpoint: '/vista/medications?dfn=3' },
+    { workflow: 'notes', endpoint: '/vista/notes?dfn=3' },
+    { workflow: 'patientSearch', endpoint: '/vista/patient-search?q=ZZ' },
   ];
 
   for (const { workflow, endpoint } of workflowEndpoints) {
@@ -219,7 +220,7 @@ describe("Live RPC replay (requires running API)", () => {
 
       expect(res.status).toBe(200);
       const data = await res.json();
-      expect(data).toHaveProperty("ok", true);
+      expect(data).toHaveProperty('ok', true);
     });
   }
 });

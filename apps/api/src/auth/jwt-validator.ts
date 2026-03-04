@@ -16,9 +16,9 @@
  *   6. Clock skew tolerance (configurable, default 30s)
  */
 
-import { createVerify, createPublicKey, type KeyObject } from "crypto";
-import { getOidcConfig, type OidcTokenClaims } from "./oidc-provider.js";
-import { log } from "../lib/logger.js";
+import { createVerify, createPublicKey, type KeyObject } from 'crypto';
+import { getOidcConfig, type OidcTokenClaims } from './oidc-provider.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -29,10 +29,10 @@ interface JwksKey {
   kid: string;
   use?: string;
   alg?: string;
-  n?: string;  // RSA modulus
-  e?: string;  // RSA exponent
-  x?: string;  // EC x coordinate
-  y?: string;  // EC y coordinate
+  n?: string; // RSA modulus
+  e?: string; // RSA exponent
+  x?: string; // EC x coordinate
+  y?: string; // EC y coordinate
   crv?: string; // EC curve
 }
 
@@ -69,7 +69,7 @@ async function fetchJwks(): Promise<Map<string, KeyObject>> {
   try {
     const resp = await fetch(config.jwksUri, { signal: AbortSignal.timeout(5000) });
     if (!resp.ok) {
-      log.warn("JWKS fetch failed", { status: resp.status, uri: config.jwksUri });
+      log.warn('JWKS fetch failed', { status: resp.status, uri: config.jwksUri });
       return jwksCache; // Return stale
     }
 
@@ -77,21 +77,21 @@ async function fetchJwks(): Promise<Map<string, KeyObject>> {
     const newCache = new Map<string, KeyObject>();
 
     for (const key of jwks.keys) {
-      if (key.use && key.use !== "sig") continue; // Only signature keys
+      if (key.use && key.use !== 'sig') continue; // Only signature keys
       try {
-        const publicKey = createPublicKey({ key: jwkToPublicKeyPem(key), format: "pem" });
+        const publicKey = createPublicKey({ key: jwkToPublicKeyPem(key), format: 'pem' });
         newCache.set(key.kid, publicKey);
       } catch (err: any) {
-        log.debug("Failed to import JWKS key", { kid: key.kid, error: err.message });
+        log.debug('Failed to import JWKS key', { kid: key.kid, error: err.message });
       }
     }
 
     jwksCache = newCache;
     jwksFetchedAt = now;
-    log.debug("JWKS refreshed", { keyCount: newCache.size });
+    log.debug('JWKS refreshed', { keyCount: newCache.size });
     return jwksCache;
   } catch (err: any) {
-    log.warn("JWKS fetch error", { error: err.message });
+    log.warn('JWKS fetch error', { error: err.message });
     return jwksCache; // Return stale
   }
 }
@@ -110,9 +110,9 @@ function jwkToPublicKeyPem(jwk: JwksKey): string {
       y: jwk.y,
       crv: jwk.crv,
     },
-    format: "jwk",
+    format: 'jwk',
   });
-  return keyObj.export({ type: "spki", format: "pem" }) as string;
+  return keyObj.export({ type: 'spki', format: 'pem' }) as string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -121,9 +121,9 @@ function jwkToPublicKeyPem(jwk: JwksKey): string {
 
 function base64UrlDecode(str: string): Buffer {
   // Replace URL-safe chars and add padding
-  const base64 = str.replace(/-/g, "+").replace(/_/g, "/");
-  const padding = base64.length % 4 === 0 ? "" : "=".repeat(4 - (base64.length % 4));
-  return Buffer.from(base64 + padding, "base64");
+  const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+  const padding = base64.length % 4 === 0 ? '' : '='.repeat(4 - (base64.length % 4));
+  return Buffer.from(base64 + padding, 'base64');
 }
 
 /* ------------------------------------------------------------------ */
@@ -140,9 +140,9 @@ export async function validateJwt(token: string): Promise<JwtValidationResult> {
   const config = getOidcConfig();
 
   // 1. Split JWT into parts
-  const parts = token.split(".");
+  const parts = token.split('.');
   if (parts.length !== 3) {
-    return { valid: false, error: "Malformed JWT: expected 3 parts" };
+    return { valid: false, error: 'Malformed JWT: expected 3 parts' };
   }
 
   const [headerB64, payloadB64, signatureB64] = parts;
@@ -150,13 +150,13 @@ export async function validateJwt(token: string): Promise<JwtValidationResult> {
   // 2. Decode header
   let header: { alg: string; kid?: string; typ?: string };
   try {
-    header = JSON.parse(base64UrlDecode(headerB64).toString("utf-8"));
+    header = JSON.parse(base64UrlDecode(headerB64).toString('utf-8'));
   } catch {
-    return { valid: false, error: "Malformed JWT header" };
+    return { valid: false, error: 'Malformed JWT header' };
   }
 
   // 3. Validate algorithm
-  const allowedAlgs = ["RS256", "RS384", "RS512", "ES256", "ES384", "ES512"];
+  const allowedAlgs = ['RS256', 'RS384', 'RS512', 'ES256', 'ES384', 'ES512'];
   if (!allowedAlgs.includes(header.alg)) {
     return { valid: false, error: `Unsupported algorithm: ${header.alg}` };
   }
@@ -179,7 +179,7 @@ export async function validateJwt(token: string): Promise<JwtValidationResult> {
   }
 
   if (!publicKey) {
-    return { valid: false, error: "No matching JWKS key found" };
+    return { valid: false, error: 'No matching JWKS key found' };
   }
 
   // 5. Verify signature
@@ -187,14 +187,18 @@ export async function validateJwt(token: string): Promise<JwtValidationResult> {
     const sigInput = `${headerB64}.${payloadB64}`;
     const signature = base64UrlDecode(signatureB64);
     const algMap: Record<string, string> = {
-      RS256: "RSA-SHA256", RS384: "RSA-SHA384", RS512: "RSA-SHA512",
-      ES256: "SHA256", ES384: "SHA384", ES512: "SHA512",
+      RS256: 'RSA-SHA256',
+      RS384: 'RSA-SHA384',
+      RS512: 'RSA-SHA512',
+      ES256: 'SHA256',
+      ES384: 'SHA384',
+      ES512: 'SHA512',
     };
     const verifier = createVerify(algMap[header.alg]);
     verifier.update(sigInput);
     const isValid = verifier.verify(publicKey, signature);
     if (!isValid) {
-      return { valid: false, error: "Invalid JWT signature" };
+      return { valid: false, error: 'Invalid JWT signature' };
     }
   } catch (err: any) {
     return { valid: false, error: `Signature verification failed: ${err.message}` };
@@ -203,21 +207,21 @@ export async function validateJwt(token: string): Promise<JwtValidationResult> {
   // 6. Decode and validate claims
   let claims: OidcTokenClaims;
   try {
-    claims = JSON.parse(base64UrlDecode(payloadB64).toString("utf-8"));
+    claims = JSON.parse(base64UrlDecode(payloadB64).toString('utf-8'));
   } catch {
-    return { valid: false, error: "Malformed JWT payload" };
+    return { valid: false, error: 'Malformed JWT payload' };
   }
 
   const now = Math.floor(Date.now() / 1000);
 
   // Check expiration
   if (claims.exp && claims.exp + CLOCK_SKEW_SECONDS < now) {
-    return { valid: false, error: "JWT expired" };
+    return { valid: false, error: 'JWT expired' };
   }
 
   // Check not-before
   if (claims.iat && claims.iat - CLOCK_SKEW_SECONDS > now) {
-    return { valid: false, error: "JWT not yet valid (iat in future)" };
+    return { valid: false, error: 'JWT not yet valid (iat in future)' };
   }
 
   // Check issuer
@@ -248,7 +252,7 @@ export async function validateAndExtractUser(token: string): Promise<{
 } | null> {
   const result = await validateJwt(token);
   if (!result.valid || !result.claims) {
-    log.debug("JWT validation failed", { error: result.error });
+    log.debug('JWT validation failed', { error: result.error });
     return null;
   }
 
@@ -266,8 +270,8 @@ export async function validateAndExtractUser(token: string): Promise<{
     duz: (claims.duz as string) || claims.sub,
     userName: (claims.name as string) || (claims.preferred_username as string) || claims.sub,
     roles,
-    facilityStation: (claims.facility_station as string) || "",
-    tenantId: (claims.tenant_id as string) || "default",
+    facilityStation: (claims.facility_station as string) || '',
+    tenantId: (claims.tenant_id as string) || 'default',
   };
 }
 

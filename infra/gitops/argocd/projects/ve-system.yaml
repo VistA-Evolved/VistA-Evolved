@@ -7,11 +7,11 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  description: "VistA-Evolved shared platform layer (postgres, redis, ingress, keycloak, observability)"
+  description: 'VistA-Evolved shared platform layer (postgres, redis, ingress, keycloak, observability)'
 
   # Source repos allowed
   sourceRepos:
-    - '*'  # Tighten to actual repo URL for production
+    - '*' # Tighten to actual repo URL for production
 
   # Destination namespaces -- shared layer only deploys to ve-system
   destinations:

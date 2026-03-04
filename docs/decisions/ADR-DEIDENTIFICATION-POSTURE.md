@@ -1,16 +1,18 @@
 # ADR: De-Identification Posture
 
 ## Status
+
 Accepted
 
 ## Context
+
 Analytics datasets must not leak PHI. Two approaches:
 
 1. **Full de-identification (Safe Harbor / Expert Determination)** — removes
    or generalizes all 18 HIPAA identifiers. Requires statistical validation
    and potentially expert review. This is a compliance/legal decision.
 2. **Pseudonymization** — replaces direct identifiers with deterministic
-   tokens (keyed hashes). The data remains *personal data* under GDPR but
+   tokens (keyed hashes). The data remains _personal data_ under GDPR but
    is unlinkable without the key.
 
 VistA-Evolved's analytics layer is an **engineering tool**, not a compliance

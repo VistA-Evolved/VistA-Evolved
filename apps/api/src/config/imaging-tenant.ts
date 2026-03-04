@@ -13,7 +13,7 @@
  * Phase 24C+: External config service or database-backed.
  */
 
-import { IMAGING_CONFIG } from "../config/server-config.js";
+import { IMAGING_CONFIG } from '../config/server-config.js';
 
 /* ================================================================== */
 /* Types                                                                */
@@ -49,21 +49,21 @@ const tenantConfigs = new Map<string, TenantImagingConfig>();
  * Default tenant config — used for single-tenant development.
  * All values come from IMAGING_CONFIG (env-overridable).
  */
-const DEFAULT_TENANT_ID = process.env.DEFAULT_TENANT_ID || "default";
-const DEFAULT_FACILITY_ID = process.env.DEFAULT_FACILITY_ID || "500";
+const DEFAULT_TENANT_ID = process.env.DEFAULT_TENANT_ID || 'default';
+const DEFAULT_FACILITY_ID = process.env.DEFAULT_FACILITY_ID || '500';
 
 function initDefaultTenant(): void {
   if (tenantConfigs.size > 0) return;
   tenantConfigs.set(configKey(DEFAULT_TENANT_ID, DEFAULT_FACILITY_ID), {
     tenantId: DEFAULT_TENANT_ID,
     facilityId: DEFAULT_FACILITY_ID,
-    facilityName: process.env.DEFAULT_FACILITY_NAME || "WORLDVISTA",
+    facilityName: process.env.DEFAULT_FACILITY_NAME || 'WORLDVISTA',
     orthancBaseUrl: IMAGING_CONFIG.orthancUrl,
     viewerBaseUrl: IMAGING_CONFIG.ohifUrl,
     dicomWebRoot: IMAGING_CONFIG.dicomWebRoot,
-    orthancAeTitle: process.env.ORTHANC_AE_TITLE || "VISTAEVOLVED",
+    orthancAeTitle: process.env.ORTHANC_AE_TITLE || 'VISTAEVOLVED',
     storagePrefix: `tenant/${DEFAULT_TENANT_ID}/facility/${DEFAULT_FACILITY_ID}/`,
-    aeAllowlist: parseAllowlist(process.env.FACILITY_AE_ALLOWLIST || ""),
+    aeAllowlist: parseAllowlist(process.env.FACILITY_AE_ALLOWLIST || ''),
     active: true,
   });
 }
@@ -73,7 +73,10 @@ function configKey(tenantId: string, facilityId: string): string {
 }
 
 function parseAllowlist(csv: string): string[] {
-  return csv.split(",").map((s) => s.trim().toUpperCase()).filter(Boolean);
+  return csv
+    .split(',')
+    .map((s) => s.trim().toUpperCase())
+    .filter(Boolean);
 }
 
 /* ================================================================== */
@@ -84,7 +87,10 @@ function parseAllowlist(csv: string): string[] {
  * Resolve imaging config for a tenant+facility pair.
  * Falls back to default tenant if no specific config exists.
  */
-export function resolveImagingConfig(tenantId: string, facilityId?: string): TenantImagingConfig | null {
+export function resolveImagingConfig(
+  tenantId: string,
+  facilityId?: string
+): TenantImagingConfig | null {
   initDefaultTenant();
 
   // Try exact match

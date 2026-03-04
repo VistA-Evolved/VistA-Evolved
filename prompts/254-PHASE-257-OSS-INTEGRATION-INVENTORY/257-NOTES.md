@@ -25,12 +25,14 @@
    FHIR bulk-ish pattern.
 
 ## Decisions NOT Made (Deferred)
+
 - Full FHIR Bulk Data API ($export) — deferred to Wave 9
 - Mirth Connect integration — decided against per ADR
 - External FHIR server sidecar — decided against per ADR
 - Velero mandatory requirement — referenced but not mandated
 
 ## Follow-ups
+
 - Each Wave 8 phase will reference these ADRs
 - Integration maturity matrix updated as phases complete
 

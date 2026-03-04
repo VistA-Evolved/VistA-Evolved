@@ -17,8 +17,8 @@
  *   SET LOCAL app.current_tenant_id = 'tenant-abc'
  */
 
-import { drizzle } from "drizzle-orm/node-postgres";
-import { getPgPool, type PgDb } from "./pg-db.js";
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { getPgPool, type PgDb } from './pg-db.js';
 
 export interface TenantContext {
   /** The tenant ID for this context. */
@@ -52,12 +52,12 @@ export interface TenantContext {
  */
 export function createTenantContext(tenantId: string): TenantContext {
   if (!tenantId || tenantId.trim().length === 0) {
-    throw new Error("tenantId must not be empty");
+    throw new Error('tenantId must not be empty');
   }
 
   // Basic SQL injection guard (defense-in-depth; parameterized queries are the real protection)
   if (/[';\\]/.test(tenantId)) {
-    throw new Error("tenantId contains invalid characters");
+    throw new Error('tenantId contains invalid characters');
   }
 
   return {
@@ -94,16 +94,16 @@ export function createTenantContext(tenantId: string): TenantContext {
       const pool = getPgPool();
       const client = await pool.connect();
       try {
-        await client.query("BEGIN");
+        await client.query('BEGIN');
         await client.query("SELECT set_config('app.current_tenant_id', $1, true)", [tenantId]);
         // Create a Drizzle instance bound to THIS client (not the pool)
         // so that BEGIN + RLS context apply to all queries in the callback.
         const db = drizzle(client as any) as unknown as PgDb;
         const result = await fn(db);
-        await client.query("COMMIT");
+        await client.query('COMMIT');
         return result;
       } catch (err) {
-        await client.query("ROLLBACK");
+        await client.query('ROLLBACK');
         throw err;
       } finally {
         client.release();
@@ -117,5 +117,5 @@ export function createTenantContext(tenantId: string): TenantContext {
  * Uses 'default' as the tenant ID.
  */
 export function defaultTenantContext(): TenantContext {
-  return createTenantContext("default");
+  return createTenantContext('default');
 }

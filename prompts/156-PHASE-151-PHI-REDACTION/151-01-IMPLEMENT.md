@@ -1,11 +1,13 @@
 # Phase 151 — PHI Redaction Hardening (IMPLEMENT)
 
 ## Objective
+
 Harden all audit emitters, log statements, and telemetry attributes to
 prevent PHI (patient identifiers, DFN, MRN, names) from leaking into
 logs, audit trails, or metric labels.
 
 ## Scope
+
 - **A) Centralized redaction helper** — Extend `lib/phi-redaction.ts`:
   add `dfn`, `patientdfn`, `patient_dfn`, `mrn` to PHI_FIELDS; export
   `sanitizeAuditDetail()` convenience function.
@@ -19,6 +21,7 @@ logs, audit trails, or metric labels.
   from the centralized redaction module.
 
 ## Files Changed
+
 1. `apps/api/src/lib/phi-redaction.ts` — added dfn/mrn to PHI_FIELDS + sanitizeAuditDetail export
 2. `apps/api/src/config/server-config.ts` — auditIncludesDfn=false, neverLogFields expanded
 3. `apps/api/src/lib/audit.ts` — removed patientDfn from log.info
@@ -35,6 +38,7 @@ logs, audit trails, or metric labels.
 14. `apps/api/tests/phi-redaction.test.ts` — unit tests for redaction module
 
 ## Verification
+
 - `npx tsc --noEmit` — no type errors
 - `pnpm exec vitest run tests/phi-redaction.test.ts` — all 25+ tests pass
 - `node qa/gauntlet/cli.mjs fast` — baseline maintained

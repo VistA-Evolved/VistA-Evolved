@@ -22,19 +22,19 @@
  *   - ORWPT LEGACY: Patient consent documentation RPC (if available)
  */
 
-import { createHash } from "node:crypto";
-import { log } from "../lib/logger.js";
+import { createHash } from 'node:crypto';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
 /* ------------------------------------------------------------------ */
 
 export type ConsentCategory =
-  | "telehealth_video"
-  | "telehealth_recording"
-  | "telehealth_data_sharing";
+  | 'telehealth_video'
+  | 'telehealth_recording'
+  | 'telehealth_data_sharing';
 
-export type ConsentDecision = "granted" | "denied" | "withdrawn" | "pending";
+export type ConsentDecision = 'granted' | 'denied' | 'withdrawn' | 'pending';
 
 export interface ConsentRecord {
   /** Unique consent ID */
@@ -44,7 +44,7 @@ export interface ConsentRecord {
   /** SHA-256 hash of participant identity (no PHI) */
   participantHash: string;
   /** Participant role (patient, provider, etc.) */
-  participantRole: "patient" | "provider" | "interpreter" | "caregiver";
+  participantRole: 'patient' | 'provider' | 'interpreter' | 'caregiver';
   /** Consent category */
   category: ConsentCategory;
   /** Current decision */
@@ -54,7 +54,7 @@ export interface ConsentRecord {
   /** ISO timestamp of most recent change */
   updatedAt: string;
   /** How consent was captured */
-  captureMethod: "ui_click" | "verbal_confirmed" | "pre_registered" | "implicit";
+  captureMethod: 'ui_click' | 'verbal_confirmed' | 'pre_registered' | 'implicit';
   /** Version of consent text shown (for audit trail) */
   consentTextVersion?: string;
 }
@@ -85,22 +85,22 @@ export interface ConsentRequirement {
 /** Default consent requirements */
 export const DEFAULT_CONSENT_REQUIREMENTS: ConsentRequirement[] = [
   {
-    category: "telehealth_video",
+    category: 'telehealth_video',
     required: true,
-    requiredRoles: ["patient"],
+    requiredRoles: ['patient'],
     // Provider consent is implicit (they initiate the visit)
   },
   {
-    category: "telehealth_recording",
+    category: 'telehealth_recording',
     required: false,
-    requiredRoles: ["patient", "provider"],
-    defaultDecision: "denied", // Recording OFF by default (see AGENTS.md #59)
+    requiredRoles: ['patient', 'provider'],
+    defaultDecision: 'denied', // Recording OFF by default (see AGENTS.md #59)
   },
   {
-    category: "telehealth_data_sharing",
+    category: 'telehealth_data_sharing',
     required: false,
-    requiredRoles: ["patient"],
-    defaultDecision: "pending",
+    requiredRoles: ['patient'],
+    defaultDecision: 'pending',
   },
 ];
 
@@ -117,7 +117,7 @@ let consentIdCounter = 0;
  * Hash a participant identity for non-PHI storage.
  */
 export function hashParticipant(identity: string): string {
-  return createHash("sha256").update(`consent:${identity}`).digest("hex").slice(0, 16);
+  return createHash('sha256').update(`consent:${identity}`).digest('hex').slice(0, 16);
 }
 
 /**
@@ -127,11 +127,11 @@ export function hashParticipant(identity: string): string {
 export function recordConsent(
   roomId: string,
   participantHash: string,
-  participantRole: ConsentRecord["participantRole"],
+  participantRole: ConsentRecord['participantRole'],
   category: ConsentCategory,
   decision: ConsentDecision,
-  captureMethod: ConsentRecord["captureMethod"] = "ui_click",
-  consentTextVersion?: string,
+  captureMethod: ConsentRecord['captureMethod'] = 'ui_click',
+  consentTextVersion?: string
 ): ConsentRecord {
   // Enforce capacity
   if (!consentStore.has(roomId) && consentStore.size >= MAX_ROOMS_TRACKED) {
@@ -144,9 +144,7 @@ export function recordConsent(
 
   // Check for existing record (idempotent update)
   const existing = records.find(
-    (r) =>
-      r.participantHash === participantHash &&
-      r.category === category,
+    (r) => r.participantHash === participantHash && r.category === category
   );
 
   if (existing) {
@@ -177,7 +175,9 @@ export function recordConsent(
   records.push(record);
   consentStore.set(roomId, records);
 
-  log.info(`Consent recorded: room=${roomId} category=${category} decision=${decision} role=${participantRole}`);
+  log.info(
+    `Consent recorded: room=${roomId} category=${category} decision=${decision} role=${participantRole}`
+  );
   return record;
 }
 
@@ -187,20 +187,17 @@ export function recordConsent(
  */
 export function evaluateConsentPosture(
   roomId: string,
-  requirements: ConsentRequirement[] = DEFAULT_CONSENT_REQUIREMENTS,
+  requirements: ConsentRequirement[] = DEFAULT_CONSENT_REQUIREMENTS
 ): ConsentPosture {
   const records = consentStore.get(roomId) || [];
-  const missingConsents: ConsentPosture["missingConsents"] = [];
+  const missingConsents: ConsentPosture['missingConsents'] = [];
 
   for (const req of requirements) {
     if (!req.required) continue;
 
     for (const role of req.requiredRoles) {
       const consent = records.find(
-        (r) =>
-          r.participantRole === role &&
-          r.category === req.category &&
-          r.decision === "granted",
+        (r) => r.participantRole === role && r.category === req.category && r.decision === 'granted'
       );
       if (!consent) {
         missingConsents.push({ participantRole: role, category: req.category });
@@ -209,12 +206,9 @@ export function evaluateConsentPosture(
   }
 
   // Recording is allowed only if ALL participants granted recording consent
-  const recordingConsents = records.filter(
-    (r) => r.category === "telehealth_recording",
-  );
+  const recordingConsents = records.filter((r) => r.category === 'telehealth_recording');
   const recordingAllowed =
-    recordingConsents.length > 0 &&
-    recordingConsents.every((r) => r.decision === "granted");
+    recordingConsents.length > 0 && recordingConsents.every((r) => r.decision === 'granted');
 
   return {
     roomId,
@@ -238,15 +232,15 @@ export function getConsentRecords(roomId: string): ConsentRecord[] {
 export function withdrawConsent(
   roomId: string,
   participantHash: string,
-  category: ConsentCategory,
+  category: ConsentCategory
 ): ConsentRecord | undefined {
   const records = consentStore.get(roomId) || [];
   const record = records.find(
-    (r) => r.participantHash === participantHash && r.category === category,
+    (r) => r.participantHash === participantHash && r.category === category
   );
 
   if (record) {
-    record.decision = "withdrawn";
+    record.decision = 'withdrawn';
     record.updatedAt = new Date().toISOString();
     log.info(`Consent withdrawn: room=${roomId} category=${category}`);
   }

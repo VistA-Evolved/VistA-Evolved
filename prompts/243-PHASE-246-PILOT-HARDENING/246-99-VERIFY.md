@@ -1,6 +1,7 @@
 # Phase 246 — Pilot Hospital Hardening — VERIFY
 
 ## Gates
+
 1. site-config.ts exists with site config store
 2. preflight.ts exists with runPreflightChecks export
 3. pilot-routes.ts exists with GET/POST endpoints
@@ -11,6 +12,7 @@
 8. No console.log in new files
 
 ## Run
+
 ```powershell
 .\scripts\verify-phase246-pilot-hardening.ps1
 ```

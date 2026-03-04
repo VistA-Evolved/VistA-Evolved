@@ -26,7 +26,7 @@ export interface CqlLibrary {
   /** ELM (Expression Logical Model) JSON -- compiled CQL */
   elmJson: string | null;
   /** Library status */
-  status: "draft" | "active" | "retired";
+  status: 'draft' | 'active' | 'retired';
   /** Dependencies (other library references) */
   dependencies: Array<{ name: string; version: string }>;
   /** Value sets referenced */
@@ -37,14 +37,22 @@ export interface CqlLibrary {
 
 // -- Quality Measure Definitions --
 
-export type MeasureScoring = "proportion" | "ratio" | "continuous-variable" | "cohort";
+export type MeasureScoring = 'proportion' | 'ratio' | 'continuous-variable' | 'cohort';
 
-export type MeasureType = "process" | "outcome" | "structure" | "composite" | "patient-reported";
+export type MeasureType = 'process' | 'outcome' | 'structure' | 'composite' | 'patient-reported';
 
-export type ReportingProgram = "eCQM" | "HEDIS" | "UDS" | "MIPS" | "custom";
+export type ReportingProgram = 'eCQM' | 'HEDIS' | 'UDS' | 'MIPS' | 'custom';
 
 export interface MeasurePopulation {
-  code: "initial-population" | "denominator" | "denominator-exclusion" | "denominator-exception" | "numerator" | "numerator-exclusion" | "measure-population" | "measure-observation";
+  code:
+    | 'initial-population'
+    | 'denominator'
+    | 'denominator-exclusion'
+    | 'denominator-exception'
+    | 'numerator'
+    | 'numerator-exclusion'
+    | 'measure-population'
+    | 'measure-observation';
   /** CQL expression name for this population */
   cqlExpression: string;
   description: string;
@@ -71,9 +79,9 @@ export interface QualityMeasure {
   measurementPeriodStart: string;
   measurementPeriodEnd: string;
   /** Improvement notation */
-  improvementNotation: "increase" | "decrease";
+  improvementNotation: 'increase' | 'decrease';
   /** Active / draft / retired */
-  status: "draft" | "active" | "retired";
+  status: 'draft' | 'active' | 'retired';
   /** Content pack that installed this measure */
   contentPackId: string | null;
   createdAt: string;
@@ -105,7 +113,7 @@ export interface MeasureEvalResult {
   /** Total patients evaluated */
   totalPatients: number;
   /** Evaluation status */
-  status: "pending" | "running" | "completed" | "failed";
+  status: 'pending' | 'running' | 'completed' | 'failed';
   /** Error message if failed */
   error: string | null;
   /** Duration in ms */
@@ -131,7 +139,7 @@ export interface PatientMeasureResult {
 
 // -- Clinical Reasoning Resources --
 
-export type PlanDefinitionStatus = "draft" | "active" | "retired" | "unknown";
+export type PlanDefinitionStatus = 'draft' | 'active' | 'retired' | 'unknown';
 
 export interface PlanDefinitionAction {
   id: string;
@@ -140,7 +148,7 @@ export interface PlanDefinitionAction {
   /** Condition for action (CQL expression ref) */
   conditionExpression: string | null;
   /** Type: create order, recommend, alert */
-  type: "create" | "update" | "remove" | "fire-event" | "recommend";
+  type: 'create' | 'update' | 'remove' | 'fire-event' | 'recommend';
   /** Resource type to act on */
   resourceType: string | null;
   /** Sub-actions */
@@ -159,7 +167,7 @@ export interface PlanDefinition {
   /** Actions in this plan */
   actions: PlanDefinitionAction[];
   /** Goal descriptions */
-  goals: Array<{ description: string; priority: "high" | "medium" | "low" }>;
+  goals: Array<{ description: string; priority: 'high' | 'medium' | 'low' }>;
   createdAt: string;
   updatedAt: string;
 }
@@ -172,7 +180,7 @@ export interface ActivityDefinition {
   description: string;
   status: PlanDefinitionStatus;
   /** What kind of activity */
-  kind: "MedicationRequest" | "ServiceRequest" | "CommunicationRequest" | "Task" | "Procedure";
+  kind: 'MedicationRequest' | 'ServiceRequest' | 'CommunicationRequest' | 'Task' | 'Procedure';
   /** CQL library for dynamic values */
   cqlLibraryId: string | null;
   /** Dynamic value expressions */
@@ -183,7 +191,7 @@ export interface ActivityDefinition {
 
 // -- Measure Report (QRDA-compatible output) --
 
-export type ReportType = "individual" | "subject-list" | "summary" | "data-collection";
+export type ReportType = 'individual' | 'subject-list' | 'summary' | 'data-collection';
 
 export interface MeasureReport {
   id: string;
@@ -200,9 +208,9 @@ export interface MeasureReport {
   /** Generated timestamp */
   generatedAt: string;
   /** QRDA format version for export */
-  qrdaVersion: "QRDA-I" | "QRDA-III" | null;
+  qrdaVersion: 'QRDA-I' | 'QRDA-III' | null;
   /** Export status */
-  exportStatus: "pending" | "generated" | "submitted";
+  exportStatus: 'pending' | 'generated' | 'submitted';
 }
 
 // -- Dashboard Stats --

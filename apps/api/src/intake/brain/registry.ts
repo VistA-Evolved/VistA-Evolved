@@ -13,10 +13,10 @@ import type {
   BrainProviderFamily,
   BrainProviderHealth,
   BrainDecisionAudit,
-} from "./types.js";
-import { parseBrainProviderId } from "./types.js";
-import { randomBytes, createHash } from "node:crypto";
-import { log } from "../../lib/logger.js";
+} from './types.js';
+import { parseBrainProviderId } from './types.js';
+import { randomBytes, createHash } from 'node:crypto';
+import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Registry Store                                                       */
@@ -40,8 +40,8 @@ export function registerBrainPlugin(plugin: IntakeBrainPlugin): void {
 }
 
 export function unregisterBrainPlugin(id: BrainProviderId): boolean {
-  if (id === "rules_engine") {
-    log.warn("Cannot unregister rules_engine -- it is the mandatory fallback");
+  if (id === 'rules_engine') {
+    log.warn('Cannot unregister rules_engine -- it is the mandatory fallback');
     return false;
   }
   return plugins.delete(id);
@@ -71,7 +71,7 @@ export function resolveBrainPlugin(requestedId: BrainProviderId): {
 
   // Try family match (e.g., "llm_constrained" -> any llm_provider:*)
   const parsed = parseBrainProviderId(requestedId);
-  if (parsed.family !== "rules_engine") {
+  if (parsed.family !== 'rules_engine') {
     for (const [id, p] of plugins) {
       if (p.family === parsed.family) {
         log.info(`Brain provider ${requestedId} not found, using family match: ${id}`);
@@ -81,16 +81,20 @@ export function resolveBrainPlugin(requestedId: BrainProviderId): {
   }
 
   // Final fallback: rules_engine
-  const rules = plugins.get("rules_engine");
+  const rules = plugins.get('rules_engine');
   if (rules) {
-    if (requestedId !== "rules_engine" && requestedId !== "rules") {
+    if (requestedId !== 'rules_engine' && requestedId !== 'rules') {
       log.warn(`Brain provider ${requestedId} not found, falling back to rules_engine`);
     }
-    return { plugin: rules, fellBack: requestedId !== "rules_engine" && requestedId !== "rules", originalId: requestedId };
+    return {
+      plugin: rules,
+      fellBack: requestedId !== 'rules_engine' && requestedId !== 'rules',
+      originalId: requestedId,
+    };
   }
 
   // Should never happen -- rules_engine is always registered
-  throw new Error("CRITICAL: rules_engine brain plugin not registered");
+  throw new Error('CRITICAL: rules_engine brain plugin not registered');
 }
 
 /* ------------------------------------------------------------------ */
@@ -101,7 +105,7 @@ export interface BrainPluginInfo {
   id: BrainProviderId;
   name: string;
   family: BrainProviderFamily;
-  capabilities: ReturnType<IntakeBrainPlugin["getCapabilities"]>;
+  capabilities: ReturnType<IntakeBrainPlugin['getCapabilities']>;
 }
 
 export function listBrainPlugins(): BrainPluginInfo[] {
@@ -127,9 +131,9 @@ export async function checkAllBrainHealth(): Promise<BrainProviderHealth[]> {
       results.push({
         providerId: plugin.id,
         family: plugin.family,
-        status: "unavailable",
+        status: 'unavailable',
         lastCheckAt: new Date().toISOString(),
-        detail: err?.message ?? "Health check failed",
+        detail: err?.message ?? 'Health check failed',
       });
     }
   }
@@ -141,11 +145,11 @@ export async function checkAllBrainHealth(): Promise<BrainProviderHealth[]> {
 /* ------------------------------------------------------------------ */
 
 export function logBrainDecision(
-  audit: Omit<BrainDecisionAudit, "id" | "timestamp">
+  audit: Omit<BrainDecisionAudit, 'id' | 'timestamp'>
 ): BrainDecisionAudit {
   const entry: BrainDecisionAudit = {
     ...audit,
-    id: randomBytes(16).toString("hex"),
+    id: randomBytes(16).toString('hex'),
     timestamp: new Date().toISOString(),
   };
   decisionAuditLog.push(entry);
@@ -204,8 +208,5 @@ export function getBrainAuditStats(): {
 
 /** Hash inputs for audit (no PHI in the hash) */
 export function hashForAudit(data: unknown): string {
-  return createHash("sha256")
-    .update(JSON.stringify(data))
-    .digest("hex")
-    .slice(0, 16);
+  return createHash('sha256').update(JSON.stringify(data)).digest('hex').slice(0, 16);
 }

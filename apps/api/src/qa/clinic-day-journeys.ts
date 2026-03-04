@@ -16,7 +16,7 @@ export interface JourneyStep {
   /** Human-readable step name */
   name: string;
   /** HTTP method */
-  method: "GET" | "POST" | "PUT" | "DELETE";
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE';
   /** API path (may contain :param placeholders resolved at runtime) */
   path: string;
   /** Query params or body factory */
@@ -37,7 +37,7 @@ export interface JourneyDefinition {
   id: string;
   name: string;
   description: string;
-  category: "outpatient" | "ed" | "lab" | "radiology" | "rcm" | "portal";
+  category: 'outpatient' | 'ed' | 'lab' | 'radiology' | 'rcm' | 'portal';
   steps: JourneyStep[];
 }
 
@@ -85,257 +85,273 @@ export interface ClinicDayReport {
 // ── Journey Definitions ─────────────────────────────────────
 
 export const J1_OUTPATIENT: JourneyDefinition = {
-  id: "J1",
-  name: "Outpatient Visit",
-  description: "Queue ticket -> rooming vitals -> provider note (template) -> order draft -> checkout",
-  category: "outpatient",
+  id: 'J1',
+  name: 'Outpatient Visit',
+  description:
+    'Queue ticket -> rooming vitals -> provider note (template) -> order draft -> checkout',
+  category: 'outpatient',
   steps: [
     {
-      name: "Create queue ticket",
-      method: "POST",
-      path: "/queue/tickets",
-      payload: { department: "primary-care", patientDfn: "3", patientName: "TEST,PATIENT", priority: "normal" },
+      name: 'Create queue ticket',
+      method: 'POST',
+      path: '/queue/tickets',
+      payload: {
+        department: 'primary-care',
+        patientDfn: '3',
+        patientName: 'TEST,PATIENT',
+        priority: 'normal',
+      },
       expectedStatus: 200,
-      requiredFields: ["ok", "ticket.id", "ticket.ticketNumber"],
+      requiredFields: ['ok', 'ticket.id', 'ticket.ticketNumber'],
       expectedRpcs: [],
     },
     {
-      name: "Call next patient",
-      method: "POST",
-      path: "/queue/departments/primary-care/call-next",
+      name: 'Call next patient',
+      method: 'POST',
+      path: '/queue/departments/primary-care/call-next',
       expectedStatus: 200,
-      requiredFields: ["ok", "ticket"],
+      requiredFields: ['ok', 'ticket'],
       expectedRpcs: [],
     },
     {
-      name: "Read vitals",
-      method: "GET",
-      path: "/vista/nursing/vitals?dfn=3",
+      name: 'Read vitals',
+      method: 'GET',
+      path: '/vista/nursing/vitals?dfn=3',
       expectedStatus: 200,
-      requiredFields: ["ok"],
-      expectedRpcs: ["ORQQVI VITALS"],
+      requiredFields: ['ok'],
+      expectedRpcs: ['ORQQVI VITALS'],
     },
     {
-      name: "List specialty templates",
-      method: "GET",
-      path: "/templates/specialty-packs",
+      name: 'List specialty templates',
+      method: 'GET',
+      path: '/templates/specialty-packs',
       expectedStatus: 200,
-      requiredFields: ["ok", "packs"],
+      requiredFields: ['ok', 'packs'],
       expectedRpcs: [],
     },
     {
-      name: "Generate draft note from template",
-      method: "POST",
-      path: "/encounter/note-builder/generate",
-      payload: { templateId: "demo", patientDfn: "3", providerDuz: "87", encounterDate: "2026-02-27" },
+      name: 'Generate draft note from template',
+      method: 'POST',
+      path: '/encounter/note-builder/generate',
+      payload: {
+        templateId: 'demo',
+        patientDfn: '3',
+        providerDuz: '87',
+        encounterDate: '2026-02-27',
+      },
       expectedStatus: 200,
-      requiredFields: ["ok"],
+      requiredFields: ['ok'],
       expectedRpcs: [],
     },
     {
-      name: "Read active orders",
-      method: "GET",
-      path: "/vista/orders?dfn=3",
+      name: 'Read active orders',
+      method: 'GET',
+      path: '/vista/orders?dfn=3',
       expectedStatus: 200,
-      requiredFields: ["ok"],
-      expectedRpcs: ["ORWORB FASTUSER", "ORWOR UNSIGN"],
+      requiredFields: ['ok'],
+      expectedRpcs: ['ORWORB FASTUSER', 'ORWOR UNSIGN'],
     },
     {
-      name: "Complete queue ticket",
-      method: "POST",
-      path: "/queue/tickets/:ticketId/complete",
+      name: 'Complete queue ticket',
+      method: 'POST',
+      path: '/queue/tickets/:ticketId/complete',
       expectedStatus: 200,
-      requiredFields: ["ok"],
+      requiredFields: ['ok'],
       expectedRpcs: [],
     },
   ],
 };
 
 export const J2_ED: JourneyDefinition = {
-  id: "J2",
-  name: "Emergency Department",
-  description: "Triage queue -> provider note -> imaging order -> result acknowledge -> discharge",
-  category: "ed",
+  id: 'J2',
+  name: 'Emergency Department',
+  description: 'Triage queue -> provider note -> imaging order -> result acknowledge -> discharge',
+  category: 'ed',
   steps: [
     {
-      name: "Create ED triage ticket",
-      method: "POST",
-      path: "/queue/tickets",
-      payload: { department: "emergency", patientDfn: "3", patientName: "TEST,PATIENT", priority: "urgent" },
+      name: 'Create ED triage ticket',
+      method: 'POST',
+      path: '/queue/tickets',
+      payload: {
+        department: 'emergency',
+        patientDfn: '3',
+        patientName: 'TEST,PATIENT',
+        priority: 'urgent',
+      },
       expectedStatus: 200,
-      requiredFields: ["ok", "ticket.id"],
+      requiredFields: ['ok', 'ticket.id'],
       expectedRpcs: [],
     },
     {
-      name: "Read patient allergies",
-      method: "GET",
-      path: "/vista/allergies?dfn=3",
+      name: 'Read patient allergies',
+      method: 'GET',
+      path: '/vista/allergies?dfn=3',
       expectedStatus: 200,
-      requiredFields: ["ok"],
-      expectedRpcs: ["ORQQAL LIST"],
+      requiredFields: ['ok'],
+      expectedRpcs: ['ORQQAL LIST'],
     },
     {
-      name: "Read patient problems",
-      method: "GET",
-      path: "/vista/problems?dfn=3",
+      name: 'Read patient problems',
+      method: 'GET',
+      path: '/vista/problems?dfn=3',
       expectedStatus: 200,
-      requiredFields: ["ok"],
-      expectedRpcs: ["ORQQPL PROBLEM LIST"],
+      requiredFields: ['ok'],
+      expectedRpcs: ['ORQQPL PROBLEM LIST'],
     },
     {
-      name: "Check imaging health",
-      method: "GET",
-      path: "/imaging/health",
+      name: 'Check imaging health',
+      method: 'GET',
+      path: '/imaging/health',
       expectedStatus: 200,
-      requiredFields: ["ok"],
+      requiredFields: ['ok'],
       expectedRpcs: [],
     },
     {
-      name: "Read discharge summaries",
-      method: "GET",
-      path: "/vista/dc-summaries?dfn=3",
+      name: 'Read discharge summaries',
+      method: 'GET',
+      path: '/vista/dc-summaries?dfn=3',
       expectedStatus: 200,
-      requiredFields: ["ok"],
-      expectedRpcs: ["TIU DOCUMENTS BY CONTEXT"],
+      requiredFields: ['ok'],
+      expectedRpcs: ['TIU DOCUMENTS BY CONTEXT'],
     },
   ],
 };
 
 export const J3_LAB: JourneyDefinition = {
-  id: "J3",
-  name: "Lab Workflow",
-  description: "Order -> specimen collected (ops state) -> results view -> notify",
-  category: "lab",
+  id: 'J3',
+  name: 'Lab Workflow',
+  description: 'Order -> specimen collected (ops state) -> results view -> notify',
+  category: 'lab',
   steps: [
     {
-      name: "Read lab results",
-      method: "GET",
-      path: "/vista/labs?dfn=3",
+      name: 'Read lab results',
+      method: 'GET',
+      path: '/vista/labs?dfn=3',
       expectedStatus: 200,
-      requiredFields: ["ok"],
-      expectedRpcs: ["ORWLRR INTERIM"],
+      requiredFields: ['ok'],
+      expectedRpcs: ['ORWLRR INTERIM'],
     },
     {
-      name: "Read cumulative lab report",
-      method: "GET",
-      path: "/vista/reports?dfn=3&reportId=OR_R18:LAB",
+      name: 'Read cumulative lab report',
+      method: 'GET',
+      path: '/vista/reports?dfn=3&reportId=OR_R18:LAB',
       expectedStatus: 200,
-      requiredFields: ["ok"],
-      expectedRpcs: ["ORWRP REPORT TEXT"],
+      requiredFields: ['ok'],
+      expectedRpcs: ['ORWRP REPORT TEXT'],
     },
     {
-      name: "Read notifications",
-      method: "GET",
-      path: "/vista/notifications?dfn=3",
+      name: 'Read notifications',
+      method: 'GET',
+      path: '/vista/notifications?dfn=3',
       expectedStatus: 200,
-      requiredFields: ["ok"],
-      expectedRpcs: ["ORWORB FASTUSER"],
+      requiredFields: ['ok'],
+      expectedRpcs: ['ORWORB FASTUSER'],
     },
   ],
 };
 
 export const J4_RADIOLOGY: JourneyDefinition = {
-  id: "J4",
-  name: "Radiology Workflow",
-  description: "Order -> schedule -> study arrives (Orthanc) -> report view",
-  category: "radiology",
+  id: 'J4',
+  name: 'Radiology Workflow',
+  description: 'Order -> schedule -> study arrives (Orthanc) -> report view',
+  category: 'radiology',
   steps: [
     {
-      name: "Check imaging worklist",
-      method: "GET",
-      path: "/imaging/worklist",
+      name: 'Check imaging worklist',
+      method: 'GET',
+      path: '/imaging/worklist',
       expectedStatus: 200,
-      requiredFields: ["ok"],
+      requiredFields: ['ok'],
       expectedRpcs: [],
     },
     {
-      name: "Check imaging health",
-      method: "GET",
-      path: "/imaging/health",
+      name: 'Check imaging health',
+      method: 'GET',
+      path: '/imaging/health',
       expectedStatus: 200,
-      requiredFields: ["ok"],
+      requiredFields: ['ok'],
       expectedRpcs: [],
     },
     {
-      name: "Read imaging studies",
-      method: "GET",
-      path: "/vista/reports?dfn=3&reportId=OR_R18:RAD",
+      name: 'Read imaging studies',
+      method: 'GET',
+      path: '/vista/reports?dfn=3&reportId=OR_R18:RAD',
       expectedStatus: 200,
-      requiredFields: ["ok"],
-      expectedRpcs: ["ORWRP REPORT TEXT"],
+      requiredFields: ['ok'],
+      expectedRpcs: ['ORWRP REPORT TEXT'],
     },
   ],
 };
 
 export const J5_RCM: JourneyDefinition = {
-  id: "J5",
-  name: "Revenue Cycle Management",
-  description: "Claim draft -> scrub -> submit (manual) -> denial -> appeal packet -> resolved",
-  category: "rcm",
+  id: 'J5',
+  name: 'Revenue Cycle Management',
+  description: 'Claim draft -> scrub -> submit (manual) -> denial -> appeal packet -> resolved',
+  category: 'rcm',
   steps: [
     {
-      name: "List claims",
-      method: "GET",
-      path: "/rcm/claims",
+      name: 'List claims',
+      method: 'GET',
+      path: '/rcm/claims',
       expectedStatus: 200,
-      requiredFields: ["ok", "claims"],
+      requiredFields: ['ok', 'claims'],
       expectedRpcs: [],
     },
     {
-      name: "List payers",
-      method: "GET",
-      path: "/rcm/payers",
+      name: 'List payers',
+      method: 'GET',
+      path: '/rcm/payers',
       expectedStatus: 200,
-      requiredFields: ["ok", "payers"],
+      requiredFields: ['ok', 'payers'],
       expectedRpcs: [],
     },
     {
-      name: "Check connector health",
-      method: "GET",
-      path: "/rcm/connectors/health",
+      name: 'Check connector health',
+      method: 'GET',
+      path: '/rcm/connectors/health',
       expectedStatus: 200,
-      requiredFields: ["ok"],
+      requiredFields: ['ok'],
       expectedRpcs: [],
     },
     {
-      name: "Check RCM audit integrity",
-      method: "GET",
-      path: "/rcm/audit/verify",
+      name: 'Check RCM audit integrity',
+      method: 'GET',
+      path: '/rcm/audit/verify',
       expectedStatus: 200,
-      requiredFields: ["ok"],
+      requiredFields: ['ok'],
       expectedRpcs: [],
     },
   ],
 };
 
 export const J6_PORTAL: JourneyDefinition = {
-  id: "J6",
-  name: "Patient Portal",
-  description: "Login -> consents -> documents generate -> messaging -> appointments view",
-  category: "portal",
+  id: 'J6',
+  name: 'Patient Portal',
+  description: 'Login -> consents -> documents generate -> messaging -> appointments view',
+  category: 'portal',
   steps: [
     {
-      name: "Portal health check",
-      method: "GET",
-      path: "/portal/health",
+      name: 'Portal health check',
+      method: 'GET',
+      path: '/portal/health',
       expectedStatus: 200,
-      requiredFields: ["ok"],
+      requiredFields: ['ok'],
       expectedRpcs: [],
     },
     {
-      name: "List supported locales",
-      method: "GET",
-      path: "/i18n/locales",
+      name: 'List supported locales',
+      method: 'GET',
+      path: '/i18n/locales',
       expectedStatus: 200,
-      requiredFields: ["ok", "locales"],
+      requiredFields: ['ok', 'locales'],
       expectedRpcs: [],
     },
     {
-      name: "Check scheduling mode",
-      method: "GET",
-      path: "/scheduling/mode",
+      name: 'Check scheduling mode',
+      method: 'GET',
+      path: '/scheduling/mode',
       expectedStatus: 200,
-      requiredFields: ["ok", "data"],
+      requiredFields: ['ok', 'data'],
       expectedRpcs: [],
     },
   ],
@@ -377,7 +393,7 @@ export function recordJourneyResult(result: JourneyResult): void {
 export async function runJourney(
   journey: JourneyDefinition,
   baseUrl: string,
-  cookieHeader?: string,
+  cookieHeader?: string
 ): Promise<JourneyResult> {
   const start = Date.now();
   const stepResults: JourneyStepResult[] = [];
@@ -400,15 +416,15 @@ export async function runJourney(
 
       const url = `${baseUrl}${resolvedPath}`;
       const headers: Record<string, string> = {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       };
-      if (cookieHeader) headers["Cookie"] = cookieHeader;
+      if (cookieHeader) headers['Cookie'] = cookieHeader;
 
       const fetchOpts: RequestInit = {
         method: step.method,
         headers,
       };
-      if (step.method !== "GET" && step.payload) {
+      if (step.method !== 'GET' && step.payload) {
         fetchOpts.body = JSON.stringify(step.payload);
       }
 
@@ -432,13 +448,13 @@ export async function runJourney(
       // Check required fields
       missingFields = checkRequiredFields(body, step.requiredFields);
       if (missingFields.length > 0) {
-        errors.push(`Missing fields: ${missingFields.join(", ")}`);
+        errors.push(`Missing fields: ${missingFields.join(', ')}`);
       }
 
       // Extract keys for subsequent steps
       if (step.extractKeys) {
         for (const [localName, jsonPath] of Object.entries(step.extractKeys)) {
-          const val = getNestedValue(body, jsonPath.replace("body.", ""));
+          const val = getNestedValue(body, jsonPath.replace('body.', ''));
           if (val !== undefined) {
             context[localName] = String(val);
           }
@@ -446,8 +462,8 @@ export async function runJourney(
       }
 
       // Auto-extract ticket ID from queue creation steps
-      if (step.path === "/queue/tickets" && body?.ticket?.id) {
-        context["ticketId"] = body.ticket.id;
+      if (step.path === '/queue/tickets' && body?.ticket?.id) {
+        context['ticketId'] = body.ticket.id;
       }
 
       // RPC trace is informational (would need API-side trace recording for live validation)
@@ -495,7 +511,7 @@ export async function runJourney(
  */
 export async function runAllJourneys(
   baseUrl: string,
-  cookieHeader?: string,
+  cookieHeader?: string
 ): Promise<ClinicDayReport> {
   const start = Date.now();
   const results: JourneyResult[] = [];
@@ -533,10 +549,10 @@ function checkRequiredFields(body: any, fields: string[]): string[] {
 }
 
 function getNestedValue(obj: any, path: string): any {
-  const parts = path.split(".");
+  const parts = path.split('.');
   let current = obj;
   for (const part of parts) {
-    if (current == null || typeof current !== "object") return undefined;
+    if (current == null || typeof current !== 'object') return undefined;
     current = current[part];
   }
   return current;

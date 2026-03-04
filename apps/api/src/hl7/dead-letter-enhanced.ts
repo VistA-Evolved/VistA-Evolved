@@ -9,9 +9,9 @@
  *
  * Pattern: Wraps existing registry.ts DLQ, adds raw message side-store.
  */
-import { createHash, randomBytes } from "crypto";
-import { recordMessageEvent } from "./message-event-store.js";
-import { log } from "../lib/logger.js";
+import { createHash, randomBytes } from 'crypto';
+import { recordMessageEvent } from './message-event-store.js';
+import { log } from '../lib/logger.js';
 
 /* ── Types ─────────────────────────────────────────────── */
 
@@ -41,7 +41,7 @@ export interface EnhancedDeadLetterEntry {
 export interface ReplayResult {
   ok: boolean;
   entryId: string;
-  action: "replayed" | "not_found" | "already_resolved" | "no_raw_message";
+  action: 'replayed' | 'not_found' | 'already_resolved' | 'no_raw_message';
   detail: string;
 }
 
@@ -83,7 +83,7 @@ let _dlqRepo: Hl7DlqRepo | null = null;
  */
 export function initHl7DlqRepo(repo: Hl7DlqRepo): void {
   _dlqRepo = repo;
-  log.info("HL7 dead-letter store wired to PG (W41-P5)");
+  log.info('HL7 dead-letter store wired to PG (W41-P5)');
 }
 
 /**
@@ -100,32 +100,36 @@ export async function rehydrateHl7Dlq(tenantId: string): Promise<void> {
         if (row.rawMessage) rawMessageVault.set(row.id, row.rawMessage);
       }
     }
-    log.info("HL7 DLQ rehydrated from PG", { count: rows.length });
-  } catch (e) { log.warn("HL7 DLQ rehydration failed", { error: String(e) }); }
+    log.info('HL7 DLQ rehydrated from PG', { count: rows.length });
+  } catch (e) {
+    log.warn('HL7 DLQ rehydration failed', { error: String(e) });
+  }
 }
 
 function persistDlqEntry(entry: EnhancedDeadLetterEntry, rawMessage?: string): void {
   if (!_dlqRepo) return;
   // PG columns received_at, last_retry_at, resolved_at are BIGINT (epoch ms)
-  void _dlqRepo.upsert({
-    id: entry.id,
-    tenantId: entry.tenantId,
-    messageType: entry.messageType,
-    messageControlId: entry.messageControlId,
-    sendingApplication: entry.sendingApplication,
-    sendingFacility: entry.sendingFacility,
-    receivedAt: entry.receivedAt,
-    reason: entry.reason,
-    retryCount: entry.retryCount,
-    messageHash: entry.messageHash,
-    messageSizeBytes: entry.messageSizeBytes,
-    lastRetryAt: entry.lastRetryAt || null,
-    resolved: entry.resolved,
-    resolvedAt: entry.resolvedAt || null,
-    resolvedBy: entry.resolvedBy,
-    rawMessage: rawMessage || null,
-    createdAt: new Date(entry.receivedAt).toISOString(),
-  }).catch((e: unknown) => log.warn("HL7 DLQ persist failed", { error: String(e) }));
+  void _dlqRepo
+    .upsert({
+      id: entry.id,
+      tenantId: entry.tenantId,
+      messageType: entry.messageType,
+      messageControlId: entry.messageControlId,
+      sendingApplication: entry.sendingApplication,
+      sendingFacility: entry.sendingFacility,
+      receivedAt: entry.receivedAt,
+      reason: entry.reason,
+      retryCount: entry.retryCount,
+      messageHash: entry.messageHash,
+      messageSizeBytes: entry.messageSizeBytes,
+      lastRetryAt: entry.lastRetryAt || null,
+      resolved: entry.resolved,
+      resolvedAt: entry.resolvedAt || null,
+      resolvedBy: entry.resolvedBy,
+      rawMessage: rawMessage || null,
+      createdAt: new Date(entry.receivedAt).toISOString(),
+    })
+    .catch((e: unknown) => log.warn('HL7 DLQ persist failed', { error: String(e) }));
 }
 
 /**
@@ -141,10 +145,10 @@ export function addEnhancedDeadLetter(opts: {
   rawMessage: string;
   tenantId: string;
 }): EnhancedDeadLetterEntry {
-  const id = `dlq-${randomBytes(8).toString("hex")}`;
+  const id = `dlq-${randomBytes(8).toString('hex')}`;
   const now = Date.now();
-  const msgHash = createHash("sha256").update(opts.rawMessage).digest("hex");
-  const msgSize = Buffer.byteLength(opts.rawMessage, "utf-8");
+  const msgHash = createHash('sha256').update(opts.rawMessage).digest('hex');
+  const msgSize = Buffer.byteLength(opts.rawMessage, 'utf-8');
 
   const entry: EnhancedDeadLetterEntry = {
     id,
@@ -179,14 +183,14 @@ export function addEnhancedDeadLetter(opts: {
   // Record in message event store
   recordMessageEvent({
     tenantId: opts.tenantId,
-    direction: "inbound",
+    direction: 'inbound',
     messageType: opts.messageType,
     messageControlId: opts.messageControlId,
     sendingApplication: opts.sendingApplication,
     sendingFacility: opts.sendingFacility,
-    receivingApplication: "",
-    receivingFacility: "",
-    status: "dead_lettered",
+    receivingApplication: '',
+    receivingFacility: '',
+    status: 'dead_lettered',
     rawMessage: opts.rawMessage,
     errorDetail: opts.reason,
   });
@@ -236,13 +240,13 @@ export function replayDeadLetter(
 ): ReplayResult & { rawMessage?: string } {
   const entry = enhancedDlq.find((e) => e.id === id);
   if (!entry) {
-    return { ok: false, entryId: id, action: "not_found", detail: "DLQ entry not found" };
+    return { ok: false, entryId: id, action: 'not_found', detail: 'DLQ entry not found' };
   }
   if (entry.resolved) {
     return {
       ok: false,
       entryId: id,
-      action: "already_resolved",
+      action: 'already_resolved',
       detail: `Resolved at ${new Date(entry.resolvedAt!).toISOString()} by ${entry.resolvedBy}`,
     };
   }
@@ -252,8 +256,8 @@ export function replayDeadLetter(
     return {
       ok: false,
       entryId: id,
-      action: "no_raw_message",
-      detail: "Raw message evicted from vault",
+      action: 'no_raw_message',
+      detail: 'Raw message evicted from vault',
     };
   }
 
@@ -264,21 +268,21 @@ export function replayDeadLetter(
   // Record replay event
   recordMessageEvent({
     tenantId: entry.tenantId,
-    direction: "inbound",
+    direction: 'inbound',
     messageType: entry.messageType,
     messageControlId: entry.messageControlId,
     sendingApplication: entry.sendingApplication,
     sendingFacility: entry.sendingFacility,
-    receivingApplication: "",
-    receivingFacility: "",
-    status: "replayed",
+    receivingApplication: '',
+    receivingFacility: '',
+    status: 'replayed',
     rawMessage: raw,
   });
 
   return {
     ok: true,
     entryId: id,
-    action: "replayed",
+    action: 'replayed',
     detail: `Retry #${entry.retryCount} by ${actorId}`,
     rawMessage: raw,
   };
@@ -287,13 +291,10 @@ export function replayDeadLetter(
 /**
  * Mark a DLQ entry as manually resolved.
  */
-export function resolveDeadLetter(
-  id: string,
-  actorId: string
-): { ok: boolean; detail: string } {
+export function resolveDeadLetter(id: string, actorId: string): { ok: boolean; detail: string } {
   const entry = enhancedDlq.find((e) => e.id === id);
   if (!entry) {
-    return { ok: false, detail: "Not found" };
+    return { ok: false, detail: 'Not found' };
   }
   entry.resolved = true;
   entry.resolvedAt = Date.now();

@@ -3,6 +3,7 @@
 ## Wave 39, P7
 
 ### Goal
+
 Build read-only Clinical Procedures (CP) and Medicine (MD) panels with VistA
 RPC stubs, integration-pending responses, and tabbed UI for CP results,
 Medicine data, and consult-procedure linking.
@@ -10,7 +11,7 @@ Medicine data, and consult-procedure linking.
 ### Implementation
 
 1. **RPC Registry** -- Add 15+ MD/CP RPCs to `rpcRegistry.ts` under domain
-   `"clinical-procedures"` (MD CLIO, MD TMD* family, ORQQCN medicine RPCs,
+   `"clinical-procedures"` (MD CLIO, MD TMD\* family, ORQQCN medicine RPCs,
    TIU CLINPROC RPCs).
 
 2. **Route Module** -- `apps/api/src/routes/clinical-procedures/index.ts`
@@ -44,6 +45,7 @@ Medicine data, and consult-procedure linking.
 8. **Register Routes** -- Wire in `register-routes.ts`
 
 ### Files Touched
+
 - apps/api/src/vista/rpcRegistry.ts
 - apps/api/src/routes/clinical-procedures/index.ts (NEW)
 - apps/api/src/server/register-routes.ts

@@ -145,13 +145,13 @@ curl -b cookies.txt http://localhost:3001/iam/biometric/providers
 
 The realm export at `infra/keycloak/realm-export.json` includes:
 
-| Item | Details |
-|------|---------|
-| Realm | `vista-evolved` |
-| Roles | provider, nurse, pharmacist, clerk, admin, patient, support |
-| Clients | vista-evolved-web, vista-evolved-api, vista-evolved-portal |
+| Item      | Details                                                                         |
+| --------- | ------------------------------------------------------------------------------- |
+| Realm     | `vista-evolved`                                                                 |
+| Roles     | provider, nurse, pharmacist, clerk, admin, patient, support                     |
+| Clients   | vista-evolved-web, vista-evolved-api, vista-evolved-portal                      |
 | Dev users | provider.clyde (DUZ 87, admin), nurse.helen (DUZ 88), pharmacist.linda (DUZ 89) |
-| WebAuthn | Passwordless configured as required action |
+| WebAuthn  | Passwordless configured as required action                                      |
 
 ## OPA Policy
 
@@ -180,14 +180,14 @@ this logic for development.
 
 ## Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `OIDC_ENABLED` | `false` | Enable OIDC/JWT auth path |
-| `OIDC_ISSUER` | — | Keycloak realm URL |
-| `OIDC_CLIENT_ID` | — | API client ID in Keycloak |
-| `OIDC_JWKS_URI` | — | Override JWKS endpoint (auto-discovered if blank) |
-| `OIDC_AUDIENCE` | — | Expected JWT audience |
-| `PASSKEY_RP_ID` | `localhost` | WebAuthn relying party ID |
-| `PASSKEY_RP_NAME` | `VistA Evolved` | WebAuthn relying party name |
-| `FACE_VERIFICATION_ENABLED` | `false` | Enable face biometric |
-| `FACE_VERIFICATION_VENDOR` | — | Face vendor adapter |
+| Variable                    | Default         | Description                                       |
+| --------------------------- | --------------- | ------------------------------------------------- |
+| `OIDC_ENABLED`              | `false`         | Enable OIDC/JWT auth path                         |
+| `OIDC_ISSUER`               | —               | Keycloak realm URL                                |
+| `OIDC_CLIENT_ID`            | —               | API client ID in Keycloak                         |
+| `OIDC_JWKS_URI`             | —               | Override JWKS endpoint (auto-discovered if blank) |
+| `OIDC_AUDIENCE`             | —               | Expected JWT audience                             |
+| `PASSKEY_RP_ID`             | `localhost`     | WebAuthn relying party ID                         |
+| `PASSKEY_RP_NAME`           | `VistA Evolved` | WebAuthn relying party name                       |
+| `FACE_VERIFICATION_ENABLED` | `false`         | Enable face biometric                             |
+| `FACE_VERIFICATION_VENDOR`  | —               | Face vendor adapter                               |

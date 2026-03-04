@@ -7,9 +7,9 @@
  * Uses Drizzle ORM + pg-core for type-safe queries.
  */
 
-import { eq, and, desc } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { pgOrCase, pgOrRoom, pgOrBlock } from "../pg-schema.js";
+import { eq, and, desc } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { pgOrCase, pgOrRoom, pgOrBlock } from '../pg-schema.js';
 
 export type OrCaseRow = typeof pgOrCase.$inferSelect;
 export type OrRoomRow = typeof pgOrRoom.$inferSelect;
@@ -41,10 +41,10 @@ export async function insertOrCase(data: {
   const now = new Date();
   await db.insert(pgOrCase).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     patientDfn: data.patientDfn,
-    status: data.status ?? "scheduled",
-    priority: data.priority ?? "elective",
+    status: data.status ?? 'scheduled',
+    priority: data.priority ?? 'elective',
     roomId: data.roomId ?? null,
     scheduledDate: data.scheduledDate,
     scheduledStartTime: data.scheduledStartTime ?? null,
@@ -71,52 +71,72 @@ export async function findOrCaseById(id: string): Promise<OrCaseRow | undefined>
   return rows[0];
 }
 
-export async function findOrCasesByStatus(status: string, tenantId = "default"): Promise<OrCaseRow[]> {
+export async function findOrCasesByStatus(
+  status: string,
+  tenantId = 'default'
+): Promise<OrCaseRow[]> {
   const db = getPgDb();
-  return db.select().from(pgOrCase)
+  return db
+    .select()
+    .from(pgOrCase)
     .where(and(eq(pgOrCase.tenantId, tenantId), eq(pgOrCase.status, status)))
     .orderBy(desc(pgOrCase.scheduledDate));
 }
 
-export async function findOrCasesByDate(date: string, tenantId = "default"): Promise<OrCaseRow[]> {
+export async function findOrCasesByDate(date: string, tenantId = 'default'): Promise<OrCaseRow[]> {
   const db = getPgDb();
-  return db.select().from(pgOrCase)
+  return db
+    .select()
+    .from(pgOrCase)
     .where(and(eq(pgOrCase.tenantId, tenantId), eq(pgOrCase.scheduledDate, date)));
 }
 
-export async function findOrCasesByPatient(patientDfn: string, tenantId = "default"): Promise<OrCaseRow[]> {
+export async function findOrCasesByPatient(
+  patientDfn: string,
+  tenantId = 'default'
+): Promise<OrCaseRow[]> {
   const db = getPgDb();
-  return db.select().from(pgOrCase)
+  return db
+    .select()
+    .from(pgOrCase)
     .where(and(eq(pgOrCase.tenantId, tenantId), eq(pgOrCase.patientDfn, patientDfn)))
     .orderBy(desc(pgOrCase.scheduledDate));
 }
 
-export async function findAllOrCases(tenantId = "default"): Promise<OrCaseRow[]> {
+export async function findAllOrCases(tenantId = 'default'): Promise<OrCaseRow[]> {
   const db = getPgDb();
-  return db.select().from(pgOrCase)
+  return db
+    .select()
+    .from(pgOrCase)
     .where(eq(pgOrCase.tenantId, tenantId))
     .orderBy(desc(pgOrCase.scheduledDate));
 }
 
 /* ── Update ──────────────────────────────────────── */
 
-export async function updateOrCase(id: string, patch: Partial<{
-  status: string;
-  priority: string;
-  roomId: string | null;
-  scheduledStartTime: string;
-  estimatedDurationMin: number;
-  surgeon: string;
-  assistants: unknown[];
-  anesthesiaJson: unknown;
-  milestonesJson: unknown[];
-  laterality: string;
-}>): Promise<OrCaseRow | undefined> {
+export async function updateOrCase(
+  id: string,
+  patch: Partial<{
+    status: string;
+    priority: string;
+    roomId: string | null;
+    scheduledStartTime: string;
+    estimatedDurationMin: number;
+    surgeon: string;
+    assistants: unknown[];
+    anesthesiaJson: unknown;
+    milestonesJson: unknown[];
+    laterality: string;
+  }>
+): Promise<OrCaseRow | undefined> {
   const db = getPgDb();
-  await db.update(pgOrCase).set({
-    ...patch,
-    updatedAt: new Date(),
-  } as any).where(eq(pgOrCase.id, id));
+  await db
+    .update(pgOrCase)
+    .set({
+      ...patch,
+      updatedAt: new Date(),
+    } as any)
+    .where(eq(pgOrCase.id, id));
   return findOrCaseById(id);
 }
 
@@ -143,10 +163,10 @@ export async function insertOrRoom(data: {
   const now = new Date();
   await db.insert(pgOrRoom).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     name: data.name,
     location: data.location,
-    status: data.status ?? "available",
+    status: data.status ?? 'available',
     currentCaseId: data.currentCaseId ?? null,
     capabilities: data.capabilities ?? [],
     createdAt: now,
@@ -164,29 +184,40 @@ export async function findOrRoomById(id: string): Promise<OrRoomRow | undefined>
   return rows[0];
 }
 
-export async function findAllOrRooms(tenantId = "default"): Promise<OrRoomRow[]> {
+export async function findAllOrRooms(tenantId = 'default'): Promise<OrRoomRow[]> {
   const db = getPgDb();
   return db.select().from(pgOrRoom).where(eq(pgOrRoom.tenantId, tenantId));
 }
 
-export async function findOrRoomsByStatus(status: string, tenantId = "default"): Promise<OrRoomRow[]> {
+export async function findOrRoomsByStatus(
+  status: string,
+  tenantId = 'default'
+): Promise<OrRoomRow[]> {
   const db = getPgDb();
-  return db.select().from(pgOrRoom)
+  return db
+    .select()
+    .from(pgOrRoom)
     .where(and(eq(pgOrRoom.tenantId, tenantId), eq(pgOrRoom.status, status)));
 }
 
 /* ── Update ──────────────────────────────────────── */
 
-export async function updateOrRoom(id: string, patch: Partial<{
-  status: string;
-  currentCaseId: string | null;
-  capabilities: unknown[];
-}>): Promise<OrRoomRow | undefined> {
+export async function updateOrRoom(
+  id: string,
+  patch: Partial<{
+    status: string;
+    currentCaseId: string | null;
+    capabilities: unknown[];
+  }>
+): Promise<OrRoomRow | undefined> {
   const db = getPgDb();
-  await db.update(pgOrRoom).set({
-    ...patch,
-    updatedAt: new Date(),
-  } as any).where(eq(pgOrRoom.id, id));
+  await db
+    .update(pgOrRoom)
+    .set({
+      ...patch,
+      updatedAt: new Date(),
+    } as any)
+    .where(eq(pgOrRoom.id, id));
   return findOrRoomById(id);
 }
 
@@ -214,7 +245,7 @@ export async function insertOrBlock(data: {
   const now = new Date();
   await db.insert(pgOrBlock).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     roomId: data.roomId,
     serviceId: data.serviceId,
     dayOfWeek: data.dayOfWeek,
@@ -236,31 +267,42 @@ export async function findOrBlockById(id: string): Promise<OrBlockRow | undefine
   return rows[0];
 }
 
-export async function findOrBlocksByRoom(roomId: string, tenantId = "default"): Promise<OrBlockRow[]> {
+export async function findOrBlocksByRoom(
+  roomId: string,
+  tenantId = 'default'
+): Promise<OrBlockRow[]> {
   const db = getPgDb();
-  return db.select().from(pgOrBlock)
+  return db
+    .select()
+    .from(pgOrBlock)
     .where(and(eq(pgOrBlock.tenantId, tenantId), eq(pgOrBlock.roomId, roomId)));
 }
 
-export async function findAllOrBlocks(tenantId = "default"): Promise<OrBlockRow[]> {
+export async function findAllOrBlocks(tenantId = 'default'): Promise<OrBlockRow[]> {
   const db = getPgDb();
   return db.select().from(pgOrBlock).where(eq(pgOrBlock.tenantId, tenantId));
 }
 
 /* ── Update ──────────────────────────────────────── */
 
-export async function updateOrBlock(id: string, patch: Partial<{
-  serviceId: string;
-  dayOfWeek: number;
-  startTime: string;
-  endTime: string;
-  surgeon: string | null;
-}>): Promise<OrBlockRow | undefined> {
+export async function updateOrBlock(
+  id: string,
+  patch: Partial<{
+    serviceId: string;
+    dayOfWeek: number;
+    startTime: string;
+    endTime: string;
+    surgeon: string | null;
+  }>
+): Promise<OrBlockRow | undefined> {
   const db = getPgDb();
-  await db.update(pgOrBlock).set({
-    ...patch,
-    updatedAt: new Date(),
-  } as any).where(eq(pgOrBlock.id, id));
+  await db
+    .update(pgOrBlock)
+    .set({
+      ...patch,
+      updatedAt: new Date(),
+    } as any)
+    .where(eq(pgOrBlock.id, id));
   return findOrBlockById(id);
 }
 

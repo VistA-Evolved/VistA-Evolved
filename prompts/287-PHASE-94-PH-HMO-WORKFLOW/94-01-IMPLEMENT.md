@@ -1,11 +1,13 @@
 # Phase 94 IMPLEMENT -- PH HMO Workflow Automation
 
 ## Request
+
 Build unified LOA, Claims, and Remittance workflows for PH HMO payers
 on top of Phase 93 registry + adapters. Evidence-bound, VistA-first,
 human-in-loop for portal/manual payers. No fabricated APIs.
 
 ## Implementation Steps
+
 1. LOA domain types + in-memory store (loa-types.ts, loa-store.ts)
 2. Claims workflow domain (claims-workflow.ts) wrapping existing claim-store
 3. Remittance intake domain (remittance-intake.ts) with secure blob abstraction
@@ -16,6 +18,7 @@ human-in-loop for portal/manual payers. No fabricated APIs.
 8. Wire routes in index.ts, nav entries in admin layout
 
 ## Files Touched
+
 - CREATED: apps/api/src/rcm/loa/loa-types.ts
 - CREATED: apps/api/src/rcm/loa/loa-store.ts
 - CREATED: apps/api/src/rcm/loa/loa-workflow.ts
@@ -36,6 +39,7 @@ human-in-loop for portal/manual payers. No fabricated APIs.
 - CREATED: prompts/99-PHASE-94-PH-HMO-WORKFLOW/94-99-VERIFY.md
 
 ## Verification
+
 - npx tsc --noEmit (zero errors)
 - scripts/vista-first-audit.ps1 (15+ gates PASS)
 - No fabricated payer APIs

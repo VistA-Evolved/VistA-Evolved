@@ -8,7 +8,7 @@
  * ADR: docs/decisions/ADR-W22-CONTENT-PACKS.md
  */
 
-import type { TemplateSetting, ClinicalTemplate } from "../templates/types.js";
+import type { TemplateSetting, ClinicalTemplate } from '../templates/types.js';
 
 // ─── Order Set Types ────────────────────────────────────────────
 
@@ -18,14 +18,22 @@ export interface OrderSetItem {
   /** Display label */
   label: string;
   /** Order category */
-  category: "medication" | "lab" | "imaging" | "nursing" | "diet" | "activity" | "consult" | "other";
+  category:
+    | 'medication'
+    | 'lab'
+    | 'imaging'
+    | 'nursing'
+    | 'diet'
+    | 'activity'
+    | 'consult'
+    | 'other';
   /** Default ordering details (free-text or structured) */
   defaultDetails?: string;
   /** VistA orderable item IEN (if known) */
   vistaOrderableIen?: string;
   /** LOINC/CPT code (for lab/imaging) */
   code?: string;
-  codeSystem?: "LOINC" | "CPT" | "local";
+  codeSystem?: 'LOINC' | 'CPT' | 'local';
   /** Whether this item is pre-checked by default */
   defaultSelected: boolean;
   /** Display order */
@@ -43,7 +51,7 @@ export interface OrderSet {
   description?: string;
   items: OrderSetItem[];
   tags?: string[];
-  status: "draft" | "published" | "archived";
+  status: 'draft' | 'published' | 'archived';
   version: number;
   forked: boolean;
   createdAt: string;
@@ -61,7 +69,7 @@ export interface FlowsheetColumn {
   /** Numeric range for flagging (optional) */
   normalRange?: { low?: number; high?: number };
   /** Data type for input */
-  dataType: "numeric" | "text" | "select" | "boolean" | "timestamp";
+  dataType: 'numeric' | 'text' | 'select' | 'boolean' | 'timestamp';
   allowedValues?: string[];
   order: number;
 }
@@ -80,7 +88,7 @@ export interface Flowsheet {
   /** Default frequency label (e.g., "q4h", "q1h", "prn") */
   defaultFrequency?: string;
   tags?: string[];
-  status: "draft" | "published" | "archived";
+  status: 'draft' | 'published' | 'archived';
   version: number;
   forked: boolean;
   createdAt: string;
@@ -90,14 +98,14 @@ export interface Flowsheet {
 // ─── Inbox Rule Types ───────────────────────────────────────────
 
 export type InboxTriggerType =
-  | "critical_result"
-  | "order_sign"
-  | "consult_response"
-  | "note_cosign"
-  | "task_assignment"
-  | "custom";
+  | 'critical_result'
+  | 'order_sign'
+  | 'consult_response'
+  | 'note_cosign'
+  | 'task_assignment'
+  | 'custom';
 
-export type InboxRecipientType = "provider" | "role" | "team" | "department";
+export type InboxRecipientType = 'provider' | 'role' | 'team' | 'department';
 
 export interface InboxRule {
   id: string;
@@ -112,10 +120,10 @@ export interface InboxRule {
   recipientType: InboxRecipientType;
   recipientValue: string;
   /** Priority */
-  priority: "low" | "normal" | "high" | "critical";
+  priority: 'low' | 'normal' | 'high' | 'critical';
   /** Auto-escalation timeout in minutes (0 = none) */
   escalationMinutes: number;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
   createdAt: string;
   updatedAt: string;
 }
@@ -128,9 +136,9 @@ export interface DashboardKpi {
   /** Data source: which API route or RPC to query */
   dataSource: string;
   /** Aggregation type */
-  aggregation: "count" | "sum" | "avg" | "min" | "max" | "latest";
+  aggregation: 'count' | 'sum' | 'avg' | 'min' | 'max' | 'latest';
   /** Display format */
-  format: "number" | "percentage" | "duration" | "currency";
+  format: 'number' | 'percentage' | 'duration' | 'currency';
   /** Threshold for color coding */
   thresholds?: {
     warning?: number;
@@ -150,7 +158,7 @@ export interface Dashboard {
   description?: string;
   kpis: DashboardKpi[];
   tags?: string[];
-  status: "draft" | "published" | "archived";
+  status: 'draft' | 'published' | 'archived';
   version: number;
   createdAt: string;
   updatedAt: string;
@@ -159,20 +167,20 @@ export interface Dashboard {
 // ─── CDS Rule Types ─────────────────────────────────────────────
 
 export type CdsHookType =
-  | "patient-view"
-  | "order-sign"
-  | "medication-prescribe"
-  | "encounter-start"
-  | "encounter-discharge"
-  | "custom";
+  | 'patient-view'
+  | 'order-sign'
+  | 'medication-prescribe'
+  | 'encounter-start'
+  | 'encounter-discharge'
+  | 'custom';
 
-export type CdsCardIndicator = "info" | "warning" | "critical";
+export type CdsCardIndicator = 'info' | 'warning' | 'critical';
 
 export interface CdsRuleCondition {
   /** Field to evaluate (e.g., "patient.age", "order.code", "allergy.substance") */
   field: string;
   /** Operator */
-  operator: "eq" | "neq" | "gt" | "lt" | "gte" | "lte" | "in" | "not_in" | "contains" | "exists";
+  operator: 'eq' | 'neq' | 'gt' | 'lt' | 'gte' | 'lte' | 'in' | 'not_in' | 'contains' | 'exists';
   /** Value to compare against */
   value: string | number | boolean | string[];
 }
@@ -180,7 +188,7 @@ export interface CdsRuleCondition {
 export interface CdsCardSuggestion {
   label: string;
   actions?: Array<{
-    type: "create" | "update" | "delete";
+    type: 'create' | 'update' | 'delete';
     description: string;
     resource?: string;
   }>;
@@ -225,7 +233,13 @@ export interface PackMigration {
 }
 
 export interface PackTransform {
-  type: "add_field" | "remove_field" | "rename_field" | "update_content" | "add_item" | "remove_item";
+  type:
+    | 'add_field'
+    | 'remove_field'
+    | 'rename_field'
+    | 'update_content'
+    | 'add_item'
+    | 'remove_item';
   target: string;
   details: Record<string, unknown>;
 }
@@ -246,12 +260,27 @@ export interface ContentPackV2 {
   minPlatformVersion?: string;
 
   /** Content sections — all optional per pack */
-  templates?: Omit<ClinicalTemplate, "id" | "tenantId" | "createdAt" | "updatedAt">[];
-  orderSets?: Omit<OrderSet, "id" | "tenantId" | "createdAt" | "updatedAt" | "packId" | "packVersion" | "forked">[];
-  flowsheets?: Omit<Flowsheet, "id" | "tenantId" | "createdAt" | "updatedAt" | "packId" | "packVersion" | "forked">[];
-  inboxRules?: Omit<InboxRule, "id" | "tenantId" | "createdAt" | "updatedAt" | "packId" | "packVersion">[];
-  dashboards?: Omit<Dashboard, "id" | "tenantId" | "createdAt" | "updatedAt" | "packId" | "packVersion">[];
-  cdsRules?: Omit<CdsRule, "id" | "tenantId" | "createdAt" | "updatedAt" | "packId" | "packVersion">[];
+  templates?: Omit<ClinicalTemplate, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>[];
+  orderSets?: Omit<
+    OrderSet,
+    'id' | 'tenantId' | 'createdAt' | 'updatedAt' | 'packId' | 'packVersion' | 'forked'
+  >[];
+  flowsheets?: Omit<
+    Flowsheet,
+    'id' | 'tenantId' | 'createdAt' | 'updatedAt' | 'packId' | 'packVersion' | 'forked'
+  >[];
+  inboxRules?: Omit<
+    InboxRule,
+    'id' | 'tenantId' | 'createdAt' | 'updatedAt' | 'packId' | 'packVersion'
+  >[];
+  dashboards?: Omit<
+    Dashboard,
+    'id' | 'tenantId' | 'createdAt' | 'updatedAt' | 'packId' | 'packVersion'
+  >[];
+  cdsRules?: Omit<
+    CdsRule,
+    'id' | 'tenantId' | 'createdAt' | 'updatedAt' | 'packId' | 'packVersion'
+  >[];
 
   /** Migrations between versions */
   migrations?: PackMigration[];
@@ -259,7 +288,7 @@ export interface ContentPackV2 {
 
 // ─── Installation Event ─────────────────────────────────────────
 
-export type PackInstallAction = "install" | "upgrade" | "rollback" | "uninstall";
+export type PackInstallAction = 'install' | 'upgrade' | 'rollback' | 'uninstall';
 
 export interface PackInstallEvent {
   id: string;
@@ -272,7 +301,7 @@ export interface PackInstallEvent {
   itemsCreated: number;
   itemsUpdated: number;
   itemsRemoved: number;
-  status: "success" | "failed" | "rolled_back";
+  status: 'success' | 'failed' | 'rolled_back';
   error?: string;
   createdAt: string;
 }
@@ -283,12 +312,12 @@ export interface PackInstallPreview {
   packId: string;
   packVersion: string;
   action: PackInstallAction;
-  templates: { name: string; action: "create" | "update" | "skip" }[];
-  orderSets: { name: string; action: "create" | "update" | "skip" }[];
-  flowsheets: { name: string; action: "create" | "update" | "skip" }[];
-  inboxRules: { name: string; action: "create" | "update" | "skip" }[];
-  dashboards: { name: string; action: "create" | "update" | "skip" }[];
-  cdsRules: { name: string; action: "create" | "update" | "skip" }[];
+  templates: { name: string; action: 'create' | 'update' | 'skip' }[];
+  orderSets: { name: string; action: 'create' | 'update' | 'skip' }[];
+  flowsheets: { name: string; action: 'create' | 'update' | 'skip' }[];
+  inboxRules: { name: string; action: 'create' | 'update' | 'skip' }[];
+  dashboards: { name: string; action: 'create' | 'update' | 'skip' }[];
+  cdsRules: { name: string; action: 'create' | 'update' | 'skip' }[];
   missingDependencies: string[];
   warnings: string[];
 }

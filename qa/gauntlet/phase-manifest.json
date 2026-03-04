@@ -7,9 +7,7 @@
       "phaseId": "1",
       "title": "HELLO SYSTEM",
       "folder": "02-PHASE-1-HELLO-SYSTEM",
-      "tags": [
-        "infrastructure"
-      ],
+      "tags": ["infrastructure"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -43,9 +41,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/health"
-        ],
+        "apiEndpoints": ["/health"],
         "vistaProbes": []
       },
       "notes": ""
@@ -54,10 +50,7 @@
       "phaseId": "2",
       "title": "VISTA SANDBOX",
       "folder": "03-PHASE-2-VISTA-SANDBOX",
-      "tags": [
-        "vista",
-        "infrastructure"
-      ],
+      "tags": ["vista", "infrastructure"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -101,9 +94,7 @@
       "phaseId": "3",
       "title": "VISTA PING",
       "folder": "04-PHASE-3-VISTA-PING",
-      "tags": [
-        "vista"
-      ],
+      "tags": ["vista"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -147,9 +138,7 @@
       "phaseId": "4A",
       "title": "DEFAULT PATIENT LIST",
       "folder": "05-PHASE-4A-DEFAULT-PATIENT-LIST",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -184,9 +173,7 @@
       "smoke": {
         "uiRoutes": [],
         "apiEndpoints": [],
-        "vistaProbes": [
-          "OR CPRS GUI CHART"
-        ]
+        "vistaProbes": ["OR CPRS GUI CHART"]
       },
       "notes": ""
     },
@@ -194,9 +181,7 @@
       "phaseId": "4B",
       "title": "PATIENT SEARCH",
       "folder": "06-PHASE-4B-PATIENT-SEARCH",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -230,9 +215,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/vista/patient-search?q=SMI"
-        ],
+        "apiEndpoints": ["/vista/patient-search?q=SMI"],
         "vistaProbes": []
       },
       "notes": ""
@@ -241,9 +224,7 @@
       "phaseId": "5",
       "title": "CORE CLINICAL WORKFLOW",
       "folder": "07-PHASE-5-CORE-CLINICAL-WORKFLOW",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -291,9 +272,7 @@
       "phaseId": "6",
       "title": "VITALS",
       "folder": "08-PHASE-6-VITALS",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -327,11 +306,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/vista/vitals",
-          "/vista/vitals?dfn=1",
-          "/vista/vitals?dfn=<dfn>"
-        ],
+        "apiEndpoints": ["/vista/vitals", "/vista/vitals?dfn=1", "/vista/vitals?dfn=<dfn>"],
         "vistaProbes": []
       },
       "notes": ""
@@ -340,9 +315,7 @@
       "phaseId": "7",
       "title": "NOTES",
       "folder": "09-PHASE-7-NOTES",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -376,11 +349,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/vista/notes",
-          "/vista/notes?dfn=1",
-          "/vista/notes?dfn=<dfn>"
-        ],
+        "apiEndpoints": ["/vista/notes", "/vista/notes?dfn=1", "/vista/notes?dfn=<dfn>"],
         "vistaProbes": []
       },
       "notes": ""
@@ -389,9 +358,7 @@
       "phaseId": "8",
       "title": "MEDICATIONS",
       "folder": "10-PHASE-8-MEDICATIONS",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -439,10 +406,7 @@
       "phaseId": "100",
       "title": "ELIGIBILITY CLAIMSTATUS",
       "folder": "100-PHASE-100-ELIGIBILITY-CLAIMSTATUS",
-      "tags": [
-        "rcm",
-        "analytics"
-      ],
+      "tags": ["rcm", "analytics"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -495,9 +459,7 @@
       "phaseId": "96",
       "title": "PHILHEALTH ECLAIMS3 ADAPTER",
       "folder": "100-PHASE-96-PHILHEALTH-ECLAIMS3-ADAPTER",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -541,10 +503,7 @@
       "phaseId": "96B",
       "title": "QA AUDIT OS",
       "folder": "101-PHASE-96B-QA-AUDIT-OS",
-      "tags": [
-        "security",
-        "qa"
-      ],
+      "tags": ["security", "qa"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -595,9 +554,7 @@
       "phaseId": "97",
       "title": "HMO PORTAL ADAPTER",
       "folder": "101-PHASE-97-HMO-PORTAL-ADAPTER",
-      "tags": [
-        "portal"
-      ],
+      "tags": ["portal"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -655,9 +612,7 @@
       "phaseId": "97B",
       "title": "PH HMO DEEPENING V2",
       "folder": "102-PHASE-97B-PH-HMO-DEEPENING-V2",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -705,9 +660,7 @@
       "phaseId": "98",
       "title": "RCM DENIALS",
       "folder": "103-PHASE-98-RCM-DENIALS",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -759,9 +712,7 @@
       "phaseId": "99",
       "title": "RCM RECONCILIATION",
       "folder": "104-PHASE-99-RCM-RECONCILIATION",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -819,9 +770,7 @@
       "phaseId": "101",
       "title": "PLATFORM DATA LAYER",
       "folder": "105-PHASE-101-PLATFORM-DATA-LAYER",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -864,9 +813,7 @@
       "phaseId": "102",
       "title": "REGISTRY MIGRATION",
       "folder": "106-PHASE-102-REGISTRY-MIGRATION",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -909,9 +856,7 @@
       "phaseId": "103",
       "title": "DB PERFORMANCE",
       "folder": "107-PHASE-103-DB-PERFORMANCE",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -954,9 +899,7 @@
       "phaseId": "104",
       "title": "DB SECURITY",
       "folder": "108-PHASE-104-DB-SECURITY",
-      "tags": [
-        "security"
-      ],
+      "tags": ["security"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -990,10 +933,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/admin/payer-db/audit/export",
-          "/admin/payer-db/audit/verify"
-        ],
+        "apiEndpoints": ["/admin/payer-db/audit/export", "/admin/payer-db/audit/verify"],
         "vistaProbes": []
       },
       "notes": ""
@@ -1002,9 +942,7 @@
       "phaseId": "105",
       "title": "QA GAUNTLET",
       "folder": "109-PHASE-105-QA-GAUNTLET",
-      "tags": [
-        "qa"
-      ],
+      "tags": ["qa"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1047,9 +985,7 @@
       "phaseId": "9",
       "title": "PROBLEM LIST",
       "folder": "11-PHASE-9-PROBLEM-LIST",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1083,11 +1019,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/vista/problems",
-          "/vista/problems?dfn=1",
-          "/vista/problems?dfn=<dfn>"
-        ],
+        "apiEndpoints": ["/vista/problems", "/vista/problems?dfn=1", "/vista/problems?dfn=<dfn>"],
         "vistaProbes": []
       },
       "notes": ""
@@ -1096,9 +1028,7 @@
       "phaseId": "106",
       "title": "VISTA ALIGNMENT",
       "folder": "110-PHASE-106-VISTA-ALIGNMENT",
-      "tags": [
-        "vista"
-      ],
+      "tags": ["vista"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1134,9 +1064,7 @@
       "smoke": {
         "uiRoutes": [],
         "apiEndpoints": [],
-        "vistaProbes": [
-          "FAKE NONEXISTENT RPC XYZ"
-        ]
+        "vistaProbes": ["FAKE NONEXISTENT RPC XYZ"]
       },
       "notes": ""
     },
@@ -1144,9 +1072,7 @@
       "phaseId": "107",
       "title": "PRODUCTION POSTURE",
       "folder": "111-PHASE-107-PRODUCTION-POSTURE",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1196,10 +1122,7 @@
       "phaseId": "108",
       "title": "PHASE AUDIT HARNESS",
       "folder": "112-PHASE-108-PHASE-AUDIT-HARNESS",
-      "tags": [
-        "security",
-        "qa"
-      ],
+      "tags": ["security", "qa"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1242,9 +1165,7 @@
       "phaseId": "109",
       "title": "MODULAR PACKAGING",
       "folder": "113-PHASE-109-MODULAR-PACKAGING",
-      "tags": [
-        "modularity"
-      ],
+      "tags": ["modularity"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1291,9 +1212,7 @@
       "phaseId": "110",
       "title": "RCM CREDENTIAL VAULT LOA",
       "folder": "114-PHASE-110-RCM-CREDENTIAL-VAULT-LOA",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1357,9 +1276,7 @@
       "phaseId": "111",
       "title": "CLAIM LIFECYCLE SCRUBBER",
       "folder": "115-PHASE-111-CLAIM-LIFECYCLE-SCRUBBER",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1416,10 +1333,7 @@
       "phaseId": "115",
       "title": "DURABILITY WAVE2",
       "folder": "115-PHASE-115-DURABILITY-WAVE2",
-      "tags": [
-        "analytics",
-        "durability"
-      ],
+      "tags": ["analytics", "durability"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1462,9 +1376,7 @@
       "phaseId": "112",
       "title": "EVIDENCE GATING",
       "folder": "116-PHASE-112-EVIDENCE-GATING",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1517,9 +1429,7 @@
       "phaseId": "113B",
       "title": "HARDENING",
       "folder": "117-PHASE-113B-HARDENING",
-      "tags": [
-        "security"
-      ],
+      "tags": ["security"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1562,10 +1472,7 @@
       "phaseId": "114",
       "title": "DURABILITY WAVE1",
       "folder": "118-PHASE-114-DURABILITY-WAVE1",
-      "tags": [
-        "analytics",
-        "durability"
-      ],
+      "tags": ["analytics", "durability"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1608,9 +1515,7 @@
       "phaseId": "116",
       "title": "JOB QUEUE",
       "folder": "119-PHASE-116-JOB-QUEUE",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1644,15 +1549,8 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/admin/jobs/runs",
-          "/admin/jobs/status",
-          "/admin/jobs/trigger"
-        ],
-        "vistaProbes": [
-          "CREATE OR REPLACE",
-          "DROP FUNCTION IF EXISTS"
-        ]
+        "apiEndpoints": ["/admin/jobs/runs", "/admin/jobs/status", "/admin/jobs/trigger"],
+        "vistaProbes": ["CREATE OR REPLACE", "DROP FUNCTION IF EXISTS"]
       },
       "notes": ""
     },
@@ -1660,9 +1558,7 @@
       "phaseId": "10",
       "title": "CPRS EXTRACT",
       "folder": "12-PHASE-10-CPRS-EXTRACT",
-      "tags": [
-        "cprs"
-      ],
+      "tags": ["cprs"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1705,9 +1601,7 @@
           "/vista/{domain",
           "/vista/{domain}/rpc/{rpc-slug}"
         ],
-        "vistaProbes": [
-          "ORQQPL PROBLEM LIST"
-        ]
+        "vistaProbes": ["ORQQPL PROBLEM LIST"]
       },
       "notes": ""
     },
@@ -1715,9 +1609,7 @@
       "phaseId": "117",
       "title": "PG PROD POSTURE",
       "folder": "120-PHASE-117-PG-PROD-POSTURE",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1773,9 +1665,7 @@
       "phaseId": "118",
       "title": "GO LIVE HARDENING",
       "folder": "121-PHASE-118-GO-LIVE-HARDENING",
-      "tags": [
-        "security"
-      ],
+      "tags": ["security"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1834,9 +1724,7 @@
       "phaseId": "119",
       "title": "QA GAUNTLET",
       "folder": "122-PHASE-119-QA-GAUNTLET",
-      "tags": [
-        "qa"
-      ],
+      "tags": ["qa"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1879,9 +1767,7 @@
       "phaseId": "11",
       "title": "CPRS WEB REPLICA",
       "folder": "13-PHASE-11-CPRS-WEB-REPLICA",
-      "tags": [
-        "cprs"
-      ],
+      "tags": ["cprs"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1930,9 +1816,7 @@
       "phaseId": "12",
       "title": "CPRS PARITY WIRING",
       "folder": "14-PHASE-12-CPRS-PARITY-WIRING",
-      "tags": [
-        "cprs"
-      ],
+      "tags": ["cprs"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -1995,9 +1879,7 @@
       "phaseId": "13",
       "title": "CPRS OPERATIONALIZATION",
       "folder": "15-PHASE-13-CPRS-OPERATIONALIZATION",
-      "tags": [
-        "cprs"
-      ],
+      "tags": ["cprs"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2043,9 +1925,7 @@
           "/vista/inbox",
           "/ws/console"
         ],
-        "vistaProbes": [
-          "ORWPT LIST ALL"
-        ]
+        "vistaProbes": ["ORWPT LIST ALL"]
       },
       "notes": ""
     },
@@ -2053,9 +1933,7 @@
       "phaseId": "14",
       "title": "PARITY CLOSURE",
       "folder": "16-PHASE-14-PARITY-CLOSURE",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2112,9 +1990,7 @@
       "phaseId": "15",
       "title": "ENTERPRISE HARDENING",
       "folder": "17-PHASE-15-ENTERPRISE-HARDENING",
-      "tags": [
-        "security"
-      ],
+      "tags": ["security"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2165,9 +2041,7 @@
       "phaseId": "16",
       "title": "PRODUCTION READINESS",
       "folder": "18-PHASE-16-PRODUCTION-READINESS",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2201,12 +2075,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/health",
-          "/metrics",
-          "/ready",
-          "/version"
-        ],
+        "apiEndpoints": ["/health", "/metrics", "/ready", "/version"],
         "vistaProbes": []
       },
       "notes": ""
@@ -2215,9 +2084,7 @@
       "phaseId": "17",
       "title": "MULTITENANT CONTROL PLANE",
       "folder": "19-PHASE-17-MULTITENANT-CONTROL-PLANE",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2265,10 +2132,7 @@
       "phaseId": "18",
       "title": "INTEROP IMAGING",
       "folder": "20-PHASE-18-INTEROP-IMAGING",
-      "tags": [
-        "imaging",
-        "interop"
-      ],
+      "tags": ["imaging", "interop"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2321,9 +2185,7 @@
       "phaseId": "19",
       "title": "REPORTING GOVERNANCE",
       "folder": "21-PHASE-19-REPORTING-GOVERNANCE",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2374,9 +2236,7 @@
           "/reports/integrations",
           "/reports/operations"
         ],
-        "vistaProbes": [
-          "ORWRP REPORT TEXT"
-        ]
+        "vistaProbes": ["ORWRP REPORT TEXT"]
       },
       "notes": ""
     },
@@ -2384,9 +2244,7 @@
       "phaseId": "20",
       "title": "VISTA FIRST GROUNDING",
       "folder": "22-PHASE-20-VISTA-FIRST-GROUNDING",
-      "tags": [
-        "vista"
-      ],
+      "tags": ["vista"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2430,9 +2288,7 @@
       "phaseId": "21",
       "title": "INTEROP REALITY",
       "folder": "23-PHASE-21-INTEROP-REALITY",
-      "tags": [
-        "interop"
-      ],
+      "tags": ["interop"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2481,9 +2337,7 @@
       "phaseId": "22",
       "title": "IMAGING PLATFORM",
       "folder": "24-PHASE-22-IMAGING-PLATFORM",
-      "tags": [
-        "imaging"
-      ],
+      "tags": ["imaging"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2532,9 +2386,7 @@
       "phaseId": "23",
       "title": "IMAGING WORKFLOW",
       "folder": "25-PHASE-23-IMAGING-WORKFLOW",
-      "tags": [
-        "imaging"
-      ],
+      "tags": ["imaging"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2577,9 +2429,7 @@
           "/imaging/worklist/:id/status",
           "/imaging/worklist/orders"
         ],
-        "vistaProbes": [
-          "CHEST 2 VIEWS"
-        ]
+        "vistaProbes": ["CHEST 2 VIEWS"]
       },
       "notes": ""
     },
@@ -2587,9 +2437,7 @@
       "phaseId": "24",
       "title": "IMAGING ENTERPRISE",
       "folder": "26-PHASE-24-IMAGING-ENTERPRISE",
-      "tags": [
-        "imaging"
-      ],
+      "tags": ["imaging"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2623,10 +2471,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/security/break-glass/start",
-          "/security/break-glass/stop"
-        ],
+        "apiEndpoints": ["/security/break-glass/start", "/security/break-glass/stop"],
         "vistaProbes": []
       },
       "notes": ""
@@ -2635,9 +2480,7 @@
       "phaseId": "25",
       "title": "BI ANALYTICS",
       "folder": "27-PHASE-25-BI-ANALYTICS",
-      "tags": [
-        "analytics"
-      ],
+      "tags": ["analytics"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2687,10 +2530,7 @@
       "phaseId": "26",
       "title": "PORTAL TELEHEALTH",
       "folder": "28-PHASE-26-PORTAL-TELEHEALTH",
-      "tags": [
-        "portal",
-        "telehealth"
-      ],
+      "tags": ["portal", "telehealth"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2748,9 +2588,7 @@
       "phaseId": "27",
       "title": "PORTAL CORE",
       "folder": "29-PHASE-27-PORTAL-CORE",
-      "tags": [
-        "portal"
-      ],
+      "tags": ["portal"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2793,9 +2631,7 @@
       "phaseId": "28",
       "title": "ENTERPRISE INTAKE OS",
       "folder": "30-PHASE-28-ENTERPRISE-INTAKE-OS",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2838,9 +2674,7 @@
       "phaseId": "29",
       "title": "PATIENT IAM",
       "folder": "31-PHASE-29-PATIENT-IAM",
-      "tags": [
-        "security"
-      ],
+      "tags": ["security"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2883,9 +2717,7 @@
       "phaseId": "30",
       "title": "TELEHEALTH",
       "folder": "32-PHASE-30-TELEHEALTH",
-      "tags": [
-        "telehealth"
-      ],
+      "tags": ["telehealth"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2928,9 +2760,7 @@
       "phaseId": "31",
       "title": "SHARING EXPORTS",
       "folder": "33-PHASE-31-SHARING-EXPORTS",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -2973,9 +2803,7 @@
       "phaseId": "32",
       "title": "MESSAGING REFILLS",
       "folder": "34-PHASE-32-MESSAGING-REFILLS",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3009,10 +2837,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/portal/staff/tasks",
-          "/portal/tasks"
-        ],
+        "apiEndpoints": ["/portal/staff/tasks", "/portal/tasks"],
         "vistaProbes": []
       },
       "notes": ""
@@ -3021,9 +2846,7 @@
       "phaseId": "33",
       "title": "AI ASSIST GATEWAY",
       "folder": "35-PHASE-33-AI-ASSIST-GATEWAY",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3066,9 +2889,7 @@
       "phaseId": "34",
       "title": "REGULATED SDLC",
       "folder": "36-PHASE-34-REGULATED-SDLC",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3111,9 +2932,7 @@
       "phaseId": "35",
       "title": "IAM AUTHZ AUDIT",
       "folder": "37-PHASE-35-IAM-AUTHZ-AUDIT",
-      "tags": [
-        "security"
-      ],
+      "tags": ["security"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3156,10 +2975,7 @@
       "phaseId": "36",
       "title": "OBSERVABILITY RELIABILITY",
       "folder": "38-PHASE-36-OBSERVABILITY-RELIABILITY",
-      "tags": [
-        "analytics",
-        "observability"
-      ],
+      "tags": ["analytics", "observability"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3193,13 +3009,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/health",
-          "/metrics",
-          "/metrics/prometheus",
-          "/ready",
-          "/version"
-        ],
+        "apiEndpoints": ["/health", "/metrics", "/metrics/prometheus", "/ready", "/version"],
         "vistaProbes": []
       },
       "notes": ""
@@ -3208,9 +3018,7 @@
       "phaseId": "37",
       "title": "QUALITY HARDENING",
       "folder": "39-PHASE-37-QUALITY-HARDENING",
-      "tags": [
-        "security"
-      ],
+      "tags": ["security"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3253,9 +3061,7 @@
       "phaseId": "37B",
       "title": "CPRS PARITY GROUNDING",
       "folder": "40-PHASE-37B-CPRS-PARITY-GROUNDING",
-      "tags": [
-        "cprs"
-      ],
+      "tags": ["cprs"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3289,9 +3095,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/vista/rpc-catalog"
-        ],
+        "apiEndpoints": ["/vista/rpc-catalog"],
         "vistaProbes": []
       },
       "notes": ""
@@ -3300,9 +3104,7 @@
       "phaseId": "37C",
       "title": "PRODUCT MODULARITY",
       "folder": "41-PHASE-37C-PRODUCT-MODULARITY",
-      "tags": [
-        "modularity"
-      ],
+      "tags": ["modularity"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3345,9 +3147,7 @@
       "phaseId": "38",
       "title": "RCM PAYER CONNECTIVITY",
       "folder": "42-PHASE-38-RCM-PAYER-CONNECTIVITY",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3409,10 +3209,7 @@
       "phaseId": "39",
       "title": "BILLING GROUNDING",
       "folder": "43-PHASE-39-BILLING-GROUNDING",
-      "tags": [
-        "rcm",
-        "analytics"
-      ],
+      "tags": ["rcm", "analytics"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3463,9 +3260,7 @@
       "phaseId": "40",
       "title": "PAYER CONNECTIVITY",
       "folder": "44-PHASE-40-PAYER-CONNECTIVITY",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3509,9 +3304,7 @@
       "phaseId": "41",
       "title": "VIVIAN RPC CATALOG",
       "folder": "45-PHASE-41-VIVIAN-RPC-CATALOG",
-      "tags": [
-        "vista"
-      ],
+      "tags": ["vista"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3546,9 +3339,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/vista/rpc-catalog"
-        ],
+        "apiEndpoints": ["/vista/rpc-catalog"],
         "vistaProbes": []
       },
       "notes": ""
@@ -3557,11 +3348,7 @@
       "phaseId": "42",
       "title": "VISTA BILLING RCM",
       "folder": "46-PHASE-42-VISTA-BILLING-RCM",
-      "tags": [
-        "rcm",
-        "vista",
-        "analytics"
-      ],
+      "tags": ["rcm", "vista", "analytics"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3597,11 +3384,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/rcm/vista/claim-drafts",
-          "/rcm/vista/coverage",
-          "/rcm/vista/encounters"
-        ],
+        "apiEndpoints": ["/rcm/vista/claim-drafts", "/rcm/vista/coverage", "/rcm/vista/encounters"],
         "vistaProbes": []
       },
       "notes": ""
@@ -3610,9 +3393,7 @@
       "phaseId": "43",
       "title": "RCM LOOP",
       "folder": "47-PHASE-43-RCM-LOOP",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3656,9 +3437,7 @@
       "phaseId": "43",
       "title": "VERIFY",
       "folder": "48-PHASE-43-VERIFY",
-      "tags": [
-        "qa"
-      ],
+      "tags": ["qa"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3701,9 +3480,7 @@
       "phaseId": "44",
       "title": "PAYER DIRECTORY",
       "folder": "49-PHASE-44-PAYER-DIRECTORY",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3747,9 +3524,7 @@
       "phaseId": "45",
       "title": "TRANSACTION ENGINE",
       "folder": "50-PHASE-45-TRANSACTION-ENGINE",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3783,10 +3558,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/rcm/connectivity/profile",
-          "/rcm/transactions/*"
-        ],
+        "apiEndpoints": ["/rcm/connectivity/profile", "/rcm/transactions/*"],
         "vistaProbes": []
       },
       "notes": ""
@@ -3795,9 +3567,7 @@
       "phaseId": "46",
       "title": "NATIONAL GATEWAY PACKS",
       "folder": "51-PHASE-46-NATIONAL-GATEWAY-PACKS",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3831,9 +3601,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/rcm/gateways/readiness"
-        ],
+        "apiEndpoints": ["/rcm/gateways/readiness"],
         "vistaProbes": []
       },
       "notes": ""
@@ -3842,9 +3610,7 @@
       "phaseId": "47",
       "title": "CI EVIDENCE QUALITY GATES",
       "folder": "52-PHASE-47-CI-EVIDENCE-QUALITY-GATES",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3887,10 +3653,7 @@
       "phaseId": "48",
       "title": "OBSERVABILITY INCIDENT RUNTIME",
       "folder": "53-PHASE-48-OBSERVABILITY-INCIDENT-RUNTIME",
-      "tags": [
-        "analytics",
-        "observability"
-      ],
+      "tags": ["analytics", "observability"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3933,10 +3696,7 @@
       "phaseId": "49",
       "title": "VISTA AUTH HARDENING RBAC",
       "folder": "54-PHASE-49-VISTA-AUTH-HARDENING-RBAC",
-      "tags": [
-        "security",
-        "vista"
-      ],
+      "tags": ["security", "vista"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -3980,9 +3740,7 @@
       "phaseId": "50",
       "title": "MIGRATION TOOLKIT",
       "folder": "55-PHASE-50-MIGRATION-TOOLKIT",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4016,10 +3774,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/migration/health",
-          "/migration/templates"
-        ],
+        "apiEndpoints": ["/migration/health", "/migration/templates"],
         "vistaProbes": []
       },
       "notes": ""
@@ -4028,9 +3783,7 @@
       "phaseId": "51",
       "title": "ENTERPRISE PACKAGING",
       "folder": "56-PHASE-51-ENTERPRISE-PACKAGING",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4073,9 +3826,7 @@
       "phaseId": "52",
       "title": "E2E PERF BUDGETS",
       "folder": "57-PHASE-52-E2E-PERF-BUDGETS",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4118,9 +3869,7 @@
       "phaseId": "53",
       "title": "PROMPTOS GOVERNANCE",
       "folder": "58-PHASE-53-PROMPTOS-GOVERNANCE",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4177,10 +3926,7 @@
       "phaseId": "54",
       "title": "ALIGNMENT AUDIT",
       "folder": "59-PHASE-54-ALIGNMENT-AUDIT",
-      "tags": [
-        "security",
-        "vista"
-      ],
+      "tags": ["security", "vista"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4215,10 +3961,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/artifacts/audit/*",
-          "/artifacts/audit/**"
-        ],
+        "apiEndpoints": ["/artifacts/audit/*", "/artifacts/audit/**"],
         "vistaProbes": []
       },
       "notes": ""
@@ -4227,10 +3970,7 @@
       "phaseId": "55",
       "title": "CPRS PARITY HARNESS",
       "folder": "60-PHASE-55-CPRS-PARITY-HARNESS",
-      "tags": [
-        "cprs",
-        "qa"
-      ],
+      "tags": ["cprs", "qa"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4273,9 +4013,7 @@
       "phaseId": "56",
       "title": "CPRS WAVE1 LAYOUT",
       "folder": "61-PHASE-56-CPRS-WAVE1-LAYOUT",
-      "tags": [
-        "cprs"
-      ],
+      "tags": ["cprs"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4318,9 +4056,7 @@
       "phaseId": "57",
       "title": "CPRS WAVE2 WRITE",
       "folder": "62-PHASE-57-CPRS-WAVE2-WRITE",
-      "tags": [
-        "cprs"
-      ],
+      "tags": ["cprs"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4372,9 +4108,7 @@
       "phaseId": "58",
       "title": "INTEROP MONITOR V2",
       "folder": "63-PHASE-58-INTEROP-MONITOR-V2",
-      "tags": [
-        "interop"
-      ],
+      "tags": ["interop"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4416,10 +4150,7 @@
           "/v2/hl7/summary",
           "/v2/hlo/summary"
         ],
-        "vistaProbes": [
-          "VE INTEROP MSG DETAIL",
-          "VE INTEROP MSG LIST"
-        ]
+        "vistaProbes": ["VE INTEROP MSG DETAIL", "VE INTEROP MSG LIST"]
       },
       "notes": ""
     },
@@ -4427,9 +4158,7 @@
       "phaseId": "59",
       "title": "CPOE PARITY",
       "folder": "64-PHASE-59-CPOE-PARITY",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4478,9 +4207,7 @@
       "phaseId": "60",
       "title": "TIU NOTES PARITY",
       "folder": "65-PHASE-60-TIU-NOTES-PARITY",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4530,9 +4257,7 @@
       "phaseId": "61",
       "title": "PORTAL DIGITAL FRONT DOOR",
       "folder": "66-PHASE-61-PORTAL-DIGITAL-FRONT-DOOR",
-      "tags": [
-        "portal"
-      ],
+      "tags": ["portal"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4581,9 +4306,7 @@
       "phaseId": "62",
       "title": "GO LIVE HARDENING",
       "folder": "67-PHASE-62-GO-LIVE-HARDENING",
-      "tags": [
-        "security"
-      ],
+      "tags": ["security"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4626,9 +4349,7 @@
       "phaseId": "63",
       "title": "SCHEDULING V1",
       "folder": "68-PHASE-63-SCHEDULING-V1",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4679,9 +4400,7 @@
       "phaseId": "64",
       "title": "SECURE MESSAGING V1",
       "folder": "69-PHASE-64-SECURE-MESSAGING-V1",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4715,9 +4434,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/artifacts/verify/phase64/"
-        ],
+        "apiEndpoints": ["/artifacts/verify/phase64/"],
         "vistaProbes": []
       },
       "notes": ""
@@ -4726,9 +4443,7 @@
       "phaseId": "70",
       "title": "MAILMAN RPC BRIDGE",
       "folder": "70-PHASE-70-MAILMAN-RPC-BRIDGE",
-      "tags": [
-        "vista"
-      ],
+      "tags": ["vista"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4774,9 +4489,7 @@
           "/messaging/mail-list?folderId=1",
           "/messaging/mail-manage"
         ],
-        "vistaProbes": [
-          "DSIC SEND MAIL MSG"
-        ]
+        "vistaProbes": ["DSIC SEND MAIL MSG"]
       },
       "notes": ""
     },
@@ -4784,9 +4497,7 @@
       "phaseId": "65",
       "title": "IMMUNIZATIONS",
       "folder": "71-PHASE-65-IMMUNIZATIONS",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4834,9 +4545,7 @@
       "phaseId": "66",
       "title": "PRODUCTION IAM V1",
       "folder": "72-PHASE-66-PRODUCTION-IAM-V1",
-      "tags": [
-        "security"
-      ],
+      "tags": ["security"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4879,9 +4588,7 @@
       "phaseId": "67",
       "title": "ADT INPATIENT",
       "folder": "73-PHASE-67-ADT-INPATIENT",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4937,9 +4644,7 @@
       "phaseId": "68",
       "title": "NURSING WORKFLOW",
       "folder": "74-PHASE-68-NURSING-WORKFLOW",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -4982,9 +4687,7 @@
       "phaseId": "69",
       "title": "RCM OPS EXCELLENCE",
       "folder": "75-PHASE-69-RCM-OPS-EXCELLENCE",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5028,9 +4731,7 @@
       "phaseId": "71",
       "title": "INTEROP MONITOR V2",
       "folder": "76-PHASE-71-INTEROP-MONITOR-V2",
-      "tags": [
-        "interop"
-      ],
+      "tags": ["interop"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5065,9 +4766,7 @@
       "smoke": {
         "uiRoutes": [],
         "apiEndpoints": [],
-        "vistaProbes": [
-          "VE INTEROP HL7 LINKS"
-        ]
+        "vistaProbes": ["VE INTEROP HL7 LINKS"]
       },
       "notes": ""
     },
@@ -5075,9 +4774,7 @@
       "phaseId": "72",
       "title": "REALITY VERIFIER PACK",
       "folder": "77-PHASE-72-REALITY-VERIFIER-PACK",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5126,9 +4823,7 @@
       "phaseId": "73",
       "title": "DRIFT LOCK",
       "folder": "78-PHASE-73-DRIFT-LOCK",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5171,9 +4866,7 @@
       "phaseId": "74",
       "title": "REALITY VERIFIER V2",
       "folder": "79-PHASE-74-REALITY-VERIFIER-V2",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5207,9 +4900,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/admin/fake-success-audit"
-        ],
+        "apiEndpoints": ["/admin/fake-success-audit"],
         "vistaProbes": []
       },
       "notes": ""
@@ -5218,9 +4909,7 @@
       "phaseId": "75",
       "title": "GO LIVE EVIDENCE PACK",
       "folder": "80-PHASE-75-GO-LIVE-EVIDENCE-PACK",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5266,9 +4955,7 @@
       "phaseId": "76",
       "title": "MODULARIZATION V1",
       "folder": "81-PHASE-76-MODULARIZATION-V1",
-      "tags": [
-        "modularity"
-      ],
+      "tags": ["modularity"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5302,9 +4989,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/api/modules/override"
-        ],
+        "apiEndpoints": ["/api/modules/override"],
         "vistaProbes": []
       },
       "notes": ""
@@ -5313,10 +4998,7 @@
       "phaseId": "77",
       "title": "OBSERVABILITY V1",
       "folder": "82-PHASE-77-OBSERVABILITY-V1",
-      "tags": [
-        "analytics",
-        "observability"
-      ],
+      "tags": ["analytics", "observability"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5350,12 +5032,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/docs/reports",
-          "/metrics",
-          "/metrics/prometheus",
-          "/reports"
-        ],
+        "apiEndpoints": ["/docs/reports", "/metrics", "/metrics/prometheus", "/reports"],
         "vistaProbes": []
       },
       "notes": ""
@@ -5364,9 +5041,7 @@
       "phaseId": "78",
       "title": "PENDING BURNDOWN",
       "folder": "83-PHASE-78-PENDING-BURNDOWN",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5414,9 +5089,7 @@
       "phaseId": "79",
       "title": "COVERSHEET LAYOUT",
       "folder": "84-PHASE-79-COVERSHEET-LAYOUT",
-      "tags": [
-        "cprs"
-      ],
+      "tags": ["cprs"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5450,9 +5123,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/ui-prefs/coversheet"
-        ],
+        "apiEndpoints": ["/ui-prefs/coversheet"],
         "vistaProbes": []
       },
       "notes": ""
@@ -5461,9 +5132,7 @@
       "phaseId": "80",
       "title": "PATIENT RECORD PORTABILITY",
       "folder": "85-PHASE-80-PATIENT-RECORD-PORTABILITY",
-      "tags": [
-        "analytics"
-      ],
+      "tags": ["analytics"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5504,9 +5173,7 @@
           "/portal/record/share/:id/revoke",
           "/portal/record/share/audit"
         ],
-        "vistaProbes": [
-          "ORWRP REPORT LISTS"
-        ]
+        "vistaProbes": ["ORWRP REPORT LISTS"]
       },
       "notes": ""
     },
@@ -5514,9 +5181,7 @@
       "phaseId": "81",
       "title": "IMAGING VIEWER V1",
       "folder": "86-PHASE-81-IMAGING-VIEWER-V1",
-      "tags": [
-        "imaging"
-      ],
+      "tags": ["imaging"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5565,9 +5230,7 @@
       "phaseId": "82",
       "title": "RCM ADAPTER EXPANSION V2",
       "folder": "87-PHASE-82-RCM-ADAPTER-EXPANSION-V2",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5611,9 +5274,7 @@
       "phaseId": "83",
       "title": "INPATIENT ADT",
       "folder": "88-PHASE-83-INPATIENT-ADT",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5647,15 +5308,8 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/cprs/inpatient/",
-          "/vista/inpatient/*"
-        ],
-        "vistaProbes": [
-          "ORQPT WARD PATIENTS",
-          "ORQPT WARDS",
-          "ORWPT16 ADMITLST"
-        ]
+        "apiEndpoints": ["/cprs/inpatient/", "/vista/inpatient/*"],
+        "vistaProbes": ["ORQPT WARD PATIENTS", "ORQPT WARDS", "ORWPT16 ADMITLST"]
       },
       "notes": ""
     },
@@ -5663,9 +5317,7 @@
       "phaseId": "84",
       "title": "NURSING",
       "folder": "89-PHASE-84-NURSING",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5717,9 +5369,7 @@
       "phaseId": "85",
       "title": "EMAR BCMA",
       "folder": "90-PHASE-85-EMAR-BCMA",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5769,9 +5419,7 @@
       "phaseId": "86",
       "title": "SHIFT HANDOFF",
       "folder": "91-PHASE-86-SHIFT-HANDOFF",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5820,9 +5468,7 @@
       "phaseId": "87",
       "title": "MEGA AUDIT",
       "folder": "92-PHASE-87-MEGA-AUDIT",
-      "tags": [
-        "security"
-      ],
+      "tags": ["security"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5879,9 +5525,7 @@
       "phaseId": "87",
       "title": "PH RCM",
       "folder": "93-PHASE-87-PH-RCM",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5939,9 +5583,7 @@
       "phaseId": "88",
       "title": "PH PAYER REGISTRY",
       "folder": "94-PHASE-88-PH-PAYER-REGISTRY",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -5985,9 +5627,7 @@
       "phaseId": "89",
       "title": "LOA ENGINE V1",
       "folder": "95-PHASE-89-LOA-ENGINE-V1",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -6021,11 +5661,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/loa/:id/assign",
-          "/rcm/",
-          "/rcm/payerops/loa-queue"
-        ],
+        "apiEndpoints": ["/loa/:id/assign", "/rcm/", "/rcm/payerops/loa-queue"],
         "vistaProbes": []
       },
       "notes": ""
@@ -6034,9 +5670,7 @@
       "phaseId": "90",
       "title": "PHILHEALTH ECLAIMS3",
       "folder": "96-PHASE-90-PHILHEALTH-ECLAIMS3",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -6080,9 +5714,7 @@
       "phaseId": "91",
       "title": "CLAIMS LIFECYCLE",
       "folder": "97-PHASE-91-CLAIMS-LIFECYCLE",
-      "tags": [
-        "rcm"
-      ],
+      "tags": ["rcm"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -6117,11 +5749,7 @@
       },
       "smoke": {
         "uiRoutes": [],
-        "apiEndpoints": [
-          "/cprs/admin/claims-queue",
-          "/cprs/admin/denials",
-          "/rcm/claims/*"
-        ],
+        "apiEndpoints": ["/cprs/admin/claims-queue", "/cprs/admin/denials", "/rcm/claims/*"],
         "vistaProbes": []
       },
       "notes": ""
@@ -6130,9 +5758,7 @@
       "phaseId": "92",
       "title": "PAYMENTS",
       "folder": "98-PHASE-92-PAYMENTS",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -6195,9 +5821,7 @@
       "phaseId": "93",
       "title": "PH HMO DEEPENING",
       "folder": "99-PHASE-93-PH-HMO-DEEPENING",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -6248,9 +5872,7 @@
       "phaseId": "94",
       "title": "PH HMO WORKFLOW",
       "folder": "99-PHASE-94-PH-HMO-WORKFLOW",
-      "tags": [
-        "general"
-      ],
+      "tags": ["general"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -6293,10 +5915,7 @@
       "phaseId": "95",
       "title": "PAYER REGISTRY PERSISTENCE",
       "folder": "99-PHASE-95-PAYER-REGISTRY-PERSISTENCE",
-      "tags": [
-        "rcm",
-        "durability"
-      ],
+      "tags": ["rcm", "durability"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -6347,9 +5966,7 @@
       "phaseId": "95B",
       "title": "PLATFORM PERSISTENCE",
       "folder": "99-PHASE-95B-PLATFORM-PERSISTENCE",
-      "tags": [
-        "durability"
-      ],
+      "tags": ["durability"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",
@@ -6392,11 +6009,7 @@
       "phaseId": "126",
       "title": "RCM DURABILITY PG",
       "folder": "130-PHASE-126-RCM-DURABILITY-PG",
-      "tags": [
-        "rcm",
-        "durability",
-        "postgres"
-      ],
+      "tags": ["rcm", "durability", "postgres"],
       "suites": {
         "fast": [
           "G0_prompts_integrity",

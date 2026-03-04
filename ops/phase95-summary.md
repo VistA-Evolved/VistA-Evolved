@@ -6,6 +6,7 @@ Phase 95 converts the PH payer registry from a read-only JSON loader into a
 persistent, audited, evidence-backed registry store. Zero new dependencies.
 
 ### New Files (6)
+
 - `apps/api/src/rcm/payers/payer-persistence.ts` — Core durable store with JSON-file
   backing, in-memory Map cache, atomic writes via rename, import from snapshot,
   CRUD operations, tenant override merge logic, and stats
@@ -21,10 +22,12 @@ persistent, audited, evidence-backed registry store. Zero new dependencies.
 - `scripts/verify-prompt-ordering.ps1` — Prompt folder integrity linter
 
 ### Modified Files (2)
+
 - `apps/api/src/index.ts` — Import + register payerAdminRoutes
 - `apps/web/src/app/cprs/admin/layout.tsx` — Add "Payer Registry" nav entry
 
 ### Unchanged (backward-compatible)
+
 - `apps/api/src/rcm/payers/ph-hmo-registry.ts` — Phase 93 read-only registry (untouched)
 - `apps/api/src/rcm/payers/ph-hmo-routes.ts` — Phase 93 routes (untouched)
 - `apps/api/src/rcm/payers/ph-hmo-adapter.ts` — Phase 93 adapters (untouched)

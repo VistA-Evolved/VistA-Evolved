@@ -9,22 +9,21 @@
  * check → audit → return response.
  */
 
-import { randomBytes } from "node:crypto";
-import type {
-  AIRequest,
-  AIResponse,
-  AIUseCase,
-  Citation,
-  ConfidenceLevel,
-} from "./types.js";
-import { resolveModel, canHandlePhi } from "./model-registry.js";
-import { renderPrompt, getPrompt } from "./prompt-registry.js";
-import { checkRequestSafety, checkResponseSafety, getFacilityPolicy, isUseCaseAllowed } from "./safety-layer.js";
-import { redactPhi, detectPhi } from "./redaction.js";
-import { assembleContext, formatContextForPrompt } from "./rag-engine.js";
-import { getProvider } from "./providers/index.js";
-import { logAiAudit } from "./ai-audit.js";
-import { log } from "../lib/logger.js";
+import { randomBytes } from 'node:crypto';
+import type { AIRequest, AIResponse, Citation, ConfidenceLevel } from './types.js';
+import { resolveModel, canHandlePhi } from './model-registry.js';
+import { renderPrompt } from './prompt-registry.js';
+import {
+  checkRequestSafety,
+  checkResponseSafety,
+  getFacilityPolicy,
+  isUseCaseAllowed,
+} from './safety-layer.js';
+import { redactPhi, detectPhi } from './redaction.js';
+import { assembleContext, formatContextForPrompt } from './rag-engine.js';
+import { getProvider } from './providers/index.js';
+import { logAiAudit } from './ai-audit.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Rate limiting (per-user, per-hour)                                  */
@@ -60,7 +59,10 @@ function recordAiRequest(userId: string): void {
 /* ------------------------------------------------------------------ */
 
 /** Extract [CITE: source] markers from AI response text. */
-function extractCitations(text: string, contextChunks: Array<{ label: string; category: string; content: string }>): Citation[] {
+function extractCitations(
+  text: string,
+  contextChunks: Array<{ label: string; category: string; content: string }>
+): Citation[] {
   const citations: Citation[] = [];
   const citePattern = /\[CITE:\s*([^\]]+)\]/g;
   let match: RegExpExecArray | null;
@@ -69,13 +71,14 @@ function extractCitations(text: string, contextChunks: Array<{ label: string; ca
     const citeRef = match[1].trim();
     // Try to match to a context chunk
     const matchedChunk = contextChunks.find(
-      (c) => c.label.toLowerCase().includes(citeRef.toLowerCase()) ||
-             citeRef.toLowerCase().includes(c.category.toLowerCase())
+      (c) =>
+        c.label.toLowerCase().includes(citeRef.toLowerCase()) ||
+        citeRef.toLowerCase().includes(c.category.toLowerCase())
     );
     citations.push({
       source: citeRef,
-      category: matchedChunk?.category ?? "unknown",
-      snippet: matchedChunk?.content?.slice(0, 200) ?? "",
+      category: matchedChunk?.category ?? 'unknown',
+      snippet: matchedChunk?.content?.slice(0, 200) ?? '',
     });
   }
 
@@ -84,12 +87,12 @@ function extractCitations(text: string, contextChunks: Array<{ label: string; ca
 
 /** Determine confidence level based on citation coverage. */
 function assessConfidence(citations: Citation[], ragChunkCount: number): ConfidenceLevel {
-  if (ragChunkCount === 0) return "low";
-  if (citations.length === 0) return "low";
+  if (ragChunkCount === 0) return 'low';
+  if (citations.length === 0) return 'low';
   const ratio = citations.length / Math.max(ragChunkCount, 1);
-  if (ratio >= 0.5) return "high";
-  if (ratio >= 0.2) return "medium";
-  return "low";
+  if (ratio >= 0.5) return 'high';
+  if (ratio >= 0.2) return 'medium';
+  return 'low';
 }
 
 /* ------------------------------------------------------------------ */
@@ -120,20 +123,20 @@ export interface GatewayResult {
  */
 export async function processAiRequest(request: AIRequest): Promise<GatewayResult> {
   const startMs = Date.now();
-  const responseId = `ai-${randomBytes(8).toString("hex")}`;
+  const responseId = `ai-${randomBytes(8).toString('hex')}`;
   const policy = getFacilityPolicy();
 
   // 1. Validate use case
   if (!isUseCaseAllowed(request.useCase)) {
     const audit = logAiAudit({
       useCase: request.useCase,
-      modelId: "none",
+      modelId: 'none',
       promptId: request.promptId,
-      promptHash: "",
+      promptHash: '',
       actorId: request.actor.id,
       actorRole: request.actor.role,
       patientDfn: request.patientDfn,
-      outcome: "blocked",
+      outcome: 'blocked',
       safetyWarnings: [`Use case '${request.useCase}' not allowed by facility policy`],
       wasRedacted: false,
       inputTokens: 0,
@@ -154,14 +157,14 @@ export async function processAiRequest(request: AIRequest): Promise<GatewayResul
   if (!rateCheck.allowed) {
     const audit = logAiAudit({
       useCase: request.useCase,
-      modelId: "none",
+      modelId: 'none',
       promptId: request.promptId,
-      promptHash: "",
+      promptHash: '',
       actorId: request.actor.id,
       actorRole: request.actor.role,
       patientDfn: request.patientDfn,
-      outcome: "blocked",
-      safetyWarnings: ["Rate limit exceeded"],
+      outcome: 'blocked',
+      safetyWarnings: ['Rate limit exceeded'],
       wasRedacted: false,
       inputTokens: 0,
       outputTokens: 0,
@@ -178,18 +181,18 @@ export async function processAiRequest(request: AIRequest): Promise<GatewayResul
   recordAiRequest(request.actor.id);
 
   // 3. Pre-request safety check
-  const inputText = Object.values(request.variables).join(" ");
+  const inputText = Object.values(request.variables).join(' ');
   const safetyCheck = checkRequestSafety(inputText, request.useCase);
   if (!safetyCheck.allowed) {
     const audit = logAiAudit({
       useCase: request.useCase,
-      modelId: "none",
+      modelId: 'none',
       promptId: request.promptId,
-      promptHash: "",
+      promptHash: '',
       actorId: request.actor.id,
       actorRole: request.actor.role,
       patientDfn: request.patientDfn,
-      outcome: "blocked",
+      outcome: 'blocked',
       blockedCategory: safetyCheck.blockedCategory,
       safetyWarnings: safetyCheck.warnings,
       wasRedacted: false,
@@ -216,15 +219,12 @@ export async function processAiRequest(request: AIRequest): Promise<GatewayResul
   }
 
   // 5. Assemble RAG context (if patient-scoped)
-  let contextText = "";
+  let contextText = '';
   let ragCategories: string[] = [];
   let contextChunks: Array<{ label: string; category: string; content: string }> = [];
 
   if (request.patientDfn) {
-    const context = await assembleContext(
-      request.patientDfn,
-      request.actor.role
-    );
+    const context = await assembleContext(request.patientDfn, request.actor.role);
     contextChunks = context.chunks.map((c) => ({
       label: c.label,
       category: c.category,
@@ -232,7 +232,6 @@ export async function processAiRequest(request: AIRequest): Promise<GatewayResul
     }));
 
     // 6. Optionally redact PHI
-    let wasRedacted = false;
     if (policy.redactPhi && !canHandlePhi(model.id)) {
       const phiCheck = detectPhi(formatContextForPrompt(context));
       if (phiCheck.phiDetected) {
@@ -241,13 +240,12 @@ export async function processAiRequest(request: AIRequest): Promise<GatewayResul
           const redacted = redactPhi(chunk.content);
           chunk.content = redacted.text;
         }
-        wasRedacted = true;
       }
     }
 
     contextText = contextChunks
       .map((c) => `[${c.label}] (${c.category}):\n${c.content}`)
-      .join("\n\n");
+      .join('\n\n');
     ragCategories = context.categoriesIncluded;
   }
 
@@ -271,7 +269,12 @@ export async function processAiRequest(request: AIRequest): Promise<GatewayResul
     return { ok: false, error: `Provider '${model.provider}' not registered` };
   }
 
-  let providerResult: { text: string; inputTokens: number; outputTokens: number; latencyMs: number };
+  let providerResult: {
+    text: string;
+    inputTokens: number;
+    outputTokens: number;
+    latencyMs: number;
+  };
   try {
     providerResult = await provider.complete({
       systemPrompt: rendered.systemPrompt,
@@ -279,7 +282,7 @@ export async function processAiRequest(request: AIRequest): Promise<GatewayResul
       maxTokens: Math.min(request.maxTokens ?? model.maxOutputTokens, model.maxOutputTokens),
     });
   } catch (err) {
-    log.error("AI provider call failed", { modelId: model.id, error: String(err) });
+    log.error('AI provider call failed', { modelId: model.id, error: String(err) });
     const audit = logAiAudit({
       useCase: request.useCase,
       modelId: model.id,
@@ -288,7 +291,7 @@ export async function processAiRequest(request: AIRequest): Promise<GatewayResul
       actorId: request.actor.id,
       actorRole: request.actor.role,
       patientDfn: request.patientDfn,
-      outcome: "error",
+      outcome: 'error',
       safetyWarnings: [],
       wasRedacted: false,
       inputTokens: 0,
@@ -297,7 +300,7 @@ export async function processAiRequest(request: AIRequest): Promise<GatewayResul
       ragCategories: ragCategories as any,
       citationCount: 0,
     });
-    return { ok: false, error: "AI model call failed", auditEventId: audit.id };
+    return { ok: false, error: 'AI model call failed', auditEventId: audit.id };
   }
 
   // 9. Post-response safety check
@@ -311,7 +314,7 @@ export async function processAiRequest(request: AIRequest): Promise<GatewayResul
   // Determine if clinician confirmation is needed
   const requiresConfirmation =
     policy.requireClinicianConfirmation &&
-    (request.useCase === "intake-summary" || request.useCase === "custom");
+    (request.useCase === 'intake-summary' || request.useCase === 'custom');
 
   // Redaction status
   const wasRedacted = policy.redactPhi && !canHandlePhi(model.id);
@@ -333,7 +336,8 @@ export async function processAiRequest(request: AIRequest): Promise<GatewayResul
   };
 
   // 11. Audit log
-  const outcome = responseSafety.categoriesFound.length > 0 ? "safety_filtered" as const : "success" as const;
+  const outcome =
+    responseSafety.categoriesFound.length > 0 ? ('safety_filtered' as const) : ('success' as const);
   const audit = logAiAudit({
     useCase: request.useCase,
     modelId: model.id,

@@ -1,6 +1,7 @@
 # Phase 157: Audit JSONL Shipping to Object Store
 
 ## Overview
+
 The audit shipper periodically uploads immutable audit JSONL entries to
 S3-compatible object storage (MinIO locally, AWS S3 in production).
 Each upload includes a SHA-256 integrity manifest for tamper evidence.
@@ -31,17 +32,17 @@ audit/{tenantId}/YYYY/MM/DD/{timestamp}_{firstSeq}-{lastSeq}.manifest.json
 
 ## Configuration
 
-| Env Var | Default | Description |
-|---------|---------|-------------|
-| `AUDIT_SHIP_ENABLED` | `false` | Enable the shipper |
-| `AUDIT_SHIP_ENDPOINT` | `http://localhost:9000` | S3/MinIO endpoint |
-| `AUDIT_SHIP_BUCKET` | `vista-evolved-audit` | S3 bucket name |
-| `AUDIT_SHIP_ACCESS_KEY` | (none) | AWS/MinIO access key |
-| `AUDIT_SHIP_SECRET_KEY` | (none) | AWS/MinIO secret key |
-| `AUDIT_SHIP_REGION` | `us-east-1` | AWS region |
-| `AUDIT_SHIP_INTERVAL_MS` | `300000` | Ship interval (5 min) |
-| `AUDIT_SHIP_CHUNK_SIZE` | `1000` | Max lines per upload |
-| `AUDIT_SHIP_PATH_STYLE` | `true` | Path-style for MinIO |
+| Env Var                  | Default                 | Description           |
+| ------------------------ | ----------------------- | --------------------- |
+| `AUDIT_SHIP_ENABLED`     | `false`                 | Enable the shipper    |
+| `AUDIT_SHIP_ENDPOINT`    | `http://localhost:9000` | S3/MinIO endpoint     |
+| `AUDIT_SHIP_BUCKET`      | `vista-evolved-audit`   | S3 bucket name        |
+| `AUDIT_SHIP_ACCESS_KEY`  | (none)                  | AWS/MinIO access key  |
+| `AUDIT_SHIP_SECRET_KEY`  | (none)                  | AWS/MinIO secret key  |
+| `AUDIT_SHIP_REGION`      | `us-east-1`             | AWS region            |
+| `AUDIT_SHIP_INTERVAL_MS` | `300000`                | Ship interval (5 min) |
+| `AUDIT_SHIP_CHUNK_SIZE`  | `1000`                  | Max lines per upload  |
+| `AUDIT_SHIP_PATH_STYLE`  | `true`                  | Path-style for MinIO  |
 
 ## Local MinIO Setup
 
@@ -59,6 +60,7 @@ docker exec minio mc mb local/vista-evolved-audit
 ```
 
 Then set in `.env.local`:
+
 ```env
 AUDIT_SHIP_ENABLED=true
 AUDIT_SHIP_ENDPOINT=http://localhost:9000
@@ -70,16 +72,17 @@ AUDIT_SHIP_SECRET_KEY=minioadmin
 
 All require admin auth (matched by `/audit/*` catch-all in AUTH_RULES).
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/audit/shipping/status` | Shipping health overview |
-| POST | `/audit/shipping/trigger` | Manual ship cycle |
-| GET | `/audit/shipping/manifests` | List recent manifests |
-| GET | `/audit/shipping/health` | S3 connectivity check |
+| Method | Path                        | Description              |
+| ------ | --------------------------- | ------------------------ |
+| GET    | `/audit/shipping/status`    | Shipping health overview |
+| POST   | `/audit/shipping/trigger`   | Manual ship cycle        |
+| GET    | `/audit/shipping/manifests` | List recent manifests    |
+| GET    | `/audit/shipping/health`    | S3 connectivity check    |
 
 ## Posture Gate
 
 The `/posture/audit-shipping` endpoint checks 6 gates:
+
 1. `audit_ship_enabled` - AUDIT_SHIP_ENABLED=true
 2. `s3_credentials_configured` - Access key + secret key set
 3. `shipper_job_running` - Periodic job is active

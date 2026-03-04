@@ -5,7 +5,7 @@
  * sending notifications, and notification log.
  */
 
-import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import {
   setConsent,
   listConsents,
@@ -17,22 +17,22 @@ import {
   getNotificationLog,
   listProviders,
   isPhiAllowed,
-} from "../services/patient-comms-service.js";
+} from '../services/patient-comms-service.js';
 import type {
   NotificationChannel,
   NotificationCategory,
   ConsentStatus,
-} from "../services/patient-comms-service.js";
+} from '../services/patient-comms-service.js';
 
 export async function patientCommsRoutes(server: FastifyInstance): Promise<void> {
-  const tenantId = "default";
+  const tenantId = 'default';
 
   // ─── Consent Management ──────────────────────────────
 
-  server.get("/patient-comms/consent", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/patient-comms/consent', async (req: FastifyRequest, reply: FastifyReply) => {
     const { patientDfn } = (req.query as any) || {};
     if (!patientDfn) {
-      return reply.code(400).send({ ok: false, error: "patientDfn query param is required" });
+      return reply.code(400).send({ ok: false, error: 'patientDfn query param is required' });
     }
     return reply.send({
       ok: true,
@@ -40,31 +40,31 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
     });
   });
 
-  server.post("/patient-comms/consent", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/patient-comms/consent', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     if (!body.patientDfn || !body.channel || !body.status) {
       return reply.code(400).send({
         ok: false,
-        error: "patientDfn, channel, and status are required",
+        error: 'patientDfn, channel, and status are required',
       });
     }
     const consent = setConsent(
       tenantId,
       body.patientDfn,
       body.channel as NotificationChannel,
-      (body.category || "*") as NotificationCategory | "*",
+      (body.category || '*') as NotificationCategory | '*',
       body.status as ConsentStatus,
-      body.locale,
+      body.locale
     );
     return reply.code(201).send({ ok: true, consent });
   });
 
-  server.get("/patient-comms/consent/check", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/patient-comms/consent/check', async (req: FastifyRequest, reply: FastifyReply) => {
     const { patientDfn, channel, category } = (req.query as any) || {};
     if (!patientDfn || !channel || !category) {
       return reply.code(400).send({
         ok: false,
-        error: "patientDfn, channel, and category are required",
+        error: 'patientDfn, channel, and category are required',
       });
     }
     return reply.send({
@@ -75,7 +75,7 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
 
   // ─── Templates ───────────────────────────────────────
 
-  server.get("/patient-comms/templates", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/patient-comms/templates', async (req: FastifyRequest, reply: FastifyReply) => {
     const { category, locale } = (req.query as any) || {};
     return reply.send({
       ok: true,
@@ -83,27 +83,27 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
     });
   });
 
-  server.get("/patient-comms/templates/:id", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/patient-comms/templates/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
     const t = getTemplate(id);
     if (!t || t.tenantId !== tenantId) {
-      return reply.code(404).send({ ok: false, error: "Template not found" });
+      return reply.code(404).send({ ok: false, error: 'Template not found' });
     }
     return reply.send({ ok: true, template: t });
   });
 
-  server.post("/patient-comms/templates", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/patient-comms/templates', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     if (!body.category || !body.channel || !body.subject || !body.body) {
       return reply.code(400).send({
         ok: false,
-        error: "category, channel, subject, and body are required",
+        error: 'category, channel, subject, and body are required',
       });
     }
     const t = createTemplate(tenantId, {
       category: body.category,
       channel: body.channel,
-      locale: body.locale || "en",
+      locale: body.locale || 'en',
       subject: body.subject,
       body: body.body,
       containsPhi: body.containsPhi || false,
@@ -114,12 +114,18 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
 
   // ─── Send Notification ───────────────────────────────
 
-  server.post("/patient-comms/send", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.post('/patient-comms/send', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
-    if (!body.patientDfn || !body.channel || !body.category || !body.templateId || !body.recipientContact) {
+    if (
+      !body.patientDfn ||
+      !body.channel ||
+      !body.category ||
+      !body.templateId ||
+      !body.recipientContact
+    ) {
       return reply.code(400).send({
         ok: false,
-        error: "patientDfn, channel, category, templateId, and recipientContact are required",
+        error: 'patientDfn, channel, category, templateId, and recipientContact are required',
       });
     }
     const result = await sendNotification({
@@ -139,7 +145,7 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
 
   // ─── Notification Log ────────────────────────────────
 
-  server.get("/patient-comms/log", async (req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/patient-comms/log', async (req: FastifyRequest, reply: FastifyReply) => {
     const { patientDfn, limit } = (req.query as any) || {};
     // Note: No raw DFN in response — log entries use hashed DFN
     return reply.send({
@@ -150,7 +156,7 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
 
   // ─── Providers ───────────────────────────────────────
 
-  server.get("/patient-comms/providers", async (_req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/patient-comms/providers', async (_req: FastifyRequest, reply: FastifyReply) => {
     const providers = listProviders().map((p) => ({
       id: p.id,
       name: p.name,
@@ -161,12 +167,12 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
 
   // ─── Health / Config ─────────────────────────────────
 
-  server.get("/patient-comms/health", async (_req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/patient-comms/health', async (_req: FastifyRequest, reply: FastifyReply) => {
     return reply.send({
       ok: true,
       phiEnabled: isPhiAllowed(),
       providers: listProviders().length,
-      supportedChannels: ["email", "sms", "push", "portal_inbox", "voice"],
+      supportedChannels: ['email', 'sms', 'push', 'portal_inbox', 'voice'],
     });
   });
 }

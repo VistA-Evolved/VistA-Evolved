@@ -10,7 +10,7 @@
   getAdminModules, filterEnabledModules, isTabVisible.
 
 - **apps/web/src/app/cprs/admin/layout.tsx** (NEW): Admin sidebar layout wrapping all
-  /cprs/admin/* pages. Seven navigation items (Modules, Integrations, Analytics,
+  /cprs/admin/\* pages. Seven navigation items (Modules, Integrations, Analytics,
   RCM/Billing, Audit Viewer, Reports, Migration). Module-gated: items with moduleId
   hidden when module disabled. Active path highlighting via usePathname.
 

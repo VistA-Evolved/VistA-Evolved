@@ -1,6 +1,7 @@
 # Phase 433 — Lab HL7 Inbound Path (W27 P3)
 
 ## Objective
+
 Create the HL7v2 ORU^R01 lab result inbound pipeline scaffold.
 Bridges the existing HL7 engine (parser, ORU pack, domain mapper)
 to a new lab result staging store with validation, quarantine, and
@@ -36,10 +37,12 @@ manual patient linking.
 5. **Add 2 RPC exceptions to registry**: LRFZX (filing routine), LR VERIFY
 
 ## Files Created
+
 - `apps/api/src/hl7/lab-inbound/types.ts`
 - `apps/api/src/hl7/lab-inbound/store.ts`
 - `apps/api/src/hl7/lab-inbound/handler.ts`
 - `apps/api/src/hl7/lab-inbound/index.ts`
 
 ## Files Modified
+
 - `apps/api/src/vista/rpcRegistry.ts` — +2 exceptions (LRFZX, LR VERIFY)

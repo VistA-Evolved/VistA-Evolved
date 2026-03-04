@@ -7,423 +7,499 @@
  *   node scripts/qa/generate-phase-tests.mjs
  */
 
-import { test, expect } from "@playwright/test";
+import { test, expect } from '@playwright/test';
 
-const API = process.env.API_URL ?? "http://localhost:3001";
+const API = process.env.API_URL ?? 'http://localhost:3001';
 
-test.describe("Phase 118: Go-Live Hardening Pack", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 118: Go-Live Hardening Pack', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__admin_jobs_status = await request.get(`${API}/admin/jobs/status`);
-    expect(r__admin_jobs_status.status(), "/admin/jobs/status should not be 500").not.toBe(500);
+    expect(r__admin_jobs_status.status(), '/admin/jobs/status should not be 500').not.toBe(500);
     const r__api_capabilities = await request.get(`${API}/api/capabilities`);
-    expect(r__api_capabilities.status(), "/api/capabilities should not be 500").not.toBe(500);
+    expect(r__api_capabilities.status(), '/api/capabilities should not be 500').not.toBe(500);
     const r__auth_session = await request.get(`${API}/auth/session`);
-    expect(r__auth_session.status(), "/auth/session should not be 500").not.toBe(500);
+    expect(r__auth_session.status(), '/auth/session should not be 500').not.toBe(500);
     const r__hardening_audit_verify = await request.get(`${API}/hardening/audit-verify`);
-    expect(r__hardening_audit_verify.status(), "/hardening/audit-verify should not be 500").not.toBe(500);
+    expect(
+      r__hardening_audit_verify.status(),
+      '/hardening/audit-verify should not be 500'
+    ).not.toBe(500);
     const r__hardening_backup_status = await request.get(`${API}/hardening/backup-status`);
-    expect(r__hardening_backup_status.status(), "/hardening/backup-status should not be 500").not.toBe(500);
+    expect(
+      r__hardening_backup_status.status(),
+      '/hardening/backup-status should not be 500'
+    ).not.toBe(500);
     const r__hardening_rc_checklist = await request.get(`${API}/hardening/rc-checklist`);
-    expect(r__hardening_rc_checklist.status(), "/hardening/rc-checklist should not be 500").not.toBe(500);
+    expect(
+      r__hardening_rc_checklist.status(),
+      '/hardening/rc-checklist should not be 500'
+    ).not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/admin/jobs/status`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
 
-  test("clinical data contract shape", async ({ request }) => {
+  test('clinical data contract shape', async ({ request }) => {
     const res = await request.get(`${API}/vista/allergies?dfn=3`);
     // Should return JSON with ok field (may be 401 without auth)
     if (res.status() === 200) {
       const body = await res.json();
-      expect(body).toHaveProperty("ok");
+      expect(body).toHaveProperty('ok');
     } else {
       expect([401, 403]).toContain(res.status());
     }
   });
 
-  test("RCM endpoint contract", async ({ request }) => {
+  test('RCM endpoint contract', async ({ request }) => {
     const res = await request.get(`${API}/rcm/audit/verify`);
     expect([200, 401, 403]).toContain(res.status());
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body) expect(body).toHaveProperty("ok");
+      if (body) expect(body).toHaveProperty('ok');
     }
   });
-
 });
 
-test.describe("Phase 14: Compatibility Layer IMPLEMENT", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 14: Compatibility Layer IMPLEMENT', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__vista_consults_create = await request.get(`${API}/vista/consults/create`);
-    expect(r__vista_consults_create.status(), "/vista/consults/create should not be 500").not.toBe(500);
+    expect(r__vista_consults_create.status(), '/vista/consults/create should not be 500').not.toBe(
+      500
+    );
     const r__vista_drafts = await request.get(`${API}/vista/drafts`);
-    expect(r__vista_drafts.status(), "/vista/drafts should not be 500").not.toBe(500);
+    expect(r__vista_drafts.status(), '/vista/drafts should not be 500').not.toBe(500);
     const r__vista_drafts_stats = await request.get(`${API}/vista/drafts/stats`);
-    expect(r__vista_drafts_stats.status(), "/vista/drafts/stats should not be 500").not.toBe(500);
+    expect(r__vista_drafts_stats.status(), '/vista/drafts/stats should not be 500').not.toBe(500);
     const r__vista_imaging_report = await request.get(`${API}/vista/imaging/report`);
-    expect(r__vista_imaging_report.status(), "/vista/imaging/report should not be 500").not.toBe(500);
+    expect(r__vista_imaging_report.status(), '/vista/imaging/report should not be 500').not.toBe(
+      500
+    );
     const r__vista_imaging_status = await request.get(`${API}/vista/imaging/status`);
-    expect(r__vista_imaging_status.status(), "/vista/imaging/status should not be 500").not.toBe(500);
+    expect(r__vista_imaging_status.status(), '/vista/imaging/status should not be 500').not.toBe(
+      500
+    );
     const r__vista_inbox = await request.get(`${API}/vista/inbox`);
-    expect(r__vista_inbox.status(), "/vista/inbox should not be 500").not.toBe(500);
+    expect(r__vista_inbox.status(), '/vista/inbox should not be 500').not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/vista/consults/create`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
 
-  test("UI component files exist", async () => {
-    const { readdirSync } = await import("node:fs");
-    const { join, resolve: resolvePath } = await import("node:path");
-    const root = resolvePath(__dirname, "..", "..", "..", "..");
-    const componentNames = ["LabsPanel.tsx","data-cache.tsx"];
+  test('UI component files exist', async () => {
+    const { readdirSync } = await import('node:fs');
+    const { join, resolve: resolvePath } = await import('node:path');
+    const root = resolvePath(__dirname, '..', '..', '..', '..');
+    const componentNames = ['LabsPanel.tsx', 'data-cache.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* skip */ }
+      } catch {
+        /* skip */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(root, "apps"), name)) found++;
+      if (findFile(join(root, 'apps'), name)) found++;
     }
     expect(found).toBeGreaterThan(0);
   });
 
-  test("clinical data contract shape", async ({ request }) => {
+  test('clinical data contract shape', async ({ request }) => {
     const res = await request.get(`${API}/vista/consults/create`);
     // Should return JSON with ok field (may be 401 without auth)
     if (res.status() === 200) {
       const body = await res.json();
-      expect(body).toHaveProperty("ok");
+      expect(body).toHaveProperty('ok');
     } else {
       expect([401, 403]).toContain(res.status());
     }
   });
-
 });
 
-test.describe("Phase 18: Enterprise Interop + Imaging Platform Integration", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 18: Enterprise Interop + Imaging Platform Integration', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__vista_imaging_studies = await request.get(`${API}/vista/imaging/studies`);
-    expect(r__vista_imaging_studies.status(), "/vista/imaging/studies should not be 500").not.toBe(500);
+    expect(r__vista_imaging_studies.status(), '/vista/imaging/studies should not be 500').not.toBe(
+      500
+    );
     const r__vista_imaging_viewer_url = await request.get(`${API}/vista/imaging/viewer-url`);
-    expect(r__vista_imaging_viewer_url.status(), "/vista/imaging/viewer-url should not be 500").not.toBe(500);
+    expect(
+      r__vista_imaging_viewer_url.status(),
+      '/vista/imaging/viewer-url should not be 500'
+    ).not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/vista/imaging/studies`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
 
-  test("UI component files exist", async () => {
-    const { readdirSync } = await import("node:fs");
-    const { join, resolve: resolvePath } = await import("node:path");
-    const root = resolvePath(__dirname, "..", "..", "..", "..");
-    const componentNames = ["ReportsPanel.tsx","page.tsx","tenant-context.tsx"];
+  test('UI component files exist', async () => {
+    const { readdirSync } = await import('node:fs');
+    const { join, resolve: resolvePath } = await import('node:path');
+    const root = resolvePath(__dirname, '..', '..', '..', '..');
+    const componentNames = ['ReportsPanel.tsx', 'page.tsx', 'tenant-context.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* skip */ }
+      } catch {
+        /* skip */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(root, "apps"), name)) found++;
+      if (findFile(join(root, 'apps'), name)) found++;
     }
     expect(found).toBeGreaterThan(0);
   });
 
-  test("clinical data contract shape", async ({ request }) => {
+  test('clinical data contract shape', async ({ request }) => {
     const res = await request.get(`${API}/vista/imaging/studies`);
     // Should return JSON with ok field (may be 401 without auth)
     if (res.status() === 200) {
       const body = await res.json();
-      expect(body).toHaveProperty("ok");
+      expect(body).toHaveProperty('ok');
     } else {
       expect([401, 403]).toContain(res.status());
     }
   });
-
 });
 
-test.describe("Phase 22: Imaging Platform V1", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 22: Imaging Platform V1', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__imaging_dicom_web_studies = await request.get(`${API}/imaging/dicom-web/studies`);
-    expect(r__imaging_dicom_web_studies.status(), "/imaging/dicom-web/studies should not be 500").not.toBe(500);
+    expect(
+      r__imaging_dicom_web_studies.status(),
+      '/imaging/dicom-web/studies should not be 500'
+    ).not.toBe(500);
     const r__imaging_health = await request.get(`${API}/imaging/health`);
-    expect(r__imaging_health.status(), "/imaging/health should not be 500").not.toBe(500);
-    const r__vista_imaging_patient_images_dfn_x = await request.get(`${API}/vista/imaging/patient-images?dfn=X`);
-    expect(r__vista_imaging_patient_images_dfn_x.status(), "/vista/imaging/patient-images?dfn=X should not be 500").not.toBe(500);
-    const r__vista_imaging_patient_photos_dfn_x = await request.get(`${API}/vista/imaging/patient-photos?dfn=X`);
-    expect(r__vista_imaging_patient_photos_dfn_x.status(), "/vista/imaging/patient-photos?dfn=X should not be 500").not.toBe(500);
+    expect(r__imaging_health.status(), '/imaging/health should not be 500').not.toBe(500);
+    const r__vista_imaging_patient_images_dfn_x = await request.get(
+      `${API}/vista/imaging/patient-images?dfn=X`
+    );
+    expect(
+      r__vista_imaging_patient_images_dfn_x.status(),
+      '/vista/imaging/patient-images?dfn=X should not be 500'
+    ).not.toBe(500);
+    const r__vista_imaging_patient_photos_dfn_x = await request.get(
+      `${API}/vista/imaging/patient-photos?dfn=X`
+    );
+    expect(
+      r__vista_imaging_patient_photos_dfn_x.status(),
+      '/vista/imaging/patient-photos?dfn=X should not be 500'
+    ).not.toBe(500);
     const r__vista_imaging_status = await request.get(`${API}/vista/imaging/status`);
-    expect(r__vista_imaging_status.status(), "/vista/imaging/status should not be 500").not.toBe(500);
+    expect(r__vista_imaging_status.status(), '/vista/imaging/status should not be 500').not.toBe(
+      500
+    );
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/imaging/dicom-web/studies`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
 
-  test("UI component files exist", async () => {
-    const { readdirSync } = await import("node:fs");
-    const { join, resolve: resolvePath } = await import("node:path");
-    const root = resolvePath(__dirname, "..", "..", "..", "..");
-    const componentNames = ["ImagingPanel.tsx","page.tsx"];
+  test('UI component files exist', async () => {
+    const { readdirSync } = await import('node:fs');
+    const { join, resolve: resolvePath } = await import('node:path');
+    const root = resolvePath(__dirname, '..', '..', '..', '..');
+    const componentNames = ['ImagingPanel.tsx', 'page.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* skip */ }
+      } catch {
+        /* skip */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(root, "apps"), name)) found++;
+      if (findFile(join(root, 'apps'), name)) found++;
     }
     expect(found).toBeGreaterThan(0);
   });
 
-  test("clinical data contract shape", async ({ request }) => {
+  test('clinical data contract shape', async ({ request }) => {
     const res = await request.get(`${API}/vista/imaging/patient-images?dfn=X`);
     // Should return JSON with ok field (may be 401 without auth)
     if (res.status() === 200) {
       const body = await res.json();
-      expect(body).toHaveProperty("ok");
+      expect(body).toHaveProperty('ok');
     } else {
       expect([401, 403]).toContain(res.status());
     }
   });
-
 });
 
-test.describe("Phase 23: Imaging Workflow — VERIFY", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 23: Imaging Workflow — VERIFY', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__imaging_ingest_callback = await request.get(`${API}/imaging/ingest/callback`);
-    expect(r__imaging_ingest_callback.status(), "/imaging/ingest/callback should not be 500").not.toBe(500);
+    expect(
+      r__imaging_ingest_callback.status(),
+      '/imaging/ingest/callback should not be 500'
+    ).not.toBe(500);
     const r__imaging_ingest_unmatched = await request.get(`${API}/imaging/ingest/unmatched`);
-    expect(r__imaging_ingest_unmatched.status(), "/imaging/ingest/unmatched should not be 500").not.toBe(500);
+    expect(
+      r__imaging_ingest_unmatched.status(),
+      '/imaging/ingest/unmatched should not be 500'
+    ).not.toBe(500);
     const r__imaging_worklist = await request.get(`${API}/imaging/worklist`);
-    expect(r__imaging_worklist.status(), "/imaging/worklist should not be 500").not.toBe(500);
+    expect(r__imaging_worklist.status(), '/imaging/worklist should not be 500').not.toBe(500);
     const r__imaging_worklist_orders = await request.get(`${API}/imaging/worklist/orders`);
-    expect(r__imaging_worklist_orders.status(), "/imaging/worklist/orders should not be 500").not.toBe(500);
+    expect(
+      r__imaging_worklist_orders.status(),
+      '/imaging/worklist/orders should not be 500'
+    ).not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/imaging/ingest/callback`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
 
-  test("UI component files exist", async () => {
-    const { readdirSync } = await import("node:fs");
-    const { join, resolve: resolvePath } = await import("node:path");
-    const root = resolvePath(__dirname, "..", "..", "..", "..");
-    const componentNames = ["ImagingPanel.tsx"];
+  test('UI component files exist', async () => {
+    const { readdirSync } = await import('node:fs');
+    const { join, resolve: resolvePath } = await import('node:path');
+    const root = resolvePath(__dirname, '..', '..', '..', '..');
+    const componentNames = ['ImagingPanel.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* skip */ }
+      } catch {
+        /* skip */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(root, "apps"), name)) found++;
+      if (findFile(join(root, 'apps'), name)) found++;
     }
     expect(found).toBeGreaterThan(0);
   });
-
 });
 
-test.describe("Phase 24: IMAGING ENTERPRISE", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 24: IMAGING ENTERPRISE', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__security_break_glass_start = await request.get(`${API}/security/break-glass/start`);
-    expect(r__security_break_glass_start.status(), "/security/break-glass/start should not be 500").not.toBe(500);
+    expect(
+      r__security_break_glass_start.status(),
+      '/security/break-glass/start should not be 500'
+    ).not.toBe(500);
     const r__security_break_glass_stop = await request.get(`${API}/security/break-glass/stop`);
-    expect(r__security_break_glass_stop.status(), "/security/break-glass/stop should not be 500").not.toBe(500);
+    expect(
+      r__security_break_glass_stop.status(),
+      '/security/break-glass/stop should not be 500'
+    ).not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/security/break-glass/start`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
 
-  test("UI component files exist", async () => {
-    const { readdirSync } = await import("node:fs");
-    const { join, resolve: resolvePath } = await import("node:path");
-    const root = resolvePath(__dirname, "..", "..", "..", "..");
-    const componentNames = ["ImagingPanel.tsx"];
+  test('UI component files exist', async () => {
+    const { readdirSync } = await import('node:fs');
+    const { join, resolve: resolvePath } = await import('node:path');
+    const root = resolvePath(__dirname, '..', '..', '..', '..');
+    const componentNames = ['ImagingPanel.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* skip */ }
+      } catch {
+        /* skip */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(root, "apps"), name)) found++;
+      if (findFile(join(root, 'apps'), name)) found++;
     }
     expect(found).toBeGreaterThan(0);
   });
-
 });
 
-test.describe("Phase 78: IMPLEMENT: PendingTargets Burn-Down v1 (Top 20 Gaps)", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 78: IMPLEMENT: PendingTargets Burn-Down v1 (Top 20 Gaps)', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__vista_cprs_consults_detail = await request.get(`${API}/vista/cprs/consults/detail`);
-    expect(r__vista_cprs_consults_detail.status(), "/vista/cprs/consults/detail should not be 500").not.toBe(500);
-    const r__vista_imaging_patient_images = await request.get(`${API}/vista/imaging/patient-images`);
-    expect(r__vista_imaging_patient_images.status(), "/vista/imaging/patient-images should not be 500").not.toBe(500);
-    const r__vista_imaging_patient_photos = await request.get(`${API}/vista/imaging/patient-photos`);
-    expect(r__vista_imaging_patient_photos.status(), "/vista/imaging/patient-photos should not be 500").not.toBe(500);
-    const r__vista_imaging_radiology_report = await request.get(`${API}/vista/imaging/radiology-report`);
-    expect(r__vista_imaging_radiology_report.status(), "/vista/imaging/radiology-report should not be 500").not.toBe(500);
+    expect(
+      r__vista_cprs_consults_detail.status(),
+      '/vista/cprs/consults/detail should not be 500'
+    ).not.toBe(500);
+    const r__vista_imaging_patient_images = await request.get(
+      `${API}/vista/imaging/patient-images`
+    );
+    expect(
+      r__vista_imaging_patient_images.status(),
+      '/vista/imaging/patient-images should not be 500'
+    ).not.toBe(500);
+    const r__vista_imaging_patient_photos = await request.get(
+      `${API}/vista/imaging/patient-photos`
+    );
+    expect(
+      r__vista_imaging_patient_photos.status(),
+      '/vista/imaging/patient-photos should not be 500'
+    ).not.toBe(500);
+    const r__vista_imaging_radiology_report = await request.get(
+      `${API}/vista/imaging/radiology-report`
+    );
+    expect(
+      r__vista_imaging_radiology_report.status(),
+      '/vista/imaging/radiology-report should not be 500'
+    ).not.toBe(500);
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/vista/cprs/consults/detail`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
 
-  test("clinical data contract shape", async ({ request }) => {
+  test('clinical data contract shape', async ({ request }) => {
     const res = await request.get(`${API}/vista/cprs/consults/detail`);
     // Should return JSON with ok field (may be 401 without auth)
     if (res.status() === 200) {
       const body = await res.json();
-      expect(body).toHaveProperty("ok");
+      expect(body).toHaveProperty('ok');
     } else {
       expect([401, 403]).toContain(res.status());
     }
   });
-
 });
 
-test.describe("Phase 81: Imaging Viewer v1 (VistA Metadata + DICOM Posture)", () => {
-  test("API routes respond without 500", async ({ request }) => {
+test.describe('Phase 81: Imaging Viewer v1 (VistA Metadata + DICOM Posture)', () => {
+  test('API routes respond without 500', async ({ request }) => {
     const r__vista_imaging_report = await request.get(`${API}/vista/imaging/report`);
-    expect(r__vista_imaging_report.status(), "/vista/imaging/report should not be 500").not.toBe(500);
+    expect(r__vista_imaging_report.status(), '/vista/imaging/report should not be 500').not.toBe(
+      500
+    );
     const r__vista_imaging_status = await request.get(`${API}/vista/imaging/status`);
-    expect(r__vista_imaging_status.status(), "/vista/imaging/status should not be 500").not.toBe(500);
+    expect(r__vista_imaging_status.status(), '/vista/imaging/status should not be 500').not.toBe(
+      500
+    );
   });
 
-  test("integration-pending responses include nextSteps", async ({ request }) => {
+  test('integration-pending responses include nextSteps', async ({ request }) => {
     const res = await request.get(`${API}/vista/imaging/report`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body?.status === "integration-pending") {
-        expect(body).toHaveProperty("nextSteps");
-        expect(body).toHaveProperty("vistaGrounding");
+      if (body?.status === 'integration-pending') {
+        expect(body).toHaveProperty('nextSteps');
+        expect(body).toHaveProperty('vistaGrounding');
       }
     }
   });
 
-  test("UI component files exist", async () => {
-    const { readdirSync } = await import("node:fs");
-    const { join, resolve: resolvePath } = await import("node:path");
-    const root = resolvePath(__dirname, "..", "..", "..", "..");
-    const componentNames = ["ImagingPanel.tsx"];
+  test('UI component files exist', async () => {
+    const { readdirSync } = await import('node:fs');
+    const { join, resolve: resolvePath } = await import('node:path');
+    const root = resolvePath(__dirname, '..', '..', '..', '..');
+    const componentNames = ['ImagingPanel.tsx'];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
+          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch { /* skip */ }
+      } catch {
+        /* skip */
+      }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(root, "apps"), name)) found++;
+      if (findFile(join(root, 'apps'), name)) found++;
     }
     expect(found).toBeGreaterThan(0);
   });
 
-  test("clinical data contract shape", async ({ request }) => {
+  test('clinical data contract shape', async ({ request }) => {
     const res = await request.get(`${API}/vista/imaging/report`);
     // Should return JSON with ok field (may be 401 without auth)
     if (res.status() === 200) {
       const body = await res.json();
-      expect(body).toHaveProperty("ok");
+      expect(body).toHaveProperty('ok');
     } else {
       expect([401, 403]).toContain(res.status());
     }
   });
-
 });

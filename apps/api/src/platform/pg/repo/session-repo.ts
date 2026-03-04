@@ -7,10 +7,10 @@
  * Uses Drizzle ORM + pg-core for type-safe queries against auth_session table.
  */
 
-import { randomUUID } from "node:crypto";
-import { eq, and, isNull, sql } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
-import { pgAuthSession } from "../pg-schema.js";
+import { randomUUID } from 'node:crypto';
+import { eq, and, isNull, sql } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
+import { pgAuthSession } from '../pg-schema.js';
 
 export type AuthSessionRow = typeof pgAuthSession.$inferSelect;
 
@@ -51,7 +51,7 @@ export async function createAuthSession(data: {
     lastSeenAt: now,
     expiresAt: data.expiresAt,
     revokedAt: null,
-    metadataJson: "{}",
+    metadataJson: '{}',
   });
 
   const row = await findSessionById(id);
@@ -66,13 +66,14 @@ export async function findSessionById(id: string): Promise<AuthSessionRow | unde
   return rows[0];
 }
 
-export async function findSessionByTokenHash(tokenHash: string): Promise<AuthSessionRow | undefined> {
+export async function findSessionByTokenHash(
+  tokenHash: string
+): Promise<AuthSessionRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(pgAuthSession)
-    .where(and(
-      eq(pgAuthSession.tokenHash, tokenHash),
-      isNull(pgAuthSession.revokedAt),
-    ));
+  const rows = await db
+    .select()
+    .from(pgAuthSession)
+    .where(and(eq(pgAuthSession.tokenHash, tokenHash), isNull(pgAuthSession.revokedAt)));
   return rows[0];
 }
 
@@ -81,9 +82,7 @@ export async function findSessionByTokenHash(tokenHash: string): Promise<AuthSes
 export async function touchSession(id: string): Promise<void> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  await db.update(pgAuthSession)
-    .set({ lastSeenAt: now })
-    .where(eq(pgAuthSession.id, id));
+  await db.update(pgAuthSession).set({ lastSeenAt: now }).where(eq(pgAuthSession.id, id));
 }
 
 /* -- Revoke ---------------------------------------------------- */
@@ -91,7 +90,8 @@ export async function touchSession(id: string): Promise<void> {
 export async function revokeSession(id: string): Promise<boolean> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  const result = await db.update(pgAuthSession)
+  const result = await db
+    .update(pgAuthSession)
     .set({ revokedAt: now })
     .where(and(eq(pgAuthSession.id, id), isNull(pgAuthSession.revokedAt)));
   return (result as any).rowCount > 0;
@@ -100,7 +100,8 @@ export async function revokeSession(id: string): Promise<boolean> {
 export async function revokeSessionByTokenHash(tokenHash: string): Promise<boolean> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  const result = await db.update(pgAuthSession)
+  const result = await db
+    .update(pgAuthSession)
     .set({ revokedAt: now })
     .where(and(eq(pgAuthSession.tokenHash, tokenHash), isNull(pgAuthSession.revokedAt)));
   return (result as any).rowCount > 0;
@@ -111,14 +112,14 @@ export async function revokeSessionByTokenHash(tokenHash: string): Promise<boole
 export async function listActiveSessions(tenantId?: string): Promise<AuthSessionRow[]> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  const conditions = [
-    isNull(pgAuthSession.revokedAt),
-    sql`${pgAuthSession.expiresAt} > ${now}`,
-  ];
+  const conditions = [isNull(pgAuthSession.revokedAt), sql`${pgAuthSession.expiresAt} > ${now}`];
   if (tenantId) {
     conditions.push(eq(pgAuthSession.tenantId, tenantId));
   }
-  return db.select().from(pgAuthSession).where(and(...conditions));
+  return db
+    .select()
+    .from(pgAuthSession)
+    .where(and(...conditions));
 }
 
 /* -- Cleanup expired/revoked ----------------------------------- */
@@ -127,7 +128,8 @@ export async function cleanupExpiredSessions(): Promise<number> {
   const db = getPgDb();
   const now = new Date().toISOString();
   const oneDayAgo = new Date(Date.now() - 86400_000).toISOString();
-  const result = await db.delete(pgAuthSession)
+  const result = await db
+    .delete(pgAuthSession)
     .where(
       sql`${pgAuthSession.expiresAt} < ${now} OR (${pgAuthSession.revokedAt} IS NOT NULL AND ${pgAuthSession.revokedAt} < ${oneDayAgo})`
     );
@@ -139,7 +141,8 @@ export async function cleanupExpiredSessions(): Promise<number> {
 export async function replaceTokenHash(id: string, newTokenHash: string): Promise<boolean> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  const result = await db.update(pgAuthSession)
+  const result = await db
+    .update(pgAuthSession)
     .set({ tokenHash: newTokenHash, lastSeenAt: now })
     .where(and(eq(pgAuthSession.id, id), isNull(pgAuthSession.revokedAt)));
   return (result as any).rowCount > 0;
@@ -150,11 +153,9 @@ export async function replaceTokenHash(id: string, newTokenHash: string): Promis
 export async function countActiveSessions(): Promise<number> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  const result = await db.select({ count: sql<number>`count(*)` })
+  const result = await db
+    .select({ count: sql<number>`count(*)` })
     .from(pgAuthSession)
-    .where(and(
-      isNull(pgAuthSession.revokedAt),
-      sql`${pgAuthSession.expiresAt} > ${now}`,
-    ));
+    .where(and(isNull(pgAuthSession.revokedAt), sql`${pgAuthSession.expiresAt} > ${now}`));
   return result[0]?.count ?? 0;
 }

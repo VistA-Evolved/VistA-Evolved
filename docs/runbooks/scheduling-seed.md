@@ -62,11 +62,11 @@ inserting and will skip seeding if sufficient records already exist.
 
 ## File Reference
 
-| File | Description |
-|------|-------------|
-| `services/vista/ZVESDSEED.m` | The MUMPS seeder routine (208 lines) |
+| File                                                | Description                                        |
+| --------------------------------------------------- | -------------------------------------------------- |
+| `services/vista/ZVESDSEED.m`                        | The MUMPS seeder routine (208 lines)               |
 | `apps/api/src/adapters/scheduling/vista-adapter.ts` | VistA scheduling adapter that calls SDES/SDOE RPCs |
-| `config/capabilities.json` | 22 scheduling capabilities with RPC targets |
+| `config/capabilities.json`                          | 22 scheduling capabilities with RPC targets        |
 
 ## Scheduling Data Architecture
 

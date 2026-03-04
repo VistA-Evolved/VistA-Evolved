@@ -1,10 +1,12 @@
 # Phase 337 -- W16-P1: Range Reservation + Manifest + OSS/ADR Decisions
 
 ## Goal
+
 Prevent prompt collisions, reserve phase range for Wave 16, and lock security
 architecture decisions (authz, IAM, secrets, SIEM) before building.
 
 ## Steps
+
 1. Created `scripts/prompts-next-phase.mjs` -- scans folders, manifests, reservations
 2. Created `scripts/prompts-reserve-range.mjs` -- reserves contiguous ranges, checks overlaps
 3. Computed BASE_PHASE = 337 (max used = 336 from W15 manifest)
@@ -17,6 +19,7 @@ architecture decisions (authz, IAM, secrets, SIEM) before building.
    - ADR-SIEM-EXPORT.md -- Multi-sink streaming (chosen)
 
 ## Files Created
+
 - `scripts/prompts-next-phase.mjs`
 - `scripts/prompts-reserve-range.mjs`
 - `docs/qa/prompt-phase-range-reservations.json`

@@ -10,12 +10,12 @@ on:
   workflow_dispatch:
     inputs:
       tier:
-        description: "Test tier (smoke or load)"
+        description: 'Test tier (smoke or load)'
         required: false
-        default: "smoke"
+        default: 'smoke'
   schedule:
     # Nightly at 03:00 UTC — load tier
-    - cron: "0 3 * * *"
+    - cron: '0 3 * * *'
 
 concurrency:
   group: perf-gate-${{ github.ref }}
@@ -23,11 +23,11 @@ concurrency:
 
 env:
   API_URL: http://localhost:3001
-  K6_VERSION: "0.50.0"
+  K6_VERSION: '0.50.0'
 
 jobs:
   perf-smoke:
-    name: "k6 Smoke Gate"
+    name: 'k6 Smoke Gate'
     runs-on: ubuntu-latest
     if: github.event.inputs.tier != 'load'
     timeout-minutes: 10
@@ -74,7 +74,7 @@ jobs:
           retention-days: 30
 
   perf-load:
-    name: "k6 Load Gate (Nightly)"
+    name: 'k6 Load Gate (Nightly)'
     runs-on: ubuntu-latest
     if: github.event_name == 'schedule' || github.event.inputs.tier == 'load'
     timeout-minutes: 20

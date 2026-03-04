@@ -3,6 +3,7 @@
 ## What Changed
 
 ### Critical Wiring Fixes
+
 1. **Route Registration** (`register-routes.ts`):
    - Added imports + `server.register()` for all 5 W13 route files
    - Added `initTerminologyResolvers()` call at startup
@@ -11,20 +12,25 @@
    - `/residency/` → admin, `/consent/` → session, `/terminology/` → session, `/country-packs/` → session, `/compliance/` → admin
 
 ### Contract Fixes
+
 3. **Compliance Routes** — replaced dead imports with actual usage of `getRequirementsByCategory`/`getRequirementsByStatus`
 
 ### Store Policy
+
 4. **5 W13 stores** registered in `store-policy.ts`: consent-records, terminology-resolvers, transfer-agreements, tenant-regions, country-pack-cache
 
 ### Dev Dependency Fix
+
 5. **locale-utils** — added `@types/node` + `vitest` to devDependencies
 
 ## Verifier Output
+
 - `apps/api`: `tsc --noEmit` — 0 errors
 - `packages/locale-utils`: `tsc --noEmit` — 0 errors
-to S3/MinIO-compatible object storage with SHA-256 integrity manifests.
+  to S3/MinIO-compatible object storage with SHA-256 integrity manifests.
 
 ### New Files (7)
+
 - `apps/api/src/audit-shipping/types.ts` -- Shared type definitions
 - `apps/api/src/audit-shipping/s3-client.ts` -- Zero-dep S3/MinIO client (AWS Sig V4)
 - `apps/api/src/audit-shipping/manifest.ts` -- SHA-256 manifest builder + verifier
@@ -34,6 +40,7 @@ to S3/MinIO-compatible object storage with SHA-256 integrity manifests.
 - `apps/api/src/posture/audit-shipping-posture.ts` -- 6 posture gates
 
 ### Modified Files (9)
+
 - `apps/api/src/platform/pg/pg-migrate.ts` -- v22: audit_ship_offset + audit_ship_manifest + RLS
 - `apps/api/src/platform/db/migrate.ts` -- SQLite equivalents
 - `apps/api/src/platform/db/schema.ts` -- Drizzle ORM table definitions
@@ -41,11 +48,13 @@ to S3/MinIO-compatible object storage with SHA-256 integrity manifests.
 - `apps/api/src/posture/index.ts` -- Wired audit-shipping into unified posture
 - `apps/api/src/middleware/security.ts` -- stopShipperJob in graceful shutdown
 - `apps/api/src/index.ts` -- startShipperJob + route registration
-- `apps/api/.env.example` -- 9 AUDIT_SHIP_* env vars documented
+- `apps/api/.env.example` -- 9 AUDIT*SHIP*\* env vars documented
 - `AGENTS.md` -- Section 7v, items 172-176
 
 ## Verifier: 18 PASS / 0 FAIL / 0 WARN
+
 ## Gauntlet RC: 4 PASS / 0 FAIL / 1 WARN (pre-existing secret scan)
+
 2. **Audit sanitization hardened**: All 4 sanitizeDetail implementations (immutable-audit, imaging-audit, rcm-audit, portal-audit) now block DFN/MRN/patientName keys. Immutable-audit and imaging-audit delegate to centralized `sanitizeAuditDetail` first.
 3. **Config lockdown**: `auditIncludesDfn: false` in server-config.ts. `neverLogFields` expanded with dfn/patientDfn/patientName/mrn.
 4. **Log PHI leaks fixed**: Removed `dfn` from `log.info/warn/error` payloads in 7 call sites (imaging-service x4, imaging-viewer x1, emar x1, write-backs x1). Removed `patientDfn` from audit.ts log.info.
@@ -78,6 +87,7 @@ node qa/gauntlet/cli.mjs --suite rc
 # Phase 157 VERIFY — Audit Shipping Verification
 
 ## What Was Verified
+
 1. **Live MinIO test**: Shipper ran against local MinIO (port 9000), shipped 76 entries on initial cycle
 2. **Manifest integrity**: SHA-256 hashes, seq ranges (1-75, 76-78, 79-79, 80-80), byte sizes verified
 3. **Idempotency**: 3 manual triggers each shipped exactly 1 new entry (self-audit), no duplicates
@@ -85,14 +95,17 @@ node qa/gauntlet/cli.mjs --suite rc
 5. **Schema alignment**: PG/SQLite/Drizzle/TS types consistent across all 4 sources
 
 ## Fixes Applied During VERIFY
+
 1. **AGENTS.md item 175**: Corrected to state offsets are in-memory (DB tables ready for wiring)
 2. **shipper.ts docstring**: Updated to match reality about in-memory offset tracking
 3. **no-fake-success middleware**: Added ~100 missing EFFECT_PROOF_FIELDS entries, eliminating 59 spurious warnings across 20 route files
 
 ## Verifier Output
+
 - Phase 157: **18/18 PASS**
 - Gauntlet RC: **4 PASS, 0 FAIL, 1 WARN** (pre-existing secret scan)
 
 ## Follow-ups
+
 - Wire `setShipperDbRepo()` for durable offset persistence across API restarts
 - Tune `AUDIT_SHIP_INTERVAL_MS` for production workloads

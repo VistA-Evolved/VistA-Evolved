@@ -13,15 +13,8 @@
  * No PHI in export filenames or metadata fields.
  */
 
-import type {
-  ExportFormat,
-  ExportResult,
-  PaymentExportBridge,
-} from './payment-types.js';
-import {
-  getBatch,
-  getAllLinesForBatch,
-} from './payment-store.js';
+import type { ExportFormat, ExportResult, PaymentExportBridge } from './payment-types.js';
+import { getBatch, getAllLinesForBatch } from './payment-store.js';
 
 /* ── Bridge Registry ───────────────────────────────────────── */
 
@@ -38,7 +31,7 @@ export function getAvailableFormats(): ExportFormat[] {
 export function exportBatch(
   batchId: string,
   format: ExportFormat,
-  tenantId: string,
+  tenantId: string
 ): ExportResult | undefined {
   const bridge = bridges.get(format);
   if (!bridge) return undefined;
@@ -71,20 +64,22 @@ const csvBridge: PaymentExportBridge = {
       'paid_at',
     ];
 
-    const rows = allLines.map(l => [
-      l.lineNumber,
-      l.matchStatus,
-      l.matchedClaimCaseId ?? '',
-      l.externalClaimRef ?? '',
-      (l.amountBilled / 100).toFixed(2),
-      (l.amountPaid / 100).toFixed(2),
-      (l.amountAdjusted / 100).toFixed(2),
-      (l.patientResponsibility / 100).toFixed(2),
-      l.serviceDate ?? '',
-      l.procedureCode ?? '',
-      (l.reasonText ?? '').replace(/,/g, ';'),
-      l.paidAt ?? '',
-    ].join(','));
+    const rows = allLines.map((l) =>
+      [
+        l.lineNumber,
+        l.matchStatus,
+        l.matchedClaimCaseId ?? '',
+        l.externalClaimRef ?? '',
+        (l.amountBilled / 100).toFixed(2),
+        (l.amountPaid / 100).toFixed(2),
+        (l.amountAdjusted / 100).toFixed(2),
+        (l.patientResponsibility / 100).toFixed(2),
+        l.serviceDate ?? '',
+        l.procedureCode ?? '',
+        (l.reasonText ?? '').replace(/,/g, ';'),
+        l.paidAt ?? '',
+      ].join(',')
+    );
 
     const content = [headers.join(','), ...rows].join('\n');
 
@@ -130,7 +125,7 @@ const jsonBridge: PaymentExportBridge = {
         totalBilled: allLines.reduce((s, l) => s + l.amountBilled, 0),
         totalAdjusted: allLines.reduce((s, l) => s + l.amountAdjusted, 0),
       },
-      lines: allLines.map(l => ({
+      lines: allLines.map((l) => ({
         lineNumber: l.lineNumber,
         matchStatus: l.matchStatus,
         matchedClaimCaseId: l.matchedClaimCaseId,

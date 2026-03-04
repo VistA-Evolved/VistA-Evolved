@@ -1,7 +1,9 @@
 # Phase 82 -- IMPLEMENT -- RCM Adapter Expansion v2
 
 ## Mission
+
 Harden RCM platform for enterprise readiness:
+
 - Payer registry tenant-scoped configuration
 - Clearinghouse connector posture (honest state, no fake claims)
 - Eligibility/status polling jobs with audit + rate limits
@@ -9,6 +11,7 @@ Harden RCM platform for enterprise readiness:
 - Connector state dashboard (real health, not fake results)
 
 ## Inventory (existing from Phases 38-69)
+
 - 63 API files, ~13K lines, 100+ endpoints, 14 UI tabs
 - PayerAdapter interface (eligibility, status, submit, denial)
 - 10 connectors + 3 adapters (sandbox, x12, philhealth)
@@ -18,6 +21,7 @@ Harden RCM platform for enterprise readiness:
 - Workqueue store with priority + assignment
 
 ## What Phase 82 adds
+
 1. `rcm-ops-dashboard.ts` -- new route file for ops-level queue + connector state endpoints
 2. Tenant-scoped payer config helpers
 3. Connector state normalization (pending/connected/degraded/disconnected)
@@ -27,6 +31,7 @@ Harden RCM platform for enterprise readiness:
 7. E2E tests + verifier (75+ gates)
 
 ## Files touched
+
 - apps/api/src/rcm/rcm-ops-routes.ts (NEW)
 - apps/api/src/rcm/jobs/job-audit-bridge.ts (NEW)
 - apps/api/src/rcm/connectors/connector-state.ts (NEW)

@@ -2,14 +2,24 @@
  * Phase 404 (W23-P6): Bulk Data — Types
  */
 
-export type BulkJobStatus = "queued" | "in-progress" | "completed" | "failed" | "cancelled";
-export type BulkJobDirection = "export" | "import";
-export type BulkResourceType = "Patient" | "AllergyIntolerance" | "Condition" | "MedicationRequest" | "Observation" | "Encounter" | "DocumentReference" | "Practitioner" | "Organization" | "Location";
+export type BulkJobStatus = 'queued' | 'in-progress' | 'completed' | 'failed' | 'cancelled';
+export type BulkJobDirection = 'export' | 'import';
+export type BulkResourceType =
+  | 'Patient'
+  | 'AllergyIntolerance'
+  | 'Condition'
+  | 'MedicationRequest'
+  | 'Observation'
+  | 'Encounter'
+  | 'DocumentReference'
+  | 'Practitioner'
+  | 'Organization'
+  | 'Location';
 
 export interface BulkJobFilter {
   resourceTypes?: BulkResourceType[];
   since?: string;
-  outputFormat?: "application/fhir+ndjson" | "application/ndjson";
+  outputFormat?: 'application/fhir+ndjson' | 'application/ndjson';
   patientIds?: string[];
 }
 

@@ -1,6 +1,7 @@
 # Phase 161 — VistA + CPRS Alignment Verification Pack (IMPLEMENT)
 
 ## User Request
+
 Build a comprehensive VistA + CPRS alignment verification system that validates
 every RPC call site against the registry, generates golden trace snapshots,
 provides RPC tripwire monitoring, and produces alignment depth scores.
@@ -36,6 +37,7 @@ provides RPC tripwire monitoring, and produces alignment depth scores.
 6. All 20 panels in vista-panel-wiring.ts have scores
 
 ## Files Touched
+
 - apps/api/src/vista/alignment/types.ts (NEW)
 - apps/api/src/vista/alignment/golden-tracer.ts (NEW)
 - apps/api/src/vista/alignment/tripwire-monitor.ts (NEW)

@@ -3,6 +3,7 @@
 ## User Request
 
 Complete portal parity by adding:
+
 - A) Immunizations — nav entry for existing page (Phase 65)
 - B) Document center — portal page + API for generate/download with signed tokens
 - C) Consent management — PG tables (patient_consent, patient_portal_pref), portal UI, consent-gated access
@@ -13,7 +14,7 @@ VistA-first approach for all clinical data. PG for portal operational state.
 ## Implementation Steps
 
 1. Create prompt files (this file + 140-99-VERIFY.md)
-2. Add audit actions to immutable-audit.ts (portal.document.*, portal.consent.*)
+2. Add audit actions to immutable-audit.ts (portal.document._, portal.consent._)
 3. PG schema + migration v17:
    - patient_consent table
    - patient_portal_pref table

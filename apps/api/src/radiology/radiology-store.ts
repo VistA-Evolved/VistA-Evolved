@@ -12,8 +12,8 @@
  * All in-memory with FIFO eviction at MAX_ITEMS.
  */
 
-import { randomUUID } from "node:crypto";
-import { log } from "../lib/logger.js";
+import { randomUUID } from 'node:crypto';
+import { log } from '../lib/logger.js';
 import type {
   RadOrder,
   RadOrderStatus,
@@ -31,7 +31,7 @@ import type {
   PeerReviewScore,
   RadDashboardStats,
   RadWritebackPosture,
-} from "./types.js";
+} from './types.js';
 
 const MAX_ITEMS = 10000;
 
@@ -60,7 +60,9 @@ export interface RadDbRepo {
 }
 
 let dbRepo: RadDbRepo | null = null;
-export function initRadiologyStoreRepo(repo: RadDbRepo): void { dbRepo = repo; }
+export function initRadiologyStoreRepo(repo: RadDbRepo): void {
+  dbRepo = repo;
+}
 function dbWarn(op: string, err: unknown): void {
   log.warn(`PG radiology write-through failed: ${op}`, { error: (err as Error).message ?? err });
 }
@@ -68,35 +70,35 @@ function dbWarn(op: string, err: unknown): void {
 // -- FSM: Rad Order Transitions --
 
 const validRadOrderTransitions: Record<RadOrderStatus, RadOrderStatus[]> = {
-  ordered: ["protocoled", "scheduled", "cancelled", "on_hold"],
-  protocoled: ["scheduled", "cancelled"],
-  scheduled: ["in_progress", "cancelled"],
-  in_progress: ["completed", "cancelled"],
-  completed: ["reported", "cancelled"],
-  reported: ["verified"],
+  ordered: ['protocoled', 'scheduled', 'cancelled', 'on_hold'],
+  protocoled: ['scheduled', 'cancelled'],
+  scheduled: ['in_progress', 'cancelled'],
+  in_progress: ['completed', 'cancelled'],
+  completed: ['reported', 'cancelled'],
+  reported: ['verified'],
   verified: [], // terminal
   cancelled: [], // terminal
-  on_hold: ["ordered", "cancelled"],
+  on_hold: ['ordered', 'cancelled'],
 };
 
 // -- FSM: Reading Worklist Transitions --
 
 const validReadingTransitions: Record<ReadingStatus, ReadingStatus[]> = {
-  unread: ["in_progress"],
-  in_progress: ["preliminary", "final"],
-  preliminary: ["final", "addendum_pending"],
-  final: ["addendum_pending"],
-  addendum_pending: ["final"],
+  unread: ['in_progress'],
+  in_progress: ['preliminary', 'final'],
+  preliminary: ['final', 'addendum_pending'],
+  final: ['addendum_pending'],
+  addendum_pending: ['final'],
 };
 
 // -- FSM: Report Status Transitions --
 
 const validReportTransitions: Record<ReportStatus, ReportStatus[]> = {
-  draft: ["preliminary", "final", "cancelled"],
-  preliminary: ["final", "addendum", "cancelled"],
-  final: ["addendum", "amended"],
-  addendum: ["final"],
-  amended: ["final"],
+  draft: ['preliminary', 'final', 'cancelled'],
+  preliminary: ['final', 'addendum', 'cancelled'],
+  final: ['addendum', 'amended'],
+  addendum: ['final'],
+  amended: ['final'],
   cancelled: [],
 };
 
@@ -110,13 +112,13 @@ interface DrlThreshold {
 }
 
 const DRL_THRESHOLDS: DrlThreshold[] = [
-  { procedure: "CT Head", modality: "CT", metric: "CTDIvol (mGy)", value: 60 },
-  { procedure: "CT Chest", modality: "CT", metric: "DLP (mGy*cm)", value: 600 },
-  { procedure: "CT Abdomen", modality: "CT", metric: "DLP (mGy*cm)", value: 1000 },
-  { procedure: "CT Pelvis", modality: "CT", metric: "DLP (mGy*cm)", value: 700 },
-  { procedure: "Chest X-Ray", modality: "CR", metric: "DAP (dGy*cm2)", value: 0.12 },
-  { procedure: "Mammography", modality: "MG", metric: "DAP (dGy*cm2)", value: 2.5 },
-  { procedure: "Fluoroscopy Upper GI", modality: "RF", metric: "fluoroTime (s)", value: 300 },
+  { procedure: 'CT Head', modality: 'CT', metric: 'CTDIvol (mGy)', value: 60 },
+  { procedure: 'CT Chest', modality: 'CT', metric: 'DLP (mGy*cm)', value: 600 },
+  { procedure: 'CT Abdomen', modality: 'CT', metric: 'DLP (mGy*cm)', value: 1000 },
+  { procedure: 'CT Pelvis', modality: 'CT', metric: 'DLP (mGy*cm)', value: 700 },
+  { procedure: 'Chest X-Ray', modality: 'CR', metric: 'DAP (dGy*cm2)', value: 0.12 },
+  { procedure: 'Mammography', modality: 'MG', metric: 'DAP (dGy*cm2)', value: 2.5 },
+  { procedure: 'Fluoroscopy Upper GI', modality: 'RF', metric: 'fluoroTime (s)', value: 300 },
 ];
 
 // -- FIFO Helper --
@@ -131,16 +133,16 @@ function enforceMax<T>(store: Map<string, T>): void {
 // -- Accession Number Generator --
 
 let dailyAccessionCounter = 0;
-let lastAccessionDate = "";
+let lastAccessionDate = '';
 
 function generateAccessionNumber(): string {
-  const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   if (today !== lastAccessionDate) {
     lastAccessionDate = today;
     dailyAccessionCounter = 0;
   }
   dailyAccessionCounter++;
-  return `RAD-${today}-${String(dailyAccessionCounter).padStart(4, "0")}`;
+  return `RAD-${today}-${String(dailyAccessionCounter).padStart(4, '0')}`;
 }
 
 // ============================================================
@@ -167,12 +169,12 @@ export function createRadOrder(input: {
     patientDfn: input.patientDfn,
     vistaOrderIen: null,
     vistaRadProcIen: null,
-    status: "ordered",
+    status: 'ordered',
     procedureName: input.procedureName,
     procedureCode: input.procedureCode ?? null,
     cptCode: input.cptCode ?? null,
     modality: input.modality,
-    priority: input.priority ?? "routine",
+    priority: input.priority ?? 'routine',
     clinicalIndication: input.clinicalIndication,
     orderingProviderDuz: input.orderingProviderDuz,
     orderingProviderName: input.orderingProviderName,
@@ -191,7 +193,11 @@ export function createRadOrder(input: {
   };
   radOrderStore.set(order.id, order);
   enforceMax(radOrderStore);
-  if (dbRepo) { dbRepo.insertRadiologyOrder(order as any).catch((e: unknown) => dbWarn("insertRadiologyOrder", e)); }
+  if (dbRepo) {
+    dbRepo
+      .insertRadiologyOrder(order as any)
+      .catch((e: unknown) => dbWarn('insertRadiologyOrder', e));
+  }
   return order;
 }
 
@@ -199,11 +205,14 @@ export function getRadOrder(id: string): RadOrder | undefined {
   return radOrderStore.get(id);
 }
 
-export function listRadOrders(tenantId: string, filters?: {
-  patientDfn?: string;
-  status?: RadOrderStatus;
-  modality?: RadModality;
-}): RadOrder[] {
+export function listRadOrders(
+  tenantId: string,
+  filters?: {
+    patientDfn?: string;
+    status?: RadOrderStatus;
+    modality?: RadModality;
+  }
+): RadOrder[] {
   const results: RadOrder[] = [];
   for (const o of radOrderStore.values()) {
     if (o.tenantId !== tenantId) continue;
@@ -218,10 +227,10 @@ export function listRadOrders(tenantId: string, filters?: {
 export function transitionRadOrder(
   id: string,
   newStatus: RadOrderStatus,
-  actor?: { duz: string; name: string },
+  actor?: { duz: string; name: string }
 ): { ok: boolean; order?: RadOrder; error?: string } {
   const order = radOrderStore.get(id);
-  if (!order) return { ok: false, error: "Rad order not found" };
+  if (!order) return { ok: false, error: 'Rad order not found' };
 
   const allowed = validRadOrderTransitions[order.status];
   if (!allowed.includes(newStatus)) {
@@ -232,54 +241,88 @@ export function transitionRadOrder(
   order.status = newStatus;
   order.updatedAt = now;
 
-  if (newStatus === "in_progress") order.startedAt = now;
-  if (newStatus === "completed") order.completedAt = now;
+  if (newStatus === 'in_progress') order.startedAt = now;
+  if (newStatus === 'completed') order.completedAt = now;
 
-  if (dbRepo) { dbRepo.updateRadiologyOrder(order.id, { status: order.status, updatedAt: order.updatedAt, startedAt: order.startedAt, completedAt: order.completedAt } as any).catch((e: unknown) => dbWarn("updateRadiologyOrder/transition", e)); }
+  if (dbRepo) {
+    dbRepo
+      .updateRadiologyOrder(order.id, {
+        status: order.status,
+        updatedAt: order.updatedAt,
+        startedAt: order.startedAt,
+        completedAt: order.completedAt,
+      } as any)
+      .catch((e: unknown) => dbWarn('updateRadiologyOrder/transition', e));
+  }
   return { ok: true, order };
 }
 
 export function assignProtocol(
   orderId: string,
   protocolName: string,
-  assignedByDuz: string,
+  assignedByDuz: string
 ): { ok: boolean; order?: RadOrder; error?: string } {
   const order = radOrderStore.get(orderId);
-  if (!order) return { ok: false, error: "Rad order not found" };
+  if (!order) return { ok: false, error: 'Rad order not found' };
   order.protocolName = protocolName;
   order.protocolAssignedByDuz = assignedByDuz;
   order.protocolAssignedAt = new Date().toISOString();
   order.updatedAt = order.protocolAssignedAt;
-  if (order.status === "ordered") {
-    order.status = "protocoled";
+  if (order.status === 'ordered') {
+    order.status = 'protocoled';
   }
-  if (dbRepo) { dbRepo.updateRadiologyOrder(order.id, { protocolName: order.protocolName, protocolAssignedByDuz: order.protocolAssignedByDuz, protocolAssignedAt: order.protocolAssignedAt, status: order.status, updatedAt: order.updatedAt } as any).catch((e: unknown) => dbWarn("updateRadiologyOrder/protocol", e)); }
+  if (dbRepo) {
+    dbRepo
+      .updateRadiologyOrder(order.id, {
+        protocolName: order.protocolName,
+        protocolAssignedByDuz: order.protocolAssignedByDuz,
+        protocolAssignedAt: order.protocolAssignedAt,
+        status: order.status,
+        updatedAt: order.updatedAt,
+      } as any)
+      .catch((e: unknown) => dbWarn('updateRadiologyOrder/protocol', e));
+  }
   return { ok: true, order };
 }
 
 export function linkMwlToRadOrder(
   orderId: string,
-  mwlWorklistItemId: string,
+  mwlWorklistItemId: string
 ): { ok: boolean; error?: string } {
   const order = radOrderStore.get(orderId);
-  if (!order) return { ok: false, error: "Rad order not found" };
+  if (!order) return { ok: false, error: 'Rad order not found' };
   order.mwlWorklistItemId = mwlWorklistItemId;
   order.updatedAt = new Date().toISOString();
-  if (dbRepo) { dbRepo.updateRadiologyOrder(order.id, { mwlWorklistItemId: order.mwlWorklistItemId, updatedAt: order.updatedAt } as any).catch((e: unknown) => dbWarn("updateRadiologyOrder/mwl", e)); }
+  if (dbRepo) {
+    dbRepo
+      .updateRadiologyOrder(order.id, {
+        mwlWorklistItemId: order.mwlWorklistItemId,
+        updatedAt: order.updatedAt,
+      } as any)
+      .catch((e: unknown) => dbWarn('updateRadiologyOrder/mwl', e));
+  }
   return { ok: true };
 }
 
 export function linkMppsToRadOrder(
   orderId: string,
   mppsRecordId: string,
-  studyInstanceUid?: string,
+  studyInstanceUid?: string
 ): { ok: boolean; error?: string } {
   const order = radOrderStore.get(orderId);
-  if (!order) return { ok: false, error: "Rad order not found" };
+  if (!order) return { ok: false, error: 'Rad order not found' };
   order.mppsRecordId = mppsRecordId;
   if (studyInstanceUid) order.studyInstanceUid = studyInstanceUid;
   order.updatedAt = new Date().toISOString();
-  if (dbRepo) { dbRepo.updateRadiologyOrder(order.id, { mppsRecordId: order.mppsRecordId, studyInstanceUid: order.studyInstanceUid, updatedAt: order.updatedAt } as any).catch((e: unknown) => dbWarn("updateRadiologyOrder/mpps", e)); }
+  if (dbRepo) {
+    dbRepo
+      .updateRadiologyOrder(order.id, {
+        mppsRecordId: order.mppsRecordId,
+        studyInstanceUid: order.studyInstanceUid,
+        updatedAt: order.updatedAt,
+      } as any)
+      .catch((e: unknown) => dbWarn('updateRadiologyOrder/mpps', e));
+  }
   return { ok: true };
 }
 
@@ -307,8 +350,8 @@ export function createReadingWorklistItem(input: {
     accessionNumber: input.accessionNumber,
     modality: input.modality,
     procedureName: input.procedureName,
-    status: "unread",
-    priority: input.priority ?? "routine",
+    status: 'unread',
+    priority: input.priority ?? 'routine',
     assignedRadiologistDuz: null,
     assignedRadiologistName: null,
     assignedAt: null,
@@ -320,21 +363,32 @@ export function createReadingWorklistItem(input: {
   };
   readingWorklistStore.set(item.id, item);
   enforceMax(readingWorklistStore);
-  if (dbRepo) { dbRepo.insertReadingWorklistItem(item as any).catch((e: unknown) => dbWarn("insertReadingWorklistItem", e)); }
+  if (dbRepo) {
+    dbRepo
+      .insertReadingWorklistItem(item as any)
+      .catch((e: unknown) => dbWarn('insertReadingWorklistItem', e));
+  }
   return item;
 }
 
-export function listReadingWorklist(tenantId: string, filters?: {
-  status?: ReadingStatus;
-  assignedRadiologistDuz?: string;
-  modality?: RadModality;
-  priority?: ReadingPriority;
-}): ReadingWorklistItem[] {
+export function listReadingWorklist(
+  tenantId: string,
+  filters?: {
+    status?: ReadingStatus;
+    assignedRadiologistDuz?: string;
+    modality?: RadModality;
+    priority?: ReadingPriority;
+  }
+): ReadingWorklistItem[] {
   const results: ReadingWorklistItem[] = [];
   for (const item of readingWorklistStore.values()) {
     if (item.tenantId !== tenantId) continue;
     if (filters?.status && item.status !== filters.status) continue;
-    if (filters?.assignedRadiologistDuz && item.assignedRadiologistDuz !== filters.assignedRadiologistDuz) continue;
+    if (
+      filters?.assignedRadiologistDuz &&
+      item.assignedRadiologistDuz !== filters.assignedRadiologistDuz
+    )
+      continue;
     if (filters?.modality && item.modality !== filters.modality) continue;
     if (filters?.priority && item.priority !== filters.priority) continue;
     results.push(item);
@@ -345,24 +399,33 @@ export function listReadingWorklist(tenantId: string, filters?: {
 export function assignRadiologist(
   itemId: string,
   radiologistDuz: string,
-  radiologistName: string,
+  radiologistName: string
 ): { ok: boolean; item?: ReadingWorklistItem; error?: string } {
   const item = readingWorklistStore.get(itemId);
-  if (!item) return { ok: false, error: "Reading worklist item not found" };
+  if (!item) return { ok: false, error: 'Reading worklist item not found' };
   item.assignedRadiologistDuz = radiologistDuz;
   item.assignedRadiologistName = radiologistName;
   item.assignedAt = new Date().toISOString();
   item.updatedAt = item.assignedAt;
-  if (dbRepo) { dbRepo.updateReadingWorklistItem(item.id, { assignedRadiologistDuz: item.assignedRadiologistDuz, assignedRadiologistName: item.assignedRadiologistName, assignedAt: item.assignedAt, updatedAt: item.updatedAt } as any).catch((e: unknown) => dbWarn("updateReadingWorklistItem/assign", e)); }
+  if (dbRepo) {
+    dbRepo
+      .updateReadingWorklistItem(item.id, {
+        assignedRadiologistDuz: item.assignedRadiologistDuz,
+        assignedRadiologistName: item.assignedRadiologistName,
+        assignedAt: item.assignedAt,
+        updatedAt: item.updatedAt,
+      } as any)
+      .catch((e: unknown) => dbWarn('updateReadingWorklistItem/assign', e));
+  }
   return { ok: true, item };
 }
 
 export function transitionReadingItem(
   itemId: string,
-  newStatus: ReadingStatus,
+  newStatus: ReadingStatus
 ): { ok: boolean; item?: ReadingWorklistItem; error?: string } {
   const item = readingWorklistStore.get(itemId);
-  if (!item) return { ok: false, error: "Reading worklist item not found" };
+  if (!item) return { ok: false, error: 'Reading worklist item not found' };
   const allowed = validReadingTransitions[item.status];
   if (!allowed.includes(newStatus)) {
     return { ok: false, error: `Cannot transition reading from ${item.status} to ${newStatus}` };
@@ -370,9 +433,18 @@ export function transitionReadingItem(
   const now = new Date().toISOString();
   item.status = newStatus;
   item.updatedAt = now;
-  if (newStatus === "in_progress") item.reportStartedAt = now;
-  if (newStatus === "final") item.reportFinalizedAt = now;
-  if (dbRepo) { dbRepo.updateReadingWorklistItem(item.id, { status: item.status, updatedAt: item.updatedAt, reportStartedAt: item.reportStartedAt, reportFinalizedAt: item.reportFinalizedAt } as any).catch((e: unknown) => dbWarn("updateReadingWorklistItem/transition", e)); }
+  if (newStatus === 'in_progress') item.reportStartedAt = now;
+  if (newStatus === 'final') item.reportFinalizedAt = now;
+  if (dbRepo) {
+    dbRepo
+      .updateReadingWorklistItem(item.id, {
+        status: item.status,
+        updatedAt: item.updatedAt,
+        reportStartedAt: item.reportStartedAt,
+        reportFinalizedAt: item.reportFinalizedAt,
+      } as any)
+      .catch((e: unknown) => dbWarn('updateReadingWorklistItem/transition', e));
+  }
   return { ok: true, item };
 }
 
@@ -404,10 +476,11 @@ export function createRadReport(input: {
     patientDfn: input.patientDfn,
     studyInstanceUid: input.studyInstanceUid,
     accessionNumber: input.accessionNumber,
-    status: "draft",
+    status: 'draft',
     findings: input.findings,
     impression: input.impression,
-    reportText: input.reportText ?? `FINDINGS:\n${input.findings}\n\nIMPRESSION:\n${input.impression}`,
+    reportText:
+      input.reportText ?? `FINDINGS:\n${input.findings}\n\nIMPRESSION:\n${input.impression}`,
     templateId: input.templateId ?? null,
     dictatedByDuz: input.dictatedByDuz,
     dictatedByName: input.dictatedByName,
@@ -425,7 +498,9 @@ export function createRadReport(input: {
   };
   radReportStore.set(report.id, report);
   enforceMax(radReportStore);
-  if (dbRepo) { dbRepo.insertRadReport(report as any).catch((e: unknown) => dbWarn("insertRadReport", e)); }
+  if (dbRepo) {
+    dbRepo.insertRadReport(report as any).catch((e: unknown) => dbWarn('insertRadReport', e));
+  }
   return report;
 }
 
@@ -433,11 +508,14 @@ export function getRadReport(id: string): RadReport | undefined {
   return radReportStore.get(id);
 }
 
-export function listRadReports(tenantId: string, filters?: {
-  radOrderId?: string;
-  patientDfn?: string;
-  status?: ReportStatus;
-}): RadReport[] {
+export function listRadReports(
+  tenantId: string,
+  filters?: {
+    radOrderId?: string;
+    patientDfn?: string;
+    status?: ReportStatus;
+  }
+): RadReport[] {
   const results: RadReport[] = [];
   for (const r of radReportStore.values()) {
     if (r.tenantId !== tenantId) continue;
@@ -452,10 +530,10 @@ export function listRadReports(tenantId: string, filters?: {
 export function transitionRadReport(
   id: string,
   newStatus: ReportStatus,
-  actor?: { duz: string; name: string },
+  actor?: { duz: string; name: string }
 ): { ok: boolean; report?: RadReport; error?: string } {
   const report = radReportStore.get(id);
-  if (!report) return { ok: false, error: "Rad report not found" };
+  if (!report) return { ok: false, error: 'Rad report not found' };
   const allowed = validReportTransitions[report.status];
   if (!allowed.includes(newStatus)) {
     return { ok: false, error: `Cannot transition report from ${report.status} to ${newStatus}` };
@@ -464,17 +542,28 @@ export function transitionRadReport(
   report.status = newStatus;
   report.updatedAt = now;
 
-  if (newStatus === "preliminary" && actor) {
+  if (newStatus === 'preliminary' && actor) {
     report.prelimSignedByDuz = actor.duz;
     report.prelimSignedByName = actor.name;
     report.prelimSignedAt = now;
   }
-  if (newStatus === "final" && actor) {
+  if (newStatus === 'final' && actor) {
     report.verifiedByDuz = actor.duz;
     report.verifiedByName = actor.name;
     report.verifiedAt = now;
   }
-  if (dbRepo) { dbRepo.updateRadReport(report.id, { status: report.status, updatedAt: report.updatedAt, prelimSignedByDuz: report.prelimSignedByDuz, prelimSignedAt: report.prelimSignedAt, verifiedByDuz: report.verifiedByDuz, verifiedAt: report.verifiedAt } as any).catch((e: unknown) => dbWarn("updateRadReport/transition", e)); }
+  if (dbRepo) {
+    dbRepo
+      .updateRadReport(report.id, {
+        status: report.status,
+        updatedAt: report.updatedAt,
+        prelimSignedByDuz: report.prelimSignedByDuz,
+        prelimSignedAt: report.prelimSignedAt,
+        verifiedByDuz: report.verifiedByDuz,
+        verifiedAt: report.verifiedAt,
+      } as any)
+      .catch((e: unknown) => dbWarn('updateRadReport/transition', e));
+  }
   return { ok: true, report };
 }
 
@@ -506,21 +595,29 @@ export function recordDose(input: {
   const matchedDrl = DRL_THRESHOLDS.find(
     (d) =>
       input.procedureName.toLowerCase().includes(d.procedure.toLowerCase()) &&
-      d.modality === input.modality,
+      d.modality === input.modality
   );
   if (matchedDrl) {
     drlMetric = matchedDrl.metric;
     drlThreshold = matchedDrl.value;
-    if (matchedDrl.metric.startsWith("CTDIvol") && input.ctdiVol && input.ctdiVol > matchedDrl.value) {
+    if (
+      matchedDrl.metric.startsWith('CTDIvol') &&
+      input.ctdiVol &&
+      input.ctdiVol > matchedDrl.value
+    ) {
       exceedsDrl = true;
     }
-    if (matchedDrl.metric.startsWith("DLP") && input.dlp && input.dlp > matchedDrl.value) {
+    if (matchedDrl.metric.startsWith('DLP') && input.dlp && input.dlp > matchedDrl.value) {
       exceedsDrl = true;
     }
-    if (matchedDrl.metric.startsWith("DAP") && input.dap && input.dap > matchedDrl.value) {
+    if (matchedDrl.metric.startsWith('DAP') && input.dap && input.dap > matchedDrl.value) {
       exceedsDrl = true;
     }
-    if (matchedDrl.metric.startsWith("fluoroTime") && input.fluoroTimeSec && input.fluoroTimeSec > matchedDrl.value) {
+    if (
+      matchedDrl.metric.startsWith('fluoroTime') &&
+      input.fluoroTimeSec &&
+      input.fluoroTimeSec > matchedDrl.value
+    ) {
       exceedsDrl = true;
     }
   }
@@ -550,15 +647,22 @@ export function recordDose(input: {
   };
   doseRegistryStore.set(entry.id, entry);
   enforceMax(doseRegistryStore);
-  if (dbRepo) { dbRepo.insertDoseRegistryEntry(entry as any).catch((e: unknown) => dbWarn("insertDoseRegistryEntry", e)); }
+  if (dbRepo) {
+    dbRepo
+      .insertDoseRegistryEntry(entry as any)
+      .catch((e: unknown) => dbWarn('insertDoseRegistryEntry', e));
+  }
   return entry;
 }
 
-export function listDoseRegistry(tenantId: string, filters?: {
-  patientDfn?: string;
-  modality?: RadModality;
-  exceedsDrl?: boolean;
-}): DoseRegistryEntry[] {
+export function listDoseRegistry(
+  tenantId: string,
+  filters?: {
+    patientDfn?: string;
+    modality?: RadModality;
+    exceedsDrl?: boolean;
+  }
+): DoseRegistryEntry[] {
   const results: DoseRegistryEntry[] = [];
   for (const e of doseRegistryStore.values()) {
     if (e.tenantId !== tenantId) continue;
@@ -570,7 +674,10 @@ export function listDoseRegistry(tenantId: string, filters?: {
   return results;
 }
 
-export function getPatientCumulativeDose(tenantId: string, patientDfn: string): {
+export function getPatientCumulativeDose(
+  tenantId: string,
+  patientDfn: string
+): {
   totalEffectiveDoseMSv: number;
   entryCount: number;
   drlExceedances: number;
@@ -584,7 +691,11 @@ export function getPatientCumulativeDose(tenantId: string, patientDfn: string): 
     if (e.exceedsDrl) exceedances++;
     count++;
   }
-  return { totalEffectiveDoseMSv: Math.round(total * 100) / 100, entryCount: count, drlExceedances: exceedances };
+  return {
+    totalEffectiveDoseMSv: Math.round(total * 100) / 100,
+    entryCount: count,
+    drlExceedances: exceedances,
+  };
 }
 
 // ============================================================
@@ -597,7 +708,7 @@ export function createRadCriticalAlert(input: {
   radOrderId: string;
   patientDfn: string;
   finding: string;
-  category: "unexpected" | "urgent" | "emergent";
+  category: 'unexpected' | 'urgent' | 'emergent';
   notifyProviderDuz: string;
   notifyProviderName: string;
 }): RadCriticalAlert {
@@ -611,7 +722,7 @@ export function createRadCriticalAlert(input: {
     patientDfn: input.patientDfn,
     finding: input.finding,
     category: input.category,
-    status: "active",
+    status: 'active',
     notifyProviderDuz: input.notifyProviderDuz,
     notifyProviderName: input.notifyProviderName,
     communicatedToDuz: null,
@@ -627,14 +738,21 @@ export function createRadCriticalAlert(input: {
   };
   radCriticalAlertStore.set(alert.id, alert);
   enforceMax(radCriticalAlertStore);
-  if (dbRepo) { dbRepo.insertRadCriticalAlert(alert as any).catch((e: unknown) => dbWarn("insertRadCriticalAlert", e)); }
+  if (dbRepo) {
+    dbRepo
+      .insertRadCriticalAlert(alert as any)
+      .catch((e: unknown) => dbWarn('insertRadCriticalAlert', e));
+  }
   return alert;
 }
 
-export function listRadCriticalAlerts(tenantId: string, filters?: {
-  patientDfn?: string;
-  status?: RadCriticalAlertStatus;
-}): RadCriticalAlert[] {
+export function listRadCriticalAlerts(
+  tenantId: string,
+  filters?: {
+    patientDfn?: string;
+    status?: RadCriticalAlertStatus;
+  }
+): RadCriticalAlert[] {
   const results: RadCriticalAlert[] = [];
   for (const a of radCriticalAlertStore.values()) {
     if (a.tenantId !== tenantId) continue;
@@ -648,40 +766,59 @@ export function listRadCriticalAlerts(tenantId: string, filters?: {
 export function communicateRadCriticalAlert(
   id: string,
   actor: { duz: string; name: string },
-  method: "direct_verbal" | "phone" | "secure_message" | "in_person",
+  method: 'direct_verbal' | 'phone' | 'secure_message' | 'in_person'
 ): { ok: boolean; alert?: RadCriticalAlert; error?: string } {
   const alert = radCriticalAlertStore.get(id);
-  if (!alert) return { ok: false, error: "Critical alert not found" };
-  if (alert.status !== "active") {
+  if (!alert) return { ok: false, error: 'Critical alert not found' };
+  if (alert.status !== 'active') {
     return { ok: false, error: `Cannot communicate alert in ${alert.status} status` };
   }
   const now = new Date().toISOString();
-  alert.status = "communicated";
+  alert.status = 'communicated';
   alert.communicatedToDuz = actor.duz;
   alert.communicatedToName = actor.name;
   alert.communicatedAt = now;
   alert.communicationMethod = method;
   alert.updatedAt = now;
-  if (dbRepo) { dbRepo.updateRadCriticalAlert(alert.id, { status: alert.status, communicatedToDuz: alert.communicatedToDuz, communicatedAt: alert.communicatedAt, communicationMethod: alert.communicationMethod, updatedAt: alert.updatedAt } as any).catch((e: unknown) => dbWarn("updateRadCriticalAlert/communicate", e)); }
+  if (dbRepo) {
+    dbRepo
+      .updateRadCriticalAlert(alert.id, {
+        status: alert.status,
+        communicatedToDuz: alert.communicatedToDuz,
+        communicatedAt: alert.communicatedAt,
+        communicationMethod: alert.communicationMethod,
+        updatedAt: alert.updatedAt,
+      } as any)
+      .catch((e: unknown) => dbWarn('updateRadCriticalAlert/communicate', e));
+  }
   return { ok: true, alert };
 }
 
 export function acknowledgeRadCriticalAlert(
   id: string,
-  actor: { duz: string; name: string },
+  actor: { duz: string; name: string }
 ): { ok: boolean; alert?: RadCriticalAlert; error?: string } {
   const alert = radCriticalAlertStore.get(id);
-  if (!alert) return { ok: false, error: "Critical alert not found" };
-  if (alert.status !== "communicated" && alert.status !== "active") {
+  if (!alert) return { ok: false, error: 'Critical alert not found' };
+  if (alert.status !== 'communicated' && alert.status !== 'active') {
     return { ok: false, error: `Cannot acknowledge alert in ${alert.status} status` };
   }
   const now = new Date().toISOString();
-  alert.status = "acknowledged";
+  alert.status = 'acknowledged';
   alert.acknowledgedByDuz = actor.duz;
   alert.acknowledgedByName = actor.name;
   alert.acknowledgedAt = now;
   alert.updatedAt = now;
-  if (dbRepo) { dbRepo.updateRadCriticalAlert(alert.id, { status: alert.status, acknowledgedByDuz: alert.acknowledgedByDuz, acknowledgedAt: alert.acknowledgedAt, updatedAt: alert.updatedAt } as any).catch((e: unknown) => dbWarn("updateRadCriticalAlert/acknowledge", e)); }
+  if (dbRepo) {
+    dbRepo
+      .updateRadCriticalAlert(alert.id, {
+        status: alert.status,
+        acknowledgedByDuz: alert.acknowledgedByDuz,
+        acknowledgedAt: alert.acknowledgedAt,
+        updatedAt: alert.updatedAt,
+      } as any)
+      .catch((e: unknown) => dbWarn('updateRadCriticalAlert/acknowledge', e));
+  }
   return { ok: true, alert };
 }
 
@@ -691,13 +828,17 @@ export function resolveRadCriticalAlert(id: string): {
   error?: string;
 } {
   const alert = radCriticalAlertStore.get(id);
-  if (!alert) return { ok: false, error: "Critical alert not found" };
-  if (alert.status !== "acknowledged") {
-    return { ok: false, error: "Alert must be acknowledged before resolving" };
+  if (!alert) return { ok: false, error: 'Critical alert not found' };
+  if (alert.status !== 'acknowledged') {
+    return { ok: false, error: 'Alert must be acknowledged before resolving' };
   }
-  alert.status = "resolved";
+  alert.status = 'resolved';
   alert.updatedAt = new Date().toISOString();
-  if (dbRepo) { dbRepo.updateRadCriticalAlert(alert.id, { status: alert.status, updatedAt: alert.updatedAt } as any).catch((e: unknown) => dbWarn("updateRadCriticalAlert/resolve", e)); }
+  if (dbRepo) {
+    dbRepo
+      .updateRadCriticalAlert(alert.id, { status: alert.status, updatedAt: alert.updatedAt } as any)
+      .catch((e: unknown) => dbWarn('updateRadCriticalAlert/resolve', e));
+  }
   return { ok: true, alert };
 }
 
@@ -730,26 +871,32 @@ export function createPeerReview(input: {
     originalDictatorName: input.originalDictatorName,
     score: input.score,
     comments: input.comments,
-    discrepancyCategory: input.score > 1 ? (input.discrepancyCategory ?? "unspecified") : null,
+    discrepancyCategory: input.score > 1 ? (input.discrepancyCategory ?? 'unspecified') : null,
     createdAt: new Date().toISOString(),
   };
   peerReviewStore.set(review.id, review);
   enforceMax(peerReviewStore);
-  if (dbRepo) { dbRepo.insertPeerReview(review as any).catch((e: unknown) => dbWarn("insertPeerReview", e)); }
+  if (dbRepo) {
+    dbRepo.insertPeerReview(review as any).catch((e: unknown) => dbWarn('insertPeerReview', e));
+  }
   return review;
 }
 
-export function listPeerReviews(tenantId: string, filters?: {
-  radReportId?: string;
-  reviewerDuz?: string;
-  originalDictatorDuz?: string;
-}): PeerReview[] {
+export function listPeerReviews(
+  tenantId: string,
+  filters?: {
+    radReportId?: string;
+    reviewerDuz?: string;
+    originalDictatorDuz?: string;
+  }
+): PeerReview[] {
   const results: PeerReview[] = [];
   for (const r of peerReviewStore.values()) {
     if (r.tenantId !== tenantId) continue;
     if (filters?.radReportId && r.radReportId !== filters.radReportId) continue;
     if (filters?.reviewerDuz && r.reviewerDuz !== filters.reviewerDuz) continue;
-    if (filters?.originalDictatorDuz && r.originalDictatorDuz !== filters.originalDictatorDuz) continue;
+    if (filters?.originalDictatorDuz && r.originalDictatorDuz !== filters.originalDictatorDuz)
+      continue;
     results.push(r);
   }
   return results;
@@ -776,17 +923,19 @@ export function getRadDashboardStats(tenantId: string): RadDashboardStats {
 
   for (const o of radOrderStore.values()) {
     if (o.tenantId !== tenantId) continue;
-    if (o.status === "ordered" || o.status === "protocoled" || o.status === "scheduled") pendingOrders++;
-    if (o.status === "verified" && o.completedAt && new Date(o.completedAt).getTime() >= dayAgo) {
+    if (o.status === 'ordered' || o.status === 'protocoled' || o.status === 'scheduled')
+      pendingOrders++;
+    if (o.status === 'verified' && o.completedAt && new Date(o.completedAt).getTime() >= dayAgo) {
       completedToday++;
     }
   }
 
   for (const item of readingWorklistStore.values()) {
     if (item.tenantId !== tenantId) continue;
-    if (item.status === "unread") unreadStudies++;
+    if (item.status === 'unread') unreadStudies++;
     if (item.reportStartedAt && item.reportFinalizedAt) {
-      const t = new Date(item.reportFinalizedAt).getTime() - new Date(item.reportStartedAt).getTime();
+      const t =
+        new Date(item.reportFinalizedAt).getTime() - new Date(item.reportStartedAt).getTime();
       totalTurnaroundMs += t;
       turnaroundCount++;
     }
@@ -794,12 +943,12 @@ export function getRadDashboardStats(tenantId: string): RadDashboardStats {
 
   for (const r of radReportStore.values()) {
     if (r.tenantId !== tenantId) continue;
-    if (r.status === "preliminary") preliminaryReports++;
+    if (r.status === 'preliminary') preliminaryReports++;
   }
 
   for (const a of radCriticalAlertStore.values()) {
     if (a.tenantId !== tenantId) continue;
-    if (a.status === "active" || a.status === "communicated") criticalAlertsActive++;
+    if (a.status === 'active' || a.status === 'communicated') criticalAlertsActive++;
   }
 
   for (const d of doseRegistryStore.values()) {
@@ -828,29 +977,29 @@ export function getRadDashboardStats(tenantId: string): RadDashboardStats {
 export function getRadWritebackPosture(): RadWritebackPosture {
   return {
     orderPlace: {
-      rpc: "ORWDX SAVE",
-      status: "available",
-      note: "Via writeback executor Phase 304 PLACE_IMAGING_ORDER intent",
+      rpc: 'ORWDX SAVE',
+      status: 'available',
+      note: 'Via writeback executor Phase 304 PLACE_IMAGING_ORDER intent',
     },
     reportCreate: {
-      rpc: "TIU CREATE RECORD",
-      status: "available",
-      note: "Registered in rpcRegistry; needs RAD document class config",
+      rpc: 'TIU CREATE RECORD',
+      status: 'available',
+      note: 'Registered in rpcRegistry; needs RAD document class config',
     },
     reportVerify: {
-      rpc: "TIU SIGN RECORD",
-      status: "available",
-      note: "Registered in rpcRegistry; e-signature required",
+      rpc: 'TIU SIGN RECORD',
+      status: 'available',
+      note: 'Registered in rpcRegistry; e-signature required',
     },
     accessionAssign: {
-      rpc: "RA ASSIGN ACC#",
-      status: "integration_pending",
-      note: "VistA Radiology accession -- not available in sandbox",
+      rpc: 'RA ASSIGN ACC#',
+      status: 'integration_pending',
+      note: 'VistA Radiology accession -- not available in sandbox',
     },
     vistaRadProc: {
-      rpc: "RAD/NUC MED PROC LIST",
-      status: "integration_pending",
-      note: "VistA File 71 RA PROCEDURE catalog -- not in sandbox RPCs",
+      rpc: 'RAD/NUC MED PROC LIST',
+      status: 'integration_pending',
+      note: 'VistA File 71 RA PROCEDURE catalog -- not in sandbox RPCs',
     },
   };
 }
@@ -867,5 +1016,5 @@ export function _resetRadiologyStores(): void {
   radCriticalAlertStore.clear();
   peerReviewStore.clear();
   dailyAccessionCounter = 0;
-  lastAccessionDate = "";
+  lastAccessionDate = '';
 }

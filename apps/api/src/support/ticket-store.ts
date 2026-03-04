@@ -7,16 +7,23 @@
  * Tickets track issues, diagnostics snapshots, and resolution status.
  */
 
-import * as crypto from "node:crypto";
-import { log } from "../lib/logger.js";
+import * as crypto from 'node:crypto';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
 
-export type TicketPriority = "low" | "medium" | "high" | "critical";
-export type TicketStatus = "open" | "in-progress" | "resolved" | "closed";
-export type TicketCategory = "vista" | "adapter" | "module" | "performance" | "data" | "security" | "other";
+export type TicketPriority = 'low' | 'medium' | 'high' | 'critical';
+export type TicketStatus = 'open' | 'in-progress' | 'resolved' | 'closed';
+export type TicketCategory =
+  | 'vista'
+  | 'adapter'
+  | 'module'
+  | 'performance'
+  | 'data'
+  | 'security'
+  | 'other';
 
 export interface SupportTicket {
   id: string;
@@ -57,7 +64,7 @@ export interface CreateTicketInput {
 const tickets = new Map<string, SupportTicket>();
 
 function genId(prefix: string): string {
-  return `${prefix}-${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
+  return `${prefix}-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -67,20 +74,24 @@ function genId(prefix: string): string {
 export function createTicket(input: CreateTicketInput, createdBy: string): SupportTicket {
   const now = new Date().toISOString();
   const ticket: SupportTicket = {
-    id: genId("tkt"),
+    id: genId('tkt'),
     title: input.title,
     description: input.description,
     category: input.category,
     priority: input.priority,
-    status: "open",
-    tenantId: input.tenantId || "default",
+    status: 'open',
+    tenantId: input.tenantId || 'default',
     createdBy,
     notes: [],
     createdAt: now,
     updatedAt: now,
   };
   tickets.set(ticket.id, ticket);
-  log.info("Support ticket created", { ticketId: ticket.id, category: input.category, priority: input.priority });
+  log.info('Support ticket created', {
+    ticketId: ticket.id,
+    category: input.category,
+    priority: input.priority,
+  });
   return ticket;
 }
 
@@ -108,10 +119,10 @@ export function updateTicketStatus(id: string, status: TicketStatus): SupportTic
 
   ticket.status = status;
   ticket.updatedAt = new Date().toISOString();
-  if (status === "resolved" || status === "closed") {
+  if (status === 'resolved' || status === 'closed') {
     ticket.resolvedAt = ticket.updatedAt;
   }
-  log.info("Support ticket status updated", { ticketId: id, status });
+  log.info('Support ticket status updated', { ticketId: id, status });
   return ticket;
 }
 
@@ -120,7 +131,7 @@ export function addTicketNote(id: string, text: string, author: string): Support
   if (!ticket) return null;
 
   ticket.notes.push({
-    id: genId("note"),
+    id: genId('note'),
     text,
     author,
     createdAt: new Date().toISOString(),

@@ -1,13 +1,16 @@
 # Phase 59 -- IMPLEMENT: CPOE Parity (Orders + Order Checks + Signing)
 
 ## Mission
+
 Make orders (CPOE) behave like CPRS:
+
 - Order creation (labs, imaging, meds, consults as available)
 - Order checks (drug-allergy, interactions, duplicate therapy, contraindications where supported)
 - Order signing workflow OR explicit "unsigned-only" if signing unavailable in this distro
 - Alerts / inbox updates (if supported) or explicit pending hooks
 
 ## Definition of Done
+
 A) Order entry flows complete for at least 1 lab, 1 imaging, 1 medication order (safe path).
 B) All order actions are Action -> Endpoint -> RPC-traceable (or explicit pending with target RPCs).
 C) Order checks run (or explicit pending with target RPCs) and surfaced in UI before submit/sign.
@@ -18,21 +21,26 @@ F) Security: no PHI in logs, audit events for writes, RBAC enforced.
 ## Implementation Steps
 
 ### Step 0: Prompts folder
+
 - Create 64-PHASE-59-CPOE-PARITY/59-01-IMPLEMENT.md (this file)
 - Create 64-PHASE-59-CPOE-PARITY/59-99-VERIFY.md
 
 ### A) Inventory
+
 - artifacts/phase59/inventory.json (order-related UI, API, RPCs, registry)
 
 ### B) Order Capability Plan
+
 - artifacts/phase59/order-plan.json (per-flow RPC sequences, availability, sandbox support)
 
 ### C) Order Dialogs (CPRS-like)
+
 - Upgrade OrdersPanel.tsx with real backend integration for lab/imaging/consult
 - Patient context required, required fields enforced
 - Order checks displayed before submit/sign
 
 ### D) API Implementation
+
 - New route file: apps/api/src/routes/cprs/orders-cpoe.ts
 - Endpoints:
   - GET /vista/cprs/orders (full order list via ORWORR AGET)
@@ -42,21 +50,26 @@ F) Security: no PHI in logs, audit events for writes, RBAC enforced.
   - POST /vista/cprs/order-checks (order checks via ORWDXC ACCEPT/SAVECHK/DISPLAY or pending)
 
 ### E) Order Checks (VistA-First)
+
 - Use ORWDXC family RPCs where available
 - If unavailable: return explicit "integration-pending" with target RPCs
 
 ### F) Signing Workflow
+
 - If ORWOR1 SIG works: implement sign with user auth + audit
 - If not feasible: "unsigned orders" consistently labeled
 
 ### G) UX Quality
+
 - Same CPRS workflow: select type -> fill dialog -> checks -> accept -> sign
 
 ### H) Registry + Traceability
+
 - Add new order RPCs to rpcRegistry.ts
 - Add new audit actions for lab/imaging order checks/sign
 
 ## Files Touched
+
 - prompts/64-PHASE-59-CPOE-PARITY/59-01-IMPLEMENT.md
 - prompts/64-PHASE-59-CPOE-PARITY/59-99-VERIFY.md
 - artifacts/phase59/inventory.json

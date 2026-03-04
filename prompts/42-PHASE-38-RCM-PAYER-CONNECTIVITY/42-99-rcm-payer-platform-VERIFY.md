@@ -6,6 +6,7 @@ This verification proves the Phase 38 RCM Gateway is correct, secure, and
 not pretending. It covers 6 categories across 158 automated gates:
 
 ### Part A -- Static Analysis (95 gates)
+
 - Domain model files, exports, interfaces
 - Payer registry + JSON seed data validation (US + PH)
 - EDI types + pipeline exports
@@ -21,6 +22,7 @@ not pretending. It covers 6 categories across 158 automated gates:
 - Prompt file existence
 
 ### Part B -- Live API Tests (30+ gates)
+
 - POST /auth/login
 - GET /rcm/payers (non-empty, US, PH, total >= 27)
 - POST /rcm/claims/draft (stable schema)
@@ -39,6 +41,7 @@ not pretending. It covers 6 categories across 158 automated gates:
 - Unauthenticated 401 enforcement
 
 ### Part C -- Security & PHI Scan (9 gates)
+
 - No hardcoded credentials in RCM code
 - No hardcoded passwords/secrets
 - No SSN patterns
@@ -48,6 +51,7 @@ not pretending. It covers 6 categories across 158 automated gates:
 - No database driver imports
 
 ### Part D -- UI Dead-Click Audit (10 gates)
+
 - Tab buttons have onClick handlers
 - Refresh button with handler
 - Search + country filter with onChange
@@ -56,6 +60,7 @@ not pretending. It covers 6 categories across 158 automated gates:
 - No TODO/FIXME/HACK comments
 
 ### Part E -- VistA-First Enforcement (8 gates)
+
 - No SQL INSERT/UPDATE/DELETE
 - Map-based persistence only
 - vistaChargeIen + vistaArIen grounding fields
@@ -64,6 +69,7 @@ not pretending. It covers 6 categories across 158 automated gates:
 - No hidden file persistence (fs.writeFile)
 
 ### Part F -- Prompts Ordering Integrity (6 gates)
+
 - No duplicate prefix numbers
 - No gaps in sequence
 - Phase 38 prompt directory + IMPLEMENT file

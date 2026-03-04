@@ -5,10 +5,10 @@
  * All operations are tenant-scoped.
  */
 
-import { eq, and, desc, count } from "drizzle-orm";
-import { getPgDb } from "../../platform/pg/pg-db.js";
-import { loaRequest, loaAttachment } from "../../platform/pg/pg-schema.js";
-import { randomUUID } from "node:crypto";
+import { eq, and, desc, count } from 'drizzle-orm';
+import { getPgDb } from '../../platform/pg/pg-db.js';
+import { loaRequest, loaAttachment } from '../../platform/pg/pg-schema.js';
+import { randomUUID } from 'node:crypto';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -94,7 +94,11 @@ export interface AddAttachmentInput {
 
 function safeJsonParse<T>(val: string | null | undefined, fallback: T): T {
   if (!val) return fallback;
-  try { return JSON.parse(val); } catch { return fallback; }
+  try {
+    return JSON.parse(val);
+  } catch {
+    return fallback;
+  }
 }
 
 function parseLoaRequest(row: any): LoaRequestRow {
@@ -154,36 +158,38 @@ export async function createLoaRequest(input: CreateLoaInput): Promise<LoaReques
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || "default";
+  const tenantId = input.tenantId || 'default';
 
-  await db.insert(loaRequest)
-    .values({
-      id,
-      tenantId,
-      patientDfn: input.patientDfn,
-      patientName: input.patientName || null,
-      payerId: input.payerId,
-      payerName: input.payerName || null,
-      encounterIen: input.encounterIen || null,
-      orderIen: input.orderIen || null,
-      loaType: input.loaType,
-      status: "draft",
-      urgency: input.urgency || "standard",
-      diagnosisCodesJson: JSON.stringify(input.diagnosisCodes || []),
-      procedureCodesJson: JSON.stringify(input.procedureCodes || []),
-      clinicalSummary: input.clinicalSummary || null,
-      requestedServiceDesc: input.requestedServiceDesc || null,
-      requestedBy: input.requestedBy,
-      requestedAt: now,
-      metadataJson: "{}",
-      createdAt: now,
-      updatedAt: now,
-    });
+  await db.insert(loaRequest).values({
+    id,
+    tenantId,
+    patientDfn: input.patientDfn,
+    patientName: input.patientName || null,
+    payerId: input.payerId,
+    payerName: input.payerName || null,
+    encounterIen: input.encounterIen || null,
+    orderIen: input.orderIen || null,
+    loaType: input.loaType,
+    status: 'draft',
+    urgency: input.urgency || 'standard',
+    diagnosisCodesJson: JSON.stringify(input.diagnosisCodes || []),
+    procedureCodesJson: JSON.stringify(input.procedureCodes || []),
+    clinicalSummary: input.clinicalSummary || null,
+    requestedServiceDesc: input.requestedServiceDesc || null,
+    requestedBy: input.requestedBy,
+    requestedAt: now,
+    metadataJson: '{}',
+    createdAt: now,
+    updatedAt: now,
+  });
 
   return (await getLoaRequestById(tenantId, id))!;
 }
 
-export async function getLoaRequestById(tenantId: string, id: string): Promise<LoaRequestRow | null> {
+export async function getLoaRequestById(
+  tenantId: string,
+  id: string
+): Promise<LoaRequestRow | null> {
   const db = getPgDb();
   const rows = await db
     .select()
@@ -235,13 +241,17 @@ export async function updateLoaRequest(
   if (updates.payerName !== undefined) setClause.payerName = updates.payerName;
   if (updates.loaType !== undefined) setClause.loaType = updates.loaType;
   if (updates.urgency !== undefined) setClause.urgency = updates.urgency;
-  if (updates.diagnosisCodes !== undefined) setClause.diagnosisCodesJson = JSON.stringify(updates.diagnosisCodes);
-  if (updates.procedureCodes !== undefined) setClause.procedureCodesJson = JSON.stringify(updates.procedureCodes);
+  if (updates.diagnosisCodes !== undefined)
+    setClause.diagnosisCodesJson = JSON.stringify(updates.diagnosisCodes);
+  if (updates.procedureCodes !== undefined)
+    setClause.procedureCodesJson = JSON.stringify(updates.procedureCodes);
   if (updates.clinicalSummary !== undefined) setClause.clinicalSummary = updates.clinicalSummary;
-  if (updates.requestedServiceDesc !== undefined) setClause.requestedServiceDesc = updates.requestedServiceDesc;
+  if (updates.requestedServiceDesc !== undefined)
+    setClause.requestedServiceDesc = updates.requestedServiceDesc;
   if (updates.metadata !== undefined) setClause.metadataJson = JSON.stringify(updates.metadata);
 
-  await db.update(loaRequest)
+  await db
+    .update(loaRequest)
     .set(setClause)
     .where(and(eq(loaRequest.tenantId, tenantId), eq(loaRequest.id, id)));
 
@@ -256,31 +266,42 @@ export async function transitionLoaStatus(
   tenantId: string,
   id: string,
   newStatus: string,
-  extra?: { authorizationNumber?: string; approvedUnits?: number; approvedFrom?: string; approvedThrough?: string; denialReason?: string }
+  extra?: {
+    authorizationNumber?: string;
+    approvedUnits?: number;
+    approvedFrom?: string;
+    approvedThrough?: string;
+    denialReason?: string;
+  }
 ): Promise<LoaRequestRow | null> {
   const db = getPgDb();
   const now = new Date().toISOString();
   const setClause: Record<string, any> = { status: newStatus, updatedAt: now };
 
-  if (newStatus === "submitted") setClause.submittedAt = now;
-  if (newStatus === "approved" || newStatus === "denied") setClause.resolvedAt = now;
+  if (newStatus === 'submitted') setClause.submittedAt = now;
+  if (newStatus === 'approved' || newStatus === 'denied') setClause.resolvedAt = now;
   if (extra?.authorizationNumber) setClause.authorizationNumber = extra.authorizationNumber;
   if (extra?.approvedUnits !== undefined) setClause.approvedUnits = extra.approvedUnits;
   if (extra?.approvedFrom) setClause.approvedFrom = extra.approvedFrom;
   if (extra?.approvedThrough) setClause.approvedThrough = extra.approvedThrough;
   if (extra?.denialReason) setClause.denialReason = extra.denialReason;
 
-  await db.update(loaRequest)
+  await db
+    .update(loaRequest)
     .set(setClause)
     .where(and(eq(loaRequest.tenantId, tenantId), eq(loaRequest.id, id)));
 
   return getLoaRequestById(tenantId, id);
 }
 
-export async function markPacketGenerated(tenantId: string, id: string): Promise<LoaRequestRow | null> {
+export async function markPacketGenerated(
+  tenantId: string,
+  id: string
+): Promise<LoaRequestRow | null> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  await db.update(loaRequest)
+  await db
+    .update(loaRequest)
     .set({ packetGeneratedAt: now, updatedAt: now })
     .where(and(eq(loaRequest.tenantId, tenantId), eq(loaRequest.id, id)));
   return getLoaRequestById(tenantId, id);
@@ -303,22 +324,21 @@ export async function addAttachment(input: AddAttachmentInput): Promise<LoaAttac
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || "default";
+  const tenantId = input.tenantId || 'default';
 
-  await db.insert(loaAttachment)
-    .values({
-      id,
-      loaRequestId: input.loaRequestId,
-      tenantId,
-      attachmentType: input.attachmentType,
-      fileName: input.fileName,
-      mimeType: input.mimeType,
-      storagePath: input.storagePath || null,
-      inlineContent: input.inlineContent || null,
-      description: input.description || null,
-      addedBy: input.addedBy,
-      addedAt: now,
-    });
+  await db.insert(loaAttachment).values({
+    id,
+    loaRequestId: input.loaRequestId,
+    tenantId,
+    attachmentType: input.attachmentType,
+    fileName: input.fileName,
+    mimeType: input.mimeType,
+    storagePath: input.storagePath || null,
+    inlineContent: input.inlineContent || null,
+    description: input.description || null,
+    addedBy: input.addedBy,
+    addedAt: now,
+  });
 
   const rows = await db.select().from(loaAttachment).where(eq(loaAttachment.id, id));
   return parseAttachment(rows[0]);

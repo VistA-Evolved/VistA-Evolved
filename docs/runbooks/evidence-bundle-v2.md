@@ -41,18 +41,18 @@ artifacts/evidence/certification-v2/<build-id>/
 
 ## Sections
 
-| # | Section | Source Phase | Script |
-|---|---------|-------------|--------|
-| 1 | Git & Version Metadata | — | Inline |
-| 2 | TypeScript Compilation | — | `pnpm exec tsc --noEmit` |
-| 3 | RPC Contract Replay | Phase 267 | `scripts/rpc-contract-ci.mjs` |
-| 4 | Clinical Invariants | Phase 268 | `scripts/clinical-invariants-ci.mjs` |
-| 5 | Security Gauntlet | Phase 269 | `scripts/security/gauntlet.mjs` |
-| 6 | PHI Audit | Phase 270 | `scripts/privacy/phi-audit.mjs` |
-| 7 | GameDay Drills | Phase 271 | `scripts/dr/gameday-drill.mjs` |
-| 8 | Audit Chain | Phase 35 | Inline JSONL verification |
-| 9 | Safety Case | Phase 266 | Inline cross-reference |
-| 10 | SHA-256 Manifest | — | Inline |
+| #   | Section                | Source Phase | Script                               |
+| --- | ---------------------- | ------------ | ------------------------------------ |
+| 1   | Git & Version Metadata | —            | Inline                               |
+| 2   | TypeScript Compilation | —            | `pnpm exec tsc --noEmit`             |
+| 3   | RPC Contract Replay    | Phase 267    | `scripts/rpc-contract-ci.mjs`        |
+| 4   | Clinical Invariants    | Phase 268    | `scripts/clinical-invariants-ci.mjs` |
+| 5   | Security Gauntlet      | Phase 269    | `scripts/security/gauntlet.mjs`      |
+| 6   | PHI Audit              | Phase 270    | `scripts/privacy/phi-audit.mjs`      |
+| 7   | GameDay Drills         | Phase 271    | `scripts/dr/gameday-drill.mjs`       |
+| 8   | Audit Chain            | Phase 35     | Inline JSONL verification            |
+| 9   | Safety Case            | Phase 266    | Inline cross-reference               |
+| 10  | SHA-256 Manifest       | —            | Inline                               |
 
 ## CI Integration
 

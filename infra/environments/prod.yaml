@@ -8,8 +8,8 @@ postgres:
   enabled: true
   storage:
     size: 100Gi
-    storageClass: gp3  # AWS EBS example; adjust per cloud
-  password: ""  # MUST be supplied via external secrets operator or --set
+    storageClass: gp3 # AWS EBS example; adjust per cloud
+  password: '' # MUST be supplied via external secrets operator or --set
 
 redis:
   enabled: true
@@ -20,14 +20,14 @@ ingress:
 
 keycloak:
   enabled: true
-  url: "https://auth.prod.example.com"
+  url: 'https://auth.prod.example.com'
 
 observability:
   enabled: true
-  otelCollectorEndpoint: "http://otel-collector.ve-system:4318"
+  otelCollectorEndpoint: 'http://otel-collector.ve-system:4318'
 
 minio:
-  enabled: false  # use real S3 in production
+  enabled: false # use real S3 in production
 
 networkPolicies:
   enabled: true

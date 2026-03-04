@@ -13,12 +13,18 @@
  */
 
 import { createAck, createStatusUpdate } from '../domain/ack-status.js';
-import type { Acknowledgement, AckType, AckDisposition, AckError, ClaimStatusUpdate } from '../domain/ack-status.js';
+import type {
+  Acknowledgement,
+  AckType,
+  AckDisposition,
+  AckError,
+  ClaimStatusUpdate,
+} from '../domain/ack-status.js';
 import { getClaim, updateClaim } from '../domain/claim-store.js';
 import { transitionClaim } from '../domain/claim.js';
 import { createWorkqueueItem } from '../workqueues/workqueue-store.js';
 import { appendRcmAudit } from '../audit/rcm-audit.js';
-import { buildActionRecommendation, lookupCarc } from '../reference/carc-rarc.js';
+import { buildActionRecommendation } from '../reference/carc-rarc.js';
 import { log } from '../../lib/logger.js';
 
 /* ── DB repo interface (lazy-wired at startup) ──────────────── */
@@ -46,7 +52,7 @@ export function initAckStatusRepo(repo: AckRepo): void {
 }
 
 function dbWarn(op: string, err: any): void {
-  if (process.env.NODE_ENV !== "test") {
+  if (process.env.NODE_ENV !== 'test') {
     log.warn(`[ack-status] DB ${op} failed (cache-only fallback)`, { err: err?.message ?? err });
   }
 }
@@ -91,7 +97,13 @@ export async function ingestAck(input: AckIngestInput): Promise<AckIngestResult>
   const existingId = idempotencyIndex.get(input.idempotencyKey);
   if (existingId) {
     const existing = acks.get(existingId)!;
-    return { ok: true, ack: existing, claimUpdated: false, workqueueItemCreated: false, idempotent: true };
+    return {
+      ok: true,
+      ack: existing,
+      claimUpdated: false,
+      workqueueItemCreated: false,
+      idempotent: true,
+    };
   }
 
   const ack = createAck({
@@ -152,7 +164,12 @@ export async function ingestAck(input: AckIngestInput): Promise<AckIngestResult>
         updateClaim(updated);
         claimUpdated = true;
       } else if (ack.disposition === 'rejected' && claim.status === 'submitted') {
-        const updated = transitionClaim(claim, 'rejected', 'system', `Ack ${ack.type} rejected: ${ack.errors.map(e => e.description).join('; ')}`);
+        const updated = transitionClaim(
+          claim,
+          'rejected',
+          'system',
+          `Ack ${ack.type} rejected: ${ack.errors.map((e) => e.description).join('; ')}`
+        );
         updateClaim(updated);
         claimUpdated = true;
 
@@ -226,7 +243,13 @@ export async function ingestStatusUpdate(input: StatusIngestInput): Promise<Stat
   const existingId = statusIdempotencyIndex.get(input.idempotencyKey);
   if (existingId) {
     const existing = statusUpdates.get(existingId)!;
-    return { ok: true, statusUpdate: existing, claimUpdated: false, workqueueItemCreated: false, idempotent: true };
+    return {
+      ok: true,
+      statusUpdate: existing,
+      claimUpdated: false,
+      workqueueItemCreated: false,
+      idempotent: true,
+    };
   }
 
   const status = createStatusUpdate({
@@ -297,8 +320,16 @@ export async function ingestStatusUpdate(input: StatusIngestInput): Promise<Stat
         claimUpdated = true;
       }
       // F2/D0 = Finalized denial
-      else if ((cat === 'F2' || cat === 'D0') && (claim.status === 'accepted' || claim.status === 'submitted')) {
-        const updated = transitionClaim(claim, 'denied', 'system', `277 denied: ${status.statusDescription}`);
+      else if (
+        (cat === 'F2' || cat === 'D0') &&
+        (claim.status === 'accepted' || claim.status === 'submitted')
+      ) {
+        const updated = transitionClaim(
+          claim,
+          'denied',
+          'system',
+          `277 denied: ${status.statusDescription}`
+        );
         updateClaim(updated);
         claimUpdated = true;
 
@@ -362,7 +393,7 @@ export function getAck(id: string): Acknowledgement | undefined {
 
 export function getAcksForClaim(claimId: string): Acknowledgement[] {
   const ids = claimAckIndex.get(claimId) ?? [];
-  return ids.map(id => acks.get(id)!).filter(Boolean);
+  return ids.map((id) => acks.get(id)!).filter(Boolean);
 }
 
 export function listAcks(filters?: {
@@ -373,9 +404,9 @@ export function listAcks(filters?: {
   offset?: number;
 }): { acks: Acknowledgement[]; total: number } {
   let result = Array.from(acks.values());
-  if (filters?.type) result = result.filter(a => a.type === filters.type);
-  if (filters?.disposition) result = result.filter(a => a.disposition === filters.disposition);
-  if (filters?.claimId) result = result.filter(a => a.claimId === filters.claimId);
+  if (filters?.type) result = result.filter((a) => a.type === filters.type);
+  if (filters?.disposition) result = result.filter((a) => a.disposition === filters.disposition);
+  if (filters?.claimId) result = result.filter((a) => a.claimId === filters.claimId);
   result.sort((a, b) => b.receivedAt.localeCompare(a.receivedAt));
   const total = result.length;
   const offset = filters?.offset ?? 0;
@@ -391,7 +422,7 @@ export function getStatusUpdate(id: string): ClaimStatusUpdate | undefined {
 
 export function getStatusUpdatesForClaim(claimId: string): ClaimStatusUpdate[] {
   const ids = claimStatusIndex.get(claimId) ?? [];
-  return ids.map(id => statusUpdates.get(id)!).filter(Boolean);
+  return ids.map((id) => statusUpdates.get(id)!).filter(Boolean);
 }
 
 export function listStatusUpdates(filters?: {
@@ -401,8 +432,8 @@ export function listStatusUpdates(filters?: {
   offset?: number;
 }): { statusUpdates: ClaimStatusUpdate[]; total: number } {
   let result = Array.from(statusUpdates.values());
-  if (filters?.categoryCode) result = result.filter(s => s.categoryCode === filters.categoryCode);
-  if (filters?.claimId) result = result.filter(s => s.claimId === filters.claimId);
+  if (filters?.categoryCode) result = result.filter((s) => s.categoryCode === filters.categoryCode);
+  if (filters?.claimId) result = result.filter((s) => s.claimId === filters.claimId);
   result.sort((a, b) => b.receivedAt.localeCompare(a.receivedAt));
   const total = result.length;
   const offset = filters?.offset ?? 0;

@@ -3,6 +3,7 @@
 ## Verification Steps
 
 ### Automated
+
 ```powershell
 .\scripts\vista-first-audit.ps1
 ```
@@ -53,6 +54,7 @@
    - [ ] `npx tsc --noEmit` passes (no type errors in new files)
 
 ## Expected Audit Output
+
 ```
 PASS: 15+ gates
 FAIL: 0

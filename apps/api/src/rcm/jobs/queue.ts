@@ -15,26 +15,26 @@
  * Production: swap InMemoryJobQueue for RedisJobQueue via env var.
  */
 
-import { randomUUID } from "node:crypto";
+import { randomUUID } from 'node:crypto';
 
 /* ── Job Types ─────────────────────────────────────────────── */
 
 export type RcmJobType =
-  | "CLAIM_SUBMIT"
-  | "ELIGIBILITY_CHECK"
-  | "STATUS_POLL"
-  | "ERA_INGEST"
-  | "ACK_PROCESS"
-  | "REMITTANCE_IMPORT"
-  | "DENIAL_FOLLOWUP_TICK";
+  | 'CLAIM_SUBMIT'
+  | 'ELIGIBILITY_CHECK'
+  | 'STATUS_POLL'
+  | 'ERA_INGEST'
+  | 'ACK_PROCESS'
+  | 'REMITTANCE_IMPORT'
+  | 'DENIAL_FOLLOWUP_TICK';
 
 export type RcmJobStatus =
-  | "queued"
-  | "processing"
-  | "completed"
-  | "failed"
-  | "dead_letter"
-  | "cancelled";
+  | 'queued'
+  | 'processing'
+  | 'completed'
+  | 'failed'
+  | 'dead_letter'
+  | 'cancelled';
 
 export interface RcmJob {
   id: string;
@@ -46,9 +46,9 @@ export interface RcmJob {
   attempts: number;
   maxAttempts: number;
   idempotencyKey?: string;
-  priority: number;          // 0 = highest, 9 = lowest
+  priority: number; // 0 = highest, 9 = lowest
   createdAt: string;
-  scheduledAt: string;       // when to run (for delayed/retry)
+  scheduledAt: string; // when to run (for delayed/retry)
   startedAt?: string;
   completedAt?: string;
   nextRetryAt?: string;
@@ -112,8 +112,13 @@ const DEFAULT_MAX_ATTEMPTS = 3;
 const RETRY_BACKOFF_BASE_MS = 5000; // 5s, 10s, 20s exponential
 
 /* Phase 146: DB repo wiring */
-let jobQueueDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
-export function initJobQueueStoreRepo(repo: typeof jobQueueDbRepo): void { jobQueueDbRepo = repo; }
+let jobQueueDbRepo: {
+  upsert(d: any): Promise<any>;
+  update?(id: string, u: any): Promise<any>;
+} | null = null;
+export function initJobQueueStoreRepo(repo: typeof jobQueueDbRepo): void {
+  jobQueueDbRepo = repo;
+}
 
 export class InMemoryJobQueue implements RcmJobQueue {
   private jobs = new Map<string, RcmJob>();
@@ -141,7 +146,7 @@ export class InMemoryJobQueue implements RcmJobQueue {
     const job: RcmJob = {
       id: randomUUID(),
       type: params.type,
-      status: "queued",
+      status: 'queued',
       payload: params.payload,
       attempts: 0,
       maxAttempts: params.maxAttempts ?? DEFAULT_MAX_ATTEMPTS,
@@ -157,7 +162,16 @@ export class InMemoryJobQueue implements RcmJobQueue {
     }
 
     // Phase 146: Write-through to PG
-    jobQueueDbRepo?.upsert({ id: job.id, tenantId: 'default', jobType: job.type, payload: JSON.stringify(job.payload), status: job.status, scheduledAt: job.scheduledAt }).catch(() => {});
+    jobQueueDbRepo
+      ?.upsert({
+        id: job.id,
+        tenantId: 'default',
+        jobType: job.type,
+        payload: JSON.stringify(job.payload),
+        status: job.status,
+        scheduledAt: job.scheduledAt,
+      })
+      .catch(() => {});
 
     return job.id;
   }
@@ -165,13 +179,13 @@ export class InMemoryJobQueue implements RcmJobQueue {
   async dequeue(): Promise<RcmJob | null> {
     const now = new Date().toISOString();
     const ready = Array.from(this.jobs.values())
-      .filter(j => j.status === "queued" && j.scheduledAt <= now)
+      .filter((j) => j.status === 'queued' && j.scheduledAt <= now)
       .sort((a, b) => a.priority - b.priority || a.scheduledAt.localeCompare(b.scheduledAt));
 
     if (ready.length === 0) return null;
 
     const job = ready[0];
-    job.status = "processing";
+    job.status = 'processing';
     job.startedAt = now;
     job.attempts += 1;
     this.jobs.set(job.id, job);
@@ -181,7 +195,7 @@ export class InMemoryJobQueue implements RcmJobQueue {
   async complete(jobId: string, result?: Record<string, unknown>): Promise<void> {
     const job = this.jobs.get(jobId);
     if (!job) return;
-    job.status = "completed";
+    job.status = 'completed';
     job.result = result;
     job.completedAt = new Date().toISOString();
     this.jobs.set(jobId, job);
@@ -194,12 +208,12 @@ export class InMemoryJobQueue implements RcmJobQueue {
     job.error = error;
 
     if (job.attempts >= job.maxAttempts) {
-      job.status = "dead_letter";
+      job.status = 'dead_letter';
       job.completedAt = new Date().toISOString();
     } else {
       // Exponential backoff
       const delayMs = RETRY_BACKOFF_BASE_MS * Math.pow(2, job.attempts - 1);
-      job.status = "queued";
+      job.status = 'queued';
       job.nextRetryAt = new Date(Date.now() + delayMs).toISOString();
       job.scheduledAt = job.nextRetryAt;
     }
@@ -209,7 +223,7 @@ export class InMemoryJobQueue implements RcmJobQueue {
   async deadLetter(jobId: string, error: string): Promise<void> {
     const job = this.jobs.get(jobId);
     if (!job) return;
-    job.status = "dead_letter";
+    job.status = 'dead_letter';
     job.error = error;
     job.completedAt = new Date().toISOString();
     this.jobs.set(jobId, job);
@@ -217,8 +231,8 @@ export class InMemoryJobQueue implements RcmJobQueue {
 
   async cancel(jobId: string): Promise<void> {
     const job = this.jobs.get(jobId);
-    if (!job || job.status !== "queued") return;
-    job.status = "cancelled";
+    if (!job || job.status !== 'queued') return;
+    job.status = 'cancelled';
     job.completedAt = new Date().toISOString();
     this.jobs.set(jobId, job);
   }
@@ -234,8 +248,8 @@ export class InMemoryJobQueue implements RcmJobQueue {
     offset?: number;
   }): Promise<{ jobs: RcmJob[]; total: number }> {
     let results = Array.from(this.jobs.values());
-    if (filter?.status) results = results.filter(j => j.status === filter.status);
-    if (filter?.type) results = results.filter(j => j.type === filter.type);
+    if (filter?.status) results = results.filter((j) => j.status === filter.status);
+    if (filter?.type) results = results.filter((j) => j.type === filter.type);
     results.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     const total = results.length;
     const offset = filter?.offset ?? 0;
@@ -252,11 +266,11 @@ export class InMemoryJobQueue implements RcmJobQueue {
   }> {
     const stats = { queued: 0, processing: 0, completed: 0, failed: 0, deadLetter: 0 };
     for (const j of this.jobs.values()) {
-      if (j.status === "queued") stats.queued++;
-      else if (j.status === "processing") stats.processing++;
-      else if (j.status === "completed") stats.completed++;
-      else if (j.status === "failed") stats.failed++;
-      else if (j.status === "dead_letter") stats.deadLetter++;
+      if (j.status === 'queued') stats.queued++;
+      else if (j.status === 'processing') stats.processing++;
+      else if (j.status === 'completed') stats.completed++;
+      else if (j.status === 'failed') stats.failed++;
+      else if (j.status === 'dead_letter') stats.deadLetter++;
     }
     return stats;
   }
@@ -264,8 +278,11 @@ export class InMemoryJobQueue implements RcmJobQueue {
   async purge(beforeTimestamp: string): Promise<number> {
     let count = 0;
     for (const [id, job] of this.jobs) {
-      if ((job.status === "completed" || job.status === "cancelled") &&
-          job.completedAt && job.completedAt < beforeTimestamp) {
+      if (
+        (job.status === 'completed' || job.status === 'cancelled') &&
+        job.completedAt &&
+        job.completedAt < beforeTimestamp
+      ) {
         this.jobs.delete(id);
         if (job.idempotencyKey) this.idempotencyIndex.delete(job.idempotencyKey);
         count++;
@@ -287,7 +304,7 @@ let _queue: RcmJobQueue | null = null;
 export function getJobQueue(): RcmJobQueue {
   if (!_queue) {
     try {
-      const { DurableJobQueue } = require("./durable-queue.js");
+      const { DurableJobQueue } = require('./durable-queue.js');
       _queue = new DurableJobQueue();
     } catch {
       // Fallback: in-memory (e.g., during tests or before DB init)

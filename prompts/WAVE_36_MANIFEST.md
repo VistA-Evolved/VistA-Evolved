@@ -7,11 +7,11 @@ probe script.
 
 ## Phase Map
 
-| Phase | Slug | Title |
-|-------|------|-------|
-| 510 | W36-P1-PROMPT-TREE-REPAIR | Prompt Tree Health Repair |
-| 511 | W36-P2-PHASE-INDEX-CORRECTNESS | Phase Index Builder Correctness |
-| 512 | W36-P3-VISTA-BASELINE-LANE | VistA Baseline Lane: VEHU Profile + Probe |
+| Phase | Slug                           | Title                                     |
+| ----- | ------------------------------ | ----------------------------------------- |
+| 510   | W36-P1-PROMPT-TREE-REPAIR      | Prompt Tree Health Repair                 |
+| 511   | W36-P2-PHASE-INDEX-CORRECTNESS | Phase Index Builder Correctness           |
+| 512   | W36-P3-VISTA-BASELINE-LANE     | VistA Baseline Lane: VEHU Profile + Probe |
 
 ## Definition of Done
 
@@ -22,8 +22,8 @@ probe script.
 
 ## Commit Log
 
-| Phase | Commit | Title |
-|-------|--------|-------|
-| 510 | 7c904f5 | Prompt Tree Health Repair |
-| 511 | ea54494 | Phase Index Builder Correctness |
-| 512 | ee6f96f | VistA Baseline Lane |
+| Phase | Commit  | Title                           |
+| ----- | ------- | ------------------------------- |
+| 510   | 7c904f5 | Prompt Tree Health Repair       |
+| 511   | ea54494 | Phase Index Builder Correctness |
+| 512   | ee6f96f | VistA Baseline Lane             |

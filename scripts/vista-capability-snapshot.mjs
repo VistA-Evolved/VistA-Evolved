@@ -26,51 +26,54 @@
  * No PHI in output -- only RPC names, availability booleans, and counts.
  */
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = join(__dirname, "..");
-const OUT_DIR = join(ROOT, "data", "vista");
+const ROOT = join(__dirname, '..');
+const OUT_DIR = join(ROOT, 'data', 'vista');
 
 /* ---- CLI args ---- */
 const args = process.argv.slice(2);
-function flag(name) { return args.includes(name); }
+function flag(name) {
+  return args.includes(name);
+}
 function opt(name, fallback) {
   const idx = args.indexOf(name);
   return idx >= 0 && args[idx + 1] ? args[idx + 1] : fallback;
 }
 
-const API = opt("--api", process.env.API_BASE || "http://127.0.0.1:3001");
-const REFRESH = flag("--refresh");
-const NO_TIMESTAMP = flag("--no-timestamp");
-const COOKIE_FILE = opt("--cookie", null);
+const API = opt('--api', process.env.API_BASE || 'http://127.0.0.1:3001');
+const REFRESH = flag('--refresh');
+const NO_TIMESTAMP = flag('--no-timestamp');
+const COOKIE_FILE = opt('--cookie', null);
 
 /* ---- Cookie handling ---- */
 function loadCookie() {
   // Try explicit cookie file
   if (COOKIE_FILE && existsSync(COOKIE_FILE)) {
-    let raw = readFileSync(COOKIE_FILE, "utf-8").trim();
+    let raw = readFileSync(COOKIE_FILE, 'utf-8').trim();
     // Strip BOM if present (BUG-064: PowerShell Set-Content adds UTF-8 BOM)
     if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
     // Extract just the cookie key=value pairs
-    const cookies = raw.split("\n")
+    const cookies = raw
+      .split('\n')
       .map((line) => line.trim())
       .filter(Boolean)
       .map((line) => {
         // Handle "Set-Cookie: name=value; ..." or just "name=value"
         const match = line.match(/^(?:Set-Cookie:\s*)?([^;]+)/i);
-        return match ? match[1].trim() : "";
+        return match ? match[1].trim() : '';
       })
       .filter(Boolean);
-    return cookies.join("; ");
+    return cookies.join('; ');
   }
   // Try env var
   if (process.env.VISTA_SESSION_COOKIE) {
     return process.env.VISTA_SESSION_COOKIE;
   }
-  return "";
+  return '';
 }
 
 /* ---- Main ---- */
@@ -80,10 +83,10 @@ async function main() {
   console.log(`  Refresh: ${REFRESH}`);
   console.log();
 
-  const url = `${API}/vista/capabilities${REFRESH ? "?refresh=true" : ""}`;
+  const url = `${API}/vista/capabilities${REFRESH ? '?refresh=true' : ''}`;
   const cookie = loadCookie();
-  const headers = { Accept: "application/json" };
-  if (cookie) headers["Cookie"] = cookie;
+  const headers = { Accept: 'application/json' };
+  if (cookie) headers['Cookie'] = cookie;
 
   let res;
   try {
@@ -96,10 +99,12 @@ async function main() {
   }
 
   if (!res.ok) {
-    const text = await res.text().catch(() => "(no body)");
+    const text = await res.text().catch(() => '(no body)');
     console.error(`FAIL  API returned ${res.status}: ${text.substring(0, 200)}`);
     if (res.status === 401) {
-      console.error(`      Auth required. Pass --cookie <file> or set VISTA_SESSION_COOKIE env var.`);
+      console.error(
+        `      Auth required. Pass --cookie <file> or set VISTA_SESSION_COOKIE env var.`
+      );
     }
     process.exit(1);
   }
@@ -116,16 +121,16 @@ async function main() {
   }
 
   // Write latest snapshot
-  const latestPath = join(OUT_DIR, "capability-snapshot.json");
-  writeFileSync(latestPath, JSON.stringify(snapshot, null, 2) + "\n", "utf-8");
-  console.log(`OK    ${latestPath.replace(ROOT + "\\", "").replace(ROOT + "/", "")}`);
+  const latestPath = join(OUT_DIR, 'capability-snapshot.json');
+  writeFileSync(latestPath, JSON.stringify(snapshot, null, 2) + '\n', 'utf-8');
+  console.log(`OK    ${latestPath.replace(ROOT + '\\', '').replace(ROOT + '/', '')}`);
 
   // Write timestamped archive
   if (!NO_TIMESTAMP && snapshot.generatedAt) {
-    const ts = snapshot.generatedAt.replace(/[:.]/g, "-").replace("Z", "");
+    const ts = snapshot.generatedAt.replace(/[:.]/g, '-').replace('Z', '');
     const archivePath = join(OUT_DIR, `capability-snapshot-${ts}.json`);
-    writeFileSync(archivePath, JSON.stringify(snapshot, null, 2) + "\n", "utf-8");
-    console.log(`OK    ${archivePath.replace(ROOT + "\\", "").replace(ROOT + "/", "")}`);
+    writeFileSync(archivePath, JSON.stringify(snapshot, null, 2) + '\n', 'utf-8');
+    console.log(`OK    ${archivePath.replace(ROOT + '\\', '').replace(ROOT + '/', '')}`);
   }
 
   // Summary
@@ -133,12 +138,16 @@ async function main() {
   const reg = snapshot.registry || {};
   console.log();
   console.log(`Summary:`);
-  console.log(`  Instance:          ${snapshot.instanceId || "unknown"}`);
-  console.log(`  RPCs probed:       ${probe.totalProbed ?? "?"}`);
-  console.log(`  Available:         ${probe.available ?? "?"}`);
-  console.log(`  Missing:           ${probe.missing ?? "?"} (${probe.expectedMissing ?? "?"} expected)`);
-  console.log(`  Unexpected missing: ${probe.unexpectedMissing ?? "?"}`);
-  console.log(`  Registry total:    ${reg.totalRegistered ?? "?"} + ${reg.totalExceptions ?? "?"} exceptions`);
+  console.log(`  Instance:          ${snapshot.instanceId || 'unknown'}`);
+  console.log(`  RPCs probed:       ${probe.totalProbed ?? '?'}`);
+  console.log(`  Available:         ${probe.available ?? '?'}`);
+  console.log(
+    `  Missing:           ${probe.missing ?? '?'} (${probe.expectedMissing ?? '?'} expected)`
+  );
+  console.log(`  Unexpected missing: ${probe.unexpectedMissing ?? '?'}`);
+  console.log(
+    `  Registry total:    ${reg.totalRegistered ?? '?'} + ${reg.totalExceptions ?? '?'} exceptions`
+  );
   console.log();
 
   if ((probe.unexpectedMissing || 0) > 0 && Array.isArray(probe.unexpectedMissingList)) {
@@ -152,6 +161,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error("Unhandled error:", err);
+  console.error('Unhandled error:', err);
   process.exit(1);
 });

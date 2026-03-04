@@ -13,10 +13,10 @@
  *   const result = await tenantCachedRpc(tenantId, rpcFn, rpcName, params);
  */
 
-import { cachedRpc, invalidateCache } from "./rpc-resilience.js";
-import { log } from "./logger.js";
+import { cachedRpc, invalidateCache } from './rpc-resilience.js';
+import { log } from './logger.js';
 
-const TENANT_PREFIX = "t:";
+const TENANT_PREFIX = 't:';
 
 /**
  * Execute an RPC with tenant-scoped caching.
@@ -27,7 +27,7 @@ export async function tenantCachedRpc<T>(
   rpcFn: () => Promise<T>,
   rpcName: string,
   params: unknown[],
-  ttlMs?: number,
+  ttlMs?: number
 ): Promise<T> {
   // Prefix the RPC name with tenant ID to create isolated cache namespace
   const scopedName = `${TENANT_PREFIX}${tenantId}::${rpcName}`;
@@ -42,7 +42,7 @@ export function invalidateTenantCache(tenantId: string): number {
   const pattern = `${TENANT_PREFIX}${tenantId}::`;
   const count = invalidateCache(pattern);
   if (count > 0) {
-    log.info("Tenant cache invalidated", { tenantId, entriesRemoved: count });
+    log.info('Tenant cache invalidated', { tenantId, entriesRemoved: count });
   }
   return count;
 }
@@ -56,7 +56,7 @@ export function invalidateTenantCache(tenantId: string): number {
 export function verifyTenantIsolation(
   tenantA: string,
   tenantB: string,
-  rpcName: string,
+  rpcName: string
 ): { isolated: boolean; reason: string } {
   // Cache keys are structurally different because tenantId is in the key
   const keyA = `${TENANT_PREFIX}${tenantA}::${rpcName}`;

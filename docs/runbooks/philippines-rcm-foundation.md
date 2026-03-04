@@ -31,27 +31,27 @@ apps/web/src/app/cprs/admin/payerops/
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | /rcm/payerops/health | Subsystem health + encryption status |
-| GET | /rcm/payerops/stats | Aggregate stats |
-| GET | /rcm/payerops/enrollments | List enrollments |
-| GET | /rcm/payerops/enrollments/:id | Get enrollment |
-| POST | /rcm/payerops/enrollments | Create enrollment |
-| PUT | /rcm/payerops/enrollments/:id/status | Update enrollment status |
-| GET | /rcm/payerops/loa | List LOA cases |
-| GET | /rcm/payerops/loa/:id | Get LOA case |
-| POST | /rcm/payerops/loa | Create LOA case |
-| PUT | /rcm/payerops/loa/:id/status | Transition LOA status |
-| POST | /rcm/payerops/loa/:id/attachments | Attach credential to LOA |
-| POST | /rcm/payerops/loa/:id/submit | Submit LOA via adapter |
-| POST | /rcm/payerops/loa/:id/pack | Generate submission pack |
-| GET | /rcm/payerops/credentials | List credentials |
-| GET | /rcm/payerops/credentials/:id | Get credential |
-| POST | /rcm/payerops/credentials | Create credential entry |
-| DELETE | /rcm/payerops/credentials/:id | Delete credential |
-| GET | /rcm/payerops/credentials/expiring | Expiring credentials |
-| GET | /rcm/payerops/adapters | List adapters |
+| Method | Path                                 | Description                          |
+| ------ | ------------------------------------ | ------------------------------------ |
+| GET    | /rcm/payerops/health                 | Subsystem health + encryption status |
+| GET    | /rcm/payerops/stats                  | Aggregate stats                      |
+| GET    | /rcm/payerops/enrollments            | List enrollments                     |
+| GET    | /rcm/payerops/enrollments/:id        | Get enrollment                       |
+| POST   | /rcm/payerops/enrollments            | Create enrollment                    |
+| PUT    | /rcm/payerops/enrollments/:id/status | Update enrollment status             |
+| GET    | /rcm/payerops/loa                    | List LOA cases                       |
+| GET    | /rcm/payerops/loa/:id                | Get LOA case                         |
+| POST   | /rcm/payerops/loa                    | Create LOA case                      |
+| PUT    | /rcm/payerops/loa/:id/status         | Transition LOA status                |
+| POST   | /rcm/payerops/loa/:id/attachments    | Attach credential to LOA             |
+| POST   | /rcm/payerops/loa/:id/submit         | Submit LOA via adapter               |
+| POST   | /rcm/payerops/loa/:id/pack           | Generate submission pack             |
+| GET    | /rcm/payerops/credentials            | List credentials                     |
+| GET    | /rcm/payerops/credentials/:id        | Get credential                       |
+| POST   | /rcm/payerops/credentials            | Create credential entry              |
+| DELETE | /rcm/payerops/credentials/:id        | Delete credential                    |
+| GET    | /rcm/payerops/credentials/expiring   | Expiring credentials                 |
+| GET    | /rcm/payerops/adapters               | List adapters                        |
 
 ## LOA Status Machine
 
@@ -85,11 +85,11 @@ PAYEROPS_CREDENTIAL_KEY=<64-hex-chars>
 
 ## Adapter Modes
 
-| Mode | Description | Returns |
-|------|-------------|---------|
+| Mode       | Description                              | Returns           |
+| ---------- | ---------------------------------------- | ----------------- |
 | **Manual** | Print packs, checklists, email templates | `manual_required` |
-| **Portal** | Portal URL + step-by-step navigation | `manual_required` |
-| **API** | Direct payer integration (future) | TBD |
+| **Portal** | Portal URL + step-by-step navigation     | `manual_required` |
+| **API**    | Direct payer integration (future)        | TBD               |
 
 All adapters currently return `manual_required` status. This is intentional.
 No operation pretends to succeed. The submission pack generator provides
@@ -118,13 +118,16 @@ When the RCM module is disabled, all `/rcm/payerops/*` endpoints return 403.
 ## Troubleshooting
 
 ### PayerOps routes return 403
+
 - Check RCM module is enabled in the SKU or tenant override
 - `GET /api/modules` should show `rcm` as enabled
 
 ### Encryption shows "degraded"
+
 - Set `PAYEROPS_CREDENTIAL_KEY` env var
 - Must be exactly 64 hex characters (32 bytes)
 
 ### LOA transition fails with 422
+
 - Check the status FSM: not all transitions are valid
 - Use `POST /rcm/payerops/loa/:id/status` with valid target status

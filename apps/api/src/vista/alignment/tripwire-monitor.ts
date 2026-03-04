@@ -11,8 +11,8 @@
  * In-memory stores -- reset on API restart. Future: persist to PG.
  */
 
-import { randomUUID } from "node:crypto";
-import type { RpcTripwire, TripwireEvent, TripwireCondition } from "./types.js";
+import { randomUUID } from 'node:crypto';
+import type { RpcTripwire, TripwireEvent, TripwireCondition } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /*  In-memory stores                                                   */
@@ -31,30 +31,30 @@ const DEFAULT_TRIPWIRES: Array<{
   threshold?: number;
 }> = [
   {
-    rpcName: "ORQQAL LIST",
-    condition: "response_empty",
-    description: "Allergy list returns empty for patient with known allergies",
+    rpcName: 'ORQQAL LIST',
+    condition: 'response_empty',
+    description: 'Allergy list returns empty for patient with known allergies',
   },
   {
-    rpcName: "ORWPT LIST ALL",
-    condition: "timeout",
-    description: "Patient list takes >10s (VistA File 2 scan bottleneck)",
+    rpcName: 'ORWPT LIST ALL',
+    condition: 'timeout',
+    description: 'Patient list takes >10s (VistA File 2 scan bottleneck)',
     threshold: 10000,
   },
   {
-    rpcName: "ORWPS ACTIVE",
-    condition: "schema_mismatch",
-    description: "Medication list returns unexpected multi-line format",
+    rpcName: 'ORWPS ACTIVE',
+    condition: 'schema_mismatch',
+    description: 'Medication list returns unexpected multi-line format',
   },
   {
-    rpcName: "TIU CREATE RECORD",
-    condition: "response_error",
-    description: "Note creation returns error (unsigned note limit, lock, etc.)",
+    rpcName: 'TIU CREATE RECORD',
+    condition: 'response_error',
+    description: 'Note creation returns error (unsigned note limit, lock, etc.)',
   },
   {
-    rpcName: "*",
-    condition: "new_rpc_unregistered",
-    description: "Any callRpc invocation referencing unregistered RPC name",
+    rpcName: '*',
+    condition: 'new_rpc_unregistered',
+    description: 'Any callRpc invocation referencing unregistered RPC name',
   },
 ];
 
@@ -115,7 +115,7 @@ export function checkTripwires(
   for (const tw of tripwireStore.values()) {
     if (!tw.enabled) continue;
     if (tw.condition !== condition) continue;
-    if (tw.rpcName !== "*" && tw.rpcName !== rpcName) continue;
+    if (tw.rpcName !== '*' && tw.rpcName !== rpcName) continue;
 
     tw.fireCount++;
     tw.lastFiredAt = new Date().toISOString();
@@ -176,7 +176,7 @@ export function getTripwireStats(): {
   }
   const topFiring = [...countMap.entries()]
     .map(([key, count]) => {
-      const [rpcName, condition] = key.split("|");
+      const [rpcName, condition] = key.split('|');
       return { rpcName, condition, count };
     })
     .sort((a, b) => b.count - a.count)

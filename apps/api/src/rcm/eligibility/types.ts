@@ -8,18 +8,18 @@
 /* ── Provenance ─────────────────────────────────────────────── */
 
 export type EligibilityProvenance =
-  | "MANUAL"
-  | "SANDBOX"
-  | "EDI_270_271"
-  | "CLEARINGHOUSE"
-  | "PORTAL";
+  | 'MANUAL'
+  | 'SANDBOX'
+  | 'EDI_270_271'
+  | 'CLEARINGHOUSE'
+  | 'PORTAL';
 
 export type ClaimStatusProvenance =
-  | "MANUAL"
-  | "SANDBOX"
-  | "EDI_276_277"
-  | "CLEARINGHOUSE"
-  | "PORTAL";
+  | 'MANUAL'
+  | 'SANDBOX'
+  | 'EDI_276_277'
+  | 'CLEARINGHOUSE'
+  | 'PORTAL';
 
 /* ── Eligibility Check ──────────────────────────────────────── */
 
@@ -48,13 +48,13 @@ export interface EligibilityCheckRecord {
   dateOfService: string | null;
   provenance: EligibilityProvenance;
   eligible: boolean | null;
-  status: "completed" | "failed" | "pending" | "integration_pending";
-  responseJson: string | null;       // Full adapter response (JSON stringified)
+  status: 'completed' | 'failed' | 'pending' | 'integration_pending';
+  responseJson: string | null; // Full adapter response (JSON stringified)
   errorMessage: string | null;
   responseMs: number | null;
-  checkedBy: string | null;           // DUZ or system
+  checkedBy: string | null; // DUZ or system
   tenantId: string;
-  createdAt: string;                  // ISO 8601
+  createdAt: string; // ISO 8601
 }
 
 /* ── Claim Status Check ─────────────────────────────────────── */
@@ -83,7 +83,7 @@ export interface ClaimStatusCheckRecord {
   claimStatus: string | null;
   adjudicationDate: string | null;
   paidAmountCents: number | null;
-  status: "completed" | "failed" | "pending" | "integration_pending";
+  status: 'completed' | 'failed' | 'pending' | 'integration_pending';
   responseJson: string | null;
   errorMessage: string | null;
   responseMs: number | null;
@@ -98,8 +98,8 @@ export interface ClaimStatusScheduleRequest {
   claimRef: string;
   payerId: string;
   payerClaimId?: string;
-  intervalMinutes?: number;   // default 10
-  maxPolls?: number;          // default 10
+  intervalMinutes?: number; // default 10
+  maxPolls?: number; // default 10
 }
 
 /* ── Stats ──────────────────────────────────────────────────── */

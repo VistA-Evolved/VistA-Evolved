@@ -14,15 +14,16 @@ hardcoded in clinical logic.
 
 Clinical terminology varies by country:
 
-| Domain | US | Philippines | Ghana |
-|--------|-----|-------------|-------|
-| Diagnosis | ICD-10-CM | ICD-10 (WHO) | ICD-10 (WHO) |
-| Procedures | CPT/HCPCS | ICD-10-PCS / PhilHealth | ICD-10-PCS |
-| Lab codes | LOINC | LOINC (partial) | Local |
-| Drugs | NDC / RxNorm | PDPD / FDA-PH | Local formulary |
-| Allergies | SNOMED CT | Free-text common | Free-text common |
+| Domain     | US           | Philippines             | Ghana            |
+| ---------- | ------------ | ----------------------- | ---------------- |
+| Diagnosis  | ICD-10-CM    | ICD-10 (WHO)            | ICD-10 (WHO)     |
+| Procedures | CPT/HCPCS    | ICD-10-PCS / PhilHealth | ICD-10-PCS       |
+| Lab codes  | LOINC        | LOINC (partial)         | Local            |
+| Drugs      | NDC / RxNorm | PDPD / FDA-PH           | Local formulary  |
+| Allergies  | SNOMED CT    | Free-text common        | Free-text common |
 
 The challenge is that:
+
 1. VistA uses VistA-internal file numbers (File 120.82, File 80, etc.)
 2. CPRS RPCs return VistA-internal codes that must be mapped to standard terminologies
 3. Claims/billing require the country-specific code system
@@ -37,13 +38,13 @@ The challenge is that:
 
 ## Rationale
 
-| Criterion           | Hardcoded | Pluggable registry | External server |
-|---------------------|:---:|:---:|:---:|
-| Offline capability  | Yes | Yes | No |
-| Latency             | Best | Good | Variable |
-| New market cost     | High (code) | Low (config) | Low (config) |
-| VistA alignment     | Tight | Good | Loose |
-| Maintenance burden  | Per-country | Per-adapter | External |
+| Criterion          |  Hardcoded  | Pluggable registry | External server |
+| ------------------ | :---------: | :----------------: | :-------------: |
+| Offline capability |     Yes     |        Yes         |       No        |
+| Latency            |    Best     |        Good        |    Variable     |
+| New market cost    | High (code) |    Low (config)    |  Low (config)   |
+| VistA alignment    |    Tight    |        Good        |      Loose      |
+| Maintenance burden | Per-country |    Per-adapter     |    External     |
 
 - **Pluggable registry** aligns with the values-driven country pack model
   (ADR-country-pack-model.md).
@@ -57,8 +58,8 @@ The challenge is that:
 
 ```typescript
 interface TerminologyResolver {
-  readonly codeSystem: string;       // e.g. "ICD-10-CM", "LOINC"
-  readonly domain: TermDomain;       // "diagnosis" | "procedure" | "lab" | "drug" | "allergy"
+  readonly codeSystem: string; // e.g. "ICD-10-CM", "LOINC"
+  readonly domain: TermDomain; // "diagnosis" | "procedure" | "lab" | "drug" | "allergy"
 
   /** Resolve VistA-internal code to standard code */
   resolve(vistaCode: string, vistaFile: number): TermCode | null;
@@ -71,13 +72,13 @@ interface TerminologyResolver {
 }
 
 interface TermCode {
-  code: string;           // e.g. "J06.9"
-  display: string;        // e.g. "Acute upper respiratory infection, unspecified"
-  system: string;         // e.g. "http://hl7.org/fhir/sid/icd-10-cm"
-  version?: string;       // e.g. "2025"
+  code: string; // e.g. "J06.9"
+  display: string; // e.g. "Acute upper respiratory infection, unspecified"
+  system: string; // e.g. "http://hl7.org/fhir/sid/icd-10-cm"
+  version?: string; // e.g. "2025"
 }
 
-type TermDomain = "diagnosis" | "procedure" | "lab" | "drug" | "allergy";
+type TermDomain = 'diagnosis' | 'procedure' | 'lab' | 'drug' | 'allergy';
 ```
 
 ### Resolution Flow
@@ -91,14 +92,14 @@ Country Pack values.json
 
 ### Built-in Resolvers (Initial)
 
-| Resolver | Domain | Source | Notes |
-|----------|--------|--------|-------|
-| ICD10CMResolver | diagnosis | VistA File 80 | US standard |
-| ICD10WHOResolver | diagnosis | VistA File 80 | WHO standard (PH, GH) |
-| CPTResolver | procedure | VistA File 81 | US standard |
-| LOINCResolver | lab | VistA File 60 | Universal |
-| NDCResolver | drug | VistA File 50 | US standard |
-| PassthroughResolver | any | any | Returns VistA code as-is |
+| Resolver            | Domain    | Source        | Notes                    |
+| ------------------- | --------- | ------------- | ------------------------ |
+| ICD10CMResolver     | diagnosis | VistA File 80 | US standard              |
+| ICD10WHOResolver    | diagnosis | VistA File 80 | WHO standard (PH, GH)    |
+| CPTResolver         | procedure | VistA File 81 | US standard              |
+| LOINCResolver       | lab       | VistA File 60 | Universal                |
+| NDCResolver         | drug      | VistA File 50 | US standard              |
+| PassthroughResolver | any       | any           | Returns VistA code as-is |
 
 ### Country Pack Integration
 
@@ -108,15 +109,15 @@ Country Pack values.json
     "diagnosisCodeSystem": "ICD-10-CM",
     "procedureCodeSystem": "CPT",
     "labCodeSystem": "LOINC",
-    "drugCodeSystem": "NDC"
+    "drugCodeSystem": "NDC",
   },
   "terminologyOverrides": {
     // Optional per-domain overrides
     "allergy": {
       "codeSystem": "SNOMED-CT",
-      "fallback": "passthrough"    // If SNOMED mapping unavailable
-    }
-  }
+      "fallback": "passthrough", // If SNOMED mapping unavailable
+    },
+  },
 }
 ```
 

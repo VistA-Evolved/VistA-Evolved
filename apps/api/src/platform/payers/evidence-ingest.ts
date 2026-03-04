@@ -13,20 +13,29 @@
  *   - Record audit events for ingest + promote
  */
 
-import { createHash, randomUUID } from "node:crypto";
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import { insertEvidence, findEvidenceById, updateEvidenceStatus, listEvidenceByStatus, type EvidenceRow } from "../pg/repo/evidence-repo.js";
-import { findPayerById, insertPayer, updatePayer, listPayers, getPayerCount, type PayerRow } from "../pg/repo/payer-repo.js";
-import { bulkSetCapabilities } from "../pg/repo/capability-repo.js";
+import { createHash } from 'node:crypto';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import {
+  insertEvidence,
+  findEvidenceById,
+  updateEvidenceStatus,
+} from '../pg/repo/evidence-repo.js';
+import {
+  findPayerById,
+  insertPayer,
+  updatePayer,
+  listPayers,
+  type PayerRow,
+} from '../pg/repo/payer-repo.js';
+import { bulkSetCapabilities } from '../pg/repo/capability-repo.js';
 
-const __dirname_resolved = typeof __dirname !== "undefined"
-  ? __dirname
-  : dirname(fileURLToPath(import.meta.url));
+const __dirname_resolved =
+  typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
 
-const REPO_ROOT = join(__dirname_resolved, "..", "..", "..", "..", "..");
-const EVIDENCE_DIR = join(REPO_ROOT, "data", "evidence");
+const REPO_ROOT = join(__dirname_resolved, '..', '..', '..', '..', '..');
+const EVIDENCE_DIR = join(REPO_ROOT, 'data', 'evidence');
 
 /* ══════════════════════════════════════════════════════════════ */
 /* Mode 1: Ingest from committed JSON snapshot                    */
@@ -76,15 +85,25 @@ export async function ingestJsonSnapshot(params: {
     if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
 
     const data = JSON.parse(raw);
-    const payerList: SnapshotPayer[] = Array.isArray(data.payers) ? data.payers :
-      Array.isArray(data) ? data : [];
+    const payerList: SnapshotPayer[] = Array.isArray(data.payers)
+      ? data.payers
+      : Array.isArray(data)
+        ? data
+        : [];
 
     if (payerList.length === 0) {
-      return { ok: false, snapshotId: "", payerCount: 0, sha256: "", diff: null, error: "No payers found in snapshot" };
+      return {
+        ok: false,
+        snapshotId: '',
+        payerCount: 0,
+        sha256: '',
+        diff: null,
+        error: 'No payers found in snapshot',
+      };
     }
 
     // Compute SHA-256 of the raw content
-    const sha256 = createHash("sha256").update(raw).digest("hex");
+    const sha256 = createHash('sha256').update(raw).digest('hex');
 
     // Store the snapshot file locally
     if (!existsSync(EVIDENCE_DIR)) {
@@ -92,16 +111,16 @@ export async function ingestJsonSnapshot(params: {
     }
     const snapshotFilename = `snapshot_${Date.now()}_${sha256.slice(0, 8)}.json`;
     const storedPath = join(EVIDENCE_DIR, snapshotFilename);
-    writeFileSync(storedPath, raw, "utf-8");
+    writeFileSync(storedPath, raw, 'utf-8');
 
     // Create evidence record
     const evidence = await insertEvidence({
-      sourceType: "json_snapshot",
+      sourceType: 'json_snapshot',
       sourceUrl: params.sourceUrl ?? undefined,
       asOfDate: params.asOfDate,
       sha256,
       storedPath: `data/evidence/${snapshotFilename}`,
-      parserVersion: "1.0.0",
+      parserVersion: '1.0.0',
       payerCount: payerList.length,
     });
 
@@ -118,9 +137,9 @@ export async function ingestJsonSnapshot(params: {
   } catch (err) {
     return {
       ok: false,
-      snapshotId: "",
+      snapshotId: '',
       payerCount: 0,
-      sha256: "",
+      sha256: '',
       diff: null,
       error: err instanceof Error ? err.message : String(err),
     };
@@ -154,17 +173,17 @@ export async function ingestPdfEvidence(params: {
       mkdirSync(EVIDENCE_DIR, { recursive: true });
     }
 
-    const sha256 = createHash("sha256").update(params.buffer).digest("hex");
+    const sha256 = createHash('sha256').update(params.buffer).digest('hex');
     const storedFilename = `evidence_${Date.now()}_${sha256.slice(0, 8)}_${params.filename}`;
     const storedPath = join(EVIDENCE_DIR, storedFilename);
     writeFileSync(storedPath, params.buffer);
 
     const evidence = await insertEvidence({
-      sourceType: "pdf_upload",
+      sourceType: 'pdf_upload',
       asOfDate: params.asOfDate,
       sha256,
       storedPath: `data/evidence/${storedFilename}`,
-      parserVersion: "1.0.0",
+      parserVersion: '1.0.0',
     });
 
     return {
@@ -172,14 +191,14 @@ export async function ingestPdfEvidence(params: {
       snapshotId: evidence.id,
       sha256,
       storedPath: `data/evidence/${storedFilename}`,
-      message: "PDF evidence stored. Parsing not implemented — evidence stored for manual review.",
+      message: 'PDF evidence stored. Parsing not implemented — evidence stored for manual review.',
     };
   } catch (err) {
     return {
       ok: false,
-      snapshotId: "",
-      sha256: "",
-      storedPath: "",
+      snapshotId: '',
+      sha256: '',
+      storedPath: '',
       message: err instanceof Error ? err.message : String(err),
     };
   }
@@ -211,9 +230,12 @@ export async function computeSnapshotDiff(snapshotPayers: SnapshotPayer[]): Prom
       const dbPayer = dbPayers.find((p: PayerRow) => p.id === sp.payerId);
       if (dbPayer) {
         const changes: string[] = [];
-        if (dbPayer.canonicalName !== sp.name) changes.push(`name: "${dbPayer.canonicalName}" → "${sp.name}"`);
-        if (dbPayer.integrationMode !== (sp.integrationMode ?? null)) changes.push(`integrationMode: "${dbPayer.integrationMode}" → "${sp.integrationMode}"`);
-        if (dbPayer.category !== (sp.category ?? null)) changes.push(`category: "${dbPayer.category}" → "${sp.category}"`);
+        if (dbPayer.canonicalName !== sp.name)
+          changes.push(`name: "${dbPayer.canonicalName}" → "${sp.name}"`);
+        if (dbPayer.integrationMode !== (sp.integrationMode ?? null))
+          changes.push(`integrationMode: "${dbPayer.integrationMode}" → "${sp.integrationMode}"`);
+        if (dbPayer.category !== (sp.category ?? null))
+          changes.push(`category: "${dbPayer.category}" → "${sp.category}"`);
         if (changes.length > 0) {
           modified.push({ payerId: sp.payerId, changes });
         } else {
@@ -254,46 +276,67 @@ export async function promoteSnapshot(snapshotId: string, actor?: string): Promi
   try {
     const evidence = await findEvidenceById(snapshotId);
     if (!evidence) {
-      return { ok: false, inserted: 0, updated: 0, skipped: 0, error: "Snapshot not found" };
+      return { ok: false, inserted: 0, updated: 0, skipped: 0, error: 'Snapshot not found' };
     }
-    if (evidence.status !== "pending") {
-      return { ok: false, inserted: 0, updated: 0, skipped: 0, error: `Snapshot status is '${evidence.status}', expected 'pending'` };
+    if (evidence.status !== 'pending') {
+      return {
+        ok: false,
+        inserted: 0,
+        updated: 0,
+        skipped: 0,
+        error: `Snapshot status is '${evidence.status}', expected 'pending'`,
+      };
     }
     if (!evidence.storedPath) {
-      return { ok: false, inserted: 0, updated: 0, skipped: 0, error: "No stored file path" };
+      return { ok: false, inserted: 0, updated: 0, skipped: 0, error: 'No stored file path' };
     }
 
     // Read the stored JSON
     const fullPath = join(REPO_ROOT, evidence.storedPath);
     if (!existsSync(fullPath)) {
-      return { ok: false, inserted: 0, updated: 0, skipped: 0, error: `Stored file not found: ${evidence.storedPath}` };
+      return {
+        ok: false,
+        inserted: 0,
+        updated: 0,
+        skipped: 0,
+        error: `Stored file not found: ${evidence.storedPath}`,
+      };
     }
 
-    let raw = readFileSync(fullPath, "utf-8");
+    let raw = readFileSync(fullPath, 'utf-8');
     if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
     const data = JSON.parse(raw);
-    const payerList: SnapshotPayer[] = Array.isArray(data.payers) ? data.payers :
-      Array.isArray(data) ? data : [];
+    const payerList: SnapshotPayer[] = Array.isArray(data.payers)
+      ? data.payers
+      : Array.isArray(data)
+        ? data
+        : [];
 
     let inserted = 0;
     let updated = 0;
     let skipped = 0;
-    const now = new Date().toISOString();
 
     for (const sp of payerList) {
-      if (!sp.payerId || !sp.name) { skipped++; continue; }
+      if (!sp.payerId || !sp.name) {
+        skipped++;
+        continue;
+      }
 
       const existing = await findPayerById(sp.payerId);
       if (!existing) {
-        await insertPayer({
-          id: sp.payerId,
-          canonicalName: sp.name,
-          aliases: JSON.stringify(sp.aliases ?? []),
-          countryCode: sp.country ?? "PH",
-          category: (sp.category ?? null) as string,
-          integrationMode: (sp.integrationMode ?? null) as string,
-          active: true,
-        }, `Promoted from evidence snapshot ${snapshotId}`, actor);
+        await insertPayer(
+          {
+            id: sp.payerId,
+            canonicalName: sp.name,
+            aliases: JSON.stringify(sp.aliases ?? []),
+            countryCode: sp.country ?? 'PH',
+            category: (sp.category ?? null) as string,
+            integrationMode: (sp.integrationMode ?? null) as string,
+            active: true,
+          },
+          `Promoted from evidence snapshot ${snapshotId}`,
+          actor
+        );
         inserted++;
       } else {
         // Only update if something changed
@@ -311,7 +354,12 @@ export async function promoteSnapshot(snapshotId: string, actor?: string): Promi
         }
 
         if (Object.keys(changes).length > 0) {
-          await updatePayer(existing.id, changes as any, `Promoted from evidence snapshot ${snapshotId}`, actor);
+          await updatePayer(
+            existing.id,
+            changes as any,
+            `Promoted from evidence snapshot ${snapshotId}`,
+            actor
+          );
           updated++;
         } else {
           skipped++;
@@ -319,11 +367,11 @@ export async function promoteSnapshot(snapshotId: string, actor?: string): Promi
       }
 
       // If snapshot includes capabilities, set them
-      if (sp.capabilities && typeof sp.capabilities === "object") {
+      if (sp.capabilities && typeof sp.capabilities === 'object') {
         const caps = Object.entries(sp.capabilities).map(([key, value]) => ({
           key,
           value: String(value),
-          confidence: "inferred" as const,
+          confidence: 'inferred' as const,
         }));
         if (caps.length > 0) {
           await bulkSetCapabilities(
@@ -331,19 +379,27 @@ export async function promoteSnapshot(snapshotId: string, actor?: string): Promi
             caps,
             snapshotId,
             `Promoted from evidence snapshot ${snapshotId}`,
-            actor,
+            actor
           );
         }
       }
     }
 
     // Mark snapshot as promoted
-    await updateEvidenceStatus(snapshotId, "promoted", `Promoted by ${actor ?? "system"}: ${inserted} inserted, ${updated} updated`, actor);
+    await updateEvidenceStatus(
+      snapshotId,
+      'promoted',
+      `Promoted by ${actor ?? 'system'}: ${inserted} inserted, ${updated} updated`,
+      actor
+    );
 
     return { ok: true, inserted, updated, skipped };
   } catch (err) {
     return {
-      ok: false, inserted: 0, updated: 0, skipped: 0,
+      ok: false,
+      inserted: 0,
+      updated: 0,
+      skipped: 0,
       error: err instanceof Error ? err.message : String(err),
     };
   }

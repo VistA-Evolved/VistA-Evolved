@@ -1,11 +1,13 @@
 # Phase 275 — Tenant & Feature Flag Control Plane Unification
 
 ## User Request
+
 Make tenancy real: persist TenantConfig to PostgreSQL, add in-memory read cache
 with TTL, unify the two co-existing feature flag systems (Phase 17A in-memory +
 Phase 109 DB-backed `tenant_feature_flag`).
 
 ## Inventory
+
 - `apps/api/src/config/tenant-config.ts` (283 lines) — pure in-memory Map store
 - `apps/api/src/platform/pg/pg-migrate.ts` — v26 latest, next = v27
 - `apps/api/src/platform/pg/pg-schema.ts` — Drizzle ORM schema
@@ -35,6 +37,7 @@ Phase 109 DB-backed `tenant_feature_flag`).
 4. All 5 consumers continue to work with zero changes (same export signatures)
 
 ## Verification Steps
+
 - `getTenant("default")` returns valid config from DB
 - `upsertTenant(...)` persists to PG and updates cache
 - Feature flags updated via `updateFeatureFlags()` persist across restart
@@ -42,6 +45,7 @@ Phase 109 DB-backed `tenant_feature_flag`).
 - Migration v27 applies cleanly
 
 ## Files Touched
+
 - `apps/api/src/platform/pg/pg-migrate.ts` — add v27 migration + RLS entry
 - `apps/api/src/platform/pg/repo/tenant-config-repo.ts` (NEW)
 - `apps/api/src/config/tenant-config.ts` — rewrite to DB-backed

@@ -1,6 +1,7 @@
 # Phase 383 — W21-P6 NOTES
 
 ## Design Decisions
+
 - SDC is the only Python component in the stack — isolated in a sidecar
   container to avoid mixing Python/Node runtimes.
 - network_mode: host required for WS-Discovery multicast (UDP 3702). Docker

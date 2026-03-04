@@ -3,6 +3,7 @@
 _To be completed after implementation verification._
 
 ## Gates
+
 - [ ] Phase manifest generated with correct phase count
 - [ ] CLI runs --suite fast without errors
 - [ ] CLI runs --suite rc without errors

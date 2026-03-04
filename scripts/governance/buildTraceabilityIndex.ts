@@ -17,13 +17,8 @@
  * Usage: npx tsx scripts/governance/buildTraceabilityIndex.ts
  */
 
-import {
-  readFileSync,
-  writeFileSync,
-  mkdirSync,
-  existsSync,
-} from "fs";
-import { join } from "path";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { join } from 'path';
 
 const ROOT = process.cwd();
 
@@ -58,24 +53,24 @@ interface TraceEntry {
   endpoint: string | null;
   rpcs: string[];
   rpcKind: string;
-  rpcRegistryMatch: "all" | "partial" | "none" | "n/a";
+  rpcRegistryMatch: 'all' | 'partial' | 'none' | 'n/a';
   missingFromRegistry: string[];
   issues: string[];
 }
 
 // Parse the action registry TS file statically
 function parseActionRegistry(): ActionEntry[] {
-  const filePath = join(ROOT, "apps", "web", "src", "actions", "actionRegistry.ts");
+  const filePath = join(ROOT, 'apps', 'web', 'src', 'actions', 'actionRegistry.ts');
   if (!existsSync(filePath)) {
-    console.error("ERROR: actionRegistry.ts not found");
+    console.error('ERROR: actionRegistry.ts not found');
     process.exit(1);
   }
 
-  const content = readFileSync(filePath, "utf-8");
+  const content = readFileSync(filePath, 'utf-8');
 
   // Extract each action object by finding actionId patterns
   const actions: ActionEntry[] = [];
-  const lines = content.split("\n");
+  const lines = content.split('\n');
 
   let currentAction: Partial<ActionEntry> | null = null;
   let braceDepth = 0;
@@ -85,7 +80,7 @@ function parseActionRegistry(): ActionEntry[] {
     const line = lines[i];
 
     // Detect start of ACTION_REGISTRY array
-    if (line.includes("ACTION_REGISTRY") && line.includes("[")) {
+    if (line.includes('ACTION_REGISTRY') && line.includes('[')) {
       inArray = true;
       continue;
     }
@@ -94,24 +89,24 @@ function parseActionRegistry(): ActionEntry[] {
 
     // Track brace depth
     for (const ch of line) {
-      if (ch === "{") {
+      if (ch === '{') {
         braceDepth++;
         if (braceDepth === 1) {
           currentAction = {};
         }
       }
-      if (ch === "}") {
+      if (ch === '}') {
         braceDepth--;
         if (braceDepth === 0 && currentAction && currentAction.actionId) {
           actions.push({
-            actionId: currentAction.actionId || "",
-            label: currentAction.label || "",
-            location: currentAction.location || "",
-            capability: currentAction.capability || "",
+            actionId: currentAction.actionId || '',
+            label: currentAction.label || '',
+            location: currentAction.location || '',
+            capability: currentAction.capability || '',
             rpcs: currentAction.rpcs || [],
-            status: currentAction.status || "unknown",
+            status: currentAction.status || 'unknown',
             endpoint: currentAction.endpoint,
-            rpcKind: currentAction.rpcKind || "read",
+            rpcKind: currentAction.rpcKind || 'read',
             pendingNote: currentAction.pendingNote,
           });
           currentAction = null;
@@ -150,9 +145,7 @@ function parseActionRegistry(): ActionEntry[] {
     const rpcsMatch = line.match(/rpcs:\s*\[([^\]]*)\]/);
     if (rpcsMatch) {
       const rpcsStr = rpcsMatch[1];
-      currentAction.rpcs = [...rpcsStr.matchAll(/"([^"]+)"/g)].map(
-        (m) => m[1],
-      );
+      currentAction.rpcs = [...rpcsStr.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
     }
   }
 
@@ -161,13 +154,13 @@ function parseActionRegistry(): ActionEntry[] {
 
 // Parse rpcRegistry.ts statically
 function parseRpcRegistry(): Set<string> {
-  const filePath = join(ROOT, "apps", "api", "src", "vista", "rpcRegistry.ts");
+  const filePath = join(ROOT, 'apps', 'api', 'src', 'vista', 'rpcRegistry.ts');
   if (!existsSync(filePath)) {
-    console.error("ERROR: rpcRegistry.ts not found");
+    console.error('ERROR: rpcRegistry.ts not found');
     process.exit(1);
   }
 
-  const content = readFileSync(filePath, "utf-8");
+  const content = readFileSync(filePath, 'utf-8');
   const names = new Set<string>();
 
   // Captures both RPC_REGISTRY and RPC_EXCEPTIONS entries (both use name: "...")
@@ -202,14 +195,14 @@ for (const action of actions) {
 
   // Check endpoint
   if (!action.endpoint && !NO_ENDPOINT_ALLOWLIST.includes(action.actionId)) {
-    issues.push("no-endpoint");
+    issues.push('no-endpoint');
     // Missing endpoints are tracked but not hard errors --
     // they represent pre-existing data quality gaps in the registry.
     // The index surfaces them; fixing them is separate backlog work.
   }
 
   // Check RPCs against registry
-  let rpcMatch: TraceEntry["rpcRegistryMatch"] = "n/a";
+  let rpcMatch: TraceEntry['rpcRegistryMatch'] = 'n/a';
   if (action.rpcs.length > 0) {
     let allFound = true;
     for (const rpc of action.rpcs) {
@@ -218,14 +211,10 @@ for (const action of actions) {
         allFound = false;
       }
     }
-    rpcMatch = allFound
-      ? "all"
-      : missingRpcs.length === action.rpcs.length
-        ? "none"
-        : "partial";
+    rpcMatch = allFound ? 'all' : missingRpcs.length === action.rpcs.length ? 'none' : 'partial';
 
-    if (missingRpcs.length > 0 && action.status === "wired") {
-      issues.push(`rpcs-missing-from-registry: ${missingRpcs.join(", ")}`);
+    if (missingRpcs.length > 0 && action.status === 'wired') {
+      issues.push(`rpcs-missing-from-registry: ${missingRpcs.join(', ')}`);
       hardErrors++;
     }
   }
@@ -250,12 +239,12 @@ for (const action of actions) {
 
 const summary = {
   totalActions: traceEntries.length,
-  wired: traceEntries.filter((e) => e.status === "wired").length,
-  pending: traceEntries.filter((e) => e.status === "integration-pending").length,
-  stub: traceEntries.filter((e) => e.status === "stub").length,
+  wired: traceEntries.filter((e) => e.status === 'wired').length,
+  pending: traceEntries.filter((e) => e.status === 'integration-pending').length,
+  stub: traceEntries.filter((e) => e.status === 'stub').length,
   withEndpoint: traceEntries.filter((e) => e.endpoint).length,
   withoutEndpoint: traceEntries.filter((e) => !e.endpoint).length,
-  allRpcsInRegistry: traceEntries.filter((e) => e.rpcRegistryMatch === "all").length,
+  allRpcsInRegistry: traceEntries.filter((e) => e.rpcRegistryMatch === 'all').length,
   missingRpcs: traceEntries.filter((e) => e.missingFromRegistry.length > 0).length,
   hardErrors,
   issueCount: traceEntries.filter((e) => e.issues.length > 0).length,
@@ -265,7 +254,7 @@ const summary = {
 /* Output                                                              */
 /* ------------------------------------------------------------------ */
 
-console.log("\n=== Traceability Index (Phase 73) ===\n");
+console.log('\n=== Traceability Index (Phase 73) ===\n');
 console.log(`  Total actions:      ${summary.totalActions}`);
 console.log(`  Wired:              ${summary.wired}`);
 console.log(`  Integration-pending: ${summary.pending}`);
@@ -284,14 +273,14 @@ if (summary.hardErrors > 0) {
   }
 }
 
-const artifactDir = join(ROOT, "artifacts", "governance");
+const artifactDir = join(ROOT, 'artifacts', 'governance');
 mkdirSync(artifactDir, { recursive: true });
 writeFileSync(
-  join(artifactDir, "traceability-index.json"),
+  join(artifactDir, 'traceability-index.json'),
   JSON.stringify(
     {
       _meta: {
-        gate: "traceability-index",
+        gate: 'traceability-index',
         phase: 73,
         timestamp: new Date().toISOString(),
       },
@@ -299,8 +288,8 @@ writeFileSync(
       entries: traceEntries,
     },
     null,
-    2,
-  ),
+    2
+  )
 );
 
 console.log(`\n  Output: artifacts/governance/traceability-index.json`);

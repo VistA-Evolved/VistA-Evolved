@@ -29,7 +29,12 @@ export class PhilHealthConnector implements RcmConnector {
   readonly name = 'PhilHealth eClaims 3.0 (PHIC)';
   readonly supportedModes = ['government_portal'];
   readonly supportedTransactions: X12TransactionSet[] = [
-    '837P', '837I', '270', '271', '276', '277',
+    '837P',
+    '837I',
+    '270',
+    '271',
+    '276',
+    '277',
   ];
 
   private config: {
@@ -42,17 +47,21 @@ export class PhilHealthConnector implements RcmConnector {
     testMode: boolean;
   } = { testMode: true };
 
-  private submissions: Map<string, {
-    id: string;
-    claimRefNo?: string;
-    status: 'queued' | 'submitted' | 'returned' | 'approved' | 'denied';
-    submittedAt: string;
-    payload: string;
-  }> = new Map();
+  private submissions: Map<
+    string,
+    {
+      id: string;
+      claimRefNo?: string;
+      status: 'queued' | 'submitted' | 'returned' | 'approved' | 'denied';
+      submittedAt: string;
+      payload: string;
+    }
+  > = new Map();
 
   async initialize(): Promise<void> {
     this.config = {
-      apiEndpoint: process.env.PHILHEALTH_API_ENDPOINT ?? 'https://eclaims3.philhealth.gov.ph/api/v3',
+      apiEndpoint:
+        process.env.PHILHEALTH_API_ENDPOINT ?? 'https://eclaims3.philhealth.gov.ph/api/v3',
       facilityCode: process.env.PHILHEALTH_FACILITY_CODE,
       apiToken: process.env.PHILHEALTH_API_TOKEN,
       certPath: process.env.PHILHEALTH_CERT_PATH,
@@ -65,7 +74,7 @@ export class PhilHealthConnector implements RcmConnector {
   async submit(
     transactionSet: X12TransactionSet,
     payload: string,
-    metadata: Record<string, string>,
+    metadata: Record<string, string>
   ): Promise<ConnectorResult> {
     const txId = `ph-${Date.now()}-${randomBytes(4).toString('hex')}`;
 
@@ -88,11 +97,14 @@ export class PhilHealthConnector implements RcmConnector {
       return {
         success: false,
         transactionId: txId,
-        errors: [{
-          code: 'PH-SOA-FORMAT-INVALID',
-          description: 'Scanned PDF SOA rejected. eClaims 3.0 requires electronic SOA. Use soa-generator.ts.',
-          severity: 'error',
-        }],
+        errors: [
+          {
+            code: 'PH-SOA-FORMAT-INVALID',
+            description:
+              'Scanned PDF SOA rejected. eClaims 3.0 requires electronic SOA. Use soa-generator.ts.',
+            severity: 'error',
+          },
+        ],
       };
     }
 
@@ -107,11 +119,13 @@ export class PhilHealthConnector implements RcmConnector {
       return {
         success: false,
         transactionId: txId,
-        errors: [{
-          code: 'PH-NO-FACILITY',
-          description: 'PhilHealth facility code not configured (PHILHEALTH_FACILITY_CODE)',
-          severity: 'error',
-        }],
+        errors: [
+          {
+            code: 'PH-NO-FACILITY',
+            description: 'PhilHealth facility code not configured (PHILHEALTH_FACILITY_CODE)',
+            severity: 'error',
+          },
+        ],
       };
     }
 
@@ -134,7 +148,9 @@ export class PhilHealthConnector implements RcmConnector {
     if (!entry) {
       return {
         success: false,
-        errors: [{ code: 'NOT_FOUND', description: 'PhilHealth submission not found', severity: 'error' }],
+        errors: [
+          { code: 'NOT_FOUND', description: 'PhilHealth submission not found', severity: 'error' },
+        ],
       };
     }
 
@@ -151,11 +167,13 @@ export class PhilHealthConnector implements RcmConnector {
     };
   }
 
-  async fetchResponses(since?: string): Promise<Array<{
-    transactionSet: X12TransactionSet;
-    payload: string;
-    receivedAt: string;
-  }>> {
+  async fetchResponses(since?: string): Promise<
+    Array<{
+      transactionSet: X12TransactionSet;
+      payload: string;
+      receivedAt: string;
+    }>
+  > {
     // In production: poll PhilHealth for remittance/payment notifications
     // PhilHealth uses batch payment with separate remittance advice
     return [];
@@ -180,9 +198,10 @@ export class PhilHealthConnector implements RcmConnector {
 
     return {
       healthy: hasConfig && hasCert,
-      details: hasConfig && hasCert
-        ? `PhilHealth eClaims 3.0 configured (facility: ${this.config.facilityCode}, cert: present)`
-        : `PhilHealth eClaims 3.0: ${issues.join(', ')}`,
+      details:
+        hasConfig && hasCert
+          ? `PhilHealth eClaims 3.0 configured (facility: ${this.config.facilityCode}, cert: present)`
+          : `PhilHealth eClaims 3.0: ${issues.join(', ')}`,
     };
   }
 

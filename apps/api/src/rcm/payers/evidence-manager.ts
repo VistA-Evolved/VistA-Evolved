@@ -12,8 +12,8 @@
  * File-backed persistence via payer-persistence integration.
  */
 
-import { createHash } from "node:crypto";
-import type { HmoEvidence, HmoCapabilities, HmoCapabilityStatus } from "./ph-hmo-registry.js";
+import { createHash } from 'node:crypto';
+import type { HmoEvidence, HmoCapabilities, HmoCapabilityStatus } from './ph-hmo-registry.js';
 
 /* ── Types ──────────────────────────────────────────────────── */
 
@@ -21,7 +21,7 @@ export interface EvidenceValidation {
   payerId: string;
   totalEvidence: number;
   byKind: Record<string, number>;
-  coverageScore: number;          // 0-100%: how many capabilities have backing evidence
+  coverageScore: number; // 0-100%: how many capabilities have backing evidence
   capabilitiesWithEvidence: string[];
   capabilitiesWithoutEvidence: string[];
   warnings: string[];
@@ -41,13 +41,13 @@ export interface EvidenceHash {
  * matching kind exists for the payer.
  */
 const CAPABILITY_EVIDENCE_MAP: Record<keyof HmoCapabilities, string[]> = {
-  loa: ["loa_instructions", "provider_portal", "website"],
-  eligibility: ["provider_portal", "api_docs", "website"],
-  claimsSubmission: ["provider_portal", "api_docs", "loa_instructions"],
-  claimStatus: ["provider_portal", "api_docs", "website"],
-  remittance: ["provider_portal", "api_docs", "website"],
-  memberPortal: ["website"],
-  providerPortal: ["provider_portal", "website"],
+  loa: ['loa_instructions', 'provider_portal', 'website'],
+  eligibility: ['provider_portal', 'api_docs', 'website'],
+  claimsSubmission: ['provider_portal', 'api_docs', 'loa_instructions'],
+  claimStatus: ['provider_portal', 'api_docs', 'website'],
+  remittance: ['provider_portal', 'api_docs', 'website'],
+  memberPortal: ['website'],
+  providerPortal: ['provider_portal', 'website'],
 };
 
 /* ── Hashing ────────────────────────────────────────────────── */
@@ -61,7 +61,7 @@ export function hashEvidence(evidence: HmoEvidence): EvidenceHash {
   });
   return {
     url: evidence.url,
-    hash: createHash("sha256").update(payload).digest("hex"),
+    hash: createHash('sha256').update(payload).digest('hex'),
     computedAt: new Date().toISOString(),
   };
 }
@@ -75,14 +75,14 @@ export function hashEvidenceList(evidenceList: HmoEvidence[]): EvidenceHash[] {
 export function validatePayerEvidence(
   payerId: string,
   capabilities: HmoCapabilities,
-  evidence: HmoEvidence[],
+  evidence: HmoEvidence[]
 ): EvidenceValidation {
   const byKind: Record<string, number> = {};
   for (const e of evidence) {
     byKind[e.kind] = (byKind[e.kind] ?? 0) + 1;
   }
 
-  const evidenceKinds: Set<string> = new Set(evidence.map(e => e.kind));
+  const evidenceKinds: Set<string> = new Set(evidence.map((e) => e.kind));
   const capabilitiesWithEvidence: string[] = [];
   const capabilitiesWithoutEvidence: string[] = [];
   const warnings: string[] = [];
@@ -91,27 +91,26 @@ export function validatePayerEvidence(
   for (const capKey of capKeys) {
     const status: HmoCapabilityStatus = capabilities[capKey];
     // Skip unavailable capabilities — no evidence needed
-    if (status === "unavailable") {
+    if (status === 'unavailable') {
       continue;
     }
 
     const requiredKinds = CAPABILITY_EVIDENCE_MAP[capKey];
-    const hasEvidence = requiredKinds.some(k => evidenceKinds.has(k));
+    const hasEvidence = requiredKinds.some((k) => evidenceKinds.has(k));
 
     if (hasEvidence) {
       capabilitiesWithEvidence.push(capKey);
     } else {
       capabilitiesWithoutEvidence.push(capKey);
-      if (status !== "unknown_publicly") {
+      if (status !== 'unknown_publicly') {
         warnings.push(`${capKey} is "${status}" but has no backing evidence`);
       }
     }
   }
 
   const totalCheckable = capabilitiesWithEvidence.length + capabilitiesWithoutEvidence.length;
-  const coverageScore = totalCheckable > 0
-    ? Math.round((capabilitiesWithEvidence.length / totalCheckable) * 100)
-    : 0;
+  const coverageScore =
+    totalCheckable > 0 ? Math.round((capabilitiesWithEvidence.length / totalCheckable) * 100) : 0;
 
   return {
     payerId,
@@ -131,18 +130,21 @@ export function validatePayerEvidence(
  * Returns true if a duplicate exists.
  */
 export function isDuplicateEvidence(existing: HmoEvidence[], newItem: HmoEvidence): boolean {
-  return existing.some(e => e.url === newItem.url);
+  return existing.some((e) => e.url === newItem.url);
 }
 
 /**
  * Merge new evidence into existing list, skipping duplicates by URL.
  */
-export function mergeEvidence(existing: HmoEvidence[], newItems: HmoEvidence[]): {
+export function mergeEvidence(
+  existing: HmoEvidence[],
+  newItems: HmoEvidence[]
+): {
   merged: HmoEvidence[];
   added: number;
   skipped: number;
 } {
-  const urls = new Set(existing.map(e => e.url));
+  const urls = new Set(existing.map((e) => e.url));
   const merged = [...existing];
   let added = 0;
   let skipped = 0;
@@ -166,7 +168,7 @@ export function mergeEvidence(existing: HmoEvidence[], newItems: HmoEvidence[]):
  * Compute aggregate evidence score across all payers.
  */
 export function computeRegistryEvidenceScore(
-  payers: Array<{ payerId: string; capabilities: HmoCapabilities; evidence: HmoEvidence[] }>,
+  payers: Array<{ payerId: string; capabilities: HmoCapabilities; evidence: HmoEvidence[] }>
 ): {
   totalPayers: number;
   averageCoverage: number;

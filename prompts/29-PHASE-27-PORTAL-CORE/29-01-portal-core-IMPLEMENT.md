@@ -1,10 +1,12 @@
 # Phase 27 — Portal Core: VistA-First Record + Exports + Proxy + Messaging + Appointments + Sharing — IMPLEMENT
 
 ## User Request
+
 Build REAL portal functionality using VistA-first data sources. No fake clinical data.
 If a VistA RPC is missing, show "Integration Pending" and name the exact target RPC/file.
 
 ## Modules
+
 A) **Health Record** — Wire portal proxy routes to real VistA RPCs (allergies, problems, vitals, meds, labs, demographics). Add PDF export per section + full record bundle.
 B) **Proxy Access + Sensitivity** — Authorized representative/proxy, protected minor rules, sensitive content policy engine.
 C) **Secure Messaging** — Threaded inbox, compose, drafts, sent. Subject categories. Attachments. SLA disclaimer. In-memory store with VistA integration mapping.
@@ -13,6 +15,7 @@ E) **Sharing** — Share Link + Access Code, time-limited, audited, revocable.
 F) **Settings** — Language, notification prefs, MFA stub.
 
 ## Implementation Steps
+
 1. Create prompt file (this file)
 2. API: Wire portal health proxy routes to real VistA RPCs
 3. API: Create PDF export service + endpoints
@@ -30,6 +33,7 @@ F) **Settings** — Language, notification prefs, MFA stub.
 15. Build + verify + commit
 
 ## Files Touched
+
 - apps/api/src/routes/portal-auth.ts (wire health proxy to real RPCs)
 - apps/api/src/routes/portal-core.ts (NEW: messaging, appointments, sharing, settings, PDF)
 - apps/api/src/services/portal-audit.ts (extend audit actions)
@@ -41,15 +45,16 @@ F) **Settings** — Language, notification prefs, MFA stub.
 - apps/api/src/services/portal-settings.ts (NEW)
 - apps/api/src/index.ts (register new routes)
 - apps/portal/src/lib/api.ts (add new fetch functions)
-- apps/portal/src/app/dashboard/* (update all pages)
-- apps/portal/src/app/dashboard/messages/* (NEW)
-- apps/portal/src/app/share/* (NEW: external viewer)
+- apps/portal/src/app/dashboard/\* (update all pages)
+- apps/portal/src/app/dashboard/messages/\* (NEW)
+- apps/portal/src/app/share/\* (NEW: external viewer)
 - docs/contracts/portal/portal-contract-v1.yaml
 - docs/contracts/portal/portal-capability-matrix.md
 - docs/contracts/portal/known-gaps.md (NEW)
 - docs/runbooks/portal-core.md (NEW)
 
 ## Verification
+
 - Portal build clean
 - API tsc --noEmit clean
 - License guard passes

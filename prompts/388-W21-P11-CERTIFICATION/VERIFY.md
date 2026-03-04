@@ -1,12 +1,15 @@
 # Phase 388 — W21-P11 Certification Runner — VERIFY
 
 ## Verification Method
+
 Self-verifying: the certification runner IS the verification.
 
 ## Gate Count
+
 93 gates across 12 sections.
 
 ## Result
+
 ```
 === CERTIFICATION SUMMARY ===
   Total gates: 93
@@ -17,6 +20,7 @@ Self-verifying: the certification runner IS the verification.
 ```
 
 ## Command
+
 ```powershell
 .\scripts\verify-wave21-devices.ps1 -SkipDocker
 ```

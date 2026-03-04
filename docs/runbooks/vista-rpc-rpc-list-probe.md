@@ -34,6 +34,7 @@ registered in a specific VistA instance. This is critical for:
 ```
 
 This script:
+
 1. Copies `ZVERPC.m` into the WorldVistA Docker container
 2. Runs `INSTALL^ZVERPC` to register the RPC in File 8994
 3. Adds it to the `OR CPRS GUI CHART` context
@@ -53,6 +54,7 @@ docker exec -it wv su - wv -c "mumps -r CHECK^ZVERPC"
 ```
 
 Expected output:
+
 ```
 VE LIST RPCS => REGISTERED (IEN=XXXX)
 ```
@@ -66,6 +68,7 @@ GET /vista/rpc-catalog
 **Auth**: Session required (automatic via `/vista/*` catch-all rule)
 
 **Response** (success):
+
 ```json
 {
   "ok": true,
@@ -79,6 +82,7 @@ GET /vista/rpc-catalog
 ```
 
 **Response** (RPC not installed):
+
 ```json
 {
   "ok": true,
@@ -104,9 +108,9 @@ requests within the TTL window return the cached result.
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| `count: 0` with hint | RPC not installed | Run `install-rpc-catalog.ps1` |
-| `error: "Application"` | RPC not in context | `ADDCTX^ZVERPC` adds it |
-| Empty catalog after install | Container restarted with `-v` | Re-run installer |
-| Timeout | VistA container not running | `docker compose up -d` in `services/vista/` |
+| Symptom                     | Cause                         | Fix                                         |
+| --------------------------- | ----------------------------- | ------------------------------------------- |
+| `count: 0` with hint        | RPC not installed             | Run `install-rpc-catalog.ps1`               |
+| `error: "Application"`      | RPC not in context            | `ADDCTX^ZVERPC` adds it                     |
+| Empty catalog after install | Container restarted with `-v` | Re-run installer                            |
+| Timeout                     | VistA container not running   | `docker compose up -d` in `services/vista/` |

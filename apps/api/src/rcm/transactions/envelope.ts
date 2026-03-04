@@ -44,29 +44,29 @@ export interface EnvelopeOptions {
 const GS_FUNCTIONAL_CODES: Partial<Record<X12TransactionSet, string>> = {
   '837P': 'HC',
   '837I': 'HC',
-  '835':  'HP',
-  '270':  'HS',
-  '271':  'HB',
-  '276':  'HN',
-  '277':  'HN',
-  '278':  'HI',
-  '275':  'HI',
-  '999':  'FA',
-  '997':  'FA',
-  'TA1':  'FA',
+  '835': 'HP',
+  '270': 'HS',
+  '271': 'HB',
+  '276': 'HN',
+  '277': 'HN',
+  '278': 'HI',
+  '275': 'HI',
+  '999': 'FA',
+  '997': 'FA',
+  TA1: 'FA',
 };
 
 /** GS08 version/release/industry identifier */
 const GS_VERSION_CODES: Partial<Record<X12TransactionSet, string>> = {
   '837P': '005010X222A1',
   '837I': '005010X223A3',
-  '835':  '005010X221A1',
-  '270':  '005010X279A1',
-  '271':  '005010X279A1',
-  '276':  '005010X212',
-  '277':  '005010X212',
-  '278':  '005010X217',
-  '999':  '005010X231A1',
+  '835': '005010X221A1',
+  '270': '005010X279A1',
+  '271': '005010X279A1',
+  '276': '005010X212',
+  '277': '005010X212',
+  '278': '005010X217',
+  '999': '005010X231A1',
 };
 
 export function buildEnvelope(options: EnvelopeOptions): TransactionEnvelope {
@@ -148,7 +148,10 @@ const transactionStore = new Map<string, TransactionRecord>();
 const correlationIndex = new Map<string, string[]>();
 const sourceIndex = new Map<string, string[]>();
 
-export function storeTransaction(envelope: TransactionEnvelope, x12Payload?: string): TransactionRecord {
+export function storeTransaction(
+  envelope: TransactionEnvelope,
+  x12Payload?: string
+): TransactionRecord {
   const now = new Date().toISOString();
   const record: TransactionRecord = {
     id: envelope.transactionId,
@@ -163,7 +166,20 @@ export function storeTransaction(envelope: TransactionEnvelope, x12Payload?: str
   transactionStore.set(record.id, record);
 
   // Phase 146: Write-through to PG
-  txnDbRepo?.upsert({ id: record.id, tenantId: 'default', sourceId: envelope.sourceId || '', sourceType: envelope.sourceType || '', controlNumber: envelope.controlNumber || '', envelopeType: 'outbound', status: 'created', correlationId: envelope.correlationId, createdAt: now, updatedAt: now }).catch(() => {});
+  txnDbRepo
+    ?.upsert({
+      id: record.id,
+      tenantId: 'default',
+      sourceId: envelope.sourceId || '',
+      sourceType: envelope.sourceType || '',
+      controlNumber: envelope.controlNumber || '',
+      envelopeType: 'outbound',
+      status: 'created',
+      correlationId: envelope.correlationId,
+      createdAt: now,
+      updatedAt: now,
+    })
+    .catch(() => {});
 
   // Index by correlation
   const corr = correlationIndex.get(envelope.correlationId) ?? [];
@@ -186,18 +202,21 @@ export function getTransaction(id: string): TransactionRecord | undefined {
 
 export function getTransactionsByCorrelation(correlationId: string): TransactionRecord[] {
   const ids = correlationIndex.get(correlationId) ?? [];
-  return ids.map(id => transactionStore.get(id)!).filter(Boolean);
+  return ids.map((id) => transactionStore.get(id)!).filter(Boolean);
 }
 
 export function getTransactionsBySource(sourceId: string): TransactionRecord[] {
   const ids = sourceIndex.get(sourceId) ?? [];
-  return ids.map(id => transactionStore.get(id)!).filter(Boolean);
+  return ids.map((id) => transactionStore.get(id)!).filter(Boolean);
 }
 
 export function transitionTransaction(
   id: string,
   newState: TransactionState,
-  detail?: { responsePayload?: string; error?: { code: string; description: string; severity: string } },
+  detail?: {
+    responsePayload?: string;
+    error?: { code: string; description: string; severity: string };
+  }
 ): TransactionRecord | null {
   const record = transactionStore.get(id);
   if (!record) return null;
@@ -222,7 +241,9 @@ export function transitionTransaction(
   transactionStore.set(id, record);
 
   // Phase 146: Write-through transaction transition
-  txnDbRepo?.upsert({ id, tenantId: 'default', status: record.state, updatedAt: record.updatedAt }).catch(() => {});
+  txnDbRepo
+    ?.upsert({ id, tenantId: 'default', status: record.state, updatedAt: record.updatedAt })
+    .catch(() => {});
 
   return record;
 }
@@ -235,9 +256,10 @@ export function listTransactions(filters?: {
 }): TransactionRecord[] {
   let results = Array.from(transactionStore.values());
 
-  if (filters?.state) results = results.filter(r => r.state === filters.state);
-  if (filters?.transactionSet) results = results.filter(r => r.envelope.transactionSet === filters.transactionSet);
-  if (filters?.sourceId) results = results.filter(r => r.envelope.sourceId === filters.sourceId);
+  if (filters?.state) results = results.filter((r) => r.state === filters.state);
+  if (filters?.transactionSet)
+    results = results.filter((r) => r.envelope.transactionSet === filters.transactionSet);
+  if (filters?.sourceId) results = results.filter((r) => r.envelope.sourceId === filters.sourceId);
 
   results.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   if (filters?.limit) results = results.slice(0, filters.limit);
@@ -259,7 +281,8 @@ export function getTransactionStats(): {
 
   for (const r of transactionStore.values()) {
     byState[r.state] = (byState[r.state] ?? 0) + 1;
-    byTransactionSet[r.envelope.transactionSet] = (byTransactionSet[r.envelope.transactionSet] ?? 0) + 1;
+    byTransactionSet[r.envelope.transactionSet] =
+      (byTransactionSet[r.envelope.transactionSet] ?? 0) + 1;
     if (r.state === 'dlq') dlqCount++;
     if (r.state === 'failed') failedCount++;
   }

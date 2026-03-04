@@ -8,12 +8,12 @@
 
 Set via `PLATFORM_RUNTIME_MODE` environment variable:
 
-| Mode | PostgreSQL | OIDC | SQLite | JSON Stores | Use Case |
-|------|-----------|------|--------|-------------|----------|
-| `dev` | Optional | Optional | Allowed | Allowed | Local development |
-| `test` | Optional | Optional | Allowed | Allowed | CI/CD testing |
-| `rc` | **Required** | **Required** | Blocked | Blocked | Release candidate / staging |
-| `prod` | **Required** | **Required** | Blocked | Blocked | Production |
+| Mode   | PostgreSQL   | OIDC         | SQLite  | JSON Stores | Use Case                    |
+| ------ | ------------ | ------------ | ------- | ----------- | --------------------------- |
+| `dev`  | Optional     | Optional     | Allowed | Allowed     | Local development           |
+| `test` | Optional     | Optional     | Allowed | Allowed     | CI/CD testing               |
+| `rc`   | **Required** | **Required** | Blocked | Blocked     | Release candidate / staging |
+| `prod` | **Required** | **Required** | Blocked | Blocked     | Production                  |
 
 ### Switching to Pilot Mode
 
@@ -34,15 +34,15 @@ OIDC_CLIENT_ID=vista-evolved-api
 
 Set via `DEPLOY_SKU` environment variable:
 
-| SKU | Active Modules | Use Case |
-|-----|---------------|----------|
-| `FULL_SUITE` | All 12 modules | Full deployment |
-| `CLINICIAN_ONLY` | kernel, clinical, scheduling, imaging, ai | Clinician workstation |
-| `PORTAL_ONLY` | kernel, portal, intake, telehealth | Patient portal |
-| `TELEHEALTH_ONLY` | kernel, telehealth | Telehealth-only site |
-| `RCM_ONLY` | kernel, clinical, rcm | Revenue cycle only |
-| `IMAGING_ONLY` | kernel, imaging | Imaging department |
-| `INTEROP_ONLY` | kernel, interop | HL7/FHIR gateway |
+| SKU               | Active Modules                            | Use Case              |
+| ----------------- | ----------------------------------------- | --------------------- |
+| `FULL_SUITE`      | All 12 modules                            | Full deployment       |
+| `CLINICIAN_ONLY`  | kernel, clinical, scheduling, imaging, ai | Clinician workstation |
+| `PORTAL_ONLY`     | kernel, portal, intake, telehealth        | Patient portal        |
+| `TELEHEALTH_ONLY` | kernel, telehealth                        | Telehealth-only site  |
+| `RCM_ONLY`        | kernel, clinical, rcm                     | Revenue cycle only    |
+| `IMAGING_ONLY`    | kernel, imaging                           | Imaging department    |
+| `INTEROP_ONLY`    | kernel, interop                           | HL7/FHIR gateway      |
 
 ### Pilot Hospital Recommendation
 
@@ -103,15 +103,15 @@ curl -X POST http://API_URL/admin/modules/feature-flags \
 
 ### Pre-Defined Feature Flags
 
-| Flag Key | Module | Default | Description |
-|----------|--------|---------|-------------|
-| `enable_ai_triage` | ai | false | AI-powered intake triage |
-| `enable_telehealth_recording` | telehealth | false | Call recording (requires consent workflow) |
-| `enable_edi_submission` | rcm | false | Live EDI claim submission |
-| `enable_philhealth_api` | rcm | false | PhilHealth eClaims API |
-| `enable_break_glass` | imaging | true | Emergency imaging access |
-| `enable_audit_shipping` | kernel | false | S3/MinIO audit offload |
-| `enable_ohif_viewer` | imaging | false | Embedded OHIF DICOM viewer |
+| Flag Key                      | Module     | Default | Description                                |
+| ----------------------------- | ---------- | ------- | ------------------------------------------ |
+| `enable_ai_triage`            | ai         | false   | AI-powered intake triage                   |
+| `enable_telehealth_recording` | telehealth | false   | Call recording (requires consent workflow) |
+| `enable_edi_submission`       | rcm        | false   | Live EDI claim submission                  |
+| `enable_philhealth_api`       | rcm        | false   | PhilHealth eClaims API                     |
+| `enable_break_glass`          | imaging    | true    | Emergency imaging access                   |
+| `enable_audit_shipping`       | kernel     | false   | S3/MinIO audit offload                     |
+| `enable_ohif_viewer`          | imaging    | false   | Embedded OHIF DICOM viewer                 |
 
 ---
 
@@ -177,22 +177,26 @@ Expected output for `CLINICIAN_ONLY` pilot:
 ## Rollout Strategy
 
 ### Phase 1: Shadow Mode (Week 1)
+
 - Deploy alongside existing system
 - Users have both systems available
 - Clinical data reads from VistA (shared source of truth)
 - No writes through VistA-Evolved yet
 
 ### Phase 2: Parallel Run (Week 2-3)
+
 - Selected users start writing through VistA-Evolved
 - Each write verified against VistA (truth gate pattern)
 - Both systems show same data
 
 ### Phase 3: Primary (Week 4+)
+
 - VistA-Evolved becomes primary for enabled modules
 - Legacy system available as fallback
 - Monitor adoption metrics
 
 ### Rollback at Any Phase
+
 - Set `DEPLOY_SKU=CLINICIAN_ONLY` with all stubs
 - Users fall back to legacy system
 - No data loss (VistA remains source of truth)

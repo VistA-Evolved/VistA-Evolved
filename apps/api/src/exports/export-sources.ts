@@ -7,19 +7,19 @@
  * queries this registry to resolve what data to export.
  */
 
-import { log } from "../lib/logger.js";
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
 export type ExportSourceCategory =
-  | "analytics"
-  | "audit"
-  | "clinical"
-  | "rcm"
-  | "platform"
-  | "imaging";
+  | 'analytics'
+  | 'audit'
+  | 'clinical'
+  | 'rcm'
+  | 'platform'
+  | 'imaging';
 
 export interface ExportSourceDescriptor {
   /** Unique source identifier */
@@ -51,7 +51,7 @@ const sourceRegistry = new Map<string, ExportSourceDescriptor>();
  */
 export function registerSource(source: ExportSourceDescriptor): void {
   sourceRegistry.set(source.id, source);
-  log.debug("Export source registered", { sourceId: source.id, category: source.category });
+  log.debug('Export source registered', { sourceId: source.id, category: source.category });
 }
 
 /**
@@ -102,15 +102,15 @@ export function getSourcesSummary(): Array<{
 
 // Platform audit source
 registerSource({
-  id: "platform-audit",
-  label: "Platform Audit Trail",
-  category: "audit",
-  description: "Immutable audit events from the platform audit trail",
+  id: 'platform-audit',
+  label: 'Platform Audit Trail',
+  category: 'audit',
+  description: 'Immutable audit events from the platform audit trail',
   estimateRows: () => 0, // lazy — actual count depends on runtime
   fetchRows: async (filters) => {
     // Delegate to audit query — import lazily to avoid circular deps
     try {
-      const { queryAuditEvents } = await import("../lib/audit.js");
+      const { queryAuditEvents } = await import('../lib/audit.js');
       const events = queryAuditEvents({
         actionPrefix: filters?.actionPrefix as string | undefined,
         limit: Math.min(Number(filters?.limit) || 10000, 50000),
@@ -119,7 +119,7 @@ registerSource({
         id: e.id,
         action: e.action,
         outcome: e.outcome,
-        actorDuz: e.actor?.duz ?? "",
+        actorDuz: e.actor?.duz ?? '',
         timestamp: e.timestamp,
         detail: JSON.stringify(e.detail ?? {}),
       }));
@@ -133,14 +133,14 @@ registerSource({
 
 // Analytics events source
 registerSource({
-  id: "analytics-events",
-  label: "Analytics Events",
-  category: "analytics",
-  description: "Raw analytics events (de-identified, no PHI)",
+  id: 'analytics-events',
+  label: 'Analytics Events',
+  category: 'analytics',
+  description: 'Raw analytics events (de-identified, no PHI)',
   estimateRows: () => 0,
   fetchRows: async (filters) => {
     try {
-      const { queryAnalyticsEvents } = await import("../services/analytics-store.js");
+      const { queryAnalyticsEvents } = await import('../services/analytics-store.js');
       const { events } = queryAnalyticsEvents({
         category: filters?.category as any,
         metric: filters?.metric as string | undefined,
@@ -164,16 +164,16 @@ registerSource({
 
 // Analytics aggregated metrics source
 registerSource({
-  id: "analytics-aggregated",
-  label: "Analytics Aggregated Metrics",
-  category: "analytics",
-  description: "Hourly/daily aggregated metric buckets",
+  id: 'analytics-aggregated',
+  label: 'Analytics Aggregated Metrics',
+  category: 'analytics',
+  description: 'Hourly/daily aggregated metric buckets',
   estimateRows: () => 0,
   fetchRows: async (filters) => {
     try {
-      const { queryAggregatedMetrics } = await import("../services/analytics-aggregator.js");
+      const { queryAggregatedMetrics } = await import('../services/analytics-aggregator.js');
       const { buckets } = queryAggregatedMetrics({
-        period: (filters?.period as "hourly" | "daily") || "daily",
+        period: (filters?.period as 'hourly' | 'daily') || 'daily',
         limit: Math.min(Number(filters?.limit) || 5000, 5000),
       });
       return buckets.map((b: any) => ({

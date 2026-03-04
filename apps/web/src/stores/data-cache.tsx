@@ -2,17 +2,14 @@
 
 import { createContext, useContext, useCallback, useRef, type ReactNode } from 'react';
 import { useState } from 'react';
-import { correlatedGet, correlatedPost, correlatedFetch } from '../lib/fetch-with-correlation';
+import { correlatedGet, correlatedPost } from '../lib/fetch-with-correlation';
+import type { Allergy, Problem, Vital, Note, Medication } from '@vista-evolved/shared-types';
 
 /* ------------------------------------------------------------------ */
-/* Types                                                               */
+/* Types — canonical clinical types re-exported from shared-types      */
 /* ------------------------------------------------------------------ */
 
-export interface Allergy { id: string; allergen: string; severity: string; reactions: string; }
-export interface Problem { id: string; text: string; status: string; onset?: string; }
-export interface Vital { type: string; value: string; takenAt: string; }
-export interface Note { id: string; title: string; date: string; author: string; location: string; status: string; }
-export interface Medication { id: string; name: string; sig: string; status: string; }
+export type { Allergy, Problem, Vital, Note, Medication };
 export interface DraftOrder {
   id: string;
   type: 'med' | 'lab' | 'imaging' | 'consult';
@@ -26,11 +23,44 @@ export interface DraftOrder {
 }
 
 /* Phase 12 — 5 new clinical domains */
-export interface Consult { id: string; date: string; status: string; service: string; type: string; }
-export interface Surgery { id: string; caseNum: string; procedure: string; date: string; surgeon: string; }
-export interface DCSummary { id: string; title: string; date: string; author: string; location: string; status: string; }
-export interface LabResult { id: string; name: string; date: string; status: string; value: string; flag?: string; refRange?: string; units?: string; specimen?: string; }
-export interface ReportDef { id: string; name: string; hsType: string; }
+export interface Consult {
+  id: string;
+  date: string;
+  status: string;
+  service: string;
+  type: string;
+}
+export interface Surgery {
+  id: string;
+  caseNum: string;
+  procedure: string;
+  date: string;
+  surgeon: string;
+}
+export interface DCSummary {
+  id: string;
+  title: string;
+  date: string;
+  author: string;
+  location: string;
+  status: string;
+}
+export interface LabResult {
+  id: string;
+  name: string;
+  date: string;
+  status: string;
+  value: string;
+  flag?: string;
+  refRange?: string;
+  units?: string;
+  specimen?: string;
+}
+export interface ReportDef {
+  id: string;
+  name: string;
+  hsType: string;
+}
 
 export interface ClinicalData {
   allergies: Allergy[];
@@ -62,11 +92,19 @@ export interface DataCacheValue {
   /** Update order status */
   updateOrderStatus: (dfn: string, orderId: string, status: DraftOrder['status']) => void;
   /** Sign an order (Draft/Unsigned → Signed) — calls server-side write-back */
-  signOrder: (dfn: string, orderId: string, signedBy: string) => Promise<{ mode: string; draftId?: string }>;
+  signOrder: (
+    dfn: string,
+    orderId: string,
+    signedBy: string
+  ) => Promise<{ mode: string; draftId?: string }>;
   /** Release a signed order (Signed → Released) — calls server-side write-back */
   releaseOrder: (dfn: string, orderId: string) => Promise<{ mode: string; draftId?: string }>;
   /** Acknowledge lab results — calls server-side write-back */
-  acknowledgeLabs: (dfn: string, labIds: string[], acknowledgedBy: string) => Promise<{ mode: string; count: number }>;
+  acknowledgeLabs: (
+    dfn: string,
+    labIds: string[],
+    acknowledgedBy: string
+  ) => Promise<{ mode: string; count: number }>;
   /** Check RPC capabilities from API */
   fetchCapabilities: () => Promise<Record<string, { available: boolean }>>;
   /** Cached capability data */
@@ -74,7 +112,11 @@ export interface DataCacheValue {
   /** Check if a domain is loading */
   isLoading: (dfn: string, domain: string) => boolean;
   /** Optimistic add for local data (e.g., draft problems) */
-  addLocalItem: <K extends keyof ClinicalData>(dfn: string, domain: K, item: ClinicalData[K][number]) => void;
+  addLocalItem: <K extends keyof ClinicalData>(
+    dfn: string,
+    domain: K,
+    item: ClinicalData[K][number]
+  ) => void;
 }
 
 /* ------------------------------------------------------------------ */
@@ -102,7 +144,9 @@ async function fetchNotes(dfn: string): Promise<Note[]> {
   return d.results ?? [];
 }
 async function fetchMedications(dfn: string): Promise<Medication[]> {
-  const d = await fetchJSON<{ ok: boolean; results?: Medication[] }>(`/vista/medications?dfn=${dfn}`);
+  const d = await fetchJSON<{ ok: boolean; results?: Medication[] }>(
+    `/vista/medications?dfn=${dfn}`
+  );
   return d.results ?? [];
 }
 async function fetchConsults(dfn: string): Promise<Consult[]> {
@@ -114,18 +158,34 @@ async function fetchSurgery(dfn: string): Promise<Surgery[]> {
   return d.results ?? [];
 }
 async function fetchDCSummaries(dfn: string): Promise<DCSummary[]> {
-  const d = await fetchJSON<{ ok: boolean; results?: DCSummary[] }>(`/vista/dc-summaries?dfn=${dfn}`);
+  const d = await fetchJSON<{ ok: boolean; results?: DCSummary[] }>(
+    `/vista/dc-summaries?dfn=${dfn}`
+  );
   return d.results ?? [];
 }
 async function fetchLabs(dfn: string): Promise<LabResult[]> {
-  interface ApiLab { testName?: string; result?: string; units?: string; refRange?: string; flag?: string; specimen?: string; collectionDate?: string; }
-  const d = await fetchJSON<{ ok: boolean; results?: ApiLab[]; rawText?: string }>(`/vista/labs?dfn=${dfn}`);
+  interface ApiLab {
+    testName?: string;
+    result?: string;
+    units?: string;
+    refRange?: string;
+    flag?: string;
+    specimen?: string;
+    collectionDate?: string;
+  }
+  const d = await fetchJSON<{ ok: boolean; results?: ApiLab[]; rawText?: string }>(
+    `/vista/labs?dfn=${dfn}`
+  );
   if (d.results && d.results.length > 0) {
     return d.results.map((r, i) => ({
       id: `lab-${i}`,
       name: r.testName ?? 'Unknown',
       date: r.collectionDate ?? '',
-      status: r.flag ? (r.flag.toUpperCase() === 'H' || r.flag.toUpperCase() === 'L' ? 'Abnormal' : 'Final') : 'Final',
+      status: r.flag
+        ? r.flag.toUpperCase() === 'H' || r.flag.toUpperCase() === 'L'
+          ? 'Abnormal'
+          : 'Final'
+        : 'Final',
       value: r.result ?? '',
       flag: r.flag ?? '',
       refRange: r.refRange ?? '',
@@ -201,19 +261,33 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
     return promise;
   }, []);
 
-  const fetchAll = useCallback(async (dfn: string) => {
-    const domains: (keyof ClinicalData)[] = [
-      'allergies', 'problems', 'vitals', 'notes', 'medications',
-      'consults', 'surgery', 'dcSummaries', 'labs', 'reports',
-    ];
-    await Promise.allSettled(domains.map((d) => fetchDomain(dfn, d)));
-  }, [fetchDomain]);
+  const fetchAll = useCallback(
+    async (dfn: string) => {
+      const domains: (keyof ClinicalData)[] = [
+        'allergies',
+        'problems',
+        'vitals',
+        'notes',
+        'medications',
+        'consults',
+        'surgery',
+        'dcSummaries',
+        'labs',
+        'reports',
+      ];
+      await Promise.allSettled(domains.map((d) => fetchDomain(dfn, d)));
+    },
+    [fetchDomain]
+  );
 
-  const getDomain = useCallback(<K extends keyof ClinicalData>(dfn: string, domain: K): ClinicalData[K] => {
-    const d = data[dfn];
-    if (!d || !d[domain]) return [] as unknown as ClinicalData[K];
-    return d[domain] as ClinicalData[K];
-  }, [data]);
+  const getDomain = useCallback(
+    <K extends keyof ClinicalData>(dfn: string, domain: K): ClinicalData[K] => {
+      const d = data[dfn];
+      if (!d || !d[domain]) return [] as unknown as ClinicalData[K];
+      return d[domain] as ClinicalData[K];
+    },
+    [data]
+  );
 
   const addDraftOrder = useCallback((dfn: string, order: DraftOrder) => {
     setData((prev) => {
@@ -222,13 +296,16 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const updateOrderStatus = useCallback((dfn: string, orderId: string, status: DraftOrder['status']) => {
-    setData((prev) => {
-      const existing = (prev[dfn]?.orders ?? []) as DraftOrder[];
-      const updated = existing.map((o) => o.id === orderId ? { ...o, status } : o);
-      return { ...prev, [dfn]: { ...prev[dfn], orders: updated } };
-    });
-  }, []);
+  const updateOrderStatus = useCallback(
+    (dfn: string, orderId: string, status: DraftOrder['status']) => {
+      setData((prev) => {
+        const existing = (prev[dfn]?.orders ?? []) as DraftOrder[];
+        const updated = existing.map((o) => (o.id === orderId ? { ...o, status } : o));
+        return { ...prev, [dfn]: { ...prev[dfn], orders: updated } };
+      });
+    },
+    []
+  );
 
   const signOrder = useCallback(async (dfn: string, orderId: string, signedBy: string) => {
     // Update local state optimistically
@@ -245,7 +322,7 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
     try {
       const { data } = await correlatedPost<{ mode?: string; draftId?: string }>(
         '/vista/orders/sign',
-        { dfn, orderId, signedBy },
+        { dfn, orderId, signedBy }
       );
       return { mode: data.mode || 'draft', draftId: data.draftId };
     } catch {
@@ -266,7 +343,7 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
     try {
       const { data } = await correlatedPost<{ mode?: string; draftId?: string }>(
         '/vista/orders/release',
-        { dfn, orderId },
+        { dfn, orderId }
       );
       return { mode: data.mode || 'draft', draftId: data.draftId };
     } catch {
@@ -274,25 +351,32 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const acknowledgeLabs = useCallback(async (dfn: string, labIds: string[], acknowledgedBy: string) => {
-    try {
-      const { data } = await correlatedPost<{ mode?: string }>(
-        '/vista/labs/ack',
-        { dfn, labIds, acknowledgedBy },
-      );
-      return { mode: data.mode || 'draft', count: labIds.length };
-    } catch {
-      return { mode: 'local', count: labIds.length };
-    }
-  }, []);
+  const acknowledgeLabs = useCallback(
+    async (dfn: string, labIds: string[], acknowledgedBy: string) => {
+      try {
+        const { data } = await correlatedPost<{ mode?: string }>('/vista/labs/ack', {
+          dfn,
+          labIds,
+          acknowledgedBy,
+        });
+        return { mode: data.mode || 'draft', count: labIds.length };
+      } catch {
+        return { mode: 'local', count: labIds.length };
+      }
+    },
+    []
+  );
 
-  const [capabilities, setCapabilities] = useState<Record<string, { available: boolean }> | null>(null);
+  const [capabilities, setCapabilities] = useState<Record<string, { available: boolean }> | null>(
+    null
+  );
 
   const fetchCapabilities = useCallback(async () => {
     try {
-      const data = await correlatedGet<{ ok?: boolean; rpcs?: Record<string, { available: boolean }> }>(
-        '/vista/rpc-capabilities',
-      );
+      const data = await correlatedGet<{
+        ok?: boolean;
+        rpcs?: Record<string, { available: boolean }>;
+      }>('/vista/rpc-capabilities');
       if (data.ok && data.rpcs) {
         const caps: Record<string, { available: boolean }> = {};
         for (const [name, info] of Object.entries(data.rpcs)) {
@@ -301,26 +385,47 @@ export function DataCacheProvider({ children }: { children: ReactNode }) {
         setCapabilities(caps);
         return caps;
       }
-    } catch { /* silent */ }
+    } catch {
+      /* silent */
+    }
     return {};
   }, []);
 
-  const isLoading = useCallback((dfn: string, domain: string): boolean => {
-    return loading[dfn]?.[domain] ?? false;
-  }, [loading]);
+  const isLoading = useCallback(
+    (dfn: string, domain: string): boolean => {
+      return loading[dfn]?.[domain] ?? false;
+    },
+    [loading]
+  );
 
-  const addLocalItem = useCallback(<K extends keyof ClinicalData>(
-    dfn: string, domain: K, item: ClinicalData[K][number]
-  ) => {
-    setData((prev) => {
-      const existing = (prev[dfn]?.[domain] ?? []) as ClinicalData[K];
-      return { ...prev, [dfn]: { ...prev[dfn], [domain]: [...existing, item] } };
-    });
-  }, []);
+  const addLocalItem = useCallback(
+    <K extends keyof ClinicalData>(dfn: string, domain: K, item: ClinicalData[K][number]) => {
+      setData((prev) => {
+        const existing = (prev[dfn]?.[domain] ?? []) as ClinicalData[K];
+        return { ...prev, [dfn]: { ...prev[dfn], [domain]: [...existing, item] } };
+      });
+    },
+    []
+  );
 
   return (
     <DataCacheContext.Provider
-      value={{ data, loading, fetchDomain, fetchAll, getDomain, addDraftOrder, updateOrderStatus, signOrder, releaseOrder, acknowledgeLabs, fetchCapabilities, capabilities, isLoading, addLocalItem }}
+      value={{
+        data,
+        loading,
+        fetchDomain,
+        fetchAll,
+        getDomain,
+        addDraftOrder,
+        updateOrderStatus,
+        signOrder,
+        releaseOrder,
+        acknowledgeLabs,
+        fetchCapabilities,
+        capabilities,
+        isLoading,
+        addLocalItem,
+      }}
     >
       {children}
     </DataCacheContext.Provider>

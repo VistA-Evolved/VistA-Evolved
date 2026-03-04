@@ -6,13 +6,10 @@
  * the RCM audit trail via appendRcmAudit().
  */
 
-import { eq, and, desc, count, lte } from "drizzle-orm";
-import { getPgDb } from "../../platform/pg/pg-db.js";
-import {
-  credentialArtifact,
-  credentialDocument,
-} from "../../platform/pg/pg-schema.js";
-import { randomUUID } from "node:crypto";
+import { eq, and, desc, count, lte } from 'drizzle-orm';
+import { getPgDb } from '../../platform/pg/pg-db.js';
+import { credentialArtifact, credentialDocument } from '../../platform/pg/pg-schema.js';
+import { randomUUID } from 'node:crypto';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -87,7 +84,11 @@ export interface CreateDocumentInput {
 
 function safeJsonParse<T>(val: string | null | undefined, fallback: T): T {
   if (!val) return fallback;
-  try { return JSON.parse(val); } catch { return fallback; }
+  try {
+    return JSON.parse(val);
+  } catch {
+    return fallback;
+  }
 }
 
 function parseCredential(row: any): CredentialArtifactRow {
@@ -133,37 +134,41 @@ function parseDocument(row: any): CredentialDocumentRow {
 /* Credential Artifact CRUD                                            */
 /* ------------------------------------------------------------------ */
 
-export async function createCredential(input: CreateCredentialInput): Promise<CredentialArtifactRow> {
+export async function createCredential(
+  input: CreateCredentialInput
+): Promise<CredentialArtifactRow> {
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || "default";
+  const tenantId = input.tenantId || 'default';
 
-  await db.insert(credentialArtifact)
-    .values({
-      id,
-      tenantId,
-      entityType: input.entityType,
-      entityId: input.entityId,
-      entityName: input.entityName,
-      credentialType: input.credentialType,
-      credentialValue: input.credentialValue,
-      issuingAuthority: input.issuingAuthority || null,
-      state: input.state || null,
-      status: input.status || "active",
-      issuedAt: input.issuedAt || null,
-      expiresAt: input.expiresAt || null,
-      renewalReminderDays: input.renewalReminderDays ?? 90,
-      metadataJson: JSON.stringify(input.metadata || {}),
-      createdAt: now,
-      updatedAt: now,
-      createdBy: input.createdBy,
-    });
+  await db.insert(credentialArtifact).values({
+    id,
+    tenantId,
+    entityType: input.entityType,
+    entityId: input.entityId,
+    entityName: input.entityName,
+    credentialType: input.credentialType,
+    credentialValue: input.credentialValue,
+    issuingAuthority: input.issuingAuthority || null,
+    state: input.state || null,
+    status: input.status || 'active',
+    issuedAt: input.issuedAt || null,
+    expiresAt: input.expiresAt || null,
+    renewalReminderDays: input.renewalReminderDays ?? 90,
+    metadataJson: JSON.stringify(input.metadata || {}),
+    createdAt: now,
+    updatedAt: now,
+    createdBy: input.createdBy,
+  });
 
   return (await getCredentialById(tenantId, id))!;
 }
 
-export async function getCredentialById(tenantId: string, id: string): Promise<CredentialArtifactRow | null> {
+export async function getCredentialById(
+  tenantId: string,
+  id: string
+): Promise<CredentialArtifactRow | null> {
   const db = getPgDb();
   const rows = await db
     .select()
@@ -181,7 +186,8 @@ export async function listCredentials(
   const conditions = [eq(credentialArtifact.tenantId, tenantId)];
   if (filters?.entityType) conditions.push(eq(credentialArtifact.entityType, filters.entityType));
   if (filters?.entityId) conditions.push(eq(credentialArtifact.entityId, filters.entityId));
-  if (filters?.credentialType) conditions.push(eq(credentialArtifact.credentialType, filters.credentialType));
+  if (filters?.credentialType)
+    conditions.push(eq(credentialArtifact.credentialType, filters.credentialType));
   if (filters?.status) conditions.push(eq(credentialArtifact.status, filters.status));
 
   const rows = await db
@@ -195,7 +201,20 @@ export async function listCredentials(
 export async function updateCredential(
   tenantId: string,
   id: string,
-  updates: Partial<Pick<CreateCredentialInput, "entityName" | "credentialValue" | "issuingAuthority" | "state" | "status" | "issuedAt" | "expiresAt" | "renewalReminderDays" | "metadata">>
+  updates: Partial<
+    Pick<
+      CreateCredentialInput,
+      | 'entityName'
+      | 'credentialValue'
+      | 'issuingAuthority'
+      | 'state'
+      | 'status'
+      | 'issuedAt'
+      | 'expiresAt'
+      | 'renewalReminderDays'
+      | 'metadata'
+    >
+  >
 ): Promise<CredentialArtifactRow | null> {
   const db = getPgDb();
   const now = new Date().toISOString();
@@ -208,41 +227,48 @@ export async function updateCredential(
   if (updates.status !== undefined) setClause.status = updates.status;
   if (updates.issuedAt !== undefined) setClause.issuedAt = updates.issuedAt;
   if (updates.expiresAt !== undefined) setClause.expiresAt = updates.expiresAt;
-  if (updates.renewalReminderDays !== undefined) setClause.renewalReminderDays = updates.renewalReminderDays;
+  if (updates.renewalReminderDays !== undefined)
+    setClause.renewalReminderDays = updates.renewalReminderDays;
   if (updates.metadata !== undefined) setClause.metadataJson = JSON.stringify(updates.metadata);
 
-  await db.update(credentialArtifact)
+  await db
+    .update(credentialArtifact)
     .set(setClause)
     .where(and(eq(credentialArtifact.tenantId, tenantId), eq(credentialArtifact.id, id)));
 
   return getCredentialById(tenantId, id);
 }
 
-export async function verifyCredential(tenantId: string, id: string, verifiedBy: string): Promise<CredentialArtifactRow | null> {
+export async function verifyCredential(
+  tenantId: string,
+  id: string,
+  verifiedBy: string
+): Promise<CredentialArtifactRow | null> {
   const db = getPgDb();
   const now = new Date().toISOString();
-  await db.update(credentialArtifact)
+  await db
+    .update(credentialArtifact)
     .set({ verifiedAt: now, verifiedBy, updatedAt: now })
     .where(and(eq(credentialArtifact.tenantId, tenantId), eq(credentialArtifact.id, id)));
   return getCredentialById(tenantId, id);
 }
 
 /** Get credentials expiring within the given number of days. */
-export async function getExpiringCredentials(tenantId: string, withinDays: number = 90): Promise<CredentialArtifactRow[]> {
+export async function getExpiringCredentials(
+  tenantId: string,
+  withinDays: number = 90
+): Promise<CredentialArtifactRow[]> {
   const db = getPgDb();
   const cutoff = new Date(Date.now() + withinDays * 86400000).toISOString();
   const rows = await db
     .select()
     .from(credentialArtifact)
-    .where(and(
-      eq(credentialArtifact.tenantId, tenantId),
-      lte(credentialArtifact.expiresAt, cutoff),
-    ))
+    .where(
+      and(eq(credentialArtifact.tenantId, tenantId), lte(credentialArtifact.expiresAt, cutoff))
+    )
     .orderBy(credentialArtifact.expiresAt);
   // Filter out null expiresAt and already-revoked
-  return rows
-    .filter((r: any) => r.expiresAt && r.status !== "revoked")
-    .map(parseCredential);
+  return rows.filter((r: any) => r.expiresAt && r.status !== 'revoked').map(parseCredential);
 }
 
 export async function countCredentials(tenantId: string): Promise<number> {
@@ -263,21 +289,20 @@ export async function addDocument(input: CreateDocumentInput): Promise<Credentia
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || "default";
+  const tenantId = input.tenantId || 'default';
 
-  await db.insert(credentialDocument)
-    .values({
-      id,
-      credentialId: input.credentialId,
-      tenantId,
-      fileName: input.fileName,
-      mimeType: input.mimeType,
-      storagePath: input.storagePath,
-      fileSizeBytes: input.fileSizeBytes || null,
-      sha256Hash: input.sha256Hash || null,
-      uploadedBy: input.uploadedBy,
-      uploadedAt: now,
-    });
+  await db.insert(credentialDocument).values({
+    id,
+    credentialId: input.credentialId,
+    tenantId,
+    fileName: input.fileName,
+    mimeType: input.mimeType,
+    storagePath: input.storagePath,
+    fileSizeBytes: input.fileSizeBytes || null,
+    sha256Hash: input.sha256Hash || null,
+    uploadedBy: input.uploadedBy,
+    uploadedAt: now,
+  });
 
   const rows = await db.select().from(credentialDocument).where(eq(credentialDocument.id, id));
   return parseDocument(rows[0]);

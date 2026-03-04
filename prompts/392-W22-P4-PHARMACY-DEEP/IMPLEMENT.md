@@ -1,6 +1,7 @@
 # Phase 392 -- W22-P4 Pharmacy Deep Workflows: IMPLEMENT
 
 ## User Request
+
 Implement Phase 392 (W22-P4): Pharmacy Deep Workflows -- order->verify->dispense->administer->discontinue lifecycle with clinical checks, BCMA linking, and VistA writeback posture.
 
 ## Implementation Steps
@@ -33,6 +34,7 @@ Implement Phase 392 (W22-P4): Pharmacy Deep Workflows -- order->verify->dispense
    - `store-policy.ts`: 3 pharmacy store entries
 
 ## Files Touched
+
 - `apps/api/src/pharmacy/types.ts` (new)
 - `apps/api/src/pharmacy/pharmacy-store.ts` (new)
 - `apps/api/src/pharmacy/pharmacy-routes.ts` (new)

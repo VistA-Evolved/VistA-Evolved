@@ -20,7 +20,7 @@
 
 export interface EligibilityResponse {
   eligible: boolean;
-  status: "active" | "inactive" | "unknown" | "pending";
+  status: 'active' | 'inactive' | 'unknown' | 'pending';
   payerId: string;
   payerName: string;
   /** True when response is from sandbox/test adapter — never trust for real workflows */
@@ -39,7 +39,7 @@ export interface EligibilityResponse {
 export interface ClaimStatusResponse {
   claimId: string;
   payerClaimId?: string;
-  status: "accepted" | "rejected" | "pending" | "adjudicated" | "unknown";
+  status: 'accepted' | 'rejected' | 'pending' | 'adjudicated' | 'unknown';
   /** True when response is from sandbox/test adapter */
   isTestData?: boolean;
   statusCode?: string;
@@ -138,7 +138,7 @@ export interface PayerAdapter {
     claimId: string;
     payerId: string;
     payload: string;
-    transactionSet: "837P" | "837I";
+    transactionSet: '837P' | '837I';
     tenantId: string;
   }): Promise<SubmissionResponse>;
 
@@ -185,7 +185,7 @@ export function listPayerAdapters(): Array<{
   name: string;
   enabled: boolean;
   supportedModes: string[];
-  rateLimits: PayerAdapterConfig["rateLimits"];
+  rateLimits: PayerAdapterConfig['rateLimits'];
 }> {
   return Array.from(adapters.values()).map((a) => ({
     id: a.config.id,

@@ -19,9 +19,8 @@ import { fileURLToPath } from 'node:url';
 
 /* ─── File sink configuration (Phase 113B) ───────────────────── */
 
-const __dirname_resolved = typeof __dirname !== 'undefined'
-  ? __dirname
-  : dirname(fileURLToPath(import.meta.url));
+const __dirname_resolved =
+  typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
 
 const REPO_ROOT = join(__dirname_resolved, '..', '..', '..', '..', '..');
 const DEFAULT_AUDIT_FILE = join(REPO_ROOT, 'logs', 'rcm-audit.jsonl');
@@ -215,9 +214,9 @@ export interface RcmAuditEntry {
 /* ─── PHI sanitization ───────────────────────────────────────────── */
 
 const PHI_PATTERNS = [
-  /\b\d{3}-\d{2}-\d{4}\b/g,                     // SSN
-  /\b\d{2}[\/-]\d{2}[\/-]\d{4}\b/g,              // DOB-like dates
-  /\b[A-Z][a-z]+,\s*[A-Z][a-z]+\b/g,            // "Last, First" names
+  /\b\d{3}-\d{2}-\d{4}\b/g, // SSN
+  /\b\d{2}[\/-]\d{2}[\/-]\d{4}\b/g, // DOB-like dates
+  /\b[A-Z][a-z]+,\s*[A-Z][a-z]+\b/g, // "Last, First" names
 ];
 
 function sanitizeDetail(detail: Record<string, unknown>): Record<string, unknown> {
@@ -280,7 +279,7 @@ export function appendRcmAudit(
     userId?: string;
     patientDfn?: string;
     detail?: Record<string, unknown>;
-  } = {},
+  } = {}
 ): RcmAuditEntry {
   seq++;
   const sanitizedDetail = sanitizeDetail(opts.detail ?? {});
@@ -324,11 +323,11 @@ export function getRcmAuditEntries(filters?: {
 }): { items: RcmAuditEntry[]; total: number } {
   let items = [...entries];
 
-  if (filters?.claimId) items = items.filter(e => e.claimId === filters.claimId);
-  if (filters?.action) items = items.filter(e => e.action === filters.action);
+  if (filters?.claimId) items = items.filter((e) => e.claimId === filters.claimId);
+  if (filters?.action) items = items.filter((e) => e.action === filters.action);
   if (filters?.since) {
     const sinceVal = filters.since;
-    items = items.filter(e => e.timestamp >= sinceVal);
+    items = items.filter((e) => e.timestamp >= sinceVal);
   }
 
   const total = items.length;

@@ -4,12 +4,12 @@
 
 ## Severity Levels
 
-| Level | Description | Response Time | Example |
-|-------|-------------|---------------|---------|
-| **P1 — Critical** | System completely unusable | Immediate | API down, VistA unreachable, auth broken |
-| **P2 — High** | Major feature broken | 1 hour | Write-backs failing, circuit breaker open |
-| **P3 — Medium** | Degraded performance | 4 hours | High latency, cache ineffective |
-| **P4 — Low** | Minor issue | Next business day | UI cosmetic bug, non-blocking warning |
+| Level             | Description                | Response Time     | Example                                   |
+| ----------------- | -------------------------- | ----------------- | ----------------------------------------- |
+| **P1 — Critical** | System completely unusable | Immediate         | API down, VistA unreachable, auth broken  |
+| **P2 — High**     | Major feature broken       | 1 hour            | Write-backs failing, circuit breaker open |
+| **P3 — Medium**   | Degraded performance       | 4 hours           | High latency, cache ineffective           |
+| **P4 — Low**      | Minor issue                | Next business day | UI cosmetic bug, non-blocking warning     |
 
 ## Quick Diagnostics
 
@@ -55,6 +55,7 @@ Test-NetConnection -ComputerName 127.0.0.1 -Port 9430
 **Root cause:** VistA RPC Broker is down or unreachable.
 
 **Resolution:**
+
 1. Check VistA container: `docker ps | grep wv`
 2. Restart if needed: `docker restart wv`
 3. Wait 15s for VistA to initialize
@@ -68,6 +69,7 @@ Test-NetConnection -ComputerName 127.0.0.1 -Port 9430
 **Root cause:** Session store cleared (process restart) or cookie not being sent.
 
 **Resolution:**
+
 1. Check if session cookie is set: browser DevTools → Application → Cookies
 2. Verify CORS allows the origin: check `ALLOWED_ORIGINS` env var
 3. Test login: `curl -v -X POST http://localhost:3001/auth/login -H 'Content-Type: application/json' -d '{"accessCode":"PROV123","verifyCode":"PROV123!!"}'`
@@ -80,6 +82,7 @@ Test-NetConnection -ComputerName 127.0.0.1 -Port 9430
 **Root cause:** VistA RPC calls are slow, cache is cold, or network issues.
 
 **Resolution:**
+
 1. Check metrics: `curl http://localhost:3001/metrics | jq '.rpcHealth.perRpc'`
 2. Look for high `avgDurationMs` per RPC
 3. Check cache hit rate: `curl http://localhost:3001/metrics | jq '.rpcHealth.cache'`
@@ -91,6 +94,7 @@ Test-NetConnection -ComputerName 127.0.0.1 -Port 9430
 **Symptoms:** Process killed, Docker restart loop.
 
 **Resolution:**
+
 1. Check memory: `curl http://localhost:3001/metrics | jq '.process'`
 2. Check Docker: `docker stats vista-evolved-api`
 3. If heap > 500MB, investigate:
@@ -123,12 +127,12 @@ curl http://localhost:3001/version
 
 ## Escalation
 
-| Issue | Escalate To |
-|-------|-------------|
+| Issue                   | Escalate To                                  |
+| ----------------------- | -------------------------------------------- |
 | VistA RPC protocol bugs | See `docs/BUG-TRACKER.md` and `AGENTS.md` §2 |
-| VistA database issues | Site VistA DBA |
-| Network/firewall | Infrastructure team |
-| Security incident | See `SECURITY.md` |
+| VistA database issues   | Site VistA DBA                               |
+| Network/firewall        | Infrastructure team                          |
+| Security incident       | See `SECURITY.md`                            |
 
 ## Post-Incident
 

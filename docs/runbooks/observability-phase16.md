@@ -41,6 +41,7 @@ Every API request gets a unique `X-Request-Id` header (UUID v4).
 **`GET /metrics`** — no auth required (for monitoring systems)
 
 Returns:
+
 ```json
 {
   "ok": true,
@@ -64,14 +65,14 @@ Returns:
 
 ### Key Metrics
 
-| Metric | Location | Description |
-|--------|----------|-------------|
-| Circuit breaker state | `rpcHealth.circuitBreaker.state` | closed/open/half-open |
-| Cache hit rate | `rpcHealth.cache.hits / (hits + misses)` | RPC result cache effectiveness |
-| RPC call count | `rpcHealth.perRpc[name].calls` | Total calls per RPC name |
-| RPC error rate | `rpcHealth.perRpc[name].failures / calls` | Error rate per RPC |
-| RPC latency | `rpcHealth.perRpc[name].avgDurationMs` | Average latency per RPC |
-| Memory usage | `process.heapUsedMB` | V8 heap usage |
+| Metric                | Location                                  | Description                    |
+| --------------------- | ----------------------------------------- | ------------------------------ |
+| Circuit breaker state | `rpcHealth.circuitBreaker.state`          | closed/open/half-open          |
+| Cache hit rate        | `rpcHealth.cache.hits / (hits + misses)`  | RPC result cache effectiveness |
+| RPC call count        | `rpcHealth.perRpc[name].calls`            | Total calls per RPC name       |
+| RPC error rate        | `rpcHealth.perRpc[name].failures / calls` | Error rate per RPC             |
+| RPC latency           | `rpcHealth.perRpc[name].avgDurationMs`    | Average latency per RPC        |
+| Memory usage          | `process.heapUsedMB`                      | V8 heap usage                  |
 
 ## Audit Events
 
@@ -79,22 +80,22 @@ Returns:
 
 ### Event Actions (63+ types)
 
-| Category | Actions |
-|----------|---------|
-| **Auth** | login.success, login.failure, logout |
-| **Patient** | patient.select, patient.search |
+| Category     | Actions                                                                                                              |
+| ------------ | -------------------------------------------------------------------------------------------------------------------- |
+| **Auth**     | login.success, login.failure, logout                                                                                 |
+| **Patient**  | patient.select, patient.search                                                                                       |
 | **Clinical** | allergies.view, allergies.add, vitals.view, vitals.add, notes.view, notes.create, meds.view, meds.add, problems.view |
-| **Admin** | admin.circuit-breaker-reset, admin.cache-invalidate |
-| **Security** | security.rate-limited, security.origin-rejected, security.rbac-denied |
-| **System** | system.startup, system.shutdown |
+| **Admin**    | admin.circuit-breaker-reset, admin.cache-invalidate                                                                  |
+| **Security** | security.rate-limited, security.origin-rejected, security.rbac-denied                                                |
+| **System**   | system.startup, system.shutdown                                                                                      |
 
 ### Audit Sinks
 
-| Sink | Env `AUDIT_SINK` | Description |
-|------|-------------------|-------------|
-| `memory` | Default | In-process array with eviction (max 5000 entries) |
-| `file` | Production | Append to JSONL file (`AUDIT_FILE_PATH`) |
-| `stdout` | Container | JSON to stdout (for log aggregators) |
+| Sink     | Env `AUDIT_SINK` | Description                                       |
+| -------- | ---------------- | ------------------------------------------------- |
+| `memory` | Default          | In-process array with eviction (max 5000 entries) |
+| `file`   | Production       | Append to JSONL file (`AUDIT_FILE_PATH`)          |
+| `stdout` | Container        | JSON to stdout (for log aggregators)              |
 
 ### Query API
 
@@ -110,10 +111,12 @@ Returns:
 ## Degraded Mode Banner (Web)
 
 The web frontend shows a banner when:
+
 - API is unreachable (red banner)
 - VistA is unreachable (yellow banner, "degraded mode")
 
 Polls `GET /ready` every 30 seconds. When degraded:
+
 - Write actions are blocked/warned
 
 **Component:** `apps/web/src/components/cprs/DegradedBanner.tsx`

@@ -11,19 +11,19 @@
  * export formats (JSON, PDF text, XML) are generated.
  */
 
-import { createHash, randomBytes } from "node:crypto";
-import type { PhilHealthClaimDraft } from "../payerOps/philhealth-types.js";
-import type { ClaimPacket } from "./types.js";
+import { createHash, randomBytes } from 'node:crypto';
+import type { PhilHealthClaimDraft } from '../payerOps/philhealth-types.js';
+import type { ClaimPacket } from './types.js';
 
 /* ── Packet ID Generation ───────────────────────────────────── */
 
 function newPacketId(): string {
-  return `pkt-${Date.now().toString(36)}-${randomBytes(6).toString("hex")}`;
+  return `pkt-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
 /* ── Content Hashing ────────────────────────────────────────── */
 
-function hashPacketContent(packet: Omit<ClaimPacket, "contentHash">): string {
+function hashPacketContent(packet: Omit<ClaimPacket, 'contentHash'>): string {
   const serialized = JSON.stringify({
     patient: packet.patient,
     facility: packet.facility,
@@ -36,7 +36,7 @@ function hashPacketContent(packet: Omit<ClaimPacket, "contentHash">): string {
     professionalFees: packet.professionalFees,
     totals: packet.totals,
   });
-  return createHash("sha256").update(serialized).digest("hex");
+  return createHash('sha256').update(serialized).digest('hex');
 }
 
 /* ── Builder ────────────────────────────────────────────────── */
@@ -61,25 +61,25 @@ export interface PacketBuilderOptions {
  */
 export function buildClaimPacket(
   draft: PhilHealthClaimDraft,
-  opts: PacketBuilderOptions,
+  opts: PacketBuilderOptions
 ): { ok: boolean; packet?: ClaimPacket; errors?: string[] } {
   const errors: string[] = [];
 
   // Validate minimum required fields
   if (!draft.patientLastName || !draft.patientFirstName) {
-    errors.push("Patient name is required.");
+    errors.push('Patient name is required.');
   }
   if (!draft.philhealthPin) {
-    errors.push("PhilHealth PIN is required.");
+    errors.push('PhilHealth PIN is required.');
   }
   if (!opts.facilityCode) {
-    errors.push("Facility code is required.");
+    errors.push('Facility code is required.');
   }
   if (!draft.admissionDate) {
-    errors.push("Admission/encounter date is required.");
+    errors.push('Admission/encounter date is required.');
   }
   if (draft.diagnoses.length === 0) {
-    errors.push("At least one diagnosis is required.");
+    errors.push('At least one diagnosis is required.');
   }
 
   if (errors.length > 0) {
@@ -96,9 +96,9 @@ export function buildClaimPacket(
 
   const now = new Date().toISOString();
 
-  const partialPacket: Omit<ClaimPacket, "contentHash"> = {
+  const partialPacket: Omit<ClaimPacket, 'contentHash'> = {
     packetId: newPacketId(),
-    eclaimsVersion: "3.0",
+    eclaimsVersion: '3.0',
     sourceClaimDraftId: draft.id,
     encounterIen: draft.encounterIen,
     patient: {
@@ -180,6 +180,6 @@ export function buildClaimPacket(
  */
 export function verifyPacketIntegrity(packet: ClaimPacket): boolean {
   const { contentHash, ...rest } = packet;
-  const computed = hashPacketContent(rest as Omit<ClaimPacket, "contentHash">);
+  const computed = hashPacketContent(rest as Omit<ClaimPacket, 'contentHash'>);
   return computed === contentHash;
 }

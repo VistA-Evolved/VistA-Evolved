@@ -15,6 +15,7 @@ VistA-Evolved needs an HL7v2 message engine for hospital integration. Current st
 - **Admin UI**: Full HL7 message browser in integration console
 
 **What is missing:**
+
 - No MLLP (Minimum Lower Layer Protocol) TCP engine
 - No message routing or transformation pipeline
 - No ACK generation or error handling
@@ -27,6 +28,7 @@ and `node-hl7-server` npm packages** for MLLP framing, combined with a custom
 routing layer that integrates with the existing VistA interop infrastructure.
 
 Rationale:
+
 - `node-hl7-client` / `node-hl7-server` handle MLLP framing (0x0B/0x1C/0x0D)
   which is error-prone to implement from scratch
 - Both are MIT-licensed, actively maintained, and lightweight
@@ -36,17 +38,18 @@ Rationale:
 
 ## Alternatives Considered
 
-| Option | License | Pros | Cons |
-|--------|---------|------|------|
-| **Mirth Connect** (NextGen) | MPL-2.0 (community), Proprietary (enterprise) | Feature-rich, GUI, widely used in healthcare | Heavy Java process, MPL has patent clause, complex deployment |
-| **Apache Camel + HAPI** | Apache-2.0 | Mature, enterprise patterns | Java dependency, large footprint, over-engineered for our needs |
-| **Custom MLLP from scratch** | N/A | Full control | Error-prone, re-inventing solved protocol framing |
-| **OIE (Open Integration Engine)** | MPL-2.0 | Community fork of Mirth | Same Java dependency issues, unclear maintenance |
-| **node-hl7-client/server** | MIT | Lightweight, Node-native, MIT license | Less feature-rich than Mirth, newer project |
+| Option                            | License                                       | Pros                                         | Cons                                                            |
+| --------------------------------- | --------------------------------------------- | -------------------------------------------- | --------------------------------------------------------------- |
+| **Mirth Connect** (NextGen)       | MPL-2.0 (community), Proprietary (enterprise) | Feature-rich, GUI, widely used in healthcare | Heavy Java process, MPL has patent clause, complex deployment   |
+| **Apache Camel + HAPI**           | Apache-2.0                                    | Mature, enterprise patterns                  | Java dependency, large footprint, over-engineered for our needs |
+| **Custom MLLP from scratch**      | N/A                                           | Full control                                 | Error-prone, re-inventing solved protocol framing               |
+| **OIE (Open Integration Engine)** | MPL-2.0                                       | Community fork of Mirth                      | Same Java dependency issues, unclear maintenance                |
+| **node-hl7-client/server**        | MIT                                           | Lightweight, Node-native, MIT license        | Less feature-rich than Mirth, newer project                     |
 
 ## Consequences
 
 **Positive:**
+
 - No new runtime dependencies beyond npm packages
 - Consistent with existing Node.js/TypeScript stack
 - MLLP framing is handled by tested library code
@@ -54,11 +57,13 @@ Rationale:
 - Production pathway: extract to sidecar container if needed
 
 **Negative:**
+
 - Less mature than Mirth for complex transformation scenarios
 - Community smaller than Java HL7 ecosystem
 - Must build routing/transformation layer ourselves
 
 **Risks:**
+
 - If throughput exceeds single-process capacity, will need process extraction
 - node-hl7-server maintenance — mitigated by MLLP being a simple protocol
 

@@ -17,24 +17,24 @@ import type {
   Citation,
   QRItem,
   QuestionnaireItem,
-} from "./types.js";
-import { resolvePacks, mergePackItems } from "./pack-registry.js";
+} from './types.js';
+import { resolvePacks, mergePackItems } from './pack-registry.js';
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
 /* ------------------------------------------------------------------ */
 
 function extractAnswer(item: QRItem): string {
-  if (!item.answer?.length) return "";
+  if (!item.answer?.length) return '';
   const a = item.answer[0];
   if (a.valueCoding?.display) return a.valueCoding.display;
   if (a.valueString) return a.valueString;
   if (a.valueInteger !== undefined) return a.valueInteger.toString();
   if (a.valueDecimal !== undefined) return a.valueDecimal.toString();
-  if (a.valueBoolean !== undefined) return a.valueBoolean ? "Yes" : "No";
+  if (a.valueBoolean !== undefined) return a.valueBoolean ? 'Yes' : 'No';
   if (a.valueDate) return a.valueDate;
   if (a.valueDateTime) return a.valueDateTime;
-  return "";
+  return '';
 }
 
 function flattenQRItems(items: QRItem[]): QRItem[] {
@@ -46,10 +46,7 @@ function flattenQRItems(items: QRItem[]): QRItem[] {
   return flat;
 }
 
-function findItemDef(
-  allItems: QuestionnaireItem[],
-  linkId: string
-): QuestionnaireItem | undefined {
+function findItemDef(allItems: QuestionnaireItem[], linkId: string): QuestionnaireItem | undefined {
   for (const item of allItems) {
     if (item.linkId === linkId) return item;
     if (item.item) {
@@ -65,20 +62,20 @@ function findItemDef(
 /* ------------------------------------------------------------------ */
 
 const ROS_SYSTEMS = [
-  "constitutional",
-  "eyes",
-  "ears_nose_throat",
-  "cardiovascular",
-  "respiratory",
-  "gastrointestinal",
-  "genitourinary",
-  "musculoskeletal",
-  "integumentary",
-  "neurological",
-  "psychiatric",
-  "endocrine",
-  "hematologic",
-  "allergic_immunologic",
+  'constitutional',
+  'eyes',
+  'ears_nose_throat',
+  'cardiovascular',
+  'respiratory',
+  'gastrointestinal',
+  'genitourinary',
+  'musculoskeletal',
+  'integumentary',
+  'neurological',
+  'psychiatric',
+  'endocrine',
+  'hematologic',
+  'allergic_immunologic',
 ];
 
 /* ------------------------------------------------------------------ */
@@ -102,7 +99,7 @@ export class TemplateSummaryProvider implements SummaryProvider {
     // Build HPI narrative
     const hpiItems = flat.filter((i) => {
       const def = findItemDef(allItems, i.linkId);
-      return def?.section === "hpi" || def?.section === "chief_complaint";
+      return def?.section === 'hpi' || def?.section === 'chief_complaint';
     });
     const hpiParts: string[] = [];
     const hpiCitations: Citation[] = [];
@@ -114,29 +111,34 @@ export class TemplateSummaryProvider implements SummaryProvider {
         hpiCitations.push({ statement: `${label}: ${val}`, answerIds: [item.linkId] });
       }
     }
-    const hpiNarrative = hpiParts.join(". ") + (hpiParts.length ? "." : "No HPI data collected.");
+    const hpiNarrative = hpiParts.join('. ') + (hpiParts.length ? '.' : 'No HPI data collected.');
 
     // Build ROS
     const rosFindings: ROSFinding[] = ROS_SYSTEMS.map((sys) => {
       const sysItems = flat.filter((i) => {
         const def = findItemDef(allItems, i.linkId);
-        return def?.section === "ros" && i.linkId.includes(sys);
+        return def?.section === 'ros' && i.linkId.includes(sys);
       });
       if (sysItems.length === 0) {
-        return { system: sys, findings: "", status: "not_asked" as const };
+        return { system: sys, findings: '', status: 'not_asked' as const };
       }
       const findings = sysItems
         .map((i) => extractAnswer(i))
         .filter(Boolean)
-        .join(", ");
+        .join(', ');
       const hasPositive = sysItems.some((i) => {
         const val = extractAnswer(i);
-        return val && val.toLowerCase() !== "no" && val.toLowerCase() !== "none" && val.toLowerCase() !== "denied";
+        return (
+          val &&
+          val.toLowerCase() !== 'no' &&
+          val.toLowerCase() !== 'none' &&
+          val.toLowerCase() !== 'denied'
+        );
       });
       return {
         system: sys,
         findings,
-        status: hasPositive ? ("positive" as const) : ("negative" as const),
+        status: hasPositive ? ('positive' as const) : ('negative' as const),
       };
     });
 
@@ -146,7 +148,7 @@ export class TemplateSummaryProvider implements SummaryProvider {
       const def = findItemDef(allItems, item.linkId);
       if (def?.redFlag) {
         const val = extractAnswer(item);
-        if (val === def.redFlag.condition || (def.redFlag.condition === "*" && val)) {
+        if (val === def.redFlag.condition || (def.redFlag.condition === '*' && val)) {
           redFlags.push({
             flag: def.redFlag.message,
             severity: def.redFlag.severity,
@@ -160,29 +162,29 @@ export class TemplateSummaryProvider implements SummaryProvider {
     // Medications delta (from medications section answers)
     const medItems = flat.filter((i) => {
       const def = findItemDef(allItems, i.linkId);
-      return def?.section === "medications";
+      return def?.section === 'medications';
     });
     const newMeds: string[] = [];
     const discMeds: string[] = [];
     const changedMeds: string[] = [];
     for (const item of medItems) {
       const val = extractAnswer(item);
-      if (val && item.linkId.includes("new_med")) newMeds.push(val);
-      else if (val && item.linkId.includes("disc_med")) discMeds.push(val);
-      else if (val && item.linkId.includes("changed_med")) changedMeds.push(val);
+      if (val && item.linkId.includes('new_med')) newMeds.push(val);
+      else if (val && item.linkId.includes('disc_med')) discMeds.push(val);
+      else if (val && item.linkId.includes('changed_med')) changedMeds.push(val);
     }
 
     // Allergies delta
     const allergyItems = flat.filter((i) => {
       const def = findItemDef(allItems, i.linkId);
-      return def?.section === "allergies";
+      return def?.section === 'allergies';
     });
     const newAllergies: string[] = [];
     const resolvedAllergies: string[] = [];
     for (const item of allergyItems) {
       const val = extractAnswer(item);
-      if (val && item.linkId.includes("new_allergy")) newAllergies.push(val);
-      else if (val && item.linkId.includes("resolved_allergy")) resolvedAllergies.push(val);
+      if (val && item.linkId.includes('new_allergy')) newAllergies.push(val);
+      else if (val && item.linkId.includes('resolved_allergy')) resolvedAllergies.push(val);
     }
 
     // Contradiction detection (simple: mutually exclusive answers)
@@ -190,74 +192,72 @@ export class TemplateSummaryProvider implements SummaryProvider {
     // Example: if patient says "no pain" in one question and rates pain > 5 in another
     // This is pack-specific logic; for now we do basic detection
     const painDenied = flat.find(
-      (i) => i.linkId.includes("pain") && extractAnswer(i).toLowerCase() === "no"
+      (i) => i.linkId.includes('pain') && extractAnswer(i).toLowerCase() === 'no'
     );
     const painRated = flat.find(
-      (i) =>
-        i.linkId.includes("pain_scale") &&
-        parseInt(extractAnswer(i), 10) > 0
+      (i) => i.linkId.includes('pain_scale') && parseInt(extractAnswer(i), 10) > 0
     );
     if (painDenied && painRated) {
       contradictions.push({
         questionIdA: painDenied.linkId,
         questionIdB: painRated.linkId,
-        description: "Patient denied pain but rated pain scale > 0",
+        description: 'Patient denied pain but rated pain scale > 0',
       });
     }
 
     // Build draft note
     const noteLines: string[] = [
-      "PATIENT-REPORTED INTAKE (DRAFT - PENDING CLINICIAN REVIEW)",
-      "=" .repeat(55),
-      "",
-      "HISTORY OF PRESENT ILLNESS:",
+      'PATIENT-REPORTED INTAKE (DRAFT - PENDING CLINICIAN REVIEW)',
+      '='.repeat(55),
+      '',
+      'HISTORY OF PRESENT ILLNESS:',
       hpiNarrative,
-      "",
-      "REVIEW OF SYSTEMS:",
+      '',
+      'REVIEW OF SYSTEMS:',
       ...rosFindings
-        .filter((r) => r.status !== "not_asked")
-        .map((r) => `  ${r.system}: ${r.status === "negative" ? "Negative" : r.findings}`),
-      "",
+        .filter((r) => r.status !== 'not_asked')
+        .map((r) => `  ${r.system}: ${r.status === 'negative' ? 'Negative' : r.findings}`),
+      '',
     ];
 
     if (redFlags.length) {
-      noteLines.push("** RED FLAGS **:");
+      noteLines.push('** RED FLAGS **:');
       for (const rf of redFlags) {
         noteLines.push(`  [${rf.severity.toUpperCase()}] ${rf.flag}`);
       }
-      noteLines.push("");
+      noteLines.push('');
     }
 
     if (newMeds.length || discMeds.length || changedMeds.length) {
-      noteLines.push("MEDICATION CHANGES (patient-reported):");
+      noteLines.push('MEDICATION CHANGES (patient-reported):');
       for (const m of newMeds) noteLines.push(`  NEW: ${m}`);
       for (const m of discMeds) noteLines.push(`  DISCONTINUED: ${m}`);
       for (const m of changedMeds) noteLines.push(`  CHANGED: ${m}`);
-      noteLines.push("");
+      noteLines.push('');
     }
 
     if (newAllergies.length || resolvedAllergies.length) {
-      noteLines.push("ALLERGY CHANGES (patient-reported):");
+      noteLines.push('ALLERGY CHANGES (patient-reported):');
       for (const a of newAllergies) noteLines.push(`  NEW: ${a}`);
       for (const a of resolvedAllergies) noteLines.push(`  RESOLVED: ${a}`);
-      noteLines.push("");
+      noteLines.push('');
     }
 
     if (contradictions.length) {
-      noteLines.push("CONTRADICTIONS DETECTED:");
+      noteLines.push('CONTRADICTIONS DETECTED:');
       for (const c of contradictions) noteLines.push(`  - ${c.description}`);
-      noteLines.push("");
+      noteLines.push('');
     }
 
-    noteLines.push("---");
-    noteLines.push("Generated by VistA-Evolved Intake OS (template provider)");
+    noteLines.push('---');
+    noteLines.push('Generated by VistA-Evolved Intake OS (template provider)');
     noteLines.push(`Session: ${session.id}`);
 
     return {
       sessionId: session.id,
       version: session.questionnaireResponseVersion,
       generatedAt: new Date().toISOString(),
-      generatedBy: "template",
+      generatedBy: 'template',
       sections: {
         hpiNarrative,
         reviewOfSystems: rosFindings,
@@ -273,7 +273,7 @@ export class TemplateSummaryProvider implements SummaryProvider {
         },
         contradictions,
       },
-      draftNoteText: noteLines.join("\n"),
+      draftNoteText: noteLines.join('\n'),
       citations: hpiCitations,
     };
   }
@@ -291,7 +291,7 @@ export class LLMSummaryProvider implements SummaryProvider {
     qr: QuestionnaireResponse,
     context: IntakeContext
   ): Promise<DraftClinicianSummary> {
-    const enabled = process.env.INTAKE_LLM_SUMMARY_ENABLED === "true";
+    const enabled = process.env.INTAKE_LLM_SUMMARY_ENABLED === 'true';
     const apiKey = process.env.INTAKE_LLM_API_KEY;
 
     if (!enabled || !apiKey) {

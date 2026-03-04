@@ -12,17 +12,17 @@
  * Orthanc: POST /instances for non-DICOM file storage.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { requireSession } from "../../auth/auth-routes.js";
-import { log } from "../../lib/logger.js";
-import { randomUUID } from "node:crypto";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../../auth/auth-routes.js';
+import { log } from '../../lib/logger.js';
+import { randomUUID } from 'node:crypto';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
-type AttachToType = "note" | "consult" | "order" | "none";
-type CaptureStatus = "captured" | "attached" | "filed";
+type AttachToType = 'note' | 'consult' | 'order' | 'none';
+type CaptureStatus = 'captured' | 'attached' | 'filed';
 
 interface CaptureAttachment {
   id: string;
@@ -50,7 +50,7 @@ const patientCaptureIndex = new Map<string, string[]>();
 
 /** Strip DFN from capture object before sending to client (PHI-safe) */
 function toSafeCapture(c: CaptureAttachment) {
-  const { dfn, ...safe } = c;
+  const { dfn: _dfn, ...safe } = c;
   return safe;
 }
 
@@ -59,7 +59,7 @@ function toSafeCapture(c: CaptureAttachment) {
 /* ------------------------------------------------------------------ */
 
 function getOrthancUrl(): string {
-  return process.env.ORTHANC_URL || "http://localhost:8042";
+  return process.env.ORTHANC_URL || 'http://localhost:8042';
 }
 
 /* ------------------------------------------------------------------ */
@@ -67,12 +67,12 @@ function getOrthancUrl(): string {
 /* ------------------------------------------------------------------ */
 
 export default async function imagingCaptureRoutes(server: FastifyInstance) {
-  log.info("Imaging Capture routes registered (Phase 538)");
+  log.info('Imaging Capture routes registered (Phase 538)');
 
   /* ------------------------------------------------------------ */
   /* POST /imaging/capture -- Upload + create capture record       */
   /* ------------------------------------------------------------ */
-  server.post("/imaging/capture", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/imaging/capture', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = requireSession(request, reply);
     if (!session) return;
 
@@ -92,25 +92,25 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
     };
 
     if (!dfn) {
-      return reply.code(400).send({ ok: false, error: "Missing dfn" });
+      return reply.code(400).send({ ok: false, error: 'Missing dfn' });
     }
     if (!filename || !mimeType || !fileBase64) {
       return reply.code(400).send({
         ok: false,
-        error: "Missing required fields: filename, mimeType, fileBase64",
+        error: 'Missing required fields: filename, mimeType, fileBase64',
       });
     }
 
-    const duz = (session as any).duz || "unknown";
-    const fileBuffer = Buffer.from(fileBase64, "base64");
+    const duz = (session as any).duz || 'unknown';
+    const fileBuffer = Buffer.from(fileBase64, 'base64');
 
     // Attempt to store in Orthanc (if available)
     let orthancId: string | null = null;
     let orthancError: string | null = null;
     try {
       const resp = await fetch(`${getOrthancUrl()}/instances`, {
-        method: "POST",
-        headers: { "Content-Type": "application/octet-stream" },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/octet-stream' },
         body: fileBuffer,
         signal: AbortSignal.timeout(30_000),
       });
@@ -123,7 +123,7 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
         log.warn(`Imaging capture: Orthanc store failed: ${orthancError}`);
       }
     } catch (err: any) {
-      orthancError = "Orthanc service unavailable";
+      orthancError = 'Orthanc service unavailable';
       log.warn(`Imaging capture: Orthanc unavailable: ${err.message}`);
     }
 
@@ -138,11 +138,11 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
       fileSize: fileBuffer.length,
       orthancId,
       studyInstanceUid: null,
-      attachedToType: "none",
+      attachedToType: 'none',
       attachedToId: null,
       vistaImageIen: null,
-      status: "captured",
-      notes: captureNotes || "",
+      status: 'captured',
+      notes: captureNotes || '',
     };
 
     captureStore.set(capture.id, capture);
@@ -157,10 +157,12 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
       orthancError,
       vistaFiled: false,
       vistaGrounding: {
-        vistaFiles: ["File 2005 (Image)", "File 2005.1 (Image Audit)"],
-        targetRpcs: ["MAG4 ADD IMAGE", "MAG NEW SO ENTRY"],
-        migrationPath: "1) Wrap file as DICOM SC, 2) Call MAG4 ADD IMAGE with patient/note context, 3) Store IEN in vistaImageIen",
-        sandboxNote: "MAG4 ADD IMAGE not available in WorldVistA Docker. File stored to Orthanc only.",
+        vistaFiles: ['File 2005 (Image)', 'File 2005.1 (Image Audit)'],
+        targetRpcs: ['MAG4 ADD IMAGE', 'MAG NEW SO ENTRY'],
+        migrationPath:
+          '1) Wrap file as DICOM SC, 2) Call MAG4 ADD IMAGE with patient/note context, 3) Store IEN in vistaImageIen',
+        sandboxNote:
+          'MAG4 ADD IMAGE not available in WorldVistA Docker. File stored to Orthanc only.',
       },
     });
   });
@@ -168,17 +170,20 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
   /* ------------------------------------------------------------ */
   /* GET /imaging/capture?dfn=N -- List captures for patient       */
   /* ------------------------------------------------------------ */
-  server.get("/imaging/capture", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/imaging/capture', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = requireSession(request, reply);
     if (!session) return;
 
     const { dfn } = request.query as { dfn?: string };
     if (!dfn) {
-      return reply.code(400).send({ ok: false, error: "Missing dfn query parameter" });
+      return reply.code(400).send({ ok: false, error: 'Missing dfn query parameter' });
     }
 
     const ids = patientCaptureIndex.get(dfn) || [];
-    const captures = ids.map((id) => captureStore.get(id)).filter(Boolean).map((c) => toSafeCapture(c!));
+    const captures = ids
+      .map((id) => captureStore.get(id))
+      .filter(Boolean)
+      .map((c) => toSafeCapture(c!));
 
     return {
       ok: true,
@@ -190,7 +195,7 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
   /* ------------------------------------------------------------ */
   /* GET /imaging/capture/:id -- Capture detail                    */
   /* ------------------------------------------------------------ */
-  server.get("/imaging/capture/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/imaging/capture/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = requireSession(request, reply);
     if (!session) return;
 
@@ -206,7 +211,7 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
   /* ------------------------------------------------------------ */
   /* POST /imaging/capture/:id/link -- Link to note/consult/order  */
   /* ------------------------------------------------------------ */
-  server.post("/imaging/capture/:id/link", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/imaging/capture/:id/link', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = requireSession(request, reply);
     if (!session) return;
 
@@ -220,14 +225,14 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
     if (!attachToType || !attachToId) {
       return reply.code(400).send({
         ok: false,
-        error: "Missing attachToType and attachToId",
+        error: 'Missing attachToType and attachToId',
       });
     }
 
-    if (!["note", "consult", "order"].includes(attachToType)) {
+    if (!['note', 'consult', 'order'].includes(attachToType)) {
       return reply.code(400).send({
         ok: false,
-        error: "attachToType must be note, consult, or order",
+        error: 'attachToType must be note, consult, or order',
       });
     }
 
@@ -236,29 +241,29 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
       return reply.code(404).send({ ok: false, error: `Capture not found: ${id}` });
     }
 
-    if (capture.status === "filed") {
-      return reply.code(409).send({ ok: false, error: "Already filed to VistA" });
+    if (capture.status === 'filed') {
+      return reply.code(409).send({ ok: false, error: 'Already filed to VistA' });
     }
 
     // Update local record
     capture.attachedToType = attachToType;
     capture.attachedToId = attachToId;
-    capture.status = "attached";
+    capture.status = 'attached';
 
     // VistA writeback is integration-pending
     return {
       ok: true,
-      status: "attached-locally",
+      status: 'attached-locally',
       capture: toSafeCapture(capture),
       vistaFiled: false,
       vistaGrounding: {
-        vistaFiles: ["File 2005 (Image)", "File 8925 (TIU Document)", "File 123 (Consultation)"],
+        vistaFiles: ['File 2005 (Image)', 'File 8925 (TIU Document)', 'File 123 (Consultation)'],
         targetRpcs: [
-          "MAG4 ADD IMAGE",
-          attachToType === "note" ? "TIU ID ATTACH ENTRY" : "ORQQCN ATTACH MED RESULTS",
+          'MAG4 ADD IMAGE',
+          attachToType === 'note' ? 'TIU ID ATTACH ENTRY' : 'ORQQCN ATTACH MED RESULTS',
         ],
-        migrationPath: `1) Ensure image in ^MAG(2005), 2) Call ${attachToType === "note" ? "TIU ID ATTACH ENTRY" : "ORQQCN ATTACH MED RESULTS"} to link, 3) Update vistaImageIen`,
-        sandboxNote: "VistA attachment RPCs not wired in sandbox. Link tracked locally.",
+        migrationPath: `1) Ensure image in ^MAG(2005), 2) Call ${attachToType === 'note' ? 'TIU ID ATTACH ENTRY' : 'ORQQCN ATTACH MED RESULTS'} to link, 3) Update vistaImageIen`,
+        sandboxNote: 'VistA attachment RPCs not wired in sandbox. Link tracked locally.',
       },
     };
   });

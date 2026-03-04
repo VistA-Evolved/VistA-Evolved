@@ -1,13 +1,16 @@
 # Phase 77 — OBSERVABILITY + RELIABILITY v1
 
 ## Mission
+
 Production-grade observability without PHI leaks: correlation IDs, enhanced
 tracing, metrics SLO gates, PHI-safe logging enforcement, perf budget gates.
 
 ## User Request
+
 > Phase 77: OBSERVABILITY + RELIABILITY v1 (TRACING, METRICS, LOG CORRELATION, PERF SLO GATES)
 
 ## Definition of Done
+
 - (A) Every API request has correlationId surfaced to client via X-Request-Id
 - (B) OTel traces for key flows (RPC, business actions, module toggle)
 - (C) Metrics: p50/p95 latency, error rate, RPC latency, SLO budget
@@ -16,6 +19,7 @@ tracing, metrics SLO gates, PHI-safe logging enforcement, perf budget gates.
 - (F) verify-latest + reality click-audit pass
 
 ## Non-Negotiables
+
 - No /reports folders
 - No PHI in telemetry (spans, metrics labels, logs)
 - Integrate with module registry
@@ -25,10 +29,12 @@ tracing, metrics SLO gates, PHI-safe logging enforcement, perf budget gates.
 ## Implementation Steps
 
 ### Step 0 — Prompt Files
+
 Create `prompts/82-PHASE-77-OBSERVABILITY-V1/77-01-IMPLEMENT.md` and
 `prompts/82-PHASE-77-OBSERVABILITY-V1/77-99-VERIFY.md`.
 
 ### Step 1 — Web-Side Correlation ID Propagation
+
 - Create `apps/web/src/lib/fetch-with-correlation.ts`
   - Generates `X-Request-Id` via `crypto.randomUUID()`
   - Attaches to every outbound request
@@ -39,6 +45,7 @@ Create `prompts/82-PHASE-77-OBSERVABILITY-V1/77-01-IMPLEMENT.md` and
   - `apps/web/src/stores/data-cache.tsx` — `fetchJSON()` function
 
 ### Step 2 — Enhanced OTel Span Instrumentation
+
 - Create `apps/api/src/telemetry/spans.ts`
   - `withSpan(name, attrs, fn)` — context manager for any async op
   - `spanModuleToggle(module, action)` — module enable/disable
@@ -48,6 +55,7 @@ Create `prompts/82-PHASE-77-OBSERVABILITY-V1/77-01-IMPLEMENT.md` and
   - Auto-attaches requestId from AsyncLocalStorage
 
 ### Step 3 — Observability Config
+
 - Create `apps/api/src/config/observability-config.ts`
   - Head-based sampling rate (env: `OTEL_SAMPLING_RATE`, default 1.0)
   - SLO targets imported from `config/performance-budgets.json`
@@ -56,6 +64,7 @@ Create `prompts/82-PHASE-77-OBSERVABILITY-V1/77-01-IMPLEMENT.md` and
   - Span attribute allowlist (rpcName, duz, module — no PHI)
 
 ### Step 4 — SLO Helpers in Metrics
+
 - Add to `apps/api/src/telemetry/metrics.ts`:
   - `sloLatencyWithinBudget` gauge — tracks % of requests within p95 budget
   - `sloErrorBudgetRemaining` gauge — tracks error budget remaining
@@ -63,19 +72,23 @@ Create `prompts/82-PHASE-77-OBSERVABILITY-V1/77-01-IMPLEMENT.md` and
   - Reads budgets from `config/performance-budgets.json`
 
 ### Step 5 — PHI-in-Telemetry Guard
+
 - Add `assertNoPhiInAttributes(attrs)` to `apps/api/src/lib/phi-redaction.ts`
 - Creates a function that throws if any attribute key matches PHI fields
 - Used by span helpers as runtime guard
 - Verified by CI/verifier gate
 
 ### Step 6 — Verifier
+
 - Create `scripts/verify-phase77-observability.ps1` with 67+ gates
 - Update `scripts/verify-latest.ps1` to delegate to Phase 77
 
 ### Step 7 — Docs
+
 - Create `docs/runbooks/phase77-observability-reliability.md`
 
 ## Files Touched
+
 - `apps/web/src/lib/fetch-with-correlation.ts` (NEW)
 - `apps/web/src/lib/api.ts` (EDIT — use correlation fetch)
 - `apps/web/src/stores/data-cache.tsx` (EDIT — use correlation fetch)

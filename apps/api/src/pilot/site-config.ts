@@ -9,23 +9,23 @@
  * worklist pattern from Phase 23 for consistency.
  */
 
-import { randomBytes } from "node:crypto";
-import { log } from "../lib/logger.js";
+import { randomBytes } from 'node:crypto';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
 
 export type SiteStatus =
-  | "draft"
-  | "configuring"
-  | "preflight"
-  | "ready"
-  | "go-live"
-  | "active"
-  | "suspended";
+  | 'draft'
+  | 'configuring'
+  | 'preflight'
+  | 'ready'
+  | 'go-live'
+  | 'active'
+  | 'suspended';
 
-export type SiteEnvironment = "sandbox" | "staging" | "production";
+export type SiteEnvironment = 'sandbox' | 'staging' | 'production';
 
 export interface SiteConfig {
   id: string;
@@ -75,7 +75,7 @@ export interface CreateSiteRequest {
 const siteStore = new Map<string, SiteConfig>();
 
 function generateSiteId(): string {
-  return `site-${randomBytes(6).toString("hex")}`;
+  return `site-${randomBytes(6).toString('hex')}`;
 }
 
 export function createSite(req: CreateSiteRequest): SiteConfig {
@@ -91,10 +91,10 @@ export function createSite(req: CreateSiteRequest): SiteConfig {
     id: generateSiteId(),
     name: req.name,
     code: req.code,
-    status: "draft",
-    environment: req.environment || "sandbox",
-    tenantId: req.tenantId || "default",
-    vistaEndpoint: req.vistaEndpoint || "127.0.0.1:9430",
+    status: 'draft',
+    environment: req.environment || 'sandbox',
+    tenantId: req.tenantId || 'default',
+    vistaEndpoint: req.vistaEndpoint || '127.0.0.1:9430',
     expectedUsers: req.expectedUsers || 0,
     goLiveDate: req.goLiveDate,
     siteContact: req.siteContact,
@@ -104,7 +104,7 @@ export function createSite(req: CreateSiteRequest): SiteConfig {
   };
 
   siteStore.set(site.id, site);
-  log.info("Pilot site created", { siteId: site.id, code: site.code });
+  log.info('Pilot site created', { siteId: site.id, code: site.code });
   return site;
 }
 
@@ -118,7 +118,20 @@ export function listSites(): SiteConfig[] {
 
 export function updateSite(
   id: string,
-  updates: Partial<Pick<SiteConfig, "name" | "status" | "environment" | "vistaEndpoint" | "expectedUsers" | "goLiveDate" | "siteContact" | "notes" | "lastPreflightScore">>,
+  updates: Partial<
+    Pick<
+      SiteConfig,
+      | 'name'
+      | 'status'
+      | 'environment'
+      | 'vistaEndpoint'
+      | 'expectedUsers'
+      | 'goLiveDate'
+      | 'siteContact'
+      | 'notes'
+      | 'lastPreflightScore'
+    >
+  >
 ): SiteConfig {
   const site = siteStore.get(id);
   if (!site) throw new Error(`Site not found: ${id}`);

@@ -10,15 +10,15 @@
  * Usage: node scripts/phi-leak-scan.mjs
  */
 
-import { readFileSync, readdirSync, statSync } from "fs";
-import { join, relative, extname } from "path";
+import { readFileSync, readdirSync, statSync } from 'fs';
+import { join, relative, extname } from 'path';
 
 const ROOT = process.cwd();
-const API_SRC = join(ROOT, "apps", "api", "src");
+const API_SRC = join(ROOT, 'apps', 'api', 'src');
 
-const SCAN_EXTENSIONS = new Set([".ts", ".tsx", ".js", ".mjs"]);
-const SKIP_DIRS = new Set(["node_modules", ".next", "dist", ".git", "coverage"]);
-const SKIP_FILES = new Set(["phi-leak-scan.mjs", "redaction.test.ts", "logger.test.ts"]);
+const SCAN_EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.mjs']);
+const SKIP_DIRS = new Set(['node_modules', '.next', 'dist', '.git', 'coverage']);
+const SKIP_FILES = new Set(['phi-leak-scan.mjs', 'redaction.test.ts', 'logger.test.ts']);
 
 /**
  * Patterns that indicate potential PHI leakage.
@@ -26,34 +26,42 @@ const SKIP_FILES = new Set(["phi-leak-scan.mjs", "redaction.test.ts", "logger.te
  */
 const LEAK_PATTERNS = [
   {
-    name: "console.log in server code",
+    name: 'console.log in server code',
     regex: /\bconsole\.(log|info|debug|warn|error)\s*\(/g,
-    allow: [".test.ts", "logger.ts", "logger.test.ts", "scripts/", "tools/", "telemetry/", "pg-db.ts"],
-    description: "Use structured logger instead of console.*",
+    allow: [
+      '.test.ts',
+      'logger.ts',
+      'logger.test.ts',
+      'scripts/',
+      'tools/',
+      'telemetry/',
+      'pg-db.ts',
+    ],
+    description: 'Use structured logger instead of console.*',
   },
   {
-    name: "Stack trace in response",
+    name: 'Stack trace in response',
     regex: /(?:reply|res|response)\.(?:send|code|status).*(?:stack|stackTrace|err\.message)/g,
-    allow: ["admin-payer-db-routes.ts"], // CONCURRENCY_CONFLICT sends controlled err.message (not stack)
-    description: "Never send stack traces to clients",
+    allow: ['admin-payer-db-routes.ts'], // CONCURRENCY_CONFLICT sends controlled err.message (not stack)
+    description: 'Never send stack traces to clients',
   },
   {
-    name: "Raw error.message to client",
+    name: 'Raw error.message to client',
     regex: /reply\.send\(\s*\{[^}]*error:\s*(?:err|error)\.message/g,
     allow: [],
-    description: "Sanitize error messages before sending to clients",
+    description: 'Sanitize error messages before sending to clients',
   },
   {
-    name: "Logging raw request body",
+    name: 'Logging raw request body',
     regex: /log\.\w+\([^)]*request\.body\s*[,)]/g,
     allow: [],
-    description: "Never log raw request bodies (may contain PHI)",
+    description: 'Never log raw request bodies (may contain PHI)',
   },
   {
-    name: "Logging raw cookie/session",
+    name: 'Logging raw cookie/session',
     regex: /log\.\w+\([^)]*(?:request\.cookies|request\.headers\.cookie|sessionToken)\s*[,)]/g,
     allow: [],
-    description: "Never log cookies or session tokens",
+    description: 'Never log cookies or session tokens',
   },
 ];
 
@@ -72,7 +80,7 @@ function collectFiles(dir) {
 }
 
 function isAllowed(filePath, allowPatterns) {
-  const rel = relative(ROOT, filePath).replace(/\\/g, "/");
+  const rel = relative(ROOT, filePath).replace(/\\/g, '/');
   return allowPatterns.some((p) => rel.includes(p));
 }
 
@@ -82,15 +90,15 @@ const violations = [];
 const files = collectFiles(API_SRC);
 
 for (const filePath of files) {
-  const content = readFileSync(filePath, "utf-8");
-  const rel = relative(ROOT, filePath).replace(/\\/g, "/");
-  const lines = content.split("\n");
+  const content = readFileSync(filePath, 'utf-8');
+  const rel = relative(ROOT, filePath).replace(/\\/g, '/');
+  const lines = content.split('\n');
 
   for (const pattern of LEAK_PATTERNS) {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       // Skip comments
-      if (line.trim().startsWith("//") || line.trim().startsWith("*")) continue;
+      if (line.trim().startsWith('//') || line.trim().startsWith('*')) continue;
 
       pattern.regex.lastIndex = 0;
       if (pattern.regex.test(line) && !isAllowed(filePath, pattern.allow)) {
@@ -120,6 +128,6 @@ if (violations.length > 0) {
   }
   process.exit(1);
 } else {
-  console.log("  No PHI leak patterns detected. CLEAN.\n");
+  console.log('  No PHI leak patterns detected. CLEAN.\n');
   process.exit(0);
 }

@@ -24,256 +24,214 @@ export interface PanelWiring {
 
 export const PANEL_WIRING: PanelWiring[] = [
   {
-    "panel": "CoverSheetPanel",
-    "wiredToVista": true,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/vista/allergies",
-      "/vista/problems",
-      "/vista/vitals",
-      "/vista/notes",
-      "/vista/medications"
+    panel: 'CoverSheetPanel',
+    wiredToVista: true,
+    partiallyWired: false,
+    noVista: false,
+    routes: [
+      '/vista/allergies',
+      '/vista/problems',
+      '/vista/vitals',
+      '/vista/notes',
+      '/vista/medications',
     ],
-    "totalRpcs": 5,
-    "wiredRpcs": 5,
-    "pendingRpcs": []
+    totalRpcs: 5,
+    wiredRpcs: 5,
+    pendingRpcs: [],
   },
   {
-    "panel": "ProblemsPanel",
-    "wiredToVista": true,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/vista/problems"
-    ],
-    "totalRpcs": 3,
-    "wiredRpcs": 3,
-    "pendingRpcs": []
+    panel: 'ProblemsPanel',
+    wiredToVista: true,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/vista/problems'],
+    totalRpcs: 3,
+    wiredRpcs: 3,
+    pendingRpcs: [],
   },
   {
-    "panel": "MedsPanel",
-    "wiredToVista": true,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/vista/medications"
-    ],
-    "totalRpcs": 1,
-    "wiredRpcs": 1,
-    "pendingRpcs": []
+    panel: 'MedsPanel',
+    wiredToVista: true,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/vista/medications'],
+    totalRpcs: 1,
+    wiredRpcs: 1,
+    pendingRpcs: [],
   },
   {
-    "panel": "OrdersPanel",
-    "wiredToVista": true,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/vista/cprs/orders"
-    ],
-    "totalRpcs": 5,
-    "wiredRpcs": 5,
-    "pendingRpcs": []
+    panel: 'OrdersPanel',
+    wiredToVista: true,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/vista/cprs/orders'],
+    totalRpcs: 5,
+    wiredRpcs: 5,
+    pendingRpcs: [],
   },
   {
-    "panel": "NotesPanel",
-    "wiredToVista": true,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/vista/cprs/notes"
-    ],
-    "totalRpcs": 4,
-    "wiredRpcs": 4,
-    "pendingRpcs": []
+    panel: 'NotesPanel',
+    wiredToVista: true,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/vista/cprs/notes'],
+    totalRpcs: 4,
+    wiredRpcs: 4,
+    pendingRpcs: [],
   },
   {
-    "panel": "ConsultsPanel",
-    "wiredToVista": false,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/vista/consults"
-    ],
-    "totalRpcs": 2,
-    "wiredRpcs": 0,
-    "pendingRpcs": [
-      "ORQQCN LIST",
-      "ORQQCN DETAIL"
-    ]
+    panel: 'ConsultsPanel',
+    wiredToVista: false,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/vista/consults'],
+    totalRpcs: 2,
+    wiredRpcs: 0,
+    pendingRpcs: ['ORQQCN LIST', 'ORQQCN DETAIL'],
   },
   {
-    "panel": "LabsPanel",
-    "wiredToVista": true,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/vista/labs"
-    ],
-    "totalRpcs": 2,
-    "wiredRpcs": 2,
-    "pendingRpcs": []
+    panel: 'LabsPanel',
+    wiredToVista: true,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/vista/labs'],
+    totalRpcs: 2,
+    wiredRpcs: 2,
+    pendingRpcs: [],
   },
   {
-    "panel": "ReportsPanel",
-    "wiredToVista": true,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/vista/reports"
-    ],
-    "totalRpcs": 2,
-    "wiredRpcs": 2,
-    "pendingRpcs": []
+    panel: 'ReportsPanel',
+    wiredToVista: true,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/vista/reports'],
+    totalRpcs: 2,
+    wiredRpcs: 2,
+    pendingRpcs: [],
   },
   {
-    "panel": "SurgeryPanel",
-    "wiredToVista": false,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/vista/surgery"
-    ],
-    "totalRpcs": 2,
-    "wiredRpcs": 0,
-    "pendingRpcs": [
-      "ORWSR LIST",
-      "ORWSR RPTLIST"
-    ]
+    panel: 'SurgeryPanel',
+    wiredToVista: false,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/vista/surgery'],
+    totalRpcs: 2,
+    wiredRpcs: 0,
+    pendingRpcs: ['ORWSR LIST', 'ORWSR RPTLIST'],
   },
   {
-    "panel": "DCSummPanel",
-    "wiredToVista": true,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/vista/dc-summaries"
-    ],
-    "totalRpcs": 1,
-    "wiredRpcs": 1,
-    "pendingRpcs": []
+    panel: 'DCSummPanel',
+    wiredToVista: true,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/vista/dc-summaries'],
+    totalRpcs: 1,
+    wiredRpcs: 1,
+    pendingRpcs: [],
   },
   {
-    "panel": "ImagingPanel",
-    "wiredToVista": true,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/imaging"
-    ],
-    "totalRpcs": 2,
-    "wiredRpcs": 2,
-    "pendingRpcs": []
+    panel: 'ImagingPanel',
+    wiredToVista: true,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/imaging'],
+    totalRpcs: 2,
+    wiredRpcs: 2,
+    pendingRpcs: [],
   },
   {
-    "panel": "ImmunizationsPanel",
-    "wiredToVista": true,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/vista/immunizations"
-    ],
-    "totalRpcs": 1,
-    "wiredRpcs": 1,
-    "pendingRpcs": []
+    panel: 'ImmunizationsPanel',
+    wiredToVista: true,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/vista/immunizations'],
+    totalRpcs: 1,
+    wiredRpcs: 1,
+    pendingRpcs: [],
   },
   {
-    "panel": "ADTPanel",
-    "wiredToVista": true,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/adt"
-    ],
-    "totalRpcs": 3,
-    "wiredRpcs": 3,
-    "pendingRpcs": []
+    panel: 'ADTPanel',
+    wiredToVista: true,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/adt'],
+    totalRpcs: 3,
+    wiredRpcs: 3,
+    pendingRpcs: [],
   },
   {
-    "panel": "NursingPanel",
-    "wiredToVista": true,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/nursing"
-    ],
-    "totalRpcs": 1,
-    "wiredRpcs": 1,
-    "pendingRpcs": []
+    panel: 'NursingPanel',
+    wiredToVista: true,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/nursing'],
+    totalRpcs: 1,
+    wiredRpcs: 1,
+    pendingRpcs: [],
   },
   {
-    "panel": "TelehealthPanel",
-    "wiredToVista": false,
-    "partiallyWired": false,
-    "noVista": true,
-    "routes": [
-      "/telehealth"
-    ],
-    "totalRpcs": 0,
-    "wiredRpcs": 0,
-    "pendingRpcs": []
+    panel: 'TelehealthPanel',
+    wiredToVista: false,
+    partiallyWired: false,
+    noVista: true,
+    routes: ['/telehealth'],
+    totalRpcs: 0,
+    wiredRpcs: 0,
+    pendingRpcs: [],
   },
   {
-    "panel": "MessagingTasksPanel",
-    "wiredToVista": true,
-    "partiallyWired": false,
-    "noVista": false,
-    "routes": [
-      "/messaging"
-    ],
-    "totalRpcs": 2,
-    "wiredRpcs": 2,
-    "pendingRpcs": []
+    panel: 'MessagingTasksPanel',
+    wiredToVista: true,
+    partiallyWired: false,
+    noVista: false,
+    routes: ['/messaging'],
+    totalRpcs: 2,
+    wiredRpcs: 2,
+    pendingRpcs: [],
   },
   {
-    "panel": "AIAssistPanel",
-    "wiredToVista": false,
-    "partiallyWired": false,
-    "noVista": true,
-    "routes": [],
-    "totalRpcs": 0,
-    "wiredRpcs": 0,
-    "pendingRpcs": []
+    panel: 'AIAssistPanel',
+    wiredToVista: false,
+    partiallyWired: false,
+    noVista: true,
+    routes: [],
+    totalRpcs: 0,
+    wiredRpcs: 0,
+    pendingRpcs: [],
   },
   {
-    "panel": "IntakePanel",
-    "wiredToVista": false,
-    "partiallyWired": false,
-    "noVista": true,
-    "routes": [
-      "/intake"
-    ],
-    "totalRpcs": 0,
-    "wiredRpcs": 0,
-    "pendingRpcs": []
+    panel: 'IntakePanel',
+    wiredToVista: false,
+    partiallyWired: false,
+    noVista: true,
+    routes: ['/intake'],
+    totalRpcs: 0,
+    wiredRpcs: 0,
+    pendingRpcs: [],
   },
   {
-    "panel": "RpcDebugPanel",
-    "wiredToVista": false,
-    "partiallyWired": false,
-    "noVista": true,
-    "routes": [
-      "/ws/console"
-    ],
-    "totalRpcs": 0,
-    "wiredRpcs": 0,
-    "pendingRpcs": []
+    panel: 'RpcDebugPanel',
+    wiredToVista: false,
+    partiallyWired: false,
+    noVista: true,
+    routes: ['/ws/console'],
+    totalRpcs: 0,
+    wiredRpcs: 0,
+    pendingRpcs: [],
   },
   {
-    "panel": "PatientLOAPanel",
-    "wiredToVista": false,
-    "partiallyWired": false,
-    "noVista": true,
-    "routes": [
-      "/inpatient/loa"
-    ],
-    "totalRpcs": 0,
-    "wiredRpcs": 0,
-    "pendingRpcs": []
-  }
+    panel: 'PatientLOAPanel',
+    wiredToVista: false,
+    partiallyWired: false,
+    noVista: true,
+    routes: ['/inpatient/loa'],
+    totalRpcs: 0,
+    wiredRpcs: 0,
+    pendingRpcs: [],
+  },
 ];
 
 /** Quick lookup by panel name */
 export function getPanelWiring(panelName: string): PanelWiring | undefined {
-  return PANEL_WIRING.find(p => p.panel === panelName);
+  return PANEL_WIRING.find((p) => p.panel === panelName);
 }

@@ -8,24 +8,24 @@
  * Usage: node scripts/regen-rpc-snapshot.mjs [--dry-run]
  */
 
-import { readFileSync, writeFileSync } from "node:fs";
-import { resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, writeFileSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, "..");
+const ROOT = resolve(__dirname, '..');
 
-const REGISTRY_PATH = resolve(ROOT, "apps/api/src/vista/rpcRegistry.ts");
-const SNAPSHOT_PATH = resolve(ROOT, "data/vista/rpc-catalog-snapshot.json");
+const REGISTRY_PATH = resolve(ROOT, 'apps/api/src/vista/rpcRegistry.ts');
+const SNAPSHOT_PATH = resolve(ROOT, 'data/vista/rpc-catalog-snapshot.json');
 
-const dryRun = process.argv.includes("--dry-run");
+const dryRun = process.argv.includes('--dry-run');
 
-const regSrc = readFileSync(REGISTRY_PATH, "utf-8");
+const regSrc = readFileSync(REGISTRY_PATH, 'utf-8');
 
 // Split file at RPC_EXCEPTIONS to separate the two arrays
-const exceptIdx = regSrc.indexOf("export const RPC_EXCEPTIONS");
+const exceptIdx = regSrc.indexOf('export const RPC_EXCEPTIONS');
 const registrySrc = exceptIdx > 0 ? regSrc.slice(0, exceptIdx) : regSrc;
-const exceptionSrc = exceptIdx > 0 ? regSrc.slice(exceptIdx) : "";
+const exceptionSrc = exceptIdx > 0 ? regSrc.slice(exceptIdx) : '';
 
 function extractEntries(src) {
   const entries = [];
@@ -49,8 +49,8 @@ function extractEntries(src) {
     let tags;
     if (tagsMatch) {
       tags = tagsMatch[1]
-        .split(",")
-        .map((t) => t.trim().replace(/["']/g, ""))
+        .split(',')
+        .map((t) => t.trim().replace(/["']/g, ''))
         .filter(Boolean);
     }
 
@@ -98,7 +98,7 @@ const exceptions = exceptionEntries.map((e) => {
 
 const snapshot = {
   generatedAt: new Date().toISOString(),
-  generatedBy: "scripts/regen-rpc-snapshot.mjs",
+  generatedBy: 'scripts/regen-rpc-snapshot.mjs',
   registry,
   exceptions,
 };
@@ -112,6 +112,6 @@ console.log(`Total:         ${total}`);
 if (dryRun) {
   console.log(`[DRY RUN] Would write ${SNAPSHOT_PATH}`);
 } else {
-  writeFileSync(SNAPSHOT_PATH, JSON.stringify(snapshot, null, 2) + "\n", "utf-8");
+  writeFileSync(SNAPSHOT_PATH, JSON.stringify(snapshot, null, 2) + '\n', 'utf-8');
   console.log(`Written: ${SNAPSHOT_PATH}`);
 }

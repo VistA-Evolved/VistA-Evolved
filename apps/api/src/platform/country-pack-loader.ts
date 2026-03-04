@@ -149,7 +149,12 @@ export function validatePack(pack: CountryPackValues): string[] {
   // Terminology
   const td = pack.terminologyDefaults;
   if (td) {
-    for (const key of ['diagnosisCodeSystem', 'procedureCodeSystem', 'labCodeSystem', 'drugCodeSystem'] as const) {
+    for (const key of [
+      'diagnosisCodeSystem',
+      'procedureCodeSystem',
+      'labCodeSystem',
+      'drugCodeSystem',
+    ] as const) {
       if (!VALID_CODE_SYSTEMS.includes(td[key])) {
         errors.push(`terminologyDefaults.${key} must be one of: ${VALID_CODE_SYSTEMS.join(', ')}`);
       }

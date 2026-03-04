@@ -15,11 +15,11 @@ Phase 37 adds automated quality gates for Release Candidate hardening:
 
 ### Test Totals
 
-| Suite | Pass | Skip | Fail |
-|-------|------|------|------|
-| Playwright E2E | 16 | 1 | 0 |
-| Vitest API | 37 | 0 | 0 |
-| **Total** | **53** | **1** | **0** |
+| Suite          | Pass   | Skip  | Fail  |
+| -------------- | ------ | ----- | ----- |
+| Playwright E2E | 16     | 1     | 0     |
+| Vitest API     | 37     | 0     | 0     |
+| **Total**      | **53** | **1** | **0** |
 
 ## Bugs Fixed
 
@@ -49,6 +49,7 @@ npx vitest run --reporter=verbose
 ## Files Touched
 
 ### New files
+
 - `apps/web/playwright.config.ts`
 - `apps/web/e2e/auth.setup.ts`
 - `apps/web/e2e/helpers/auth.ts`
@@ -64,6 +65,7 @@ npx vitest run --reporter=verbose
 - `prompts/39-PHASE-37-QUALITY-HARDENING/39-01-quality-hardening-IMPLEMENT.md`
 
 ### Modified files
+
 - `apps/web/src/components/cprs/panels/CoverSheetPanel.tsx` (a11y contrast fix)
 - `apps/web/src/components/cprs/cprs.module.css` (a11y contrast fix)
 - `.gitignore` (test artifact patterns)

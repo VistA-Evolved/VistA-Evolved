@@ -1,12 +1,14 @@
 # Phase 14A — Compatibility Layer IMPLEMENT
 
 ## User Request
+
 Implement a VistA Compatibility Layer with RPC capability discovery, runtime
 availability checks, and structured fallback behavior for missing RPCs.
 
 ## Implementation Steps
 
 ### 14A — RPC Capability Discovery + Cache
+
 1. Create `apps/api/src/vista/rpcCapabilities.ts`:
    - `discoverCapabilities()` — probes all known RPCs against VistA
    - `requireRpc(name)` — throws structured error if unavailable
@@ -22,6 +24,7 @@ availability checks, and structured fallback behavior for missing RPCs.
    - Response includes: totalProbed, available, missing, expectedMissing, unexpectedMissing
 
 ### 14B — Close 2 WARN RPC Gaps
+
 3. Update `apps/api/src/routes/inbox.ts`:
    - Import `optionalRpc` from capability layer
    - Check capability before calling ORWORB UNSIG ORDERS / ORWORB FASTUSER
@@ -29,6 +32,7 @@ availability checks, and structured fallback behavior for missing RPCs.
    - Maintain backward-compat `rpcErrors` field for Phase 13 verifier
 
 ### 14C — Write-back Parity Upgrades
+
 4. Create `apps/api/src/routes/write-backs.ts`:
    - POST /vista/orders/sign — ORWDX SAVE or server-side draft
    - POST /vista/orders/release — ORWDXA VERIFY or server-side draft
@@ -53,6 +57,7 @@ availability checks, and structured fallback behavior for missing RPCs.
    - Show ack mode (synced / server-side / local) in status message
 
 ### 14D — Imaging Viewer Integration
+
 7. Create `apps/api/src/routes/imaging.ts`:
    - GET /vista/imaging/status — viewer enabled/disabled + capability detection
    - GET /vista/imaging/report — radiology report (if RA DETAILED REPORT available)
@@ -61,16 +66,19 @@ availability checks, and structured fallback behavior for missing RPCs.
 8. Register all new routes in `apps/api/src/index.ts`
 
 ### 14E — Documentation
+
 9. Create prompts/16-PHASE-14-PARITY-CLOSURE/
 10. Create docs/runbooks/cprs-parity-closure-phase14.md
 11. Update known-gaps documentation
 
 ### 14F — Verifier Script
+
 12. Create scripts/verify-phase1-to-phase14-parity-closure.ps1
 13. Update scripts/verify-latest.ps1
 14. Achieve 0 WARN on WorldVistA sandbox
 
 ## Verification Steps
+
 - Run scripts/verify-phase1-to-phase14-parity-closure.ps1
 - All PASS, 0 WARN, 0 FAIL
 - GET /vista/rpc-capabilities returns structured map
@@ -80,6 +88,7 @@ availability checks, and structured fallback behavior for missing RPCs.
 - GET /vista/imaging/status shows viewer state
 
 ## Files Touched
+
 - apps/api/src/vista/rpcCapabilities.ts (NEW)
 - apps/api/src/routes/capabilities.ts (NEW)
 - apps/api/src/routes/write-backs.ts (NEW)
@@ -91,4 +100,4 @@ availability checks, and structured fallback behavior for missing RPCs.
 - scripts/verify-phase1-to-phase14-parity-closure.ps1 (NEW)
 - scripts/verify-latest.ps1 (MODIFIED)
 - docs/runbooks/cprs-parity-closure-phase14.md (NEW)
-- prompts/16-PHASE-14-PARITY-CLOSURE/* (NEW)
+- prompts/16-PHASE-14-PARITY-CLOSURE/\* (NEW)

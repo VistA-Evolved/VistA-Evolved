@@ -39,18 +39,14 @@
  *   GET /vista/interop/v2/hlo/summary          — HLO dashboard summary (combined)
  */
 
-import type { FastifyInstance } from "fastify";
-import { z } from "zod/v4";
-import { requireSession, requireRole } from "../auth/auth-routes.js";
-import { log } from "../lib/logger.js";
-import { validate } from "../lib/validation.js";
-import { audit } from "../lib/audit.js";
-import { cachedRpc, CircuitOpenError, RpcTimeoutError } from "../lib/rpc-resilience.js";
-import {
-  connect,
-  callRpc,
-  disconnect,
-} from "../vista/rpcBrokerClient.js";
+import type { FastifyInstance } from 'fastify';
+import { z } from 'zod/v4';
+import { requireSession, requireRole } from '../auth/auth-routes.js';
+import { log } from '../lib/logger.js';
+import { validate } from '../lib/validation.js';
+import { audit } from '../lib/audit.js';
+import { cachedRpc, CircuitOpenError, RpcTimeoutError } from '../lib/rpc-resilience.js';
+import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient.js';
 import { safeErr } from '../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
@@ -58,9 +54,7 @@ import { safeErr } from '../lib/safe-error.js';
 /* ------------------------------------------------------------------ */
 
 /** Cache TTL for interop telemetry responses (ms). Default 10s. */
-const INTEROP_CACHE_TTL_MS = parseInt(
-  process.env.INTEROP_CACHE_TTL_MS || "10000", 10,
-);
+const INTEROP_CACHE_TTL_MS = parseInt(process.env.INTEROP_CACHE_TTL_MS || '10000', 10);
 
 /* ------------------------------------------------------------------ */
 /*  Zod query schemas                                                  */
@@ -76,14 +70,14 @@ const Hl7MessagesQuerySchema = z.object({
 
 /* Phase 58: v2 message list query schema */
 const MsgListQuerySchema = z.object({
-  direction: z.enum(["I", "O", "*"]).optional(),
-  status: z.enum(["D", "E", "P", "*"]).optional(),
+  direction: z.enum(['I', 'O', '*']).optional(),
+  status: z.enum(['D', 'E', 'P', '*']).optional(),
   limit: z.string().regex(/^\d+$/).optional(),
 });
 
 /* Phase 58: unmask request body schema */
 const UnmaskBodySchema = z.object({
-  reason: z.string().min(10, "Reason must be at least 10 characters"),
+  reason: z.string().min(10, 'Reason must be at least 10 characters'),
 });
 
 /* ------------------------------------------------------------------ */
@@ -91,19 +85,19 @@ const UnmaskBodySchema = z.object({
 /* ------------------------------------------------------------------ */
 
 /** HL7 segment types that may contain PHI — masked by default. */
-const PHI_SEGMENT_TYPES = new Set(["PID", "NK1", "GT1", "IN1", "IN2", "ACC"]);
+const PHI_SEGMENT_TYPES = new Set(['PID', 'NK1', 'GT1', 'IN1', 'IN2', 'ACC']);
 
 /** Direction code to human-readable label */
 const DIRECTION_LABELS: Record<string, string> = {
-  I: "inbound",
-  O: "outbound",
+  I: 'inbound',
+  O: 'outbound',
 };
 
 /** Status code to human-readable label */
 const STATUS_LABELS: Record<string, string> = {
-  D: "done",
-  E: "error",
-  P: "pending",
+  D: 'done',
+  E: 'error',
+  P: 'pending',
 };
 
 /* ------------------------------------------------------------------ */
@@ -182,8 +176,8 @@ interface HL7MessageDetail {
 /** Parse "key=value" pairs from a caret-delimited line */
 function parseKV(segment: string): Record<string, string> {
   const result: Record<string, string> = {};
-  for (const part of segment.split("^")) {
-    const eq = part.indexOf("=");
+  for (const part of segment.split('^')) {
+    const eq = part.indexOf('=');
     if (eq > 0) {
       result[part.substring(0, eq)] = part.substring(eq + 1);
     }
@@ -205,7 +199,7 @@ function parseKV(segment: string): Record<string, string> {
 async function callInteropRpcCached(
   rpcName: string,
   params: string[] = [],
-  ttlMs: number = INTEROP_CACHE_TTL_MS,
+  ttlMs: number = INTEROP_CACHE_TTL_MS
 ): Promise<string[]> {
   return cachedRpc(
     async () => {
@@ -215,13 +209,17 @@ async function callInteropRpcCached(
         disconnect();
         return lines;
       } catch (err) {
-        try { disconnect(); } catch { /* ignore */ }
+        try {
+          disconnect();
+        } catch {
+          /* ignore */
+        }
         throw err;
       }
     },
     rpcName,
     params,
-    ttlMs,
+    ttlMs
   );
 }
 
@@ -231,21 +229,21 @@ function handleRpcError(err: unknown, rpcName: string, reply: any): void {
   if (err instanceof CircuitOpenError) {
     reply.status(503).send({
       ok: false,
-      error: "VistA temporarily unavailable",
-      detail: "Circuit breaker open -- too many recent failures",
+      error: 'VistA temporarily unavailable',
+      detail: 'Circuit breaker open -- too many recent failures',
       rpc: rpcName,
     });
   } else if (err instanceof RpcTimeoutError) {
     reply.status(504).send({
       ok: false,
-      error: "VistA RPC timed out",
+      error: 'VistA RPC timed out',
       detail: message,
       rpc: rpcName,
     });
   } else {
     reply.status(502).send({
       ok: false,
-      error: "VistA RPC failed",
+      error: 'VistA RPC failed',
       detail: message,
       rpc: rpcName,
     });
@@ -257,33 +255,32 @@ function handleRpcError(err: unknown, rpcName: string, reply: any): void {
 /* ------------------------------------------------------------------ */
 
 export default async function vistaInteropRoutes(server: FastifyInstance): Promise<void> {
-
   // ---- GET /vista/interop/hl7-links ----
-  server.get("/vista/interop/hl7-links", async (request, reply) => {
+  server.get('/vista/interop/hl7-links', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin", "provider"], reply);
+    requireRole(session, ['admin', 'provider'], reply);
 
     const parsed = validate(Hl7LinksQuerySchema, request.query);
-    const maxN = parsed.ok ? (parsed.data.max || "100") : "100";
+    const maxN = parsed.ok ? parsed.data.max || '100' : '100';
 
     try {
-      const lines = await callInteropRpcCached("VE INTEROP HL7 LINKS", [maxN]);
+      const lines = await callInteropRpcCached('VE INTEROP HL7 LINKS', [maxN]);
 
       // Parse header: count^status^description
-      const header = lines[0] || "";
-      const headerParts = header.split("^");
+      const header = lines[0] || '';
+      const headerParts = header.split('^');
       const count = parseInt(headerParts[0], 10) || 0;
-      const status = headerParts[1] || "UNKNOWN";
+      const status = headerParts[1] || 'UNKNOWN';
 
-      if (status === "NOT_AVAILABLE") {
+      if (status === 'NOT_AVAILABLE') {
         return {
           ok: true,
-          source: "vista",
+          source: 'vista',
           available: false,
-          message: headerParts[2] || "HL7 data unavailable",
+          message: headerParts[2] || 'HL7 data unavailable',
           links: [],
-          rpcsUsed: ["VE INTEROP HL7 LINKS"],
-          vistaFile: "#870 HL LOGICAL LINK",
+          rpcsUsed: ['VE INTEROP HL7 LINKS'],
+          vistaFile: '#870 HL LOGICAL LINK',
           timestamp: new Date().toISOString(),
         };
       }
@@ -291,126 +288,142 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
       // Parse link rows: IEN^NAME^TYPE^STATE^DEVICE^PORT
       const links: HL7Link[] = [];
       for (let i = 1; i < lines.length; i++) {
-        const parts = lines[i].split("^");
+        const parts = lines[i].split('^');
         if (parts.length < 2) continue;
         links.push({
           ien: parseInt(parts[0], 10) || 0,
-          name: parts[1] || "",
-          type: parts[2] || "unknown",
-          state: parts[3] || "unknown",
-          device: parts[4] || "",
-          port: parts[5] || "",
+          name: parts[1] || '',
+          type: parts[2] || 'unknown',
+          state: parts[3] || 'unknown',
+          device: parts[4] || '',
+          port: parts[5] || '',
         });
       }
 
       return {
         ok: true,
-        source: "vista",
+        source: 'vista',
         available: true,
         count,
         links,
-        rpc: "VE INTEROP HL7 LINKS",
-        rpcsUsed: ["VE INTEROP HL7 LINKS"],
-        vistaFile: "#870 HL LOGICAL LINK",
+        rpc: 'VE INTEROP HL7 LINKS',
+        rpcsUsed: ['VE INTEROP HL7 LINKS'],
+        vistaFile: '#870 HL LOGICAL LINK',
         timestamp: new Date().toISOString(),
       };
     } catch (err: unknown) {
-      handleRpcError(err, "VE INTEROP HL7 LINKS", reply);
+      handleRpcError(err, 'VE INTEROP HL7 LINKS', reply);
     }
   });
 
   // ---- GET /vista/interop/hl7-messages ----
-  server.get("/vista/interop/hl7-messages", async (request, reply) => {
+  server.get('/vista/interop/hl7-messages', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin", "provider"], reply);
+    requireRole(session, ['admin', 'provider'], reply);
 
     const parsed = validate(Hl7MessagesQuerySchema, request.query);
-    const hours = parsed.ok ? (parsed.data.hours || "24") : "24";
+    const hours = parsed.ok ? parsed.data.hours || '24' : '24';
 
     try {
-      const lines = await callInteropRpcCached("VE INTEROP HL7 MSGS", [hours]);
+      const lines = await callInteropRpcCached('VE INTEROP HL7 MSGS', [hours]);
 
-      const header = lines[0] || "";
-      const headerParts = header.split("^");
-      const status = headerParts[1] || "UNKNOWN";
+      const header = lines[0] || '';
+      const headerParts = header.split('^');
+      const status = headerParts[1] || 'UNKNOWN';
 
-      if (status === "NOT_AVAILABLE") {
+      if (status === 'NOT_AVAILABLE') {
         return {
           ok: true,
-          source: "vista",
+          source: 'vista',
           available: false,
-          message: headerParts[2] || "HL7 message data unavailable",
+          message: headerParts[2] || 'HL7 message data unavailable',
           stats: null,
-          rpcsUsed: ["VE INTEROP HL7 MSGS"],
-          vistaFile: "#773 HL7 MESSAGE ADMIN",
+          rpcsUsed: ['VE INTEROP HL7 MSGS'],
+          vistaFile: '#773 HL7 MESSAGE ADMIN',
           timestamp: new Date().toISOString(),
         };
       }
 
       // Parse stat rows: label^value
       const stats: HL7MessageStats = {
-        total: 0, outbound: 0, inbound: 0,
-        completed: 0, errors: 0, pending: 0,
+        total: 0,
+        outbound: 0,
+        inbound: 0,
+        completed: 0,
+        errors: 0,
+        pending: 0,
         lookbackHours: parseInt(hours, 10) || 24,
       };
 
       for (let i = 1; i < lines.length; i++) {
-        const parts = lines[i].split("^");
+        const parts = lines[i].split('^');
         const label = parts[0];
         const value = parseInt(parts[1], 10) || 0;
         switch (label) {
-          case "total": stats.total = value; break;
-          case "outbound": stats.outbound = value; break;
-          case "inbound": stats.inbound = value; break;
-          case "completed": stats.completed = value; break;
-          case "errors": stats.errors = value; break;
-          case "pending": stats.pending = value; break;
+          case 'total':
+            stats.total = value;
+            break;
+          case 'outbound':
+            stats.outbound = value;
+            break;
+          case 'inbound':
+            stats.inbound = value;
+            break;
+          case 'completed':
+            stats.completed = value;
+            break;
+          case 'errors':
+            stats.errors = value;
+            break;
+          case 'pending':
+            stats.pending = value;
+            break;
         }
       }
 
       return {
         ok: true,
-        source: "vista",
+        source: 'vista',
         available: true,
         stats,
-        rpc: "VE INTEROP HL7 MSGS",
-        rpcsUsed: ["VE INTEROP HL7 MSGS"],
-        vistaFile: "#773 HL7 MESSAGE ADMIN",
+        rpc: 'VE INTEROP HL7 MSGS',
+        rpcsUsed: ['VE INTEROP HL7 MSGS'],
+        vistaFile: '#773 HL7 MESSAGE ADMIN',
         timestamp: new Date().toISOString(),
       };
     } catch (err: unknown) {
-      handleRpcError(err, "VE INTEROP HL7 MSGS", reply);
+      handleRpcError(err, 'VE INTEROP HL7 MSGS', reply);
     }
   });
 
   // ---- GET /vista/interop/hlo-status ----
-  server.get("/vista/interop/hlo-status", async (request, reply) => {
+  server.get('/vista/interop/hlo-status', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin", "provider"], reply);
+    requireRole(session, ['admin', 'provider'], reply);
 
     try {
-      const lines = await callInteropRpcCached("VE INTEROP HLO STATUS");
+      const lines = await callInteropRpcCached('VE INTEROP HLO STATUS');
 
-      const header = lines[0] || "";
-      const headerParts = header.split("^");
-      const status = headerParts[1] || "UNKNOWN";
+      const header = lines[0] || '';
+      const headerParts = header.split('^');
+      const status = headerParts[1] || 'UNKNOWN';
 
-      if (status === "NOT_AVAILABLE") {
+      if (status === 'NOT_AVAILABLE') {
         return {
           ok: true,
-          source: "vista",
+          source: 'vista',
           available: false,
-          message: headerParts[2] || "HLO data unavailable",
+          message: headerParts[2] || 'HLO data unavailable',
           hloStatus: null,
-          rpcsUsed: ["VE INTEROP HLO STATUS"],
-          vistaFiles: "#779.1, #779.2, #779.4, #779.9, #778",
+          rpcsUsed: ['VE INTEROP HLO STATUS'],
+          vistaFiles: '#779.1, #779.2, #779.4, #779.9, #778',
           timestamp: new Date().toISOString(),
         };
       }
 
       // Parse rows
       const hloStatus: HLOStatus = {
-        system: { domain: "", maxQueues: 0, mode: "" },
+        system: { domain: '', maxQueues: 0, mode: '' },
         apps: [],
         subscriptionCount: 0,
         priorityQueueCount: 0,
@@ -419,29 +432,29 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
       for (let i = 1; i < lines.length; i++) {
         const line = lines[i];
-        const parts = line.split("^");
+        const parts = line.split('^');
         const rowType = parts[0];
 
-        if (rowType === "system") {
+        if (rowType === 'system') {
           const kv = parseKV(line);
-          hloStatus.system.domain = kv.domain || "";
+          hloStatus.system.domain = kv.domain || '';
           hloStatus.system.maxQueues = parseInt(kv.maxQueues, 10) || 0;
-          hloStatus.system.mode = kv.mode || "";
-        } else if (rowType === "app") {
+          hloStatus.system.mode = kv.mode || '';
+        } else if (rowType === 'app') {
           const kv = parseKV(line);
           hloStatus.apps.push({
             ien: parseInt(kv.ien, 10) || 0,
-            name: kv.name || "",
-            package: kv.package || "",
-            type: kv.type || "",
+            name: kv.name || '',
+            package: kv.package || '',
+            type: kv.type || '',
           });
-        } else if (rowType === "subscriptions") {
+        } else if (rowType === 'subscriptions') {
           const kv = parseKV(line);
           hloStatus.subscriptionCount = parseInt(kv.count, 10) || 0;
-        } else if (rowType === "priorityQueues") {
+        } else if (rowType === 'priorityQueues') {
           const kv = parseKV(line);
           hloStatus.priorityQueueCount = parseInt(kv.count, 10) || 0;
-        } else if (rowType === "hloMessages") {
+        } else if (rowType === 'hloMessages') {
           const kv = parseKV(line);
           hloStatus.hloMessageCount = parseInt(kv.totalCount, 10) || 0;
         }
@@ -449,40 +462,40 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
       return {
         ok: true,
-        source: "vista",
+        source: 'vista',
         available: true,
         hloStatus,
-        rpc: "VE INTEROP HLO STATUS",
-        rpcsUsed: ["VE INTEROP HLO STATUS"],
-        vistaFiles: "#779.1, #779.2, #779.4, #779.9, #778",
+        rpc: 'VE INTEROP HLO STATUS',
+        rpcsUsed: ['VE INTEROP HLO STATUS'],
+        vistaFiles: '#779.1, #779.2, #779.4, #779.9, #778',
         timestamp: new Date().toISOString(),
       };
     } catch (err: unknown) {
-      handleRpcError(err, "VE INTEROP HLO STATUS", reply);
+      handleRpcError(err, 'VE INTEROP HLO STATUS', reply);
     }
   });
 
   // ---- GET /vista/interop/queue-depth ----
-  server.get("/vista/interop/queue-depth", async (request, reply) => {
+  server.get('/vista/interop/queue-depth', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin", "provider"], reply);
+    requireRole(session, ['admin', 'provider'], reply);
 
     try {
-      const lines = await callInteropRpcCached("VE INTEROP QUEUE DEPTH");
+      const lines = await callInteropRpcCached('VE INTEROP QUEUE DEPTH');
 
-      const header = lines[0] || "";
-      const headerParts = header.split("^");
-      const status = headerParts[1] || "UNKNOWN";
+      const header = lines[0] || '';
+      const headerParts = header.split('^');
+      const status = headerParts[1] || 'UNKNOWN';
 
-      if (status === "NOT_AVAILABLE") {
+      if (status === 'NOT_AVAILABLE') {
         return {
           ok: true,
-          source: "vista",
+          source: 'vista',
           available: false,
-          message: "Queue data unavailable",
+          message: 'Queue data unavailable',
           queues: null,
-          rpcsUsed: ["VE INTEROP QUEUE DEPTH"],
-          vistaFiles: "#773, #778, #776",
+          rpcsUsed: ['VE INTEROP QUEUE DEPTH'],
+          vistaFiles: '#773, #778, #776',
           timestamp: new Date().toISOString(),
         };
       }
@@ -495,41 +508,41 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
       for (let i = 1; i < lines.length; i++) {
         const line = lines[i];
-        const parts = line.split("^");
+        const parts = line.split('^');
         const rowType = parts[0];
         const kv = parseKV(line);
 
-        if (rowType === "hl7Messages") {
+        if (rowType === 'hl7Messages') {
           queues.hl7Messages.total = parseInt(kv.total, 10) || 0;
           queues.hl7Messages.pending = parseInt(kv.pending, 10) || 0;
           queues.hl7Messages.errors = parseInt(kv.errors, 10) || 0;
-        } else if (rowType === "hloMessages") {
+        } else if (rowType === 'hloMessages') {
           queues.hloMessages.total = parseInt(kv.total, 10) || 0;
-        } else if (rowType === "monitorJobs") {
+        } else if (rowType === 'monitorJobs') {
           queues.monitorJobs.count = parseInt(kv.count, 10) || 0;
         }
       }
 
       return {
         ok: true,
-        source: "vista",
+        source: 'vista',
         available: true,
         queues,
-        rpc: "VE INTEROP QUEUE DEPTH",
-        rpcsUsed: ["VE INTEROP QUEUE DEPTH"],
-        vistaFiles: "#773, #778, #776",
+        rpc: 'VE INTEROP QUEUE DEPTH',
+        rpcsUsed: ['VE INTEROP QUEUE DEPTH'],
+        vistaFiles: '#773, #778, #776',
         timestamp: new Date().toISOString(),
       };
     } catch (err: unknown) {
-      handleRpcError(err, "VE INTEROP QUEUE DEPTH", reply);
+      handleRpcError(err, 'VE INTEROP QUEUE DEPTH', reply);
     }
   });
 
   // ---- GET /vista/interop/summary ----
   // Combined dashboard endpoint — calls all 4 RPCs, cached as aggregate
-  server.get("/vista/interop/summary", async (request, reply) => {
+  server.get('/vista/interop/summary', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin", "provider"], reply);
+    requireRole(session, ['admin', 'provider'], reply);
 
     const startTime = Date.now();
 
@@ -543,13 +556,16 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           await connect();
 
           for (const rpc of [
-            "VE INTEROP HL7 LINKS",
-            "VE INTEROP HL7 MSGS",
-            "VE INTEROP HLO STATUS",
-            "VE INTEROP QUEUE DEPTH",
+            'VE INTEROP HL7 LINKS',
+            'VE INTEROP HL7 MSGS',
+            'VE INTEROP HLO STATUS',
+            'VE INTEROP QUEUE DEPTH',
           ]) {
             try {
-              const lines = await callRpc(rpc, rpc.includes("LINKS") ? ["20"] : rpc.includes("MSGS") ? ["168"] : []);
+              const lines = await callRpc(
+                rpc,
+                rpc.includes('LINKS') ? ['20'] : rpc.includes('MSGS') ? ['168'] : []
+              );
               batch[rpc] = { ok: true, lines };
             } catch (err: any) {
               batch[rpc] = { ok: false, lines: [], error: safeErr(err) };
@@ -559,72 +575,88 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           disconnect();
           return batch;
         },
-        "VE INTEROP SUMMARY",
+        'VE INTEROP SUMMARY',
         [],
-        INTEROP_CACHE_TTL_MS,
+        INTEROP_CACHE_TTL_MS
       );
 
       // Parse LINKS result
-      const linksRaw = results["VE INTEROP HL7 LINKS"];
+      const linksRaw = results['VE INTEROP HL7 LINKS'];
       let linkCount = 0;
       const linkSample: HL7Link[] = [];
       if (linksRaw?.ok && linksRaw.lines.length > 0) {
-        const hdr = linksRaw.lines[0].split("^");
+        const hdr = linksRaw.lines[0].split('^');
         linkCount = parseInt(hdr[0], 10) || 0;
         for (let i = 1; i < linksRaw.lines.length; i++) {
-          const p = linksRaw.lines[i].split("^");
+          const p = linksRaw.lines[i].split('^');
           linkSample.push({
             ien: parseInt(p[0], 10) || 0,
-            name: p[1] || "",
-            type: p[2] || "",
-            state: p[3] || "",
-            device: p[4] || "",
-            port: p[5] || "",
+            name: p[1] || '',
+            type: p[2] || '',
+            state: p[3] || '',
+            device: p[4] || '',
+            port: p[5] || '',
           });
         }
       }
 
       // Parse MSGS result
-      const msgsRaw = results["VE INTEROP HL7 MSGS"];
+      const msgsRaw = results['VE INTEROP HL7 MSGS'];
       const msgStats: HL7MessageStats = {
-        total: 0, outbound: 0, inbound: 0,
-        completed: 0, errors: 0, pending: 0,
+        total: 0,
+        outbound: 0,
+        inbound: 0,
+        completed: 0,
+        errors: 0,
+        pending: 0,
         lookbackHours: 168,
       };
       if (msgsRaw?.ok) {
         for (let i = 1; i < msgsRaw.lines.length; i++) {
-          const p = msgsRaw.lines[i].split("^");
+          const p = msgsRaw.lines[i].split('^');
           const v = parseInt(p[1], 10) || 0;
           switch (p[0]) {
-            case "total": msgStats.total = v; break;
-            case "outbound": msgStats.outbound = v; break;
-            case "inbound": msgStats.inbound = v; break;
-            case "completed": msgStats.completed = v; break;
-            case "errors": msgStats.errors = v; break;
-            case "pending": msgStats.pending = v; break;
+            case 'total':
+              msgStats.total = v;
+              break;
+            case 'outbound':
+              msgStats.outbound = v;
+              break;
+            case 'inbound':
+              msgStats.inbound = v;
+              break;
+            case 'completed':
+              msgStats.completed = v;
+              break;
+            case 'errors':
+              msgStats.errors = v;
+              break;
+            case 'pending':
+              msgStats.pending = v;
+              break;
           }
         }
       }
 
       // Parse HLO result
-      const hloRaw = results["VE INTEROP HLO STATUS"];
-      let hloDomain = "";
-      let hloMode = "";
+      const hloRaw = results['VE INTEROP HLO STATUS'];
+      let hloDomain = '';
+      let hloMode = '';
       let hloAppCount = 0;
       if (hloRaw?.ok) {
         for (const line of hloRaw.lines) {
-          const parts = line.split("^");
-          if (parts[0] === "system") {
+          const parts = line.split('^');
+          if (parts[0] === 'system') {
             const kv = parseKV(line);
-            hloDomain = kv.domain || "";
-            hloMode = kv.mode || "";
+            hloDomain = kv.domain || '';
+            hloMode = kv.mode || '';
           }
-          if (parts[0] === "app") hloAppCount++;
+          if (parts[0] === 'app') hloAppCount++;
         }
       }
 
       // Parse QUEUE result
-      const qRaw = results["VE INTEROP QUEUE DEPTH"];
+      const qRaw = results['VE INTEROP QUEUE DEPTH'];
       const queues: QueueDepth = {
         hl7Messages: { total: 0, pending: 0, errors: 0 },
         hloMessages: { total: 0 },
@@ -632,15 +664,15 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
       };
       if (qRaw?.ok) {
         for (const line of qRaw.lines) {
-          const parts = line.split("^");
+          const parts = line.split('^');
           const kv = parseKV(line);
-          if (parts[0] === "hl7Messages") {
+          if (parts[0] === 'hl7Messages') {
             queues.hl7Messages.total = parseInt(kv.total, 10) || 0;
             queues.hl7Messages.pending = parseInt(kv.pending, 10) || 0;
             queues.hl7Messages.errors = parseInt(kv.errors, 10) || 0;
           }
-          if (parts[0] === "hloMessages") queues.hloMessages.total = parseInt(kv.total, 10) || 0;
-          if (parts[0] === "monitorJobs") queues.monitorJobs.count = parseInt(kv.count, 10) || 0;
+          if (parts[0] === 'hloMessages') queues.hloMessages.total = parseInt(kv.total, 10) || 0;
+          if (parts[0] === 'monitorJobs') queues.monitorJobs.count = parseInt(kv.count, 10) || 0;
         }
       }
 
@@ -648,7 +680,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
       return {
         ok: true,
-        source: "vista",
+        source: 'vista',
         elapsedMs: elapsed,
         hl7: {
           linkCount,
@@ -662,16 +694,26 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
         },
         queues,
         rpcsUsed: [
-          "VE INTEROP HL7 LINKS",
-          "VE INTEROP HL7 MSGS",
-          "VE INTEROP HLO STATUS",
-          "VE INTEROP QUEUE DEPTH",
+          'VE INTEROP HL7 LINKS',
+          'VE INTEROP HL7 MSGS',
+          'VE INTEROP HLO STATUS',
+          'VE INTEROP QUEUE DEPTH',
         ],
-        vistaFiles: ["#870", "#773", "#772", "#779.1", "#779.2", "#779.4", "#779.9", "#778", "#776"],
+        vistaFiles: [
+          '#870',
+          '#773',
+          '#772',
+          '#779.1',
+          '#779.2',
+          '#779.4',
+          '#779.9',
+          '#778',
+          '#776',
+        ],
         timestamp: new Date().toISOString(),
       };
     } catch (err: unknown) {
-      handleRpcError(err, "VE INTEROP SUMMARY", reply);
+      handleRpcError(err, 'VE INTEROP SUMMARY', reply);
     }
   });
 
@@ -683,35 +725,35 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
   // List individual HL7 messages from VistA file #773 with direction/status filters.
   // Uses VE INTEROP MSG LIST (MSGLIST^ZVEMIOP).
   // Returns metadata only — NO message bodies.
-  server.get("/vista/interop/v2/hl7/messages", async (request, reply) => {
+  server.get('/vista/interop/v2/hl7/messages', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin", "provider"], reply);
+    requireRole(session, ['admin', 'provider'], reply);
 
     const parsed = validate(MsgListQuerySchema, request.query);
-    const direction = parsed.ok ? (parsed.data.direction || "*") : "*";
-    const status = parsed.ok ? (parsed.data.status || "*") : "*";
-    const limit = parsed.ok ? (parsed.data.limit || "50") : "50";
+    const direction = parsed.ok ? parsed.data.direction || '*' : '*';
+    const status = parsed.ok ? parsed.data.status || '*' : '*';
+    const limit = parsed.ok ? parsed.data.limit || '50' : '50';
 
     try {
       const lines = await callInteropRpcCached(
-        "VE INTEROP MSG LIST",
+        'VE INTEROP MSG LIST',
         [direction, status, limit],
-        INTEROP_CACHE_TTL_MS,
+        INTEROP_CACHE_TTL_MS
       );
 
-      const header = (lines[0] || "").split("^");
+      const header = (lines[0] || '').split('^');
       const count = parseInt(header[0], 10) || 0;
-      const rpcStatus = header[1] || "UNKNOWN";
+      const rpcStatus = header[1] || 'UNKNOWN';
 
-      if (rpcStatus === "NOT_AVAILABLE") {
+      if (rpcStatus === 'NOT_AVAILABLE') {
         return {
           ok: true,
-          source: "vista",
+          source: 'vista',
           available: false,
-          message: header[2] || "HL7 MESSAGE ADMIN (#773) not available",
+          message: header[2] || 'HL7 MESSAGE ADMIN (#773) not available',
           messages: [],
-          rpcsUsed: ["VE INTEROP MSG LIST"],
-          vistaFile: "#773 HL7 MESSAGE ADMIN",
+          rpcsUsed: ['VE INTEROP MSG LIST'],
+          vistaFile: '#773 HL7 MESSAGE ADMIN',
           timestamp: new Date().toISOString(),
         };
       }
@@ -719,10 +761,10 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
       // Parse message rows: IEN^DIR^STATUS^LINK_IEN^DATE^MSG_IEN_772
       const messages: HL7MessageRow[] = [];
       for (let i = 1; i < lines.length; i++) {
-        const parts = lines[i].split("^");
+        const parts = lines[i].split('^');
         if (parts.length < 2) continue;
-        const dir = parts[1] || "";
-        const st = parts[2] || "";
+        const dir = parts[1] || '';
+        const st = parts[2] || '';
         messages.push({
           ien: parseInt(parts[0], 10) || 0,
           direction: dir,
@@ -730,33 +772,38 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           status: st,
           statusLabel: STATUS_LABELS[st] || st,
           linkIen: parseInt(parts[3], 10) || 0,
-          date: parts[4] || "",
+          date: parts[4] || '',
           textIen: parseInt(parts[5], 10) || 0,
         });
       }
 
-      audit("interop.message-list", "success", {
-        duz: session.duz,
-        name: session.userName,
-        role: session.role,
-      }, {
-        detail: { direction, status, limit, count },
-      });
+      audit(
+        'interop.message-list',
+        'success',
+        {
+          duz: session.duz,
+          name: session.userName,
+          role: session.role,
+        },
+        {
+          detail: { direction, status, limit, count },
+        }
+      );
 
       return {
         ok: true,
-        source: "vista",
+        source: 'vista',
         available: true,
         count,
         filters: { direction, status, limit: parseInt(limit, 10) },
         messages,
-        rpc: "VE INTEROP MSG LIST",
-        rpcsUsed: ["VE INTEROP MSG LIST"],
-        vistaFile: "#773 HL7 MESSAGE ADMIN",
+        rpc: 'VE INTEROP MSG LIST',
+        rpcsUsed: ['VE INTEROP MSG LIST'],
+        vistaFile: '#773 HL7 MESSAGE ADMIN',
         timestamp: new Date().toISOString(),
       };
     } catch (err: unknown) {
-      handleRpcError(err, "VE INTEROP MSG LIST", reply);
+      handleRpcError(err, 'VE INTEROP MSG LIST', reply);
     }
   });
 
@@ -765,43 +812,43 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
   // Uses VE INTEROP MSG DETAIL (MSGDETL^ZVEMIOP).
   // Returns segment TYPE COUNTS only — no raw segment content.
   // PHI segment types (PID, NK1, GT1, IN1, IN2, ACC) are flagged as masked.
-  server.get("/vista/interop/v2/hl7/messages/:id", async (request, reply) => {
+  server.get('/vista/interop/v2/hl7/messages/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin", "provider"], reply);
+    requireRole(session, ['admin', 'provider'], reply);
 
     const { id } = request.params as { id: string };
     const msgIen = parseInt(id, 10);
     if (!msgIen || msgIen < 1) {
-      return reply.status(400).send({ ok: false, error: "Invalid message IEN" });
+      return reply.status(400).send({ ok: false, error: 'Invalid message IEN' });
     }
 
     try {
       const lines = await callInteropRpcCached(
-        "VE INTEROP MSG DETAIL",
+        'VE INTEROP MSG DETAIL',
         [String(msgIen)],
-        5000, // shorter TTL for detail — 5s
+        5000 // shorter TTL for detail — 5s
       );
 
-      const header = (lines[0] || "").split("^");
-      const rpcStatus = header[1] || "UNKNOWN";
+      const header = (lines[0] || '').split('^');
+      const rpcStatus = header[1] || 'UNKNOWN';
 
-      if (rpcStatus === "NOT_FOUND" || rpcStatus === "ERROR") {
+      if (rpcStatus === 'NOT_FOUND' || rpcStatus === 'ERROR') {
         return reply.status(404).send({
           ok: false,
-          error: header[2] || "Message not found",
-          rpcsUsed: ["VE INTEROP MSG DETAIL"],
+          error: header[2] || 'Message not found',
+          rpcsUsed: ['VE INTEROP MSG DETAIL'],
         });
       }
 
       // Parse metadata row: meta^ien=N^dir=X^status=X^link=N^date=D^textIen=N
       let detail: HL7MessageDetail = {
         ien: msgIen,
-        direction: "",
-        directionLabel: "",
-        status: "",
-        statusLabel: "",
+        direction: '',
+        directionLabel: '',
+        status: '',
+        statusLabel: '',
         linkIen: 0,
-        date: "",
+        date: '',
         textIen: 0,
         segments: [],
         totalSegments: 0,
@@ -809,57 +856,63 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
       for (let i = 1; i < lines.length; i++) {
         const line = lines[i];
-        const parts = line.split("^");
+        const parts = line.split('^');
         const rowType = parts[0];
 
-        if (rowType === "meta") {
+        if (rowType === 'meta') {
           const kv = parseKV(line);
           detail.ien = parseInt(kv.ien, 10) || msgIen;
-          detail.direction = kv.dir || "";
-          detail.directionLabel = DIRECTION_LABELS[kv.dir] || kv.dir || "";
-          detail.status = kv.status || "";
-          detail.statusLabel = STATUS_LABELS[kv.status] || kv.status || "";
+          detail.direction = kv.dir || '';
+          detail.directionLabel = DIRECTION_LABELS[kv.dir] || kv.dir || '';
+          detail.status = kv.status || '';
+          detail.statusLabel = STATUS_LABELS[kv.status] || kv.status || '';
           detail.linkIen = parseInt(kv.link, 10) || 0;
-          detail.date = kv.date || "";
+          detail.date = kv.date || '';
           detail.textIen = parseInt(kv.textIen, 10) || 0;
-        } else if (rowType === "seg") {
+        } else if (rowType === 'seg') {
           const kv = parseKV(line);
-          const segType = kv.type || "UNK";
+          const segType = kv.type || 'UNK';
           const segCount = parseInt(kv.count, 10) || 0;
           detail.segments.push({
             type: segType,
             count: segCount,
             masked: PHI_SEGMENT_TYPES.has(segType),
           });
-        } else if (rowType === "segTotal") {
+        } else if (rowType === 'segTotal') {
           const kv = parseKV(line);
           detail.totalSegments = parseInt(kv.count, 10) || 0;
         }
       }
 
-      audit("interop.message-detail", "success", {
-        duz: session.duz,
-        name: session.userName,
-        role: session.role,
-      }, {
-        detail: { msgIen, segmentCount: detail.totalSegments },
-      });
+      audit(
+        'interop.message-detail',
+        'success',
+        {
+          duz: session.duz,
+          name: session.userName,
+          role: session.role,
+        },
+        {
+          detail: { msgIen, segmentCount: detail.totalSegments },
+        }
+      );
 
       return {
         ok: true,
-        source: "vista",
+        source: 'vista',
         available: true,
         masked: true,
-        maskNote: "PHI segment types (PID, NK1, GT1, IN1, IN2, ACC) are flagged. " +
-          "No raw segment content is returned — only type counts.",
+        maskNote:
+          'PHI segment types (PID, NK1, GT1, IN1, IN2, ACC) are flagged. ' +
+          'No raw segment content is returned — only type counts.',
         detail,
-        rpc: "VE INTEROP MSG DETAIL",
-        rpcsUsed: ["VE INTEROP MSG DETAIL"],
-        vistaFiles: "#773 HL7 MESSAGE ADMIN, #772 HL7 MESSAGE TEXT",
+        rpc: 'VE INTEROP MSG DETAIL',
+        rpcsUsed: ['VE INTEROP MSG DETAIL'],
+        vistaFiles: '#773 HL7 MESSAGE ADMIN, #772 HL7 MESSAGE TEXT',
         timestamp: new Date().toISOString(),
       };
     } catch (err: unknown) {
-      handleRpcError(err, "VE INTEROP MSG DETAIL", reply);
+      handleRpcError(err, 'VE INTEROP MSG DETAIL', reply);
     }
   });
 
@@ -870,14 +923,14 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
   // means returning the detail with masked=false flags on PHI segments.
   // If future M routines return actual segment content, this endpoint
   // would gate access to that content.
-  server.post("/vista/interop/v2/hl7/messages/:id/unmask", async (request, reply) => {
+  server.post('/vista/interop/v2/hl7/messages/:id/unmask', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin"], reply);
+    requireRole(session, ['admin'], reply);
 
     const { id } = request.params as { id: string };
     const msgIen = parseInt(id, 10);
     if (!msgIen || msgIen < 1) {
-      return reply.status(400).send({ ok: false, error: "Invalid message IEN" });
+      return reply.status(400).send({ ok: false, error: 'Invalid message IEN' });
     }
 
     const body = (request.body as any) || {};
@@ -885,7 +938,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
     if (!bodyParsed.ok) {
       return reply.status(400).send({
         ok: false,
-        error: "Reason is required (minimum 10 characters)",
+        error: 'Reason is required (minimum 10 characters)',
         validation: bodyParsed.error,
       });
     }
@@ -893,19 +946,24 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
     const reason = bodyParsed.data.reason;
 
     // Audit the unmask action BEFORE returning data
-    audit("interop.message-unmask", "success", {
-      duz: session.duz,
-      name: session.userName,
-      role: session.role,
-    }, {
-      detail: {
-        msgIen,
-        reason,
-        warning: "PHI unmask granted for HL7 message detail",
+    audit(
+      'interop.message-unmask',
+      'success',
+      {
+        duz: session.duz,
+        name: session.userName,
+        role: session.role,
       },
-    });
+      {
+        detail: {
+          msgIen,
+          reason,
+          warning: 'PHI unmask granted for HL7 message detail',
+        },
+      }
+    );
 
-    log.info("Interop message unmask granted", {
+    log.info('Interop message unmask granted', {
       duz: session.duz,
       msgIen,
       reason: reason.substring(0, 100),
@@ -913,31 +971,31 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
     try {
       const lines = await callInteropRpcCached(
-        "VE INTEROP MSG DETAIL",
+        'VE INTEROP MSG DETAIL',
         [String(msgIen)],
-        0, // no cache for unmask — always fresh
+        0 // no cache for unmask — always fresh
       );
 
-      const header = (lines[0] || "").split("^");
-      const rpcStatus = header[1] || "UNKNOWN";
+      const header = (lines[0] || '').split('^');
+      const rpcStatus = header[1] || 'UNKNOWN';
 
-      if (rpcStatus === "NOT_FOUND" || rpcStatus === "ERROR") {
+      if (rpcStatus === 'NOT_FOUND' || rpcStatus === 'ERROR') {
         return reply.status(404).send({
           ok: false,
-          error: header[2] || "Message not found",
-          rpcsUsed: ["VE INTEROP MSG DETAIL"],
+          error: header[2] || 'Message not found',
+          rpcsUsed: ['VE INTEROP MSG DETAIL'],
         });
       }
 
       // Parse same as detail but with masked=false
       let detail: HL7MessageDetail = {
         ien: msgIen,
-        direction: "",
-        directionLabel: "",
-        status: "",
-        statusLabel: "",
+        direction: '',
+        directionLabel: '',
+        status: '',
+        statusLabel: '',
         linkIen: 0,
-        date: "",
+        date: '',
         textIen: 0,
         segments: [],
         totalSegments: 0,
@@ -945,29 +1003,29 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
       for (let i = 1; i < lines.length; i++) {
         const line = lines[i];
-        const parts = line.split("^");
+        const parts = line.split('^');
         const rowType = parts[0];
 
-        if (rowType === "meta") {
+        if (rowType === 'meta') {
           const kv = parseKV(line);
           detail.ien = parseInt(kv.ien, 10) || msgIen;
-          detail.direction = kv.dir || "";
-          detail.directionLabel = DIRECTION_LABELS[kv.dir] || kv.dir || "";
-          detail.status = kv.status || "";
-          detail.statusLabel = STATUS_LABELS[kv.status] || kv.status || "";
+          detail.direction = kv.dir || '';
+          detail.directionLabel = DIRECTION_LABELS[kv.dir] || kv.dir || '';
+          detail.status = kv.status || '';
+          detail.statusLabel = STATUS_LABELS[kv.status] || kv.status || '';
           detail.linkIen = parseInt(kv.link, 10) || 0;
-          detail.date = kv.date || "";
+          detail.date = kv.date || '';
           detail.textIen = parseInt(kv.textIen, 10) || 0;
-        } else if (rowType === "seg") {
+        } else if (rowType === 'seg') {
           const kv = parseKV(line);
-          const segType = kv.type || "UNK";
+          const segType = kv.type || 'UNK';
           const segCount = parseInt(kv.count, 10) || 0;
           detail.segments.push({
             type: segType,
             count: segCount,
             masked: false, // ALL segments unmasked after admin approval
           });
-        } else if (rowType === "segTotal") {
+        } else if (rowType === 'segTotal') {
           const kv = parseKV(line);
           detail.totalSegments = parseInt(kv.count, 10) || 0;
         }
@@ -975,29 +1033,29 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
       return {
         ok: true,
-        source: "vista",
+        source: 'vista',
         available: true,
         masked: false,
         unmaskedBy: session.userName,
         unmaskedAt: new Date().toISOString(),
         reason,
         detail,
-        rpc: "VE INTEROP MSG DETAIL",
-        rpcsUsed: ["VE INTEROP MSG DETAIL"],
-        vistaFiles: "#773 HL7 MESSAGE ADMIN, #772 HL7 MESSAGE TEXT",
+        rpc: 'VE INTEROP MSG DETAIL',
+        rpcsUsed: ['VE INTEROP MSG DETAIL'],
+        vistaFiles: '#773 HL7 MESSAGE ADMIN, #772 HL7 MESSAGE TEXT',
         timestamp: new Date().toISOString(),
       };
     } catch (err: unknown) {
-      handleRpcError(err, "VE INTEROP MSG DETAIL", reply);
+      handleRpcError(err, 'VE INTEROP MSG DETAIL', reply);
     }
   });
 
   // ---- GET /vista/interop/v2/hl7/summary ----
   // Enhanced HL7 dashboard summary combining links + messages + queue depth.
   // Uses 3 existing RPCs in parallel (through the summary batch approach).
-  server.get("/vista/interop/v2/hl7/summary", async (request, reply) => {
+  server.get('/vista/interop/v2/hl7/summary', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin", "provider"], reply);
+    requireRole(session, ['admin', 'provider'], reply);
 
     const startTime = Date.now();
 
@@ -1007,14 +1065,14 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           const result: Record<string, { ok: boolean; lines: string[]; error?: string }> = {};
           await connect();
           for (const rpc of [
-            "VE INTEROP HL7 LINKS",
-            "VE INTEROP HL7 MSGS",
-            "VE INTEROP QUEUE DEPTH",
+            'VE INTEROP HL7 LINKS',
+            'VE INTEROP HL7 MSGS',
+            'VE INTEROP QUEUE DEPTH',
           ]) {
             try {
               const lines = await callRpc(
                 rpc,
-                rpc.includes("LINKS") ? ["20"] : rpc.includes("MSGS") ? ["168"] : [],
+                rpc.includes('LINKS') ? ['20'] : rpc.includes('MSGS') ? ['168'] : []
               );
               result[rpc] = { ok: true, lines };
             } catch (err: any) {
@@ -1024,50 +1082,66 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           disconnect();
           return result;
         },
-        "VE INTEROP V2 HL7 SUMMARY",
+        'VE INTEROP V2 HL7 SUMMARY',
         [],
-        INTEROP_CACHE_TTL_MS,
+        INTEROP_CACHE_TTL_MS
       );
 
       // Parse LINKS
-      const linksRaw = batch["VE INTEROP HL7 LINKS"];
+      const linksRaw = batch['VE INTEROP HL7 LINKS'];
       let linkCount = 0;
       const activeLinkNames: string[] = [];
       if (linksRaw?.ok && linksRaw.lines.length > 0) {
-        const hdr = linksRaw.lines[0].split("^");
+        const hdr = linksRaw.lines[0].split('^');
         linkCount = parseInt(hdr[0], 10) || 0;
         for (let i = 1; i < linksRaw.lines.length; i++) {
-          const p = linksRaw.lines[i].split("^");
-          if (p[3] === "ACTIVE" || p[3] === "active") {
-            activeLinkNames.push(p[1] || "");
+          const p = linksRaw.lines[i].split('^');
+          if (p[3] === 'ACTIVE' || p[3] === 'active') {
+            activeLinkNames.push(p[1] || '');
           }
         }
       }
 
       // Parse MSGS
-      const msgsRaw = batch["VE INTEROP HL7 MSGS"];
+      const msgsRaw = batch['VE INTEROP HL7 MSGS'];
       const msgStats: HL7MessageStats = {
-        total: 0, outbound: 0, inbound: 0,
-        completed: 0, errors: 0, pending: 0,
+        total: 0,
+        outbound: 0,
+        inbound: 0,
+        completed: 0,
+        errors: 0,
+        pending: 0,
         lookbackHours: 168,
       };
       if (msgsRaw?.ok) {
         for (let i = 1; i < msgsRaw.lines.length; i++) {
-          const p = msgsRaw.lines[i].split("^");
+          const p = msgsRaw.lines[i].split('^');
           const v = parseInt(p[1], 10) || 0;
           switch (p[0]) {
-            case "total": msgStats.total = v; break;
-            case "outbound": msgStats.outbound = v; break;
-            case "inbound": msgStats.inbound = v; break;
-            case "completed": msgStats.completed = v; break;
-            case "errors": msgStats.errors = v; break;
-            case "pending": msgStats.pending = v; break;
+            case 'total':
+              msgStats.total = v;
+              break;
+            case 'outbound':
+              msgStats.outbound = v;
+              break;
+            case 'inbound':
+              msgStats.inbound = v;
+              break;
+            case 'completed':
+              msgStats.completed = v;
+              break;
+            case 'errors':
+              msgStats.errors = v;
+              break;
+            case 'pending':
+              msgStats.pending = v;
+              break;
           }
         }
       }
 
       // Parse QUEUE
-      const qRaw = batch["VE INTEROP QUEUE DEPTH"];
+      const qRaw = batch['VE INTEROP QUEUE DEPTH'];
       const queues: QueueDepth = {
         hl7Messages: { total: 0, pending: 0, errors: 0 },
         hloMessages: { total: 0 },
@@ -1075,21 +1149,21 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
       };
       if (qRaw?.ok) {
         for (const line of qRaw.lines) {
-          const parts = line.split("^");
+          const parts = line.split('^');
           const kv = parseKV(line);
-          if (parts[0] === "hl7Messages") {
+          if (parts[0] === 'hl7Messages') {
             queues.hl7Messages.total = parseInt(kv.total, 10) || 0;
             queues.hl7Messages.pending = parseInt(kv.pending, 10) || 0;
             queues.hl7Messages.errors = parseInt(kv.errors, 10) || 0;
           }
-          if (parts[0] === "hloMessages") queues.hloMessages.total = parseInt(kv.total, 10) || 0;
-          if (parts[0] === "monitorJobs") queues.monitorJobs.count = parseInt(kv.count, 10) || 0;
+          if (parts[0] === 'hloMessages') queues.hloMessages.total = parseInt(kv.total, 10) || 0;
+          if (parts[0] === 'monitorJobs') queues.monitorJobs.count = parseInt(kv.count, 10) || 0;
         }
       }
 
       return {
         ok: true,
-        source: "vista",
+        source: 'vista',
         version: 2,
         elapsedMs: Date.now() - startTime,
         hl7: {
@@ -1098,20 +1172,20 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           messageStats: msgStats,
           queues: queues.hl7Messages,
         },
-        rpcsUsed: ["VE INTEROP HL7 LINKS", "VE INTEROP HL7 MSGS", "VE INTEROP QUEUE DEPTH"],
-        vistaFiles: ["#870", "#773", "#776"],
+        rpcsUsed: ['VE INTEROP HL7 LINKS', 'VE INTEROP HL7 MSGS', 'VE INTEROP QUEUE DEPTH'],
+        vistaFiles: ['#870', '#773', '#776'],
         timestamp: new Date().toISOString(),
       };
     } catch (err: unknown) {
-      handleRpcError(err, "VE INTEROP V2 HL7 SUMMARY", reply);
+      handleRpcError(err, 'VE INTEROP V2 HL7 SUMMARY', reply);
     }
   });
 
   // ---- GET /vista/interop/v2/hlo/summary ----
   // Enhanced HLO dashboard summary combining HLO status + queue depth.
-  server.get("/vista/interop/v2/hlo/summary", async (request, reply) => {
+  server.get('/vista/interop/v2/hlo/summary', async (request, reply) => {
     const session = await requireSession(request, reply);
-    requireRole(session, ["admin", "provider"], reply);
+    requireRole(session, ['admin', 'provider'], reply);
 
     const startTime = Date.now();
 
@@ -1120,7 +1194,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
         async () => {
           const result: Record<string, { ok: boolean; lines: string[]; error?: string }> = {};
           await connect();
-          for (const rpc of ["VE INTEROP HLO STATUS", "VE INTEROP QUEUE DEPTH"]) {
+          for (const rpc of ['VE INTEROP HLO STATUS', 'VE INTEROP QUEUE DEPTH']) {
             try {
               const lines = await callRpc(rpc, []);
               result[rpc] = { ok: true, lines };
@@ -1131,15 +1205,15 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           disconnect();
           return result;
         },
-        "VE INTEROP V2 HLO SUMMARY",
+        'VE INTEROP V2 HLO SUMMARY',
         [],
-        INTEROP_CACHE_TTL_MS,
+        INTEROP_CACHE_TTL_MS
       );
 
       // Parse HLO STATUS
-      const hloRaw = batch["VE INTEROP HLO STATUS"];
+      const hloRaw = batch['VE INTEROP HLO STATUS'];
       const hloStatus: HLOStatus = {
-        system: { domain: "", maxQueues: 0, mode: "" },
+        system: { domain: '', maxQueues: 0, mode: '' },
         apps: [],
         subscriptionCount: 0,
         priorityQueueCount: 0,
@@ -1147,36 +1221,36 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
       };
       if (hloRaw?.ok) {
         for (const line of hloRaw.lines) {
-          const parts = line.split("^");
+          const parts = line.split('^');
           const kv = parseKV(line);
-          if (parts[0] === "system") {
-            hloStatus.system.domain = kv.domain || "";
+          if (parts[0] === 'system') {
+            hloStatus.system.domain = kv.domain || '';
             hloStatus.system.maxQueues = parseInt(kv.maxQueues, 10) || 0;
-            hloStatus.system.mode = kv.mode || "";
-          } else if (parts[0] === "app") {
+            hloStatus.system.mode = kv.mode || '';
+          } else if (parts[0] === 'app') {
             hloStatus.apps.push({
               ien: parseInt(kv.ien, 10) || 0,
-              name: kv.name || "",
-              package: kv.package || "",
-              type: kv.type || "",
+              name: kv.name || '',
+              package: kv.package || '',
+              type: kv.type || '',
             });
-          } else if (parts[0] === "subscriptions") {
+          } else if (parts[0] === 'subscriptions') {
             hloStatus.subscriptionCount = parseInt(kv.count, 10) || 0;
-          } else if (parts[0] === "priorityQueues") {
+          } else if (parts[0] === 'priorityQueues') {
             hloStatus.priorityQueueCount = parseInt(kv.count, 10) || 0;
-          } else if (parts[0] === "hloMessages") {
+          } else if (parts[0] === 'hloMessages') {
             hloStatus.hloMessageCount = parseInt(kv.totalCount, 10) || 0;
           }
         }
       }
 
       // Parse queue depth for HLO portion
-      const qRaw = batch["VE INTEROP QUEUE DEPTH"];
+      const qRaw = batch['VE INTEROP QUEUE DEPTH'];
       let hloQueueTotal = 0;
       if (qRaw?.ok) {
         for (const line of qRaw.lines) {
-          const parts = line.split("^");
-          if (parts[0] === "hloMessages") {
+          const parts = line.split('^');
+          if (parts[0] === 'hloMessages') {
             const kv = parseKV(line);
             hloQueueTotal = parseInt(kv.total, 10) || 0;
           }
@@ -1185,7 +1259,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
 
       return {
         ok: true,
-        source: "vista",
+        source: 'vista',
         version: 2,
         elapsedMs: Date.now() - startTime,
         hlo: {
@@ -1197,27 +1271,27 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
           messageCount: hloStatus.hloMessageCount,
           queueTotal: hloQueueTotal,
         },
-        rpcsUsed: ["VE INTEROP HLO STATUS", "VE INTEROP QUEUE DEPTH"],
-        vistaFiles: ["#779.1", "#779.2", "#779.4", "#779.9", "#778"],
+        rpcsUsed: ['VE INTEROP HLO STATUS', 'VE INTEROP QUEUE DEPTH'],
+        vistaFiles: ['#779.1', '#779.2', '#779.4', '#779.9', '#778'],
         timestamp: new Date().toISOString(),
       };
     } catch (err: unknown) {
-      handleRpcError(err, "VE INTEROP V2 HLO SUMMARY", reply);
+      handleRpcError(err, 'VE INTEROP V2 HLO SUMMARY', reply);
     }
   });
 
-  log.info("VistA Interop Telemetry routes registered", {
+  log.info('VistA Interop Telemetry routes registered', {
     routes: [
-      "GET /vista/interop/hl7-links",
-      "GET /vista/interop/hl7-messages",
-      "GET /vista/interop/hlo-status",
-      "GET /vista/interop/queue-depth",
-      "GET /vista/interop/summary",
-      "GET /vista/interop/v2/hl7/messages",
-      "GET /vista/interop/v2/hl7/messages/:id",
-      "POST /vista/interop/v2/hl7/messages/:id/unmask",
-      "GET /vista/interop/v2/hl7/summary",
-      "GET /vista/interop/v2/hlo/summary",
+      'GET /vista/interop/hl7-links',
+      'GET /vista/interop/hl7-messages',
+      'GET /vista/interop/hlo-status',
+      'GET /vista/interop/queue-depth',
+      'GET /vista/interop/summary',
+      'GET /vista/interop/v2/hl7/messages',
+      'GET /vista/interop/v2/hl7/messages/:id',
+      'POST /vista/interop/v2/hl7/messages/:id/unmask',
+      'GET /vista/interop/v2/hl7/summary',
+      'GET /vista/interop/v2/hlo/summary',
     ],
   });
 }

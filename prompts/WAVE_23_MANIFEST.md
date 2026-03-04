@@ -7,28 +7,28 @@
 
 ## Phase Map
 
-| Wave Phase | Resolved ID | Title | Prompt Folder |
-|------------|-------------|-------|---------------|
-| W23-P1 | 399 | Reservation + Manifest + Country/Exchange Map + ADRs | `399-W23-P1-MANIFEST-ADRS` |
-| W23-P2 | 400 | Interop Gateway Layer (mediator/channels) | `400-W23-P2-INTEROP-GATEWAY` |
-| W23-P3 | 401 | MPI / Client Registry Integration | `401-W23-P3-MPI-REGISTRY` |
-| W23-P4 | 402 | Provider Directory + Facility Registry | `402-W23-P4-PROVIDER-DIRECTORY` |
-| W23-P5 | 403 | Document Exchange Baseline (XDS.b/MHD posture) | `403-W23-P5-DOCUMENT-EXCHANGE` |
-| W23-P6 | 404 | FHIR Bulk Data Export/Import | `404-W23-P6-BULK-DATA` |
-| W23-P7 | 405 | Consent + Purpose-of-Use + Segmentation | `405-W23-P7-CONSENT-POU` |
-| W23-P8 | 406 | US Exchange Pack (TEFCA-ready posture) | `406-W23-P8-US-EXCHANGE` |
-| W23-P9 | 407 | Global Exchange Packs (OpenHIE, EU-style) | `407-W23-P9-GLOBAL-PACKS` |
-| W23-P10 | 408 | HIE Certification Runner | `408-W23-P10-HIE-CERT` |
+| Wave Phase | Resolved ID | Title                                                | Prompt Folder                   |
+| ---------- | ----------- | ---------------------------------------------------- | ------------------------------- |
+| W23-P1     | 399         | Reservation + Manifest + Country/Exchange Map + ADRs | `399-W23-P1-MANIFEST-ADRS`      |
+| W23-P2     | 400         | Interop Gateway Layer (mediator/channels)            | `400-W23-P2-INTEROP-GATEWAY`    |
+| W23-P3     | 401         | MPI / Client Registry Integration                    | `401-W23-P3-MPI-REGISTRY`       |
+| W23-P4     | 402         | Provider Directory + Facility Registry               | `402-W23-P4-PROVIDER-DIRECTORY` |
+| W23-P5     | 403         | Document Exchange Baseline (XDS.b/MHD posture)       | `403-W23-P5-DOCUMENT-EXCHANGE`  |
+| W23-P6     | 404         | FHIR Bulk Data Export/Import                         | `404-W23-P6-BULK-DATA`          |
+| W23-P7     | 405         | Consent + Purpose-of-Use + Segmentation              | `405-W23-P7-CONSENT-POU`        |
+| W23-P8     | 406         | US Exchange Pack (TEFCA-ready posture)               | `406-W23-P8-US-EXCHANGE`        |
+| W23-P9     | 407         | Global Exchange Packs (OpenHIE, EU-style)            | `407-W23-P9-GLOBAL-PACKS`       |
+| W23-P10    | 408         | HIE Certification Runner                             | `408-W23-P10-HIE-CERT`          |
 
 ## ADR Index
 
-| ADR | Path |
-|-----|------|
-| Interop Gateway | `docs/decisions/ADR-W23-INTEROP-GATEWAY.md` |
-| MPI Strategy | `docs/decisions/ADR-W23-MPI.md` |
+| ADR               | Path                                          |
+| ----------------- | --------------------------------------------- |
+| Interop Gateway   | `docs/decisions/ADR-W23-INTEROP-GATEWAY.md`   |
+| MPI Strategy      | `docs/decisions/ADR-W23-MPI.md`               |
 | Document Exchange | `docs/decisions/ADR-W23-DOCUMENT-EXCHANGE.md` |
-| Bulk Data | `docs/decisions/ADR-W23-BULK-DATA.md` |
-| TEFCA Pack | `docs/decisions/ADR-W23-TEFCA-PACK.md` |
+| Bulk Data         | `docs/decisions/ADR-W23-BULK-DATA.md`         |
+| TEFCA Pack        | `docs/decisions/ADR-W23-TEFCA-PACK.md`        |
 
 ## Dependencies & Run Order
 

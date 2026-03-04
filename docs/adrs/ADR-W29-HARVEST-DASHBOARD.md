@@ -23,7 +23,7 @@ VistA-Evolved API
   |     |-- interface.ts          -- DashboardAdapter interface
   |     |-- stub-adapter.ts       -- Returns pending status
   |     |-- worldvista-adapter.ts -- HTTP bridge to Dashboard service
-  |     
+  |
   +-- Dashboard Docker service (optional, profile: dashboard)
         |-- worldvista/dashboard:latest
         |-- Port: 3010 (internal)
@@ -43,11 +43,11 @@ interface DashboardAdapter {
 
 ### Event Bus Mapping
 
-| VistA-Evolved Event | Dashboard Event | Direction |
-|---------------------|-----------------|-----------|
-| `patient.viewed` | Rule evaluation trigger | API -> Dashboard |
-| `order.signed` | Order check trigger | API -> Dashboard |
-| `alert.fired` | Alert notification | Dashboard -> API |
+| VistA-Evolved Event | Dashboard Event         | Direction        |
+| ------------------- | ----------------------- | ---------------- |
+| `patient.viewed`    | Rule evaluation trigger | API -> Dashboard |
+| `order.signed`      | Order check trigger     | API -> Dashboard |
+| `alert.fired`       | Alert notification      | Dashboard -> API |
 
 ### Deployment
 

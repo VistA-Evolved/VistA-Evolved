@@ -8,8 +8,8 @@
  * Uses Drizzle ORM + pg-core for type-safe queries.
  */
 
-import { eq, and, desc } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
+import { eq, and, desc } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
 import {
   pgRadiologyOrder,
   pgReadingWorklistItem,
@@ -17,7 +17,7 @@ import {
   pgDoseRegistryEntry,
   pgRadCriticalAlert,
   pgPeerReview,
-} from "../pg-schema.js";
+} from '../pg-schema.js';
 
 export type RadiologyOrderRow = typeof pgRadiologyOrder.$inferSelect;
 export type ReadingWorklistItemRow = typeof pgReadingWorklistItem.$inferSelect;
@@ -58,16 +58,16 @@ export async function insertRadiologyOrder(data: {
   const now = new Date();
   await db.insert(pgRadiologyOrder).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     patientDfn: data.patientDfn,
     vistaOrderIen: data.vistaOrderIen ?? null,
     vistaRadProcIen: data.vistaRadProcIen ?? null,
-    status: data.status ?? "ordered",
+    status: data.status ?? 'ordered',
     procedureName: data.procedureName,
     procedureCode: data.procedureCode ?? null,
     cptCode: data.cptCode ?? null,
     modality: data.modality,
-    priority: data.priority ?? "routine",
+    priority: data.priority ?? 'routine',
     clinicalIndication: data.clinicalIndication,
     orderingProviderDuz: data.orderingProviderDuz,
     orderingProviderName: data.orderingProviderName,
@@ -94,52 +94,82 @@ export async function findRadiologyOrderById(id: string): Promise<RadiologyOrder
   return rows[0];
 }
 
-export async function findRadiologyOrdersByStatus(status: string, tenantId = "default"): Promise<RadiologyOrderRow[]> {
+export async function findRadiologyOrdersByStatus(
+  status: string,
+  tenantId = 'default'
+): Promise<RadiologyOrderRow[]> {
   const db = getPgDb();
-  return db.select().from(pgRadiologyOrder)
+  return db
+    .select()
+    .from(pgRadiologyOrder)
     .where(and(eq(pgRadiologyOrder.tenantId, tenantId), eq(pgRadiologyOrder.status, status)))
     .orderBy(desc(pgRadiologyOrder.createdAt));
 }
 
-export async function findRadiologyOrdersByPatient(patientDfn: string, tenantId = "default"): Promise<RadiologyOrderRow[]> {
+export async function findRadiologyOrdersByPatient(
+  patientDfn: string,
+  tenantId = 'default'
+): Promise<RadiologyOrderRow[]> {
   const db = getPgDb();
-  return db.select().from(pgRadiologyOrder)
-    .where(and(eq(pgRadiologyOrder.tenantId, tenantId), eq(pgRadiologyOrder.patientDfn, patientDfn)))
+  return db
+    .select()
+    .from(pgRadiologyOrder)
+    .where(
+      and(eq(pgRadiologyOrder.tenantId, tenantId), eq(pgRadiologyOrder.patientDfn, patientDfn))
+    )
     .orderBy(desc(pgRadiologyOrder.createdAt));
 }
 
-export async function findRadiologyOrderByAccession(accessionNumber: string, tenantId = "default"): Promise<RadiologyOrderRow | undefined> {
+export async function findRadiologyOrderByAccession(
+  accessionNumber: string,
+  tenantId = 'default'
+): Promise<RadiologyOrderRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(pgRadiologyOrder)
-    .where(and(eq(pgRadiologyOrder.tenantId, tenantId), eq(pgRadiologyOrder.accessionNumber, accessionNumber)));
+  const rows = await db
+    .select()
+    .from(pgRadiologyOrder)
+    .where(
+      and(
+        eq(pgRadiologyOrder.tenantId, tenantId),
+        eq(pgRadiologyOrder.accessionNumber, accessionNumber)
+      )
+    );
   return rows[0];
 }
 
-export async function findAllRadiologyOrders(tenantId = "default"): Promise<RadiologyOrderRow[]> {
+export async function findAllRadiologyOrders(tenantId = 'default'): Promise<RadiologyOrderRow[]> {
   const db = getPgDb();
-  return db.select().from(pgRadiologyOrder)
+  return db
+    .select()
+    .from(pgRadiologyOrder)
     .where(eq(pgRadiologyOrder.tenantId, tenantId))
     .orderBy(desc(pgRadiologyOrder.createdAt));
 }
 
-export async function updateRadiologyOrder(id: string, patch: Partial<{
-  status: string;
-  protocolName: string;
-  protocolAssignedByDuz: string;
-  protocolAssignedAt: string;
-  mwlWorklistItemId: string;
-  mppsRecordId: string;
-  studyInstanceUid: string;
-  accessionNumber: string;
-  scheduledAt: string;
-  startedAt: string;
-  completedAt: string;
-}>): Promise<RadiologyOrderRow | undefined> {
+export async function updateRadiologyOrder(
+  id: string,
+  patch: Partial<{
+    status: string;
+    protocolName: string;
+    protocolAssignedByDuz: string;
+    protocolAssignedAt: string;
+    mwlWorklistItemId: string;
+    mppsRecordId: string;
+    studyInstanceUid: string;
+    accessionNumber: string;
+    scheduledAt: string;
+    startedAt: string;
+    completedAt: string;
+  }>
+): Promise<RadiologyOrderRow | undefined> {
   const db = getPgDb();
-  await db.update(pgRadiologyOrder).set({
-    ...patch,
-    updatedAt: new Date(),
-  } as any).where(eq(pgRadiologyOrder.id, id));
+  await db
+    .update(pgRadiologyOrder)
+    .set({
+      ...patch,
+      updatedAt: new Date(),
+    } as any)
+    .where(eq(pgRadiologyOrder.id, id));
   return findRadiologyOrderById(id);
 }
 
@@ -173,15 +203,15 @@ export async function insertReadingWorklistItem(data: {
   const now = new Date();
   await db.insert(pgReadingWorklistItem).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     radOrderId: data.radOrderId,
     patientDfn: data.patientDfn,
     studyInstanceUid: data.studyInstanceUid,
     accessionNumber: data.accessionNumber,
     modality: data.modality,
     procedureName: data.procedureName,
-    status: data.status ?? "unread",
-    priority: data.priority ?? "routine",
+    status: data.status ?? 'unread',
+    priority: data.priority ?? 'routine',
     assignedRadiologistDuz: data.assignedRadiologistDuz ?? null,
     assignedRadiologistName: data.assignedRadiologistName ?? null,
     assignedAt: data.assignedAt ?? null,
@@ -195,46 +225,78 @@ export async function insertReadingWorklistItem(data: {
   return row!;
 }
 
-export async function findReadingWorklistItemById(id: string): Promise<ReadingWorklistItemRow | undefined> {
+export async function findReadingWorklistItemById(
+  id: string
+): Promise<ReadingWorklistItemRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(pgReadingWorklistItem).where(eq(pgReadingWorklistItem.id, id));
+  const rows = await db
+    .select()
+    .from(pgReadingWorklistItem)
+    .where(eq(pgReadingWorklistItem.id, id));
   return rows[0];
 }
 
-export async function findReadingWorklistByStatus(status: string, tenantId = "default"): Promise<ReadingWorklistItemRow[]> {
+export async function findReadingWorklistByStatus(
+  status: string,
+  tenantId = 'default'
+): Promise<ReadingWorklistItemRow[]> {
   const db = getPgDb();
-  return db.select().from(pgReadingWorklistItem)
-    .where(and(eq(pgReadingWorklistItem.tenantId, tenantId), eq(pgReadingWorklistItem.status, status)))
+  return db
+    .select()
+    .from(pgReadingWorklistItem)
+    .where(
+      and(eq(pgReadingWorklistItem.tenantId, tenantId), eq(pgReadingWorklistItem.status, status))
+    )
     .orderBy(desc(pgReadingWorklistItem.createdAt));
 }
 
-export async function findReadingWorklistByRadiologist(duz: string, tenantId = "default"): Promise<ReadingWorklistItemRow[]> {
+export async function findReadingWorklistByRadiologist(
+  duz: string,
+  tenantId = 'default'
+): Promise<ReadingWorklistItemRow[]> {
   const db = getPgDb();
-  return db.select().from(pgReadingWorklistItem)
-    .where(and(eq(pgReadingWorklistItem.tenantId, tenantId), eq(pgReadingWorklistItem.assignedRadiologistDuz, duz)))
+  return db
+    .select()
+    .from(pgReadingWorklistItem)
+    .where(
+      and(
+        eq(pgReadingWorklistItem.tenantId, tenantId),
+        eq(pgReadingWorklistItem.assignedRadiologistDuz, duz)
+      )
+    )
     .orderBy(desc(pgReadingWorklistItem.createdAt));
 }
 
-export async function findAllReadingWorklistItems(tenantId = "default"): Promise<ReadingWorklistItemRow[]> {
+export async function findAllReadingWorklistItems(
+  tenantId = 'default'
+): Promise<ReadingWorklistItemRow[]> {
   const db = getPgDb();
-  return db.select().from(pgReadingWorklistItem)
+  return db
+    .select()
+    .from(pgReadingWorklistItem)
     .where(eq(pgReadingWorklistItem.tenantId, tenantId))
     .orderBy(desc(pgReadingWorklistItem.createdAt));
 }
 
-export async function updateReadingWorklistItem(id: string, patch: Partial<{
-  status: string;
-  assignedRadiologistDuz: string;
-  assignedRadiologistName: string;
-  assignedAt: string;
-  reportStartedAt: string;
-  reportFinalizedAt: string;
-}>): Promise<ReadingWorklistItemRow | undefined> {
+export async function updateReadingWorklistItem(
+  id: string,
+  patch: Partial<{
+    status: string;
+    assignedRadiologistDuz: string;
+    assignedRadiologistName: string;
+    assignedAt: string;
+    reportStartedAt: string;
+    reportFinalizedAt: string;
+  }>
+): Promise<ReadingWorklistItemRow | undefined> {
   const db = getPgDb();
-  await db.update(pgReadingWorklistItem).set({
-    ...patch,
-    updatedAt: new Date(),
-  } as any).where(eq(pgReadingWorklistItem.id, id));
+  await db
+    .update(pgReadingWorklistItem)
+    .set({
+      ...patch,
+      updatedAt: new Date(),
+    } as any)
+    .where(eq(pgReadingWorklistItem.id, id));
   return findReadingWorklistItemById(id);
 }
 
@@ -275,16 +337,16 @@ export async function insertRadReport(data: {
   const now = new Date();
   await db.insert(pgRadReport).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     radOrderId: data.radOrderId,
     readingWorklistItemId: data.readingWorklistItemId,
     patientDfn: data.patientDfn,
     studyInstanceUid: data.studyInstanceUid,
     accessionNumber: data.accessionNumber,
-    status: data.status ?? "draft",
-    findings: data.findings ?? "",
-    impression: data.impression ?? "",
-    reportText: data.reportText ?? "",
+    status: data.status ?? 'draft',
+    findings: data.findings ?? '',
+    impression: data.impression ?? '',
+    reportText: data.reportText ?? '',
     templateId: data.templateId ?? null,
     dictatedByDuz: data.dictatedByDuz,
     dictatedByName: data.dictatedByName,
@@ -310,46 +372,64 @@ export async function findRadReportById(id: string): Promise<RadReportRow | unde
   return rows[0];
 }
 
-export async function findRadReportsByStatus(status: string, tenantId = "default"): Promise<RadReportRow[]> {
+export async function findRadReportsByStatus(
+  status: string,
+  tenantId = 'default'
+): Promise<RadReportRow[]> {
   const db = getPgDb();
-  return db.select().from(pgRadReport)
+  return db
+    .select()
+    .from(pgRadReport)
     .where(and(eq(pgRadReport.tenantId, tenantId), eq(pgRadReport.status, status)))
     .orderBy(desc(pgRadReport.createdAt));
 }
 
-export async function findRadReportByOrder(radOrderId: string, tenantId = "default"): Promise<RadReportRow | undefined> {
+export async function findRadReportByOrder(
+  radOrderId: string,
+  tenantId = 'default'
+): Promise<RadReportRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(pgRadReport)
+  const rows = await db
+    .select()
+    .from(pgRadReport)
     .where(and(eq(pgRadReport.tenantId, tenantId), eq(pgRadReport.radOrderId, radOrderId)));
   return rows[0];
 }
 
-export async function findAllRadReports(tenantId = "default"): Promise<RadReportRow[]> {
+export async function findAllRadReports(tenantId = 'default'): Promise<RadReportRow[]> {
   const db = getPgDb();
-  return db.select().from(pgRadReport)
+  return db
+    .select()
+    .from(pgRadReport)
     .where(eq(pgRadReport.tenantId, tenantId))
     .orderBy(desc(pgRadReport.createdAt));
 }
 
-export async function updateRadReport(id: string, patch: Partial<{
-  status: string;
-  findings: string;
-  impression: string;
-  reportText: string;
-  prelimSignedByDuz: string;
-  prelimSignedByName: string;
-  prelimSignedAt: string;
-  verifiedByDuz: string;
-  verifiedByName: string;
-  verifiedAt: string;
-  vistaTiuNoteIen: string;
-  criticalFinding: boolean;
-}>): Promise<RadReportRow | undefined> {
+export async function updateRadReport(
+  id: string,
+  patch: Partial<{
+    status: string;
+    findings: string;
+    impression: string;
+    reportText: string;
+    prelimSignedByDuz: string;
+    prelimSignedByName: string;
+    prelimSignedAt: string;
+    verifiedByDuz: string;
+    verifiedByName: string;
+    verifiedAt: string;
+    vistaTiuNoteIen: string;
+    criticalFinding: boolean;
+  }>
+): Promise<RadReportRow | undefined> {
   const db = getPgDb();
-  await db.update(pgRadReport).set({
-    ...patch,
-    updatedAt: new Date(),
-  } as any).where(eq(pgRadReport.id, id));
+  await db
+    .update(pgRadReport)
+    .set({
+      ...patch,
+      updatedAt: new Date(),
+    } as any)
+    .where(eq(pgRadReport.id, id));
   return findRadReportById(id);
 }
 
@@ -386,7 +466,7 @@ export async function insertDoseRegistryEntry(data: {
   const now = new Date();
   await db.insert(pgDoseRegistryEntry).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     patientDfn: data.patientDfn,
     radOrderId: data.radOrderId,
     studyInstanceUid: data.studyInstanceUid,
@@ -410,36 +490,65 @@ export async function insertDoseRegistryEntry(data: {
   return row!;
 }
 
-export async function findDoseRegistryEntryById(id: string): Promise<DoseRegistryEntryRow | undefined> {
+export async function findDoseRegistryEntryById(
+  id: string
+): Promise<DoseRegistryEntryRow | undefined> {
   const db = getPgDb();
   const rows = await db.select().from(pgDoseRegistryEntry).where(eq(pgDoseRegistryEntry.id, id));
   return rows[0];
 }
 
-export async function findDoseRegistryByPatient(patientDfn: string, tenantId = "default"): Promise<DoseRegistryEntryRow[]> {
+export async function findDoseRegistryByPatient(
+  patientDfn: string,
+  tenantId = 'default'
+): Promise<DoseRegistryEntryRow[]> {
   const db = getPgDb();
-  return db.select().from(pgDoseRegistryEntry)
-    .where(and(eq(pgDoseRegistryEntry.tenantId, tenantId), eq(pgDoseRegistryEntry.patientDfn, patientDfn)))
+  return db
+    .select()
+    .from(pgDoseRegistryEntry)
+    .where(
+      and(
+        eq(pgDoseRegistryEntry.tenantId, tenantId),
+        eq(pgDoseRegistryEntry.patientDfn, patientDfn)
+      )
+    )
     .orderBy(desc(pgDoseRegistryEntry.performedAt));
 }
 
-export async function findDoseRegistryByModality(modality: string, tenantId = "default"): Promise<DoseRegistryEntryRow[]> {
+export async function findDoseRegistryByModality(
+  modality: string,
+  tenantId = 'default'
+): Promise<DoseRegistryEntryRow[]> {
   const db = getPgDb();
-  return db.select().from(pgDoseRegistryEntry)
-    .where(and(eq(pgDoseRegistryEntry.tenantId, tenantId), eq(pgDoseRegistryEntry.modality, modality)))
+  return db
+    .select()
+    .from(pgDoseRegistryEntry)
+    .where(
+      and(eq(pgDoseRegistryEntry.tenantId, tenantId), eq(pgDoseRegistryEntry.modality, modality))
+    )
     .orderBy(desc(pgDoseRegistryEntry.performedAt));
 }
 
-export async function findDoseRegistryExceedingDrl(tenantId = "default"): Promise<DoseRegistryEntryRow[]> {
+export async function findDoseRegistryExceedingDrl(
+  tenantId = 'default'
+): Promise<DoseRegistryEntryRow[]> {
   const db = getPgDb();
-  return db.select().from(pgDoseRegistryEntry)
-    .where(and(eq(pgDoseRegistryEntry.tenantId, tenantId), eq(pgDoseRegistryEntry.exceedsDrl, true)))
+  return db
+    .select()
+    .from(pgDoseRegistryEntry)
+    .where(
+      and(eq(pgDoseRegistryEntry.tenantId, tenantId), eq(pgDoseRegistryEntry.exceedsDrl, true))
+    )
     .orderBy(desc(pgDoseRegistryEntry.performedAt));
 }
 
-export async function findAllDoseRegistryEntries(tenantId = "default"): Promise<DoseRegistryEntryRow[]> {
+export async function findAllDoseRegistryEntries(
+  tenantId = 'default'
+): Promise<DoseRegistryEntryRow[]> {
   const db = getPgDb();
-  return db.select().from(pgDoseRegistryEntry)
+  return db
+    .select()
+    .from(pgDoseRegistryEntry)
     .where(eq(pgDoseRegistryEntry.tenantId, tenantId))
     .orderBy(desc(pgDoseRegistryEntry.performedAt));
 }
@@ -476,13 +585,13 @@ export async function insertRadCriticalAlert(data: {
   const now = new Date();
   await db.insert(pgRadCriticalAlert).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     radReportId: data.radReportId,
     radOrderId: data.radOrderId,
     patientDfn: data.patientDfn,
     finding: data.finding,
     category: data.category,
-    status: data.status ?? "active",
+    status: data.status ?? 'active',
     notifyProviderDuz: data.notifyProviderDuz,
     notifyProviderName: data.notifyProviderName,
     communicatedToDuz: data.communicatedToDuz ?? null,
@@ -500,48 +609,72 @@ export async function insertRadCriticalAlert(data: {
   return row!;
 }
 
-export async function findRadCriticalAlertById(id: string): Promise<RadCriticalAlertRow | undefined> {
+export async function findRadCriticalAlertById(
+  id: string
+): Promise<RadCriticalAlertRow | undefined> {
   const db = getPgDb();
   const rows = await db.select().from(pgRadCriticalAlert).where(eq(pgRadCriticalAlert.id, id));
   return rows[0];
 }
 
-export async function findRadCriticalAlertsByStatus(status: string, tenantId = "default"): Promise<RadCriticalAlertRow[]> {
+export async function findRadCriticalAlertsByStatus(
+  status: string,
+  tenantId = 'default'
+): Promise<RadCriticalAlertRow[]> {
   const db = getPgDb();
-  return db.select().from(pgRadCriticalAlert)
+  return db
+    .select()
+    .from(pgRadCriticalAlert)
     .where(and(eq(pgRadCriticalAlert.tenantId, tenantId), eq(pgRadCriticalAlert.status, status)))
     .orderBy(desc(pgRadCriticalAlert.createdAt));
 }
 
-export async function findRadCriticalAlertsByPatient(patientDfn: string, tenantId = "default"): Promise<RadCriticalAlertRow[]> {
+export async function findRadCriticalAlertsByPatient(
+  patientDfn: string,
+  tenantId = 'default'
+): Promise<RadCriticalAlertRow[]> {
   const db = getPgDb();
-  return db.select().from(pgRadCriticalAlert)
-    .where(and(eq(pgRadCriticalAlert.tenantId, tenantId), eq(pgRadCriticalAlert.patientDfn, patientDfn)))
+  return db
+    .select()
+    .from(pgRadCriticalAlert)
+    .where(
+      and(eq(pgRadCriticalAlert.tenantId, tenantId), eq(pgRadCriticalAlert.patientDfn, patientDfn))
+    )
     .orderBy(desc(pgRadCriticalAlert.createdAt));
 }
 
-export async function findAllRadCriticalAlerts(tenantId = "default"): Promise<RadCriticalAlertRow[]> {
+export async function findAllRadCriticalAlerts(
+  tenantId = 'default'
+): Promise<RadCriticalAlertRow[]> {
   const db = getPgDb();
-  return db.select().from(pgRadCriticalAlert)
+  return db
+    .select()
+    .from(pgRadCriticalAlert)
     .where(eq(pgRadCriticalAlert.tenantId, tenantId))
     .orderBy(desc(pgRadCriticalAlert.createdAt));
 }
 
-export async function updateRadCriticalAlert(id: string, patch: Partial<{
-  status: string;
-  communicatedToDuz: string;
-  communicatedToName: string;
-  communicatedAt: string;
-  communicationMethod: string;
-  acknowledgedByDuz: string;
-  acknowledgedByName: string;
-  acknowledgedAt: string;
-}>): Promise<RadCriticalAlertRow | undefined> {
+export async function updateRadCriticalAlert(
+  id: string,
+  patch: Partial<{
+    status: string;
+    communicatedToDuz: string;
+    communicatedToName: string;
+    communicatedAt: string;
+    communicationMethod: string;
+    acknowledgedByDuz: string;
+    acknowledgedByName: string;
+    acknowledgedAt: string;
+  }>
+): Promise<RadCriticalAlertRow | undefined> {
   const db = getPgDb();
-  await db.update(pgRadCriticalAlert).set({
-    ...patch,
-    updatedAt: new Date(),
-  } as any).where(eq(pgRadCriticalAlert.id, id));
+  await db
+    .update(pgRadCriticalAlert)
+    .set({
+      ...patch,
+      updatedAt: new Date(),
+    } as any)
+    .where(eq(pgRadCriticalAlert.id, id));
   return findRadCriticalAlertById(id);
 }
 
@@ -571,7 +704,7 @@ export async function insertPeerReview(data: {
   const now = new Date();
   await db.insert(pgPeerReview).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     radReportId: data.radReportId,
     radOrderId: data.radOrderId,
     patientDfn: data.patientDfn,
@@ -594,23 +727,35 @@ export async function findPeerReviewById(id: string): Promise<PeerReviewRow | un
   return rows[0];
 }
 
-export async function findPeerReviewsByReport(radReportId: string, tenantId = "default"): Promise<PeerReviewRow[]> {
+export async function findPeerReviewsByReport(
+  radReportId: string,
+  tenantId = 'default'
+): Promise<PeerReviewRow[]> {
   const db = getPgDb();
-  return db.select().from(pgPeerReview)
+  return db
+    .select()
+    .from(pgPeerReview)
     .where(and(eq(pgPeerReview.tenantId, tenantId), eq(pgPeerReview.radReportId, radReportId)))
     .orderBy(desc(pgPeerReview.createdAt));
 }
 
-export async function findPeerReviewsByReviewer(reviewerDuz: string, tenantId = "default"): Promise<PeerReviewRow[]> {
+export async function findPeerReviewsByReviewer(
+  reviewerDuz: string,
+  tenantId = 'default'
+): Promise<PeerReviewRow[]> {
   const db = getPgDb();
-  return db.select().from(pgPeerReview)
+  return db
+    .select()
+    .from(pgPeerReview)
     .where(and(eq(pgPeerReview.tenantId, tenantId), eq(pgPeerReview.reviewerDuz, reviewerDuz)))
     .orderBy(desc(pgPeerReview.createdAt));
 }
 
-export async function findAllPeerReviews(tenantId = "default"): Promise<PeerReviewRow[]> {
+export async function findAllPeerReviews(tenantId = 'default'): Promise<PeerReviewRow[]> {
   const db = getPgDb();
-  return db.select().from(pgPeerReview)
+  return db
+    .select()
+    .from(pgPeerReview)
     .where(eq(pgPeerReview.tenantId, tenantId))
     .orderBy(desc(pgPeerReview.createdAt));
 }

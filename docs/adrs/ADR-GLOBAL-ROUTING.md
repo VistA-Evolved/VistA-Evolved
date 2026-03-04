@@ -20,17 +20,20 @@ A global DNS layer (e.g., Route53, Cloudflare, or equivalent) resolves
 tenant-specific subdomains to the correct regional ingress IP.
 
 Tenant identification:
+
 - **Subdomain:** `<tenant>.api.example.com` resolves to the correct region
 - **Fallback path routing:** `api.example.com/t/<tenant>/...` for environments
   without wildcard DNS
 
 **Pros:**
+
 - Simple, battle-tested DNS-based routing
 - Each region is independently deployable
 - TLS termination at regional ingress (no cross-region TLS hop)
 - Failover by updating DNS records (controlled TTL)
 
 **Cons:**
+
 - DNS propagation delay during failover (mitigated by low TTL, e.g., 60s)
 - Requires wildcard TLS cert or per-tenant cert management
 - New tenants need DNS record provisioning
@@ -41,10 +44,12 @@ A single global LB inspects request headers (e.g., `X-Tenant-Id`) and routes
 to the correct regional backend.
 
 **Pros:**
+
 - Single entry point, simpler DNS
 - Instant routing changes (no DNS propagation)
 
 **Cons:**
+
 - Global LB is a single point of failure
 - All traffic transits the LB region before reaching the target region
 - Header-based routing requires client cooperation
@@ -54,10 +59,12 @@ to the correct regional backend.
 A multi-cluster service mesh (e.g., Istio) handles cross-cluster traffic.
 
 **Pros:**
+
 - Automatic locality-aware load balancing
 - mTLS between clusters
 
 **Cons:**
+
 - High operational complexity
 - Overkill for tenant-level placement (mesh does instance-level)
 
@@ -80,6 +87,7 @@ Request: https://<tenant>.api.example.com/vista/ping
 ```
 
 Fallback (non-wildcard environments):
+
 ```
 Request: https://api.example.com/t/<tenantSlug>/vista/ping
   -> Global ingress routes based on path prefix

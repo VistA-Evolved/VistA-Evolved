@@ -1,6 +1,7 @@
 # Phase 314 — Country Packs (W13-P6)
 
 ## Objective
+
 Create concrete country-pack JSON configs for US, PH, and GH markets, plus
 a loader that validates, caches, and serves them via REST endpoints.
 
@@ -20,6 +21,7 @@ a loader that validates, caches, and serves them via REST endpoints.
 7. Create prompts, evidence, verifier
 
 ## Files Touched
+
 - `country-packs/US/values.json` (new)
 - `country-packs/US/README.md` (new)
 - `country-packs/PH/values.json` (new)
@@ -30,4 +32,5 @@ a loader that validates, caches, and serves them via REST endpoints.
 - `apps/api/src/routes/country-pack-routes.ts` (new)
 
 ## Verification
+
 See `314-99-VERIFY.md`

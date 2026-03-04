@@ -11,54 +11,60 @@ This is **intentional** and **safe**. Adding patient problems in VistA requires 
 ## Why Problem Creation is Complex
 
 ### Minimal Required Fields
+
 To create a valid problem in VistA (file 9000011), the system requires:
 
-| Field | Type | Purpose | Validation Needed |
-|-------|------|---------|-------------------|
-| **PATIENT** | IEN (file 2) | Patient reference | DFN must exist |
-| **NARRATIVE** | Text (80 chars) | Problem description (free text) | None if text-only |
-| **DIAGNOSIS** | IEN (file 80) | ICD-9 or ICD-10 code | **CODE LOOKUP REQUIRED** |
-| **PROVIDER** | IEN (file 200) | Who entered the problem | DUZ validation |
-| **LOCATION** | IEN (file 4) | Where  problem was documented | Location must be valid |
-| **STATUS** | Code | A/I/R (active/inactive/resolved) | Must be valid code |
-| **ONSET** | FM Date | When problem started | Date validation |
+| Field         | Type            | Purpose                          | Validation Needed        |
+| ------------- | --------------- | -------------------------------- | ------------------------ |
+| **PATIENT**   | IEN (file 2)    | Patient reference                | DFN must exist           |
+| **NARRATIVE** | Text (80 chars) | Problem description (free text)  | None if text-only        |
+| **DIAGNOSIS** | IEN (file 80)   | ICD-9 or ICD-10 code             | **CODE LOOKUP REQUIRED** |
+| **PROVIDER**  | IEN (file 200)  | Who entered the problem          | DUZ validation           |
+| **LOCATION**  | IEN (file 4)    | Where problem was documented     | Location must be valid   |
+| **STATUS**    | Code            | A/I/R (active/inactive/resolved) | Must be valid code       |
+| **ONSET**     | FM Date         | When problem started             | Date validation          |
 
 ### Complex Required Validations
 
 #### 1. **ICD-9/ICD-10 Diagnosis Code Lookup**
-   - User provides `"Hypertension"` (free text)
-   - System must validate against diagnostic databases (file 80, 757.01 Lexicon)
-   - Must map to correct ICD-9 (401.x series) or ICD-10 (I10-I16)
-   - SNOMED CT concepts must be resolved → ICD codes
-   - **Problem**: No safe single-string-to-code mapping; requires validated lookup
+
+- User provides `"Hypertension"` (free text)
+- System must validate against diagnostic databases (file 80, 757.01 Lexicon)
+- Must map to correct ICD-9 (401.x series) or ICD-10 (I10-I16)
+- SNOMED CT concepts must be resolved → ICD codes
+- **Problem**: No safe single-string-to-code mapping; requires validated lookup
 
 #### 2. **Service Condition Flags**
-   - Additional mandatory fields for VA patients:
-     - SC (Service Connected)  
-     - AO (Agent Orange exposure)
-     - IR (Radiation exposure)
-     - EC (Environmental Contamination)
-     - HNC (Head/Neck Cancer)
-     - MST (Military Sexual Trauma)
-     - CV (Combat Veteran)
-     - SHD (Shipboard Hazard & Defense)
-   - Each flag is conditional on patient demographics and service history
-   - MVP cannot safely infer these; require provider judgment
+
+- Additional mandatory fields for VA patients:
+  - SC (Service Connected)
+  - AO (Agent Orange exposure)
+  - IR (Radiation exposure)
+  - EC (Environmental Contamination)
+  - HNC (Head/Neck Cancer)
+  - MST (Military Sexual Trauma)
+  - CV (Combat Veteran)
+  - SHD (Shipboard Hazard & Defense)
+- Each flag is conditional on patient demographics and service history
+- MVP cannot safely infer these; require provider judgment
 
 #### 3. **Duplicate Problem Checking**
-   - Cannot add "Hypertension" if already in patient's active problem list
-   - Requires fuzzy matching across problem text and diagnosis codes
-   - Different times of diagnosis vs. re-entry must be detected
+
+- Cannot add "Hypertension" if already in patient's active problem list
+- Requires fuzzy matching across problem text and diagnosis codes
+- Different times of diagnosis vs. re-entry must be detected
 
 #### 4. **Provider Context Validation**
-   - Current user must be a valid clinical provider (DUZ with appropriate role)
-   - Cannot be non-provider or administrative user
-   - Service/Department assignment must be valid
+
+- Current user must be a valid clinical provider (DUZ with appropriate role)
+- Cannot be non-provider or administrative user
+- Service/Department assignment must be valid
 
 #### 5. **Lexicon Entry Mapping** (for SNOMED CT)
-   - If diagnosis is provided with SNOMED concept notation
-   - Must resolve SNOMED CT code → ICD-9 → ICD-10
-   - Lexicon file (757.01) lookup required
+
+- If diagnosis is provided with SNOMED concept notation
+- Must resolve SNOMED CT code → ICD-9 → ICD-10
+- Lexicon file (757.01) lookup required
 
 ### VistA's Native Approach: GMPLUTL.CREATE
 
@@ -80,6 +86,7 @@ CREATE(PL,PLY)  ; Creates a new problem input array, passed by reference
 ```
 
 **Why we don't call this from the API:**
+
 1. **Not exposed as an RPC** — designed for internal utility use only
 2. **Requires complex array building** — caller must validate ALL 15+ fields
 3. **Delegates validation to FileMan** — FileMan errors returned if invalid
@@ -118,12 +125,14 @@ CREATE(PL,PLY)  ; Creates a new problem input array, passed by reference
 ## How to Add Problems Safely: VistA CPRS
 
 ### Step 1: Open Patient in CPRS
+
 ```
 CPRS Chart → Patient workup screen
 Select or search patient by name/DFN
 ```
 
 ### Step 2: Problem List Tab
+
 ```
 Chart Tree (left side) → "Problems"
   or
@@ -131,11 +140,13 @@ Chart Tabs (top) → "Problems" tab
 ```
 
 ### Step 3: New Problem Button
+
 ```
 Button: "+ Add Problem" or "New"
 ```
 
 ### Step 4: Problem Entry Form
+
 ```
 Encounter Date: (auto-populated or select)
 Problem Description: (free text or code lookup)
@@ -147,8 +158,10 @@ Provider: (auto-populated to logged-in user)
 ```
 
 ### Step 5: Verify
+
 CPRS validates all fields before saving:
-- Diagnosis code exists  
+
+- Diagnosis code exists
 - Service conditions match patient demographics
 - No duplicate active problems
 - Provider is authorized
@@ -160,6 +173,7 @@ CPRS validates all fields before saving:
 To implement POST /vista/problems safely in a future phase:
 
 ### Option A: Full Validation Engine
+
 1. Add ICD-9/ICD-10 code lookup endpoints (GET /vista/diagnosis?q=hypertension)
 2. Add patient demographics reader (service history, VA status, age, etc.)
 3. Implement duplicate problem detection logic
@@ -167,12 +181,14 @@ To implement POST /vista/problems safely in a future phase:
 5. Then expose POST /vista/problems with full validation
 
 ### Option B: Simple Free-Text Warning
+
 1. Expose POST with text only (no ICD codes)
 2. Return warning: "Problem created without diagnosis code; requires CPRS review"
 3. Write problem as "Pending" status until provider adds code
 4. Not recommended: risky for medical records
 
 ### Option C: Provider-Only API
+
 1. Require provider role check (DUZ must be file 200 entry with provider role)
 2. Accept minimal fields (DFN, text, onset)
 3. Use hardcoded location (e.g., location 2 = DR OFFICE)
@@ -185,13 +201,13 @@ To implement POST /vista/problems safely in a future phase:
 
 ## Known Limitations (Current)
 
-| Limitation | Impact | Workaround |
-|-----------|--------|-----------|
-| No diagnosis code lookup | Cannot safely map text → ICD codes | Use VistA diagnosis picker |
-| No service condition inference | Cannot infer SC/AO/IR flags from demographics | Ask provider during CPRS entry |
-| No duplicate detection | Could double-enter same problem | CPRS prevents this automatically |
-| No provider validation | Cannot check if user is clinical provider | CPRS enforces role-based access |
-| No RPC wrapper available | Cannot call GMPLUTL.CREATE directly | Use CPRS GUI |
+| Limitation                     | Impact                                        | Workaround                       |
+| ------------------------------ | --------------------------------------------- | -------------------------------- |
+| No diagnosis code lookup       | Cannot safely map text → ICD codes            | Use VistA diagnosis picker       |
+| No service condition inference | Cannot infer SC/AO/IR flags from demographics | Ask provider during CPRS entry   |
+| No duplicate detection         | Could double-enter same problem               | CPRS prevents this automatically |
+| No provider validation         | Cannot check if user is clinical provider     | CPRS enforces role-based access  |
+| No RPC wrapper available       | Cannot call GMPLUTL.CREATE directly           | Use CPRS GUI                     |
 
 ---
 
@@ -241,7 +257,8 @@ curl -X POST http://127.0.0.1:3001/vista/problems \
 
 **Rationale**: VistA problem entry is a clinical decision that must be made by authorized providers with full context. An API endpoint that accepts free-text problem descriptions without diagnosis code validation risks medical record integrity.
 
-**User Impact**: 
+**User Impact**:
+
 - Problem LIST works (read-only via GET /vista/problems)
 - Problem CREATION requires CPRS GUI (as designed in VistA)
 - API users understand the limitation upfront (honest error)

@@ -2,7 +2,7 @@
  * Imaging Adapter Interface — Phase 37C.
  */
 
-import type { BaseAdapter, AdapterResult } from "../types.js";
+import type { BaseAdapter, AdapterResult } from '../types.js';
 
 export interface ImagingStudy {
   id: string;
@@ -27,7 +27,7 @@ export interface ImagingOrder {
 }
 
 export interface ImagingAdapter extends BaseAdapter {
-  readonly adapterType: "imaging";
+  readonly adapterType: 'imaging';
   getStudies(patientDfn: string): Promise<AdapterResult<ImagingStudy[]>>;
   getStudyMetadata(studyId: string): Promise<AdapterResult<Record<string, unknown>>>;
   getViewerUrl(studyId: string): Promise<AdapterResult<string>>;

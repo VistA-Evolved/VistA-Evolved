@@ -5,7 +5,7 @@
  * and modality AE configurations. Bridges to Orthanc for DICOM operations.
  */
 
-import * as crypto from "node:crypto";
+import * as crypto from 'node:crypto';
 import type {
   WorklistItem,
   WorklistItemStatus,
@@ -13,7 +13,7 @@ import type {
   MppsStatus,
   ModalityAeConfig,
   ImagingModalityStats,
-} from "./imaging-modality-types.js";
+} from './imaging-modality-types.js';
 
 // ---------------------------------------------------------------------------
 // Config
@@ -37,7 +37,7 @@ interface ModalityAuditEntry {
   id: string;
   tenantId: string;
   action: string;
-  entityType: "worklist" | "mpps" | "modality";
+  entityType: 'worklist' | 'mpps' | 'modality';
   entityId: string;
   detail?: string;
   timestamp: string;
@@ -49,7 +49,7 @@ const auditLog: ModalityAuditEntry[] = [];
 // ---------------------------------------------------------------------------
 
 function genId(): string {
-  return crypto.randomBytes(12).toString("hex");
+  return crypto.randomBytes(12).toString('hex');
 }
 
 function now(): string {
@@ -67,9 +67,9 @@ function evictOldest<V>(map: Map<string, V>, max: number): void {
 function audit(
   tenantId: string,
   action: string,
-  entityType: ModalityAuditEntry["entityType"],
+  entityType: ModalityAuditEntry['entityType'],
   entityId: string,
-  detail?: string,
+  detail?: string
 ): void {
   if (auditLog.length >= MAX_AUDIT) auditLog.shift();
   auditLog.push({ id: genId(), tenantId, action, entityType, entityId, detail, timestamp: now() });
@@ -87,7 +87,16 @@ function generateDicomUid(): string {
 
 export function createWorklistItem(
   tenantId: string,
-  item: Omit<WorklistItem, "id" | "tenantId" | "studyInstanceUid" | "scheduledStepId" | "status" | "createdAt" | "updatedAt"> & { studyInstanceUid?: string; scheduledStepId?: string },
+  item: Omit<
+    WorklistItem,
+    | 'id'
+    | 'tenantId'
+    | 'studyInstanceUid'
+    | 'scheduledStepId'
+    | 'status'
+    | 'createdAt'
+    | 'updatedAt'
+  > & { studyInstanceUid?: string; scheduledStepId?: string }
 ): WorklistItem {
   evictOldest(worklistItems, MAX_WORKLIST);
   const wl: WorklistItem = {
@@ -96,12 +105,12 @@ export function createWorklistItem(
     tenantId,
     studyInstanceUid: item.studyInstanceUid || generateDicomUid(),
     scheduledStepId: item.scheduledStepId || `SPS-${genId().slice(0, 8)}`,
-    status: "scheduled",
+    status: 'scheduled',
     createdAt: now(),
     updatedAt: now(),
   };
   worklistItems.set(wl.id, wl);
-  audit(tenantId, "worklist_created", "worklist", wl.id, wl.accessionNumber);
+  audit(tenantId, 'worklist_created', 'worklist', wl.id, wl.accessionNumber);
   return wl;
 }
 
@@ -109,7 +118,10 @@ export function getWorklistItem(id: string): WorklistItem | undefined {
   return worklistItems.get(id);
 }
 
-export function findWorklistByAccession(tenantId: string, accessionNumber: string): WorklistItem | undefined {
+export function findWorklistByAccession(
+  tenantId: string,
+  accessionNumber: string
+): WorklistItem | undefined {
   for (const w of worklistItems.values()) {
     if (w.tenantId === tenantId && w.accessionNumber === accessionNumber) return w;
   }
@@ -124,7 +136,7 @@ export function listWorklistItems(
     patientDfn?: string;
     scheduledAeTitle?: string;
     limit?: number;
-  },
+  }
 ): WorklistItem[] {
   const limit = filters?.limit ?? 200;
   const result: WorklistItem[] = [];
@@ -142,13 +154,13 @@ export function listWorklistItems(
 
 export function updateWorklistStatus(
   id: string,
-  status: WorklistItemStatus,
+  status: WorklistItemStatus
 ): WorklistItem | undefined {
   const w = worklistItems.get(id);
   if (!w) return undefined;
   w.status = status;
   w.updatedAt = now();
-  audit(w.tenantId, `worklist_${status}`, "worklist", id, w.accessionNumber);
+  audit(w.tenantId, `worklist_${status}`, 'worklist', id, w.accessionNumber);
   return w;
 }
 
@@ -158,7 +170,9 @@ export function updateWorklistStatus(
 
 export function createMppsRecord(
   tenantId: string,
-  rec: Omit<MppsRecord, "id" | "tenantId" | "receivedAt" | "updatedAt"> & { mppsInstanceUid?: string },
+  rec: Omit<MppsRecord, 'id' | 'tenantId' | 'receivedAt' | 'updatedAt'> & {
+    mppsInstanceUid?: string;
+  }
 ): MppsRecord {
   evictOldest(mppsRecords, MAX_MPPS);
   const mpps: MppsRecord = {
@@ -176,12 +190,17 @@ export function createMppsRecord(
     const wl = findWorklistByAccession(tenantId, mpps.accessionNumber);
     if (wl) {
       mpps.worklistItemId = wl.id;
-      wl.status = mpps.status === "IN PROGRESS" ? "in_progress" : mpps.status === "COMPLETED" ? "completed" : "discontinued";
+      wl.status =
+        mpps.status === 'IN PROGRESS'
+          ? 'in_progress'
+          : mpps.status === 'COMPLETED'
+            ? 'completed'
+            : 'discontinued';
       wl.updatedAt = now();
     }
   }
 
-  audit(tenantId, "mpps_created", "mpps", mpps.id, `status=${mpps.status}`);
+  audit(tenantId, 'mpps_created', 'mpps', mpps.id, `status=${mpps.status}`);
   return mpps;
 }
 
@@ -196,7 +215,7 @@ export function listMppsRecords(
     modality?: string;
     performingAeTitle?: string;
     limit?: number;
-  },
+  }
 ): MppsRecord[] {
   const limit = filters?.limit ?? 200;
   const result: MppsRecord[] = [];
@@ -214,7 +233,7 @@ export function listMppsRecords(
 export function updateMppsStatus(
   id: string,
   status: MppsStatus,
-  update?: { endDateTime?: string; seriesCount?: number; instanceCount?: number },
+  update?: { endDateTime?: string; seriesCount?: number; instanceCount?: number }
 ): MppsRecord | undefined {
   const m = mppsRecords.get(id);
   if (!m) return undefined;
@@ -228,12 +247,17 @@ export function updateMppsStatus(
   if (m.worklistItemId) {
     const wl = worklistItems.get(m.worklistItemId);
     if (wl) {
-      wl.status = status === "COMPLETED" ? "completed" : status === "DISCONTINUED" ? "discontinued" : "in_progress";
+      wl.status =
+        status === 'COMPLETED'
+          ? 'completed'
+          : status === 'DISCONTINUED'
+            ? 'discontinued'
+            : 'in_progress';
       wl.updatedAt = now();
     }
   }
 
-  audit(m.tenantId, `mpps_${status.toLowerCase().replace(" ", "_")}`, "mpps", id);
+  audit(m.tenantId, `mpps_${status.toLowerCase().replace(' ', '_')}`, 'mpps', id);
   return m;
 }
 
@@ -243,15 +267,15 @@ export function updateMppsStatus(
 
 export function registerModality(
   tenantId: string,
-  cfg: Omit<ModalityAeConfig, "id" | "tenantId" | "status" | "createdAt" | "updatedAt">,
+  cfg: Omit<ModalityAeConfig, 'id' | 'tenantId' | 'status' | 'createdAt' | 'updatedAt'>
 ): ModalityAeConfig | { error: string } {
   // Validate AE Title
   if (!cfg.aeTitle || !/^[A-Z0-9_ ]{1,16}$/.test(cfg.aeTitle)) {
-    return { error: "AE Title must be 1-16 chars, uppercase A-Z0-9 and underscore" };
+    return { error: 'AE Title must be 1-16 chars, uppercase A-Z0-9 and underscore' };
   }
   // Check duplicate AE Title
   for (const m of modalityConfigs.values()) {
-    if (m.tenantId === tenantId && m.aeTitle === cfg.aeTitle && m.status !== "decommissioned") {
+    if (m.tenantId === tenantId && m.aeTitle === cfg.aeTitle && m.status !== 'decommissioned') {
       return { error: `AE Title ${cfg.aeTitle} already registered` };
     }
   }
@@ -260,12 +284,12 @@ export function registerModality(
     ...cfg,
     id: genId(),
     tenantId,
-    status: "active",
+    status: 'active',
     createdAt: now(),
     updatedAt: now(),
   };
   modalityConfigs.set(modality.id, modality);
-  audit(tenantId, "modality_registered", "modality", modality.id, cfg.aeTitle);
+  audit(tenantId, 'modality_registered', 'modality', modality.id, cfg.aeTitle);
   return modality;
 }
 
@@ -275,7 +299,7 @@ export function getModality(id: string): ModalityAeConfig | undefined {
 
 export function listModalities(
   tenantId: string,
-  filters?: { modality?: string; status?: string; limit?: number },
+  filters?: { modality?: string; status?: string; limit?: number }
 ): ModalityAeConfig[] {
   const limit = filters?.limit ?? 200;
   const result: ModalityAeConfig[] = [];
@@ -291,13 +315,13 @@ export function listModalities(
 
 export function updateModalityStatus(
   id: string,
-  status: ModalityAeConfig["status"],
+  status: ModalityAeConfig['status']
 ): ModalityAeConfig | undefined {
   const m = modalityConfigs.get(id);
   if (!m) return undefined;
   m.status = status;
   m.updatedAt = now();
-  audit(m.tenantId, `modality_${status}`, "modality", id, m.aeTitle);
+  audit(m.tenantId, `modality_${status}`, 'modality', id, m.aeTitle);
   return m;
 }
 
@@ -332,7 +356,7 @@ export function getImagingModalityStats(tenantId: string): ImagingModalityStats 
     if (m.tenantId !== tenantId) continue;
     totalMpps++;
     mppsTotal++;
-    if (m.status === "COMPLETED") mppsCompleted++;
+    if (m.status === 'COMPLETED') mppsCompleted++;
   }
   for (const m of modalityConfigs.values()) {
     if (m.tenantId !== tenantId) continue;

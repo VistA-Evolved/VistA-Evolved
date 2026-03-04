@@ -23,7 +23,7 @@ export interface FlagEvaluationResult {
   /** Optional variant name (for A/B or multivariate flags). */
   variant?: string;
   /** Source of the evaluation (db, unleash, fallback). */
-  source: "db" | "unleash" | "fallback";
+  source: 'db' | 'unleash' | 'fallback';
 }
 
 // ─── User Targeting Rule ───────────────────────────────────────
@@ -31,7 +31,7 @@ export interface UserTargetingRule {
   /** Field to match in FlagContext (userId, or a properties key). */
   field: string;
   /** Operator for the match. */
-  operator: "eq" | "neq" | "in" | "not_in" | "contains";
+  operator: 'eq' | 'neq' | 'in' | 'not_in' | 'contains';
   /** Value(s) to match against. */
   values: string[];
 }
@@ -55,7 +55,10 @@ export interface FeatureFlagProvider {
   /**
    * Bulk-evaluate multiple flags for the same context.
    */
-  evaluateAll(flagKeys: string[], context: FlagContext): Promise<Record<string, FlagEvaluationResult>>;
+  evaluateAll(
+    flagKeys: string[],
+    context: FlagContext
+  ): Promise<Record<string, FlagEvaluationResult>>;
 
   /** Health check — returns true if provider is operational. */
   healthCheck(): Promise<boolean>;
@@ -65,7 +68,7 @@ export interface FeatureFlagProvider {
 }
 
 // ─── Provider Type ─────────────────────────────────────────────
-export type FeatureFlagProviderType = "db" | "unleash";
+export type FeatureFlagProviderType = 'db' | 'unleash';
 
 // ─── Provider Registry (singleton) ─────────────────────────────
 let _flagProvider: FeatureFlagProvider | null = null;

@@ -6,7 +6,7 @@
  * with tenant scoping and FIFO eviction.
  */
 
-import { randomUUID } from "node:crypto";
+import { randomUUID } from 'node:crypto';
 import type {
   OrderSet,
   Flowsheet,
@@ -17,7 +17,7 @@ import type {
   ContentPackV2,
   PackInstallPreview,
   PackInstallAction,
-} from "./types.js";
+} from './types.js';
 
 // ─── Stores ─────────────────────────────────────────────────────
 
@@ -29,7 +29,10 @@ const inboxRuleStore = new Map<string, InboxRule>();
 const dashboardStore = new Map<string, Dashboard>();
 const cdsRuleStore = new Map<string, CdsRule>();
 const installEventStore: PackInstallEvent[] = [];
-const installedPacks = new Map<string, { packId: string; version: string; tenantId: string; installedAt: string }>();
+const installedPacks = new Map<
+  string,
+  { packId: string; version: string; tenantId: string; installedAt: string }
+>();
 
 // ─── Helpers ────────────────────────────────────────────────────
 
@@ -48,7 +51,7 @@ function evict<T>(store: Map<string, T>): void {
 
 export function createOrderSet(
   tenantId: string,
-  input: Omit<OrderSet, "id" | "tenantId" | "createdAt" | "updatedAt">,
+  input: Omit<OrderSet, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>
 ): OrderSet {
   evict(orderSetStore);
   const now = new Date().toISOString();
@@ -63,17 +66,25 @@ export function getOrderSet(id: string): OrderSet | undefined {
 
 export function listOrderSets(tenantId: string, specialty?: string): OrderSet[] {
   return Array.from(orderSetStore.values()).filter(
-    (os) => os.tenantId === tenantId && os.status !== "archived" && (!specialty || os.specialty === specialty),
+    (os) =>
+      os.tenantId === tenantId &&
+      os.status !== 'archived' &&
+      (!specialty || os.specialty === specialty)
   );
 }
 
 export function updateOrderSet(
   id: string,
-  patch: Partial<Pick<OrderSet, "name" | "description" | "items" | "tags" | "status">>,
+  patch: Partial<Pick<OrderSet, 'name' | 'description' | 'items' | 'tags' | 'status'>>
 ): OrderSet | undefined {
   const existing = orderSetStore.get(id);
   if (!existing) return undefined;
-  const updated: OrderSet = { ...existing, ...patch, forked: existing.packId ? true : existing.forked, updatedAt: new Date().toISOString() };
+  const updated: OrderSet = {
+    ...existing,
+    ...patch,
+    forked: existing.packId ? true : existing.forked,
+    updatedAt: new Date().toISOString(),
+  };
   orderSetStore.set(id, updated);
   return updated;
 }
@@ -82,7 +93,7 @@ export function updateOrderSet(
 
 export function createFlowsheet(
   tenantId: string,
-  input: Omit<Flowsheet, "id" | "tenantId" | "createdAt" | "updatedAt">,
+  input: Omit<Flowsheet, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>
 ): Flowsheet {
   evict(flowsheetStore);
   const now = new Date().toISOString();
@@ -97,17 +108,27 @@ export function getFlowsheet(id: string): Flowsheet | undefined {
 
 export function listFlowsheets(tenantId: string, specialty?: string): Flowsheet[] {
   return Array.from(flowsheetStore.values()).filter(
-    (fs) => fs.tenantId === tenantId && fs.status !== "archived" && (!specialty || fs.specialty === specialty),
+    (fs) =>
+      fs.tenantId === tenantId &&
+      fs.status !== 'archived' &&
+      (!specialty || fs.specialty === specialty)
   );
 }
 
 export function updateFlowsheet(
   id: string,
-  patch: Partial<Pick<Flowsheet, "name" | "description" | "columns" | "defaultFrequency" | "tags" | "status">>,
+  patch: Partial<
+    Pick<Flowsheet, 'name' | 'description' | 'columns' | 'defaultFrequency' | 'tags' | 'status'>
+  >
 ): Flowsheet | undefined {
   const existing = flowsheetStore.get(id);
   if (!existing) return undefined;
-  const updated: Flowsheet = { ...existing, ...patch, forked: existing.packId ? true : existing.forked, updatedAt: new Date().toISOString() };
+  const updated: Flowsheet = {
+    ...existing,
+    ...patch,
+    forked: existing.packId ? true : existing.forked,
+    updatedAt: new Date().toISOString(),
+  };
   flowsheetStore.set(id, updated);
   return updated;
 }
@@ -116,7 +137,7 @@ export function updateFlowsheet(
 
 export function createInboxRule(
   tenantId: string,
-  input: Omit<InboxRule, "id" | "tenantId" | "createdAt" | "updatedAt">,
+  input: Omit<InboxRule, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>
 ): InboxRule {
   evict(inboxRuleStore);
   const now = new Date().toISOString();
@@ -126,14 +147,16 @@ export function createInboxRule(
 }
 
 export function listInboxRules(tenantId: string): InboxRule[] {
-  return Array.from(inboxRuleStore.values()).filter((r) => r.tenantId === tenantId && r.status === "active");
+  return Array.from(inboxRuleStore.values()).filter(
+    (r) => r.tenantId === tenantId && r.status === 'active'
+  );
 }
 
 // ─── Dashboard CRUD ─────────────────────────────────────────────
 
 export function createDashboard(
   tenantId: string,
-  input: Omit<Dashboard, "id" | "tenantId" | "createdAt" | "updatedAt">,
+  input: Omit<Dashboard, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>
 ): Dashboard {
   evict(dashboardStore);
   const now = new Date().toISOString();
@@ -144,7 +167,10 @@ export function createDashboard(
 
 export function listDashboards(tenantId: string, specialty?: string): Dashboard[] {
   return Array.from(dashboardStore.values()).filter(
-    (d) => d.tenantId === tenantId && d.status !== "archived" && (!specialty || d.specialty === specialty),
+    (d) =>
+      d.tenantId === tenantId &&
+      d.status !== 'archived' &&
+      (!specialty || d.specialty === specialty)
   );
 }
 
@@ -152,7 +178,7 @@ export function listDashboards(tenantId: string, specialty?: string): Dashboard[
 
 export function createCdsRule(
   tenantId: string,
-  input: Omit<CdsRule, "id" | "tenantId" | "createdAt" | "updatedAt">,
+  input: Omit<CdsRule, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>
 ): CdsRule {
   evict(cdsRuleStore);
   const now = new Date().toISOString();
@@ -167,7 +193,7 @@ export function getCdsRule(id: string): CdsRule | undefined {
 
 export function listCdsRules(tenantId: string, hook?: string): CdsRule[] {
   return Array.from(cdsRuleStore.values()).filter(
-    (r) => r.tenantId === tenantId && r.enabled && (!hook || r.hook === hook),
+    (r) => r.tenantId === tenantId && r.enabled && (!hook || r.hook === hook)
   );
 }
 
@@ -175,7 +201,7 @@ export function listCdsRules(tenantId: string, hook?: string): CdsRule[] {
 
 export function previewPackInstall(tenantId: string, pack: ContentPackV2): PackInstallPreview {
   const existing = installedPacks.get(tenantPackKey(tenantId, pack.packId));
-  const action: PackInstallAction = existing ? "upgrade" : "install";
+  const action: PackInstallAction = existing ? 'upgrade' : 'install';
 
   const missingDependencies: string[] = [];
   for (const dep of pack.requires ?? []) {
@@ -188,30 +214,47 @@ export function previewPackInstall(tenantId: string, pack: ContentPackV2): PackI
     packId: pack.packId,
     packVersion: pack.version,
     action,
-    templates: (pack.templates ?? []).map((t) => ({ name: t.name, action: "create" as const })),
-    orderSets: (pack.orderSets ?? []).map((o) => ({ name: o.name, action: "create" as const })),
-    flowsheets: (pack.flowsheets ?? []).map((f) => ({ name: f.name, action: "create" as const })),
-    inboxRules: (pack.inboxRules ?? []).map((r) => ({ name: r.name, action: "create" as const })),
-    dashboards: (pack.dashboards ?? []).map((d) => ({ name: d.name, action: "create" as const })),
-    cdsRules: (pack.cdsRules ?? []).map((c) => ({ name: c.name, action: "create" as const })),
+    templates: (pack.templates ?? []).map((t) => ({ name: t.name, action: 'create' as const })),
+    orderSets: (pack.orderSets ?? []).map((o) => ({ name: o.name, action: 'create' as const })),
+    flowsheets: (pack.flowsheets ?? []).map((f) => ({ name: f.name, action: 'create' as const })),
+    inboxRules: (pack.inboxRules ?? []).map((r) => ({ name: r.name, action: 'create' as const })),
+    dashboards: (pack.dashboards ?? []).map((d) => ({ name: d.name, action: 'create' as const })),
+    cdsRules: (pack.cdsRules ?? []).map((c) => ({ name: c.name, action: 'create' as const })),
     missingDependencies,
-    warnings: missingDependencies.length > 0 ? [`Missing prerequisites: ${missingDependencies.join(", ")}`] : [],
+    warnings:
+      missingDependencies.length > 0
+        ? [`Missing prerequisites: ${missingDependencies.join(', ')}`]
+        : [],
   };
 }
 
-export function installPack(tenantId: string, pack: ContentPackV2, actor: string): PackInstallEvent {
+export function installPack(
+  tenantId: string,
+  pack: ContentPackV2,
+  actor: string
+): PackInstallEvent {
   const now = new Date().toISOString();
   let itemsCreated = 0;
 
   // Install order sets
   for (const osInput of pack.orderSets ?? []) {
-    createOrderSet(tenantId, { ...osInput, packId: pack.packId, packVersion: pack.version, forked: false });
+    createOrderSet(tenantId, {
+      ...osInput,
+      packId: pack.packId,
+      packVersion: pack.version,
+      forked: false,
+    });
     itemsCreated++;
   }
 
   // Install flowsheets
   for (const fsInput of pack.flowsheets ?? []) {
-    createFlowsheet(tenantId, { ...fsInput, packId: pack.packId, packVersion: pack.version, forked: false });
+    createFlowsheet(tenantId, {
+      ...fsInput,
+      packId: pack.packId,
+      packVersion: pack.version,
+      forked: false,
+    });
     itemsCreated++;
   }
 
@@ -246,12 +289,12 @@ export function installPack(tenantId: string, pack: ContentPackV2, actor: string
     tenantId,
     packId: pack.packId,
     packVersion: pack.version,
-    action: "install",
+    action: 'install',
     actor,
     itemsCreated,
     itemsUpdated: 0,
     itemsRemoved: 0,
-    status: "success",
+    status: 'success',
     createdAt: now,
   };
   installEventStore.push(event);
@@ -301,14 +344,14 @@ export function rollbackPack(tenantId: string, packId: string, actor: string): P
     id: randomUUID(),
     tenantId,
     packId,
-    packVersion: existing?.version ?? "unknown",
-    action: "rollback",
+    packVersion: existing?.version ?? 'unknown',
+    action: 'rollback',
     actor,
     previousVersion: existing?.version,
     itemsCreated: 0,
     itemsUpdated: 0,
     itemsRemoved,
-    status: "success",
+    status: 'success',
     createdAt: now,
   };
   installEventStore.push(event);
@@ -317,7 +360,9 @@ export function rollbackPack(tenantId: string, packId: string, actor: string): P
 
 // ─── Queries ────────────────────────────────────────────────────
 
-export function listInstalledPacks(tenantId: string): Array<{ packId: string; version: string; installedAt: string }> {
+export function listInstalledPacks(
+  tenantId: string
+): Array<{ packId: string; version: string; installedAt: string }> {
   return Array.from(installedPacks.values()).filter((p) => p.tenantId === tenantId);
 }
 

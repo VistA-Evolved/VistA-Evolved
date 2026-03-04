@@ -8,7 +8,22 @@
     "FULL_SUITE": {
       "name": "Full Suite",
       "description": "All modules enabled — VA Medical Centers, large health systems",
-      "modules": ["kernel", "clinical", "portal", "telehealth", "imaging", "analytics", "interop", "intake", "ai", "iam", "rcm", "scheduling", "migration", "fhir"]
+      "modules": [
+        "kernel",
+        "clinical",
+        "portal",
+        "telehealth",
+        "imaging",
+        "analytics",
+        "interop",
+        "intake",
+        "ai",
+        "iam",
+        "rcm",
+        "scheduling",
+        "migration",
+        "fhir"
+      ]
     },
     "CLINICIAN_ONLY": {
       "name": "Clinician CPRS",

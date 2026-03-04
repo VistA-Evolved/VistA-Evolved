@@ -45,9 +45,9 @@
  * Auth: session-based; admin for mutating operations.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { requireSession } from "../auth/auth-routes.js";
-import { log } from "../lib/logger.js";
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
+import { log } from '../lib/logger.js';
 import {
   listLocales,
   getLocale,
@@ -76,126 +76,167 @@ import {
   getTenantLocaleConfig,
   updateTenantLocaleConfig,
   getLocalizationDashboardStats,
-} from "./localization-store.js";
+} from './localization-store.js';
 
 export default async function localizationRoutes(server: FastifyInstance) {
   // ---- Locales ----
 
-  server.get("/localization/locales", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/localization/locales', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     return { ok: true, locales: listLocales() };
   });
 
-  server.post("/localization/locales", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/localization/locales', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const body = (request.body as any) || {};
-    const { languageTag, nativeName, englishName, direction, dateFormat, decimalSeparator, thousandsSeparator, defaultUnitProfileId, enabled } = body;
+    const {
+      languageTag,
+      nativeName,
+      englishName,
+      direction,
+      dateFormat,
+      decimalSeparator,
+      thousandsSeparator,
+      defaultUnitProfileId,
+      enabled,
+    } = body;
     if (!languageTag || !nativeName || !englishName) {
-      return reply.code(400).send({ ok: false, error: "languageTag, nativeName, and englishName required" });
+      return reply
+        .code(400)
+        .send({ ok: false, error: 'languageTag, nativeName, and englishName required' });
     }
     try {
       const loc = createLocale({
         languageTag,
         nativeName,
         englishName,
-        direction: direction || "ltr",
-        dateFormat: dateFormat || "MM/DD/YYYY",
-        decimalSeparator: decimalSeparator || ".",
-        thousandsSeparator: thousandsSeparator || ",",
+        direction: direction || 'ltr',
+        dateFormat: dateFormat || 'MM/DD/YYYY',
+        decimalSeparator: decimalSeparator || '.',
+        thousandsSeparator: thousandsSeparator || ',',
         defaultUnitProfileId: defaultUnitProfileId || null,
         enabled: enabled !== false,
       });
       return reply.code(201).send({ ok: true, locale: loc });
     } catch (err: any) {
-      log.error("Locale creation failed", { error: err instanceof Error ? err.message : String(err) });
-      return reply.code(409).send({ ok: false, error: "Internal error" });
+      log.error('Locale creation failed', {
+        error: err instanceof Error ? err.message : String(err),
+      });
+      return reply.code(409).send({ ok: false, error: 'Internal error' });
     }
   });
 
-  server.get("/localization/locales/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/localization/locales/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const loc = getLocale(id);
-    if (!loc) return reply.code(404).send({ ok: false, error: "Locale not found" });
+    if (!loc) return reply.code(404).send({ ok: false, error: 'Locale not found' });
     return { ok: true, locale: loc };
   });
 
-  server.put("/localization/locales/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.put('/localization/locales/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const updated = updateLocale(id, body);
-    if (!updated) return reply.code(404).send({ ok: false, error: "Locale not found" });
+    if (!updated) return reply.code(404).send({ ok: false, error: 'Locale not found' });
     return { ok: true, locale: updated };
   });
 
-  server.delete("/localization/locales/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const { id } = request.params as { id: string };
-    if (!deleteLocale(id)) return reply.code(404).send({ ok: false, error: "Locale not found" });
-    return { ok: true };
-  });
+  server.delete(
+    '/localization/locales/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const { id } = request.params as { id: string };
+      if (!deleteLocale(id)) return reply.code(404).send({ ok: false, error: 'Locale not found' });
+      return { ok: true };
+    }
+  );
 
   // ---- Translation Bundles ----
 
-  server.get("/localization/translations", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/localization/translations', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const { languageTag } = request.query as { languageTag?: string };
     return { ok: true, bundles: listTranslationBundles(session.tenantId, languageTag) };
   });
 
-  server.post("/localization/translations", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    const body = (request.body as any) || {};
-    const { languageTag, namespace, translations, source, contentPackId } = body;
-    if (!languageTag || !namespace || !translations) {
-      return reply.code(400).send({ ok: false, error: "languageTag, namespace, and translations required" });
+  server.post(
+    '/localization/translations',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      const body = (request.body as any) || {};
+      const { languageTag, namespace, translations, source, contentPackId } = body;
+      if (!languageTag || !namespace || !translations) {
+        return reply
+          .code(400)
+          .send({ ok: false, error: 'languageTag, namespace, and translations required' });
+      }
+      try {
+        const bundle = createTranslationBundle({
+          tenantId: session.tenantId,
+          languageTag,
+          namespace,
+          translations,
+          source: source || 'manual',
+          contentPackId: contentPackId || null,
+        });
+        return reply.code(201).send({ ok: true, bundle });
+      } catch (err: any) {
+        log.error('Translation bundle creation failed', {
+          error: err instanceof Error ? err.message : String(err),
+        });
+        return reply.code(409).send({ ok: false, error: 'Internal error' });
+      }
     }
-    try {
-      const bundle = createTranslationBundle({
-        tenantId: session.tenantId,
-        languageTag,
-        namespace,
-        translations,
-        source: source || "manual",
-        contentPackId: contentPackId || null,
-      });
-      return reply.code(201).send({ ok: true, bundle });
-    } catch (err: any) {
-      log.error("Translation bundle creation failed", { error: err instanceof Error ? err.message : String(err) });
-      return reply.code(409).send({ ok: false, error: "Internal error" });
+  );
+
+  server.get(
+    '/localization/translations/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const { id } = request.params as { id: string };
+      const bundle = getTranslationBundle(id);
+      if (!bundle)
+        return reply.code(404).send({ ok: false, error: 'Translation bundle not found' });
+      return { ok: true, bundle };
     }
-  });
+  );
 
-  server.get("/localization/translations/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const { id } = request.params as { id: string };
-    const bundle = getTranslationBundle(id);
-    if (!bundle) return reply.code(404).send({ ok: false, error: "Translation bundle not found" });
-    return { ok: true, bundle };
-  });
+  server.put(
+    '/localization/translations/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
+      const updated = updateTranslationBundle(id, body);
+      if (!updated)
+        return reply.code(404).send({ ok: false, error: 'Translation bundle not found' });
+      return { ok: true, bundle: updated };
+    }
+  );
 
-  server.put("/localization/translations/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
-    const updated = updateTranslationBundle(id, body);
-    if (!updated) return reply.code(404).send({ ok: false, error: "Translation bundle not found" });
-    return { ok: true, bundle: updated };
-  });
+  server.delete(
+    '/localization/translations/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const { id } = request.params as { id: string };
+      if (!deleteTranslationBundle(id))
+        return reply.code(404).send({ ok: false, error: 'Translation bundle not found' });
+      return { ok: true };
+    }
+  );
 
-  server.delete("/localization/translations/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const { id } = request.params as { id: string };
-    if (!deleteTranslationBundle(id)) return reply.code(404).send({ ok: false, error: "Translation bundle not found" });
-    return { ok: true };
-  });
-
-  server.get("/localization/resolve", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/localization/resolve', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
-    const { languageTag, namespace } = request.query as { languageTag?: string; namespace?: string };
+    const { languageTag, namespace } = request.query as {
+      languageTag?: string;
+      namespace?: string;
+    };
     if (!languageTag || !namespace) {
-      return reply.code(400).send({ ok: false, error: "languageTag and namespace query params required" });
+      return reply
+        .code(400)
+        .send({ ok: false, error: 'languageTag and namespace query params required' });
     }
     const translations = resolveTranslations(session.tenantId, languageTag, namespace);
     return { ok: true, languageTag, namespace, translations };
@@ -203,119 +244,170 @@ export default async function localizationRoutes(server: FastifyInstance) {
 
   // ---- UCUM Unit Profiles ----
 
-  server.get("/localization/unit-profiles", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    return { ok: true, profiles: listUnitProfiles() };
-  });
-
-  server.post("/localization/unit-profiles", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const body = (request.body as any) || {};
-    const { name, description, preferredUnits, conversions, region } = body;
-    if (!name || !preferredUnits) {
-      return reply.code(400).send({ ok: false, error: "name and preferredUnits required" });
+  server.get(
+    '/localization/unit-profiles',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      return { ok: true, profiles: listUnitProfiles() };
     }
-    try {
-      const profile = createUnitProfile({
-        name,
-        description: description || "",
-        preferredUnits,
-        conversions: conversions || [],
-        region: region || "Custom",
-      });
-      return reply.code(201).send({ ok: true, profile });
-    } catch (err: any) {
-      log.error("Unit profile creation failed", { error: err instanceof Error ? err.message : String(err) });
-      return reply.code(409).send({ ok: false, error: "Internal error" });
-    }
-  });
+  );
 
-  server.get("/localization/unit-profiles/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const { id } = request.params as { id: string };
-    const profile = getUnitProfile(id);
-    if (!profile) return reply.code(404).send({ ok: false, error: "Unit profile not found" });
-    return { ok: true, profile };
-  });
+  server.post(
+    '/localization/unit-profiles',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const body = (request.body as any) || {};
+      const { name, description, preferredUnits, conversions, region } = body;
+      if (!name || !preferredUnits) {
+        return reply.code(400).send({ ok: false, error: 'name and preferredUnits required' });
+      }
+      try {
+        const profile = createUnitProfile({
+          name,
+          description: description || '',
+          preferredUnits,
+          conversions: conversions || [],
+          region: region || 'Custom',
+        });
+        return reply.code(201).send({ ok: true, profile });
+      } catch (err: any) {
+        log.error('Unit profile creation failed', {
+          error: err instanceof Error ? err.message : String(err),
+        });
+        return reply.code(409).send({ ok: false, error: 'Internal error' });
+      }
+    }
+  );
+
+  server.get(
+    '/localization/unit-profiles/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const { id } = request.params as { id: string };
+      const profile = getUnitProfile(id);
+      if (!profile) return reply.code(404).send({ ok: false, error: 'Unit profile not found' });
+      return { ok: true, profile };
+    }
+  );
 
   // ---- Country Packs ----
 
-  server.get("/localization/country-packs", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    return { ok: true, countryPacks: listCountryPacks(session.tenantId) };
-  });
-
-  server.post("/localization/country-packs", async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    const body = (request.body as any) || {};
-    const { countryCode, name, description, icdVersion, defaultLocale, formularyReference, labRangeProfileId, documentTemplateIds, contentPackId, enabled } = body;
-    if (!countryCode || !name || !icdVersion) {
-      return reply.code(400).send({ ok: false, error: "countryCode, name, and icdVersion required" });
+  server.get(
+    '/localization/country-packs',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      return { ok: true, countryPacks: listCountryPacks(session.tenantId) };
     }
-    try {
-      const pack = createCountryPack({
-        tenantId: session.tenantId,
+  );
+
+  server.post(
+    '/localization/country-packs',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      const body = (request.body as any) || {};
+      const {
         countryCode,
         name,
-        description: description || "",
+        description,
         icdVersion,
-        defaultLocale: defaultLocale || "en-US",
-        formularyReference: formularyReference || null,
-        labRangeProfileId: labRangeProfileId || null,
-        documentTemplateIds: documentTemplateIds || [],
-        contentPackId: contentPackId || null,
-        enabled: enabled !== false,
-      });
-      return reply.code(201).send({ ok: true, countryPack: pack });
-    } catch (err: any) {
-      log.error("Country pack creation failed", { error: err instanceof Error ? err.message : String(err) });
-      return reply.code(409).send({ ok: false, error: "Internal error" });
+        defaultLocale,
+        formularyReference,
+        labRangeProfileId,
+        documentTemplateIds,
+        contentPackId,
+        enabled,
+      } = body;
+      if (!countryCode || !name || !icdVersion) {
+        return reply
+          .code(400)
+          .send({ ok: false, error: 'countryCode, name, and icdVersion required' });
+      }
+      try {
+        const pack = createCountryPack({
+          tenantId: session.tenantId,
+          countryCode,
+          name,
+          description: description || '',
+          icdVersion,
+          defaultLocale: defaultLocale || 'en-US',
+          formularyReference: formularyReference || null,
+          labRangeProfileId: labRangeProfileId || null,
+          documentTemplateIds: documentTemplateIds || [],
+          contentPackId: contentPackId || null,
+          enabled: enabled !== false,
+        });
+        return reply.code(201).send({ ok: true, countryPack: pack });
+      } catch (err: any) {
+        log.error('Country pack creation failed', {
+          error: err instanceof Error ? err.message : String(err),
+        });
+        return reply.code(409).send({ ok: false, error: 'Internal error' });
+      }
     }
-  });
+  );
 
-  server.get("/localization/country-packs/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const { id } = request.params as { id: string };
-    const pack = getCountryPack(id);
-    if (!pack) return reply.code(404).send({ ok: false, error: "Country pack not found" });
-    return { ok: true, countryPack: pack };
-  });
+  server.get(
+    '/localization/country-packs/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const { id } = request.params as { id: string };
+      const pack = getCountryPack(id);
+      if (!pack) return reply.code(404).send({ ok: false, error: 'Country pack not found' });
+      return { ok: true, countryPack: pack };
+    }
+  );
 
-  server.put("/localization/country-packs/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const { id } = request.params as { id: string };
-    const body = (request.body as any) || {};
-    const updated = updateCountryPack(id, body);
-    if (!updated) return reply.code(404).send({ ok: false, error: "Country pack not found" });
-    return { ok: true, countryPack: updated };
-  });
+  server.put(
+    '/localization/country-packs/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const { id } = request.params as { id: string };
+      const body = (request.body as any) || {};
+      const updated = updateCountryPack(id, body);
+      if (!updated) return reply.code(404).send({ ok: false, error: 'Country pack not found' });
+      return { ok: true, countryPack: updated };
+    }
+  );
 
-  server.delete("/localization/country-packs/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const { id } = request.params as { id: string };
-    if (!deleteCountryPack(id)) return reply.code(404).send({ ok: false, error: "Country pack not found" });
-    return { ok: true };
-  });
+  server.delete(
+    '/localization/country-packs/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const { id } = request.params as { id: string };
+      if (!deleteCountryPack(id))
+        return reply.code(404).send({ ok: false, error: 'Country pack not found' });
+      return { ok: true };
+    }
+  );
 
   // ---- Themes ----
 
-  server.get("/localization/themes", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/localization/themes', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     return { ok: true, themes: listThemes() };
   });
 
-  server.post("/localization/themes", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.post('/localization/themes', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const body = (request.body as any) || {};
-    const { name, preset, description, variables, darkModeVariables, fontFamily, baseFontSize, borderRadius } = body;
+    const {
+      name,
+      preset,
+      description,
+      variables,
+      darkModeVariables,
+      fontFamily,
+      baseFontSize,
+      borderRadius,
+    } = body;
     if (!name) {
-      return reply.code(400).send({ ok: false, error: "name required" });
+      return reply.code(400).send({ ok: false, error: 'name required' });
     }
     try {
       const theme = createTheme({
         name,
-        preset: preset || "custom",
-        description: description || "",
+        preset: preset || 'custom',
+        description: description || '',
         variables: variables || [],
         darkModeVariables: darkModeVariables || null,
         fontFamily: fontFamily || "'Inter', sans-serif",
@@ -325,43 +417,50 @@ export default async function localizationRoutes(server: FastifyInstance) {
       });
       return reply.code(201).send({ ok: true, theme });
     } catch (err: any) {
-      log.error("Theme creation failed", { error: err instanceof Error ? err.message : String(err) });
-      return reply.code(409).send({ ok: false, error: "Internal error" });
+      log.error('Theme creation failed', {
+        error: err instanceof Error ? err.message : String(err),
+      });
+      return reply.code(409).send({ ok: false, error: 'Internal error' });
     }
   });
 
-  server.get("/localization/themes/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/localization/themes/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const theme = getTheme(id);
-    if (!theme) return reply.code(404).send({ ok: false, error: "Theme not found" });
+    if (!theme) return reply.code(404).send({ ok: false, error: 'Theme not found' });
     return { ok: true, theme };
   });
 
-  server.put("/localization/themes/:id", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.put('/localization/themes/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const updated = updateTheme(id, body);
-    if (!updated) return reply.code(404).send({ ok: false, error: "Theme not found or is a system theme" });
+    if (!updated)
+      return reply.code(404).send({ ok: false, error: 'Theme not found or is a system theme' });
     return { ok: true, theme: updated };
   });
 
-  server.delete("/localization/themes/:id", async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const { id } = request.params as { id: string };
-    if (!deleteTheme(id)) return reply.code(404).send({ ok: false, error: "Theme not found or is a system theme" });
-    return { ok: true };
-  });
+  server.delete(
+    '/localization/themes/:id',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const { id } = request.params as { id: string };
+      if (!deleteTheme(id))
+        return reply.code(404).send({ ok: false, error: 'Theme not found or is a system theme' });
+      return { ok: true };
+    }
+  );
 
   // ---- Tenant Config ----
 
-  server.get("/localization/config", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/localization/config', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     return { ok: true, config: getTenantLocaleConfig(session.tenantId) };
   });
 
-  server.put("/localization/config", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.put('/localization/config', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const body = (request.body as any) || {};
     const updated = updateTenantLocaleConfig(session.tenantId, body);
@@ -370,7 +469,7 @@ export default async function localizationRoutes(server: FastifyInstance) {
 
   // ---- Dashboard ----
 
-  server.get("/localization/dashboard", async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/localization/dashboard', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     return { ok: true, stats: getLocalizationDashboardStats() };
   });

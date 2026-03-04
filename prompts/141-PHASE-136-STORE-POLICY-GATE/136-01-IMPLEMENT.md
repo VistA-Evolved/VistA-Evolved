@@ -1,12 +1,14 @@
 # Phase 136 — IMPLEMENT: Store Policy Gate + Durability Sweep
 
 ## Goal
+
 Stop drift back into Map stores. Enforce a hard policy: critical state must be
 durable in Postgres in rc/prod. No new in-memory-only stores for domain data.
 
 ## Implementation Steps
 
 ### A) Store Inventory Infrastructure
+
 1. Create `apps/api/src/platform/store-policy.ts`:
    - Machine-readable registry of ALL in-memory stores
    - Each store classified: `critical` | `cache` | `dev_only` | `rate_limiter` | `registry` | `audit`
@@ -18,6 +20,7 @@ durable in Postgres in rc/prod. No new in-memory-only stores for domain data.
    - Classification, owner domain, file path, migration status
 
 ### B) Store Policy QA Gate
+
 1. Create `scripts/qa-gates/store-policy-gate.mjs`:
    - FAIL if any `critical` Map store exists AND runtime mode is rc/prod
    - FAIL if any `cache` store lacks TTL or size cap annotation
@@ -29,15 +32,18 @@ durable in Postgres in rc/prod. No new in-memory-only stores for domain data.
    - Add to RC + FULL suites
 
 ### C) Runtime Enforcement
+
 1. Extend `store-resolver.ts` or posture:
    - `/posture/store-policy` endpoint returning live store status
    - Blocks API startup in rc/prod if critical stores are Map-only (warning log)
 
 ### D) Regression Safety
+
 1. Unit tests for store-policy module
 2. Gauntlet FAST + RC must pass
 
 ## Files Touched
+
 - `apps/api/src/platform/store-policy.ts` (NEW)
 - `scripts/qa-gates/store-policy-gate.mjs` (NEW)
 - `qa/gauntlet/gates/g17-store-policy.mjs` (NEW)
@@ -49,5 +55,6 @@ durable in Postgres in rc/prod. No new in-memory-only stores for domain data.
 - `prompts/141-PHASE-136-STORE-POLICY-GATE/136-99-VERIFY.md`
 
 ## Verification
+
 Run `scripts/qa-gates/store-policy-gate.mjs` — must PASS.
 Run gauntlet FAST + RC — must be green.

@@ -1,6 +1,7 @@
 # Phase 30 VERIFY -- Telehealth gates
 
 ## User request
+
 PHASE 30 VERIFY -- Telehealth gates
 
 G30-0 regression: verify-latest green
@@ -13,6 +14,7 @@ G30-5 provider swap: switching provider config falls back safely if provider not
 Deliver verify-phase1-to-phase30.ps1; update verify-latest only if green.
 
 ## Implementation steps
+
 1. Read existing verify-phase1-to-phase29.ps1 + verify-latest.ps1 for patterns
 2. Inventory all Phase 30 files (types, providers, room-store, device-check, routes, UI, docs)
 3. Build verify-phase1-to-phase30.ps1 with gates G30-0 through G30-5
@@ -22,10 +24,12 @@ Deliver verify-phase1-to-phase30.ps1; update verify-latest only if green.
 7. Commit
 
 ## Verification steps
+
 - All gates pass (PASS count, 0 FAIL)
 - verify-latest.ps1 delegates to phase30
 
 ## Files touched
+
 - scripts/verify-phase1-to-phase30.ps1 (new)
 - scripts/verify-latest.ps1 (updated)
 - prompts/32-PHASE-30-TELEHEALTH/32-02-telehealth-VERIFY.md (this file)

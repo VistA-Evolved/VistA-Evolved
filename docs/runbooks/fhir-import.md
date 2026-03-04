@@ -5,6 +5,7 @@
 ## Overview
 
 The FHIR import pipeline accepts FHIR R4 Bundles containing:
+
 - Patient
 - Condition
 - MedicationRequest
@@ -25,12 +26,12 @@ FHIR Bundle → Validate → Import → Track Batch Status
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/migration/fhir/import` | Import a FHIR R4 Bundle |
-| GET | `/migration/batches` | List all import batches |
-| GET | `/migration/batches/:id` | Get single batch details |
-| GET | `/migration/health` | Migration subsystem health |
+| Method | Path                     | Description                |
+| ------ | ------------------------ | -------------------------- |
+| POST   | `/migration/fhir/import` | Import a FHIR R4 Bundle    |
+| GET    | `/migration/batches`     | List all import batches    |
+| GET    | `/migration/batches/:id` | Get single batch details   |
+| GET    | `/migration/health`      | Migration subsystem health |
 
 ## Example Import
 
@@ -56,14 +57,14 @@ curl -X POST http://localhost:3001/migration/fhir/import \
 
 ## Batch Status Values
 
-| Status | Meaning |
-|--------|---------|
-| pending | Batch created, not yet processed |
-| validating | Resources being validated |
-| importing | Active import in progress |
-| completed | All resources imported successfully |
-| partial | Some resources imported, some failed |
-| failed | No resources imported successfully |
+| Status     | Meaning                              |
+| ---------- | ------------------------------------ |
+| pending    | Batch created, not yet processed     |
+| validating | Resources being validated            |
+| importing  | Active import in progress            |
+| completed  | All resources imported successfully  |
+| partial    | Some resources imported, some failed |
+| failed     | No resources imported successfully   |
 
 ## Notes
 

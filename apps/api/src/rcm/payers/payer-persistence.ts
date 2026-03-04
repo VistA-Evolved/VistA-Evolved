@@ -22,12 +22,12 @@
  * No credentials stored. Vault interface defined for future use.
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import { createHash } from "node:crypto";
-import { renameSync } from "node:fs";
-import { blocksJsonStores, getRuntimeMode } from "../../platform/runtime-mode.js";
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
+import { renameSync } from 'node:fs';
+import { blocksJsonStores, getRuntimeMode } from '../../platform/runtime-mode.js';
 import type {
   PhHmo,
   PhHmoRegistryData,
@@ -35,16 +35,15 @@ import type {
   HmoStatus,
   HmoIntegrationMode,
   HmoEvidence,
-} from "./ph-hmo-registry.js";
+} from './ph-hmo-registry.js';
 
-const __dirname_resolved = typeof __dirname !== "undefined"
-  ? __dirname
-  : dirname(fileURLToPath(import.meta.url));
+const __dirname_resolved =
+  typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
 
-const REPO_ROOT = join(__dirname_resolved, "..", "..", "..", "..", "..");
-const DATA_DIR = join(REPO_ROOT, "data", "payers");
-const REGISTRY_DB_PATH = join(DATA_DIR, "registry-db.json");
-const TENANT_OVERRIDES_PATH = join(DATA_DIR, "tenant-overrides.json");
+const REPO_ROOT = join(__dirname_resolved, '..', '..', '..', '..', '..');
+const DATA_DIR = join(REPO_ROOT, 'data', 'payers');
+const REGISTRY_DB_PATH = join(DATA_DIR, 'registry-db.json');
+const TENANT_OVERRIDES_PATH = join(DATA_DIR, 'tenant-overrides.json');
 
 /* ── Types ──────────────────────────────────────────────────── */
 
@@ -61,7 +60,7 @@ export interface PersistedPayer extends PhHmo {
 }
 
 export interface PayerProvenance {
-  sourceType: "insurance_commission_snapshot" | "manual_entry" | "csv_import" | "api_sync";
+  sourceType: 'insurance_commission_snapshot' | 'manual_entry' | 'csv_import' | 'api_sync';
   sourceUrl?: string;
   retrievedAt: string;
   importedBy: string;
@@ -97,7 +96,7 @@ export interface TenantPayerOverride {
 /** DB file schema */
 interface RegistryDbFile {
   _meta: {
-    schema: "payer-registry-db-v1";
+    schema: 'payer-registry-db-v1';
     lastModified: string;
     payerCount: number;
   };
@@ -106,7 +105,7 @@ interface RegistryDbFile {
 
 interface TenantOverridesFile {
   _meta: {
-    schema: "tenant-payer-overrides-v1";
+    schema: 'tenant-payer-overrides-v1';
     lastModified: string;
   };
   overrides: TenantPayerOverride[];
@@ -136,9 +135,7 @@ function stripBom(raw: string): string {
 }
 
 function hashRecord(record: PhHmo): string {
-  return createHash("sha256")
-    .update(JSON.stringify(record))
-    .digest("hex");
+  return createHash('sha256').update(JSON.stringify(record)).digest('hex');
 }
 
 function atomicWrite(path: string, data: unknown): void {
@@ -146,11 +143,11 @@ function atomicWrite(path: string, data: unknown): void {
   if (blocksJsonStores()) {
     throw new Error(
       `JSON file writes are blocked in PLATFORM_RUNTIME_MODE=${getRuntimeMode()}. ` +
-      `Use the PostgreSQL-backed payer repository (store-resolver) instead.`
+        `Use the PostgreSQL-backed payer repository (store-resolver) instead.`
     );
   }
-  const tmpPath = path + ".tmp";
-  writeFileSync(tmpPath, JSON.stringify(data, null, 2), "utf-8");
+  const tmpPath = path + '.tmp';
+  writeFileSync(tmpPath, JSON.stringify(data, null, 2), 'utf-8');
   // Rename is atomic on most filesystems
   renameSync(tmpPath, path);
 }
@@ -165,21 +162,25 @@ export function initPayerPersistence(): { ok: boolean; count: number; error?: st
   // Load registry DB if exists
   if (existsSync(REGISTRY_DB_PATH)) {
     try {
-      const raw = stripBom(readFileSync(REGISTRY_DB_PATH, "utf-8"));
+      const raw = stripBom(readFileSync(REGISTRY_DB_PATH, 'utf-8'));
       const db: RegistryDbFile = JSON.parse(raw);
       for (const p of db.payers) {
         payerCache.set(p.payerId, p);
       }
     } catch (err) {
       initialized = true;
-      return { ok: false, count: 0, error: `Failed to load registry DB: ${err instanceof Error ? err.message : String(err)}` };
+      return {
+        ok: false,
+        count: 0,
+        error: `Failed to load registry DB: ${err instanceof Error ? err.message : String(err)}`,
+      };
     }
   }
 
   // Load tenant overrides if exists
   if (existsSync(TENANT_OVERRIDES_PATH)) {
     try {
-      const raw = stripBom(readFileSync(TENANT_OVERRIDES_PATH, "utf-8"));
+      const raw = stripBom(readFileSync(TENANT_OVERRIDES_PATH, 'utf-8'));
       const overrides: TenantOverridesFile = JSON.parse(raw);
       for (const o of overrides.overrides) {
         tenantOverrideCache.set(`${o.tenantId}:${o.payerId}`, o);
@@ -199,7 +200,7 @@ function flushRegistryDb(): void {
   ensureDir(DATA_DIR);
   const db: RegistryDbFile = {
     _meta: {
-      schema: "payer-registry-db-v1",
+      schema: 'payer-registry-db-v1',
       lastModified: new Date().toISOString(),
       payerCount: payerCache.size,
     },
@@ -212,7 +213,7 @@ function flushTenantOverrides(): void {
   ensureDir(DATA_DIR);
   const file: TenantOverridesFile = {
     _meta: {
-      schema: "tenant-payer-overrides-v1",
+      schema: 'tenant-payer-overrides-v1',
       lastModified: new Date().toISOString(),
     },
     overrides: Array.from(tenantOverrideCache.values()),
@@ -223,25 +224,30 @@ function flushTenantOverrides(): void {
 /* ── Import from snapshot JSON ──────────────────────────────── */
 
 export function importFromSnapshot(params: {
-  sourceType: PayerProvenance["sourceType"];
+  sourceType: PayerProvenance['sourceType'];
   sourceUrl?: string;
   importedBy: string;
 }): { ok: boolean; imported: number; skipped: number; errors: string[] } {
-  const snapshotPath = join(DATA_DIR, "ph-hmo-registry.json");
+  const snapshotPath = join(DATA_DIR, 'ph-hmo-registry.json');
 
   if (!existsSync(snapshotPath)) {
     return { ok: false, imported: 0, skipped: 0, errors: [`Snapshot not found: ${snapshotPath}`] };
   }
 
-  const raw = stripBom(readFileSync(snapshotPath, "utf-8"));
+  const raw = stripBom(readFileSync(snapshotPath, 'utf-8'));
   let data: PhHmoRegistryData;
   try {
     data = JSON.parse(raw);
   } catch (err) {
-    return { ok: false, imported: 0, skipped: 0, errors: [`Parse error: ${err instanceof Error ? err.message : String(err)}`] };
+    return {
+      ok: false,
+      imported: 0,
+      skipped: 0,
+      errors: [`Parse error: ${err instanceof Error ? err.message : String(err)}`],
+    };
   }
 
-  const fileHash = createHash("sha256").update(raw).digest("hex");
+  const fileHash = createHash('sha256').update(raw).digest('hex');
   const now = new Date().toISOString();
   const errors: string[] = [];
   let imported = 0;
@@ -279,73 +285,74 @@ export function importFromSnapshot(params: {
   }
 
   // Also import PhilHealth as a special payer if not present
-  if (!payerCache.has("PH-PHILHEALTH")) {
+  if (!payerCache.has('PH-PHILHEALTH')) {
     const philhealth: PersistedPayer = {
-      payerId: "PH-PHILHEALTH",
-      legalName: "Philippine Health Insurance Corporation",
-      brandNames: ["PhilHealth"],
-      type: "HMO",
-      country: "PH",
+      payerId: 'PH-PHILHEALTH',
+      legalName: 'Philippine Health Insurance Corporation',
+      brandNames: ['PhilHealth'],
+      type: 'HMO',
+      country: 'PH',
       canonicalSource: {
-        url: "https://www.philhealth.gov.ph/",
-        asOfDate: "2025-12-31",
+        url: 'https://www.philhealth.gov.ph/',
+        asOfDate: '2025-12-31',
         retrievedAt: now,
       },
       capabilities: {
-        loa: "manual",
-        eligibility: "portal",
-        claimsSubmission: "portal",
-        claimStatus: "portal",
-        remittance: "manual",
-        memberPortal: "available",
-        providerPortal: "available",
+        loa: 'manual',
+        eligibility: 'portal',
+        claimsSubmission: 'portal',
+        claimStatus: 'portal',
+        remittance: 'manual',
+        memberPortal: 'available',
+        providerPortal: 'available',
       },
-      integrationMode: "portal",
+      integrationMode: 'portal',
       evidence: [
         {
-          kind: "provider_portal",
-          url: "https://www.philhealth.gov.ph/services/eclaims/",
-          title: "PhilHealth eClaims Portal",
+          kind: 'provider_portal',
+          url: 'https://www.philhealth.gov.ph/services/eclaims/',
+          title: 'PhilHealth eClaims Portal',
           retrievedAt: now,
-          notes: "Government insurance -- separate from HMO registry. eClaims v3 integration via Phase 90.",
+          notes:
+            'Government insurance -- separate from HMO registry. eClaims v3 integration via Phase 90.',
         },
       ],
-      status: "active",
+      status: 'active',
       contractingTasks: [],
       importedAt: now,
       updatedAt: now,
       importHash: hashRecord({
-        payerId: "PH-PHILHEALTH",
-        legalName: "Philippine Health Insurance Corporation",
-        brandNames: ["PhilHealth"],
-        type: "HMO",
-        country: "PH",
+        payerId: 'PH-PHILHEALTH',
+        legalName: 'Philippine Health Insurance Corporation',
+        brandNames: ['PhilHealth'],
+        type: 'HMO',
+        country: 'PH',
         canonicalSource: {
-          url: "https://www.philhealth.gov.ph/",
-          asOfDate: "2025-12-31",
+          url: 'https://www.philhealth.gov.ph/',
+          asOfDate: '2025-12-31',
           retrievedAt: now,
         },
         capabilities: {
-          loa: "manual",
-          eligibility: "portal",
-          claimsSubmission: "portal",
-          claimStatus: "portal",
-          remittance: "manual",
-          memberPortal: "available",
-          providerPortal: "available",
+          loa: 'manual',
+          eligibility: 'portal',
+          claimsSubmission: 'portal',
+          claimStatus: 'portal',
+          remittance: 'manual',
+          memberPortal: 'available',
+          providerPortal: 'available',
         },
-        integrationMode: "portal",
+        integrationMode: 'portal',
         evidence: [],
-        status: "active",
+        status: 'active',
       }),
       provenance: {
-        sourceType: "manual_entry",
-        sourceUrl: "https://www.philhealth.gov.ph/",
+        sourceType: 'manual_entry',
+        sourceUrl: 'https://www.philhealth.gov.ph/',
         retrievedAt: now,
         importedBy: params.importedBy,
       },
     };
-    payerCache.set("PH-PHILHEALTH", philhealth);
+    payerCache.set('PH-PHILHEALTH', philhealth);
     imported++;
   }
 
@@ -375,15 +382,15 @@ export function listPayers(filter?: {
   let result = Array.from(payerCache.values());
 
   if (filter?.status) {
-    result = result.filter(p => p.status === filter.status);
+    result = result.filter((p) => p.status === filter.status);
   }
   if (filter?.integrationMode) {
-    result = result.filter(p => p.integrationMode === filter.integrationMode);
+    result = result.filter((p) => p.integrationMode === filter.integrationMode);
   }
   if (filter?.search) {
     const q = filter.search.toLowerCase();
-    result = result.filter(p => {
-      const haystack = [p.legalName, p.payerId, ...p.brandNames].join(" ").toLowerCase();
+    result = result.filter((p) => {
+      const haystack = [p.legalName, p.payerId, ...p.brandNames].join(' ').toLowerCase();
       return haystack.includes(q);
     });
   }
@@ -400,7 +407,7 @@ export function updatePayerCapabilities(
   payerId: string,
   capabilities: Partial<HmoCapabilities>,
   actor: string,
-  reason: string,
+  reason: string
 ): { ok: boolean; payer?: PersistedPayer; error?: string; before?: HmoCapabilities } {
   if (!initialized) initPayerPersistence();
   const payer = payerCache.get(payerId);
@@ -423,7 +430,7 @@ export function updatePayerTasks(
   payerId: string,
   tasks: string[],
   actor: string,
-  reason: string,
+  reason: string
 ): { ok: boolean; payer?: PersistedPayer; error?: string; before?: string[] } {
   if (!initialized) initPayerPersistence();
   const payer = payerCache.get(payerId);
@@ -446,7 +453,7 @@ export function updatePayerStatus(
   payerId: string,
   status: HmoStatus,
   actor: string,
-  reason: string,
+  reason: string
 ): { ok: boolean; payer?: PersistedPayer; error?: string; before?: HmoStatus } {
   if (!initialized) initPayerPersistence();
   const payer = payerCache.get(payerId);
@@ -468,7 +475,7 @@ export function updatePayerStatus(
 export function addPayerEvidence(
   payerId: string,
   evidence: HmoEvidence,
-  actor: string,
+  actor: string
 ): { ok: boolean; payer?: PersistedPayer; error?: string } {
   if (!initialized) initPayerPersistence();
   const payer = payerCache.get(payerId);
@@ -488,14 +495,15 @@ export function addPayerEvidence(
 
 /* ── Tenant overrides ───────────────────────────────────────── */
 
-export function getTenantOverride(tenantId: string, payerId: string): TenantPayerOverride | undefined {
+export function getTenantOverride(
+  tenantId: string,
+  payerId: string
+): TenantPayerOverride | undefined {
   if (!initialized) initPayerPersistence();
   return tenantOverrideCache.get(`${tenantId}:${payerId}`);
 }
 
-export function setTenantOverride(
-  override: TenantPayerOverride,
-): { ok: boolean } {
+export function setTenantOverride(override: TenantPayerOverride): { ok: boolean } {
   if (!initialized) initPayerPersistence();
   tenantOverrideCache.set(`${override.tenantId}:${override.payerId}`, override);
   flushTenantOverrides();
@@ -504,12 +512,14 @@ export function setTenantOverride(
 
 export function listTenantOverrides(tenantId: string): TenantPayerOverride[] {
   if (!initialized) initPayerPersistence();
-  return Array.from(tenantOverrideCache.values())
-    .filter(o => o.tenantId === tenantId);
+  return Array.from(tenantOverrideCache.values()).filter((o) => o.tenantId === tenantId);
 }
 
 /** Resolve effective payer for a tenant (global + overrides merged) */
-export function resolvePayerForTenant(tenantId: string, payerId: string): PersistedPayer | undefined {
+export function resolvePayerForTenant(
+  tenantId: string,
+  payerId: string
+): PersistedPayer | undefined {
   if (!initialized) initPayerPersistence();
   const global = payerCache.get(payerId);
   if (!global) return undefined;
@@ -546,8 +556,9 @@ export function getPayerRegistryStats(): {
   for (const p of all) {
     byStatus[p.status] = (byStatus[p.status] ?? 0) + 1;
     byIntegrationMode[p.integrationMode] = (byIntegrationMode[p.integrationMode] ?? 0) + 1;
-    if (p.capabilities.providerPortal === "available" || p.capabilities.providerPortal === "portal") withPortal++;
-    if (p.status === "contracting_needed") contractingNeeded++;
+    if (p.capabilities.providerPortal === 'available' || p.capabilities.providerPortal === 'portal')
+      withPortal++;
+    if (p.status === 'contracting_needed') contractingNeeded++;
   }
 
   return {
@@ -556,7 +567,7 @@ export function getPayerRegistryStats(): {
     byIntegrationMode,
     withPortal,
     contractingNeeded,
-    hasPhilHealth: payerCache.has("PH-PHILHEALTH"),
+    hasPhilHealth: payerCache.has('PH-PHILHEALTH'),
   };
 }
 

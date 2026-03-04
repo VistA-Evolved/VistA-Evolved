@@ -17,10 +17,10 @@
  *   - Dependency validation between modules
  */
 
-import { readFileSync } from "fs";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
-import { log } from "../lib/logger.js";
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Phase 109: DB-backed entitlement provider                           */
@@ -33,7 +33,7 @@ let dbEntitlementProvider: DbEntitlementProvider | null = null;
 /** Register a DB-backed entitlement provider (called from index.ts after DB init). */
 export function setDbEntitlementProvider(provider: DbEntitlementProvider): void {
   dbEntitlementProvider = provider;
-  log.info("Module registry: DB entitlement provider registered");
+  log.info('Module registry: DB entitlement provider registered');
 }
 
 /* ------------------------------------------------------------------ */
@@ -43,7 +43,7 @@ export function setDbEntitlementProvider(provider: DbEntitlementProvider): void 
 /** Data store descriptor for a module (Phase 51). */
 export interface ModuleDataStore {
   id: string;
-  type: "in-memory" | "in-memory+jsonl" | "vista" | "json-seed" | "filesystem" | "external-sql";
+  type: 'in-memory' | 'in-memory+jsonl' | 'vista' | 'json-seed' | 'filesystem' | 'external-sql';
   description: string;
 }
 
@@ -78,7 +78,7 @@ export type ModuleId = string;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const CONFIG_ROOT = join(__dirname, "..", "..", "..", "..", "config");
+const CONFIG_ROOT = join(__dirname, '..', '..', '..', '..', 'config');
 
 let moduleDefinitions: Record<string, ModuleDefinition> = {};
 let skuProfiles: Record<string, SkuProfile> = {};
@@ -88,7 +88,7 @@ let compiledPatterns: Map<string, RegExp[]> = new Map();
 const tenantModuleOverrides = new Map<string, Set<string>>();
 
 // Active SKU (from env)
-let activeSku: string = "FULL_SUITE";
+let activeSku: string = 'FULL_SUITE';
 
 /* ------------------------------------------------------------------ */
 /* Initialization                                                      */
@@ -96,12 +96,12 @@ let activeSku: string = "FULL_SUITE";
 
 export function initModuleRegistry(): void {
   try {
-    const modulesPath = join(CONFIG_ROOT, "modules.json");
-    const modulesData = JSON.parse(readFileSync(modulesPath, "utf-8"));
+    const modulesPath = join(CONFIG_ROOT, 'modules.json');
+    const modulesData = JSON.parse(readFileSync(modulesPath, 'utf-8'));
     moduleDefinitions = modulesData.modules || {};
 
-    const skusPath = join(CONFIG_ROOT, "skus.json");
-    const skusData = JSON.parse(readFileSync(skusPath, "utf-8"));
+    const skusPath = join(CONFIG_ROOT, 'skus.json');
+    const skusData = JSON.parse(readFileSync(skusPath, 'utf-8'));
     skuProfiles = skusData.skus || {};
 
     // Compile regex patterns for route matching
@@ -112,15 +112,15 @@ export function initModuleRegistry(): void {
     }
 
     // Read active SKU from env
-    activeSku = process.env.DEPLOY_SKU || "FULL_SUITE";
+    activeSku = process.env.DEPLOY_SKU || 'FULL_SUITE';
 
-    log.info("Module registry initialized", {
+    log.info('Module registry initialized', {
       moduleCount: Object.keys(moduleDefinitions).length,
       skuCount: Object.keys(skuProfiles).length,
       activeSku,
     });
   } catch (err: any) {
-    log.warn("Failed to load module registry, defaulting to all-enabled", {
+    log.warn('Failed to load module registry, defaulting to all-enabled', {
       error: err.message,
     });
     moduleDefinitions = {};
@@ -165,7 +165,7 @@ export function getActiveSkuProfile(): SkuProfile | undefined {
  * 2. Otherwise fall back to SKU profile + in-memory overrides
  * 3. Always include modules with alwaysEnabled: true
  */
-export function getEnabledModules(tenantId: string = "default"): string[] {
+export function getEnabledModules(tenantId: string = 'default'): string[] {
   // Phase 109: DB-backed resolution (preferred)
   if (dbEntitlementProvider) {
     try {
@@ -175,9 +175,7 @@ export function getEnabledModules(tenantId: string = "default"): string[] {
       // for unseeded tenants. Detect unseeded tenants by checking whether any returned
       // module is NOT alwaysEnabled — if all are alwaysEnabled, the tenant has no
       // explicit entitlements and should fall through to SKU resolution. (Phase 135 fix)
-      const hasExplicitEntitlements = dbEnabled.some(
-        (id) => !moduleDefinitions[id]?.alwaysEnabled
-      );
+      const hasExplicitEntitlements = dbEnabled.some((id) => !moduleDefinitions[id]?.alwaysEnabled);
       if (hasExplicitEntitlements) {
         // Tenant has been seeded — use DB as source of truth
         const enabled = new Set(dbEnabled);
@@ -214,7 +212,7 @@ export function getEnabledModules(tenantId: string = "default"): string[] {
 }
 
 /** Check if a specific module is enabled for a tenant. */
-export function isModuleEnabled(moduleId: string, tenantId: string = "default"): boolean {
+export function isModuleEnabled(moduleId: string, tenantId: string = 'default'): boolean {
   const def = moduleDefinitions[moduleId];
   if (def?.alwaysEnabled) return true;
   return getEnabledModules(tenantId).includes(moduleId);
@@ -241,7 +239,7 @@ export function resolveModuleForRoute(path: string): string | undefined {
  */
 export function isRouteAllowed(
   path: string,
-  tenantId: string = "default"
+  tenantId: string = 'default'
 ): { allowed: boolean; moduleId: string | undefined; reason?: string } {
   const moduleId = resolveModuleForRoute(path);
 
@@ -282,7 +280,7 @@ export function setTenantModules(tenantId: string, modules: string[] | null): vo
   } else {
     // Always include kernel
     const set = new Set(modules);
-    set.add("kernel");
+    set.add('kernel');
     tenantModuleOverrides.set(tenantId, set);
   }
 }
@@ -306,7 +304,7 @@ export function validateDependencies(enabledModules: string[]): string[] {
 }
 
 /** Get module status summary (for admin/status endpoints). */
-export function getModuleStatus(tenantId: string = "default"): Array<{
+export function getModuleStatus(tenantId: string = 'default'): Array<{
   moduleId: string;
   name: string;
   enabled: boolean;
@@ -327,10 +325,10 @@ export function getModuleStatus(tenantId: string = "default"): Array<{
     alwaysEnabled: def.alwaysEnabled,
     dependencies: def.dependencies,
     adapterTypes: def.adapters,
-    version: def.version || "0.0.0",
+    version: def.version || '0.0.0',
     permissions: def.permissions || [],
     dataStores: def.dataStores || [],
-    healthCheckEndpoint: def.healthCheckEndpoint || "",
+    healthCheckEndpoint: def.healthCheckEndpoint || '',
   }));
 }
 
@@ -340,14 +338,16 @@ export function getModuleStatus(tenantId: string = "default"): Array<{
  */
 export function getModuleManifest(
   moduleId: string,
-  tenantId: string = "default"
-): {
-  moduleId: string;
-  manifest: ModuleDefinition;
-  enabled: boolean;
-  dependenciesMet: boolean;
-  missingDependencies: string[];
-} | undefined {
+  tenantId: string = 'default'
+):
+  | {
+      moduleId: string;
+      manifest: ModuleDefinition;
+      enabled: boolean;
+      dependenciesMet: boolean;
+      missingDependencies: string[];
+    }
+  | undefined {
   const def = moduleDefinitions[moduleId];
   if (!def) return undefined;
 
@@ -367,7 +367,7 @@ export function getModuleManifest(
 /**
  * Get all module manifests for marketplace display (Phase 51).
  */
-export function getAllModuleManifests(tenantId: string = "default"): Array<{
+export function getAllModuleManifests(tenantId: string = 'default'): Array<{
   moduleId: string;
   manifest: ModuleDefinition;
   enabled: boolean;

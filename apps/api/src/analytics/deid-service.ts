@@ -11,23 +11,19 @@
  * ADR: docs/decisions/ADR-DEIDENTIFICATION-POSTURE.md
  */
 
-import { createHash, createHmac, randomBytes } from "node:crypto";
-import { log } from "../lib/logger.js";
-import type {
-  DeidConfig,
-  DeidMode,
-  ExtractRecord,
-} from "./extract-types.js";
+import { createHash, createHmac, randomBytes } from 'node:crypto';
+import { log } from '../lib/logger.js';
+import type { DeidConfig, DeidMode, ExtractRecord } from './extract-types.js';
 import {
   DIRECT_IDENTIFIER_FIELDS,
   INLINE_PHI_PATTERNS,
   DEFAULT_DEID_CONFIG,
-} from "./extract-types.js";
+} from './extract-types.js';
 
 // ── Per-tenant config store ─────────────────────────────────────────────
 
 const tenantDeidConfigs = new Map<string, DeidConfig>();
-const DEFAULT_HMAC_SECRET = randomBytes(32).toString("hex");
+const DEFAULT_HMAC_SECRET = randomBytes(32).toString('hex');
 
 export function getDeidConfig(tenantId: string): DeidConfig {
   const stored = tenantDeidConfigs.get(tenantId);
@@ -43,7 +39,7 @@ export function setDeidConfig(config: DeidConfig): DeidConfig {
   if (!config.pseudonymizationSecret) {
     config.pseudonymizationSecret = DEFAULT_HMAC_SECRET;
   }
-  const tid = config.tenantId || "default";
+  const tid = config.tenantId || 'default';
   config.tenantId = tid;
   tenantDeidConfigs.set(tid, config);
   log.info(`Deid config updated for tenant ${tid}: mode=${config.mode}`);
@@ -62,7 +58,7 @@ export function listDeidConfigs(): DeidConfig[] {
  */
 export function deidentifyRecords(
   records: ExtractRecord[],
-  config: DeidConfig,
+  config: DeidConfig
 ): { records: ExtractRecord[]; stats: DeidStats } {
   const stats: DeidStats = {
     totalRecords: records.length,
@@ -72,7 +68,7 @@ export function deidentifyRecords(
     mode: config.mode,
   };
 
-  if (config.mode === "raw") {
+  if (config.mode === 'raw') {
     return { records, stats };
   }
 
@@ -99,7 +95,7 @@ function deidentifyObject(
   obj: Record<string, unknown>,
   config: DeidConfig,
   stats: DeidStats,
-  depth = 0,
+  depth = 0
 ): Record<string, unknown> {
   if (depth > 8) return obj;
   const result: Record<string, unknown> = {};
@@ -113,29 +109,29 @@ function deidentifyObject(
     const keyLower = key.toLowerCase();
 
     if (config.redactDirectIdentifiers && allBlockedFields.has(key)) {
-      if (config.mode === "pseudonymized" && typeof value === "string") {
+      if (config.mode === 'pseudonymized' && typeof value === 'string') {
         result[key] = pseudonymize(value, config.pseudonymizationSecret!);
         stats.fieldsPseudonymized++;
       } else {
-        result[key] = "[REDACTED]";
+        result[key] = '[REDACTED]';
         stats.fieldsRedacted++;
       }
     } else if (
       config.redactDirectIdentifiers &&
       [...allBlockedFields].some((f) => f.toLowerCase() === keyLower)
     ) {
-      if (config.mode === "pseudonymized" && typeof value === "string") {
+      if (config.mode === 'pseudonymized' && typeof value === 'string') {
         result[key] = pseudonymize(value, config.pseudonymizationSecret!);
         stats.fieldsPseudonymized++;
       } else {
-        result[key] = "[REDACTED]";
+        result[key] = '[REDACTED]';
         stats.fieldsRedacted++;
       }
-    } else if (typeof value === "string" && config.redactFreeText) {
+    } else if (typeof value === 'string' && config.redactFreeText) {
       const scrubbed = scrubFreeText(value);
       if (scrubbed !== value) stats.freeTextScrubbedCount++;
       result[key] = scrubbed;
-    } else if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+    } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
       result[key] = deidentifyObject(value as Record<string, unknown>, config, stats, depth + 1);
     } else {
       result[key] = value;
@@ -152,7 +148,7 @@ function deidentifyObject(
  * Same input + same key = same output, enabling joins across datasets.
  */
 export function pseudonymize(value: string, secret: string): string {
-  return "PSE-" + createHmac("sha256", secret).update(value).digest("hex").slice(0, 16);
+  return 'PSE-' + createHmac('sha256', secret).update(value).digest('hex').slice(0, 16);
 }
 
 // ── Free-text scrubbing ─────────────────────────────────────────────────
@@ -196,15 +192,19 @@ export function runDenylistScan(records: ExtractRecord[]): DenylistResult {
 
   for (const record of records) {
     for (const [field, value] of Object.entries(record.data)) {
-      if (typeof value !== "string") continue;
+      if (typeof value !== 'string') continue;
       scannedFields++;
 
       // Check for known identifier field names that should have been redacted
-      if (DIRECT_IDENTIFIER_FIELDS.has(field) && !value.startsWith("[") && !value.startsWith("PSE-")) {
+      if (
+        DIRECT_IDENTIFIER_FIELDS.has(field) &&
+        !value.startsWith('[') &&
+        !value.startsWith('PSE-')
+      ) {
         violations.push({
           recordId: record.id,
           field,
-          pattern: "direct_identifier_field",
+          pattern: 'direct_identifier_field',
           snippet: value.slice(0, 30),
         });
       }
@@ -236,5 +236,5 @@ export function runDenylistScan(records: ExtractRecord[]): DenylistResult {
 // ── Hash utility ────────────────────────────────────────────────────────
 
 export function hashForAudit(value: string): string {
-  return createHash("sha256").update(value).digest("hex").slice(0, 16);
+  return createHash('sha256').update(value).digest('hex').slice(0, 16);
 }

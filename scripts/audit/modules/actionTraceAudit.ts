@@ -7,12 +7,12 @@
  *   3. Stubs and integration-pending actions are documented
  */
 
-import { readFileSync, existsSync, readdirSync, statSync } from "fs";
-import { join, relative, extname } from "path";
-import type { AuditModule, AuditFinding } from "../types.js";
+import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
+import { join, relative, extname } from 'path';
+import type { AuditModule, AuditFinding } from '../types.js';
 
-const SCAN_EXTENSIONS = new Set([".ts", ".tsx", ".js", ".mjs"]);
-const SKIP_DIRS = new Set(["node_modules", ".next", ".git", "dist", ".turbo", "coverage", ".pnpm"]);
+const SCAN_EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.mjs']);
+const SKIP_DIRS = new Set(['node_modules', '.next', '.git', 'dist', '.turbo', 'coverage', '.pnpm']);
 
 function collectFiles(dir: string): string[] {
   const results: string[] = [];
@@ -40,28 +40,29 @@ interface ActionEntry {
 }
 
 export const actionTraceAudit: AuditModule = {
-  name: "actionTraceAudit",
-  requires: "offline",
+  name: 'actionTraceAudit',
+  requires: 'offline',
 
   async run(root: string): Promise<AuditFinding[]> {
     const findings: AuditFinding[] = [];
 
-    const registryFile = join(root, "apps", "web", "src", "actions", "actionRegistry.ts");
+    const registryFile = join(root, 'apps', 'web', 'src', 'actions', 'actionRegistry.ts');
     if (!existsSync(registryFile)) {
       findings.push({
-        rule: "action-registry-exists",
-        status: "fail",
-        severity: "critical",
-        message: "actionRegistry.ts not found",
+        rule: 'action-registry-exists',
+        status: 'fail',
+        severity: 'critical',
+        message: 'actionRegistry.ts not found',
       });
       return findings;
     }
 
-    const registrySource = readFileSync(registryFile, "utf-8");
+    const registrySource = readFileSync(registryFile, 'utf-8');
 
     // Parse action entries from source
     const actions: ActionEntry[] = [];
-    const actionBlockRe = /\{\s*actionId:\s*["']([^"']+)["'][\s\S]*?status:\s*["']([^"']+)["'][\s\S]*?\}/g;
+    const actionBlockRe =
+      /\{\s*actionId:\s*["']([^"']+)["'][\s\S]*?status:\s*["']([^"']+)["'][\s\S]*?\}/g;
 
     let m: RegExpExecArray | null;
     while ((m = actionBlockRe.exec(registrySource)) !== null) {
@@ -75,7 +76,7 @@ export const actionTraceAudit: AuditModule = {
 
       // Extract location
       const locM = block.match(/location:\s*["']([^"']+)["']/);
-      const location = locM ? locM[1] : "unknown";
+      const location = locM ? locM[1] : 'unknown';
 
       // Extract rpcs array
       const rpcsM = block.match(/rpcs:\s*\[([\s\S]*?)\]/);
@@ -101,17 +102,17 @@ export const actionTraceAudit: AuditModule = {
     }
 
     findings.push({
-      rule: "actions-parsed",
-      status: "pass",
-      severity: "info",
+      rule: 'actions-parsed',
+      status: 'pass',
+      severity: 'info',
       message: `Parsed ${actions.length} actions from actionRegistry`,
     });
 
     // Load RPC registry names for cross-ref
-    const rpcRegistryFile = join(root, "apps", "api", "src", "vista", "rpcRegistry.ts");
+    const rpcRegistryFile = join(root, 'apps', 'api', 'src', 'vista', 'rpcRegistry.ts');
     const rpcNames = new Set<string>();
     if (existsSync(rpcRegistryFile)) {
-      const rpcSrc = readFileSync(rpcRegistryFile, "utf-8");
+      const rpcSrc = readFileSync(rpcRegistryFile, 'utf-8');
       const nameRe = /name:\s*["']([^"']+)["']/g;
       let rm: RegExpExecArray | null;
       while ((rm = nameRe.exec(rpcSrc)) !== null) {
@@ -126,11 +127,11 @@ export const actionTraceAudit: AuditModule = {
         if (!rpcNames.has(rpc.toUpperCase())) {
           missingRpcCount++;
           findings.push({
-            rule: "action-rpc-in-registry",
-            status: "fail",
-            severity: "high",
+            rule: 'action-rpc-in-registry',
+            status: 'fail',
+            severity: 'high',
             message: `Action "${action.actionId}" references RPC "${rpc}" not in rpcRegistry`,
-            file: "apps/web/src/actions/actionRegistry.ts",
+            file: 'apps/web/src/actions/actionRegistry.ts',
             fix: `Add "${rpc}" to RPC_REGISTRY or RPC_EXCEPTIONS`,
           });
         }
@@ -138,21 +139,22 @@ export const actionTraceAudit: AuditModule = {
     }
     if (missingRpcCount === 0) {
       findings.push({
-        rule: "action-rpc-in-registry",
-        status: "pass",
-        severity: "info",
-        message: "All action RPCs exist in rpcRegistry",
+        rule: 'action-rpc-in-registry',
+        status: 'pass',
+        severity: 'info',
+        message: 'All action RPCs exist in rpcRegistry',
       });
     }
 
     // Check 2: scan API source to verify RPCs are called
-    const apiSrc = join(root, "apps", "api", "src");
+    const apiSrc = join(root, 'apps', 'api', 'src');
     const apiFiles = collectFiles(apiSrc);
     const calledRpcs = new Set<string>();
-    const rpcCallPattern = /(?:callRpc|safeCallRpc|callRpcWithList|safeCallRpcWithList)\s*\(\s*["']([^"']+)["']/g;
+    const rpcCallPattern =
+      /(?:callRpc|safeCallRpc|callRpcWithList|safeCallRpcWithList)\s*\(\s*["']([^"']+)["']/g;
 
     for (const file of apiFiles) {
-      const content = readFileSync(file, "utf-8");
+      const content = readFileSync(file, 'utf-8');
       let cm: RegExpExecArray | null;
       rpcCallPattern.lastIndex = 0;
       while ((cm = rpcCallPattern.exec(content)) !== null) {
@@ -161,7 +163,7 @@ export const actionTraceAudit: AuditModule = {
     }
 
     // For wired actions, verify their RPCs are actually called
-    const wiredActions = actions.filter((a) => a.status === "wired");
+    const wiredActions = actions.filter((a) => a.status === 'wired');
     const unwiredRpcs: { action: string; rpc: string }[] = [];
     for (const action of wiredActions) {
       for (const rpc of action.rpcs) {
@@ -173,39 +175,41 @@ export const actionTraceAudit: AuditModule = {
 
     if (unwiredRpcs.length === 0) {
       findings.push({
-        rule: "wired-rpcs-called",
-        status: "pass",
-        severity: "info",
+        rule: 'wired-rpcs-called',
+        status: 'pass',
+        severity: 'info',
         message: `All wired action RPCs (${wiredActions.length} actions) are called in API source`,
       });
     } else {
       for (const u of unwiredRpcs) {
         findings.push({
-          rule: "wired-rpcs-called",
-          status: "warn",
-          severity: "medium",
+          rule: 'wired-rpcs-called',
+          status: 'warn',
+          severity: 'medium',
           message: `Wired action "${u.action}" references RPC "${u.rpc}" not found in callRpc patterns`,
-          fix: "Verify the RPC is called via a different pattern or mark action as stub",
+          fix: 'Verify the RPC is called via a different pattern or mark action as stub',
         });
       }
     }
 
     // Check 3: stub/pending actions should have pendingNote
-    const stubActions = actions.filter((a) => a.status === "stub" || a.status === "integration-pending");
+    const stubActions = actions.filter(
+      (a) => a.status === 'stub' || a.status === 'integration-pending'
+    );
     const missingNotes = stubActions.filter((a) => !a.pendingNote);
     if (missingNotes.length === 0) {
       findings.push({
-        rule: "stub-has-note",
-        status: "pass",
-        severity: "info",
+        rule: 'stub-has-note',
+        status: 'pass',
+        severity: 'info',
         message: `All ${stubActions.length} stub/pending actions have pendingNote`,
       });
     } else {
       for (const a of missingNotes) {
         findings.push({
-          rule: "stub-has-note",
-          status: "warn",
-          severity: "low",
+          rule: 'stub-has-note',
+          status: 'warn',
+          severity: 'low',
           message: `${a.status} action "${a.actionId}" has no pendingNote`,
           fix: `Add pendingNote explaining what's missing`,
         });
@@ -213,13 +217,13 @@ export const actionTraceAudit: AuditModule = {
     }
 
     // Summary stats
-    const wired = actions.filter((a) => a.status === "wired").length;
-    const stubs = actions.filter((a) => a.status === "stub").length;
-    const pending = actions.filter((a) => a.status === "integration-pending").length;
+    const wired = actions.filter((a) => a.status === 'wired').length;
+    const stubs = actions.filter((a) => a.status === 'stub').length;
+    const pending = actions.filter((a) => a.status === 'integration-pending').length;
     findings.push({
-      rule: "action-stats",
-      status: "pass",
-      severity: "info",
+      rule: 'action-stats',
+      status: 'pass',
+      severity: 'info',
       message: `Actions: ${actions.length} total, ${wired} wired, ${stubs} stub, ${pending} integration-pending`,
     });
 

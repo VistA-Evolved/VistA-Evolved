@@ -8,25 +8,15 @@
   "workflows": {
     "login": {
       "description": "Standard broker sign-on sequence",
-      "rpcSequence": [
-        "XUS SIGNON SETUP",
-        "XUS AV CODE",
-        "XWB CREATE CONTEXT",
-        "XUS GET USER INFO"
-      ]
+      "rpcSequence": ["XUS SIGNON SETUP", "XUS AV CODE", "XWB CREATE CONTEXT", "XUS GET USER INFO"]
     },
     "patientSearch": {
       "description": "Search for patients by name",
-      "rpcSequence": [
-        "ORWPT LIST ALL"
-      ]
+      "rpcSequence": ["ORWPT LIST ALL"]
     },
     "defaultPatientList": {
       "description": "Fetch default patient list for clinic",
-      "rpcSequence": [
-        "ORQPT DEFAULT LIST SOURCE",
-        "ORWPT LIST ALL"
-      ]
+      "rpcSequence": ["ORQPT DEFAULT LIST SOURCE", "ORWPT LIST ALL"]
     },
     "coverSheet": {
       "description": "Load cover sheet clinical data for a patient (DFN=3)",
@@ -40,40 +30,27 @@
     },
     "allergies": {
       "description": "Fetch allergy list for patient",
-      "rpcSequence": [
-        "ORQQAL LIST"
-      ]
+      "rpcSequence": ["ORQQAL LIST"]
     },
     "vitals": {
       "description": "Fetch vitals/measurements for patient",
-      "rpcSequence": [
-        "GMV V/M ALLDATA"
-      ]
+      "rpcSequence": ["GMV V/M ALLDATA"]
     },
     "problems": {
       "description": "Fetch active problem list",
-      "rpcSequence": [
-        "ORQQPL PROBLEM LIST"
-      ]
+      "rpcSequence": ["ORQQPL PROBLEM LIST"]
     },
     "medications": {
       "description": "Fetch active medications",
-      "rpcSequence": [
-        "ORWPS ACTIVE"
-      ]
+      "rpcSequence": ["ORWPS ACTIVE"]
     },
     "notes": {
       "description": "Fetch TIU notes for patient",
-      "rpcSequence": [
-        "TIU DOCUMENTS BY CONTEXT"
-      ]
+      "rpcSequence": ["TIU DOCUMENTS BY CONTEXT"]
     },
     "orders": {
       "description": "Fetch orders for patient",
-      "rpcSequence": [
-        "ORWORB FASTUSER",
-        "ORWDX WRLST"
-      ]
+      "rpcSequence": ["ORWORB FASTUSER", "ORWDX WRLST"]
     }
   },
   "registrySnapshot": {

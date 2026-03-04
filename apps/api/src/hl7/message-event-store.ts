@@ -6,22 +6,22 @@
  *
  * Pattern: Same as imaging-audit.ts, rcm-audit.ts — hash-chained, PHI-redacted.
  */
-import { createHash, randomBytes } from "crypto";
+import { createHash, randomBytes } from 'crypto';
 
 /* ── Types ─────────────────────────────────────────────── */
 
-export type Hl7MessageDirection = "inbound" | "outbound";
+export type Hl7MessageDirection = 'inbound' | 'outbound';
 
 export type Hl7ProcessingStatus =
-  | "received"
-  | "parsed"
-  | "routed"
-  | "dispatched"
-  | "ack_sent"
-  | "nak_sent"
-  | "dead_lettered"
-  | "replayed"
-  | "error";
+  | 'received'
+  | 'parsed'
+  | 'routed'
+  | 'dispatched'
+  | 'ack_sent'
+  | 'nak_sent'
+  | 'dead_lettered'
+  | 'replayed'
+  | 'error';
 
 export interface Hl7MessageEvent {
   id: string;
@@ -68,7 +68,7 @@ export interface CreateMessageEventInput {
 
 /* ── PHI Redaction ─────────────────────────────────────── */
 
-const PHI_SEGMENT_PREFIXES = ["PID", "NK1", "GT1", "IN1", "IN2"];
+const PHI_SEGMENT_PREFIXES = ['PID', 'NK1', 'GT1', 'IN1', 'IN2'];
 
 /**
  * Build a PHI-safe summary from an HL7 message.
@@ -83,31 +83,31 @@ export function buildPhiSafeSummary(rawMessage: string): string {
     })
     .map((seg) => {
       // Truncate long segments to 120 chars
-      return seg.length > 120 ? seg.substring(0, 120) + "..." : seg;
+      return seg.length > 120 ? seg.substring(0, 120) + '...' : seg;
     });
-  return safe.join("\n");
+  return safe.join('\n');
 }
 
 /**
  * Hash raw HL7 message content for integrity verification.
  */
 export function hashMessage(raw: string): string {
-  return createHash("sha256").update(raw).digest("hex");
+  return createHash('sha256').update(raw).digest('hex');
 }
 
 /* ── Ring Buffer Store ─────────────────────────────────── */
 
 const MAX_EVENTS = 10_000;
 const events: Hl7MessageEvent[] = [];
-let lastHash = "genesis";
+let lastHash = 'genesis';
 
-function computeEventHash(event: Omit<Hl7MessageEvent, "hash">): string {
+function computeEventHash(event: Omit<Hl7MessageEvent, 'hash'>): string {
   const payload = `${event.prevHash}|${event.id}|${event.tenantId}|${event.messageType}|${event.messageControlId}|${event.status}|${event.createdAt}`;
-  return createHash("sha256").update(payload).digest("hex").substring(0, 32);
+  return createHash('sha256').update(payload).digest('hex').substring(0, 32);
 }
 
 function generateEventId(): string {
-  return `hle-${randomBytes(8).toString("hex")}`;
+  return `hle-${randomBytes(8).toString('hex')}`;
 }
 
 /**
@@ -119,9 +119,9 @@ export function recordMessageEvent(input: CreateMessageEventInput): Hl7MessageEv
   const now = new Date().toISOString();
   const summary = buildPhiSafeSummary(input.rawMessage);
   const msgHash = hashMessage(input.rawMessage);
-  const msgSize = Buffer.byteLength(input.rawMessage, "utf-8");
+  const msgSize = Buffer.byteLength(input.rawMessage, 'utf-8');
 
-  const partial: Omit<Hl7MessageEvent, "hash"> = {
+  const partial: Omit<Hl7MessageEvent, 'hash'> = {
     id,
     tenantId: input.tenantId,
     direction: input.direction,
@@ -219,7 +219,7 @@ export function verifyMessageEventChain(): {
   for (let i = 0; i < events.length; i++) {
     const event = events[i];
     const { hash, ...rest } = event;
-    const expected = computeEventHash(rest as Omit<Hl7MessageEvent, "hash">);
+    const expected = computeEventHash(rest as Omit<Hl7MessageEvent, 'hash'>);
     if (expected !== hash) {
       return { ok: false, totalEvents: events.length, brokenAt: i };
     }

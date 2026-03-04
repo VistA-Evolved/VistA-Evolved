@@ -26,32 +26,32 @@ API Routes (record-portability.ts)  -- 10 endpoints
 
 ## Endpoints
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| POST | /portal/record/export | session | Generate summary (PDF/HTML) |
-| GET | /portal/record/export/:token | session | Download by token |
-| GET | /portal/record/exports | session | List patient's exports |
-| POST | /portal/record/share | session | Create share link |
-| POST | /portal/record/share/:id/revoke | session | Revoke share link |
-| GET | /portal/record/shares | session | List patient's shares |
-| GET | /portal/record/share/audit | session | Access audit log |
-| GET | /portal/record/share/preview/:token | public | Share preview (label, sections) |
-| POST | /portal/record/share/verify/:token | public | Verify access code + DOB |
-| GET | /portal/record/stats | session | Portability stats |
+| Method | Path                                | Auth    | Description                     |
+| ------ | ----------------------------------- | ------- | ------------------------------- |
+| POST   | /portal/record/export               | session | Generate summary (PDF/HTML)     |
+| GET    | /portal/record/export/:token        | session | Download by token               |
+| GET    | /portal/record/exports              | session | List patient's exports          |
+| POST   | /portal/record/share                | session | Create share link               |
+| POST   | /portal/record/share/:id/revoke     | session | Revoke share link               |
+| GET    | /portal/record/shares               | session | List patient's shares           |
+| GET    | /portal/record/share/audit          | session | Access audit log                |
+| GET    | /portal/record/share/preview/:token | public  | Share preview (label, sections) |
+| POST   | /portal/record/share/verify/:token  | public  | Verify access code + DOB        |
+| GET    | /portal/record/stats                | session | Portability stats               |
 
 ## VistA RPCs Used
 
-| RPC | Section | Status |
-|-----|---------|--------|
-| ORWRP REPORT TEXT | Health Summary (primary) | Available |
-| ORQQAL LIST | Allergies | Available |
-| ORWPS ACTIVE | Medications | Available |
-| ORWCH PROBLEM LIST | Problems | Available |
-| ORQQVI VITALS | Vitals | Available |
-| ORWPT SELECT | Demographics | Available |
-| ORWLRR INTERIMG | Labs | Available |
-| ORQQPX IMMUN LIST | Immunizations | Pending |
-| GMTS HS ABBREVIATED PROFILE | Full Summary | Pending |
+| RPC                         | Section                  | Status    |
+| --------------------------- | ------------------------ | --------- |
+| ORWRP REPORT TEXT           | Health Summary (primary) | Available |
+| ORQQAL LIST                 | Allergies                | Available |
+| ORWPS ACTIVE                | Medications              | Available |
+| ORWCH PROBLEM LIST          | Problems                 | Available |
+| ORQQVI VITALS               | Vitals                   | Available |
+| ORWPT SELECT                | Demographics             | Available |
+| ORWLRR INTERIMG             | Labs                     | Available |
+| ORQQPX IMMUN LIST           | Immunizations            | Pending   |
+| GMTS HS ABBREVIATED PROFILE | Full Summary             | Pending   |
 
 ## Security
 
@@ -65,16 +65,16 @@ API Routes (record-portability.ts)  -- 10 endpoints
 
 ## Limits
 
-| Parameter | Value |
-|-----------|-------|
-| Max exports per patient | 20 |
-| Max shares per patient | 10 |
-| Default export TTL | 1 hour |
-| Default share TTL | 1 hour |
-| Max share TTL | 24 hours |
-| Access code length | 6 chars |
-| Max access attempts | 3 |
-| Cleanup interval | 5 minutes |
+| Parameter               | Value     |
+| ----------------------- | --------- |
+| Max exports per patient | 20        |
+| Max shares per patient  | 10        |
+| Default export TTL      | 1 hour    |
+| Default share TTL       | 1 hour    |
+| Max share TTL           | 24 hours  |
+| Access code length      | 6 chars   |
+| Max access attempts     | 3         |
+| Cleanup interval        | 5 minutes |
 
 ## Troubleshooting
 

@@ -7,19 +7,19 @@
 The C-CDA ingest pipeline extracts clinical data from Consolidated CDA documents.
 Supported sections (by OID):
 
-| Section | OID |
-|---------|-----|
-| Problems | 2.16.840.1.113883.10.20.22.2.5.1 |
+| Section     | OID                              |
+| ----------- | -------------------------------- |
+| Problems    | 2.16.840.1.113883.10.20.22.2.5.1 |
 | Medications | 2.16.840.1.113883.10.20.22.2.1.1 |
-| Allergies | 2.16.840.1.113883.10.20.22.2.6.1 |
+| Allergies   | 2.16.840.1.113883.10.20.22.2.6.1 |
 
 ## API Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/migration/ccda/import` | Import a C-CDA XML document |
-| GET | `/migration/batches` | List all batches (FHIR + C-CDA) |
-| GET | `/migration/batches/:id` | Get single batch details |
+| Method | Path                     | Description                     |
+| ------ | ------------------------ | ------------------------------- |
+| POST   | `/migration/ccda/import` | Import a C-CDA XML document     |
+| GET    | `/migration/batches`     | List all batches (FHIR + C-CDA) |
+| GET    | `/migration/batches/:id` | Get single batch details        |
 
 ## Example Import
 

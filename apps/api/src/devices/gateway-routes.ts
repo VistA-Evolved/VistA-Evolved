@@ -9,7 +9,7 @@
  * Pattern: follows imaging-worklist.ts, telehealth.ts route style.
  */
 
-import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
+import type { FastifyInstance, FastifyRequest } from 'fastify';
 import {
   registerGateway,
   getGateway,
@@ -27,20 +27,14 @@ import {
   listObservations,
   getGatewayHealth,
   getStoreStats,
-} from "./gateway-store.js";
-import type {
-  UplinkEnvelope,
-  DeviceObservation,
-  GatewayStatus,
-} from "./types.js";
-import * as crypto from "node:crypto";
+} from './gateway-store.js';
+import type { UplinkEnvelope, DeviceObservation, GatewayStatus } from './types.js';
+import * as crypto from 'node:crypto';
 
-const DEFAULT_TENANT = "default";
+const DEFAULT_TENANT = 'default';
 
 function tenantId(request: FastifyRequest): string {
-  return (
-    (request.headers["x-tenant-id"] as string) || DEFAULT_TENANT
-  );
+  return (request.headers['x-tenant-id'] as string) || DEFAULT_TENANT;
 }
 
 function now(): string {
@@ -48,77 +42,66 @@ function now(): string {
 }
 
 function generateId(prefix: string): string {
-  return `${prefix}-${crypto.randomBytes(8).toString("hex")}`;
+  return `${prefix}-${crypto.randomBytes(8).toString('hex')}`;
 }
 
-export default async function edgeGatewayRoutes(
-  server: FastifyInstance
-): Promise<void> {
+export default async function edgeGatewayRoutes(server: FastifyInstance): Promise<void> {
   // -----------------------------------------------------------------------
   // Gateway Management (admin auth — enforced by AUTH_RULES)
   // -----------------------------------------------------------------------
 
   /** POST /edge-gateways — Register a new edge gateway */
-  server.post("/edge-gateways", async (request, reply) => {
+  server.post('/edge-gateways', async (request, reply) => {
     const body = (request.body as any) || {};
     const { name, facilityCode, adapters } = body;
     if (!name || !facilityCode) {
-      return reply
-        .code(400)
-        .send({ ok: false, error: "name and facilityCode required" });
+      return reply.code(400).send({ ok: false, error: 'name and facilityCode required' });
     }
-    const gw = registerGateway(
-      name,
-      facilityCode,
-      adapters || [],
-      tenantId(request)
-    );
+    const gw = registerGateway(name, facilityCode, adapters || [], tenantId(request));
     return reply.code(201).send({ ok: true, gateway: gw });
   });
 
   /** GET /edge-gateways — List all gateways */
-  server.get("/edge-gateways", async (request, reply) => {
+  server.get('/edge-gateways', async (request, reply) => {
     const tid = tenantId(request);
     const items = listGateways(tid);
     return { ok: true, gateways: items, total: items.length };
   });
 
   /** GET /edge-gateways/:id — Get a single gateway */
-  server.get("/edge-gateways/:id", async (request, reply) => {
+  server.get('/edge-gateways/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const gw = getGateway(id);
-    if (!gw) return reply.code(404).send({ ok: false, error: "not_found" });
+    if (!gw) return reply.code(404).send({ ok: false, error: 'not_found' });
     return { ok: true, gateway: gw };
   });
 
   /** PATCH /edge-gateways/:id/status — Update gateway status */
-  server.patch("/edge-gateways/:id/status", async (request, reply) => {
+  server.patch('/edge-gateways/:id/status', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const { status } = body as { status: GatewayStatus };
     if (!status) {
-      return reply.code(400).send({ ok: false, error: "status required" });
+      return reply.code(400).send({ ok: false, error: 'status required' });
     }
     const gw = updateGatewayStatus(id, status);
-    if (!gw) return reply.code(404).send({ ok: false, error: "not_found" });
+    if (!gw) return reply.code(404).send({ ok: false, error: 'not_found' });
     return { ok: true, gateway: gw };
   });
 
   /** POST /edge-gateways/:id/revoke — Revoke a gateway */
-  server.post("/edge-gateways/:id/revoke", async (request, reply) => {
+  server.post('/edge-gateways/:id/revoke', async (request, reply) => {
     const { id } = request.params as { id: string };
     const revoked = revokeGateway(id);
-    if (!revoked)
-      return reply.code(404).send({ ok: false, error: "not_found" });
-    return { ok: true, status: "revoked" };
+    if (!revoked) return reply.code(404).send({ ok: false, error: 'not_found' });
+    return { ok: true, status: 'revoked' };
   });
 
   /** DELETE /edge-gateways/:id — Remove a gateway */
-  server.delete("/edge-gateways/:id", async (request, reply) => {
+  server.delete('/edge-gateways/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const deleted = deleteGateway(id);
-    if (!deleted)
-      return reply.code(404).send({ ok: false, error: "not_found" });
+    if (!deleted) return reply.code(404).send({ ok: false, error: 'not_found' });
     return { ok: true };
   });
 
@@ -127,11 +110,10 @@ export default async function edgeGatewayRoutes(
   // -----------------------------------------------------------------------
 
   /** GET /edge-gateways/:id/health — Gateway health snapshot */
-  server.get("/edge-gateways/:id/health", async (request, reply) => {
+  server.get('/edge-gateways/:id/health', async (request, reply) => {
     const { id } = request.params as { id: string };
     const health = getGatewayHealth(id);
-    if (!health)
-      return reply.code(404).send({ ok: false, error: "not_found" });
+    if (!health) return reply.code(404).send({ ok: false, error: 'not_found' });
     return { ok: true, health };
   });
 
@@ -140,19 +122,19 @@ export default async function edgeGatewayRoutes(
   // -----------------------------------------------------------------------
 
   /** GET /edge-gateways/:id/config — Get gateway config */
-  server.get("/edge-gateways/:id/config", async (request, reply) => {
+  server.get('/edge-gateways/:id/config', async (request, reply) => {
     const { id } = request.params as { id: string };
     const gw = getGateway(id);
-    if (!gw) return reply.code(404).send({ ok: false, error: "not_found" });
+    if (!gw) return reply.code(404).send({ ok: false, error: 'not_found' });
     const config = getGatewayConfig(id);
     return { ok: true, config };
   });
 
   /** PUT /edge-gateways/:id/config — Update gateway config */
-  server.put("/edge-gateways/:id/config", async (request, reply) => {
+  server.put('/edge-gateways/:id/config', async (request, reply) => {
     const { id } = request.params as { id: string };
     const gw = getGateway(id);
-    if (!gw) return reply.code(404).send({ ok: false, error: "not_found" });
+    if (!gw) return reply.code(404).send({ ok: false, error: 'not_found' });
     const body = (request.body as any) || {};
     const config = setGatewayConfig(id, body);
     return { ok: true, config };
@@ -163,12 +145,11 @@ export default async function edgeGatewayRoutes(
   // -----------------------------------------------------------------------
 
   /** POST /edge-gateways/:id/heartbeat — Record gateway heartbeat */
-  server.post("/edge-gateways/:id/heartbeat", async (request, reply) => {
+  server.post('/edge-gateways/:id/heartbeat', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const gw = recordHeartbeat(id, body.firmwareVersion);
-    if (!gw)
-      return reply.code(404).send({ ok: false, error: "not_found" });
+    if (!gw) return reply.code(404).send({ ok: false, error: 'not_found' });
     return { ok: true, status: gw.status, lastHeartbeat: gw.lastHeartbeat };
   });
 
@@ -177,21 +158,18 @@ export default async function edgeGatewayRoutes(
   // -----------------------------------------------------------------------
 
   /** POST /edge-gateways/uplink — Ingest an uplink message from a gateway */
-  server.post("/edge-gateways/uplink", async (request, reply) => {
+  server.post('/edge-gateways/uplink', async (request, reply) => {
     const body = (request.body as any) || {};
-    const { messageId, gatewayId, type, sourceProtocol, payload, gatewayTimestamp } =
-      body;
+    const { messageId, gatewayId, type, sourceProtocol, payload, gatewayTimestamp } = body;
     if (!messageId || !gatewayId || !type) {
-      return reply
-        .code(400)
-        .send({ ok: false, error: "messageId, gatewayId, and type required" });
+      return reply.code(400).send({ ok: false, error: 'messageId, gatewayId, and type required' });
     }
 
     const envelope: UplinkEnvelope = {
       messageId,
       gatewayId,
       type,
-      sourceProtocol: sourceProtocol || "raw",
+      sourceProtocol: sourceProtocol || 'raw',
       payload: payload || {},
       gatewayTimestamp: gatewayTimestamp || now(),
     };
@@ -199,7 +177,7 @@ export default async function edgeGatewayRoutes(
     const result = ingestUplinkMessage(envelope);
     if (!result.accepted) {
       return reply
-        .code(result.reason === "duplicate" ? 409 : 400)
+        .code(result.reason === 'duplicate' ? 409 : 400)
         .send({ ok: false, error: result.reason });
     }
 
@@ -207,12 +185,9 @@ export default async function edgeGatewayRoutes(
   });
 
   /** GET /edge-gateways/uplink/buffer — View uplink buffer */
-  server.get("/edge-gateways/uplink/buffer", async (request, reply) => {
+  server.get('/edge-gateways/uplink/buffer', async (request, reply) => {
     const query = request.query as { gatewayId?: string; limit?: string };
-    const messages = getUplinkBuffer(
-      query.gatewayId,
-      parseInt(query.limit || "100", 10)
-    );
+    const messages = getUplinkBuffer(query.gatewayId, parseInt(query.limit || '100', 10));
     return { ok: true, messages, total: messages.length };
   });
 
@@ -221,37 +196,29 @@ export default async function edgeGatewayRoutes(
   // -----------------------------------------------------------------------
 
   /** POST /edge-gateways/observations — Store a normalized observation */
-  server.post("/edge-gateways/observations", async (request, reply) => {
+  server.post('/edge-gateways/observations', async (request, reply) => {
     const body = (request.body as any) || {};
-    const {
-      gatewayId,
-      deviceId,
-      code,
-      codeSystem,
-      value,
-      unit,
-      sourceProtocol,
-    } = body;
+    const { gatewayId, deviceId, code, codeSystem, value, unit, sourceProtocol } = body;
     if (!gatewayId || !deviceId || !code || !value) {
       return reply.code(400).send({
         ok: false,
-        error: "gatewayId, deviceId, code, and value required",
+        error: 'gatewayId, deviceId, code, and value required',
       });
     }
 
     const obs: DeviceObservation = {
-      id: generateId("obs"),
+      id: generateId('obs'),
       gatewayId,
       deviceId,
       patientId: body.patientId,
       code,
-      codeSystem: codeSystem || "local",
+      codeSystem: codeSystem || 'local',
       value,
-      unit: unit || "",
+      unit: unit || '',
       flag: body.flag,
       referenceRange: body.referenceRange,
       specimen: body.specimen,
-      sourceProtocol: sourceProtocol || "raw",
+      sourceProtocol: sourceProtocol || 'raw',
       observedAt: body.observedAt || now(),
       ingestedAt: now(),
       normalized: body.normalized || false,
@@ -263,7 +230,7 @@ export default async function edgeGatewayRoutes(
   });
 
   /** GET /edge-gateways/observations — Query observations */
-  server.get("/edge-gateways/observations", async (request, reply) => {
+  server.get('/edge-gateways/observations', async (request, reply) => {
     const query = request.query as {
       gatewayId?: string;
       deviceId?: string;
@@ -275,16 +242,16 @@ export default async function edgeGatewayRoutes(
       deviceId: query.deviceId,
       patientId: query.patientId,
       tenantId: tenantId(request),
-      limit: parseInt(query.limit || "100", 10),
+      limit: parseInt(query.limit || '100', 10),
     });
     return { ok: true, observations: results, total: results.length };
   });
 
   /** GET /edge-gateways/observations/:id — Get single observation */
-  server.get("/edge-gateways/observations/:id", async (request, reply) => {
+  server.get('/edge-gateways/observations/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const obs = getObservation(id);
-    if (!obs) return reply.code(404).send({ ok: false, error: "not_found" });
+    if (!obs) return reply.code(404).send({ ok: false, error: 'not_found' });
     return { ok: true, observation: obs };
   });
 
@@ -293,7 +260,7 @@ export default async function edgeGatewayRoutes(
   // -----------------------------------------------------------------------
 
   /** GET /edge-gateways/stats — Store statistics */
-  server.get("/edge-gateways/stats", async (request, reply) => {
+  server.get('/edge-gateways/stats', async (request, reply) => {
     return { ok: true, stats: getStoreStats() };
   });
 }

@@ -1,6 +1,7 @@
 # Phase 144 -- QA Ladder V2 -- VERIFY
 
 ## Verification Gates
+
 1. TypeScript compiles clean (tsc --noEmit) for api, portal, web
 2. Phase registry resolves domains for Phases 139-144
 3. Test generator produces Playwright + RPC + restart specs

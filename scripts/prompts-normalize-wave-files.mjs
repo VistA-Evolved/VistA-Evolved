@@ -10,21 +10,30 @@
  *   node scripts/prompts-normalize-wave-files.mjs --dry-run   # preview only
  */
 
-import { readdirSync, renameSync, statSync, existsSync, mkdirSync, copyFileSync, unlinkSync, writeFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import {
+  readdirSync,
+  renameSync,
+  statSync,
+  existsSync,
+  mkdirSync,
+  copyFileSync,
+  unlinkSync,
+  writeFileSync,
+} from 'node:fs';
+import { join, resolve } from 'node:path';
 
-const ROOT = resolve(import.meta.dirname, "..");
-const PROMPTS = join(ROOT, "prompts");
-const BACKUP_DIR = join(ROOT, "artifacts", "prompts-normalize", "backups");
-const dryRun = process.argv.includes("--dry-run");
+const ROOT = resolve(import.meta.dirname, '..');
+const PROMPTS = join(ROOT, 'prompts');
+const BACKUP_DIR = join(ROOT, 'artifacts', 'prompts-normalize', 'backups');
+const dryRun = process.argv.includes('--dry-run');
 
 const WAVE_FOLDER_RE = /^\d+-W\d+-P\d+-/;
 
 // Map old patterns to canonical names
 const RENAME_MAP = [
-  { pattern: /^\d+-01-IMPLEMENT\.md$/i, target: "IMPLEMENT.md" },
-  { pattern: /^\d+-99-VERIFY\.md$/i, target: "VERIFY.md" },
-  { pattern: /^\d+-NOTES\.md$/i, target: "NOTES.md" },
+  { pattern: /^\d+-01-IMPLEMENT\.md$/i, target: 'IMPLEMENT.md' },
+  { pattern: /^\d+-99-VERIFY\.md$/i, target: 'VERIFY.md' },
+  { pattern: /^\d+-NOTES\.md$/i, target: 'NOTES.md' },
 ];
 
 let renamed = 0;
@@ -83,20 +92,22 @@ for (const folder of folders) {
 
   // Create NOTES.md if missing
   const updatedFiles = dryRun ? files : readdirSync(dir);
-  if (!updatedFiles.includes("NOTES.md")) {
-    const num = folder.match(/^(\d+)/)?.[1] || "?";
-    const slug = folder.replace(/^\d+-W\d+-P\d+-/, "").replace(/-/g, " ");
+  if (!updatedFiles.includes('NOTES.md')) {
+    const num = folder.match(/^(\d+)/)?.[1] || '?';
+    const slug = folder.replace(/^\d+-W\d+-P\d+-/, '').replace(/-/g, ' ');
     if (dryRun) {
       console.log(`  DRY-C  ${folder}/NOTES.md`);
     } else {
       const content = `# Phase ${num} -- ${slug} -- NOTES\n\n## Summary\nPart of wave folder normalization.\n\n## Key Decisions\n- TBD\n\n## Follow-ups\n- TBD\n`;
-      writeFileSync(join(dir, "NOTES.md"), content, "utf-8");
+      writeFileSync(join(dir, 'NOTES.md'), content, 'utf-8');
       console.log(`  CREATE  ${folder}/NOTES.md`);
     }
     created++;
   }
 }
 
-console.log(`\nDone. Renamed: ${renamed}, Backed-up: ${backed}, Created: ${created}, Skipped: ${skipped}, Errors: ${errors}`);
-if (dryRun) console.log("(dry-run mode -- no files were changed)");
+console.log(
+  `\nDone. Renamed: ${renamed}, Backed-up: ${backed}, Created: ${created}, Skipped: ${skipped}, Errors: ${errors}`
+);
+if (dryRun) console.log('(dry-run mode -- no files were changed)');
 process.exit(errors > 0 ? 1 : 0);

@@ -1,6 +1,7 @@
 # Phase 335 — W15-P9: Verification Checklist
 
 ## Gates
+
 - [ ] `sre-support-posture.ts` exports all domain functions
 - [ ] `sre-support-posture-routes.ts` registers 26 endpoints under `/platform/sre/`
 - [ ] AUTH_RULES: `/platform/sre/` → admin

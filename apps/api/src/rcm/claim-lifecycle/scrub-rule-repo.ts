@@ -6,10 +6,10 @@
  * If unknown: mark as contracting_needed in evidenceSource.
  */
 
-import { randomUUID } from "node:crypto";
-import { eq, and, desc, count } from "drizzle-orm";
-import { getPgDb } from "../../platform/pg/pg-db.js";
-import { scrubRule, scrubResult } from "../../platform/pg/pg-schema.js";
+import { randomUUID } from 'node:crypto';
+import { eq, and, desc, count } from 'drizzle-orm';
+import { getPgDb } from '../../platform/pg/pg-db.js';
+import { scrubRule, scrubResult } from '../../platform/pg/pg-schema.js';
 
 /* ── Types ─────────────────────────────────────────────────── */
 
@@ -71,7 +71,11 @@ export interface CreateScrubRuleInput {
 
 function safeJsonParse<T>(val: string | null | undefined, fallback: T): T {
   if (!val) return fallback;
-  try { return JSON.parse(val); } catch { return fallback; }
+  try {
+    return JSON.parse(val);
+  } catch {
+    return fallback;
+  }
 }
 
 function parseRule(row: any): ScrubRuleRow {
@@ -121,7 +125,7 @@ export async function createScrubRule(input: CreateScrubRuleInput): Promise<Scru
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || "default";
+  const tenantId = input.tenantId || 'default';
 
   await db.insert(scrubRule).values({
     id,
@@ -130,14 +134,14 @@ export async function createScrubRule(input: CreateScrubRuleInput): Promise<Scru
     serviceType: input.serviceType || null,
     ruleCode: input.ruleCode,
     category: input.category,
-    severity: input.severity || "error",
+    severity: input.severity || 'error',
     field: input.field,
     description: input.description,
     conditionJson: JSON.stringify(input.condition),
     suggestedFix: input.suggestedFix || null,
     evidenceSource: input.evidenceSource || null,
     evidenceDate: input.evidenceDate || null,
-    blocksSubmission: (input.blocksSubmission !== false) ? 1 : 0,
+    blocksSubmission: input.blocksSubmission !== false ? 1 : 0,
     isActive: 1,
     createdAt: now,
     updatedAt: now,
@@ -159,13 +163,14 @@ export async function getScrubRuleById(tenantId: string, id: string): Promise<Sc
 
 export async function listScrubRules(
   tenantId: string,
-  filters?: { payerId?: string; category?: string; isActive?: boolean },
+  filters?: { payerId?: string; category?: string; isActive?: boolean }
 ): Promise<ScrubRuleRow[]> {
   const db = getPgDb();
   const conditions = [eq(scrubRule.tenantId, tenantId)];
   if (filters?.payerId) conditions.push(eq(scrubRule.payerId, filters.payerId));
   if (filters?.category) conditions.push(eq(scrubRule.category, filters.category));
-  if (filters?.isActive !== undefined) conditions.push(eq(scrubRule.isActive, filters.isActive ? 1 : 0));
+  if (filters?.isActive !== undefined)
+    conditions.push(eq(scrubRule.isActive, filters.isActive ? 1 : 0));
 
   const rows = await db
     .select()
@@ -178,10 +183,18 @@ export async function listScrubRules(
 export async function updateScrubRule(
   tenantId: string,
   id: string,
-  updates: Partial<Pick<CreateScrubRuleInput,
-    "description" | "condition" | "suggestedFix" | "severity" | "blocksSubmission" |
-    "evidenceSource" | "evidenceDate"
-  > & { isActive?: boolean }>,
+  updates: Partial<
+    Pick<
+      CreateScrubRuleInput,
+      | 'description'
+      | 'condition'
+      | 'suggestedFix'
+      | 'severity'
+      | 'blocksSubmission'
+      | 'evidenceSource'
+      | 'evidenceDate'
+    > & { isActive?: boolean }
+  >
 ): Promise<ScrubRuleRow | null> {
   const db = getPgDb();
   const now = new Date().toISOString();
@@ -191,12 +204,14 @@ export async function updateScrubRule(
   if (updates.condition !== undefined) setClause.conditionJson = JSON.stringify(updates.condition);
   if (updates.suggestedFix !== undefined) setClause.suggestedFix = updates.suggestedFix;
   if (updates.severity !== undefined) setClause.severity = updates.severity;
-  if (updates.blocksSubmission !== undefined) setClause.blocksSubmission = updates.blocksSubmission ? 1 : 0;
+  if (updates.blocksSubmission !== undefined)
+    setClause.blocksSubmission = updates.blocksSubmission ? 1 : 0;
   if (updates.evidenceSource !== undefined) setClause.evidenceSource = updates.evidenceSource;
   if (updates.evidenceDate !== undefined) setClause.evidenceDate = updates.evidenceDate;
   if (updates.isActive !== undefined) setClause.isActive = updates.isActive ? 1 : 0;
 
-  await db.update(scrubRule)
+  await db
+    .update(scrubRule)
     .set(setClause)
     .where(and(eq(scrubRule.tenantId, tenantId), eq(scrubRule.id, id)));
 
@@ -238,14 +253,13 @@ export async function storeScrubResults(
     suggestedFix?: string;
     blocksSubmission: boolean;
     score: number;
-  }>,
+  }>
 ): Promise<ScrubResultRow[]> {
   const db = getPgDb();
   const now = new Date().toISOString();
 
   // Clear previous results for this claim
-  await db.delete(scrubResult)
-    .where(eq(scrubResult.claimDraftId, claimDraftId));
+  await db.delete(scrubResult).where(eq(scrubResult.claimDraftId, claimDraftId));
 
   const stored: ScrubResultRow[] = [];
   for (const r of results) {
@@ -288,15 +302,12 @@ export async function getScrubResultStats(tenantId: string): Promise<{
   suggestionCount: number;
 }> {
   const db = getPgDb();
-  const all = await db
-    .select()
-    .from(scrubResult)
-    .where(eq(scrubResult.tenantId, tenantId));
+  const all = await db.select().from(scrubResult).where(eq(scrubResult.tenantId, tenantId));
 
   return {
     totalScrubs: all.length,
-    errorCount: all.filter(r => r.severity === "error").length,
-    warningCount: all.filter(r => r.severity === "warning").length,
-    suggestionCount: all.filter(r => r.severity === "suggestion").length,
+    errorCount: all.filter((r) => r.severity === 'error').length,
+    warningCount: all.filter((r) => r.severity === 'warning').length,
+    suggestionCount: all.filter((r) => r.severity === 'suggestion').length,
   };
 }

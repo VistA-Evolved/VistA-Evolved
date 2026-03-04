@@ -4,16 +4,16 @@
 
 Active production pack for US-based VistA-Evolved deployments.
 
-| Field | Value |
-|-------|-------|
-| **Country Code** | US |
-| **Regulatory Framework** | HIPAA |
-| **Consent Granularity** | Category-level |
-| **Default Region** | us-east |
-| **Default Locale** | en |
-| **Supported Locales** | en, es |
-| **Payer Module** | us_core (12 payers) |
-| **Status** | Active (P0) |
+| Field                    | Value               |
+| ------------------------ | ------------------- |
+| **Country Code**         | US                  |
+| **Regulatory Framework** | HIPAA               |
+| **Consent Granularity**  | Category-level      |
+| **Default Region**       | us-east             |
+| **Default Locale**       | en                  |
+| **Supported Locales**    | en, es              |
+| **Payer Module**         | us_core (12 payers) |
+| **Status**               | Active (P0)         |
 
 ## Regulatory Notes
 

@@ -10,6 +10,7 @@ from leaking into logs, audit trails, or metric labels.
 ## Architecture
 
 ### Centralized Redaction (`lib/phi-redaction.ts`)
+
 - **PHI_FIELDS**: Canonical set of blocked field names (lowercase)
 - **CREDENTIAL_FIELDS**: Auth-related field names (tokens, passwords)
 - **ALL_BLOCKED_FIELDS**: Union of PHI + credential fields
@@ -19,14 +20,18 @@ from leaking into logs, audit trails, or metric labels.
 - **sanitizeForAudit(detail, maxLen)**: Redact + truncate long strings
 
 ### Audit Emitter Wiring
+
 All audit stores delegate to `sanitizeAuditDetail()` before storage:
+
 - `immutable-audit.ts`: Two-pass (centralized + legacy pattern scrub)
 - `imaging-audit.ts`: Centralized first pass + local BLOCKED_KEYS
 - `rcm-audit.ts`: Local sanitizeDetail blocks dfn/patientdfn/patient_dfn/mrn
 - `portal-audit.ts`: Direct `sanitizeAuditDetail(opts?.detail)`
 
 ### CI Gate (G22)
+
 `qa/gauntlet/gates/g22-phi-leak-audit.mjs` performs 6 static analysis checks:
+
 1. PHI_FIELDS includes dfn/patientdfn/patient_dfn/mrn
 2. `sanitizeAuditDetail` export exists
 3. `auditIncludesDfn: false` in server-config.ts
@@ -58,19 +63,19 @@ grep -rn "log\.\(info\|warn\|error\).*\bdfn\b" apps/api/src/routes/ apps/api/src
 
 ## Files Changed
 
-| File | Change |
-|------|--------|
-| `lib/phi-redaction.ts` | +dfn/mrn to PHI_FIELDS, +sanitizeAuditDetail export |
-| `config/server-config.ts` | auditIncludesDfn=false, neverLogFields expanded |
-| `lib/audit.ts` | Removed patientDfn from log.info |
-| `lib/immutable-audit.ts` | Centralized sanitize + two-pass approach |
-| `services/imaging-audit.ts` | Centralized first pass + local BLOCKED_KEYS expanded |
-| `rcm/audit/rcm-audit.ts` | Added dfn/patientdfn/patient_dfn/mrn checks |
-| `services/portal-audit.ts` | Added sanitizeAuditDetail to detail |
-| `services/imaging-service.ts` | Removed dfn from 4 log.warn calls |
-| `routes/imaging-viewer.ts` | Removed dfn from log.warn |
-| `routes/emar/index.ts` | Removed dfn from log.info |
-| `routes/write-backs.ts` | Removed dfn from log.info |
+| File                          | Change                                               |
+| ----------------------------- | ---------------------------------------------------- |
+| `lib/phi-redaction.ts`        | +dfn/mrn to PHI_FIELDS, +sanitizeAuditDetail export  |
+| `config/server-config.ts`     | auditIncludesDfn=false, neverLogFields expanded      |
+| `lib/audit.ts`                | Removed patientDfn from log.info                     |
+| `lib/immutable-audit.ts`      | Centralized sanitize + two-pass approach             |
+| `services/imaging-audit.ts`   | Centralized first pass + local BLOCKED_KEYS expanded |
+| `rcm/audit/rcm-audit.ts`      | Added dfn/patientdfn/patient_dfn/mrn checks          |
+| `services/portal-audit.ts`    | Added sanitizeAuditDetail to detail                  |
+| `services/imaging-service.ts` | Removed dfn from 4 log.warn calls                    |
+| `routes/imaging-viewer.ts`    | Removed dfn from log.warn                            |
+| `routes/emar/index.ts`        | Removed dfn from log.info                            |
+| `routes/write-backs.ts`       | Removed dfn from log.info                            |
 
 ## Gauntlet Results
 

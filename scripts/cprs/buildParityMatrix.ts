@@ -18,11 +18,11 @@
  * Usage: npx tsx scripts/cprs/buildParityMatrix.ts
  */
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
-import { join } from "path";
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { join } from 'path';
 
 const ROOT = process.cwd();
-const ARTIFACTS = join(ROOT, "artifacts", "cprs");
+const ARTIFACTS = join(ROOT, 'artifacts', 'cprs');
 
 /* ------------------------------------------------------------------ */
 /*  Load inputs                                                        */
@@ -68,7 +68,7 @@ interface CoreAction {
   label: string;
   category: string;
   requiredRpcs: string[];
-  gateLevel: "must" | "should" | "may";
+  gateLevel: 'must' | 'should' | 'may';
 }
 
 function loadJson<T>(path: string, fallback: T): T {
@@ -76,7 +76,7 @@ function loadJson<T>(path: string, fallback: T): T {
     console.log(`  WARN: missing ${path}, using empty fallback`);
     return fallback;
   }
-  return JSON.parse(readFileSync(path, "utf-8")) as T;
+  return JSON.parse(readFileSync(path, 'utf-8')) as T;
 }
 
 /* ------------------------------------------------------------------ */
@@ -87,7 +87,7 @@ function loadJson<T>(path: string, fallback: T): T {
 
 function extractRegistryFromTs(filePath: string): { rpcs: string[]; exceptions: string[] } {
   if (!existsSync(filePath)) return { rpcs: [], exceptions: [] };
-  const src = readFileSync(filePath, "utf-8");
+  const src = readFileSync(filePath, 'utf-8');
   const rpcs: string[] = [];
   const exceptions: string[] = [];
 
@@ -97,7 +97,7 @@ function extractRegistryFromTs(filePath: string): { rpcs: string[]; exceptions: 
   }
 
   // RPC_EXCEPTIONS section
-  const excBlock = src.indexOf("RPC_EXCEPTIONS");
+  const excBlock = src.indexOf('RPC_EXCEPTIONS');
   if (excBlock > 0) {
     const tail = src.slice(excBlock);
     for (const m of tail.matchAll(/name:\s*"([^"]+)"/g)) {
@@ -119,17 +119,17 @@ interface ActionEntry {
 
 function extractActionsFromTs(filePath: string): ActionEntry[] {
   if (!existsSync(filePath)) return [];
-  const src = readFileSync(filePath, "utf-8");
+  const src = readFileSync(filePath, 'utf-8');
   const actions: ActionEntry[] = [];
 
   // Split on action blocks.  Each block: { actionId: "...", label: "...", ...}
   const blocks = src.split(/\{\s*\n\s*actionId:/);
   for (let i = 1; i < blocks.length; i++) {
-    const block = "actionId:" + blocks[i].split(/\n\s*\}/)[0];
-    const id = block.match(/actionId:\s*"([^"]+)"/)?.[1] ?? "";
-    const label = block.match(/label:\s*"([^"]+)"/)?.[1] ?? "";
-    const location = block.match(/location:\s*"([^"]+)"/)?.[1] ?? "";
-    const status = block.match(/status:\s*"([^"]+)"/)?.[1] ?? "unknown";
+    const block = 'actionId:' + blocks[i].split(/\n\s*\}/)[0];
+    const id = block.match(/actionId:\s*"([^"]+)"/)?.[1] ?? '';
+    const label = block.match(/label:\s*"([^"]+)"/)?.[1] ?? '';
+    const location = block.match(/location:\s*"([^"]+)"/)?.[1] ?? '';
+    const status = block.match(/status:\s*"([^"]+)"/)?.[1] ?? 'unknown';
     const pendingNote = block.match(/pendingNote:\s*"([^"]+)"/)?.[1];
     const rpcsMatch = block.match(/rpcs:\s*\[([^\]]*)\]/);
     const rpcs: string[] = [];
@@ -159,7 +159,7 @@ interface RpcParity {
   isException: boolean;
   wiredInWebAction: boolean;
   webActions: string[];
-  status: "wired" | "registered" | "vivian-only" | "delphi-only" | "gap";
+  status: 'wired' | 'registered' | 'vivian-only' | 'delphi-only' | 'gap';
 }
 
 interface ActionParity {
@@ -183,7 +183,7 @@ interface CoreActionGate {
   webActionFound: boolean;
   webActionStatus: string;
   allRpcsWired: boolean;
-  gateResult: "PASS" | "WARN" | "FAIL";
+  gateResult: 'PASS' | 'WARN' | 'FAIL';
   failReason?: string;
 }
 
@@ -191,22 +191,36 @@ function main() {
   mkdirSync(ARTIFACTS, { recursive: true });
 
   // 1. Load Delphi extractions
-  const delphiRpcs = loadJson<DelphiRpcFile>(join(ARTIFACTS, "delphi-rpcs.json"), { _meta: {}, rpcs: [] });
-  const delphiActions = loadJson<DelphiActionFile>(join(ARTIFACTS, "delphi-actions.json"), { _meta: {}, actions: [] });
-  const delphiForms = loadJson<DelphiFormFile>(join(ARTIFACTS, "delphi-forms.json"), { _meta: {}, forms: [] });
+  const delphiRpcs = loadJson<DelphiRpcFile>(join(ARTIFACTS, 'delphi-rpcs.json'), {
+    _meta: {},
+    rpcs: [],
+  });
+  const delphiActions = loadJson<DelphiActionFile>(join(ARTIFACTS, 'delphi-actions.json'), {
+    _meta: {},
+    actions: [],
+  });
+  const delphiForms = loadJson<DelphiFormFile>(join(ARTIFACTS, 'delphi-forms.json'), {
+    _meta: {},
+    forms: [],
+  });
 
   // 2. Load Vivian index
-  const vivian = loadJson<VivianFile>(join(ROOT, "data", "vista", "vivian", "rpc_index.json"), { _meta: {}, rpcs: [] });
+  const vivian = loadJson<VivianFile>(join(ROOT, 'data', 'vista', 'vivian', 'rpc_index.json'), {
+    _meta: {},
+    rpcs: [],
+  });
   const vivianSet = new Map<string, string>();
-  for (const r of vivian.rpcs) vivianSet.set(r.name.toUpperCase(), r.package ?? "");
+  for (const r of vivian.rpcs) vivianSet.set(r.name.toUpperCase(), r.package ?? '');
 
   // 3. Load API registry
-  const reg = extractRegistryFromTs(join(ROOT, "apps", "api", "src", "vista", "rpcRegistry.ts"));
+  const reg = extractRegistryFromTs(join(ROOT, 'apps', 'api', 'src', 'vista', 'rpcRegistry.ts'));
   const apiRpcSet = new Set(reg.rpcs);
   const apiExcSet = new Set(reg.exceptions);
 
   // 4. Load web action registry
-  const webActions = extractActionsFromTs(join(ROOT, "apps", "web", "src", "actions", "actionRegistry.ts"));
+  const webActions = extractActionsFromTs(
+    join(ROOT, 'apps', 'web', 'src', 'actions', 'actionRegistry.ts')
+  );
   const webActionRpcs = new Set<string>();
   const rpcToActions = new Map<string, string[]>();
   for (const a of webActions) {
@@ -218,7 +232,10 @@ function main() {
   }
 
   // 5. Load core actions contract
-  const coreActions = loadJson<CoreAction[]>(join(ROOT, "scripts", "cprs", "core-actions.json"), []);
+  const coreActions = loadJson<CoreAction[]>(
+    join(ROOT, 'scripts', 'cprs', 'core-actions.json'),
+    []
+  );
 
   // Build unified RPC set from all sources
   const allRpcNames = new Set<string>();
@@ -237,12 +254,12 @@ function main() {
     const isExc = apiExcSet.has(name);
     const inWeb = webActionRpcs.has(name);
 
-    let status: RpcParity["status"];
-    if (inWeb) status = "wired";
-    else if (inApi || isExc) status = "registered";
-    else if (inVivian && !inDelphi) status = "vivian-only";
-    else if (inDelphi && !inVivian && !inApi) status = "delphi-only";
-    else status = "gap";
+    let status: RpcParity['status'];
+    if (inWeb) status = 'wired';
+    else if (inApi || isExc) status = 'registered';
+    else if (inVivian && !inDelphi) status = 'vivian-only';
+    else if (inDelphi && !inVivian && !inApi) status = 'delphi-only';
+    else status = 'gap';
 
     rpcParity.push({
       name,
@@ -250,9 +267,9 @@ function main() {
       delphiRefCount: delphiEntry?.refCount ?? 0,
       delphiFiles: delphiEntry?.files ?? [],
       inVivianIndex: inVivian,
-      vivianPackage: vivianSet.get(name) ?? "",
+      vivianPackage: vivianSet.get(name) ?? '',
       inApiRegistry: inApi || isExc,
-      apiDomain: inApi ? "registered" : isExc ? "exception" : "",
+      apiDomain: inApi ? 'registered' : isExc ? 'exception' : '',
       isException: isExc,
       wiredInWebAction: inWeb,
       webActions: rpcToActions.get(name) ?? [],
@@ -262,10 +279,14 @@ function main() {
 
   // Build action parity rows
   const actionParity: ActionParity[] = webActions.map((a) => {
-    const allInReg = a.rpcs.every((r) => apiRpcSet.has(r.toUpperCase()) || apiExcSet.has(r.toUpperCase()));
-    const allInViv = a.rpcs.every((r) => vivianSet.has(r.toUpperCase()) || apiExcSet.has(r.toUpperCase()));
+    const allInReg = a.rpcs.every(
+      (r) => apiRpcSet.has(r.toUpperCase()) || apiExcSet.has(r.toUpperCase())
+    );
+    const allInViv = a.rpcs.every(
+      (r) => vivianSet.has(r.toUpperCase()) || apiExcSet.has(r.toUpperCase())
+    );
     // Check if any Delphi action has a matching handler name or identifier
-    const aIdParts = a.actionId.split(".");
+    const aIdParts = a.actionId.split('.');
     const hasDelphiMatch = delphiActions.actions.some((da) => {
       const daLower = (da.handler ?? da.identifier).toLowerCase();
       return aIdParts.some((p) => daLower.includes(p));
@@ -287,42 +308,44 @@ function main() {
   const gates: CoreActionGate[] = coreActions.map((ca) => {
     const wa = webActions.find((a) => a.actionId === ca.actionId);
     const found = !!wa;
-    const waStatus = wa?.status ?? "missing";
+    const waStatus = wa?.status ?? 'missing';
     const allWired =
       found &&
-      waStatus === "wired" &&
-      ca.requiredRpcs.every((r) => apiRpcSet.has(r.toUpperCase()) || apiExcSet.has(r.toUpperCase()));
+      waStatus === 'wired' &&
+      ca.requiredRpcs.every(
+        (r) => apiRpcSet.has(r.toUpperCase()) || apiExcSet.has(r.toUpperCase())
+      );
 
-    let gateResult: CoreActionGate["gateResult"] = "PASS";
+    let gateResult: CoreActionGate['gateResult'] = 'PASS';
     let failReason: string | undefined;
 
-    if (ca.gateLevel === "must") {
+    if (ca.gateLevel === 'must') {
       if (!found) {
-        gateResult = "FAIL";
-        failReason = "Core action missing from web action registry";
-      } else if (waStatus === "stub") {
-        gateResult = "FAIL";
+        gateResult = 'FAIL';
+        failReason = 'Core action missing from web action registry';
+      } else if (waStatus === 'stub') {
+        gateResult = 'FAIL';
         failReason = `Action is stub (expected wired or integration-pending)`;
-      } else if (waStatus === "integration-pending") {
-        gateResult = "WARN";
-        failReason = "Action integration-pending (acceptable but track)";
+      } else if (waStatus === 'integration-pending') {
+        gateResult = 'WARN';
+        failReason = 'Action integration-pending (acceptable but track)';
       } else if (!allWired) {
-        gateResult = "FAIL";
-        failReason = "Required RPCs not all in API registry";
+        gateResult = 'FAIL';
+        failReason = 'Required RPCs not all in API registry';
       }
-    } else if (ca.gateLevel === "should") {
+    } else if (ca.gateLevel === 'should') {
       if (!found) {
-        gateResult = "WARN";
-        failReason = "Should-have action missing from registry";
-      } else if (waStatus === "stub") {
-        gateResult = "WARN";
-        failReason = "Should-have action still stub";
+        gateResult = 'WARN';
+        failReason = 'Should-have action missing from registry';
+      } else if (waStatus === 'stub') {
+        gateResult = 'WARN';
+        failReason = 'Should-have action still stub';
       }
     }
     // "may" level only FAILs if dead-click (wired but RPCs missing)
-    if (ca.gateLevel === "may" && found && waStatus === "wired" && !allWired) {
-      gateResult = "FAIL";
-      failReason = "Action marked wired but RPCs not in registry (dead click)";
+    if (ca.gateLevel === 'may' && found && waStatus === 'wired' && !allWired) {
+      gateResult = 'FAIL';
+      failReason = 'Action marked wired but RPCs not in registry (dead click)';
     }
 
     return {
@@ -342,11 +365,11 @@ function main() {
   // Compute summary stats
   const rpcStats = {
     total: rpcParity.length,
-    wired: rpcParity.filter((r) => r.status === "wired").length,
-    registered: rpcParity.filter((r) => r.status === "registered").length,
-    vivianOnly: rpcParity.filter((r) => r.status === "vivian-only").length,
-    delphiOnly: rpcParity.filter((r) => r.status === "delphi-only").length,
-    gap: rpcParity.filter((r) => r.status === "gap").length,
+    wired: rpcParity.filter((r) => r.status === 'wired').length,
+    registered: rpcParity.filter((r) => r.status === 'registered').length,
+    vivianOnly: rpcParity.filter((r) => r.status === 'vivian-only').length,
+    delphiOnly: rpcParity.filter((r) => r.status === 'delphi-only').length,
+    gap: rpcParity.filter((r) => r.status === 'gap').length,
     inDelphi: rpcParity.filter((r) => r.inDelphiSource).length,
     inVivian: rpcParity.filter((r) => r.inVivianIndex).length,
     inApi: rpcParity.filter((r) => r.inApiRegistry).length,
@@ -355,16 +378,16 @@ function main() {
 
   const actionStats = {
     total: actionParity.length,
-    wired: actionParity.filter((a) => a.status === "wired").length,
-    pending: actionParity.filter((a) => a.status === "integration-pending").length,
-    stub: actionParity.filter((a) => a.status === "stub").length,
+    wired: actionParity.filter((a) => a.status === 'wired').length,
+    pending: actionParity.filter((a) => a.status === 'integration-pending').length,
+    stub: actionParity.filter((a) => a.status === 'stub').length,
   };
 
   const gateStats = {
     total: gates.length,
-    pass: gates.filter((g) => g.gateResult === "PASS").length,
-    warn: gates.filter((g) => g.gateResult === "WARN").length,
-    fail: gates.filter((g) => g.gateResult === "FAIL").length,
+    pass: gates.filter((g) => g.gateResult === 'PASS').length,
+    warn: gates.filter((g) => g.gateResult === 'WARN').length,
+    fail: gates.filter((g) => g.gateResult === 'FAIL').length,
   };
 
   // Write matrix JSON
@@ -372,7 +395,7 @@ function main() {
     _meta: {
       generatedAt: new Date().toISOString(),
       phase: 55,
-      description: "CPRS Parity Matrix v2 — Delphi + Vivian + API + Web cross-reference",
+      description: 'CPRS Parity Matrix v2 — Delphi + Vivian + API + Web cross-reference',
       inputs: {
         delphiRpcs: delphiRpcs._meta,
         delphiActions: delphiActions._meta,
@@ -391,47 +414,47 @@ function main() {
     coreActionGates: gates,
   };
 
-  writeFileSync(join(ARTIFACTS, "parity-matrix.json"), JSON.stringify(matrix, null, 2));
+  writeFileSync(join(ARTIFACTS, 'parity-matrix.json'), JSON.stringify(matrix, null, 2));
   console.log(`\nParity matrix written to artifacts/cprs/parity-matrix.json`);
 
   // Write human-readable summary
   const lines: string[] = [
-    "# CPRS Parity Matrix v2 Summary",
+    '# CPRS Parity Matrix v2 Summary',
     `Generated: ${matrix._meta.generatedAt}`,
-    "",
-    "## RPC Coverage",
+    '',
+    '## RPC Coverage',
     `  Total unique RPCs:     ${rpcStats.total}`,
     `  In Delphi source:      ${rpcStats.inDelphi}`,
     `  In Vivian index:       ${rpcStats.inVivian}`,
     `  In API registry:       ${rpcStats.inApi}`,
     `  Wired in web actions:  ${rpcStats.inWeb}`,
-    "",
+    '',
     `  Status breakdown:`,
     `    wired:       ${rpcStats.wired}  (RPC has web action)`,
     `    registered:  ${rpcStats.registered}  (in API registry, no web action)`,
     `    vivian-only: ${rpcStats.vivianOnly}  (in Vivian, not in Delphi/API)`,
     `    delphi-only: ${rpcStats.delphiOnly}  (in Delphi source, not in Vivian/API)`,
     `    gap:         ${rpcStats.gap}`,
-    "",
-    "## Web Action Coverage",
+    '',
+    '## Web Action Coverage',
     `  Total actions: ${actionStats.total}`,
     `  Wired:         ${actionStats.wired}`,
     `  Pending:       ${actionStats.pending}`,
     `  Stub:          ${actionStats.stub}`,
-    "",
-    "## Core Action Gates",
+    '',
+    '## Core Action Gates',
     `  Total: ${gateStats.total}  PASS: ${gateStats.pass}  WARN: ${gateStats.warn}  FAIL: ${gateStats.fail}`,
-    "",
+    '',
   ];
 
   if (gates.length > 0) {
-    lines.push("### Gate Results");
+    lines.push('### Gate Results');
     for (const g of gates) {
-      const icon = g.gateResult === "PASS" ? "PASS" : g.gateResult === "WARN" ? "WARN" : "FAIL";
+      const icon = g.gateResult === 'PASS' ? 'PASS' : g.gateResult === 'WARN' ? 'WARN' : 'FAIL';
       lines.push(`  [${icon}] ${g.actionId} (${g.gateLevel}) -- ${g.label}`);
       if (g.failReason) lines.push(`         ${g.failReason}`);
     }
-    lines.push("");
+    lines.push('');
   }
 
   // Top 20 most-referenced Delphi RPCs not wired
@@ -441,18 +464,20 @@ function main() {
     .slice(0, 20);
 
   if (unwiredFromDelphi.length > 0) {
-    lines.push("## Top 20 Delphi RPCs NOT in API/Web (by reference count)");
+    lines.push('## Top 20 Delphi RPCs NOT in API/Web (by reference count)');
     for (const r of unwiredFromDelphi) {
-      lines.push(`  ${r.delphiRefCount.toString().padStart(3)} refs  ${r.name}  [${r.delphiFiles.length} files]`);
+      lines.push(
+        `  ${r.delphiRefCount.toString().padStart(3)} refs  ${r.name}  [${r.delphiFiles.length} files]`
+      );
     }
-    lines.push("");
+    lines.push('');
   }
 
-  writeFileSync(join(ARTIFACTS, "parity-summary.txt"), lines.join("\n"));
+  writeFileSync(join(ARTIFACTS, 'parity-summary.txt'), lines.join('\n'));
   console.log(`Summary written to artifacts/cprs/parity-summary.txt`);
 
   // Print summary to console
-  console.log("\n" + lines.join("\n"));
+  console.log('\n' + lines.join('\n'));
 }
 
 main();

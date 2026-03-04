@@ -10,13 +10,13 @@ RPC via the Node.js API.
 
 ## RPC Details
 
-| Item | Value |
-|------|-------|
-| **RPC Name** | `ORWPT LIST ALL` |
-| **Context** | `OR CPRS GUI CHART` |
-| **Param 1** | FROM — starting search string (case-insensitive) |
-| **Param 2** | DIR — `"1"` for forward alphabetical |
-| **Response** | Lines of `DFN^NAME^^^^NAME` |
+| Item         | Value                                            |
+| ------------ | ------------------------------------------------ |
+| **RPC Name** | `ORWPT LIST ALL`                                 |
+| **Context**  | `OR CPRS GUI CHART`                              |
+| **Param 1**  | FROM — starting search string (case-insensitive) |
+| **Param 2**  | DIR — `"1"` for forward alphabetical             |
+| **Response** | Lines of `DFN^NAME^^^^NAME`                      |
 
 ## Steps
 
@@ -98,14 +98,17 @@ curl "http://127.0.0.1:3001/vista/patient-search?q=ZZ" -UseBasicParsing
 ## Troubleshooting
 
 ### "TCP connect timeout" or ECONNREFUSED
+
 - Sandbox not running: `docker ps` to check, `docker compose --profile dev up -d` to start
 - Wait 15s after container start for port 9430 to be ready
 
 ### Sign-on failed
+
 - Verify credentials in `apps/api/.env.local` match the WorldVistA defaults
   (PROV123 / PROV123!!) — see `apps/api/.env.example`
 
 ### 0 results for a name you expect
+
 - The fresh WorldVistA sandbox has only 3 test patients (ZZ PATIENT,TEST ONE/TWO/THREE)
 - Search is alphabetical starting from the search string; try `?q=ZZ`
 

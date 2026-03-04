@@ -3,6 +3,7 @@
 ## Request
 
 Build a phase-by-phase QA backfill generator that:
+
 - Scans prompts/ and builds `docs/qa/phase-index.json`
 - Generates executable Playwright + Vitest QA packs per phase
 - Provides progressive QA runner (`pnpm qa:phase`, `pnpm qa:range`, `pnpm qa:all`)
@@ -37,6 +38,6 @@ Build a phase-by-phase QA backfill generator that:
 - package.json (MODIFIED -- +4 scripts)
 - .github/workflows/qa-gauntlet.yml (MODIFIED -- +2 steps)
 - docs/qa/phase-index.json (GENERATED)
-- apps/web/e2e/phases/*.spec.ts (GENERATED -- 7 files)
-- apps/api/tests/phases/*.test.ts (GENERATED -- 2 files)
+- apps/web/e2e/phases/\*.spec.ts (GENERATED -- 7 files)
+- apps/api/tests/phases/\*.test.ts (GENERATED -- 2 files)
 - docs/runbooks/phase108-phase-audit-harness.md (NEW)

@@ -9,15 +9,16 @@ The **Problem List** in VistA stores patient chronic conditions, diagnoses, and 
 ## RPC: ORWCH PROBLEM LIST
 
 ### Categories
+
 - **Namespace**: ORWCH (CPRS Chart)
 - **Purpose**: Retrieve patient problem list (diagnoses, chronic conditions)
 - **File**: 9000011 (Problem List in VistA fileman hierarchy)
 
 ### Parameters
 
-| Param | Type | Description |
-|-------|------|-------------|
-| **DFN** | LITERAL | Patient IEN (e.g., "1") |
+| Param    | Type    | Description                                      |
+| -------- | ------- | ------------------------------------------------ |
+| **DFN**  | LITERAL | Patient IEN (e.g., "1")                          |
 | **FLAG** | LITERAL | "1" = active only, "0" = all (active + resolved) |
 
 ### Response Format
@@ -29,6 +30,7 @@ IEN^PROBLEM_TEXT^STATUS^ONSET_DATE^...
 ```
 
 **Field Breakdown**:
+
 1. **IEN** – Problem record ID in file 9000011
 2. **PROBLEM_TEXT** – Diagnosis/problem description (e.g., "Type 2 Diabetes")
 3. **STATUS** – Status code:
@@ -49,11 +51,13 @@ IEN^PROBLEM_TEXT^STATUS^ONSET_DATE^...
 ## API Endpoint: GET /vista/problems?dfn=<dfn>
 
 ### Request
+
 ```bash
 curl -s http://127.0.0.1:3001/vista/problems?dfn=1
 ```
 
 ### Success Response (200)
+
 ```json
 {
   "ok": true,
@@ -82,6 +86,7 @@ curl -s http://127.0.0.1:3001/vista/problems?dfn=1
 ```
 
 ### Error Response (400/500)
+
 ```json
 {
   "ok": false,
@@ -95,12 +100,14 @@ curl -s http://127.0.0.1:3001/vista/problems?dfn=1
 ## Implementation Notes
 
 ### MVP Scope
+
 - **Read only**: Returns problem list, no add/edit/delete in Phase 9A
 - **Status display**: Simplified to "active" / "inactive" / "resolved"
 - **Minimal fields**: Stores id, text, status, onset only (ICD/SNOMED mapping out of scope)
 - **No date formatting**: Onset dates returned raw (FileMan format), displayed as-is
 
 ### Known Limitations
+
 1. **Problem text may be truncated** in WorldVistA if stored descriptions are long
 2. **Onset date** is in FileMan format (YYYMMDD) — frontend could format to human-readable if needed
 3. **No ICD/SNOMED codes** — only problem description text is retrieved
@@ -110,11 +117,13 @@ curl -s http://127.0.0.1:3001/vista/problems?dfn=1
 ### Testing with WorldVistA Docker
 
 1. **Verify patient has problems**:
+
    ```bash
    docker exec wv su - wv -c "mumps -r %XCMD 'F I=1:1:5 W I_\": \"_\$O(^PXRMINDX(9000011,\"PSPI\",1,I)),! ' Q"
    ```
 
 2. **Test RPC call**:
+
    ```bash
    curl -s http://127.0.0.1:3001/vista/problems?dfn=1 | jq .
    ```
@@ -158,6 +167,7 @@ Response (multiple lines):
 ### Caret-Delimited Parsing
 
 Each line is split by `^`:
+
 - `parts[0]` = IEN
 - `parts[1]` = Problem text
 - `parts[2]` = Status
@@ -168,6 +178,7 @@ Each line is split by `^`:
 ## UI Integration
 
 ### Web Component: Problem List Tab
+
 - **Section Title**: "Problem List"
 - **Display**: Table with columns:
   - Problem (text)
@@ -183,14 +194,17 @@ Each line is split by `^`:
 ## Troubleshooting
 
 ### RPC returns empty list
+
 - Check that patient (DFN) has active/resolved problems recorded in VistA
 - Try `FLAG=0` (all problems) instead of `FLAG=1` (active only)
 
 ### RPC returns -1^ERROR
+
 - Patient DFN may not exist in VistA
 - User may not have RPC permissions (check VISTA_ACCESS_CODE and VISTA_VERIFY_CODE)
 
 ### UI section does not appear
+
 - Ensure API is running: `curl http://127.0.0.1:3001/health`
 - Check browser console for network errors
 - Verify patient was selected before opening Problems tab

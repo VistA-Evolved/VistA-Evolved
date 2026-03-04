@@ -1,12 +1,14 @@
 # Phase 279 — Interop HL7 Engine: Production Convergence
 
 ## User Request
+
 Enhance the existing in-process HL7v2 MLLP engine (Phase 238-241, 258-260)
 with production-convergence features: FHIR R4 message bridge, channel health
 monitoring, outbound message builder, conformance profile declaration, and
 a QA gate. Per ADR-hl7-engine-choice.md, Mirth Connect was explicitly rejected.
 
 ## Inventory
+
 - Existing HL7 engine: `apps/api/src/hl7/` (14 files, Phase 238-260)
   - mllp-server.ts, mllp-client.ts — TCP framing
   - parser.ts, ack-generator.ts — message handling
@@ -48,6 +50,7 @@ a QA gate. Per ADR-hl7-engine-choice.md, Mirth Connect was explicitly rejected.
    - Verifies HL7 route files are registered
 
 ## Verification Steps
+
 - FHIR bridge exports conversion functions for all 4 message packs
 - Channel health module exports aggregation function
 - Outbound builder exports message construction functions

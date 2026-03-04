@@ -13,9 +13,9 @@
  * reads try cache first then fall back to DB on miss.
  */
 
-import { randomBytes } from "node:crypto";
-import type { AccessLogEntry, AccessLogEventType } from "./types.js";
-import { log } from "../lib/logger.js";
+import { randomBytes } from 'node:crypto';
+import type { AccessLogEntry, AccessLogEventType } from './types.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* DB-backed hybrid (Phase 121)                                          */
@@ -35,11 +35,14 @@ export interface AccessLogRepo {
   }): any;
   findAccessLogsByUser(
     userId: string,
-    opts?: { eventType?: string; since?: string; limit?: number; offset?: number },
+    opts?: { eventType?: string; since?: string; limit?: number; offset?: number }
   ): any;
   countAccessLogsByUser(userId: string): any;
   /** Filtered count -- supports eventType + since filters (Phase 121 BUG #11 fix) */
-  countAccessLogsByUserFiltered?(userId: string, opts?: { eventType?: string; since?: string }): any;
+  countAccessLogsByUserFiltered?(
+    userId: string,
+    opts?: { eventType?: string; since?: string }
+  ): any;
   countAllAccessLogs(): any;
   getAccessLogStats(): any;
   /** Breakdown by event_type for cold-cache stats (Phase 121 BUG #12 fix) */
@@ -51,7 +54,7 @@ let dbRepo: AccessLogRepo | null = null;
 /** Called from index.ts after initPlatformDb() */
 export function initAccessLogRepo(repo: AccessLogRepo): void {
   dbRepo = repo;
-  log.info("Access log store wired to DB (Phase 121)");
+  log.info('Access log store wired to DB (Phase 121)');
 }
 
 function dbWarn(op: string, err: unknown): void {
@@ -79,7 +82,7 @@ let totalEntries = 0;
 /* ------------------------------------------------------------------ */
 
 function genId(): string {
-  return `al-${randomBytes(12).toString("hex")}`;
+  return `al-${randomBytes(12).toString('hex')}`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -97,11 +100,11 @@ function sanitizeMetadata(meta: Record<string, string>): Record<string, string> 
   for (const [key, value] of Object.entries(meta)) {
     // Strip any key that looks like PHI
     const lk = key.toLowerCase();
-    if (lk.includes("ssn") || lk.includes("dob") || lk.includes("birth")) continue;
+    if (lk.includes('ssn') || lk.includes('dob') || lk.includes('birth')) continue;
 
     let val = value;
     for (const pat of PHI_PATTERNS) {
-      val = val.replace(pat, "[REDACTED]");
+      val = val.replace(pat, '[REDACTED]');
     }
     clean[key] = val.slice(0, 200); // truncate long values
   }
@@ -157,17 +160,19 @@ export function appendAccessLog(
 
   // Phase 121: Write-through to DB
   if (dbRepo) {
-    Promise.resolve(dbRepo.insertAccessLog({
-      id: logEntry.id,
-      userId,
-      actorName: logEntry.actorName,
-      isProxy: logEntry.isProxy,
-      targetPatientDfn: logEntry.targetPatientDfn,
-      eventType: logEntry.eventType,
-      description: logEntry.description,
-      metadataJson: JSON.stringify(logEntry.metadata ?? {}),
-      createdAt: logEntry.timestamp,
-    })).catch(err => dbWarn("insert", err));
+    Promise.resolve(
+      dbRepo.insertAccessLog({
+        id: logEntry.id,
+        userId,
+        actorName: logEntry.actorName,
+        isProxy: logEntry.isProxy,
+        targetPatientDfn: logEntry.targetPatientDfn,
+        eventType: logEntry.eventType,
+        description: logEntry.description,
+        metadataJson: JSON.stringify(logEntry.metadata ?? {}),
+        createdAt: logEntry.timestamp,
+      })
+    ).catch((err) => dbWarn('insert', err));
   }
 
   return logEntry;
@@ -176,7 +181,7 @@ export function appendAccessLog(
 function evictOldest(): void {
   // Find user with oldest first entry and remove it
   let oldestTime = Infinity;
-  let oldestUserId = "";
+  let oldestUserId = '';
   for (const [uid, entries] of accessLogs) {
     if (entries.length > 0) {
       const t = new Date(entries[0].timestamp).getTime();
@@ -216,7 +221,9 @@ export async function getAccessLog(
     try {
       // BUG #13 fix: Single DB round-trip for rehydration — fetch up to MAX
       // entries (newest-first) and extract the requested page from that set.
-      const all = await Promise.resolve(dbRepo.findAccessLogsByUser(userId, { limit: MAX_ENTRIES_PER_USER }));
+      const all = await Promise.resolve(
+        dbRepo.findAccessLogsByUser(userId, { limit: MAX_ENTRIES_PER_USER })
+      );
       if (Array.isArray(all) && all.length > 0) {
         const mapRow = (r: any): AccessLogEntry => ({
           id: r.id,
@@ -244,18 +251,27 @@ export async function getAccessLog(
           filtered = filtered.filter((e) => new Date(e.timestamp).getTime() >= sinceTime);
         }
         // BUG #11 fix: total reflects filtered count, not unfiltered
-        const total = (opts?.eventType || opts?.since)
-          ? dbRepo.countAccessLogsByUserFiltered
-            ? await Promise.resolve(dbRepo.countAccessLogsByUserFiltered(userId, { eventType: opts?.eventType, since: opts?.since }))
-            : filtered.length
-          : all.length;
+        const total =
+          opts?.eventType || opts?.since
+            ? dbRepo.countAccessLogsByUserFiltered
+              ? await Promise.resolve(
+                  dbRepo.countAccessLogsByUserFiltered(userId, {
+                    eventType: opts?.eventType,
+                    since: opts?.since,
+                  })
+                )
+              : filtered.length
+            : all.length;
         const offset = opts?.offset ?? 0;
         const limit = opts?.limit ?? 50;
-        const page = filtered.slice().reverse().slice(offset, offset + limit);
+        const page = filtered
+          .slice()
+          .reverse()
+          .slice(offset, offset + limit);
         return { entries: page, total };
       }
     } catch (err) {
-      dbWarn("fallback-read", err);
+      dbWarn('fallback-read', err);
     }
   }
 
@@ -292,8 +308,8 @@ export function logSignIn(userId: string, actorName: string, meta?: Record<strin
     actorName,
     isProxy: false,
     targetPatientDfn: null,
-    eventType: "sign_in",
-    description: "Signed in to portal",
+    eventType: 'sign_in',
+    description: 'Signed in to portal',
     metadata: meta,
   });
 }
@@ -303,8 +319,8 @@ export function logSignOut(userId: string, actorName: string): void {
     actorName,
     isProxy: false,
     targetPatientDfn: null,
-    eventType: "sign_out",
-    description: "Signed out of portal",
+    eventType: 'sign_out',
+    description: 'Signed out of portal',
   });
 }
 
@@ -319,7 +335,7 @@ export function logViewSection(
     actorName,
     isProxy,
     targetPatientDfn: patientDfn,
-    eventType: "view_record_section",
+    eventType: 'view_record_section',
     description: `Viewed ${section}`,
     metadata: { section },
   });
@@ -336,50 +352,39 @@ export function logExport(
     actorName,
     isProxy,
     targetPatientDfn: patientDfn,
-    eventType: "export_record",
+    eventType: 'export_record',
     description: `Exported records (${format})`,
     metadata: { format },
   });
 }
 
-export function logShareCode(
-  userId: string,
-  actorName: string,
-  action: "create" | "redeem"
-): void {
+export function logShareCode(userId: string, actorName: string, action: 'create' | 'redeem'): void {
   appendAccessLog(userId, {
     actorName,
     isProxy: false,
     targetPatientDfn: null,
-    eventType: action === "create" ? "share_code_create" : "share_code_redeem",
+    eventType: action === 'create' ? 'share_code_create' : 'share_code_redeem',
     description: `Share code ${action}d`,
   });
 }
 
-export function logProxySwitch(
-  userId: string,
-  actorName: string,
-  targetDfn: string
-): void {
+export function logProxySwitch(userId: string, actorName: string, targetDfn: string): void {
   appendAccessLog(userId, {
     actorName,
     isProxy: true,
     targetPatientDfn: targetDfn,
-    eventType: "proxy_switch",
-    description: "Switched to proxy patient",
+    eventType: 'proxy_switch',
+    description: 'Switched to proxy patient',
   });
 }
 
-export function logMessageSend(
-  userId: string,
-  actorName: string
-): void {
+export function logMessageSend(userId: string, actorName: string): void {
   appendAccessLog(userId, {
     actorName,
     isProxy: false,
     targetPatientDfn: null,
-    eventType: "message_send",
-    description: "Secure message sent",
+    eventType: 'message_send',
+    description: 'Secure message sent',
   });
 }
 
@@ -392,8 +397,8 @@ export function logRefillRequest(
     actorName,
     isProxy: false,
     targetPatientDfn: patientDfn,
-    eventType: "refill_request",
-    description: "Medication refill requested",
+    eventType: 'refill_request',
+    description: 'Medication refill requested',
   });
 }
 
@@ -424,14 +429,14 @@ export async function getAccessLogStats(): Promise<{
       // BUG #12 fix: Also populate byEventType from DB when cache is cold
       if (dbRepo.getAccessLogStatsByEventType) {
         const dbByType = await Promise.resolve(dbRepo.getAccessLogStatsByEventType());
-        if (dbByType && typeof dbByType === "object") {
+        if (dbByType && typeof dbByType === 'object') {
           for (const [k, v] of Object.entries(dbByType)) {
             byEventType[k] = (byEventType[k] || 0) + (v as number);
           }
         }
       }
     } catch (err) {
-      dbWarn("stats", err);
+      dbWarn('stats', err);
     }
   }
 

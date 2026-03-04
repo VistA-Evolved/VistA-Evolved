@@ -37,23 +37,23 @@ The `hash` field itself is excluded from its own computation (chicken-egg).
 
 ## Audited Actions
 
-| Action | When Logged |
-|---|---|
-| `VIEW_STUDY` | WADO-RS metadata/instance/frame retrieval |
-| `VIEW_SERIES` | QIDO-RS series search |
-| `SEARCH_STUDIES` | QIDO-RS study search |
-| `INGEST_STUDY` | Orthanc OnStableStudy callback |
-| `LINK_STUDY_TO_ORDER` | Reconciliation: study linked to worklist order |
-| `UNMATCHED_STUDY` | Study ingested but not matched to any order |
-| `BREAK_GLASS_START` | Emergency access initiated |
-| `BREAK_GLASS_STOP` | Emergency access terminated (manual or auto-expiry) |
-| `DEVICE_REGISTER` | New DICOM device registered |
-| `DEVICE_UPDATE` | Device configuration changed |
-| `DEVICE_DELETE` | Device decommissioned |
-| `STOW_UPLOAD` | DICOM instances stored via STOW-RS |
-| `VIEWER_LAUNCH` | OHIF viewer URL generated |
-| `AUDIT_QUERY` | Audit log queried (meta-audit) |
-| `AUDIT_EXPORT` | Audit log exported to CSV |
+| Action                | When Logged                                         |
+| --------------------- | --------------------------------------------------- |
+| `VIEW_STUDY`          | WADO-RS metadata/instance/frame retrieval           |
+| `VIEW_SERIES`         | QIDO-RS series search                               |
+| `SEARCH_STUDIES`      | QIDO-RS study search                                |
+| `INGEST_STUDY`        | Orthanc OnStableStudy callback                      |
+| `LINK_STUDY_TO_ORDER` | Reconciliation: study linked to worklist order      |
+| `UNMATCHED_STUDY`     | Study ingested but not matched to any order         |
+| `BREAK_GLASS_START`   | Emergency access initiated                          |
+| `BREAK_GLASS_STOP`    | Emergency access terminated (manual or auto-expiry) |
+| `DEVICE_REGISTER`     | New DICOM device registered                         |
+| `DEVICE_UPDATE`       | Device configuration changed                        |
+| `DEVICE_DELETE`       | Device decommissioned                               |
+| `STOW_UPLOAD`         | DICOM instances stored via STOW-RS                  |
+| `VIEWER_LAUNCH`       | OHIF viewer URL generated                           |
+| `AUDIT_QUERY`         | Audit log queried (meta-audit)                      |
+| `AUDIT_EXPORT`        | Audit log exported to CSV                           |
 
 ## API Endpoints
 
@@ -67,6 +67,7 @@ curl 'http://localhost:3001/imaging/audit/events?limit=50&action=VIEW_STUDY' \
 ```
 
 Query parameters:
+
 - `limit` — max entries to return (default: 100)
 - `offset` — skip N entries
 - `action` — filter by action type
@@ -83,6 +84,7 @@ curl http://localhost:3001/imaging/audit/stats \
 ```
 
 Response:
+
 ```json
 {
   "ok": true,
@@ -107,6 +109,7 @@ curl http://localhost:3001/imaging/audit/verify \
 ```
 
 Response:
+
 ```json
 {
   "ok": true,
@@ -119,6 +122,7 @@ Response:
 ```
 
 If tampering is detected:
+
 ```json
 {
   "ok": true,
@@ -140,10 +144,10 @@ curl 'http://localhost:3001/imaging/audit/export?format=csv' \
 
 ## Configuration
 
-| Env Variable | Default | Description |
-|---|---|---|
-| `IMAGING_AUDIT_MAX_ENTRIES` | 10000 | Max in-memory entries before eviction |
-| `IMAGING_AUDIT_FILE` | (empty) | Path for JSONL persistence |
+| Env Variable                | Default | Description                           |
+| --------------------------- | ------- | ------------------------------------- |
+| `IMAGING_AUDIT_MAX_ENTRIES` | 10000   | Max in-memory entries before eviction |
+| `IMAGING_AUDIT_FILE`        | (empty) | Path for JSONL persistence            |
 
 ### JSONL Persistence
 
@@ -161,6 +165,7 @@ append-only — entries are never modified or deleted.
 The audit trail **sanitizes** all details to prevent PHI/credential leakage:
 
 Blocked fields:
+
 - `pixelData`, `pixel_data` — DICOM pixel data
 - `bulkDataURI`, `InlineBinary` — DICOM bulk data
 - `hl7Body`, `hl7Message`, `messageBody` — HL7 message content
@@ -189,6 +194,7 @@ The `/imaging/health` endpoint now reports audit chain status:
 ## UI Access
 
 Admin users see an **Audit Log** tab in the Imaging Panel with:
+
 - Filterable event list (sequence, time, action, outcome, actor, study UID)
 - Color-coded denied events (red background)
 - Color-coded action types (break-glass: amber, device: blue)
@@ -197,9 +203,9 @@ Admin users see an **Audit Log** tab in the Imaging Panel with:
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---|---|---|
-| Chain integrity broken | In-memory eviction removed entries | Expected if > `MAX_ENTRIES` |
-| No JSONL file created | `IMAGING_AUDIT_FILE` not set | Set env var |
-| 403 on audit endpoints | Not imaging_admin | Login as admin |
-| Large audit file | High-volume imaging | Rotate JSONL files periodically |
+| Symptom                | Cause                              | Fix                             |
+| ---------------------- | ---------------------------------- | ------------------------------- |
+| Chain integrity broken | In-memory eviction removed entries | Expected if > `MAX_ENTRIES`     |
+| No JSONL file created  | `IMAGING_AUDIT_FILE` not set       | Set env var                     |
+| 403 on audit endpoints | Not imaging_admin                  | Login as admin                  |
+| Large audit file       | High-volume imaging                | Rotate JSONL files periodically |

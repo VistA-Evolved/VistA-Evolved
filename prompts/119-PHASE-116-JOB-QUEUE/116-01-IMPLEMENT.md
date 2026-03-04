@@ -1,10 +1,12 @@
 # Phase 116 — IMPLEMENT: Postgres Job Queue (Graphile Worker) + Job Governance
 
 ## User Request
+
 Introduce a durable job runner for: eligibility polling, claim status polling,
 evidence refresh checks, scheduled reports, cleanup/retention tasks.
 
 ## Implementation Steps
+
 1. Add `graphile-worker` (MIT) dependency to `apps/api/package.json`
 2. Create `apps/api/src/jobs/` module:
    - `registry.ts` — typesafe job name registry + zod payload schemas (NO PHI enforcement)
@@ -22,6 +24,7 @@ evidence refresh checks, scheduled reports, cleanup/retention tasks.
 7. Create `docs/runbooks/jobs-graphile-worker.md` runbook
 
 ## Verification Steps
+
 - `npx tsc --noEmit` clean
 - Phase 116 verifier passes all gates
 - No PHI in job payload schemas (zod enforced)
@@ -30,6 +33,7 @@ evidence refresh checks, scheduled reports, cleanup/retention tasks.
 - All 4 job task functions importable + type-safe
 
 ## Files Touched
+
 - `apps/api/package.json` — add graphile-worker dep
 - `apps/api/src/jobs/registry.ts` (new)
 - `apps/api/src/jobs/runner.ts` (new)

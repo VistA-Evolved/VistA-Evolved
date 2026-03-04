@@ -97,13 +97,15 @@ function checkPayerCountryCode(country) {
   const raw = readFileSync(join(ROOT, seedCheck.file), 'utf8');
   const data = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
   const payers = data.payers ?? data.hmos ?? [];
-  const wrongCountry = payers.filter(p => p.country && p.country !== country && p.country !== 'INTL');
+  const wrongCountry = payers.filter(
+    (p) => p.country && p.country !== country && p.country !== 'INTL'
+  );
 
   if (wrongCountry.length > 0) {
     return {
       pass: false,
       detail: `${wrongCountry.length} payers have wrong country code (expected ${country})`,
-      affected: wrongCountry.map(p => p.payerId ?? p.id),
+      affected: wrongCountry.map((p) => p.payerId ?? p.id),
     };
   }
   return { pass: true };
@@ -129,7 +131,7 @@ function checkConnectorExists(country) {
     };
   }
 
-  const found = patterns.find(p => existsSync(join(ROOT, p)));
+  const found = patterns.find((p) => existsSync(join(ROOT, p)));
   return { pass: !!found, file: found ?? null };
 }
 
@@ -144,7 +146,8 @@ function checkValidationRules(country) {
 
   if (existsSync(enginePath)) {
     const content = readFileSync(enginePath, 'utf8');
-    const hasRule = content.includes(`CTY-${country}`) || content.includes(`country !== '${country}'`);
+    const hasRule =
+      content.includes(`CTY-${country}`) || content.includes(`country !== '${country}'`);
     return { pass: hasRule, source: hasRule ? 'engine.ts' : null };
   }
 
@@ -162,14 +165,13 @@ function checkScrubberPack(country) {
     const scrubber = join(ROOT, 'apps/api/src/rcm/claims/scrubber.ts');
     if (existsSync(scrubber)) {
       const content = readFileSync(scrubber, 'utf8');
-      const hasPack = country === 'US'
-        ? content.includes('us_core')
-        : content.includes('philhealth');
+      const hasPack =
+        country === 'US' ? content.includes('us_core') : content.includes('philhealth');
       return { pass: hasPack, source: hasPack ? 'scrubber.ts' : null };
     }
   }
 
-  const found = patterns.find(p => existsSync(join(ROOT, p)));
+  const found = patterns.find((p) => existsSync(join(ROOT, p)));
   return { pass: !!found, source: found ?? null };
 }
 
@@ -193,31 +195,78 @@ function checkDocumentation(country) {
     `docs/rcm/jurisdiction-packs.md`,
     `docs/runbooks/rcm-payer-connectivity.md`,
   ];
-  const found = patterns.find(p => existsSync(join(ROOT, p)));
+  const found = patterns.find((p) => existsSync(join(ROOT, p)));
   return { pass: !!found, file: found ?? 'docs/rcm/jurisdiction-packs.md (generic)' };
 }
 
 /* ── Run Conformance ────────────────────────────────────────── */
 
 function runConformance(country) {
-  const meta = KNOWN_COUNTRIES[country] ?? { name: country, currency: '???', locale: '??', claimFormat: 'unknown' };
+  const meta = KNOWN_COUNTRIES[country] ?? {
+    name: country,
+    currency: '???',
+    locale: '??',
+    claimFormat: 'unknown',
+  };
 
   const checks = [
-    { id: 'CONF-001', area: 'seed_data', ...runCheck('Payer seed data exists', () => checkSeedDataExists(country)) },
-    { id: 'CONF-002', area: 'seed_schema', ...runCheck('Payer seed JSON schema valid', () => checkSeedDataSchema(country)) },
-    { id: 'CONF-003', area: 'country_code', ...runCheck('Payer country codes correct', () => checkPayerCountryCode(country)) },
-    { id: 'CONF-004', area: 'connector', ...runCheck('Connector file exists', () => checkConnectorExists(country)) },
-    { id: 'CONF-005', area: 'validation', ...runCheck('Country validation rules defined', () => checkValidationRules(country)) },
-    { id: 'CONF-006', area: 'scrubber', ...runCheck('Scrubber pack defined', () => checkScrubberPack(country)) },
-    { id: 'CONF-007', area: 'privacy', ...runCheck('Privacy/PHI flags configured', () => checkPrivacyFlags(country)) },
-    { id: 'CONF-008', area: 'conformance', ...runCheck('Conformance checklist exists', () => checkConformanceChecklist(country)) },
-    { id: 'CONF-009', area: 'documentation', ...runCheck('Documentation exists', () => checkDocumentation(country)) },
-    { id: 'CONF-010', area: 'currency', ...runCheck(`Currency is ${meta.currency}`, () => ({ pass: !!meta.currency && meta.currency !== '???' })) },
+    {
+      id: 'CONF-001',
+      area: 'seed_data',
+      ...runCheck('Payer seed data exists', () => checkSeedDataExists(country)),
+    },
+    {
+      id: 'CONF-002',
+      area: 'seed_schema',
+      ...runCheck('Payer seed JSON schema valid', () => checkSeedDataSchema(country)),
+    },
+    {
+      id: 'CONF-003',
+      area: 'country_code',
+      ...runCheck('Payer country codes correct', () => checkPayerCountryCode(country)),
+    },
+    {
+      id: 'CONF-004',
+      area: 'connector',
+      ...runCheck('Connector file exists', () => checkConnectorExists(country)),
+    },
+    {
+      id: 'CONF-005',
+      area: 'validation',
+      ...runCheck('Country validation rules defined', () => checkValidationRules(country)),
+    },
+    {
+      id: 'CONF-006',
+      area: 'scrubber',
+      ...runCheck('Scrubber pack defined', () => checkScrubberPack(country)),
+    },
+    {
+      id: 'CONF-007',
+      area: 'privacy',
+      ...runCheck('Privacy/PHI flags configured', () => checkPrivacyFlags(country)),
+    },
+    {
+      id: 'CONF-008',
+      area: 'conformance',
+      ...runCheck('Conformance checklist exists', () => checkConformanceChecklist(country)),
+    },
+    {
+      id: 'CONF-009',
+      area: 'documentation',
+      ...runCheck('Documentation exists', () => checkDocumentation(country)),
+    },
+    {
+      id: 'CONF-010',
+      area: 'currency',
+      ...runCheck(`Currency is ${meta.currency}`, () => ({
+        pass: !!meta.currency && meta.currency !== '???',
+      })),
+    },
   ];
 
-  const passCount = checks.filter(c => c.status === 'PASS').length;
-  const failCount = checks.filter(c => c.status === 'FAIL').length;
-  const warnCount = checks.filter(c => c.status === 'WARN').length;
+  const passCount = checks.filter((c) => c.status === 'PASS').length;
+  const failCount = checks.filter((c) => c.status === 'FAIL').length;
+  const warnCount = checks.filter((c) => c.status === 'WARN').length;
 
   return {
     country,
@@ -237,7 +286,7 @@ function runCheck(name, fn) {
     const result = fn();
     return {
       check: name,
-      status: result.pass ? 'PASS' : (result.errors?.length > 0 ? 'FAIL' : 'WARN'),
+      status: result.pass ? 'PASS' : result.errors?.length > 0 ? 'FAIL' : 'WARN',
       detail: result,
     };
   } catch (e) {
@@ -247,16 +296,14 @@ function runCheck(name, fn) {
 
 /* ── Main ───────────────────────────────────────────────────── */
 
-const countries = RUN_ALL
-  ? Object.keys(KNOWN_COUNTRIES)
-  : TARGET_COUNTRY ? [TARGET_COUNTRY] : [];
+const countries = RUN_ALL ? Object.keys(KNOWN_COUNTRIES) : TARGET_COUNTRY ? [TARGET_COUNTRY] : [];
 
 if (countries.length === 0) {
   console.error('Usage: node scripts/rcm/country-conformance-runner.mjs --country=XX  or  --all');
   process.exit(1);
 }
 
-const results = countries.map(c => runConformance(c));
+const results = countries.map((c) => runConformance(c));
 
 if (JSON_OUTPUT) {
   console.log(JSON.stringify(results, null, 2));
@@ -265,8 +312,12 @@ if (JSON_OUTPUT) {
 
   for (const result of results) {
     console.log(`\n--- ${result.name} (${result.country}) ---`);
-    console.log(`  Currency: ${result.currency}  |  Locale: ${result.locale}  |  Format: ${result.claimFormat}`);
-    console.log(`  Status: ${result.overallStatus}  (${result.summary.pass}/${result.summary.total} checks pass)\n`);
+    console.log(
+      `  Currency: ${result.currency}  |  Locale: ${result.locale}  |  Format: ${result.claimFormat}`
+    );
+    console.log(
+      `  Status: ${result.overallStatus}  (${result.summary.pass}/${result.summary.total} checks pass)\n`
+    );
 
     for (const check of result.checks) {
       const icon = check.status === 'PASS' ? 'PASS' : check.status === 'WARN' ? 'WARN' : 'FAIL';
@@ -275,9 +326,11 @@ if (JSON_OUTPUT) {
   }
 
   console.log('\n=== Summary ===');
-  const conformant = results.filter(r => r.overallStatus === 'CONFORMANT').length;
-  const partial = results.filter(r => r.overallStatus === 'PARTIAL').length;
-  const nonConformant = results.filter(r => r.overallStatus === 'NON_CONFORMANT').length;
-  console.log(`  Conformant: ${conformant}  |  Partial: ${partial}  |  Non-conformant: ${nonConformant}`);
+  const conformant = results.filter((r) => r.overallStatus === 'CONFORMANT').length;
+  const partial = results.filter((r) => r.overallStatus === 'PARTIAL').length;
+  const nonConformant = results.filter((r) => r.overallStatus === 'NON_CONFORMANT').length;
+  console.log(
+    `  Conformant: ${conformant}  |  Partial: ${partial}  |  Non-conformant: ${nonConformant}`
+  );
   console.log(`  Total countries: ${results.length}\n`);
 }

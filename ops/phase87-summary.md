@@ -3,6 +3,7 @@
 ## What changed (VERIFY pass)
 
 ### Bugs fixed
+
 1. **Encryption health check always truthy (CRITICAL)** --
    `testEncryptionHealth()` returns `{ ok: boolean; error?: string }` (an object),
    but `payerops-routes.ts` line 103 used it as a bare truthy check. Objects are
@@ -20,6 +21,7 @@
    handles this correctly, but reordered for clarity and defensiveness.
 
 ### Verification results
+
 - TypeScript compilation: API clean, Web clean (before and after fixes)
 - Secret scan: No hardcoded credentials in PayerOps files
 - console.log audit: Zero occurrences in PayerOps module
@@ -29,6 +31,7 @@
 - Admin layout: PayerOps link gated to moduleId 'rcm'
 
 ## How to test manually
+
 ```bash
 # Start API
 cd apps/api
@@ -56,6 +59,7 @@ curl http://127.0.0.1:3001/rcm/payerops/credentials/expiring?days=90
 ```
 
 ## Follow-ups
+
 - Gate 2 live test (requires running API + Docker)
 - Gate 8 feature flag test (requires toggling RCM module off)
 - Gate 9 full UI test (requires running Next.js dev server)

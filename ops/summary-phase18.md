@@ -3,6 +3,7 @@
 ## What Changed
 
 ### New Files (API)
+
 - `apps/api/src/config/integration-registry.ts` — Central integration registry model
   with 11 integration types, per-tenant in-memory store, health monitoring, queue
   metrics, error log ring buffer (max 20), and seeded defaults (vista-primary,
@@ -13,11 +14,13 @@
   study list, DICOMweb QIDO-RS/WADO-RS, OHIF viewer URL generation, registry-status
 
 ### Modified Files (API)
+
 - `apps/api/src/index.ts` — Import swap (imaging-service), interop route registration,
   integration health in /metrics
 - `apps/api/src/lib/audit.ts` — 5 new AuditAction types
 
 ### Modified Files (Web)
+
 - `apps/web/src/app/cprs/admin/integrations/page.tsx` — Full rewrite: 3-tab integration
   console (Registry, Device Onboarding, Legacy Connectors)
 - `apps/web/src/components/cprs/panels/ReportsPanel.tsx` — Imaging status indicator,
@@ -25,6 +28,7 @@
 - `apps/web/src/app/cprs/remote-data-viewer/page.tsx` — External sources from registry
 
 ### Documentation
+
 - `docs/runbooks/interop-imaging-phase18.md` — Full runbook
 - `prompts/20-PHASE-18-INTEROP-IMAGING/` — IMPLEMENT + VERIFY prompt files
 - `scripts/verify-phase18-interop-imaging.ps1` — 164-check verifier

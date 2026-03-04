@@ -12,7 +12,7 @@ export type {
   QaFlowResult,
   QaStepResult,
   DeadClickEntry,
-} from "./types.js";
+} from './types.js';
 
 export {
   recordRpcTrace,
@@ -23,7 +23,7 @@ export {
   getRpcTraceStats,
   clearRpcTraceBuffer,
   isRpcTraceEnabled,
-} from "./rpc-trace.js";
+} from './rpc-trace.js';
 
 export {
   loadFlowCatalog,
@@ -35,7 +35,7 @@ export {
   storeFlowResult,
   getRecentFlowResults,
   getFlowResultsByFlowId,
-} from "./flow-catalog.js";
+} from './flow-catalog.js';
 
 /* Phase 479: Contract trace recorder */
 export {
@@ -51,10 +51,6 @@ export {
   compareToGolden,
   compareTraces,
   WORKFLOW_TEMPLATES,
-} from "./rpc-contract-trace.js";
+} from './rpc-contract-trace.js';
 
-export type {
-  TraceSession,
-  ContractTraceEntry,
-  CompareResult,
-} from "./rpc-contract-trace.js";
+export type { TraceSession, ContractTraceEntry, CompareResult } from './rpc-contract-trace.js';

@@ -10,11 +10,11 @@
  * All financial amounts stored in cents (integer).
  */
 
-import { z } from "zod";
+import { z } from 'zod';
 
 /* ── Remittance Import ──────────────────────────────────────── */
 
-export const REMITTANCE_SOURCE_TYPES = ["EDI_835", "MANUAL", "OTHER"] as const;
+export const REMITTANCE_SOURCE_TYPES = ['EDI_835', 'MANUAL', 'OTHER'] as const;
 export type RemittanceSourceType = (typeof REMITTANCE_SOURCE_TYPES)[number];
 
 export interface RemittanceImport {
@@ -34,7 +34,7 @@ export interface RemittanceImport {
 }
 
 export const CreateRemittanceImportSchema = z.object({
-  sourceType: z.enum(REMITTANCE_SOURCE_TYPES).default("MANUAL"),
+  sourceType: z.enum(REMITTANCE_SOURCE_TYPES).default('MANUAL'),
   originalFilename: z.string().max(255).optional(),
   parserName: z.string().max(100).optional(),
   parserVersion: z.string().max(20).optional(),
@@ -44,17 +44,17 @@ export const CreateRemittanceImportSchema = z.object({
 /* ── Payment Record ─────────────────────────────────────────── */
 
 export const PAYMENT_STATUSES = [
-  "IMPORTED",
-  "MATCHED",
-  "PARTIALLY_MATCHED",
-  "UNMATCHED",
-  "POSTED",
-  "DISPUTED",
+  'IMPORTED',
+  'MATCHED',
+  'PARTIALLY_MATCHED',
+  'UNMATCHED',
+  'POSTED',
+  'DISPUTED',
 ] as const;
 export type PaymentStatus = (typeof PAYMENT_STATUSES)[number];
 
 export const PaymentCodeSchema = z.object({
-  type: z.enum(["CARC", "RARC", "OTHER"]),
+  type: z.enum(['CARC', 'RARC', 'OTHER']),
   code: z.string().min(1).max(10),
   description: z.string().max(500).optional(),
 });
@@ -131,19 +131,14 @@ export type ManualPaymentEntryInput = z.infer<typeof ManualPaymentEntrySchema>;
 /* ── Reconciliation Match ───────────────────────────────────── */
 
 export const MATCH_METHODS = [
-  "EXACT_CLAIM_REF",
-  "TRACE_NUMBER",
-  "PATIENT_DOS_AMOUNT",
-  "MANUAL",
+  'EXACT_CLAIM_REF',
+  'TRACE_NUMBER',
+  'PATIENT_DOS_AMOUNT',
+  'MANUAL',
 ] as const;
 export type MatchMethod = (typeof MATCH_METHODS)[number];
 
-export const MATCH_STATUSES = [
-  "AUTO_MATCHED",
-  "REVIEW_REQUIRED",
-  "CONFIRMED",
-  "REJECTED",
-] as const;
+export const MATCH_STATUSES = ['AUTO_MATCHED', 'REVIEW_REQUIRED', 'CONFIRMED', 'REJECTED'] as const;
 export type MatchStatus = (typeof MATCH_STATUSES)[number];
 
 export interface ReconciliationMatch {
@@ -160,37 +155,40 @@ export interface ReconciliationMatch {
 }
 
 export const ConfirmMatchSchema = z.object({
-  matchStatus: z.enum(["CONFIRMED", "REJECTED"]),
+  matchStatus: z.enum(['CONFIRMED', 'REJECTED']),
   notes: z.string().max(2000).optional(),
 });
 
 /* ── Underpayment Case ──────────────────────────────────────── */
 
 export const EXPECTED_AMOUNT_MODELS = [
-  "BILLED_AMOUNT",
-  "CONTRACT_MODEL",
-  "MANUAL_EXPECTED",
+  'BILLED_AMOUNT',
+  'CONTRACT_MODEL',
+  'MANUAL_EXPECTED',
 ] as const;
 export type ExpectedAmountModel = (typeof EXPECTED_AMOUNT_MODELS)[number];
 
 export const UNDERPAYMENT_STATUSES = [
-  "NEW",
-  "INVESTIGATING",
-  "APPEALING",
-  "RESOLVED",
-  "WRITTEN_OFF",
+  'NEW',
+  'INVESTIGATING',
+  'APPEALING',
+  'RESOLVED',
+  'WRITTEN_OFF',
 ] as const;
 export type UnderpaymentStatus = (typeof UNDERPAYMENT_STATUSES)[number];
 
 export const UNDERPAYMENT_TRANSITIONS: Record<UnderpaymentStatus, readonly UnderpaymentStatus[]> = {
-  NEW:           ["INVESTIGATING", "APPEALING", "RESOLVED", "WRITTEN_OFF"],
-  INVESTIGATING: ["APPEALING", "RESOLVED", "WRITTEN_OFF"],
-  APPEALING:     ["RESOLVED", "WRITTEN_OFF"],
-  RESOLVED:      [], // terminal
-  WRITTEN_OFF:   [], // terminal
+  NEW: ['INVESTIGATING', 'APPEALING', 'RESOLVED', 'WRITTEN_OFF'],
+  INVESTIGATING: ['APPEALING', 'RESOLVED', 'WRITTEN_OFF'],
+  APPEALING: ['RESOLVED', 'WRITTEN_OFF'],
+  RESOLVED: [], // terminal
+  WRITTEN_OFF: [], // terminal
 };
 
-export function isValidUnderpaymentTransition(from: UnderpaymentStatus, to: UnderpaymentStatus): boolean {
+export function isValidUnderpaymentTransition(
+  from: UnderpaymentStatus,
+  to: UnderpaymentStatus
+): boolean {
   return UNDERPAYMENT_TRANSITIONS[from].includes(to);
 }
 
@@ -219,7 +217,7 @@ export const CreateUnderpaymentSchema = z.object({
   claimRef: z.string().min(1).max(100),
   paymentId: z.string().min(1),
   payerId: z.string().min(1).max(100),
-  expectedAmountModel: z.enum(EXPECTED_AMOUNT_MODELS).default("BILLED_AMOUNT"),
+  expectedAmountModel: z.enum(EXPECTED_AMOUNT_MODELS).default('BILLED_AMOUNT'),
   expectedAmount: z.number().min(0),
   paidAmount: z.number().min(0),
 });
@@ -235,8 +233,8 @@ export const UpdateUnderpaymentSchema = z.object({
 export interface NormalizedPaymentLine {
   claimRef: string;
   payerId: string;
-  billedAmount: number;       // dollars
-  paidAmount: number;         // dollars
+  billedAmount: number; // dollars
+  paidAmount: number; // dollars
   allowedAmount?: number;
   patientResp?: number;
   adjustmentAmount?: number;
@@ -252,8 +250,8 @@ export interface NormalizedRemittance {
   lines: NormalizedPaymentLine[];
   payerId: string;
   checkNumber?: string;
-  totalPaidAmount: number;    // dollars
-  totalBilledAmount: number;  // dollars
+  totalPaidAmount: number; // dollars
+  totalBilledAmount: number; // dollars
   parseErrors: string[];
 }
 
@@ -284,9 +282,9 @@ export const Import835PaymentSchema = z.object({
 
 export const ImportRemittanceBatchSchema = z.object({
   entries: z.array(Import835PaymentSchema).min(1).max(1000),
-  sourceType: z.enum(REMITTANCE_SOURCE_TYPES).default("EDI_835"),
+  sourceType: z.enum(REMITTANCE_SOURCE_TYPES).default('EDI_835'),
   originalFilename: z.string().max(255).optional(),
-  parserVersion: z.string().max(20).default("1.0.0"),
+  parserVersion: z.string().max(20).default('1.0.0'),
 });
 export type ImportRemittanceBatchInput = z.infer<typeof ImportRemittanceBatchSchema>;
 
@@ -298,8 +296,8 @@ export const PaymentListQuerySchema = z.object({
   status: z.enum(PAYMENT_STATUSES).optional(),
   payerId: z.string().optional(),
   remittanceImportId: z.string().optional(),
-  sort: z.enum(["createdAt", "paidAmountCents", "claimRef"]).default("createdAt"),
-  order: z.enum(["asc", "desc"]).default("desc"),
+  sort: z.enum(['createdAt', 'paidAmountCents', 'claimRef']).default('createdAt'),
+  order: z.enum(['asc', 'desc']).default('desc'),
 });
 export type PaymentListQuery = z.infer<typeof PaymentListQuerySchema>;
 
@@ -308,8 +306,8 @@ export const UnderpaymentListQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(20),
   status: z.enum(UNDERPAYMENT_STATUSES).optional(),
   payerId: z.string().optional(),
-  sort: z.enum(["createdAt", "deltaCents", "updatedAt"]).default("createdAt"),
-  order: z.enum(["asc", "desc"]).default("desc"),
+  sort: z.enum(['createdAt', 'deltaCents', 'updatedAt']).default('createdAt'),
+  order: z.enum(['asc', 'desc']).default('desc'),
 });
 export type UnderpaymentListQuery = z.infer<typeof UnderpaymentListQuerySchema>;
 

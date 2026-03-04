@@ -9,6 +9,7 @@ two are stubs for future integration.
 ## Provider Selection
 
 Environment variable: `INTAKE_BRAIN_PROVIDER`
+
 - `rules` (DEFAULT) — deterministic, pack-driven
 - `vendor_adapter` — stub; requires vendor API keys
 - `llm_constrained` — stub/pilot; strictly constrained
@@ -39,7 +40,7 @@ interface NextQuestionResult {
   };
   /** Contained Questionnaire fragment for LHC-Forms renderer */
   containedQuestionnaire: {
-    resourceType: "Questionnaire";
+    resourceType: 'Questionnaire';
     item: QuestionnaireItem[];
   };
   /** True when all required coverage is met */
@@ -65,13 +66,22 @@ interface NextQuestionProvider {
 interface SummaryResult {
   hpiNarrative: string;
   reviewOfSystems: { system: string; findings: string; status: string }[];
-  redFlags: { flag: string; severity: string; triggerQuestionId: string; triggerAnswerId: string }[];
-  medicationsDelta: { newMedications: string[]; discontinuedMedications: string[]; changedMedications: string[] };
+  redFlags: {
+    flag: string;
+    severity: string;
+    triggerQuestionId: string;
+    triggerAnswerId: string;
+  }[];
+  medicationsDelta: {
+    newMedications: string[];
+    discontinuedMedications: string[];
+    changedMedications: string[];
+  };
   allergiesDelta: { newAllergies: string[]; resolvedAllergies: string[] };
   contradictions: { questionIdA: string; questionIdB: string; description: string }[];
   draftNoteText: string;
   citations: { statement: string; answerIds: string[] }[];
-  generatedBy: "template" | "llm_constrained";
+  generatedBy: 'template' | 'llm_constrained';
 }
 
 interface SummaryProvider {
@@ -96,17 +106,14 @@ interface TranslatorProvider {
    * Must NOT mix languages on the same screen.
    * Pack-provided translations are preferred over dynamic translation.
    */
-  translate(
-    text: string,
-    fromLanguage: string,
-    toLanguage: string
-  ): Promise<string>;
+  translate(text: string, fromLanguage: string, toLanguage: string): Promise<string>;
 }
 ```
 
 ## Provider Implementations
 
 ### RulesNextQuestionProvider (DEFAULT)
+
 - Uses Pack registry + Context Resolver
 - Deterministic: same inputs always produce same output
 - Resolves packs by context, iterates sections in order
@@ -115,6 +122,7 @@ interface TranslatorProvider {
 - No external API calls; no network; pure logic
 
 ### VendorAdapterProvider (STUB)
+
 - OFF unless `INTAKE_VENDOR_API_KEY` is set
 - Adapter pattern: converts our session/QR format to vendor API format
 - Must never be hardwired to one specific vendor
@@ -122,6 +130,7 @@ interface TranslatorProvider {
 - All calls audited
 
 ### LLMConstrainedProvider (STUB/PILOT)
+
 - May ONLY rank eligible next questions from the pack library
 - CANNOT invent new medical questions
 - Must cite which answers caused the next-question choice in audit
@@ -130,6 +139,7 @@ interface TranslatorProvider {
 - All LLM interactions logged (prompt + response, PHI-redacted)
 
 ### TemplateSummaryProvider (DEFAULT)
+
 - Uses pack-defined `outputTemplates` (Mustache-like)
 - Deterministic text generation from QR answers
 - Evaluates red flag conditions
@@ -137,6 +147,7 @@ interface TranslatorProvider {
 - Computes medication/allergy deltas against VistA baseline
 
 ### LLMSummaryProvider (OPTIONAL)
+
 - Behind `INTAKE_LLM_SUMMARY_ENABLED=true` flag
 - Grounded in QuestionnaireResponse (no hallucination)
 - Must output citations mapping each statement to answer IDs

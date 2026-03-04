@@ -84,7 +84,8 @@ const registrySource = readFileSync(registryPath, 'utf8');
 
 // Extract RPC_REGISTRY entries
 const registryEntries = [];
-const regRx = /\{\s*name:\s*"([^"]+)"\s*,\s*domain:\s*"([^"]+)"\s*,\s*tag:\s*"([^"]+)"\s*,\s*description:\s*"([^"]+)"\s*\}/g;
+const regRx =
+  /\{\s*name:\s*"([^"]+)"\s*,\s*domain:\s*"([^"]+)"\s*,\s*tag:\s*"([^"]+)"\s*,\s*description:\s*"([^"]+)"\s*\}/g;
 let m;
 while ((m = regRx.exec(registrySource)) !== null) {
   registryEntries.push({ name: m[1], domain: m[2], tag: m[3], description: m[4] });
@@ -101,7 +102,7 @@ const excRx = /\{\s*name:\s*"([^"]+)"\s*,\s*reason:\s*"([^"]+)"\s*\}/g;
 while ((m = excRx.exec(registrySource)) !== null) {
   exceptions.push({ name: m[1], reason: m[2] });
 }
-const exceptionSet = new Set(exceptions.map(e => e.name.toUpperCase()));
+const exceptionSet = new Set(exceptions.map((e) => e.name.toUpperCase()));
 
 console.log(`[registry] ${registryMap.size} registered + ${exceptions.length} exceptions`);
 
@@ -158,7 +159,8 @@ const stubRx = /rpcName:\s*"([^"]+)"/g;
 for (const filePath of tsFiles) {
   const src = readFileSync(filePath, 'utf8');
   // Only look in files with the stub marker
-  if (!src.includes('error: "Not implemented"') && !src.includes("error: 'Not implemented'")) continue;
+  if (!src.includes('error: "Not implemented"') && !src.includes("error: 'Not implemented'"))
+    continue;
   let sm;
   stubRx.lastIndex = 0;
   while ((sm = stubRx.exec(src)) !== null) {
@@ -235,10 +237,10 @@ for (const upperName of [...allNames].sort()) {
 /* 7. Summary statistics                                               */
 /* ------------------------------------------------------------------ */
 
-const wiredCount = records.filter(r => r.status === 'wired').length;
-const registeredCount = records.filter(r => r.status === 'registered').length;
-const stubCount = records.filter(r => r.status === 'stub').length;
-const cprsOnlyCount = records.filter(r => r.status === 'cprs-only').length;
+const wiredCount = records.filter((r) => r.status === 'wired').length;
+const registeredCount = records.filter((r) => r.status === 'registered').length;
+const stubCount = records.filter((r) => r.status === 'stub').length;
+const cprsOnlyCount = records.filter((r) => r.status === 'cprs-only').length;
 const totalCprs = cprsMap.size;
 const totalVivian = vivianMap.size;
 
@@ -300,10 +302,10 @@ console.log(`\nWrote ${jsonPath}`);
 /* ------------------------------------------------------------------ */
 
 const byStatus = {
-  wired: records.filter(r => r.status === 'wired'),
-  registered: records.filter(r => r.status === 'registered'),
-  stub: records.filter(r => r.status === 'stub'),
-  'cprs-only': records.filter(r => r.status === 'cprs-only'),
+  wired: records.filter((r) => r.status === 'wired'),
+  registered: records.filter((r) => r.status === 'registered'),
+  stub: records.filter((r) => r.status === 'stub'),
+  'cprs-only': records.filter((r) => r.status === 'cprs-only'),
 };
 
 let md = `# VistA Alignment Coverage Report
@@ -344,7 +346,7 @@ These RPCs are fully connected to VistA through the RPC Broker.
 `;
 
 for (const r of byStatus.wired) {
-  const sites = r.callSites.map(s => `${s.file}:${s.line}`).join(', ');
+  const sites = r.callSites.map((s) => `${s.file}:${s.line}`).join(', ');
   md += `| ${r.name} | ${r.domain ?? '-'} | ${r.tag ?? '-'} | ${r.callSites.length} | ${r.inCprs ? 'Yes' : '-'} | ${r.inVivian ? 'Yes' : '-'} |\n`;
 }
 
@@ -360,7 +362,13 @@ md += `\n---\n\n## Stub Routes (${byStatus.stub.length})\n\nAuto-generated stubs
 for (const r of byStatus.stub) {
   // Guess domain from RPC prefix
   let domain = '-';
-  if (r.name.startsWith('ORWDPS') || r.name.startsWith('ORWPS') || r.name.startsWith('PSO') || r.name.startsWith('PSB')) domain = 'meds';
+  if (
+    r.name.startsWith('ORWDPS') ||
+    r.name.startsWith('ORWPS') ||
+    r.name.startsWith('PSO') ||
+    r.name.startsWith('PSB')
+  )
+    domain = 'meds';
   else if (r.name.startsWith('ORQQPL')) domain = 'problems';
   else if (r.name.startsWith('TIU') || r.name.startsWith('ORWTIU')) domain = 'notes';
   else if (r.name.startsWith('ORWDX') || r.name.startsWith('ORWORR')) domain = 'orders';
@@ -382,8 +390,9 @@ md += `\n---\n\n## Domain Coverage Breakdown\n\n`;
 
 // Group wired RPCs by domain
 const domainGroups = {};
-for (const r of records.filter(r => r.domain)) {
-  if (!domainGroups[r.domain]) domainGroups[r.domain] = { wired: 0, registered: 0, stub: 0, total: 0 };
+for (const r of records.filter((r) => r.domain)) {
+  if (!domainGroups[r.domain])
+    domainGroups[r.domain] = { wired: 0, registered: 0, stub: 0, total: 0 };
   domainGroups[r.domain].total++;
   if (r.status === 'wired') domainGroups[r.domain].wired++;
   else if (r.status === 'registered') domainGroups[r.domain].registered++;
@@ -391,7 +400,9 @@ for (const r of records.filter(r => r.domain)) {
 }
 
 md += `| Domain | Wired | Registered | Stub | Total |\n|--------|-------|-----------|------|-------|\n`;
-for (const [domain, counts] of Object.entries(domainGroups).sort((a, b) => a[0].localeCompare(b[0]))) {
+for (const [domain, counts] of Object.entries(domainGroups).sort((a, b) =>
+  a[0].localeCompare(b[0])
+)) {
   md += `| ${domain} | ${counts.wired} | ${counts.registered} | ${counts.stub} | ${counts.total} |\n`;
 }
 
@@ -407,22 +418,67 @@ console.log(`Wrote ${mdPath}`);
 
 // Map each UI panel to its API routes and wiring status
 const panelWiring = [
-  { panel: 'CoverSheetPanel', routes: ['/vista/allergies', '/vista/problems', '/vista/vitals', '/vista/notes', '/vista/medications'], rpcs: ['ORQQAL LIST', 'ORQQPL PROBLEM LIST', 'ORQQVI VITALS', 'TIU DOCUMENTS BY CONTEXT', 'ORWPS ACTIVE'] },
-  { panel: 'ProblemsPanel', routes: ['/vista/problems'], rpcs: ['ORQQPL PROBLEM LIST', 'ORQQPL ADD SAVE', 'ORQQPL EDIT SAVE'] },
+  {
+    panel: 'CoverSheetPanel',
+    routes: [
+      '/vista/allergies',
+      '/vista/problems',
+      '/vista/vitals',
+      '/vista/notes',
+      '/vista/medications',
+    ],
+    rpcs: [
+      'ORQQAL LIST',
+      'ORQQPL PROBLEM LIST',
+      'ORQQVI VITALS',
+      'TIU DOCUMENTS BY CONTEXT',
+      'ORWPS ACTIVE',
+    ],
+  },
+  {
+    panel: 'ProblemsPanel',
+    routes: ['/vista/problems'],
+    rpcs: ['ORQQPL PROBLEM LIST', 'ORQQPL ADD SAVE', 'ORQQPL EDIT SAVE'],
+  },
   { panel: 'MedsPanel', routes: ['/vista/medications'], rpcs: ['ORWPS ACTIVE'] },
-  { panel: 'OrdersPanel', routes: ['/vista/cprs/orders'], rpcs: ['ORWORR AGET', 'ORWDX SAVE', 'ORWDX LOCK', 'ORWDX UNLOCK', 'ORWOR1 SIG'] },
-  { panel: 'NotesPanel', routes: ['/vista/cprs/notes'], rpcs: ['TIU DOCUMENTS BY CONTEXT', 'TIU CREATE RECORD', 'TIU SIGN RECORD', 'TIU GET RECORD TEXT'] },
+  {
+    panel: 'OrdersPanel',
+    routes: ['/vista/cprs/orders'],
+    rpcs: ['ORWORR AGET', 'ORWDX SAVE', 'ORWDX LOCK', 'ORWDX UNLOCK', 'ORWOR1 SIG'],
+  },
+  {
+    panel: 'NotesPanel',
+    routes: ['/vista/cprs/notes'],
+    rpcs: [
+      'TIU DOCUMENTS BY CONTEXT',
+      'TIU CREATE RECORD',
+      'TIU SIGN RECORD',
+      'TIU GET RECORD TEXT',
+    ],
+  },
   { panel: 'ConsultsPanel', routes: ['/vista/consults'], rpcs: ['ORQQCN LIST', 'ORQQCN DETAIL'] },
   { panel: 'LabsPanel', routes: ['/vista/labs'], rpcs: ['ORWLRR INTERIM', 'ORWLRR CHART'] },
-  { panel: 'ReportsPanel', routes: ['/vista/reports'], rpcs: ['ORWRP REPORT LISTS', 'ORWRP REPORT TEXT'] },
+  {
+    panel: 'ReportsPanel',
+    routes: ['/vista/reports'],
+    rpcs: ['ORWRP REPORT LISTS', 'ORWRP REPORT TEXT'],
+  },
   { panel: 'SurgeryPanel', routes: ['/vista/surgery'], rpcs: ['ORWSR LIST', 'ORWSR RPTLIST'] },
   { panel: 'DCSummPanel', routes: ['/vista/dc-summaries'], rpcs: ['TIU DOCUMENTS BY CONTEXT'] },
   { panel: 'ImagingPanel', routes: ['/imaging'], rpcs: ['MAG4 PAT GET IMAGES', 'MAGG PAT PHOTOS'] },
   { panel: 'ImmunizationsPanel', routes: ['/vista/immunizations'], rpcs: ['ORQQPX IMMUN LIST'] },
-  { panel: 'ADTPanel', routes: ['/adt'], rpcs: ['ORQPT WARDS', 'ORQPT WARD PATIENTS', 'ORQPT PROVIDER PATIENTS'] },
+  {
+    panel: 'ADTPanel',
+    routes: ['/adt'],
+    rpcs: ['ORQPT WARDS', 'ORQPT WARD PATIENTS', 'ORQPT PROVIDER PATIENTS'],
+  },
   { panel: 'NursingPanel', routes: ['/nursing'], rpcs: ['ORQQVI VITALS FOR DATE RANGE'] },
   { panel: 'TelehealthPanel', routes: ['/telehealth'], rpcs: [] },
-  { panel: 'MessagingTasksPanel', routes: ['/messaging'], rpcs: ['ZVE MAIL FOLDERS', 'ZVE MAIL LIST'] },
+  {
+    panel: 'MessagingTasksPanel',
+    routes: ['/messaging'],
+    rpcs: ['ZVE MAIL FOLDERS', 'ZVE MAIL LIST'],
+  },
   { panel: 'AIAssistPanel', routes: [], rpcs: [] },
   { panel: 'IntakePanel', routes: ['/intake'], rpcs: [] },
   { panel: 'RpcDebugPanel', routes: ['/ws/console'], rpcs: [] },
@@ -430,8 +486,8 @@ const panelWiring = [
 ];
 
 // Resolve wiring status for each panel
-const panelWiringResolved = panelWiring.map(p => {
-  const rpcStatuses = p.rpcs.map(rpcName => {
+const panelWiringResolved = panelWiring.map((p) => {
+  const rpcStatuses = p.rpcs.map((rpcName) => {
     const upper = rpcName.toUpperCase();
     const isLive = liveRpcMap.has(upper);
     const isRegistered = registryMap.has(upper) || exceptionSet.has(upper);
@@ -441,9 +497,9 @@ const panelWiringResolved = panelWiring.map(p => {
       registered: isRegistered,
     };
   });
-  const allWired = p.rpcs.length > 0 && rpcStatuses.every(r => r.wired);
-  const anyWired = rpcStatuses.some(r => r.wired);
-  const pendingRpcs = rpcStatuses.filter(r => !r.wired).map(r => r.name);
+  const allWired = p.rpcs.length > 0 && rpcStatuses.every((r) => r.wired);
+  const anyWired = rpcStatuses.some((r) => r.wired);
+  const pendingRpcs = rpcStatuses.filter((r) => !r.wired).map((r) => r.name);
 
   return {
     panel: p.panel,
@@ -452,7 +508,7 @@ const panelWiringResolved = panelWiring.map(p => {
     noVista: p.rpcs.length === 0,
     routes: p.routes,
     totalRpcs: p.rpcs.length,
-    wiredRpcs: rpcStatuses.filter(r => r.wired).length,
+    wiredRpcs: rpcStatuses.filter((r) => r.wired).length,
     pendingRpcs,
   };
 });

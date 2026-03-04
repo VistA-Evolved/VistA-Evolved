@@ -10,17 +10,16 @@
  * This is the pipeline engine. Route endpoints are added in Phase 444.
  */
 
-import { createHash, randomUUID } from "crypto";
-import { resolveTenantRegulatoryConfig } from "./country-config.js";
-import { classify } from "./classification-engine.js";
-import type { RegulatoryFramework, DataClassTier } from "./types.js";
+import { createHash, randomUUID } from 'crypto';
+import { resolveTenantRegulatoryConfig } from './country-config.js';
+import type { RegulatoryFramework, DataClassTier } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
 /* ------------------------------------------------------------------ */
 
-export type ExportFormat = "json" | "csv" | "hl7_fhir_bundle" | "x12" | "flat_file";
-export type ExportStatus = "pending" | "processing" | "completed" | "failed" | "blocked";
+export type ExportFormat = 'json' | 'csv' | 'hl7_fhir_bundle' | 'x12' | 'flat_file';
+export type ExportStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'blocked';
 
 export interface ExportRequest {
   /** Who requested the export */
@@ -95,7 +94,7 @@ export interface ExportPackage {
 export interface ExportAuditEntry {
   id: string;
   exportId: string;
-  action: "requested" | "constraint_check" | "processing" | "completed" | "failed" | "blocked";
+  action: 'requested' | 'constraint_check' | 'processing' | 'completed' | 'failed' | 'blocked';
   actor: string;
   detail: string;
   timestamp: string;
@@ -112,18 +111,27 @@ const MAX_AUDIT = 5000;
 
 const exportPackages = new Map<string, ExportPackage>();
 const exportAudit: ExportAuditEntry[] = [];
-let lastAuditHash = "genesis";
+let lastAuditHash = 'genesis';
 
-function computeAuditHash(e: Omit<ExportAuditEntry, "hash">): string {
+function computeAuditHash(e: Omit<ExportAuditEntry, 'hash'>): string {
   const payload = JSON.stringify({
-    id: e.id, exportId: e.exportId, action: e.action, timestamp: e.timestamp, prevHash: e.prevHash,
+    id: e.id,
+    exportId: e.exportId,
+    action: e.action,
+    timestamp: e.timestamp,
+    prevHash: e.prevHash,
   });
-  return createHash("sha256").update(payload).digest("hex").slice(0, 32);
+  return createHash('sha256').update(payload).digest('hex').slice(0, 32);
 }
 
-function appendAudit(exportId: string, action: ExportAuditEntry["action"], actor: string, detail: string): string {
+function appendAudit(
+  exportId: string,
+  action: ExportAuditEntry['action'],
+  actor: string,
+  detail: string
+): string {
   if (exportAudit.length >= MAX_AUDIT) exportAudit.shift();
-  const entry: Omit<ExportAuditEntry, "hash"> = {
+  const entry: Omit<ExportAuditEntry, 'hash'> = {
     id: randomUUID(),
     exportId,
     action,
@@ -146,33 +154,70 @@ function appendAudit(exportId: string, action: ExportAuditEntry["action"], actor
 function checkCrossBorderConstraint(
   sourceCountry: string,
   destCountry: string | undefined,
-  regConfig: ReturnType<typeof resolveTenantRegulatoryConfig>,
+  regConfig: ReturnType<typeof resolveTenantRegulatoryConfig>
 ): ExportConstraintCheck {
   if (!destCountry || destCountry === sourceCountry) {
-    return { constraint: "cross-border-transfer", framework: "HIPAA" as RegulatoryFramework, satisfied: true, detail: "Domestic transfer or no destination specified" };
+    return {
+      constraint: 'cross-border-transfer',
+      framework: 'HIPAA' as RegulatoryFramework,
+      satisfied: true,
+      detail: 'Domestic transfer or no destination specified',
+    };
   }
-  if (regConfig.crossBorderPolicy === "blocked") {
-    return { constraint: "cross-border-transfer", framework: "HIPAA" as RegulatoryFramework, satisfied: false, detail: `Cross-border transfer blocked under ${regConfig.frameworks[0]}. Source: ${sourceCountry}, Destination: ${destCountry}` };
+  if (regConfig.crossBorderPolicy === 'blocked') {
+    return {
+      constraint: 'cross-border-transfer',
+      framework: 'HIPAA' as RegulatoryFramework,
+      satisfied: false,
+      detail: `Cross-border transfer blocked under ${regConfig.frameworks[0]}. Source: ${sourceCountry}, Destination: ${destCountry}`,
+    };
   }
-  if (regConfig.crossBorderPolicy === "allowed_with_consent") {
-    return { constraint: "cross-border-transfer", framework: regConfig.frameworks[0] as RegulatoryFramework, satisfied: true, detail: `Cross-border allowed with consent. Source: ${sourceCountry}, Destination: ${destCountry}` };
+  if (regConfig.crossBorderPolicy === 'allowed_with_consent') {
+    return {
+      constraint: 'cross-border-transfer',
+      framework: regConfig.frameworks[0] as RegulatoryFramework,
+      satisfied: true,
+      detail: `Cross-border allowed with consent. Source: ${sourceCountry}, Destination: ${destCountry}`,
+    };
   }
-  return { constraint: "cross-border-transfer", framework: "HIPAA" as RegulatoryFramework, satisfied: true, detail: "Transfer allowed" };
+  return {
+    constraint: 'cross-border-transfer',
+    framework: 'HIPAA' as RegulatoryFramework,
+    satisfied: true,
+    detail: 'Transfer allowed',
+  };
 }
 
 function checkPhiConstraint(includePhi: boolean, dataTier: DataClassTier): ExportConstraintCheck {
-  if (includePhi && (dataTier === "C1_PHI" || dataTier === "C2_DEIDENTIFIED")) {
-    return { constraint: "phi-classification", framework: "HIPAA" as RegulatoryFramework, satisfied: true, detail: `PHI included. Data tier: ${dataTier}. Ensure destination has adequate protection.` };
+  if (includePhi && (dataTier === 'C1_PHI' || dataTier === 'C2_DEIDENTIFIED')) {
+    return {
+      constraint: 'phi-classification',
+      framework: 'HIPAA' as RegulatoryFramework,
+      satisfied: true,
+      detail: `PHI included. Data tier: ${dataTier}. Ensure destination has adequate protection.`,
+    };
   }
   if (!includePhi) {
-    return { constraint: "phi-classification", framework: "HIPAA" as RegulatoryFramework, satisfied: true, detail: "PHI excluded from export (de-identified)" };
+    return {
+      constraint: 'phi-classification',
+      framework: 'HIPAA' as RegulatoryFramework,
+      satisfied: true,
+      detail: 'PHI excluded from export (de-identified)',
+    };
   }
-  return { constraint: "phi-classification", framework: "HIPAA" as RegulatoryFramework, satisfied: true, detail: `Data tier ${dataTier}: no PHI constraints` };
+  return {
+    constraint: 'phi-classification',
+    framework: 'HIPAA' as RegulatoryFramework,
+    satisfied: true,
+    detail: `Data tier ${dataTier}: no PHI constraints`,
+  };
 }
 
-function checkRetentionConstraint(regConfig: ReturnType<typeof resolveTenantRegulatoryConfig>): ExportConstraintCheck {
+function checkRetentionConstraint(
+  regConfig: ReturnType<typeof resolveTenantRegulatoryConfig>
+): ExportConstraintCheck {
   return {
-    constraint: "retention-acknowledgement",
+    constraint: 'retention-acknowledgement',
     framework: regConfig.frameworks[0] as RegulatoryFramework,
     satisfied: true,
     detail: `Minimum retention: ${regConfig.retentionMinYears} years. Export recipient must comply.`,
@@ -195,31 +240,46 @@ export function createExportPackage(request: ExportRequest): ExportPackage {
   }
 
   const exportId = randomUUID();
-  const tenantId = request.tenantId || "default";
+  const tenantId = request.tenantId || 'default';
   const regConfig = resolveTenantRegulatoryConfig(tenantId);
 
   // Initial audit
   const auditIds: string[] = [];
-  auditIds.push(appendAudit(exportId, "requested", request.requestedBy, `Export requested: ${request.domains.join(",")} as ${request.format}`));
+  auditIds.push(
+    appendAudit(
+      exportId,
+      'requested',
+      request.requestedBy,
+      `Export requested: ${request.domains.join(',')} as ${request.format}`
+    )
+  );
 
   // Run constraint checks
   const constraints: ExportConstraintCheck[] = [];
-  constraints.push(checkCrossBorderConstraint(regConfig.countryCode, request.destinationCountry, regConfig));
-  constraints.push(checkPhiConstraint(request.includePhi, "C1_PHI")); // Default to C1_PHI for clinical data
+  constraints.push(
+    checkCrossBorderConstraint(regConfig.countryCode, request.destinationCountry, regConfig)
+  );
+  constraints.push(checkPhiConstraint(request.includePhi, 'C1_PHI')); // Default to C1_PHI for clinical data
   constraints.push(checkRetentionConstraint(regConfig));
 
-  auditIds.push(appendAudit(exportId, "constraint_check", request.requestedBy,
-    `Checked ${constraints.length} constraints: ${constraints.filter((c) => c.satisfied).length} passed`));
+  auditIds.push(
+    appendAudit(
+      exportId,
+      'constraint_check',
+      request.requestedBy,
+      `Checked ${constraints.length} constraints: ${constraints.filter((c) => c.satisfied).length} passed`
+    )
+  );
 
   // Check for blockers
   const blockers = constraints.filter((c) => !c.satisfied);
   if (blockers.length > 0) {
-    const reason = blockers.map((b) => `${b.constraint}: ${b.detail}`).join("; ");
-    auditIds.push(appendAudit(exportId, "blocked", request.requestedBy, reason));
+    const reason = blockers.map((b) => `${b.constraint}: ${b.detail}`).join('; ');
+    auditIds.push(appendAudit(exportId, 'blocked', request.requestedBy, reason));
 
     const pkg: ExportPackage = {
       id: exportId,
-      status: "blocked",
+      status: 'blocked',
       request,
       manifest: null,
       content: null,
@@ -233,20 +293,26 @@ export function createExportPackage(request: ExportRequest): ExportPackage {
   }
 
   // Generate export content (scaffold — real implementation would query data stores)
-  auditIds.push(appendAudit(exportId, "processing", request.requestedBy, "Generating export package"));
+  auditIds.push(
+    appendAudit(exportId, 'processing', request.requestedBy, 'Generating export package')
+  );
 
-  const exportContent = JSON.stringify({
-    _exportMeta: {
-      id: exportId,
-      format: request.format,
-      domains: request.domains,
-      generatedAt: new Date().toISOString(),
-      note: "Scaffold export — real data query integration pending",
+  const exportContent = JSON.stringify(
+    {
+      _exportMeta: {
+        id: exportId,
+        format: request.format,
+        domains: request.domains,
+        generatedAt: new Date().toISOString(),
+        note: 'Scaffold export — real data query integration pending',
+      },
+      records: [],
     },
-    records: [],
-  }, null, 2);
+    null,
+    2
+  );
 
-  const contentHash = createHash("sha256").update(exportContent).digest("hex");
+  const contentHash = createHash('sha256').update(exportContent).digest('hex');
 
   // Build manifest
   const manifest: ExportManifest = {
@@ -257,22 +323,28 @@ export function createExportPackage(request: ExportRequest): ExportPackage {
     destinationCountry: request.destinationCountry || null,
     format: request.format,
     domains: request.domains,
-    dataTier: request.includePhi ? "C1_PHI" : "C3_AGGREGATED",
+    dataTier: request.includePhi ? 'C1_PHI' : 'C3_AGGREGATED',
     recordCount: 0,
     contentHash,
-    sizeBytes: Buffer.byteLength(exportContent, "utf-8"),
+    sizeBytes: Buffer.byteLength(exportContent, 'utf-8'),
     constraintChecks: constraints,
     phiIncluded: request.includePhi,
     frameworks: regConfig.frameworks as RegulatoryFramework[],
     retentionMinYears: regConfig.retentionMinYears,
   };
 
-  auditIds.push(appendAudit(exportId, "completed", request.requestedBy,
-    `Export completed: ${manifest.sizeBytes} bytes, hash=${contentHash.slice(0, 16)}`));
+  auditIds.push(
+    appendAudit(
+      exportId,
+      'completed',
+      request.requestedBy,
+      `Export completed: ${manifest.sizeBytes} bytes, hash=${contentHash.slice(0, 16)}`
+    )
+  );
 
   const pkg: ExportPackage = {
     id: exportId,
-    status: "completed",
+    status: 'completed',
     request,
     manifest,
     content: exportContent,
@@ -338,5 +410,5 @@ export function verifyExportAuditChain(): { valid: boolean; brokenAt?: string; c
 export function _resetExportStore(): void {
   exportPackages.clear();
   exportAudit.length = 0;
-  lastAuditHash = "genesis";
+  lastAuditHash = 'genesis';
 }

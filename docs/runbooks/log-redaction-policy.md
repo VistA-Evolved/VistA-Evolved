@@ -27,57 +27,58 @@ same field blocklist.
 Fields containing authentication material. Never logged under any
 circumstance, even in debug mode.
 
-| Field | Variants |
-|-------|----------|
+| Field       | Variants                |
+| ----------- | ----------------------- |
 | Access Code | accessCode, access_code |
 | Verify Code | verifyCode, verify_code |
-| Password | password |
-| Token | token, sessionToken |
-| AV Plain | avPlain |
-| API Key | api_key, apikey |
-| Auth Header | authorization |
-| Service Key | x-service-key |
-| Cookies | cookie, set-cookie |
-| Secret | secret |
+| Password    | password                |
+| Token       | token, sessionToken     |
+| AV Plain    | avPlain                 |
+| API Key     | api_key, apikey         |
+| Auth Header | authorization           |
+| Service Key | x-service-key           |
+| Cookies     | cookie, set-cookie      |
+| Secret      | secret                  |
 
 ### Class 2: PHI Fields (always [REDACTED])
 
 Fields protected under HIPAA/HITECH.
 
-| Field | Variants |
-|-------|----------|
-| SSN | ssn, socialSecurityNumber, social_security_number |
-| Date of Birth | dob, dateOfBirth, date_of_birth, birthdate |
-| Clinical Notes | noteText, noteContent, problemText |
-| Patient Name | patientName, patient_name |
-| Member Name | memberName, member_name |
-| Subscriber Name | subscriberName, subscriber_name |
-| Member ID | memberId, member_id |
-| Subscriber ID | subscriberId, subscriber_id |
-| Insurance ID | insuranceId, insurance_id |
-| Policy ID | policyId, policy_id |
-| Medicare/Medicaid | medicareNum, medicaidNum |
-| Address | address, streetAddress, street_address |
-| Phone | phoneNumber, phone_number, phone |
-| Email | email, emailAddress, email_address |
+| Field             | Variants                                          |
+| ----------------- | ------------------------------------------------- |
+| SSN               | ssn, socialSecurityNumber, social_security_number |
+| Date of Birth     | dob, dateOfBirth, date_of_birth, birthdate        |
+| Clinical Notes    | noteText, noteContent, problemText                |
+| Patient Name      | patientName, patient_name                         |
+| Member Name       | memberName, member_name                           |
+| Subscriber Name   | subscriberName, subscriber_name                   |
+| Member ID         | memberId, member_id                               |
+| Subscriber ID     | subscriberId, subscriber_id                       |
+| Insurance ID      | insuranceId, insurance_id                         |
+| Policy ID         | policyId, policy_id                               |
+| Medicare/Medicaid | medicareNum, medicaidNum                          |
+| Address           | address, streetAddress, street_address            |
+| Phone             | phoneNumber, phone_number, phone                  |
+| Email             | email, emailAddress, email_address                |
 
 ### Class 3: Inline Patterns (scrubbed in string values)
 
 Even when a field name is safe, string values are scanned for:
 
-| Pattern | Example | Replacement |
-|---------|---------|-------------|
-| AV code pair | `PROV123;PROV123!!` | `[REDACTED]` |
-| Bearer token | `Bearer eyJhbGci...` | `[REDACTED]` |
-| Session hex | `a1b2c3d4e5...` (64 chars) | `[REDACTED]` |
-| SSN | `123-45-6789` | `[REDACTED]` |
-| DOB ISO | `1990-01-15` | `[REDACTED]` |
-| DOB US | `01/15/1990` | `[REDACTED]` |
-| VistA name | `SMITH,JOHN A` | `[REDACTED]` |
+| Pattern      | Example                    | Replacement  |
+| ------------ | -------------------------- | ------------ |
+| AV code pair | `PROV123;PROV123!!`        | `[REDACTED]` |
+| Bearer token | `Bearer eyJhbGci...`       | `[REDACTED]` |
+| Session hex  | `a1b2c3d4e5...` (64 chars) | `[REDACTED]` |
+| SSN          | `123-45-6789`              | `[REDACTED]` |
+| DOB ISO      | `1990-01-15`               | `[REDACTED]` |
+| DOB US       | `01/15/1990`               | `[REDACTED]` |
+| VistA name   | `SMITH,JOHN A`             | `[REDACTED]` |
 
 ### Class 4: Safe Fields
 
 All fields not in Class 1-3. May be logged freely:
+
 - `dfn` (patient file number — numeric ID, not PHI by itself in logs)
 - `duz` (user file number)
 - `rpcName` (RPC procedure name)
@@ -103,10 +104,10 @@ that pass blocked field names as object keys:
 
 ```typescript
 // WILL BE FLAGGED:
-log.info("Patient found", { ssn: patient.ssn });
+log.info('Patient found', { ssn: patient.ssn });
 
 // SAFE — field name is not blocked:
-log.info("Patient found", { dfn: patient.dfn });
+log.info('Patient found', { dfn: patient.dfn });
 ```
 
 Exit code 1 = violations found. Integrate into CI pipeline.
@@ -114,6 +115,7 @@ Exit code 1 = violations found. Integrate into CI pipeline.
 ### Audit Stores
 
 Each audit store has its own `sanitizeDetail()`:
+
 - `immutable-audit.ts`: Strips SSN, 9-digit numbers, ISO dates, VistA names
 - `imaging-audit.ts`: Strips pixel data, HL7 bodies, credentials, SSN, DOB
 - `rcm-audit.ts`: Strips SSN, DOB-like dates, Last/First names

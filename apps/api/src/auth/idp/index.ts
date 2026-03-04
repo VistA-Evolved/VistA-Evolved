@@ -13,10 +13,10 @@
  * is used when no explicit IdP type is requested.
  */
 
-import { log } from "../../lib/logger.js";
-import { OidcIdentityProvider } from "./oidc-idp.js";
-import { SamlBrokerIdentityProvider } from "./saml-broker-idp.js";
-import type { IdentityProvider, IdpType } from "./types.js";
+import { log } from '../../lib/logger.js';
+import { OidcIdentityProvider } from './oidc-idp.js';
+import { SamlBrokerIdentityProvider } from './saml-broker-idp.js';
+import type { IdentityProvider, IdpType } from './types.js';
 
 /* ------------------------------------------------------------------ */
 /* Registry                                                            */
@@ -35,14 +35,14 @@ export function initIdentityProviders(): void {
   const oidc = new OidcIdentityProvider();
   const samlBroker = new SamlBrokerIdentityProvider();
 
-  providers.set("oidc", oidc);
-  providers.set("saml-broker", samlBroker);
+  providers.set('oidc', oidc);
+  providers.set('saml-broker', samlBroker);
 
   const enabledList = Array.from(providers.entries())
     .filter(([, p]) => p.isEnabled())
     .map(([t]) => t);
 
-  log.info("Identity providers initialized", {
+  log.info('Identity providers initialized', {
     registered: Array.from(providers.keys()),
     enabled: enabledList,
   });
@@ -63,7 +63,7 @@ export function getProvider(type: IdpType): IdentityProvider | null {
  */
 export function getDefaultProvider(): IdentityProvider | null {
   // Priority order
-  const priority: IdpType[] = ["oidc", "saml-broker"];
+  const priority: IdpType[] = ['oidc', 'saml-broker'];
   for (const type of priority) {
     const provider = providers.get(type);
     if (provider?.isEnabled()) return provider;
@@ -105,13 +105,13 @@ export async function checkAllProviderHealth(): Promise<
 
   // Always include VistA direct status
   results.push({
-    type: "vista",
+    type: 'vista',
     ok: true,
-    detail: "VistA direct auth always available via POST /auth/login",
+    detail: 'VistA direct auth always available via POST /auth/login',
   });
 
   return results;
 }
 
 // Re-export types for convenience
-export type { IdentityProvider, IdpType, IdentityResult, CallbackParams } from "./types.js";
+export type { IdentityProvider, IdpType, IdentityResult, CallbackParams } from './types.js';

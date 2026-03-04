@@ -24,14 +24,14 @@
  *   - Backup files are gitignored (/backups/)
  */
 
-import { existsSync, mkdirSync, writeFileSync, readFileSync, statSync } from "node:fs";
-import { join, resolve, dirname } from "node:path";
-import { execFileSync } from "node:child_process";
-import { createHash } from "node:crypto";
-import { fileURLToPath } from "node:url";
+import { existsSync, mkdirSync, writeFileSync, readFileSync, statSync } from 'node:fs';
+import { join, resolve, dirname } from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, "../..");
+const ROOT = resolve(__dirname, '../..');
 
 // ---- Argument parsing ----
 
@@ -43,17 +43,17 @@ function getArg(name) {
 }
 
 function getTimestamp() {
-  return new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+  return new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 }
 
 // ---- Configuration ----
 
-const pgUrl = getArg("pg-url") || process.env.PLATFORM_PG_URL;
-const outputDir = getArg("output") || join(ROOT, "backups", getTimestamp());
+const pgUrl = getArg('pg-url') || process.env.PLATFORM_PG_URL;
+const outputDir = getArg('output') || join(ROOT, 'backups', getTimestamp());
 
 if (!pgUrl) {
-  console.error("ERROR: No PostgreSQL URL configured.");
-  console.error("Set PLATFORM_PG_URL env var or pass --pg-url <url>");
+  console.error('ERROR: No PostgreSQL URL configured.');
+  console.error('Set PLATFORM_PG_URL env var or pass --pg-url <url>');
   process.exit(1);
 }
 
@@ -61,8 +61,8 @@ if (!pgUrl) {
 
 function hasBinary(name) {
   try {
-    execFileSync(process.platform === "win32" ? "where" : "which", [name], {
-      stdio: "pipe",
+    execFileSync(process.platform === 'win32' ? 'where' : 'which', [name], {
+      stdio: 'pipe',
       timeout: 5_000,
     });
     return true;
@@ -76,68 +76,96 @@ function hasBinary(name) {
  * Returns { mode: 'local' | 'docker', containerName?: string }.
  */
 function resolvePgDumpMode() {
-  if (hasBinary("pg_dump")) return { mode: "local" };
+  if (hasBinary('pg_dump')) return { mode: 'local' };
 
   // Check if the platform-db container is running
   try {
-    const containers = execFileSync("docker", ["ps", "--format", "{{.Names}}"], {
-      encoding: "utf-8",
+    const containers = execFileSync('docker', ['ps', '--format', '{{.Names}}'], {
+      encoding: 'utf-8',
       timeout: 5_000,
-    }).trim().split("\n");
+    })
+      .trim()
+      .split('\n');
 
     for (const name of containers) {
-      if (name.includes("platform-db") || name.includes("postgres")) {
-        return { mode: "docker", containerName: name.trim() };
+      if (name.includes('platform-db') || name.includes('postgres')) {
+        return { mode: 'docker', containerName: name.trim() };
       }
     }
-  } catch { /* Docker not available */ }
+  } catch {
+    /* Docker not available */
+  }
 
-  return { mode: "none" };
+  return { mode: 'none' };
 }
 
 // ---- SHA-256 helper ----
 
 function sha256(filePath) {
   const data = readFileSync(filePath);
-  return createHash("sha256").update(data).digest("hex");
+  return createHash('sha256').update(data).digest('hex');
 }
 
 // ---- WAL / PITR posture check ----
 
 function checkWalPosture() {
   try {
-    const sql = "SELECT name || '=' || setting FROM pg_settings WHERE name IN ('wal_level','archive_mode','archive_command') ORDER BY name;";
+    const sql =
+      "SELECT name || '=' || setting FROM pg_settings WHERE name IN ('wal_level','archive_mode','archive_command') ORDER BY name;";
     let result;
 
-    if (pgMode.mode === "local") {
-      result = execFileSync("psql", [
-        "--dbname", pgUrl, "--tuples-only", "--no-align", "-c", sql
-      ], { timeout: 10_000, encoding: "utf-8" }).trim();
-    } else if (pgMode.mode === "docker") {
+    if (pgMode.mode === 'local') {
+      result = execFileSync('psql', ['--dbname', pgUrl, '--tuples-only', '--no-align', '-c', sql], {
+        timeout: 10_000,
+        encoding: 'utf-8',
+      }).trim();
+    } else if (pgMode.mode === 'docker') {
       const urlObj = new URL(pgUrl);
-      result = execFileSync("docker", [
-        "exec", pgMode.containerName, "psql",
-        "--dbname", urlObj.pathname.slice(1), "--username", urlObj.username,
-        "--tuples-only", "--no-align", "-c", sql
-      ], { timeout: 10_000, encoding: "utf-8" }).trim();
+      result = execFileSync(
+        'docker',
+        [
+          'exec',
+          pgMode.containerName,
+          'psql',
+          '--dbname',
+          urlObj.pathname.slice(1),
+          '--username',
+          urlObj.username,
+          '--tuples-only',
+          '--no-align',
+          '-c',
+          sql,
+        ],
+        { timeout: 10_000, encoding: 'utf-8' }
+      ).trim();
     } else {
-      return { wal_level: "unknown", archive_mode: "unknown", archive_command: "(unset)", pitrReady: false };
+      return {
+        wal_level: 'unknown',
+        archive_mode: 'unknown',
+        archive_command: '(unset)',
+        pitrReady: false,
+      };
     }
 
     const settings = {};
-    for (const line of result.split("\n").filter(Boolean)) {
-      const [k, v] = line.split("=", 2);
+    for (const line of result.split('\n').filter(Boolean)) {
+      const [k, v] = line.split('=', 2);
       settings[k] = v;
     }
 
     return {
-      wal_level: settings.wal_level || "unknown",
-      archive_mode: settings.archive_mode || "unknown",
-      archive_command: settings.archive_command || "(unset)",
-      pitrReady: settings.wal_level === "replica" && settings.archive_mode === "on",
+      wal_level: settings.wal_level || 'unknown',
+      archive_mode: settings.archive_mode || 'unknown',
+      archive_command: settings.archive_command || '(unset)',
+      pitrReady: settings.wal_level === 'replica' && settings.archive_mode === 'on',
     };
   } catch {
-    return { wal_level: "unknown", archive_mode: "unknown", archive_command: "(unset)", pitrReady: false };
+    return {
+      wal_level: 'unknown',
+      archive_mode: 'unknown',
+      archive_command: '(unset)',
+      pitrReady: false,
+    };
   }
 }
 
@@ -148,24 +176,37 @@ function getTableInventory() {
     const sql = `SELECT relname || ':' || n_live_tup FROM pg_stat_user_tables WHERE schemaname = 'public' ORDER BY relname;`;
     let result;
 
-    if (pgMode.mode === "local") {
-      result = execFileSync("psql", [
-        "--dbname", pgUrl, "--tuples-only", "--no-align", "-c", sql
-      ], { timeout: 10_000, encoding: "utf-8" }).trim();
-    } else if (pgMode.mode === "docker") {
+    if (pgMode.mode === 'local') {
+      result = execFileSync('psql', ['--dbname', pgUrl, '--tuples-only', '--no-align', '-c', sql], {
+        timeout: 10_000,
+        encoding: 'utf-8',
+      }).trim();
+    } else if (pgMode.mode === 'docker') {
       const urlObj = new URL(pgUrl);
-      result = execFileSync("docker", [
-        "exec", pgMode.containerName, "psql",
-        "--dbname", urlObj.pathname.slice(1), "--username", urlObj.username,
-        "--tuples-only", "--no-align", "-c", sql
-      ], { timeout: 10_000, encoding: "utf-8" }).trim();
+      result = execFileSync(
+        'docker',
+        [
+          'exec',
+          pgMode.containerName,
+          'psql',
+          '--dbname',
+          urlObj.pathname.slice(1),
+          '--username',
+          urlObj.username,
+          '--tuples-only',
+          '--no-align',
+          '-c',
+          sql,
+        ],
+        { timeout: 10_000, encoding: 'utf-8' }
+      ).trim();
     } else {
       return {};
     }
 
     const tables = {};
-    for (const line of result.split("\n").filter(Boolean)) {
-      const [name, count] = line.split(":", 2);
+    for (const line of result.split('\n').filter(Boolean)) {
+      const [name, count] = line.split(':', 2);
       tables[name] = parseInt(count, 10) || 0;
     }
     return tables;
@@ -182,87 +223,101 @@ console.log(`  Target: ${outputDir}\n`);
 mkdirSync(outputDir, { recursive: true });
 
 // 1. pg_dump (logical backup)
-const dumpFile = join(outputDir, "platform-pg.sql");
-console.log("  [1/3] Running pg_dump...");
+const dumpFile = join(outputDir, 'platform-pg.sql');
+console.log('  [1/3] Running pg_dump...');
 
 const pgMode = resolvePgDumpMode();
 
 try {
   let dump;
 
-  if (pgMode.mode === "local") {
+  if (pgMode.mode === 'local') {
     // Local pg_dump binary
-    dump = execFileSync("pg_dump", [
-      "--dbname", pgUrl,
-      "--format", "plain",
-      "--no-owner",
-      "--no-privileges",
-      "--clean",
-      "--if-exists",
-    ], {
-      timeout: 120_000,
-      maxBuffer: 100 * 1024 * 1024,
-    });
-  } else if (pgMode.mode === "docker") {
+    dump = execFileSync(
+      'pg_dump',
+      [
+        '--dbname',
+        pgUrl,
+        '--format',
+        'plain',
+        '--no-owner',
+        '--no-privileges',
+        '--clean',
+        '--if-exists',
+      ],
+      {
+        timeout: 120_000,
+        maxBuffer: 100 * 1024 * 1024,
+      }
+    );
+  } else if (pgMode.mode === 'docker') {
     // Parse connection details from pgUrl for Docker internal connection
     const urlObj = new URL(pgUrl);
     const dbName = urlObj.pathname.slice(1);
     const user = urlObj.username;
 
     console.log(`         Using Docker container: ${pgMode.containerName}`);
-    dump = execFileSync("docker", [
-      "exec", pgMode.containerName,
-      "pg_dump",
-      "--dbname", dbName,
-      "--username", user,
-      "--format", "plain",
-      "--no-owner",
-      "--no-privileges",
-      "--clean",
-      "--if-exists",
-    ], {
-      timeout: 120_000,
-      maxBuffer: 100 * 1024 * 1024,
-    });
+    dump = execFileSync(
+      'docker',
+      [
+        'exec',
+        pgMode.containerName,
+        'pg_dump',
+        '--dbname',
+        dbName,
+        '--username',
+        user,
+        '--format',
+        'plain',
+        '--no-owner',
+        '--no-privileges',
+        '--clean',
+        '--if-exists',
+      ],
+      {
+        timeout: 120_000,
+        maxBuffer: 100 * 1024 * 1024,
+      }
+    );
   } else {
-    console.error("  FATAL: pg_dump not found locally or in Docker.");
-    console.error("         Install PostgreSQL client tools or ensure Docker is running.");
+    console.error('  FATAL: pg_dump not found locally or in Docker.');
+    console.error('         Install PostgreSQL client tools or ensure Docker is running.');
     process.exit(2);
   }
 
   writeFileSync(dumpFile, dump);
   const dumpSize = statSync(dumpFile).size;
   if (dumpSize === 0) {
-    console.error("  FATAL: pg_dump produced an empty file. Check PG connectivity.");
+    console.error('  FATAL: pg_dump produced an empty file. Check PG connectivity.');
     process.exit(2);
   }
   const sizeMB = (dumpSize / 1024 / 1024).toFixed(2);
   console.log(`         pg_dump complete: ${sizeMB} MB`);
 } catch (err) {
-  console.error(`  FATAL: pg_dump failed: ${err.message?.split("\n")[0]}`);
+  console.error(`  FATAL: pg_dump failed: ${err.message?.split('\n')[0]}`);
   process.exit(2);
 }
 
 // 2. WAL posture check
-console.log("  [2/3] Checking WAL/PITR posture...");
+console.log('  [2/3] Checking WAL/PITR posture...');
 const walPosture = checkWalPosture();
 console.log(`         wal_level=${walPosture.wal_level}, archive_mode=${walPosture.archive_mode}`);
 if (!walPosture.pitrReady) {
-  console.log("         NOTE: PITR not fully configured (archive_mode != on). See runbook.");
+  console.log('         NOTE: PITR not fully configured (archive_mode != on). See runbook.');
 }
 
 // 3. Generate manifest
-console.log("  [3/3] Writing manifest...");
+console.log('  [3/3] Writing manifest...');
 const tableInventory = getTableInventory();
 
 const manifest = {
   version: 1,
   createdAt: new Date().toISOString(),
-  backupType: "pg_dump_logical",
-  pgUrl: pgUrl.replace(/\/\/[^@]+@/, "//***@").replace(/[?&]password=[^&]*/gi, ""), // redact credentials
+  backupType: 'pg_dump_logical',
+  pgUrl: pgUrl.replace(/\/\/[^@]+@/, '//***@').replace(/[?&]password=[^&]*/gi, ''), // redact credentials
   files: [
     {
-      name: "platform-pg.sql",
+      name: 'platform-pg.sql',
       sizeBytes: statSync(dumpFile).size,
       sha256: sha256(dumpFile),
     },
@@ -274,11 +329,11 @@ const manifest = {
   pitrReady: walPosture.pitrReady,
 };
 
-writeFileSync(join(outputDir, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n");
+writeFileSync(join(outputDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 
 console.log(`\n=== Backup Complete ===`);
 console.log(`  Tables: ${manifest.tableCount}`);
 console.log(`  Rows: ${manifest.totalRows}`);
 console.log(`  PITR ready: ${manifest.pitrReady}`);
-console.log(`  Manifest: ${join(outputDir, "manifest.json")}`);
+console.log(`  Manifest: ${join(outputDir, 'manifest.json')}`);
 console.log(`  Dump: ${dumpFile}\n`);

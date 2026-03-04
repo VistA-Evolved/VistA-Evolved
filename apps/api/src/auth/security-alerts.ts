@@ -6,8 +6,8 @@
  * data exfiltration patterns, etc.
  */
 
-import { emitSiemEvent, type SiemSeverity } from "./siem-sink.js";
-import { log } from "../lib/logger.js";
+import { emitSiemEvent, type SiemSeverity } from './siem-sink.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -63,74 +63,74 @@ const windowCounters = new Map<string, number[]>();
 
 export function initDefaultAlertRules(): void {
   registerAlertRule({
-    id: "brute-force-login",
-    name: "Brute Force Login",
-    description: "Detect repeated failed login attempts",
-    category: "auth",
+    id: 'brute-force-login',
+    name: 'Brute Force Login',
+    description: 'Detect repeated failed login attempts',
+    category: 'auth',
     actionPattern: /login\.failed/,
     threshold: 5,
     windowMs: 300_000, // 5 minutes
-    severity: "high",
+    severity: 'high',
     enabled: true,
   });
 
   registerAlertRule({
-    id: "privilege-escalation",
-    name: "Privilege Escalation",
-    description: "Detect attempts to access admin resources without admin role",
-    category: "access",
+    id: 'privilege-escalation',
+    name: 'Privilege Escalation',
+    description: 'Detect attempts to access admin resources without admin role',
+    category: 'access',
     actionPattern: /admin\..*denied/,
     threshold: 3,
     windowMs: 60_000,
-    severity: "critical",
+    severity: 'critical',
     enabled: true,
   });
 
   registerAlertRule({
-    id: "break-glass-usage",
-    name: "Break-Glass Access",
-    description: "Alert on any break-glass access",
-    category: "access",
+    id: 'break-glass-usage',
+    name: 'Break-Glass Access',
+    description: 'Alert on any break-glass access',
+    category: 'access',
     actionPattern: /break-glass/,
     threshold: 1,
     windowMs: 1,
-    severity: "high",
+    severity: 'high',
     enabled: true,
   });
 
   registerAlertRule({
-    id: "mass-data-export",
-    name: "Mass Data Export",
-    description: "Detect excessive data export requests",
-    category: "admin",
+    id: 'mass-data-export',
+    name: 'Mass Data Export',
+    description: 'Detect excessive data export requests',
+    category: 'admin',
     actionPattern: /export/,
     threshold: 10,
     windowMs: 600_000, // 10 minutes
-    severity: "medium",
+    severity: 'medium',
     enabled: true,
   });
 
   registerAlertRule({
-    id: "after-hours-admin",
-    name: "After-Hours Admin Access",
-    description: "Admin actions outside business hours",
-    category: "admin",
+    id: 'after-hours-admin',
+    name: 'After-Hours Admin Access',
+    description: 'Admin actions outside business hours',
+    category: 'admin',
     actionPattern: /admin\./,
     threshold: 3,
     windowMs: 60_000,
-    severity: "medium",
+    severity: 'medium',
     enabled: true,
   });
 
   registerAlertRule({
-    id: "sensitivity-access-spike",
-    name: "Sensitivity Tag Access Spike",
-    description: "Excessive access to sensitivity-tagged records",
-    category: "privacy",
+    id: 'sensitivity-access-spike',
+    name: 'Sensitivity Tag Access Spike',
+    description: 'Excessive access to sensitivity-tagged records',
+    category: 'privacy',
     actionPattern: /access-reason/,
     threshold: 20,
     windowMs: 300_000,
-    severity: "high",
+    severity: 'high',
     enabled: true,
   });
 }
@@ -223,11 +223,11 @@ export function evaluateAlertRules(event: {
 
       // Emit as SIEM event
       emitSiemEvent({
-        category: "alert",
+        category: 'alert',
         action: `alert.triggered.${rule.id}`,
         severity: rule.severity,
         actorId: event.actorId,
-        actorName: "",
+        actorName: '',
         tenantId: event.tenantId,
         detail: {
           ruleId: rule.id,
@@ -238,7 +238,7 @@ export function evaluateAlertRules(event: {
         alertTriggered: true,
       });
 
-      log.warn("Security alert triggered", {
+      log.warn('Security alert triggered', {
         ruleId: rule.id,
         severity: rule.severity,
         eventCount: pruned.length,

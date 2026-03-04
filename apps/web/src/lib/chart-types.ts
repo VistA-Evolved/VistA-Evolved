@@ -25,16 +25,16 @@ export interface ChartTab {
  * except Cover Sheet is moved to first position (as CPRS displays it).
  */
 export const CHART_TABS: ChartTab[] = [
-  { slug: 'cover',     label: 'Cover Sheet',          constant: 'CT_COVER',    id: 1,  hasApi: true  },
-  { slug: 'problems',  label: 'Problems',             constant: 'CT_PROBLEMS', id: 2,  hasApi: true  },
-  { slug: 'meds',      label: 'Meds',                 constant: 'CT_MEDS',     id: 3,  hasApi: true  },
-  { slug: 'orders',    label: 'Orders',               constant: 'CT_ORDERS',   id: 4,  hasApi: false },
-  { slug: 'notes',     label: 'Notes',                constant: 'CT_NOTES',    id: 6,  hasApi: true  },
-  { slug: 'consults',  label: 'Consults',             constant: 'CT_CONSULTS', id: 7,  hasApi: false },
-  { slug: 'surgery',   label: 'Surgery',              constant: 'CT_SURGERY',  id: 11, hasApi: false },
-  { slug: 'dcsumm',    label: 'D/C Summ',             constant: 'CT_DCSUMM',   id: 8,  hasApi: false },
-  { slug: 'labs',      label: 'Labs',                 constant: 'CT_LABS',     id: 9,  hasApi: false },
-  { slug: 'reports',   label: 'Reports',              constant: 'CT_REPORTS',  id: 10, hasApi: false },
+  { slug: 'cover', label: 'Cover Sheet', constant: 'CT_COVER', id: 1, hasApi: true },
+  { slug: 'problems', label: 'Problems', constant: 'CT_PROBLEMS', id: 2, hasApi: true },
+  { slug: 'meds', label: 'Meds', constant: 'CT_MEDS', id: 3, hasApi: true },
+  { slug: 'orders', label: 'Orders', constant: 'CT_ORDERS', id: 4, hasApi: false },
+  { slug: 'notes', label: 'Notes', constant: 'CT_NOTES', id: 6, hasApi: true },
+  { slug: 'consults', label: 'Consults', constant: 'CT_CONSULTS', id: 7, hasApi: false },
+  { slug: 'surgery', label: 'Surgery', constant: 'CT_SURGERY', id: 11, hasApi: false },
+  { slug: 'dcsumm', label: 'D/C Summ', constant: 'CT_DCSUMM', id: 8, hasApi: false },
+  { slug: 'labs', label: 'Labs', constant: 'CT_LABS', id: 9, hasApi: false },
+  { slug: 'reports', label: 'Reports', constant: 'CT_REPORTS', id: 10, hasApi: false },
 ];
 
 export function tabBySlug(slug: string): ChartTab | undefined {
@@ -74,54 +74,16 @@ export function cleanCaption(caption: string): string {
 }
 
 /* ------------------------------------------------------------------ */
-/* API response types (matching apps/api responses)                    */
+/* API response types — re-exported from canonical shared types        */
 /* ------------------------------------------------------------------ */
 
-export interface Patient {
-  dfn: string;
-  name: string;
-}
-
-export interface PatientDemographics {
-  dfn: string;
-  name: string;
-  dob: string;
-  sex: string;
-  ssn?: string;
-}
-
-export interface Allergy {
-  id: string;
-  allergen: string;
-  severity: string;
-  reactions: string;
-}
-
-export interface Vital {
-  type: string;
-  value: string;
-  takenAt: string;
-}
-
-export interface Note {
-  id: string;
-  title: string;
-  date: string;
-  author: string;
-  location: string;
-  status: string;
-}
-
-export interface Medication {
-  id: string;
-  name: string;
-  sig: string;
-  status: string;
-}
-
-export interface Problem {
-  id: string;
-  text: string;
-  status: string;
-  onset?: string;
-}
+export type {
+  Patient,
+  PatientDemographics,
+  PatientSummary,
+  Allergy,
+  Vital,
+  Note,
+  Medication,
+  Problem,
+} from '@vista-evolved/shared-types';

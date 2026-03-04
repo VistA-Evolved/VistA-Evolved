@@ -3,6 +3,7 @@
 ## What Changed (VERIFY pass)
 
 ### Code Fixes
+
 1. **matching-engine.ts** -- Fixed no-op ternary: `expectedAmountModel` now returns
    `CONTRACT_MODEL` when claim has `totalChargeCents`, `BILLED_AMOUNT` otherwise.
 2. **recon-store.ts** -- Removed unused `gte`, `lte` imports from drizzle-orm.
@@ -10,6 +11,7 @@
 4. **matching-engine.ts** -- Removed unused type imports: `ReconciliationMatch`, `UnderpaymentCase`.
 
 ### Verification Script Enhancements
+
 - Added `-SkipBuild` and `-SkipRuntime` flags
 - Added Section O: Code Quality (5 gates) -- catches unused imports and no-op logic
 - Added Section P: Runtime Endpoint Battery (9 gates) -- live API tests with session + CSRF
@@ -38,15 +40,18 @@ curl http://localhost:3001/rcm/reconciliation/stats -b cookies.txt
 ```
 
 ## Verifier Output
+
 - Phase 99: **83/83 PASS** (enhanced verifier, `-SkipBuild`)
 - Phase 98 regression: **71/71 PASS**
 
 ## Durability Confirmed
+
 - Imported 3 payments, matched 1, restarted API
 - All records persisted in SQLite across restart
 - Stats returned identical values post-restart
 
 ## Follow-ups
+
 - EDI 835 real wire-format parser (currently scaffold-json only)
 - Known claims registry integration with Phase 91 claim store
 - Underpayment auto-detection requires known claims to be registered first

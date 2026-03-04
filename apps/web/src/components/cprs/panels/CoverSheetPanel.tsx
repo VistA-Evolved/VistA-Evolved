@@ -9,7 +9,9 @@ import styles from '../cprs.module.css';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001';
 
-interface Props { dfn: string; }
+interface Props {
+  dfn: string;
+}
 
 /* ------------------------------------------------------------------ */
 /* Section — single cover-sheet panel with resize + drag              */
@@ -61,18 +63,33 @@ function Section({
       document.addEventListener('mousemove', onMove);
       document.addEventListener('mouseup', onUp);
     }
-    function onMove(e: MouseEvent) { resizeFn(e.clientY - startY); startY = e.clientY; }
-    function onUp() { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+    function onMove(e: MouseEvent) {
+      resizeFn(e.clientY - startY);
+      startY = e.clientY;
+    }
+    function onUp() {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    }
     handle.addEventListener('mousedown', onDown);
     return () => handle.removeEventListener('mousedown', onDown);
   }, [onResize]);
 
   // Keyboard resize: arrow keys on focused handle
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (!onResize) return;
-    if (e.key === 'ArrowDown') { e.preventDefault(); onResize(10); }
-    if (e.key === 'ArrowUp') { e.preventDefault(); onResize(-10); }
-  }, [onResize]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (!onResize) return;
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        onResize(10);
+      }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        onResize(-10);
+      }
+    },
+    [onResize]
+  );
 
   const isDragOver = dragOverKey === panelKey;
 
@@ -82,7 +99,9 @@ function Section({
       style={{
         minHeight: height ?? undefined,
         ...(draggable ? { cursor: 'grab' } : {}),
-        ...(isDragOver ? { outline: '2px dashed var(--cprs-accent, #0066b2)', outlineOffset: -2 } : {}),
+        ...(isDragOver
+          ? { outline: '2px dashed var(--cprs-accent, #0066b2)', outlineOffset: -2 }
+          : {}),
       }}
       draggable={draggable}
       onDragStart={onDragStart}
@@ -91,14 +110,26 @@ function Section({
       data-panel-key={panelKey}
     >
       <h3>
-        {draggable && <span style={{ cursor: 'grab', marginRight: 6, opacity: 0.5 }} aria-hidden>&#x2630;</span>}
+        {draggable && (
+          <span style={{ cursor: 'grab', marginRight: 6, opacity: 0.5 }} aria-hidden>
+            &#x2630;
+          </span>
+        )}
         {title}
         {pending && (
           <span
             className={styles.pendingBadge}
             onClick={onPendingClick}
             title="Integration pending -- click for details"
-            style={{ cursor: 'pointer', marginLeft: 8, fontSize: 11, background: '#4a3d2d', color: '#d9c9a3', padding: '1px 6px', borderRadius: 3 }}
+            style={{
+              cursor: 'pointer',
+              marginLeft: 8,
+              fontSize: 11,
+              background: '#4a3d2d',
+              color: '#d9c9a3',
+              padding: '1px 6px',
+              borderRadius: 3,
+            }}
           >
             PENDING
           </span>
@@ -108,7 +139,9 @@ function Section({
       {error && <p className={styles.errorText}>{error}</p>}
       {!loading && !error && children}
       {contractId && !loading && !error && (
-        <div style={{ position: 'absolute', top: 4, right: 8, fontSize: 9, color: '#767676' }}>{contractId}</div>
+        <div style={{ position: 'absolute', top: 4, right: 8, fontSize: 9, color: '#767676' }}>
+          {contractId}
+        </div>
       )}
       <div
         ref={handleRef}
@@ -134,16 +167,28 @@ async function fetchJson(url: string) {
 /* ------------------------------------------------------------------ */
 
 interface PanelData {
-  problems: any[]; allergies: any[]; meds: any[]; vitals: any[];
-  notes: any[]; labs: any[];
+  problems: any[];
+  allergies: any[];
+  meds: any[];
+  vitals: any[];
+  notes: any[];
+  labs: any[];
   ordersSummary: { unsigned: number; recent: any[] } | null;
-  immunizations: any[]; immuPending: boolean;
+  immunizations: any[];
+  immuPending: boolean;
   reminders: any[];
 }
 
 interface PanelLoading {
-  problems: boolean; allergies: boolean; meds: boolean; vitals: boolean;
-  notes: boolean; labs: boolean; orders: boolean; immunizations: boolean; reminders: boolean;
+  problems: boolean;
+  allergies: boolean;
+  meds: boolean;
+  vitals: boolean;
+  notes: boolean;
+  labs: boolean;
+  orders: boolean;
+  immunizations: boolean;
+  reminders: boolean;
 }
 
 interface PanelDef {
@@ -160,12 +205,26 @@ function buildPanelDefs(): Record<string, PanelDef> {
       title: 'Active Problems',
       contractId: 'CT_PROBLEMS',
       render: (d) =>
-        d.problems.length === 0 ? <p className={styles.emptyText}>No active problems</p> : (
+        d.problems.length === 0 ? (
+          <p className={styles.emptyText}>No active problems</p>
+        ) : (
           <table className={styles.dataTable}>
-            <thead><tr><th>Problem</th><th>Status</th><th>Onset</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Problem</th>
+                <th>Status</th>
+                <th>Onset</th>
+              </tr>
+            </thead>
             <tbody>
               {d.problems.map((p) => (
-                <tr key={p.id}><td>{p.text}</td><td><span className={`${styles.badge} ${styles[p.status] || ''}`}>{p.status}</span></td><td>{p.onset || '\u2014'}</td></tr>
+                <tr key={p.id}>
+                  <td>{p.text}</td>
+                  <td>
+                    <span className={`${styles.badge} ${styles[p.status] || ''}`}>{p.status}</span>
+                  </td>
+                  <td>{p.onset || '\u2014'}</td>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -175,12 +234,24 @@ function buildPanelDefs(): Record<string, PanelDef> {
       title: 'Allergies / Adverse Reactions',
       contractId: 'ORQQAL LIST',
       render: (d) =>
-        d.allergies.length === 0 ? <p className={styles.emptyText}>No known allergies</p> : (
+        d.allergies.length === 0 ? (
+          <p className={styles.emptyText}>No known allergies</p>
+        ) : (
           <table className={styles.dataTable}>
-            <thead><tr><th>Allergen</th><th>Severity</th><th>Reactions</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Allergen</th>
+                <th>Severity</th>
+                <th>Reactions</th>
+              </tr>
+            </thead>
             <tbody>
               {d.allergies.map((a) => (
-                <tr key={a.id}><td>{a.allergen}</td><td>{a.severity}</td><td>{a.reactions}</td></tr>
+                <tr key={a.id}>
+                  <td>{a.allergen}</td>
+                  <td>{a.severity}</td>
+                  <td>{a.reactions}</td>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -190,12 +261,26 @@ function buildPanelDefs(): Record<string, PanelDef> {
       title: 'Active Medications',
       contractId: 'ORWPS ACTIVE',
       render: (d) =>
-        d.meds.length === 0 ? <p className={styles.emptyText}>No active medications</p> : (
+        d.meds.length === 0 ? (
+          <p className={styles.emptyText}>No active medications</p>
+        ) : (
           <table className={styles.dataTable}>
-            <thead><tr><th>Medication</th><th>Sig</th><th>Status</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Medication</th>
+                <th>Sig</th>
+                <th>Status</th>
+              </tr>
+            </thead>
             <tbody>
               {d.meds.map((m) => (
-                <tr key={m.id}><td>{m.name}</td><td>{m.sig}</td><td><span className={`${styles.badge} ${styles[m.status] || ''}`}>{m.status}</span></td></tr>
+                <tr key={m.id}>
+                  <td>{m.name}</td>
+                  <td>{m.sig}</td>
+                  <td>
+                    <span className={`${styles.badge} ${styles[m.status] || ''}`}>{m.status}</span>
+                  </td>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -205,12 +290,24 @@ function buildPanelDefs(): Record<string, PanelDef> {
       title: 'Vitals',
       contractId: 'ORQQVI VITALS',
       render: (d) =>
-        d.vitals.length === 0 ? <p className={styles.emptyText}>No vitals recorded</p> : (
+        d.vitals.length === 0 ? (
+          <p className={styles.emptyText}>No vitals recorded</p>
+        ) : (
           <table className={styles.dataTable}>
-            <thead><tr><th>Type</th><th>Value</th><th>Date</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Date</th>
+              </tr>
+            </thead>
             <tbody>
               {d.vitals.map((v, i) => (
-                <tr key={i}><td>{v.type}</td><td>{v.value}</td><td>{v.takenAt}</td></tr>
+                <tr key={i}>
+                  <td>{v.type}</td>
+                  <td>{v.value}</td>
+                  <td>{v.takenAt}</td>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -220,12 +317,24 @@ function buildPanelDefs(): Record<string, PanelDef> {
       title: 'Recent Notes',
       contractId: 'TIU DOCUMENTS BY CONTEXT',
       render: (d) =>
-        d.notes.length === 0 ? <p className={styles.emptyText}>No notes on record</p> : (
+        d.notes.length === 0 ? (
+          <p className={styles.emptyText}>No notes on record</p>
+        ) : (
           <table className={styles.dataTable}>
-            <thead><tr><th>Title</th><th>Date</th><th>Author</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Author</th>
+              </tr>
+            </thead>
             <tbody>
               {d.notes.slice(0, 10).map((n) => (
-                <tr key={n.id}><td>{n.title}</td><td>{n.date}</td><td>{n.author}</td></tr>
+                <tr key={n.id}>
+                  <td>{n.title}</td>
+                  <td>{n.date}</td>
+                  <td>{n.author}</td>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -235,12 +344,24 @@ function buildPanelDefs(): Record<string, PanelDef> {
       title: 'Recent Labs',
       contractId: 'ORWLRR INTERIM',
       render: (d) =>
-        d.labs.length === 0 ? <p className={styles.emptyText}>No recent lab results</p> : (
+        d.labs.length === 0 ? (
+          <p className={styles.emptyText}>No recent lab results</p>
+        ) : (
           <table className={styles.dataTable}>
-            <thead><tr><th>Test</th><th>Result</th><th>Date</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Test</th>
+                <th>Result</th>
+                <th>Date</th>
+              </tr>
+            </thead>
             <tbody>
               {d.labs.slice(0, 10).map((l, i) => (
-                <tr key={i}><td>{l.name || '\u2014'}</td><td>{l.value || '\u2014'}</td><td>{l.date || '\u2014'}</td></tr>
+                <tr key={i}>
+                  <td>{l.name || '\u2014'}</td>
+                  <td>{l.value || '\u2014'}</td>
+                  <td>{l.date || '\u2014'}</td>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -258,10 +379,20 @@ function buildPanelDefs(): Record<string, PanelDef> {
               {d.ordersSummary.unsigned} unsigned order(s)
             </p>
             <table className={styles.dataTable}>
-              <thead><tr><th>Order</th><th>Status</th><th>Date</th></tr></thead>
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
               <tbody>
                 {d.ordersSummary.recent.slice(0, 8).map((o, i) => (
-                  <tr key={i}><td>{o.name}</td><td>{o.status}</td><td>{o.date || '\u2014'}</td></tr>
+                  <tr key={i}>
+                    <td>{o.name}</td>
+                    <td>{o.status}</td>
+                    <td>{o.date || '\u2014'}</td>
+                  </tr>
                 ))}
               </tbody>
             </table>
@@ -275,7 +406,8 @@ function buildPanelDefs(): Record<string, PanelDef> {
       pendingActionId: 'cover.load-appointments',
       render: () => (
         <p className={styles.pendingText}>
-          Appointments integration pending.<br />
+          Appointments integration pending.
+          <br />
           <span style={{ fontSize: 11, color: '#888' }}>Target: SD API APPOINTMENTS BY DFN</span>
         </p>
       ),
@@ -286,17 +418,28 @@ function buildPanelDefs(): Record<string, PanelDef> {
       render: (d) =>
         d.immuPending && d.immunizations.length === 0 ? (
           <p className={styles.pendingText}>
-            Immunization data integration pending.<br />
+            Immunization data integration pending.
+            <br />
             <span style={{ fontSize: 11, color: '#888' }}>Target: ORQQPX IMMUN LIST</span>
           </p>
         ) : d.immunizations.length === 0 ? (
           <p className={styles.emptyText}>No immunizations on record</p>
         ) : (
           <table className={styles.dataTable}>
-            <thead><tr><th>Immunization</th><th>Date</th><th>Reaction</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Immunization</th>
+                <th>Date</th>
+                <th>Reaction</th>
+              </tr>
+            </thead>
             <tbody>
               {d.immunizations.slice(0, 8).map((im: any, i: number) => (
-                <tr key={i}><td>{im.name || im.ien}</td><td>{im.dateTime || '\u2014'}</td><td>{im.reaction || 'None'}</td></tr>
+                <tr key={i}>
+                  <td>{im.name || im.ien}</td>
+                  <td>{im.dateTime || '\u2014'}</td>
+                  <td>{im.reaction || 'None'}</td>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -310,10 +453,20 @@ function buildPanelDefs(): Record<string, PanelDef> {
           <p className={styles.emptyText}>No clinical reminders due</p>
         ) : (
           <table className={styles.dataTable}>
-            <thead><tr><th>Reminder</th><th>Due</th><th>Status</th></tr></thead>
+            <thead>
+              <tr>
+                <th>Reminder</th>
+                <th>Due</th>
+                <th>Status</th>
+              </tr>
+            </thead>
             <tbody>
               {d.reminders.slice(0, 8).map((r: any, i: number) => (
-                <tr key={i}><td>{r.name || r.ien}</td><td>{r.due || '\u2014'}</td><td>{r.status || '\u2014'}</td></tr>
+                <tr key={i}>
+                  <td>{r.name || r.ien}</td>
+                  <td>{r.due || '\u2014'}</td>
+                  <td>{r.status || '\u2014'}</td>
+                </tr>
               ))}
             </tbody>
           </table>
@@ -343,7 +496,9 @@ export default function CoverSheetPanel({ dfn }: Props) {
   const [pendingModal, setPendingModal] = useState<PendingActionInfo | null>(null);
 
   // Extra data states
-  const [ordersSummary, setOrdersSummary] = useState<{ unsigned: number; recent: any[] } | null>(null);
+  const [ordersSummary, setOrdersSummary] = useState<{ unsigned: number; recent: any[] } | null>(
+    null
+  );
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [immunizations, setImmunizations] = useState<any[]>([]);
   const [immuLoading, setImmuLoading] = useState(false);
@@ -370,12 +525,16 @@ export default function CoverSheetPanel({ dfn }: Props) {
   }, [preferences.coverSheetLayout.panelHeights]);
 
   // Data fetching
-  useEffect(() => { cache.fetchAll(dfn); }, [dfn]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    cache.fetchAll(dfn);
+  }, [dfn]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setOrdersLoading(true);
     fetchJson(`${API_BASE}/vista/cprs/orders-summary?dfn=${dfn}`)
-      .then((d) => { if (d.ok) setOrdersSummary({ unsigned: d.unsigned, recent: d.recent }); })
+      .then((d) => {
+        if (d.ok) setOrdersSummary({ unsigned: d.unsigned, recent: d.recent });
+      })
       .catch(() => {})
       .finally(() => setOrdersLoading(false));
   }, [dfn]);
@@ -387,14 +546,18 @@ export default function CoverSheetPanel({ dfn }: Props) {
         if (d.ok && d.results) setImmunizations(d.results);
         if (d._integration === 'pending') setImmuPending(true);
       })
-      .catch(() => { setImmuPending(true); })
+      .catch(() => {
+        setImmuPending(true);
+      })
       .finally(() => setImmuLoading(false));
   }, [dfn]);
 
   useEffect(() => {
     setRemindersLoading(true);
     fetchJson(`${API_BASE}/vista/cprs/reminders?dfn=${dfn}`)
-      .then((d) => { if (d.ok && d.results) setReminders(d.results); })
+      .then((d) => {
+        if (d.ok && d.results) setReminders(d.results);
+      })
       .catch(() => {})
       .finally(() => setRemindersLoading(false));
   }, [dfn]);
@@ -419,8 +582,16 @@ export default function CoverSheetPanel({ dfn }: Props) {
   };
 
   const panelData: PanelData = {
-    problems, allergies: allergiesData, meds, vitals, notes, labs,
-    ordersSummary, immunizations, immuPending, reminders,
+    problems,
+    allergies: allergiesData,
+    meds,
+    vitals,
+    notes,
+    labs,
+    ordersSummary,
+    immunizations,
+    immuPending,
+    reminders,
   };
 
   const panelDefs = buildPanelDefs();
@@ -442,49 +613,66 @@ export default function CoverSheetPanel({ dfn }: Props) {
     heightsTimerRef.current = setTimeout(() => {
       saveCoverSheetLayout({ panelHeights: heights });
     }, 300);
-    return () => { if (heightsTimerRef.current) clearTimeout(heightsTimerRef.current); };
+    return () => {
+      if (heightsTimerRef.current) clearTimeout(heightsTimerRef.current);
+    };
   }, [heights, saveCoverSheetLayout]);
 
-  const handleResize = useCallback((panel: string) => (delta: number) => {
-    setHeights((prev) => ({
-      ...prev,
-      [panel]: Math.min(800, Math.max(80, (prev[panel] || 200) + delta)),
-    }));
-  }, []);
+  const handleResize = useCallback(
+    (panel: string) => (delta: number) => {
+      setHeights((prev) => ({
+        ...prev,
+        [panel]: Math.min(800, Math.max(80, (prev[panel] || 200) + delta)),
+      }));
+    },
+    []
+  );
 
   // Drag-and-drop handlers
-  const handleDragStart = useCallback((key: string) => (e: React.DragEvent) => {
-    setDragKey(key);
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', key);
-  }, []);
+  const handleDragStart = useCallback(
+    (key: string) => (e: React.DragEvent) => {
+      setDragKey(key);
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', key);
+    },
+    []
+  );
 
-  const handleDragOver = useCallback((key: string) => (e: React.DragEvent) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    setDragOverKey(key);
-  }, []);
+  const handleDragOver = useCallback(
+    (key: string) => (e: React.DragEvent) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      setDragOverKey(key);
+    },
+    []
+  );
 
-  const handleDrop = useCallback((targetKey: string) => (e: React.DragEvent) => {
-    e.preventDefault();
-    setDragOverKey(null);
-    if (!dragKey || dragKey === targetKey) return;
-    const order = [...panelOrder];
-    const fromIdx = order.indexOf(dragKey);
-    const toIdx = order.indexOf(targetKey);
-    if (fromIdx === -1 || toIdx === -1) return;
-    order.splice(fromIdx, 1);
-    order.splice(toIdx, 0, dragKey);
-    saveCoverSheetLayout({ panelOrder: order });
-    setDragKey(null);
-  }, [dragKey, panelOrder, saveCoverSheetLayout]);
+  const handleDrop = useCallback(
+    (targetKey: string) => (e: React.DragEvent) => {
+      e.preventDefault();
+      setDragOverKey(null);
+      if (!dragKey || dragKey === targetKey) return;
+      const order = [...panelOrder];
+      const fromIdx = order.indexOf(dragKey);
+      const toIdx = order.indexOf(targetKey);
+      if (fromIdx === -1 || toIdx === -1) return;
+      order.splice(fromIdx, 1);
+      order.splice(toIdx, 0, dragKey);
+      saveCoverSheetLayout({ panelOrder: order });
+      setDragKey(null);
+    },
+    [dragKey, panelOrder, saveCoverSheetLayout]
+  );
 
   // Toggle panel visibility
-  const toggleVisibility = useCallback((key: string) => {
-    const vis = { ...(panelVisibility ?? {}) };
-    vis[key] = !(vis[key] ?? true);
-    saveCoverSheetLayout({ panelVisibility: vis });
-  }, [panelVisibility, saveCoverSheetLayout]);
+  const toggleVisibility = useCallback(
+    (key: string) => {
+      const vis = { ...(panelVisibility ?? {}) };
+      vis[key] = !(vis[key] ?? true);
+      saveCoverSheetLayout({ panelVisibility: vis });
+    },
+    [panelVisibility, saveCoverSheetLayout]
+  );
 
   // Build pending action info from action registry
   const showPending = (actionId: string) => {
@@ -515,8 +703,13 @@ export default function CoverSheetPanel({ dfn }: Props) {
         <button
           onClick={() => setCustomizeMode((v) => !v)}
           style={{
-            border: '1px solid var(--cprs-border, #3a3a3a)', background: customizeMode ? 'var(--cprs-accent, #0066b2)' : 'transparent',
-            color: customizeMode ? '#fff' : 'var(--cprs-text, #ccc)', padding: '2px 10px', borderRadius: 3, cursor: 'pointer', fontSize: 12,
+            border: '1px solid var(--cprs-border, #3a3a3a)',
+            background: customizeMode ? 'var(--cprs-accent, #0066b2)' : 'transparent',
+            color: customizeMode ? '#fff' : 'var(--cprs-text, #ccc)',
+            padding: '2px 10px',
+            borderRadius: 3,
+            cursor: 'pointer',
+            fontSize: 12,
           }}
           aria-pressed={customizeMode}
           title="Toggle layout customization mode"
@@ -524,10 +717,18 @@ export default function CoverSheetPanel({ dfn }: Props) {
           {customizeMode ? 'Done Customizing' : 'Customize Layout'}
         </button>
         <button
-          onClick={() => { resetCoverSheetLayout(); setHeights({ ...DEFAULT_PANEL_HEIGHTS }); }}
+          onClick={() => {
+            resetCoverSheetLayout();
+            setHeights({ ...DEFAULT_PANEL_HEIGHTS });
+          }}
           style={{
-            border: '1px solid var(--cprs-border, #3a3a3a)', background: 'transparent',
-            color: 'var(--cprs-text, #ccc)', padding: '2px 10px', borderRadius: 3, cursor: 'pointer', fontSize: 12,
+            border: '1px solid var(--cprs-border, #3a3a3a)',
+            background: 'transparent',
+            color: 'var(--cprs-text, #ccc)',
+            padding: '2px 10px',
+            borderRadius: 3,
+            cursor: 'pointer',
+            fontSize: 12,
           }}
           title="Reset cover sheet layout to CPRS defaults"
         >
@@ -535,14 +736,25 @@ export default function CoverSheetPanel({ dfn }: Props) {
         </button>
         {customizeMode && (
           <span style={{ marginLeft: 'auto', color: '#888', fontSize: 11 }}>
-            Drag panels to reorder{preferences.layoutMode === 'modern' ? '' : ' (enable Modern mode for drag)'} | Click eye icon to hide/show
+            Drag panels to reorder
+            {preferences.layoutMode === 'modern' ? '' : ' (enable Modern mode for drag)'} | Click
+            eye icon to hide/show
           </span>
         )}
       </div>
 
       {/* Visibility toggles in customize mode */}
       {customizeMode && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, padding: '4px 8px', borderBottom: '1px solid var(--cprs-border, #3a3a3a)', fontSize: 11 }}>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 4,
+            padding: '4px 8px',
+            borderBottom: '1px solid var(--cprs-border, #3a3a3a)',
+            fontSize: 11,
+          }}
+        >
           {panelOrder.map((key) => {
             const def = panelDefs[key];
             if (!def) return null;
@@ -552,9 +764,13 @@ export default function CoverSheetPanel({ dfn }: Props) {
                 key={key}
                 onClick={() => toggleVisibility(key)}
                 style={{
-                  border: '1px solid var(--cprs-border, #3a3a3a)', borderRadius: 3, padding: '1px 8px',
+                  border: '1px solid var(--cprs-border, #3a3a3a)',
+                  borderRadius: 3,
+                  padding: '1px 8px',
                   background: visible ? 'var(--cprs-selected, #222)' : 'transparent',
-                  color: visible ? 'var(--cprs-text, #ccc)' : '#666', cursor: 'pointer', fontSize: 11,
+                  color: visible ? 'var(--cprs-text, #ccc)' : '#666',
+                  cursor: 'pointer',
+                  fontSize: 11,
                 }}
                 aria-label={`${visible ? 'Hide' : 'Show'} ${def.title}`}
               >
@@ -570,7 +786,8 @@ export default function CoverSheetPanel({ dfn }: Props) {
         {visiblePanels.map((key) => {
           const def = panelDefs[key];
           if (!def) return null;
-          const isPending = def.pending || (key === 'immunizations' && immuPending && immunizations.length === 0);
+          const isPending =
+            def.pending || (key === 'immunizations' && immuPending && immunizations.length === 0);
           return (
             <Section
               key={key}
@@ -579,7 +796,9 @@ export default function CoverSheetPanel({ dfn }: Props) {
               contractId={def.contractId}
               loading={loadingMap[key as keyof PanelLoading] ?? false}
               pending={isPending}
-              onPendingClick={def.pendingActionId ? () => showPending(def.pendingActionId!) : undefined}
+              onPendingClick={
+                def.pendingActionId ? () => showPending(def.pendingActionId!) : undefined
+              }
               onResize={handleResize(key)}
               height={heights[key]}
               draggable={isDragEnabled || customizeMode}

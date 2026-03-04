@@ -3,6 +3,7 @@
 ## User Request
 
 Implement shift handoff/signout workflow for inpatient operations:
+
 - SBAR-style handoff form with situation/background/assessment/recommendation
 - To-do checklist, risk flags (falls, isolation, critical labs)
 - Shift-to-shift "handoff packet" printable/exportable
@@ -14,6 +15,7 @@ Implement shift handoff/signout workflow for inpatient operations:
 ## VistA Grounding Research
 
 VistA has a **Shift Handoff Tool** package (CRHD) with 58 RPCs including:
+
 - `CRHD GET PAT LIST` / `CRHD INPT LIST` — ward patient lists
 - `CRHD PAT DEMO` / `CRHD PAT ALLERGIES` / `CRHD PAT ACTMEDS` — patient data assembly
 - `CRHD HOT TEAM LIST` / `CRHD HOT TEAM SAVE` — team management
@@ -46,6 +48,7 @@ VistA has a **Shift Handoff Tool** package (CRHD) with 58 RPCs including:
 ## Files Touched
 
 ### Created
+
 - `apps/api/src/routes/handoff/handoff-store.ts`
 - `apps/api/src/routes/handoff/index.ts`
 - `apps/web/src/app/cprs/handoff/page.tsx`
@@ -55,6 +58,7 @@ VistA has a **Shift Handoff Tool** package (CRHD) with 58 RPCs including:
 - `docs/runbooks/handoff-grounding.md`
 
 ### Modified
+
 - `apps/api/src/index.ts`
 - `apps/api/src/middleware/security.ts`
 - `apps/api/src/lib/audit.ts`

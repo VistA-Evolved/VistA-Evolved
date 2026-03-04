@@ -18,21 +18,8 @@
     "CC-BY-3.0",
     "CC-BY-4.0"
   ],
-  "denied": [
-    "GPL-2.0",
-    "GPL-3.0",
-    "AGPL-3.0",
-    "SSPL-1.0",
-    "EUPL-1.1",
-    "EUPL-1.2"
-  ],
-  "review": [
-    "LGPL-2.1",
-    "LGPL-3.0",
-    "MPL-2.0",
-    "EPL-1.0",
-    "EPL-2.0"
-  ],
+  "denied": ["GPL-2.0", "GPL-3.0", "AGPL-3.0", "SSPL-1.0", "EUPL-1.1", "EUPL-1.2"],
+  "review": ["LGPL-2.1", "LGPL-3.0", "MPL-2.0", "EPL-1.0", "EPL-2.0"],
   "notes": {
     "GPL": "Copyleft licenses are denied to avoid distribution obligations",
     "LGPL": "Requires review -- dynamic linking may be acceptable",

@@ -20,8 +20,19 @@ import { API_BASE } from '@/lib/api-config';
 /* ------------------------------------------------------------------ */
 
 export type ModuleId =
-  | 'cover' | 'problems' | 'meds' | 'orders' | 'notes' | 'consults'
-  | 'surgery' | 'dcsumm' | 'labs' | 'reports' | 'vitals' | 'allergies' | 'imaging';
+  | 'cover'
+  | 'problems'
+  | 'meds'
+  | 'orders'
+  | 'notes'
+  | 'consults'
+  | 'surgery'
+  | 'dcsumm'
+  | 'labs'
+  | 'reports'
+  | 'vitals'
+  | 'allergies'
+  | 'imaging';
 
 export interface UIDefaults {
   theme: 'light' | 'dark' | 'system';
@@ -73,11 +84,6 @@ export interface TenantContextValue {
 /* Defaults                                                            */
 /* ------------------------------------------------------------------ */
 
-const ALL_MODULES: ModuleId[] = [
-  'cover', 'problems', 'meds', 'orders', 'notes', 'consults',
-  'surgery', 'dcsumm', 'labs', 'reports', 'vitals', 'allergies', 'imaging',
-];
-
 const DEFAULT_UI: UIDefaults = {
   theme: 'light',
   density: 'comfortable',
@@ -85,7 +91,6 @@ const DEFAULT_UI: UIDefaults = {
   initialTab: 'cover',
   enableDragReorder: false,
 };
-
 
 /* ------------------------------------------------------------------ */
 /* Context + Provider                                                  */
@@ -122,33 +127,41 @@ export function TenantProvider({ children }: { children: ReactNode }) {
     }
   }, [authenticated, fetchTenant]);
 
-  const isModuleEnabled = useCallback((moduleId: string): boolean => {
-    if (!tenant) return true; // before config loads, allow everything
-    // Check tab-level modules (cover, meds, etc.)
-    if (tenant.enabledModules.includes(moduleId as ModuleId)) return true;
-    // Check system-level modules (rcm, telehealth, imaging, etc.) — Phase 135
-    if (tenant.systemModules?.includes(moduleId)) return true;
-    return false;
-  }, [tenant]);
+  const isModuleEnabled = useCallback(
+    (moduleId: string): boolean => {
+      if (!tenant) return true; // before config loads, allow everything
+      // Check tab-level modules (cover, meds, etc.)
+      if (tenant.enabledModules.includes(moduleId as ModuleId)) return true;
+      // Check system-level modules (rcm, telehealth, imaging, etc.) — Phase 135
+      if (tenant.systemModules?.includes(moduleId)) return true;
+      return false;
+    },
+    [tenant]
+  );
 
-  const isFeatureEnabled = useCallback((flagId: string): boolean => {
-    if (!tenant) return true; // before config loads, allow everything
-    return tenant.featureFlags[flagId] !== false;
-  }, [tenant]);
+  const isFeatureEnabled = useCallback(
+    (flagId: string): boolean => {
+      if (!tenant) return true; // before config loads, allow everything
+      return tenant.featureFlags[flagId] !== false;
+    },
+    [tenant]
+  );
 
   const facilityDefaults = tenant?.uiDefaults ?? null;
   const noteTemplates = tenant?.noteTemplates ?? [];
 
   return (
-    <TenantContext.Provider value={{
-      tenant,
-      loading,
-      isModuleEnabled,
-      isFeatureEnabled,
-      facilityDefaults,
-      noteTemplates,
-      refresh: fetchTenant,
-    }}>
+    <TenantContext.Provider
+      value={{
+        tenant,
+        loading,
+        isModuleEnabled,
+        isFeatureEnabled,
+        facilityDefaults,
+        noteTemplates,
+        refresh: fetchTenant,
+      }}
+    >
       {children}
     </TenantContext.Provider>
   );

@@ -12,6 +12,7 @@
 8. No PHI patterns in contract trace module
 
 ## Verification
+
 ```powershell
 $ct = Get-Content apps/api/src/qa/rpc-contract-trace.ts -Raw
 $ct -match 'startTraceSession'         # Gate 1

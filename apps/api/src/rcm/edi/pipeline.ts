@@ -13,12 +13,10 @@ import type {
   EdiClaim837,
   EdiEligibilityInquiry270,
   EdiClaimStatusInquiry276,
-  EdiPriorAuth278,
   PipelineEntry,
   PipelineStage,
   X12TransactionSet,
   EdiResponseError,
-  EdiTransaction,
 } from './types.js';
 import type { Claim } from '../domain/claim.js';
 import { getPayer } from '../payer-registry/registry.js';
@@ -44,7 +42,7 @@ export function initPipelineRepo(repo: PipelineRepo): void {
 }
 
 function dbWarn(op: string, err: any): void {
-  if (process.env.NODE_ENV !== "test") {
+  if (process.env.NODE_ENV !== 'test') {
     log.warn(`[edi-pipeline] DB ${op} failed (cache-only fallback)`, { err: err?.message ?? err });
   }
 }
@@ -64,7 +62,7 @@ export function createPipelineEntry(
   claimId: string,
   transactionSet: X12TransactionSet,
   connectorId: string,
-  payerId: string,
+  payerId: string
 ): PipelineEntry {
   const now = new Date().toISOString();
   const entry: PipelineEntry = {
@@ -87,22 +85,24 @@ export function createPipelineEntry(
 
   // Write-through to DB (Phase 126) — fire-and-forget with .catch
   if (dbRepo) {
-    dbRepo.insertPipelineEntry({
-      id: entry.id,
-      tenantId: 'default',
-      claimId: entry.claimId,
-      transactionSet: entry.transactionSet,
-      stage: entry.stage,
-      connectorId: entry.connectorId,
-      payerId: entry.payerId,
-      outboundPayload: entry.outboundPayload ?? null,
-      inboundPayload: entry.inboundPayload ?? null,
-      errorsJson: JSON.stringify(entry.errors),
-      attempts: entry.attempts,
-      createdAt: entry.createdAt,
-      updatedAt: entry.updatedAt,
-      completedAt: entry.completedAt ?? null,
-    }).catch((err: unknown) => dbWarn('insertPipelineEntry', err));
+    dbRepo
+      .insertPipelineEntry({
+        id: entry.id,
+        tenantId: 'default',
+        claimId: entry.claimId,
+        transactionSet: entry.transactionSet,
+        stage: entry.stage,
+        connectorId: entry.connectorId,
+        payerId: entry.payerId,
+        outboundPayload: entry.outboundPayload ?? null,
+        inboundPayload: entry.inboundPayload ?? null,
+        errorsJson: JSON.stringify(entry.errors),
+        attempts: entry.attempts,
+        createdAt: entry.createdAt,
+        updatedAt: entry.updatedAt,
+        completedAt: entry.completedAt ?? null,
+      })
+      .catch((err: unknown) => dbWarn('insertPipelineEntry', err));
   }
 
   return entry;
@@ -110,15 +110,10 @@ export function createPipelineEntry(
 
 /* ─── Public: advance pipeline stage ──────────────────────────────── */
 
-const STAGE_ORDER: PipelineStage[] = [
-  'build', 'validate', 'enqueue', 'transmit',
-  'ack_pending', 'ack_received', 'response', 'reconciled',
-];
-
 export function advancePipelineStage(
   entryId: string,
   newStage: PipelineStage,
-  payload?: { outbound?: string; inbound?: string; errors?: EdiResponseError[] },
+  payload?: { outbound?: string; inbound?: string; errors?: EdiResponseError[] }
 ): PipelineEntry | null {
   const entry = pipelineEntries.get(entryId);
   if (!entry) return null;
@@ -145,8 +140,7 @@ export function advancePipelineStage(
     if (entry.inboundPayload) updates.inboundPayload = entry.inboundPayload;
     updates.errorsJson = JSON.stringify(entry.errors);
     if (entry.completedAt) updates.completedAt = entry.completedAt;
-    dbRepo.updateEntry(entryId, updates)
-      .catch((err: unknown) => dbWarn('updateEntry', err));
+    dbRepo.updateEntry(entryId, updates).catch((err: unknown) => dbWarn('updateEntry', err));
   }
 
   return entry;
@@ -160,7 +154,7 @@ export function getPipelineEntry(entryId: string): PipelineEntry | undefined {
 
 export function getPipelineEntriesForClaim(claimId: string): PipelineEntry[] {
   const ids = claimIndex.get(claimId) ?? [];
-  return ids.map(id => pipelineEntries.get(id)!).filter(Boolean);
+  return ids.map((id) => pipelineEntries.get(id)!).filter(Boolean);
 }
 
 export function listPipelineEntries(filters?: {
@@ -172,9 +166,10 @@ export function listPipelineEntries(filters?: {
 }): { items: PipelineEntry[]; total: number } {
   let items = Array.from(pipelineEntries.values());
 
-  if (filters?.stage) items = items.filter(e => e.stage === filters.stage);
-  if (filters?.payerId) items = items.filter(e => e.payerId === filters.payerId);
-  if (filters?.transactionSet) items = items.filter(e => e.transactionSet === filters.transactionSet);
+  if (filters?.stage) items = items.filter((e) => e.stage === filters.stage);
+  if (filters?.payerId) items = items.filter((e) => e.payerId === filters.payerId);
+  if (filters?.transactionSet)
+    items = items.filter((e) => e.transactionSet === filters.transactionSet);
 
   const total = items.length;
   const offset = filters?.offset ?? 0;
@@ -191,7 +186,10 @@ export function buildClaim837FromDomain(claim: Claim): EdiClaim837 {
   // In production, this would pull full data from VistA IB/AR files.
   const edi: EdiClaim837 = {
     transactionSet: claim.claimType === 'institutional' ? '837I' : '837P',
-    controlNumber: claim.id.replace(/[^0-9]/g, '').slice(0, 9).padStart(9, '0'),
+    controlNumber: claim.id
+      .replace(/[^0-9]/g, '')
+      .slice(0, 9)
+      .padStart(9, '0'),
     submitterInfo: {
       name: claim.facilityName ?? 'VistA Facility',
       taxId: claim.facilityTaxId ?? '000000000',
@@ -262,7 +260,7 @@ export function buildEligibilityInquiry270(
   payerId: string,
   providerNpi: string,
   patientInfo: { firstName: string; lastName: string; dob?: string },
-  serviceTypeCodes: string[] = ['30'], // default: plan coverage
+  serviceTypeCodes: string[] = ['30'] // default: plan coverage
 ): EdiEligibilityInquiry270 {
   const payer = getPayer(payerId);
   return {
@@ -290,7 +288,7 @@ export function buildEligibilityInquiry270(
 
 export function buildClaimStatusInquiry276(
   claim: Claim,
-  providerNpi: string,
+  providerNpi: string
 ): EdiClaimStatusInquiry276 {
   return {
     transactionSet: '276',

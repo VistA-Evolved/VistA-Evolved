@@ -47,7 +47,12 @@ function envPresent(varName: string): boolean {
   return typeof v === 'string' && v.trim().length > 0;
 }
 
-function checkEnvVar(varName: string, label: string, required: boolean, remediation?: string): ReadinessCheckResult {
+function checkEnvVar(
+  varName: string,
+  label: string,
+  required: boolean,
+  remediation?: string
+): ReadinessCheckResult {
   const present = envPresent(varName);
   return {
     check: label,
@@ -63,25 +68,58 @@ function checkEnvVar(varName: string, label: string, required: boolean, remediat
 function probePhilHealth(): GatewayReadiness {
   const checks: ReadinessCheckResult[] = [];
 
-  checks.push(checkEnvVar('PHILHEALTH_FACILITY_CODE', 'Facility accreditation code', true,
-    'Register facility at https://www.philhealth.gov.ph/partners/providers/'));
-  checks.push(checkEnvVar('PHILHEALTH_API_TOKEN', 'API authentication token', true,
-    'Request eClaims 3.0 API credentials from PhilHealth IT'));
-  checks.push(checkEnvVar('PHILHEALTH_API_ENDPOINT', 'eClaims 3.0 API endpoint', false,
-    'Defaults to https://eclaims3.philhealth.gov.ph/api/v3'));
-  checks.push(checkEnvVar('PHILHEALTH_CERT_PATH', 'TLS client certificate', true,
-    'Generate facility PKI cert via PhilHealth eClaims 3.0 portal'));
-  checks.push(checkEnvVar('PHILHEALTH_CERT_KEY_PATH', 'TLS certificate private key', true,
-    'Must correspond to the facility certificate'));
+  checks.push(
+    checkEnvVar(
+      'PHILHEALTH_FACILITY_CODE',
+      'Facility accreditation code',
+      true,
+      'Register facility at https://www.philhealth.gov.ph/partners/providers/'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'PHILHEALTH_API_TOKEN',
+      'API authentication token',
+      true,
+      'Request eClaims 3.0 API credentials from PhilHealth IT'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'PHILHEALTH_API_ENDPOINT',
+      'eClaims 3.0 API endpoint',
+      false,
+      'Defaults to https://eclaims3.philhealth.gov.ph/api/v3'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'PHILHEALTH_CERT_PATH',
+      'TLS client certificate',
+      true,
+      'Generate facility PKI cert via PhilHealth eClaims 3.0 portal'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'PHILHEALTH_CERT_KEY_PATH',
+      'TLS certificate private key',
+      true,
+      'Must correspond to the facility certificate'
+    )
+  );
 
   // eClaims 3.0 specific: electronic SOA
   const soaConfigured = envPresent('PHILHEALTH_SOA_SIGNING_KEY');
   checks.push({
     check: 'Electronic SOA signing capability',
     status: soaConfigured ? 'green' : 'amber',
-    message: soaConfigured ? 'SOA signing key configured' : 'Electronic SOA signing key not set (PHILHEALTH_SOA_SIGNING_KEY)',
+    message: soaConfigured
+      ? 'SOA signing key configured'
+      : 'Electronic SOA signing key not set (PHILHEALTH_SOA_SIGNING_KEY)',
     required: false,
-    remediation: 'SOA signing will use HMAC-SHA256 with facility key. Configure PHILHEALTH_SOA_SIGNING_KEY for production.',
+    remediation:
+      'SOA signing will use HMAC-SHA256 with facility key. Configure PHILHEALTH_SOA_SIGNING_KEY for production.',
   });
 
   // Test mode check
@@ -89,7 +127,9 @@ function probePhilHealth(): GatewayReadiness {
   checks.push({
     check: 'Production readiness',
     status: testMode ? 'amber' : 'green',
-    message: testMode ? 'Running in TEST mode (PHILHEALTH_TEST_MODE != false)' : 'Production mode enabled',
+    message: testMode
+      ? 'Running in TEST mode (PHILHEALTH_TEST_MODE != false)'
+      : 'Production mode enabled',
     required: false,
   });
 
@@ -118,22 +158,58 @@ function probePhilHealth(): GatewayReadiness {
 function probeEclipse(): GatewayReadiness {
   const checks: ReadinessCheckResult[] = [];
 
-  checks.push(checkEnvVar('ECLIPSE_PRODA_ORG_ID', 'PRODA organisation ID', true,
-    'Register at https://www.servicesaustralia.gov.au/proda'));
-  checks.push(checkEnvVar('ECLIPSE_DEVICE_NAME', 'PRODA device name', true,
-    'Create device in PRODA organisation portal'));
-  checks.push(checkEnvVar('ECLIPSE_CERT_PATH', 'PKI device certificate', true,
-    'Generate device certificate via PRODA portal'));
-  checks.push(checkEnvVar('ECLIPSE_API_ENDPOINT', 'ECLIPSE claiming endpoint', false,
-    'Defaults to https://claiming.eclipseservices.gov.au'));
+  checks.push(
+    checkEnvVar(
+      'ECLIPSE_PRODA_ORG_ID',
+      'PRODA organisation ID',
+      true,
+      'Register at https://www.servicesaustralia.gov.au/proda'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'ECLIPSE_DEVICE_NAME',
+      'PRODA device name',
+      true,
+      'Create device in PRODA organisation portal'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'ECLIPSE_CERT_PATH',
+      'PKI device certificate',
+      true,
+      'Generate device certificate via PRODA portal'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'ECLIPSE_API_ENDPOINT',
+      'ECLIPSE claiming endpoint',
+      false,
+      'Defaults to https://claiming.eclipseservices.gov.au'
+    )
+  );
 
   // Provider number check
-  checks.push(checkEnvVar('ECLIPSE_PROVIDER_NUMBER', 'Medicare provider number', true,
-    'Apply via Services Australia provider registration'));
+  checks.push(
+    checkEnvVar(
+      'ECLIPSE_PROVIDER_NUMBER',
+      'Medicare provider number',
+      true,
+      'Apply via Services Australia provider registration'
+    )
+  );
 
   // HPOS/HPI-I check
-  checks.push(checkEnvVar('ECLIPSE_HPI_I', 'Healthcare Provider Identifier (HPI-I)', false,
-    'Register with Australian Digital Health Agency for HPI-I'));
+  checks.push(
+    checkEnvVar(
+      'ECLIPSE_HPI_I',
+      'Healthcare Provider Identifier (HPI-I)',
+      false,
+      'Register with Australian Digital Health Agency for HPI-I'
+    )
+  );
 
   return {
     gatewayId: 'au-eclipse',
@@ -153,18 +229,48 @@ function probeEclipse(): GatewayReadiness {
 function probeNphc(): GatewayReadiness {
   const checks: ReadinessCheckResult[] = [];
 
-  checks.push(checkEnvVar('NPHC_CORPPASS_CLIENT_ID', 'CorpPass client ID', true,
-    'Register at https://www.corppass.gov.sg/ and request NPHC API access'));
-  checks.push(checkEnvVar('NPHC_CORPPASS_SECRET', 'CorpPass client secret', true,
-    'Issued during CorpPass API onboarding'));
-  checks.push(checkEnvVar('NPHC_FACILITY_LICENSE', 'MOH facility license number', true,
-    'Apply via Singapore MOH at https://www.moh.gov.sg/'));
-  checks.push(checkEnvVar('NPHC_API_ENDPOINT', 'NPHC API endpoint', false,
-    'Defaults to https://api.nphc.gov.sg'));
+  checks.push(
+    checkEnvVar(
+      'NPHC_CORPPASS_CLIENT_ID',
+      'CorpPass client ID',
+      true,
+      'Register at https://www.corppass.gov.sg/ and request NPHC API access'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'NPHC_CORPPASS_SECRET',
+      'CorpPass client secret',
+      true,
+      'Issued during CorpPass API onboarding'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'NPHC_FACILITY_LICENSE',
+      'MOH facility license number',
+      true,
+      'Apply via Singapore MOH at https://www.moh.gov.sg/'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'NPHC_API_ENDPOINT',
+      'NPHC API endpoint',
+      false,
+      'Defaults to https://api.nphc.gov.sg'
+    )
+  );
 
   // Role-based access
-  checks.push(checkEnvVar('NPHC_USER_NRIC_HASH', 'Authorized user NRIC hash', false,
-    'NPHC requires named-user authorization via CorpPass role mapping'));
+  checks.push(
+    checkEnvVar(
+      'NPHC_USER_NRIC_HASH',
+      'Authorized user NRIC hash',
+      false,
+      'NPHC requires named-user authorization via CorpPass role mapping'
+    )
+  );
 
   return {
     gatewayId: 'sg-nphc',
@@ -184,21 +290,47 @@ function probeNphc(): GatewayReadiness {
 function probeAcc(): GatewayReadiness {
   const checks: ReadinessCheckResult[] = [];
 
-  checks.push(checkEnvVar('ACC_NZ_CLIENT_ID', 'OAuth2 client ID', true,
-    'Register as treatment provider at https://www.acc.co.nz/for-providers/ then request API access'));
-  checks.push(checkEnvVar('ACC_NZ_CLIENT_SECRET', 'OAuth2 client secret', true,
-    'Issued during ACC developer portal onboarding'));
-  checks.push(checkEnvVar('ACC_NZ_PROVIDER_ID', 'ACC provider ID', true,
-    'Assigned during provider registration'));
-  checks.push(checkEnvVar('ACC_NZ_API_ENDPOINT', 'ACC API endpoint', false,
-    'Defaults to https://api.acc.co.nz'));
+  checks.push(
+    checkEnvVar(
+      'ACC_NZ_CLIENT_ID',
+      'OAuth2 client ID',
+      true,
+      'Register as treatment provider at https://www.acc.co.nz/for-providers/ then request API access'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'ACC_NZ_CLIENT_SECRET',
+      'OAuth2 client secret',
+      true,
+      'Issued during ACC developer portal onboarding'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'ACC_NZ_PROVIDER_ID',
+      'ACC provider ID',
+      true,
+      'Assigned during provider registration'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'ACC_NZ_API_ENDPOINT',
+      'ACC API endpoint',
+      false,
+      'Defaults to https://api.acc.co.nz'
+    )
+  );
 
   // Sandbox check
   const hasSandbox = envPresent('ACC_NZ_SANDBOX_ENDPOINT');
   checks.push({
     check: 'Sandbox environment',
     status: hasSandbox || envPresent('ACC_NZ_CLIENT_ID') ? 'green' : 'amber',
-    message: hasSandbox ? 'Sandbox endpoint configured' : 'Sandbox at https://sandbox.api.acc.co.nz (default when test mode)',
+    message: hasSandbox
+      ? 'Sandbox endpoint configured'
+      : 'Sandbox at https://sandbox.api.acc.co.nz (default when test mode)',
     required: false,
   });
 
@@ -220,12 +352,30 @@ function probeAcc(): GatewayReadiness {
 function probeUsEdi(): GatewayReadiness {
   const checks: ReadinessCheckResult[] = [];
 
-  checks.push(checkEnvVar('CLEARINGHOUSE_SFTP_HOST', 'Clearinghouse SFTP host', true,
-    'Configure clearinghouse connection (e.g., Availity, Change Healthcare)'));
-  checks.push(checkEnvVar('CLEARINGHOUSE_SFTP_USER', 'SFTP username', true,
-    'Provided by clearinghouse during enrollment'));
-  checks.push(checkEnvVar('CLEARINGHOUSE_SENDER_ID', 'Sender/submitter ID', true,
-    'ISA06 sender ID assigned by clearinghouse'));
+  checks.push(
+    checkEnvVar(
+      'CLEARINGHOUSE_SFTP_HOST',
+      'Clearinghouse SFTP host',
+      true,
+      'Configure clearinghouse connection (e.g., Availity, Change Healthcare)'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'CLEARINGHOUSE_SFTP_USER',
+      'SFTP username',
+      true,
+      'Provided by clearinghouse during enrollment'
+    )
+  );
+  checks.push(
+    checkEnvVar(
+      'CLEARINGHOUSE_SENDER_ID',
+      'Sender/submitter ID',
+      true,
+      'ISA06 sender ID assigned by clearinghouse'
+    )
+  );
 
   return {
     gatewayId: 'us-edi',
@@ -241,9 +391,9 @@ function probeUsEdi(): GatewayReadiness {
 /* ── Overall status computation ──────────────────────────────── */
 
 function computeOverall(checks: ReadinessCheckResult[]): ReadinessStatus {
-  const hasRed = checks.some(c => c.status === 'red' && c.required);
+  const hasRed = checks.some((c) => c.status === 'red' && c.required);
   if (hasRed) return 'red';
-  const hasAmber = checks.some(c => c.status === 'amber' || (c.status === 'red' && !c.required));
+  const hasAmber = checks.some((c) => c.status === 'amber' || (c.status === 'red' && !c.required));
   if (hasAmber) return 'amber';
   return 'green';
 }
@@ -267,7 +417,14 @@ export function probeGateway(id: GatewayId): GatewayReadiness {
       country: '??',
       wireFormat: 'unknown',
       overallStatus: 'red',
-      checks: [{ check: 'Gateway exists', status: 'red', message: `Unknown gateway: ${id}`, required: true }],
+      checks: [
+        {
+          check: 'Gateway exists',
+          status: 'red',
+          message: `Unknown gateway: ${id}`,
+          required: true,
+        },
+      ],
       lastProbeAt: new Date().toISOString(),
     };
   }
@@ -275,7 +432,7 @@ export function probeGateway(id: GatewayId): GatewayReadiness {
 }
 
 export function probeAllGateways(): GatewayReadiness[] {
-  return Object.keys(GATEWAY_PROBES).map(id => probeGateway(id as GatewayId));
+  return Object.keys(GATEWAY_PROBES).map((id) => probeGateway(id as GatewayId));
 }
 
 export function getGatewayIds(): GatewayId[] {

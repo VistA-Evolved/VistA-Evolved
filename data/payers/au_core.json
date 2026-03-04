@@ -17,8 +17,16 @@
       "enrollmentNotes": "All providers must register with Services Australia. Claims via ECLIPSE (Electronic Claim Lodgement and Information Processing Service Environment). HPOS (Health Professional Online Services) for provider registration.",
       "enrollmentUrl": "https://www.servicesaustralia.gov.au/health-professionals",
       "endpoints": [
-        { "purpose": "claims", "protocol": "rest", "notes": "ECLIPSE gateway for Medicare claiming. Requires PRODA (Provider Digital Access) authentication." },
-        { "purpose": "eligibility", "protocol": "rest", "notes": "Medicare Patient Verification (via ECLIPSE DVA/Medicare Online)" }
+        {
+          "purpose": "claims",
+          "protocol": "rest",
+          "notes": "ECLIPSE gateway for Medicare claiming. Requires PRODA (Provider Digital Access) authentication."
+        },
+        {
+          "purpose": "eligibility",
+          "protocol": "rest",
+          "notes": "Medicare Patient Verification (via ECLIPSE DVA/Medicare Online)"
+        }
       ],
       "aliases": ["Medicare AU", "ECLIPSE", "Services Australia"],
       "createdAt": "2026-02-20T00:00:00Z",
@@ -50,7 +58,11 @@
       "enrollmentRequired": true,
       "enrollmentNotes": "Largest AU private insurer. Provider enrollment via Medibank provider portal. ECLIPSE/HICAPS for in-practice claiming.",
       "endpoints": [
-        { "purpose": "claims", "protocol": "portal", "url": "https://www.medibank.com.au/providers/" }
+        {
+          "purpose": "claims",
+          "protocol": "portal",
+          "url": "https://www.medibank.com.au/providers/"
+        }
       ],
       "aliases": ["Medibank"],
       "createdAt": "2026-02-20T00:00:00Z",
@@ -66,7 +78,11 @@
       "enrollmentRequired": true,
       "enrollmentNotes": "Second largest AU private insurer. Provider enrollment via Bupa provider portal. HICAPS terminal for in-practice.",
       "endpoints": [
-        { "purpose": "claims", "protocol": "portal", "url": "https://www.bupa.com.au/health-professionals" }
+        {
+          "purpose": "claims",
+          "protocol": "portal",
+          "url": "https://www.bupa.com.au/health-professionals"
+        }
       ],
       "aliases": ["Bupa AU"],
       "createdAt": "2026-02-20T00:00:00Z",

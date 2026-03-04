@@ -7,7 +7,6 @@ import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
-
 /**
  * Create Note dialog -- Phase 57 write safety model.
  * POST /vista/cprs/notes/create with TIU CREATE RECORD + TIU SET DOCUMENT TEXT.
@@ -26,14 +25,21 @@ export default function CreateNoteDialog() {
   const [syncStatus, setSyncStatus] = useState<'synced' | 'local' | ''>('');
 
   async function handleSave() {
-    if (!noteText.trim()) { setError('Note text is required'); return; }
+    if (!noteText.trim()) {
+      setError('Note text is required');
+      return;
+    }
     setSaving(true);
     setError('');
 
     try {
       const res = await fetch(`${API_BASE}/vista/cprs/notes/create`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Idempotency-Key': `note-${dfn}-${Date.now()}`, ...csrfHeaders() },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Idempotency-Key': `note-${dfn}-${Date.now()}`,
+          ...csrfHeaders(),
+        },
         credentials: 'include',
         body: JSON.stringify({ dfn, titleIen, noteText }),
       });
@@ -76,27 +82,46 @@ export default function CreateNoteDialog() {
   if (!dfn) return null;
 
   return (
-    <div className={styles.modalOverlay} onClick={(e) => e.target === e.currentTarget && closeModal()}>
+    <div
+      className={styles.modalOverlay}
+      onClick={(e) => e.target === e.currentTarget && closeModal()}
+    >
       <div className={styles.modalContent} style={{ maxWidth: 600 }}>
         <div className={styles.modalHeader}>
           <span>Create Note</span>
-          <button onClick={closeModal} style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer' }}>&times;</button>
+          <button
+            onClick={closeModal}
+            style={{ background: 'none', border: 'none', fontSize: 18, cursor: 'pointer' }}
+          >
+            &times;
+          </button>
         </div>
         <div className={styles.modalBody}>
           {error && <div className={styles.errorText}>{error}</div>}
           {success && (
-            <div style={{
-              padding: '6px 10px', borderRadius: 4, marginBottom: 8, fontSize: 12,
-              background: syncStatus === 'synced' ? '#d4edda' : '#fff3cd',
-              border: syncStatus === 'synced' ? '1px solid #28a745' : '1px solid #ffc107',
-            }}>
-              {syncStatus === 'synced' ? 'Note created in VistA' : 'Note saved as local draft (VistA sync pending)'}
+            <div
+              style={{
+                padding: '6px 10px',
+                borderRadius: 4,
+                marginBottom: 8,
+                fontSize: 12,
+                background: syncStatus === 'synced' ? '#d4edda' : '#fff3cd',
+                border: syncStatus === 'synced' ? '1px solid #28a745' : '1px solid #ffc107',
+              }}
+            >
+              {syncStatus === 'synced'
+                ? 'Note created in VistA'
+                : 'Note saved as local draft (VistA sync pending)'}
             </div>
           )}
 
           <div className={styles.formGroup}>
             <label>Note Title IEN</label>
-            <input className={styles.formInput} value={titleIen} onChange={(e) => setTitleIen(e.target.value)} />
+            <input
+              className={styles.formInput}
+              value={titleIen}
+              onChange={(e) => setTitleIen(e.target.value)}
+            />
           </div>
 
           <div className={styles.formGroup}>
@@ -111,8 +136,14 @@ export default function CreateNoteDialog() {
           </div>
 
           <div className={styles.modalFooter}>
-            <button className={styles.btn} onClick={closeModal}>Cancel</button>
-            <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={handleSave} disabled={saving}>
+            <button className={styles.btn} onClick={closeModal}>
+              Cancel
+            </button>
+            <button
+              className={`${styles.btn} ${styles.btnPrimary}`}
+              onClick={handleSave}
+              disabled={saving}
+            >
               {saving ? 'Saving...' : 'Create Note'}
             </button>
           </div>

@@ -7,12 +7,12 @@ It assumes familiarity with the [Observability Runbook](observability.md).
 
 ## Severity Levels
 
-| Level | Description | Response Time | Examples |
-|-------|-------------|---------------|----------|
-| SEV-1 | System down, data integrity at risk | Immediate | Audit chain broken, VistA unreachable + CB open |
-| SEV-2 | Degraded service, single subsystem | 15 min | Connector CB open, high error rate |
-| SEV-3 | Minor degradation, workarounds exist | 1 hour | Slow RPC responses, cache miss spike |
-| SEV-4 | Cosmetic, no user impact | Next business day | Log format issue, metric label typo |
+| Level | Description                          | Response Time     | Examples                                        |
+| ----- | ------------------------------------ | ----------------- | ----------------------------------------------- |
+| SEV-1 | System down, data integrity at risk  | Immediate         | Audit chain broken, VistA unreachable + CB open |
+| SEV-2 | Degraded service, single subsystem   | 15 min            | Connector CB open, high error rate              |
+| SEV-3 | Minor degradation, workarounds exist | 1 hour            | Slow RPC responses, cache miss spike            |
+| SEV-4 | Cosmetic, no user impact             | Next business day | Log format issue, metric label typo             |
 
 ## Common Scenarios
 
@@ -21,6 +21,7 @@ It assumes familiarity with the [Observability Runbook](observability.md).
 **Symptom:** `/ready` returns `ok: false`, `vista_circuit_breaker_state == 1`
 
 **Diagnosis:**
+
 ```bash
 curl http://127.0.0.1:3001/ready
 curl http://127.0.0.1:3001/metrics | grep circuit_breaker
@@ -28,6 +29,7 @@ curl http://127.0.0.1:3001/vista/ping
 ```
 
 **Resolution:**
+
 1. Check VistA container: `docker ps | grep worldvista`
 2. If container down: `cd services/vista && docker compose up -d`
 3. Wait 15s for port 9430 readiness
@@ -35,6 +37,7 @@ curl http://127.0.0.1:3001/vista/ping
 5. Verify: `curl http://127.0.0.1:3001/vista/default-patient-list`
 
 **Escalation:** If VistA container is running but RPC calls fail, check:
+
 - Port 9430 connectivity: `Test-NetConnection -ComputerName 127.0.0.1 -Port 9430`
 - RPC broker logs: `docker logs wv --tail 50`
 
@@ -43,11 +46,13 @@ curl http://127.0.0.1:3001/vista/ping
 **Symptom:** `rcm_connector_health == 0`, claim submissions failing
 
 **Diagnosis:**
+
 ```bash
 curl http://127.0.0.1:3001/admin/connector-cbs
 ```
 
 **Resolution:**
+
 1. Check connector configuration in payer registry
 2. Verify payer endpoint reachability
 3. Reset CB: `curl -X POST http://127.0.0.1:3001/admin/connector-cb/reset -H "Content-Type: application/json" -d '{"connectorId":"clearinghouse"}'`
@@ -58,6 +63,7 @@ curl http://127.0.0.1:3001/admin/connector-cbs
 **Symptom:** `/audit/unified/stats` shows `chainValid: false`
 
 **Diagnosis:**
+
 ```bash
 curl http://127.0.0.1:3001/audit/unified/stats
 curl http://127.0.0.1:3001/iam/audit/verify
@@ -79,6 +85,7 @@ This is a **SEV-1** event — indicates potential tampering or memory corruption
 **Symptom:** `rate(vista_errors_total[5m]) > 10`
 
 **Diagnosis:**
+
 ```bash
 # Check recent errors in structured logs
 docker logs vista-api --since 5m | jq 'select(.level == "error")'
@@ -88,6 +95,7 @@ curl -s http://127.0.0.1:3001/metrics/prometheus | grep vista_errors_total
 ```
 
 **Resolution:**
+
 1. Identify error category from metrics
 2. If `rpc_timeout`: check VistA load, consider increasing `RPC_CALL_TIMEOUT_MS`
 3. If `auth_failure`: check for brute-force attempts, review rate limiter
@@ -98,12 +106,14 @@ curl -s http://127.0.0.1:3001/metrics/prometheus | grep vista_errors_total
 **Symptom:** `process_resident_memory_bytes` growing, OOM kills
 
 **Diagnosis:**
+
 ```bash
 curl http://127.0.0.1:3001/metrics | jq '.process'
 curl -s http://127.0.0.1:3001/metrics/prometheus | grep process_heap
 ```
 
 **Resolution:**
+
 1. Check audit store sizes: `curl http://127.0.0.1:3001/audit/unified/stats`
 2. Immutable audit: 10K entries max (ring buffer, self-limiting)
 3. RCM audit: 20K entries max (FIFO eviction)
@@ -131,13 +141,13 @@ curl -s http://127.0.0.1:3001/metrics/prometheus | grep process_heap
 
 ### Key Fields for Correlation
 
-| Field | Purpose |
-|-------|---------|
-| `requestId` | Correlate all log entries for a single HTTP request |
-| `traceId` | Link to distributed traces in Jaeger |
-| `spanId` | Specific span within the trace |
-| `rpcName` | VistA RPC being called |
-| `connectorId` | RCM connector identifier |
+| Field         | Purpose                                             |
+| ------------- | --------------------------------------------------- |
+| `requestId`   | Correlate all log entries for a single HTTP request |
+| `traceId`     | Link to distributed traces in Jaeger                |
+| `spanId`      | Specific span within the trace                      |
+| `rpcName`     | VistA RPC being called                              |
+| `connectorId` | RCM connector identifier                            |
 
 ### Grep Patterns for Common Issues
 
@@ -157,6 +167,7 @@ grep 'circuit.*breaker' logs/*.log
 **Symptom:** `/iam/audit/verify` or `/imaging/audit/verify` or `/rcm/audit/verify` returns `{ valid: false }`
 
 **Diagnosis:**
+
 ```bash
 curl -s http://127.0.0.1:3001/iam/audit/verify | jq .
 curl -s http://127.0.0.1:3001/imaging/audit/verify | jq .
@@ -166,11 +177,13 @@ npx tsx scripts/security/verify-audit-chain.ts --file logs/immutable-audit.jsonl
 ```
 
 **Resolution:**
+
 - Memory chain reset after API restart is **expected** -- file chain is authoritative
 - If JSONL file chain is broken: preserve file as evidence, investigate, report
 - See `docs/runbooks/audit-integrity.md` for full procedures
 
 **If tampering suspected (SEV-1):**
+
 1. Preserve the broken JSONL file immediately
 2. Do NOT delete or repair -- it is evidence
 3. Compare with most recent backup

@@ -1,15 +1,17 @@
 ---
 name: Documentation request
 about: Improve or add documentation (architecture, runbooks, decisions, onboarding)
-title: "[Docs]: "
-labels: ["type:docs", "needs-triage"]
+title: '[Docs]: '
+labels: ['type:docs', 'needs-triage']
 assignees: []
 ---
 
 ## What doc is needed?
+
 What should exist that doesn’t?
 
 ## Where should it live?
+
 - [ ] docs/README.md
 - [ ] docs/architecture/
 - [ ] docs/decisions/
@@ -19,9 +21,11 @@ What should exist that doesn’t?
 - [ ] scripts/
 
 ## Acceptance criteria
+
 - [ ]
 - [ ]
 
 ## Links
+
 - Notion page link (optional):
 - Related PR / issue:

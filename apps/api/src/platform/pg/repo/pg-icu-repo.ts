@@ -8,8 +8,8 @@
  * Uses Drizzle ORM + pg-core for type-safe queries.
  */
 
-import { eq, and, desc } from "drizzle-orm";
-import { getPgDb } from "../pg-db.js";
+import { eq, and, desc } from 'drizzle-orm';
+import { getPgDb } from '../pg-db.js';
 import {
   pgIcuAdmission,
   pgIcuBed,
@@ -17,7 +17,7 @@ import {
   pgIcuVentRecord,
   pgIcuIoRecord,
   pgIcuScore,
-} from "../pg-schema.js";
+} from '../pg-schema.js';
 
 export type IcuAdmissionRow = typeof pgIcuAdmission.$inferSelect;
 export type IcuBedRow = typeof pgIcuBed.$inferSelect;
@@ -48,16 +48,16 @@ export async function insertIcuAdmission(data: {
   const now = new Date();
   await db.insert(pgIcuAdmission).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     patientDfn: data.patientDfn,
     bedId: data.bedId,
     unit: data.unit,
-    status: data.status ?? "active",
+    status: data.status ?? 'active',
     admitTime: data.admitTime,
     admitSource: data.admitSource,
     attendingProvider: data.attendingProvider,
     diagnosis: data.diagnosis,
-    codeStatus: data.codeStatus ?? "full",
+    codeStatus: data.codeStatus ?? 'full',
     isolationPrecautions: data.isolationPrecautions ?? null,
     dischargeTime: data.dischargeTime ?? null,
     dischargeDisposition: data.dischargeDisposition ?? null,
@@ -74,48 +74,71 @@ export async function findIcuAdmissionById(id: string): Promise<IcuAdmissionRow 
   return rows[0];
 }
 
-export async function findIcuAdmissionsByStatus(status: string, tenantId = "default"): Promise<IcuAdmissionRow[]> {
+export async function findIcuAdmissionsByStatus(
+  status: string,
+  tenantId = 'default'
+): Promise<IcuAdmissionRow[]> {
   const db = getPgDb();
-  return db.select().from(pgIcuAdmission)
+  return db
+    .select()
+    .from(pgIcuAdmission)
     .where(and(eq(pgIcuAdmission.tenantId, tenantId), eq(pgIcuAdmission.status, status)))
     .orderBy(desc(pgIcuAdmission.admitTime));
 }
 
-export async function findIcuAdmissionsByUnit(unit: string, tenantId = "default"): Promise<IcuAdmissionRow[]> {
+export async function findIcuAdmissionsByUnit(
+  unit: string,
+  tenantId = 'default'
+): Promise<IcuAdmissionRow[]> {
   const db = getPgDb();
-  return db.select().from(pgIcuAdmission)
+  return db
+    .select()
+    .from(pgIcuAdmission)
     .where(and(eq(pgIcuAdmission.tenantId, tenantId), eq(pgIcuAdmission.unit, unit)))
     .orderBy(desc(pgIcuAdmission.admitTime));
 }
 
-export async function findIcuAdmissionsByPatient(patientDfn: string, tenantId = "default"): Promise<IcuAdmissionRow[]> {
+export async function findIcuAdmissionsByPatient(
+  patientDfn: string,
+  tenantId = 'default'
+): Promise<IcuAdmissionRow[]> {
   const db = getPgDb();
-  return db.select().from(pgIcuAdmission)
+  return db
+    .select()
+    .from(pgIcuAdmission)
     .where(and(eq(pgIcuAdmission.tenantId, tenantId), eq(pgIcuAdmission.patientDfn, patientDfn)))
     .orderBy(desc(pgIcuAdmission.admitTime));
 }
 
-export async function findAllIcuAdmissions(tenantId = "default"): Promise<IcuAdmissionRow[]> {
+export async function findAllIcuAdmissions(tenantId = 'default'): Promise<IcuAdmissionRow[]> {
   const db = getPgDb();
-  return db.select().from(pgIcuAdmission)
+  return db
+    .select()
+    .from(pgIcuAdmission)
     .where(eq(pgIcuAdmission.tenantId, tenantId))
     .orderBy(desc(pgIcuAdmission.admitTime));
 }
 
-export async function updateIcuAdmission(id: string, patch: Partial<{
-  status: string;
-  bedId: string;
-  attendingProvider: string;
-  codeStatus: string;
-  isolationPrecautions: unknown;
-  dischargeTime: string;
-  dischargeDisposition: string;
-}>): Promise<IcuAdmissionRow | undefined> {
+export async function updateIcuAdmission(
+  id: string,
+  patch: Partial<{
+    status: string;
+    bedId: string;
+    attendingProvider: string;
+    codeStatus: string;
+    isolationPrecautions: unknown;
+    dischargeTime: string;
+    dischargeDisposition: string;
+  }>
+): Promise<IcuAdmissionRow | undefined> {
   const db = getPgDb();
-  await db.update(pgIcuAdmission).set({
-    ...patch,
-    updatedAt: new Date(),
-  } as any).where(eq(pgIcuAdmission.id, id));
+  await db
+    .update(pgIcuAdmission)
+    .set({
+      ...patch,
+      updatedAt: new Date(),
+    } as any)
+    .where(eq(pgIcuAdmission.id, id));
   return findIcuAdmissionById(id);
 }
 
@@ -140,10 +163,10 @@ export async function insertIcuBed(data: {
   const now = new Date();
   await db.insert(pgIcuBed).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     unit: data.unit,
     bedNumber: data.bedNumber,
-    status: data.status ?? "available",
+    status: data.status ?? 'available',
     currentAdmissionId: data.currentAdmissionId ?? null,
     monitors: data.monitors ?? [],
     createdAt: now,
@@ -159,27 +182,35 @@ export async function findIcuBedById(id: string): Promise<IcuBedRow | undefined>
   return rows[0];
 }
 
-export async function findIcuBedsByUnit(unit: string, tenantId = "default"): Promise<IcuBedRow[]> {
+export async function findIcuBedsByUnit(unit: string, tenantId = 'default'): Promise<IcuBedRow[]> {
   const db = getPgDb();
-  return db.select().from(pgIcuBed)
+  return db
+    .select()
+    .from(pgIcuBed)
     .where(and(eq(pgIcuBed.tenantId, tenantId), eq(pgIcuBed.unit, unit)));
 }
 
-export async function findAllIcuBeds(tenantId = "default"): Promise<IcuBedRow[]> {
+export async function findAllIcuBeds(tenantId = 'default'): Promise<IcuBedRow[]> {
   const db = getPgDb();
   return db.select().from(pgIcuBed).where(eq(pgIcuBed.tenantId, tenantId));
 }
 
-export async function updateIcuBed(id: string, patch: Partial<{
-  status: string;
-  currentAdmissionId: string | null;
-  monitors: unknown[];
-}>): Promise<IcuBedRow | undefined> {
+export async function updateIcuBed(
+  id: string,
+  patch: Partial<{
+    status: string;
+    currentAdmissionId: string | null;
+    monitors: unknown[];
+  }>
+): Promise<IcuBedRow | undefined> {
   const db = getPgDb();
-  await db.update(pgIcuBed).set({
-    ...patch,
-    updatedAt: new Date(),
-  } as any).where(eq(pgIcuBed.id, id));
+  await db
+    .update(pgIcuBed)
+    .set({
+      ...patch,
+      updatedAt: new Date(),
+    } as any)
+    .where(eq(pgIcuBed.id, id));
   return findIcuBedById(id);
 }
 
@@ -205,7 +236,7 @@ export async function insertIcuFlowsheetEntry(data: {
   const now = new Date();
   await db.insert(pgIcuFlowsheetEntry).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     admissionId: data.admissionId,
     category: data.category,
     timestamp: data.timestamp,
@@ -218,27 +249,47 @@ export async function insertIcuFlowsheetEntry(data: {
   return row!;
 }
 
-export async function findIcuFlowsheetEntryById(id: string): Promise<IcuFlowsheetEntryRow | undefined> {
+export async function findIcuFlowsheetEntryById(
+  id: string
+): Promise<IcuFlowsheetEntryRow | undefined> {
   const db = getPgDb();
   const rows = await db.select().from(pgIcuFlowsheetEntry).where(eq(pgIcuFlowsheetEntry.id, id));
   return rows[0];
 }
 
-export async function findIcuFlowsheetByAdmission(admissionId: string, tenantId = "default"): Promise<IcuFlowsheetEntryRow[]> {
+export async function findIcuFlowsheetByAdmission(
+  admissionId: string,
+  tenantId = 'default'
+): Promise<IcuFlowsheetEntryRow[]> {
   const db = getPgDb();
-  return db.select().from(pgIcuFlowsheetEntry)
-    .where(and(eq(pgIcuFlowsheetEntry.tenantId, tenantId), eq(pgIcuFlowsheetEntry.admissionId, admissionId)))
+  return db
+    .select()
+    .from(pgIcuFlowsheetEntry)
+    .where(
+      and(
+        eq(pgIcuFlowsheetEntry.tenantId, tenantId),
+        eq(pgIcuFlowsheetEntry.admissionId, admissionId)
+      )
+    )
     .orderBy(desc(pgIcuFlowsheetEntry.timestamp));
 }
 
-export async function findIcuFlowsheetByCategory(admissionId: string, category: string, tenantId = "default"): Promise<IcuFlowsheetEntryRow[]> {
+export async function findIcuFlowsheetByCategory(
+  admissionId: string,
+  category: string,
+  tenantId = 'default'
+): Promise<IcuFlowsheetEntryRow[]> {
   const db = getPgDb();
-  return db.select().from(pgIcuFlowsheetEntry)
-    .where(and(
-      eq(pgIcuFlowsheetEntry.tenantId, tenantId),
-      eq(pgIcuFlowsheetEntry.admissionId, admissionId),
-      eq(pgIcuFlowsheetEntry.category, category),
-    ))
+  return db
+    .select()
+    .from(pgIcuFlowsheetEntry)
+    .where(
+      and(
+        eq(pgIcuFlowsheetEntry.tenantId, tenantId),
+        eq(pgIcuFlowsheetEntry.admissionId, admissionId),
+        eq(pgIcuFlowsheetEntry.category, category)
+      )
+    )
     .orderBy(desc(pgIcuFlowsheetEntry.timestamp));
 }
 
@@ -271,7 +322,7 @@ export async function insertIcuVentRecord(data: {
   const now = new Date();
   await db.insert(pgIcuVentRecord).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     admissionId: data.admissionId,
     timestamp: data.timestamp,
     mode: data.mode,
@@ -297,10 +348,17 @@ export async function findIcuVentRecordById(id: string): Promise<IcuVentRecordRo
   return rows[0];
 }
 
-export async function findIcuVentByAdmission(admissionId: string, tenantId = "default"): Promise<IcuVentRecordRow[]> {
+export async function findIcuVentByAdmission(
+  admissionId: string,
+  tenantId = 'default'
+): Promise<IcuVentRecordRow[]> {
   const db = getPgDb();
-  return db.select().from(pgIcuVentRecord)
-    .where(and(eq(pgIcuVentRecord.tenantId, tenantId), eq(pgIcuVentRecord.admissionId, admissionId)))
+  return db
+    .select()
+    .from(pgIcuVentRecord)
+    .where(
+      and(eq(pgIcuVentRecord.tenantId, tenantId), eq(pgIcuVentRecord.admissionId, admissionId))
+    )
     .orderBy(desc(pgIcuVentRecord.timestamp));
 }
 
@@ -327,7 +385,7 @@ export async function insertIcuIoRecord(data: {
   const now = new Date();
   await db.insert(pgIcuIoRecord).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     admissionId: data.admissionId,
     type: data.type,
     source: data.source,
@@ -347,21 +405,34 @@ export async function findIcuIoRecordById(id: string): Promise<IcuIoRecordRow | 
   return rows[0];
 }
 
-export async function findIcuIoByAdmission(admissionId: string, tenantId = "default"): Promise<IcuIoRecordRow[]> {
+export async function findIcuIoByAdmission(
+  admissionId: string,
+  tenantId = 'default'
+): Promise<IcuIoRecordRow[]> {
   const db = getPgDb();
-  return db.select().from(pgIcuIoRecord)
+  return db
+    .select()
+    .from(pgIcuIoRecord)
     .where(and(eq(pgIcuIoRecord.tenantId, tenantId), eq(pgIcuIoRecord.admissionId, admissionId)))
     .orderBy(desc(pgIcuIoRecord.timestamp));
 }
 
-export async function findIcuIoByType(admissionId: string, type: string, tenantId = "default"): Promise<IcuIoRecordRow[]> {
+export async function findIcuIoByType(
+  admissionId: string,
+  type: string,
+  tenantId = 'default'
+): Promise<IcuIoRecordRow[]> {
   const db = getPgDb();
-  return db.select().from(pgIcuIoRecord)
-    .where(and(
-      eq(pgIcuIoRecord.tenantId, tenantId),
-      eq(pgIcuIoRecord.admissionId, admissionId),
-      eq(pgIcuIoRecord.type, type),
-    ))
+  return db
+    .select()
+    .from(pgIcuIoRecord)
+    .where(
+      and(
+        eq(pgIcuIoRecord.tenantId, tenantId),
+        eq(pgIcuIoRecord.admissionId, admissionId),
+        eq(pgIcuIoRecord.type, type)
+      )
+    )
     .orderBy(desc(pgIcuIoRecord.timestamp));
 }
 
@@ -387,7 +458,7 @@ export async function insertIcuScore(data: {
   const now = new Date();
   await db.insert(pgIcuScore).values({
     id: data.id,
-    tenantId: data.tenantId ?? "default",
+    tenantId: data.tenantId ?? 'default',
     admissionId: data.admissionId,
     scoreType: data.scoreType,
     score: data.score,
@@ -406,21 +477,34 @@ export async function findIcuScoreById(id: string): Promise<IcuScoreRow | undefi
   return rows[0];
 }
 
-export async function findIcuScoresByAdmission(admissionId: string, tenantId = "default"): Promise<IcuScoreRow[]> {
+export async function findIcuScoresByAdmission(
+  admissionId: string,
+  tenantId = 'default'
+): Promise<IcuScoreRow[]> {
   const db = getPgDb();
-  return db.select().from(pgIcuScore)
+  return db
+    .select()
+    .from(pgIcuScore)
     .where(and(eq(pgIcuScore.tenantId, tenantId), eq(pgIcuScore.admissionId, admissionId)))
     .orderBy(desc(pgIcuScore.timestamp));
 }
 
-export async function findIcuScoresByType(admissionId: string, scoreType: string, tenantId = "default"): Promise<IcuScoreRow[]> {
+export async function findIcuScoresByType(
+  admissionId: string,
+  scoreType: string,
+  tenantId = 'default'
+): Promise<IcuScoreRow[]> {
   const db = getPgDb();
-  return db.select().from(pgIcuScore)
-    .where(and(
-      eq(pgIcuScore.tenantId, tenantId),
-      eq(pgIcuScore.admissionId, admissionId),
-      eq(pgIcuScore.scoreType, scoreType),
-    ))
+  return db
+    .select()
+    .from(pgIcuScore)
+    .where(
+      and(
+        eq(pgIcuScore.tenantId, tenantId),
+        eq(pgIcuScore.admissionId, admissionId),
+        eq(pgIcuScore.scoreType, scoreType)
+      )
+    )
     .orderBy(desc(pgIcuScore.timestamp));
 }
 

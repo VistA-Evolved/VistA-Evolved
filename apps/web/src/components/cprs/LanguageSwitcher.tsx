@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 /**
  * LanguageSwitcher — Phase 132: Globe icon dropdown for locale selection.
@@ -8,9 +8,9 @@
  * supported languages.
  */
 
-import { useState, useRef, useEffect } from "react";
-import { useLocale } from "@/components/I18nProvider";
-import { SUPPORTED_LOCALES, LOCALE_LABELS, type SupportedLocale } from "@/lib/i18n";
+import { useState, useRef, useEffect } from 'react';
+import { useLocale } from '@/components/I18nProvider';
+import { SUPPORTED_LOCALES, LOCALE_LABELS } from '@/lib/i18n';
 
 export function LanguageSwitcher() {
   const { locale, setLocale } = useLocale();
@@ -25,48 +25,48 @@ export function LanguageSwitcher() {
       }
     }
     if (open) {
-      document.addEventListener("mousedown", handleClick);
-      return () => document.removeEventListener("mousedown", handleClick);
+      document.addEventListener('mousedown', handleClick);
+      return () => document.removeEventListener('mousedown', handleClick);
     }
   }, [open]);
 
   return (
-    <div ref={ref} style={{ position: "relative", display: "inline-block" }}>
+    <div ref={ref} style={{ position: 'relative', display: 'inline-block' }}>
       <button
         onClick={() => setOpen(!open)}
         style={{
-          background: "transparent",
-          border: "1px solid #555",
+          background: 'transparent',
+          border: '1px solid #555',
           borderRadius: 4,
-          color: "inherit",
-          cursor: "pointer",
-          padding: "2px 8px",
-          fontSize: "12px",
-          display: "flex",
-          alignItems: "center",
-          gap: "4px",
+          color: 'inherit',
+          cursor: 'pointer',
+          padding: '2px 8px',
+          fontSize: '12px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '4px',
         }}
         title="Switch Language"
         aria-label="Switch Language"
       >
-        <span style={{ fontSize: "14px" }}>🌐</span>
+        <span style={{ fontSize: '14px' }}>🌐</span>
         <span>{locale.toUpperCase()}</span>
       </button>
 
       {open && (
         <div
           style={{
-            position: "absolute",
-            top: "100%",
+            position: 'absolute',
+            top: '100%',
             right: 0,
             marginTop: 4,
-            background: "#fff",
-            border: "1px solid #ddd",
+            background: '#fff',
+            border: '1px solid #ddd',
             borderRadius: 6,
-            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
             minWidth: 140,
             zIndex: 9999,
-            overflow: "hidden",
+            overflow: 'hidden',
           }}
         >
           {SUPPORTED_LOCALES.map((loc) => (
@@ -77,15 +77,15 @@ export function LanguageSwitcher() {
                 setOpen(false);
               }}
               style={{
-                display: "block",
-                width: "100%",
-                padding: "8px 14px",
-                border: "none",
-                background: locale === loc ? "#e8f0fe" : "transparent",
-                color: "#333",
-                cursor: "pointer",
-                textAlign: "left",
-                fontSize: "13px",
+                display: 'block',
+                width: '100%',
+                padding: '8px 14px',
+                border: 'none',
+                background: locale === loc ? '#e8f0fe' : 'transparent',
+                color: '#333',
+                cursor: 'pointer',
+                textAlign: 'left',
+                fontSize: '13px',
                 fontWeight: locale === loc ? 600 : 400,
               }}
             >

@@ -40,7 +40,18 @@
         },
         "category": {
           "type": "string",
-          "enum": ["clinical", "admin", "imaging", "scheduling", "portal", "reporting", "infrastructure", "pharmacy", "lab", "mental-health"]
+          "enum": [
+            "clinical",
+            "admin",
+            "imaging",
+            "scheduling",
+            "portal",
+            "reporting",
+            "infrastructure",
+            "pharmacy",
+            "lab",
+            "mental-health"
+          ]
         },
         "description": {
           "type": "string"
@@ -101,14 +112,33 @@
     },
     "Coverage": {
       "type": "object",
-      "required": ["present_ui", "present_api", "vista_rpc_wired", "writeback_ready", "tests_present", "evidence_present"],
+      "required": [
+        "present_ui",
+        "present_api",
+        "vista_rpc_wired",
+        "writeback_ready",
+        "tests_present",
+        "evidence_present"
+      ],
       "properties": {
-        "present_ui": { "type": "boolean", "description": "UI page/component exists in VistA-Evolved" },
+        "present_ui": {
+          "type": "boolean",
+          "description": "UI page/component exists in VistA-Evolved"
+        },
         "present_api": { "type": "boolean", "description": "API route exists for this surface" },
-        "vista_rpc_wired": { "type": "boolean", "description": "RPC calls wired through rpcBrokerClient" },
+        "vista_rpc_wired": {
+          "type": "boolean",
+          "description": "RPC calls wired through rpcBrokerClient"
+        },
         "writeback_ready": { "type": "boolean", "description": "Write operations are functional" },
-        "tests_present": { "type": "boolean", "description": "E2E or API tests cover this surface" },
-        "evidence_present": { "type": "boolean", "description": "Evidence artifacts exist for verification" }
+        "tests_present": {
+          "type": "boolean",
+          "description": "E2E or API tests cover this surface"
+        },
+        "evidence_present": {
+          "type": "boolean",
+          "description": "Evidence artifacts exist for verification"
+        }
       }
     },
     "VeEquivalent": {

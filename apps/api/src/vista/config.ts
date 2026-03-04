@@ -18,16 +18,16 @@
  * └──────────────────────────────────────────────────────────────────────┘
  */
 
-export const VISTA_HOST = process.env.VISTA_HOST || "127.0.0.1";
+export const VISTA_HOST = process.env.VISTA_HOST || '127.0.0.1';
 export const VISTA_PORT = Number(process.env.VISTA_PORT || 9430);
 export const VISTA_ACCESS_CODE = process.env.VISTA_ACCESS_CODE;
 export const VISTA_VERIFY_CODE = process.env.VISTA_VERIFY_CODE;
-export const VISTA_CONTEXT = process.env.VISTA_CONTEXT || "OR CPRS GUI CHART";
+export const VISTA_CONTEXT = process.env.VISTA_CONTEXT || 'OR CPRS GUI CHART';
 
 export const validateCredentials = (): void => {
   if (!VISTA_ACCESS_CODE || !VISTA_VERIFY_CODE) {
     throw new Error(
-      "Missing VistA credentials. Create apps/api/.env.local and set:\nVISTA_ACCESS_CODE=<code>\nVISTA_VERIFY_CODE=<code>\nVISTA_HOST=127.0.0.1\nVISTA_PORT=9430"
+      'Missing VistA credentials. Create apps/api/.env.local and set:\nVISTA_ACCESS_CODE=<code>\nVISTA_VERIFY_CODE=<code>\nVISTA_HOST=127.0.0.1\nVISTA_PORT=9430'
     );
   }
 };

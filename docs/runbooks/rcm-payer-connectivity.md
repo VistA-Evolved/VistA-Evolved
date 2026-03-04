@@ -17,25 +17,25 @@ Claim Draft → Validate → Submit → EDI Pipeline → Connector → Payer
 
 ### Components
 
-| Component | File | Purpose |
-|-----------|------|---------|
-| Domain model | `apps/api/src/rcm/domain/claim.ts` | Claim entity, lifecycle states, transitions |
-| Claim store | `apps/api/src/rcm/domain/claim-store.ts` | In-memory claim + remittance storage |
-| Payer registry | `apps/api/src/rcm/payer-registry/registry.ts` | Payer catalog with seed data |
-| EDI types | `apps/api/src/rcm/edi/types.ts` | X12 transaction set definitions |
-| EDI pipeline | `apps/api/src/rcm/edi/pipeline.ts` | Build → validate → send → track |
-| Validation engine | `apps/api/src/rcm/validation/engine.ts` | Multi-layer claim validation |
-| Connectors | `apps/api/src/rcm/connectors/*.ts` | Pluggable transport layer |
-| RCM audit | `apps/api/src/rcm/audit/rcm-audit.ts` | Hash-chained audit trail |
-| API routes | `apps/api/src/rcm/rcm-routes.ts` | REST endpoints |
-| UI | `apps/web/src/app/cprs/admin/rcm/page.tsx` | Tabbed admin interface |
+| Component         | File                                          | Purpose                                     |
+| ----------------- | --------------------------------------------- | ------------------------------------------- |
+| Domain model      | `apps/api/src/rcm/domain/claim.ts`            | Claim entity, lifecycle states, transitions |
+| Claim store       | `apps/api/src/rcm/domain/claim-store.ts`      | In-memory claim + remittance storage        |
+| Payer registry    | `apps/api/src/rcm/payer-registry/registry.ts` | Payer catalog with seed data                |
+| EDI types         | `apps/api/src/rcm/edi/types.ts`               | X12 transaction set definitions             |
+| EDI pipeline      | `apps/api/src/rcm/edi/pipeline.ts`            | Build → validate → send → track             |
+| Validation engine | `apps/api/src/rcm/validation/engine.ts`       | Multi-layer claim validation                |
+| Connectors        | `apps/api/src/rcm/connectors/*.ts`            | Pluggable transport layer                   |
+| RCM audit         | `apps/api/src/rcm/audit/rcm-audit.ts`         | Hash-chained audit trail                    |
+| API routes        | `apps/api/src/rcm/rcm-routes.ts`              | REST endpoints                              |
+| UI                | `apps/web/src/app/cprs/admin/rcm/page.tsx`    | Tabbed admin interface                      |
 
 ### Seed Data
 
-| File | Payers | Notes |
-|------|--------|-------|
-| `data/payers/us_core.json` | 12 | Medicare A/B, Medicaid, TRICARE, CHAMPVA, BCBS, UHC, Aetna, Cigna, Humana, Kaiser, Workers Comp |
-| `data/payers/ph_hmos.json` | 15 | PhilHealth + 14 licensed HMOs |
+| File                       | Payers | Notes                                                                                           |
+| -------------------------- | ------ | ----------------------------------------------------------------------------------------------- |
+| `data/payers/us_core.json` | 12     | Medicare A/B, Medicaid, TRICARE, CHAMPVA, BCBS, UHC, Aetna, Cigna, Humana, Kaiser, Workers Comp |
+| `data/payers/ph_hmos.json` | 15     | PhilHealth + 14 licensed HMOs                                                                   |
 
 ## Prerequisites
 
@@ -45,6 +45,7 @@ Claim Draft → Validate → Submit → EDI Pipeline → Connector → Payer
 ## API Endpoints
 
 ### Payers
+
 ```bash
 # List payers
 curl -b cookies.txt http://localhost:3001/rcm/payers
@@ -60,6 +61,7 @@ curl -b cookies.txt http://localhost:3001/rcm/payers/stats
 ```
 
 ### Claims
+
 ```bash
 # Create draft claim
 curl -b cookies.txt -X POST http://localhost:3001/rcm/claims/draft \
@@ -80,6 +82,7 @@ curl -b cookies.txt http://localhost:3001/rcm/claims/{id}/timeline
 ```
 
 ### Eligibility
+
 ```bash
 curl -b cookies.txt -X POST http://localhost:3001/rcm/eligibility/check \
   -H "Content-Type: application/json" \
@@ -87,6 +90,7 @@ curl -b cookies.txt -X POST http://localhost:3001/rcm/eligibility/check \
 ```
 
 ### EDI Pipeline & Connectors
+
 ```bash
 # Pipeline entries
 curl -b cookies.txt http://localhost:3001/rcm/edi/pipeline
@@ -102,6 +106,7 @@ curl -b cookies.txt http://localhost:3001/rcm/connectors/health
 ```
 
 ### Audit
+
 ```bash
 # Audit entries
 curl -b cookies.txt "http://localhost:3001/rcm/audit?limit=50"
@@ -122,6 +127,7 @@ draft → validated → submitted → accepted → paid → closed
 ```
 
 Valid transitions:
+
 - `draft` → `validated`
 - `validated` → `submitted`
 - `submitted` → `accepted` | `rejected`
@@ -143,29 +149,29 @@ Run `GET /rcm/validation/rules` to see all active rules. Categories:
 
 ## Connectors
 
-| ID | Name | Modes | Notes |
-|----|------|-------|-------|
-| `sandbox` | Sandbox | All modes | Simulated responses, configurable rejection rate |
-| `clearinghouse-edi` | EDI Clearinghouse | `clearinghouse_edi` | SFTP/API (config via env vars) |
-| `philhealth-eclaims` | PhilHealth eClaims | `government_portal` | REST API (config via env vars) |
-| `portal-batch` | Portal/Batch | `portal_batch` | Manual upload queue |
+| ID                   | Name               | Modes               | Notes                                            |
+| -------------------- | ------------------ | ------------------- | ------------------------------------------------ |
+| `sandbox`            | Sandbox            | All modes           | Simulated responses, configurable rejection rate |
+| `clearinghouse-edi`  | EDI Clearinghouse  | `clearinghouse_edi` | SFTP/API (config via env vars)                   |
+| `philhealth-eclaims` | PhilHealth eClaims | `government_portal` | REST API (config via env vars)                   |
+| `portal-batch`       | Portal/Batch       | `portal_batch`      | Manual upload queue                              |
 
 ## Environment Variables
 
-| Var | Default | Purpose |
-|-----|---------|---------|
-| `RCM_SANDBOX_REJECTION_RATE` | `0.1` | Sandbox rejection rate (0.0-1.0) |
-| `RCM_CH_SFTP_HOST` | - | Clearinghouse SFTP host |
-| `RCM_CH_SFTP_PORT` | `22` | Clearinghouse SFTP port |
-| `RCM_CH_SFTP_USER` | - | Clearinghouse SFTP user |
-| `RCM_CH_API_ENDPOINT` | - | Clearinghouse REST API |
-| `RCM_CH_API_KEY` | - | Clearinghouse API key |
-| `RCM_CH_SENDER_ID` | `VISTAEVOLVED` | ISA sender ID |
-| `RCM_CH_RECEIVER_ID` | `CLEARINGHOUSE` | ISA receiver ID |
-| `PHILHEALTH_API_ENDPOINT` | eClaims URL | PhilHealth API |
-| `PHILHEALTH_FACILITY_CODE` | - | PhilHealth facility code |
-| `PHILHEALTH_API_TOKEN` | - | PhilHealth API token |
-| `PHILHEALTH_TEST_MODE` | `true` | PhilHealth test mode |
+| Var                          | Default         | Purpose                          |
+| ---------------------------- | --------------- | -------------------------------- |
+| `RCM_SANDBOX_REJECTION_RATE` | `0.1`           | Sandbox rejection rate (0.0-1.0) |
+| `RCM_CH_SFTP_HOST`           | -               | Clearinghouse SFTP host          |
+| `RCM_CH_SFTP_PORT`           | `22`            | Clearinghouse SFTP port          |
+| `RCM_CH_SFTP_USER`           | -               | Clearinghouse SFTP user          |
+| `RCM_CH_API_ENDPOINT`        | -               | Clearinghouse REST API           |
+| `RCM_CH_API_KEY`             | -               | Clearinghouse API key            |
+| `RCM_CH_SENDER_ID`           | `VISTAEVOLVED`  | ISA sender ID                    |
+| `RCM_CH_RECEIVER_ID`         | `CLEARINGHOUSE` | ISA receiver ID                  |
+| `PHILHEALTH_API_ENDPOINT`    | eClaims URL     | PhilHealth API                   |
+| `PHILHEALTH_FACILITY_CODE`   | -               | PhilHealth facility code         |
+| `PHILHEALTH_API_TOKEN`       | -               | PhilHealth API token             |
+| `PHILHEALTH_TEST_MODE`       | `true`          | PhilHealth test mode             |
 
 ## Troubleshooting
 

@@ -16,28 +16,33 @@ and shift handoff (Phase 86) subsystems with:
 ## Implementation Steps
 
 ### Step 1 — Infrastructure Wiring
+
 - Add `nursing.*`, `emar.*`, `handoff.*` audit actions to `immutable-audit.ts`
 - Add PSB MED LOG, PSB ALLERGY, PSJBCMA to `rpcRegistry.ts` RPC_EXCEPTIONS
 - Add missing capabilities to `capabilities.json` (handoff, flowsheet, io, assessments, emar)
 - Add `^/emar/` and `^/handoff/` to clinical module in `modules.json`
 
 ### Step 2 — API Route Hardening
+
 - Add `immutableAudit()` calls to all nursing, eMAR, and handoff read/write endpoints
 - Fix `pendingFallback` returns to use `ok: false` in nursing and eMAR routes
 - Ensure all error paths are consistent
 
 ### Step 3 — UI Enhancement
+
 - Add `csrfHeaders()` to NursingPanel.tsx fetch helper
 - Add Flowsheet sub-tab (calls `/vista/nursing/flowsheet?dfn=`)
 - Add Handoff sub-tab (shows handoff reports list from `/handoff/reports`)
 - Improve MAR tab to show eMAR schedule when available
 
 ### Step 4 — Verify
+
 - TypeScript build clean
 - Vitest 20/20 files, 413+ tests
 - Gauntlet FAST + RC pass
 
 ## Files Touched
+
 - `apps/api/src/lib/immutable-audit.ts` — add audit action types
 - `apps/api/src/vista/rpcRegistry.ts` — add BCMA/PSB RPCs to exceptions
 - `config/capabilities.json` — add 8 new capabilities
@@ -48,5 +53,6 @@ and shift handoff (Phase 86) subsystems with:
 - `apps/web/src/components/cprs/panels/NursingPanel.tsx` — CSRF + new tabs
 
 ## Verification
+
 - `scripts/verify-latest.ps1`
 - Gauntlet FAST + RC

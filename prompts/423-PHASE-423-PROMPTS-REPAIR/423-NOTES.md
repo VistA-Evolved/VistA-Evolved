@@ -6,6 +6,7 @@
 - **Dependencies**: None (first phase in W26)
 
 ## Key Decisions
+
 1. Wave-level audit folders (263, 290, 326) use `WAVE-N-` naming instead of
    `PHASE-NNN-` to avoid collisions with real phase folders at those numbers.
 2. Legacy 283/284 duplicate-phase WARNs left as-is — the 300+ prefix≠PHASE

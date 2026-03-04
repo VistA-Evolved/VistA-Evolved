@@ -15,7 +15,7 @@
 /* Core types                                                          */
 /* ------------------------------------------------------------------ */
 
-export type BiometricMethod = "passkey" | "face" | "fingerprint";
+export type BiometricMethod = 'passkey' | 'face' | 'fingerprint';
 
 export interface BiometricAuthProvider {
   /** Provider identifier */
@@ -42,7 +42,10 @@ export interface BiometricAuthProvider {
   /**
    * Complete a registration ceremony with the client's response.
    */
-  completeRegistration(userId: string, response: BiometricRegistrationResponse): Promise<BiometricRegistrationResult>;
+  completeRegistration(
+    userId: string,
+    response: BiometricRegistrationResponse
+  ): Promise<BiometricRegistrationResult>;
 
   /**
    * Begin an authentication ceremony (e.g., WebAuthn assertion).
@@ -52,7 +55,9 @@ export interface BiometricAuthProvider {
   /**
    * Complete an authentication ceremony with the client's response.
    */
-  completeAuthentication(response: BiometricAuthenticationResponse): Promise<BiometricAuthenticationResult>;
+  completeAuthentication(
+    response: BiometricAuthenticationResponse
+  ): Promise<BiometricAuthenticationResult>;
 
   /**
    * List registered credentials for a user.
@@ -163,7 +168,7 @@ export const DEFAULT_FACE_CONFIG: FaceVerificationConfig = {
   requireTenantApproval: true,
   requireLivenessCheck: true,
   storeRawImages: false,
-  vendorId: "none",
+  vendorId: 'none',
   maxTemplateSizeBytes: 4096,
 };
 
@@ -175,9 +180,9 @@ export interface BiometricAuditEvent {
   /** Which biometric method */
   method: BiometricMethod;
   /** Registration or authentication */
-  ceremony: "registration" | "authentication";
+  ceremony: 'registration' | 'authentication';
   /** Success or failure */
-  outcome: "success" | "failure";
+  outcome: 'success' | 'failure';
   /** User ID involved */
   userId: string;
   /** No raw biometric data — only metadata */

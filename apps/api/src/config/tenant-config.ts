@@ -15,7 +15,6 @@
  */
 
 import {
-  dbGetTenant,
   dbListTenants,
   dbUpsertTenant,
   dbDeleteTenant,
@@ -24,7 +23,7 @@ import {
   dbUpdateEnabledModules,
   seedDefaultTenantToDb,
   type TenantConfigRow,
-} from "../platform/pg/repo/tenant-config-repo.js";
+} from '../platform/pg/repo/tenant-config-repo.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -32,37 +31,48 @@ import {
 
 /** Module IDs correspond to tab slugs from contracts/data/tabs.json */
 export type ModuleId =
-  | "cover"
-  | "problems"
-  | "meds"
-  | "orders"
-  | "notes"
-  | "consults"
-  | "surgery"
-  | "dcsumm"
-  | "labs"
-  | "reports"
-  | "vitals"
-  | "allergies"
-  | "imaging";
+  | 'cover'
+  | 'problems'
+  | 'meds'
+  | 'orders'
+  | 'notes'
+  | 'consults'
+  | 'surgery'
+  | 'dcsumm'
+  | 'labs'
+  | 'reports'
+  | 'vitals'
+  | 'allergies'
+  | 'imaging';
 
 /** All known module IDs (used as default enabled set). */
 export const ALL_MODULES: ModuleId[] = [
-  "cover", "problems", "meds", "orders", "notes", "consults",
-  "surgery", "dcsumm", "labs", "reports", "vitals", "allergies", "imaging",
+  'cover',
+  'problems',
+  'meds',
+  'orders',
+  'notes',
+  'consults',
+  'surgery',
+  'dcsumm',
+  'labs',
+  'reports',
+  'vitals',
+  'allergies',
+  'imaging',
 ];
 
 /** Feature flag identifiers — extensible union. */
 export type FeatureFlagId =
-  | "notes.templates"
-  | "orders.sign"
-  | "orders.release"
-  | "imaging.viewer"
-  | "rpc.console"
-  | "write-backs.enabled"
-  | "drag-reorder.coversheet"
-  | "remote-data.enabled"
-  | "rcm.enabled";
+  | 'notes.templates'
+  | 'orders.sign'
+  | 'orders.release'
+  | 'imaging.viewer'
+  | 'rpc.console'
+  | 'write-backs.enabled'
+  | 'drag-reorder.coversheet'
+  | 'remote-data.enabled'
+  | 'rcm.enabled';
 
 /** Per-tenant feature flags. */
 export interface FeatureFlags {
@@ -71,22 +81,22 @@ export interface FeatureFlags {
 
 /** Default feature flags — everything enabled. */
 export const DEFAULT_FEATURE_FLAGS: FeatureFlags = {
-  "notes.templates": true,
-  "orders.sign": true,
-  "orders.release": true,
-  "imaging.viewer": true,
-  "rpc.console": true,
-  "write-backs.enabled": true,
-  "drag-reorder.coversheet": true,
-  "remote-data.enabled": true,
-  "rcm.enabled": false,
+  'notes.templates': true,
+  'orders.sign': true,
+  'orders.release': true,
+  'imaging.viewer': true,
+  'rpc.console': true,
+  'write-backs.enabled': true,
+  'drag-reorder.coversheet': true,
+  'remote-data.enabled': true,
+  'rcm.enabled': false,
 };
 
 /** UI defaults that a facility admin can set as base preferences. */
 export interface UIDefaults {
-  theme: "light" | "dark" | "system";
-  density: "comfortable" | "compact" | "dense" | "balanced";
-  layoutMode: "cprs" | "modern";
+  theme: 'light' | 'dark' | 'system';
+  density: 'comfortable' | 'compact' | 'dense' | 'balanced';
+  layoutMode: 'cprs' | 'modern';
   initialTab: string;
   enableDragReorder: boolean;
   /** Phase 281: Default theme pack for new users at this facility */
@@ -94,12 +104,12 @@ export interface UIDefaults {
 }
 
 export const DEFAULT_UI_DEFAULTS: UIDefaults = {
-  theme: "light",
-  density: "comfortable",
-  layoutMode: "cprs",
-  initialTab: "cover",
+  theme: 'light',
+  density: 'comfortable',
+  layoutMode: 'cprs',
+  initialTab: 'cover',
   enableDragReorder: false,
-  themePack: "modern-default",
+  themePack: 'modern-default',
 };
 
 /* ------------------------------------------------------------------ */
@@ -129,12 +139,12 @@ export interface BrandingConfig {
 }
 
 export const DEFAULT_BRANDING: BrandingConfig = {
-  logoUrl: "",
-  faviconUrl: "",
-  primaryColor: "",
-  secondaryColor: "",
-  headerText: "",
-  footerText: "",
+  logoUrl: '',
+  faviconUrl: '',
+  primaryColor: '',
+  secondaryColor: '',
+  headerText: '',
+  footerText: '',
   enabled: false,
 };
 
@@ -146,16 +156,17 @@ const HTTPS_URL_RE = /^https:\/\/.{1,2040}$/;
 /** Strip HTML tags and control characters from plain text. */
 function sanitizeText(text: string, maxLen: number): string {
   return text
-    .replace(/<[^>]*>/g, "")             // strip HTML tags
-    .replace(/[^\x20-\x7E\u00A0-\uFFFF]/g, "") // strip control chars
+    .replace(/<[^>]*>/g, '') // strip HTML tags
+    .replace(/[^\x20-\x7E\u00A0-\uFFFF]/g, '') // strip control chars
     .slice(0, maxLen)
     .trim();
 }
 
 /** Validate and sanitize a branding config. Returns sanitized copy + errors. */
-export function sanitizeBranding(
-  input: Partial<BrandingConfig>,
-): { branding: BrandingConfig; errors: string[] } {
+export function sanitizeBranding(input: Partial<BrandingConfig>): {
+  branding: BrandingConfig;
+  errors: string[];
+} {
   const errors: string[] = [];
   const branding: BrandingConfig = { ...DEFAULT_BRANDING };
 
@@ -163,8 +174,8 @@ export function sanitizeBranding(
   if (input.logoUrl) {
     if (HTTPS_URL_RE.test(input.logoUrl)) {
       branding.logoUrl = input.logoUrl;
-    } else if (input.logoUrl.trim() !== "") {
-      errors.push("logoUrl must be a valid HTTPS URL (max 2048 chars)");
+    } else if (input.logoUrl.trim() !== '') {
+      errors.push('logoUrl must be a valid HTTPS URL (max 2048 chars)');
     }
   }
 
@@ -172,8 +183,8 @@ export function sanitizeBranding(
   if (input.faviconUrl) {
     if (HTTPS_URL_RE.test(input.faviconUrl)) {
       branding.faviconUrl = input.faviconUrl;
-    } else if (input.faviconUrl.trim() !== "") {
-      errors.push("faviconUrl must be a valid HTTPS URL (max 2048 chars)");
+    } else if (input.faviconUrl.trim() !== '') {
+      errors.push('faviconUrl must be a valid HTTPS URL (max 2048 chars)');
     }
   }
 
@@ -181,8 +192,8 @@ export function sanitizeBranding(
   if (input.primaryColor) {
     if (HEX_COLOR_RE.test(input.primaryColor)) {
       branding.primaryColor = input.primaryColor;
-    } else if (input.primaryColor.trim() !== "") {
-      errors.push("primaryColor must be a 6-digit hex color (e.g. #003366)");
+    } else if (input.primaryColor.trim() !== '') {
+      errors.push('primaryColor must be a 6-digit hex color (e.g. #003366)');
     }
   }
 
@@ -190,8 +201,8 @@ export function sanitizeBranding(
   if (input.secondaryColor) {
     if (HEX_COLOR_RE.test(input.secondaryColor)) {
       branding.secondaryColor = input.secondaryColor;
-    } else if (input.secondaryColor.trim() !== "") {
-      errors.push("secondaryColor must be a 6-digit hex color (e.g. #0078d4)");
+    } else if (input.secondaryColor.trim() !== '') {
+      errors.push('secondaryColor must be a 6-digit hex color (e.g. #0078d4)');
     }
   }
 
@@ -229,11 +240,11 @@ export interface NoteTemplate {
 export interface ConnectorConfig {
   id: string;
   label: string;
-  type: "vista-rpc" | "fhir" | "imaging" | "external";
+  type: 'vista-rpc' | 'fhir' | 'imaging' | 'external';
   host: string;
   port: number;
   /** Last known status */
-  status: "connected" | "disconnected" | "degraded" | "unknown";
+  status: 'connected' | 'disconnected' | 'degraded' | 'unknown';
   /** Last checked timestamp (ISO) */
   lastChecked: string | null;
 }
@@ -312,9 +323,9 @@ function fromRow(row: TenantConfigRow): TenantConfig {
     vistaHost: row.vista_host,
     vistaPort: row.vista_port,
     vistaContext: row.vista_context,
-    countryPackId: row.country_pack_id || "US",
-    locale: row.locale || "en",
-    timezone: row.timezone || "America/New_York",
+    countryPackId: row.country_pack_id || 'US',
+    locale: row.locale || 'en',
+    timezone: row.timezone || 'America/New_York',
     enabledModules: (row.enabled_modules || []) as ModuleId[],
     featureFlags: row.feature_flags || {},
     uiDefaults: { ...DEFAULT_UI_DEFAULTS, ...(row.ui_defaults || {}) } as UIDefaults,
@@ -335,15 +346,15 @@ function syncToDb(config: TenantConfig): void {
 function buildDefaultTenant(): TenantConfig {
   const now = new Date().toISOString();
   return {
-    tenantId: "default",
-    facilityName: process.env.VISTA_FACILITY_NAME || "Development Facility",
-    facilityStation: process.env.VISTA_FACILITY_STATION || "500",
-    vistaHost: process.env.VISTA_HOST || "127.0.0.1",
+    tenantId: 'default',
+    facilityName: process.env.VISTA_FACILITY_NAME || 'Development Facility',
+    facilityStation: process.env.VISTA_FACILITY_STATION || '500',
+    vistaHost: process.env.VISTA_HOST || '127.0.0.1',
     vistaPort: Number(process.env.VISTA_PORT || 9430),
-    vistaContext: process.env.VISTA_CONTEXT || "OR CPRS GUI CHART",
-    countryPackId: process.env.TENANT_COUNTRY_PACK || "US",
-    locale: process.env.TENANT_LOCALE || "en",
-    timezone: process.env.TENANT_TIMEZONE || "America/New_York",
+    vistaContext: process.env.VISTA_CONTEXT || 'OR CPRS GUI CHART',
+    countryPackId: process.env.TENANT_COUNTRY_PACK || 'US',
+    locale: process.env.TENANT_LOCALE || 'en',
+    timezone: process.env.TENANT_TIMEZONE || 'America/New_York',
     enabledModules: [...ALL_MODULES],
     featureFlags: { ...DEFAULT_FEATURE_FLAGS },
     uiDefaults: { ...DEFAULT_UI_DEFAULTS },
@@ -351,12 +362,12 @@ function buildDefaultTenant(): TenantConfig {
     branding: { ...DEFAULT_BRANDING },
     connectors: [
       {
-        id: "vista-primary",
-        label: "Primary VistA Broker",
-        type: "vista-rpc",
-        host: process.env.VISTA_HOST || "127.0.0.1",
+        id: 'vista-primary',
+        label: 'Primary VistA Broker',
+        type: 'vista-rpc',
+        host: process.env.VISTA_HOST || '127.0.0.1',
         port: Number(process.env.VISTA_PORT || 9430),
-        status: "unknown",
+        status: 'unknown',
         lastChecked: null,
       },
     ],
@@ -366,7 +377,7 @@ function buildDefaultTenant(): TenantConfig {
 }
 
 // Seed default tenant on module load
-tenants.set("default", buildDefaultTenant());
+tenants.set('default', buildDefaultTenant());
 // Phase 275: Also seed to DB (fire-and-forget)
 seedDefaultTenantToDb(toRow(buildDefaultTenant())).catch(() => {});
 
@@ -395,7 +406,7 @@ export function upsertTenant(config: TenantConfig): TenantConfig {
 
 /** Delete a tenant. Returns true if deleted. */
 export function deleteTenant(tenantId: string): boolean {
-  if (tenantId === "default") return false; // cannot delete default
+  if (tenantId === 'default') return false; // cannot delete default
   const result = tenants.delete(tenantId);
   if (result) dbDeleteTenant(tenantId).catch(() => {}); // Phase 275: write-through
   return result;
@@ -412,7 +423,10 @@ export function updateFeatureFlags(tenantId: string, flags: FeatureFlags): Featu
 }
 
 /** Update UI defaults for a tenant (partial merge). */
-export function updateUIDefaults(tenantId: string, defaults: Partial<UIDefaults>): UIDefaults | null {
+export function updateUIDefaults(
+  tenantId: string,
+  defaults: Partial<UIDefaults>
+): UIDefaults | null {
   const tenant = tenants.get(tenantId);
   if (!tenant) return null;
   tenant.uiDefaults = { ...tenant.uiDefaults, ...defaults };
@@ -472,7 +486,7 @@ export function deleteNoteTemplate(tenantId: string, templateId: string): boolea
 export function updateConnectorStatus(
   tenantId: string,
   connectorId: string,
-  status: ConnectorConfig["status"],
+  status: ConnectorConfig['status']
 ): ConnectorConfig | null {
   const tenant = tenants.get(tenantId);
   if (!tenant) return null;
@@ -492,7 +506,7 @@ export function resolveTenantId(facilityStation?: string): string {
     const key = `facility-${facilityStation}`;
     if (tenants.has(key)) return key;
   }
-  return "default";
+  return 'default';
 }
 
 /**

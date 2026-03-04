@@ -41,20 +41,20 @@ VistA Docker (port 9430)
 
 ## PHI Masking Strategy
 
-| Segment Type | Contains PHI? | Default State |
-|-------------|---------------|---------------|
-| PID         | Yes -- patient identifiers, names, SSN | MASKED |
-| NK1         | Yes -- next of kin information | MASKED |
-| GT1         | Yes -- guarantor information | MASKED |
-| IN1         | Yes -- insurance information | MASKED |
-| IN2         | Yes -- insurance additional info | MASKED |
-| ACC         | Yes -- accident information | MASKED |
-| MSH         | No -- message header | Not masked |
-| EVN         | No -- event type | Not masked |
-| OBR         | No -- observation request | Not masked |
-| OBX         | Mixed -- depends on content | Not masked* |
+| Segment Type | Contains PHI?                          | Default State |
+| ------------ | -------------------------------------- | ------------- |
+| PID          | Yes -- patient identifiers, names, SSN | MASKED        |
+| NK1          | Yes -- next of kin information         | MASKED        |
+| GT1          | Yes -- guarantor information           | MASKED        |
+| IN1          | Yes -- insurance information           | MASKED        |
+| IN2          | Yes -- insurance additional info       | MASKED        |
+| ACC          | Yes -- accident information            | MASKED        |
+| MSH          | No -- message header                   | Not masked    |
+| EVN          | No -- event type                       | Not masked    |
+| OBR          | No -- observation request              | Not masked    |
+| OBX          | Mixed -- depends on content            | Not masked\*  |
 
-*Note: ZVEMIOP.m only returns segment TYPE NAMES and COUNTS, not actual
+\*Note: ZVEMIOP.m only returns segment TYPE NAMES and COUNTS, not actual
 segment content. The "masked" flag is informational -- it tells the viewer
 which segment types would contain PHI if content were exposed.
 
@@ -72,21 +72,26 @@ which segment types would contain PHI if content were exposed.
 ## API Endpoints
 
 ### GET /vista/interop/v2/hl7/messages
-Query params: `direction` (I/O/*), `status` (D/E/P/*), `limit` (25/50/100)
+
+Query params: `direction` (I/O/_), `status` (D/E/P/_), `limit` (25/50/100)
 Returns array of message metadata rows.
 
 ### GET /vista/interop/v2/hl7/messages/:id
+
 Returns single message metadata + segment type summary.
 PHI segment types flagged with `masked: true`.
 
 ### POST /vista/interop/v2/hl7/messages/:id/unmask
+
 Body: `{ "reason": "..." }` (min 10 chars)
 Requires admin role. Returns detail with `masked: false`.
 
 ### GET /vista/interop/v2/hl7/summary
+
 Combined HL7 dashboard: links + message stats + queue depth.
 
 ### GET /vista/interop/v2/hlo/summary
+
 Combined HLO dashboard: system params + apps + queues.
 
 ## Verification
@@ -99,10 +104,10 @@ All 10 gates must pass.
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| Messages list empty | RPCs not installed | Run `scripts/install-interop-rpcs.ps1` |
-| 404 on message detail | Invalid IEN | Check IEN exists in message list |
-| 403 on unmask | Non-admin user | Only admin role can unmask |
-| Unmask reason rejected | Too short | Must be at least 10 characters |
-| Circuit breaker open | VistA down | Wait 30s, restart Docker if needed |
+| Symptom                | Cause              | Fix                                    |
+| ---------------------- | ------------------ | -------------------------------------- |
+| Messages list empty    | RPCs not installed | Run `scripts/install-interop-rpcs.ps1` |
+| 404 on message detail  | Invalid IEN        | Check IEN exists in message list       |
+| 403 on unmask          | Non-admin user     | Only admin role can unmask             |
+| Unmask reason rejected | Too short          | Must be at least 10 characters         |
+| Circuit breaker open   | VistA down         | Wait 30s, restart Docker if needed     |

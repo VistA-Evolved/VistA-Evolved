@@ -1,6 +1,7 @@
 # Phase 334 — VERIFY: Scale Performance Campaign (W15-P8)
 
 ## Verification Steps
+
 1. `npx tsc --noEmit` — 0 errors
 2. Load test profiles: endpoints, VUs, duration, thresholds (p95, p99, error rate, RPS)
 3. Run verdict: pass/fail/degraded based on threshold comparison
@@ -10,4 +11,5 @@
 7. Store-policy: 6 entries
 
 ## Evidence
+
 - tsc: 0 errors

@@ -21,7 +21,7 @@ export interface ConformanceProfile {
   /** Profile name */
   name: string;
   /** Profile source (IHE, HL7, custom) */
-  source: "IHE" | "HL7" | "custom";
+  source: 'IHE' | 'HL7' | 'custom';
   /** Profile version */
   version: string;
   /** URL to profile specification */
@@ -30,14 +30,37 @@ export interface ConformanceProfile {
 
 /** Well-known conformance profiles */
 export const WELL_KNOWN_PROFILES: ConformanceProfile[] = [
-  { id: "IHE-PAM-ITI-31", name: "IHE PAM ITI-31 Patient Encounter Management", source: "IHE", version: "2.0", specUrl: "https://profiles.ihe.net/ITI/TF/Volume2/ITI-31.html" },
-  { id: "IHE-PAM-ITI-30", name: "IHE PAM ITI-30 Patient Identity Management", source: "IHE", version: "2.0", specUrl: "https://profiles.ihe.net/ITI/TF/Volume2/ITI-30.html" },
-  { id: "IHE-SWF-RAD-4", name: "IHE SWF RAD-4 Procedure Scheduled", source: "IHE", version: "3.0", specUrl: "https://profiles.ihe.net/RAD/Scheduled-Workflow/" },
-  { id: "IHE-LAB-LTW-LAB-1", name: "IHE LAB LTW Lab-1 Order Placer", source: "IHE", version: "2.0" },
-  { id: "HL7-251-ADT", name: "HL7 v2.5.1 ADT Messages", source: "HL7", version: "2.5.1" },
-  { id: "HL7-251-ORM", name: "HL7 v2.5.1 Order Messages", source: "HL7", version: "2.5.1" },
-  { id: "HL7-251-ORU", name: "HL7 v2.5.1 Result Messages", source: "HL7", version: "2.5.1" },
-  { id: "HL7-251-SIU", name: "HL7 v2.5.1 Scheduling Messages", source: "HL7", version: "2.5.1" },
+  {
+    id: 'IHE-PAM-ITI-31',
+    name: 'IHE PAM ITI-31 Patient Encounter Management',
+    source: 'IHE',
+    version: '2.0',
+    specUrl: 'https://profiles.ihe.net/ITI/TF/Volume2/ITI-31.html',
+  },
+  {
+    id: 'IHE-PAM-ITI-30',
+    name: 'IHE PAM ITI-30 Patient Identity Management',
+    source: 'IHE',
+    version: '2.0',
+    specUrl: 'https://profiles.ihe.net/ITI/TF/Volume2/ITI-30.html',
+  },
+  {
+    id: 'IHE-SWF-RAD-4',
+    name: 'IHE SWF RAD-4 Procedure Scheduled',
+    source: 'IHE',
+    version: '3.0',
+    specUrl: 'https://profiles.ihe.net/RAD/Scheduled-Workflow/',
+  },
+  {
+    id: 'IHE-LAB-LTW-LAB-1',
+    name: 'IHE LAB LTW Lab-1 Order Placer',
+    source: 'IHE',
+    version: '2.0',
+  },
+  { id: 'HL7-251-ADT', name: 'HL7 v2.5.1 ADT Messages', source: 'HL7', version: '2.5.1' },
+  { id: 'HL7-251-ORM', name: 'HL7 v2.5.1 Order Messages', source: 'HL7', version: '2.5.1' },
+  { id: 'HL7-251-ORU', name: 'HL7 v2.5.1 Result Messages', source: 'HL7', version: '2.5.1' },
+  { id: 'HL7-251-SIU', name: 'HL7 v2.5.1 Scheduling Messages', source: 'HL7', version: '2.5.1' },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -45,16 +68,37 @@ export const WELL_KNOWN_PROFILES: ConformanceProfile[] = [
 /* ------------------------------------------------------------------ */
 
 /** Optionality of a field in a segment template */
-export type FieldOptionality = "R" | "RE" | "O" | "C" | "X";
+export type FieldOptionality = 'R' | 'RE' | 'O' | 'C' | 'X';
 
 /** Data type of a field */
 export type Hl7DataType =
-  | "ST" | "TX" | "FT" | "NM" | "SI" | "ID" | "IS"
-  | "DT" | "TM" | "DTM" | "TS"
-  | "CWE" | "CE" | "CNE"
-  | "XPN" | "XAD" | "XTN" | "XCN" | "XON"
-  | "CX" | "EI" | "HD" | "PL" | "MSG"
-  | "VID" | "PT" | "varies";
+  | 'ST'
+  | 'TX'
+  | 'FT'
+  | 'NM'
+  | 'SI'
+  | 'ID'
+  | 'IS'
+  | 'DT'
+  | 'TM'
+  | 'DTM'
+  | 'TS'
+  | 'CWE'
+  | 'CE'
+  | 'CNE'
+  | 'XPN'
+  | 'XAD'
+  | 'XTN'
+  | 'XCN'
+  | 'XON'
+  | 'CX'
+  | 'EI'
+  | 'HD'
+  | 'PL'
+  | 'MSG'
+  | 'VID'
+  | 'PT'
+  | 'varies';
 
 /** Constraint for a single field in a segment */
 export interface FieldConstraint {
@@ -81,7 +125,7 @@ export interface FieldConstraint {
 /* ------------------------------------------------------------------ */
 
 /** Segment optionality in a message template */
-export type SegmentUsage = "R" | "RE" | "O" | "C" | "X";
+export type SegmentUsage = 'R' | 'RE' | 'O' | 'C' | 'X';
 
 /** Template for a single HL7 segment */
 export interface SegmentTemplate {
@@ -104,10 +148,10 @@ export interface SegmentTemplate {
 /* ------------------------------------------------------------------ */
 
 /** Status of a message template */
-export type TemplateStatus = "draft" | "active" | "deprecated" | "archived";
+export type TemplateStatus = 'draft' | 'active' | 'deprecated' | 'archived';
 
 /** Tenant ownership for a template */
-export type TemplateScope = "system" | "tenant";
+export type TemplateScope = 'system' | 'tenant';
 
 /** A versioned message template with conformance profiles */
 export interface MessageTemplate {
@@ -170,9 +214,9 @@ export interface TemplateValidationResult {
 /** An issue found during template validation */
 export interface TemplateValidationIssue {
   /** Severity */
-  severity: "error" | "warning" | "info";
+  severity: 'error' | 'warning' | 'info';
   /** Category */
-  category: "segment" | "field" | "conformance" | "structure";
+  category: 'segment' | 'field' | 'conformance' | 'structure';
   /** Segment reference (e.g., "PID", "OBR[2]") */
   segmentRef?: string;
   /** Field reference (e.g., "PID-3", "OBR[2]-4") */

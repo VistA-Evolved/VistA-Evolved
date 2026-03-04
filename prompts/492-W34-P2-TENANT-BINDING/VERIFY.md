@@ -3,6 +3,7 @@
 ## Verification Gates
 
 ### Gate 1 — TenantConfig has 3 new fields
+
 ```powershell
 $tc = Get-Content apps/api/src/config/tenant-config.ts -Raw
 $hasPackId = $tc -match 'countryPackId'
@@ -15,6 +16,7 @@ Write-Host "PASS: TenantConfig has all 3 country binding fields"
 ```
 
 ### Gate 2 — TenantConfigRow has 3 new fields
+
 ```powershell
 $repo = Get-Content apps/api/src/platform/pg/repo/tenant-config-repo.ts -Raw
 $hasPackId = $repo -match 'country_pack_id'
@@ -27,6 +29,7 @@ Write-Host "PASS: TenantConfigRow has all 3 DB columns"
 ```
 
 ### Gate 3 — PG migration v51 exists
+
 ```powershell
 $migrate = Get-Content apps/api/src/platform/pg/pg-migrate.ts -Raw
 if ($migrate -notmatch 'version:\s*51') {
@@ -39,6 +42,7 @@ Write-Host "PASS: PG migration v51 exists with country_pack_id"
 ```
 
 ### Gate 4 — resolveCountryPolicy function exists
+
 ```powershell
 $loader = Get-Content apps/api/src/platform/country-pack-loader.ts -Raw
 if ($loader -notmatch 'resolveCountryPolicy') {
@@ -48,6 +52,7 @@ Write-Host "PASS: resolveCountryPolicy() exists"
 ```
 
 ### Gate 5 — Default tenant seeds US pack
+
 ```powershell
 $tc = Get-Content apps/api/src/config/tenant-config.ts -Raw
 if ($tc -notmatch 'countryPackId.*US') {
@@ -57,6 +62,7 @@ Write-Host "PASS: Default tenant seeds US country pack"
 ```
 
 ### Gate 6 — Upsert SQL includes new columns
+
 ```powershell
 $repo = Get-Content apps/api/src/platform/pg/repo/tenant-config-repo.ts -Raw
 if ($repo -notmatch 'country_pack_id.*locale.*timezone') {

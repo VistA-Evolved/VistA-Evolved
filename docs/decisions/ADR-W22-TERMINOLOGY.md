@@ -10,16 +10,16 @@ Clinical content packs, CDS rules, lab results, imaging orders, and pharmacy
 workflows all reference coded clinical concepts. Multiple terminology systems
 are in use across the platform:
 
-| System | Use Case | Licensing |
-|--------|----------|-----------|
-| SNOMED CT | Problems, diagnoses, clinical findings | NLM UMLS license (free for US users) |
-| LOINC | Lab test codes, observation identifiers | Free, Regenstrief license |
-| UCUM | Units of measure | Free, public domain |
-| ICD-10-CM | Diagnosis coding for billing | Free (CMS) |
-| ICD-10-PCS | Procedure coding (inpatient) | Free (CMS) |
-| CPT/HCPCS | Procedure coding (professional) | **AMA license required** |
-| NDC | Drug identification | Free (FDA) |
-| RxNorm | Drug normalization | Free (NLM) |
+| System     | Use Case                                | Licensing                            |
+| ---------- | --------------------------------------- | ------------------------------------ |
+| SNOMED CT  | Problems, diagnoses, clinical findings  | NLM UMLS license (free for US users) |
+| LOINC      | Lab test codes, observation identifiers | Free, Regenstrief license            |
+| UCUM       | Units of measure                        | Free, public domain                  |
+| ICD-10-CM  | Diagnosis coding for billing            | Free (CMS)                           |
+| ICD-10-PCS | Procedure coding (inpatient)            | Free (CMS)                           |
+| CPT/HCPCS  | Procedure coding (professional)         | **AMA license required**             |
+| NDC        | Drug identification                     | Free (FDA)                           |
+| RxNorm     | Drug normalization                      | Free (NLM)                           |
 
 The platform MUST handle coded values but must NOT embed proprietary code set
 tables (specifically CPT descriptions) without licensing.

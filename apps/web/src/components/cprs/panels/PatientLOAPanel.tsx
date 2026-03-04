@@ -15,7 +15,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { API_BASE } from '@/lib/api-config';
 
-
 async function apiFetch(path: string) {
   const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
   return res.json();
@@ -35,27 +34,38 @@ export default function PatientLOAPanel({ patientDfn, compact }: PatientLOAPanel
     if (!patientDfn) return;
     setLoading(true);
     apiFetch(`/rcm/payerops/loa?patientDfn=${encodeURIComponent(patientDfn)}`)
-      .then(d => setCases(d?.loaCases || []))
+      .then((d) => setCases(d?.loaCases || []))
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [patientDfn]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+  }, [load]);
 
   if (!patientDfn) {
     return <div style={{ fontSize: 12, color: '#6c757d', padding: 8 }}>No patient selected</div>;
   }
 
-  const activeCases = cases.filter(c => !['approved', 'denied', 'expired', 'cancelled', 'partially_approved'].includes(c.status));
-  const resolvedCases = cases.filter(c => ['approved', 'denied', 'expired', 'cancelled', 'partially_approved'].includes(c.status));
+  const activeCases = cases.filter(
+    (c) => !['approved', 'denied', 'expired', 'cancelled', 'partially_approved'].includes(c.status)
+  );
+  const resolvedCases = cases.filter((c) =>
+    ['approved', 'denied', 'expired', 'cancelled', 'partially_approved'].includes(c.status)
+  );
 
   return (
     <div style={{ fontSize: 12 }}>
-      <div style={{
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: compact ? '4px 8px' : '8px 12px',
-        borderBottom: '1px solid #dee2e6', background: '#f8f9fa',
-      }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: compact ? '4px 8px' : '8px 12px',
+          borderBottom: '1px solid #dee2e6',
+          background: '#f8f9fa',
+        }}
+      >
         <strong style={{ fontSize: compact ? 12 : 13 }}>LOA Cases</strong>
         <span style={{ fontSize: 11, color: '#6c757d' }}>
           {activeCases.length} active / {cases.length} total
@@ -71,8 +81,20 @@ export default function PatientLOAPanel({ patientDfn, compact }: PatientLOAPanel
           {/* Active Cases */}
           {activeCases.length > 0 && (
             <div>
-              {!compact && <div style={{ padding: '4px 12px', fontSize: 11, fontWeight: 600, color: '#495057', background: '#e9ecef' }}>Active</div>}
-              {activeCases.map(c => (
+              {!compact && (
+                <div
+                  style={{
+                    padding: '4px 12px',
+                    fontSize: 11,
+                    fontWeight: 600,
+                    color: '#495057',
+                    background: '#e9ecef',
+                  }}
+                >
+                  Active
+                </div>
+              )}
+              {activeCases.map((c) => (
                 <LOACaseRow
                   key={c.id}
                   loaCase={c}
@@ -87,8 +109,18 @@ export default function PatientLOAPanel({ patientDfn, compact }: PatientLOAPanel
           {/* Resolved Cases */}
           {resolvedCases.length > 0 && !compact && (
             <div>
-              <div style={{ padding: '4px 12px', fontSize: 11, fontWeight: 600, color: '#6c757d', background: '#e9ecef' }}>Resolved</div>
-              {resolvedCases.slice(0, 5).map(c => (
+              <div
+                style={{
+                  padding: '4px 12px',
+                  fontSize: 11,
+                  fontWeight: 600,
+                  color: '#6c757d',
+                  background: '#e9ecef',
+                }}
+              >
+                Resolved
+              </div>
+              {resolvedCases.slice(0, 5).map((c) => (
                 <LOACaseRow
                   key={c.id}
                   loaCase={c}
@@ -112,7 +144,12 @@ export default function PatientLOAPanel({ patientDfn, compact }: PatientLOAPanel
 
 /* ── LOA Case Row ───────────────────────────────────────────── */
 
-function LOACaseRow({ loaCase, compact, expanded, onToggle }: {
+function LOACaseRow({
+  loaCase,
+  compact,
+  expanded,
+  onToggle,
+}: {
   loaCase: any;
   compact?: boolean;
   expanded: boolean;
@@ -144,37 +181,59 @@ function LOACaseRow({ loaCase, compact, expanded, onToggle }: {
       <div
         onClick={onToggle}
         style={{
-          display: 'flex', alignItems: 'center', gap: 8,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 8,
           padding: compact ? '4px 8px' : '6px 12px',
           cursor: 'pointer',
         }}
       >
         {/* SLA dot */}
-        <span style={{
-          width: 8, height: 8, borderRadius: '50%', flexShrink: 0,
-          background: riskColor[loaCase.slaRiskLevel] || '#6c757d',
-        }} />
+        <span
+          style={{
+            width: 8,
+            height: 8,
+            borderRadius: '50%',
+            flexShrink: 0,
+            background: riskColor[loaCase.slaRiskLevel] || '#6c757d',
+          }}
+        />
 
         {/* Payer + Type */}
-        <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <span
+          style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+        >
           {loaCase.payerName} -- {loaCase.requestType?.replace(/_/g, ' ')}
         </span>
 
         {/* Status badge */}
-        <span style={{
-          fontSize: 10, padding: '1px 6px', borderRadius: 3, fontWeight: 600,
-          background: sc.bg, color: sc.fg, flexShrink: 0,
-        }}>
+        <span
+          style={{
+            fontSize: 10,
+            padding: '1px 6px',
+            borderRadius: 3,
+            fontWeight: 600,
+            background: sc.bg,
+            color: sc.fg,
+            flexShrink: 0,
+          }}
+        >
           {loaCase.status?.replace(/_/g, ' ')}
         </span>
 
         {/* Priority */}
         {loaCase.priority !== 'routine' && (
-          <span style={{
-            fontSize: 10, padding: '1px 4px', borderRadius: 2, fontWeight: 600,
-            background: loaCase.priority === 'stat' ? '#dc3545' : '#fd7e14',
-            color: '#fff', flexShrink: 0,
-          }}>
+          <span
+            style={{
+              fontSize: 10,
+              padding: '1px 4px',
+              borderRadius: 2,
+              fontWeight: 600,
+              background: loaCase.priority === 'stat' ? '#dc3545' : '#fd7e14',
+              color: '#fff',
+              flexShrink: 0,
+            }}
+          >
             {loaCase.priority?.toUpperCase()}
           </span>
         )}
@@ -183,18 +242,26 @@ function LOACaseRow({ loaCase, compact, expanded, onToggle }: {
       {/* Expanded Detail */}
       {expanded && (
         <div style={{ padding: '4px 12px 8px 28px', fontSize: 11, color: '#495057' }}>
-          <div>ID: <span style={{ fontFamily: 'monospace' }}>{loaCase.id}</span></div>
-          <div>Member: {loaCase.memberId || 'N/A'} | Plan: {loaCase.planName || 'N/A'}</div>
+          <div>
+            ID: <span style={{ fontFamily: 'monospace' }}>{loaCase.id}</span>
+          </div>
+          <div>
+            Member: {loaCase.memberId || 'N/A'} | Plan: {loaCase.planName || 'N/A'}
+          </div>
           {loaCase.slaDeadline && (
             <div>Deadline: {new Date(loaCase.slaDeadline).toLocaleString()}</div>
           )}
           {loaCase.assignedTo && <div>Assigned: {loaCase.assignedTo}</div>}
-          {loaCase.urgencyNotes && <div style={{ color: '#856404' }}>Urgency: {loaCase.urgencyNotes}</div>}
+          {loaCase.urgencyNotes && (
+            <div style={{ color: '#856404' }}>Urgency: {loaCase.urgencyNotes}</div>
+          )}
           {loaCase.payerRefNumber && <div>Payer Ref: {loaCase.payerRefNumber}</div>}
           {loaCase.approvedAmount !== undefined && loaCase.approvedAmount !== null && (
             <div>Approved: {loaCase.approvedAmount.toLocaleString()}</div>
           )}
-          {loaCase.denialReason && <div style={{ color: '#721c24' }}>Denial: {loaCase.denialReason}</div>}
+          {loaCase.denialReason && (
+            <div style={{ color: '#721c24' }}>Denial: {loaCase.denialReason}</div>
+          )}
           <div style={{ marginTop: 4, color: '#6c757d' }}>
             Created: {new Date(loaCase.createdAt).toLocaleString()} by {loaCase.createdBy}
           </div>

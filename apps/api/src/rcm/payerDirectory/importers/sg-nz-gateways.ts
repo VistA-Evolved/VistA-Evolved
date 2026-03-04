@@ -19,12 +19,14 @@ function buildSgPayers(now: string): DirectoryPayer[] {
       displayName: 'National Platform for Healthcare Claims (NPHC)',
       country: 'SG',
       payerType: 'NATIONAL',
-      channels: [{
-        type: 'NATIONAL_GATEWAY',
-        connectorId: 'nphc-sg',
-        endpoint: 'https://www.nphc.gov.sg',
-        notes: 'MediSave/MediShield Life claims submission',
-      }],
+      channels: [
+        {
+          type: 'NATIONAL_GATEWAY',
+          connectorId: 'nphc-sg',
+          endpoint: 'https://www.nphc.gov.sg',
+          notes: 'MediSave/MediShield Life claims submission',
+        },
+      ],
       supportedTransactions: [],
       payerIdsByNetwork: {},
       regulatorySource: {
@@ -35,7 +37,8 @@ function buildSgPayers(now: string): DirectoryPayer[] {
       integrationMode: 'government_portal',
       status: 'active',
       category: 'government',
-      notes: 'National claims platform for MediSave/MediShield Life. All Singapore providers must submit via NPHC.',
+      notes:
+        'National claims platform for MediSave/MediShield Life. All Singapore providers must submit via NPHC.',
       createdAt: now,
       updatedAt: now,
     },
@@ -44,11 +47,13 @@ function buildSgPayers(now: string): DirectoryPayer[] {
       displayName: 'MediSave (CPF Board)',
       country: 'SG',
       payerType: 'NATIONAL',
-      channels: [{
-        type: 'NATIONAL_GATEWAY',
-        connectorId: 'nphc-sg',
-        notes: 'Claims via NPHC for MediSave drawdown',
-      }],
+      channels: [
+        {
+          type: 'NATIONAL_GATEWAY',
+          connectorId: 'nphc-sg',
+          notes: 'Claims via NPHC for MediSave drawdown',
+        },
+      ],
       supportedTransactions: [],
       payerIdsByNetwork: {},
       integrationMode: 'government_portal',
@@ -63,11 +68,13 @@ function buildSgPayers(now: string): DirectoryPayer[] {
       displayName: 'MediShield Life (CPF Board)',
       country: 'SG',
       payerType: 'NATIONAL',
-      channels: [{
-        type: 'NATIONAL_GATEWAY',
-        connectorId: 'nphc-sg',
-        notes: 'Claims via NPHC for MediShield Life',
-      }],
+      channels: [
+        {
+          type: 'NATIONAL_GATEWAY',
+          connectorId: 'nphc-sg',
+          notes: 'Claims via NPHC for MediShield Life',
+        },
+      ],
       supportedTransactions: [],
       payerIdsByNetwork: {},
       integrationMode: 'government_portal',
@@ -87,12 +94,14 @@ function buildNzPayers(now: string): DirectoryPayer[] {
       displayName: 'Accident Compensation Corporation (ACC)',
       country: 'NZ',
       payerType: 'NATIONAL',
-      channels: [{
-        type: 'DIRECT_API',
-        connectorId: 'acc-nz',
-        endpoint: 'https://api.acc.co.nz',
-        notes: 'ACC Claim API for injury claims',
-      }],
+      channels: [
+        {
+          type: 'DIRECT_API',
+          connectorId: 'acc-nz',
+          endpoint: 'https://api.acc.co.nz',
+          notes: 'ACC Claim API for injury claims',
+        },
+      ],
       supportedTransactions: ['ACC_CLAIM', 'ACC_STATUS'],
       payerIdsByNetwork: {},
       regulatorySource: {
@@ -103,7 +112,8 @@ function buildNzPayers(now: string): DirectoryPayer[] {
       integrationMode: 'direct_api',
       status: 'active',
       category: 'government',
-      notes: 'No-fault accident insurance. All injury claims go through ACC regardless of private insurance.',
+      notes:
+        'No-fault accident insurance. All injury claims go through ACC regardless of private insurance.',
       createdAt: now,
       updatedAt: now,
     },

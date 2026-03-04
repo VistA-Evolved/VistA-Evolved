@@ -78,6 +78,7 @@ EOT
 ```
 
 Record types:
+
 - **H** (Header): sender, receiver, timestamp
 - **P** (Patient): patient ID, name (anonymize!)
 - **O** (Order): specimen ID, test codes

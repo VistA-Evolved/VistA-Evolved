@@ -1,12 +1,14 @@
 # Phase 37C — Productization & Modular Architecture
 
 ## User Request
+
 Implement formal module boundaries, adapter interfaces, capability registry,
 SKU deploy profiles, and module toggle enforcement so VistA-Evolved can be
 sold as modular SKUs (Full Suite, CPRS-only, Portal-only, Telehealth-only,
 RCM-only, Imaging-only, Interop-only).
 
 ## Implementation Steps
+
 1. Create architecture doc: `docs/architecture/product-modularity-v1.md`
 2. Create machine-readable manifests: `config/modules.json`, `config/skus.json`
 3. Create capability registry: `config/capabilities.json` + server-side service
@@ -17,12 +19,14 @@ RCM-only, Imaging-only, Interop-only).
 8. Create ops artifacts and runbook
 
 ## Verification
+
 - `scripts/verify-phase37c-modularity.ps1` — all gates PASS
 - Module disable returns 404 on disabled routes
 - Adapter swap uses stub without crashing
 - Capability registry drives UI enablement
 
 ## Files Touched
+
 - prompts/41-PHASE-37C-PRODUCT-MODULARITY/IMPLEMENT.md
 - docs/architecture/product-modularity-v1.md
 - config/modules.json, config/skus.json, config/capabilities.json
