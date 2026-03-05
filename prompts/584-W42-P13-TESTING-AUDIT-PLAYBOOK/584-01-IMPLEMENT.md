@@ -16,6 +16,7 @@ Implement integration tests, auth flow verification, dead-click audit, security 
 **Location:** `apps/api/tests/integration/`
 
 **Tests:**
+
 1. Start VistA Docker (VEHU)
 2. Login via XWB RPC with DUZ-per-request (verify different users get different DUZs)
 3. Search for patients
@@ -31,6 +32,7 @@ Implement integration tests, auth flow verification, dead-click audit, security 
 ## 10B: Store Durability Tests
 
 For every store migrated to PG:
+
 1. Write data
 2. Restart the API
 3. Verify data persists
@@ -71,6 +73,7 @@ For every store migrated to PG:
 ## 10F: Dead-Click Audit (UI Crawl)
 
 **Playwright test:**
+
 1. Log in as each role (provider, nurse, pharmacist, admin)
 2. Navigate to every route (74 routes)
 3. Click every button, open every dialog, submit every form
@@ -84,6 +87,7 @@ For every store migrated to PG:
 **Produce:** `evidence/contract-alignment.json`
 
 Cross-reference:
+
 - `design/contracts/cprs/v1/rpc_catalog.json` (975 RPCs)
 - `rpcRegistry.ts` (168+ RPCs)
 - Working route call sites

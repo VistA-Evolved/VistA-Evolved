@@ -47,6 +47,7 @@ every user — regardless of which clinician is logged in — executes under tha
 single DUZ (VistA internal user ID, typically DUZ 87 for PROVIDER,CLYDE).
 
 This means:
+
 - All clinical notes appear authored by PROVIDER,CLYDE
 - All orders appear signed by PROVIDER,CLYDE
 - All medication administrations attributed to PROVIDER,CLYDE

@@ -11,14 +11,14 @@
 
 ## Summary: 6/6 PASS
 
-| # | Test | Status | Duration | Detail |
-|---|------|--------|----------|--------|
-| 0 | Connect | PASS | 3165ms | DUZ=1 |
-| 1 | ORWU USERINFO | PASS | 12ms | First line: user info returned |
-| 2 | ORWPT LIST ALL | PASS | 51ms | Multiple patients returned |
-| 3 | ORWORDG IEN | PASS | 4ms | Response received |
-| 4 | ORWU DT | PASS | 2ms | Server time returned |
-| 5 | Disconnect | PASS | 0ms | Clean disconnect |
+| #   | Test           | Status | Duration | Detail                         |
+| --- | -------------- | ------ | -------- | ------------------------------ |
+| 0   | Connect        | PASS   | 3165ms   | DUZ=1                          |
+| 1   | ORWU USERINFO  | PASS   | 12ms     | First line: user info returned |
+| 2   | ORWPT LIST ALL | PASS   | 51ms     | Multiple patients returned     |
+| 3   | ORWORDG IEN    | PASS   | 4ms      | Response received              |
+| 4   | ORWU DT        | PASS   | 2ms      | Server time returned           |
+| 5   | Disconnect     | PASS   | 0ms      | Clean disconnect               |
 
 ## RPC Capability Probe Summary
 
@@ -53,6 +53,7 @@
 - VE LIST RPCS, VE RCM PROVIDER INFO
 
 **Recovered after ZVEADT fix + probe reconnect (no longer cascade failures):**
+
 - ZVEADT WARDS (now returns clean result instead of crashing socket)
 - ZVEADT BEDS, ZVEADT MVHIST
 - DGPM NEW ADMISSION, DGPM NEW TRANSFER, DGPM NEW DISCHARGE
@@ -71,16 +72,16 @@
 
 Previous false negatives resolved by Phase 576 two-pass probe:
 
-| RPC | Previous Error | Fix |
-|-----|---------------|-----|
-| ORQQPL EDIT SAVE | "TIU SET RECORD TEXT doesn't exist" (wrong RPC) | Second-pass re-verify: RPC exists |
-| ORWPCE LEXCODE | "ORQQCN2 MED RESULTS doesn't exist" (wrong RPC) | Second-pass re-verify: RPC exists |
-| IBARXM QUERY ONLY | "ORWLRR ACK doesn't exist" (wrong RPC) | Second-pass re-verify: RPC exists |
-| GMRIO RESULTS | "IBD GET ALL PCE DATA cannot be run" (wrong RPC) | Second-pass re-verify: RPC exists |
-| ZVENAS SAVE | "-1^Patient not found" | Fixed isRpcMissing: "Patient not found" is not "RPC not found" |
-| VE INTEROP HL7 MSGS | "ORWORB UNSIG ORDERS doesn't exist" (wrong RPC) | Second-pass re-verify: RPC exists |
-| VE INTEROP HLO STATUS | "ORWCIRN FACILITIES doesn't exist" (wrong RPC) | Second-pass re-verify: RPC exists |
-| VE INTEROP QUEUE DEPTH | "RA DETAILED REPORT doesn't exist" (wrong RPC) | Second-pass re-verify: RPC exists |
+| RPC                    | Previous Error                                   | Fix                                                            |
+| ---------------------- | ------------------------------------------------ | -------------------------------------------------------------- |
+| ORQQPL EDIT SAVE       | "TIU SET RECORD TEXT doesn't exist" (wrong RPC)  | Second-pass re-verify: RPC exists                              |
+| ORWPCE LEXCODE         | "ORQQCN2 MED RESULTS doesn't exist" (wrong RPC)  | Second-pass re-verify: RPC exists                              |
+| IBARXM QUERY ONLY      | "ORWLRR ACK doesn't exist" (wrong RPC)           | Second-pass re-verify: RPC exists                              |
+| GMRIO RESULTS          | "IBD GET ALL PCE DATA cannot be run" (wrong RPC) | Second-pass re-verify: RPC exists                              |
+| ZVENAS SAVE            | "-1^Patient not found"                           | Fixed isRpcMissing: "Patient not found" is not "RPC not found" |
+| VE INTEROP HL7 MSGS    | "ORWORB UNSIG ORDERS doesn't exist" (wrong RPC)  | Second-pass re-verify: RPC exists                              |
+| VE INTEROP HLO STATUS  | "ORWCIRN FACILITIES doesn't exist" (wrong RPC)   | Second-pass re-verify: RPC exists                              |
+| VE INTEROP QUEUE DEPTH | "RA DETAILED REPORT doesn't exist" (wrong RPC)   | Second-pass re-verify: RPC exists                              |
 
 > **Phase 576 Recovery (two-pass probe):** The capability probe now uses a
 > two-pass strategy: (1) bulk probe all 87 RPCs, then (2) re-verify any

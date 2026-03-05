@@ -31,11 +31,7 @@ import {
   connect,
   type RpcParam,
 } from '../vista/rpcBrokerClient.js';
-import {
-  poolCallRpc,
-  poolCallRpcWithList,
-  type RpcContext,
-} from '../vista/rpcConnectionPool.js';
+import { poolCallRpc, poolCallRpcWithList, type RpcContext } from '../vista/rpcConnectionPool.js';
 // Phase 36: OTel tracing + Prometheus metrics
 import { startRpcSpan, endRpcSpan } from '../telemetry/tracing.js';
 import { rpcCallDuration, rpcCallsTotal, circuitBreakerTrips } from '../telemetry/metrics.js';
@@ -335,7 +331,11 @@ export async function resilientRpc<T>(
     endRpcSpan(span);
 
     // Phase 586: Billing metering — count RPC calls
-    try { meterRpcCall?.('default', 'rpc_call'); } catch { /* best-effort */ }
+    try {
+      meterRpcCall?.('default', 'rpc_call');
+    } catch {
+      /* best-effort */
+    }
 
     log.debug('RPC completed', { rpcName, durationMs });
     return result;
@@ -489,11 +489,10 @@ export async function safeCallRpc(
 ): Promise<string[]> {
   const ctx = opts?.ctx;
   if (ctx) {
-    return resilientRpc(
-      () => poolCallRpc(rpcName, params, ctx),
-      rpcName,
-      { idempotent: opts?.idempotent ?? true, timeoutMs: opts?.timeoutMs }
-    );
+    return resilientRpc(() => poolCallRpc(rpcName, params, ctx), rpcName, {
+      idempotent: opts?.idempotent ?? true,
+      timeoutMs: opts?.timeoutMs,
+    });
   }
   return resilientRpc(
     () =>
@@ -519,11 +518,10 @@ export async function safeCallRpcWithList(
 ): Promise<string[]> {
   const ctx = opts?.ctx;
   if (ctx) {
-    return resilientRpc(
-      () => poolCallRpcWithList(rpcName, params, ctx),
-      rpcName,
-      { idempotent: opts?.idempotent ?? true, timeoutMs: opts?.timeoutMs }
-    );
+    return resilientRpc(() => poolCallRpcWithList(rpcName, params, ctx), rpcName, {
+      idempotent: opts?.idempotent ?? true,
+      timeoutMs: opts?.timeoutMs,
+    });
   }
   return resilientRpc(
     () =>

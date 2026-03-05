@@ -41,17 +41,17 @@ authoritative source of truth for all clinical data.
 
 ## Technology Stack
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Frontend | Next.js 16 / React 19 | Clinician workstation + Patient portal |
-| API | Fastify 5 / Node.js 24 | REST API + FHIR R4 gateway |
-| VistA | YottaDB / MUMPS | Clinical data engine (XWB RPC protocol) |
-| Database | PostgreSQL 16 | Platform state (sessions, tenants, audit) |
-| Cache | Redis 7 (optional) | Session cache, rate limiting, distributed locks |
-| IAM | Keycloak 24 (optional) | OIDC / SAML for production SSO |
-| Imaging | Orthanc + OHIF | DICOM/DICOMweb + web viewer |
-| Observability | OTel + Jaeger + Prometheus | Distributed tracing + metrics |
-| Analytics | YottaDB/ROcto | SQL analytics over aggregated metrics |
+| Layer         | Technology                 | Purpose                                         |
+| ------------- | -------------------------- | ----------------------------------------------- |
+| Frontend      | Next.js 16 / React 19      | Clinician workstation + Patient portal          |
+| API           | Fastify 5 / Node.js 24     | REST API + FHIR R4 gateway                      |
+| VistA         | YottaDB / MUMPS            | Clinical data engine (XWB RPC protocol)         |
+| Database      | PostgreSQL 16              | Platform state (sessions, tenants, audit)       |
+| Cache         | Redis 7 (optional)         | Session cache, rate limiting, distributed locks |
+| IAM           | Keycloak 24 (optional)     | OIDC / SAML for production SSO                  |
+| Imaging       | Orthanc + OHIF             | DICOM/DICOMweb + web viewer                     |
+| Observability | OTel + Jaeger + Prometheus | Distributed tracing + metrics                   |
+| Analytics     | YottaDB/ROcto              | SQL analytics over aggregated metrics           |
 
 ## Monorepo Structure
 
@@ -93,12 +93,14 @@ All clinical data flows through the VistA RPC Broker using the XWB protocol.
 The API never invents clinical data -- VistA is always the source of truth.
 
 **Connection Architecture:**
+
 - `rpcBrokerClient.ts` -- Single global socket (legacy, backward compatible)
 - `rpcConnectionPool.ts` -- Pooled connections keyed by tenant:DUZ
 - `rpc-resilience.ts` -- Circuit breaker, retry, timeout, metrics
 - `safeCallRpc()` / `safeCallRpcWithList()` -- Drop-in resilient wrappers
 
 **Key RPCs used (87+ available in VEHU):**
+
 - Authentication: `XUS AV CODE`, `XWB CREATE CONTEXT`
 - Patient: `ORWPT LIST ALL`, `ORWPT16 ID INFO`
 - Allergies: `ORQQAL LIST`, `ORWDAL32 SAVE ALLERGY`
@@ -127,16 +129,17 @@ The API never invents clinical data -- VistA is always the source of truth.
 
 ## Data Plane
 
-| Mode | PG Required | RLS | OIDC | SQLite |
-|------|-------------|-----|------|--------|
-| dev  | No          | Off | Off  | OK     |
-| test | No          | Off | Off  | OK     |
-| rc   | Yes         | On  | Yes  | Blocked|
-| prod | Yes         | On  | Yes  | Blocked|
+| Mode | PG Required | RLS | OIDC | SQLite  |
+| ---- | ----------- | --- | ---- | ------- |
+| dev  | No          | Off | Off  | OK      |
+| test | No          | Off | Off  | OK      |
+| rc   | Yes         | On  | Yes  | Blocked |
+| prod | Yes         | On  | Yes  | Blocked |
 
 ## FHIR R4 Gateway
 
 8 endpoints mapping VistA data to FHIR R4 resources:
+
 - `GET /fhir/metadata` -- CapabilityStatement (public)
 - `GET /fhir/Patient/:id` -- Patient read
 - `GET /fhir/AllergyIntolerance?patient=N` -- Allergies
@@ -151,6 +154,7 @@ Supports SMART-on-FHIR Bearer JWT or session cookie auth.
 ## Module System
 
 12 system modules controlled by SKU profiles:
+
 - kernel, clinical, portal, telehealth, imaging, analytics
 - interop, intake, ai, iam, rcm, scheduling
 

@@ -15,16 +15,16 @@ Wire 10 existing PG tables to their in-memory store counterparts. These tables a
 
 | Store                    | File                                  | Existing PG Table             | Action                    |
 | ------------------------ | ------------------------------------- | ----------------------------- | ------------------------- |
-| portal-access-logs       | portal-iam/access-log-store.ts         | portal_access_log             | Wire PG repo              |
+| portal-access-logs       | portal-iam/access-log-store.ts        | portal_access_log             | Wire PG repo              |
 | imaging-break-glass      | services/imaging-authz.ts             | iam_break_glass_session       | Wire PG repo              |
-| telehealth-rooms        | telehealth/room-store.ts               | telehealth_room               | Wire PG repo              |
+| telehealth-rooms         | telehealth/room-store.ts              | telehealth_room               | Wire PG repo              |
 | scheduling-booking-locks | adapters/scheduling/vista-adapter.ts  | scheduling_booking_lock       | Wire PG repo              |
 | scheduling-waitlist      | adapters/scheduling/vista-adapter.ts  | scheduling_waitlist_request   | Wire PG repo              |
 | intake-sessions          | intake/intake-store.ts                | intake_session                | Wire PG repo              |
 | clinical-drafts          | routes/write-backs.ts                 | clinical_draft                | Wire PG repo              |
 | templates                | templates/template-engine.ts          | clinical_template, quick_text | Already PG-backed, verify |
-| webhook-subscriptions    | services/webhook-service.ts           | (v45 planned)                | Create table + repo       |
-| fhir-subscriptions       | services/fhir-subscription-service.ts | (v46 planned)                | Create table + repo       |
+| webhook-subscriptions    | services/webhook-service.ts           | (v45 planned)                 | Create table + repo       |
+| fhir-subscriptions       | services/fhir-subscription-service.ts | (v46 planned)                 | Create table + repo       |
 
 ---
 

@@ -27,16 +27,16 @@
 
 ## Where Code Goes
 
-| Path | Purpose |
-|------|---------|
-| `apps/web` | Next.js clinician CPRS UI |
-| `apps/api` | Fastify API server |
-| `apps/portal` | Next.js patient portal |
-| `services/vista` | VistA Docker compose + MUMPS routines |
-| `services/platform-db` | PostgreSQL Docker compose |
-| `docs/runbooks` | Step-by-step operational guides |
-| `scripts` | Verifiers, installers, QA gates |
-| `config` | Module, SKU, and capability JSON |
+| Path                   | Purpose                               |
+| ---------------------- | ------------------------------------- |
+| `apps/web`             | Next.js clinician CPRS UI             |
+| `apps/api`             | Fastify API server                    |
+| `apps/portal`          | Next.js patient portal                |
+| `services/vista`       | VistA Docker compose + MUMPS routines |
+| `services/platform-db` | PostgreSQL Docker compose             |
+| `docs/runbooks`        | Step-by-step operational guides       |
+| `scripts`              | Verifiers, installers, QA gates       |
+| `config`               | Module, SKU, and capability JSON      |
 
 ## QA Gates
 
@@ -56,6 +56,7 @@ Every PR should pass:
 ## Session Log
 
 After each working session, append an entry to `docs/SESSION_LOG.md` with:
+
 - Session ID, date, and phase/task label
 - What was completed
 - What remains

@@ -620,8 +620,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
       vistaGrounding: {
         vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT (2)'],
         targetRoutines: ['DGPMV', 'DGADM'],
-        migrationPath:
-          'Wire DGPM admission RPCs with ward/bed selection + DG ADT event triggers',
+        migrationPath: 'Wire DGPM admission RPCs with ward/bed selection + DG ADT event triggers',
         sandboxNote:
           'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
       },
@@ -665,8 +664,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
       vistaGrounding: {
         vistaFiles: ['PATIENT MOVEMENT (405)', 'WARD LOCATION (42)'],
         targetRoutines: ['DGPMV', 'DGTRAN'],
-        migrationPath:
-          'Wire DGPM transfer RPC with destination ward/bed + attending provider',
+        migrationPath: 'Wire DGPM transfer RPC with destination ward/bed + attending provider',
         sandboxNote:
           'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
       },
@@ -708,8 +706,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
       vistaGrounding: {
         vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT (2)'],
         targetRoutines: ['DGPMV', 'DGDIS'],
-        migrationPath:
-          'Wire DGPM discharge RPC with discharge type + disposition',
+        migrationPath: 'Wire DGPM discharge RPC with discharge type + disposition',
         sandboxNote:
           'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
       },

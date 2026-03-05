@@ -19,14 +19,20 @@ server.get('/vista/notes/:action', async (request, reply) => {
   const dfn = (request.query as any)?.dfn;
   if (!dfn) return reply.status(400).send({ ok: false, error: 'dfn required' });
   try {
-    const raw = await safeCallRpc('TIU RPC_NAME', [dfn], { tenantId: session.tenantId, duz: session.duz });
+    const raw = await safeCallRpc('TIU RPC_NAME', [dfn], {
+      tenantId: session.tenantId,
+      duz: session.duz,
+    });
     const parsed = parseTiuResponse(raw);
     return reply.send({ ok: true, source: 'vista', data: parsed });
   } catch (err: any) {
     log.warn({ err, rpc: 'TIU RPC_NAME' }, 'RPC call failed');
     return reply.code(502).send({
-      ok: false, source: 'vista', error: err?.message,
-      rpcUsed: ['TIU RPC_NAME'], pendingTargets: []
+      ok: false,
+      source: 'vista',
+      error: err?.message,
+      rpcUsed: ['TIU RPC_NAME'],
+      pendingTargets: [],
     });
   }
 });
@@ -38,16 +44,16 @@ server.get('/vista/notes/:action', async (request, reply) => {
 
 **File:** `apps/api/src/routes/notes.ts`
 
-| RPC Family | Purpose |
-|------------|---------|
-| TIU CREATE RECORD | Create note |
-| TIU SET DOCUMENT TEXT | Set note text |
-| TIU SIGN RECORD | Sign note |
-| TIU GET RECORD TEXT | Get note text |
-| ORWTIU TEMPLATE GETITM | Template items |
-| ORWTIU PERSONAL TITLE LIST | Title list |
-| TIU DOCUMENTS BY CONTEXT | List notes by context |
-| etc. | (remaining TIU/ORWTIU RPCs) |
+| RPC Family                 | Purpose                     |
+| -------------------------- | --------------------------- |
+| TIU CREATE RECORD          | Create note                 |
+| TIU SET DOCUMENT TEXT      | Set note text               |
+| TIU SIGN RECORD            | Sign note                   |
+| TIU GET RECORD TEXT        | Get note text               |
+| ORWTIU TEMPLATE GETITM     | Template items              |
+| ORWTIU PERSONAL TITLE LIST | Title list                  |
+| TIU DOCUMENTS BY CONTEXT   | List notes by context       |
+| etc.                       | (remaining TIU/ORWTIU RPCs) |
 
 ---
 
@@ -55,18 +61,18 @@ server.get('/vista/notes/:action', async (request, reply) => {
 
 **File:** `apps/api/src/routes/orders.ts`
 
-| RPC Family | Purpose |
-|------------|---------|
-| ORWDX SAVE | Save order |
-| ORWDXA DC | Discontinue |
-| ORWDXA COMPLETE | Complete order |
-| ORWDXC ACCEPT | Order check accept |
-| ORWDXC DISPLAY | Order check display |
-| ORWDXC SAVECHK | Save order check |
-| ORWDX WRLST | Write list |
-| ORWDLR DEF | Lab def |
-| ORWOR* | Order entry helpers |
-| etc. | (remaining ORWDX/ORWOR RPCs) |
+| RPC Family      | Purpose                      |
+| --------------- | ---------------------------- |
+| ORWDX SAVE      | Save order                   |
+| ORWDXA DC       | Discontinue                  |
+| ORWDXA COMPLETE | Complete order               |
+| ORWDXC ACCEPT   | Order check accept           |
+| ORWDXC DISPLAY  | Order check display          |
+| ORWDXC SAVECHK  | Save order check             |
+| ORWDX WRLST     | Write list                   |
+| ORWDLR DEF      | Lab def                      |
+| ORWOR\*         | Order entry helpers          |
+| etc.            | (remaining ORWDX/ORWOR RPCs) |
 
 **LOCK/UNLOCK**: Call `ORWDX LOCK` before ordering RPCs, `ORWDX UNLOCK` after (see AGENTS.md gotcha 17).
 

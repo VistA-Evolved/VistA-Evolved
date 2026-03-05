@@ -28,11 +28,11 @@ graph LR
 
 ## Prerequisites
 
-| Tool | Version | Install |
-|------|---------|---------|
-| Node.js | 24.x | [nodejs.org](https://nodejs.org/) |
-| pnpm | 10.x | `corepack enable && corepack prepare pnpm@latest --activate` |
-| Docker Desktop | Latest | [docker.com](https://www.docker.com/products/docker-desktop/) (enable WSL 2 on Windows) |
+| Tool           | Version | Install                                                                                 |
+| -------------- | ------- | --------------------------------------------------------------------------------------- |
+| Node.js        | 24.x    | [nodejs.org](https://nodejs.org/)                                                       |
+| pnpm           | 10.x    | `corepack enable && corepack prepare pnpm@latest --activate`                            |
+| Docker Desktop | Latest  | [docker.com](https://www.docker.com/products/docker-desktop/) (enable WSL 2 on Windows) |
 
 Allocate **at least 6 GB RAM** to Docker (VistA alone needs ~2 GB).
 
@@ -45,10 +45,10 @@ port maps, credentials, and env templates, see
 
 Pick one profile and run a single command. Do not mix profiles in the same session.
 
-| Profile | VistA Image | Broker Port | Best For |
-|---------|-------------|-------------|----------|
-| **vehu** (default) | `worldvista/vehu` | **9431** | Day-to-day dev, RPC truth, evidence docs |
-| **compose** | `worldvista/worldvista-ehr` | **9210** | Full-stack containerized demo |
+| Profile            | VistA Image                 | Broker Port | Best For                                 |
+| ------------------ | --------------------------- | ----------- | ---------------------------------------- |
+| **vehu** (default) | `worldvista/vehu`           | **9431**    | Day-to-day dev, RPC truth, evidence docs |
+| **compose**        | `worldvista/worldvista-ehr` | **9210**    | Full-stack containerized demo            |
 
 ### One-command start (recommended)
 
@@ -141,24 +141,24 @@ Search for patient **CARTER,DAVID** to see a full chart.
 
 ### Port Map
 
-| Service | VEHU Profile | Compose Profile | Notes |
-|---------|-------------|-----------------|-------|
-| VistA RPC Broker | **9431** | **9210** | XWB protocol |
-| VistA SSH | 2223 | -- | VEHU only |
-| VistA Web UI | -- | 8001 | Compose only |
-| PostgreSQL | 5433 | 5432 | Platform DB |
-| Redis | -- | 6379 | Compose only |
-| API (Fastify) | 3001 (local) | 4000 (container) | |
-| Web (Next.js) | 3000 (local) | 5173 (container) | |
+| Service          | VEHU Profile | Compose Profile  | Notes        |
+| ---------------- | ------------ | ---------------- | ------------ |
+| VistA RPC Broker | **9431**     | **9210**         | XWB protocol |
+| VistA SSH        | 2223         | --               | VEHU only    |
+| VistA Web UI     | --           | 8001             | Compose only |
+| PostgreSQL       | 5433         | 5432             | Platform DB  |
+| Redis            | --           | 6379             | Compose only |
+| API (Fastify)    | 3001 (local) | 4000 (container) |              |
+| Web (Next.js)    | 3000 (local) | 5173 (container) |              |
 
 ### Sandbox Credentials
 
-| Access Code | Verify Code | User | Profile |
-|-------------|-------------|------|---------|
-| PRO1234 | PRO1234!! | PROGRAMMER,ONE (DUZ 1) | **vehu** (recommended) |
-| PROV123 | PROV123!! | PROVIDER,CLYDE WV (DUZ 87) | compose / vehu |
-| PHARM123 | PHARM123!! | PHARMACIST,LINDA WV | compose / vehu |
-| NURSE123 | NURSE123!! | NURSE,HELEN WV | compose / vehu |
+| Access Code | Verify Code | User                       | Profile                |
+| ----------- | ----------- | -------------------------- | ---------------------- |
+| PRO1234     | PRO1234!!   | PROGRAMMER,ONE (DUZ 1)     | **vehu** (recommended) |
+| PROV123     | PROV123!!   | PROVIDER,CLYDE WV (DUZ 87) | compose / vehu         |
+| PHARM123    | PHARM123!!  | PHARMACIST,LINDA WV        | compose / vehu         |
+| NURSE123    | NURSE123!!  | NURSE,HELEN WV             | compose / vehu         |
 
 ### Evidence Docs
 
@@ -279,6 +279,7 @@ Read [AGENTS.md](AGENTS.md) before making any changes. It contains:
 - Mandatory governance rules (prompt capture, verification, docs)
 
 Also read:
+
 - `.github/copilot-instructions.md` -- Copilot-specific build protocol with
   RPC availability tables and probe instructions
 - `.cursor/rules/docker-first-verification.md` -- Cursor agent rules

@@ -33,7 +33,12 @@ export type {
 } from './types.js';
 
 export { StubErxAdapter } from './stub-adapter.js';
-export { buildNewRx, buildRenewalResponse, buildCancelRx, mapVistaPatientToErx } from './message-builder.js';
+export {
+  buildNewRx,
+  buildRenewalResponse,
+  buildCancelRx,
+  mapVistaPatientToErx,
+} from './message-builder.js';
 
 let activeAdapter: import('./types.js').ErxAdapter | null = null;
 

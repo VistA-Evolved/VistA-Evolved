@@ -204,57 +204,147 @@ export default async function reportsRoutes(server: FastifyInstance): Promise<vo
     rpcName: string,
     request: FastifyRequest,
     reply: FastifyReply,
-    paramBuilder?: (q: Record<string, unknown>) => string[],
+    paramBuilder?: (q: Record<string, unknown>) => string[]
   ) {
     await requireSession(request, reply);
     const q = (request.query as Record<string, unknown>) || {};
     const params = paramBuilder ? paramBuilder(q) : q?.dfn ? [String(q.dfn)] : [];
     try {
       const lines = await safeCallRpc(rpcName, params);
-      return reply.send({ ok: true, source: 'vista', rpcUsed: [rpcName], data: lines, pendingTargets: [] });
+      return reply.send({
+        ok: true,
+        source: 'vista',
+        rpcUsed: [rpcName],
+        data: lines,
+        pendingTargets: [],
+      });
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       log.warn(`${rpcName} failed`, { err: msg });
-      return reply.code(502).send({ ok: false, source: 'vista', error: msg, rpcUsed: [], pendingTargets: [rpcName] });
+      return reply
+        .code(502)
+        .send({ ok: false, source: 'vista', error: msg, rpcUsed: [], pendingTargets: [rpcName] });
     }
   }
 
-  server.get('/vista/reports/rpc/orwrp-column-headers', (req, rep) => callReportRpc('ORWRP COLUMN HEADERS', req, rep));
-  server.get('/vista/reports/rpc/orwrp-get-default-printer', (req, rep) => callReportRpc('ORWRP GET DEFAULT PRINTER', req, rep));
-  server.get('/vista/reports/rpc/orwrp-lab-report-lists', (req, rep) => callReportRpc('ORWRP LAB REPORT LISTS', req, rep));
-  server.get('/vista/reports/rpc/orwrp-print-lab-remote', (req, rep) => callReportRpc('ORWRP PRINT LAB REMOTE', req, rep));
-  server.get('/vista/reports/rpc/orwrp-print-lab-reports', (req, rep) => callReportRpc('ORWRP PRINT LAB REPORTS', req, rep));
-  server.get('/vista/reports/rpc/orwrp-print-remote-report', (req, rep) => callReportRpc('ORWRP PRINT REMOTE REPORT', req, rep));
-  server.get('/vista/reports/rpc/orwrp-print-report', (req, rep) => callReportRpc('ORWRP PRINT REPORT', req, rep));
-  server.get('/vista/reports/rpc/orwrp-print-v-report', (req, rep) => callReportRpc('ORWRP PRINT V REPORT', req, rep));
-  server.get('/vista/reports/rpc/orwrp-print-windows-lab-remote', (req, rep) => callReportRpc('ORWRP PRINT WINDOWS LAB REMOTE', req, rep));
-  server.get('/vista/reports/rpc/orwrp-print-windows-remote', (req, rep) => callReportRpc('ORWRP PRINT WINDOWS REMOTE', req, rep));
-  server.get('/vista/reports/rpc/orwrp-print-windows-report', (req, rep) => callReportRpc('ORWRP PRINT WINDOWS REPORT', req, rep));
-  server.get('/vista/reports/rpc/orwrp-report-lists', (req, rep) => callReportRpc('ORWRP REPORT LISTS', req, rep));
-  server.get('/vista/reports/rpc/orwrp-report-text', (req, rep) => callReportRpc('ORWRP REPORT TEXT', req, rep, (q) => [String(q?.dfn ?? ''), String(q?.id ?? ''), String(q?.hsType ?? ''), '', '0', '', '']));
-  server.get('/vista/reports/rpc/orwrp-save-default-printer', (req, rep) => callReportRpc('ORWRP SAVE DEFAULT PRINTER', req, rep));
-  server.get('/vista/reports/rpc/orwrp-winprint-default', (req, rep) => callReportRpc('ORWRP WINPRINT DEFAULT', req, rep));
-  server.get('/vista/reports/rpc/orwrp-winprint-lab-reports', (req, rep) => callReportRpc('ORWRP WINPRINT LAB REPORTS', req, rep));
-  server.get('/vista/reports/rpc/orwrp1-listnutr', (req, rep) => callReportRpc('ORWRP1 LISTNUTR', req, rep));
-  server.get('/vista/reports/rpc/orwrp2-compabv', (req, rep) => callReportRpc('ORWRP2 COMPABV', req, rep));
-  server.get('/vista/reports/rpc/orwrp2-compdisp', (req, rep) => callReportRpc('ORWRP2 COMPDISP', req, rep));
-  server.get('/vista/reports/rpc/orwrp2-getlkup', (req, rep) => callReportRpc('ORWRP2 GETLKUP', req, rep));
-  server.get('/vista/reports/rpc/orwrp2-hs-comp-files', (req, rep) => callReportRpc('ORWRP2 HS COMP FILES', req, rep));
-  server.get('/vista/reports/rpc/orwrp2-hs-component-subs', (req, rep) => callReportRpc('ORWRP2 HS COMPONENT SUBS', req, rep));
-  server.get('/vista/reports/rpc/orwrp2-hs-components', (req, rep) => callReportRpc('ORWRP2 HS COMPONENTS', req, rep));
-  server.get('/vista/reports/rpc/orwrp2-hs-file-lookup', (req, rep) => callReportRpc('ORWRP2 HS FILE LOOKUP', req, rep));
-  server.get('/vista/reports/rpc/orwrp2-hs-report-text', (req, rep) => callReportRpc('ORWRP2 HS REPORT TEXT', req, rep));
-  server.get('/vista/reports/rpc/orwrp2-hs-subitems', (req, rep) => callReportRpc('ORWRP2 HS SUBITEMS', req, rep));
-  server.get('/vista/reports/rpc/orwrp2-savlkup', (req, rep) => callReportRpc('ORWRP2 SAVLKUP', req, rep));
-  server.get('/vista/reports/rpc/orwrp3-expand-columns', (req, rep) => callReportRpc('ORWRP3 EXPAND COLUMNS', req, rep));
-  server.get('/vista/reports/rpc/orwrp4-hdr-modify', (req, rep) => callReportRpc('ORWRP4 HDR MODIFY', req, rep));
-  server.get('/vista/reports/rpc/orwsr-caselist', (req, rep) => callReportRpc('ORWSR CASELIST', req, rep));
-  server.get('/vista/reports/rpc/orwsr-get-surg-context', (req, rep) => callReportRpc('ORWSR GET SURG CONTEXT', req, rep));
+  server.get('/vista/reports/rpc/orwrp-column-headers', (req, rep) =>
+    callReportRpc('ORWRP COLUMN HEADERS', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-get-default-printer', (req, rep) =>
+    callReportRpc('ORWRP GET DEFAULT PRINTER', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-lab-report-lists', (req, rep) =>
+    callReportRpc('ORWRP LAB REPORT LISTS', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-print-lab-remote', (req, rep) =>
+    callReportRpc('ORWRP PRINT LAB REMOTE', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-print-lab-reports', (req, rep) =>
+    callReportRpc('ORWRP PRINT LAB REPORTS', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-print-remote-report', (req, rep) =>
+    callReportRpc('ORWRP PRINT REMOTE REPORT', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-print-report', (req, rep) =>
+    callReportRpc('ORWRP PRINT REPORT', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-print-v-report', (req, rep) =>
+    callReportRpc('ORWRP PRINT V REPORT', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-print-windows-lab-remote', (req, rep) =>
+    callReportRpc('ORWRP PRINT WINDOWS LAB REMOTE', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-print-windows-remote', (req, rep) =>
+    callReportRpc('ORWRP PRINT WINDOWS REMOTE', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-print-windows-report', (req, rep) =>
+    callReportRpc('ORWRP PRINT WINDOWS REPORT', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-report-lists', (req, rep) =>
+    callReportRpc('ORWRP REPORT LISTS', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-report-text', (req, rep) =>
+    callReportRpc('ORWRP REPORT TEXT', req, rep, (q) => [
+      String(q?.dfn ?? ''),
+      String(q?.id ?? ''),
+      String(q?.hsType ?? ''),
+      '',
+      '0',
+      '',
+      '',
+    ])
+  );
+  server.get('/vista/reports/rpc/orwrp-save-default-printer', (req, rep) =>
+    callReportRpc('ORWRP SAVE DEFAULT PRINTER', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-winprint-default', (req, rep) =>
+    callReportRpc('ORWRP WINPRINT DEFAULT', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp-winprint-lab-reports', (req, rep) =>
+    callReportRpc('ORWRP WINPRINT LAB REPORTS', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp1-listnutr', (req, rep) =>
+    callReportRpc('ORWRP1 LISTNUTR', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp2-compabv', (req, rep) =>
+    callReportRpc('ORWRP2 COMPABV', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp2-compdisp', (req, rep) =>
+    callReportRpc('ORWRP2 COMPDISP', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp2-getlkup', (req, rep) =>
+    callReportRpc('ORWRP2 GETLKUP', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp2-hs-comp-files', (req, rep) =>
+    callReportRpc('ORWRP2 HS COMP FILES', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp2-hs-component-subs', (req, rep) =>
+    callReportRpc('ORWRP2 HS COMPONENT SUBS', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp2-hs-components', (req, rep) =>
+    callReportRpc('ORWRP2 HS COMPONENTS', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp2-hs-file-lookup', (req, rep) =>
+    callReportRpc('ORWRP2 HS FILE LOOKUP', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp2-hs-report-text', (req, rep) =>
+    callReportRpc('ORWRP2 HS REPORT TEXT', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp2-hs-subitems', (req, rep) =>
+    callReportRpc('ORWRP2 HS SUBITEMS', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp2-savlkup', (req, rep) =>
+    callReportRpc('ORWRP2 SAVLKUP', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp3-expand-columns', (req, rep) =>
+    callReportRpc('ORWRP3 EXPAND COLUMNS', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwrp4-hdr-modify', (req, rep) =>
+    callReportRpc('ORWRP4 HDR MODIFY', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwsr-caselist', (req, rep) =>
+    callReportRpc('ORWSR CASELIST', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwsr-get-surg-context', (req, rep) =>
+    callReportRpc('ORWSR GET SURG CONTEXT', req, rep)
+  );
   server.get('/vista/reports/rpc/orwsr-list', (req, rep) => callReportRpc('ORWSR LIST', req, rep));
-  server.get('/vista/reports/rpc/orwsr-onecase', (req, rep) => callReportRpc('ORWSR ONECASE', req, rep));
-  server.get('/vista/reports/rpc/orwsr-optop', (req, rep) => callReportRpc('ORWSR OPTOP', req, rep));
-  server.get('/vista/reports/rpc/orwsr-rptlist', (req, rep) => callReportRpc('ORWSR RPTLIST', req, rep));
-  server.get('/vista/reports/rpc/orwsr-save-surg-context', (req, rep) => callReportRpc('ORWSR SAVE SURG CONTEXT', req, rep));
-  server.get('/vista/reports/rpc/orwsr-show-optop-when-signing', (req, rep) => callReportRpc('ORWSR SHOW OPTOP WHEN SIGNING', req, rep));
-  server.get('/vista/reports/rpc/orwsr-show-surg-tab', (req, rep) => callReportRpc('ORWSR SHOW SURG TAB', req, rep));
+  server.get('/vista/reports/rpc/orwsr-onecase', (req, rep) =>
+    callReportRpc('ORWSR ONECASE', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwsr-optop', (req, rep) =>
+    callReportRpc('ORWSR OPTOP', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwsr-rptlist', (req, rep) =>
+    callReportRpc('ORWSR RPTLIST', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwsr-save-surg-context', (req, rep) =>
+    callReportRpc('ORWSR SAVE SURG CONTEXT', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwsr-show-optop-when-signing', (req, rep) =>
+    callReportRpc('ORWSR SHOW OPTOP WHEN SIGNING', req, rep)
+  );
+  server.get('/vista/reports/rpc/orwsr-show-surg-tab', (req, rep) =>
+    callReportRpc('ORWSR SHOW SURG TAB', req, rep)
+  );
 }

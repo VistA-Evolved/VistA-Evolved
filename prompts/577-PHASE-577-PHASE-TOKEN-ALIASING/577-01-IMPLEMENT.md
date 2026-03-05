@@ -47,6 +47,7 @@ multiple prompt folders):
 ### D. Regenerate Audit
 
 After script changes, run the audit to regenerate:
+
 - `docs/qa/phase-comment-audit.json`
 - `docs/qa/phase-comment-audit.md`
 

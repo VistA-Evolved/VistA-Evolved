@@ -29,10 +29,10 @@ Redis is unavailable (single-instance dev).
 
 ## Env Vars
 
-| Var | Default | Description |
-| --- | --- | --- |
-| `REDIS_URL` | (empty) | Redis connection URL. If empty, Redis is disabled. |
-| `REDIS_KEY_PREFIX` | `ve:` | Key prefix for namespace isolation |
+| Var                | Default | Description                                        |
+| ------------------ | ------- | -------------------------------------------------- |
+| `REDIS_URL`        | (empty) | Redis connection URL. If empty, Redis is disabled. |
+| `REDIS_KEY_PREFIX` | `ve:`   | Key prefix for namespace isolation                 |
 
 ## Acceptance Criteria
 

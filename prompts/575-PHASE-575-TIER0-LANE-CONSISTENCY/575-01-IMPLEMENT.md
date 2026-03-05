@@ -9,6 +9,7 @@ between docs, defaults, and heuristics.
 ## Changes
 
 ### A) swap-boundary.ts -- Explicit lane boundaries
+
 - Add `vehuSandboxBoundary()` (instanceId: 'vehu', port default 9431)
 - Add `worldvistaEhrBoundary()` (instanceId: 'worldvista-ehr', port default 9430)
 - Rename `devSandboxBoundary()` -> kept as alias for backward compat
@@ -18,16 +19,19 @@ between docs, defaults, and heuristics.
   - Port heuristic fallback: 9431->vehu, 9430->worldvista-ehr, 9210->worldvista-ehr
 
 ### B) TIER0_PROOF.md -- Multi-lane prerequisites
+
 - Replace single-lane "port 9430" guidance
 - Link to runtime-lanes.md
 - Show creds for both VEHU and Legacy
 
 ### C) verify-tier0.ps1 + verify-tier0.sh -- Lane detection
+
 - Add lane detection via GET /vista/swap-boundary
 - Choose default creds from boundary.instanceId
 - Docker check looks for both "wv" and "vehu" containers
 
 ### D) runtime-lanes.md -- VISTA_INSTANCE_ID section
+
 - Add short reference section for VISTA_INSTANCE_ID values
 
 ## Files Touched

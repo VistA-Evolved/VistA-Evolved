@@ -60,7 +60,9 @@ try {
   }
 }
 
-console.log(`Gauntlet finished: ${jsonOutput.totals.pass} PASS, ${jsonOutput.totals.fail} FAIL, ${jsonOutput.totals.warn} WARN, ${jsonOutput.totals.skip} SKIP`);
+console.log(
+  `Gauntlet finished: ${jsonOutput.totals.pass} PASS, ${jsonOutput.totals.fail} FAIL, ${jsonOutput.totals.warn} WARN, ${jsonOutput.totals.skip} SKIP`
+);
 
 // ── Step 3: Build markdown ──────────────────────────────────
 const { totals, gates, durationMs, generatedAt, suite } = jsonOutput;
@@ -70,11 +72,16 @@ const timestamp = generatedAt || new Date().toISOString();
 
 function statusEmoji(s) {
   switch (s) {
-    case 'pass': return 'PASS';
-    case 'fail': return '**FAIL**';
-    case 'warn': return 'WARN';
-    case 'skip': return 'SKIP';
-    default: return s.toUpperCase();
+    case 'pass':
+      return 'PASS';
+    case 'fail':
+      return '**FAIL**';
+    case 'warn':
+      return 'WARN';
+    case 'skip':
+      return 'SKIP';
+    default:
+      return s.toUpperCase();
   }
 }
 

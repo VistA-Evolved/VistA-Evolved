@@ -16,12 +16,14 @@ Build competitive feature frameworks (e-Prescribing, charge capture, bed managem
 **Location:** `apps/api/src/pharmacy/erx/`
 
 **What to build:**
+
 - NCPDP SCRIPT message builder/parser (wire format, not Surescripts connection)
 - Message types: NewRx, RxRenewal, CancelRx, RxFill
 - Adapter interface for Surescripts/WENO/DoseSpot
 - Stub adapter that validates message structure without sending
 
 **Files:**
+
 - `apps/api/src/pharmacy/erx/message-builder.ts`
 - `apps/api/src/pharmacy/erx/message-parser.ts`
 - `apps/api/src/pharmacy/erx/adapter.ts` (interface)
@@ -34,6 +36,7 @@ Build competitive feature frameworks (e-Prescribing, charge capture, bed managem
 **Location:** `apps/api/src/rcm/charge-capture/`
 
 **What to build:**
+
 - CPT/ICD-10 code entry linked to VistA encounter (ORWPCE)
 - Charge rules engine (E&M level evaluation)
 - Integration with existing claim creation pipeline
@@ -45,6 +48,7 @@ Build competitive feature frameworks (e-Prescribing, charge capture, bed managem
 **Location:** `apps/api/src/rcm/payments/`
 
 **What to build:**
+
 - ERA (835) auto-posting to VistA AR (when AR available)
 - Manual payment entry
 - A/R aging calculations
@@ -56,6 +60,7 @@ Build competitive feature frameworks (e-Prescribing, charge capture, bed managem
 **Location:** `apps/api/src/inpatient/bed-management.ts`
 
 **What to build:**
+
 - Uses ZVEADT.m ward/bed data (already working)
 - Visual bed board with occupancy status
 - Assign/transfer/discharge from bed view
@@ -67,6 +72,7 @@ Build competitive feature frameworks (e-Prescribing, charge capture, bed managem
 **Location:** `apps/api/src/service-lines/ed/track-board.ts`
 
 **What to build:**
+
 - Patient queue with triage level, arrival time, provider assignment
 - Uses ORQPT WARD PATIENTS for ED location
 - Uses ORQQVI VITALS for triage vitals
@@ -78,6 +84,7 @@ Build competitive feature frameworks (e-Prescribing, charge capture, bed managem
 **API:** `POST /admin/tenants/provision`
 
 **What to build:**
+
 1. Create tenant record in PG (`tenant_config` table)
 2. Run PG migrations for tenant-scoped tables (RLS auto-applies)
 3. Seed module entitlements from chosen SKU
@@ -91,6 +98,7 @@ Build competitive feature frameworks (e-Prescribing, charge capture, bed managem
 ## Part G: SaaS Billing (Lago Wiring) (Phase 14B)
 
 **What to build:**
+
 1. Create Lago customer on tenant provisioning
 2. Emit metering events: API calls, active users, RPC calls, storage bytes
 3. Wire `GET /admin/billing/usage` — current usage for tenant
@@ -104,6 +112,7 @@ Build competitive feature frameworks (e-Prescribing, charge capture, bed managem
 **Location:** `tests/k6/`
 
 **Scenarios:**
+
 1. `load-concurrent-users.js` — 50 concurrent users, mixed workflows
 2. `load-rpc-throughput.js` — max RPC calls/second through pool
 3. `load-multi-tenant.js` — 5 tenants, 10 users each, isolation under load

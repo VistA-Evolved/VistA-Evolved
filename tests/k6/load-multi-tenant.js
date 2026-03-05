@@ -53,7 +53,7 @@ function login() {
   const res = http.post(
     `${API}/auth/login`,
     JSON.stringify({ accessCode: ACCESS, verifyCode: VERIFY }),
-    { headers: { 'Content-Type': 'application/json' } },
+    { headers: { 'Content-Type': 'application/json' } }
   );
   loginDuration.add(Date.now() - start);
 

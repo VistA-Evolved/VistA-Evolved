@@ -47,8 +47,8 @@ export default function MenuBar({ dfn }: MenuBarProps) {
 
   const PENDING_RPC_MAP: Record<string, string> = {
     'info:demographics': 'ORWPT PTINQ',
-    'fontSize': 'N/A (local preference)',
-    'about': 'N/A (static dialog)',
+    fontSize: 'N/A (local preference)',
+    about: 'N/A (static dialog)',
   };
 
   function handleAction(item: MenuItem) {
@@ -68,7 +68,9 @@ export default function MenuBar({ dfn }: MenuBarProps) {
       const size = item.tag ?? 10;
       document.documentElement.style.setProperty('--chart-font-size', `${size}px`);
     } else if (item.onClick === 'about') {
-      window.alert('VistA-Evolved CPRS Web Client\nIntegration pending features shown in menu tooltips.');
+      window.alert(
+        'VistA-Evolved CPRS Web Client\nIntegration pending features shown in menu tooltips.'
+      );
     } else {
       // No dead clicks — show pending info for any unhandled action
       const rpc = PENDING_RPC_MAP[item.onClick] ?? 'unknown';
@@ -91,7 +93,11 @@ export default function MenuBar({ dfn }: MenuBarProps) {
             <button
               className={`${styles.menuItem} ${!item.enabled ? styles.disabled : ''}`}
               disabled={!item.enabled}
-              title={!item.enabled ? `Integration pending${DISABLED_RPC_MAP[item.name] ? ' — target: ' + DISABLED_RPC_MAP[item.name] : ''}` : undefined}
+              title={
+                !item.enabled
+                  ? `Integration pending${DISABLED_RPC_MAP[item.name] ? ' — target: ' + DISABLED_RPC_MAP[item.name] : ''}`
+                  : undefined
+              }
               onClick={() => {
                 if (!hasChildren) handleAction(item);
               }}

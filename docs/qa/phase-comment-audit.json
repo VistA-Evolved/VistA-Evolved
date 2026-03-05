@@ -331,9 +331,7 @@
         }
       ],
       "basePhase": "14",
-      "baseFolders": [
-        "16-PHASE-14-PARITY-CLOSURE"
-      ],
+      "baseFolders": ["16-PHASE-14-PARITY-CLOSURE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -359,9 +357,7 @@
         }
       ],
       "basePhase": "15",
-      "baseFolders": [
-        "17-PHASE-15-ENTERPRISE-HARDENING"
-      ],
+      "baseFolders": ["17-PHASE-15-ENTERPRISE-HARDENING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -387,9 +383,7 @@
         }
       ],
       "basePhase": "5",
-      "baseFolders": [
-        "07-PHASE-5-CORE-CLINICAL-WORKFLOW"
-      ],
+      "baseFolders": ["07-PHASE-5-CORE-CLINICAL-WORKFLOW"],
       "resolvedVia": "basePhase"
     },
     {
@@ -415,9 +409,7 @@
         }
       ],
       "basePhase": "25",
-      "baseFolders": [
-        "27-PHASE-25-BI-ANALYTICS"
-      ],
+      "baseFolders": ["27-PHASE-25-BI-ANALYTICS"],
       "resolvedVia": "basePhase"
     },
     {
@@ -443,9 +435,7 @@
         }
       ],
       "basePhase": "15",
-      "baseFolders": [
-        "17-PHASE-15-ENTERPRISE-HARDENING"
-      ],
+      "baseFolders": ["17-PHASE-15-ENTERPRISE-HARDENING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -471,9 +461,7 @@
         }
       ],
       "basePhase": "68",
-      "baseFolders": [
-        "74-PHASE-68-NURSING-WORKFLOW"
-      ],
+      "baseFolders": ["74-PHASE-68-NURSING-WORKFLOW"],
       "resolvedVia": "basePhase"
     },
     {
@@ -499,9 +487,7 @@
         }
       ],
       "basePhase": "17",
-      "baseFolders": [
-        "19-PHASE-17-MULTITENANT-CONTROL-PLANE"
-      ],
+      "baseFolders": ["19-PHASE-17-MULTITENANT-CONTROL-PLANE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -527,9 +513,7 @@
         }
       ],
       "basePhase": "6",
-      "baseFolders": [
-        "08-PHASE-6-VITALS"
-      ],
+      "baseFolders": ["08-PHASE-6-VITALS"],
       "resolvedVia": "basePhase"
     },
     {
@@ -555,9 +539,7 @@
         }
       ],
       "basePhase": "5",
-      "baseFolders": [
-        "07-PHASE-5-CORE-CLINICAL-WORKFLOW"
-      ],
+      "baseFolders": ["07-PHASE-5-CORE-CLINICAL-WORKFLOW"],
       "resolvedVia": "basePhase"
     },
     {
@@ -583,9 +565,7 @@
         }
       ],
       "basePhase": "5",
-      "baseFolders": [
-        "07-PHASE-5-CORE-CLINICAL-WORKFLOW"
-      ],
+      "baseFolders": ["07-PHASE-5-CORE-CLINICAL-WORKFLOW"],
       "resolvedVia": "basePhase"
     },
     {
@@ -611,9 +591,7 @@
         }
       ],
       "basePhase": "15",
-      "baseFolders": [
-        "17-PHASE-15-ENTERPRISE-HARDENING"
-      ],
+      "baseFolders": ["17-PHASE-15-ENTERPRISE-HARDENING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -639,9 +617,7 @@
         }
       ],
       "basePhase": "14",
-      "baseFolders": [
-        "16-PHASE-14-PARITY-CLOSURE"
-      ],
+      "baseFolders": ["16-PHASE-14-PARITY-CLOSURE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -667,9 +643,7 @@
         }
       ],
       "basePhase": "14",
-      "baseFolders": [
-        "16-PHASE-14-PARITY-CLOSURE"
-      ],
+      "baseFolders": ["16-PHASE-14-PARITY-CLOSURE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -695,9 +669,7 @@
         }
       ],
       "basePhase": "67",
-      "baseFolders": [
-        "73-PHASE-67-ADT-INPATIENT"
-      ],
+      "baseFolders": ["73-PHASE-67-ADT-INPATIENT"],
       "resolvedVia": "basePhase"
     },
     {
@@ -723,9 +695,7 @@
         }
       ],
       "basePhase": "18",
-      "baseFolders": [
-        "20-PHASE-18-INTEROP-IMAGING"
-      ],
+      "baseFolders": ["20-PHASE-18-INTEROP-IMAGING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -751,9 +721,7 @@
         }
       ],
       "basePhase": "9",
-      "baseFolders": [
-        "11-PHASE-9-PROBLEM-LIST"
-      ],
+      "baseFolders": ["11-PHASE-9-PROBLEM-LIST"],
       "resolvedVia": "basePhase"
     },
     {
@@ -779,9 +747,7 @@
         }
       ],
       "basePhase": "8",
-      "baseFolders": [
-        "10-PHASE-8-MEDICATIONS"
-      ],
+      "baseFolders": ["10-PHASE-8-MEDICATIONS"],
       "resolvedVia": "basePhase"
     },
     {
@@ -807,9 +773,7 @@
         }
       ],
       "basePhase": "84",
-      "baseFolders": [
-        "89-PHASE-84-NURSING"
-      ],
+      "baseFolders": ["89-PHASE-84-NURSING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -835,9 +799,7 @@
         }
       ],
       "basePhase": "14",
-      "baseFolders": [
-        "16-PHASE-14-PARITY-CLOSURE"
-      ],
+      "baseFolders": ["16-PHASE-14-PARITY-CLOSURE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -863,9 +825,7 @@
         }
       ],
       "basePhase": "18",
-      "baseFolders": [
-        "20-PHASE-18-INTEROP-IMAGING"
-      ],
+      "baseFolders": ["20-PHASE-18-INTEROP-IMAGING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -891,9 +851,7 @@
         }
       ],
       "basePhase": "7",
-      "baseFolders": [
-        "09-PHASE-7-NOTES"
-      ],
+      "baseFolders": ["09-PHASE-7-NOTES"],
       "resolvedVia": "basePhase"
     },
     {
@@ -919,9 +877,7 @@
         }
       ],
       "basePhase": "15",
-      "baseFolders": [
-        "17-PHASE-15-ENTERPRISE-HARDENING"
-      ],
+      "baseFolders": ["17-PHASE-15-ENTERPRISE-HARDENING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -947,9 +903,7 @@
         }
       ],
       "basePhase": "13",
-      "baseFolders": [
-        "15-PHASE-13-CPRS-OPERATIONALIZATION"
-      ],
+      "baseFolders": ["15-PHASE-13-CPRS-OPERATIONALIZATION"],
       "resolvedVia": "basePhase"
     },
     {
@@ -975,9 +929,7 @@
         }
       ],
       "basePhase": "13",
-      "baseFolders": [
-        "15-PHASE-13-CPRS-OPERATIONALIZATION"
-      ],
+      "baseFolders": ["15-PHASE-13-CPRS-OPERATIONALIZATION"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1003,9 +955,7 @@
         }
       ],
       "basePhase": "6",
-      "baseFolders": [
-        "08-PHASE-6-VITALS"
-      ],
+      "baseFolders": ["08-PHASE-6-VITALS"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1031,9 +981,7 @@
         }
       ],
       "basePhase": "8",
-      "baseFolders": [
-        "10-PHASE-8-MEDICATIONS"
-      ],
+      "baseFolders": ["10-PHASE-8-MEDICATIONS"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1059,9 +1007,7 @@
         }
       ],
       "basePhase": "9",
-      "baseFolders": [
-        "11-PHASE-9-PROBLEM-LIST"
-      ],
+      "baseFolders": ["11-PHASE-9-PROBLEM-LIST"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1087,9 +1033,7 @@
         }
       ],
       "basePhase": "11",
-      "baseFolders": [
-        "13-PHASE-11-CPRS-WEB-REPLICA"
-      ],
+      "baseFolders": ["13-PHASE-11-CPRS-WEB-REPLICA"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1115,9 +1059,7 @@
         }
       ],
       "basePhase": "11",
-      "baseFolders": [
-        "13-PHASE-11-CPRS-WEB-REPLICA"
-      ],
+      "baseFolders": ["13-PHASE-11-CPRS-WEB-REPLICA"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1143,9 +1085,7 @@
         }
       ],
       "basePhase": "11",
-      "baseFolders": [
-        "13-PHASE-11-CPRS-WEB-REPLICA"
-      ],
+      "baseFolders": ["13-PHASE-11-CPRS-WEB-REPLICA"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1171,9 +1111,7 @@
         }
       ],
       "basePhase": "11",
-      "baseFolders": [
-        "13-PHASE-11-CPRS-WEB-REPLICA"
-      ],
+      "baseFolders": ["13-PHASE-11-CPRS-WEB-REPLICA"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1199,9 +1137,7 @@
         }
       ],
       "basePhase": "11",
-      "baseFolders": [
-        "13-PHASE-11-CPRS-WEB-REPLICA"
-      ],
+      "baseFolders": ["13-PHASE-11-CPRS-WEB-REPLICA"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1227,9 +1163,7 @@
         }
       ],
       "basePhase": "5",
-      "baseFolders": [
-        "07-PHASE-5-CORE-CLINICAL-WORKFLOW"
-      ],
+      "baseFolders": ["07-PHASE-5-CORE-CLINICAL-WORKFLOW"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1255,9 +1189,7 @@
         }
       ],
       "basePhase": "10",
-      "baseFolders": [
-        "12-PHASE-10-CPRS-EXTRACT"
-      ],
+      "baseFolders": ["12-PHASE-10-CPRS-EXTRACT"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1283,9 +1215,7 @@
         }
       ],
       "basePhase": "15",
-      "baseFolders": [
-        "17-PHASE-15-ENTERPRISE-HARDENING"
-      ],
+      "baseFolders": ["17-PHASE-15-ENTERPRISE-HARDENING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1311,9 +1241,7 @@
         }
       ],
       "basePhase": "103",
-      "baseFolders": [
-        "107-PHASE-103-DB-PERFORMANCE"
-      ],
+      "baseFolders": ["107-PHASE-103-DB-PERFORMANCE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1339,9 +1267,7 @@
         }
       ],
       "basePhase": "65",
-      "baseFolders": [
-        "71-PHASE-65-IMMUNIZATIONS"
-      ],
+      "baseFolders": ["71-PHASE-65-IMMUNIZATIONS"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1367,9 +1293,7 @@
         }
       ],
       "basePhase": "18",
-      "baseFolders": [
-        "20-PHASE-18-INTEROP-IMAGING"
-      ],
+      "baseFolders": ["20-PHASE-18-INTEROP-IMAGING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1395,9 +1319,7 @@
         }
       ],
       "basePhase": "13",
-      "baseFolders": [
-        "15-PHASE-13-CPRS-OPERATIONALIZATION"
-      ],
+      "baseFolders": ["15-PHASE-13-CPRS-OPERATIONALIZATION"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1423,9 +1345,7 @@
         }
       ],
       "basePhase": "7",
-      "baseFolders": [
-        "09-PHASE-7-NOTES"
-      ],
+      "baseFolders": ["09-PHASE-7-NOTES"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1451,9 +1371,7 @@
         }
       ],
       "basePhase": "11",
-      "baseFolders": [
-        "13-PHASE-11-CPRS-WEB-REPLICA"
-      ],
+      "baseFolders": ["13-PHASE-11-CPRS-WEB-REPLICA"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1479,9 +1397,7 @@
         }
       ],
       "basePhase": "11",
-      "baseFolders": [
-        "13-PHASE-11-CPRS-WEB-REPLICA"
-      ],
+      "baseFolders": ["13-PHASE-11-CPRS-WEB-REPLICA"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1507,9 +1423,7 @@
         }
       ],
       "basePhase": "11",
-      "baseFolders": [
-        "13-PHASE-11-CPRS-WEB-REPLICA"
-      ],
+      "baseFolders": ["13-PHASE-11-CPRS-WEB-REPLICA"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1535,9 +1449,7 @@
         }
       ],
       "basePhase": "12",
-      "baseFolders": [
-        "14-PHASE-12-CPRS-PARITY-WIRING"
-      ],
+      "baseFolders": ["14-PHASE-12-CPRS-PARITY-WIRING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1563,9 +1475,7 @@
         }
       ],
       "basePhase": "12",
-      "baseFolders": [
-        "14-PHASE-12-CPRS-PARITY-WIRING"
-      ],
+      "baseFolders": ["14-PHASE-12-CPRS-PARITY-WIRING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1591,9 +1501,7 @@
         }
       ],
       "basePhase": "12",
-      "baseFolders": [
-        "14-PHASE-12-CPRS-PARITY-WIRING"
-      ],
+      "baseFolders": ["14-PHASE-12-CPRS-PARITY-WIRING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1619,9 +1527,7 @@
         }
       ],
       "basePhase": "12",
-      "baseFolders": [
-        "14-PHASE-12-CPRS-PARITY-WIRING"
-      ],
+      "baseFolders": ["14-PHASE-12-CPRS-PARITY-WIRING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1647,9 +1553,7 @@
         }
       ],
       "basePhase": "12",
-      "baseFolders": [
-        "14-PHASE-12-CPRS-PARITY-WIRING"
-      ],
+      "baseFolders": ["14-PHASE-12-CPRS-PARITY-WIRING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1675,9 +1579,7 @@
         }
       ],
       "basePhase": "1",
-      "baseFolders": [
-        "02-PHASE-1-HELLO-SYSTEM"
-      ],
+      "baseFolders": ["02-PHASE-1-HELLO-SYSTEM"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1703,9 +1605,7 @@
         }
       ],
       "basePhase": "1",
-      "baseFolders": [
-        "02-PHASE-1-HELLO-SYSTEM"
-      ],
+      "baseFolders": ["02-PHASE-1-HELLO-SYSTEM"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1731,9 +1631,7 @@
         }
       ],
       "basePhase": "83",
-      "baseFolders": [
-        "88-PHASE-83-INPATIENT-ADT"
-      ],
+      "baseFolders": ["88-PHASE-83-INPATIENT-ADT"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1754,9 +1652,7 @@
         }
       ],
       "basePhase": "17",
-      "baseFolders": [
-        "19-PHASE-17-MULTITENANT-CONTROL-PLANE"
-      ],
+      "baseFolders": ["19-PHASE-17-MULTITENANT-CONTROL-PLANE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1777,9 +1673,7 @@
         }
       ],
       "basePhase": "137",
-      "baseFolders": [
-        "142-PHASE-137-ADT-BEDBOARD"
-      ],
+      "baseFolders": ["142-PHASE-137-ADT-BEDBOARD"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1800,9 +1694,7 @@
         }
       ],
       "basePhase": "19",
-      "baseFolders": [
-        "21-PHASE-19-REPORTING-GOVERNANCE"
-      ],
+      "baseFolders": ["21-PHASE-19-REPORTING-GOVERNANCE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1823,9 +1715,7 @@
         }
       ],
       "basePhase": "17",
-      "baseFolders": [
-        "19-PHASE-17-MULTITENANT-CONTROL-PLANE"
-      ],
+      "baseFolders": ["19-PHASE-17-MULTITENANT-CONTROL-PLANE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1846,9 +1736,7 @@
         }
       ],
       "basePhase": "13",
-      "baseFolders": [
-        "15-PHASE-13-CPRS-OPERATIONALIZATION"
-      ],
+      "baseFolders": ["15-PHASE-13-CPRS-OPERATIONALIZATION"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1869,9 +1757,7 @@
         }
       ],
       "basePhase": "15",
-      "baseFolders": [
-        "17-PHASE-15-ENTERPRISE-HARDENING"
-      ],
+      "baseFolders": ["17-PHASE-15-ENTERPRISE-HARDENING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1892,9 +1778,7 @@
         }
       ],
       "basePhase": "15",
-      "baseFolders": [
-        "17-PHASE-15-ENTERPRISE-HARDENING"
-      ],
+      "baseFolders": ["17-PHASE-15-ENTERPRISE-HARDENING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1910,9 +1794,7 @@
         }
       ],
       "basePhase": "24",
-      "baseFolders": [
-        "26-PHASE-24-IMAGING-ENTERPRISE"
-      ],
+      "baseFolders": ["26-PHASE-24-IMAGING-ENTERPRISE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1928,9 +1810,7 @@
         }
       ],
       "basePhase": "18",
-      "baseFolders": [
-        "20-PHASE-18-INTEROP-IMAGING"
-      ],
+      "baseFolders": ["20-PHASE-18-INTEROP-IMAGING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1946,9 +1826,7 @@
         }
       ],
       "basePhase": "19",
-      "baseFolders": [
-        "21-PHASE-19-REPORTING-GOVERNANCE"
-      ],
+      "baseFolders": ["21-PHASE-19-REPORTING-GOVERNANCE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1964,9 +1842,7 @@
         }
       ],
       "basePhase": "25",
-      "baseFolders": [
-        "27-PHASE-25-BI-ANALYTICS"
-      ],
+      "baseFolders": ["27-PHASE-25-BI-ANALYTICS"],
       "resolvedVia": "basePhase"
     },
     {
@@ -1982,9 +1858,7 @@
         }
       ],
       "basePhase": "25",
-      "baseFolders": [
-        "27-PHASE-25-BI-ANALYTICS"
-      ],
+      "baseFolders": ["27-PHASE-25-BI-ANALYTICS"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2000,9 +1874,7 @@
         }
       ],
       "basePhase": "25",
-      "baseFolders": [
-        "27-PHASE-25-BI-ANALYTICS"
-      ],
+      "baseFolders": ["27-PHASE-25-BI-ANALYTICS"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2018,9 +1890,7 @@
         }
       ],
       "basePhase": "19",
-      "baseFolders": [
-        "21-PHASE-19-REPORTING-GOVERNANCE"
-      ],
+      "baseFolders": ["21-PHASE-19-REPORTING-GOVERNANCE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2036,9 +1906,7 @@
         }
       ],
       "basePhase": "17",
-      "baseFolders": [
-        "19-PHASE-17-MULTITENANT-CONTROL-PLANE"
-      ],
+      "baseFolders": ["19-PHASE-17-MULTITENANT-CONTROL-PLANE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2054,9 +1922,7 @@
         }
       ],
       "basePhase": "12",
-      "baseFolders": [
-        "14-PHASE-12-CPRS-PARITY-WIRING"
-      ],
+      "baseFolders": ["14-PHASE-12-CPRS-PARITY-WIRING"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2072,9 +1938,7 @@
         }
       ],
       "basePhase": "17",
-      "baseFolders": [
-        "19-PHASE-17-MULTITENANT-CONTROL-PLANE"
-      ],
+      "baseFolders": ["19-PHASE-17-MULTITENANT-CONTROL-PLANE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2090,9 +1954,7 @@
         }
       ],
       "basePhase": "17",
-      "baseFolders": [
-        "19-PHASE-17-MULTITENANT-CONTROL-PLANE"
-      ],
+      "baseFolders": ["19-PHASE-17-MULTITENANT-CONTROL-PLANE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2108,9 +1970,7 @@
         }
       ],
       "basePhase": "13",
-      "baseFolders": [
-        "15-PHASE-13-CPRS-OPERATIONALIZATION"
-      ],
+      "baseFolders": ["15-PHASE-13-CPRS-OPERATIONALIZATION"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2126,9 +1986,7 @@
         }
       ],
       "basePhase": "13",
-      "baseFolders": [
-        "15-PHASE-13-CPRS-OPERATIONALIZATION"
-      ],
+      "baseFolders": ["15-PHASE-13-CPRS-OPERATIONALIZATION"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2144,9 +2002,7 @@
         }
       ],
       "basePhase": "13",
-      "baseFolders": [
-        "15-PHASE-13-CPRS-OPERATIONALIZATION"
-      ],
+      "baseFolders": ["15-PHASE-13-CPRS-OPERATIONALIZATION"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2162,9 +2018,7 @@
         }
       ],
       "basePhase": "13",
-      "baseFolders": [
-        "15-PHASE-13-CPRS-OPERATIONALIZATION"
-      ],
+      "baseFolders": ["15-PHASE-13-CPRS-OPERATIONALIZATION"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2180,9 +2034,7 @@
         }
       ],
       "basePhase": "14",
-      "baseFolders": [
-        "16-PHASE-14-PARITY-CLOSURE"
-      ],
+      "baseFolders": ["16-PHASE-14-PARITY-CLOSURE"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2198,9 +2050,7 @@
         }
       ],
       "basePhase": "10",
-      "baseFolders": [
-        "12-PHASE-10-CPRS-EXTRACT"
-      ],
+      "baseFolders": ["12-PHASE-10-CPRS-EXTRACT"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2216,9 +2066,7 @@
         }
       ],
       "basePhase": "10",
-      "baseFolders": [
-        "12-PHASE-10-CPRS-EXTRACT"
-      ],
+      "baseFolders": ["12-PHASE-10-CPRS-EXTRACT"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2234,9 +2082,7 @@
         }
       ],
       "basePhase": "10",
-      "baseFolders": [
-        "12-PHASE-10-CPRS-EXTRACT"
-      ],
+      "baseFolders": ["12-PHASE-10-CPRS-EXTRACT"],
       "resolvedVia": "basePhase"
     },
     {
@@ -2252,9 +2098,7 @@
         }
       ],
       "basePhase": "140",
-      "baseFolders": [
-        "145-PHASE-140-PORTAL-PARITY"
-      ],
+      "baseFolders": ["145-PHASE-140-PORTAL-PARITY"],
       "resolvedVia": "basePhase"
     }
   ],
@@ -2262,10 +2106,7 @@
     {
       "token": "284",
       "refCount": 19,
-      "matchingFolders": [
-        "282-PHASE-284-THEME-PACKS-BRANDING",
-        "284-PHASE-284-BILLING-METERING"
-      ],
+      "matchingFolders": ["282-PHASE-284-THEME-PACKS-BRANDING", "284-PHASE-284-BILLING-METERING"],
       "folderCount": 2,
       "sampleRefs": [
         {
@@ -2343,10 +2184,7 @@
     {
       "token": "283",
       "refCount": 1,
-      "matchingFolders": [
-        "281-PHASE-283-THEME-SYSTEM-CORE",
-        "283-PHASE-283-MIGRATION-TEMPLATES"
-      ],
+      "matchingFolders": ["281-PHASE-283-THEME-SYSTEM-CORE", "283-PHASE-283-MIGRATION-TEMPLATES"],
       "folderCount": 2,
       "sampleRefs": [
         {
@@ -2747,9 +2585,7 @@
     {
       "token": "Wave 12",
       "refCount": 14,
-      "matchingFolders": [
-        "299-PHASE-299-W12-MANIFEST-SCOPE-MATRIX"
-      ],
+      "matchingFolders": ["299-PHASE-299-W12-MANIFEST-SCOPE-MATRIX"],
       "folderCount": 1,
       "sampleRefs": [
         {
@@ -3283,9 +3119,7 @@
     {
       "token": "Wave 28",
       "refCount": 2,
-      "matchingFolders": [
-        "446-PHASE-446-W28-INTEGRITY-AUDIT"
-      ],
+      "matchingFolders": ["446-PHASE-446-W28-INTEGRITY-AUDIT"],
       "folderCount": 1,
       "sampleRefs": [
         {

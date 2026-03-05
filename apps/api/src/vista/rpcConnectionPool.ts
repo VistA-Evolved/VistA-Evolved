@@ -51,8 +51,17 @@ function lPack(s: string): string {
 
 function buildTCPConnect(clientIP: string, callbackPort: number): string {
   return (
-    PREFIX + '10304' + sPack('TCPConnect') + '5' + '0' +
-    lPack(clientIP) + 'f' + '0' + lPack(String(callbackPort)) + 'f' + EOT
+    PREFIX +
+    '10304' +
+    sPack('TCPConnect') +
+    '5' +
+    '0' +
+    lPack(clientIP) +
+    'f' +
+    '0' +
+    lPack(String(callbackPort)) +
+    'f' +
+    EOT
   );
 }
 
@@ -279,7 +288,7 @@ async function createPooledConnection(
   port: number,
   accessCode: string,
   verifyCode: string,
-  context: string,
+  context: string
 ): Promise<PooledConnection> {
   const key = poolKey(tenantId, duz);
   dbg('POOL CREATE', `key=${key} host=${host}:${port}`);
@@ -291,8 +300,14 @@ async function createPooledConnection(
       s.destroy();
       reject(new Error('TCP connect timeout'));
     }, CONNECT_TIMEOUT_MS);
-    s.once('connect', () => { clearTimeout(timer); resolve(s); });
-    s.once('error', (e) => { clearTimeout(timer); reject(new Error('TCP: ' + e.message)); });
+    s.once('connect', () => {
+      clearTimeout(timer);
+      resolve(s);
+    });
+    s.once('error', (e) => {
+      clearTimeout(timer);
+      reject(new Error('TCP: ' + e.message));
+    });
   });
 
   const conn: PooledConnection = {
@@ -309,8 +324,14 @@ async function createPooledConnection(
     mutexQueue: [],
   };
 
-  sock.once('close', () => { conn.connected = false; conn.readBuf = ''; });
-  sock.on('error', () => { conn.connected = false; conn.readBuf = ''; });
+  sock.once('close', () => {
+    conn.connected = false;
+    conn.readBuf = '';
+  });
+  sock.on('error', () => {
+    conn.connected = false;
+    conn.readBuf = '';
+  });
 
   // TCPConnect handshake
   await connRawSend(conn, buildTCPConnect('127.0.0.1', 0));
@@ -333,7 +354,8 @@ async function createPooledConnection(
   const authDuz = avLines[0]?.trim();
   if (!authDuz || authDuz === '0') {
     sock.destroy();
-    const reason = avLines[3]?.trim() || avLines[2]?.trim() || avLines[1]?.trim() || 'Invalid credentials';
+    const reason =
+      avLines[3]?.trim() || avLines[2]?.trim() || avLines[1]?.trim() || 'Invalid credentials';
     throw new Error('Pool auth failed: ' + reason.replace(/[\x00-\x1f]/g, ' ').trim());
   }
 
@@ -355,7 +377,9 @@ function destroyConnection(conn: PooledConnection): void {
   if (conn.sock && !conn.sock.destroyed) {
     try {
       conn.sock.write(Buffer.from(buildBye(), 'latin1'));
-    } catch { /* best effort */ }
+    } catch {
+      /* best effort */
+    }
     conn.sock.destroy();
   }
   conn.connected = false;
@@ -417,7 +441,7 @@ async function acquireConnection(ctx: RpcContext): Promise<PooledConnection> {
     ctx.vistaPort,
     ctx.accessCode,
     ctx.verifyCode,
-    ctx.vistaContext || 'OR CPRS GUI CHART',
+    ctx.vistaContext || 'OR CPRS GUI CHART'
   );
   pool.set(key, conn);
   return conn;
@@ -430,7 +454,7 @@ async function acquireConnection(ctx: RpcContext): Promise<PooledConnection> {
 export async function poolCallRpc(
   rpcName: string,
   params: string[],
-  ctx: RpcContext,
+  ctx: RpcContext
 ): Promise<string[]> {
   const conn = await acquireConnection(ctx);
   return withConnLock(conn, async () => {
@@ -477,7 +501,7 @@ export async function poolCallRpc(
 export async function poolCallRpcWithList(
   rpcName: string,
   params: RpcParam[],
-  ctx: RpcContext,
+  ctx: RpcContext
 ): Promise<string[]> {
   const conn = await acquireConnection(ctx);
   return withConnLock(conn, async () => {

@@ -3,6 +3,7 @@
 ## User Request
 
 Create a verified, tested VistA RPC connection layer with:
+
 - A `VistaRpcBridge` class wrapping the existing XWB protocol client
 - Connection test suite (skip if no VistA running)
 - Standalone verification script with pass/fail output
@@ -19,6 +20,7 @@ Create a verified, tested VistA RPC connection layer with:
 ## Key Decision: Reuse Existing Client
 
 The codebase already has a battle-tested XWB RPC Broker client (implemented from scratch, not nodevista499). It includes:
+
 - Full XWB protocol: TCPConnect → XUS SIGNON SETUP → XUS AV CODE → XWB CREATE CONTEXT
 - Cipher pad encryption from XUSRB1.m Z-tag (20 pads, correct $TR algorithm)
 - Auto-reconnect via `isSocketHealthy()` + stale socket detection (5 min idle)

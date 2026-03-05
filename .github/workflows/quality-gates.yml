@@ -31,7 +31,7 @@ jobs:
         run: npm install -g pnpm@10.29.2
 
       - name: Install dependencies
-        run: pnpm -r install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       # --- Typecheck ---
       - name: Typecheck API
@@ -89,7 +89,7 @@ jobs:
         run: npm install -g pnpm@10.29.2
 
       - name: Install dependencies
-        run: pnpm -r install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Generate evidence bundle
         run: node scripts/generate-evidence-bundle.mjs --build-id "ci-${{ github.run_number }}-${{ github.sha }}"

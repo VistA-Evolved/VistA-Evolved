@@ -7,130 +7,130 @@
  *   node scripts/generate-phase-qa.mjs
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from 'vitest';
 
-const API = process.env.API_URL ?? "http://localhost:3001";
+const API = process.env.API_URL ?? 'http://localhost:3001';
 
-describe("Phase 74: Reality Verification Pack v2 (E2E Evidence + Click Audit + T", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 74: Reality Verification Pack v2 (E2E Evidence + Click Audit + T', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/admin/fake-success-audit`);
-    expect(r0.status, "/admin/fake-success-audit").not.toBe(500);
+    expect(r0.status, '/admin/fake-success-audit').not.toBe(500);
   });
 });
 
-describe("Phase 75: Notes", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 75: Notes', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/artifacts/evidence/phase75/backup/`);
-    expect(r0.status, "/artifacts/evidence/phase75/backup/").not.toBe(500);
+    expect(r0.status, '/artifacts/evidence/phase75/backup/').not.toBe(500);
     const r1 = await fetch(`${API}/artifacts/evidence/phase75/perf/`);
-    expect(r1.status, "/artifacts/evidence/phase75/perf/").not.toBe(500);
+    expect(r1.status, '/artifacts/evidence/phase75/perf/').not.toBe(500);
   });
 });
 
-describe("Phase 78: IMPLEMENT: PendingTargets Burn-Down v1 (Top 20 Gaps)", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 78: IMPLEMENT: PendingTargets Burn-Down v1 (Top 20 Gaps)', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/vista/cprs/consults/detail`);
-    expect(r0.status, "/vista/cprs/consults/detail").not.toBe(500);
+    expect(r0.status, '/vista/cprs/consults/detail').not.toBe(500);
     const r1 = await fetch(`${API}/vista/imaging/patient-images`);
-    expect(r1.status, "/vista/imaging/patient-images").not.toBe(500);
+    expect(r1.status, '/vista/imaging/patient-images').not.toBe(500);
     const r2 = await fetch(`${API}/vista/imaging/patient-photos`);
-    expect(r2.status, "/vista/imaging/patient-photos").not.toBe(500);
+    expect(r2.status, '/vista/imaging/patient-photos').not.toBe(500);
     const r3 = await fetch(`${API}/vista/imaging/radiology-report`);
-    expect(r3.status, "/vista/imaging/radiology-report").not.toBe(500);
+    expect(r3.status, '/vista/imaging/radiology-report').not.toBe(500);
   });
 });
 
-describe("Phase 104: Notes", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 104: Notes', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/admin/payer-db/audit/export`);
-    expect(r0.status, "/admin/payer-db/audit/export").not.toBe(500);
+    expect(r0.status, '/admin/payer-db/audit/export').not.toBe(500);
     const r1 = await fetch(`${API}/admin/payer-db/audit/verify`);
-    expect(r1.status, "/admin/payer-db/audit/verify").not.toBe(500);
+    expect(r1.status, '/admin/payer-db/audit/verify').not.toBe(500);
   });
 });
 
-describe("Phase 107: Production Posture Pack", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 107: Production Posture Pack', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/posture`);
-    expect(r0.status, "/posture").not.toBe(500);
+    expect(r0.status, '/posture').not.toBe(500);
     const r1 = await fetch(`${API}/posture/backup`);
-    expect(r1.status, "/posture/backup").not.toBe(500);
+    expect(r1.status, '/posture/backup').not.toBe(500);
     const r2 = await fetch(`${API}/posture/observability`);
-    expect(r2.status, "/posture/observability").not.toBe(500);
+    expect(r2.status, '/posture/observability').not.toBe(500);
     const r3 = await fetch(`${API}/posture/performance`);
-    expect(r3.status, "/posture/performance").not.toBe(500);
+    expect(r3.status, '/posture/performance').not.toBe(500);
     const r4 = await fetch(`${API}/posture/tenant`);
-    expect(r4.status, "/posture/tenant").not.toBe(500);
+    expect(r4.status, '/posture/tenant').not.toBe(500);
   });
 });
 
-describe("Phase 116: IMPLEMENT: Postgres Job Queue (Graphile Worker) + Job Govern", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 116: IMPLEMENT: Postgres Job Queue (Graphile Worker) + Job Govern', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/admin/jobs/runs`);
-    expect(r0.status, "/admin/jobs/runs").not.toBe(500);
+    expect(r0.status, '/admin/jobs/runs').not.toBe(500);
     const r1 = await fetch(`${API}/admin/jobs/status`);
-    expect(r1.status, "/admin/jobs/status").not.toBe(500);
+    expect(r1.status, '/admin/jobs/status').not.toBe(500);
     const r2 = await fetch(`${API}/admin/jobs/trigger`);
-    expect(r2.status, "/admin/jobs/trigger").not.toBe(500);
+    expect(r2.status, '/admin/jobs/trigger').not.toBe(500);
   });
 });
 
-describe("Phase 117: IMPLEMENT: Postgres-First Prod Posture + Multi-Instance", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 117: IMPLEMENT: Postgres-First Prod Posture + Multi-Instance', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/api/capabilities`);
-    expect(r0.status, "/api/capabilities").not.toBe(500);
+    expect(r0.status, '/api/capabilities').not.toBe(500);
     const r1 = await fetch(`${API}/auth/login`);
-    expect(r1.status, "/auth/login").not.toBe(500);
+    expect(r1.status, '/auth/login').not.toBe(500);
     const r2 = await fetch(`${API}/auth/logout`);
-    expect(r2.status, "/auth/logout").not.toBe(500);
+    expect(r2.status, '/auth/logout').not.toBe(500);
     const r3 = await fetch(`${API}/auth/session`);
-    expect(r3.status, "/auth/session").not.toBe(500);
+    expect(r3.status, '/auth/session').not.toBe(500);
     const r4 = await fetch(`${API}/health`);
-    expect(r4.status, "/health").not.toBe(500);
+    expect(r4.status, '/health').not.toBe(500);
   });
 });
 
-describe("Phase 118: Go-Live Hardening Pack", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 118: Go-Live Hardening Pack', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/admin/jobs/status`);
-    expect(r0.status, "/admin/jobs/status").not.toBe(500);
+    expect(r0.status, '/admin/jobs/status').not.toBe(500);
     const r1 = await fetch(`${API}/api/capabilities`);
-    expect(r1.status, "/api/capabilities").not.toBe(500);
+    expect(r1.status, '/api/capabilities').not.toBe(500);
     const r2 = await fetch(`${API}/auth/session`);
-    expect(r2.status, "/auth/session").not.toBe(500);
+    expect(r2.status, '/auth/session').not.toBe(500);
     const r3 = await fetch(`${API}/hardening/audit-verify`);
-    expect(r3.status, "/hardening/audit-verify").not.toBe(500);
+    expect(r3.status, '/hardening/audit-verify').not.toBe(500);
     const r4 = await fetch(`${API}/hardening/backup-status`);
-    expect(r4.status, "/hardening/backup-status").not.toBe(500);
+    expect(r4.status, '/hardening/backup-status').not.toBe(500);
   });
 });
 
-describe("Phase 120B: Full System Audit + Evidence-Based Gap Matrix", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 120B: Full System Audit + Evidence-Based Gap Matrix', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/reports`);
-    expect(r0.status, "/reports").not.toBe(500);
+    expect(r0.status, '/reports').not.toBe(500);
   });
 });
 
-describe("Phase 123: SCHEDULING SD* INTEGRATION PACK (VISTA-FIRST, TESTABLE)", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 123: SCHEDULING SD* INTEGRATION PACK (VISTA-FIRST, TESTABLE)', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/scheduling/appointments/request`);
-    expect(r0.status, "/scheduling/appointments/request").not.toBe(500);
+    expect(r0.status, '/scheduling/appointments/request').not.toBe(500);
     const r1 = await fetch(`${API}/scheduling/waitlist`);
-    expect(r1.status, "/scheduling/waitlist").not.toBe(500);
+    expect(r1.status, '/scheduling/waitlist').not.toBe(500);
   });
 });
 
-describe("Phase 125: IMPLEMENT: Postgres-Only Production Data Plane", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 125: IMPLEMENT: Postgres-Only Production Data Plane', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/posture/data-plane`);
-    expect(r0.status, "/posture/data-plane").not.toBe(500);
+    expect(r0.status, '/posture/data-plane').not.toBe(500);
   });
 });
 
-describe("Phase 133: IMPLEMENT (Enterprise Observability Baseline)", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 133: IMPLEMENT (Enterprise Observability Baseline)', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/metrics/prometheus`);
-    expect(r0.status, "/metrics/prometheus").not.toBe(500);
+    expect(r0.status, '/metrics/prometheus').not.toBe(500);
   });
 });

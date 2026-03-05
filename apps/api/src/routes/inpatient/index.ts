@@ -449,7 +449,8 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
     return reply.status(307).header('location', '/vista/adt/admit').send({
       ok: false,
       redirect: '/vista/adt/admit',
-      reason: 'DGPM NEW ADMISSION RPC not registered in this VistA instance. Use /vista/adt/admit which tracks ADT events and will call DGPM when the RPC is registered.',
+      reason:
+        'DGPM NEW ADMISSION RPC not registered in this VistA instance. Use /vista/adt/admit which tracks ADT events and will call DGPM when the RPC is registered.',
       vistaAction: 'Register DGPM NEW ADMISSION in File 8994 and add to OR CPRS GUI CHART context',
     });
   });
@@ -466,7 +467,8 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
     return reply.status(307).header('location', '/vista/adt/transfer').send({
       ok: false,
       redirect: '/vista/adt/transfer',
-      reason: 'DGPM NEW TRANSFER RPC not registered in this VistA instance. Use /vista/adt/transfer.',
+      reason:
+        'DGPM NEW TRANSFER RPC not registered in this VistA instance. Use /vista/adt/transfer.',
       vistaAction: 'Register DGPM NEW TRANSFER in File 8994 and add to OR CPRS GUI CHART context',
     });
   });
@@ -485,8 +487,10 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
       return reply.status(307).header('location', '/vista/adt/discharge').send({
         ok: false,
         redirect: '/vista/adt/discharge',
-        reason: 'DGPM NEW DISCHARGE RPC not registered in this VistA instance. Use /vista/adt/discharge.',
-        vistaAction: 'Register DGPM NEW DISCHARGE in File 8994 and add to OR CPRS GUI CHART context',
+        reason:
+          'DGPM NEW DISCHARGE RPC not registered in this VistA instance. Use /vista/adt/discharge.',
+        vistaAction:
+          'Register DGPM NEW DISCHARGE in File 8994 and add to OR CPRS GUI CHART context',
       });
     }
   );

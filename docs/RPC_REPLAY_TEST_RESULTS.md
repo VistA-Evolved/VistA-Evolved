@@ -11,28 +11,28 @@
 
 ### VistA Connectivity (3/3 PASS)
 
-| Test | Status | Duration |
-|------|--------|----------|
-| GET /vista/ping confirms VistA reachability | PASS | 61ms |
-| GET /health reports circuit breaker state | PASS | 7ms |
-| GET /ready reports VistA reachability | PASS | 3ms |
+| Test                                        | Status | Duration |
+| ------------------------------------------- | ------ | -------- |
+| GET /vista/ping confirms VistA reachability | PASS   | 61ms     |
+| GET /health reports circuit breaker state   | PASS   | 7ms      |
+| GET /ready reports VistA reachability       | PASS   | 3ms      |
 
 ### Authenticated RPC Calls (4/5 — 1 FAIL)
 
-| Test | Status | Duration | Detail |
-|------|--------|----------|--------|
-| Patient search RPC returns structured results | PASS | 3165ms | |
-| Default patient list RPC returns results | PASS | 3166ms | |
-| Allergies RPC returns structured data | PASS | 3123ms | |
-| Vitals RPC returns structured data | PASS | 3173ms | |
-| RPC capability probe returns status | **FAIL** | 30011ms | **Test timed out in 30000ms** |
+| Test                                          | Status   | Duration | Detail                        |
+| --------------------------------------------- | -------- | -------- | ----------------------------- |
+| Patient search RPC returns structured results | PASS     | 3165ms   |                               |
+| Default patient list RPC returns results      | PASS     | 3166ms   |                               |
+| Allergies RPC returns structured data         | PASS     | 3123ms   |                               |
+| Vitals RPC returns structured data            | PASS     | 3173ms   |                               |
+| RPC capability probe returns status           | **FAIL** | 30011ms  | **Test timed out in 30000ms** |
 
 ### Error Handling (2/2 PASS)
 
-| Test | Status | Duration |
-|------|--------|----------|
-| Invalid DFN returns error without PHI leak | PASS | 731ms |
-| Missing DFN param returns appropriate error | PASS | 2ms |
+| Test                                        | Status | Duration |
+| ------------------------------------------- | ------ | -------- |
+| Invalid DFN returns error without PHI leak  | PASS   | 731ms    |
+| Missing DFN param returns appropriate error | PASS   | 2ms      |
 
 ## Failure Analysis
 
@@ -49,6 +49,7 @@ The `/vista/rpc-capabilities` endpoint probes 87 unique RPCs against the live Vi
 The endpoint works correctly (verified via direct curl with 90s timeout — returned 64 available, 23 missing).
 
 **Fix options:**
-1. Increase test timeout: `it('...', async () => {...}, 120_000)` 
+
+1. Increase test timeout: `it('...', async () => {...}, 120_000)`
 2. Pre-warm the capability cache before the test runs
 3. Skip this test when running against live VistA (the probe is expensive)

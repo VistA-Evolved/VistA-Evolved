@@ -6626,7 +6626,8 @@ function ClaimLifecycleTab() {
           )}
           {!cfoLoading && !cfoData?.ok && (
             <div style={{ fontSize: 12, color: '#dc3545', padding: 16, textAlign: 'center' }}>
-              Unable to load revenue summary. Ensure PostgreSQL is running and claim_draft table has data.
+              Unable to load revenue summary. Ensure PostgreSQL is running and claim_draft table has
+              data.
             </div>
           )}
           {!cfoLoading && cfoData?.ok && (
@@ -6636,26 +6637,75 @@ function ClaimLifecycleTab() {
               </div>
 
               {/* Row 1: Net Revenue + Collection Rate */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 16 }}>
-                <div style={{ background: '#d1e7dd', borderRadius: 8, padding: 16, textAlign: 'center' }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: 12,
+                  marginBottom: 16,
+                }}
+              >
+                <div
+                  style={{
+                    background: '#d1e7dd',
+                    borderRadius: 8,
+                    padding: 16,
+                    textAlign: 'center',
+                  }}
+                >
                   <div style={{ fontSize: 24, fontWeight: 700, color: '#198754' }}>
-                    ${((cfoData.netRevenue?.netRevenueCents || 0) / 100).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                    $
+                    {((cfoData.netRevenue?.netRevenueCents || 0) / 100).toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
                   </div>
                   <div style={{ fontSize: 11, color: '#6c757d' }}>Net Revenue</div>
                 </div>
-                <div style={{ background: '#f8f9fa', borderRadius: 8, padding: 16, textAlign: 'center' }}>
+                <div
+                  style={{
+                    background: '#f8f9fa',
+                    borderRadius: 8,
+                    padding: 16,
+                    textAlign: 'center',
+                  }}
+                >
                   <div style={{ fontSize: 24, fontWeight: 700 }}>
-                    ${((cfoData.netRevenue?.totalChargeCents || 0) / 100).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                    $
+                    {((cfoData.netRevenue?.totalChargeCents || 0) / 100).toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
                   </div>
                   <div style={{ fontSize: 11, color: '#6c757d' }}>Total Charges</div>
                 </div>
-                <div style={{ background: '#f8f9fa', borderRadius: 8, padding: 16, textAlign: 'center' }}>
-                  <div style={{ fontSize: 24, fontWeight: 700, color: cfoData.collectionRate?.rate >= 90 ? '#198754' : '#dc3545' }}>
-                    {cfoData.collectionRate?.rate != null ? `${cfoData.collectionRate.rate}%` : '--'}
+                <div
+                  style={{
+                    background: '#f8f9fa',
+                    borderRadius: 8,
+                    padding: 16,
+                    textAlign: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: 24,
+                      fontWeight: 700,
+                      color: cfoData.collectionRate?.rate >= 90 ? '#198754' : '#dc3545',
+                    }}
+                  >
+                    {cfoData.collectionRate?.rate != null
+                      ? `${cfoData.collectionRate.rate}%`
+                      : '--'}
                   </div>
                   <div style={{ fontSize: 11, color: '#6c757d' }}>Collection Rate</div>
                 </div>
-                <div style={{ background: '#f8d7da', borderRadius: 8, padding: 16, textAlign: 'center' }}>
+                <div
+                  style={{
+                    background: '#f8d7da',
+                    borderRadius: 8,
+                    padding: 16,
+                    textAlign: 'center',
+                  }}
+                >
                   <div style={{ fontSize: 24, fontWeight: 700, color: '#dc3545' }}>
                     {cfoData.denials?.deniedCount ?? 0}
                   </div>
@@ -6665,20 +6715,38 @@ function ClaimLifecycleTab() {
 
               {/* Row 2: AR Aging Buckets */}
               <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>AR Aging</div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 16 }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: 12,
+                  marginBottom: 16,
+                }}
+              >
                 {[
                   { label: '0-30 Days', data: cfoData.arAging?.bucket_0_30, color: '#198754' },
                   { label: '31-60 Days', data: cfoData.arAging?.bucket_31_60, color: '#ffc107' },
                   { label: '61-90 Days', data: cfoData.arAging?.bucket_61_90, color: '#fd7e14' },
                   { label: '90+ Days', data: cfoData.arAging?.bucket_90_plus, color: '#dc3545' },
                 ].map((b) => (
-                  <div key={b.label} style={{ background: '#f8f9fa', borderRadius: 8, padding: 12, textAlign: 'center' }}>
+                  <div
+                    key={b.label}
+                    style={{
+                      background: '#f8f9fa',
+                      borderRadius: 8,
+                      padding: 12,
+                      textAlign: 'center',
+                    }}
+                  >
                     <div style={{ fontSize: 18, fontWeight: 700, color: b.color }}>
                       {b.data?.count ?? 0}
                     </div>
                     <div style={{ fontSize: 10, color: '#6c757d' }}>{b.label}</div>
                     <div style={{ fontSize: 10, color: '#6c757d' }}>
-                      ${((b.data?.totalCents || 0) / 100).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                      $
+                      {((b.data?.totalCents || 0) / 100).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                      })}
                     </div>
                   </div>
                 ))}
@@ -6691,11 +6759,21 @@ function ClaimLifecycleTab() {
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                     <thead>
                       <tr style={{ background: '#f8f9fa', textAlign: 'left' }}>
-                        <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Payer</th>
-                        <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Claims</th>
-                        <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Charges</th>
-                        <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Paid</th>
-                        <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>Mix %</th>
+                        <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>
+                          Payer
+                        </th>
+                        <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>
+                          Claims
+                        </th>
+                        <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>
+                          Charges
+                        </th>
+                        <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>
+                          Paid
+                        </th>
+                        <th style={{ padding: '6px 8px', borderBottom: '2px solid #dee2e6' }}>
+                          Mix %
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -6703,8 +6781,12 @@ function ClaimLifecycleTab() {
                         <tr key={p.payerId} style={{ borderBottom: '1px solid #f0f0f0' }}>
                           <td style={{ padding: '4px 8px' }}>{p.payerName || p.payerId}</td>
                           <td style={{ padding: '4px 8px' }}>{p.claimCount}</td>
-                          <td style={{ padding: '4px 8px' }}>${((p.totalChargeCents || 0) / 100).toFixed(2)}</td>
-                          <td style={{ padding: '4px 8px', color: '#198754' }}>${((p.totalPaidCents || 0) / 100).toFixed(2)}</td>
+                          <td style={{ padding: '4px 8px' }}>
+                            ${((p.totalChargeCents || 0) / 100).toFixed(2)}
+                          </td>
+                          <td style={{ padding: '4px 8px', color: '#198754' }}>
+                            ${((p.totalPaidCents || 0) / 100).toFixed(2)}
+                          </td>
                           <td style={{ padding: '4px 8px' }}>{p.percentage}%</td>
                         </tr>
                       ))}
@@ -6716,10 +6798,22 @@ function ClaimLifecycleTab() {
               {/* Row 4: Denial Breakdown */}
               {cfoData.denials?.byReason && cfoData.denials.byReason.length > 0 && (
                 <div style={{ marginTop: 16 }}>
-                  <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Denial Reasons (This Week)</div>
+                  <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>
+                    Denial Reasons (This Week)
+                  </div>
                   <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     {cfoData.denials.byReason.map((d: any, i: number) => (
-                      <div key={i} style={{ padding: '4px 12px', borderRadius: 12, fontSize: 11, fontWeight: 600, background: '#f8d7da', color: '#dc3545' }}>
+                      <div
+                        key={i}
+                        style={{
+                          padding: '4px 12px',
+                          borderRadius: 12,
+                          fontSize: 11,
+                          fontWeight: 600,
+                          background: '#f8d7da',
+                          color: '#dc3545',
+                        }}
+                      >
                         {d.code || 'Unknown'}: {d.count} {d.reason ? `(${d.reason})` : ''}
                       </div>
                     ))}
@@ -6728,8 +6822,17 @@ function ClaimLifecycleTab() {
               )}
 
               {cfoData.collectionRate?.totalClaimCount === 0 && (
-                <div style={{ marginTop: 16, padding: 12, background: '#fff3cd', borderRadius: 8, fontSize: 12 }}>
-                  No claim drafts found for this period. Create claims via the Claim Drafts tab or API to see CFO metrics.
+                <div
+                  style={{
+                    marginTop: 16,
+                    padding: 12,
+                    background: '#fff3cd',
+                    borderRadius: 8,
+                    fontSize: 12,
+                  }}
+                >
+                  No claim drafts found for this period. Create claims via the Claim Drafts tab or
+                  API to see CFO metrics.
                 </div>
               )}
             </div>

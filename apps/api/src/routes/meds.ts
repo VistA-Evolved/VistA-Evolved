@@ -121,10 +121,23 @@ export default async function medsRoutes(server: FastifyInstance): Promise<void>
     if (!dfn) return reply.status(400).send({ ok: false, error: 'dfn query parameter required' });
     try {
       const lines = await safeCallRpc('ORWPS COVER', [String(dfn)]);
-      return reply.send({ ok: true, source: 'vista', data: lines, rpcUsed: ['ORWPS COVER'], pendingTargets: [] });
+      return reply.send({
+        ok: true,
+        source: 'vista',
+        data: lines,
+        rpcUsed: ['ORWPS COVER'],
+        pendingTargets: [],
+      });
     } catch (err: any) {
       log.warn('ORWPS COVER failed', { err: err?.message || String(err) });
-      return reply.code(502).send({ ok: false, source: 'vista', error: err?.message || 'RPC call failed', rpcUsed: [], pendingTargets: ['ORWPS COVER'], _integration: 'pending' });
+      return reply.code(502).send({
+        ok: false,
+        source: 'vista',
+        error: err?.message || 'RPC call failed',
+        rpcUsed: [],
+        pendingTargets: ['ORWPS COVER'],
+        _integration: 'pending',
+      });
     }
   });
 
@@ -135,10 +148,23 @@ export default async function medsRoutes(server: FastifyInstance): Promise<void>
     if (!mid) return reply.status(400).send({ ok: false, error: 'mid path parameter required' });
     try {
       const lines = await safeCallRpc('ORWPS DETAIL', [String(mid)]);
-      return reply.send({ ok: true, source: 'vista', data: lines, rpcUsed: ['ORWPS DETAIL'], pendingTargets: [] });
+      return reply.send({
+        ok: true,
+        source: 'vista',
+        data: lines,
+        rpcUsed: ['ORWPS DETAIL'],
+        pendingTargets: [],
+      });
     } catch (err: any) {
       log.warn('ORWPS DETAIL failed', { err: err?.message || String(err) });
-      return reply.code(502).send({ ok: false, source: 'vista', error: err?.message || 'RPC call failed', rpcUsed: [], pendingTargets: ['ORWPS DETAIL'], _integration: 'pending' });
+      return reply.code(502).send({
+        ok: false,
+        source: 'vista',
+        error: err?.message || 'RPC call failed',
+        rpcUsed: [],
+        pendingTargets: ['ORWPS DETAIL'],
+        _integration: 'pending',
+      });
     }
   });
 
@@ -155,12 +181,17 @@ export default async function medsRoutes(server: FastifyInstance): Promise<void>
     const body = (request.body as any) || {};
     const parsed = MedSignSchema.safeParse(body);
     if (!parsed.success) {
-      return reply.status(400).send({ ok: false, error: 'Validation failed', details: parsed.error.issues });
+      return reply
+        .status(400)
+        .send({ ok: false, error: 'Validation failed', details: parsed.error.issues });
     }
     // TODO: Phase 568 — wire to ORWPCE SAVE after VEHU validation
     return reply.send({
-      ok: false, source: 'vista', error: 'integration-pending',
-      rpcUsed: [], pendingTargets: ['ORWPCE SAVE'],
+      ok: false,
+      source: 'vista',
+      error: 'integration-pending',
+      rpcUsed: [],
+      pendingTargets: ['ORWPCE SAVE'],
       _integration: 'pending',
       _hint: 'ORWPCE SAVE writes clinical data — requires VEHU validation before enabling',
     });
@@ -173,74 +204,176 @@ export default async function medsRoutes(server: FastifyInstance): Promise<void>
     rpcName: string,
     request: FastifyRequest,
     reply: FastifyReply,
-    paramBuilder?: (q: any) => string[],
+    paramBuilder?: (q: any) => string[]
   ) {
     await requireSession(request, reply);
     const q = request.query as any;
     const params = paramBuilder ? paramBuilder(q) : q?.dfn ? [String(q.dfn)] : [];
     try {
       const lines = await safeCallRpc(rpcName, params);
-      return reply.send({ ok: true, source: 'vista', rpcUsed: [rpcName], data: lines, pendingTargets: [] });
+      return reply.send({
+        ok: true,
+        source: 'vista',
+        rpcUsed: [rpcName],
+        data: lines,
+        pendingTargets: [],
+      });
     } catch (err: any) {
       log.warn(`${rpcName} failed`, { err: err?.message });
-      return reply.code(502).send({ ok: false, source: 'vista', error: err?.message, rpcUsed: [], pendingTargets: [rpcName] });
+      return reply.code(502).send({
+        ok: false,
+        source: 'vista',
+        error: err?.message,
+        rpcUsed: [],
+        pendingTargets: [rpcName],
+      });
     }
   }
 
-  server.get('/vista/meds/rpc/orwdps-allschd', (req, rep) => callMedRpc('ORWDPS ALLSCHD', req, rep, () => []));
+  server.get('/vista/meds/rpc/orwdps-allschd', (req, rep) =>
+    callMedRpc('ORWDPS ALLSCHD', req, rep, () => [])
+  );
   server.get('/vista/meds/rpc/orwdps1-chk94', (req, rep) => callMedRpc('ORWDPS1 CHK94', req, rep));
-  server.get('/vista/meds/rpc/orwdps1-dfltsply', (req, rep) => callMedRpc('ORWDPS1 DFLTSPLY', req, rep));
-  server.get('/vista/meds/rpc/orwdps1-dosealt', (req, rep) => callMedRpc('ORWDPS1 DOSEALT', req, rep));
-  server.get('/vista/meds/rpc/orwdps1-dowsch', (req, rep) => callMedRpc('ORWDPS1 DOWSCH', req, rep));
-  server.get('/vista/meds/rpc/orwdps1-faildea', (req, rep) => callMedRpc('ORWDPS1 FAILDEA', req, rep));
-  server.get('/vista/meds/rpc/orwdps1-formalt', (req, rep) => callMedRpc('ORWDPS1 FORMALT', req, rep));
-  server.get('/vista/meds/rpc/orwdps1-hasoipi', (req, rep) => callMedRpc('ORWDPS1 HASOIPI', req, rep));
-  server.get('/vista/meds/rpc/orwdps1-hasroute', (req, rep) => callMedRpc('ORWDPS1 HASROUTE', req, rep));
+  server.get('/vista/meds/rpc/orwdps1-dfltsply', (req, rep) =>
+    callMedRpc('ORWDPS1 DFLTSPLY', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps1-dosealt', (req, rep) =>
+    callMedRpc('ORWDPS1 DOSEALT', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps1-dowsch', (req, rep) =>
+    callMedRpc('ORWDPS1 DOWSCH', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps1-faildea', (req, rep) =>
+    callMedRpc('ORWDPS1 FAILDEA', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps1-formalt', (req, rep) =>
+    callMedRpc('ORWDPS1 FORMALT', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps1-hasoipi', (req, rep) =>
+    callMedRpc('ORWDPS1 HASOIPI', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps1-hasroute', (req, rep) =>
+    callMedRpc('ORWDPS1 HASROUTE', req, rep)
+  );
   server.get('/vista/meds/rpc/orwdps1-ivdea', (req, rep) => callMedRpc('ORWDPS1 IVDEA', req, rep));
-  server.get('/vista/meds/rpc/orwdps1-locpick', (req, rep) => callMedRpc('ORWDPS1 LOCPICK', req, rep));
+  server.get('/vista/meds/rpc/orwdps1-locpick', (req, rep) =>
+    callMedRpc('ORWDPS1 LOCPICK', req, rep)
+  );
   server.get('/vista/meds/rpc/orwdps1-maxds', (req, rep) => callMedRpc('ORWDPS1 MAXDS', req, rep));
-  server.get('/vista/meds/rpc/orwdps1-odslct', (req, rep) => callMedRpc('ORWDPS1 ODSLCT', req, rep));
-  server.get('/vista/meds/rpc/orwdps1-qomedalt', (req, rep) => callMedRpc('ORWDPS1 QOMEDALT', req, rep));
-  server.get('/vista/meds/rpc/orwdps1-schall', (req, rep) => callMedRpc('ORWDPS1 SCHALL', req, rep));
+  server.get('/vista/meds/rpc/orwdps1-odslct', (req, rep) =>
+    callMedRpc('ORWDPS1 ODSLCT', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps1-qomedalt', (req, rep) =>
+    callMedRpc('ORWDPS1 QOMEDALT', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps1-schall', (req, rep) =>
+    callMedRpc('ORWDPS1 SCHALL', req, rep)
+  );
   server.get('/vista/meds/rpc/orwdps2-admin', (req, rep) => callMedRpc('ORWDPS2 ADMIN', req, rep));
-  server.get('/vista/meds/rpc/orwdps2-chkgrp', (req, rep) => callMedRpc('ORWDPS2 CHKGRP', req, rep));
+  server.get('/vista/meds/rpc/orwdps2-chkgrp', (req, rep) =>
+    callMedRpc('ORWDPS2 CHKGRP', req, rep)
+  );
   server.get('/vista/meds/rpc/orwdps2-chkpi', (req, rep) => callMedRpc('ORWDPS2 CHKPI', req, rep));
-  server.get('/vista/meds/rpc/orwdps2-day2qty', (req, rep) => callMedRpc('ORWDPS2 DAY2QTY', req, rep, (q) => [q?.dfn || '', q?.days || '']));
-  server.get('/vista/meds/rpc/orwdps2-maxref', (req, rep) => callMedRpc('ORWDPS2 MAXREF', req, rep));
-  server.get('/vista/meds/rpc/orwdps2-oislct', (req, rep) => callMedRpc('ORWDPS2 OISLCT', req, rep));
+  server.get('/vista/meds/rpc/orwdps2-day2qty', (req, rep) =>
+    callMedRpc('ORWDPS2 DAY2QTY', req, rep, (q) => [q?.dfn || '', q?.days || ''])
+  );
+  server.get('/vista/meds/rpc/orwdps2-maxref', (req, rep) =>
+    callMedRpc('ORWDPS2 MAXREF', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps2-oislct', (req, rep) =>
+    callMedRpc('ORWDPS2 OISLCT', req, rep)
+  );
   server.get('/vista/meds/rpc/orwdps2-qogrp', (req, rep) => callMedRpc('ORWDPS2 QOGRP', req, rep));
-  server.get('/vista/meds/rpc/orwdps2-qty2day', (req, rep) => callMedRpc('ORWDPS2 QTY2DAY', req, rep, (q) => [q?.dfn || '', q?.qty || '']));
+  server.get('/vista/meds/rpc/orwdps2-qty2day', (req, rep) =>
+    callMedRpc('ORWDPS2 QTY2DAY', req, rep, (q) => [q?.dfn || '', q?.qty || ''])
+  );
   server.get('/vista/meds/rpc/orwdps2-reqst', (req, rep) => callMedRpc('ORWDPS2 REQST', req, rep));
-  server.get('/vista/meds/rpc/orwdps2-schreq', (req, rep) => callMedRpc('ORWDPS2 SCHREQ', req, rep));
-  server.get('/vista/meds/rpc/orwdps32-allivrte', (req, rep) => callMedRpc('ORWDPS32 ALLIVRTE', req, rep));
-  server.get('/vista/meds/rpc/orwdps32-allroute', (req, rep) => callMedRpc('ORWDPS32 ALLROUTE', req, rep));
+  server.get('/vista/meds/rpc/orwdps2-schreq', (req, rep) =>
+    callMedRpc('ORWDPS2 SCHREQ', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps32-allivrte', (req, rep) =>
+    callMedRpc('ORWDPS32 ALLIVRTE', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps32-allroute', (req, rep) =>
+    callMedRpc('ORWDPS32 ALLROUTE', req, rep)
+  );
   server.get('/vista/meds/rpc/orwdps32-auth', (req, rep) => callMedRpc('ORWDPS32 AUTH', req, rep));
-  server.get('/vista/meds/rpc/orwdps32-authnva', (req, rep) => callMedRpc('ORWDPS32 AUTHNVA', req, rep));
-  server.get('/vista/meds/rpc/orwdps32-dlgslct', (req, rep) => callMedRpc('ORWDPS32 DLGSLCT', req, rep, (q) => [q?.dfn || '', q?.orderIen || '', q?.dialogId || '']));
-  server.get('/vista/meds/rpc/orwdps32-drugmsg', (req, rep) => callMedRpc('ORWDPS32 DRUGMSG', req, rep, (q) => [q?.dfn || '', q?.drugIen || '']));
-  server.get('/vista/meds/rpc/orwdps32-formalt', (req, rep) => callMedRpc('ORWDPS32 FORMALT', req, rep));
-  server.get('/vista/meds/rpc/orwdps32-issply', (req, rep) => callMedRpc('ORWDPS32 ISSPLY', req, rep));
-  server.get('/vista/meds/rpc/orwdps32-ivamt', (req, rep) => callMedRpc('ORWDPS32 IVAMT', req, rep));
-  server.get('/vista/meds/rpc/orwdps32-medisiv', (req, rep) => callMedRpc('ORWDPS32 MEDISIV', req, rep));
-  server.get('/vista/meds/rpc/orwdps32-oislct', (req, rep) => callMedRpc('ORWDPS32 OISLCT', req, rep));
-  server.get('/vista/meds/rpc/orwdps32-scsts', (req, rep) => callMedRpc('ORWDPS32 SCSTS', req, rep));
-  server.get('/vista/meds/rpc/orwdps32-valqty', (req, rep) => callMedRpc('ORWDPS32 VALQTY', req, rep));
-  server.get('/vista/meds/rpc/orwdps32-valrate', (req, rep) => callMedRpc('ORWDPS32 VALRATE', req, rep));
-  server.get('/vista/meds/rpc/orwdps32-valroute', (req, rep) => callMedRpc('ORWDPS32 VALROUTE', req, rep));
-  server.get('/vista/meds/rpc/orwdps32-valsch', (req, rep) => callMedRpc('ORWDPS32 VALSCH', req, rep));
-  server.get('/vista/meds/rpc/orwdps33-comploc', (req, rep) => callMedRpc('ORWDPS33 COMPLOC', req, rep));
-  server.get('/vista/meds/rpc/orwdps33-getaddfr', (req, rep) => callMedRpc('ORWDPS33 GETADDFR', req, rep));
-  server.get('/vista/meds/rpc/orwdps33-ivdosfrm', (req, rep) => callMedRpc('ORWDPS33 IVDOSFRM', req, rep));
-  server.get('/vista/meds/rpc/orwdps4-cpinfo', (req, rep) => callMedRpc('ORWDPS4 CPINFO', req, rep));
+  server.get('/vista/meds/rpc/orwdps32-authnva', (req, rep) =>
+    callMedRpc('ORWDPS32 AUTHNVA', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps32-dlgslct', (req, rep) =>
+    callMedRpc('ORWDPS32 DLGSLCT', req, rep, (q) => [
+      q?.dfn || '',
+      q?.orderIen || '',
+      q?.dialogId || '',
+    ])
+  );
+  server.get('/vista/meds/rpc/orwdps32-drugmsg', (req, rep) =>
+    callMedRpc('ORWDPS32 DRUGMSG', req, rep, (q) => [q?.dfn || '', q?.drugIen || ''])
+  );
+  server.get('/vista/meds/rpc/orwdps32-formalt', (req, rep) =>
+    callMedRpc('ORWDPS32 FORMALT', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps32-issply', (req, rep) =>
+    callMedRpc('ORWDPS32 ISSPLY', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps32-ivamt', (req, rep) =>
+    callMedRpc('ORWDPS32 IVAMT', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps32-medisiv', (req, rep) =>
+    callMedRpc('ORWDPS32 MEDISIV', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps32-oislct', (req, rep) =>
+    callMedRpc('ORWDPS32 OISLCT', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps32-scsts', (req, rep) =>
+    callMedRpc('ORWDPS32 SCSTS', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps32-valqty', (req, rep) =>
+    callMedRpc('ORWDPS32 VALQTY', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps32-valrate', (req, rep) =>
+    callMedRpc('ORWDPS32 VALRATE', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps32-valroute', (req, rep) =>
+    callMedRpc('ORWDPS32 VALROUTE', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps32-valsch', (req, rep) =>
+    callMedRpc('ORWDPS32 VALSCH', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps33-comploc', (req, rep) =>
+    callMedRpc('ORWDPS33 COMPLOC', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps33-getaddfr', (req, rep) =>
+    callMedRpc('ORWDPS33 GETADDFR', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps33-ivdosfrm', (req, rep) =>
+    callMedRpc('ORWDPS33 IVDOSFRM', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps4-cpinfo', (req, rep) =>
+    callMedRpc('ORWDPS4 CPINFO', req, rep)
+  );
   server.get('/vista/meds/rpc/orwdps4-cplst', (req, rep) => callMedRpc('ORWDPS4 CPLST', req, rep));
-  server.get('/vista/meds/rpc/orwdps4-ipod4op', (req, rep) => callMedRpc('ORWDPS4 IPOD4OP', req, rep));
-  server.get('/vista/meds/rpc/orwdps4-isudiv', (req, rep) => callMedRpc('ORWDPS4 ISUDIV', req, rep));
-  server.get('/vista/meds/rpc/orwdps4-updtdg', (req, rep) => callMedRpc('ORWDPS4 UPDTDG', req, rep));
+  server.get('/vista/meds/rpc/orwdps4-ipod4op', (req, rep) =>
+    callMedRpc('ORWDPS4 IPOD4OP', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps4-isudiv', (req, rep) =>
+    callMedRpc('ORWDPS4 ISUDIV', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps4-updtdg', (req, rep) =>
+    callMedRpc('ORWDPS4 UPDTDG', req, rep)
+  );
   server.get('/vista/meds/rpc/orwdps5-isvtp', (req, rep) => callMedRpc('ORWDPS5 ISVTP', req, rep));
-  server.get('/vista/meds/rpc/orwdps5-lesapi', (req, rep) => callMedRpc('ORWDPS5 LESAPI', req, rep));
-  server.get('/vista/meds/rpc/orwdps5-lesgrp', (req, rep) => callMedRpc('ORWDPS5 LESGRP', req, rep));
+  server.get('/vista/meds/rpc/orwdps5-lesapi', (req, rep) =>
+    callMedRpc('ORWDPS5 LESAPI', req, rep)
+  );
+  server.get('/vista/meds/rpc/orwdps5-lesgrp', (req, rep) =>
+    callMedRpc('ORWDPS5 LESGRP', req, rep)
+  );
   server.get('/vista/meds/rpc/orwps-active', (req, rep) => callMedRpc('ORWPS ACTIVE', req, rep));
-  server.get('/vista/meds/rpc/orwps-detail', (req, rep) => callMedRpc('ORWPS DETAIL', req, rep, (q) => [q?.mid || q?.orderIen || '']));
+  server.get('/vista/meds/rpc/orwps-detail', (req, rep) =>
+    callMedRpc('ORWPS DETAIL', req, rep, (q) => [q?.mid || q?.orderIen || ''])
+  );
   server.get('/vista/meds/rpc/orwps-medhist', (req, rep) => callMedRpc('ORWPS MEDHIST', req, rep));
   server.get('/vista/meds/rpc/orwps-reason', (req, rep) => callMedRpc('ORWPS REASON', req, rep));
   server.get('/vista/meds/rpc/orwps1-newdlg', (req, rep) => callMedRpc('ORWPS1 NEWDLG', req, rep));

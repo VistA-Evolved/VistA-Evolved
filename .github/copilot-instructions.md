@@ -27,6 +27,7 @@ npx tsx --env-file=.env.local src/index.ts
 ```
 
 **Check the logs.** You MUST see:
+
 - `Server listening` on port 3001
 - `Platform PG init` with `ok: true, errors: []`
 - NO `migration_failed` messages
@@ -115,6 +116,7 @@ This is where AI coding most commonly fails. You MUST:
 DO NOT skip this step. DO NOT say "verification deferred."
 
 Also run:
+
 - `scripts/verify-latest.ps1` (or the correct phase/bundle verifier)
 - If failures: fix and rerun until clean
 
@@ -183,6 +185,7 @@ ZVEPROB.m first. This list was wrong before -- it blocked 11 working RPCs.
 ### When an RPC is missing
 
 If a route needs an RPC that doesn't exist in VEHU:
+
 1. Use an alternative RPC that IS available (e.g., use ORWPS ACTIVE instead of PSB MED LOG)
 2. If no alternative, return a clear response explaining what VistA package is needed
 3. Include `vistaGrounding` metadata: target file, routine, and migration path
@@ -203,6 +206,7 @@ A feature or route is DONE when ALL of these are true:
 7. Verification script passes
 
 A feature is NOT done if:
+
 - It was only written, never executed
 - It returns "Not implemented" or placeholder data
 - It was tested against a mock or stub

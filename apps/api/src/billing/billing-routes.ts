@@ -22,16 +22,22 @@ import { log } from '../lib/logger.js';
  * base BillingHealthStatus from the provider.
  * Phase 569 (PromptFolder: 570-PHASE-569-BILLING-NO-SILENT-MOCK)
  */
-function enrichHealthResponse(health: Awaited<ReturnType<ReturnType<typeof getBillingProvider>['healthCheck']>>) {
+function enrichHealthResponse(
+  health: Awaited<ReturnType<ReturnType<typeof getBillingProvider>['healthCheck']>>
+) {
   const runtimeMode = getRuntimeMode();
   const forbidden = isMockBillingForbidden();
   const warnings: string[] = [];
 
   if (health.provider === 'mock') {
     warnings.push('Mock billing provider is active. NOT suitable for demo/pilot/production.');
-    warnings.push('Set BILLING_PROVIDER=lago and configure LAGO_API_URL + LAGO_API_KEY for real billing.');
+    warnings.push(
+      'Set BILLING_PROVIDER=lago and configure LAGO_API_URL + LAGO_API_KEY for real billing.'
+    );
     if (forbidden) {
-      warnings.push(`Current runtime mode (${runtimeMode}) forbids mock billing. Server should not have started.`);
+      warnings.push(
+        `Current runtime mode (${runtimeMode}) forbids mock billing. Server should not have started.`
+      );
     }
   }
 

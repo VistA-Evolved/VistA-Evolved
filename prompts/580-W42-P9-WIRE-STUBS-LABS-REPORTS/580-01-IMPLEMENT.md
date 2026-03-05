@@ -19,14 +19,20 @@ server.get('/vista/labs/:action', async (request, reply) => {
   const dfn = (request.query as any)?.dfn;
   if (!dfn) return reply.status(400).send({ ok: false, error: 'dfn required' });
   try {
-    const raw = await safeCallRpc('ORWLRR RPC_NAME', [dfn], { tenantId: session.tenantId, duz: session.duz });
+    const raw = await safeCallRpc('ORWLRR RPC_NAME', [dfn], {
+      tenantId: session.tenantId,
+      duz: session.duz,
+    });
     const parsed = parseLabResponse(raw);
     return reply.send({ ok: true, source: 'vista', data: parsed });
   } catch (err: any) {
     log.warn({ err, rpc: 'ORWLRR RPC_NAME' }, 'RPC call failed');
     return reply.code(502).send({
-      ok: false, source: 'vista', error: err?.message,
-      rpcUsed: ['ORWLRR RPC_NAME'], pendingTargets: []
+      ok: false,
+      source: 'vista',
+      error: err?.message,
+      rpcUsed: ['ORWLRR RPC_NAME'],
+      pendingTargets: [],
     });
   }
 });
@@ -38,15 +44,15 @@ server.get('/vista/labs/:action', async (request, reply) => {
 
 **File:** `apps/api/src/routes/labs.ts`
 
-| RPC Family | Purpose |
-|------------|---------|
-| ORWLRR CHART | Lab chart |
-| ORWLRR GRID | Lab grid |
-| ORWLRR INTERIM | Interim results |
-| ORWDLR32 ABBSPEC | Abbreviated specimen |
-| ORWDLR32 ALLSURG | All surgery |
-| LR ORDER | Lab order (write) |
-| etc. | (remaining ORWLRR/ORWDLR RPCs) |
+| RPC Family       | Purpose                        |
+| ---------------- | ------------------------------ |
+| ORWLRR CHART     | Lab chart                      |
+| ORWLRR GRID      | Lab grid                       |
+| ORWLRR INTERIM   | Interim results                |
+| ORWDLR32 ABBSPEC | Abbreviated specimen           |
+| ORWDLR32 ALLSURG | All surgery                    |
+| LR ORDER         | Lab order (write)              |
+| etc.             | (remaining ORWLRR/ORWDLR RPCs) |
 
 **Note:** LR ORDER may return empty in sandbox (no lab data); wiring is still required.
 
@@ -56,14 +62,14 @@ server.get('/vista/labs/:action', async (request, reply) => {
 
 **File:** `apps/api/src/routes/reports.ts`
 
-| RPC Family | Purpose |
-|------------|---------|
-| ORWRP REPORT TEXT | Report text |
-| ORWRP REPORT LISTS | Report lists |
-| ORWRP2 HS COMPONENTS | Health summary components |
-| ORWRP2 HS FILE | File report |
-| ORWRP2 HS REPORT TEXT | Report text |
-| etc. | (remaining ORWRP RPCs) |
+| RPC Family            | Purpose                   |
+| --------------------- | ------------------------- |
+| ORWRP REPORT TEXT     | Report text               |
+| ORWRP REPORT LISTS    | Report lists              |
+| ORWRP2 HS COMPONENTS  | Health summary components |
+| ORWRP2 HS FILE        | File report               |
+| ORWRP2 HS REPORT TEXT | Report text               |
+| etc.                  | (remaining ORWRP RPCs)    |
 
 All read-only; return raw text or parsed structure.
 

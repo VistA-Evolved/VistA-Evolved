@@ -1,33 +1,37 @@
-# VistA-Evolved Portal (Next.js patient-facing) -- Production Dockerfile
+# VistA-Evolved Portal (Next.js patient-facing) — Production Dockerfile
 # Multi-stage build: deps -> build -> standalone runtime
-# Port: 3002, non-root user, standalone output
+# Monorepo: requires workspace root + apps/portal + packages + shared
 
 # ---- Stage 1: Dependencies ----
 FROM node:22-alpine AS deps
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@10.29.2 --activate
 
-COPY apps/portal/package.json ./
-COPY pnpm-lock.yaml* ./
-RUN pnpm install --frozen-lockfile || pnpm install
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/portal/package.json apps/portal/
+COPY apps/api/package.json apps/api/
+COPY packages/ packages/
+COPY shared/ shared/
+
+RUN pnpm install --frozen-lockfile --filter portal...
 
 # ---- Stage 2: Build ----
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@10.29.2 --activate
 
 COPY --from=deps /app/node_modules ./node_modules
-COPY apps/portal/package.json ./
-COPY pnpm-lock.yaml* ./
-COPY apps/portal/tsconfig.json apps/portal/next.config.ts apps/portal/next-env.d.ts ./
-COPY apps/portal/src ./src
-COPY apps/portal/public ./public
+COPY --from=deps /app/apps/portal/node_modules ./apps/portal/node_modules
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/portal/ apps/portal/
+COPY apps/api/package.json apps/api/
+COPY packages/ packages/
+COPY shared/ shared/
 
-# NEXT_PUBLIC_API_URL is baked at build time into the client bundle.
-# For Docker-to-Docker SSR use "http://api:3001"; for browser access, override
-# at build time with the publicly reachable URL (e.g., --build-arg NEXT_PUBLIC_API_URL=/api).
+WORKDIR /app/apps/portal
+
 ARG NEXT_PUBLIC_API_URL=""
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
@@ -39,9 +43,9 @@ WORKDIR /app
 
 RUN addgroup -g 1001 appgroup && adduser -u 1001 -G appgroup -D appuser
 
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
+COPY --from=builder /app/apps/portal/.next/standalone ./
+COPY --from=builder /app/apps/portal/.next/static ./.next/static
+COPY --from=builder /app/apps/portal/public ./public
 
 ARG BUILD_SHA=unknown
 ARG BUILD_TIME=unknown

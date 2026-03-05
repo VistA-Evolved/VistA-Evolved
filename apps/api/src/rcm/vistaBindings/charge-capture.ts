@@ -58,7 +58,7 @@ let safeCallRpc: ((rpc: string, params: string[]) => Promise<string[]>) | null =
  * imported without circular deps on rpc-resilience.
  */
 export function wireChargeCaptureRpc(
-  caller: (rpc: string, params: string[]) => Promise<string[]>,
+  caller: (rpc: string, params: string[]) => Promise<string[]>
 ): void {
   safeCallRpc = caller;
 }
@@ -110,7 +110,7 @@ export async function getChargeCaptureCandidates(
     dateFrom?: string;
     dateTo?: string;
     locationIen?: string;
-  },
+  }
 ): Promise<ChargeCaptureResult> {
   if (!safeCallRpc) {
     return {
@@ -164,7 +164,7 @@ export async function getChargeCaptureCandidates(
     return {
       ok: true,
       candidates: candidates.sort(
-        (a, b) => new Date(b.dateOfService).getTime() - new Date(a.dateOfService).getTime(),
+        (a, b) => new Date(b.dateOfService).getTime() - new Date(a.dateOfService).getTime()
       ),
       integrationPending: false,
       vistaGrounding: {
@@ -173,8 +173,7 @@ export async function getChargeCaptureCandidates(
         migrationPath:
           'IB charge lookup (IBD FIND CHARGES) not available in sandbox. ' +
           'All encounters shown as candidates. Production VistA will filter by IB linkage.',
-        sandboxNote:
-          'Visit + CPT data is live from VistA. IB charge cross-reference pending.',
+        sandboxNote: 'Visit + CPT data is live from VistA. IB charge cross-reference pending.',
       },
     };
   } catch (err: any) {

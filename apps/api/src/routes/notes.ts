@@ -439,7 +439,9 @@ async function callNoteRpc(
 ): Promise<void> {
   const session = await requireSession(request, reply);
   const q = (request.query as Record<string, unknown>) || {};
-  const params = paramBuilder ? paramBuilder(q, session) : [q?.dfn, q?.docIen ?? q?.ien].filter(Boolean).map(String);
+  const params = paramBuilder
+    ? paramBuilder(q, session)
+    : [q?.dfn, q?.docIen ?? q?.ien].filter(Boolean).map(String);
   try {
     const lines = await safeCallRpc(rpcName, params);
     return reply.send({
@@ -482,233 +484,330 @@ export default async function notesRoutes(server: FastifyInstance): Promise<void
   // ── Individual RPC routes (wired to VistA) ─────────────────────
 
   server.get('/vista/notes/rpc/orwtiu-canlink', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU CANLINK'));
+    callNoteRpc(req, rep, 'ORWTIU CANLINK')
+  );
 
   server.get('/vista/notes/rpc/orwtiu-chktxt', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU CHKTXT'));
+    callNoteRpc(req, rep, 'ORWTIU CHKTXT')
+  );
   server.get('/vista/notes/rpc/orwtiu-get-dcsumm-context', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU GET DCSUMM CONTEXT'));
+    callNoteRpc(req, rep, 'ORWTIU GET DCSUMM CONTEXT')
+  );
   server.get('/vista/notes/rpc/orwtiu-get-listbox-item', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU GET LISTBOX ITEM'));
+    callNoteRpc(req, rep, 'ORWTIU GET LISTBOX ITEM')
+  );
   server.get('/vista/notes/rpc/orwtiu-get-saved-cp-fields', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU GET SAVED CP FIELDS'));
+    callNoteRpc(req, rep, 'ORWTIU GET SAVED CP FIELDS')
+  );
   server.get('/vista/notes/rpc/orwtiu-get-tiu-context', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU GET TIU CONTEXT'));
+    callNoteRpc(req, rep, 'ORWTIU GET TIU CONTEXT')
+  );
   server.get('/vista/notes/rpc/orwtiu-getpaste', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU GETPASTE'));
+    callNoteRpc(req, rep, 'ORWTIU GETPASTE')
+  );
   server.get('/vista/notes/rpc/orwtiu-ldcpidnt', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU LDCPIDNT'));
-  server.get('/vista/notes/rpc/orwtiu-poll', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU POLL'));
+    callNoteRpc(req, rep, 'ORWTIU LDCPIDNT')
+  );
+  server.get('/vista/notes/rpc/orwtiu-poll', (req, rep) => callNoteRpc(req, rep, 'ORWTIU POLL'));
   server.get('/vista/notes/rpc/orwtiu-save-dcsumm-context', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU SAVE DCSUMM CONTEXT'));
+    callNoteRpc(req, rep, 'ORWTIU SAVE DCSUMM CONTEXT')
+  );
   server.get('/vista/notes/rpc/orwtiu-save-tiu-context', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU SAVE TIU CONTEXT'));
-  server.get('/vista/notes/rpc/orwtiu-start', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU START'));
-  server.get('/vista/notes/rpc/orwtiu-stop', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU STOP'));
+    callNoteRpc(req, rep, 'ORWTIU SAVE TIU CONTEXT')
+  );
+  server.get('/vista/notes/rpc/orwtiu-start', (req, rep) => callNoteRpc(req, rep, 'ORWTIU START'));
+  server.get('/vista/notes/rpc/orwtiu-stop', (req, rep) => callNoteRpc(req, rep, 'ORWTIU STOP'));
   server.get('/vista/notes/rpc/orwtiu-svcopy', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU SVCOPY'));
+    callNoteRpc(req, rep, 'ORWTIU SVCOPY')
+  );
   server.get('/vista/notes/rpc/orwtiu-svcpidnt', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU SVCPIDNT'));
+    callNoteRpc(req, rep, 'ORWTIU SVCPIDNT')
+  );
   server.get('/vista/notes/rpc/orwtiu-svpaste', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU SVPASTE'));
+    callNoteRpc(req, rep, 'ORWTIU SVPASTE')
+  );
   server.get('/vista/notes/rpc/orwtiu-viewcopy', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU VIEWCOPY'));
+    callNoteRpc(req, rep, 'ORWTIU VIEWCOPY')
+  );
   server.get('/vista/notes/rpc/orwtiu-winprint-note', (req, rep) =>
-    callNoteRpc(req, rep, 'ORWTIU WINPRINT NOTE'));
+    callNoteRpc(req, rep, 'ORWTIU WINPRINT NOTE')
+  );
 
   server.get('/vista/notes/rpc/tiu-ancillary-package-message', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU ANCILLARY PACKAGE MESSAGE'));
+    callNoteRpc(req, rep, 'TIU ANCILLARY PACKAGE MESSAGE')
+  );
   server.get('/vista/notes/rpc/tiu-authorization', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU AUTHORIZATION'));
+    callNoteRpc(req, rep, 'TIU AUTHORIZATION')
+  );
   server.get('/vista/notes/rpc/tiu-create-addendum-record', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU CREATE ADDENDUM RECORD'));
+    callNoteRpc(req, rep, 'TIU CREATE ADDENDUM RECORD')
+  );
   server.get('/vista/notes/rpc/tiu-create-record', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU CREATE RECORD'));
+    callNoteRpc(req, rep, 'TIU CREATE RECORD')
+  );
   server.get('/vista/notes/rpc/tiu-delete-record', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU DELETE RECORD'));
+    callNoteRpc(req, rep, 'TIU DELETE RECORD')
+  );
   server.get('/vista/notes/rpc/tiu-detailed-display', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU DETAILED DISPLAY'));
+    callNoteRpc(req, rep, 'TIU DETAILED DISPLAY')
+  );
   server.get('/vista/notes/rpc/tiu-div-and-class-info', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU DIV AND CLASS INFO'));
+    callNoteRpc(req, rep, 'TIU DIV AND CLASS INFO')
+  );
   server.get('/vista/notes/rpc/tiu-documents-by-context', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU DOCUMENTS BY CONTEXT'));
+    callNoteRpc(req, rep, 'TIU DOCUMENTS BY CONTEXT')
+  );
   server.get('/vista/notes/rpc/tiu-field-can-edit', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD CAN EDIT'));
+    callNoteRpc(req, rep, 'TIU FIELD CAN EDIT')
+  );
   server.get('/vista/notes/rpc/tiu-field-check', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD CHECK'));
+    callNoteRpc(req, rep, 'TIU FIELD CHECK')
+  );
   server.get('/vista/notes/rpc/tiu-field-delete', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD DELETE'));
+    callNoteRpc(req, rep, 'TIU FIELD DELETE')
+  );
   server.get('/vista/notes/rpc/tiu-field-dolmtext', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD DOLMTEXT'));
+    callNoteRpc(req, rep, 'TIU FIELD DOLMTEXT')
+  );
   server.get('/vista/notes/rpc/tiu-field-export', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD EXPORT'));
+    callNoteRpc(req, rep, 'TIU FIELD EXPORT')
+  );
   server.get('/vista/notes/rpc/tiu-field-import', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD IMPORT'));
+    callNoteRpc(req, rep, 'TIU FIELD IMPORT')
+  );
   server.get('/vista/notes/rpc/tiu-field-list', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD LIST'));
+    callNoteRpc(req, rep, 'TIU FIELD LIST')
+  );
   server.get('/vista/notes/rpc/tiu-field-list-add', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD LIST ADD'));
+    callNoteRpc(req, rep, 'TIU FIELD LIST ADD')
+  );
   server.get('/vista/notes/rpc/tiu-field-list-import', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD LIST IMPORT'));
+    callNoteRpc(req, rep, 'TIU FIELD LIST IMPORT')
+  );
   server.get('/vista/notes/rpc/tiu-field-load', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD LOAD'));
+    callNoteRpc(req, rep, 'TIU FIELD LOAD')
+  );
   server.get('/vista/notes/rpc/tiu-field-load-by-ien', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD LOAD BY IEN'));
+    callNoteRpc(req, rep, 'TIU FIELD LOAD BY IEN')
+  );
   server.get('/vista/notes/rpc/tiu-field-lock', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD LOCK'));
+    callNoteRpc(req, rep, 'TIU FIELD LOCK')
+  );
   server.get('/vista/notes/rpc/tiu-field-name-is-unique', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD NAME IS UNIQUE'));
+    callNoteRpc(req, rep, 'TIU FIELD NAME IS UNIQUE')
+  );
   server.get('/vista/notes/rpc/tiu-field-save', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD SAVE'));
+    callNoteRpc(req, rep, 'TIU FIELD SAVE')
+  );
   server.get('/vista/notes/rpc/tiu-field-unlock', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU FIELD UNLOCK'));
+    callNoteRpc(req, rep, 'TIU FIELD UNLOCK')
+  );
 
   server.get('/vista/notes/rpc/tiu-get-additional-signers', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET ADDITIONAL SIGNERS'));
+    callNoteRpc(req, rep, 'TIU GET ADDITIONAL SIGNERS')
+  );
   server.get('/vista/notes/rpc/tiu-get-alert-info', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET ALERT INFO'));
+    callNoteRpc(req, rep, 'TIU GET ALERT INFO')
+  );
   server.get('/vista/notes/rpc/tiu-get-boilerplate', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET BOILERPLATE'));
+    callNoteRpc(req, rep, 'TIU GET BOILERPLATE')
+  );
   server.get('/vista/notes/rpc/tiu-get-default-provider', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET DEFAULT PROVIDER'));
+    callNoteRpc(req, rep, 'TIU GET DEFAULT PROVIDER')
+  );
   server.get('/vista/notes/rpc/tiu-get-document-parameters', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET DOCUMENT PARAMETERS'));
+    callNoteRpc(req, rep, 'TIU GET DOCUMENT PARAMETERS')
+  );
   server.get('/vista/notes/rpc/tiu-get-document-title', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET DOCUMENT TITLE'));
+    callNoteRpc(req, rep, 'TIU GET DOCUMENT TITLE')
+  );
   server.get('/vista/notes/rpc/tiu-get-ds-urgencies', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET DS URGENCIES'));
+    callNoteRpc(req, rep, 'TIU GET DS URGENCIES')
+  );
   server.get('/vista/notes/rpc/tiu-get-linked-prf-notes', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET LINKED PRF NOTES'));
+    callNoteRpc(req, rep, 'TIU GET LINKED PRF NOTES')
+  );
   server.get('/vista/notes/rpc/tiu-get-list-of-objects', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET LIST OF OBJECTS'));
+    callNoteRpc(req, rep, 'TIU GET LIST OF OBJECTS')
+  );
   server.get('/vista/notes/rpc/tiu-get-personal-preferences', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET PERSONAL PREFERENCES', (_, s) => [s.duz ?? '']));
+    callNoteRpc(req, rep, 'TIU GET PERSONAL PREFERENCES', (_, s) => [s.duz ?? ''])
+  );
 
   server.get('/vista/notes/rpc/tiu-get-prf-actions', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET PRF ACTIONS'));
+    callNoteRpc(req, rep, 'TIU GET PRF ACTIONS')
+  );
   server.get('/vista/notes/rpc/tiu-get-prf-title', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET PRF TITLE'));
+    callNoteRpc(req, rep, 'TIU GET PRF TITLE')
+  );
   server.get('/vista/notes/rpc/tiu-get-print-name', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET PRINT NAME'));
+    callNoteRpc(req, rep, 'TIU GET PRINT NAME')
+  );
   server.get('/vista/notes/rpc/tiu-get-record-text', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET RECORD TEXT', (q) => [q?.ien ?? q?.docIen ?? ''].filter(Boolean).map(String)));
+    callNoteRpc(req, rep, 'TIU GET RECORD TEXT', (q) =>
+      [q?.ien ?? q?.docIen ?? ''].filter(Boolean).map(String)
+    )
+  );
   server.get('/vista/notes/rpc/tiu-get-request', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET REQUEST'));
+    callNoteRpc(req, rep, 'TIU GET REQUEST')
+  );
   server.get('/vista/notes/rpc/tiu-get-site-parameters', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU GET SITE PARAMETERS', () => []));
+    callNoteRpc(req, rep, 'TIU GET SITE PARAMETERS', () => [])
+  );
 
   server.get('/vista/notes/rpc/tiu-id-attach-entry', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU ID ATTACH ENTRY'));
+    callNoteRpc(req, rep, 'TIU ID ATTACH ENTRY')
+  );
   server.get('/vista/notes/rpc/tiu-id-can-attach', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU ID CAN ATTACH'));
+    callNoteRpc(req, rep, 'TIU ID CAN ATTACH')
+  );
   server.get('/vista/notes/rpc/tiu-id-can-receive', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU ID CAN RECEIVE'));
+    callNoteRpc(req, rep, 'TIU ID CAN RECEIVE')
+  );
   server.get('/vista/notes/rpc/tiu-id-detach-entry', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU ID DETACH ENTRY'));
+    callNoteRpc(req, rep, 'TIU ID DETACH ENTRY')
+  );
   server.get('/vista/notes/rpc/tiu-identify-clinproc-class', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU IDENTIFY CLINPROC CLASS'));
+    callNoteRpc(req, rep, 'TIU IDENTIFY CLINPROC CLASS')
+  );
   server.get('/vista/notes/rpc/tiu-identify-consults-class', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU IDENTIFY CONSULTS CLASS'));
+    callNoteRpc(req, rep, 'TIU IDENTIFY CONSULTS CLASS')
+  );
   server.get('/vista/notes/rpc/tiu-identify-surgery-class', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU IDENTIFY SURGERY CLASS'));
+    callNoteRpc(req, rep, 'TIU IDENTIFY SURGERY CLASS')
+  );
   server.get('/vista/notes/rpc/tiu-is-user-a-usr-provider', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU IS USER A USR PROVIDER', (_, s) => [s.duz ?? '']));
-  server.get('/vista/notes/rpc/tiu-isprf', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU ISPRF'));
+    callNoteRpc(req, rep, 'TIU IS USER A USR PROVIDER', (_, s) => [s.duz ?? ''])
+  );
+  server.get('/vista/notes/rpc/tiu-isprf', (req, rep) => callNoteRpc(req, rep, 'TIU ISPRF'));
   server.get('/vista/notes/rpc/tiu-link-to-flag', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU LINK TO FLAG'));
+    callNoteRpc(req, rep, 'TIU LINK TO FLAG')
+  );
   server.get('/vista/notes/rpc/tiu-load-boilerplate-text', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU LOAD BOILERPLATE TEXT'));
+    callNoteRpc(req, rep, 'TIU LOAD BOILERPLATE TEXT')
+  );
   server.get('/vista/notes/rpc/tiu-load-record-for-edit', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU LOAD RECORD FOR EDIT'));
+    callNoteRpc(req, rep, 'TIU LOAD RECORD FOR EDIT')
+  );
   server.get('/vista/notes/rpc/tiu-load-record-text', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU LOAD RECORD TEXT'));
+    callNoteRpc(req, rep, 'TIU LOAD RECORD TEXT')
+  );
   server.get('/vista/notes/rpc/tiu-lock-record', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU LOCK RECORD'));
+    callNoteRpc(req, rep, 'TIU LOCK RECORD')
+  );
 
   server.get('/vista/notes/rpc/tiu-long-list-boilerplated', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU LONG LIST BOILERPLATED'));
+    callNoteRpc(req, rep, 'TIU LONG LIST BOILERPLATED')
+  );
   server.get('/vista/notes/rpc/tiu-long-list-clinproc-titles', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU LONG LIST CLINPROC TITLES'));
+    callNoteRpc(req, rep, 'TIU LONG LIST CLINPROC TITLES')
+  );
   server.get('/vista/notes/rpc/tiu-long-list-consult-titles', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU LONG LIST CONSULT TITLES'));
+    callNoteRpc(req, rep, 'TIU LONG LIST CONSULT TITLES')
+  );
   server.get('/vista/notes/rpc/tiu-long-list-of-titles', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU LONG LIST OF TITLES'));
+    callNoteRpc(req, rep, 'TIU LONG LIST OF TITLES')
+  );
   server.get('/vista/notes/rpc/tiu-long-list-surgery-titles', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU LONG LIST SURGERY TITLES'));
+    callNoteRpc(req, rep, 'TIU LONG LIST SURGERY TITLES')
+  );
   server.get('/vista/notes/rpc/tiu-personal-title-list', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU PERSONAL TITLE LIST', (_, s) => [s.duz ?? '']));
+    callNoteRpc(req, rep, 'TIU PERSONAL TITLE LIST', (_, s) => [s.duz ?? ''])
+  );
   server.get('/vista/notes/rpc/tiu-print-record', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU PRINT RECORD'));
+    callNoteRpc(req, rep, 'TIU PRINT RECORD')
+  );
   server.get('/vista/notes/rpc/tiu-rem-dlg-ok-as-template', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU REM DLG OK AS TEMPLATE'));
+    callNoteRpc(req, rep, 'TIU REM DLG OK AS TEMPLATE')
+  );
   server.get('/vista/notes/rpc/tiu-reminder-dialogs', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU REMINDER DIALOGS'));
+    callNoteRpc(req, rep, 'TIU REMINDER DIALOGS')
+  );
   server.get('/vista/notes/rpc/tiu-requires-cosignature', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU REQUIRES COSIGNATURE'));
+    callNoteRpc(req, rep, 'TIU REQUIRES COSIGNATURE')
+  );
   server.get('/vista/notes/rpc/tiu-set-document-text', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU SET DOCUMENT TEXT'));
+    callNoteRpc(req, rep, 'TIU SET DOCUMENT TEXT')
+  );
   server.get('/vista/notes/rpc/tiu-sign-record', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU SIGN RECORD'));
+    callNoteRpc(req, rep, 'TIU SIGN RECORD')
+  );
   server.get('/vista/notes/rpc/tiu-summaries', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU SUMMARIES'));
+    callNoteRpc(req, rep, 'TIU SUMMARIES')
+  );
 
   server.get('/vista/notes/rpc/tiu-template-access-level', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE ACCESS LEVEL'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE ACCESS LEVEL')
+  );
   server.get('/vista/notes/rpc/tiu-template-all-titles', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE ALL TITLES'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE ALL TITLES')
+  );
 
   server.get('/vista/notes/rpc/tiu-template-check-boilerplate', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE CHECK BOILERPLATE'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE CHECK BOILERPLATE')
+  );
   server.get('/vista/notes/rpc/tiu-template-delete', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE DELETE'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE DELETE')
+  );
   server.get('/vista/notes/rpc/tiu-template-get-defaults', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE GET DEFAULTS'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE GET DEFAULTS')
+  );
   server.get('/vista/notes/rpc/tiu-template-get-description', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE GET DESCRIPTION'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE GET DESCRIPTION')
+  );
   server.get('/vista/notes/rpc/tiu-template-getboil', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE GETBOIL'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE GETBOIL')
+  );
   server.get('/vista/notes/rpc/tiu-template-getitems', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE GETITEMS'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE GETITEMS')
+  );
   server.get('/vista/notes/rpc/tiu-template-getlink', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE GETLINK'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE GETLINK')
+  );
   server.get('/vista/notes/rpc/tiu-template-getroots', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE GETROOTS'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE GETROOTS')
+  );
   server.get('/vista/notes/rpc/tiu-template-gettext', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE GETTEXT'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE GETTEXT')
+  );
   server.get('/vista/notes/rpc/tiu-template-iseditor', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE ISEDITOR'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE ISEDITOR')
+  );
   server.get('/vista/notes/rpc/tiu-template-lock', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE LOCK'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE LOCK')
+  );
   server.get('/vista/notes/rpc/tiu-template-personal-objects', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE PERSONAL OBJECTS', (_, s) => [s.duz ?? '']));
+    callNoteRpc(req, rep, 'TIU TEMPLATE PERSONAL OBJECTS', (_, s) => [s.duz ?? ''])
+  );
   server.get('/vista/notes/rpc/tiu-template-set-defaults', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE SET DEFAULTS'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE SET DEFAULTS')
+  );
   server.get('/vista/notes/rpc/tiu-template-set-items', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE SET ITEMS'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE SET ITEMS')
+  );
   server.get('/vista/notes/rpc/tiu-template-unlock', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU TEMPLATE UNLOCK'));
+    callNoteRpc(req, rep, 'TIU TEMPLATE UNLOCK')
+  );
   server.get('/vista/notes/rpc/tiu-unlock-record', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU UNLOCK RECORD'));
+    callNoteRpc(req, rep, 'TIU UNLOCK RECORD')
+  );
   server.get('/vista/notes/rpc/tiu-update-additional-signers', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU UPDATE ADDITIONAL SIGNERS'));
+    callNoteRpc(req, rep, 'TIU UPDATE ADDITIONAL SIGNERS')
+  );
   server.get('/vista/notes/rpc/tiu-update-record', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU UPDATE RECORD'));
+    callNoteRpc(req, rep, 'TIU UPDATE RECORD')
+  );
   server.get('/vista/notes/rpc/tiu-user-class-long-list', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU USER CLASS LONG LIST', (_, s) => [s.duz ?? '']));
+    callNoteRpc(req, rep, 'TIU USER CLASS LONG LIST', (_, s) => [s.duz ?? ''])
+  );
   server.get('/vista/notes/rpc/tiu-user-is-member-of-class', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU USER IS MEMBER OF CLASS'));
+    callNoteRpc(req, rep, 'TIU USER IS MEMBER OF CLASS')
+  );
   server.get('/vista/notes/rpc/tiu-which-signature-action', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU WHICH SIGNATURE ACTION'));
-  server.get('/vista/notes/rpc/tiu-doc', (req, rep) =>
-    callNoteRpc(req, rep, 'TIU_DOC'));
-  server.get('/vista/notes/rpc/tiuadd', (req, rep) =>
-    callNoteRpc(req, rep, 'TIUADD'));
-  server.get('/vista/notes/rpc/tiuerr', (req, rep) =>
-    callNoteRpc(req, rep, 'TIUERR'));
-  server.get('/vista/notes/rpc/tiuid', (req, rep) =>
-    callNoteRpc(req, rep, 'TIUID'));
+    callNoteRpc(req, rep, 'TIU WHICH SIGNATURE ACTION')
+  );
+  server.get('/vista/notes/rpc/tiu-doc', (req, rep) => callNoteRpc(req, rep, 'TIU_DOC'));
+  server.get('/vista/notes/rpc/tiuadd', (req, rep) => callNoteRpc(req, rep, 'TIUADD'));
+  server.get('/vista/notes/rpc/tiuerr', (req, rep) => callNoteRpc(req, rep, 'TIUERR'));
+  server.get('/vista/notes/rpc/tiuid', (req, rep) => callNoteRpc(req, rep, 'TIUID'));
 }

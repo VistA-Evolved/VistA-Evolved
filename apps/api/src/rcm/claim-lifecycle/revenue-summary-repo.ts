@@ -29,7 +29,7 @@ export interface RevenueSummary {
     period: string;
   };
   collectionRate: {
-    rate: number | null;          // percentage 0-100
+    rate: number | null; // percentage 0-100
     paidClaimCount: number;
     totalClaimCount: number;
     period: string;
@@ -102,12 +102,7 @@ export async function getRevenueSummary(
       totalAdj: sql<number>`COALESCE(SUM(adjustment_cents), 0)`,
     })
     .from(claimDraft)
-    .where(
-      and(
-        eq(claimDraft.tenantId, tenantId),
-        gte(claimDraft.dateOfService, periodStart)
-      )
-    );
+    .where(and(eq(claimDraft.tenantId, tenantId), gte(claimDraft.dateOfService, periodStart)));
   const rev = revenueRows[0] as any;
   const totalChargeCents = Number(rev?.totalCharge ?? 0);
   const totalPaidCents = Number(rev?.totalPaid ?? 0);
@@ -117,12 +112,7 @@ export async function getRevenueSummary(
   const countRows = await db
     .select({ cnt: count() })
     .from(claimDraft)
-    .where(
-      and(
-        eq(claimDraft.tenantId, tenantId),
-        gte(claimDraft.dateOfService, periodStart)
-      )
-    );
+    .where(and(eq(claimDraft.tenantId, tenantId), gte(claimDraft.dateOfService, periodStart)));
   const totalClaimCount = Number((countRows[0] as any)?.cnt ?? 0);
 
   const paidCountRows = await db
@@ -138,9 +128,7 @@ export async function getRevenueSummary(
   const paidClaimCount = Number((paidCountRows[0] as any)?.cnt ?? 0);
 
   const collectionRate =
-    totalChargeCents > 0
-      ? Math.round((totalPaidCents / totalChargeCents) * 10000) / 100
-      : null;
+    totalChargeCents > 0 ? Math.round((totalPaidCents / totalChargeCents) * 10000) / 100 : null;
 
   // ── 3. Denials (this week by default for CFO view) ──────
   const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString();
@@ -194,12 +182,7 @@ export async function getRevenueSummary(
       totalCharge: sql<number>`COALESCE(SUM(total_charge_cents), 0)`,
     })
     .from(claimDraft)
-    .where(
-      and(
-        eq(claimDraft.tenantId, tenantId),
-        sql`status NOT IN ('paid', 'closed')`
-      )
-    )
+    .where(and(eq(claimDraft.tenantId, tenantId), sql`status NOT IN ('paid', 'closed')`))
     .groupBy(sql`CASE
       WHEN EXTRACT(EPOCH FROM (NOW() - date_of_service::timestamp)) / 86400 <= 30 THEN '0-30'
       WHEN EXTRACT(EPOCH FROM (NOW() - date_of_service::timestamp)) / 86400 <= 60 THEN '31-60'
@@ -230,12 +213,7 @@ export async function getRevenueSummary(
       totalPaid: sql<number>`COALESCE(SUM(paid_amount_cents), 0)`,
     })
     .from(claimDraft)
-    .where(
-      and(
-        eq(claimDraft.tenantId, tenantId),
-        gte(claimDraft.dateOfService, periodStart)
-      )
-    )
+    .where(and(eq(claimDraft.tenantId, tenantId), gte(claimDraft.dateOfService, periodStart)))
     .groupBy(claimDraft.payerId, claimDraft.payerName);
 
   const payerMix = (payerRows as any[]).map((r) => ({
@@ -245,9 +223,7 @@ export async function getRevenueSummary(
     totalChargeCents: Number(r.totalCharge),
     totalPaidCents: Number(r.totalPaid),
     percentage:
-      totalClaimCount > 0
-        ? Math.round((Number(r.cnt) / totalClaimCount) * 10000) / 100
-        : 0,
+      totalClaimCount > 0 ? Math.round((Number(r.cnt) / totalClaimCount) * 10000) / 100 : 0,
   }));
 
   log.debug('[revenue-summary] Computed revenue summary', {

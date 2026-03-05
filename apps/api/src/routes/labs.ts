@@ -121,10 +121,23 @@ export default async function labsRoutes(server: FastifyInstance): Promise<void>
     if (!oid) return reply.status(400).send({ ok: false, error: 'oid path parameter required' });
     try {
       const lines = await safeCallRpc('ORQQL DETAIL', [String(oid)]);
-      return reply.send({ ok: true, source: 'vista', data: lines, rpcUsed: ['ORQQL DETAIL'], pendingTargets: [] });
+      return reply.send({
+        ok: true,
+        source: 'vista',
+        data: lines,
+        rpcUsed: ['ORQQL DETAIL'],
+        pendingTargets: [],
+      });
     } catch (err: any) {
       log.warn('ORQQL DETAIL failed', { err: err?.message || String(err) });
-      return reply.code(502).send({ ok: false, source: 'vista', error: err?.message || 'RPC call failed', rpcUsed: [], pendingTargets: ['ORQQL DETAIL'], _integration: 'pending' });
+      return reply.code(502).send({
+        ok: false,
+        source: 'vista',
+        error: err?.message || 'RPC call failed',
+        rpcUsed: [],
+        pendingTargets: ['ORQQL DETAIL'],
+        _integration: 'pending',
+      });
     }
   });
 
@@ -135,10 +148,23 @@ export default async function labsRoutes(server: FastifyInstance): Promise<void>
     if (!dfn) return reply.status(400).send({ ok: false, error: 'dfn query parameter required' });
     try {
       const lines = await safeCallRpc('ORWLR RECENTSIT', [String(dfn)]);
-      return reply.send({ ok: true, source: 'vista', data: lines, rpcUsed: ['ORWLR RECENTSIT'], pendingTargets: [] });
+      return reply.send({
+        ok: true,
+        source: 'vista',
+        data: lines,
+        rpcUsed: ['ORWLR RECENTSIT'],
+        pendingTargets: [],
+      });
     } catch (err: any) {
       log.warn('ORWLR RECENTSIT failed', { err: err?.message || String(err) });
-      return reply.code(502).send({ ok: false, source: 'vista', error: err?.message || 'RPC call failed', rpcUsed: [], pendingTargets: ['ORWLR RECENTSIT'], _integration: 'pending' });
+      return reply.code(502).send({
+        ok: false,
+        source: 'vista',
+        error: err?.message || 'RPC call failed',
+        rpcUsed: [],
+        pendingTargets: ['ORWLR RECENTSIT'],
+        _integration: 'pending',
+      });
     }
   });
 
@@ -149,10 +175,23 @@ export default async function labsRoutes(server: FastifyInstance): Promise<void>
     if (!dfn) return reply.status(400).send({ ok: false, error: 'dfn query parameter required' });
     try {
       const lines = await safeCallRpc('ORWLR CUMULATIVE', [String(dfn)]);
-      return reply.send({ ok: true, source: 'vista', data: lines, rpcUsed: ['ORWLR CUMULATIVE'], pendingTargets: [] });
+      return reply.send({
+        ok: true,
+        source: 'vista',
+        data: lines,
+        rpcUsed: ['ORWLR CUMULATIVE'],
+        pendingTargets: [],
+      });
     } catch (err: any) {
       log.warn('ORWLR CUMULATIVE failed', { err: err?.message || String(err) });
-      return reply.code(502).send({ ok: false, source: 'vista', error: err?.message || 'RPC call failed', rpcUsed: [], pendingTargets: ['ORWLR CUMULATIVE'], _integration: 'pending' });
+      return reply.code(502).send({
+        ok: false,
+        source: 'vista',
+        error: err?.message || 'RPC call failed',
+        rpcUsed: [],
+        pendingTargets: ['ORWLR CUMULATIVE'],
+        _integration: 'pending',
+      });
     }
   });
 
@@ -170,12 +209,17 @@ export default async function labsRoutes(server: FastifyInstance): Promise<void>
     const body = (request.body as any) || {};
     const parsed = LabOrderSchema.safeParse(body);
     if (!parsed.success) {
-      return reply.status(400).send({ ok: false, error: 'Validation failed', details: parsed.error.issues });
+      return reply
+        .status(400)
+        .send({ ok: false, error: 'Validation failed', details: parsed.error.issues });
     }
     // TODO: Phase 568 — wire to LR ORDER after VEHU validation
     return reply.send({
-      ok: false, source: 'vista', error: 'integration-pending',
-      rpcUsed: [], pendingTargets: ['LR ORDER'],
+      ok: false,
+      source: 'vista',
+      error: 'integration-pending',
+      rpcUsed: [],
+      pendingTargets: ['LR ORDER'],
       _integration: 'pending',
       _hint: 'LR ORDER writes clinical data — requires VEHU validation before enabling',
     });
@@ -188,48 +232,102 @@ export default async function labsRoutes(server: FastifyInstance): Promise<void>
     rpcName: string,
     request: FastifyRequest,
     reply: FastifyReply,
-    paramBuilder?: (q: any) => string[],
+    paramBuilder?: (q: any) => string[]
   ) {
     await requireSession(request, reply);
     const q = request.query as any;
     const params = paramBuilder ? paramBuilder(q) : q?.dfn ? [String(q.dfn)] : [];
     try {
       const lines = await safeCallRpc(rpcName, params);
-      return reply.send({ ok: true, source: 'vista', rpcUsed: [rpcName], data: lines, pendingTargets: [] });
+      return reply.send({
+        ok: true,
+        source: 'vista',
+        rpcUsed: [rpcName],
+        data: lines,
+        pendingTargets: [],
+      });
     } catch (err: any) {
       log.warn(`${rpcName} failed`, { err: err?.message });
-      return reply.code(502).send({ ok: false, source: 'vista', error: err?.message || 'RPC call failed', rpcUsed: [], pendingTargets: [rpcName] });
+      return reply.code(502).send({
+        ok: false,
+        source: 'vista',
+        error: err?.message || 'RPC call failed',
+        rpcUsed: [],
+        pendingTargets: [rpcName],
+      });
     }
   }
 
-  server.get('/vista/labs/rpc/orwdlr32-abbspec', (req, rep) => callLabRpc('ORWDLR32 ABBSPEC', req, rep));
-  server.get('/vista/labs/rpc/orwdlr32-allsamp', (req, rep) => callLabRpc('ORWDLR32 ALLSAMP', req, rep));
-  server.get('/vista/labs/rpc/orwdlr32-allspec', (req, rep) => callLabRpc('ORWDLR32 ALLSPEC', req, rep));
+  server.get('/vista/labs/rpc/orwdlr32-abbspec', (req, rep) =>
+    callLabRpc('ORWDLR32 ABBSPEC', req, rep)
+  );
+  server.get('/vista/labs/rpc/orwdlr32-allsamp', (req, rep) =>
+    callLabRpc('ORWDLR32 ALLSAMP', req, rep)
+  );
+  server.get('/vista/labs/rpc/orwdlr32-allspec', (req, rep) =>
+    callLabRpc('ORWDLR32 ALLSPEC', req, rep)
+  );
   server.get('/vista/labs/rpc/orwdlr32-def', (req, rep) => callLabRpc('ORWDLR32 DEF', req, rep));
-  server.get('/vista/labs/rpc/orwdlr32-get-lab-times', (req, rep) => callLabRpc('ORWDLR32 GET LAB TIMES', req, rep));
-  server.get('/vista/labs/rpc/orwdlr32-ic-default', (req, rep) => callLabRpc('ORWDLR32 IC DEFAULT', req, rep));
-  server.get('/vista/labs/rpc/orwdlr32-ic-valid', (req, rep) => callLabRpc('ORWDLR32 IC VALID', req, rep));
-  server.get('/vista/labs/rpc/orwdlr32-immed-collect', (req, rep) => callLabRpc('ORWDLR32 IMMED COLLECT', req, rep));
-  server.get('/vista/labs/rpc/orwdlr32-lab-coll-time', (req, rep) => callLabRpc('ORWDLR32 LAB COLL TIME', req, rep));
+  server.get('/vista/labs/rpc/orwdlr32-get-lab-times', (req, rep) =>
+    callLabRpc('ORWDLR32 GET LAB TIMES', req, rep)
+  );
+  server.get('/vista/labs/rpc/orwdlr32-ic-default', (req, rep) =>
+    callLabRpc('ORWDLR32 IC DEFAULT', req, rep)
+  );
+  server.get('/vista/labs/rpc/orwdlr32-ic-valid', (req, rep) =>
+    callLabRpc('ORWDLR32 IC VALID', req, rep)
+  );
+  server.get('/vista/labs/rpc/orwdlr32-immed-collect', (req, rep) =>
+    callLabRpc('ORWDLR32 IMMED COLLECT', req, rep)
+  );
+  server.get('/vista/labs/rpc/orwdlr32-lab-coll-time', (req, rep) =>
+    callLabRpc('ORWDLR32 LAB COLL TIME', req, rep)
+  );
   server.get('/vista/labs/rpc/orwdlr32-load', (req, rep) => callLabRpc('ORWDLR32 LOAD', req, rep));
-  server.get('/vista/labs/rpc/orwdlr32-maxdays', (req, rep) => callLabRpc('ORWDLR32 MAXDAYS', req, rep));
-  server.get('/vista/labs/rpc/orwdlr32-one-sample', (req, rep) => callLabRpc('ORWDLR32 ONE SAMPLE', req, rep));
-  server.get('/vista/labs/rpc/orwdlr32-one-specimen', (req, rep) => callLabRpc('ORWDLR32 ONE SPECIMEN', req, rep));
+  server.get('/vista/labs/rpc/orwdlr32-maxdays', (req, rep) =>
+    callLabRpc('ORWDLR32 MAXDAYS', req, rep)
+  );
+  server.get('/vista/labs/rpc/orwdlr32-one-sample', (req, rep) =>
+    callLabRpc('ORWDLR32 ONE SAMPLE', req, rep)
+  );
+  server.get('/vista/labs/rpc/orwdlr32-one-specimen', (req, rep) =>
+    callLabRpc('ORWDLR32 ONE SPECIMEN', req, rep)
+  );
   server.get('/vista/labs/rpc/orwdlr32-stop', (req, rep) => callLabRpc('ORWDLR32 STOP', req, rep));
-  server.get('/vista/labs/rpc/orwdlr33-future-lab-collects', (req, rep) => callLabRpc('ORWDLR33 FUTURE LAB COLLECTS', req, rep));
-  server.get('/vista/labs/rpc/orwdlr33-lasttime', (req, rep) => callLabRpc('ORWDLR33 LASTTIME', req, rep));
-  server.get('/vista/labs/rpc/orwdlr33-lc-to-wc', (req, rep) => callLabRpc('ORWDLR33 LC TO WC', req, rep));
-  server.get('/vista/labs/rpc/orwlrr-alltests', (req, rep) => callLabRpc('ORWLRR ALLTESTS', req, rep));
+  server.get('/vista/labs/rpc/orwdlr33-future-lab-collects', (req, rep) =>
+    callLabRpc('ORWDLR33 FUTURE LAB COLLECTS', req, rep)
+  );
+  server.get('/vista/labs/rpc/orwdlr33-lasttime', (req, rep) =>
+    callLabRpc('ORWDLR33 LASTTIME', req, rep)
+  );
+  server.get('/vista/labs/rpc/orwdlr33-lc-to-wc', (req, rep) =>
+    callLabRpc('ORWDLR33 LC TO WC', req, rep)
+  );
+  server.get('/vista/labs/rpc/orwlrr-alltests', (req, rep) =>
+    callLabRpc('ORWLRR ALLTESTS', req, rep)
+  );
   server.get('/vista/labs/rpc/orwlrr-atests', (req, rep) => callLabRpc('ORWLRR ATESTS', req, rep));
   server.get('/vista/labs/rpc/orwlrr-atg', (req, rep) => callLabRpc('ORWLRR ATG', req, rep));
-  server.get('/vista/labs/rpc/orwlrr-atomics', (req, rep) => callLabRpc('ORWLRR ATOMICS', req, rep));
-  server.get('/vista/labs/rpc/orwlrr-chart', (req, rep) => callLabRpc('ORWLRR CHART', req, rep, (q) => [q?.dfn || '', q?.testName || '']));
-  server.get('/vista/labs/rpc/orwlrr-chemtest', (req, rep) => callLabRpc('ORWLRR CHEMTEST', req, rep));
+  server.get('/vista/labs/rpc/orwlrr-atomics', (req, rep) =>
+    callLabRpc('ORWLRR ATOMICS', req, rep)
+  );
+  server.get('/vista/labs/rpc/orwlrr-chart', (req, rep) =>
+    callLabRpc('ORWLRR CHART', req, rep, (q) => [q?.dfn || '', q?.testName || ''])
+  );
+  server.get('/vista/labs/rpc/orwlrr-chemtest', (req, rep) =>
+    callLabRpc('ORWLRR CHEMTEST', req, rep)
+  );
   server.get('/vista/labs/rpc/orwlrr-grid', (req, rep) => callLabRpc('ORWLRR GRID', req, rep));
   server.get('/vista/labs/rpc/orwlrr-info', (req, rep) => callLabRpc('ORWLRR INFO', req, rep));
-  server.get('/vista/labs/rpc/orwlrr-interim', (req, rep) => callLabRpc('ORWLRR INTERIM', req, rep, (q) => [q?.dfn || '', q?.p1 || '', q?.p2 || '']));
-  server.get('/vista/labs/rpc/orwlrr-interimg', (req, rep) => callLabRpc('ORWLRR INTERIMG', req, rep, (q) => [q?.dfn || '', '', '1', '']));
-  server.get('/vista/labs/rpc/orwlrr-interims', (req, rep) => callLabRpc('ORWLRR INTERIMS', req, rep));
+  server.get('/vista/labs/rpc/orwlrr-interim', (req, rep) =>
+    callLabRpc('ORWLRR INTERIM', req, rep, (q) => [q?.dfn || '', q?.p1 || '', q?.p2 || ''])
+  );
+  server.get('/vista/labs/rpc/orwlrr-interimg', (req, rep) =>
+    callLabRpc('ORWLRR INTERIMG', req, rep, (q) => [q?.dfn || '', '', '1', ''])
+  );
+  server.get('/vista/labs/rpc/orwlrr-interims', (req, rep) =>
+    callLabRpc('ORWLRR INTERIMS', req, rep)
+  );
   server.get('/vista/labs/rpc/orwlrr-newold', (req, rep) => callLabRpc('ORWLRR NEWOLD', req, rep));
   server.get('/vista/labs/rpc/orwlrr-param', (req, rep) => callLabRpc('ORWLRR PARAM', req, rep));
   server.get('/vista/labs/rpc/orwlrr-spec', (req, rep) => callLabRpc('ORWLRR SPEC', req, rep));

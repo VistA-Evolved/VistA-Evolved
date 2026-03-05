@@ -43,7 +43,9 @@ const CIPHER_PAD = [
   '5:iar.{YU7mBZR@-K|2 "+~`M%8sq4JhPo<_X\\Sg3WC;Tuxz,fvEQ1p9=w}FAI&j/keD0c?)LN6OHV]lGy\'$*>nd[(tb!#',
 ];
 
-function sPack(s) { return String.fromCharCode(s.length) + s; }
+function sPack(s) {
+  return String.fromCharCode(s.length) + s;
+}
 function lPack(s) {
   const len = s.length.toString();
   return String.fromCharCode(len.length) + len + s;
@@ -65,47 +67,120 @@ function cipherEncrypt(text) {
 }
 
 function buildTCPConnect(ip, port) {
-  return PREFIX + '10304' + sPack('TCPConnect') + '5' + '0' + lPack(ip) + 'f' + '0' + lPack(String(port)) + 'f' + EOT;
+  return (
+    PREFIX +
+    '10304' +
+    sPack('TCPConnect') +
+    '5' +
+    '0' +
+    lPack(ip) +
+    'f' +
+    '0' +
+    lPack(String(port)) +
+    'f' +
+    EOT
+  );
 }
 
 function buildRpcMessage(name, params = []) {
   let msg = PREFIX + '11302' + '\x01' + '1' + sPack(name);
   if (params.length === 0) msg += '54f';
-  else { msg += '5'; for (const p of params) msg += '0' + lPack(p) + 'f'; }
+  else {
+    msg += '5';
+    for (const p of params) msg += '0' + lPack(p) + 'f';
+  }
   return msg + EOT;
 }
 
 // The 87 unique RPCs in probe order (from rpcCapabilities.ts KNOWN_RPCS)
 const KNOWN_RPCS = [
-  'ORWPT LIST ALL','ORWPT SELECT','ORQPT DEFAULT PATIENT LIST',
-  'ORQQAL LIST','ORWDAL32 ALLERGY MATCH','ORWDAL32 SAVE ALLERGY',
-  'ORQQVI VITALS','GMV ADD VM','TIU DOCUMENTS BY CONTEXT',
-  'TIU CREATE RECORD','TIU SET RECORD TEXT','TIU GET RECORD TEXT',
-  'ORWPS ACTIVE','ORWORR GETTXT','ORWDXM AUTOACK',
-  'ORQQPL PROBLEM LIST','ORQQPL4 LEX','ORQQPL ADD SAVE','ORQQPL EDIT SAVE',
-  'ORWDX SAVE','ORWDXA DC','ORWDXA FLAG','ORWDXA VERIFY',
-  'ORWORR AGET','ORWOR1 SIG','ORWDXC ACCEPT',
-  'ORQQCN LIST','ORQQCN DETAIL','ORQQCN2 MED RESULTS',
-  'ORWSR LIST','ORWSR RPTLIST',
-  'ORWLRR INTERIM','ORWLRR ACK','ORWLRR CHART',
-  'ORWRP REPORT LISTS','ORWRP REPORT TEXT',
-  'ORWORB UNSIG ORDERS','ORWORB FASTUSER',
-  'ORWCIRN FACILITIES','MAG4 REMOTE PROCEDURE','RA DETAILED REPORT',
-  'ORWPCE SAVE','ORWPCE VISIT','ORWPCE GET VISIT',
-  'ORWPCE DIAG','ORWPCE PROC','ORWPCE PCE4NOTE',
-  'ORWPCE HASVISIT','ORWPCE GETSVC','ORWPCE4 LEX','ORWPCE LEXCODE',
+  'ORWPT LIST ALL',
+  'ORWPT SELECT',
+  'ORQPT DEFAULT PATIENT LIST',
+  'ORQQAL LIST',
+  'ORWDAL32 ALLERGY MATCH',
+  'ORWDAL32 SAVE ALLERGY',
+  'ORQQVI VITALS',
+  'GMV ADD VM',
+  'TIU DOCUMENTS BY CONTEXT',
+  'TIU CREATE RECORD',
+  'TIU SET RECORD TEXT',
+  'TIU GET RECORD TEXT',
+  'ORWPS ACTIVE',
+  'ORWORR GETTXT',
+  'ORWDXM AUTOACK',
+  'ORQQPL PROBLEM LIST',
+  'ORQQPL4 LEX',
+  'ORQQPL ADD SAVE',
+  'ORQQPL EDIT SAVE',
+  'ORWDX SAVE',
+  'ORWDXA DC',
+  'ORWDXA FLAG',
+  'ORWDXA VERIFY',
+  'ORWORR AGET',
+  'ORWOR1 SIG',
+  'ORWDXC ACCEPT',
+  'ORQQCN LIST',
+  'ORQQCN DETAIL',
+  'ORQQCN2 MED RESULTS',
+  'ORWSR LIST',
+  'ORWSR RPTLIST',
+  'ORWLRR INTERIM',
+  'ORWLRR ACK',
+  'ORWLRR CHART',
+  'ORWRP REPORT LISTS',
+  'ORWRP REPORT TEXT',
+  'ORWORB UNSIG ORDERS',
+  'ORWORB FASTUSER',
+  'ORWCIRN FACILITIES',
+  'MAG4 REMOTE PROCEDURE',
+  'RA DETAILED REPORT',
+  'ORWPCE SAVE',
+  'ORWPCE VISIT',
+  'ORWPCE GET VISIT',
+  'ORWPCE DIAG',
+  'ORWPCE PROC',
+  'ORWPCE PCE4NOTE',
+  'ORWPCE HASVISIT',
+  'ORWPCE GETSVC',
+  'ORWPCE4 LEX',
+  'ORWPCE LEXCODE',
   'ORWPCE ACTIVE CODE',
-  'IBCN INSURANCE QUERY','IBD GET ALL PCE DATA','IBD GET FORMSPEC',
-  'IBARXM QUERY ONLY','IBO MT LTC COPAY QUERY',
-  'VE INTEROP HL7 LINKS','VE INTEROP HL7 MSGS','VE INTEROP HLO STATUS',
-  'VE INTEROP QUEUE DEPTH','VE INTEROP MSG LIST','VE INTEROP MSG DETAIL',
-  'ZVE MAIL FOLDERS','ZVE MAIL LIST','ZVE MAIL GET','ZVE MAIL SEND','ZVE MAIL MANAGE',
-  'VE LIST RPCS','VE RCM PROVIDER INFO',
-  'ZVEADT WARDS','ZVEADT BEDS','ZVEADT MVHIST',
-  'DGPM NEW ADMISSION','DGPM NEW TRANSFER','DGPM NEW DISCHARGE',
-  'PSB MED LOG','PSB ALLERGY','PSB VALIDATE ORDER','PSJBCMA',
-  'NURS TASK LIST','NURS ASSESSMENTS','LR VERIFY',
-  'GMRIO RESULTS','GMRIO ADD','ZVENAS LIST','ZVENAS SAVE',
+  'IBCN INSURANCE QUERY',
+  'IBD GET ALL PCE DATA',
+  'IBD GET FORMSPEC',
+  'IBARXM QUERY ONLY',
+  'IBO MT LTC COPAY QUERY',
+  'VE INTEROP HL7 LINKS',
+  'VE INTEROP HL7 MSGS',
+  'VE INTEROP HLO STATUS',
+  'VE INTEROP QUEUE DEPTH',
+  'VE INTEROP MSG LIST',
+  'VE INTEROP MSG DETAIL',
+  'ZVE MAIL FOLDERS',
+  'ZVE MAIL LIST',
+  'ZVE MAIL GET',
+  'ZVE MAIL SEND',
+  'ZVE MAIL MANAGE',
+  'VE LIST RPCS',
+  'VE RCM PROVIDER INFO',
+  'ZVEADT WARDS',
+  'ZVEADT BEDS',
+  'ZVEADT MVHIST',
+  'DGPM NEW ADMISSION',
+  'DGPM NEW TRANSFER',
+  'DGPM NEW DISCHARGE',
+  'PSB MED LOG',
+  'PSB ALLERGY',
+  'PSB VALIDATE ORDER',
+  'PSJBCMA',
+  'NURS TASK LIST',
+  'NURS ASSESSMENTS',
+  'LR VERIFY',
+  'GMRIO RESULTS',
+  'GMRIO ADD',
+  'ZVENAS LIST',
+  'ZVENAS SAVE',
 ];
 
 // ---- Raw socket I/O ----
@@ -114,7 +189,7 @@ let readBuf = '';
 
 function rawSend(data) {
   return new Promise((resolve, reject) => {
-    sock.write(Buffer.from(data, 'latin1'), (err) => err ? reject(err) : resolve());
+    sock.write(Buffer.from(data, 'latin1'), (err) => (err ? reject(err) : resolve()));
   });
 }
 
@@ -133,11 +208,27 @@ function readToEOT() {
     function onData(chunk) {
       readBuf += chunk.toString('latin1');
       const i = readBuf.indexOf(EOT);
-      if (i >= 0) { cleanup(); const r = readBuf.substring(0, i); readBuf = readBuf.substring(i + 1); resolve(r); }
+      if (i >= 0) {
+        cleanup();
+        const r = readBuf.substring(0, i);
+        readBuf = readBuf.substring(i + 1);
+        resolve(r);
+      }
     }
-    function onErr(e) { cleanup(); reject(e); }
-    function onClose() { cleanup(); reject(new Error('Connection closed')); }
-    function cleanup() { clearTimeout(timer); sock.removeListener('data', onData); sock.removeListener('error', onErr); sock.removeListener('close', onClose); }
+    function onErr(e) {
+      cleanup();
+      reject(e);
+    }
+    function onClose() {
+      cleanup();
+      reject(new Error('Connection closed'));
+    }
+    function cleanup() {
+      clearTimeout(timer);
+      sock.removeListener('data', onData);
+      sock.removeListener('error', onErr);
+      sock.removeListener('close', onClose);
+    }
     sock.on('data', onData);
     sock.once('error', onErr);
     sock.once('close', onClose);
@@ -148,7 +239,9 @@ function readToEOT() {
 function readAllAvailable(ms = 200) {
   return new Promise((resolve) => {
     let buf = '';
-    function onData(chunk) { buf += chunk.toString('latin1'); }
+    function onData(chunk) {
+      buf += chunk.toString('latin1');
+    }
     sock.on('data', onData);
     setTimeout(() => {
       sock.removeListener('data', onData);
@@ -178,9 +271,18 @@ async function main() {
   sock = await new Promise((resolve, reject) => {
     const s = createConnection({ host: HOST, port: PORT });
     s.setKeepAlive(true, 30000);
-    const t = setTimeout(() => { s.destroy(); reject(new Error('TCP timeout')); }, TIMEOUT);
-    s.once('connect', () => { clearTimeout(t); resolve(s); });
-    s.once('error', (e) => { clearTimeout(t); reject(new Error('TCP: ' + e.message)); });
+    const t = setTimeout(() => {
+      s.destroy();
+      reject(new Error('TCP timeout'));
+    }, TIMEOUT);
+    s.once('connect', () => {
+      clearTimeout(t);
+      resolve(s);
+    });
+    s.once('error', (e) => {
+      clearTimeout(t);
+      reject(new Error('TCP: ' + e.message));
+    });
   });
   readBuf = '';
   console.log('TCP connected');
@@ -208,14 +310,20 @@ async function main() {
   const avResp = stripNulls(await readToEOT());
   const duz = avResp.split('\r\n')[0];
   console.log('Auth DUZ:', duz);
-  if (duz === '0') { console.error('Auth failed'); process.exit(1); }
+  if (duz === '0') {
+    console.error('Auth failed');
+    process.exit(1);
+  }
 
   // XWB CREATE CONTEXT
   const encCtx = cipherEncrypt(CONTEXT);
   await rawSend(buildRpcMessage('XWB CREATE CONTEXT', [encCtx]));
   const ctxResp = stripNulls(await readToEOT());
   console.log('Context:', ctxResp);
-  if (ctxResp !== '1') { console.error('Context failed:', ctxResp); process.exit(1); }
+  if (ctxResp !== '1') {
+    console.error('Context failed:', ctxResp);
+    process.exit(1);
+  }
 
   console.log(`\n--- Probing ${KNOWN_RPCS.length} RPCs ---\n`);
 
@@ -230,7 +338,9 @@ async function main() {
     const readBufEOTs = (readBuf.match(/\x04/g) || []).length;
 
     if (readBufBefore > 0) {
-      console.log(`  !! readBuf NOT EMPTY before RPC #${i} (${rpcName}): ${readBufBefore} bytes, ${readBufEOTs} EOTs`);
+      console.log(
+        `  !! readBuf NOT EMPTY before RPC #${i} (${rpcName}): ${readBufBefore} bytes, ${readBufEOTs} EOTs`
+      );
       console.log(`     readBuf hex: ${hexPreview(readBuf, 200)}`);
       console.log(`     readBuf txt: ${printablePreview(readBuf)}`);
       shiftsDetected++;
@@ -240,27 +350,40 @@ async function main() {
       await rawSend(buildRpcMessage(rpcName, []));
       const rawResp = await readToEOT();
       const resp = stripNulls(rawResp);
-      const lines = resp.split(/\r?\n/).filter(l => l.length > 0);
+      const lines = resp.split(/\r?\n/).filter((l) => l.length > 0);
       const firstLine = lines[0] || '';
 
       // Check if this looks like a "doesn't exist" error
-      const isMissing = /^[A-Z:]?remote procedure/i.test(firstLine) && /doesn't exist|not found/i.test(resp);
+      const isMissing =
+        /^[A-Z:]?remote procedure/i.test(firstLine) && /doesn't exist|not found/i.test(resp);
 
       // Check if readBuf has leftover after read
       const readBufAfter = readBuf.length;
       const readBufAfterEOTs = (readBuf.match(/\x04/g) || []).length;
 
       const status = isMissing ? 'MISSING' : 'OK';
-      console.log(`[${String(i).padStart(2)}] ${rpcName.padEnd(35)} ${status.padEnd(8)} lines=${lines.length} readBufAfter=${readBufAfter}`);
+      console.log(
+        `[${String(i).padStart(2)}] ${rpcName.padEnd(35)} ${status.padEnd(8)} lines=${lines.length} readBufAfter=${readBufAfter}`
+      );
       if (isMissing) {
         console.log(`     Error: ${printablePreview(firstLine, 100)}`);
       }
       if (readBufAfter > 0) {
-        console.log(`     !! readBuf has ${readBufAfter} bytes (${readBufAfterEOTs} EOTs) AFTER read`);
+        console.log(
+          `     !! readBuf has ${readBufAfter} bytes (${readBufAfterEOTs} EOTs) AFTER read`
+        );
         console.log(`     readBuf hex: ${hexPreview(readBuf, 200)}`);
       }
 
-      results.push({ i, rpcName, status, lines: lines.length, firstLine: firstLine.substring(0, 80), readBufBefore, readBufAfter });
+      results.push({
+        i,
+        rpcName,
+        status,
+        lines: lines.length,
+        firstLine: firstLine.substring(0, 80),
+        readBufBefore,
+        readBufAfter,
+      });
     } catch (err) {
       console.log(`[${String(i).padStart(2)}] ${rpcName.padEnd(35)} ERROR: ${err.message}`);
       results.push({ i, rpcName, status: 'ERROR', error: err.message, readBufBefore });
@@ -276,12 +399,12 @@ async function main() {
   // Summary
   console.log(`\n--- Summary ---`);
   console.log(`Total RPCs: ${KNOWN_RPCS.length}`);
-  console.log(`OK: ${results.filter(r => r.status === 'OK').length}`);
-  console.log(`MISSING: ${results.filter(r => r.status === 'MISSING').length}`);
-  console.log(`ERROR: ${results.filter(r => r.status === 'ERROR').length}`);
+  console.log(`OK: ${results.filter((r) => r.status === 'OK').length}`);
+  console.log(`MISSING: ${results.filter((r) => r.status === 'MISSING').length}`);
+  console.log(`ERROR: ${results.filter((r) => r.status === 'ERROR').length}`);
   console.log(`Shifts detected (non-empty readBuf before send): ${shiftsDetected}`);
 
-  const misaligned = results.filter(r => r.readBufBefore > 0 || r.readBufAfter > 0);
+  const misaligned = results.filter((r) => r.readBufBefore > 0 || r.readBufAfter > 0);
   if (misaligned.length > 0) {
     console.log(`\nRPCs with readBuf anomalies:`);
     for (const r of misaligned) {
@@ -290,4 +413,7 @@ async function main() {
   }
 }
 
-main().catch(err => { console.error('Fatal:', err); process.exit(1); });
+main().catch((err) => {
+  console.error('Fatal:', err);
+  process.exit(1);
+});

@@ -90,11 +90,13 @@ Remove-Item login-body.json, cookies.txt -ErrorAction SilentlyContinue
 ```
 
 **VEHU test data:**
+
 - Valid patient DFNs: 46, 47, 49, 53-93 (NOT 1, 2, 3)
 - DFN=46 has: 2 allergies, 5 vitals, 2 problems (Sleep apnea, PTSD), 1 note
 - Credentials: PRO1234 / PRO1234!! (DUZ 1, PROGRAMMER,ONE)
 
 **What "done" means:**
+
 1. API starts with 0 migration errors
 2. VistA Docker is running and reachable on port 9431
 3. Route returns `{"ok": true}` with real VistA data
@@ -103,6 +105,7 @@ Remove-Item login-body.json, cookies.txt -ErrorAction SilentlyContinue
 6. Test was run against LIVE Docker, not simulated or assumed
 
 **NEVER allowed:**
+
 - Claiming code "works" without showing the actual HTTP response
 - Marking a task "completed" without a live test
 - Saying "verification deferred" or "should work" or "looks correct"
@@ -1787,26 +1790,26 @@ Add new RPCs to `ZVEPROB.m` LIST array and re-run to check availability.
 These RPCs **exist and are callable**. Do NOT put them in
 `SANDBOX_EXPECTED_MISSING`. Do NOT use `tier0Gate` to block them.
 
-| RPC | IEN | Domain | Notes |
-|-----|-----|--------|-------|
-| ORWPS ACTIVE | 321 | meds/nursing | Active medication list |
-| ORQQAL LIST | 139 | allergies | Allergy list |
-| ORQQVI VITALS | (exists) | vitals | Vitals history |
-| TIU CREATE RECORD | 85 | notes | Create TIU document |
-| TIU SET DOCUMENT TEXT | 1132 | notes | Set note body text |
-| TIU DOCUMENTS BY CONTEXT | 91 | notes | List notes by context |
-| PSB ALLERGY | 1278 | nursing/eMAR | BCMA allergy check at admin time |
-| PSB VALIDATE ORDER | 646 | nursing/eMAR | BCMA order validation |
-| ORWPCE SAVE | 310 | encounters | Save PCE encounter data |
-| PX SAVE DATA | 3430 | immunizations | Save PCE/immunization data |
-| ORWDX SAVE | 359 | orders | Save order |
-| ORWDXA DC | 390 | orders | Discontinue order |
-| ORWDXA COMPLETE | 396 | orders | Complete order |
-| ORWDXA FLAG | 393 | orders | Flag order |
-| ORWDXA HOLD | 388 | orders | Hold order |
-| ORWDXC ACCEPT | 498 | order-checks | Accept order check |
-| MAG4 ADD IMAGE | 1167 | imaging | Add VistA Imaging entry |
-| SDEC APPADD | 3676 | scheduling | SDES appointment create |
+| RPC                      | IEN      | Domain        | Notes                            |
+| ------------------------ | -------- | ------------- | -------------------------------- |
+| ORWPS ACTIVE             | 321      | meds/nursing  | Active medication list           |
+| ORQQAL LIST              | 139      | allergies     | Allergy list                     |
+| ORQQVI VITALS            | (exists) | vitals        | Vitals history                   |
+| TIU CREATE RECORD        | 85       | notes         | Create TIU document              |
+| TIU SET DOCUMENT TEXT    | 1132     | notes         | Set note body text               |
+| TIU DOCUMENTS BY CONTEXT | 91       | notes         | List notes by context            |
+| PSB ALLERGY              | 1278     | nursing/eMAR  | BCMA allergy check at admin time |
+| PSB VALIDATE ORDER       | 646      | nursing/eMAR  | BCMA order validation            |
+| ORWPCE SAVE              | 310      | encounters    | Save PCE encounter data          |
+| PX SAVE DATA             | 3430     | immunizations | Save PCE/immunization data       |
+| ORWDX SAVE               | 359      | orders        | Save order                       |
+| ORWDXA DC                | 390      | orders        | Discontinue order                |
+| ORWDXA COMPLETE          | 396      | orders        | Complete order                   |
+| ORWDXA FLAG              | 393      | orders        | Flag order                       |
+| ORWDXA HOLD              | 388      | orders        | Hold order                       |
+| ORWDXC ACCEPT            | 498      | order-checks  | Accept order check               |
+| MAG4 ADD IMAGE           | 1167     | imaging       | Add VistA Imaging entry          |
+| SDEC APPADD              | 3676     | scheduling    | SDES appointment create          |
 
 ### RPCs confirmed MISSING from VEHU (NOT in File 8994)
 
@@ -1814,34 +1817,34 @@ These RPCs **do not exist** in VEHU. Using `tier0Gate` or
 `SANDBOX_EXPECTED_MISSING` for these is correct. Routes depending on
 them should explain exactly what VistA package needs installing.
 
-| RPC | Package | Why Missing |
-|-----|---------|-------------|
-| PSB MED LOG | PSB (BCMA) | BCMA logging RPC not registered |
-| PSJBCMA | PSJ (Pharmacy) | PSJ barcode package not registered |
-| DGPM NEW ADMISSION | DG (ADT) | ADT write RPCs not exposed |
-| DGPM NEW TRANSFER | DG (ADT) | ADT write RPCs not exposed |
-| DGPM NEW DISCHARGE | DG (ADT) | ADT write RPCs not exposed |
-| GMRIO RESULTS | GMR (I/O) | GMR I&O RPCs not registered |
-| GMRIO ADD | GMR (I/O) | GMR I&O RPCs not registered |
-| GMPL ADD SAVE | GMPL (Problems) | Problem write RPC not registered |
-| LR ORDER | LR (Lab) | Lab order RPC not registered |
-| LR VERIFY | LR (Lab) | Lab verify RPC not registered |
-| NURS TASK LIST | NURS | Nursing package RPCs not registered |
-| NURS ASSESSMENTS | NURS | Nursing package RPCs not registered |
-| ZVENAS LIST | Custom | Custom RPCs not yet installed |
-| ZVENAS SAVE | Custom | Custom RPCs not yet installed |
+| RPC                | Package         | Why Missing                         |
+| ------------------ | --------------- | ----------------------------------- |
+| PSB MED LOG        | PSB (BCMA)      | BCMA logging RPC not registered     |
+| PSJBCMA            | PSJ (Pharmacy)  | PSJ barcode package not registered  |
+| DGPM NEW ADMISSION | DG (ADT)        | ADT write RPCs not exposed          |
+| DGPM NEW TRANSFER  | DG (ADT)        | ADT write RPCs not exposed          |
+| DGPM NEW DISCHARGE | DG (ADT)        | ADT write RPCs not exposed          |
+| GMRIO RESULTS      | GMR (I/O)       | GMR I&O RPCs not registered         |
+| GMRIO ADD          | GMR (I/O)       | GMR I&O RPCs not registered         |
+| GMPL ADD SAVE      | GMPL (Problems) | Problem write RPC not registered    |
+| LR ORDER           | LR (Lab)        | Lab order RPC not registered        |
+| LR VERIFY          | LR (Lab)        | Lab verify RPC not registered       |
+| NURS TASK LIST     | NURS            | Nursing package RPCs not registered |
+| NURS ASSESSMENTS   | NURS            | Nursing package RPCs not registered |
+| ZVENAS LIST        | Custom          | Custom RPCs not yet installed       |
+| ZVENAS SAVE        | Custom          | Custom RPCs not yet installed       |
 
 ### Key data files for RPC research
 
-| File | What | Count |
-|------|------|-------|
-| `data/vista/vivian/rpc_index.json` | Full Vivian RPC index | 3,747 RPCs |
-| `docs/grounding/vivian-index.json` | Raw Vivian source data | 3,747 RPCs |
-| `docs/vista-alignment/rpc-coverage.json` | Cross-ref: CPRS + Vivian + API | 1,016 tracked |
-| `docs/vista-alignment/rpc-coverage.md` | Human-readable coverage report | - |
-| `apps/api/src/vista/rpcRegistry.ts` | API RPC registry (live + exceptions) | ~170 RPCs |
-| `services/vista/ZVEPROB.m` | VistA File 8994 probe routine | - |
-| `tools/rpc-extract/build-coverage-map.mjs` | Coverage map generator | - |
+| File                                       | What                                 | Count         |
+| ------------------------------------------ | ------------------------------------ | ------------- |
+| `data/vista/vivian/rpc_index.json`         | Full Vivian RPC index                | 3,747 RPCs    |
+| `docs/grounding/vivian-index.json`         | Raw Vivian source data               | 3,747 RPCs    |
+| `docs/vista-alignment/rpc-coverage.json`   | Cross-ref: CPRS + Vivian + API       | 1,016 tracked |
+| `docs/vista-alignment/rpc-coverage.md`     | Human-readable coverage report       | -             |
+| `apps/api/src/vista/rpcRegistry.ts`        | API RPC registry (live + exceptions) | ~170 RPCs     |
+| `services/vista/ZVEPROB.m`                 | VistA File 8994 probe routine        | -             |
+| `tools/rpc-extract/build-coverage-map.mjs` | Coverage map generator               | -             |
 
 ### Critical lesson: `tier0Gate` was blocking working RPCs (BUG-071)
 

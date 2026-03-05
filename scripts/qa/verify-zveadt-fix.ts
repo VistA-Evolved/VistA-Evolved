@@ -17,10 +17,7 @@
  */
 
 import { connect, disconnect, callRpc } from '../../apps/api/src/vista/rpcBrokerClient.js';
-import {
-  discoverCapabilities,
-  KNOWN_RPCS,
-} from '../../apps/api/src/vista/rpcCapabilities.js';
+import { discoverCapabilities, KNOWN_RPCS } from '../../apps/api/src/vista/rpcCapabilities.js';
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                             */
@@ -133,18 +130,27 @@ async function main() {
     let wardsResp: string[];
     try {
       wardsResp = await callRpc('ZVEADT WARDS', []);
-      pass(`ZVEADT WARDS returned ${wardsResp.length} line(s), first: ${wardsResp[0]?.substring(0, 100) || '(empty)'}`);
+      pass(
+        `ZVEADT WARDS returned ${wardsResp.length} line(s), first: ${wardsResp[0]?.substring(0, 100) || '(empty)'}`
+      );
     } catch (err: any) {
       fail(`ZVEADT WARDS threw: ${err.message}`);
       // If the socket died, try reconnect for the next test
-      try { disconnect(); await connect(); } catch { /* give up */ }
+      try {
+        disconnect();
+        await connect();
+      } catch {
+        /* give up */
+      }
     }
 
     // Step B: Call ORWPT LIST ALL immediately after
     try {
       const patResp = await callRpc('ORWPT LIST ALL', ['1', '1']);
       if (patResp.length > 0) {
-        pass(`ORWPT LIST ALL returned ${patResp.length} line(s) AFTER ZVEADT WARDS — socket survived`);
+        pass(
+          `ORWPT LIST ALL returned ${patResp.length} line(s) AFTER ZVEADT WARDS — socket survived`
+        );
       } else {
         fail('ORWPT LIST ALL returned empty — socket may be degraded');
       }

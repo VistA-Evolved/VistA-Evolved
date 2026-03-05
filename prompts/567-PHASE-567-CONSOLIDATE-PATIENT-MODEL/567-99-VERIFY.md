@@ -3,6 +3,7 @@
 ## Verification Steps
 
 1. **TypeScript compilation** — zero errors across all 4 packages:
+
    ```
    cd shared && npx tsc --noEmit         # 0 errors
    cd apps/web && npx tsc --noEmit       # 0 errors
@@ -11,6 +12,7 @@
    ```
 
 2. **File existence** — canonical types exist:
+
    ```
    ls shared/src/clinical/patient.ts     # exists
    ls shared/src/clinical/allergy.ts     # exists
@@ -22,11 +24,13 @@
    ```
 
 3. **Export count** — patient.ts has ≥3 exports:
+
    ```
    grep -c '^export' shared/src/clinical/patient.ts  # expect 7
    ```
 
 4. **No duplicate definitions remain** in consolidated files:
+
    ```
    grep 'interface Patient ' apps/web/src/lib/chart-types.ts       # 0 matches
    grep 'interface Allergy ' apps/web/src/stores/data-cache.tsx     # 0 matches

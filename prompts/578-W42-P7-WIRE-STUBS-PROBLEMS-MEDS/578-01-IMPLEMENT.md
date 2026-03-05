@@ -19,14 +19,20 @@ server.get('/vista/problems/:action', async (request, reply) => {
   const dfn = (request.query as any)?.dfn;
   if (!dfn) return reply.status(400).send({ ok: false, error: 'dfn required' });
   try {
-    const raw = await safeCallRpc('ORQQPL RPC_NAME', [dfn], { tenantId: session.tenantId, duz: session.duz });
+    const raw = await safeCallRpc('ORQQPL RPC_NAME', [dfn], {
+      tenantId: session.tenantId,
+      duz: session.duz,
+    });
     const parsed = parseRpcResponse(raw);
     return reply.send({ ok: true, source: 'vista', data: parsed });
   } catch (err: any) {
     log.warn({ err, rpc: 'ORQQPL RPC_NAME' }, 'RPC call failed');
     return reply.code(502).send({
-      ok: false, source: 'vista', error: err?.message,
-      rpcUsed: ['ORQQPL RPC_NAME'], pendingTargets: []
+      ok: false,
+      source: 'vista',
+      error: err?.message,
+      rpcUsed: ['ORQQPL RPC_NAME'],
+      pendingTargets: [],
     });
   }
 });
@@ -38,17 +44,17 @@ server.get('/vista/problems/:action', async (request, reply) => {
 
 **File:** `apps/api/src/routes/problems.ts`
 
-| RPC | Purpose |
-|-----|---------|
+| RPC                 | Purpose                   |
+| ------------------- | ------------------------- |
 | ORQQPL PROBLEM LIST | List problems for patient |
-| ORQQPL ADD SAVE | Add new problem |
-| ORQQPL DELETE | Delete problem |
-| ORQQPL EDIT SAVE | Edit problem |
-| ORQQPL DETAIL | Problem detail |
-| ORQQPL AUDIT | Audit trail |
-| ORQQPL INIT USER | Initialize user context |
-| GMPL CS SEARCH | Search problems |
-| etc. | (remaining ORQQPL RPCs) |
+| ORQQPL ADD SAVE     | Add new problem           |
+| ORQQPL DELETE       | Delete problem            |
+| ORQQPL EDIT SAVE    | Edit problem              |
+| ORQQPL DETAIL       | Problem detail            |
+| ORQQPL AUDIT        | Audit trail               |
+| ORQQPL INIT USER    | Initialize user context   |
+| GMPL CS SEARCH      | Search problems           |
+| etc.                | (remaining ORQQPL RPCs)   |
 
 Ensure all RPCs are in `RPC_REGISTRY` or `RPC_EXCEPTIONS` with domain and tag.
 
@@ -58,16 +64,16 @@ Ensure all RPCs are in `RPC_REGISTRY` or `RPC_EXCEPTIONS` with domain and tag.
 
 **File:** `apps/api/src/routes/meds.ts`
 
-| RPC Family | Purpose |
-|------------|---------|
-| ORWPS ACTIVE | Active medications |
-| ORWPS COVER | Coverage list |
-| ORWPS DETAIL | Medication detail |
-| ORWDPS1 DSGP | Order dialog helpers |
-| ORWDPS2 DAY2QTY | Day supply |
-| ORWDPS2 OISLCT | Order selection |
-| ORWDPS32 VALROUTE | Route validation |
-| etc. | (remaining ORWPS/ORWDPS RPCs) |
+| RPC Family        | Purpose                       |
+| ----------------- | ----------------------------- |
+| ORWPS ACTIVE      | Active medications            |
+| ORWPS COVER       | Coverage list                 |
+| ORWPS DETAIL      | Medication detail             |
+| ORWDPS1 DSGP      | Order dialog helpers          |
+| ORWDPS2 DAY2QTY   | Day supply                    |
+| ORWDPS2 OISLCT    | Order selection               |
+| ORWDPS32 VALROUTE | Route validation              |
+| etc.              | (remaining ORWPS/ORWDPS RPCs) |
 
 Many return structured data; implement RPC-specific parsers.
 

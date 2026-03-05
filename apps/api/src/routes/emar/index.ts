@@ -547,7 +547,8 @@ export default async function emarRoutes(server: FastifyInstance) {
         count: history.length,
         rpcUsed,
         pendingTargets: [],
-        _note: 'History from ORWPS ACTIVE. PSB MED LOG (not registered in this VistA) adds barcode-verified administration timestamps.',
+        _note:
+          'History from ORWPS ACTIVE. PSB MED LOG (not registered in this VistA) adds barcode-verified administration timestamps.',
       };
     } catch (err: any) {
       log.warn('eMAR history failed', { error: safeErr(err) });
@@ -588,7 +589,13 @@ export default async function emarRoutes(server: FastifyInstance) {
     try {
       const adminNote = `eMAR: ${action} order ${orderIEN}${reason ? ' - ' + reason : ''}`;
       const noteLines = await safeCallRpc('TIU CREATE RECORD', [
-        dfn, '', '', '', 'NURSING NOTE', '', adminNote,
+        dfn,
+        '',
+        '',
+        '',
+        'NURSING NOTE',
+        '',
+        adminNote,
       ]);
       rpcUsed.push('TIU CREATE RECORD');
       const noteIen = (noteLines || [])[0]?.trim() || '';
@@ -609,7 +616,8 @@ export default async function emarRoutes(server: FastifyInstance) {
         noteIen,
         rpcUsed,
         pendingTargets: [],
-        _note: 'Administration recorded via TIU nursing note. PSB MED LOG (not registered) adds BCMA-verified recording when installed.',
+        _note:
+          'Administration recorded via TIU nursing note. PSB MED LOG (not registered) adds BCMA-verified recording when installed.',
       };
     } catch (err: any) {
       log.warn('eMAR administer failed', { error: safeErr(err) });
@@ -715,16 +723,19 @@ export default async function emarRoutes(server: FastifyInstance) {
       const activeLines = await safeCallRpc('ORWPS ACTIVE', [dfn]);
       rpcUsed.push('ORWPS ACTIVE');
       const meds = parseActiveMeds(activeLines || []);
-      const match = meds.find((m) =>
-        (m.drugName || '').toLowerCase().includes(barcode.toLowerCase()) ||
-        barcode.includes(m.orderIEN || '')
+      const match = meds.find(
+        (m) =>
+          (m.drugName || '').toLowerCase().includes(barcode.toLowerCase()) ||
+          barcode.includes(m.orderIEN || '')
       );
 
       let validateResult: string[] = [];
       try {
         validateResult = await safeCallRpc('PSB VALIDATE ORDER', [dfn, barcode]);
         rpcUsed.push('PSB VALIDATE ORDER');
-      } catch { /* PSB VALIDATE ORDER may need specific params */ }
+      } catch {
+        /* PSB VALIDATE ORDER may need specific params */
+      }
 
       immutableAudit('emar.barcode-scan', 'success', auditActor(session), {
         detail: { dfn, barcodeLength: barcode.length, matched: !!match },
@@ -734,12 +745,15 @@ export default async function emarRoutes(server: FastifyInstance) {
         source: 'vista',
         barcode,
         matched: !!match,
-        medication: match ? { name: match.drugName, sig: match.sig, orderIEN: match.orderIEN } : null,
+        medication: match
+          ? { name: match.drugName, sig: match.sig, orderIEN: match.orderIEN }
+          : null,
         validateResult: validateResult.filter((l) => l.trim()),
         activeMedCount: meds.length,
         rpcUsed,
         pendingTargets: [],
-        _note: 'Barcode matched against ORWPS ACTIVE medications. PSB VALIDATE ORDER called for VistA-side validation.',
+        _note:
+          'Barcode matched against ORWPS ACTIVE medications. PSB VALIDATE ORDER called for VistA-side validation.',
       };
     } catch (err: any) {
       log.warn('eMAR barcode scan failed', { error: safeErr(err) });

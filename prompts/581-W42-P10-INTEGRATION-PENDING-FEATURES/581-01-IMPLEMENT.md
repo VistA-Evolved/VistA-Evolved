@@ -14,6 +14,7 @@ Implement nursing, eMAR, inpatient, clinical procedures, and order checks. Wire 
 ## 5A: Nursing
 
 **What to build:**
+
 - Flowsheet via ORQQVI VITALS (already working) + nursing assessment template
 - I&O (Intake & Output) via TIU CREATE RECORD with I&O template
 - MAR via ORWPS ACTIVE + PSB MED LOG (PSB not in sandbox — mark integration-pending)
@@ -27,6 +28,7 @@ Implement nursing, eMAR, inpatient, clinical procedures, and order checks. Wire 
 ## 5B: eMAR/BCMA
 
 **What to build:**
+
 - Med schedule from ORWPS ACTIVE (already working)
 - Allergy check from ORQQAL LIST (already working)
 - Administration history from ORWPS DETAIL
@@ -40,9 +42,10 @@ Implement nursing, eMAR, inpatient, clinical procedures, and order checks. Wire 
 ## 5C: Inpatient ADT Writes
 
 **What to build:**
+
 - Census from ORQPT WARDS + ORQPT WARD PATIENTS (already working)
 - Bedboard visualization (UI only, data from above RPCs)
-- ADMIT/TRANSFER/DISCHARGE writes via DGPM* RPCs (not in sandbox)
+- ADMIT/TRANSFER/DISCHARGE writes via DGPM\* RPCs (not in sandbox)
 
 **Action:** Census and bedboard implementable NOW. Mark ADT writes as `integration-pending` with `vistaGrounding: { targetRpc: 'DGPM*', vistaFiles: ['^DGPM'] }`.
 
@@ -51,9 +54,10 @@ Implement nursing, eMAR, inpatient, clinical procedures, and order checks. Wire 
 ## 5D: Clinical Procedures
 
 **What to build:**
+
 - CP/MD results from ORQQCN LIST/DETAIL (consult RPCs, in registry)
 - TIU CLINPROC document class
-- Medicine package results (MD CLIO, MD TMD* — may not be standard)
+- Medicine package results (MD CLIO, MD TMD\* — may not be standard)
 
 **Action:** Wire ORQQCN LIST and DETAIL. Mark MD package RPCs as `integration-pending` if not available.
 
@@ -62,6 +66,7 @@ Implement nursing, eMAR, inpatient, clinical procedures, and order checks. Wire 
 ## 5E: Order Checks
 
 **What to build:**
+
 - ORWDXC ACCEPT, ORWDXC DISPLAY, ORWDXC SAVECHK for order check evaluation
 - Order check types, severity, categories
 

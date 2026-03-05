@@ -2,12 +2,12 @@
 
 ## Before/After Counts
 
-| Metric | Before | After |
-|--------|--------|-------|
-| Unresolved tokens | 80 | 2 |
-| Resolved via base phase | 0 | 78 |
-| Ambiguous tokens | 4 | 4 |
-| Resolved to single folder | 461 | 466 |
+| Metric                    | Before | After |
+| ------------------------- | ------ | ----- |
+| Unresolved tokens         | 80     | 2     |
+| Resolved via base phase   | 0      | 78    |
+| Ambiguous tokens          | 4      | 4     |
+| Resolved to single folder | 461    | 466   |
 
 ## Remaining Unresolved
 

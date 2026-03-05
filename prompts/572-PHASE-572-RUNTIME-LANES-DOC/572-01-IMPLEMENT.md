@@ -12,7 +12,7 @@ documenting runtime lanes.
    - Lane B: Legacy worldvista-ehr
    - Lane C: All-in-one compose (root docker-compose.yml)
    - Lane D: Distro lane (build-your-own)
-   Per lane: ports, docker compose command, env template, expected truth evidence.
+     Per lane: ports, docker compose command, env template, expected truth evidence.
 2. Update `AGENTS.md` Section 4 ("Running Everything") to reference VEHU as
    the recommended lane and link to `docs/runbooks/runtime-lanes.md`.
 3. Update `README.md` to link to the runtime-lanes runbook from the Quick Start.

@@ -14,17 +14,17 @@ listening on the configured host/port.
 
 ## Quick Comparison
 
-| | Lane A — VEHU | Lane B — Legacy | Lane C — Compose | Lane D — Distro |
-|-|---------------|-----------------|------------------|-----------------|
-| **Image** | `worldvista/vehu` | `worldvista/worldvista-ehr` | `worldvista/worldvista-ehr` | `vista-evolved/vista-distro` (local build) |
-| **Compose file** | `services/vista/docker-compose.yml` | `services/vista/docker-compose.yml` | `docker-compose.yml` (root) | `services/vista-distro/docker-compose.yml` |
-| **Profile flag** | `--profile vehu` | `--profile legacy` | _(none — default)_ | `--profile distro` |
-| **Broker port (host)** | **9431** | 9430 | 9210 | 9431 (default) |
-| **SSH port (host)** | 2223 | 2222 | — | — |
-| **Env template** | `apps/api/.env.example` | `apps/api/.env.example` | `.env.example` (root) | `.env` + Docker secrets |
-| **Primary creds** | PRO1234 / PRO1234!! | PROV123 / PROV123!! | PROV123 / PROV123!! | Injected at runtime |
-| **Best for** | Day-to-day dev, RPC truth, evidence | Legacy compat testing | Full-stack containerized demo | Production / reproducible builds |
-| **Recommendation** | **Use this** | Only if needed | Quick demos | Staging / prod |
+|                        | Lane A — VEHU                       | Lane B — Legacy                     | Lane C — Compose              | Lane D — Distro                            |
+| ---------------------- | ----------------------------------- | ----------------------------------- | ----------------------------- | ------------------------------------------ |
+| **Image**              | `worldvista/vehu`                   | `worldvista/worldvista-ehr`         | `worldvista/worldvista-ehr`   | `vista-evolved/vista-distro` (local build) |
+| **Compose file**       | `services/vista/docker-compose.yml` | `services/vista/docker-compose.yml` | `docker-compose.yml` (root)   | `services/vista-distro/docker-compose.yml` |
+| **Profile flag**       | `--profile vehu`                    | `--profile legacy`                  | _(none — default)_            | `--profile distro`                         |
+| **Broker port (host)** | **9431**                            | 9430                                | 9210                          | 9431 (default)                             |
+| **SSH port (host)**    | 2223                                | 2222                                | —                             | —                                          |
+| **Env template**       | `apps/api/.env.example`             | `apps/api/.env.example`             | `.env.example` (root)         | `.env` + Docker secrets                    |
+| **Primary creds**      | PRO1234 / PRO1234!!                 | PROV123 / PROV123!!                 | PROV123 / PROV123!!           | Injected at runtime                        |
+| **Best for**           | Day-to-day dev, RPC truth, evidence | Legacy compat testing               | Full-stack containerized demo | Production / reproducible builds           |
+| **Recommendation**     | **Use this**                        | Only if needed                      | Quick demos                   | Staging / prod                             |
 
 ---
 
@@ -72,12 +72,12 @@ After starting the API and running verification:
 
 ### Ports
 
-| Service | Host Port | Container Port |
-|---------|-----------|----------------|
-| RPC Broker | 9431 | 9430 |
-| SSH | 2223 | 22 |
-| Web UI | 8082 | 8080 |
-| EWD | 5001 | 5001 |
+| Service    | Host Port | Container Port |
+| ---------- | --------- | -------------- |
+| RPC Broker | 9431      | 9430           |
+| SSH        | 2223      | 22             |
+| Web UI     | 8082      | 8080           |
+| EWD        | 5001      | 5001           |
 
 ---
 
@@ -118,13 +118,13 @@ VISTA_VERIFY_CODE=PROV123!!
 
 ### Ports
 
-| Service | Host Port | Container Port |
-|---------|-----------|----------------|
-| RPC Broker | 9430 | 9430 |
-| SSH | 2222 | 22 |
-| Web UI | 8001 | 8001 |
-| HTTP | 8080 | 8080 |
-| HTTP (alt) | 9080 | 9080 |
+| Service    | Host Port | Container Port |
+| ---------- | --------- | -------------- |
+| RPC Broker | 9430      | 9430           |
+| SSH        | 2222      | 22             |
+| Web UI     | 8001      | 8001           |
+| HTTP       | 8080      | 8080           |
+| HTTP (alt) | 9080      | 9080           |
 
 ### Known Limitations
 
@@ -163,14 +163,14 @@ POSTGRES_PASSWORD=your_password
 
 ### Ports
 
-| Service | Host Port | Notes |
-|---------|-----------|-------|
-| VistA RPC Broker | 9210 | Different from Lanes A/B |
-| VistA Web UI | 8001 | |
-| PostgreSQL | 5432 | |
-| Redis | 6379 | |
-| API (Fastify) | 4000 | Container-internal build |
-| Web (Next.js) | 5173 | Container-internal build |
+| Service          | Host Port | Notes                    |
+| ---------------- | --------- | ------------------------ |
+| VistA RPC Broker | 9210      | Different from Lanes A/B |
+| VistA Web UI     | 8001      |                          |
+| PostgreSQL       | 5432      |                          |
+| Redis            | 6379      |                          |
+| API (Fastify)    | 4000      | Container-internal build |
+| Web (Next.js)    | 5173      | Container-internal build |
 
 ### Expected Truth Evidence
 
@@ -222,9 +222,9 @@ VISTA_VERIFY_CODE=<injected_verify_code>
 
 ### Ports
 
-| Service | Host Port | Container Port |
-|---------|-----------|----------------|
-| RPC Broker | 9431 (default, configurable via `VISTA_DISTRO_PORT`) | 9430 |
+| Service    | Host Port                                            | Container Port |
+| ---------- | ---------------------------------------------------- | -------------- |
+| RPC Broker | 9431 (default, configurable via `VISTA_DISTRO_PORT`) | 9430           |
 
 ### Security Posture
 
@@ -240,14 +240,15 @@ Set `VISTA_INSTANCE_ID` in `apps/api/.env.local` to explicitly tell the API
 which lane it is connected to. This overrides the port-based heuristic in
 `activeSwapBoundary()` ([swap-boundary.ts](../../apps/api/src/vista/swap-boundary.ts)).
 
-| Value | Lane | Default Port | Default Creds |
-|-------|------|-------------|---------------|
-| `vehu` | A -- VEHU | 9431 | PRO1234 / PRO1234!! |
-| `worldvista-ehr` | B -- Legacy | 9430 | PROV123 / PROV123!! |
-| _(not set, port 9210)_ | C -- Compose | 9210 | PROV123 / PROV123!! |
-| `vista-distro-lane` | D -- Distro | 9431 | _(injected)_ |
+| Value                  | Lane         | Default Port | Default Creds       |
+| ---------------------- | ------------ | ------------ | ------------------- |
+| `vehu`                 | A -- VEHU    | 9431         | PRO1234 / PRO1234!! |
+| `worldvista-ehr`       | B -- Legacy  | 9430         | PROV123 / PROV123!! |
+| _(not set, port 9210)_ | C -- Compose | 9210         | PROV123 / PROV123!! |
+| `vista-distro-lane`    | D -- Distro  | 9431         | _(injected)_        |
 
 **If `VISTA_INSTANCE_ID` is not set**, the API uses port-based heuristics:
+
 - Port 9431 -> `vehu` (the most common dev case)
 - Port 9430 -> `worldvista-ehr`
 - Port 9210 -> `worldvista-ehr` (compose lane)
@@ -266,22 +267,21 @@ to VEHU.
 3. Start the new lane
 4. Verify with `GET /vista/swap-boundary` to confirm the active instance
 
-> **Conflict warning:** Lanes A (VEHU) and D (Distro) both default to port
-> 9431. Do not run both simultaneously unless you change `VISTA_DISTRO_PORT`.
+> **Conflict warning:** Lanes A (VEHU) and D (Distro) both default to port 9431. Do not run both simultaneously unless you change `VISTA_DISTRO_PORT`.
 
 ---
 
 ## Credential Reference
 
-| Lane | Access Code | Verify Code | User |
-|------|-------------|-------------|------|
-| A (VEHU) | PRO1234 | PRO1234!! | PROGRAMMER,ONE (DUZ 1) |
-| A (VEHU) | PROV123 | PROV123!! | PROVIDER,CLYDE WV (DUZ 87) |
-| B (Legacy) | PROV123 | PROV123!! | PROVIDER,CLYDE WV (DUZ 87) |
-| B (Legacy) | PHARM123 | PHARM123!! | PHARMACIST,LINDA WV |
-| B (Legacy) | NURSE123 | NURSE123!! | NURSE,HELEN WV |
-| C (Compose) | PROV123 | PROV123!! | PROVIDER,CLYDE WV (DUZ 87) |
-| D (Distro) | _(injected)_ | _(injected)_ | _(configured at build)_ |
+| Lane        | Access Code  | Verify Code  | User                       |
+| ----------- | ------------ | ------------ | -------------------------- |
+| A (VEHU)    | PRO1234      | PRO1234!!    | PROGRAMMER,ONE (DUZ 1)     |
+| A (VEHU)    | PROV123      | PROV123!!    | PROVIDER,CLYDE WV (DUZ 87) |
+| B (Legacy)  | PROV123      | PROV123!!    | PROVIDER,CLYDE WV (DUZ 87) |
+| B (Legacy)  | PHARM123     | PHARM123!!   | PHARMACIST,LINDA WV        |
+| B (Legacy)  | NURSE123     | NURSE123!!   | NURSE,HELEN WV             |
+| C (Compose) | PROV123      | PROV123!!    | PROVIDER,CLYDE WV (DUZ 87) |
+| D (Distro)  | _(injected)_ | _(injected)_ | _(configured at build)_    |
 
 ---
 

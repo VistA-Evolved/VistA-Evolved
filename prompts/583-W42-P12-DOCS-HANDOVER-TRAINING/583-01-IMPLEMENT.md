@@ -16,6 +16,7 @@ Create ARCHITECTURE.md, Getting Started guide, phase lineage, canonical tagging,
 **Location:** `docs/ARCHITECTURE.md` or repo root `ARCHITECTURE.md`
 
 **Contents:**
+
 - High-level system diagram (Mermaid)
 - Module map with status (implemented / partial / integration-pending)
 - Data flow: Browser -> Next.js -> Fastify API -> VistA RPC -> MUMPS globals
@@ -32,6 +33,7 @@ Create ARCHITECTURE.md, Getting Started guide, phase lineage, canonical tagging,
 **Location:** `docs/GETTING-STARTED.md`
 
 **Contents:**
+
 - Prerequisites (Node 24, pnpm 10, Docker)
 - Clone, install, start (step by step, tested on Windows + Mac + Linux)
 - How to run VistA Docker (VEHU lane)
@@ -47,6 +49,7 @@ Create ARCHITECTURE.md, Getting Started guide, phase lineage, canonical tagging,
 ## 9C: Phase Lineage and Canonical Tagging
 
 **Files:**
+
 - `docs/qa/phase-lineage.json` — Maps phase N extended by M, superseded by P
 - `docs/qa/canonical-phases.md` — List of ~50-80 canonical phases
 - Mark each phase: `canonical`, `superseded`, `diagnostic`, `meta`
@@ -73,6 +76,7 @@ Create ARCHITECTURE.md, Getting Started guide, phase lineage, canonical tagging,
 ## 9F: Update AGENTS.md
 
 Add entries for:
+
 - RPC connection pool with DUZ-per-request
 - Redis integration
 - All new PG tables (Phase 6)
@@ -96,13 +100,13 @@ Add entries for:
 
 **Location:** `docs/training/`
 
-| File | Purpose |
-|------|---------|
-| vista-rpc-protocol-primer.md | XWB protocol, SPack/LPack, cipher pads |
-| mumps-basics-for-developers.md | Globals, FileMan, routines |
-| tenant-isolation-guide.md | RLS, tenant context, store resolver |
-| adding-a-new-rpc.md | Step-by-step from "I need data" to endpoint |
-| cprs-panel-development.md | Building a new CPRS panel |
+| File                           | Purpose                                     |
+| ------------------------------ | ------------------------------------------- |
+| vista-rpc-protocol-primer.md   | XWB protocol, SPack/LPack, cipher pads      |
+| mumps-basics-for-developers.md | Globals, FileMan, routines                  |
+| tenant-isolation-guide.md      | RLS, tenant context, store resolver         |
+| adding-a-new-rpc.md            | Step-by-step from "I need data" to endpoint |
+| cprs-panel-development.md      | Building a new CPRS panel                   |
 
 ---
 

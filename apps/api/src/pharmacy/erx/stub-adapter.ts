@@ -102,7 +102,7 @@ export class StubErxAdapter implements ErxAdapter {
   async searchPharmacies(
     zip: string,
     radius: number,
-    name?: string,
+    name?: string
   ): Promise<ErxPharmacySearchResult> {
     const stubPharmacies = [
       {

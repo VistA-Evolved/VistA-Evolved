@@ -7,146 +7,146 @@
  *   node scripts/generate-phase-qa.mjs
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from 'vitest';
 
-const API = process.env.API_URL ?? "http://localhost:3001";
+const API = process.env.API_URL ?? 'http://localhost:3001';
 
-describe("Phase 338: W16-P2 — Enterprise Identity Hardening — IMPLEMENT", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 338: W16-P2 — Enterprise Identity Hardening — IMPLEMENT', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/auth/security-events`);
-    expect(r0.status, "/auth/security-events").not.toBe(500);
+    expect(r0.status, '/auth/security-events').not.toBe(500);
     const r1 = await fetch(`${API}/auth/sessions`);
-    expect(r1.status, "/auth/sessions").not.toBe(500);
+    expect(r1.status, '/auth/sessions').not.toBe(500);
     const r2 = await fetch(`${API}/auth/sessions/revoke-all`);
-    expect(r2.status, "/auth/sessions/revoke-all").not.toBe(500);
+    expect(r2.status, '/auth/sessions/revoke-all').not.toBe(500);
   });
 });
 
-describe("Phase 339: W16-P3 — SCIM Provisioning — IMPLEMENT", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 339: W16-P3 — SCIM Provisioning — IMPLEMENT', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/scim/`);
-    expect(r0.status, "/scim/").not.toBe(500);
+    expect(r0.status, '/scim/').not.toBe(500);
     const r1 = await fetch(`${API}/scim/v2/Groups`);
-    expect(r1.status, "/scim/v2/Groups").not.toBe(500);
+    expect(r1.status, '/scim/v2/Groups').not.toBe(500);
     const r2 = await fetch(`${API}/scim/v2/ResourceTypes`);
-    expect(r2.status, "/scim/v2/ResourceTypes").not.toBe(500);
+    expect(r2.status, '/scim/v2/ResourceTypes').not.toBe(500);
     const r3 = await fetch(`${API}/scim/v2/Schemas`);
-    expect(r3.status, "/scim/v2/Schemas").not.toBe(500);
+    expect(r3.status, '/scim/v2/Schemas').not.toBe(500);
     const r4 = await fetch(`${API}/scim/v2/ServiceProviderConfig`);
-    expect(r4.status, "/scim/v2/ServiceProviderConfig").not.toBe(500);
+    expect(r4.status, '/scim/v2/ServiceProviderConfig').not.toBe(500);
   });
 });
 
-describe("Phase 374: W20-P5 EXTERNAL VALIDATION", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 374: W20-P5 EXTERNAL VALIDATION', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/external-validation/endpoint-inventory`);
-    expect(r0.status, "/external-validation/endpoint-inventory").not.toBe(500);
+    expect(r0.status, '/external-validation/endpoint-inventory').not.toBe(500);
     const r1 = await fetch(`${API}/external-validation/scope-document`);
-    expect(r1.status, "/external-validation/scope-document").not.toBe(500);
+    expect(r1.status, '/external-validation/scope-document').not.toBe(500);
     const r2 = await fetch(`${API}/external-validation/vulnerabilities`);
-    expect(r2.status, "/external-validation/vulnerabilities").not.toBe(500);
+    expect(r2.status, '/external-validation/vulnerabilities').not.toBe(500);
   });
 });
 
-describe("Phase 375: W20-P6 DATA RIGHTS", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 375: W20-P6 DATA RIGHTS', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/data-rights/audit`);
-    expect(r0.status, "/data-rights/audit").not.toBe(500);
+    expect(r0.status, '/data-rights/audit').not.toBe(500);
     const r1 = await fetch(`${API}/data-rights/deletion-requests`);
-    expect(r1.status, "/data-rights/deletion-requests").not.toBe(500);
+    expect(r1.status, '/data-rights/deletion-requests').not.toBe(500);
     const r2 = await fetch(`${API}/data-rights/legal-holds`);
-    expect(r2.status, "/data-rights/legal-holds").not.toBe(500);
+    expect(r2.status, '/data-rights/legal-holds').not.toBe(500);
     const r3 = await fetch(`${API}/data-rights/retention-policies`);
-    expect(r3.status, "/data-rights/retention-policies").not.toBe(500);
+    expect(r3.status, '/data-rights/retention-policies').not.toBe(500);
   });
 });
 
-describe("Phase 377: W20-P8 GA EVIDENCE", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 377: W20-P8 GA EVIDENCE', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/ga/evidence/bundle`);
-    expect(r0.status, "/ga/evidence/bundle").not.toBe(500);
+    expect(r0.status, '/ga/evidence/bundle').not.toBe(500);
     const r1 = await fetch(`${API}/ga/evidence/status`);
-    expect(r1.status, "/ga/evidence/status").not.toBe(500);
+    expect(r1.status, '/ga/evidence/status').not.toBe(500);
     const r2 = await fetch(`${API}/ga/evidence/trust-center`);
-    expect(r2.status, "/ga/evidence/trust-center").not.toBe(500);
+    expect(r2.status, '/ga/evidence/trust-center').not.toBe(500);
   });
 });
 
-describe("Phase 381: W21-P4 IMPLEMENT: HL7 v2 MLLP Ingest", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 381: W21-P4 IMPLEMENT: HL7 v2 MLLP Ingest', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/devices/hl7v2/ingest`);
-    expect(r0.status, "/devices/hl7v2/ingest").not.toBe(500);
+    expect(r0.status, '/devices/hl7v2/ingest').not.toBe(500);
     const r1 = await fetch(`${API}/devices/hl7v2/ingest-log`);
-    expect(r1.status, "/devices/hl7v2/ingest-log").not.toBe(500);
+    expect(r1.status, '/devices/hl7v2/ingest-log').not.toBe(500);
     const r2 = await fetch(`${API}/devices/hl7v2/parse`);
-    expect(r2.status, "/devices/hl7v2/parse").not.toBe(500);
+    expect(r2.status, '/devices/hl7v2/parse').not.toBe(500);
   });
 });
 
-describe("Phase 382: W21-P5 IMPLEMENT: ASTM + POCT1-A Ingest", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 382: W21-P5 IMPLEMENT: ASTM + POCT1-A Ingest', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/devices/astm/ingest`);
-    expect(r0.status, "/devices/astm/ingest").not.toBe(500);
+    expect(r0.status, '/devices/astm/ingest').not.toBe(500);
     const r1 = await fetch(`${API}/devices/astm/ingest-log`);
-    expect(r1.status, "/devices/astm/ingest-log").not.toBe(500);
+    expect(r1.status, '/devices/astm/ingest-log').not.toBe(500);
     const r2 = await fetch(`${API}/devices/astm/parse`);
-    expect(r2.status, "/devices/astm/parse").not.toBe(500);
+    expect(r2.status, '/devices/astm/parse').not.toBe(500);
     const r3 = await fetch(`${API}/devices/poct1a/ingest`);
-    expect(r3.status, "/devices/poct1a/ingest").not.toBe(500);
+    expect(r3.status, '/devices/poct1a/ingest').not.toBe(500);
     const r4 = await fetch(`${API}/devices/poct1a/ingest-log`);
-    expect(r4.status, "/devices/poct1a/ingest-log").not.toBe(500);
+    expect(r4.status, '/devices/poct1a/ingest-log').not.toBe(500);
   });
 });
 
-describe("Phase 383: W21-P6 IMPLEMENT: IEEE 11073 SDC Ingest", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 383: W21-P6 IMPLEMENT: IEEE 11073 SDC Ingest', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/devices/sdc/ingest`);
-    expect(r0.status, "/devices/sdc/ingest").not.toBe(500);
+    expect(r0.status, '/devices/sdc/ingest').not.toBe(500);
     const r1 = await fetch(`${API}/devices/sdc/ingest-log`);
-    expect(r1.status, "/devices/sdc/ingest-log").not.toBe(500);
+    expect(r1.status, '/devices/sdc/ingest-log').not.toBe(500);
     const r2 = await fetch(`${API}/devices/sdc/status`);
-    expect(r2.status, "/devices/sdc/status").not.toBe(500);
+    expect(r2.status, '/devices/sdc/status').not.toBe(500);
   });
 });
 
-describe("Phase 384: W21-P7 IMPLEMENT: Alarms Pipeline (IHE PCD ACM)", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 384: W21-P7 IMPLEMENT: Alarms Pipeline (IHE PCD ACM)', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/devices/alarms`);
-    expect(r0.status, "/devices/alarms").not.toBe(500);
+    expect(r0.status, '/devices/alarms').not.toBe(500);
     const r1 = await fetch(`${API}/devices/alarms/audit`);
-    expect(r1.status, "/devices/alarms/audit").not.toBe(500);
+    expect(r1.status, '/devices/alarms/audit').not.toBe(500);
     const r2 = await fetch(`${API}/devices/alarms/routing-rules`);
-    expect(r2.status, "/devices/alarms/routing-rules").not.toBe(500);
+    expect(r2.status, '/devices/alarms/routing-rules').not.toBe(500);
     const r3 = await fetch(`${API}/devices/alarms/stats`);
-    expect(r3.status, "/devices/alarms/stats").not.toBe(500);
+    expect(r3.status, '/devices/alarms/stats').not.toBe(500);
   });
 });
 
-describe("Phase 385: W21-P8 Infusion/BCMA Safety Bridge — IMPLEMENT", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 385: W21-P8 Infusion/BCMA Safety Bridge — IMPLEMENT', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/devices/infusion/pump-events`);
-    expect(r0.status, "/devices/infusion/pump-events").not.toBe(500);
+    expect(r0.status, '/devices/infusion/pump-events').not.toBe(500);
   });
 });
 
-describe("Phase 386: W21-P9 Imaging Modality Connectivity — IMPLEMENT", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 386: W21-P9 Imaging Modality Connectivity — IMPLEMENT', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/devices/`);
-    expect(r0.status, "/devices/").not.toBe(500);
+    expect(r0.status, '/devices/').not.toBe(500);
   });
 });
 
-describe("Phase 387: W21-P10 LOINC/UCUM Normalization — IMPLEMENT", () => {
-  it("API routes respond (no 500)", async () => {
+describe('Phase 387: W21-P10 LOINC/UCUM Normalization — IMPLEMENT', () => {
+  it('API routes respond (no 500)', async () => {
     const r0 = await fetch(`${API}/devices/normalize`);
-    expect(r0.status, "/devices/normalize").not.toBe(500);
+    expect(r0.status, '/devices/normalize').not.toBe(500);
     const r1 = await fetch(`${API}/devices/normalize/batch`);
-    expect(r1.status, "/devices/normalize/batch").not.toBe(500);
+    expect(r1.status, '/devices/normalize/batch').not.toBe(500);
     const r2 = await fetch(`${API}/devices/normalize/mappings`);
-    expect(r2.status, "/devices/normalize/mappings").not.toBe(500);
+    expect(r2.status, '/devices/normalize/mappings').not.toBe(500);
     const r3 = await fetch(`${API}/devices/normalize/mappings/loinc`);
-    expect(r3.status, "/devices/normalize/mappings/loinc").not.toBe(500);
+    expect(r3.status, '/devices/normalize/mappings/loinc').not.toBe(500);
     const r4 = await fetch(`${API}/devices/normalize/mappings/ucum`);
-    expect(r4.status, "/devices/normalize/mappings/ucum").not.toBe(500);
+    expect(r4.status, '/devices/normalize/mappings/ucum').not.toBe(500);
   });
 });

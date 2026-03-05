@@ -13,9 +13,11 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 # Copy workspace manifest + lockfile first for layer caching
 COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
 COPY apps/api/package.json apps/api/
+COPY packages/ packages/
+COPY shared/ shared/
 
 # Install ALL deps (tsx + typescript needed at runtime & type-check)
-RUN pnpm install --frozen-lockfile --filter @vista-evolved/api
+RUN pnpm install --frozen-lockfile --filter @vista-evolved/api...
 
 # ---- Stage 2: Minimal runtime ----
 FROM node:22-alpine AS runtime

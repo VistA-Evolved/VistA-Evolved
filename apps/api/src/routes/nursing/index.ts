@@ -337,7 +337,8 @@ export default async function nursingRoutes(server: FastifyInstance) {
         count: tasks.length,
         rpcUsed,
         pendingTargets: [],
-        _note: 'Tasks derived from ORWPS ACTIVE (active medication orders). PSB MED LOG adds BCMA-specific task data when available.',
+        _note:
+          'Tasks derived from ORWPS ACTIVE (active medication orders). PSB MED LOG adds BCMA-specific task data when available.',
       };
     } catch (err) {
       log.warn('Nursing tasks RPC failed', { err: String(err) });
@@ -401,7 +402,8 @@ export default async function nursingRoutes(server: FastifyInstance) {
         allergyWarnings,
         rpcUsed,
         pendingTargets: [],
-        _note: 'MAR built from ORWPS ACTIVE + PSB ALLERGY. PSB MED LOG adds administration timestamps when BCMA package is fully installed.',
+        _note:
+          'MAR built from ORWPS ACTIVE + PSB ALLERGY. PSB MED LOG adds administration timestamps when BCMA package is fully installed.',
       };
     } catch (err) {
       log.warn('Nursing MAR RPC failed', { err: String(err) });
@@ -433,7 +435,13 @@ export default async function nursingRoutes(server: FastifyInstance) {
       try {
         const adminNote = `Med admin: ${medicationId} - ${adminAction}${note ? ' - ' + note : ''}`;
         const noteLines = await safeCallRpc('TIU CREATE RECORD', [
-          dfn, '', '', '', 'NURSING NOTE', '', adminNote,
+          dfn,
+          '',
+          '',
+          '',
+          'NURSING NOTE',
+          '',
+          adminNote,
         ]);
         rpcUsed.push('TIU CREATE RECORD');
         const noteIen = (noteLines || [])[0]?.trim() || '';
@@ -453,7 +461,8 @@ export default async function nursingRoutes(server: FastifyInstance) {
           noteIen,
           rpcUsed,
           pendingTargets: [],
-          _note: 'Administration recorded via TIU nursing note. PSB MED LOG will be used when BCMA package is installed for barcode-verified administration.',
+          _note:
+            'Administration recorded via TIU nursing note. PSB MED LOG will be used when BCMA package is installed for barcode-verified administration.',
         };
       } catch (err) {
         log.warn('Nursing administer failed', { err: String(err) });
@@ -702,7 +711,15 @@ export default async function nursingRoutes(server: FastifyInstance) {
       let ioNotes: Array<{ ien: string; title: string; date: string }> = [];
       try {
         const noteLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', [
-          '', '1', dfn, '0', '0', '0', '', '0', '',
+          '',
+          '1',
+          dfn,
+          '0',
+          '0',
+          '0',
+          '',
+          '0',
+          '',
         ]);
         rpcUsed.push('TIU DOCUMENTS BY CONTEXT');
         ioNotes = (noteLines || [])
@@ -715,7 +732,9 @@ export default async function nursingRoutes(server: FastifyInstance) {
               date: parts[2]?.trim() || '',
             };
           });
-      } catch { /* notes lookup optional */ }
+      } catch {
+        /* notes lookup optional */
+      }
 
       immutableAudit('nursing.io', 'success', auditActor(session), {
         detail: { dfn, weightCount: weightEntries.length, ioNoteCount: ioNotes.length },
@@ -727,7 +746,8 @@ export default async function nursingRoutes(server: FastifyInstance) {
         ioNotes,
         rpcUsed,
         pendingTargets: [],
-        _note: 'I/O data from vitals (weight trend) + TIU notes. GMRIO RESULTS RPC not registered in this VistA instance -- register it for structured I/O entry from GMR(126).',
+        _note:
+          'I/O data from vitals (weight trend) + TIU notes. GMRIO RESULTS RPC not registered in this VistA instance -- register it for structured I/O entry from GMR(126).',
       };
     } catch (err) {
       log.warn('Nursing I/O RPC failed', { err: String(err) });
@@ -755,7 +775,15 @@ export default async function nursingRoutes(server: FastifyInstance) {
     const rpcUsed: string[] = [];
     try {
       const noteLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', [
-        '', '1', dfn, '0', '0', '0', '', '0', '',
+        '',
+        '1',
+        dfn,
+        '0',
+        '0',
+        '0',
+        '',
+        '0',
+        '',
       ]);
       rpcUsed.push('TIU DOCUMENTS BY CONTEXT');
       const assessments = (noteLines || [])
@@ -782,7 +810,8 @@ export default async function nursingRoutes(server: FastifyInstance) {
         count: assessments.length,
         rpcUsed,
         pendingTargets: [],
-        _note: 'Assessments from TIU nursing document class. Filtered by assessment-related title keywords. For structured assessments, install GN package RPCs.',
+        _note:
+          'Assessments from TIU nursing document class. Filtered by assessment-related title keywords. For structured assessments, install GN package RPCs.',
       };
     } catch (err) {
       log.warn('Nursing assessments RPC failed', { err: String(err) });

@@ -68,18 +68,43 @@ const SCAN_DIRS = [
 ];
 
 const SKIP_DIRS = new Set([
-  'node_modules', '.next', '.git', 'dist', 'build', '.turbo',
-  'artifacts', 'evidence', '.pnpm',
+  'node_modules',
+  '.next',
+  '.git',
+  'dist',
+  'build',
+  '.turbo',
+  'artifacts',
+  'evidence',
+  '.pnpm',
 ]);
 
 const SKIP_FILES = new Set([
-  'phase-index.json', 'phase-registry.json', 'phase-comment-audit.json',
-  'phase-comment-audit.md', 'pnpm-lock.yaml', 'PROMPTS_INDEX.md',
+  'phase-index.json',
+  'phase-registry.json',
+  'phase-comment-audit.json',
+  'phase-comment-audit.md',
+  'pnpm-lock.yaml',
+  'PROMPTS_INDEX.md',
 ]);
 
 const SCAN_EXTENSIONS = new Set([
-  '.ts', '.tsx', '.js', '.mjs', '.cjs', '.json', '.md', '.ps1',
-  '.sh', '.lua', '.m', '.yml', '.yaml', '.sql', '.conf', '.rego',
+  '.ts',
+  '.tsx',
+  '.js',
+  '.mjs',
+  '.cjs',
+  '.json',
+  '.md',
+  '.ps1',
+  '.sh',
+  '.lua',
+  '.m',
+  '.yml',
+  '.yaml',
+  '.sql',
+  '.conf',
+  '.rego',
 ]);
 
 // Patterns
@@ -128,8 +153,8 @@ console.log(`  Scanning ${allFiles.length} files...\n`);
 
 // ── Collect references ──
 
-const phaseRefs = new Map();  // token -> [{file, line, context}]
-const waveRefs = new Map();   // wave# -> [{file, line, context}]
+const phaseRefs = new Map(); // token -> [{file, line, context}]
+const waveRefs = new Map(); // wave# -> [{file, line, context}]
 
 for (const filePath of allFiles) {
   let content;
@@ -256,17 +281,19 @@ const allTokensSorted = [...phaseRefs.entries()]
     // Check resolved via base phase
     const viaBase = resolvedViaBase.find((e) => e.token === token);
     if (viaBase) {
-      const baseLabel = viaBase.resolvedVia === 'basePhase'
-        ? `via base ${viaBase.basePhase}: ${viaBase.baseFolders.join(', ')}`
-        : `via canonical: ${viaBase.canonicalFolder}`;
+      const baseLabel =
+        viaBase.resolvedVia === 'basePhase'
+          ? `via base ${viaBase.basePhase}: ${viaBase.baseFolders.join(', ')}`
+          : `via canonical: ${viaBase.canonicalFolder}`;
       return { token, refCount: refs.length, resolvedTo: baseLabel };
     }
     return {
       token,
       refCount: refs.length,
-      resolvedTo: (phaseToFolders.get(token) || []).length > 0
-        ? (phaseToFolders.get(token) || []).join(', ')
-        : 'UNRESOLVED',
+      resolvedTo:
+        (phaseToFolders.get(token) || []).length > 0
+          ? (phaseToFolders.get(token) || []).join(', ')
+          : 'UNRESOLVED',
     };
   });
 
@@ -294,10 +321,7 @@ const jsonReport = {
 };
 
 mkdirSync(outDir, { recursive: true });
-writeFileSync(
-  join(outDir, 'phase-comment-audit.json'),
-  JSON.stringify(jsonReport, null, 2) + '\n'
-);
+writeFileSync(join(outDir, 'phase-comment-audit.json'), JSON.stringify(jsonReport, null, 2) + '\n');
 
 // ── Markdown report ──
 
@@ -354,7 +378,7 @@ if (resolvedViaBase.length > 0) {
   md.push('|-------|------|------------|-------------|');
   for (const r of resolvedViaBase.sort((a, b) => b.refCount - a.refCount)) {
     const base = r.basePhase || '-';
-    const folder = r.baseFolders ? r.baseFolders[0] : (r.canonicalFolder || '-');
+    const folder = r.baseFolders ? r.baseFolders[0] : r.canonicalFolder || '-';
     md.push(`| Phase ${r.token} | ${r.refCount} | ${base} | ${folder} |`);
   }
   md.push('');
@@ -410,13 +434,17 @@ writeFileSync(join(outDir, 'phase-comment-audit.md'), md.join('\n'));
 
 console.log('  Results:');
 console.log(`    Phase tokens found:   ${phaseRefs.size}`);
-console.log(`    Total phase refs:     ${[...phaseRefs.values()].reduce((s, r) => s + r.length, 0)}`);
+console.log(
+  `    Total phase refs:     ${[...phaseRefs.values()].reduce((s, r) => s + r.length, 0)}`
+);
 console.log(`    Resolved (1 folder):  ${resolved.length}`);
 console.log(`    Resolved via base:    ${resolvedViaBase.length}`);
 console.log(`    Unresolved (0):       ${unresolved.length}`);
 console.log(`    Ambiguous (2+):       ${ambiguous.length}`);
 console.log(`    Wave tokens found:    ${waveRefs.size}`);
-console.log(`    Wave refs:            ${[...waveRefs.values()].reduce((s, r) => s + r.length, 0)}`);
+console.log(
+  `    Wave refs:            ${[...waveRefs.values()].reduce((s, r) => s + r.length, 0)}`
+);
 console.log('');
 console.log(`  Written:`);
 console.log(`    ${join(outDir, 'phase-comment-audit.json')}`);

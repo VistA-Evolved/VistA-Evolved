@@ -126,13 +126,27 @@ export default async function problemsRoutes(server: FastifyInstance): Promise<v
     const dfn = (request.query as any)?.dfn;
     const noteIen = (request.query as any)?.noteIen;
     if (!dfn) return reply.status(400).send({ ok: false, error: 'dfn query parameter required' });
-    if (!noteIen) return reply.status(400).send({ ok: false, error: 'noteIen query parameter required' });
+    if (!noteIen)
+      return reply.status(400).send({ ok: false, error: 'noteIen query parameter required' });
     try {
       const lines = await safeCallRpc('ORWPCE PCE4NOTE', [String(dfn), String(noteIen)]);
-      return reply.send({ ok: true, source: 'vista', data: lines, rpcUsed: ['ORWPCE PCE4NOTE'], pendingTargets: [] });
+      return reply.send({
+        ok: true,
+        source: 'vista',
+        data: lines,
+        rpcUsed: ['ORWPCE PCE4NOTE'],
+        pendingTargets: [],
+      });
     } catch (err: any) {
       log.warn('ORWPCE PCE4NOTE failed', { err: err?.message || String(err) });
-      return reply.code(502).send({ ok: false, source: 'vista', error: err?.message || 'RPC call failed', rpcUsed: [], pendingTargets: ['ORWPCE PCE4NOTE'], _integration: 'pending' });
+      return reply.code(502).send({
+        ok: false,
+        source: 'vista',
+        error: err?.message || 'RPC call failed',
+        rpcUsed: [],
+        pendingTargets: ['ORWPCE PCE4NOTE'],
+        _integration: 'pending',
+      });
     }
   });
 
@@ -144,10 +158,23 @@ export default async function problemsRoutes(server: FastifyInstance): Promise<v
     const status = (request.query as any)?.status || 'A'; // A=active, I=inactive, B=both
     try {
       const lines = await safeCallRpc('ORQQPL PROBLEM LIST', [String(dfn), String(status)]);
-      return reply.send({ ok: true, source: 'vista', data: lines, rpcUsed: ['ORQQPL PROBLEM LIST'], pendingTargets: [] });
+      return reply.send({
+        ok: true,
+        source: 'vista',
+        data: lines,
+        rpcUsed: ['ORQQPL PROBLEM LIST'],
+        pendingTargets: [],
+      });
     } catch (err: any) {
       log.warn('ORQQPL PROBLEM LIST failed', { err: err?.message || String(err) });
-      return reply.code(502).send({ ok: false, source: 'vista', error: err?.message || 'RPC call failed', rpcUsed: [], pendingTargets: ['ORQQPL PROBLEM LIST'], _integration: 'pending' });
+      return reply.code(502).send({
+        ok: false,
+        source: 'vista',
+        error: err?.message || 'RPC call failed',
+        rpcUsed: [],
+        pendingTargets: ['ORQQPL PROBLEM LIST'],
+        _integration: 'pending',
+      });
     }
   });
 
@@ -166,12 +193,17 @@ export default async function problemsRoutes(server: FastifyInstance): Promise<v
     const body = (request.body as any) || {};
     const parsed = AddProblemSchema.safeParse(body);
     if (!parsed.success) {
-      return reply.status(400).send({ ok: false, error: 'Validation failed', details: parsed.error.issues });
+      return reply
+        .status(400)
+        .send({ ok: false, error: 'Validation failed', details: parsed.error.issues });
     }
     // TODO: Phase 568 — wire to GMPL ADD SAVE after VEHU validation
     return reply.send({
-      ok: false, source: 'vista', error: 'integration-pending',
-      rpcUsed: [], pendingTargets: ['GMPL ADD SAVE'],
+      ok: false,
+      source: 'vista',
+      error: 'integration-pending',
+      rpcUsed: [],
+      pendingTargets: ['GMPL ADD SAVE'],
       _integration: 'pending',
       _hint: 'GMPL ADD SAVE writes clinical data — requires VEHU validation before enabling',
     });
@@ -184,92 +216,133 @@ export default async function problemsRoutes(server: FastifyInstance): Promise<v
     rpcName: string,
     request: FastifyRequest,
     reply: FastifyReply,
-    paramBuilder?: (q: any) => string[],
+    paramBuilder?: (q: any) => string[]
   ) {
     await requireSession(request, reply);
     const q = request.query as any;
     const params = paramBuilder ? paramBuilder(q) : q?.dfn ? [String(q.dfn)] : [];
     try {
       const lines = await safeCallRpc(rpcName, params);
-      return reply.send({ ok: true, source: 'vista', rpcUsed: [rpcName], data: lines, pendingTargets: [] });
+      return reply.send({
+        ok: true,
+        source: 'vista',
+        rpcUsed: [rpcName],
+        data: lines,
+        pendingTargets: [],
+      });
     } catch (err: any) {
       log.warn(`${rpcName} failed`, { err: err?.message });
-      return reply.code(502).send({ ok: false, source: 'vista', error: err?.message, rpcUsed: [], pendingTargets: [rpcName] });
+      return reply.code(502).send({
+        ok: false,
+        source: 'vista',
+        error: err?.message,
+        rpcUsed: [],
+        pendingTargets: [rpcName],
+      });
     }
   }
 
   server.get('/vista/problems/rpc/orqqpl-add-save', (req, rep) =>
-    callProblemRpc('ORQQPL ADD SAVE', req, rep, (q) => [q?.dfn || '', q?.data || '']));
+    callProblemRpc('ORQQPL ADD SAVE', req, rep, (q) => [q?.dfn || '', q?.data || ''])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-audit-hist', (req, rep) =>
-    callProblemRpc('ORQQPL AUDIT HIST', req, rep, (q) => [q?.dfn || '', q?.probIen || '']));
+    callProblemRpc('ORQQPL AUDIT HIST', req, rep, (q) => [q?.dfn || '', q?.probIen || ''])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-check-dup', (req, rep) =>
-    callProblemRpc('ORQQPL CHECK DUP', req, rep, (q) => [q?.dfn || '', q?.term || '']));
+    callProblemRpc('ORQQPL CHECK DUP', req, rep, (q) => [q?.dfn || '', q?.term || ''])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-clin-filter-list', (req, rep) =>
-    callProblemRpc('ORQQPL CLIN FILTER LIST', req, rep));
+    callProblemRpc('ORQQPL CLIN FILTER LIST', req, rep)
+  );
 
   server.get('/vista/problems/rpc/orqqpl-clin-srch', (req, rep) =>
-    callProblemRpc('ORQQPL CLIN SRCH', req, rep, (q) => [q?.term || '']));
+    callProblemRpc('ORQQPL CLIN SRCH', req, rep, (q) => [q?.term || ''])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-delete', (req, rep) =>
-    callProblemRpc('ORQQPL DELETE', req, rep, (q) => [q?.dfn || '', q?.probIen || '']));
+    callProblemRpc('ORQQPL DELETE', req, rep, (q) => [q?.dfn || '', q?.probIen || ''])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-detail', (req, rep) =>
-    callProblemRpc('ORQQPL DETAIL', req, rep, (q) => [q?.dfn || '', q?.probIen || '']));
+    callProblemRpc('ORQQPL DETAIL', req, rep, (q) => [q?.dfn || '', q?.probIen || ''])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-edit-load', (req, rep) =>
-    callProblemRpc('ORQQPL EDIT LOAD', req, rep, (q) => [q?.probIen || '']));
+    callProblemRpc('ORQQPL EDIT LOAD', req, rep, (q) => [q?.probIen || ''])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-edit-save', (req, rep) =>
-    callProblemRpc('ORQQPL EDIT SAVE', req, rep, (q) => [q?.probIen || '', q?.data || '']));
+    callProblemRpc('ORQQPL EDIT SAVE', req, rep, (q) => [q?.probIen || '', q?.data || ''])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-init-pt', (req, rep) =>
-    callProblemRpc('ORQQPL INIT PT', req, rep));
+    callProblemRpc('ORQQPL INIT PT', req, rep)
+  );
 
   server.get('/vista/problems/rpc/orqqpl-init-user', (req, rep) =>
-    callProblemRpc('ORQQPL INIT USER', req, rep, () => []));
+    callProblemRpc('ORQQPL INIT USER', req, rep, () => [])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-prob-comments', (req, rep) =>
-    callProblemRpc('ORQQPL PROB COMMENTS', req, rep, (q) => [q?.dfn || '', q?.probIen || '']));
+    callProblemRpc('ORQQPL PROB COMMENTS', req, rep, (q) => [q?.dfn || '', q?.probIen || ''])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-problem-list', (req, rep) =>
-    callProblemRpc('ORQQPL PROBLEM LIST', req, rep, (q) => [q?.dfn || '', q?.status || 'A']));
+    callProblemRpc('ORQQPL PROBLEM LIST', req, rep, (q) => [q?.dfn || '', q?.status || 'A'])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-problem-ntrt-bulletin', (req, rep) =>
-    callProblemRpc('ORQQPL PROBLEM NTRT BULLETIN', req, rep));
+    callProblemRpc('ORQQPL PROBLEM NTRT BULLETIN', req, rep)
+  );
 
   server.get('/vista/problems/rpc/orqqpl-prov-filter-list', (req, rep) =>
-    callProblemRpc('ORQQPL PROV FILTER LIST', req, rep));
+    callProblemRpc('ORQQPL PROV FILTER LIST', req, rep)
+  );
 
   server.get('/vista/problems/rpc/orqqpl-provider-list', (req, rep) =>
-    callProblemRpc('ORQQPL PROVIDER LIST', req, rep));
+    callProblemRpc('ORQQPL PROVIDER LIST', req, rep)
+  );
 
   server.get('/vista/problems/rpc/orqqpl-replace', (req, rep) =>
-    callProblemRpc('ORQQPL REPLACE', req, rep, (q) => [q?.dfn || '', q?.probIen || '', q?.newIcd || '']));
+    callProblemRpc('ORQQPL REPLACE', req, rep, (q) => [
+      q?.dfn || '',
+      q?.probIen || '',
+      q?.newIcd || '',
+    ])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-saveview', (req, rep) =>
-    callProblemRpc('ORQQPL SAVEVIEW', req, rep, (q) => [q?.view || '']));
+    callProblemRpc('ORQQPL SAVEVIEW', req, rep, (q) => [q?.view || ''])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-serv-filter-list', (req, rep) =>
-    callProblemRpc('ORQQPL SERV FILTER LIST', req, rep));
+    callProblemRpc('ORQQPL SERV FILTER LIST', req, rep)
+  );
 
   server.get('/vista/problems/rpc/orqqpl-srvc-srch', (req, rep) =>
-    callProblemRpc('ORQQPL SRVC SRCH', req, rep, (q) => [q?.term || '']));
+    callProblemRpc('ORQQPL SRVC SRCH', req, rep, (q) => [q?.term || ''])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-update', (req, rep) =>
-    callProblemRpc('ORQQPL UPDATE', req, rep, (q) => [q?.dfn || '', q?.data || '']));
+    callProblemRpc('ORQQPL UPDATE', req, rep, (q) => [q?.dfn || '', q?.data || ''])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-user-prob-cats', (req, rep) =>
-    callProblemRpc('ORQQPL USER PROB CATS', req, rep, () => []));
+    callProblemRpc('ORQQPL USER PROB CATS', req, rep, () => [])
+  );
 
   server.get('/vista/problems/rpc/orqqpl-user-prob-list', (req, rep) =>
-    callProblemRpc('ORQQPL USER PROB LIST', req, rep));
+    callProblemRpc('ORQQPL USER PROB LIST', req, rep)
+  );
 
   server.get('/vista/problems/rpc/orqqpl-verify', (req, rep) =>
-    callProblemRpc('ORQQPL VERIFY', req, rep, (q) => [q?.dfn || '', q?.probIen || '']));
+    callProblemRpc('ORQQPL VERIFY', req, rep, (q) => [q?.dfn || '', q?.probIen || ''])
+  );
 
   server.get('/vista/problems/rpc/orqqpl4-lex', (req, rep) =>
-    callProblemRpc('ORQQPL4 LEX', req, rep, (q) => [q?.term || '', q?.count || '20']));
+    callProblemRpc('ORQQPL4 LEX', req, rep, (q) => [q?.term || '', q?.count || '20'])
+  );
 }

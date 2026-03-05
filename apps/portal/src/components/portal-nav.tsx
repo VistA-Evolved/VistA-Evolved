@@ -52,7 +52,9 @@ export function PortalNav() {
         method: 'POST',
         credentials: 'include',
       });
-    } catch { /* best-effort */ }
+    } catch {
+      /* best-effort */
+    }
     router.push('/');
   }
 

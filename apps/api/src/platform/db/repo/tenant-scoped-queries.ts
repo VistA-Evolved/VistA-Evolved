@@ -28,10 +28,7 @@ import { requireTenantId } from './tenant-guard.js';
  * @param paramIndex - The $N parameter index (default $1)
  * @returns SQL fragment like "tenant_id = $1"
  */
-export function tenantWhere(
-  tenantId: string,
-  paramIndex = 1,
-): string {
+export function tenantWhere(tenantId: string, paramIndex = 1): string {
   requireTenantId(tenantId, 'tenantWhere');
   return `tenant_id = $${paramIndex}`;
 }
@@ -46,7 +43,7 @@ export function tenantWhere(
  */
 export function tenantInsert<T extends Record<string, unknown>>(
   tenantId: string,
-  data: T,
+  data: T
 ): T & { tenant_id: string } {
   requireTenantId(tenantId, 'tenantInsert');
   return { tenant_id: tenantId, ...data };
@@ -75,7 +72,7 @@ export function tenantSetLocal(tenantId: string): string {
  */
 export function validateTenantResults(
   rows: Array<{ tenant_id?: string; tenantId?: string }>,
-  expectedTenantId: string,
+  expectedTenantId: string
 ): boolean {
   requireTenantId(expectedTenantId, 'validateTenantResults');
   for (const row of rows) {
@@ -83,7 +80,7 @@ export function validateTenantResults(
     if (rowTenant && rowTenant !== expectedTenantId) {
       throw new Error(
         `Tenant isolation post-check failed: expected ${expectedTenantId}, ` +
-          `found ${rowTenant} in result set`,
+          `found ${rowTenant} in result set`
       );
     }
   }

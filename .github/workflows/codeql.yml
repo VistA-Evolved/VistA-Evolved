@@ -3,6 +3,11 @@ name: 'CodeQL'
 on:
   push:
     branches: ['main']
+    paths:
+      - 'apps/**'
+      - 'packages/**'
+      - 'shared/**'
+      - 'services/**'
   pull_request:
     branches: ['main']
   schedule:

@@ -127,7 +127,9 @@ md.push(`| Metric | Count |`);
 md.push(`|--------|-------|`);
 md.push(`| Exact duplicate phase numbers | ${exactDuplicates.length} |`);
 md.push(`| Near-duplicate fingerprint groups | ${nearDuplicates.length} |`);
-md.push(`| Total redundant folders | ${exactDuplicates.reduce((s, d) => s + d.redundant.length, 0) + nearDuplicates.reduce((s, d) => s + d.count - 1, 0)} |`);
+md.push(
+  `| Total redundant folders | ${exactDuplicates.reduce((s, d) => s + d.redundant.length, 0) + nearDuplicates.reduce((s, d) => s + d.count - 1, 0)} |`
+);
 md.push('');
 md.push('> **Policy:** Redundant folders are NOT deleted. They are marked with');
 md.push('> `REDUNDANT_OF: <canonical-folder>` in their NOTES.md file.');

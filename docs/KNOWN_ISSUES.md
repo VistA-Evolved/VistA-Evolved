@@ -1,8 +1,8 @@
 # Known Issues Registry
 
-| ID | Module | Description | Severity | Status |
-| --- | ------ | ----------- | -------- | ------ |
-| KI-001 | VistA RPC | ZVEADT WARDS RPC causes socket crash cascade — M routine error on ward enumeration disconnects the broker, failing all subsequent RPCs in the same session | HIGH | Closed — Phase 568 fix verified live 2026-03-05: 0 cascade, 79/87 RPCs available, ADT sequence test passed |
-| KI-002 | VistA Interop | VE INTEROP HL7 MSGS, VE INTEROP HLO STATUS, VE INTEROP QUEUE DEPTH RPCs were false negatives from XWB response buffering artifact | MEDIUM | Closed -- Phase 576 verified all 6 RPCs callable (IENs 4690-4695), installer expanded to smoke all 6 entry points |
-| KI-003 | QA/Security | G3 secret scan flags hardcoded creds in `.github/workflows/ci.yml` (redis URL) and `scripts/restart-drill.mjs` (PROV123 default) — WARN only, not blocking | LOW | Open |
-| KI-004 | VistA RPC | 23 of 87 probed RPCs return empty/missing — expected for sandbox (WorldVistA VEHU has limited synthetic data for IB/PRCA/Radiology subsystems) | INFO | Expected |
+| ID     | Module        | Description                                                                                                                                                | Severity | Status                                                                                                            |
+| ------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------- |
+| KI-001 | VistA RPC     | ZVEADT WARDS RPC causes socket crash cascade — M routine error on ward enumeration disconnects the broker, failing all subsequent RPCs in the same session | HIGH     | Closed — Phase 568 fix verified live 2026-03-05: 0 cascade, 79/87 RPCs available, ADT sequence test passed        |
+| KI-002 | VistA Interop | VE INTEROP HL7 MSGS, VE INTEROP HLO STATUS, VE INTEROP QUEUE DEPTH RPCs were false negatives from XWB response buffering artifact                          | MEDIUM   | Closed -- Phase 576 verified all 6 RPCs callable (IENs 4690-4695), installer expanded to smoke all 6 entry points |
+| KI-003 | QA/Security   | G3 secret scan flags hardcoded creds in `.github/workflows/ci.yml` (redis URL) and `scripts/restart-drill.mjs` (PROV123 default) — WARN only, not blocking | LOW      | Open                                                                                                              |
+| KI-004 | VistA RPC     | 23 of 87 probed RPCs return empty/missing — expected for sandbox (WorldVistA VEHU has limited synthetic data for IB/PRCA/Radiology subsystems)             | INFO     | Expected                                                                                                          |

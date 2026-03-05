@@ -69,7 +69,8 @@ function parseKnownIssues(md) {
 
 const issues = parseKnownIssues(knownIssues);
 const openBlockers = issues.filter(
-  (i) => !i.status.toLowerCase().startsWith('closed') && !i.status.toLowerCase().startsWith('expected')
+  (i) =>
+    !i.status.toLowerCase().startsWith('closed') && !i.status.toLowerCase().startsWith('expected')
 );
 const closedIssues = issues.filter((i) => i.status.toLowerCase().startsWith('closed'));
 
@@ -95,7 +96,10 @@ function parseVistaConn(md) {
   if (mm) result.missingCount = parseInt(mm[1], 10);
 
   // Check for specific RPC families
-  result.hasTIU = /TIU CREATE RECORD/.test(md) && /TIU SET RECORD TEXT/.test(md) && /TIU GET RECORD TEXT/.test(md);
+  result.hasTIU =
+    /TIU CREATE RECORD/.test(md) &&
+    /TIU SET RECORD TEXT/.test(md) &&
+    /TIU GET RECORD TEXT/.test(md);
   result.hasOrders = /ORWDX SAVE/.test(md) && /ORWOR1 SIG/.test(md);
   result.hasLabs = /ORWLRR INTERIM/.test(md) || /ORWLRR CHART/.test(md);
   result.hasMeds = /ORWPS ACTIVE/.test(md);
@@ -168,7 +172,9 @@ const gauntletData = parseGauntlet(gauntlet);
 let commitSha = 'unknown';
 try {
   commitSha = execSync('git rev-parse --short HEAD', { cwd: ROOT, encoding: 'utf-8' }).trim();
-} catch { /* ignore */ }
+} catch {
+  /* ignore */
+}
 
 // ── Build readiness rows ──
 
@@ -183,8 +189,14 @@ const rows = [];
 // 1. Platform health + API startup
 rows.push({
   capability: 'Platform health + API startup',
-  status: status(gauntletData.typeCheckStatus === 'PASS' && gauntletData.passCount >= 2, gauntletData.passCount >= 1),
-  evidence: '`scripts/qa/gauntlet-fast.mjs` G1 Build+TypeCheck: ' + gauntletData.typeCheckStatus + '; [QA Gauntlet Results](docs/QA_GAUNTLET_FAST_RESULTS.md)',
+  status: status(
+    gauntletData.typeCheckStatus === 'PASS' && gauntletData.passCount >= 2,
+    gauntletData.passCount >= 1
+  ),
+  evidence:
+    '`scripts/qa/gauntlet-fast.mjs` G1 Build+TypeCheck: ' +
+    gauntletData.typeCheckStatus +
+    '; [QA Gauntlet Results](docs/QA_GAUNTLET_FAST_RESULTS.md)',
   blockers: 'None',
   nextProof: 'Promote to CI required gate',
 });
@@ -194,7 +206,8 @@ rows.push({
   capability: 'VistA RPC connectivity (core)',
   status: status(vista.coreTests === '6/6' && vista.available >= 80, vista.coreTests === '6/6'),
   evidence: `Core: ${vista.coreTests} PASS; Probe: ${vista.available}/${vista.totalProbed} RPCs available; [Connectivity Results](docs/VISTA_CONNECTIVITY_RESULTS.md)`,
-  blockers: vista.missingCount > 0 ? `${vista.missingCount} RPCs missing (sandbox data limits)` : 'None',
+  blockers:
+    vista.missingCount > 0 ? `${vista.missingCount} RPCs missing (sandbox data limits)` : 'None',
   nextProof: 'Run against production VistA instance',
 });
 
@@ -295,15 +308,22 @@ rows.push({
     gauntletData.phiLeakStatus === 'PASS'
   ),
   evidence: `G3 Secret scan: ${gauntletData.secretScanStatus}; PHI leak scan: ${gauntletData.phiLeakStatus}; Dep audit: ${gauntletData.depAuditStatus}; [Gauntlet Results](docs/QA_GAUNTLET_FAST_RESULTS.md)`,
-  blockers: gauntletData.secretScanStatus === 'WARN' ? 'KI-003: hardcoded creds in CI/scripts (WARN, non-blocking)' : 'None',
-  nextProof: gauntletData.secretScanStatus === 'WARN' ? 'Resolve KI-003 secret scan warnings' : 'Maintain clean scan',
+  blockers:
+    gauntletData.secretScanStatus === 'WARN'
+      ? 'KI-003: hardcoded creds in CI/scripts (WARN, non-blocking)'
+      : 'None',
+  nextProof:
+    gauntletData.secretScanStatus === 'WARN'
+      ? 'Resolve KI-003 secret scan warnings'
+      : 'Maintain clean scan',
 });
 
 // 12. Multi-tenancy / RLS posture
 rows.push({
   capability: 'Multi-tenancy / RLS posture',
   status: status(false, true),
-  evidence: 'PG RLS policies cover 21+ tables; `PLATFORM_PG_RLS_ENABLED` gate; `/posture/tenant` endpoint; `data-plane-posture.ts` (9 gates)',
+  evidence:
+    'PG RLS policies cover 21+ tables; `PLATFORM_PG_RLS_ENABLED` gate; `/posture/tenant` endpoint; `data-plane-posture.ts` (9 gates)',
   blockers: 'RLS not enforced in dev mode by default; requires rc/prod runtime mode',
   nextProof: 'Run full posture check in rc mode with RLS enabled',
 });
@@ -312,7 +332,8 @@ rows.push({
 rows.push({
   capability: 'Imaging + Scheduling PG durability',
   status: status(false, true),
-  evidence: 'Imaging worklist + ingest in-memory (Phase 23); Scheduling PG repo exists (Phase 152); Orthanc profile optional; `/imaging/health` live probe',
+  evidence:
+    'Imaging worklist + ingest in-memory (Phase 23); Scheduling PG repo exists (Phase 152); Orthanc profile optional; `/imaging/health` live probe',
   blockers: 'Imaging worklist not yet PG-backed; scheduling seed data requires ZVESDSEED.m',
   nextProof: 'Migrate imaging worklist to PG; run scheduling truth gate with seed data',
 });
@@ -352,10 +373,18 @@ md.push('## SDLC Alignment');
 md.push('');
 md.push('| SDLC Stage | Gate / Mechanism | Evidence |');
 md.push('|------------|-----------------|----------|');
-md.push(`| **Build** | QA Gauntlet (${gauntletData.gates.length} gates: ${gauntletData.passCount}P/${gauntletData.warnCount}W/${gauntletData.failCount}F) | [QA Gauntlet Results](docs/QA_GAUNTLET_FAST_RESULTS.md) |`);
-md.push('| **Verify** | Tier-0 proof + `pnpm verify:vista` | [Tier-0 Proof](docs/TIER0_PROOF.md), [Connectivity Results](docs/VISTA_CONNECTIVITY_RESULTS.md) |');
-md.push(`| **Release** | RC suite (\`scripts/verify-rc.ps1\`) + CI smoke | ${hasCiSmoke ? '[CI VEHU Smoke](.github/workflows/ci-vehu-smoke.yml)' : 'CI smoke not found'} |`);
-md.push('| **Operate** | Observability posture (OTel, Prometheus, Jaeger) | `apps/api/src/posture/observability-posture.ts`, `/posture/observability` |');
+md.push(
+  `| **Build** | QA Gauntlet (${gauntletData.gates.length} gates: ${gauntletData.passCount}P/${gauntletData.warnCount}W/${gauntletData.failCount}F) | [QA Gauntlet Results](docs/QA_GAUNTLET_FAST_RESULTS.md) |`
+);
+md.push(
+  '| **Verify** | Tier-0 proof + `pnpm verify:vista` | [Tier-0 Proof](docs/TIER0_PROOF.md), [Connectivity Results](docs/VISTA_CONNECTIVITY_RESULTS.md) |'
+);
+md.push(
+  `| **Release** | RC suite (\`scripts/verify-rc.ps1\`) + CI smoke | ${hasCiSmoke ? '[CI VEHU Smoke](.github/workflows/ci-vehu-smoke.yml)' : 'CI smoke not found'} |`
+);
+md.push(
+  '| **Operate** | Observability posture (OTel, Prometheus, Jaeger) | `apps/api/src/posture/observability-posture.ts`, `/posture/observability` |'
+);
 md.push('');
 
 // ── Known Issues Summary ──
@@ -366,9 +395,15 @@ md.push(`| Metric | Count |`);
 md.push(`|--------|-------|`);
 md.push(`| Total tracked | ${issues.length} |`);
 md.push(`| Closed | ${closedIssues.length} |`);
-md.push(`| Open (blocking) | ${openBlockers.filter((i) => i.severity === 'HIGH' || i.severity === 'MEDIUM').length} |`);
-md.push(`| Open (non-blocking) | ${openBlockers.filter((i) => i.severity === 'LOW' || i.severity === 'INFO').length} |`);
-md.push(`| Expected (sandbox limits) | ${issues.filter((i) => i.status.toLowerCase().startsWith('expected')).length} |`);
+md.push(
+  `| Open (blocking) | ${openBlockers.filter((i) => i.severity === 'HIGH' || i.severity === 'MEDIUM').length} |`
+);
+md.push(
+  `| Open (non-blocking) | ${openBlockers.filter((i) => i.severity === 'LOW' || i.severity === 'INFO').length} |`
+);
+md.push(
+  `| Expected (sandbox limits) | ${issues.filter((i) => i.status.toLowerCase().startsWith('expected')).length} |`
+);
 md.push('');
 md.push('Source: [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md)');
 md.push('');
@@ -382,8 +417,11 @@ md.push('|---|-----------|--------|----------|----------|----------------------|
 
 for (let i = 0; i < rows.length; i++) {
   const r = rows[i];
-  const icon = r.status === 'PROVEN' ? '**PROVEN**' : r.status === 'PARTIAL' ? 'PARTIAL' : '_PENDING_';
-  md.push(`| ${i + 1} | ${r.capability} | ${icon} | ${r.evidence} | ${r.blockers} | ${r.nextProof} |`);
+  const icon =
+    r.status === 'PROVEN' ? '**PROVEN**' : r.status === 'PARTIAL' ? 'PARTIAL' : '_PENDING_';
+  md.push(
+    `| ${i + 1} | ${r.capability} | ${icon} | ${r.evidence} | ${r.blockers} | ${r.nextProof} |`
+  );
 }
 
 md.push('');

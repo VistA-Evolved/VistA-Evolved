@@ -59,6 +59,7 @@ UserRole, and SupportedLocale.
 ## Files Touched
 
 ### Created
+
 - `shared/package.json`
 - `shared/tsconfig.json`
 - `shared/src/index.ts`
@@ -73,6 +74,7 @@ UserRole, and SupportedLocale.
 - `shared/src/auth/user-role.ts`
 
 ### Modified
+
 - `pnpm-workspace.yaml` — added `shared` to packages list
 - `apps/web/package.json` — added shared-types + locale-utils deps
 - `apps/api/package.json` — added shared-types + locale-utils deps

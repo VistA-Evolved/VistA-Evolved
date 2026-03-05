@@ -17,10 +17,10 @@ Every prompt folder has this structure:
 
 Example:
 
-| Folder | Prefix | Phase# | Title |
-|--------|--------|--------|-------|
-| `02-PHASE-1-HELLO-SYSTEM` | 02 | 1 | Hello System |
-| `179-PHASE-211-PROMPTOPS-GOVERNANCE` | 179 | 211 | PromptOps Governance |
+| Folder                               | Prefix | Phase# | Title                |
+| ------------------------------------ | ------ | ------ | -------------------- |
+| `02-PHASE-1-HELLO-SYSTEM`            | 02     | 1      | Hello System         |
+| `179-PHASE-211-PROMPTOPS-GOVERNANCE` | 179    | 211    | PromptOps Governance |
 
 So folder `179` holds Phase 211. **Never assume prefix == phase number.**
 
@@ -44,13 +44,13 @@ Folders starting with `00-` are meta/rules/playbooks. They are not phases.
 
 Inside each phase folder:
 
-| File suffix | Meaning |
-|-------------|---------|
-| `*-01-IMPLEMENT.md` | Implementation steps |
-| `*-99-VERIFY.md` | Verification / acceptance criteria |
-| `*-02-IMPLEMENT.md` through `*-04-IMPLEMENT.md` | Additional sub-phase implements |
-| `*-90-VERIFY.md` through `*-98-VERIFY.md` | Additional verification steps |
-| `NOTES.md` | Optional notes, redundancy markers |
+| File suffix                                     | Meaning                            |
+| ----------------------------------------------- | ---------------------------------- |
+| `*-01-IMPLEMENT.md`                             | Implementation steps               |
+| `*-99-VERIFY.md`                                | Verification / acceptance criteria |
+| `*-02-IMPLEMENT.md` through `*-04-IMPLEMENT.md` | Additional sub-phase implements    |
+| `*-90-VERIFY.md` through `*-98-VERIFY.md`       | Additional verification steps      |
+| `NOTES.md`                                      | Optional notes, redundancy markers |
 
 The file prefix uses the **phase number** (not the folder prefix):
 
@@ -73,6 +73,7 @@ node scripts/prompt-ref.mjs --phase 284
 ```
 
 This prints:
+
 - Matching prompt folder(s)
 - Title
 - IMPLEMENT/VERIFY files
@@ -134,15 +135,15 @@ wave plan.
 
 ## 5. Index and Audit Tools
 
-| Tool | Command | Output |
-|------|---------|--------|
-| Phase Index | `pnpm qa:phase-index` | `docs/qa/phase-index.json` |
-| PROMPTS_INDEX | `node scripts/prompts-index.mjs` | `prompts/PROMPTS_INDEX.md` |
-| Phase Registry | `pnpm qa:phase-registry` | `artifacts/phase-registry.json` |
-| Ordering Gate | See below | Console PASS/FAIL |
-| Phase Resolver | `node scripts/prompt-ref.mjs --phase 284` | Console lookup |
-| Comment Audit | `node scripts/qa/phase-comment-audit.mjs` | `docs/qa/phase-comment-audit.*` |
-| Redundancy Report | `docs/qa/prompt-redundancy-report.md` | Static doc |
+| Tool              | Command                                   | Output                          |
+| ----------------- | ----------------------------------------- | ------------------------------- |
+| Phase Index       | `pnpm qa:phase-index`                     | `docs/qa/phase-index.json`      |
+| PROMPTS_INDEX     | `node scripts/prompts-index.mjs`          | `prompts/PROMPTS_INDEX.md`      |
+| Phase Registry    | `pnpm qa:phase-registry`                  | `artifacts/phase-registry.json` |
+| Ordering Gate     | See below                                 | Console PASS/FAIL               |
+| Phase Resolver    | `node scripts/prompt-ref.mjs --phase 284` | Console lookup                  |
+| Comment Audit     | `node scripts/qa/phase-comment-audit.mjs` | `docs/qa/phase-comment-audit.*` |
+| Redundancy Report | `docs/qa/prompt-redundancy-report.md`     | Static doc                      |
 
 ### Running the Ordering Gate
 
@@ -162,6 +163,7 @@ Phase <token> (PromptFolder: <foldername>)
 ```
 
 Example:
+
 ```typescript
 // Phase 284 (PromptFolder: 260-PHASE-284-PROMPT-AUDIT-TOOLS)
 ```
@@ -173,14 +175,14 @@ For existing code, use the resolver tool + audit report to trace references.
 
 ## 7. Quick Reference: Prefix Ranges
 
-| Prefix Range | Content |
-|-------------|---------|
-| 00-* | Meta, rules, playbooks, archive |
-| 01 | Bootstrap |
-| 02-50 | Core build phases (early) |
-| 51-200 | Expanded features + hardening |
-| 200-400 | Advanced features, enterprise, audit |
-| 400+ | Waves, deep integrations, late phases |
+| Prefix Range | Content                               |
+| ------------ | ------------------------------------- |
+| 00-\*        | Meta, rules, playbooks, archive       |
+| 01           | Bootstrap                             |
+| 02-50        | Core build phases (early)             |
+| 51-200       | Expanded features + hardening         |
+| 200-400      | Advanced features, enterprise, audit  |
+| 400+         | Waves, deep integrations, late phases |
 
 The exact ranges grow as new phases are added. Use `docs/qa/phase-index.json`
 as the canonical reference — never hardcode prefix assumptions.

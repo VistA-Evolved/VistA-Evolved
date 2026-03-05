@@ -24,15 +24,15 @@ executes under DUZ 87.
 
 ### Impact
 
-| Area | Risk |
-| --- | --- |
-| **Clinical Notes** | All TIU notes authored by DUZ 87, not the actual clinician |
-| **Orders** | All CPOE orders signed under DUZ 87 |
-| **Medication Administration** | All MAR entries attributed to DUZ 87 |
-| **VistA Audit Trail** | Meaningless — all actions appear as one user |
-| **Legal Liability** | Clinical actions not legally attributable to acting provider |
-| **Regulatory** | Fails ONC certification criteria for user attribution |
-| **Patient Safety** | Wrong provider on safety-critical medication orders |
+| Area                          | Risk                                                         |
+| ----------------------------- | ------------------------------------------------------------ |
+| **Clinical Notes**            | All TIU notes authored by DUZ 87, not the actual clinician   |
+| **Orders**                    | All CPOE orders signed under DUZ 87                          |
+| **Medication Administration** | All MAR entries attributed to DUZ 87                         |
+| **VistA Audit Trail**         | Meaningless — all actions appear as one user                 |
+| **Legal Liability**           | Clinical actions not legally attributable to acting provider |
+| **Regulatory**                | Fails ONC certification criteria for user attribution        |
+| **Patient Safety**            | Wrong provider on safety-critical medication orders          |
 
 ### Current Code Path
 
@@ -92,6 +92,7 @@ Browser → Fastify API → RpcConnectionPool
 
 The original design stored access/verify codes in the session for
 re-authentication. This is **not recommended** because:
+
 - Credentials at rest in PG are a security risk even when encrypted
 - VistA sessions have their own timeout
 
@@ -109,12 +110,12 @@ expires naturally anyway after the configured TTL).
 
 ### Configuration
 
-| Env Var | Default | Description |
-| --- | --- | --- |
-| `VISTA_POOL_SIZE` | 1 | Connections per user per tenant |
-| `VISTA_MAX_CONNECTIONS_PER_USER` | 3 | Max connections per user |
-| `VISTA_MAX_POOL_TOTAL` | 50 | Max total connections per API instance |
-| `VISTA_IDLE_TIMEOUT_MS` | 300000 | Idle connection reap timeout (5 min) |
+| Env Var                          | Default | Description                            |
+| -------------------------------- | ------- | -------------------------------------- |
+| `VISTA_POOL_SIZE`                | 1       | Connections per user per tenant        |
+| `VISTA_MAX_CONNECTIONS_PER_USER` | 3       | Max connections per user               |
+| `VISTA_MAX_POOL_TOTAL`           | 50      | Max total connections per API instance |
+| `VISTA_IDLE_TIMEOUT_MS`          | 300000  | Idle connection reap timeout (5 min)   |
 
 ---
 

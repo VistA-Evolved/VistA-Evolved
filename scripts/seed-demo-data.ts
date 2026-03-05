@@ -189,7 +189,9 @@ const DEMO_CLAIMS: ClaimSeed[] = [
     deniedAt: null,
     paidAt: null,
     submittedAt: daysAgo(45),
-    diagnosesJson: JSON.stringify([{ code: 'K80.20', description: 'Calculus of gallbladder w/o obstruction' }]),
+    diagnosesJson: JSON.stringify([
+      { code: 'K80.20', description: 'Calculus of gallbladder w/o obstruction' },
+    ]),
     linesJson: JSON.stringify([
       { procedure: { code: '47562', description: 'Lap cholecystectomy', charge: 350000 } },
     ]),
@@ -238,9 +240,17 @@ const DEMO_CLAIMS: ClaimSeed[] = [
     deniedAt: null,
     paidAt: null,
     submittedAt: daysAgo(110),
-    diagnosesJson: JSON.stringify([{ code: 'S72.001A', description: 'Fracture of unspecified part of neck of right femur' }]),
+    diagnosesJson: JSON.stringify([
+      { code: 'S72.001A', description: 'Fracture of unspecified part of neck of right femur' },
+    ]),
     linesJson: JSON.stringify([
-      { procedure: { code: '27236', description: 'Open treatment, femoral fracture', charge: 480000 } },
+      {
+        procedure: {
+          code: '27236',
+          description: 'Open treatment, femoral fracture',
+          charge: 480000,
+        },
+      },
     ]),
   },
 
@@ -262,7 +272,9 @@ const DEMO_CLAIMS: ClaimSeed[] = [
     deniedAt: null,
     paidAt: daysAgo(5),
     submittedAt: daysAgo(20),
-    diagnosesJson: JSON.stringify([{ code: 'J06.9', description: 'Acute upper respiratory infection' }]),
+    diagnosesJson: JSON.stringify([
+      { code: 'J06.9', description: 'Acute upper respiratory infection' },
+    ]),
     linesJson: JSON.stringify([
       { procedure: { code: '99213', description: 'Office visit', charge: 75000 } },
       { procedure: { code: '87804', description: 'Influenza test, rapid', charge: 35000 } },
@@ -382,12 +394,30 @@ async function main() {
            $22, $23, $24
          )`,
         [
-          id, TENANT_ID, c.idempotencyKey, c.status, c.claimType,
-          c.patientId, c.patientName, c.providerId, c.payerId, c.payerName,
-          c.dateOfService, c.totalChargeCents, c.paidAmountCents,
-          c.denialCode, c.denialReason, c.deniedAt, c.paidAt, c.submittedAt,
-          c.diagnosesJson, c.linesJson, auditJson('demo-seeder', c.status),
-          NOW, NOW, 'demo-seeder',
+          id,
+          TENANT_ID,
+          c.idempotencyKey,
+          c.status,
+          c.claimType,
+          c.patientId,
+          c.patientName,
+          c.providerId,
+          c.payerId,
+          c.payerName,
+          c.dateOfService,
+          c.totalChargeCents,
+          c.paidAmountCents,
+          c.denialCode,
+          c.denialReason,
+          c.deniedAt,
+          c.paidAt,
+          c.submittedAt,
+          c.diagnosesJson,
+          c.linesJson,
+          auditJson('demo-seeder', c.status),
+          NOW,
+          NOW,
+          'demo-seeder',
         ]
       );
 
@@ -400,7 +430,9 @@ async function main() {
       );
 
       inserted++;
-      console.log(`  -> ${c.idempotencyKey}: ${c.status} (${c.payerName}, $${(c.totalChargeCents / 100).toFixed(2)})`);
+      console.log(
+        `  -> ${c.idempotencyKey}: ${c.status} (${c.payerName}, $${(c.totalChargeCents / 100).toFixed(2)})`
+      );
     }
     console.log(`  Total: ${inserted} inserted, ${skipped} skipped (already exist)`);
 

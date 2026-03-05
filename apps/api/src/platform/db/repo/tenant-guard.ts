@@ -37,32 +37,32 @@ export class TenantIsolationError extends Error {
  * CANONICAL_RLS_TABLES in pg-migrate.ts.
  */
 export const TENANT_SCOPED_TABLES = [
-  "auth_session",
-  "portal_sessions",
-  "portal_users",
-  "portal_patient_identity",
-  "tenant_payer",
-  "tenant_module",
-  "tenant_feature_flag",
-  "tenant_oidc_mapping",
-  "rcm_claim",
-  "rcm_remittance",
-  "rcm_claim_case",
-  "rcm_work_item",
-  "edi_acknowledgement",
-  "edi_claim_status",
-  "edi_pipeline_entry",
-  "idempotency_key",
-  "cpoe_order_sign_event",
-  "module_audit_log",
-  "audit_ship_offset",
-  "consent_records",
-  "intake_sessions",
-  "scheduling_lifecycle",
-  "scheduling_preferences",
-  "scheduling_writeback",
-  "identity_link_requests",
-  "identity_links",
+  'auth_session',
+  'portal_sessions',
+  'portal_users',
+  'portal_patient_identity',
+  'tenant_payer',
+  'tenant_module',
+  'tenant_feature_flag',
+  'tenant_oidc_mapping',
+  'rcm_claim',
+  'rcm_remittance',
+  'rcm_claim_case',
+  'rcm_work_item',
+  'edi_acknowledgement',
+  'edi_claim_status',
+  'edi_pipeline_entry',
+  'idempotency_key',
+  'cpoe_order_sign_event',
+  'module_audit_log',
+  'audit_ship_offset',
+  'consent_records',
+  'intake_sessions',
+  'scheduling_lifecycle',
+  'scheduling_preferences',
+  'scheduling_writeback',
+  'identity_link_requests',
+  'identity_links',
 ] as const;
 
 export type TenantScopedTable = (typeof TENANT_SCOPED_TABLES)[number];
@@ -72,10 +72,10 @@ export type TenantScopedTable = (typeof TENANT_SCOPED_TABLES)[number];
  * These do NOT get RLS policies and do NOT require tenant_id filters.
  */
 export const GLOBAL_TABLES = [
-  "module_catalog",
-  "system_config",
-  "rpc_capability_cache",
-  "migration_version",
+  'module_catalog',
+  'system_config',
+  'rpc_capability_cache',
+  'migration_version',
 ] as const;
 
 export type GlobalTable = (typeof GLOBAL_TABLES)[number];
@@ -92,13 +92,13 @@ export type GlobalTable = (typeof GLOBAL_TABLES)[number];
  */
 export function requireTenantId(
   tenantId: string | undefined | null,
-  operation = 'database query',
+  operation = 'database query'
 ): string {
   if (!tenantId || tenantId.trim() === '') {
     throw new TenantIsolationError(
       `Tenant ID is required for ${operation}. ` +
         'This is a programming error — ensure session middleware sets tenantId.',
-      tenantId || '<missing>',
+      tenantId || '<missing>'
     );
   }
   return tenantId.trim();
@@ -117,7 +117,7 @@ export function requireTenantId(
 export function assertTenantMatch(
   record: { tenant_id?: string; tenantId?: string },
   expectedTenantId: string,
-  table?: string,
+  table?: string
 ): void {
   const recordTenantId = record.tenant_id || record.tenantId;
   if (!recordTenantId) {
@@ -125,7 +125,7 @@ export function assertTenantMatch(
       `Record from ${table || 'unknown table'} has no tenant_id field. ` +
         'This may indicate a schema or query error.',
       expectedTenantId,
-      table,
+      table
     );
   }
   if (recordTenantId !== expectedTenantId) {
@@ -133,7 +133,7 @@ export function assertTenantMatch(
       `Tenant isolation violation on ${table || 'unknown table'}: ` +
         `record belongs to tenant ${recordTenantId} but was accessed by tenant ${expectedTenantId}`,
       expectedTenantId,
-      table,
+      table
     );
   }
 }

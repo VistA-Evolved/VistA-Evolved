@@ -1,16 +1,19 @@
 # Phase 568 Notes
 
 ## Summary
+
 Closes KI-001: ZVEADT WARDS socket crash cascade.
 **Verified live against VEHU container 2026-03-05.**
 
 ## Root Cause
+
 1. `ZVEADT.m` WARDS entry had no `$ETRAP` -- M runtime error killed the TCP session
 2. Global reads (`^DIC(42)`, `^DIC(42.4)`) lacked `$D()` existence checks
 3. `rpcCapabilities.ts` probe loop had no reconnect-on-socket-loss -- single crash cascaded to 16+ false negatives
 4. `rpcBrokerClient.ts` didn't reset `readBuf`/`sessionDuz` on socket close
 
 ## Fix (3 layers)
+
 - **Layer 1 -- M routine:** Added `$ETRAP` + `$D()` guards to all 3 entry points (WARDS, BEDS, MVHIST)
 - **Layer 2 -- Probe loop:** Added `isSocketLostError()` detection -> `disconnect()` + `connect()` -> retry once
 - **Layer 3 -- Broker client:** Reset `readBuf`, `sessionDuz`, `connected` on socket close/error events
@@ -18,6 +21,7 @@ Closes KI-001: ZVEADT WARDS socket crash cascade.
 ## Live Verification Evidence (2026-03-05)
 
 ### verify:vista (6/6 PASS)
+
 ```
 VistA RPC Bridge Verification
   Host: 127.0.0.1:9431
@@ -34,6 +38,7 @@ VistA connectivity: 6/6 tests passed
 ```
 
 ### verify-zveadt-fix.ts (exit code 0)
+
 ```
 === Phase 568: ZVEADT Crash + Cascade Fix Verification ===
 

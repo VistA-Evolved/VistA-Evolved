@@ -5,6 +5,7 @@
 Billing must never silently run as mock outside dev/test.
 
 Requirements:
+
 1. If `PLATFORM_RUNTIME_MODE` is rc|prod (or `NODE_ENV=production`), and
    provider resolves to mock: FAIL FAST at startup with a clear error message.
    In dev/test, allow mock but log a loud warning.
@@ -19,6 +20,7 @@ Do NOT weaken tests. If tests need env defaults, make them explicit.
 ### Requirement 1 -- ALREADY SATISFIED
 
 `apps/api/src/billing/index.ts` contains:
+
 - `isMockBillingForbidden()` checks NODE_ENV, PLATFORM_RUNTIME_MODE, DEPLOYMENT_STAGE
 - `initBillingProvider()` throws at startup with `buildBillingConfigError()` if
   mock is resolved in rc/prod/demo/pilot
@@ -30,6 +32,7 @@ No code changes needed for requirement 1.
 
 `apps/api/src/billing/billing-routes.ts` has `/billing/health` and `/admin/billing/health`.
 Both delegate to `provider.healthCheck()` which returns `BillingHealthStatus`:
+
 - `provider`: `"mock"` | `"lago"` -- already present
 - `configuredForProduction`: boolean -- already present
 - `details.warning`: string -- warning is buried in details object
@@ -40,6 +43,7 @@ or `isMockBillingForbidden()` context to the response.
 ### Requirement 3 -- ALREADY SATISFIED
 
 `docs/runbooks/billing-provider-readiness.md` (119 lines) covers:
+
 - Provider table (mock vs lago)
 - Safety rules (mock blocked in non-dev)
 - Environment configurations (dev, demo, prod)
@@ -60,6 +64,7 @@ In `apps/api/src/billing/billing-routes.ts`:
    - `mockForbiddenInCurrentMode`: boolean from `isMockBillingForbidden()`
 
 Example enriched response for mock in dev:
+
 ```json
 {
   "ok": true,
@@ -79,11 +84,13 @@ Example enriched response for mock in dev:
 ### B) Export `isMockBillingForbidden` from billing barrel
 
 In `apps/api/src/billing/index.ts`:
+
 - Add `export { isMockBillingForbidden }` to make it available to routes.
 
 ### C) Update runbook with explicit "dev vs demo vs prod" section header
 
 In `docs/runbooks/billing-provider-readiness.md`:
+
 - Add a section: `## Dev vs Demo vs Prod Rules` with a decision table
 - Add the enriched health response examples
 

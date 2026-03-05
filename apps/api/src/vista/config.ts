@@ -25,7 +25,9 @@ export const VISTA_VERIFY_CODE = process.env.VISTA_VERIFY_CODE;
 export const VISTA_CONTEXT = process.env.VISTA_CONTEXT || 'OR CPRS GUI CHART';
 
 export const VISTA_POOL_SIZE = Number(process.env.VISTA_POOL_SIZE || 1);
-export const VISTA_MAX_CONNECTIONS_PER_USER = Number(process.env.VISTA_MAX_CONNECTIONS_PER_USER || 3);
+export const VISTA_MAX_CONNECTIONS_PER_USER = Number(
+  process.env.VISTA_MAX_CONNECTIONS_PER_USER || 3
+);
 export const VISTA_MAX_POOL_TOTAL = Number(process.env.VISTA_MAX_POOL_TOTAL || 50);
 export const VISTA_IDLE_TIMEOUT_MS = Number(process.env.VISTA_IDLE_TIMEOUT_MS || 300_000);
 

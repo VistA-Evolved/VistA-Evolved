@@ -288,7 +288,11 @@ export function activeSwapBoundary(): VistaSwapBoundary {
       return worldvistaEhrBoundary();
     case 9210:
       // Compose lane (Lane C) uses worldvista-ehr image on port 9210
-      return { ...worldvistaEhrBoundary(), connection: { ...worldvistaEhrBoundary().connection, port: 9210 }, probes: { ...worldvistaEhrBoundary().probes, readiness: { type: 'tcp', port: 9210 } } };
+      return {
+        ...worldvistaEhrBoundary(),
+        connection: { ...worldvistaEhrBoundary().connection, port: 9210 },
+        probes: { ...worldvistaEhrBoundary().probes, readiness: { type: 'tcp', port: 9210 } },
+      };
     default:
       return worldvistaEhrBoundary();
   }

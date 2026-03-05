@@ -44,7 +44,9 @@ async function loginAndGetCookie() {
     try {
       const body = await resp.json();
       csrfToken = body.csrfToken || '';
-    } catch { /* non-JSON is ok */ }
+    } catch {
+      /* non-JSON is ok */
+    }
     return { cookie, csrfToken };
   } catch {
     return { cookie: '', csrfToken: '' };

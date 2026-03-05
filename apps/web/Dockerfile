@@ -1,35 +1,39 @@
 # VistA-Evolved Web (Next.js) — Production Dockerfile
 # Multi-stage build: install → build → standalone runtime
+# Monorepo: requires workspace root + apps/web + packages + shared
 
 # ---- Stage 1: Dependencies ----
 FROM node:22-alpine AS deps
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@10.29.2 --activate
 
-# Copy package manifest + lockfile from the web directory
-COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
+# Copy workspace root (lockfile at root, not in apps/web)
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/web/package.json apps/web/
+COPY apps/api/package.json apps/api/
+COPY packages/ packages/
+COPY shared/ shared/
 
-# Install all deps (need devDependencies for build)
-RUN pnpm install --frozen-lockfile || pnpm install
+# Install deps for web (includes workspace packages locale-utils, shared-types)
+RUN pnpm install --frozen-lockfile --filter web...
 
 # ---- Stage 2: Build ----
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@10.29.2 --activate
 
-# Bring in installed node_modules
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/apps/web/node_modules ./apps/web/node_modules
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/web/ apps/web/
+COPY apps/api/package.json apps/api/
+COPY packages/ packages/
+COPY shared/ shared/
 
-# Copy web source files (not node_modules or .next)
-COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
-COPY apps/web/tsconfig.json apps/web/next.config.ts apps/web/next-env.d.ts ./
-COPY apps/web/eslint.config.mjs ./
-COPY apps/web/src ./src
-COPY apps/web/public ./public
+WORKDIR /app/apps/web
 
-# Build-time env
 ARG NEXT_PUBLIC_API_URL=http://api:3001
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
@@ -41,10 +45,9 @@ WORKDIR /app
 
 RUN addgroup -g 1001 appgroup && adduser -u 1001 -G appgroup -D appuser
 
-# Next.js standalone output
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
+COPY --from=builder /app/apps/web/.next/standalone ./
+COPY --from=builder /app/apps/web/.next/static ./.next/static
+COPY --from=builder /app/apps/web/public ./public
 
 ARG BUILD_SHA=unknown
 ARG BUILD_TIME=unknown

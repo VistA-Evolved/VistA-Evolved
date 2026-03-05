@@ -15,13 +15,13 @@ Create PG repos for 17 new tables from migration v60 and wire them to their in-m
 
 | Store                | File                                  | New PG Table         |
 | -------------------- | ------------------------------------- | -------------------- |
-| intake-brain-states  | intake/brain-routes.ts                 | intake_brain_state   |
-| intake-brain-audit   | intake/brain/registry.ts               | intake_brain_audit   |
+| intake-brain-states  | intake/brain-routes.ts                | intake_brain_state   |
+| intake-brain-audit   | intake/brain/registry.ts              | intake_brain_audit   |
 | mha-administration   | routes/mha/index.ts                   | mha_administration   |
 | cp-result            | routes/clinical-procedures/index.ts   | cp_result            |
 | imaging-capture      | routes/imaging-capture/index.ts       | imaging_capture      |
 | scheduling-recall    | routes/scheduling/index.ts            | scheduling_recall    |
-| portal-audit         | services/portal-audit.ts               | portal_audit_event   |
+| portal-audit         | services/portal-audit.ts              | portal_audit_event   |
 | hl7-routes           | hl7/routing/registry.ts               | hl7_route            |
 | hl7-tenant-endpoints | hl7/tenant-endpoints.ts               | hl7_tenant_endpoint  |
 | hl7-message-events   | hl7/message-event-store.ts            | hl7_message_event    |
@@ -31,7 +31,7 @@ Create PG repos for 17 new tables from migration v60 and wire them to their in-m
 | discharge-plans      | routes/discharge-workflow.ts          | discharge_plan       |
 | mar-safety-events    | routes/emar/index.ts                  | mar_safety_event     |
 | device-alarm         | devices/alarm-store.ts                | device_alarm         |
-| plugin-registry       | services/plugin-sdk.ts                | plugin_registry      |
+| plugin-registry      | services/plugin-sdk.ts                | plugin_registry      |
 
 ---
 

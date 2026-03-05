@@ -6,24 +6,24 @@
 
 The billing subsystem uses a pluggable provider model:
 
-| Provider | Use case | `configuredForProduction` |
-|----------|----------|--------------------------|
-| `mock`   | Local dev / unit tests only | `false` |
-| `lago`   | Demo, pilot, production (OSS self-hosted Lago) | `true` |
+| Provider | Use case                                       | `configuredForProduction` |
+| -------- | ---------------------------------------------- | ------------------------- |
+| `mock`   | Local dev / unit tests only                    | `false`                   |
+| `lago`   | Demo, pilot, production (OSS self-hosted Lago) | `true`                    |
 
 ## Safety Rules
 
 ### Dev vs Demo vs Prod Rules
 
-| Environment | `BILLING_PROVIDER` | Mock allowed? | Startup behavior | `/billing/health` |
-|-------------|-------------------|---------------|------------------|--------------------|
-| **dev** (default) | unset (mock) | Yes | Loud warning logged | `provider: "mock"`, `warnings: [...]` |
-| **test** (CI) | unset (mock) | Yes | Loud warning logged | Same as dev |
-| **demo** (`DEPLOYMENT_STAGE=demo`) | Must be `lago` | No | Fail-fast startup error | `provider: "lago"`, `warnings: []` |
-| **pilot** (`DEPLOYMENT_STAGE=pilot`) | Must be `lago` | No | Fail-fast startup error | Same as demo |
-| **rc** (`PLATFORM_RUNTIME_MODE=rc`) | Must be `lago` | No | Fail-fast startup error | Same as demo |
-| **prod** (`PLATFORM_RUNTIME_MODE=prod`) | Must be `lago` | No | Fail-fast startup error | Same as demo |
-| **production** (`NODE_ENV=production`) | Must be `lago` | No | Fail-fast startup error | Same as demo |
+| Environment                             | `BILLING_PROVIDER` | Mock allowed? | Startup behavior        | `/billing/health`                     |
+| --------------------------------------- | ------------------ | ------------- | ----------------------- | ------------------------------------- |
+| **dev** (default)                       | unset (mock)       | Yes           | Loud warning logged     | `provider: "mock"`, `warnings: [...]` |
+| **test** (CI)                           | unset (mock)       | Yes           | Loud warning logged     | Same as dev                           |
+| **demo** (`DEPLOYMENT_STAGE=demo`)      | Must be `lago`     | No            | Fail-fast startup error | `provider: "lago"`, `warnings: []`    |
+| **pilot** (`DEPLOYMENT_STAGE=pilot`)    | Must be `lago`     | No            | Fail-fast startup error | Same as demo                          |
+| **rc** (`PLATFORM_RUNTIME_MODE=rc`)     | Must be `lago`     | No            | Fail-fast startup error | Same as demo                          |
+| **prod** (`PLATFORM_RUNTIME_MODE=prod`) | Must be `lago`     | No            | Fail-fast startup error | Same as demo                          |
+| **production** (`NODE_ENV=production`)  | Must be `lago`     | No            | Fail-fast startup error | Same as demo                          |
 
 > **Rule:** If ANY of the three env vars (`NODE_ENV`, `PLATFORM_RUNTIME_MODE`,
 > `DEPLOYMENT_STAGE`) indicates a non-dev environment, mock billing is
@@ -39,6 +39,7 @@ any of these conditions are true:
 - `DEPLOYMENT_STAGE=demo`, `pilot`, or `prod`
 
 The startup error includes:
+
 - What is wrong
 - Which env vars to set
 - Example configuration
@@ -125,19 +126,19 @@ curl -b cookies.txt http://localhost:3001/admin/billing/health
 
 ### Key fields
 
-| Field | Meaning |
-|-------|---------|
-| `provider` | `"mock"` or `"lago"` |
-| `healthy` | Provider is operational (mock: always true; lago: can reach API) |
-| `configuredForProduction` | `false` for mock; `true` for lago with API key |
-| `runtimeMode` | Current `PLATFORM_RUNTIME_MODE` value (dev/test/rc/prod) |
-| `mockForbiddenInCurrentMode` | `true` if mock would be blocked in this mode |
-| `warnings` | Array of warning strings (non-empty when mock is active) |
+| Field                        | Meaning                                                          |
+| ---------------------------- | ---------------------------------------------------------------- |
+| `provider`                   | `"mock"` or `"lago"`                                             |
+| `healthy`                    | Provider is operational (mock: always true; lago: can reach API) |
+| `configuredForProduction`    | `false` for mock; `true` for lago with API key                   |
+| `runtimeMode`                | Current `PLATFORM_RUNTIME_MODE` value (dev/test/rc/prod)         |
+| `mockForbiddenInCurrentMode` | `true` if mock would be blocked in this mode                     |
+| `warnings`                   | Array of warning strings (non-empty when mock is active)         |
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| API won't start: `BILLING MISCONFIGURATION` | Mock provider in non-dev env | Set `BILLING_PROVIDER=lago` + Lago credentials |
-| `/billing/health` returns `configuredForProduction: false` | Using mock provider | Switch to lago |
-| `/billing/health` returns `healthy: false` | Lago unreachable or bad API key | Check `LAGO_API_URL` and `LAGO_API_KEY` |
+| Symptom                                                    | Cause                           | Fix                                            |
+| ---------------------------------------------------------- | ------------------------------- | ---------------------------------------------- |
+| API won't start: `BILLING MISCONFIGURATION`                | Mock provider in non-dev env    | Set `BILLING_PROVIDER=lago` + Lago credentials |
+| `/billing/health` returns `configuredForProduction: false` | Using mock provider             | Switch to lago                                 |
+| `/billing/health` returns `healthy: false`                 | Lago unreachable or bad API key | Check `LAGO_API_URL` and `LAGO_API_KEY`        |

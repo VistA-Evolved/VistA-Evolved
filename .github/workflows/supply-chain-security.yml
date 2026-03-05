@@ -3,6 +3,10 @@ name: Supply Chain Security
 on:
   push:
     branches: [main]
+    paths:
+      - 'apps/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
   pull_request:
     branches: [main]
   schedule:

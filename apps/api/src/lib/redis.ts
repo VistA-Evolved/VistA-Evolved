@@ -84,7 +84,7 @@ export function isRedisAvailable(): boolean {
 export async function checkRateLimit(
   key: string,
   limit: number,
-  windowMs: number,
+  windowMs: number
 ): Promise<{ allowed: boolean; remaining: number; resetMs: number }> {
   if (!client || !connected) {
     return { allowed: true, remaining: limit, resetMs: 0 };
@@ -129,7 +129,7 @@ export async function checkRateLimit(
  */
 export async function acquireLock(
   lockKey: string,
-  ttlMs: number = 30_000,
+  ttlMs: number = 30_000
 ): Promise<(() => Promise<void>) | null> {
   if (!client || !connected) return null;
 
@@ -147,7 +147,9 @@ export async function acquireLock(
         if (current === lockValue) {
           await client!.del(fullKey);
         }
-      } catch { /* best effort release */ }
+      } catch {
+        /* best effort release */
+      }
     };
   } catch (err: any) {
     log.warn('Redis lock acquire failed', { error: err.message });
@@ -165,7 +167,7 @@ export async function acquireLock(
 export async function cacheSession(
   tokenHash: string,
   sessionJson: string,
-  ttlMs: number = 60_000,
+  ttlMs: number = 60_000
 ): Promise<void> {
   if (!client || !connected) return;
   try {
@@ -195,7 +197,9 @@ export async function invalidateCachedSession(tokenHash: string): Promise<void> 
   if (!client || !connected) return;
   try {
     await client.del(`sess:${tokenHash}`);
-  } catch { /* best effort */ }
+  } catch {
+    /* best effort */
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -217,7 +221,11 @@ function ensureSubClient(): Redis | null {
       const handlers = subscriptions.get(channel);
       if (handlers) {
         for (const handler of handlers) {
-          try { handler(channel, message); } catch { /* handler error */ }
+          try {
+            handler(channel, message);
+          } catch {
+            /* handler error */
+          }
         }
       }
     });
@@ -229,10 +237,7 @@ function ensureSubClient(): Redis | null {
 /**
  * Subscribe to a Redis pub/sub channel.
  */
-export async function subscribe(
-  channel: string,
-  handler: MessageHandler,
-): Promise<void> {
+export async function subscribe(channel: string, handler: MessageHandler): Promise<void> {
   const sub = ensureSubClient();
   if (!sub) return;
 
@@ -266,11 +271,19 @@ export async function publish(channel: string, message: string): Promise<void> {
 /** Gracefully disconnect Redis clients. */
 export async function disconnectRedis(): Promise<void> {
   if (client) {
-    try { await client.quit(); } catch { client.disconnect(); }
+    try {
+      await client.quit();
+    } catch {
+      client.disconnect();
+    }
     client = null;
   }
   if (subClient) {
-    try { await subClient.quit(); } catch { subClient.disconnect(); }
+    try {
+      await subClient.quit();
+    } catch {
+      subClient.disconnect();
+    }
     subClient = null;
   }
   connected = false;

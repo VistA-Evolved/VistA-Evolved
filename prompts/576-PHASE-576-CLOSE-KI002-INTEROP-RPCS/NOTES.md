@@ -13,14 +13,14 @@ Phase 155 unified installer was created.
 
 ## RPCs Covered
 
-| RPC Name | Tag^Routine | Function |
-|---|---|---|
-| VE INTEROP HL7 LINKS | LINKS^ZVEMIOP | HL7 logical link status from #870 |
-| VE INTEROP HL7 MSGS | MSGS^ZVEMIOP | HL7 message activity from #773 |
-| VE INTEROP HLO STATUS | HLOSTAT^ZVEMIOP | HLO app registry from #779.* |
-| VE INTEROP QUEUE DEPTH | QLENGTH^ZVEMIOP | Queue depth from #773/#778/#776 |
-| VE INTEROP MSG LIST | MSGLIST^ZVEMIOP | Message list from #773 |
-| VE INTEROP MSG DETAIL | MSGDETL^ZVEMIOP | Message detail from #773/#772 |
+| RPC Name               | Tag^Routine     | Function                          |
+| ---------------------- | --------------- | --------------------------------- |
+| VE INTEROP HL7 LINKS   | LINKS^ZVEMIOP   | HL7 logical link status from #870 |
+| VE INTEROP HL7 MSGS    | MSGS^ZVEMIOP    | HL7 message activity from #773    |
+| VE INTEROP HLO STATUS  | HLOSTAT^ZVEMIOP | HLO app registry from #779.\*     |
+| VE INTEROP QUEUE DEPTH | QLENGTH^ZVEMIOP | Queue depth from #773/#778/#776   |
+| VE INTEROP MSG LIST    | MSGLIST^ZVEMIOP | Message list from #773            |
+| VE INTEROP MSG DETAIL  | MSGDETL^ZVEMIOP | Message detail from #773/#772     |
 
 ## Observation
 

@@ -16,12 +16,14 @@ Update store-policy.ts so all migrated stores are pg_backed; fix Helm charts; wi
 **File:** `apps/api/src/platform/store-policy.ts`
 
 **Actions:**
+
 1. Change durability from `in_memory_only` to `pg_backed` for all migrated stores (Phases 576, 577)
 2. Add new stores to inventory
 3. `getCriticalInMemoryStores()` must return 0 in rc/prod mode
 4. Add Redis-backed stores as `redis_cached` (sessions, rate limiters, locks)
 
 **Stores to update:**
+
 - portal-access-logs, imaging-break-glass, telehealth-rooms
 - scheduling-booking-locks, scheduling-waitlist, intake-sessions
 - clinical-drafts, webhook-subscriptions, fhir-subscriptions
@@ -33,6 +35,7 @@ Update store-policy.ts so all migrated stores are pg_backed; fix Helm charts; wi
 ## Part B: Helm Fixes (Phase 12A)
 
 **Files:**
+
 - `infra/gitops/argocd/` — Replace YOUR-ORG placeholder with actual org
 - `infra/helm/ve-tenant/` — Add Redis to chart (currently only in ve-shared)
 - `ve-tenant/templates/api.yaml` — Pass `REDIS_URL`, `VISTA_POOL_SIZE`, `VISTA_MAX_POOL_TOTAL`
@@ -46,6 +49,7 @@ Update store-policy.ts so all migrated stores are pg_backed; fix Helm charts; wi
 **Files:** `.github/workflows/`
 
 **Actions:**
+
 1. Update `ci-pr-gates.yml` — Run `node qa/gauntlet/cli.mjs --suite fast` on every PR
 2. Update `ci.yml` — Run `--suite rc` on push to main
 3. Add `ci-gauntlet-full.yml` — Run `--suite full` nightly or on release branches
@@ -57,6 +61,7 @@ Update store-policy.ts so all migrated stores are pg_backed; fix Helm charts; wi
 ## Part D: Redis in docker-compose.prod.yml (Phase 12C)
 
 **Actions:**
+
 1. Add Redis service with persistence (AOF)
 2. Wire `REDIS_URL` to API service
 3. Add health check for Redis

@@ -453,36 +453,42 @@ export default async function ordersRoutes(server: FastifyInstance): Promise<voi
   // TODO: integration-pending — ORWDXA DC writes clinical data.
   // Expected params: [ORDER_IEN, PROVIDER_IEN, LOCATION_IEN, REASON_IEN]
   // Requires ORWDX LOCK ORDER before / ORWDX UNLOCK ORDER after.
-  server.post('/vista/orders/:oid/discontinue', async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const oid = (request.params as any)?.oid;
-    return reply.send({
-      ok: false,
-      source: 'vista',
-      error: 'integration-pending',
-      rpcUsed: [],
-      pendingTargets: ['ORWDXA DC'],
-      _integration: 'pending',
-      _hint: `ORWDXA DC writes clinical data for order ${oid} — requires VEHU validation`,
-    });
-  });
+  server.post(
+    '/vista/orders/:oid/discontinue',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const oid = (request.params as any)?.oid;
+      return reply.send({
+        ok: false,
+        source: 'vista',
+        error: 'integration-pending',
+        rpcUsed: [],
+        pendingTargets: ['ORWDXA DC'],
+        _integration: 'pending',
+        _hint: `ORWDXA DC writes clinical data for order ${oid} — requires VEHU validation`,
+      });
+    }
+  );
 
   // Phase 568: ORWDXA COMPLETE — Write: complete order
   // TODO: integration-pending — ORWDXA COMPLETE writes clinical data.
   // Expected params: [ORDER_IEN, ES_CODE]
-  server.post('/vista/orders/:oid/complete', async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
-    const oid = (request.params as any)?.oid;
-    return reply.send({
-      ok: false,
-      source: 'vista',
-      error: 'integration-pending',
-      rpcUsed: [],
-      pendingTargets: ['ORWDXA COMPLETE'],
-      _integration: 'pending',
-      _hint: `ORWDXA COMPLETE writes clinical data for order ${oid} — requires VEHU validation`,
-    });
-  });
+  server.post(
+    '/vista/orders/:oid/complete',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await requireSession(request, reply);
+      const oid = (request.params as any)?.oid;
+      return reply.send({
+        ok: false,
+        source: 'vista',
+        error: 'integration-pending',
+        rpcUsed: [],
+        pendingTargets: ['ORWDXA COMPLETE'],
+        _integration: 'pending',
+        _hint: `ORWDXA COMPLETE writes clinical data for order ${oid} — requires VEHU validation`,
+      });
+    }
+  );
 
   // Phase 568: ORWDXA FLAG — Write: flag order
   // TODO: integration-pending — ORWDXA FLAG writes clinical data.

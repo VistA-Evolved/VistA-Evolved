@@ -30,7 +30,7 @@ const verifyCode = process.env.VISTA_VERIFY_CODE || process.env.VISTA_VERIFY || 
 if (!accessCode || !verifyCode) {
   console.error(
     '\n  FAIL  Missing VistA credentials.\n' +
-    '  Set VISTA_ACCESS_CODE and VISTA_VERIFY_CODE in environment or .env.local\n'
+      '  Set VISTA_ACCESS_CODE and VISTA_VERIFY_CODE in environment or .env.local\n'
   );
   process.exit(2);
 }
@@ -40,12 +40,12 @@ if (!accessCode || !verifyCode) {
 /* ------------------------------------------------------------------ */
 
 const INTEROP_RPCS = [
-  { name: 'VE INTEROP HL7 LINKS',  params: ['5'],       tag: 'LINKS' },
-  { name: 'VE INTEROP HL7 MSGS',   params: ['24'],      tag: 'MSGS' },
-  { name: 'VE INTEROP HLO STATUS', params: [],           tag: 'HLOSTAT' },
-  { name: 'VE INTEROP QUEUE DEPTH', params: [],          tag: 'QLENGTH' },
-  { name: 'VE INTEROP MSG LIST',   params: ['*', '*', '5'], tag: 'MSGLIST' },
-  { name: 'VE INTEROP MSG DETAIL', params: ['1'],        tag: 'MSGDETL' },
+  { name: 'VE INTEROP HL7 LINKS', params: ['5'], tag: 'LINKS' },
+  { name: 'VE INTEROP HL7 MSGS', params: ['24'], tag: 'MSGS' },
+  { name: 'VE INTEROP HLO STATUS', params: [], tag: 'HLOSTAT' },
+  { name: 'VE INTEROP QUEUE DEPTH', params: [], tag: 'QLENGTH' },
+  { name: 'VE INTEROP MSG LIST', params: ['*', '*', '5'], tag: 'MSGLIST' },
+  { name: 'VE INTEROP MSG DETAIL', params: ['1'], tag: 'MSGDETL' },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -153,7 +153,7 @@ async function main() {
   } else {
     console.log(`\n  ${failCount} RPC(s) still failing. KI-002 remains open.\n`);
     console.log('  Failed RPCs:');
-    for (const r of results.filter(r => r.status === 'FAIL')) {
+    for (const r of results.filter((r) => r.status === 'FAIL')) {
       console.log(`    - ${r.name}: ${r.reason}`);
     }
     console.log('');

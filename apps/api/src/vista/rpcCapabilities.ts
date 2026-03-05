@@ -75,8 +75,7 @@ function isRpcMissing(response: string[]): boolean {
   const first = response[0] || '';
   // Match "Remote Procedure" or SPack-prefixed (any single char + "Remote Procedure")
   // followed by "doesn't exist" OR "doesn\u0027t exist" (HTML entity variant)
-  const rpcNotExist =
-    /^.?Remote Procedure .+ doesn(?:'|\\u0027)?t exist/i.test(first);
+  const rpcNotExist = /^.?Remote Procedure .+ doesn(?:'|\\u0027)?t exist/i.test(first);
   return rpcNotExist;
 }
 

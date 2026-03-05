@@ -174,8 +174,13 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
         noteTemplates: [],
         connectors: [],
         branding: body.branding ?? {
-          logoUrl: '', faviconUrl: '', primaryColor: '', secondaryColor: '',
-          headerText: '', footerText: '', enabled: false,
+          logoUrl: '',
+          faviconUrl: '',
+          primaryColor: '',
+          secondaryColor: '',
+          headerText: '',
+          footerText: '',
+          enabled: false,
         },
         countryPackId: body.countryPackId ?? 'US',
         locale: body.locale ?? 'en',
@@ -198,7 +203,11 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
       const skuProfile = getActiveSkuProfile();
       const skuModules = skuProfile?.modules || Object.keys(getModuleDefinitions());
       const seeded = await seedTenantModules(tenantId, skuModules, session.duz);
-      steps.push({ step: 'seed_module_entitlements', ok: true, detail: `${seeded} modules seeded` });
+      steps.push({
+        step: 'seed_module_entitlements',
+        ok: true,
+        detail: `${seeded} modules seeded`,
+      });
     } catch (err: any) {
       steps.push({ step: 'seed_module_entitlements', ok: false, detail: err?.message });
     }
@@ -224,7 +233,11 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
       const { getBillingProvider } = await import('../billing/types.js');
       const provider = getBillingProvider();
       if (provider) {
-        steps.push({ step: 'billing_customer', ok: true, detail: 'Deferred to subscription creation' });
+        steps.push({
+          step: 'billing_customer',
+          ok: true,
+          detail: 'Deferred to subscription creation',
+        });
       } else {
         steps.push({ step: 'billing_customer', ok: true, detail: 'No billing provider active' });
       }

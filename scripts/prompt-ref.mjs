@@ -119,7 +119,9 @@ function formatResult(phase) {
     `  Prefix:   ${prefix}`,
   ];
   if (wave) {
-    lines.push(`  Wave:     ${wave.wave}${wave.position !== null ? ` (position ${wave.position})` : ''}`);
+    lines.push(
+      `  Wave:     ${wave.wave}${wave.position !== null ? ` (position ${wave.position})` : ''}`
+    );
   }
   if (phase.implementFiles.length > 0) {
     lines.push(`  Implement: ${phase.implementFiles.join(', ')}`);
@@ -128,10 +130,14 @@ function formatResult(phase) {
     lines.push(`  Verify:    ${phase.verifyFiles.join(', ')}`);
   }
   if (phase.routes.length > 0) {
-    lines.push(`  Routes:    ${phase.routes.slice(0, 5).join(', ')}${phase.routes.length > 5 ? ` (+${phase.routes.length - 5} more)` : ''}`);
+    lines.push(
+      `  Routes:    ${phase.routes.slice(0, 5).join(', ')}${phase.routes.length > 5 ? ` (+${phase.routes.length - 5} more)` : ''}`
+    );
   }
   if (phase.rpcs.length > 0) {
-    lines.push(`  RPCs:      ${phase.rpcs.slice(0, 5).join(', ')}${phase.rpcs.length > 5 ? ` (+${phase.rpcs.length - 5} more)` : ''}`);
+    lines.push(
+      `  RPCs:      ${phase.rpcs.slice(0, 5).join(', ')}${phase.rpcs.length > 5 ? ` (+${phase.rpcs.length - 5} more)` : ''}`
+    );
   }
   return lines.join('\n');
 }
@@ -228,14 +234,7 @@ if (waveArg) {
 if (searchArg) {
   const terms = searchArg.toLowerCase().split(/\s+/);
   const matches = phases.filter((p) => {
-    const corpus = [
-      p.title,
-      p.folder,
-      p.phaseNumber,
-      ...p.routes,
-      ...p.rpcs,
-      ...p.filesTouched,
-    ]
+    const corpus = [p.title, p.folder, p.phaseNumber, ...p.routes, ...p.rpcs, ...p.filesTouched]
       .join(' ')
       .toLowerCase();
     return terms.every((t) => corpus.includes(t));
