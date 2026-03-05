@@ -1,7 +1,7 @@
 # Enterprise Readiness Matrix
 
-**Generated:** 2026-03-05T12:29:32.935Z  
-**Commit:** `97f61c10`  
+**Generated:** 2026-03-05T12:30:35.909Z  
+**Commit:** `e8b335b0`  
 **Generator:** `scripts/qa/generate-enterprise-readiness-matrix.mjs`
 
 > This matrix is the single source of truth for what VistA-Evolved can
