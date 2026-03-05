@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-05T11:16:52.584Z",
+  "generatedAt": "2026-03-05T12:24:57.567Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 573,
+  "phaseCount": 574,
   "phases": [
     {
       "phaseNumber": "1",
@@ -14455,6 +14455,33 @@
         "prompts/576-PHASE-576-CLOSE-KI002-INTEROP-RPCS/576-01-IMPLEMENT.md",
         "prompts/576-PHASE-576-CLOSE-KI002-INTEROP-RPCS/576-99-VERIFY.md",
         "prompts/576-PHASE-576-CLOSE-KI002-INTEROP-RPCS/NOTES.md"
+      ]
+    },
+    {
+      "phaseNumber": "577",
+      "title": "PHASE TOKEN RESOLUTION: SUBPHASES + CANONICAL MAP",
+      "folder": "577-PHASE-577-PHASE-TOKEN-ALIASING",
+      "files": [
+        "577-01-IMPLEMENT.md",
+        "577-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "577-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "577-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/qa/phase-comment-audit.mjs",
+        "scripts/prompt-ref.mjs",
+        "docs/qa/phase-canonical-map.json",
+        "docs/qa/phase-comment-audit.json",
+        "docs/qa/phase-comment-audit.md",
+        "prompts/577-PHASE-577-PHASE-TOKEN-ALIASING/NOTES.md"
       ]
     },
     {
