@@ -24,8 +24,8 @@
 
 **Endpoint:** `GET /vista/rpc-capabilities` (requires auth session)  
 **Total Probed:** 87 unique RPCs  
-**Available:** 82 (verified -- Phase 576 recovered 3 interop RPCs)  
-**Missing:** 5 (verified -- 0 cascade, all genuine)  
+**Available:** 87 (verified -- Phase 576 two-pass probe with readBuf fix)  
+**Missing:** 0  
 **Cascade "Not connected":** 0
 
 ### Available RPCs (64 confirmed + 17 recovered after fix + 3 interop recovered Phase 576)
@@ -67,28 +67,27 @@
 > not registered in the VEHU sandbox. But they will now be probed correctly
 > instead of showing false "Not connected" errors from the cascade.
 
-### True Missing RPCs (5 verified)
+### True Missing RPCs (0 verified -- all 87 now available)
 
-| RPC | Error | Category |
-|-----|-------|----------|
-| ORQQPL EDIT SAVE | "doesn't exist" | Expected -- known sandbox limitation |
-| ORWPCE LEXCODE | "doesn't exist" | RPC not registered in VEHU |
-| IBARXM QUERY ONLY | "doesn't exist" | RPC not registered in VEHU |
-| GMRIO RESULTS | "cannot be run at this time" | RPCs exists but runtime constraint |
-| ZVENAS SAVE | "-1^Patient not found" | RPC exists but needs valid patient param |
+Previous false negatives resolved by Phase 576 two-pass probe:
 
-> **Phase 576 Recovery:** VE INTEROP HL7 MSGS, VE INTEROP HLO STATUS, and
-> VE INTEROP QUEUE DEPTH were previously listed as missing due to an XWB
-> response buffering artifact (error messages referenced wrong RPC names).
-> Live verification with `verify-interop-rpcs.mjs` confirmed all 6 VE INTEROP
-> RPCs are registered (IENs 4690-4695), in context, and callable. KI-002 closed.
+| RPC | Previous Error | Fix |
+|-----|---------------|-----|
+| ORQQPL EDIT SAVE | "TIU SET RECORD TEXT doesn't exist" (wrong RPC) | Second-pass re-verify: RPC exists |
+| ORWPCE LEXCODE | "ORQQCN2 MED RESULTS doesn't exist" (wrong RPC) | Second-pass re-verify: RPC exists |
+| IBARXM QUERY ONLY | "ORWLRR ACK doesn't exist" (wrong RPC) | Second-pass re-verify: RPC exists |
+| GMRIO RESULTS | "IBD GET ALL PCE DATA cannot be run" (wrong RPC) | Second-pass re-verify: RPC exists |
+| ZVENAS SAVE | "-1^Patient not found" | Fixed isRpcMissing: "Patient not found" is not "RPC not found" |
+| VE INTEROP HL7 MSGS | "ORWORB UNSIG ORDERS doesn't exist" (wrong RPC) | Second-pass re-verify: RPC exists |
+| VE INTEROP HLO STATUS | "ORWCIRN FACILITIES doesn't exist" (wrong RPC) | Second-pass re-verify: RPC exists |
+| VE INTEROP QUEUE DEPTH | "RA DETAILED REPORT doesn't exist" (wrong RPC) | Second-pass re-verify: RPC exists |
 
-> **Note:** The missing RPC error messages may reference unexpected RPC names
-> (e.g., ORQQPL EDIT SAVE shows error about TIU SET RECORD TEXT). This is a known
-> XWB response buffering artifact where the previous RPC's rejection text leaks
-> into the next probe response. It does not affect correctness -- the RPC is still
-> correctly identified as unavailable. This is a pre-existing issue unrelated to
-> the Phase 568 cascade fix.
+> **Phase 576 Recovery (two-pass probe):** The capability probe now uses a
+> two-pass strategy: (1) bulk probe all 87 RPCs, then (2) re-verify any
+> "missing" RPCs individually on fresh disconnect+reconnect to eliminate
+> false negatives from XWB readBuf misalignment. Additionally, `isRpcMissing`
+> was tightened to only match genuine "RPC doesn't exist" errors, not things
+> like "Patient not found". Result: 87/87 available, 0 missing.
 
 ### RESOLVED: ZVEADT WARDS Cascade Failure
 

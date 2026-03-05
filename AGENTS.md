@@ -1609,6 +1609,15 @@ scripts/
      or without the flag for full Docker + TCP probing. Evidence written to
      `evidence/wave-36/512-W36-P3-VISTA-BASELINE-LANE/baseline-probe.json`.
      Added as optional G13 in `verify-rc.ps1`.
+185. **Capability probe uses two-pass strategy to eliminate false negatives
+     (Phase 576).** The XWB protocol readBuf accumulates misaligned bytes
+     when probing 87+ RPCs sequentially — some responses contain extra
+     framing that shifts all subsequent reads. The probe now: (1) bulk-probes
+     all RPCs, then (2) re-verifies any "missing" RPCs individually on a
+     fresh disconnect+reconnect. Each re-verify gets a clean readBuf.
+     Result: 87/87 available (was 79/87 before). Also tightened
+     `isRpcMissing()` to only match genuine "RPC doesn't exist" messages,
+     not data-level errors like "Patient not found".
 
 ## 8. Bug Tracker & Lessons Learned
 

@@ -15,7 +15,7 @@
  *   - TTL configurable via VISTA_CAPABILITY_TTL_MS env var (default: 5 min)
  */
 
-import { connect, disconnect, callRpc } from './rpcBrokerClient.js';
+import { connect, disconnect, callRpc, withBrokerLock } from './rpcBrokerClient.js';
 import { validateCredentials } from './config.js';
 
 /* ------------------------------------------------------------------ */
@@ -58,18 +58,26 @@ export interface RpcCheck {
 /* ------------------------------------------------------------------ */
 
 /**
- * Patterns that mean the RPC genuinely does NOT exist on the server.
- * Note: %YDB-E-LVUNDEF and "M  ERROR" with LVUNDEF indicate the RPC EXISTS
- * but was called with insufficient parameters — that's a positive availability
- * signal (the M routine ran). We only flag "doesn't exist" responses.
+ * Detect genuine "RPC doesn't exist" responses from VistA.
+ *
+ * VistA broker error format: "Remote Procedure '<name>' doesn't exist on the server."
+ * SPacked format prefixes the error with a length byte (e.g., 'C' = chr(67)).
+ *
+ * Must NOT match:
+ *   - "-1^Patient not found" (M routine ran — RPC is registered, just missing params)
+ *   - "M  ERROR" / "%YDB-E-LVUNDEF" (M runtime error — RPC exists, routine executed)
+ *   - "cannot be run at this time" (RPC exists but is locked/disabled)
+ *
+ * Only matches: "Remote Procedure '<name>' doesn't exist on the server."
+ * (optionally prefixed by XWB SPack length byte).
  */
-const RPC_NOT_FOUND_PATTERNS = ["doesn't exist", 'doesn\u0027t exist', 'not found'];
-
 function isRpcMissing(response: string[]): boolean {
   const first = response[0] || '';
-  // "CRemote Procedure 'X' doesn't exist" — server-level rejection
-  if (first.startsWith('CRemote')) return true;
-  return RPC_NOT_FOUND_PATTERNS.some((pat) => first.includes(pat));
+  // Match "Remote Procedure" or SPack-prefixed (any single char + "Remote Procedure")
+  // followed by "doesn't exist" OR "doesn\u0027t exist" (HTML entity variant)
+  const rpcNotExist =
+    /^.?Remote Procedure .+ doesn(?:'|\\u0027)?t exist/i.test(first);
+  return rpcNotExist;
 }
 
 /* ------------------------------------------------------------------ */
@@ -351,74 +359,103 @@ export async function discoverCapabilities(forceRefresh = false): Promise<Capabi
   // Deduplicate RPCs (TIU DOCUMENTS BY CONTEXT appears twice for different domains)
   const uniqueRpcs = [...new Set(KNOWN_RPCS.map((r) => r.rpc))];
 
+  // Phase 576: The XWB protocol uses a persistent readBuf that can accumulate
+  // stale bytes when probing 87+ RPCs sequentially. Some VistA RPC responses
+  // contain framing artifacts that cause readBuf misalignment: a single extra
+  // EOT byte in a response shifts ALL subsequent reads, producing false negatives
+  // where the probe reads the PREVIOUS RPC's response instead of the current one.
+  //
+  // Strategy: Run the main first-pass bulk probe, then re-verify any RPCs that
+  // appear "missing" individually on a fresh connection. Each re-verify uses
+  // disconnect()+connect() to guarantee a clean readBuf with zero contamination.
+  // This eliminates false negatives without needing to fix the XWB framing issue.
   try {
-    await connect();
+    await withBrokerLock(async () => {
+      // Force a fresh connection for the first pass
+      disconnect();
+      await connect();
 
-    for (const rpcName of uniqueRpcs) {
-      try {
-        // Probe with empty/minimal params — we only care about "exists" vs "doesn't exist"
-        const resp = await callRpc(rpcName, []);
-        if (isRpcMissing(resp)) {
-          rpcs[rpcName] = {
-            rpcName,
-            available: false,
-            error: resp[0]?.substring(0, 200),
-            probedAt,
-          };
-          missingList.push(rpcName);
-        } else {
-          // RPC exists — even if response contains M ERROR / LVUNDEF, the
-          // underlying routine ran, which means the RPC is registered.
-          rpcs[rpcName] = { rpcName, available: true, probedAt };
-          availableList.push(rpcName);
-        }
-      } catch (err: any) {
-        const errMsg = err.message || '';
-
-        // If the error indicates the socket was lost (e.g. an M crash in
-        // the RPC killed the broker session), reconnect and retry ONCE.
-        if (isSocketLostError(errMsg)) {
-          try {
-            disconnect(); // clean up dead socket state
-            await connect(); // fresh connection + auth + context
-            // Retry the same RPC exactly once
-            const retryResp = await callRpc(rpcName, []);
-            if (isRpcMissing(retryResp)) {
-              rpcs[rpcName] = {
-                rpcName,
-                available: false,
-                error: retryResp[0]?.substring(0, 200),
-                probedAt,
-              };
-              missingList.push(rpcName);
-            } else {
-              rpcs[rpcName] = { rpcName, available: true, probedAt };
-              availableList.push(rpcName);
-            }
-          } catch (retryErr: any) {
-            // Retry also failed — record as runtime error, not "missing"
+      // ---- First pass: bulk probe all RPCs ----
+      for (const rpcName of uniqueRpcs) {
+        try {
+          const resp = await callRpc(rpcName, []);
+          if (isRpcMissing(resp)) {
             rpcs[rpcName] = {
               rpcName,
               available: false,
-              error: `Socket lost + retry failed: ${retryErr.message?.substring(0, 150)}`,
+              error: resp[0]?.substring(0, 200),
+              probedAt,
+            };
+            missingList.push(rpcName);
+          } else {
+            rpcs[rpcName] = { rpcName, available: true, probedAt };
+            availableList.push(rpcName);
+          }
+        } catch (err: any) {
+          const errMsg = err.message || '';
+          if (isSocketLostError(errMsg)) {
+            try {
+              disconnect();
+              await connect();
+              const retryResp = await callRpc(rpcName, []);
+              if (isRpcMissing(retryResp)) {
+                rpcs[rpcName] = {
+                  rpcName,
+                  available: false,
+                  error: retryResp[0]?.substring(0, 200),
+                  probedAt,
+                };
+                missingList.push(rpcName);
+              } else {
+                rpcs[rpcName] = { rpcName, available: true, probedAt };
+                availableList.push(rpcName);
+              }
+            } catch (retryErr: any) {
+              rpcs[rpcName] = {
+                rpcName,
+                available: false,
+                error: `Socket lost + retry failed: ${retryErr.message?.substring(0, 150)}`,
+                probedAt,
+              };
+              missingList.push(rpcName);
+            }
+          } else {
+            rpcs[rpcName] = {
+              rpcName,
+              available: false,
+              error: errMsg.substring(0, 200),
               probedAt,
             };
             missingList.push(rpcName);
           }
-        } else {
-          // Non-socket error (timeout, etc.) — record as unavailable but don't reconnect
-          rpcs[rpcName] = {
-            rpcName,
-            available: false,
-            error: errMsg.substring(0, 200),
-            probedAt,
-          };
-          missingList.push(rpcName);
         }
       }
-    }
 
-    disconnect();
+      // ---- Second pass: re-verify "missing" RPCs individually ----
+      // Each re-check uses disconnect()+connect() to get a pristine socket
+      // with empty readBuf. This catches false negatives from XWB readBuf
+      // misalignment in the bulk first-pass probe.
+      if (missingList.length > 0) {
+        const recheck = [...missingList];
+        for (const rpcName of recheck) {
+          try {
+            disconnect();
+            await connect();
+            const resp = await callRpc(rpcName, []);
+            if (!isRpcMissing(resp)) {
+              // Second pass says it's available — override first-pass false negative
+              rpcs[rpcName] = { rpcName, available: true, probedAt };
+              missingList.splice(missingList.indexOf(rpcName), 1);
+              availableList.push(rpcName);
+            }
+          } catch {
+            // Re-check failed — keep the first-pass result
+          }
+        }
+      }
+
+      // Leave the connection open for subsequent API calls
+    });
   } catch (err: any) {
     // Connection-level failure — mark everything unknown
     disconnect();
