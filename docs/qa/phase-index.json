@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-05T08:35:11.104Z",
+  "generatedAt": "2026-03-05T10:44:08.094Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 570,
+  "phaseCount": 571,
   "phases": [
     {
       "phaseNumber": "1",
@@ -14375,6 +14375,30 @@
         "prompts/573-PHASE-573-CI-VEHU-SMOKE/573-01-IMPLEMENT.md",
         "prompts/573-PHASE-573-CI-VEHU-SMOKE/573-99-VERIFY.md",
         "prompts/573-PHASE-573-CI-VEHU-SMOKE/NOTES.md"
+      ]
+    },
+    {
+      "phaseNumber": "574",
+      "title": "QA Fast Truth Report Refresh",
+      "folder": "574-PHASE-574-QA-FAST-TRUTH-REPORT",
+      "files": [
+        "574-01-IMPLEMENT.md",
+        "574-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "574-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "574-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/qa/regenerate-gauntlet-fast-report.mjs",
+        "docs/QA_GAUNTLET_FAST_RESULTS.md",
+        "package.json"
       ]
     },
     {
