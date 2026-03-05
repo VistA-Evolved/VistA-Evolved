@@ -5,7 +5,9 @@
 **User:** PROGRAMMER,ONE (DUZ=1, PRO1234/PRO1234!!)  
 **Script:** `scripts/verify-vista.ts` (via `pnpm verify:vista`)  
 **Phase 568 Verifier:** `scripts/qa/verify-zveadt-fix.ts`  
-**KI-001 Status:** Closed (verified live 2026-03-05)
+**Phase 576 Verifier:** `scripts/qa/verify-interop-rpcs.mjs` (all 6 VE INTEROP RPCs)  
+**KI-001 Status:** Closed (verified live 2026-03-05)  
+**KI-002 Status:** Closed (verified live 2026-03-05 -- Phase 576)
 
 ## Summary: 6/6 PASS
 
@@ -22,11 +24,11 @@
 
 **Endpoint:** `GET /vista/rpc-capabilities` (requires auth session)  
 **Total Probed:** 87 unique RPCs  
-**Available:** 79 (verified)  
-**Missing:** 8 (verified -- 0 cascade, all genuine)  
+**Available:** 82 (verified -- Phase 576 recovered 3 interop RPCs)  
+**Missing:** 5 (verified -- 0 cascade, all genuine)  
 **Cascade "Not connected":** 0
 
-### Available RPCs (64 confirmed + 17 recovered after fix)
+### Available RPCs (64 confirmed + 17 recovered after fix + 3 interop recovered Phase 576)
 
 - ORWPT LIST ALL, ORWPT SELECT, ORQPT DEFAULT PATIENT LIST
 - ORQQAL LIST, ORWDAL32 ALLERGY MATCH, ORWDAL32 SAVE ALLERGY
@@ -45,7 +47,8 @@
 - ORWPCE SAVE, ORWPCE VISIT, ORWPCE GET VISIT, ORWPCE DIAG, ORWPCE PROC
 - ORWPCE PCE4NOTE, ORWPCE HASVISIT, ORWPCE GETSVC, ORWPCE4 LEX, ORWPCE ACTIVE CODE
 - IBCN INSURANCE QUERY, IBD GET ALL PCE DATA, IBD GET FORMSPEC, IBO MT LTC COPAY QUERY
-- VE INTEROP HL7 LINKS, VE INTEROP MSG LIST, VE INTEROP MSG DETAIL
+- VE INTEROP HL7 LINKS, VE INTEROP HL7 MSGS, VE INTEROP HLO STATUS
+- VE INTEROP QUEUE DEPTH, VE INTEROP MSG LIST, VE INTEROP MSG DETAIL
 - ZVE MAIL FOLDERS, ZVE MAIL LIST, ZVE MAIL GET, ZVE MAIL SEND, ZVE MAIL MANAGE
 - VE LIST RPCS, VE RCM PROVIDER INFO
 
@@ -64,18 +67,21 @@
 > not registered in the VEHU sandbox. But they will now be probed correctly
 > instead of showing false "Not connected" errors from the cascade.
 
-### True Missing RPCs (8 verified)
+### True Missing RPCs (5 verified)
 
 | RPC | Error | Category |
 |-----|-------|----------|
 | ORQQPL EDIT SAVE | "doesn't exist" | Expected -- known sandbox limitation |
 | ORWPCE LEXCODE | "doesn't exist" | RPC not registered in VEHU |
 | IBARXM QUERY ONLY | "doesn't exist" | RPC not registered in VEHU |
-| VE INTEROP HL7 MSGS | "doesn't exist" | Custom routine not installed |
-| VE INTEROP HLO STATUS | "doesn't exist" | Custom routine not installed |
-| VE INTEROP QUEUE DEPTH | "doesn't exist" | Custom routine not installed |
 | GMRIO RESULTS | "cannot be run at this time" | RPCs exists but runtime constraint |
 | ZVENAS SAVE | "-1^Patient not found" | RPC exists but needs valid patient param |
+
+> **Phase 576 Recovery:** VE INTEROP HL7 MSGS, VE INTEROP HLO STATUS, and
+> VE INTEROP QUEUE DEPTH were previously listed as missing due to an XWB
+> response buffering artifact (error messages referenced wrong RPC names).
+> Live verification with `verify-interop-rpcs.mjs` confirmed all 6 VE INTEROP
+> RPCs are registered (IENs 4690-4695), in context, and callable. KI-002 closed.
 
 > **Note:** The missing RPC error messages may reference unexpected RPC names
 > (e.g., ORQQPL EDIT SAVE shows error about TIU SET RECORD TEXT). This is a known
@@ -160,6 +166,12 @@ No `%YDB-E-VAREXPECTED` warning — clean compilation after `$G($ZERROR)` → `$
     VE INTEROP QUEUE DEPTH: BRemote Procedure 'RA DETAILED REPORT' doesn't exist
     GMRIO RESULTS: CRemote Procedure 'IBD GET ALL PCE DATA' cannot be run at this time.
     ZVENAS SAVE: -1^Patient not found
+
+  NOTE (Phase 576): The 3 VE INTEROP errors above were XWB response buffering
+  artifacts — the error messages reference WRONG RPC names (ORWORB UNSIG ORDERS,
+  ORWCIRN FACILITIES, RA DETAILED REPORT). Live verification with
+  verify-interop-rpcs.mjs confirmed all 6 VE INTEROP RPCs are callable.
+  Corrected count: Available=82, Missing=5.
 
 --- PART 2: Cascade Check ---
   PASS  ZVEADT WARDS: available

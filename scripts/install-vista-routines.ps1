@@ -278,11 +278,37 @@ if (-not $SkipVerify) {
     Write-Host "--- Step 6: Verification ---"
 
     # Check that key routines are callable
+    # Phase 576: expanded to test all 6 ZVEMIOP entry points (not just LINKS)
     $verifyTests = @(
         @{
-            Label   = "ZVEMIOP callable"
+            Label   = "ZVEMIOP LINKS callable"
             Command = "mumps -run %XCMD 'N R D LINKS^ZVEMIOP(.R,5) W R(0)'"
             Match   = "OK|0\^|\^"
+        },
+        @{
+            Label   = "ZVEMIOP MSGS callable"
+            Command = "mumps -run %XCMD 'N R D MSGS^ZVEMIOP(.R,24) W R(0)'"
+            Match   = "OK|NOT_AVAILABLE|\^"
+        },
+        @{
+            Label   = "ZVEMIOP HLOSTAT callable"
+            Command = "mumps -run %XCMD 'N R D HLOSTAT^ZVEMIOP(.R) W R(0)'"
+            Match   = "OK|NOT_AVAILABLE|\^"
+        },
+        @{
+            Label   = "ZVEMIOP QLENGTH callable"
+            Command = "mumps -run %XCMD 'N R D QLENGTH^ZVEMIOP(.R) W R(0)'"
+            Match   = "OK|NOT_AVAILABLE|\^"
+        },
+        @{
+            Label   = "ZVEMIOP MSGLIST callable"
+            Command = "mumps -run %XCMD 'N R D MSGLIST^ZVEMIOP(.R) W R(0)'"
+            Match   = "OK|NOT_AVAILABLE|\^"
+        },
+        @{
+            Label   = "ZVEMIOP MSGDETL callable"
+            Command = "mumps -run %XCMD 'N R D MSGDETL^ZVEMIOP(.R,1) W R(0)'"
+            Match   = "OK|NOT_FOUND|NOT_AVAILABLE|\^"
         },
         @{
             Label   = "ZVEMSGR callable"

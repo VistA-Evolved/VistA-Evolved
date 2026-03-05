@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-05T11:01:26.513Z",
+  "generatedAt": "2026-03-05T11:16:52.584Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 572,
+  "phaseCount": 573,
   "phases": [
     {
       "phaseNumber": "1",
@@ -14427,6 +14427,34 @@
         "scripts/verify-tier0.ps",
         "scripts/verify-tier0.sh",
         "docs/runbooks/runtime-lanes.md"
+      ]
+    },
+    {
+      "phaseNumber": "576",
+      "title": "Close KI-002: VE INTEROP RPC Availability (VEHU)",
+      "folder": "576-PHASE-576-CLOSE-KI002-INTEROP-RPCS",
+      "files": [
+        "576-01-IMPLEMENT.md",
+        "576-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "576-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "576-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/qa/verify-interop-rpcs.mjs",
+        "scripts/install-vista-routines.ps",
+        "docs/VISTA_CONNECTIVITY_RESULTS.md",
+        "docs/KNOWN_ISSUES.md",
+        "prompts/576-PHASE-576-CLOSE-KI002-INTEROP-RPCS/576-01-IMPLEMENT.md",
+        "prompts/576-PHASE-576-CLOSE-KI002-INTEROP-RPCS/576-99-VERIFY.md",
+        "prompts/576-PHASE-576-CLOSE-KI002-INTEROP-RPCS/NOTES.md"
       ]
     },
     {
