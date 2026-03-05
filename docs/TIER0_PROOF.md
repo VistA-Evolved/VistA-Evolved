@@ -28,17 +28,29 @@ outpatient workflow against a live VistA instance using real RPC Broker calls:
 
 ## Prerequisites
 
-1. **VistA Docker sandbox running** on port 9430:
+1. **VistA Docker sandbox running** -- pick a lane
+   (see [runtime-lanes.md](runbooks/runtime-lanes.md) for the full comparison):
+
+   **Lane A -- VEHU (recommended)**:
    ```bash
-   cd services/vista
-   docker compose --profile dev up -d
+   docker compose -f services/vista/docker-compose.yml --profile vehu up -d
    ```
-2. **API server running** on port 3001:
+   Default creds: `PRO1234` / `PRO1234!!` on port **9431**
+
+   **Lane B -- Legacy (worldvista-ehr)**:
+   ```bash
+   docker compose -f services/vista/docker-compose.yml --profile legacy up -d
+   ```
+   Default creds: `PROV123` / `PROV123!!` on port **9430**
+
+2. **Credentials configured** in `apps/api/.env.local` (see `.env.example`).
+   Always read creds from `.env.local` -- do not rely on script defaults.
+
+3. **API server running** on port 3001:
    ```bash
    cd apps/api
    npx tsx --env-file=.env.local src/index.ts
    ```
-3. **Credentials configured** in `apps/api/.env.local` (see `.env.example`)
 
 ## How to Run
 
@@ -150,9 +162,11 @@ FAIL  T0  Tier-0 Outpatient Proof
     FAIL  Fetch default patient list (VistA RPC) [500] 45ms
           -> Expected status 200, got 500
 ```
-- Verify VistA Docker is running: `docker ps --filter name=wv`
-- Check `.env.local` has correct credentials (PROV123 / PROV123!!)
-- Wait 15s after container start for port 9430 to be ready
+- Verify VistA Docker is running: `docker ps --filter name=vehu` (or `name=wv` for legacy)
+- Check `.env.local` has correct credentials for your lane:
+  - VEHU: `PRO1234` / `PRO1234!!` (port 9431)
+  - Legacy: `PROV123` / `PROV123!!` (port 9430)
+- Wait 15s after container start for the broker port to be ready
 - Check API logs for RPC Broker connection errors
 
 ### Missing fields in response

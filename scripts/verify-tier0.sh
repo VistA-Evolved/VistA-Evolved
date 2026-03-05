@@ -16,15 +16,60 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BASE_URL="http://127.0.0.1:3001"
 SKIP_DOCKER=false
+ACCESS_CODE=""
+VERIFY_CODE=""
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --base-url)  BASE_URL="$2"; shift 2 ;;
     --skip-docker) SKIP_DOCKER=true; shift ;;
+    --access-code) ACCESS_CODE="$2"; shift 2 ;;
+    --verify-code) VERIFY_CODE="$2"; shift 2 ;;
     *) echo "Unknown arg: $1"; exit 1 ;;
   esac
 done
+
+# -- Lane detection (Phase 575) -------------------------------------------
+DETECTED_LANE=""
+SWAP_JSON=$(curl -s --max-time 5 "$BASE_URL/vista/swap-boundary" 2>/dev/null || echo "")
+if [ -n "$SWAP_JSON" ]; then
+  # Extract instanceId from JSON (portable: no jq dependency)
+  DETECTED_LANE=$(echo "$SWAP_JSON" | grep -oP '"instanceId"\s*:\s*"[^"]*"' | head -1 | grep -oP ':\s*"\K[^"]+' || true)
+fi
+
+# Resolve credentials: arg > env > .env.local > lane-based default
+if [ -z "$ACCESS_CODE" ] && [ -n "${VISTA_ACCESS_CODE:-}" ]; then ACCESS_CODE="$VISTA_ACCESS_CODE"; fi
+if [ -z "$VERIFY_CODE" ] && [ -n "${VISTA_VERIFY_CODE:-}" ]; then VERIFY_CODE="$VISTA_VERIFY_CODE"; fi
+if [ -z "$ACCESS_CODE" ] || [ -z "$VERIFY_CODE" ]; then
+  ENV_FILE="$ROOT/apps/api/.env.local"
+  if [ -f "$ENV_FILE" ]; then
+    if [ -z "$ACCESS_CODE" ]; then
+      ACCESS_CODE=$(grep -E '^VISTA_ACCESS_CODE=' "$ENV_FILE" | head -1 | cut -d= -f2- || true)
+    fi
+    if [ -z "$VERIFY_CODE" ]; then
+      VERIFY_CODE=$(grep -E '^VISTA_VERIFY_CODE=' "$ENV_FILE" | head -1 | cut -d= -f2- || true)
+    fi
+  fi
+fi
+# Lane-based defaults (Phase 575)
+if [ -z "$ACCESS_CODE" ] || [ -z "$VERIFY_CODE" ]; then
+  case "$DETECTED_LANE" in
+    vehu)
+      [ -z "$ACCESS_CODE" ] && ACCESS_CODE="PRO1234"
+      [ -z "$VERIFY_CODE" ] && VERIFY_CODE="PRO1234!!"
+      ;;
+    worldvista-ehr|""|worldvista-docker-sandbox)
+      [ -z "$ACCESS_CODE" ] && ACCESS_CODE="PROV123"
+      [ -z "$VERIFY_CODE" ] && VERIFY_CODE="PROV123!!"
+      ;;
+    *)
+      echo "[ERROR] Unknown VistA lane '$DETECTED_LANE' and no credentials provided."
+      echo "  Supply --access-code / --verify-code, or set VISTA_ACCESS_CODE / VISTA_VERIFY_CODE."
+      exit 1
+      ;;
+  esac
+fi
 
 # Timestamps and artifact paths
 TS="$(date +%Y%m%d-%H%M%S)"
@@ -48,13 +93,18 @@ echo ""
 # -- Gate 1: Docker check (optional) -------------------------------------
 if [ "$SKIP_DOCKER" = false ]; then
   echo "--- Gate 1: Docker VistA container ---"
+  if [ -n "$DETECTED_LANE" ]; then
+    echo "  Detected lane: $DETECTED_LANE (via /vista/swap-boundary)"
+  fi
   if command -v docker &>/dev/null; then
-    DOCKER_OUT=$(docker ps --filter "name=wv" --format "{{.Names}}: {{.Status}}" 2>/dev/null || true)
-    if echo "$DOCKER_OUT" | grep -q "wv"; then
+    DOCKER_OUT_WV=$(docker ps --filter "name=wv" --format "{{.Names}}: {{.Status}}" 2>/dev/null || true)
+    DOCKER_OUT_VEHU=$(docker ps --filter "name=vehu" --format "{{.Names}}: {{.Status}}" 2>/dev/null || true)
+    if echo "$DOCKER_OUT_WV" | grep -q "wv" || echo "$DOCKER_OUT_VEHU" | grep -q "vehu"; then
       echo "  [PASS] VistA container running"
-      echo "  $DOCKER_OUT"
+      [ -n "$DOCKER_OUT_VEHU" ] && echo "$DOCKER_OUT_VEHU" | grep -q "vehu" && echo "  $DOCKER_OUT_VEHU"
+      [ -n "$DOCKER_OUT_WV" ] && echo "$DOCKER_OUT_WV" | grep -q "wv" && echo "  $DOCKER_OUT_WV"
     else
-      echo "  [WARN] VistA container not found"
+      echo "  [WARN] VistA container not found (checked both 'wv' and 'vehu')"
     fi
   else
     echo "  [WARN] Docker not available"
@@ -88,7 +138,7 @@ if [ ! -f "$RUNNER" ]; then
   EXIT_CODE=1
 else
   set +e
-  node "$RUNNER" --base-url "$BASE_URL" --journey T0 --artifact-name "$ARTIFACT_NAME"
+  node "$RUNNER" --base-url "$BASE_URL" --journey T0 --artifact-name "$ARTIFACT_NAME" --access-code "$ACCESS_CODE" --verify-code "$VERIFY_CODE"
   RUNNER_EXIT=$?
   set -e
 

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-05T10:44:08.094Z",
+  "generatedAt": "2026-03-05T11:01:26.513Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 571,
+  "phaseCount": 572,
   "phases": [
     {
       "phaseNumber": "1",
@@ -14399,6 +14399,34 @@
         "scripts/qa/regenerate-gauntlet-fast-report.mjs",
         "docs/QA_GAUNTLET_FAST_RESULTS.md",
         "package.json"
+      ]
+    },
+    {
+      "phaseNumber": "575",
+      "title": "Tier-0 + Runtime-Lane Consistency",
+      "folder": "575-PHASE-575-TIER0-LANE-CONSISTENCY",
+      "files": [
+        "575-01-IMPLEMENT.md",
+        "575-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "575-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "575-99-VERIFY.md"
+      ],
+      "routes": [
+        "/vista/swap-boundary"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/vista/swap-boundary.ts",
+        "docs/TIER0_PROOF.md",
+        "scripts/verify-tier0.ps",
+        "scripts/verify-tier0.sh",
+        "docs/runbooks/runtime-lanes.md"
       ]
     },
     {

@@ -5,10 +5,10 @@
 
 | Field | Value |
 |-------|-------|
-| Generated | 2026-03-05T10:44:33.551Z |
-| Commit | `2e510200` |
+| Generated | 2026-03-05T11:04:02.737Z |
+| Commit | `f42e6a4f` |
 | Suite | fast |
-| Duration | 19.9s |
+| Duration | 19.3s |
 | Verdict | **PASS (with warnings)** |
 
 ## Summary
@@ -25,11 +25,11 @@
 
 | # | Gate | Status | Duration |
 |---|------|--------|----------|
-| 1 | Prompts Integrity | PASS | 735ms |
-| 2 | Build + TypeCheck | PASS | 12023ms |
-| 3 | Unit Tests | PASS | 3833ms |
-| 4 | Security Scans | WARN | 3319ms |
-| 5 | Contract Alignment | PASS | 2ms |
+| 1 | Prompts Integrity | PASS | 542ms |
+| 2 | Build + TypeCheck | PASS | 10479ms |
+| 3 | Unit Tests | PASS | 3759ms |
+| 4 | Security Scans | WARN | 4531ms |
+| 5 | Contract Alignment | PASS | 1ms |
 
 ## Gate Details
 
@@ -77,5 +77,5 @@
 ## Raw Artifacts
 
 - Machine output: `artifacts/qa-gauntlet.json`
-- Run timestamp: 2026-03-05T10:44:33.551Z
-- Git SHA: `2e510200`
+- Run timestamp: 2026-03-05T11:04:02.737Z
+- Git SHA: `f42e6a4f`

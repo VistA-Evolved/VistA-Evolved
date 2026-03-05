@@ -23,7 +23,22 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Continue"
 $root = Split-Path -Parent $PSScriptRoot
 
-# Resolve credentials: param > env > .env.local > default (PROV123)
+# -- Lane detection (Phase 575) -------------------------------------------
+# Try to detect which VistA lane is active via /vista/swap-boundary
+$detectedLane = ""
+try {
+  $swapResp = Invoke-WebRequest -Uri "$BaseUrl/vista/swap-boundary" -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
+  if ($swapResp.StatusCode -eq 200) {
+    $swapJson = $swapResp.Content | ConvertFrom-Json
+    if ($swapJson.boundary.instanceId) {
+      $detectedLane = $swapJson.boundary.instanceId
+    }
+  }
+} catch {
+  # API may not be running yet -- fall through to credential defaults
+}
+
+# Resolve credentials: param > env > .env.local > lane-based default
 if (-not $AccessCode) { $AccessCode = $env:VISTA_ACCESS_CODE }
 if (-not $VerifyCode) { $VerifyCode = $env:VISTA_VERIFY_CODE }
 if ((-not $AccessCode) -or (-not $VerifyCode)) {
@@ -39,8 +54,23 @@ if ((-not $AccessCode) -or (-not $VerifyCode)) {
     }
   }
 }
-if (-not $AccessCode) { $AccessCode = "PROV123" }
-if (-not $VerifyCode) { $VerifyCode = "PROV123!!" }
+# Lane-based defaults (Phase 575)
+if (-not $AccessCode -or -not $VerifyCode) {
+  if ($detectedLane -eq "vehu") {
+    if (-not $AccessCode) { $AccessCode = "PRO1234" }
+    if (-not $VerifyCode) { $VerifyCode = "PRO1234!!" }
+  } elseif ($detectedLane -eq "worldvista-ehr" -or $detectedLane -eq "" -or $detectedLane -eq "worldvista-docker-sandbox") {
+    if (-not $AccessCode) { $AccessCode = "PROV123" }
+    if (-not $VerifyCode) { $VerifyCode = "PROV123!!" }
+  } else {
+    # Unknown lane -- refuse to guess
+    if (-not $AccessCode -or -not $VerifyCode) {
+      Write-Host "[ERROR] Unknown VistA lane '$detectedLane' and no credentials provided."
+      Write-Host "  Supply -AccessCode / -VerifyCode, or set VISTA_ACCESS_CODE / VISTA_VERIFY_CODE env vars."
+      exit 1
+    }
+  }
+}
 
 # -- Artifact setup ----------------------------------------------------------
 $ts = Get-Date -Format "yyyyMMdd-HHmmss"
@@ -69,13 +99,18 @@ $exitCode = 0
 # -- Gate 1: Docker check (optional) -------------------------------------
 if (-not $SkipDocker) {
   Log "--- Gate 1: Docker VistA container ---"
+  if ($detectedLane) {
+    Log "  Detected lane: $detectedLane (via /vista/swap-boundary)"
+  }
   try {
-    $dockerOut = docker ps --filter "name=wv" --format "{{.Names}}: {{.Status}}" 2>&1 | Out-String
-    if ($dockerOut -match "wv") {
+    $dockerOutWv = docker ps --filter "name=wv" --format "{{.Names}}: {{.Status}}" 2>&1 | Out-String
+    $dockerOutVehu = docker ps --filter "name=vehu" --format "{{.Names}}: {{.Status}}" 2>&1 | Out-String
+    if ($dockerOutWv -match "wv" -or $dockerOutVehu -match "vehu") {
       Log "  [PASS] VistA container running"
-      Log "  $($dockerOut.Trim())"
+      if ($dockerOutVehu -match "vehu") { Log "  $($dockerOutVehu.Trim())" }
+      if ($dockerOutWv -match "wv") { Log "  $($dockerOutWv.Trim())" }
     } else {
-      Log "  [WARN] VistA container not found (journey may fail if VistA RPCs are needed)"
+      Log "  [WARN] VistA container not found (checked both 'wv' and 'vehu')"
     }
   } catch {
     Log "  [WARN] Docker not available: $($_.Exception.Message)"

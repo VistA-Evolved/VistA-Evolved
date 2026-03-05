@@ -146,11 +146,43 @@ function parsePort(fallback: number): number {
 
 // ---- Factory Functions ----
 
-/** Build a swap boundary descriptor for the dev sandbox */
-export function devSandboxBoundary(): VistaSwapBoundary {
+// Phase 575: Explicit lane boundary factories matching docs/runbooks/runtime-lanes.md
+
+/** Build a swap boundary descriptor for the VEHU sandbox (Lane A, recommended) */
+export function vehuSandboxBoundary(): VistaSwapBoundary {
   return {
-    instanceId: 'worldvista-docker-sandbox',
-    label: 'WorldVistA Docker Sandbox',
+    instanceId: 'vehu',
+    label: 'WorldVistA VEHU Sandbox',
+    contractVersion: '1.0.0',
+    connection: {
+      host: process.env.VISTA_HOST || '127.0.0.1',
+      port: parsePort(9431),
+      protocol: 'xwb',
+    },
+    capabilities: {
+      tcpProbe: true,
+      rpcAuth: true,
+      cprsContext: true,
+      rpcRead: true,
+    },
+    security: {
+      credentialSource: 'env',
+      hasDefaultCredentials: true, // VEHU ships with demo creds (see runtime-lanes.md)
+      sshExposed: true, // VEHU exposes SSH on port 2223
+      brokerBind: '0.0.0.0',
+    },
+    probes: {
+      readiness: { type: 'tcp', port: parsePort(9431) },
+      liveness: { type: 'rpc', rpcName: 'XUS SIGNON SETUP' },
+    },
+  };
+}
+
+/** Build a swap boundary descriptor for the legacy WorldVistA EHR sandbox (Lane B) */
+export function worldvistaEhrBoundary(): VistaSwapBoundary {
+  return {
+    instanceId: 'worldvista-ehr',
+    label: 'WorldVistA EHR Docker Sandbox',
     contractVersion: '1.0.0',
     connection: {
       host: process.env.VISTA_HOST || '127.0.0.1',
@@ -165,8 +197,8 @@ export function devSandboxBoundary(): VistaSwapBoundary {
     },
     security: {
       credentialSource: 'env',
-      hasDefaultCredentials: true, // WorldVistA ships with sandbox demo accounts
-      sshExposed: true, // WorldVistA exposes port 22
+      hasDefaultCredentials: true, // Legacy image ships with demo creds (see runtime-lanes.md)
+      sshExposed: true, // Exposes SSH on port 2222
       brokerBind: '0.0.0.0',
     },
     probes: {
@@ -176,7 +208,12 @@ export function devSandboxBoundary(): VistaSwapBoundary {
   };
 }
 
-/** Build a swap boundary descriptor for the distro lane */
+/** @deprecated Use worldvistaEhrBoundary() -- kept for backward compatibility */
+export function devSandboxBoundary(): VistaSwapBoundary {
+  return worldvistaEhrBoundary();
+}
+
+/** Build a swap boundary descriptor for the distro lane (Lane D, production) */
 export function distroLaneBoundary(): VistaSwapBoundary {
   return {
     instanceId: 'vista-distro-lane',
@@ -206,19 +243,55 @@ export function distroLaneBoundary(): VistaSwapBoundary {
   };
 }
 
-/** Get the active swap boundary based on current env config */
+/**
+ * Get the active swap boundary based on current env config.
+ *
+ * Resolution order:
+ * 1. VISTA_INSTANCE_ID env var (explicit lane selection)
+ * 2. VISTA_PORT heuristic (9431->vehu, 9430->worldvista-ehr, 9210->worldvista-ehr)
+ * 3. Default: worldvista-ehr (legacy behavior)
+ *
+ * Phase 575: Port 9431 now maps to VEHU (the common dev case), not distro.
+ * Set VISTA_INSTANCE_ID=vista-distro-lane explicitly for production distro.
+ */
 export function activeSwapBoundary(): VistaSwapBoundary {
-  const port = parsePort(9430);
-  // Heuristic: port 9431 = distro lane, 9430 = dev sandbox
-  // In practice, the VISTA_INSTANCE_ID env var is more reliable
-  const instanceId =
-    process.env.VISTA_INSTANCE_ID ||
-    (port === 9431 ? 'vista-distro-lane' : 'worldvista-docker-sandbox');
+  const explicitId = process.env.VISTA_INSTANCE_ID;
 
-  if (instanceId === 'vista-distro-lane') {
-    return distroLaneBoundary();
+  if (explicitId) {
+    switch (explicitId) {
+      case 'vehu':
+        return vehuSandboxBoundary();
+      case 'worldvista-ehr':
+        return worldvistaEhrBoundary();
+      case 'vista-distro-lane':
+        return distroLaneBoundary();
+      default: {
+        // Unknown instance ID -- return a boundary with the given ID but
+        // reasonable defaults. Consumers should check instanceId.
+        const base = worldvistaEhrBoundary();
+        return {
+          ...base,
+          instanceId: explicitId,
+          label: `Custom VistA Instance (${explicitId})`,
+          security: { ...base.security, hasDefaultCredentials: false },
+        };
+      }
+    }
   }
-  return devSandboxBoundary();
+
+  // Port-based heuristic when no explicit instance ID is set
+  const port = parsePort(9430);
+  switch (port) {
+    case 9431:
+      return vehuSandboxBoundary();
+    case 9430:
+      return worldvistaEhrBoundary();
+    case 9210:
+      // Compose lane (Lane C) uses worldvista-ehr image on port 9210
+      return { ...worldvistaEhrBoundary(), connection: { ...worldvistaEhrBoundary().connection, port: 9210 }, probes: { ...worldvistaEhrBoundary().probes, readiness: { type: 'tcp', port: 9210 } } };
+    default:
+      return worldvistaEhrBoundary();
+  }
 }
 
 /**

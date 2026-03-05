@@ -234,6 +234,31 @@ VISTA_VERIFY_CODE=<injected_verify_code>
 
 ---
 
+## `VISTA_INSTANCE_ID` Values
+
+Set `VISTA_INSTANCE_ID` in `apps/api/.env.local` to explicitly tell the API
+which lane it is connected to. This overrides the port-based heuristic in
+`activeSwapBoundary()` ([swap-boundary.ts](../../apps/api/src/vista/swap-boundary.ts)).
+
+| Value | Lane | Default Port | Default Creds |
+|-------|------|-------------|---------------|
+| `vehu` | A -- VEHU | 9431 | PRO1234 / PRO1234!! |
+| `worldvista-ehr` | B -- Legacy | 9430 | PROV123 / PROV123!! |
+| _(not set, port 9210)_ | C -- Compose | 9210 | PROV123 / PROV123!! |
+| `vista-distro-lane` | D -- Distro | 9431 | _(injected)_ |
+
+**If `VISTA_INSTANCE_ID` is not set**, the API uses port-based heuristics:
+- Port 9431 -> `vehu` (the most common dev case)
+- Port 9430 -> `worldvista-ehr`
+- Port 9210 -> `worldvista-ehr` (compose lane)
+- Other -> `worldvista-ehr` (legacy default)
+
+**To use the distro lane on port 9431**, you must set
+`VISTA_INSTANCE_ID=vista-distro-lane` explicitly, because port 9431 defaults
+to VEHU.
+
+---
+
 ## Switching Between Lanes
 
 1. Stop the current lane: `docker compose down` (in the lane's compose directory)
