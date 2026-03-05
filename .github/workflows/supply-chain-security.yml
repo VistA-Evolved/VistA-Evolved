@@ -151,7 +151,7 @@ jobs:
           name: sbom-artifacts
 
       - name: Install Grype
-        uses: anchore/scan-action/download-grype@v4
+        uses: anchore/scan-action/download-grype@v7
 
       - name: Scan API SBOM
         run: |
