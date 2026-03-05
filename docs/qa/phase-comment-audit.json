@@ -1,15 +1,16 @@
 {
-  "generatedAt": "2026-03-04T16:50:07.544Z",
+  "generatedAt": "2026-03-05T12:23:24.509Z",
   "generator": "scripts/qa/phase-comment-audit.mjs",
   "summary": {
-    "totalPhaseTokens": 545,
-    "totalPhaseRefs": 6715,
-    "resolved": 461,
-    "unresolved": 80,
+    "totalPhaseTokens": 550,
+    "totalPhaseRefs": 6738,
+    "resolved": 466,
+    "resolvedViaBasePhase": 78,
+    "unresolved": 2,
     "ambiguous": 4,
     "totalWaveTokens": 38,
     "totalWaveRefs": 513,
-    "filesScanned": 2096
+    "filesScanned": 2110
   },
   "top50MostReferenced": [
     {
@@ -64,7 +65,7 @@
     },
     {
       "token": "132",
-      "refCount": 58,
+      "refCount": 59,
       "resolvedTo": "136-PHASE-132-CSRF-SYNC-TOKEN"
     },
     {
@@ -148,6 +149,11 @@
       "resolvedTo": "130-PHASE-126-RCM-DURABILITY-PG"
     },
     {
+      "token": "568",
+      "refCount": 39,
+      "resolvedTo": "568-PHASE-568-ZVEADT-CRASH-FIX"
+    },
+    {
       "token": "16",
       "refCount": 38,
       "resolvedTo": "18-PHASE-16-PRODUCTION-READINESS"
@@ -166,11 +172,6 @@
       "token": "101",
       "refCount": 36,
       "resolvedTo": "105-PHASE-101-PLATFORM-DATA-LAYER"
-    },
-    {
-      "token": "568",
-      "refCount": 35,
-      "resolvedTo": "568-PHASE-568-ZVEADT-CRASH-FIX"
     },
     {
       "token": "128",
@@ -265,98 +266,6 @@
   ],
   "unresolvedTokens": [
     {
-      "token": "14D",
-      "refCount": 17,
-      "matchingFolders": [],
-      "folderCount": 0,
-      "sampleRefs": [
-        {
-          "file": "apps/api/src/routes/imaging.ts",
-          "line": 2,
-          "context": "* Imaging Viewer Integration — Phase 14D."
-        },
-        {
-          "file": "apps/api/src/server/register-routes.ts",
-          "line": 375,
-          "context": "// Imaging domain (Phase 14D, 22, 23, 24, 81)"
-        },
-        {
-          "file": "apps/api/src/services/imaging-service.ts",
-          "line": 4,
-          "context": "* Enhances Phase 14D imaging routes with enterprise capabilities:"
-        }
-      ]
-    },
-    {
-      "token": "15B",
-      "refCount": 15,
-      "matchingFolders": [],
-      "folderCount": 0,
-      "sampleRefs": [
-        {
-          "file": "apps/api/src/auth/auth-routes.ts",
-          "line": 248,
-          "context": "// Rotate session token to prevent fixation (Phase 15B)"
-        },
-        {
-          "file": "apps/api/src/auth/auth-routes.ts",
-          "line": 287,
-          "context": "// Phase 15B: Do NOT expose token in response body — cookie-only transport"
-        },
-        {
-          "file": "apps/api/src/lib/rpc-resilience.ts",
-          "line": 2,
-          "context": "* RPC Resilience Layer — Phase 15B."
-        }
-      ]
-    },
-    {
-      "token": "5D",
-      "refCount": 13,
-      "matchingFolders": [],
-      "folderCount": 0,
-      "sampleRefs": [
-        {
-          "file": "apps/web/src/app/patient-search/page.tsx",
-          "line": 594,
-          "context": "{/* Phase 5D: Add Allergy form */}"
-        },
-        {
-          "file": "scripts/verify-phase1-to-phase5b.ps1",
-          "line": 5,
-          "context": "Verifies phases from Hello System through Phase 5D Add Allergy (CRUD)."
-        },
-        {
-          "file": "scripts/verify-phase1-to-phase5b.ps1",
-          "line": 432,
-          "context": "Write-Phase \"PHASE 5D\" \"Add Allergy (First Write / CRUD)\""
-        }
-      ]
-    },
-    {
-      "token": "25D",
-      "refCount": 10,
-      "matchingFolders": [],
-      "folderCount": 0,
-      "sampleRefs": [
-        {
-          "file": "apps/api/src/services/support-ops-service.ts",
-          "line": 331,
-          "context": "{ id: \"rb-004\", title: \"Analytics Octo/ROcto\", path: \"docs/runbooks/analytics-octo-rocto.md\", category: \"analytics\", pha"
-        },
-        {
-          "file": "services/analytics/docker-compose.yml",
-          "line": 1,
-          "context": "# Analytics SQL Layer — Phase 25D"
-        },
-        {
-          "file": "services/analytics/octo-seed.sql",
-          "line": 1,
-          "context": "-- Analytics SQL Schema — Phase 25D"
-        }
-      ]
-    },
-    {
       "token": "4",
       "refCount": 10,
       "matchingFolders": [],
@@ -380,6 +289,138 @@
       ]
     },
     {
+      "token": "0",
+      "refCount": 2,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "docs/SESSION_LOG.md",
+          "line": 318,
+          "context": "### Phase 0: Environment Verification"
+        },
+        {
+          "file": "docs/SESSION_LOG.md",
+          "line": 324,
+          "context": "### Phase 0: VistA Routine Installation"
+        }
+      ]
+    }
+  ],
+  "resolvedViaBasePhaseTokens": [
+    {
+      "token": "14D",
+      "refCount": 17,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/imaging.ts",
+          "line": 2,
+          "context": "* Imaging Viewer Integration — Phase 14D."
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 375,
+          "context": "// Imaging domain (Phase 14D, 22, 23, 24, 81)"
+        },
+        {
+          "file": "apps/api/src/services/imaging-service.ts",
+          "line": 4,
+          "context": "* Enhances Phase 14D imaging routes with enterprise capabilities:"
+        }
+      ],
+      "basePhase": "14",
+      "baseFolders": [
+        "16-PHASE-14-PARITY-CLOSURE"
+      ],
+      "resolvedVia": "basePhase"
+    },
+    {
+      "token": "15B",
+      "refCount": 15,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/auth/auth-routes.ts",
+          "line": 248,
+          "context": "// Rotate session token to prevent fixation (Phase 15B)"
+        },
+        {
+          "file": "apps/api/src/auth/auth-routes.ts",
+          "line": 287,
+          "context": "// Phase 15B: Do NOT expose token in response body — cookie-only transport"
+        },
+        {
+          "file": "apps/api/src/lib/rpc-resilience.ts",
+          "line": 2,
+          "context": "* RPC Resilience Layer — Phase 15B."
+        }
+      ],
+      "basePhase": "15",
+      "baseFolders": [
+        "17-PHASE-15-ENTERPRISE-HARDENING"
+      ],
+      "resolvedVia": "basePhase"
+    },
+    {
+      "token": "5D",
+      "refCount": 13,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/patient-search/page.tsx",
+          "line": 594,
+          "context": "{/* Phase 5D: Add Allergy form */}"
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase5b.ps1",
+          "line": 5,
+          "context": "Verifies phases from Hello System through Phase 5D Add Allergy (CRUD)."
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase5b.ps1",
+          "line": 432,
+          "context": "Write-Phase \"PHASE 5D\" \"Add Allergy (First Write / CRUD)\""
+        }
+      ],
+      "basePhase": "5",
+      "baseFolders": [
+        "07-PHASE-5-CORE-CLINICAL-WORKFLOW"
+      ],
+      "resolvedVia": "basePhase"
+    },
+    {
+      "token": "25D",
+      "refCount": 10,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/services/support-ops-service.ts",
+          "line": 331,
+          "context": "{ id: \"rb-004\", title: \"Analytics Octo/ROcto\", path: \"docs/runbooks/analytics-octo-rocto.md\", category: \"analytics\", pha"
+        },
+        {
+          "file": "services/analytics/docker-compose.yml",
+          "line": 1,
+          "context": "# Analytics SQL Layer — Phase 25D"
+        },
+        {
+          "file": "services/analytics/octo-seed.sql",
+          "line": 1,
+          "context": "-- Analytics SQL Schema — Phase 25D"
+        }
+      ],
+      "basePhase": "25",
+      "baseFolders": [
+        "27-PHASE-25-BI-ANALYTICS"
+      ],
+      "resolvedVia": "basePhase"
+    },
+    {
       "token": "15C",
       "refCount": 9,
       "matchingFolders": [],
@@ -400,7 +441,12 @@
           "line": 360,
           "context": "// Phase 15C: Audit logout"
         }
-      ]
+      ],
+      "basePhase": "15",
+      "baseFolders": [
+        "17-PHASE-15-ENTERPRISE-HARDENING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "68B",
@@ -423,7 +469,12 @@
           "line": 969,
           "context": "pendingNote: 'BCMA/PSB package not available in WorldVistA sandbox -- deferred to Phase 68B',"
         }
-      ]
+      ],
+      "basePhase": "68",
+      "baseFolders": [
+        "74-PHASE-68-NURSING-WORKFLOW"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "17A",
@@ -446,7 +497,12 @@
           "line": 2589,
           "context": "-- Replaces in-memory Map store from Phase 17A with DB-backed persistence."
         }
-      ]
+      ],
+      "basePhase": "17",
+      "baseFolders": [
+        "19-PHASE-17-MULTITENANT-CONTROL-PLANE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "6A",
@@ -469,7 +525,12 @@
           "line": 7,
           "context": "> **Last updated**: 2026-02-11 (Phase 6A complete)"
         }
-      ]
+      ],
+      "basePhase": "6",
+      "baseFolders": [
+        "08-PHASE-6-VITALS"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "5B",
@@ -492,7 +553,12 @@
           "line": 381,
           "context": "if (-not $ready)    { Write-Host \"  [SKIP] API not running -- cannot test Phase 5B\" -ForegroundColor Yellow }"
         }
-      ]
+      ],
+      "basePhase": "5",
+      "baseFolders": [
+        "07-PHASE-5-CORE-CLINICAL-WORKFLOW"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "5C",
@@ -515,7 +581,12 @@
           "line": 428,
           "context": "if (-not $ready)    { Write-Host \"  [SKIP] API not running -- cannot test Phase 5C\" -ForegroundColor Yellow }"
         }
-      ]
+      ],
+      "basePhase": "5",
+      "baseFolders": [
+        "07-PHASE-5-CORE-CLINICAL-WORKFLOW"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "15A",
@@ -538,7 +609,12 @@
           "line": 2,
           "context": "* Input validation schemas — Phase 15A."
         }
-      ]
+      ],
+      "basePhase": "15",
+      "baseFolders": [
+        "17-PHASE-15-ENTERPRISE-HARDENING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "14A",
@@ -561,7 +637,12 @@
           "line": 2,
           "context": "* VistA RPC Capability Discovery + Cache — Phase 14A."
         }
-      ]
+      ],
+      "basePhase": "14",
+      "baseFolders": [
+        "16-PHASE-14-PARITY-CLOSURE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "14B",
@@ -584,7 +665,12 @@
           "line": 56,
           "context": "// Phase 14B: check capability layer before calling RPCs"
         }
-      ]
+      ],
+      "basePhase": "14",
+      "baseFolders": [
+        "16-PHASE-14-PARITY-CLOSURE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "67B",
@@ -607,7 +693,12 @@
           "line": 905,
           "context": "pendingNote: 'DG ADT write RPCs not available in WorldVistA sandbox -- deferred to Phase 67B',"
         }
-      ]
+      ],
+      "basePhase": "67",
+      "baseFolders": [
+        "73-PHASE-67-ADT-INPATIENT"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "18E",
@@ -630,7 +721,12 @@
           "line": 274,
           "context": "{/* Phase 18E: External integration sources from registry */}"
         }
-      ]
+      ],
+      "basePhase": "18",
+      "baseFolders": [
+        "20-PHASE-18-INTEROP-IMAGING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "9B",
@@ -653,7 +749,12 @@
           "line": 25,
           "context": "13. [Phase 9B — Add Problem](#phase-9b--add-problem)"
         }
-      ]
+      ],
+      "basePhase": "9",
+      "baseFolders": [
+        "11-PHASE-9-PROBLEM-LIST"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "8B",
@@ -676,7 +777,12 @@
           "line": 154,
           "context": "Select a quick order to place via ORWDX SEND (Phase 8B AUTOACK):"
         }
-      ]
+      ],
+      "basePhase": "8",
+      "baseFolders": [
+        "10-PHASE-8-MEDICATIONS"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "84B",
@@ -699,7 +805,12 @@
           "line": 63,
           "context": "| GMRIO RESULTS   | GMR     | I&O results query           | Phase 84B    |"
         }
-      ]
+      ],
+      "basePhase": "84",
+      "baseFolders": [
+        "89-PHASE-84-NURSING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "14C",
@@ -722,7 +833,12 @@
           "line": 177,
           "context": "Write-Phase \"PHASE 14C\" \"Write-back Parity Upgrades\""
         }
-      ]
+      ],
+      "basePhase": "14",
+      "baseFolders": [
+        "16-PHASE-14-PARITY-CLOSURE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "18C",
@@ -745,7 +861,12 @@
           "line": 4,
           "context": "* Reports Panel — Phase 18C enhanced."
         }
-      ]
+      ],
+      "basePhase": "18",
+      "baseFolders": [
+        "20-PHASE-18-INTEROP-IMAGING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "7B",
@@ -768,7 +889,12 @@
           "line": 287,
           "context": "## Phase 7B — Create Note"
         }
-      ]
+      ],
+      "basePhase": "7",
+      "baseFolders": [
+        "09-PHASE-7-NOTES"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "15E",
@@ -791,7 +917,12 @@
           "line": 4,
           "context": "* Debounce hook — Phase 15E."
         }
-      ]
+      ],
+      "basePhase": "15",
+      "baseFolders": [
+        "17-PHASE-15-ENTERPRISE-HARDENING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "13B",
@@ -814,7 +945,12 @@
           "line": 343,
           "context": "Write-Phase \"PHASE 13B\" \"Inbox / Tasks\""
         }
-      ]
+      ],
+      "basePhase": "13",
+      "baseFolders": [
+        "15-PHASE-13-CPRS-OPERATIONALIZATION"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "13F",
@@ -837,7 +973,12 @@
           "line": 412,
           "context": "Write-Phase \"PHASE 13F\" \"Legacy Console WebSocket\""
         }
-      ]
+      ],
+      "basePhase": "13",
+      "baseFolders": [
+        "15-PHASE-13-CPRS-OPERATIONALIZATION"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "6B",
@@ -860,7 +1001,12 @@
           "line": 1,
           "context": "# Runbook — Add Vitals via `GMV ADD VM` RPC (Phase 6B)"
         }
-      ]
+      ],
+      "basePhase": "6",
+      "baseFolders": [
+        "08-PHASE-6-VITALS"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "8A",
@@ -883,7 +1029,12 @@
           "line": 301,
           "context": "## Phase 8A — Medications"
         }
-      ]
+      ],
+      "basePhase": "8",
+      "baseFolders": [
+        "10-PHASE-8-MEDICATIONS"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "9A",
@@ -906,7 +1057,12 @@
           "line": 1,
           "context": "# VistA Problem List (ORWCH PROBLEM LIST) — Phase 9A Runbook"
         }
-      ]
+      ],
+      "basePhase": "9",
+      "baseFolders": [
+        "11-PHASE-9-PROBLEM-LIST"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "11A",
@@ -929,7 +1085,12 @@
           "line": 85,
           "context": "Write-Phase \"PHASE 11A\" \"Contract Binding Layer\""
         }
-      ]
+      ],
+      "basePhase": "11",
+      "baseFolders": [
+        "13-PHASE-11-CPRS-WEB-REPLICA"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "11B",
@@ -952,7 +1113,12 @@
           "line": 102,
           "context": "Write-Phase \"PHASE 11B\" \"State Management Layer\""
         }
-      ]
+      ],
+      "basePhase": "11",
+      "baseFolders": [
+        "13-PHASE-11-CPRS-WEB-REPLICA"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "11C",
@@ -975,7 +1141,12 @@
           "line": 123,
           "context": "Write-Phase \"PHASE 11C\" \"CPRS Shell Components\""
         }
-      ]
+      ],
+      "basePhase": "11",
+      "baseFolders": [
+        "13-PHASE-11-CPRS-WEB-REPLICA"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "11D",
@@ -998,7 +1169,12 @@
           "line": 140,
           "context": "Write-Phase \"PHASE 11D\" \"Tab Panel Components (all 10)\""
         }
-      ]
+      ],
+      "basePhase": "11",
+      "baseFolders": [
+        "13-PHASE-11-CPRS-WEB-REPLICA"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "11F",
@@ -1021,7 +1197,12 @@
           "line": 184,
           "context": "Write-Phase \"PHASE 11F\" \"CPRS Route Pages\""
         }
-      ]
+      ],
+      "basePhase": "11",
+      "baseFolders": [
+        "13-PHASE-11-CPRS-WEB-REPLICA"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "5A",
@@ -1044,7 +1225,12 @@
           "line": 18,
           "context": "6. [Phase 5A — Patient Search UI](#phase-5a--patient-search-ui)"
         }
-      ]
+      ],
+      "basePhase": "5",
+      "baseFolders": [
+        "07-PHASE-5-CORE-CLINICAL-WORKFLOW"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "10A",
@@ -1067,7 +1253,12 @@
           "line": 30,
           "context": "The same 6 files from Phase 10A, now validated for schema correctness:"
         }
-      ]
+      ],
+      "basePhase": "10",
+      "baseFolders": [
+        "12-PHASE-10-CPRS-EXTRACT"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "15F",
@@ -1090,7 +1281,12 @@
           "line": 219,
           "context": "Write-Phase \"PHASE 15F\" \"Compliance Configuration\""
         }
-      ]
+      ],
+      "basePhase": "15",
+      "baseFolders": [
+        "17-PHASE-15-ENTERPRISE-HARDENING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "103B",
@@ -1113,7 +1309,12 @@
           "line": 108,
           "context": "### Partition plan (for Phase 103B)"
         }
-      ]
+      ],
+      "basePhase": "103",
+      "baseFolders": [
+        "107-PHASE-103-DB-PERFORMANCE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "65B",
@@ -1136,7 +1337,12 @@
           "line": 780,
           "context": "pendingNote: 'PCE PX SAVE DATA requires encounter context — deferred to Phase 65B',"
         }
-      ]
+      ],
+      "basePhase": "65",
+      "baseFolders": [
+        "71-PHASE-65-IMMUNIZATIONS"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "18B",
@@ -1159,7 +1365,12 @@
           "line": 4,
           "context": "* Admin Integration Console — Phase 18B/D + Phase 21 + Phase 58."
         }
-      ]
+      ],
+      "basePhase": "18",
+      "baseFolders": [
+        "20-PHASE-18-INTEROP-IMAGING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "13G",
@@ -1182,7 +1393,12 @@
           "line": 136,
           "context": "# Phase 13G - UI Toggle"
         }
-      ]
+      ],
+      "basePhase": "13",
+      "baseFolders": [
+        "15-PHASE-13-CPRS-OPERATIONALIZATION"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "7A",
@@ -1205,7 +1421,12 @@
           "line": 145,
           "context": "## Files Modified (Phase 7A)"
         }
-      ]
+      ],
+      "basePhase": "7",
+      "baseFolders": [
+        "09-PHASE-7-NOTES"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "11E",
@@ -1228,7 +1449,12 @@
           "line": 169,
           "context": "Write-Phase \"PHASE 11E\" \"Dialog Components\""
         }
-      ]
+      ],
+      "basePhase": "11",
+      "baseFolders": [
+        "13-PHASE-11-CPRS-WEB-REPLICA"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "11G",
@@ -1251,7 +1477,12 @@
           "line": 202,
           "context": "Write-Phase \"PHASE 11G\" \"Root Page Updated\""
         }
-      ]
+      ],
+      "basePhase": "11",
+      "baseFolders": [
+        "13-PHASE-11-CPRS-WEB-REPLICA"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "11H",
@@ -1274,7 +1505,12 @@
           "line": 210,
           "context": "Write-Phase \"PHASE 11H\" \"No VA/VHA Terminology in UI\""
         }
-      ]
+      ],
+      "basePhase": "11",
+      "baseFolders": [
+        "13-PHASE-11-CPRS-WEB-REPLICA"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "12A",
@@ -1297,7 +1533,12 @@
           "line": 69,
           "context": "### 6. Consults / Requests (Phase 12A)"
         }
-      ]
+      ],
+      "basePhase": "12",
+      "baseFolders": [
+        "14-PHASE-12-CPRS-PARITY-WIRING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "12B",
@@ -1320,7 +1561,12 @@
           "line": 77,
           "context": "### 7. Surgery (Phase 12B)"
         }
-      ]
+      ],
+      "basePhase": "12",
+      "baseFolders": [
+        "14-PHASE-12-CPRS-PARITY-WIRING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "12C",
@@ -1343,7 +1589,12 @@
           "line": 85,
           "context": "### 8. Discharge Summaries (Phase 12C)"
         }
-      ]
+      ],
+      "basePhase": "12",
+      "baseFolders": [
+        "14-PHASE-12-CPRS-PARITY-WIRING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "12D",
@@ -1366,7 +1617,12 @@
           "line": 93,
           "context": "### 9. Laboratory (Phase 12D)"
         }
-      ]
+      ],
+      "basePhase": "12",
+      "baseFolders": [
+        "14-PHASE-12-CPRS-PARITY-WIRING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "12E",
@@ -1389,7 +1645,12 @@
           "line": 101,
           "context": "### 10. Reports (Phase 12E)"
         }
-      ]
+      ],
+      "basePhase": "12",
+      "baseFolders": [
+        "14-PHASE-12-CPRS-PARITY-WIRING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "1B",
@@ -1412,7 +1673,12 @@
           "line": 120,
           "context": "Write-Phase \"PHASE 1B\" \"apps/web - Next.js Homepage\""
         }
-      ]
+      ],
+      "basePhase": "1",
+      "baseFolders": [
+        "02-PHASE-1-HELLO-SYSTEM"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "1C",
@@ -1435,7 +1701,12 @@
           "line": 128,
           "context": "Write-Phase \"PHASE 1C\" \"apps/api - Fastify Health Check\""
         }
-      ]
+      ],
+      "basePhase": "1",
+      "baseFolders": [
+        "02-PHASE-1-HELLO-SYSTEM"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "83B",
@@ -1458,7 +1729,12 @@
           "line": 99,
           "context": "- Future Phase 83B: wire DGPM write RPCs or implement ZVE\\* wrappers"
         }
-      ]
+      ],
+      "basePhase": "83",
+      "baseFolders": [
+        "88-PHASE-83-INPATIENT-ADT"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "17B",
@@ -1476,7 +1752,12 @@
           "line": 388,
           "context": "// Admin/tenant routes (Phase 17B)"
         }
-      ]
+      ],
+      "basePhase": "17",
+      "baseFolders": [
+        "19-PHASE-17-MULTITENANT-CONTROL-PLANE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "137B",
@@ -1494,7 +1775,12 @@
           "line": 425,
           "context": "'Phase 137B: Install ZVEADT.m and register ZVEADT MVHIST RPC to read ^DGPM(405) movement chain',"
         }
-      ]
+      ],
+      "basePhase": "137",
+      "baseFolders": [
+        "142-PHASE-137-ADT-BEDBOARD"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "19A",
@@ -1512,7 +1798,12 @@
           "line": 404,
           "context": "// Reporting & export (Phase 19A)"
         }
-      ]
+      ],
+      "basePhase": "19",
+      "baseFolders": [
+        "21-PHASE-19-REPORTING-GOVERNANCE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "17F",
@@ -1530,7 +1821,12 @@
           "line": 907,
           "context": "Phase 17F legacy connector view. These are the original ConnectorConfig entries from"
         }
-      ]
+      ],
+      "basePhase": "17",
+      "baseFolders": [
+        "19-PHASE-17-MULTITENANT-CONTROL-PLANE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "13A",
@@ -1548,7 +1844,12 @@
           "line": 124,
           "context": "# Phase 13A - Auth"
         }
-      ]
+      ],
+      "basePhase": "13",
+      "baseFolders": [
+        "15-PHASE-13-CPRS-OPERATIONALIZATION"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "15D",
@@ -1566,7 +1867,12 @@
           "line": 184,
           "context": "Write-Phase \"PHASE 15D\" \"Observability - /health, /ready, /metrics\""
         }
-      ]
+      ],
+      "basePhase": "15",
+      "baseFolders": [
+        "17-PHASE-15-ENTERPRISE-HARDENING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "15G",
@@ -1584,25 +1890,12 @@
           "line": 239,
           "context": "Write-Phase \"PHASE 15G\" \"Documentation\""
         }
-      ]
-    },
-    {
-      "token": "0",
-      "refCount": 2,
-      "matchingFolders": [],
-      "folderCount": 0,
-      "sampleRefs": [
-        {
-          "file": "docs/SESSION_LOG.md",
-          "line": 318,
-          "context": "### Phase 0: Environment Verification"
-        },
-        {
-          "file": "docs/SESSION_LOG.md",
-          "line": 324,
-          "context": "### Phase 0: VistA Routine Installation"
-        }
-      ]
+      ],
+      "basePhase": "15",
+      "baseFolders": [
+        "17-PHASE-15-ENTERPRISE-HARDENING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "24C",
@@ -1615,7 +1908,12 @@
           "line": 13,
           "context": "* Phase 24C+: External config service or database-backed."
         }
-      ]
+      ],
+      "basePhase": "24",
+      "baseFolders": [
+        "26-PHASE-24-IMAGING-ENTERPRISE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "18A",
@@ -1628,7 +1926,12 @@
           "line": 2,
           "context": "* Integration Registry — Phase 18A."
         }
-      ]
+      ],
+      "basePhase": "18",
+      "baseFolders": [
+        "20-PHASE-18-INTEROP-IMAGING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "19B",
@@ -1641,7 +1944,12 @@
           "line": 2,
           "context": "* Export governance — Phase 19B."
         }
-      ]
+      ],
+      "basePhase": "19",
+      "baseFolders": [
+        "21-PHASE-19-REPORTING-GOVERNANCE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "25C",
@@ -1654,7 +1962,12 @@
           "line": 2,
           "context": "* Analytics Routes — Phase 25C/E."
         }
-      ]
+      ],
+      "basePhase": "25",
+      "baseFolders": [
+        "27-PHASE-25-BI-ANALYTICS"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "25B",
@@ -1667,7 +1980,12 @@
           "line": 2,
           "context": "* Enhanced VistA Clinical Report Pipeline — Phase 25B."
         }
-      ]
+      ],
+      "basePhase": "25",
+      "baseFolders": [
+        "27-PHASE-25-BI-ANALYTICS"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "25E",
@@ -1680,7 +1998,12 @@
           "line": 4,
           "context": "* Analytics & BI Dashboard — Phase 25E."
         }
-      ]
+      ],
+      "basePhase": "25",
+      "baseFolders": [
+        "27-PHASE-25-BI-ANALYTICS"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "19C",
@@ -1693,7 +2016,12 @@
           "line": 4,
           "context": "* Admin Reporting Dashboard — Phase 19C."
         }
-      ]
+      ],
+      "basePhase": "19",
+      "baseFolders": [
+        "21-PHASE-19-REPORTING-GOVERNANCE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "17D",
@@ -1706,7 +2034,12 @@
           "line": 10,
           "context": "* Phase 17D: adds \"Reset to facility defaults\" button."
         }
-      ]
+      ],
+      "basePhase": "17",
+      "baseFolders": [
+        "19-PHASE-17-MULTITENANT-CONTROL-PLANE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "12F",
@@ -1719,7 +2052,12 @@
           "line": 18,
           "context": "* Phase 12F: search box queries /vista/icd-search for real lexicon results."
         }
-      ]
+      ],
+      "basePhase": "12",
+      "baseFolders": [
+        "14-PHASE-12-CPRS-PARITY-WIRING"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "17E",
@@ -1732,7 +2070,12 @@
           "line": 80,
           "context": "// Merge facility-managed templates with local fallbacks (Phase 17E)"
         }
-      ]
+      ],
+      "basePhase": "17",
+      "baseFolders": [
+        "19-PHASE-17-MULTITENANT-CONTROL-PLANE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "17C",
@@ -1745,7 +2088,12 @@
           "line": 4,
           "context": "* Tenant context — Phase 17C."
         }
-      ]
+      ],
+      "basePhase": "17",
+      "baseFolders": [
+        "19-PHASE-17-MULTITENANT-CONTROL-PLANE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "13C",
@@ -1758,7 +2106,12 @@
           "line": 364,
           "context": "Write-Phase \"PHASE 13C\" \"Order Workflow State Machine\""
         }
-      ]
+      ],
+      "basePhase": "13",
+      "baseFolders": [
+        "15-PHASE-13-CPRS-OPERATIONALIZATION"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "13D",
@@ -1771,7 +2124,12 @@
           "line": 384,
           "context": "Write-Phase \"PHASE 13D\" \"Results Workflow\""
         }
-      ]
+      ],
+      "basePhase": "13",
+      "baseFolders": [
+        "15-PHASE-13-CPRS-OPERATIONALIZATION"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "13E",
@@ -1784,7 +2142,12 @@
           "line": 398,
           "context": "Write-Phase \"PHASE 13E\" \"Remote Data Viewer\""
         }
-      ]
+      ],
+      "basePhase": "13",
+      "baseFolders": [
+        "15-PHASE-13-CPRS-OPERATIONALIZATION"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "13H",
@@ -1797,7 +2160,12 @@
           "line": 454,
           "context": "Write-Phase \"PHASE 13H\" \"Documentation & Prompts\""
         }
-      ]
+      ],
+      "basePhase": "13",
+      "baseFolders": [
+        "15-PHASE-13-CPRS-OPERATIONALIZATION"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "14E",
@@ -1810,7 +2178,12 @@
           "line": 231,
           "context": "Write-Phase \"PHASE 14E\" \"Documentation & Prompts\""
         }
-      ]
+      ],
+      "basePhase": "14",
+      "baseFolders": [
+        "16-PHASE-14-PARITY-CLOSURE"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "10D",
@@ -1823,7 +2196,12 @@
           "line": 1,
           "context": "# Runbook: CPRS API Scaffold Generator (Phase 10D)"
         }
-      ]
+      ],
+      "basePhase": "10",
+      "baseFolders": [
+        "12-PHASE-10-CPRS-EXTRACT"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "10B",
@@ -1836,7 +2214,12 @@
           "line": 1,
           "context": "# Runbook: CPRS Contract Generation (Phase 10B)"
         }
-      ]
+      ],
+      "basePhase": "10",
+      "baseFolders": [
+        "12-PHASE-10-CPRS-EXTRACT"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "10C",
@@ -1849,7 +2232,12 @@
           "line": 1,
           "context": "# Runbook: CPRS Replica Shell (Phase 10C)"
         }
-      ]
+      ],
+      "basePhase": "10",
+      "baseFolders": [
+        "12-PHASE-10-CPRS-EXTRACT"
+      ],
+      "resolvedVia": "basePhase"
     },
     {
       "token": "140D",
@@ -1862,13 +2250,18 @@
           "line": 85,
           "context": "- Health card with QR code (Phase 140D — optional)"
         }
-      ]
+      ],
+      "basePhase": "140",
+      "baseFolders": [
+        "145-PHASE-140-PORTAL-PARITY"
+      ],
+      "resolvedVia": "basePhase"
     }
   ],
   "ambiguousTokens": [
     {
       "token": "284",
-      "refCount": 20,
+      "refCount": 19,
       "matchingFolders": [
         "282-PHASE-284-THEME-PACKS-BRANDING",
         "284-PHASE-284-BILLING-METERING"
@@ -1895,7 +2288,7 @@
     },
     {
       "token": "263",
-      "refCount": 11,
+      "refCount": 10,
       "matchingFolders": [
         "260-PHASE-263-SUPPORT-TOOLING-V2",
         "263-PHASE-263-WAVE8-INTEGRITY-AUDIT"
@@ -1922,7 +2315,7 @@
     },
     {
       "token": "290",
-      "refCount": 7,
+      "refCount": 6,
       "matchingFolders": [
         "290-PHASE-290-WAVE9-INTEGRITY-AUDIT",
         "297-PHASE-290-INTEROP-CERT-HARNESS"
@@ -1949,7 +2342,7 @@
     },
     {
       "token": "283",
-      "refCount": 2,
+      "refCount": 1,
       "matchingFolders": [
         "281-PHASE-283-THEME-SYSTEM-CORE",
         "283-PHASE-283-MIGRATION-TEMPLATES"
@@ -1960,11 +2353,6 @@
           "file": "docs/qa/prompt-redundancy-report.md",
           "line": 28,
           "context": "### Phase 283 (2 folders)"
-        },
-        {
-          "file": "docs/QA_GAUNTLET_FAST_RESULTS.md",
-          "line": 31,
-          "context": "| 7 | duplicate-phase | WARN | Phase 283 has 2 folders (281 vs 283 prefix) |"
         }
       ],
       "canonicalFolder": "281-PHASE-283-THEME-SYSTEM-CORE"

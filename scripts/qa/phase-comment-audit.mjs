@@ -43,6 +43,17 @@ for (const p of index.phases) {
   phaseToFolders.get(key).push(p.folder);
 }
 
+// Load canonical map (for ambiguous tokens) if it exists
+const CANONICAL_MAP_PATH = resolve(ROOT, 'docs/qa/phase-canonical-map.json');
+let canonicalMap = {};
+if (existsSync(CANONICAL_MAP_PATH)) {
+  const cmRaw = readFileSync(CANONICAL_MAP_PATH, 'utf-8');
+  canonicalMap = JSON.parse(cmRaw.charCodeAt(0) === 0xfeff ? cmRaw.slice(1) : cmRaw);
+}
+
+// Subphase regex: digits followed by one or more alpha chars (e.g. "15B", "103B", "14D")
+const SUBPHASE_RE = /^(\d+)([A-Za-z].*)$/;
+
 // ── Scan configuration ──
 
 const SCAN_DIRS = [
@@ -166,6 +177,7 @@ for (const filePath of allFiles) {
 const resolved = [];
 const unresolved = [];
 const ambiguous = [];
+const resolvedViaBase = [];
 
 for (const [token, refs] of phaseRefs) {
   const folders = phaseToFolders.get(token) || [];
@@ -178,15 +190,39 @@ for (const [token, refs] of phaseRefs) {
   };
 
   if (folders.length === 0) {
+    // Try subphase resolution: "15B" -> base "15"
+    const subMatch = token.match(SUBPHASE_RE);
+    if (subMatch) {
+      const basePhase = subMatch[1];
+      const baseFolders = phaseToFolders.get(basePhase) || [];
+      if (baseFolders.length > 0) {
+        entry.basePhase = basePhase;
+        entry.baseFolders = baseFolders;
+        entry.resolvedVia = 'basePhase';
+        resolvedViaBase.push(entry);
+        continue;
+      }
+    }
+    // Check canonical map for direct override
+    if (canonicalMap[token]) {
+      entry.canonicalFolder = canonicalMap[token];
+      entry.resolvedVia = 'canonicalMap';
+      resolvedViaBase.push(entry);
+      continue;
+    }
     unresolved.push(entry);
   } else if (folders.length > 1) {
-    // Pick canonical: lowest prefix number
-    const sorted = [...folders].sort((a, b) => {
-      const pa = parseInt(a.match(/^(\d+)/)?.[1] || '9999', 10);
-      const pb = parseInt(b.match(/^(\d+)/)?.[1] || '9999', 10);
-      return pa - pb;
-    });
-    entry.canonicalFolder = sorted[0];
+    // Pick canonical: from map first, then lowest prefix number
+    if (canonicalMap[token]) {
+      entry.canonicalFolder = canonicalMap[token];
+    } else {
+      const sorted = [...folders].sort((a, b) => {
+        const pa = parseInt(a.match(/^(\d+)/)?.[1] || '9999', 10);
+        const pb = parseInt(b.match(/^(\d+)/)?.[1] || '9999', 10);
+        return pa - pb;
+      });
+      entry.canonicalFolder = sorted[0];
+    }
     ambiguous.push(entry);
   } else {
     resolved.push(entry);
@@ -216,13 +252,23 @@ for (const [token, refs] of waveRefs) {
 const allTokensSorted = [...phaseRefs.entries()]
   .sort((a, b) => b[1].length - a[1].length)
   .slice(0, 50)
-  .map(([token, refs]) => ({
-    token,
-    refCount: refs.length,
-    resolvedTo: (phaseToFolders.get(token) || []).length > 0
-      ? (phaseToFolders.get(token) || []).join(', ')
-      : 'UNRESOLVED',
-  }));
+  .map(([token, refs]) => {
+    // Check resolved via base phase
+    const viaBase = resolvedViaBase.find((e) => e.token === token);
+    if (viaBase) {
+      const baseLabel = viaBase.resolvedVia === 'basePhase'
+        ? `via base ${viaBase.basePhase}: ${viaBase.baseFolders.join(', ')}`
+        : `via canonical: ${viaBase.canonicalFolder}`;
+      return { token, refCount: refs.length, resolvedTo: baseLabel };
+    }
+    return {
+      token,
+      refCount: refs.length,
+      resolvedTo: (phaseToFolders.get(token) || []).length > 0
+        ? (phaseToFolders.get(token) || []).join(', ')
+        : 'UNRESOLVED',
+    };
+  });
 
 // ── Generate reports ──
 
@@ -233,6 +279,7 @@ const jsonReport = {
     totalPhaseTokens: phaseRefs.size,
     totalPhaseRefs: [...phaseRefs.values()].reduce((s, r) => s + r.length, 0),
     resolved: resolved.length,
+    resolvedViaBasePhase: resolvedViaBase.length,
     unresolved: unresolved.length,
     ambiguous: ambiguous.length,
     totalWaveTokens: waveRefs.size,
@@ -241,6 +288,7 @@ const jsonReport = {
   },
   top50MostReferenced: allTokensSorted,
   unresolvedTokens: unresolved.sort((a, b) => b.refCount - a.refCount),
+  resolvedViaBasePhaseTokens: resolvedViaBase.sort((a, b) => b.refCount - a.refCount),
   ambiguousTokens: ambiguous.sort((a, b) => b.refCount - a.refCount),
   waveReferences: waveEntries.sort((a, b) => b.refCount - a.refCount),
 };
@@ -266,6 +314,7 @@ md.push(`|--------|-------|`);
 md.push(`| Unique phase tokens in code | ${jsonReport.summary.totalPhaseTokens} |`);
 md.push(`| Total phase references | ${jsonReport.summary.totalPhaseRefs} |`);
 md.push(`| Resolved to single folder | ${jsonReport.summary.resolved} |`);
+md.push(`| Resolved via base phase | ${jsonReport.summary.resolvedViaBasePhase} |`);
 md.push(`| Unresolved (no matching folder) | ${jsonReport.summary.unresolved} |`);
 md.push(`| Ambiguous (multiple folders) | ${jsonReport.summary.ambiguous} |`);
 md.push(`| Unique wave tokens | ${jsonReport.summary.totalWaveTokens} |`);
@@ -292,6 +341,21 @@ if (unresolved.length > 0) {
   for (const u of unresolved) {
     const sample = u.sampleRefs[0]?.file || '-';
     md.push(`| Phase ${u.token} | ${u.refCount} | ${sample} |`);
+  }
+  md.push('');
+}
+
+if (resolvedViaBase.length > 0) {
+  md.push('## Resolved via Base Phase');
+  md.push('');
+  md.push('These subphase tokens (e.g. "15B") were resolved by matching their base phase number.');
+  md.push('');
+  md.push('| Token | Refs | Base Phase | Base Folder |');
+  md.push('|-------|------|------------|-------------|');
+  for (const r of resolvedViaBase.sort((a, b) => b.refCount - a.refCount)) {
+    const base = r.basePhase || '-';
+    const folder = r.baseFolders ? r.baseFolders[0] : (r.canonicalFolder || '-');
+    md.push(`| Phase ${r.token} | ${r.refCount} | ${base} | ${folder} |`);
   }
   md.push('');
 }
@@ -348,6 +412,7 @@ console.log('  Results:');
 console.log(`    Phase tokens found:   ${phaseRefs.size}`);
 console.log(`    Total phase refs:     ${[...phaseRefs.values()].reduce((s, r) => s + r.length, 0)}`);
 console.log(`    Resolved (1 folder):  ${resolved.length}`);
+console.log(`    Resolved via base:    ${resolvedViaBase.length}`);
 console.log(`    Unresolved (0):       ${unresolved.length}`);
 console.log(`    Ambiguous (2+):       ${ambiguous.length}`);
 console.log(`    Wave tokens found:    ${waveRefs.size}`);

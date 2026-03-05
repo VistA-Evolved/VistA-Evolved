@@ -183,7 +183,31 @@ if (phaseArg) {
     (p) => p.phaseNumber !== phaseArg && p.phaseNumber.startsWith(phaseArg)
   );
   const all = [...exact, ...prefixMatches];
-  outputResults(all, `phase ${phaseArg}`);
+
+  if (all.length === 0) {
+    // Subphase fallback: "15B" -> try base "15"
+    const subMatch = phaseArg.match(/^(\d+)([A-Za-z].*)$/);
+    if (subMatch) {
+      const basePhase = subMatch[1];
+      const baseExact = phases.filter((p) => p.phaseNumber === basePhase);
+      const basePrefix = phases.filter(
+        (p) => p.phaseNumber !== basePhase && p.phaseNumber.startsWith(basePhase)
+      );
+      const baseAll = [...baseExact, ...basePrefix];
+      if (baseAll.length > 0) {
+        if (!jsonOutput) {
+          console.log(`\n  Resolved by base phase: ${basePhase} (from ${phaseArg})\n`);
+        }
+        outputResults(baseAll, `phase ${phaseArg} (via base ${basePhase})`);
+      } else {
+        outputResults([], `phase ${phaseArg}`);
+      }
+    } else {
+      outputResults([], `phase ${phaseArg}`);
+    }
+  } else {
+    outputResults(all, `phase ${phaseArg}`);
+  }
 }
 
 if (prefixArg) {
