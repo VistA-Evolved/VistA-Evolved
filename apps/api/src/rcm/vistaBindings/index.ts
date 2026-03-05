@@ -19,7 +19,8 @@ export { postEraToVista, checkVistaArTransaction, type EraPostResult } from './e
 export {
   getChargeCaptureCandidates,
   getVistaInsurancePolicies,
-  type ChargeCapturCandidate,
+  wireChargeCaptureRpc,
+  type ChargeCaptureCandidate,
   type ChargeCaptureResult,
 } from './charge-capture.js';
 

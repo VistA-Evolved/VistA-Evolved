@@ -80,9 +80,16 @@ function buildSearchQueryString(query: Record<string, string | undefined>): stri
     .join('&');
 }
 
-function fhirReply(reply: FastifyReply, status: number, body: unknown): void {
-  if (reply.sent) return; // M3: guard against double-send
-  reply.status(status).header('content-type', FHIR_CONTENT_TYPE).send(body);
+/**
+ * Send a FHIR response. Returns the body so the caller can `return fhirReply()`
+ * and let Fastify handle the actual send via the return-value path. This avoids
+ * the ERR_HTTP_HEADERS_SENT crash that occurs when reply.send() is called inside
+ * an async handler alongside Fastify's internal onSendEnd processing (BUG-071).
+ */
+function fhirReply(reply: FastifyReply, status: number, body: unknown): unknown {
+  if (reply.sent) return;
+  reply.status(status).header('content-type', FHIR_CONTENT_TYPE);
+  return body;
 }
 
 function operationOutcome(
@@ -140,13 +147,14 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
   server.get('/fhir/metadata', async (request: FastifyRequest, reply: FastifyReply) => {
     const baseUrl = getBaseUrl(request);
     const cs = buildCapabilityStatement(baseUrl);
-    fhirReply(reply, 200, cs);
+    return fhirReply(reply, 200, cs);
   });
 
   /* ---------------------------------------------------------------- */
   /* GET /fhir/Patient/:id — Patient read                            */
   /* ---------------------------------------------------------------- */
   server.get('/fhir/Patient/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    if (reply.sent) return;
     await requireSession(request, reply);
     if (reply.sent) return;
     const { id } = request.params as { id: string };
@@ -183,12 +191,12 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
       }
 
       const resource = toFhirPatient(result.data);
-      fhirReply(reply, 200, resource);
+      return fhirReply(reply, 200, resource);
     } catch (err: unknown) {
       log.error('FHIR Patient read error', {
         error: err instanceof Error ? err.message : String(err),
       });
-      fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
+      return fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
     }
   });
 
@@ -196,6 +204,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
   /* GET /fhir/Patient?name=X — Patient search                      */
   /* ---------------------------------------------------------------- */
   server.get('/fhir/Patient', async (request: FastifyRequest, reply: FastifyReply) => {
+    if (reply.sent) return;
     await requireSession(request, reply);
     if (reply.sent) return;
     if (!enforceFhirScope(request, reply, 'Patient')) return;
@@ -262,7 +271,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
       }
 
       const resources = result.data.map(toFhirPatient);
-      fhirReply(
+      return fhirReply(
         reply,
         200,
         toPagedSearchBundle(resources, baseUrl, 'Patient', {
@@ -275,7 +284,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
       log.error('FHIR Patient search error', {
         error: err instanceof Error ? err.message : String(err),
       });
-      fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
+      return fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
     }
   });
 
@@ -283,6 +292,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
   /* GET /fhir/AllergyIntolerance?patient=N                          */
   /* ---------------------------------------------------------------- */
   server.get('/fhir/AllergyIntolerance', async (request: FastifyRequest, reply: FastifyReply) => {
+    if (reply.sent) return;
     await requireSession(request, reply);
     if (reply.sent) return;
     const query = request.query as Record<string, string | undefined>;
@@ -329,7 +339,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
         'clinical-status': query['clinical-status'],
       });
       const { offset, count } = extractPaging(query);
-      fhirReply(
+      return fhirReply(
         reply,
         200,
         toPagedSearchBundle(filtered, baseUrl, 'AllergyIntolerance', {
@@ -342,7 +352,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
       log.error('FHIR AllergyIntolerance error', {
         error: err instanceof Error ? err.message : String(err),
       });
-      fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
+      return fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
     }
   });
 
@@ -350,6 +360,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
   /* GET /fhir/Condition?patient=N                                   */
   /* ---------------------------------------------------------------- */
   server.get('/fhir/Condition', async (request: FastifyRequest, reply: FastifyReply) => {
+    if (reply.sent) return;
     await requireSession(request, reply);
     if (reply.sent) return;
     const query = request.query as Record<string, string | undefined>;
@@ -394,7 +405,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
       const resources = result.data.map((p) => toFhirCondition(p, dfn));
       const filtered = filterConditions(resources, { 'clinical-status': query['clinical-status'] });
       const { offset, count } = extractPaging(query);
-      fhirReply(
+      return fhirReply(
         reply,
         200,
         toPagedSearchBundle(filtered, baseUrl, 'Condition', {
@@ -407,7 +418,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
       log.error('FHIR Condition error', {
         error: err instanceof Error ? err.message : String(err),
       });
-      fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
+      return fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
     }
   });
 
@@ -415,6 +426,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
   /* GET /fhir/Observation?patient=N&category=vital-signs|laboratory */
   /* ---------------------------------------------------------------- */
   server.get('/fhir/Observation', async (request: FastifyRequest, reply: FastifyReply) => {
+    if (reply.sent) return;
     await requireSession(request, reply);
     if (reply.sent) return;
     const query = request.query as Record<string, string | undefined>;
@@ -461,7 +473,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
 
       const filtered = filterObservations(resources, { code: query.code, date: query.date });
       const { offset, count } = extractPaging(query);
-      fhirReply(
+      return fhirReply(
         reply,
         200,
         toPagedSearchBundle(filtered, baseUrl, 'Observation', {
@@ -474,7 +486,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
       log.error('FHIR Observation error', {
         error: err instanceof Error ? err.message : String(err),
       });
-      fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
+      return fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
     }
   });
 
@@ -482,6 +494,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
   /* GET /fhir/MedicationRequest?patient=N                           */
   /* ---------------------------------------------------------------- */
   server.get('/fhir/MedicationRequest', async (request: FastifyRequest, reply: FastifyReply) => {
+    if (reply.sent) return;
     await requireSession(request, reply);
     if (reply.sent) return;
     const query = request.query as Record<string, string | undefined>;
@@ -526,7 +539,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
       const resources = result.data.map((m) => toFhirMedicationRequest(m, dfn));
       const filtered = filterMedicationRequests(resources, { status: query.status });
       const { offset, count } = extractPaging(query);
-      fhirReply(
+      return fhirReply(
         reply,
         200,
         toPagedSearchBundle(filtered, baseUrl, 'MedicationRequest', {
@@ -539,7 +552,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
       log.error('FHIR MedicationRequest error', {
         error: err instanceof Error ? err.message : String(err),
       });
-      fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
+      return fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
     }
   });
 
@@ -547,6 +560,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
   /* GET /fhir/DocumentReference?patient=N                           */
   /* ---------------------------------------------------------------- */
   server.get('/fhir/DocumentReference', async (request: FastifyRequest, reply: FastifyReply) => {
+    if (reply.sent) return;
     await requireSession(request, reply);
     if (reply.sent) return;
     const query = request.query as Record<string, string | undefined>;
@@ -591,7 +605,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
       const resources = result.data.map((n) => toFhirDocumentReference(n, dfn));
       const filtered = filterDocumentReferences(resources, { date: query.date });
       const { offset, count } = extractPaging(query);
-      fhirReply(
+      return fhirReply(
         reply,
         200,
         toPagedSearchBundle(filtered, baseUrl, 'DocumentReference', {
@@ -604,7 +618,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
       log.error('FHIR DocumentReference error', {
         error: err instanceof Error ? err.message : String(err),
       });
-      fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
+      return fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
     }
   });
 
@@ -612,6 +626,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
   /* GET /fhir/Encounter?patient=N — Encounters by patient           */
   /* ---------------------------------------------------------------- */
   server.get('/fhir/Encounter', async (request: FastifyRequest, reply: FastifyReply) => {
+    if (reply.sent) return;
     await requireSession(request, reply);
     if (reply.sent) return;
     const query = request.query as Record<string, string | undefined>;
@@ -656,7 +671,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
       const resources = result.data.map((e) => toFhirEncounter(e));
       const filtered = filterEncounters(resources, { date: query.date, status: query.status });
       const { offset, count } = extractPaging(query);
-      fhirReply(
+      return fhirReply(
         reply,
         200,
         toPagedSearchBundle(filtered, baseUrl, 'Encounter', {
@@ -669,7 +684,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
       log.error('FHIR Encounter error', {
         error: err instanceof Error ? err.message : String(err),
       });
-      fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
+      return fhirReply(reply, 500, operationOutcome('error', 'exception', 'Internal server error'));
     }
   });
 

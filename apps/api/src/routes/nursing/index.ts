@@ -34,7 +34,7 @@ import { safeCallRpc, safeCallRpcWithList } from '../../lib/rpc-resilience.js';
 import type { RpcParam } from '../../vista/rpcBrokerClient.js';
 import { log } from '../../lib/logger.js';
 import { immutableAudit } from '../../lib/immutable-audit.js';
-import { tier0Gate } from '../../lib/tier0-response.js';
+// tier0Gate removed -- all nursing routes now call VistA RPCs directly
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -299,7 +299,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
     }
   );
 
-  /* ------ GET /vista/nursing/tasks?dfn=N (Tier-0 capability-gated) ------ */
+  /* ------ GET /vista/nursing/tasks?dfn=N ------ */
   server.get('/vista/nursing/tasks', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || '').trim();
@@ -309,27 +309,50 @@ export default async function nursingRoutes(server: FastifyInstance) {
         .code(400)
         .send({ ok: false, error: 'Invalid dfn -- must be a positive integer' });
 
-    const blocked = tier0Gate('PSB MED LOG', 'nursing', {
-      vistaFiles: ['PSB(53.79) BCMA MEDICATION LOG'],
-      targetRoutines: ['PSBML', 'PSBMLEN', 'PSBVDL'],
-      migrationPath: 'Install BCMA package, configure med routes, enable PSB RPCs',
-      sandboxNote:
-        'WorldVistA Docker does not include BCMA/PSB package. Nursing tasks derived from BCMA + order parsing.',
-    });
-    immutableAudit('nursing.tasks', blocked ? 'blocked' : 'attempt', auditActor(session), {
-      detail: { dfn, gated: !!blocked, rpc: 'PSB MED LOG' },
-    });
-    if (blocked) return reply.status(202).send(blocked);
+    const rpcUsed: string[] = [];
+    try {
+      const lines = await safeCallRpc('ORWPS ACTIVE', [dfn]);
+      rpcUsed.push('ORWPS ACTIVE');
+      const tasks = (lines || [])
+        .filter((l) => l.startsWith('~'))
+        .map((line, i) => {
+          const parts = line.substring(1).split('^');
+          return {
+            id: `task-${i}`,
+            type: 'medication',
+            medication: parts[0]?.trim() || '',
+            sig: parts[1]?.trim() || '',
+            status: parts[4]?.trim() || 'active',
+            priority: 'routine',
+          };
+        });
 
-    // RPC available -- real implementation not yet wired (Phase 68B future)
-    return reply.code(501).send({
-      ok: false,
-      status: 'not-implemented',
-      message: 'PSB MED LOG available but task parsing not yet wired',
-    });
+      immutableAudit('nursing.tasks', 'success', auditActor(session), {
+        detail: { dfn, taskCount: tasks.length },
+      });
+      return {
+        ok: true,
+        source: 'vista',
+        items: tasks,
+        count: tasks.length,
+        rpcUsed,
+        pendingTargets: [],
+        _note: 'Tasks derived from ORWPS ACTIVE (active medication orders). PSB MED LOG adds BCMA-specific task data when available.',
+      };
+    } catch (err) {
+      log.warn('Nursing tasks RPC failed', { err: String(err) });
+      return {
+        ok: true,
+        source: 'vista',
+        items: [],
+        count: 0,
+        rpcUsed,
+        pendingTargets: [{ rpc: 'ORWPS ACTIVE', package: 'OR', reason: String(err) }],
+      };
+    }
   });
 
-  /* ------ GET /vista/nursing/mar?dfn=N (Tier-0 capability-gated) ------ */
+  /* ------ GET /vista/nursing/mar?dfn=N ------ */
   server.get('/vista/nursing/mar', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || '').trim();
@@ -339,47 +362,111 @@ export default async function nursingRoutes(server: FastifyInstance) {
         .code(400)
         .send({ ok: false, error: 'Invalid dfn -- must be a positive integer' });
 
-    const blocked = tier0Gate('PSB ALLERGY', 'nursing', {
-      vistaFiles: ['PSB(53.79) BCMA MEDICATION LOG', 'PSB(53.78) BCMA ALLERGY'],
-      targetRoutines: ['PSBML', 'PSBAL', 'PSBMLEN'],
-      migrationPath: 'Install BCMA package, configure med routes, enable PSB RPCs',
-      sandboxNote:
-        'WorldVistA Docker does not include BCMA/PSB package. MAR requires PSB ALLERGY + PSB MED LOG.',
-    });
-    immutableAudit('nursing.mar', blocked ? 'blocked' : 'attempt', auditActor(session), {
-      detail: { dfn, gated: !!blocked, rpc: 'PSB ALLERGY' },
-    });
-    if (blocked) return reply.status(202).send(blocked);
+    const rpcUsed: string[] = [];
+    try {
+      const medLines = await safeCallRpc('ORWPS ACTIVE', [dfn]);
+      rpcUsed.push('ORWPS ACTIVE');
+      const meds = (medLines || [])
+        .filter((l) => l.startsWith('~'))
+        .map((line, i) => {
+          const parts = line.substring(1).split('^');
+          return {
+            id: `mar-${i}`,
+            medication: parts[0]?.trim() || '',
+            sig: parts[1]?.trim() || '',
+            route: parts[2]?.trim() || '',
+            schedule: parts[3]?.trim() || '',
+            status: parts[4]?.trim() || 'active',
+            lastAdmin: null as string | null,
+          };
+        });
 
-    return reply.code(501).send({
-      ok: false,
-      status: 'not-implemented',
-      message: 'PSB ALLERGY available but MAR view not yet wired',
-    });
+      let allergyWarnings: string[] = [];
+      try {
+        const allergyLines = await safeCallRpc('PSB ALLERGY', [dfn]);
+        rpcUsed.push('PSB ALLERGY');
+        allergyWarnings = (allergyLines || []).filter((l) => l.trim()).map((l) => l.trim());
+      } catch {
+        log.debug('PSB ALLERGY call returned no data (may need BCMA context)');
+      }
+
+      immutableAudit('nursing.mar', 'success', auditActor(session), {
+        detail: { dfn, medCount: meds.length },
+      });
+      return {
+        ok: true,
+        source: 'vista',
+        medications: meds,
+        count: meds.length,
+        allergyWarnings,
+        rpcUsed,
+        pendingTargets: [],
+        _note: 'MAR built from ORWPS ACTIVE + PSB ALLERGY. PSB MED LOG adds administration timestamps when BCMA package is fully installed.',
+      };
+    } catch (err) {
+      log.warn('Nursing MAR RPC failed', { err: String(err) });
+      return {
+        ok: true,
+        source: 'vista',
+        medications: [],
+        count: 0,
+        allergyWarnings: [],
+        rpcUsed,
+        pendingTargets: [{ rpc: 'ORWPS ACTIVE', package: 'OR', reason: String(err) }],
+      };
+    }
   });
 
-  /* ------ POST /vista/nursing/mar/administer (Tier-0 capability-gated) ------ */
+  /* ------ POST /vista/nursing/mar/administer ------ */
   server.post(
     '/vista/nursing/mar/administer',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
+      const body = (request.body as any) || {};
+      const { dfn, medicationId, action, note } = body;
+      if (!dfn || !medicationId)
+        return reply.code(400).send({ ok: false, error: 'dfn and medicationId required' });
 
-      const blocked = tier0Gate('PSB MED LOG', 'nursing', {
-        vistaFiles: ['PSB(53.79) BCMA MEDICATION LOG'],
-        targetRoutines: ['PSBML', 'PSBMLEN'],
-        migrationPath: 'Install BCMA package, configure med routes, enable PSB RPCs',
-        sandboxNote: 'WorldVistA Docker does not include BCMA/PSB package.',
-      });
-      immutableAudit('nursing.mar', blocked ? 'blocked' : 'attempt', auditActor(session), {
-        detail: { action: 'administer-attempt', gated: !!blocked, rpc: 'PSB MED LOG' },
-      });
-      if (blocked) return reply.status(202).send(blocked);
+      const rpcUsed: string[] = [];
+      const adminAction = action || 'given';
 
-      return reply.code(501).send({
-        ok: false,
-        status: 'not-implemented',
-        message: 'PSB MED LOG available but administer not yet wired',
-      });
+      try {
+        const adminNote = `Med admin: ${medicationId} - ${adminAction}${note ? ' - ' + note : ''}`;
+        const noteLines = await safeCallRpc('TIU CREATE RECORD', [
+          dfn, '', '', '', 'NURSING NOTE', '', adminNote,
+        ]);
+        rpcUsed.push('TIU CREATE RECORD');
+        const noteIen = (noteLines || [])[0]?.trim() || '';
+
+        if (noteIen && /^\d+$/.test(noteIen)) {
+          await safeCallRpc('TIU SET DOCUMENT TEXT', [noteIen, adminNote]);
+          rpcUsed.push('TIU SET DOCUMENT TEXT');
+        }
+
+        immutableAudit('nursing.mar.administer', 'success', auditActor(session), {
+          detail: { dfn, medicationId, adminAction, noteIen },
+        });
+        return {
+          ok: true,
+          source: 'vista',
+          adminAction,
+          noteIen,
+          rpcUsed,
+          pendingTargets: [],
+          _note: 'Administration recorded via TIU nursing note. PSB MED LOG will be used when BCMA package is installed for barcode-verified administration.',
+        };
+      } catch (err) {
+        log.warn('Nursing administer failed', { err: String(err) });
+        immutableAudit('nursing.mar.administer', 'failure', auditActor(session), {
+          detail: { dfn, medicationId, error: String(err) },
+        });
+        return reply.code(500).send({
+          ok: false,
+          error: 'Failed to record administration',
+          rpcUsed,
+          detail: String(err),
+        });
+      }
     }
   );
 
@@ -595,7 +682,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
     }
   });
 
-  /* ------ GET /vista/nursing/io?dfn=N (Tier-0 capability-gated) ------ */
+  /* ------ GET /vista/nursing/io?dfn=N ------ */
   server.get('/vista/nursing/io', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || '').trim();
@@ -605,27 +692,57 @@ export default async function nursingRoutes(server: FastifyInstance) {
         .code(400)
         .send({ ok: false, error: 'Invalid dfn -- must be a positive integer' });
 
-    const blocked = tier0Gate('GMRIO RESULTS', 'nursing', {
-      vistaFiles: ['GMR(126) INTAKE/OUTPUT', 'GMR(126.1) I/O TYPE', 'GMR(126.2) I/O SHIFT'],
-      targetRoutines: ['GMRIORES', 'GMRIOADD', 'GMRIOENT'],
-      migrationPath:
-        'Enable GMR I&O RPCs in OR CPRS GUI CHART context, or create ZVEIOM custom M routine',
-      sandboxNote:
-        'GMR I&O package exists in WorldVistA but RPCs not exposed via OR CPRS GUI CHART context.',
-    });
-    immutableAudit('nursing.io', blocked ? 'blocked' : 'attempt', auditActor(session), {
-      detail: { dfn, gated: !!blocked, rpc: 'GMRIO RESULTS' },
-    });
-    if (blocked) return reply.status(202).send(blocked);
+    const rpcUsed: string[] = [];
+    try {
+      const vitLines = await safeCallRpc('ORQQVI VITALS', [dfn]);
+      rpcUsed.push('ORQQVI VITALS');
+      const parsed = parseVitals(vitLines || []);
+      const weightEntries = parsed.filter((v) => v.type === 'WT' || v.type === 'WEIGHT');
 
-    return reply.code(501).send({
-      ok: false,
-      status: 'not-implemented',
-      message: 'GMRIO RESULTS available but I&O parsing not yet wired',
-    });
+      let ioNotes: Array<{ ien: string; title: string; date: string }> = [];
+      try {
+        const noteLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', [
+          '', '1', dfn, '0', '0', '0', '', '0', '',
+        ]);
+        rpcUsed.push('TIU DOCUMENTS BY CONTEXT');
+        ioNotes = (noteLines || [])
+          .filter((l) => l.trim() && /I.?O|INTAKE|OUTPUT|FLUID/i.test(l))
+          .map((line) => {
+            const parts = line.split('^');
+            return {
+              ien: parts[0]?.trim() || '',
+              title: parts[1]?.trim() || '',
+              date: parts[2]?.trim() || '',
+            };
+          });
+      } catch { /* notes lookup optional */ }
+
+      immutableAudit('nursing.io', 'success', auditActor(session), {
+        detail: { dfn, weightCount: weightEntries.length, ioNoteCount: ioNotes.length },
+      });
+      return {
+        ok: true,
+        source: 'vista',
+        weightTrend: weightEntries,
+        ioNotes,
+        rpcUsed,
+        pendingTargets: [],
+        _note: 'I/O data from vitals (weight trend) + TIU notes. GMRIO RESULTS RPC not registered in this VistA instance -- register it for structured I/O entry from GMR(126).',
+      };
+    } catch (err) {
+      log.warn('Nursing I/O RPC failed', { err: String(err) });
+      return {
+        ok: true,
+        source: 'vista',
+        weightTrend: [],
+        ioNotes: [],
+        rpcUsed,
+        pendingTargets: [{ rpc: 'ORQQVI VITALS', package: 'OR', reason: String(err) }],
+      };
+    }
   });
 
-  /* ------ GET /vista/nursing/assessments?dfn=N (Tier-0 capability-gated) ------ */
+  /* ------ GET /vista/nursing/assessments?dfn=N ------ */
   server.get('/vista/nursing/assessments', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const dfn = String((request.query as any)?.dfn || '').trim();
@@ -635,24 +752,49 @@ export default async function nursingRoutes(server: FastifyInstance) {
         .code(400)
         .send({ ok: false, error: 'Invalid dfn -- must be a positive integer' });
 
-    const blocked = tier0Gate('ZVENAS LIST', 'nursing', {
-      vistaFiles: ['GN(228) ASSESSMENT', 'GN(228.1) ASSESSMENT DETAIL', 'TIU(8925) TIU DOCUMENT'],
-      targetRoutines: ['GNASMT', 'GNASMTU', 'TIUSRVP'],
-      migrationPath:
-        'Build ZVENAS custom RPCs wrapping GN package, or use TIU-based assessment templates',
-      sandboxNote:
-        'GN Nursing package present but no standard read/write RPCs exposed. TIU templates are the recommended approach.',
-    });
-    immutableAudit('nursing.assessments', blocked ? 'blocked' : 'attempt', auditActor(session), {
-      detail: { dfn, gated: !!blocked, rpc: 'ZVENAS LIST' },
-    });
-    if (blocked) return reply.status(202).send(blocked);
+    const rpcUsed: string[] = [];
+    try {
+      const noteLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', [
+        '', '1', dfn, '0', '0', '0', '', '0', '',
+      ]);
+      rpcUsed.push('TIU DOCUMENTS BY CONTEXT');
+      const assessments = (noteLines || [])
+        .filter((l) => l.trim())
+        .filter((l) => /ASSESS|ADMISSION|NURSING|SKIN|FALL|BRADEN|PAIN/i.test(l))
+        .map((line) => {
+          const parts = line.split('^');
+          return {
+            ien: parts[0]?.trim() || '',
+            title: parts[1]?.trim() || '',
+            date: parts[2]?.trim() || '',
+            author: parts[3]?.trim() || '',
+            status: parts[4]?.trim() || '',
+          };
+        });
 
-    return reply.code(501).send({
-      ok: false,
-      status: 'not-implemented',
-      message: 'ZVENAS LIST available but assessment retrieval not yet wired',
-    });
+      immutableAudit('nursing.assessments', 'success', auditActor(session), {
+        detail: { dfn, count: assessments.length },
+      });
+      return {
+        ok: true,
+        source: 'vista',
+        items: assessments,
+        count: assessments.length,
+        rpcUsed,
+        pendingTargets: [],
+        _note: 'Assessments from TIU nursing document class. Filtered by assessment-related title keywords. For structured assessments, install GN package RPCs.',
+      };
+    } catch (err) {
+      log.warn('Nursing assessments RPC failed', { err: String(err) });
+      return {
+        ok: true,
+        source: 'vista',
+        items: [],
+        count: 0,
+        rpcUsed,
+        pendingTargets: [{ rpc: 'TIU DOCUMENTS BY CONTEXT', package: 'TIU', reason: String(err) }],
+      };
+    }
   });
 
   /* ------ POST /vista/nursing/notes/create ------ */

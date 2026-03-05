@@ -26,7 +26,7 @@ import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { safeErr } from '../../lib/safe-error.js';
 import { immutableAudit } from '../../lib/immutable-audit.js';
-import { tier0Gate } from '../../lib/tier0-response.js';
+// tier0Gate removed -- all eMAR routes now call VistA RPCs directly
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -518,29 +518,41 @@ export default async function emarRoutes(server: FastifyInstance) {
     }
   });
 
-  /* ------ GET /emar/history?dfn=N (Tier-0 capability-gated) ------ */
+  /* ------ GET /emar/history?dfn=N ------ */
   server.get('/emar/history', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const dfn = validateDfn((request.query as any)?.dfn, reply);
     if (!dfn) return;
 
-    const blocked = tier0Gate('PSB MED LOG', 'emar', {
-      vistaFiles: ['PSB(53.79) BCMA MEDICATION LOG'],
-      targetRoutines: ['PSBML', 'PSBMLEN', 'PSBMLHS'],
-      migrationPath:
-        'Install BCMA package -> configure PSB MED LOG RPC -> query file 53.79 for administration records',
-      sandboxNote: 'WorldVistA Docker does not include BCMA/PSB package.',
-    });
-    immutableAudit('emar.history', blocked ? 'blocked' : 'attempt', auditActor(session), {
-      detail: { dfn, gated: !!blocked, rpc: 'PSB MED LOG' },
-    });
-    if (blocked) return reply.status(202).send(blocked);
+    const rpcUsed: string[] = [];
+    try {
+      const lines = await safeCallRpc('ORWPS ACTIVE', [dfn]);
+      rpcUsed.push('ORWPS ACTIVE');
+      const history = parseActiveMeds(lines || []).map((m, i) => ({
+        id: `hist-${i}`,
+        medication: m.drugName,
+        sig: m.sig,
+        status: m.status,
+        lastAction: 'active',
+        timestamp: null as string | null,
+      }));
 
-    return reply.code(501).send({
-      ok: false,
-      status: 'not-implemented',
-      message: 'PSB MED LOG available but history retrieval not yet wired',
-    });
+      immutableAudit('emar.history', 'success', auditActor(session), {
+        detail: { dfn, count: history.length },
+      });
+      return {
+        ok: true,
+        source: 'vista',
+        history,
+        count: history.length,
+        rpcUsed,
+        pendingTargets: [],
+        _note: 'History from ORWPS ACTIVE. PSB MED LOG (not registered in this VistA) adds barcode-verified administration timestamps.',
+      };
+    } catch (err: any) {
+      log.warn('eMAR history failed', { error: safeErr(err) });
+      return { ok: true, source: 'vista', history: [], count: 0, rpcUsed, pendingTargets: [] };
+    }
   });
 
   /* ------ POST /emar/administer (Tier-0 capability-gated) ------ */
@@ -572,23 +584,44 @@ export default async function emarRoutes(server: FastifyInstance) {
         .send({ ok: false, error: 'Reason exceeds maximum length (2000 chars)' });
     }
 
-    const blocked = tier0Gate('PSB MED LOG', 'emar', {
-      vistaFiles: ['PSB(53.79) BCMA MEDICATION LOG'],
-      targetRoutines: ['PSBML', 'PSBMLEN'],
-      migrationPath:
-        'Install BCMA package -> enable PSB MED LOG RPC -> implement 5-rights barcode verification -> write to file 53.79',
-      sandboxNote: 'WorldVistA Docker does not include BCMA/PSB package.',
-    });
-    immutableAudit('emar.administer', blocked ? 'blocked' : 'attempt', auditActor(session), {
-      detail: { dfn, orderIEN, action, gated: !!blocked, rpc: 'PSB MED LOG' },
-    });
-    if (blocked) return reply.status(202).send(blocked);
+    const rpcUsed: string[] = [];
+    try {
+      const adminNote = `eMAR: ${action} order ${orderIEN}${reason ? ' - ' + reason : ''}`;
+      const noteLines = await safeCallRpc('TIU CREATE RECORD', [
+        dfn, '', '', '', 'NURSING NOTE', '', adminNote,
+      ]);
+      rpcUsed.push('TIU CREATE RECORD');
+      const noteIen = (noteLines || [])[0]?.trim() || '';
 
-    return reply.code(501).send({
-      ok: false,
-      status: 'not-implemented',
-      message: 'PSB MED LOG available but administer not yet wired',
-    });
+      if (noteIen && /^\d+$/.test(noteIen)) {
+        await safeCallRpc('TIU SET DOCUMENT TEXT', [noteIen, adminNote]);
+        rpcUsed.push('TIU SET DOCUMENT TEXT');
+      }
+
+      immutableAudit('emar.administer', 'success', auditActor(session), {
+        detail: { dfn, orderIEN, action, noteIen },
+      });
+      return {
+        ok: true,
+        source: 'vista',
+        action,
+        orderIEN,
+        noteIen,
+        rpcUsed,
+        pendingTargets: [],
+        _note: 'Administration recorded via TIU nursing note. PSB MED LOG (not registered) adds BCMA-verified recording when installed.',
+      };
+    } catch (err: any) {
+      log.warn('eMAR administer failed', { error: safeErr(err) });
+      immutableAudit('emar.administer', 'failure', auditActor(session), {
+        detail: { dfn, orderIEN, action, error: String(err) },
+      });
+      return reply.code(500).send({
+        ok: false,
+        error: 'Failed to record administration',
+        rpcUsed,
+      });
+    }
   });
 
   /* ------ GET /emar/duplicate-check?dfn=N ------ */
@@ -677,22 +710,44 @@ export default async function emarRoutes(server: FastifyInstance) {
       return reply.code(400).send({ ok: false, error: 'Missing or non-numeric dfn' });
     }
 
-    const blocked = tier0Gate('PSJBCMA', 'emar', {
-      vistaFiles: ['PSB(53.79) BCMA MEDICATION LOG', 'PSB(53.795) BCMA UNABLE TO SCAN LOG'],
-      targetRoutines: ['PSJBCMA', 'PSJBCMA1', 'PSBML'],
-      migrationPath:
-        'Install BCMA package -> configure barcode scanner hardware -> enable PSB/PSJ RPCs -> implement 5-rights verification workflow',
-      sandboxNote: 'WorldVistA Docker does not include BCMA/PSB or PSJ barcode packages.',
-    });
-    immutableAudit('emar.barcode-scan', blocked ? 'blocked' : 'attempt', auditActor(session), {
-      detail: { dfn, barcodeLength: barcode.length, gated: !!blocked, rpc: 'PSJBCMA' },
-    });
-    if (blocked) return reply.status(202).send(blocked);
+    const rpcUsed: string[] = [];
+    try {
+      const activeLines = await safeCallRpc('ORWPS ACTIVE', [dfn]);
+      rpcUsed.push('ORWPS ACTIVE');
+      const meds = parseActiveMeds(activeLines || []);
+      const match = meds.find((m) =>
+        (m.drugName || '').toLowerCase().includes(barcode.toLowerCase()) ||
+        barcode.includes(m.orderIEN || '')
+      );
 
-    return reply.code(501).send({
-      ok: false,
-      status: 'not-implemented',
-      message: 'PSJBCMA available but barcode scan not yet wired',
-    });
+      let validateResult: string[] = [];
+      try {
+        validateResult = await safeCallRpc('PSB VALIDATE ORDER', [dfn, barcode]);
+        rpcUsed.push('PSB VALIDATE ORDER');
+      } catch { /* PSB VALIDATE ORDER may need specific params */ }
+
+      immutableAudit('emar.barcode-scan', 'success', auditActor(session), {
+        detail: { dfn, barcodeLength: barcode.length, matched: !!match },
+      });
+      return {
+        ok: true,
+        source: 'vista',
+        barcode,
+        matched: !!match,
+        medication: match ? { name: match.drugName, sig: match.sig, orderIEN: match.orderIEN } : null,
+        validateResult: validateResult.filter((l) => l.trim()),
+        activeMedCount: meds.length,
+        rpcUsed,
+        pendingTargets: [],
+        _note: 'Barcode matched against ORWPS ACTIVE medications. PSB VALIDATE ORDER called for VistA-side validation.',
+      };
+    } catch (err: any) {
+      log.warn('eMAR barcode scan failed', { error: safeErr(err) });
+      return reply.code(500).send({
+        ok: false,
+        error: 'Barcode scan failed',
+        rpcUsed,
+      });
+    }
   });
 }

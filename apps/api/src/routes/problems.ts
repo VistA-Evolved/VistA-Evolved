@@ -177,308 +177,99 @@ export default async function problemsRoutes(server: FastifyInstance): Promise<v
     });
   });
 
-  // ── Individual RPC stubs ──────────────────────────────────────
+  // ── Phase 578 (Wave 42): Wired RPC endpoints ─────────────────
 
-  /** Stub for ORQQPL ADD SAVE (2 call sites in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-add-save', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL ADD SAVE',
-      domain: 'problems',
-      slug: 'orqqpl-add-save',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
-
-  /** Stub for ORQQPL AUDIT HIST (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-audit-hist', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL AUDIT HIST',
-      domain: 'problems',
-      slug: 'orqqpl-audit-hist',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
-
-  /** Stub for ORQQPL CHECK DUP (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-check-dup', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL CHECK DUP',
-      domain: 'problems',
-      slug: 'orqqpl-check-dup',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
-
-  /** Stub for ORQQPL CLIN FILTER LIST (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-clin-filter-list', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL CLIN FILTER LIST',
-      domain: 'problems',
-      slug: 'orqqpl-clin-filter-list',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
-
-  /** Stub for ORQQPL CLIN SRCH (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-clin-srch', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL CLIN SRCH',
-      domain: 'problems',
-      slug: 'orqqpl-clin-srch',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
-
-  /** Stub for ORQQPL DELETE (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-delete', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL DELETE',
-      domain: 'problems',
-      slug: 'orqqpl-delete',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
-
-  /** Stub for ORQQPL DETAIL (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-detail', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL DETAIL',
-      domain: 'problems',
-      slug: 'orqqpl-detail',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
-
-  /** Stub for ORQQPL EDIT LOAD (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-edit-load', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL EDIT LOAD',
-      domain: 'problems',
-      slug: 'orqqpl-edit-load',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
-
-  /** Stub for ORQQPL EDIT SAVE (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-edit-save', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL EDIT SAVE',
-      domain: 'problems',
-      slug: 'orqqpl-edit-save',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
-
-  /** Stub for ORQQPL INIT PT (2 call sites in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-init-pt', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL INIT PT',
-      domain: 'problems',
-      slug: 'orqqpl-init-pt',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
-
-  /** Stub for ORQQPL INIT USER (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-init-user', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL INIT USER',
-      domain: 'problems',
-      slug: 'orqqpl-init-user',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
-
-  /** Stub for ORQQPL PROB COMMENTS (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-prob-comments', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL PROB COMMENTS',
-      domain: 'problems',
-      slug: 'orqqpl-prob-comments',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
-
-  /** Stub for ORQQPL PROBLEM LIST (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-problem-list', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL PROBLEM LIST',
-      domain: 'problems',
-      slug: 'orqqpl-problem-list',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
-
-  /** Stub for ORQQPL PROBLEM NTRT BULLETIN (1 call site in CPRS) */
-  server.get(
-    '/vista/problems/rpc/orqqpl-problem-ntrt-bulletin',
-    async (): Promise<StubResponse> => {
-      return {
-        ok: false,
-        error: 'Not implemented',
-        rpcName: 'ORQQPL PROBLEM NTRT BULLETIN',
-        domain: 'problems',
-        slug: 'orqqpl-problem-ntrt-bulletin',
-        hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-      };
+  /** Generic RPC caller for problem domain — DFN-based reads. */
+  async function callProblemRpc(
+    rpcName: string,
+    request: FastifyRequest,
+    reply: FastifyReply,
+    paramBuilder?: (q: any) => string[],
+  ) {
+    await requireSession(request, reply);
+    const q = request.query as any;
+    const params = paramBuilder ? paramBuilder(q) : q?.dfn ? [String(q.dfn)] : [];
+    try {
+      const lines = await safeCallRpc(rpcName, params);
+      return reply.send({ ok: true, source: 'vista', rpcUsed: [rpcName], data: lines, pendingTargets: [] });
+    } catch (err: any) {
+      log.warn(`${rpcName} failed`, { err: err?.message });
+      return reply.code(502).send({ ok: false, source: 'vista', error: err?.message, rpcUsed: [], pendingTargets: [rpcName] });
     }
-  );
+  }
 
-  /** Stub for ORQQPL PROV FILTER LIST (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-prov-filter-list', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL PROV FILTER LIST',
-      domain: 'problems',
-      slug: 'orqqpl-prov-filter-list',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get('/vista/problems/rpc/orqqpl-add-save', (req, rep) =>
+    callProblemRpc('ORQQPL ADD SAVE', req, rep, (q) => [q?.dfn || '', q?.data || '']));
 
-  /** Stub for ORQQPL PROVIDER LIST (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-provider-list', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL PROVIDER LIST',
-      domain: 'problems',
-      slug: 'orqqpl-provider-list',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get('/vista/problems/rpc/orqqpl-audit-hist', (req, rep) =>
+    callProblemRpc('ORQQPL AUDIT HIST', req, rep, (q) => [q?.dfn || '', q?.probIen || '']));
 
-  /** Stub for ORQQPL REPLACE (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-replace', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL REPLACE',
-      domain: 'problems',
-      slug: 'orqqpl-replace',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get('/vista/problems/rpc/orqqpl-check-dup', (req, rep) =>
+    callProblemRpc('ORQQPL CHECK DUP', req, rep, (q) => [q?.dfn || '', q?.term || '']));
 
-  /** Stub for ORQQPL SAVEVIEW (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-saveview', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL SAVEVIEW',
-      domain: 'problems',
-      slug: 'orqqpl-saveview',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get('/vista/problems/rpc/orqqpl-clin-filter-list', (req, rep) =>
+    callProblemRpc('ORQQPL CLIN FILTER LIST', req, rep));
 
-  /** Stub for ORQQPL SERV FILTER LIST (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-serv-filter-list', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL SERV FILTER LIST',
-      domain: 'problems',
-      slug: 'orqqpl-serv-filter-list',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get('/vista/problems/rpc/orqqpl-clin-srch', (req, rep) =>
+    callProblemRpc('ORQQPL CLIN SRCH', req, rep, (q) => [q?.term || '']));
 
-  /** Stub for ORQQPL SRVC SRCH (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-srvc-srch', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL SRVC SRCH',
-      domain: 'problems',
-      slug: 'orqqpl-srvc-srch',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get('/vista/problems/rpc/orqqpl-delete', (req, rep) =>
+    callProblemRpc('ORQQPL DELETE', req, rep, (q) => [q?.dfn || '', q?.probIen || '']));
 
-  /** Stub for ORQQPL UPDATE (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-update', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL UPDATE',
-      domain: 'problems',
-      slug: 'orqqpl-update',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get('/vista/problems/rpc/orqqpl-detail', (req, rep) =>
+    callProblemRpc('ORQQPL DETAIL', req, rep, (q) => [q?.dfn || '', q?.probIen || '']));
 
-  /** Stub for ORQQPL USER PROB CATS (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-user-prob-cats', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL USER PROB CATS',
-      domain: 'problems',
-      slug: 'orqqpl-user-prob-cats',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get('/vista/problems/rpc/orqqpl-edit-load', (req, rep) =>
+    callProblemRpc('ORQQPL EDIT LOAD', req, rep, (q) => [q?.probIen || '']));
 
-  /** Stub for ORQQPL USER PROB LIST (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-user-prob-list', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL USER PROB LIST',
-      domain: 'problems',
-      slug: 'orqqpl-user-prob-list',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get('/vista/problems/rpc/orqqpl-edit-save', (req, rep) =>
+    callProblemRpc('ORQQPL EDIT SAVE', req, rep, (q) => [q?.probIen || '', q?.data || '']));
 
-  /** Stub for ORQQPL VERIFY (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl-verify', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL VERIFY',
-      domain: 'problems',
-      slug: 'orqqpl-verify',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get('/vista/problems/rpc/orqqpl-init-pt', (req, rep) =>
+    callProblemRpc('ORQQPL INIT PT', req, rep));
 
-  /** Stub for ORQQPL4 LEX (1 call site in CPRS) */
-  server.get('/vista/problems/rpc/orqqpl4-lex', async (): Promise<StubResponse> => {
-    return {
-      ok: false,
-      error: 'Not implemented',
-      rpcName: 'ORQQPL4 LEX',
-      domain: 'problems',
-      slug: 'orqqpl4-lex',
-      hint: "Wire this stub: import { connect, callRpc, disconnect } from '../vista/rpcBrokerClient'",
-    };
-  });
+  server.get('/vista/problems/rpc/orqqpl-init-user', (req, rep) =>
+    callProblemRpc('ORQQPL INIT USER', req, rep, () => []));
+
+  server.get('/vista/problems/rpc/orqqpl-prob-comments', (req, rep) =>
+    callProblemRpc('ORQQPL PROB COMMENTS', req, rep, (q) => [q?.dfn || '', q?.probIen || '']));
+
+  server.get('/vista/problems/rpc/orqqpl-problem-list', (req, rep) =>
+    callProblemRpc('ORQQPL PROBLEM LIST', req, rep, (q) => [q?.dfn || '', q?.status || 'A']));
+
+  server.get('/vista/problems/rpc/orqqpl-problem-ntrt-bulletin', (req, rep) =>
+    callProblemRpc('ORQQPL PROBLEM NTRT BULLETIN', req, rep));
+
+  server.get('/vista/problems/rpc/orqqpl-prov-filter-list', (req, rep) =>
+    callProblemRpc('ORQQPL PROV FILTER LIST', req, rep));
+
+  server.get('/vista/problems/rpc/orqqpl-provider-list', (req, rep) =>
+    callProblemRpc('ORQQPL PROVIDER LIST', req, rep));
+
+  server.get('/vista/problems/rpc/orqqpl-replace', (req, rep) =>
+    callProblemRpc('ORQQPL REPLACE', req, rep, (q) => [q?.dfn || '', q?.probIen || '', q?.newIcd || '']));
+
+  server.get('/vista/problems/rpc/orqqpl-saveview', (req, rep) =>
+    callProblemRpc('ORQQPL SAVEVIEW', req, rep, (q) => [q?.view || '']));
+
+  server.get('/vista/problems/rpc/orqqpl-serv-filter-list', (req, rep) =>
+    callProblemRpc('ORQQPL SERV FILTER LIST', req, rep));
+
+  server.get('/vista/problems/rpc/orqqpl-srvc-srch', (req, rep) =>
+    callProblemRpc('ORQQPL SRVC SRCH', req, rep, (q) => [q?.term || '']));
+
+  server.get('/vista/problems/rpc/orqqpl-update', (req, rep) =>
+    callProblemRpc('ORQQPL UPDATE', req, rep, (q) => [q?.dfn || '', q?.data || '']));
+
+  server.get('/vista/problems/rpc/orqqpl-user-prob-cats', (req, rep) =>
+    callProblemRpc('ORQQPL USER PROB CATS', req, rep, () => []));
+
+  server.get('/vista/problems/rpc/orqqpl-user-prob-list', (req, rep) =>
+    callProblemRpc('ORQQPL USER PROB LIST', req, rep));
+
+  server.get('/vista/problems/rpc/orqqpl-verify', (req, rep) =>
+    callProblemRpc('ORQQPL VERIFY', req, rep, (q) => [q?.dfn || '', q?.probIen || '']));
+
+  server.get('/vista/problems/rpc/orqqpl4-lex', (req, rep) =>
+    callProblemRpc('ORQQPL4 LEX', req, rep, (q) => [q?.term || '', q?.count || '20']));
 }

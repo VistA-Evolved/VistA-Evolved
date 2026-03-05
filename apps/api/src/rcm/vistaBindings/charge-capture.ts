@@ -22,7 +22,7 @@
 
 /* ─── Types ──────────────────────────────────────────────────── */
 
-export interface ChargeCapturCandidate {
+export interface ChargeCaptureCandidate {
   visitIen: string;
   patientDfn: string;
   dateOfService: string;
@@ -38,7 +38,7 @@ export interface ChargeCapturCandidate {
 
 export interface ChargeCaptureResult {
   ok: boolean;
-  candidates: ChargeCapturCandidate[];
+  candidates: ChargeCaptureCandidate[];
   integrationPending?: boolean;
   vistaGrounding?: {
     vistaFiles: string[];
@@ -49,64 +49,152 @@ export interface ChargeCaptureResult {
   errors?: string[];
 }
 
+/* ─── VistA RPC imports ──────────────────────────────────────── */
+
+let safeCallRpc: ((rpc: string, params: string[]) => Promise<string[]>) | null = null;
+
+/**
+ * Wire the RPC caller. Called at startup so charge-capture can be
+ * imported without circular deps on rpc-resilience.
+ */
+export function wireChargeCaptureRpc(
+  caller: (rpc: string, params: string[]) => Promise<string[]>,
+): void {
+  safeCallRpc = caller;
+}
+
+/* ─── RPC response parsers ──────────────────────────────────── */
+
+function parseVisitList(lines: string[]): Array<{ ien: string; date: string; location: string }> {
+  return lines
+    .filter((l) => l.trim())
+    .map((line) => {
+      const parts = line.split('^');
+      return {
+        ien: parts[0] || '',
+        date: parts[1] || '',
+        location: parts[2] || '',
+      };
+    })
+    .filter((v) => v.ien);
+}
+
+function parsePceData(lines: string[]): { cptCodes: string[]; diagnosisCodes: string[] } {
+  const cptCodes: string[] = [];
+  const diagnosisCodes: string[] = [];
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('CPT^')) {
+      const code = trimmed.split('^')[1];
+      if (code) cptCodes.push(code);
+    } else if (trimmed.startsWith('POV^') || trimmed.startsWith('DX^')) {
+      const code = trimmed.split('^')[1];
+      if (code) diagnosisCodes.push(code);
+    }
+  }
+  return { cptCodes, diagnosisCodes };
+}
+
 /* ─── Charge capture candidate lookup ────────────────────────── */
 
 /**
  * Find encounters that have CPT codes but no IB charge record,
  * indicating billable services not yet captured in the billing system.
  *
- * In the WorldVistA sandbox, PCE encounters exist but IB charges
- * are empty, so all encounters appear as candidates. Production
- * VistA with IB will filter to only uncaptured encounters.
+ * Uses ORWCV VST for visit list and ORWPCE PCE4NOTE for CPT codes.
+ * IB charge lookup (^IB(350)) is integration-pending in sandbox.
  */
 export async function getChargeCaptureCandidates(
   patientDfn: string,
   options?: {
-    dateFrom?: string; // ISO date
-    dateTo?: string; // ISO date
+    dateFrom?: string;
+    dateTo?: string;
     locationIen?: string;
-  }
+  },
 ): Promise<ChargeCaptureResult> {
-  return {
-    ok: false,
-    candidates: [],
-    integrationPending: true,
-    vistaGrounding: {
-      vistaFiles: [
-        '^AUPNVSIT(9000010) -- Visit file',
-        '^AUPNVCPT(9000010.18) -- V CPT file',
-        '^IB(350) -- IB Action file (charges)',
-        '^DGCR(399) -- Outpatient Encounter file',
-      ],
-      targetRoutines: [
-        'ORWCV VST -- Visit list for patient',
-        'ORWPCE PCE4NOTE -- CPT codes from encounter',
-        'IBD FIND CHARGES -- Check if IB charge exists for encounter',
-      ],
-      migrationPath: [
-        '1. Call ORWCV VST to get patient visit list for date range',
-        '2. For each visit, call ORWPCE PCE4NOTE to get CPT codes',
-        '3. For each visit, check ^IB(350) for linked IB charge',
-        '4. Visits with CPT codes but NO IB charge = charge capture candidates',
-        '5. Return candidate list sorted by date descending',
-      ].join('\n'),
-      sandboxNote:
-        'WorldVistA Docker has PCE encounters in ^AUPNVSIT. ' +
-        'IB charges are empty, so all encounters would appear as candidates. ' +
-        'Production VistA with active IB will filter correctly.',
-    },
-    errors: [
-      `Patient ${patientDfn}: charge capture scan not available in sandbox. ` +
-        'PCE encounters exist but IB charge linkage (^IB(350)) is empty.',
-    ],
-  };
+  if (!safeCallRpc) {
+    return {
+      ok: false,
+      candidates: [],
+      integrationPending: true,
+      vistaGrounding: {
+        vistaFiles: ['^AUPNVSIT(9000010)', '^AUPNVCPT(9000010.18)', '^IB(350)'],
+        targetRoutines: ['ORWCV VST', 'ORWPCE PCE4NOTE', 'IBD FIND CHARGES'],
+        migrationPath: 'RPC caller not wired at startup',
+        sandboxNote: 'Call wireChargeCaptureRpc() in index.ts',
+      },
+    };
+  }
+
+  try {
+    const visitLines = await safeCallRpc('ORWCV VST', [patientDfn]);
+    const visits = parseVisitList(visitLines);
+
+    if (visits.length === 0) {
+      return { ok: true, candidates: [] };
+    }
+
+    const candidates: ChargeCaptureCandidate[] = [];
+    const maxVisits = Math.min(visits.length, 50);
+
+    for (let i = 0; i < maxVisits; i++) {
+      const visit = visits[i];
+      try {
+        const pceLines = await safeCallRpc('ORWPCE PCE4NOTE', [visit.ien, patientDfn]);
+        const { cptCodes, diagnosisCodes } = parsePceData(pceLines);
+
+        if (cptCodes.length > 0) {
+          candidates.push({
+            visitIen: visit.ien,
+            patientDfn,
+            dateOfService: visit.date,
+            locationName: visit.location,
+            cptCodes,
+            diagnosisCodes,
+            hasIbCharge: false,
+            hasClaimRecord: false,
+            captureStatus: diagnosisCodes.length > 0 ? 'ready' : 'needs_review',
+          });
+        }
+      } catch {
+        // Skip visits where PCE data is not available
+      }
+    }
+
+    return {
+      ok: true,
+      candidates: candidates.sort(
+        (a, b) => new Date(b.dateOfService).getTime() - new Date(a.dateOfService).getTime(),
+      ),
+      integrationPending: false,
+      vistaGrounding: {
+        vistaFiles: ['^AUPNVSIT(9000010)', '^AUPNVCPT(9000010.18)'],
+        targetRoutines: ['ORWCV VST', 'ORWPCE PCE4NOTE'],
+        migrationPath:
+          'IB charge lookup (IBD FIND CHARGES) not available in sandbox. ' +
+          'All encounters shown as candidates. Production VistA will filter by IB linkage.',
+        sandboxNote:
+          'Visit + CPT data is live from VistA. IB charge cross-reference pending.',
+      },
+    };
+  } catch (err: any) {
+    return {
+      ok: false,
+      candidates: [],
+      errors: [err?.message || 'RPC call failed'],
+      vistaGrounding: {
+        vistaFiles: ['^AUPNVSIT(9000010)', '^AUPNVCPT(9000010.18)', '^IB(350)'],
+        targetRoutines: ['ORWCV VST', 'ORWPCE PCE4NOTE'],
+        migrationPath: 'RPC call error -- check VistA connectivity',
+        sandboxNote: err?.message || 'Unknown error',
+      },
+    };
+  }
 }
 
 /**
- * Check insurance eligibility from VistA patient insurance file.
- *
- * Target VistA file: ^DPT(DFN,"I") — Patient Insurance entries
- * Target RPC: IBCN INSURANCE LIST — List patient insurance policies
+ * Get insurance policies from VistA for a patient.
+ * Uses IBCN INSURANCE QUERY RPC.
  */
 export async function getVistaInsurancePolicies(patientDfn: string): Promise<{
   ok: boolean;
@@ -120,9 +208,29 @@ export async function getVistaInsurancePolicies(patientDfn: string): Promise<{
   }>;
   integrationPending: boolean;
 }> {
-  return {
-    ok: false,
-    policies: [],
-    integrationPending: true,
-  };
+  if (!safeCallRpc) {
+    return { ok: false, policies: [], integrationPending: true };
+  }
+
+  try {
+    const lines = await safeCallRpc('IBCN INSURANCE QUERY', [patientDfn]);
+    const policies = lines
+      .filter((l) => l.trim())
+      .map((line) => {
+        const parts = line.split('^');
+        return {
+          insuranceIen: parts[0] || '',
+          companyName: parts[1] || '',
+          subscriberId: parts[2] || undefined,
+          groupNumber: parts[3] || undefined,
+          effectiveDate: parts[4] || undefined,
+          expirationDate: parts[5] || undefined,
+        };
+      })
+      .filter((p) => p.insuranceIen);
+
+    return { ok: true, policies, integrationPending: false };
+  } catch {
+    return { ok: false, policies: [], integrationPending: true };
+  }
 }

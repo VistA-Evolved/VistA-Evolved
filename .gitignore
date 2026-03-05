@@ -3,6 +3,7 @@
 Thumbs.db
 .vscode/
 .idea/
+.cursor/
 
 # Node
 node_modules/
@@ -53,6 +54,9 @@ apps/api/data/
 apps/api/logs/
 apps/api/cookies*.txt
 apps/api/verify*.json
+
+# Test fixture archive (moved from root in Wave 42)
+/test-fixtures/
 
 # Root-level test / curl artifacts (never commit)
 # Exclude all root-level JSON except known config files

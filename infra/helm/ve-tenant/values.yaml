@@ -48,6 +48,9 @@ vista:
     limits:
       cpu: '2'
       memory: 2Gi
+  poolSize: 3
+  maxPoolTotal: 50
+  maxConnectionsPerUser: 3
   storage:
     size: 5Gi
     storageClass: ''

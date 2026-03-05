@@ -211,15 +211,82 @@ services/
   analytics/    YottaDB/Octo/ROcto for BI
 ```
 
-## For AI Agents
+## Verify Your Setup (MANDATORY Before Any Work)
+
+After starting the system, run this verification to confirm everything works
+end-to-end against the real VistA Docker:
+
+```powershell
+# 1. Confirm Docker is running
+docker ps --format "table {{.Names}}\t{{.Status}}" | Select-String "vehu|ve-platform-db"
+
+# 2. Confirm API starts cleanly (look for "Server listening" and PG init ok:true)
+cd apps/api
+npx tsx --env-file=.env.local src/index.ts
+
+# 3. Confirm VistA connectivity
+curl.exe -s http://127.0.0.1:3001/vista/ping
+# Expected: {"ok":true,"vista":"reachable","port":9431}
+
+curl.exe -s http://127.0.0.1:3001/health
+# Expected: {"ok":true,...,"platformPg":{"ok":true,...}}
+
+# 4. Confirm real clinical data flows from VistA
+Set-Content -Path login-body.json -Value '{"accessCode":"PRO1234","verifyCode":"PRO1234!!"}' -NoNewline -Encoding ASCII
+curl.exe -s -c cookies.txt -X POST http://127.0.0.1:3001/auth/login -H "Content-Type: application/json" -d "@login-body.json"
+
+curl.exe -s -b cookies.txt "http://127.0.0.1:3001/vista/default-patient-list"
+# Expected: {"ok":true,"count":38,"results":[...]}
+
+curl.exe -s -b cookies.txt "http://127.0.0.1:3001/vista/allergies?dfn=46"
+# Expected: {"ok":true,"count":2,"results":[{"allergen":"SULFONAMIDE/RELATED ANTIMICROBIALS",...}]}
+
+Remove-Item login-body.json, cookies.txt -ErrorAction SilentlyContinue
+```
+
+If any of these fail, do NOT proceed with coding. Fix the infrastructure first.
+See [docs/runbooks/runtime-lanes.md](docs/runbooks/runtime-lanes.md) for
+troubleshooting.
+
+## VistA RPC Reference
+
+This project integrates with VistA via the XWB RPC Broker protocol. Not all
+RPCs listed in the Vivian index (3,747 RPCs) are available in the VEHU sandbox.
+
+**Key files for RPC research:**
+
+- `data/vista/vivian/rpc_index.json` -- Full Vivian RPC catalog (3,747 RPCs)
+- `docs/vista-alignment/rpc-coverage.json` -- Cross-reference: CPRS + Vivian + API
+- `apps/api/src/vista/rpcRegistry.ts` -- Which RPCs the API knows about (~170)
+- `services/vista/ZVEPROB.m` -- Probe routine to check File 8994 in running VistA
+
+**To check if an RPC exists in VistA:** Add it to `ZVEPROB.m` and run the probe
+(see AGENTS.md Section 8 for instructions). Never assume an RPC exists or doesn't
+exist without probing File 8994 in the running VEHU instance.
+
+## For AI Agents (Cursor, Copilot, ChatGPT, etc.)
 
 Read [AGENTS.md](AGENTS.md) before making any changes. It contains:
 
+- **RULE ZERO: Docker-First Verification Protocol** -- you MUST start Docker
+  and test against real VistA before and after writing any backend code
 - VistA XWB RPC protocol details (critical byte-level fixes)
 - Credential locations and Docker account table
-- Architecture quick map with 180+ gotchas
+- **Section 8: VistA RPC Availability Reference** -- confirmed available/missing
+  RPCs with IENs, probe commands, and key data files
+- Architecture quick map with 190+ gotchas
 - Bug tracker with 60+ root-cause analyses
 - Mandatory governance rules (prompt capture, verification, docs)
+
+Also read:
+- `.github/copilot-instructions.md` -- Copilot-specific build protocol with
+  RPC availability tables and probe instructions
+- `.cursor/rules/docker-first-verification.md` -- Cursor agent rules
+
+**The #1 failure mode of AI-assisted development on this project** is writing
+code that compiles but was never tested against the running VistA Docker.
+Every AI agent MUST follow the Docker-First protocol in AGENTS.md Section 0A.
+Code that was never executed against the live system is NOT considered done.
 
 ## Contributing
 

@@ -13,6 +13,17 @@
 
 import { RPC_CONFIG, CACHE_CONFIG } from '../config/server-config.js';
 import { log } from './logger.js';
+
+/**
+ * Lazy metering callback. Wired at startup to avoid circular import
+ * with billing/metering.ts. When null, metering is silently skipped.
+ */
+let meterRpcCall: ((tenantId: string, event: string) => void) | null = null;
+
+/** Wire the metering callback at startup (called from index.ts or lifecycle.ts). */
+export function wireMeteringCallback(fn: (tenantId: string, event: string) => void): void {
+  meterRpcCall = fn;
+}
 import {
   callRpc,
   callRpcWithList,
@@ -20,6 +31,11 @@ import {
   connect,
   type RpcParam,
 } from '../vista/rpcBrokerClient.js';
+import {
+  poolCallRpc,
+  poolCallRpcWithList,
+  type RpcContext,
+} from '../vista/rpcConnectionPool.js';
 // Phase 36: OTel tracing + Prometheus metrics
 import { startRpcSpan, endRpcSpan } from '../telemetry/tracing.js';
 import { rpcCallDuration, rpcCallsTotal, circuitBreakerTrips } from '../telemetry/metrics.js';
@@ -318,8 +334,8 @@ export async function resilientRpc<T>(
     rpcCallsTotal.inc({ rpc_name: rpcName, outcome: 'success' });
     endRpcSpan(span);
 
-    // Phase 96B: RPC traces now recorded at protocol level in rpcBrokerClient.ts
-    // (no duplicate recording needed here)
+    // Phase 586: Billing metering — count RPC calls
+    try { meterRpcCall?.('default', 'rpc_call'); } catch { /* best-effort */ }
 
     log.debug('RPC completed', { rpcName, durationMs });
     return result;
@@ -461,12 +477,24 @@ export function getRpcHealthSummary(): {
 /**
  * Drop-in replacement for callRpc that adds timeout, circuit breaker,
  * retry (for reads), per-RPC metrics, and mutex-protected socket access.
+ *
+ * When `ctx` (RpcContext) is provided, routes through the connection pool
+ * with DUZ-per-request (Phase 573). Without `ctx`, falls back to the
+ * legacy single-socket path using system credentials (backward compatible).
  */
 export async function safeCallRpc(
   rpcName: string,
   params: string[],
-  opts?: { idempotent?: boolean; timeoutMs?: number }
+  opts?: { idempotent?: boolean; timeoutMs?: number; ctx?: RpcContext }
 ): Promise<string[]> {
+  const ctx = opts?.ctx;
+  if (ctx) {
+    return resilientRpc(
+      () => poolCallRpc(rpcName, params, ctx),
+      rpcName,
+      { idempotent: opts?.idempotent ?? true, timeoutMs: opts?.timeoutMs }
+    );
+  }
   return resilientRpc(
     () =>
       withBrokerLock(async () => {
@@ -480,12 +508,23 @@ export async function safeCallRpc(
 
 /**
  * Drop-in replacement for callRpcWithList that adds resilience + mutex.
+ *
+ * When `ctx` (RpcContext) is provided, routes through the connection pool
+ * with DUZ-per-request (Phase 573). Without `ctx`, falls back to legacy path.
  */
 export async function safeCallRpcWithList(
   rpcName: string,
   params: RpcParam[],
-  opts?: { idempotent?: boolean; timeoutMs?: number }
+  opts?: { idempotent?: boolean; timeoutMs?: number; ctx?: RpcContext }
 ): Promise<string[]> {
+  const ctx = opts?.ctx;
+  if (ctx) {
+    return resilientRpc(
+      () => poolCallRpcWithList(rpcName, params, ctx),
+      rpcName,
+      { idempotent: opts?.idempotent ?? true, timeoutMs: opts?.timeoutMs }
+    );
+  }
   return resilientRpc(
     () =>
       withBrokerLock(async () => {
@@ -496,3 +535,5 @@ export async function safeCallRpcWithList(
     { idempotent: opts?.idempotent ?? true, timeoutMs: opts?.timeoutMs }
   );
 }
+
+export type { RpcContext };

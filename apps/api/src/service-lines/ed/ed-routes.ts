@@ -17,6 +17,8 @@ import {
   disposeVisit,
   getBoardMetrics,
 } from './ed-store.js';
+import { safeCallRpc } from '../../lib/rpc-resilience.js';
+import { log } from '../../lib/logger.js';
 
 export default async function edRoutes(server: FastifyInstance) {
   // ── Visit CRUD ─────────────────────────────────────────────────
@@ -118,5 +120,96 @@ export default async function edRoutes(server: FastifyInstance) {
 
   server.get('/ed/board', async () => {
     return { ok: true, metrics: getBoardMetrics() };
+  });
+
+  // ── VistA-enriched: patient demographics for ED visit ─────────
+
+  server.get('/ed/visits/:id/vista-demographics', async (request, reply) => {
+    const { id } = request.params as any;
+    const visit = getVisit(id);
+    if (!visit) return reply.code(404).send({ ok: false, error: 'Visit not found' });
+
+    try {
+      const rawLines = await safeCallRpc('ORWPT16 ID INFO', [visit.patientDfn]);
+      const demographics: Record<string, string> = {};
+      for (const line of rawLines) {
+        if (!line.trim()) continue;
+        const [key, ...vals] = line.split('^');
+        if (key) demographics[key.trim()] = vals.join('^').trim();
+      }
+      return { ok: true, source: 'vista', visitId: id, demographics };
+    } catch (err: any) {
+      log.warn('ED demographics RPC failed', { err: String(err), rpc: 'ORWPT16 ID INFO' });
+      return reply.code(502).send({
+        ok: false,
+        error: err?.message,
+        source: 'vista',
+        rpcUsed: ['ORWPT16 ID INFO'],
+      });
+    }
+  });
+
+  // ── VistA-enriched: latest vitals for ED patient ──────────────
+
+  server.get('/ed/visits/:id/vista-vitals', async (request, reply) => {
+    const { id } = request.params as any;
+    const visit = getVisit(id);
+    if (!visit) return reply.code(404).send({ ok: false, error: 'Visit not found' });
+
+    try {
+      const rawLines = await safeCallRpc('ORQQVI VITALS', [visit.patientDfn]);
+      const vitals = rawLines
+        .filter((l) => l.trim())
+        .map((line) => {
+          const parts = line.split('^');
+          return {
+            type: parts[0] || '',
+            value: parts[1] || '',
+            unit: parts[2] || '',
+            date: parts[3] || '',
+          };
+        });
+      return { ok: true, source: 'vista', visitId: id, vitals };
+    } catch (err: any) {
+      log.warn('ED vitals RPC failed', { err: String(err), rpc: 'ORQQVI VITALS' });
+      return reply.code(502).send({
+        ok: false,
+        error: err?.message,
+        source: 'vista',
+        rpcUsed: ['ORQQVI VITALS'],
+      });
+    }
+  });
+
+  // ── VistA-enriched: allergies for ED patient ──────────────────
+
+  server.get('/ed/visits/:id/vista-allergies', async (request, reply) => {
+    const { id } = request.params as any;
+    const visit = getVisit(id);
+    if (!visit) return reply.code(404).send({ ok: false, error: 'Visit not found' });
+
+    try {
+      const rawLines = await safeCallRpc('ORQQAL LIST', [visit.patientDfn]);
+      const allergies = rawLines
+        .filter((l) => l.trim())
+        .map((line) => {
+          const parts = line.split('^');
+          return {
+            ien: parts[0] || '',
+            allergen: parts[1] || '',
+            severity: parts[2] || '',
+            reaction: parts[3] || '',
+          };
+        });
+      return { ok: true, source: 'vista', visitId: id, allergies };
+    } catch (err: any) {
+      log.warn('ED allergies RPC failed', { err: String(err), rpc: 'ORQQAL LIST' });
+      return reply.code(502).send({
+        ok: false,
+        error: err?.message,
+        source: 'vista',
+        rpcUsed: ['ORQQAL LIST'],
+      });
+    }
   });
 }

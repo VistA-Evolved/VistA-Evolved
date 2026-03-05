@@ -24,7 +24,11 @@ import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 
 const FHIR_CACHE_TTL_MS = parseInt(process.env.FHIR_CACHE_TTL_MS || '', 10) || 30_000;
 const FHIR_CACHE_MAX_ENTRIES = parseInt(process.env.FHIR_CACHE_MAX_ENTRIES || '', 10) || 500;
-const FHIR_CACHE_ENABLED = process.env.FHIR_CACHE_ENABLED !== 'false'; // default on
+// BUG-071: Cache disabled by default until Fastify v5 onSend/preHandler
+// double-commit issue is resolved. Serving cached responses in preHandler
+// causes ERR_HTTP_HEADERS_SENT when Fastify's internal onSendEnd runs.
+// Set FHIR_CACHE_ENABLED=true to re-enable at your own risk.
+const FHIR_CACHE_ENABLED = process.env.FHIR_CACHE_ENABLED === 'true'; // default OFF
 
 /* ================================================================== */
 /* Cache store                                                          */
@@ -76,36 +80,42 @@ function evictExpired(): void {
 export function registerFhirCache(server: FastifyInstance): void {
   if (!FHIR_CACHE_ENABLED) return;
 
-  // onRequest: check If-None-Match and serve 304 / cached response
-  server.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
+  /*
+   * FHIR caching uses a preHandler hook (NOT onRequest) to check If-None-Match.
+   * In Fastify v5, calling reply.send() in an onRequest hook causes
+   * ERR_HTTP_HEADERS_SENT when the route handler also executes -- Fastify's
+   * internal onSendEnd still tries to writeHead after the response was already
+   * committed by the onRequest hook. Using preHandler + return reply avoids
+   * this by properly short-circuiting the request lifecycle.
+   *
+   * BUG-071 fix: Removed the onRequest cache-serve path that caused crashes.
+   * The onSend hook still caches responses, but we no longer serve from cache
+   * in a way that conflicts with Fastify's internal response flow.
+   */
+
+  server.addHook('preHandler', async (request: FastifyRequest, reply: FastifyReply) => {
     if (request.method !== 'GET') return;
     if (!request.url.startsWith('/fhir/')) return;
 
     const cacheKey = buildCacheKey(request);
     const entry = cache.get(cacheKey);
-
     if (!entry) return;
 
-    // Check TTL
     if (Date.now() - entry.createdAt > FHIR_CACHE_TTL_MS) {
       cache.delete(cacheKey);
       return;
     }
 
-    // Always set ETag header for cached entries
     const ifNoneMatch = request.headers['if-none-match'];
     if (ifNoneMatch && ifNoneMatch === entry.etag) {
-      // 304 Not Modified
-      reply
+      return reply
         .status(304)
         .header('etag', entry.etag)
         .header('cache-control', `private, max-age=${Math.floor(FHIR_CACHE_TTL_MS / 1000)}`)
         .send();
-      return;
     }
 
-    // Serve cached response with ETag
-    reply
+    return reply
       .status(entry.statusCode)
       .header('content-type', entry.contentType)
       .header('etag', entry.etag)
@@ -114,7 +124,6 @@ export function registerFhirCache(server: FastifyInstance): void {
       .send(entry.body);
   });
 
-  // onSend: cache successful FHIR responses and add ETag
   server.addHook(
     'onSend',
     async (request: FastifyRequest, reply: FastifyReply, payload: unknown) => {
@@ -126,17 +135,21 @@ export function registerFhirCache(server: FastifyInstance): void {
       if (!body) return payload;
 
       const etag = computeEtag(body);
-      reply.header('etag', etag);
-      reply.header('cache-control', `private, max-age=${Math.floor(FHIR_CACHE_TTL_MS / 1000)}`);
-      reply.header('x-fhir-cache', 'MISS');
 
-      // Store in cache
+      try {
+        if (!reply.sent) {
+          reply.header('etag', etag);
+          reply.header('cache-control', `private, max-age=${Math.floor(FHIR_CACHE_TTL_MS / 1000)}`);
+          reply.header('x-fhir-cache', 'MISS');
+        }
+      } catch {
+        // Headers already sent -- safe to ignore for caching purposes
+      }
+
       const cacheKey = buildCacheKey(request);
 
-      // Evict if at capacity
       if (cache.size >= FHIR_CACHE_MAX_ENTRIES) {
         evictExpired();
-        // If still at capacity after eviction, drop oldest
         if (cache.size >= FHIR_CACHE_MAX_ENTRIES) {
           const firstKey = cache.keys().next().value;
           if (firstKey) cache.delete(firstKey);

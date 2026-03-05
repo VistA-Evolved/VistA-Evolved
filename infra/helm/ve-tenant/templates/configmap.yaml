@@ -16,6 +16,9 @@ data:
   PLATFORM_PG_DB: "ve_platform"
   PLATFORM_PG_USER: "ve_api"
   REDIS_URL: "redis://ve-redis.{{ .Values.global.sharedNamespace }}.svc.cluster.local:6379"
+  VISTA_POOL_SIZE: {{ .Values.vista.poolSize | default 3 | quote }}
+  VISTA_MAX_POOL_TOTAL: {{ .Values.vista.maxPoolTotal | default 50 | quote }}
+  VISTA_MAX_CONNECTIONS_PER_USER: {{ .Values.vista.maxConnectionsPerUser | default 3 | quote }}
 ---
 apiVersion: v1
 kind: Secret

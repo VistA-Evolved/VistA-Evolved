@@ -303,15 +303,22 @@ let _queue: RcmJobQueue | null = null;
  */
 export function getJobQueue(): RcmJobQueue {
   if (!_queue) {
-    try {
-      const { DurableJobQueue } = require('./durable-queue.js');
-      _queue = new DurableJobQueue();
-    } catch {
-      // Fallback: in-memory (e.g., during tests or before DB init)
-      _queue = new InMemoryJobQueue();
-    }
+    _queue = new InMemoryJobQueue();
   }
   return _queue!;
+}
+
+/**
+ * Attempt to upgrade the queue to durable (SQLite-backed).
+ * Called at startup after DB init. Falls back silently on failure.
+ */
+export async function initDurableQueue(): Promise<void> {
+  try {
+    const { DurableJobQueue } = await import('./durable-queue.js');
+    _queue = new DurableJobQueue();
+  } catch {
+    // Durable queue unavailable; InMemoryJobQueue remains active
+  }
 }
 
 /**

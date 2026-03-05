@@ -9,6 +9,11 @@
 
 **Every agent and developer MUST follow these rules:**
 
+0. **DOCKER-FIRST VERIFICATION (NON-NEGOTIABLE, RULE ZERO).**
+   Before writing ANY backend code, verify Docker is running and the API
+   starts cleanly. After writing code, test it against the LIVE VistA Docker.
+   Code that was never executed against the running system is NOT done.
+   See "Section 0A: Docker-First Verification Protocol" below.
 1. **Canonical inputs live ONLY in:** `/prompts` (IMPLEMENT + VERIFY prompts),
    `/scripts` (verifiers + audit tooling), `/docs/runbooks` and `/docs/decisions`
    (curated docs only).
@@ -33,6 +38,76 @@
 - **Pre-commit hook enforces these rules.** Set up with:
   `git config core.hooksPath .hooks`
 - **See `docs/POLICY.md`** for the full documentation policy.
+
+### 0A. Docker-First Verification Protocol (MANDATORY FOR ALL AI AGENTS)
+
+**Why this exists:** AI coding agents (Cursor, Copilot, ChatGPT) have
+repeatedly written code that compiles and "looks correct" but was never tested
+against the running VistA Docker. This produced hundreds of routes that
+returned MUMPS errors, wrong parameters, or 404s when actually called.
+This rule prevents that failure mode permanently.
+
+**Before writing ANY backend code:**
+
+```powershell
+# 1. Verify Docker containers are running
+docker ps --format "table {{.Names}}\t{{.Status}}" | Select-String "vehu|ve-platform-db"
+# MUST see: vehu (healthy), ve-platform-db (healthy)
+
+# 2. If not running, start them:
+docker compose -f services/vista/docker-compose.yml --profile vehu up -d
+docker compose -f services/platform-db/docker-compose.yml up -d
+
+# 3. Start the API
+cd apps/api
+npx tsx --env-file=.env.local src/index.ts
+# NOTE: Do NOT use "pnpm -C apps/api dev" -- it does NOT load .env.local (BUG-010)
+
+# 4. Verify startup is clean
+# Log MUST show: "Server listening" on port 3001
+# Log MUST show: "Platform PG init" with ok:true, errors:[]
+# Log MUST NOT show: "migration_failed"
+# If migration errors exist, FIX THEM before writing any other code.
+
+# 5. Verify VistA is reachable
+curl.exe -s http://127.0.0.1:3001/vista/ping
+# MUST return: {"ok":true,"vista":"reachable","port":9431}
+```
+
+**After writing ANY backend route or RPC-related code:**
+
+```powershell
+# Login
+Set-Content -Path login-body.json -Value '{"accessCode":"PRO1234","verifyCode":"PRO1234!!"}' -NoNewline -Encoding ASCII
+curl.exe -s -c cookies.txt -X POST http://127.0.0.1:3001/auth/login -H "Content-Type: application/json" -d "@login-body.json"
+
+# Test the specific route (use DFN=46 for VEHU patients)
+curl.exe -s -b cookies.txt "http://127.0.0.1:3001/vista/<your-route>?dfn=46"
+
+# Verify response has: {"ok":true, "source":"vista", "rpcUsed":[...], "data":[...]}
+# Clean up
+Remove-Item login-body.json, cookies.txt -ErrorAction SilentlyContinue
+```
+
+**VEHU test data:**
+- Valid patient DFNs: 46, 47, 49, 53-93 (NOT 1, 2, 3)
+- DFN=46 has: 2 allergies, 5 vitals, 2 problems (Sleep apnea, PTSD), 1 note
+- Credentials: PRO1234 / PRO1234!! (DUZ 1, PROGRAMMER,ONE)
+
+**What "done" means:**
+1. API starts with 0 migration errors
+2. VistA Docker is running and reachable on port 9431
+3. Route returns `{"ok": true}` with real VistA data
+4. Response includes `rpcUsed` showing which RPC was called
+5. No MUMPS errors (`%YDB-E-*`) in the response data
+6. Test was run against LIVE Docker, not simulated or assumed
+
+**NEVER allowed:**
+- Claiming code "works" without showing the actual HTTP response
+- Marking a task "completed" without a live test
+- Saying "verification deferred" or "should work" or "looks correct"
+- Testing with DFN=1,2,3 (they don't exist in VEHU)
+- Writing more than 1 route file without testing the first one
 
 ### Phase Reference Rules (Code Comments)
 
@@ -1619,7 +1694,169 @@ scripts/
      `isRpcMissing()` to only match genuine "RPC doesn't exist" messages,
      not data-level errors like "Patient not found".
 
-## 8. Bug Tracker & Lessons Learned
+## 7y. Architecture Quick Map (Wave 42 — Production Remediation)
+
+```
+prompts/572-W42-P1-BASELINE-DUZ-SAFETY/    -- Gauntlet baseline + DUZ safety doc (Phase 572)
+prompts/573-W42-P2-RPC-CONNECTION-POOL-DUZ/ -- RPC pool with per-user DUZ auth (Phase 573)
+prompts/574-W42-P3-REDIS-DISTRIBUTED-STATE/ -- Redis for sessions/locks/rate (Phase 574)
+prompts/575-W42-P4-PG-MIGRATIONS-SCHEMA-AUDIT/ -- 17 new PG tables + schema audit (Phase 575)
+prompts/576-W42-P5-STORE-MIGRATION-EXISTING-PG/ -- Wire existing PG tables (Phase 576)
+prompts/577-W42-P6-STORE-MIGRATION-NEW-PG/ -- New PG repos + wire stores (Phase 577)
+prompts/578-W42-P7-WIRE-STUBS-PROBLEMS-MEDS/ -- Wire problems + meds stubs (Phase 578)
+prompts/579-W42-P8-WIRE-STUBS-NOTES-ORDERS/ -- Wire notes + orders stubs (Phase 579)
+prompts/580-W42-P9-WIRE-STUBS-LABS-REPORTS/ -- Wire labs + reports stubs (Phase 580)
+prompts/581-W42-P10-INTEGRATION-PENDING-FEATURES/ -- Nursing, eMAR, ADT, CP (Phase 581)
+prompts/582-W42-P11-FHIR-PROFILES-DRUG-INTERACTIONS/ -- FHIR profiles + drug checks (Phase 582)
+prompts/583-W42-P12-DOCS-HANDOVER-TRAINING/ -- ARCHITECTURE.md + training (Phase 583)
+prompts/584-W42-P13-TESTING-AUDIT-PLAYBOOK/ -- Integration tests + audit (Phase 584)
+prompts/585-W42-P14-HELM-CICD-STORE-POLICY/ -- Helm + CI/CD + store policy (Phase 585)
+prompts/586-W42-P15-COMPETITIVE-SCAFFOLDING-SAAS/ -- e-Rx, SaaS, load tests (Phase 586)
+
+apps/api/src/vista/
+  rpcBrokerClient.ts    -- +RpcConnectionPool class (Phase 573)
+apps/api/src/lib/
+  redis.ts              -- Redis client with ioredis (Phase 574)
+  rpc-resilience.ts     -- +tenantId/duz context param (Phase 573)
+docs/security/
+  single-duz-problem.md -- DUZ safety documentation (Phase 572)
+test-fixtures/          -- Archived root-level test artifacts (Phase 572)
+```
+
+186. **The single-DUZ problem is the #1 patient safety risk (Phase 572).**
+     Before Phase 573, ALL VistA RPC calls execute under one DUZ (the env var
+     user, typically DUZ 87 / PROVIDER,CLYDE). Clinical notes, orders, and
+     medication administrations are all attributed to this single provider
+     regardless of which clinician initiated the action. Phase 573 fixes this
+     with a connection pool keyed by `tenantId:duz` where each connection
+     authenticates as the acting clinician. See `docs/security/single-duz-problem.md`.
+187. **Test fixture files archived to `/test-fixtures/` (Phase 572).** Over
+     170 stray `.json`, `.txt`, and `.log` files accumulated in the repo root
+     from curl/testing during phases 1-571. They are gitignored and moved to
+     `test-fixtures/` for reference. The root directory now contains only
+     project configuration files and documentation.
+188. **Wave 42 prompt folders use prefix 572-586 (Phase 572-586).** The 15
+     prompt folders cover the complete production remediation plan. Each folder
+     has `XXX-01-IMPLEMENT.md`, `XXX-99-VERIFY.md`, and `NOTES.md`. The plan
+     is documented in `.cursor/plans/complete_production_remediation_*.plan.md`.
+
+189. **PG migration v42 conflicted with v17 `patient_consent` table (BUG-071).**
+     v17 creates `patient_consent` with `patient_dfn` column (HIPAA/research consent).
+     v42 (Phase 351) tried to create the same table with `patient_dfn_hash` column
+     (notification consent). `CREATE TABLE IF NOT EXISTS` skipped creation, but
+     `CREATE INDEX` on `patient_dfn_hash` failed because the v17 schema lacks it.
+     Fix: renamed the Phase 351 table to `notification_consent`. Added to RLS tables.
+190. **Docker-First Verification Protocol is MANDATORY (Wave 42 lesson).**
+     AI agents (Cursor, Copilot) wrote 362+ routes that compiled but were never
+     tested against the running VistA Docker. When finally tested live, ~30%
+     returned MUMPS errors due to wrong parameter formats, ~10% returned 404
+     because routes weren't registered. Section 0A now mandates Docker verification
+     before and after every code change. This rule exists in AGENTS.md, README.md,
+     `.github/copilot-instructions.md`, and `.cursor/rules/docker-first-verification.md`.
+191. **VEHU patient DFNs start at 46, not 1.** DFN=1, 2, 3 do not exist in the
+     VEHU sandbox. Using them causes "Connection closed before response" or MUMPS
+     null subscript errors. Always use DFN=46 (has allergies, vitals, problems,
+     notes) or check `/vista/default-patient-list` first.
+192. **Some RPCs require specific parameter formats that generic helpers miss.**
+     `ORWDPS32 AUTH` expects a user IEN in param 1, not a patient DFN. `ORWOR SHEETS`
+     requires `ORVP` (patient DFN) as a named parameter. `ORWLRR CHART/GRID`
+     require `DATE1` and `DATE2`. Generic `callXxxRpc` helpers that blindly pass
+     `[dfn]` will trigger MUMPS `LVUNDEF` errors. Each RPC's parameter contract
+     must be verified against VEHU before the route is marked as done.
+
+## 8. VistA RPC Availability Reference (VEHU Probe -- 2026-03-05)
+
+> **Source of truth:** File 8994 in the running VEHU VistA, probed via
+> `services/vista/ZVEPROB.m`. The Vivian index (`data/vista/vivian/rpc_index.json`,
+> 3747 RPCs) is useful for discovery but NOT authoritative -- some RPCs exist
+> in VEHU that are NOT in Vivian, and vice versa.
+
+### How to probe RPC availability
+
+```powershell
+# Copy probe routine into VEHU and run it
+docker cp services\vista\ZVEPROB.m vehu:/tmp/ZVEPROB.m
+docker exec vehu bash -c "cp /tmp/ZVEPROB.m /home/vehu/r/ZVEPROB.m && chown vehu:vehu /home/vehu/r/ZVEPROB.m"
+docker exec vehu su - vehu -c "mumps -r PROBE^ZVEPROB"
+```
+
+Add new RPCs to `ZVEPROB.m` LIST array and re-run to check availability.
+
+### RPCs confirmed AVAILABLE in VEHU (IEN in File 8994)
+
+These RPCs **exist and are callable**. Do NOT put them in
+`SANDBOX_EXPECTED_MISSING`. Do NOT use `tier0Gate` to block them.
+
+| RPC | IEN | Domain | Notes |
+|-----|-----|--------|-------|
+| ORWPS ACTIVE | 321 | meds/nursing | Active medication list |
+| ORQQAL LIST | 139 | allergies | Allergy list |
+| ORQQVI VITALS | (exists) | vitals | Vitals history |
+| TIU CREATE RECORD | 85 | notes | Create TIU document |
+| TIU SET DOCUMENT TEXT | 1132 | notes | Set note body text |
+| TIU DOCUMENTS BY CONTEXT | 91 | notes | List notes by context |
+| PSB ALLERGY | 1278 | nursing/eMAR | BCMA allergy check at admin time |
+| PSB VALIDATE ORDER | 646 | nursing/eMAR | BCMA order validation |
+| ORWPCE SAVE | 310 | encounters | Save PCE encounter data |
+| PX SAVE DATA | 3430 | immunizations | Save PCE/immunization data |
+| ORWDX SAVE | 359 | orders | Save order |
+| ORWDXA DC | 390 | orders | Discontinue order |
+| ORWDXA COMPLETE | 396 | orders | Complete order |
+| ORWDXA FLAG | 393 | orders | Flag order |
+| ORWDXA HOLD | 388 | orders | Hold order |
+| ORWDXC ACCEPT | 498 | order-checks | Accept order check |
+| MAG4 ADD IMAGE | 1167 | imaging | Add VistA Imaging entry |
+| SDEC APPADD | 3676 | scheduling | SDES appointment create |
+
+### RPCs confirmed MISSING from VEHU (NOT in File 8994)
+
+These RPCs **do not exist** in VEHU. Using `tier0Gate` or
+`SANDBOX_EXPECTED_MISSING` for these is correct. Routes depending on
+them should explain exactly what VistA package needs installing.
+
+| RPC | Package | Why Missing |
+|-----|---------|-------------|
+| PSB MED LOG | PSB (BCMA) | BCMA logging RPC not registered |
+| PSJBCMA | PSJ (Pharmacy) | PSJ barcode package not registered |
+| DGPM NEW ADMISSION | DG (ADT) | ADT write RPCs not exposed |
+| DGPM NEW TRANSFER | DG (ADT) | ADT write RPCs not exposed |
+| DGPM NEW DISCHARGE | DG (ADT) | ADT write RPCs not exposed |
+| GMRIO RESULTS | GMR (I/O) | GMR I&O RPCs not registered |
+| GMRIO ADD | GMR (I/O) | GMR I&O RPCs not registered |
+| GMPL ADD SAVE | GMPL (Problems) | Problem write RPC not registered |
+| LR ORDER | LR (Lab) | Lab order RPC not registered |
+| LR VERIFY | LR (Lab) | Lab verify RPC not registered |
+| NURS TASK LIST | NURS | Nursing package RPCs not registered |
+| NURS ASSESSMENTS | NURS | Nursing package RPCs not registered |
+| ZVENAS LIST | Custom | Custom RPCs not yet installed |
+| ZVENAS SAVE | Custom | Custom RPCs not yet installed |
+
+### Key data files for RPC research
+
+| File | What | Count |
+|------|------|-------|
+| `data/vista/vivian/rpc_index.json` | Full Vivian RPC index | 3,747 RPCs |
+| `docs/grounding/vivian-index.json` | Raw Vivian source data | 3,747 RPCs |
+| `docs/vista-alignment/rpc-coverage.json` | Cross-ref: CPRS + Vivian + API | 1,016 tracked |
+| `docs/vista-alignment/rpc-coverage.md` | Human-readable coverage report | - |
+| `apps/api/src/vista/rpcRegistry.ts` | API RPC registry (live + exceptions) | ~170 RPCs |
+| `services/vista/ZVEPROB.m` | VistA File 8994 probe routine | - |
+| `tools/rpc-extract/build-coverage-map.mjs` | Coverage map generator | - |
+
+### Critical lesson: `tier0Gate` was blocking working RPCs (BUG-071)
+
+The `tier0Gate` function in `lib/tier0-response.ts` reads from
+`SANDBOX_EXPECTED_MISSING` and pre-blocks RPCs **without ever calling VistA**.
+This caused 11 RPCs that actually exist in VEHU to return 202/501 responses.
+Fixed 2026-03-05 by removing `PSB ALLERGY` and `PSB VALIDATE ORDER` from
+the missing list and re-probing all RPCs via ZVEPROB.m.
+
+**Rule: Never add an RPC to `SANDBOX_EXPECTED_MISSING` without first running
+ZVEPROB.m to confirm it is genuinely absent from File 8994.**
+
+---
+
+## 9. Bug Tracker & Lessons Learned
 
 A comprehensive log of every bug, challenge, and fix from Phase 1 through
 Phase 25 lives in **[`docs/BUG-TRACKER.md`](docs/BUG-TRACKER.md)**.

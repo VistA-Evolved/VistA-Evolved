@@ -19,7 +19,10 @@ import { getRuntimeMode } from '../platform/runtime-mode.js';
 import { initHl7Engine, isHl7EngineEnabled } from '../hl7/index.js';
 import { startHealthMonitor } from '../rcm/connectors/health-monitor.js';
 import { initBillingProvider } from '../billing/index.js';
-import { startMeteringFlush } from '../billing/metering.js';
+import { startMeteringFlush, incrementMeter } from '../billing/metering.js';
+import { wireMeteringCallback } from '../lib/rpc-resilience.js';
+import { startPoolReaper } from '../vista/rpcConnectionPool.js';
+import { initRedis } from '../lib/redis.js';
 import { initFeatureFlagProvider } from '../flags/index.js';
 import { bootstrapWritebackExecutors } from '../writeback/executor-bootstrap.js';
 import { startSessionSweeper } from '../telehealth/session-hardening.js';
@@ -438,6 +441,12 @@ async function initPostgresLayer(): Promise<void> {
  * Start all background jobs and services after the server is listening.
  */
 async function startBackgroundServices(): Promise<void> {
+  // Phase 574: Initialize Redis (session cache, rate limiting, distributed locks)
+  const redisOk = initRedis();
+  if (redisOk) {
+    log.info('Redis client initialized (REDIS_URL configured)');
+  }
+
   // Phase 300: Bootstrap writeback domain executors (6 domains)
   try {
     bootstrapWritebackExecutors();
@@ -463,6 +472,7 @@ async function startBackgroundServices(): Promise<void> {
   // Phase 284: Initialize billing provider (mock or Lago based on BILLING_PROVIDER env)
   initBillingProvider();
   startMeteringFlush();
+  wireMeteringCallback((tenantId, event) => incrementMeter(tenantId, event as any));
 
   // Phase 285: Initialize feature flag provider (db or Unleash based on FEATURE_FLAG_PROVIDER env)
   initFeatureFlagProvider();
@@ -498,6 +508,9 @@ async function startBackgroundServices(): Promise<void> {
       log.info('HL7 MLLP engine started (HL7_ENGINE_ENABLED=true)');
     }
   }
+
+  // Phase 573: Start RPC connection pool idle reaper
+  startPoolReaper();
 
   // Phase 242: Start background connector health monitor
   startHealthMonitor();

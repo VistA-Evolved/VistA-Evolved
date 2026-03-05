@@ -15,7 +15,7 @@
  */
 
 import { randomBytes, createHash } from 'node:crypto';
-import { writeFileSync, readFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync, mkdirSync, readdirSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 import type { X12TransactionSet } from '../edi/types.js';
 import type { RcmConnector, ConnectorResult } from '../connectors/types.js';
@@ -159,7 +159,6 @@ class TraceStore {
       while (files.length > this.config.maxTracesPerSet) {
         const oldest = files.shift();
         if (oldest) {
-          const { unlinkSync } = require('node:fs');
           unlinkSync(join(dir, oldest));
         }
       }

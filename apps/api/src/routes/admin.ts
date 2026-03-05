@@ -128,6 +128,128 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, deleted: tenantId };
   });
 
+  /**
+   * POST /admin/tenants/provision — Unified tenant provisioning pipeline.
+   *
+   * Orchestrates: tenant config creation, module entitlement seeding,
+   * VistA connectivity probe, and optional billing customer creation.
+   * Returns a structured result with per-step status.
+   */
+  server.post('/admin/tenants/provision', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
+    const body = (request.body as any) || {};
+
+    const tenantId = body.tenantId;
+    if (!tenantId || typeof tenantId !== 'string' || tenantId.length < 2) {
+      return reply.code(400).send({ ok: false, error: 'tenantId is required (min 2 chars)' });
+    }
+
+    const existing = getTenant(tenantId);
+    if (existing) {
+      return reply.code(409).send({ ok: false, error: `Tenant ${tenantId} already exists` });
+    }
+
+    const steps: Array<{ step: string; ok: boolean; detail?: string }> = [];
+
+    // Step 1: Create tenant config
+    try {
+      const config: TenantConfig = {
+        tenantId,
+        facilityName: body.facilityName ?? tenantId,
+        facilityStation: body.facilityStation ?? '',
+        vistaHost: body.vistaHost ?? '127.0.0.1',
+        vistaPort: body.vistaPort ?? 9430,
+        vistaContext: body.vistaContext ?? 'OR CPRS GUI CHART',
+        enabledModules: body.enabledModules ?? [],
+        featureFlags: body.featureFlags ?? {},
+        uiDefaults: body.uiDefaults ?? {
+          theme: 'light',
+          density: 'comfortable',
+          layoutMode: 'cprs',
+          initialTab: 'cover',
+          enableDragReorder: false,
+          themePack: 'modern-default',
+        },
+        noteTemplates: [],
+        connectors: [],
+        branding: body.branding ?? {
+          logoUrl: '', faviconUrl: '', primaryColor: '', secondaryColor: '',
+          headerText: '', footerText: '', enabled: false,
+        },
+        countryPackId: body.countryPackId ?? 'US',
+        locale: body.locale ?? 'en',
+        timezone: body.timezone ?? 'America/New_York',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      upsertTenant(config);
+      steps.push({ step: 'create_tenant_config', ok: true });
+    } catch (err: any) {
+      steps.push({ step: 'create_tenant_config', ok: false, detail: err?.message });
+      return reply.code(500).send({ ok: false, steps, error: 'Tenant config creation failed' });
+    }
+
+    // Step 2: Seed module entitlements from SKU
+    try {
+      const { getActiveSkuProfile, getModuleDefinitions } =
+        await import('../modules/module-registry.js');
+      const { seedTenantModules } = await import('../platform/pg/repo/module-repo.js');
+      const skuProfile = getActiveSkuProfile();
+      const skuModules = skuProfile?.modules || Object.keys(getModuleDefinitions());
+      const seeded = await seedTenantModules(tenantId, skuModules, session.duz);
+      steps.push({ step: 'seed_module_entitlements', ok: true, detail: `${seeded} modules seeded` });
+    } catch (err: any) {
+      steps.push({ step: 'seed_module_entitlements', ok: false, detail: err?.message });
+    }
+
+    // Step 3: Probe VistA connectivity (uses global VISTA_HOST/VISTA_PORT from env)
+    try {
+      await probeConnect(2000);
+      steps.push({
+        step: 'vista_connectivity_probe',
+        ok: true,
+        detail: `VistA broker reachable`,
+      });
+    } catch (err: any) {
+      steps.push({
+        step: 'vista_connectivity_probe',
+        ok: false,
+        detail: err?.message || 'VistA unreachable',
+      });
+    }
+
+    // Step 4: Create billing customer (if billing provider is active)
+    try {
+      const { getBillingProvider } = await import('../billing/types.js');
+      const provider = getBillingProvider();
+      if (provider) {
+        steps.push({ step: 'billing_customer', ok: true, detail: 'Deferred to subscription creation' });
+      } else {
+        steps.push({ step: 'billing_customer', ok: true, detail: 'No billing provider active' });
+      }
+    } catch {
+      steps.push({ step: 'billing_customer', ok: true, detail: 'Billing not configured' });
+    }
+
+    const allOk = steps.every((s) => s.ok);
+    audit('config.tenant-provision', allOk ? 'success' : 'partial', auditActor(request), {
+      requestId: (request as any).requestId,
+      sourceIp: request.ip,
+      detail: { tenantId, steps },
+    });
+
+    log.info('Tenant provisioned', { tenantId, steps: steps.map((s) => `${s.step}:${s.ok}`) });
+    return reply.code(allOk ? 201 : 207).send({
+      ok: allOk,
+      tenantId,
+      steps,
+      message: allOk
+        ? `Tenant ${tenantId} fully provisioned`
+        : `Tenant ${tenantId} provisioned with warnings`,
+    });
+  });
+
   // ── Feature Flags ───────────────────────────────────────────────
 
   /** GET /admin/feature-flags/:tenantId — get feature flags */

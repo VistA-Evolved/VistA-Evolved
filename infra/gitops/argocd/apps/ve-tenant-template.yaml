@@ -16,7 +16,7 @@ spec:
   project: ve-tenants
 
   source:
-    repoURL: https://github.com/YOUR-ORG/VistA-Evolved.git # TODO: update to actual repo
+    repoURL: https://github.com/VistA-Evolved/VistA-Evolved.git
     targetRevision: HEAD
     path: infra/helm/ve-tenant
     helm:

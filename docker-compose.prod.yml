@@ -109,6 +109,12 @@ services:
       - ORTHANC_URL=${ORTHANC_URL:-http://orthanc:8042}
       - OHIF_URL=${OHIF_URL:-http://ohif-viewer:80}
       - IMAGING_INGEST_WEBHOOK_SECRET=${IMAGING_INGEST_WEBHOOK_SECRET:-dev-imaging-ingest-key-change-in-production}
+      # Redis (distributed sessions, rate limiting, pub/sub, locks)
+      - REDIS_URL=redis://redis:6379
+      # RPC connection pool
+      - VISTA_POOL_SIZE=${VISTA_POOL_SIZE:-3}
+      - VISTA_MAX_POOL_TOTAL=${VISTA_MAX_POOL_TOTAL:-50}
+      - VISTA_MAX_CONNECTIONS_PER_USER=${VISTA_MAX_CONNECTIONS_PER_USER:-3}
       # Job runner (only first instance should run jobs; use JOB_WORKER_ENABLED=true selectively)
       - JOB_WORKER_ENABLED=${JOB_WORKER_ENABLED:-false}
     volumes:
@@ -125,8 +131,29 @@ services:
     depends_on:
       platform-db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - frontend
+      - backend
+
+  # ---------- Redis (distributed state: sessions, rate limiting, pub/sub) ----------
+  redis:
+    image: redis:7-alpine
+    container_name: ve-redis-prod
+    command: ['redis-server', '--appendonly', 'yes', '--maxmemory', '256mb', '--maxmemory-policy', 'allkeys-lru']
+    volumes:
+      - redisdata:/data
+    expose:
+      - '6379'
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
       - backend
 
   # ---------- Web frontend (Next.js) ----------
@@ -210,6 +237,8 @@ volumes:
   api-logs:
     driver: local
   pgdata:
+    driver: local
+  redisdata:
     driver: local
   orthanc-data:
     driver: local

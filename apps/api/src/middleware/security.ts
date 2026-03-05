@@ -18,6 +18,8 @@ import { RATE_LIMIT_CONFIG, CSRF_CONFIG } from '../config/server-config.js';
 import { getSession } from '../auth/session-store.js';
 import type { SessionData } from '../auth/session-store.js';
 import { disconnect as disconnectRpcBroker } from '../vista/rpcBrokerClient.js';
+import { disconnectPool as disconnectRpcPool } from '../vista/rpcConnectionPool.js';
+import { disconnectRedis } from '../lib/redis.js';
 import { stopAggregationJob } from '../services/analytics-aggregator.js';
 import { stopRoomCleanup } from '../telehealth/room-store.js';
 import { stopBreakGlassCleanup } from '../auth/enterprise-break-glass.js';
@@ -27,7 +29,7 @@ import { stopLinkRequestCleanup } from '../routes/identity-linking.js';
 import { stopEtl } from '../services/analytics-etl.js';
 import { stopHealthMonitor } from '../rcm/connectors/health-monitor.js';
 import { stopHl7Engine } from '../hl7/index.js';
-import { stopMeteringFlush } from '../billing/metering.js';
+import { stopMeteringFlush, incrementMeter } from '../billing/metering.js';
 import { getFeatureFlagProvider } from '../flags/types.js';
 import {
   extractBearerToken,
@@ -673,6 +675,15 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
     const isError = reply.statusCode >= 500;
     recordSloSample(route, duration, isError, SLO_P95_BUDGET_MS);
 
+    // Phase 586 (W42-P15): Billing metering — count API calls per tenant
+    try {
+      const tenantId = (request as any).session?.tenantId || 'default';
+      incrementMeter(tenantId, 'api_call');
+      if (route.startsWith('/fhir/')) incrementMeter(tenantId, 'fhir_request');
+    } catch {
+      // Metering is best-effort; never block the response
+    }
+
     clearRequestId();
   });
 
@@ -738,6 +749,16 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
           disconnectRpcBroker();
         } catch {
           /* socket may already be closed */
+        }
+        try {
+          disconnectRpcPool();
+        } catch {
+          /* pool may already be drained */
+        }
+        try {
+          await disconnectRedis();
+        } catch {
+          /* redis may already be disconnected */
         }
         // Phase 25: stop analytics aggregation job and ETL writer
         try {

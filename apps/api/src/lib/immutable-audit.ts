@@ -132,6 +132,7 @@ export type ImmutableAuditAction =
   | 'nursing.create-note'
   | 'nursing.tasks'
   | 'nursing.mar'
+  | 'nursing.mar.administer'
   | 'nursing.io'
   | 'nursing.assessments'
   | 'nursing.context'
@@ -191,7 +192,8 @@ export type ImmutableAuditOutcome =
   | 'denied'
   | 'error'
   | 'blocked'
-  | 'attempt';
+  | 'attempt'
+  | 'redirect';
 
 export interface ImmutableAuditEntry {
   /** Sequential entry number (monotonic) */

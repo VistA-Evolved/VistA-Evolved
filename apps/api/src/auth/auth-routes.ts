@@ -142,7 +142,10 @@ function clearLockout(accountKey: string): void {
 
 /** Helper to require a valid session on a request.  Returns session or throws 401. */
 export async function requireSession(request: any, reply: any): Promise<SessionData> {
-  if (reply.sent) throw new Error('Reply already sent');
+  if (reply.sent) {
+    if (request.session) return request.session;
+    throw new Error('Reply already sent');
+  }
   const token = extractToken(request);
   if (!token) {
     reply.code(401).send({ ok: false, error: 'Not authenticated' });

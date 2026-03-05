@@ -66,29 +66,36 @@ export interface Tier0PendingResponse {
 /* ------------------------------------------------------------------ */
 
 /**
- * RPCs that are known to be absent from the WorldVistA Docker sandbox.
- * These will be marked `expectedMissing: true` in probe results.
+ * RPCs confirmed absent from VEHU VistA via ZVEPROB.m probe of File 8994.
+ * Only list RPCs here that are genuinely NOT REGISTERED in VistA.
+ * Verified 2026-03-05 against running VEHU instance.
+ *
+ * RPCs REMOVED from this list (they exist in VistA and should be called):
+ *   PSB ALLERGY (IEN 1278), PSB VALIDATE ORDER (IEN 646)
  */
 const SANDBOX_EXPECTED_MISSING: string[] = [
-  // ADT write RPCs -- DGPM package not exposed in OR CPRS GUI CHART context
+  // DGPM broker RPCs -- not registered in File 8994
   'DGPM NEW ADMISSION',
   'DGPM NEW TRANSFER',
   'DGPM NEW DISCHARGE',
-  // BCMA/PSB -- separate package, not in sandbox
+  // PSB MED LOG -- BCMA logging RPC not registered (PSB ALLERGY IS registered)
   'PSB MED LOG',
-  'PSB ALLERGY',
-  'PSB VALIDATE ORDER',
   'PSJBCMA',
-  // Nursing -- NURS package not in sandbox
+  // NURS package RPCs -- not registered
   'NURS TASK LIST',
   'NURS ASSESSMENTS',
-  // Lab write -- LR package not exposed via broker context
+  // Lab write -- not registered
   'LR VERIFY',
-  // Phase 484 (W33-P4): Nursing I/O + assessment RPCs
+  // GMR I/O -- not registered
   'GMRIO RESULTS',
   'GMRIO ADD',
+  // Custom RPCs -- not yet installed
   'ZVENAS LIST',
   'ZVENAS SAVE',
+  // Problem add -- not registered (GMPL read RPCs exist, write does not)
+  'GMPL ADD SAVE',
+  // Lab order -- not registered
+  'LR ORDER',
 ];
 
 /* ------------------------------------------------------------------ */

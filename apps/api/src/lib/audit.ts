@@ -66,6 +66,7 @@ export type AuditAction =
   | 'clinical.consult-complete'
   | 'config.capability-refresh'
   | 'config.tenant-update'
+  | 'config.tenant-provision'
   | 'config.feature-flag-update'
   | 'config.ui-defaults-update'
   | 'config.ui-prefs-save'
@@ -145,7 +146,7 @@ export type AuditAction =
   | 'clinical.handoff-archive'
   | 'clinical.handoff-view';
 
-export type AuditOutcome = 'success' | 'failure' | 'denied' | 'error';
+export type AuditOutcome = 'success' | 'failure' | 'denied' | 'error' | 'partial';
 
 export interface AuditEvent {
   /** Unique event ID */

@@ -24,7 +24,7 @@ import { requireSession } from '../../auth/auth-routes.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { immutableAudit } from '../../lib/immutable-audit.js';
 import { log } from '../../lib/logger.js';
-import { tier0Gate } from '../../lib/tier0-response.js';
+// tier0Gate removed -- ADT writes redirect to /vista/adt/* which has PG tracking
 
 /* ------------------------------------------------------------------ */
 /* Audit helper                                                         */
@@ -437,73 +437,56 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
   );
 
   /**
-   * POST /vista/inpatient/admit -- Tier-0 capability-driven (Phase 483)
+   * POST /vista/inpatient/admit
+   * DGPM NEW ADMISSION is NOT registered in VistA File 8994 (confirmed via ZVEPROB.m).
+   * Use /vista/adt/admit for the PG-tracked ADT workflow until DGPM RPCs are registered.
    */
   server.post('/vista/inpatient/admit', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
-    const blocked = tier0Gate('DGPM NEW ADMISSION', 'adt', {
-      vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT (2)', 'WARD LOCATION (42)'],
-      targetRoutines: ['DGPMV', 'DGADM'],
-      migrationPath: 'Wire DGPM NEW ADMISSION with ward/bed selection + DG ADT event triggers',
-      sandboxNote:
-        'WorldVistA Docker does not expose DG ADT write RPCs in OR CPRS GUI CHART context',
+    immutableAudit('inpatient.admit', 'redirect', auditActor(request), {
+      detail: { redirect: '/vista/adt/admit', reason: 'DGPM NEW ADMISSION not in File 8994' },
     });
-    immutableAudit('inpatient.admit', blocked ? 'blocked' : 'attempt', auditActor(request), {
-      detail: { capabilityProbe: blocked?.capabilityProbe },
-    });
-    if (blocked) return reply.status(202).send(blocked);
-    return reply.status(501).send({
+    return reply.status(307).header('location', '/vista/adt/admit').send({
       ok: false,
-      status: 'not-implemented',
-      message: 'DGPM NEW ADMISSION call not yet wired',
+      redirect: '/vista/adt/admit',
+      reason: 'DGPM NEW ADMISSION RPC not registered in this VistA instance. Use /vista/adt/admit which tracks ADT events and will call DGPM when the RPC is registered.',
+      vistaAction: 'Register DGPM NEW ADMISSION in File 8994 and add to OR CPRS GUI CHART context',
     });
   });
 
   /**
-   * POST /vista/inpatient/transfer -- Tier-0 capability-driven (Phase 483)
+   * POST /vista/inpatient/transfer
+   * DGPM NEW TRANSFER is NOT registered in VistA File 8994.
    */
   server.post('/vista/inpatient/transfer', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
-    const blocked = tier0Gate('DGPM NEW TRANSFER', 'adt', {
-      vistaFiles: ['PATIENT MOVEMENT (405)', 'WARD LOCATION (42)', 'ROOM-BED (405.4)'],
-      targetRoutines: ['DGPMV', 'DGTRAN'],
-      migrationPath: 'Wire DGPM NEW TRANSFER with destination ward/bed + attending provider update',
-      sandboxNote:
-        'WorldVistA Docker does not expose DG ADT write RPCs in OR CPRS GUI CHART context',
+    immutableAudit('inpatient.transfer', 'redirect', auditActor(request), {
+      detail: { redirect: '/vista/adt/transfer', reason: 'DGPM NEW TRANSFER not in File 8994' },
     });
-    immutableAudit('inpatient.transfer', blocked ? 'blocked' : 'attempt', auditActor(request), {
-      detail: { capabilityProbe: blocked?.capabilityProbe },
-    });
-    if (blocked) return reply.status(202).send(blocked);
-    return reply.status(501).send({
+    return reply.status(307).header('location', '/vista/adt/transfer').send({
       ok: false,
-      status: 'not-implemented',
-      message: 'DGPM NEW TRANSFER call not yet wired',
+      redirect: '/vista/adt/transfer',
+      reason: 'DGPM NEW TRANSFER RPC not registered in this VistA instance. Use /vista/adt/transfer.',
+      vistaAction: 'Register DGPM NEW TRANSFER in File 8994 and add to OR CPRS GUI CHART context',
     });
   });
 
   /**
-   * POST /vista/inpatient/discharge -- Tier-0 capability-driven (Phase 483)
+   * POST /vista/inpatient/discharge
+   * DGPM NEW DISCHARGE is NOT registered in VistA File 8994.
    */
   server.post(
     '/vista/inpatient/discharge',
     async (request: FastifyRequest, reply: FastifyReply) => {
       await requireSession(request, reply);
-      const blocked = tier0Gate('DGPM NEW DISCHARGE', 'adt', {
-        vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT (2)', 'DISPOSITION (405.2)'],
-        targetRoutines: ['DGPMV', 'DGDIS'],
-        migrationPath: 'Wire DGPM NEW DISCHARGE with discharge type + disposition + diagnosis',
-        sandboxNote:
-          'WorldVistA Docker does not expose DG ADT write RPCs in OR CPRS GUI CHART context',
+      immutableAudit('inpatient.discharge', 'redirect', auditActor(request), {
+        detail: { redirect: '/vista/adt/discharge', reason: 'DGPM NEW DISCHARGE not in File 8994' },
       });
-      immutableAudit('inpatient.discharge', blocked ? 'blocked' : 'attempt', auditActor(request), {
-        detail: { capabilityProbe: blocked?.capabilityProbe },
-      });
-      if (blocked) return reply.status(202).send(blocked);
-      return reply.status(501).send({
+      return reply.status(307).header('location', '/vista/adt/discharge').send({
         ok: false,
-        status: 'not-implemented',
-        message: 'DGPM NEW DISCHARGE call not yet wired',
+        redirect: '/vista/adt/discharge',
+        reason: 'DGPM NEW DISCHARGE RPC not registered in this VistA instance. Use /vista/adt/discharge.',
+        vistaAction: 'Register DGPM NEW DISCHARGE in File 8994 and add to OR CPRS GUI CHART context',
       });
     }
   );

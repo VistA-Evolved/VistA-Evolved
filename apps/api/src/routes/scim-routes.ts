@@ -169,7 +169,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
    */
   server.post('/scim/v2/Users', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
-    if (!tenantId) return;
+    if (!tenantId) return reply;
 
     try {
       const body = (request.body as ScimUser) || {};
@@ -189,7 +189,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
    */
   server.get('/scim/v2/Users/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
-    if (!tenantId) return;
+    if (!tenantId) return reply;
 
     const { id } = request.params as { id: string };
     const user = await connector.getUser(id, tenantId);
@@ -204,7 +204,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
    */
   server.get('/scim/v2/Users', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
-    if (!tenantId) return;
+    if (!tenantId) return reply;
 
     const query = request.query as Record<string, string>;
     const list = await connector.listUsers(
@@ -221,7 +221,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
    */
   server.put('/scim/v2/Users/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
-    if (!tenantId) return;
+    if (!tenantId) return reply;
 
     const { id } = request.params as { id: string };
     try {
@@ -238,7 +238,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
    */
   server.patch('/scim/v2/Users/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
-    if (!tenantId) return;
+    if (!tenantId) return reply;
 
     const { id } = request.params as { id: string };
     try {
@@ -255,7 +255,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
    */
   server.delete('/scim/v2/Users/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
-    if (!tenantId) return;
+    if (!tenantId) return reply;
 
     const { id } = request.params as { id: string };
     try {
@@ -275,7 +275,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
    */
   server.post('/scim/v2/Groups', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
-    if (!tenantId) return;
+    if (!tenantId) return reply;
 
     try {
       const body = (request.body as ScimGroup) || {};
@@ -294,7 +294,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
    */
   server.get('/scim/v2/Groups/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
-    if (!tenantId) return;
+    if (!tenantId) return reply;
 
     const { id } = request.params as { id: string };
     const group = await connector.getGroup(id, tenantId);
@@ -309,7 +309,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
    */
   server.get('/scim/v2/Groups', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
-    if (!tenantId) return;
+    if (!tenantId) return reply;
 
     return connector.listGroups(tenantId);
   });
@@ -319,7 +319,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
    */
   server.patch('/scim/v2/Groups/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
-    if (!tenantId) return;
+    if (!tenantId) return reply;
 
     const { id } = request.params as { id: string };
     try {
@@ -336,7 +336,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
    */
   server.delete('/scim/v2/Groups/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
-    if (!tenantId) return;
+    if (!tenantId) return reply;
 
     const { id } = request.params as { id: string };
     try {

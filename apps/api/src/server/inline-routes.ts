@@ -14,6 +14,8 @@ import type { FastifyInstance } from 'fastify';
 import { probeConnect } from '../vista/rpcBroker.js';
 import { validateCredentials } from '../vista/config.js';
 import { connect, disconnect, callRpc, callRpcWithList, getDuz } from '../vista/rpcBrokerClient.js';
+import { getPoolStats } from '../vista/rpcConnectionPool.js';
+import { isRedisAvailable } from '../lib/redis.js';
 import { requireSession } from '../auth/auth-routes.js';
 import { isTracingEnabled } from '../telemetry/tracing.js';
 import {
@@ -146,6 +148,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       version: 'phase-101',
       circuitBreaker: cbStats.state,
       tracingEnabled: isTracingEnabled(),
+      redis: isRedisAvailable() ? 'connected' : 'not-configured',
       platformPg,
     };
   });
@@ -301,6 +304,17 @@ export function registerInlineRoutes(server: FastifyInstance): void {
         port: Number(process.env.VISTA_PORT || 9430),
       };
     }
+  });
+
+  server.get('/vista/pool/status', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const stats = getPoolStats();
+    return {
+      ok: true,
+      pool: stats,
+      legacyDuz: getDuz(),
+    };
   });
 
   server.get('/vista/swap-boundary', async () => {

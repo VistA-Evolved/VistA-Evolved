@@ -3228,8 +3228,8 @@ CREATE INDEX IF NOT EXISTS idx_wte_tenant ON workflow_task_event(tenant_id);
     version: 42,
     name: 'phase351_patient_comms',
     sql: `
--- Patient Consent (Phase 351)
-CREATE TABLE IF NOT EXISTS patient_consent (
+-- Phase 351: Notification consent (separate from v17 patient_consent which is HIPAA/research)
+CREATE TABLE IF NOT EXISTS notification_consent (
   id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
   tenant_id TEXT NOT NULL DEFAULT 'default',
   patient_dfn_hash TEXT NOT NULL,
@@ -3240,9 +3240,9 @@ CREATE TABLE IF NOT EXISTS patient_consent (
   recorded_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
-CREATE INDEX IF NOT EXISTS idx_pc_tenant ON patient_consent(tenant_id);
-CREATE INDEX IF NOT EXISTS idx_pc_patient ON patient_consent(tenant_id, patient_dfn_hash);
-CREATE UNIQUE INDEX IF NOT EXISTS idx_pc_uniq ON patient_consent(tenant_id, patient_dfn_hash, channel, category);
+CREATE INDEX IF NOT EXISTS idx_nc_tenant ON notification_consent(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_nc_patient ON notification_consent(tenant_id, patient_dfn_hash);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_nc_uniq ON notification_consent(tenant_id, patient_dfn_hash, channel, category);
 
 -- Notification Template (Phase 351)
 CREATE TABLE IF NOT EXISTS notification_template (
@@ -4450,6 +4450,181 @@ CREATE INDEX IF NOT EXISTS idx_adt_mv_dfn ON adt_movement(tenant_id, patient_dfn
 CREATE INDEX IF NOT EXISTS idx_adt_mv_status ON adt_movement(tenant_id, status);
 `,
   },
+  {
+    version: 60,
+    name: 'wave42_new_domain_tables',
+    sql: `
+-- Phase 575 (Wave 42): 17 new domain tables for in-memory store migration
+
+CREATE TABLE IF NOT EXISTS intake_brain_state (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  session_id TEXT NOT NULL,
+  plugin_id TEXT NOT NULL,
+  state_json JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ibs_tenant ON intake_brain_state(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ibs_session ON intake_brain_state(tenant_id, session_id);
+
+CREATE TABLE IF NOT EXISTS intake_brain_audit (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  session_id TEXT NOT NULL,
+  action TEXT NOT NULL,
+  input_hash TEXT,
+  output_hash TEXT,
+  plugin_id TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_iba_tenant ON intake_brain_audit(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_iba_session ON intake_brain_audit(tenant_id, session_id);
+
+CREATE TABLE IF NOT EXISTS mha_administration (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  instrument_id TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'in_progress',
+  score REAL,
+  responses_json JSONB,
+  administered_by TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_mha_tenant ON mha_administration(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_mha_dfn ON mha_administration(tenant_id, patient_dfn);
+
+CREATE TABLE IF NOT EXISTS cp_result (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  procedure_type TEXT NOT NULL,
+  result_json JSONB,
+  status TEXT NOT NULL DEFAULT 'pending',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_cpr_tenant ON cp_result(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_cpr_dfn ON cp_result(tenant_id, patient_dfn);
+
+CREATE TABLE IF NOT EXISTS imaging_capture (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  study_uid TEXT,
+  capture_type TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  orthanc_id TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_imgcap_tenant ON imaging_capture(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_imgcap_dfn ON imaging_capture(tenant_id, patient_dfn);
+
+CREATE TABLE IF NOT EXISTS scheduling_recall (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  clinic_ien TEXT,
+  recall_date TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_schrcl_tenant ON scheduling_recall(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_schrcl_dfn ON scheduling_recall(tenant_id, patient_dfn);
+
+CREATE TABLE IF NOT EXISTS portal_audit_event (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  user_id TEXT NOT NULL,
+  action TEXT NOT NULL,
+  detail_json JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_pae_tenant ON portal_audit_event(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_pae_user ON portal_audit_event(tenant_id, user_id);
+
+CREATE TABLE IF NOT EXISTS hl7_route (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  message_type TEXT NOT NULL,
+  destination TEXT NOT NULL,
+  transform_id TEXT,
+  active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_hl7r_tenant ON hl7_route(tenant_id);
+
+CREATE TABLE IF NOT EXISTS hl7_tenant_endpoint (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  endpoint_url TEXT NOT NULL,
+  auth_type TEXT NOT NULL DEFAULT 'none',
+  active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_hl7te_tenant ON hl7_tenant_endpoint(tenant_id);
+
+CREATE TABLE IF NOT EXISTS hl7_message_event (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  message_type TEXT NOT NULL,
+  direction TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'received',
+  body_hash TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_hl7me_tenant ON hl7_message_event(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_hl7me_type ON hl7_message_event(tenant_id, message_type);
+
+CREATE TABLE IF NOT EXISTS med_rec_session (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'in_progress',
+  medications_json JSONB,
+  reconciled_by TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_medrec_tenant ON med_rec_session(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_medrec_dfn ON med_rec_session(tenant_id, patient_dfn);
+
+CREATE TABLE IF NOT EXISTS discharge_plan (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'draft',
+  plan_json JSONB,
+  created_by TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_dp_tenant ON discharge_plan(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_dp_dfn ON discharge_plan(tenant_id, patient_dfn);
+
+CREATE TABLE IF NOT EXISTS mar_safety_event (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  event_type TEXT NOT NULL,
+  detail_json JSONB,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_mse_tenant ON mar_safety_event(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_mse_dfn ON mar_safety_event(tenant_id, patient_dfn);
+
+CREATE TABLE IF NOT EXISTS device_alarm (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  device_id TEXT NOT NULL,
+  alarm_type TEXT NOT NULL,
+  severity TEXT NOT NULL DEFAULT 'medium',
+  detail_json JSONB,
+  ack_by TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_da_tenant ON device_alarm(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_da_device ON device_alarm(tenant_id, device_id);
+`,
+  },
 ];
 
 /**
@@ -4639,6 +4814,7 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   'workflow_task',
   'workflow_task_event',
   // Phase 351: Patient Communications
+  'notification_consent',
   'notification_template',
   'notification_record',
   // Phase 352: Department Scheduling & Resources
@@ -4713,6 +4889,21 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   'bulk_export_job',
   // ADT-1: ADT movement store
   'adt_movement',
+  // Phase 575 (Wave 42): New domain tables for store migration
+  'intake_brain_state',
+  'intake_brain_audit',
+  'mha_administration',
+  'cp_result',
+  'imaging_capture',
+  'scheduling_recall',
+  'portal_audit_event',
+  'hl7_route',
+  'hl7_tenant_endpoint',
+  'hl7_message_event',
+  'med_rec_session',
+  'discharge_plan',
+  'mar_safety_event',
+  'device_alarm',
 ] as const;
 
 /**

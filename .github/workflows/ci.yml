@@ -153,3 +153,39 @@ jobs:
 
       - name: Build all packages
         run: pnpm run build
+
+  # ── JOB 5: QA Gauntlet (RC on main, FAST on branches) ───────────
+  qa-gauntlet:
+    runs-on: ubuntu-latest
+    needs: [unit-tests, build-check]
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run QA Gauntlet
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            node qa/gauntlet/cli.mjs --suite rc --ci
+          else
+            pnpm qa:gauntlet:fast
+          fi
+
+      - name: Upload gauntlet results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-gauntlet-ci
+          path: artifacts/qa-gauntlet.json
+          retention-days: 14

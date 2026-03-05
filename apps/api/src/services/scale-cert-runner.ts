@@ -7,6 +7,8 @@
  * attribution, DR/GameDay, scale performance, and SRE posture.
  */
 
+import { createHash } from 'node:crypto';
+
 // ── Types ──────────────────────────────────────────────────────────────
 
 export type CertGateStatus = "pass" | "fail" | "warn" | "skip";
@@ -372,8 +374,7 @@ export function runCertification(
 
   // Compute evidence hash (simple SHA-256 of the run content)
   try {
-    const crypto = require("crypto");
-    run.evidenceHash = crypto.createHash("sha256").update(JSON.stringify(run)).digest("hex");
+    run.evidenceHash = createHash("sha256").update(JSON.stringify(run)).digest("hex");
   } catch {
     run.evidenceHash = "hash-unavailable";
   }
