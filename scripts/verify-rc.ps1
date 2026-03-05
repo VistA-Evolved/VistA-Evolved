@@ -60,7 +60,8 @@ $gates = @(
   @{ Id="G10"; Label="Defect Budget";              Type="ps1";  Path="scripts/qa/bug-bash-run.ps1";                    Required=$true  },
   @{ Id="G11"; Label="Production Posture";         Type="node"; Path="scripts/qa-gates/prod-posture.mjs";              Required=$true  },
   @{ Id="G12"; Label="Data Plane Posture";         Type="node"; Path="qa/gauntlet/gates/g12-data-plane.mjs";           Required=$true  },
-  @{ Id="G13"; Label="VistA Baseline Probe";       Type="ps1";  Path="scripts/vista-baseline-probe.ps1";              Required=$false }
+  @{ Id="G13"; Label="VistA Baseline Probe";       Type="ps1";  Path="scripts/vista-baseline-probe.ps1";              Required=$false },
+  @{ Id="G14"; Label="Tier-0 Outpatient Proof";    Type="ps1";  Path="scripts/verify-tier0.ps1";                      Required=$false }
 )
 
 $results = @()

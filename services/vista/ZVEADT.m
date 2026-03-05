@@ -1,5 +1,5 @@
 ZVEADT	;VistA-Evolved/ADT -- Ward Census + Bed Board + Movement History
-	;;1.0;VistA-Evolved ADT Bridge;Phase 137
+	;;1.1;VistA-Evolved ADT Bridge;Phase 137+fix
 	;
 	; PURPOSE: Custom RPC entry points for inpatient ADT operational views.
 	; VistA-first: reads existing FileMan structures, never writes.
@@ -19,26 +19,52 @@ ZVEADT	;VistA-Evolved/ADT -- Ward Census + Bed Board + Movement History
 	; Install: docker cp ZVEADT.m wv:/tmp/ then:
 	;   mumps -r INSTALL^ZVEADT
 	;
+	; DEFENSIVE DESIGN: Each entry point uses $ETRAP to catch M runtime
+	; errors and return a clean error result instead of crashing the
+	; broker session. All global reads use $G() / $D() guards.
+	;
 	Q
+	;
+	; ---- ERRTRAP: Shared error handler — returns error string, no crash ----
+ERRTRAP	;
+	S $ECODE=""
+	S RESULT(0)="0^ERROR^"_$$ERRMSG
+	Q
+	;
+ERRMSG()	;
+	; Extract a safe one-line error message from $ZERROR
+	; Note: $ZERROR is an ISV, always defined — do NOT wrap in $G()
+	N MSG S MSG=$ZERROR
+	I MSG="" S MSG="Unknown M error"
+	; Truncate to 200 chars
+	I $L(MSG)>200 S MSG=$E(MSG,1,200)
+	Q MSG
 	;
 	; ---- WARDS: Ward list with bed counts and census ----
 	; Returns: WARD_IEN^NAME^TOTAL_BEDS^OCCUPIED^EMPTY
+	; On error or missing globals: RESULT(0)="0^ERROR^reason" (no crash)
 	;
 WARDS(RESULT,DUMMY)	;
 	N I,WRD,CNT,RCNT,BEDS,OCC,EMP,BED,NODE
 	K RESULT S RCNT=0
+	; Defensive error trap — catch any M error, return clean result
+	N $ESTACK,$ETRAP S $ETRAP="D ERRTRAP^ZVEADT Q"
+	; Check if WARD LOCATION file global exists
+	I '$D(^DIC(42,0)) D  Q
+	. S RESULT(0)="0^NOT_AVAILABLE^WARD LOCATION file (#42) not populated"
 	; Loop through WARD LOCATION file (42)
 	S I=0 F  S I=$O(^DIC(42,I)) Q:'I  D
 	. S WRD=$P($G(^DIC(42,I,0)),"^",1) Q:WRD=""
 	. ; Count beds for this ward from ROOM-BED (42.4)
 	. S BEDS=0,OCC=0
-	. S BED=0 F  S BED=$O(^DIC(42.4,BED)) Q:'BED  D
-	. . S NODE=$G(^DIC(42.4,BED,0))
-	. . ; Piece 2 of ROOM-BED is the ward pointer
-	. . Q:$P(NODE,"^",2)'=I
-	. . S BEDS=BEDS+1
-	. . ; Check occupancy: piece 3 is current patient (if any)
-	. . I $P(NODE,"^",3)]"" S OCC=OCC+1
+	. I $D(^DIC(42.4)) D
+	. . S BED=0 F  S BED=$O(^DIC(42.4,BED)) Q:'BED  D
+	. . . S NODE=$G(^DIC(42.4,BED,0))
+	. . . ; Piece 2 of ROOM-BED is the ward pointer
+	. . . Q:$P(NODE,"^",2)'=I
+	. . . S BEDS=BEDS+1
+	. . . ; Check occupancy: piece 3 is current patient (if any)
+	. . . I $P(NODE,"^",3)]"" S OCC=OCC+1
 	. S EMP=BEDS-OCC
 	. S RCNT=RCNT+1
 	. S RESULT(RCNT)=I_"^"_WRD_"^"_BEDS_"^"_OCC_"^"_EMP
@@ -53,7 +79,13 @@ WARDS(RESULT,DUMMY)	;
 BEDS(RESULT,WARD)	;
 	N I,NODE,RM,STAT,DFN,PNAME,RCNT
 	K RESULT S RCNT=0
-	Q:'$G(WARD)
+	; Defensive error trap
+	N $ESTACK,$ETRAP S $ETRAP="D ERRTRAP^ZVEADT Q"
+	I '$G(WARD) D  Q
+	. S RESULT(0)="0^ERROR^WARD parameter required"
+	; Check if ROOM-BED file global exists
+	I '$D(^DIC(42.4)) D  Q
+	. S RESULT(0)="0^NOT_AVAILABLE^ROOM-BED file (#42.4) not populated"
 	S I=0 F  S I=$O(^DIC(42.4,I)) Q:'I  D
 	. S NODE=$G(^DIC(42.4,I,0))
 	. ; Filter to requested ward (piece 2)
@@ -81,7 +113,13 @@ BEDS(RESULT,WARD)	;
 MVHIST(RESULT,DFN)	;
 	N MVDT,MV,NODE,MTYPE,MTNAME,FROM,TO,WRD,RB,PROV,RCNT
 	K RESULT S RCNT=0
-	Q:'$G(DFN)
+	; Defensive error trap
+	N $ESTACK,$ETRAP S $ETRAP="D ERRTRAP^ZVEADT Q"
+	I '$G(DFN) D  Q
+	. S RESULT(0)="0^ERROR^DFN parameter required"
+	; Check if PATIENT MOVEMENT global exists
+	I '$D(^DGPM("APTT")) D  Q
+	. S RESULT(0)="0^NOT_AVAILABLE^PATIENT MOVEMENT cross-ref not populated"
 	; PATIENT MOVEMENT (405) is indexed by patient
 	; ^DGPM("APTT",DFN,date,ien)
 	S MVDT=0 F  S MVDT=$O(^DGPM("APTT",DFN,MVDT)) Q:'MVDT  D

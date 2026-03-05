@@ -220,6 +220,8 @@ test.describe("Phase 284: IMPLEMENT: SaaS Billing / Metering", () => {
     expect(r2.status(), "/admin/billing/subscriptions not 500").not.toBe(500);
     const r3 = await request.get(`${API}/admin/billing/usage/flush`);
     expect(r3.status(), "/admin/billing/usage/flush not 500").not.toBe(500);
+    const r4 = await request.get(`${API}/billing/health`);
+    expect(r4.status(), "/billing/health not 500").not.toBe(500);
   });
 
   test("UI component files exist on disk", async () => {

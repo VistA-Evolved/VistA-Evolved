@@ -133,6 +133,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/plugin-marketplace\//, auth: 'admin' }, // Phase 360: plugin marketplace (admin only)
   { pattern: /^\/imaging\/ingest\/callback$/, auth: 'service' }, // Phase 23: Orthanc webhook (X-Service-Key)
   { pattern: /^\/imaging\/health$/, auth: 'session' }, // Phase 24: imaging health check
+  { pattern: /^\/billing\/health$/, auth: 'session' }, // Phase 284: billing health check (public-facing, session required)
   { pattern: /^\/imaging\/devices/, auth: 'session' }, // Phase 24: device registry (imaging_admin checked in handler)
   { pattern: /^\/imaging\/audit/, auth: 'session' }, // Phase 24: imaging audit (imaging_admin checked in handler)
   { pattern: /^\/security\/break-glass/, auth: 'session' }, // Phase 24: break-glass

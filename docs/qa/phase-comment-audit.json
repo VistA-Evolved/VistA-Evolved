@@ -1,0 +1,3023 @@
+{
+  "generatedAt": "2026-03-04T16:50:07.544Z",
+  "generator": "scripts/qa/phase-comment-audit.mjs",
+  "summary": {
+    "totalPhaseTokens": 545,
+    "totalPhaseRefs": 6715,
+    "resolved": 461,
+    "unresolved": 80,
+    "ambiguous": 4,
+    "totalWaveTokens": 38,
+    "totalWaveRefs": 513,
+    "filesScanned": 2096
+  },
+  "top50MostReferenced": [
+    {
+      "token": "24",
+      "refCount": 120,
+      "resolvedTo": "26-PHASE-24-IMAGING-ENTERPRISE"
+    },
+    {
+      "token": "136",
+      "refCount": 112,
+      "resolvedTo": "141-PHASE-136-STORE-POLICY-GATE"
+    },
+    {
+      "token": "146",
+      "refCount": 111,
+      "resolvedTo": "151-PHASE-146-DURABILITY-WAVE3"
+    },
+    {
+      "token": "38",
+      "refCount": 110,
+      "resolvedTo": "42-PHASE-38-RCM-PAYER-CONNECTIVITY"
+    },
+    {
+      "token": "23",
+      "refCount": 102,
+      "resolvedTo": "25-PHASE-23-IMAGING-WORKFLOW"
+    },
+    {
+      "token": "40",
+      "refCount": 88,
+      "resolvedTo": "44-PHASE-40-PAYER-CONNECTIVITY"
+    },
+    {
+      "token": "35",
+      "refCount": 78,
+      "resolvedTo": "37-PHASE-35-IAM-AUTHZ-AUDIT"
+    },
+    {
+      "token": "37C",
+      "refCount": 76,
+      "resolvedTo": "41-PHASE-37C-PRODUCT-MODULARITY"
+    },
+    {
+      "token": "36",
+      "refCount": 67,
+      "resolvedTo": "38-PHASE-36-OBSERVABILITY-RELIABILITY"
+    },
+    {
+      "token": "30",
+      "refCount": 62,
+      "resolvedTo": "32-PHASE-30-TELEHEALTH"
+    },
+    {
+      "token": "132",
+      "refCount": 58,
+      "resolvedTo": "136-PHASE-132-CSRF-SYNC-TOKEN"
+    },
+    {
+      "token": "154",
+      "refCount": 57,
+      "resolvedTo": "159-PHASE-154-CPOE-SIGNING"
+    },
+    {
+      "token": "31",
+      "refCount": 57,
+      "resolvedTo": "33-PHASE-31-SHARING-EXPORTS"
+    },
+    {
+      "token": "25",
+      "refCount": 55,
+      "resolvedTo": "27-PHASE-25-BI-ANALYTICS"
+    },
+    {
+      "token": "22",
+      "refCount": 55,
+      "resolvedTo": "24-PHASE-22-IMAGING-PLATFORM"
+    },
+    {
+      "token": "27",
+      "refCount": 53,
+      "resolvedTo": "29-PHASE-27-PORTAL-CORE"
+    },
+    {
+      "token": "32",
+      "refCount": 53,
+      "resolvedTo": "34-PHASE-32-MESSAGING-REFILLS"
+    },
+    {
+      "token": "147",
+      "refCount": 52,
+      "resolvedTo": "152-PHASE-147-SCHEDULING-DEPTH-V2"
+    },
+    {
+      "token": "109",
+      "refCount": 50,
+      "resolvedTo": "113-PHASE-109-MODULAR-PACKAGING"
+    },
+    {
+      "token": "26",
+      "refCount": 49,
+      "resolvedTo": "28-PHASE-26-PORTAL-TELEHEALTH"
+    },
+    {
+      "token": "21",
+      "refCount": 48,
+      "resolvedTo": "23-PHASE-21-INTEROP-REALITY"
+    },
+    {
+      "token": "12",
+      "refCount": 47,
+      "resolvedTo": "14-PHASE-12-CPRS-PARITY-WIRING"
+    },
+    {
+      "token": "125",
+      "refCount": 45,
+      "resolvedTo": "129-PHASE-125-POSTGRES-ONLY-DATAPLANE"
+    },
+    {
+      "token": "131",
+      "refCount": 44,
+      "resolvedTo": "135-PHASE-131-SCHEDULING-DEPTH"
+    },
+    {
+      "token": "157",
+      "refCount": 44,
+      "resolvedTo": "162-PHASE-157-AUDIT-JSONL-SHIPPING"
+    },
+    {
+      "token": "33",
+      "refCount": 42,
+      "resolvedTo": "35-PHASE-33-AI-ASSIST-GATEWAY"
+    },
+    {
+      "token": "126",
+      "refCount": 40,
+      "resolvedTo": "130-PHASE-126-RCM-DURABILITY-PG"
+    },
+    {
+      "token": "16",
+      "refCount": 38,
+      "resolvedTo": "18-PHASE-16-PRODUCTION-READINESS"
+    },
+    {
+      "token": "107",
+      "refCount": 38,
+      "resolvedTo": "111-PHASE-107-PRODUCTION-POSTURE"
+    },
+    {
+      "token": "123",
+      "refCount": 36,
+      "resolvedTo": "127-PHASE-123-SCHEDULING-SD"
+    },
+    {
+      "token": "101",
+      "refCount": 36,
+      "resolvedTo": "105-PHASE-101-PLATFORM-DATA-LAYER"
+    },
+    {
+      "token": "568",
+      "refCount": 35,
+      "resolvedTo": "568-PHASE-568-ZVEADT-CRASH-FIX"
+    },
+    {
+      "token": "128",
+      "refCount": 34,
+      "resolvedTo": "132-PHASE-128-IMAGING-SCHEDULING-PG"
+    },
+    {
+      "token": "1",
+      "refCount": 34,
+      "resolvedTo": "02-PHASE-1-HELLO-SYSTEM"
+    },
+    {
+      "token": "34",
+      "refCount": 33,
+      "resolvedTo": "36-PHASE-34-REGULATED-SDLC"
+    },
+    {
+      "token": "51",
+      "refCount": 33,
+      "resolvedTo": "56-PHASE-51-ENTERPRISE-PACKAGING"
+    },
+    {
+      "token": "28",
+      "refCount": 32,
+      "resolvedTo": "30-PHASE-28-ENTERPRISE-INTAKE-OS"
+    },
+    {
+      "token": "39",
+      "refCount": 32,
+      "resolvedTo": "43-PHASE-39-BILLING-GROUNDING"
+    },
+    {
+      "token": "121",
+      "refCount": 31,
+      "resolvedTo": "125-PHASE-121-DURABILITY-WAVE-1"
+    },
+    {
+      "token": "13",
+      "refCount": 31,
+      "resolvedTo": "15-PHASE-13-CPRS-OPERATIONALIZATION"
+    },
+    {
+      "token": "143",
+      "refCount": 31,
+      "resolvedTo": "148-PHASE-143-AI-INTAKE-ENGINE"
+    },
+    {
+      "token": "104",
+      "refCount": 31,
+      "resolvedTo": "108-PHASE-104-DB-SECURITY"
+    },
+    {
+      "token": "67",
+      "refCount": 31,
+      "resolvedTo": "73-PHASE-67-ADT-INPATIENT"
+    },
+    {
+      "token": "102",
+      "refCount": 30,
+      "resolvedTo": "106-PHASE-102-REGISTRY-MIGRATION"
+    },
+    {
+      "token": "94",
+      "refCount": 30,
+      "resolvedTo": "287-PHASE-94-PH-HMO-WORKFLOW"
+    },
+    {
+      "token": "108",
+      "refCount": 30,
+      "resolvedTo": "112-PHASE-108-PHASE-AUDIT-HARNESS"
+    },
+    {
+      "token": "281",
+      "refCount": 29,
+      "resolvedTo": "279-PHASE-281-DATA-MIGRATION-FOUNDATIONS"
+    },
+    {
+      "token": "69",
+      "refCount": 29,
+      "resolvedTo": "75-PHASE-69-RCM-OPS-EXCELLENCE"
+    },
+    {
+      "token": "153",
+      "refCount": 28,
+      "resolvedTo": "158-PHASE-153-IAM-OIDC-DEFAULT"
+    },
+    {
+      "token": "44",
+      "refCount": 28,
+      "resolvedTo": "49-PHASE-44-PAYER-DIRECTORY"
+    }
+  ],
+  "unresolvedTokens": [
+    {
+      "token": "14D",
+      "refCount": 17,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/imaging.ts",
+          "line": 2,
+          "context": "* Imaging Viewer Integration — Phase 14D."
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 375,
+          "context": "// Imaging domain (Phase 14D, 22, 23, 24, 81)"
+        },
+        {
+          "file": "apps/api/src/services/imaging-service.ts",
+          "line": 4,
+          "context": "* Enhances Phase 14D imaging routes with enterprise capabilities:"
+        }
+      ]
+    },
+    {
+      "token": "15B",
+      "refCount": 15,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/auth/auth-routes.ts",
+          "line": 248,
+          "context": "// Rotate session token to prevent fixation (Phase 15B)"
+        },
+        {
+          "file": "apps/api/src/auth/auth-routes.ts",
+          "line": 287,
+          "context": "// Phase 15B: Do NOT expose token in response body — cookie-only transport"
+        },
+        {
+          "file": "apps/api/src/lib/rpc-resilience.ts",
+          "line": 2,
+          "context": "* RPC Resilience Layer — Phase 15B."
+        }
+      ]
+    },
+    {
+      "token": "5D",
+      "refCount": 13,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/patient-search/page.tsx",
+          "line": 594,
+          "context": "{/* Phase 5D: Add Allergy form */}"
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase5b.ps1",
+          "line": 5,
+          "context": "Verifies phases from Hello System through Phase 5D Add Allergy (CRUD)."
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase5b.ps1",
+          "line": 432,
+          "context": "Write-Phase \"PHASE 5D\" \"Add Allergy (First Write / CRUD)\""
+        }
+      ]
+    },
+    {
+      "token": "25D",
+      "refCount": 10,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/services/support-ops-service.ts",
+          "line": 331,
+          "context": "{ id: \"rb-004\", title: \"Analytics Octo/ROcto\", path: \"docs/runbooks/analytics-octo-rocto.md\", category: \"analytics\", pha"
+        },
+        {
+          "file": "services/analytics/docker-compose.yml",
+          "line": 1,
+          "context": "# Analytics SQL Layer — Phase 25D"
+        },
+        {
+          "file": "services/analytics/octo-seed.sql",
+          "line": 1,
+          "context": "-- Analytics SQL Schema — Phase 25D"
+        }
+      ]
+    },
+    {
+      "token": "4",
+      "refCount": 10,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/dr/restore-verify.mjs",
+          "line": 393,
+          "context": "// ---- Phase 4: RLS policy verification ----"
+        },
+        {
+          "file": "scripts/dr/restore-verify.mjs",
+          "line": 395,
+          "context": "console.log('\\n--- Phase 4: RLS policy probes ---\\n');"
+        },
+        {
+          "file": "scripts/restart-drill.mjs",
+          "line": 206,
+          "context": "// Phase 4: Lifecycle wiring check"
+        }
+      ]
+    },
+    {
+      "token": "15C",
+      "refCount": 9,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/auth/auth-routes.ts",
+          "line": 261,
+          "context": "// Phase 15C: Audit successful login"
+        },
+        {
+          "file": "apps/api/src/auth/auth-routes.ts",
+          "line": 319,
+          "context": "// Phase 15C: Audit failed login (never log credentials)"
+        },
+        {
+          "file": "apps/api/src/auth/auth-routes.ts",
+          "line": 360,
+          "context": "// Phase 15C: Audit logout"
+        }
+      ]
+    },
+    {
+      "token": "68B",
+      "refCount": 9,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/nursing/index.ts",
+          "line": 324,
+          "context": "// RPC available -- real implementation not yet wired (Phase 68B future)"
+        },
+        {
+          "file": "apps/web/src/actions/actionRegistry.ts",
+          "line": 958,
+          "context": "pendingNote: 'BCMA/PSB package not available in WorldVistA sandbox -- deferred to Phase 68B',"
+        },
+        {
+          "file": "apps/web/src/actions/actionRegistry.ts",
+          "line": 969,
+          "context": "pendingNote: 'BCMA/PSB package not available in WorldVistA sandbox -- deferred to Phase 68B',"
+        }
+      ]
+    },
+    {
+      "token": "17A",
+      "refCount": 8,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/config/marketplace-tenant.ts",
+          "line": 5,
+          "context": "* Layers on top of the existing Phase 17A tenant-config.ts (tab-level)"
+        },
+        {
+          "file": "apps/api/src/config/tenant-config.ts",
+          "line": 2,
+          "context": "* Multi-tenant configuration — Phase 17A → Phase 275 (DB-backed)."
+        },
+        {
+          "file": "apps/api/src/platform/pg/pg-migrate.ts",
+          "line": 2589,
+          "context": "-- Replaces in-memory Map store from Phase 17A with DB-backed persistence."
+        }
+      ]
+    },
+    {
+      "token": "6A",
+      "refCount": 8,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/patient-search/page.tsx",
+          "line": 627,
+          "context": "{/* Phase 6A: Vitals section */}"
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase6b.ps1",
+          "line": 6,
+          "context": "- Add Phase 6A test:"
+        },
+        {
+          "file": "docs/bug-tracker-lessons-phase1-to-phase5d.md",
+          "line": 7,
+          "context": "> **Last updated**: 2026-02-11 (Phase 6A complete)"
+        }
+      ]
+    },
+    {
+      "token": "5B",
+      "refCount": 8,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase5b.ps1",
+          "line": 340,
+          "context": "Write-Phase \"PHASE 5B\" \"Patient Demographics\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase5b.ps1",
+          "line": 380,
+          "context": "if (-not $dockerOk) { Write-Host \"  [SKIP] Sandbox not running -- cannot test Phase 5B\" -ForegroundColor Yellow }"
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase5b.ps1",
+          "line": 381,
+          "context": "if (-not $ready)    { Write-Host \"  [SKIP] API not running -- cannot test Phase 5B\" -ForegroundColor Yellow }"
+        }
+      ]
+    },
+    {
+      "token": "5C",
+      "refCount": 8,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase5b.ps1",
+          "line": 385,
+          "context": "Write-Phase \"PHASE 5C\" \"Patient Allergies\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase5b.ps1",
+          "line": 427,
+          "context": "if (-not $dockerOk) { Write-Host \"  [SKIP] Sandbox not running -- cannot test Phase 5C\" -ForegroundColor Yellow }"
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase5b.ps1",
+          "line": 428,
+          "context": "if (-not $ready)    { Write-Host \"  [SKIP] API not running -- cannot test Phase 5C\" -ForegroundColor Yellow }"
+        }
+      ]
+    },
+    {
+      "token": "15A",
+      "refCount": 7,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/auth/auth-routes.ts",
+          "line": 174,
+          "context": "// Phase 15A: Validate input with zod"
+        },
+        {
+          "file": "apps/api/src/lib/logger.ts",
+          "line": 2,
+          "context": "* Redacting structured logger — Phase 15A."
+        },
+        {
+          "file": "apps/api/src/lib/validation.ts",
+          "line": 2,
+          "context": "* Input validation schemas — Phase 15A."
+        }
+      ]
+    },
+    {
+      "token": "14A",
+      "refCount": 7,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/capabilities.ts",
+          "line": 2,
+          "context": "* RPC Capability Discovery routes — Phase 14A + Phase 478."
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 369,
+          "context": "// RPC capability discovery (Phase 14A)"
+        },
+        {
+          "file": "apps/api/src/vista/rpcCapabilities.ts",
+          "line": 2,
+          "context": "* VistA RPC Capability Discovery + Cache — Phase 14A."
+        }
+      ]
+    },
+    {
+      "token": "14B",
+      "refCount": 6,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/inbox.ts",
+          "line": 2,
+          "context": "* Inbox / Notifications routes — Phase 13B + Phase 14B compat layer."
+        },
+        {
+          "file": "apps/api/src/routes/inbox.ts",
+          "line": 10,
+          "context": "* Phase 14B: Uses RPC capability layer to detect missing RPCs at startup"
+        },
+        {
+          "file": "apps/api/src/routes/inbox.ts",
+          "line": 56,
+          "context": "// Phase 14B: check capability layer before calling RPCs"
+        }
+      ]
+    },
+    {
+      "token": "67B",
+      "refCount": 6,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/actions/actionRegistry.ts",
+          "line": 883,
+          "context": "pendingNote: 'DG ADT write RPCs not available in WorldVistA sandbox -- deferred to Phase 67B',"
+        },
+        {
+          "file": "apps/web/src/actions/actionRegistry.ts",
+          "line": 894,
+          "context": "pendingNote: 'DG ADT write RPCs not available in WorldVistA sandbox -- deferred to Phase 67B',"
+        },
+        {
+          "file": "apps/web/src/actions/actionRegistry.ts",
+          "line": 905,
+          "context": "pendingNote: 'DG ADT write RPCs not available in WorldVistA sandbox -- deferred to Phase 67B',"
+        }
+      ]
+    },
+    {
+      "token": "18E",
+      "refCount": 6,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/cprs/remote-data-viewer/page.tsx",
+          "line": 4,
+          "context": "* Remote Data Viewer — Phase 18E enhanced."
+        },
+        {
+          "file": "apps/web/src/app/cprs/remote-data-viewer/page.tsx",
+          "line": 134,
+          "context": "// 2. Fetch external sources from integration registry (Phase 18E)"
+        },
+        {
+          "file": "apps/web/src/app/cprs/remote-data-viewer/page.tsx",
+          "line": 274,
+          "context": "{/* Phase 18E: External integration sources from registry */}"
+        }
+      ]
+    },
+    {
+      "token": "9B",
+      "refCount": 6,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/patient-search/page.tsx",
+          "line": 335,
+          "context": "// For Phase 9B, this will return a documented blocker explaining why it's not implemented"
+        },
+        {
+          "file": "apps/web/src/app/patient-search/page.tsx",
+          "line": 871,
+          "context": "{/* Phase 9B: Add Problem form */}"
+        },
+        {
+          "file": "docs/BUG-TRACKER.md",
+          "line": 25,
+          "context": "13. [Phase 9B — Add Problem](#phase-9b--add-problem)"
+        }
+      ]
+    },
+    {
+      "token": "8B",
+      "refCount": 6,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/patient-search/page.tsx",
+          "line": 735,
+          "context": "{/* Phase 8B: Add Medication form */}"
+        },
+        {
+          "file": "apps/web/src/components/cprs/dialogs/AddMedicationDialog.tsx",
+          "line": 10,
+          "context": "/* Quick-order IENs from Phase 8B */"
+        },
+        {
+          "file": "apps/web/src/components/cprs/dialogs/AddMedicationDialog.tsx",
+          "line": 154,
+          "context": "Select a quick order to place via ORWDX SEND (Phase 8B AUTOACK):"
+        }
+      ]
+    },
+    {
+      "token": "84B",
+      "refCount": 5,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/nursing/index.ts",
+          "line": 745,
+          "context": "_note: 'Note created. Signing requires TIU SIGN RECORD (deferred to Phase 84B).',"
+        },
+        {
+          "file": "apps/web/src/app/cprs/nursing/page.tsx",
+          "line": 1031,
+          "context": "functional when ZVENAS custom RPCs are built (Phase 84B)."
+        },
+        {
+          "file": "docs/runbooks/nursing-grounding.md",
+          "line": 63,
+          "context": "| GMRIO RESULTS   | GMR     | I&O results query           | Phase 84B    |"
+        }
+      ]
+    },
+    {
+      "token": "14C",
+      "refCount": 5,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/write-backs.ts",
+          "line": 2,
+          "context": "* Write-back routes — Phase 14C."
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 372,
+          "context": "// Write-back routes (Phase 14C)"
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase14-parity-closure.ps1",
+          "line": 177,
+          "context": "Write-Phase \"PHASE 14C\" \"Write-back Parity Upgrades\""
+        }
+      ]
+    },
+    {
+      "token": "18C",
+      "refCount": 5,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/services/imaging-service.ts",
+          "line": 2,
+          "context": "* Imaging Integration Service — Phase 18C + Phase 22 enhancements."
+        },
+        {
+          "file": "apps/api/src/services/imaging-service.ts",
+          "line": 341,
+          "context": "// 3. Try DICOMweb from registered integrations (Phase 18C)"
+        },
+        {
+          "file": "apps/web/src/components/cprs/panels/ReportsPanel.tsx",
+          "line": 4,
+          "context": "* Reports Panel — Phase 18C enhanced."
+        }
+      ]
+    },
+    {
+      "token": "7B",
+      "refCount": 5,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/patient-search/page.tsx",
+          "line": 796,
+          "context": "{/* Phase 7B: Create note form */}"
+        },
+        {
+          "file": "docs/BUG-TRACKER.md",
+          "line": 23,
+          "context": "11. [Phase 7B — Create Note](#phase-7b--create-note)"
+        },
+        {
+          "file": "docs/BUG-TRACKER.md",
+          "line": 287,
+          "context": "## Phase 7B — Create Note"
+        }
+      ]
+    },
+    {
+      "token": "15E",
+      "refCount": 5,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/components/ui/ErrorBoundary.tsx",
+          "line": 6,
+          "context": "/* Error Boundary — Phase 15E                                          */"
+        },
+        {
+          "file": "apps/web/src/components/ui/ErrorBoundary.tsx",
+          "line": 95,
+          "context": "/* Loading skeleton — Phase 15E                                        */"
+        },
+        {
+          "file": "apps/web/src/lib/useDebounce.ts",
+          "line": 4,
+          "context": "* Debounce hook — Phase 15E."
+        }
+      ]
+    },
+    {
+      "token": "13B",
+      "refCount": 4,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/inbox.ts",
+          "line": 2,
+          "context": "* Inbox / Notifications routes — Phase 13B + Phase 14B compat layer."
+        },
+        {
+          "file": "apps/api/src/routes/index.ts",
+          "line": 16,
+          "context": "import inboxRoutes from './inbox.js'; // Phase 13B"
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 343,
+          "context": "Write-Phase \"PHASE 13B\" \"Inbox / Tasks\""
+        }
+      ]
+    },
+    {
+      "token": "13F",
+      "refCount": 4,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/ws-console.ts",
+          "line": 2,
+          "context": "* WebSocket console gateway — Phase 13F."
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 366,
+          "context": "// WebSocket console (Phase 13F)"
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 412,
+          "context": "Write-Phase \"PHASE 13F\" \"Legacy Console WebSocket\""
+        }
+      ]
+    },
+    {
+      "token": "6B",
+      "refCount": 4,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/patient-search/page.tsx",
+          "line": 657,
+          "context": "{/* Phase 6B: Add vital form */}"
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase6b.ps1",
+          "line": 9,
+          "context": "- Add Phase 6B test:"
+        },
+        {
+          "file": "docs/runbooks/vista-rpc-add-vitals.md",
+          "line": 1,
+          "context": "# Runbook — Add Vitals via `GMV ADD VM` RPC (Phase 6B)"
+        }
+      ]
+    },
+    {
+      "token": "8A",
+      "refCount": 4,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/patient-search/page.tsx",
+          "line": 705,
+          "context": "{/* Phase 8A: Medications section */}"
+        },
+        {
+          "file": "docs/BUG-TRACKER.md",
+          "line": 24,
+          "context": "12. [Phase 8A — Medications](#phase-8a--medications)"
+        },
+        {
+          "file": "docs/BUG-TRACKER.md",
+          "line": 301,
+          "context": "## Phase 8A — Medications"
+        }
+      ]
+    },
+    {
+      "token": "9A",
+      "refCount": 4,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/patient-search/page.tsx",
+          "line": 841,
+          "context": "{/* Phase 9A: Problems section */}"
+        },
+        {
+          "file": "docs/runbooks/vista-rpc-add-problem.md",
+          "line": 271,
+          "context": "- **Phase 9A** (v1.0): GET /vista/problems implemented (read-only)"
+        },
+        {
+          "file": "docs/runbooks/vista-rpc-problems.md",
+          "line": 1,
+          "context": "# VistA Problem List (ORWCH PROBLEM LIST) — Phase 9A Runbook"
+        }
+      ]
+    },
+    {
+      "token": "11A",
+      "refCount": 4,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase11-cprs.ps1",
+          "line": 76,
+          "context": "Write-Phase \"PHASE 11A\" \"Contract Binding Layer\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase12-parity.ps1",
+          "line": 80,
+          "context": "Write-Phase \"PHASE 11A\" \"Contract Binding Layer\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 85,
+          "context": "Write-Phase \"PHASE 11A\" \"Contract Binding Layer\""
+        }
+      ]
+    },
+    {
+      "token": "11B",
+      "refCount": 4,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase11-cprs.ps1",
+          "line": 96,
+          "context": "Write-Phase \"PHASE 11B\" \"State Management Layer\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase12-parity.ps1",
+          "line": 97,
+          "context": "Write-Phase \"PHASE 11B\" \"State Management Layer\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 102,
+          "context": "Write-Phase \"PHASE 11B\" \"State Management Layer\""
+        }
+      ]
+    },
+    {
+      "token": "11C",
+      "refCount": 4,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase11-cprs.ps1",
+          "line": 117,
+          "context": "Write-Phase \"PHASE 11C\" \"CPRS Shell Components\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase12-parity.ps1",
+          "line": 118,
+          "context": "Write-Phase \"PHASE 11C\" \"CPRS Shell Components\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 123,
+          "context": "Write-Phase \"PHASE 11C\" \"CPRS Shell Components\""
+        }
+      ]
+    },
+    {
+      "token": "11D",
+      "refCount": 4,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase11-cprs.ps1",
+          "line": 135,
+          "context": "Write-Phase \"PHASE 11D\" \"Tab Panel Components (all 10)\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase12-parity.ps1",
+          "line": 135,
+          "context": "Write-Phase \"PHASE 11D\" \"Tab Panel Components (all 10)\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 140,
+          "context": "Write-Phase \"PHASE 11D\" \"Tab Panel Components (all 10)\""
+        }
+      ]
+    },
+    {
+      "token": "11F",
+      "refCount": 4,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase11-cprs.ps1",
+          "line": 181,
+          "context": "Write-Phase \"PHASE 11F\" \"CPRS Route Pages\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase12-parity.ps1",
+          "line": 179,
+          "context": "Write-Phase \"PHASE 11F\" \"CPRS Route Pages\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 184,
+          "context": "Write-Phase \"PHASE 11F\" \"CPRS Route Pages\""
+        }
+      ]
+    },
+    {
+      "token": "5A",
+      "refCount": 4,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "docs/bug-tracker-lessons-phase1-to-phase5d.md",
+          "line": 18,
+          "context": "6. [Phase 5A — Patient Search UI](#phase-5a--patient-search-ui)"
+        },
+        {
+          "file": "docs/bug-tracker-lessons-phase1-to-phase5d.md",
+          "line": 147,
+          "context": "## Phase 5A — Patient Search UI"
+        },
+        {
+          "file": "docs/BUG-TRACKER.md",
+          "line": 18,
+          "context": "6. [Phase 5A — Patient Search UI](#phase-5a--patient-search-ui)"
+        }
+      ]
+    },
+    {
+      "token": "10A",
+      "refCount": 4,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "docs/runbooks/cprs-api-scaffold-generator.md",
+          "line": 16,
+          "context": "| RPC catalog      | `design/contracts/cprs/v1/rpc_catalog.json`     | 975 RPCs from Phase 10A |"
+        },
+        {
+          "file": "docs/runbooks/cprs-contract-generation.md",
+          "line": 14,
+          "context": "| Extraction output | `design/contracts/cprs/v1/` | Produced by Phase 10A (`pnpm run cprs:extract`) |"
+        },
+        {
+          "file": "docs/runbooks/cprs-contract-generation.md",
+          "line": 30,
+          "context": "The same 6 files from Phase 10A, now validated for schema correctness:"
+        }
+      ]
+    },
+    {
+      "token": "15F",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/config/server-config.ts",
+          "line": 2,
+          "context": "* Server-side compliance + hardening config — Phase 15F."
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase15-enterprise-hardening.ps1",
+          "line": 216,
+          "context": "# PHASE 15F - Compliance Config"
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase15-enterprise-hardening.ps1",
+          "line": 219,
+          "context": "Write-Phase \"PHASE 15F\" \"Compliance Configuration\""
+        }
+      ]
+    },
+    {
+      "token": "103B",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/platform/pg/pg-migrate.ts",
+          "line": 482,
+          "context": "-- Partitioning DEFERRED to Phase 103B because:"
+        },
+        {
+          "file": "docs/architecture/platform-db-performance.md",
+          "line": 90,
+          "context": "### Strategy: DEFERRED to Phase 103B"
+        },
+        {
+          "file": "docs/architecture/platform-db-performance.md",
+          "line": 108,
+          "context": "### Partition plan (for Phase 103B)"
+        }
+      ]
+    },
+    {
+      "token": "65B",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/immunizations/index.ts",
+          "line": 164,
+          "context": "'Add immunization requires PCE encounter context (PX SAVE DATA). Deferred to Phase 65B.',"
+        },
+        {
+          "file": "apps/api/src/routes/immunizations/index.ts",
+          "line": 176,
+          "context": "'Phase 65B: wire PX SAVE DATA with encounter/visit IEN + immunization IEN + admin route/site',"
+        },
+        {
+          "file": "apps/web/src/actions/actionRegistry.ts",
+          "line": 780,
+          "context": "pendingNote: 'PCE PX SAVE DATA requires encounter context — deferred to Phase 65B',"
+        }
+      ]
+    },
+    {
+      "token": "18B",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/interop.ts",
+          "line": 2,
+          "context": "* Interop routes — Phase 18B/D."
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 400,
+          "context": "// Interop routes (Phase 18B/D, 21)"
+        },
+        {
+          "file": "apps/web/src/app/cprs/admin/integrations/page.tsx",
+          "line": 4,
+          "context": "* Admin Integration Console — Phase 18B/D + Phase 21 + Phase 58."
+        }
+      ]
+    },
+    {
+      "token": "13G",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/cprs/settings/preferences/page.tsx",
+          "line": 9,
+          "context": "* Phase 13G: adds layout mode and extended density options."
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 434,
+          "context": "Write-Phase \"PHASE 13G\" \"Modern UI Toggle\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase14-parity-closure.ps1",
+          "line": 136,
+          "context": "# Phase 13G - UI Toggle"
+        }
+      ]
+    },
+    {
+      "token": "7A",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/patient-search/page.tsx",
+          "line": 764,
+          "context": "{/* Phase 7A: Notes section */}"
+        },
+        {
+          "file": "docs/runbooks/vista-rpc-notes.md",
+          "line": 1,
+          "context": "# Runbook — Notes List via `TIU DOCUMENTS BY CONTEXT` RPC (Phase 7A)"
+        },
+        {
+          "file": "docs/runbooks/vista-rpc-notes.md",
+          "line": 145,
+          "context": "## Files Modified (Phase 7A)"
+        }
+      ]
+    },
+    {
+      "token": "11E",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase11-cprs.ps1",
+          "line": 165,
+          "context": "Write-Phase \"PHASE 11E\" \"Dialog Components\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase12-parity.ps1",
+          "line": 164,
+          "context": "Write-Phase \"PHASE 11E\" \"Dialog Components\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 169,
+          "context": "Write-Phase \"PHASE 11E\" \"Dialog Components\""
+        }
+      ]
+    },
+    {
+      "token": "11G",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase11-cprs.ps1",
+          "line": 200,
+          "context": "Write-Phase \"PHASE 11G\" \"Root Page Updated\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase12-parity.ps1",
+          "line": 197,
+          "context": "Write-Phase \"PHASE 11G\" \"Root Page Updated\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 202,
+          "context": "Write-Phase \"PHASE 11G\" \"Root Page Updated\""
+        }
+      ]
+    },
+    {
+      "token": "11H",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase11-cprs.ps1",
+          "line": 208,
+          "context": "Write-Phase \"PHASE 11H\" \"No VA/VHA Terminology in UI\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase12-parity.ps1",
+          "line": 205,
+          "context": "Write-Phase \"PHASE 11H\" \"No VA/VHA Terminology in UI\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 210,
+          "context": "Write-Phase \"PHASE 11H\" \"No VA/VHA Terminology in UI\""
+        }
+      ]
+    },
+    {
+      "token": "12A",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase12-parity.ps1",
+          "line": 224,
+          "context": "Write-Phase \"PHASE 12A\" \"Data-Cache: 5 New Domains\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 229,
+          "context": "Write-Phase \"PHASE 12A\" \"Data-Cache: 5 New Domains\""
+        },
+        {
+          "file": "docs/parity-coverage-report.md",
+          "line": 69,
+          "context": "### 6. Consults / Requests (Phase 12A)"
+        }
+      ]
+    },
+    {
+      "token": "12B",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase12-parity.ps1",
+          "line": 240,
+          "context": "Write-Phase \"PHASE 12B\" \"5 Panels Wired to Live Data (no MOCK_)\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 245,
+          "context": "Write-Phase \"PHASE 12B\" \"5 Panels Wired to Live Data (no MOCK_)\""
+        },
+        {
+          "file": "docs/parity-coverage-report.md",
+          "line": 77,
+          "context": "### 7. Surgery (Phase 12B)"
+        }
+      ]
+    },
+    {
+      "token": "12C",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase12-parity.ps1",
+          "line": 253,
+          "context": "Write-Phase \"PHASE 12C\" \"3 Dialogs Improved\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 258,
+          "context": "Write-Phase \"PHASE 12C\" \"3 Dialogs Improved\""
+        },
+        {
+          "file": "docs/parity-coverage-report.md",
+          "line": 85,
+          "context": "### 8. Discharge Summaries (Phase 12C)"
+        }
+      ]
+    },
+    {
+      "token": "12D",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase12-parity.ps1",
+          "line": 269,
+          "context": "Write-Phase \"PHASE 12D\" \"Graphing, Remote Data, Legacy Console\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 274,
+          "context": "Write-Phase \"PHASE 12D\" \"Graphing, Remote Data, Legacy Console\""
+        },
+        {
+          "file": "docs/parity-coverage-report.md",
+          "line": 93,
+          "context": "### 9. Laboratory (Phase 12D)"
+        }
+      ]
+    },
+    {
+      "token": "12E",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase12-parity.ps1",
+          "line": 282,
+          "context": "Write-Phase \"PHASE 12E\" \"Documentation Artifacts\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 287,
+          "context": "Write-Phase \"PHASE 12E\" \"Documentation Artifacts\""
+        },
+        {
+          "file": "docs/parity-coverage-report.md",
+          "line": 101,
+          "context": "### 10. Reports (Phase 12E)"
+        }
+      ]
+    },
+    {
+      "token": "1B",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase4a.ps1",
+          "line": 111,
+          "context": "Write-Phase \"PHASE 1B\" \"apps/web - Next.js Homepage\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase4b.ps1",
+          "line": 120,
+          "context": "Write-Phase \"PHASE 1B\" \"apps/web - Next.js Homepage\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase5b.ps1",
+          "line": 120,
+          "context": "Write-Phase \"PHASE 1B\" \"apps/web - Next.js Homepage\""
+        }
+      ]
+    },
+    {
+      "token": "1C",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase4a.ps1",
+          "line": 119,
+          "context": "Write-Phase \"PHASE 1C\" \"apps/api - Fastify Health Check\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase4b.ps1",
+          "line": 128,
+          "context": "Write-Phase \"PHASE 1C\" \"apps/api - Fastify Health Check\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase5b.ps1",
+          "line": 128,
+          "context": "Write-Phase \"PHASE 1C\" \"apps/api - Fastify Health Check\""
+        }
+      ]
+    },
+    {
+      "token": "83B",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "docs/runbooks/inpatient-adt-grounding.md",
+          "line": 131,
+          "context": "- **Solution (Phase 83B):** Either add RPCs to context via VEMCTX3.m or implement ZVE\\* wrapper RPCs"
+        },
+        {
+          "file": "docs/runbooks/inpatient-adt.md",
+          "line": 51,
+          "context": "- Migration path (Phase 83B)"
+        },
+        {
+          "file": "docs/runbooks/inpatient-adt.md",
+          "line": 99,
+          "context": "- Future Phase 83B: wire DGPM write RPCs or implement ZVE\\* wrappers"
+        }
+      ]
+    },
+    {
+      "token": "17B",
+      "refCount": 2,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/admin.ts",
+          "line": 2,
+          "context": "* Admin routes — Phase 17B."
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 388,
+          "context": "// Admin/tenant routes (Phase 17B)"
+        }
+      ]
+    },
+    {
+      "token": "137B",
+      "refCount": 2,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/adt/index.ts",
+          "line": 572,
+          "context": "migrationPath: 'Phase 137B: Install ZVEADT.m, register ZVEADT MVHIST RPC',"
+        },
+        {
+          "file": "apps/api/src/routes/inpatient/index.ts",
+          "line": 425,
+          "context": "'Phase 137B: Install ZVEADT.m and register ZVEADT MVHIST RPC to read ^DGPM(405) movement chain',"
+        }
+      ]
+    },
+    {
+      "token": "19A",
+      "refCount": 2,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/reporting.ts",
+          "line": 2,
+          "context": "* Reporting & export routes — Phase 19A."
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 404,
+          "context": "// Reporting & export (Phase 19A)"
+        }
+      ]
+    },
+    {
+      "token": "17F",
+      "refCount": 2,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/cprs/admin/integrations/page.tsx",
+          "line": 13,
+          "context": "*   - Legacy connector view (Phase 17F compatibility)"
+        },
+        {
+          "file": "apps/web/src/app/cprs/admin/integrations/page.tsx",
+          "line": 907,
+          "context": "Phase 17F legacy connector view. These are the original ConnectorConfig entries from"
+        }
+      ]
+    },
+    {
+      "token": "13A",
+      "refCount": 2,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 296,
+          "context": "Write-Phase \"PHASE 13A\" \"Authentication & Sessions\""
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase14-parity-closure.ps1",
+          "line": 124,
+          "context": "# Phase 13A - Auth"
+        }
+      ]
+    },
+    {
+      "token": "15D",
+      "refCount": 2,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase15-enterprise-hardening.ps1",
+          "line": 181,
+          "context": "# PHASE 15D - Observability (File Patterns)"
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase15-enterprise-hardening.ps1",
+          "line": 184,
+          "context": "Write-Phase \"PHASE 15D\" \"Observability - /health, /ready, /metrics\""
+        }
+      ]
+    },
+    {
+      "token": "15G",
+      "refCount": 2,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase15-enterprise-hardening.ps1",
+          "line": 236,
+          "context": "# PHASE 15G - Docs"
+        },
+        {
+          "file": "scripts/verify-phase1-to-phase15-enterprise-hardening.ps1",
+          "line": 239,
+          "context": "Write-Phase \"PHASE 15G\" \"Documentation\""
+        }
+      ]
+    },
+    {
+      "token": "0",
+      "refCount": 2,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "docs/SESSION_LOG.md",
+          "line": 318,
+          "context": "### Phase 0: Environment Verification"
+        },
+        {
+          "file": "docs/SESSION_LOG.md",
+          "line": 324,
+          "context": "### Phase 0: VistA Routine Installation"
+        }
+      ]
+    },
+    {
+      "token": "24C",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/config/imaging-tenant.ts",
+          "line": 13,
+          "context": "* Phase 24C+: External config service or database-backed."
+        }
+      ]
+    },
+    {
+      "token": "18A",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/config/integration-registry.ts",
+          "line": 2,
+          "context": "* Integration Registry — Phase 18A."
+        }
+      ]
+    },
+    {
+      "token": "19B",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/lib/export-governance.ts",
+          "line": 2,
+          "context": "* Export governance — Phase 19B."
+        }
+      ]
+    },
+    {
+      "token": "25C",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/analytics-routes.ts",
+          "line": 2,
+          "context": "* Analytics Routes — Phase 25C/E."
+        }
+      ]
+    },
+    {
+      "token": "25B",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/services/clinical-reports.ts",
+          "line": 2,
+          "context": "* Enhanced VistA Clinical Report Pipeline — Phase 25B."
+        }
+      ]
+    },
+    {
+      "token": "25E",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/cprs/admin/analytics/page.tsx",
+          "line": 4,
+          "context": "* Analytics & BI Dashboard — Phase 25E."
+        }
+      ]
+    },
+    {
+      "token": "19C",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/cprs/admin/reports/page.tsx",
+          "line": 4,
+          "context": "* Admin Reporting Dashboard — Phase 19C."
+        }
+      ]
+    },
+    {
+      "token": "17D",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/app/cprs/settings/preferences/page.tsx",
+          "line": 10,
+          "context": "* Phase 17D: adds \"Reset to facility defaults\" button."
+        }
+      ]
+    },
+    {
+      "token": "12F",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/components/cprs/dialogs/AddProblemDialog.tsx",
+          "line": 18,
+          "context": "* Phase 12F: search box queries /vista/icd-search for real lexicon results."
+        }
+      ]
+    },
+    {
+      "token": "17E",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/components/cprs/panels/NotesPanel.tsx",
+          "line": 80,
+          "context": "// Merge facility-managed templates with local fallbacks (Phase 17E)"
+        }
+      ]
+    },
+    {
+      "token": "17C",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/web/src/stores/tenant-context.tsx",
+          "line": 4,
+          "context": "* Tenant context — Phase 17C."
+        }
+      ]
+    },
+    {
+      "token": "13C",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 364,
+          "context": "Write-Phase \"PHASE 13C\" \"Order Workflow State Machine\""
+        }
+      ]
+    },
+    {
+      "token": "13D",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 384,
+          "context": "Write-Phase \"PHASE 13D\" \"Results Workflow\""
+        }
+      ]
+    },
+    {
+      "token": "13E",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 398,
+          "context": "Write-Phase \"PHASE 13E\" \"Remote Data Viewer\""
+        }
+      ]
+    },
+    {
+      "token": "13H",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase13-cprs.ps1",
+          "line": 454,
+          "context": "Write-Phase \"PHASE 13H\" \"Documentation & Prompts\""
+        }
+      ]
+    },
+    {
+      "token": "14E",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase1-to-phase14-parity-closure.ps1",
+          "line": 231,
+          "context": "Write-Phase \"PHASE 14E\" \"Documentation & Prompts\""
+        }
+      ]
+    },
+    {
+      "token": "10D",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "docs/runbooks/cprs-api-scaffold-generator.md",
+          "line": 1,
+          "context": "# Runbook: CPRS API Scaffold Generator (Phase 10D)"
+        }
+      ]
+    },
+    {
+      "token": "10B",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "docs/runbooks/cprs-contract-generation.md",
+          "line": 1,
+          "context": "# Runbook: CPRS Contract Generation (Phase 10B)"
+        }
+      ]
+    },
+    {
+      "token": "10C",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "docs/runbooks/cprs-replica-shell.md",
+          "line": 1,
+          "context": "# Runbook: CPRS Replica Shell (Phase 10C)"
+        }
+      ]
+    },
+    {
+      "token": "140D",
+      "refCount": 1,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "docs/runbooks/portal-parity.md",
+          "line": 85,
+          "context": "- Health card with QR code (Phase 140D — optional)"
+        }
+      ]
+    }
+  ],
+  "ambiguousTokens": [
+    {
+      "token": "284",
+      "refCount": 20,
+      "matchingFolders": [
+        "282-PHASE-284-THEME-PACKS-BRANDING",
+        "284-PHASE-284-BILLING-METERING"
+      ],
+      "folderCount": 2,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/billing/billing-routes.ts",
+          "line": 4,
+          "context": "* Phase 284 (Wave 10 P5)"
+        },
+        {
+          "file": "apps/api/src/billing/index.ts",
+          "line": 4,
+          "context": "* Phase 284 (Wave 10 P5)"
+        },
+        {
+          "file": "apps/api/src/billing/lago-provider.ts",
+          "line": 4,
+          "context": "* Phase 284 (Wave 10 P5)"
+        }
+      ],
+      "canonicalFolder": "282-PHASE-284-THEME-PACKS-BRANDING"
+    },
+    {
+      "token": "263",
+      "refCount": 11,
+      "matchingFolders": [
+        "260-PHASE-263-SUPPORT-TOOLING-V2",
+        "263-PHASE-263-WAVE8-INTEGRITY-AUDIT"
+      ],
+      "folderCount": 2,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/platform/store-policy.ts",
+          "line": 2109,
+          "context": "notes: 'Phase 263: diagnostic snapshots; regenerated on demand',"
+        },
+        {
+          "file": "apps/api/src/platform/store-policy.ts",
+          "line": 2119,
+          "context": "notes: 'Phase 263: support ticket cross-references; re-derivable from source stores',"
+        },
+        {
+          "file": "apps/api/src/platform/store-policy.ts",
+          "line": 2129,
+          "context": "notes: 'Phase 263: populated on demand; re-derivable from HL7 pipeline store',"
+        }
+      ],
+      "canonicalFolder": "260-PHASE-263-SUPPORT-TOOLING-V2"
+    },
+    {
+      "token": "290",
+      "refCount": 7,
+      "matchingFolders": [
+        "290-PHASE-290-WAVE9-INTEGRITY-AUDIT",
+        "297-PHASE-290-INTEROP-CERT-HARNESS"
+      ],
+      "folderCount": 2,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase290-interop-cert.ps1",
+          "line": 2,
+          "context": "Phase 290 verifier -- Interop Certification Harness"
+        },
+        {
+          "file": "scripts/verify-phase290-interop-cert.ps1",
+          "line": 16,
+          "context": "Write-Host \"`n=== Phase 290 Verifier: Interop Certification Harness ===\" -ForegroundColor Cyan"
+        },
+        {
+          "file": "scripts/verify-phase290-interop-cert.ps1",
+          "line": 112,
+          "context": "Write-Host \"`n--- Phase 290 Summary ---\" -ForegroundColor Cyan"
+        }
+      ],
+      "canonicalFolder": "290-PHASE-290-WAVE9-INTEGRITY-AUDIT"
+    },
+    {
+      "token": "283",
+      "refCount": 2,
+      "matchingFolders": [
+        "281-PHASE-283-THEME-SYSTEM-CORE",
+        "283-PHASE-283-MIGRATION-TEMPLATES"
+      ],
+      "folderCount": 2,
+      "sampleRefs": [
+        {
+          "file": "docs/qa/prompt-redundancy-report.md",
+          "line": 28,
+          "context": "### Phase 283 (2 folders)"
+        },
+        {
+          "file": "docs/QA_GAUNTLET_FAST_RESULTS.md",
+          "line": 31,
+          "context": "| 7 | duplicate-phase | WARN | Phase 283 has 2 folders (281 vs 283 prefix) |"
+        }
+      ],
+      "canonicalFolder": "281-PHASE-283-THEME-SYSTEM-CORE"
+    }
+  ],
+  "waveReferences": [
+    {
+      "token": "Wave 6",
+      "refCount": 60,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/config/onboarding-store.ts",
+          "line": 4,
+          "context": "* Phase 243 (Wave 6 P6): Tracks multi-step facility onboarding wizard state."
+        },
+        {
+          "file": "apps/api/src/hl7/ack-generator.ts",
+          "line": 4,
+          "context": "* Phase 239 (Wave 6 P2): Generates HL7v2 ACK/NAK messages per the HL7v2 spec."
+        },
+        {
+          "file": "apps/api/src/hl7/index.ts",
+          "line": 4,
+          "context": "* Phase 239 (Wave 6 P2): Engine initialization and shutdown."
+        }
+      ]
+    },
+    {
+      "token": "Wave 8",
+      "refCount": 41,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/config/onboarding-integration-steps.ts",
+          "line": 2,
+          "context": "* Onboarding Integration Steps -- Phase 262 (Wave 8 P6)"
+        },
+        {
+          "file": "apps/api/src/exports/data-portability.ts",
+          "line": 2,
+          "context": "* Data Portability Engine -- Phase 264 (Wave 8 P8)"
+        },
+        {
+          "file": "apps/api/src/hl7/dead-letter-enhanced.ts",
+          "line": 2,
+          "context": "* HL7v2 Dead-Letter Queue Enhancement — Phase 259 (Wave 8 P3)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 21",
+      "refCount": 36,
+      "matchingFolders": [
+        "378-W21-P1-MANIFEST-COVERAGE",
+        "379-W21-P2-EDGE-GATEWAY",
+        "380-W21-P3-DEVICE-REGISTRY",
+        "381-W21-P4-HL7V2-MLLP-INGEST",
+        "382-W21-P5-ASTM-POCT",
+        "383-W21-P6-SDC-INGEST",
+        "384-W21-P7-ALARMS",
+        "385-W21-P8-INFUSION-BCMA",
+        "386-W21-P9-IMAGING-MODALITY",
+        "387-W21-P10-NORMALIZATION",
+        "388-W21-P11-CERTIFICATION"
+      ],
+      "folderCount": 11,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/inpatient/types.ts",
+          "line": 80,
+          "context": "/** Source: manual vs device ingest (Wave 21) */"
+        },
+        {
+          "file": "apps/api/src/inpatient/types.ts",
+          "line": 82,
+          "context": "/** Device observation ID if ingested from Wave 21 */"
+        },
+        {
+          "file": "apps/api/src/lab/lab-routes.ts",
+          "line": 12,
+          "context": "*   POST /lab/specimens/:id/link-device      â€” Link Wave 21 device observation"
+        }
+      ]
+    },
+    {
+      "token": "Wave 1",
+      "refCount": 28,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/platform/pg/pg-schema.ts",
+          "line": 106,
+          "context": "*  PAYER DOMAIN TABLES (mirrors of SQLite — Phase 101 Wave 1)"
+        },
+        {
+          "file": "apps/api/src/rcm/claims/claim-store.ts",
+          "line": 7,
+          "context": "* Phase 121: Durability Wave 1 — hybrid cache + DB persistence."
+        },
+        {
+          "file": "apps/api/src/rcm/domain/claim-store.ts",
+          "line": 5,
+          "context": "* Phase 121: Durability Wave 1 — hybrid cache + DB persistence."
+        }
+      ]
+    },
+    {
+      "token": "Wave 7",
+      "refCount": 26,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-phase250-rpc-contracts.ps1",
+          "line": 1,
+          "context": "<# Phase 250 - VistA RPC Contract Harness Verifier (Wave 7 P3) #>"
+        },
+        {
+          "file": "scripts/verify-phase251-api-fhir-contracts.ps1",
+          "line": 1,
+          "context": "<# Phase 251 - API + FHIR Contract Verification (Wave 7 P4) #>"
+        },
+        {
+          "file": "scripts/verify-phase252-e2e-journeys.ps1",
+          "line": 1,
+          "context": "<# Phase 252 - E2E Clinical Journeys Verifier (Wave 7 P5) #>"
+        }
+      ]
+    },
+    {
+      "token": "Wave 2",
+      "refCount": 25,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/jobs/backpressure.ts",
+          "line": 2,
+          "context": "* Queue Backpressure Monitor — Wave 2 Q191"
+        },
+        {
+          "file": "apps/api/src/platform/pg/pg-schema.ts",
+          "line": 223,
+          "context": "*  DENIAL + RECONCILIATION TABLES (Wave 2 — mirror from SQLite)"
+        },
+        {
+          "file": "apps/api/src/platform/pg/pg-schema.ts",
+          "line": 382,
+          "context": "*  ELIGIBILITY + CLAIM STATUS (Phase 100 — Wave 2)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 16",
+      "refCount": 24,
+      "matchingFolders": [
+        "337-W16-P1-MANIFEST-ADRS",
+        "338-W16-P2-IDENTITY-HARDENING",
+        "339-W16-P3-SCIM-PROVISIONING",
+        "340-W16-P4-ABAC",
+        "341-W16-P5-SECRETS-MGMT",
+        "342-W16-P6-TENANT-SECURITY",
+        "343-W16-P7-PRIVACY-SEG",
+        "344-W16-P8-SIEM-EXPORT",
+        "345-W16-P9-SECURITY-CERT-RUNNER"
+      ],
+      "folderCount": 9,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/platform/store-policy.ts",
+          "line": 3296,
+          "context": "// -- Wave 16: Enterprise Security + Governance (Phases 337-345) ---"
+        },
+        {
+          "file": "apps/api/src/posture/index.ts",
+          "line": 136,
+          "context": "// Phase 345: Wave 16 security certification posture"
+        },
+        {
+          "file": "apps/api/src/posture/security-cert-posture.ts",
+          "line": 2,
+          "context": "* security-cert-posture.ts -- Wave 16 Security Certification Posture (Phase 345)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 22",
+      "refCount": 21,
+      "matchingFolders": [
+        "389-W22-P1-MANIFEST-COVERAGE",
+        "390-W22-P2-CONTENT-PACKS",
+        "391-W22-P3-INPATIENT-CORE",
+        "392-W22-P4-PHARMACY-DEEP",
+        "393-W22-P5-LAB-DEEP",
+        "394-W22-P6-IMAGING-RAD",
+        "395-W22-P7-CDS-HOOKS",
+        "396-W22-P8-CLINICAL-REASONING",
+        "397-W22-P9-LOCALIZATION",
+        "398-W22-P10-CERT-RUNNER"
+      ],
+      "folderCount": 10,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/middleware/security.ts",
+          "line": 232,
+          "context": "// Wave 22: Specialty Clinical Content + CDS + Deep VistA Writeback (Phases 389-398)"
+        },
+        {
+          "file": "apps/api/src/middleware/security.ts",
+          "line": 236,
+          "context": "// ── Wave 22, Phase 391: Inpatient Core ──"
+        },
+        {
+          "file": "apps/api/src/middleware/security.ts",
+          "line": 240,
+          "context": "// ── Wave 22, Phase 392: Pharmacy Deep Workflows ──"
+        }
+      ]
+    },
+    {
+      "token": "Wave 37",
+      "refCount": 21,
+      "matchingFolders": [
+        "513-W37-P1-RCM-READINESS-SCAN",
+        "514-W37-P2-PAYER-DOSSIERS",
+        "515-W37-P3-PHILHEALTH-TRANSPORT",
+        "516-W37-P4-PHILHEALTH-EXPORT-V2",
+        "517-W37-P5-PH-HMO-OPS-V2",
+        "518-W37-P6-US-X12-INGEST-V2",
+        "519-W37-P7-CLEARINGHOUSE-V2",
+        "520-W37-P8-DENIALS-HARDENING",
+        "521-W37-P9-GLOBAL-PACK-EXPANSION"
+      ],
+      "folderCount": 9,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/platform/pg/pg-schema.ts",
+          "line": 1680,
+          "context": "*  PAYER DOSSIER TABLES (Phase 514 — Wave 37 B2)"
+        },
+        {
+          "file": "apps/api/src/platform/pg/repo/dossier-repo.ts",
+          "line": 4,
+          "context": "* Phase 514 (Wave 37 B2): Payer Dossiers + Ops Onboarding Workflow"
+        },
+        {
+          "file": "apps/api/src/platform/store-policy.ts",
+          "line": 5344,
+          "context": "// Wave 37: International Revenue Cycle + Billing + Payer Ops v2 (Phases 513-521)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 14",
+      "refCount": 19,
+      "matchingFolders": [
+        "317-W14-P1-MANIFEST-INTEROP-INVENTORY",
+        "318-W14-P2-INTEGRATION-CONTROL-PLANE",
+        "319-W14-P3-HL7V2-MESSAGE-TEMPLATES",
+        "320-W14-P4-HL7V2-OPS-MATURITY",
+        "321-W14-P5-X12-GATEWAY-SERVICE",
+        "322-W14-P6-CLEARINGHOUSE-ADAPTERS",
+        "323-W14-P7-CERTIFICATION-PIPELINE",
+        "324-W14-P8-MARKETPLACE-REGISTRY",
+        "325-W14-P9-ONBOARDING-UX"
+      ],
+      "folderCount": 9,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/middleware/security.ts",
+          "line": 191,
+          "context": "// Wave 14: Enterprise Interop (Phases 317-325)"
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 279,
+          "context": "// Wave 14: Enterprise Interop (Phase 318)"
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 282,
+          "context": "// Wave 14: HL7v2 Message Templates (Phase 319)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 39",
+      "refCount": 19,
+      "matchingFolders": [
+        "531-W39-P1-VA-IHS-UI-ESTATE-CATALOG",
+        "532-W39-P2-UI-PARITY-GAP-GATE-CI",
+        "533-W39-P3-WORKFLOW-STATE-SWITCHBOARD",
+        "534-W39-P4-BROWSER-TERMINAL-XTERMJS",
+        "535-W39-P5-MHA-V1-LFORMS-QUESTIONNAIRE-ENGINE",
+        "536-W39-P6-MHA-VISTA-WRITEBACK-TIU",
+        "537-W39-P7-CLINICAL-PROCEDURES-V1-CPMD",
+        "538-W39-P8-IMAGING-CAPTURE-ATTACH-SIC-LIKE",
+        "539-W39-P9-SCHEDULING-PARITY-VS-VSE",
+        "540-W39-P10-JLV-STYLE-LONGITUDINAL-VIEWER-V1",
+        "541-W39-P11-VA-GUI-HYBRIDS-CAPABILITY-MAP",
+        "542-W39-P12-ACCEPTANCE-HARNESS"
+      ],
+      "folderCount": 12,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/routes/hybrids/index.ts",
+          "line": 2,
+          "context": "* hybrids/index.ts -- Phase 541 (Wave 39, P11)"
+        },
+        {
+          "file": "apps/api/src/workflow/fsm.ts",
+          "line": 3,
+          "context": "* Phase 533 (Wave 39 P3)"
+        },
+        {
+          "file": "apps/api/src/workflow/index.ts",
+          "line": 3,
+          "context": "* Phase 533 (Wave 39 P3)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 15",
+      "refCount": 16,
+      "matchingFolders": [
+        "327-W15-P1-MANIFEST-ADRS",
+        "328-W15-P2-MULTI-CLUSTER-REGISTRY",
+        "329-W15-P3-GLOBAL-ROUTING",
+        "330-W15-P4-DATA-PLANE-SHARDING",
+        "331-W15-P5-QUEUE-CACHE-REGIONAL",
+        "332-W15-P6-COST-ATTRIBUTION",
+        "333-W15-P7-DR-GAMEDAYS",
+        "334-W15-P8-SCALE-PERF",
+        "335-W15-P9-SRE-SUPPORT",
+        "336-W15-P10-SCALE-CERT-RUNNER"
+      ],
+      "folderCount": 10,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/middleware/security.ts",
+          "line": 200,
+          "context": "// Wave 15: Scale + Cost + Multi-Region (Phase 328+)"
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 303,
+          "context": "// Wave 15: Multi-Cluster Registry (Phase 328)"
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 306,
+          "context": "// Wave 15: Global Routing (Phase 329)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 20",
+      "refCount": 15,
+      "matchingFolders": [
+        "370-W20-P1-MANIFEST-GA-CHECKLIST",
+        "371-W20-P2-RELEASE-TRAIN",
+        "372-W20-P3-CUSTOMER-SUCCESS",
+        "373-W20-P4-SUPPORT-OPS",
+        "374-W20-P5-EXTERNAL-VALIDATION",
+        "375-W20-P6-DATA-RIGHTS",
+        "376-W20-P7-GA-CERT-RUNNER",
+        "377-W20-P8-GA-EVIDENCE"
+      ],
+      "folderCount": 8,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/middleware/security.ts",
+          "line": 215,
+          "context": "// Wave 20: GA Launch Program + Customer Success + External Validation (Phases 370-377)"
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 346,
+          "context": "// Wave 20: GA Launch Program + External Validation + Customer Success (Phases 370-377)"
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 766,
+          "context": "// Wave 20: GA Launch Program + Customer Success + External Validation (Phases 370-377)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 12",
+      "refCount": 14,
+      "matchingFolders": [
+        "299-PHASE-299-W12-MANIFEST-SCOPE-MATRIX"
+      ],
+      "folderCount": 1,
+      "sampleRefs": [
+        {
+          "file": "docs/adrs/ADR-DICOM-store.md",
+          "line": 5,
+          "context": "**Context:** Wave 12 Phase 306 (Imaging/PACS Production Validation)"
+        },
+        {
+          "file": "docs/adrs/ADR-HL7-ops.md",
+          "line": 5,
+          "context": "**Context:** Wave 12 (HL7 operations across multiple phases)"
+        },
+        {
+          "file": "docs/adrs/ADR-HL7-ops.md",
+          "line": 54,
+          "context": "- Wave 12 P305 (ADT) and P304 (Lab) may use HL7 message bridges"
+        }
+      ]
+    },
+    {
+      "token": "Wave 19",
+      "refCount": 12,
+      "matchingFolders": [
+        "362-W19-P1-MANIFEST-ADRS",
+        "363-W19-P2-ANALYTICS-EXTRACT",
+        "364-W19-P3-DEID-SERVICE",
+        "365-W19-P4-REPORTING-API",
+        "366-W19-P5-QUALITY-SAFETY",
+        "367-W19-P6-RCM-ANALYTICS",
+        "368-W19-P7-DATA-ACCESS-CONTROLS",
+        "369-W19-P8-ANALYTICS-CERT-RUNNER"
+      ],
+      "folderCount": 8,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/platform/pg/pg-migrate.ts",
+          "line": 3671,
+          "context": "// ── v50: Analytics Data Platform (Wave 19, Phases 362-369) ──"
+        },
+        {
+          "file": "apps/api/src/platform/pg/pg-migrate.ts",
+          "line": 4671,
+          "context": "// Wave 19: Analytics Data Platform (Phases 362-369)"
+        },
+        {
+          "file": "apps/api/src/platform/store-policy.ts",
+          "line": 3963,
+          "context": "// ── Wave 19: Data Platform + Analytics + De-Id + Reporting (Phases 362-369) ──"
+        }
+      ]
+    },
+    {
+      "token": "Wave 10",
+      "refCount": 11,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/billing/billing-routes.ts",
+          "line": 4,
+          "context": "* Phase 284 (Wave 10 P5)"
+        },
+        {
+          "file": "apps/api/src/billing/index.ts",
+          "line": 4,
+          "context": "* Phase 284 (Wave 10 P5)"
+        },
+        {
+          "file": "apps/api/src/billing/lago-provider.ts",
+          "line": 4,
+          "context": "* Phase 284 (Wave 10 P5)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 9",
+      "refCount": 11,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/hl7/channel-health.ts",
+          "line": 2,
+          "context": "* HL7v2 Channel Health Monitor — Phase 279 (Wave 9)"
+        },
+        {
+          "file": "apps/api/src/hl7/fhir-bridge.ts",
+          "line": 2,
+          "context": "* HL7v2 → FHIR R4 Bridge — Phase 279 (Wave 9)"
+        },
+        {
+          "file": "apps/api/src/hl7/outbound-builder.ts",
+          "line": 2,
+          "context": "* HL7v2 Outbound Message Builder — Phase 279 (Wave 9)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 13",
+      "refCount": 10,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/middleware/security.ts",
+          "line": 180,
+          "context": "// Wave 13: Regulatory/Compliance + Multi-Country (Phases 311-315)"
+        },
+        {
+          "file": "apps/api/src/platform/store-policy.ts",
+          "line": 2337,
+          "context": "// ─── Wave 13: Regulatory/Compliance + Multi-Country (Phases 311-315) ───"
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 266,
+          "context": "// Wave 13: Regulatory/Compliance + Multi-Country (Phases 311-315)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 24",
+      "refCount": 10,
+      "matchingFolders": [
+        "409-W24-P1-MANIFEST-ARCHETYPES",
+        "410-W24-P2-REFERENCE-ENVIRONMENTS",
+        "411-W24-P3-INTEGRATION-INTAKE",
+        "412-W24-P4-CERTIFICATION-RUNS",
+        "413-W24-P5-MIGRATION-REHEARSAL",
+        "414-W24-P6-UAT-HARNESS",
+        "415-W24-P7-CUTOVER-ROLLBACK",
+        "416-W24-P8-SRE-MONITORING",
+        "417-W24-P9-GO-NOGO-GATE"
+      ],
+      "folderCount": 9,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/middleware/security.ts",
+          "line": 266,
+          "context": "// Wave 24: Pilot Go-Lives + Stabilization (Phases 409-417)"
+        },
+        {
+          "file": "apps/api/src/platform/store-policy.ts",
+          "line": 5162,
+          "context": "// PILOT GO-LIVES (Wave 24)"
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 255,
+          "context": "// Wave 24: Pilot Go-Lives + Stabilization (Phases 409-417)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 3",
+      "refCount": 10,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/platform/pg/pg-migrate.ts",
+          "line": 1280,
+          "context": "-- Phase 146: Durability Wave 3 — Critical Map Stores to PG"
+        },
+        {
+          "file": "apps/api/src/platform/pg/pg-migrate.ts",
+          "line": 4539,
+          "context": "// Phase 146: Durability Wave 3 tables"
+        },
+        {
+          "file": "apps/api/src/platform/pg/repo/generic-pg-repo.ts",
+          "line": 4,
+          "context": "* Phase 146: Durability Wave 3 — Critical Map Stores to PG"
+        }
+      ]
+    },
+    {
+      "token": "Wave 23",
+      "refCount": 9,
+      "matchingFolders": [
+        "399-W23-P1-MANIFEST-ADRS",
+        "400-W23-P2-INTEROP-GATEWAY",
+        "401-W23-P3-MPI-CLIENT-REGISTRY",
+        "402-W23-P4-PROVIDER-DIRECTORY",
+        "403-W23-P5-DOCUMENT-EXCHANGE",
+        "404-W23-P6-BULK-DATA",
+        "405-W23-P7-CONSENT-POU",
+        "406-W23-P8-US-EXCHANGE-PACK",
+        "407-W23-P9-GLOBAL-EXCHANGE-PACKS",
+        "408-W23-P10-HIE-CERT-RUNNER"
+      ],
+      "folderCount": 10,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/middleware/security.ts",
+          "line": 258,
+          "context": "// Wave 23: Longitudinal Interop + HIE + Multi-Country Exchange Packs (Phases 399-408)"
+        },
+        {
+          "file": "apps/api/src/platform/store-policy.ts",
+          "line": 4984,
+          "context": "// ── Wave 23: Longitudinal Interop + HIE + Multi-Country Exchange Packs (Phases 399-408) ──"
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 246,
+          "context": "// Wave 23: Longitudinal Interop + HIE + Multi-Country Exchange Packs (Phases 399-408)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 41",
+      "refCount": 9,
+      "matchingFolders": [
+        "558-PHASE-558-W41P1-PG-CLINICAL-COMMAND",
+        "559-PHASE-559-W41P2-DURABLE-IDEMPOTENCY",
+        "560-PHASE-560-W41P3-DURABLE-EVENT-BUS",
+        "561-PHASE-561-W41P4-SCHEDULING-WRITEBACK-PG",
+        "562-PHASE-562-W41P5-HL7-DEAD-LETTER-PG",
+        "563-PHASE-563-W41P6-DSAR-EXPORT-PG",
+        "564-PHASE-564-W41P7-STORE-POLICY-TRUTH",
+        "565-PHASE-565-W41P8-RESTART-DRILL"
+      ],
+      "folderCount": 8,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/platform/pg/pg-migrate.ts",
+          "line": 4322,
+          "context": "// v58 — Wave 41: Durable Ops Stores (scheduling writeback,"
+        },
+        {
+          "file": "apps/api/src/platform/pg/pg-migrate.ts",
+          "line": 4709,
+          "context": "// Wave 41: Durable Ops Stores"
+        },
+        {
+          "file": "apps/api/src/platform/pg/repo/index.ts",
+          "line": 41,
+          "context": "// Wave 41: Durable Ops Stores"
+        }
+      ]
+    },
+    {
+      "token": "Wave 17",
+      "refCount": 8,
+      "matchingFolders": [
+        "346-W17-P1-MANIFEST-ADRS",
+        "347-W17-P2-FACILITY-MODEL",
+        "348-W17-P3-DEPT-RBAC",
+        "349-W17-P4-DEPT-PACKS",
+        "350-W17-P5-WORKFLOW-INBOX",
+        "351-W17-P6-PATIENT-COMMS",
+        "352-W17-P7-SCHEDULING",
+        "353-W17-P8-PACK-CERT-RUNNER"
+      ],
+      "folderCount": 8,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/inpatient/types.ts",
+          "line": 5,
+          "context": "* Reuses the Wave 17 Facility → Department → Location hierarchy from"
+        },
+        {
+          "file": "apps/api/src/middleware/security.ts",
+          "line": 117,
+          "context": "// Wave 17: Multi-Facility + Dept Packs + Workflow Inbox + Patient Comms (Phases 346-353)"
+        },
+        {
+          "file": "apps/api/src/platform/store-policy.ts",
+          "line": 3520,
+          "context": "// ─── Wave 17: Multi-Facility + Dept Packs (Phases 346-353) ───"
+        }
+      ]
+    },
+    {
+      "token": "Wave 18",
+      "refCount": 8,
+      "matchingFolders": [
+        "354-W18-P1-MANIFEST-ADRS",
+        "355-W18-P2-EVENT-BUS",
+        "356-W18-P3-WEBHOOKS",
+        "357-W18-P4-FHIR-SUBSCRIPTIONS",
+        "358-W18-P5-PLUGIN-SDK",
+        "359-W18-P6-UI-EXTENSIONS",
+        "360-W18-P7-PLUGIN-MARKETPLACE",
+        "361-W18-P8-ECOSYSTEM-CERT-RUNNER"
+      ],
+      "folderCount": 8,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/middleware/security.ts",
+          "line": 127,
+          "context": "// Wave 18: Extensibility + Event Bus + Webhooks + Plugins (Phases 354-361)"
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 334,
+          "context": "// Wave 18: Extensibility + Event Bus + Webhooks + FHIR Subscriptions + Plugins (Phases 354-361)"
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 754,
+          "context": "// Wave 18: Extensibility + Event Bus + Webhooks + FHIR Subscriptions + Plugins (Phases 354-361)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 38",
+      "refCount": 7,
+      "matchingFolders": [
+        "522-W38-P1-REALITY-SCAN-MATRIX-DURABILITY-VISTA-ALIGNMENT",
+        "523-W38-P2-ED-DURABILITY-V1-PG-TABLES-REPO-ROUTE-MIGRATION",
+        "524-W38-P3-ORANESTHESIA-DURABILITY-V1-PG-TABLES-REPO",
+        "525-W38-P4-ICU-DURABILITY-V1-PG-TABLES-REPO",
+        "526-W38-P5-DEVICE-REGISTRY-DURABILITY-V1-PG-TABLES-REPO",
+        "527-W38-P6-DEVICE-INGEST-CLINICAL-OBSERVATION-PIPELINE-V1",
+        "528-W38-P7-RADIOLOGY-INTEGRATION-V2-PG-DURABILITY",
+        "529-W38-P8-END-TO-END-CLINICAL-SCENARIOS-VISTA-CONTRACT-TRACE",
+        "530-W38-P9-CERTIFICATION-RUNNER"
+      ],
+      "folderCount": 9,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/platform/pg/pg-schema.ts",
+          "line": 1766,
+          "context": "*  WAVE 38: SERVICE-LINE + DEVICE + RADIOLOGY DURABILITY TABLES"
+        },
+        {
+          "file": "scripts/verify-wave38-service-lines-v2.ps1",
+          "line": 3,
+          "context": "Wave 38 Verification: Service Lines + Devices v2 (Durability + VistA Alignment)"
+        },
+        {
+          "file": "scripts/verify-wave38-service-lines-v2.ps1",
+          "line": 35,
+          "context": "Write-Host \"=== Wave 38 Verification: Service Lines + Devices v2 ===\" -ForegroundColor Cyan"
+        }
+      ]
+    },
+    {
+      "token": "Wave 34",
+      "refCount": 6,
+      "matchingFolders": [
+        "491-W34-P1-MANIFEST-COVERAGE",
+        "492-W34-P2-TENANT-BINDING",
+        "493-W34-P3-RUNTIME-POLICY-SPINE",
+        "494-W34-P4-CONSENT-PRIVACY-V2",
+        "495-W34-P5-DATA-RESIDENCY",
+        "496-W34-P6-RETENTION-DSAR",
+        "497-W34-P7-I18N-COVERAGE",
+        "498-W34-P8-UTF8-LANE",
+        "499-W34-P9-CONFORMANCE-RUNNER"
+      ],
+      "folderCount": 9,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/platform/store-policy.ts",
+          "line": 5332,
+          "context": "// Wave 34: Multi-Country Regulatory v2 (Phases 491-499)"
+        },
+        {
+          "file": "scripts/qa-gates/country-conformance-runner.mjs",
+          "line": 6,
+          "context": "* Wave 34 regulatory enforcement gates (P2-P8). Produces per-pack evidence."
+        },
+        {
+          "file": "docs/architecture/country-pack-coverage-matrix.md",
+          "line": 122,
+          "context": "Wave 34 P2-P9 will systematically wire these fields to runtime behavior."
+        }
+      ]
+    },
+    {
+      "token": "Wave 31",
+      "refCount": 5,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/middleware/security.ts",
+          "line": 268,
+          "context": "// Wave 31: Service-line boards — ED / OR / ICU (Phases 464-471)"
+        },
+        {
+          "file": "apps/api/src/platform/store-policy.ts",
+          "line": 5207,
+          "context": "// ── Wave 31: Service-Line Expansion (Phases 464-471) ──────────"
+        },
+        {
+          "file": "scripts/verify-wave31.ps1",
+          "line": 2,
+          "context": "verify-wave31.ps1 -- Wave 31 Service-Line Expansion verifier"
+        }
+      ]
+    },
+    {
+      "token": "Wave 36",
+      "refCount": 5,
+      "matchingFolders": [
+        "510-W36-P1-PROMPT-TREE-REPAIR",
+        "511-W36-P2-PHASE-INDEX-CORRECTNESS",
+        "512-W36-P3-VISTA-BASELINE-LANE"
+      ],
+      "folderCount": 3,
+      "sampleRefs": [
+        {
+          "file": "scripts/prompt-ref.mjs",
+          "line": 13,
+          "context": "*   node scripts/prompt-ref.mjs --wave 36"
+        },
+        {
+          "file": "scripts/verify-latest.ps1",
+          "line": 3,
+          "context": "# Phase 512: Added G13 VistA Baseline gate (Wave 36)"
+        },
+        {
+          "file": "scripts/vista-baseline-probe.ps1",
+          "line": 6,
+          "context": "Phase 512 (Wave 36 A3). Probes Docker profiles, TCP ports, and compose"
+        }
+      ]
+    },
+    {
+      "token": "Wave 30",
+      "refCount": 5,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-wave30.ps1",
+          "line": 1,
+          "context": "<# Wave 30 Verifier -- Phase 463 (W30-P8)"
+        },
+        {
+          "file": "scripts/verify-wave30.ps1",
+          "line": 25,
+          "context": "Write-Host \"`n=== Wave 30 Verification (Migration at Scale) ===`n\""
+        },
+        {
+          "file": "scripts/verify-wave30.ps1",
+          "line": 69,
+          "context": "Write-Host \"`n--- Wave 30: $pass/$total passed ---\""
+        }
+      ]
+    },
+    {
+      "token": "Wave 5",
+      "refCount": 4,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/fhir/capability-statement.ts",
+          "line": 2,
+          "context": "* FHIR R4 CapabilityStatement -- Phase 178, updated Phase 235 (Wave 5 Q235)."
+        },
+        {
+          "file": "apps/api/src/fhir/fhir-bearer-auth.ts",
+          "line": 2,
+          "context": "* FHIR Bearer Token Authentication — Phase 231 (Wave 5 Q231)."
+        },
+        {
+          "file": "apps/api/src/fhir/fhir-scope-enforcement.ts",
+          "line": 2,
+          "context": "* SMART Scope Enforcement — Phase 232 (Wave 5 Q232)."
+        }
+      ]
+    },
+    {
+      "token": "Wave 40",
+      "refCount": 4,
+      "matchingFolders": [
+        "543-W40-P1-WAVE-40-BOOTSTRAP",
+        "544-W40-P2-REPAIR-WAVE38-FOLDERS",
+        "545-W40-P3-REPAIR-WAVE39-FOLDERS",
+        "546-W40-P4-FIX-OLD-STYLE-FILENAMES",
+        "547-W40-P5-RESOLVE-PREFIX-COLLISIONS",
+        "548-W40-P6-STRICT-PROMPTS-QUALITY",
+        "549-W40-P7-WAVE-PHASE-GENERATOR",
+        "550-W40-P8-I18N-GATE-FIX",
+        "551-W40-P9-RESTART-DURABILITY-GATES",
+        "552-W40-P10-RPC-SNAPSHOT-HYGIENE",
+        "553-W40-P11-SECRET-SCAN-REMEDIATION",
+        "554-W40-P12-PHI-LEAK-REMEDIATION",
+        "555-W40-P13-INTEGRATION-PENDING-BUDGET",
+        "556-W40-P14-FRONTEND-CONFIG-HYGIENE",
+        "557-W40-P15-RC-GATES-COMMAND"
+      ],
+      "folderCount": 15,
+      "sampleRefs": [
+        {
+          "file": "scripts/prompts-mk-wave-phase.mjs",
+          "line": 8,
+          "context": "*   node scripts/prompts-mk-wave-phase.mjs --wave 40 --phase 543 --p 1 --title \"WAVE-40-BOOTSTRAP\""
+        },
+        {
+          "file": "scripts/qa-rc.mjs",
+          "line": 5,
+          "context": "* Runs the 9 core hygiene QA gates from Wave 40 in sequence."
+        },
+        {
+          "file": "scripts/qa-rc.mjs",
+          "line": 87,
+          "context": "console.log('  RC GATES -- Wave 40 hygiene checks');"
+        }
+      ]
+    },
+    {
+      "token": "Wave 29",
+      "refCount": 3,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-wave29.ps1",
+          "line": 3,
+          "context": "Wave 29 verifier -- confirms all 9 W29 phases (447-455) are committed."
+        },
+        {
+          "file": "scripts/verify-wave29.ps1",
+          "line": 15,
+          "context": "Write-Host \"`n=== Wave 29 Verifier ===\" -ForegroundColor Cyan"
+        },
+        {
+          "file": "scripts/verify-wave29.ps1",
+          "line": 52,
+          "context": "Write-Host \"`n=== Wave 29: $pass/$($phases.Count) phases verified ===\" -ForegroundColor $(if ($fail -eq 0) { \"Green\" } e"
+        }
+      ]
+    },
+    {
+      "token": "Wave 28",
+      "refCount": 2,
+      "matchingFolders": [
+        "446-PHASE-446-W28-INTEGRITY-AUDIT"
+      ],
+      "folderCount": 1,
+      "sampleRefs": [
+        {
+          "file": "apps/api/src/middleware/security.ts",
+          "line": 189,
+          "context": "// Wave 28: Regulatory Reporting (Phase 444)"
+        },
+        {
+          "file": "apps/api/src/server/register-routes.ts",
+          "line": 684,
+          "context": "// Wave 28: Regulatory Reporting (Phase 444)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 56",
+      "refCount": 2,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/cprs/buildWave56Plan.ts",
+          "line": 3,
+          "context": "* Phase 56 -- Build Wave 56 Plan"
+        },
+        {
+          "file": "scripts/cprs/buildWave56Plan.ts",
+          "line": 327,
+          "context": "`Wave 56 plan: ${screens.length} screens, ${allActions.length} actions (${wired} wired, ${pending} pending)`"
+        }
+      ]
+    },
+    {
+      "token": "Wave 11",
+      "refCount": 2,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "scripts/prompts-audit.mjs",
+          "line": 3,
+          "context": "* scripts/prompts-audit.mjs — Phase 286 (Wave 11 P1)"
+        },
+        {
+          "file": "docs/ga/GA_READINESS_CHECKLIST.md",
+          "line": 16,
+          "context": "| Wave Source  | Wave 11 / Phase 287                         |"
+        }
+      ]
+    },
+    {
+      "token": "Wave 33",
+      "refCount": 2,
+      "matchingFolders": [
+        "481-W33-P1-TIER0-RESERVATION",
+        "482-W33-P2-CAPABILITY-ROUTING",
+        "483-W33-P3-ADT-WRITEBACK",
+        "484-W33-P4-NURSING-WRITEBACK",
+        "485-W33-P5-EMAR-WRITEBACK",
+        "486-W33-P6-LAB-WRITEBACK",
+        "487-W33-P7-PHARMACY-WRITEBACK",
+        "488-W33-P8-UI-HARDENING",
+        "489-W33-P9-DAY-IN-THE-LIFE",
+        "490-W33-P10-PRODUCTION-GATES"
+      ],
+      "folderCount": 10,
+      "sampleRefs": [
+        {
+          "file": "scripts/tier0-day-in-the-life.mjs",
+          "line": 6,
+          "context": "* Wave 33 phases P3--P7 and capturing the capability-probe responses as"
+        },
+        {
+          "file": "docs/clinical/tier0-writeback-targets.md",
+          "line": 1,
+          "context": "# Tier-0 Writeback Targets -- Wave 33"
+        }
+      ]
+    },
+    {
+      "token": "Wave 4",
+      "refCount": 2,
+      "matchingFolders": [],
+      "folderCount": 0,
+      "sampleRefs": [
+        {
+          "file": "docs/wave4-convergence-snapshot.md",
+          "line": 1,
+          "context": "# Wave 4 Convergence Snapshot"
+        },
+        {
+          "file": "docs/wave4-convergence-snapshot.md",
+          "line": 7,
+          "context": "## Wave 4 Summary (Q211-Q220)"
+        }
+      ]
+    },
+    {
+      "token": "Wave 35",
+      "refCount": 1,
+      "matchingFolders": [
+        "500-W35-P1-RC-SCOPE-FREEZE",
+        "501-W35-P2-RC-VERIFY-ORCHESTRATOR",
+        "502-W35-P3-BUG-BASH-HARNESS",
+        "503-W35-P4-DOWNTIME-MODE",
+        "504-W35-P5-PERF-BUDGETS",
+        "505-W35-P6-RELIABILITY-CHAOS",
+        "506-W35-P7-SECURITY-PRECERT",
+        "507-W35-P8-ROLE-ACCEPTANCE",
+        "508-W35-P9-OPERATIONAL-RUNBOOKS",
+        "509-W35-P10-RC-EVIDENCE-BUNDLE"
+      ],
+      "folderCount": 10,
+      "sampleRefs": [
+        {
+          "file": "scripts/verify-latest.ps1",
+          "line": 2,
+          "context": "# Phase 501: RC-1 Verify Orchestrator (Wave 35)"
+        }
+      ]
+    }
+  ]
+}

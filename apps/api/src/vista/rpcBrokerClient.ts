@@ -376,13 +376,18 @@ export async function connect(): Promise<void> {
   });
   readBuf = '';
 
-  // Detect half-open state: mark disconnected on unexpected close/error
+  // Detect half-open state: fully reset on unexpected close/error
   // (AGENTS.md #14 - half-open socket detection)
+  // Must clear readBuf + sessionDuz so stale data doesn't leak across reconnects.
   sock.once('close', () => {
     connected = false;
+    readBuf = '';
+    sessionDuz = '';
   });
   sock.on('error', () => {
     connected = false;
+    readBuf = '';
+    sessionDuz = '';
   });
   touchActivity();
 

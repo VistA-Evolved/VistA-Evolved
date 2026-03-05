@@ -34,6 +34,18 @@
   `git config core.hooksPath .hooks`
 - **See `docs/POLICY.md`** for the full documentation policy.
 
+### Phase Reference Rules (Code Comments)
+
+- **New phase references in code MUST use:**
+  `Phase <token> (PromptFolder: <foldername>)`
+  Example: `// Phase 284 (PromptFolder: 282-PHASE-284-THEME-PACKS-BRANDING)`
+- **For existing code references:** use `node scripts/prompt-ref.mjs --phase <N>`
+  to resolve, or consult `docs/qa/phase-comment-audit.md` for the full audit.
+- **Ambiguous phase numbers** (same phase# in multiple folders) must include
+  the `PromptFolder:` qualifier to be unambiguous.
+- **Navigation guide:** See `prompts/00-NAVIGATE-PROMPTS.md` for full details
+  on folder prefix vs phase number, file naming, and tooling.
+
 ---
 
 ## 1. Credentials — Where They Live
@@ -141,21 +153,32 @@ scripts/                — Verification scripts
 
 ## 4. Running Everything
 
+> **Multiple VistA runtime lanes are available.** See
+> [`docs/runbooks/runtime-lanes.md`](docs/runbooks/runtime-lanes.md) for the
+> full comparison (VEHU, Legacy, Compose, Distro). The commands below use the
+> **VEHU lane (recommended)**.
+
 ```powershell
-# 1. Start Docker sandbox
+# 1. Start VEHU VistA sandbox (recommended lane)
 cd services\vista
-docker compose --profile dev up -d
+docker compose --profile vehu up -d
 
 # 2. Set up credentials (first time only)
 cp apps/api/.env.example apps/api/.env.local
-# Edit .env.local with PROV123 / PROV123!!
+# Edit .env.local:
+#   VISTA_PORT=9431
+#   VISTA_ACCESS_CODE=PRO1234
+#   VISTA_VERIFY_CODE=PRO1234!!
 
-# 3. Start the API
+# 3. Provision VistA RPCs (first time only)
+.\scripts\install-vista-routines.ps1 -ContainerName vehu -VistaUser vehu
+
+# 4. Start the API
 cd apps/api
 npx tsx --env-file=.env.local src/index.ts
 # NOTE: Do NOT use "pnpm -C apps/api dev" — it does NOT load .env.local (BUG-010)
 
-# 4. Verify
+# 5. Verify
 curl http://127.0.0.1:3001/vista/default-patient-list
 # Should return {"ok":true, ...}
 ```

@@ -302,12 +302,35 @@ export class LagoBillingProvider implements BillingProvider {
   }
 
   /* ---- Health ---- */
-  async healthCheck(): Promise<{ ok: boolean; provider: string; details?: string }> {
+  async healthCheck(): Promise<import('./types.js').BillingHealthStatus> {
+    const hasApiKey = !!this.config.apiKey;
+    const apiUrl = this.config.apiUrl;
     try {
       await lagoFetch(this.config, '/plans?per_page=1');
-      return { ok: true, provider: 'lago', details: `Connected to ${this.config.apiUrl}` };
+      return {
+        ok: true,
+        provider: 'lago',
+        healthy: true,
+        configuredForProduction: true,
+        details: {
+          apiUrl,
+          apiKeyConfigured: hasApiKey,
+          reachable: true,
+        },
+      };
     } catch (err: any) {
-      return { ok: false, provider: 'lago', details: err.message?.slice(0, 200) };
+      return {
+        ok: false,
+        provider: 'lago',
+        healthy: false,
+        configuredForProduction: hasApiKey,
+        details: {
+          apiUrl,
+          apiKeyConfigured: hasApiKey,
+          reachable: false,
+          error: (err.message || String(err)).slice(0, 200),
+        },
+      };
     }
   }
 }

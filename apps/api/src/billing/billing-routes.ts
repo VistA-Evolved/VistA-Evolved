@@ -11,8 +11,37 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { getBillingProvider } from './types.js';
+import { isMockBillingForbidden } from './index.js';
 import { getMeterSnapshot, flushMeters } from './metering.js';
+import { getRuntimeMode } from '../platform/runtime-mode.js';
 import { log } from '../lib/logger.js';
+
+/**
+ * Build an enriched health response that adds runtime context
+ * (warnings, runtimeMode, mockForbiddenInCurrentMode) to the
+ * base BillingHealthStatus from the provider.
+ * Phase 569 (PromptFolder: 570-PHASE-569-BILLING-NO-SILENT-MOCK)
+ */
+function enrichHealthResponse(health: Awaited<ReturnType<ReturnType<typeof getBillingProvider>['healthCheck']>>) {
+  const runtimeMode = getRuntimeMode();
+  const forbidden = isMockBillingForbidden();
+  const warnings: string[] = [];
+
+  if (health.provider === 'mock') {
+    warnings.push('Mock billing provider is active. NOT suitable for demo/pilot/production.');
+    warnings.push('Set BILLING_PROVIDER=lago and configure LAGO_API_URL + LAGO_API_KEY for real billing.');
+    if (forbidden) {
+      warnings.push(`Current runtime mode (${runtimeMode}) forbids mock billing. Server should not have started.`);
+    }
+  }
+
+  return {
+    ...health,
+    runtimeMode,
+    mockForbiddenInCurrentMode: forbidden,
+    warnings,
+  };
+}
 
 export default async function billingRoutes(server: FastifyInstance): Promise<void> {
   /* ================================================================ */
@@ -146,11 +175,27 @@ export default async function billingRoutes(server: FastifyInstance): Promise<vo
   /* Health                                                            */
   /* ================================================================ */
 
-  /** GET /admin/billing/health — billing provider health check */
+  /**
+   * GET /billing/health — public billing provider health check.
+   *
+   * Returns provider type, health status, production-readiness flag,
+   * and diagnostic details. Does NOT require admin auth — it is
+   * registered as auth: "session" in AUTH_RULES (see security.ts).
+   */
+  server.get('/billing/health', async (_req: FastifyRequest, reply: FastifyReply) => {
+    const provider = getBillingProvider();
+    const health = await provider.healthCheck();
+    const enriched = enrichHealthResponse(health);
+    const code = health.healthy ? 200 : 503;
+    return reply.code(code).send(enriched);
+  });
+
+  /** GET /admin/billing/health — admin billing provider health check (legacy) */
   server.get('/admin/billing/health', async (_req: FastifyRequest, reply: FastifyReply) => {
     const provider = getBillingProvider();
     const health = await provider.healthCheck();
-    const code = health.ok ? 200 : 503;
-    return reply.code(code).send(health);
+    const enriched = enrichHealthResponse(health);
+    const code = health.healthy ? 200 : 503;
+    return reply.code(code).send(enriched);
   });
 }

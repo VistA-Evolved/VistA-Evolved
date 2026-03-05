@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 # =============================================================================
-# VistA-Evolved — Development Start Script
+# VistA-Evolved -- Development Start Script (LEGACY HELPER)
 # =============================================================================
-# Usage: ./scripts/dev-start.sh
+# LEGACY: This script predates the canonical dev-up entrypoints.
+#   Canonical entrypoint: ./scripts/dev-up.sh --profile <compose|vehu>
+#   See README.md "Quick Start" for the official workflow.
+#
+# This script only handles the root docker-compose.yml (compose profile).
+# It does NOT support the VEHU profile.
+#
+# Original usage: ./scripts/dev-start.sh
 # =============================================================================
 set -euo pipefail
 

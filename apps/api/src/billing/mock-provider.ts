@@ -207,8 +207,17 @@ export class MockBillingProvider implements BillingProvider {
     return null;
   }
 
-  async healthCheck(): Promise<{ ok: boolean; provider: string; details?: string }> {
-    return { ok: true, provider: 'mock', details: 'Mock billing provider (dev/test)' };
+  async healthCheck(): Promise<import('./types.js').BillingHealthStatus> {
+    return {
+      ok: true,
+      provider: 'mock',
+      healthy: true,
+      configuredForProduction: false,
+      details: {
+        warning: 'Mock billing provider is active. NOT suitable for demo/pilot/production.',
+        hint: 'Set BILLING_PROVIDER=lago and configure LAGO_API_URL + LAGO_API_KEY for real billing.',
+      },
+    };
   }
 }
 

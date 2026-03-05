@@ -128,7 +128,7 @@ test.describe("Phase 556: Frontend Config Hygiene — IMPLEMENT", () => {
 
 });
 
-test.describe("Phase 567: CONSOLIDATE PATIENT MODEL", () => {
+test.describe("Phase 567: Consolidate Patient Model & Top Duplicates", () => {
   test("UI component files exist on disk", async () => {
     const componentNames = ["data-cache.tsx","page.tsx","patient-context.tsx","session-context.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {

@@ -307,11 +307,33 @@ const WORLDVISTA_EXPECTED_MISSING = [
 /* ------------------------------------------------------------------ */
 
 /**
+ * Patterns that indicate the socket/connection was lost (not a normal RPC error).
+ * When one of these is detected, we must reconnect before probing the next RPC
+ * to avoid cascading false "Not connected" negatives.
+ */
+const SOCKET_LOST_PATTERNS = [
+  'Not connected',
+  'Socket closed',
+  'Connection closed',
+  'ECONNRESET',
+  'EPIPE',
+  'read timeout',
+];
+
+function isSocketLostError(msg: string): boolean {
+  const lower = msg.toLowerCase();
+  return SOCKET_LOST_PATTERNS.some((pat) => lower.includes(pat.toLowerCase()));
+}
+
+/**
  * Probe all known RPCs against the connected VistA instance.
  * Uses a lightweight probe: calls each RPC with minimal params and checks
  * whether the response is an "RPC doesn't exist" error.
  *
- * This is done with a single connection for efficiency.
+ * Resilient to mid-probe socket crashes: if an RPC call kills the broker
+ * connection (e.g. an M runtime error in a custom routine), the probe
+ * reconnects and retries that RPC exactly once before recording a failure.
+ * This prevents a single bad RPC from causing 16+ cascading false negatives.
  */
 export async function discoverCapabilities(forceRefresh = false): Promise<CapabilityMap> {
   const now = Date.now();
@@ -351,14 +373,48 @@ export async function discoverCapabilities(forceRefresh = false): Promise<Capabi
           availableList.push(rpcName);
         }
       } catch (err: any) {
-        // Connection errors, timeouts — treat as unavailable but don't stop
-        rpcs[rpcName] = {
-          rpcName,
-          available: false,
-          error: err.message?.substring(0, 200),
-          probedAt,
-        };
-        missingList.push(rpcName);
+        const errMsg = err.message || '';
+
+        // If the error indicates the socket was lost (e.g. an M crash in
+        // the RPC killed the broker session), reconnect and retry ONCE.
+        if (isSocketLostError(errMsg)) {
+          try {
+            disconnect(); // clean up dead socket state
+            await connect(); // fresh connection + auth + context
+            // Retry the same RPC exactly once
+            const retryResp = await callRpc(rpcName, []);
+            if (isRpcMissing(retryResp)) {
+              rpcs[rpcName] = {
+                rpcName,
+                available: false,
+                error: retryResp[0]?.substring(0, 200),
+                probedAt,
+              };
+              missingList.push(rpcName);
+            } else {
+              rpcs[rpcName] = { rpcName, available: true, probedAt };
+              availableList.push(rpcName);
+            }
+          } catch (retryErr: any) {
+            // Retry also failed — record as runtime error, not "missing"
+            rpcs[rpcName] = {
+              rpcName,
+              available: false,
+              error: `Socket lost + retry failed: ${retryErr.message?.substring(0, 150)}`,
+              probedAt,
+            };
+            missingList.push(rpcName);
+          }
+        } else {
+          // Non-socket error (timeout, etc.) — record as unavailable but don't reconnect
+          rpcs[rpcName] = {
+            rpcName,
+            available: false,
+            error: errMsg.substring(0, 200),
+            probedAt,
+          };
+          missingList.push(rpcName);
+        }
       }
     }
 

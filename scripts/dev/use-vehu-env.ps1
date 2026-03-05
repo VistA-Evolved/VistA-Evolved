@@ -3,6 +3,10 @@
     Sets VEHU VistA environment variables in the current PowerShell session.
 
 .DESCRIPTION
+    LEGACY HELPER -- The canonical entrypoint is:
+      .\scripts\dev-up.ps1 -Profile vehu
+    which sets these same variables automatically.
+
     Phase 477 -- Helper to quickly switch to VEHU VistA profile.
     Sets VISTA_HOST, VISTA_PORT, VISTA_ACCESS_CODE, VISTA_VERIFY_CODE,
     VISTA_CONTEXT and VISTA_INSTANCE_ID for the current shell session.

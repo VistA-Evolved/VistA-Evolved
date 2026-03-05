@@ -1,0 +1,178 @@
+# Phase 573 -- CI VEHU Smoke Test (Nightly + Manual)
+#
+# Proves "real VistA" connectivity by starting the VEHU Docker container,
+# running direct RPC bridge verification, and executing a Tier-0 clinic-day
+# journey against the live API.
+#
+# This workflow does NOT run on pull_request -- it is nightly + manual only
+# to avoid slowing PRs.
+
+name: CI VEHU Smoke
+
+on:
+  schedule:
+    - cron: '30 3 * * *'  # 03:30 UTC daily (after DR nightly at 03:00)
+  workflow_dispatch:
+    inputs:
+      journey:
+        description: 'Clinic-day journey ID (default: J1)'
+        required: false
+        default: 'J1'
+
+permissions:
+  contents: read
+
+jobs:
+  vehu-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: ve_platform
+          POSTGRES_USER: ve_api
+          POSTGRES_PASSWORD: ve_dev_only_change_in_prod
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd="pg_isready -U ve_api -d ve_platform"
+          --health-interval=5s
+          --health-timeout=3s
+          --health-retries=10
+
+    env:
+      VISTA_HOST: 127.0.0.1
+      VISTA_PORT: 9431
+      VISTA_ACCESS_CODE: PRO1234
+      VISTA_VERIFY_CODE: PRO1234!!
+      VISTA_CONTEXT: OR CPRS GUI CHART
+      PLATFORM_PG_URL: postgresql://ve_api:ve_dev_only_change_in_prod@localhost:5433/ve_platform
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.29.2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.13.0'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # ---- Start VEHU VistA container ----
+      - name: Start VEHU VistA
+        run: |
+          docker compose -f services/vista/docker-compose.yml --profile vehu up -d
+          echo "Waiting for VEHU RPC Broker on port 9431..."
+          for i in $(seq 1 60); do
+            if bash -c '</dev/tcp/127.0.0.1/9431' 2>/dev/null; then
+              echo "VEHU broker is ready (attempt $i)"
+              break
+            fi
+            if [ "$i" -eq 60 ]; then
+              echo "FAIL: VEHU broker not ready after 120s"
+              docker logs vehu 2>&1 | tail -50
+              exit 1
+            fi
+            sleep 2
+          done
+
+      # ---- Provision VistA RPCs ----
+      - name: Install VistA routines
+        run: |
+          # Copy routines into container
+          for f in services/vista/ZVEMIOP.m services/vista/ZVEMINS.m services/vista/VEMCTX3.m; do
+            if [ -f "$f" ]; then
+              docker cp "$f" vehu:/home/vehu/
+            fi
+          done
+          # Run installer if present
+          if [ -f services/vista/ZVEMINS.m ]; then
+            docker exec vehu bash -c 'cd /home/vehu && su - vehu -c "mumps -r INSTALL^ZVEMINS"' || true
+          fi
+
+      # ---- Gate 1: Direct RPC Bridge Verification ----
+      - name: Verify VistA RPC connectivity
+        run: |
+          mkdir -p artifacts
+          echo "=== Gate 1: pnpm verify:vista ==="
+          pnpm verify:vista 2>&1 | tee artifacts/verify-vista.log
+
+      # ---- Run PG Migrations ----
+      - name: Run PG Migrations
+        run: |
+          timeout 60 npx tsx apps/api/src/platform/pg/pg-migrate.ts 2>&1
+
+      # ---- Start API in background ----
+      # Env vars (VISTA_HOST, VISTA_PORT, etc.) are set at job level
+      - name: Start API server
+        run: |
+          mkdir -p artifacts
+          cd apps/api
+          npx tsx src/index.ts > ../../artifacts/api-server.log 2>&1 &
+          echo $! > ../../artifacts/api.pid
+          cd ../..
+          echo "Waiting for API on port 3001..."
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:3001/health > /dev/null 2>&1; then
+              echo "API is ready (attempt $i)"
+              break
+            fi
+            if [ "$i" -eq 30 ]; then
+              echo "FAIL: API not ready after 60s"
+              cat artifacts/api-server.log | tail -50
+              exit 1
+            fi
+            sleep 2
+          done
+
+      # ---- Gate 2: Clinic Day Journey ----
+      - name: Run clinic-day journey
+        run: |
+          JOURNEY="${{ github.event.inputs.journey || 'J1' }}"
+          echo "=== Gate 2: Clinic Day Journey $JOURNEY ==="
+          node scripts/qa/clinic-day-runner.mjs \
+            --base-url http://127.0.0.1:3001 \
+            --journey "$JOURNEY" \
+            --access-code PRO1234 \
+            --verify-code 'PRO1234!!' \
+            --artifact-name "vehu-smoke-clinic-day" \
+            2>&1 | tee artifacts/clinic-day.log
+
+      # ---- Cleanup ----
+      - name: Stop API
+        if: always()
+        run: |
+          if [ -f artifacts/api.pid ]; then
+            kill "$(cat artifacts/api.pid)" 2>/dev/null || true
+          fi
+
+      - name: Collect VistA logs
+        if: always()
+        run: |
+          docker logs vehu > artifacts/vehu-docker.log 2>&1 || true
+
+      - name: Stop VEHU
+        if: always()
+        run: |
+          docker compose -f services/vista/docker-compose.yml --profile vehu down || true
+
+      # ---- Upload artifacts (always, even on failure) ----
+      - name: Upload smoke test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vehu-smoke-results
+          path: |
+            artifacts/verify-vista.log
+            artifacts/api-server.log
+            artifacts/clinic-day.log
+            artifacts/vehu-docker.log
+            artifacts/vehu-smoke-clinic-day.json
+          retention-days: 14

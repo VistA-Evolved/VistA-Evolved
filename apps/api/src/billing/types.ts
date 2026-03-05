@@ -160,7 +160,16 @@ export interface BillingProvider {
   getCurrentInvoice(tenantId: string): Promise<Invoice | null>;
 
   /* ---- Health ---- */
-  healthCheck(): Promise<{ ok: boolean; provider: string; details?: string }>;
+  healthCheck(): Promise<BillingHealthStatus>;
+}
+
+/** Structured health response returned by /billing/health */
+export interface BillingHealthStatus {
+  ok: boolean;
+  provider: BillingProviderType;
+  healthy: boolean;
+  configuredForProduction: boolean;
+  details: Record<string, unknown>;
 }
 
 /* ------------------------------------------------------------------ */

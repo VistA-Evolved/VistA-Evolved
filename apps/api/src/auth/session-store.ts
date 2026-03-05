@@ -414,7 +414,9 @@ export function mapUserRole(userName: string, securityKeys?: string[]): UserRole
   // Fallback: name-substring matching for Docker sandbox users
   const upper = userName.toUpperCase();
   // PROV123 (PROVIDER,CLYDE WV DUZ 87) is the primary admin in Docker sandbox
+  // PRO1234 (PROGRAMMER,ONE DUZ 1) is the system programmer in VEHU sandbox
   if (upper.includes('PROVIDER') || upper.includes('CLYDE')) return 'admin';
+  if (upper.includes('PROGRAMMER')) return 'admin';
   if (upper.includes('NURSE') || upper.includes('HELEN')) return 'nurse';
   if (upper.includes('PHARM') || upper.includes('LINDA')) return 'pharmacist';
   if (upper.includes('BILLING') || upper.includes('BILLER')) return 'billing';

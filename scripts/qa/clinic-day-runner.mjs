@@ -22,22 +22,32 @@ function getArg(name) {
 
 const baseUrl = getArg('base-url') || 'http://127.0.0.1:3001';
 const journeyFilter = getArg('journey');
+const artifactName = getArg('artifact-name'); // optional override for output filename
+const accessCode = getArg('access-code') || process.env.VISTA_ACCESS_CODE || 'PROV123';
+const verifyCode = getArg('verify-code') || process.env.VISTA_VERIFY_CODE || 'PROV123!!';
 
 async function loginAndGetCookie() {
   try {
     const resp = await fetch(`${baseUrl}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ accessCode: 'PROV123', verifyCode: 'PROV123!!' }),
+      body: JSON.stringify({ accessCode, verifyCode }),
       redirect: 'manual',
     });
     const setCookie = resp.headers.get('set-cookie') || '';
-    return setCookie
+    const cookie = setCookie
       .split(',')
       .map((c) => c.split(';')[0].trim())
       .join('; ');
+    // Extract CSRF token from response body (Phase 132 session-bound CSRF)
+    let csrfToken = '';
+    try {
+      const body = await resp.json();
+      csrfToken = body.csrfToken || '';
+    } catch { /* non-JSON is ok */ }
+    return { cookie, csrfToken };
   } catch {
-    return '';
+    return { cookie: '', csrfToken: '' };
   }
 }
 
@@ -56,7 +66,7 @@ async function runJourneys() {
   }
 
   // Login
-  const cookie = await loginAndGetCookie();
+  const { cookie, csrfToken } = await loginAndGetCookie();
   if (!cookie) {
     console.warn('  WARN: Could not authenticate, some journeys may fail\n');
   }
@@ -73,11 +83,16 @@ async function runJourneys() {
 
   // Run journeys
   const runBody = { baseUrl, cookie };
+  const postHeaders = {
+    'Content-Type': 'application/json',
+    ...(cookie ? { Cookie: cookie } : {}),
+    ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {}),
+  };
   let report;
   if (journeyFilter) {
     const resp = await fetch(`${baseUrl}/admin/qa/journeys/${journeyFilter}/run`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...(cookie ? { Cookie: cookie } : {}) },
+      headers: postHeaders,
       body: JSON.stringify(runBody),
     });
     const data = await resp.json();
@@ -97,7 +112,7 @@ async function runJourneys() {
   } else {
     const resp = await fetch(`${baseUrl}/admin/qa/journeys/run`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', ...(cookie ? { Cookie: cookie } : {}) },
+      headers: postHeaders,
       body: JSON.stringify(runBody),
     });
     const data = await resp.json();
@@ -134,8 +149,10 @@ async function runJourneys() {
 
   // Write artifact
   mkdirSync(ARTIFACTS_DIR, { recursive: true });
-  writeFileSync(resolve(ARTIFACTS_DIR, 'clinic-day-report.json'), JSON.stringify(report, null, 2));
-  console.log(`  Report written to artifacts/clinic-day-report.json\n`);
+  const defaultName = artifactName || 'clinic-day-report';
+  const reportPath = resolve(ARTIFACTS_DIR, `${defaultName}.json`);
+  writeFileSync(reportPath, JSON.stringify(report, null, 2));
+  console.log(`  Report written to artifacts/${defaultName}.json\n`);
 
   process.exit(report.summary.failed > 0 ? 1 : 0);
 }

@@ -1,4 +1,4 @@
-# P1-1 — VistA RPC Bridge — Verified Live Connection
+# Phase 566 -- VistA RPC Bridge -- Verified Live Connection
 
 ## User Request
 
@@ -35,5 +35,5 @@ Installing nodevista499 would be a regression. The bridge class wraps existing i
 - `package.json` (add verify:vista script)
 - `docs/CURRENT_TASK.md` (updated)
 - `docs/SESSION_LOG.md` (updated)
-- `prompts/566-PHASE-P1-1-VISTA-RPC-BRIDGE/P1-1-01-IMPLEMENT.md` (this file)
-- `prompts/566-PHASE-P1-1-VISTA-RPC-BRIDGE/P1-1-99-VERIFY.md`
+- `prompts/566-PHASE-566-VISTA-RPC-BRIDGE/566-01-IMPLEMENT.md` (this file)
+- `prompts/566-PHASE-566-VISTA-RPC-BRIDGE/566-99-VERIFY.md`

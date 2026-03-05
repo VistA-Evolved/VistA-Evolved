@@ -357,7 +357,76 @@ export const J6_PORTAL: JourneyDefinition = {
   ],
 };
 
+/**
+ * T0 — Tier-0 Outpatient Proof
+ *
+ * Minimal end-to-end journey using ONLY outpatient-safe RPCs.
+ * Designed for hospital technical reviewers and consulting firms.
+ * Every step that calls VistA uses a known-good sandbox RPC.
+ *
+ * Sequence: login -> patient list -> vitals -> allergies -> problems -> logout
+ * No queue, no templates, no orders, no inpatient dependencies.
+ */
+export const T0_OUTPATIENT: JourneyDefinition = {
+  id: 'T0',
+  name: 'Tier-0 Outpatient Proof',
+  description:
+    'Login -> default patient list -> read vitals -> read allergies -> read problems -> logout. Pure outpatient-safe RPCs only.',
+  category: 'outpatient',
+  steps: [
+    {
+      name: 'Verify API health',
+      method: 'GET',
+      path: '/health',
+      expectedStatus: 200,
+      requiredFields: ['ok'],
+      expectedRpcs: [],
+    },
+    {
+      name: 'Fetch default patient list (VistA RPC)',
+      method: 'GET',
+      path: '/vista/default-patient-list',
+      expectedStatus: 200,
+      requiredFields: ['ok'],
+      expectedRpcs: ['ORQPT DEFAULT LIST SOURCE', 'ORWPT LIST ALL'],
+    },
+    {
+      name: 'Read patient vitals (VistA RPC)',
+      method: 'GET',
+      path: '/vista/nursing/vitals?dfn=3',
+      expectedStatus: 200,
+      requiredFields: ['ok'],
+      expectedRpcs: ['ORQQVI VITALS'],
+    },
+    {
+      name: 'Read patient allergies (VistA RPC)',
+      method: 'GET',
+      path: '/vista/allergies?dfn=3',
+      expectedStatus: 200,
+      requiredFields: ['ok'],
+      expectedRpcs: ['ORQQAL LIST'],
+    },
+    {
+      name: 'Read patient problems (VistA RPC)',
+      method: 'GET',
+      path: '/vista/problems?dfn=3',
+      expectedStatus: 200,
+      requiredFields: ['ok'],
+      expectedRpcs: ['ORQQPL PROBLEM LIST'],
+    },
+    {
+      name: 'Logout session',
+      method: 'POST',
+      path: '/auth/logout',
+      expectedStatus: 200,
+      requiredFields: ['ok'],
+      expectedRpcs: [],
+    },
+  ],
+};
+
 export const ALL_JOURNEYS: JourneyDefinition[] = [
+  T0_OUTPATIENT,
   J1_OUTPATIENT,
   J2_ED,
   J3_LAB,

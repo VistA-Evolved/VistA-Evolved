@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-04T10:52:50.154Z",
+  "generatedAt": "2026-03-05T08:35:11.104Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 564,
+  "phaseCount": 570,
   "phases": [
     {
       "phaseNumber": "1",
@@ -6164,12 +6164,14 @@
       "folder": "284-PHASE-284-BILLING-METERING",
       "files": [
         "284-01-IMPLEMENT.md",
+        "284-02-IMPLEMENT.md",
         "284-99-VERIFY.md",
         "284-NOTES.md",
         "NOTES.md"
       ],
       "implementFiles": [
-        "284-01-IMPLEMENT.md"
+        "284-01-IMPLEMENT.md",
+        "284-02-IMPLEMENT.md"
       ],
       "verifyFiles": [
         "284-99-VERIFY.md"
@@ -6184,7 +6186,8 @@
         "/admin/billing/subscriptions",
         "/admin/billing/subscriptions/:tenantId",
         "/admin/billing/usage/:tenantId",
-        "/admin/billing/usage/flush"
+        "/admin/billing/usage/flush",
+        "/billing/health"
       ],
       "rpcs": [],
       "uiComponents": [
@@ -14107,17 +14110,17 @@
     },
     {
       "phaseNumber": "566",
-      "title": "VISTA RPC BRIDGE",
+      "title": "VistA RPC Bridge -- Verified Live Connection",
       "folder": "566-PHASE-566-VISTA-RPC-BRIDGE",
       "files": [
-        "P1-1-01-IMPLEMENT.md",
-        "P1-1-99-VERIFY.md"
+        "566-01-IMPLEMENT.md",
+        "566-99-VERIFY.md"
       ],
       "implementFiles": [
-        "P1-1-01-IMPLEMENT.md"
+        "566-01-IMPLEMENT.md"
       ],
       "verifyFiles": [
-        "P1-1-99-VERIFY.md"
+        "566-99-VERIFY.md"
       ],
       "routes": [],
       "rpcs": [],
@@ -14129,23 +14132,23 @@
         "package.json",
         "docs/CURRENT_TASK.md",
         "docs/SESSION_LOG.md",
-        "prompts/566-PHASE-P1-1-VISTA-RPC-BRIDGE/P1-1-01-IMPLEMENT.md",
-        "prompts/566-PHASE-P1-1-VISTA-RPC-BRIDGE/P1-1-99-VERIFY.md"
+        "prompts/566-PHASE-566-VISTA-RPC-BRIDGE/566-01-IMPLEMENT.md",
+        "prompts/566-PHASE-566-VISTA-RPC-BRIDGE/566-99-VERIFY.md"
       ]
     },
     {
       "phaseNumber": "567",
-      "title": "CONSOLIDATE PATIENT MODEL",
+      "title": "Consolidate Patient Model & Top Duplicates",
       "folder": "567-PHASE-567-CONSOLIDATE-PATIENT-MODEL",
       "files": [
-        "P1-3-01-IMPLEMENT.md",
-        "P1-3-99-VERIFY.md"
+        "567-01-IMPLEMENT.md",
+        "567-99-VERIFY.md"
       ],
       "implementFiles": [
-        "P1-3-01-IMPLEMENT.md"
+        "567-01-IMPLEMENT.md"
       ],
       "verifyFiles": [
-        "P1-3-99-VERIFY.md"
+        "567-99-VERIFY.md"
       ],
       "routes": [],
       "rpcs": [],
@@ -14186,6 +14189,59 @@
       ]
     },
     {
+      "phaseNumber": "568",
+      "title": "ZVEADT WARDS Crash Fix + Probe Cascade Prevention",
+      "folder": "568-PHASE-568-ZVEADT-CRASH-FIX",
+      "files": [
+        "568-01-IMPLEMENT.md",
+        "568-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "568-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "568-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "services/vista/ZVEADT.m",
+        "apps/api/src/vista/rpcCapabilities.ts",
+        "apps/api/src/vista/rpcBrokerClient.ts",
+        "docs/VISTA_CONNECTIVITY_RESULTS.md",
+        "prompts/568-PHASE-568-ZVEADT-CRASH-FIX/568-01-IMPLEMENT.md"
+      ]
+    },
+    {
+      "phaseNumber": "569",
+      "title": "TIER0 OUTPATIENT PROOF",
+      "folder": "569-PHASE-569-TIER0-OUTPATIENT-PROOF",
+      "files": [
+        "569-01-IMPLEMENT.md",
+        "569-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "569-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "569-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/qa/clinic-day-journeys.ts",
+        "scripts/qa/clinic-day-runner.mjs",
+        "scripts/verify-tier0.ps",
+        "scripts/verify-tier0.sh",
+        "scripts/verify-rc.ps",
+        "docs/release/RC_SCOPE.md",
+        "docs/TIER0_PROOF.md"
+      ]
+    },
+    {
       "phaseNumber": "52",
       "title": "E2E Scenario Tests + Performance Budgets (RC Hardening)",
       "folder": "57-PHASE-52-E2E-PERF-BUDGETS",
@@ -14212,6 +14268,113 @@
         "tests/k6/perf-budgets.js",
         "docs/runbooks/e2e-testing.md",
         "docs/runbooks/performance-budgets.md"
+      ]
+    },
+    {
+      "phaseNumber": "570",
+      "title": "Billing Must Never Silently Run as Mock Outside Dev/Test",
+      "folder": "570-PHASE-570-BILLING-NO-SILENT-MOCK",
+      "files": [
+        "570-01-IMPLEMENT.md",
+        "570-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "570-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "570-99-VERIFY.md"
+      ],
+      "routes": [
+        "/admin/billing/health",
+        "/billing/health"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/billing/billing-routes.ts",
+        "apps/api/src/billing/index.ts",
+        "docs/runbooks/billing-provider-readiness.md"
+      ]
+    },
+    {
+      "phaseNumber": "571",
+      "title": "Rename Phase 566/567 Prompt Files for Consistency",
+      "folder": "571-PHASE-571-PROMPTS-566-567-CLEANUP",
+      "files": [
+        "571-01-IMPLEMENT.md",
+        "571-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "571-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "571-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/566-PHASE-566-VISTA-RPC-BRIDGE/566-01-IMPLEMENT.md",
+        "prompts/566-PHASE-566-VISTA-RPC-BRIDGE/566-99-VERIFY.md",
+        "prompts/567-PHASE-567-CONSOLIDATE-PATIENT-MODEL/567-01-IMPLEMENT.md",
+        "prompts/567-PHASE-567-CONSOLIDATE-PATIENT-MODEL/567-99-VERIFY.md",
+        "docs/qa/phase-index.json"
+      ]
+    },
+    {
+      "phaseNumber": "572",
+      "title": "Runtime Lanes Documentation",
+      "folder": "572-PHASE-572-RUNTIME-LANES-DOC",
+      "files": [
+        "572-01-IMPLEMENT.md",
+        "572-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "572-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "572-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "docs/runbooks/runtime-lanes.md",
+        "AGENTS.md",
+        "README.md",
+        "prompts/572-PHASE-572-RUNTIME-LANES-DOC/572-01-IMPLEMENT.md",
+        "prompts/572-PHASE-572-RUNTIME-LANES-DOC/572-99-VERIFY.md",
+        "prompts/572-PHASE-572-RUNTIME-LANES-DOC/NOTES.md"
+      ]
+    },
+    {
+      "phaseNumber": "573",
+      "title": "CI VEHU Smoke",
+      "folder": "573-PHASE-573-CI-VEHU-SMOKE",
+      "files": [
+        "573-01-IMPLEMENT.md",
+        "573-99-VERIFY.md",
+        "NOTES.md"
+      ],
+      "implementFiles": [
+        "573-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "573-99-VERIFY.md"
+      ],
+      "routes": [
+        "/health"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        ".github/workflows/ci-vehu-smoke.yml",
+        "prompts/573-PHASE-573-CI-VEHU-SMOKE/573-01-IMPLEMENT.md",
+        "prompts/573-PHASE-573-CI-VEHU-SMOKE/573-99-VERIFY.md",
+        "prompts/573-PHASE-573-CI-VEHU-SMOKE/NOTES.md"
       ]
     },
     {

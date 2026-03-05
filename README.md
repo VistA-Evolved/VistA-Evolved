@@ -36,16 +36,56 @@ graph LR
 
 Allocate **at least 6 GB RAM** to Docker (VistA alone needs ~2 GB).
 
-## Quick Start
+## Quick Start -- Choose Your Profile
+
+This repo supports **multiple VistA runtime lanes**. The two most common
+are below. For all four lanes (VEHU, Legacy, Compose, Distro) with full
+port maps, credentials, and env templates, see
+[docs/runbooks/runtime-lanes.md](docs/runbooks/runtime-lanes.md).
+
+Pick one profile and run a single command. Do not mix profiles in the same session.
+
+| Profile | VistA Image | Broker Port | Best For |
+|---------|-------------|-------------|----------|
+| **vehu** (default) | `worldvista/vehu` | **9431** | Day-to-day dev, RPC truth, evidence docs |
+| **compose** | `worldvista/worldvista-ehr` | **9210** | Full-stack containerized demo |
+
+### One-command start (recommended)
+
+```powershell
+# Windows / PowerShell (default profile = vehu)
+.\scripts\dev-up.ps1 -Profile vehu
+
+# Or the all-in-one containerized stack
+.\scripts\dev-up.ps1 -Profile compose
+```
+
+```bash
+# macOS / Linux
+./scripts/dev-up.sh --profile vehu
+./scripts/dev-up.sh --profile compose
+```
+
+The scripts will: check Docker, create env files with sane defaults if missing,
+start the right containers, wait for the VistA broker to be healthy, run
+`pnpm verify:vista`, run `pnpm qa:gauntlet:fast`, and print PASS/FAIL.
+
+Use `--SkipVerify` (PowerShell) / `--skip-verify` (bash) to skip verification
+and just start Docker services.
+
+### Manual start (if you prefer)
+
+<details>
+<summary>VEHU profile -- manual steps</summary>
 
 ```powershell
 # 1. Clone
 git clone https://github.com/<org>/VistA-Evolved.git
 cd VistA-Evolved
 
-# 2. Create API env file
+# 2. Create API env file (script does this automatically)
 Copy-Item apps/api/.env.example apps/api/.env.local
-# Edit apps/api/.env.local — set at minimum:
+# Edit apps/api/.env.local -- set at minimum:
 #   VISTA_HOST=127.0.0.1
 #   VISTA_PORT=9431
 #   VISTA_ACCESS_CODE=PRO1234
@@ -64,39 +104,67 @@ pnpm install
 # 6. Provision VistA RPCs (first time only)
 .\scripts\install-vista-routines.ps1 -ContainerName vehu -VistaUser vehu
 
-# 7. Seed demo data (optional — adds 10 sample claims)
-pnpm seed:demo
-
-# 8. Start the API (in one terminal)
+# 7. Start the API (in one terminal)
 cd apps/api
 npx tsx --env-file=.env.local src/index.ts
 
-# 9. Start the web UI (in another terminal)
+# 8. Start the web UI (in another terminal)
 cd apps/web
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and log in with
-**PRO1234 / PRO1234!!**. Search for patient **CARTER,DAVID** to see a full
-chart.
+</details>
 
-### Services
+<details>
+<summary>Compose profile -- manual steps</summary>
 
-| Service | Port | Container | Description |
-|---------|------|-----------|-------------|
-| VistA VEHU | 9431 (RPC), 2223 (SSH) | `vehu` | WorldVistA VEHU sandbox |
-| PostgreSQL | 5433 | `ve-platform-db` | Platform database |
-| API | 3001 | (local) | Fastify API server |
-| Web | 3000 | (local) | Next.js clinician UI |
+```powershell
+# 1. Clone
+git clone https://github.com/<org>/VistA-Evolved.git
+cd VistA-Evolved
+
+# 2. Create root .env
+Copy-Item .env.example .env
+# Edit .env -- set POSTGRES_PASSWORD, VISTA_ACCESS_CODE=PROV123, VISTA_VERIFY_CODE=PROV123!!
+
+# 3. Start everything (VistA + PG + Redis + API + Web)
+docker compose up -d --build
+
+# API is at http://localhost:4000, Web at http://localhost:5173
+```
+
+</details>
+
+Open [http://localhost:3000](http://localhost:3000) (vehu) or
+[http://localhost:5173](http://localhost:5173) (compose) and log in.
+Search for patient **CARTER,DAVID** to see a full chart.
+
+### Port Map
+
+| Service | VEHU Profile | Compose Profile | Notes |
+|---------|-------------|-----------------|-------|
+| VistA RPC Broker | **9431** | **9210** | XWB protocol |
+| VistA SSH | 2223 | -- | VEHU only |
+| VistA Web UI | -- | 8001 | Compose only |
+| PostgreSQL | 5433 | 5432 | Platform DB |
+| Redis | -- | 6379 | Compose only |
+| API (Fastify) | 3001 (local) | 4000 (container) | |
+| Web (Next.js) | 3000 (local) | 5173 (container) | |
 
 ### Sandbox Credentials
 
-| Access Code | Verify Code | User |
-|-------------|-------------|------|
-| PRO1234 | PRO1234!! | PROGRAMMER,ONE (DUZ 1) -- recommended |
-| PROV123 | PROV123!! | PROVIDER,CLYDE WV (DUZ 87) |
-| PHARM123 | PHARM123!! | PHARMACIST,LINDA WV |
-| NURSE123 | NURSE123!! | NURSE,HELEN WV |
+| Access Code | Verify Code | User | Profile |
+|-------------|-------------|------|---------|
+| PRO1234 | PRO1234!! | PROGRAMMER,ONE (DUZ 1) | **vehu** (recommended) |
+| PROV123 | PROV123!! | PROVIDER,CLYDE WV (DUZ 87) | compose / vehu |
+| PHARM123 | PHARM123!! | PHARMACIST,LINDA WV | compose / vehu |
+| NURSE123 | NURSE123!! | NURSE,HELEN WV | compose / vehu |
+
+### Evidence Docs
+
+`docs/VISTA_CONNECTIVITY_RESULTS.md` is generated under the **VEHU** profile.
+It is the canonical RPC truth reference. Do not regenerate it under the compose
+profile.
 
 ## Key Commands
 

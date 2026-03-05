@@ -103,6 +103,16 @@ node qa/gauntlet/gates/g12-data-plane.mjs 2>$null; echo $LASTEXITCODE
 
 **Pass criteria:** Exit 0 in fixture mode (PG not required for RC gate).
 
+### G14 — Tier-0 Outpatient Proof (NEEDS-RUN-IN-ENV)
+
+```powershell
+.\scripts\verify-tier0.ps1
+```
+
+**Pass criteria:** Exit 0. T0 journey (login, patient list, vitals, allergies,
+problems, logout) passes all 6 steps against live API + VistA. Requires running
+API and VistA Docker. See `docs/TIER0_PROOF.md` for details.
+
 ## Non-Blocking (Info Only)
 
 - Playwright e2e suite (NEEDS-RUN-IN-ENV)
