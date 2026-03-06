@@ -1110,11 +1110,9 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     } catch (err: any) {
       return { ok: false, error: safeErr(err) };
     }
-    const RPC_NAME = 'ORWCH PROBLEM LIST';
+    const RPC_NAME = 'ORQQPL PROBLEM LIST';
     try {
-      await connect();
-      const lines = await callRpc(RPC_NAME, [String(dfn), '0']);
-      disconnect();
+      const lines = await safeCallRpc(RPC_NAME, [String(dfn), 'A']);
       if (lines.length > 0 && lines[0].startsWith('-1')) {
         const errMsg = lines[0].split('^').slice(1).join('^') || 'Unknown VistA error';
         return { ok: false, error: errMsg, rpcUsed: RPC_NAME };
@@ -1143,7 +1141,6 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       });
       return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
     } catch (err: any) {
-      disconnect();
       return { ok: false, error: safeErr(err) };
     }
   });

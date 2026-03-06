@@ -5,6 +5,30 @@
 
 ---
 
+## Context
+
+Wave 42 production-remediation prompt. Use this section to capture execution context, dependencies, and prerequisites before changing code.
+
+## Implementation Steps
+
+1. Execute the objective and task sections below in order.
+2. Keep changes deterministic and minimal.
+3. Record any deviations from the stated approach in Decisions.
+
+## Files Changed
+
+List the source files, configs, scripts, docs, and tests changed while executing this prompt.
+
+## Decisions
+
+Record design choices, trade-offs, or scope trims made during execution.
+
+## Evidence Captured
+
+List the commands, runtime checks, artifacts, and logs that prove the work is complete.
+
+---
+
 ## Objective
 
 Wire 26 problems.ts stub routes to real ORQQPL RPCs and 60 meds.ts stub routes to real ORWPS/ORWDPS RPCs. Replace every `{ ok: false, error: 'Not implemented' }` with actual RPC calls.

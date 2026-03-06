@@ -5,6 +5,30 @@
 
 ---
 
+## Context
+
+Wave 42 production-remediation prompt. Use this section to capture execution context, dependencies, and prerequisites before changing code.
+
+## Implementation Steps
+
+1. Execute the objective and task sections below in order.
+2. Keep changes deterministic and minimal.
+3. Record any deviations from the stated approach in Decisions.
+
+## Files Changed
+
+List the source files, configs, scripts, docs, and tests changed while executing this prompt.
+
+## Decisions
+
+Record design choices, trade-offs, or scope trims made during execution.
+
+## Evidence Captured
+
+List the commands, runtime checks, artifacts, and logs that prove the work is complete.
+
+---
+
 ## Objective
 
 Create PG repos for 17 new tables from migration v60 and wire them to their in-memory store counterparts. Each store currently uses a Map; replace with PG-backed repo.

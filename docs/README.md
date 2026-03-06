@@ -10,5 +10,12 @@ This folder contains engineering documentation for VistA Evolved.
 
 ## Source of truth
 
-Planning + decisions + roadmap are maintained in Notion:
-Company HQ → VistA Evolved HQ
+For engineers working in this repository:
+
+- `docs/INDEX.md` is the curated documentation entry point.
+- `docs/POLICY.md` defines where durable docs are allowed to live.
+- `docs/architecture/**` and `docs/runbooks/**` are the maintained in-repo
+  references for architecture and operations.
+
+External planning systems may still exist, but contributors should not depend on
+them to understand the runtime, wiring, or verification rules of the codebase.

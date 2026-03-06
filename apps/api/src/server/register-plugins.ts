@@ -18,6 +18,7 @@ import { initCapabilityService } from '../modules/capability-service.js';
 import { initAdapters } from '../adapters/adapter-loader.js';
 import { initMarketplaceTenantConfig } from '../config/marketplace-tenant.js';
 import { moduleGuardHook } from '../middleware/module-guard.js';
+import { registerTenantHook } from '../platform/pg/tenant-middleware.js';
 
 /**
  * Register all Fastify plugins, middleware, and module system.
@@ -42,6 +43,7 @@ export async function registerPlugins(server: FastifyInstance): Promise<void> {
 
   // Phase 51: Marketplace tenant config (after module registry)
   initMarketplaceTenantConfig();
+  registerTenantHook(server);
   server.addHook('onRequest', moduleGuardHook);
 
   // Accept empty-body POSTs with any Content-Type (e.g., logout)

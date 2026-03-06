@@ -68,7 +68,8 @@ Pick one profile and run a single command. Do not mix profiles in the same sessi
 
 The scripts will: check Docker, create env files with sane defaults if missing,
 start the right containers, wait for the VistA broker to be healthy, run
-`pnpm verify:vista`, run `pnpm qa:gauntlet:fast`, and print PASS/FAIL.
+`pnpm verify:vista` (which loads `apps/api/.env.local`), run `pnpm qa:gauntlet:fast`,
+and print PASS/FAIL.
 
 Use `--SkipVerify` (PowerShell) / `--skip-verify` (bash) to skip verification
 and just start Docker services.

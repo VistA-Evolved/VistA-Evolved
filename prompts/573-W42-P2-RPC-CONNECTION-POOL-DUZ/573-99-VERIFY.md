@@ -1,5 +1,23 @@
 # Phase 573 — W42-P2: Verification
 
+## Verification Steps
+
+Run the verification gates and commands documented below in order.
+
+## Expected Output
+
+Each gate should pass or produce a truthful blocker with concrete evidence.
+
+## Negative Tests
+
+Check failure paths, blockers, or integration-pending branches where applicable.
+
+## Evidence Captured
+
+Store command output in artifacts or the specified wave evidence location before marking the phase complete.
+
+---
+
 ## Gate 1: Pool module exists and exports
 
 ```bash

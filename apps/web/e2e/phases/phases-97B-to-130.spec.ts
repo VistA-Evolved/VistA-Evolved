@@ -7,519 +7,498 @@
  *   node scripts/generate-phase-qa.mjs
  */
 
-import { test, expect } from '@playwright/test';
-import { readdirSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { test, expect } from "@playwright/test";
+import { readdirSync } from "node:fs";
+import { join, resolve } from "node:path";
 
-const API = process.env.API_URL ?? 'http://localhost:3001';
-const ROOT = resolve(__dirname, '..', '..', '..', '..');
+const API = process.env.API_URL ?? "http://localhost:3001";
+const ROOT = resolve(__dirname, "..", "..", "..", "..");
 
-test.describe('Phase 97B: PH HMO Deepening Pack v2 (ALL IC HMOs) + LOA/Claim Packet Op', () => {
-  test('API routes respond (no 500)', async ({ request }) => {
+test.describe("Phase 97B: PH HMO Deepening Pack v2 (ALL IC HMOs) + LOA/Claim Packet Op", () => {
+  test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/rcm/hmo/contracting`);
-    expect(r0.status(), '/rcm/hmo/contracting not 500').not.toBe(500);
+    expect(r0.status(), "/rcm/hmo/contracting not 500").not.toBe(500);
     const r1 = await request.get(`${API}/rcm/hmo/manifest`);
-    expect(r1.status(), '/rcm/hmo/manifest not 500').not.toBe(500);
+    expect(r1.status(), "/rcm/hmo/manifest not 500").not.toBe(500);
     const r2 = await request.get(`${API}/rcm/hmo/market-summary`);
-    expect(r2.status(), '/rcm/hmo/market-summary not 500').not.toBe(500);
+    expect(r2.status(), "/rcm/hmo/market-summary not 500").not.toBe(500);
   });
 
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['layout.tsx', 'page.tsx'];
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["layout.tsx","page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 2 UI files for Phase 97B`).toBeGreaterThan(0);
   });
 
-  test('integration-pending responses are compliant', async ({ request }) => {
+  test("integration-pending responses are compliant", async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/rcm/hmo/contracting`);
-    expect(res.status(), '/rcm/hmo/contracting should respond').toBeDefined();
+    expect(res.status(), "/rcm/hmo/contracting should respond").toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === 'integration-pending') {
-        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
+      if (body && body.status === "integration-pending") {
+        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
       }
     }
   });
 });
 
-test.describe('Phase 98: RCM Denials & Appeals Loop', () => {
-  test('API routes respond (no 500)', async ({ request }) => {
+test.describe("Phase 98: RCM Denials & Appeals Loop", () => {
+  test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/rcm/denials`);
-    expect(r0.status(), '/rcm/denials not 500').not.toBe(500);
+    expect(r0.status(), "/rcm/denials not 500").not.toBe(500);
     const r1 = await request.get(`${API}/rcm/denials/import/835`);
-    expect(r1.status(), '/rcm/denials/import/835 not 500').not.toBe(500);
+    expect(r1.status(), "/rcm/denials/import/835 not 500").not.toBe(500);
   });
 
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 98`).toBeGreaterThan(0);
   });
 
-  test('integration-pending responses are compliant', async ({ request }) => {
+  test("integration-pending responses are compliant", async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/rcm/denials`);
-    expect(res.status(), '/rcm/denials should respond').toBeDefined();
+    expect(res.status(), "/rcm/denials should respond").toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === 'integration-pending') {
-        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
+      if (body && body.status === "integration-pending") {
+        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
       }
     }
   });
 });
 
-test.describe('Phase 99: RCM Payments + Reconciliation — IMPLEMENT', () => {
-  test('API routes respond (no 500)', async ({ request }) => {
+test.describe("Phase 99: RCM Payments + Reconciliation — IMPLEMENT", () => {
+  test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/rcm/reconciliation/import`);
-    expect(r0.status(), '/rcm/reconciliation/import not 500').not.toBe(500);
+    expect(r0.status(), "/rcm/reconciliation/import not 500").not.toBe(500);
     const r1 = await request.get(`${API}/rcm/reconciliation/imports`);
-    expect(r1.status(), '/rcm/reconciliation/imports not 500').not.toBe(500);
+    expect(r1.status(), "/rcm/reconciliation/imports not 500").not.toBe(500);
     const r2 = await request.get(`${API}/rcm/reconciliation/match-batch`);
-    expect(r2.status(), '/rcm/reconciliation/match-batch not 500').not.toBe(500);
+    expect(r2.status(), "/rcm/reconciliation/match-batch not 500").not.toBe(500);
     const r3 = await request.get(`${API}/rcm/reconciliation/matches/review`);
-    expect(r3.status(), '/rcm/reconciliation/matches/review not 500').not.toBe(500);
+    expect(r3.status(), "/rcm/reconciliation/matches/review not 500").not.toBe(500);
     const r4 = await request.get(`${API}/rcm/reconciliation/payments`);
-    expect(r4.status(), '/rcm/reconciliation/payments not 500').not.toBe(500);
+    expect(r4.status(), "/rcm/reconciliation/payments not 500").not.toBe(500);
   });
 
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 99`).toBeGreaterThan(0);
   });
 
-  test('integration-pending responses are compliant', async ({ request }) => {
+  test("integration-pending responses are compliant", async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/rcm/reconciliation/import`);
-    expect(res.status(), '/rcm/reconciliation/import should respond').toBeDefined();
+    expect(res.status(), "/rcm/reconciliation/import should respond").toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === 'integration-pending') {
-        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
+      if (body && body.status === "integration-pending") {
+        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
       }
     }
   });
 });
 
-test.describe('Phase 100: Eligibility + Claim Status Polling Framework (Adapter-first)', () => {
-  test('API routes respond (no 500)', async ({ request }) => {
+test.describe("Phase 100: Eligibility + Claim Status Polling Framework (Adapter-first)", () => {
+  test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/rcm/claim-status/check`);
-    expect(r0.status(), '/rcm/claim-status/check not 500').not.toBe(500);
+    expect(r0.status(), "/rcm/claim-status/check not 500").not.toBe(500);
     const r1 = await request.get(`${API}/rcm/claim-status/history`);
-    expect(r1.status(), '/rcm/claim-status/history not 500').not.toBe(500);
+    expect(r1.status(), "/rcm/claim-status/history not 500").not.toBe(500);
     const r2 = await request.get(`${API}/rcm/claim-status/schedule`);
-    expect(r2.status(), '/rcm/claim-status/schedule not 500').not.toBe(500);
+    expect(r2.status(), "/rcm/claim-status/schedule not 500").not.toBe(500);
     const r3 = await request.get(`${API}/rcm/claim-status/stats`);
-    expect(r3.status(), '/rcm/claim-status/stats not 500').not.toBe(500);
+    expect(r3.status(), "/rcm/claim-status/stats not 500").not.toBe(500);
     const r4 = await request.get(`${API}/rcm/eligibility/check`);
-    expect(r4.status(), '/rcm/eligibility/check not 500').not.toBe(500);
+    expect(r4.status(), "/rcm/eligibility/check not 500").not.toBe(500);
   });
 
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 100`).toBeGreaterThan(0);
   });
 
-  test('integration-pending responses are compliant', async ({ request }) => {
+  test("integration-pending responses are compliant", async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/rcm/claim-status/check`);
-    expect(res.status(), '/rcm/claim-status/check should respond').toBeDefined();
+    expect(res.status(), "/rcm/claim-status/check should respond").toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === 'integration-pending') {
-        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
+      if (body && body.status === "integration-pending") {
+        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
       }
     }
   });
 });
 
-test.describe('Phase 102: Notes', () => {
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+test.describe("Phase 102: Notes", () => {
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 102`).toBeGreaterThan(0);
   });
+
 });
 
-test.describe('Phase 106: VistA Alignment Coverage', () => {
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['VistaAlignmentBanner.tsx'];
+test.describe("Phase 106: VistA Alignment Coverage", () => {
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["VistaAlignmentBanner.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 106`).toBeGreaterThan(0);
   });
+
 });
 
-test.describe('Phase 109: Modular Packaging + Feature Flags', () => {
-  test('API routes respond (no 500)', async ({ request }) => {
+test.describe("Phase 109: Modular Packaging + Feature Flags", () => {
+  test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/admin/modules/audit`);
-    expect(r0.status(), '/admin/modules/audit not 500').not.toBe(500);
+    expect(r0.status(), "/admin/modules/audit not 500").not.toBe(500);
     const r1 = await request.get(`${API}/admin/modules/entitlements`);
-    expect(r1.status(), '/admin/modules/entitlements not 500').not.toBe(500);
+    expect(r1.status(), "/admin/modules/entitlements not 500").not.toBe(500);
     const r2 = await request.get(`${API}/admin/modules/feature-flags?tenantId=X`);
-    expect(r2.status(), '/admin/modules/feature-flags?tenantId=X not 500').not.toBe(500);
+    expect(r2.status(), "/admin/modules/feature-flags?tenantId=X not 500").not.toBe(500);
   });
 
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 109`).toBeGreaterThan(0);
   });
 
-  test('integration-pending responses are compliant', async ({ request }) => {
+  test("integration-pending responses are compliant", async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/admin/modules/audit`);
-    expect(res.status(), '/admin/modules/audit should respond').toBeDefined();
+    expect(res.status(), "/admin/modules/audit should respond").toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === 'integration-pending') {
-        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
+      if (body && body.status === "integration-pending") {
+        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
       }
     }
   });
 });
 
-test.describe('Phase 110: RCM Core v1: Credential Vault + LOA Engine', () => {
-  test('API routes respond (no 500)', async ({ request }) => {
+test.describe("Phase 110: RCM Core v1: Credential Vault + LOA Engine", () => {
+  test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/cprs/admin/rcm`);
-    expect(r0.status(), '/cprs/admin/rcm not 500').not.toBe(500);
+    expect(r0.status(), "/cprs/admin/rcm not 500").not.toBe(500);
     const r1 = await request.get(`${API}/expiring`);
-    expect(r1.status(), '/expiring not 500').not.toBe(500);
+    expect(r1.status(), "/expiring not 500").not.toBe(500);
     const r2 = await request.get(`${API}/rcm/accreditation`);
-    expect(r2.status(), '/rcm/accreditation not 500').not.toBe(500);
+    expect(r2.status(), "/rcm/accreditation not 500").not.toBe(500);
     const r3 = await request.get(`${API}/rcm/accreditation/stats`);
-    expect(r3.status(), '/rcm/accreditation/stats not 500').not.toBe(500);
+    expect(r3.status(), "/rcm/accreditation/stats not 500").not.toBe(500);
     const r4 = await request.get(`${API}/rcm/audit/verify`);
-    expect(r4.status(), '/rcm/audit/verify not 500').not.toBe(500);
+    expect(r4.status(), "/rcm/audit/verify not 500").not.toBe(500);
   });
 
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 110`).toBeGreaterThan(0);
   });
 
-  test('integration-pending responses are compliant', async ({ request }) => {
+  test("integration-pending responses are compliant", async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/cprs/admin/rcm`);
-    expect(res.status(), '/cprs/admin/rcm should respond').toBeDefined();
+    expect(res.status(), "/cprs/admin/rcm should respond").toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === 'integration-pending') {
-        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
+      if (body && body.status === "integration-pending") {
+        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
       }
     }
   });
 });
 
-test.describe('Phase 111: IMPLEMENT: Claim Scrubbing + Claim Lifecycle', () => {
-  test('API routes respond (no 500)', async ({ request }) => {
+test.describe("Phase 111: IMPLEMENT: Claim Scrubbing + Claim Lifecycle", () => {
+  test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/rcm/claim-lifecycle/drafts`);
-    expect(r0.status(), '/rcm/claim-lifecycle/drafts not 500').not.toBe(500);
+    expect(r0.status(), "/rcm/claim-lifecycle/drafts not 500").not.toBe(500);
     const r1 = await request.get(`${API}/rcm/claim-lifecycle/drafts/aging`);
-    expect(r1.status(), '/rcm/claim-lifecycle/drafts/aging not 500').not.toBe(500);
+    expect(r1.status(), "/rcm/claim-lifecycle/drafts/aging not 500").not.toBe(500);
     const r2 = await request.get(`${API}/rcm/claim-lifecycle/drafts/stats`);
-    expect(r2.status(), '/rcm/claim-lifecycle/drafts/stats not 500').not.toBe(500);
+    expect(r2.status(), "/rcm/claim-lifecycle/drafts/stats not 500").not.toBe(500);
     const r3 = await request.get(`${API}/rcm/claim-lifecycle/metrics`);
-    expect(r3.status(), '/rcm/claim-lifecycle/metrics not 500').not.toBe(500);
+    expect(r3.status(), "/rcm/claim-lifecycle/metrics not 500").not.toBe(500);
     const r4 = await request.get(`${API}/rcm/claim-lifecycle/metrics/scrub`);
-    expect(r4.status(), '/rcm/claim-lifecycle/metrics/scrub not 500').not.toBe(500);
+    expect(r4.status(), "/rcm/claim-lifecycle/metrics/scrub not 500").not.toBe(500);
   });
 
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 111`).toBeGreaterThan(0);
   });
 
-  test('integration-pending responses are compliant', async ({ request }) => {
+  test("integration-pending responses are compliant", async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/rcm/claim-lifecycle/drafts`);
-    expect(res.status(), '/rcm/claim-lifecycle/drafts should respond').toBeDefined();
+    expect(res.status(), "/rcm/claim-lifecycle/drafts should respond").toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === 'integration-pending') {
-        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
+      if (body && body.status === "integration-pending") {
+        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
       }
     }
   });
 });
 
-test.describe('Phase 112: Evidence Pipeline + No-Fake-Integrations Gate', () => {
-  test('API routes respond (no 500)', async ({ request }) => {
+test.describe("Phase 112: Evidence Pipeline + No-Fake-Integrations Gate", () => {
+  test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/rcm/evidence`);
-    expect(r0.status(), '/rcm/evidence not 500').not.toBe(500);
+    expect(r0.status(), "/rcm/evidence not 500").not.toBe(500);
     const r1 = await request.get(`${API}/rcm/evidence/by-payer/US-CMS-MEDICARE-A`);
-    expect(r1.status(), '/rcm/evidence/by-payer/US-CMS-MEDICARE-A not 500').not.toBe(500);
+    expect(r1.status(), "/rcm/evidence/by-payer/US-CMS-MEDICARE-A not 500").not.toBe(500);
     const r2 = await request.get(`${API}/rcm/evidence/coverage`);
-    expect(r2.status(), '/rcm/evidence/coverage not 500').not.toBe(500);
+    expect(r2.status(), "/rcm/evidence/coverage not 500").not.toBe(500);
     const r3 = await request.get(`${API}/rcm/evidence/gaps`);
-    expect(r3.status(), '/rcm/evidence/gaps not 500').not.toBe(500);
+    expect(r3.status(), "/rcm/evidence/gaps not 500").not.toBe(500);
     const r4 = await request.get(`${API}/rcm/evidence/nonexistent`);
-    expect(r4.status(), '/rcm/evidence/nonexistent not 500').not.toBe(500);
+    expect(r4.status(), "/rcm/evidence/nonexistent not 500").not.toBe(500);
   });
 
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 112`).toBeGreaterThan(0);
   });
 
-  test('integration-pending responses are compliant', async ({ request }) => {
+  test("integration-pending responses are compliant", async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/rcm/evidence`);
-    expect(res.status(), '/rcm/evidence should respond').toBeDefined();
+    expect(res.status(), "/rcm/evidence should respond").toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === 'integration-pending') {
-        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
+      if (body && body.status === "integration-pending") {
+        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
       }
     }
   });
 });
 
-test.describe('Phase 124: UI Dead-Click Zero + Stub Reduction (Credibility Pass)', () => {
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['OrdersPanel.tsx', 'SurgeryPanel.tsx', 'page.tsx'];
+test.describe("Phase 124: UI Dead-Click Zero + Stub Reduction (Credibility Pass)", () => {
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["OrdersPanel.tsx","SurgeryPanel.tsx","page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 3 UI files for Phase 124`).toBeGreaterThan(0);
   });
+
 });
 
-test.describe('Phase 130: IMPLEMENT: VistA MailMan Bridge (ZVEMSGR RPC + Portal VistA-', () => {
-  test('API routes respond (no 500)', async ({ request }) => {
+test.describe("Phase 130: IMPLEMENT: VistA MailMan Bridge (ZVEMSGR RPC + Portal VistA-", () => {
+  test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/portal/mailman/`);
-    expect(r0.status(), '/portal/mailman/ not 500').not.toBe(500);
+    expect(r0.status(), "/portal/mailman/ not 500").not.toBe(500);
     const r1 = await request.get(`${API}/portal/mailman/inbox`);
-    expect(r1.status(), '/portal/mailman/inbox not 500').not.toBe(500);
+    expect(r1.status(), "/portal/mailman/inbox not 500").not.toBe(500);
     const r2 = await request.get(`${API}/vista/mailman/`);
-    expect(r2.status(), '/vista/mailman/ not 500').not.toBe(500);
+    expect(r2.status(), "/vista/mailman/ not 500").not.toBe(500);
     const r3 = await request.get(`${API}/vista/mailman/inbox`);
-    expect(r3.status(), '/vista/mailman/inbox not 500').not.toBe(500);
+    expect(r3.status(), "/vista/mailman/inbox not 500").not.toBe(500);
     const r4 = await request.get(`${API}/vista/mailman/send`);
-    expect(r4.status(), '/vista/mailman/send not 500').not.toBe(500);
+    expect(r4.status(), "/vista/mailman/send not 500").not.toBe(500);
   });
 
-  test('UI component files exist on disk', async () => {
-    const componentNames = ['page.tsx'];
+  test("UI component files exist on disk", async () => {
+    const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
       if (depth > 6) return false;
       try {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
           if (entry.isFile() && entry.name === name) return true;
-          if (entry.isDirectory() && !entry.name.startsWith('.') && entry.name !== 'node_modules') {
+          if (entry.isDirectory() && !entry.name.startsWith(".") && entry.name !== "node_modules") {
             if (findFile(join(dir, entry.name), name, depth + 1)) return true;
           }
         }
-      } catch {
-        /* permission error or similar */
-      }
+      } catch { /* permission error or similar */ }
       return false;
     }
     let found = 0;
     for (const name of componentNames) {
-      if (findFile(join(ROOT, 'apps'), name)) found++;
+      if (findFile(join(ROOT, "apps"), name)) found++;
     }
     expect(found, `Expected >= 1 of 1 UI files for Phase 130`).toBeGreaterThan(0);
   });
 
-  test('integration-pending responses are compliant', async ({ request }) => {
+  test("integration-pending responses are compliant", async ({ request }) => {
     // Spot-check first accessible route for pending compliance
     const res = await request.get(`${API}/portal/mailman/`);
-    expect(res.status(), '/portal/mailman/ should respond').toBeDefined();
+    expect(res.status(), "/portal/mailman/ should respond").toBeDefined();
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
-      if (body && body.status === 'integration-pending') {
-        expect(body, 'integration-pending must have nextSteps').toHaveProperty('nextSteps');
+      if (body && body.status === "integration-pending") {
+        expect(body, "integration-pending must have nextSteps").toHaveProperty("nextSteps");
       }
     }
   });

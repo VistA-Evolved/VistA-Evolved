@@ -10,7 +10,7 @@
  *
  * Usage:
  *   pnpm run verify:vista
- *   (requires VISTA_HOST, VISTA_PORT, VISTA_ACCESS_CODE, VISTA_VERIFY_CODE in env or .env.local)
+ *   (loads apps/api/.env.local via the root package script, or accepts env vars directly)
  *
  * Exit codes:
  *   0 = all tests passed
@@ -25,7 +25,7 @@ import { VistaRpcBridge } from '../apps/api/src/services/vistaRpcBridge.js';
 /* ------------------------------------------------------------------ */
 
 const host = process.env.VISTA_HOST || '127.0.0.1';
-const port = Number(process.env.VISTA_PORT || 9430);
+const port = Number(process.env.VISTA_PORT || 9431);
 const accessCode = process.env.VISTA_ACCESS_CODE || '';
 const verifyCode = process.env.VISTA_VERIFY_CODE || '';
 
@@ -33,7 +33,7 @@ if (!accessCode || !verifyCode) {
   console.error(
     '\n❌ Missing VistA credentials.\n' +
       'Set VISTA_ACCESS_CODE and VISTA_VERIFY_CODE in environment or .env.local\n' +
-      'Example: VISTA_ACCESS_CODE=PROV123 VISTA_VERIFY_CODE=PROV123!!\n'
+      'Example: VISTA_ACCESS_CODE=PRO1234 VISTA_VERIFY_CODE=PRO1234!!\n'
   );
   process.exit(2);
 }

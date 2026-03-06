@@ -25,11 +25,8 @@ export default function Home() {
           <Link className={styles.primary} href="/cprs/verify">
             Verification Dashboard
           </Link>
-          <Link className={styles.secondary} href="/patient-search">
-            Legacy Patient Search
-          </Link>
-          <Link className={styles.secondary} href="/chart/1/cover">
-            Legacy Chart Shell
+          <Link className={styles.secondary} href="/cprs">
+            Canonical CPRS Shell
           </Link>
         </div>
       </main>

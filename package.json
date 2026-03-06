@@ -54,13 +54,14 @@
     "qa:gauntlet:manifest": "node qa/gauntlet/build-manifest.mjs",
     "qa:phase-registry": "node scripts/qa/phase-registry.mjs",
     "qa:generate-tests": "node scripts/qa/generate-phase-tests.mjs",
+    "qa:runtime-truth": "node scripts/qa/runtime-truth-map.mjs",
     "qa:rpc-trace:verify": "node scripts/qa/rpc-trace-manager.mjs verify",
     "qa:rpc-trace:record": "node scripts/qa/rpc-trace-manager.mjs record",
     "qa:journeys:clinic-day": "node scripts/qa/clinic-day-runner.mjs",
     "qa:report:fast": "node scripts/qa/regenerate-gauntlet-fast-report.mjs",
     "validate:specialty-packs": "node scripts/qa/validate-specialty-packs.mjs",
     "audit:system": "node scripts/audit/system-audit.mjs",
-    "verify:vista": "pnpm -C apps/api exec tsx ../../scripts/verify-vista.ts",
+    "verify:vista": "pnpm -C apps/api exec -- tsx --env-file=.env.local ../../scripts/verify-vista.ts",
     "seed:demo": "pnpm -C apps/api exec tsx ../../scripts/seed-demo-data.ts"
   },
   "devDependencies": {

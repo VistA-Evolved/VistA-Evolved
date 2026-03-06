@@ -49,6 +49,8 @@ import {
   updateTenantConnectors,
   updateTenantJurisdiction,
 } from '../config/marketplace-tenant.js';
+import { isPgConfigured } from '../platform/pg/pg-db.js';
+import { getEnabledModuleIds, listTenantModules } from '../platform/pg/repo/module-repo.js';
 
 export default async function moduleCapabilityRoutes(server: FastifyInstance): Promise<void> {
   /* ---------------------------------------------------------------- */
@@ -119,8 +121,18 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     }
 
     const tenantId = ((request.query as any)?.tenantId as string) || 'default';
-    const status = getModuleStatus(tenantId);
-    const depErrors = validateDependencies(getEnabledModules(tenantId));
+    let enabledModules = getEnabledModules(tenantId);
+    if (isPgConfigured()) {
+      const tenantRows = await listTenantModules(tenantId).catch(() => []);
+      if (tenantRows.length > 0) {
+        enabledModules = await getEnabledModuleIds(tenantId).catch(() => getEnabledModules(tenantId));
+      }
+    }
+    const status = getModuleStatus(tenantId).map((entry) => ({
+      ...entry,
+      enabled: entry.alwaysEnabled || enabledModules.includes(entry.moduleId),
+    }));
+    const depErrors = validateDependencies(enabledModules);
 
     return {
       ok: true,
@@ -283,7 +295,24 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     }
 
     const tenantId = ((request.query as any)?.tenantId as string) || 'default';
-    const manifests = getAllModuleManifests(tenantId);
+    let enabledModules = getEnabledModules(tenantId);
+    if (isPgConfigured()) {
+      const tenantRows = await listTenantModules(tenantId).catch(() => []);
+      if (tenantRows.length > 0) {
+        enabledModules = await getEnabledModuleIds(tenantId).catch(() => getEnabledModules(tenantId));
+      }
+    }
+    const enabledSet = new Set(enabledModules);
+    const manifests = getAllModuleManifests(tenantId).map((entry) => ({
+      ...entry,
+      enabled: entry.manifest.alwaysEnabled || enabledSet.has(entry.moduleId),
+      dependenciesMet: entry.manifest.dependencies.every(
+        (dep) => dep === 'kernel' || enabledSet.has(dep)
+      ),
+      missingDependencies: entry.manifest.dependencies.filter(
+        (dep) => dep !== 'kernel' && !enabledSet.has(dep)
+      ),
+    }));
 
     return {
       ok: true,

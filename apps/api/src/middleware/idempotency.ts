@@ -29,7 +29,10 @@ function dbWarn(op: string, err: unknown): void {
 /* ------------------------------------------------------------------ */
 
 interface IdempotencyKeyData {
-  compositeKey: string;
+  tenantId: string;
+  key: string;
+  method: string;
+  path: string;
   statusCode: number;
   responseBody: string | null;
   createdAt: number;
@@ -38,9 +41,10 @@ interface IdempotencyKeyData {
 interface IdempotencyRepo {
   upsertKey(data: IdempotencyKeyData): any;
   findByKey(
-    compositeKey: string
+    tenantId: string,
+    key: string
   ): IdempotencyKeyData | undefined | Promise<IdempotencyKeyData | undefined>;
-  deleteKey(compositeKey: string): any;
+  deleteKey(tenantId: string, key: string): any;
   pruneExpiredKeys(): any;
 }
 let _repo: IdempotencyRepo | null = null;
@@ -127,9 +131,9 @@ export function idempotencyGuard() {
       return;
     }
 
-    // Get tenant from session (default if not available)
+    // Prefer request-scoped tenant resolved by tenant middleware.
     const session = (request as any).session;
-    const tenantId = session?.tenantId ?? 'default';
+    const tenantId = (request as any).tenantId ?? session?.tenantId ?? 'default';
     const cKey = compositeKey(tenantId, idempotencyKey);
 
     // Prune expired entries periodically
@@ -140,14 +144,28 @@ export function idempotencyGuard() {
     // Check if key exists and is not expired
     const cached = memoryStore.get(cKey);
     if (cached && cached.expiresAt > Date.now()) {
+      if (cached.statusCode === 0) {
+        reply.status(409).header('Idempotency-Status', 'processing').send({
+          ok: false,
+          error: 'A request with this Idempotency-Key is already in progress',
+        });
+        return;
+      }
       reply.status(cached.statusCode).header('Idempotency-Replayed', 'true').send(cached.body);
       return;
     }
     // Check DB if not in cache
     if (!cached && _repo) {
       try {
-        const row = await _repo.findByKey(cKey);
+        const row = await _repo.findByKey(tenantId, idempotencyKey);
         if (row && row.expiresAt > Date.now()) {
+          if (!row.statusCode || row.statusCode <= 0) {
+            reply.status(409).header('Idempotency-Status', 'processing').send({
+              ok: false,
+              error: 'A request with this Idempotency-Key is already in progress',
+            });
+            return;
+          }
           let body: unknown = null;
           try {
             body = JSON.parse(row.responseBody ?? '');
@@ -183,7 +201,10 @@ export function idempotencyGuard() {
     if (_repo) {
       try {
         _repo.upsertKey({
-          compositeKey: cKey,
+          tenantId,
+          key: idempotencyKey,
+          method,
+          path: request.routeOptions?.url || request.url.split('?')[0],
           statusCode: 0,
           responseBody: '',
           createdAt: marker.createdAt,
@@ -206,7 +227,10 @@ export function idempotencyGuard() {
           if (_repo) {
             try {
               _repo.upsertKey({
-                compositeKey: cKey,
+                tenantId,
+                key: idempotencyKey,
+                method,
+                path: request.routeOptions?.url || request.url.split('?')[0],
                 statusCode: reply.statusCode,
                 responseBody: existing.body != null ? JSON.stringify(existing.body) : '',
                 createdAt: existing.createdAt,
@@ -223,7 +247,7 @@ export function idempotencyGuard() {
         memoryStore.delete(cKey);
         if (_repo) {
           try {
-            _repo.deleteKey(cKey);
+            _repo.deleteKey(tenantId, idempotencyKey);
           } catch (e) {
             dbWarn('persist', e);
           }
@@ -250,7 +274,7 @@ export async function idempotencyOnSend(
   if (!['POST', 'PUT', 'PATCH'].includes(method)) return payload;
 
   const session = (request as any).session;
-  const tenantId = session?.tenantId ?? 'default';
+  const tenantId = (request as any).tenantId ?? session?.tenantId ?? 'default';
   const cKey = compositeKey(tenantId, idempotencyKey);
 
   // Parse the payload to store as JSON
@@ -273,7 +297,10 @@ export async function idempotencyOnSend(
     if (_repo) {
       try {
         _repo.upsertKey({
-          compositeKey: cKey,
+          tenantId,
+          key: idempotencyKey,
+          method,
+          path: request.routeOptions?.url || request.url.split('?')[0],
           statusCode: reply.statusCode,
           responseBody: body != null ? JSON.stringify(body) : '',
           createdAt: existing.createdAt,

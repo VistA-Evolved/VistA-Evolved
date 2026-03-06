@@ -69,6 +69,32 @@ async function initPostgresLayer(): Promise<void> {
     log.warn('PG session repo wire failed (in-memory fallback)', { error: psErr.message });
   }
 
+  // Idempotency repo -> PG
+  try {
+    const pgIdempotencyRepoMod = await import('../platform/pg/repo/idempotency-repo.js');
+    const { initIdempotencyRepo } = await import('../middleware/idempotency.js');
+    initIdempotencyRepo(pgIdempotencyRepoMod);
+    log.info('Idempotency store wired to PG');
+  } catch (idemErr: any) {
+    log.warn('PG idempotency repo wire failed (in-memory fallback)', { error: idemErr.message });
+  }
+
+  // Seed the in-memory module cache from DB-backed entitlements so legacy
+  // status/manifests stay aligned with the runtime guard on startup.
+  try {
+    const { getEnabledModuleIds, listTenantModules } = await import('../platform/pg/repo/module-repo.js');
+    const { setTenantModules } = await import('../modules/module-registry.js');
+    const tenantRows = await listTenantModules('default');
+    if (tenantRows.length > 0) {
+      setTenantModules('default', await getEnabledModuleIds('default'));
+      log.info('Module registry warmed from PG entitlements for default tenant');
+    } else {
+      log.info('Module registry kept on SKU defaults (default tenant not yet provisioned in PG)');
+    }
+  } catch (moduleErr: any) {
+    log.warn('PG module entitlement warm-up failed (SKU fallback)', { error: moduleErr.message });
+  }
+
   // Workqueue repo -> PG
   try {
     const pgWqRepoMod = await import('../platform/pg/repo/workqueue-repo.js');
@@ -445,6 +471,14 @@ async function startBackgroundServices(): Promise<void> {
   const redisOk = initRedis();
   if (redisOk) {
     log.info('Redis client initialized (REDIS_URL configured)');
+  }
+
+  try {
+    const { initDurableQueue } = await import('../rcm/jobs/queue.js');
+    await initDurableQueue();
+    log.info('RCM durable queue initialized');
+  } catch (queueErr: any) {
+    log.warn('RCM durable queue init failed (in-memory fallback)', { error: queueErr.message });
   }
 
   // Phase 300: Bootstrap writeback domain executors (6 domains)

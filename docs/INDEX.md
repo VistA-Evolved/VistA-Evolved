@@ -21,12 +21,16 @@
 ### Architecture
 
 - [docs/architecture/](architecture/) -- Architecture specifications
+- [docs/architecture/hybrid-saas-runtime-topology.md](architecture/hybrid-saas-runtime-topology.md) -- Cloud SaaS, on-prem, and hybrid runtime model
 - [docs/vista/](vista/) -- VistA capability maps and grounding docs
 - [docs/vista-alignment/](vista-alignment/) -- RPC coverage maps (CPRS + Vivian + API cross-reference)
 
 ### Operational Runbooks
 
 - [docs/runbooks/](runbooks/) -- Step-by-step guides for each phase and subsystem
+- [docs/runbooks/production-readiness-handoff.md](runbooks/production-readiness-handoff.md) -- Engineering-team handoff for current runtime truth
+- [docs/runbooks/ai-proof-driven-stabilization.md](runbooks/ai-proof-driven-stabilization.md) -- AI remediation loop with mandatory proof steps
+- [docs/runbooks/canonical-clinical-journeys.md](runbooks/canonical-clinical-journeys.md) -- Canonical clinician route families and maturity map
 
 ### Decisions (ADRs)
 
@@ -69,3 +73,4 @@
 - Verification outputs are **artifacts**, not documentation.
 - They are written to `/artifacts/` (gitignored) and uploaded as CI artifacts.
 - Run `scripts/verify-latest.ps1` for the latest phase verifier.
+- Run `pnpm qa:runtime-truth` to generate a live runtime truth map at `artifacts/runtime-truth-map/latest.json`.

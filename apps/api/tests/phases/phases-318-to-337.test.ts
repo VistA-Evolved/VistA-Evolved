@@ -7,122 +7,122 @@
  *   node scripts/generate-phase-qa.mjs
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from "vitest";
 
-const API = process.env.API_URL ?? 'http://localhost:3001';
+const API = process.env.API_URL ?? "http://localhost:3001";
 
-describe('Phase 318: W14-P2 INTEGRATION CONTROL PLANE', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 318: W14-P2 INTEGRATION CONTROL PLANE", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/api/platform/integrations/`);
-    expect(r0.status, '/api/platform/integrations/').not.toBe(500);
+    expect(r0.status, "/api/platform/integrations/").not.toBe(500);
   });
 });
 
-describe('Phase 320: W14-P4: HL7v2 Ops Maturity', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 320: W14-P4: HL7v2 Ops Maturity", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/hl7/ops/dashboard`);
-    expect(r0.status, '/hl7/ops/dashboard').not.toBe(500);
+    expect(r0.status, "/hl7/ops/dashboard").not.toBe(500);
     const r1 = await fetch(`${API}/hl7/ops/retry`);
-    expect(r1.status, '/hl7/ops/retry').not.toBe(500);
+    expect(r1.status, "/hl7/ops/retry").not.toBe(500);
     const r2 = await fetch(`${API}/hl7/ops/retry/due`);
-    expect(r2.status, '/hl7/ops/retry/due').not.toBe(500);
+    expect(r2.status, "/hl7/ops/retry/due").not.toBe(500);
     const r3 = await fetch(`${API}/hl7/ops/retry/stats`);
-    expect(r3.status, '/hl7/ops/retry/stats').not.toBe(500);
+    expect(r3.status, "/hl7/ops/retry/stats").not.toBe(500);
     const r4 = await fetch(`${API}/hl7/ops/sla`);
-    expect(r4.status, '/hl7/ops/sla').not.toBe(500);
+    expect(r4.status, "/hl7/ops/sla").not.toBe(500);
   });
 });
 
-describe('Phase 321: W14-P5: X12 Gateway Service', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 321: W14-P5: X12 Gateway Service", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/x12/gateway/ack/999`);
-    expect(r0.status, '/x12/gateway/ack/999').not.toBe(500);
+    expect(r0.status, "/x12/gateway/ack/999").not.toBe(500);
     const r1 = await fetch(`${API}/x12/gateway/ack/ta1`);
-    expect(r1.status, '/x12/gateway/ack/ta1').not.toBe(500);
+    expect(r1.status, "/x12/gateway/ack/ta1").not.toBe(500);
     const r2 = await fetch(`${API}/x12/gateway/control-numbers`);
-    expect(r2.status, '/x12/gateway/control-numbers').not.toBe(500);
+    expect(r2.status, "/x12/gateway/control-numbers").not.toBe(500);
     const r3 = await fetch(`${API}/x12/gateway/handlers`);
-    expect(r3.status, '/x12/gateway/handlers').not.toBe(500);
+    expect(r3.status, "/x12/gateway/handlers").not.toBe(500);
     const r4 = await fetch(`${API}/x12/gateway/health`);
-    expect(r4.status, '/x12/gateway/health').not.toBe(500);
+    expect(r4.status, "/x12/gateway/health").not.toBe(500);
   });
 });
 
-describe('Phase 322: W14-P6: Clearinghouse Adapters v2', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 322: W14-P6: Clearinghouse Adapters v2", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/clearinghouse/health`);
-    expect(r0.status, '/clearinghouse/health').not.toBe(500);
+    expect(r0.status, "/clearinghouse/health").not.toBe(500);
     const r1 = await fetch(`${API}/clearinghouse/profiles`);
-    expect(r1.status, '/clearinghouse/profiles').not.toBe(500);
+    expect(r1.status, "/clearinghouse/profiles").not.toBe(500);
     const r2 = await fetch(`${API}/clearinghouse/transports`);
-    expect(r2.status, '/clearinghouse/transports').not.toBe(500);
+    expect(r2.status, "/clearinghouse/transports").not.toBe(500);
     const r3 = await fetch(`${API}/clearinghouse/vault/credentials`);
-    expect(r3.status, '/clearinghouse/vault/credentials').not.toBe(500);
+    expect(r3.status, "/clearinghouse/vault/credentials").not.toBe(500);
     const r4 = await fetch(`${API}/clearinghouse/vault/status`);
-    expect(r4.status, '/clearinghouse/vault/status').not.toBe(500);
+    expect(r4.status, "/clearinghouse/vault/status").not.toBe(500);
   });
 });
 
-describe('Phase 323: W14-P7: Integration Certification Pipeline', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 323: W14-P7: Integration Certification Pipeline", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/certification/`);
-    expect(r0.status, '/certification/').not.toBe(500);
+    expect(r0.status, "/certification/").not.toBe(500);
     const r1 = await fetch(`${API}/certification/stats`);
-    expect(r1.status, '/certification/stats').not.toBe(500);
+    expect(r1.status, "/certification/stats").not.toBe(500);
   });
 });
 
-describe('Phase 324: W14-P8: Integration Marketplace & Registry', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 324: W14-P8: Integration Marketplace & Registry", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/marketplace/`);
-    expect(r0.status, '/marketplace/').not.toBe(500);
+    expect(r0.status, "/marketplace/").not.toBe(500);
     const r1 = await fetch(`${API}/marketplace/stats`);
-    expect(r1.status, '/marketplace/stats').not.toBe(500);
+    expect(r1.status, "/marketplace/stats").not.toBe(500);
   });
 });
 
-describe('Phase 325: W14-P9: Integration Onboarding UX', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 325: W14-P9: Integration Onboarding UX", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/onboarding/`);
-    expect(r0.status, '/onboarding/').not.toBe(500);
+    expect(r0.status, "/onboarding/").not.toBe(500);
     const r1 = await fetch(`${API}/onboarding/stats`);
-    expect(r1.status, '/onboarding/stats').not.toBe(500);
+    expect(r1.status, "/onboarding/stats").not.toBe(500);
   });
 });
 
-describe('Phase 326: Wave 14 Integrity Audit & Fix Pass', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 326: Wave 14 Integrity Audit & Fix Pass", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/hl7/ops/store-stats`);
-    expect(r0.status, '/hl7/ops/store-stats').not.toBe(500);
+    expect(r0.status, "/hl7/ops/store-stats").not.toBe(500);
   });
 });
 
-describe('Phase 327: W15-P1: Manifest + Multi-Region ADRs', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 327: W15-P1: Manifest + Multi-Region ADRs", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/docs/adrs/`);
-    expect(r0.status, '/docs/adrs/').not.toBe(500);
+    expect(r0.status, "/docs/adrs/").not.toBe(500);
   });
 });
 
-describe('Phase 335: W15-P9: Enterprise SRE / Support Posture', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 335: W15-P9: Enterprise SRE / Support Posture", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/platform/sre/`);
-    expect(r0.status, '/platform/sre/').not.toBe(500);
+    expect(r0.status, "/platform/sre/").not.toBe(500);
   });
 });
 
-describe('Phase 336: W15-P10: Scale Certification Runner', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 336: W15-P10: Scale Certification Runner", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/platform/cert/`);
-    expect(r0.status, '/platform/cert/').not.toBe(500);
+    expect(r0.status, "/platform/cert/").not.toBe(500);
   });
 });
 
-describe('Phase 337: W16-P1: Range Reservation + Manifest + OSS/ADR Decisions', () => {
-  it('API routes respond (no 500)', async () => {
+describe("Phase 337: W16-P1: Range Reservation + Manifest + OSS/ADR Decisions", () => {
+  it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/docs/adrs/`);
-    expect(r0.status, '/docs/adrs/').not.toBe(500);
+    expect(r0.status, "/docs/adrs/").not.toBe(500);
     const r1 = await fetch(`${API}/evidence/wave-16/337-manifest/`);
-    expect(r1.status, '/evidence/wave-16/337-manifest/').not.toBe(500);
+    expect(r1.status, "/evidence/wave-16/337-manifest/").not.toBe(500);
   });
 });

@@ -32,7 +32,7 @@ import {
   countModuleAuditLog,
   isModuleEnabledForTenant,
 } from '../platform/pg/repo/module-repo.js';
-import { getActiveSkuProfile, getModuleDefinitions } from '../modules/module-registry.js';
+import { getActiveSkuProfile, getModuleDefinitions, setTenantModules } from '../modules/module-registry.js';
 
 export default async function moduleEntitlementRoutes(server: FastifyInstance): Promise<void> {
   // Scoped error handler -- catch DB errors and return clean 500 responses
@@ -124,6 +124,7 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
 
       // Apply change
       const result = await setModuleEnabled(tenantId, moduleId, enabled, session.duz, planTier);
+      setTenantModules(tenantId, await getEnabledModuleIds(tenantId));
 
       // Audit log
       await appendModuleAudit({
@@ -169,6 +170,7 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
         skuModules = skuProfile?.modules || Object.keys(getModuleDefinitions());
       }
       const seeded = await seedTenantModules(tenantId, skuModules, session.duz);
+      setTenantModules(tenantId, await getEnabledModuleIds(tenantId));
 
       // Audit
       await appendModuleAudit({

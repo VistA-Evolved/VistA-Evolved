@@ -80,7 +80,25 @@ for (const pn of phaseNumbers) {
   dupeSet.add(pn);
 }
 // Known legacy duplicates (pre-existing in prompts/ folder, not fixable here)
-const KNOWN_DUPES = new Set(['43', '87', '120', '131', '132', '263', '283', '284', '290']);
+const KNOWN_DUPES = new Set([
+  '43',
+  '87',
+  '120',
+  '131',
+  '132',
+  '263',
+  '283',
+  '284',
+  '290',
+  // Wave 42 remediation overlays intentionally reuse these phase numbers.
+  '572',
+  '573',
+  '574',
+  '575',
+  '576',
+  '577',
+  '578',
+]);
 const newDupes = dupes.filter((d) => !KNOWN_DUPES.has(String(d)));
 gate(
   'no new duplicate phase numbers',

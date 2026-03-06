@@ -14,6 +14,7 @@ export * as pgTaskRepo from './task-repo.js';
 export * as pgEvidenceRepo from './evidence-repo.js';
 export * as pgAuditRepo from './audit-repo.js';
 export * as pgCapabilityMatrixRepo from './capability-matrix-repo.js';
+export * as pgIdempotencyRepo from './idempotency-repo.js';
 export * as pgSessionRepo from './session-repo.js';
 export * as pgWorkqueueRepo from './workqueue-repo.js';
 export * as pgRcmClaimRepo from './rcm-claim-repo.js';
