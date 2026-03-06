@@ -1117,20 +1117,31 @@ export function registerInlineRoutes(server: FastifyInstance): void {
         const errMsg = lines[0].split('^').slice(1).join('^') || 'Unknown VistA error';
         return { ok: false, error: errMsg, rpcUsed: RPC_NAME };
       }
+      // ORQQPL PROBLEM LIST format: IEN^Status(A/I)^ProblemText^ICDCode^OnsetDateFM^LastModFM^...
       const results = lines
         .map((line) => {
           if (!line || line.trim() === '') return null;
           const parts = line.split('^');
-          if (parts.length < 2) return null;
+          // Skip count line (single numeric) or lines too short
+          if (parts.length < 3) return null;
           const ien = parts[0]?.trim();
-          const text = parts[1]?.trim();
-          const status = parts[2]?.trim() || 'Unknown';
-          const onset = parts[3]?.trim() || '';
-          if (!ien || !text) return null;
+          const statusFlag = parts[1]?.trim();   // 'A' = active, 'I' = inactive
+          const text = parts[2]?.trim();          // Problem narrative
+          const icdCode = parts[3]?.trim() || '';
+          const onsetFm = parts[4]?.trim() || '';
+          if (!ien || !text || !/^\d+$/.test(ien)) return null;
+          // Convert FileMan date (YYYMMDD where YYY = years since 1700)
+          let onset: string | undefined;
+          if (onsetFm && onsetFm.length >= 7 && /^\d{7}/.test(onsetFm)) {
+            const y = parseInt(onsetFm.substring(0, 3), 10) + 1700;
+            const m = onsetFm.substring(3, 5);
+            const d = onsetFm.substring(5, 7);
+            onset = `${y}-${m}-${d}`;
+          }
           let displayStatus = 'active';
-          if (status.toUpperCase().includes('I') || status === '0') displayStatus = 'inactive';
-          else if (status.toUpperCase().includes('R') || status === '2') displayStatus = 'resolved';
-          return { id: ien, text, status: displayStatus, onset: onset || undefined };
+          if (statusFlag === 'I') displayStatus = 'inactive';
+          else if (statusFlag === 'R') displayStatus = 'resolved';
+          return { id: ien, text, status: displayStatus, icdCode: icdCode || undefined, onset };
         })
         .filter((r) => r !== null);
       audit('phi.problems-view', 'success', auditActor(request), {

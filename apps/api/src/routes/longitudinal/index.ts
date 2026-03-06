@@ -71,16 +71,17 @@ async function fetchAllergies(dfn: string): Promise<TimelineEvent[]> {
 async function fetchProblems(dfn: string): Promise<TimelineEvent[]> {
   try {
     const lines = await safeCallRpc('ORQQPL PROBLEM LIST', [dfn, 'A']);
+    // ORQQPL PROBLEM LIST format: IEN^Status(A/I)^ProblemText^ICDCode^OnsetDateFM^...
     return lines
-      .filter((l: string) => l.trim())
+      .filter((l: string) => l.trim() && /^\d+\^/.test(l))
       .map((line: string) => {
         const parts = line.split('^');
         return {
           id: `problem-${parts[0]?.trim() || '?'}`,
           domain: 'problem',
-          date: parseFmDate(parts[3]?.trim() || ''),
-          summary: parts[1]?.trim() || 'Unknown problem',
-          detail: parts[2]?.trim() || '',
+          date: parseFmDate(parts[4]?.trim() || ''),  // parts[4] = OnsetDateFM
+          summary: parts[2]?.trim() || 'Unknown problem', // parts[2] = ProblemText
+          detail: parts[3]?.trim() || '',                 // parts[3] = ICD code
           ien: parts[0]?.trim(),
         };
       });
@@ -93,15 +94,16 @@ async function fetchProblems(dfn: string): Promise<TimelineEvent[]> {
 async function fetchVitals(dfn: string): Promise<TimelineEvent[]> {
   try {
     const lines = await safeCallRpc('ORQQVI VITALS', [dfn]);
+    // ORQQVI VITALS format: IEN^Type^Value^DateTimeFM^...
     return lines
-      .filter((l: string) => l.trim())
+      .filter((l: string) => l.trim() && /^\d+\^/.test(l))
       .map((line: string) => {
         const parts = line.split('^');
         return {
           id: `vital-${parts[0]?.trim() || Math.random().toString(36).slice(2)}`,
           domain: 'vital',
-          date: parseFmDate(parts[1]?.trim() || ''),
-          summary: `${parts[2]?.trim() || '?'}: ${parts[3]?.trim() || '?'}`,
+          date: parseFmDate(parts[3]?.trim() || ''),  // parts[3] = DateTimeFM
+          summary: `${parts[1]?.trim() || '?'}: ${parts[2]?.trim() || '?'}`,  // type: value
           ien: parts[0]?.trim(),
         };
       });

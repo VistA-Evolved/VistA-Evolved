@@ -107,7 +107,7 @@ export default async function vistaRcmRoutes(server: FastifyInstance): Promise<v
   server.get('/vista/rcm/encounters', async (request) => {
     const dfn = validateDfn((request.query as any)?.dfn);
     if (!dfn) {
-      return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=3' };
+      return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=46' };
     }
 
     try {
@@ -177,7 +177,7 @@ export default async function vistaRcmRoutes(server: FastifyInstance): Promise<v
   server.get('/vista/rcm/insurance', async (request) => {
     const dfn = validateDfn((request.query as any)?.dfn);
     if (!dfn) {
-      return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=3' };
+      return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=46' };
     }
 
     try {
@@ -311,7 +311,7 @@ export default async function vistaRcmRoutes(server: FastifyInstance): Promise<v
   server.get('/vista/rcm/charges', async (request) => {
     const dfn = validateDfn((request.query as any)?.dfn);
     if (!dfn) {
-      return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=3' };
+      return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=46' };
     }
 
     audit('phi.rcm-charges-view', 'success', auditActor(request), {
@@ -339,7 +339,7 @@ export default async function vistaRcmRoutes(server: FastifyInstance): Promise<v
   server.get('/vista/rcm/claims-status', async (request) => {
     const dfn = validateDfn((request.query as any)?.dfn);
     if (!dfn) {
-      return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=3' };
+      return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=46' };
     }
 
     audit('phi.rcm-claims-status-view', 'success', auditActor(request), {
@@ -367,7 +367,7 @@ export default async function vistaRcmRoutes(server: FastifyInstance): Promise<v
   server.get('/vista/rcm/ar-status', async (request) => {
     const dfn = validateDfn((request.query as any)?.dfn);
     if (!dfn) {
-      return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=3' };
+      return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=46' };
     }
 
     audit('phi.rcm-ar-status-view', 'success', auditActor(request), {

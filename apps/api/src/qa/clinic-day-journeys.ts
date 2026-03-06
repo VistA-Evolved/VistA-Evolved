@@ -116,7 +116,7 @@ export const J1_OUTPATIENT: JourneyDefinition = {
     {
       name: 'Read vitals',
       method: 'GET',
-      path: '/vista/nursing/vitals?dfn=3',
+      path: '/vista/nursing/vitals?dfn=46',
       expectedStatus: 200,
       requiredFields: ['ok'],
       expectedRpcs: ['ORQQVI VITALS'],
@@ -146,7 +146,7 @@ export const J1_OUTPATIENT: JourneyDefinition = {
     {
       name: 'Read active orders',
       method: 'GET',
-      path: '/vista/orders?dfn=3',
+      path: '/vista/orders?dfn=46',
       expectedStatus: 200,
       requiredFields: ['ok'],
       expectedRpcs: ['ORWORB FASTUSER', 'ORWOR UNSIGN'],
@@ -185,7 +185,7 @@ export const J2_ED: JourneyDefinition = {
     {
       name: 'Read patient allergies',
       method: 'GET',
-      path: '/vista/allergies?dfn=3',
+      path: '/vista/allergies?dfn=46',
       expectedStatus: 200,
       requiredFields: ['ok'],
       expectedRpcs: ['ORQQAL LIST'],
@@ -193,7 +193,7 @@ export const J2_ED: JourneyDefinition = {
     {
       name: 'Read patient problems',
       method: 'GET',
-      path: '/vista/problems?dfn=3',
+      path: '/vista/problems?dfn=46',
       expectedStatus: 200,
       requiredFields: ['ok'],
       expectedRpcs: ['ORQQPL PROBLEM LIST'],
@@ -209,7 +209,7 @@ export const J2_ED: JourneyDefinition = {
     {
       name: 'Read discharge summaries',
       method: 'GET',
-      path: '/vista/dc-summaries?dfn=3',
+      path: '/vista/dc-summaries?dfn=46',
       expectedStatus: 200,
       requiredFields: ['ok'],
       expectedRpcs: ['TIU DOCUMENTS BY CONTEXT'],
@@ -226,7 +226,7 @@ export const J3_LAB: JourneyDefinition = {
     {
       name: 'Read lab results',
       method: 'GET',
-      path: '/vista/labs?dfn=3',
+      path: '/vista/labs?dfn=46',
       expectedStatus: 200,
       requiredFields: ['ok'],
       expectedRpcs: ['ORWLRR INTERIM'],
@@ -242,7 +242,7 @@ export const J3_LAB: JourneyDefinition = {
     {
       name: 'Read notifications',
       method: 'GET',
-      path: '/vista/notifications?dfn=3',
+      path: '/vista/notifications?dfn=46',
       expectedStatus: 200,
       requiredFields: ['ok'],
       expectedRpcs: ['ORWORB FASTUSER'],
@@ -393,7 +393,7 @@ export const T0_OUTPATIENT: JourneyDefinition = {
     {
       name: 'Read patient vitals (VistA RPC)',
       method: 'GET',
-      path: '/vista/nursing/vitals?dfn=3',
+      path: '/vista/nursing/vitals?dfn=46',
       expectedStatus: 200,
       requiredFields: ['ok'],
       expectedRpcs: ['ORQQVI VITALS'],
@@ -401,7 +401,7 @@ export const T0_OUTPATIENT: JourneyDefinition = {
     {
       name: 'Read patient allergies (VistA RPC)',
       method: 'GET',
-      path: '/vista/allergies?dfn=3',
+      path: '/vista/allergies?dfn=46',
       expectedStatus: 200,
       requiredFields: ['ok'],
       expectedRpcs: ['ORQQAL LIST'],
@@ -409,7 +409,7 @@ export const T0_OUTPATIENT: JourneyDefinition = {
     {
       name: 'Read patient problems (VistA RPC)',
       method: 'GET',
-      path: '/vista/problems?dfn=3',
+      path: '/vista/problems?dfn=46',
       expectedStatus: 200,
       requiredFields: ['ok'],
       expectedRpcs: ['ORQQPL PROBLEM LIST'],

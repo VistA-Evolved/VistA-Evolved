@@ -4780,17 +4780,15 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   'scrub_rule',
   'scrub_result',
   'rcm_durable_job',
-  // Phase 174: Module entitlements
-  'module_catalog',
+  // Phase 174: Module entitlements (module_catalog is global — no tenant_id)
   'tenant_module',
   'tenant_feature_flag',
   'module_audit_log',
   // Phase 275: Tenant config control plane
   'tenant_config',
   // Phase 300: Clinical writeback command bus
+  // clinical_command_attempt/result inherit tenant scope via FK to clinical_command
   'clinical_command',
-  'clinical_command_attempt',
-  'clinical_command_result',
   // Phase 318: Integration Control Plane v2
   'integration_partner',
   'integration_endpoint',
@@ -4839,11 +4837,9 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   // Phase 359: UI Extension Slots
   'ui_extension_slot',
   'ui_slot_policy',
-  // Phase 360: Plugin Marketplace
-  'marketplace_listing',
+  // Phase 360: Plugin Marketplace (marketplace_listing/audit_log are global catalogs)
   'marketplace_install',
   'marketplace_review',
-  'marketplace_audit_log',
   // Wave 19: Analytics Data Platform (Phases 362-369)
   'analytics_extract_run',
   'analytics_extract_record',
@@ -4904,6 +4900,19 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   'discharge_plan',
   'mar_safety_event',
   'device_alarm',
+  // Wave 16 (Phase 338-343): Session security + SCIM + ABAC + key management
+  'session_device_fingerprint',
+  'session_mfa_state',
+  'session_security_event',
+  'scim_user',
+  'scim_group',
+  'scim_group_member',
+  'encryption_key',
+  'key_rotation_event',
+  'tenant_security_policy',
+  'tenant_security_policy_change',
+  'sensitivity_tag',
+  'access_reason',
 ] as const;
 
 /**

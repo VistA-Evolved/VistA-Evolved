@@ -157,11 +157,14 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
   async getProblems(dfn: string): Promise<AdapterResult<ProblemRecord[]>> {
     try {
       const { safeCallRpc } = await import('../../lib/rpc-resilience.js');
-      const rawLines = await safeCallRpc('ORQQPL PROBLEM LIST', [dfn]);
-      const problems: ProblemRecord[] = rawLines.filter(Boolean).map((line: string) => {
-        const parts = line.split('^');
-        return { id: parts[0] || '', description: parts[1] || '' };
-      });
+      const rawLines = await safeCallRpc('ORQQPL PROBLEM LIST', [dfn, 'A']);
+      // ORQQPL PROBLEM LIST format: IEN^Status(A/I)^ProblemText^ICDCode^OnsetDateFM^...
+      const problems: ProblemRecord[] = rawLines
+        .filter((line: string) => Boolean(line) && /^\d+\^/.test(line))
+        .map((line: string) => {
+          const parts = line.split('^');
+          return { id: parts[0] || '', description: parts[2] || parts[1] || '' };
+        });
       return { ok: true, data: problems };
     } catch (err: any) {
       return { ok: false, error: err.message };
