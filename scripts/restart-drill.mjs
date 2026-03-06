@@ -62,8 +62,11 @@ async function fetchJson(path, opts = {}) {
 }
 
 async function loginAndGetCookies() {
-  const accessCode = process.env.VISTA_ACCESS_CODE || 'PRO1234';
-  const verifyCode = process.env.VISTA_VERIFY_CODE || 'PRO1234!!';
+  const accessCode = process.env.VISTA_ACCESS_CODE;
+  const verifyCode = process.env.VISTA_VERIFY_CODE;
+  if (!accessCode || !verifyCode) {
+    return null;
+  }
   const res = await fetch(`${API}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

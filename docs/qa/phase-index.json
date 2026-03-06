@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-05T20:56:28.906Z",
+  "generatedAt": "2026-03-06T01:24:32.352Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 590,
+  "phaseCount": 591,
   "phases": [
     {
       "phaseNumber": "1",
@@ -14867,6 +14867,31 @@
       "rpcs": [],
       "uiComponents": [],
       "filesTouched": []
+    },
+    {
+      "phaseNumber": "587",
+      "title": "Full Repo Audit Stabilization - IMPLEMENT",
+      "folder": "587-PHASE-587-FULL-REPO-AUDIT-STABILIZATION",
+      "files": [
+        "587-01-IMPLEMENT.md",
+        "587-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "587-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "587-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/587-PHASE-587-FULL-REPO-AUDIT-STABILIZATION/587-01-IMPLEMENT.md",
+        "prompts/587-PHASE-587-FULL-REPO-AUDIT-STABILIZATION/587-99-VERIFY.md",
+        "docs/runbooks/<to-be-created-or-updated>.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
     },
     {
       "phaseNumber": "54",

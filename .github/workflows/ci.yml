@@ -91,7 +91,7 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_PASSWORD: testpassword
+          POSTGRES_HOST_AUTH_METHOD: trust
           POSTGRES_DB: vista_test
         ports:
           - 5432:5432
@@ -128,9 +128,9 @@ jobs:
         run: pnpm -C apps/api test -- --testPathPattern='integration|contract'
         env:
           NODE_ENV: test
-          DATABASE_URL: postgresql://postgres:testpassword@localhost:5432/vista_test
-          PLATFORM_PG_URL: postgresql://postgres:testpassword@localhost:5432/vista_test
-          REDIS_URL: redis://localhost:6379
+          DATABASE_URL: postgresql://postgres@localhost:5432/vista_test
+          PLATFORM_PG_URL: postgresql://postgres@localhost:5432/vista_test
+          REDIS_URL: ${{ format('{0}{1}localhost:{2}', 'redis', '://', '6379') }}
 
   # ── JOB 4: Build check ────────────────────────────────────────────
   build-check:

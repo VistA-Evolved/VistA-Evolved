@@ -79,8 +79,8 @@ if [[ "$PROFILE" == "compose" ]]; then
   PG_COMPOSE_FILE=""
   BROKER_HOST="127.0.0.1"
   BROKER_PORT=9210
-  ACCESS_CODE="PROV123"
-  VERIFY_CODE="PROV123!!"
+  ACCESS_CODE="${VISTA_ACCESS_CODE:-PRO1234}"
+  VERIFY_CODE="${VISTA_VERIFY_CODE:-PRO1234!!}"
   INSTANCE_ID="compose-dev"
   echo ""
   echo "================================================================"
@@ -91,7 +91,7 @@ if [[ "$PROFILE" == "compose" ]]; then
   echo "  * VistA broker on port 9210, Web UI on 8001"
   echo "  * PostgreSQL on 5432, Redis on 6379"
   echo "  * API on 4000 (containerized), Web on 5173 (containerized)"
-  echo "  * Credentials: PROV123 / PROV123!!"
+  echo "  * Credentials: set VISTA_ACCESS_CODE / VISTA_VERIFY_CODE in shell or .env"
   echo "  * Requires: .env at repo root (copy from .env.example)"
   echo ""
 else

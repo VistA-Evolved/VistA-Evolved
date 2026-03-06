@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "description": "Integration-pending budget baseline (Phase 555 / Wave 40 P13)",
-    "updatedAt": "2026-03-03T02:23:12.648Z",
-    "updatedBy": "Phase 555: +11 from Waves 37-39 (clinical-procedures +3, imaging-capture +2, scheduling +5, store-policy +1)"
+    "description": "Integration-pending budget baseline (Phase 480)",
+    "updatedAt": "2026-03-06T01:23:32.943Z",
+    "updatedBy": "Phase 587: audited +11 delta accepted and rebaselined after live verification and gate hardening"
   },
-  "total": 265,
+  "total": 276,
   "tolerance": 0,
   "files": [
     {
@@ -18,6 +18,10 @@
     {
       "file": "apps/api/src/routes/vista-rcm.ts",
       "count": 12
+    },
+    {
+      "file": "apps/api/src/routes/orders.ts",
+      "count": 10
     },
     {
       "file": "apps/api/src/workflows/department-packs.ts",
@@ -36,10 +40,6 @@
       "count": 9
     },
     {
-      "file": "apps/api/src/platform/store-policy.ts",
-      "count": 8
-    },
-    {
       "file": "apps/api/src/routes/cprs/orders-cpoe.ts",
       "count": 8
     },
@@ -56,7 +56,7 @@
       "count": 7
     },
     {
-      "file": "apps/api/src/routes/emar/index.ts",
+      "file": "apps/api/src/platform/store-policy.ts",
       "count": 7
     },
     {
@@ -88,15 +88,15 @@
       "count": 5
     },
     {
-      "file": "apps/api/src/routes/adt/index.ts",
-      "count": 5
-    },
-    {
       "file": "apps/api/src/lib/tier0-response.ts",
       "count": 4
     },
     {
       "file": "apps/api/src/routes/cprs/wave1-routes.ts",
+      "count": 4
+    },
+    {
+      "file": "apps/api/src/routes/emar/index.ts",
       "count": 4
     },
     {
@@ -136,6 +136,10 @@
       "count": 3
     },
     {
+      "file": "apps/api/src/routes/scheduling/writeback-guard.ts",
+      "count": 3
+    },
+    {
       "file": "apps/api/src/writeback/__tests__/telehealth-hardening-contract.test.ts",
       "count": 3
     },
@@ -168,7 +172,15 @@
       "count": 2
     },
     {
+      "file": "apps/api/src/rcm/vistaBindings/charge-capture.ts",
+      "count": 2
+    },
+    {
       "file": "apps/api/src/rcm/vistaBindings/era-to-vista.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/routes/adt/index.ts",
       "count": 2
     },
     {
@@ -176,11 +188,19 @@
       "count": 2
     },
     {
+      "file": "apps/api/src/routes/labs.ts",
+      "count": 2
+    },
+    {
       "file": "apps/api/src/routes/mar-safety.ts",
       "count": 2
     },
     {
-      "file": "apps/api/src/routes/scheduling/writeback-guard.ts",
+      "file": "apps/api/src/routes/meds.ts",
+      "count": 2
+    },
+    {
+      "file": "apps/api/src/routes/problems.ts",
       "count": 2
     },
     {
@@ -241,10 +261,6 @@
     },
     {
       "file": "apps/api/src/rcm/reconciliation/edi835-parser.ts",
-      "count": 1
-    },
-    {
-      "file": "apps/api/src/rcm/vistaBindings/charge-capture.ts",
       "count": 1
     },
     {

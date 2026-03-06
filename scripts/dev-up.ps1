@@ -12,7 +12,7 @@
 
     Evidence docs (VISTA_CONNECTIVITY_RESULTS.md) are generated under the VEHU profile.
 
-.PARAMETER Profile
+.PARAMETER RuntimeLane
     Which VistA runtime lane to start. Must be "compose" or "vehu". Default: vehu.
 
 .PARAMETER SkipVerify
@@ -23,14 +23,14 @@
     Skip pnpm qa:gauntlet:fast but still run verify:vista.
 
 .EXAMPLE
-    .\scripts\dev-up.ps1 -Profile vehu
-    .\scripts\dev-up.ps1 -Profile compose
-    .\scripts\dev-up.ps1 -Profile vehu -SkipVerify
+    .\scripts\dev-up.ps1 -RuntimeLane vehu
+    .\scripts\dev-up.ps1 -RuntimeLane compose
+    .\scripts\dev-up.ps1 -RuntimeLane vehu -SkipVerify
 #>
 [CmdletBinding()]
 param(
     [ValidateSet("compose", "vehu")]
-    [string]$Profile = "vehu",
+    [string]$RuntimeLane = "vehu",
 
     [switch]$SkipVerify,
     [switch]$SkipGauntlet
@@ -43,18 +43,18 @@ $ROOT = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Definitio
 Push-Location $ROOT
 
 # ---------------------------------------------------------------------
-# Profile definitions
+# Runtime lane definitions
 # ---------------------------------------------------------------------
 
-$PROFILES = @{
+$RUNTIME_LANES = @{
     compose = @{
         Label          = "All-in-one compose (worldvista-ehr)"
         ComposeFile    = "docker-compose.yml"
         ComposeArgs    = @()
         BrokerHost     = "127.0.0.1"
         BrokerPort     = 9210
-        AccessCode     = "PROV123"
-        VerifyCode     = "PROV123!!"
+        AccessCode     = $env:VISTA_ACCESS_CODE
+        VerifyCode     = $env:VISTA_VERIFY_CODE
         InstanceId     = "compose-dev"
         HealthEndpoint = "http://127.0.0.1:9210"
         HealthTcp      = $true
@@ -62,7 +62,7 @@ $PROFILES = @{
             "VistA broker on port 9210, Web UI on 8001"
             "PostgreSQL on 5432, Redis on 6379"
             "API on 4000 (containerized), Web on 5173 (containerized)"
-            "Credentials: PROV123 / PROV123!!"
+            "Credentials: set VISTA_ACCESS_CODE / VISTA_VERIFY_CODE in your shell or .env"
             "Requires: .env at repo root (copy from .env.example)"
         )
     }
@@ -89,7 +89,14 @@ $PROFILES = @{
     }
 }
 
-$P = $PROFILES[$Profile]
+$P = $RUNTIME_LANES[$RuntimeLane]
+
+if ([string]::IsNullOrWhiteSpace($P.AccessCode)) {
+    $P.AccessCode = "PRO1234"
+}
+if ([string]::IsNullOrWhiteSpace($P.VerifyCode)) {
+    $P.VerifyCode = "PRO1234!!"
+}
 
 # ---------------------------------------------------------------------
 # Banner
@@ -97,7 +104,7 @@ $P = $PROFILES[$Profile]
 
 Write-Host ""
 Write-Host "================================================================" -ForegroundColor Cyan
-Write-Host "  VistA-Evolved Dev-Up  --  Profile: $Profile" -ForegroundColor Cyan
+Write-Host "  VistA-Evolved Dev-Up  --  Profile: $RuntimeLane" -ForegroundColor Cyan
 Write-Host "  $($P.Label)" -ForegroundColor Cyan
 Write-Host "================================================================" -ForegroundColor Cyan
 Write-Host ""
@@ -134,7 +141,7 @@ if (-not (Get-Command pnpm -ErrorAction SilentlyContinue)) {
 Write-Host "  [OK] pnpm available" -ForegroundColor Green
 
 # Env file check
-if ($Profile -eq "compose") {
+if ($RuntimeLane -eq "compose") {
     if (-not (Test-Path -LiteralPath "$ROOT\.env")) {
         if (Test-Path -LiteralPath "$ROOT\.env.example") {
             Write-Host "  [WARN] .env not found -- copying from .env.example" -ForegroundColor DarkYellow
@@ -189,14 +196,14 @@ if (-not (Test-Path -LiteralPath "$ROOT\node_modules")) {
 # ---------------------------------------------------------------------
 
 Write-Host ""
-Write-Host "[1/6] Starting Docker services for profile: $Profile ..." -ForegroundColor Yellow
+Write-Host "[1/6] Starting Docker services for profile: $RuntimeLane ..." -ForegroundColor Yellow
 
 # Docker compose writes status to stderr even on success.
 # Temporarily relax ErrorActionPreference so stderr lines don't throw.
 $savedEAP = $ErrorActionPreference
 $ErrorActionPreference = "Continue"
 
-if ($Profile -eq "compose") {
+if ($RuntimeLane -eq "compose") {
     Write-Host "  docker compose -f docker-compose.yml up -d" -ForegroundColor DarkGray
     docker compose -f $P.ComposeFile up -d 2>&1 | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
     if ($LASTEXITCODE -ne 0) {
@@ -330,12 +337,12 @@ if (-not $SkipVerify -and -not $SkipGauntlet) {
 
 Write-Host ""
 Write-Host "================================================================" -ForegroundColor Cyan
-Write-Host "  Profile: $Profile  --  $($P.Label)" -ForegroundColor Cyan
+Write-Host "  Profile: $RuntimeLane  --  $($P.Label)" -ForegroundColor Cyan
 Write-Host "================================================================" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "  VistA Broker : $($P.BrokerHost):$($P.BrokerPort)" -ForegroundColor White
 
-if ($Profile -eq "compose") {
+if ($RuntimeLane -eq "compose") {
     Write-Host "  API          : http://127.0.0.1:4000  (containerized)" -ForegroundColor White
     Write-Host "  Web          : http://127.0.0.1:5173  (containerized)" -ForegroundColor White
     Write-Host "  PostgreSQL   : 127.0.0.1:5432" -ForegroundColor White

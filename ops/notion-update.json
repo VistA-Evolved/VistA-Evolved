@@ -1,9 +1,15 @@
 {
-  "feature": "Phase 157: Audit JSONL Shipping to Object Store",
+  "feature": "Phase 587: Full Repository Audit and Stabilization",
   "stage": "verified",
   "status": "complete",
-  "promptRef": "prompts/162-PHASE-157-AUDIT-JSONL-SHIPPING/157-01-IMPLEMENT.md",
-  "runbookPath": "docs/runbooks/phase157-audit-shipping.md",
-  "verifyScript": "scripts/verify-phase157-audit-shipping.ps1",
-  "commitSha": "e852724"
+  "promptRef": "prompts/587-PHASE-587-FULL-REPO-AUDIT-STABILIZATION/587-01-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/phase587-full-repo-audit-stabilization.md",
+  "verifyScript": "scripts/verify-latest.ps1",
+  "commitSha": "efeec740",
+  "notes": [
+    "Docker-first runtime checks completed against live VEHU and platform PG.",
+    "Secret scan remediation completed; fast gauntlet now fully passing.",
+    "RC verification is now RC_READY (15 PASS / 0 FAIL / 0 SKIP).",
+    "Integration-pending baseline reconciled to audited reality with explicit Phase 587 metadata."
+  ]
 }

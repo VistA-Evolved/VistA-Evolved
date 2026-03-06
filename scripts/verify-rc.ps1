@@ -64,6 +64,9 @@ $gates = @(
   @{ Id="G14"; Label="Tier-0 Outpatient Proof";    Type="ps1";  Path="scripts/verify-tier0.ps1";                      Required=$false }
 )
 
+# Gates that require live Docker/VistA infrastructure.
+$dockerDependentGateIds = @('G04', 'G09', 'G13', 'G14')
+
 $results = @()
 $totalPass = 0
 $totalFail = 0
@@ -79,6 +82,22 @@ foreach ($gate in $gates) {
   $fullPath = Join-Path $root $gpath
 
   Log "--- $id : $label ---"
+
+  if ($SkipDocker -and ($dockerDependentGateIds -contains $id)) {
+    Log "  [SKIP] Docker-dependent gate skipped due to -SkipDocker"
+    $results += @{
+      gateName     = $id
+      label        = $label
+      status       = "SKIP"
+      reason       = "Skipped by -SkipDocker"
+      durationMs   = 0
+      exitCode     = $null
+      required     = $req
+    }
+    $totalSkip++
+    Log ""
+    continue
+  }
 
   # Check if script/dir exists
   $pathExists = Test-Path -LiteralPath $fullPath
@@ -127,7 +146,12 @@ foreach ($gate in $gates) {
       }
       "ps1" {
         Push-Location $root
-        $ps1Out = & powershell -NoProfile -ExecutionPolicy Bypass -File $fullPath 2>&1 | Out-String
+        $psArgs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $fullPath)
+        # Forward -SkipDocker to child scripts that support it.
+        if ($SkipDocker -and ($id -eq 'G13')) {
+          $psArgs += '-SkipDocker'
+        }
+        $ps1Out = & powershell @psArgs 2>&1 | Out-String
         $exitCode = $LASTEXITCODE
         Pop-Location
         if ($ps1Out.Trim()) { Log $ps1Out.TrimEnd() }

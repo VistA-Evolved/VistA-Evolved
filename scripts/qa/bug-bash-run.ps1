@@ -82,13 +82,14 @@ foreach ($dir in $scanDirs) {
         if ($tag -eq "FIXME") { $sev = "P2" }
         if ($tag -eq "HACK")  { $sev = "P2" }
         $relPath = $f.FullName.Substring($root.Length + 1) -replace '\\','/'
+        $trimmed  = $fline.Trim()
+        $text     = $trimmed.Substring(0, [Math]::Min($trimmed.Length, 120))
         $codeDefects += @{
           file     = $relPath
           line     = $lineNum
           tag      = $tag
           severity = $sev
-        $trimmed  = $fline.Trim()
-        $text     = $trimmed.Substring(0, [Math]::Min($trimmed.Length, 120))
+          text     = $text
         }
       }
     }

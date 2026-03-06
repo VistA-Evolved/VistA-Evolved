@@ -6,8 +6,8 @@
 
 ## Current Baseline
 
-- **Total**: 292 occurrences across 69 files
-- **Established**: 2026-03-02
+- **Total**: 276 occurrences across 77 files
+- **Established**: 2026-03-06
 - **Budget tolerance**: 0 (strict — any increase fails the gate)
 
 ## Top Files by Count

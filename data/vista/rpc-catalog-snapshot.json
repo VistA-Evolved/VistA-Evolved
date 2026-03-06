@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-03T02:46:16.132Z",
+  "generatedAt": "2026-03-06T01:14:54.819Z",
   "generatedBy": "scripts/regen-rpc-snapshot.mjs",
   "registry": {
     "XUS SIGNON SETUP": {
@@ -227,15 +227,210 @@
       "tag": "read",
       "description": "Lab chart data"
     },
+    "ORQQL DETAIL": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order detail"
+    },
+    "ORWLR RECENTSIT": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Recent lab results by site"
+    },
+    "ORWLR CUMULATIVE": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Cumulative lab report"
+    },
+    "LR ORDER": {
+      "domain": "labs",
+      "tag": "write",
+      "description": "Place lab order"
+    },
     "ORWLRR INTERIMG": {
       "domain": "labs",
       "tag": "read",
       "description": "Interim lab results (imaging context)"
     },
+    "ORWDLR32 ABBSPEC": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog abbrev specimen"
+    },
+    "ORWDLR32 ALLSAMP": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog all samples"
+    },
+    "ORWDLR32 ALLSPEC": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog all specimens"
+    },
+    "ORWDLR32 DEF": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog default"
+    },
+    "ORWDLR32 GET LAB TIMES": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog lab times"
+    },
+    "ORWDLR32 IC DEFAULT": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog IC default"
+    },
+    "ORWDLR32 IC VALID": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog IC valid"
+    },
+    "ORWDLR32 IMMED COLLECT": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog immediate collect"
+    },
+    "ORWDLR32 LAB COLL TIME": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog collection time"
+    },
+    "ORWDLR32 LOAD": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog load"
+    },
+    "ORWDLR32 MAXDAYS": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog max days"
+    },
+    "ORWDLR32 ONE SAMPLE": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog one sample"
+    },
+    "ORWDLR32 ONE SPECIMEN": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog one specimen"
+    },
+    "ORWDLR32 STOP": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab order dialog stop"
+    },
+    "ORWDLR33 FUTURE LAB COLLECTS": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Future lab collects"
+    },
+    "ORWDLR33 LASTTIME": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab last collection time"
+    },
+    "ORWDLR33 LC TO WC": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab collect to WC"
+    },
+    "ORWLRR ALLTESTS": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab all tests"
+    },
+    "ORWLRR ATESTS": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab atomic tests"
+    },
+    "ORWLRR ATG": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab atomic test group"
+    },
+    "ORWLRR ATOMICS": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab atomics"
+    },
+    "ORWLRR CHEMTEST": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab chem test"
+    },
+    "ORWLRR GRID": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab grid"
+    },
+    "ORWLRR INFO": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab info"
+    },
+    "ORWLRR INTERIMS": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab interims"
+    },
+    "ORWLRR NEWOLD": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab new/old"
+    },
+    "ORWLRR PARAM": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab param"
+    },
+    "ORWLRR SPEC": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab spec"
+    },
+    "ORWLRR TG": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab test group"
+    },
+    "ORWLRR USERS": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab users"
+    },
+    "ORWLRR UTGA": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab UTGA"
+    },
+    "ORWLRR UTGD": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab UTGD"
+    },
+    "ORWLRR UTGR": {
+      "domain": "labs",
+      "tag": "read",
+      "description": "Lab UTGR"
+    },
     "ORWPS ACTIVE": {
       "domain": "medications",
       "tag": "read",
       "description": "Active medications list"
+    },
+    "ORWPS COVER": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Medications cover sheet"
+    },
+    "ORWPS DETAIL": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Medication detail"
     },
     "ORWORR GETTXT": {
       "domain": "medications",
@@ -246,6 +441,291 @@
       "domain": "medications",
       "tag": "write",
       "description": "Quick-order medication auto-acknowledge"
+    },
+    "ORWDPS ALLSCHD": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "All schedule types"
+    },
+    "ORWDPS1 CHK94": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Check 94"
+    },
+    "ORWDPS1 DFLTSPLY": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Default supply"
+    },
+    "ORWDPS1 DOSEALT": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Dose alternatives"
+    },
+    "ORWDPS1 DOWSCH": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Days of week schedule"
+    },
+    "ORWDPS1 FAILDEA": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "DEA failure check"
+    },
+    "ORWDPS1 FORMALT": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Form alternatives"
+    },
+    "ORWDPS1 HASOIPI": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Has OIPI"
+    },
+    "ORWDPS1 HASROUTE": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Has route"
+    },
+    "ORWDPS1 IVDEA": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "IV DEA check"
+    },
+    "ORWDPS1 LOCPICK": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Location picker"
+    },
+    "ORWDPS1 MAXDS": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Max dose"
+    },
+    "ORWDPS1 ODSLCT": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Orderable select"
+    },
+    "ORWDPS1 QOMEDALT": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "QO med alternatives"
+    },
+    "ORWDPS1 SCHALL": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Schedule all"
+    },
+    "ORWDPS2 ADMIN": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Admin schedule"
+    },
+    "ORWDPS2 CHKGRP": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Check group"
+    },
+    "ORWDPS2 CHKPI": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Check PI"
+    },
+    "ORWDPS2 DAY2QTY": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Days to quantity"
+    },
+    "ORWDPS2 MAXREF": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Max refills"
+    },
+    "ORWDPS2 OISLCT": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Orderable item select"
+    },
+    "ORWDPS2 QOGRP": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "QO group"
+    },
+    "ORWDPS2 QTY2DAY": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Quantity to days"
+    },
+    "ORWDPS2 REQST": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Request"
+    },
+    "ORWDPS2 SCHREQ": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Schedule request"
+    },
+    "ORWDPS32 ALLIVRTE": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "All IV routes"
+    },
+    "ORWDPS32 ALLROUTE": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "All routes"
+    },
+    "ORWDPS32 AUTH": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Auth check"
+    },
+    "ORWDPS32 AUTHNVA": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Auth NVA"
+    },
+    "ORWDPS32 DLGSLCT": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Dialog select"
+    },
+    "ORWDPS32 DRUGMSG": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Drug message"
+    },
+    "ORWDPS32 FORMALT": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Form alternatives"
+    },
+    "ORWDPS32 ISSPLY": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Is supply"
+    },
+    "ORWDPS32 IVAMT": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "IV amount"
+    },
+    "ORWDPS32 MEDISIV": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Med is IV"
+    },
+    "ORWDPS32 OISLCT": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Orderable item select"
+    },
+    "ORWDPS32 SCSTS": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Schedule status"
+    },
+    "ORWDPS32 VALQTY": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Validate quantity"
+    },
+    "ORWDPS32 VALRATE": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Validate rate"
+    },
+    "ORWDPS32 VALROUTE": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Validate route"
+    },
+    "ORWDPS32 VALSCH": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Validate schedule"
+    },
+    "ORWDPS33 COMPLOC": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Compound location"
+    },
+    "ORWDPS33 GETADDFR": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Get add form"
+    },
+    "ORWDPS33 IVDOSFRM": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "IV dose form"
+    },
+    "ORWDPS4 CPINFO": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "CP info"
+    },
+    "ORWDPS4 CPLST": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "CP list"
+    },
+    "ORWDPS4 IPOD4OP": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "IPOD for OP"
+    },
+    "ORWDPS4 ISUDIV": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "IS UDIV"
+    },
+    "ORWDPS4 UPDTDG": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Update dialog"
+    },
+    "ORWDPS5 ISVTP": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Is VTP"
+    },
+    "ORWDPS5 LESAPI": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "LES API"
+    },
+    "ORWDPS5 LESGRP": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "LES group"
+    },
+    "ORWPS MEDHIST": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Medication history"
+    },
+    "ORWPS REASON": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Reason"
+    },
+    "ORWPS1 NEWDLG": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "New dialog"
+    },
+    "ORWPS1 PICKUP": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Pickup"
+    },
+    "ORWPS1 REFILL": {
+      "domain": "medications",
+      "tag": "read",
+      "description": "Refill"
     },
     "TIU DOCUMENTS BY CONTEXT": {
       "domain": "notes",
@@ -327,6 +807,16 @@
       "tag": "write",
       "description": "Flag order"
     },
+    "ORWDXA COMPLETE": {
+      "domain": "orders",
+      "tag": "write",
+      "description": "Complete order (IEN 396 in VEHU)"
+    },
+    "ORWDXA HOLD": {
+      "domain": "orders",
+      "tag": "write",
+      "description": "Hold order (IEN 388 in VEHU)"
+    },
     "ORWDXA VERIFY": {
       "domain": "orders",
       "tag": "write",
@@ -407,6 +897,16 @@
       "tag": "write",
       "description": "Add problem"
     },
+    "GMPL PROB LIST": {
+      "domain": "problems",
+      "tag": "read",
+      "description": "GMPL problem list by status"
+    },
+    "GMPL ADD SAVE": {
+      "domain": "problems",
+      "tag": "write",
+      "description": "GMPL add and save problem"
+    },
     "ORQQPL EDIT SAVE": {
       "domain": "problems",
       "tag": "write",
@@ -432,6 +932,141 @@
       "tag": "read",
       "description": "Get report text"
     },
+    "ORWRP COLUMN HEADERS": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Report column headers"
+    },
+    "ORWRP GET DEFAULT PRINTER": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Get default printer"
+    },
+    "ORWRP LAB REPORT LISTS": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Lab report lists"
+    },
+    "ORWRP PRINT LAB REMOTE": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Print lab remote"
+    },
+    "ORWRP PRINT LAB REPORTS": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Print lab reports"
+    },
+    "ORWRP PRINT REMOTE REPORT": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Print remote report"
+    },
+    "ORWRP PRINT REPORT": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Print report"
+    },
+    "ORWRP PRINT V REPORT": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Print V report"
+    },
+    "ORWRP PRINT WINDOWS LAB REMOTE": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Print Windows lab remote"
+    },
+    "ORWRP PRINT WINDOWS REMOTE": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Print Windows remote"
+    },
+    "ORWRP PRINT WINDOWS REPORT": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Print Windows report"
+    },
+    "ORWRP SAVE DEFAULT PRINTER": {
+      "domain": "reports",
+      "tag": "write",
+      "description": "Save default printer"
+    },
+    "ORWRP WINPRINT DEFAULT": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Winprint default"
+    },
+    "ORWRP WINPRINT LAB REPORTS": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Winprint lab reports"
+    },
+    "ORWRP1 LISTNUTR": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "List nutrition reports"
+    },
+    "ORWRP2 COMPABV": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Report comp above"
+    },
+    "ORWRP2 COMPDISP": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Report comp display"
+    },
+    "ORWRP2 GETLKUP": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Report lookup get"
+    },
+    "ORWRP2 HS COMP FILES": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "HS component files"
+    },
+    "ORWRP2 HS COMPONENT SUBS": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "HS component subs"
+    },
+    "ORWRP2 HS COMPONENTS": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "HS components"
+    },
+    "ORWRP2 HS FILE LOOKUP": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "HS file lookup"
+    },
+    "ORWRP2 HS REPORT TEXT": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "HS report text"
+    },
+    "ORWRP2 HS SUBITEMS": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "HS subitems"
+    },
+    "ORWRP2 SAVLKUP": {
+      "domain": "reports",
+      "tag": "write",
+      "description": "Report lookup save"
+    },
+    "ORWRP3 EXPAND COLUMNS": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Expand columns"
+    },
+    "ORWRP4 HDR MODIFY": {
+      "domain": "reports",
+      "tag": "read",
+      "description": "Header modify"
+    },
     "ORWSR LIST": {
       "domain": "surgery",
       "tag": "read",
@@ -441,6 +1076,41 @@
       "domain": "surgery",
       "tag": "read",
       "description": "Surgery report list"
+    },
+    "ORWSR CASELIST": {
+      "domain": "surgery",
+      "tag": "read",
+      "description": "Surgery case list"
+    },
+    "ORWSR GET SURG CONTEXT": {
+      "domain": "surgery",
+      "tag": "read",
+      "description": "Get surgery context"
+    },
+    "ORWSR ONECASE": {
+      "domain": "surgery",
+      "tag": "read",
+      "description": "Surgery one case"
+    },
+    "ORWSR OPTOP": {
+      "domain": "surgery",
+      "tag": "read",
+      "description": "Surgery optop"
+    },
+    "ORWSR SAVE SURG CONTEXT": {
+      "domain": "surgery",
+      "tag": "write",
+      "description": "Save surgery context"
+    },
+    "ORWSR SHOW OPTOP WHEN SIGNING": {
+      "domain": "surgery",
+      "tag": "read",
+      "description": "Show optop when signing"
+    },
+    "ORWSR SHOW SURG TAB": {
+      "domain": "surgery",
+      "tag": "read",
+      "description": "Show surgery tab"
     },
     "GMV V/M ALLDATA": {
       "domain": "vitals",
@@ -541,6 +1211,26 @@
       "domain": "immunizations",
       "tag": "read",
       "description": "Immunization type picker (short list)"
+    },
+    "PX SAVE DATA": {
+      "domain": "immunizations",
+      "tag": "write",
+      "description": "Save PCE encounter/immunization data (IEN 3430 in VEHU)"
+    },
+    "PSB ALLERGY": {
+      "domain": "nursing",
+      "tag": "read",
+      "description": "BCMA allergy check at med admin time (IEN 1278 in VEHU)"
+    },
+    "PSB VALIDATE ORDER": {
+      "domain": "nursing",
+      "tag": "read",
+      "description": "BCMA order validation at scan time (IEN 646 in VEHU)"
+    },
+    "SDEC APPADD": {
+      "domain": "scheduling",
+      "tag": "write",
+      "description": "SDES appointment create (IEN 3676 in VEHU)"
     },
     "ORQQXMB MAIL GROUPS": {
       "domain": "messaging",
@@ -1007,9 +1697,6 @@
       "name": "PSB MED LOG"
     },
     {
-      "name": "PSB ALLERGY"
-    },
-    {
       "name": "PSJBCMA"
     },
     {
@@ -1034,9 +1721,6 @@
       "name": "PSJ ORDER STATUS"
     },
     {
-      "name": "PSB VALIDATE ORDER"
-    },
-    {
       "name": "LRFZX"
     },
     {
@@ -1056,6 +1740,702 @@
     },
     {
       "name": "ORWDXC SESSION"
+    },
+    {
+      "name": "ORQQL DETAIL"
+    },
+    {
+      "name": "ORWLR RECENTSIT"
+    },
+    {
+      "name": "ORWLR CUMULATIVE"
+    },
+    {
+      "name": "LR ORDER"
+    },
+    {
+      "name": "ORWPS COVER"
+    },
+    {
+      "name": "ORWPS DETAIL"
+    },
+    {
+      "name": "GMPL PROB LIST"
+    },
+    {
+      "name": "GMPL ADD SAVE"
+    },
+    {
+      "name": "ORWDPS ALLSCHD"
+    },
+    {
+      "name": "ORWDPS1 CHK94"
+    },
+    {
+      "name": "ORWDPS1 DFLTSPLY"
+    },
+    {
+      "name": "ORWDPS1 DOSEALT"
+    },
+    {
+      "name": "ORWDPS1 DOWSCH"
+    },
+    {
+      "name": "ORWDPS1 FAILDEA"
+    },
+    {
+      "name": "ORWDPS1 FORMALT"
+    },
+    {
+      "name": "ORWDPS1 HASOIPI"
+    },
+    {
+      "name": "ORWDPS1 HASROUTE"
+    },
+    {
+      "name": "ORWDPS1 IVDEA"
+    },
+    {
+      "name": "ORWDPS1 LOCPICK"
+    },
+    {
+      "name": "ORWDPS1 MAXDS"
+    },
+    {
+      "name": "ORWDPS1 ODSLCT"
+    },
+    {
+      "name": "ORWDPS1 QOMEDALT"
+    },
+    {
+      "name": "ORWDPS1 SCHALL"
+    },
+    {
+      "name": "ORWDPS2 ADMIN"
+    },
+    {
+      "name": "ORWDPS2 CHKGRP"
+    },
+    {
+      "name": "ORWDPS2 CHKPI"
+    },
+    {
+      "name": "ORWDPS2 DAY2QTY"
+    },
+    {
+      "name": "ORWDPS2 MAXREF"
+    },
+    {
+      "name": "ORWDPS2 OISLCT"
+    },
+    {
+      "name": "ORWDPS2 QOGRP"
+    },
+    {
+      "name": "ORWDPS2 QTY2DAY"
+    },
+    {
+      "name": "ORWDPS2 REQST"
+    },
+    {
+      "name": "ORWDPS2 SCHREQ"
+    },
+    {
+      "name": "ORWDPS32 ALLIVRTE"
+    },
+    {
+      "name": "ORWDPS32 ALLROUTE"
+    },
+    {
+      "name": "ORWDPS32 AUTH"
+    },
+    {
+      "name": "ORWDPS32 AUTHNVA"
+    },
+    {
+      "name": "ORWDPS32 DLGSLCT"
+    },
+    {
+      "name": "ORWDPS32 DRUGMSG"
+    },
+    {
+      "name": "ORWDPS32 FORMALT"
+    },
+    {
+      "name": "ORWDPS32 ISSPLY"
+    },
+    {
+      "name": "ORWDPS32 IVAMT"
+    },
+    {
+      "name": "ORWDPS32 MEDISIV"
+    },
+    {
+      "name": "ORWDPS32 OISLCT"
+    },
+    {
+      "name": "ORWDPS32 SCSTS"
+    },
+    {
+      "name": "ORWDPS32 VALQTY"
+    },
+    {
+      "name": "ORWDPS32 VALRATE"
+    },
+    {
+      "name": "ORWDPS32 VALROUTE"
+    },
+    {
+      "name": "ORWDPS32 VALSCH"
+    },
+    {
+      "name": "ORWDPS33 COMPLOC"
+    },
+    {
+      "name": "ORWDPS33 GETADDFR"
+    },
+    {
+      "name": "ORWDPS33 IVDOSFRM"
+    },
+    {
+      "name": "ORWDPS4 CPINFO"
+    },
+    {
+      "name": "ORWDPS4 CPLST"
+    },
+    {
+      "name": "ORWDPS4 IPOD4OP"
+    },
+    {
+      "name": "ORWDPS4 ISUDIV"
+    },
+    {
+      "name": "ORWDPS4 UPDTDG"
+    },
+    {
+      "name": "ORWDPS5 ISVTP"
+    },
+    {
+      "name": "ORWDPS5 LESAPI"
+    },
+    {
+      "name": "ORWDPS5 LESGRP"
+    },
+    {
+      "name": "ORWPS MEDHIST"
+    },
+    {
+      "name": "ORWPS REASON"
+    },
+    {
+      "name": "ORWPS1 NEWDLG"
+    },
+    {
+      "name": "ORWPS1 PICKUP"
+    },
+    {
+      "name": "ORWPS1 REFILL"
+    },
+    {
+      "name": "ORWDLR32 ABBSPEC"
+    },
+    {
+      "name": "ORWDLR32 ALLSAMP"
+    },
+    {
+      "name": "ORWDLR32 ALLSPEC"
+    },
+    {
+      "name": "ORWDLR32 DEF"
+    },
+    {
+      "name": "ORWDLR32 GET LAB TIMES"
+    },
+    {
+      "name": "ORWDLR32 IC DEFAULT"
+    },
+    {
+      "name": "ORWDLR32 IC VALID"
+    },
+    {
+      "name": "ORWDLR32 IMMED COLLECT"
+    },
+    {
+      "name": "ORWDLR32 LAB COLL TIME"
+    },
+    {
+      "name": "ORWDLR32 LOAD"
+    },
+    {
+      "name": "ORWDLR32 MAXDAYS"
+    },
+    {
+      "name": "ORWDLR32 ONE SAMPLE"
+    },
+    {
+      "name": "ORWDLR32 ONE SPECIMEN"
+    },
+    {
+      "name": "ORWDLR32 STOP"
+    },
+    {
+      "name": "ORWDLR33 FUTURE LAB COLLECTS"
+    },
+    {
+      "name": "ORWDLR33 LASTTIME"
+    },
+    {
+      "name": "ORWDLR33 LC TO WC"
+    },
+    {
+      "name": "ORWLRR ALLTESTS"
+    },
+    {
+      "name": "ORWLRR ATESTS"
+    },
+    {
+      "name": "ORWLRR ATG"
+    },
+    {
+      "name": "ORWLRR ATOMICS"
+    },
+    {
+      "name": "ORWLRR CHEMTEST"
+    },
+    {
+      "name": "ORWLRR GRID"
+    },
+    {
+      "name": "ORWLRR INFO"
+    },
+    {
+      "name": "ORWLRR INTERIMS"
+    },
+    {
+      "name": "ORWLRR NEWOLD"
+    },
+    {
+      "name": "ORWLRR PARAM"
+    },
+    {
+      "name": "ORWLRR SPEC"
+    },
+    {
+      "name": "ORWLRR TG"
+    },
+    {
+      "name": "ORWLRR USERS"
+    },
+    {
+      "name": "ORWLRR UTGA"
+    },
+    {
+      "name": "ORWLRR UTGD"
+    },
+    {
+      "name": "ORWLRR UTGR"
+    },
+    {
+      "name": "ORWRP COLUMN HEADERS"
+    },
+    {
+      "name": "ORWRP GET DEFAULT PRINTER"
+    },
+    {
+      "name": "ORWRP LAB REPORT LISTS"
+    },
+    {
+      "name": "ORWRP PRINT LAB REMOTE"
+    },
+    {
+      "name": "ORWRP PRINT LAB REPORTS"
+    },
+    {
+      "name": "ORWRP PRINT REMOTE REPORT"
+    },
+    {
+      "name": "ORWRP PRINT REPORT"
+    },
+    {
+      "name": "ORWRP PRINT V REPORT"
+    },
+    {
+      "name": "ORWRP PRINT WINDOWS LAB REMOTE"
+    },
+    {
+      "name": "ORWRP PRINT WINDOWS REMOTE"
+    },
+    {
+      "name": "ORWRP PRINT WINDOWS REPORT"
+    },
+    {
+      "name": "ORWRP SAVE DEFAULT PRINTER"
+    },
+    {
+      "name": "ORWRP WINPRINT DEFAULT"
+    },
+    {
+      "name": "ORWRP WINPRINT LAB REPORTS"
+    },
+    {
+      "name": "ORWRP1 LISTNUTR"
+    },
+    {
+      "name": "ORWRP2 COMPABV"
+    },
+    {
+      "name": "ORWRP2 COMPDISP"
+    },
+    {
+      "name": "ORWRP2 GETLKUP"
+    },
+    {
+      "name": "ORWRP2 HS COMP FILES"
+    },
+    {
+      "name": "ORWRP2 HS COMPONENT SUBS"
+    },
+    {
+      "name": "ORWRP2 HS COMPONENTS"
+    },
+    {
+      "name": "ORWRP2 HS FILE LOOKUP"
+    },
+    {
+      "name": "ORWRP2 HS REPORT TEXT"
+    },
+    {
+      "name": "ORWRP2 HS SUBITEMS"
+    },
+    {
+      "name": "ORWRP2 SAVLKUP"
+    },
+    {
+      "name": "ORWRP3 EXPAND COLUMNS"
+    },
+    {
+      "name": "ORWRP4 HDR MODIFY"
+    },
+    {
+      "name": "ORWSR CASELIST"
+    },
+    {
+      "name": "ORWSR GET SURG CONTEXT"
+    },
+    {
+      "name": "ORWSR ONECASE"
+    },
+    {
+      "name": "ORWSR OPTOP"
+    },
+    {
+      "name": "ORWSR SAVE SURG CONTEXT"
+    },
+    {
+      "name": "ORWSR SHOW OPTOP WHEN SIGNING"
+    },
+    {
+      "name": "ORWSR SHOW SURG TAB"
+    },
+    {
+      "name": "ORWTIU CANLINK"
+    },
+    {
+      "name": "ORWTIU CHKTXT"
+    },
+    {
+      "name": "ORWTIU GET DCSUMM CONTEXT"
+    },
+    {
+      "name": "ORWTIU GET LISTBOX ITEM"
+    },
+    {
+      "name": "ORWTIU GET SAVED CP FIELDS"
+    },
+    {
+      "name": "ORWTIU GET TIU CONTEXT"
+    },
+    {
+      "name": "ORWTIU GETPASTE"
+    },
+    {
+      "name": "ORWTIU LDCPIDNT"
+    },
+    {
+      "name": "ORWTIU POLL"
+    },
+    {
+      "name": "ORWTIU SAVE DCSUMM CONTEXT"
+    },
+    {
+      "name": "ORWTIU SAVE TIU CONTEXT"
+    },
+    {
+      "name": "ORWTIU START"
+    },
+    {
+      "name": "ORWTIU STOP"
+    },
+    {
+      "name": "ORWTIU SVCOPY"
+    },
+    {
+      "name": "ORWTIU SVCPIDNT"
+    },
+    {
+      "name": "ORWTIU SVPASTE"
+    },
+    {
+      "name": "ORWTIU VIEWCOPY"
+    },
+    {
+      "name": "ORWTIU WINPRINT NOTE"
+    },
+    {
+      "name": "TIU ANCILLARY PACKAGE MESSAGE"
+    },
+    {
+      "name": "TIU AUTHORIZATION"
+    },
+    {
+      "name": "TIU DELETE RECORD"
+    },
+    {
+      "name": "TIU DETAILED DISPLAY"
+    },
+    {
+      "name": "TIU DIV AND CLASS INFO"
+    },
+    {
+      "name": "TIU FIELD CAN EDIT"
+    },
+    {
+      "name": "TIU FIELD CHECK"
+    },
+    {
+      "name": "TIU FIELD DELETE"
+    },
+    {
+      "name": "TIU FIELD DOLMTEXT"
+    },
+    {
+      "name": "TIU FIELD EXPORT"
+    },
+    {
+      "name": "TIU FIELD IMPORT"
+    },
+    {
+      "name": "TIU FIELD LIST"
+    },
+    {
+      "name": "TIU FIELD LIST ADD"
+    },
+    {
+      "name": "TIU FIELD LIST IMPORT"
+    },
+    {
+      "name": "TIU FIELD LOAD"
+    },
+    {
+      "name": "TIU FIELD LOAD BY IEN"
+    },
+    {
+      "name": "TIU FIELD LOCK"
+    },
+    {
+      "name": "TIU FIELD NAME IS UNIQUE"
+    },
+    {
+      "name": "TIU FIELD SAVE"
+    },
+    {
+      "name": "TIU FIELD UNLOCK"
+    },
+    {
+      "name": "TIU GET ADDITIONAL SIGNERS"
+    },
+    {
+      "name": "TIU GET ALERT INFO"
+    },
+    {
+      "name": "TIU GET BOILERPLATE"
+    },
+    {
+      "name": "TIU GET DEFAULT PROVIDER"
+    },
+    {
+      "name": "TIU GET DOCUMENT PARAMETERS"
+    },
+    {
+      "name": "TIU GET DOCUMENT TITLE"
+    },
+    {
+      "name": "TIU GET DS URGENCIES"
+    },
+    {
+      "name": "TIU GET LINKED PRF NOTES"
+    },
+    {
+      "name": "TIU GET LIST OF OBJECTS"
+    },
+    {
+      "name": "TIU GET PERSONAL PREFERENCES"
+    },
+    {
+      "name": "TIU GET PRF ACTIONS"
+    },
+    {
+      "name": "TIU GET PRF TITLE"
+    },
+    {
+      "name": "TIU GET PRINT NAME"
+    },
+    {
+      "name": "TIU GET REQUEST"
+    },
+    {
+      "name": "TIU GET SITE PARAMETERS"
+    },
+    {
+      "name": "TIU ID ATTACH ENTRY"
+    },
+    {
+      "name": "TIU ID CAN ATTACH"
+    },
+    {
+      "name": "TIU ID CAN RECEIVE"
+    },
+    {
+      "name": "TIU ID DETACH ENTRY"
+    },
+    {
+      "name": "TIU IDENTIFY CONSULTS CLASS"
+    },
+    {
+      "name": "TIU IDENTIFY SURGERY CLASS"
+    },
+    {
+      "name": "TIU IS USER A USR PROVIDER"
+    },
+    {
+      "name": "TIU ISPRF"
+    },
+    {
+      "name": "TIU LINK TO FLAG"
+    },
+    {
+      "name": "TIU LOAD BOILERPLATE TEXT"
+    },
+    {
+      "name": "TIU LOAD RECORD FOR EDIT"
+    },
+    {
+      "name": "TIU LOAD RECORD TEXT"
+    },
+    {
+      "name": "TIU LONG LIST BOILERPLATED"
+    },
+    {
+      "name": "TIU LONG LIST CLINPROC TITLES"
+    },
+    {
+      "name": "TIU LONG LIST CONSULT TITLES"
+    },
+    {
+      "name": "TIU LONG LIST OF TITLES"
+    },
+    {
+      "name": "TIU LONG LIST SURGERY TITLES"
+    },
+    {
+      "name": "TIU PRINT RECORD"
+    },
+    {
+      "name": "TIU REM DLG OK AS TEMPLATE"
+    },
+    {
+      "name": "TIU REMINDER DIALOGS"
+    },
+    {
+      "name": "TIU SUMMARIES"
+    },
+    {
+      "name": "TIU TEMPLATE ACCESS LEVEL"
+    },
+    {
+      "name": "TIU TEMPLATE ALL TITLES"
+    },
+    {
+      "name": "TIU TEMPLATE CHECK BOILERPLATE"
+    },
+    {
+      "name": "TIU TEMPLATE DELETE"
+    },
+    {
+      "name": "TIU TEMPLATE GET DEFAULTS"
+    },
+    {
+      "name": "TIU TEMPLATE GET DESCRIPTION"
+    },
+    {
+      "name": "TIU TEMPLATE GETBOIL"
+    },
+    {
+      "name": "TIU TEMPLATE GETITEMS"
+    },
+    {
+      "name": "TIU TEMPLATE GETLINK"
+    },
+    {
+      "name": "TIU TEMPLATE GETROOTS"
+    },
+    {
+      "name": "TIU TEMPLATE GETTEXT"
+    },
+    {
+      "name": "TIU TEMPLATE ISEDITOR"
+    },
+    {
+      "name": "TIU TEMPLATE LOCK"
+    },
+    {
+      "name": "TIU TEMPLATE PERSONAL OBJECTS"
+    },
+    {
+      "name": "TIU TEMPLATE SET DEFAULTS"
+    },
+    {
+      "name": "TIU TEMPLATE SET ITEMS"
+    },
+    {
+      "name": "TIU TEMPLATE UNLOCK"
+    },
+    {
+      "name": "TIU UPDATE ADDITIONAL SIGNERS"
+    },
+    {
+      "name": "TIU UPDATE RECORD"
+    },
+    {
+      "name": "TIU USER CLASS LONG LIST"
+    },
+    {
+      "name": "TIU USER IS MEMBER OF CLASS"
+    },
+    {
+      "name": "TIU WHICH SIGNATURE ACTION"
+    },
+    {
+      "name": "TIU_DOC"
+    },
+    {
+      "name": "TIUADD"
+    },
+    {
+      "name": "TIUERR"
+    },
+    {
+      "name": "TIUID"
     }
   ]
 }
