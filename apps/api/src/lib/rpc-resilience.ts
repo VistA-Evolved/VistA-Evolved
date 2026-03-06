@@ -11,6 +11,7 @@
  * Wraps the raw rpcBrokerClient calls without modifying the protocol layer.
  */
 
+import { AsyncLocalStorage } from 'async_hooks';
 import { RPC_CONFIG, CACHE_CONFIG } from '../config/server-config.js';
 import { log } from './logger.js';
 
@@ -36,6 +37,40 @@ import { poolCallRpc, poolCallRpcWithList, type RpcContext } from '../vista/rpcC
 import { startRpcSpan, endRpcSpan } from '../telemetry/tracing.js';
 import { rpcCallDuration, rpcCallsTotal, circuitBreakerTrips } from '../telemetry/metrics.js';
 // Phase 96B: RPC traces recorded at protocol level in rpcBrokerClient.ts
+
+/* ================================================================== */
+/* Async-local RPC context (Phase 573B -- DUZ-per-request wiring)       */
+/* ================================================================== */
+
+/**
+ * AsyncLocalStorage that carries the RpcContext for the current request.
+ * When populated, safeCallRpc/safeCallRpcWithList automatically route
+ * through the connection pool with per-user DUZ attribution.
+ * Populated by the security middleware after session auth succeeds.
+ */
+const rpcContextStore = new AsyncLocalStorage<RpcContext | null>();
+
+/**
+ * Run a callback with an RPC context bound to the async call chain.
+ * All safeCallRpc calls within `fn` will use the pool with the given context.
+ */
+export function runWithRpcContext<T>(ctx: RpcContext | null, fn: () => T): T {
+  return rpcContextStore.run(ctx, fn);
+}
+
+/** Read the current request's RPC context (if any). */
+export function getCurrentRpcContext(): RpcContext | null {
+  return rpcContextStore.getStore() ?? null;
+}
+
+/**
+ * Patch the current async context with an RPC context (no callback needed).
+ * Use in Fastify onRequest hooks — the context persists through the
+ * handler and all downstream async continuations for this request.
+ */
+export function enterRpcContext(ctx: RpcContext): void {
+  rpcContextStore.enterWith(ctx);
+}
 
 /* ================================================================== */
 /* Circuit Breaker                                                     */
@@ -487,7 +522,8 @@ export async function safeCallRpc(
   params: string[],
   opts?: { idempotent?: boolean; timeoutMs?: number; ctx?: RpcContext }
 ): Promise<string[]> {
-  const ctx = opts?.ctx;
+  // Phase 573B: Resolve context — explicit > AsyncLocalStorage > legacy
+  const ctx = opts?.ctx ?? getCurrentRpcContext();
   if (ctx) {
     return resilientRpc(() => poolCallRpc(rpcName, params, ctx), rpcName, {
       idempotent: opts?.idempotent ?? true,
@@ -516,7 +552,8 @@ export async function safeCallRpcWithList(
   params: RpcParam[],
   opts?: { idempotent?: boolean; timeoutMs?: number; ctx?: RpcContext }
 ): Promise<string[]> {
-  const ctx = opts?.ctx;
+  // Phase 573B: Resolve context — explicit > AsyncLocalStorage > legacy
+  const ctx = opts?.ctx ?? getCurrentRpcContext();
   if (ctx) {
     return resilientRpc(() => poolCallRpcWithList(rpcName, params, ctx), rpcName, {
       idempotent: opts?.idempotent ?? true,

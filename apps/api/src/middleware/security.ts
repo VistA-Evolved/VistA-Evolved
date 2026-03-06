@@ -14,6 +14,7 @@ import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { randomUUID } from 'crypto';
 import { log, setRequestId, clearRequestId } from '../lib/logger.js';
 import { audit } from '../lib/audit.js';
+import { enterRpcContext } from '../lib/rpc-resilience.js';
 import { RATE_LIMIT_CONFIG, CSRF_CONFIG } from '../config/server-config.js';
 import { getSession } from '../auth/session-store.js';
 import type { SessionData } from '../auth/session-store.js';
@@ -48,6 +49,10 @@ import {
 } from '../telemetry/metrics.js';
 import { shutdownTracing } from '../telemetry/tracing.js';
 import { closePgDb } from '../platform/pg/pg-db.js';
+// Phase 573B: VistA config for RPC context injection
+import {
+  VISTA_HOST, VISTA_PORT, VISTA_ACCESS_CODE, VISTA_VERIFY_CODE, VISTA_CONTEXT,
+} from '../vista/config.js';
 
 /* ================================================================== */
 /* CORS origin allowlist                                                */
@@ -102,7 +107,7 @@ interface AuthRule {
  */
 const AUTH_RULES: AuthRule[] = [
   {
-    pattern: /^\/(health|ready|vista\/ping|vista\/swap-boundary|metrics(\/prometheus)?|version)$/,
+    pattern: /^\/(health|ready|vista\/ping|vista\/swap-boundary|metrics(\/prometheus)?|version|docs(\/.*)?$)/,
     auth: 'none',
   },
   { pattern: /^\/auth\/sessions/, auth: 'session' }, // Phase 338: session management (own session check in handler)
@@ -502,6 +507,21 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
 
     // Attach session to request for downstream audit attribution
     request.session = session;
+
+    // Phase 573B: Inject RPC context so safeCallRpc routes through the
+    // connection pool with the correct DUZ attribution for this request.
+    // Uses system credentials for now; per-user AV codes come in Phase 573C.
+    if (session.duz && VISTA_ACCESS_CODE && VISTA_VERIFY_CODE) {
+      enterRpcContext({
+        tenantId: session.tenantId || 'default',
+        duz: session.duz,
+        vistaHost: VISTA_HOST,
+        vistaPort: VISTA_PORT,
+        vistaContext: VISTA_CONTEXT,
+        accessCode: VISTA_ACCESS_CODE,
+        verifyCode: VISTA_VERIFY_CODE,
+      });
+    }
 
     // Phase 231: For FHIR routes with session auth, also set fhirPrincipal
     if (requiredAuth === 'fhir') {

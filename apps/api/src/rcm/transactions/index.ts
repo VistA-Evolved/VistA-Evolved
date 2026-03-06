@@ -21,6 +21,8 @@ export { TRANSACTION_STATE_TRANSITIONS } from './types.js';
 export {
   buildEnvelope,
   nextControlNumber,
+  nextControlNumberDurable,
+  initControlSequenceRepo,
   storeTransaction,
   getTransaction,
   getTransactionsByCorrelation,

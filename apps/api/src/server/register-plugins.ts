@@ -10,6 +10,8 @@ import type { FastifyInstance } from 'fastify';
 import cors from '@fastify/cors';
 import cookie from '@fastify/cookie';
 import websocket from '@fastify/websocket';
+import swagger from '@fastify/swagger';
+import swaggerUi from '@fastify/swagger-ui';
 
 import { registerSecurityMiddleware, corsOriginValidator } from '../middleware/security.js';
 import { registerNoFakeSuccessHook } from '../middleware/no-fake-success.js';
@@ -29,6 +31,36 @@ export async function registerPlugins(server: FastifyInstance): Promise<void> {
   server.register(cors, { origin: corsOriginValidator as any, credentials: true });
   server.register(cookie);
   server.register(websocket);
+
+  // OpenAPI spec + Swagger UI (must register before routes)
+  await server.register(swagger, {
+    openapi: {
+      info: {
+        title: 'VistA-Evolved API',
+        description: 'EHR modernization platform bridging VistA/CPRS with modern web services',
+        version: '1.0.0',
+      },
+      servers: [{ url: 'http://localhost:3001', description: 'Local development' }],
+      tags: [
+        { name: 'auth', description: 'Authentication & session management' },
+        { name: 'vista', description: 'VistA RPC-backed clinical routes' },
+        { name: 'cprs', description: 'CPRS clinical panels (orders, notes, meds)' },
+        { name: 'imaging', description: 'DICOMweb proxy, imaging worklist, devices' },
+        { name: 'rcm', description: 'Revenue Cycle Management (claims, payers, EDI)' },
+        { name: 'scheduling', description: 'Appointment scheduling (SDES/SDOE)' },
+        { name: 'telehealth', description: 'Telehealth rooms & device checks' },
+        { name: 'analytics', description: 'Analytics events & aggregation' },
+        { name: 'admin', description: 'Admin, tenant, module management' },
+        { name: 'portal', description: 'Patient portal' },
+        { name: 'iam', description: 'Identity, OIDC, SCIM, policy, audit' },
+        { name: 'posture', description: 'Production posture & observability' },
+        { name: 'infrastructure', description: 'Health, ready, metrics, capabilities' },
+      ],
+    },
+  });
+  await server.register(swaggerUi, {
+    routePrefix: '/docs',
+  });
 
   // Phase 15: Security middleware (request IDs, headers, rate limiting, error handler)
   await registerSecurityMiddleware(server);

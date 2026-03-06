@@ -10,6 +10,11 @@ import { eq, and, desc, count, lte } from 'drizzle-orm';
 import { getPgDb } from '../../platform/pg/pg-db.js';
 import { credentialArtifact, credentialDocument } from '../../platform/pg/pg-schema.js';
 import { randomUUID } from 'node:crypto';
+import { encryptCredential, decryptCredential } from '../payerOps/credential-encryption.js';
+import { log } from '../../lib/logger.js';
+
+/** Prefix for encrypted credential values (distinguishes from legacy plaintext). */
+const ENCRYPTED_PREFIX = 'enc:v1:';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -91,6 +96,26 @@ function safeJsonParse<T>(val: string | null | undefined, fallback: T): T {
   }
 }
 
+/** Encrypt a credential value for storage. */
+function encryptForStorage(plaintext: string): string {
+  return ENCRYPTED_PREFIX + encryptCredential(plaintext);
+}
+
+/** Decrypt a credential value from storage. Handles legacy plaintext gracefully. */
+function decryptFromStorage(stored: string): string {
+  if (!stored.startsWith(ENCRYPTED_PREFIX)) {
+    // Legacy plaintext row — return as-is (gradual migration)
+    return stored;
+  }
+  const envelope = stored.slice(ENCRYPTED_PREFIX.length);
+  const decrypted = decryptCredential(envelope);
+  if (decrypted === null) {
+    log.error('Credential decryption failed — key mismatch or corrupted data');
+    return '[DECRYPTION_FAILED]';
+  }
+  return decrypted;
+}
+
 function parseCredential(row: any): CredentialArtifactRow {
   return {
     id: row.id,
@@ -99,7 +124,7 @@ function parseCredential(row: any): CredentialArtifactRow {
     entityId: row.entityId,
     entityName: row.entityName,
     credentialType: row.credentialType,
-    credentialValue: row.credentialValue,
+    credentialValue: decryptFromStorage(row.credentialValue),
     issuingAuthority: row.issuingAuthority,
     state: row.state,
     status: row.status,
@@ -149,7 +174,7 @@ export async function createCredential(
     entityId: input.entityId,
     entityName: input.entityName,
     credentialType: input.credentialType,
-    credentialValue: input.credentialValue,
+    credentialValue: encryptForStorage(input.credentialValue),
     issuingAuthority: input.issuingAuthority || null,
     state: input.state || null,
     status: input.status || 'active',
@@ -221,7 +246,7 @@ export async function updateCredential(
   const setClause: Record<string, any> = { updatedAt: now };
 
   if (updates.entityName !== undefined) setClause.entityName = updates.entityName;
-  if (updates.credentialValue !== undefined) setClause.credentialValue = updates.credentialValue;
+  if (updates.credentialValue !== undefined) setClause.credentialValue = encryptForStorage(updates.credentialValue);
   if (updates.issuingAuthority !== undefined) setClause.issuingAuthority = updates.issuingAuthority;
   if (updates.state !== undefined) setClause.state = updates.state;
   if (updates.status !== undefined) setClause.status = updates.status;

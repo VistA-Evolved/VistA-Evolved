@@ -9,14 +9,31 @@ import { randomUUID, randomBytes, createHash } from 'node:crypto';
 import type { TransactionEnvelope, TransactionRecord, TransactionState } from './types.js';
 import type { X12TransactionSet, IsaEnvelope, GsEnvelope } from '../edi/types.js';
 import { TRANSACTION_STATE_TRANSITIONS } from './types.js';
+import { log } from '../../lib/logger.js';
 
 /* ── Control number generator ────────────────────────────────── */
 
 const controlCounters = new Map<string, number>();
 
 /**
+ * PG-backed control number repo (optional).
+ * When wired, guarantees unique monotonic ISA13 across restarts.
+ */
+interface ControlSequenceRepo {
+  nextValue(tenantId: string, senderId: string, receiverId: string): Promise<number>;
+}
+
+let pgControlRepo: ControlSequenceRepo | null = null;
+
+/** Wire a PG-backed control number repo at startup. */
+export function initControlSequenceRepo(repo: ControlSequenceRepo): void {
+  pgControlRepo = repo;
+}
+
+/**
  * Generate a unique, monotonically increasing ISA13 control number
- * per sender/receiver pair. Resets on API restart (in-memory).
+ * per sender/receiver pair. Uses PG sequence when available, falls
+ * back to in-memory counter.
  */
 export function nextControlNumber(senderId: string, receiverId: string): string {
   const key = `${senderId}:${receiverId}`;
@@ -24,6 +41,28 @@ export function nextControlNumber(senderId: string, receiverId: string): string 
   const next = current + 1;
   controlCounters.set(key, next);
   return String(next).padStart(9, '0');
+}
+
+/**
+ * Async version that uses PG sequence for durability when available.
+ */
+export async function nextControlNumberDurable(
+  senderId: string,
+  receiverId: string,
+  tenantId: string = 'default'
+): Promise<string> {
+  if (pgControlRepo) {
+    try {
+      const val = await pgControlRepo.nextValue(tenantId, senderId, receiverId);
+      // Keep in-memory counter synced
+      const key = `${senderId}:${receiverId}`;
+      controlCounters.set(key, val);
+      return String(val).padStart(9, '0');
+    } catch (err: any) {
+      log.warn('PG control number fetch failed, falling back to in-memory', { error: err.message });
+    }
+  }
+  return nextControlNumber(senderId, receiverId);
 }
 
 /* ── Envelope builder ────────────────────────────────────────── */

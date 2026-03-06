@@ -66,6 +66,10 @@ async function initPostgresLayer(): Promise<void> {
     initSessionRepo(pgSessionRepoMod);
     log.info('Session store wired to PG');
   } catch (psErr: any) {
+    const mode = getRuntimeMode();
+    if (mode === 'rc' || mode === 'prod') {
+      throw new Error(`Session PG wiring failed in ${mode} mode: ${psErr.message}`);
+    }
     log.warn('PG session repo wire failed (in-memory fallback)', { error: psErr.message });
   }
 
@@ -112,6 +116,10 @@ async function initPostgresLayer(): Promise<void> {
     initClaimStoreRepo(pgClaimRepoMod);
     log.info('RCM claim store wired to PG');
   } catch (rcErr: any) {
+    const mode = getRuntimeMode();
+    if (mode === 'rc' || mode === 'prod') {
+      throw new Error(`RCM claim PG wiring failed in ${mode} mode: ${rcErr.message}`);
+    }
     log.warn('PG RCM claim repo wire failed (in-memory fallback)', { error: rcErr.message });
   }
 
@@ -404,6 +412,16 @@ async function initPostgresLayer(): Promise<void> {
     initPortalSessionPgRepo(DR.createPortalSessionRepo());
     log.info('Phase 150: Portal session PG write-through wired');
   } catch (d146Err: any) {
+    // Phase 573B: In rc/prod mode, silent fallback to in-memory is a critical
+    // patient-safety and data-durability failure. Fail loud.
+    const mode = getRuntimeMode();
+    if (mode === 'rc' || mode === 'prod') {
+      log.fatal('Phase 146 durability wire failed in production mode — refusing to start with volatile stores', {
+        error: d146Err.message,
+        mode,
+      });
+      throw new Error(`Critical store PG wiring failed in ${mode} mode: ${d146Err.message}`);
+    }
     log.warn('Phase 146 durability wire partially failed (Map cache fallback)', {
       error: d146Err.message,
     });
@@ -457,6 +475,14 @@ async function initPostgresLayer(): Promise<void> {
 
     log.info('Wave 41: All durable ops stores wired to PG (6 stores, 10 repos)');
   } catch (w41Err: any) {
+    const mode = getRuntimeMode();
+    if (mode === 'rc' || mode === 'prod') {
+      log.fatal('Wave 41 durability wire failed in production mode — refusing to start with volatile stores', {
+        error: w41Err.message,
+        mode,
+      });
+      throw new Error(`Critical store PG wiring failed in ${mode} mode: ${w41Err.message}`);
+    }
     log.warn('Wave 41 durability wire partially failed (Map cache fallback)', {
       error: w41Err.message,
     });

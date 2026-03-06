@@ -4625,6 +4625,24 @@ CREATE INDEX IF NOT EXISTS idx_da_tenant ON device_alarm(tenant_id);
 CREATE INDEX IF NOT EXISTS idx_da_device ON device_alarm(tenant_id, device_id);
 `,
   },
+  {
+    version: 61,
+    name: 'edi_control_number_sequence',
+    sql: `
+-- Phase 573B: Durable EDI control number sequence
+-- Prevents duplicate ISA13 control numbers across API restarts
+CREATE TABLE IF NOT EXISTS edi_control_sequence (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  sender_id TEXT NOT NULL,
+  receiver_id TEXT NOT NULL,
+  last_value BIGINT NOT NULL DEFAULT 0,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(tenant_id, sender_id, receiver_id)
+);
+CREATE INDEX IF NOT EXISTS idx_ecs_tenant_sender ON edi_control_sequence(tenant_id, sender_id, receiver_id);
+`,
+  },
 ];
 
 /**
