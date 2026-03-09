@@ -1,0 +1,355 @@
+{
+  "generatedAt": "2026-03-09T10:30:00Z",
+  "source": "VEHU Docker (worldvista/vehu)",
+  "totalRpcsInFile8994": 4517,
+  "domains": [
+    {
+      "id": 1,
+      "name": "System Infrastructure & Security",
+      "vistaPackages": ["Kernel (XU)", "Toolkit (XT)", "FileMan (DI)", "MailMan (XM)", "RPC Broker (XWB)"],
+      "keyFiles": [200, 19, 19.1, 3.5, 8989.3, 8989.5, 14.5, 1.1],
+      "rpcs": {
+        "available": [
+          {"name": "XUS SIGNON SETUP", "ien": 10, "purpose": "Initialize sign-on sequence"},
+          {"name": "XUS AV CODE", "ien": 12, "purpose": "Authenticate access/verify codes"},
+          {"name": "XUS SET VISITOR", "ien": 2344, "purpose": "Set visitor context"},
+          {"name": "XUS GET USER INFO", "ien": 595, "purpose": "Get current user info"},
+          {"name": "XUS DIVISION GET", "ien": 596, "purpose": "Get user divisions"},
+          {"name": "XUS DIVISION SET", "ien": 594, "purpose": "Set active division"},
+          {"name": "XUS PKI GET UPN", "ien": 3350, "purpose": "Get PKI UPN"},
+          {"name": "XUS GET TOKEN", "ien": 867, "purpose": "Get authentication token"},
+          {"name": "XUS INTRO MSG", "ien": 13, "purpose": "Get intro message"},
+          {"name": "XWB GET BROKER INFO", "ien": 597, "purpose": "Get broker version info"},
+          {"name": "XWB IM HERE", "ien": 598, "purpose": "Keepalive ping"},
+          {"name": "XWB CREATE CONTEXT", "ien": 14, "purpose": "Create RPC context"},
+          {"name": "XWB GET VARIABLE VALUE", "ien": 9, "purpose": "Read M variable value"},
+          {"name": "ORWU NEWPERS", "ien": 213, "purpose": "List persons (users/providers) matching search"},
+          {"name": "ORWU USERINFO", "ien": 185, "purpose": "Get detailed user info"},
+          {"name": "ORWU DT", "ien": 252, "purpose": "Convert date/time"},
+          {"name": "ORWU TOOLMENU", "ien": 305, "purpose": "Get tool menu items"},
+          {"name": "ORWU VALIDSIG", "ien": 195, "purpose": "Validate electronic signature"},
+          {"name": "ORWU VERSRV", "ien": 439, "purpose": "Get server version"},
+          {"name": "ORWU EXTNAME", "ien": 287, "purpose": "Get external name for IEN"},
+          {"name": "ORWU HASKEY", "ien": 306, "purpose": "Check if user has security key"},
+          {"name": "ORWU PARAM", "ien": 691, "purpose": "Get/set parameters"}
+        ],
+        "missing": [
+          {"name": "XWB ARE YOU THERE", "purpose": "Connection health check"}
+        ],
+        "customNeeded": [
+          {"name": "VE USER LIST", "purpose": "List all users from File #200 with admin fields"},
+          {"name": "VE USER CREATE", "purpose": "Create new user in File #200"},
+          {"name": "VE USER EDIT", "purpose": "Edit user in File #200"},
+          {"name": "VE USER DEACTIVATE", "purpose": "Deactivate user in File #200"},
+          {"name": "VE KEY ALLOCATE", "purpose": "Allocate security key to user"},
+          {"name": "VE KEY DEALLOCATE", "purpose": "Remove security key from user"},
+          {"name": "VE KEY LIST", "purpose": "List all security keys from File #19.1"},
+          {"name": "VE MENU ASSIGN", "purpose": "Assign menu options to user"},
+          {"name": "VE ESIG SETUP", "purpose": "Set up electronic signature for user"},
+          {"name": "VE PARAM GET", "purpose": "Read site parameters from File #8989.3"},
+          {"name": "VE PARAM SET", "purpose": "Write site parameters"}
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "name": "Facility Setup & Organization",
+      "vistaPackages": ["Registration (DG)", "Kernel (XU)"],
+      "keyFiles": [4, 40.8, 389.9, 42.4, 45.7, 40.7, 49, 44],
+      "rpcs": {
+        "available": [
+          {"name": "DG CHK PAT/DIV MEANS TEST", "ien": 634, "purpose": "Check means test"},
+          {"name": "DG SENSITIVE RECORD ACCESS", "ien": 628, "purpose": "Sensitive record access check"},
+          {"name": "DG SENSITIVE RECORD BULLETIN", "ien": 629, "purpose": "Sensitive record bulletin"},
+          {"name": "ORWU CLINLOC", "ien": 254, "purpose": "List clinic locations"},
+          {"name": "ORWU1 NAMECVT", "ien": 1398, "purpose": "Name conversion utility"},
+          {"name": "ORWU GENERIC", "ien": 330, "purpose": "Generic FileMan lookup"}
+        ],
+        "missing": [
+          {"name": "DG REGISTRATION DEMOGRAPHIC", "purpose": "Patient demographic registration"},
+          {"name": "VBECS ADT EVENTS", "purpose": "ADT event notifications"}
+        ],
+        "customNeeded": [
+          {"name": "VE INST LIST", "purpose": "List institutions from File #4"},
+          {"name": "VE INST EDIT", "purpose": "Edit institution record"},
+          {"name": "VE DIV LIST", "purpose": "List divisions from File #40.8"},
+          {"name": "VE DIV CREATE", "purpose": "Create division"},
+          {"name": "VE SVC LIST", "purpose": "List services/sections from File #49"},
+          {"name": "VE SVC CREATE", "purpose": "Create service/section"},
+          {"name": "VE STOP LIST", "purpose": "List stop codes from File #40.7"},
+          {"name": "VE SPEC LIST", "purpose": "List treating specialties from File #42.4"}
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "name": "Clinic Setup & Scheduling",
+      "vistaPackages": ["Scheduling (SD)", "PCE (PX)"],
+      "keyFiles": [44, 44.1, 44.2, 409.1, 409.2, 409.832, 409.845],
+      "rpcs": {
+        "available": [
+          {"name": "SDES GET APPT TYPES", "ien": 4399, "purpose": "List appointment types"},
+          {"name": "SDES GET APPT BY APPT IEN", "ien": 4323, "purpose": "Get appointment by IEN"},
+          {"name": "SDES GET CANCEL REASONS", "ien": 4381, "purpose": "List cancellation reasons"},
+          {"name": "SDOE LIST ENCOUNTERS FOR PAT", "ien": 132, "purpose": "List encounters for patient"},
+          {"name": "SDEC APPADD", "ien": 3676, "purpose": "Add appointment"},
+          {"name": "SDEC APPDEL", "ien": 3665, "purpose": "Delete appointment"},
+          {"name": "SDEC CLINLET", "ien": 3657, "purpose": "Clinic letter"}
+        ],
+        "missing": [
+          {"name": "SDES CANCEL APPOINTMENT", "purpose": "Cancel appointment"},
+          {"name": "SDES GET CLINIC DETAILS", "purpose": "Get clinic configuration details"},
+          {"name": "SDES GET CLINIC RESOURCES", "purpose": "Get clinic resources"},
+          {"name": "SDES GET CLINIC AVAILABILITY", "purpose": "Get clinic availability slots"},
+          {"name": "SDES HELD APPOINTMENT", "purpose": "Hold appointment slot"},
+          {"name": "SDES BOOKED APPOINTMENT", "purpose": "Book appointment"},
+          {"name": "SDES CREATE APPOINTMENT", "purpose": "Create new appointment"},
+          {"name": "SD WAIT LIST", "purpose": "Wait list operations"},
+          {"name": "SDVW RESOURCE", "purpose": "Scheduling resource lookup"},
+          {"name": "SDVW APPTBYDT", "purpose": "Appointments by date"},
+          {"name": "SD W/L CLINICS", "purpose": "Wait list clinics"}
+        ],
+        "customNeeded": [
+          {"name": "VE CLIN LIST", "purpose": "List clinics from File #44 with admin fields"},
+          {"name": "VE CLIN CREATE", "purpose": "Create clinic in File #44"},
+          {"name": "VE CLIN EDIT", "purpose": "Edit clinic fields"},
+          {"name": "VE CLIN PATTERN", "purpose": "Set/get clinic availability patterns"},
+          {"name": "VE CLIN GROUP", "purpose": "Manage clinic groups (#409.832)"}
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "name": "Inpatient / ADT / Wards / Beds",
+      "vistaPackages": ["Registration (DG)", "Bed Management (WEBB)"],
+      "keyFiles": [42, 42.4, 405, 405.1, 43, 391, 405.4],
+      "rpcs": {
+        "available": [
+          {"name": "ORWPT ADMITLST", "ien": 198, "purpose": "Admitted patient list"},
+          {"name": "ORWPT CLINRNG", "ien": 253, "purpose": "Clinic range list"},
+          {"name": "ORWPT BYWARD", "ien": 620, "purpose": "Patients by ward"},
+          {"name": "ORWPT LAST5", "ien": 251, "purpose": "Last 5 patients"}
+        ],
+        "missing": [
+          {"name": "DGPM NEW ADMISSION", "purpose": "Create new admission"},
+          {"name": "DGPM NEW TRANSFER", "purpose": "Create new transfer"},
+          {"name": "DGPM NEW DISCHARGE", "purpose": "Create new discharge"},
+          {"name": "DG ADT DISCHARGE", "purpose": "ADT discharge"}
+        ],
+        "customNeeded": [
+          {"name": "VE WARD LIST", "purpose": "List wards from File #42"},
+          {"name": "VE WARD CREATE", "purpose": "Create ward in File #42"},
+          {"name": "VE WARD EDIT", "purpose": "Edit ward configuration"},
+          {"name": "VE BED STATUS", "purpose": "Get bed status for ward"},
+          {"name": "VE CENSUS", "purpose": "Get census counts by ward/specialty"}
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "name": "Pharmacy Setup",
+      "vistaPackages": ["Outpatient Pharmacy (PSO)", "Inpatient Meds (PSJ)", "Pharmacy Data (PSS)", "National Drug File (PSN)", "Drug Accountability (PSA)", "BCMA (PSB)"],
+      "keyFiles": [50, 50.6, 50.67, 50.68, 51, 51.1, 52, 55, 59],
+      "rpcs": {
+        "available": [
+          {"name": "PSB ALLERGY", "ien": 1278, "purpose": "BCMA allergy check"},
+          {"name": "PSB VALIDATE ORDER", "ien": 646, "purpose": "BCMA order validation"},
+          {"name": "ORWPS ACTIVE", "ien": 321, "purpose": "Active medication list"},
+          {"name": "ORWPS DETAIL", "ien": 323, "purpose": "Medication detail"},
+          {"name": "ORWDPS32 AUTH", "ien": 375, "purpose": "Pharmacy auth check"},
+          {"name": "ORWDPS32 VALQTY", "ien": 484, "purpose": "Validate quantity"},
+          {"name": "ORWDPS32 SCSTS", "ien": 398, "purpose": "SC status"}
+        ],
+        "missing": [
+          {"name": "PSS DRUG LIST", "purpose": "List drugs from File #50"},
+          {"name": "PSS ORDER", "purpose": "Pharmacy order"},
+          {"name": "PSO ACTIVE LIST", "purpose": "Active prescription list"},
+          {"name": "PSJ LM ORDER UPDATE", "purpose": "Inpatient order update"},
+          {"name": "PSO UPDATE MED LIST", "purpose": "Update medication list"},
+          {"name": "ORWDPS1 FAESSION", "purpose": "Pharmacy session"}
+        ],
+        "customNeeded": [
+          {"name": "VE DRUG LIST", "purpose": "List drugs from File #50 with formulary status"},
+          {"name": "VE DRUG DETAIL", "purpose": "Get drug detail from File #50"},
+          {"name": "VE DRUG EDIT", "purpose": "Edit drug formulary entry"},
+          {"name": "VE PHARM SITE", "purpose": "Get/set pharmacy site parameters from File #59"}
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "name": "Laboratory Setup",
+      "vistaPackages": ["Lab Service (LR)", "Automated Lab Instruments (LA)"],
+      "keyFiles": [60, 61, 62, 62.05, 63, 64, 68, 69, 69.9],
+      "rpcs": {
+        "available": [
+          {"name": "ORWLRR ALLTESTS", "ien": 261, "purpose": "List all lab tests"},
+          {"name": "ORWLRR CHART", "ien": 290, "purpose": "Lab chart data"},
+          {"name": "ORWLRR GRID", "ien": 271, "purpose": "Lab grid data"},
+          {"name": "ORWLRR INTERIM", "ien": 269, "purpose": "Interim lab results"},
+          {"name": "ORWLRR INTERIMG", "ien": 286, "purpose": "Interim imaging results"},
+          {"name": "ORWLRR SPEC", "ien": 260, "purpose": "Lab specimens"},
+          {"name": "ORWLRR USERS", "ien": 262, "purpose": "Lab users"}
+        ],
+        "missing": [
+          {"name": "LR ORDER", "purpose": "Lab order entry"},
+          {"name": "LR VERIFY", "purpose": "Lab result verification"}
+        ],
+        "customNeeded": [
+          {"name": "VE LAB TEST LIST", "purpose": "List lab tests from File #60 with admin fields"},
+          {"name": "VE LAB TEST EDIT", "purpose": "Edit lab test definition"},
+          {"name": "VE LAB SITE", "purpose": "Get/set lab site parameters from File #69.9"},
+          {"name": "VE LAB COLL", "purpose": "Manage collection samples from File #62"}
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "name": "Radiology Setup",
+      "vistaPackages": ["Radiology Nuclear Medicine (RA)", "Imaging (MAG)"],
+      "keyFiles": [71, 72, 73, 74, 79, 79.1],
+      "rpcs": {
+        "available": [
+          {"name": "MAG4 ADD IMAGE", "ien": 1167, "purpose": "Add VistA Imaging entry"},
+          {"name": "MAG4 GET IMAGE INFO", "ien": 1895, "purpose": "Get image information"},
+          {"name": "ORWRA IMAGING EXAMS", "ien": 215, "purpose": "List imaging exams"}
+        ],
+        "missing": [
+          {"name": "ORWDXR NEW ORDER", "purpose": "New radiology order"},
+          {"name": "RA EXAM STATUS", "purpose": "Radiology exam status"},
+          {"name": "MAG DICOM QUERY RETRIEVE", "purpose": "DICOM Q/R"}
+        ],
+        "customNeeded": [
+          {"name": "VE RAD PROC LIST", "purpose": "List rad procedures from File #71"},
+          {"name": "VE RAD PROC EDIT", "purpose": "Edit rad procedure definition"},
+          {"name": "VE RAD SITE", "purpose": "Get/set rad division parameters from File #79"}
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "name": "Billing, Insurance & Revenue Cycle",
+      "vistaPackages": ["Integrated Billing (IB)", "Accounts Receivable (PRCA)", "Fee Basis (FB)", "E Claims (BPS)"],
+      "keyFiles": [350, 350.1, 350.9, 355.3, 355.33, 36, 360, 399, 340],
+      "rpcs": {
+        "available": [],
+        "missing": [
+          {"name": "IBD SCANCODE", "purpose": "Scan billing code"},
+          {"name": "IBD SCAN ALL", "purpose": "Scan all billing codes"},
+          {"name": "IB PT STATUS", "purpose": "Patient billing status"},
+          {"name": "IBCN INSUR DATA", "purpose": "Insurance data"},
+          {"name": "IBCN INSURANCE", "purpose": "Insurance lookup"},
+          {"name": "IBARXMK MARKUP", "purpose": "Rx markup"},
+          {"name": "IBARXMG GETDATA", "purpose": "Rx get data"},
+          {"name": "IBARXMS STATS", "purpose": "Rx stats"},
+          {"name": "DGBT CLAIM STATUS", "purpose": "Claim status"}
+        ],
+        "customNeeded": [
+          {"name": "VE IB SITE", "purpose": "Get/set IB site parameters from File #350.9"},
+          {"name": "VE INS LIST", "purpose": "List insurance companies from File #355.3"},
+          {"name": "VE INS CREATE", "purpose": "Create insurance company"},
+          {"name": "VE INS EDIT", "purpose": "Edit insurance company"},
+          {"name": "VE FEE SCHED", "purpose": "Manage fee schedules"},
+          {"name": "VE AR AGING", "purpose": "AR aging report query"}
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "name": "Inventory & Supply Chain (IFCAP)",
+      "vistaPackages": ["IFCAP (PRC/PRX)", "Engineering (EN)"],
+      "keyFiles": [441, 442, 443, 445, 446, 410, 6914, 6928],
+      "rpcs": {
+        "available": [],
+        "missing": [
+          {"name": "PRC ITEM INQUIRY", "purpose": "Item inquiry"},
+          {"name": "PRC PURCHASE ORDER", "purpose": "Purchase order"}
+        ],
+        "customNeeded": [
+          {"name": "VE ITEM LIST", "purpose": "List items from File #441"},
+          {"name": "VE VENDOR LIST", "purpose": "List vendors from File #445"},
+          {"name": "VE INV STATUS", "purpose": "Inventory status from File #446"}
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "name": "Employee & Workforce Management",
+      "vistaPackages": ["PAID (PRS)", "Credentials (QAR)", "Nursing (NUR)"],
+      "keyFiles": [200, 450, 451, 8932.1, 150, 210],
+      "rpcs": {
+        "available": [],
+        "missing": [
+          {"name": "PRS EMPLOYEE", "purpose": "Employee record access"}
+        ],
+        "customNeeded": [
+          {"name": "VE EMP LIST", "purpose": "List employees from File #200/450"},
+          {"name": "VE CRED LIST", "purpose": "List credentials from File #150"},
+          {"name": "VE PERSON CLASS", "purpose": "List person classes from File #8932.1"}
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "name": "Quality, Compliance & Reporting",
+      "vistaPackages": ["Quality Assurance (QAQ/QAN/QAO/QAM)", "Clinical Reminders (PXRM)", "DSS Extracts (ECX)", "Event Capture (EC)"],
+      "keyFiles": [740, 741, 810, 811.9, 727.81, 749],
+      "rpcs": {
+        "available": [
+          {"name": "ORQQPX REMINDER DETAIL", "ien": 299, "purpose": "Clinical reminder detail"}
+        ],
+        "missing": [
+          {"name": "PXRM REMINDERS", "purpose": "List clinical reminders"},
+          {"name": "ORQQPX NEW REMINDERS", "purpose": "New reminders"}
+        ],
+        "customNeeded": [
+          {"name": "VE QA PARAMS", "purpose": "Get/set QA site parameters from File #740"},
+          {"name": "VE REMINDER LIST", "purpose": "List clinical reminders from File #810"},
+          {"name": "VE REMINDER EDIT", "purpose": "Edit reminder definition"}
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "name": "Clinical Application Setup",
+      "vistaPackages": ["Order Entry (OR)", "Consults (GMRC)", "TIU", "Health Summary (GMTS)", "Surgery (SR)"],
+      "keyFiles": [100, 100.98, 101, 101.41, 101.44, 123, 123.5, 8925, 8925.1, 8926, 130],
+      "rpcs": {
+        "available": [
+          {"name": "ORWDXM MENU", "ien": 475, "purpose": "Order menu items"},
+          {"name": "ORWDX WRLST", "ien": 379, "purpose": "Order write list"},
+          {"name": "ORWORDG IEN", "ien": 309, "purpose": "Order display group IEN"},
+          {"name": "ORWOR SHEETS", "ien": 546, "purpose": "Order sheets"},
+          {"name": "TIU TEMPLATE GETITEMS", "ien": 554, "purpose": "Get TIU template items"},
+          {"name": "GMRC LIST CONSULT REQUESTS", "ien": 325, "purpose": "List consult requests"},
+          {"name": "TIU CREATE RECORD", "ien": 85, "purpose": "Create TIU document"},
+          {"name": "TIU SET DOCUMENT TEXT", "ien": 1132, "purpose": "Set TIU document text"}
+        ],
+        "missing": [
+          {"name": "ORWTIU GET LISTBOX", "purpose": "TIU listbox data"},
+          {"name": "TIU GET TEMPLATE TEXT", "purpose": "Get template text"},
+          {"name": "ORWDXM DLGORD", "purpose": "Dialog order"},
+          {"name": "GMPL LIST", "purpose": "Problem list"}
+        ],
+        "customNeeded": [
+          {"name": "VE ORDERSET LIST", "purpose": "List order sets from File #101.44"},
+          {"name": "VE ORDERSET EDIT", "purpose": "Edit order set"},
+          {"name": "VE TIUDEF LIST", "purpose": "List TIU document definitions from File #8925.1"},
+          {"name": "VE TIUDEF EDIT", "purpose": "Edit TIU document definition"},
+          {"name": "VE CONSULT SVC LIST", "purpose": "List consult services from File #123.5"},
+          {"name": "VE CONSULT SVC EDIT", "purpose": "Edit consult service"}
+        ]
+      }
+    }
+  ],
+  "summary": {
+    "totalRpcsInVEHU": 4517,
+    "adminRpcsProbed": 100,
+    "adminRpcsAvailable": 55,
+    "adminRpcsMissing": 45,
+    "customRpcsNeeded": 58,
+    "domainsFullyCovered": 0,
+    "domainsPartiallyCovered": 8,
+    "domainsNoCoverage": 4
+  }
+}

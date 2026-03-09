@@ -1,0 +1,144 @@
+ZVEFAC ;VE;Facility Setup Admin RPCs;2026-03-09
+ ;
+ ; Custom RPCs for facility/organization admin operations.
+ ; Files: #4 (INSTITUTION), #40.8 (DIVISION), #49 (SERVICE/SECTION),
+ ;        #40.7 (STOP CODE), #42.4 (SPECIALTY)
+ ; Read RPCs: INSTLIST, DIVLIST, SVCLIST, STOPLIST, SPECLIST, SITEPARM
+ ; Write RPCs: SVCCRT, SVCEDT
+ ;
+INSTLIST(RESULT,SEARCH,COUNT) ;List institutions from File #4
+ N IEN,NM,I,U,MAXCT
+ S U="^",I=0,MAXCT=+$G(COUNT)
+ I MAXCT<1 S MAXCT=100
+ S SEARCH=$G(SEARCH)
+ I SEARCH="" D  Q
+ . S IEN=0
+ . F  S IEN=$O(^DIC(4,IEN)) Q:'IEN  Q:I>=MAXCT  D
+ . . S NM=$P($G(^DIC(4,IEN,0)),U,1)
+ . . Q:NM=""
+ . . S I=I+1
+ . . S RESULT(I)=IEN_U_NM_U_$P($G(^DIC(4,IEN,0)),U,11)_U_$P($G(^DIC(4,IEN,0)),U,99)
+ . S RESULT(0)=I
+ S NM=SEARCH
+ F  S NM=$O(^DIC(4,"B",NM)) Q:NM=""  Q:$E(NM,1,$L(SEARCH))'=SEARCH  Q:I>=MAXCT  D
+ . S IEN=$O(^DIC(4,"B",NM,""))
+ . Q:'IEN
+ . S I=I+1
+ . S RESULT(I)=IEN_U_NM_U_$P($G(^DIC(4,IEN,0)),U,11)
+ S RESULT(0)=I
+ Q
+ ;
+DIVLIST(RESULT) ;List divisions from File #40.8
+ N IEN,NM,I,U,INST
+ S U="^",I=0,IEN=0
+ F  S IEN=$O(^DG(40.8,IEN)) Q:'IEN  D
+ . S NM=$P($G(^DG(40.8,IEN,0)),U,1)
+ . Q:NM=""
+ . S INST=$P($G(^DG(40.8,IEN,0)),U,7)
+ . S I=I+1
+ . S RESULT(I)=IEN_U_NM_U_$P($G(^DG(40.8,IEN,0)),U,2)_U_INST
+ S RESULT(0)=I
+ Q
+ ;
+SVCLIST(RESULT) ;List services/sections from File #49
+ N IEN,NM,I,U
+ S U="^",I=0,IEN=0
+ F  S IEN=$O(^DIC(49,IEN)) Q:'IEN  D
+ . S NM=$P($G(^DIC(49,IEN,0)),U,1)
+ . Q:NM=""
+ . S I=I+1
+ . S RESULT(I)=IEN_U_NM_U_$P($G(^DIC(49,IEN,0)),U,2)_U_$P($G(^DIC(49,IEN,0)),U,3)
+ S RESULT(0)=I
+ Q
+ ;
+STOPLIST(RESULT,SEARCH) ;List stop codes from File #40.7
+ N IEN,NM,I,U,MAXCT
+ S U="^",I=0,MAXCT=200,SEARCH=$G(SEARCH)
+ I SEARCH="" D  Q
+ . S IEN=0
+ . F  S IEN=$O(^DIC(40.7,IEN)) Q:'IEN  Q:I>=MAXCT  D
+ . . S NM=$P($G(^DIC(40.7,IEN,0)),U,1)
+ . . Q:NM=""
+ . . S I=I+1
+ . . S RESULT(I)=IEN_U_NM_U_$P($G(^DIC(40.7,IEN,0)),U,2)
+ . S RESULT(0)=I
+ S NM=SEARCH
+ F  S NM=$O(^DIC(40.7,"B",NM)) Q:NM=""  Q:$E(NM,1,$L(SEARCH))'=SEARCH  Q:I>=MAXCT  D
+ . S IEN=$O(^DIC(40.7,"B",NM,""))
+ . Q:'IEN
+ . S I=I+1
+ . S RESULT(I)=IEN_U_NM_U_$P($G(^DIC(40.7,IEN,0)),U,2)
+ S RESULT(0)=I
+ Q
+ ;
+SPECLIST(RESULT) ;List specialties from File #42.4
+ N IEN,NM,I,U
+ S U="^",I=0,IEN=0
+ F  S IEN=$O(^DIC(42.4,IEN)) Q:'IEN  D
+ . S NM=$P($G(^DIC(42.4,IEN,0)),U,1)
+ . Q:NM=""
+ . S I=I+1
+ . S RESULT(I)=IEN_U_NM_U_$P($G(^DIC(42.4,IEN,0)),U,3)
+ S RESULT(0)=I
+ Q
+ ;
+SITEPARM(RESULT) ;Get kernel site parameters from File #8989.3
+ N IEN,U
+ S U="^"
+ S IEN=$O(^XTV(8989.3,0))
+ I 'IEN S RESULT(0)="-1^No site parameters found" Q
+ S RESULT(0)="1^OK"
+ S RESULT(1)="DOMAIN^"_$P($G(^XTV(8989.3,IEN,0)),U,1)
+ S RESULT(2)="VOLUME_SET^"_$P($G(^XTV(8989.3,IEN,0)),U,2)
+ S RESULT(3)="DEFAULT_INSTITUTION^"_$P($G(^XTV(8989.3,IEN,0)),U,3)
+ Q
+ ;
+SVCCRT(RESULT,NAME,ABBREV,CHIEF) ;Create service/section in File #49
+ N U,FDA,IENS,ERR,NEWIEN
+ S U="^"
+ S NAME=$G(NAME),ABBREV=$G(ABBREV),CHIEF=$G(CHIEF)
+ I NAME="" S RESULT(0)="-1^Service name required" Q
+ S IENS="+1,"
+ S FDA(49,IENS,.01)=NAME
+ I ABBREV'="" S FDA(49,IENS,.02)=ABBREV
+ I CHIEF'="" S FDA(49,IENS,.03)=CHIEF
+ S NEWIEN(1)=""
+ D UPDATE^DIE("E","FDA","NEWIEN","ERR")
+ I $D(ERR) S RESULT(0)="-1^"_$G(ERR("DIERR",1,"TEXT",1)) Q
+ S RESULT(0)="1^OK"
+ S RESULT(1)="IEN^"_$G(NEWIEN(1))
+ S RESULT(2)="NAME^"_NAME
+ Q
+ ;
+SVCEDT(RESULT,SVCIEN,FIELD,VALUE) ;Edit service/section in File #49
+ N U,FDA,IENS,ERR,FLDNUM
+ S U="^",SVCIEN=+$G(SVCIEN)
+ I 'SVCIEN S RESULT(0)="-1^Service IEN required" Q
+ I '$D(^DIC(49,SVCIEN,0)) S RESULT(0)="-1^Service not found" Q
+ S FIELD=$G(FIELD),VALUE=$G(VALUE)
+ I FIELD="" S RESULT(0)="-1^Field name required" Q
+ S FLDNUM=""
+ I FIELD="NAME" S FLDNUM=.01
+ I FIELD="ABBREVIATION" S FLDNUM=.02
+ I FIELD="CHIEF" S FLDNUM=.03
+ I FLDNUM="" S RESULT(0)="-1^Unknown field: "_FIELD Q
+ S IENS=SVCIEN_","
+ S FDA(49,IENS,FLDNUM)=VALUE
+ D FILE^DIE("E","FDA","ERR")
+ I $D(ERR) S RESULT(0)="-1^"_$G(ERR("DIERR",1,"TEXT",1)) Q
+ S RESULT(0)="1^OK"
+ Q
+ ;
+INSTALL ;Register RPCs in File #8994
+ ; Read RPCs
+ D REG^ZVEUSER("VE INST LIST","INSTLIST","ZVEFAC")
+ D REG^ZVEUSER("VE DIV LIST","DIVLIST","ZVEFAC")
+ D REG^ZVEUSER("VE SVC LIST","SVCLIST","ZVEFAC")
+ D REG^ZVEUSER("VE STOP LIST","STOPLIST","ZVEFAC")
+ D REG^ZVEUSER("VE SPEC LIST","SPECLIST","ZVEFAC")
+ D REG^ZVEUSER("VE SITE PARM","SITEPARM","ZVEFAC")
+ ; Write RPCs
+ D REG^ZVEUSER("VE SVC CREATE","SVCCRT","ZVEFAC")
+ D REG^ZVEUSER("VE SVC EDIT","SVCEDT","ZVEFAC")
+ W "ZVEFAC RPCs registered",!
+ Q

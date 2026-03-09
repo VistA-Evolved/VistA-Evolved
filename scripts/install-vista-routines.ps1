@@ -128,7 +128,21 @@ $productionRoutines = @(
     "ZVERPC.m",    # RPC catalog lister
     "ZVERCMP.m",   # RCM provider info wrapper
     "ZVEADT.m",    # ADT ward census/bed board (3 RPCs)
-    "ZVEPROBADD.m" # Problem add wrapper (Phase 683)
+    "ZVEPROBADD.m",# Problem add wrapper (Phase 683)
+    "ZVEUSER.m",   # Admin: user/key/menu RPCs
+    "ZVEFAC.m",    # Admin: facilities/divisions/services RPCs
+    "ZVECLIN.m",   # Admin: clinics/appointment types RPCs
+    "ZVEWARD.m",   # Admin: wards/bed census RPCs
+    "ZVEPHAR.m",   # Admin: pharmacy formulary RPCs
+    "ZVELAB.m",    # Admin: lab tests/samples RPCs
+    "ZVEBILL.m",   # Admin: billing/insurance RPCs
+    "ZVESYS.m",    # Admin: system/TaskMan/error trap/parameters RPCs
+    "ZVERAD.m",    # Admin: radiology procedures/locations RPCs
+    "ZVEINV.m",    # Admin: inventory/IFCAP item master/vendors RPCs
+    "ZVEWRKF.m",   # Admin: workforce/provider credentials RPCs
+    "ZVEQUAL.m",   # Admin: quality/compliance/reminders RPCs
+    "ZVECAPP.m",   # Admin: clinical app setup (orders/TIU/consults) RPCs
+    "ZVECTX.m"     # Admin: context adder for all admin RPCs
 )
 
 if ($Seed) {
@@ -209,6 +223,71 @@ $installSteps = @(
         Label   = "Problem add wrapper (VE PROBLEM ADD)"
         Command = "mumps -run INSTALL^ZVEPROBADD"
         Match   = "registered|already|VE PROBLEM ADD"
+    },
+    @{
+        Label   = "Admin user RPCs (VE USER LIST, etc.)"
+        Command = "mumps -run INSTALL^ZVEUSER"
+        Match   = "registered|already|VE USER"
+    },
+    @{
+        Label   = "Admin facility RPCs (VE INST LIST, etc.)"
+        Command = "mumps -run INSTALL^ZVEFAC"
+        Match   = "registered|already|VE INST|VE DIV|VE SVC|VE STOP|VE SPEC|VE SITE"
+    },
+    @{
+        Label   = "Admin clinic RPCs (VE CLIN LIST, etc.)"
+        Command = "mumps -run INSTALL^ZVECLIN"
+        Match   = "registered|already|VE CLIN|VE APPT"
+    },
+    @{
+        Label   = "Admin ward RPCs (VE WARD LIST, etc.)"
+        Command = "mumps -run INSTALL^ZVEWARD"
+        Match   = "registered|already|VE WARD|VE CENSUS"
+    },
+    @{
+        Label   = "Admin pharmacy RPCs (VE DRUG LIST, etc.)"
+        Command = "mumps -run INSTALL^ZVEPHAR"
+        Match   = "registered|already|VE DRUG|VE MED"
+    },
+    @{
+        Label   = "Admin lab RPCs (VE LAB TEST LIST, etc.)"
+        Command = "mumps -run INSTALL^ZVELAB"
+        Match   = "registered|already|VE LAB"
+    },
+    @{
+        Label   = "Admin billing RPCs (VE IB SITE, etc.)"
+        Command = "mumps -run INSTALL^ZVEBILL"
+        Match   = "registered|already|VE IB|VE INS|VE CLAIM"
+    },
+    @{
+        Label   = "Admin system RPCs (VE TASKMAN LIST, etc.)"
+        Command = "mumps -run INSTALL^ZVESYS"
+        Match   = "registered|already|VE TASKMAN|VE ERROR|VE SYS|VE PARAM"
+    },
+    @{
+        Label   = "Admin radiology RPCs (VE RAD PROC LIST, etc.)"
+        Command = "mumps -run INSTALL^ZVERAD"
+        Match   = "registered|already|VE RAD"
+    },
+    @{
+        Label   = "Admin inventory RPCs (VE INV ITEM LIST, etc.)"
+        Command = "mumps -run INSTALL^ZVEINV"
+        Match   = "registered|already|VE INV"
+    },
+    @{
+        Label   = "Admin workforce RPCs (VE PROV LIST, etc.)"
+        Command = "mumps -run INSTALL^ZVEWRKF"
+        Match   = "registered|already|VE PROV|VE PERSON"
+    },
+    @{
+        Label   = "Admin quality RPCs (VE REMINDER LIST, etc.)"
+        Command = "mumps -run INSTALL^ZVEQUAL"
+        Match   = "registered|already|VE REMINDER|VE QA"
+    },
+    @{
+        Label   = "Admin clinical app RPCs (VE ORDER SETS, etc.)"
+        Command = "mumps -run INSTALL^ZVECAPP"
+        Match   = "registered|already|VE ORDER|VE CONSULT|VE TIU|VE HEALTH"
     }
 )
 
@@ -252,6 +331,22 @@ if ($ctxExit -ne 0) {
     Write-Gate "WARN" "Context registration (exit $ctxExit)"
 } else {
     Write-Gate "PASS" "Context registration (VEMCTX3)"
+}
+
+Write-Host "  Running ZVECTX (admin RPC context adder)..."
+$prevEAP = $ErrorActionPreference
+$ErrorActionPreference = "SilentlyContinue"
+$admCtxOutput = docker exec $ContainerName su - $VistaUser -c "mumps -run ZVECTX" 2>&1
+$admCtxExit = $LASTEXITCODE
+$ErrorActionPreference = $prevEAP
+$admCtxStr = ($admCtxOutput | Out-String).Trim()
+if ($admCtxStr) {
+    $admCtxStr -split "`n" | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+}
+if ($admCtxExit -ne 0) {
+    Write-Gate "WARN" "Admin context registration (exit $admCtxExit)"
+} else {
+    Write-Gate "PASS" "Admin context registration (ZVECTX)"
 }
 
 # ================================================================

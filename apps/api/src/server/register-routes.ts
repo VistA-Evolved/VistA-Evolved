@@ -152,6 +152,23 @@ import icuRoutes from '../service-lines/icu/icu-routes.js';
 // Schema status (Phase 175)
 import schemaStatusRoutes from '../routes/admin/schema-status.js';
 
+// VistA admin routes (users, facilities, clinics, wards, pharmacy, lab, billing)
+import vistaUsersRoutes from '../routes/admin/vista-users.js';
+import vistaFacilitiesRoutes from '../routes/admin/vista-facilities.js';
+import vistaClinicsRoutes from '../routes/admin/vista-clinics.js';
+import vistaWardsRoutes from '../routes/admin/vista-wards.js';
+import vistaPharmacyRoutes from '../routes/admin/vista-pharmacy.js';
+import vistaLabRoutes from '../routes/admin/vista-lab.js';
+import vistaBillingConfigRoutes from '../routes/admin/vista-billing-config.js';
+import vistaDashboardRoutes from '../routes/admin/vista-dashboard.js';
+import vistaSystemRoutes from '../routes/admin/vista-system.js';
+import vistaRadiologyRoutes from '../routes/admin/vista-radiology.js';
+import vistaInventoryRoutes from '../routes/admin/vista-inventory.js';
+import vistaWorkforceRoutes from '../routes/admin/vista-workforce.js';
+import vistaQualityRoutes from '../routes/admin/vista-quality.js';
+import vistaClinicalSetupRoutes from '../routes/admin/vista-clinical-setup.js';
+import provisioningRoutes from '../routes/admin/provisioning.js';
+
 // FHIR R4 gateway (Phase 178)
 import fhirRoutes from '../fhir/fhir-routes.js';
 import smartConfigRoutes from '../fhir/smart-configuration.js';
@@ -396,6 +413,25 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // Schema status (Phase 175)
   server.register(schemaStatusRoutes);
+
+  // VistA admin routes (users, facilities, clinics, wards, pharmacy, lab, billing)
+  server.register(vistaUsersRoutes);
+  server.register(vistaFacilitiesRoutes);
+  server.register(vistaClinicsRoutes);
+  server.register(vistaWardsRoutes);
+  server.register(vistaPharmacyRoutes);
+  server.register(vistaLabRoutes);
+  server.register(vistaBillingConfigRoutes);
+  server.register(vistaDashboardRoutes);
+  server.register(vistaSystemRoutes);
+  server.register(vistaRadiologyRoutes);
+  server.register(vistaInventoryRoutes);
+  server.register(vistaWorkforceRoutes);
+  server.register(vistaQualityRoutes);
+  server.register(vistaClinicalSetupRoutes);
+
+  // SaaS provisioning (tenant signup wizard)
+  server.register(provisioningRoutes);
 
   // Interop routes (Phase 18B/D, 21)
   server.register(interopRoutes);

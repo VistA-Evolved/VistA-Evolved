@@ -52,6 +52,7 @@ const ADMIN_NAV: AdminNavItem[] = [
   { label: 'Contracting', href: '/cprs/admin/contracting-hub', moduleId: 'rcm' },
   { label: 'Audit Viewer', href: '/cprs/admin/audit-viewer', moduleId: 'iam' },
   { label: 'Break-Glass', href: '/cprs/admin/break-glass', moduleId: 'iam' },
+  { label: 'VistA Admin', href: '/cprs/admin/vista' },
   { label: 'RPC Debug', href: '/cprs/admin/rpc-debug' },
   { label: 'Reports', href: '/cprs/admin/reports' },
   { label: 'Exports', href: '/cprs/admin/exports' },

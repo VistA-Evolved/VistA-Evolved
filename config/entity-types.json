@@ -1,0 +1,72 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "description": "Healthcare organization entity type definitions for SaaS provisioning"
+  },
+  "entityTypes": {
+    "SOLO_CLINIC": {
+      "name": "Solo Practice / Small Clinic",
+      "description": "Independent physician or small group practice (1-5 providers)",
+      "defaultSku": "CLINICIAN_ONLY",
+      "maxProviders": 10,
+      "defaultModules": ["kernel", "clinical", "scheduling", "portal", "analytics"],
+      "optionalModules": ["telehealth", "rcm", "imaging", "intake", "ai"],
+      "defaultDepartments": ["PRIMARY_CARE"],
+      "vistaConfig": {
+        "divisions": 1,
+        "maxWards": 0,
+        "maxClinics": 5,
+        "schedulingEnabled": true,
+        "inpatientEnabled": false
+      }
+    },
+    "MULTI_CLINIC": {
+      "name": "Multi-Location Practice",
+      "description": "Multi-site clinical group (2-10 locations, 5-50 providers)",
+      "defaultSku": "FULL_SUITE",
+      "maxProviders": 100,
+      "defaultModules": ["kernel", "clinical", "scheduling", "portal", "analytics", "rcm", "interop"],
+      "optionalModules": ["telehealth", "imaging", "intake", "ai", "iam"],
+      "defaultDepartments": ["PRIMARY_CARE", "INTERNAL_MEDICINE", "PEDIATRICS"],
+      "vistaConfig": {
+        "divisions": 10,
+        "maxWards": 0,
+        "maxClinics": 50,
+        "schedulingEnabled": true,
+        "inpatientEnabled": false
+      }
+    },
+    "HOSPITAL": {
+      "name": "Hospital / Medical Center",
+      "description": "Single hospital with inpatient and outpatient services (50-500 providers)",
+      "defaultSku": "FULL_SUITE",
+      "maxProviders": 1000,
+      "defaultModules": ["kernel", "clinical", "scheduling", "portal", "analytics", "rcm", "imaging", "interop", "iam"],
+      "optionalModules": ["telehealth", "intake", "ai", "migration", "fhir"],
+      "defaultDepartments": ["EMERGENCY", "SURGERY", "MEDICINE", "PEDIATRICS", "RADIOLOGY", "LABORATORY", "PHARMACY", "ICU"],
+      "vistaConfig": {
+        "divisions": 5,
+        "maxWards": 50,
+        "maxClinics": 200,
+        "schedulingEnabled": true,
+        "inpatientEnabled": true
+      }
+    },
+    "HEALTH_SYSTEM": {
+      "name": "Health System / Network",
+      "description": "Multi-facility health system with hospitals and clinics (500+ providers)",
+      "defaultSku": "FULL_SUITE",
+      "maxProviders": 10000,
+      "defaultModules": ["kernel", "clinical", "scheduling", "portal", "analytics", "rcm", "imaging", "interop", "iam", "telehealth", "intake", "ai", "migration", "fhir"],
+      "optionalModules": [],
+      "defaultDepartments": ["EMERGENCY", "SURGERY", "MEDICINE", "PEDIATRICS", "RADIOLOGY", "LABORATORY", "PHARMACY", "ICU", "BEHAVIORAL_HEALTH", "REHABILITATION", "PRIMARY_CARE"],
+      "vistaConfig": {
+        "divisions": 50,
+        "maxWards": 500,
+        "maxClinics": 2000,
+        "schedulingEnabled": true,
+        "inpatientEnabled": true
+      }
+    }
+  }
+}

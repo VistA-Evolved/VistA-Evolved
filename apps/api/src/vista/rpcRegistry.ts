@@ -1282,6 +1282,113 @@ export const RPC_REGISTRY: RpcDefinition[] = [
     tag: 'read',
     description: 'Get CP class IEN from TIU',
   },
+
+  // --- Admin: User Management (ZVEUSER.m) ---
+  { name: 'VE USER LIST', domain: 'admin-users', tag: 'read', description: 'List users from File #200' },
+  { name: 'VE USER DETAIL', domain: 'admin-users', tag: 'read', description: 'Get user detail from File #200' },
+  { name: 'VE KEY LIST', domain: 'admin-users', tag: 'read', description: 'List security keys from File #19.1' },
+  { name: 'VE MENU LIST', domain: 'admin-users', tag: 'read', description: 'List menu options from File #19' },
+
+  // --- Admin: Facility Setup (ZVEFAC.m) ---
+  { name: 'VE INST LIST', domain: 'admin-facility', tag: 'read', description: 'List institutions from File #4' },
+  { name: 'VE DIV LIST', domain: 'admin-facility', tag: 'read', description: 'List divisions from File #40.8' },
+  { name: 'VE SVC LIST', domain: 'admin-facility', tag: 'read', description: 'List services/sections from File #49' },
+  { name: 'VE STOP LIST', domain: 'admin-facility', tag: 'read', description: 'List stop codes from File #40.7' },
+  { name: 'VE SPEC LIST', domain: 'admin-facility', tag: 'read', description: 'List specialties from File #42.4' },
+  { name: 'VE SITE PARM', domain: 'admin-facility', tag: 'read', description: 'Get kernel site parameters' },
+
+  // --- Admin: Clinic Setup (ZVECLIN.m) ---
+  { name: 'VE CLIN LIST', domain: 'admin-clinics', tag: 'read', description: 'List clinics from File #44' },
+  { name: 'VE CLIN DETAIL', domain: 'admin-clinics', tag: 'read', description: 'Get clinic detail from File #44' },
+  { name: 'VE APPT TYPES', domain: 'admin-clinics', tag: 'read', description: 'List appointment types from File #409.1' },
+
+  // --- Admin: Ward/Bed (ZVEWARD.m) ---
+  { name: 'VE WARD LIST', domain: 'admin-wards', tag: 'read', description: 'List wards from File #42' },
+  { name: 'VE WARD DETAIL', domain: 'admin-wards', tag: 'read', description: 'Get ward detail from File #42' },
+  { name: 'VE CENSUS', domain: 'admin-wards', tag: 'read', description: 'Get census counts by ward' },
+
+  // --- Admin: Pharmacy (ZVEPHAR.m) ---
+  { name: 'VE DRUG LIST', domain: 'admin-pharmacy', tag: 'read', description: 'List drugs from File #50' },
+  { name: 'VE DRUG DETAIL', domain: 'admin-pharmacy', tag: 'read', description: 'Get drug detail from File #50' },
+  { name: 'VE MED ROUTES', domain: 'admin-pharmacy', tag: 'read', description: 'List medication routes from File #51' },
+  { name: 'VE MED SCHEDULES', domain: 'admin-pharmacy', tag: 'read', description: 'List medication schedules from File #51.1' },
+
+  // --- Admin: Laboratory (ZVELAB.m) ---
+  { name: 'VE LAB TEST LIST', domain: 'admin-lab', tag: 'read', description: 'List lab tests from File #60' },
+  { name: 'VE LAB TEST DETAIL', domain: 'admin-lab', tag: 'read', description: 'Get lab test detail from File #60' },
+  { name: 'VE LAB COLL SAMP', domain: 'admin-lab', tag: 'read', description: 'List collection samples from File #62' },
+  { name: 'VE LAB URGENCY', domain: 'admin-lab', tag: 'read', description: 'List urgency types from File #62.05' },
+
+  // --- Admin: Billing Config (ZVEBILL.m) ---
+  { name: 'VE IB SITE', domain: 'admin-billing', tag: 'read', description: 'Get IB site parameters from File #350.9' },
+  { name: 'VE INS LIST', domain: 'admin-billing', tag: 'read', description: 'List insurance companies from File #36' },
+  { name: 'VE INS DETAIL', domain: 'admin-billing', tag: 'read', description: 'Get insurance company detail from File #36' },
+  { name: 'VE CLAIM COUNT', domain: 'admin-billing', tag: 'read', description: 'Get claim counts from File #399' },
+
+  // --- Admin: User Write RPCs (ZVEUSER.m) ---
+  { name: 'VE USER EDIT', domain: 'admin-users', tag: 'write', description: 'Edit user fields in File #200' },
+  { name: 'VE USER ADD KEY', domain: 'admin-users', tag: 'write', description: 'Add security key to user' },
+  { name: 'VE USER REMOVE KEY', domain: 'admin-users', tag: 'write', description: 'Remove security key from user' },
+  { name: 'VE USER DEACTIVATE', domain: 'admin-users', tag: 'write', description: 'Deactivate user account' },
+  { name: 'VE USER REACTIVATE', domain: 'admin-users', tag: 'write', description: 'Reactivate user account' },
+
+  // --- Admin: Clinic Write RPCs (ZVECLIN.m) ---
+  { name: 'VE CLIN CREATE', domain: 'admin-clinics', tag: 'write', description: 'Create clinic in File #44' },
+  { name: 'VE CLIN EDIT', domain: 'admin-clinics', tag: 'write', description: 'Edit clinic fields' },
+  { name: 'VE CLIN TOGGLE', domain: 'admin-clinics', tag: 'write', description: 'Toggle clinic active/inactive' },
+
+  // --- Admin: Ward Write RPCs (ZVEWARD.m) ---
+  { name: 'VE WARD EDIT', domain: 'admin-wards', tag: 'write', description: 'Edit ward fields in File #42' },
+
+  // --- Admin: Facility Write RPCs (ZVEFAC.m) ---
+  { name: 'VE SVC CREATE', domain: 'admin-facility', tag: 'write', description: 'Create service/section in File #49' },
+  { name: 'VE SVC EDIT', domain: 'admin-facility', tag: 'write', description: 'Edit service/section' },
+
+  // --- Admin: Pharmacy Write RPCs (ZVEPHAR.m) ---
+  { name: 'VE DRUG EDIT', domain: 'admin-pharmacy', tag: 'write', description: 'Edit drug fields in File #50' },
+
+  // --- Admin: Lab Write RPCs (ZVELAB.m) ---
+  { name: 'VE LAB TEST EDIT', domain: 'admin-lab', tag: 'write', description: 'Edit lab test fields in File #60' },
+
+  // --- Admin: Billing Write RPCs (ZVEBILL.m) ---
+  { name: 'VE INS CREATE', domain: 'admin-billing', tag: 'write', description: 'Create insurance company in File #36' },
+  { name: 'VE INS EDIT', domain: 'admin-billing', tag: 'write', description: 'Edit insurance company' },
+
+  // --- Admin: System Management RPCs ---
+  { name: 'VE TASKMAN LIST', domain: 'admin-system', tag: 'read', description: 'List TaskMan tasks' },
+  { name: 'VE ERROR TRAP', domain: 'admin-system', tag: 'read', description: 'List recent error trap entries' },
+  { name: 'VE SYS STATUS', domain: 'admin-system', tag: 'read', description: 'System status information' },
+  { name: 'VE PARAM LIST', domain: 'admin-system', tag: 'read', description: 'List parameters from File #8989.5' },
+  { name: 'VE PARAM EDIT', domain: 'admin-system', tag: 'write', description: 'Edit parameter value' },
+
+  // --- Admin: Radiology RPCs ---
+  { name: 'VE RAD PROC LIST', domain: 'admin-radiology', tag: 'read', description: 'List radiology procedures' },
+  { name: 'VE RAD PROC DETAIL', domain: 'admin-radiology', tag: 'read', description: 'Radiology procedure detail' },
+  { name: 'VE RAD IMG LOCATIONS', domain: 'admin-radiology', tag: 'read', description: 'List imaging locations' },
+  { name: 'VE RAD DIV PARAMS', domain: 'admin-radiology', tag: 'read', description: 'Radiology division parameters' },
+
+  // --- Admin: Inventory RPCs ---
+  { name: 'VE INV ITEM LIST', domain: 'admin-inventory', tag: 'read', description: 'List inventory items from File #441' },
+  { name: 'VE INV ITEM DETAIL', domain: 'admin-inventory', tag: 'read', description: 'Inventory item detail' },
+  { name: 'VE INV VENDOR LIST', domain: 'admin-inventory', tag: 'read', description: 'List vendors from File #445' },
+  { name: 'VE INV PO LIST', domain: 'admin-inventory', tag: 'read', description: 'List purchase orders' },
+
+  // --- Admin: Workforce/Credentialing RPCs ---
+  { name: 'VE PROV LIST', domain: 'admin-workforce', tag: 'read', description: 'List providers with credentials' },
+  { name: 'VE PROV DETAIL', domain: 'admin-workforce', tag: 'read', description: 'Provider credential detail' },
+  { name: 'VE PERSON CLASS LIST', domain: 'admin-workforce', tag: 'read', description: 'List person classes' },
+
+  // --- Admin: Quality Management RPCs ---
+  { name: 'VE REMINDER LIST', domain: 'admin-quality', tag: 'read', description: 'List clinical reminders' },
+  { name: 'VE REMINDER DETAIL', domain: 'admin-quality', tag: 'read', description: 'Reminder detail' },
+  { name: 'VE QA SITE PARAMS', domain: 'admin-quality', tag: 'read', description: 'QA site parameters' },
+
+  // --- Admin: Clinical Application Setup RPCs ---
+  { name: 'VE ORDER SETS', domain: 'admin-clinical-app', tag: 'read', description: 'List order sets' },
+  { name: 'VE CONSULT SERVICES', domain: 'admin-clinical-app', tag: 'read', description: 'List consult services' },
+  { name: 'VE TIU DEFINITIONS', domain: 'admin-clinical-app', tag: 'read', description: 'List TIU document definitions' },
+  { name: 'VE TIU TEMPLATES', domain: 'admin-clinical-app', tag: 'read', description: 'List TIU templates' },
+  { name: 'VE HEALTH SUMMARY TYPES', domain: 'admin-clinical-app', tag: 'read', description: 'List health summary types' },
 ];
 
 /**
@@ -2068,6 +2175,80 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: 'TIUADD', reason: 'Notes; TIU package (routes/notes.ts)' },
   { name: 'TIUERR', reason: 'Notes; TIU package (routes/notes.ts)' },
   { name: 'TIUID', reason: 'Notes; TIU package (routes/notes.ts)' },
+  { name: 'VE USER LIST', reason: 'Custom admin RPC (ZVEUSER.m) for user management' },
+  { name: 'VE USER DETAIL', reason: 'Custom admin RPC (ZVEUSER.m) for user detail' },
+  { name: 'VE KEY LIST', reason: 'Custom admin RPC (ZVEUSER.m) for security key listing' },
+  { name: 'VE MENU LIST', reason: 'Custom admin RPC (ZVEUSER.m) for menu option listing' },
+  { name: 'VE INST LIST', reason: 'Custom admin RPC (ZVEFAC.m) for institution listing' },
+  { name: 'VE DIV LIST', reason: 'Custom admin RPC (ZVEFAC.m) for division listing' },
+  { name: 'VE SVC LIST', reason: 'Custom admin RPC (ZVEFAC.m) for service/section listing' },
+  { name: 'VE STOP LIST', reason: 'Custom admin RPC (ZVEFAC.m) for stop code listing' },
+  { name: 'VE SPEC LIST', reason: 'Custom admin RPC (ZVEFAC.m) for specialty listing' },
+  { name: 'VE SITE PARM', reason: 'Custom admin RPC (ZVEFAC.m) for site parameter reading' },
+  { name: 'VE CLIN LIST', reason: 'Custom admin RPC (ZVECLIN.m) for clinic listing' },
+  { name: 'VE CLIN DETAIL', reason: 'Custom admin RPC (ZVECLIN.m) for clinic detail' },
+  { name: 'VE APPT TYPES', reason: 'Custom admin RPC (ZVECLIN.m) for appointment type listing' },
+  { name: 'VE WARD LIST', reason: 'Custom admin RPC (ZVEWARD.m) for ward listing' },
+  { name: 'VE WARD DETAIL', reason: 'Custom admin RPC (ZVEWARD.m) for ward detail' },
+  { name: 'VE CENSUS', reason: 'Custom admin RPC (ZVEWARD.m) for ward census' },
+  { name: 'VE DRUG LIST', reason: 'Custom admin RPC (ZVEPHAR.m) for drug listing' },
+  { name: 'VE DRUG DETAIL', reason: 'Custom admin RPC (ZVEPHAR.m) for drug detail' },
+  { name: 'VE MED ROUTES', reason: 'Custom admin RPC (ZVEPHAR.m) for medication routes' },
+  { name: 'VE MED SCHEDULES', reason: 'Custom admin RPC (ZVEPHAR.m) for medication schedules' },
+  { name: 'VE LAB TEST LIST', reason: 'Custom admin RPC (ZVELAB.m) for lab test listing' },
+  { name: 'VE LAB TEST DETAIL', reason: 'Custom admin RPC (ZVELAB.m) for lab test detail' },
+  { name: 'VE LAB COLL SAMP', reason: 'Custom admin RPC (ZVELAB.m) for collection samples' },
+  { name: 'VE LAB URGENCY', reason: 'Custom admin RPC (ZVELAB.m) for lab urgency types' },
+  { name: 'VE IB SITE', reason: 'Custom admin RPC (ZVEBILL.m) for IB site parameters' },
+  { name: 'VE INS LIST', reason: 'Custom admin RPC (ZVEBILL.m) for insurance company listing' },
+  { name: 'VE INS DETAIL', reason: 'Custom admin RPC (ZVEBILL.m) for insurance company detail' },
+  { name: 'VE CLAIM COUNT', reason: 'Custom admin RPC (ZVEBILL.m) for claim count' },
+  // Admin write RPCs
+  { name: 'VE USER EDIT', reason: 'Custom admin RPC (ZVEUSER.m) for user field editing' },
+  { name: 'VE USER ADD KEY', reason: 'Custom admin RPC (ZVEUSER.m) for adding security keys' },
+  { name: 'VE USER REMOVE KEY', reason: 'Custom admin RPC (ZVEUSER.m) for removing security keys' },
+  { name: 'VE USER DEACTIVATE', reason: 'Custom admin RPC (ZVEUSER.m) for user deactivation' },
+  { name: 'VE USER REACTIVATE', reason: 'Custom admin RPC (ZVEUSER.m) for user reactivation' },
+  { name: 'VE CLIN CREATE', reason: 'Custom admin RPC (ZVECLIN.m) for clinic creation' },
+  { name: 'VE CLIN EDIT', reason: 'Custom admin RPC (ZVECLIN.m) for clinic editing' },
+  { name: 'VE CLIN TOGGLE', reason: 'Custom admin RPC (ZVECLIN.m) for clinic toggle active/inactive' },
+  { name: 'VE WARD EDIT', reason: 'Custom admin RPC (ZVEWARD.m) for ward editing' },
+  { name: 'VE SVC CREATE', reason: 'Custom admin RPC (ZVEFAC.m) for service/section creation' },
+  { name: 'VE SVC EDIT', reason: 'Custom admin RPC (ZVEFAC.m) for service/section editing' },
+  { name: 'VE DRUG EDIT', reason: 'Custom admin RPC (ZVEPHAR.m) for drug editing' },
+  { name: 'VE LAB TEST EDIT', reason: 'Custom admin RPC (ZVELAB.m) for lab test editing' },
+  { name: 'VE INS CREATE', reason: 'Custom admin RPC (ZVEBILL.m) for insurance company creation' },
+  { name: 'VE INS EDIT', reason: 'Custom admin RPC (ZVEBILL.m) for insurance company editing' },
+  // Admin system RPCs
+  { name: 'VE TASKMAN LIST', reason: 'Custom admin RPC for TaskMan task listing' },
+  { name: 'VE ERROR TRAP', reason: 'Custom admin RPC for error trap listing' },
+  { name: 'VE SYS STATUS', reason: 'Custom admin RPC for system status' },
+  { name: 'VE PARAM LIST', reason: 'Custom admin RPC for parameter listing' },
+  { name: 'VE PARAM EDIT', reason: 'Custom admin RPC for parameter editing' },
+  // Admin radiology RPCs
+  { name: 'VE RAD PROC LIST', reason: 'Custom admin RPC for radiology procedure listing' },
+  { name: 'VE RAD PROC DETAIL', reason: 'Custom admin RPC for radiology procedure detail' },
+  { name: 'VE RAD IMG LOCATIONS', reason: 'Custom admin RPC for imaging location listing' },
+  { name: 'VE RAD DIV PARAMS', reason: 'Custom admin RPC for radiology division parameters' },
+  // Admin inventory RPCs
+  { name: 'VE INV ITEM LIST', reason: 'Custom admin RPC for inventory item listing' },
+  { name: 'VE INV ITEM DETAIL', reason: 'Custom admin RPC for inventory item detail' },
+  { name: 'VE INV VENDOR LIST', reason: 'Custom admin RPC for vendor listing' },
+  { name: 'VE INV PO LIST', reason: 'Custom admin RPC for purchase order listing' },
+  // Admin workforce RPCs
+  { name: 'VE PROV LIST', reason: 'Custom admin RPC for provider listing' },
+  { name: 'VE PROV DETAIL', reason: 'Custom admin RPC for provider detail' },
+  { name: 'VE PERSON CLASS LIST', reason: 'Custom admin RPC for person class listing' },
+  // Admin quality RPCs
+  { name: 'VE REMINDER LIST', reason: 'Custom admin RPC for clinical reminder listing' },
+  { name: 'VE REMINDER DETAIL', reason: 'Custom admin RPC for reminder detail' },
+  { name: 'VE QA SITE PARAMS', reason: 'Custom admin RPC for QA site parameters' },
+  // Admin clinical app setup RPCs
+  { name: 'VE ORDER SETS', reason: 'Custom admin RPC for order set listing' },
+  { name: 'VE CONSULT SERVICES', reason: 'Custom admin RPC for consult service listing' },
+  { name: 'VE TIU DEFINITIONS', reason: 'Custom admin RPC for TIU document definition listing' },
+  { name: 'VE TIU TEMPLATES', reason: 'Custom admin RPC for TIU template listing' },
+  { name: 'VE HEALTH SUMMARY TYPES', reason: 'Custom admin RPC for health summary type listing' },
 ];
 
 /* ------------------------------------------------------------------ */

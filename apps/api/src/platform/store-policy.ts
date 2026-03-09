@@ -1372,6 +1372,17 @@ export const STORE_INVENTORY: StoreEntry[] = [
     domain: 'infrastructure',
   },
   {
+    id: 'provisioning-tenants',
+    file: 'routes/admin/provisioning.ts',
+    variable: 'tenantStore',
+    description: 'SaaS provisioning tenant requests and pipeline state',
+    classification: 'important' as StoreClassification,
+    durability: 'in_memory_only' as DurabilityStatus,
+    domain: 'infrastructure',
+    migrationTarget: 'pg: provisioning_tenant table',
+    notes: 'SaaS provisioning pipeline store. Resets on restart.',
+  },
+  {
     id: 'imaging-tenant-config',
     file: 'config/imaging-tenant.ts',
     variable: 'tenantConfigs',
