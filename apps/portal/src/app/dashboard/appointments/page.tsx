@@ -31,6 +31,39 @@ interface SchedulingMode {
   detail: string;
 }
 
+type AppointmentSource = 'ehr' | 'pending' | 'local';
+
+function getAppointmentSource(appt: any): AppointmentSource {
+  const source = String(appt?.source || '').toLowerCase();
+  if (source === 'ehr' || source === 'pending' || source === 'local') {
+    return source as AppointmentSource;
+  }
+  return 'pending';
+}
+
+function getAppointmentBadgeMeta(
+  appointments: any[],
+  schedulingMode: SchedulingMode | null
+): { source: AppointmentSource; label?: string } {
+  if (appointments.length === 0) {
+    if (schedulingMode && !schedulingMode.writebackEnabled) {
+      return { source: 'pending', label: 'Request Only' };
+    }
+    return { source: 'local', label: 'No Appointments' };
+  }
+
+  const sources = new Set(appointments.map((appt) => getAppointmentSource(appt)));
+  if (sources.size === 1) {
+    const only = Array.from(sources)[0] as AppointmentSource;
+    if (only === 'local') return { source: 'local', label: 'Local Schedule' };
+    if (only === 'pending') return { source: 'pending', label: 'Request Pending' };
+    return { source: 'ehr' };
+  }
+
+  if (sources.has('local')) return { source: 'local', label: 'Mixed Sources' };
+  return { source: 'pending', label: 'Mixed Sources' };
+}
+
 export default function AppointmentsPage() {
   const [view, setView] = useState<View>('list');
   const [upcoming, setUpcoming] = useState<any[]>([]);
@@ -38,6 +71,8 @@ export default function AppointmentsPage() {
   const [loading, setLoading] = useState(true);
   const [notice, setNotice] = useState('');
   const [schedulingMode, setSchedulingMode] = useState<SchedulingMode | null>(null);
+  const upcomingBadge = getAppointmentBadgeMeta(upcoming, schedulingMode);
+  const pastBadge = getAppointmentBadgeMeta(past, schedulingMode);
 
   // Request form
   const [reqClinic, setReqClinic] = useState('');
@@ -84,7 +119,13 @@ export default function AppointmentsPage() {
     });
     setSubmitting(false);
     if (res.ok) {
-      setNotice((res.data as any)?.notice || 'Request submitted.');
+      const pending = (res.data as any)?.pending;
+      const target = (res.data as any)?.target;
+      setNotice(
+        pending
+          ? `Request submitted. Clinic confirmation pending${target ? ` (${target})` : ''}.`
+          : (res.data as any)?.notice || 'Request submitted.'
+      );
       setReqClinic('');
       setReqDate('');
       setReqReason('');
@@ -100,7 +141,13 @@ export default function AppointmentsPage() {
     if (!reason) return;
     const res = await requestAppointmentCancellation(id, reason);
     if (res.ok) {
-      setNotice((res.data as any)?.notice || 'Cancellation request submitted.');
+      const pending = (res.data as any)?.pending;
+      const target = (res.data as any)?.target;
+      setNotice(
+        pending
+          ? `Cancellation request submitted. Clinic confirmation pending${target ? ` (${target})` : ''}.`
+          : (res.data as any)?.notice || 'Cancellation request submitted.'
+      );
       loadData();
     }
   }
@@ -110,7 +157,13 @@ export default function AppointmentsPage() {
     if (!pref) return;
     const res = await requestAppointmentReschedule(id, pref);
     if (res.ok) {
-      setNotice((res.data as any)?.notice || 'Reschedule request submitted.');
+      const pending = (res.data as any)?.pending;
+      const target = (res.data as any)?.target;
+      setNotice(
+        pending
+          ? `Reschedule request submitted. Clinic confirmation pending${target ? ` (${target})` : ''}.`
+          : (res.data as any)?.notice || 'Reschedule request submitted.'
+      );
       loadData();
     }
   }
@@ -267,7 +320,7 @@ export default function AppointmentsPage() {
               }}
             >
               <h3 style={{ margin: 0 }}>Upcoming ({upcoming.length})</h3>
-              <DataSourceBadge source="ehr" />
+              <DataSourceBadge source={upcomingBadge.source} label={upcomingBadge.label} />
             </div>
             {upcoming.length === 0 ? (
               <p style={{ color: '#94a3b8', fontSize: '0.875rem' }}>No upcoming appointments.</p>
@@ -295,7 +348,7 @@ export default function AppointmentsPage() {
               }}
             >
               <h3 style={{ margin: 0 }}>Past Visits ({past.length})</h3>
-              <DataSourceBadge source="ehr" />
+              <DataSourceBadge source={pastBadge.source} label={pastBadge.label} />
             </div>
             {past.length === 0 ? (
               <p style={{ color: '#94a3b8', fontSize: '0.875rem' }}>No past appointments.</p>
@@ -347,6 +400,9 @@ function AppointmentCard({
     rejected: { bg: '#fef2f2', color: '#dc2626' },
   };
   const sc = statusColors[appt.status] || { bg: '#f1f5f9', color: '#64748b' };
+  const source = getAppointmentSource(appt);
+  const sourceLabel =
+    source === 'ehr' ? undefined : source === 'local' ? 'Local Schedule' : 'Request Pending';
 
   return (
     <div
@@ -359,19 +415,22 @@ function AppointmentCard({
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
         <span style={{ fontWeight: 600, fontSize: '0.875rem' }}>{appt.clinicName}</span>
-        <span
-          style={{
-            display: 'inline-block',
-            padding: '0.125rem 0.375rem',
-            borderRadius: 4,
-            fontSize: '0.6875rem',
-            fontWeight: 600,
-            background: sc.bg,
-            color: sc.color,
-          }}
-        >
-          {appt.status.replace(/_/g, ' ')}
-        </span>
+        <div style={{ display: 'flex', gap: '0.375rem', alignItems: 'center' }}>
+          <DataSourceBadge source={source} label={sourceLabel} />
+          <span
+            style={{
+              display: 'inline-block',
+              padding: '0.125rem 0.375rem',
+              borderRadius: 4,
+              fontSize: '0.6875rem',
+              fontWeight: 600,
+              background: sc.bg,
+              color: sc.color,
+            }}
+          >
+            {appt.status.replace(/_/g, ' ')}
+          </span>
+        </div>
       </div>
       <div style={{ fontSize: '0.8125rem', color: '#475569' }}>
         {dt.toLocaleDateString()} at{' '}

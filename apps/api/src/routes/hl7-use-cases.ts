@@ -7,6 +7,7 @@
  * - GET /hl7/use-cases/fixtures — List available test fixtures
  */
 import type { FastifyInstance } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
 import { mapHl7ToDomainEvent, listSupportedMappings } from '../hl7/domain-mapper.js';
 import { recordMessageEvent } from '../hl7/message-event-store.js';
 import { addEnhancedDeadLetter } from '../hl7/dead-letter-enhanced.js';
@@ -14,18 +15,45 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 
 export async function hl7UseCaseRoutes(server: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: any): string | null {
+    const sessionTenantId =
+      typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+        ? request.session.tenantId.trim()
+        : undefined;
+    const requestTenantId =
+      typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+        ? request.tenantId.trim()
+        : undefined;
+    const headerTenantId = request?.headers?.['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return sessionTenantId || requestTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(request: any, reply: any): string | null {
+    const tenantId = resolveTenantId(request);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
   /**
    * POST /hl7/ingest — Accept raw HL7 message, parse, map to domain event.
    * Body: { rawMessage: string, tenantId?: string }
    */
   server.post('/hl7/ingest', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const body = (request.body as { rawMessage?: string; tenantId?: string }) || {};
     const raw = body.rawMessage;
     if (!raw || typeof raw !== 'string') {
       return reply.code(400).send({ ok: false, error: 'rawMessage is required' });
     }
 
-    const tenantId = body.tenantId || 'default';
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
 
     try {
       // Extract MSH fields for event recording

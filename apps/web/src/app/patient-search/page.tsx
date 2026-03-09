@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import styles from './page.module.css';
 import { API_BASE } from '@/lib/api-config';
+import { csrfHeaders } from '@/lib/csrf';
 import type {
   PatientSummary,
   PatientDemographics,
@@ -295,7 +296,7 @@ export default function PatientSearchPage() {
     try {
       const res = await fetch(`${API_BASE}/vista/medications`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ dfn: selected.dfn, drug: newMedDrug.trim() }),
       });
@@ -306,8 +307,10 @@ export default function PatientSearchPage() {
       } else {
         setAddMedSuccess(data.message || 'Medication ordered');
         setNewMedDrug('');
-        // Refresh medications list
-        await fetchMedications(selected.dfn);
+        if (data.mode === 'real' || !data.syncPending) {
+          // Refresh medications list only when VistA accepted the order.
+          await fetchMedications(selected.dfn);
+        }
       }
     } catch (err) {
       setAddMedError(err instanceof Error ? err.message : 'Failed to reach API server');
@@ -323,21 +326,30 @@ export default function PatientSearchPage() {
     setAddProblemSuccess(null);
 
     try {
-      const res = await fetch(`${API_BASE}/vista/problems`, {
+      const res = await fetch(`${API_BASE}/vista/cprs/problems/add`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': `patient-search-problem-${selected.dfn}-${Date.now()}`,
+          ...csrfHeaders(),
+        },
         credentials: 'include',
-        body: JSON.stringify({ dfn: selected.dfn, text: newProblemText.trim() }),
+        body: JSON.stringify({ dfn: selected.dfn, problemText: newProblemText.trim() }),
       });
       const data = await res.json();
 
       if (!res.ok || !data.ok) {
-        // For Phase 9B, this will return a documented blocker explaining why it's not implemented
         setAddProblemError(data.error || `Server error (${res.status})`);
+      } else if (data.mode === 'real') {
+        setAddProblemSuccess(data.message || 'Problem saved to VistA');
+        setNewProblemText('');
+        await fetchProblems(selected.dfn);
+      } else if (data.mode === 'draft' || data.syncPending) {
+        setAddProblemSuccess(data.message || 'Problem saved as server-side draft; VistA sync pending');
+        setNewProblemText('');
       } else {
         setAddProblemSuccess(data.message || 'Problem added');
         setNewProblemText('');
-        // Refresh problems list
         await fetchProblems(selected.dfn);
       }
     } catch (err) {
@@ -419,7 +431,7 @@ export default function PatientSearchPage() {
     try {
       const res = await fetch(`${API_BASE}/vista/allergies`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ dfn: selected.dfn, allergyText: newAllergen.trim() }),
       });
@@ -451,7 +463,7 @@ export default function PatientSearchPage() {
     try {
       const res = await fetch(`${API_BASE}/vista/vitals`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({
           dfn: selected.dfn,
@@ -486,7 +498,7 @@ export default function PatientSearchPage() {
     try {
       const res = await fetch(`${API_BASE}/vista/notes`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({
           dfn: selected.dfn,
@@ -872,10 +884,10 @@ export default function PatientSearchPage() {
             <div className={styles.addProblemForm}>
               <h3 className={styles.addProblemTitle}>Add Problem</h3>
               <p className={styles.addProblemInfo}>
-                Problem creation requires full diagnosis code validation and is currently under
-                review.
+                Quick add now uses the live CPRS problem-write route.
                 <br />
-                <strong>Data Input:</strong> This form will be fully enabled in a future phase.
+                <strong>Behavior:</strong> successful writes refresh the problem list; sandbox or
+                VistA write failures fall back to a truthful sync-pending draft response.
               </p>
               <input
                 type="text"
@@ -892,11 +904,7 @@ export default function PatientSearchPage() {
               >
                 {addProblemLoading ? 'Submitting…' : 'Try Add Problem'}
               </button>
-              {addProblemError && (
-                <div className={styles.addProblemError}>
-                  <strong>Not Yet Implemented:</strong> {addProblemError}
-                </div>
-              )}
+              {addProblemError && <div className={styles.addProblemError}>{addProblemError}</div>}
               {addProblemSuccess && (
                 <div className={styles.addProblemSuccess}>{addProblemSuccess}</div>
               )}

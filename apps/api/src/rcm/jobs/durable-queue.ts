@@ -72,6 +72,10 @@ export class DurableJobQueue implements RcmJobQueue {
   }): Promise<string> {
     const db = getPgDb();
     const now = new Date();
+    const tenantId = (params.payload as any)?._tenantId;
+    if (typeof tenantId !== 'string' || tenantId.trim().length === 0) {
+      throw new Error('TENANT_REQUIRED');
+    }
     const scheduledAt = params.delayMs
       ? new Date(now.getTime() + params.delayMs).toISOString()
       : now.toISOString();
@@ -84,7 +88,7 @@ export class DurableJobQueue implements RcmJobQueue {
         .where(
           and(
             eq(rcmDurableJob.idempotencyKey, params.idempotencyKey),
-            eq(rcmDurableJob.tenantId, String((params.payload as any)?._tenantId ?? 'default'))
+            eq(rcmDurableJob.tenantId, tenantId)
           )
         );
       const existing = existingRows[0] ?? null;
@@ -94,7 +98,7 @@ export class DurableJobQueue implements RcmJobQueue {
     const id = randomUUID();
     await db.insert(rcmDurableJob).values({
       id,
-      tenantId: String((params.payload as any)?._tenantId ?? 'default'),
+      tenantId,
       type: params.type,
       status: 'queued',
       payloadJson: JSON.stringify(params.payload),

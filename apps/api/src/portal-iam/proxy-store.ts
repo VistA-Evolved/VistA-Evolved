@@ -21,6 +21,7 @@ import { addPatientProfile } from './portal-user-store.js';
 import { evaluateSensitivity, getProxiesForPatient } from '../services/portal-sensitivity.js';
 import { portalAudit } from '../services/portal-audit.js';
 import { log } from '../lib/logger.js';
+import { listTenants } from '../config/tenant-config.js';
 
 /* ------------------------------------------------------------------ */
 /* Configuration                                                        */
@@ -36,10 +37,44 @@ const MAX_PROXIES_PER_PATIENT = 10;
 
 const invitations = new Map<string, ProxyInvitation>();
 
+type ProxyInvitationRepoRow = {
+  id: string;
+  tenantId?: string;
+  fromUserId?: string;
+  toEmail?: string;
+  relationship?: string;
+  status?: InvitationStatus;
+  token?: string | null;
+  permissionsJson?: string | null;
+  createdAt?: string;
+  expiresAt?: string;
+  acceptedAt?: string | null;
+  patientDfn?: string | null;
+  patientName?: string | null;
+  requestorName?: string | null;
+  requestedAccessLevel?: ProxyInvitation['requestedAccessLevel'] | null;
+  reason?: string | null;
+  verificationDocRef?: string | null;
+  patientAge?: number | null;
+  policyResultJson?: string | null;
+  respondedAt?: string | null;
+};
+
+type ProxyInvitationRepo = {
+  upsert(d: any): Promise<any>;
+  findByTenant?(
+    tenantId: string,
+    opts?: { limit?: number; offset?: number }
+  ): Promise<ProxyInvitationRepoRow[]>;
+};
+
 /* Phase 146: DB repo wiring */
-let proxyDbRepo: { upsert(d: any): Promise<any> } | null = null;
-export function initProxyStoreRepo(repo: typeof proxyDbRepo): void {
+let proxyDbRepo: ProxyInvitationRepo | null = null;
+export function initProxyStoreRepo(repo: ProxyInvitationRepo | null): void {
   proxyDbRepo = repo;
+  if (repo) {
+    void rehydrateProxyInvitations(repo);
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -54,11 +89,129 @@ function now(): string {
   return new Date().toISOString();
 }
 
+function parseJsonObject<T>(value: unknown, fallback: T): T {
+  if (typeof value !== 'string' || value.trim() === '') return fallback;
+  try {
+    return JSON.parse(value) as T;
+  } catch {
+    return fallback;
+  }
+}
+
+function toProxyInvitationRepoRow(inv: ProxyInvitation): Record<string, unknown> {
+  return {
+    id: inv.id,
+    tenantId: inv.tenantId,
+    fromUserId: inv.requestorUserId,
+    toEmail: '',
+    relationship: inv.relationship,
+    status: inv.status,
+    token: inv.patientDfn,
+    permissionsJson: JSON.stringify({
+      requestedAccessLevel: inv.requestedAccessLevel,
+      reason: inv.reason,
+      verificationDocRef: inv.verificationDocRef,
+      patientName: inv.patientName,
+      patientAge: inv.patientAge,
+      policyResult: inv.policyResult,
+      respondedAt: inv.respondedAt,
+      requestorName: inv.requestorName,
+    }),
+    createdAt: inv.createdAt,
+    expiresAt: inv.expiresAt,
+    acceptedAt: inv.status === 'accepted' ? inv.respondedAt : null,
+    patientDfn: inv.patientDfn,
+    patientName: inv.patientName,
+    requestorName: inv.requestorName,
+    requestedAccessLevel: inv.requestedAccessLevel,
+    reason: inv.reason,
+    verificationDocRef: inv.verificationDocRef,
+    patientAge: inv.patientAge,
+    policyResultJson: JSON.stringify(inv.policyResult),
+    respondedAt: inv.respondedAt,
+  };
+}
+
+function fromProxyInvitationRepoRow(row: ProxyInvitationRepoRow | null | undefined): ProxyInvitation | null {
+  if (!row?.id || !row.tenantId || !row.fromUserId || !row.relationship || !row.status || !row.createdAt) return null;
+  const legacy = parseJsonObject<Record<string, unknown>>(row.permissionsJson, {});
+  const policyResult = row.policyResultJson
+    ? parseJsonObject<PolicyResult | null>(row.policyResultJson, null)
+    : ((legacy.policyResult as PolicyResult | undefined) ?? null);
+  const patientName = row.patientName ?? (typeof legacy.patientName === 'string' ? legacy.patientName : '');
+  const requestorName =
+    row.requestorName ?? (typeof legacy.requestorName === 'string' ? legacy.requestorName : '');
+  const reason = row.reason ?? (typeof legacy.reason === 'string' ? legacy.reason : '');
+  const requestedAccessLevel =
+    row.requestedAccessLevel ??
+    ((legacy.requestedAccessLevel as ProxyInvitation['requestedAccessLevel'] | undefined) ?? 'read_only');
+
+  return {
+    id: row.id,
+    tenantId: row.tenantId,
+    requestorUserId: row.fromUserId,
+    requestorName,
+    patientDfn: row.patientDfn ?? row.token ?? '',
+    patientName,
+    relationship: row.relationship as PatientRelationship,
+    requestedAccessLevel,
+    reason,
+    verificationDocRef:
+      row.verificationDocRef ??
+      (typeof legacy.verificationDocRef === 'string' ? legacy.verificationDocRef : null),
+    patientAge:
+      row.patientAge ??
+      (typeof legacy.patientAge === 'number' ? legacy.patientAge : null),
+    policyResult,
+    status: row.status,
+    createdAt: row.createdAt,
+    respondedAt:
+      row.respondedAt ??
+      (typeof legacy.respondedAt === 'string' ? legacy.respondedAt : row.acceptedAt ?? null),
+    expiresAt: row.expiresAt ?? row.createdAt,
+  };
+}
+
+async function rehydrateProxyInvitations(repo: ProxyInvitationRepo): Promise<void> {
+  if (!repo.findByTenant) return;
+  try {
+    let loaded = 0;
+    const tenantIds = new Set<string>(['default']);
+    for (const tenant of listTenants()) {
+      if (tenant.tenantId?.trim()) {
+        tenantIds.add(tenant.tenantId.trim());
+      }
+    }
+    for (const tenantId of tenantIds) {
+      let offset = 0;
+      const pageSize = 1000;
+      while (true) {
+        const rows = (await repo.findByTenant(tenantId, { limit: pageSize, offset })) || [];
+        for (const row of rows) {
+          const invitation = fromProxyInvitationRepoRow(row);
+          if (invitation) {
+            invitations.set(invitation.id, invitation);
+            loaded++;
+          }
+        }
+        if (rows.length < pageSize) break;
+        offset += pageSize;
+      }
+    }
+    if (loaded > 0) {
+      log.info('Portal proxy invitations rehydrated from PG', { count: loaded });
+    }
+  } catch (err: any) {
+    log.warn('Portal proxy invitation rehydration failed', { error: err?.message });
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* Policy Evaluation                                                    */
 /* ------------------------------------------------------------------ */
 
 function evaluateProxyPolicy(
+  tenantId: string,
   patientDfn: string,
   patientAge: number | null,
   relationship: PatientRelationship
@@ -67,7 +220,7 @@ function evaluateProxyPolicy(
   const blockedRules: string[] = [];
 
   // Check max proxies
-  const existing = getProxiesForPatient(patientDfn);
+  const existing = getProxiesForPatient(tenantId, patientDfn);
   if (existing.length >= MAX_PROXIES_PER_PATIENT) {
     blockedRules.push('max_proxies_exceeded');
   }
@@ -112,6 +265,7 @@ function evaluateProxyPolicy(
 /* ------------------------------------------------------------------ */
 
 export function createProxyInvitation(opts: {
+  tenantId: string;
   requestorUserId: string;
   requestorName: string;
   patientDfn: string;
@@ -123,7 +277,7 @@ export function createProxyInvitation(opts: {
   patientAge?: number;
 }): ProxyInvitation {
   // Check pending invitation cap
-  const pending = getPendingInvitationsForUser(opts.requestorUserId);
+  const pending = getPendingInvitationsForUser(opts.tenantId, opts.requestorUserId);
   if (pending.length >= MAX_PENDING_PER_USER) {
     throw new Error('Maximum pending proxy invitations reached');
   }
@@ -131,6 +285,7 @@ export function createProxyInvitation(opts: {
   // Check for duplicate pending invitation
   const dup = Array.from(invitations.values()).find(
     (inv) =>
+      inv.tenantId === opts.tenantId &&
       inv.requestorUserId === opts.requestorUserId &&
       inv.patientDfn === opts.patientDfn &&
       inv.status === 'pending'
@@ -141,6 +296,7 @@ export function createProxyInvitation(opts: {
 
   // Evaluate policies
   const policyResult = evaluateProxyPolicy(
+    opts.tenantId,
     opts.patientDfn,
     opts.patientAge ?? null,
     opts.relationship
@@ -150,6 +306,7 @@ export function createProxyInvitation(opts: {
 
   const invitation: ProxyInvitation = {
     id: genId(),
+    tenantId: opts.tenantId,
     requestorUserId: opts.requestorUserId,
     requestorName: opts.requestorName,
     patientDfn: opts.patientDfn,
@@ -170,17 +327,11 @@ export function createProxyInvitation(opts: {
 
   // Phase 146: Write-through to PG
   proxyDbRepo
-    ?.upsert({
-      id: invitation.id,
-      tenantId: 'default',
-      fromUserId: opts.requestorUserId ?? '',
-      toEmail: '',
-      status: invitation.status,
-      createdAt: invitation.createdAt,
-    })
+    ?.upsert(toProxyInvitationRepoRow(invitation))
     .catch(() => {});
 
   portalAudit('portal.proxy.grant', policyResult.allowed ? 'success' : 'failure', opts.patientDfn, {
+    tenantId: opts.tenantId,
     detail: {
       invitationId: invitation.id,
       relationship: opts.relationship,
@@ -199,11 +350,13 @@ export function createProxyInvitation(opts: {
 
 export function respondToInvitation(
   invitationId: string,
+  tenantId: string,
   response: 'accepted' | 'declined',
   respondedBy: string
 ): ProxyInvitation | null {
   const inv = invitations.get(invitationId);
   if (!inv) return null;
+  if (inv.tenantId !== tenantId) return null;
   if (inv.status !== 'pending') return null;
 
   // Check expiry
@@ -236,6 +389,7 @@ export function respondToInvitation(
     'success',
     inv.patientDfn,
     {
+      tenantId: inv.tenantId,
       detail: {
         invitationId: inv.id,
         response,
@@ -248,13 +402,7 @@ export function respondToInvitation(
 
   // Phase 146: Write-through invitation response
   proxyDbRepo
-    ?.upsert({
-      id: inv.id,
-      tenantId: 'default',
-      fromUserId: inv.requestorUserId ?? '',
-      status: inv.status,
-      createdAt: inv.createdAt,
-    })
+    ?.upsert(toProxyInvitationRepoRow(inv))
     .catch(() => {});
 
   return inv;
@@ -264,22 +412,16 @@ export function respondToInvitation(
 /* Cancel Invitation                                                    */
 /* ------------------------------------------------------------------ */
 
-export function cancelInvitation(invitationId: string, cancelledBy: string): boolean {
+export function cancelInvitation(invitationId: string, tenantId: string, cancelledBy: string): boolean {
   const inv = invitations.get(invitationId);
-  if (!inv || inv.status !== 'pending') return false;
+  if (!inv || inv.tenantId !== tenantId || inv.status !== 'pending') return false;
 
   inv.status = 'cancelled';
   inv.respondedAt = now();
 
   // Phase 146: Write-through invitation cancel
   proxyDbRepo
-    ?.upsert({
-      id: inv.id,
-      tenantId: 'default',
-      fromUserId: inv.requestorUserId ?? '',
-      status: 'cancelled',
-      createdAt: inv.createdAt,
-    })
+    ?.upsert(toProxyInvitationRepoRow(inv))
     .catch(() => {});
 
   log.info(`Proxy invitation cancelled: ${invitationId} by ${cancelledBy}`);
@@ -294,18 +436,22 @@ export function getInvitation(id: string): ProxyInvitation | null {
   return invitations.get(id) ?? null;
 }
 
-export function getPendingInvitationsForUser(userId: string): ProxyInvitation[] {
+export function getPendingInvitationsForUser(tenantId: string, userId: string): ProxyInvitation[] {
   return Array.from(invitations.values()).filter(
-    (inv) => inv.requestorUserId === userId && inv.status === 'pending'
+    (inv) => inv.tenantId === tenantId && inv.requestorUserId === userId && inv.status === 'pending'
   );
 }
 
-export function getInvitationsForPatient(patientDfn: string): ProxyInvitation[] {
-  return Array.from(invitations.values()).filter((inv) => inv.patientDfn === patientDfn);
+export function getInvitationsForPatient(tenantId: string, patientDfn: string): ProxyInvitation[] {
+  return Array.from(invitations.values()).filter(
+    (inv) => inv.tenantId === tenantId && inv.patientDfn === patientDfn
+  );
 }
 
-export function getInvitationsForUser(userId: string): ProxyInvitation[] {
-  return Array.from(invitations.values()).filter((inv) => inv.requestorUserId === userId);
+export function getInvitationsForUser(tenantId: string, userId: string): ProxyInvitation[] {
+  return Array.from(invitations.values()).filter(
+    (inv) => inv.tenantId === tenantId && inv.requestorUserId === userId
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -325,13 +471,16 @@ setInterval(() => {
 /* Stats                                                                */
 /* ------------------------------------------------------------------ */
 
-export function getProxyInvitationStats(): {
+export function getProxyInvitationStats(tenantId?: string): {
   total: number;
   byStatus: Record<string, number>;
 } {
   const byStatus: Record<string, number> = {};
-  for (const inv of invitations.values()) {
+  const scopedInvitations = tenantId
+    ? Array.from(invitations.values()).filter((inv) => inv.tenantId === tenantId)
+    : Array.from(invitations.values());
+  for (const inv of scopedInvitations) {
     byStatus[inv.status] = (byStatus[inv.status] || 0) + 1;
   }
-  return { total: invitations.size, byStatus };
+  return { total: scopedInvitations.length, byStatus };
 }

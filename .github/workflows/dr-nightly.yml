@@ -1,7 +1,5 @@
 name: DR Nightly
 on:
-  schedule:
-    - cron: '0 3 * * *' # 03:00 UTC daily
   workflow_dispatch: # Manual trigger for ad-hoc drills
 
 permissions:

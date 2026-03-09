@@ -34,6 +34,7 @@ import type {
 
 export const SCIM_ENABLED = process.env.SCIM_ENABLED === 'true';
 export const SCIM_BEARER_TOKEN = process.env.SCIM_BEARER_TOKEN || '';
+export const SCIM_TENANT_ID = process.env.SCIM_TENANT_ID || 'default';
 
 /* ------------------------------------------------------------------ */
 /* Group types (extends scim-connector.ts types)                      */

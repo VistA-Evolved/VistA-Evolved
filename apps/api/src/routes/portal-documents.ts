@@ -17,7 +17,7 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { log } from '../lib/logger.js';
 import { immutableAudit } from '../lib/immutable-audit.js';
-import { randomBytes, createHmac, timingSafeEqual } from 'node:crypto';
+import { randomBytes, createHmac, timingSafeEqual, createHash } from 'node:crypto';
 import { isPgConfigured } from '../platform/pg/pg-db.js';
 
 /* ------------------------------------------------------------------ */
@@ -26,6 +26,7 @@ import { isPgConfigured } from '../platform/pg/pg-db.js';
 
 interface PortalSessionData {
   token: string;
+  tenantId: string;
   patientDfn: string;
   patientName: string;
   createdAt: number;
@@ -58,6 +59,8 @@ const TOKEN_SECRET = randomBytes(32).toString('hex');
 const TOKEN_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 interface PendingDocument {
+  tenantId: string;
+  sessionTokenHash: string;
   patientDfn: string;
   documentType: string;
   createdAt: number;
@@ -89,6 +92,10 @@ function verifyToken(token: string): boolean {
   const expected = createHmac('sha256', TOKEN_SECRET).update(raw).digest('hex').slice(0, 16);
   if (sig.length !== expected.length) return false;
   return timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
+}
+
+function hashSessionToken(token: string): string {
+  return createHash('sha256').update(token).digest('hex');
 }
 
 /* ------------------------------------------------------------------ */
@@ -309,6 +316,8 @@ export default async function portalDocumentsRoutes(server: FastifyInstance) {
     // Create signed token
     const token = generateSignedToken();
     pendingDocs.set(token, {
+      tenantId: session.tenantId,
+      sessionTokenHash: hashSessionToken(session.token),
       patientDfn: session.patientDfn,
       documentType,
       createdAt: Date.now(),
@@ -332,6 +341,7 @@ export default async function portalDocumentsRoutes(server: FastifyInstance) {
 
   // GET /portal/documents/download/:token — download document by signed token
   server.get('/portal/documents/download/:token', async (request, reply) => {
+    const session = requirePortalSession(request, reply);
     const { token } = request.params as { token: string };
 
     if (!verifyToken(token)) {
@@ -341,6 +351,13 @@ export default async function portalDocumentsRoutes(server: FastifyInstance) {
     const doc = pendingDocs.get(token);
     if (!doc) {
       return reply.code(404).send({ ok: false, error: 'Document not found or expired' });
+    }
+    if (
+      doc.tenantId !== session.tenantId ||
+      doc.patientDfn !== session.patientDfn ||
+      doc.sessionTokenHash !== hashSessionToken(session.token)
+    ) {
+      return reply.code(403).send({ ok: false, error: 'Document token does not belong to this session' });
     }
 
     if (Date.now() - doc.createdAt > TOKEN_TTL_MS) {
@@ -354,7 +371,7 @@ export default async function portalDocumentsRoutes(server: FastifyInstance) {
     immutableAudit(
       'portal.document.download',
       'success',
-      { sub: doc.patientDfn, name: 'portal-patient', roles: ['patient'] },
+      { sub: session.patientDfn, name: 'portal-patient', roles: ['patient'] },
       { detail: { documentType: doc.documentType } }
     );
 
@@ -379,7 +396,7 @@ export default async function portalDocumentsRoutes(server: FastifyInstance) {
     if (isPgConfigured()) {
       try {
         const { listConsents } = await import('../platform/pg/repo/pg-consent-repo.js');
-        consents = await listConsents(session.patientDfn);
+        consents = await listConsents(session.patientDfn, session.tenantId);
       } catch (_err) {
         log.warn('PG consent fetch failed, returning defaults');
       }
@@ -434,6 +451,7 @@ export default async function portalDocumentsRoutes(server: FastifyInstance) {
         const { upsertConsent } = await import('../platform/pg/repo/pg-consent-repo.js');
         const result = await upsertConsent({
           patientDfn: session.patientDfn,
+          tenantId: session.tenantId,
           consentType,
           status,
           locale: body.locale,

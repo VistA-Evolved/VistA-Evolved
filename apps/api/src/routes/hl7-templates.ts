@@ -36,11 +36,31 @@ import {
 } from '../hl7/templates/index.js';
 import type { TemplateStatus } from '../hl7/templates/types.js';
 
-const DEFAULT_TENANT = 'default';
 const VALID_STATUSES: TemplateStatus[] = ['draft', 'active', 'deprecated', 'archived'];
 
-function getTenantId(request: any): string {
-  return (request as any).session?.tenantId || DEFAULT_TENANT;
+function getTenantId(request: any): string | null {
+  const headerTenantId = request?.headers?.['x-tenant-id'];
+  const headerTenant =
+    typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+      ? headerTenantId.trim()
+      : undefined;
+  const sessionTenantId =
+    typeof (request as any).session?.tenantId === 'string' &&
+    (request as any).session.tenantId.trim().length > 0
+      ? (request as any).session.tenantId.trim()
+      : undefined;
+  const requestTenantId =
+    typeof (request as any).tenantId === 'string' && (request as any).tenantId.trim().length > 0
+      ? (request as any).tenantId.trim()
+      : undefined;
+  return sessionTenantId || requestTenantId || headerTenant || null;
+}
+
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId = getTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
 }
 
 function getUserId(request: any): string {
@@ -54,16 +74,20 @@ export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, count: WELL_KNOWN_PROFILES.length, profiles: WELL_KNOWN_PROFILES };
   });
 
-  app.get('/hl7/templates/stats', async (request) => {
-    const stats = getTemplateStoreStats();
+  app.get('/hl7/templates/stats', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const stats = getTemplateStoreStats(tenantId);
     return { ok: true, ...stats };
   });
 
   // ─── CRUD ────────────────────────────────────────────────────────
 
-  app.get('/hl7/templates', async (request) => {
+  app.get('/hl7/templates', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const query = request.query as Record<string, string>;
-    const templateList = listTemplates(getTenantId(request), {
+    const templateList = listTemplates(tenantId, {
       messageType: query.messageType,
       status: query.status as TemplateStatus,
       scope: query.scope as any,
@@ -90,6 +114,8 @@ export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
   });
 
   app.post('/hl7/templates', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { name, description, messageType } = body;
     if (!name || !messageType) {
@@ -97,7 +123,7 @@ export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
       return { ok: false, error: 'name and messageType are required' };
     }
     const template = createTemplate(
-      getTenantId(request),
+      tenantId,
       {
         name,
         description: description || '',
@@ -117,7 +143,9 @@ export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
 
   app.get('/hl7/templates/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
-    const template = getTemplate(getTenantId(request), id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const template = getTemplate(tenantId, id);
     if (!template) {
       reply.code(404);
       return { ok: false, error: 'template_not_found' };
@@ -127,13 +155,15 @@ export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
 
   app.post('/hl7/templates/:id/status', async (request, reply) => {
     const { id } = request.params as { id: string };
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { status } = body;
     if (!status || !VALID_STATUSES.includes(status)) {
       reply.code(400);
       return { ok: false, error: `status must be one of: ${VALID_STATUSES.join(', ')}` };
     }
-    const result = updateTemplateStatus(getTenantId(request), id, status);
+    const result = updateTemplateStatus(tenantId, id, status);
     if (!result.ok) {
       const code = result.error === 'template_not_found' ? 404 : 409;
       reply.code(code);
@@ -144,13 +174,15 @@ export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
 
   app.put('/hl7/templates/:id/segments', async (request, reply) => {
     const { id } = request.params as { id: string };
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { segments } = body;
     if (!Array.isArray(segments)) {
       reply.code(400);
       return { ok: false, error: 'segments array is required' };
     }
-    const result = updateTemplateSegments(getTenantId(request), id, segments);
+    const result = updateTemplateSegments(tenantId, id, segments);
     if (!result.ok) {
       reply.code(result.error === 'template_not_found' ? 404 : 409);
       return { ok: false, error: result.error };
@@ -160,13 +192,15 @@ export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
 
   app.put('/hl7/templates/:id/profiles', async (request, reply) => {
     const { id } = request.params as { id: string };
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { profiles } = body;
     if (!Array.isArray(profiles)) {
       reply.code(400);
       return { ok: false, error: 'profiles array is required' };
     }
-    const result = updateTemplateProfiles(getTenantId(request), id, profiles);
+    const result = updateTemplateProfiles(tenantId, id, profiles);
     if (!result.ok) {
       reply.code(result.error === 'template_not_found' ? 404 : 409);
       return { ok: false, error: result.error };
@@ -176,13 +210,15 @@ export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
 
   app.post('/hl7/templates/:id/clone', async (request, reply) => {
     const { id } = request.params as { id: string };
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { name } = body;
     if (!name) {
       reply.code(400);
       return { ok: false, error: 'name is required' };
     }
-    const cloned = cloneTemplate(getTenantId(request), id, name, getUserId(request));
+    const cloned = cloneTemplate(tenantId, id, name, getUserId(request));
     if (!cloned) {
       reply.code(404);
       return { ok: false, error: 'source_template_not_found' };
@@ -193,7 +229,9 @@ export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
 
   app.delete('/hl7/templates/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
-    const deleted = deleteTemplate(getTenantId(request), id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const deleted = deleteTemplate(tenantId, id);
     if (!deleted) {
       reply.code(404);
       return { ok: false, error: 'template_not_found_or_not_draft' };
@@ -205,13 +243,15 @@ export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
 
   app.post('/hl7/templates/:id/validate', async (request, reply) => {
     const { id } = request.params as { id: string };
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const rawMessage = body.message || body.hl7;
     if (!rawMessage) {
       reply.code(400);
       return { ok: false, error: 'message (raw HL7v2) is required' };
     }
-    const template = getTemplate(getTenantId(request), id);
+    const template = getTemplate(tenantId, id);
     if (!template) {
       reply.code(404);
       return { ok: false, error: 'template_not_found' };
@@ -227,7 +267,9 @@ export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
 
   app.get('/hl7/templates/:id/conformance', async (request, reply) => {
     const { id } = request.params as { id: string };
-    const template = getTemplate(getTenantId(request), id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const template = getTemplate(tenantId, id);
     if (!template) {
       reply.code(404);
       return { ok: false, error: 'template_not_found' };

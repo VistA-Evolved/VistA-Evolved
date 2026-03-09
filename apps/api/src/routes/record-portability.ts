@@ -22,6 +22,7 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { validateCredentials } from '../vista/config.js';
 import { connect, disconnect, callRpc } from '../vista/rpcBrokerClient.js';
+import { safeCallRpc } from '../lib/rpc-resilience.js';
 import {
   buildTextPdf,
   formatAllergiesForPdf,
@@ -53,6 +54,7 @@ import {
 
 interface PortalSessionData {
   token: string;
+  tenantId: string;
   patientDfn: string;
   patientName: string;
   createdAt: number;
@@ -70,8 +72,9 @@ export function initRecordPortability(
 function requirePortalSession(request: FastifyRequest, reply: FastifyReply): PortalSessionData {
   const session = portalSessionLookup?.(request);
   if (!session) {
-    reply.code(401).send({ ok: false, error: 'Not authenticated' });
-    throw new Error('No portal session');
+    const err: any = new Error('No portal session');
+    err.statusCode = 401;
+    throw err;
   }
   return session;
 }
@@ -96,6 +99,60 @@ interface SummaryResult {
   sections: string[];
   rpcUsed: string[];
   pendingTargets: string[];
+}
+
+function parsePortabilityImmunizations(lines: string[]): unknown[] {
+  return lines
+    .map((line) => {
+      const parts = line.split('^');
+      if (!parts[0]?.trim()) return null;
+      return {
+        ien: parts[0].trim(),
+        name: parts[1]?.trim() || '',
+        dateTime: parts[2]?.trim() || '',
+        reaction: parts[3]?.trim() || '',
+      };
+    })
+    .filter(Boolean) as unknown[];
+}
+
+function parsePortabilityLabs(lines: string[]): unknown[] {
+  const results: Array<{
+    testName: string;
+    result: string;
+    units: string;
+    refRange: string;
+    flag: string;
+    specimen: string;
+    collectedAt: string;
+  }> = [];
+  let currentSpecimen = '';
+  let currentDate = '';
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    if (/^Specimen:/i.test(trimmed)) {
+      currentSpecimen = trimmed.replace(/^Specimen:\s*/i, '').trim();
+      continue;
+    }
+    if (/^(Collection\s+Date|Collected):/i.test(trimmed)) {
+      currentDate = trimmed.replace(/^(Collection\s+Date|Collected):\s*/i, '').trim();
+      continue;
+    }
+    if (!trimmed.includes('^')) continue;
+    const parts = trimmed.split('^');
+    if (parts.length < 2) continue;
+    results.push({
+      testName: (parts[0] || '').trim(),
+      result: (parts[1] || '').trim(),
+      units: (parts[2] || '').trim(),
+      refRange: (parts[3] || '').trim(),
+      flag: (parts[4] || '').trim(),
+      specimen: currentSpecimen,
+      collectedAt: currentDate,
+    });
+  }
+  return results as unknown[];
 }
 
 async function fetchSectionData(
@@ -192,21 +249,26 @@ async function fetchSectionData(
         };
 
       case 'immunizations':
-        // Integration-pending in WorldVistA sandbox
-        pendingTargets.push('ORQQPX IMMUN LIST');
-        return { data: [], rpcUsed, pendingTargets };
+        try {
+          lines = await callRpc('ORQQPX IMMUN LIST', [dfn]);
+          rpcUsed.push('ORQQPX IMMUN LIST');
+          return { data: parsePortabilityImmunizations(lines), rpcUsed, pendingTargets };
+        } catch {
+          pendingTargets.push('ORQQPX IMMUN LIST');
+          return { data: [], rpcUsed, pendingTargets };
+        }
 
       case 'labs':
         try {
-          lines = await callRpc('ORWLRR INTERIMG', [dfn, '', '1', '']);
-          rpcUsed.push('ORWLRR INTERIMG');
+          lines = await callRpc('ORWLRR INTERIM', [dfn, '', '']);
+          rpcUsed.push('ORWLRR INTERIM');
           return {
-            data: lines.map((l) => ({ text: l })).filter((l) => l.text.trim()),
+            data: parsePortabilityLabs(lines),
             rpcUsed,
             pendingTargets,
           };
         } catch {
-          pendingTargets.push('ORWLRR INTERIMG');
+          pendingTargets.push('ORWLRR INTERIM');
           return { data: [], rpcUsed, pendingTargets };
         }
 
@@ -241,17 +303,12 @@ async function generatePatientSummary(
   let hsText: string | null = null;
   try {
     validateCredentials();
-    await connect();
     // Try to get abbreviated health summary
-    const reportLines = await callRpc('ORWRP REPORT TEXT', [dfn, '1', '', '', '1', '0']);
+    const reportLines = await safeCallRpc('ORWRP REPORT TEXT', [dfn, '1', '', '', '1', '0']);
     allRpcUsed.push('ORWRP REPORT TEXT');
     hsText = reportLines.join('\n').trim();
     if (hsText.length < 20) hsText = null; // Too short = no real data
-    disconnect();
   } catch {
-    try {
-      disconnect();
-    } catch {}
     // Will fall through to section-by-section
   }
 
@@ -288,10 +345,14 @@ async function generatePatientSummary(
         formatted = formatDemographicsForPdf(result.data as any[]);
         break;
       case 'immunizations':
-        formatted = formatImmunizationsForPdf(result.data as any[]);
+        formatted = formatImmunizationsForPdf(result.data as any[], {
+          pendingTargets: result.pendingTargets,
+        });
         break;
       case 'labs':
-        formatted = formatLabsForPdf(result.data as any[]);
+        formatted = formatLabsForPdf(result.data as any[], {
+          pendingTargets: result.pendingTargets,
+        });
         break;
     }
     pdfSections.push(formatted);
@@ -384,6 +445,8 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
       format === 'html' ? Buffer.from(summary.htmlContent, 'utf-8') : summary.pdfBuffer;
 
     const result = createExport({
+      tenantId: session.tenantId,
+      sessionToken: session.token,
       patientDfn: session.patientDfn,
       patientName: session.patientName,
       format,
@@ -412,8 +475,9 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   /* GET /portal/record/export/:token — download by token             */
   /* ---------------------------------------------------------------- */
   server.get('/portal/record/export/:token', async (request, reply) => {
+    const session = requirePortalSession(request, reply);
     const { token } = request.params as { token: string };
-    const result = downloadExport(token);
+    const result = downloadExport(token, session.tenantId, session.patientDfn, session.token);
 
     if ('error' in result) {
       return reply.code(result.status).send({ ok: false, error: result.error });
@@ -434,7 +498,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   /* ---------------------------------------------------------------- */
   server.get('/portal/record/exports', async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    const exports = getPatientExports(session.patientDfn);
+    const exports = getPatientExports(session.tenantId, session.patientDfn);
     return reply.send({ ok: true, exports });
   });
 
@@ -444,7 +508,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   server.post('/portal/record/export/:token/revoke', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { token } = request.params as { token: string };
-    const ok = revokeExport(token, session.patientDfn);
+    const ok = revokeExport(token, session.tenantId, session.patientDfn);
     if (!ok) {
       return reply.code(404).send({ ok: false, error: 'Export not found or already revoked.' });
     }
@@ -472,6 +536,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
 
     const result = createRecordShare({
       exportToken: body.exportToken,
+      tenantId: session.tenantId,
       patientDfn: session.patientDfn,
       patientName: session.patientName,
       patientDob,
@@ -501,7 +566,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   server.post('/portal/record/share/:id/revoke', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
-    const ok = revokeRecordShare(id, session.patientDfn);
+    const ok = revokeRecordShare(id, session.tenantId, session.patientDfn);
     if (!ok) {
       return reply.code(404).send({ ok: false, error: 'Share not found or already revoked.' });
     }
@@ -513,7 +578,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   /* ---------------------------------------------------------------- */
   server.get('/portal/record/shares', async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    const shares = getPatientShares(session.patientDfn).map((s) => ({
+    const shares = getPatientShares(session.tenantId, session.patientDfn).map((s) => ({
       id: s.id,
       token: s.token,
       label: s.label,
@@ -533,7 +598,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   /* ---------------------------------------------------------------- */
   server.get('/portal/record/share/audit', async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    const events = getShareAudit(session.patientDfn);
+    const events = getShareAudit(session.tenantId, session.patientDfn);
     return reply.send({ ok: true, events });
   });
 
@@ -585,7 +650,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   server.get('/portal/record/stats', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     if (!session) return; // guard
-    const stats = getPortabilityStats();
+    const stats = getPortabilityStats(session.tenantId, session.patientDfn);
     return reply.send({ ok: true, ...stats });
   });
 }

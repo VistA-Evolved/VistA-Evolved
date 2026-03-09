@@ -13,6 +13,7 @@
  */
 
 import { log } from '../lib/logger.js';
+import { tryResolveTenantId } from '../config/tenant-config.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -155,12 +156,13 @@ export function mapClaimsToUserMeta(claims: OidcTokenClaims): {
   tenantId: string;
 } {
   const roles = extractRolesFromClaims(claims);
+  const facilityStation = claims.facility_station || '';
   return {
     duz: claims.duz || claims.sub,
     userName: claims.name || claims.preferred_username || claims.sub,
     roles,
-    facilityStation: claims.facility_station || '',
-    tenantId: claims.tenant_id || 'default',
+    facilityStation,
+    tenantId: claims.tenant_id || tryResolveTenantId(facilityStation) || '',
   };
 }
 

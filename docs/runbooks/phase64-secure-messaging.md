@@ -5,19 +5,34 @@
 Clinician-to-clinician secure messaging backed by VistA MailMan RPCs, plus
 portal-to-clinic messaging posture that bridges to MailMan when available.
 
+## Current Posture
+
+- Clinician MailMan routes are backed by the `ZVE MAIL *` RPC family.
+- Portal inbox remains portal-scoped because patient MailMan basket identity is
+   not provably bound in this lane.
+- Portal send is VistA-first when a clinic mail group is supplied or configured.
+- Portal send is local-mode when no VistA group is configured or the MailMan
+   path is unavailable.
+- Phase 591 hardened the patient Sent history so a just-sent message appears
+   immediately in Sent for both local-mode and VistA-backed sends.
+
 ## VistA RPCs Used
 
-| RPC                   | Routine   | Auth       | Purpose                 |
-| --------------------- | --------- | ---------- | ----------------------- |
-| `DSIC SEND MAIL MSG`  | DSICXM.m  | AGREEMENT  | Send message via XMXAPI |
-| `ORQQXMB MAIL GROUPS` | ORQQXQA.m | RESTRICTED | List mail groups        |
+| RPC                   | Routine   | Auth       | Purpose                        |
+| --------------------- | --------- | ---------- | ------------------------------ |
+| `ZVE MAIL FOLDERS`    | ZVEMSGR.m | SESSION    | List MailMan baskets           |
+| `ZVE MAIL LIST`       | ZVEMSGR.m | SESSION    | List MailMan message metadata  |
+| `ZVE MAIL GET`        | ZVEMSGR.m | SESSION    | Read MailMan message           |
+| `ZVE MAIL SEND`       | ZVEMSGR.m | SESSION    | Send MailMan message           |
+| `ZVE MAIL MANAGE`     | ZVEMSGR.m | SESSION    | Mark read / delete / move      |
+| `ORQQXMB MAIL GROUPS` | ORQQXQA.m | RESTRICTED | List mail groups               |
 
-### Read-Inbox Gap
+### Portal Inbox Limitation
 
-MailMan has **no standard RPC** for reading inbox messages. `^XMB(3.9)` basket
-entries require direct global access. Phase 64 uses a local in-memory store
-for inbox display. Full read sync requires a custom `ZVEMSGR.m` wrapper
-routine (migration target).
+Patients do not have a proven MailMan basket identity binding in this lane, so
+the portal inbox remains portal-scoped. Clinician MailMan inbox and send are
+live through `ZVEMSGR.m`, but patient inbox read continues to use the durable
+portal store with explicit local-mode labeling.
 
 ## Architecture
 
@@ -34,8 +49,9 @@ GET /messaging/mail-groups  -- ORQQXMB MAIL GROUPS (5-min cache)
 Portal UI (dashboard/messages)
   |
   v
-POST /messaging/portal/send -- local store + DSIC SEND MAIL MSG bridge
-GET /messaging/portal/inbox -- local store (filtered by DFN)
+POST /portal/mailman/send   -- VistA MailMan primary, durable local mirror
+GET /portal/mailman/inbox   -- portal-scoped inbox with source label
+GET /portal/messages/sent   -- durable patient sent history, including MailMan mirrors
 ```
 
 ## Security Constraints
@@ -98,29 +114,34 @@ Recipients support prefixes: plain DUZ, `G.groupname`, `I:DUZ` (info copy),
 
 ## Migration Path
 
-1. **Read inbox:** Write `ZVEMSGR.m` M routine that reads `^XMB(3.9,DUZ,...)`
-   baskets and exposes via RPC. Install in VistA and replace local store reads.
-2. **Full sync:** On login, call ZVEMSGR to populate local store from VistA.
-   On compose, write-through to MailMan and local store.
-3. **Attachments:** MailMan supports binary via XMXAPI. Add multipart upload
-   endpoint and bridge to MailMan attachment support.
+1. Add a real patient-to-MailMan identity binding if portal inbox must become
+   VistA-readable instead of portal-scoped.
+2. Keep write-through mirroring from `/portal/mailman/send` to the portal store
+   so Sent history remains truthful even when transport is VistA-first.
+3. Attachments remain disabled by default and still need a production storage +
+   MailMan delivery strategy before being enabled broadly.
 
 ## Manual Testing
 
-```bash
-# List mail groups
-curl -b cookies.txt http://127.0.0.1:3001/messaging/mail-groups
+```powershell
+# Clinician: discover live mail groups
+Set-Content -Path clinician-login.json -Value '{"accessCode":"PRO1234","verifyCode":"PRO1234!!"}' -NoNewline -Encoding ASCII
+curl.exe -s -c clinician-cookies.txt -X POST http://127.0.0.1:3001/auth/login -H "Content-Type: application/json" -d "@clinician-login.json" | Out-Null
+curl.exe -s -b clinician-cookies.txt http://127.0.0.1:3001/messaging/mail-groups
 
-# Send a message
-curl -b cookies.txt -X POST http://127.0.0.1:3001/messaging/compose \
-  -H "Content-Type: application/json" \
-  -d '{"subject":"Test Message","body":"Hello from Phase 64","recipients":[{"type":"user","identifier":"87"}]}'
+# Portal: local-mode send still appears immediately in Sent
+Set-Content -Path portal-login.json -Value '{"username":"patient1","password":"Patient1!"}' -NoNewline -Encoding ASCII
+Set-Content -Path portal-send.json -Value '{"subject":"Portal sent mirror proof","body":"Verify that a freshly sent portal message appears immediately in Sent history.","category":"general"}' -NoNewline -Encoding ASCII
+curl.exe -s -c portal-cookies.txt -X POST http://127.0.0.1:3001/portal/auth/login -H "Content-Type: application/json" -d "@portal-login.json"
+curl.exe -s -b portal-cookies.txt -X POST http://127.0.0.1:3001/portal/mailman/send -H "Content-Type: application/json" -d "@portal-send.json"
+curl.exe -s -b portal-cookies.txt http://127.0.0.1:3001/portal/messages/sent
 
-# Check inbox
-curl -b cookies.txt http://127.0.0.1:3001/messaging/inbox
+# Portal: VistA MailMan send mirrored into Sent when a live clinic group is provided
+Set-Content -Path portal-send-vista.json -Value '{"subject":"Portal VistA MailMan proof","body":"Verify VistA MailMan send plus mirrored sent history.","category":"general","clinicGroup":"TEST"}' -NoNewline -Encoding ASCII
+curl.exe -s -b portal-cookies.txt -X POST http://127.0.0.1:3001/portal/mailman/send -H "Content-Type: application/json" -d "@portal-send-vista.json"
+curl.exe -s -b portal-cookies.txt http://127.0.0.1:3001/portal/messages/sent
 
-# Health check
-curl -b cookies.txt http://127.0.0.1:3001/messaging/health
+Remove-Item clinician-login.json,clinician-cookies.txt,portal-login.json,portal-send.json,portal-send-vista.json,portal-cookies.txt -ErrorAction SilentlyContinue
 ```
 
 ## Verification

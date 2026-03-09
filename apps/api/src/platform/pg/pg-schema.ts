@@ -1131,6 +1131,115 @@ export const pgSchedulingLifecycle = pgTable(
 );
 
 /**
+ * Phase 159: Queue Ticket
+ * Durable department queue state. Mirrors queue/types.ts QueueTicket.
+ */
+export const pgQueueTicket = pgTable(
+  'queue_ticket',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull().default('default'),
+    department: text('department').notNull(),
+    ticketNumber: text('ticket_number').notNull(),
+    patientDfn: text('patient_dfn').notNull(),
+    patientName: text('patient_name').notNull(),
+    priority: text('priority').notNull().default('normal'),
+    status: text('status').notNull().default('waiting'),
+    providerDuz: text('provider_duz'),
+    windowNumber: text('window_number'),
+    notes: text('notes'),
+    appointmentIen: text('appointment_ien'),
+    transferredFrom: text('transferred_from'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    calledAt: timestamp('called_at', { withTimezone: true }),
+    servedAt: timestamp('served_at', { withTimezone: true }),
+    completedAt: timestamp('completed_at', { withTimezone: true }),
+  },
+  (table) => [
+    index('idx_pg_queue_ticket_tenant').on(table.tenantId),
+    index('idx_pg_queue_ticket_department').on(table.tenantId, table.department, table.status),
+    index('idx_pg_queue_ticket_created').on(table.tenantId, table.createdAt),
+  ]
+);
+
+/**
+ * Phase 159: Queue Event
+ * Append-only queue lifecycle audit log.
+ */
+export const pgQueueEvent = pgTable(
+  'queue_event',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull().default('default'),
+    ticketId: text('ticket_id').notNull(),
+    eventType: text('event_type').notNull(),
+    actorDuz: text('actor_duz'),
+    detail: text('detail'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    index('idx_pg_queue_event_tenant').on(table.tenantId),
+    index('idx_pg_queue_event_ticket').on(table.tenantId, table.ticketId),
+    index('idx_pg_queue_event_created').on(table.tenantId, table.createdAt),
+  ]
+);
+
+/**
+ * Phase 160: Workflow Definition
+ * Durable department workflow blueprints.
+ */
+export const pgWorkflowDefinition = pgTable(
+  'workflow_definition',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull().default('default'),
+    department: text('department').notNull(),
+    name: text('name').notNull(),
+    description: text('description'),
+    version: integer('version').notNull().default(1),
+    status: text('status').notNull().default('draft'),
+    stepsJson: jsonb('steps_json').notNull().default([]),
+    tagsJson: jsonb('tags_json').notNull().default([]),
+    createdBy: text('created_by'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [
+    index('idx_pg_workflow_definition_tenant').on(table.tenantId),
+    index('idx_pg_workflow_definition_department').on(table.tenantId, table.department),
+    index('idx_pg_workflow_definition_status').on(table.tenantId, table.status),
+  ]
+);
+
+/**
+ * Phase 160: Workflow Instance
+ * Durable runtime workflow execution state.
+ */
+export const pgWorkflowInstance = pgTable(
+  'workflow_instance',
+  {
+    id: text('id').primaryKey(),
+    tenantId: text('tenant_id').notNull().default('default'),
+    definitionId: text('definition_id').notNull(),
+    department: text('department').notNull(),
+    patientDfn: text('patient_dfn').notNull(),
+    encounterRef: text('encounter_ref'),
+    queueTicketId: text('queue_ticket_id'),
+    status: text('status').notNull().default('not_started'),
+    stepsJson: jsonb('steps_json').notNull().default([]),
+    startedBy: text('started_by'),
+    startedAt: timestamp('started_at', { withTimezone: true }).notNull().defaultNow(),
+    completedAt: timestamp('completed_at', { withTimezone: true }),
+  },
+  (table) => [
+    index('idx_pg_workflow_instance_tenant').on(table.tenantId),
+    index('idx_pg_workflow_instance_department').on(table.tenantId, table.department),
+    index('idx_pg_workflow_instance_patient').on(table.tenantId, table.patientDfn),
+    index('idx_pg_workflow_instance_status').on(table.tenantId, table.status),
+  ]
+);
+
+/**
  * Phase 132: User Locale Preference
  * Clinician language preference, persisted per user per tenant.
  */

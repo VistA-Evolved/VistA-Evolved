@@ -426,13 +426,14 @@ export function listTemplates(
 }
 
 export function updateTemplate(
+  tenantId: string,
   id: string,
   patch: Partial<
     Pick<DeptRoleTemplate, 'name' | 'allowedActions' | 'deniedActions' | 'constraints' | 'status'>
   >
 ): DeptRoleTemplate | undefined {
   const existing = templateStore.get(id);
-  if (!existing) return undefined;
+  if (!existing || existing.tenantId !== tenantId) return undefined;
   const updated: DeptRoleTemplate = {
     ...existing,
     ...patch,
@@ -474,9 +475,9 @@ export function listMemberships(
   );
 }
 
-export function revokeMembership(id: string): boolean {
+export function revokeMembership(tenantId: string, id: string): boolean {
   const m = membershipStore.get(id);
-  if (!m) return false;
+  if (!m || m.tenantId !== tenantId) return false;
   m.status = 'revoked';
   return true;
 }

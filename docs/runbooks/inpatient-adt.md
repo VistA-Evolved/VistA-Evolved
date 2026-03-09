@@ -31,13 +31,15 @@ package RPC availability.
 - **Data source:** `ORQPT WARDS` + `ORQPT WARD PATIENTS` + `ORWPT16 ADMITLST`
 - Click a ward button to load its patient census
 - Click a patient row to see detail drawer with "Open Chart" navigation
-- Census enrichment (admit date, room/bed) comes from ORWPT16
+- Census enrichment uses `ORQPT WARD PATIENTS` for room/bed and `ORWPT16 ADMITLST` for admission date and movement destination
+- The ward census summary is a live feature, not an integration-pending placeholder. The summary count view should report `pendingTargets: []` when `ORQPT WARDS` and `ORQPT WARD PATIENTS` succeed.
 
 ### 2. Bed Board
 
 - **Data source:** `ORQPT WARD PATIENTS` + `ORWPT16 ADMITLST`
 - Select a ward from the dropdown to see the bed grid
 - Occupied beds show patient initials; click for detail modal
+- Room/bed values come from the live third piece of `ORQPT WARD PATIENTS`
 - **Known limitation:** Only occupied beds are shown. Empty/OOS bed data requires
   `ZVEBED LIST` custom RPC (see grounding doc)
 

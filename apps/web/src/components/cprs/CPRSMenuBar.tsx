@@ -30,6 +30,7 @@ function buildMenus(): Record<string, MenuAction[]> {
       { label: 'Refresh Patient Data', shortcut: 'F5', action: 'refresh' },
       { separator: true, label: '', action: '' },
       { label: 'Inbox / Notifications', shortcut: 'Ctrl+I', action: 'inbox' },
+      { label: 'Messages / MailMan', action: 'messages' },
       { label: 'Order Sets...', action: 'orderSets' },
       { separator: true, label: '', action: '' },
       { label: 'Print...', shortcut: 'Ctrl+P', action: 'print' },
@@ -144,6 +145,8 @@ export default function CPRSMenuBar({ dfn }: { dfn?: string }) {
       logout().then(() => router.push('/cprs/login'));
     } else if (action === 'inbox') {
       router.push('/cprs/inbox');
+    } else if (action === 'messages') {
+      router.push('/cprs/messages');
     } else if (action === 'orderSets') {
       router.push('/cprs/order-sets');
     } else if (action === 'preferences') {

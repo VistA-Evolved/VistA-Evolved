@@ -140,6 +140,7 @@ export function updateTenantSecurityPolicy(
       'success',
       { sub: updatedBy, name: updatedBy, roles: ['admin'] },
       {
+        tenantId,
         detail: {
           tenantId,
           changesCount: changes.length,
@@ -182,7 +183,7 @@ export function deleteTenantSecurityPolicy(tenantId: string, deletedBy: string):
       'admin.tenant-security-policy' as ImmutableAuditAction,
       'success',
       { sub: deletedBy, name: deletedBy, roles: ['admin'] },
-      { detail: { tenantId, action: 'deleted' } }
+      { tenantId, detail: { tenantId, action: 'deleted' } }
     );
   }
   return existed;

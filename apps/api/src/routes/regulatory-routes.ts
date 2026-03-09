@@ -20,7 +20,7 @@ import {
   getAllFrameworks,
   resolveFrameworksByCountry,
   createAttestation,
-  getAttestation,
+  getAttestationForTenant,
   listAttestations,
   revokeAttestation,
   checkExpiredAttestations,
@@ -34,7 +34,7 @@ import {
   getCountryAssignmentAudit,
   verifyCountryAuditChain,
   createExportPackage,
-  getExportPackage,
+  getExportPackageForTenant,
   listExportPackages,
   getExportAudit,
   verifyExportAuditChain,
@@ -47,6 +47,30 @@ import {
 /* ------------------------------------------------------------------ */
 
 export default async function regulatoryRoutes(server: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: any): string | null {
+    const requestTenantId =
+      typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+        ? request.tenantId.trim()
+        : undefined;
+    const sessionTenantId =
+      typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+        ? request.session.tenantId.trim()
+        : undefined;
+    const headerTenantId = request?.headers?.['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return requestTenantId || sessionTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(request: any, reply: FastifyReply): string | null {
+    const tenantId = resolveTenantId(request);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
   /* ── Frameworks ─────────────────────────────────────── */
 
   server.get('/regulatory/frameworks', async () => {
@@ -74,12 +98,14 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
 
   server.post('/regulatory/classify', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     if (!body.operation) {
       reply.code(400);
       return { ok: false, error: 'operation is required' };
     }
     const result = classify({
-      tenantId: body.tenantId,
+      tenantId,
       countryCode: body.countryCode,
       operation: body.operation,
       operationRisk: body.operationRisk || 'read',
@@ -91,12 +117,14 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
 
   /* ── Attestations ───────────────────────────────────── */
 
-  server.get('/regulatory/attestations', async (request: FastifyRequest) => {
+  server.get('/regulatory/attestations', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const q = request.query as any;
     const result = listAttestations({
       framework: q.framework,
       status: q.status,
-      tenantId: q.tenantId,
+      tenantId,
       requirementId: q.requirementId,
       limit: q.limit ? parseInt(q.limit, 10) : undefined,
       offset: q.offset ? parseInt(q.offset, 10) : undefined,
@@ -106,8 +134,10 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
 
   server.get(
     '/regulatory/attestations/:id',
-    async (request: FastifyRequest<{ Params: { id: string } }>) => {
-      const att = getAttestation(request.params.id);
+    async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const att = getAttestationForTenant(tenantId, request.params.id);
       if (!att) return { ok: false, error: 'Attestation not found' };
       return { ok: true, attestation: att };
     }
@@ -115,6 +145,8 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
 
   server.post('/regulatory/attestations', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     if (!body.framework || !body.requirementId || !body.attestedBy) {
       reply.code(400);
       return { ok: false, error: 'framework, requirementId, and attestedBy are required' };
@@ -127,7 +159,7 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
       attesterRole: body.attesterRole || 'admin',
       evidence: body.evidence || [],
       notes: body.notes,
-      tenantId: body.tenantId,
+      tenantId,
       reviewIntervalDays: body.reviewIntervalDays,
     });
     reply.code(201);
@@ -138,7 +170,14 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
     '/regulatory/attestations/:id/revoke',
     async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
       const body = (request.body as any) || {};
-      const ok = revokeAttestation(request.params.id, body.revokedBy || 'system', body.reason);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const ok = revokeAttestation(
+        tenantId,
+        request.params.id,
+        body.revokedBy || (request as any)?.session?.duz || 'system',
+        body.reason
+      );
       if (!ok) {
         reply.code(404);
         return { ok: false, error: 'Attestation not found or already revoked' };
@@ -147,9 +186,10 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
     }
   );
 
-  server.get('/regulatory/attestations/summary', async (request: FastifyRequest) => {
-    const q = request.query as any;
-    return { ok: true, summary: getAttestationSummary(q.tenantId) };
+  server.get('/regulatory/attestations/summary', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    return { ok: true, summary: getAttestationSummary(tenantId) };
   });
 
   server.get('/regulatory/attestations/verify', async () => {
@@ -163,19 +203,23 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
 
   /* ── Country Config ─────────────────────────────────── */
 
-  server.get('/regulatory/country-config', async () => {
+  server.get('/regulatory/country-config', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     return {
       ok: true,
-      assignments: listTenantCountryAssignments(),
+      assignments: listTenantCountryAssignments().filter((assignment) => assignment.tenantId === tenantId),
       supportedCountries: getSupportedCountries(),
     };
   });
 
   server.get(
     '/regulatory/country-config/:tenantId',
-    async (request: FastifyRequest<{ Params: { tenantId: string } }>) => {
-      const assignment = getTenantCountryAssignment(request.params.tenantId);
-      const regConfig = resolveTenantRegulatoryConfig(request.params.tenantId);
+    async (request: FastifyRequest<{ Params: { tenantId: string } }>, reply: FastifyReply) => {
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const assignment = getTenantCountryAssignment(tenantId);
+      const regConfig = resolveTenantRegulatoryConfig(tenantId);
       return { ok: true, assignment: assignment || null, regulatoryConfig: regConfig };
     }
   );
@@ -184,13 +228,15 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
     '/regulatory/country-config',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const body = (request.body as any) || {};
-      if (!body.tenantId || !body.countryCode || !body.assignedBy) {
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      if (!body.countryCode || !body.assignedBy) {
         reply.code(400);
-        return { ok: false, error: 'tenantId, countryCode, and assignedBy are required' };
+        return { ok: false, error: 'countryCode and assignedBy are required' };
       }
       try {
         const assignment = assignCountryToTenant({
-          tenantId: body.tenantId,
+          tenantId,
           countryCode: body.countryCode,
           assignedBy: body.assignedBy,
           reason: body.reason || 'Admin assignment',
@@ -204,9 +250,10 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
     }
   );
 
-  server.get('/regulatory/country-config/audit', async (request: FastifyRequest) => {
-    const q = request.query as any;
-    return { ok: true, audit: getCountryAssignmentAudit(q.tenantId) };
+  server.get('/regulatory/country-config/audit', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    return { ok: true, audit: getCountryAssignmentAudit(tenantId) };
   });
 
   server.get('/regulatory/country-config/audit/verify', async () => {
@@ -217,13 +264,15 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
 
   server.post('/regulatory/export', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     if (!body.requestedBy || !body.domains || !body.format) {
       reply.code(400);
       return { ok: false, error: 'requestedBy, domains, and format are required' };
     }
     const pkg = createExportPackage({
       requestedBy: body.requestedBy,
-      tenantId: body.tenantId,
+      tenantId,
       destinationCountry: body.destinationCountry,
       domains: body.domains,
       format: body.format,
@@ -237,11 +286,13 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
     return { ok: true, package: pkg };
   });
 
-  server.get('/regulatory/export', async (request: FastifyRequest) => {
+  server.get('/regulatory/export', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const q = request.query as any;
     const result = listExportPackages({
       status: q.status,
-      tenantId: q.tenantId,
+      tenantId,
       limit: q.limit ? parseInt(q.limit, 10) : undefined,
       offset: q.offset ? parseInt(q.offset, 10) : undefined,
     });
@@ -250,16 +301,31 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
 
   server.get(
     '/regulatory/export/:id',
-    async (request: FastifyRequest<{ Params: { id: string } }>) => {
-      const pkg = getExportPackage(request.params.id);
+    async (request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) => {
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const pkg = getExportPackageForTenant(tenantId, request.params.id);
       if (!pkg) return { ok: false, error: 'Export package not found' };
       return { ok: true, package: pkg };
     }
   );
 
-  server.get('/regulatory/export/audit', async (request: FastifyRequest) => {
+  server.get('/regulatory/export/audit', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const q = request.query as any;
-    return { ok: true, audit: getExportAudit(q.exportId) };
+    if (q.exportId) {
+      const pkg = getExportPackageForTenant(tenantId, q.exportId);
+      if (!pkg) return { ok: true, audit: [] };
+      return { ok: true, audit: getExportAudit(q.exportId) };
+    }
+    const tenantIds = new Set(
+      listExportPackages({ tenantId, limit: 5000 }).items.map((pkg) => pkg.id)
+    );
+    return {
+      ok: true,
+      audit: getExportAudit().filter((entry) => tenantIds.has(entry.exportId)),
+    };
   });
 
   server.get('/regulatory/export/audit/verify', async () => {
@@ -292,9 +358,9 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
 
   /* ── Posture ────────────────────────────────────────── */
 
-  server.get('/regulatory/posture', async (request: FastifyRequest) => {
-    const q = request.query as any;
-    const tenantId = q.tenantId || 'default';
+  server.get('/regulatory/posture', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const regConfig = resolveTenantRegulatoryConfig(tenantId);
     const attestationSummary = getAttestationSummary(tenantId);
     const validators = listCountryValidators();

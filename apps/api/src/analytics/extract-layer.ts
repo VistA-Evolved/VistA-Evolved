@@ -611,23 +611,26 @@ export function clearExtractData(tenantId: string): void {
   extractRuns.push(...remaining);
 }
 
-export function getExtractStats(): {
+export function getExtractStats(tenantId: string): {
   totalRuns: number;
   totalRecords: number;
-  tenants: string[];
   entityTypes: string[];
 } {
-  const tenants = new Set(extractRuns.map((r) => r.tenantId));
+  const tenantRunIds = new Set(
+    extractRuns.filter((r) => r.tenantId === tenantId).map((r) => r.runId)
+  );
   const entityTypes = new Set<string>();
-  for (const records of extractRecords.values()) {
+  for (const [runId, records] of extractRecords.entries()) {
+    if (!tenantRunIds.has(runId)) continue;
     for (const r of records) entityTypes.add(r.entityType);
   }
   let totalRecords = 0;
-  for (const records of extractRecords.values()) totalRecords += records.length;
+  for (const [runId, records] of extractRecords.entries()) {
+    if (tenantRunIds.has(runId)) totalRecords += records.length;
+  }
   return {
-    totalRuns: extractRuns.length,
+    totalRuns: tenantRunIds.size,
     totalRecords,
-    tenants: Array.from(tenants),
     entityTypes: Array.from(entityTypes),
   };
 }

@@ -22,7 +22,8 @@
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { requireSession } from '../../auth/auth-routes.js';
-import { safeCallRpc } from '../../lib/rpc-resilience.js';
+import { safeCallRpc, safeCallRpcWithList } from '../../lib/rpc-resilience.js';
+import type { RpcParam } from '../../vista/rpcBrokerClient.js';
 import { log } from '../../lib/logger.js';
 import { safeErr } from '../../lib/safe-error.js';
 import { immutableAudit } from '../../lib/immutable-audit.js';
@@ -42,6 +43,36 @@ function validateDfn(dfn: unknown, reply: FastifyReply): string | null {
   return val;
 }
 
+function isVistaValidationError(line: string): boolean {
+  return /%YDB-E-|\bM\s+ERROR\b|undefined variable/i.test(line);
+}
+
+function normalizePsbAllergyWarnings(lines: string[] | undefined): string[] {
+  return (lines || [])
+    .map((line) => String(line || '').trim())
+    .filter((line) => Boolean(line) && !/^\d+$/.test(line));
+}
+
+function buildTiuTextBuffer(noteText: unknown): Record<string, string> {
+  const textData: Record<string, string> = { HDR: '1^1' };
+  String(noteText || '')
+    .split(/\r?\n/)
+    .forEach((line, index) => {
+      textData[`TEXT,${index + 1},0`] = line;
+    });
+  return textData;
+}
+
+function tiuReadbackContainsExpectedText(lines: string[], noteText: unknown): boolean {
+  const expected = String(noteText || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  if (expected.length === 0) return false;
+  const haystack = lines.map((line) => line.trim()).filter(Boolean);
+  return expected.every((line) => haystack.includes(line));
+}
+
 /* ------------------------------------------------------------------ */
 /* Medication schedule types                                            */
 /* ------------------------------------------------------------------ */
@@ -58,6 +89,272 @@ interface ScheduleEntry {
   nextDue: string | null; // ISO or heuristic label
   route: string; // PO, IV, IM, etc. (derived from sig)
   frequency: string; // human-readable
+}
+
+interface EmarOrderMetadata {
+  orderIen: string;
+  displayGroup: string;
+  packageRef?: string;
+  textFromDetail?: string;
+  rawDetail: string[];
+}
+
+function normalizeVistaText(text: string | undefined): string {
+  return String(text || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function parseGetByIfnMetadata(lines: string[]): EmarOrderMetadata {
+  const metaLine = lines.find((line) => line.startsWith('~'));
+  const detailText = lines
+    .filter((line) => line.startsWith('t'))
+    .map((line) => normalizeVistaText(line.slice(1)))
+    .filter(Boolean)
+    .join(' ');
+  const parts = metaLine ? metaLine.slice(1).split('^') : [];
+  const packageCandidate = parts[parts.length - 1]?.trim() || '';
+  return {
+    orderIen: parts[0]?.trim() || '',
+    displayGroup: parts[1]?.trim() || '',
+    packageRef: /^[A-Z0-9]{2,8}$/.test(packageCandidate) ? packageCandidate : undefined,
+    textFromDetail: detailText || undefined,
+    rawDetail: lines,
+  };
+}
+
+function inferOrderType(
+  packageRef: string | undefined,
+  displayGroup: string | undefined,
+  text: string
+): string | undefined {
+  const signal = `${packageRef || ''} ${displayGroup || ''} ${text}`.toUpperCase();
+  if (/PSO|PSJ|MED|TABLET|CAP|INJ|PATCH|CREAM|REFILL|RX/.test(signal)) return 'med';
+  if (/LR|LAB|CBC|BMP|CMP|CHEM|CULTURE|HEMOGLOBIN|PLATELET|PANEL/.test(signal)) return 'lab';
+  if (/RA|RAD|IMAG|XRAY|X-RAY|MRI|CT|ULTRASOUND|MAMMO|MAG/.test(signal)) return 'imaging';
+  if (/GMRC|CONSULT|REFERRAL|SERVICE/.test(signal)) return 'consult';
+  return undefined;
+}
+
+function normalizeOrderStatus(rawStatus: string | undefined, displayText?: string): string {
+  if ((displayText || '').toUpperCase().includes('*UNSIGNED*')) return 'unsigned';
+  const normalized = rawStatus?.trim();
+  return normalized || 'active';
+}
+
+function populateScheduleMetadata(med: ScheduleEntry): void {
+  const sigUpper = med.sig.toUpperCase();
+  med.isPRN = sigUpper.includes('PRN') || sigUpper.includes('AS NEEDED');
+
+  if (sigUpper.includes(' IV ') || sigUpper.includes('INTRAVENOUS')) med.route = 'IV';
+  else if (sigUpper.includes(' IM ') || sigUpper.includes('INTRAMUSCULAR')) med.route = 'IM';
+  else if (sigUpper.includes(' SQ ') || sigUpper.includes('SUBCUTANEOUS')) med.route = 'SQ';
+  else if (sigUpper.includes(' PO ') || sigUpper.includes('BY MOUTH') || sigUpper.includes('ORAL'))
+    med.route = 'PO';
+  else if (sigUpper.includes('TOPICAL')) med.route = 'TOP';
+  else if (sigUpper.includes('OPHTHALMIC')) med.route = 'OPH';
+  else if (sigUpper.includes('OTIC')) med.route = 'OTIC';
+  else if (sigUpper.includes('NASAL') || sigUpper.includes('INHALE')) med.route = 'INH';
+  else if (sigUpper.includes('RECTAL')) med.route = 'PR';
+  else med.route = 'PO';
+
+  const freqPatterns: Array<[RegExp, string, string]> = [
+    [/\bQ(\d+)H\b/i, 'Q$1H', 'every $1 hours'],
+    [/\bBID\b/i, 'BID', 'twice daily'],
+    [/\bTID\b/i, 'TID', 'three times daily'],
+    [/\bQID\b/i, 'QID', 'four times daily'],
+    [/\bQD\b|DAILY|ONCE DAILY/i, 'QD', 'once daily'],
+    [/\bQ(\d+)MIN\b/i, 'Q$1MIN', 'every $1 minutes'],
+    [/\bQHS\b|AT BEDTIME/i, 'QHS', 'at bedtime'],
+    [/\bQAM\b/i, 'QAM', 'every morning'],
+    [/\bQPM\b/i, 'QPM', 'every evening'],
+    [/\bQ(\d+)D\b/i, 'Q$1D', 'every $1 days'],
+    [/\bWEEKLY\b|QW\b/i, 'QW', 'weekly'],
+    [/\bSTAT\b/i, 'STAT', 'immediately'],
+    [/\bONCE\b/i, 'ONCE', 'one time'],
+  ];
+
+  for (const [regex, sched, freq] of freqPatterns) {
+    const match = sigUpper.match(regex);
+    if (match) {
+      med.schedule = sched.replace('$1', match[1] || '');
+      med.frequency = freq.replace('$1', match[1] || '');
+      break;
+    }
+  }
+
+  if (!med.schedule && med.isPRN) {
+    med.schedule = 'PRN';
+    med.frequency = 'as needed';
+  }
+  if (!med.schedule) {
+    med.schedule = 'UNSCHEDULED';
+    med.frequency = 'see sig for details';
+  }
+
+  if (med.isPRN || med.schedule === 'STAT' || med.schedule === 'ONCE') {
+    med.nextDue = null;
+  } else {
+    med.nextDue = 'scheduled';
+  }
+}
+
+async function buildScheduleFallbackFromOrders(
+  dfn: string
+): Promise<{ schedule: ScheduleEntry[]; rpcUsed: string[] }> {
+  const activeOrderLines = await safeCallRpc('ORWORR AGET', [dfn, '2', '', '', '']);
+  const rpcUsedSet = new Set<string>(['ORWORR AGET']);
+  const fallbackSchedule = new Map<string, ScheduleEntry>();
+
+  for (const line of activeOrderLines) {
+    if (!line || line.startsWith('-1')) continue;
+    const parts = line.split('^');
+    const orderIen = parts[0]?.trim() || '';
+    if (!orderIen) continue;
+
+    let metadata: EmarOrderMetadata = {
+      orderIen,
+      displayGroup: parts[1]?.trim() || '',
+      rawDetail: [],
+    };
+    let detailText = '';
+    let drugName = normalizeVistaText(parts[3]);
+    let sigText = '';
+
+    try {
+      const detailLines = await callOrderDetailRpcWithRetry('ORWORR GETBYIFN', orderIen);
+      if (detailLines.length > 0 && !detailLines[0]?.startsWith('-1')) {
+        metadata = parseGetByIfnMetadata(detailLines);
+        rpcUsedSet.add('ORWORR GETBYIFN');
+      }
+    } catch {
+      // Keep AGET row truthful even if enrichment fails.
+    }
+
+    try {
+      const txtLines = await callOrderDetailRpcWithRetry('ORWORR GETTXT', orderIen);
+      const normalizedTxt = txtLines.map((entry) => normalizeVistaText(entry)).filter(Boolean);
+      if (normalizedTxt.length > 0 && !normalizedTxt[0].startsWith('-1')) {
+        drugName = normalizedTxt[0] || drugName;
+        sigText = normalizedTxt.slice(1).join(' ');
+        detailText = normalizedTxt.join(' ');
+        rpcUsedSet.add('ORWORR GETTXT');
+      }
+    } catch {
+      // Keep AGET/GETBYIFN truthful if GETTXT is unavailable.
+    }
+
+    const displayText = normalizeVistaText(detailText || metadata.textFromDetail || drugName);
+    const orderType = inferOrderType(metadata.packageRef, metadata.displayGroup, displayText);
+    if (orderType !== 'med') continue;
+
+    const baseOrderIen = orderIen.split(';')[0] || orderIen;
+    const med: ScheduleEntry = {
+      orderIEN: baseOrderIen,
+      rxId: baseOrderIen,
+      type: 'ORDER',
+      drugName: drugName || displayText || `Medication order ${baseOrderIen}`,
+      status: normalizeOrderStatus(parts[4], displayText),
+      sig: sigText || metadata.textFromDetail || displayText,
+      schedule: '',
+      isPRN: false,
+      nextDue: null,
+      route: '',
+      frequency: '',
+    };
+    populateScheduleMetadata(med);
+    fallbackSchedule.set(med.orderIEN, med);
+  }
+
+  return {
+    schedule: Array.from(fallbackSchedule.values()),
+    rpcUsed: Array.from(rpcUsedSet),
+  };
+}
+
+async function callOrderDetailRpcWithRetry(
+  rpcName: 'ORWORR GETBYIFN' | 'ORWORR GETTXT',
+  orderIen: string
+): Promise<string[]> {
+  let lastError: unknown;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      return await safeCallRpc(rpcName, [orderIen]);
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError ?? new Error(`${rpcName} failed for order ${orderIen}`);
+}
+
+async function buildMedicationCandidatesFromValidatedOrders(
+  validateLines: string[]
+): Promise<{ meds: ScheduleEntry[]; rpcUsed: string[] }> {
+  const rpcUsedSet = new Set<string>();
+  const orderIens = extractValidatedOrderIens(validateLines);
+
+  const meds: ScheduleEntry[] = [];
+  for (const orderIen of orderIens) {
+    let metadata: EmarOrderMetadata = {
+      orderIen,
+      displayGroup: '',
+      rawDetail: [],
+    };
+    let drugName = '';
+    let sigText = '';
+
+    try {
+      const detailLines = await callOrderDetailRpcWithRetry('ORWORR GETBYIFN', orderIen);
+      if (detailLines.length > 0 && !detailLines[0]?.startsWith('-1')) {
+        metadata = parseGetByIfnMetadata(detailLines);
+        rpcUsedSet.add('ORWORR GETBYIFN');
+      }
+    } catch {
+      // Continue to GETTXT-based recovery.
+    }
+
+    try {
+      const txtLines = await callOrderDetailRpcWithRetry('ORWORR GETTXT', orderIen);
+      const normalizedTxt = txtLines.map((entry) => normalizeVistaText(entry)).filter(Boolean);
+      if (normalizedTxt.length > 0 && !normalizedTxt[0].startsWith('-1')) {
+        drugName = normalizedTxt[0] || drugName;
+        sigText = normalizedTxt.slice(1).join(' ');
+        rpcUsedSet.add('ORWORR GETTXT');
+      }
+    } catch {
+      // Use GETBYIFN text if GETTXT is unavailable.
+    }
+
+    const displayText = normalizeVistaText(sigText || metadata.textFromDetail || drugName);
+    const med: ScheduleEntry = {
+      orderIEN: orderIen,
+      rxId: orderIen,
+      type: 'ORDER',
+      drugName: drugName || metadata.textFromDetail || `Medication order ${orderIen}`,
+      status: 'active',
+      sig: displayText || drugName || metadata.textFromDetail || `Medication order ${orderIen}`,
+      schedule: '',
+      isPRN: false,
+      nextDue: null,
+      route: '',
+      frequency: '',
+    };
+    populateScheduleMetadata(med);
+    meds.push(med);
+  }
+
+  return { meds, rpcUsed: Array.from(rpcUsedSet) };
+}
+
+function extractValidatedOrderIens(validateLines: string[]): string[] {
+  return Array.from(
+    new Set(
+      validateLines
+        .filter((line) => line.includes(';'))
+        .map((line) => line.split('^')[0]?.split(';')[0]?.trim() || '')
+        .filter((value) => /^\d+$/.test(value))
+    )
+  );
 }
 
 /** Parse ORWPS ACTIVE output into schedule entries. */
@@ -97,73 +394,8 @@ function parseActiveMeds(activeLines: string[]): ScheduleEntry[] {
     }
   }
 
-  // Derive schedule metadata from sig text
   for (const med of meds) {
-    const sigUpper = med.sig.toUpperCase();
-    med.isPRN = sigUpper.includes('PRN') || sigUpper.includes('AS NEEDED');
-
-    // Extract route
-    if (sigUpper.includes(' IV ') || sigUpper.includes('INTRAVENOUS')) med.route = 'IV';
-    else if (sigUpper.includes(' IM ') || sigUpper.includes('INTRAMUSCULAR')) med.route = 'IM';
-    else if (sigUpper.includes(' SQ ') || sigUpper.includes('SUBCUTANEOUS')) med.route = 'SQ';
-    else if (
-      sigUpper.includes(' PO ') ||
-      sigUpper.includes('BY MOUTH') ||
-      sigUpper.includes('ORAL')
-    )
-      med.route = 'PO';
-    else if (sigUpper.includes('TOPICAL')) med.route = 'TOP';
-    else if (sigUpper.includes('OPHTHALMIC')) med.route = 'OPH';
-    else if (sigUpper.includes('OTIC')) med.route = 'OTIC';
-    else if (sigUpper.includes('NASAL') || sigUpper.includes('INHALE')) med.route = 'INH';
-    else if (sigUpper.includes('RECTAL')) med.route = 'PR';
-    else med.route = 'PO'; // default
-
-    // Extract frequency
-    const freqPatterns: Array<[RegExp, string, string]> = [
-      [/\bQ(\d+)H\b/i, 'Q$1H', 'every $1 hours'],
-      [/\bBID\b/i, 'BID', 'twice daily'],
-      [/\bTID\b/i, 'TID', 'three times daily'],
-      [/\bQID\b/i, 'QID', 'four times daily'],
-      [/\bQD\b|DAILY|ONCE DAILY/i, 'QD', 'once daily'],
-      [/\bQ(\d+)MIN\b/i, 'Q$1MIN', 'every $1 minutes'],
-      [/\bQHS\b|AT BEDTIME/i, 'QHS', 'at bedtime'],
-      [/\bQAM\b/i, 'QAM', 'every morning'],
-      [/\bQPM\b/i, 'QPM', 'every evening'],
-      [/\bQ(\d+)D\b/i, 'Q$1D', 'every $1 days'],
-      [/\bWEEKLY\b|QW\b/i, 'QW', 'weekly'],
-      [/\bSTAT\b/i, 'STAT', 'immediately'],
-      [/\bONCE\b/i, 'ONCE', 'one time'],
-    ];
-
-    for (const [regex, sched, freq] of freqPatterns) {
-      const match = sigUpper.match(regex);
-      if (match) {
-        med.schedule = sched.replace('$1', match[1] || '');
-        med.frequency = freq.replace('$1', match[1] || '');
-        break;
-      }
-    }
-
-    if (!med.schedule && med.isPRN) {
-      med.schedule = 'PRN';
-      med.frequency = 'as needed';
-    }
-    if (!med.schedule) {
-      med.schedule = 'UNSCHEDULED';
-      med.frequency = 'see sig for details';
-    }
-
-    // Heuristic next-due (we don't have real admin times -- this is a posture label)
-    if (med.isPRN) {
-      med.nextDue = null; // PRN has no scheduled time
-    } else if (med.schedule === 'STAT' || med.schedule === 'ONCE') {
-      med.nextDue = null;
-    } else {
-      // Without real PSB data, we cannot calculate actual due times.
-      // Label this clearly as a posture placeholder.
-      med.nextDue = 'scheduled';
-    }
+    populateScheduleMetadata(med);
   }
 
   return meds;
@@ -326,12 +558,31 @@ export default async function emarRoutes(server: FastifyInstance) {
       const activeLines = await safeCallRpc('ORWPS ACTIVE', [dfn]);
 
       if (!activeLines || activeLines.length === 0) {
+        const fallback = await buildScheduleFallbackFromOrders(dfn);
+        immutableAudit('emar.schedule', 'success', auditActor(session), {
+          detail: { dfn, count: fallback.schedule.length, fallbackUsed: true },
+        });
         return {
           ok: true,
           source: 'vista',
-          schedule: [],
-          count: 0,
-          rpcUsed: ['ORWPS ACTIVE'],
+          schedule: fallback.schedule.map((m) => ({
+            orderIEN: m.orderIEN,
+            rxId: m.rxId,
+            drugName: m.drugName || '(unknown medication)',
+            type: m.type,
+            status: m.status.toLowerCase() || 'active',
+            sig: m.sig,
+            route: m.route,
+            schedule: m.schedule,
+            isPRN: m.isPRN,
+            frequency: m.frequency,
+            nextDue: m.nextDue,
+          })),
+          count: fallback.schedule.length,
+          rpcUsed: ['ORWPS ACTIVE', ...fallback.rpcUsed],
+          fallbackUsed: true,
+          fallbackReason:
+            'ORWPS ACTIVE returned no active medication rows; schedule synthesized from live active CPRS medication orders.',
           pendingTargets: [
             {
               rpc: 'PSB MED LOG',
@@ -431,14 +682,25 @@ export default async function emarRoutes(server: FastifyInstance) {
     if (!dfn) return;
 
     try {
+      const rpcUsed: string[] = ['ORQQAL LIST'];
       const lines = await safeCallRpc('ORQQAL LIST', [dfn]);
       if (!lines || lines.length === 0) {
+        let psbWarnings: string[] = [];
+        try {
+          const allergyLines = await safeCallRpc('PSB ALLERGY', [dfn]);
+          rpcUsed.push('PSB ALLERGY');
+          psbWarnings = normalizePsbAllergyWarnings(allergyLines);
+        } catch {
+          // Keep empty documented allergies truthful even if PSB ALLERGY is unavailable in context.
+        }
+
         return {
           ok: true,
           source: 'vista',
           allergies: [],
           count: 0,
-          rpcUsed: ['ORQQAL LIST'],
+          interactionWarnings: psbWarnings,
+          rpcUsed,
           pendingTargets: [],
         };
       }
@@ -469,20 +731,22 @@ export default async function emarRoutes(server: FastifyInstance) {
             r !== null
         );
 
-      // Check for drug-allergy interactions with active meds (heuristic)
-      // This is a simple name-based check -- NOT a full interaction engine
-      const interactionWarnings: Array<{ allergen: string; severity: string; note: string }> = [];
-      for (const allergy of allergies) {
-        if (
-          allergy.severity?.toUpperCase() === 'SEVERE' ||
-          allergy.severity?.toUpperCase() === 'MODERATE'
-        ) {
-          interactionWarnings.push({
-            allergen: allergy.allergen,
-            severity: allergy.severity,
-            note: 'Patient has documented allergy -- verify all medications against this allergen before administration',
-          });
-        }
+      let interactionWarnings: string[] = [];
+      try {
+        const allergyLines = await safeCallRpc('PSB ALLERGY', [dfn]);
+        rpcUsed.push('PSB ALLERGY');
+        interactionWarnings = normalizePsbAllergyWarnings(allergyLines);
+      } catch {
+        interactionWarnings = allergies
+          .filter(
+            (allergy) =>
+              allergy.severity?.toUpperCase() === 'SEVERE' ||
+              allergy.severity?.toUpperCase() === 'MODERATE'
+          )
+          .map(
+            (allergy) =>
+              `${allergy.severity || 'ALL'}^${allergy.allergen}^Patient has documented allergy -- verify all medications against this allergen before administration`
+          );
       }
 
       immutableAudit('emar.allergies', 'success', auditActor(session), {
@@ -494,14 +758,8 @@ export default async function emarRoutes(server: FastifyInstance) {
         count: allergies.length,
         allergies,
         interactionWarnings,
-        rpcUsed: ['ORQQAL LIST'],
-        pendingTargets: [
-          {
-            rpc: 'PSB ALLERGY',
-            package: 'PSB',
-            reason: 'BCMA allergy check at scan time requires PSB package',
-          },
-        ],
+        rpcUsed,
+        pendingTargets: [],
       };
     } catch (err: any) {
       log.error('eMAR allergy fetch failed', { error: safeErr(err) });
@@ -559,6 +817,7 @@ export default async function emarRoutes(server: FastifyInstance) {
   /* ------ POST /emar/administer (Tier-0 capability-gated) ------ */
   server.post('/emar/administer', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
+    if (!session) return;
 
     const body = (request.body as any) || {};
     const dfn = String(body.dfn || '').trim();
@@ -588,21 +847,45 @@ export default async function emarRoutes(server: FastifyInstance) {
     const rpcUsed: string[] = [];
     try {
       const adminNote = `eMAR: ${action} order ${orderIEN}${reason ? ' - ' + reason : ''}`;
+      const titleIen = '10';
+      const now = new Date();
+      const fmYear = now.getFullYear() - 1700;
+      const fmMonth = String(now.getMonth() + 1).padStart(2, '0');
+      const fmDay = String(now.getDate()).padStart(2, '0');
+      const fmHour = String(now.getHours()).padStart(2, '0');
+      const fmMin = String(now.getMinutes()).padStart(2, '0');
+      const visitDate = `${fmYear}${fmMonth}${fmDay}.${fmHour}${fmMin}`;
       const noteLines = await safeCallRpc('TIU CREATE RECORD', [
         dfn,
+        titleIen,
+        visitDate,
         '',
         '',
         '',
-        'NURSING NOTE',
         '',
-        adminNote,
       ]);
       rpcUsed.push('TIU CREATE RECORD');
-      const noteIen = (noteLines || [])[0]?.trim() || '';
+      const noteResult = (noteLines || [])[0]?.trim() || '';
+      const noteIen = noteResult.split('^')[0]?.trim() || '';
 
-      if (noteIen && /^\d+$/.test(noteIen)) {
-        await safeCallRpc('TIU SET DOCUMENT TEXT', [noteIen, adminNote]);
-        rpcUsed.push('TIU SET DOCUMENT TEXT');
+      if (!noteIen || noteIen === '0' || noteIen.startsWith('-') || !/^\d+$/.test(noteIen)) {
+        throw new Error(`TIU CREATE RECORD returned error: ${noteResult || '(empty)'}`);
+      }
+
+      const textParams: RpcParam[] = [
+        { type: 'literal', value: noteIen },
+        { type: 'list', value: buildTiuTextBuffer(adminNote) },
+        { type: 'literal', value: '0' },
+      ];
+      await safeCallRpcWithList('TIU SET DOCUMENT TEXT', textParams, { idempotent: false });
+      rpcUsed.push('TIU SET DOCUMENT TEXT');
+
+      const readbackLines = await safeCallRpc('TIU GET RECORD TEXT', [noteIen], {
+        idempotent: true,
+      });
+      rpcUsed.push('TIU GET RECORD TEXT');
+      if (!tiuReadbackContainsExpectedText(readbackLines, adminNote)) {
+        throw new Error('TIU note body did not persist after TIU SET DOCUMENT TEXT');
       }
 
       immutableAudit('emar.administer', 'success', auditActor(session), {
@@ -617,16 +900,17 @@ export default async function emarRoutes(server: FastifyInstance) {
         rpcUsed,
         pendingTargets: [],
         _note:
-          'Administration recorded via TIU nursing note. PSB MED LOG (not registered) adds BCMA-verified recording when installed.',
+          'Administration recorded via TIU fallback note capture. PSB MED LOG (not registered) adds BCMA-verified recording when installed.',
       };
     } catch (err: any) {
       log.warn('eMAR administer failed', { error: safeErr(err) });
       immutableAudit('emar.administer', 'failure', auditActor(session), {
         detail: { dfn, orderIEN, action, error: String(err) },
       });
-      return reply.code(500).send({
+      return reply.code(409).send({
         ok: false,
         error: 'Failed to record administration',
+        detail: safeErr(err),
         rpcUsed,
       });
     }
@@ -722,12 +1006,15 @@ export default async function emarRoutes(server: FastifyInstance) {
     try {
       const activeLines = await safeCallRpc('ORWPS ACTIVE', [dfn]);
       rpcUsed.push('ORWPS ACTIVE');
-      const meds = parseActiveMeds(activeLines || []);
-      const match = meds.find(
-        (m) =>
-          (m.drugName || '').toLowerCase().includes(barcode.toLowerCase()) ||
-          barcode.includes(m.orderIEN || '')
-      );
+      let meds = parseActiveMeds(activeLines || []);
+      const fallbackUsed = meds.length === 0;
+      if (meds.length === 0) {
+        const fallback = await buildScheduleFallbackFromOrders(dfn);
+        meds = fallback.schedule;
+        for (const rpc of fallback.rpcUsed) {
+          if (!rpcUsed.includes(rpc)) rpcUsed.push(rpc);
+        }
+      }
 
       let validateResult: string[] = [];
       try {
@@ -737,6 +1024,33 @@ export default async function emarRoutes(server: FastifyInstance) {
         /* PSB VALIDATE ORDER may need specific params */
       }
 
+      const filteredValidateResult = validateResult.map((line) => line.trim()).filter(Boolean);
+      const hasValidationError = filteredValidateResult.some(isVistaValidationError);
+      const validatedOrderIens = extractValidatedOrderIens(filteredValidateResult);
+      if (meds.length === 0 && filteredValidateResult.length > 0) {
+        const validatedCandidates = await buildMedicationCandidatesFromValidatedOrders(
+          filteredValidateResult
+        );
+        if (validatedCandidates.meds.length > 0) {
+          meds = validatedCandidates.meds;
+          for (const rpc of validatedCandidates.rpcUsed) {
+            if (!rpcUsed.includes(rpc)) rpcUsed.push(rpc);
+          }
+        }
+      }
+
+      const match = meds.find(
+        (m) =>
+          (m.drugName || '').toLowerCase().includes(barcode.toLowerCase()) ||
+          barcode.includes(m.orderIEN || '')
+      );
+      const validatedMatch = meds.find((m) => validatedOrderIens.includes(m.orderIEN || ''));
+      const matchedMedication = match || validatedMatch || null;
+
+      const validationWarning = hasValidationError
+        ? 'PSB VALIDATE ORDER did not return a clean BCMA validation result in this sandbox. Barcode matching below is based on active medications only.'
+        : null;
+
       immutableAudit('emar.barcode-scan', 'success', auditActor(session), {
         detail: { dfn, barcodeLength: barcode.length, matched: !!match },
       });
@@ -744,16 +1058,31 @@ export default async function emarRoutes(server: FastifyInstance) {
         ok: true,
         source: 'vista',
         barcode,
-        matched: !!match,
-        medication: match
-          ? { name: match.drugName, sig: match.sig, orderIEN: match.orderIEN }
+        matched: !!matchedMedication,
+        medication: matchedMedication
+          ? {
+              name: matchedMedication.drugName,
+              sig: matchedMedication.sig,
+              orderIEN: matchedMedication.orderIEN,
+            }
           : null,
-        validateResult: validateResult.filter((l) => l.trim()),
+        validateResult: hasValidationError ? [] : filteredValidateResult,
+        validationWarning,
         activeMedCount: meds.length,
+        fallbackUsed,
+        fallbackReason: fallbackUsed
+          ? 'ORWPS ACTIVE returned no active medication rows; barcode candidates were synthesized from live active CPRS medication orders.'
+          : undefined,
         rpcUsed,
         pendingTargets: [],
         _note:
-          'Barcode matched against ORWPS ACTIVE medications. PSB VALIDATE ORDER called for VistA-side validation.',
+          validationWarning
+            ? fallbackUsed
+              ? 'Barcode matched against fallback active medication candidates synthesized from live CPRS orders. PSB/BCMA write-side validation remains sandbox-limited.'
+              : 'Barcode matched against ORWPS ACTIVE medications. PSB/BCMA write-side validation remains sandbox-limited.'
+            : fallbackUsed
+              ? 'Barcode matched against fallback active medication candidates synthesized from live CPRS orders. PSB VALIDATE ORDER was also called for VistA-side validation.'
+              : 'Barcode matched against ORWPS ACTIVE medications. PSB VALIDATE ORDER was also called for VistA-side validation.',
       };
     } catch (err: any) {
       log.warn('eMAR barcode scan failed', { error: safeErr(err) });

@@ -17,6 +17,7 @@ import {
   getNotificationLog,
   listProviders,
   isPhiAllowed,
+  getPatientCommsStats,
 } from '../services/patient-comms-service.js';
 import type {
   NotificationChannel,
@@ -24,12 +25,37 @@ import type {
   ConsentStatus,
 } from '../services/patient-comms-service.js';
 
-export async function patientCommsRoutes(server: FastifyInstance): Promise<void> {
-  const tenantId = 'default';
+function resolveTenantId(request: FastifyRequest): string | null {
+  const requestTenantId =
+    typeof (request as any).tenantId === 'string' && (request as any).tenantId.trim().length > 0
+      ? (request as any).tenantId.trim()
+      : undefined;
+  const sessionTenantId =
+    typeof (request as any).session?.tenantId === 'string' &&
+    (request as any).session.tenantId.trim().length > 0
+      ? (request as any).session.tenantId.trim()
+      : undefined;
+  const headerTenantId = request.headers['x-tenant-id'];
+  const headerTenant =
+    typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+      ? headerTenantId.trim()
+      : undefined;
+  return requestTenantId || sessionTenantId || headerTenant || null;
+}
 
+function requireTenantId(request: FastifyRequest, reply: FastifyReply): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
+export async function patientCommsRoutes(server: FastifyInstance): Promise<void> {
   // ─── Consent Management ──────────────────────────────
 
   server.get('/patient-comms/consent', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { patientDfn } = (req.query as any) || {};
     if (!patientDfn) {
       return reply.code(400).send({ ok: false, error: 'patientDfn query param is required' });
@@ -41,6 +67,8 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
   });
 
   server.post('/patient-comms/consent', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const body = (req.body as any) || {};
     if (!body.patientDfn || !body.channel || !body.status) {
       return reply.code(400).send({
@@ -60,6 +88,8 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
   });
 
   server.get('/patient-comms/consent/check', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { patientDfn, channel, category } = (req.query as any) || {};
     if (!patientDfn || !channel || !category) {
       return reply.code(400).send({
@@ -76,6 +106,8 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
   // ─── Templates ───────────────────────────────────────
 
   server.get('/patient-comms/templates', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { category, locale } = (req.query as any) || {};
     return reply.send({
       ok: true,
@@ -84,6 +116,8 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
   });
 
   server.get('/patient-comms/templates/:id', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { id } = req.params as { id: string };
     const t = getTemplate(id);
     if (!t || t.tenantId !== tenantId) {
@@ -93,6 +127,8 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
   });
 
   server.post('/patient-comms/templates', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const body = (req.body as any) || {};
     if (!body.category || !body.channel || !body.subject || !body.body) {
       return reply.code(400).send({
@@ -115,6 +151,8 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
   // ─── Send Notification ───────────────────────────────
 
   server.post('/patient-comms/send', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const body = (req.body as any) || {};
     if (
       !body.patientDfn ||
@@ -146,6 +184,8 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
   // ─── Notification Log ────────────────────────────────
 
   server.get('/patient-comms/log', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { patientDfn, limit } = (req.query as any) || {};
     // Note: No raw DFN in response — log entries use hashed DFN
     return reply.send({
@@ -167,11 +207,18 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
 
   // ─── Health / Config ─────────────────────────────────
 
-  server.get('/patient-comms/health', async (_req: FastifyRequest, reply: FastifyReply) => {
+  server.get('/patient-comms/health', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const stats = getPatientCommsStats(tenantId);
     return reply.send({
       ok: true,
+      tenantId,
       phiEnabled: isPhiAllowed(),
-      providers: listProviders().length,
+      providers: stats.providerCount,
+      consentCount: stats.consentCount,
+      templateCount: stats.templateCount,
+      notificationCount: stats.notificationCount,
       supportedChannels: ['email', 'sms', 'push', 'portal_inbox', 'voice'],
     });
   });

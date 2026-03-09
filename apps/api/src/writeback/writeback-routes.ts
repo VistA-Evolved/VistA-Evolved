@@ -20,6 +20,8 @@ import { getWritebackGateSummary } from './gates.js';
 import { runCertification, getCertificationSummary } from './certification-runner.js';
 import type { WritebackDomain, WritebackIntent, SubmitCommandRequest } from './types.js';
 import { INTENT_DOMAIN_MAP } from './types.js';
+import { bindCommandToVistaSession } from './command-rpc-context.js';
+import { SESSION_CONFIG } from '../config/server-config.js';
 
 /* ------------------------------------------------------------------ */
 /* Valid values for runtime validation                                  */
@@ -27,6 +29,28 @@ import { INTENT_DOMAIN_MAP } from './types.js';
 
 const VALID_DOMAINS = new Set<string>(['TIU', 'ORDERS', 'PHARM', 'LAB', 'ADT', 'IMG']);
 const VALID_INTENTS = new Set<string>(Object.keys(INTENT_DOMAIN_MAP));
+
+function extractToken(request: any): string | null {
+  const cookie = request?.cookies?.[SESSION_CONFIG.cookieName];
+  if (cookie) return cookie;
+  const auth = request?.headers?.authorization;
+  if (typeof auth === 'string' && auth.startsWith('Bearer ')) {
+    return auth.slice(7);
+  }
+  return null;
+}
+
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId =
+    typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+      ? request.session.tenantId.trim()
+      : typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+        ? request.tenantId.trim()
+        : null;
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
 
 /* ------------------------------------------------------------------ */
 /* Plugin                                                               */
@@ -78,7 +102,8 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
 
     // Extract session info
     const session = (request as any).session || {};
-    const tenantId = session.tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const createdBy = session.duz || session.userId || 'anon';
 
     const req: SubmitCommandRequest = {
@@ -94,6 +119,7 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
     };
 
     const result = submitCommand(req);
+    bindCommandToVistaSession(result.commandId, extractToken(request));
 
     const statusCode = result.status === 'rejected' ? 422 : result.status === 'pending' ? 202 : 200;
     return reply.code(statusCode).send({ ok: result.status !== 'rejected', ...result });
@@ -104,8 +130,8 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
    */
   server.get('/writeback/commands', async (request, reply) => {
     const query = (request.query as any) || {};
-    const session = (request as any).session || {};
-    const tenantId = session.tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     const result = listCommands({
       tenantId,
@@ -123,9 +149,14 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
    */
   server.get('/writeback/commands/:id', async (request, reply) => {
     const { id } = request.params as any;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const detail = getCommandDetail(id);
 
     if (!detail.command) {
+      return reply.code(404).send({ ok: false, error: 'Command not found' });
+    }
+    if (detail.command.tenantId !== tenantId) {
       return reply.code(404).send({ ok: false, error: 'Command not found' });
     }
 
@@ -142,6 +173,12 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
    */
   server.post('/writeback/commands/:id/process', async (request, reply) => {
     const { id } = request.params as any;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const detail = getCommandDetail(id);
+    if (!detail.command || detail.command.tenantId !== tenantId) {
+      return reply.code(404).send({ ok: false, error: 'Command not found' });
+    }
     const result = await processCommand(id);
 
     const statusCode = result.status === 'failed' ? 500 : 200;
@@ -161,6 +198,12 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
       return reply.code(400).send({ ok: false, error: 'decision must be "approve" or "reject"' });
     }
 
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const detail = getCommandDetail(id);
+    if (!detail.command || detail.command.tenantId !== tenantId) {
+      return reply.code(404).send({ ok: false, error: 'Command not found' });
+    }
     const session = (request as any).session || {};
     const reviewerDuz = session.duz || session.userId || 'anon';
 
@@ -175,8 +218,8 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
    * GET /writeback/gates — Get feature gate summary.
    */
   server.get('/writeback/gates', async (request, reply) => {
-    const session = (request as any).session || {};
-    const tenantId = session.tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const summary = getWritebackGateSummary(tenantId);
     return reply.send({ ok: true, ...summary });
   });

@@ -69,6 +69,10 @@ pnpm -C apps/web build
 # Navigate to http://localhost:3000/cprs/verify
 ```
 
+Current recovery note:
+- `/cprs/verify` now requires a real CPRS session and redirects unauthenticated users to `/cprs/login?redirect=%2Fcprs%2Fverify` before running protected checks.
+- The dashboard now probes the API via `API_BASE` instead of the web origin and uses VEHU-valid patient grounding (`DFN=46`, `ZZZRETFOURNINETYFOUR`) so failures reflect real API problems instead of HTML parse noise or invalid sandbox assumptions.
+
 ## Known Limitations
 
 - Labs, Reports, Consults, Surgery, D/C Summ use mock data (API integration pending)

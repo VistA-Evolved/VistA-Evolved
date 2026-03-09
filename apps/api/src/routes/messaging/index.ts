@@ -42,7 +42,6 @@ import {
   getVistaMessage,
   manageMessage,
 } from '../../services/secure-messaging.js';
-import { connect, disconnect } from '../../vista/rpcBrokerClient.js';
 import { immutableAudit } from '../../lib/immutable-audit.js';
 import { log } from '../../lib/logger.js';
 
@@ -94,12 +93,9 @@ export default async function messagingRoutes(server: FastifyInstance) {
   server.get('/messaging/folders', async (request, reply) => {
     if (!requireSession(request, reply)) return;
     try {
-      await connect();
       const result = await listFolders();
-      disconnect();
       return { ok: result.ok, source: result.source, folders: result.folders, error: result.error };
     } catch (err: any) {
-      disconnect();
       log.error(`Messaging folders error: ${err.message}`);
       return reply
         .code(502)
@@ -113,9 +109,7 @@ export default async function messagingRoutes(server: FastifyInstance) {
     const folderId = (request.query as any)?.folderId || '1';
     const limit = Number((request.query as any)?.limit) || 50;
     try {
-      await connect();
       const result = await listMessages(folderId, limit);
-      disconnect();
       return {
         ok: result.ok,
         source: result.source,
@@ -124,7 +118,6 @@ export default async function messagingRoutes(server: FastifyInstance) {
         error: result.error,
       };
     } catch (err: any) {
-      disconnect();
       log.error(`Messaging mail-list error: ${err.message}`);
       return reply
         .code(502)
@@ -138,13 +131,10 @@ export default async function messagingRoutes(server: FastifyInstance) {
     const ien = (request.query as any)?.ien;
     if (!ien) return reply.code(400).send({ ok: false, error: 'Missing ien query parameter' });
     try {
-      await connect();
       const result = await getVistaMessage(ien);
-      disconnect();
       if (!result.ok) return reply.code(result.source === 'vista' ? 404 : 502).send(result);
       return { ok: true, source: result.source, message: result.message };
     } catch (err: any) {
-      disconnect();
       log.error(`Messaging mail-get error: ${err.message}`);
       return reply
         .code(502)
@@ -166,15 +156,12 @@ export default async function messagingRoutes(server: FastifyInstance) {
       return reply.code(400).send({ ok: false, error: 'action must be markread, delete, or move' });
     }
     try {
-      await connect();
       const result = await manageMessage(action, body.ien, body.basket, body.toBasket);
-      disconnect();
       immutableAudit('messaging.manage', result.ok ? 'success' : 'failure', auditActor(request), {
         detail: { action, ien: body.ien },
       });
       return result;
     } catch (err: any) {
-      disconnect();
       log.error(`Messaging mail-manage error: ${err.message}`);
       return reply.code(502).send({ ok: false, error: 'VistA MailMan unavailable' });
     }

@@ -61,6 +61,7 @@ export default function InboxPage() {
   const [error, setError] = useState('');
   const [filter, setFilter] = useState<string>('all');
   const [acknowledged, setAcknowledged] = useState<Set<string>>(new Set());
+  const [ackSaving, setAckSaving] = useState<Set<string>>(new Set());
   const [ackPending, setAckPending] = useState<Set<string>>(new Set());
 
   const fetchInbox = useCallback(async () => {
@@ -86,8 +87,7 @@ export default function InboxPage() {
   }, [fetchInbox]);
 
   async function handleAcknowledge(id: string) {
-    // Optimistically hide the item
-    setAcknowledged((prev) => new Set(prev).add(id));
+    setAckSaving((prev) => new Set(prev).add(id));
     try {
       const res = await fetch(`${API_BASE}/vista/inbox/acknowledge`, {
         method: 'POST',
@@ -96,12 +96,27 @@ export default function InboxPage() {
         body: JSON.stringify({ itemId: id }),
       });
       const data = await res.json();
-      if (!data.ok && (data.integrationPending || data.pending)) {
+      if (data.ok) {
+        setAcknowledged((prev) => new Set(prev).add(id));
+        setAckPending((prev) => {
+          const next = new Set(prev);
+          next.delete(id);
+          return next;
+        });
+      } else if (data.integrationPending || data.pending) {
         setAckPending((prev) => new Set(prev).add(id));
+      } else {
+        setError(data.error || 'Failed to acknowledge inbox item');
       }
     } catch {
-      // API endpoint not yet available -- mark as integration-pending
+      // API endpoint not yet available -- keep item visible and mark pending.
       setAckPending((prev) => new Set(prev).add(id));
+    } finally {
+      setAckSaving((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
     }
   }
 
@@ -186,9 +201,9 @@ export default function InboxPage() {
             }}
           >
             <strong>Integration Pending:</strong> {ackPending.size} item
-            {ackPending.size !== 1 ? 's' : ''} acknowledged locally only. VistA persistence requires
-            ORWORB KILL EXPIR MSG RPC (not available in sandbox). Items will reappear on page
-            refresh.
+            {ackPending.size !== 1 ? 's' : ''} could not be persisted to VistA. They remain visible
+            until a real acknowledge path is available. VistA persistence requires ORWORB KILL EXPIR
+            MSG RPC (not available in sandbox).
           </div>
         )}
 
@@ -270,9 +285,10 @@ export default function InboxPage() {
                       <button
                         className={styles.btn}
                         style={{ fontSize: 10, padding: '2px 6px' }}
+                        disabled={ackSaving.has(item.id)}
                         onClick={() => handleAcknowledge(item.id)}
                       >
-                        Acknowledge
+                        {ackSaving.has(item.id) ? 'Saving...' : 'Acknowledge'}
                       </button>
                     </div>
                   </td>

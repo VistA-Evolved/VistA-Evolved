@@ -29,6 +29,7 @@ export type EnrollmentStatus =
 
 export interface FacilityPayerEnrollment {
   id: string;
+  tenantId: string;
   facilityId: string;
   facilityName: string;
   payerId: string;
@@ -85,6 +86,7 @@ export type LOAPriority = 'routine' | 'urgent' | 'stat';
 
 export interface LOACase {
   id: string;
+  tenantId: string;
   facilityId: string;
   /** Patient DFN — clinical data fetched from VistA at render time */
   patientDfn: string;
@@ -217,6 +219,7 @@ export type CredentialDocType =
 
 export interface CredentialVaultEntry {
   id: string;
+  tenantId: string;
   facilityId: string;
   docType: CredentialDocType;
   title: string;

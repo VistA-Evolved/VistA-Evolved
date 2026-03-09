@@ -64,6 +64,7 @@ export default function ProxyPage() {
   const [sentInvitations, setSentInvitations] = useState<ProxyInvitation[]>([]);
   const [receivedInvitations, setReceivedInvitations] = useState<ProxyInvitation[]>([]);
   const [csrfToken, setCsrfToken] = useState('');
+  const [iamAvailable, setIamAvailable] = useState(true);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
@@ -78,6 +79,9 @@ export default function ProxyPage() {
 
   const loadData = useCallback(async () => {
     try {
+      await portalFetch('/portal/iam/session');
+      setIamAvailable(true);
+
       const [profilesRes, sentRes, receivedRes, csrfRes] = await Promise.all([
         portalFetch('/portal/iam/profiles'),
         portalFetch('/portal/iam/proxy/invitations'),
@@ -89,7 +93,12 @@ export default function ProxyPage() {
       setReceivedInvitations(receivedRes.invitations || []);
       setCsrfToken(csrfRes.csrfToken || '');
     } catch (err: any) {
-      setError(err.message);
+      if (typeof err?.message === 'string' && err.message.includes('Not authenticated')) {
+        setIamAvailable(false);
+        setError('');
+      } else {
+        setError(err.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -191,7 +200,13 @@ export default function ProxyPage() {
       {/* Connected Profiles */}
       <div className="card" style={{ marginBottom: '1rem' }}>
         <h2 style={{ fontSize: '1.125rem', marginBottom: '0.75rem' }}>Connected Records</h2>
-        {profiles.length === 0 ? (
+        {!iamAvailable ? (
+          <p style={{ color: 'var(--portal-text-muted)' }}>
+            Family access is available only after signing in to the portal account system. Your
+            patient session is active, but proxy-management features are not currently available in
+            this session.
+          </p>
+        ) : profiles.length === 0 ? (
           <p style={{ color: 'var(--portal-text-muted)' }}>No patient records connected</p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -235,203 +250,212 @@ export default function ProxyPage() {
         )}
       </div>
 
-      {/* Request Proxy Access */}
-      <div className="card" style={{ marginBottom: '1rem' }}>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '0.75rem',
-          }}
-        >
-          <h2 style={{ fontSize: '1.125rem', margin: 0 }}>Request Access</h2>
-          <button
-            onClick={() => setShowForm(!showForm)}
-            style={{
-              fontSize: '0.875rem',
-              color: '#3182ce',
-              background: 'none',
-              border: '1px solid #3182ce',
-              borderRadius: '4px',
-              padding: '0.25rem 0.75rem',
-              cursor: 'pointer',
-            }}
-          >
-            {showForm ? 'Cancel' : 'New Request'}
-          </button>
-        </div>
-        {showForm && (
-          <div
-            style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxWidth: '400px' }}
-          >
-            <input
-              type="text"
-              placeholder="Patient record number"
-              value={invitePatientDfn}
-              onChange={(e) => setInvitePatientDfn(e.target.value)}
-              style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            <input
-              type="text"
-              placeholder="Patient full name"
-              value={invitePatientName}
-              onChange={(e) => setInvitePatientName(e.target.value)}
-              style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            <select
-              value={inviteRelationship}
-              onChange={(e) => setInviteRelationship(e.target.value)}
-              style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            >
-              {RELATIONSHIPS.map((r) => (
-                <option key={r.value} value={r.value}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
-            <input
-              type="number"
-              placeholder="Patient age (optional)"
-              value={inviteAge}
-              onChange={(e) => setInviteAge(e.target.value)}
-              style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            <textarea
-              placeholder="Reason for access request"
-              value={inviteReason}
-              onChange={(e) => setInviteReason(e.target.value)}
-              style={{
-                padding: '0.5rem',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                minHeight: '60px',
-              }}
-            />
-            <button
-              onClick={handleInvite}
-              disabled={!invitePatientDfn || !invitePatientName || !inviteReason}
-              className="btn-primary"
-              style={{ padding: '0.5rem 1rem', cursor: 'pointer' }}
-            >
-              Send Request
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Incoming Invitations */}
-      {receivedInvitations.filter((i) => i.status === 'pending').length > 0 && (
-        <div className="card" style={{ marginBottom: '1rem', borderLeft: '3px solid #ed8936' }}>
-          <h2 style={{ fontSize: '1.125rem', marginBottom: '0.75rem' }}>Pending Requests</h2>
-          {receivedInvitations
-            .filter((i) => i.status === 'pending')
-            .map((inv) => (
-              <div
-                key={inv.id}
-                style={{
-                  padding: '0.75rem',
-                  background: 'var(--portal-bg-alt, #f7f7f7)',
-                  borderRadius: '4px',
-                  marginBottom: '0.5rem',
-                }}
-              >
-                <p style={{ margin: '0 0 0.25rem' }}>
-                  <strong>{inv.requestorName}</strong> requests <strong>{inv.relationship}</strong>{' '}
-                  access
-                </p>
-                <p
-                  style={{
-                    margin: '0 0 0.5rem',
-                    fontSize: '0.8125rem',
-                    color: 'var(--portal-text-muted)',
-                  }}
-                >
-                  Reason: {inv.reason}
-                </p>
-                {inv.policyResult?.warnings?.map((w, i) => (
-                  <p
-                    key={i}
-                    style={{ margin: '0 0 0.25rem', fontSize: '0.75rem', color: '#ed8936' }}
-                  >
-                    {w}
-                  </p>
-                ))}
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <button
-                    onClick={() => handleRespond(inv.id, 'accepted')}
-                    style={{
-                      padding: '0.25rem 0.75rem',
-                      background: '#38a169',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Accept
-                  </button>
-                  <button
-                    onClick={() => handleRespond(inv.id, 'declined')}
-                    style={{
-                      padding: '0.25rem 0.75rem',
-                      background: '#e53e3e',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Decline
-                  </button>
-                </div>
-              </div>
-            ))}
-        </div>
-      )}
-
-      {/* Sent Invitations History */}
-      {sentInvitations.length > 0 && (
-        <div className="card" style={{ marginBottom: '1rem' }}>
-          <h2 style={{ fontSize: '1.125rem', marginBottom: '0.75rem' }}>Your Requests</h2>
-          {sentInvitations.map((inv) => (
+      {iamAvailable && (
+        <>
+          {/* Request Proxy Access */}
+          <div className="card" style={{ marginBottom: '1rem' }}>
             <div
-              key={inv.id}
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                padding: '0.5rem',
-                borderBottom: '1px solid #eee',
+                marginBottom: '0.75rem',
               }}
             >
-              <div>
-                <p style={{ margin: 0, fontSize: '0.875rem' }}>
-                  <strong>{inv.patientName}</strong> ({inv.relationship})
-                </p>
-                <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--portal-text-muted)' }}>
-                  {inv.status} - {new Date(inv.createdAt).toLocaleDateString()}
-                </p>
-              </div>
-              {inv.status === 'pending' && (
-                <button
-                  onClick={() => handleCancel(inv.id)}
+              <h2 style={{ fontSize: '1.125rem', margin: 0 }}>Request Access</h2>
+              <button
+                onClick={() => setShowForm(!showForm)}
+                style={{
+                  fontSize: '0.875rem',
+                  color: '#3182ce',
+                  background: 'none',
+                  border: '1px solid #3182ce',
+                  borderRadius: '4px',
+                  padding: '0.25rem 0.75rem',
+                  cursor: 'pointer',
+                }}
+              >
+                {showForm ? 'Cancel' : 'New Request'}
+              </button>
+            </div>
+            {showForm && (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.5rem',
+                  maxWidth: '400px',
+                }}
+              >
+                <input
+                  type="text"
+                  placeholder="Patient record number"
+                  value={invitePatientDfn}
+                  onChange={(e) => setInvitePatientDfn(e.target.value)}
+                  style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                />
+                <input
+                  type="text"
+                  placeholder="Patient full name"
+                  value={invitePatientName}
+                  onChange={(e) => setInvitePatientName(e.target.value)}
+                  style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                />
+                <select
+                  value={inviteRelationship}
+                  onChange={(e) => setInviteRelationship(e.target.value)}
+                  style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                >
+                  {RELATIONSHIPS.map((r) => (
+                    <option key={r.value} value={r.value}>
+                      {r.label}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="number"
+                  placeholder="Patient age (optional)"
+                  value={inviteAge}
+                  onChange={(e) => setInviteAge(e.target.value)}
+                  style={{ padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
+                />
+                <textarea
+                  placeholder="Reason for access request"
+                  value={inviteReason}
+                  onChange={(e) => setInviteReason(e.target.value)}
                   style={{
-                    fontSize: '0.75rem',
-                    color: '#e53e3e',
-                    background: 'none',
-                    border: '1px solid #e53e3e',
+                    padding: '0.5rem',
                     borderRadius: '4px',
-                    padding: '0.125rem 0.5rem',
-                    cursor: 'pointer',
+                    border: '1px solid #ccc',
+                    minHeight: '60px',
+                  }}
+                />
+                <button
+                  onClick={handleInvite}
+                  disabled={!invitePatientDfn || !invitePatientName || !inviteReason}
+                  className="btn-primary"
+                  style={{ padding: '0.5rem 1rem', cursor: 'pointer' }}
+                >
+                  Send Request
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Incoming Invitations */}
+          {receivedInvitations.filter((i) => i.status === 'pending').length > 0 && (
+            <div className="card" style={{ marginBottom: '1rem', borderLeft: '3px solid #ed8936' }}>
+              <h2 style={{ fontSize: '1.125rem', marginBottom: '0.75rem' }}>Pending Requests</h2>
+              {receivedInvitations
+                .filter((i) => i.status === 'pending')
+                .map((inv) => (
+                  <div
+                    key={inv.id}
+                    style={{
+                      padding: '0.75rem',
+                      background: 'var(--portal-bg-alt, #f7f7f7)',
+                      borderRadius: '4px',
+                      marginBottom: '0.5rem',
+                    }}
+                  >
+                    <p style={{ margin: '0 0 0.25rem' }}>
+                      <strong>{inv.requestorName}</strong> requests <strong>{inv.relationship}</strong>{' '}
+                      access
+                    </p>
+                    <p
+                      style={{
+                        margin: '0 0 0.5rem',
+                        fontSize: '0.8125rem',
+                        color: 'var(--portal-text-muted)',
+                      }}
+                    >
+                      Reason: {inv.reason}
+                    </p>
+                    {inv.policyResult?.warnings?.map((w, i) => (
+                      <p
+                        key={i}
+                        style={{ margin: '0 0 0.25rem', fontSize: '0.75rem', color: '#ed8936' }}
+                      >
+                        {w}
+                      </p>
+                    ))}
+                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                      <button
+                        onClick={() => handleRespond(inv.id, 'accepted')}
+                        style={{
+                          padding: '0.25rem 0.75rem',
+                          background: '#38a169',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '4px',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        onClick={() => handleRespond(inv.id, 'declined')}
+                        style={{
+                          padding: '0.25rem 0.75rem',
+                          background: '#e53e3e',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '4px',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        Decline
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          )}
+
+          {/* Sent Invitations History */}
+          {sentInvitations.length > 0 && (
+            <div className="card" style={{ marginBottom: '1rem' }}>
+              <h2 style={{ fontSize: '1.125rem', marginBottom: '0.75rem' }}>Your Requests</h2>
+              {sentInvitations.map((inv) => (
+                <div
+                  key={inv.id}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '0.5rem',
+                    borderBottom: '1px solid #eee',
                   }}
                 >
-                  Cancel
-                </button>
-              )}
+                  <div>
+                    <p style={{ margin: 0, fontSize: '0.875rem' }}>
+                      <strong>{inv.patientName}</strong> ({inv.relationship})
+                    </p>
+                    <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--portal-text-muted)' }}>
+                      {inv.status} - {new Date(inv.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                  {inv.status === 'pending' && (
+                    <button
+                      onClick={() => handleCancel(inv.id)}
+                      style={{
+                        fontSize: '0.75rem',
+                        color: '#e53e3e',
+                        background: 'none',
+                        border: '1px solid #e53e3e',
+                        borderRadius: '4px',
+                        padding: '0.125rem 0.5rem',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
     </div>
   );

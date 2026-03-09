@@ -124,7 +124,7 @@ export async function matchPayment(payment: PaymentRecord): Promise<SingleMatchR
     }
 
     // No match found — mark as unmatched
-    await updatePaymentStatus(payment.id, 'UNMATCHED');
+    await updatePaymentStatus(payment.tenantId, payment.id, 'UNMATCHED');
     return {
       paymentId: payment.id,
       matched: false,
@@ -145,8 +145,8 @@ export async function matchPayment(payment: PaymentRecord): Promise<SingleMatchR
 /**
  * Run matching for all payment records in an import batch.
  */
-export async function matchImportBatch(importId: string): Promise<BatchMatchResult> {
-  const payments = await listPaymentsByImport(importId);
+export async function matchImportBatch(tenantId: string, importId: string): Promise<BatchMatchResult> {
+  const payments = await listPaymentsByImport(tenantId, importId);
   const results: SingleMatchResult[] = [];
   let matched = 0;
   let needsReview = 0;
@@ -192,9 +192,10 @@ export async function matchImportBatch(importId: string): Promise<BatchMatchResu
  * Used by remittance-import-job.ts for background processing.
  */
 export async function runBatchMatch(
+  tenantId: string,
   importId: string
 ): Promise<{ attempted: number; matched: number; errors: string[] }> {
-  const batch = await matchImportBatch(importId);
+  const batch = await matchImportBatch(tenantId, importId);
   return {
     attempted: batch.totalLines,
     matched: batch.matched + batch.needsReview,
@@ -215,6 +216,7 @@ async function createMatchAndCheck(
 
   // Create reconciliation match record
   const match = await createMatch({
+    tenantId: payment.tenantId,
     paymentId: payment.id,
     claimRef: claim.claimRef,
     matchConfidence: confidence,
@@ -223,7 +225,7 @@ async function createMatchAndCheck(
   });
 
   // Update payment status
-  await updatePaymentStatus(payment.id, paymentStatus as any);
+  await updatePaymentStatus(payment.tenantId, payment.id, paymentStatus as any);
 
   // Check for underpayment
   let underpaymentCreated = false;
@@ -232,6 +234,7 @@ async function createMatchAndCheck(
   const expectedCents = claim.totalChargeCents ?? payment.billedAmountCents;
   if (payment.paidAmountCents < expectedCents * UNDERPAYMENT_THRESHOLD) {
     const up = await createUnderpaymentCase({
+      tenantId: payment.tenantId,
       claimRef: claim.claimRef,
       paymentId: payment.id,
       payerId: payment.payerId,

@@ -36,6 +36,16 @@ export async function findTaskById(id: string): Promise<TaskRow | undefined> {
   return rows[0];
 }
 
+export async function findTaskByIdForTenant(
+  tenantId: string,
+  id: string
+): Promise<TaskRow | undefined> {
+  const row = await findTaskById(id);
+  if (!row) return undefined;
+  if (row.tenantId !== null && row.tenantId !== tenantId) return undefined;
+  return row;
+}
+
 export async function createTask(
   data: {
     payerId: string;
@@ -87,10 +97,11 @@ export async function updateTaskStatus(
   id: string,
   status: string,
   reason: string,
-  actor?: string
+  actor?: string,
+  tenantId?: string
 ): Promise<TaskRow | null> {
   const db = getPgDb();
-  const before = await findTaskById(id);
+  const before = tenantId ? await findTaskByIdForTenant(tenantId, id) : await findTaskById(id);
   if (!before) return null;
 
   const now = new Date().toISOString();

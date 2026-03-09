@@ -330,6 +330,7 @@ export type PipelineStage =
 
 export interface PipelineEntry {
   id: string;
+  tenantId: string;
   claimId: string;
   transactionSet: X12TransactionSet;
   stage: PipelineStage;

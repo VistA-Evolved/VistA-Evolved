@@ -21,8 +21,6 @@ import { createHash } from 'crypto';
 import type { ClinicalCommand, RpcExecutor, DryRunTranscript } from '../types.js';
 import { optionalRpc } from '../../vista/rpcCapabilities.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
-import { validateCredentials } from '../../vista/config.js';
-import { connect, disconnect, getDuz } from '../../vista/rpcBrokerClient.js';
 import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
@@ -63,32 +61,21 @@ export const ordersExecutor: RpcExecutor = {
       }
     }
 
-    validateCredentials();
-    await connect();
-
-    try {
-      switch (intent) {
-        case 'PLACE_ORDER':
-          return await execPlaceOrder(command);
-        case 'DISCONTINUE_ORDER':
-          return await execDiscontinueOrder(command);
-        case 'VERIFY_ORDER':
-          return await execVerifyOrder(command);
-        case 'SIGN_ORDER':
-          return await execSignOrder(command);
-        case 'FLAG_ORDER':
-          return await execFlagOrder(command);
-        default:
-          throw Object.assign(new Error(`Unimplemented ORDERS intent: ${intent}`), {
-            errorClass: 'permanent',
-          });
-      }
-    } finally {
-      try {
-        disconnect();
-      } catch {
-        /* best-effort */
-      }
+    switch (intent) {
+      case 'PLACE_ORDER':
+        return await execPlaceOrder(command);
+      case 'DISCONTINUE_ORDER':
+        return await execDiscontinueOrder(command);
+      case 'VERIFY_ORDER':
+        return await execVerifyOrder(command);
+      case 'SIGN_ORDER':
+        return await execSignOrder(command);
+      case 'FLAG_ORDER':
+        return await execFlagOrder(command);
+      default:
+        throw Object.assign(new Error(`Unimplemented ORDERS intent: ${intent}`), {
+          errorClass: 'permanent',
+        });
     }
   },
 
@@ -140,7 +127,12 @@ async function execPlaceOrder(cmd: ClinicalCommand): Promise<{
 
   try {
     // Step 2: SAVE order
-    const duz = getDuz();
+    const duz = String(cmd.createdBy || '').trim();
+    if (!duz) {
+      throw Object.assign(new Error('createdBy DUZ required for clinician-attributed PLACE_ORDER'), {
+        errorClass: 'permanent',
+      });
+    }
     const saveResult = await safeCallRpc('ORWDX SAVE', [
       dfn,
       duz,
@@ -201,7 +193,15 @@ async function execDiscontinueOrder(cmd: ClinicalCommand): Promise<{
   }
 
   try {
-    const duz = getDuz();
+    const duz = String(cmd.createdBy || '').trim();
+    if (!duz) {
+      throw Object.assign(
+        new Error('createdBy DUZ required for clinician-attributed DISCONTINUE_ORDER'),
+        {
+          errorClass: 'permanent',
+        }
+      );
+    }
     await safeCallRpc('ORWDXA DC', [orderIen, duz, '', reason || 'Discontinued']);
 
     log.info(`ORDERS DISCONTINUE_ORDER completed: orderIen=${orderIen}`);
@@ -232,7 +232,12 @@ async function execVerifyOrder(cmd: ClinicalCommand): Promise<{
     });
   }
 
-  const duz = getDuz();
+  const duz = String(cmd.createdBy || '').trim();
+  if (!duz) {
+    throw Object.assign(new Error('createdBy DUZ required for clinician-attributed VERIFY_ORDER'), {
+      errorClass: 'permanent',
+    });
+  }
   await safeCallRpc('ORWDXA VERIFY', [orderIen, duz, '']);
 
   log.info(`ORDERS VERIFY_ORDER completed: orderIen=${orderIen}`);
@@ -306,7 +311,12 @@ async function execFlagOrder(cmd: ClinicalCommand): Promise<{
     });
   }
 
-  const duz = getDuz();
+  const duz = String(cmd.createdBy || '').trim();
+  if (!duz) {
+    throw Object.assign(new Error('createdBy DUZ required for clinician-attributed FLAG_ORDER'), {
+      errorClass: 'permanent',
+    });
+  }
   await safeCallRpc('ORWDXA FLAG', [orderIen, duz, flagText || 'Flagged']);
 
   log.info(`ORDERS FLAG_ORDER completed: orderIen=${orderIen}`);

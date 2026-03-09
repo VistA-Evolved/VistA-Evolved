@@ -207,6 +207,15 @@ export function getInstallation(id: string): PackInstallation | undefined {
   return installationStore.get(id);
 }
 
+export function getInstallationForTenant(
+  tenantId: string,
+  id: string
+): PackInstallation | undefined {
+  const installation = installationStore.get(id);
+  if (!installation || installation.tenantId !== tenantId) return undefined;
+  return installation;
+}
+
 // ─── Effective Feature Flags ─────────────────────────────
 
 /**

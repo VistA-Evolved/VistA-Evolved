@@ -24,7 +24,9 @@ import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { requireSession } from '../auth/auth-routes.js';
 import { safeCallRpc } from '../lib/rpc-resilience.js';
 import { log } from '../lib/logger.js';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
+import { tiuExecutor } from '../writeback/executors/tiu-executor.js';
+import type { ClinicalCommand } from '../writeback/types.js';
 
 // ── Types ───────────────────────────────────────────────────
 
@@ -71,6 +73,13 @@ export interface MedRecSession {
     decidedAt: string;
     decidedBy: string;
   }>;
+  summaryNote?: {
+    mode: 'tiu_draft';
+    titleIen: string;
+    docIen: string;
+    resultSummary: string;
+    createdAt: string;
+  };
   createdAt: string;
   completedAt?: string;
 }
@@ -83,6 +92,10 @@ const MED_REC_MAX_SIZE = 500;
 
 export function getMedRecSessionCount(): number {
   return medRecSessions.size;
+}
+
+export function getMedRecSessionById(id: string): MedRecSession | undefined {
+  return medRecSessions.get(id);
 }
 
 /** Evict completed/stale sessions older than TTL */
@@ -207,6 +220,146 @@ function detectDiscrepancies(
   return discrepancies;
 }
 
+function normalizeMedRecEntry(raw: unknown): MedRecEntry | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const entry = raw as Record<string, unknown>;
+  const medicationName = String(entry.medicationName || '').trim();
+  if (!medicationName) return null;
+  const sourceValue = String(entry.source || 'outpatient').trim();
+  const source: MedRecEntry['source'] =
+    sourceValue === 'inpatient' ||
+    sourceValue === 'outpatient' ||
+    sourceValue === 'pre-admission' ||
+    sourceValue === 'patient-reported'
+      ? sourceValue
+      : 'outpatient';
+  const statusValue = String(entry.status || 'active').trim();
+  const status: MedRecEntry['status'] =
+    statusValue === 'active' ||
+    statusValue === 'discontinued' ||
+    statusValue === 'hold' ||
+    statusValue === 'expired'
+      ? statusValue
+      : 'active';
+
+  return {
+    medicationName,
+    dose: String(entry.dose || '').trim(),
+    route: String(entry.route || '').trim(),
+    frequency: String(entry.frequency || '').trim(),
+    source,
+    orderIen: entry.orderIen ? String(entry.orderIen).trim() : undefined,
+    status,
+  };
+}
+
+function normalizeOutpatientMeds(raw: unknown): MedRecEntry[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.map(normalizeMedRecEntry).filter((entry): entry is MedRecEntry => !!entry);
+}
+
+export function buildMedRecSummaryText(
+  medRec: MedRecSession,
+  additionalNote?: string
+): string {
+  const lines: string[] = [
+    'MEDICATION RECONCILIATION SUMMARY',
+    '',
+    `Patient DFN: ${medRec.patientDfn}`,
+    `Reconciliation Session: ${medRec.id}`,
+    `Status: ${medRec.status}`,
+    `Created: ${medRec.createdAt}`,
+  ];
+
+  if (medRec.completedAt) {
+    lines.push(`Completed: ${medRec.completedAt}`);
+  }
+
+  lines.push('', 'ACTIVE INPATIENT MEDICATIONS');
+  if (medRec.inpatientMeds.length === 0) {
+    lines.push('- None listed');
+  } else {
+    for (const med of medRec.inpatientMeds) {
+      const detail = [med.dose, med.route, med.frequency].filter(Boolean).join(' | ');
+      lines.push(`- ${med.medicationName}${detail ? ` -- ${detail}` : ''}`);
+    }
+  }
+
+  lines.push('', 'OUTPATIENT OR PRE-ADMISSION MEDICATIONS');
+  if (medRec.outpatientMeds.length === 0) {
+    lines.push('- None provided');
+  } else {
+    for (const med of medRec.outpatientMeds) {
+      const detail = [med.dose, med.route, med.frequency].filter(Boolean).join(' | ');
+      lines.push(`- ${med.medicationName}${detail ? ` -- ${detail}` : ''}`);
+    }
+  }
+
+  lines.push('', 'DISCREPANCIES AND DECISIONS');
+  if (medRec.discrepancies.length === 0) {
+    lines.push('- No discrepancies identified');
+  } else {
+    for (const discrepancy of medRec.discrepancies) {
+      const decision = medRec.decisions.find((item) => item.discrepancyId === discrepancy.id);
+      lines.push(`- ${discrepancy.medication}: ${discrepancy.description}`);
+      lines.push(`  Severity: ${discrepancy.severity}; Type: ${discrepancy.type}`);
+      if (decision) {
+        lines.push(
+          `  Decision: ${decision.decision} by ${decision.decidedBy} at ${decision.decidedAt}`
+        );
+        if (decision.rationale) {
+          lines.push(`  Rationale: ${decision.rationale}`);
+        }
+      } else {
+        lines.push('  Decision: pending');
+      }
+    }
+  }
+
+  if (additionalNote && additionalNote.trim()) {
+    lines.push('', 'CLINICIAN NOTE', additionalNote.trim());
+  }
+
+  return lines.join('\n');
+}
+
+async function createMedRecSummaryNote(options: {
+  tenantId: string;
+  patientDfn: string;
+  actorDuz: string;
+  titleIen: string;
+  text: string;
+  visitStr?: string;
+  correlationId: string;
+}): Promise<{ docIen: string; resultSummary: string; titleIen: string }> {
+  const command: ClinicalCommand = {
+    id: randomUUID(),
+    tenantId: options.tenantId,
+    patientRefHash: createHash('sha256').update(options.patientDfn).digest('hex'),
+    domain: 'TIU',
+    intent: 'CREATE_NOTE_DRAFT',
+    payloadJson: {
+      dfn: options.patientDfn,
+      titleIen: options.titleIen,
+      text: options.text,
+      visitStr: options.visitStr || '',
+    },
+    idempotencyKey: `med-rec:${options.correlationId}:${createHash('sha256').update(`${options.titleIen}:${options.text}`).digest('hex').slice(0, 16)}`,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+    createdBy: options.actorDuz,
+    correlationId: options.correlationId,
+    attemptCount: 0,
+  };
+
+  const result = await tiuExecutor.execute(command);
+  return {
+    docIen: String(result.vistaRefs.docIen || ''),
+    resultSummary: result.resultSummary,
+    titleIen: options.titleIen,
+  };
+}
+
 // ── Routes ──────────────────────────────────────────────────
 
 export default async function medReconciliationRoutes(server: FastifyInstance) {
@@ -255,7 +408,7 @@ export default async function medReconciliationRoutes(server: FastifyInstance) {
 
     // Outpatient/pre-admission meds would come from a separate source
     // Integration-pending: PSO MED LIST for outpatient pharmacy
-    const outpatientMeds: MedRecEntry[] = body.outpatientMeds || [];
+    const outpatientMeds = normalizeOutpatientMeds(body.outpatientMeds);
 
     const discrepancies = detectDiscrepancies(inpatientMeds, outpatientMeds);
 
@@ -401,6 +554,54 @@ export default async function medReconciliationRoutes(server: FastifyInstance) {
         });
       }
 
+      const body = (request.body as any) || {};
+      const documentation = (body.documentation as Record<string, unknown>) || {};
+      const noteRequested =
+        documentation.createNote === true ||
+        documentation.titleIen !== undefined ||
+        documentation.text !== undefined ||
+        documentation.additionalNote !== undefined ||
+        documentation.visitStr !== undefined;
+      const rpcUsed: string[] = [];
+
+      if (noteRequested) {
+        const titleIen = String(documentation.titleIen || '10').trim() || '10';
+        const noteText =
+          String(documentation.text || '').trim() ||
+          buildMedRecSummaryText(medRec, String(documentation.additionalNote || ''));
+
+        try {
+          const note = await createMedRecSummaryNote({
+            tenantId: medRec.tenantId,
+            patientDfn: medRec.patientDfn,
+            actorDuz: session.duz,
+            titleIen,
+            text: noteText,
+            visitStr: String(documentation.visitStr || '').trim(),
+            correlationId: `med-rec-complete:${medRec.id}`,
+          });
+          medRec.summaryNote = {
+            mode: 'tiu_draft',
+            titleIen: note.titleIen,
+            docIen: note.docIen,
+            resultSummary: note.resultSummary,
+            createdAt: new Date().toISOString(),
+          };
+          rpcUsed.push('TIU CREATE RECORD', 'TIU SET DOCUMENT TEXT');
+        } catch (error: any) {
+          return reply.code(502).send({
+            ok: false,
+            error: 'Failed to create medication reconciliation TIU summary note',
+            detail: error?.message || 'Unknown TIU error',
+            rpcUsed: ['TIU CREATE RECORD', 'TIU SET DOCUMENT TEXT'],
+            vistaGrounding: {
+              targetRpc: ['TIU CREATE RECORD', 'TIU SET DOCUMENT TEXT'],
+              status: 'available_but_failed',
+            },
+          });
+        }
+      }
+
       medRec.status = 'completed';
       medRec.completedAt = new Date().toISOString();
 
@@ -415,11 +616,26 @@ export default async function medReconciliationRoutes(server: FastifyInstance) {
             decision: d.decision,
           })),
         },
+        rpcUsed,
+        documentation: medRec.summaryNote
+          ? {
+              status: 'completed',
+              mode: medRec.summaryNote.mode,
+              titleIen: medRec.summaryNote.titleIen,
+              docIen: medRec.summaryNote.docIen,
+              resultSummary: medRec.summaryNote.resultSummary,
+            }
+          : {
+              status: 'not_requested',
+              mode: 'none',
+            },
         vistaGrounding: {
           targetRpc: ['PSO UPDATE MED LIST', 'PSJ LM ORDER UPDATE', 'TIU CREATE RECORD'],
           status: 'integration-pending',
           nextSteps: [
-            'Write reconciliation summary to TIU note',
+            noteRequested
+              ? 'PSO and PSJ writeback remain pending in VEHU; TIU summary note was created.'
+              : 'Write reconciliation summary to TIU note',
             'Update PSO outpatient med list',
             'Update PSJ inpatient orders',
           ],

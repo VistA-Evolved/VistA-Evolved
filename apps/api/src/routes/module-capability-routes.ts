@@ -30,10 +30,12 @@ import {
   getModuleStatus,
   getSkuProfiles,
   getActiveSku,
+  getActiveSkuProfile,
   setTenantModules,
   validateDependencies,
   getEnabledModules,
   getAllModuleManifests,
+  getModuleDefinitions,
 } from '../modules/module-registry.js';
 import {
   resolveCapabilities,
@@ -50,7 +52,24 @@ import {
   updateTenantJurisdiction,
 } from '../config/marketplace-tenant.js';
 import { isPgConfigured } from '../platform/pg/pg-db.js';
-import { getEnabledModuleIds, listTenantModules } from '../platform/pg/repo/module-repo.js';
+import {
+  appendModuleAudit,
+  getEnabledModuleIds,
+  listTenantModules,
+  setModuleEnabled,
+} from '../platform/pg/repo/module-repo.js';
+
+function resolveSessionTenantId(_request: FastifyRequest, session: any): string | null {
+  const sessionTenantId =
+    typeof session?.tenantId === 'string' && session.tenantId.trim().length > 0
+      ? session.tenantId.trim()
+      : undefined;
+  return sessionTenantId || null;
+}
+
+function resolveAdminTenantId(_request: FastifyRequest, session: any): string | null {
+  return resolveSessionTenantId(_request, session);
+}
 
 export default async function moduleCapabilityRoutes(server: FastifyInstance): Promise<void> {
   /* ---------------------------------------------------------------- */
@@ -62,7 +81,11 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    const tenantId = (session as any).tenantId || 'default';
+    const tenantId = resolveSessionTenantId(request, session);
+    if (!tenantId) {
+      reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+      return;
+    }
     const capabilities = resolveCapabilities(tenantId);
 
     return {
@@ -77,7 +100,11 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    const tenantId = (session as any).tenantId || 'default';
+    const tenantId = resolveSessionTenantId(request, session);
+    if (!tenantId) {
+      reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+      return;
+    }
     const summary = getCapabilitySummary(tenantId);
 
     return {
@@ -94,7 +121,11 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
       const session = await requireSession(request, reply);
       if (!session) return;
 
-      const tenantId = (session as any).tenantId || 'default';
+      const tenantId = resolveSessionTenantId(request, session);
+      if (!tenantId) {
+        reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+        return;
+      }
       const grouped = getCapabilitiesByModule(tenantId);
 
       return {
@@ -120,7 +151,11 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
       return;
     }
 
-    const tenantId = ((request.query as any)?.tenantId as string) || 'default';
+    const tenantId = resolveAdminTenantId(request, session);
+    if (!tenantId) {
+      reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+      return;
+    }
     let enabledModules = getEnabledModules(tenantId);
     if (isPgConfigured()) {
       const tenantRows = await listTenantModules(tenantId).catch(() => []);
@@ -171,17 +206,46 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     }
 
     const body = (request.body as any) || {};
-    const { tenantId, modules } = body;
-
+    const { modules } = body;
+    const tenantId = resolveAdminTenantId(request, session);
     if (!tenantId) {
-      reply.code(400).send({ ok: false, error: 'tenantId is required' });
+      reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
       return;
     }
 
+    const actorId = String((session as any).duz || 'system');
+    const beforeEnabledModules = isPgConfigured()
+      ? await getEnabledModuleIds(tenantId).catch(() => getEnabledModules(tenantId))
+      : getEnabledModules(tenantId);
+
     // null → clear overrides, array → set overrides
     if (modules === null || modules === undefined) {
-      setTenantModules(tenantId, null);
-      log.info('Cleared module overrides for tenant', { tenantId });
+      const skuModules = getActiveSkuProfile()?.modules || Object.keys(getModuleDefinitions());
+
+      if (isPgConfigured()) {
+        const defs = getModuleDefinitions();
+        const desired = new Set(skuModules);
+        for (const [moduleId, def] of Object.entries(defs)) {
+          if (def.alwaysEnabled) continue;
+          await setModuleEnabled(tenantId, moduleId, desired.has(moduleId), actorId);
+        }
+        setTenantModules(tenantId, await getEnabledModuleIds(tenantId));
+        await appendModuleAudit({
+          tenantId,
+          actorId,
+          actorType: 'user',
+          entityType: 'entitlement',
+          entityId: 'api.modules.override.clear',
+          action: 'update',
+          beforeJson: JSON.stringify({ enabledModules: beforeEnabledModules }),
+          afterJson: JSON.stringify({ enabledModules: skuModules }),
+          reason: 'Reverted tenant module overrides to active SKU defaults',
+        });
+      } else {
+        setTenantModules(tenantId, null);
+      }
+
+      log.info('Cleared module overrides for tenant', { tenantId, mode: isPgConfigured() ? 'pg' : 'memory' });
 
       // Immutable audit event
       immutableAudit(
@@ -217,8 +281,35 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
       return;
     }
 
-    setTenantModules(tenantId, modules);
-    log.info('Applied module overrides for tenant', { tenantId, modules });
+    let appliedModules = modules;
+    if (isPgConfigured()) {
+      const defs = getModuleDefinitions();
+      const desired = new Set(modules);
+      for (const [moduleId, def] of Object.entries(defs)) {
+        if (def.alwaysEnabled) continue;
+        await setModuleEnabled(tenantId, moduleId, desired.has(moduleId), actorId);
+      }
+      appliedModules = await getEnabledModuleIds(tenantId).catch(() => modules);
+      setTenantModules(tenantId, appliedModules);
+      await appendModuleAudit({
+        tenantId,
+        actorId,
+        actorType: 'user',
+        entityType: 'entitlement',
+        entityId: 'api.modules.override',
+        action: 'update',
+        beforeJson: JSON.stringify({ enabledModules: beforeEnabledModules }),
+        afterJson: JSON.stringify({ enabledModules: appliedModules }),
+        reason: 'Applied module override via legacy API endpoint',
+      });
+    } else {
+      setTenantModules(tenantId, modules);
+    }
+    log.info('Applied module overrides for tenant', {
+      tenantId,
+      modules: appliedModules,
+      mode: isPgConfigured() ? 'pg' : 'memory',
+    });
 
     // Immutable audit event
     immutableAudit(
@@ -238,7 +329,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     return {
       ok: true,
       message: `Module overrides applied for tenant '${tenantId}'`,
-      enabledModules: getEnabledModules(tenantId),
+      enabledModules: isPgConfigured() ? appliedModules : getEnabledModules(tenantId),
     };
   });
 
@@ -294,7 +385,11 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
       return;
     }
 
-    const tenantId = ((request.query as any)?.tenantId as string) || 'default';
+    const tenantId = resolveAdminTenantId(request, session);
+    if (!tenantId) {
+      reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+      return;
+    }
     let enabledModules = getEnabledModules(tenantId);
     if (isPgConfigured()) {
       const tenantRows = await listTenantModules(tenantId).catch(() => []);
@@ -335,7 +430,11 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
       return;
     }
 
-    const tenantId = ((request.query as any)?.tenantId as string) || 'default';
+    const tenantId = resolveAdminTenantId(request, session);
+    if (!tenantId) {
+      reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+      return;
+    }
     const config = getMarketplaceTenantConfig(tenantId);
 
     if (!config) {
@@ -357,11 +456,10 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     }
 
     const body = (request.body as any) || {};
-    const { tenantId, facilityName, jurisdiction, enabledModules, connectors, customSettings } =
-      body;
-
+    const { facilityName, jurisdiction, enabledModules, connectors, customSettings } = body;
+    const tenantId = resolveAdminTenantId(request, session);
     if (!tenantId) {
-      reply.code(400).send({ ok: false, error: 'tenantId is required' });
+      reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
       return;
     }
 
@@ -397,10 +495,15 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
       }
 
       const body = (request.body as any) || {};
-      const { tenantId, connectors } = body;
+      const { connectors } = body;
+      const tenantId = resolveAdminTenantId(request, session);
+      if (!tenantId) {
+        reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+        return;
+      }
 
-      if (!tenantId || !Array.isArray(connectors)) {
-        reply.code(400).send({ ok: false, error: 'tenantId and connectors[] are required' });
+      if (!Array.isArray(connectors)) {
+        reply.code(400).send({ ok: false, error: 'connectors[] is required' });
         return;
       }
 
@@ -427,10 +530,15 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
       }
 
       const body = (request.body as any) || {};
-      const { tenantId, jurisdiction } = body;
+      const { jurisdiction } = body;
+      const tenantId = resolveAdminTenantId(request, session);
+      if (!tenantId) {
+        reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+        return;
+      }
 
-      if (!tenantId || !jurisdiction) {
-        reply.code(400).send({ ok: false, error: 'tenantId and jurisdiction are required' });
+      if (!jurisdiction) {
+        reply.code(400).send({ ok: false, error: 'jurisdiction is required' });
         return;
       }
 

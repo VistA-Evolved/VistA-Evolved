@@ -61,6 +61,7 @@ export function initPayerOpsRepos(repos: {
 }
 
 export function createEnrollment(data: {
+  tenantId: string;
   facilityId: string;
   facilityName: string;
   payerId: string;
@@ -75,6 +76,7 @@ export function createEnrollment(data: {
   const now = new Date().toISOString();
   const enrollment: FacilityPayerEnrollment = {
     id,
+    tenantId: data.tenantId,
     facilityId: data.facilityId,
     facilityName: data.facilityName,
     payerId: data.payerId,
@@ -102,7 +104,7 @@ export function createEnrollment(data: {
   enrollDbRepo
     ?.upsert({
       id,
-      tenantId: (enrollment as any).tenantId ?? 'default',
+      tenantId: enrollment.tenantId,
       payerId: enrollment.payerId,
       status: enrollment.status,
       createdAt: enrollment.createdAt,
@@ -116,12 +118,23 @@ export function getEnrollment(id: string): FacilityPayerEnrollment | undefined {
   return enrollments.get(id);
 }
 
+export function getEnrollmentForTenant(
+  tenantId: string,
+  id: string
+): FacilityPayerEnrollment | undefined {
+  const enrollment = enrollments.get(id);
+  if (!enrollment || enrollment.tenantId !== tenantId) return undefined;
+  return enrollment;
+}
+
 export function listEnrollments(filter?: {
+  tenantId?: string;
   facilityId?: string;
   payerId?: string;
   status?: EnrollmentStatus;
 }): FacilityPayerEnrollment[] {
   let results = Array.from(enrollments.values());
+  if (filter?.tenantId) results = results.filter((e) => e.tenantId === filter.tenantId);
   if (filter?.facilityId) results = results.filter((e) => e.facilityId === filter.facilityId);
   if (filter?.payerId) results = results.filter((e) => e.payerId === filter.payerId);
   if (filter?.status) results = results.filter((e) => e.status === filter.status);
@@ -129,12 +142,13 @@ export function listEnrollments(filter?: {
 }
 
 export function updateEnrollmentStatus(
+  tenantId: string,
   id: string,
   newStatus: EnrollmentStatus,
   actor: string,
   detail?: string
 ): FacilityPayerEnrollment | undefined {
-  const enrollment = enrollments.get(id);
+  const enrollment = getEnrollmentForTenant(tenantId, id);
   if (!enrollment) return undefined;
   const now = new Date().toISOString();
   enrollment.timeline.push({
@@ -148,8 +162,12 @@ export function updateEnrollmentStatus(
   return enrollment;
 }
 
-export function addCredentialRefToEnrollment(enrollmentId: string, credentialId: string): boolean {
-  const enrollment = enrollments.get(enrollmentId);
+export function addCredentialRefToEnrollment(
+  tenantId: string,
+  enrollmentId: string,
+  credentialId: string
+): boolean {
+  const enrollment = getEnrollmentForTenant(tenantId, enrollmentId);
   if (!enrollment) return false;
   if (!enrollment.credentialVaultRefs.includes(credentialId)) {
     enrollment.credentialVaultRefs.push(credentialId);
@@ -163,6 +181,7 @@ export function addCredentialRefToEnrollment(enrollmentId: string, credentialId:
 const loaCases = new Map<string, LOACase>();
 
 export function createLOACase(data: {
+  tenantId: string;
   facilityId: string;
   patientDfn: string;
   encounterIen?: string;
@@ -184,6 +203,7 @@ export function createLOACase(data: {
   const now = new Date().toISOString();
   const loaCase: LOACase = {
     id,
+    tenantId: data.tenantId,
     facilityId: data.facilityId,
     patientDfn: data.patientDfn,
     encounterIen: data.encounterIen,
@@ -227,7 +247,7 @@ export function createLOACase(data: {
   loaCaseDbRepo
     ?.upsert({
       id,
-      tenantId: (loaCase as any).tenantId ?? 'default',
+      tenantId: loaCase.tenantId,
       payerId: loaCase.payerId,
       status: loaCase.status,
       createdAt: loaCase.createdAt,
@@ -241,13 +261,21 @@ export function getLOACase(id: string): LOACase | undefined {
   return loaCases.get(id);
 }
 
+export function getLOACaseForTenant(tenantId: string, id: string): LOACase | undefined {
+  const loa = loaCases.get(id);
+  if (!loa || loa.tenantId !== tenantId) return undefined;
+  return loa;
+}
+
 export function listLOACases(filter?: {
+  tenantId?: string;
   facilityId?: string;
   patientDfn?: string;
   payerId?: string;
   status?: LOAStatus;
 }): LOACase[] {
   let results = Array.from(loaCases.values());
+  if (filter?.tenantId) results = results.filter((c) => c.tenantId === filter.tenantId);
   if (filter?.facilityId) results = results.filter((c) => c.facilityId === filter.facilityId);
   if (filter?.patientDfn) results = results.filter((c) => c.patientDfn === filter.patientDfn);
   if (filter?.payerId) results = results.filter((c) => c.payerId === filter.payerId);
@@ -256,12 +284,13 @@ export function listLOACases(filter?: {
 }
 
 export function transitionLOAStatus(
+  tenantId: string,
   id: string,
   newStatus: LOAStatus,
   actor: string,
   reason?: string
 ): { ok: boolean; error?: string; loaCase?: LOACase } {
-  const loa = loaCases.get(id);
+  const loa = getLOACaseForTenant(tenantId, id);
   if (!loa) return { ok: false, error: 'LOA case not found' };
 
   const allowed = LOA_TRANSITIONS[loa.status];
@@ -285,8 +314,8 @@ export function transitionLOAStatus(
   return { ok: true, loaCase: loa };
 }
 
-export function addAttachmentToLOA(loaId: string, credentialId: string): boolean {
-  const loa = loaCases.get(loaId);
+export function addAttachmentToLOA(tenantId: string, loaId: string, credentialId: string): boolean {
+  const loa = getLOACaseForTenant(tenantId, loaId);
   if (!loa) return false;
   if (!loa.attachmentRefs.includes(credentialId)) {
     loa.attachmentRefs.push(credentialId);
@@ -296,12 +325,13 @@ export function addAttachmentToLOA(loaId: string, credentialId: string): boolean
 }
 
 export function updateLOAPayerRef(
+  tenantId: string,
   id: string,
   payerRefNumber: string,
   approvedAmount?: number,
   approvedServices?: string[]
 ): boolean {
-  const loa = loaCases.get(id);
+  const loa = getLOACaseForTenant(tenantId, id);
   if (!loa) return false;
   loa.payerRefNumber = payerRefNumber;
   if (approvedAmount !== undefined) loa.approvedAmount = approvedAmount;
@@ -356,6 +386,7 @@ export function refreshSLARisk(loa: LOACase): LOACase {
 /* ── Phase 89: Patch LOA Draft ──────────────────────────────── */
 
 export function patchLOADraft(
+  tenantId: string,
   id: string,
   patch: {
     memberId?: string;
@@ -371,7 +402,7 @@ export function patchLOADraft(
     denialReason?: string;
   }
 ): { ok: boolean; error?: string; loaCase?: LOACase } {
-  const loa = loaCases.get(id);
+  const loa = getLOACaseForTenant(tenantId, id);
   if (!loa) return { ok: false, error: 'LOA case not found' };
 
   // Only draft and pending_submission can be edited
@@ -402,6 +433,7 @@ export function patchLOADraft(
 /* ── Phase 89: LOA Queue ────────────────────────────────────── */
 
 export interface LOAQueueFilter {
+  tenantId?: string;
   status?: LOAStatus | LOAStatus[];
   payerId?: string;
   assignedTo?: string;
@@ -429,6 +461,7 @@ export function listLOAQueue(filter: LOAQueueFilter = {}): {
   slaBreakdown: Record<LOASLARiskLevel, number>;
 } {
   let results = Array.from(loaCases.values()).map(refreshSLARisk);
+  if (filter.tenantId) results = results.filter((c) => c.tenantId === filter.tenantId);
 
   // Status filter
   if (filter.status) {
@@ -498,8 +531,8 @@ export function listLOAQueue(filter: LOAQueueFilter = {}): {
 
 /* ── Phase 89: LOA Pack Storage ─────────────────────────────── */
 
-export function addPackToLOA(loaId: string, pack: LOAPack): boolean {
-  const loa = loaCases.get(loaId);
+export function addPackToLOA(tenantId: string, loaId: string, pack: LOAPack): boolean {
+  const loa = getLOACaseForTenant(tenantId, loaId);
   if (!loa) return false;
   loa.packHistory.push(pack);
   loa.updatedAt = new Date().toISOString();
@@ -509,11 +542,12 @@ export function addPackToLOA(loaId: string, pack: LOAPack): boolean {
 /* ── Phase 89: LOA Assignment ───────────────────────────────── */
 
 export function assignLOA(
+  tenantId: string,
   id: string,
   assignedTo: string,
   actor: string
 ): { ok: boolean; error?: string; loaCase?: LOACase } {
-  const loa = loaCases.get(id);
+  const loa = getLOACaseForTenant(tenantId, id);
   if (!loa) return { ok: false, error: 'LOA case not found' };
   const now = new Date().toISOString();
   loa.assignedTo = assignedTo;
@@ -532,6 +566,7 @@ export function assignLOA(
 const credentials = new Map<string, CredentialVaultEntry>();
 
 export function createCredentialEntry(data: {
+  tenantId: string;
   facilityId: string;
   docType: CredentialDocType;
   title: string;
@@ -552,6 +587,7 @@ export function createCredentialEntry(data: {
   const now = new Date().toISOString();
   const entry: CredentialVaultEntry = {
     id,
+    tenantId: data.tenantId,
     facilityId: data.facilityId,
     docType: data.docType,
     title: data.title,
@@ -576,7 +612,7 @@ export function createCredentialEntry(data: {
   credDbRepo
     ?.upsert({
       id,
-      tenantId: (entry as any).tenantId ?? 'default',
+      tenantId: entry.tenantId,
       payerId: (entry as any).payerId ?? '',
       credentialType: (entry as any).type ?? 'generic',
       createdAt: (entry as any).createdAt ?? new Date().toISOString(),
@@ -590,13 +626,24 @@ export function getCredentialEntry(id: string): CredentialVaultEntry | undefined
   return credentials.get(id);
 }
 
+export function getCredentialEntryForTenant(
+  tenantId: string,
+  id: string
+): CredentialVaultEntry | undefined {
+  const entry = credentials.get(id);
+  if (!entry || entry.tenantId !== tenantId) return undefined;
+  return entry;
+}
+
 export function listCredentialEntries(filter?: {
+  tenantId?: string;
   facilityId?: string;
   docType?: CredentialDocType;
   payerId?: string;
   expiringWithinDays?: number;
 }): CredentialVaultEntry[] {
   let results = Array.from(credentials.values());
+  if (filter?.tenantId) results = results.filter((c) => c.tenantId === filter.tenantId);
   if (filter?.facilityId) results = results.filter((c) => c.facilityId === filter.facilityId);
   if (filter?.docType) results = results.filter((c) => c.docType === filter.docType);
   if (filter?.payerId)
@@ -610,17 +657,23 @@ export function listCredentialEntries(filter?: {
   return results.sort((a, b) => b.uploadedAt.localeCompare(a.uploadedAt));
 }
 
-export function deleteCredentialEntry(id: string): boolean {
+export function deleteCredentialEntry(tenantId: string, id: string): boolean {
+  const entry = getCredentialEntryForTenant(tenantId, id);
+  if (!entry) return false;
   return credentials.delete(id);
 }
 
 /* ── Renewal Reminder Check ─────────────────────────────────── */
 
-export function getExpiringCredentials(daysAhead: number = 30): CredentialVaultEntry[] {
+export function getExpiringCredentials(
+  tenantId: string,
+  daysAhead: number = 30
+): CredentialVaultEntry[] {
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() + daysAhead);
   const cutoffStr = cutoff.toISOString().split('T')[0];
   return Array.from(credentials.values()).filter((c) => {
+    if (c.tenantId !== tenantId) return false;
     if (!c.expiryDate) return false;
     return c.expiryDate.split('T')[0] <= cutoffStr;
   });
@@ -628,27 +681,37 @@ export function getExpiringCredentials(daysAhead: number = 30): CredentialVaultE
 
 /* ── Stats ──────────────────────────────────────────────────── */
 
-export function getPayerOpsStats(): {
+export function getPayerOpsStats(tenantId?: string): {
   enrollments: { total: number; byStatus: Record<string, number> };
   loaCases: { total: number; byStatus: Record<string, number> };
   credentials: { total: number; expiringSoon: number };
 } {
   const enrollmentsByStatus: Record<string, number> = {};
-  for (const e of enrollments.values()) {
+  const tenantEnrollments = tenantId
+    ? Array.from(enrollments.values()).filter((e) => e.tenantId === tenantId)
+    : Array.from(enrollments.values());
+  for (const e of tenantEnrollments) {
     enrollmentsByStatus[e.status] = (enrollmentsByStatus[e.status] || 0) + 1;
   }
 
   const loaByStatus: Record<string, number> = {};
-  for (const l of loaCases.values()) {
+  const tenantLoas = tenantId
+    ? Array.from(loaCases.values()).filter((l) => l.tenantId === tenantId)
+    : Array.from(loaCases.values());
+  for (const l of tenantLoas) {
     loaByStatus[l.status] = (loaByStatus[l.status] || 0) + 1;
   }
 
+  const tenantCredentials = tenantId
+    ? Array.from(credentials.values()).filter((c) => c.tenantId === tenantId)
+    : Array.from(credentials.values());
+
   return {
-    enrollments: { total: enrollments.size, byStatus: enrollmentsByStatus },
-    loaCases: { total: loaCases.size, byStatus: loaByStatus },
+    enrollments: { total: tenantEnrollments.length, byStatus: enrollmentsByStatus },
+    loaCases: { total: tenantLoas.length, byStatus: loaByStatus },
     credentials: {
-      total: credentials.size,
-      expiringSoon: getExpiringCredentials(30).length,
+      total: tenantCredentials.length,
+      expiringSoon: tenantId ? getExpiringCredentials(tenantId, 30).length : 0,
     },
   };
 }

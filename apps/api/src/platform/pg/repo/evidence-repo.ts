@@ -7,7 +7,7 @@
  */
 
 import { randomUUID } from 'node:crypto';
-import { eq, or, isNull, desc } from 'drizzle-orm';
+import { eq, or, isNull, desc, and } from 'drizzle-orm';
 import { getPgDb } from '../pg-db.js';
 import { payerEvidenceSnapshot, payerAuditEvent } from '../pg-schema.js';
 
@@ -20,6 +20,16 @@ export async function findEvidenceById(id: string): Promise<EvidenceRow | undefi
     .from(payerEvidenceSnapshot)
     .where(eq(payerEvidenceSnapshot.id, id));
   return rows[0];
+}
+
+export async function findEvidenceByIdForTenant(
+  tenantId: string,
+  id: string
+): Promise<EvidenceRow | undefined> {
+  const row = await findEvidenceById(id);
+  if (!row) return undefined;
+  if (row.tenantId !== null && row.tenantId !== tenantId) return undefined;
+  return row;
 }
 
 export async function listEvidence(tenantId?: string | null): Promise<EvidenceRow[]> {
@@ -36,8 +46,26 @@ export async function listEvidence(tenantId?: string | null): Promise<EvidenceRo
   return db.select().from(payerEvidenceSnapshot).orderBy(desc(payerEvidenceSnapshot.ingestedAt));
 }
 
-export async function listEvidenceByStatus(status: string): Promise<EvidenceRow[]> {
+export async function listEvidenceByStatus(
+  status: string,
+  tenantId?: string | null
+): Promise<EvidenceRow[]> {
   const db = getPgDb();
+  if (tenantId) {
+    return db
+      .select()
+      .from(payerEvidenceSnapshot)
+      .where(
+        and(
+          eq(payerEvidenceSnapshot.status, status),
+          or(
+            eq(payerEvidenceSnapshot.tenantId, tenantId),
+            isNull(payerEvidenceSnapshot.tenantId)
+          )
+        )
+      )
+      .orderBy(desc(payerEvidenceSnapshot.ingestedAt));
+  }
   return db
     .select()
     .from(payerEvidenceSnapshot)

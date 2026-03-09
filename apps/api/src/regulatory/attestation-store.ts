@@ -149,6 +149,15 @@ export function getAttestation(id: string): ComplianceAttestation | undefined {
   return attestations.get(id);
 }
 
+export function getAttestationForTenant(
+  tenantId: string,
+  id: string
+): ComplianceAttestation | undefined {
+  const attestation = attestations.get(id);
+  if (!attestation || attestation.tenantId !== tenantId) return undefined;
+  return attestation;
+}
+
 /**
  * List attestations with optional filters.
  */
@@ -179,8 +188,13 @@ export function listAttestations(filters?: {
 /**
  * Revoke an attestation (e.g. when a control is found to be non-compliant).
  */
-export function revokeAttestation(id: string, revokedBy: string, reason?: string): boolean {
-  const att = attestations.get(id);
+export function revokeAttestation(
+  tenantId: string,
+  id: string,
+  revokedBy: string,
+  reason?: string
+): boolean {
+  const att = getAttestationForTenant(tenantId, id);
   if (!att || att.status === 'revoked') return false;
   att.status = 'revoked';
   att.notes = (att.notes || '') + ` | Revoked by ${revokedBy}: ${reason || 'no reason given'}`;

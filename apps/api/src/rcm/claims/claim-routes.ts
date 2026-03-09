@@ -43,9 +43,19 @@ import type { ClaimLifecycleStatus } from './claim-types.js';
 
 function getSession(request: FastifyRequest): { duz: string; tenantId: string } {
   const s = (request as any).session;
+  const requestTenantId = (request as any).tenantId;
+  const headerTenantId = request.headers['x-tenant-id'];
   return {
     duz: s?.duz ?? 'system',
-    tenantId: s?.tenantId ?? 'default',
+    tenantId:
+      (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0
+        ? requestTenantId.trim()
+        : undefined) ||
+      (typeof s?.tenantId === 'string' && s.tenantId.trim().length > 0 ? s.tenantId.trim() : undefined) ||
+      (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined) ||
+      'default',
   };
 }
 
@@ -134,8 +144,9 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
 
   /* ── Get Claim Case Detail ─────────────────────────────── */
   server.get('/rcm/claims/lifecycle/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { tenantId } = getSession(request);
     const { id } = request.params as { id: string };
-    const cc = getClaimCase(id);
+    const cc = getClaimCase(id, tenantId);
     if (!cc) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
     return reply.send({ ok: true, claimCase: cc });
   });
@@ -144,11 +155,11 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
   server.patch(
     '/rcm/claims/lifecycle/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const { duz } = getSession(request);
+      const { duz, tenantId } = getSession(request);
       const { id } = request.params as { id: string };
       const body = (request.body as any) || {};
 
-      const existing = getClaimCase(id);
+      const existing = getClaimCase(id, tenantId);
       if (!existing) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
 
       // Only allow updates in editable states
@@ -172,7 +183,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
       delete body.events;
       delete body.scrubHistory;
 
-      const updated = updateClaimCase(id, body);
+      const updated = updateClaimCase(tenantId, id, body);
       if (!updated) return reply.status(500).send({ ok: false, error: 'Update failed' });
 
       appendRcmAudit('claim.updated', { claimId: id, userId: duz });
@@ -184,7 +195,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
   server.put(
     '/rcm/claims/lifecycle/:id/transition',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const { duz } = getSession(request);
+      const { duz, tenantId } = getSession(request);
       const { id } = request.params as { id: string };
       const body = (request.body as any) || {};
 
@@ -192,7 +203,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
         return reply.status(400).send({ ok: false, error: 'toStatus is required' });
       }
 
-      const result = transitionClaimCase(id, body.toStatus, duz, body.detail);
+      const result = transitionClaimCase(tenantId, id, body.toStatus, duz, body.detail);
       if (!result.ok) {
         return reply.status(409).send({ ok: false, error: result.error });
       }
@@ -211,11 +222,11 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
   server.post(
     '/rcm/claims/lifecycle/:id/scrub',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const { duz } = getSession(request);
+      const { duz, tenantId } = getSession(request);
       const { id } = request.params as { id: string };
       const body = (request.body as any) || {};
 
-      const cc = getClaimCase(id);
+      const cc = getClaimCase(id, tenantId);
       if (!cc) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
 
       // Run scrubber
@@ -226,7 +237,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
       });
 
       // Record result on the claim case
-      const updated = recordScrubResult(id, scrubResult);
+      const updated = recordScrubResult(tenantId, id, scrubResult);
       if (!updated)
         return reply.status(500).send({ ok: false, error: 'Failed to record scrub result' });
 
@@ -236,7 +247,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
         const newStatus: ClaimLifecycleStatus =
           scrubResult.outcome === 'fail' ? 'scrub_failed' : 'scrub_passed';
         // Only transition if valid
-        const transResult = transitionClaimCase(id, newStatus, 'system', {
+        const transResult = transitionClaimCase(tenantId, id, newStatus, 'system', {
           scrubOutcome: scrubResult.outcome,
           findingsCount: scrubResult.findings.length,
         });
@@ -265,7 +276,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
   server.post(
     '/rcm/claims/lifecycle/:id/attachments',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const { duz } = getSession(request);
+      const { duz, tenantId } = getSession(request);
       const { id } = request.params as { id: string };
       const body = (request.body as any) || {};
 
@@ -274,6 +285,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
       }
 
       const updated = addAttachment(
+        tenantId,
         id,
         {
           category: body.category,
@@ -304,7 +316,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
   server.post(
     '/rcm/claims/lifecycle/:id/denials',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const { duz } = getSession(request);
+      const { duz, tenantId } = getSession(request);
       const { id } = request.params as { id: string };
       const body = (request.body as any) || {};
 
@@ -315,7 +327,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
         });
       }
 
-      const denial = addDenial(id, {
+      const denial = addDenial(tenantId, id, {
         source: body.source,
         reasonCode: body.reasonCode,
         reasonDescription: body.reasonDescription,
@@ -343,11 +355,11 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
   server.put(
     '/rcm/claims/lifecycle/denials/:denialId/resolve',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const { duz } = getSession(request);
+      const { duz, tenantId } = getSession(request);
       const { denialId } = request.params as { denialId: string };
       const body = (request.body as any) || {};
 
-      const resolved = resolveDenial(denialId, duz, body.resolutionNote ?? '');
+      const resolved = resolveDenial(tenantId, denialId, duz, body.resolutionNote ?? '');
       if (!resolved) return reply.status(404).send({ ok: false, error: 'Denial not found' });
 
       appendRcmAudit('workqueue.resolved', {

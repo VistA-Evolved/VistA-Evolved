@@ -359,9 +359,10 @@ export function querySecurityEvents(opts?: {
 /**
  * Get aggregate counts by event type (for analytics).
  */
-export function getSecurityEventCounts(): Record<string, number> {
+export function getSecurityEventCounts(tenantId?: string): Record<string, number> {
   const counts: Record<string, number> = {};
   for (const evt of securityEventRing) {
+    if (tenantId && evt.tenantId !== tenantId) continue;
     counts[evt.eventType] = (counts[evt.eventType] || 0) + 1;
   }
   return counts;

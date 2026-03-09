@@ -66,6 +66,22 @@ function requireSession(request: FastifyRequest, reply: FastifyReply): SessionDa
   return s;
 }
 
+function requireTenantId(
+  request: FastifyRequest,
+  session: SessionData,
+  reply: FastifyReply
+): string | null {
+  const tenantId =
+    typeof session.tenantId === 'string' && session.tenantId.trim().length > 0
+      ? session.tenantId.trim()
+      : typeof (request as any).tenantId === 'string' && (request as any).tenantId.trim().length > 0
+        ? (request as any).tenantId.trim()
+        : null;
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
 /**
  * Require imaging_view permission — sends 403 if not authorized.
  * Checks role-based imaging RBAC + active break-glass grants.
@@ -74,6 +90,7 @@ function requireSession(request: FastifyRequest, reply: FastifyReply): SessionDa
 function requireImagingView(
   request: FastifyRequest,
   session: SessionData,
+  tenantId: string,
   reply: FastifyReply
 ): boolean {
   const allowed = hasImagingPermission(session, 'imaging_view');
@@ -81,7 +98,7 @@ function requireImagingView(
     imagingAuditDenied(
       'VIEW_STUDY',
       { duz: session.duz, name: session.userName || '', role: session.role || '' },
-      session.tenantId || 'default',
+      tenantId,
       { requestId: (request as any).requestId, sourceIp: request.ip }
     );
     reply.code(403).send({ ok: false, error: 'Imaging view permission required' });
@@ -97,6 +114,7 @@ function requireImagingView(
 function requireImagingAdmin(
   request: FastifyRequest,
   session: SessionData,
+  tenantId: string,
   reply: FastifyReply
 ): boolean {
   const allowed = hasImagingPermission(session, 'imaging_admin');
@@ -104,7 +122,7 @@ function requireImagingAdmin(
     imagingAuditDenied(
       'STOW_UPLOAD',
       { duz: session.duz, name: session.userName || '', role: session.role || '' },
-      session.tenantId || 'default',
+      tenantId,
       { requestId: (request as any).requestId, sourceIp: request.ip }
     );
     reply.code(403).send({ ok: false, error: 'Imaging admin permission required' });
@@ -333,7 +351,9 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   server.get('/imaging/dicom-web/studies', async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
-    if (!requireImagingView(request, session, reply)) return;
+    const tenantId = requireTenantId(request, session, reply);
+    if (!tenantId) return;
+    if (!requireImagingView(request, session, tenantId, reply)) return;
     if (!checkDicomwebRateLimit(request, session, reply)) return;
 
     // Build Orthanc path with query string
@@ -375,7 +395,7 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
       reply.header('X-Cache', 'MISS');
 
       // Phase 24: Hash-chained imaging audit
-      imagingAudit('SEARCH_STUDIES', buildImagingActor(session), session.tenantId || 'default', {
+      imagingAudit('SEARCH_STUDIES', buildImagingActor(session), tenantId, {
         requestId: (request as any).requestId,
         sourceIp: request.ip,
         detail: { query: qs },
@@ -406,14 +426,16 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   server.get('/imaging/dicom-web/studies/:studyUid/series', async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
-    if (!requireImagingView(request, session, reply)) return;
+    const tenantId = requireTenantId(request, session, reply);
+    if (!tenantId) return;
+    if (!requireImagingView(request, session, tenantId, reply)) return;
     if (!checkDicomwebRateLimit(request, session, reply)) return;
 
     const { studyUid } = request.params as any;
     const qs = new URL(request.url, 'http://localhost').search;
     const orthancPath = `${IMAGING_CONFIG.dicomWebRoot}/studies/${studyUid}/series${qs}`;
 
-    imagingAudit('VIEW_SERIES', buildImagingActor(session), session.tenantId || 'default', {
+    imagingAudit('VIEW_SERIES', buildImagingActor(session), tenantId, {
       studyInstanceUid: studyUid,
       requestId: (request as any).requestId,
       sourceIp: request.ip,
@@ -436,13 +458,15 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   server.get('/imaging/dicom-web/studies/:studyUid/metadata', async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
-    if (!requireImagingView(request, session, reply)) return;
+    const tenantId = requireTenantId(request, session, reply);
+    if (!tenantId) return;
+    if (!requireImagingView(request, session, tenantId, reply)) return;
     if (!checkDicomwebRateLimit(request, session, reply)) return;
 
     const { studyUid } = request.params as any;
     const orthancPath = `${IMAGING_CONFIG.dicomWebRoot}/studies/${studyUid}/metadata`;
 
-    imagingAudit('VIEW_STUDY', buildImagingActor(session), session.tenantId || 'default', {
+    imagingAudit('VIEW_STUDY', buildImagingActor(session), tenantId, {
       studyInstanceUid: studyUid,
       requestId: (request as any).requestId,
       sourceIp: request.ip,
@@ -468,7 +492,9 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
     async (request, reply) => {
       const session = requireSession(request, reply);
       if (!session) return;
-      if (!requireImagingView(request, session, reply)) return;
+      const tenantId = requireTenantId(request, session, reply);
+      if (!tenantId) return;
+      if (!requireImagingView(request, session, tenantId, reply)) return;
       if (!checkDicomwebRateLimit(request, session, reply)) return;
 
       const { studyUid, seriesUid } = request.params as any;
@@ -488,13 +514,15 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
     async (request, reply) => {
       const session = requireSession(request, reply);
       if (!session) return;
-      if (!requireImagingView(request, session, reply)) return;
+      const tenantId = requireTenantId(request, session, reply);
+      if (!tenantId) return;
+      if (!requireImagingView(request, session, tenantId, reply)) return;
       if (!checkDicomwebRateLimit(request, session, reply)) return;
 
       const { studyUid, seriesUid, instanceUid } = request.params as any;
       const orthancPath = `${IMAGING_CONFIG.dicomWebRoot}/studies/${studyUid}/series/${seriesUid}/instances/${instanceUid}`;
 
-      imagingAudit('VIEW_STUDY', buildImagingActor(session), session.tenantId || 'default', {
+      imagingAudit('VIEW_STUDY', buildImagingActor(session), tenantId, {
         studyInstanceUid: studyUid,
         requestId: (request as any).requestId,
         sourceIp: request.ip,
@@ -515,13 +543,15 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
     async (request, reply) => {
       const session = requireSession(request, reply);
       if (!session) return;
-      if (!requireImagingView(request, session, reply)) return;
+      const tenantId = requireTenantId(request, session, reply);
+      if (!tenantId) return;
+      if (!requireImagingView(request, session, tenantId, reply)) return;
       if (!checkDicomwebRateLimit(request, session, reply)) return;
 
       const { studyUid, seriesUid, instanceUid, frameList } = request.params as any;
       const orthancPath = `${IMAGING_CONFIG.dicomWebRoot}/studies/${studyUid}/series/${seriesUid}/instances/${instanceUid}/frames/${frameList}`;
 
-      imagingAudit('VIEW_STUDY', buildImagingActor(session), session.tenantId || 'default', {
+      imagingAudit('VIEW_STUDY', buildImagingActor(session), tenantId, {
         studyInstanceUid: studyUid,
         requestId: (request as any).requestId,
         sourceIp: request.ip,
@@ -540,12 +570,14 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   server.post('/imaging/dicom-web/studies', async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
-    if (!requireImagingAdmin(request, session, reply)) return;
+    const tenantId = requireTenantId(request, session, reply);
+    if (!tenantId) return;
+    if (!requireImagingAdmin(request, session, tenantId, reply)) return;
 
     const contentType = request.headers['content-type'] || 'application/dicom';
     const orthancPath = `${IMAGING_CONFIG.dicomWebRoot}/studies`;
 
-    imagingAudit('STOW_UPLOAD', buildImagingActor(session), session.tenantId || 'default', {
+    imagingAudit('STOW_UPLOAD', buildImagingActor(session), tenantId, {
       requestId: (request as any).requestId,
       sourceIp: request.ip,
       detail: { contentType },
@@ -572,7 +604,9 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   server.get('/imaging/orthanc/studies', async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
-    if (!requireImagingView(request, session, reply)) return;
+    const tenantId = requireTenantId(request, session, reply);
+    if (!tenantId) return;
+    if (!requireImagingView(request, session, tenantId, reply)) return;
 
     const orthancPath = '/studies?expand';
     await proxyToOrthanc(request, reply, orthancPath);
@@ -591,7 +625,9 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
 
     const session = requireSession(request, reply);
     if (!session) return;
-    if (!requireImagingAdmin(request, session, reply)) return;
+    const tenantId = requireTenantId(request, session, reply);
+    if (!tenantId) return;
+    if (!requireImagingAdmin(request, session, tenantId, reply)) return;
 
     try {
       const url = `${IMAGING_CONFIG.orthancUrl}/instances`;
@@ -610,7 +646,7 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
 
       const result = await upstream.json();
 
-      imagingAudit('STOW_UPLOAD', buildImagingActor(session), session.tenantId || 'default', {
+      imagingAudit('STOW_UPLOAD', buildImagingActor(session), tenantId, {
         requestId: (request as any).requestId,
         sourceIp: request.ip,
         detail: { action: 'demo-upload' },
@@ -637,7 +673,9 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
   server.get('/imaging/viewer', async (request, reply) => {
     const session = requireSession(request, reply);
     if (!session) return;
-    if (!requireImagingView(request, session, reply)) return;
+    const tenantId = requireTenantId(request, session, reply);
+    if (!tenantId) return;
+    if (!requireImagingView(request, session, tenantId, reply)) return;
 
     const { studyUid } = request.query as any;
     if (!studyUid) {
@@ -646,7 +684,7 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
 
     const viewerUrl = `${IMAGING_CONFIG.ohifUrl}/viewer?StudyInstanceUIDs=${studyUid}`;
 
-    imagingAudit('VIEWER_LAUNCH', buildImagingActor(session), session.tenantId || 'default', {
+    imagingAudit('VIEWER_LAUNCH', buildImagingActor(session), tenantId, {
       studyInstanceUid: studyUid,
       requestId: (request as any).requestId,
       sourceIp: request.ip,

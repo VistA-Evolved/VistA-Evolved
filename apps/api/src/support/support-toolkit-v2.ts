@@ -116,20 +116,16 @@ function genId(prefix: string): string {
 export function generateDiagnosticBundle(tenantId: string, generatedBy: string): DiagnosticBundle {
   const now = new Date().toISOString();
   const sections: DiagnosticSection[] = [];
+  const tenantBundleCount = Array.from(bundleStore.values()).filter((bundle) => bundle.tenantId === tenantId).length;
 
   // Section 1: Runtime
   sections.push({
     name: 'runtime',
-    status: 'healthy',
+    status: 'unknown',
     data: {
       nodeVersion: process.version,
       platform: process.platform,
-      uptime: process.uptime(),
-      memoryUsage: {
-        heapUsed: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
-        heapTotal: Math.round(process.memoryUsage().heapTotal / 1024 / 1024),
-        rss: Math.round(process.memoryUsage().rss / 1024 / 1024),
-      },
+      note: 'Platform uptime and memory metrics are available via /posture/performance.',
     },
     collectedAt: now,
   });
@@ -179,9 +175,8 @@ export function generateDiagnosticBundle(tenantId: string, generatedBy: string):
     name: 'stores',
     status: 'healthy',
     data: {
-      bundleStoreSize: bundleStore.size,
-      correlationStoreSize: correlationStore.size,
-      note: 'Full store inventory available via /posture endpoints',
+      tenantBundleCount,
+      note: 'Tenant-scoped bundle count only. Platform-wide store inventory is available via /posture endpoints.',
     },
     collectedAt: now,
   });

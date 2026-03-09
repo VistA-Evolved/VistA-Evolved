@@ -12,7 +12,7 @@ import type { FastifyInstance } from 'fastify';
 import { getEffectivePolicy } from '../middleware/country-policy-hook.js';
 import {
   createDsarRequest,
-  getDsarRequest,
+  getDsarRequestForTenant,
   listDsarRequests,
   transitionDsar,
   getDsarStats,
@@ -29,18 +29,42 @@ const VALID_TYPES: DsarType[] = [
 ];
 
 export async function dsarRoutes(app: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: any): string | null {
+    const requestTenantId =
+      typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+        ? request.tenantId.trim()
+        : undefined;
+    const sessionTenantId =
+      typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+        ? request.session.tenantId.trim()
+        : undefined;
+    const headerTenantId = request?.headers?.['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return requestTenantId || sessionTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(request: any, reply: any): string | null {
+    const tenantId = resolveTenantId(request);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
   // POST /dsar/requests — create a DSAR request
   app.post('/dsar/requests', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
-    const { tenantId, requestType, subjectRef, requestedBy, dueDays } = body as Record<
+    const { requestType, subjectRef, requestedBy, dueDays } = body as Record<
       string,
       string
     >;
 
-    if (!tenantId || !requestType || !subjectRef || !requestedBy) {
+    if (!requestType || !subjectRef || !requestedBy) {
       return reply.code(400).send({
         ok: false,
-        error: 'tenantId, requestType, subjectRef, requestedBy required',
+        error: 'requestType, subjectRef, requestedBy required',
       });
     }
 
@@ -75,6 +99,8 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
     const daysUntilDue = parseInt(dueDays || '30', 10);
     const dueDate = new Date(Date.now() + daysUntilDue * 86_400_000).toISOString();
 
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const req = createDsarRequest({
       tenantId,
       requestType: requestType as DsarType,
@@ -95,12 +121,10 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
   // GET /dsar/requests — list DSAR requests
   app.get('/dsar/requests', async (request, reply) => {
     const query = (request.query as Record<string, string>) || {};
-    const { tenantId, status, requestType, limit } = query;
+    const { status, requestType, limit } = query;
 
-    if (!tenantId) {
-      return reply.code(400).send({ ok: false, error: 'tenantId required' });
-    }
-
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const requests = listDsarRequests(tenantId, {
       status: status as any,
       requestType: requestType as any,
@@ -113,7 +137,9 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
   // GET /dsar/requests/:id — get a DSAR request
   app.get('/dsar/requests/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
-    const req = getDsarRequest(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const req = getDsarRequestForTenant(tenantId, id);
     if (!req) {
       return reply.code(404).send({ ok: false, error: 'DSAR request not found' });
     }
@@ -124,9 +150,11 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
   app.post('/dsar/requests/:id/process', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as Record<string, unknown>) || {};
-    const by = (body.by as string) || 'admin';
+    const by = (body.by as string) || (request as any)?.session?.duz || 'admin';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
-    const updated = transitionDsar(id, 'processing', by);
+    const updated = transitionDsar(id, 'processing', by, undefined, tenantId);
     if (!updated) {
       return reply.code(404).send({ ok: false, error: 'Not found or invalid transition' });
     }
@@ -137,9 +165,11 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
   app.post('/dsar/requests/:id/fulfill', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as Record<string, unknown>) || {};
-    const by = (body.by as string) || 'admin';
+    const by = (body.by as string) || (request as any)?.session?.duz || 'admin';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
-    const updated = transitionDsar(id, 'fulfilled', by);
+    const updated = transitionDsar(id, 'fulfilled', by, undefined, tenantId);
     if (!updated) {
       return reply.code(404).send({ ok: false, error: 'Not found or invalid transition' });
     }
@@ -150,10 +180,18 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
   app.post('/dsar/requests/:id/deny', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as Record<string, unknown>) || {};
-    const by = (body.by as string) || 'admin';
+    const by = (body.by as string) || (request as any)?.session?.duz || 'admin';
     const reason = (body.reason as string) || 'Denied by administrator';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
-    const updated = transitionDsar(id, 'denied', by, { denialReason: reason });
+    const updated = transitionDsar(
+      id,
+      'denied',
+      by,
+      { denialReason: reason },
+      tenantId
+    );
     if (!updated) {
       return reply.code(404).send({ ok: false, error: 'Not found or invalid transition' });
     }
@@ -164,10 +202,18 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
   app.post('/dsar/requests/:id/export', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as Record<string, unknown>) || {};
-    const by = (body.by as string) || 'admin';
+    const by = (body.by as string) || (request as any)?.session?.duz || 'admin';
     const exportRef = (body.exportRef as string) || null;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
-    const updated = transitionDsar(id, 'exported', by, { exportRef: exportRef || undefined });
+    const updated = transitionDsar(
+      id,
+      'exported',
+      by,
+      { exportRef: exportRef || undefined },
+      tenantId
+    );
     if (!updated) {
       return reply.code(404).send({ ok: false, error: 'Not found or invalid transition' });
     }
@@ -176,11 +222,8 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
 
   // GET /dsar/stats — DSAR statistics for a tenant
   app.get('/dsar/stats', async (request, reply) => {
-    const query = (request.query as Record<string, string>) || {};
-    const { tenantId } = query;
-    if (!tenantId) {
-      return reply.code(400).send({ ok: false, error: 'tenantId required' });
-    }
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const stats = getDsarStats(tenantId);
     return { ok: true, ...stats };
   });

@@ -240,6 +240,11 @@ export const KNOWN_RPCS: { rpc: string; domain: string; fallback?: string; descr
       domain: 'interop',
       description: 'HL7 message detail (ZVEMIOP)',
     },
+    {
+      rpc: 'VE PROBLEM ADD',
+      domain: 'problems',
+      description: 'Write-back: add problem via native GMPL wrapper (ZVEPROBADD)',
+    },
     { rpc: 'ZVE MAIL FOLDERS', domain: 'messaging', description: 'MailMan folders (ZVEMSGR)' },
     { rpc: 'ZVE MAIL LIST', domain: 'messaging', description: 'MailMan message list (ZVEMSGR)' },
     { rpc: 'ZVE MAIL GET', domain: 'messaging', description: 'Get MailMan message (ZVEMSGR)' },

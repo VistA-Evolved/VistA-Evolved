@@ -28,7 +28,11 @@ import { registerTenantHook } from '../platform/pg/tenant-middleware.js';
  */
 export async function registerPlugins(server: FastifyInstance): Promise<void> {
   // Core Fastify plugins
-  server.register(cors, { origin: corsOriginValidator as any, credentials: true });
+  server.register(cors, {
+    origin: corsOriginValidator as any,
+    credentials: true,
+    methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  });
   server.register(cookie);
   server.register(websocket);
 

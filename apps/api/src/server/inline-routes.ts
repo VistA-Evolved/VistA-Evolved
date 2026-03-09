@@ -47,12 +47,41 @@ import {
   getNoFakeSuccessAuditReport,
 } from '../middleware/no-fake-success.js';
 import { safeErr } from '../lib/safe-error.js';
+import { createDraft } from '../routes/write-backs.js';
 
 /** Extract audit actor from request session. */
 function auditActor(request: any): { duz: string; name?: string; role?: string } {
   const s = request.session;
   if (s) return { duz: s.duz, name: s.userName, role: s.role };
   return { duz: 'system' };
+}
+
+function isInlineRpcMissingLine(line: string): boolean {
+  return (
+    line.includes("doesn't exist") ||
+    line.includes('doesn\u0027t exist') ||
+    line.startsWith('CRemote') ||
+    line.includes('not found')
+  );
+}
+
+function hasInlineBrokerExecutionError(lines: string[]): boolean {
+  return lines.some((line) => /M\s+ERROR|%YDB-E-|LVUNDEF|LAST REF=|Remote Procedure/i.test(line));
+}
+
+function parseAllergyRows(lines: string[]) {
+  return lines
+    .filter((line) => line.trim())
+    .map((line) => {
+      const parts = line.split('^');
+      const id = parts[0]?.trim();
+      const allergen = parts[1]?.trim() || '';
+      const severity = parts[2]?.trim() || '';
+      const reactions = parts[3]?.trim() || '';
+      if (!id) return null;
+      return { id, allergen, severity, reactions };
+    })
+    .filter((row) => row !== null);
 }
 
 /* RPC catalog cache */
@@ -120,6 +149,203 @@ function matchQuickOrder(drug: string): (typeof QUICK_ORDERS)[number] | null {
     }
   }
   return null;
+}
+
+function formatVistaDateTime(value: string): string {
+  const input = (value || '').trim();
+  if (!input || input.includes('-') || input.length < 7) return input;
+  const [datePart, timePart] = input.split('.');
+  if (datePart.length < 7) return input;
+  const year = parseInt(datePart.substring(0, 3), 10) + 1700;
+  const month = datePart.substring(3, 5);
+  const day = datePart.substring(5, 7);
+  let output = `${year}-${month}-${day}`;
+  if (timePart && timePart.length >= 4) {
+    output += ` ${timePart.substring(0, 2)}:${timePart.substring(2, 4)}`;
+  }
+  return output;
+}
+
+function nonEmptyLines(lines: string[]): string[] {
+  return lines.filter((line) => line.trim().length > 0);
+}
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function hasVistaExecutionError(lines: string[]): boolean {
+  return lines.some((line) => /M  ERROR=|%YDB-E-|LVUNDEF/i.test(line));
+}
+
+function responseMentionsSurgeryCase(lines: string[], caseId: string): boolean {
+  return lines.some(
+    (line) =>
+      line.includes(`${caseId};SRF(`) || line.includes(`Case #: ${caseId}`) || line.startsWith(`${caseId}^`)
+  );
+}
+
+function normalizeMedicationOrderText(value: string | undefined): string {
+  return String(value || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function parseMedicationOrderDetail(lines: string[]): {
+  displayGroup: string;
+  packageRef?: string;
+  textFromDetail?: string;
+} {
+  const metaLine = lines.find((line) => line.startsWith('~'));
+  const textFromDetail = lines
+    .filter((line) => line.startsWith('t'))
+    .map((line) => normalizeMedicationOrderText(line.slice(1)))
+    .filter(Boolean)
+    .join(' ');
+  const parts = metaLine ? metaLine.slice(1).split('^') : [];
+  const packageCandidate = parts[parts.length - 1]?.trim() || '';
+  return {
+    displayGroup: parts[1]?.trim() || '',
+    packageRef: /^[A-Z0-9]{2,8}$/.test(packageCandidate) ? packageCandidate : undefined,
+    textFromDetail: textFromDetail || undefined,
+  };
+}
+
+function formatProblemOnsetFromFileMan(onsetFm?: string): string | undefined {
+  if (!onsetFm || onsetFm.length < 3 || !/^\d+/.test(onsetFm)) return undefined;
+
+  const year = parseInt(onsetFm.substring(0, 3), 10) + 1700;
+  const month = onsetFm.length >= 5 ? onsetFm.substring(3, 5) : '';
+  const day = onsetFm.length >= 7 ? onsetFm.substring(5, 7) : '';
+
+  if (month && month !== '00' && day && day !== '00') {
+    return `${year}-${month}-${day}`;
+  }
+  if (month && month !== '00') {
+    return `${year}-${month}`;
+  }
+  return String(year);
+}
+
+function inferMedicationOrderType(
+  packageRef: string | undefined,
+  displayGroup: string | undefined,
+  text: string
+): string | undefined {
+  const signal = `${packageRef || ''} ${displayGroup || ''} ${text}`.toUpperCase();
+  if (/PSO|PSJ|MED|TABLET|CAP|INJ|PATCH|CREAM|REFILL|RX/.test(signal)) return 'med';
+  if (/LR|LAB|CBC|BMP|CMP|CHEM|CULTURE|HEMOGLOBIN|PLATELET|PANEL/.test(signal)) return 'lab';
+  if (/RA|RAD|IMAG|XRAY|X-RAY|MRI|CT|ULTRASOUND|MAMMO|MAG/.test(signal)) return 'imaging';
+  if (/GMRC|CONSULT|REFERRAL|SERVICE/.test(signal)) return 'consult';
+  return undefined;
+}
+
+function normalizeMedicationOrderStatus(rawStatus: string | undefined, displayText?: string): string {
+  if ((displayText || '').toUpperCase().includes('*UNSIGNED*')) return 'unsigned';
+  const normalized = rawStatus?.trim().toLowerCase();
+  return normalized || 'active';
+}
+
+async function buildMedicationFallbackFromOrders(dfn: string): Promise<{
+  results: Array<{ id: string; name: string; sig: string; status: string }>;
+  rpcUsed: string[];
+}> {
+  const orderLines = await safeCallRpc('ORWORR AGET', [dfn, '2', '', '', '']);
+  const rpcUsedSet = new Set<string>(['ORWORR AGET']);
+  const meds = new Map<string, { id: string; name: string; sig: string; status: string }>();
+
+  for (const line of orderLines) {
+    if (!line || line.startsWith('-1')) continue;
+    const parts = line.split('^');
+    const orderIen = parts[0]?.trim() || '';
+    if (!orderIen) continue;
+
+    let displayGroup = parts[1]?.trim() || '';
+    let packageRef: string | undefined;
+    let drugName = normalizeMedicationOrderText(parts[3]);
+    let sig = '';
+    let detailText = '';
+
+    try {
+      const detailLines = await safeCallRpc('ORWORR GETBYIFN', [orderIen]);
+      if (detailLines.length > 0 && !detailLines[0]?.startsWith('-1')) {
+        const detail = parseMedicationOrderDetail(detailLines);
+        displayGroup = detail.displayGroup || displayGroup;
+        packageRef = detail.packageRef;
+        detailText = detail.textFromDetail || '';
+        rpcUsedSet.add('ORWORR GETBYIFN');
+      }
+    } catch {
+      // Keep order row truthful even if enrichment fails.
+    }
+
+    try {
+      const txtLines = await safeCallRpc('ORWORR GETTXT', [orderIen]);
+      const normalizedTxt = txtLines.map((entry) => normalizeMedicationOrderText(entry)).filter(Boolean);
+      if (normalizedTxt.length > 0 && !normalizedTxt[0].startsWith('-1')) {
+        drugName = normalizedTxt[0] || drugName;
+        sig = normalizedTxt.slice(1).join(' ');
+        detailText = normalizedTxt.join(' ');
+        rpcUsedSet.add('ORWORR GETTXT');
+      }
+    } catch {
+      // Keep fallback truthful even if GETTXT is unavailable.
+    }
+
+    const displayText = normalizeMedicationOrderText(detailText || drugName);
+    if (inferMedicationOrderType(packageRef, displayGroup, displayText) !== 'med') continue;
+
+    const baseOrderIen = orderIen.split(';')[0] || orderIen;
+    meds.set(baseOrderIen, {
+      id: baseOrderIen,
+      name: drugName || detailText || `Medication order ${baseOrderIen}`,
+      sig: sig || detailText,
+      status: normalizeMedicationOrderStatus(parts[4], displayText),
+    });
+  }
+
+  return { results: Array.from(meds.values()), rpcUsed: Array.from(rpcUsedSet) };
+}
+
+function parseSurgeryLinkedDocuments(lines: string[], selectedId: string) {
+  const documents: Array<{ id: string; title: string; date?: string; status?: string; raw: string }> = [];
+  const candidateIds: string[] = [];
+  const seenDocs = new Set<string>();
+  const seenCandidates = new Set<string>();
+
+  const addCandidate = (value: string) => {
+    if (!/^\d+$/.test(value) || seenCandidates.has(value)) return;
+    seenCandidates.add(value);
+    candidateIds.push(value);
+  };
+
+  addCandidate(selectedId);
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    if (!line.includes('^')) continue;
+    const parts = line.split('^');
+    const id = (parts[0] || '').trim();
+    const title = (parts[1] || '').trim();
+    const date = formatVistaDateTime(parts[2] || '');
+    const status = (parts[6] || '').trim() || undefined;
+    if (/^\d+$/.test(id)) addCandidate(id);
+    if (!/^\d+$/.test(id) || !title) continue;
+    const docKey = `${id}|${title}`;
+    if (seenDocs.has(docKey)) continue;
+    seenDocs.add(docKey);
+    documents.push({ id, title, date: date || undefined, status, raw: rawLine });
+  }
+
+  return { documents, candidateIds };
+}
+
+async function reconnectSurgeryBroker(): Promise<void> {
+  try {
+    disconnect();
+  } catch {
+    // Best-effort cleanup before the next surgery RPC probe.
+  }
 }
 
 /**
@@ -514,7 +740,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     }
   });
 
-  server.get('/vista/allergies', async (request) => {
+  server.get('/vista/allergies', async (request, reply) => {
     const dfn = (request.query as any)?.dfn;
     if (!dfn || !/^\d+$/.test(String(dfn))) {
       return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=1' };
@@ -530,21 +756,35 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     }
     const RPC_NAME = 'ORQQAL LIST';
     try {
-      await connect();
-      const lines = await callRpc(RPC_NAME, [String(dfn)]);
-      disconnect();
-      const results = lines
+      await requireSession(request, reply);
+      if (reply.sent) return;
 
-        .map((line) => {
-          const parts = line.split('^');
-          const id = parts[0]?.trim();
-          const allergen = parts[1]?.trim() || '';
-          const severity = parts[2]?.trim() || '';
-          const reactions = parts[3]?.trim() || '';
-          if (!id) return null;
-          return { id, allergen, severity, reactions };
-        })
-        .filter((r) => r !== null);
+      const loadAllergies = async () => {
+        const lines = await safeCallRpc(RPC_NAME, [String(dfn)]);
+        const contaminated = hasInlineBrokerExecutionError(lines) || lines.some(isInlineRpcMissingLine);
+        return { lines, contaminated };
+      };
+
+      let allergyLoad = await loadAllergies();
+      if (allergyLoad.contaminated) {
+        await new Promise((resolve) => setTimeout(resolve, 150));
+        allergyLoad = await loadAllergies();
+      }
+
+      if (allergyLoad.contaminated) {
+        return {
+          ok: true,
+          count: 0,
+          results: [],
+          rpcUsed: RPC_NAME,
+          status: 'integration-pending',
+          pendingTargets: [RPC_NAME],
+          pendingNote:
+            'Live VistA allergy data returned broker/runtime error text during this request, so the response was withheld instead of showing a fake allergy row.',
+        };
+      }
+
+      const results = parseAllergyRows(allergyLoad.lines);
       audit('phi.allergies-view', 'success', auditActor(request), {
         patientDfn: String(dfn),
         requestId: (request as any).requestId,
@@ -553,11 +793,15 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       });
       return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
     } catch (err: any) {
-      disconnect();
       return {
         ok: false,
         error: safeErr(err),
-        hint: 'Ensure VistA RPC Broker is running on 127.0.0.1:9430 and credentials are correct',
+        rpcUsed: RPC_NAME,
+        status: 'request-failed',
+        pendingTargets: [RPC_NAME],
+        pendingNote: 'Live VistA allergies could not be retrieved for this patient during this request.',
+        results: [],
+        hint: 'Ensure VistA RPC Broker is running and credentials are correct',
       };
     }
   });
@@ -677,9 +921,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     }
     const RPC_NAME = 'ORQQVI VITALS';
     try {
-      await connect();
-      const lines = await callRpc(RPC_NAME, [String(dfn), '3000101', '3991231']);
-      disconnect();
+      const lines = await safeCallRpc(RPC_NAME, [String(dfn), '3000101', '3991231']);
       const results = lines
         .map((line) => {
           const parts = line.split('^');
@@ -713,8 +955,15 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       });
       return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
     } catch (err: any) {
-      disconnect();
-      return { ok: false, error: safeErr(err) };
+      return {
+        ok: false,
+        error: safeErr(err),
+        rpcUsed: RPC_NAME,
+        status: 'request-failed',
+        pendingTargets: [RPC_NAME],
+        pendingNote: 'Live VistA vitals could not be retrieved for this patient during this request.',
+        results: [],
+      };
     }
   });
 
@@ -774,10 +1023,8 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     }
     const RPC_NAME = 'TIU DOCUMENTS BY CONTEXT';
     try {
-      await connect();
-      const signedLines = await callRpc(RPC_NAME, ['3', '1', String(dfn), '', '', '0', '0', 'D']);
-      const unsignedLines = await callRpc(RPC_NAME, ['3', '2', String(dfn), '', '', '0', '0', 'D']);
-      disconnect();
+      const signedLines = await safeCallRpc(RPC_NAME, ['3', '1', String(dfn), '', '', '0', '0', 'D']);
+      const unsignedLines = await safeCallRpc(RPC_NAME, ['3', '2', String(dfn), '', '', '0', '0', 'D']);
       const seenIens = new Set<string>();
       const allLines: string[] = [];
       for (const line of [...unsignedLines, ...signedLines]) {
@@ -826,8 +1073,15 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       });
       return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
     } catch (err: any) {
-      disconnect();
-      return { ok: false, error: safeErr(err) };
+      return {
+        ok: false,
+        error: safeErr(err),
+        rpcUsed: RPC_NAME,
+        status: 'request-failed',
+        pendingTargets: [RPC_NAME],
+        pendingNote: 'Live VistA notes could not be retrieved for this patient during this request.',
+        results: [],
+      };
     }
   });
 
@@ -923,12 +1177,10 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       return { ok: false, error: safeErr(err) };
     }
     try {
-      await connect();
-      const activeLines = await callRpc('ORWPS ACTIVE', [String(dfn)]);
+      const activeLines = await safeCallRpc('ORWPS ACTIVE', [String(dfn)]);
       if (activeLines.length > 0 && activeLines[0].startsWith('-1')) {
         const errMsg = activeLines[0].split('^').slice(1).join('^') || 'Unknown VistA error';
-        disconnect();
-        return { ok: false, error: errMsg, rpcUsed: 'ORWPS ACTIVE' };
+        return { ok: false, error: errMsg, rpcUsed: ['ORWPS ACTIVE'] };
       }
       interface MedEntry {
         orderIEN: string;
@@ -963,35 +1215,64 @@ export function registerInlineRoutes(server: FastifyInstance): void {
           else if (trimmed.startsWith('Qty:')) current.qty = trimmed.replace(/^Qty:\s*/, '').trim();
         }
       }
+
+      const rpcUsedSet = new Set<string>(['ORWPS ACTIVE']);
       for (const med of meds) {
         if (!med.drugName && med.orderIEN && /^\d+$/.test(med.orderIEN)) {
           try {
-            const txtLines = await callRpc('ORWORR GETTXT', [med.orderIEN]);
+            const txtLines = await safeCallRpc('ORWORR GETTXT', [med.orderIEN]);
             if (txtLines.length > 0 && !txtLines[0].startsWith('-1')) {
               med.drugName = txtLines[0].trim();
               if (!med.sig && txtLines[1]) med.sig = txtLines[1].trim();
+              rpcUsedSet.add('ORWORR GETTXT');
             }
           } catch {
             /* non-fatal */
           }
         }
       }
-      disconnect();
-      const results = meds.map((m) => ({
+
+      let results = meds.map((m) => ({
         id: m.rxId || m.orderIEN,
         name: m.drugName || '(unknown medication)',
         sig: m.sig,
         status: m.status.toLowerCase() || 'active',
       }));
+
+      let fallbackUsed = false;
+      let fallbackReason: string | undefined;
+
+      if (results.length === 0) {
+        for (let attempt = 0; attempt < 2 && results.length === 0; attempt += 1) {
+          if (attempt > 0) {
+            await delay(150);
+          }
+          const fallback = await buildMedicationFallbackFromOrders(String(dfn));
+          for (const rpc of fallback.rpcUsed) rpcUsedSet.add(rpc);
+          if (fallback.results.length > 0) {
+            results = fallback.results;
+            fallbackUsed = true;
+            fallbackReason =
+              'ORWPS ACTIVE returned no active medication rows; medication list synthesized from live active CPRS medication orders.';
+          }
+        }
+      }
+
       audit('phi.medications-view', 'success', auditActor(request), {
         patientDfn: String(dfn),
         requestId: (request as any).requestId,
         sourceIp: request.ip,
         detail: { count: results.length },
       });
-      return { ok: true, count: results.length, results, rpcUsed: 'ORWPS ACTIVE' };
+      return {
+        ok: true,
+        count: results.length,
+        results,
+        rpcUsed: Array.from(rpcUsedSet),
+        fallbackUsed,
+        fallbackReason,
+      };
     } catch (err: any) {
-      disconnect();
       return { ok: false, error: safeErr(err) };
     }
   });
@@ -1000,6 +1281,10 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     const body = request.body as any;
     const dfn = body?.dfn;
     const drug = body?.drug;
+    const tenantId =
+      typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+        ? request.session.tenantId.trim()
+        : 'default';
     if (!dfn || !/^\d+$/.test(String(dfn)))
       return { ok: false, error: 'Missing or non-numeric dfn' };
     if (!drug || typeof drug !== 'string' || drug.trim().length < 2)
@@ -1040,7 +1325,35 @@ export function registerInlineRoutes(server: FastifyInstance): void {
           await callRpc('ORWDX UNLOCK', [String(dfn)]);
         } catch {}
         disconnect();
-        return { ok: false, error: 'AUTOACK failed: ' + safeErr(autoackErr) };
+        const draft = createDraft(
+          'order-sign',
+          String(dfn),
+          'ORWDXM AUTOACK',
+          {
+            action: 'meds-quick-order',
+            drug: drug.trim(),
+            quickOrderIen: qo.ien,
+            attemptedAt: new Date().toISOString(),
+            failure: safeErr(autoackErr),
+          },
+          tenantId
+        );
+        audit('clinical.medication-add', 'success', auditActor(request), {
+          patientDfn: String(dfn),
+          requestId: (request as any).requestId,
+          sourceIp: request.ip,
+          detail: { quickOrder: qo.name, draftId: draft.id, mode: 'draft' },
+        });
+        return {
+          ok: true,
+          mode: 'draft',
+          draftId: draft.id,
+          status: 'sync-pending',
+          syncPending: true,
+          quickOrder: qo.name,
+          message: 'Medication order saved as server-side draft. ORWDXM AUTOACK sync pending.',
+          rpcUsed: 'ORWDXM AUTOACK',
+        };
       }
       try {
         await callRpc('ORWDX UNLOCK', [String(dfn)]);
@@ -1048,10 +1361,42 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       disconnect();
       const raw = autoackLines.join('\n').trim();
       if (!raw || raw === '0' || raw.startsWith('-1'))
-        return {
-          ok: false,
-          error: 'Order was not created. AUTOACK returned: ' + (raw || '(empty)'),
-        };
+        {
+          const draft = createDraft(
+            'order-sign',
+            String(dfn),
+            'ORWDXM AUTOACK',
+            {
+              action: 'meds-quick-order',
+              drug: drug.trim(),
+              quickOrderIen: qo.ien,
+              attemptedAt: new Date().toISOString(),
+              autoackRaw: raw || '(empty)',
+            },
+            tenantId
+          );
+          audit('clinical.medication-add', 'success', auditActor(request), {
+            patientDfn: String(dfn),
+            requestId: (request as any).requestId,
+            sourceIp: request.ip,
+            detail: {
+              quickOrder: qo.name,
+              draftId: draft.id,
+              mode: 'draft',
+              autoackRaw: raw || '(empty)',
+            },
+          });
+          return {
+            ok: true,
+            mode: 'draft',
+            draftId: draft.id,
+            status: 'sync-pending',
+            syncPending: true,
+            quickOrder: qo.name,
+            message: 'Medication order saved as server-side draft. ORWDXM AUTOACK did not return a live order.',
+            rpcUsed: 'ORWDXM AUTOACK',
+          };
+        }
       const orderIEN = (raw.split(/[\^;]/)[0]?.trim() || raw).replace(/^~/, '');
       audit('clinical.medication-add', 'success', auditActor(request), {
         patientDfn: String(dfn),
@@ -1130,14 +1475,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
           const icdCode = parts[3]?.trim() || '';
           const onsetFm = parts[4]?.trim() || '';
           if (!ien || !text || !/^\d+$/.test(ien)) return null;
-          // Convert FileMan date (YYYMMDD where YYY = years since 1700)
-          let onset: string | undefined;
-          if (onsetFm && onsetFm.length >= 7 && /^\d{7}/.test(onsetFm)) {
-            const y = parseInt(onsetFm.substring(0, 3), 10) + 1700;
-            const m = onsetFm.substring(3, 5);
-            const d = onsetFm.substring(5, 7);
-            onset = `${y}-${m}-${d}`;
-          }
+          const onset = formatProblemOnsetFromFileMan(onsetFm);
           let displayStatus = 'active';
           if (statusFlag === 'I') displayStatus = 'inactive';
           else if (statusFlag === 'R') displayStatus = 'resolved';
@@ -1205,22 +1543,47 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     }
   });
 
-  server.get('/vista/consults', async (request) => {
+  server.get('/vista/consults', async (request, reply) => {
     const { dfn } = request.query as any;
     if (!dfn || !/^\d+$/.test(String(dfn)))
       return { ok: false, error: 'Missing or non-numeric dfn' };
-    try {
-      validateCredentials();
-    } catch (err: any) {
-      return { ok: false, error: safeErr(err) };
-    }
+    await requireSession(request, reply);
     const RPC_NAME = 'ORQQCN LIST';
+    const normalizeConsultStatus = (
+      rawStatus: string
+    ): { label: string; code: string; category: 'pending' | 'complete' | 'unknown' } => {
+      const code = rawStatus.trim().toLowerCase();
+      switch (code) {
+        case 'a':
+          return { label: 'Active', code, category: 'pending' };
+        case 'p':
+        case 'pr':
+          return { label: 'Pending', code, category: 'pending' };
+        case 's':
+          return { label: 'Scheduled', code, category: 'pending' };
+        case 'ip':
+          return { label: 'In Progress', code, category: 'pending' };
+        case 'c':
+          return { label: 'Complete', code, category: 'complete' };
+        case 'dc':
+          return { label: 'Discontinued', code, category: 'complete' };
+        case 'x':
+        case 'ca':
+          return { label: 'Cancelled', code, category: 'complete' };
+        case 'h':
+          return { label: 'On Hold', code, category: 'pending' };
+        default:
+          return {
+            label: rawStatus.trim() || 'Unknown',
+            code,
+            category: code ? 'unknown' : 'unknown',
+          };
+      }
+    };
     try {
-      await connect();
-      const lines = await callRpc(RPC_NAME, [String(dfn), '', '', '', '']);
-      disconnect();
+      const lines = await safeCallRpc(RPC_NAME, [String(dfn), '', '', '', '']);
       if (lines.length === 0 || (lines.length === 1 && lines[0].startsWith('<')))
-        return { ok: true, count: 0, results: [], rpcUsed: RPC_NAME };
+        return { ok: true, count: 0, results: [], rpcUsed: [RPC_NAME], status: 'ok-empty' };
       const results = lines
         .map((line) => {
           const p = line.split('^');
@@ -1236,37 +1599,51 @@ export function registerInlineRoutes(server: FastifyInstance): void {
             date = `${y}-${m}-${d}`;
             if (tp && tp.length >= 4) date += ` ${tp.substring(0, 2)}:${tp.substring(2, 4)}`;
           }
-          const status = (p[2] || '').trim();
+          const statusInfo = normalizeConsultStatus((p[2] || '').trim());
           const service = (p[3] || '').trim();
           const typeStr = (p[4] || '').trim();
           const typeCode = (p[8] || '').trim();
-          return { id, date, status, service, type: typeStr || 'Consult', typeCode };
+          return {
+            id,
+            date,
+            status: statusInfo.label,
+            statusCode: statusInfo.code,
+            statusCategory: statusInfo.category,
+            service,
+            type: typeStr || 'Consult',
+            typeCode,
+          };
         })
         .filter(Boolean);
-      return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
+      return { ok: true, count: results.length, results, rpcUsed: [RPC_NAME], status: 'ok' };
     } catch (err: any) {
-      disconnect();
-      return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
+      return {
+        ok: false,
+        error: safeErr(err),
+        rpcUsed: [RPC_NAME],
+        status: 'request-failed',
+        pendingTargets: ['ORQQCN GET CONSULTS'],
+        pendingNote: 'Live consult read failed at runtime after session authentication.',
+        results: [],
+      };
     }
   });
 
-  server.get('/vista/consults/detail', async (request) => {
+  server.get('/vista/consults/detail', async (request, reply) => {
     const { id } = request.query as any;
     if (!id || !/^\d+$/.test(String(id)))
       return { ok: false, error: 'Missing or non-numeric consult id' };
+    await requireSession(request, reply);
     try {
-      validateCredentials();
+      const lines = await safeCallRpc('ORQQCN DETAIL', [String(id)]);
+      return { ok: true, text: lines.join('\n'), rpcUsed: ['ORQQCN DETAIL'] };
     } catch (err: any) {
-      return { ok: false, error: safeErr(err) };
-    }
-    try {
-      await connect();
-      const lines = await callRpc('ORQQCN DETAIL', [String(id)]);
-      disconnect();
-      return { ok: true, text: lines.join('\n'), rpcUsed: 'ORQQCN DETAIL' };
-    } catch (err: any) {
-      disconnect();
-      return { ok: false, error: safeErr(err) };
+      return {
+        ok: false,
+        error: safeErr(err),
+        rpcUsed: ['ORQQCN DETAIL'],
+        status: 'request-failed',
+      };
     }
   });
 
@@ -1281,9 +1658,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     }
     const RPC_NAME = 'ORWSR LIST';
     try {
-      await connect();
-      const lines = await callRpc(RPC_NAME, [String(dfn), '', '', '-1', '999']);
-      disconnect();
+      const lines = await safeCallRpc(RPC_NAME, [String(dfn), '', '', '-1', '999']);
       if (lines.length === 0 || (lines.length === 1 && !lines[0].trim()))
         return { ok: true, count: 0, results: [], rpcUsed: RPC_NAME };
       const results = lines
@@ -1293,26 +1668,151 @@ export function registerInlineRoutes(server: FastifyInstance): void {
           const id = p[0]?.trim();
           if (!id) return null;
           const procedure = (p[1] || '').trim();
-          let date = (p[2] || '').trim();
-          if (date && date.length >= 7 && !date.includes('-')) {
-            const [dp, tp] = date.split('.');
-            const y = parseInt(dp.substring(0, 3), 10) + 1700;
-            const m = dp.substring(3, 5);
-            const d = dp.substring(5, 7);
-            date = `${y}-${m}-${d}`;
-            if (tp && tp.length >= 4) date += ` ${tp.substring(0, 2)}:${tp.substring(2, 4)}`;
-          }
+          const date = formatVistaDateTime(p[2] || '');
           const surgeonField = (p[3] || '').trim();
           const surgeon = surgeonField.includes(';')
             ? surgeonField.split(';')[1] || surgeonField
             : surgeonField;
-          return { id, procedure, date, surgeon, status: 'Complete' };
+          return { id, caseNum: id, procedure, date, surgeon, status: 'Complete' };
         })
         .filter(Boolean);
       return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
     } catch (err: any) {
-      disconnect();
-      return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
+      return {
+        ok: false,
+        error: safeErr(err),
+        rpcUsed: [RPC_NAME],
+        status: 'request-failed',
+        pendingTargets: ['ORWSR LIST'],
+        pendingNote: 'Live surgery list failed at runtime after VistA authentication.',
+        results: [],
+      };
+    }
+  });
+
+  server.get('/vista/surgery/detail', async (request) => {
+    const { id, dfn } = request.query as any;
+    if (!id || !/^\d+$/.test(String(id))) {
+      return { ok: false, error: 'Missing or non-numeric surgery id' };
+    }
+    if (dfn && !/^\d+$/.test(String(dfn))) {
+      return { ok: false, error: 'dfn must be numeric when provided' };
+    }
+    try {
+      validateCredentials();
+    } catch (err: any) {
+      return { ok: false, error: safeErr(err) };
+    }
+
+    const selectedId = String(id);
+    const selectedDfn = dfn ? String(dfn) : undefined;
+    const rpcUsed = new Set<string>();
+
+    try {
+      let caseLines = await safeCallRpc('ORWSR ONECASE', [selectedId]);
+      rpcUsed.add('ORWSR ONECASE');
+      let resolvedFromId = selectedId;
+      let caseHadExecutionError = hasVistaExecutionError(caseLines);
+
+      if (caseHadExecutionError && selectedDfn) {
+        try {
+          await reconnectSurgeryBroker();
+          const listLines = await safeCallRpc('ORWSR LIST', [selectedDfn, '', '', '-1', '999']);
+          rpcUsed.add('ORWSR LIST');
+          const siblingIds = listLines
+            .map((line) => (line.split('^')[0] || '').trim())
+            .filter((candidateId) => /^\d+$/.test(candidateId) && candidateId !== selectedId);
+
+          for (const siblingId of siblingIds) {
+            try {
+              await reconnectSurgeryBroker();
+              const siblingCaseLines = await safeCallRpc('ORWSR ONECASE', [siblingId]);
+              rpcUsed.add('ORWSR ONECASE');
+              if (hasVistaExecutionError(siblingCaseLines)) continue;
+              const siblingDocuments = parseSurgeryLinkedDocuments(siblingCaseLines, siblingId).documents;
+              const matchesSelectedCase =
+                siblingDocuments.some((doc) => doc.id === selectedId) ||
+                responseMentionsSurgeryCase(siblingCaseLines, selectedId);
+              if (!matchesSelectedCase) continue;
+              caseLines = siblingCaseLines;
+              resolvedFromId = siblingId;
+              caseHadExecutionError = false;
+              break;
+            } catch {
+              // Keep probing sibling surgery entries until one resolves the selected case.
+            }
+          }
+        } catch {
+          // Leave the original ORWSR ONECASE payload in place if the list fallback fails.
+        }
+      }
+
+      const { documents, candidateIds } = parseSurgeryLinkedDocuments(caseLines, selectedId);
+      const orderedCandidateIds =
+        resolvedFromId !== selectedId
+          ? [
+              resolvedFromId,
+              ...candidateIds.filter(
+                (candidateId) => candidateId !== resolvedFromId && candidateId !== selectedId
+              ),
+            ]
+          : candidateIds;
+      let noteId: string | undefined;
+      let textLines: string[] = [];
+      let detailLines: string[] = [];
+
+      for (const candidateId of orderedCandidateIds) {
+        if (caseHadExecutionError && candidateId === selectedId) continue;
+        try {
+          const nextTextLines = await safeCallRpc('TIU GET RECORD TEXT', [candidateId]);
+          if (nonEmptyLines(nextTextLines).length === 0) continue;
+          noteId = candidateId;
+          textLines = nextTextLines;
+          rpcUsed.add('TIU GET RECORD TEXT');
+          try {
+            const nextDetailLines = await safeCallRpc('TIU DETAILED DISPLAY', [candidateId]);
+            if (nonEmptyLines(nextDetailLines).length > 0) {
+              detailLines = nextDetailLines;
+              rpcUsed.add('TIU DETAILED DISPLAY');
+            }
+          } catch {
+            // Leave detail empty if TIU detail is unavailable for the resolved note.
+          }
+          break;
+        } catch {
+          // Keep probing candidate note ids until one resolves real TIU text.
+        }
+      }
+
+      if (caseHadExecutionError) {
+        return {
+          ok: false,
+          id: selectedId,
+          resolvedFromId,
+          linkedDocuments: documents,
+          noteId,
+          rawCase: caseLines,
+          text: textLines.join('\n'),
+          detail: detailLines.join('\n'),
+          rpcUsed: Array.from(rpcUsed),
+          error:
+            'Surgery detail unavailable. ORWSR ONECASE returned a VistA runtime error for this case.',
+        };
+      }
+
+      return {
+        ok: true,
+        id: selectedId,
+        resolvedFromId,
+        linkedDocuments: documents,
+        noteId,
+        rawCase: caseLines,
+        text: textLines.join('\n'),
+        detail: detailLines.join('\n'),
+        rpcUsed: Array.from(rpcUsed),
+      };
+    } catch (err: any) {
+      return { ok: false, error: safeErr(err), rpcUsed: Array.from(rpcUsed) };
     }
   });
 
@@ -1327,9 +1827,8 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     }
     const RPC_NAME = 'TIU DOCUMENTS BY CONTEXT';
     try {
-      await connect();
-      const signedLines = await callRpc(RPC_NAME, ['244', '1', String(dfn), '', '', '0', '0', 'D']);
-      const unsignedLines = await callRpc(RPC_NAME, [
+      const signedLines = await safeCallRpc(RPC_NAME, ['244', '1', String(dfn), '', '', '0', '0', 'D']);
+      const unsignedLines = await safeCallRpc(RPC_NAME, [
         '244',
         '2',
         String(dfn),
@@ -1339,7 +1838,6 @@ export function registerInlineRoutes(server: FastifyInstance): void {
         '0',
         'D',
       ]);
-      disconnect();
       const seenIens = new Set<string>();
       const allLines: string[] = [];
       for (const line of [...unsignedLines, ...signedLines]) {
@@ -1377,8 +1875,15 @@ export function registerInlineRoutes(server: FastifyInstance): void {
         .filter(Boolean);
       return { ok: true, count: results.length, results, rpcUsed: RPC_NAME };
     } catch (err: any) {
-      disconnect();
-      return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
+      return {
+        ok: false,
+        error: safeErr(err),
+        rpcUsed: [RPC_NAME],
+        status: 'request-failed',
+        pendingTargets: ['TIU DOCUMENTS BY CONTEXT'],
+        pendingNote: 'Live discharge summary fetch failed at runtime after VistA authentication.',
+        results: [],
+      };
     }
   });
 
@@ -1392,13 +1897,10 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       return { ok: false, error: safeErr(err) };
     }
     try {
-      await connect();
-      const lines = await callRpc('TIU GET RECORD TEXT', [String(id)]);
-      disconnect();
+      const lines = await safeCallRpc('TIU GET RECORD TEXT', [String(id)]);
       return { ok: true, text: lines.join('\n'), rpcUsed: 'TIU GET RECORD TEXT' };
     } catch (err: any) {
-      disconnect();
-      return { ok: false, error: safeErr(err) };
+      return { ok: false, error: safeErr(err), rpcUsed: 'TIU GET RECORD TEXT' };
     }
   });
 
@@ -1413,10 +1915,10 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     }
     const RPC_NAME = 'ORWLRR INTERIM';
     try {
-      await connect();
-      const lines = await callRpc(RPC_NAME, [String(dfn), '', '']);
-      disconnect();
+      const lines = await safeCallRpc(RPC_NAME, [String(dfn), '', '']);
       const results: {
+        ackId?: string;
+        resultId?: string;
         testName: string;
         result: string;
         units: string;
@@ -1440,13 +1942,18 @@ export function registerInlineRoutes(server: FastifyInstance): void {
         }
         if (trimmed.includes('^')) {
           const p = trimmed.split('^');
+          const leadingField = (p[0] || '').trim();
+          const hasLeadingResultId = /^\d+(?:[.;:-]\d+)*$/.test(leadingField) && Boolean((p[1] || '').trim());
+          const valueOffset = hasLeadingResultId ? 1 : 0;
           if (p.length >= 2)
             results.push({
-              testName: (p[0] || '').trim(),
-              result: (p[1] || '').trim(),
-              units: (p[2] || '').trim(),
-              refRange: (p[3] || '').trim(),
-              flag: (p[4] || '').trim(),
+              ackId: hasLeadingResultId ? leadingField : undefined,
+              resultId: hasLeadingResultId ? leadingField : undefined,
+              testName: (p[valueOffset] || '').trim(),
+              result: (p[valueOffset + 1] || '').trim(),
+              units: (p[valueOffset + 2] || '').trim(),
+              refRange: (p[valueOffset + 3] || '').trim(),
+              flag: (p[valueOffset + 4] || '').trim(),
               specimen: currentSpecimen,
               collectionDate: currentDate,
             });
@@ -1464,10 +1971,170 @@ export function registerInlineRoutes(server: FastifyInstance): void {
         };
       return { ok: true, count: results.length, results, rawText, rpcUsed: RPC_NAME };
     } catch (err: any) {
-      disconnect();
-      return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
+      return {
+        ok: false,
+        error: safeErr(err),
+        rpcUsed: RPC_NAME,
+        status: 'request-failed',
+        pendingTargets: [RPC_NAME],
+        pendingNote: 'Live VistA lab results could not be retrieved for this patient during this request.',
+        results: [],
+      };
     }
   });
+
+  function parseReportCatalogOption(raw: string) {
+    const parts = String(raw || '').split('^');
+    return {
+      id: (parts[0] || '').trim(),
+      label: (parts[1] || parts[0] || '').trim(),
+      raw: String(raw || ''),
+    };
+  }
+
+  function resolveReportCatalogSection(
+    reportId: string,
+    currentSectionId: string,
+    currentSectionLabel: string,
+    sectionLookup: Map<string, string>
+  ) {
+    const sectionOverrideId = reportId === 'OR_PN' ? 'OR_PNMN' : '';
+    if (!sectionOverrideId) {
+      return { sectionId: currentSectionId, sectionLabel: currentSectionLabel };
+    }
+    return {
+      sectionId: sectionOverrideId,
+      sectionLabel: sectionLookup.get(sectionOverrideId) || 'Progress Notes',
+    };
+  }
+
+  function toFileManDateTime(value: string) {
+    const trimmed = String(value || '').trim();
+    if (!trimmed) return '';
+    if (/^\d+(?:\.\d+)?$/.test(trimmed)) return trimmed;
+    const parsed = new Date(trimmed);
+    if (Number.isNaN(parsed.getTime())) return '';
+    const fmYear = parsed.getUTCFullYear() - 1700;
+    const month = String(parsed.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(parsed.getUTCDate()).padStart(2, '0');
+    const hour = String(parsed.getUTCHours()).padStart(2, '0');
+    const minute = String(parsed.getUTCMinutes()).padStart(2, '0');
+    const second = String(parsed.getUTCSeconds()).padStart(2, '0');
+    return `${fmYear}${month}${day}.${hour}${minute}${second}`;
+  }
+
+  function resolveReportTextQuery(query: any) {
+    const rawQualifier = String(query?.qualifier || '').trim();
+    const qualifierToken = rawQualifier ? rawQualifier.split('^')[0].trim() : '';
+    let hsType = String(query?.hsType || '').trim();
+    let daysBack = String(query?.daysBack || '').trim();
+    let examId = String(query?.examId || '').trim();
+    let alpha = String(query?.alpha || '').trim();
+    let omega = String(query?.omega || '').trim();
+
+    if (hsType.startsWith('h')) {
+      hsType = hsType.slice(1).split('^')[0].split(';')[0].trim();
+    }
+
+    if (qualifierToken) {
+      if (/^d/i.test(qualifierToken)) {
+        const candidateDaysBack = qualifierToken.slice(1).split(';')[0].trim();
+        if (/^\d+$/.test(candidateDaysBack)) {
+          daysBack = candidateDaysBack;
+        }
+      } else if (/^h/i.test(qualifierToken)) {
+        hsType = qualifierToken.slice(1).split(';')[0].trim();
+      } else if (/^i/i.test(qualifierToken)) {
+        examId = qualifierToken.slice(1).split(';')[0].trim();
+      } else if (/^T/i.test(qualifierToken)) {
+        const rangeSpec = qualifierToken.slice(1);
+        const [startRaw, endRaw] = rangeSpec.split(';');
+        alpha = alpha || toFileManDateTime(startRaw || '');
+        omega = omega || toFileManDateTime(endRaw || '');
+      }
+    }
+
+    alpha = toFileManDateTime(alpha);
+    omega = toFileManDateTime(omega);
+
+    return {
+      qualifier: rawQualifier,
+      hsType,
+      daysBack,
+      examId,
+      alpha,
+      omega,
+    };
+  }
+
+  function parseTiuContextReportNote(line: string) {
+    const parts = String(line || '').split('^');
+    if (parts.length < 7) return null;
+    const id = (parts[0] || '').trim();
+    if (!/^\d+$/.test(id)) return null;
+    const title = (parts[1] || '').replace(/^\+\s*/, '').trim() || 'Untitled note';
+    const fmDate = (parts[2] || '').trim();
+    const authorField = (parts[4] || '').trim();
+    const location = (parts[5] || '').trim();
+    const status = (parts[6] || '').trim();
+    let date = fmDate;
+    if (fmDate && fmDate.length >= 7) {
+      const [datePart, timePart] = fmDate.split('.');
+      const y = parseInt(datePart.substring(0, 3), 10) + 1700;
+      const m = datePart.substring(3, 5);
+      const d = datePart.substring(5, 7);
+      date = `${y}-${m}-${d}`;
+      if (timePart && timePart.length >= 4) {
+        date += ` ${timePart.substring(0, 2)}:${timePart.substring(2, 4)}`;
+      }
+    }
+    const authorParts = authorField.split(';');
+    const author = authorParts.length >= 3 ? authorParts[2] : authorParts[1] || authorField || 'Unknown author';
+    return { id, title, date, author, location, status };
+  }
+
+  async function buildProgressNotesReportFallback(dfn: string) {
+    const rpcUsed = new Set<string>(['TIU DOCUMENTS BY CONTEXT']);
+    const signedLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', ['3', '1', String(dfn), '', '', '0', '0', 'D']);
+    const unsignedLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', ['3', '2', String(dfn), '', '', '0', '0', 'D']);
+    const seenIens = new Set<string>();
+    const mergedNotes = [...unsignedLines, ...signedLines]
+      .map((line) => parseTiuContextReportNote(line))
+      .filter((note): note is NonNullable<typeof note> => Boolean(note))
+      .filter((note) => {
+        if (seenIens.has(note.id)) return false;
+        seenIens.add(note.id);
+        return true;
+      });
+
+    const renderedBlocks: string[] = [];
+    for (const note of mergedNotes) {
+      if (renderedBlocks.length >= 5) break;
+      try {
+        const textLines = await safeCallRpc('TIU GET RECORD TEXT', [note.id]);
+        rpcUsed.add('TIU GET RECORD TEXT');
+        const text = textLines.join('\n').trim();
+        if (!text) continue;
+        const metadata = [note.date, note.author, note.location, note.status]
+          .filter(Boolean)
+          .join(' | ');
+        renderedBlocks.push(`${note.title}${metadata ? `\n${metadata}` : ''}\n\n${text}`);
+      } catch {
+        continue;
+      }
+    }
+
+    if (renderedBlocks.length === 0) return null;
+
+    return {
+      text:
+        'Progress Notes report fallback synthesized from live TIU note documents because ORWRP REPORT TEXT returned blank content in this environment.\n\n' +
+        renderedBlocks.join('\n\n------------------------------------------------------------\n\n'),
+      rpcUsed: Array.from(rpcUsed),
+      noteCount: mergedNotes.length,
+      renderedCount: renderedBlocks.length,
+    };
+  }
 
   server.get('/vista/reports', async (_request) => {
     try {
@@ -1477,10 +2144,8 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     }
     const RPC_NAME = 'ORWRP REPORT LISTS';
     try {
-      await connect();
-      const lines = await callRpc(RPC_NAME, []);
-      disconnect();
-      const reports: {
+      const lines = await safeCallRpc(RPC_NAME, []);
+      const rawReports: {
         id: string;
         heading: string;
         qualifier: string;
@@ -1514,7 +2179,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
         }
         if (currentSection === 'reportList' && line.trim()) {
           const p = line.split('^');
-          reports.push({
+          rawReports.push({
             id: (p[0] || '').trim(),
             heading: (p[1] || '').trim(),
             qualifier: (p[2] || '').trim(),
@@ -1524,39 +2189,124 @@ export function registerInlineRoutes(server: FastifyInstance): void {
           });
         }
       }
-      return { ok: true, count: reports.length, reports, dateRanges, hsTypes, rpcUsed: RPC_NAME };
+      const sections: { id: string; label: string }[] = [];
+      const sectionLookup = new Map<string, string>();
+      let currentSectionId = 'clinical-reports';
+      let currentSectionLabel = 'Clinical Reports';
+      const reports = rawReports
+        .filter((report) => report.id !== '$$END' && report.heading)
+        .flatMap((report) => {
+          if (!report.rpcName) {
+            currentSectionId = report.id || currentSectionId;
+            currentSectionLabel = report.heading || currentSectionLabel;
+            sections.push({ id: currentSectionId, label: currentSectionLabel });
+            sectionLookup.set(currentSectionId, currentSectionLabel);
+            return [];
+          }
+          if (report.rpcName !== 'ORWRP REPORT TEXT') return [];
+          const resolvedSection = resolveReportCatalogSection(
+            report.id,
+            currentSectionId,
+            currentSectionLabel,
+            sectionLookup
+          );
+          return {
+            id: report.id,
+            name: report.heading,
+            hsType: '',
+            qualifier: report.qualifier,
+            qualifierType: Number.parseInt(report.qualifier || '0', 10) || 0,
+            sectionId: resolvedSection.sectionId,
+            sectionLabel: resolvedSection.sectionLabel,
+            remote: report.remote === '1',
+            rpcName: report.rpcName,
+            localOnly: report.remote !== '1',
+          };
+        });
+
+      const dateRangeOptions = dateRanges
+        .map((raw) => parseReportCatalogOption(raw))
+        .filter((option) => option.id && option.id !== '$$END');
+      const hsTypeOptions = hsTypes
+        .map((raw) => parseReportCatalogOption(raw))
+        .filter((option) => option.id && option.id !== '$$END');
+
+      return {
+        ok: true,
+        count: reports.length,
+        reports,
+        sections,
+        dateRanges,
+        dateRangeOptions,
+        hsTypes,
+        hsTypeOptions,
+        rawReports,
+        rpcUsed: RPC_NAME,
+      };
     } catch (err: any) {
-      disconnect();
       return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
     }
   });
 
   server.get('/vista/reports/text', async (request) => {
-    const { dfn, id, hsType } = request.query as any;
+    const { dfn, id } = request.query as any;
+    const LOCAL_ONLY_REPORT_IDS = new Set(['19', '28']);
     if (!dfn || !/^\d+$/.test(String(dfn)))
       return { ok: false, error: 'Missing or non-numeric dfn' };
     if (!id) return { ok: false, error: 'Missing report id' };
+    if (LOCAL_ONLY_REPORT_IDS.has(String(id))) {
+      return {
+        ok: false,
+        status: 'local-only',
+        localOnly: true,
+        error: 'local-only',
+        message:
+          'This report is marked local only in the live VistA catalog and does not expose report text through ORWRP REPORT TEXT.',
+        rpcUsed: 'ORWRP REPORT TEXT',
+      };
+    }
     try {
       validateCredentials();
     } catch (err: any) {
       return { ok: false, error: safeErr(err) };
     }
     const RPC_NAME = 'ORWRP REPORT TEXT';
+    const resolved = resolveReportTextQuery(request.query as any);
     try {
-      await connect();
-      const lines = await callRpc(RPC_NAME, [
+      const lines = await safeCallRpc(RPC_NAME, [
         String(dfn),
         String(id),
-        String(hsType || ''),
-        '',
-        '0',
-        '',
-        '',
+        resolved.hsType,
+        resolved.daysBack,
+        resolved.examId,
+        resolved.alpha,
+        resolved.omega,
       ]);
-      disconnect();
-      return { ok: true, text: lines.join('\n'), rpcUsed: RPC_NAME };
+      const text = lines.join('\n');
+      if (String(id) === 'OR_PN' && !text.trim()) {
+        const fallback = await buildProgressNotesReportFallback(String(dfn));
+        if (fallback?.text?.trim()) {
+          return {
+            ok: true,
+            text: fallback.text,
+            resolved,
+            rpcUsed: Array.from(new Set([RPC_NAME, ...fallback.rpcUsed])),
+            fallbackUsed: true,
+            fallbackReason:
+              'ORWRP REPORT TEXT returned blank content for the Progress Notes report; response synthesized from live TIU note documents.',
+            source: 'tiu-progress-notes',
+            noteCount: fallback.noteCount,
+            renderedCount: fallback.renderedCount,
+          };
+        }
+      }
+      return {
+        ok: true,
+        text,
+        resolved,
+        rpcUsed: RPC_NAME,
+      };
     } catch (err: any) {
-      disconnect();
       return { ok: false, error: safeErr(err), rpcUsed: RPC_NAME };
     }
   });

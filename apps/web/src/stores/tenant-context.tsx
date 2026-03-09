@@ -32,7 +32,37 @@ export type ModuleId =
   | 'reports'
   | 'vitals'
   | 'allergies'
-  | 'imaging';
+  | 'imaging'
+  | 'immunizations'
+  | 'adt'
+  | 'nursing'
+  | 'intake'
+  | 'telehealth'
+  | 'tasks'
+  | 'aiassist';
+
+const MODULE_ALIASES: Record<string, string[]> = {
+  cover: ['cover', 'clinical'],
+  problems: ['problems', 'clinical'],
+  meds: ['meds', 'clinical'],
+  orders: ['orders', 'clinical'],
+  notes: ['notes', 'clinical'],
+  consults: ['consults', 'clinical'],
+  surgery: ['surgery', 'clinical'],
+  dcsumm: ['dcsumm', 'clinical'],
+  labs: ['labs', 'clinical'],
+  reports: ['reports', 'clinical'],
+  vitals: ['vitals', 'clinical'],
+  allergies: ['allergies', 'clinical'],
+  immunizations: ['immunizations', 'clinical'],
+  adt: ['adt', 'clinical'],
+  nursing: ['nursing', 'clinical'],
+  intake: ['intake', 'clinical'],
+  tasks: ['tasks', 'clinical'],
+  aiassist: ['aiassist', 'clinical'],
+  imaging: ['imaging'],
+  telehealth: ['telehealth'],
+};
 
 export interface UIDefaults {
   theme: 'light' | 'dark' | 'system';
@@ -130,10 +160,11 @@ export function TenantProvider({ children }: { children: ReactNode }) {
   const isModuleEnabled = useCallback(
     (moduleId: string): boolean => {
       if (!tenant) return true; // before config loads, allow everything
-      // Check tab-level modules (cover, meds, etc.)
-      if (tenant.enabledModules.includes(moduleId as ModuleId)) return true;
-      // Check system-level modules (rcm, telehealth, imaging, etc.) — Phase 135
-      if (tenant.systemModules?.includes(moduleId)) return true;
+      const candidates = MODULE_ALIASES[moduleId] ?? [moduleId];
+      if (candidates.some((candidate) => tenant.enabledModules.includes(candidate as ModuleId))) {
+        return true;
+      }
+      if (candidates.some((candidate) => tenant.systemModules?.includes(candidate))) return true;
       return false;
     },
     [tenant]

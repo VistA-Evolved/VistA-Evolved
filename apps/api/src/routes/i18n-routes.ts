@@ -26,6 +26,26 @@ const SUPPORTED_LOCALES = [
 
 const VALID_LOCALE_CODES = SUPPORTED_LOCALES.map((l) => l.code);
 
+function resolvePublicTenantId(request: any): string | null {
+  const requestTenantId =
+    typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+      ? request.tenantId.trim()
+      : undefined;
+  const sessionTenantId =
+    typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+      ? request.session.tenantId.trim()
+      : undefined;
+  return requestTenantId || sessionTenantId || null;
+}
+
+function requireSessionTenantId(session: { tenantId?: string }, reply: any): string | null {
+  if (typeof session.tenantId === 'string' && session.tenantId.trim().length > 0) {
+    return session.tenantId.trim();
+  }
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
 export default async function i18nRoutes(server: FastifyInstance): Promise<void> {
   /* ------------------------------------------------------------------ */
   /* GET /i18n/locales — list supported locales (public, no auth)        */
@@ -47,7 +67,9 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
 
     try {
       const repo = await import('../platform/pg/repo/pg-user-locale-repo.js');
-      const pref = await repo.getLocalePreference(session.tenantId || 'default', session.duz);
+      const tenantId = requireSessionTenantId(session, reply);
+      if (!tenantId) return;
+      const pref = await repo.getLocalePreference(tenantId, session.duz);
       return {
         ok: true,
         locale: pref?.locale ?? 'en',
@@ -84,8 +106,10 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
 
     try {
       const repo = await import('../platform/pg/repo/pg-user-locale-repo.js');
+      const tenantId = requireSessionTenantId(session, reply);
+      if (!tenantId) return;
       const row = await repo.upsertLocalePreference(
-        session.tenantId || 'default',
+        tenantId,
         session.duz,
         locale
       );
@@ -104,7 +128,7 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
   server.get('/intake/question-schema', async (request, reply) => {
     const query = request.query as any;
     const locale = query.locale || 'en';
-    const tenantId = query.tenantId || 'default';
+    const tenantId = resolvePublicTenantId(request);
 
     if (!VALID_LOCALE_CODES.includes(locale)) {
       reply.code(400);
@@ -112,6 +136,11 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
         ok: false,
         error: `Invalid locale. Supported: ${VALID_LOCALE_CODES.join(', ')}`,
       };
+    }
+
+    if (!tenantId) {
+      reply.code(400);
+      return { ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' };
     }
 
     if (!isPgConfigured()) {
@@ -127,9 +156,16 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
 
     try {
       const repo = await import('../platform/pg/repo/pg-intake-question-repo.js');
-      // Seed defaults if needed (idempotent)
-      await repo.seedDefaultQuestions(tenantId);
       const questions = await repo.getQuestionsByLocale(tenantId, locale);
+      if (questions.length === 0) {
+        return {
+          ok: true,
+          locale,
+          questions: getStaticQuestions(locale),
+          source: 'static',
+          note: 'No tenant-specific schema found — returning static defaults',
+        };
+      }
       return {
         ok: true,
         locale,
@@ -164,7 +200,8 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
 
     try {
       const repo = await import('../platform/pg/repo/pg-intake-question-repo.js');
-      const tenantId = session.tenantId || 'default';
+      const tenantId = requireSessionTenantId(session, reply);
+      if (!tenantId) return;
       const questions = await repo.getAllQuestions(tenantId);
       return { ok: true, questions: questions.map(formatQuestion), count: questions.length };
     } catch (err: any) {
@@ -212,8 +249,10 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
 
     try {
       const repo = await import('../platform/pg/repo/pg-intake-question-repo.js');
+      const tenantId = requireSessionTenantId(session, reply);
+      if (!tenantId) return;
       const row = await repo.insertQuestion({
-        tenantId: session.tenantId || 'default',
+        tenantId,
         questionKey,
         locale: locale || 'en',
         category: category || 'general',

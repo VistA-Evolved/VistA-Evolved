@@ -24,6 +24,7 @@ import { portalAudit } from "./portal-audit.js";
 
 export interface ProxyRelationship {
   id: string;
+  tenantId: string;
   patientDfn: string;
   proxyDfn: string;
   proxyName: string;
@@ -90,6 +91,7 @@ policyStore.set("default", DEFAULT_POLICY);
 /* ------------------------------------------------------------------ */
 
 export function grantProxy(
+  tenantId: string,
   patientDfn: string,
   proxyDfn: string,
   proxyName: string,
@@ -101,6 +103,7 @@ export function grantProxy(
   const now = new Date();
   const proxy: ProxyRelationship = {
     id,
+    tenantId,
     patientDfn,
     proxyDfn,
     proxyName,
@@ -114,39 +117,41 @@ export function grantProxy(
   proxyStore.set(id, proxy);
 
   // Phase 146: Write-through to PG
-  sensitivityDbRepo?.upsert({ id, tenantId: 'default', entityId: patientDfn, entityType: 'proxy', policy: JSON.stringify(proxy) }).catch(() => {});
+  sensitivityDbRepo?.upsert({ id, tenantId, entityId: patientDfn, entityType: 'proxy', policy: JSON.stringify(proxy) }).catch(() => {});
 
   portalAudit("portal.proxy.grant", "success", patientDfn, {
+    tenantId,
     detail: { proxyName, relationship, accessLevel },
   });
 
   return proxy;
 }
 
-export function revokeProxy(proxyId: string, revokedBy: string): boolean {
+export function revokeProxy(proxyId: string, tenantId: string, revokedBy: string): boolean {
   const proxy = proxyStore.get(proxyId);
-  if (!proxy || !proxy.active) return false;
+  if (!proxy || proxy.tenantId !== tenantId || !proxy.active) return false;
   proxy.active = false;
   proxy.revokedAt = new Date().toISOString();
 
   portalAudit("portal.proxy.revoke", "success", revokedBy, {
+    tenantId,
     detail: { proxyId, proxyName: proxy.proxyName },
   });
 
   return true;
 }
 
-export function getProxiesForPatient(patientDfn: string): ProxyRelationship[] {
+export function getProxiesForPatient(tenantId: string, patientDfn: string): ProxyRelationship[] {
   const now = new Date().toISOString();
   return [...proxyStore.values()].filter(
-    (p) => p.patientDfn === patientDfn && p.active && (!p.expiresAt || p.expiresAt > now)
+    (p) => p.tenantId === tenantId && p.patientDfn === patientDfn && p.active && (!p.expiresAt || p.expiresAt > now)
   );
 }
 
-export function getProxiedPatients(proxyDfn: string): ProxyRelationship[] {
+export function getProxiedPatients(tenantId: string, proxyDfn: string): ProxyRelationship[] {
   const now = new Date().toISOString();
   return [...proxyStore.values()].filter(
-    (p) => p.proxyDfn === proxyDfn && p.active && (!p.expiresAt || p.expiresAt > now)
+    (p) => p.tenantId === tenantId && p.proxyDfn === proxyDfn && p.active && (!p.expiresAt || p.expiresAt > now)
   );
 }
 

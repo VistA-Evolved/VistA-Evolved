@@ -41,7 +41,7 @@
 
 ### Fallback Path
 
-- If TIU SIGN RECORD fails: note stays in unsigned state, user prompted to retry
+- If TIU SIGN RECORD rejects the e-signature: note stays unsigned and the UI shows a clean retry message instead of raw VistA broker text
 - If VistA unreachable: command queued with status PENDING, circuit breaker triggers
 
 ---

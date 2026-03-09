@@ -32,6 +32,7 @@ export interface AckError {
 
 export interface Acknowledgement {
   id: string;
+  tenantId: string;
   type: AckType;
   disposition: AckDisposition;
 
@@ -60,6 +61,7 @@ export interface Acknowledgement {
 }
 
 export function createAck(params: {
+  tenantId: string;
   type: AckType;
   disposition: AckDisposition;
   claimId?: string;
@@ -74,6 +76,7 @@ export function createAck(params: {
   const now = new Date().toISOString();
   return {
     id: randomUUID(),
+    tenantId: params.tenantId,
     type: params.type,
     disposition: params.disposition,
     claimId: params.claimId,
@@ -121,6 +124,7 @@ export type StatusCategoryCode =
 
 export interface ClaimStatusUpdate {
   id: string;
+  tenantId: string;
   claimId?: string; // our internal claim ID
   payerClaimId?: string; // payer's tracking reference
 
@@ -151,6 +155,7 @@ export interface ClaimStatusUpdate {
 }
 
 export function createStatusUpdate(params: {
+  tenantId: string;
   claimId?: string;
   payerClaimId?: string;
   categoryCode: StatusCategoryCode;
@@ -168,6 +173,7 @@ export function createStatusUpdate(params: {
   const now = new Date().toISOString();
   return {
     id: randomUUID(),
+    tenantId: params.tenantId,
     claimId: params.claimId,
     payerClaimId: params.payerClaimId,
     categoryCode: params.categoryCode,

@@ -60,10 +60,66 @@ function validateRequired(body: Record<string, unknown>, fields: string[]): Vali
   return errors;
 }
 
+function buildTiuTextBuffer(noteText: unknown): Record<string, string> {
+  const textData: Record<string, string> = { HDR: '1^1' };
+  String(noteText || '')
+    .split(/\r?\n/)
+    .forEach((line, index) => {
+      textData[`TEXT,${index + 1},0`] = line;
+    });
+  return textData;
+}
+
+function parseTiuLineCount(lines: string[]): number {
+  for (const line of lines) {
+    const match = line.match(/Line Count:\s*(\d+)/i);
+    if (match) return parseInt(match[1], 10) || 0;
+  }
+  return -1;
+}
+
+function normalizeExpectedNoteLines(noteText: unknown): string[] {
+  return String(noteText || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+}
+
+function tiuReadbackContainsExpectedText(lines: string[], noteText: unknown): boolean {
+  const expected = normalizeExpectedNoteLines(noteText);
+  if (expected.length === 0) return false;
+  const haystack = lines.map((line) => line.trim()).filter((line) => line.length > 0);
+  return expected.every((line) => haystack.includes(line));
+}
+
 /* getIdempotencyKey removed in Phase 154 -- DB-backed middleware uses Idempotency-Key header */
 
 function getActor(request: any): string {
   return (request as any).session?.duz ?? (request as any).session?.userName ?? 'unknown';
+}
+
+function resolveTenantId(request: any): string | null {
+  const requestTenantId =
+    typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+      ? request.tenantId.trim()
+      : undefined;
+  const sessionTenantId =
+    typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+      ? request.session.tenantId.trim()
+      : undefined;
+  const headerTenantId = request?.headers?.['x-tenant-id'];
+  const headerTenant =
+    typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+      ? headerTenantId.trim()
+      : undefined;
+  return requestTenantId || sessionTenantId || headerTenant || null;
+}
+
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
 }
 
 function auditWrite(
@@ -87,6 +143,53 @@ function auditWrite(
       },
     }
   );
+}
+
+function sanitizeVistaSignText(value: string): string {
+  return String(value || '')
+    .replace(/[\x00-\x1f\x7f]+/g, ' ')
+    .replace(/^\d+(?:\[[^\]]+\])?\s*/i, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function normalizeNoteSignFailure(rawValue: string): {
+  status: 'sign-blocked' | 'sign-failed';
+  blocker?: string;
+  message: string;
+} {
+  const raw = String(rawValue || '').trim();
+  const sanitized = sanitizeVistaSignText(raw);
+  const matchText = sanitized || raw;
+
+  if (/incorrect electronic signature code|electronic signature code.*try again/i.test(matchText)) {
+    return {
+      status: 'sign-blocked',
+      blocker: 'invalid_esCode',
+      message: 'Incorrect electronic signature code. Try again.',
+    };
+  }
+
+  if (/electronic signature/i.test(matchText) && /not/i.test(matchText)) {
+    return {
+      status: 'sign-blocked',
+      blocker: 'esCode_unavailable',
+      message: 'Electronic signature is not available for this user in the current VistA context.',
+    };
+  }
+
+  if (/locked/i.test(matchText)) {
+    return {
+      status: 'sign-blocked',
+      blocker: 'document_locked',
+      message: 'This note is locked by another user or process. Refresh and try again.',
+    };
+  }
+
+  return {
+    status: 'sign-failed',
+    message: sanitized || 'TIU SIGN RECORD failed. Retry or contact support if the problem persists.',
+  };
 }
 
 /* ------------------------------------------------------------------ */
@@ -303,6 +406,8 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
    * RPC: TIU LOCK RECORD -> TIU SIGN RECORD -> TIU UNLOCK RECORD
    * ================================================================ */
   server.post('/vista/cprs/notes/sign', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, docIen, esCode } = body;
     const rpcUsed = ['TIU LOCK RECORD', 'TIU SIGN RECORD', 'TIU UNLOCK RECORD'];
@@ -362,6 +467,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
           // TIU SIGN RECORD returns empty string on success, error text on failure
           const signResult = signResp.join('\n').trim();
           if (signResult && signResult !== '0') {
+            const normalizedFailure = normalizeNoteSignFailure(signResult);
             // Non-empty response indicates an error
             disconnect();
             // Always unlock
@@ -375,7 +481,10 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
 
             return {
               ok: false,
-              error: signResult || 'Sign failed',
+              status: normalizedFailure.status,
+              blocker: normalizedFailure.blocker,
+              message: normalizedFailure.message,
+              error: normalizedFailure.message,
               rpcUsed,
               vivianPresence,
             };
@@ -421,7 +530,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
       action: 'note-sign',
       docIen: String(docIen),
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.note-sign', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -444,12 +553,21 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
    * RPC: TIU CREATE ADDENDUM RECORD + TIU SET DOCUMENT TEXT
    * ================================================================ */
   server.post('/vista/cprs/notes/addendum', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, parentDocIen, noteText } = body;
-    const rpcUsed = ['TIU CREATE ADDENDUM RECORD', 'TIU SET DOCUMENT TEXT'];
+    const rpcUsed = [
+      'TIU CREATE ADDENDUM RECORD',
+      'TIU SET DOCUMENT TEXT',
+      'TIU DETAILED DISPLAY',
+      'TIU GET RECORD TEXT',
+    ];
     const vivianPresence = {
       'TIU CREATE ADDENDUM RECORD': 'present' as const,
       'TIU SET DOCUMENT TEXT': 'present' as const,
+      'TIU DETAILED DISPLAY': 'present' as const,
+      'TIU GET RECORD TEXT': 'present' as const,
     };
 
     const errors = validateRequired(body, ['dfn', 'parentDocIen', 'noteText']);
@@ -477,25 +595,68 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
         );
 
         const addendumIen = createResp[0]?.split('^')[0]?.trim();
-        if (!addendumIen || addendumIen.startsWith('-1')) {
+        if (!addendumIen || addendumIen === '0' || addendumIen.startsWith('-1')) {
           disconnect();
           throw new Error(`TIU CREATE ADDENDUM RECORD returned error: ${createResp.join(' ')}`);
         }
 
-        // Step 2: Set the addendum text
-        const textLines: Record<string, string> = {};
-        const noteLines = String(noteText).split('\n');
-        noteLines.forEach((line, i) => {
-          textLines[`"TEXT",${i + 1},0`] = line;
-        });
-        await safeCallRpcWithList(
+        const textResp = await safeCallRpcWithList(
           'TIU SET DOCUMENT TEXT',
           [
             { type: 'literal', value: addendumIen },
-            { type: 'list', value: textLines },
+            { type: 'list', value: buildTiuTextBuffer(noteText) },
+            { type: 'literal', value: '0' },
           ],
           { idempotent: false }
         );
+
+        const textAck = textResp[0]?.trim() || '';
+        if (textAck.startsWith('0^')) {
+          disconnect();
+          return {
+            ok: false,
+            status: 'addendum-blocked',
+            blocker: 'note_text_write_failed',
+            message:
+              textAck.split('^').slice(3).join('^') ||
+              'VistA rejected the addendum body text for this TIU note.',
+            addendumIen,
+            parentDocIen: String(parentDocIen),
+            rpcUsed,
+            vivianPresence,
+          };
+        }
+
+        const detailLines = await safeCallRpc('TIU DETAILED DISPLAY', [addendumIen], {
+          idempotent: true,
+        });
+        const readbackLines = await safeCallRpc('TIU GET RECORD TEXT', [addendumIen], {
+          idempotent: true,
+        });
+        const lineCount = parseTiuLineCount(detailLines);
+        const hasPersistedBody =
+          lineCount > 0 ||
+          tiuReadbackContainsExpectedText(readbackLines, noteText) ||
+          tiuReadbackContainsExpectedText(detailLines, noteText);
+        if (!hasPersistedBody) {
+          disconnect();
+          auditWrite('clinical.note-addendum', 'failure', actor, validDfn!, {
+            mode: 'blocked-text-not-persisted',
+            rpc: 'TIU SET DOCUMENT TEXT',
+            docIen: addendumIen,
+          });
+          return {
+            ok: false,
+            status: 'addendum-blocked',
+            blocker: 'note_text_not_persisted',
+            message:
+              'VistA created an addendum shell but did not persist the addendum body text in this environment. Addendum creation is blocked to avoid false success.',
+            addendumIen,
+            parentDocIen: String(parentDocIen),
+            rpcUsed,
+            vivianPresence,
+          };
+        }
 
         disconnect();
 
@@ -525,7 +686,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
       action: 'note-addendum',
       parentDocIen: String(parentDocIen),
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.note-addendum', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -572,23 +733,31 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
       const lines = await safeCallRpc('TIU PERSONAL TITLE LIST', [duz], { idempotent: true });
       disconnect();
 
-      // Response format: each line is IEN^TITLE NAME
+      // Response format: each line is IEN^TITLE NAME. Ignore raw M error output
+      // and other non-title lines so the UI gets either valid titles or a clean fallback.
       const titles = lines
-        .filter((l) => l.trim() && !l.startsWith('-1'))
+        .filter((l) => /^\d+\^[^^]+/.test(l.trim()))
         .map((l) => {
           const parts = l.split('^');
           return { ien: parts[0]?.trim(), name: (parts[1] || '').trim() };
         })
         .filter((t) => t.ien && t.name);
 
-      // If personal list is empty, provide known default
+      // If the personal list is empty or VistA returned only unusable rows,
+      // provide the known-safe default title instead of surfacing garbage.
       if (titles.length === 0) {
+        const hadRuntimeError = lines.some(
+          (line) =>
+            /M\s+ERROR|%YDB-E-|LVUNDEF|LAST REF=|TIUSRVD/i.test(line) || line.startsWith('-1')
+        );
         return {
           ok: true,
           titles: [{ ien: '10', name: 'GENERAL NOTE' }],
           rpcUsed,
           vivianPresence,
-          note: 'No personal titles configured. Using default.',
+          note: hadRuntimeError
+            ? 'VistA returned no usable personal titles. Using default.'
+            : 'No personal titles configured. Using default.',
         };
       }
 

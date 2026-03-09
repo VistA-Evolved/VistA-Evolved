@@ -46,6 +46,7 @@ import {
   disableMfa,
   isMfaEnabled,
   validatePasswordStrength,
+  removePatientProfile,
   listDeviceSessions,
   revokeDeviceSession,
   revokeAllDeviceSessions,
@@ -65,6 +66,7 @@ import { generateCsrfToken, validateCsrf } from './csrf.js';
 import { portalAudit } from '../services/portal-audit.js';
 import { log } from '../lib/logger.js';
 import type { PortalUser } from './types.js';
+import { requireSession, requireRole } from '../auth/auth-routes.js';
 
 /* ------------------------------------------------------------------ */
 /* IAM Session Store (separate from Phase 26 portal session)            */
@@ -73,6 +75,7 @@ import type { PortalUser } from './types.js';
 interface IamSession {
   token: string;
   userId: string;
+  tenantId: string;
   displayName: string;
   /** Primary patient DFN (self profile) — for backward compat with portal routes */
   patientDfn: string | null;
@@ -114,6 +117,7 @@ function createIamSession(user: PortalUser): string {
   iamSessions.set(token, {
     token,
     userId: user.id,
+    tenantId: user.tenantId,
     displayName: user.displayName,
     patientDfn: selfProfile?.patientDfn ?? null,
     patientName: selfProfile?.patientName ?? null,
@@ -147,8 +151,9 @@ export function getIamSession(request: FastifyRequest): IamSession | null {
 function requireIamSession(request: FastifyRequest, reply: FastifyReply): IamSession {
   const session = getIamSession(request);
   if (!session) {
-    reply.code(401).send({ ok: false, error: 'Not authenticated' });
-    throw new Error('No IAM session');
+    const err: any = new Error('No IAM session');
+    err.statusCode = 401;
+    throw err;
   }
   return session;
 }
@@ -215,26 +220,23 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
   server.post('/portal/iam/register', async (request, reply) => {
     const ip = request.ip;
     if (!checkIamRate(ip)) {
-      reply.code(429).send({ ok: false, error: 'Too many requests. Try again later.' });
-      return;
+      return reply.code(429).send({ ok: false, error: 'Too many requests. Try again later.' });
     }
 
     const body = (request.body as any) || {};
     const { username, email, password, displayName, patientDfn, patientName } = body;
 
     if (!username || !email || !password || !displayName) {
-      reply.code(400).send({
+      return reply.code(400).send({
         ok: false,
         error: 'Missing required fields: username, email, password, displayName',
       });
-      return;
     }
 
     // Validate password strength
     const pwCheck = validatePasswordStrength(password);
     if (!pwCheck.valid) {
-      reply.code(400).send({ ok: false, error: 'Password too weak', details: pwCheck.errors });
-      return;
+      return reply.code(400).send({ ok: false, error: 'Password too weak', details: pwCheck.errors });
     }
 
     try {
@@ -243,17 +245,22 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
         email,
         password,
         displayName,
-        patientDfn && patientName ? { dfn: patientDfn, name: patientName } : undefined
+        patientDfn && patientName ? { dfn: patientDfn, name: patientName } : undefined,
+        typeof body.tenantId === 'string' && body.tenantId.trim().length > 0
+          ? body.tenantId.trim()
+          : undefined
       );
 
       portalAudit('portal.login', 'success', patientDfn ?? 'none', {
+        tenantId: user.tenantId,
         detail: { action: 'register', userId: user.id },
       });
 
-      reply.code(201).send({
+      return reply.code(201).send({
         ok: true,
         user: {
           id: user.id,
+          tenantId: user.tenantId,
           username: user.username,
           displayName: user.displayName,
           email: user.email,
@@ -261,7 +268,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
         },
       });
     } catch (_err: any) {
-      reply.code(409).send({ ok: false, error: 'Registration failed' });
+      return reply.code(409).send({ ok: false, error: 'Registration failed' });
     }
   });
 
@@ -320,6 +327,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
     logSignIn(result.user.id, result.user.displayName, { ip });
 
     portalAudit('portal.login', 'success', result.user.patientProfiles[0]?.patientDfn ?? 'none', {
+      tenantId: result.user.tenantId,
       detail: { userId: result.user.id },
     });
 
@@ -327,6 +335,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
       ok: true,
       user: {
         id: result.user.id,
+        tenantId: result.user.tenantId,
         username: result.user.username,
         displayName: result.user.displayName,
         profiles: result.user.patientProfiles.map((p) => ({
@@ -352,6 +361,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
       logSignOut(session.userId, session.displayName);
       iamSessions.delete(session.token);
       portalAudit('portal.logout', 'success', session.patientDfn ?? 'none', {
+        tenantId: session.tenantId,
         detail: { userId: session.userId },
       });
     }
@@ -374,6 +384,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
       ok: true,
       session: {
         userId: session.userId,
+        tenantId: session.tenantId,
         displayName: session.displayName,
         patientDfn: session.patientDfn,
         patientName: session.patientName,
@@ -590,9 +601,11 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
       return;
     }
 
-    // Using inline removal since removePatientProfile is in the store
-    const idx = user.patientProfiles.findIndex((p) => p.id === id);
-    if (idx >= 0) user.patientProfiles.splice(idx, 1);
+    const removed = removePatientProfile(session.userId, id);
+    if (!removed) {
+      reply.code(500).send({ ok: false, error: 'Failed to remove profile' });
+      return;
+    }
 
     return { ok: true };
   });
@@ -670,6 +683,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
 
     try {
       const invitation = createProxyInvitation({
+        tenantId: session.tenantId,
         requestorUserId: session.userId,
         requestorName: session.displayName,
         patientDfn,
@@ -689,7 +703,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
 
   server.get('/portal/iam/proxy/invitations', async (request, reply) => {
     const session = requireIamSession(request, reply);
-    const invitations = getInvitationsForUser(session.userId);
+    const invitations = getInvitationsForUser(session.tenantId, session.userId);
     return { ok: true, invitations };
   });
 
@@ -699,7 +713,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
       reply.code(400).send({ ok: false, error: 'No patient profile linked' });
       return;
     }
-    const invitations = getInvitationsForPatient(session.patientDfn);
+    const invitations = getInvitationsForPatient(session.tenantId, session.patientDfn);
     return { ok: true, invitations };
   });
 
@@ -716,7 +730,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
       return;
     }
 
-    const result = respondToInvitation(id, response, session.userId);
+    const result = respondToInvitation(id, session.tenantId, response, session.userId);
     if (!result) {
       reply.code(404).send({ ok: false, error: 'Invitation not found or not pending' });
       return;
@@ -730,7 +744,7 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
     if (!validateCsrf(request, reply, session?.csrfSecret)) return;
 
     const { id } = request.params as { id: string };
-    const ok = cancelInvitation(id, session.userId);
+    const ok = cancelInvitation(id, session.tenantId, session.userId);
     if (!ok) {
       reply.code(404).send({ ok: false, error: 'Invitation not found or not pending' });
       return;
@@ -762,9 +776,12 @@ export default async function portalIamRoutes(server: FastifyInstance): Promise<
   /* ================================================================ */
 
   server.get('/portal/iam/stats', async (request, reply) => {
-    // In production, restrict to admin role
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
+
     return {
       ok: true,
+      scope: 'platform-global',
       iam: getIamStats(),
       proxy: getProxyInvitationStats(),
       accessLog: await getAccessLogStats(),

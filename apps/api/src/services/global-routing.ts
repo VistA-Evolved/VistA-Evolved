@@ -345,8 +345,13 @@ export function getDnsRecord(tenantId: string): TenantDnsRecord | undefined {
   return id ? dnsRecordStore.get(id) : undefined;
 }
 
-export function listDnsRecords(filters?: { region?: string; active?: boolean }): TenantDnsRecord[] {
+export function listDnsRecords(filters?: {
+  tenantId?: string;
+  region?: string;
+  active?: boolean;
+}): TenantDnsRecord[] {
   let results = Array.from(dnsRecordStore.values());
+  if (filters?.tenantId) results = results.filter((r) => r.tenantId === filters.tenantId);
   if (filters?.region) results = results.filter((r) => r.region === filters.region);
   if (filters?.active !== undefined) results = results.filter((r) => r.active === filters.active);
   return results.sort((a, b) => a.subdomain.localeCompare(b.subdomain));
@@ -441,9 +446,13 @@ export function completeFailover(
   toClusterId: string,
   newDnsTarget: string,
   actor: string,
+  tenantId?: string,
 ): FailoverEvent {
   const event = failoverStore.get(failoverId);
   if (!event) throw Object.assign(new Error("Failover event not found"), { statusCode: 404 });
+  if (tenantId && event.tenantId !== tenantId) {
+    throw Object.assign(new Error("Failover event not found"), { statusCode: 404 });
+  }
   if (event.status !== "failover_in_progress") {
     throw Object.assign(new Error(`Cannot complete failover in status: ${event.status}`), { statusCode: 400 });
   }
@@ -486,6 +495,15 @@ export function getFailoverEvent(id: string): FailoverEvent | undefined {
   return failoverStore.get(id);
 }
 
+export function getFailoverEventForTenant(
+  tenantId: string,
+  id: string
+): FailoverEvent | undefined {
+  const event = failoverStore.get(id);
+  if (!event || event.tenantId !== tenantId) return undefined;
+  return event;
+}
+
 export function getLatestFailover(tenantId: string): FailoverEvent | undefined {
   const id = failoverByTenant.get(tenantId);
   return id ? failoverStore.get(id) : undefined;
@@ -502,35 +520,51 @@ export function listFailovers(
 
 // ─── Routing Summary ────────────────────────────────────────────────────────
 
-export function getRoutingSummary(): {
+export function getRoutingSummary(tenantId?: string): {
   config: RoutingConfig;
-  ingressCount: number;
-  healthyIngresses: number;
+  ingressCount: number | null;
+  healthyIngresses: number | null;
   dnsRecordCount: number;
   activeDnsRecords: number;
   failoverCount: number;
   activeFailovers: number;
 } {
-  let healthyIngresses = 0;
-  for (const i of ingressStore.values()) if (i.healthy) healthyIngresses++;
+  let healthyIngresses: number | null = null;
+  let ingressCount: number | null = null;
+  if (!tenantId) {
+    healthyIngresses = 0;
+    for (const i of ingressStore.values()) if (i.healthy) healthyIngresses++;
+    ingressCount = ingressStore.size;
+  }
 
   let activeDns = 0;
-  for (const r of dnsRecordStore.values()) if (r.active) activeDns++;
+  for (const r of dnsRecordStore.values()) {
+    if (tenantId && r.tenantId !== tenantId) continue;
+    if (r.active) activeDns++;
+  }
 
   let activeFailovers = 0;
   for (const f of failoverStore.values()) {
+    if (tenantId && f.tenantId !== tenantId) continue;
     if (f.status === "failover_in_progress" || f.status === "rollback_in_progress") {
       activeFailovers++;
     }
   }
 
+  const dnsRecordCount = tenantId
+    ? Array.from(dnsRecordStore.values()).filter((record) => record.tenantId === tenantId).length
+    : dnsRecordStore.size;
+  const failoverCount = tenantId
+    ? Array.from(failoverStore.values()).filter((event) => event.tenantId === tenantId).length
+    : failoverStore.size;
+
   return {
     config: routingConfig,
-    ingressCount: ingressStore.size,
+    ingressCount,
     healthyIngresses,
-    dnsRecordCount: dnsRecordStore.size,
+    dnsRecordCount,
     activeDnsRecords: activeDns,
-    failoverCount: failoverStore.size,
+    failoverCount,
     activeFailovers,
   };
 }
@@ -542,6 +576,9 @@ function appendAudit(action: string, actor: string, detail: Record<string, unkno
   if (routingAudit.length > MAX_AUDIT) routingAudit.splice(0, routingAudit.length - MAX_AUDIT);
 }
 
-export function getRoutingAuditLog(limit = 100, offset = 0): typeof routingAudit {
-  return routingAudit.slice().reverse().slice(offset, offset + limit);
+export function getRoutingAuditLog(limit = 100, offset = 0, tenantId?: string): typeof routingAudit {
+  const scoped = tenantId
+    ? routingAudit.filter((entry) => entry.detail?.tenantId === tenantId)
+    : routingAudit;
+  return scoped.slice().reverse().slice(offset, offset + limit);
 }

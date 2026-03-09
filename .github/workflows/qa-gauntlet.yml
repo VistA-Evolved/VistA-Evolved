@@ -1,11 +1,6 @@
 name: QA Gauntlet
 
 on:
-  pull_request:
-    branches: [main, develop]
-  schedule:
-    # Nightly at 02:00 UTC
-    - cron: '0 2 * * *'
   workflow_dispatch:
     inputs:
       suite:

@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useCPRSUI } from '../../../stores/cprs-ui-state';
-import { useDataCache, type Vital } from '../../../stores/data-cache';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
@@ -21,11 +20,10 @@ const VITAL_TYPES = [
 /**
  * Add Vital dialog -- Phase 57 write safety model.
  * POST /vista/cprs/vitals/add with GMV ADD VM.
- * Falls back to local draft if RPC unavailable.
+ * Falls back to server-side draft storage if RPC unavailable.
  */
 export default function AddVitalDialog() {
   const { closeModal, modalData } = useCPRSUI();
-  const { addLocalItem } = useDataCache();
   const dfn = String(modalData?.dfn ?? '');
 
   const [vitalType, setVitalType] = useState('2');
@@ -34,7 +32,7 @@ export default function AddVitalDialog() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const [syncStatus, setSyncStatus] = useState<'synced' | 'local' | ''>('');
+  const [syncStatus, setSyncStatus] = useState<'synced' | 'draft' | ''>('');
 
   async function handleSave() {
     if (!value.trim()) {
@@ -63,30 +61,17 @@ export default function AddVitalDialog() {
         return;
       }
       if (data.ok && data.mode === 'draft') {
-        setSyncStatus('local');
+        setSyncStatus('draft');
         setSuccess(true);
         setTimeout(() => closeModal(), 800);
         return;
       }
-      saveLocal();
+      setError(data.error || data.message || 'Vital save failed');
     } catch {
-      saveLocal();
+      setError('Network error -- unable to save vital');
     } finally {
       setSaving(false);
     }
-  }
-
-  function saveLocal() {
-    const label = VITAL_TYPES.find((v) => v.value === vitalType)?.label ?? 'Vital';
-    const draft: Vital = {
-      type: label,
-      value: value.trim(),
-      takenAt: new Date().toISOString().slice(0, 10),
-    };
-    addLocalItem(dfn, 'vitals', draft);
-    setSyncStatus('local');
-    setSuccess(true);
-    setTimeout(() => closeModal(), 800);
   }
 
   if (!dfn) return null;
@@ -121,7 +106,7 @@ export default function AddVitalDialog() {
             >
               {syncStatus === 'synced'
                 ? 'Vital saved to VistA'
-                : 'Vital saved as local draft (VistA sync pending)'}
+                : 'Vital saved as server-side draft (VistA sync pending)'}
             </div>
           )}
 

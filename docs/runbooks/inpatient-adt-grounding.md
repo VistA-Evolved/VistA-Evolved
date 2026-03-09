@@ -55,8 +55,8 @@
 | RPC                       | Package | Used By                            | Returns                                   |
 | ------------------------- | ------- | ---------------------------------- | ----------------------------------------- |
 | `ORQPT WARDS`             | OR      | /vista/inpatient/wards             | IEN^NAME list of all wards                |
-| `ORQPT WARD PATIENTS`     | OR      | /vista/inpatient/ward-census       | DFN^NAME per ward                         |
-| `ORWPT16 ADMITLST`        | OR      | /vista/inpatient/patient-movements | DFN^NAME^DATE^WARD^ROOM admission history |
+| `ORQPT WARD PATIENTS`     | OR      | /vista/inpatient/ward-census       | DFN^NAME^ROOM/BED per ward                |
+| `ORWPT16 ADMITLST`        | OR      | /vista/inpatient/patient-movements | FM_DATE^MOVEMENT_IEN^DISPLAY_DATE^TYPE^LOCATION |
 | `ORQPT PROVIDER PATIENTS` | OR      | Phase 67 only                      | DFN^NAME for provider's patients          |
 | `ORQPT TEAMS`             | OR      | Phase 67 only                      | IEN^NAME team list                        |
 | `ORQPT SPECIALTIES`       | OR      | Phase 67 only                      | IEN^NAME specialty list                   |
@@ -87,12 +87,12 @@ ORQPT WARDS
     └── Used by: /vista/inpatient/wards (with census counts)
 
 ORQPT WARD PATIENTS(wardIen)
-    ├── Returns DFN^NAME for patients on a ward
+    ├── Returns DFN^NAME^ROOM/BED for patients on a ward
     ├── Reads current admission in ^DGPM(405) where type=1 and no discharge
     └── Used by: /vista/inpatient/ward-census, /vista/inpatient/bedboard
 
 ORWPT16 ADMITLST(dfn)
-    ├── Returns admission episodes: DFN^NAME^ADMIT_DATE^WARD^ROOM
+    ├── Returns admission episodes: FM_DATE^MOVEMENT_IEN^DISPLAY_DATE^TYPE^LOCATION
     ├── Reads ^DGPM(405,D0) for patient movements
     └── Used by: /vista/inpatient/ward-census (enrich), /vista/inpatient/patient-movements
 ```

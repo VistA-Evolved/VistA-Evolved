@@ -1,4 +1,4 @@
-# Runbook — Phase 8A: Medications List (ORWPS ACTIVE)
+# Runbook — Phase 8A / Phase 673: Medications List (ORWPS ACTIVE + Orders Fallback)
 
 > GET /vista/medications?dfn=<DFN> — active medications for a patient
 
@@ -68,18 +68,23 @@ Quantity: 30 Refills: 3              ← Line 2: qty + refills
 
 ## Implementation Strategy
 
-1. Call `ORWPS ACTIVE` with DFN → parse header lines for order IEN, status, qty
-2. For each med with empty drug name, call `ORWORR GETTXT` with order IEN
-3. Combine into `{ id, name, sig, status }` result objects
+1. Call `ORWPS ACTIVE` with DFN → parse header lines for order IEN, status, qty.
+2. For each med with empty drug name, call `ORWORR GETTXT` with order IEN.
+3. If `ORWPS ACTIVE` returns no active rows, fall back to the live CPRS Orders feed:
+  - `ORWORR AGET`
+  - `ORWORR GETBYIFN`
+  - `ORWORR GETTXT`
+4. Keep only rows that classify as medication orders and normalize them into `{ id, name, sig, status }` result objects.
+5. Return fallback provenance in the API response so the caller can distinguish a primary `ORWPS ACTIVE` read from an Orders-based recovery path.
 
-All calls happen within a single authenticated RPC broker session.
+All calls happen against live VistA RPCs; no local mock medication rows are fabricated.
 
 ---
 
 ## API
 
 ```
-GET /vista/medications?dfn=1
+GET /vista/medications?dfn=46
 ```
 
 **Success response**:
@@ -96,9 +101,21 @@ GET /vista/medications?dfn=1
       "status": "pending"
     }
   ],
-  "rpcUsed": "ORWPS ACTIVE"
+  "rpcUsed": ["ORWPS ACTIVE", "ORWORR AGET", "ORWORR GETBYIFN", "ORWORR GETTXT"],
+  "fallbackUsed": true,
+  "fallbackReason": "ORWPS ACTIVE returned no active medication rows; medication list synthesized from live active CPRS medication orders."
 }
 ```
+
+If `ORWPS ACTIVE` returns trusted medication rows directly, the route still returns the primary RPC result without forcing the fallback.
+
+## Standalone Medications Panel Truthfulness Contract
+
+- The standalone CPRS Medications tab uses shared `useDataCache()` metadata, not just medication row count.
+- A successful live empty response renders `No medications`.
+- A failed or integration-pending medication-list read renders a grounded pending banner with status, attempted RPCs, and target RPCs instead of a false empty-chart state.
+- When `ORWPS ACTIVE` is blank but active CPRS medication orders still exist, the route recovers from the live Orders feed instead of returning a false empty chart state.
+- If medications exist but the current status filter removes all rows, the panel shows a filter-specific empty message rather than claiming the chart has no medications.
 
 **Validation error** (no dfn):
 
@@ -115,21 +132,24 @@ GET /vista/medications?dfn=1
 ## Test Commands
 
 ```powershell
-# List medications for patient DFN=1
-Invoke-RestMethod -Uri "http://127.0.0.1:3001/vista/medications?dfn=1"
+# List medications for VEHU patient DFN=46
+Invoke-RestMethod -Uri "http://127.0.0.1:3001/vista/medications?dfn=46"
 
 # cURL equivalent
-curl http://127.0.0.1:3001/vista/medications?dfn=1
+curl http://127.0.0.1:3001/vista/medications?dfn=46
 ```
 
 ---
 
-## Known Issue: Empty Drug Names in WorldVistA Docker
+## Known Issues and Lane Notes
 
-The `^PSDRUG` file in the WorldVistA Docker image has incomplete data for many
-IENs (e.g., IEN 94657 is empty). The routine `OCL^PSOORRL` reads drug names from
-`$P($G(^PSDRUG(+$P(RX0,"^",6),0)),"^")` — when that's empty, piece 2 in the
-ORWPS ACTIVE output is blank.
+1. The `^PSDRUG` file in the Docker sandboxes can have incomplete data for many
+  IENs. The routine `OCL^PSOORRL` reads drug names from `^PSDRUG`, so piece 2 in
+  the `ORWPS ACTIVE` output can be blank.
+
+2. In the VEHU lane, `ORWPS ACTIVE` can also return no active rows for a patient
+  whose live CPRS Orders feed still contains an active medication order. Phase 673
+  adds an Orders fallback to keep `/vista/medications` truthful for those cases.
 
 The fallback via `ORWORR GETTXT` resolves this by reading from the order's
 orderable item via `GETTXT^ORWORR`.

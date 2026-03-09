@@ -50,6 +50,7 @@ export {
 export {
   createAttestation,
   getAttestation,
+  getAttestationForTenant,
   listAttestations,
   revokeAttestation,
   checkExpiredAttestations,
@@ -73,6 +74,7 @@ export {
 export {
   createExportPackage,
   getExportPackage,
+  getExportPackageForTenant,
   listExportPackages,
   getExportAudit,
   verifyExportAuditChain,

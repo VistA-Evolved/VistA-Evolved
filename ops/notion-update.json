@@ -1,15 +1,15 @@
 {
-  "feature": "Phase 587: Full Repository Audit and Stabilization",
-  "stage": "verified",
-  "status": "complete",
-  "promptRef": "prompts/587-PHASE-587-FULL-REPO-AUDIT-STABILIZATION/587-01-IMPLEMENT.md",
-  "runbookPath": "docs/runbooks/phase587-full-repo-audit-stabilization.md",
-  "verifyScript": "scripts/verify-latest.ps1",
-  "commitSha": "efeec740",
+  "feature": "Phase 720: CPRS Inbox Acknowledge Contract Recovery",
+  "stage": "complete",
+  "status": "completed",
+  "promptRef": "prompts/720-PHASE-720-CPRS-INBOX-ACKNOWLEDGE-CONTRACT-RECOVERY/720-01-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/vista-rpc-phase13-operationalization.md",
+  "verifyScript": "manual-cprs-inbox-acknowledge-proof",
+  "commitSha": "pending",
   "notes": [
-    "Docker-first runtime checks completed against live VEHU and platform PG.",
-    "Secret scan remediation completed; fast gauntlet now fully passing.",
-    "RC verification is now RC_READY (15 PASS / 0 FAIL / 0 SKIP).",
-    "Integration-pending baseline reconciled to audited reality with explicit Phase 587 metadata."
+    "Recovered a live clinician inbox defect where clicking Acknowledge hit a missing /vista/inbox/acknowledge endpoint and surfaced Not Found in the browser.",
+    "Added the missing inbox acknowledge API contract so the page now receives a structured integration-pending response instead of a raw 404.",
+    "Grounded the pending posture on the missing VistA persistence RPC ORWORB KILL EXPIR MSG, which is not available in the active VEHU sandbox.",
+    "Completed live API and browser proof after the fix: acknowledge now keeps the inbox stable and shows the intended pending banner rather than a fatal page error."
   ]
 }

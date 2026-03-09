@@ -277,20 +277,21 @@ export function queryAnalyticsEvents(q: AnalyticsEventQuery): {
 /**
  * Get event buffer stats (for health endpoint).
  */
-export function getEventBufferStats(): {
+export function getEventBufferStats(tenantId?: string): {
   totalEvents: number;
   oldestTimestamp: string | null;
   newestTimestamp: string | null;
   categoryCounts: Record<string, number>;
 } {
+  const filtered = tenantId ? eventBuffer.filter((e) => e.tenantId === tenantId) : eventBuffer;
   const categoryCounts: Record<string, number> = {};
-  for (const e of eventBuffer) {
+  for (const e of filtered) {
     categoryCounts[e.category] = (categoryCounts[e.category] || 0) + 1;
   }
   return {
-    totalEvents: eventBuffer.length,
-    oldestTimestamp: eventBuffer.length > 0 ? eventBuffer[0].timestamp : null,
-    newestTimestamp: eventBuffer.length > 0 ? eventBuffer[eventBuffer.length - 1].timestamp : null,
+    totalEvents: filtered.length,
+    oldestTimestamp: filtered.length > 0 ? filtered[0].timestamp : null,
+    newestTimestamp: filtered.length > 0 ? filtered[filtered.length - 1].timestamp : null,
     categoryCounts,
   };
 }

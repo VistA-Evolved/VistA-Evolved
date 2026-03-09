@@ -176,22 +176,28 @@ export function listChangeWindows(tenantId: string): ChangeWindow[] {
   return [...changeWindowStore.values()].filter((w) => w.tenantId === tenantId);
 }
 
-export function getChangeWindow(id: string): ChangeWindow | undefined {
-  return changeWindowStore.get(id);
+export function getChangeWindow(id: string, tenantId?: string): ChangeWindow | undefined {
+  const window = changeWindowStore.get(id);
+  if (!window) return undefined;
+  if (tenantId && window.tenantId !== tenantId) return undefined;
+  return window;
 }
 
 export function updateChangeWindow(
+  tenantId: string,
   id: string,
   patch: Partial<Pick<ChangeWindow, "name" | "description" | "schedule" | "durationMinutes" | "enabled">>
 ): ChangeWindow | undefined {
   const existing = changeWindowStore.get(id);
-  if (!existing) return undefined;
+  if (!existing || existing.tenantId !== tenantId) return undefined;
   const updated: ChangeWindow = { ...existing, ...patch, updatedAt: now() };
   changeWindowStore.set(id, updated);
   return updated;
 }
 
-export function deleteChangeWindow(id: string): boolean {
+export function deleteChangeWindow(tenantId: string, id: string): boolean {
+  const existing = changeWindowStore.get(id);
+  if (!existing || existing.tenantId !== tenantId) return false;
   return changeWindowStore.delete(id);
 }
 
@@ -212,6 +218,7 @@ export function scheduleRelease(
     metadata?: Record<string, unknown>;
   }
 ): ReleaseEvent {
+  const changeWindow = input.changeWindowId ? getChangeWindow(input.changeWindowId, tenantId) : undefined;
   const r: ReleaseEvent = {
     id: uid(),
     tenantId,
@@ -219,7 +226,7 @@ export function scheduleRelease(
     title: input.title,
     description: input.description || "",
     status: "scheduled",
-    changeWindowId: input.changeWindowId || null,
+    changeWindowId: changeWindow?.id || null,
     scheduledAt: input.scheduledAt || null,
     requestedBy: input.requestedBy,
     approvedBy: null,
@@ -240,13 +247,21 @@ export function listReleases(tenantId: string): ReleaseEvent[] {
   return [...releaseStore.values()].filter((r) => r.tenantId === tenantId);
 }
 
-export function getRelease(id: string): ReleaseEvent | undefined {
-  return releaseStore.get(id);
+export function getRelease(id: string, tenantId?: string): ReleaseEvent | undefined {
+  const release = releaseStore.get(id);
+  if (!release) return undefined;
+  if (tenantId && release.tenantId !== tenantId) return undefined;
+  return release;
 }
 
-function transitionRelease(id: string, target: ReleaseStatus, extra?: Partial<ReleaseEvent>): ReleaseEvent | null {
+function transitionRelease(
+  tenantId: string,
+  id: string,
+  target: ReleaseStatus,
+  extra?: Partial<ReleaseEvent>
+): ReleaseEvent | null {
   const r = releaseStore.get(id);
-  if (!r) return null;
+  if (!r || r.tenantId !== tenantId) return null;
   const allowed = VALID_TRANSITIONS[r.status];
   if (!allowed.includes(target)) return null;
   const updated: ReleaseEvent = { ...r, status: target, ...extra, updatedAt: now() };
@@ -254,12 +269,17 @@ function transitionRelease(id: string, target: ReleaseStatus, extra?: Partial<Re
   return updated;
 }
 
-export function requestApproval(id: string): ReleaseEvent | null {
-  return transitionRelease(id, "pending_approval");
+export function requestApproval(tenantId: string, id: string): ReleaseEvent | null {
+  return transitionRelease(tenantId, id, "pending_approval");
 }
 
-export function approveRelease(id: string, approvedBy: string, reason: string): { release: ReleaseEvent; approval: ApprovalRecord } | null {
-  const release = transitionRelease(id, "approved", { approvedBy, approvedAt: now() });
+export function approveRelease(
+  tenantId: string,
+  id: string,
+  approvedBy: string,
+  reason: string
+): { release: ReleaseEvent; approval: ApprovalRecord } | null {
+  const release = transitionRelease(tenantId, id, "approved", { approvedBy, approvedAt: now() });
   if (!release) return null;
   const approval: ApprovalRecord = {
     id: uid(),
@@ -274,8 +294,13 @@ export function approveRelease(id: string, approvedBy: string, reason: string): 
   return { release, approval };
 }
 
-export function rejectRelease(id: string, rejectedBy: string, reason: string): { release: ReleaseEvent; approval: ApprovalRecord } | null {
-  const release = transitionRelease(id, "cancelled");
+export function rejectRelease(
+  tenantId: string,
+  id: string,
+  rejectedBy: string,
+  reason: string
+): { release: ReleaseEvent; approval: ApprovalRecord } | null {
+  const release = transitionRelease(tenantId, id, "cancelled");
   if (!release) return null;
   const approval: ApprovalRecord = {
     id: uid(),
@@ -290,36 +315,38 @@ export function rejectRelease(id: string, rejectedBy: string, reason: string): {
   return { release, approval };
 }
 
-export function deployCanary(id: string): ReleaseEvent | null {
-  return transitionRelease(id, "deploying_canary");
+export function deployCanary(tenantId: string, id: string): ReleaseEvent | null {
+  return transitionRelease(tenantId, id, "deploying_canary");
 }
 
-export function activateCanary(id: string): ReleaseEvent | null {
-  return transitionRelease(id, "canary_active");
+export function activateCanary(tenantId: string, id: string): ReleaseEvent | null {
+  return transitionRelease(tenantId, id, "canary_active");
 }
 
-export function promoteRelease(id: string): ReleaseEvent | null {
-  return transitionRelease(id, "promoting");
+export function promoteRelease(tenantId: string, id: string): ReleaseEvent | null {
+  return transitionRelease(tenantId, id, "promoting");
 }
 
-export function completePromotion(id: string): ReleaseEvent | null {
-  return transitionRelease(id, "deployed", { deployedAt: now() });
+export function completePromotion(tenantId: string, id: string): ReleaseEvent | null {
+  return transitionRelease(tenantId, id, "deployed", { deployedAt: now() });
 }
 
-export function rollbackRelease(id: string, reason: string): ReleaseEvent | null {
-  return transitionRelease(id, "rolling_back", { rollbackReason: reason });
+export function rollbackRelease(tenantId: string, id: string, reason: string): ReleaseEvent | null {
+  return transitionRelease(tenantId, id, "rolling_back", { rollbackReason: reason });
 }
 
-export function completeRollback(id: string): ReleaseEvent | null {
-  return transitionRelease(id, "rolled_back", { rolledBackAt: now() });
+export function completeRollback(tenantId: string, id: string): ReleaseEvent | null {
+  return transitionRelease(tenantId, id, "rolled_back", { rolledBackAt: now() });
 }
 
-export function cancelRelease(id: string): ReleaseEvent | null {
-  return transitionRelease(id, "cancelled");
+export function cancelRelease(tenantId: string, id: string): ReleaseEvent | null {
+  return transitionRelease(tenantId, id, "cancelled");
 }
 
-export function getApprovals(releaseId: string): ApprovalRecord[] {
-  return [...approvalStore.values()].filter((a) => a.releaseId === releaseId);
+export function getApprovals(releaseId: string, tenantId?: string): ApprovalRecord[] {
+  return [...approvalStore.values()].filter(
+    (a) => a.releaseId === releaseId && (!tenantId || a.tenantId === tenantId)
+  );
 }
 
 /* ================================================================== */
@@ -350,22 +377,28 @@ export function listCommsTemplates(tenantId: string): CommsTemplate[] {
   return [...commsTemplateStore.values()].filter((t) => t.tenantId === tenantId);
 }
 
-export function getCommsTemplate(id: string): CommsTemplate | undefined {
-  return commsTemplateStore.get(id);
+export function getCommsTemplate(id: string, tenantId?: string): CommsTemplate | undefined {
+  const template = commsTemplateStore.get(id);
+  if (!template) return undefined;
+  if (tenantId && template.tenantId !== tenantId) return undefined;
+  return template;
 }
 
 export function updateCommsTemplate(
+  tenantId: string,
   id: string,
   patch: Partial<Pick<CommsTemplate, "name" | "subject" | "body" | "trigger" | "enabled">>
 ): CommsTemplate | undefined {
   const existing = commsTemplateStore.get(id);
-  if (!existing) return undefined;
+  if (!existing || existing.tenantId !== tenantId) return undefined;
   const updated: CommsTemplate = { ...existing, ...patch, updatedAt: now() };
   commsTemplateStore.set(id, updated);
   return updated;
 }
 
-export function deleteCommsTemplate(id: string): boolean {
+export function deleteCommsTemplate(tenantId: string, id: string): boolean {
+  const existing = commsTemplateStore.get(id);
+  if (!existing || existing.tenantId !== tenantId) return false;
   return commsTemplateStore.delete(id);
 }
 
@@ -378,9 +411,9 @@ export function sendMaintenanceNotification(
   releaseId: string,
   templateId: string
 ): MaintenanceNotification | null {
-  const tmpl = commsTemplateStore.get(templateId);
+  const tmpl = getCommsTemplate(templateId, tenantId);
   if (!tmpl || !tmpl.enabled) return null;
-  const release = releaseStore.get(releaseId);
+  const release = getRelease(releaseId, tenantId);
   if (!release) return null;
 
   // Interpolate template variables
@@ -443,22 +476,22 @@ export function simulateReleaseCycle(tenantId: string, requestedBy: string): {
   });
 
   // 3. Request approval
-  requestApproval(release.id);
+  requestApproval(tenantId, release.id);
 
   // 4. Approve
-  const result = approveRelease(release.id, requestedBy, "Approved for GA");
+  const result = approveRelease(tenantId, release.id, requestedBy, "Approved for GA");
   if (!result) throw new Error("Approval failed");
 
   // 5. Send notification
   const notif = sendMaintenanceNotification(tenantId, release.id, tmpl.id);
 
   // 6. Deploy canary -> activate -> promote -> complete
-  deployCanary(release.id);
-  activateCanary(release.id);
-  promoteRelease(release.id);
-  completePromotion(release.id);
+  deployCanary(tenantId, release.id);
+  activateCanary(tenantId, release.id);
+  promoteRelease(tenantId, release.id);
+  completePromotion(tenantId, release.id);
 
-  const final = getRelease(release.id)!;
+  const final = getRelease(release.id, tenantId)!;
   return {
     release: final,
     approval: result.approval,

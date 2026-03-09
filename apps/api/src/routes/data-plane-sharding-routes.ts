@@ -27,7 +27,9 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
 import { log } from '../lib/logger.js';
+import { getTenant } from '../config/tenant-config.js';
 import {
   registerShard,
   listShards,
@@ -59,6 +61,57 @@ const VALID_SHARD_STATUSES: ShardStatus[] = [
 
 function getActor(request: FastifyRequest): string {
   return (request as any).session?.duz || 'unknown';
+}
+
+function getSessionTenantId(request: FastifyRequest): string | null {
+  const sessionTenantId =
+    typeof (request as any).session?.tenantId === 'string' &&
+    (request as any).session.tenantId.trim().length > 0
+      ? (request as any).session.tenantId.trim()
+      : undefined;
+  const requestTenantId =
+    typeof (request as any).tenantId === 'string' && (request as any).tenantId.trim().length > 0
+      ? (request as any).tenantId.trim()
+      : undefined;
+  return sessionTenantId || requestTenantId || null;
+}
+
+function ensureTenantExists(tenantId: string, reply: FastifyReply): boolean {
+  if (!getTenant(tenantId)) {
+    reply.code(404).send({ ok: false, error: `Tenant '${tenantId}' not found` });
+    return false;
+  }
+  return true;
+}
+
+function resolveAdminTargetTenant(
+  request: FastifyRequest,
+  reply: FastifyReply,
+  explicitTenantId?: string,
+  reason?: string
+): string | undefined {
+  const sessionTenantId = getSessionTenantId(request);
+  if (!sessionTenantId && (!explicitTenantId || !`${explicitTenantId}`.trim())) {
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return undefined;
+  }
+  const targetTenantId =
+    typeof explicitTenantId === 'string' && explicitTenantId.trim().length > 0
+      ? explicitTenantId.trim()
+      : sessionTenantId;
+  if (!targetTenantId) {
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return undefined;
+  }
+  if (!ensureTenantExists(targetTenantId, reply)) return undefined;
+  if (sessionTenantId && targetTenantId !== sessionTenantId && (!reason || !reason.trim())) {
+    reply.code(400).send({
+      ok: false,
+      error: 'reason is required for cross-tenant shard control-plane actions',
+    });
+    return undefined;
+  }
+  return targetTenantId;
 }
 
 export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<void> {
@@ -177,12 +230,16 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
   server.post(
     '/platform/shards/map-tenant',
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
       const body = (request.body as any) || {};
-      if (!body.tenantId || !body.region) {
-        return reply.code(400).send({ ok: false, error: 'tenantId and region are required' });
+      if (!body.region) {
+        return reply.code(400).send({ ok: false, error: 'region is required' });
       }
+      const tenantId = resolveAdminTargetTenant(request, reply, body.tenantId, body.reason);
+      if (!tenantId) return reply;
       try {
-        const mapping = mapTenantToShard(body, getActor(request));
+        const mapping = mapTenantToShard({ ...body, tenantId }, getActor(request));
         return reply.code(201).send({ ok: true, mapping });
       } catch (err: any) {
         log.warn('Tenant-shard mapping failed', { error: err.message });
@@ -196,7 +253,12 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
   server.get(
     '/platform/shards/tenant/:tenantId',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const { tenantId } = request.params as any;
+      const session = await requireSession(request, reply);
+      if (!session) return;
+      const { tenantId: requestedTenantId } = request.params as any;
+      const query = request.query as any;
+      const tenantId = resolveAdminTargetTenant(request, reply, requestedTenantId, query.reason);
+      if (!tenantId) return reply;
       const result = getTenantShard(tenantId);
       if (!result) return reply.code(404).send({ ok: false, error: 'No shard mapping for tenant' });
       return { ok: true, ...result };
@@ -216,13 +278,36 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
   server.post(
     '/platform/shards/validate-access',
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
       const body = (request.body as any) || {};
-      if (!body.requestingTenantId || !body.targetTenantId) {
+      if (!body.targetTenantId) {
+        return reply.code(400).send({ ok: false, error: 'targetTenantId required' });
+      }
+      const requestingTenantId = getSessionTenantId(request);
+      if (!requestingTenantId) {
+        return reply
+          .code(403)
+          .send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+      }
+      if (
+        body.requestingTenantId &&
+        typeof body.requestingTenantId === 'string' &&
+        body.requestingTenantId.trim() !== requestingTenantId
+      ) {
         return reply
           .code(400)
-          .send({ ok: false, error: 'requestingTenantId and targetTenantId required' });
+          .send({ ok: false, error: 'requestingTenantId must match the authenticated tenant' });
       }
-      const result = validateSameShardAccess(body.requestingTenantId, body.targetTenantId);
+      const targetTenantId = resolveAdminTargetTenant(
+        request,
+        reply,
+        body.targetTenantId,
+        body.reason
+      );
+      if (!targetTenantId) return reply;
+      if (!ensureTenantExists(requestingTenantId, reply)) return reply;
+      const result = validateSameShardAccess(requestingTenantId, targetTenantId);
       return { ok: true, ...result };
     }
   );
@@ -232,12 +317,16 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
   server.post(
     '/platform/shards/migrations',
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
       const body = (request.body as any) || {};
-      if (!body.tenantId || !body.toShardId) {
-        return reply.code(400).send({ ok: false, error: 'tenantId and toShardId are required' });
+      if (!body.toShardId) {
+        return reply.code(400).send({ ok: false, error: 'toShardId is required' });
       }
+      const tenantId = resolveAdminTargetTenant(request, reply, body.tenantId, body.reason);
+      if (!tenantId) return reply;
       try {
-        const plan = createMigrationPlan(body, getActor(request));
+        const plan = createMigrationPlan({ ...body, tenantId }, getActor(request));
         return reply.code(201).send({ ok: true, plan });
       } catch (err: any) {
         log.warn('Migration plan creation failed', { error: err.message });
@@ -248,10 +337,14 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
     }
   );
 
-  server.get('/platform/shards/migrations', async (request: FastifyRequest) => {
+  server.get('/platform/shards/migrations', async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const query = request.query as any;
+    const tenantId = resolveAdminTargetTenant(request, reply, query.tenantId, query.reason);
+    if (query.tenantId && !tenantId) return reply;
     const plans = listMigrationPlans({
-      tenantId: query.tenantId,
+      tenantId,
       status: query.status,
     });
     return { ok: true, plans, count: plans.length };

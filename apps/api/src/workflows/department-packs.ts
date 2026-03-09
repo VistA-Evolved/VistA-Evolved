@@ -25,6 +25,10 @@ function step(
   return { id, name, description: name, order, ...opts };
 }
 
+function pendingIntegration(targetRpc: string): NonNullable<WorkflowStepDef['vistaIntegration']> {
+  return { targetRpc, status: 'integration-pending' };
+}
+
 export function getAllDepartmentPacks(): PackDef[] {
   return [
     // ── Emergency Department ──────────────────────────────────────
@@ -58,7 +62,7 @@ export function getAllDepartmentPacks(): PackDef[] {
             }),
             step('ed-orders', 'Order Entry (Labs/Imaging)', 5, {
               requiredRole: 'provider',
-              vistaIntegration: { targetRpc: 'ORWDX SAVE', status: 'integration-pending' },
+              vistaIntegration: pendingIntegration('ORWDX SAVE'),
             }),
             step('ed-results-review', 'Results Review', 6, {
               requiredRole: 'provider',
@@ -70,12 +74,13 @@ export function getAllDepartmentPacks(): PackDef[] {
             }),
             step('ed-discharge', 'Discharge / Admit Orders', 8, {
               requiredRole: 'provider',
-              vistaIntegration: { targetRpc: 'ORWDX SAVE', status: 'integration-pending' },
+              vistaIntegration: pendingIntegration('ORWDX SAVE'),
             }),
             step('ed-note', 'ED Note Documentation', 9, {
               requiredRole: 'provider',
               specialtyTag: 'emergency-medicine',
               estimatedMinutes: 10,
+              vistaIntegration: pendingIntegration('TIU CREATE RECORD'),
             }),
           ],
         },
@@ -99,7 +104,7 @@ export function getAllDepartmentPacks(): PackDef[] {
             }),
             step('lab-verify-order', 'Verify Lab Orders', 2, {
               requiredRole: 'nurse',
-              vistaIntegration: { targetRpc: 'ORWLR ALLTESTS', status: 'integration-pending' },
+              vistaIntegration: pendingIntegration('ORWLR ALLTESTS'),
             }),
             step('lab-draw', 'Specimen Collection', 3, {
               requiredRole: 'nurse',
@@ -112,7 +117,7 @@ export function getAllDepartmentPacks(): PackDef[] {
             step('lab-process', 'Specimen Processing', 5, { estimatedMinutes: 15 }),
             step('lab-result', 'Result Entry & Verification', 6, {
               requiredRole: 'provider',
-              vistaIntegration: { targetRpc: 'ORWLR REPORT', status: 'integration-pending' },
+              vistaIntegration: pendingIntegration('ORWLR REPORT'),
             }),
           ],
         },
@@ -136,7 +141,7 @@ export function getAllDepartmentPacks(): PackDef[] {
             }),
             step('rad-verify', 'Verify Imaging Order', 2, {
               requiredRole: 'nurse',
-              vistaIntegration: { targetRpc: 'ORWDXR NEW ORDER', status: 'integration-pending' },
+              vistaIntegration: pendingIntegration('ORWDXR NEW ORDER'),
             }),
             step('rad-prep', 'Patient Prep & Screening', 3, {
               requiredRole: 'nurse',
@@ -154,7 +159,7 @@ export function getAllDepartmentPacks(): PackDef[] {
             }),
             step('rad-report', 'Generate Report', 6, {
               requiredRole: 'provider',
-              vistaIntegration: { targetRpc: 'TIU CREATE RECORD', status: 'integration-pending' },
+              vistaIntegration: pendingIntegration('TIU CREATE RECORD'),
             }),
           ],
         },
@@ -191,7 +196,7 @@ export function getAllDepartmentPacks(): PackDef[] {
             }),
             step('surg-labs', 'Pre-Op Lab Orders', 5, {
               requiredRole: 'provider',
-              vistaIntegration: { targetRpc: 'ORWDX SAVE', status: 'integration-pending' },
+              vistaIntegration: pendingIntegration('ORWDX SAVE'),
             }),
             step('surg-clearance', 'Anesthesia Clearance', 6, {
               requiredRole: 'provider',
@@ -279,7 +284,7 @@ export function getAllDepartmentPacks(): PackDef[] {
             }),
             step('icu-labs', 'AM Labs Review', 4, {
               requiredRole: 'provider',
-              vistaIntegration: { targetRpc: 'ORWLR REPORT', status: 'integration-pending' },
+              vistaIntegration: pendingIntegration('ORWLR REPORT'),
             }),
             step('icu-round', 'Multidisciplinary Rounding', 5, {
               requiredRole: 'provider',
@@ -288,7 +293,7 @@ export function getAllDepartmentPacks(): PackDef[] {
             }),
             step('icu-orders', 'Order Reconciliation', 6, {
               requiredRole: 'provider',
-              vistaIntegration: { targetRpc: 'ORWDX SAVE', status: 'integration-pending' },
+              vistaIntegration: pendingIntegration('ORWDX SAVE'),
             }),
             step('icu-skin', 'Skin/Wound Assessment', 7, {
               requiredRole: 'nurse',
@@ -325,7 +330,7 @@ export function getAllDepartmentPacks(): PackDef[] {
               estimatedMinutes: 5,
             }),
             step('rx-ddi-check', 'Drug Interaction Check', 3, {
-              vistaIntegration: { targetRpc: 'ORWPS ACTIVE', status: 'integration-pending' },
+              vistaIntegration: pendingIntegration('ORWPS ACTIVE'),
               estimatedMinutes: 2,
             }),
             step('rx-fill', 'Fill Prescription', 4, { estimatedMinutes: 5 }),

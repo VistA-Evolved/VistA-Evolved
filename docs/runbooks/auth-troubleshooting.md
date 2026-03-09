@@ -85,6 +85,8 @@ curl.exe http://127.0.0.1:3001/vista/ping
 
 **Fix:** Log in again. Sessions are in-memory and don't survive restarts.
 
+**CPRS web behavior:** the chart shell now revalidates the API session on focus/visibility and listens for explicit frontend 401 recovery events. If a panel like Orders hits a live API 401 after the shell was already open, the UI should clear the stale authenticated state and send the clinician back to `/cprs/login` instead of settling into a fake empty-order posture.
+
 ### 4. "Insufficient privileges" (403)
 
 **Symptoms:** API call returns `{"ok":false,"error":"Insufficient privileges"}`

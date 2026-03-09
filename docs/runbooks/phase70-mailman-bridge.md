@@ -63,6 +63,17 @@ docker exec -it wv su - wv -c "mumps -r ZVEMSIN"
 4. **Portal patients**: Don't have real VistA DUZ. Portal send uses
    the session DUZ (provider) as the MailMan sender.
 
+5. **Route layer must not wrap `safeCallRpc*` with extra broker lifecycle calls**:
+   the secure-messaging service already uses the resilient broker path with
+   `withBrokerLock()`. Adding manual `connect()` / `disconnect()` in route
+   handlers can reintroduce mount-time races on pages like `/cprs/messages`
+   where folders and inbox are fetched in parallel.
+
+6. **`/cprs/messages` is a protected CPRS surface**: unauthenticated access
+   should redirect to `/cprs/login?redirect=%2Fcprs%2Fmessages` before any
+   MailMan fetches run. Do not let the page spam protected endpoints and settle
+   into an inline `Authentication required` / empty-inbox posture.
+
 ## Troubleshooting
 
 ### Messages not appearing in inbox
@@ -70,6 +81,13 @@ docker exec -it wv su - wv -c "mumps -r ZVEMSIN"
 1. Check if DUZ 87 has a mailbox: `W $D(^XMB(3.7,87))` in MUMPS
 2. If 0, create: `D CRE8MBOX^XMXMBOX(87)` or send a test message (SEND creates mailbox)
 3. Check basket: `ZW ^XMB(3.7,87,2,1,1)` — should show message IENs
+4. If `/cprs/messages` intermittently shows `VistA MailMan unavailable` while
+   direct curl calls still succeed, inspect the route layer for duplicate
+   `connect()` / `disconnect()` wrappers around service functions that already
+   call `safeCallRpc` or `safeCallRpcWithList`.
+5. If `/cprs/messages` shows `Authentication required` inline instead of the
+   login form, inspect the page for missing `useSession()` / router gating and
+   ensure protected fetches wait for session readiness.
 
 ### Send returns error
 

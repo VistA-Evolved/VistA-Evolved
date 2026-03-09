@@ -16,6 +16,9 @@ export interface TransactionEnvelope {
   /** Unique ID for this transaction instance */
   transactionId: string;
 
+  /** Tenant context for durable multi-tenant storage */
+  tenantId: string;
+
   /** X12 transaction set type */
   transactionSet: X12TransactionSet;
 

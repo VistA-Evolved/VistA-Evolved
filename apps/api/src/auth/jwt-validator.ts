@@ -265,13 +265,22 @@ export async function validateAndExtractUser(token: string): Promise<{
     roles = claims.realm_access.roles;
   }
 
+  const tenantId =
+    typeof claims.tenant_id === 'string' && claims.tenant_id.trim().length > 0
+      ? claims.tenant_id.trim()
+      : null;
+  if (!tenantId) {
+    log.debug('JWT missing tenant_id claim');
+    return null;
+  }
+
   return {
     sub: claims.sub,
     duz: (claims.duz as string) || claims.sub,
     userName: (claims.name as string) || (claims.preferred_username as string) || claims.sub,
     roles,
     facilityStation: (claims.facility_station as string) || '',
-    tenantId: (claims.tenant_id as string) || 'default',
+    tenantId,
   };
 }
 

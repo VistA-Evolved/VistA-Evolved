@@ -147,6 +147,12 @@ export const RPC_REGISTRY: RpcDefinition[] = [
     description: 'List all registered RPCs from File 8994',
   },
   {
+    name: 'VE PROBLEM ADD',
+    domain: 'problems',
+    tag: 'custom',
+    description: 'Add problem through native GMPL wrapper using lexicon-grounded fields',
+  },
+  {
     name: 'VE INTEROP HL7 LINKS',
     domain: 'interop',
     tag: 'custom',
@@ -553,6 +559,12 @@ export const RPC_REGISTRY: RpcDefinition[] = [
     domain: 'orders',
     tag: 'read',
     description: 'Get active orders by display group',
+  },
+  {
+    name: 'ORWORR GETBYIFN',
+    domain: 'orders',
+    tag: 'read',
+    description: 'Get order detail by internal entry number',
   },
   {
     name: 'ORWOR1 SIG',

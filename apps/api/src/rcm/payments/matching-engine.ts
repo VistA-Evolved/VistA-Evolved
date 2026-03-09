@@ -138,7 +138,7 @@ export function matchBatch(batchId: string, actor: string): BatchMatchResult {
 function matchSingleLine(line: RemittanceLine, batch: RemittanceBatch, actor: string): MatchResult {
   // Strategy 1: Exact match by internal claim ID
   if (line.claimId) {
-    const claim = getClaimCase(line.claimId);
+    const claim = getClaimCase(line.claimId, batch.tenantId);
     if (claim) {
       return applyMatch(line, claim, batch, actor, 'exact_id', 100);
     }
@@ -226,23 +226,47 @@ function applyMatch(
     canProceed = true;
   } else if (needsAckFirstStates.includes(currentStatus)) {
     // Two-step: submitted → payer_acknowledged → paid
-    const ackResult = transitionClaimCase(claim.id, 'payer_acknowledged', actor, evidenceDetail);
+    const ackResult = transitionClaimCase(
+      batch.tenantId,
+      claim.id,
+      'payer_acknowledged',
+      actor,
+      evidenceDetail
+    );
     canProceed = ackResult.ok;
   } else if (needsSubmitFirstStates.includes(currentStatus)) {
     // Three-step: exported → submitted_electronic → payer_acknowledged → paid
-    const subResult = transitionClaimCase(claim.id, 'submitted_electronic', actor, evidenceDetail);
+    const subResult = transitionClaimCase(
+      batch.tenantId,
+      claim.id,
+      'submitted_electronic',
+      actor,
+      evidenceDetail
+    );
     if (subResult.ok) {
-      const ackResult = transitionClaimCase(claim.id, 'payer_acknowledged', actor, evidenceDetail);
+      const ackResult = transitionClaimCase(
+        batch.tenantId,
+        claim.id,
+        'payer_acknowledged',
+        actor,
+        evidenceDetail
+      );
       canProceed = ackResult.ok;
     }
   }
 
   if (canProceed) {
-    const transResult = transitionClaimCase(claim.id, toStatus, actor, evidenceDetail);
+    const transResult = transitionClaimCase(
+      batch.tenantId,
+      claim.id,
+      toStatus as any,
+      actor,
+      evidenceDetail
+    );
 
     if (transResult.ok) {
       // Update claim financial fields
-      updateClaimCase(claim.id, {
+      updateClaimCase(batch.tenantId, claim.id, {
         paidAmount: (claim.paidAmount ?? 0) + line.amountPaid,
         adjustmentAmount: (claim.adjustmentAmount ?? 0) + line.amountAdjusted,
         patientResponsibility: (claim.patientResponsibility ?? 0) + line.patientResponsibility,
@@ -363,7 +387,7 @@ export function manualLinkLine(lineId: string, claimCaseId: string, actor: strin
     };
   }
 
-  const claim = getClaimCase(claimCaseId);
+  const claim = getClaimCase(claimCaseId, line.tenantId);
   if (!claim) {
     return {
       lineId,

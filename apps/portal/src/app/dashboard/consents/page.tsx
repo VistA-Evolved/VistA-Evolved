@@ -99,7 +99,7 @@ export default function ConsentsPage() {
             Review and manage your health data consent decisions
           </p>
         </div>
-        <DataSourceBadge source="ehr" />
+        <DataSourceBadge source="local" label="Portal Managed" />
       </div>
 
       {error && (

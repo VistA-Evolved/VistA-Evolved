@@ -6,6 +6,7 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
 import {
   createFhirSubscription,
   getFhirSubscription,
@@ -19,11 +20,33 @@ import {
 } from '../services/fhir-subscription-service.js';
 
 export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<void> {
-  const TENANT = 'default';
+  function resolveTenantId(req: FastifyRequest): string | null {
+    const sessionTenantId =
+      typeof (req as any).session?.tenantId === 'string' &&
+      (req as any).session.tenantId.trim().length > 0
+        ? (req as any).session.tenantId.trim()
+        : undefined;
+    const requestTenantId =
+      typeof (req as any).tenantId === 'string' && (req as any).tenantId.trim().length > 0
+        ? (req as any).tenantId.trim()
+        : undefined;
+    return sessionTenantId || requestTenantId || null;
+  }
+
+  function requireTenantId(req: FastifyRequest, reply: FastifyReply): string | null {
+    const tenantId = resolveTenantId(req);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
 
   // ── Health ──────────────────────────────────────────────────────────
-  server.get('/fhir-subscriptions/health', async (_req: FastifyRequest, reply: FastifyReply) => {
-    const stats = getFhirSubscriptionStats(TENANT);
+  server.get('/fhir-subscriptions/health', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const stats = getFhirSubscriptionStats(tenantId);
     return reply.send({ ok: true, phase: 357, ...stats });
   });
 
@@ -41,6 +64,10 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
 
   // ── Create subscription ────────────────────────────────────────────
   server.post('/fhir-subscriptions', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const body = (req.body as any) || {};
     const { criteria, channel, end, reason } = body;
 
@@ -54,7 +81,7 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
     }
 
     try {
-      const sub = createFhirSubscription(TENANT, criteria, channel, { end, reason });
+      const sub = createFhirSubscription(tenantId, criteria, channel, { end, reason });
       return reply.code(201).send({ ok: true, subscription: sub });
     } catch (_err: any) {
       return reply.code(400).send({ ok: false, error: 'Failed to create FHIR subscription' });
@@ -63,8 +90,12 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
 
   // ── List subscriptions ─────────────────────────────────────────────
   server.get('/fhir-subscriptions/list', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const query = (req.query as any) || {};
-    const subs = listFhirSubscriptions(TENANT, {
+    const subs = listFhirSubscriptions(tenantId, {
       status: query.status,
       resourceType: query.resourceType,
     });
@@ -73,27 +104,39 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
 
   // ── Get subscription ───────────────────────────────────────────────
   server.get('/fhir-subscriptions/:id', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { id } = req.params as any;
-    const sub = getFhirSubscription(id, TENANT);
+    const sub = getFhirSubscription(id, tenantId);
     if (!sub) return reply.code(404).send({ ok: false, error: 'Subscription not found' });
     return reply.send({ ok: true, subscription: sub });
   });
 
   // ── Update subscription ────────────────────────────────────────────
   server.patch('/fhir-subscriptions/:id', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { id } = req.params as any;
     const body = (req.body as any) || {};
     const { status, end, reason } = body;
 
-    const sub = updateFhirSubscription(id, TENANT, { status, end, reason });
+    const sub = updateFhirSubscription(id, tenantId, { status, end, reason });
     if (!sub) return reply.code(404).send({ ok: false, error: 'Subscription not found' });
     return reply.send({ ok: true, subscription: sub });
   });
 
   // ── Delete subscription ────────────────────────────────────────────
   server.delete('/fhir-subscriptions/:id', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { id } = req.params as any;
-    const deleted = deleteFhirSubscription(id, TENANT);
+    const deleted = deleteFhirSubscription(id, tenantId);
     if (!deleted) return reply.code(404).send({ ok: false, error: 'Subscription not found' });
     return reply.send({ ok: true, deleted: true });
   });
@@ -102,8 +145,12 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
   server.get(
     '/fhir-subscriptions/notifications',
     async (req: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(req, reply);
+      if (!session) return;
+      const tenantId = requireTenantId(req, reply);
+      if (!tenantId) return;
       const query = (req.query as any) || {};
-      const notes = getFhirNotifications(TENANT, {
+      const notes = getFhirNotifications(tenantId, {
         subscriptionId: query.subscriptionId,
         status: query.status,
         limit: query.limit ? parseInt(query.limit, 10) : 100,
@@ -113,8 +160,12 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
   );
 
   // ── Stats ──────────────────────────────────────────────────────────
-  server.get('/fhir-subscriptions/stats', async (_req: FastifyRequest, reply: FastifyReply) => {
-    const stats = getFhirSubscriptionStats(TENANT);
+  server.get('/fhir-subscriptions/stats', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const stats = getFhirSubscriptionStats(tenantId);
     return reply.send({ ok: true, ...stats });
   });
 }

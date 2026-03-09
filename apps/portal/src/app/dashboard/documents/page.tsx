@@ -26,6 +26,22 @@ interface GenerateResult {
   downloadUrl: string;
 }
 
+function toBadgeSource(source: string): 'ehr' | 'pending' | 'local' {
+  const normalized = source.toLowerCase();
+  if (normalized.includes('vista') || normalized.includes('ehr') || normalized.includes('health system')) {
+    return 'ehr';
+  }
+  if (
+    normalized.includes('pending') ||
+    normalized.includes('scaffold') ||
+    normalized.includes('manual') ||
+    normalized.includes('mixed')
+  ) {
+    return 'pending';
+  }
+  return 'local';
+}
+
 async function portalFetch<T = unknown>(path: string, options: RequestInit = {}): Promise<any> {
   const res = await fetch(`${API_BASE}${path}`, {
     credentials: 'include',
@@ -45,6 +61,26 @@ export default function DocumentsPage() {
   const [generating, setGenerating] = useState<string | null>(null);
   const [lastToken, setLastToken] = useState<GenerateResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const pageBadgeSource =
+    docTypes.length === 0
+      ? 'pending'
+      : docTypes.every((dt) => toBadgeSource(dt.source) === 'ehr')
+        ? 'ehr'
+        : docTypes.every((dt) => toBadgeSource(dt.source) === 'local')
+          ? 'local'
+          : 'pending';
+  const pageBadgeLabel =
+    docTypes.length === 0
+      ? 'Document Source Pending'
+      : pageBadgeSource === 'pending'
+        ? 'Mixed / Pending Sources'
+        : undefined;
+  const footerText =
+    pageBadgeSource === 'ehr'
+      ? 'Documents are generated from your live health-system record. Download links expire in 5 minutes.'
+      : pageBadgeSource === 'local'
+        ? 'Documents are currently generated from local portal data, not directly from the live health-system record. Download links expire in 5 minutes.'
+        : 'Document sources vary by type. Some are generated from the live health-system record while others remain local or integration-pending. Download links expire in 5 minutes.';
 
   useEffect(() => {
     portalFetch('/portal/documents')
@@ -96,7 +132,7 @@ export default function DocumentsPage() {
             Generate and download health documents from your medical record
           </p>
         </div>
-        <DataSourceBadge source="ehr" />
+        <DataSourceBadge source={pageBadgeSource} label={pageBadgeLabel} />
       </div>
 
       {error && (
@@ -176,7 +212,18 @@ export default function DocumentsPage() {
                 }}
               >
                 <div>
-                  <div style={{ fontWeight: 600, fontSize: '0.9375rem' }}>{dt.label}</div>
+                  <div
+                    style={{
+                      fontWeight: 600,
+                      fontSize: '0.9375rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <span>{dt.label}</span>
+                    <DataSourceBadge source={toBadgeSource(dt.source)} label={dt.source} />
+                  </div>
                   <div
                     style={{
                       color: 'var(--portal-text-muted)',
@@ -210,7 +257,7 @@ export default function DocumentsPage() {
       </div>
 
       <p style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '1rem' }}>
-        Documents are generated from your VistA health record. Download links expire in 5 minutes.
+        {footerText}
       </p>
     </div>
   );

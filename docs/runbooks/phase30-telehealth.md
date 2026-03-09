@@ -80,6 +80,22 @@ UI
 3. **Active** — Both parties connected
 4. **Ended** — Clinician ends room or room auto-expires (4h)
 
+## CPRS Chart Launch Contract
+
+- The clinician chart tab now follows the original Phase 30 intent: `appointment list -> create room -> join room`.
+- The appointment source for the CPRS Telehealth panel is `GET /vista/cprs/appointments?dfn=<dfn>`.
+- The panel filters launchable telehealth appointments from the live chart appointment payload and sends the selected `appointmentId` to `POST /telehealth/rooms`.
+- The chart launch path no longer uses a permanently disabled placeholder state or an empty `appointmentId`.
+- Existing room management still uses:
+    - `GET /telehealth/rooms`
+    - `POST /telehealth/rooms/:roomId/join`
+    - `POST /telehealth/rooms/:roomId/end`
+    - `GET /telehealth/rooms/:roomId/waiting`
+
+### Verified chart-launch example
+
+For DFN `46`, the live appointment route returned multiple `Telehealth Clinic` entries. The CPRS chart tab selected `req-1-mmg6ue0l`, created a room through the clinician UI, joined it into visit mode, and ended it successfully.
+
 ## Security
 
 - Room IDs are opaque hex tokens (`ve-{randomBytes(12)}`)
@@ -132,6 +148,16 @@ curl -X POST http://localhost:3001/telehealth/rooms \
 
 # Device requirements (public)
 curl http://localhost:3001/telehealth/device-check/requirements
+```
+
+```powershell
+# CPRS chart launch grounding
+Set-Content -Path login-body.json -Value '{"accessCode":"PRO1234","verifyCode":"PRO1234!!"}' -NoNewline -Encoding ASCII
+curl.exe -s -c cookies.txt -X POST http://127.0.0.1:3001/auth/login -H "Content-Type: application/json" -d "@login-body.json"
+curl.exe -s -b cookies.txt "http://127.0.0.1:3001/vista/cprs/appointments?dfn=46"
+curl.exe -s -b cookies.txt "http://127.0.0.1:3001/telehealth/rooms"
+curl.exe -s -b cookies.txt "http://127.0.0.1:3001/telehealth/health"
+Remove-Item login-body.json, cookies.txt -ErrorAction SilentlyContinue
 ```
 
 ## Files Changed

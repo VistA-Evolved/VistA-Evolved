@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import { useDataCache, type DCSummary } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
+import CachePendingBanner from './CachePendingBanner';
 
 interface Props {
   dfn: string;
 }
 
 export default function DCSummPanel({ dfn }: Props) {
-  const { fetchDomain, getDomain, isLoading } = useDataCache();
+  const { fetchDomain, getDomain, getDomainMeta, isLoading } = useDataCache();
   const [selected, setSelected] = useState<DCSummary | null>(null);
   const [fullText, setFullText] = useState<string>('');
   const [textLoading, setTextLoading] = useState(false);
@@ -19,8 +20,33 @@ export default function DCSummPanel({ dfn }: Props) {
     fetchDomain(dfn, 'dcSummaries');
   }, [dfn, fetchDomain]);
 
+  useEffect(() => {
+    setSelected(null);
+    setFullText('');
+    setTextLoading(false);
+  }, [dfn]);
+
   const summaries = getDomain(dfn, 'dcSummaries');
   const loading = isLoading(dfn, 'dcSummaries');
+  const dcSummariesMeta = getDomainMeta(dfn, 'dcSummaries');
+  const showPendingBanner =
+    !loading && summaries.length === 0 && dcSummariesMeta.fetched && (dcSummariesMeta.pending || dcSummariesMeta.ok !== true);
+
+  useEffect(() => {
+    if (!selected) return;
+
+    const freshSelected = summaries.find((summary) => summary.id === selected.id) || null;
+    if (!freshSelected) {
+      setSelected(null);
+      setFullText('');
+      setTextLoading(false);
+      return;
+    }
+
+    if (freshSelected !== selected) {
+      setSelected(freshSelected);
+    }
+  }, [selected, summaries]);
 
   async function handleSelect(s: DCSummary) {
     setSelected(s);
@@ -46,41 +72,51 @@ export default function DCSummPanel({ dfn }: Props) {
 
       <div className={styles.splitPane}>
         <div className={styles.splitLeft}>
-          <table className={styles.dataTable}>
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {summaries.map((s) => (
-                <tr
-                  key={s.id}
-                  onClick={() => handleSelect(s)}
-                  style={selected?.id === s.id ? { background: 'var(--cprs-selected)' } : undefined}
-                >
-                  <td>{s.title}</td>
-                  <td>{s.date}</td>
-                  <td>
-                    <span
-                      className={`${styles.badge} ${/unsigned/i.test(s.status) ? styles.unsigned : styles.signed}`}
-                    >
-                      {s.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-              {!loading && summaries.length === 0 && (
+          {showPendingBanner && (
+            <CachePendingBanner
+              title="Discharge summaries pending"
+              noun="discharge-summary"
+              meta={dcSummariesMeta}
+              defaultTargets={['TIU DOCUMENTS BY CONTEXT']}
+            />
+          )}
+          {!showPendingBanner && (
+            <table className={styles.dataTable}>
+              <thead>
                 <tr>
-                  <td colSpan={3} style={{ textAlign: 'center', fontStyle: 'italic' }}>
-                    No discharge summaries on file
-                  </td>
+                  <th>Title</th>
+                  <th>Date</th>
+                  <th>Status</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {summaries.map((s) => (
+                  <tr
+                    key={s.id}
+                    onClick={() => handleSelect(s)}
+                    style={selected?.id === s.id ? { background: 'var(--cprs-selected)' } : undefined}
+                  >
+                    <td>{s.title}</td>
+                    <td>{s.date}</td>
+                    <td>
+                      <span
+                        className={`${styles.badge} ${/unsigned/i.test(s.status) ? styles.unsigned : styles.signed}`}
+                      >
+                        {s.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+                {!loading && summaries.length === 0 && (
+                  <tr>
+                    <td colSpan={3} style={{ textAlign: 'center', fontStyle: 'italic' }}>
+                      No discharge summaries on file
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
           {loading && (
             <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', padding: 8 }}>Loading...</p>
           )}

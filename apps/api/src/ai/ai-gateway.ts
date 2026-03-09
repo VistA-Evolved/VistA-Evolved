@@ -12,7 +12,7 @@
 import { randomBytes } from 'node:crypto';
 import type { AIRequest, AIResponse, Citation, ConfidenceLevel } from './types.js';
 import { resolveModel, canHandlePhi } from './model-registry.js';
-import { renderPrompt } from './prompt-registry.js';
+import { getPrompt, renderPrompt } from './prompt-registry.js';
 import {
   checkRequestSafety,
   checkResponseSafety,
@@ -251,7 +251,12 @@ export async function processAiRequest(request: AIRequest): Promise<GatewayResul
 
   // 7. Render prompt
   const enrichedVars = { ...request.variables };
-  if (contextText && enrichedVars.chartContext === undefined) {
+  const promptTemplate = getPrompt(request.promptId);
+  if (
+    contextText &&
+    promptTemplate?.allowedVariables.includes('chartContext') &&
+    enrichedVars.chartContext === undefined
+  ) {
     enrichedVars.chartContext = contextText;
   }
 

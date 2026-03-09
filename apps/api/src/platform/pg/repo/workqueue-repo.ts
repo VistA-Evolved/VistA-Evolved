@@ -15,6 +15,13 @@ import { pgRcmWorkItem, pgRcmWorkItemEvent } from '../pg-schema.js';
 export type WorkItemRow = typeof pgRcmWorkItem.$inferSelect;
 export type WorkItemEventRow = typeof pgRcmWorkItemEvent.$inferSelect;
 
+function requireTenantId(tenantId?: string): string {
+  if (typeof tenantId === 'string' && tenantId.trim().length > 0) {
+    return tenantId.trim();
+  }
+  throw new Error('Tenant context required for workqueue repository');
+}
+
 /* -- Create ---------------------------------------------------- */
 
 export async function createWorkItem(data: {
@@ -38,7 +45,7 @@ export async function createWorkItem(data: {
   const db = getPgDb();
   const now = new Date().toISOString();
   const id = randomUUID();
-  const tid = data.tenantId ?? 'default';
+  const tid = requireTenantId(data.tenantId);
 
   await db.insert(pgRcmWorkItem).values({
     id,
@@ -76,26 +83,39 @@ export async function createWorkItem(data: {
   // Audit event
   await appendEvent(id, tid, 'created', null, 'open', 'system', null);
 
-  const row = await findWorkItemById(id);
+  const row = await findWorkItemById(tid, id);
   return row!;
 }
 
 /* -- Lookup ---------------------------------------------------- */
 
-export async function findWorkItemById(id: string): Promise<WorkItemRow | undefined> {
+export async function findWorkItemById(
+  tenantId: string,
+  id: string
+): Promise<WorkItemRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(pgRcmWorkItem).where(eq(pgRcmWorkItem.id, id));
+  const rows = await db
+    .select()
+    .from(pgRcmWorkItem)
+    .where(and(eq(pgRcmWorkItem.tenantId, tenantId), eq(pgRcmWorkItem.id, id)));
   return rows[0];
 }
 
-export async function findWorkItemsForClaim(claimId: string): Promise<WorkItemRow[]> {
+export async function findWorkItemsForClaim(
+  tenantId: string,
+  claimId: string
+): Promise<WorkItemRow[]> {
   const db = getPgDb();
-  return db.select().from(pgRcmWorkItem).where(eq(pgRcmWorkItem.claimId, claimId));
+  return db
+    .select()
+    .from(pgRcmWorkItem)
+    .where(and(eq(pgRcmWorkItem.tenantId, tenantId), eq(pgRcmWorkItem.claimId, claimId)));
 }
 
 /* -- Update ---------------------------------------------------- */
 
 export async function updateWorkItem(
+  tenantId: string,
   id: string,
   updates: Partial<{
     status: string;
@@ -122,13 +142,16 @@ export async function updateWorkItem(
   actor?: string
 ): Promise<WorkItemRow | undefined> {
   const db = getPgDb();
-  const existing = await findWorkItemById(id);
+  const existing = await findWorkItemById(tenantId, id);
   if (!existing) return undefined;
 
   const now = new Date().toISOString();
   const merged = { ...updates, updatedAt: now };
 
-  await db.update(pgRcmWorkItem).set(merged).where(eq(pgRcmWorkItem.id, id));
+  await db
+    .update(pgRcmWorkItem)
+    .set(merged)
+    .where(and(eq(pgRcmWorkItem.tenantId, tenantId), eq(pgRcmWorkItem.id, id)));
 
   // Audit status change
   if (updates.status && updates.status !== existing.status) {
@@ -154,7 +177,7 @@ export async function updateWorkItem(
     );
   }
 
-  return findWorkItemById(id);
+  return findWorkItemById(tenantId, id);
 }
 
 /* -- List with filters ----------------------------------------- */

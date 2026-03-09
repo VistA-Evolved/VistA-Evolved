@@ -11,8 +11,9 @@
 | Medications        |        2        |        1         |     1     |    1    | Quick-order works; manual is draft  |
 | Orders             |        1        |        1         |     1     |    0    | ORWDX SEND via quick-order          |
 | Notes              |        2        |        1         |     1     |    0    | Full read + create + sign           |
+| Clinical Procedures |        4        |        0         |     1     |    0    | Read parity via TIU/consult fallback; medicine pending |
 | Consults           |        2        |        0         |     1     |    0    | **NEW Phase 12**                    |
-| Surgery            |        1        |        0         |     1     |    0    | **NEW Phase 12**                    |
+| Surgery            |        4        |        0         |     1     |    0    | Detail + operative text parity      |
 | D/C Summaries      |        2        |        0         |     1     |    0    | **NEW Phase 12**                    |
 | Labs               |        1        |        0         |     1     |    0    | **NEW Phase 12**                    |
 | Reports            |        2        |        0         |     1     |    0    | **NEW Phase 12**                    |
@@ -74,13 +75,21 @@
 - **Status**: Full read parity
 - **Gap**: ORQQCN2 MED RESULTS for entering consult results
 
+### 6B. Clinical Procedures (Phase 613)
+
+- **Panel**: `ClinicalProceduresPanel.tsx` — live results browser with detail pane and consult-linked fallback
+- **RPCs (read)**: TIU IDENTIFY CLINPROC CLASS, TIU DOCUMENTS BY CONTEXT, ORQQCN LIST, ORQQCN DETAIL
+- **API endpoints**: GET /vista/clinical-procedures?dfn=, GET /vista/clinical-procedures/:id?kind=, GET /vista/clinical-procedures/consult-link?dfn=&consultId=, GET /vista/clinical-procedures/medicine?dfn=
+- **Status**: Partial-but-real read parity. Results now use the TIU Clinical Procedures class when populated and truthfully fall back to consult-tracked procedure records when VEHU has no TIU CP documents. Consult-linked detail is live.
+- **Gap**: MD package patient-scoped medicine results and consult attach/detach writes remain pending until File 702 / MD package data is actually present in the sandbox
+
 ### 7. Surgery (Phase 12B)
 
-- **Panel**: `SurgeryPanel.tsx` — live data via data-cache
-- **RPCs (read)**: ORWSR LIST
-- **API endpoints**: GET /vista/surgery?dfn=
-- **Status**: Full read parity
-- **Gap**: Surgery report text (would need ORWSR RPTLIST + text fetch)
+- **Panel**: `SurgeryPanel.tsx` — live data via data-cache plus linked operative report detail
+- **RPCs (read)**: ORWSR LIST, ORWSR ONECASE, TIU GET RECORD TEXT, TIU DETAILED DISPLAY
+- **API endpoints**: GET /vista/surgery?dfn=, GET /vista/surgery/detail?id=&dfn=
+- **Status**: Full read parity including operative report text/detail
+- **Gap**: VEHU case-header rows can throw `GETONE+5^ORWSR`; the API now truthfully resolves through linked document rows for the same case when available
 
 ### 8. Discharge Summaries (Phase 12C)
 
@@ -100,15 +109,15 @@
 
 ### 10. Reports (Phase 12E)
 
-- **Panel**: `ReportsPanel.tsx` — live report catalog + text fetch
+- **Panel**: `ReportsPanel.tsx` — grouped live report browser + qualifier-aware text viewer
 - **RPCs (read)**: ORWRP REPORT LISTS, ORWRP REPORT TEXT
-- **API endpoints**: GET /vista/reports, GET /vista/reports/text?dfn=&id=&hsType=
-- **Status**: Full read parity
-- **Gap**: Date range / HS type filtering in report text
+- **API endpoints**: GET /vista/reports, GET /vista/reports/text?dfn=&id=&qualifier=&alpha=&omega=
+- **Status**: Grouped report read parity with Health Summary and date-range qualifier support
+- **Gap**: Remote HDR/site-specific report queries and exact ORWRP3 tree parity for advanced column layouts
 
 ---
 
-## API Endpoint Inventory (23 total)
+## API Endpoint Inventory (29 total)
 
 | #   | Method | Path                             | RPC(s)                         | Phase   |
 | --- | ------ | -------------------------------- | ------------------------------ | ------- |
@@ -130,12 +139,17 @@
 | 16  | GET    | /vista/icd-search?q=             | ORQQPL4 LEX                    | **12F** |
 | 17  | GET    | /vista/consults?dfn=             | ORQQCN LIST                    | **12A** |
 | 18  | GET    | /vista/consults/detail?id=       | ORQQCN DETAIL                  | **12A** |
-| 19  | GET    | /vista/surgery?dfn=              | ORWSR LIST                     | **12B** |
-| 20  | GET    | /vista/dc-summaries?dfn=         | TIU DOCUMENTS BY CONTEXT (244) | **12C** |
-| 21  | GET    | /vista/tiu-text?id=              | TIU GET RECORD TEXT            | **12C** |
-| 22  | GET    | /vista/labs?dfn=                 | ORWLRR INTERIM                 | **12D** |
-| 23  | GET    | /vista/reports                   | ORWRP REPORT LISTS             | **12E** |
-| 24  | GET    | /vista/reports/text?dfn=&id=     | ORWRP REPORT TEXT              | **12E** |
+| 19  | GET    | /vista/clinical-procedures?dfn=  | TIU CP class + ORQQCN LIST     | **613** |
+| 20  | GET    | /vista/clinical-procedures/:id?kind= | ORQQCN DETAIL or TIU detail | **613** |
+| 21  | GET    | /vista/clinical-procedures/consult-link?dfn=&consultId= | ORQQCN LIST + ORQQCN DETAIL | **613** |
+| 22  | GET    | /vista/clinical-procedures/medicine?dfn= | honest MD-package pending grounding | **613** |
+| 23  | GET    | /vista/surgery?dfn=              | ORWSR LIST                     | **12B** |
+| 24  | GET    | /vista/surgery/detail?id=&dfn=   | ORWSR ONECASE + TIU detail     | **612** |
+| 25  | GET    | /vista/dc-summaries?dfn=         | TIU DOCUMENTS BY CONTEXT (244) | **12C** |
+| 26  | GET    | /vista/tiu-text?id=              | TIU GET RECORD TEXT            | **12C** |
+| 27  | GET    | /vista/labs?dfn=                 | ORWLRR INTERIM                 | **12D** |
+| 28  | GET    | /vista/reports                   | ORWRP REPORT LISTS             | **12E** |
+| 29  | GET    | /vista/reports/text?dfn=&id=     | ORWRP REPORT TEXT              | **12E** |
 
 ---
 
@@ -186,11 +200,10 @@
 
 1. **Problem writes**: ORQQPL ADD SAVE + ORQQPL EDIT SAVE (requires full ICD coding flow)
 2. **Manual medication ordering**: Full OERR order dialog lifecycle
-3. **Consult result entry**: ORQQCN2 MED RESULTS
-4. **Surgery report text**: ORWSR RPTLIST text retrieval
-5. **D/C Summary creation**: TIU CREATE RECORD with CLASS=244
-6. **Lab charting**: ORWLRR CHART for graphical lab results
-7. **Report date ranges**: ORWRP REPORT TEXT with alpha/omega date params
-8. **Remote facility data**: ORWCIRN FACLIST + ORWCIRN HDRA (requires production VistA)
-9. **Order sentences**: ORWDXA DC (discontinue), ORWDXA FLAG (flag), ORWDXA VERIFY
-10. **Encounter management**: ORWPCE SAVE (PCE encounter capture)
+3. **Clinical Procedures medicine results and consult attach/detach writes**: MD TMDPATIENT, MD TMDWIDGET, MD TMDCIDC, ORQQCN ASSIGNABLE/ATTACH/REMOVABLE MED RESULTS
+4. **D/C Summary creation**: TIU CREATE RECORD with CLASS=244
+5. **Lab charting**: ORWLRR CHART for graphical lab results
+6. **Advanced report tree parity**: ORWRP3 EXPAND COLUMNS / remote HDR query parity for column layouts and cross-site browsing
+7. **Remote facility data**: ORWCIRN FACLIST + ORWCIRN HDRA (requires production VistA)
+8. **Order sentences**: ORWDXA DC (discontinue), ORWDXA FLAG (flag), ORWDXA VERIFY
+9. **Encounter management**: ORWPCE SAVE (PCE encounter capture)

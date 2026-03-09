@@ -22,7 +22,7 @@ import { log } from '../../lib/logger.js';
 import { validateJwt, type JwtValidationResult } from '../jwt-validator.js';
 import { mapClaimsToUserMeta, type OidcTokenClaims } from '../oidc-provider.js';
 import type { UserRole } from '../session-store.js';
-import { resolveTenantId } from '../../config/tenant-config.js';
+import { tryResolveTenantId } from '../../config/tenant-config.js';
 import type { IdentityProvider, IdentityResult, CallbackParams, OidcIdpConfig } from './types.js';
 
 /* ------------------------------------------------------------------ */
@@ -123,11 +123,14 @@ function mapClaimsToIdentity(claims: OidcTokenClaims, config: OidcIdpConfig): Id
     else if (roleSet.has('support') || roleSet.has('helpdesk')) role = 'support';
   }
 
-  const facilityStation = userMeta.facilityStation || '500';
-  if (!userMeta.facilityStation) {
-    log.warn('OIDC claims missing facility_station, defaulting to 500 (sandbox)');
+  const facilityStation = userMeta.facilityStation;
+  const tenantId = userMeta.tenantId || tryResolveTenantId(facilityStation);
+  if (!tenantId) {
+    return {
+      ok: false,
+      error: 'OIDC tenant resolution failed: missing tenant_id claim or mapped facility_station',
+    };
   }
-  const tenantId = userMeta.tenantId || resolveTenantId(facilityStation);
 
   return {
     ok: true,
@@ -137,7 +140,7 @@ function mapClaimsToIdentity(claims: OidcTokenClaims, config: OidcIdpConfig): Id
       displayName: userMeta.userName,
       email: claims.email,
       role,
-      facilityStation,
+      facilityStation: facilityStation || '',
       facilityName: '',
       divisionIen: '',
       tenantId,

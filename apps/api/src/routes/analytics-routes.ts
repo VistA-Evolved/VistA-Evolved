@@ -105,6 +105,10 @@ function setDashboardCache(key: string, data: unknown): void {
   });
 }
 
+function getTenantCacheSize(tenantId: string): number {
+  return Array.from(dashboardCache.keys()).filter((key) => key.endsWith(`:${tenantId}`)).length;
+}
+
 /* ================================================================== */
 /* Route Plugin                                                         */
 /* ================================================================== */
@@ -119,8 +123,8 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     if (cached) return { ok: true, cached: true, ...(cached as object) };
 
     const rpcHealth = getRpcHealthSummary();
-    const eventStats = getEventBufferStats();
-    const aggStats = getAggregationStats();
+    const eventStats = getEventBufferStats(session.tenantId);
+    const aggStats = getAggregationStats(session.tenantId);
     const mem = process.memoryUsage();
 
     const dashboard = {
@@ -188,7 +192,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
       limit: 30,
     });
 
-    const reportHealth = getClinicalReportHealth();
+    const reportHealth = getClinicalReportHealth(session.tenantId);
 
     const dashboard = {
       timestamp: new Date().toISOString(),
@@ -231,7 +235,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     const result = queryAnalyticsEvents({
       category: q.category,
       metric: q.metric,
-      tenantId: q.tenantId || session.tenantId,
+      tenantId: session.tenantId,
       since: q.since,
       until: q.until,
       limit: Math.min(Number(q.limit || 100), 1000),
@@ -251,7 +255,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
       period: q.period || 'hourly',
       metric: q.metric,
       category: q.category,
-      tenantId: q.tenantId || session.tenantId,
+      tenantId: session.tenantId,
       since: q.since,
       until: q.until,
       limit: Math.min(Number(q.limit || 200), ANALYTICS_DASHBOARD_CONFIG.maxDataPoints),
@@ -270,7 +274,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
 
     const series = getMetricSeries(metric, {
       period: q.period || 'hourly',
-      tenantId: q.tenantId || session.tenantId,
+      tenantId: session.tenantId,
       since: q.since,
       until: q.until,
       maxPoints: Math.min(Number(q.maxPoints || 200), ANALYTICS_DASHBOARD_CONFIG.maxDataPoints),
@@ -307,7 +311,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
         period: body.filters?.period,
         metric: body.filters?.metric,
         category: body.filters?.category,
-        tenantId: body.filters?.tenantId || session.tenantId,
+        tenantId: session.tenantId,
         since: body.filters?.since,
         until: body.filters?.until,
       });
@@ -315,7 +319,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
       csv = exportAnalyticsEventsCsv({
         category: body.filters?.category,
         metric: body.filters?.metric,
-        tenantId: body.filters?.tenantId || session.tenantId,
+        tenantId: session.tenantId,
         since: body.filters?.since,
         until: body.filters?.until,
         limit: ANALYTICS_EXPORT_CONFIG.maxExportRows,
@@ -342,7 +346,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     requireAnalyticsPermission(session, 'analytics_admin', reply);
 
     const body = (request.body as any) || {};
-    const result = runAggregation(body.since, body.until, body.tenantId || session.tenantId);
+    const result = runAggregation(body.since, body.until, session.tenantId);
 
     audit('analytics.aggregate' as AuditAction, 'success', auditActor(request), {
       detail: { ...result },
@@ -356,9 +360,9 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     const session = await requireSession(request, reply);
     requireAnalyticsPermission(session, 'analytics_viewer', reply);
 
-    const eventStats = getEventBufferStats();
-    const aggStats = getAggregationStats();
-    const reportHealth = getClinicalReportHealth();
+    const eventStats = getEventBufferStats(session.tenantId);
+    const aggStats = getAggregationStats(session.tenantId);
+    const reportHealth = getClinicalReportHealth(session.tenantId);
 
     return {
       ok: true,
@@ -366,7 +370,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
       eventBuffer: eventStats,
       aggregation: aggStats,
       clinicalReports: reportHealth,
-      dashboardCacheSize: dashboardCache.size,
+      dashboardCacheSize: getTenantCacheSize(session.tenantId),
     };
   });
 
@@ -413,8 +417,16 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     const session = await requireSession(request, reply);
     requireAnalyticsPermission(session, 'analytics_admin', reply);
 
-    const { buckets: hourly } = queryAggregatedMetrics({ period: 'hourly', limit: 5000 });
-    const { buckets: daily } = queryAggregatedMetrics({ period: 'daily', limit: 5000 });
+    const { buckets: hourly } = queryAggregatedMetrics({
+      period: 'hourly',
+      tenantId: session.tenantId,
+      limit: 5000,
+    });
+    const { buckets: daily } = queryAggregatedMetrics({
+      period: 'daily',
+      tenantId: session.tenantId,
+      limit: 5000,
+    });
 
     const result = await syncBucketsToOcto(hourly, daily);
 

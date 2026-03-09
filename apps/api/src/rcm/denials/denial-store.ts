@@ -117,7 +117,7 @@ function rowToResubmission(row: any): ResubmissionAttempt {
 /* ── Denial Case CRUD ───────────────────────────────────────── */
 
 export async function createDenialCase(
-  input: CreateDenialInput,
+  input: CreateDenialInput & { tenantId: string },
   actor?: string
 ): Promise<DenialCase> {
   const db = getPgDb();
@@ -126,6 +126,7 @@ export async function createDenialCase(
 
   const row = {
     id,
+    tenantId: input.tenantId,
     claimRef: input.claimRef,
     vistaClaimIen: input.vistaClaimIen ?? null,
     patientDfn: input.patientDfn ?? null,
@@ -164,7 +165,7 @@ export async function createDenialCase(
  * Sets importFileHash, importTimestamp, importParserVersion at creation time.
  */
 export async function createDenialCaseWithProvenance(
-  input: CreateDenialInput,
+  input: CreateDenialInput & { tenantId: string },
   provenance: {
     importFileHash: string;
     importTimestamp: string;
@@ -178,6 +179,7 @@ export async function createDenialCaseWithProvenance(
 
   const row = {
     id,
+    tenantId: input.tenantId,
     claimRef: input.claimRef,
     vistaClaimIen: input.vistaClaimIen ?? null,
     patientDfn: input.patientDfn ?? null,
@@ -221,13 +223,17 @@ export async function createDenialCaseWithProvenance(
   return rowToDenialCase(row);
 }
 
-export async function getDenialById(id: string): Promise<DenialCase | null> {
+export async function getDenialById(tenantId: string, id: string): Promise<DenialCase | null> {
   const db = getPgDb();
-  const rows = await db.select().from(denialCase).where(eq(denialCase.id, id));
+  const rows = await db
+    .select()
+    .from(denialCase)
+    .where(and(eq(denialCase.tenantId, tenantId), eq(denialCase.id, id)));
   return rows[0] ? rowToDenialCase(rows[0]) : null;
 }
 
 export async function updateDenialCase(
+  tenantId: string,
   id: string,
   updates: {
     denialStatus?: DenialStatus;
@@ -241,7 +247,7 @@ export async function updateDenialCase(
   reason: string
 ): Promise<DenialCase | null> {
   const db = getPgDb();
-  const existing = await getDenialById(id);
+  const existing = await getDenialById(tenantId, id);
   if (!existing) return null;
 
   const now = new Date().toISOString();
@@ -256,7 +262,10 @@ export async function updateDenialCase(
   if (updates.assignedTeam !== undefined) setClause.assignedTeam = updates.assignedTeam;
   if (updates.denialCodes) setClause.denialCodesJson = JSON.stringify(updates.denialCodes);
 
-  await db.update(denialCase).set(setClause).where(eq(denialCase.id, id));
+  await db
+    .update(denialCase)
+    .set(setClause)
+    .where(and(eq(denialCase.tenantId, tenantId), eq(denialCase.id, id)));
 
   // Record action
   const actionType =
@@ -270,7 +279,7 @@ export async function updateDenialCase(
     newStatus
   );
 
-  return getDenialById(id);
+  return getDenialById(tenantId, id);
 }
 
 export interface DenialListResult {
@@ -281,9 +290,9 @@ export interface DenialListResult {
   totalPages: number;
 }
 
-export async function listDenials(query: DenialListQuery): Promise<DenialListResult> {
+export async function listDenials(tenantId: string, query: DenialListQuery): Promise<DenialListResult> {
   const db = getPgDb();
-  const conditions: any[] = [];
+  const conditions: any[] = [eq(denialCase.tenantId, tenantId)];
 
   if (query.status) conditions.push(eq(denialCase.denialStatus, query.status));
   if (query.payerId) conditions.push(eq(denialCase.payerId, query.payerId));
@@ -369,12 +378,13 @@ async function insertAction(
 }
 
 export async function addDenialAction(
+  tenantId: string,
   denialId: string,
   actor: string,
   actionType: string,
   payload: Record<string, unknown>
 ): Promise<DenialAction> {
-  const existing = await getDenialById(denialId);
+  const existing = await getDenialById(tenantId, denialId);
   if (!existing) throw new Error(`Denial not found: ${denialId}`);
   return insertAction(
     denialId,
@@ -480,7 +490,7 @@ export async function listResubmissions(denialId: string): Promise<ResubmissionA
 
 /* ── Stats (for dashboard) ──────────────────────────────────── */
 
-export async function getDenialStats(): Promise<Record<string, number>> {
+export async function getDenialStats(tenantId: string): Promise<Record<string, number>> {
   const db = getPgDb();
   const rows = await db
     .select({
@@ -488,6 +498,7 @@ export async function getDenialStats(): Promise<Record<string, number>> {
       count: sql<number>`count(*)`,
     })
     .from(denialCase)
+    .where(eq(denialCase.tenantId, tenantId))
     .groupBy(denialCase.denialStatus);
 
   const stats: Record<string, number> = {};

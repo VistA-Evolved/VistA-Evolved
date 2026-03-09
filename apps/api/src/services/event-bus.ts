@@ -81,6 +81,7 @@ const consumers: Map<string, EventConsumer> = new Map();
 
 /** Event delivery log (for auditing) */
 const deliveryLog: Array<{
+  tenantId: string;
   eventId: string;
   consumerId: string;
   deliveredAt: string;
@@ -178,11 +179,11 @@ function persistDlqEntry(entry: DlqEntry): void {
   }).catch((e: unknown) => log.warn("Event bus DLQ persist failed", { error: String(e) }));
 }
 
-function persistDeliveryLog(entry: { eventId: string; consumerId: string; deliveredAt: string; success: boolean; error?: string }): void {
+function persistDeliveryLog(entry: { tenantId: string; eventId: string; consumerId: string; deliveredAt: string; success: boolean; error?: string }): void {
   if (!_deliveryLogRepo) return;
   void _deliveryLogRepo.upsert({
     id: `${entry.eventId}-${entry.consumerId}-${Date.now()}`,
-    tenantId: "default",
+    tenantId: entry.tenantId,
     eventId: entry.eventId,
     consumerId: entry.consumerId,
     deliveredAt: entry.deliveredAt,
@@ -258,6 +259,7 @@ async function dispatchEvent(event: DomainEvent): Promise<void> {
         );
       });
       const successEntry = {
+        tenantId: event.tenantId,
         eventId: event.eventId,
         consumerId: consumer.id,
         deliveredAt: new Date().toISOString(),
@@ -268,6 +270,7 @@ async function dispatchEvent(event: DomainEvent): Promise<void> {
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : String(err);
       const failEntry = {
+        tenantId: event.tenantId,
         eventId: event.eventId,
         consumerId: consumer.id,
         deliveredAt: new Date().toISOString(),
@@ -310,11 +313,17 @@ function addToDlq(event: DomainEvent, consumerId: string, error: string): void {
  * Retry a DLQ entry. If consumer exists and retry succeeds, entry is removed.
  * Returns success status.
  */
-export async function retryDlqEntry(dlqId: string): Promise<{ ok: boolean; error?: string }> {
+export async function retryDlqEntry(
+  dlqId: string,
+  tenantId: string
+): Promise<{ ok: boolean; error?: string }> {
   const idx = dlq.findIndex((d) => d.id === dlqId);
   if (idx === -1) return { ok: false, error: "DLQ entry not found" };
 
   const entry = dlq[idx];
+  if (entry.event.tenantId !== tenantId) {
+    return { ok: false, error: "DLQ entry not found" };
+  }
   if (entry.retryCount >= entry.maxRetries) {
     return { ok: false, error: "Max retries exceeded" };
   }
@@ -348,9 +357,13 @@ export function unregisterConsumer(consumerId: string): boolean {
   return consumers.delete(consumerId);
 }
 
-/** List registered consumers */
-export function listConsumers(): Omit<EventConsumer, "handler">[] {
-  return Array.from(consumers.values()).map(({ handler, ...rest }) => rest);
+/** List registered consumers, optionally scoped to a tenant */
+export function listConsumers(tenantId: string): Omit<EventConsumer, "handler">[] {
+  return Array.from(consumers.values())
+    .filter((consumer) => {
+      return !consumer.tenantIds?.length || consumer.tenantIds.includes(tenantId);
+    })
+    .map(({ handler, ...rest }) => rest);
 }
 
 // ─── Replay ──────────────────────────────────────────────
@@ -403,52 +416,58 @@ export async function replayEvents(opts: {
 // ─── Query ───────────────────────────────────────────────
 
 /** Get outbox events, optionally filtered */
-export function getOutbox(opts?: {
-  tenantId?: string;
+export function getOutbox(opts: {
+  tenantId: string;
   eventType?: string;
   limit?: number;
 }): DomainEvent[] {
   let result = [...outbox];
-  if (opts?.tenantId) result = result.filter((e) => e.tenantId === opts.tenantId);
-  if (opts?.eventType) result = result.filter((e) => matchesFilter(e.eventType, opts.eventType!));
+  result = result.filter((e) => e.tenantId === opts.tenantId);
+  const eventType = opts.eventType;
+  if (eventType) result = result.filter((e) => matchesFilter(e.eventType, eventType));
   result = result.reverse(); // Most recent first
-  if (opts?.limit) result = result.slice(0, opts.limit);
+  if (opts.limit) result = result.slice(0, opts.limit);
   return result;
 }
 
 /** Get DLQ entries */
-export function getDlq(opts?: {
-  tenantId?: string;
+export function getDlq(opts: {
+  tenantId: string;
   consumerId?: string;
   limit?: number;
 }): DlqEntry[] {
   let result = [...dlq];
-  if (opts?.tenantId) result = result.filter((d) => d.event.tenantId === opts.tenantId);
-  if (opts?.consumerId) result = result.filter((d) => d.consumerId === opts.consumerId);
+  result = result.filter((d) => d.event.tenantId === opts.tenantId);
+  if (opts.consumerId) result = result.filter((d) => d.consumerId === opts.consumerId);
   result = result.reverse();
-  if (opts?.limit) result = result.slice(0, opts.limit);
+  if (opts.limit) result = result.slice(0, opts.limit);
   return result;
 }
 
 /** Get delivery log */
-export function getDeliveryLog(limit?: number): typeof deliveryLog {
-  const result = [...deliveryLog].reverse();
-  return limit ? result.slice(0, limit) : result;
+export function getDeliveryLog(opts: { tenantId: string; limit?: number }): typeof deliveryLog {
+  let result = [...deliveryLog];
+  result = result.filter((d) => d.tenantId === opts.tenantId);
+  result = result.reverse();
+  return opts.limit ? result.slice(0, opts.limit) : result;
 }
 
 /** Get event bus stats */
-export function getEventBusStats(): {
+export function getEventBusStats(tenantId: string): {
   outboxSize: number;
   dlqSize: number;
   consumerCount: number;
   deliveryLogSize: number;
   eventTypes: string[];
 } {
+  const tenantOutbox = outbox.filter((event) => event.tenantId === tenantId);
+  const tenantDlq = dlq.filter((entry) => entry.event.tenantId === tenantId);
+  const tenantDeliveryLog = deliveryLog.filter((entry) => entry.tenantId === tenantId);
   return {
-    outboxSize: outbox.length,
-    dlqSize: dlq.length,
-    consumerCount: consumers.size,
-    deliveryLogSize: deliveryLog.length,
+    outboxSize: tenantOutbox.length,
+    dlqSize: tenantDlq.length,
+    consumerCount: listConsumers(tenantId).length,
+    deliveryLogSize: tenantDeliveryLog.length,
     eventTypes: Object.values(EVENT_TYPES),
   };
 }

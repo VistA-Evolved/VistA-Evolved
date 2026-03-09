@@ -29,6 +29,42 @@ const tenantRegions = new Map<string, DataRegion>();
 // ── Route Registration ─────────────────────────────────────────
 
 export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: any): string | null {
+    const requestTenantId =
+      typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+        ? request.tenantId.trim()
+        : undefined;
+    const sessionTenantId =
+      typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+        ? request.session.tenantId.trim()
+        : undefined;
+    const headerTenantId = request?.headers?.['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return requestTenantId || sessionTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(request: any, reply: any): string | null {
+    const tenantId = resolveTenantId(request);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
+  function requireMatchingTenantParam(request: any, reply: any, tenantId: string): boolean {
+    const requestedTenantId =
+      typeof request?.params?.tenantId === 'string' && request.params.tenantId.trim().length > 0
+        ? request.params.tenantId.trim()
+        : null;
+    if (requestedTenantId && requestedTenantId !== tenantId) {
+      reply.code(404).send({ ok: false, error: 'Tenant not found' });
+      return false;
+    }
+    return true;
+  }
+
   // GET /residency/regions — list all data regions
   app.get('/residency/regions', async (_request, _reply) => {
     return {
@@ -58,7 +94,9 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
 
   // GET /residency/tenant/:tenantId — get tenant's region assignment
   app.get('/residency/tenant/:tenantId', async (request, reply) => {
-    const { tenantId } = request.params as { tenantId: string };
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    if (!requireMatchingTenantParam(request, reply, tenantId)) return;
     const region = tenantRegions.get(tenantId);
     if (!region) {
       return reply.code(404).send({ ok: false, error: 'Tenant has no region assignment' });
@@ -74,7 +112,9 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
 
   // POST /residency/tenant/:tenantId/assign — assign region (one-time only)
   app.post('/residency/tenant/:tenantId/assign', async (request, reply) => {
-    const { tenantId } = request.params as { tenantId: string };
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    if (!requireMatchingTenantParam(request, reply, tenantId)) return;
     const body = (request.body as Record<string, unknown>) || {};
     const region = body.dataRegion as string;
 
@@ -116,7 +156,6 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
   app.post('/residency/transfer-agreements', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const {
-      tenantId,
       sourceRegion,
       targetRegion,
       purpose,
@@ -126,10 +165,13 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
       expiresAt,
     } = body as Record<string, string>;
 
-    if (!tenantId || !sourceRegion || !targetRegion || !purpose || !legalBasis) {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+
+    if (!sourceRegion || !targetRegion || !purpose || !legalBasis) {
       return reply.code(400).send({
         ok: false,
-        error: 'Missing required fields: tenantId, sourceRegion, targetRegion, purpose, legalBasis',
+        error: 'Missing required fields: sourceRegion, targetRegion, purpose, legalBasis',
       });
     }
 
@@ -170,12 +212,14 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
 
   // GET /residency/transfer-agreements — list agreements
   app.get('/residency/transfer-agreements', async (request) => {
-    const query = (request.query as Record<string, string>) || {};
-    let agreements = [...transferAgreements.values()];
-
-    if (query.tenantId) {
-      agreements = agreements.filter((a) => a.tenantId === query.tenantId);
+    const tenantId = resolveTenantId(request);
+    if (!tenantId) {
+      return { ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' };
     }
+    const query = (request.query as Record<string, string>) || {};
+    let agreements = [...transferAgreements.values()].filter(
+      (agreement) => agreement.tenantId === tenantId
+    );
     if (query.status) {
       agreements = agreements.filter((a) => a.status === query.status);
     }

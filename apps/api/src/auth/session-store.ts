@@ -309,6 +309,37 @@ export async function destroySession(token: string): Promise<boolean> {
   return !!cached;
 }
 
+/** Revoke all other active sessions for the same user/tenant except the current token. */
+export async function revokeOtherSessions(
+  currentToken: string,
+  tenantId: string,
+  userId: string
+): Promise<number> {
+  const currentHash = hashToken(currentToken);
+  let revokedCount = 0;
+
+  if (_repo) {
+    try {
+      const rows = await _repo.listActiveSessions(tenantId);
+      for (const row of rows as any[]) {
+        if (row.userId !== userId) continue;
+        if (row.tokenHash === currentHash) continue;
+        if (await _repo.revokeSession(row.id)) revokedCount++;
+      }
+    } catch {
+      // fall back to cache cleanup below
+    }
+  }
+
+  for (const [tokenHash, cached] of sessionCache) {
+    if (tokenHash === currentHash) continue;
+    if (cached.data.tenantId !== tenantId || cached.data.duz !== userId) continue;
+    sessionCache.delete(tokenHash);
+  }
+
+  return revokedCount;
+}
+
 /** Get all active sessions (for admin audit). */
 export async function listSessions(): Promise<SessionData[]> {
   if (_repo) {

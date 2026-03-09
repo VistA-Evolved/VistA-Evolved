@@ -56,6 +56,18 @@ function sessionActor(request: FastifyRequest): string {
   return s?.userName || s?.duz || 'unknown';
 }
 
+function resolveTenantId(request: FastifyRequest): string {
+  const headerTenantId = request.headers['x-tenant-id'];
+  if (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0) {
+    return headerTenantId.trim();
+  }
+  const requestTenantId = (request as any).tenantId || (request as any).session?.tenantId;
+  if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+    return requestTenantId.trim();
+  }
+  return 'default';
+}
+
 /* ── Default facility ID (single-tenant sandbox) ────────────── */
 
 const DEFAULT_FACILITY_ID = process.env.PHILHEALTH_FACILITY_CODE || 'DEFAULT';
@@ -65,8 +77,8 @@ const DEFAULT_FACILITY_ID = process.env.PHILHEALTH_FACILITY_CODE || 'DEFAULT';
 export default async function philhealthRoutes(server: FastifyInstance): Promise<void> {
   /* ── Stats ────────────────────────────────────────────────── */
 
-  server.get('/rcm/philhealth/stats', async (_request: FastifyRequest, reply: FastifyReply) => {
-    const stats = getPhilHealthStats();
+  server.get('/rcm/philhealth/stats', async (request: FastifyRequest, reply: FastifyReply) => {
+    const stats = getPhilHealthStats(resolveTenantId(request));
     return reply.send({ ok: true, ...stats });
   });
 
@@ -91,6 +103,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     }
 
     const draft = createPhilHealthClaimDraft({
+      tenantId: resolveTenantId(request),
       facilityId: body.facilityId || DEFAULT_FACILITY_ID,
       patientDfn: body.patientDfn || '',
       patientLastName: body.patientLastName,
@@ -125,6 +138,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
   server.get('/rcm/philhealth/claims', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     const drafts = listPhilHealthClaimDrafts({
+      tenantId: resolveTenantId(request),
       facilityId: q.facilityId,
       patientDfn: q.patientDfn,
       status: q.status as PhilHealthClaimStatus | undefined,
@@ -136,7 +150,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
 
   server.get('/rcm/philhealth/claims/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
-    const draft = getPhilHealthClaimDraft(id);
+    const draft = getPhilHealthClaimDraft(resolveTenantId(request), id);
     if (!draft) return reply.status(404).send({ ok: false, error: 'Claim draft not found' });
     return reply.send({ ok: true, draft });
   });
@@ -150,7 +164,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
       const body = (request.body as any) || {};
       const actor = sessionActor(request);
 
-      const result = patchPhilHealthClaimDraft(id, body);
+      const result = patchPhilHealthClaimDraft(resolveTenantId(request), id, body);
       if (!result.ok) return reply.status(400).send(result);
 
       appendRcmAudit('claim.updated', {
@@ -176,7 +190,13 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
         return reply.status(400).send({ ok: false, error: 'Required: status' });
       }
 
-      const result = transitionPhilHealthClaimStatus(id, body.status, actor, body.reason);
+      const result = transitionPhilHealthClaimStatus(
+        resolveTenantId(request),
+        id,
+        body.status,
+        actor,
+        body.reason
+      );
       if (!result.ok) return reply.status(400).send(result);
 
       appendRcmAudit('claim.transition', {
@@ -195,7 +215,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     '/rcm/philhealth/claims/:id/validate',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as { id: string };
-      const draft = getPhilHealthClaimDraft(id);
+      const draft = getPhilHealthClaimDraft(resolveTenantId(request), id);
       if (!draft) return reply.status(404).send({ ok: false, error: 'Claim draft not found' });
 
       const result = validatePhilHealthClaimDraft(draft);
@@ -225,7 +245,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
       const actor = sessionActor(request);
       const signingKey = process.env.PHILHEALTH_SOA_SIGNING_KEY;
 
-      const result = generateExportPackage(id, actor, signingKey);
+      const result = generateExportPackage(resolveTenantId(request), id, actor, signingKey);
       if (!result.ok) return reply.status(400).send(result);
 
       appendRcmAudit('claim.exported', {
@@ -258,14 +278,14 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
       const actor = sessionActor(request);
 
       // Run validation first to determine errors/warnings
-      const draft = getPhilHealthClaimDraft(id);
+      const draft = getPhilHealthClaimDraft(resolveTenantId(request), id);
       if (!draft) return reply.status(404).send({ ok: false, error: 'Claim draft not found' });
 
       const validation = validatePhilHealthClaimDraft(draft);
       const valErrors = validation.errors.map((e) => `${e.field}: ${e.message}`);
       const valWarnings = validation.warnings.map((w) => `${w.field}: ${w.message}`);
 
-      const result = simulateTestUpload(id, actor, valErrors, valWarnings);
+      const result = simulateTestUpload(resolveTenantId(request), id, actor, valErrors, valWarnings);
       if (!result.ok) return reply.status(400).send(result);
 
       appendRcmAudit('gateway.probe', {
@@ -294,7 +314,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
   server.get('/rcm/philhealth/setup', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     const facilityId = q.facilityId || DEFAULT_FACILITY_ID;
-    const setup = getOrCreateFacilitySetup(facilityId);
+    const setup = getOrCreateFacilitySetup(resolveTenantId(request), facilityId);
     return reply.send({ ok: true, setup });
   });
 
@@ -305,7 +325,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     const actor = sessionActor(request);
     const facilityId = body.facilityId || DEFAULT_FACILITY_ID;
 
-    const setup = updateFacilitySetup(facilityId, body);
+    const setup = updateFacilitySetup(resolveTenantId(request), facilityId, body);
 
     appendRcmAudit('enrollment.updated', {
       userId: actor,
@@ -331,7 +351,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
           .send({ ok: false, error: 'Required: providerName, prcLicenseNumber' });
       }
 
-      const setup = addProviderAccreditation(facilityId, {
+      const setup = addProviderAccreditation(resolveTenantId(request), facilityId, {
         providerName: body.providerName,
         prcLicenseNumber: body.prcLicenseNumber,
         philhealthAccreditationNumber: body.philhealthAccreditationNumber,
@@ -359,7 +379,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
       const q = (request.query as any) || {};
       const facilityId = q.facilityId || DEFAULT_FACILITY_ID;
 
-      const setup = removeProviderAccreditation(facilityId, prc);
+      const setup = removeProviderAccreditation(resolveTenantId(request), facilityId, prc);
 
       appendRcmAudit('enrollment.updated', {
         userId: actor,
@@ -381,7 +401,13 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
       const actor = sessionActor(request);
       const facilityId = body.facilityId || DEFAULT_FACILITY_ID;
 
-      const setup = updateReadinessItem(facilityId, itemId, !!body.completed, actor);
+      const setup = updateReadinessItem(
+        resolveTenantId(request),
+        facilityId,
+        itemId,
+        !!body.completed,
+        actor
+      );
 
       appendRcmAudit('gateway.readiness_checked', {
         userId: actor,

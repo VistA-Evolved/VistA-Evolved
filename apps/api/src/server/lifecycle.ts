@@ -26,6 +26,7 @@ import { initRedis } from '../lib/redis.js';
 import { initFeatureFlagProvider } from '../flags/index.js';
 import { bootstrapWritebackExecutors } from '../writeback/executor-bootstrap.js';
 import { startSessionSweeper } from '../telehealth/session-hardening.js';
+import { loadTenantsFromDb } from '../config/tenant-config.js';
 /**
  * Initialize Postgres platform DB and wire all repos.
  */
@@ -39,6 +40,12 @@ async function initPostgresLayer(): Promise<void> {
 
   const pgResult = await initPlatformPg();
   if (!pgResult.ok) {
+    const mode = getRuntimeMode();
+    if (mode === 'rc' || mode === 'prod') {
+      throw new Error(
+        `Platform PG init failed in ${mode} mode: ${pgResult.reason || pgResult.error || 'unknown error'}`
+      );
+    }
     log.warn('Platform PG init failed', {
       ok: false,
       reason: pgResult.reason,
@@ -54,10 +61,39 @@ async function initPostgresLayer(): Promise<void> {
     latencyMs: pgResult.healthCheck?.latencyMs,
   });
 
+  try {
+    const tenantCount = await loadTenantsFromDb();
+    log.info('Tenant config cache warmed from PG', { tenantCount });
+  } catch (tenantErr: any) {
+    log.warn('Tenant config warm-up failed (default tenant fallback)', {
+      error: tenantErr.message,
+    });
+  }
+
   // Phase 117: Wire repos to PG when STORE_BACKEND resolves to "pg"
   const { resolveBackend } = await import('../platform/store-resolver.js');
   const backend = resolveBackend();
   if (backend !== 'pg') return;
+
+  // Phase 109 / Wave 3: Seed module catalog + baseline tenant entitlements
+  // before the runtime guard begins enforcing DB-backed tenant provisioning.
+  try {
+    const { seedModuleCatalogFromConfig } = await import('../modules/module-catalog-seed.js');
+    const seedResult = await seedModuleCatalogFromConfig();
+    log.info('Module catalog and tenant entitlements seeded', {
+      catalogCount: seedResult.catalogCount,
+      defaultTenantSeeded: seedResult.defaultTenantSeeded,
+      defaultTenantEnabled: seedResult.defaultTenantEnabled,
+    });
+  } catch (seedErr: any) {
+    const mode = getRuntimeMode();
+    if (mode === 'rc' || mode === 'prod') {
+      throw new Error(`Module entitlement seed failed in ${mode} mode: ${seedErr.message}`);
+    }
+    log.warn('Module entitlement seed failed (guard may block unprovisioned tenants)', {
+      error: seedErr.message,
+    });
+  }
 
   // Session repo -> PG
   try {
@@ -410,6 +446,8 @@ async function initPostgresLayer(): Promise<void> {
     const { initPortalSessionPgRepo } =
       await import('../platform/pg/repo/pg-portal-session-repo.js');
     initPortalSessionPgRepo(DR.createPortalSessionRepo());
+    const { rehydratePortalSessionsFromPg } = await import('../routes/portal-auth.js');
+    await rehydratePortalSessionsFromPg();
     log.info('Phase 150: Portal session PG write-through wired');
   } catch (d146Err: any) {
     // Phase 573B: In rc/prod mode, silent fallback to in-memory is a critical

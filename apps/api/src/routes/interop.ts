@@ -61,6 +61,33 @@ function auditActor(request: any): { duz: string; name?: string; role?: string }
   return { duz: 'system' };
 }
 
+function resolveTenantId(request: any, requestedTenantId?: string): string | null {
+  const sessionTenantId =
+    typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+      ? request.session.tenantId.trim()
+      : undefined;
+  return sessionTenantId || requestedTenantId || null;
+}
+
+function requireTenantId(reply: any, request: any, requestedTenantId?: string): string | null {
+  const tenantId = resolveTenantId(request, requestedTenantId);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
+function requireMatchingTenantPath(
+  reply: any,
+  resolvedTenantId: string,
+  requestedTenantId?: string
+): boolean {
+  if (requestedTenantId && requestedTenantId !== resolvedTenantId) {
+    reply.code(404).send({ ok: false, error: `Tenant '${requestedTenantId}' not found` });
+    return false;
+  }
+  return true;
+}
+
 /**
  * Probe a single integration for connectivity.
  * Returns the resulting status.
@@ -142,7 +169,10 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   server.get('/admin/registry/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const tenantId = requireTenantId(reply, request, requestedTenantId);
+    if (!tenantId) return reply;
+    if (!requireMatchingTenantPath(reply, tenantId, requestedTenantId)) return reply;
     const entries = listIntegrations(tenantId);
     return { ok: true, tenantId, integrations: entries, count: entries.length };
   });
@@ -152,10 +182,13 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   server.get('/admin/registry/:tenantId/:integrationId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId, integrationId } = request.params as {
+    const { tenantId: requestedTenantId, integrationId } = request.params as {
       tenantId: string;
       integrationId: string;
     };
+    const tenantId = requireTenantId(reply, request, requestedTenantId);
+    if (!tenantId) return reply;
+    if (!requireMatchingTenantPath(reply, tenantId, requestedTenantId)) return reply;
     const entry = getIntegration(tenantId, integrationId);
     if (!entry) return reply.code(404).send({ ok: false, error: 'Integration not found' });
     return { ok: true, tenantId, integration: entry };
@@ -166,10 +199,13 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   server.put('/admin/registry/:tenantId/:integrationId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId, integrationId } = request.params as {
+    const { tenantId: requestedTenantId, integrationId } = request.params as {
       tenantId: string;
       integrationId: string;
     };
+    const tenantId = requireTenantId(reply, request, requestedTenantId);
+    if (!tenantId) return reply;
+    if (!requireMatchingTenantPath(reply, tenantId, requestedTenantId)) return reply;
     const body = request.body as Partial<IntegrationEntry>;
 
     const existing = getIntegration(tenantId, integrationId);
@@ -218,10 +254,13 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   server.delete('/admin/registry/:tenantId/:integrationId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId, integrationId } = request.params as {
+    const { tenantId: requestedTenantId, integrationId } = request.params as {
       tenantId: string;
       integrationId: string;
     };
+    const tenantId = requireTenantId(reply, request, requestedTenantId);
+    if (!tenantId) return reply;
+    if (!requireMatchingTenantPath(reply, tenantId, requestedTenantId)) return reply;
     const deleted = deleteIntegration(tenantId, integrationId);
     if (!deleted) return reply.code(404).send({ ok: false, error: 'Integration not found' });
 
@@ -239,10 +278,13 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   server.post('/admin/registry/:tenantId/:integrationId/toggle', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId, integrationId } = request.params as {
+    const { tenantId: requestedTenantId, integrationId } = request.params as {
       tenantId: string;
       integrationId: string;
     };
+    const tenantId = requireTenantId(reply, request, requestedTenantId);
+    if (!tenantId) return reply;
+    if (!requireMatchingTenantPath(reply, tenantId, requestedTenantId)) return reply;
     const { enabled } = request.body as { enabled: boolean };
 
     const result = toggleIntegration(tenantId, integrationId, enabled);
@@ -262,10 +304,13 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   server.post('/admin/registry/:tenantId/:integrationId/probe', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId, integrationId } = request.params as {
+    const { tenantId: requestedTenantId, integrationId } = request.params as {
       tenantId: string;
       integrationId: string;
     };
+    const tenantId = requireTenantId(reply, request, requestedTenantId);
+    if (!tenantId) return reply;
+    if (!requireMatchingTenantPath(reply, tenantId, requestedTenantId)) return reply;
 
     const entry = getIntegration(tenantId, integrationId);
     if (!entry) return reply.code(404).send({ ok: false, error: 'Integration not found' });
@@ -296,7 +341,10 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   server.post('/admin/registry/:tenantId/probe-all', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const tenantId = requireTenantId(reply, request, requestedTenantId);
+    if (!tenantId) return reply;
+    if (!requireMatchingTenantPath(reply, tenantId, requestedTenantId)) return reply;
 
     const entries = listIntegrations(tenantId).filter((e) => e.enabled);
     const results: Array<{ id: string; status: IntegrationStatus; latencyMs: number }> = [];
@@ -325,7 +373,10 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   server.get('/admin/registry/:tenantId/health-summary', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const tenantId = requireTenantId(reply, request, requestedTenantId);
+    if (!tenantId) return reply;
+    if (!requireMatchingTenantPath(reply, tenantId, requestedTenantId)) return reply;
     const summary = getIntegrationHealthSummary(tenantId);
 
     audit('integration.dashboard-view' as any, 'success', auditActor(request), {
@@ -342,10 +393,13 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   server.get('/admin/registry/:tenantId/error-log/:integrationId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId, integrationId } = request.params as {
+    const { tenantId: requestedTenantId, integrationId } = request.params as {
       tenantId: string;
       integrationId: string;
     };
+    const tenantId = requireTenantId(reply, request, requestedTenantId);
+    if (!tenantId) return reply;
+    if (!requireMatchingTenantPath(reply, tenantId, requestedTenantId)) return reply;
     const entry = getIntegration(tenantId, integrationId);
     if (!entry) return reply.code(404).send({ ok: false, error: 'Integration not found' });
     return { ok: true, tenantId, integrationId, errorLog: entry.errorLog };
@@ -365,7 +419,10 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
   server.post('/admin/registry/:tenantId/onboard-device', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const tenantId = requireTenantId(reply, request, requestedTenantId);
+    if (!tenantId) return reply;
+    if (!requireMatchingTenantPath(reply, tenantId, requestedTenantId)) return reply;
     const body = request.body as Record<string, any>;
 
     // Validate required fields

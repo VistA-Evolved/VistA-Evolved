@@ -40,9 +40,19 @@ import type { EligibilityProvenance, ClaimStatusProvenance } from './types.js';
 
 function getSession(request: FastifyRequest): { duz: string; tenantId: string } {
   const s = (request as any).session;
+  const requestTenantId = (request as any).tenantId;
+  const headerTenantId = request.headers['x-tenant-id'];
   return {
     duz: s?.duz ?? 'system',
-    tenantId: s?.tenantId ?? 'default',
+    tenantId:
+      (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0
+        ? requestTenantId.trim()
+        : undefined) ||
+      (typeof s?.tenantId === 'string' && s.tenantId.trim().length > 0 ? s.tenantId.trim() : undefined) ||
+      (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined) ||
+      'default',
   };
 }
 
@@ -231,11 +241,12 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
   /** GET /rcm/eligibility/history — Paginated history */
   server.get('/rcm/eligibility/history', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
+    const { tenantId } = getSession(request);
     const result = await listEligibilityChecks({
       patientDfn: q.patientDfn,
       payerId: q.payerId,
       provenance: q.provenance,
-      tenantId: q.tenantId,
+      tenantId,
       limit: parseInt(q.limit ?? '50', 10) || 50,
       offset: parseInt(q.offset ?? '0', 10) || 0,
     });
@@ -244,15 +255,15 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
 
   /** GET /rcm/eligibility/stats — Aggregate statistics */
   server.get('/rcm/eligibility/stats', async (request: FastifyRequest, reply: FastifyReply) => {
-    const q = (request.query as any) || {};
-    const stats = await getEligibilityStats(q.tenantId);
+    const stats = await getEligibilityStats(getSession(request).tenantId);
     return reply.send({ ok: true, stats });
   });
 
   /** GET /rcm/eligibility/:id — Get single check */
   server.get('/rcm/eligibility/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { tenantId } = getSession(request);
     const { id } = request.params as { id: string };
-    const check = await getEligibilityCheckById(id);
+    const check = await getEligibilityCheckById(tenantId, id);
     if (!check) {
       return reply.status(404).send({ ok: false, error: 'Eligibility check not found' });
     }
@@ -428,7 +439,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     '/rcm/claim-status/schedule',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const body = (request.body as any) || {};
-      const { duz } = getSession(request);
+      const { duz, tenantId } = getSession(request);
 
       if (!body.claimRef || !body.payerId) {
         return reply.status(400).send({ ok: false, error: 'claimRef and payerId are required' });
@@ -442,6 +453,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
           payerCode: body.payerId,
           payerClaimId: body.payerClaimId,
           integrationMode: 'sandbox',
+          _tenantId: tenantId,
         },
         priority: Math.max(0, Math.min(9, parseInt(body.priority ?? '5', 10) || 5)),
       });
@@ -466,11 +478,12 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
   /** GET /rcm/claim-status/history — Paginated history */
   server.get('/rcm/claim-status/history', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
+    const { tenantId } = getSession(request);
     const result = await listClaimStatusChecks({
       claimRef: q.claimRef,
       payerId: q.payerId,
       provenance: q.provenance,
-      tenantId: q.tenantId,
+      tenantId,
       limit: parseInt(q.limit ?? '50', 10) || 50,
       offset: parseInt(q.offset ?? '0', 10) || 0,
     });
@@ -480,24 +493,25 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
   /** GET /rcm/claim-status/timeline — Claim-specific timeline */
   server.get('/rcm/claim-status/timeline', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
+    const { tenantId } = getSession(request);
     if (!q.claimRef) {
       return reply.status(400).send({ ok: false, error: 'claimRef query parameter required' });
     }
-    const timeline = await getClaimStatusTimeline(q.claimRef, q.tenantId);
+    const timeline = await getClaimStatusTimeline(q.claimRef, tenantId);
     return reply.send({ ok: true, claimRef: q.claimRef, timeline, total: timeline.length });
   });
 
   /** GET /rcm/claim-status/stats — Aggregate statistics */
   server.get('/rcm/claim-status/stats', async (request: FastifyRequest, reply: FastifyReply) => {
-    const q = (request.query as any) || {};
-    const stats = await getClaimStatusStats(q.tenantId);
+    const stats = await getClaimStatusStats(getSession(request).tenantId);
     return reply.send({ ok: true, stats });
   });
 
   /** GET /rcm/claim-status/:id — Get single check */
   server.get('/rcm/claim-status/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { tenantId } = getSession(request);
     const { id } = request.params as { id: string };
-    const check = await getClaimStatusCheckById(id);
+    const check = await getClaimStatusCheckById(tenantId, id);
     if (!check) {
       return reply.status(404).send({ ok: false, error: 'Claim status check not found' });
     }

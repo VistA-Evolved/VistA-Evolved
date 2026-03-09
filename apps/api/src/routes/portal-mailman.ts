@@ -2,8 +2,8 @@
  * Phase 130 — Portal MailMan Bridge: VistA-first inbox with Postgres fallback.
  *
  * Routes:
- *   GET  /portal/mailman/inbox     — VistA inbox (primary) or Postgres (fallback with "local" label)
- *   GET  /portal/mailman/message/:id — Single message (VistA IEN or Postgres ID)
+ *   GET  /portal/mailman/inbox     — Postgres portal inbox (patient-scoped)
+ *   GET  /portal/mailman/message/:id — Single Postgres portal message
  *   POST /portal/mailman/send      — Send via VistA MailMan (primary) or Postgres draft+send (fallback)
  *
  * Auth: portal session (matches /^\/portal\// AUTH_RULE — own session check in handler).
@@ -11,9 +11,10 @@
  */
 
 import type { FastifyInstance, FastifyRequest } from 'fastify';
-import { listMessages, getVistaMessage, portalSendToClinic } from '../services/secure-messaging.js';
+import { portalSendToClinic } from '../services/secure-messaging.js';
 import { connect, disconnect } from '../vista/rpcBrokerClient.js';
 import {
+  recordSentMirror,
   getInbox as getLocalInbox,
   getMessage as getLocalMessage,
 } from '../services/portal-messaging.js';
@@ -26,6 +27,7 @@ import { log } from '../lib/logger.js';
 
 interface PortalSessionData {
   token: string;
+  tenantId: string;
   patientDfn: string;
   patientName: string;
   createdAt: number;
@@ -71,40 +73,17 @@ export default async function portalMailmanRoutes(server: FastifyInstance) {
     const session = requirePortalSession(request);
     const limit = Number((request.query as any)?.limit) || 50;
 
-    // 1) Try VistA MailMan inbox (basket "1" = IN)
-    try {
-      await connect();
-      const vistaResult = await listMessages('1', limit);
-      disconnect();
-      if (vistaResult.ok && vistaResult.source === 'vista') {
-        immutableAudit('messaging.read', 'success', portalAuditActor(session), {
-          detail: {
-            route: '/portal/mailman/inbox',
-            source: 'vista',
-            count: vistaResult.messages.length,
-          },
-        });
-        return {
-          ok: true,
-          source: 'vista' as const,
-          count: vistaResult.messages.length,
-          messages: vistaResult.messages,
-        };
-      }
-    } catch (err: any) {
-      disconnect();
-      log.warn(`Portal MailMan VistA inbox fallback: ${err.message}`);
-    }
-
-    // 2) Fallback: Postgres-backed portal_message store
-    const localMessages = await getLocalInbox(session.patientDfn);
+    // Portal patients do not have a provable MailMan basket binding in VistA.
+    // Serve only the portal's own tenant-scoped message store until a real
+    // patient-to-MailMan identity mapping exists.
+    const localMessages = (await getLocalInbox(session.tenantId, session.patientDfn)).slice(0, limit);
     immutableAudit('messaging.read', 'success', portalAuditActor(session), {
       detail: { route: '/portal/mailman/inbox', source: 'local', count: localMessages.length },
     });
     return {
       ok: true,
       source: 'local' as const,
-      sourceLabel: 'Local Mode -- VistA MailMan unavailable',
+      sourceLabel: 'Portal-scoped inbox -- VistA MailMan patient binding unavailable',
       count: localMessages.length,
       messages: localMessages,
     };
@@ -114,35 +93,19 @@ export default async function portalMailmanRoutes(server: FastifyInstance) {
   server.get('/portal/mailman/message/:id', async (request, reply) => {
     const session = requirePortalSession(request);
     const { id } = request.params as { id: string };
-
-    // If numeric, try VistA IEN first
-    if (/^\d+$/.test(id)) {
-      try {
-        await connect();
-        const vistaResult = await getVistaMessage(id);
-        disconnect();
-        if (vistaResult.ok && vistaResult.source === 'vista') {
-          // Audit metadata only — NEVER log message body
-          immutableAudit('messaging.read', 'success', portalAuditActor(session), {
-            detail: { route: '/portal/mailman/message', ien: id, source: 'vista' },
-          });
-          return { ok: true, source: 'vista' as const, message: vistaResult.message };
-        }
-      } catch (err: any) {
-        disconnect();
-        log.warn(`Portal MailMan VistA message fallback: ${err.message}`);
-      }
-    }
-
-    // Fallback: Postgres-backed portal_message store
-    const localMsg = await getLocalMessage(id, session.patientDfn);
+    const localMsg = await getLocalMessage(id, session.tenantId, session.patientDfn);
     if (!localMsg) {
       return reply.code(404).send({ ok: false, error: 'Message not found' });
     }
     immutableAudit('messaging.read', 'success', portalAuditActor(session), {
       detail: { route: '/portal/mailman/message', id, source: 'local' },
     });
-    return { ok: true, source: 'local' as const, sourceLabel: 'Local Mode', message: localMsg };
+    return {
+      ok: true,
+      source: 'local' as const,
+      sourceLabel: 'Portal-scoped message -- VistA MailMan patient binding unavailable',
+      message: localMsg,
+    };
   });
 
   /* ---- POST /portal/mailman/send ---- */
@@ -180,11 +143,22 @@ export default async function portalMailmanRoutes(server: FastifyInstance) {
           },
         });
 
+        const mirrored = await recordSentMirror({
+          tenantId: session.tenantId,
+          patientDfn: session.patientDfn,
+          patientName: session.patientName,
+          subject: body.subject,
+          category: body.category || 'general',
+          body: body.body,
+          vistaSync: 'synced',
+          vistaRef: result.message?.vistaRef || null,
+        });
+
         return {
           ok: true,
           source: 'vista' as const,
-          message: result.message,
-          vistaSync: result.message?.vistaSync || 'pending',
+          message: mirrored,
+          vistaSync: mirrored.vistaSync,
         };
       } catch (err: any) {
         disconnect();
@@ -194,23 +168,23 @@ export default async function portalMailmanRoutes(server: FastifyInstance) {
 
     // Fallback: Postgres-only draft+send
     try {
-      const { createDraft, sendMessage: sendDraft } =
-        await import('../services/portal-messaging.js');
-      const draft = await createDraft({
-        fromDfn: session.patientDfn,
-        fromName: session.patientName,
+      const mirrored = await recordSentMirror({
+        tenantId: session.tenantId,
+        patientDfn: session.patientDfn,
+        patientName: session.patientName,
         subject: body.subject,
         category: body.category || 'general',
         body: body.body,
+        vistaSync: 'not_synced',
+        vistaRef: null,
       });
-      const sent = await sendDraft(draft.id, session.patientDfn);
 
       immutableAudit('messaging.portal-send', 'success', portalAuditActor(session), {
         detail: {
           route: '/portal/mailman/send',
           source: 'local',
           subjectLength: body.subject.length,
-          messageId: draft.id,
+          messageId: mirrored.id,
         },
       });
 
@@ -218,8 +192,8 @@ export default async function portalMailmanRoutes(server: FastifyInstance) {
         ok: true,
         source: 'local' as const,
         sourceLabel: 'Local Mode -- VistA MailMan unavailable',
-        message: sent || draft,
-        vistaSync: 'not_synced',
+        message: mirrored,
+        vistaSync: mirrored.vistaSync,
       };
     } catch (innerErr: any) {
       log.error(`Portal MailMan local send error: ${innerErr.message}`);

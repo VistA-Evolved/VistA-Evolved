@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { API_BASE as API } from '@/lib/api-config';
+import { getCsrfToken } from '@/lib/csrf';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -10,14 +11,23 @@ interface WorkflowStepDef {
   id: string;
   name: string;
   description: string;
-  department: string;
   requiredRole?: string;
   estimatedMinutes?: number;
-  vistaRpc?: string;
-  vistaIntegration?: string;
-  optional?: boolean;
-  autoAdvance?: boolean;
-  tags?: string[];
+  isOptional?: boolean;
+  vistaIntegration?: {
+    targetRpc?: string;
+    status: string;
+  };
+}
+
+interface WorkflowStepIntegrationOutcome {
+  mode: 'tiu_draft' | 'integration_pending' | 'none';
+  status: 'completed' | 'failed' | 'not_requested' | 'integration-pending';
+  targetRpc?: string;
+  message: string;
+  rpcUsed?: string[];
+  docIen?: string;
+  resultSummary?: string;
 }
 
 interface WorkflowDefinition {
@@ -43,6 +53,8 @@ interface WorkflowStepInstance {
   completedAt?: string;
   completedBy?: string;
   notes?: string;
+  skippedReason?: string;
+  integrationOutcome?: WorkflowStepIntegrationOutcome;
 }
 
 interface WorkflowInstance {
@@ -77,15 +89,29 @@ interface WorkflowStats {
   byDepartment: Record<string, number>;
 }
 
+interface TiuTitle {
+  ien: string;
+  name: string;
+}
+
 /* ------------------------------------------------------------------ */
 /*  API helpers                                                        */
 /* ------------------------------------------------------------------ */
 
 async function apiFetch<T>(path: string, opts?: RequestInit): Promise<T> {
+  const method = (opts?.method || 'GET').toUpperCase();
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...((opts?.headers as Record<string, string> | undefined) ?? {}),
+  };
+  if (method !== 'GET' && method !== 'HEAD') {
+    const csrf = await getCsrfToken();
+    if (csrf) headers['x-csrf-token'] = csrf;
+  }
   const res = await fetch(`${API}${path}`, {
     credentials: 'include',
     ...opts,
-    headers: { 'Content-Type': 'application/json', ...(opts?.headers ?? {}) },
+    headers,
   });
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
   return res.json() as Promise<T>;
@@ -94,10 +120,13 @@ async function apiFetch<T>(path: string, opts?: RequestInit): Promise<T> {
 /* ------------------------------------------------------------------ */
 /*  Tab components                                                     */
 /* ------------------------------------------------------------------ */
-function DefinitionsTab() {
+function DefinitionsTab({ onStarted }: { onStarted: () => void }) {
   const [defs, setDefs] = useState<WorkflowDefinition[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('');
+  const [patientDfn, setPatientDfn] = useState('46');
+  const [startingId, setStartingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -130,6 +159,22 @@ function DefinitionsTab() {
     return '#f59e0b';
   };
 
+  const startWorkflow = async (definitionId: string) => {
+    setStartingId(definitionId);
+    setError(null);
+    try {
+      await apiFetch('/workflows/start', {
+        method: 'POST',
+        body: JSON.stringify({ definitionId, patientDfn: patientDfn.trim() }),
+      });
+      onStarted();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to start workflow');
+    } finally {
+      setStartingId(null);
+    }
+  };
+
   return (
     <div>
       <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
@@ -159,7 +204,21 @@ function DefinitionsTab() {
         >
           Refresh
         </button>
+        <input
+          placeholder="Patient DFN"
+          value={patientDfn}
+          onChange={(e) => setPatientDfn(e.target.value)}
+          style={{
+            width: 140,
+            padding: 8,
+            border: '1px solid #334155',
+            borderRadius: 6,
+            background: '#1e293b',
+            color: '#e2e8f0',
+          }}
+        />
       </div>
+      {error && <div style={{ color: '#fca5a5', marginBottom: 12 }}>{error}</div>}
 
       {loading ? (
         <p style={{ color: '#94a3b8' }}>Loading definitions...</p>
@@ -177,6 +236,7 @@ function DefinitionsTab() {
               <th style={{ textAlign: 'center', padding: 8 }}>Version</th>
               <th style={{ textAlign: 'center', padding: 8 }}>Status</th>
               <th style={{ textAlign: 'left', padding: 8 }}>Tags</th>
+              <th style={{ textAlign: 'center', padding: 8 }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -192,6 +252,22 @@ function DefinitionsTab() {
                 <td style={{ padding: 8, fontSize: 12, color: '#94a3b8' }}>
                   {(d.tags ?? []).slice(0, 3).join(', ')}
                 </td>
+                <td style={{ padding: 8, textAlign: 'center' }}>
+                  <button
+                    onClick={() => startWorkflow(d.id)}
+                    disabled={startingId === d.id || !patientDfn.trim()}
+                    style={{
+                      padding: '6px 12px',
+                      background: startingId === d.id ? '#475569' : '#16a34a',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: 6,
+                      cursor: startingId === d.id || !patientDfn.trim() ? 'not-allowed' : 'pointer',
+                    }}
+                  >
+                    {startingId === d.id ? 'Starting...' : 'Start'}
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -201,21 +277,39 @@ function DefinitionsTab() {
   );
 }
 
-function InstancesTab() {
+function InstancesTab({ refreshToken }: { refreshToken: number }) {
   const [instances, setInstances] = useState<WorkflowInstance[]>([]);
+  const [definitions, setDefinitions] = useState<Record<string, WorkflowDefinition>>({});
+  const [titles, setTitles] = useState<TiuTitle[]>([]);
   const [loading, setLoading] = useState(true);
   const [dept, setDept] = useState('');
+  const [busyKey, setBusyKey] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [notesByStep, setNotesByStep] = useState<Record<string, string>>({});
+  const [titleByStep, setTitleByStep] = useState<Record<string, string>>({});
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
       const q = dept ? `?department=${dept}` : '';
-      const data = await apiFetch<{ ok: boolean; instances: WorkflowInstance[] }>(
-        `/workflows/instances${q}`
+      const [instanceData, defData, titleData] = await Promise.all([
+        apiFetch<{ ok: boolean; instances: WorkflowInstance[] }>(`/workflows/instances${q}`),
+        apiFetch<{ ok: boolean; definitions: WorkflowDefinition[] }>('/admin/workflows/definitions'),
+        apiFetch<{
+          ok: boolean;
+          titles?: TiuTitle[];
+          defaultTitles?: TiuTitle[];
+        }>('/vista/cprs/notes/titles'),
+      ]);
+      setInstances(instanceData.instances ?? []);
+      setDefinitions(
+        Object.fromEntries((defData.definitions ?? []).map((definition) => [definition.id, definition]))
       );
-      setInstances(data.instances ?? []);
+      setTitles(titleData.titles ?? titleData.defaultTitles ?? [{ ien: '10', name: 'GENERAL NOTE' }]);
     } catch {
       setInstances([]);
+      setDefinitions({});
+      setTitles([{ ien: '10', name: 'GENERAL NOTE' }]);
     } finally {
       setLoading(false);
     }
@@ -223,13 +317,50 @@ function InstancesTab() {
 
   useEffect(() => {
     load();
-  }, [load]);
+  }, [load, refreshToken]);
 
-  const statusIcon = (s: string) => {
-    if (s === 'completed') return '\u2705';
-    if (s === 'in_progress') return '\u23F3';
-    if (s === 'cancelled') return '\u274C';
-    return '\u23F8';
+  const stepKey = (instanceId: string, stepId: string) => `${instanceId}:${stepId}`;
+  const getStepDef = (instance: WorkflowInstance, step: WorkflowStepInstance) =>
+    definitions[instance.definitionId]?.steps.find((candidate) => candidate.id === step.stepId);
+
+  const mutateStep = async (
+    instance: WorkflowInstance,
+    step: WorkflowStepInstance,
+    action: 'complete' | 'skip'
+  ) => {
+    const key = stepKey(instance.id, step.stepId);
+    const stepDef = getStepDef(instance, step);
+    const noteText = notesByStep[key]?.trim() || '';
+    const titleIen = titleByStep[key] || titles[0]?.ien || '10';
+    if (
+      action === 'complete' &&
+      stepDef?.vistaIntegration?.targetRpc === 'TIU CREATE RECORD' &&
+      !noteText
+    ) {
+      setError('TIU-backed workflow steps require note text before completion.');
+      return;
+    }
+
+    setBusyKey(key);
+    setError(null);
+    try {
+      await apiFetch(`/workflows/instances/${instance.id}/step/${step.stepId}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          action,
+          notes: noteText,
+          integration:
+            action === 'complete' && stepDef?.vistaIntegration?.targetRpc === 'TIU CREATE RECORD'
+              ? { tiu: { titleIen, text: noteText } }
+              : undefined,
+        }),
+      });
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to advance workflow step');
+    } finally {
+      setBusyKey(null);
+    }
   };
 
   return (
@@ -262,56 +393,163 @@ function InstancesTab() {
           Refresh
         </button>
       </div>
+      {error && <div style={{ color: '#fca5a5', marginBottom: 12 }}>{error}</div>}
 
       {loading ? (
         <p style={{ color: '#94a3b8' }}>Loading instances...</p>
       ) : instances.length === 0 ? (
         <p style={{ color: '#94a3b8' }}>No active workflow instances.</p>
       ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ borderBottom: '1px solid #334155', color: '#94a3b8', fontSize: 13 }}>
-              <th style={{ textAlign: 'left', padding: 8 }}>Department</th>
-              <th style={{ textAlign: 'left', padding: 8 }}>Patient DFN</th>
-              <th style={{ textAlign: 'center', padding: 8 }}>Status</th>
-              <th style={{ textAlign: 'left', padding: 8 }}>Progress</th>
-              <th style={{ textAlign: 'left', padding: 8 }}>Started</th>
-            </tr>
-          </thead>
-          <tbody>
-            {instances.map((inst) => {
-              const total = inst.steps?.length ?? 0;
-              const done = inst.steps?.filter((s) => s.status === 'completed').length ?? 0;
-              return (
-                <tr key={inst.id} style={{ borderBottom: '1px solid #1e293b' }}>
-                  <td style={{ padding: 8, fontWeight: 600 }}>{inst.department}</td>
-                  <td style={{ padding: 8 }}>{inst.patientDfn}</td>
-                  <td style={{ padding: 8, textAlign: 'center' }}>
-                    {statusIcon(inst.status)} {inst.status}
-                  </td>
-                  <td style={{ padding: 8 }}>
-                    <div style={{ background: '#334155', borderRadius: 4, height: 8, width: 120 }}>
-                      <div
-                        style={{
-                          background: '#22c55e',
-                          borderRadius: 4,
-                          height: 8,
-                          width: total > 0 ? `${(done / total) * 100}%` : '0%',
-                        }}
-                      />
+        <div style={{ display: 'grid', gap: 16 }}>
+          {instances.map((inst) => {
+            const total = inst.steps?.length ?? 0;
+            const done = inst.steps?.filter((s) => s.status === 'completed').length ?? 0;
+            return (
+              <div
+                key={inst.id}
+                style={{
+                  background: '#1e293b',
+                  border: '1px solid #334155',
+                  borderRadius: 8,
+                  padding: 16,
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, marginBottom: 12 }}>
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: 16 }}>{definitions[inst.definitionId]?.name || inst.department}</div>
+                    <div style={{ color: '#94a3b8', fontSize: 13 }}>
+                      {inst.department} • patient DFN {inst.patientDfn}
                     </div>
-                    <span style={{ fontSize: 11, color: '#94a3b8' }}>
-                      {done}/{total} steps
-                    </span>
-                  </td>
-                  <td style={{ padding: 8, fontSize: 12, color: '#94a3b8' }}>
-                    {new Date(inst.startedAt).toLocaleString()}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                  </div>
+                  <div style={{ textAlign: 'right', fontSize: 12, color: '#94a3b8' }}>
+                    <div>Status: <span style={{ color: '#e2e8f0', fontWeight: 700 }}>{inst.status}</span></div>
+                    <div>Started: {new Date(inst.startedAt).toLocaleString()}</div>
+                    <div>{done}/{total} steps completed</div>
+                  </div>
+                </div>
+
+                <div style={{ background: '#334155', borderRadius: 4, height: 8, marginBottom: 14 }}>
+                  <div
+                    style={{
+                      background: '#22c55e',
+                      borderRadius: 4,
+                      height: 8,
+                      width: total > 0 ? `${(done / total) * 100}%` : '0%',
+                    }}
+                  />
+                </div>
+
+                <div style={{ display: 'grid', gap: 10 }}>
+                  {inst.steps.map((step) => {
+                    const key = stepKey(inst.id, step.stepId);
+                    const stepDef = getStepDef(inst, step);
+                    const isActive = step.status === 'active';
+                    const isTiu = stepDef?.vistaIntegration?.targetRpc === 'TIU CREATE RECORD';
+                    return (
+                      <div
+                        key={step.stepId}
+                        style={{
+                          border: '1px solid #334155',
+                          borderRadius: 6,
+                          padding: 12,
+                          background: isActive ? '#0f2f4a' : '#0f172a',
+                        }}
+                      >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16 }}>
+                          <div>
+                            <div style={{ fontWeight: 600 }}>{step.name}</div>
+                            <div style={{ fontSize: 12, color: '#94a3b8' }}>
+                              {stepDef?.requiredRole ? `${stepDef.requiredRole} • ` : ''}
+                              {stepDef?.vistaIntegration?.targetRpc || 'No direct VistA writeback'}
+                            </div>
+                          </div>
+                          <div style={{ fontSize: 12, color: '#e2e8f0', fontWeight: 700 }}>{step.status}</div>
+                        </div>
+
+                        {step.integrationOutcome && (
+                          <div style={{ marginTop: 8, fontSize: 12, color: '#cbd5e1' }}>
+                            {step.integrationOutcome.message}
+                            {step.integrationOutcome.docIen ? ` (IEN ${step.integrationOutcome.docIen})` : ''}
+                          </div>
+                        )}
+
+                        {isActive && (
+                          <div style={{ marginTop: 10, display: 'grid', gap: 10 }}>
+                            {isTiu && (
+                              <>
+                                <select
+                                  value={titleByStep[key] || titles[0]?.ien || '10'}
+                                  onChange={(e) => setTitleByStep((current) => ({ ...current, [key]: e.target.value }))}
+                                  style={{
+                                    padding: 8,
+                                    border: '1px solid #334155',
+                                    borderRadius: 6,
+                                    background: '#1e293b',
+                                    color: '#e2e8f0',
+                                  }}
+                                >
+                                  {titles.map((title) => (
+                                    <option key={title.ien} value={title.ien}>
+                                      {title.name}
+                                    </option>
+                                  ))}
+                                </select>
+                                <textarea
+                                  value={notesByStep[key] || ''}
+                                  onChange={(e) => setNotesByStep((current) => ({ ...current, [key]: e.target.value }))}
+                                  placeholder="Enter TIU note text to create a VistA draft for this workflow step"
+                                  rows={4}
+                                  style={{
+                                    width: '100%',
+                                    padding: 10,
+                                    border: '1px solid #334155',
+                                    borderRadius: 6,
+                                    background: '#1e293b',
+                                    color: '#e2e8f0',
+                                  }}
+                                />
+                              </>
+                            )}
+                            <div style={{ display: 'flex', gap: 8 }}>
+                              <button
+                                onClick={() => mutateStep(inst, step, 'complete')}
+                                disabled={busyKey === key}
+                                style={{
+                                  padding: '8px 14px',
+                                  background: '#16a34a',
+                                  color: '#fff',
+                                  border: 'none',
+                                  borderRadius: 6,
+                                  cursor: busyKey === key ? 'not-allowed' : 'pointer',
+                                }}
+                              >
+                                {busyKey === key ? 'Working...' : isTiu ? 'Complete + TIU Draft' : 'Complete Step'}
+                              </button>
+                              <button
+                                onClick={() => mutateStep(inst, step, 'skip')}
+                                disabled={busyKey === key}
+                                style={{
+                                  padding: '8px 14px',
+                                  background: '#475569',
+                                  color: '#fff',
+                                  border: 'none',
+                                  borderRadius: 6,
+                                  cursor: busyKey === key ? 'not-allowed' : 'pointer',
+                                }}
+                              >
+                                Skip Step
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );
@@ -672,6 +910,7 @@ type Tab = (typeof TABS)[number];
 
 export default function WorkflowsAdminPage() {
   const [tab, setTab] = useState<Tab>('definitions');
+  const [refreshToken, setRefreshToken] = useState(0);
 
   return (
     <div style={{ padding: 24, maxWidth: 1200, margin: '0 auto', color: '#e2e8f0' }}>
@@ -713,8 +952,13 @@ export default function WorkflowsAdminPage() {
       </div>
 
       {/* Tab content */}
-      {tab === 'definitions' && <DefinitionsTab />}
-      {tab === 'instances' && <InstancesTab />}
+      {tab === 'definitions' && (
+        <DefinitionsTab onStarted={() => {
+          setRefreshToken((current) => current + 1);
+          setTab('instances');
+        }} />
+      )}
+      {tab === 'instances' && <InstancesTab refreshToken={refreshToken} />}
       {tab === 'packs' && <PacksTab />}
       {tab === 'stats' && <StatsTab />}
       {tab === 'switchboard' && <SwitchboardTab />}

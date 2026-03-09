@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { Fragment, useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
@@ -9,7 +9,7 @@ import { API_BASE } from '@/lib/api-config';
  * MessagingTasksPanel — Phase 32 CPRS staff panel
  *
  * Displays:
- * 1. Unread patient messages (staff queue)
+ * 1. Unread patient portal messages (staff queue)
  * 2. Pending refill requests
  * 3. Active tasks across patients
  */
@@ -17,10 +17,12 @@ import { API_BASE } from '@/lib/api-config';
 interface StaffMessage {
   id: string;
   patientDfn: string;
-  senderName: string;
+  senderName?: string;
+  fromName?: string;
   subject: string;
   body: string;
-  sentAt: string;
+  sentAt?: string;
+  createdAt?: string;
   status: string;
 }
 
@@ -48,6 +50,36 @@ interface StaffTask {
 }
 
 type ActiveSubTab = 'messages' | 'refills' | 'tasks';
+type QueueErrorMap = Partial<Record<ActiveSubTab, string>>;
+
+async function readQueueResponse<T>(
+  response: Response,
+  key: string
+): Promise<{ items: T[]; error: string | null }> {
+  const payload = await response
+    .json()
+    .catch(() => null as { ok?: boolean; error?: string; message?: string; [k: string]: unknown } | null);
+
+  if (!response.ok || !payload?.ok) {
+    return {
+      items: [],
+      error:
+        payload?.message ||
+        payload?.error ||
+        `${key} request failed with HTTP ${response.status}`,
+    };
+  }
+
+  const items = Array.isArray(payload[key]) ? (payload[key] as T[]) : [];
+  return { items, error: null };
+}
+
+function formatQueueDate(primary?: string, fallback?: string): string {
+  const raw = primary || fallback;
+  if (!raw) return 'Unknown';
+  const date = new Date(raw);
+  return Number.isNaN(date.getTime()) ? 'Unknown' : date.toLocaleDateString();
+}
 
 export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
   const [activeSubTab, setActiveSubTab] = useState<ActiveSubTab>('messages');
@@ -56,37 +88,68 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
   const [tasks, setTasks] = useState<StaffTask[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [queueErrors, setQueueErrors] = useState<QueueErrorMap>({});
+  const [replyingToId, setReplyingToId] = useState<string | null>(null);
+  const [replyDraft, setReplyDraft] = useState('');
+  const [replyError, setReplyError] = useState<string | null>(null);
+  const [replySending, setReplySending] = useState(false);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
+    setQueueErrors({});
+    setMessages([]);
+    setRefills([]);
+    setTasks([]);
+
     try {
       const opts = { credentials: 'include' as RequestCredentials };
+      const patientQuery = `patientDfn=${encodeURIComponent(dfn)}`;
 
       const [msgRes, refillRes, taskRes] = await Promise.allSettled([
-        fetch(`${API_BASE}/portal/staff/messages`, opts),
-        fetch(`${API_BASE}/portal/staff/refills`, opts),
-        fetch(`${API_BASE}/portal/staff/tasks`, opts),
+        fetch(`${API_BASE}/portal/staff/messages?${patientQuery}`, opts),
+        fetch(`${API_BASE}/portal/staff/refills?${patientQuery}`, opts),
+        fetch(`${API_BASE}/portal/staff/tasks?${patientQuery}`, opts),
       ]);
 
-      if (msgRes.status === 'fulfilled' && msgRes.value.ok) {
-        const d = await msgRes.value.json();
-        setMessages(d.messages || []);
+      const nextErrors: QueueErrorMap = {};
+
+      if (msgRes.status === 'fulfilled') {
+        const parsed = await readQueueResponse<StaffMessage>(msgRes.value, 'messages');
+        setMessages(parsed.items);
+        if (parsed.error) nextErrors.messages = parsed.error;
+      } else {
+        nextErrors.messages = msgRes.reason instanceof Error ? msgRes.reason.message : 'Messages request failed';
       }
-      if (refillRes.status === 'fulfilled' && refillRes.value.ok) {
-        const d = await refillRes.value.json();
-        setRefills(d.refills || []);
+
+      if (refillRes.status === 'fulfilled') {
+        const parsed = await readQueueResponse<RefillRequest>(refillRes.value, 'refills');
+        setRefills(parsed.items);
+        if (parsed.error) nextErrors.refills = parsed.error;
+      } else {
+        nextErrors.refills =
+          refillRes.reason instanceof Error ? refillRes.reason.message : 'Refills request failed';
       }
-      if (taskRes.status === 'fulfilled' && taskRes.value.ok) {
-        const d = await taskRes.value.json();
-        setTasks(d.tasks || []);
+
+      if (taskRes.status === 'fulfilled') {
+        const parsed = await readQueueResponse<StaffTask>(taskRes.value, 'tasks');
+        setTasks(parsed.items);
+        if (parsed.error) nextErrors.tasks = parsed.error;
+      } else {
+        nextErrors.tasks = taskRes.reason instanceof Error ? taskRes.reason.message : 'Tasks request failed';
+      }
+
+      setQueueErrors(nextErrors);
+
+      if (Object.keys(nextErrors).length > 0) {
+        setError('One or more staff queues failed to load. See the active tab for details.');
       }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Failed to load data');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [dfn]);
 
   useEffect(() => {
     fetchData();
@@ -109,27 +172,61 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
     }
   };
 
+  const startReply = (msgId: string) => {
+    setReplyingToId((current) => (current === msgId ? null : msgId));
+    setReplyDraft('');
+    setReplyError(null);
+  };
+
+  const cancelReply = () => {
+    setReplyingToId(null);
+    setReplyDraft('');
+    setReplyError(null);
+  };
+
   const replyToMessage = async (msgId: string) => {
-    const body = prompt('Reply text:');
-    if (!body) return;
+    const body = replyDraft.trim();
+    if (!body) {
+      setReplyError('Reply text is required');
+      return;
+    }
+
+    setReplySending(true);
+    setReplyError(null);
+
     try {
-      await fetch(`${API_BASE}/portal/staff/messages/${msgId}/reply`, {
+      const response = await fetch(`${API_BASE}/portal/staff/messages/${msgId}/reply`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({ body }),
       });
-      fetchData();
+
+      const payload = await response
+        .json()
+        .catch(() => null as { ok?: boolean; error?: string; message?: string } | null);
+
+      if (!response.ok || !payload?.ok) {
+        setReplyError(payload?.error || payload?.message || 'Failed to send reply');
+        return;
+      }
+
+      cancelReply();
+      await fetchData();
     } catch {
-      /* swallow */
+      setReplyError('Network error -- unable to send reply');
+    } finally {
+      setReplySending(false);
     }
   };
 
   const subTabs: { key: ActiveSubTab; label: string; count: number }[] = [
-    { key: 'messages', label: 'Messages', count: messages.length },
+    { key: 'messages', label: 'Staff Queue', count: messages.length },
     { key: 'refills', label: 'Refills', count: refills.length },
     { key: 'tasks', label: 'Tasks', count: tasks.length },
   ];
+
+  const canSendReply = replyDraft.trim().length > 0;
 
   return (
     <div style={{ padding: 8 }}>
@@ -190,8 +287,23 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
 
       {!loading && activeSubTab === 'messages' && (
         <div>
-          {messages.length === 0 ? (
-            <p className={styles.emptyText}>No unread patient messages.</p>
+          <div
+            style={{
+              fontSize: 11,
+              color: '#6b7280',
+              marginBottom: 8,
+              padding: '6px 8px',
+              background: 'rgba(245, 158, 11, 0.08)',
+              border: '1px solid rgba(245, 158, 11, 0.25)',
+            }}
+          >
+            This view is the patient portal staff queue for the current patient, not the clinician VistA MailMan inbox.
+            Use File &gt; Messages / MailMan for direct MailMan access.
+          </div>
+          {queueErrors.messages ? (
+            <p style={{ color: '#ef4444', fontSize: 12 }}>{queueErrors.messages}</p>
+          ) : messages.length === 0 ? (
+            <p className={styles.emptyText}>No unread patient portal messages in the staff queue.</p>
           ) : (
             <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
               <thead>
@@ -206,21 +318,75 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
               </thead>
               <tbody>
                 {messages.map((m) => (
-                  <tr key={m.id} style={{ borderBottom: '1px solid var(--cprs-border, #eee)' }}>
-                    <td style={{ padding: '4px 8px' }}>{m.senderName}</td>
-                    <td style={{ padding: '4px 8px' }}>{m.subject}</td>
-                    <td style={{ padding: '4px 8px' }}>
-                      {new Date(m.sentAt).toLocaleDateString()}
-                    </td>
-                    <td style={{ padding: '4px 8px' }}>
-                      <button
-                        onClick={() => replyToMessage(m.id)}
-                        style={{ fontSize: 11, cursor: 'pointer' }}
-                      >
-                        Reply
-                      </button>
-                    </td>
-                  </tr>
+                  <Fragment key={m.id}>
+                    <tr style={{ borderBottom: '1px solid var(--cprs-border, #eee)' }}>
+                      <td style={{ padding: '4px 8px' }}>{m.senderName || m.fromName || 'Unknown'}</td>
+                      <td style={{ padding: '4px 8px' }}>{m.subject}</td>
+                      <td style={{ padding: '4px 8px' }}>{formatQueueDate(m.sentAt, m.createdAt)}</td>
+                      <td style={{ padding: '4px 8px' }}>
+                        <button
+                          onClick={() => startReply(m.id)}
+                          style={{ fontSize: 11, cursor: 'pointer' }}
+                        >
+                          {replyingToId === m.id ? 'Cancel Reply' : 'Reply'}
+                        </button>
+                      </td>
+                    </tr>
+                    {replyingToId === m.id && (
+                      <tr>
+                        <td
+                          colSpan={4}
+                          style={{
+                            padding: '8px 12px 12px',
+                            background: 'rgba(37, 99, 235, 0.04)',
+                            borderBottom: '1px solid var(--cprs-border, #eee)',
+                          }}
+                        >
+                          <div style={{ fontSize: 11, fontWeight: 600, marginBottom: 6 }}>
+                            Replying to {m.subject}
+                          </div>
+                          {replyError && (
+                            <div className={styles.errorText} style={{ marginBottom: 8 }}>
+                              {replyError}
+                            </div>
+                          )}
+                          <textarea
+                            className={styles.formTextarea}
+                            rows={4}
+                            value={replyDraft}
+                            onChange={(e) => {
+                              setReplyDraft(e.target.value);
+                              if (replyError) setReplyError(null);
+                            }}
+                            placeholder="Write a response to the patient..."
+                          />
+                          <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+                            <span style={{ fontSize: 11, color: '#6b7280' }}>
+                              Reply will be sent through the patient portal staff messaging workflow.
+                            </span>
+                            <div style={{ display: 'flex', gap: 8 }}>
+                              <button className={styles.btn} onClick={cancelReply} disabled={replySending}>
+                                Cancel
+                              </button>
+                              <button
+                                className={`${styles.btn} ${styles.btnPrimary}`}
+                                onClick={() => replyToMessage(m.id)}
+                                disabled={replySending || !canSendReply}
+                                style={{ cursor: replySending || !canSendReply ? 'not-allowed' : 'pointer' }}
+                              >
+                                {replySending ? 'Sending...' : 'Send Reply'}
+                              </button>
+                            </div>
+                          </div>
+                          {!replyError && !canSendReply && (
+                            <div style={{ marginTop: 8, fontSize: 11, color: '#6b7280' }}>
+                              Enter reply text to enable Send Reply.
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
                 ))}
               </tbody>
             </table>
@@ -230,7 +396,9 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
 
       {!loading && activeSubTab === 'refills' && (
         <div>
-          {refills.length === 0 ? (
+          {queueErrors.refills ? (
+            <p style={{ color: '#ef4444', fontSize: 12 }}>{queueErrors.refills}</p>
+          ) : refills.length === 0 ? (
             <p className={styles.emptyText}>No pending refill requests.</p>
           ) : (
             <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
@@ -289,7 +457,9 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
 
       {!loading && activeSubTab === 'tasks' && (
         <div>
-          {tasks.length === 0 ? (
+          {queueErrors.tasks ? (
+            <p style={{ color: '#ef4444', fontSize: 12 }}>{queueErrors.tasks}</p>
+          ) : tasks.length === 0 ? (
             <p className={styles.emptyText}>No active tasks.</p>
           ) : (
             <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>

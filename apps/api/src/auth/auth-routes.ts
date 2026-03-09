@@ -18,7 +18,8 @@ import {
   type SessionData,
 } from './session-store.js';
 import { SESSION_CONFIG, LOCKOUT_CONFIG } from '../config/server-config.js';
-import { resolveTenantId } from '../config/tenant-config.js';
+import { tryResolveTenantId, loadTenantsFromDb } from '../config/tenant-config.js';
+import { bindVistaSession, unbindVistaSession } from './idp/vista-binding.js';
 import { log } from '../lib/logger.js';
 import { audit } from '../lib/audit.js';
 import { immutableAudit } from '../lib/immutable-audit.js';
@@ -148,13 +149,15 @@ export async function requireSession(request: any, reply: any): Promise<SessionD
   }
   const token = extractToken(request);
   if (!token) {
-    reply.code(401).send({ ok: false, error: 'Not authenticated' });
-    throw new Error('No session');
+    const err: any = new Error('No session');
+    err.statusCode = 401;
+    throw err;
   }
   const session = await getSession(token);
   if (!session) {
-    reply.code(401).send({ ok: false, error: 'Session expired or invalid' });
-    throw new Error('Invalid session');
+    const err: any = new Error('Invalid session');
+    err.statusCode = 401;
+    throw err;
   }
   return session;
 }
@@ -237,7 +240,21 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
 
       // Create session
       const role = mapUserRole(userInfo.userName);
-      const tenantId = resolveTenantId(userInfo.facilityStation);
+      let tenantId = tryResolveTenantId(userInfo.facilityStation);
+      if (!tenantId && userInfo.facilityStation) {
+        await loadTenantsFromDb();
+        tenantId = tryResolveTenantId(userInfo.facilityStation);
+      }
+      if (!tenantId) {
+        log.warn('Login rejected: tenant resolution failed', {
+          duz: userInfo.duz,
+          facilityStation: userInfo.facilityStation,
+        });
+        return reply.code(403).send({
+          ok: false,
+          error: 'Tenant resolution failed for authenticated facility',
+        });
+      }
       const token = await createSession({
         duz: userInfo.duz,
         userName: userInfo.userName,
@@ -252,6 +269,23 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
       const finalToken = SESSION_CONFIG.rotateOnLogin
         ? ((await rotateSession(token)) ?? token)
         : token;
+
+      const rpcBinding = await bindVistaSession(finalToken, accessCode, verifyCode, {
+        tenantId,
+        userInfo,
+      });
+      if (!rpcBinding.ok) {
+        await destroySession(finalToken);
+        reply.clearCookie(COOKIE_NAME, { path: '/' });
+        log.warn('Login rejected: clinician RPC binding failed', {
+          duz: userInfo.duz,
+          tenantId,
+        });
+        return reply.code(503).send({
+          ok: false,
+          error: 'Failed to establish clinician VistA session',
+        });
+      }
 
       // Set cookie (httpOnly — no JS access)
       reply.setCookie(COOKIE_NAME, finalToken, COOKIE_OPTS);
@@ -356,6 +390,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
     const session = token ? await getSession(token) : null;
 
     if (token) {
+      unbindVistaSession(token);
       await destroySession(token);
     }
     reply.clearCookie(COOKIE_NAME, { path: '/' });

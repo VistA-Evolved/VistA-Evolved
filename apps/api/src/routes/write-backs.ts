@@ -34,6 +34,7 @@ import type { AuditAction } from '../lib/audit.js';
 
 export interface ServerDraft {
   id: string;
+  tenantId: string;
   type:
     | 'order-sign'
     | 'order-release'
@@ -80,12 +81,14 @@ export function createDraft(
   type: ServerDraft['type'],
   dfn: string,
   requiredRpc: string,
-  payload: Record<string, unknown>
+  payload: Record<string, unknown>,
+  tenantId: string
 ): ServerDraft {
   const id = `draft-${++draftSeq}-${Date.now()}`;
   const now = new Date().toISOString();
   const draft: ServerDraft = {
     id,
+    tenantId,
     type,
     status: 'pending',
     dfn,
@@ -103,7 +106,7 @@ export function createDraft(
   draftDbRepo
     ?.upsert({
       id,
-      tenantId: 'default',
+      tenantId,
       patientDfn: dfn,
       draftType: type,
       content: JSON.stringify(payload),
@@ -132,6 +135,7 @@ export function createDraft(
 
 interface WriteAuditEntry {
   timestamp: string;
+  tenantId: string;
   action: string;
   dfn: string;
   user: string;
@@ -181,8 +185,34 @@ function auditWrite(entry: WriteAuditEntry) {
 /* ------------------------------------------------------------------ */
 
 export default async function writeBackRoutes(server: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: any): string | null {
+    const requestTenantId =
+      typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+        ? request.tenantId.trim()
+        : undefined;
+    const sessionTenantId =
+      typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+        ? request.session.tenantId.trim()
+        : undefined;
+    const headerTenantId = request.headers?.['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return requestTenantId || sessionTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(request: any, reply: any): string | null {
+    const tenantId = resolveTenantId(request);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
   /* ---- POST /vista/orders/sign ---- */
   server.post('/vista/orders/sign', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { dfn, orderId, orderName, signedBy } = request.body as any;
     if (!dfn || !orderId) {
       return reply.code(400).send({ ok: false, error: 'Missing dfn or orderId' });
@@ -205,6 +235,7 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
 
         auditWrite({
           timestamp: now,
+          tenantId,
           action,
           dfn: String(dfn),
           user: signedBy || 'unknown',
@@ -225,6 +256,7 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
         // RPC call failed — fall through to draft
         auditWrite({
           timestamp: now,
+          tenantId,
           action,
           dfn: String(dfn),
           user: signedBy || 'unknown',
@@ -241,9 +273,10 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
       orderName,
       signedBy,
       attemptedAt: now,
-    });
+    }, tenantId);
     auditWrite({
       timestamp: now,
+      tenantId,
       action,
       dfn: String(dfn),
       user: signedBy || 'unknown',
@@ -264,6 +297,8 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
 
   /* ---- POST /vista/orders/release ---- */
   server.post('/vista/orders/release', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { dfn, orderId, releasedBy } = request.body as any;
     if (!dfn || !orderId) {
       return reply.code(400).send({ ok: false, error: 'Missing dfn or orderId' });
@@ -280,6 +315,7 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
         disconnect();
         auditWrite({
           timestamp: now,
+          tenantId,
           action: 'order-release',
           dfn: String(dfn),
           user: releasedBy || 'unknown',
@@ -303,9 +339,10 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
       orderId,
       releasedBy,
       attemptedAt: now,
-    });
+    }, tenantId);
     auditWrite({
       timestamp: now,
+      tenantId,
       action: 'order-release',
       dfn: String(dfn),
       user: releasedBy || 'unknown',
@@ -324,6 +361,8 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
 
   /* ---- POST /vista/labs/ack ---- */
   server.post('/vista/labs/ack', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { dfn, labIds, acknowledgedBy } = request.body as any;
     if (!dfn || !labIds?.length) {
       return reply.code(400).send({ ok: false, error: 'Missing dfn or labIds' });
@@ -344,6 +383,7 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
         disconnect();
         auditWrite({
           timestamp: now,
+          tenantId,
           action: 'lab-ack',
           dfn: String(dfn),
           user: acknowledgedBy || 'unknown',
@@ -368,9 +408,10 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
       labIds,
       acknowledgedBy,
       acknowledgedAt: now,
-    });
+    }, tenantId);
     auditWrite({
       timestamp: now,
+      tenantId,
       action: 'lab-ack',
       dfn: String(dfn),
       user: acknowledgedBy || 'unknown',
@@ -391,6 +432,8 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
 
   /* ---- POST /vista/consults/create ---- */
   server.post('/vista/consults/create', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { dfn, service, urgency, reason, requestedBy } = request.body as any;
     if (!dfn || !service) {
       return reply.code(400).send({ ok: false, error: 'Missing dfn or service' });
@@ -414,6 +457,7 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
         disconnect();
         auditWrite({
           timestamp: now,
+          tenantId,
           action: 'consult-create',
           dfn: String(dfn),
           user: requestedBy || 'unknown',
@@ -438,9 +482,10 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
       reason,
       requestedBy,
       attemptedAt: now,
-    });
+    }, tenantId);
     auditWrite({
       timestamp: now,
+      tenantId,
       action: 'consult-create',
       dfn: String(dfn),
       user: requestedBy || 'unknown',
@@ -459,6 +504,8 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
 
   /* ---- POST /vista/surgery/create ---- */
   server.post('/vista/surgery/create', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { dfn, procedure, surgeon, scheduledDate, createdBy } = request.body as any;
     if (!dfn || !procedure) {
       return reply.code(400).send({ ok: false, error: 'Missing dfn or procedure' });
@@ -473,9 +520,10 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
       scheduledDate,
       createdBy,
       attemptedAt: now,
-    });
+    }, tenantId);
     auditWrite({
       timestamp: now,
+      tenantId,
       action: 'surgery-create',
       dfn: String(dfn),
       user: createdBy || 'unknown',
@@ -495,6 +543,8 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
 
   /* ---- POST /vista/problems/save ---- */
   server.post('/vista/problems/save', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const {
       dfn,
       problemText,
@@ -528,6 +578,7 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
         disconnect();
         auditWrite({
           timestamp: now,
+          tenantId,
           action: 'problem-save',
           dfn: String(dfn),
           user: savedBy || 'unknown',
@@ -554,9 +605,10 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
       probAction,
       savedBy,
       attemptedAt: now,
-    });
+    }, tenantId);
     auditWrite({
       timestamp: now,
+      tenantId,
       action: 'problem-save',
       dfn: String(dfn),
       user: savedBy || 'unknown',
@@ -575,9 +627,11 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
   });
 
   /* ---- GET /vista/drafts ---- */
-  server.get('/vista/drafts', async (request) => {
+  server.get('/vista/drafts', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { type, status: filterStatus, dfn } = request.query as any;
-    let results = Array.from(drafts.values());
+    let results = Array.from(drafts.values()).filter((d) => d.tenantId === tenantId);
 
     if (type) results = results.filter((d) => d.type === type);
     if (filterStatus) results = results.filter((d) => d.status === filterStatus);
@@ -587,8 +641,10 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
   });
 
   /* ---- GET /vista/drafts/stats ---- */
-  server.get('/vista/drafts/stats', async () => {
-    const all = Array.from(drafts.values());
+  server.get('/vista/drafts/stats', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const all = Array.from(drafts.values()).filter((d) => d.tenantId === tenantId);
     const byType: Record<string, number> = {};
     const byStatus: Record<string, number> = {};
     for (const d of all) {
@@ -599,11 +655,13 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
   });
 
   /* ---- GET /vista/write-audit ---- */
-  server.get('/vista/write-audit', async (request) => {
+  server.get('/vista/write-audit', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { limit } = request.query as any;
     const n = Math.min(Number(limit) || 50, MAX_AUDIT);
     // Return both legacy entries and hint about centralized audit
-    const entries = writeAuditLog.slice(-n);
+    const entries = writeAuditLog.filter((entry) => entry.tenantId === tenantId).slice(-n);
     return {
       ok: true,
       count: entries.length,

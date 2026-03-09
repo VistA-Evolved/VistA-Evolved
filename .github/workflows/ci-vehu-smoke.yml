@@ -10,8 +10,6 @@
 name: CI VEHU Smoke
 
 on:
-  schedule:
-    - cron: '30 3 * * *' # 03:30 UTC daily (after DR nightly at 03:00)
   workflow_dispatch:
     inputs:
       journey:

@@ -11,6 +11,32 @@ import { requireSession } from '../auth/auth-routes.js';
 import { getFeatureFlagProvider } from '../flags/types.js';
 import type { FlagContext } from '../flags/types.js';
 
+function resolveTenantId(request: any, explicitTenantId?: unknown): string | null {
+  const bodyTenantId =
+    typeof explicitTenantId === 'string' && explicitTenantId.trim() ? explicitTenantId.trim() : null;
+  const headerTenantId = request?.headers?.['x-tenant-id'];
+  const headerTenant =
+    typeof headerTenantId === 'string' && headerTenantId.trim() ? headerTenantId.trim() : null;
+  const requestTenantId =
+    typeof request?.tenantId === 'string' && request.tenantId.trim() ? request.tenantId.trim() : null;
+  const sessionTenantId =
+    typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim()
+      ? request.session.tenantId.trim()
+      : null;
+  return bodyTenantId || headerTenant || requestTenantId || sessionTenantId || null;
+}
+
+function requireTenantId(
+  request: FastifyRequest,
+  reply: FastifyReply,
+  explicitTenantId?: unknown
+): string | null {
+  const tenantId = resolveTenantId(request, explicitTenantId);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
 export default async function flagEvalRoutes(server: FastifyInstance): Promise<void> {
   /** POST /admin/flags/evaluate — Evaluate a single flag. */
   server.post('/admin/flags/evaluate', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -35,8 +61,11 @@ export default async function flagEvalRoutes(server: FastifyInstance): Promise<v
       });
     }
 
+    const resolvedTenantId = requireTenantId(request, reply, tenantId);
+    if (!resolvedTenantId) return;
+
     const context: FlagContext = {
-      tenantId: tenantId || session.tenantId || 'default',
+      tenantId: resolvedTenantId,
       userId: userId || session.duz,
       properties: properties || {},
     };
@@ -68,8 +97,11 @@ export default async function flagEvalRoutes(server: FastifyInstance): Promise<v
       });
     }
 
+    const resolvedTenantId = requireTenantId(request, reply, tenantId);
+    if (!resolvedTenantId) return;
+
     const context: FlagContext = {
-      tenantId: tenantId || session.tenantId || 'default',
+      tenantId: resolvedTenantId,
       userId: userId || session.duz,
       properties: properties || {},
     };
@@ -101,8 +133,11 @@ export default async function flagEvalRoutes(server: FastifyInstance): Promise<v
       });
     }
 
+    const resolvedTenantId = requireTenantId(request, reply, tenantId);
+    if (!resolvedTenantId) return;
+
     const context: FlagContext = {
-      tenantId: tenantId || session.tenantId || 'default',
+      tenantId: resolvedTenantId,
       userId: userId || session.duz,
       properties: properties || {},
     };

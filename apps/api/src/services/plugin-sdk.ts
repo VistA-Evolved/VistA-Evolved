@@ -459,16 +459,22 @@ export function getPluginStats(tenantId: string): {
 } {
   let total = 0;
   let active = 0;
+  const tenantPluginIds = new Set<string>();
   for (const p of plugins.values()) {
     if (p.tenantId !== tenantId) continue;
     total++;
     if (p.status === "active") active++;
+    tenantPluginIds.add(p.manifest.pluginId);
   }
 
   let valCount = 0;
-  for (const vals of validators.values()) valCount += vals.length;
+  for (const vals of validators.values()) {
+    valCount += vals.filter((entry) => tenantPluginIds.has(entry.pluginId)).length;
+  }
   let trCount = 0;
-  for (const trs of transformers.values()) trCount += trs.length;
+  for (const trs of transformers.values()) {
+    trCount += trs.filter((entry) => tenantPluginIds.has(entry.pluginId)).length;
+  }
 
   let auditCount = 0;
   for (const e of auditLog) if (e.tenantId === tenantId) auditCount++;

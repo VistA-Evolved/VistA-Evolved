@@ -22,6 +22,13 @@ export type DevicePatientAssociationRow = typeof pgDevicePatientAssociation.$inf
 export type DeviceLocationMappingRow = typeof pgDeviceLocationMapping.$inferSelect;
 export type DeviceAuditLogRow = typeof pgDeviceAuditLog.$inferSelect;
 
+function requireTenantId(tenantId?: string): string {
+  if (typeof tenantId === 'string' && tenantId.trim().length > 0) {
+    return tenantId.trim();
+  }
+  throw new Error('Tenant context required for device registry repository');
+}
+
 /* ═══════════════════ MANAGED DEVICE ═══════════════════ */
 
 export async function insertManagedDevice(data: {
@@ -42,9 +49,10 @@ export async function insertManagedDevice(data: {
 }): Promise<ManagedDeviceRow> {
   const db = getPgDb();
   const now = new Date();
+  const tenantId = requireTenantId(data.tenantId);
   await db.insert(pgManagedDevice).values({
     id: data.id,
-    tenantId: data.tenantId ?? 'default',
+    tenantId,
     name: data.name,
     manufacturer: data.manufacturer,
     model: data.model,
@@ -72,42 +80,45 @@ export async function findManagedDeviceById(id: string): Promise<ManagedDeviceRo
 
 export async function findManagedDevicesByClass(
   deviceClass: string,
-  tenantId = 'default'
+  tenantId: string
 ): Promise<ManagedDeviceRow[]> {
   const db = getPgDb();
+  const resolvedTenantId = requireTenantId(tenantId);
   return db
     .select()
     .from(pgManagedDevice)
     .where(
-      and(eq(pgManagedDevice.tenantId, tenantId), eq(pgManagedDevice.deviceClass, deviceClass))
+      and(eq(pgManagedDevice.tenantId, resolvedTenantId), eq(pgManagedDevice.deviceClass, deviceClass))
     );
 }
 
 export async function findManagedDevicesByStatus(
   status: string,
-  tenantId = 'default'
+  tenantId: string
 ): Promise<ManagedDeviceRow[]> {
   const db = getPgDb();
+  const resolvedTenantId = requireTenantId(tenantId);
   return db
     .select()
     .from(pgManagedDevice)
-    .where(and(eq(pgManagedDevice.tenantId, tenantId), eq(pgManagedDevice.status, status)));
+    .where(and(eq(pgManagedDevice.tenantId, resolvedTenantId), eq(pgManagedDevice.status, status)));
 }
 
 export async function findManagedDevicesByGateway(
   gatewayId: string,
-  tenantId = 'default'
+  tenantId: string
 ): Promise<ManagedDeviceRow[]> {
   const db = getPgDb();
+  const resolvedTenantId = requireTenantId(tenantId);
   return db
     .select()
     .from(pgManagedDevice)
-    .where(and(eq(pgManagedDevice.tenantId, tenantId), eq(pgManagedDevice.gatewayId, gatewayId)));
+    .where(and(eq(pgManagedDevice.tenantId, resolvedTenantId), eq(pgManagedDevice.gatewayId, gatewayId)));
 }
 
-export async function findAllManagedDevices(tenantId = 'default'): Promise<ManagedDeviceRow[]> {
+export async function findAllManagedDevices(tenantId: string): Promise<ManagedDeviceRow[]> {
   const db = getPgDb();
-  return db.select().from(pgManagedDevice).where(eq(pgManagedDevice.tenantId, tenantId));
+  return db.select().from(pgManagedDevice).where(eq(pgManagedDevice.tenantId, requireTenantId(tenantId)));
 }
 
 export async function updateManagedDevice(
@@ -156,9 +167,10 @@ export async function insertDevicePatientAssociation(data: {
 }): Promise<DevicePatientAssociationRow> {
   const db = getPgDb();
   const now = new Date();
+  const tenantId = requireTenantId(data.tenantId);
   await db.insert(pgDevicePatientAssociation).values({
     id: data.id,
-    tenantId: data.tenantId ?? 'default',
+    tenantId,
     deviceId: data.deviceId,
     patientDfn: data.patientDfn,
     location: data.location ?? null,
@@ -186,15 +198,16 @@ export async function findDevicePatientAssociationById(
 
 export async function findDevicePatientAssociationsByDevice(
   deviceId: string,
-  tenantId = 'default'
+  tenantId: string
 ): Promise<DevicePatientAssociationRow[]> {
   const db = getPgDb();
+  const resolvedTenantId = requireTenantId(tenantId);
   return db
     .select()
     .from(pgDevicePatientAssociation)
     .where(
       and(
-        eq(pgDevicePatientAssociation.tenantId, tenantId),
+        eq(pgDevicePatientAssociation.tenantId, resolvedTenantId),
         eq(pgDevicePatientAssociation.deviceId, deviceId)
       )
     )
@@ -203,15 +216,16 @@ export async function findDevicePatientAssociationsByDevice(
 
 export async function findDevicePatientAssociationsByPatient(
   patientDfn: string,
-  tenantId = 'default'
+  tenantId: string
 ): Promise<DevicePatientAssociationRow[]> {
   const db = getPgDb();
+  const resolvedTenantId = requireTenantId(tenantId);
   return db
     .select()
     .from(pgDevicePatientAssociation)
     .where(
       and(
-        eq(pgDevicePatientAssociation.tenantId, tenantId),
+        eq(pgDevicePatientAssociation.tenantId, resolvedTenantId),
         eq(pgDevicePatientAssociation.patientDfn, patientDfn)
       )
     )
@@ -219,15 +233,16 @@ export async function findDevicePatientAssociationsByPatient(
 }
 
 export async function findActiveAssociations(
-  tenantId = 'default'
+  tenantId: string
 ): Promise<DevicePatientAssociationRow[]> {
   const db = getPgDb();
+  const resolvedTenantId = requireTenantId(tenantId);
   return db
     .select()
     .from(pgDevicePatientAssociation)
     .where(
       and(
-        eq(pgDevicePatientAssociation.tenantId, tenantId),
+        eq(pgDevicePatientAssociation.tenantId, resolvedTenantId),
         eq(pgDevicePatientAssociation.status, 'active')
       )
     );
@@ -272,9 +287,10 @@ export async function insertDeviceLocationMapping(data: {
 }): Promise<DeviceLocationMappingRow> {
   const db = getPgDb();
   const now = new Date();
+  const tenantId = requireTenantId(data.tenantId);
   await db.insert(pgDeviceLocationMapping).values({
     id: data.id,
-    tenantId: data.tenantId ?? 'default',
+    tenantId,
     deviceId: data.deviceId,
     ward: data.ward,
     room: data.room,
@@ -301,29 +317,31 @@ export async function findDeviceLocationMappingById(
 
 export async function findDeviceLocationMappingsByDevice(
   deviceId: string,
-  tenantId = 'default'
+  tenantId: string
 ): Promise<DeviceLocationMappingRow[]> {
   const db = getPgDb();
+  const resolvedTenantId = requireTenantId(tenantId);
   return db
     .select()
     .from(pgDeviceLocationMapping)
     .where(
       and(
-        eq(pgDeviceLocationMapping.tenantId, tenantId),
+        eq(pgDeviceLocationMapping.tenantId, resolvedTenantId),
         eq(pgDeviceLocationMapping.deviceId, deviceId)
       )
     );
 }
 
 export async function findActiveDeviceLocationMappings(
-  tenantId = 'default'
+  tenantId: string
 ): Promise<DeviceLocationMappingRow[]> {
   const db = getPgDb();
+  const resolvedTenantId = requireTenantId(tenantId);
   return db
     .select()
     .from(pgDeviceLocationMapping)
     .where(
-      and(eq(pgDeviceLocationMapping.tenantId, tenantId), eq(pgDeviceLocationMapping.active, true))
+      and(eq(pgDeviceLocationMapping.tenantId, resolvedTenantId), eq(pgDeviceLocationMapping.active, true))
     );
 }
 
@@ -363,9 +381,10 @@ export async function insertDeviceAuditLog(data: {
 }): Promise<DeviceAuditLogRow> {
   const db = getPgDb();
   const now = new Date();
+  const tenantId = requireTenantId(data.tenantId);
   await db.insert(pgDeviceAuditLog).values({
     id: data.id,
-    tenantId: data.tenantId ?? 'default',
+    tenantId,
     deviceId: data.deviceId,
     action: data.action,
     actor: data.actor,
@@ -385,25 +404,26 @@ export async function findDeviceAuditLogById(id: string): Promise<DeviceAuditLog
 
 export async function findDeviceAuditByDevice(
   deviceId: string,
-  tenantId = 'default'
+  tenantId: string
 ): Promise<DeviceAuditLogRow[]> {
   const db = getPgDb();
+  const resolvedTenantId = requireTenantId(tenantId);
   return db
     .select()
     .from(pgDeviceAuditLog)
-    .where(and(eq(pgDeviceAuditLog.tenantId, tenantId), eq(pgDeviceAuditLog.deviceId, deviceId)))
+    .where(and(eq(pgDeviceAuditLog.tenantId, resolvedTenantId), eq(pgDeviceAuditLog.deviceId, deviceId)))
     .orderBy(desc(pgDeviceAuditLog.timestamp));
 }
 
 export async function findAllDeviceAuditLogs(
-  tenantId = 'default',
+  tenantId: string,
   limit = 100
 ): Promise<DeviceAuditLogRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(pgDeviceAuditLog)
-    .where(eq(pgDeviceAuditLog.tenantId, tenantId))
+    .where(eq(pgDeviceAuditLog.tenantId, requireTenantId(tenantId)))
     .orderBy(desc(pgDeviceAuditLog.timestamp))
     .limit(limit);
 }

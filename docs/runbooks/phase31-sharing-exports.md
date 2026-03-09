@@ -9,7 +9,7 @@ Phase 31 enhances the patient portal's data sharing and export capabilities:
 1. **Share-code lane** — Tighter security: 60-min TTL (was 72h), 3-attempt lockout (was 5), one-time redeem option, CAPTCHA stub
 2. **Export lane** — PDF (existing, enhanced) + structured JSON for portability
 3. **SHC lane** — Feature-flagged SMART Health Cards for immunizations
-4. **VistA-first data sourcing** — All data from RPCs; "integration pending" when unavailable
+4. **VistA-first data sourcing** — All data from RPCs; exports distinguish empty live sections from genuinely unavailable VistA sections
 
 ### Prerequisites
 
@@ -76,6 +76,12 @@ curl http://localhost:3001/portal/export/section/immunizations \
 curl http://localhost:3001/portal/export/full \
   -b "portal_session=<token>" -o health-record.pdf
 ```
+
+Empty live sections are now rendered truthfully in the PDF output:
+
+- live empty immunizations -> `No immunizations on file`
+- live empty labs -> `No lab results on file`
+- only sections with actual fetch failures keep a pending/unavailable message with target RPC metadata
 
 ### Structured JSON Export (Phase 31)
 

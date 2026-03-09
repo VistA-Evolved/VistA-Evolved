@@ -21,17 +21,62 @@ import {
   getInstalls,
   getListingReviews,
   getMarketplaceAudit,
-  getMarketplaceStats,
   LISTING_CATEGORIES,
   type ListingStatus,
 } from '../services/marketplace-service.js';
 
 export async function marketplaceRoutes(server: FastifyInstance): Promise<void> {
-  const TENANT = 'default';
+  function resolveTenantId(req: FastifyRequest): string | null {
+    const headerTenantId = req.headers['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return (req as any).session?.tenantId || (req as any).tenantId || headerTenant || null;
+  }
+
+  function requireTenantId(req: FastifyRequest, reply: FastifyReply): string | null {
+    const tenantId = resolveTenantId(req);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
+  function canViewListing(listing: any, tenantId: string): boolean {
+    return listing.publisherId === tenantId || listing.status === 'published';
+  }
+
+  function canManageListing(listing: any, tenantId: string): boolean {
+    return listing.publisherId === tenantId;
+  }
+
+  function getTenantOwnedListings(tenantId: string) {
+    return searchListings({ limit: 1000 }).filter((listing) => listing.publisherId === tenantId);
+  }
+
+  function getTenantMarketplaceStats(tenantId: string) {
+    const listings = getTenantOwnedListings(tenantId);
+    const installs = getInstalls(tenantId);
+    return {
+      totalListings: listings.length,
+      publishedListings: listings.filter((listing) => listing.status === 'published').length,
+      pendingReview: listings.filter(
+        (listing) => listing.status === 'submitted' || listing.status === 'under_review'
+      ).length,
+      totalInstalls: installs.length,
+      totalReviews: listings.reduce(
+        (count, listing) => count + getListingReviews(listing.id, 1000).length,
+        0
+      ),
+      categories: LISTING_CATEGORIES,
+    };
+  }
 
   // ── Health ──────────────────────────────────────────────────────────
-  server.get('/plugin-marketplace/health', async (_req: FastifyRequest, reply: FastifyReply) => {
-    const stats = getMarketplaceStats();
+  server.get('/plugin-marketplace/health', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const stats = getTenantMarketplaceStats(tenantId);
     return reply.send({ ok: true, phase: 360, ...stats });
   });
 
@@ -45,6 +90,8 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
 
   // ── Create listing ─────────────────────────────────────────────────
   server.post('/plugin-marketplace/listings', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const body = (req.body as any) || {};
     const { pluginId, name, version, description, summary, category, tags, manifestHash } = body;
 
@@ -55,7 +102,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
       });
     }
 
-    const listing = createListing(TENANT, {
+    const listing = createListing(tenantId, {
       pluginId,
       name,
       version,
@@ -72,9 +119,13 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   server.get(
     '/plugin-marketplace/listings/:id',
     async (req: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(req, reply);
+      if (!tenantId) return;
       const { id } = req.params as any;
       const listing = getListing(id);
-      if (!listing) return reply.code(404).send({ ok: false, error: 'Listing not found' });
+      if (!listing || !canViewListing(listing, tenantId)) {
+        return reply.code(404).send({ ok: false, error: 'Listing not found' });
+      }
       return reply.send({ ok: true, listing });
     }
   );
@@ -83,10 +134,16 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   server.patch(
     '/plugin-marketplace/listings/:id',
     async (req: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(req, reply);
+      if (!tenantId) return;
       const { id } = req.params as any;
       const body = (req.body as any) || {};
+      const existing = getListing(id);
+      if (!existing || !canManageListing(existing, tenantId)) {
+        return reply.code(404).send({ ok: false, error: 'Listing not found' });
+      }
       try {
-        const listing = updateListing(id, TENANT, body);
+        const listing = updateListing(id, tenantId, body);
         if (!listing) return reply.code(404).send({ ok: false, error: 'Listing not found' });
         return reply.send({ ok: true, listing });
       } catch (_err: any) {
@@ -99,6 +156,8 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   server.post(
     '/plugin-marketplace/listings/:id/transition',
     async (req: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(req, reply);
+      if (!tenantId) return;
       const { id } = req.params as any;
       const body = (req.body as any) || {};
       const { status, notes } = body;
@@ -107,8 +166,13 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
         return reply.code(400).send({ ok: false, error: 'status required' });
       }
 
+      const existing = getListing(id);
+      if (!existing || !canManageListing(existing, tenantId)) {
+        return reply.code(404).send({ ok: false, error: 'Listing not found' });
+      }
+
       try {
-        const listing = transitionListing(id, status as ListingStatus, 'admin', notes);
+        const listing = transitionListing(id, status as ListingStatus, tenantId, notes);
         return reply.send({ ok: true, listing });
       } catch (_err: any) {
         return reply.code(400).send({ ok: false, error: 'Listing status transition failed' });
@@ -132,9 +196,11 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   server.post(
     '/plugin-marketplace/listings/:id/install',
     async (req: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(req, reply);
+      if (!tenantId) return;
       const { id } = req.params as any;
       try {
-        const install = installFromMarketplace(TENANT, id, 'admin');
+        const install = installFromMarketplace(tenantId, id, tenantId);
         return reply.code(201).send({ ok: true, install });
       } catch (_err: any) {
         return reply.code(400).send({ ok: false, error: 'Marketplace install failed' });
@@ -146,8 +212,10 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   server.delete(
     '/plugin-marketplace/installs/:installId',
     async (req: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(req, reply);
+      if (!tenantId) return;
       const { installId } = req.params as any;
-      const removed = uninstallFromMarketplace(TENANT, installId, 'admin');
+      const removed = uninstallFromMarketplace(tenantId, installId, tenantId);
       if (!removed) return reply.code(404).send({ ok: false, error: 'Install not found' });
       return reply.send({ ok: true, uninstalled: true });
     }
@@ -155,8 +223,10 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
 
   // ── List tenant installs ───────────────────────────────────────────
   server.get('/plugin-marketplace/installs', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const query = (req.query as any) || {};
-    const list = getInstalls(TENANT, {
+    const list = getInstalls(tenantId, {
       active: query.active !== undefined ? query.active === 'true' : undefined,
     });
     return reply.send({ ok: true, installs: list, count: list.length });
@@ -166,6 +236,8 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   server.post(
     '/plugin-marketplace/listings/:id/reviews',
     async (req: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(req, reply);
+      if (!tenantId) return;
       const { id } = req.params as any;
       const body = (req.body as any) || {};
       const { rating, comment } = body;
@@ -174,8 +246,13 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
         return reply.code(400).send({ ok: false, error: 'rating (1-5) required' });
       }
 
+      const listing = getListing(id);
+      if (!listing || !canViewListing(listing, tenantId)) {
+        return reply.code(404).send({ ok: false, error: 'Listing not found' });
+      }
+
       try {
-        const review = addReview(id, TENANT, rating, comment);
+        const review = addReview(id, tenantId, rating, comment);
         return reply.send({ ok: true, review });
       } catch (_err: any) {
         return reply.code(400).send({ ok: false, error: 'Review submission failed' });
@@ -187,8 +264,14 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
   server.get(
     '/plugin-marketplace/listings/:id/reviews',
     async (req: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(req, reply);
+      if (!tenantId) return;
       const { id } = req.params as any;
       const query = (req.query as any) || {};
+      const listing = getListing(id);
+      if (!listing || !canViewListing(listing, tenantId)) {
+        return reply.code(404).send({ ok: false, error: 'Listing not found' });
+      }
       const revs = getListingReviews(id, query.limit ? parseInt(query.limit, 10) : 50);
       return reply.send({ ok: true, reviews: revs, count: revs.length });
     }
@@ -196,17 +279,29 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
 
   // ── Audit log ──────────────────────────────────────────────────────
   server.get('/plugin-marketplace/audit', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const query = (req.query as any) || {};
+    const listingId = query.listingId;
+    if (listingId) {
+      const listing = getListing(listingId);
+      if (!listing || !canManageListing(listing, tenantId)) {
+        return reply.code(404).send({ ok: false, error: 'Listing not found' });
+      }
+    }
+    const ownedListingIds = new Set(getTenantOwnedListings(tenantId).map((listing) => listing.id));
     const entries = getMarketplaceAudit({
       listingId: query.listingId,
       limit: query.limit ? parseInt(query.limit, 10) : 100,
-    });
+    }).filter((entry) => ownedListingIds.has(entry.listingId));
     return reply.send({ ok: true, audit: entries, count: entries.length });
   });
 
   // ── Stats ──────────────────────────────────────────────────────────
-  server.get('/plugin-marketplace/stats', async (_req: FastifyRequest, reply: FastifyReply) => {
-    const stats = getMarketplaceStats();
+  server.get('/plugin-marketplace/stats', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const stats = getTenantMarketplaceStats(tenantId);
     return reply.send({ ok: true, ...stats });
   });
 }

@@ -69,9 +69,14 @@ const statusUpdates = new Map<string, ClaimStatusUpdate>();
 const claimStatusIndex = new Map<string, string[]>(); // claimId → status IDs
 const statusIdempotencyIndex = new Map<string, string>();
 
+function claimTenantKey(tenantId: string, claimId: string): string {
+  return `${tenantId}:${claimId}`;
+}
+
 /* ── Ack Ingestion ─────────────────────────────────────────── */
 
 export interface AckIngestInput {
+  tenantId: string;
   type: AckType;
   disposition: AckDisposition;
   originalControlNumber: string;
@@ -93,8 +98,9 @@ export interface AckIngestResult {
 }
 
 export async function ingestAck(input: AckIngestInput): Promise<AckIngestResult> {
+  const tenantId = input.tenantId;
   // Idempotency check
-  const existingId = idempotencyIndex.get(input.idempotencyKey);
+  const existingId = idempotencyIndex.get(`${tenantId}:${input.idempotencyKey}`);
   if (existingId) {
     const existing = acks.get(existingId)!;
     return {
@@ -107,6 +113,7 @@ export async function ingestAck(input: AckIngestInput): Promise<AckIngestResult>
   }
 
   const ack = createAck({
+    tenantId,
     type: input.type,
     disposition: input.disposition,
     claimId: input.claimId,
@@ -121,10 +128,11 @@ export async function ingestAck(input: AckIngestInput): Promise<AckIngestResult>
 
   // Store in cache
   acks.set(ack.id, ack);
-  idempotencyIndex.set(input.idempotencyKey, ack.id);
+  idempotencyIndex.set(`${tenantId}:${input.idempotencyKey}`, ack.id);
   if (ack.claimId) {
-    if (!claimAckIndex.has(ack.claimId)) claimAckIndex.set(ack.claimId, []);
-    claimAckIndex.get(ack.claimId)!.push(ack.id);
+    const key = claimTenantKey(tenantId, ack.claimId);
+    if (!claimAckIndex.has(key)) claimAckIndex.set(key, []);
+    claimAckIndex.get(key)!.push(ack.id);
   }
 
   // Write-through to DB (Phase 126)
@@ -132,7 +140,7 @@ export async function ingestAck(input: AckIngestInput): Promise<AckIngestResult>
     try {
       await dbRepo.insertAck({
         id: ack.id,
-        tenantId: 'default',
+        tenantId: ack.tenantId,
         type: ack.type,
         disposition: ack.disposition,
         claimId: ack.claimId ?? null,
@@ -157,7 +165,7 @@ export async function ingestAck(input: AckIngestInput): Promise<AckIngestResult>
   let workqueueItemCreated = false;
 
   if (ack.claimId) {
-    const claim = getClaim(ack.claimId);
+    const claim = getClaim(ack.claimId, ack.tenantId);
     if (claim) {
       if (ack.disposition === 'accepted' && claim.status === 'submitted') {
         const updated = transitionClaim(claim, 'accepted', 'system', `Ack ${ack.type} accepted`);
@@ -190,6 +198,7 @@ export async function ingestAck(input: AckIngestInput): Promise<AckIngestResult>
             sourceId: ack.id,
             sourceTimestamp: ack.receivedAt,
             priority: 'high',
+            tenantId: ack.tenantId,
           });
           workqueueItemCreated = true;
         }
@@ -215,6 +224,7 @@ export async function ingestAck(input: AckIngestInput): Promise<AckIngestResult>
 /* ── Status Ingestion ──────────────────────────────────────── */
 
 export interface StatusIngestInput {
+  tenantId: string;
   claimId?: string;
   payerClaimId?: string;
   categoryCode: string;
@@ -239,8 +249,9 @@ export interface StatusIngestResult {
 }
 
 export async function ingestStatusUpdate(input: StatusIngestInput): Promise<StatusIngestResult> {
+  const tenantId = input.tenantId;
   // Idempotency check
-  const existingId = statusIdempotencyIndex.get(input.idempotencyKey);
+  const existingId = statusIdempotencyIndex.get(`${tenantId}:${input.idempotencyKey}`);
   if (existingId) {
     const existing = statusUpdates.get(existingId)!;
     return {
@@ -253,6 +264,7 @@ export async function ingestStatusUpdate(input: StatusIngestInput): Promise<Stat
   }
 
   const status = createStatusUpdate({
+    tenantId,
     claimId: input.claimId,
     payerClaimId: input.payerClaimId,
     categoryCode: input.categoryCode,
@@ -270,10 +282,11 @@ export async function ingestStatusUpdate(input: StatusIngestInput): Promise<Stat
 
   // Store in cache
   statusUpdates.set(status.id, status);
-  statusIdempotencyIndex.set(input.idempotencyKey, status.id);
+  statusIdempotencyIndex.set(`${tenantId}:${input.idempotencyKey}`, status.id);
   if (status.claimId) {
-    if (!claimStatusIndex.has(status.claimId)) claimStatusIndex.set(status.claimId, []);
-    claimStatusIndex.get(status.claimId)!.push(status.id);
+    const key = claimTenantKey(tenantId, status.claimId);
+    if (!claimStatusIndex.has(key)) claimStatusIndex.set(key, []);
+    claimStatusIndex.get(key)!.push(status.id);
   }
 
   // Write-through to DB (Phase 126)
@@ -281,7 +294,7 @@ export async function ingestStatusUpdate(input: StatusIngestInput): Promise<Stat
     try {
       await dbRepo.insertStatusUpdate({
         id: status.id,
-        tenantId: 'default',
+        tenantId: status.tenantId,
         claimId: status.claimId ?? null,
         payerClaimId: status.payerClaimId ?? null,
         categoryCode: status.categoryCode,
@@ -308,7 +321,7 @@ export async function ingestStatusUpdate(input: StatusIngestInput): Promise<Stat
   let workqueueItemCreated = false;
 
   if (status.claimId) {
-    const claim = getClaim(status.claimId);
+    const claim = getClaim(status.claimId, status.tenantId);
     if (claim) {
       const cat = status.categoryCode;
 
@@ -345,6 +358,7 @@ export async function ingestStatusUpdate(input: StatusIngestInput): Promise<Stat
           sourceId: status.id,
           sourceTimestamp: status.receivedAt,
           priority: 'high',
+          tenantId: status.tenantId,
         });
         workqueueItemCreated = true;
       }
@@ -362,6 +376,7 @@ export async function ingestStatusUpdate(input: StatusIngestInput): Promise<Stat
           sourceId: status.id,
           sourceTimestamp: status.receivedAt,
           priority: 'medium',
+          tenantId: status.tenantId,
         });
         workqueueItemCreated = true;
       }
@@ -384,19 +399,20 @@ export async function ingestStatusUpdate(input: StatusIngestInput): Promise<Stat
 
 /* ── Query Functions ───────────────────────────────────────── */
 
-export function getAck(id: string): Acknowledgement | undefined {
+export function getAck(tenantId: string, id: string): Acknowledgement | undefined {
   const cached = acks.get(id);
-  if (cached) return cached;
+  if (cached && cached.tenantId === tenantId) return cached;
   // No sync DB fallback for async repos — cache is primary for sync callers
   return undefined;
 }
 
-export function getAcksForClaim(claimId: string): Acknowledgement[] {
-  const ids = claimAckIndex.get(claimId) ?? [];
+export function getAcksForClaim(tenantId: string, claimId: string): Acknowledgement[] {
+  const ids = claimAckIndex.get(claimTenantKey(tenantId, claimId)) ?? [];
   return ids.map((id) => acks.get(id)!).filter(Boolean);
 }
 
 export function listAcks(filters?: {
+  tenantId?: string;
   type?: AckType;
   disposition?: AckDisposition;
   claimId?: string;
@@ -404,6 +420,7 @@ export function listAcks(filters?: {
   offset?: number;
 }): { acks: Acknowledgement[]; total: number } {
   let result = Array.from(acks.values());
+  if (filters?.tenantId) result = result.filter((a) => a.tenantId === filters.tenantId);
   if (filters?.type) result = result.filter((a) => a.type === filters.type);
   if (filters?.disposition) result = result.filter((a) => a.disposition === filters.disposition);
   if (filters?.claimId) result = result.filter((a) => a.claimId === filters.claimId);
@@ -414,24 +431,26 @@ export function listAcks(filters?: {
   return { acks: result.slice(offset, offset + limit), total };
 }
 
-export function getStatusUpdate(id: string): ClaimStatusUpdate | undefined {
+export function getStatusUpdate(tenantId: string, id: string): ClaimStatusUpdate | undefined {
   const cached = statusUpdates.get(id);
-  if (cached) return cached;
+  if (cached && cached.tenantId === tenantId) return cached;
   return undefined;
 }
 
-export function getStatusUpdatesForClaim(claimId: string): ClaimStatusUpdate[] {
-  const ids = claimStatusIndex.get(claimId) ?? [];
+export function getStatusUpdatesForClaim(tenantId: string, claimId: string): ClaimStatusUpdate[] {
+  const ids = claimStatusIndex.get(claimTenantKey(tenantId, claimId)) ?? [];
   return ids.map((id) => statusUpdates.get(id)!).filter(Boolean);
 }
 
 export function listStatusUpdates(filters?: {
+  tenantId?: string;
   categoryCode?: string;
   claimId?: string;
   limit?: number;
   offset?: number;
 }): { statusUpdates: ClaimStatusUpdate[]; total: number } {
   let result = Array.from(statusUpdates.values());
+  if (filters?.tenantId) result = result.filter((s) => s.tenantId === filters.tenantId);
   if (filters?.categoryCode) result = result.filter((s) => s.categoryCode === filters.categoryCode);
   if (filters?.claimId) result = result.filter((s) => s.claimId === filters.claimId);
   result.sort((a, b) => b.receivedAt.localeCompare(a.receivedAt));
@@ -443,7 +462,7 @@ export function listStatusUpdates(filters?: {
 
 /* ── Stats ─────────────────────────────────────────────────── */
 
-export function getAckStats(): {
+export function getAckStats(tenantId?: string): {
   total: number;
   byType: Record<string, number>;
   byDisposition: Record<string, number>;
@@ -451,21 +470,27 @@ export function getAckStats(): {
   const byType: Record<string, number> = {};
   const byDisposition: Record<string, number> = {};
   for (const ack of acks.values()) {
+    if (tenantId && ack.tenantId !== tenantId) continue;
     byType[ack.type] = (byType[ack.type] ?? 0) + 1;
     byDisposition[ack.disposition] = (byDisposition[ack.disposition] ?? 0) + 1;
   }
-  return { total: acks.size, byType, byDisposition };
+  const total = tenantId ? Array.from(acks.values()).filter((ack) => ack.tenantId === tenantId).length : acks.size;
+  return { total, byType, byDisposition };
 }
 
-export function getStatusStats(): {
+export function getStatusStats(tenantId?: string): {
   total: number;
   byCategoryCode: Record<string, number>;
 } {
   const byCategoryCode: Record<string, number> = {};
   for (const s of statusUpdates.values()) {
+    if (tenantId && s.tenantId !== tenantId) continue;
     byCategoryCode[s.categoryCode] = (byCategoryCode[s.categoryCode] ?? 0) + 1;
   }
-  return { total: statusUpdates.size, byCategoryCode };
+  const total = tenantId
+    ? Array.from(statusUpdates.values()).filter((s) => s.tenantId === tenantId).length
+    : statusUpdates.size;
+  return { total, byCategoryCode };
 }
 
 /** Returns the backing repo (if wired) for external inspection (e.g. restart gate) */

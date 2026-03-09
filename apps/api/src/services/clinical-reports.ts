@@ -13,10 +13,10 @@
 
 import { log } from "../lib/logger.js";
 import { audit, type AuditAction } from "../lib/audit.js";
-import { connect, disconnect, callRpc } from "../vista/rpcBrokerClient.js";
 import { validateCredentials } from "../vista/config.js";
 import { recordAnalyticsEvent } from "./analytics-store.js";
 import { safeErr } from "../lib/safe-error.js";
+import { safeCallRpc } from "../lib/rpc-resilience.js";
 
 /* ================================================================== */
 /* Types                                                                */
@@ -84,6 +84,12 @@ function setCache<T>(cache: Map<string, CacheEntry<T>>, key: string, data: T): v
   cache.set(key, { data, expiresAt: Date.now() + CACHE_TTL_MS });
 }
 
+function countTenantCacheEntries(cache: Map<string, CacheEntry<unknown>>, tenantId?: string): number {
+  if (!tenantId) return cache.size;
+  const prefix = `reports:`;
+  return Array.from(cache.keys()).filter((key) => key.startsWith(prefix) && key.includes(`:${tenantId}:`)).length;
+}
+
 /* ================================================================== */
 /* HTML sanitization                                                    */
 /* ================================================================== */
@@ -113,7 +119,7 @@ export async function getClinicalReportList(
   actor: { duz: string; name?: string; role?: string },
   tenantId: string,
 ): Promise<ClinicalReportListResponse> {
-  const cacheKey = `reports:list:${actor.duz}`;
+  const cacheKey = `reports:list:${tenantId}:${actor.duz}`;
   const cached = getCached(reportListCache, cacheKey);
   if (cached) {
     recordAnalyticsEvent("usage.report", "report_list_view", 1, {
@@ -126,9 +132,7 @@ export async function getClinicalReportList(
 
   try {
     validateCredentials();
-    await connect();
-    const lines = await callRpc("ORWRP REPORT LISTS", []);
-    disconnect();
+    const lines = await safeCallRpc("ORWRP REPORT LISTS", []);
 
     const reports: ClinicalReportListItem[] = [];
     const dateRanges: string[] = [];
@@ -169,7 +173,6 @@ export async function getClinicalReportList(
 
     return result;
   } catch (err: any) {
-    disconnect();
     log.error("Clinical report list failed", { error: err.message });
     return { ok: false, count: 0, reports: [], dateRanges: [], hsTypes: [], error: safeErr(err) };
   }
@@ -186,7 +189,7 @@ export async function getClinicalReportText(
   actor: { duz: string; name?: string; role?: string },
   tenantId: string,
 ): Promise<ClinicalReportTextResponse> {
-  const cacheKey = `reports:text:${actor.duz}:${dfn}:${reportId}:${hsType}`;
+  const cacheKey = `reports:text:${tenantId}:${actor.duz}:${dfn}:${reportId}:${hsType}`;
   const cached = getCached(reportTextCache, cacheKey);
   if (cached) {
     recordAnalyticsEvent("usage.report", "report_text_view", 1, {
@@ -201,11 +204,9 @@ export async function getClinicalReportText(
 
   try {
     validateCredentials();
-    await connect();
-    const lines = await callRpc("ORWRP REPORT TEXT", [
+    const lines = await safeCallRpc("ORWRP REPORT TEXT", [
       String(dfn), String(reportId), String(hsType || ""), "", "0", "", "",
     ]);
-    disconnect();
 
     const rawText = lines.join("\n");
     const sanitized = sanitizeReportText(rawText);
@@ -246,7 +247,6 @@ export async function getClinicalReportText(
 
     return result;
   } catch (err: any) {
-    disconnect();
     const elapsedMs = Date.now() - startMs;
     log.error("Clinical report text fetch failed", {
       error: safeErr(err),
@@ -267,15 +267,15 @@ export async function getClinicalReportText(
 /**
  * Get clinical report pipeline health.
  */
-export function getClinicalReportHealth(): {
+export function getClinicalReportHealth(tenantId?: string): {
   listCacheSize: number;
   textCacheSize: number;
   cacheTtlMs: number;
   maxCacheEntries: number;
 } {
   return {
-    listCacheSize: reportListCache.size,
-    textCacheSize: reportTextCache.size,
+    listCacheSize: countTenantCacheEntries(reportListCache as Map<string, CacheEntry<unknown>>, tenantId),
+    textCacheSize: countTenantCacheEntries(reportTextCache as Map<string, CacheEntry<unknown>>, tenantId),
     cacheTtlMs: CACHE_TTL_MS,
     maxCacheEntries: MAX_CACHE_ENTRIES,
   };

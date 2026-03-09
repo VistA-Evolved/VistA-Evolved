@@ -29,6 +29,7 @@ import {
   getScimConnector,
   SCIM_ENABLED,
   SCIM_BEARER_TOKEN,
+  SCIM_TENANT_ID,
   type ScimGroup,
 } from '../auth/scim-server.js';
 import type { ScimUser, ScimPatchOp, ScimError } from '../auth/scim-connector.js';
@@ -49,7 +50,7 @@ function scimError(status: number, detail: string, scimType?: string): ScimError
 
 /**
  * Validate SCIM bearer token from Authorization header.
- * Returns the tenant ID from the X-Tenant-Id header, or "default".
+ * Binds requests to the configured SCIM tenant instead of trusting caller headers.
  */
 function validateScimAuth(request: any, reply: any): string | null {
   if (!SCIM_ENABLED) {
@@ -85,8 +86,17 @@ function validateScimAuth(request: any, reply: any): string | null {
     return null;
   }
 
-  // Tenant from header, defaulting to "default"
-  return (request.headers['x-tenant-id'] as string) || 'default';
+  const requestedTenantId = request.headers['x-tenant-id'];
+  if (
+    typeof requestedTenantId === 'string' &&
+    requestedTenantId.trim().length > 0 &&
+    requestedTenantId.trim() !== SCIM_TENANT_ID
+  ) {
+    reply.code(403).send(scimError(403, 'SCIM token is not authorized for the requested tenant'));
+    return null;
+  }
+
+  return SCIM_TENANT_ID;
 }
 
 /* ------------------------------------------------------------------ */

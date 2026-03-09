@@ -14,6 +14,13 @@ import { pgPortalPatientSetting } from '../pg-schema.js';
 
 export type PortalPatientSettingRow = typeof pgPortalPatientSetting.$inferSelect;
 
+function requireTenantId(tenantId?: string): string {
+  if (typeof tenantId === 'string' && tenantId.trim().length > 0) {
+    return tenantId.trim();
+  }
+  throw new Error('Tenant context required for portal patient settings');
+}
+
 /* ── Upsert ────────────────────────────────────────────────── */
 
 export async function upsertSetting(data: {
@@ -25,7 +32,7 @@ export async function upsertSetting(data: {
   mfaJson: string;
 }): Promise<PortalPatientSettingRow> {
   const db = getPgDb();
-  const tenantId = data.tenantId ?? 'default';
+  const tenantId = requireTenantId(data.tenantId);
   const now = new Date().toISOString();
 
   // Try update first

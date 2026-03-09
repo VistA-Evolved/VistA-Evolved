@@ -27,13 +27,27 @@ import {
 import { getAllSpecialtyPacks } from './specialty-packs.js';
 import { SPECIALTY_TAGS } from './types.js';
 
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId =
+    typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+      ? request.tenantId.trim()
+      : typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+        ? request.session.tenantId.trim()
+        : null;
+  if (tenantId) return tenantId;
+  reply.code(403);
+  reply.send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
 export default async function templateRoutes(server: FastifyInstance): Promise<void> {
   // ─── Admin Template Management ────────────────────────────────
 
   // List templates with optional filters
   server.get('/admin/templates', async (request, reply) => {
     const q = request.query as any;
-    const tenantId = (request as any).tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const templates = await listTemplates(tenantId, {
       specialty: q.specialty,
       setting: q.setting,
@@ -46,7 +60,8 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
   // Get single template
   server.get('/admin/templates/:id', async (request, reply) => {
     const { id } = request.params as any;
-    const tenantId = (request as any).tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const template = await getTemplate(tenantId, id);
     if (!template) {
       reply.code(404);
@@ -58,7 +73,8 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
   // Create template
   server.post('/admin/templates', async (request, reply) => {
     const body = (request.body as any) || {};
-    const tenantId = (request as any).tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const actor = (request as any).session?.userName || 'system';
 
     if (!body.name || !body.specialty) {
@@ -89,7 +105,8 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
   server.put('/admin/templates/:id', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
-    const tenantId = (request as any).tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const actor = (request as any).session?.userName || 'system';
 
     const updated = await updateTemplate(
@@ -118,7 +135,8 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
   // Publish template
   server.post('/admin/templates/:id/publish', async (request, reply) => {
     const { id } = request.params as any;
-    const tenantId = (request as any).tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const actor = (request as any).session?.userName || 'system';
 
     const published = await publishTemplate(tenantId, id, actor);
@@ -132,7 +150,8 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
   // Archive template
   server.post('/admin/templates/:id/archive', async (request, reply) => {
     const { id } = request.params as any;
-    const tenantId = (request as any).tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const actor = (request as any).session?.userName || 'system';
 
     const archived = await archiveTemplate(tenantId, id, actor);
@@ -146,21 +165,24 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
   // Version history
   server.get('/admin/templates/:id/versions', async (request, reply) => {
     const { id } = request.params as any;
-    const tenantId = (request as any).tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const events = await getVersionHistory(tenantId, id);
     return { ok: true, events, count: events.length };
   });
 
   // Template stats
   server.get('/admin/templates/stats', async (request, reply) => {
-    const tenantId = (request as any).tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const stats = getTemplateStats(tenantId);
     return { ok: true, ...stats };
   });
 
   // Seed specialty packs
   server.post('/admin/templates/seed', async (request, reply) => {
-    const tenantId = (request as any).tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const specialty = body.specialty; // optional: seed only one specialty
 
@@ -180,7 +202,8 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
 
   server.get('/admin/templates/quick-text', async (request, reply) => {
     const q = request.query as any;
-    const tenantId = (request as any).tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const items = await listQuickTexts(tenantId, {
       tag: q.tag,
       specialty: q.specialty,
@@ -191,7 +214,8 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
 
   server.post('/admin/templates/quick-text', async (request, reply) => {
     const body = (request.body as any) || {};
-    const tenantId = (request as any).tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     if (!body.key || !body.text) {
       reply.code(400);
@@ -213,7 +237,8 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
   server.put('/admin/templates/quick-text/:id', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
-    const tenantId = (request as any).tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     const updated = await updateQuickText(tenantId, id, {
       text: body.text,
@@ -230,7 +255,8 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
 
   server.delete('/admin/templates/quick-text/:id', async (request, reply) => {
     const { id } = request.params as any;
-    const tenantId = (request as any).tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const deleted = await deleteQuickText(tenantId, id);
     if (!deleted) {
       reply.code(404);
@@ -295,9 +321,16 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
   });
 
   server.get('/admin/templates/validate/user', async (request) => {
-    const session = (request as any).session || { tenantId: 'default' };
+    const session = (request as any).session;
+    const tenantId =
+      typeof session?.tenantId === 'string' && session.tenantId.trim().length > 0
+        ? session.tenantId.trim()
+        : null;
     const { validateUserTemplates } = await import('./pack-validator.js');
-    const report = await validateUserTemplates(session.tenantId);
+    if (!tenantId) {
+      return { ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' };
+    }
+    const report = await validateUserTemplates(tenantId);
     return { ok: true, report };
   });
 }

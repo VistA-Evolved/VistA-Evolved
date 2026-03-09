@@ -13,6 +13,8 @@ import { getModuleDefinition, isRouteAllowed, resolveModuleForRoute } from '../m
 import { log } from '../lib/logger.js';
 import { isPgConfigured } from '../platform/pg/pg-db.js';
 import { getEnabledModuleIds, listTenantModules } from '../platform/pg/repo/module-repo.js';
+import { getPortalSession } from '../routes/portal-auth.js';
+import { getIamSession } from '../portal-iam/portal-iam-routes.js';
 
 /* ------------------------------------------------------------------ */
 /* Bypass patterns — never blocked by module guard                     */
@@ -23,7 +25,15 @@ const BYPASS_PATTERNS = [
   /^\/ready$/,
   /^\/version$/,
   /^\/metrics/,
+  /^\/vista\/ping$/,
+  /^\/vista\/swap-boundary$/,
+  /^\/queue\/display\//,
   /^\/auth\//,
+  /^\/portal\/auth\//,
+  /^\/portal\/iam\/login$/,
+  /^\/portal\/iam\/register$/,
+  /^\/portal\/iam\/password\/(reset|confirm)$/,
+  /^\/intake\//, // Phase 625: intake routes resolve portal/clinician/kiosk auth inside handlers
   /^\/api\/modules/,
   /^\/api\/capabilities/,
   /^\/api\/adapters/,
@@ -50,7 +60,24 @@ export async function moduleGuardHook(request: FastifyRequest, reply: FastifyRep
 
   // Prefer the request-scoped tenant resolved by tenant middleware.
   const session = (request as any).session;
-  const tenantId = (request as any).tenantId || session?.tenantId || 'default';
+  const portalSession = path.startsWith('/portal/') ? getPortalSession(request) : null;
+  const iamSession = path.startsWith('/portal/iam/') ? getIamSession(request) : null;
+  const tenantId =
+    (request as any).tenantId ||
+    session?.tenantId ||
+    iamSession?.tenantId ||
+    portalSession?.tenantId ||
+    '';
+  if (!tenantId) {
+    log.warn('Route blocked: tenant context missing', { path });
+    reply.code(400).send({
+      ok: false,
+      code: 'TENANT_REQUIRED',
+      error: 'Tenant context required',
+      message: 'No tenant context was resolved for this request.',
+    });
+    return;
+  }
 
   // In PG-backed deployments, enforce module entitlements from the DB instead
   // of the legacy in-memory override map. Fall back to registry logic if PG
@@ -65,6 +92,18 @@ export async function moduleGuardHook(request: FastifyRequest, reply: FastifyRep
     try {
       const tenantModules = await listTenantModules(tenantId);
       if (tenantModules.length === 0) {
+        log.warn('Route blocked: tenant has no entitlement rows', {
+          path,
+          tenantId,
+          module: moduleId,
+        });
+        reply.code(403).send({
+          ok: false,
+          code: 'TENANT_UNPROVISIONED',
+          error: 'Tenant not provisioned',
+          module: moduleId,
+          message: `Tenant '${tenantId}' has no module entitlement records.`,
+        });
         return;
       }
 

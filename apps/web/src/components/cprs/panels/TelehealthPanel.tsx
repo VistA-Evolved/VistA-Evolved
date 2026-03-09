@@ -54,6 +54,15 @@ interface ProviderHealth {
   roomStats: RoomStats;
 }
 
+interface ChartAppointment {
+  id: string;
+  dateTime: string;
+  clinic: string;
+  status: string;
+  reason?: string;
+  source?: string;
+}
+
 /* ------------------------------------------------------------------ */
 /* API helper                                                           */
 /* ------------------------------------------------------------------ */
@@ -79,6 +88,25 @@ async function clinicianFetch<T = unknown>(
   }
 }
 
+async function fetchChartAppointments(dfn: string): Promise<ChartAppointment[]> {
+  try {
+    const res = await fetch(`${API_BASE}/vista/cprs/appointments?dfn=${encodeURIComponent(dfn)}`, {
+      credentials: 'include',
+      headers: { ...csrfHeaders() },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.ok && Array.isArray(data.results) ? (data.results as ChartAppointment[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function isTelehealthAppointment(appt: ChartAppointment): boolean {
+  const haystack = `${appt.clinic || ''} ${appt.reason || ''}`.toLowerCase();
+  return /telehealth|video|virtual/.test(haystack);
+}
+
 /* ------------------------------------------------------------------ */
 /* Component                                                            */
 /* ------------------------------------------------------------------ */
@@ -89,25 +117,36 @@ interface Props {
 
 export default function TelehealthPanel({ dfn }: Props) {
   const [rooms, setRooms] = useState<TelehealthRoom[]>([]);
+  const [roomStats, setRoomStats] = useState<RoomStats | null>(null);
   const [health, setHealth] = useState<ProviderHealth | null>(null);
+  const [appointments, setAppointments] = useState<ChartAppointment[]>([]);
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState('');
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [notice, setNotice] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
   const [joinUrl, setJoinUrl] = useState<string | null>(null);
   const [activeRoomId, setActiveRoomId] = useState<string | null>(null);
   const [waitState, setWaitState] = useState<WaitingRoomState | null>(null);
+  const launchableAppointments = appointments
+    .filter((appt) => isTelehealthAppointment(appt))
+    .sort((a, b) => a.dateTime.localeCompare(b.dateTime));
+  const selectedAppointment = launchableAppointments.find((appt) => appt.id === selectedAppointmentId) || null;
+  const canCreateRoom = Boolean(selectedAppointmentId);
 
   // Load rooms and health
   const loadData = useCallback(async () => {
     setLoading(true);
-    const [roomsRes, healthRes] = await Promise.all([
+    const [roomsRes, healthRes, appointmentData] = await Promise.all([
       clinicianFetch<{ rooms: TelehealthRoom[]; stats: RoomStats }>('/telehealth/rooms'),
       clinicianFetch<ProviderHealth>('/telehealth/health'),
+      fetchChartAppointments(dfn),
     ]);
     if (roomsRes.ok && roomsRes.data) setRooms(roomsRes.data.rooms || []);
+    if (roomsRes.ok && roomsRes.data) setRoomStats(roomsRes.data.stats || null);
     if (healthRes.ok && healthRes.data) setHealth(healthRes.data);
+    setAppointments(Array.isArray(appointmentData) ? appointmentData : []);
     setLoading(false);
-  }, []);
+  }, [dfn]);
 
   useEffect(() => {
     loadData();
@@ -125,20 +164,39 @@ export default function TelehealthPanel({ dfn }: Props) {
     return () => clearInterval(poll);
   }, [activeRoomId]);
 
+  useEffect(() => {
+    if (launchableAppointments.length === 0) {
+      if (selectedAppointmentId) setSelectedAppointmentId('');
+      return;
+    }
+    const stillExists = launchableAppointments.some((appt) => appt.id === selectedAppointmentId);
+    if (!stillExists) {
+      setSelectedAppointmentId(launchableAppointments[0].id);
+    }
+  }, [launchableAppointments, selectedAppointmentId]);
+
   /* ── Handlers ── */
 
   const handleCreateRoom = async () => {
+    if (!canCreateRoom) {
+      setNotice({
+        text: 'No launchable telehealth appointment is selected for this patient. Select a telehealth appointment first.',
+        type: 'error',
+      });
+      return;
+    }
     setCreating(true);
     setNotice(null);
-    // Use DFN as a placeholder appointment ID for demo
-    const appointmentId = `demo-${dfn}-${Date.now()}`;
-    const res = await clinicianFetch<{ room: TelehealthRoom }>('/telehealth/rooms', {
+    const appointmentId = selectedAppointmentId;
+    const res = await clinicianFetch<{ room: TelehealthRoom; reused?: boolean }>('/telehealth/rooms', {
       method: 'POST',
-      body: JSON.stringify({ appointmentId }),
+      body: JSON.stringify({ appointmentId, patientDfn: dfn }),
     });
     if (res.ok && res.data?.room) {
       setNotice({
-        text: 'Room created. Share the appointment link with the patient.',
+        text: res.data.reused
+          ? 'An active room already exists for the selected appointment.'
+          : 'Room created. Share the appointment link with the patient.',
         type: 'success',
       });
       await loadData();
@@ -209,6 +267,8 @@ export default function TelehealthPanel({ dfn }: Props) {
         return '#6b7280';
     }
   };
+
+  const visibleRoomStats = roomStats || health?.roomStats || null;
 
   /* ── Visit mode ── */
 
@@ -290,20 +350,83 @@ export default function TelehealthPanel({ dfn }: Props) {
         <h3 style={{ margin: 0, fontSize: '1.125rem' }}>Telehealth</h3>
         <button
           onClick={handleCreateRoom}
-          disabled={creating}
+          disabled={creating || !canCreateRoom}
+          title={
+            canCreateRoom
+              ? 'Create a room for the selected telehealth appointment'
+              : 'Select a telehealth appointment to launch a room'
+          }
           style={{
             padding: '0.375rem 0.75rem',
             fontSize: '0.8125rem',
-            background: '#2563eb',
+            background: canCreateRoom ? '#2563eb' : '#9ca3af',
             color: '#fff',
             border: 'none',
             borderRadius: '4px',
-            cursor: creating ? 'wait' : 'pointer',
-            opacity: creating ? 0.6 : 1,
+            cursor: creating ? 'wait' : canCreateRoom ? 'pointer' : 'not-allowed',
+            opacity: creating || !canCreateRoom ? 0.6 : 1,
           }}
         >
           {creating ? 'Creating...' : 'New Video Visit'}
         </button>
+      </div>
+      {!canCreateRoom && (
+        <p style={{ marginTop: '-0.5rem', marginBottom: '0.75rem', fontSize: '0.8125rem', color: '#6b7280' }}>
+          This panel launches visits from real patient appointment records. Select a telehealth appointment below to enable room creation.
+        </p>
+      )}
+
+      <div style={sectionStyle}>
+        <h4 style={{ fontSize: '0.875rem', marginBottom: '0.5rem', color: '#374151' }}>
+          Telehealth Appointments
+        </h4>
+        {loading ? (
+          <p style={{ fontSize: '0.8125rem', color: '#9ca3af' }}>Loading appointments...</p>
+        ) : launchableAppointments.length === 0 ? (
+          <p style={{ fontSize: '0.8125rem', color: '#9ca3af' }}>
+            No launchable telehealth appointments were found for this patient.
+          </p>
+        ) : (
+          launchableAppointments.map((appt) => {
+            const isSelected = appt.id === selectedAppointmentId;
+            return (
+              <button
+                key={appt.id}
+                type="button"
+                onClick={() => setSelectedAppointmentId(appt.id)}
+                style={{
+                  ...cardStyle,
+                  width: '100%',
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  background: isSelected ? '#eff6ff' : '#fff',
+                  border: isSelected ? '1px solid #2563eb' : '1px solid #e5e7eb',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.8125rem', fontWeight: 600 }}>{appt.clinic}</span>
+                  <span style={badgeStyle(isSelected ? '#2563eb' : '#6b7280')}>
+                    {appt.status}
+                  </span>
+                </div>
+                <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
+                  {new Date(appt.dateTime).toLocaleString()} | Ref: {appt.id}
+                </div>
+                {appt.reason && (
+                  <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
+                    Reason: {appt.reason}
+                  </div>
+                )}
+              </button>
+            );
+          })
+        )}
+        {selectedAppointment && (
+          <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
+            Selected appointment: {selectedAppointment.clinic} at{' '}
+            {new Date(selectedAppointment.dateTime).toLocaleString()}
+          </div>
+        )}
       </div>
 
       {notice && (
@@ -333,10 +456,11 @@ export default function TelehealthPanel({ dfn }: Props) {
                 {health.healthy ? 'Connected' : 'Unavailable'}
               </span>
             </div>
-            {health.roomStats && (
+            {visibleRoomStats && (
               <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
-                Active: {health.roomStats.active} | Waiting: {health.roomStats.waiting} | Total:{' '}
-                {health.roomStats.total}
+                Created: {visibleRoomStats.created} | Waiting: {visibleRoomStats.waiting} |
+                {' '}Active: {visibleRoomStats.active} | Ended: {visibleRoomStats.ended} |
+                {' '}Total: {visibleRoomStats.total}
               </div>
             )}
           </div>

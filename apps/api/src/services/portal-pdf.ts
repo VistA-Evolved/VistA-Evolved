@@ -171,25 +171,41 @@ export function formatDemographicsForPdf(data: any[]): { heading: string; lines:
   };
 }
 
+function formatEmptyOrPending(
+  emptyMessage: string,
+  pendingTargets?: string[]
+): { heading: string; lines: string[] }['lines'] {
+  if (pendingTargets && pendingTargets.length > 0) {
+    return [`Data temporarily unavailable -- target RPCs: ${pendingTargets.join(', ')}`];
+  }
+  return [emptyMessage];
+}
+
 /* ------------------------------------------------------------------ */
 /* Phase 31: New section formatters                                     */
 /* ------------------------------------------------------------------ */
 
-export function formatImmunizationsForPdf(data: any[]): { heading: string; lines: string[] } {
+export function formatImmunizationsForPdf(
+  data: any[],
+  options?: { pendingTargets?: string[] }
+): { heading: string; lines: string[] } {
   return {
     heading: "Immunizations",
     lines: data.length > 0
       ? data.map(i => `${i.name || i.vaccine || "Unknown"} — Date: ${i.dateTime || i.date || "N/A"}${i.reaction ? ` | Reaction: ${i.reaction}` : ""}${i.series ? ` | Series: ${i.series}` : ""}${i.facility ? ` | Facility: ${i.facility}` : ""}`)
-      : ["No immunization data available — VistA integration pending"],
+      : formatEmptyOrPending("No immunizations on file", options?.pendingTargets),
   };
 }
 
-export function formatLabsForPdf(data: any[]): { heading: string; lines: string[] } {
+export function formatLabsForPdf(
+  data: any[],
+  options?: { pendingTargets?: string[] }
+): { heading: string; lines: string[] } {
   return {
     heading: "Lab Results",
     lines: data.length > 0
       ? data.map(l => `${l.testName || "Unknown"}: ${l.result || "N/A"} ${l.units || ""} [${l.flag || ""}] — ${l.collectedAt || ""}`)
-      : ["No lab results available — VistA integration pending"],
+      : formatEmptyOrPending("No lab results on file", options?.pendingTargets),
   };
 }
 

@@ -97,6 +97,56 @@ curl -s http://127.0.0.1:3001/vista/problems?dfn=1
 
 ---
 
+## API Endpoint: POST /vista/cprs/problems/edit
+
+### Purpose
+
+Edits an existing problem using `ORQQPL EDIT SAVE` through the CPRS writeback surface.
+
+### Request Body
+
+```json
+{
+  "dfn": "46",
+  "problemIen": "1787",
+  "problemText": "Sleep apnea (SCT 73430006)",
+  "icdCode": "327.23",
+  "status": "active"
+}
+```
+
+### Status Normalization
+
+- UI values `active` and `inactive` are normalized to VistA-safe status codes `A` and `I` before the RPC call.
+- Any VistA runtime-error payload is treated as a failed live write and falls back truthfully to draft mode instead of returning fake live success.
+
+### Success Responses
+
+Real VistA write:
+
+```json
+{
+  "ok": true,
+  "mode": "real",
+  "status": "saved",
+  "rpcUsed": ["ORQQPL EDIT SAVE"]
+}
+```
+
+Draft fallback:
+
+```json
+{
+  "ok": true,
+  "mode": "draft",
+  "status": "sync-pending",
+  "syncPending": true,
+  "rpcUsed": ["ORQQPL EDIT SAVE"]
+}
+```
+
+---
+
 ## Implementation Notes
 
 ### MVP Scope
@@ -105,6 +155,19 @@ curl -s http://127.0.0.1:3001/vista/problems?dfn=1
 - **Status display**: Simplified to "active" / "inactive" / "resolved"
 - **Minimal fields**: Stores id, text, status, onset only (ICD/SNOMED mapping out of scope)
 - **No date formatting**: Onset dates returned raw (FileMan format), displayed as-is
+
+### Current Writeback Posture
+
+- Problem list reads remain available via `GET /vista/problems`.
+- Active CPRS writeback uses `POST /vista/cprs/problems/edit` and `POST /vista/cprs/problems/add`.
+- Legacy `POST /vista/problems` remains blocker-era and should not be used for active write paths.
+
+### Standalone Problems Panel Truthfulness Contract
+
+- The standalone CPRS Problems tab uses shared `useDataCache()` metadata, not just row count.
+- A successful live empty response renders `No problems on record`.
+- A failed or integration-pending problem-list read renders a grounded pending banner with status, attempted RPCs, and target RPCs instead of a false empty-chart state.
+- If problems exist but the local status filter removes all rows, the panel shows a filter-specific empty message rather than claiming the chart has no problems.
 
 ### Known Limitations
 

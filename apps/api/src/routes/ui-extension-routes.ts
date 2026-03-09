@@ -22,11 +22,36 @@ import {
 } from '../services/ui-extension-service.js';
 
 export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> {
-  const TENANT = 'default';
+  function resolveTenantId(req: FastifyRequest): string | null {
+    const requestTenantId =
+      typeof (req as any).tenantId === 'string' && (req as any).tenantId.trim().length > 0
+        ? (req as any).tenantId.trim()
+        : undefined;
+    const sessionTenantId =
+      typeof (req as any).session?.tenantId === 'string' &&
+      (req as any).session.tenantId.trim().length > 0
+        ? (req as any).session.tenantId.trim()
+        : undefined;
+    const headerTenantId = req.headers['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return requestTenantId || sessionTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(req: FastifyRequest, reply: FastifyReply): string | null {
+    const tenantId = resolveTenantId(req);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
 
   // ── Health ──────────────────────────────────────────────────────────
-  server.get('/ui-extensions/health', async (_req: FastifyRequest, reply: FastifyReply) => {
-    const stats = getExtensionStats(TENANT);
+  server.get('/ui-extensions/health', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const stats = getExtensionStats(tenantId);
     return reply.send({ ok: true, phase: 359, ...stats });
   });
 
@@ -37,6 +62,8 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
 
   // ── Register extension ─────────────────────────────────────────────
   server.post('/ui-extensions', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const body = (req.body as any) || {};
     const { pluginId, slotLocation, label, componentRef, icon, priority, allowedRoles, config } =
       body;
@@ -56,7 +83,7 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
     }
 
     try {
-      const ext = registerExtension(TENANT, pluginId, slotLocation, {
+      const ext = registerExtension(tenantId, pluginId, slotLocation, {
         label,
         componentRef,
         icon,
@@ -72,14 +99,18 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
 
   // ── Get extension ──────────────────────────────────────────────────
   server.get('/ui-extensions/:id', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { id } = req.params as any;
-    const ext = getExtension(id, TENANT);
+    const ext = getExtension(id, tenantId);
     if (!ext) return reply.code(404).send({ ok: false, error: 'Extension not found' });
     return reply.send({ ok: true, extension: ext });
   });
 
   // ── Update extension status (approve/disable) ─────────────────────
   server.patch('/ui-extensions/:id/status', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { id } = req.params as any;
     const body = (req.body as any) || {};
     const { status } = body;
@@ -91,24 +122,28 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
       });
     }
 
-    const ext = updateExtensionStatus(id, TENANT, status);
+    const ext = updateExtensionStatus(id, tenantId, status);
     if (!ext) return reply.code(404).send({ ok: false, error: 'Extension not found' });
     return reply.send({ ok: true, extension: ext });
   });
 
   // ── Unregister extension ───────────────────────────────────────────
   server.delete('/ui-extensions/:id', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { id } = req.params as any;
-    const deleted = unregisterExtension(id, TENANT);
+    const deleted = unregisterExtension(id, tenantId);
     if (!deleted) return reply.code(404).send({ ok: false, error: 'Extension not found' });
     return reply.send({ ok: true, deleted: true });
   });
 
   // ── Get extensions for a slot ──────────────────────────────────────
   server.get('/ui-extensions/slot/:location', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { location } = req.params as any;
     const query = (req.query as any) || {};
-    const exts = getExtensionsForSlot(TENANT, location as SlotLocation, {
+    const exts = getExtensionsForSlot(tenantId, location as SlotLocation, {
       status: query.status,
       role: query.role,
     });
@@ -117,8 +152,10 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
 
   // ── List all extensions ────────────────────────────────────────────
   server.get('/ui-extensions/list', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const query = (req.query as any) || {};
-    const exts = listExtensions(TENANT, {
+    const exts = listExtensions(tenantId, {
       pluginId: query.pluginId,
       status: query.status,
     });
@@ -127,6 +164,8 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
 
   // ── Set slot policy ────────────────────────────────────────────────
   server.post('/ui-extensions/policies', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const body = (req.body as any) || {};
     const { slotLocation, maxExtensions, requireApproval, adminRoles } = body;
 
@@ -137,7 +176,7 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
       });
     }
 
-    const policy = setSlotPolicy(TENANT, slotLocation, {
+    const policy = setSlotPolicy(tenantId, slotLocation, {
       maxExtensions,
       requireApproval,
       adminRoles,
@@ -149,8 +188,10 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
   server.get(
     '/ui-extensions/policies/:location',
     async (req: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(req, reply);
+      if (!tenantId) return;
       const { location } = req.params as any;
-      const policy = getSlotPolicy(TENANT, location as SlotLocation);
+      const policy = getSlotPolicy(tenantId, location as SlotLocation);
       if (!policy) return reply.code(404).send({ ok: false, error: 'No policy for this slot' });
       return reply.send({ ok: true, policy });
     }
@@ -158,13 +199,17 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
 
   // ── List all policies ──────────────────────────────────────────────
   server.get('/ui-extensions/policies', async (req: FastifyRequest, reply: FastifyReply) => {
-    const policies = listSlotPolicies(TENANT);
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const policies = listSlotPolicies(tenantId);
     return reply.send({ ok: true, policies, count: policies.length });
   });
 
   // ── Stats ──────────────────────────────────────────────────────────
-  server.get('/ui-extensions/stats', async (_req: FastifyRequest, reply: FastifyReply) => {
-    const stats = getExtensionStats(TENANT);
+  server.get('/ui-extensions/stats', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const stats = getExtensionStats(tenantId);
     return reply.send({ ok: true, ...stats });
   });
 }

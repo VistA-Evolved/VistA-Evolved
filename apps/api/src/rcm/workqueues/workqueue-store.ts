@@ -69,9 +69,9 @@ export interface WorkqueueItem {
  */
 export interface WorkqueueRepoLike {
   createWorkItem(params: any): any;
-  findWorkItemById(id: string): any;
-  findWorkItemsForClaim(claimId: string): any;
-  updateWorkItem(id: string, updates: any): any;
+  findWorkItemById(tenantId: string, id: string): any;
+  findWorkItemsForClaim(tenantId: string, claimId: string): any;
+  updateWorkItem(tenantId: string, id: string, updates: any): any;
   listWorkItems(filters?: any): any;
   getWorkItemStats(tenantId?: string): any;
   appendEvent?(params: any): any;
@@ -166,20 +166,24 @@ export async function createWorkqueueItem(params: {
   throw new Error('Workqueue store not initialized (DB not ready)');
 }
 
-export async function getWorkqueueItem(id: string): Promise<WorkqueueItem | undefined> {
+export async function getWorkqueueItem(
+  tenantId: string,
+  id: string
+): Promise<WorkqueueItem | undefined> {
   if (_repo) {
-    const row = await _repo.findWorkItemById(id);
+    const row = await _repo.findWorkItemById(tenantId, id);
     return row ? rowToItem(row) : undefined;
   }
   return undefined;
 }
 
 export async function updateWorkqueueItem(
+  tenantId: string,
   id: string,
   updates: Partial<WorkqueueItem>
 ): Promise<WorkqueueItem | undefined> {
   if (_repo) {
-    const row = await _repo.updateWorkItem(id, updates as any);
+    const row = await _repo.updateWorkItem(tenantId, id, updates as any);
     return row ? rowToItem(row) : undefined;
   }
   return undefined;
@@ -202,9 +206,12 @@ export async function listWorkqueueItems(filters?: {
   return { items: [], total: 0 };
 }
 
-export async function getWorkqueueItemsForClaim(claimId: string): Promise<WorkqueueItem[]> {
+export async function getWorkqueueItemsForClaim(
+  tenantId: string,
+  claimId: string
+): Promise<WorkqueueItem[]> {
   if (_repo) {
-    const rows = await _repo.findWorkItemsForClaim(claimId);
+    const rows = await _repo.findWorkItemsForClaim(tenantId, claimId);
     return rows.map(rowToItem);
   }
   return [];

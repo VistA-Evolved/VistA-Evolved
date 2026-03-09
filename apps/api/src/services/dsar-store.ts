@@ -142,6 +142,12 @@ export function getDsarRequest(id: string): DsarRequest | undefined {
   return store.get(id);
 }
 
+export function getDsarRequestForTenant(tenantId: string, id: string): DsarRequest | undefined {
+  const req = store.get(id);
+  if (!req || req.tenantId !== tenantId) return undefined;
+  return req;
+}
+
 export function listDsarRequests(tenantId: string, opts?: {
   status?: DsarStatus;
   requestType?: DsarType;
@@ -159,8 +165,9 @@ export function transitionDsar(
   newStatus: DsarStatus,
   by: string,
   extra?: { denialReason?: string; exportRef?: string },
+  tenantId?: string,
 ): DsarRequest | undefined {
-  const req = store.get(id);
+  const req = tenantId ? getDsarRequestForTenant(tenantId, id) : store.get(id);
   if (!req) return undefined;
 
   // Validate transitions

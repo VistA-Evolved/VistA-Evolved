@@ -28,6 +28,7 @@ async function apiFetch(path: string, opts?: RequestInit) {
 /* ------------------------------------------------------------------ */
 
 type Tab = 'census' | 'bedboard' | 'adt' | 'movements';
+type ReconciliationDecision = 'continue' | 'discontinue' | 'modify' | 'hold' | 'defer';
 
 interface WardSummary {
   ien: string;
@@ -79,10 +80,113 @@ interface PendingInfo {
   };
 }
 
+interface MedRecEntry {
+  medicationName: string;
+  dose: string;
+  route: string;
+  frequency: string;
+  source: 'inpatient' | 'outpatient' | 'pre-admission' | 'patient-reported';
+  orderIen?: string;
+  status: 'active' | 'discontinued' | 'hold' | 'expired';
+}
+
+interface MedRecDecisionRecord {
+  discrepancyId: string;
+  decision: ReconciliationDecision;
+  rationale: string;
+  decidedAt: string;
+  decidedBy: string;
+}
+
+interface MedRecDiscrepancy {
+  id: string;
+  medication: string;
+  type: string;
+  severity: 'high' | 'medium' | 'low';
+  description: string;
+  inpatientEntry?: MedRecEntry;
+  outpatientEntry?: MedRecEntry;
+}
+
+interface MedRecSession {
+  id: string;
+  status: 'in-progress' | 'completed' | 'abandoned';
+  patientDfn: string;
+  inpatientMeds: MedRecEntry[];
+  outpatientMeds: MedRecEntry[];
+  discrepancies: MedRecDiscrepancy[];
+  decisions: MedRecDecisionRecord[];
+  summaryNote?: {
+    mode: 'tiu_draft';
+    titleIen: string;
+    docIen: string;
+    resultSummary: string;
+    createdAt: string;
+  };
+  createdAt: string;
+  completedAt?: string;
+}
+
+interface MedRecSessionListItem {
+  id: string;
+  patientDfn: string;
+  status: 'in-progress' | 'completed' | 'abandoned';
+  discrepancyCount: number;
+  decisionCount: number;
+  createdAt: string;
+  completedAt?: string;
+}
+
+interface DischargeChecklistItem {
+  id: string;
+  category: 'medication' | 'follow-up' | 'education' | 'documentation' | 'safety';
+  title: string;
+  description: string;
+  status: 'pending' | 'completed' | 'not-applicable' | 'blocked';
+  completedBy?: string;
+  completedAt?: string;
+  vistaRpc?: string;
+  vistaStatus?: 'live' | 'integration-pending';
+}
+
+interface DischargePlan {
+  id: string;
+  patientDfn: string;
+  status: 'planning' | 'ready' | 'completed' | 'cancelled';
+  targetDischargeDate?: string;
+  dischargeDisposition?: string;
+  checklist: DischargeChecklistItem[];
+  medRecSessionId?: string;
+  followUpInstructions: string[];
+  patientEducation: string[];
+  summaryNote?: {
+    mode: 'tiu_draft';
+    titleIen: string;
+    docIen: string;
+    resultSummary: string;
+    createdAt: string;
+  };
+  createdAt: string;
+  completedAt?: string;
+}
+
+interface DischargePlanListItem {
+  id: string;
+  status: 'planning' | 'ready' | 'completed' | 'cancelled';
+  pending: number;
+  completed: number;
+  createdAt: string;
+}
+
+interface MedRecStatus {
+  linked: boolean;
+  completed: boolean;
+}
+
 const TABS: { id: Tab; label: string }[] = [
   { id: 'census', label: 'Ward Census' },
   { id: 'bedboard', label: 'Bed Board' },
-  { id: 'adt', label: 'ADT Workflow' },
+  { id: 'adt', label: 'ADT & Discharge Prep' },
   { id: 'movements', label: 'Movements' },
 ];
 
@@ -361,7 +465,156 @@ const S = {
   clickRow: {
     cursor: 'pointer',
   } as React.CSSProperties,
+  sectionTitle: {
+    margin: '0 0 8px 0',
+    fontSize: '14px',
+    color: '#2d3748',
+  } as React.CSSProperties,
+  helperText: {
+    fontSize: '12px',
+    color: '#718096',
+    lineHeight: '1.5',
+  } as React.CSSProperties,
+  textarea: {
+    padding: '8px 10px',
+    border: '1px solid #cbd5e0',
+    borderRadius: '4px',
+    fontSize: '13px',
+    width: '100%',
+    minHeight: '88px',
+    resize: 'vertical' as const,
+    fontFamily: 'inherit',
+  } as React.CSSProperties,
+  input: {
+    padding: '8px 10px',
+    border: '1px solid #cbd5e0',
+    borderRadius: '4px',
+    fontSize: '13px',
+    minWidth: '200px',
+    fontFamily: 'inherit',
+  } as React.CSSProperties,
+  fieldGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+    gap: '12px',
+    marginBottom: '12px',
+  } as React.CSSProperties,
+  fieldBlock: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    gap: '4px',
+  } as React.CSSProperties,
+  actionRow: {
+    display: 'flex',
+    gap: '8px',
+    flexWrap: 'wrap' as const,
+    marginTop: '12px',
+  } as React.CSSProperties,
+  secondaryBtn: (disabled: boolean) =>
+    ({
+      padding: '8px 14px',
+      borderRadius: '6px',
+      border: '1px solid #cbd5e0',
+      background: disabled ? '#f7fafc' : '#fff',
+      color: disabled ? '#a0aec0' : '#2d3748',
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      fontSize: '13px',
+      fontWeight: 600,
+    }) as React.CSSProperties,
+  miniBtn: (disabled: boolean) =>
+    ({
+      padding: '6px 10px',
+      borderRadius: '4px',
+      border: '1px solid #cbd5e0',
+      background: disabled ? '#edf2f7' : '#fff',
+      color: disabled ? '#a0aec0' : '#2d3748',
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      fontSize: '12px',
+      fontWeight: 600,
+    }) as React.CSSProperties,
+  infoBox: {
+    padding: '12px',
+    borderRadius: '6px',
+    background: '#f7fafc',
+    border: '1px solid #e2e8f0',
+    marginBottom: '12px',
+  } as React.CSSProperties,
+  summaryGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+    gap: '10px',
+    marginBottom: '12px',
+  } as React.CSSProperties,
+  summaryCard: {
+    padding: '10px 12px',
+    borderRadius: '6px',
+    border: '1px solid #e2e8f0',
+    background: '#f7fafc',
+  } as React.CSSProperties,
+  kpiLabel: {
+    fontSize: '11px',
+    color: '#718096',
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.05em',
+  } as React.CSSProperties,
+  kpiValue: {
+    fontSize: '18px',
+    fontWeight: 700,
+    color: '#1a365d',
+    marginTop: '4px',
+  } as React.CSSProperties,
+  checklistCard: {
+    padding: '12px',
+    borderRadius: '6px',
+    border: '1px solid #e2e8f0',
+    background: '#fff',
+    marginBottom: '8px',
+  } as React.CSSProperties,
+  checklistTitle: {
+    fontWeight: 600,
+    color: '#2d3748',
+    fontSize: '13px',
+  } as React.CSSProperties,
+  smallText: {
+    fontSize: '12px',
+    color: '#718096',
+  } as React.CSSProperties,
 };
+
+function splitMultiline(text: string): string[] {
+  return text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+}
+
+function parseOutpatientMedicationText(text: string): MedRecEntry[] {
+  return splitMultiline(text).map((line) => {
+    const parts = line.split('|').map((part) => part.trim());
+    return {
+      medicationName: parts[0] || line.trim(),
+      dose: parts[1] || '',
+      route: parts[2] || '',
+      frequency: parts[3] || '',
+      source: 'patient-reported' as const,
+      status: 'active' as const,
+    };
+  });
+}
+
+function getStatusColor(status: string): string {
+  if (status === 'completed' || status === 'ready') return 'green';
+  if (status === 'blocked') return 'yellow';
+  if (status === 'in-progress' || status === 'planning') return 'blue';
+  return 'gray';
+}
+
+function formatTimestamp(value?: string): string {
+  if (!value) return 'Not recorded';
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed.toLocaleString();
+}
 
 /* ------------------------------------------------------------------ */
 /* Census Tab                                                           */
@@ -790,6 +1043,31 @@ function ADTWorkflowTab() {
   const [showModal, setShowModal] = useState<'admit' | 'transfer' | 'discharge' | null>(null);
   const [pendingInfo, setPendingInfo] = useState<PendingInfo | null>(null);
   const [loading, setLoading] = useState(false);
+  const [dfn, setDfn] = useState('46');
+  const [targetDate, setTargetDate] = useState('');
+  const [disposition, setDisposition] = useState('Home');
+  const [outpatientText, setOutpatientText] = useState(
+    'Lisinopril 10mg | 10 mg | PO | daily\nSertraline 50mg | 50 mg | PO | daily'
+  );
+  const [followUpText, setFollowUpText] = useState(
+    'Primary care follow-up within 7 days\nBehavioral health follow-up within 14 days'
+  );
+  const [educationText, setEducationText] = useState(
+    'Reviewed discharge warning signs\nReviewed medication changes and adherence plan'
+  );
+  const [medRecNote, setMedRecNote] = useState('Medication reconciliation reviewed with patient before discharge.');
+  const [dischargeNote, setDischargeNote] = useState('Patient is clinically stable for discharge preparation; ADT movement remains pending in VEHU.');
+  const [workflowMessage, setWorkflowMessage] = useState('');
+  const [workflowError, setWorkflowError] = useState('');
+  const [busyAction, setBusyAction] = useState('');
+  const [recoveryLoading, setRecoveryLoading] = useState(false);
+  const [medRecSession, setMedRecSession] = useState<MedRecSession | null>(null);
+  const [dischargePlan, setDischargePlan] = useState<DischargePlan | null>(null);
+  const [medRecStatus, setMedRecStatus] = useState<MedRecStatus | null>(null);
+  const [medRecSessionOptions, setMedRecSessionOptions] = useState<MedRecSessionListItem[]>([]);
+  const [dischargePlanOptions, setDischargePlanOptions] = useState<DischargePlanListItem[]>([]);
+  const [decisionSelections, setDecisionSelections] = useState<Record<string, ReconciliationDecision>>({});
+  const [decisionRationales, setDecisionRationales] = useState<Record<string, string>>({});
 
   const handleAction = async (action: 'admit' | 'transfer' | 'discharge') => {
     setShowModal(action);
@@ -814,10 +1092,269 @@ function ADTWorkflowTab() {
     setPendingInfo(null);
   };
 
+  const clearLoadedWorkspace = useCallback(() => {
+    setMedRecSession(null);
+    setDischargePlan(null);
+    setMedRecStatus(null);
+    setDecisionSelections({});
+    setDecisionRationales({});
+  }, []);
+
+  const resetWorkflowFeedback = () => {
+    setWorkflowMessage('');
+    setWorkflowError('');
+  };
+
+  const refreshWorkspaceLists = useCallback(
+    async (patientDfn: string) => {
+      const trimmedDfn = patientDfn.trim();
+      if (!trimmedDfn) {
+        setMedRecSessionOptions([]);
+        setDischargePlanOptions([]);
+        return;
+      }
+
+      setRecoveryLoading(true);
+      try {
+        const [medRecData, dischargeData] = await Promise.all([
+          apiFetch('/vista/med-rec/sessions'),
+          apiFetch(`/vista/discharge/plans?dfn=${encodeURIComponent(trimmedDfn)}`),
+        ]);
+
+        const nextMedRecSessions = ((medRecData.sessions || []) as MedRecSessionListItem[])
+          .filter((session) => session.patientDfn === trimmedDfn)
+          .sort((left, right) => right.createdAt.localeCompare(left.createdAt));
+        const nextDischargePlans = ((dischargeData.plans || []) as DischargePlanListItem[]).sort(
+          (left, right) => right.createdAt.localeCompare(left.createdAt)
+        );
+
+        setMedRecSessionOptions(nextMedRecSessions);
+        setDischargePlanOptions(nextDischargePlans);
+      } catch (err: any) {
+        setWorkflowError(err?.message || 'Failed to load existing inpatient workflow state');
+      } finally {
+        setRecoveryLoading(false);
+      }
+    },
+    [setWorkflowError]
+  );
+
+  useEffect(() => {
+    clearLoadedWorkspace();
+    void refreshWorkspaceLists(dfn);
+  }, [clearLoadedWorkspace, dfn, refreshWorkspaceLists]);
+
+  const loadMedRecSession = useCallback(async (id: string) => {
+    const data = await apiFetch(`/vista/med-rec/session/${id}`);
+    const session = data.session as MedRecSession;
+    setMedRecSession(session);
+    const nextSelections: Record<string, ReconciliationDecision> = {};
+    const nextRationales: Record<string, string> = {};
+    for (const discrepancy of session.discrepancies) {
+      const decision = session.decisions.find((item) => item.discrepancyId === discrepancy.id);
+      nextSelections[discrepancy.id] = decision?.decision || 'continue';
+      nextRationales[discrepancy.id] = decision?.rationale || '';
+    }
+    setDecisionSelections(nextSelections);
+    setDecisionRationales(nextRationales);
+    return session;
+  }, []);
+
+  const loadDischargePlan = useCallback(async (id: string) => {
+    const data = await apiFetch(`/vista/discharge/plan/${id}`);
+    setDischargePlan(data.plan as DischargePlan);
+    setMedRecStatus((data.medRecStatus as MedRecStatus) || null);
+    return data.plan as DischargePlan;
+  }, []);
+
+  const withWorkflowAction = async (label: string, fn: () => Promise<void>) => {
+    setBusyAction(label);
+    resetWorkflowFeedback();
+    try {
+      await fn();
+    } catch (err: any) {
+      setWorkflowError(err?.message || 'Workflow action failed');
+    }
+    setBusyAction('');
+  };
+
+  const startMedRec = async () => {
+    await withWorkflowAction('start-medrec', async () => {
+      const data = await apiFetch('/vista/med-rec/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          dfn,
+          outpatientMeds: parseOutpatientMedicationText(outpatientText),
+        }),
+      });
+      await loadMedRecSession(data.session.id);
+      await refreshWorkspaceLists(dfn);
+      setWorkflowMessage(`Medication reconciliation session ${data.session.id} started.`);
+    });
+  };
+
+  const loadExistingMedRec = async (sessionId: string) => {
+    await withWorkflowAction(`load-medrec-${sessionId}`, async () => {
+      const nextSession = await loadMedRecSession(sessionId);
+      if (dischargePlan?.medRecSessionId === nextSession.id && dischargePlan.id) {
+        await loadDischargePlan(dischargePlan.id);
+      }
+      setWorkflowMessage(`Loaded medication reconciliation session ${sessionId}.`);
+    });
+  };
+
+  const recordDecision = async (discrepancyId: string) => {
+    await withWorkflowAction(`decide-${discrepancyId}`, async () => {
+      if (!medRecSession) throw new Error('Start or load a medication reconciliation session first');
+      await apiFetch(`/vista/med-rec/session/${medRecSession.id}/decide`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          discrepancyId,
+          decision: decisionSelections[discrepancyId] || 'continue',
+          rationale: decisionRationales[discrepancyId] || '',
+        }),
+      });
+      await loadMedRecSession(medRecSession.id);
+      setWorkflowMessage('Medication reconciliation decision recorded.');
+    });
+  };
+
+  const completeMedRec = async () => {
+    await withWorkflowAction('complete-medrec', async () => {
+      if (!medRecSession) throw new Error('Start or load a medication reconciliation session first');
+      await apiFetch(`/vista/med-rec/session/${medRecSession.id}/complete`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          documentation: {
+            createNote: true,
+            additionalNote: medRecNote,
+          },
+        }),
+      });
+      const nextSession = await loadMedRecSession(medRecSession.id);
+      if (dischargePlan) {
+        await loadDischargePlan(dischargePlan.id);
+      }
+      await refreshWorkspaceLists(dfn);
+      setWorkflowMessage(
+        nextSession.summaryNote
+          ? `Medication reconciliation completed and TIU draft ${nextSession.summaryNote.docIen} created.`
+          : 'Medication reconciliation completed.'
+      );
+    });
+  };
+
+  const createDischargePlan = async () => {
+    await withWorkflowAction('create-plan', async () => {
+      const data = await apiFetch('/vista/discharge/plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          dfn,
+          targetDate,
+          disposition,
+          medRecSessionId: medRecSession?.id,
+        }),
+      });
+      await loadDischargePlan(data.plan.id);
+      await refreshWorkspaceLists(dfn);
+      setWorkflowMessage(`Discharge plan ${data.plan.id} created.`);
+    });
+  };
+
+  const loadExistingDischargePlan = async (planId: string) => {
+    await withWorkflowAction(`load-plan-${planId}`, async () => {
+      const nextPlan = await loadDischargePlan(planId);
+      if (nextPlan.medRecSessionId) {
+        await loadMedRecSession(nextPlan.medRecSessionId);
+      }
+      setWorkflowMessage(`Loaded discharge plan ${planId}.`);
+    });
+  };
+
+  const saveDischargePlan = async () => {
+    await withWorkflowAction('save-plan', async () => {
+      if (!dischargePlan) throw new Error('Create a discharge plan first');
+      await apiFetch(`/vista/discharge/plan/${dischargePlan.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          targetDate,
+          disposition,
+          medRecSessionId: medRecSession?.id,
+          followUpInstructions: splitMultiline(followUpText),
+          patientEducation: splitMultiline(educationText),
+        }),
+      });
+      await loadDischargePlan(dischargePlan.id);
+      await refreshWorkspaceLists(dfn);
+      setWorkflowMessage('Discharge planning details saved.');
+    });
+  };
+
+  const updateChecklistItem = async (
+    itemId: string,
+    status: 'pending' | 'completed' | 'not-applicable' | 'blocked'
+  ) => {
+    await withWorkflowAction(`checklist-${itemId}`, async () => {
+      if (!dischargePlan) throw new Error('Create a discharge plan first');
+      await apiFetch(`/vista/discharge/plan/${dischargePlan.id}/checklist/${itemId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      await loadDischargePlan(dischargePlan.id);
+      await refreshWorkspaceLists(dfn);
+      setWorkflowMessage('Checklist item updated.');
+    });
+  };
+
+  const markReady = async () => {
+    await withWorkflowAction('ready-plan', async () => {
+      if (!dischargePlan) throw new Error('Create a discharge plan first');
+      const data = await apiFetch(`/vista/discharge/plan/${dischargePlan.id}/ready`, {
+        method: 'POST',
+      });
+      await loadDischargePlan(dischargePlan.id);
+      await refreshWorkspaceLists(dfn);
+      setWorkflowMessage(data.warnings?.length ? data.warnings.join(' ') : 'Discharge plan marked ready.');
+    });
+  };
+
+  const completeDischarge = async () => {
+    await withWorkflowAction('complete-plan', async () => {
+      if (!dischargePlan) throw new Error('Create a discharge plan first');
+      const data = await apiFetch(`/vista/discharge/plan/${dischargePlan.id}/complete`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          documentation: {
+            createNote: true,
+            additionalNote: dischargeNote,
+          },
+        }),
+      });
+      await loadDischargePlan(dischargePlan.id);
+      await refreshWorkspaceLists(dfn);
+      setWorkflowMessage(
+        data.documentation?.docIen
+          ? `Discharge preparation completed and TIU draft ${data.documentation.docIen} created.`
+          : 'Discharge preparation completed.'
+      );
+    });
+  };
+
+  const decisionCount = medRecSession?.decisions.length || 0;
+  const discrepancyCount = medRecSession?.discrepancies.length || 0;
+  const pendingChecklistCount = dischargePlan?.checklist.filter((item) => item.status === 'pending').length || 0;
+
   return (
     <div>
       <div style={S.card}>
-        <h3 style={{ margin: '0 0 8px 0', fontSize: '14px', color: '#2d3748' }}>ADT Actions</h3>
+        <h3 style={S.sectionTitle}>ADT Actions</h3>
         <p style={{ fontSize: '13px', color: '#718096', margin: '0 0 16px 0' }}>
           Select an action below. Write operations require DG ADT package RPCs that are not
           available in the WorldVistA sandbox. Each action shows what VistA integration is needed.
@@ -855,6 +1392,390 @@ function ADTWorkflowTab() {
           DGPMV, DGADM, DGTRAN, DGDIS
         </div>
       </div>
+
+      <div style={S.card}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' }}>
+          <div>
+            <h3 style={S.sectionTitle}>Discharge Preparation Workspace</h3>
+            <div style={S.helperText}>
+              This workflow is live for medication reconciliation reads and TIU draft creation. DG ADT discharge movement and PSO/PSJ med-rec writeback remain truthful integration-pending items in VEHU.
+            </div>
+          </div>
+          <span style={S.sourceTag}>Live: ORWPS ACTIVE + TIU CREATE RECORD</span>
+        </div>
+
+        <div style={{ ...S.summaryGrid, marginTop: '12px' }}>
+          <div style={S.summaryCard}>
+            <div style={S.kpiLabel}>Medication Reconciliation</div>
+            <div style={S.kpiValue}>{medRecSession ? medRecSession.status : 'Not started'}</div>
+          </div>
+          <div style={S.summaryCard}>
+            <div style={S.kpiLabel}>Discrepancies Decided</div>
+            <div style={S.kpiValue}>{decisionCount}/{discrepancyCount || 0}</div>
+          </div>
+          <div style={S.summaryCard}>
+            <div style={S.kpiLabel}>Discharge Plan</div>
+            <div style={S.kpiValue}>{dischargePlan ? dischargePlan.status : 'Not created'}</div>
+          </div>
+          <div style={S.summaryCard}>
+            <div style={S.kpiLabel}>Checklist Pending</div>
+            <div style={S.kpiValue}>{pendingChecklistCount}</div>
+          </div>
+        </div>
+
+        {workflowError && <div style={S.error}>{workflowError}</div>}
+        {workflowMessage && <div style={{ ...S.pendingBanner, background: '#f0fff4', borderColor: '#9ae6b4' }}><div style={{ ...S.pendingTitle, color: '#276749' }}>Workflow Update</div><div style={{ ...S.pendingText, color: '#276749' }}>{workflowMessage}</div></div>}
+
+        <div style={{ ...S.card, background: '#f8fafc', marginTop: '12px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div>
+              <div style={S.sectionTitle}>Workspace Recovery</div>
+              <div style={S.helperText}>
+                Load existing medication reconciliation sessions and discharge plans for DFN {dfn || '...'}.
+                This keeps discharge preparation recoverable after refreshes and handoffs.
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+              {recoveryLoading && <span style={S.pendingTag}>Refreshing…</span>}
+              <button
+                style={S.secondaryBtn(recoveryLoading || busyAction !== '')}
+                disabled={recoveryLoading || busyAction !== ''}
+                onClick={() => void refreshWorkspaceLists(dfn)}
+              >
+                Refresh Lists
+              </button>
+              <button
+                style={S.secondaryBtn(busyAction !== '')}
+                disabled={busyAction !== ''}
+                onClick={clearLoadedWorkspace}
+              >
+                Clear Loaded Workspace
+              </button>
+            </div>
+          </div>
+
+          <div style={{ ...S.summaryGrid, marginTop: '12px' }}>
+            <div style={S.summaryCard}>
+              <div style={S.kpiLabel}>Recent Med Rec Sessions</div>
+              <div style={S.kpiValue}>{medRecSessionOptions.length}</div>
+            </div>
+            <div style={S.summaryCard}>
+              <div style={S.kpiLabel}>Recent Discharge Plans</div>
+              <div style={S.kpiValue}>{dischargePlanOptions.length}</div>
+            </div>
+          </div>
+
+          <div style={S.fieldGrid}>
+            <div style={S.fieldBlock}>
+              <label style={S.label}>Medication Reconciliation Sessions</label>
+              {medRecSessionOptions.length === 0 ? (
+                <div style={S.helperText}>No medication reconciliation sessions found for this DFN.</div>
+              ) : (
+                <div style={{ display: 'grid', gap: '8px' }}>
+                  {medRecSessionOptions.map((session) => (
+                    <div key={session.id} style={S.infoBox}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <div>
+                          <div style={S.smallText}>Session ID: {session.id}</div>
+                          <div style={S.smallText}>
+                            Discrepancies: {session.decisionCount}/{session.discrepancyCount} decided
+                          </div>
+                          <div style={S.smallText}>Created: {formatTimestamp(session.createdAt)}</div>
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+                          {medRecSession?.id === session.id && <span style={S.sourceTag}>Loaded</span>}
+                          <span style={S.badge(getStatusColor(session.status))}>{session.status}</span>
+                          <button
+                            style={S.miniBtn(busyAction !== '' || recoveryLoading)}
+                            disabled={busyAction !== '' || recoveryLoading}
+                            onClick={() => void loadExistingMedRec(session.id)}
+                          >
+                            Load
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div style={S.fieldBlock}>
+              <label style={S.label}>Discharge Plans</label>
+              {dischargePlanOptions.length === 0 ? (
+                <div style={S.helperText}>No discharge plans found for this DFN.</div>
+              ) : (
+                <div style={{ display: 'grid', gap: '8px' }}>
+                  {dischargePlanOptions.map((plan) => (
+                    <div key={plan.id} style={S.infoBox}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+                        <div>
+                          <div style={S.smallText}>Plan ID: {plan.id}</div>
+                          <div style={S.smallText}>Checklist: {plan.completed} completed / {plan.pending} pending</div>
+                          <div style={S.smallText}>Created: {formatTimestamp(plan.createdAt)}</div>
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+                          {dischargePlan?.id === plan.id && <span style={S.sourceTag}>Loaded</span>}
+                          <span style={S.badge(getStatusColor(plan.status))}>{plan.status}</span>
+                          <button
+                            style={S.miniBtn(busyAction !== '' || recoveryLoading)}
+                            disabled={busyAction !== '' || recoveryLoading}
+                            onClick={() => void loadExistingDischargePlan(plan.id)}
+                          >
+                            Load
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div style={S.fieldGrid}>
+          <div style={S.fieldBlock}>
+            <label style={S.label}>Patient DFN</label>
+            <input style={S.input} value={dfn} onChange={(e) => setDfn(e.target.value)} />
+          </div>
+          <div style={S.fieldBlock}>
+            <label style={S.label}>Target Discharge Date</label>
+            <input
+              type="date"
+              style={S.input}
+              value={targetDate}
+              onChange={(e) => setTargetDate(e.target.value)}
+            />
+          </div>
+          <div style={S.fieldBlock}>
+            <label style={S.label}>Disposition</label>
+            <input style={S.input} value={disposition} onChange={(e) => setDisposition(e.target.value)} />
+          </div>
+        </div>
+
+        <div style={S.fieldGrid}>
+          <div style={S.fieldBlock}>
+            <label style={S.label}>Outpatient / Pre-admission Medications</label>
+            <textarea
+              style={S.textarea}
+              value={outpatientText}
+              onChange={(e) => setOutpatientText(e.target.value)}
+              placeholder="One medication per line: Name | Dose | Route | Frequency"
+            />
+          </div>
+          <div style={S.fieldBlock}>
+            <label style={S.label}>Follow-up Instructions</label>
+            <textarea
+              style={S.textarea}
+              value={followUpText}
+              onChange={(e) => setFollowUpText(e.target.value)}
+            />
+          </div>
+          <div style={S.fieldBlock}>
+            <label style={S.label}>Patient Education</label>
+            <textarea
+              style={S.textarea}
+              value={educationText}
+              onChange={(e) => setEducationText(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div style={S.fieldGrid}>
+          <div style={S.fieldBlock}>
+            <label style={S.label}>Medication Reconciliation TIU Note</label>
+            <textarea style={S.textarea} value={medRecNote} onChange={(e) => setMedRecNote(e.target.value)} />
+          </div>
+          <div style={S.fieldBlock}>
+            <label style={S.label}>Discharge Preparation TIU Note</label>
+            <textarea style={S.textarea} value={dischargeNote} onChange={(e) => setDischargeNote(e.target.value)} />
+          </div>
+        </div>
+
+        <div style={S.actionRow}>
+          <button style={S.actionBtn(busyAction !== '')} disabled={busyAction !== ''} onClick={startMedRec}>
+            Start Med Rec
+          </button>
+          <button
+            style={S.secondaryBtn(busyAction !== '' || !medRecSession || medRecSession.status !== 'in-progress')}
+            disabled={busyAction !== '' || !medRecSession || medRecSession.status !== 'in-progress'}
+            onClick={completeMedRec}
+          >
+            Complete Med Rec + TIU
+          </button>
+          <button style={S.actionBtn(busyAction !== '')} disabled={busyAction !== ''} onClick={createDischargePlan}>
+            Create Discharge Plan
+          </button>
+          <button
+            style={S.secondaryBtn(busyAction !== '' || !dischargePlan)}
+            disabled={busyAction !== '' || !dischargePlan}
+            onClick={saveDischargePlan}
+          >
+            Save Planning Details
+          </button>
+          <button
+            style={S.secondaryBtn(busyAction !== '' || !dischargePlan)}
+            disabled={busyAction !== '' || !dischargePlan}
+            onClick={markReady}
+          >
+            Mark Ready
+          </button>
+          <button
+            style={S.secondaryBtn(busyAction !== '' || !dischargePlan || dischargePlan.status !== 'ready')}
+            disabled={busyAction !== '' || !dischargePlan || dischargePlan.status !== 'ready'}
+            onClick={completeDischarge}
+          >
+            Complete Discharge Prep + TIU
+          </button>
+        </div>
+
+        {busyAction && <div style={{ ...S.helperText, marginTop: '8px' }}>Working: {busyAction}</div>}
+      </div>
+
+      {medRecSession && (
+        <div style={S.card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <h3 style={S.sectionTitle}>Medication Reconciliation Detail</h3>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <span style={S.badge(getStatusColor(medRecSession.status))}>{medRecSession.status}</span>
+              {medRecSession.summaryNote && <span style={S.pendingTag}>TIU draft #{medRecSession.summaryNote.docIen}</span>}
+            </div>
+          </div>
+
+          <div style={S.infoBox}>
+            <div style={S.smallText}>Session ID: {medRecSession.id}</div>
+            <div style={S.smallText}>Inpatient meds: {medRecSession.inpatientMeds.length} | Outpatient meds: {medRecSession.outpatientMeds.length}</div>
+          </div>
+
+          <table style={S.table}>
+            <thead>
+              <tr>
+                <th style={S.th}>Medication</th>
+                <th style={S.th}>Severity</th>
+                <th style={S.th}>Issue</th>
+                <th style={S.th}>Decision</th>
+                <th style={S.th}>Rationale</th>
+                <th style={S.th}>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {medRecSession.discrepancies.map((discrepancy) => {
+                const recorded = medRecSession.decisions.find((item) => item.discrepancyId === discrepancy.id);
+                return (
+                  <tr key={discrepancy.id}>
+                    <td style={S.td}>{discrepancy.medication}</td>
+                    <td style={S.td}>
+                      <span style={S.badge(discrepancy.severity === 'high' ? 'yellow' : discrepancy.severity === 'medium' ? 'blue' : 'gray')}>
+                        {discrepancy.severity}
+                      </span>
+                    </td>
+                    <td style={S.td}>{discrepancy.description}</td>
+                    <td style={S.td}>
+                      <select
+                        style={S.selectInput}
+                        value={decisionSelections[discrepancy.id] || 'continue'}
+                        onChange={(e) =>
+                          setDecisionSelections((prev) => ({
+                            ...prev,
+                            [discrepancy.id]: e.target.value as ReconciliationDecision,
+                          }))
+                        }
+                        disabled={!!recorded || busyAction !== ''}
+                      >
+                        <option value="continue">Continue</option>
+                        <option value="discontinue">Discontinue</option>
+                        <option value="modify">Modify</option>
+                        <option value="hold">Hold</option>
+                        <option value="defer">Defer</option>
+                      </select>
+                    </td>
+                    <td style={S.td}>
+                      <input
+                        style={{ ...S.input, minWidth: '180px' }}
+                        value={decisionRationales[discrepancy.id] || ''}
+                        onChange={(e) =>
+                          setDecisionRationales((prev) => ({ ...prev, [discrepancy.id]: e.target.value }))
+                        }
+                        disabled={!!recorded || busyAction !== ''}
+                        placeholder="Clinical rationale"
+                      />
+                    </td>
+                    <td style={S.td}>
+                      {recorded ? (
+                        <span style={S.pendingTag}>{recorded.decision}</span>
+                      ) : (
+                        <button
+                          style={S.miniBtn(busyAction !== '')}
+                          disabled={busyAction !== ''}
+                          onClick={() => recordDecision(discrepancy.id)}
+                        >
+                          Record
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+              {medRecSession.discrepancies.length === 0 && (
+                <tr>
+                  <td colSpan={6} style={{ ...S.td, textAlign: 'center' }}>No discrepancies detected.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {dischargePlan && (
+        <div style={S.card}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <h3 style={S.sectionTitle}>Discharge Plan Detail</h3>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <span style={S.badge(getStatusColor(dischargePlan.status))}>{dischargePlan.status}</span>
+              {medRecStatus && (
+                <span style={medRecStatus.completed ? S.sourceTag : S.pendingTag}>
+                  Med Rec {medRecStatus.completed ? 'linked + complete' : medRecStatus.linked ? 'linked, pending' : 'not linked'}
+                </span>
+              )}
+              {dischargePlan.summaryNote && <span style={S.pendingTag}>TIU draft #{dischargePlan.summaryNote.docIen}</span>}
+            </div>
+          </div>
+
+          <div style={S.infoBox}>
+            <div style={S.smallText}>Plan ID: {dischargePlan.id}</div>
+            <div style={S.smallText}>Disposition: {dischargePlan.dischargeDisposition || 'Not set'} | Target date: {dischargePlan.targetDischargeDate || 'Not set'}</div>
+          </div>
+
+          {dischargePlan.checklist.map((item) => (
+            <div key={item.id} style={S.checklistCard}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap' }}>
+                <div>
+                  <div style={S.checklistTitle}>{item.title}</div>
+                  <div style={S.smallText}>{item.description}</div>
+                  <div style={{ ...S.smallText, marginTop: '4px' }}>
+                    Category: {item.category}
+                    {item.vistaRpc ? ` | Target RPC: ${item.vistaRpc}` : ''}
+                    {item.vistaStatus ? ` | ${item.vistaStatus}` : ''}
+                  </div>
+                </div>
+                <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <span style={S.badge(getStatusColor(item.status))}>{item.status}</span>
+                  <button style={S.miniBtn(busyAction !== '')} disabled={busyAction !== ''} onClick={() => updateChecklistItem(item.id, 'completed')}>
+                    Complete
+                  </button>
+                  <button style={S.miniBtn(busyAction !== '')} disabled={busyAction !== ''} onClick={() => updateChecklistItem(item.id, 'pending')}>
+                    Pending
+                  </button>
+                  <button style={S.miniBtn(busyAction !== '')} disabled={busyAction !== ''} onClick={() => updateChecklistItem(item.id, 'not-applicable')}>
+                    N/A
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Action modal */}
       {showModal && (

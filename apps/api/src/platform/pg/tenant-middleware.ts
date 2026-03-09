@@ -7,9 +7,9 @@
  * available via request.tenantId for downstream route handlers.
  *
  * Tenant resolution order:
- *   1. X-Tenant-Id header (admin/service-to-service)
- *   2. Session data (if authenticated)
- *   3. Falls back to 'default' (single-tenant mode)
+ *   1. Session data (if authenticated)
+ *   2. X-Tenant-Id header (admin/service-to-service)
+ *   3. Leaves the tenant unresolved when neither source is present
  *
  * This is a Fastify decorateRequest + onRequest hook.
  */
@@ -28,11 +28,18 @@ declare module 'fastify' {
  * Must be called AFTER auth middleware (so session is available).
  */
 export function registerTenantHook(server: FastifyInstance): void {
-  // Decorate request with default tenantId
-  server.decorateRequest('tenantId', 'default');
+  // Decorate request with an empty tenantId so downstream guards can fail closed
+  server.decorateRequest('tenantId', '');
 
   server.addHook('onRequest', async (request: FastifyRequest) => {
-    // Priority 1: Explicit header (for admin/service calls)
+    // Priority 1: Session-derived tenant (if session middleware set it)
+    const session = (request as any).session;
+    if (session?.tenantId && typeof session.tenantId === 'string') {
+      request.tenantId = session.tenantId;
+      return;
+    }
+
+    // Priority 2: Explicit header (for admin/service calls without session)
     const headerTenant = request.headers['x-tenant-id'];
     if (typeof headerTenant === 'string' && headerTenant.trim().length > 0) {
       // Basic validation: no SQL injection chars
@@ -42,14 +49,8 @@ export function registerTenantHook(server: FastifyInstance): void {
       }
     }
 
-    // Priority 2: Session-derived tenant (if session middleware set it)
-    const session = (request as any).session;
-    if (session?.tenantId && typeof session.tenantId === 'string') {
-      request.tenantId = session.tenantId;
-      return;
-    }
-
-    // Priority 3: Default tenant
-    request.tenantId = 'default';
+    // Priority 3: leave unresolved. Auth and module guards must reject
+    // requests that still lack tenant context.
+    request.tenantId = '';
   });
 }

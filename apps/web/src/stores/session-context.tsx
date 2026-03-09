@@ -39,6 +39,8 @@ export interface SessionContextValue {
   hasRole: (...roles: UserRole[]) => boolean;
 }
 
+export const SESSION_EXPIRED_EVENT = 've:session-expired';
+
 /* ------------------------------------------------------------------ */
 /* Constants                                                           */
 /* ------------------------------------------------------------------ */
@@ -54,23 +56,86 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState<SessionUser | null>(null);
 
+  const clearSessionState = useCallback(() => {
+    setUser(null);
+    setAuthenticated(false);
+    clearCsrfToken();
+    setReady(true);
+  }, []);
+
   /** Check existing session on mount (cookie sent automatically). */
   useEffect(() => {
-    fetch(`${API_BASE}/auth/session`, { credentials: 'include' })
-      .then((res) => res.json())
-      .then((data) => {
+    let cancelled = false;
+
+    async function checkSession(attempt = 0): Promise<void> {
+      try {
+        const res = await fetch(`${API_BASE}/auth/session`, { credentials: 'include' });
+
+        if (res.status === 401) {
+          if (!cancelled) {
+            clearSessionState();
+          }
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error(`Session check failed (${res.status})`);
+        }
+
+        const data = await res.json();
+        if (cancelled) return;
+
         if (data.ok && data.authenticated && data.session) {
           setUser(data.session);
           setAuthenticated(true);
-          // Phase 132: Capture session-bound CSRF token
           if (data.csrfToken) setCsrfToken(data.csrfToken);
+        } else {
+          clearSessionState();
+          return;
         }
-      })
-      .catch(() => {
-        // no valid session — stay unauthenticated
-      })
-      .finally(() => setReady(true));
-  }, []);
+        setReady(true);
+      } catch {
+        if (cancelled) return;
+        if (attempt < 2) {
+          window.setTimeout(() => {
+            void checkSession(attempt + 1);
+          }, 400 * (attempt + 1));
+          return;
+        }
+        setReady(true);
+      }
+    }
+
+    const revalidateSession = () => {
+      void checkSession();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        void checkSession();
+      }
+    };
+
+    const sessionProbeTimer = window.setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        void checkSession();
+      }
+    }, 60_000);
+
+    window.addEventListener('focus', revalidateSession);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener(SESSION_EXPIRED_EVENT, clearSessionState);
+
+    void checkSession();
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(sessionProbeTimer);
+      window.removeEventListener('focus', revalidateSession);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener(SESSION_EXPIRED_EVENT, clearSessionState);
+    };
+  }, [clearSessionState]);
 
   const login = useCallback(async (accessCode: string, verifyCode: string) => {
     try {

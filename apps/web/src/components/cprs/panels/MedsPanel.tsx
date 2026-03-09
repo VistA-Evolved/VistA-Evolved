@@ -1,12 +1,48 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useDataCache, type Medication } from '@/stores/data-cache';
+import { useDataCache, type DomainFetchMeta, type Medication } from '@/stores/data-cache';
 import { useCPRSUI } from '@/stores/cprs-ui-state';
 import styles from '../cprs.module.css';
 
 interface Props {
   dfn: string;
+}
+
+function MedicationsPendingBanner({ meta }: { meta: DomainFetchMeta }) {
+  const statusLabel = meta.status || (meta.ok ? 'ok' : 'request-failed');
+  const targetRpcs = meta.pendingTargets.length > 0 ? meta.pendingTargets : ['ORWPS ACTIVE'];
+
+  return (
+    <div
+      style={{
+        border: '1px solid #f59e0b',
+        borderRadius: 6,
+        padding: 12,
+        background: '#fffbeb',
+        color: '#92400e',
+      }}
+    >
+      <div style={{ fontWeight: 600, marginBottom: 6 }}>Medication list pending</div>
+      <div style={{ fontSize: 13, marginBottom: 6 }}>
+        {meta.error
+          ? `The latest medication-list fetch failed: ${meta.error}`
+          : meta.pendingNote ||
+            'The latest medication-list fetch did not return a trustworthy live VistA result.'}
+      </div>
+      <div style={{ fontSize: 12, marginBottom: 4 }}>
+        <strong>Status:</strong> {statusLabel}
+      </div>
+      {meta.rpcUsed.length > 0 && (
+        <div style={{ fontSize: 12, marginBottom: 4 }}>
+          <strong>RPC attempted:</strong> {meta.rpcUsed.join(', ')}
+        </div>
+      )}
+      <div style={{ fontSize: 12 }}>
+        <strong>Target RPCs:</strong> {targetRpcs.join(', ')}
+      </div>
+    </div>
+  );
 }
 
 export default function MedsPanel({ dfn }: Props) {
@@ -21,8 +57,30 @@ export default function MedsPanel({ dfn }: Props) {
 
   const meds = cache.getDomain(dfn, 'medications');
   const loading = cache.isLoading(dfn, 'medications');
+  const medsMeta = cache.getDomainMeta(dfn, 'medications');
+
+  useEffect(() => {
+    setSelected(null);
+  }, [dfn]);
+
+  useEffect(() => {
+    if (!selected) return;
+
+    const freshSelected = meds.find((medication) => medication.id === selected.id) || null;
+    if (!freshSelected) {
+      setSelected(null);
+      return;
+    }
+
+    if (freshSelected !== selected) {
+      setSelected(freshSelected);
+    }
+  }, [meds, selected]);
 
   const filtered = filter === 'all' ? meds : meds.filter((m) => m.status?.toLowerCase() === filter);
+  const showPendingMedsBanner =
+    !loading && meds.length === 0 && medsMeta.fetched && (medsMeta.pending || medsMeta.ok !== true);
+  const showFilterEmpty = !loading && meds.length > 0 && filtered.length === 0;
 
   const statusCounts = meds.reduce(
     (acc, m) => {
@@ -67,7 +125,13 @@ export default function MedsPanel({ dfn }: Props) {
       <div className={styles.splitPane}>
         <div className={styles.splitLeft}>
           {loading && <p className={styles.loadingText}>Loading medications...</p>}
-          {!loading && filtered.length === 0 && <p className={styles.emptyText}>No medications</p>}
+          {showPendingMedsBanner && <MedicationsPendingBanner meta={medsMeta} />}
+          {showFilterEmpty && (
+            <p className={styles.emptyText}>No medications match the current filter</p>
+          )}
+          {!loading && !showPendingMedsBanner && !showFilterEmpty && filtered.length === 0 && (
+            <p className={styles.emptyText}>No medications</p>
+          )}
           {!loading && filtered.length > 0 && (
             <table className={styles.dataTable}>
               <thead>

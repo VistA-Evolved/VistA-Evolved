@@ -155,9 +155,9 @@ export function createTicket(
   return ticket;
 }
 
-export function acknowledgeTicket(id: string, assignedTo: string): SupportTicket | null {
+export function acknowledgeTicket(tenantId: string, id: string, assignedTo: string): SupportTicket | null {
   const ticket = ticketStore.get(id);
-  if (!ticket || ticket.status !== "open") return null;
+  if (!ticket || ticket.tenantId !== tenantId || ticket.status !== "open") return null;
   const ackTime = now();
   const ttaMs = new Date(ackTime).getTime() - new Date(ticket.sla.createdAt).getTime();
   const updated: SupportTicket = {
@@ -171,9 +171,9 @@ export function acknowledgeTicket(id: string, assignedTo: string): SupportTicket
   return updated;
 }
 
-export function startWork(id: string): SupportTicket | null {
+export function startWork(tenantId: string, id: string): SupportTicket | null {
   const ticket = ticketStore.get(id);
-  if (!ticket || ticket.status !== "acknowledged") return null;
+  if (!ticket || ticket.tenantId !== tenantId || ticket.status !== "acknowledged") return null;
   const updated: SupportTicket = {
     ...ticket,
     status: "in_progress",
@@ -183,9 +183,13 @@ export function startWork(id: string): SupportTicket | null {
   return updated;
 }
 
-export function resolveTicket(id: string, resolution?: string): SupportTicket | null {
+export function resolveTicket(tenantId: string, id: string, resolution?: string): SupportTicket | null {
   const ticket = ticketStore.get(id);
-  if (!ticket || (ticket.status !== "in_progress" && ticket.status !== "acknowledged" && ticket.status !== "open")) return null;
+  if (
+    !ticket ||
+    ticket.tenantId !== tenantId ||
+    (ticket.status !== "in_progress" && ticket.status !== "acknowledged" && ticket.status !== "open")
+  ) return null;
   const resolveTime = now();
   const ttrMs = new Date(resolveTime).getTime() - new Date(ticket.sla.createdAt).getTime();
   const updated: SupportTicket = {
@@ -199,9 +203,9 @@ export function resolveTicket(id: string, resolution?: string): SupportTicket | 
   return updated;
 }
 
-export function closeTicket(id: string): SupportTicket | null {
+export function closeTicket(tenantId: string, id: string): SupportTicket | null {
   const ticket = ticketStore.get(id);
-  if (!ticket || ticket.status !== "resolved") return null;
+  if (!ticket || ticket.tenantId !== tenantId || ticket.status !== "resolved") return null;
   const closeTime = now();
   const updated: SupportTicket = {
     ...ticket,
@@ -213,9 +217,9 @@ export function closeTicket(id: string): SupportTicket | null {
   return updated;
 }
 
-export function escalateTicket(id: string, reason: string): SupportTicket | null {
+export function escalateTicket(tenantId: string, id: string, reason: string): SupportTicket | null {
   const ticket = ticketStore.get(id);
-  if (!ticket || ticket.status === "closed" || ticket.status === "resolved") return null;
+  if (!ticket || ticket.tenantId !== tenantId || ticket.status === "closed" || ticket.status === "resolved") return null;
   const updated: SupportTicket = {
     ...ticket,
     status: "escalated",
@@ -226,8 +230,11 @@ export function escalateTicket(id: string, reason: string): SupportTicket | null
   return updated;
 }
 
-export function getTicket(id: string): SupportTicket | undefined {
-  return ticketStore.get(id);
+export function getTicket(id: string, tenantId: string): SupportTicket | undefined {
+  const ticket = ticketStore.get(id);
+  if (!ticket) return undefined;
+  if (ticket.tenantId !== tenantId) return undefined;
+  return ticket;
 }
 
 export function listTickets(tenantId: string, status?: TicketStatus): SupportTicket[] {
@@ -236,9 +243,9 @@ export function listTickets(tenantId: string, status?: TicketStatus): SupportTic
   return all;
 }
 
-function attachDiagnostics(ticketId: string, bundleId: string): SupportTicket | null {
+function attachDiagnostics(tenantId: string, ticketId: string, bundleId: string): SupportTicket | null {
   const ticket = ticketStore.get(ticketId);
-  if (!ticket) return null;
+  if (!ticket || ticket.tenantId !== tenantId) return null;
   const updated: SupportTicket = {
     ...ticket,
     diagnosticsBundleId: bundleId,
@@ -253,23 +260,23 @@ function attachDiagnostics(ticketId: string, bundleId: string): SupportTicket | 
 /* ================================================================== */
 
 export function generateDiagnosticsBundle(tenantId: string, ticketId?: string): DiagnosticsBundle {
-  const heapUsed = process.memoryUsage().heapUsed;
-  const heapTotal = process.memoryUsage().heapTotal;
+  const tenantTicketCount = [...ticketStore.values()].filter((ticket) => ticket.tenantId === tenantId).length;
+  const tenantDiagnosticsCount = [...diagnosticsStore.values()].filter(
+    (bundle) => bundle.tenantId === tenantId
+  ).length;
 
   const sections: DiagnosticsSection[] = [
     {
       name: "memory",
-      status: heapUsed / heapTotal > 0.9 ? "warning" : "ok",
+      status: "unknown",
       data: {
-        heapUsedMB: Math.round(heapUsed / 1048576),
-        heapTotalMB: Math.round(heapTotal / 1048576),
-        rssMB: Math.round(process.memoryUsage().rss / 1048576),
+        note: "Platform memory metrics are available via /posture/performance.",
       },
     },
     {
       name: "uptime",
-      status: "ok",
-      data: { uptimeSeconds: Math.round(process.uptime()) },
+      status: "unknown",
+      data: { note: "Platform uptime is available via /posture/performance." },
     },
     {
       name: "node_version",
@@ -280,8 +287,8 @@ export function generateDiagnosticsBundle(tenantId: string, ticketId?: string): 
       name: "store_inventory",
       status: "ok",
       data: {
-        ticketStoreSize: ticketStore.size,
-        diagnosticsStoreSize: diagnosticsStore.size,
+        tenantTicketCount,
+        tenantDiagnosticsCount,
       },
     },
     {
@@ -306,14 +313,17 @@ export function generateDiagnosticsBundle(tenantId: string, ticketId?: string): 
 
   // Auto-attach to ticket if provided
   if (ticketId) {
-    attachDiagnostics(ticketId, bundle.id);
+    attachDiagnostics(tenantId, ticketId, bundle.id);
   }
 
   return bundle;
 }
 
-export function getDiagnosticsBundle(id: string): DiagnosticsBundle | undefined {
-  return diagnosticsStore.get(id);
+export function getDiagnosticsBundle(id: string, tenantId: string): DiagnosticsBundle | undefined {
+  const bundle = diagnosticsStore.get(id);
+  if (!bundle) return undefined;
+  if (bundle.tenantId !== tenantId) return undefined;
+  return bundle;
 }
 
 export function listDiagnosticsBundles(tenantId: string): DiagnosticsBundle[] {

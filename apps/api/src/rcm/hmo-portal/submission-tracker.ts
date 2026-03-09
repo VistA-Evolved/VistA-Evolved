@@ -38,6 +38,7 @@ function newSubmissionId(): string {
 /* ── CRUD ───────────────────────────────────────────────────── */
 
 export function createSubmission(params: {
+  tenantId: string;
   payerId: string;
   payerName: string;
   claimId?: string;
@@ -47,6 +48,7 @@ export function createSubmission(params: {
   const now = new Date().toISOString();
   const record: HmoSubmissionRecord = {
     id: newSubmissionId(),
+    tenantId: params.tenantId,
     payerId: params.payerId,
     payerName: params.payerName,
     claimId: params.claimId,
@@ -64,9 +66,9 @@ export function createSubmission(params: {
   hmoSubDbRepo
     ?.upsert({
       id: record.id,
-      tenantId: (record as any).tenantId ?? 'default',
-      claimId: (record as any).claimId ?? '',
-      payerId: (record as any).payerId ?? '',
+      tenantId: record.tenantId,
+      claimId: record.claimId ?? '',
+      payerId: record.payerId,
       status: record.status,
       submittedAt: record.createdAt,
     })
@@ -75,17 +77,20 @@ export function createSubmission(params: {
   return record;
 }
 
-export function getSubmission(id: string): HmoSubmissionRecord | undefined {
-  return submissions.get(id);
+export function getSubmission(tenantId: string, id: string): HmoSubmissionRecord | undefined {
+  const record = submissions.get(id);
+  if (!record || record.tenantId !== tenantId) return undefined;
+  return record;
 }
 
 export function listSubmissions(filter?: {
+  tenantId: string;
   payerId?: string;
   status?: HmoSubmissionStatus;
   claimId?: string;
   loaRequestId?: string;
 }): HmoSubmissionRecord[] {
-  let records = Array.from(submissions.values());
+  let records = Array.from(submissions.values()).filter((r) => r.tenantId === filter?.tenantId);
   if (filter?.payerId) records = records.filter((r) => r.payerId === filter.payerId);
   if (filter?.status) records = records.filter((r) => r.status === filter.status);
   if (filter?.claimId) records = records.filter((r) => r.claimId === filter.claimId);
@@ -94,12 +99,13 @@ export function listSubmissions(filter?: {
 }
 
 export function transitionSubmission(
+  tenantId: string,
   id: string,
   toStatus: HmoSubmissionStatus,
   actor: string,
   detail?: string
 ): { ok: boolean; record?: HmoSubmissionRecord; error?: string } {
-  const record = submissions.get(id);
+  const record = getSubmission(tenantId, id);
   if (!record) return { ok: false, error: 'Submission not found.' };
 
   if (!isValidHmoTransition(record.status, toStatus)) {
@@ -126,10 +132,23 @@ export function transitionSubmission(
     ],
   };
   submissions.set(id, updated);
+
+  hmoSubDbRepo
+    ?.upsert({
+      id,
+      tenantId: updated.tenantId,
+      claimId: updated.claimId ?? '',
+      payerId: updated.payerId,
+      status: updated.status,
+      updatedAt: updated.updatedAt,
+    })
+    .catch(() => {});
+
   return { ok: true, record: updated };
 }
 
 export function updateSubmissionFields(
+  tenantId: string,
   id: string,
   fields: Partial<
     Pick<
@@ -145,7 +164,7 @@ export function updateSubmissionFields(
     >
   >
 ): { ok: boolean; record?: HmoSubmissionRecord; error?: string } {
-  const record = submissions.get(id);
+  const record = getSubmission(tenantId, id);
   if (!record) return { ok: false, error: 'Submission not found.' };
 
   const now = new Date().toISOString();
@@ -155,32 +174,77 @@ export function updateSubmissionFields(
     updatedAt: now,
   };
   submissions.set(id, updated);
+
+  hmoSubDbRepo
+    ?.upsert({
+      id,
+      tenantId: updated.tenantId,
+      claimId: updated.claimId ?? '',
+      payerId: updated.payerId,
+      status: updated.status,
+      updatedAt: updated.updatedAt,
+    })
+    .catch(() => {});
+
   return { ok: true, record: updated };
 }
 
-export function addStaffNote(id: string, note: string): { ok: boolean; error?: string } {
-  const record = submissions.get(id);
+export function addStaffNote(
+  tenantId: string,
+  id: string,
+  note: string
+): { ok: boolean; error?: string } {
+  const record = getSubmission(tenantId, id);
   if (!record) return { ok: false, error: 'Submission not found.' };
 
   record.staffNotes.push(`[${new Date().toISOString()}] ${note}`);
   record.updatedAt = new Date().toISOString();
+
+  hmoSubDbRepo
+    ?.upsert({
+      id,
+      tenantId: record.tenantId,
+      claimId: record.claimId ?? '',
+      payerId: record.payerId,
+      status: record.status,
+      updatedAt: record.updatedAt,
+    })
+    .catch(() => {});
+
   return { ok: true };
 }
 
-export function addExportFile(id: string, filename: string): { ok: boolean; error?: string } {
-  const record = submissions.get(id);
+export function addExportFile(
+  tenantId: string,
+  id: string,
+  filename: string
+): { ok: boolean; error?: string } {
+  const record = getSubmission(tenantId, id);
   if (!record) return { ok: false, error: 'Submission not found.' };
 
   record.exportFiles.push(filename);
   record.updatedAt = new Date().toISOString();
+
+  hmoSubDbRepo
+    ?.upsert({
+      id,
+      tenantId: record.tenantId,
+      claimId: record.claimId ?? '',
+      payerId: record.payerId,
+      status: record.status,
+      updatedAt: record.updatedAt,
+    })
+    .catch(() => {});
+
   return { ok: true };
 }
 
 /* ── Summary Stats ──────────────────────────────────────────── */
 
-export function getSubmissionStats(): Record<HmoSubmissionStatus, number> {
+export function getSubmissionStats(tenantId: string): Record<HmoSubmissionStatus, number> {
   const stats: Partial<Record<HmoSubmissionStatus, number>> = {};
   for (const record of submissions.values()) {
+    if (record.tenantId !== tenantId) continue;
     stats[record.status] = (stats[record.status] ?? 0) + 1;
   }
   // Ensure all statuses present

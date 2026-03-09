@@ -34,6 +34,14 @@ import {
 } from '../platform/pg/repo/module-repo.js';
 import { getActiveSkuProfile, getModuleDefinitions, setTenantModules } from '../modules/module-registry.js';
 
+function resolveTenantId(_request: FastifyRequest, session: any): string | null {
+  const sessionTenantId =
+    typeof session?.tenantId === 'string' && session.tenantId.trim().length > 0
+      ? session.tenantId.trim()
+      : undefined;
+  return sessionTenantId || null;
+}
+
 export default async function moduleEntitlementRoutes(server: FastifyInstance): Promise<void> {
   // Scoped error handler -- catch DB errors and return clean 500 responses
   server.setErrorHandler((error, _request, reply) => {
@@ -66,7 +74,12 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
       const session = await requireSession(request, reply);
       if (!session) return;
 
-      const tenantId = (request.query as any)?.tenantId || session.tenantId || 'default';
+      const tenantId = resolveTenantId(request, session);
+      if (!tenantId) {
+        return reply
+          .code(403)
+          .send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+      }
       const entitlements = await listTenantModules(tenantId);
       const enabledIds = await getEnabledModuleIds(tenantId);
 
@@ -88,12 +101,17 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
 
       const body = (request.body as any) || {};
       const {
-        tenantId = session.tenantId || 'default',
         moduleId,
         enabled,
         planTier = 'base',
         reason,
       } = body;
+      const tenantId = resolveTenantId(request, session);
+      if (!tenantId) {
+        return reply
+          .code(403)
+          .send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+      }
 
       if (!moduleId || typeof enabled !== 'boolean') {
         return reply.code(400).send({
@@ -158,7 +176,12 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
       if (!session) return;
 
       const body = (request.body as any) || {};
-      const tenantId = body.tenantId || session.tenantId || 'default';
+      const tenantId = resolveTenantId(request, session);
+      if (!tenantId) {
+        return reply
+          .code(403)
+          .send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+      }
 
       // If caller provides explicit modules list, use it; otherwise read from SKU config
       let skuModules: string[];
@@ -205,7 +228,12 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
       const session = await requireSession(request, reply);
       if (!session) return;
 
-      const tenantId = (request.query as any)?.tenantId || session.tenantId || 'default';
+      const tenantId = resolveTenantId(request, session);
+      if (!tenantId) {
+        return reply
+          .code(403)
+          .send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+      }
       const flags = await listTenantFeatureFlags(tenantId);
 
       return { ok: true, tenantId, flags, count: flags.length };
@@ -221,7 +249,6 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
 
       const body = (request.body as any) || {};
       const {
-        tenantId = session.tenantId || 'default',
         flagKey,
         flagValue,
         moduleId,
@@ -230,6 +257,12 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
         userTargeting,
         reason,
       } = body;
+      const tenantId = resolveTenantId(request, session);
+      if (!tenantId) {
+        return reply
+          .code(403)
+          .send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+      }
 
       if (!flagKey || flagValue === undefined) {
         return reply.code(400).send({
@@ -287,7 +320,13 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
       if (!session) return;
 
       const body = (request.body as any) || {};
-      const { tenantId = session.tenantId || 'default', flagKey, reason } = body;
+      const { flagKey, reason } = body;
+      const tenantId = resolveTenantId(request, session);
+      if (!tenantId) {
+        return reply
+          .code(403)
+          .send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+      }
 
       if (!flagKey) {
         return reply.code(400).send({
@@ -328,7 +367,12 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
     if (!session) return;
 
     const query = (request.query as any) || {};
-    const tenantId = query.tenantId || session.tenantId || 'default';
+    const tenantId = resolveTenantId(request, session);
+    if (!tenantId) {
+      return reply
+        .code(403)
+        .send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    }
     const limit = Math.min(parseInt(query.limit) || 100, 500);
     const offset = parseInt(query.offset) || 0;
 

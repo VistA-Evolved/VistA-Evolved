@@ -21,7 +21,6 @@ import {
   sendViaMailMan,
   manageMessage,
 } from '../services/secure-messaging.js';
-import { connect, disconnect } from '../vista/rpcBrokerClient.js';
 import { immutableAudit } from '../lib/immutable-audit.js';
 import { log } from '../lib/logger.js';
 
@@ -57,9 +56,7 @@ export default async function vistaMailmanRoutes(server: FastifyInstance) {
     const limit = Number((request.query as any)?.limit) || 50;
 
     try {
-      await connect();
       const result = await listMessages('1', limit); // basket 1 = IN
-      disconnect();
       immutableAudit('messaging.read', result.ok ? 'success' : 'failure', auditActor(request), {
         detail: {
           route: '/vista/mailman/inbox',
@@ -75,7 +72,6 @@ export default async function vistaMailmanRoutes(server: FastifyInstance) {
         error: result.error,
       };
     } catch (err: any) {
-      disconnect();
       log.error(`MailMan inbox error: ${err.message}`);
       return reply
         .code(502)
@@ -92,9 +88,7 @@ export default async function vistaMailmanRoutes(server: FastifyInstance) {
     }
 
     try {
-      await connect();
       const result = await getVistaMessage(ien);
-      disconnect();
       // Audit: metadata only — never log message body
       immutableAudit('messaging.read', result.ok ? 'success' : 'failure', auditActor(request), {
         detail: { route: '/vista/mailman/message', ien, source: result.source },
@@ -104,7 +98,6 @@ export default async function vistaMailmanRoutes(server: FastifyInstance) {
       }
       return { ok: true, source: result.source, message: result.message };
     } catch (err: any) {
-      disconnect();
       log.error(`MailMan message error: ${err.message}`);
       return reply
         .code(502)
@@ -126,7 +119,6 @@ export default async function vistaMailmanRoutes(server: FastifyInstance) {
     }
 
     try {
-      await connect();
       const recipients = Array.isArray(body.to)
         ? body.to
         : [{ type: 'user' as const, id: body.to, name: body.toName || body.to }];
@@ -136,7 +128,6 @@ export default async function vistaMailmanRoutes(server: FastifyInstance) {
         recipients,
         body.priority || 'routine'
       );
-      disconnect();
 
       // Audit: metadata only — never log message body
       immutableAudit('messaging.send', result.ok ? 'success' : 'failure', auditActor(request), {
@@ -155,7 +146,6 @@ export default async function vistaMailmanRoutes(server: FastifyInstance) {
         error: result.error,
       };
     } catch (err: any) {
-      disconnect();
       log.error(`MailMan send error: ${err.message}`);
       return reply.code(500).send({ ok: false, error: 'Internal error during message send' });
     }
@@ -176,15 +166,12 @@ export default async function vistaMailmanRoutes(server: FastifyInstance) {
     }
 
     try {
-      await connect();
       const result = await manageMessage(action, body.ien, body.basket, body.toBasket);
-      disconnect();
       immutableAudit('messaging.manage', result.ok ? 'success' : 'failure', auditActor(request), {
         detail: { route: '/vista/mailman/manage', action, ien: body.ien },
       });
       return result;
     } catch (err: any) {
-      disconnect();
       log.error(`MailMan manage error: ${err.message}`);
       return reply.code(502).send({ ok: false, error: 'VistA MailMan unavailable' });
     }
@@ -194,12 +181,9 @@ export default async function vistaMailmanRoutes(server: FastifyInstance) {
   server.get('/vista/mailman/folders', async (request, reply) => {
     if (!requireSession(request, reply)) return;
     try {
-      await connect();
       const result = await listFolders();
-      disconnect();
       return { ok: result.ok, source: result.source, folders: result.folders, error: result.error };
     } catch (err: any) {
-      disconnect();
       log.error(`MailMan folders error: ${err.message}`);
       return reply
         .code(502)

@@ -65,6 +65,7 @@ export async function correlatedFetch<T = unknown>(
 
   const res = await fetch(url, {
     credentials: 'include',
+    cache: opts?.cache ?? 'no-store',
     ...opts,
     headers,
   });

@@ -274,10 +274,13 @@ export function createClaimCase(params: CreateClaimCaseParams): ClaimCase {
 
 /* ── CRUD ──────────────────────────────────────────────────── */
 
-export function getClaimCase(id: string): ClaimCase | undefined {
+export function getClaimCase(id: string, tenantId?: string): ClaimCase | undefined {
   // Cache-first
   const cached = cases.get(id);
-  if (cached) return cached;
+  if (cached) {
+    if (tenantId && cached.tenantId !== tenantId) return undefined;
+    return cached;
+  }
 
   // DB fallback
   if (dbRepo) {
@@ -285,6 +288,7 @@ export function getClaimCase(id: string): ClaimCase | undefined {
       const row = dbRepo.findClaimCaseById(id);
       if (row) {
         const cc = dbRowToCase(row);
+        if (tenantId && cc.tenantId !== tenantId) return undefined;
         cases.set(cc.id, cc);
         if (!tenantIndex.has(cc.tenantId)) tenantIndex.set(cc.tenantId, new Set());
         tenantIndex.get(cc.tenantId)!.add(cc.id);
@@ -303,8 +307,12 @@ export function getClaimCase(id: string): ClaimCase | undefined {
   return undefined;
 }
 
-export function updateClaimCase(id: string, updates: Partial<ClaimCase>): ClaimCase | undefined {
-  const existing = getClaimCase(id);
+export function updateClaimCase(
+  tenantId: string,
+  id: string,
+  updates: Partial<ClaimCase>
+): ClaimCase | undefined {
+  const existing = getClaimCase(id, tenantId);
   if (!existing) return undefined;
 
   const updated: ClaimCase = {
@@ -332,12 +340,13 @@ export interface TransitionResult {
 }
 
 export function transitionClaimCase(
+  tenantId: string,
   id: string,
   toStatus: ClaimLifecycleStatus,
   actor: string,
   detail?: Record<string, unknown>
 ): TransitionResult {
-  const cc = getClaimCase(id);
+  const cc = getClaimCase(id, tenantId);
   if (!cc) return { ok: false, error: 'Claim case not found' };
 
   if (!isValidLifecycleTransition(cc.lifecycleStatus, toStatus)) {
@@ -427,10 +436,11 @@ export function transitionClaimCase(
 /* ── Scrub Results ─────────────────────────────────────────── */
 
 export function recordScrubResult(
+  tenantId: string,
   claimCaseId: string,
   result: ClaimScrubResult
 ): ClaimCase | undefined {
-  const cc = getClaimCase(claimCaseId);
+  const cc = getClaimCase(claimCaseId, tenantId);
   if (!cc) return undefined;
 
   const event: ClaimEvent = {
@@ -462,11 +472,12 @@ export function recordScrubResult(
 /* ── Attachments ───────────────────────────────────────────── */
 
 export function addAttachment(
+  tenantId: string,
   claimCaseId: string,
   attachment: Omit<ClaimAttachment, 'id' | 'claimCaseId'>,
   actor: string
 ): ClaimCase | undefined {
-  const cc = getClaimCase(claimCaseId);
+  const cc = getClaimCase(claimCaseId, tenantId);
   if (!cc) return undefined;
 
   const att: ClaimAttachment = {
@@ -498,10 +509,11 @@ export function addAttachment(
 /* ── Denials ───────────────────────────────────────────────── */
 
 export function addDenial(
+  tenantId: string,
   claimCaseId: string,
   denial: Omit<DenialRecord, 'id' | 'claimCaseId'>
 ): DenialRecord | undefined {
-  const cc = getClaimCase(claimCaseId);
+  const cc = getClaimCase(claimCaseId, tenantId);
   if (!cc) return undefined;
 
   const dr: DenialRecord = {
@@ -537,12 +549,16 @@ export function addDenial(
 }
 
 export function resolveDenial(
+  tenantId: string,
   denialId: string,
   resolvedBy: string,
   resolutionNote: string
 ): DenialRecord | undefined {
   const dr = allDenials.get(denialId);
   if (!dr) return undefined;
+
+  const cc = getClaimCase(dr.claimCaseId, tenantId);
+  if (!cc) return undefined;
 
   const updated: DenialRecord = {
     ...dr,
@@ -553,7 +569,6 @@ export function resolveDenial(
   allDenials.set(denialId, updated);
 
   // Update in the claim case too
-  const cc = getClaimCase(dr.claimCaseId);
   if (cc) {
     const updatedDenials = cc.denials.map((d) => (d.id === denialId ? updated : d));
     const updatedCase = { ...cc, denials: updatedDenials, updatedAt: new Date().toISOString() };

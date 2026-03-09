@@ -29,35 +29,32 @@ function generateStubResponse(systemPrompt: string, userPrompt: string): string 
 }
 
 function generateIntakeSummary(userPrompt: string): string {
+  const intakeSection = userPrompt.match(/Patient intake data collected at .*?:\s*([\s\S]*)/);
+  const intakeExcerpt = intakeSection?.[1]?.trim().slice(0, 240) || 'No intake content was provided.';
+
   return [
-    '**DRAFT -- Clinician Review Required**',
+    '**DEVELOPMENT STUB OUTPUT -- NOT CLINICAL CONTENT**',
     '',
-    '## Intake Summary',
+    '## Intake Summary Preview',
     '',
-    '### Chief Complaint',
-    'Follow-up for chronic condition management [CITE: intake/HPI]',
+    'No live model was invoked. This output only confirms that the governed AI',
+    'pipeline is wired end to end in the current environment.',
     '',
-    '### History of Present Illness',
-    'Patient presents for routine follow-up. Reports general compliance with',
-    'current medication regimen. [CITE: intake/medications]',
+    '### Intake Source Check',
+    intakeExcerpt,
     '',
-    '### Review of Systems',
-    '- **Constitutional**: No fever, weight loss, or fatigue [CITE: intake/ROS]',
-    '- **Cardiovascular**: No chest pain or palpitations [CITE: intake/ROS]',
-    '- **Endocrine**: Monitoring glucose levels at home [CITE: intake/ROS]',
+    '### Interpretation',
+    'Because the configured provider is a development stub, no grounded clinical',
+    'draft has been generated from patient data. Use a non-stub provider for',
+    'real intake summarization.',
     '',
-    '### Current Medications',
-    'Per chart review (see active medication list) [CITE: medications/active]',
-    '',
-    '### Allergies',
-    'Per chart review (see allergy list) [CITE: allergies/active]',
-    '',
-    '### Vital Signs',
-    'Documented at intake (see vitals section) [CITE: vitals/recent]',
+    '### Next Step',
+    'Review the patient intake session directly, or configure a live governed AI',
+    'provider before relying on generated draft content.',
     '',
     '---',
-    '*This summary was drafted by AI from intake data and requires clinician',
-    'review and confirmation before use in clinical documentation.*',
+    '*Development stub only. No patient-specific clinical facts were inferred or',
+    'validated by a live model.*',
   ].join('\n');
 }
 

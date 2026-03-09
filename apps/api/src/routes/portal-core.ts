@@ -40,6 +40,7 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession, requireRole } from '../auth/auth-routes.js';
 import { log } from '../lib/logger.js';
 import { portalAudit } from '../services/portal-audit.js';
 import {
@@ -94,7 +95,7 @@ import {
   getPatientRefills,
   requestRefill,
   cancelRefill,
-  getStaffRefillQueue,
+  getStaffRefillQueueForTenant,
   reviewRefill,
 } from '../services/portal-refills.js';
 import {
@@ -116,6 +117,7 @@ import { getStaffMessageQueue, clinicianReply } from '../services/portal-messagi
 
 interface PortalSessionData {
   token: string;
+  tenantId: string;
   patientDfn: string;
   patientName: string;
   createdAt: number;
@@ -151,7 +153,69 @@ function requirePortalSession(request: FastifyRequest, reply: FastifyReply): Por
 import { validateCredentials } from '../vista/config.js';
 import { connect, disconnect, callRpc } from '../vista/rpcBrokerClient.js';
 
-async function fetchHealthData(dfn: string, resource: string): Promise<unknown[]> {
+interface PortalExportFetchResult {
+  data: unknown[];
+  rpcUsed: string[];
+  pendingTargets: string[];
+}
+
+function parsePortalImmunizations(lines: string[]): unknown[] {
+  return lines
+    .map((line) => {
+      const parts = line.split('^');
+      if (!parts[0]?.trim()) return null;
+      return {
+        ien: parts[0].trim(),
+        name: parts[1]?.trim() || '',
+        dateTime: parts[2]?.trim() || '',
+        reaction: parts[3]?.trim() || '',
+      };
+    })
+    .filter(Boolean) as unknown[];
+}
+
+function parsePortalLabs(lines: string[]): unknown[] {
+  const results: Array<{
+    testName: string;
+    result: string;
+    units: string;
+    refRange: string;
+    flag: string;
+    specimen: string;
+    collectedAt: string;
+  }> = [];
+  let currentSpecimen = '';
+  let currentDate = '';
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    if (/^Specimen:/i.test(trimmed)) {
+      currentSpecimen = trimmed.replace(/^Specimen:\s*/i, '').trim();
+      continue;
+    }
+    if (/^(Collection\s+Date|Collected):/i.test(trimmed)) {
+      currentDate = trimmed.replace(/^(Collection\s+Date|Collected):\s*/i, '').trim();
+      continue;
+    }
+    if (!trimmed.includes('^')) continue;
+    const parts = trimmed.split('^');
+    if (parts.length < 2) continue;
+    results.push({
+      testName: (parts[0] || '').trim(),
+      result: (parts[1] || '').trim(),
+      units: (parts[2] || '').trim(),
+      refRange: (parts[3] || '').trim(),
+      flag: (parts[4] || '').trim(),
+      specimen: currentSpecimen,
+      collectedAt: currentDate,
+    });
+  }
+  return results as unknown[];
+}
+
+async function fetchHealthData(dfn: string, resource: string): Promise<PortalExportFetchResult> {
+  const rpcUsed: string[] = [];
+  const pendingTargets: string[] = [];
   try {
     validateCredentials();
     await connect();
@@ -160,8 +224,10 @@ async function fetchHealthData(dfn: string, resource: string): Promise<unknown[]
     switch (resource) {
       case 'allergies':
         lines = await callRpc('ORQQAL LIST', [dfn]);
-        return lines
-          .map((l) => {
+        rpcUsed.push('ORQQAL LIST');
+        return {
+          data: lines
+            .map((l) => {
             const p = l.split('^');
             return p[0]?.trim()
               ? {
@@ -172,37 +238,52 @@ async function fetchHealthData(dfn: string, resource: string): Promise<unknown[]
                 }
               : null;
           })
-          .filter(Boolean) as unknown[];
+            .filter(Boolean) as unknown[],
+          rpcUsed,
+          pendingTargets,
+        };
 
       case 'problems':
-        lines = await callRpc('ORWCH PROBLEM LIST', [dfn, '0']);
-        return lines
-          .map((l) => {
+        lines = await callRpc('ORQQPL PROBLEM LIST', [dfn, 'A']);
+        rpcUsed.push('ORQQPL PROBLEM LIST');
+        return {
+          data: lines
+            .map((l) => {
             const p = l.split('^');
-            return p[0]?.trim() && p[1]?.trim()
+            return p[0]?.trim() && p[2]?.trim() && /^\d+$/.test(p[0].trim())
               ? {
                   id: p[0].trim(),
-                  text: p[1].trim(),
-                  status: p[2]?.trim() || 'active',
-                  onset: p[3]?.trim() || '',
+                  text: p[2].trim(),
+                  status:
+                    p[1]?.trim() === 'I' ? 'inactive' : p[1]?.trim() === 'R' ? 'resolved' : 'active',
+                  onset: p[4]?.trim() || '',
                 }
               : null;
           })
-          .filter(Boolean) as unknown[];
+            .filter(Boolean) as unknown[],
+          rpcUsed,
+          pendingTargets,
+        };
 
       case 'vitals':
         lines = await callRpc('ORQQVI VITALS', [dfn, '3000101', '3991231']);
-        return lines
-          .map((l) => {
+        rpcUsed.push('ORQQVI VITALS');
+        return {
+          data: lines
+            .map((l) => {
             const p = l.split('^');
             return p[0]?.trim()
               ? { type: p[1]?.trim() || '', value: p[2]?.trim() || '', takenAt: p[3]?.trim() || '' }
               : null;
           })
-          .filter(Boolean) as unknown[];
+            .filter(Boolean) as unknown[],
+          rpcUsed,
+          pendingTargets,
+        };
 
       case 'medications':
         lines = await callRpc('ORWPS ACTIVE', [dfn]);
+        rpcUsed.push('ORWPS ACTIVE');
         const meds: { drugName: string; status: string; sig: string }[] = [];
         let cur: { drugName: string; status: string; sig: string } | null = null;
         for (const line of lines) {
@@ -220,20 +301,41 @@ async function fetchHealthData(dfn: string, resource: string): Promise<unknown[]
           }
         }
         if (cur) meds.push(cur);
-        return meds as unknown[];
+        return { data: meds as unknown[], rpcUsed, pendingTargets };
 
       case 'demographics':
         lines = await callRpc('ORWPT SELECT', [dfn]);
+        rpcUsed.push('ORWPT SELECT');
         const raw = lines[0] || '';
         const p = raw.split('^');
-        if (p[0] === '-1' || !p[0]) return [];
-        return [{ name: p[0], sex: p[1] || '', dob: p[2] || '' }] as unknown[];
+        if (p[0] === '-1' || !p[0]) return { data: [], rpcUsed, pendingTargets };
+        return { data: [{ name: p[0], sex: p[1] || '', dob: p[2] || '' }] as unknown[], rpcUsed, pendingTargets };
+
+      case 'immunizations':
+        try {
+          lines = await callRpc('ORQQPX IMMUN LIST', [dfn]);
+          rpcUsed.push('ORQQPX IMMUN LIST');
+          return { data: parsePortalImmunizations(lines), rpcUsed, pendingTargets };
+        } catch {
+          pendingTargets.push('ORQQPX IMMUN LIST');
+          return { data: [], rpcUsed, pendingTargets };
+        }
+
+      case 'labs':
+        try {
+          lines = await callRpc('ORWLRR INTERIM', [dfn, '', '']);
+          rpcUsed.push('ORWLRR INTERIM');
+          return { data: parsePortalLabs(lines), rpcUsed, pendingTargets };
+        } catch {
+          pendingTargets.push('ORWLRR INTERIM');
+          return { data: [], rpcUsed, pendingTargets };
+        }
 
       default:
-        return [];
+        return { data: [], rpcUsed, pendingTargets };
     }
   } catch {
-    return [];
+    return { data: [], rpcUsed, pendingTargets };
   } finally {
     try {
       disconnect();
@@ -246,6 +348,26 @@ async function fetchHealthData(dfn: string, resource: string): Promise<unknown[]
 /* ------------------------------------------------------------------ */
 
 export default async function portalCoreRoutes(server: FastifyInstance): Promise<void> {
+  const resolveAppointmentSource = (appt: any): 'ehr' | 'pending' | 'local' => {
+    const explicitSource = String(appt?.source || '').toLowerCase();
+    if (explicitSource === 'ehr' || explicitSource === 'pending' || explicitSource === 'local') {
+      return explicitSource as 'ehr' | 'pending' | 'local';
+    }
+    const vistaSync = String(appt?.vistaSync || '').toLowerCase();
+    const status = String(appt?.status || '').toLowerCase();
+    if (appt?.vistaRef || vistaSync === 'synced') return 'ehr';
+    if (
+      appt?.pending === true ||
+      vistaSync === 'pending' ||
+      ['pending_confirmation', 'requested', 'cancel_requested', 'reschedule_requested'].includes(
+        status
+      )
+    ) {
+      return 'pending';
+    }
+    return 'local';
+  };
+
   /* ================================================================ */
   /* PDF Export                                                         */
   /* ================================================================ */
@@ -270,7 +392,8 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
         .send({ ok: false, error: `Invalid section. Valid: ${EXPORTABLE_SECTIONS.join(', ')}` });
     }
 
-    const data = await fetchHealthData(session.patientDfn, section);
+    const result = await fetchHealthData(session.patientDfn, section);
+    const data = result.data;
 
     let sec_data: { heading: string; lines: string[] } = {
       heading: section,
@@ -293,10 +416,12 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
         sec_data = formatDemographicsForPdf(data as any[]);
         break;
       case 'immunizations':
-        sec_data = formatImmunizationsForPdf(data as any[]);
+        sec_data = formatImmunizationsForPdf(data as any[], {
+          pendingTargets: result.pendingTargets,
+        });
         break;
       case 'labs':
-        sec_data = formatLabsForPdf(data as any[]);
+        sec_data = formatLabsForPdf(data as any[], { pendingTargets: result.pendingTargets });
         break;
     }
 
@@ -304,8 +429,9 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     const pdf = buildTextPdf(title, [sec_data]);
 
     portalAudit('portal.export.section', 'success', session.patientDfn, {
+      tenantId: session.tenantId,
       sourceIp: request.ip,
-      detail: { section, records: data.length },
+      detail: { section, records: data.length, pendingTargets: result.pendingTargets },
     });
 
     reply.header('Content-Type', 'application/pdf');
@@ -319,7 +445,8 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     const sections: { heading: string; lines: string[] }[] = [];
 
     for (const sec of EXPORTABLE_SECTIONS) {
-      const data = await fetchHealthData(session.patientDfn, sec);
+      const result = await fetchHealthData(session.patientDfn, sec);
+      const data = result.data;
       let sec_data: { heading: string; lines: string[] } = {
         heading: sec,
         lines: ['No data available.'],
@@ -341,10 +468,12 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
           sec_data = formatDemographicsForPdf(data as any[]);
           break;
         case 'immunizations':
-          sec_data = formatImmunizationsForPdf(data as any[]);
+          sec_data = formatImmunizationsForPdf(data as any[], {
+            pendingTargets: result.pendingTargets,
+          });
           break;
         case 'labs':
-          sec_data = formatLabsForPdf(data as any[]);
+          sec_data = formatLabsForPdf(data as any[], { pendingTargets: result.pendingTargets });
           break;
       }
       sections.push(sec_data);
@@ -354,6 +483,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     const pdf = buildTextPdf(title, sections);
 
     portalAudit('portal.export.full', 'success', session.patientDfn, {
+      tenantId: session.tenantId,
       sourceIp: request.ip,
       detail: { sections: EXPORTABLE_SECTIONS },
     });
@@ -376,12 +506,13 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
 
     const sectionData: Record<string, unknown[]> = {};
     for (const sec of requestedSections) {
-      sectionData[sec] = await fetchHealthData(session.patientDfn, sec);
+      sectionData[sec] = (await fetchHealthData(session.patientDfn, sec)).data;
     }
 
     const jsonExport = buildStructuredJsonExport(session.patientName, sectionData);
 
     portalAudit('portal.export.json', 'success', session.patientDfn, {
+      tenantId: session.tenantId,
       sourceIp: request.ip,
       detail: { sections: requestedSections, totalRecords: jsonExport.metadata.totalRecords },
     });
@@ -404,13 +535,14 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     const { dataset } = request.params as { dataset: string };
 
     const data = await fetchHealthData(session.patientDfn, dataset);
-    const result = generateShcCredential(dataset as any, session.patientName, data as any[]);
+    const result = generateShcCredential(dataset as any, session.patientName, data.data as any[]);
 
     if ('error' in result) {
       return reply.code(400).send({ ok: false, error: result.error });
     }
 
     portalAudit('portal.export.shc', 'success', session.patientDfn, {
+      tenantId: session.tenantId,
       sourceIp: request.ip,
       detail: { dataset, recordCount: result.meta.recordCount, devMode: result.meta.devMode },
     });
@@ -424,27 +556,28 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
 
   server.get('/portal/messages', async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    const inbox = await getInbox(session.patientDfn);
+    const inbox = await getInbox(session.tenantId, session.patientDfn);
     return reply.send({ ok: true, messages: inbox, slaDisclaimer: SLA_DISCLAIMER });
   });
 
   server.get('/portal/messages/drafts', async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    return reply.send({ ok: true, messages: await getDrafts(session.patientDfn) });
+    return reply.send({ ok: true, messages: await getDrafts(session.tenantId, session.patientDfn) });
   });
 
   server.get('/portal/messages/sent', async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    return reply.send({ ok: true, messages: await getSent(session.patientDfn) });
+    return reply.send({ ok: true, messages: await getSent(session.tenantId, session.patientDfn) });
   });
 
   server.get('/portal/messages/:id', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
-    const msg = await getMessage(id, session.patientDfn);
+    const msg = await getMessage(id, session.tenantId, session.patientDfn);
     if (!msg) return reply.code(404).send({ ok: false, error: 'Message not found' });
 
     portalAudit('portal.message.read', 'success', session.patientDfn, {
+      tenantId: session.tenantId,
       sourceIp: request.ip,
       detail: { messageId: id },
     });
@@ -454,9 +587,9 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
   server.get('/portal/messages/:id/thread', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
-    const msg = await getMessage(id, session.patientDfn);
+    const msg = await getMessage(id, session.tenantId, session.patientDfn);
     if (!msg) return reply.code(404).send({ ok: false, error: 'Message not found' });
-    const thread = await getThread(msg.threadId);
+    const thread = await getThread(session.tenantId, msg.threadId);
     return reply.send({ ok: true, messages: thread });
   });
 
@@ -464,6 +597,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     const session = requirePortalSession(request, reply);
     const body = (request.body as any) || {};
     const draft = await createDraft({
+      tenantId: session.tenantId,
       fromDfn: session.patientDfn,
       fromName: session.patientName,
       subject: body.subject || '',
@@ -473,6 +607,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     });
 
     portalAudit('portal.message.draft', 'success', session.patientDfn, {
+      tenantId: session.tenantId,
       sourceIp: request.ip,
       detail: { messageId: draft.id },
     });
@@ -484,7 +619,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const result = await updateDraft(id, session.patientDfn, body);
+    const result = await updateDraft(id, session.tenantId, session.patientDfn, body);
     if (!result)
       return reply.code(404).send({ ok: false, error: 'Draft not found or already sent' });
     return reply.send({ ok: true, message: result });
@@ -493,7 +628,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
   server.delete('/portal/messages/:id', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
-    if (!(await deleteDraft(id, session.patientDfn))) {
+    if (!(await deleteDraft(id, session.tenantId, session.patientDfn))) {
       return reply.code(404).send({ ok: false, error: 'Draft not found' });
     }
     return reply.send({ ok: true, deleted: id });
@@ -502,11 +637,15 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
   server.post('/portal/messages/:id/send', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
-    const result = await sendMessage(id, session.patientDfn);
+    const result = await sendMessage(id, session.tenantId, session.patientDfn);
+    if (result && 'error' in result) {
+      return reply.code(result.statusCode || 400).send({ ok: false, error: result.error });
+    }
     if (!result)
       return reply.code(400).send({ ok: false, error: 'Draft not found or already sent' });
 
     portalAudit('portal.message.send', 'success', session.patientDfn, {
+      tenantId: session.tenantId,
       sourceIp: request.ip,
       detail: { messageId: id },
     });
@@ -517,7 +656,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const result = await addAttachment(id, session.patientDfn, {
+    const result = await addAttachment(id, session.tenantId, session.patientDfn, {
       filename: body.filename || 'untitled',
       mimeType: body.mimeType || 'application/pdf',
       data: body.data || '',
@@ -540,7 +679,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
       const { getAdapter } = await import('../adapters/adapter-loader.js');
       const adapter = getAdapter('scheduling') as any;
       if (adapter && typeof adapter.listAppointments === 'function') {
-        const result = await adapter.listAppointments(session.patientDfn);
+        const result = await adapter.listAppointments(session.patientDfn, undefined, undefined, session.tenantId);
         if (result.ok && result.data) {
           vistaAppointments = result.data;
         }
@@ -553,8 +692,8 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     }
 
     // Also include local portal appointments (legacy Phase 27 store)
-    const upcoming = getUpcomingAppointments(session.patientDfn);
-    const past = getPastAppointments(session.patientDfn);
+    const upcoming = getUpcomingAppointments(session.tenantId, session.patientDfn);
+    const past = getPastAppointments(session.tenantId, session.patientDfn);
 
     // Normalize VistA encounters → portal shape (scheduledAt, clinicName, etc.)
     const normalizeVista = (a: any) => ({
@@ -565,6 +704,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
       duration: a.duration || 30,
       appointmentType: a.appointmentType || 'in_person',
       reason: a.reason || '',
+      source: resolveAppointmentSource(a),
     });
 
     // Merge: VistA encounters + local requests (deduplicated by ID)
@@ -595,6 +735,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     }
 
     portalAudit('portal.appointment.view', 'success', session.patientDfn, {
+      tenantId: session.tenantId,
       sourceIp: request.ip,
     });
 
@@ -609,7 +750,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
   server.get('/portal/appointments/:id', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
-    const appt = getAppointment(id, session.patientDfn);
+    const appt = getAppointment(id, session.tenantId, session.patientDfn);
     if (!appt) return reply.code(404).send({ ok: false, error: 'Appointment not found' });
     return reply.send({ ok: true, appointment: appt });
   });
@@ -637,8 +778,17 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
           appointmentType: body.appointmentType || 'in_person',
         });
 
+        if (!result.ok && !result.pending) {
+          return reply.code(502).send({
+            ok: false,
+            error: result.error || 'Scheduling request failed',
+            target: result.target,
+          });
+        }
+
         // Also store in legacy store for portal compatibility
-        requestAppointment({
+        const portalAppointment = requestAppointment({
+          tenantId: session.tenantId,
           patientDfn: session.patientDfn,
           patientName: session.patientName,
           clinicName: body.clinicName,
@@ -649,7 +799,8 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
 
         return reply.code(201).send({
           ok: true,
-          appointment: result.data,
+          appointment: portalAppointment,
+          adapterResult: result.data,
           pending: result.pending,
           target: result.target,
           notice: 'Your request has been submitted. The clinic will contact you to confirm.',
@@ -661,6 +812,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
 
     // Legacy fallback
     const appt = requestAppointment({
+      tenantId: session.tenantId,
       patientDfn: session.patientDfn,
       patientName: session.patientName,
       clinicName: body.clinicName,
@@ -689,8 +841,10 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
       if (adapter && typeof adapter.cancelAppointment === 'function') {
         const adapterResult = await adapter.cancelAppointment(id, reason, session.patientDfn);
         if (adapterResult.ok || adapterResult.pending) {
+          const localResult = requestCancellation(id, session.tenantId, session.patientDfn, reason);
           return reply.send({
             ok: true,
+            appointment: localResult || undefined,
             pending: adapterResult.pending,
             target: adapterResult.target,
             notice: adapterResult.pending
@@ -698,13 +852,18 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
               : 'Appointment cancelled.',
           });
         }
+        return reply.code(502).send({
+          ok: false,
+          error: adapterResult.error || 'Appointment cancellation failed',
+          target: adapterResult.target,
+        });
       }
     } catch {
       /* scheduling adapter unavailable -- fall through */
     }
 
     // Legacy fallback
-    const result = requestCancellation(id, session.patientDfn, reason);
+    const result = requestCancellation(id, session.tenantId, session.patientDfn, reason);
     if (!result)
       return reply
         .code(404)
@@ -728,11 +887,18 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
       const adapter = getAdapter('scheduling') as any;
       if (adapter && typeof adapter.cancelAppointment === 'function') {
         // Cancel original via adapter
-        await adapter.cancelAppointment(
+        const cancelResult = await adapter.cancelAppointment(
           id,
           body.reason || 'Reschedule requested',
           session.patientDfn
         );
+        if (!cancelResult.ok && !cancelResult.pending) {
+          return reply.code(502).send({
+            ok: false,
+            error: cancelResult.error || 'Appointment reschedule failed during cancellation',
+            target: cancelResult.target,
+          });
+        }
 
         // Create new request if preferred date given
         if (body.preference || body.preferredDate) {
@@ -742,9 +908,33 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
             preferredDate: body.preferredDate || body.preference || '',
             reason: body.reason || 'Rescheduled appointment',
           });
+          if (!newResult.ok && !newResult.pending) {
+            return reply.code(502).send({
+              ok: false,
+              error: newResult.error || 'Appointment reschedule failed',
+              target: newResult.target,
+            });
+          }
+          const updatedOriginal = requestReschedule(
+            id,
+            session.tenantId,
+            session.patientDfn,
+            body.preference || body.preferredDate || ''
+          );
+          const portalAppointment = requestAppointment({
+            tenantId: session.tenantId,
+            patientDfn: session.patientDfn,
+            patientName: session.patientName,
+            clinicName: body.clinicName || 'Rescheduled',
+            appointmentType: body.appointmentType || 'in_person',
+            preferredDate: body.preferredDate || body.preference || '',
+            reason: body.reason || 'Rescheduled appointment',
+          });
           return reply.send({
             ok: true,
-            data: newResult.data,
+            appointment: portalAppointment,
+            previousAppointment: updatedOriginal || undefined,
+            adapterResult: newResult.data,
             pending: newResult.pending,
             target: newResult.target,
             notice:
@@ -764,7 +954,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     }
 
     // Legacy fallback
-    const result = requestReschedule(id, session.patientDfn, body.preference || '');
+    const result = requestReschedule(id, session.tenantId, session.patientDfn, body.preference || '');
     if (!result)
       return reply
         .code(404)
@@ -783,7 +973,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
 
   server.get('/portal/shares', async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    const shares = getPatientShares(session.patientDfn);
+    const shares = getPatientShares(session.tenantId, session.patientDfn);
     // Strip access codes from the list response (only shown at creation)
     const safe = shares.map(({ accessCode, ...rest }) => rest);
     return reply.send({ ok: true, shares: safe });
@@ -802,13 +992,14 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     if (!dob) {
       try {
         const demoData = await fetchHealthData(session.patientDfn, 'demographics');
-        if (demoData.length > 0) dob = (demoData[0] as any).dob || '';
+        if (demoData.data.length > 0) dob = (demoData.data[0] as any).dob || '';
       } catch {
         // DOB fetch failed — proceed with empty DOB (non-critical for share link)
       }
     }
 
     const result = createShareLink({
+      tenantId: session.tenantId,
       patientDfn: session.patientDfn,
       patientName: session.patientName,
       patientDob: dob,
@@ -837,7 +1028,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
   server.post('/portal/shares/:id/revoke', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
-    if (!revokeShare(id, session.patientDfn)) {
+    if (!revokeShare(id, session.patientDfn, session.tenantId)) {
       return reply.code(404).send({ ok: false, error: 'Share not found or already revoked' });
     }
     return reply.send({ ok: true, deleted: id });
@@ -879,7 +1070,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     // Fetch only the allowed sections
     const sectionData: Record<string, unknown[]> = {};
     for (const sec of result.sections) {
-      sectionData[sec] = await fetchHealthData(result.patientDfn, sec);
+      sectionData[sec] = (await fetchHealthData(result.patientDfn, sec)).data;
     }
 
     return reply.send({
@@ -897,14 +1088,14 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
 
   server.get('/portal/settings', async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    const settings = getSettings(session.patientDfn);
+    const settings = await getSettings(session.tenantId, session.patientDfn);
     return reply.send({ ok: true, settings, languages: LANGUAGE_OPTIONS });
   });
 
   server.put('/portal/settings', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const body = (request.body as any) || {};
-    const result = updateSettings(session.patientDfn, body);
+    const result = await updateSettings(session.tenantId, session.patientDfn, body);
     if ('error' in result) return reply.code(400).send({ ok: false, error: result.error });
     return reply.send({ ok: true, settings: result });
   });
@@ -915,7 +1106,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
 
   server.get('/portal/proxy/list', async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    const proxies = getProxiesForPatient(session.patientDfn);
+    const proxies = getProxiesForPatient(session.tenantId, session.patientDfn);
     return reply.send({ ok: true, proxies });
   });
 
@@ -930,6 +1121,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     }
 
     const proxy = grantProxy(
+      session.tenantId,
       session.patientDfn,
       body.proxyDfn,
       body.proxyName,
@@ -948,7 +1140,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
       return reply.code(400).send({ ok: false, error: 'proxyId is required' });
     }
 
-    if (!revokeProxyAccess(body.proxyId, session.patientDfn)) {
+    if (!revokeProxyAccess(body.proxyId, session.tenantId, session.patientDfn)) {
       return reply.code(404).send({ ok: false, error: 'Proxy relationship not found' });
     }
     return reply.send({ ok: true, deleted: body.proxyId });
@@ -975,7 +1167,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
 
   server.get('/portal/refills', async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    const refills = getPatientRefills(session.patientDfn);
+    const refills = getPatientRefills(session.tenantId, session.patientDfn);
     return reply.send({ ok: true, refills });
   });
 
@@ -990,6 +1182,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     }
 
     const result = requestRefill({
+      tenantId: session.tenantId,
       patientDfn: session.patientDfn,
       patientName: session.patientName,
       medicationName: body.medicationName,
@@ -1009,7 +1202,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
 
-    const cancelled = cancelRefill(id, session.patientDfn);
+    const cancelled = cancelRefill(id, session.patientDfn, session.tenantId);
     if (!cancelled) {
       return reply
         .code(404)
@@ -1029,13 +1222,13 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     const statusFilter = query.status ? query.status.split(',') : undefined;
     const categoryFilter = query.category ? query.category.split(',') : undefined;
 
-    const tasks = getPatientTasks(session.patientDfn, { statusFilter, categoryFilter });
+    const tasks = getPatientTasks(session.tenantId, session.patientDfn, { statusFilter, categoryFilter });
     return reply.send({ ok: true, tasks });
   });
 
   server.get('/portal/tasks/counts', async (request, reply) => {
     const session = requirePortalSession(request, reply);
-    const counts = getPatientTaskCounts(session.patientDfn);
+    const counts = getPatientTaskCounts(session.tenantId, session.patientDfn);
     return reply.send({ ok: true, ...counts });
   });
 
@@ -1043,7 +1236,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
 
-    const dismissed = dismissTask(id, session.patientDfn);
+    const dismissed = dismissTask(id, session.patientDfn, session.tenantId);
     if (!dismissed) {
       return reply.code(404).send({ ok: false, error: 'Task not found or already resolved' });
     }
@@ -1054,7 +1247,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
 
-    const completed = completeTask(id, session.patientDfn);
+    const completed = completeTask(id, session.patientDfn, session.tenantId);
     if (!completed) {
       return reply.code(404).send({ ok: false, error: 'Task not found or already resolved' });
     }
@@ -1066,14 +1259,19 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
   /* ================================================================ */
 
   server.get('/portal/staff/refills', async (request, reply) => {
-    requirePortalSession(request, reply);
-    // In production: check staff role. For now, any authenticated portal user can view.
-    const queue = getStaffRefillQueue();
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
+    const query = (request.query as any) || {};
+    const patientDfn = String(query.patientDfn || '').trim();
+    const queue = getStaffRefillQueueForTenant(session.tenantId).filter((item) => {
+      return !patientDfn || item.patientDfn === patientDfn;
+    });
     return reply.send({ ok: true, refills: queue });
   });
 
   server.post('/portal/staff/refills/:id/review', async (request, reply) => {
-    const session = requirePortalSession(request, reply);
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
 
@@ -1084,9 +1282,10 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     const result = reviewRefill(
       id,
       body.action,
-      session.patientDfn, // Using session DFN as clinician ID in sandbox
-      session.patientName,
-      body.note || ''
+      session.duz,
+      session.userName || session.duz,
+      body.note || '',
+      session.tenantId
     );
 
     if ('error' in result) {
@@ -1096,22 +1295,32 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
   });
 
   server.get('/portal/staff/tasks', async (request, reply) => {
-    requirePortalSession(request, reply);
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
     const query = (request.query as any) || {};
     const categoryFilter = query.category ? query.category.split(',') : undefined;
+    const patientDfn = String(query.patientDfn || '').trim();
 
-    const tasks = getStaffTaskQueue({ categoryFilter });
+    const tasks = getStaffTaskQueue({ tenantId: session.tenantId, categoryFilter }).filter((task) => {
+      return !patientDfn || task.patientDfn === patientDfn;
+    });
     return reply.send({ ok: true, tasks });
   });
 
   server.get('/portal/staff/messages', async (request, reply) => {
-    requirePortalSession(request, reply);
-    const queue = await getStaffMessageQueue();
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
+    const query = (request.query as any) || {};
+    const patientDfn = String(query.patientDfn || '').trim();
+    const queue = (await getStaffMessageQueue(session.tenantId)).filter((message) => {
+      return !patientDfn || message.fromDfn === patientDfn || message.toDfn === patientDfn;
+    });
     return reply.send({ ok: true, messages: queue });
   });
 
   server.post('/portal/staff/messages/:id/reply', async (request, reply) => {
-    const session = requirePortalSession(request, reply);
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
 
@@ -1120,9 +1329,10 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     }
 
     const result = await clinicianReply({
+      tenantId: session.tenantId,
       replyToId: id,
-      clinicianDuz: session.patientDfn, // clinician DUZ in sandbox
-      clinicianName: session.patientName, // clinician name
+      clinicianDuz: session.duz,
+      clinicianName: session.userName || session.duz,
       body: body.body,
     });
 

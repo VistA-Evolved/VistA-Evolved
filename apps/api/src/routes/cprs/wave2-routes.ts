@@ -14,7 +14,7 @@
  * Draft fallback: server-side structured draft when RPC is unavailable.
  *
  * Endpoints:
- *   POST /vista/cprs/problems/add       -- ORQQPL ADD SAVE
+ *   POST /vista/cprs/problems/add       -- VE PROBLEM ADD
  *   POST /vista/cprs/problems/edit      -- ORQQPL EDIT SAVE
  *   POST /vista/cprs/notes/create       -- TIU CREATE RECORD + TIU SET DOCUMENT TEXT
  *   POST /vista/cprs/orders/draft       -- ORWDX LOCK + ORWDX SAVE + ORWDX UNLOCK
@@ -34,6 +34,7 @@ import { optionalRpc } from '../../vista/rpcCapabilities.js';
 import { safeCallRpc, safeCallRpcWithList } from '../../lib/rpc-resilience.js';
 import { audit } from '../../lib/audit.js';
 import { log } from '../../lib/logger.js';
+import { safeErr } from '../../lib/safe-error.js';
 import { createDraft } from '../write-backs.js';
 import { idempotencyGuard, idempotencyOnSend } from '../../middleware/idempotency.js';
 
@@ -67,6 +68,38 @@ function validateRequired(body: Record<string, unknown>, fields: string[]): Vali
   return errors;
 }
 
+function buildTiuTextBuffer(noteText: unknown): Record<string, string> {
+  const textData: Record<string, string> = { HDR: '1^1' };
+  String(noteText || '')
+    .split(/\r?\n/)
+    .forEach((line, index) => {
+      textData[`TEXT,${index + 1},0`] = line;
+    });
+  return textData;
+}
+
+function parseTiuLineCount(lines: string[]): number {
+  for (const line of lines) {
+    const match = line.match(/Line Count:\s*(\d+)/i);
+    if (match) return parseInt(match[1], 10) || 0;
+  }
+  return -1;
+}
+
+function normalizeExpectedNoteLines(noteText: unknown): string[] {
+  return String(noteText || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+}
+
+function tiuReadbackContainsExpectedText(lines: string[], noteText: unknown): boolean {
+  const expected = normalizeExpectedNoteLines(noteText);
+  if (expected.length === 0) return false;
+  const haystack = lines.map((line) => line.trim()).filter((line) => line.length > 0);
+  return expected.every((line) => haystack.includes(line));
+}
+
 /* getIdempotencyKey removed in Phase 154 -- DB-backed middleware uses Idempotency-Key header */
 
 /* ------------------------------------------------------------------ */
@@ -95,6 +128,90 @@ function getActor(request: any): string {
   return (request as any).session?.duz ?? (request as any).session?.userName ?? 'unknown';
 }
 
+function resolveTenantId(request: any): string | null {
+  const requestTenantId =
+    typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+      ? request.tenantId.trim()
+      : undefined;
+  const sessionTenantId =
+    typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+      ? request.session.tenantId.trim()
+      : undefined;
+  const headerTenantId = request?.headers?.['x-tenant-id'];
+  const headerTenant =
+    typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+      ? headerTenantId.trim()
+      : undefined;
+  return requestTenantId || sessionTenantId || headerTenant || null;
+}
+
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
+function hasVistaRuntimeError(lines: string[]): boolean {
+  const raw = lines.join('\n');
+  return (
+    raw.trim().startsWith('-1') ||
+    /M\s+ERROR|%YDB-E-|LVUNDEF|LAST REF=|More actual parameters than formal parameters/i.test(raw)
+  );
+}
+
+const QUICK_ORDER_LOCATION_IEN = '2';
+
+function normalizeProblemStatus(status: unknown): 'A' | 'I' {
+  const raw = typeof status === 'string' ? status.trim().toUpperCase() : '';
+  if (raw === 'I' || raw === 'INACTIVE') return 'I';
+  return 'A';
+}
+
+interface ProblemLexiconMatch {
+  ien: string;
+  text: string;
+  code: string;
+}
+
+function parseProblemLexicon(lines: string[]): ProblemLexiconMatch[] {
+  return lines
+    .filter((line) => line.trim().length > 0)
+    .map((line) => {
+      const [ien = '', text = '', code = ''] = line.split('^');
+      return { ien: ien.trim(), text: text.trim(), code: code.trim() };
+    })
+    .filter((entry) => entry.ien.length > 0);
+}
+
+async function resolveProblemLexicon(
+  problemText: string,
+  icdCode: string,
+  lexIen?: string
+): Promise<ProblemLexiconMatch | null> {
+  const requestedIen = String(lexIen || '').trim();
+  const normalizedText = problemText.trim().toLowerCase();
+  const normalizedCode = icdCode.trim().toUpperCase();
+  const lines = await safeCallRpc('ORQQPL4 LEX', [problemText]);
+  const matches = parseProblemLexicon(lines);
+
+  if (requestedIen) {
+    return matches.find((entry) => entry.ien === requestedIen) || null;
+  }
+
+  const exactText = matches.find((entry) => entry.text.trim().toLowerCase() === normalizedText);
+  if (exactText) return exactText;
+
+  if (normalizedCode) {
+    const exactCode = matches.find((entry) => entry.code.trim().toUpperCase() === normalizedCode);
+    if (exactCode) return exactCode;
+    const prefixCode = matches.find((entry) => entry.code.trim().toUpperCase().startsWith(normalizedCode));
+    if (prefixCode) return prefixCode;
+  }
+
+  return matches.length === 1 ? matches[0] : null;
+}
+
 /* ------------------------------------------------------------------ */
 /* Route plugin                                                        */
 /* ------------------------------------------------------------------ */
@@ -113,13 +230,20 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
 
   /* ================================================================
    * POST /vista/cprs/problems/add
-   * RPC: ORQQPL ADD SAVE
+   * RPC: VE PROBLEM ADD
    * ================================================================ */
   server.post('/vista/cprs/problems/add', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
-    const { dfn, problemText, icdCode, onset, status: probStatus, comment: _comment } = body;
-    const rpcUsed = ['ORQQPL ADD SAVE'];
-    const vivianPresence = { 'ORQQPL ADD SAVE': 'present' as const };
+    const { dfn, problemText, icdCode, lexIen, onset, status: probStatus, comment: _comment } =
+      body;
+    const rpcUsed = ['VE PROBLEM ADD', 'ORQQPL ADD SAVE'];
+    const vivianPresence = {
+      'VE PROBLEM ADD': 'present' as const,
+      'ORQQPL ADD SAVE': 'present' as const,
+    };
+    const normalizedStatus = normalizeProblemStatus(probStatus);
 
     // Validate
     const errors = validateRequired(body, ['dfn', 'problemText']);
@@ -128,45 +252,80 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
 
     // Idempotency
-    const check = optionalRpc('ORQQPL ADD SAVE');
+    const check = optionalRpc('VE PROBLEM ADD');
     const actor = getActor(request);
 
     if (check.available) {
+      let resolvedLex: ProblemLexiconMatch | null = null;
       try {
         validateCredentials();
         await connect();
-        const duz = getDuz();
+        resolvedLex = await resolveProblemLexicon(String(problemText), String(icdCode || ''), String(lexIen || ''));
+        if (!resolvedLex) {
+          disconnect();
+          return reply.code(400).send({
+            ok: false,
+            error: 'Select a valid lexicon diagnosis before saving the problem',
+            rpcUsed: [...rpcUsed, 'ORQQPL4 LEX'],
+            vivianPresence: { ...vivianPresence, 'ORQQPL4 LEX': 'present' as const },
+          });
+        }
+
         const resp = await safeCallRpc(
-          'ORQQPL ADD SAVE',
-          [validDfn!, duz, String(problemText), icdCode || '', onset || '', probStatus || 'A'],
+          'VE PROBLEM ADD',
+          [
+            validDfn!,
+            resolvedLex.text,
+            resolvedLex.ien,
+            onset || '',
+            normalizedStatus,
+            '',
+          ],
           { idempotent: false }
         );
+
+        if (hasVistaRuntimeError(resp)) {
+          throw new Error(resp.join('\n').trim() || 'VE PROBLEM ADD returned runtime error output');
+        }
+
+        const firstLine = (resp[0] || '').trim();
+        const [okFlag = '0', problemIen = '', message = 'Problem added'] = firstLine.split('^');
+        if (okFlag !== '1') {
+          throw new Error(message || firstLine || 'VE PROBLEM ADD did not confirm save');
+        }
+
         disconnect();
 
         const result = {
           ok: true,
           mode: 'real',
           status: 'saved',
+          problemIen,
+          lexIen: resolvedLex.ien,
           rpcUsed,
           vivianPresence,
-          response: resp.join('\n'),
+          message: message || 'Problem saved to VistA',
+          response: firstLine,
         };
         auditWrite('clinical.problem-add', 'success', actor, validDfn!, {
           mode: 'real',
-          rpc: 'ORQQPL ADD SAVE',
+          rpc: 'VE PROBLEM ADD',
         });
         return result;
       } catch (err: any) {
         disconnect();
-        log.warn('ORQQPL ADD SAVE failed, falling back to draft', { error: err.message });
+        log.warn('VE PROBLEM ADD failed, falling back to draft', {
+          error: safeErr(err),
+          lexIen: resolvedLex?.ien,
+        });
       }
     }
 
     // Draft fallback
-    const draft = createDraft('problem-save', validDfn!, 'ORQQPL ADD SAVE', {
+    const draft = createDraft('problem-save', validDfn!, 'VE PROBLEM ADD', {
       action: 'add',
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.problem-add', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -179,7 +338,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       syncPending: true,
       rpcUsed,
       vivianPresence,
-      message: 'Problem saved as server-side draft. ORQQPL ADD SAVE sync pending.',
+      message: 'Problem saved as server-side draft. VE PROBLEM ADD sync pending.',
     };
     return result;
   });
@@ -189,6 +348,8 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
    * RPC: ORQQPL EDIT SAVE
    * ================================================================ */
   server.post('/vista/cprs/problems/edit', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const {
       dfn,
@@ -201,6 +362,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     } = body;
     const rpcUsed = ['ORQQPL EDIT SAVE'];
     const vivianPresence = { 'ORQQPL EDIT SAVE': 'present' as const };
+    const normalizedStatus = normalizeProblemStatus(probStatus);
 
     const errors = validateRequired(body, ['dfn', 'problemIen']);
     const validDfn = validateDfn(dfn);
@@ -224,10 +386,15 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
             problemText || '',
             icdCode || '',
             onset || '',
-            probStatus || 'A',
+            normalizedStatus,
           ],
           { idempotent: false }
         );
+
+        if (hasVistaRuntimeError(resp)) {
+          throw new Error(resp.join('\n').trim() || 'ORQQPL EDIT SAVE returned runtime error output');
+        }
+
         disconnect();
 
         const result = {
@@ -245,14 +412,14 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
         return result;
       } catch (err: any) {
         disconnect();
-        log.warn('ORQQPL EDIT SAVE failed, falling back to draft', { error: err.message });
+        log.warn('ORQQPL EDIT SAVE failed, falling back to draft', { error: safeErr(err) });
       }
     }
 
     const draft = createDraft('problem-save', validDfn!, 'ORQQPL EDIT SAVE', {
       action: 'edit',
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.problem-edit', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -275,12 +442,21 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
    * RPC: TIU CREATE RECORD + TIU SET DOCUMENT TEXT
    * ================================================================ */
   server.post('/vista/cprs/notes/create', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, titleIen, noteText, visitDate, visitLocation } = body;
-    const rpcUsed = ['TIU CREATE RECORD', 'TIU SET DOCUMENT TEXT'];
+    const rpcUsed = [
+      'TIU CREATE RECORD',
+      'TIU SET DOCUMENT TEXT',
+      'TIU DETAILED DISPLAY',
+      'TIU GET RECORD TEXT',
+    ];
     const vivianPresence = {
       'TIU CREATE RECORD': 'present' as const,
       'TIU SET DOCUMENT TEXT': 'present' as const,
+      'TIU DETAILED DISPLAY': 'present' as const,
+      'TIU GET RECORD TEXT': 'present' as const,
     };
 
     const errors = validateRequired(body, ['dfn', 'titleIen', 'noteText']);
@@ -297,40 +473,93 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
         validateCredentials();
         await connect();
         const duz = getDuz();
+        const now = new Date();
+        const fmYear = now.getFullYear() - 1700;
+        const defaultFmDate = `${fmYear}${String(now.getMonth() + 1).padStart(2, '0')}${String(
+          now.getDate()
+        ).padStart(2, '0')}.${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
+        const createFmDate = String(visitDate || defaultFmDate);
+        const createLocation = String(visitLocation || '2');
+        const createFields: Record<string, string> = {
+          '1202': String(duz),
+          '1301': createFmDate,
+        };
 
-        // Step 1: Create the record with LIST params
+        // Use the known-good Phase 7B TIU contract instead of the drifted 5-param variant.
         const createResp = await safeCallRpcWithList(
           'TIU CREATE RECORD',
           [
             { type: 'literal', value: validDfn! },
             { type: 'literal', value: String(titleIen) },
-            { type: 'literal', value: duz },
-            { type: 'literal', value: visitLocation || '' },
-            { type: 'literal', value: visitDate || '' },
+            { type: 'literal', value: createFmDate },
+            { type: 'literal', value: createLocation },
+            { type: 'literal', value: '' },
+            { type: 'list', value: createFields },
+            { type: 'literal', value: '' },
+            { type: 'literal', value: '1' },
+            { type: 'literal', value: '0' },
           ],
           { idempotent: false }
         );
 
         const docIen = createResp[0]?.split('^')[0]?.trim();
-        if (!docIen || docIen.startsWith('-1')) {
+        if (!docIen || docIen === '0' || docIen.startsWith('-1')) {
           disconnect();
           throw new Error(`TIU CREATE RECORD returned error: ${createResp.join(' ')}`);
         }
 
-        // Step 2: Set the text
-        const textLines: Record<string, string> = {};
-        const noteLines = String(noteText).split('\n');
-        noteLines.forEach((line, i) => {
-          textLines[`"TEXT",${i + 1},0`] = line;
-        });
-        await safeCallRpcWithList(
+        const textResp = await safeCallRpcWithList(
           'TIU SET DOCUMENT TEXT',
           [
             { type: 'literal', value: docIen },
-            { type: 'list', value: textLines },
+            { type: 'list', value: buildTiuTextBuffer(noteText) },
+            { type: 'literal', value: '0' },
           ],
           { idempotent: false }
         );
+
+        const textAck = textResp[0]?.trim() || '';
+        if (textAck.startsWith('0^')) {
+          disconnect();
+          return {
+            ok: false,
+            status: 'create-blocked',
+            blocker: 'note_text_write_failed',
+            message:
+              textAck.split('^').slice(3).join('^') ||
+              'VistA rejected the note body text for this TIU note.',
+            documentIen: docIen,
+            rpcUsed,
+            vivianPresence,
+          };
+        }
+
+        const detailLines = await safeCallRpc('TIU DETAILED DISPLAY', [docIen], { idempotent: true });
+        const readbackLines = await safeCallRpc('TIU GET RECORD TEXT', [docIen], {
+          idempotent: true,
+        });
+        const lineCount = parseTiuLineCount(detailLines);
+        const hasPersistedBody =
+          lineCount > 0 ||
+          tiuReadbackContainsExpectedText(readbackLines, noteText) ||
+          tiuReadbackContainsExpectedText(detailLines, noteText);
+        if (!hasPersistedBody) {
+          disconnect();
+          auditWrite('clinical.note-create', 'failure', actor, validDfn!, {
+            mode: 'blocked-text-not-persisted',
+            rpc: 'TIU SET DOCUMENT TEXT',
+          });
+          return {
+            ok: false,
+            status: 'create-blocked',
+            blocker: 'note_text_not_persisted',
+            message:
+              'VistA created a shell TIU note but did not persist the note body text in this environment. Creation is blocked to avoid false success.',
+            documentIen: docIen,
+            rpcUsed,
+            vivianPresence,
+          };
+        }
 
         disconnect();
 
@@ -356,7 +585,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const draft = createDraft('order-sign', validDfn!, 'TIU CREATE RECORD', {
       action: 'note-create',
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.note-create', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -379,6 +608,8 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
    * RPC: ORWDX LOCK + ORWDX SAVE + ORWDX UNLOCK (always unlock)
    * ================================================================ */
   server.post('/vista/cprs/orders/draft', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, orderDialog, orderItems, urgency: _urgency, comment: _comment } = body;
     const rpcUsed = ['ORWDX LOCK', 'ORWDX SAVE', 'ORWDX UNLOCK'];
@@ -461,7 +692,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const draft = createDraft('order-sign', validDfn!, 'ORWDX SAVE', {
       action: 'order-draft',
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.order-draft', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -484,6 +715,8 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
    * RPC: ORWDXA VERIFY
    * ================================================================ */
   server.post('/vista/cprs/orders/verify', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, orderId, verifyAction } = body;
     const rpcUsed = ['ORWDXA VERIFY'];
@@ -530,7 +763,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const draft = createDraft('order-release', validDfn!, 'ORWDXA VERIFY', {
       action: 'order-verify',
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.order-verify', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -560,6 +793,8 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
    *   RSIEN   = reason-for-DC IEN from 100.02 (empty for default)
    * ================================================================ */
   server.post('/vista/cprs/orders/dc', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, orderId, reason, dcType } = body;
     const rpcUsed = ['ORWDX LOCK', 'ORWDXA DC', 'ORWDX UNLOCK'];
@@ -614,6 +849,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
         const respText = resp.join('\n').trim();
         const hasError =
           respText.includes('cannot be') || respText.startsWith('-1') || respText.includes('ERROR');
+        const createdUnsignedDcOrder = /\*UNSIGNED\*/i.test(respText) && /^~?\d+;\d+/m.test(respText);
 
         if (hasError) {
           const result = {
@@ -625,6 +861,26 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           };
           auditWrite('clinical.order-dc', 'failure', actor, validDfn!, {
             mode: 'error',
+            rpc: 'ORWDXA DC',
+          });
+          return result;
+        }
+
+        if (createdUnsignedDcOrder) {
+          const result = {
+            ok: true,
+            mode: 'draft',
+            status: 'sync-pending',
+            syncPending: true,
+            rpcUsed,
+            vivianPresence,
+            response: respText,
+            message:
+              `Discontinue request for order ${orderId} created but remains unsigned. ` +
+              'The original order may remain active until the discontinue order is signed.',
+          };
+          auditWrite('clinical.order-dc', 'success', actor, validDfn!, {
+            mode: 'draft',
             rpc: 'ORWDXA DC',
           });
           return result;
@@ -658,7 +914,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       orderId,
       reason: reason || '',
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.order-dc', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -682,6 +938,8 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
    * Params: ORIFN^FLAG REASON (text)
    * ================================================================ */
   server.post('/vista/cprs/orders/flag', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, orderId, flagReason } = body;
     const rpcUsed = ['ORWDXA FLAG'];
@@ -749,7 +1007,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       orderId,
       flagReason: flagReason || '',
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.order-flag', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -772,6 +1030,8 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
    * RPC: ORWDX LOCK + ORWDXM AUTOACK + ORWDX UNLOCK
    * ================================================================ */
   server.post('/vista/cprs/meds/quick-order', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, quickOrderIen } = body;
     const rpcUsed = ['ORWDX LOCK', 'ORWDXM AUTOACK', 'ORWDX UNLOCK'];
@@ -788,6 +1048,35 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
 
     const check = optionalRpc('ORWDXM AUTOACK');
     const actor = getActor(request);
+
+    const replyWithDraftBlocker = () => {
+      const draft = createDraft(
+        'order-sign',
+        validDfn!,
+        'ORWDXM AUTOACK',
+        {
+          action: 'meds-quick-order',
+          quickOrderIen: String(quickOrderIen),
+          attemptedAt: new Date().toISOString(),
+        },
+        tenantId
+      );
+      auditWrite('clinical.medication-add', 'success', actor, validDfn!, {
+        mode: 'draft',
+        draftId: draft.id,
+      });
+      return reply.code(409).send({
+        ok: false,
+        mode: 'draft',
+        draftId: draft.id,
+        status: 'order-blocked',
+        syncPending: true,
+        error:
+          'Medication quick order could not be placed live in VistA. A server-side draft was saved for follow-up.',
+        rpcUsed,
+        vivianPresence,
+      });
+    };
 
     if (check.available) {
       let locked = false;
@@ -812,7 +1101,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
         // AUTOACK
         const ackResp = await safeCallRpc(
           'ORWDXM AUTOACK',
-          [validDfn!, duz, String(quickOrderIen)],
+          [validDfn!, duz, QUICK_ORDER_LOCATION_IEN, String(quickOrderIen)],
           { idempotent: false }
         );
 
@@ -822,13 +1111,24 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
 
         disconnect();
 
+        const ackRaw = ackResp.join('\n').trim();
+        if (hasVistaRuntimeError(ackResp) || !ackRaw || ackRaw === '0') {
+          return replyWithDraftBlocker();
+        }
+
+        const orderIEN = (ackRaw.split(/[\^;]/)[0]?.trim() || ackRaw).replace(/^~/, '');
+        if (!/^\d+$/.test(orderIEN)) {
+          return replyWithDraftBlocker();
+        }
+
         const result = {
           ok: true,
           mode: 'real',
-          status: 'ordered',
+          status: 'unsigned',
+          orderIEN,
           rpcUsed,
           vivianPresence,
-          response: ackResp.join('\n'),
+          message: 'Medication quick order created in VistA and remains unsigned until signed.',
         };
         auditWrite('clinical.medication-add', 'success', actor, validDfn!, {
           mode: 'real',
@@ -840,29 +1140,12 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
           await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
         }
         disconnect();
-        log.warn('ORWDXM AUTOACK failed, falling back to draft', { error: err.message });
+        log.warn('ORWDXM AUTOACK failed, saving draft blocker', { error: safeErr(err) });
+        return replyWithDraftBlocker();
       }
     }
 
-    const draft = createDraft('order-sign', validDfn!, 'ORWDXM AUTOACK', {
-      action: 'meds-quick-order',
-      attemptedAt: new Date().toISOString(),
-    });
-    auditWrite('clinical.medication-add', 'success', actor, validDfn!, {
-      mode: 'draft',
-      draftId: draft.id,
-    });
-    const result = {
-      ok: true,
-      mode: 'draft',
-      draftId: draft.id,
-      status: 'sync-pending',
-      syncPending: true,
-      rpcUsed,
-      vivianPresence,
-      message: 'Quick order saved as server-side draft. ORWDXM AUTOACK sync pending.',
-    };
-    return result;
+    return replyWithDraftBlocker();
   });
 
   /* ================================================================
@@ -870,6 +1153,8 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
    * RPC: ORWLRR ACK
    * ================================================================ */
   server.post('/vista/cprs/labs/ack', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, labIds } = body;
     const rpcUsed = ['ORWLRR ACK'];
@@ -917,7 +1202,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const draft = createDraft('lab-ack', validDfn!, 'ORWLRR ACK', {
       action: 'lab-ack',
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.lab-ack', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -941,6 +1226,8 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
    * RPC: GMV ADD VM
    * ================================================================ */
   server.post('/vista/cprs/vitals/add', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, vitalType, value, units, qualifier } = body;
     const rpcUsed = ['GMV ADD VM'];
@@ -987,7 +1274,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const draft = createDraft('order-sign', validDfn!, 'GMV ADD VM', {
       action: 'vitals-add',
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.vitals-add', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -1010,6 +1297,8 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
    * RPC: ORWDAL32 SAVE ALLERGY
    * ================================================================ */
   server.post('/vista/cprs/allergies/add', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, reactant, reactions, severity, observedHistorical, comments } = body;
     const rpcUsed = ['ORWDAL32 SAVE ALLERGY'];
@@ -1078,7 +1367,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const draft = createDraft('order-sign', validDfn!, 'ORWDAL32 SAVE ALLERGY', {
       action: 'allergy-add',
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.allergy-add', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -1101,6 +1390,8 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
    * RPC: ORQQCN2 MED RESULTS
    * ================================================================ */
   server.post('/vista/cprs/consults/complete', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, consultIen, resultText, urgency } = body;
     const rpcUsed = ['ORQQCN2 MED RESULTS'];
@@ -1148,7 +1439,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
     const draft = createDraft('consult-create', validDfn!, 'ORQQCN2 MED RESULTS', {
       action: 'consult-complete',
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.consult-complete', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,

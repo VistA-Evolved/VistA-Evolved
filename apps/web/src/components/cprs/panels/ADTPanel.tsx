@@ -1,50 +1,89 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
-
-/* ------------------------------------------------------------------ */
-/* Types                                                                */
-/* ------------------------------------------------------------------ */
+import styles from '../cprs.module.css';
 
 interface Ward {
   ien: string;
   name: string;
 }
+
 interface Team {
   ien: string;
   name: string;
 }
+
 interface Specialty {
   ien: string;
   name: string;
 }
+
 interface PatientEntry {
   dfn: string;
   name: string;
 }
+
 interface AdmissionEntry {
   dfn: string;
   name: string;
   admitDate: string;
   ward: string;
   roomBed: string;
+  movementType?: string;
+  locationText?: string;
+  rawDateTime?: string;
 }
+
+interface CensusSummary {
+  ien: string;
+  name: string;
+  patientCount: number;
+}
+
+interface CensusPatient {
+  dfn: string;
+  name: string;
+  admitDate: string;
+  ward: string;
+  roomBed: string;
+}
+
+interface MovementEntry {
+  date: string;
+  type: string;
+  fromLocation: string;
+  toLocation: string;
+  ward: string;
+  roomBed: string;
+  provider: string;
+}
+
 interface ApiResponse<T> {
   ok: boolean;
   source?: string;
   count: number;
   results: T[];
-  rpcUsed: string[];
-  pendingTargets: string[];
+  rpcUsed?: string[];
+  pendingTargets?: string[];
   _integration?: string;
   _error?: string;
+  _note?: string;
+  wardIen?: string;
 }
 
-/* ------------------------------------------------------------------ */
-/* Shared fetcher                                                        */
-/* ------------------------------------------------------------------ */
+type SubTab = 'ward' | 'provider' | 'team' | 'specialty' | 'admissions' | 'census' | 'movements';
+
+const SUB_TABS: Array<{ key: SubTab; label: string }> = [
+  { key: 'census', label: 'Census' },
+  { key: 'movements', label: 'Movements' },
+  { key: 'ward', label: 'Ward Lists' },
+  { key: 'provider', label: 'My Patients' },
+  { key: 'team', label: 'Teams' },
+  { key: 'specialty', label: 'Specialty' },
+  { key: 'admissions', label: 'Admissions' },
+];
 
 async function apiFetch<T>(path: string): Promise<ApiResponse<T>> {
   try {
@@ -70,494 +109,504 @@ async function apiFetch<T>(path: string): Promise<ApiResponse<T>> {
       results: [],
       rpcUsed: [],
       pendingTargets: [],
-      _error: err.message,
+      _error: err?.message || 'Request failed',
     };
   }
 }
 
-/* ------------------------------------------------------------------ */
-/* Sub-components                                                        */
-/* ------------------------------------------------------------------ */
-
-function IntegrationPendingBanner({ label, targets }: { label: string; targets: string[] }) {
+function Banner({ title, children, tone = 'warning' }: { title: string; children: string; tone?: 'warning' | 'info' }) {
+  const palette =
+    tone === 'warning'
+      ? { bg: '#fef3c7', border: '#f59e0b', text: '#92400e' }
+      : { bg: '#eff6ff', border: '#60a5fa', text: '#1d4ed8' };
   return (
     <div
       style={{
-        background: '#fef3c7',
-        border: '1px solid #f59e0b',
+        background: palette.bg,
+        border: `1px solid ${palette.border}`,
         borderRadius: 4,
         padding: '8px 12px',
         margin: '8px 0',
         fontSize: 12,
-        color: '#92400e',
+        color: palette.text,
       }}
     >
-      <strong>Integration Pending:</strong> {label}
-      {targets.length > 0 && (
-        <span style={{ marginLeft: 8 }}>
-          Target RPC{targets.length > 1 ? 's' : ''}: {targets.join(', ')}
-        </span>
-      )}
+      <strong>{title}:</strong> {children}
     </div>
   );
 }
 
-function LoadingRow() {
-  return (
-    <tr>
-      <td colSpan={4} style={{ padding: 12, textAlign: 'center', color: '#6b7280', fontSize: 12 }}>
-        Loading from VistA...
-      </td>
-    </tr>
-  );
+function PendingBanner({ label, targets, note }: { label: string; targets?: string[]; note?: string }) {
+  if ((!targets || targets.length === 0) && !note) return null;
+  const suffix = targets && targets.length > 0 ? ` | Target RPC${targets.length > 1 ? 's' : ''}: ${targets.join(', ')}` : '';
+  const noteSuffix = note ? ` | ${note}` : '';
+  return <Banner title="Integration Pending">{`${label}${suffix}${noteSuffix}`}</Banner>;
 }
 
-function EmptyRow({ message }: { message: string }) {
-  return (
-    <tr>
-      <td colSpan={4} style={{ padding: 12, textAlign: 'center', color: '#9ca3af', fontSize: 12 }}>
-        {message}
-      </td>
-    </tr>
-  );
+function RpcBanner({ rpcUsed }: { rpcUsed?: string[] }) {
+  if (!rpcUsed || rpcUsed.length === 0) return null;
+  return <Banner title="RPC Used" tone="info">{rpcUsed.join(', ')}</Banner>;
 }
 
-function PatientTable({
-  patients,
-  loading,
-  emptyMsg,
-}: {
-  patients: PatientEntry[];
-  loading: boolean;
-  emptyMsg: string;
-}) {
+function TableShell({ columns, loading, emptyMessage, children }: { columns: string[]; loading: boolean; emptyMessage: string; children: ReactNode }) {
+  const childCount = Array.isArray(children) ? children.length : children ? 1 : 0;
   return (
-    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+    <table className={styles.dataTable}>
       <thead>
-        <tr style={{ background: '#f3f4f6', borderBottom: '1px solid #e5e7eb' }}>
-          <th style={{ textAlign: 'left', padding: '6px 8px' }}>DFN</th>
-          <th style={{ textAlign: 'left', padding: '6px 8px' }}>Patient Name</th>
+        <tr>
+          {columns.map((column) => (
+            <th key={column}>{column}</th>
+          ))}
         </tr>
       </thead>
       <tbody>
         {loading ? (
-          <LoadingRow />
-        ) : patients.length === 0 ? (
-          <EmptyRow message={emptyMsg} />
+          <tr>
+            <td colSpan={columns.length} className={styles.loadingText}>Loading from VistA...</td>
+          </tr>
+        ) : childCount === 0 ? (
+          <tr>
+            <td colSpan={columns.length} className={styles.emptyText}>{emptyMessage}</td>
+          </tr>
         ) : (
-          patients.map((p) => (
-            <tr key={p.dfn} style={{ borderBottom: '1px solid #f3f4f6' }}>
-              <td style={{ padding: '4px 8px' }}>{p.dfn}</td>
-              <td style={{ padding: '4px 8px' }}>{p.name}</td>
-            </tr>
-          ))
+          children
         )}
       </tbody>
     </table>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* Sub-tab: Ward Census                                                  */
-/* ------------------------------------------------------------------ */
+function ListSelector({ label, value, disabled, options, placeholder, onChange }: { label: string; value: string; disabled?: boolean; options: Array<{ value: string; label: string }>; placeholder: string; onChange: (value: string) => void }) {
+  return (
+    <div className={styles.formGroup} style={{ maxWidth: 320 }}>
+      <label>{label}</label>
+      <select className={styles.formSelect} value={value} disabled={disabled} onChange={(e) => onChange(e.target.value)}>
+        <option value="">{placeholder}</option>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
 
-function WardCensusTab() {
+function PatientTable({ patients, loading, emptyMessage }: { patients: PatientEntry[]; loading: boolean; emptyMessage: string }) {
+  return (
+    <TableShell columns={['DFN', 'Patient Name']} loading={loading} emptyMessage={emptyMessage}>
+      {patients.map((patient) => (
+        <tr key={patient.dfn}>
+          <td>{patient.dfn}</td>
+          <td>{patient.name}</td>
+        </tr>
+      ))}
+    </TableShell>
+  );
+}
+
+function WardListsTab() {
   const [wards, setWards] = useState<Ward[]>([]);
   const [wardsLoading, setWardsLoading] = useState(true);
+  const [wardsPendingTargets, setWardsPendingTargets] = useState<string[]>([]);
+  const [wardsRpcUsed, setWardsRpcUsed] = useState<string[]>([]);
   const [wardsError, setWardsError] = useState<string | null>(null);
-  const [wardsPending, setWardsPending] = useState<string[]>([]);
-
   const [selectedWard, setSelectedWard] = useState('');
   const [patients, setPatients] = useState<PatientEntry[]>([]);
   const [patientsLoading, setPatientsLoading] = useState(false);
-  const [patientsPending, setPatientsPending] = useState<string[]>([]);
+  const [patientsPendingTargets, setPatientsPendingTargets] = useState<string[]>([]);
+  const [patientsRpcUsed, setPatientsRpcUsed] = useState<string[]>([]);
 
   useEffect(() => {
+    let cancelled = false;
     setWardsLoading(true);
-    apiFetch<Ward>('/vista/adt/wards').then((r) => {
-      setWards(r.results);
-      setWardsError(r._error || null);
-      setWardsPending(r.pendingTargets || []);
+    void apiFetch<Ward>('/vista/adt/wards').then((response) => {
+      if (cancelled) return;
+      setWards(response.results || []);
+      setWardsPendingTargets(response.pendingTargets || []);
+      setWardsRpcUsed(response.rpcUsed || []);
+      setWardsError(response._error || null);
       setWardsLoading(false);
     });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const loadWardPatients = useCallback((wardIen: string) => {
     setSelectedWard(wardIen);
     if (!wardIen) {
       setPatients([]);
+      setPatientsPendingTargets([]);
+      setPatientsRpcUsed([]);
       return;
     }
     setPatientsLoading(true);
-    apiFetch<PatientEntry>(`/vista/adt/ward-patients?ward=${encodeURIComponent(wardIen)}`).then(
-      (r) => {
-        setPatients(r.results);
-        setPatientsPending(r.pendingTargets || []);
-        setPatientsLoading(false);
-      }
-    );
-  }, []);
-
-  return (
-    <div>
-      {wardsPending.length > 0 && (
-        <IntegrationPendingBanner label="Ward list" targets={wardsPending} />
-      )}
-      <div style={{ marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
-        <label style={{ fontSize: 12, fontWeight: 600 }}>Ward:</label>
-        <select
-          value={selectedWard}
-          onChange={(e) => loadWardPatients(e.target.value)}
-          disabled={wardsLoading}
-          style={{ fontSize: 12, padding: '2px 4px', minWidth: 200 }}
-        >
-          <option value="">{wardsLoading ? 'Loading wards...' : '-- Select Ward --'}</option>
-          {wards.map((w) => (
-            <option key={w.ien} value={w.ien}>
-              {w.name}
-            </option>
-          ))}
-        </select>
-        {wardsError && <span style={{ color: '#ef4444', fontSize: 11 }}>{wardsError}</span>}
-      </div>
-      {patientsPending.length > 0 && (
-        <IntegrationPendingBanner label="Ward patient list" targets={patientsPending} />
-      )}
-      {selectedWard && (
-        <PatientTable
-          patients={patients}
-          loading={patientsLoading}
-          emptyMsg="No patients on this ward"
-        />
-      )}
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Sub-tab: My Patients (Provider)                                       */
-/* ------------------------------------------------------------------ */
-
-function MyPatientsTab() {
-  const [patients, setPatients] = useState<PatientEntry[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [pending, setPending] = useState<string[]>([]);
-
-  useEffect(() => {
-    apiFetch<PatientEntry>('/vista/adt/provider-patients').then((r) => {
-      setPatients(r.results);
-      setPending(r.pendingTargets || []);
-      setLoading(false);
-    });
-  }, []);
-
-  return (
-    <div>
-      {pending.length > 0 && (
-        <IntegrationPendingBanner label="Provider patients" targets={pending} />
-      )}
-      <PatientTable patients={patients} loading={loading} emptyMsg="No patients assigned to you" />
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Sub-tab: Team Patients                                                */
-/* ------------------------------------------------------------------ */
-
-function TeamPatientsTab() {
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [teamsLoading, setTeamsLoading] = useState(true);
-  const [teamsPending, setTeamsPending] = useState<string[]>([]);
-
-  const [selectedTeam, setSelectedTeam] = useState('');
-  const [patients, setPatients] = useState<PatientEntry[]>([]);
-  const [patientsLoading, setPatientsLoading] = useState(false);
-  const [patientsPending, setPatientsPending] = useState<string[]>([]);
-
-  useEffect(() => {
-    setTeamsLoading(true);
-    apiFetch<Team>('/vista/adt/teams').then((r) => {
-      setTeams(r.results);
-      setTeamsPending(r.pendingTargets || []);
-      setTeamsLoading(false);
-    });
-  }, []);
-
-  const loadTeamPatients = useCallback((teamIen: string) => {
-    setSelectedTeam(teamIen);
-    if (!teamIen) {
-      setPatients([]);
-      return;
-    }
-    setPatientsLoading(true);
-    apiFetch<PatientEntry>(`/vista/adt/team-patients?team=${encodeURIComponent(teamIen)}`).then(
-      (r) => {
-        setPatients(r.results);
-        setPatientsPending(r.pendingTargets || []);
-        setPatientsLoading(false);
-      }
-    );
-  }, []);
-
-  return (
-    <div>
-      {teamsPending.length > 0 && (
-        <IntegrationPendingBanner label="Team list" targets={teamsPending} />
-      )}
-      <div style={{ marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
-        <label style={{ fontSize: 12, fontWeight: 600 }}>Team:</label>
-        <select
-          value={selectedTeam}
-          onChange={(e) => loadTeamPatients(e.target.value)}
-          disabled={teamsLoading}
-          style={{ fontSize: 12, padding: '2px 4px', minWidth: 200 }}
-        >
-          <option value="">{teamsLoading ? 'Loading teams...' : '-- Select Team --'}</option>
-          {teams.map((t) => (
-            <option key={t.ien} value={t.ien}>
-              {t.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      {patientsPending.length > 0 && (
-        <IntegrationPendingBanner label="Team patients" targets={patientsPending} />
-      )}
-      {selectedTeam && (
-        <PatientTable
-          patients={patients}
-          loading={patientsLoading}
-          emptyMsg="No patients on this team"
-        />
-      )}
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Sub-tab: Specialty                                                    */
-/* ------------------------------------------------------------------ */
-
-function SpecialtyTab() {
-  const [specialties, setSpecialties] = useState<Specialty[]>([]);
-  const [specLoading, setSpecLoading] = useState(true);
-  const [specPending, setSpecPending] = useState<string[]>([]);
-
-  const [selectedSpec, setSelectedSpec] = useState('');
-  const [patients, setPatients] = useState<PatientEntry[]>([]);
-  const [patientsLoading, setPatientsLoading] = useState(false);
-  const [patientsPending, setPatientsPending] = useState<string[]>([]);
-
-  useEffect(() => {
-    setSpecLoading(true);
-    apiFetch<Specialty>('/vista/adt/specialties').then((r) => {
-      setSpecialties(r.results);
-      setSpecPending(r.pendingTargets || []);
-      setSpecLoading(false);
-    });
-  }, []);
-
-  const loadSpecialtyPatients = useCallback((specIen: string) => {
-    setSelectedSpec(specIen);
-    if (!specIen) {
-      setPatients([]);
-      return;
-    }
-    setPatientsLoading(true);
-    apiFetch<PatientEntry>(
-      `/vista/adt/specialty-patients?specialty=${encodeURIComponent(specIen)}`
-    ).then((r) => {
-      setPatients(r.results);
-      setPatientsPending(r.pendingTargets || []);
+    void apiFetch<PatientEntry>(`/vista/adt/ward-patients?ward=${encodeURIComponent(wardIen)}`).then((response) => {
+      setPatients(response.results || []);
+      setPatientsPendingTargets(response.pendingTargets || []);
+      setPatientsRpcUsed(response.rpcUsed || []);
       setPatientsLoading(false);
     });
   }, []);
 
   return (
     <div>
-      {specPending.length > 0 && (
-        <IntegrationPendingBanner label="Specialty list" targets={specPending} />
-      )}
-      <div style={{ marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
-        <label style={{ fontSize: 12, fontWeight: 600 }}>Specialty:</label>
-        <select
-          value={selectedSpec}
-          onChange={(e) => loadSpecialtyPatients(e.target.value)}
-          disabled={specLoading}
-          style={{ fontSize: 12, padding: '2px 4px', minWidth: 200 }}
-        >
-          <option value="">{specLoading ? 'Loading...' : '-- Select Specialty --'}</option>
-          {specialties.map((s) => (
-            <option key={s.ien} value={s.ien}>
-              {s.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      {patientsPending.length > 0 && (
-        <IntegrationPendingBanner label="Specialty patients" targets={patientsPending} />
-      )}
-      {selectedSpec && (
-        <PatientTable
-          patients={patients}
-          loading={patientsLoading}
-          emptyMsg="No patients for this specialty"
-        />
-      )}
+      <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Ward Lists</h3>
+      <PendingBanner label="Ward list" targets={wardsPendingTargets} note={wardsError || undefined} />
+      <RpcBanner rpcUsed={wardsRpcUsed} />
+      <ListSelector
+        label="Ward"
+        value={selectedWard}
+        disabled={wardsLoading}
+        options={wards.map((ward) => ({ value: ward.ien, label: ward.name }))}
+        placeholder={wardsLoading ? 'Loading wards...' : 'Select ward'}
+        onChange={loadWardPatients}
+      />
+      <PendingBanner label="Ward patient list" targets={patientsPendingTargets} />
+      <RpcBanner rpcUsed={patientsRpcUsed} />
+      <PatientTable patients={patients} loading={patientsLoading} emptyMessage="No patients on this ward." />
     </div>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* Sub-tab: Admission History (patient-scoped)                           */
-/* ------------------------------------------------------------------ */
-
-function AdmissionHistoryTab({ dfn }: { dfn: string }) {
-  const [admissions, setAdmissions] = useState<AdmissionEntry[]>([]);
+function ProviderPatientsTab() {
+  const [response, setResponse] = useState<ApiResponse<PatientEntry> | null>(null);
   const [loading, setLoading] = useState(true);
-  const [pending, setPending] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!dfn) return;
+    let cancelled = false;
     setLoading(true);
-    apiFetch<AdmissionEntry>(`/vista/adt/admission-list?dfn=${encodeURIComponent(dfn)}`).then(
-      (r) => {
-        setAdmissions(r.results);
-        setPending(r.pendingTargets || []);
-        setLoading(false);
-      }
-    );
+    void apiFetch<PatientEntry>('/vista/adt/provider-patients').then((next) => {
+      if (cancelled) return;
+      setResponse(next);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return (
+    <div>
+      <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>My Patients</h3>
+      <PendingBanner label="Provider patients" targets={response?.pendingTargets} note={response?._error} />
+      <RpcBanner rpcUsed={response?.rpcUsed} />
+      <PatientTable patients={response?.results || []} loading={loading} emptyMessage="No patients assigned to this provider." />
+    </div>
+  );
+}
+
+function TeamsTab() {
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [teamsLoading, setTeamsLoading] = useState(true);
+  const [teamsPendingTargets, setTeamsPendingTargets] = useState<string[]>([]);
+  const [teamsRpcUsed, setTeamsRpcUsed] = useState<string[]>([]);
+  const [selectedTeam, setSelectedTeam] = useState('');
+  const [patients, setPatients] = useState<PatientEntry[]>([]);
+  const [patientsLoading, setPatientsLoading] = useState(false);
+  const [patientsPendingTargets, setPatientsPendingTargets] = useState<string[]>([]);
+  const [patientsRpcUsed, setPatientsRpcUsed] = useState<string[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setTeamsLoading(true);
+    void apiFetch<Team>('/vista/adt/teams').then((response) => {
+      if (cancelled) return;
+      setTeams(response.results || []);
+      setTeamsPendingTargets(response.pendingTargets || []);
+      setTeamsRpcUsed(response.rpcUsed || []);
+      setTeamsLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const loadTeamPatients = useCallback((teamIen: string) => {
+    setSelectedTeam(teamIen);
+    if (!teamIen) {
+      setPatients([]);
+      setPatientsPendingTargets([]);
+      setPatientsRpcUsed([]);
+      return;
+    }
+    setPatientsLoading(true);
+    void apiFetch<PatientEntry>(`/vista/adt/team-patients?team=${encodeURIComponent(teamIen)}`).then((response) => {
+      setPatients(response.results || []);
+      setPatientsPendingTargets(response.pendingTargets || []);
+      setPatientsRpcUsed(response.rpcUsed || []);
+      setPatientsLoading(false);
+    });
+  }, []);
+
+  return (
+    <div>
+      <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Team Patients</h3>
+      <PendingBanner label="Team list" targets={teamsPendingTargets} />
+      <RpcBanner rpcUsed={teamsRpcUsed} />
+      <ListSelector
+        label="Team"
+        value={selectedTeam}
+        disabled={teamsLoading}
+        options={teams.map((team) => ({ value: team.ien, label: team.name }))}
+        placeholder={teamsLoading ? 'Loading teams...' : 'Select team'}
+        onChange={loadTeamPatients}
+      />
+      <PendingBanner label="Team patient list" targets={patientsPendingTargets} />
+      <RpcBanner rpcUsed={patientsRpcUsed} />
+      <PatientTable patients={patients} loading={patientsLoading} emptyMessage="No patients found for this team." />
+    </div>
+  );
+}
+
+function SpecialtyTab() {
+  const [specialties, setSpecialties] = useState<Specialty[]>([]);
+  const [specialtiesLoading, setSpecialtiesLoading] = useState(true);
+  const [specialtiesPendingTargets, setSpecialtiesPendingTargets] = useState<string[]>([]);
+  const [specialtiesRpcUsed, setSpecialtiesRpcUsed] = useState<string[]>([]);
+  const [selectedSpecialty, setSelectedSpecialty] = useState('');
+  const [patients, setPatients] = useState<PatientEntry[]>([]);
+  const [patientsLoading, setPatientsLoading] = useState(false);
+  const [patientsPendingTargets, setPatientsPendingTargets] = useState<string[]>([]);
+  const [patientsRpcUsed, setPatientsRpcUsed] = useState<string[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setSpecialtiesLoading(true);
+    void apiFetch<Specialty>('/vista/adt/specialties').then((response) => {
+      if (cancelled) return;
+      setSpecialties(response.results || []);
+      setSpecialtiesPendingTargets(response.pendingTargets || []);
+      setSpecialtiesRpcUsed(response.rpcUsed || []);
+      setSpecialtiesLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const loadSpecialtyPatients = useCallback((specialtyIen: string) => {
+    setSelectedSpecialty(specialtyIen);
+    if (!specialtyIen) {
+      setPatients([]);
+      setPatientsPendingTargets([]);
+      setPatientsRpcUsed([]);
+      return;
+    }
+    setPatientsLoading(true);
+    void apiFetch<PatientEntry>(`/vista/adt/specialty-patients?specialty=${encodeURIComponent(specialtyIen)}`).then((response) => {
+      setPatients(response.results || []);
+      setPatientsPendingTargets(response.pendingTargets || []);
+      setPatientsRpcUsed(response.rpcUsed || []);
+      setPatientsLoading(false);
+    });
+  }, []);
+
+  return (
+    <div>
+      <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Specialty Patients</h3>
+      <PendingBanner label="Specialty list" targets={specialtiesPendingTargets} />
+      <RpcBanner rpcUsed={specialtiesRpcUsed} />
+      <ListSelector
+        label="Specialty"
+        value={selectedSpecialty}
+        disabled={specialtiesLoading}
+        options={specialties.map((specialty) => ({ value: specialty.ien, label: specialty.name }))}
+        placeholder={specialtiesLoading ? 'Loading specialties...' : 'Select specialty'}
+        onChange={loadSpecialtyPatients}
+      />
+      <PendingBanner label="Specialty patient list" targets={patientsPendingTargets} />
+      <RpcBanner rpcUsed={patientsRpcUsed} />
+      <PatientTable patients={patients} loading={patientsLoading} emptyMessage="No patients found for this specialty." />
+    </div>
+  );
+}
+
+function AdmissionsTab({ dfn }: { dfn: string }) {
+  const [response, setResponse] = useState<ApiResponse<AdmissionEntry> | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    void apiFetch<AdmissionEntry>(`/vista/adt/admission-list?dfn=${encodeURIComponent(dfn)}`).then((next) => {
+      if (cancelled) return;
+      setResponse(next);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [dfn]);
 
   return (
     <div>
-      {pending.length > 0 && (
-        <IntegrationPendingBanner label="Admission history" targets={pending} />
-      )}
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-        <thead>
-          <tr style={{ background: '#f3f4f6', borderBottom: '1px solid #e5e7eb' }}>
-            <th style={{ textAlign: 'left', padding: '6px 8px' }}>Admit Date</th>
-            <th style={{ textAlign: 'left', padding: '6px 8px' }}>Ward</th>
-            <th style={{ textAlign: 'left', padding: '6px 8px' }}>Room</th>
-            <th style={{ textAlign: 'left', padding: '6px 8px' }}>Patient</th>
+      <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Admission History</h3>
+      <PendingBanner label="Admission history" targets={response?.pendingTargets} note={response?._error} />
+      <RpcBanner rpcUsed={response?.rpcUsed} />
+      <TableShell columns={['Admit Date', 'Movement', 'Ward', 'Location']} loading={loading} emptyMessage="No admission history found.">
+        {(response?.results || []).map((admission, index) => (
+          <tr key={`${admission.dfn}-${index}`}>
+            <td>{admission.admitDate || '—'}</td>
+            <td>{admission.movementType || 'ADMISSION'}</td>
+            <td>{admission.ward || '—'}</td>
+            <td>{admission.locationText || admission.roomBed || '—'}</td>
           </tr>
-        </thead>
-        <tbody>
-          {loading ? (
-            <LoadingRow />
-          ) : admissions.length === 0 ? (
-            <EmptyRow message="No admission history found" />
-          ) : (
-            admissions.map((a, i) => (
-              <tr key={`${a.dfn}-${i}`} style={{ borderBottom: '1px solid #f3f4f6' }}>
-                <td style={{ padding: '4px 8px' }}>{a.admitDate}</td>
-                <td style={{ padding: '4px 8px' }}>{a.ward}</td>
-                <td style={{ padding: '4px 8px' }}>{a.roomBed || '--'}</td>
-                <td style={{ padding: '4px 8px' }}>{a.name}</td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+        ))}
+      </TableShell>
     </div>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* Main Panel                                                            */
-/* ------------------------------------------------------------------ */
+function CensusTab() {
+  const [summary, setSummary] = useState<ApiResponse<CensusSummary> | null>(null);
+  const [summaryLoading, setSummaryLoading] = useState(true);
+  const [selectedWard, setSelectedWard] = useState('');
+  const [detail, setDetail] = useState<ApiResponse<CensusPatient> | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
 
-type SubTab = 'ward' | 'provider' | 'team' | 'specialty' | 'admissions';
+  useEffect(() => {
+    let cancelled = false;
+    setSummaryLoading(true);
+    void apiFetch<CensusSummary>('/vista/adt/census').then((response) => {
+      if (cancelled) return;
+      setSummary(response);
+      setSummaryLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
-const SUB_TABS: { key: SubTab; label: string }[] = [
-  { key: 'ward', label: 'Ward Census' },
-  { key: 'provider', label: 'My Patients' },
-  { key: 'team', label: 'Team Patients' },
-  { key: 'specialty', label: 'Specialty' },
-  { key: 'admissions', label: 'Admissions' },
-];
-
-export default function ADTPanel({ dfn }: { dfn: string }) {
-  const [activeTab, setActiveTab] = useState<SubTab>('ward');
+  const loadWardDetail = useCallback((wardIen: string) => {
+    setSelectedWard(wardIen);
+    if (!wardIen) {
+      setDetail(null);
+      return;
+    }
+    setDetailLoading(true);
+    void apiFetch<CensusPatient>(`/vista/adt/census?ward=${encodeURIComponent(wardIen)}`).then((response) => {
+      setDetail(response);
+      setDetailLoading(false);
+    });
+  }, []);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      {/* Header */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '8px 12px',
-          borderBottom: '1px solid var(--cprs-border, #e5e7eb)',
-          background: 'var(--cprs-surface, #f9fafb)',
-        }}
-      >
-        <h2 style={{ fontSize: 14, fontWeight: 600, margin: 0, marginRight: 16 }}>
-          ADT / Inpatient Lists
-        </h2>
-        <span
-          style={{
-            fontSize: 10,
-            color: '#6b7280',
-            padding: '2px 6px',
-            background: '#e5e7eb',
-            borderRadius: 3,
-          }}
-        >
-          Phase 67 -- VistA-first read posture
-        </span>
+    <div className={styles.splitPane}>
+      <div className={styles.splitLeft} style={{ maxWidth: 360 }}>
+        <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Ward Census Summary</h3>
+        <PendingBanner label="Census summary" targets={summary?.pendingTargets} note={summary?._error || summary?._note} />
+        <RpcBanner rpcUsed={summary?.rpcUsed} />
+        <TableShell columns={['Ward', 'Patients']} loading={summaryLoading} emptyMessage="No ward census summary returned.">
+          {(summary?.results || []).map((ward) => (
+            <tr
+              key={ward.ien}
+              onClick={() => loadWardDetail(ward.ien)}
+              style={{ background: selectedWard === ward.ien ? 'var(--cprs-hover-bg)' : undefined, cursor: 'pointer' }}
+            >
+              <td>{ward.name}</td>
+              <td>{ward.patientCount}</td>
+            </tr>
+          ))}
+        </TableShell>
       </div>
+      <div className={styles.splitRight}>
+        <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Selected Ward Census</h3>
+        <PendingBanner label="Ward census detail" targets={detail?.pendingTargets} note={detail?._error} />
+        <RpcBanner rpcUsed={detail?.rpcUsed} />
+        <TableShell columns={['DFN', 'Patient', 'Admit Date', 'Ward', 'Room/Bed']} loading={detailLoading} emptyMessage="Select a ward to load census detail.">
+          {(detail?.results || []).map((patient) => (
+            <tr key={`${patient.dfn}-${patient.name}`}>
+              <td>{patient.dfn}</td>
+              <td>{patient.name}</td>
+              <td>{patient.admitDate || '—'}</td>
+              <td>{patient.ward || '—'}</td>
+              <td>{patient.roomBed || '—'}</td>
+            </tr>
+          ))}
+        </TableShell>
+      </div>
+    </div>
+  );
+}
 
-      {/* Sub-tab strip */}
-      <div
-        style={{
-          display: 'flex',
-          borderBottom: '1px solid var(--cprs-border, #e5e7eb)',
-          background: 'var(--cprs-surface, #fff)',
-        }}
-      >
-        {SUB_TABS.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setActiveTab(t.key)}
-            style={{
-              padding: '6px 14px',
-              fontSize: 12,
-              border: 'none',
-              cursor: 'pointer',
-              background: activeTab === t.key ? 'var(--cprs-selected, #dbeafe)' : 'transparent',
-              color:
-                activeTab === t.key
-                  ? 'var(--cprs-text, #1e3a5f)'
-                  : 'var(--cprs-text-muted, #6b7280)',
-              fontWeight: activeTab === t.key ? 600 : 400,
-              borderBottom:
-                activeTab === t.key
-                  ? '2px solid var(--cprs-accent, #2563eb)'
-                  : '2px solid transparent',
-            }}
-          >
-            {t.label}
+function MovementsTab({ dfn }: { dfn: string }) {
+  const [response, setResponse] = useState<ApiResponse<MovementEntry> | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    void apiFetch<MovementEntry>(`/vista/adt/movements?dfn=${encodeURIComponent(dfn)}`).then((next) => {
+      setResponse(next);
+      setLoading(false);
+    });
+  }, [dfn]);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  return (
+    <div>
+      <div className={styles.panelToolbar}>
+        <h3 style={{ margin: 0, fontSize: 15 }}>Patient Movement Timeline</h3>
+        <button className={styles.btn} onClick={refresh}>Refresh</button>
+      </div>
+      <PendingBanner label="Movement history" targets={response?.pendingTargets} note={response?._error || response?._note} />
+      <RpcBanner rpcUsed={response?.rpcUsed} />
+      <TableShell columns={['Date', 'Type', 'From', 'To', 'Ward', 'Room/Bed', 'Provider']} loading={loading} emptyMessage="No movement history returned for this patient.">
+        {(response?.results || []).map((movement, index) => (
+          <tr key={`${movement.date}-${movement.type}-${index}`}>
+            <td>{movement.date || '—'}</td>
+            <td>{movement.type || '—'}</td>
+            <td>{movement.fromLocation || '—'}</td>
+            <td>{movement.toLocation || '—'}</td>
+            <td>{movement.ward || '—'}</td>
+            <td>{movement.roomBed || '—'}</td>
+            <td>{movement.provider || '—'}</td>
+          </tr>
+        ))}
+      </TableShell>
+      <div style={{ marginTop: 10, padding: 12, border: '1px solid var(--cprs-border)', borderRadius: 4, background: 'var(--cprs-section-bg)' }}>
+        <strong>Truthfulness Contract</strong>
+        <p style={{ margin: '6px 0 0', fontSize: 12, color: 'var(--cprs-text-muted)' }}>
+          This tab uses the live movements route. In VEHU it may currently show admissions only because full transfer and discharge history depends on the custom ZVEADT MVHIST RPC rather than the standard ORWPT16 admission list.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default function ADTPanel({ dfn }: { dfn: string }) {
+  const [activeTab, setActiveTab] = useState<SubTab>('census');
+
+  return (
+    <div>
+      <div className={styles.panelTitle}>ADT / Inpatient Operations</div>
+      <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: '2px 0 10px' }}>
+        Contract: Phase 137 ADT census and movement depth over live `/vista/adt/*` routes, with truthful DG write posture.
+      </p>
+
+      <Banner title="Writeback Posture">
+        ADT writes remain integration-pending in VEHU. Admit, transfer, and discharge must stay explicit about DGPM NEW ADMISSION, DGPM NEW TRANSFER, and DGPM NEW DISCHARGE instead of presenting fake completion.
+      </Banner>
+
+      <div className={styles.panelToolbar} style={{ flexWrap: 'wrap' }}>
+        {SUB_TABS.map((tab) => (
+          <button key={tab.key} className={activeTab === tab.key ? styles.btnPrimary : styles.btn} onClick={() => setActiveTab(tab.key)}>
+            {tab.label}
           </button>
         ))}
       </div>
 
-      {/* Write actions banner */}
-      <IntegrationPendingBanner
-        label="ADT write actions (Admit, Transfer, Discharge) require VistA DG package RPCs"
-        targets={['DGPM NEW ADMISSION', 'DGPM NEW TRANSFER', 'DGPM NEW DISCHARGE']}
-      />
-
-      {/* Sub-tab content */}
-      <div style={{ flex: 1, overflow: 'auto', padding: '8px 12px' }}>
-        {activeTab === 'ward' && <WardCensusTab />}
-        {activeTab === 'provider' && <MyPatientsTab />}
-        {activeTab === 'team' && <TeamPatientsTab />}
-        {activeTab === 'specialty' && <SpecialtyTab />}
-        {activeTab === 'admissions' && <AdmissionHistoryTab dfn={dfn} />}
-      </div>
+      {activeTab === 'census' && <CensusTab />}
+      {activeTab === 'movements' && <MovementsTab dfn={dfn} />}
+      {activeTab === 'ward' && <WardListsTab />}
+      {activeTab === 'provider' && <ProviderPatientsTab />}
+      {activeTab === 'team' && <TeamsTab />}
+      {activeTab === 'specialty' && <SpecialtyTab />}
+      {activeTab === 'admissions' && <AdmissionsTab dfn={dfn} />}
     </div>
   );
 }

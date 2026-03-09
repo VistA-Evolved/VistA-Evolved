@@ -1,16 +1,37 @@
 'use client';
 
 import { useEffect, useCallback, useState, useRef } from 'react';
-import { useDataCache } from '@/stores/data-cache';
+import { useDataCache, type DomainFetchMeta } from '@/stores/data-cache';
 import { useCPRSUI, DEFAULT_PANEL_ORDER, DEFAULT_PANEL_HEIGHTS } from '@/stores/cprs-ui-state';
+import { usePatient } from '@/stores/patient-context';
+import { useSession } from '@/stores/session-context';
+import { API_BASE } from '@/lib/api-config';
+import { correlatedGet } from '@/lib/fetch-with-correlation';
 import IntegrationPendingModal, { type PendingActionInfo } from '../IntegrationPendingModal';
 import { getActionsByLocation } from '@/actions/actionRegistry';
 import styles from '../cprs.module.css';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001';
-
 interface Props {
   dfn: string;
+}
+
+function buildStableRowKey(index: number, values: Array<unknown>): string {
+  const parts = values
+    .map((value) => String(value ?? '').trim())
+    .filter(Boolean);
+  return parts.length > 0 ? `${parts.join('|')}|${index}` : `row-${index}`;
+}
+
+function formatCoverAppointmentDate(value: string | undefined | null): string {
+  if (!value) return '\u2014';
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  const year = parsed.getFullYear();
+  const month = String(parsed.getMonth() + 1).padStart(2, '0');
+  const day = String(parsed.getDate()).padStart(2, '0');
+  const hours = String(parsed.getHours()).padStart(2, '0');
+  const minutes = String(parsed.getMinutes()).padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -156,11 +177,22 @@ function Section({
   );
 }
 
-async function fetchJson(url: string) {
-  const res = await fetch(url, { credentials: 'include' });
-  if (!res.ok) throw new Error(`${res.status}`);
-  return res.json();
+async function fetchJson<T>(url: string): Promise<T> {
+  return correlatedGet<T>(url);
 }
+
+function isImmunizationErrorResult(entry: any): boolean {
+  const label = String(entry?.name || entry?.ien || '').toUpperCase();
+  return (
+    label.includes('%YDB-E-') ||
+    label.includes('LVUNDEF') ||
+    label.includes('TMP("DIERR"') ||
+    label.includes('TMP(\"DIERR\"')
+  );
+}
+
+const CACHE_RETRY_LIMIT = 2;
+const CUSTOM_RETRY_LIMIT = 2;
 
 /* ------------------------------------------------------------------ */
 /* Panel content renderers                                            */
@@ -168,15 +200,25 @@ async function fetchJson(url: string) {
 
 interface PanelData {
   problems: any[];
+  problemsMeta: DomainFetchMeta;
   allergies: any[];
+  allergiesMeta: DomainFetchMeta;
   meds: any[];
+  medsMeta: DomainFetchMeta;
   vitals: any[];
+  vitalsMeta: DomainFetchMeta;
   notes: any[];
+  notesMeta: DomainFetchMeta;
   labs: any[];
+  labsMeta: DomainFetchMeta;
   ordersSummary: { unsigned: number; recent: any[] } | null;
+  ordersPending: boolean;
+  appointments: any[];
+  appointmentsPending: boolean;
   immunizations: any[];
   immuPending: boolean;
   reminders: any[];
+  remindersPending: boolean;
 }
 
 interface PanelLoading {
@@ -187,6 +229,7 @@ interface PanelLoading {
   notes: boolean;
   labs: boolean;
   orders: boolean;
+  appointments: boolean;
   immunizations: boolean;
   reminders: boolean;
 }
@@ -199,13 +242,50 @@ interface PanelDef {
   render: (data: PanelData) => React.ReactNode;
 }
 
-function buildPanelDefs(): Record<string, PanelDef> {
+interface CoverOrdersSummaryResponse {
+  ok?: boolean;
+  status?: string;
+  unsigned?: number;
+  recent?: any[];
+  pendingTargets?: string[];
+}
+
+interface CoverImmunizationsResponse {
+  ok?: boolean;
+  _integration?: string;
+  results?: any[];
+  pendingTargets?: string[];
+}
+
+interface CoverAppointmentsResponse {
+  ok?: boolean;
+  status?: string;
+  results?: any[];
+  pendingTargets?: string[];
+}
+
+interface CoverRemindersResponse {
+  ok?: boolean;
+  status?: string;
+  results?: any[];
+  pendingTargets?: string[];
+}
+
+function buildPanelDefs(data: PanelData): Record<string, PanelDef> {
   return {
     problems: {
       title: 'Active Problems',
       contractId: 'CT_PROBLEMS',
+      pending: data.problemsMeta.pending && data.problems.length === 0,
+      pendingActionId: 'cover.load-problems',
       render: (d) =>
-        d.problems.length === 0 ? (
+        d.problemsMeta.pending ? (
+          <p className={styles.pendingText}>
+            Problem list unavailable.
+            <br />
+            <span style={{ fontSize: 11, color: '#888' }}>Target: ORQQPL PROBLEM LIST</span>
+          </p>
+        ) : d.problems.length === 0 ? (
           <p className={styles.emptyText}>No active problems</p>
         ) : (
           <table className={styles.dataTable}>
@@ -217,8 +297,8 @@ function buildPanelDefs(): Record<string, PanelDef> {
               </tr>
             </thead>
             <tbody>
-              {d.problems.map((p) => (
-                <tr key={p.id}>
+              {d.problems.map((p, i) => (
+                <tr key={buildStableRowKey(i, [p.id, p.text, p.status, p.onset])}>
                   <td>{p.text}</td>
                   <td>
                     <span className={`${styles.badge} ${styles[p.status] || ''}`}>{p.status}</span>
@@ -233,8 +313,16 @@ function buildPanelDefs(): Record<string, PanelDef> {
     allergies: {
       title: 'Allergies / Adverse Reactions',
       contractId: 'ORQQAL LIST',
+      pending: data.allergiesMeta.pending && data.allergies.length === 0,
+      pendingActionId: 'cover.load-allergies',
       render: (d) =>
-        d.allergies.length === 0 ? (
+        d.allergiesMeta.pending ? (
+          <p className={styles.pendingText}>
+            Allergy data unavailable.
+            <br />
+            <span style={{ fontSize: 11, color: '#888' }}>Target: ORQQAL LIST</span>
+          </p>
+        ) : d.allergies.length === 0 ? (
           <p className={styles.emptyText}>No known allergies</p>
         ) : (
           <table className={styles.dataTable}>
@@ -246,8 +334,8 @@ function buildPanelDefs(): Record<string, PanelDef> {
               </tr>
             </thead>
             <tbody>
-              {d.allergies.map((a) => (
-                <tr key={a.id}>
+              {d.allergies.map((a, i) => (
+                <tr key={buildStableRowKey(i, [a.id, a.allergen, a.severity, a.reactions])}>
                   <td>{a.allergen}</td>
                   <td>{a.severity}</td>
                   <td>{a.reactions}</td>
@@ -260,8 +348,16 @@ function buildPanelDefs(): Record<string, PanelDef> {
     meds: {
       title: 'Active Medications',
       contractId: 'ORWPS ACTIVE',
+      pending: data.medsMeta.pending && data.meds.length === 0,
+      pendingActionId: 'cover.load-meds',
       render: (d) =>
-        d.meds.length === 0 ? (
+        d.medsMeta.pending ? (
+          <p className={styles.pendingText}>
+            Medication list unavailable.
+            <br />
+            <span style={{ fontSize: 11, color: '#888' }}>Target: ORWPS ACTIVE</span>
+          </p>
+        ) : d.meds.length === 0 ? (
           <p className={styles.emptyText}>No active medications</p>
         ) : (
           <table className={styles.dataTable}>
@@ -273,8 +369,8 @@ function buildPanelDefs(): Record<string, PanelDef> {
               </tr>
             </thead>
             <tbody>
-              {d.meds.map((m) => (
-                <tr key={m.id}>
+              {d.meds.map((m, i) => (
+                <tr key={buildStableRowKey(i, [m.id, m.name, m.sig, m.status])}>
                   <td>{m.name}</td>
                   <td>{m.sig}</td>
                   <td>
@@ -289,8 +385,16 @@ function buildPanelDefs(): Record<string, PanelDef> {
     vitals: {
       title: 'Vitals',
       contractId: 'ORQQVI VITALS',
+      pending: data.vitalsMeta.pending && data.vitals.length === 0,
+      pendingActionId: 'cover.load-vitals',
       render: (d) =>
-        d.vitals.length === 0 ? (
+        d.vitalsMeta.pending ? (
+          <p className={styles.pendingText}>
+            Vital signs unavailable.
+            <br />
+            <span style={{ fontSize: 11, color: '#888' }}>Target: ORQQVI VITALS</span>
+          </p>
+        ) : d.vitals.length === 0 ? (
           <p className={styles.emptyText}>No vitals recorded</p>
         ) : (
           <table className={styles.dataTable}>
@@ -303,7 +407,7 @@ function buildPanelDefs(): Record<string, PanelDef> {
             </thead>
             <tbody>
               {d.vitals.map((v, i) => (
-                <tr key={i}>
+                <tr key={buildStableRowKey(i, [v.type, v.value, v.takenAt])}>
                   <td>{v.type}</td>
                   <td>{v.value}</td>
                   <td>{v.takenAt}</td>
@@ -316,8 +420,16 @@ function buildPanelDefs(): Record<string, PanelDef> {
     notes: {
       title: 'Recent Notes',
       contractId: 'TIU DOCUMENTS BY CONTEXT',
+      pending: data.notesMeta.pending && data.notes.length === 0,
+      pendingActionId: 'cover.load-notes',
       render: (d) =>
-        d.notes.length === 0 ? (
+        d.notesMeta.pending ? (
+          <p className={styles.pendingText}>
+            Recent notes unavailable.
+            <br />
+            <span style={{ fontSize: 11, color: '#888' }}>Target: TIU DOCUMENTS BY CONTEXT</span>
+          </p>
+        ) : d.notes.length === 0 ? (
           <p className={styles.emptyText}>No notes on record</p>
         ) : (
           <table className={styles.dataTable}>
@@ -329,8 +441,8 @@ function buildPanelDefs(): Record<string, PanelDef> {
               </tr>
             </thead>
             <tbody>
-              {d.notes.slice(0, 10).map((n) => (
-                <tr key={n.id}>
+              {d.notes.slice(0, 10).map((n, i) => (
+                <tr key={buildStableRowKey(i, [n.id, n.title, n.date, n.author])}>
                   <td>{n.title}</td>
                   <td>{n.date}</td>
                   <td>{n.author}</td>
@@ -343,8 +455,16 @@ function buildPanelDefs(): Record<string, PanelDef> {
     labs: {
       title: 'Recent Labs',
       contractId: 'ORWLRR INTERIM',
+      pending: data.labsMeta.pending && data.labs.length === 0,
+      pendingActionId: 'cover.load-labs',
       render: (d) =>
-        d.labs.length === 0 ? (
+        d.labsMeta.pending ? (
+          <p className={styles.pendingText}>
+            Recent labs unavailable.
+            <br />
+            <span style={{ fontSize: 11, color: '#888' }}>Target: ORWLRR INTERIM</span>
+          </p>
+        ) : d.labs.length === 0 ? (
           <p className={styles.emptyText}>No recent lab results</p>
         ) : (
           <table className={styles.dataTable}>
@@ -357,7 +477,7 @@ function buildPanelDefs(): Record<string, PanelDef> {
             </thead>
             <tbody>
               {d.labs.slice(0, 10).map((l, i) => (
-                <tr key={i}>
+                <tr key={buildStableRowKey(i, [l.id, l.name, l.date, l.value])}>
                   <td>{l.name || '\u2014'}</td>
                   <td>{l.value || '\u2014'}</td>
                   <td>{l.date || '\u2014'}</td>
@@ -370,8 +490,16 @@ function buildPanelDefs(): Record<string, PanelDef> {
     orders: {
       title: 'Orders Summary',
       contractId: 'ORWORB UNSIG ORDERS',
+      pending: data.ordersPending && (!data.ordersSummary || data.ordersSummary.recent.length === 0),
+      pendingActionId: 'cover.load-orders',
       render: (d) =>
-        !d.ordersSummary || d.ordersSummary.recent.length === 0 ? (
+        d.ordersPending && (!d.ordersSummary || d.ordersSummary.recent.length === 0) ? (
+          <p className={styles.pendingText}>
+            Orders summary unavailable.
+            <br />
+            <span style={{ fontSize: 11, color: '#888' }}>Target: ORWORB UNSIG ORDERS</span>
+          </p>
+        ) : !d.ordersSummary || d.ordersSummary.recent.length === 0 ? (
           <p className={styles.emptyText}>No unsigned orders</p>
         ) : (
           <>
@@ -388,7 +516,7 @@ function buildPanelDefs(): Record<string, PanelDef> {
               </thead>
               <tbody>
                 {d.ordersSummary.recent.slice(0, 8).map((o, i) => (
-                  <tr key={i}>
+                  <tr key={buildStableRowKey(i, [o.id, o.orderId, o.name, o.status, o.date])}>
                     <td>{o.name}</td>
                     <td>{o.status}</td>
                     <td>{o.date || '\u2014'}</td>
@@ -401,20 +529,50 @@ function buildPanelDefs(): Record<string, PanelDef> {
     },
     appointments: {
       title: 'Appointments',
-      contractId: 'SD API APPOINTMENTS',
-      pending: true,
+      contractId: 'ORWPT APPTLST',
+      pending: data.appointmentsPending && data.appointments.length === 0,
       pendingActionId: 'cover.load-appointments',
-      render: () => (
-        <p className={styles.pendingText}>
-          Appointments integration pending.
-          <br />
-          <span style={{ fontSize: 11, color: '#888' }}>Target: SD API APPOINTMENTS BY DFN</span>
-        </p>
-      ),
+      render: (d) =>
+        d.appointmentsPending && d.appointments.length === 0 ? (
+          <p className={styles.pendingText}>
+            Appointment data unavailable.
+            <br />
+            <span style={{ fontSize: 11, color: '#888' }}>Target: ORWPT APPTLST</span>
+          </p>
+        ) : d.appointments.length === 0 ? (
+          <p className={styles.emptyText}>No upcoming appointments</p>
+        ) : (
+          <table className={styles.dataTable}>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Clinic</th>
+                <th>Status</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody>
+              {d.appointments.slice(0, 8).map((appt, i) => {
+                const status = String(appt.status || '\u2014').replace(/^request:/, 'request ');
+                const source = appt.source === 'vista' ? 'EHR' : appt.source === 'request' ? 'Request' : '\u2014';
+                return (
+                  <tr key={buildStableRowKey(i, [appt.id, appt.dateTime, appt.clinic, status, source])}>
+                    <td>{formatCoverAppointmentDate(appt.dateTime)}</td>
+                    <td>{appt.clinic || '\u2014'}</td>
+                    <td>{status}</td>
+                    <td>{source}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        ),
     },
     immunizations: {
       title: 'Immunizations',
       contractId: 'ORQQPX IMMUN LIST',
+      pending: data.immuPending && data.immunizations.length === 0,
+      pendingActionId: 'cover.load-immunizations',
       render: (d) =>
         d.immuPending && d.immunizations.length === 0 ? (
           <p className={styles.pendingText}>
@@ -435,7 +593,7 @@ function buildPanelDefs(): Record<string, PanelDef> {
             </thead>
             <tbody>
               {d.immunizations.slice(0, 8).map((im: any, i: number) => (
-                <tr key={i}>
+                <tr key={buildStableRowKey(i, [im.ien, im.name, im.dateTime, im.reaction])}>
                   <td>{im.name || im.ien}</td>
                   <td>{im.dateTime || '\u2014'}</td>
                   <td>{im.reaction || 'None'}</td>
@@ -448,8 +606,16 @@ function buildPanelDefs(): Record<string, PanelDef> {
     reminders: {
       title: 'Clinical Reminders',
       contractId: 'ORQQPX REMINDERS LIST',
+      pending: data.remindersPending && data.reminders.length === 0,
+      pendingActionId: 'cover.load-reminders',
       render: (d) =>
-        d.reminders.length === 0 ? (
+        d.remindersPending && d.reminders.length === 0 ? (
+          <p className={styles.pendingText}>
+            Clinical reminders unavailable.
+            <br />
+            <span style={{ fontSize: 11, color: '#888' }}>Target: ORQQPX REMINDERS LIST</span>
+          </p>
+        ) : d.reminders.length === 0 ? (
           <p className={styles.emptyText}>No clinical reminders due</p>
         ) : (
           <table className={styles.dataTable}>
@@ -462,7 +628,7 @@ function buildPanelDefs(): Record<string, PanelDef> {
             </thead>
             <tbody>
               {d.reminders.slice(0, 8).map((r: any, i: number) => (
-                <tr key={i}>
+                <tr key={buildStableRowKey(i, [r.ien, r.name, r.due, r.status, r.priority])}>
                   <td>{r.name || r.ien}</td>
                   <td>{r.due || '\u2014'}</td>
                   <td>{r.status || '\u2014'}</td>
@@ -480,7 +646,9 @@ function buildPanelDefs(): Record<string, PanelDef> {
 /* ------------------------------------------------------------------ */
 
 export default function CoverSheetPanel({ dfn }: Props) {
-  const cache = useDataCache();
+  const { fetchDomain, getDomain, getDomainMeta, isLoading } = useDataCache();
+  const { dfn: patientDfn, demographics } = usePatient();
+  const { ready: sessionReady, authenticated } = useSession();
   const { preferences, saveCoverSheetLayout, resetCoverSheetLayout } = useCPRSUI();
 
   const layout = preferences.coverSheetLayout;
@@ -500,11 +668,18 @@ export default function CoverSheetPanel({ dfn }: Props) {
     null
   );
   const [ordersLoading, setOrdersLoading] = useState(false);
+  const [ordersPending, setOrdersPending] = useState(false);
+  const [appointments, setAppointments] = useState<any[]>([]);
+  const [appointmentsLoading, setAppointmentsLoading] = useState(false);
+  const [appointmentsPending, setAppointmentsPending] = useState(false);
   const [immunizations, setImmunizations] = useState<any[]>([]);
   const [immuLoading, setImmuLoading] = useState(false);
   const [immuPending, setImmuPending] = useState(false);
   const [reminders, setReminders] = useState<any[]>([]);
   const [remindersLoading, setRemindersLoading] = useState(false);
+  const [remindersPending, setRemindersPending] = useState(false);
+  const cacheRetryCountsRef = useRef<Record<string, number>>({});
+  const customRetryCountsRef = useRef<Record<string, number>>({});
 
   // Local heights for immediate UI update (synced to store on change)
   const [heights, setHeights] = useState<Record<string, number>>(panelHeights);
@@ -524,77 +699,291 @@ export default function CoverSheetPanel({ dfn }: Props) {
     prevHeightsJsonRef.current = JSON.stringify(incoming);
   }, [preferences.coverSheetLayout.panelHeights]);
 
-  // Data fetching
-  useEffect(() => {
-    cache.fetchAll(dfn);
-  }, [dfn]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
+  const loadOrdersSummary = useCallback(() => {
     setOrdersLoading(true);
-    fetchJson(`${API_BASE}/vista/cprs/orders-summary?dfn=${dfn}`)
+    setOrdersPending(false);
+    return fetchJson<CoverOrdersSummaryResponse>(`${API_BASE}/vista/cprs/orders-summary?dfn=${dfn}`)
       .then((d) => {
-        if (d.ok) setOrdersSummary({ unsigned: d.unsigned, recent: d.recent });
+        if (d.ok) {
+          setOrdersSummary({ unsigned: d.unsigned ?? 0, recent: d.recent ?? [] });
+        } else {
+          setOrdersSummary(null);
+        }
+        const hasPendingTargets = Array.isArray(d.pendingTargets) && d.pendingTargets.length > 0;
+        setOrdersPending(d.ok !== true || hasPendingTargets || d.status === 'integration-pending');
       })
-      .catch(() => {})
+      .catch(() => {
+        setOrdersSummary(null);
+        setOrdersPending(true);
+      })
       .finally(() => setOrdersLoading(false));
   }, [dfn]);
 
-  useEffect(() => {
+  const loadImmunizations = useCallback(() => {
     setImmuLoading(true);
-    fetchJson(`${API_BASE}/vista/immunizations?dfn=${dfn}`)
+    setImmuPending(false);
+    return fetchJson<CoverImmunizationsResponse>(`${API_BASE}/vista/immunizations?dfn=${dfn}`)
       .then((d) => {
-        if (d.ok && d.results) setImmunizations(d.results);
-        if (d._integration === 'pending') setImmuPending(true);
+        const safeResults = Array.isArray(d.results)
+          ? d.results.filter((entry: any) => !isImmunizationErrorResult(entry))
+          : [];
+
+        if (d.ok && safeResults.length > 0) {
+          setImmunizations(safeResults);
+        } else {
+          setImmunizations([]);
+        }
+        const hadErrorArtifacts = Array.isArray(d.results) && d.results.some((entry: any) => isImmunizationErrorResult(entry));
+        const hasPendingTargets = Array.isArray(d.pendingTargets) && d.pendingTargets.length > 0;
+        setImmuPending(hadErrorArtifacts || d._integration === 'pending' || hasPendingTargets || d.ok !== true);
       })
       .catch(() => {
+        setImmunizations([]);
         setImmuPending(true);
       })
       .finally(() => setImmuLoading(false));
   }, [dfn]);
 
-  useEffect(() => {
-    setRemindersLoading(true);
-    fetchJson(`${API_BASE}/vista/cprs/reminders?dfn=${dfn}`)
+  const loadAppointments = useCallback(() => {
+    setAppointmentsLoading(true);
+    setAppointmentsPending(false);
+    return fetchJson<CoverAppointmentsResponse>(`${API_BASE}/vista/cprs/appointments?dfn=${dfn}`)
       .then((d) => {
-        if (d.ok && d.results) setReminders(d.results);
+        if (d.ok && Array.isArray(d.results)) {
+          setAppointments(d.results);
+        } else {
+          setAppointments([]);
+        }
+        const hasPendingTargets = Array.isArray(d.pendingTargets) && d.pendingTargets.length > 0;
+        setAppointmentsPending(d.status !== 'ok' || hasPendingTargets);
       })
-      .catch(() => {})
+      .catch(() => {
+        setAppointments([]);
+        setAppointmentsPending(true);
+      })
+      .finally(() => setAppointmentsLoading(false));
+  }, [dfn]);
+
+  const loadReminders = useCallback(() => {
+    setRemindersLoading(true);
+    setRemindersPending(false);
+    return fetchJson<CoverRemindersResponse>(`${API_BASE}/vista/cprs/reminders?dfn=${dfn}`)
+      .then((d) => {
+        if (d.ok && Array.isArray(d.results)) {
+          setReminders(d.results);
+        } else {
+          setReminders([]);
+        }
+        const hasPendingTargets = Array.isArray(d.pendingTargets) && d.pendingTargets.length > 0;
+        setRemindersPending(d.ok !== true || hasPendingTargets);
+      })
+      .catch(() => {
+        setReminders([]);
+        setRemindersPending(true);
+      })
       .finally(() => setRemindersLoading(false));
   }, [dfn]);
 
-  const problems = cache.getDomain(dfn, 'problems');
-  const allergiesData = cache.getDomain(dfn, 'allergies');
-  const meds = cache.getDomain(dfn, 'medications');
-  const vitals = cache.getDomain(dfn, 'vitals');
-  const notes = cache.getDomain(dfn, 'notes');
-  const labs = cache.getDomain(dfn, 'labs');
+  // Data fetching
+  useEffect(() => {
+    if (!sessionReady || !authenticated || patientDfn !== dfn || !demographics) return;
+
+    cacheRetryCountsRef.current = {};
+    customRetryCountsRef.current = {};
+    setOrdersSummary(null);
+    setOrdersPending(false);
+    setAppointments([]);
+    setAppointmentsPending(false);
+    setImmunizations([]);
+    setImmuPending(false);
+    setReminders([]);
+    setRemindersPending(false);
+
+    let cancelled = false;
+
+    void (async () => {
+      const coverDomains: Array<
+        'problems' | 'allergies' | 'medications' | 'vitals' | 'notes' | 'labs'
+      > = ['problems', 'allergies', 'medications', 'vitals', 'notes', 'labs'];
+
+      for (const domain of coverDomains) {
+        if (cancelled) return;
+        await fetchDomain(dfn, domain);
+      }
+
+      void loadOrdersSummary();
+      void loadImmunizations();
+      void loadAppointments();
+      void loadReminders();
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authenticated, demographics, dfn, fetchDomain, loadAppointments, loadImmunizations, loadOrdersSummary, loadReminders, patientDfn, sessionReady]);
+
+  const problems = getDomain(dfn, 'problems');
+  const problemsMeta = getDomainMeta(dfn, 'problems');
+  const allergiesData = getDomain(dfn, 'allergies');
+  const allergiesMeta = getDomainMeta(dfn, 'allergies');
+  const meds = getDomain(dfn, 'medications');
+  const medsMeta = getDomainMeta(dfn, 'medications');
+  const vitals = getDomain(dfn, 'vitals');
+  const vitalsMeta = getDomainMeta(dfn, 'vitals');
+  const notes = getDomain(dfn, 'notes');
+  const notesMeta = getDomainMeta(dfn, 'notes');
+  const labs = getDomain(dfn, 'labs');
+  const labsMeta = getDomainMeta(dfn, 'labs');
 
   const loadingMap: PanelLoading = {
-    problems: cache.isLoading(dfn, 'problems'),
-    allergies: cache.isLoading(dfn, 'allergies'),
-    meds: cache.isLoading(dfn, 'medications'),
-    vitals: cache.isLoading(dfn, 'vitals'),
-    notes: cache.isLoading(dfn, 'notes'),
-    labs: cache.isLoading(dfn, 'labs'),
+    problems: isLoading(dfn, 'problems'),
+    allergies: isLoading(dfn, 'allergies'),
+    meds: isLoading(dfn, 'medications'),
+    vitals: isLoading(dfn, 'vitals'),
+    notes: isLoading(dfn, 'notes'),
+    labs: isLoading(dfn, 'labs'),
     orders: ordersLoading,
+    appointments: appointmentsLoading,
     immunizations: immuLoading,
     reminders: remindersLoading,
   };
 
+  useEffect(() => {
+    if (!sessionReady || !authenticated || patientDfn !== dfn || !demographics) return;
+
+    const retryCandidates: Array<keyof Pick<PanelData, 'problems' | 'allergies' | 'meds' | 'vitals' | 'notes' | 'labs'>> = [];
+    if (problems.length === 0 && problemsMeta.pending && !loadingMap.problems) retryCandidates.push('problems');
+    if (allergiesData.length === 0 && allergiesMeta.pending && !loadingMap.allergies) retryCandidates.push('allergies');
+    if (meds.length === 0 && medsMeta.pending && !loadingMap.meds) retryCandidates.push('meds');
+    if (vitals.length === 0 && vitalsMeta.pending && !loadingMap.vitals) retryCandidates.push('vitals');
+    if (notes.length === 0 && notesMeta.pending && !loadingMap.notes) retryCandidates.push('notes');
+    if (labs.length === 0 && labsMeta.pending && !loadingMap.labs) retryCandidates.push('labs');
+    if (retryCandidates.length === 0) return;
+
+    let cancelled = false;
+
+    void (async () => {
+      const domainMap = {
+        problems: 'problems',
+        allergies: 'allergies',
+        meds: 'medications',
+        vitals: 'vitals',
+        notes: 'notes',
+        labs: 'labs',
+      } as const;
+
+      for (const panelKey of retryCandidates) {
+        const domain = domainMap[panelKey];
+        const retryKey = `${dfn}:${domain}`;
+        const attempts = cacheRetryCountsRef.current[retryKey] ?? 0;
+        if (attempts >= CACHE_RETRY_LIMIT) continue;
+        cacheRetryCountsRef.current[retryKey] = attempts + 1;
+        await new Promise((resolve) => setTimeout(resolve, 600 * (attempts + 1)));
+        if (cancelled) return;
+        await fetchDomain(dfn, domain);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    allergiesData.length,
+    allergiesMeta.pending,
+    authenticated,
+    demographics,
+    dfn,
+    fetchDomain,
+    labs.length,
+    labsMeta.pending,
+    loadingMap.allergies,
+    loadingMap.labs,
+    loadingMap.meds,
+    loadingMap.notes,
+    loadingMap.problems,
+    loadingMap.vitals,
+    meds.length,
+    medsMeta.pending,
+    notes.length,
+    notesMeta.pending,
+    patientDfn,
+    problems.length,
+    problemsMeta.pending,
+    sessionReady,
+    vitals.length,
+    vitalsMeta.pending,
+  ]);
+
+  useEffect(() => {
+    if (!sessionReady || !authenticated || patientDfn !== dfn || !demographics) return;
+
+    const retryCustom = async (
+      key: string,
+      shouldRetry: boolean,
+      loader: () => Promise<unknown>
+    ) => {
+      if (!shouldRetry) return;
+      const attempts = customRetryCountsRef.current[key] ?? 0;
+      if (attempts >= CUSTOM_RETRY_LIMIT) return;
+      customRetryCountsRef.current[key] = attempts + 1;
+      await new Promise((resolve) => setTimeout(resolve, 800 * (attempts + 1)));
+      await loader();
+    };
+
+    void (async () => {
+      await retryCustom(`orders:${dfn}`, ordersPending && (!ordersSummary || ordersSummary.recent.length === 0) && !ordersLoading, loadOrdersSummary);
+      await retryCustom(`appointments:${dfn}`, appointmentsPending && appointments.length === 0 && !appointmentsLoading, loadAppointments);
+      await retryCustom(`immunizations:${dfn}`, immuPending && immunizations.length === 0 && !immuLoading, loadImmunizations);
+      await retryCustom(`reminders:${dfn}`, remindersPending && reminders.length === 0 && !remindersLoading, loadReminders);
+    })();
+  }, [
+    appointments.length,
+    appointmentsLoading,
+    appointmentsPending,
+    authenticated,
+    demographics,
+    dfn,
+    immuLoading,
+    immuPending,
+    immunizations.length,
+    loadAppointments,
+    loadImmunizations,
+    loadOrdersSummary,
+    loadReminders,
+    ordersLoading,
+    ordersPending,
+    ordersSummary,
+    patientDfn,
+    reminders.length,
+    remindersLoading,
+    remindersPending,
+    sessionReady,
+  ]);
+
   const panelData: PanelData = {
     problems,
+    problemsMeta,
     allergies: allergiesData,
+    allergiesMeta,
     meds,
+    medsMeta,
     vitals,
+    vitalsMeta,
     notes,
+    notesMeta,
     labs,
+    labsMeta,
     ordersSummary,
+    ordersPending,
+    appointments,
+    appointmentsPending,
     immunizations,
     immuPending,
     reminders,
+    remindersPending,
   };
 
-  const panelDefs = buildPanelDefs();
+  const panelDefs = buildPanelDefs(panelData);
 
   // Persist heights on change (debounced)
   const heightsTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -786,8 +1175,7 @@ export default function CoverSheetPanel({ dfn }: Props) {
         {visiblePanels.map((key) => {
           const def = panelDefs[key];
           if (!def) return null;
-          const isPending =
-            def.pending || (key === 'immunizations' && immuPending && immunizations.length === 0);
+          const isPending = Boolean(def.pending);
           return (
             <Section
               key={key}

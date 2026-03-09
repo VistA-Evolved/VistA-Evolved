@@ -151,6 +151,12 @@ export function getLoaRequest(id: string): LoaRequest | undefined {
   return loaStore.get(id);
 }
 
+export function getLoaRequestForTenant(tenantId: string, id: string): LoaRequest | undefined {
+  const loa = loaStore.get(id);
+  if (!loa || loa.tenantId !== tenantId) return undefined;
+  return loa;
+}
+
 export function listLoaRequests(
   tenantId: string,
   filters?: {
@@ -196,6 +202,7 @@ export function getLoaStats(tenantId: string): Record<string, number> {
 /* ── Update ─────────────────────────────────────────────────── */
 
 export function transitionLoa(
+  tenantId: string,
   id: string,
   toStatus: LoaStatus,
   actor: string,
@@ -207,7 +214,7 @@ export function transitionLoa(
     denialReason?: string;
   }
 ): LoaRequest {
-  const loa = loaStore.get(id);
+  const loa = getLoaRequestForTenant(tenantId, id);
   if (!loa) throw new Error(`LOA not found: ${id}`);
 
   // Import transition check inline to avoid circular
@@ -253,7 +260,7 @@ export function transitionLoa(
   dbRepo
     ?.upsert({
       id,
-      tenantId: updated.tenantId ?? 'default',
+      tenantId: updated.tenantId,
       status: updated.status,
       updatedAt: updated.updatedAt,
       metadataJson: JSON.stringify(updated),
@@ -264,12 +271,13 @@ export function transitionLoa(
 }
 
 export function updateLoaChecklist(
+  tenantId: string,
   id: string,
   checklistItemId: string,
   completed: boolean,
   actor: string
 ): LoaRequest {
-  const loa = loaStore.get(id);
+  const loa = getLoaRequestForTenant(tenantId, id);
   if (!loa) throw new Error(`LOA not found: ${id}`);
 
   const now = new Date().toISOString();
@@ -303,7 +311,7 @@ export function updateLoaChecklist(
   dbRepo
     ?.upsert({
       id,
-      tenantId: updated.tenantId ?? 'default',
+      tenantId: updated.tenantId,
       status: updated.status,
       updatedAt: updated.updatedAt,
       metadataJson: JSON.stringify(updated),
@@ -313,8 +321,13 @@ export function updateLoaChecklist(
   return updated;
 }
 
-export function addLoaAttachment(id: string, attachment: LoaAttachment, actor: string): LoaRequest {
-  const loa = loaStore.get(id);
+export function addLoaAttachment(
+  tenantId: string,
+  id: string,
+  attachment: LoaAttachment,
+  actor: string
+): LoaRequest {
+  const loa = getLoaRequestForTenant(tenantId, id);
   if (!loa) throw new Error(`LOA not found: ${id}`);
 
   const now = new Date().toISOString();
@@ -339,7 +352,7 @@ export function addLoaAttachment(id: string, attachment: LoaAttachment, actor: s
   dbRepo
     ?.upsert({
       id,
-      tenantId: updated.tenantId ?? 'default',
+      tenantId: updated.tenantId,
       status: updated.status,
       updatedAt: updated.updatedAt,
       metadataJson: JSON.stringify(updated),
@@ -349,8 +362,8 @@ export function addLoaAttachment(id: string, attachment: LoaAttachment, actor: s
   return updated;
 }
 
-export function assignLoa(id: string, assignedTo: string, actor: string): LoaRequest {
-  const loa = loaStore.get(id);
+export function assignLoa(tenantId: string, id: string, assignedTo: string, actor: string): LoaRequest {
+  const loa = getLoaRequestForTenant(tenantId, id);
   if (!loa) throw new Error(`LOA not found: ${id}`);
 
   const now = new Date().toISOString();
@@ -375,7 +388,7 @@ export function assignLoa(id: string, assignedTo: string, actor: string): LoaReq
   dbRepo
     ?.upsert({
       id,
-      tenantId: updated.tenantId ?? 'default',
+      tenantId: updated.tenantId,
       status: updated.status,
       updatedAt: updated.updatedAt,
       metadataJson: JSON.stringify(updated),

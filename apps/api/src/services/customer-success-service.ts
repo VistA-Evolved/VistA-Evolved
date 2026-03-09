@@ -152,9 +152,9 @@ export function startOnboarding(input: {
   return config;
 }
 
-export function runOnboarding(id: string): TenantOnboardingConfig | null {
+export function runOnboarding(tenantId: string, id: string): TenantOnboardingConfig | null {
   const config = onboardingStore.get(id);
-  if (!config) return null;
+  if (!config || config.tenantId !== tenantId) return null;
 
   // Simulate each step completing
   const updated: TenantOnboardingConfig = {
@@ -173,8 +173,11 @@ export function runOnboarding(id: string): TenantOnboardingConfig | null {
   return updated;
 }
 
-export function getOnboarding(id: string): TenantOnboardingConfig | undefined {
-  return onboardingStore.get(id);
+export function getOnboarding(id: string, tenantId?: string): TenantOnboardingConfig | undefined {
+  const config = onboardingStore.get(id);
+  if (!config) return undefined;
+  if (tenantId && config.tenantId !== tenantId) return undefined;
+  return config;
 }
 
 export function listOnboardings(): TenantOnboardingConfig[] {
@@ -185,9 +188,9 @@ export function listOnboardings(): TenantOnboardingConfig[] {
 /* Training Mode                                                       */
 /* ================================================================== */
 
-export function enableTrainingMode(onboardingId: string): TenantOnboardingConfig | null {
+export function enableTrainingMode(tenantId: string, onboardingId: string): TenantOnboardingConfig | null {
   const config = onboardingStore.get(onboardingId);
-  if (!config) return null;
+  if (!config || config.tenantId !== tenantId) return null;
   const updated: TenantOnboardingConfig = {
     ...config,
     trainingMode: "active",
@@ -201,9 +204,9 @@ export function enableTrainingMode(onboardingId: string): TenantOnboardingConfig
   return updated;
 }
 
-export function disableTrainingMode(onboardingId: string): TenantOnboardingConfig | null {
+export function disableTrainingMode(tenantId: string, onboardingId: string): TenantOnboardingConfig | null {
   const config = onboardingStore.get(onboardingId);
-  if (!config) return null;
+  if (!config || config.tenantId !== tenantId) return null;
   const updated: TenantOnboardingConfig = {
     ...config,
     trainingMode: "off",
@@ -286,17 +289,20 @@ export function createDemoEnvironment(
   return env;
 }
 
-export function getDemoEnvironment(id: string): DemoEnvironment | undefined {
-  return demoEnvStore.get(id);
+export function getDemoEnvironment(id: string, tenantId?: string): DemoEnvironment | undefined {
+  const env = demoEnvStore.get(id);
+  if (!env) return undefined;
+  if (tenantId && env.tenantId !== tenantId) return undefined;
+  return env;
 }
 
 export function listDemoEnvironments(tenantId: string): DemoEnvironment[] {
   return [...demoEnvStore.values()].filter((e) => e.tenantId === tenantId);
 }
 
-export function destroyDemoEnvironment(id: string): DemoEnvironment | null {
+export function destroyDemoEnvironment(tenantId: string, id: string): DemoEnvironment | null {
   const env = demoEnvStore.get(id);
-  if (!env) return null;
+  if (!env || env.tenantId !== tenantId) return null;
   const updated: DemoEnvironment = { ...env, status: "destroyed" };
   demoEnvStore.set(id, updated);
   return updated;

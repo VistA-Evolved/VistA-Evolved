@@ -2,40 +2,44 @@
 
 import { useState } from 'react';
 import { useCPRSUI } from '../../../stores/cprs-ui-state';
-import { useDataCache } from '../../../stores/data-cache';
+import { useDataCache, type Problem } from '../../../stores/data-cache';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
 /**
- * Edit Problem dialog — allows modifying status and notes on an existing problem.
- * Attempts POST to /vista/problems for server persistence; falls back to local
- * data-cache if the API returns a blocker (ORQQPL EDIT SAVE not yet wired).
+ * Edit Problem dialog for an existing problem-list item.
+ * Uses the CPRS write route first, then truthfully updates the local cache if
+ * the server stores the edit as a draft fallback.
  */
 export default function EditProblemDialog() {
   const { closeModal, modalData } = useCPRSUI();
-  const { addLocalItem } = useDataCache();
+  const { updateProblem } = useDataCache();
   const dfn = String(modalData?.dfn ?? '');
-  const problem = (modalData?.problem ?? null) as {
-    id?: string;
+  const problem = (modalData?.problem ?? null) as (Problem & {
     description?: string;
-    status?: string;
     note?: string;
     icdCode?: string;
-  } | null;
+  }) | null;
+  const problemText = problem?.description ?? problem?.text ?? '';
 
   const [status, setStatus] = useState<string>(problem?.status ?? 'active');
   const [note, setNote] = useState<string>(problem?.note ?? '');
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const [serverSync, setServerSync] = useState<'pending' | 'synced' | 'local'>('pending');
+  const [serverSync, setServerSync] = useState<'pending' | 'synced' | 'draft'>('pending');
 
   async function handleSave() {
     if (!dfn || !problem) return;
+    if (!problemText.trim()) {
+      setError('Problem text missing');
+      return;
+    }
     setSaving(true);
+    setError('');
 
     try {
-      // Try API first
       const res = await fetch(`${API_BASE}/vista/cprs/problems/edit`, {
         method: 'POST',
         headers: {
@@ -47,7 +51,7 @@ export default function EditProblemDialog() {
         body: JSON.stringify({
           dfn,
           problemIen: problem.id,
-          problemText: problem.description,
+          problemText,
           status,
           comment: note,
           icdCode: problem.icdCode,
@@ -55,18 +59,20 @@ export default function EditProblemDialog() {
       });
       const data = await res.json();
       if (data.ok && data.mode === 'real') {
+        applyLocalEdit();
         setServerSync('synced');
       } else if (data.ok && data.mode === 'draft') {
-        persistLocal();
-        setServerSync('local');
+        applyLocalEdit();
+        setServerSync('draft');
       } else {
-        persistLocal();
-        setServerSync('local');
+        setError(data.error || data.message || 'Problem update failed');
+        setSaving(false);
+        return;
       }
     } catch {
-      // Network error — save locally
-      persistLocal();
-      setServerSync('local');
+      setError('Network error -- unable to update problem');
+      setSaving(false);
+      return;
     }
 
     setSuccess(true);
@@ -74,13 +80,15 @@ export default function EditProblemDialog() {
     setTimeout(() => closeModal(), 800);
   }
 
-  function persistLocal() {
-    addLocalItem(dfn, 'problems', {
-      id: problem?.id ?? `edited-${Date.now()}`,
-      text: `${problem?.description ?? ''}${problem?.icdCode ? ` (${problem.icdCode})` : ''} [${note ? 'note: ' + note : ''}]`,
+  function applyLocalEdit() {
+    if (!problem?.id) return;
+    updateProblem(dfn, problem.id, (existing) => ({
+      ...existing,
+      text: problemText,
       status,
-      onset: undefined,
-    });
+      ...(problem.icdCode ? ({ icdCode: problem.icdCode } as any) : {}),
+      ...(note ? ({ note } as any) : {}),
+    }));
   }
 
   if (!problem) return null;
@@ -101,6 +109,7 @@ export default function EditProblemDialog() {
           </button>
         </div>
         <div className={styles.modalBody}>
+          {error && <div className={styles.errorText}>{error}</div>}
           {success && (
             <div
               style={{
@@ -114,13 +123,13 @@ export default function EditProblemDialog() {
             >
               {serverSync === 'synced'
                 ? 'Changes saved to VistA (ORQQPL EDIT SAVE).'
-                : 'Changes saved locally (VistA sync pending).'}
+                : 'Changes saved as server-side draft (VistA sync pending).'}
             </div>
           )}
 
           <div className={styles.formGroup}>
             <label>Problem</label>
-            <div style={{ fontWeight: 600 }}>{problem.description ?? '(unknown)'}</div>
+            <div style={{ fontWeight: 600 }}>{problemText || '(unknown)'}</div>
           </div>
 
           {problem.icdCode && (

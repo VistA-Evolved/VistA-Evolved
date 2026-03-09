@@ -1,10 +1,57 @@
-# VistA Problem Creation (Phase 9B) — MVP Status & Runbook
+# VistA Problem Creation (Phase 9B / Phase 599 / Phase 683) — Current Posture & Runbook
 
-## Status: NOT YET IMPLEMENTED — Documented Blocker
+## Current Posture
 
-**POST /vista/problems** returns an honest error explaining why problem creation is out of MVP scope for this API.
+There are now three distinct problem-write surfaces in this repo:
 
-This is **intentional** and **safe**. Adding patient problems in VistA requires complex clinical validation that is best handled by dedicated provider workstations (VistA CPRS).
+1. `POST /vista/problems`
+  - legacy MVP endpoint
+  - remains an honest blocker response
+  - used to explain why free-text-only problem creation was unsafe
+
+2. `POST /vista/cprs/problems/add`
+  - active CPRS write path used by chart dialogs and the patient-search quick-add form
+  - now targets custom wrapper `VE PROBLEM ADD`, which internally uses native GMPL utilities and the live `ORQQPL ADD SAVE` contract
+  - requires a lexicon-grounded diagnosis, either passed as `lexIen` from the CPRS dialog or resolved server-side from `ORQQPL4 LEX`
+  - returns truthful `mode: real` only when VistA returns `1^<problemIen>^Problem added`
+  - falls back to `mode: draft` with `syncPending: true` only when the wrapper RPC is unavailable or the live write fails
+
+3. `VE PROBLEM ADD`
+  - custom VistA RPC installed from `services/vista/ZVEPROBADD.m`
+  - registered in File 8994 and added to `OR CPRS GUI CHART` by the standard installer path
+  - resolves provider narrative with `PROVNARR^GMPLX`, diagnosis coding with `NOS^GMPLX`, patient service-condition flags via `INITPT^ORQQPL1`, then files through `NEW^GMPLSAVE`
+
+### Live VEHU Reality
+
+On the current VEHU lane, the raw `ORQQPL ADD SAVE` RPC is present, but it does not accept the old 6-positional-arg route contract. Live probing in Phase 683 established that successful writes require `GMPDFN`, `GMPROV`, `GMPVAMC`, and an `ADDARRAY` list of `GMPFLD(...)="..."` assignments including at least:
+
+- `GMPFLD(.01)` diagnosis coding value from `NOS^GMPLX`
+- `GMPFLD(.05)` provider narrative from `PROVNARR^GMPLX`
+- `GMPFLD(.12)` status
+- `GMPFLD(.13)` onset date
+- `GMPFLD(1.01)` lexicon entry
+- `GMPFLD(1.05)` provider DUZ/name
+- `GMPFLD(1.08)` clinic/location
+- `GMPFLD(1.11)` / `1.12` / `1.13` patient exposure flags
+
+Because those native fields are not safe to reconstruct ad hoc in TypeScript, the active CPRS route now uses `VE PROBLEM ADD` as the stable production surface.
+
+Successful live response:
+
+```json
+{
+  "ok": true,
+  "mode": "real",
+  "status": "saved",
+  "problemIen": "1881",
+  "lexIen": "7106455",
+  "rpcUsed": ["VE PROBLEM ADD", "ORQQPL ADD SAVE"],
+  "message": "Problem added",
+  "response": "1^1881^Problem added"
+}
+```
+
+This is now live-verified against VEHU. The CPRS browser workflow no longer lands in draft fallback for a lexicon-grounded diagnosis such as `Essential hypertension` or `Wheezing`.
 
 ---
 
@@ -94,7 +141,7 @@ CREATE(PL,PLY)  ; Creates a new problem input array, passed by reference
 
 ---
 
-## API Response: Honest Error
+## Legacy MVP Blocker
 
 ### POST /vista/problems — Current Response
 
@@ -168,6 +215,19 @@ CPRS validates all fields before saving:
 
 ---
 
+## Current Implementation Notes
+
+### CPRS dialog path
+
+- `apps/web/src/components/cprs/dialogs/AddProblemDialog.tsx` now sends `lexIen` from the selected `ORQQPL4 LEX` result.
+- After a real save, the dialog refreshes the cached `problems` domain before closing so the Problems panel converges immediately to the new live VistA row.
+
+### Patient-search compatibility path
+
+- `POST /vista/cprs/problems/add` still accepts free-text callers that do not send `lexIen`.
+- In that case, the API performs a best-effort `ORQQPL4 LEX` resolution and uses the single or exact match when one is available.
+- If no trustworthy lexicon match can be resolved, the route returns a 400 instead of creating a fake VistA success.
+
 ## Future Enhancement Path (Phase 10+)
 
 To implement POST /vista/problems safely in a future phase:
@@ -213,11 +273,41 @@ To implement POST /vista/problems safely in a future phase:
 
 ## Testing Locally
 
-To verify the endpoint is correctly returning the "not yet implemented" error:
+To verify the legacy endpoint is still correctly blocked:
 
 ```bash
 # Test 1: Valid DFN and text
 curl -X POST http://127.0.0.1:3001/vista/problems \
+
+```
+
+To verify the active CPRS route on the current VEHU lane:
+
+```powershell
+Set-Content -Path login-body.json -Value '{"accessCode":"PRO1234","verifyCode":"PRO1234!!"}' -NoNewline -Encoding ASCII
+Set-Content -Path problem-body.json -Value '{"dfn":"46","problemText":"Essential hypertension","icdCode":"I10.","lexIen":"7106455","onset":"2026-03-08","status":"active"}' -NoNewline -Encoding ASCII
+$login = curl.exe -s -c cookies.txt -X POST http://127.0.0.1:3001/auth/login -H "Content-Type: application/json" -d "@login-body.json" | ConvertFrom-Json
+$csrf = $login.csrfToken
+curl.exe -s -b cookies.txt -X POST http://127.0.0.1:3001/vista/cprs/problems/add -H "Content-Type: application/json" -H "X-CSRF-Token: $csrf" -d "@problem-body.json"
+curl.exe -s -b cookies.txt "http://127.0.0.1:3001/vista/problems?dfn=46"
+Remove-Item login-body.json,problem-body.json,cookies.txt -ErrorAction SilentlyContinue
+```
+
+## Live Verification Record
+
+- Direct API write after the Phase 683 fix returned `{"ok":true,"mode":"real","status":"saved","problemIen":"1881",...}` for DFN 46.
+- Follow-up `GET /vista/problems?dfn=46` returned the newly filed problem row from live VistA.
+- Live browser verification on `http://127.0.0.1:3000/cprs/chart/46/problems` succeeded with:
+  - `Asthma` added through the modal with a real VistA success message
+  - `Wheezing` added through the modal with the Problems table refreshing immediately afterward
+
+Expected result on VEHU today:
+
+- `ok: true`
+- `mode: "draft"`
+- `status: "sync-pending"`
+- `rpcUsed: ["ORQQPL ADD SAVE"]`
+- no fake `mode: "real"` when the RPC emits an M error
   -H "Content-Type: application/json" \
   -d '{"dfn":"1","text":"Hypertension"}'
 

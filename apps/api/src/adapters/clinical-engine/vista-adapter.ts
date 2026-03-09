@@ -578,12 +578,14 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
         .filter((l: string) => l.trim())
         .map((l: string) => {
           const parts = l.split('^');
+          const locationText = (parts[4] || '').trim();
+          const ward = locationText.replace(/^TO:\s*/i, '').trim() || undefined;
           return {
-            id: parts[0] || '',
+            id: parts[1] || parts[0] || '',
             patientDfn: dfn,
             movementType: 'admission' as const,
-            dateTime: parts[1] || '',
-            ward: parts[2] || '',
+            dateTime: parts[2] || parts[0] || '',
+            ward,
           };
         });
       return { ok: true, data: movements };

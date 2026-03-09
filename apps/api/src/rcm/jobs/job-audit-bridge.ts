@@ -70,7 +70,7 @@ export async function auditedEnqueue(params: {
   maxAttempts?: number;
   delayMs?: number;
   userId?: string;
-  tenantId?: string;
+  tenantId: string;
 }): Promise<{ jobId: string; queued: boolean }> {
   // PHI guard
   const phiCheck = validateJobPayload(params.payload);
@@ -85,7 +85,7 @@ export async function auditedEnqueue(params: {
         type: params.type,
         rejected: true,
         reason: 'PHI detected in payload',
-        tenantId: params.tenantId ?? 'default',
+        tenantId: params.tenantId,
       },
     });
     throw new Error(`Job payload rejected: ${phiCheck.violations.join('; ')}`);
@@ -96,7 +96,7 @@ export async function auditedEnqueue(params: {
     type: params.type,
     payload: {
       ...params.payload,
-      _tenantId: params.tenantId ?? 'default',
+      _tenantId: params.tenantId,
       _enqueuedBy: params.userId ?? 'system',
       _enqueuedAt: new Date().toISOString(),
     },
@@ -111,7 +111,7 @@ export async function auditedEnqueue(params: {
     detail: {
       jobId,
       type: params.type,
-      tenantId: params.tenantId ?? 'default',
+      tenantId: params.tenantId,
       priority: params.priority ?? 5,
       payerCode: params.payload.payerCode,
       claimId: params.payload.claimId,
@@ -131,7 +131,7 @@ export function auditJobCompletion(job: RcmJob): void {
       jobId: job.id,
       type: job.type,
       attempts: job.attempts,
-      tenantId: (job.payload as any)?._tenantId ?? 'default',
+      tenantId: (job.payload as any)?._tenantId ?? null,
       payerCode: (job.payload as any)?.payerCode,
       claimId: (job.payload as any)?.claimId,
       completedAt: job.completedAt,
@@ -152,7 +152,7 @@ export function auditJobFailure(job: RcmJob, error: string): void {
       maxAttempts: job.maxAttempts,
       error,
       deadLetter: job.status === 'dead_letter',
-      tenantId: (job.payload as any)?._tenantId ?? 'default',
+      tenantId: (job.payload as any)?._tenantId ?? null,
       payerCode: (job.payload as any)?.payerCode,
       claimId: (job.payload as any)?.claimId,
     },
@@ -189,7 +189,7 @@ export async function listJobsByTenant(
   });
 
   const tenantJobs = jobs.filter(
-    (j) => (j.payload as any)?._tenantId === tenantId || tenantId === 'default'
+    (j) => (j.payload as any)?._tenantId === tenantId
   );
 
   const offset = filter?.offset ?? 0;

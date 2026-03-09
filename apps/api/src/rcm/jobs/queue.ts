@@ -120,6 +120,11 @@ export function initJobQueueStoreRepo(repo: typeof jobQueueDbRepo): void {
   jobQueueDbRepo = repo;
 }
 
+function getPayloadTenantId(payload: Record<string, unknown>): string {
+  const tenantId = payload._tenantId;
+  return typeof tenantId === 'string' && tenantId.trim().length > 0 ? tenantId.trim() : 'default';
+}
+
 export class InMemoryJobQueue implements RcmJobQueue {
   private jobs = new Map<string, RcmJob>();
   private idempotencyIndex = new Map<string, string>(); // key → jobId
@@ -132,9 +137,11 @@ export class InMemoryJobQueue implements RcmJobQueue {
     maxAttempts?: number;
     delayMs?: number;
   }): Promise<string> {
+    const tenantId = getPayloadTenantId(params.payload);
+    const idempotencyKey = params.idempotencyKey ? `${tenantId}:${params.idempotencyKey}` : undefined;
     // Idempotency check
-    if (params.idempotencyKey) {
-      const existing = this.idempotencyIndex.get(params.idempotencyKey);
+    if (idempotencyKey) {
+      const existing = this.idempotencyIndex.get(idempotencyKey);
       if (existing && this.jobs.has(existing)) return existing;
     }
 
@@ -157,15 +164,15 @@ export class InMemoryJobQueue implements RcmJobQueue {
     };
 
     this.jobs.set(job.id, job);
-    if (params.idempotencyKey) {
-      this.idempotencyIndex.set(params.idempotencyKey, job.id);
+    if (idempotencyKey) {
+      this.idempotencyIndex.set(idempotencyKey, job.id);
     }
 
     // Phase 146: Write-through to PG
     jobQueueDbRepo
       ?.upsert({
         id: job.id,
-        tenantId: 'default',
+        tenantId,
         jobType: job.type,
         payload: JSON.stringify(job.payload),
         status: job.status,
@@ -284,7 +291,11 @@ export class InMemoryJobQueue implements RcmJobQueue {
         job.completedAt < beforeTimestamp
       ) {
         this.jobs.delete(id);
-        if (job.idempotencyKey) this.idempotencyIndex.delete(job.idempotencyKey);
+        if (job.idempotencyKey) {
+          this.idempotencyIndex.delete(
+            `${getPayloadTenantId(job.payload)}:${job.idempotencyKey}`
+          );
+        }
         count++;
       }
     }

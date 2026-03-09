@@ -21,9 +21,16 @@ export type OnboardingTaskInsert = typeof payerOnboardingTask.$inferInsert;
 
 /* ── Dossier CRUD ───────────────────────────────────────── */
 
-export async function findDossierById(id: string): Promise<DossierRow | undefined> {
+export async function findDossierById(id: string, tenantId?: string): Promise<DossierRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(payerDossier).where(eq(payerDossier.id, id));
+  const rows = await db
+    .select()
+    .from(payerDossier)
+    .where(
+      tenantId
+        ? and(eq(payerDossier.id, id), eq(payerDossier.tenantId, tenantId))
+        : eq(payerDossier.id, id)
+    );
   return rows[0];
 }
 
@@ -91,7 +98,7 @@ export async function insertDossier(
 
   await db.insert(payerAuditEvent).values({
     id: randomUUID(),
-    tenantId: data.tenantId ?? 'default',
+    tenantId: data.tenantId,
     actorType: actor ? 'user' : 'system',
     actorId: actor ?? 'system',
     entityType: 'dossier',
@@ -107,6 +114,7 @@ export async function insertDossier(
 
 export async function updateDossier(
   id: string,
+  tenantId: string,
   updates: Partial<DossierInsert>,
   reason: string,
   actor?: string,
@@ -114,7 +122,10 @@ export async function updateDossier(
 ): Promise<DossierRow> {
   const db = getPgDb();
 
-  const [before] = await db.select().from(payerDossier).where(eq(payerDossier.id, id));
+  const [before] = await db
+    .select()
+    .from(payerDossier)
+    .where(and(eq(payerDossier.id, id), eq(payerDossier.tenantId, tenantId)));
   if (!before) throw Object.assign(new Error('Dossier not found'), { statusCode: 404 });
 
   if (expectedVersion !== undefined && before.version !== expectedVersion) {
@@ -129,7 +140,7 @@ export async function updateDossier(
       updatedAt: new Date(),
       updatedBy: actor,
     })
-    .where(eq(payerDossier.id, id))
+    .where(and(eq(payerDossier.id, id), eq(payerDossier.tenantId, tenantId)))
     .returning();
 
   await db.insert(payerAuditEvent).values({
@@ -150,18 +161,35 @@ export async function updateDossier(
 
 /* ── Onboarding Task CRUD ───────────────────────────────── */
 
-export async function listOnboardingTasks(dossierId: string): Promise<OnboardingTaskRow[]> {
+export async function listOnboardingTasks(
+  dossierId: string,
+  tenantId?: string
+): Promise<OnboardingTaskRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(payerOnboardingTask)
-    .where(eq(payerOnboardingTask.dossierId, dossierId))
+    .where(
+      tenantId
+        ? and(eq(payerOnboardingTask.dossierId, dossierId), eq(payerOnboardingTask.tenantId, tenantId))
+        : eq(payerOnboardingTask.dossierId, dossierId)
+    )
     .orderBy(payerOnboardingTask.sortOrder);
 }
 
-export async function findOnboardingTaskById(id: string): Promise<OnboardingTaskRow | undefined> {
+export async function findOnboardingTaskById(
+  id: string,
+  tenantId?: string
+): Promise<OnboardingTaskRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(payerOnboardingTask).where(eq(payerOnboardingTask.id, id));
+  const rows = await db
+    .select()
+    .from(payerOnboardingTask)
+    .where(
+      tenantId
+        ? and(eq(payerOnboardingTask.id, id), eq(payerOnboardingTask.tenantId, tenantId))
+        : eq(payerOnboardingTask.id, id)
+    );
   return rows[0];
 }
 
@@ -181,7 +209,7 @@ export async function insertOnboardingTask(
 
   await db.insert(payerAuditEvent).values({
     id: randomUUID(),
-    tenantId: data.tenantId ?? 'default',
+    tenantId: data.tenantId,
     actorType: actor ? 'user' : 'system',
     actorId: actor ?? 'system',
     entityType: 'onboarding_task',
@@ -197,6 +225,7 @@ export async function insertOnboardingTask(
 
 export async function updateOnboardingTask(
   id: string,
+  tenantId: string,
   updates: Partial<OnboardingTaskInsert>,
   reason: string,
   actor?: string,
@@ -207,7 +236,7 @@ export async function updateOnboardingTask(
   const [before] = await db
     .select()
     .from(payerOnboardingTask)
-    .where(eq(payerOnboardingTask.id, id));
+    .where(and(eq(payerOnboardingTask.id, id), eq(payerOnboardingTask.tenantId, tenantId)));
   if (!before) throw Object.assign(new Error('Onboarding task not found'), { statusCode: 404 });
 
   if (expectedVersion !== undefined && before.version !== expectedVersion) {
@@ -221,7 +250,7 @@ export async function updateOnboardingTask(
       version: sql`COALESCE(${payerOnboardingTask.version}, 1) + 1`,
       updatedAt: new Date(),
     })
-    .where(eq(payerOnboardingTask.id, id))
+    .where(and(eq(payerOnboardingTask.id, id), eq(payerOnboardingTask.tenantId, tenantId)))
     .returning();
 
   await db.insert(payerAuditEvent).values({
@@ -242,11 +271,13 @@ export async function updateOnboardingTask(
 
 export async function completeOnboardingTask(
   id: string,
+  tenantId: string,
   reason: string,
   actor: string
 ): Promise<OnboardingTaskRow> {
   return updateOnboardingTask(
     id,
+    tenantId,
     { status: 'completed', completedAt: new Date(), completedBy: actor },
     reason,
     actor
@@ -259,8 +290,8 @@ export async function completeOnboardingTask(
  * Recalculate & store completeness score for a dossier based on
  * how many onboarding tasks are completed.
  */
-export async function refreshCompletenessScore(dossierId: string): Promise<number> {
-  const tasks = await listOnboardingTasks(dossierId);
+export async function refreshCompletenessScore(dossierId: string, tenantId: string): Promise<number> {
+  const tasks = await listOnboardingTasks(dossierId, tenantId);
   if (tasks.length === 0) return 0;
 
   const completed = tasks.filter((t) => t.status === 'completed').length;
@@ -270,7 +301,7 @@ export async function refreshCompletenessScore(dossierId: string): Promise<numbe
   await db
     .update(payerDossier)
     .set({ completenessScore: score, updatedAt: new Date() })
-    .where(eq(payerDossier.id, dossierId));
+    .where(and(eq(payerDossier.id, dossierId), eq(payerDossier.tenantId, tenantId)));
 
   return score;
 }
@@ -355,7 +386,7 @@ export async function seedOnboardingTasks(
   payerId: string,
   actor?: string
 ): Promise<OnboardingTaskRow[]> {
-  const existing = await listOnboardingTasks(dossierId);
+  const existing = await listOnboardingTasks(dossierId, tenantId);
   if (existing.length > 0) return existing;
 
   const templates = DEFAULT_ONBOARDING_TASKS[integrationMode] ?? DEFAULT_ONBOARDING_TASKS.manual!;
@@ -380,6 +411,6 @@ export async function seedOnboardingTasks(
     tasks.push(created);
   }
 
-  await refreshCompletenessScore(dossierId);
+  await refreshCompletenessScore(dossierId, tenantId);
   return tasks;
 }

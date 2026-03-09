@@ -49,6 +49,7 @@ export interface MessageAttachment {
 
 export interface PortalMessage {
   id: string;
+  tenantId: string;
   threadId: string;
   fromDfn: string;
   fromName: string;
@@ -98,14 +99,14 @@ export const SLA_DISCLAIMER =
 
 interface MsgRepo {
   insertMessage(data: any): any;
-  findMessageById(id: string): any;
-  findThread(threadId: string): any;
-  findInbox(dfn: string): any;
-  findDrafts(dfn: string): any;
-  findSent(dfn: string): any;
-  findStaffQueue(): any;
-  updateMessage(id: string, updates: any): any;
-  deleteMessage(id: string): any;
+  findMessageById(id: string, tenantId?: string): any;
+  findThread(threadId: string, tenantId: string): any;
+  findInbox(tenantId: string, dfn: string): any;
+  findDrafts(tenantId: string, dfn: string): any;
+  findSent(tenantId: string, dfn: string): any;
+  findStaffQueue(tenantId: string): any;
+  updateMessage(id: string, tenantId: string, updates: any): any;
+  deleteMessage(id: string, tenantId: string): any;
   countMessages(): any;
 }
 let _repo: MsgRepo | null = null;
@@ -131,6 +132,7 @@ function cacheMsg(msg: PortalMessage): void {
 function rowToMsg(row: any): PortalMessage {
   return {
     id: row.id,
+    tenantId: row.tenantId ?? 'default',
     threadId: row.threadId,
     fromDfn: row.fromDfn,
     fromName: row.fromName,
@@ -152,6 +154,7 @@ function rowToMsg(row: any): PortalMessage {
 function msgToDbFields(msg: PortalMessage) {
   return {
     id: msg.id,
+    tenantId: msg.tenantId,
     threadId: msg.threadId,
     fromDfn: msg.fromDfn,
     fromName: msg.fromName,
@@ -168,18 +171,32 @@ function msgToDbFields(msg: PortalMessage) {
   };
 }
 
+function mergeMessages(rows: PortalMessage[], cached: PortalMessage[]): PortalMessage[] {
+  const merged = new Map<string, PortalMessage>();
+  for (const row of rows) merged.set(row.id, row);
+  for (const msg of cached) {
+    if (!merged.has(msg.id)) merged.set(msg.id, msg);
+  }
+  return [...merged.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+}
+
 /* ------------------------------------------------------------------ */
 /* Phase 32: Rate limiter                                               */
 /* ------------------------------------------------------------------ */
 
 const sendTimestamps = new Map<string, number[]>();
 
+function sendRateKey(tenantId: string, dfn: string): string {
+  return `${tenantId}:${dfn}`;
+}
+
 /** Check if patient has exceeded send rate limit. */
-export function checkRateLimit(dfn: string): { allowed: boolean; retryAfterMs?: number } {
+export function checkRateLimit(tenantId: string, dfn: string): { allowed: boolean; retryAfterMs?: number } {
   const now = Date.now();
   const hourAgo = now - 3600000;
-  const timestamps = (sendTimestamps.get(dfn) || []).filter(t => t > hourAgo);
-  sendTimestamps.set(dfn, timestamps);
+  const key = sendRateKey(tenantId, dfn);
+  const timestamps = (sendTimestamps.get(key) || []).filter(t => t > hourAgo);
+  sendTimestamps.set(key, timestamps);
 
   if (timestamps.length >= MAX_MESSAGES_PER_HOUR) {
     const oldest = timestamps[0];
@@ -188,10 +205,11 @@ export function checkRateLimit(dfn: string): { allowed: boolean; retryAfterMs?: 
   return { allowed: true };
 }
 
-function recordSend(dfn: string): void {
-  const timestamps = sendTimestamps.get(dfn) || [];
+function recordSend(tenantId: string, dfn: string): void {
+  const key = sendRateKey(tenantId, dfn);
+  const timestamps = sendTimestamps.get(key) || [];
   timestamps.push(Date.now());
-  sendTimestamps.set(dfn, timestamps);
+  sendTimestamps.set(key, timestamps);
 }
 
 /* ------------------------------------------------------------------ */
@@ -215,6 +233,7 @@ export function checkBlocklist(text: string): { blocked: boolean; term?: string 
 /* ------------------------------------------------------------------ */
 
 export async function createDraft(opts: {
+  tenantId?: string;
   fromDfn: string;
   fromName: string;
   subject: string;
@@ -229,6 +248,7 @@ export async function createDraft(opts: {
 
   const msg: PortalMessage = {
     id,
+    tenantId: opts.tenantId ?? "default",
     threadId,
     fromDfn: opts.fromDfn,
     fromName: opts.fromName,
@@ -248,44 +268,73 @@ export async function createDraft(opts: {
 
   if (_repo) {
     try {
-      _repo.insertMessage(msgToDbFields(msg));
+      await Promise.resolve(_repo.insertMessage(msgToDbFields(msg)));
     } catch (e) { dbWarn("persist", e); }
   }
   cacheMsg(msg);
 
   portalAudit("portal.message.draft", "success", opts.fromDfn, {
+    tenantId: opts.tenantId ?? "default",
     detail: { messageId: id, category: opts.category },
   });
   return msg;
 }
 
 /** Internal lookup — no access-control, used for thread resolution. */
-async function getMessage_internal(messageId: string): Promise<PortalMessage | null> {
+async function getMessage_internal(messageId: string, tenantId?: string): Promise<PortalMessage | null> {
   const cached = messageCache.get(messageId);
-  if (cached) return cached;
+  if (cached && (!tenantId || cached.tenantId === tenantId)) return cached;
   if (_repo) {
     try {
-      const row = await Promise.resolve(_repo.findMessageById(messageId));
+      const row = await Promise.resolve(_repo.findMessageById(messageId, tenantId));
       if (row) { const m = rowToMsg(row); cacheMsg(m); return m; }
     } catch (e) { dbWarn("persist", e); }
   }
   return null;
 }
 
-export async function sendMessage(messageId: string, senderDfn: string): Promise<PortalMessage | null> {
-  const msg = await getMessage_internal(messageId);
+export async function sendMessage(
+  messageId: string,
+  tenantId: string,
+  senderDfn: string
+): Promise<PortalMessage | { error: string; statusCode?: number } | null> {
+  const msg = await getMessage_internal(messageId, tenantId);
   if (!msg || msg.fromDfn !== senderDfn) return null;
   if (msg.status !== "draft") return null;
+
+  const rl = checkRateLimit(tenantId, senderDfn);
+  if (!rl.allowed) {
+    return {
+      error: `Rate limit exceeded. Try again in ${Math.ceil((rl.retryAfterMs || 0) / 60000)} minutes.`,
+      statusCode: 429,
+    };
+  }
+  const bl = checkBlocklist(`${msg.subject} ${msg.body}`);
+  if (bl.blocked) {
+    portalAudit("portal.message.blocked" as any, "failure", senderDfn, {
+      tenantId,
+      detail: { reason: "blocklist", term: bl.term || "unknown" },
+    });
+    return { error: "Message contains restricted content.", statusCode: 400 };
+  }
 
   msg.status = "sent";
   msg.vistaSync = "pending";
 
   if (_repo) {
-    try { _repo.updateMessage(messageId, { status: "sent" }); } catch (e) { dbWarn("persist", e); }
+    try {
+      await Promise.resolve(_repo.updateMessage(messageId, tenantId, {
+        status: "sent",
+        vistaSync: false,
+        vistaRef: null,
+      }));
+    } catch (e) { dbWarn("persist", e); }
   }
   cacheMsg(msg);
+  recordSend(tenantId, senderDfn);
 
   portalAudit("portal.message.send", "success", senderDfn, {
+    tenantId,
     detail: { messageId, threadId: msg.threadId, category: msg.category },
   });
   return msg;
@@ -293,12 +342,16 @@ export async function sendMessage(messageId: string, senderDfn: string): Promise
 
 export async function addAttachment(
   messageId: string,
+  tenantId: string,
   senderDfn: string,
   attachment: { filename: string; mimeType: string; data: string }
 ): Promise<{ ok: boolean; error?: string; attachment?: MessageAttachment }> {
-  const msg = await getMessage_internal(messageId);
+  const msg = await getMessage_internal(messageId, tenantId);
   if (!msg || msg.fromDfn !== senderDfn) return { ok: false, error: "Message not found" };
   if (msg.status !== "draft") return { ok: false, error: "Can only add attachments to drafts" };
+  if (!areAttachmentsEnabled()) {
+    return { ok: false, error: "Attachments are disabled." };
+  }
   if (msg.attachments.length >= MAX_ATTACHMENTS_PER_MSG) {
     return { ok: false, error: `Maximum ${MAX_ATTACHMENTS_PER_MSG} attachments` };
   }
@@ -324,7 +377,7 @@ export async function addAttachment(
 
   if (_repo) {
     try {
-      _repo.updateMessage(messageId, {
+      _repo.updateMessage(messageId, tenantId, {
         attachmentsJson: JSON.stringify(msg.attachments.map(a => ({ ...a, data: "(stored)" }))),
       });
     } catch (e) { dbWarn("persist", e); }
@@ -333,56 +386,60 @@ export async function addAttachment(
   return { ok: true, attachment: { ...att, data: "(stored)" } };
 }
 
-export async function getInbox(patientDfn: string): Promise<PortalMessage[]> {
+export async function getInbox(tenantId: string, patientDfn: string): Promise<PortalMessage[]> {
   if (_repo) {
     try {
-      const rows = await Promise.resolve(_repo.findInbox(patientDfn));
+      const rows = await Promise.resolve(_repo.findInbox(tenantId, patientDfn));
       return (Array.isArray(rows) ? rows : []).map(rowToMsg);
     } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]
+    .filter((m) => m.tenantId === tenantId)
     .filter((m) => (m.toDfn === patientDfn || m.fromDfn === patientDfn) && m.status !== "draft")
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-export async function getDrafts(patientDfn: string): Promise<PortalMessage[]> {
+export async function getDrafts(tenantId: string, patientDfn: string): Promise<PortalMessage[]> {
   if (_repo) {
     try {
-      const rows = await Promise.resolve(_repo.findDrafts(patientDfn));
+      const rows = await Promise.resolve(_repo.findDrafts(tenantId, patientDfn));
       return (Array.isArray(rows) ? rows : []).map(rowToMsg);
     } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]
+    .filter((m) => m.tenantId === tenantId)
     .filter((m) => m.fromDfn === patientDfn && m.status === "draft")
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-export async function getSent(patientDfn: string): Promise<PortalMessage[]> {
+export async function getSent(tenantId: string, patientDfn: string): Promise<PortalMessage[]> {
+  const cached = [...messageCache.values()]
+    .filter((m) => m.tenantId === tenantId)
+    .filter((m) => m.fromDfn === patientDfn && m.status !== "draft");
   if (_repo) {
     try {
-      const rows = await Promise.resolve(_repo.findSent(patientDfn));
-      return (Array.isArray(rows) ? rows : []).map(rowToMsg);
+      const rows = await Promise.resolve(_repo.findSent(tenantId, patientDfn));
+      return mergeMessages((Array.isArray(rows) ? rows : []).map(rowToMsg), cached);
     } catch (e) { dbWarn("persist", e); }
   }
-  return [...messageCache.values()]
-    .filter((m) => m.fromDfn === patientDfn && m.status !== "draft")
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  return cached.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-export async function getThread(threadId: string): Promise<PortalMessage[]> {
+export async function getThread(tenantId: string, threadId: string): Promise<PortalMessage[]> {
   if (_repo) {
     try {
-      const rows = await Promise.resolve(_repo.findThread(threadId));
+      const rows = await Promise.resolve(_repo.findThread(threadId, tenantId));
       return (Array.isArray(rows) ? rows : []).map(rowToMsg);
     } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]
+    .filter((m) => m.tenantId === tenantId)
     .filter((m) => m.threadId === threadId && m.status !== "draft")
     .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 }
 
-export async function getMessage(messageId: string, viewerDfn: string): Promise<PortalMessage | null> {
-  const msg = await getMessage_internal(messageId);
+export async function getMessage(messageId: string, tenantId: string, viewerDfn: string): Promise<PortalMessage | null> {
+  const msg = await getMessage_internal(messageId, tenantId);
   if (!msg) return null;
   if (msg.fromDfn !== viewerDfn && msg.toDfn !== viewerDfn) return null;
 
@@ -390,10 +447,15 @@ export async function getMessage(messageId: string, viewerDfn: string): Promise<
     msg.readAt = new Date().toISOString();
     msg.status = "read";
     if (_repo) {
-      try { _repo.updateMessage(messageId, { status: "read", readAt: msg.readAt }); } catch (e) { dbWarn("persist", e); }
+      try {
+        await Promise.resolve(
+          _repo.updateMessage(messageId, tenantId, { status: "read", readAt: msg.readAt })
+        );
+      } catch (e) { dbWarn("persist", e); }
     }
     cacheMsg(msg);
     portalAudit("portal.message.read", "success", viewerDfn, {
+      tenantId,
       detail: { messageId },
     });
   }
@@ -404,10 +466,11 @@ export async function getMessage(messageId: string, viewerDfn: string): Promise<
 
 export async function updateDraft(
   messageId: string,
+  tenantId: string,
   senderDfn: string,
   updates: Partial<Pick<PortalMessage, "subject" | "category" | "body">>
 ): Promise<PortalMessage | null> {
-  const msg = await getMessage_internal(messageId);
+  const msg = await getMessage_internal(messageId, tenantId);
   if (!msg || msg.fromDfn !== senderDfn || msg.status !== "draft") return null;
 
   if (updates.subject) msg.subject = updates.subject.slice(0, 200);
@@ -417,22 +480,24 @@ export async function updateDraft(
   cacheMsg(msg);
   if (_repo) {
     try {
-      _repo.updateMessage(messageId, {
-        subject: msg.subject,
-        body: msg.body,
-      });
+      await Promise.resolve(
+        _repo.updateMessage(messageId, tenantId, {
+          subject: msg.subject,
+          body: msg.body,
+        })
+      );
     } catch (e) { dbWarn("persist", e); }
   }
 
   return msg;
 }
 
-export async function deleteDraft(messageId: string, senderDfn: string): Promise<boolean> {
-  const msg = await getMessage_internal(messageId);
+export async function deleteDraft(messageId: string, tenantId: string, senderDfn: string): Promise<boolean> {
+  const msg = await getMessage_internal(messageId, tenantId);
   if (!msg || msg.fromDfn !== senderDfn || msg.status !== "draft") return false;
   messageCache.delete(messageId);
   if (_repo) {
-    try { _repo.deleteMessage(messageId); } catch (e) { dbWarn("persist", e); }
+    try { _repo.deleteMessage(messageId, tenantId); } catch (e) { dbWarn("persist", e); }
   }
   return true;
 }
@@ -446,6 +511,7 @@ export async function deleteDraft(messageId: string, senderDfn: string): Promise
  * The proxy's identity is recorded in metadata for audit.
  */
 export function sendOnBehalf(opts: {
+  tenantId?: string;
   patientDfn: string;
   patientName: string;
   proxyDfn: string;
@@ -455,7 +521,8 @@ export function sendOnBehalf(opts: {
   body: string;
 }): PortalMessage | { error: string } {
   // Rate limit applies to the patient, not the proxy
-  const rl = checkRateLimit(opts.patientDfn);
+  const tenantId = opts.tenantId ?? "default";
+  const rl = checkRateLimit(tenantId, opts.patientDfn);
   if (!rl.allowed) {
     return { error: `Rate limit exceeded. Try again in ${Math.ceil((rl.retryAfterMs || 0) / 60000)} minutes.` };
   }
@@ -463,6 +530,7 @@ export function sendOnBehalf(opts: {
   const bl = checkBlocklist(`${opts.subject} ${opts.body}`);
   if (bl.blocked) {
     portalAudit("portal.message.blocked" as any, "failure", opts.proxyDfn, {
+      tenantId,
       detail: { reason: "blocklist", patientDfn: "hashed" },
     });
     return { error: "Message contains restricted content." };
@@ -471,6 +539,7 @@ export function sendOnBehalf(opts: {
   const id = `msg-${++msgSeq}-${randomBytes(4).toString("hex")}`;
   const msg: PortalMessage = {
     id,
+    tenantId,
     threadId: id,
     fromDfn: opts.patientDfn,
     fromName: `${opts.patientName} (via ${opts.proxyName})`,
@@ -489,12 +558,15 @@ export function sendOnBehalf(opts: {
   };
 
   if (_repo) {
-    try { _repo.insertMessage(msgToDbFields(msg)); } catch (e) { dbWarn("persist", e); }
+    try {
+      void Promise.resolve(_repo.insertMessage(msgToDbFields(msg))).catch((e) => dbWarn('persist', e));
+    } catch (e) { dbWarn("persist", e); }
   }
   cacheMsg(msg);
-  recordSend(opts.patientDfn);
+  recordSend(tenantId, opts.patientDfn);
 
   portalAudit("portal.message.send", "success", opts.proxyDfn, {
+    tenantId,
     detail: { messageId: id, onBehalfOf: "hashed-patient", proxy: true },
   });
 
@@ -510,17 +582,20 @@ export function sendOnBehalf(opts: {
  * Called from the CPRS messaging panel, not the patient portal.
  */
 export async function clinicianReply(opts: {
+  tenantId: string;
   clinicianDuz: string;
   clinicianName: string;
   replyToId: string;
   body: string;
 }): Promise<PortalMessage | { error: string }> {
-  const original = await getMessage_internal(opts.replyToId);
+  const original = await getMessage_internal(opts.replyToId, opts.tenantId);
   if (!original) return { error: "Original message not found." };
+  if (original.tenantId !== opts.tenantId) return { error: "Original message not found." };
 
   const id = `msg-${++msgSeq}-${randomBytes(4).toString("hex")}`;
   const msg: PortalMessage = {
     id,
+    tenantId: opts.tenantId,
     threadId: original.threadId,
     fromDfn: `duz-${opts.clinicianDuz}`,
     fromName: opts.clinicianName,
@@ -539,7 +614,7 @@ export async function clinicianReply(opts: {
   };
 
   if (_repo) {
-    try { _repo.insertMessage(msgToDbFields(msg)); } catch (e) { dbWarn("persist", e); }
+    try { await Promise.resolve(_repo.insertMessage(msgToDbFields(msg))); } catch (e) { dbWarn("persist", e); }
   }
   cacheMsg(msg);
 
@@ -548,24 +623,66 @@ export async function clinicianReply(opts: {
     original.status = "replied";
     cacheMsg(original);
     if (_repo) {
-      try { _repo.updateMessage(opts.replyToId, { status: "replied" }); } catch (e) { dbWarn("persist", e); }
+      try {
+        await Promise.resolve(_repo.updateMessage(opts.replyToId, opts.tenantId, { status: "replied" }));
+      } catch (e) { dbWarn("persist", e); }
     }
   }
 
   return msg;
 }
 
+export async function recordSentMirror(opts: {
+  tenantId: string;
+  patientDfn: string;
+  patientName: string;
+  subject: string;
+  category: MessageCategory;
+  body: string;
+  vistaSync: PortalMessage['vistaSync'];
+  vistaRef?: string | null;
+}): Promise<PortalMessage> {
+  const id = `msg-${++msgSeq}-${randomBytes(4).toString("hex")}`;
+  const msg: PortalMessage = {
+    id,
+    tenantId: opts.tenantId,
+    threadId: id,
+    fromDfn: opts.patientDfn,
+    fromName: opts.patientName,
+    toDfn: 'clinic',
+    toName: 'Care Team',
+    subject: opts.subject.slice(0, 200),
+    category: opts.category,
+    body: opts.body.slice(0, MAX_BODY_LENGTH),
+    status: 'sent',
+    attachments: [],
+    createdAt: new Date().toISOString(),
+    readAt: null,
+    replyToId: null,
+    vistaSync: opts.vistaSync,
+    vistaRef: opts.vistaRef ?? null,
+  };
+
+  if (_repo) {
+    try { await Promise.resolve(_repo.insertMessage(msgToDbFields(msg))); } catch (e) { dbWarn('persist', e); }
+  }
+  cacheMsg(msg);
+  recordSend(opts.tenantId, opts.patientDfn);
+  return msg;
+}
+
 /**
  * Get all unread patient messages for staff queue (CPRS shell).
  */
-export async function getStaffMessageQueue(): Promise<PortalMessage[]> {
+export async function getStaffMessageQueue(tenantId: string): Promise<PortalMessage[]> {
   if (_repo) {
     try {
-      const rows = await Promise.resolve(_repo.findStaffQueue());
+      const rows = await Promise.resolve(_repo.findStaffQueue(tenantId));
       return (Array.isArray(rows) ? rows : []).map(rowToMsg);
     } catch (e) { dbWarn("persist", e); }
   }
   return [...messageCache.values()]
+    .filter(m => m.tenantId === tenantId)
     .filter(m => m.toDfn === "clinic" && m.status === "sent")
     .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 }

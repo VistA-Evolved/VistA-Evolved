@@ -57,8 +57,9 @@ interface AllergyEntry {
 }
 
 interface InteractionWarning {
+  raw: string;
+  category: string;
   allergen: string;
-  severity: string;
   note: string;
 }
 
@@ -193,11 +194,51 @@ function AllergyBanner({ warnings }: { warnings: InteractionWarning[] }) {
       </div>
       {warnings.map((w, i) => (
         <div key={i} style={{ fontSize: 13, color: '#742a2a', marginBottom: 4 }}>
-          <strong>{w.allergen}</strong> (Severity: {w.severity}) — {w.note}
+          <strong>{w.allergen}</strong> ({w.category}) — {w.note}
         </div>
       ))}
     </div>
   );
+}
+
+function parseInteractionWarnings(lines: string[]): InteractionWarning[] {
+  return lines
+    .map((line) => {
+      const trimmed = String(line || '').trim();
+      if (!trimmed || /^\d+$/.test(trimmed)) return null;
+
+      const parts = trimmed.split('^');
+      if (parts.length >= 3) {
+        const category = parts[0]?.trim().toUpperCase() || 'WARNING';
+        const allergen = parts[1]?.trim() || 'Allergy warning';
+        const note = parts.slice(2).join('^').trim() || 'BCMA allergy warning';
+        return {
+          raw: trimmed,
+          category: category === 'ALL' ? 'allergy' : category === 'ADR' ? 'reaction' : category.toLowerCase(),
+          allergen,
+          note,
+        };
+      }
+
+      if (parts.length === 2) {
+        const category = parts[0]?.trim().toUpperCase() || 'WARNING';
+        const allergen = parts[1]?.trim() || 'Allergy warning';
+        return {
+          raw: trimmed,
+          category: category === 'ALL' ? 'allergy' : category === 'ADR' ? 'reaction' : category.toLowerCase(),
+          allergen,
+          note: 'BCMA allergy warning',
+        };
+      }
+
+      return {
+        raw: trimmed,
+        category: 'warning',
+        allergen: 'Allergy warning',
+        note: trimmed,
+      };
+    })
+    .filter((warning): warning is InteractionWarning => Boolean(warning?.note));
 }
 
 function DuplicateTherapyBanner({ duplicates }: { duplicates: DuplicateAlert[] }) {
@@ -444,7 +485,7 @@ function AllergiesTab({ dfn }: { dfn: string }) {
       .then((data) => {
         if (data.ok) {
           setAllergies(data.allergies || []);
-          setWarnings(data.interactionWarnings || []);
+          setWarnings(parseInteractionWarnings(data.interactionWarnings || []));
         } else {
           setError(data.error || 'Failed to load allergies');
         }
@@ -544,8 +585,8 @@ function AllergiesTab({ dfn }: { dfn: string }) {
           borderTop: `1px solid ${colors.border}`,
         }}
       >
-        Source: VistA ORQQAL LIST RPC (real patient data). Drug-allergy interaction checking at scan
-        time requires BCMA PSB ALLERGY RPC (integration-pending).
+        Source: VistA ORQQAL LIST for the documented allergy table and PSB ALLERGY for BCMA scan-time
+        allergy warnings when available.
       </div>
     </div>
   );
@@ -566,6 +607,11 @@ function AdminTab({ dfn }: { dfn: string }) {
   const [adminReason, setAdminReason] = useState('');
   const [adminResult, setAdminResult] = useState<{
     ok: boolean;
+    source?: string;
+    action?: string;
+    orderIEN?: string;
+    noteIen?: string;
+    _note?: string;
     status?: string;
     message?: string;
     error?: string;
@@ -785,16 +831,39 @@ function AdminTab({ dfn }: { dfn: string }) {
                     padding: '10px 12px',
                     borderRadius: 4,
                     background:
-                      adminResult.status === 'integration-pending' ||
-                      adminResult.status === 'unsupported-in-sandbox'
-                        ? colors.pendingBg
-                        : '#fed7d7',
-                    border: `1px solid ${adminResult.status === 'integration-pending' || adminResult.status === 'unsupported-in-sandbox' ? colors.pendingBorder : '#fc8181'}`,
+                      adminResult.ok && adminResult.source === 'vista'
+                        ? '#f0fff4'
+                        : adminResult.status === 'integration-pending' ||
+                            adminResult.status === 'unsupported-in-sandbox'
+                          ? colors.pendingBg
+                          : '#fed7d7',
+                    border: `1px solid ${
+                      adminResult.ok && adminResult.source === 'vista'
+                        ? '#9ae6b4'
+                        : adminResult.status === 'integration-pending' ||
+                            adminResult.status === 'unsupported-in-sandbox'
+                          ? colors.pendingBorder
+                          : '#fc8181'
+                    }`,
                     fontSize: 13,
                   }}
                 >
-                  {adminResult.status === 'integration-pending' ||
-                  adminResult.status === 'unsupported-in-sandbox' ? (
+                  {adminResult.ok && adminResult.source === 'vista' ? (
+                    <>
+                      <strong style={{ color: colors.success }}>Captured in VistA fallback note:</strong>{' '}
+                      Administration action `{adminResult.action || adminAction}` was saved as TIU nursing-note documentation, not a BCMA medication-log write.
+                      <div style={{ fontSize: 11, color: '#2f855a', marginTop: 4 }}>
+                        Documentation path: TIU nursing note
+                        {adminResult.noteIen ? ` (${adminResult.noteIen})` : ''}.
+                      </div>
+                      {adminResult._note && (
+                        <div style={{ fontSize: 11, color: '#2f855a', marginTop: 4 }}>
+                          {adminResult._note}
+                        </div>
+                      )}
+                    </>
+                  ) : adminResult.status === 'integration-pending' ||
+                    adminResult.status === 'unsupported-in-sandbox' ? (
                     <>
                       <strong>
                         {adminResult.status === 'unsupported-in-sandbox'
@@ -829,6 +898,14 @@ function BCMATab({ dfn }: { dfn: string }) {
   const [barcode, setBarcode] = useState('');
   const [scanResult, setScanResult] = useState<{
     ok: boolean;
+    source?: string;
+    barcode?: string;
+    matched?: boolean;
+    medication?: { name: string; sig?: string; orderIEN?: string } | null;
+    validateResult?: string[];
+    validationWarning?: string | null;
+    activeMedCount?: number;
+    _note?: string;
     status?: string;
     message?: string;
     error?: string;
@@ -978,6 +1055,42 @@ function BCMATab({ dfn }: { dfn: string }) {
               }}
             >
               <strong>Error:</strong> {scanResult.error || 'Scan request failed'}
+            </div>
+          ) : scanResult.source === 'vista' ? (
+            <div
+              style={{
+                marginTop: 12,
+                padding: '10px 12px',
+                borderRadius: 4,
+                background: '#f0fff4',
+                border: '1px solid #9ae6b4',
+                fontSize: 13,
+              }}
+            >
+              <strong style={{ color: colors.success }}>VistA verification completed:</strong>{' '}
+              {scanResult.matched
+                ? `Matched ${scanResult.medication?.name || 'active medication'}`
+                : 'No active medication match found for this barcode.'}
+              {scanResult.medication?.orderIEN && (
+                <div style={{ fontSize: 11, color: '#2f855a', marginTop: 4 }}>
+                  Order IEN: {scanResult.medication.orderIEN}
+                </div>
+              )}
+              {scanResult.validateResult && scanResult.validateResult.length > 0 && (
+                <div style={{ fontSize: 11, color: '#2f855a', marginTop: 4 }}>
+                  Validation: {scanResult.validateResult.join(' | ')}
+                </div>
+              )}
+              {scanResult.validationWarning && (
+                <div style={{ fontSize: 11, color: '#975a16', marginTop: 4 }}>
+                  {scanResult.validationWarning}
+                </div>
+              )}
+              {scanResult._note && (
+                <div style={{ fontSize: 11, color: '#2f855a', marginTop: 4 }}>
+                  {scanResult._note}
+                </div>
+              )}
             </div>
           ) : (
             <div

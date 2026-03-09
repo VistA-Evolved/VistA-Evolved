@@ -86,12 +86,36 @@ function clampPageSize(requested?: number): number {
 /* ------------------------------------------------------------------ */
 
 export default async function reportingRoutes(server: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: any, session: any): string | null {
+    const sessionTenantId =
+      typeof session?.tenantId === 'string' && session.tenantId.trim().length > 0
+        ? session.tenantId.trim()
+        : undefined;
+    const requestTenantId =
+      typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+        ? request.tenantId.trim()
+        : undefined;
+    const headerTenantId = request?.headers?.['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return sessionTenantId || requestTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(request: any, reply: any, session: any): string | null {
+    const tenantId = resolveTenantId(request, session);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
   /* ── GET /reports/operations ─────────────────────────────────── */
   server.get('/reports/operations', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
 
-    const cached = getCached<object>('report:operations');
+    const cached = getCached<object>(`report:operations:${session.tenantId}`);
     if (cached) {
       audit('report.generate' as AuditAction, 'success', auditActor(request), {
         detail: { report: 'operations', cached: true },
@@ -122,7 +146,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
       rpcMetrics: rpcHealth.rpcMetrics,
     };
 
-    setCache('report:operations', report, REPORT_CONFIG.operationsCacheTtlMs);
+    setCache(`report:operations:${session.tenantId}`, report, REPORT_CONFIG.operationsCacheTtlMs);
 
     audit('report.generate' as AuditAction, 'success', auditActor(request), {
       detail: { report: 'operations', cached: false },
@@ -135,8 +159,10 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
   server.get('/reports/integrations', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
 
-    const cached = getCached<object>('report:integrations');
+    const cached = getCached<object>(`report:integrations:${session.tenantId}`);
     if (cached) {
       audit('report.generate' as AuditAction, 'success', auditActor(request), {
         detail: { report: 'integrations', cached: true },
@@ -144,7 +170,6 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
       return { ok: true, cached: true, ...cached };
     }
 
-    const tenantId = (request.query as any)?.tenantId || 'default';
     const health = getIntegrationHealthSummary(tenantId);
 
     const report = {
@@ -171,7 +196,11 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
       })),
     };
 
-    setCache('report:integrations', report, REPORT_CONFIG.integrationsCacheTtlMs);
+    setCache(
+      `report:integrations:${session.tenantId}`,
+      report,
+      REPORT_CONFIG.integrationsCacheTtlMs
+    );
 
     audit('report.generate' as AuditAction, 'success', auditActor(request), {
       detail: { report: 'integrations', cached: false, tenantId },
@@ -216,6 +245,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
 
     return {
       ok: true,
+      scope: 'platform-global',
       stats: {
         total: stats.total,
         byAction: stats.byAction,
@@ -236,12 +266,12 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
 
-    const cached = getCached<object>('report:clinical');
+    const cached = getCached<object>('report:clinical:platform-global');
     if (cached) {
       audit('report.generate' as AuditAction, 'success', auditActor(request), {
         detail: { report: 'clinical', cached: true },
       });
-      return { ok: true, cached: true, ...cached };
+      return { ok: true, cached: true, scope: 'platform-global', ...cached };
     }
 
     // Aggregate clinical activity from audit events — counts only, no PHI text
@@ -284,19 +314,21 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
       note: 'Counts only — no PHI text is included in this report.',
     };
 
-    setCache('report:clinical', report, REPORT_CONFIG.clinicalCacheTtlMs);
+    setCache('report:clinical:platform-global', report, REPORT_CONFIG.clinicalCacheTtlMs);
 
     audit('report.generate' as AuditAction, 'success', auditActor(request), {
       detail: { report: 'clinical', cached: false },
     });
 
-    return { ok: true, cached: false, ...report };
+    return { ok: true, cached: false, scope: 'platform-global', ...report };
   });
 
   /* ── POST /reports/export ────────────────────────────────────── */
   server.post('/reports/export', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
 
     const body = request.body as any;
     const reportType = body?.reportType as ExportReportType;
@@ -337,7 +369,6 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
           break;
         }
         case 'integrations': {
-          const tenantId = filters?.tenantId || 'default';
           const health = getIntegrationHealthSummary(tenantId);
           rows = health.entries.map((e: any) => ({
             id: e.id,

@@ -16,6 +16,7 @@ import {
   clearThemeTokens,
   type ThemePack,
 } from '@/lib/theme-tokens';
+import { API_BASE } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -175,9 +176,6 @@ function savePrefs(prefs: CPRSPreferences): void {
 /* ------------------------------------------------------------------ */
 /* Server sync                                                         */
 /* ------------------------------------------------------------------ */
-
-const API_BASE =
-  typeof window !== 'undefined' ? process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001' : '';
 
 async function fetchServerPrefs(): Promise<{ layout: CoverSheetLayout; source: string } | null> {
   try {

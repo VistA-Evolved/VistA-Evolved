@@ -24,11 +24,37 @@ import {
 import { findPayerById } from '../platform/pg/repo/payer-repo.js';
 
 export async function dossierRoutes(server: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: FastifyRequest): string | null {
+    const headerTenantId = request.headers['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    const requestTenantId =
+      typeof (request as any)?.tenantId === 'string' && (request as any).tenantId.trim().length > 0
+        ? (request as any).tenantId.trim()
+        : undefined;
+    const sessionTenantId =
+      typeof (request as any)?.session?.tenantId === 'string' &&
+      (request as any).session.tenantId.trim().length > 0
+        ? (request as any).session.tenantId.trim()
+        : undefined;
+    return headerTenant || requestTenantId || sessionTenantId || null;
+  }
+
+  function requireTenantId(request: FastifyRequest, reply: FastifyReply): string | null {
+    const tenantId = resolveTenantId(request);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
   /* ── List dossiers ─────────────────────────────────────── */
 
   server.get('/rcm/dossiers', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
-    const tenantId = q.tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const result = await listDossiers(tenantId, {
       status: q.status,
       countryCode: q.countryCode,
@@ -41,11 +67,13 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
   /* ── Get dossier by ID ────────────────────────────────── */
 
   server.get('/rcm/dossiers/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
-    const dossier = await findDossierById(id);
+    const dossier = await findDossierById(id, tenantId);
     if (!dossier) return reply.code(404).send({ ok: false, error: 'Dossier not found' });
 
-    const tasks = await listOnboardingTasks(id);
+    const tasks = await listOnboardingTasks(id, tenantId);
     return { ok: true, dossier, tasks };
   });
 
@@ -55,13 +83,13 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
     '/rcm/dossiers/by-payer/:payerId',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { payerId } = request.params as { payerId: string };
-      const q = (request.query as any) || {};
-      const tenantId = q.tenantId || 'default';
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
 
       const dossier = await findDossierByPayer(tenantId, payerId);
       if (!dossier) return reply.code(404).send({ ok: false, error: 'No dossier for this payer' });
 
-      const tasks = await listOnboardingTasks(dossier.id);
+      const tasks = await listOnboardingTasks(dossier.id, tenantId);
       return { ok: true, dossier, tasks };
     }
   );
@@ -72,12 +100,13 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
     const body = (request.body as any) || {};
     const {
       payerId,
-      tenantId = 'default',
       enrichmentJson,
       contactJson,
       timingJson,
       complianceJson,
     } = body;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     if (!payerId) return reply.code(400).send({ ok: false, error: 'payerId required' });
 
@@ -118,11 +147,14 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
   /* ── Update dossier ────────────────────────────────────── */
 
   server.patch('/rcm/dossiers/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
 
     const updated = await updateDossier(
       id,
+      tenantId,
       {
         displayName: body.displayName,
         enrichmentJson: body.enrichmentJson,
@@ -142,11 +174,13 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
   /* ── List onboarding tasks for dossier ────────────────── */
 
   server.get('/rcm/dossiers/:id/tasks', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
-    const dossier = await findDossierById(id);
+    const dossier = await findDossierById(id, tenantId);
     if (!dossier) return reply.code(404).send({ ok: false, error: 'Dossier not found' });
 
-    const tasks = await listOnboardingTasks(id);
+    const tasks = await listOnboardingTasks(id, tenantId);
     return { ok: true, tasks, completenessScore: dossier.completenessScore };
   });
 
@@ -155,16 +189,19 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
   server.patch(
     '/rcm/dossiers/:dossierId/tasks/:taskId',
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { dossierId, taskId } = request.params as { dossierId: string; taskId: string };
       const body = (request.body as any) || {};
 
-      const task = await findOnboardingTaskById(taskId);
+      const task = await findOnboardingTaskById(taskId, tenantId);
       if (!task || task.dossierId !== dossierId) {
         return reply.code(404).send({ ok: false, error: 'Task not found' });
       }
 
       const updated = await updateOnboardingTask(
         taskId,
+        tenantId,
         {
           status: body.status,
           assignee: body.assignee,
@@ -176,7 +213,7 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
         body.expectedVersion
       );
 
-      const score = await refreshCompletenessScore(dossierId);
+      const score = await refreshCompletenessScore(dossierId, tenantId);
       return { ok: true, task: updated, completenessScore: score };
     }
   );
@@ -186,10 +223,12 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
   server.post(
     '/rcm/dossiers/:dossierId/tasks/:taskId/complete',
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { dossierId, taskId } = request.params as { dossierId: string; taskId: string };
       const body = (request.body as any) || {};
 
-      const task = await findOnboardingTaskById(taskId);
+      const task = await findOnboardingTaskById(taskId, tenantId);
       if (!task || task.dossierId !== dossierId) {
         return reply.code(404).send({ ok: false, error: 'Task not found' });
       }
@@ -200,16 +239,18 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
 
       const updated = await completeOnboardingTask(
         taskId,
+        tenantId,
         body.reason || 'Completed via API',
         body.actor || 'system'
       );
-      const score = await refreshCompletenessScore(dossierId);
+      const score = await refreshCompletenessScore(dossierId, tenantId);
 
       // If all tasks complete, auto-advance dossier to "active"
-      const dossier = await findDossierById(dossierId);
+      const dossier = await findDossierById(dossierId, tenantId);
       if (score === 100 && dossier && dossier.status === 'draft') {
         await updateDossier(
           dossierId,
+          tenantId,
           { status: 'active' },
           'All onboarding tasks completed',
           body.actor
@@ -225,10 +266,12 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
   server.post(
     '/rcm/dossiers/:id/seed-tasks',
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
       const body = (request.body as any) || {};
 
-      const dossier = await findDossierById(id);
+      const dossier = await findDossierById(id, tenantId);
       if (!dossier) return reply.code(404).send({ ok: false, error: 'Dossier not found' });
 
       const payer = await findPayerById(dossier.payerId);
@@ -237,7 +280,7 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
       const tasks = await seedOnboardingTasks(
         id,
         mode,
-        dossier.tenantId,
+        tenantId,
         dossier.payerId,
         body.actor
       );

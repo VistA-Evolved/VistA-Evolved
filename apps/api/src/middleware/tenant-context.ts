@@ -45,7 +45,7 @@ export async function getRequestTenantId(request: FastifyRequest): Promise<strin
   if (!token) return null;
 
   const session = await getSession(token);
-  return session?.tenantId ?? 'default';
+  return session?.tenantId ?? null;
 }
 
 /* ------------------------------------------------------------------ */
@@ -79,7 +79,14 @@ export async function registerTenantContextMiddleware(server: FastifyInstance): 
       return;
     }
 
-    const tenantId = session.tenantId || 'default';
+    const tenantId = session.tenantId;
+    if (!tenantId) {
+      reply.code(403).send({
+        ok: false,
+        error: 'Tenant context missing from session',
+      });
+      return;
+    }
 
     // Validate tenant exists
     const tenant = getTenant(tenantId);
@@ -88,20 +95,10 @@ export async function registerTenantContextMiddleware(server: FastifyInstance): 
         tenantId,
         duz: session.duz,
       });
-      // Fall back to default tenant rather than hard-fail
-      // (single-tenant deployments always use "default")
-      const defaultTenant = getTenant('default');
-      if (!defaultTenant) {
-        reply.code(403).send({
-          ok: false,
-          error: 'Tenant configuration not found',
-        });
-        return;
-      }
-      (request as any).__tenantCtx = {
-        tenantId: 'default',
-        facilityName: defaultTenant.facilityName,
-      } satisfies TenantContext;
+      reply.code(403).send({
+        ok: false,
+        error: 'Tenant configuration not found',
+      });
       return;
     }
 

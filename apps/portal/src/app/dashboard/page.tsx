@@ -39,21 +39,24 @@ const SUMMARY_CARDS = [
     title: 'Messages',
     href: '/dashboard/messages',
     icon: '✉️',
-    source: 'ehr' as const,
+    source: 'local' as const,
+    label: 'Mixed Sources',
     description: 'Send and receive secure messages',
   },
   {
     title: 'Appointments',
     href: '/dashboard/appointments',
     icon: '📅',
-    source: 'ehr' as const,
+    source: 'pending' as const,
+    label: 'Check Page Source',
     description: 'View and manage your appointments',
   },
   {
     title: 'Record Sharing',
     href: '/dashboard/profile',
     icon: '🔗',
-    source: 'ehr' as const,
+    source: 'local' as const,
+    label: 'Portal Managed',
     description: 'Share records with providers or caregivers',
   },
 ];
@@ -89,7 +92,7 @@ export default function DashboardPage() {
                 }}
               >
                 <span style={{ fontSize: '1.5rem' }}>{card.icon}</span>
-                <DataSourceBadge source={card.source} />
+                <DataSourceBadge source={card.source} label={card.label} />
               </div>
               <h3 style={{ textTransform: 'none', color: 'var(--portal-text)' }}>{card.title}</h3>
               <p

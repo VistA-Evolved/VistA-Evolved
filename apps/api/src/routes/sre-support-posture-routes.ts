@@ -5,6 +5,7 @@
  * runbooks, SLAs, support tickets, and tenant communications.
  */
 import { FastifyInstance } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
 import {
   declareIncident,
   updateIncidentStatus,
@@ -41,31 +42,67 @@ import {
 } from '../services/sre-support-posture.js';
 
 export default async function sreSupportPostureRoutes(server: FastifyInstance): Promise<void> {
-  const defaultTenant = 'default';
+  function resolveTenantId(request: any, session: any): string | null {
+    const sessionTenantId =
+      typeof session?.tenantId === 'string' && session.tenantId.trim().length > 0
+        ? session.tenantId.trim()
+        : undefined;
+    const requestTenantId =
+      typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+        ? request.tenantId.trim()
+        : undefined;
+    const headerTenantId = request?.headers?.['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return sessionTenantId || requestTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(request: any, reply: any, session: any): string | null {
+    const tenantId = resolveTenantId(request, session);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
+  function resolveActor(session: any): string {
+    return session?.userName || session?.duz || 'system';
+  }
 
   // ── Incidents ─────────────────────────────────────────────────────
 
   server.get('/platform/sre/incidents', async (_req, reply) => {
-    const tenantId = (_req.query as any)?.tenantId || defaultTenant;
+    const session = await requireSession(_req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(_req, reply, session);
+    if (!tenantId) return;
     return reply.send({ ok: true, incidents: listIncidents(tenantId) });
   });
 
   server.get('/platform/sre/incidents/:id', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     const { id } = req.params as any;
-    const inc = getIncident(id);
+    const inc = getIncident(id, tenantId);
     if (!inc) return reply.code(404).send({ ok: false, error: 'Incident not found' });
     return reply.send({ ok: true, incident: inc });
   });
 
   server.post('/platform/sre/incidents', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
     const body = (req.body as any) || {};
     const {
-      tenantId = defaultTenant,
       title,
       severity = 'sev3',
-      commander = 'system',
       affectedServices = [],
     } = body;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
+    const commander = resolveActor(session);
     if (!title) return reply.code(400).send({ ok: false, error: 'title required' });
     const validSeverities = ['sev1', 'sev2', 'sev3', 'sev4'];
     if (!validSeverities.includes(severity)) {
@@ -79,9 +116,14 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
   });
 
   server.post('/platform/sre/incidents/:id/status', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     const { id } = req.params as any;
     const body = (req.body as any) || {};
-    const { status, actor = 'system', detail = '' } = body;
+    const { status, detail = '' } = body;
+    const actor = resolveActor(session);
     if (!status) return reply.code(400).send({ ok: false, error: 'status required' });
     const validStatuses = [
       'declared',
@@ -96,17 +138,22 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
         .code(400)
         .send({ ok: false, error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` });
     }
-    const inc = updateIncidentStatus(id, status, actor, detail);
+    const inc = updateIncidentStatus(id, status, actor, detail, tenantId);
     if (!inc) return reply.code(404).send({ ok: false, error: 'Incident not found' });
     return reply.send({ ok: true, incident: inc });
   });
 
   server.post('/platform/sre/incidents/:id/postmortem', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     const { id } = req.params as any;
     const body = (req.body as any) || {};
-    const { url, actor = 'system' } = body;
+    const { url } = body;
+    const actor = resolveActor(session);
     if (!url) return reply.code(400).send({ ok: false, error: 'url required' });
-    const inc = addPostmortemUrl(id, url, actor);
+    const inc = addPostmortemUrl(id, url, actor, tenantId);
     if (!inc) return reply.code(404).send({ ok: false, error: 'Incident not found' });
     return reply.send({ ok: true, incident: inc });
   });
@@ -114,7 +161,10 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
   // ── Status Page ───────────────────────────────────────────────────
 
   server.get('/platform/sre/status-page', async (req, reply) => {
-    const tenantId = (req.query as any)?.tenantId || defaultTenant;
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     return reply.send({ ok: true, statusPage: getStatusPage(tenantId) });
   });
 
@@ -133,21 +183,27 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
   // ── Maintenance Windows ───────────────────────────────────────────
 
   server.get('/platform/sre/maintenance', async (req, reply) => {
-    const tenantId = (req.query as any)?.tenantId || defaultTenant;
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     return reply.send({ ok: true, maintenanceWindows: listMaintenanceWindows(tenantId) });
   });
 
   server.post('/platform/sre/maintenance', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
     const body = (req.body as any) || {};
     const {
-      tenantId = defaultTenant,
       title,
       description = '',
       affectedComponents = [],
       scheduledStart,
       scheduledEnd,
-      createdBy = 'system',
     } = body;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
+    const createdBy = resolveActor(session);
     if (!title || !scheduledStart || !scheduledEnd) {
       return reply
         .code(400)
@@ -166,9 +222,14 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
   });
 
   server.post('/platform/sre/maintenance/:id/state', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     const { id } = req.params as any;
     const body = (req.body as any) || {};
-    const { state, actor = 'system' } = body;
+    const { state } = body;
+    const actor = resolveActor(session);
     if (!state) return reply.code(400).send({ ok: false, error: 'state required' });
     const validStates = ['scheduled', 'in_progress', 'completed', 'cancelled'];
     if (!validStates.includes(state)) {
@@ -176,7 +237,7 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
         .code(400)
         .send({ ok: false, error: `Invalid state. Must be one of: ${validStates.join(', ')}` });
     }
-    const mw = updateMaintenanceState(id, state, actor);
+    const mw = updateMaintenanceState(id, state, actor, tenantId);
     if (!mw) return reply.code(404).send({ ok: false, error: 'Maintenance window not found' });
     return reply.send({ ok: true, maintenanceWindow: mw });
   });
@@ -184,27 +245,37 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
   // ── On-Call ────────────────────────────────────────────────────────
 
   server.get('/platform/sre/oncall', async (req, reply) => {
-    const tenantId = (req.query as any)?.tenantId || defaultTenant;
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     return reply.send({ ok: true, schedules: listOnCallSchedules(tenantId) });
   });
 
   server.get('/platform/sre/oncall/current', async (req, reply) => {
-    const { tenantId = defaultTenant, teamName } = req.query as any;
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
+    const { teamName } = req.query as any;
     if (!teamName) return reply.code(400).send({ ok: false, error: 'teamName required' });
     const current = getCurrentOnCall(tenantId, teamName);
     return reply.send({ ok: true, currentOnCall: current });
   });
 
   server.put('/platform/sre/oncall', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
     const body = (req.body as any) || {};
     const {
-      tenantId = defaultTenant,
       teamName,
       rotation = [],
       escalationPolicy = [],
       timezone = 'UTC',
-      actor = 'system',
     } = body;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
+    const actor = resolveActor(session);
     if (!teamName) return reply.code(400).send({ ok: false, error: 'teamName required' });
     const sched = upsertOnCallSchedule(
       tenantId,
@@ -220,45 +291,63 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
   // ── Runbooks ──────────────────────────────────────────────────────
 
   server.get('/platform/sre/runbooks', async (req, reply) => {
-    const tenantId = (req.query as any)?.tenantId || defaultTenant;
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     return reply.send({ ok: true, runbooks: listRunbooks(tenantId) });
   });
 
   server.get('/platform/sre/runbooks/:id', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     const { id } = req.params as any;
-    const rb = getRunbook(id);
+    const rb = getRunbook(id, tenantId);
     if (!rb) return reply.code(404).send({ ok: false, error: 'Runbook not found' });
     return reply.send({ ok: true, runbook: rb });
   });
 
   server.post('/platform/sre/runbooks', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
     const body = (req.body as any) || {};
     const {
-      tenantId = defaultTenant,
       title,
       service = '',
       severity = 'sev3',
       steps = [],
-      actor = 'system',
     } = body;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
+    const actor = resolveActor(session);
     if (!title) return reply.code(400).send({ ok: false, error: 'title required' });
     const rb = createRunbook(tenantId, title, service, severity, steps, actor);
     return reply.code(201).send({ ok: true, runbook: rb });
   });
 
   server.patch('/platform/sre/runbooks/:id', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     const { id } = req.params as any;
     const body = (req.body as any) || {};
-    const { actor = 'system', ...updates } = body;
-    const rb = updateRunbook(id, updates, actor);
+    const { ...updates } = body;
+    const actor = resolveActor(session);
+    const rb = updateRunbook(id, updates, actor, tenantId);
     if (!rb) return reply.code(404).send({ ok: false, error: 'Runbook not found' });
     return reply.send({ ok: true, runbook: rb });
   });
 
   server.post('/platform/sre/runbooks/:id/test', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     const { id } = req.params as any;
-    const body = (req.body as any) || {};
-    const rb = markRunbookTested(id, body.actor || 'system');
+    const rb = markRunbookTested(id, resolveActor(session), tenantId);
     if (!rb) return reply.code(404).send({ ok: false, error: 'Runbook not found' });
     return reply.send({ ok: true, runbook: rb });
   });
@@ -266,21 +355,27 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
   // ── SLA Definitions & Reports ─────────────────────────────────────
 
   server.get('/platform/sre/slas', async (req, reply) => {
-    const tenantId = (req.query as any)?.tenantId || defaultTenant;
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     return reply.send({ ok: true, slaDefinitions: listSlaDefinitions(tenantId) });
   });
 
   server.post('/platform/sre/slas', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
     const body = (req.body as any) || {};
     const {
-      tenantId = defaultTenant,
       name,
       metric,
       targetValue,
       unit = '%',
       window = 'monthly',
-      actor = 'system',
     } = body;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
+    const actor = resolveActor(session);
     if (!name || !metric || targetValue === undefined) {
       return reply.code(400).send({ ok: false, error: 'name, metric, targetValue required' });
     }
@@ -301,35 +396,49 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
   });
 
   server.get('/platform/sre/sla-report', async (req, reply) => {
-    const tenantId = (req.query as any)?.tenantId || defaultTenant;
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     return reply.send({ ok: true, reports: generateSlaReport(tenantId) });
   });
 
   // ── Support Tickets ───────────────────────────────────────────────
 
   server.get('/platform/sre/tickets', async (req, reply) => {
-    const { tenantId = defaultTenant, status } = req.query as any;
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
+    const { status } = req.query as any;
     return reply.send({ ok: true, tickets: listSupportTickets(tenantId, status) });
   });
 
   server.get('/platform/sre/tickets/:id', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     const { id } = req.params as any;
-    const t = getSupportTicket(id);
+    const t = getSupportTicket(id, tenantId);
     if (!t) return reply.code(404).send({ ok: false, error: 'Ticket not found' });
     return reply.send({ ok: true, ticket: t });
   });
 
   server.post('/platform/sre/tickets', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
     const body = (req.body as any) || {};
     const {
-      tenantId = defaultTenant,
       subject,
       description = '',
       priority = 'medium',
       category = 'general',
-      createdBy = 'system',
       relatedIncidentId,
     } = body;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
+    const createdBy = resolveActor(session);
     if (!subject) return reply.code(400).send({ ok: false, error: 'subject required' });
     const validPriorities = ['critical', 'high', 'medium', 'low'];
     if (!validPriorities.includes(priority)) {
@@ -351,9 +460,14 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
   });
 
   server.post('/platform/sre/tickets/:id/status', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     const { id } = req.params as any;
     const body = (req.body as any) || {};
-    const { status, actor = 'system' } = body;
+    const { status } = body;
+    const actor = resolveActor(session);
     if (!status) return reply.code(400).send({ ok: false, error: 'status required' });
     const validStatuses = [
       'open',
@@ -368,27 +482,37 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
         .code(400)
         .send({ ok: false, error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` });
     }
-    const t = updateTicketStatus(id, status, actor);
+    const t = updateTicketStatus(id, status, actor, tenantId);
     if (!t) return reply.code(404).send({ ok: false, error: 'Ticket not found' });
     return reply.send({ ok: true, ticket: t });
   });
 
   server.post('/platform/sre/tickets/:id/assign', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     const { id } = req.params as any;
     const body = (req.body as any) || {};
-    const { assignee, actor = 'system' } = body;
+    const { assignee } = body;
+    const actor = resolveActor(session);
     if (!assignee) return reply.code(400).send({ ok: false, error: 'assignee required' });
-    const t = assignTicket(id, assignee, actor);
+    const t = assignTicket(id, assignee, actor, tenantId);
     if (!t) return reply.code(404).send({ ok: false, error: 'Ticket not found' });
     return reply.send({ ok: true, ticket: t });
   });
 
   server.post('/platform/sre/tickets/:id/messages', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     const { id } = req.params as any;
     const body = (req.body as any) || {};
-    const { author = 'system', body: msgBody, internal = false } = body;
+    const { body: msgBody, internal = false } = body;
+    const author = resolveActor(session);
     if (!msgBody) return reply.code(400).send({ ok: false, error: 'body required' });
-    const t = addTicketMessage(id, author, msgBody, internal);
+    const t = addTicketMessage(id, author, msgBody, internal, tenantId);
     if (!t) return reply.code(404).send({ ok: false, error: 'Ticket not found' });
     return reply.send({ ok: true, ticket: t });
   });
@@ -396,21 +520,27 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
   // ── Tenant Communications ─────────────────────────────────────────
 
   server.get('/platform/sre/communications', async (req, reply) => {
-    const tenantId = (req.query as any)?.tenantId || defaultTenant;
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     return reply.send({ ok: true, communications: listTenantCommunications(tenantId) });
   });
 
   server.post('/platform/sre/communications', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
     const body = (req.body as any) || {};
     const {
-      tenantId = defaultTenant,
       channel = 'in_app',
       subject,
       body: msgBody,
-      createdBy = 'system',
       relatedIncidentId,
       relatedMaintenanceId,
     } = body;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
+    const createdBy = resolveActor(session);
     if (!subject || !msgBody)
       return reply.code(400).send({ ok: false, error: 'subject and body required' });
     const comm = sendTenantCommunication(
@@ -428,12 +558,19 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
   // ── Posture & Audit ───────────────────────────────────────────────
 
   server.get('/platform/sre/posture', async (req, reply) => {
-    const tenantId = (req.query as any)?.tenantId || defaultTenant;
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     return reply.send({ ok: true, posture: getSrePosture(tenantId) });
   });
 
   server.get('/platform/sre/audit', async (req, reply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply, session);
+    if (!tenantId) return;
     const limit = parseInt((req.query as any)?.limit || '200', 10);
-    return reply.send({ ok: true, entries: getSreAuditLog(limit) });
+    return reply.send({ ok: true, entries: getSreAuditLog(limit, tenantId) });
   });
 }

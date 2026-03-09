@@ -53,11 +53,12 @@ export function initIntakeRoutes(
 function requirePortalSession(
   request: any,
   reply: any
-): { patientDfn: string; patientName: string } | null {
+): { patientDfn: string; patientName: string } {
   const session = getPortalSessionFn(request);
   if (!session) {
-    reply.code(401).send({ error: 'Portal session required' });
-    return null;
+    const err: any = new Error('Portal session required');
+    err.statusCode = 401;
+    throw err;
   }
   return session;
 }
@@ -65,11 +66,12 @@ function requirePortalSession(
 async function requireClinicianSession(
   request: any,
   reply: any
-): Promise<{ duz: string; name: string } | null> {
+): Promise<{ duz: string; name: string }> {
   const session = await getClinicianSessionFn(request);
   if (!session) {
-    reply.code(401).send({ error: 'Clinician session required' });
-    return null;
+    const err: any = new Error('Clinician session required');
+    err.statusCode = 401;
+    throw err;
   }
   return session;
 }

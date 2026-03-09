@@ -182,6 +182,15 @@ export function getRemittanceDocument(id: string): RemittanceDocument | undefine
   return remitDocStore.get(id);
 }
 
+export function getRemittanceDocumentForTenant(
+  tenantId: string,
+  id: string
+): RemittanceDocument | undefined {
+  const doc = remitDocStore.get(id);
+  if (!doc || doc.tenantId !== tenantId) return undefined;
+  return doc;
+}
+
 export function listRemittanceDocuments(
   tenantId: string,
   filters?: {
@@ -212,6 +221,7 @@ export function listRemittanceDocuments(
 /* ── Tag + Associate ────────────────────────────────────────── */
 
 export function tagRemittanceDocument(
+  tenantId: string,
   id: string,
   params: {
     checkNumber?: string;
@@ -220,7 +230,7 @@ export function tagRemittanceDocument(
     actor: string;
   }
 ): RemittanceDocument {
-  const doc = remitDocStore.get(id);
+  const doc = getRemittanceDocumentForTenant(tenantId, id);
   if (!doc) throw new Error(`Remittance document not found: ${id}`);
 
   const totalPaid = params.lineItems.reduce((sum, li) => sum + li.paidAmount, 0);
@@ -251,7 +261,7 @@ export function tagRemittanceDocument(
   dbRepo
     ?.upsert({
       id,
-      tenantId: updated.tenantId ?? 'default',
+      tenantId: updated.tenantId,
       status: updated.status,
       updatedAt: updated.updatedAt,
     })
@@ -262,8 +272,12 @@ export function tagRemittanceDocument(
 
 /* ── Review + Underpayment Check ────────────────────────────── */
 
-export function reviewRemittanceDocument(id: string, actor: string): RemittanceDocument {
-  const doc = remitDocStore.get(id);
+export function reviewRemittanceDocument(
+  tenantId: string,
+  id: string,
+  actor: string
+): RemittanceDocument {
+  const doc = getRemittanceDocumentForTenant(tenantId, id);
   if (!doc) throw new Error(`Remittance document not found: ${id}`);
 
   // Check for underpayment
@@ -302,7 +316,7 @@ export function reviewRemittanceDocument(id: string, actor: string): RemittanceD
   dbRepo
     ?.upsert({
       id,
-      tenantId: updated.tenantId ?? 'default',
+      tenantId: updated.tenantId,
       status: updated.status,
       updatedAt: updated.updatedAt,
     })
@@ -314,12 +328,13 @@ export function reviewRemittanceDocument(id: string, actor: string): RemittanceD
 /* ── Post to VistA (scaffold) ───────────────────────────────── */
 
 export function markAsPosted(
+  tenantId: string,
   id: string,
   vistaArIen: string | undefined,
   postingNotes: string,
   actor: string
 ): RemittanceDocument {
-  const doc = remitDocStore.get(id);
+  const doc = getRemittanceDocumentForTenant(tenantId, id);
   if (!doc) throw new Error(`Remittance document not found: ${id}`);
 
   const now = new Date().toISOString();
@@ -338,7 +353,7 @@ export function markAsPosted(
         actor,
         detail: vistaArIen
           ? `Posted to VistA AR IEN: ${vistaArIen}`
-          : `Marked as posted (VistA AR integration pending): ${postingNotes}`,
+          : `Recorded locally for later VistA AR posting (integration pending): ${postingNotes}`,
       },
     ],
   };
@@ -349,7 +364,7 @@ export function markAsPosted(
   dbRepo
     ?.upsert({
       id,
-      tenantId: updated.tenantId ?? 'default',
+      tenantId: updated.tenantId,
       status: updated.status,
       updatedAt: updated.updatedAt,
     })

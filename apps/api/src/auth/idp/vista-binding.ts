@@ -23,6 +23,9 @@
 
 import { log } from '../../lib/logger.js';
 import { authenticateUser } from '../../vista/rpcBrokerClient.js';
+import { VISTA_CONTEXT, VISTA_HOST, VISTA_PORT } from '../../vista/config.js';
+import { primeRpcContext, type RpcContext } from '../../vista/rpcConnectionPool.js';
+import { tryResolveTenantId } from '../../config/tenant-config.js';
 import type { VistaBindingResult, VistaBindingStatus } from './types.js';
 
 /* ------------------------------------------------------------------ */
@@ -30,11 +33,14 @@ import type { VistaBindingResult, VistaBindingStatus } from './types.js';
 /* ------------------------------------------------------------------ */
 
 interface VistaBinding {
+  tenantId: string;
   duz: string;
   userName: string;
   facilityStation: string;
   facilityName: string;
   divisionIen: string;
+  accessCode: string;
+  verifyCode: string;
   boundAt: number;
 }
 
@@ -71,17 +77,45 @@ setInterval(() => {
 export async function bindVistaSession(
   sessionToken: string,
   accessCode: string,
-  verifyCode: string
+  verifyCode: string,
+  opts?: {
+    tenantId?: string;
+    userInfo?: {
+      duz: string;
+      userName: string;
+      facilityStation: string;
+      facilityName: string;
+      divisionIen: string;
+    };
+  }
 ): Promise<VistaBindingResult> {
   try {
-    const userInfo = await authenticateUser(accessCode, verifyCode);
+    const userInfo = opts?.userInfo ?? (await authenticateUser(accessCode, verifyCode));
+    const tenantId = opts?.tenantId || tryResolveTenantId(userInfo.facilityStation);
+    if (!tenantId) {
+      return { ok: false, error: 'Tenant resolution failed for VistA binding' };
+    }
+    const rpcContext: RpcContext = {
+      tenantId,
+      duz: userInfo.duz,
+      vistaHost: VISTA_HOST,
+      vistaPort: VISTA_PORT,
+      vistaContext: VISTA_CONTEXT,
+      accessCode,
+      verifyCode,
+    };
+
+    await primeRpcContext(rpcContext);
 
     vistaBindings.set(sessionToken, {
+      tenantId,
       duz: userInfo.duz,
       userName: userInfo.userName,
       facilityStation: userInfo.facilityStation,
       facilityName: userInfo.facilityName,
       divisionIen: userInfo.divisionIen,
+      accessCode,
+      verifyCode,
       boundAt: Date.now(),
     });
 
@@ -89,7 +123,7 @@ export async function bindVistaSession(
     vistaBindDbRepo
       ?.upsert({
         id: sessionToken,
-        tenantId: 'default',
+        tenantId,
         idpUserId: sessionToken,
         vistaDuz: userInfo.duz,
         provider: 'vista',
@@ -97,7 +131,7 @@ export async function bindVistaSession(
       })
       .catch(() => {});
 
-    log.info('VistA session bound', { duz: userInfo.duz });
+    log.info('VistA session bound', { duz: userInfo.duz, tenantId });
 
     return {
       ok: true,

@@ -2,8 +2,7 @@
  * Messages Page — Secure messaging with care team.
  * Inbox / Drafts / Sent tabs, compose form.
  *
- * Phase 64: Added VistA MailMan bridge for sending to clinic mail groups.
- * Messages are sent through both portal store AND VistA MailMan (DSIC SEND MAIL MSG).
+ * Portal secure messaging with truthful VistA MailMan or local-mode posture.
  *
  * IMPORTANT: SLA disclaimer — this is NOT for urgent communication.
  */
@@ -25,6 +24,21 @@ import {
 
 type Tab = 'inbox' | 'drafts' | 'sent' | 'compose';
 
+function describeVistaSync(vistaSync?: string) {
+  switch (vistaSync) {
+    case 'synced':
+      return { label: 'VistA MailMan synced', color: '#166534' };
+    case 'failed':
+      return { label: 'MailMan sync failed', color: '#b91c1c' };
+    case 'pending':
+      return { label: 'Sync pending', color: '#92400e' };
+    case 'not_synced':
+      return { label: 'Local mode only', color: '#64748b' };
+    default:
+      return null;
+  }
+}
+
 export default function MessagesPage() {
   const [tab, setTab] = useState<Tab>('inbox');
   const [inbox, setInbox] = useState<any[]>([]);
@@ -39,6 +53,8 @@ export default function MessagesPage() {
   const [notice, setNotice] = useState('');
   const [vistaSync, setVistaSync] = useState<string>('');
   const [inboxSource, setInboxSource] = useState<'vista' | 'local' | ''>('');
+  const noticeIsError =
+    notice.toLowerCase().includes('failed') || notice.toLowerCase().includes('required');
 
   useEffect(() => {
     loadMessages();
@@ -94,16 +110,16 @@ export default function MessagesPage() {
       });
       if (mmRes.ok && (mmRes.data as any)?.ok) {
         const src = (mmRes.data as any)?.source || 'unknown';
-        const syncStatus = (mmRes.data as any)?.vistaSync || 'pending';
+        const syncStatus = (mmRes.data as any)?.vistaSync || 'not_synced';
         setVistaSync(syncStatus);
         const label =
           src === 'vista'
-            ? ' (sent to clinic via VistA MailMan)'
-            : ' (stored locally — VistA MailMan unavailable)';
+            ? 'Message sent to the clinic via VistA MailMan.'
+            : 'Message stored locally only. VistA MailMan is unavailable, so clinic delivery is not yet confirmed.';
         setSubject('');
         setBody('');
         setCategory('general');
-        setNotice('Message sent successfully.' + label);
+        setNotice(label);
         setSending(false);
         setTab('sent');
         loadMessages();
@@ -137,7 +153,9 @@ export default function MessagesPage() {
       setSubject('');
       setBody('');
       setCategory('general');
-      setNotice('Message sent successfully. (stored locally — VistA MailMan unavailable)');
+      setNotice(
+        'Message stored locally only. VistA MailMan is unavailable, so clinic delivery is not yet confirmed.'
+      );
       setTab('sent');
       loadMessages();
     } else {
@@ -258,8 +276,8 @@ export default function MessagesPage() {
                     padding: '0.375rem 0.75rem',
                     borderRadius: 4,
                     marginBottom: '0.75rem',
-                    background: notice.includes('success') ? '#dcfce7' : '#fef2f2',
-                    color: notice.includes('success') ? '#166534' : '#dc2626',
+                    background: noticeIsError ? '#fef2f2' : '#dcfce7',
+                    color: noticeIsError ? '#dc2626' : '#166534',
                     fontSize: '0.8125rem',
                   }}
                 >
@@ -345,21 +363,11 @@ export default function MessagesPage() {
                   <div
                     style={{
                       fontSize: '0.75rem',
-                      color:
-                        vistaSync === 'synced'
-                          ? '#166534'
-                          : vistaSync === 'integration-pending'
-                            ? '#92400e'
-                            : '#64748b',
+                      color: describeVistaSync(vistaSync)?.color || '#64748b',
                       marginTop: '0.25rem',
                     }}
                   >
-                    VistA MailMan:{' '}
-                    {vistaSync === 'synced'
-                      ? 'Synced to clinic'
-                      : vistaSync === 'integration-pending'
-                        ? 'Integration pending (target: DSIC SEND MAIL MSG)'
-                        : vistaSync}
+                    Delivery posture: {describeVistaSync(vistaSync)?.label || vistaSync}
                   </div>
                 )}
               </div>
@@ -395,6 +403,10 @@ function MessageList({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
       {messages.map((msg: any) => (
+        (() => {
+          const messageSource = msg.vistaSync === 'synced' || msg.vistaRef ? 'vista' : dataSource;
+          const syncMeta = describeVistaSync(msg.vistaSync);
+          return (
         <div
           key={msg.id || msg.ien || msg.subject}
           className="card"
@@ -445,9 +457,14 @@ function MessageList({
                   Delete
                 </button>
               )}
-              <DataSourceBadge source={dataSource === 'vista' ? 'ehr' : 'local'} />
+              <DataSourceBadge source={messageSource === 'vista' ? 'ehr' : 'local'} />
             </div>
           </div>
+          {syncMeta && msg.status !== 'draft' && (
+            <div style={{ fontSize: '0.75rem', color: syncMeta.color, marginTop: '0.25rem' }}>
+              {syncMeta.label}
+            </div>
+          )}
           {msg.body && (
             <p
               style={{
@@ -461,6 +478,8 @@ function MessageList({
             </p>
           )}
         </div>
+          );
+        })()
       ))}
     </div>
   );

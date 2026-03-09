@@ -18,7 +18,7 @@
 
 import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
 import {
-  getLoaRequest,
+  getLoaRequestForTenant,
   listLoaRequests,
   getLoaStats,
   transitionLoa,
@@ -34,12 +34,38 @@ import {
 } from '../loa/loa-workflow.js';
 import type { LoaStatus } from '../loa/loa-types.js';
 
+function resolveTenantId(request: any): string | null {
+  const headerTenantId = request?.headers?.['x-tenant-id'];
+  if (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0) {
+    return headerTenantId.trim();
+  }
+  const requestTenantId = request?.tenantId;
+  if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+    return requestTenantId.trim();
+  }
+  const sessionTenantId = request?.session?.tenantId;
+  if (typeof sessionTenantId === 'string' && sessionTenantId.trim().length > 0) {
+    return sessionTenantId.trim();
+  }
+  return null;
+}
+
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
+function resolveActor(request: any, explicitActor?: string): string {
+  return explicitActor || request?.session?.userName || request?.session?.duz || 'system';
+}
+
 const loaRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   /* ── POST /rcm/loa — create ────────────────────────────── */
   server.post('/rcm/loa', async (request, reply) => {
     const body = (request.body as any) || {};
     const {
-      tenantId = 'default',
       patientDfn,
       patientName,
       payerId,
@@ -55,6 +81,8 @@ const loaRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
     if (!patientDfn || !payerId) {
       return reply.status(400).send({ ok: false, error: 'patientDfn and payerId required' });
     }
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     try {
       // Transform plain string arrays into typed code objects
@@ -81,7 +109,7 @@ const loaRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
         providerDuz,
         facilityName,
         memberId,
-        createdBy: body.actor ?? 'system',
+        createdBy: resolveActor(request, body.actor),
       });
 
       const resolved = resolveSubmissionMode(payerId);
@@ -103,14 +131,15 @@ const loaRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   /* ── GET /rcm/loa — list ───────────────────────────────── */
   server.get('/rcm/loa', async (request, reply) => {
     const query = request.query as {
-      tenantId?: string;
       status?: string;
       payerId?: string;
       limit?: string;
       offset?: string;
     };
 
-    const result = listLoaRequests(query.tenantId ?? 'default', {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const result = listLoaRequests(tenantId, {
       status: query.status as LoaStatus | undefined,
       payerId: query.payerId,
       limit: query.limit ? parseInt(query.limit, 10) : undefined,
@@ -122,7 +151,8 @@ const loaRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
 
   /* ── GET /rcm/loa/stats ───────────────────────────────── */
   server.get('/rcm/loa/stats', async (request, reply) => {
-    const tenantId = (request.query as any)?.tenantId ?? 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const byStatus = getLoaStats(tenantId);
     const total = Object.values(byStatus).reduce((sum, n) => sum + n, 0);
     return reply.send({ ok: true, total, byStatus });
@@ -131,7 +161,9 @@ const loaRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   /* ── GET /rcm/loa/:id — detail ────────────────────────── */
   server.get('/rcm/loa/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
-    const loa = getLoaRequest(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const loa = getLoaRequestForTenant(tenantId, id);
     if (!loa) return reply.status(404).send({ ok: false, error: 'LOA not found' });
     return reply.send({ ok: true, loa });
   });
@@ -140,14 +172,16 @@ const loaRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   server.post('/rcm/loa/:id/transition', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const { toStatus, actor = 'system' } = body;
+    const { toStatus, actor } = body;
 
     if (!toStatus) {
       return reply.status(400).send({ ok: false, error: 'toStatus required' });
     }
 
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     try {
-      const loa = transitionLoa(id, toStatus, actor);
+      const loa = transitionLoa(tenantId, id, toStatus, resolveActor(request, actor));
       return reply.send({ ok: true, loa });
     } catch (err) {
       return reply.status(400).send({
@@ -161,10 +195,12 @@ const loaRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   server.post('/rcm/loa/:id/submit', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const { actor = 'system' } = body;
+    const { actor } = body;
 
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     try {
-      const result = submitLoa(id, actor);
+      const result = submitLoa(tenantId, id, resolveActor(request, actor));
       return reply.send({ ok: true, ...result });
     } catch (err) {
       return reply.status(400).send({
@@ -178,15 +214,18 @@ const loaRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   server.post('/rcm/loa/:id/approve', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const { referenceNumber = '', approvedDate, expirationDate, actor = 'system' } = body;
+    const { referenceNumber = '', approvedDate, expirationDate, actor } = body;
 
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     try {
       const loa = recordLoaApproval(
+        tenantId,
         id,
         referenceNumber,
         approvedDate ?? new Date().toISOString().slice(0, 10),
         expirationDate,
-        actor
+        resolveActor(request, actor)
       );
       return reply.send({ ok: true, loa });
     } catch (err) {
@@ -201,10 +240,17 @@ const loaRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   server.post('/rcm/loa/:id/deny', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const { reason, actor = 'system' } = body;
+    const { reason, actor } = body;
 
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     try {
-      const loa = recordLoaDenial(id, reason ?? 'No reason provided', actor);
+      const loa = recordLoaDenial(
+        tenantId,
+        id,
+        reason ?? 'No reason provided',
+        resolveActor(request, actor)
+      );
       return reply.send({ ok: true, loa });
     } catch (err) {
       return reply.status(400).send({
@@ -226,8 +272,16 @@ const loaRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
         .send({ ok: false, error: 'itemId (string) and checked (boolean) required' });
     }
 
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     try {
-      const loa = updateLoaChecklist(id, itemId, checked, body.actor ?? 'system');
+      const loa = updateLoaChecklist(
+        tenantId,
+        id,
+        itemId,
+        checked,
+        resolveActor(request, body.actor)
+      );
       return reply.send({ ok: true, loa });
     } catch (err) {
       return reply.status(400).send({
@@ -241,15 +295,18 @@ const loaRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   server.post('/rcm/loa/:id/attachment', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const { filename, mimeType, storageRef, uploadedBy = 'system', category = 'other' } = body;
+    const { filename, mimeType, storageRef, uploadedBy, category = 'other' } = body;
 
     if (!filename || !storageRef) {
       return reply.status(400).send({ ok: false, error: 'filename and storageRef required' });
     }
 
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     try {
       const now = new Date().toISOString();
       const loa = addLoaAttachment(
+        tenantId,
         id,
         {
           id: `att-${Date.now()}`,
@@ -258,10 +315,10 @@ const loaRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
           sizeBytes: body.sizeBytes ?? 0,
           storageRef,
           uploadedAt: now,
-          uploadedBy,
+          uploadedBy: resolveActor(request, uploadedBy),
           category,
         },
-        uploadedBy
+        resolveActor(request, uploadedBy)
       );
       return reply.send({ ok: true, loa });
     } catch (err) {

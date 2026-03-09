@@ -1,11 +1,17 @@
 ﻿'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from '@/components/cprs/cprs.module.css';
+import { API_BASE } from '@/lib/api-config';
+import { useSession } from '@/stores/session-context';
+
+const VERIFY_DFN = '46';
+const VERIFY_SEARCH = 'ZZZRETFOURNINETYFOUR';
 
 /** Fetch helper that always sends session cookie */
 function apiFetch(url: string, init?: RequestInit): Promise<Response> {
-  return fetch(url, { credentials: 'include', ...init });
+  return fetch(`${API_BASE}${url}`, { credentials: 'include', ...init });
 }
 
 interface Check {
@@ -23,7 +29,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       fn: async () => {
         const r = await apiFetch(`/health`);
         const d = await r.json();
-        return { ok: d.status === 'ok', detail: JSON.stringify(d) };
+        return { ok: d.ok === true || d.status === 'ok', detail: JSON.stringify(d) };
       },
     },
     {
@@ -39,7 +45,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       id: 'patient-search',
       label: 'Patient search RPC',
       fn: async () => {
-        const r = await apiFetch(`/vista/patient-search?q=CARTER`);
+        const r = await apiFetch(`/vista/patient-search?q=${encodeURIComponent(VERIFY_SEARCH)}`);
         const d = await r.json();
         return {
           ok: d.ok === true && Array.isArray(d.results),
@@ -51,7 +57,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       id: 'demographics',
       label: 'Patient demographics RPC',
       fn: async () => {
-        const r = await apiFetch(`/vista/patient-demographics?dfn=1`);
+        const r = await apiFetch(`/vista/patient-demographics?dfn=${VERIFY_DFN}`);
         const d = await r.json();
         return { ok: d.ok === true, detail: d.name ?? 'N/A' };
       },
@@ -60,7 +66,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       id: 'allergies',
       label: 'Allergies endpoint',
       fn: async () => {
-        const r = await apiFetch(`/vista/allergies?dfn=1`);
+        const r = await apiFetch(`/vista/allergies?dfn=${VERIFY_DFN}`);
         const d = await r.json();
         return { ok: d.ok === true, detail: `${d.allergies?.length ?? 0} allergy(s)` };
       },
@@ -69,7 +75,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       id: 'vitals',
       label: 'Vitals endpoint',
       fn: async () => {
-        const r = await apiFetch(`/vista/vitals?dfn=1`);
+        const r = await apiFetch(`/vista/vitals?dfn=${VERIFY_DFN}`);
         const d = await r.json();
         return { ok: d.ok === true, detail: `${d.vitals?.length ?? 0} vital(s)` };
       },
@@ -78,7 +84,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       id: 'notes',
       label: 'Notes endpoint',
       fn: async () => {
-        const r = await apiFetch(`/vista/notes?dfn=1`);
+        const r = await apiFetch(`/vista/notes?dfn=${VERIFY_DFN}`);
         const d = await r.json();
         return { ok: d.ok === true, detail: `${d.notes?.length ?? 0} note(s)` };
       },
@@ -87,7 +93,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       id: 'medications',
       label: 'Medications endpoint',
       fn: async () => {
-        const r = await apiFetch(`/vista/medications?dfn=1`);
+        const r = await apiFetch(`/vista/medications?dfn=${VERIFY_DFN}`);
         const d = await r.json();
         return { ok: d.ok === true, detail: `${d.medications?.length ?? 0} med(s)` };
       },
@@ -96,7 +102,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       id: 'problems',
       label: 'Problems endpoint',
       fn: async () => {
-        const r = await apiFetch(`/vista/problems?dfn=1`);
+        const r = await apiFetch(`/vista/problems?dfn=${VERIFY_DFN}`);
         const d = await r.json();
         return { ok: d.ok === true, detail: `${d.problems?.length ?? 0} problem(s)` };
       },
@@ -118,7 +124,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       id: 'consults',
       label: 'Consults endpoint (Phase 12)',
       fn: async () => {
-        const r = await apiFetch(`/vista/consults?dfn=1`);
+        const r = await apiFetch(`/vista/consults?dfn=${VERIFY_DFN}`);
         const d = await r.json();
         return { ok: d.ok === true, detail: `${d.results?.length ?? 0} consult(s)` };
       },
@@ -127,7 +133,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       id: 'surgery',
       label: 'Surgery endpoint (Phase 12)',
       fn: async () => {
-        const r = await apiFetch(`/vista/surgery?dfn=1`);
+        const r = await apiFetch(`/vista/surgery?dfn=${VERIFY_DFN}`);
         const d = await r.json();
         return { ok: d.ok === true, detail: `${d.results?.length ?? 0} case(s)` };
       },
@@ -136,7 +142,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       id: 'dc-summaries',
       label: 'D/C Summaries endpoint (Phase 12)',
       fn: async () => {
-        const r = await apiFetch(`/vista/dc-summaries?dfn=1`);
+        const r = await apiFetch(`/vista/dc-summaries?dfn=${VERIFY_DFN}`);
         const d = await r.json();
         return { ok: d.ok === true, detail: `${d.results?.length ?? 0} summary(s)` };
       },
@@ -145,7 +151,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       id: 'labs',
       label: 'Labs endpoint (Phase 12)',
       fn: async () => {
-        const r = await apiFetch(`/vista/labs?dfn=1`);
+        const r = await apiFetch(`/vista/labs?dfn=${VERIFY_DFN}`);
         const d = await r.json();
         return { ok: d.ok === true, detail: `${d.results?.length ?? 0} result(s)` };
       },
@@ -154,7 +160,7 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
       id: 'reports',
       label: 'Reports catalog (Phase 12)',
       fn: async () => {
-        const r = await apiFetch(`/vista/reports`);
+        const r = await apiFetch(`/vista/reports?dfn=${VERIFY_DFN}`);
         const d = await r.json();
         return {
           ok: d.ok === true && Array.isArray(d.reports),
@@ -200,9 +206,9 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
     },
     {
       id: 'route-chart',
-      label: '/cprs/chart/100/cover route',
+      label: '/cprs/chart/46/cover route',
       fn: async () => {
-        const r = await fetch('/cprs/chart/100/cover', { redirect: 'manual' });
+        const r = await fetch(`/cprs/chart/${VERIFY_DFN}/cover`, { redirect: 'manual' });
         return { ok: r.status < 400, detail: `HTTP ${r.status}` };
       },
     },
@@ -217,6 +223,8 @@ const CHECKS: { id: string; label: string; fn: () => Promise<{ ok: boolean; deta
   ];
 
 export default function CPRSVerifyPage() {
+  const router = useRouter();
+  const { ready: sessionReady, authenticated } = useSession();
   const [checks, setChecks] = useState<Check[]>(
     CHECKS.map((c) => ({ id: c.id, label: c.label, status: 'pending', detail: '' }))
   );
@@ -249,12 +257,28 @@ export default function CPRSVerifyPage() {
   }, []);
 
   useEffect(() => {
+    if (sessionReady && !authenticated) {
+      const redirect = encodeURIComponent('/cprs/verify');
+      router.replace(`/cprs/login?redirect=${redirect}`);
+    }
+  }, [authenticated, router, sessionReady]);
+
+  useEffect(() => {
+    if (!sessionReady || !authenticated) return;
     runChecks();
-  }, [runChecks]);
+  }, [authenticated, runChecks, sessionReady]);
 
   const passed = checks.filter((c) => c.status === 'pass').length;
   const failed = checks.filter((c) => c.status === 'fail').length;
   const total = checks.length;
+
+  if (!sessionReady || !authenticated) {
+    return (
+      <div className={styles.shell} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        <p style={{ color: 'var(--cprs-text-muted)' }}>Checking session...</p>
+      </div>
+    );
+  }
 
   return (
     <div

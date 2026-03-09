@@ -14,7 +14,6 @@ import type { FastifyInstance } from 'fastify';
 import { requireSession, requireRole } from '../auth/auth-routes.js';
 import {
   queryImmutableAudit,
-  getImmutableAuditStats,
   verifyAuditChain,
   immutableAudit,
 } from '../lib/immutable-audit.js';
@@ -44,7 +43,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
     const events = queryImmutableAudit({
       actionPrefix: query.actionPrefix,
       actorId: query.actorId,
-      tenantId: query.tenantId,
+      tenantId: session.tenantId,
       since: query.since,
       outcome: query.outcome as any,
       limit: query.limit ? Number(query.limit) : 100,
@@ -66,7 +65,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
       }
     );
 
-    return { ok: true, events, count: events.length };
+    return { ok: true, events, count: events.length, scope: 'tenant-scoped' };
   });
 
   /**
@@ -77,8 +76,21 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
     const session = await requireSession(request, reply);
     requireRole(session, ['admin', 'support'], reply);
 
-    const stats = getImmutableAuditStats();
-    return { ok: true, stats };
+    const scopedEvents = queryImmutableAudit({ tenantId: session.tenantId, limit: 50_000 });
+    const byAction: Record<string, number> = {};
+    const byOutcome: Record<string, number> = {};
+    for (const event of scopedEvents) {
+      byAction[event.action] = (byAction[event.action] || 0) + 1;
+      byOutcome[event.outcome] = (byOutcome[event.outcome] || 0) + 1;
+    }
+    const stats = {
+      totalEntries: scopedEvents.length,
+      byAction,
+      byOutcome,
+      oldestTimestamp: scopedEvents[0]?.timestamp ?? null,
+      newestTimestamp: scopedEvents[scopedEvents.length - 1]?.timestamp ?? null,
+    };
+    return { ok: true, stats, scope: 'tenant-scoped' };
   });
 
   /**

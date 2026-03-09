@@ -52,10 +52,15 @@ export function initPhSubmissionStoreRepo(repo: typeof phSubDbRepo): void {
 /**
  * Create a new submission record for a claim packet.
  */
-export function createSubmission(packet: ClaimPacket, actor: string): SubmissionRecord {
+export function createSubmission(
+  tenantId: string,
+  packet: ClaimPacket,
+  actor: string
+): SubmissionRecord {
   const now = new Date().toISOString();
   const record: SubmissionRecord = {
     id: newSubmissionId(),
+    tenantId,
     packetId: packet.packetId,
     sourceClaimDraftId: packet.sourceClaimDraftId,
     status: 'draft',
@@ -75,7 +80,7 @@ export function createSubmission(packet: ClaimPacket, actor: string): Submission
   phSubDbRepo
     ?.upsert({
       id: record.id,
-      tenantId: (record as any).tenantId ?? 'default',
+      tenantId: record.tenantId,
       claimId: record.sourceClaimDraftId,
       packetId: record.packetId,
       status: record.status,
@@ -89,26 +94,29 @@ export function createSubmission(packet: ClaimPacket, actor: string): Submission
 /**
  * Get a submission by ID.
  */
-export function getSubmission(id: string): SubmissionRecord | undefined {
-  return submissions.get(id);
+export function getSubmission(tenantId: string, id: string): SubmissionRecord | undefined {
+  const record = submissions.get(id);
+  if (!record || record.tenantId !== tenantId) return undefined;
+  return record;
 }
 
 /**
  * Get submission by source claim draft ID.
  */
-export function getSubmissionByDraft(draftId: string): SubmissionRecord | undefined {
+export function getSubmissionByDraft(tenantId: string, draftId: string): SubmissionRecord | undefined {
   const subId = byDraft.get(draftId);
-  return subId ? submissions.get(subId) : undefined;
+  return subId ? getSubmission(tenantId, subId) : undefined;
 }
 
 /**
  * List all submissions, optionally filtered by status.
  */
 export function listSubmissions(filter?: {
+  tenantId: string;
   status?: EClaimsSubmissionStatus;
   limit?: number;
 }): SubmissionRecord[] {
-  let results = Array.from(submissions.values());
+  let results = Array.from(submissions.values()).filter((s) => s.tenantId === filter?.tenantId);
   if (filter?.status) {
     results = results.filter((s) => s.status === filter.status);
   }
@@ -133,12 +141,13 @@ export interface TransitionResult {
  * cannot be set without explicit staff action.
  */
 export function transitionSubmission(
+  tenantId: string,
   id: string,
   toStatus: EClaimsSubmissionStatus,
   actor: string,
   detail?: string
 ): TransitionResult {
-  const record = submissions.get(id);
+  const record = getSubmission(tenantId, id);
   if (!record) {
     return { ok: false, error: 'Submission not found.' };
   }
@@ -162,6 +171,17 @@ export function transitionSubmission(
   record.status = toStatus;
   record.updatedAt = now;
 
+  phSubDbRepo
+    ?.upsert({
+      id,
+      tenantId: record.tenantId,
+      claimId: record.sourceClaimDraftId,
+      packetId: record.packetId,
+      status: record.status,
+      updatedAt: record.updatedAt,
+    })
+    .catch(() => {});
+
   return { ok: true, submission: record };
 }
 
@@ -170,11 +190,23 @@ export function transitionSubmission(
 /**
  * Record that an export bundle was generated for this submission.
  */
-export function recordExportBundle(id: string, bundleId: string): boolean {
-  const record = submissions.get(id);
+export function recordExportBundle(tenantId: string, id: string, bundleId: string): boolean {
+  const record = getSubmission(tenantId, id);
   if (!record) return false;
   record.exportBundleIds.push(bundleId);
   record.updatedAt = new Date().toISOString();
+
+  phSubDbRepo
+    ?.upsert({
+      id,
+      tenantId: record.tenantId,
+      claimId: record.sourceClaimDraftId,
+      packetId: record.packetId,
+      status: record.status,
+      updatedAt: record.updatedAt,
+    })
+    .catch(() => {});
+
   return true;
 }
 
@@ -186,10 +218,11 @@ export function recordExportBundle(id: string, bundleId: string): boolean {
  * transition to "denied".
  */
 export function recordDenialReason(
+  tenantId: string,
   id: string,
   reason: Omit<DenialReason, 'recordedAt'>
 ): TransitionResult {
-  const record = submissions.get(id);
+  const record = getSubmission(tenantId, id);
   if (!record) {
     return { ok: false, error: 'Submission not found.' };
   }
@@ -201,6 +234,17 @@ export function recordDenialReason(
   });
   record.updatedAt = now;
 
+  phSubDbRepo
+    ?.upsert({
+      id,
+      tenantId: record.tenantId,
+      claimId: record.sourceClaimDraftId,
+      packetId: record.packetId,
+      status: record.status,
+      updatedAt: record.updatedAt,
+    })
+    .catch(() => {});
+
   return { ok: true, submission: record };
 }
 
@@ -211,11 +255,12 @@ export function recordDenialReason(
  * PhilHealth accepted the claim.
  */
 export function recordAcceptance(
+  tenantId: string,
   id: string,
   tcn: string,
   payerRefNumber?: string
 ): TransitionResult {
-  const record = submissions.get(id);
+  const record = getSubmission(tenantId, id);
   if (!record) {
     return { ok: false, error: 'Submission not found.' };
   }
@@ -227,22 +272,45 @@ export function recordAcceptance(
   record.payerRefNumber = payerRefNumber;
   record.updatedAt = new Date().toISOString();
 
+  phSubDbRepo
+    ?.upsert({
+      id,
+      tenantId: record.tenantId,
+      claimId: record.sourceClaimDraftId,
+      packetId: record.packetId,
+      status: record.status,
+      updatedAt: record.updatedAt,
+    })
+    .catch(() => {});
+
   return { ok: true, submission: record };
 }
 
 /* ── Staff Notes ────────────────────────────────────────────── */
 
-export function addStaffNote(id: string, note: string): boolean {
-  const record = submissions.get(id);
+export function addStaffNote(tenantId: string, id: string, note: string): boolean {
+  const record = getSubmission(tenantId, id);
   if (!record) return false;
   record.staffNotes.push(note);
   record.updatedAt = new Date().toISOString();
+
+  phSubDbRepo
+    ?.upsert({
+      id,
+      tenantId: record.tenantId,
+      claimId: record.sourceClaimDraftId,
+      packetId: record.packetId,
+      status: record.status,
+      updatedAt: record.updatedAt,
+    })
+    .catch(() => {});
+
   return true;
 }
 
 /* ── Stats ──────────────────────────────────────────────────── */
 
-export function getSubmissionStats(): {
+export function getSubmissionStats(tenantId: string): {
   total: number;
   byStatus: Record<EClaimsSubmissionStatus, number>;
   recentDenials: number;
@@ -261,6 +329,7 @@ export function getSubmissionStats(): {
   let recentDenials = 0;
 
   for (const sub of submissions.values()) {
+    if (sub.tenantId !== tenantId) continue;
     byStatus[sub.status]++;
     if (sub.status === 'denied' && sub.updatedAt >= weekAgo) {
       recentDenials++;
@@ -268,7 +337,7 @@ export function getSubmissionStats(): {
   }
 
   return {
-    total: submissions.size,
+    total: Object.values(byStatus).reduce((sum, count) => sum + count, 0),
     byStatus,
     recentDenials,
   };

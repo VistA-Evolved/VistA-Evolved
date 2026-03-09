@@ -35,7 +35,8 @@ export interface ImportResult {
  */
 export async function importRemittanceDenials(
   input: Import835BatchInput,
-  actor: string
+  actor: string,
+  tenantId: string
 ): Promise<ImportResult> {
   const result: ImportResult = {
     ok: true,
@@ -63,6 +64,7 @@ export async function importRemittanceDenials(
 
       const denial = await createDenialCaseWithProvenance(
         {
+          tenantId,
           claimRef: entry.claimRef,
           payerId: entry.payerId,
           patientDfn: entry.patientDfn,
@@ -83,7 +85,7 @@ export async function importRemittanceDenials(
       );
 
       // Add supplementary import action with entry-level detail
-      await addDenialAction(denial.id, actor, 'IMPORT', {
+      await addDenialAction(tenantId, denial.id, actor, 'IMPORT', {
         source: 'EDI_835',
         importFileHash: contentHash,
         entryIndex: i,

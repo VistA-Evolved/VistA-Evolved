@@ -56,7 +56,7 @@ export interface CredentialDocumentRow {
 }
 
 export interface CreateCredentialInput {
-  tenantId?: string;
+  tenantId: string;
   entityType: string;
   entityId: string;
   entityName: string;
@@ -74,7 +74,7 @@ export interface CreateCredentialInput {
 
 export interface CreateDocumentInput {
   credentialId: string;
-  tenantId?: string;
+  tenantId: string;
   fileName: string;
   mimeType: string;
   storagePath: string;
@@ -165,7 +165,7 @@ export async function createCredential(
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || 'default';
+  const tenantId = input.tenantId;
 
   await db.insert(credentialArtifact).values({
     id,
@@ -314,7 +314,11 @@ export async function addDocument(input: CreateDocumentInput): Promise<Credentia
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || 'default';
+  const tenantId = input.tenantId;
+  const credential = await getCredentialById(tenantId, input.credentialId);
+  if (!credential) {
+    throw new Error('Credential not found');
+  }
 
   await db.insert(credentialDocument).values({
     id,
@@ -329,21 +333,34 @@ export async function addDocument(input: CreateDocumentInput): Promise<Credentia
     uploadedAt: now,
   });
 
-  const rows = await db.select().from(credentialDocument).where(eq(credentialDocument.id, id));
+  const rows = await db
+    .select()
+    .from(credentialDocument)
+    .where(and(eq(credentialDocument.tenantId, tenantId), eq(credentialDocument.id, id)));
   return parseDocument(rows[0]);
 }
 
-export async function listDocuments(credentialId: string): Promise<CredentialDocumentRow[]> {
+export async function listDocuments(
+  tenantId: string,
+  credentialId: string
+): Promise<CredentialDocumentRow[]> {
   const db = getPgDb();
   const rows = await db
     .select()
     .from(credentialDocument)
-    .where(eq(credentialDocument.credentialId, credentialId));
+    .where(
+      and(
+        eq(credentialDocument.tenantId, tenantId),
+        eq(credentialDocument.credentialId, credentialId)
+      )
+    );
   return rows.map(parseDocument);
 }
 
-export async function deleteDocument(id: string): Promise<boolean> {
+export async function deleteDocument(tenantId: string, id: string): Promise<boolean> {
   const db = getPgDb();
-  const result = await db.delete(credentialDocument).where(eq(credentialDocument.id, id));
+  const result = await db
+    .delete(credentialDocument)
+    .where(and(eq(credentialDocument.tenantId, tenantId), eq(credentialDocument.id, id)));
   return (result as any).rowCount > 0;
 }

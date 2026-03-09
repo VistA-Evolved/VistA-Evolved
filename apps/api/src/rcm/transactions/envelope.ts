@@ -49,7 +49,7 @@ export function nextControlNumber(senderId: string, receiverId: string): string 
 export async function nextControlNumberDurable(
   senderId: string,
   receiverId: string,
-  tenantId: string = 'default'
+  tenantId: string
 ): Promise<string> {
   if (pgControlRepo) {
     try {
@@ -68,6 +68,7 @@ export async function nextControlNumberDurable(
 /* ── Envelope builder ────────────────────────────────────────── */
 
 export interface EnvelopeOptions {
+  tenantId: string;
   transactionSet: X12TransactionSet;
   senderId: string;
   receiverId: string;
@@ -136,6 +137,7 @@ export function buildEnvelope(options: EnvelopeOptions): TransactionEnvelope {
 
   return {
     transactionId,
+    tenantId: options.tenantId,
     transactionSet: options.transactionSet,
     isa,
     gs,
@@ -208,7 +210,7 @@ export function storeTransaction(
   txnDbRepo
     ?.upsert({
       id: record.id,
-      tenantId: 'default',
+      tenantId: envelope.tenantId,
       sourceId: envelope.sourceId || '',
       sourceType: envelope.sourceType || '',
       controlNumber: envelope.controlNumber || '',
@@ -281,13 +283,19 @@ export function transitionTransaction(
 
   // Phase 146: Write-through transaction transition
   txnDbRepo
-    ?.upsert({ id, tenantId: 'default', status: record.state, updatedAt: record.updatedAt })
+    ?.upsert({
+      id,
+      tenantId: record.envelope.tenantId,
+      status: record.state,
+      updatedAt: record.updatedAt,
+    })
     .catch(() => {});
 
   return record;
 }
 
 export function listTransactions(filters?: {
+  tenantId?: string;
   state?: TransactionState;
   transactionSet?: X12TransactionSet;
   sourceId?: string;
@@ -295,6 +303,7 @@ export function listTransactions(filters?: {
 }): TransactionRecord[] {
   let results = Array.from(transactionStore.values());
 
+  if (filters?.tenantId) results = results.filter((r) => r.envelope.tenantId === filters.tenantId);
   if (filters?.state) results = results.filter((r) => r.state === filters.state);
   if (filters?.transactionSet)
     results = results.filter((r) => r.envelope.transactionSet === filters.transactionSet);
@@ -306,7 +315,7 @@ export function listTransactions(filters?: {
   return results;
 }
 
-export function getTransactionStats(): {
+export function getTransactionStats(tenantId?: string): {
   total: number;
   byState: Record<string, number>;
   byTransactionSet: Record<string, number>;
@@ -319,6 +328,7 @@ export function getTransactionStats(): {
   let failedCount = 0;
 
   for (const r of transactionStore.values()) {
+    if (tenantId && r.envelope.tenantId !== tenantId) continue;
     byState[r.state] = (byState[r.state] ?? 0) + 1;
     byTransactionSet[r.envelope.transactionSet] =
       (byTransactionSet[r.envelope.transactionSet] ?? 0) + 1;
@@ -326,7 +336,8 @@ export function getTransactionStats(): {
     if (r.state === 'failed') failedCount++;
   }
 
-  return { total: transactionStore.size, byState, byTransactionSet, dlqCount, failedCount };
+  const total = Object.values(byState).reduce((sum, count) => sum + count, 0);
+  return { total, byState, byTransactionSet, dlqCount, failedCount };
 }
 
 export function resetTransactionStore(): void {

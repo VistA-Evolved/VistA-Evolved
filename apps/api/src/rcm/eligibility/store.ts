@@ -47,8 +47,14 @@ export async function insertEligibilityCheck(
   return { ...row, id, createdAt };
 }
 
-export async function getEligibilityCheckById(id: string): Promise<EligibilityCheckRecord | null> {
-  const rows = await getPgDb().select().from(eligibilityCheck).where(eq(eligibilityCheck.id, id));
+export async function getEligibilityCheckById(
+  tenantId: string,
+  id: string
+): Promise<EligibilityCheckRecord | null> {
+  const rows = await getPgDb()
+    .select()
+    .from(eligibilityCheck)
+    .where(and(eq(eligibilityCheck.tenantId, tenantId), eq(eligibilityCheck.id, id)));
   return rows[0] ? mapEligRow(rows[0]) : null;
 }
 
@@ -211,8 +217,14 @@ export async function insertClaimStatusCheck(
   return { ...row, id, createdAt };
 }
 
-export async function getClaimStatusCheckById(id: string): Promise<ClaimStatusCheckRecord | null> {
-  const rows = await getPgDb().select().from(claimStatusCheck).where(eq(claimStatusCheck.id, id));
+export async function getClaimStatusCheckById(
+  tenantId: string,
+  id: string
+): Promise<ClaimStatusCheckRecord | null> {
+  const rows = await getPgDb()
+    .select()
+    .from(claimStatusCheck)
+    .where(and(eq(claimStatusCheck.tenantId, tenantId), eq(claimStatusCheck.id, id)));
   return rows[0] ? mapCstatRow(rows[0]) : null;
 }
 

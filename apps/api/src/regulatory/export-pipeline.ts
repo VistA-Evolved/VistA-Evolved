@@ -364,6 +364,15 @@ export function getExportPackage(id: string): ExportPackage | undefined {
   return exportPackages.get(id);
 }
 
+export function getExportPackageForTenant(
+  tenantId: string,
+  id: string
+): ExportPackage | undefined {
+  const pkg = exportPackages.get(id);
+  if (!pkg || (pkg.request.tenantId || 'default') !== tenantId) return undefined;
+  return pkg;
+}
+
 /**
  * List export packages with optional status filter.
  */

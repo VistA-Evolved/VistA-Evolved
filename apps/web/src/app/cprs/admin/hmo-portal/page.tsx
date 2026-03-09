@@ -584,6 +584,20 @@ function ClaimBuilderTab() {
       <p style={{ color: '#666', fontSize: '0.85rem', marginBottom: '1rem' }}>
         Build claim packets for HMO portal submission. Generates JSON and text exports.
       </p>
+      <div
+        style={{
+          marginBottom: '1rem',
+          padding: '0.75rem 1rem',
+          background: '#fff7ed',
+          border: '1px solid #fdba74',
+          borderRadius: '8px',
+          color: '#9a3412',
+          fontSize: '0.85rem',
+        }}
+      >
+        This builder currently creates demo claim packets in export-only safety mode. It does not
+        submit live claims directly to an HMO system.
+      </div>
 
       <button
         onClick={handleBuildDemo}
@@ -667,7 +681,7 @@ function ClaimBuilderTab() {
               cursor: 'pointer',
             }}
           >
-            Submit to Portal (Manual-Assisted)
+            Create Demo Portal Submission (Manual-Assisted)
           </button>
         </div>
       )}

@@ -100,10 +100,14 @@ export interface PortalSettings {
 }
 
 /* ------------------------------------------------------------------ */
-/* Store                                                                */
+/* Store (cache key: tenantId:patientDfn for tenant isolation)          */
 /* ------------------------------------------------------------------ */
 
 const settingsStore = new Map<string, PortalSettings>();
+
+function cacheKey(tenantId: string, patientDfn: string): string {
+  return `${tenantId}:${patientDfn}`;
+}
 
 function defaultSettings(patientDfn: string): PortalSettings {
   return {
@@ -138,11 +142,52 @@ function defaultSettings(patientDfn: string): PortalSettings {
 /* API                                                                  */
 /* ------------------------------------------------------------------ */
 
-export function getSettings(patientDfn: string): PortalSettings {
-  let settings = settingsStore.get(patientDfn);
+function rowToSettings(row: {
+  patientDfn: string;
+  language?: string | null;
+  notificationsJson?: string | null;
+  displayJson?: string | null;
+  mfaJson?: string | null;
+  updatedAt?: string | null;
+}): PortalSettings {
+  const defaults = defaultSettings(row.patientDfn);
+  const parseJson = <T>(value: unknown, fallback: T): T => {
+    if (typeof value !== "string" || value.trim() === "") return fallback;
+    try {
+      const parsed = JSON.parse(value);
+      return (parsed ?? fallback) as T;
+    } catch {
+      return fallback;
+    }
+  };
+
+  return {
+    patientDfn: row.patientDfn,
+    language: (row.language as PortalLanguage) ?? defaults.language,
+    notifications: parseJson(row.notificationsJson, defaults.notifications),
+    display: parseJson(row.displayJson, defaults.display),
+    mfa: parseJson(row.mfaJson, defaults.mfa),
+    updatedAt: row.updatedAt ?? defaults.updatedAt,
+  };
+}
+
+export async function getSettings(tenantId: string, patientDfn: string): Promise<PortalSettings> {
+  const key = cacheKey(tenantId, patientDfn);
+  let settings = settingsStore.get(key);
+  if (!settings && _settingsRepo) {
+    try {
+      const row = await Promise.resolve(_settingsRepo.findSettingByDfn(tenantId, patientDfn));
+      if (row) {
+        settings = rowToSettings(row);
+        settingsStore.set(key, settings);
+      }
+    } catch (e) {
+      settingsDbWarn("find", e);
+    }
+  }
   if (!settings) {
     settings = defaultSettings(patientDfn);
-    settingsStore.set(patientDfn, settings);
+    settingsStore.set(key, settings);
   }
   return settings;
 }
@@ -150,15 +195,16 @@ export function getSettings(patientDfn: string): PortalSettings {
 const VALID_LANGUAGES: PortalLanguage[] = ["en", "es", "fr", "vi", "zh", "ko", "tl", "fil"];
 const VALID_FONT_SIZES = ["small", "medium", "large"];
 
-export function updateSettings(
+export async function updateSettings(
+  tenantId: string,
   patientDfn: string,
   patch: Partial<{
     language: PortalLanguage;
     notifications: Partial<NotificationPrefs>;
     display: Partial<DisplayPrefs>;
   }>
-): PortalSettings | { error: string } {
-  const settings = getSettings(patientDfn);
+): Promise<PortalSettings | { error: string }> {
+  const settings = await getSettings(tenantId, patientDfn);
   const changes: string[] = [];
 
   if (patch.language !== undefined) {
@@ -204,18 +250,21 @@ export function updateSettings(
   }
 
   settings.updatedAt = new Date().toISOString();
-  settingsStore.set(patientDfn, settings);
+  settingsStore.set(cacheKey(tenantId, patientDfn), settings);
 
   // Phase 127: Write-through to PG (fire-and-forget)
   if (_settingsRepo) {
     try {
-      void Promise.resolve(_settingsRepo.upsertSetting(settingsToDbFields(settings)))
+      void Promise.resolve(
+        _settingsRepo.upsertSetting({ ...settingsToDbFields(settings), tenantId })
+      )
         .catch((e: unknown) => settingsDbWarn("upsert", e));
     } catch (e) { settingsDbWarn("upsert", e); }
   }
 
   if (changes.length > 0) {
     portalAudit("portal.settings.update", "success", patientDfn, {
+      tenantId,
       detail: { changes },
     });
   }

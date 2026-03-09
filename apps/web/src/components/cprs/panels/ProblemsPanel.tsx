@@ -1,12 +1,48 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useDataCache, type Problem } from '@/stores/data-cache';
+import { useDataCache, type DomainFetchMeta, type Problem } from '@/stores/data-cache';
 import { useCPRSUI } from '@/stores/cprs-ui-state';
 import styles from '../cprs.module.css';
 
 interface Props {
   dfn: string;
+}
+
+function ProblemsPendingBanner({ meta }: { meta: DomainFetchMeta }) {
+  const statusLabel = meta.status || (meta.ok ? 'ok' : 'request-failed');
+  const targetRpcs = meta.pendingTargets.length > 0 ? meta.pendingTargets : ['ORQQPL PROBLEM LIST'];
+
+  return (
+    <div
+      style={{
+        border: '1px solid #f59e0b',
+        borderRadius: 6,
+        padding: 12,
+        background: '#fffbeb',
+        color: '#92400e',
+      }}
+    >
+      <div style={{ fontWeight: 600, marginBottom: 6 }}>Problem list pending</div>
+      <div style={{ fontSize: 13, marginBottom: 6 }}>
+        {meta.error
+          ? `The latest problem-list fetch failed: ${meta.error}`
+          : meta.pendingNote ||
+            'The latest problem-list fetch did not return a trustworthy live VistA result.'}
+      </div>
+      <div style={{ fontSize: 12, marginBottom: 4 }}>
+        <strong>Status:</strong> {statusLabel}
+      </div>
+      {meta.rpcUsed.length > 0 && (
+        <div style={{ fontSize: 12, marginBottom: 4 }}>
+          <strong>RPC attempted:</strong> {meta.rpcUsed.join(', ')}
+        </div>
+      )}
+      <div style={{ fontSize: 12 }}>
+        <strong>Target RPCs:</strong> {targetRpcs.join(', ')}
+      </div>
+    </div>
+  );
 }
 
 export default function ProblemsPanel({ dfn }: Props) {
@@ -21,9 +57,21 @@ export default function ProblemsPanel({ dfn }: Props) {
 
   const problems = cache.getDomain(dfn, 'problems');
   const loading = cache.isLoading(dfn, 'problems');
+  const problemsMeta = cache.getDomainMeta(dfn, 'problems');
+
+  useEffect(() => {
+    if (!selected) return;
+    const refreshed = problems.find((problem) => problem.id === selected.id);
+    if (refreshed && refreshed !== selected) {
+      setSelected(refreshed);
+    }
+  }, [problems, selected]);
 
   const filtered =
     filter === 'all' ? problems : problems.filter((p) => p.status?.toLowerCase() === filter);
+  const showPendingProblemsBanner =
+    !loading && problems.length === 0 && problemsMeta.fetched && (problemsMeta.pending || problemsMeta.ok !== true);
+  const showFilterEmpty = !loading && problems.length > 0 && filtered.length === 0;
 
   return (
     <div>
@@ -47,7 +95,11 @@ export default function ProblemsPanel({ dfn }: Props) {
       <div className={styles.splitPane}>
         <div className={styles.splitLeft}>
           {loading && <p className={styles.loadingText}>Loading problems...</p>}
-          {!loading && filtered.length === 0 && (
+          {showPendingProblemsBanner && <ProblemsPendingBanner meta={problemsMeta} />}
+          {showFilterEmpty && (
+            <p className={styles.emptyText}>No {filter} problems match the current filter</p>
+          )}
+          {!loading && !showPendingProblemsBanner && !showFilterEmpty && filtered.length === 0 && (
             <p className={styles.emptyText}>No problems on record</p>
           )}
           {!loading && filtered.length > 0 && (

@@ -37,7 +37,8 @@ API (Fastify, port 3001)
 | Vitals         | ORQQVI VITALS              | ✅ Live                                       |
 | Medications    | ORWPS ACTIVE               | ✅ Live                                       |
 | Demographics   | ORWPT SELECT               | ✅ Live                                       |
-| Labs           | ORWLRR INTERIM             | ⏳ Integration pending                        |
+| Immunizations  | ORQQPX IMMUN LIST          | ✅ Live                                       |
+| Labs           | ORWLRR INTERIM             | ✅ Live (may be empty / free-text only)       |
 | Consults       | ORQQCN LIST                | ⏳ Integration pending                        |
 | Surgery        | ORWSR LIST                 | ⏳ Integration pending                        |
 | DC Summaries   | TIU DOCUMENTS BY CONTEXT   | ⏳ Integration pending                        |
@@ -56,7 +57,8 @@ API (Fastify, port 3001)
 - `GET /portal/health/vitals` — Real VistA data
 - `GET /portal/health/medications` — Real VistA data
 - `GET /portal/health/demographics` — Real VistA data
-- `GET /portal/health/labs` — Integration pending (ORWLRR INTERIM)
+- `GET /portal/health/immunizations` — Real VistA data
+- `GET /portal/health/labs` — Real VistA data (empty/free-text results remain truthful)
 - `GET /portal/health/consults` — Integration pending (ORQQCN LIST)
 - `GET /portal/health/surgery` — Integration pending (ORWSR LIST)
 - `GET /portal/health/dc-summaries` — Integration pending (TIU DOCUMENTS BY CONTEXT)
@@ -66,6 +68,12 @@ API (Fastify, port 3001)
 
 - `GET /portal/export/section/:section` — Single section PDF (allergies|problems|vitals|medications|demographics)
 - `GET /portal/export/full` — Full record bundle PDF
+
+Portal exports now keep empty live sections truthful:
+
+- empty immunizations render `No immunizations on file`
+- empty labs render `No lab results on file`
+- only genuine fetch failures surface pending target RPC messaging
 
 ### Secure Messaging
 

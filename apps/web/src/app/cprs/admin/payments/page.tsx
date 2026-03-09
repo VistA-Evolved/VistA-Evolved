@@ -982,6 +982,19 @@ function CreateBatchForm({
       }}
     >
       <div style={{ fontWeight: 600, marginBottom: 8 }}>New Remittance Batch</div>
+      <div
+        style={{
+          marginBottom: 10,
+          padding: '8px 10px',
+          background: '#fff7ed',
+          border: '1px solid #fdba74',
+          borderRadius: 6,
+          color: '#9a3412',
+        }}
+      >
+        New batches created from this form are demo remittance batches for workflow testing, not live
+        payer remittances.
+      </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 8 }}>
         <label>
           Payer ID

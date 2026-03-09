@@ -63,6 +63,7 @@ import { requiresPg } from '../../platform/runtime-mode.js';
 export interface SchedulingRepo {
   insertSchedulingRequest(data: {
     id: string;
+    tenantId: string;
     patientDfn: string;
     clinicName: string;
     preferredDate: string;
@@ -73,16 +74,18 @@ export interface SchedulingRepo {
     createdAt: string;
     updatedAt: string;
   }): any;
-  findSchedulingRequestById(id: string): any;
-  findSchedulingRequestsByPatient(patientDfn: string): any;
-  findAllActiveRequests(): any;
+  findSchedulingRequestById(id: string, tenantId: string): any;
+  findSchedulingRequestsByPatient(patientDfn: string, tenantId: string): any;
+  findAllActiveRequests(tenantId?: string): any;
   findPendingByPatientClinicDate(
     patientDfn: string,
     clinicName: string,
-    preferredDate: string
+    preferredDate: string,
+    tenantId: string
   ): any;
   updateSchedulingRequest(
     id: string,
+    tenantId: string,
     updates: Partial<{
       status: string;
       reason: string;
@@ -101,7 +104,7 @@ export interface SchedulingLockRepo {
     holderDuz: string;
     expiresAt: string;
   }): any;
-  releaseLock(lockKey: string): any;
+  releaseLock(lockKey: string, tenantId?: string): any;
   findLockByKey(lockKey: string): any;
   findActiveLocks(): any;
   cleanupExpiredLocks(): any;
@@ -145,6 +148,7 @@ function dbWarn(op: string, err: unknown): void {
 function dbRowToEntry(row: any): WaitListEntry {
   return {
     id: row.id,
+    tenantId: row.tenantId || 'default',
     patientDfn: row.patientDfn,
     clinicName: row.clinicName,
     preferredDate: row.preferredDate,
@@ -168,10 +172,11 @@ function persistEntry(entry: WaitListEntry): void {
   }
   Promise.resolve(
     (async () => {
-      const existing = await Promise.resolve(dbRepo!.findSchedulingRequestById(entry.id));
+      const tenantId = entry.tenantId || 'default';
+      const existing = await Promise.resolve(dbRepo!.findSchedulingRequestById(entry.id, tenantId));
       if (existing) {
         await Promise.resolve(
-          dbRepo!.updateSchedulingRequest(entry.id, {
+          dbRepo!.updateSchedulingRequest(entry.id, tenantId, {
             status: entry.status,
             reason: entry.reason,
           })
@@ -180,6 +185,7 @@ function persistEntry(entry: WaitListEntry): void {
         await Promise.resolve(
           dbRepo!.insertSchedulingRequest({
             id: entry.id,
+            tenantId,
             patientDfn: entry.patientDfn,
             clinicName: entry.clinicName,
             preferredDate: entry.preferredDate,
@@ -224,6 +230,45 @@ function isoToVistaDate(iso: string): string {
   const month = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
   return `${year}${month}${day}`;
+}
+
+function normalizeSdesDateInput(value: string): string {
+  if (!value) return value;
+  if (/^\d{4}-\d{2}-\d{2}(T.*)?$/.test(value)) return value;
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed.toISOString().slice(0, 10);
+}
+
+function hasVistaRuntimeError(rawLines: string[]): boolean {
+  const raw = rawLines.join('\n');
+  return (
+    /(?:^|\n)-1\^/i.test(raw) ||
+    /M\s+ERROR/i.test(raw) ||
+    /%YDB-E-/i.test(raw) ||
+    /ACTLSTTOOLONG/i.test(raw) ||
+    /^.?Remote Procedure .+ doesn(?:'|\\u0027)?t exist/i.test(raw.trim())
+  );
+}
+
+function extractJsonPayload(rawLines: string[]): string | null {
+  const raw = rawLines.join('\n').trim();
+  const firstBrace = raw.indexOf('{');
+  const lastBrace = raw.lastIndexOf('}');
+  if (firstBrace === -1 || lastBrace === -1 || lastBrace < firstBrace) {
+    return null;
+  }
+  return raw.slice(firstBrace, lastBrace + 1);
+}
+
+function parseSdesJson(rawLines: string[]): any | null {
+  const payload = extractJsonPayload(rawLines);
+  if (!payload) return null;
+  try {
+    return JSON.parse(payload);
+  } catch {
+    return null;
+  }
 }
 
 /** Parse SDOE LIST ENCOUNTERS result (multi-line, ^ delimited) */
@@ -442,35 +487,71 @@ function grounding(
 const requestStore = new Map<string, WaitListEntry>();
 let requestSeq = 0;
 
+function toPendingAppointment(entry: WaitListEntry): Appointment | null {
+  if (entry.type === 'cancel_request') {
+    return null;
+  }
+  if (!entry.preferredDate || !entry.clinicName) {
+    return null;
+  }
+  return {
+    id: entry.id,
+    patientDfn: entry.patientDfn,
+    dateTime: entry.preferredDate,
+    clinic: entry.clinicName,
+    status: `request:${entry.status}`,
+    reason: entry.reason,
+    source: 'request',
+  };
+}
+
 /** Lock map for double-booking prevention */
-const bookingLocks = new Map<string, number>(); // key: "dfn:date:clinic" → timestamp
+const bookingLocks = new Map<string, number>(); // key: "tenant:dfn:date:clinic" → timestamp
 const LOCK_TTL_MS = 30_000; // 30s lock
 
-function acquireBookingLock(key: string): boolean {
+function scopedBookingLockKey(key: string, tenantId?: string): string {
+  return `${tenantId || 'default'}:${key}`;
+}
+
+async function acquireBookingLock(key: string, tenantId?: string): Promise<boolean> {
+  const scopedKey = scopedBookingLockKey(key, tenantId);
   const now = Date.now();
-  const existing = bookingLocks.get(key);
+  const existing = bookingLocks.get(scopedKey);
   if (existing && now - existing < LOCK_TTL_MS) {
     return false; // already locked
   }
-  bookingLocks.set(key, now);
-  // Write-through to PG lock repo (fire-and-forget)
+  bookingLocks.set(scopedKey, now);
+  // PG lock repo is authoritative in multi-instance deployments.
   if (lockRepo) {
-    Promise.resolve(
-      lockRepo.acquireLock({
+    try {
+      const acquired = await Promise.resolve(
+        lockRepo.acquireLock({
         id: randomUUID(),
+        tenantId: tenantId || 'default',
         lockKey: key,
         holderDuz: 'scheduler',
         expiresAt: new Date(now + LOCK_TTL_MS).toISOString(),
       })
-    ).catch((e) => dbWarn('acquireLock', e));
+      );
+      if (!acquired) {
+        bookingLocks.delete(scopedKey);
+        return false;
+      }
+    } catch (e) {
+      bookingLocks.delete(scopedKey);
+      dbWarn('acquireLock', e);
+      return false;
+    }
   }
   return true;
 }
 
-function releaseBookingLock(key: string): void {
-  bookingLocks.delete(key);
+function releaseBookingLock(key: string, tenantId?: string): void {
+  bookingLocks.delete(scopedBookingLockKey(key, tenantId));
   if (lockRepo) {
-    Promise.resolve(lockRepo.releaseLock(key)).catch((e) => dbWarn('releaseLock', e));
+    Promise.resolve(lockRepo.releaseLock(key, tenantId || 'default')).catch((e) =>
+      dbWarn('releaseLock', e)
+    );
   }
 }
 
@@ -511,7 +592,8 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
   async listAppointments(
     patientDfn: string,
     startDate?: string,
-    endDate?: string
+    endDate?: string,
+    tenantId?: string
   ): Promise<AdapterResult<Appointment[]>> {
     try {
       // Build param: DFN^startDate^endDate (VistA format)
@@ -529,18 +611,14 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
 
       // Also include any pending requests from the request store
       const pendingRequests = [...requestStore.values()]
-        .filter((r) => r.patientDfn === patientDfn && r.status !== 'cancelled')
-        .map(
-          (r): Appointment => ({
-            id: r.id,
-            patientDfn: r.patientDfn,
-            dateTime: r.preferredDate,
-            clinic: r.clinicName,
-            status: `request:${r.status}`,
-            reason: r.reason,
-            source: 'request',
-          })
-        );
+        .filter(
+          (r) =>
+            r.patientDfn === patientDfn &&
+            (r.tenantId || 'default') === (tenantId || 'default') &&
+            r.status !== 'cancelled'
+        )
+        .map((r) => toPendingAppointment(r))
+        .filter((entry): entry is Appointment => entry !== null);
 
       return {
         ok: true,
@@ -557,18 +635,14 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       log.warn('SDOE LIST ENCOUNTERS FOR PAT failed', { error: err.message });
       // Return just pending requests if VistA call fails
       const pendingRequests = [...requestStore.values()]
-        .filter((r) => r.patientDfn === patientDfn && r.status !== 'cancelled')
-        .map(
-          (r): Appointment => ({
-            id: r.id,
-            patientDfn: r.patientDfn,
-            dateTime: r.preferredDate,
-            clinic: r.clinicName,
-            status: `request:${r.status}`,
-            reason: r.reason,
-            source: 'request',
-          })
-        );
+        .filter(
+          (r) =>
+            r.patientDfn === patientDfn &&
+            (r.tenantId || 'default') === (tenantId || 'default') &&
+            r.status !== 'cancelled'
+        )
+        .map((r) => toPendingAppointment(r))
+        .filter((entry): entry is Appointment => entry !== null);
 
       return {
         ok: pendingRequests.length > 0,
@@ -591,7 +665,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
   ): Promise<AdapterResult<Appointment | WaitListEntry>> {
     const lockKey = `${request.patientDfn}:${request.preferredDate}:${request.clinicName}`;
 
-    if (!acquireBookingLock(lockKey)) {
+    if (!(await acquireBookingLock(lockKey, request.tenantId))) {
       return {
         ok: false,
         error:
@@ -603,6 +677,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       // Check for existing request (double-booking prevention)
       for (const existing of requestStore.values()) {
         if (
+          (existing.tenantId || 'default') === (request.tenantId || 'default') &&
           existing.patientDfn === request.patientDfn &&
           existing.clinicName === request.clinicName &&
           existing.preferredDate === request.preferredDate &&
@@ -647,6 +722,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
 
       const entry: WaitListEntry = {
         id,
+        tenantId: request.tenantId || 'default',
         patientDfn: request.patientDfn,
         clinicName: request.clinicName,
         preferredDate: request.preferredDate,
@@ -687,7 +763,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         ),
       };
     } finally {
-      releaseBookingLock(lockKey);
+      releaseBookingLock(lockKey, request.tenantId);
     }
   }
 
@@ -698,11 +774,15 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
   async cancelAppointment(
     appointmentId: string,
     reason: string,
-    patientDfn?: string
+    patientDfn?: string,
+    tenantId?: string
   ): Promise<AdapterResult<void>> {
     // If it's a local request, update its status
     const existing = requestStore.get(appointmentId);
     if (existing) {
+      if ((existing.tenantId || 'default') !== (tenantId || 'default')) {
+        return { ok: false, error: 'Request not found' };
+      }
       if (patientDfn && existing.patientDfn !== patientDfn) {
         return { ok: false, error: 'Patient mismatch' };
       }
@@ -723,6 +803,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
     const id = `cancel-${++requestSeq}-${Date.now().toString(36)}`;
     const cancelEntry: WaitListEntry = {
       id,
+      tenantId: tenantId || 'default',
       patientDfn: patientDfn || '',
       clinicName: '',
       preferredDate: '',
@@ -777,7 +858,17 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
    */
   async listClinics(): Promise<AdapterResult<ClinicInfo[]>> {
     try {
-      const rawLines = await safeCallRpc('SD W/L RETRIVE HOSP LOC(#44)', ['']);
+      const rawLines = await safeCallRpc('SD W/L RETRIVE HOSP LOC(#44)', []);
+      if (hasVistaRuntimeError(rawLines)) {
+        const raw = rawLines.join('\n').trim();
+        return {
+          ok: false,
+          data: [],
+          error: `Clinic lookup runtime error: ${raw.split('\n')[0]}`,
+          pending: true,
+          target: 'SD W/L RETRIVE HOSP LOC(#44)',
+        };
+      }
       const clinics = parseClinicList(rawLines.join('\n'));
       return {
         ok: true,
@@ -807,7 +898,17 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
    */
   async listProviders(): Promise<AdapterResult<ProviderInfo[]>> {
     try {
-      const rawLines = await safeCallRpc('SD W/L RETRIVE PERSON(200)', ['']);
+      const rawLines = await safeCallRpc('SD W/L RETRIVE PERSON(200)', []);
+      if (hasVistaRuntimeError(rawLines)) {
+        const raw = rawLines.join('\n').trim();
+        return {
+          ok: false,
+          data: [],
+          error: `Provider lookup runtime error: ${raw.split('\n')[0]}`,
+          pending: true,
+          target: 'SD W/L RETRIVE PERSON(200)',
+        };
+      }
       const providers = parseProviderList(rawLines.join('\n'));
       return {
         ok: true,
@@ -986,7 +1087,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
    * Read wait-list entries via SD W/L RETRIVE FULL DATA.
    * Merges VistA wait-list with local request store.
    */
-  async getWaitList(clinicIen?: string): Promise<AdapterResult<WaitListEntry[]>> {
+  async getWaitList(clinicIen?: string, tenantId?: string): Promise<AdapterResult<WaitListEntry[]>> {
     let vistaEntries: WaitListEntry[] = [];
     let rpcOk = false;
 
@@ -1000,6 +1101,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
 
     // Merge local request store entries
     const localEntries = [...requestStore.values()]
+      .filter((r) => (r.tenantId || 'default') === (tenantId || 'default'))
       .filter((r) => r.status !== 'cancelled')
       .filter((r) => !clinicIen || !r.clinicName || r.clinicName === clinicIen);
 
@@ -1388,9 +1490,9 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
    */
   async getAppointmentTypes(): Promise<AdapterResult<AppointmentType[]>> {
     try {
-      const rawLines = await safeCallRpc('SDES GET APPT TYPES', ['']);
+      const rawLines = await safeCallRpc('SDES GET APPT TYPES', []);
       const raw = rawLines.join('\n').trim();
-      if (!raw || raw.startsWith('-1') || raw.startsWith('0')) {
+      if (!raw) {
         return {
           ok: true,
           data: [],
@@ -1403,19 +1505,41 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
           }),
         };
       }
-      // Parse: each line typically "IEN^NAME^INACTIVE" or similar ^-delimited
-      const types: AppointmentType[] = [];
-      for (const line of rawLines) {
-        if (!line.trim()) continue;
-        const pieces = line.split('^');
-        if (pieces.length >= 2) {
-          types.push({
-            ien: pieces[0] || '',
-            name: pieces[1] || '',
-            inactive: pieces[2] === '1',
-          });
-        }
+      if (hasVistaRuntimeError(rawLines)) {
+        return {
+          ok: false,
+          data: [],
+          error: `SDES GET APPT TYPES runtime error: ${raw.split('\n')[0]}`,
+          pending: true,
+          target: 'SDES GET APPT TYPES',
+        };
       }
+
+      const parsed = parseSdesJson(rawLines);
+      const names = Array.isArray(parsed?.AppointmentTypes) ? parsed.AppointmentTypes : [];
+      const types: AppointmentType[] = names
+        .filter((value: unknown) => typeof value === 'string' && value.trim())
+        .map((name: string, index: number) => ({
+          ien: String(index + 1),
+          name,
+          code: name,
+          inactive: false,
+        }));
+
+      if (types.length === 0) {
+        return {
+          ok: true,
+          data: [],
+          pending: true,
+          target: 'SDES GET APPT TYPES',
+          vistaGrounding: grounding('SDES GET APPT TYPES', 'SDES', {
+            vistaFiles: ['SD APPOINTMENT TYPE (File 409.1)'],
+            sandboxNote:
+              'RPC callable but returned no appointment type rows -- seed data not present for this lane',
+          }),
+        };
+      }
+
       return {
         ok: true,
         data: types,
@@ -1441,9 +1565,9 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
    */
   async getCancelReasons(): Promise<AdapterResult<CancelReason[]>> {
     try {
-      const rawLines = await safeCallRpc('SDES GET CANCEL REASONS', ['']);
+      const rawLines = await safeCallRpc('SDES GET CANCEL REASONS', ['0']);
       const raw = rawLines.join('\n').trim();
-      if (!raw || raw.startsWith('-1') || raw.startsWith('0')) {
+      if (!raw) {
         return {
           ok: true,
           data: [],
@@ -1455,18 +1579,25 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
           }),
         };
       }
-      const reasons: CancelReason[] = [];
-      for (const line of rawLines) {
-        if (!line.trim()) continue;
-        const pieces = line.split('^');
-        if (pieces.length >= 2) {
-          reasons.push({
-            ien: pieces[0] || '',
-            name: pieces[1] || '',
-            type: pieces[2] || '',
-          });
-        }
+      if (hasVistaRuntimeError(rawLines)) {
+        return {
+          ok: false,
+          data: [],
+          error: `SDES GET CANCEL REASONS runtime error: ${raw.split('\n')[0]}`,
+          pending: true,
+          target: 'SDES GET CANCEL REASONS',
+        };
       }
+
+      const parsed = parseSdesJson(rawLines);
+      const entries = Array.isArray(parsed?.CancelReasons) ? parsed.CancelReasons : [];
+      const reasons: CancelReason[] = entries.map((entry: any) => ({
+        ien: String(entry?.ReasonIEN ?? ''),
+        name: String(entry?.ReasonName ?? ''),
+        code: String(entry?.ReasonSystemUse ?? ''),
+        type: String(entry?.ReasonType ?? ''),
+      }));
+
       return {
         ok: true,
         data: reasons,
@@ -1494,7 +1625,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
     try {
       const rawLines = await safeCallRpc('SDES GET RESOURCE BY CLINIC', [clinicIen]);
       const raw = rawLines.join('\n').trim();
-      if (!raw || raw.startsWith('-1') || raw.startsWith('0')) {
+      if (!raw) {
         return {
           ok: true,
           data: { clinicIen, clinicName: '' },
@@ -1506,13 +1637,44 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
           }),
         };
       }
-      // Parse first line: typically IEN^NAME^ABBREV^RESOURCEIEN
-      const pieces = rawLines[0].split('^');
+      if (hasVistaRuntimeError(rawLines)) {
+        return {
+          ok: false,
+          data: { clinicIen, clinicName: '' },
+          error: `SDES GET RESOURCE BY CLINIC runtime error: ${raw.split('\n')[0]}`,
+          pending: true,
+          target: 'SDES GET RESOURCE BY CLINIC',
+        };
+      }
+
+      const parsed = parseSdesJson(rawLines);
+      const entries = Array.isArray(parsed?.Resource)
+        ? parsed.Resource.filter((entry: unknown) => !!entry && typeof entry === 'object')
+        : [];
+      if (entries.length === 0) {
+        return {
+          ok: true,
+          data: { clinicIen, clinicName: '' },
+          pending: true,
+          target: 'SDES GET RESOURCE BY CLINIC',
+          vistaGrounding: grounding('SDES GET RESOURCE BY CLINIC', 'SDES', {
+            vistaFiles: ['HOSPITAL LOCATION (File 44)'],
+            sandboxNote: `Clinic IEN ${clinicIen} has no associated SDES resource rows`,
+          }),
+        };
+      }
+      const match =
+        entries.find((entry: any) => String(entry?.ClinicIEN ?? '') === String(clinicIen)) ||
+        entries[0];
+
       const resource: ClinicResource = {
-        clinicIen: pieces[0] || clinicIen,
-        clinicName: pieces[1] || '',
-        resourceIen: pieces[3] || '',
-        abbreviation: pieces[2] || '',
+        clinicIen: String(match?.ClinicIEN ?? clinicIen),
+        clinicName: String(match?.ClinicName ?? ''),
+        resourceIen: match?.ResourceIEN != null ? String(match.ResourceIEN) : '',
+        resourceName: String(match?.ResourceType ?? ''),
+        abbreviation: String(match?.Abbreviation ?? ''),
+        slotLength:
+          match?.TimeScale != null ? parseInt(String(match.TimeScale), 10) || undefined : undefined,
         raw: rawLines,
       };
       return {
@@ -1547,11 +1709,13 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
     endDate: string
   ): Promise<AdapterResult<SdesAvailSlot[]>> {
     try {
-      // SDES expects: clinicIen^startDate^endDate (internal VistA dates)
-      const param = `${clinicIen}^${isoToVistaDate(startDate)}^${isoToVistaDate(endDate)}`;
-      const rawLines = await safeCallRpc('SDES GET CLIN AVAILABILITY', [param]);
+      const rawLines = await safeCallRpc('SDES GET CLIN AVAILABILITY', [
+        clinicIen,
+        normalizeSdesDateInput(startDate),
+        normalizeSdesDateInput(endDate),
+      ]);
       const raw = rawLines.join('\n').trim();
-      if (!raw || raw.startsWith('-1') || raw.startsWith('0')) {
+      if (!raw) {
         return {
           ok: true,
           data: [],
@@ -1563,21 +1727,57 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
           }),
         };
       }
-      // Parse: each line typically DATE^TIME^SLOTS_AVAILABLE^RESOURCE_IEN
-      const slots: SdesAvailSlot[] = [];
-      for (const line of rawLines) {
-        if (!line.trim()) continue;
-        const pieces = line.split('^');
-        if (pieces.length >= 2) {
-          slots.push({
-            date: pieces[0] || '',
-            time: pieces[1] || '',
-            slotsAvailable: parseInt(pieces[2] || '0', 10) || 0,
-            resourceIen: pieces[3] || '',
-            raw: line,
-          });
-        }
+      if (hasVistaRuntimeError(rawLines)) {
+        return {
+          ok: false,
+          data: [],
+          error: `SDES GET CLIN AVAILABILITY runtime error: ${raw.split('\n')[0]}`,
+          pending: true,
+          target: 'SDES GET CLIN AVAILABILITY',
+        };
       }
+
+      const parsed = parseSdesJson(rawLines);
+      const entries = Array.isArray(parsed?.ClinAvail)
+        ? parsed.ClinAvail.filter((entry: unknown) => !!entry && typeof entry === 'object')
+        : Array.isArray(parsed?.ClinicSlot)
+          ? parsed.ClinicSlot.filter((entry: unknown) => !!entry && typeof entry === 'object')
+          : [];
+      if (entries.length === 0) {
+        return {
+          ok: true,
+          data: [],
+          pending: true,
+          target: 'SDES GET CLIN AVAILABILITY',
+          vistaGrounding: grounding('SDES GET CLIN AVAILABILITY', 'SDES', {
+            vistaFiles: ['HOSPITAL LOCATION (File 44)'],
+            sandboxNote: `Clinic IEN ${clinicIen} returned no schedulable SDES availability rows`,
+          }),
+        };
+      }
+      const slots: SdesAvailSlot[] = entries.map((entry: any) => {
+        const beginTime = String(entry?.BeginTime ?? entry?.AppointmentStart ?? '');
+        const dateTime = beginTime || String(entry?.Date ?? '');
+        return {
+          clinicIen,
+          date: dateTime ? dateTime.slice(0, 10) : String(entry?.Date ?? ''),
+          time: dateTime && dateTime.length >= 16 ? dateTime.slice(11, 16) : String(entry?.StartTime ?? ''),
+          dateTime,
+          slotCount:
+            entry?.SlotsAvail != null ? parseInt(String(entry.SlotsAvail), 10) || 0 : undefined,
+          slotsAvailable:
+            entry?.SlotsAvail != null
+              ? parseInt(String(entry.SlotsAvail), 10) || 0
+              : entry?.OpenSlots != null
+                ? parseInt(String(entry.OpenSlots), 10) || 0
+                : 0,
+          slotLength:
+            entry?.Length != null ? parseInt(String(entry.Length), 10) || undefined : undefined,
+          resourceIen: entry?.ResourceIEN != null ? String(entry.ResourceIEN) : '',
+          raw: JSON.stringify(entry),
+        };
+      });
+
       return {
         ok: true,
         data: slots,
@@ -1611,7 +1811,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       try {
         const sdesLines = await safeCallRpc('SDES GET APPT BY APPT IEN', [appointmentRef]);
         const sdesRaw = sdesLines.join('\n').trim();
-        if (sdesRaw && !sdesRaw.startsWith('-1') && !sdesRaw.startsWith('0')) {
+        if (sdesRaw && !hasVistaRuntimeError(sdesLines) && !sdesRaw.startsWith('0')) {
           return {
             ok: true,
             data: {
@@ -1694,8 +1894,8 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
 
     // Probe SDES
     try {
-      await safeCallRpc('SDES GET APPT TYPES', ['']);
-      sdesInstalled = true;
+      const sdesProbe = await safeCallRpc('SDES GET APPT TYPES', []);
+      sdesInstalled = !!extractJsonPayload(sdesProbe) && !hasVistaRuntimeError(sdesProbe);
     } catch {
       /* not available */
     }
@@ -1710,8 +1910,8 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
 
     // Probe SD W/L
     try {
-      await safeCallRpc('SD W/L RETRIVE HOSP LOC(#44)', ['']);
-      sdwlInstalled = true;
+      const sdwlProbe = await safeCallRpc('SD W/L RETRIVE HOSP LOC(#44)', []);
+      sdwlInstalled = !hasVistaRuntimeError(sdwlProbe);
     } catch {
       /* not available */
     }

@@ -24,6 +24,7 @@
  */
 
 import type { FastifyInstance } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
 import {
   createPartner,
   getPartner,
@@ -38,7 +39,7 @@ import {
   addRoute,
   listRoutes,
   startTestRun,
-  getTestRun,
+  getTestRunForPartner,
   listTestRuns,
   getValidTransitions,
   type IntegrationPartnerType,
@@ -51,10 +52,28 @@ const VALID_TYPES: IntegrationPartnerType[] = ['HL7', 'X12', 'FHIR', 'PACS', 'OT
 const VALID_PROTOCOLS: EndpointProtocol[] = ['MLLP', 'SFTP', 'AS2', 'HTTPS', 'DICOM'];
 const VALID_DIRECTIONS: EndpointDirection[] = ['IN', 'OUT', 'BIDIRECTIONAL'];
 
-const DEFAULT_TENANT = 'default';
+function getTenantId(request: any): string | null {
+  const sessionTenantId =
+    typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+      ? request.session.tenantId.trim()
+      : undefined;
+  const requestTenantId =
+    typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+      ? request.tenantId.trim()
+      : undefined;
+  const headerTenantId = request?.headers?.['x-tenant-id'];
+  const headerTenant =
+    typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+      ? headerTenantId.trim()
+      : undefined;
+  return sessionTenantId || requestTenantId || headerTenant || null;
+}
 
-function getTenantId(request: any): string {
-  return (request as any).session?.tenantId || DEFAULT_TENANT;
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId = getTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
 }
 
 function getUserId(request: any): string {
@@ -65,6 +84,10 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
   // ─── Partners ────────────────────────────────────────────────────
 
   app.post('/api/platform/integrations/partners', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { name, type, description, contactEmail, tags } = body;
     if (!name || !type) {
@@ -76,7 +99,7 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
       return { ok: false, error: `Invalid type. Valid: ${VALID_TYPES.join(', ')}` };
     }
     const partner = createPartner(
-      getTenantId(request),
+      tenantId,
       { name, type, description, contactEmail, tags },
       getUserId(request)
     );
@@ -84,14 +107,22 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
     return { ok: true, partner };
   });
 
-  app.get('/api/platform/integrations/partners', async (request) => {
-    const partnersList = listPartners(getTenantId(request));
+  app.get('/api/platform/integrations/partners', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const partnersList = listPartners(tenantId);
     return { ok: true, count: partnersList.length, partners: partnersList };
   });
 
   app.get('/api/platform/integrations/partners/:id', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const { id } = request.params as { id: string };
-    const partner = getPartner(getTenantId(request), id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const partner = getPartner(tenantId, id);
     if (!partner) {
       reply.code(404);
       return { ok: false, error: 'partner_not_found' };
@@ -100,6 +131,10 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
   });
 
   app.post('/api/platform/integrations/partners/:id/status', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const { status } = body;
@@ -107,7 +142,7 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
       reply.code(400);
       return { ok: false, error: 'status is required' };
     }
-    const result = updatePartnerStatus(getTenantId(request), id, status as PartnerStatus);
+    const result = updatePartnerStatus(tenantId, id, status as PartnerStatus);
     if (!result.ok) {
       const code = result.error === 'partner_not_found' ? 404 : 409;
       reply.code(code);
@@ -123,6 +158,10 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
   // ─── Endpoints ───────────────────────────────────────────────────
 
   app.post('/api/platform/integrations/partners/:id/endpoints', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const { direction, protocol, address, port, path, tlsMode, description } = body;
@@ -138,7 +177,7 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
       reply.code(400);
       return { ok: false, error: `Invalid protocol. Valid: ${VALID_PROTOCOLS.join(', ')}` };
     }
-    const ep = addEndpoint(getTenantId(request), id, {
+    const ep = addEndpoint(tenantId, id, {
       direction,
       protocol,
       address,
@@ -155,19 +194,27 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
     return { ok: true, endpoint: ep };
   });
 
-  app.get('/api/platform/integrations/partners/:id/endpoints', async (request) => {
+  app.get('/api/platform/integrations/partners/:id/endpoints', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const { id } = request.params as { id: string };
-    const eps = listEndpoints(getTenantId(request), id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const eps = listEndpoints(tenantId, id);
     return { ok: true, count: eps.length, endpoints: eps };
   });
 
   app.post(
     '/api/platform/integrations/partners/:id/endpoints/:epId/toggle',
     async (request, reply) => {
-      const { epId } = request.params as { id: string; epId: string };
+      const session = await requireSession(request, reply);
+      if (!session) return;
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const { id, epId } = request.params as { id: string; epId: string };
       const body = (request.body as any) || {};
       const enabled = body.enabled !== false;
-      const success = toggleEndpoint(getTenantId(request), epId, enabled);
+      const success = toggleEndpoint(tenantId, id, epId, enabled);
       if (!success) {
         reply.code(404);
         return { ok: false, error: 'endpoint_not_found' };
@@ -179,6 +226,10 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
   // ─── Credential Refs ─────────────────────────────────────────────
 
   app.post('/api/platform/integrations/partners/:id/credentials', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const { secretRef, label } = body;
@@ -186,7 +237,7 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
       reply.code(400);
       return { ok: false, error: 'secretRef and label are required' };
     }
-    const cred = addCredentialRef(getTenantId(request), id, { secretRef, label });
+    const cred = addCredentialRef(tenantId, id, { secretRef, label });
     if (!cred) {
       reply.code(404);
       return { ok: false, error: 'partner_not_found' };
@@ -195,23 +246,31 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
     return { ok: true, credential: cred };
   });
 
-  app.get('/api/platform/integrations/partners/:id/credentials', async (request) => {
+  app.get('/api/platform/integrations/partners/:id/credentials', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const { id } = request.params as { id: string };
-    const creds = listCredentialRefs(getTenantId(request), id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const creds = listCredentialRefs(tenantId, id);
     return { ok: true, count: creds.length, credentials: creds };
   });
 
   app.post(
     '/api/platform/integrations/partners/:id/credentials/:credId/rotate',
     async (request, reply) => {
-      const { credId } = request.params as { id: string; credId: string };
+      const session = await requireSession(request, reply);
+      if (!session) return;
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const { id, credId } = request.params as { id: string; credId: string };
       const body = (request.body as any) || {};
       const { newSecretRef } = body;
       if (!newSecretRef) {
         reply.code(400);
         return { ok: false, error: 'newSecretRef is required' };
       }
-      const success = rotateCredential(getTenantId(request), credId, newSecretRef);
+      const success = rotateCredential(tenantId, id, credId, newSecretRef);
       if (!success) {
         reply.code(404);
         return { ok: false, error: 'credential_not_found' };
@@ -223,6 +282,10 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
   // ─── Routes ──────────────────────────────────────────────────────
 
   app.post('/api/platform/integrations/partners/:id/routes', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const { messageType, routeTo, priority, enabled } = body;
@@ -230,7 +293,7 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
       reply.code(400);
       return { ok: false, error: 'messageType and routeTo are required' };
     }
-    const route = addRoute(getTenantId(request), id, { messageType, routeTo, priority, enabled });
+    const route = addRoute(tenantId, id, { messageType, routeTo, priority, enabled });
     if (!route) {
       reply.code(404);
       return { ok: false, error: 'partner_not_found' };
@@ -239,17 +302,25 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
     return { ok: true, route };
   });
 
-  app.get('/api/platform/integrations/partners/:id/routes', async (request) => {
+  app.get('/api/platform/integrations/partners/:id/routes', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const { id } = request.params as { id: string };
-    const routesList = listRoutes(getTenantId(request), id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const routesList = listRoutes(tenantId, id);
     return { ok: true, count: routesList.length, routes: routesList };
   });
 
   // ─── Test Runs ───────────────────────────────────────────────────
 
   app.post('/api/platform/integrations/partners/:id/test', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
-    const run = startTestRun(getTenantId(request), id, getUserId(request));
+    const run = startTestRun(tenantId, id, getUserId(request));
     if (!run) {
       reply.code(404);
       return { ok: false, error: 'partner_not_found' };
@@ -257,15 +328,23 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
     return { ok: true, testRun: run };
   });
 
-  app.get('/api/platform/integrations/partners/:id/test-runs', async (request) => {
+  app.get('/api/platform/integrations/partners/:id/test-runs', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const { id } = request.params as { id: string };
-    const runs = listTestRuns(getTenantId(request), id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const runs = listTestRuns(tenantId, id);
     return { ok: true, count: runs.length, testRuns: runs };
   });
 
   app.get('/api/platform/integrations/partners/:id/test-runs/:runId', async (request, reply) => {
-    const { runId } = request.params as { id: string; runId: string };
-    const run = getTestRun(getTenantId(request), runId);
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const { id, runId } = request.params as { id: string; runId: string };
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const run = getTestRunForPartner(tenantId, id, runId);
     if (!run) {
       reply.code(404);
       return { ok: false, error: 'test_run_not_found' };

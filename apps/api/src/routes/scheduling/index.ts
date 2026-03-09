@@ -57,6 +57,12 @@ import { immutableAudit } from '../../lib/immutable-audit.js';
 import { log } from '../../lib/logger.js';
 import { requiresPg } from '../../platform/runtime-mode.js';
 import writebackRoutes from './writeback-routes.js';
+import {
+  enforceTruthGate,
+  getWritebackPolicy,
+  trackWriteback,
+  updateWritebackStatus,
+} from './writeback-guard.js';
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -89,12 +95,170 @@ function requireSession(request: FastifyRequest, reply: FastifyReply): boolean {
   return true;
 }
 
+function resolveTenantId(request: FastifyRequest): string | null {
+  const sessionTenantId =
+    typeof request.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+      ? request.session.tenantId.trim()
+      : undefined;
+  const requestTenantId =
+    typeof (request as any).tenantId === 'string' && (request as any).tenantId.trim().length > 0
+      ? (request as any).tenantId.trim()
+      : undefined;
+  return sessionTenantId || requestTenantId || null;
+}
+
+function requireTenantId(request: FastifyRequest, reply: FastifyReply): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
 /* ------------------------------------------------------------------ */
 /* Route registration                                                    */
 /* ------------------------------------------------------------------ */
 
 export default async function schedulingRoutes(server: FastifyInstance): Promise<void> {
   const adapter = getSchedulingAdapter();
+
+  async function handleAppointmentRequest(
+    request: FastifyRequest,
+    reply: FastifyReply,
+    body: Record<string, any>
+  ) {
+    if (!requireSession(request, reply)) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+
+    const {
+      patientDfn,
+      clinicName,
+      preferredDate,
+      reason,
+      appointmentType,
+      clinicIen,
+      providerDuz,
+    } = body;
+
+    if (!patientDfn || !clinicName || !preferredDate || !reason) {
+      return reply.code(400).send({
+        ok: false,
+        error: 'patientDfn, clinicName, preferredDate, and reason are required',
+      });
+    }
+
+    const result = await adapter.createAppointment({
+      tenantId,
+      patientDfn,
+      clinicName,
+      preferredDate,
+      reason: String(reason).slice(0, 500),
+      appointmentType: appointmentType || 'in_person',
+      clinicIen,
+      providerDuz,
+    });
+
+    if (result.ok && result.data && typeof result.data === 'object' && 'id' in result.data) {
+      trackWriteback(String((result.data as any).id), String(patientDfn), tenantId, clinicIen);
+    }
+
+    immutableAudit('scheduling.request', result.ok ? 'success' : 'failure', auditActor(request), {
+      requestId: (request as any).id,
+      sourceIp: request.ip,
+      tenantId: request.session?.tenantId,
+      detail: {
+        clinicName,
+        appointmentType: appointmentType || 'in_person',
+        pending: result.pending,
+      },
+    });
+
+    if (!result.ok && !result.pending) {
+      return reply.code(409).send({ ok: false, error: result.error });
+    }
+
+    return reply.code(201).send({
+      ok: result.ok,
+      data: result.data,
+      pending: result.pending,
+      target: result.target,
+      vistaGrounding: result.vistaGrounding,
+      notice: result.pending
+        ? 'Appointment request submitted. Clinic will confirm scheduling.'
+        : 'Appointment booked successfully.',
+    });
+  }
+
+  async function handleAppointmentCheckin(
+    request: FastifyRequest,
+    reply: FastifyReply,
+    appointmentRef: string,
+    body: Record<string, any>
+  ) {
+    if (!requireSession(request, reply)) return;
+    const { patientDfn, clinicName, clinicIen } = body;
+
+    if (!patientDfn || !clinicName) {
+      return reply.code(400).send({ ok: false, error: 'patientDfn and clinicName are required' });
+    }
+
+    try {
+      const pgLifecycleRepo =
+        await import('../../platform/pg/repo/pg-scheduling-lifecycle-repo.js');
+      const { randomUUID } = await import('node:crypto');
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+
+      const latest = await pgLifecycleRepo.findLatestByAppointmentRef(appointmentRef, tenantId);
+      const previousState = latest?.state;
+      const targetState = 'checked_in';
+
+      if (previousState && !pgLifecycleRepo.isValidTransition(previousState, targetState)) {
+        return reply.code(409).send({
+          ok: false,
+          error: `Cannot check in: current state is ${previousState}`,
+          currentState: previousState,
+        });
+      }
+
+      const entry = await pgLifecycleRepo.insertLifecycleEntry({
+        id: randomUUID(),
+        tenantId,
+        appointmentRef,
+        patientDfn,
+        clinicIen: clinicIen || undefined,
+        clinicName,
+        state: targetState,
+        previousState: previousState || undefined,
+        vistaIen: undefined,
+        rpcUsed: 'SDOE UPDATE ENCOUNTER',
+        transitionNote: 'Patient checked in',
+        createdByDuz: request.session?.duz,
+      });
+
+      immutableAudit('scheduling.checkin', 'success', auditActor(request), {
+        requestId: (request as any).id,
+        sourceIp: request.ip,
+        tenantId: request.session?.tenantId,
+        detail: { appointmentRef, previousState: previousState || 'initial' },
+      });
+
+      return reply.code(200).send({
+        ok: true,
+        data: entry,
+        transition: `${previousState || 'initial'} -> checked_in`,
+        vistaGrounding: {
+          targetRpc: 'SDOE UPDATE ENCOUNTER',
+          status: 'integration_pending',
+          sandboxNote:
+            'Check-in lifecycle recorded. VistA writeback requires SDOE UPDATE ENCOUNTER.',
+        },
+      });
+    } catch (err: any) {
+      log.warn('Check-in failed', { error: err.message });
+      return reply.code(500).send({ ok: false, error: 'Check-in failed' });
+    }
+  }
 
   /* ---- Health ---- */
   server.get('/scheduling/health', async () => {
@@ -105,6 +269,8 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
   /* ---- GET /scheduling/appointments?dfn=X&startDate=Y&endDate=Z ---- */
   server.get('/scheduling/appointments', async (request: FastifyRequest, reply: FastifyReply) => {
     if (!requireSession(request, reply)) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { dfn, startDate, endDate } = request.query as {
       dfn?: string;
       startDate?: string;
@@ -114,7 +280,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       return reply.code(400).send({ ok: false, error: 'dfn query parameter required' });
     }
 
-    const result = await adapter.listAppointments(dfn, startDate, endDate);
+    const result = await adapter.listAppointments(dfn, startDate, endDate, tenantId);
 
     immutableAudit('scheduling.list', result.ok ? 'success' : 'failure', auditActor(request), {
       requestId: (request as any).id,
@@ -211,62 +377,14 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
   server.post(
     '/scheduling/appointments/request',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      if (!requireSession(request, reply)) return;
-      const body = (request.body as any) || {};
-      const {
-        patientDfn,
-        clinicName,
-        preferredDate,
-        reason,
-        appointmentType,
-        clinicIen,
-        providerDuz,
-      } = body;
-
-      if (!patientDfn || !clinicName || !preferredDate || !reason) {
-        return reply.code(400).send({
-          ok: false,
-          error: 'patientDfn, clinicName, preferredDate, and reason are required',
-        });
-      }
-
-      const result = await adapter.createAppointment({
-        patientDfn,
-        clinicName,
-        preferredDate,
-        reason: String(reason).slice(0, 500),
-        appointmentType: appointmentType || 'in_person',
-        clinicIen,
-        providerDuz,
-      });
-
-      immutableAudit('scheduling.request', result.ok ? 'success' : 'failure', auditActor(request), {
-        requestId: (request as any).id,
-        sourceIp: request.ip,
-        tenantId: request.session?.tenantId,
-        detail: {
-          clinicName,
-          appointmentType: appointmentType || 'in_person',
-          pending: result.pending,
-        },
-      });
-
-      if (!result.ok && !result.pending) {
-        return reply.code(409).send({ ok: false, error: result.error });
-      }
-
-      return reply.code(201).send({
-        ok: result.ok,
-        data: result.data,
-        pending: result.pending,
-        target: result.target,
-        vistaGrounding: result.vistaGrounding,
-        notice: result.pending
-          ? 'Appointment request submitted. Clinic will confirm scheduling.'
-          : 'Appointment booked successfully.',
-      });
+      return handleAppointmentRequest(request, reply, ((request.body as any) || {}) as Record<string, any>);
     }
   );
+
+  /* ---- POST /scheduling/book ---- */
+  server.post('/scheduling/book', async (request: FastifyRequest, reply: FastifyReply) => {
+    return handleAppointmentRequest(request, reply, ((request.body as any) || {}) as Record<string, any>);
+  });
 
   /* ---- POST /scheduling/appointments/:id/cancel ---- */
   server.post(
@@ -277,8 +395,10 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       const body = (request.body as any) || {};
       const reason = body.reason || 'Patient requested cancellation';
       const patientDfn = body.patientDfn;
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
 
-      const result = await adapter.cancelAppointment(id, reason, patientDfn);
+      const result = await adapter.cancelAppointment(id, reason, patientDfn, tenantId);
 
       immutableAudit('scheduling.cancel', result.ok ? 'success' : 'failure', auditActor(request), {
         requestId: (request as any).id,
@@ -310,16 +430,19 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       const { id } = request.params as { id: string };
       const body = (request.body as any) || {};
       const { preferredDate, reason, patientDfn } = body;
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
 
       if (!patientDfn) {
         return reply.code(400).send({ ok: false, error: 'patientDfn is required for reschedule' });
       }
 
       // Cancel original + create new request
-      await adapter.cancelAppointment(id, reason || 'Reschedule requested', patientDfn);
+      await adapter.cancelAppointment(id, reason || 'Reschedule requested', patientDfn, tenantId);
 
       if (preferredDate && body.clinicName) {
         const newResult = await adapter.createAppointment({
+          tenantId,
           patientDfn: patientDfn || '',
           clinicName: body.clinicName,
           preferredDate,
@@ -359,6 +482,8 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
   /* ---- GET /scheduling/requests ---- */
   server.get('/scheduling/requests', async (request: FastifyRequest, reply: FastifyReply) => {
     if (!requireSession(request, reply)) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     // Phase 152: PG is source of truth; Map fallback only in dev mode
     const merged = new Map<string, any>();
@@ -366,7 +491,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
     try {
       const pgRequestRepo = await import('../../platform/pg/repo/pg-scheduling-request-repo.js');
       try {
-        const pgRows = await pgRequestRepo.findAllActiveRequests();
+        const pgRows = await pgRequestRepo.findAllActiveRequests(tenantId);
         for (const row of pgRows) merged.set(row.id, row);
         pgAvailable = true;
       } catch (queryErr: any) {
@@ -394,6 +519,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
     if (!pgAvailable || !requiresPg()) {
       const store = await getRequestStore();
       for (const [id, req] of store.entries()) {
+        if (!req.tenantId || req.tenantId !== tenantId) continue;
         if (!merged.has(id)) merged.set(id, req);
       }
       if (!pgAvailable) {
@@ -481,9 +607,11 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
   /* ---- GET /scheduling/waitlist?clinicIen=X ---- */
   server.get('/scheduling/waitlist', async (request: FastifyRequest, reply: FastifyReply) => {
     if (!requireSession(request, reply)) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { clinicIen } = request.query as { clinicIen?: string };
 
-    const result = await adapter.getWaitList(clinicIen);
+    const result = await adapter.getWaitList(clinicIen, tenantId);
     return {
       ok: result.ok,
       data: result.data || [],
@@ -573,6 +701,8 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
   /* ---- GET /scheduling/lifecycle?patientDfn=X&appointmentRef=Y&state=Z ---- */
   server.get('/scheduling/lifecycle', async (request: FastifyRequest, reply: FastifyReply) => {
     if (!requireSession(request, reply)) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { patientDfn, appointmentRef, state, limit } = request.query as {
       patientDfn?: string;
       appointmentRef?: string;
@@ -586,18 +716,15 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
 
       let entries;
       if (appointmentRef) {
-        entries = await pgLifecycleRepo.findLifecycleByAppointmentRef(appointmentRef);
+        entries = await pgLifecycleRepo.findLifecycleByAppointmentRef(appointmentRef, tenantId);
       } else if (patientDfn) {
-        entries = await pgLifecycleRepo.findLifecycleByPatient(
-          patientDfn,
-          parseInt(limit || '50', 10)
-        );
+        entries = await pgLifecycleRepo.findLifecycleByPatient(patientDfn, tenantId, parseInt(limit || '50', 10));
       } else if (state) {
-        entries = await pgLifecycleRepo.findLifecycleByState(state, parseInt(limit || '100', 10));
+        entries = await pgLifecycleRepo.findLifecycleByState(state, tenantId, parseInt(limit || '100', 10));
       } else {
         // Return stats summary when no filter
-        const counts = await pgLifecycleRepo.countByState();
-        const total = await pgLifecycleRepo.countTotal();
+        const counts = await pgLifecycleRepo.countByState(tenantId);
+        const total = await pgLifecycleRepo.countTotal(tenantId);
         return { ok: true, data: [], stats: { total, byState: counts } };
       }
 
@@ -638,6 +765,8 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
         const pgLifecycleRepo =
           await import('../../platform/pg/repo/pg-scheduling-lifecycle-repo.js');
         const { randomUUID } = await import('node:crypto');
+        const tenantId = requireTenantId(request, reply);
+        if (!tenantId) return;
 
         // Validate state
         if (!pgLifecycleRepo.LIFECYCLE_STATES.includes(state)) {
@@ -648,7 +777,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
         }
 
         // Check previous state for transition validation
-        const latest = await pgLifecycleRepo.findLatestByAppointmentRef(appointmentRef);
+        const latest = await pgLifecycleRepo.findLatestByAppointmentRef(appointmentRef, tenantId);
         const previousState = latest?.state;
 
         if (previousState && !pgLifecycleRepo.isValidTransition(previousState, state)) {
@@ -670,7 +799,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
 
         const entry = await pgLifecycleRepo.insertLifecycleEntry({
           id: randomUUID(),
-          tenantId: request.session?.tenantId || 'default',
+          tenantId,
           appointmentRef,
           patientDfn,
           clinicIen: clinicIen || undefined,
@@ -719,71 +848,25 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
   server.post(
     '/scheduling/appointments/:id/checkin',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      if (!requireSession(request, reply)) return;
       const { id } = request.params as { id: string };
-      const body = (request.body as any) || {};
-      const { patientDfn, clinicName, clinicIen } = body;
-
-      if (!patientDfn || !clinicName) {
-        return reply.code(400).send({ ok: false, error: 'patientDfn and clinicName are required' });
-      }
-
-      try {
-        const pgLifecycleRepo =
-          await import('../../platform/pg/repo/pg-scheduling-lifecycle-repo.js');
-        const { randomUUID } = await import('node:crypto');
-
-        const latest = await pgLifecycleRepo.findLatestByAppointmentRef(id);
-        const previousState = latest?.state;
-        const targetState = 'checked_in';
-
-        if (previousState && !pgLifecycleRepo.isValidTransition(previousState, targetState)) {
-          return reply.code(409).send({
-            ok: false,
-            error: `Cannot check in: current state is ${previousState}`,
-            currentState: previousState,
-          });
-        }
-
-        const entry = await pgLifecycleRepo.insertLifecycleEntry({
-          id: randomUUID(),
-          tenantId: request.session?.tenantId || 'default',
-          appointmentRef: id,
-          patientDfn,
-          clinicIen: clinicIen || undefined,
-          clinicName,
-          state: targetState,
-          previousState: previousState || undefined,
-          vistaIen: undefined,
-          rpcUsed: 'SDOE UPDATE ENCOUNTER',
-          transitionNote: 'Patient checked in',
-          createdByDuz: request.session?.duz,
-        });
-
-        immutableAudit('scheduling.checkin', 'success', auditActor(request), {
-          requestId: (request as any).id,
-          sourceIp: request.ip,
-          tenantId: request.session?.tenantId,
-          detail: { appointmentRef: id, previousState: previousState || 'initial' },
-        });
-
-        return reply.code(200).send({
-          ok: true,
-          data: entry,
-          transition: `${previousState || 'initial'} -> checked_in`,
-          vistaGrounding: {
-            targetRpc: 'SDOE UPDATE ENCOUNTER',
-            status: 'integration_pending',
-            sandboxNote:
-              'Check-in lifecycle recorded. VistA writeback requires SDOE UPDATE ENCOUNTER.',
-          },
-        });
-      } catch (err: any) {
-        log.warn('Check-in failed', { error: err.message });
-        return reply.code(500).send({ ok: false, error: 'Check-in failed' });
-      }
+      return handleAppointmentCheckin(
+        request,
+        reply,
+        id,
+        ((request.body as any) || {}) as Record<string, any>
+      );
     }
   );
+
+  /* ---- POST /scheduling/check-in ---- */
+  server.post('/scheduling/check-in', async (request: FastifyRequest, reply: FastifyReply) => {
+    const body = ((request.body as any) || {}) as Record<string, any>;
+    const appointmentRef = String(body.appointmentId || body.id || '').trim();
+    if (!appointmentRef) {
+      return reply.code(400).send({ ok: false, error: 'appointmentId is required' });
+    }
+    return handleAppointmentCheckin(request, reply, appointmentRef, body);
+  });
 
   /* ---- POST /scheduling/appointments/:id/checkout ---- */
   server.post(
@@ -802,8 +885,10 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
         const pgLifecycleRepo =
           await import('../../platform/pg/repo/pg-scheduling-lifecycle-repo.js');
         const { randomUUID } = await import('node:crypto');
+        const tenantId = requireTenantId(request, reply);
+        if (!tenantId) return;
 
-        const latest = await pgLifecycleRepo.findLatestByAppointmentRef(id);
+        const latest = await pgLifecycleRepo.findLatestByAppointmentRef(id, tenantId);
         const previousState = latest?.state;
         const targetState = 'completed';
 
@@ -817,7 +902,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
 
         const entry = await pgLifecycleRepo.insertLifecycleEntry({
           id: randomUUID(),
-          tenantId: request.session?.tenantId || 'default',
+          tenantId,
           appointmentRef: id,
           patientDfn,
           clinicIen: clinicIen || undefined,
@@ -861,11 +946,13 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
     async (request: FastifyRequest, reply: FastifyReply) => {
       if (!requireSession(request, reply)) return;
       const { id } = request.params as { id: string };
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
 
       try {
         const pgRequestRepo = await import('../../platform/pg/repo/pg-scheduling-request-repo.js');
 
-        const existing = await pgRequestRepo.findSchedulingRequestById(id);
+        const existing = await pgRequestRepo.findSchedulingRequestById(id, tenantId);
         if (!existing) {
           // Phase 152: In rc/prod, do not fall back to in-memory store
           if (requiresPg()) {
@@ -875,7 +962,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
           log.warn('DEV_ONLY_FALLBACK: approve using in-memory scheduling store');
           const store = await getRequestStore();
           const memReq = store.get(id);
-          if (!memReq) {
+          if (!memReq || !memReq.tenantId || memReq.tenantId !== tenantId) {
             return reply.code(404).send({ ok: false, error: 'Request not found' });
           }
           if (memReq.status !== 'pending') {
@@ -885,15 +972,42 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
           }
           memReq.status = 'approved';
           (memReq as any).updatedAt = new Date().toISOString();
+          trackWriteback(id, memReq.patientDfn, tenantId);
+          updateWritebackStatus(id, 'approved');
+
+          const policy = await getWritebackPolicy();
+          let writeback: any = {
+            status: 'approved',
+            mode: policy.mode,
+            requireTruthGate: policy.requireTruthGate,
+            detail: policy.detail,
+          };
+
+          if (policy.mode !== 'request_only') {
+            writeback = await enforceTruthGate(id, memReq.patientDfn, tenantId, request.session?.duz || 'unknown');
+          }
 
           immutableAudit('scheduling.approve', 'success', auditActor(request), {
             requestId: (request as any).id,
             sourceIp: request.ip,
             tenantId: request.session?.tenantId,
-            detail: { schedulingRequestId: id, source: 'in-memory-dev' },
+            detail: {
+              schedulingRequestId: id,
+              source: 'in-memory-dev',
+              writebackStatus: writeback.status,
+              writebackMode: policy.mode,
+            },
           });
 
-          return { ok: true, data: memReq, notice: 'Request approved (dev fallback store).' };
+          return {
+            ok: true,
+            data: memReq,
+            writeback,
+            notice:
+              writeback.status === 'scheduled'
+                ? 'Request approved and VistA confirmed scheduling.'
+                : 'Request approved. Keep status as approved until VistA confirms scheduling.',
+          };
         }
 
         if (existing.status !== 'pending') {
@@ -902,19 +1016,45 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
             .send({ ok: false, error: `Cannot approve: request is already ${existing.status}` });
         }
 
-        const updated = await pgRequestRepo.updateSchedulingRequest(id, { status: 'approved' });
+        const updated = await pgRequestRepo.updateSchedulingRequest(id, tenantId, {
+          status: 'approved',
+        });
+
+        trackWriteback(id, existing.patientDfn, tenantId);
+        updateWritebackStatus(id, 'approved');
+
+        const policy = await getWritebackPolicy();
+        let writeback: any = {
+          status: 'approved',
+          mode: policy.mode,
+          requireTruthGate: policy.requireTruthGate,
+          detail: policy.detail,
+        };
+
+        if (policy.mode !== 'request_only') {
+          writeback = await enforceTruthGate(id, existing.patientDfn, tenantId, request.session?.duz || 'unknown');
+        }
 
         immutableAudit('scheduling.approve', 'success', auditActor(request), {
           requestId: (request as any).id,
           sourceIp: request.ip,
           tenantId: request.session?.tenantId,
-          detail: { schedulingRequestId: id, source: 'pg' },
+          detail: {
+            schedulingRequestId: id,
+            source: 'pg',
+            writebackStatus: writeback.status,
+            writebackMode: policy.mode,
+          },
         });
 
         return {
           ok: true,
           data: updated,
-          notice: 'Request approved. Clinic scheduling will proceed.',
+          writeback,
+          notice:
+            writeback.status === 'scheduled'
+              ? 'Request approved and VistA confirmed scheduling.'
+              : 'Request approved. Keep status as approved until VistA confirms scheduling.',
         };
       } catch (err: any) {
         // Phase 152: If PG import itself failed in rc/prod, return 503
@@ -942,11 +1082,13 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       const { id } = request.params as { id: string };
       const body = (request.body as any) || {};
       const reason = body.reason || 'Rejected by scheduling staff';
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
 
       try {
         const pgRequestRepo = await import('../../platform/pg/repo/pg-scheduling-request-repo.js');
 
-        const existing = await pgRequestRepo.findSchedulingRequestById(id);
+        const existing = await pgRequestRepo.findSchedulingRequestById(id, tenantId);
         if (!existing) {
           // Phase 152: In rc/prod, do not fall back to in-memory store
           if (requiresPg()) {
@@ -956,7 +1098,7 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
           log.warn('DEV_ONLY_FALLBACK: reject using in-memory scheduling store');
           const store = await getRequestStore();
           const memReq = store.get(id);
-          if (!memReq) {
+          if (!memReq || !memReq.tenantId || memReq.tenantId !== tenantId) {
             return reply.code(404).send({ ok: false, error: 'Request not found' });
           }
           if (memReq.status !== 'pending') {
@@ -983,7 +1125,9 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
             .send({ ok: false, error: `Cannot reject: request is already ${existing.status}` });
         }
 
-        const updated = await pgRequestRepo.updateSchedulingRequest(id, { status: 'rejected' });
+        const updated = await pgRequestRepo.updateSchedulingRequest(id, tenantId, {
+          status: 'rejected',
+        });
 
         immutableAudit('scheduling.reject', 'success', auditActor(request), {
           requestId: (request as any).id,
@@ -1024,7 +1168,8 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
 
       try {
         const cpRepo = await import('../../platform/pg/repo/pg-clinic-preferences-repo.js');
-        const tenantId = request.session?.tenantId || 'default';
+        const tenantId = requireTenantId(request, reply);
+        if (!tenantId) return;
         const prefs = await cpRepo.findByClinicIen(ien, tenantId);
 
         if (!prefs) {
@@ -1063,7 +1208,8 @@ export default async function schedulingRoutes(server: FastifyInstance): Promise
       try {
         const cpRepo = await import('../../platform/pg/repo/pg-clinic-preferences-repo.js');
         const { randomUUID } = await import('node:crypto');
-        const tenantId = request.session?.tenantId || 'default';
+        const tenantId = requireTenantId(request, reply);
+        if (!tenantId) return;
 
         const prefs = await cpRepo.upsertClinicPreferences({
           id: randomUUID(),

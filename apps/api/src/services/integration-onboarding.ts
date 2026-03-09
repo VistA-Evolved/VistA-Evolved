@@ -185,18 +185,22 @@ export function startOnboarding(input: {
   return session;
 }
 
-export function getSession(id: string): OnboardingSession | undefined {
-  return sessionStore.get(id);
+export function getSessionForTenant(tenantId: string, id: string): OnboardingSession | undefined {
+  const session = sessionStore.get(id);
+  if (!session || session.tenantId !== tenantId) return undefined;
+  return session;
 }
 
 export function listSessions(filters?: {
   partnerId?: string;
-  tenantId?: string;
+  tenantId: string;
   status?: string;
 }): OnboardingSession[] {
   let results = [...sessionStore.values()];
+  const tenantId = filters?.tenantId;
+  if (!tenantId) return [];
   if (filters?.partnerId) results = results.filter((s) => s.partnerId === filters.partnerId);
-  if (filters?.tenantId) results = results.filter((s) => s.tenantId === filters.tenantId);
+  results = results.filter((s) => s.tenantId === tenantId);
   if (filters?.status) results = results.filter((s) => s.status === filters.status);
   return results.sort((a, b) => b.startedAt.localeCompare(a.startedAt));
 }
@@ -210,13 +214,14 @@ function recalcCompletion(session: OnboardingSession): void {
   session.completionPercent = Math.round((done / total) * 100);
 }
 
-export function advanceStep(
+export function advanceStepForTenant(
+  tenantId: string,
   sessionId: string,
   stepId: string,
   action: "start" | "complete" | "skip",
   notes?: string,
 ): boolean {
-  const session = sessionStore.get(sessionId);
+  const session = getSessionForTenant(tenantId, sessionId);
   if (!session || session.status !== "active") return false;
 
   const sp = session.stepProgress.find((s) => s.stepId === stepId);
@@ -273,22 +278,22 @@ export function advanceStep(
   return true;
 }
 
-export function pauseSession(sessionId: string): boolean {
-  const session = sessionStore.get(sessionId);
+export function pauseSessionForTenant(tenantId: string, sessionId: string): boolean {
+  const session = getSessionForTenant(tenantId, sessionId);
   if (!session || session.status !== "active") return false;
   session.status = "paused";
   return true;
 }
 
-export function resumeSession(sessionId: string): boolean {
-  const session = sessionStore.get(sessionId);
+export function resumeSessionForTenant(tenantId: string, sessionId: string): boolean {
+  const session = getSessionForTenant(tenantId, sessionId);
   if (!session || session.status !== "paused") return false;
   session.status = "active";
   return true;
 }
 
-export function abandonSession(sessionId: string): boolean {
-  const session = sessionStore.get(sessionId);
+export function abandonSessionForTenant(tenantId: string, sessionId: string): boolean {
+  const session = getSessionForTenant(tenantId, sessionId);
   if (!session || session.status === "completed") return false;
   session.status = "abandoned";
   return true;
@@ -298,8 +303,8 @@ export function abandonSession(sessionId: string): boolean {
    5. READINESS CHECKS
    ═══════════════════════════════════════════════════════════════════ */
 
-export function runReadinessCheck(sessionId: string): ReadinessReport {
-  const session = sessionStore.get(sessionId);
+export function runReadinessCheckForTenant(tenantId: string, sessionId: string): ReadinessReport {
+  const session = getSessionForTenant(tenantId, sessionId);
   if (!session) throw new Error(`session_not_found: ${sessionId}`);
 
   const template = templateStore.get(session.templateId);
@@ -396,7 +401,12 @@ export function runReadinessCheck(sessionId: string): ReadinessReport {
   return report;
 }
 
-export function getReadinessReport(sessionId: string): ReadinessReport | undefined {
+export function getReadinessReportForTenant(
+  tenantId: string,
+  sessionId: string
+): ReadinessReport | undefined {
+  const session = getSessionForTenant(tenantId, sessionId);
+  if (!session) return undefined;
   return readinessStore.get(sessionId);
 }
 
@@ -404,13 +414,13 @@ export function getReadinessReport(sessionId: string): ReadinessReport | undefin
    6. STATS
    ═══════════════════════════════════════════════════════════════════ */
 
-export function getOnboardingStats(): {
+export function getOnboardingStats(tenantId: string): {
   templates: number;
   sessions: { total: number; active: number; completed: number; abandoned: number };
   avgCompletionPercent: number;
   avgCompletionDays: number;
 } {
-  const sessions = [...sessionStore.values()];
+  const sessions = [...sessionStore.values()].filter((s) => s.tenantId === tenantId);
   const completed = sessions.filter((s) => s.status === "completed");
   const avgPercent = sessions.length > 0
     ? Math.round(sessions.reduce((sum, s) => sum + s.completionPercent, 0) / sessions.length)

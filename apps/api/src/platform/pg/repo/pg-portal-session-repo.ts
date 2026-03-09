@@ -142,6 +142,36 @@ export async function findPortalSessionByTokenHash(
   }
 }
 
+export async function listActivePortalSessions(): Promise<PortalSessionRow[]> {
+  if (!pgRepo) return [];
+  try {
+    const pool = getPgPool();
+    const result = await pool.query(
+      `SELECT id, tenant_id, token_hash, user_id, subject, patient_dfn, data_json,
+              created_at, expires_at, last_activity_at, revoked_at
+       FROM portal_session
+       WHERE revoked_at IS NULL AND expires_at >= $1`,
+      [new Date().toISOString()]
+    );
+    return result.rows.map((row) => ({
+      id: row.id,
+      tenantId: row.tenant_id,
+      tokenHash: row.token_hash,
+      userId: row.user_id,
+      subject: row.subject || '',
+      patientDfn: row.patient_dfn || '',
+      dataJson: row.data_json || '{}',
+      createdAt: row.created_at,
+      expiresAt: row.expires_at,
+      lastActivityAt: row.last_activity_at || row.created_at,
+      revokedAt: row.revoked_at,
+    }));
+  } catch (err: any) {
+    log.warn('Portal session list failed', { error: err.message });
+    return [];
+  }
+}
+
 /**
  * Soft-revoke a session by setting revoked_at timestamp (by token hash).
  */

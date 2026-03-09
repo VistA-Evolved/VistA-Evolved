@@ -80,6 +80,25 @@ function auditActor(request: any): { duz: string; name?: string; role?: string }
   return { duz: 'system' };
 }
 
+function resolveTenantId(request: any): string | null {
+  const sessionTenantId =
+    typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+      ? request.session.tenantId.trim()
+      : undefined;
+  const requestTenantId =
+    typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+      ? request.tenantId.trim()
+      : undefined;
+  return sessionTenantId || requestTenantId || null;
+}
+
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
 /** Check if OHIF viewer is reachable (quick probe). */
 async function isViewerReachable(viewerUrl: string): Promise<boolean> {
   try {
@@ -349,7 +368,8 @@ export default async function imagingViewerRoutes(server: FastifyInstance): Prom
       return reply.code(400).send({ ok: false, error: 'Missing studyId' });
     }
 
-    const tenantId = (request as any).session?.tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     // 1. Check tenant-scoped viewer config
     let viewerBaseUrl = IMAGING_CONFIG.ohifUrl;

@@ -75,15 +75,32 @@ import type {
   PeerReviewScore,
 } from './types.js';
 
+function requireTenantId(request: FastifyRequest, reply: FastifyReply): string | null {
+  const sessionTenantId =
+    typeof request.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+      ? request.session.tenantId.trim()
+      : undefined;
+  const requestTenantId =
+    typeof (request as any).tenantId === 'string' && (request as any).tenantId.trim().length > 0
+      ? (request as any).tenantId.trim()
+      : undefined;
+  const tenantId = sessionTenantId || requestTenantId || null;
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
 // -- Plugin --
 
 export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
   // == Rad Orders ==
 
   server.get('/radiology/orders', async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+    await requireSession(request, reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const q = (request.query ?? {}) as Record<string, string>;
-    const orders = listRadOrders(session.tenantId ?? 'default', {
+    const orders = listRadOrders(tenantId, {
       patientDfn: q.dfn,
       status: q.status as RadOrderStatus | undefined,
       modality: q.modality as RadModality | undefined,
@@ -93,6 +110,8 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
 
   server.post('/radiology/orders', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as Record<string, unknown>) ?? {};
     if (!body.procedureName || !body.modality || !body.clinicalIndication) {
       return reply.code(400).send({
@@ -101,7 +120,7 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
       });
     }
     const order = createRadOrder({
-      tenantId: session.tenantId ?? 'default',
+      tenantId,
       patientDfn: String(body.dfn ?? ''),
       procedureName: String(body.procedureName),
       procedureCode: body.procedureCode ? String(body.procedureCode) : undefined,
@@ -118,8 +137,10 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
 
   server.get('/radiology/orders/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
-    const order = getRadOrder(id);
+    const order = getRadOrder(tenantId, id);
     if (!order) return reply.code(404).send({ ok: false, error: 'Rad order not found' });
     return { ok: true, order };
   });
@@ -128,10 +149,12 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
     '/radiology/orders/:id/transition',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
       const body = (request.body as Record<string, unknown>) ?? {};
       if (!body.status) return reply.code(400).send({ ok: false, error: 'status required' });
-      const result = transitionRadOrder(id, body.status as RadOrderStatus, {
+      const result = transitionRadOrder(tenantId, id, body.status as RadOrderStatus, {
         duz: session.duz,
         name: session.userName ?? session.duz,
       });
@@ -144,11 +167,13 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
     '/radiology/orders/:id/protocol',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
       const body = (request.body as Record<string, unknown>) ?? {};
       if (!body.protocolName)
         return reply.code(400).send({ ok: false, error: 'protocolName required' });
-      const result = assignProtocol(id, String(body.protocolName), session.duz);
+      const result = assignProtocol(tenantId, id, String(body.protocolName), session.duz);
       if (!result.ok) return reply.code(400).send(result);
       return { ok: true, order: result.order };
     }
@@ -158,11 +183,13 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
     '/radiology/orders/:id/link-mwl',
     async (request: FastifyRequest, reply: FastifyReply) => {
       await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
       const body = (request.body as Record<string, unknown>) ?? {};
       if (!body.mwlWorklistItemId)
         return reply.code(400).send({ ok: false, error: 'mwlWorklistItemId required' });
-      const result = linkMwlToRadOrder(id, String(body.mwlWorklistItemId));
+      const result = linkMwlToRadOrder(tenantId, id, String(body.mwlWorklistItemId));
       if (!result.ok) return reply.code(400).send(result);
       return { ok: true };
     }
@@ -172,11 +199,14 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
     '/radiology/orders/:id/link-mpps',
     async (request: FastifyRequest, reply: FastifyReply) => {
       await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
       const body = (request.body as Record<string, unknown>) ?? {};
       if (!body.mppsRecordId)
         return reply.code(400).send({ ok: false, error: 'mppsRecordId required' });
       const result = linkMppsToRadOrder(
+        tenantId,
         id,
         String(body.mppsRecordId),
         body.studyInstanceUid ? String(body.studyInstanceUid) : undefined
@@ -191,9 +221,11 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
   server.get(
     '/radiology/reading-worklist',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = await requireSession(request, reply);
+      await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const q = (request.query ?? {}) as Record<string, string>;
-      const items = listReadingWorklist(session.tenantId ?? 'default', {
+      const items = listReadingWorklist(tenantId, {
         status: q.status as ReadingStatus | undefined,
         assignedRadiologistDuz: q.radiologistDuz,
         modality: q.modality as RadModality | undefined,
@@ -206,7 +238,9 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
   server.post(
     '/radiology/reading-worklist',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = await requireSession(request, reply);
+      await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const body = (request.body as Record<string, unknown>) ?? {};
       if (
         !body.radOrderId ||
@@ -222,7 +256,7 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
         });
       }
       const item = createReadingWorklistItem({
-        tenantId: session.tenantId ?? 'default',
+        tenantId,
         radOrderId: String(body.radOrderId),
         patientDfn: String(body.dfn ?? ''),
         studyInstanceUid: String(body.studyInstanceUid),
@@ -239,9 +273,12 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
     '/radiology/reading-worklist/:id/assign',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
       const body = (request.body as Record<string, unknown>) ?? {};
       const result = assignRadiologist(
+        tenantId,
         id,
         body.radiologistDuz ? String(body.radiologistDuz) : session.duz,
         body.radiologistName ? String(body.radiologistName) : (session.userName ?? session.duz)
@@ -255,10 +292,12 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
     '/radiology/reading-worklist/:id/transition',
     async (request: FastifyRequest, reply: FastifyReply) => {
       await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
       const body = (request.body as Record<string, unknown>) ?? {};
       if (!body.status) return reply.code(400).send({ ok: false, error: 'status required' });
-      const result = transitionReadingItem(id, body.status as ReadingStatus);
+      const result = transitionReadingItem(tenantId, id, body.status as ReadingStatus);
       if (!result.ok) return reply.code(400).send(result);
       return { ok: true, item: result.item };
     }
@@ -267,9 +306,11 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
   // == Reports ==
 
   server.get('/radiology/reports', async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+    await requireSession(request, reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const q = (request.query ?? {}) as Record<string, string>;
-    const reports = listRadReports(session.tenantId ?? 'default', {
+    const reports = listRadReports(tenantId, {
       radOrderId: q.radOrderId,
       patientDfn: q.dfn,
       status: q.status as ReportStatus | undefined,
@@ -279,6 +320,8 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
 
   server.post('/radiology/reports', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as Record<string, unknown>) ?? {};
     if (
       !body.radOrderId ||
@@ -295,7 +338,7 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
       });
     }
     const report = createRadReport({
-      tenantId: session.tenantId ?? 'default',
+      tenantId,
       radOrderId: String(body.radOrderId),
       readingWorklistItemId: String(body.readingWorklistItemId),
       patientDfn: String(body.dfn ?? ''),
@@ -314,8 +357,10 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
 
   server.get('/radiology/reports/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
-    const report = getRadReport(id);
+    const report = getRadReport(tenantId, id);
     if (!report) return reply.code(404).send({ ok: false, error: 'Rad report not found' });
     return { ok: true, report };
   });
@@ -324,10 +369,12 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
     '/radiology/reports/:id/transition',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
       const body = (request.body as Record<string, unknown>) ?? {};
       if (!body.status) return reply.code(400).send({ ok: false, error: 'status required' });
-      const result = transitionRadReport(id, body.status as ReportStatus, {
+      const result = transitionRadReport(tenantId, id, body.status as ReportStatus, {
         duz: session.duz,
         name: session.userName ?? session.duz,
       });
@@ -339,9 +386,11 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
   // == Dose Registry ==
 
   server.get('/radiology/dose-registry', async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+    await requireSession(request, reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const q = (request.query ?? {}) as Record<string, string>;
-    const entries = listDoseRegistry(session.tenantId ?? 'default', {
+    const entries = listDoseRegistry(tenantId, {
       patientDfn: q.dfn,
       modality: q.modality as RadModality | undefined,
       exceedsDrl: q.exceedsDrl === 'true' ? true : q.exceedsDrl === 'false' ? false : undefined,
@@ -350,7 +399,9 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
   });
 
   server.post('/radiology/dose-registry', async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+    await requireSession(request, reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as Record<string, unknown>) ?? {};
     if (
       !body.radOrderId ||
@@ -366,7 +417,7 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
       });
     }
     const entry = recordDose({
-      tenantId: session.tenantId ?? 'default',
+      tenantId,
       patientDfn: String(body.dfn ?? ''),
       radOrderId: String(body.radOrderId),
       studyInstanceUid: String(body.studyInstanceUid),
@@ -387,10 +438,12 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
   server.get(
     '/radiology/dose-registry/patient-cumulative',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = await requireSession(request, reply);
+      await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const q = (request.query ?? {}) as Record<string, string>;
       if (!q.dfn) return reply.code(400).send({ ok: false, error: 'dfn query param required' });
-      const cumulative = getPatientCumulativeDose(session.tenantId ?? 'default', q.dfn);
+      const cumulative = getPatientCumulativeDose(tenantId, q.dfn);
       return { ok: true, cumulative };
     }
   );
@@ -398,9 +451,11 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
   // == Critical Alerts ==
 
   server.get('/radiology/critical-alerts', async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+    await requireSession(request, reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const q = (request.query ?? {}) as Record<string, string>;
-    const alerts = listRadCriticalAlerts(session.tenantId ?? 'default', {
+    const alerts = listRadCriticalAlerts(tenantId, {
       patientDfn: q.dfn,
       status: q.status as RadCriticalAlertStatus | undefined,
     });
@@ -411,6 +466,8 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
     '/radiology/critical-alerts',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const body = (request.body as Record<string, unknown>) ?? {};
       if (!body.radReportId || !body.radOrderId || !body.finding || !body.category) {
         return reply.code(400).send({
@@ -419,7 +476,7 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
         });
       }
       const alert = createRadCriticalAlert({
-        tenantId: session.tenantId ?? 'default',
+        tenantId,
         radReportId: String(body.radReportId),
         radOrderId: String(body.radOrderId),
         patientDfn: String(body.dfn ?? ''),
@@ -438,10 +495,13 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
     '/radiology/critical-alerts/:id/communicate',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
       const body = (request.body as Record<string, unknown>) ?? {};
       if (!body.method) return reply.code(400).send({ ok: false, error: 'method required' });
       const result = communicateRadCriticalAlert(
+        tenantId,
         id,
         { duz: session.duz, name: session.userName ?? session.duz },
         body.method as 'direct_verbal' | 'phone' | 'secure_message' | 'in_person'
@@ -455,8 +515,10 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
     '/radiology/critical-alerts/:id/ack',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
-      const result = acknowledgeRadCriticalAlert(id, {
+      const result = acknowledgeRadCriticalAlert(tenantId, id, {
         duz: session.duz,
         name: session.userName ?? session.duz,
       });
@@ -469,8 +531,10 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
     '/radiology/critical-alerts/:id/resolve',
     async (request: FastifyRequest, reply: FastifyReply) => {
       await requireSession(request, reply);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
-      const result = resolveRadCriticalAlert(id);
+      const result = resolveRadCriticalAlert(tenantId, id);
       if (!result.ok) return reply.code(400).send(result);
       return { ok: true, alert: result.alert };
     }
@@ -479,9 +543,11 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
   // == Peer Reviews ==
 
   server.get('/radiology/peer-reviews', async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
+    await requireSession(request, reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const q = (request.query ?? {}) as Record<string, string>;
-    const reviews = listPeerReviews(session.tenantId ?? 'default', {
+    const reviews = listPeerReviews(tenantId, {
       radReportId: q.radReportId,
       reviewerDuz: q.reviewerDuz,
       originalDictatorDuz: q.originalDictatorDuz,
@@ -491,6 +557,8 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
 
   server.post('/radiology/peer-reviews', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as Record<string, unknown>) ?? {};
     if (!body.radReportId || !body.radOrderId || body.score === undefined || !body.comments) {
       return reply.code(400).send({
@@ -499,7 +567,7 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
       });
     }
     const review = createPeerReview({
-      tenantId: session.tenantId ?? 'default',
+      tenantId,
       radReportId: String(body.radReportId),
       radOrderId: String(body.radOrderId),
       patientDfn: String(body.dfn ?? ''),
@@ -517,8 +585,10 @@ export async function radiologyRoutes(server: FastifyInstance): Promise<void> {
   // == Dashboard & Posture ==
 
   server.get('/radiology/dashboard', async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = await requireSession(request, reply);
-    const stats = getRadDashboardStats(session.tenantId ?? 'default');
+    await requireSession(request, reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const stats = getRadDashboardStats(tenantId);
     return { ok: true, stats };
   });
 

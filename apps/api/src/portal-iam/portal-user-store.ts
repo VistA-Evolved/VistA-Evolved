@@ -18,6 +18,7 @@ import { randomBytes, scrypt, createHash, timingSafeEqual } from 'node:crypto';
 import { promisify } from 'node:util';
 import type { PortalUser, PatientProfile, DeviceSession } from './types.js';
 import { log } from '../lib/logger.js';
+import { listTenants } from '../config/tenant-config.js';
 
 const scryptAsync = promisify(scrypt);
 
@@ -54,12 +55,48 @@ export const IAM_CONFIG = {
 const users = new Map<string, PortalUser>();
 const usersByUsername = new Map<string, string>(); // username -> userId
 const usersByEmail = new Map<string, string>(); // email -> userId
+let devSeedRetryScheduled = false;
+const DEFAULT_PORTAL_TENANT_ID =
+  process.env.PORTAL_DEFAULT_TENANT_ID?.trim() || 'default';
+
+type PortalUserRepoRow = {
+  id: string;
+  tenantId?: string;
+  username?: string;
+  displayName?: string | null;
+  email?: string;
+  passwordHash?: string;
+  status?: PortalUser['status'];
+  mfaEnabled?: boolean;
+  mfaSecret?: string | null;
+  patientProfilesJson?: string | null;
+  failedLoginCount?: number;
+  lockedUntil?: string | null;
+  passwordResetToken?: string | null;
+  passwordResetExpires?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+  lastLoginAt?: string | null;
+};
+
+type PortalUserRepo = {
+  upsert(d: any): Promise<any>;
+  findById?(id: string): Promise<PortalUserRepoRow | null>;
+  findByField?(field: string, value: unknown, tenantId?: string): Promise<PortalUserRepoRow[]>;
+  findByTenant?(
+    tenantId: string,
+    opts?: { limit?: number; offset?: number }
+  ): Promise<PortalUserRepoRow[]>;
+  update?(id: string, u: any): Promise<any>;
+};
 
 /* Phase 146: DB repo wiring */
-let userDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null =
-  null;
-export function initPortalUserStoreRepo(repo: typeof userDbRepo): void {
+let userDbRepo: PortalUserRepo | null = null;
+export function initPortalUserStoreRepo(repo: PortalUserRepo | null): void {
   userDbRepo = repo;
+  if (repo) {
+    void rehydrateUsersFromRepo(repo);
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -76,6 +113,120 @@ function hashToken(token: string): string {
 
 function now(): string {
   return new Date().toISOString();
+}
+
+function cachePortalUser(user: PortalUser): PortalUser {
+  users.set(user.id, user);
+  usersByUsername.set(user.username.toLowerCase(), user.id);
+  usersByEmail.set(user.email.toLowerCase(), user.id);
+  return user;
+}
+
+function parsePatientProfiles(value: unknown): PatientProfile[] {
+  if (typeof value !== 'string' || value.trim() === '') return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? (parsed as PatientProfile[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function normalizeTenantId(value: unknown): string | null {
+  return typeof value === 'string' && value.trim().length > 0 ? value.trim() : null;
+}
+
+function fromPortalUserRepoRow(row: PortalUserRepoRow | null | undefined): PortalUser | null {
+  if (!row?.id || !row.username || !row.email || !row.passwordHash) return null;
+  const tenantId = normalizeTenantId(row.tenantId);
+  if (!tenantId) return null;
+  return {
+    id: row.id,
+    tenantId,
+    username: row.username.toLowerCase(),
+    displayName: row.displayName || row.username,
+    email: row.email.toLowerCase(),
+    passwordHash: row.passwordHash,
+    status: row.status ?? 'active',
+    failedAttempts: Number(row.failedLoginCount ?? 0),
+    lockedUntil: row.lockedUntil ? new Date(row.lockedUntil).getTime() : null,
+    mfaEnabled: Boolean(row.mfaEnabled),
+    totpSecret: row.mfaSecret ?? null,
+    patientProfiles: parsePatientProfiles(row.patientProfilesJson),
+    deviceSessions: [],
+    passwordResetToken: row.passwordResetToken ?? null,
+    passwordResetExpiry: row.passwordResetExpires
+      ? new Date(row.passwordResetExpires).getTime()
+      : null,
+    createdAt: row.createdAt ?? now(),
+    updatedAt: row.updatedAt ?? now(),
+    lastLoginAt: row.lastLoginAt ?? null,
+  };
+}
+
+async function rehydrateUsersFromRepo(repo: PortalUserRepo): Promise<void> {
+  if (!repo.findByTenant) return;
+  try {
+    let loaded = 0;
+    const tenantIds = new Set<string>([DEFAULT_PORTAL_TENANT_ID]);
+    for (const tenant of listTenants()) {
+      const tenantId = normalizeTenantId(tenant.tenantId);
+      if (tenantId) {
+        tenantIds.add(tenantId);
+      }
+    }
+
+    for (const tenantId of tenantIds) {
+      let offset = 0;
+      const pageSize = 1000;
+      while (true) {
+        const rows = (await repo.findByTenant(tenantId, { limit: pageSize, offset })) || [];
+        for (const row of rows) {
+          const user = fromPortalUserRepoRow(row);
+          if (user) {
+            cachePortalUser(user);
+            loaded++;
+          }
+        }
+        if (rows.length < pageSize) break;
+        offset += pageSize;
+      }
+    }
+    if (loaded > 0) {
+      log.info('Portal IAM users rehydrated from PG', { count: loaded });
+    }
+  } catch (err: any) {
+    log.warn('Portal IAM user rehydration failed', { error: err?.message });
+  }
+}
+
+function toPortalUserRepoRow(
+  user: PortalUser,
+  overrides: Record<string, unknown> = {}
+): Record<string, unknown> {
+  return {
+    id: user.id,
+    tenantId: user.tenantId,
+    username: user.username,
+    displayName: user.displayName,
+    email: user.email,
+    passwordHash: user.passwordHash,
+    role: 'patient',
+    status: user.status,
+    mfaEnabled: user.mfaEnabled,
+    mfaSecret: user.totpSecret,
+    patientProfilesJson: JSON.stringify(user.patientProfiles),
+    failedLoginCount: user.failedAttempts,
+    lockedUntil: user.lockedUntil ? new Date(user.lockedUntil).toISOString() : null,
+    passwordResetToken: user.passwordResetToken,
+    passwordResetExpires: user.passwordResetExpiry
+      ? new Date(user.passwordResetExpiry).toISOString()
+      : null,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+    lastLoginAt: user.lastLoginAt,
+    ...overrides,
+  };
 }
 
 /* ------------------------------------------------------------------ */
@@ -129,7 +280,8 @@ export async function createUser(
   email: string,
   password: string,
   displayName: string,
-  selfPatient?: { dfn: string; name: string }
+  selfPatient?: { dfn: string; name: string },
+  tenantId: string = DEFAULT_PORTAL_TENANT_ID
 ): Promise<PortalUser> {
   if (users.size >= IAM_CONFIG.maxUsers) {
     throw new Error('Maximum user capacity reached');
@@ -160,6 +312,7 @@ export async function createUser(
 
   const user: PortalUser = {
     id,
+    tenantId,
     username: username.toLowerCase(),
     displayName,
     email: email.toLowerCase(),
@@ -178,23 +331,11 @@ export async function createUser(
     lastLoginAt: null,
   };
 
-  users.set(id, user);
-  usersByUsername.set(user.username, id);
-  usersByEmail.set(user.email, id);
+  cachePortalUser(user);
 
   // Phase 146: Write-through to PG
   userDbRepo
-    ?.upsert({
-      id,
-      tenantId: 'default',
-      username: user.username,
-      email: user.email,
-      displayName: user.displayName,
-      passwordHash: user.passwordHash,
-      status: user.status,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    })
+    ?.upsert(toPortalUserRepoRow(user))
     .catch(() => {});
 
   log.info(`Portal user created: ${id}`);
@@ -259,13 +400,7 @@ export async function authenticateUser(username: string, password: string): Prom
 
     // Phase 146: Write-through lockout state
     userDbRepo
-      ?.upsert({
-        id: user.id,
-        tenantId: 'default',
-        status: user.status,
-        failedAttempts: user.failedAttempts,
-        updatedAt: user.updatedAt,
-      })
+      ?.upsert(toPortalUserRepoRow(user))
       .catch(() => {});
 
     return { success: false, error: 'Invalid credentials' };
@@ -279,14 +414,7 @@ export async function authenticateUser(username: string, password: string): Prom
 
   // Phase 146: Write-through login success
   userDbRepo
-    ?.upsert({
-      id: user.id,
-      tenantId: 'default',
-      status: user.status,
-      failedAttempts: 0,
-      lastLoginAt: user.lastLoginAt,
-      updatedAt: user.updatedAt,
-    })
+    ?.upsert(toPortalUserRepoRow(user))
     .catch(() => {});
 
   // Check MFA
@@ -312,7 +440,7 @@ export function generatePasswordResetToken(userId: string): string | null {
 
   // Phase 146: Write-through reset token
   userDbRepo
-    ?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt })
+    ?.upsert(toPortalUserRepoRow(user))
     .catch(() => {});
 
   return token; // Return plaintext — only returned once (sent via email)
@@ -340,14 +468,7 @@ export async function resetPassword(
 
       // Phase 146: Write-through password reset
       userDbRepo
-        ?.upsert({
-          id: user.id,
-          tenantId: 'default',
-          passwordHash: user.passwordHash,
-          status: user.status,
-          failedAttempts: 0,
-          updatedAt: user.updatedAt,
-        })
+        ?.upsert(toPortalUserRepoRow(user))
         .catch(() => {});
 
       return { success: true };
@@ -372,12 +493,7 @@ export async function changePassword(
 
   // Phase 146: Write-through password change
   userDbRepo
-    ?.upsert({
-      id: user.id,
-      tenantId: 'default',
-      passwordHash: user.passwordHash,
-      updatedAt: user.updatedAt,
-    })
+    ?.upsert(toPortalUserRepoRow(user))
     .catch(() => {});
 
   return { success: true };
@@ -408,12 +524,7 @@ export function setupMfa(userId: string): {
 
   // Phase 146: Write-through MFA setup
   userDbRepo
-    ?.upsert({
-      id: user.id,
-      tenantId: 'default',
-      mfaEnabled: user.mfaEnabled,
-      updatedAt: user.updatedAt,
-    })
+    ?.upsert(toPortalUserRepoRow(user))
     .catch(() => {});
 
   const uri = `otpauth://totp/VistA-Evolved:${user.username}?secret=${secret}&issuer=VistA-Evolved`;
@@ -433,7 +544,7 @@ export function confirmMfa(userId: string, code: string): boolean {
 
     // Phase 146: Write-through MFA confirm
     userDbRepo
-      ?.upsert({ id: user.id, tenantId: 'default', mfaEnabled: true, updatedAt: user.updatedAt })
+      ?.upsert(toPortalUserRepoRow(user))
       .catch(() => {});
 
     return true;
@@ -452,7 +563,7 @@ export function disableMfa(userId: string): boolean {
 
   // Phase 146: Write-through MFA disable
   userDbRepo
-    ?.upsert({ id: user.id, tenantId: 'default', mfaEnabled: false, updatedAt: user.updatedAt })
+    ?.upsert(toPortalUserRepoRow(user))
     .catch(() => {});
 
   return true;
@@ -484,7 +595,7 @@ export function addPatientProfile(
 
   // Phase 146: Write-through profile add
   userDbRepo
-    ?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt })
+    ?.upsert(toPortalUserRepoRow(user))
     .catch(() => {});
 
   return fullProfile;
@@ -502,7 +613,7 @@ export function removePatientProfile(userId: string, profileId: string): boolean
 
   // Phase 146: Write-through profile remove
   userDbRepo
-    ?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt })
+    ?.upsert(toPortalUserRepoRow(user))
     .catch(() => {});
 
   return true;
@@ -539,7 +650,7 @@ export function createDeviceSession(
 
   // Phase 146: Write-through device session
   userDbRepo
-    ?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt })
+    ?.upsert({ id: user.id, tenantId: user.tenantId, updatedAt: user.updatedAt })
     .catch(() => {});
 
   return ds;
@@ -576,7 +687,7 @@ export function revokeDeviceSession(userId: string, sessionId: string): boolean 
 
   // Phase 146: Write-through device revoke
   userDbRepo
-    ?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt })
+    ?.upsert({ id: user.id, tenantId: user.tenantId, updatedAt: user.updatedAt })
     .catch(() => {});
 
   return true;
@@ -596,7 +707,7 @@ export function revokeAllDeviceSessions(userId: string): number {
 
   // Phase 146: Write-through revoke all devices
   userDbRepo
-    ?.upsert({ id: user.id, tenantId: 'default', updatedAt: user.updatedAt })
+    ?.upsert({ id: user.id, tenantId: user.tenantId, updatedAt: user.updatedAt })
     .catch(() => {});
 
   return count;
@@ -636,16 +747,26 @@ export function getIamStats(): {
 
 export async function seedDevUsers(): Promise<void> {
   if (process.env.NODE_ENV === 'production') return;
+  if (!userDbRepo) {
+    if (!devSeedRetryScheduled) {
+      devSeedRetryScheduled = true;
+      setTimeout(() => {
+        devSeedRetryScheduled = false;
+        void seedDevUsers();
+      }, 2000).unref?.();
+    }
+    return;
+  }
   if (users.size > 0) return; // already seeded
 
   try {
     await createUser('patient1', 'patient1@example.com', 'Patient1!', 'David Carter', {
-      dfn: '100022',
-      name: 'CARTER,DAVID',
+      dfn: '46',
+      name: 'ZZZRETFOURNINETYFOUR,PATIENT',
     });
     await createUser('patient2', 'patient2@example.com', 'Patient2!', 'John Smith', {
-      dfn: '100033',
-      name: 'SMITH,JOHN',
+      dfn: '47',
+      name: 'ZZZRETFOURTWENTYSEVEN,PATIENT',
     });
     log.info('Portal IAM: dev users seeded');
   } catch {

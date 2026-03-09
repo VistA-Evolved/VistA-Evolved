@@ -11,6 +11,32 @@ export type SystemStatus = 'ok' | 'degraded' | 'unreachable';
 interface ReadyResponse {
   ok: boolean;
   vista?: string;
+  circuitBreaker?: string;
+}
+
+function classifyReadyState(data: ReadyResponse): { status: SystemStatus; detail: string } {
+  if (data.ok && data.vista === 'reachable') {
+    return { status: 'ok', detail: '' };
+  }
+
+  if (data.vista === 'reachable') {
+    if (data.circuitBreaker === 'open') {
+      return {
+        status: 'degraded',
+        detail: 'VistA is reachable, but the RPC circuit breaker is open. Some live requests are temporarily blocked and writes remain disabled.',
+      };
+    }
+
+    return {
+      status: 'degraded',
+      detail: 'VistA is reachable, but the system is reporting degraded readiness. Writes remain disabled until health recovers.',
+    };
+  }
+
+  return {
+    status: 'degraded',
+    detail: 'VistA EHR is unreachable. Read-only mode - writes are blocked.',
+  };
 }
 
 /**
@@ -44,14 +70,10 @@ export function DegradedBanner() {
       }
 
       const data: ReadyResponse = await res.json();
-      if (data.ok && data.vista === 'reachable') {
-        setStatus('ok');
-        setDetail('');
-      } else {
-        setStatus('degraded');
-        setDetail('VistA EHR is unreachable. Read-only mode — writes are blocked.');
-        setDismissed(false);
-      }
+      const next = classifyReadyState(data);
+      setStatus(next.status);
+      setDetail(next.detail);
+      if (next.status !== 'ok') setDismissed(false);
     } catch {
       setStatus('unreachable');
       setDetail('Cannot reach API server.');
@@ -149,7 +171,7 @@ export function useSystemStatus(): { status: SystemStatus; canWrite: boolean } {
         });
         clearTimeout(timeout);
         const data: ReadyResponse = await res.json();
-        setStatus(data.ok && data.vista === 'reachable' ? 'ok' : 'degraded');
+        setStatus(classifyReadyState(data).status);
       } catch {
         setStatus('unreachable');
       }

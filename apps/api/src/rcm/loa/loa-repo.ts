@@ -60,7 +60,7 @@ export interface LoaAttachmentRow {
 }
 
 export interface CreateLoaInput {
-  tenantId?: string;
+  tenantId: string;
   patientDfn: string;
   patientName?: string;
   payerId: string;
@@ -78,7 +78,7 @@ export interface CreateLoaInput {
 
 export interface AddAttachmentInput {
   loaRequestId: string;
-  tenantId?: string;
+  tenantId: string;
   attachmentType: string;
   fileName: string;
   mimeType: string;
@@ -158,7 +158,7 @@ export async function createLoaRequest(input: CreateLoaInput): Promise<LoaReques
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || 'default';
+  const tenantId = input.tenantId;
 
   await db.insert(loaRequest).values({
     id,
@@ -324,7 +324,7 @@ export async function addAttachment(input: AddAttachmentInput): Promise<LoaAttac
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || 'default';
+  const tenantId = input.tenantId;
 
   await db.insert(loaAttachment).values({
     id,

@@ -21,7 +21,7 @@ import { checkDataPlanePosture } from './data-plane-posture.js';
 import { checkAuditShippingPosture } from './audit-shipping-posture.js';
 import { checkCertificationPosture } from './certification-posture.js';
 import { checkSecurityCertPosture } from './security-cert-posture.js';
-import { getStoreInventorySummary } from '../platform/store-policy.js';
+import { getStoreInventorySummary, getStorePolicyGateSummary } from '../platform/store-policy.js';
 
 export default async function postureRoutes(server: FastifyInstance) {
   // Unified posture report
@@ -37,6 +37,7 @@ export default async function postureRoutes(server: FastifyInstance) {
     const certification = checkCertificationPosture();
     const securityCert = checkSecurityCertPosture();
     const storePolicy = getStoreInventorySummary();
+    const storePolicyGate = getStorePolicyGateSummary();
 
     const totalGates = [
       ...observability.gates,
@@ -47,6 +48,12 @@ export default async function postureRoutes(server: FastifyInstance) {
       ...auditShipping.gates,
       ...certification.gates,
       ...securityCert.gates,
+      {
+        name: 'store_policy',
+        pass: storePolicyGate.pass,
+        detail: storePolicyGate.summary,
+        severity: storePolicyGate.pass ? 'info' : 'critical',
+      },
     ];
     const passCount = totalGates.filter((g) => g.pass).length;
     const totalScore = Math.round((passCount / totalGates.length) * 100);
@@ -65,9 +72,13 @@ export default async function postureRoutes(server: FastifyInstance) {
         certification,
         securityCert,
         storePolicy: {
+          pass: storePolicyGate.pass,
+          summary: storePolicyGate.summary,
           total: storePolicy.total,
           criticalInMemoryCount: storePolicy.criticalInMemoryCount,
+          cacheWithoutLimitsCount: storePolicy.cacheWithoutLimitsCount,
           byClassification: storePolicy.byClassification,
+          policyViolations: storePolicy.policyViolations,
         },
       },
       timestamp: new Date().toISOString(),
@@ -124,11 +135,11 @@ export default async function postureRoutes(server: FastifyInstance) {
   // Phase 136: Store policy posture
   server.get('/posture/store-policy', async () => {
     const summary = getStoreInventorySummary();
-    const pass = summary.criticalInMemoryCount === 0;
+    const gate = getStorePolicyGateSummary();
     return {
       ok: true,
-      pass,
-      summary: `${summary.total} stores inventoried, ${summary.criticalInMemoryCount} critical+in_memory_only`,
+      pass: gate.pass,
+      summary: gate.summary,
       ...summary,
     };
   });

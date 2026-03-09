@@ -276,6 +276,9 @@ to VEHU.
 | Lane        | Access Code  | Verify Code  | User                       |
 | ----------- | ------------ | ------------ | -------------------------- |
 | A (VEHU)    | PRO1234      | PRO1234!!    | PROGRAMMER,ONE (DUZ 1)     |
+
+Development CPRS login note:
+When `NODE_ENV !== 'production'`, the CPRS login form now prefills the verified VEHU credentials into the actual input values so the visible dev account can be submitted directly without retyping.
 | A (VEHU)    | PROV123      | PROV123!!    | PROVIDER,CLYDE WV (DUZ 87) |
 | B (Legacy)  | PROV123      | PROV123!!    | PROVIDER,CLYDE WV (DUZ 87) |
 | B (Legacy)  | PHARM123     | PHARM123!!   | PHARMACIST,LINDA WV        |

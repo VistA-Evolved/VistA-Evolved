@@ -80,7 +80,7 @@ interface Hl7Summary {
 /*  Collector                                                          */
 /* ------------------------------------------------------------------ */
 
-export async function collectDiagnostics(tenantId = 'default'): Promise<DiagnosticReport> {
+export async function collectDiagnostics(tenantId: string): Promise<DiagnosticReport> {
   const start = Date.now();
   log.info('Collecting system diagnostics');
 

@@ -35,11 +35,12 @@ export type EvidenceGateResult =
  * Returns an EvidenceGateResult describing whether the call is allowed.
  */
 export async function checkEvidenceGate(
+  tenantId: string,
   payerId: string,
   method: string,
   actor?: string,
 ): Promise<EvidenceGateResult> {
-  const evidence = await findByPayerAndMethod(payerId, method);
+  const evidence = await findByPayerAndMethod(tenantId, payerId, method);
 
   // No evidence at all
   if (!evidence) {
@@ -154,7 +155,7 @@ export async function checkEvidenceGate(
 /**
  * Bulk check all evidence for a payer across all methods.
  */
-export async function checkPayerEvidenceOverview(payerId: string): Promise<{
+export async function checkPayerEvidenceOverview(tenantId: string, payerId: string): Promise<{
   payerId: string;
   methods: Array<{
     method: string;
@@ -165,7 +166,7 @@ export async function checkPayerEvidenceOverview(payerId: string): Promise<{
   hasAnyVerified: boolean;
   recommendation: string;
 }> {
-  const records = await listByPayer(payerId);
+  const records = await listByPayer(tenantId, payerId);
 
   if (records.length === 0) {
     return {

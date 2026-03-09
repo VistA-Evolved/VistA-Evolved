@@ -22,6 +22,7 @@ management. Integrates with the existing Phase 139 check-in lifecycle.
 - **SQLite**: `queue_ticket`, `queue_event` (auto-created via migrate.ts)
 - **PostgreSQL**: Migration v24 (`phase159_patient_queue`) with UUID, TIMESTAMPTZ
 - **RLS**: Both tables in `tenantTables` array with `tenant_id` column
+- **Phase 592 reality**: queue tickets and queue events are now served PG-first in `queue-routes.ts`; the in-memory engine remains a fallback only when PG is not configured.
 
 ### UI
 
@@ -65,7 +66,7 @@ management. Integrates with the existing Phase 139 check-in lifecycle.
 ## Ticket Numbering
 
 - Format: `{PREFIX}-{NNN}` (e.g., `ED-001`, `LAB-042`)
-- Daily counter per department (resets with API restart or at midnight)
+- Daily counter per department derived from durable ticket count for the current day
 - Prefix configurable per department
 
 ## Priority Queue
@@ -76,38 +77,48 @@ management. Integrates with the existing Phase 139 check-in lifecycle.
 
 ## How to Test
 
-### 1. Seed Departments
+### 1. Login and capture CSRF
 
-```bash
-curl -X POST http://localhost:3001/queue/departments/seed -b cookies.txt
+```powershell
+$session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+$loginBody = @{ accessCode = 'PRO1234'; verifyCode = 'PRO1234!!' } | ConvertTo-Json -Compress
+$login = Invoke-RestMethod -Uri 'http://127.0.0.1:3001/auth/login' -Method Post -Body $loginBody -ContentType 'application/json' -WebSession $session
+$csrf = $login.csrfToken
+$headers = @{ 'X-CSRF-Token' = $csrf }
 ```
 
-### 2. Create a Ticket
+### 2. Seed Departments
 
-```bash
-curl -X POST http://localhost:3001/queue/tickets \
-  -b cookies.txt -H "Content-Type: application/json" \
-  -d '{"department":"primary-care","patientDfn":"3","patientName":"PATIENT,TEST"}'
+```powershell
+Invoke-RestMethod -Uri 'http://127.0.0.1:3001/queue/departments/seed' -Method Post -Headers $headers -WebSession $session
 ```
 
-### 3. Call Next Patient
+### 3. Create a Ticket
 
-```bash
-curl -X POST http://localhost:3001/queue/call-next \
-  -b cookies.txt -H "Content-Type: application/json" \
-  -d '{"department":"primary-care","windowNumber":"Room-1"}'
+```powershell
+$createBody = @{ department = 'primary-care'; patientDfn = '46'; patientName = 'PROGRAMMER,ONE'; priority = 'high' } | ConvertTo-Json -Compress
+$create = Invoke-RestMethod -Uri 'http://127.0.0.1:3001/queue/tickets' -Method Post -Body $createBody -ContentType 'application/json' -Headers $headers -WebSession $session
 ```
 
-### 4. View Display Board (no auth)
+### 4. Call, Serve, and Complete
 
-```bash
-curl http://localhost:3001/queue/display/primary-care
+```powershell
+$callNextBody = @{ department = 'primary-care'; windowNumber = 'Room-1' } | ConvertTo-Json -Compress
+Invoke-RestMethod -Uri 'http://127.0.0.1:3001/queue/call-next' -Method Post -Body $callNextBody -ContentType 'application/json' -Headers $headers -WebSession $session
+Invoke-RestMethod -Uri ("http://127.0.0.1:3001/queue/tickets/{0}/serve" -f $create.ticket.id) -Method Post -Body (@{ providerDuz = '1' } | ConvertTo-Json -Compress) -ContentType 'application/json' -Headers $headers -WebSession $session
+Invoke-RestMethod -Uri ("http://127.0.0.1:3001/queue/tickets/{0}/complete" -f $create.ticket.id) -Method Post -Headers $headers -WebSession $session
 ```
 
-### 5. View Stats
+### 5. View Display Board (no auth)
 
-```bash
-curl http://localhost:3001/queue/stats/primary-care -b cookies.txt
+```powershell
+curl.exe -s http://127.0.0.1:3001/queue/display/primary-care
+```
+
+### 6. Prove Persistence Across Restart
+
+```powershell
+Invoke-RestMethod -Uri 'http://127.0.0.1:3001/queue/tickets?dept=primary-care' -Method Get -WebSession $session
 ```
 
 ## Store Policy
@@ -118,3 +129,9 @@ curl http://localhost:3001/queue/stats/primary-care -b cookies.txt
 | queue-event-store        | audit          | pg_backed  |
 | queue-department-configs | registry       | pg_backed  |
 | queue-daily-counters     | ephemeral      | ephemeral  |
+
+## Phase 592 Notes
+
+- The admin queue page now includes an explicit front-desk ticket creation flow instead of assuming an external hidden creator.
+- `/queue/departments` auto-seeds the default department catalog when a tenant has no in-memory config yet, so the page no longer opens into an empty setup state.
+- `/queue/display/:dept` is bypassed in module guard so the public board contract is truthful again.

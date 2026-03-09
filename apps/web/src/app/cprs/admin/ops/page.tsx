@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { API_BASE } from '@/lib/api-config';
 
 /* ================================================================== */
 /*  Phase 171 — Ops Admin Center                                       */
@@ -51,8 +52,6 @@ interface RunbookEntry {
   domain: string;
 }
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001';
-
 export default function OpsAdminPage() {
   const [tab, setTab] = useState<Tab>('overview');
   const [overview, setOverview] = useState<OpsOverview | null>(null);
@@ -67,10 +66,10 @@ export default function OpsAdminPage() {
     setError(null);
     try {
       const [ovRes, alertRes, storeRes, rbRes] = await Promise.allSettled([
-        fetch(`${API}/admin/ops/overview`, { credentials: 'include' }),
-        fetch(`${API}/admin/ops/alerts`, { credentials: 'include' }),
-        fetch(`${API}/admin/ops/store-inventory`, { credentials: 'include' }),
-        fetch(`${API}/admin/ops/runbooks`, { credentials: 'include' }),
+        fetch(`${API_BASE}/admin/ops/overview`, { credentials: 'include' }),
+        fetch(`${API_BASE}/admin/ops/alerts`, { credentials: 'include' }),
+        fetch(`${API_BASE}/admin/ops/store-inventory`, { credentials: 'include' }),
+        fetch(`${API_BASE}/admin/ops/runbooks`, { credentials: 'include' }),
       ]);
 
       if (ovRes.status === 'fulfilled' && ovRes.value.ok) {

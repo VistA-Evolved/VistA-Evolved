@@ -445,6 +445,20 @@ export function getNotificationLog(
   return records.slice(-(limit || 100));
 }
 
+export function getPatientCommsStats(tenantId: string): {
+  consentCount: number;
+  templateCount: number;
+  notificationCount: number;
+  providerCount: number;
+} {
+  return {
+    consentCount: Array.from(consentStore.values()).filter((consent) => consent.tenantId === tenantId).length,
+    templateCount: Array.from(templateStore.values()).filter((template) => template.tenantId === tenantId).length,
+    notificationCount: notificationLog.filter((record) => record.tenantId === tenantId).length,
+    providerCount: providerRegistry.size,
+  };
+}
+
 // ─── Store Reset ─────────────────────────────────────────
 
 export function _resetCommsStores(): void {

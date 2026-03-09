@@ -526,6 +526,19 @@ export type RpcParam =
   | { type: 'literal'; value: string }
   | { type: 'list'; value: Record<string, string> };
 
+function encodeListKeyForMumps(key: string): string {
+  const trimmed = key.trim();
+  if (!trimmed) return '""';
+  if (trimmed.startsWith('"')) return trimmed;
+  if (/^\d+(,\d+)*$/.test(trimmed)) return trimmed;
+  const commaIndex = trimmed.indexOf(',');
+  if (commaIndex === -1) return '"' + trimmed + '"';
+  const head = trimmed.slice(0, commaIndex).trim();
+  const tail = trimmed.slice(commaIndex);
+  if (!head) return trimmed;
+  return '"' + head + '"' + tail;
+}
+
 /**
  * Build an RPC message with mixed literal + list params.
  * Same framing as buildRpcMessage but supports LIST-type params (type 2).
@@ -534,8 +547,8 @@ export type RpcParam =
  *   "2" + [LPack(key) + LPack(value) + continuation]...
  *   continuation = "t" (more entries) or "f" (last entry / end-of-param)
  *
- * Keys must include MUMPS double-quotes so LINST^XWBPRS correctly sets
- * string subscripts: LPack('"GMRAGNT"') not LPack('GMRAGNT').
+ * Keys must be encoded as valid MUMPS subscript expressions for LINST^XWBPRS,
+ * e.g. 'GMRAGNT' -> '"GMRAGNT"' and 'TEXT,1,0' -> '"TEXT",1,0'.
  */
 function buildRpcMessageEx(rpcName: string, params: RpcParam[]): string {
   let msg = PREFIX + '11302' + '\x01' + '1' + sPack(rpcName);
@@ -551,8 +564,7 @@ function buildRpcMessageEx(rpcName: string, params: RpcParam[]): string {
         const entries = Object.entries(p.value);
         msg += '2';
         entries.forEach(([key, val], idx) => {
-          // Wrap key in MUMPS double-quotes for string subscripts
-          const quotedKey = '"' + key + '"';
+          const quotedKey = encodeListKeyForMumps(key);
           msg += lPack(quotedKey) + lPack(val);
           msg += idx < entries.length - 1 ? 't' : 'f';
         });
@@ -759,11 +771,18 @@ export async function authenticateUser(
     // Line 0: DUZ, Line 1: user name, Line 2: ???, Line 3: division info
     const userName = userLines[1]?.trim() || 'Unknown User';
     const divLine = userLines[3]?.trim() || '';
-    // Division format: IEN^station^name (e.g., "500^500^CAMP MASTER")
+    // Division is usually IEN^station^name, but some sandboxes return
+    // IEN^name^station. Normalize both shapes before session creation.
     const divParts = divLine.split('^');
     const divisionIen = divParts[0] || '500';
-    const facilityStation = divParts[1] || '500';
-    const facilityName = divParts[2] || 'WorldVistA EHR';
+    let facilityStation = divParts[1] || '500';
+    let facilityName = divParts[2] || 'WorldVistA EHR';
+    const thirdLooksLikeStation = /^[0-9]+$/.test(facilityName.trim());
+    const secondLooksLikeName = facilityStation.trim().length > 0 && !/^[0-9]+$/.test(facilityStation.trim());
+    if (thirdLooksLikeStation && secondLooksLikeName) {
+      facilityStation = divParts[2] || facilityStation;
+      facilityName = divParts[1] || facilityName;
+    }
 
     return { duz, userName, divisionIen, facilityStation, facilityName };
   } finally {

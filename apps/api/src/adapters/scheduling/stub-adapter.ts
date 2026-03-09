@@ -34,7 +34,12 @@ export class StubSchedulingAdapter implements SchedulingAdapter {
   async healthCheck() {
     return { ok: false, latencyMs: 0, detail: 'Stub adapter' };
   }
-  async listAppointments(): Promise<AdapterResult<Appointment[]>> {
+  async listAppointments(
+    _patientDfn?: string,
+    _startDate?: string,
+    _endDate?: string,
+    _tenantId?: string
+  ): Promise<AdapterResult<Appointment[]>> {
     return STUB;
   }
   async createAppointment(): Promise<AdapterResult<Appointment | WaitListEntry>> {
@@ -65,7 +70,7 @@ export class StubSchedulingAdapter implements SchedulingAdapter {
   async getEncounterDiagnoses(): Promise<AdapterResult<EncounterDiagnosis[]>> {
     return STUB;
   }
-  async getWaitList(): Promise<AdapterResult<WaitListEntry[]>> {
+  async getWaitList(_clinicIen?: string, _tenantId?: string): Promise<AdapterResult<WaitListEntry[]>> {
     return STUB;
   }
   // Phase 131: new methods

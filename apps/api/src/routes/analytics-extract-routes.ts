@@ -67,8 +67,19 @@ function requirePerm(session: any, perm: AnalyticsPermission, reply: any): void 
   }
 }
 
-function getTenantId(request: any): string {
-  return (request as any).tenantId || 'default';
+function getTenantId(request: any): string | null {
+  const sessionTenantId =
+    typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+      ? request.session.tenantId.trim()
+      : undefined;
+  return sessionTenantId || null;
+}
+
+function requireTenantId(request: any, reply: any): string {
+  const tenantId = getTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  throw new Error('Tenant context missing');
 }
 
 /* ================================================================== */
@@ -82,8 +93,9 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
     const session = await requireSession(request, reply);
     requirePerm(session, 'analytics_admin', reply);
     const body = (request.body as any) || {};
+    const tenantId = requireTenantId(request, reply);
     const config: ExtractRunConfig = {
-      tenantId: getTenantId(request),
+      tenantId,
       entityTypes: body.entityTypes || ['analytics_event'],
       incremental: body.incremental !== false,
       maxRecords: Math.min(body.maxRecords || 10000, 50000),
@@ -100,7 +112,7 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
     requirePerm(session, 'analytics_viewer', reply);
     const q = request.query as any;
     const limit = Math.min(parseInt(q.limit) || 50, 200);
-    const runs = getExtractRuns(getTenantId(request), limit);
+    const runs = getExtractRuns(requireTenantId(request, reply), limit);
     return reply.send({ ok: true, runs, count: runs.length });
   });
 
@@ -128,13 +140,13 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
   server.get('/analytics/extract/offsets', async (request, reply) => {
     const session = await requireSession(request, reply);
     requirePerm(session, 'analytics_viewer', reply);
-    return reply.send({ ok: true, offsets: getExtractOffsets(getTenantId(request)) });
+    return reply.send({ ok: true, offsets: getExtractOffsets(requireTenantId(request, reply)) });
   });
 
   server.get('/analytics/extract/stats', async (request, reply) => {
     const session = await requireSession(request, reply);
     requirePerm(session, 'analytics_viewer', reply);
-    return reply.send({ ok: true, stats: getExtractStats() });
+    return reply.send({ ok: true, stats: getExtractStats(requireTenantId(request, reply)) });
   });
 
   /* ── DE-IDENTIFICATION (Phase 364) ────────────────────────────── */
@@ -145,7 +157,7 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
     const body = (request.body as any) || {};
     if (!body.runId) return reply.code(400).send({ ok: false, error: 'runId required' });
     const records = getExtractRecords(body.runId);
-    const config = getDeidConfig(getTenantId(request));
+    const config = getDeidConfig(requireTenantId(request, reply));
     const result = deidentifyRecords(records, config);
     audit('analytics.deid.process' as AuditAction, 'success', auditActor(request), {
       detail: { recordCount: result.records.length, mode: config.mode },
@@ -159,7 +171,7 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
     const body = (request.body as any) || {};
     if (!body.runId) return reply.code(400).send({ ok: false, error: 'runId required' });
     const records = getExtractRecords(body.runId);
-    const config = getDeidConfig(getTenantId(request));
+    const config = getDeidConfig(requireTenantId(request, reply));
     const deidResult = deidentifyRecords(records, config);
     const scanResult = runDenylistScan(deidResult.records);
     return reply.send({ ok: true, scan: scanResult });
@@ -168,15 +180,16 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
   server.get('/analytics/deid/config', async (request, reply) => {
     const session = await requireSession(request, reply);
     requirePerm(session, 'analytics_viewer', reply);
-    return reply.send({ ok: true, config: getDeidConfig(getTenantId(request)) });
+    return reply.send({ ok: true, config: getDeidConfig(requireTenantId(request, reply)) });
   });
 
   server.put('/analytics/deid/config', async (request, reply) => {
     const session = await requireSession(request, reply);
     requirePerm(session, 'analytics_admin', reply);
     const body = (request.body as any) || {};
+    const tenantId = requireTenantId(request, reply);
     setDeidConfig({
-      tenantId: getTenantId(request),
+      tenantId,
       mode: body.mode || 'strict',
       pseudonymizationSecret: body.pseudonymizationSecret,
       denylistScanEnabled: body.denylistScanEnabled !== false,
@@ -185,7 +198,7 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
     audit('analytics.deid.config' as AuditAction, 'success', auditActor(request), {
       detail: { mode: body.mode || 'strict' },
     });
-    return reply.send({ ok: true, config: getDeidConfig(getTenantId(request)) });
+    return reply.send({ ok: true, config: getDeidConfig(tenantId) });
   });
 
   server.get('/analytics/deid/configs', async (request, reply) => {
@@ -219,7 +232,7 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
     try {
       const result = computeQualityMetric(
         body.measureId as QualityMeasureId,
-        getTenantId(request),
+        requireTenantId(request, reply),
         body.periodStart,
         body.periodEnd
       );
@@ -235,14 +248,14 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
   server.post('/analytics/quality/compute-all', async (request, reply) => {
     const session = await requireSession(request, reply);
     requirePerm(session, 'analytics_admin', reply);
-    return reply.send({ ok: true, metrics: computeAllMetrics(getTenantId(request)) });
+    return reply.send({ ok: true, metrics: computeAllMetrics(requireTenantId(request, reply)) });
   });
 
   server.get('/analytics/quality/runs', async (request, reply) => {
     const session = await requireSession(request, reply);
     requirePerm(session, 'analytics_viewer', reply);
     const q = request.query as any;
-    const runs = getMetricRuns(getTenantId(request), q.measureId, parseInt(q.limit) || 50);
+    const runs = getMetricRuns(requireTenantId(request, reply), q.measureId, parseInt(q.limit) || 50);
     return reply.send({ ok: true, runs, count: runs.length });
   });
 
@@ -258,7 +271,7 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
     const session = await requireSession(request, reply);
     requirePerm(session, 'analytics_viewer', reply);
     const { metricKey } = request.params as any;
-    const result = computeRcmMetric(metricKey, getTenantId(request));
+    const result = computeRcmMetric(metricKey, requireTenantId(request, reply));
     if (!result) return reply.code(404).send({ ok: false, error: 'Metric not found' });
     return reply.send({ ok: true, ...result });
   });

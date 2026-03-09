@@ -39,6 +39,7 @@ export type RefillStatus =
 
 export interface RefillRequest {
   id: string;
+  tenantId: string;
   patientDfn: string;
   patientName: string;
   medicationName: string;
@@ -83,11 +84,34 @@ const refillTimestamps = new Map<string, number[]>();
 let refillDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
 export function initRefillStoreRepo(repo: typeof refillDbRepo): void { refillDbRepo = repo; }
 
-function checkRefillRateLimit(dfn: string): { allowed: boolean; retryAfterMs?: number } {
+function persistRefillRow(req: RefillRequest): void {
+  refillDbRepo
+    ?.upsert({
+      id: req.id,
+      tenantId: req.tenantId,
+      patientDfn: req.patientDfn,
+      medicationName: req.medicationName,
+      rxNumber: null,
+      pharmacy: req.pharmacyType,
+      status: req.status,
+      requestedAt: req.requestedAt,
+      completedAt: req.status === 'approved' || req.status === 'denied' || req.status === 'cancelled' ? req.updatedAt : null,
+      createdAt: req.requestedAt,
+      updatedAt: req.updatedAt,
+    })
+    .catch(() => {});
+}
+
+function rateLimitKey(tenantId: string, dfn: string): string {
+  return `${tenantId}:${dfn}`;
+}
+
+function checkRefillRateLimit(tenantId: string, dfn: string): { allowed: boolean; retryAfterMs?: number } {
   const now = Date.now();
   const hourAgo = now - 3600000;
-  const timestamps = (refillTimestamps.get(dfn) || []).filter(t => t > hourAgo);
-  refillTimestamps.set(dfn, timestamps);
+  const key = rateLimitKey(tenantId, dfn);
+  const timestamps = (refillTimestamps.get(key) || []).filter(t => t > hourAgo);
+  refillTimestamps.set(key, timestamps);
   if (timestamps.length >= MAX_REFILLS_PER_HOUR) {
     return { allowed: false, retryAfterMs: timestamps[0] + 3600000 - now };
   }
@@ -116,6 +140,7 @@ function seedDemoRefills() {
     const id = `refill-${++refillSeq}-${randomBytes(4).toString("hex")}`;
     refillStore.set(id, {
       id,
+      tenantId: "default",
       patientDfn: d.patientDfn!,
       patientName: d.patientName!,
       medicationName: d.medicationName!,
@@ -144,21 +169,26 @@ seedDemoRefills();
 /* Queries                                                              */
 /* ------------------------------------------------------------------ */
 
-export function getPatientRefills(patientDfn: string): RefillRequest[] {
+export function getPatientRefills(tenantId: string, patientDfn: string): RefillRequest[] {
   return [...refillStore.values()]
-    .filter(r => r.patientDfn === patientDfn)
+    .filter(r => r.tenantId === tenantId && r.patientDfn === patientDfn)
     .sort((a, b) => b.requestedAt.localeCompare(a.requestedAt));
 }
 
-export function getRefillRequest(refillId: string, patientDfn: string): RefillRequest | null {
+export function getRefillRequest(refillId: string, tenantId: string, patientDfn: string): RefillRequest | null {
   const req = refillStore.get(refillId);
-  if (!req || req.patientDfn !== patientDfn) return null;
+  if (!req || req.tenantId !== tenantId || req.patientDfn !== patientDfn) return null;
   return req;
 }
 
 /** Staff queue: all pending refill requests across patients */
 export function getStaffRefillQueue(): RefillRequest[] {
+  return getStaffRefillQueueForTenant("default");
+}
+
+export function getStaffRefillQueueForTenant(tenantId: string): RefillRequest[] {
   return [...refillStore.values()]
+    .filter(r => r.tenantId === tenantId)
     .filter(r => r.status === "requested" || r.status === "pending_review")
     .sort((a, b) => a.requestedAt.localeCompare(b.requestedAt));
 }
@@ -168,6 +198,7 @@ export function getStaffRefillQueue(): RefillRequest[] {
 /* ------------------------------------------------------------------ */
 
 export function requestRefill(opts: {
+  tenantId: string;
   patientDfn: string;
   patientName: string;
   medicationName: string;
@@ -177,14 +208,15 @@ export function requestRefill(opts: {
   isProxy: boolean;
 }): RefillRequest | { error: string } {
   // Rate limit
-  const rl = checkRefillRateLimit(opts.patientDfn);
+  const rl = checkRefillRateLimit(opts.tenantId, opts.patientDfn);
   if (!rl.allowed) {
     return { error: `Rate limit exceeded. Try again in ${Math.ceil((rl.retryAfterMs || 0) / 60000)} minutes.` };
   }
 
   // Check for duplicate pending request
   const existing = [...refillStore.values()].find(
-    r => r.patientDfn === opts.patientDfn &&
+    r => r.tenantId === opts.tenantId &&
+         r.patientDfn === opts.patientDfn &&
          r.medicationId === opts.medicationId &&
          ["requested", "pending_review", "pending_filing"].includes(r.status)
   );
@@ -197,6 +229,7 @@ export function requestRefill(opts: {
 
   const req: RefillRequest = {
     id,
+    tenantId: opts.tenantId,
     patientDfn: opts.patientDfn,
     patientName: opts.patientName,
     medicationName: opts.medicationName,
@@ -220,23 +253,25 @@ export function requestRefill(opts: {
   refillStore.set(id, req);
 
   // Phase 146: Write-through to PG
-  refillDbRepo?.upsert({ id, tenantId: 'default', patientDfn: req.patientDfn, medicationName: req.medicationName, medicationId: req.medicationId, status: req.status, requestedAt: req.requestedAt, updatedAt: req.updatedAt }).catch(() => {});
+  persistRefillRow(req);
 
   // Record rate limit
-  const timestamps = refillTimestamps.get(opts.patientDfn) || [];
+  const rateKey = rateLimitKey(opts.tenantId, opts.patientDfn);
+  const timestamps = refillTimestamps.get(rateKey) || [];
   timestamps.push(Date.now());
-  refillTimestamps.set(opts.patientDfn, timestamps);
+  refillTimestamps.set(rateKey, timestamps);
 
   portalAudit("portal.refill.request" as any, "success", opts.patientDfn, {
+    tenantId: opts.tenantId,
     detail: { refillId: id, medication: opts.medicationName, isProxy: opts.isProxy },
   });
 
   return req;
 }
 
-export function cancelRefill(refillId: string, patientDfn: string): RefillRequest | null {
+export function cancelRefill(refillId: string, patientDfn: string, tenantId: string = 'default'): RefillRequest | null {
   const req = refillStore.get(refillId);
-  if (!req || req.patientDfn !== patientDfn) return null;
+  if (!req || req.tenantId !== tenantId || req.patientDfn !== patientDfn) return null;
   if (!["requested", "pending_review"].includes(req.status)) return null;
 
   req.status = "cancelled";
@@ -244,9 +279,18 @@ export function cancelRefill(refillId: string, patientDfn: string): RefillReques
   req.updatedAt = new Date().toISOString();
 
   // Phase 146: Write-through cancel
-  refillDbRepo?.upsert({ id: refillId, tenantId: 'default', status: req.status, updatedAt: req.updatedAt }).catch(() => {});
+  if (refillDbRepo?.update) {
+    refillDbRepo.update(refillId, {
+      status: req.status,
+      completedAt: req.updatedAt,
+      updatedAt: req.updatedAt,
+    }).catch(() => {});
+  } else {
+    persistRefillRow(req);
+  }
 
   portalAudit("portal.refill.cancel" as any, "success", patientDfn, {
+    tenantId,
     detail: { refillId },
   });
 
@@ -263,9 +307,11 @@ export function reviewRefill(
   clinicianDuz: string,
   clinicianName: string,
   note: string,
+  tenantId: string = 'default',
 ): RefillRequest | { error: string } {
   const req = refillStore.get(refillId);
   if (!req) return { error: "Refill request not found." };
+  if (req.tenantId !== tenantId) return { error: "Refill request not found." };
   if (!["requested", "pending_review"].includes(req.status)) {
     return { error: `Cannot review a refill in status: ${req.status}` };
   }
@@ -289,7 +335,15 @@ export function reviewRefill(
   }
 
   // Phase 146: Write-through review
-  refillDbRepo?.upsert({ id: refillId, tenantId: 'default', status: req.status, updatedAt: req.updatedAt }).catch(() => {});
+  if (refillDbRepo?.update) {
+    refillDbRepo.update(refillId, {
+      status: req.status,
+      completedAt: req.updatedAt,
+      updatedAt: req.updatedAt,
+    }).catch(() => {});
+  } else {
+    persistRefillRow(req);
+  }
 
   return req;
 }

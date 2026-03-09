@@ -264,13 +264,15 @@ function registerWebhookConsumer(sub: WebhookSubscription): void {
 /**
  * Send a test event to a webhook subscription to verify delivery.
  */
-export async function testWebhook(subscriptionId: string): Promise<{
+export async function testWebhook(subscriptionId: string, tenantId?: string): Promise<{
   ok: boolean;
   delivery?: WebhookDelivery;
   error?: string;
 }> {
   const sub = subscriptions.get(subscriptionId);
-  if (!sub) return { ok: false, error: "Subscription not found" };
+  if (!sub || (tenantId && sub.tenantId !== tenantId)) {
+    return { ok: false, error: "Subscription not found" };
+  }
 
   const testEvent: DomainEvent = {
     eventId: randomUUID(),
@@ -317,15 +319,24 @@ export function getWebhookDlq(tenantId?: string, limit?: number): WebhookDeliver
   return result;
 }
 
-export function getWebhookStats(): {
+export function getWebhookStats(tenantId?: string): {
   subscriptionCount: number;
   deliveryCount: number;
   dlqCount: number;
 } {
+  const subscriptionCount = tenantId
+    ? Array.from(subscriptions.values()).filter((sub) => sub.tenantId === tenantId).length
+    : subscriptions.size;
+  const deliveryCount = tenantId
+    ? deliveries.filter((delivery) => delivery.tenantId === tenantId).length
+    : deliveries.length;
+  const dlqCount = tenantId
+    ? webhookDlq.filter((delivery) => delivery.tenantId === tenantId).length
+    : webhookDlq.length;
   return {
-    subscriptionCount: subscriptions.size,
-    deliveryCount: deliveries.length,
-    dlqCount: webhookDlq.length,
+    subscriptionCount,
+    deliveryCount,
+    dlqCount,
   };
 }
 

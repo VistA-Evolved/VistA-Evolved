@@ -27,6 +27,14 @@ interface Appointment {
   appointmentType: string;
   scheduledAt: string;
   status: string;
+  source?: 'ehr' | 'pending' | 'local';
+}
+
+function getTelehealthBadgeSource(appt?: Appointment | null): 'ehr' | 'pending' | 'local' {
+  if (appt?.source === 'ehr' || appt?.source === 'pending' || appt?.source === 'local') {
+    return appt.source;
+  }
+  return 'pending';
 }
 
 interface DeviceCheckResult {
@@ -179,8 +187,18 @@ export default function TelehealthPage() {
 
   // Poll waiting room
   useEffect(() => {
-    if (view !== 'waiting-room' || !room) return;
+    if (view !== 'waiting-room' || !selectedAppt) return;
     const poll = setInterval(async () => {
+      if (!room) {
+        const roomRes = await apiFetch<{ room: TelehealthRoom | null }>(
+          `/portal/telehealth/appointment/${selectedAppt.id}/room`
+        );
+        if (roomRes.ok && roomRes.data?.room) {
+          setRoom(roomRes.data.room);
+        }
+        return;
+      }
+
       const res = await apiFetch<{ waiting: WaitingRoomState }>(
         `/portal/telehealth/rooms/${room.roomId}/waiting`
       );
@@ -195,7 +213,7 @@ export default function TelehealthPage() {
       }
     }, 5000);
     return () => clearInterval(poll);
-  }, [view, room]);
+  }, [view, room, selectedAppt]);
 
   /* ── Handlers ── */
 
@@ -230,13 +248,19 @@ export default function TelehealthPage() {
     if (res.ok && res.data?.room) {
       setRoom(res.data.room);
       setView('waiting-room');
-    } else {
+      setNotice(null);
+    } else if (res.ok) {
       // No room yet
       setRoom(null);
       setView('waiting-room');
       setNotice({
         text: 'Your provider has not started the visit yet. Please wait.',
         type: 'success',
+      });
+    } else {
+      setNotice({
+        text: res.error || 'Could not check visit status. Please try again.',
+        type: 'error',
       });
     }
   };
@@ -335,7 +359,7 @@ export default function TelehealthPage() {
                 }}
               >
                 <h3 style={{ margin: 0 }}>Video Visits</h3>
-                <DataSourceBadge source="ehr" />
+                <DataSourceBadge source="pending" label="No Active Visit" />
               </div>
               <div className="empty-state">
                 <h3>No Upcoming Telehealth Visits</h3>
@@ -358,7 +382,16 @@ export default function TelehealthPage() {
                     }}
                   >
                     <h3 style={{ margin: 0 }}>{appt.clinicName}</h3>
-                    <DataSourceBadge source="ehr" />
+                    <DataSourceBadge
+                      source={getTelehealthBadgeSource(appt)}
+                      label={
+                        appt.source === 'local'
+                          ? 'Local Schedule'
+                          : getTelehealthBadgeSource(appt) === 'ehr'
+                            ? undefined
+                            : 'Request Pending'
+                      }
+                    />
                   </div>
                   <p
                     style={{
@@ -390,7 +423,7 @@ export default function TelehealthPage() {
                   >
                     {appt.status.replace(/_/g, ' ').toUpperCase()}
                   </div>
-                  {appt.status === 'confirmed' && (
+                  {appt.status === 'confirmed' && appt.source === 'ehr' && (
                     <div>
                       <button
                         className="btn btn-primary"
@@ -400,6 +433,11 @@ export default function TelehealthPage() {
                         Prepare for Visit
                       </button>
                     </div>
+                  )}
+                  {appt.status === 'confirmed' && appt.source !== 'ehr' && (
+                    <p style={{ fontSize: '0.8125rem', color: 'var(--portal-text-muted)' }}>
+                      This visit is not confirmed from the live EHR yet.
+                    </p>
                   )}
                 </div>
               ))}

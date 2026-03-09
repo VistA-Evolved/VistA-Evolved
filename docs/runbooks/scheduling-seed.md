@@ -55,6 +55,21 @@ curl http://127.0.0.1:3001/scheduling/clinics -b cookies.txt
 curl http://127.0.0.1:3001/scheduling/appointment-types -b cookies.txt
 ```
 
+## VEHU Reality Check
+
+Running the unified installer with `-Seed` is necessary but not sufficient for
+direct SDES writeback. On the live VEHU lane validated in Phase 589
+(2026-03-07):
+
+- `SDES GET APPT TYPES` returned real appointment types.
+- `SDES GET CANCEL REASONS` returned real cancellation reasons.
+- `SDES GET RESOURCE BY CLINIC` returned no resource rows for the clinics probed.
+- `SDES GET CLIN AVAILABILITY` returned no schedulable availability rows for the same clinics.
+
+That means the lane remains truthfully `sdes_partial`, not `vista_direct`, even
+after seeding. Do not enable direct booking/check-in unless clinic resources and
+slot availability are proven live.
+
 ## Idempotency
 
 The routine is safe to run multiple times. It checks for existing data before

@@ -387,7 +387,9 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
       });
     }
 
-    const bindResult = await bindVistaSession(token, accessCode, verifyCode);
+    const bindResult = await bindVistaSession(token, accessCode, verifyCode, {
+      tenantId: session.tenantId,
+    });
 
     if (!bindResult.ok) {
       audit(

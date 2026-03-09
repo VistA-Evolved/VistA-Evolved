@@ -1,16 +1,6 @@
 name: Supply Chain Security
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'apps/**'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-  pull_request:
-    branches: [main]
-  schedule:
-    - cron: '0 4 * * 1' # Weekly Monday 04:00 UTC
   workflow_dispatch:
 
 concurrency:

@@ -29,6 +29,7 @@ import { getTelehealthProvider, listProviders } from '../telehealth/providers/in
 import * as roomStore from '../telehealth/room-store.js';
 import { getDeviceRequirements, validateDeviceReport } from '../telehealth/device-check.js';
 import { portalAudit } from '../services/portal-audit.js';
+import { getAppointment } from '../services/portal-appointments.js';
 import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
@@ -37,6 +38,7 @@ import { log } from '../lib/logger.js';
 
 interface PortalSessionData {
   token: string;
+  tenantId: string;
   patientDfn: string;
   patientName: string;
   createdAt: number;
@@ -47,6 +49,7 @@ interface ClinicianSession {
   duz: string;
   userName?: string;
   role?: string;
+  tenantId: string;
 }
 
 type PortalSessionLookup = (request: FastifyRequest) => PortalSessionData | null;
@@ -57,6 +60,7 @@ type ClinicianSessionLookup = (
 
 let _portalSession: PortalSessionLookup | null = null;
 let _clinicianSession: ClinicianSessionLookup | null = null;
+const roomCreationLocks = new Map<string, Promise<void>>();
 
 export function initTelehealthRoutes(
   portalSessionLookup: PortalSessionLookup,
@@ -69,8 +73,9 @@ export function initTelehealthRoutes(
 function requirePortalSession(request: FastifyRequest, reply: FastifyReply): PortalSessionData {
   const session = _portalSession?.(request);
   if (!session) {
-    reply.code(401).send({ ok: false, error: 'Not authenticated' });
-    throw new Error('No portal session');
+    const err: any = new Error('No portal session');
+    err.statusCode = 401;
+    throw err;
   }
   return session;
 }
@@ -80,10 +85,33 @@ async function requireClinicianSession(
   reply: FastifyReply
 ): Promise<ClinicianSession> {
   if (!_clinicianSession) {
-    reply.code(401).send({ ok: false, error: 'Not authenticated' });
-    throw new Error('No clinician session lookup');
+    const err: any = new Error('No clinician session lookup');
+    err.statusCode = 401;
+    throw err;
   }
   return await _clinicianSession(request, reply);
+}
+
+async function withRoomCreationLock<T>(key: string, task: () => Promise<T>): Promise<T> {
+  const prior = roomCreationLocks.get(key);
+  if (prior) {
+    await prior.catch(() => {});
+  }
+
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  roomCreationLocks.set(key, gate);
+
+  try {
+    return await task();
+  } finally {
+    if (roomCreationLocks.get(key) === gate) {
+      roomCreationLocks.delete(key);
+    }
+    release();
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -106,17 +134,29 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
         return reply.code(400).send({ ok: false, error: 'appointmentId required' });
       }
 
-      // Check if room already exists for this appointment
-      const existing = await roomStore.getRoomByAppointment(appointmentId);
-      if (existing && existing.status !== 'ended') {
-        return { ok: true, room: existing, reused: true };
-      }
+      const lockKey = `${session.tenantId}:${appointmentId}`;
+      const roomResult = await withRoomCreationLock(lockKey, async () => {
+        const existing = await roomStore.getRoomByAppointment(appointmentId, session.tenantId);
+        if (existing && existing.status !== 'ended') {
+          return { room: existing, reused: true };
+        }
 
-      // Create via provider adapter
-      const result = await provider.createRoom(appointmentId);
-
-      // Store room in lifecycle store
-      const room = roomStore.createRoom(appointmentId, result.roomId);
+        const result = await provider.createRoom(appointmentId);
+        const created = roomStore.createRoom({
+          tenantId: session.tenantId,
+          appointmentId,
+          roomId: result.roomId,
+          patientDfn: typeof body.patientDfn === 'string' ? body.patientDfn : '',
+          providerDuz: session.duz,
+          providerName: session.userName,
+        });
+        return {
+          room: created,
+          reused: false,
+          providerMeta: result.meta,
+        };
+      });
+      const room = roomResult.room;
 
       log.info('Telehealth room created by clinician', {
         roomId: room.roomId,
@@ -124,7 +164,12 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
         duz: session.duz,
       });
 
-      return { ok: true, room, providerMeta: result.meta };
+      return {
+        ok: true,
+        room,
+        reused: roomResult.reused || undefined,
+        providerMeta: roomResult.providerMeta,
+      };
     } catch (err: any) {
       if (err.message === 'No clinician session lookup') return;
       log.error('Failed to create telehealth room', { error: err.message });
@@ -135,9 +180,9 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
   // Get room status
   server.get('/telehealth/rooms/:roomId', async (request, reply) => {
     try {
-      await requireClinicianSession(request, reply);
+      const session = await requireClinicianSession(request, reply);
       const { roomId } = request.params as any;
-      const room = await roomStore.getRoom(roomId);
+      const room = await roomStore.getRoom(roomId, session.tenantId);
       if (!room) return reply.code(404).send({ ok: false, error: 'Room not found' });
       return { ok: true, room };
     } catch (err: any) {
@@ -152,13 +197,13 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
       const session = await requireClinicianSession(request, reply);
       const { roomId } = request.params as any;
 
-      const room = await roomStore.getRoom(roomId);
+      const room = await roomStore.getRoom(roomId, session.tenantId);
       if (!room) return reply.code(404).send({ ok: false, error: 'Room not found' });
       if (room.status === 'ended')
         return reply.code(410).send({ ok: false, error: 'Room has ended' });
 
       // Join the room store
-      await roomStore.joinRoom(roomId, `duz-${session.duz}`, 'provider');
+      await roomStore.joinRoom(roomId, session.tenantId, `duz-${session.duz}`, 'provider');
 
       // Get provider join URL
       const joinResult = await provider.joinUrl(roomId, {
@@ -181,11 +226,11 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
       const session = await requireClinicianSession(request, reply);
       const { roomId } = request.params as any;
 
-      const room = await roomStore.getRoom(roomId);
+      const room = await roomStore.getRoom(roomId, session.tenantId);
       if (!room) return reply.code(404).send({ ok: false, error: 'Room not found' });
 
       await provider.endRoom(roomId);
-      const ended = await roomStore.endRoom(roomId);
+      const ended = await roomStore.endRoom(roomId, session.tenantId);
 
       log.info('Telehealth room ended by clinician', { roomId, duz: session.duz });
 
@@ -199,9 +244,9 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
   // Get waiting room state (clinician view)
   server.get('/telehealth/rooms/:roomId/waiting', async (request, reply) => {
     try {
-      await requireClinicianSession(request, reply);
+      const session = await requireClinicianSession(request, reply);
       const { roomId } = request.params as any;
-      const state = await roomStore.getWaitingRoomState(roomId);
+      const state = await roomStore.getWaitingRoomState(roomId, session.tenantId);
       if (!state) return reply.code(404).send({ ok: false, error: 'Room not found' });
       return { ok: true, waiting: state };
     } catch (err: any) {
@@ -213,9 +258,9 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
   // List active rooms (clinician dashboard)
   server.get('/telehealth/rooms', async (request, reply) => {
     try {
-      await requireClinicianSession(request, reply);
-      const rooms = await roomStore.listActiveRooms();
-      const stats = roomStore.getRoomStats();
+      const session = await requireClinicianSession(request, reply);
+      const rooms = await roomStore.listActiveRooms(session.tenantId);
+      const stats = roomStore.getRoomStats(session.tenantId);
       return { ok: true, rooms, stats };
     } catch (err: any) {
       if (err.message === 'No clinician session lookup') return;
@@ -229,14 +274,15 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
   });
 
   // Provider health check
-  server.get('/telehealth/health', async () => {
+  server.get('/telehealth/health', async (request, reply) => {
+    const session = await requireClinicianSession(request, reply);
     const healthy = await provider.healthCheck();
     return {
       ok: true,
       provider: provider.name,
       healthy,
       availableProviders: listProviders(),
-      roomStats: roomStore.getRoomStats(),
+      roomStats: roomStore.getRoomStats(session.tenantId),
     };
   });
 
@@ -245,11 +291,15 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
   // Get or create room for a portal appointment
   server.get('/portal/telehealth/appointment/:appointmentId/room', async (request, reply) => {
     try {
-      requirePortalSession(request, reply);
+      const session = requirePortalSession(request, reply);
       const { appointmentId } = request.params as any;
+      const appointment = getAppointment(appointmentId, session.tenantId, session.patientDfn);
+      if (!appointment) {
+        return reply.code(404).send({ ok: false, error: 'Appointment not found' });
+      }
 
       // Check for existing active room
-      const existing = await roomStore.getRoomByAppointment(appointmentId);
+      const existing = await roomStore.getRoomByAppointment(appointmentId, session.tenantId);
       if (existing && existing.status !== 'ended') {
         return { ok: true, room: existing };
       }
@@ -268,13 +318,16 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
       const session = requirePortalSession(request, reply);
       const { roomId } = request.params as any;
 
-      const room = await roomStore.getRoom(roomId);
+      const room = await roomStore.getRoom(roomId, session.tenantId);
       if (!room) return reply.code(404).send({ ok: false, error: 'Room not found' });
       if (room.status === 'ended')
         return reply.code(410).send({ ok: false, error: 'Visit has ended' });
+      if (!room.appointmentId || !getAppointment(room.appointmentId, session.tenantId, session.patientDfn)) {
+        return reply.code(404).send({ ok: false, error: 'Room not found' });
+      }
 
       // Join the room store
-      await roomStore.joinRoom(roomId, `dfn-${session.patientDfn}`, 'patient');
+      await roomStore.joinRoom(roomId, session.tenantId, `dfn-${session.patientDfn}`, 'patient');
 
       // Get provider join URL
       const joinResult = await provider.joinUrl(roomId, {
@@ -284,6 +337,7 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
 
       // Audit
       portalAudit('portal.telehealth.joined', 'success', session.patientDfn, {
+        tenantId: session.tenantId,
         detail: { roomId },
       });
 
@@ -297,10 +351,15 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
   // Patient waiting room state
   server.get('/portal/telehealth/rooms/:roomId/waiting', async (request, reply) => {
     try {
-      requirePortalSession(request, reply);
+      const session = requirePortalSession(request, reply);
       const { roomId } = request.params as any;
 
-      const state = await roomStore.getWaitingRoomState(roomId);
+      const room = await roomStore.getRoom(roomId, session.tenantId);
+      if (!room || !room.appointmentId || !getAppointment(room.appointmentId, session.tenantId, session.patientDfn)) {
+        return reply.code(404).send({ ok: false, error: 'Room not found' });
+      }
+
+      const state = await roomStore.getWaitingRoomState(roomId, session.tenantId);
       if (!state) return reply.code(404).send({ ok: false, error: 'Room not found' });
 
       return { ok: true, waiting: state };
@@ -328,6 +387,7 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
         result.ready ? 'success' : 'failure',
         session.patientDfn,
         {
+          tenantId: session.tenantId,
           detail: {
             ready: result.ready,
             issues: result.issues,

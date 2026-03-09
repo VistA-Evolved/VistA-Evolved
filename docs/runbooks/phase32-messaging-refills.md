@@ -78,6 +78,11 @@ three sub-tabs:
 - **Refills**: Pending refill requests with approve/deny actions
 - **Tasks**: Active tasks with priority sorting
 
+The chart-scoped Tasks tab must stay patient-scoped. When loaded inside
+`/cprs/chart/:dfn/tasks`, the panel should request the staff queue endpoints
+with the current chart DFN so clinicians do not see or act on another
+patient's queue items from the wrong chart context.
+
 ## Abuse Controls
 
 | Control            | Value                             | Configurable via                  |

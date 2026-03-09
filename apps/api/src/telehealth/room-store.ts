@@ -55,9 +55,9 @@ const MAX_ROOMS = 500;
 
 interface RoomRepo {
   insertRoom(data: any): any;
-  findRoomById(id: string): any;
-  findRoomByAppointment(appointmentId: string): any;
-  findActiveRooms(): any;
+  findRoomById(id: string, tenantId?: string): any;
+  findRoomByAppointment(appointmentId: string, tenantId?: string): any;
+  findActiveRooms(tenantId?: string): any;
   updateRoom(id: string, updates: any): any;
   expireRoom(id: string): any;
   cleanupExpiredRooms(): any;
@@ -75,6 +75,10 @@ export function initTelehealthRoomRepo(repo: RoomRepo): void {
 /* ------------------------------------------------------------------ */
 
 interface RoomEntry extends TelehealthRoom {
+  tenantId: string;
+  patientDfn: string;
+  providerDuz: string;
+  providerName?: string;
   /** Participants who have joined */
   participants: Map<string, { role: ParticipantRole; joinedAt: string }>;
   /** Token for room access verification */
@@ -108,7 +112,11 @@ function jsonToParticipants(
 function rowToEntry(row: any): RoomEntry {
   return {
     roomId: row.id,
+    tenantId: row.tenantId ?? 'default',
     appointmentId: row.appointmentId ?? '',
+    patientDfn: row.patientDfn ?? '',
+    providerDuz: row.providerDuz ?? '',
+    providerName: row.providerName ?? undefined,
     status: row.roomStatus as RoomStatus,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
@@ -123,14 +131,18 @@ function rowToEntry(row: any): RoomEntry {
   };
 }
 
-async function getEntry(roomId: string): Promise<RoomEntry | null> {
+async function getEntry(roomId: string, tenantId?: string): Promise<RoomEntry | null> {
   const cached = rooms.get(roomId);
-  if (cached) return cached;
+  if (cached) {
+    if (!tenantId || cached.tenantId === tenantId) return cached;
+    return null;
+  }
   if (_repo) {
     try {
-      const row = await Promise.resolve(_repo.findRoomById(roomId));
+      const row = await Promise.resolve(_repo.findRoomById(roomId, tenantId));
       if (row) {
         const e = rowToEntry(row);
+        if (tenantId && e.tenantId !== tenantId) return null;
         rooms.set(roomId, e);
         return e;
       }
@@ -159,7 +171,14 @@ function persistEntry(entry: RoomEntry): void {
 /* Lifecycle                                                            */
 /* ------------------------------------------------------------------ */
 
-export function createRoom(appointmentId: string, roomId: string): TelehealthRoom {
+export function createRoom(opts: {
+  tenantId: string;
+  appointmentId: string;
+  roomId: string;
+  patientDfn?: string;
+  providerDuz: string;
+  providerName?: string;
+}): TelehealthRoom {
   if (rooms.size >= MAX_ROOMS) {
     for (const [id, room] of rooms) {
       if (room.status === 'ended') {
@@ -174,8 +193,12 @@ export function createRoom(appointmentId: string, roomId: string): TelehealthRoo
 
   const now = new Date().toISOString();
   const entry: RoomEntry = {
-    roomId,
-    appointmentId,
+    roomId: opts.roomId,
+    tenantId: opts.tenantId,
+    appointmentId: opts.appointmentId,
+    patientDfn: opts.patientDfn ?? '',
+    providerDuz: opts.providerDuz,
+    providerName: opts.providerName,
     status: 'created',
     createdAt: now,
     updatedAt: now,
@@ -184,14 +207,16 @@ export function createRoom(appointmentId: string, roomId: string): TelehealthRoo
     accessToken: randomBytes(24).toString('hex'),
   };
 
-  rooms.set(roomId, entry);
+  rooms.set(opts.roomId, entry);
   if (_repo) {
     Promise.resolve(
       _repo.insertRoom({
-        id: roomId,
-        appointmentId,
-        patientDfn: '',
-        providerDuz: '',
+        id: opts.roomId,
+        tenantId: opts.tenantId,
+        appointmentId: opts.appointmentId,
+        patientDfn: opts.patientDfn ?? '',
+        providerDuz: opts.providerDuz,
+        providerName: opts.providerName ?? null,
         roomStatus: 'created',
         accessToken: entry.accessToken,
         expiresAt: entry.expiresAt,
@@ -199,12 +224,17 @@ export function createRoom(appointmentId: string, roomId: string): TelehealthRoo
       })
     ).catch((e) => dbWarn('persist', e));
   }
-  log.info('Telehealth room created', { roomId, appointmentId });
+  log.info('Telehealth room created', {
+    roomId: opts.roomId,
+    appointmentId: opts.appointmentId,
+    tenantId: opts.tenantId,
+    providerDuz: opts.providerDuz,
+  });
   return toPublicRoom(entry);
 }
 
-export async function getRoom(roomId: string): Promise<TelehealthRoom | null> {
-  const entry = await getEntry(roomId);
+export async function getRoom(roomId: string, tenantId: string): Promise<TelehealthRoom | null> {
+  const entry = await getEntry(roomId, tenantId);
   if (!entry) return null;
   if (isExpired(entry)) {
     expireRoom(entry);
@@ -213,10 +243,17 @@ export async function getRoom(roomId: string): Promise<TelehealthRoom | null> {
   return toPublicRoom(entry);
 }
 
-export async function getRoomByAppointment(appointmentId: string): Promise<TelehealthRoom | null> {
+export async function getRoomByAppointment(
+  appointmentId: string,
+  tenantId: string
+): Promise<TelehealthRoom | null> {
   // Check cache first
   for (const entry of rooms.values()) {
-    if (entry.appointmentId === appointmentId && entry.status !== 'ended') {
+    if (
+      entry.tenantId === tenantId &&
+      entry.appointmentId === appointmentId &&
+      entry.status !== 'ended'
+    ) {
       if (isExpired(entry)) {
         expireRoom(entry);
         continue;
@@ -227,7 +264,7 @@ export async function getRoomByAppointment(appointmentId: string): Promise<Teleh
   // Check DB
   if (_repo) {
     try {
-      const row = await Promise.resolve(_repo.findRoomByAppointment(appointmentId));
+      const row = await Promise.resolve(_repo.findRoomByAppointment(appointmentId, tenantId));
       if (row) {
         const e = rowToEntry(row);
         if (!isExpired(e)) {
@@ -244,9 +281,10 @@ export async function getRoomByAppointment(appointmentId: string): Promise<Teleh
 
 export async function updateRoomStatus(
   roomId: string,
+  tenantId: string,
   status: RoomStatus
 ): Promise<TelehealthRoom | null> {
-  const entry = await getEntry(roomId);
+  const entry = await getEntry(roomId, tenantId);
   if (!entry) return null;
   if (isExpired(entry)) {
     expireRoom(entry);
@@ -262,10 +300,11 @@ export async function updateRoomStatus(
 
 export async function joinRoom(
   roomId: string,
+  tenantId: string,
   participantId: string,
   role: ParticipantRole
 ): Promise<WaitingRoomState | null> {
-  const entry = await getEntry(roomId);
+  const entry = await getEntry(roomId, tenantId);
   if (!entry || isExpired(entry)) return null;
 
   const now = new Date().toISOString();
@@ -286,8 +325,8 @@ export async function joinRoom(
   return toWaitingState(entry);
 }
 
-export async function endRoom(roomId: string): Promise<TelehealthRoom | null> {
-  const entry = await getEntry(roomId);
+export async function endRoom(roomId: string, tenantId: string): Promise<TelehealthRoom | null> {
+  const entry = await getEntry(roomId, tenantId);
   if (!entry) return null;
   entry.status = 'ended';
   entry.updatedAt = new Date().toISOString();
@@ -296,20 +335,27 @@ export async function endRoom(roomId: string): Promise<TelehealthRoom | null> {
   return toPublicRoom(entry);
 }
 
-export async function getWaitingRoomState(roomId: string): Promise<WaitingRoomState | null> {
-  const entry = await getEntry(roomId);
+export async function getWaitingRoomState(
+  roomId: string,
+  tenantId: string
+): Promise<WaitingRoomState | null> {
+  const entry = await getEntry(roomId, tenantId);
   if (!entry || isExpired(entry)) return null;
   return toWaitingState(entry);
 }
 
-export async function getRoomAccessToken(roomId: string): Promise<string | null> {
-  const entry = await getEntry(roomId);
+export async function getRoomAccessToken(roomId: string, tenantId: string): Promise<string | null> {
+  const entry = await getEntry(roomId, tenantId);
   if (!entry || isExpired(entry)) return null;
   return entry.accessToken;
 }
 
-export async function verifyRoomAccess(roomId: string, token: string): Promise<boolean> {
-  const entry = await getEntry(roomId);
+export async function verifyRoomAccess(
+  roomId: string,
+  tenantId: string,
+  token: string
+): Promise<boolean> {
+  const entry = await getEntry(roomId, tenantId);
   if (!entry || isExpired(entry)) return false;
   // Constant-time comparison
   if (entry.accessToken.length !== token.length) return false;
@@ -324,11 +370,11 @@ export async function verifyRoomAccess(roomId: string, token: string): Promise<b
 /* Query helpers                                                        */
 /* ------------------------------------------------------------------ */
 
-export async function listActiveRooms(): Promise<TelehealthRoom[]> {
+export async function listActiveRooms(tenantId: string): Promise<TelehealthRoom[]> {
   // Load from DB if available
   if (_repo) {
     try {
-      const rows = await Promise.resolve(_repo.findActiveRooms());
+      const rows = await Promise.resolve(_repo.findActiveRooms(tenantId));
       return (Array.isArray(rows) ? rows : [])
         .map((r: any) => {
           const e = rowToEntry(r);
@@ -342,6 +388,7 @@ export async function listActiveRooms(): Promise<TelehealthRoom[]> {
   }
   const result: TelehealthRoom[] = [];
   for (const entry of rooms.values()) {
+    if (entry.tenantId !== tenantId) continue;
     if (isExpired(entry)) {
       expireRoom(entry);
       continue;
@@ -351,7 +398,7 @@ export async function listActiveRooms(): Promise<TelehealthRoom[]> {
   return result;
 }
 
-export function getRoomStats(): {
+export function getRoomStats(tenantId: string): {
   total: number;
   created: number;
   waiting: number;
@@ -363,6 +410,7 @@ export function getRoomStats(): {
     active = 0,
     ended = 0;
   for (const entry of rooms.values()) {
+    if (entry.tenantId !== tenantId) continue;
     switch (entry.status) {
       case 'created':
         created++;
@@ -378,7 +426,7 @@ export function getRoomStats(): {
         break;
     }
   }
-  return { total: rooms.size, created, waiting, active, ended };
+  return { total: created + waiting + active + ended, created, waiting, active, ended };
 }
 
 /* ------------------------------------------------------------------ */

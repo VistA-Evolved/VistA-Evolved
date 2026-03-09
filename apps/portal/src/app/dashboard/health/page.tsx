@@ -34,6 +34,12 @@ interface SectionState {
   error?: string;
 }
 
+function resolveSectionSource(data: any): 'ehr' | 'pending' | 'local' {
+  if (data?._integration === 'pending') return 'pending';
+  if (data?.source === 'vista' || data?.rpcUsed) return 'ehr';
+  return 'local';
+}
+
 function DownloadButton({ url, label }: { url: string; label: string }) {
   return (
     <a
@@ -92,7 +98,7 @@ export default function HealthRecordsPage() {
         <div>
           <h1 style={{ fontSize: '1.5rem', marginBottom: '0.25rem' }}>Health Records</h1>
           <p style={{ color: 'var(--portal-text-muted)', fontSize: '0.875rem' }}>
-            Your complete health information from the health system
+            Health information available through the portal
           </p>
         </div>
         <DownloadButton url={exportFullRecordUrl()} label="Download Full Record (PDF)" />
@@ -104,7 +110,7 @@ export default function HealthRecordsPage() {
           title="Demographics"
           loading={demographics.loading}
           data={demographics.data}
-          source={demographics.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          source={resolveSectionSource(demographics.data)}
           downloadUrl={exportSectionUrl('demographics')}
           renderData={(d) => {
             const results = d.results || [];
@@ -131,7 +137,7 @@ export default function HealthRecordsPage() {
           title="Allergies"
           loading={allergies.loading}
           data={allergies.data}
-          source={allergies.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          source={resolveSectionSource(allergies.data)}
           downloadUrl={exportSectionUrl('allergies')}
           renderData={(d) => {
             const results = d.results || [];
@@ -164,7 +170,7 @@ export default function HealthRecordsPage() {
           title="Problem List"
           loading={problems.loading}
           data={problems.data}
-          source={problems.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          source={resolveSectionSource(problems.data)}
           downloadUrl={exportSectionUrl('problems')}
           renderData={(d) => {
             const results = d.results || [];
@@ -211,7 +217,7 @@ export default function HealthRecordsPage() {
           title="Vital Signs"
           loading={vitals.loading}
           data={vitals.data}
-          source={vitals.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          source={resolveSectionSource(vitals.data)}
           downloadUrl={exportSectionUrl('vitals')}
           renderData={(d) => {
             const results = d.results || [];
@@ -244,7 +250,7 @@ export default function HealthRecordsPage() {
           title="Lab Results"
           loading={labs.loading}
           data={labs.data}
-          source={labs.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          source={resolveSectionSource(labs.data)}
           downloadUrl={exportSectionUrl('labs')}
           renderData={(d) => {
             const results = d.results || [];
@@ -311,7 +317,7 @@ export default function HealthRecordsPage() {
           title="Consult History"
           loading={consults.loading}
           data={consults.data}
-          source={consults.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          source={resolveSectionSource(consults.data)}
           downloadUrl={exportSectionUrl('consults')}
           renderData={(d) => {
             const results = d.results || [];
@@ -346,7 +352,7 @@ export default function HealthRecordsPage() {
           title="Surgery History"
           loading={surgery.loading}
           data={surgery.data}
-          source={surgery.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          source={resolveSectionSource(surgery.data)}
           downloadUrl={exportSectionUrl('surgery')}
           renderData={(d) => {
             const results = d.results || [];
@@ -381,7 +387,7 @@ export default function HealthRecordsPage() {
           title="Discharge Summaries"
           loading={dcSummaries.loading}
           data={dcSummaries.data}
-          source={dcSummaries.data?._integration === 'pending' ? 'pending' : 'ehr'}
+          source={resolveSectionSource(dcSummaries.data)}
           downloadUrl={exportSectionUrl('dc-summaries')}
           renderData={(d) => {
             const results = d.results || [];
@@ -426,7 +432,7 @@ function HealthSection({
   title: string;
   loading: boolean;
   data: any;
-  source: 'ehr' | 'pending';
+  source: 'ehr' | 'pending' | 'local';
   downloadUrl?: string;
   renderData: (data: any) => React.ReactNode;
 }) {

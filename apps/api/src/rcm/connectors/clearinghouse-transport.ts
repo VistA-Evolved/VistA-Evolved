@@ -596,12 +596,17 @@ export interface RateLimitConfig {
 
 const rateLimitBuckets = new Map<string, RateLimitConfig>();
 
+function rateLimitKey(tenantId: string, connectorId: string): string {
+  return `${tenantId}::${connectorId}`;
+}
+
 export function configureRateLimit(
+  tenantId: string,
   connectorId: string,
   maxTokens: number,
   refillRatePerSec: number
 ): void {
-  rateLimitBuckets.set(connectorId, {
+  rateLimitBuckets.set(rateLimitKey(tenantId, connectorId), {
     maxTokens,
     refillRatePerSec,
     tokens: maxTokens,
@@ -627,13 +632,13 @@ export function tryAcquireToken(connectorId: string): boolean {
   return false; // Rate limited
 }
 
-export function getRateLimitStatus(connectorId: string): {
+export function getRateLimitStatus(tenantId: string, connectorId: string): {
   configured: boolean;
   tokens?: number;
   maxTokens?: number;
   refillRate?: number;
 } {
-  const bucket = rateLimitBuckets.get(connectorId);
+  const bucket = rateLimitBuckets.get(rateLimitKey(tenantId, connectorId));
   if (!bucket) return { configured: false };
   // Refill before reporting
   const now = Date.now();
@@ -650,18 +655,21 @@ export function getRateLimitStatus(connectorId: string): {
   };
 }
 
-export function listRateLimits(): Array<{
+export function listRateLimits(tenantId?: string): Array<{
   connectorId: string;
   tokens: number;
   maxTokens: number;
   refillRate: number;
 }> {
-  return [...rateLimitBuckets.entries()].map(([id, b]) => {
+  return [...rateLimitBuckets.entries()]
+    .filter(([key]) => !tenantId || key.startsWith(`${tenantId}::`))
+    .map(([id, b]) => {
     const now = Date.now();
     const elapsed = (now - b.lastRefillAt) / 1000;
     const currentTokens = Math.min(b.maxTokens, b.tokens + elapsed * b.refillRatePerSec);
+    const [, connectorId] = id.split('::');
     return {
-      connectorId: id,
+      connectorId: connectorId || id,
       tokens: Math.floor(currentTokens),
       maxTokens: b.maxTokens,
       refillRate: b.refillRatePerSec,
@@ -675,6 +683,7 @@ export function listRateLimits(): Array<{
 
 export interface TransportProfile {
   id: string;
+  tenantId: string;
   connectorId: string;
   transportConfig: TransportConfig;
   rateLimitConfig?: { maxTokens: number; refillRatePerSec: number };
@@ -697,6 +706,7 @@ export function createTransportProfile(
   // Configure rate limit if specified
   if (input.rateLimitConfig) {
     configureRateLimit(
+      input.tenantId,
       input.connectorId,
       input.rateLimitConfig.maxTokens,
       input.rateLimitConfig.refillRatePerSec
@@ -706,18 +716,28 @@ export function createTransportProfile(
   return profile;
 }
 
-export function getTransportProfile(id: string): TransportProfile | undefined {
-  return transportProfiles.get(id);
+export function getTransportProfile(id: string, tenantId?: string): TransportProfile | undefined {
+  const profile = transportProfiles.get(id);
+  if (!profile) return undefined;
+  if (tenantId && profile.tenantId !== tenantId) return undefined;
+  return profile;
 }
 
-export function listTransportProfiles(): TransportProfile[] {
-  return [...transportProfiles.values()];
+export function listTransportProfiles(tenantId?: string): TransportProfile[] {
+  return [...transportProfiles.values()].filter((profile) => !tenantId || profile.tenantId === tenantId);
 }
 
-export function deleteTransportProfile(id: string): boolean {
+export function deleteTransportProfile(id: string, tenantId?: string): boolean {
+  const profile = getTransportProfile(id, tenantId);
+  if (!profile) return false;
   return transportProfiles.delete(id);
 }
 
-export function getTransportProfileForConnector(connectorId: string): TransportProfile | undefined {
-  return [...transportProfiles.values()].find((p) => p.connectorId === connectorId && p.enabled);
+export function getTransportProfileForConnector(
+  tenantId: string,
+  connectorId: string
+): TransportProfile | undefined {
+  return [...transportProfiles.values()].find(
+    (p) => p.tenantId === tenantId && p.connectorId === connectorId && p.enabled
+  );
 }

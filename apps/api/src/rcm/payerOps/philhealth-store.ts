@@ -48,7 +48,12 @@ export function initPhFacilityStoreRepo(repo: DurabilityRepo): void {
   phFacilityDbRepo = repo;
 }
 
+function facilitySetupKey(tenantId: string, facilityId: string): string {
+  return `${tenantId}:${facilityId}`;
+}
+
 export function createPhilHealthClaimDraft(data: {
+  tenantId: string;
   facilityId: string;
   patientDfn: string;
   patientLastName: string;
@@ -71,6 +76,7 @@ export function createPhilHealthClaimDraft(data: {
   const now = new Date().toISOString();
   const draft: PhilHealthClaimDraft = {
     id,
+    tenantId: data.tenantId,
     facilityId: data.facilityId,
     patientDfn: data.patientDfn,
     patientLastName: data.patientLastName,
@@ -112,8 +118,8 @@ export function createPhilHealthClaimDraft(data: {
   phDraftDbRepo
     ?.upsert({
       id,
-      tenantId: (draft as any).tenantId ?? 'default',
-      patientDfn: (draft as any).patientDfn ?? '',
+      tenantId: draft.tenantId,
+      patientDfn: draft.patientDfn,
       status: draft.status,
       createdAt: draft.createdAt,
     })
@@ -122,16 +128,22 @@ export function createPhilHealthClaimDraft(data: {
   return draft;
 }
 
-export function getPhilHealthClaimDraft(id: string): PhilHealthClaimDraft | undefined {
-  return claimDrafts.get(id);
+export function getPhilHealthClaimDraft(
+  tenantId: string,
+  id: string
+): PhilHealthClaimDraft | undefined {
+  const draft = claimDrafts.get(id);
+  if (!draft || draft.tenantId !== tenantId) return undefined;
+  return draft;
 }
 
 export function listPhilHealthClaimDrafts(filter?: {
+  tenantId: string;
   facilityId?: string;
   patientDfn?: string;
   status?: PhilHealthClaimStatus;
 }): PhilHealthClaimDraft[] {
-  let results = Array.from(claimDrafts.values());
+  let results = Array.from(claimDrafts.values()).filter((c) => c.tenantId === filter?.tenantId);
   if (filter?.facilityId) results = results.filter((c) => c.facilityId === filter.facilityId);
   if (filter?.patientDfn) results = results.filter((c) => c.patientDfn === filter.patientDfn);
   if (filter?.status) results = results.filter((c) => c.status === filter.status);
@@ -139,6 +151,7 @@ export function listPhilHealthClaimDrafts(filter?: {
 }
 
 export function patchPhilHealthClaimDraft(
+  tenantId: string,
   id: string,
   patch: Partial<
     Pick<
@@ -164,7 +177,7 @@ export function patchPhilHealthClaimDraft(
     >
   >
 ): { ok: boolean; error?: string; draft?: PhilHealthClaimDraft } {
-  const draft = claimDrafts.get(id);
+  const draft = getPhilHealthClaimDraft(tenantId, id);
   if (!draft) return { ok: false, error: 'Claim draft not found' };
   if (draft.status !== 'draft' && draft.status !== 'ready_for_submission') {
     return {
@@ -183,7 +196,7 @@ export function patchPhilHealthClaimDraft(
   phDraftDbRepo
     ?.upsert({
       id,
-      tenantId: (draft as any).tenantId ?? 'default',
+      tenantId: draft.tenantId,
       status: draft.status,
       updatedAt: draft.updatedAt,
     })
@@ -193,12 +206,13 @@ export function patchPhilHealthClaimDraft(
 }
 
 export function transitionPhilHealthClaimStatus(
+  tenantId: string,
   id: string,
   newStatus: PhilHealthClaimStatus,
   actor: string,
   reason?: string
 ): { ok: boolean; error?: string; draft?: PhilHealthClaimDraft } {
-  const draft = claimDrafts.get(id);
+  const draft = getPhilHealthClaimDraft(tenantId, id);
   if (!draft) return { ok: false, error: 'Claim draft not found' };
 
   const allowed = PH_CLAIM_TRANSITIONS[draft.status];
@@ -237,7 +251,7 @@ export function transitionPhilHealthClaimStatus(
   phDraftDbRepo
     ?.upsert({
       id,
-      tenantId: (draft as any).tenantId ?? 'default',
+      tenantId: draft.tenantId,
       status: draft.status,
       updatedAt: draft.updatedAt,
     })
@@ -249,6 +263,7 @@ export function transitionPhilHealthClaimStatus(
 /* ── Export Pipeline ─────────────────────────────────────────── */
 
 export function generateExportPackage(
+  tenantId: string,
   id: string,
   actor: string,
   signingKey?: string
@@ -258,7 +273,7 @@ export function generateExportPackage(
   manifest?: PhilHealthExportManifest;
   draft?: PhilHealthClaimDraft;
 } {
-  const draft = claimDrafts.get(id);
+  const draft = getPhilHealthClaimDraft(tenantId, id);
   if (!draft) return { ok: false, error: 'Claim draft not found' };
   if (draft.status !== 'ready_for_submission' && draft.status !== 'exported') {
     return {
@@ -330,7 +345,7 @@ export function generateExportPackage(
   phDraftDbRepo
     ?.upsert({
       id,
-      tenantId: (draft as any).tenantId ?? 'default',
+      tenantId: draft.tenantId,
       status: draft.status,
       updatedAt: draft.updatedAt,
     })
@@ -396,6 +411,7 @@ function generateSoaFromDraft(
 /* ── Test Upload Simulator ──────────────────────────────────── */
 
 export function simulateTestUpload(
+  tenantId: string,
   id: string,
   actor: string,
   validationErrors: string[],
@@ -406,7 +422,7 @@ export function simulateTestUpload(
   result?: PhilHealthTestUploadResult;
   draft?: PhilHealthClaimDraft;
 } {
-  const draft = claimDrafts.get(id);
+  const draft = getPhilHealthClaimDraft(tenantId, id);
   if (!draft) return { ok: false, error: 'Claim draft not found' };
   if (draft.status !== 'exported') {
     return {
@@ -454,7 +470,7 @@ export function simulateTestUpload(
     phDraftDbRepo
       ?.upsert({
         id,
-        tenantId: (draft as any).tenantId ?? 'default',
+        tenantId: draft.tenantId,
         status: draft.status,
         updatedAt: draft.updatedAt,
       })
@@ -468,12 +484,17 @@ export function simulateTestUpload(
 
 const facilitySetups = new Map<string, PhilHealthFacilitySetup>();
 
-export function getOrCreateFacilitySetup(facilityId: string): PhilHealthFacilitySetup {
-  let setup = facilitySetups.get(facilityId);
+export function getOrCreateFacilitySetup(
+  tenantId: string,
+  facilityId: string
+): PhilHealthFacilitySetup {
+  const key = facilitySetupKey(tenantId, facilityId);
+  let setup = facilitySetups.get(key);
   if (!setup) {
     const now = new Date().toISOString();
     setup = {
       id: newId('phsetup'),
+      tenantId,
       facilityId,
       facilityCode: '',
       facilityName: '',
@@ -488,13 +509,13 @@ export function getOrCreateFacilitySetup(facilityId: string): PhilHealthFacility
       createdAt: now,
       updatedAt: now,
     };
-    facilitySetups.set(facilityId, setup);
+    facilitySetups.set(key, setup);
 
     // Phase 146: Write-through facility create
     phFacilityDbRepo
       ?.upsert({
         id: setup.id,
-        tenantId: 'default',
+        tenantId,
         facilityId,
         facilityCode: setup.facilityCode,
         createdAt: setup.createdAt,
@@ -505,6 +526,7 @@ export function getOrCreateFacilitySetup(facilityId: string): PhilHealthFacility
 }
 
 export function updateFacilitySetup(
+  tenantId: string,
   facilityId: string,
   patch: Partial<
     Pick<
@@ -519,7 +541,7 @@ export function updateFacilitySetup(
     >
   >
 ): PhilHealthFacilitySetup {
-  const setup = getOrCreateFacilitySetup(facilityId);
+  const setup = getOrCreateFacilitySetup(tenantId, facilityId);
   for (const [key, value] of Object.entries(patch)) {
     if (value !== undefined) {
       (setup as any)[key] = value;
@@ -531,7 +553,7 @@ export function updateFacilitySetup(
   phFacilityDbRepo
     ?.upsert({
       id: setup.id,
-      tenantId: 'default',
+      tenantId,
       facilityId: setup.facilityId,
       facilityCode: setup.facilityCode,
       updatedAt: setup.updatedAt,
@@ -542,20 +564,22 @@ export function updateFacilitySetup(
 }
 
 export function addProviderAccreditation(
+  tenantId: string,
   facilityId: string,
   provider: PhilHealthProviderAccreditation
 ): PhilHealthFacilitySetup {
-  const setup = getOrCreateFacilitySetup(facilityId);
+  const setup = getOrCreateFacilitySetup(tenantId, facilityId);
   setup.providerAccreditations.push(provider);
   setup.updatedAt = new Date().toISOString();
   return setup;
 }
 
 export function removeProviderAccreditation(
+  tenantId: string,
   facilityId: string,
   prcLicenseNumber: string
 ): PhilHealthFacilitySetup {
-  const setup = getOrCreateFacilitySetup(facilityId);
+  const setup = getOrCreateFacilitySetup(tenantId, facilityId);
   setup.providerAccreditations = setup.providerAccreditations.filter(
     (p) => p.prcLicenseNumber !== prcLicenseNumber
   );
@@ -564,12 +588,13 @@ export function removeProviderAccreditation(
 }
 
 export function updateReadinessItem(
+  tenantId: string,
   facilityId: string,
   itemId: string,
   completed: boolean,
   actor: string
 ): PhilHealthFacilitySetup {
-  const setup = getOrCreateFacilitySetup(facilityId);
+  const setup = getOrCreateFacilitySetup(tenantId, facilityId);
   const item = setup.readinessChecklist.find((i) => i.id === itemId);
   if (item) {
     item.completed = completed;
@@ -582,16 +607,22 @@ export function updateReadinessItem(
 
 /* ── Stats ──────────────────────────────────────────────────── */
 
-export function getPhilHealthStats(): {
+export function getPhilHealthStats(tenantId?: string): {
   claimDrafts: { total: number; byStatus: Record<string, number> };
   facilitySetups: number;
 } {
   const byStatus: Record<string, number> = {};
-  for (const d of claimDrafts.values()) {
+  const drafts = tenantId
+    ? Array.from(claimDrafts.values()).filter((d) => d.tenantId === tenantId)
+    : Array.from(claimDrafts.values());
+  for (const d of drafts) {
     byStatus[d.status] = (byStatus[d.status] || 0) + 1;
   }
+  const facilityCount = tenantId
+    ? Array.from(facilitySetups.values()).filter((s) => s.tenantId === tenantId).length
+    : facilitySetups.size;
   return {
-    claimDrafts: { total: claimDrafts.size, byStatus },
-    facilitySetups: facilitySetups.size,
+    claimDrafts: { total: drafts.length, byStatus },
+    facilitySetups: facilityCount,
   };
 }

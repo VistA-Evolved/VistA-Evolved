@@ -340,8 +340,10 @@ function processBulkExport(jobId: string): void {
   });
 }
 
-export function getBulkExportJob(id: string): BulkExportJob | undefined {
-  return bulkExportJobs.get(id);
+export function getBulkExportJob(tenantId: string, id: string): BulkExportJob | undefined {
+  const job = bulkExportJobs.get(id);
+  if (!job || job.tenantId !== tenantId) return undefined;
+  return job;
 }
 
 export function listBulkExportJobs(tenantId?: string): BulkExportJob[] {
@@ -350,7 +352,9 @@ export function listBulkExportJobs(tenantId?: string): BulkExportJob[] {
   return all;
 }
 
-export function deleteBulkExportJob(id: string): boolean {
+export function deleteBulkExportJob(tenantId: string, id: string): boolean {
+  const job = getBulkExportJob(tenantId, id);
+  if (!job) return false;
   return bulkExportJobs.delete(id);
 }
 
@@ -409,8 +413,10 @@ export function generatePatientChart(params: {
   return bundle;
 }
 
-export function getPatientChart(id: string): PatientChartBundle | undefined {
-  return patientChartBundles.get(id);
+export function getPatientChart(tenantId: string, id: string): PatientChartBundle | undefined {
+  const chart = patientChartBundles.get(id);
+  if (!chart || chart.tenantId !== tenantId) return undefined;
+  return chart;
 }
 
 export function listPatientCharts(tenantId?: string): PatientChartBundle[] {
@@ -512,8 +518,10 @@ function processTenantExport(jobId: string): void {
   });
 }
 
-export function getTenantExportJob(id: string): TenantExportJob | undefined {
-  return tenantExportJobs.get(id);
+export function getTenantExportJob(tenantId: string, id: string): TenantExportJob | undefined {
+  const job = tenantExportJobs.get(id);
+  if (!job || job.tenantId !== tenantId) return undefined;
+  return job;
 }
 
 export function listTenantExportJobs(tenantId?: string): TenantExportJob[] {

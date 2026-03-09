@@ -38,6 +38,29 @@ import { getJobQueue } from './jobs/queue.js';
 import { checkPayerEvidenceOverview, checkEvidenceGate } from './evidence/evidence-gate.js';
 import { handleDenialFollowupTick } from './jobs/denial-followup-tick.js';
 
+function resolveTenantId(request: FastifyRequest): string | null {
+  const headerTenantId = request.headers['x-tenant-id'];
+  if (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0) {
+    return headerTenantId.trim();
+  }
+  const requestTenantId = (request as any).tenantId;
+  if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+    return requestTenantId.trim();
+  }
+  const sessionTenantId = (request as any).session?.tenantId;
+  if (typeof sessionTenantId === 'string' && sessionTenantId.trim().length > 0) {
+    return sessionTenantId.trim();
+  }
+  return null;
+}
+
+function requireTenantId(request: FastifyRequest, reply: FastifyReply): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
 /* ── Route plugin ───────────────────────────────────────────── */
 
 export default async function rcmOpsRoutes(server: FastifyInstance): Promise<void> {
@@ -86,9 +109,9 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
   /* ─────────────────────────────────────────────────────────── */
   /* GET /rcm/ops/queue-depth                                    */
   /* ─────────────────────────────────────────────────────────── */
-  server.get('/rcm/ops/queue-depth', async (request: FastifyRequest) => {
-    const q = request.query as Record<string, string>;
-    const tenantId = q.tenantId ?? 'default';
+  server.get('/rcm/ops/queue-depth', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const stats = await getJobStatsByTenant(tenantId);
     return { ok: true, tenantId, ...stats };
   });
@@ -96,9 +119,10 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
   /* ─────────────────────────────────────────────────────────── */
   /* GET /rcm/ops/queue-jobs                                     */
   /* ─────────────────────────────────────────────────────────── */
-  server.get('/rcm/ops/queue-jobs', async (request: FastifyRequest) => {
+  server.get('/rcm/ops/queue-jobs', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = request.query as Record<string, string>;
-    const tenantId = q.tenantId ?? 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const status = q.status as any;
     const type = q.type as any;
     const offset = parseInt(q.offset ?? '0', 10) || 0;
@@ -122,7 +146,7 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
       const body = (request.body as any) || {};
       const session = (request as any).session;
 
-      const { payerCode, subscriberMemberId, tenantId } = body;
+      const { payerCode, subscriberMemberId } = body;
       if (!payerCode || !subscriberMemberId) {
         reply.code(400);
         return {
@@ -132,6 +156,8 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
       }
 
       try {
+        const tenantId = requireTenantId(request, reply);
+        if (!tenantId) return;
         const result = await auditedEnqueue({
           type: 'ELIGIBILITY_CHECK',
           payload: {
@@ -139,7 +165,7 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
             subscriberMemberId,
             serviceType: body.serviceType ?? '30', // Health benefit plan coverage
           },
-          tenantId: tenantId ?? 'default',
+          tenantId,
           userId: session?.duz ?? 'unknown',
           priority: body.priority ?? 5,
           idempotencyKey: body.idempotencyKey,
@@ -169,6 +195,8 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
       }
 
       try {
+        const tenantId = requireTenantId(request, reply);
+        if (!tenantId) return;
         const result = await auditedEnqueue({
           type: 'STATUS_POLL',
           payload: {
@@ -176,7 +204,7 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
             payerCode: payerCode ?? 'unknown',
             trackingNumber: body.trackingNumber,
           },
-          tenantId: body.tenantId ?? 'default',
+          tenantId,
           userId: session?.duz ?? 'unknown',
           priority: body.priority ?? 5,
           idempotencyKey: body.idempotencyKey,
@@ -193,9 +221,10 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
   /* ─────────────────────────────────────────────────────────── */
   /* GET /rcm/ops/denial-queue                                   */
   /* ─────────────────────────────────────────────────────────── */
-  server.get('/rcm/ops/denial-queue', async (request: FastifyRequest) => {
+  server.get('/rcm/ops/denial-queue', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = request.query as Record<string, string>;
-    const tenantId = q.tenantId ?? 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const status = q.status as any;
     const priority = q.priority as any;
     const offset = parseInt(q.offset ?? '0', 10) || 0;
@@ -251,9 +280,9 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
   /* ─────────────────────────────────────────────────────────── */
   /* GET /rcm/ops/dashboard                                      */
   /* ─────────────────────────────────────────────────────────── */
-  server.get('/rcm/ops/dashboard', async (request: FastifyRequest) => {
-    const q = request.query as Record<string, string>;
-    const tenantId = q.tenantId ?? 'default';
+  server.get('/rcm/ops/dashboard', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     // Gather all state — single call to getConnectorStateSummary avoids triple-probe
     const [stateSummary, jobStats, schedulerStatus, workqueueStats] = await Promise.all([
@@ -293,9 +322,10 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
   /* ─────────────────────────────────────────────────────────── */
   /* GET /rcm/ops/jobs/durable — Durable job queue stats (P142)  */
   /* ─────────────────────────────────────────────────────────── */
-  server.get('/rcm/ops/jobs/durable', async (request: FastifyRequest) => {
+  server.get('/rcm/ops/jobs/durable', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = request.query as Record<string, string>;
-    const tenantId = q.tenantId ?? 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     try {
       const queue = getJobQueue();
       const stats = await queue.getStats();
@@ -340,13 +370,15 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
         return { ok: false, error: 'payerId query param is required' };
       }
       try {
+        const session = (request as any).session;
+        const tenantId = requireTenantId(request, reply);
+        if (!tenantId) return;
         if (method) {
-          const session = (request as any).session;
-          const gate = await checkEvidenceGate(payerId, method, session?.duz ?? 'system');
+          const gate = await checkEvidenceGate(tenantId, payerId, method, session?.duz ?? 'system');
           const { payerId: _p, method: _m, ...rest } = gate;
           return { ok: true, payerId, method, ...rest };
         }
-        const overview = await checkPayerEvidenceOverview(payerId);
+        const overview = await checkPayerEvidenceOverview(tenantId, payerId);
         return { ok: true, payerId, overview };
       } catch (err) {
         return { ok: false, error: safeErr(err) };
@@ -384,6 +416,8 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
       }
 
       try {
+        const tenantId = requireTenantId(request, reply);
+        if (!tenantId) return;
         const result = await auditedEnqueue({
           type: 'REMITTANCE_IMPORT',
           payload: {
@@ -393,7 +427,7 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
             parserVersion: body.parserVersion,
             importedBy: session?.duz ?? 'unknown',
           },
-          tenantId: body.tenantId ?? 'default',
+          tenantId,
           userId: session?.duz ?? 'unknown',
           priority: body.priority ?? 5,
           idempotencyKey: body.idempotencyKey,

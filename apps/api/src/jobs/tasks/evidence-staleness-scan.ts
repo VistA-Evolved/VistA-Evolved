@@ -66,7 +66,7 @@ export async function handleEvidenceStalenessScan(payload: Record<string, unknow
     let flagged = 0;
     for (const ev of staleEntries) {
       try {
-        await updateEvidence(ev.id, { status: 'stale' });
+        await updateEvidence(tenantId, ev.id, { status: 'stale' });
         flagged++;
       } catch (err) {
         const errMsg = err instanceof Error ? err.message : String(err);

@@ -182,12 +182,13 @@ export function getActiveConsent(
 }
 
 export function revokeConsent(
+  tenantId: string,
   consentId: string,
   revokedBy: string,
   reason: string
 ): ConsentRecord | undefined {
   const existing = consentRecords.get(consentId);
-  if (!existing || existing.status !== "granted") return undefined;
+  if (!existing || existing.tenantId !== tenantId || existing.status !== "granted") return undefined;
 
   // Create revocation record (original is immutable)
   const revoked: ConsentRecord = {

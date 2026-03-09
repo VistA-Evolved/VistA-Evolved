@@ -381,6 +381,7 @@ export function runCertification(
 
   certRuns.set(run.id, run);
   audit("cert.run_completed", actor, {
+    tenantId,
     runId: run.id,
     verdict,
     score,
@@ -394,6 +395,12 @@ export function runCertification(
 
 export function getCertRun(id: string): CertRun | null {
   return certRuns.get(id) ?? null;
+}
+
+export function getCertRunForTenant(tenantId: string, id: string): CertRun | null {
+  const run = certRuns.get(id) ?? null;
+  if (!run || run.tenantId !== tenantId) return null;
+  return run;
 }
 
 export function listCertRuns(tenantId: string): CertRun[] {
@@ -464,12 +471,17 @@ export function createCertSchedule(
   return sched;
 }
 
-export function toggleCertSchedule(id: string, enabled: boolean, actor: string): CertSchedule | null {
+export function toggleCertSchedule(
+  tenantId: string,
+  id: string,
+  enabled: boolean,
+  actor: string
+): CertSchedule | null {
   const s = certSchedules.get(id);
-  if (!s) return null;
+  if (!s || s.tenantId !== tenantId) return null;
   s.enabled = enabled;
   s.updatedAt = new Date().toISOString();
-  audit("cert.schedule_toggled", actor, { scheduleId: id, enabled });
+  audit("cert.schedule_toggled", actor, { scheduleId: id, tenantId, enabled });
   return s;
 }
 
@@ -532,6 +544,9 @@ export function getGateCatalog(): Array<{ id: string; category: string; name: st
 
 // ── Audit ──────────────────────────────────────────────────────────────
 
-export function getCertAuditLog(limit = 200): AuditEntry[] {
-  return auditLog.slice(-limit);
+export function getCertAuditLog(limit = 200, tenantId?: string): AuditEntry[] {
+  const scoped = tenantId
+    ? auditLog.filter((entry) => entry.detail?.tenantId === tenantId)
+    : auditLog;
+  return scoped.slice(-limit);
 }

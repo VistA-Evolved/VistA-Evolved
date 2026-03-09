@@ -21,17 +21,19 @@
  *   POST /vista/cprs/orders/lab       -- LOCK + AUTOACK + UNLOCK (lab quick order)
  *   POST /vista/cprs/orders/imaging   -- integration-pending (no imaging QOs in sandbox)
  *   POST /vista/cprs/orders/consult   -- integration-pending (needs ORDIALOG params)
- *   POST /vista/cprs/orders/sign      -- ORWOR1 SIG (or integration-pending)
+ *   POST /vista/cprs/orders/sign      -- ORWDX LOCK + ORWOR1 SIG + ORWDX UNLOCK (or integration-pending)
  *   POST /vista/cprs/order-checks     -- ORWDXC ACCEPT / DISPLAY (or pending)
  */
 
 import type { FastifyInstance } from 'fastify';
 import { createHash } from 'node:crypto';
+import { requireSession } from '../../auth/auth-routes.js';
 import { validateCredentials } from '../../vista/config.js';
-import { connect, disconnect, getDuz } from '../../vista/rpcBrokerClient.js';
+import { callRpc, connect, disconnect, getDuz, withBrokerLock } from '../../vista/rpcBrokerClient.js';
+import { poolRunRpcSequence } from '../../vista/rpcConnectionPool.js';
 import { optionalRpc } from '../../vista/rpcCapabilities.js';
 import { probeTier0Rpc } from '../../lib/tier0-response.js';
-import { safeCallRpc } from '../../lib/rpc-resilience.js';
+import { getCurrentRpcContext, safeCallRpc, safeCallRpcWithList } from '../../lib/rpc-resilience.js';
 import { audit } from '../../lib/audit.js';
 import { log } from '../../lib/logger.js';
 import { createDraft } from '../write-backs.js';
@@ -135,6 +137,30 @@ function getActor(request: any): string {
   return (request as any).session?.duz ?? (request as any).session?.userName ?? 'unknown';
 }
 
+function resolveTenantId(request: any): string | null {
+  const requestTenantId =
+    typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+      ? request.tenantId.trim()
+      : undefined;
+  const sessionTenantId =
+    typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+      ? request.session.tenantId.trim()
+      : undefined;
+  const headerTenantId = request?.headers?.['x-tenant-id'];
+  const headerTenant =
+    typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+      ? headerTenantId.trim()
+      : undefined;
+  return requestTenantId || sessionTenantId || headerTenant || null;
+}
+
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
 function auditWrite(
   action: Parameters<typeof audit>[0],
   outcome: 'success' | 'failure',
@@ -156,6 +182,256 @@ function auditWrite(
       },
     }
   );
+}
+
+function hasVistaRuntimeError(raw: string): boolean {
+  return (
+    raw.startsWith('-1') ||
+    /M\s+ERROR|%YDB-E-|LVUNDEF|LAST REF=|Undefined local variable/i.test(raw)
+  );
+}
+
+function parseOrderSendResponses(lines: string[]): {
+  success: boolean;
+  alreadySigned: boolean;
+  errorMessage?: string;
+  raw: string;
+} {
+  const raw = lines.filter(Boolean).join('\n').trim();
+  if (!raw) {
+    return { success: true, alreadySigned: false, raw };
+  }
+  if (hasVistaRuntimeError(raw)) {
+    return {
+      success: false,
+      alreadySigned: false,
+      errorMessage: 'Order send failed in VistA runtime.',
+      raw,
+    };
+  }
+
+  const rows = lines.filter(Boolean);
+  let alreadySigned = false;
+  for (const row of rows) {
+    const pieces = row.split('^');
+    const status = (pieces[1] || '').trim();
+    const detail = (pieces[3] || pieces[2] || '').trim();
+    if (status === 'E') {
+      if (/This order has been signed!/i.test(detail)) {
+        alreadySigned = true;
+        continue;
+      }
+      return {
+        success: false,
+        alreadySigned: false,
+        errorMessage: detail || 'Order send failed.',
+        raw,
+      };
+    }
+  }
+
+  return { success: true, alreadySigned, raw };
+}
+
+type OrderPanelType = 'med' | 'lab' | 'imaging' | 'consult';
+type OrderListFilter = 'active' | 'all' | 'recent';
+
+export interface NormalizedVistaOrder {
+  id: string;
+  ien: string;
+  name: string;
+  text: string;
+  details: string;
+  status: string;
+  displayGroup: string;
+  timestamp: string;
+  startDate?: string;
+  stopDate?: string;
+  provider: string;
+  packageRef: string;
+  orderType?: OrderPanelType;
+  textSource: 'ORWORR GETTXT' | 'ORWORR GETBYIFN' | 'ORWORR AGET';
+  raw: string;
+  rawDetail: string[];
+  rpcUsed: string[];
+}
+
+interface GetByIfnMetadata {
+  orderIen: string;
+  displayGroup: string;
+  startDateRaw?: string;
+  stopDateRaw?: string;
+  provider?: string;
+  packageRef?: string;
+  textFromDetail?: string;
+  rawDetail: string[];
+}
+
+function normalizeVistaText(value: string): string {
+  return value.replace(/^t+/, '').replace(/\s+/g, ' ').trim();
+}
+
+function formatFilemanDate(value?: string): string | undefined {
+  if (!value || !/^\d{7}(?:\.\d+)?$/.test(value)) return undefined;
+  const [datePart] = value.split('.');
+  const year = parseInt(datePart.slice(0, 3), 10) + 1700;
+  const month = datePart.slice(3, 5);
+  const day = datePart.slice(5, 7);
+  return `${year}-${month}-${day}`;
+}
+
+function parseGetByIfnMetadata(lines: string[]): GetByIfnMetadata {
+  const metaLine = lines.find((line) => line.startsWith('~'));
+  const textFromDetail = lines
+    .filter((line) => line.startsWith('t'))
+    .map((line) => normalizeVistaText(line.slice(1)))
+    .filter(Boolean)
+    .join(' ');
+  const parts = metaLine ? metaLine.slice(1).split('^') : [];
+  const packageCandidate = parts[parts.length - 1]?.trim() || '';
+  return {
+    orderIen: parts[0]?.trim() || '',
+    displayGroup: parts[1]?.trim() || '',
+    startDateRaw: parts[2]?.trim() || undefined,
+    stopDateRaw: parts[3]?.trim() || undefined,
+    provider: parts[10]?.trim() || undefined,
+    packageRef: /^[A-Z0-9]{2,8}$/.test(packageCandidate) ? packageCandidate : undefined,
+    textFromDetail: textFromDetail || undefined,
+    rawDetail: lines,
+  };
+}
+
+function normalizeOrderStatus(rawStatus: string | undefined, filter: string, displayText?: string): string {
+  if ((displayText || '').toUpperCase().includes('*UNSIGNED*')) return 'unsigned';
+  const normalized = rawStatus?.trim();
+  if (normalized) return normalized;
+  return filter === 'all' ? 'unknown' : 'active';
+}
+
+function inferOrderType(
+  packageRef: string | undefined,
+  displayGroup: string | undefined,
+  text: string
+): OrderPanelType | undefined {
+  const signal = `${packageRef || ''} ${displayGroup || ''} ${text}`.toUpperCase();
+  if (/PSO|PSJ|MED|TABLET|CAP|INJ|PATCH|CREAM|REFILL|RX/.test(signal)) return 'med';
+  if (/LR|LAB|CBC|BMP|CMP|CHEM|CULTURE|HEMOGLOBIN|PLATELET|PANEL/.test(signal)) return 'lab';
+  if (/RA|RAD|IMAG|XRAY|X-RAY|MRI|CT|ULTRASOUND|MAMMO|MAG/.test(signal)) return 'imaging';
+  if (/GMRC|CONSULT|REFERRAL|SERVICE/.test(signal)) return 'consult';
+  return undefined;
+}
+
+function shouldIncludeActiveOrder(orderIen: string, displayText: string, metadata: GetByIfnMetadata): boolean {
+  if (displayText) return true;
+  if (metadata.provider || metadata.packageRef) return true;
+  return /;/.test(orderIen);
+}
+
+export async function loadNormalizedVistaOrders(
+  dfn: string,
+  filter: OrderListFilter = 'active'
+): Promise<{ orders: NormalizedVistaOrder[]; rpcUsed: string[]; excludedRawCount: number }> {
+  const filterCode = filter === 'all' ? '12' : filter === 'recent' ? '8' : '2';
+  const ctx = getCurrentRpcContext();
+  const runSequence = async <T>(
+    fn: (callLocked: (rpcName: string, params: string[]) => Promise<string[]>) => Promise<T>
+  ): Promise<T> => {
+    if (ctx) return poolRunRpcSequence(ctx, fn);
+    return withBrokerLock(async () => {
+      await connect();
+      return fn((rpcName, params) => callRpc(rpcName, params));
+    });
+  };
+  const rpcUsedSet = new Set<string>(['ORWORR AGET']);
+  let excludedRawCount = 0;
+  const orders: NormalizedVistaOrder[] = [];
+
+  await runSequence(async (callLocked) => {
+    const lines = await callLocked('ORWORR AGET', [String(dfn), filterCode, '', '', '']);
+
+    for (const line of lines.filter((entry) => entry.trim() && !entry.startsWith('~'))) {
+      const parts = line.split('^');
+      const orderIen = parts[0]?.trim()?.replace(/^~/, '') || '';
+      if (!orderIen || orderIen === '0') continue;
+
+      const rowRpcUsed = new Set<string>(['ORWORR AGET']);
+      let metadata: GetByIfnMetadata = {
+        orderIen,
+        displayGroup: parts[1]?.trim() || '',
+        rawDetail: [],
+      };
+      let detailText = '';
+
+      try {
+        const detailLines = await callLocked('ORWORR GETBYIFN', [orderIen]);
+        if (detailLines.length > 0 && !detailLines[0]?.startsWith('-1')) {
+          metadata = parseGetByIfnMetadata(detailLines);
+          rowRpcUsed.add('ORWORR GETBYIFN');
+          rpcUsedSet.add('ORWORR GETBYIFN');
+          detailText = metadata.textFromDetail || '';
+        }
+      } catch {
+        // Non-fatal enrichment failure -- keep AGET row truthful.
+      }
+
+      try {
+        const txtLines = await callLocked('ORWORR GETTXT', [orderIen]);
+        const normalizedTxt = txtLines
+          .map((entry) => normalizeVistaText(entry))
+          .filter(Boolean)
+          .join(' ');
+        if (normalizedTxt && !normalizedTxt.startsWith('-1')) {
+          detailText = normalizedTxt;
+          rowRpcUsed.add('ORWORR GETTXT');
+          rpcUsedSet.add('ORWORR GETTXT');
+        }
+      } catch {
+        // Non-fatal enrichment failure -- GETBYIFN/AGET may still be enough.
+      }
+
+      const canonicalOrderIen = metadata.orderIen || orderIen;
+      const agetText = normalizeVistaText(parts[3]?.trim() || '');
+      const displayText = normalizeVistaText(detailText || metadata.textFromDetail || agetText);
+
+      if (!shouldIncludeActiveOrder(canonicalOrderIen, displayText, metadata)) {
+        excludedRawCount += 1;
+        continue;
+      }
+
+      const displayGroup = metadata.displayGroup || parts[1]?.trim() || '';
+      const timestamp = metadata.startDateRaw || parts[2]?.trim() || '';
+      const status = normalizeOrderStatus(parts[4], filter, displayText);
+      orders.push({
+        id: canonicalOrderIen,
+        ien: canonicalOrderIen,
+        name: displayText || `VistA order ${canonicalOrderIen}`,
+        text: displayText || `VistA order ${canonicalOrderIen}`,
+        details: detailText || metadata.textFromDetail || agetText || '',
+        status,
+        displayGroup,
+        timestamp,
+        startDate: formatFilemanDate(timestamp),
+        stopDate: formatFilemanDate(metadata.stopDateRaw),
+        provider: metadata.provider || '',
+        packageRef: metadata.packageRef || '',
+        orderType: inferOrderType(metadata.packageRef, displayGroup, displayText),
+        textSource: detailText
+          ? 'ORWORR GETTXT'
+          : metadata.textFromDetail
+            ? 'ORWORR GETBYIFN'
+            : 'ORWORR AGET',
+        raw: line,
+        rawDetail: metadata.rawDetail,
+        rpcUsed: Array.from(rowRpcUsed),
+      });
+    }
+  });
+
+  return {
+    orders,
+    rpcUsed: Array.from(rpcUsedSet),
+    excludedRawCount,
+  };
 }
 
 /* ------------------------------------------------------------------ */
@@ -196,6 +472,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     const dfn = (request.query as any)?.dfn;
     if (!dfn || !/^\d+$/.test(String(dfn)))
       return { ok: false, error: 'Missing or non-numeric dfn' };
+    await requireSession(request, reply);
 
     const filter = (request.query as any)?.filter || 'active';
     const rpcUsed = ['ORWORR AGET'];
@@ -217,30 +494,10 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     }
 
     try {
-      validateCredentials();
-      await connect();
-
-      // ORWORR AGET params: DFN^FILTER^DGRP
-      // FILTER: 2=active, 3=current, 5=expiring, 8=recent, 12=all
-      const filterCode = filter === 'all' ? '12' : filter === 'recent' ? '8' : '2';
-      const lines = await safeCallRpc('ORWORR AGET', [String(dfn), filterCode, '', '', '']);
-      disconnect();
-
-      // Parse: each line is orderIEN^displayGroup^timestamp^orderText^status^...
-      const orders = lines
-        .filter((l) => l.trim() && !l.startsWith('~'))
-        .map((line, i) => {
-          const parts = line.split('^');
-          return {
-            id: parts[0]?.trim()?.replace(/~/, '') || `ord-${i}`,
-            displayGroup: parts[1]?.trim() || '',
-            timestamp: parts[2]?.trim() || '',
-            text: parts[3]?.trim() || line.trim(),
-            status: parts[4]?.trim() || '',
-            raw: line,
-          };
-        })
-        .filter((o) => o.id && o.id !== '0');
+      const { orders, rpcUsed: normalizedRpcUsed, excludedRawCount } = await loadNormalizedVistaOrders(
+        String(dfn),
+        filter === 'all' || filter === 'recent' ? filter : 'active'
+      );
 
       audit(
         'phi.orders-view',
@@ -258,11 +515,11 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         filter,
         count: orders.length,
         orders,
-        rpcUsed,
+        excludedRawCount,
+        rpcUsed: normalizedRpcUsed,
         vivianPresence,
       };
     } catch (err: any) {
-      disconnect();
       return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
     }
   });
@@ -273,6 +530,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
    * Uses lab quick-order IEN path (same as med but for lab type)
    * ================================================================ */
   server.post('/vista/cprs/orders/lab', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, labTest, quickOrderIen } = body;
     const rpcUsed = ['ORWDX LOCK', 'ORWDXM AUTOACK', 'ORWDX UNLOCK'];
@@ -317,7 +576,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         action: 'lab-order',
         labTest: String(labTest || ''),
         attemptedAt: new Date().toISOString(),
-      });
+      }, tenantId);
       auditWrite('clinical.order-lab', 'success', actor, validDfn!, {
         mode: 'draft',
         draftId: draft.id,
@@ -348,7 +607,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       const draft = createDraft('order-sign', validDfn!, 'ORWDXM AUTOACK', {
         action: 'lab-order',
         attemptedAt: new Date().toISOString(),
-      });
+      }, tenantId);
       auditWrite('clinical.order-lab', 'success', actor, validDfn!, {
         mode: 'draft',
         draftId: draft.id,
@@ -449,6 +708,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
    * Target RPCs: ORWDX LOCK + ORWDXM AUTOACK + ORWDX UNLOCK
    * ================================================================ */
   server.post('/vista/cprs/orders/imaging', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, imagingStudy, quickOrderIen } = body;
     const rpcUsed = ['ORWDX LOCK', 'ORWDXM AUTOACK', 'ORWDX UNLOCK'];
@@ -551,7 +812,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       action: 'imaging-order',
       imagingStudy: String(imagingStudy || ''),
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.order-imaging', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -582,6 +843,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
    * Target RPCs: ORWDX LOCK + ORWDX SAVE + ORWDX UNLOCK
    * ================================================================ */
   server.post('/vista/cprs/orders/consult', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, consultService, urgency, reason: _reason } = body;
     const rpcUsed = ['ORWDX LOCK', 'ORWDX SAVE', 'ORWDX UNLOCK'];
@@ -603,7 +866,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       consultService: String(consultService),
       urgency: urgency || 'routine',
       attemptedAt: new Date().toISOString(),
-    });
+    }, tenantId);
     auditWrite('clinical.order-consult', 'success', actor, validDfn!, {
       mode: 'draft',
       draftId: draft.id,
@@ -630,15 +893,25 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
 
   /* ================================================================
    * POST /vista/cprs/orders/sign
-   * RPC: ORWOR1 SIG — electronically sign order(s)
+  * RPC: ORWDX LOCK + ORWD1 SIG4ONE + ORWOR1 CHKDIG + ORWDX SEND + ORWDX UNLOCK
+  *      ORWOR1 SIG is PKI-only digital signature storage and is NOT the normal
+  *      e-sign route for ordinary unsigned orders.
    * Phase 154: Enhanced with PG sign event audit, esCode validation,
    *            DB-backed idempotency via middleware, structured blockers.
    * ================================================================ */
   server.post('/vista/cprs/orders/sign', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, orderIds, esCode } = body;
-    const rpcUsed = ['ORWOR1 SIG'];
-    const vivianPresence = { 'ORWOR1 SIG': 'present' as const };
+    const rpcUsed = ['ORWDX LOCK', 'ORWD1 SIG4ONE', 'ORWOR1 CHKDIG', 'ORWDX SEND', 'ORWDX UNLOCK'];
+    const vivianPresence = {
+      'ORWDX LOCK': 'present' as const,
+      'ORWD1 SIG4ONE': 'present' as const,
+      'ORWOR1 CHKDIG': 'present' as const,
+      'ORWDX SEND': 'present' as const,
+      'ORWDX UNLOCK': 'present' as const,
+    };
 
     const errors = validateRequired(body, ['dfn', 'orderIds']);
     const validDfn = validateDfn(dfn);
@@ -649,8 +922,11 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
 
     const actor = getActor(request);
-    const tenantId = (request as any).tenantId || 'default';
-    const check = optionalRpc('ORWOR1 SIG');
+    const sigCheck = optionalRpc('ORWD1 SIG4ONE');
+    const digitalCheck = optionalRpc('ORWOR1 CHKDIG');
+    const sendCheck = optionalRpc('ORWDX SEND');
+    const lockCheck = optionalRpc('ORWDX LOCK');
+    const unlockCheck = optionalRpc('ORWDX UNLOCK');
 
     /* ---- Phase 154: esCode required for real signing ---- */
     if (!esCode) {
@@ -680,27 +956,152 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       };
     }
 
-    if (check.available) {
+    if (sigCheck.available && digitalCheck.available && sendCheck.available && lockCheck.available && unlockCheck.available) {
       try {
         validateCredentials();
         await connect();
-
-        // ORWOR1 SIG params: DFN^OrderIEN(s)^ESCode
-        // OrderIENs joined by semicolons
-        const orderIenStr = (orderIds as string[]).join(';');
         const esHash = hashEsCode(String(esCode));
+        const providerDuz = String(getDuz() || actor || '');
+        const requestedLocation = typeof body.locationIen === 'string' || typeof body.locationIen === 'number'
+          ? String(body.locationIen)
+          : '';
+        const locationIen = /^\d+$/.test(requestedLocation) ? requestedLocation : '1';
+        const requestedNature = typeof body.nature === 'string' ? body.nature.trim().toUpperCase() : '';
+        const nature = ['E', 'V', 'P', 'I', 'W'].includes(requestedNature) ? requestedNature : 'W';
 
-        const resp = await safeCallRpc('ORWOR1 SIG', [validDfn!, orderIenStr, String(esCode)], {
-          idempotent: false,
-        });
-        disconnect();
+        let locked = false;
+        let orderEntriesForSend: Record<string, string> = {};
+        const sendResponses: string[] = [];
+        try {
+          const lockResp = await safeCallRpc('ORWDX LOCK', [validDfn!], { idempotent: false });
+          const lockRaw = lockResp.join('\n').trim();
+          locked = lockRaw.startsWith('1');
+          if (!locked) {
+            auditWrite('clinical.order-sign', 'failure', actor, validDfn!, {
+              mode: 'real',
+              rpc: 'ORWDX LOCK',
+            });
+            for (const oid of orderIds as string[]) {
+              void logSignEvent({
+                tenantId,
+                orderIen: oid,
+                dfn: validDfn!,
+                duz: actor,
+                action: 'sign',
+                status: 'lock_failed',
+                esHash,
+                rpcUsed: 'ORWDX LOCK',
+                detail: { responsePrefix: lockRaw.slice(0, 80) },
+              });
+            }
+            disconnect();
+            return reply.code(409).send({
+              ok: false,
+              status: 'sign-blocked',
+              blocker: 'patient_locked',
+              rpcUsed,
+              vivianPresence,
+              message: 'Order signing is blocked because the patient is locked by another provider.',
+            });
+          }
 
-        const raw = resp.join('\n').trim();
-        const success = !raw.startsWith('-1') && !raw.toLowerCase().includes('error');
+          const pkiUseResp = await safeCallRpc('ORWOR PKIUSE', [], { idempotent: true }).catch(() => []);
+          const pkiEnabled = pkiUseResp.join('').trim() === '1';
+
+          const orderEntries: Record<string, string> = {};
+          let orderIndex = 1;
+          for (const orderId of orderIds as string[]) {
+            const signRequiredResp = await safeCallRpc('ORWD1 SIG4ONE', [String(orderId)], {
+              idempotent: true,
+            });
+            const signRequired = signRequiredResp.join('').trim() === '1';
+            if (!signRequired) {
+              continue;
+            }
+
+            const digitalRequiredResp = await safeCallRpc('ORWOR1 CHKDIG', [String(orderId)], {
+              idempotent: true,
+            });
+            const digitalRequired = digitalRequiredResp.join('').trim() === '1';
+            if (digitalRequired && pkiEnabled) {
+              return reply.code(409).send({
+                ok: false,
+                status: 'sign-blocked',
+                blocker: 'digital_signature_required',
+                rpcUsed,
+                vivianPresence,
+                message:
+                  'This order requires a PKI digital signature. The current chart flow only supports standard VistA e-signature signing.',
+              });
+            }
+
+            orderEntries[String(orderIndex)] = `${String(orderId)}^1^1^${nature}`;
+            orderIndex += 1;
+          }
+
+          if (Object.keys(orderEntries).length === 0) {
+            return reply.send({
+              ok: true,
+              mode: 'real',
+              status: 'signed',
+              rpcUsed,
+              vivianPresence,
+              message: 'No additional signature action was required for the selected order(s).',
+            });
+          }
+
+          orderEntriesForSend = orderEntries;
+
+          const resp = await safeCallRpcWithList(
+            'ORWDX SEND',
+            [
+              { type: 'literal', value: validDfn! },
+              { type: 'literal', value: providerDuz || '1' },
+              { type: 'literal', value: locationIen },
+              { type: 'literal', value: ` ${String(esCode)}` },
+              { type: 'list', value: orderEntries },
+            ],
+            { idempotent: false }
+          );
+          sendResponses.push(...resp);
+        } finally {
+          if (locked) {
+            await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+          }
+          disconnect();
+        }
+
+        let parsedSend = parseOrderSendResponses(sendResponses);
+        if (
+          !parsedSend.success &&
+          /Unable to discontinue/i.test(parsedSend.errorMessage || '') &&
+          Object.keys(orderEntriesForSend).length > 0
+        ) {
+          const retryEntries: Record<string, string> = {};
+          for (const [key, value] of Object.entries(orderEntriesForSend)) {
+            const pieces = value.split('^');
+            pieces[3] = 'W';
+            retryEntries[key] = pieces.join('^');
+          }
+          const retryResp = await safeCallRpcWithList(
+            'ORWDX SEND',
+            [
+              { type: 'literal', value: validDfn! },
+              { type: 'literal', value: providerDuz || '1' },
+              { type: 'literal', value: locationIen },
+              { type: 'literal', value: ` ${String(esCode)}` },
+              { type: 'list', value: retryEntries },
+            ],
+            { idempotent: false }
+          );
+          parsedSend = parseOrderSendResponses(retryResp);
+        }
+        const raw = parsedSend.raw;
+        const success = parsedSend.success;
 
         auditWrite('clinical.order-sign', success ? 'success' : 'failure', actor, validDfn!, {
           mode: 'real',
-          rpc: 'ORWOR1 SIG',
+          rpc: 'ORWDX SEND',
         });
 
         // Phase 154: Log sign events to PG for each order
@@ -711,27 +1112,39 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
             dfn: validDfn!,
             duz: actor,
             action: 'sign',
-            status: success ? 'signed' : 'sign_failed',
+            status: success ? (parsedSend.alreadySigned ? 'already_signed' : 'signed') : 'sign_failed',
             esHash,
-            rpcUsed: 'ORWOR1 SIG',
+            rpcUsed: 'ORWDX LOCK -> ORWD1 SIG4ONE -> ORWOR1 CHKDIG -> ORWDX SEND -> ORWDX UNLOCK',
             detail: { responsePrefix: raw.slice(0, 80), orderCount: orderIds.length },
           });
         }
 
+        if (!success) {
+          return reply.code(502).send({
+            ok: false,
+            mode: 'real',
+            status: 'sign-failed',
+            blocker: 'vista_send_rejected',
+            rpcUsed,
+            vivianPresence,
+            message: parsedSend.errorMessage || 'Order signing failed in VistA.',
+          });
+        }
+
         return {
-          ok: success,
+          ok: true,
           mode: 'real',
-          status: success ? 'signed' : 'sign-failed',
+          status: 'signed',
           rpcUsed,
           vivianPresence,
           response: raw,
-          message: success
-            ? `${orderIds.length} order(s) signed successfully`
-            : `Order signing failed: ${raw}`,
+          message: parsedSend.alreadySigned
+            ? `${orderIds.length} order(s) were already signed in VistA`
+            : `${orderIds.length} order(s) signed successfully`,
         };
       } catch (err: any) {
         disconnect();
-        log.warn('ORWOR1 SIG failed', { error: safeErr(err) });
+        log.warn('ORWDX SEND failed', { error: safeErr(err) });
         for (const oid of orderIds as string[]) {
           void logSignEvent({
             tenantId,
@@ -741,27 +1154,28 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
             action: 'sign',
             status: 'rpc_error',
             esHash: hashEsCode(String(esCode)),
-            rpcUsed: 'ORWOR1 SIG',
+            rpcUsed: 'ORWDX LOCK -> ORWD1 SIG4ONE -> ORWOR1 CHKDIG -> ORWDX SEND -> ORWDX UNLOCK',
             detail: { error: safeErr(err) },
           });
         }
         auditWrite('clinical.order-sign', 'failure', actor, validDfn!, {
           mode: 'real',
-          rpc: 'ORWOR1 SIG',
+          rpc: 'ORWDX SEND',
         });
         return {
           ok: false,
           status: 'sign-failed',
+          blocker: 'rpc_error',
           rpcUsed,
           vivianPresence,
-          error: safeErr(err),
-          message: `Order signing RPC call failed: ${safeErr(err)}`,
+          message:
+            'Order signing RPC call failed before VistA could confirm the signature.',
         };
       }
     }
 
-    // Signing RPC not available -- return capability-probed response (no fake success)
-    const signProbe = probeTier0Rpc('ORWOR1 SIG', 'orders');
+    // Signing RPC path not available -- return capability-probed response (no fake success)
+    const signProbe = probeTier0Rpc('ORWDX SEND', 'orders');
     auditWrite('clinical.order-sign', 'failure', actor, validDfn!, { mode: 'rpc-unavailable' });
     for (const oid of orderIds as string[]) {
       void logSignEvent({
@@ -771,7 +1185,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         duz: actor,
         action: 'sign_attempt',
         status: 'rpc_unavailable',
-        detail: { rpcTarget: 'ORWOR1 SIG' },
+        detail: { rpcTarget: 'ORWDX SEND' },
       });
     }
     return reply.code(202).send({
@@ -780,8 +1194,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       rpcUsed,
       vivianPresence,
       capabilityProbe: signProbe,
-      pendingTargets: ['ORWOR1 SIG'],
-      pendingNote: 'ORWOR1 SIG not available at runtime. Orders remain unsigned.',
+      pendingTargets: ['ORWDX LOCK', 'ORWD1 SIG4ONE', 'ORWOR1 CHKDIG', 'ORWDX SEND', 'ORWDX UNLOCK'],
+      pendingNote: 'Orders sign RPC path is not fully available at runtime.',
       unsignedCount: (orderIds as string[]).length,
       message: `${(orderIds as string[]).length} order(s) remain unsigned. Signing RPC unavailable.`,
     });
@@ -793,6 +1207,8 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
    * Runs VistA order checks for pending/new orders
    * ================================================================ */
   server.post('/vista/cprs/order-checks', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, orderIds } = body;
     const rpcUsed = ['ORWDXC ACCEPT', 'ORWDXC DISPLAY'];
@@ -810,6 +1226,18 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     const actor = getActor(request);
     const checkAccept = optionalRpc('ORWDXC ACCEPT');
 
+    const isTransportOrMErrorLine = (line: string) => {
+      const normalized = (line || '').trim();
+      if (!normalized) return false;
+      return (
+        /M\s+ERROR=/i.test(normalized) ||
+        /ERROR=.*\^ORWDXC/i.test(normalized) ||
+        /%YDB-E-/i.test(normalized) ||
+        /Undefined local variable/i.test(normalized) ||
+        /LAST REF=/i.test(normalized)
+      );
+    };
+
     if (checkAccept.available && orderIds && Array.isArray(orderIds) && orderIds.length > 0) {
       try {
         validateCredentials();
@@ -820,6 +1248,25 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         const orderIenStr = (orderIds as string[]).join(';');
         const acceptLines = await safeCallRpc('ORWDXC ACCEPT', [validDfn!, orderIenStr]);
         disconnect();
+
+        const rawErrors = acceptLines.filter(isTransportOrMErrorLine);
+        if (rawErrors.length > 0) {
+          log.warn('ORWDXC ACCEPT returned runtime error lines', { rawErrors });
+          return reply.code(202).send({
+            ok: false,
+            status: 'integration-pending' as const,
+            checks: [],
+            checkCount: 0,
+            rpcUsed,
+            vivianPresence,
+            pendingTargets: ['ORWDXC SESSION', 'ORWDXC ACCEPT', 'ORWDXC DISPLAY', 'ORWDXC SAVECHK'],
+            pendingNote:
+              'Order checks for existing active orders require CPRS order-check session context ' +
+              '(including location and order context parameters) that is not yet assembled by this route. ' +
+              'Use the new/unsigned order workflow for order checks until the sessioned CPRS parity flow is wired.',
+            message: 'Order checks unavailable for this active order context.',
+          });
+        }
 
         // Parse check results: each line describes a check finding
         const checks = acceptLines

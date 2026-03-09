@@ -118,7 +118,8 @@ function appendAudit(
   actor: string,
   detail: string
 ): void {
-  const prevHash = auditStore.length > 0 ? auditStore[auditStore.length - 1].hash : "0".repeat(32);
+  const lastTenantEntry = [...auditStore].reverse().find((entry) => entry.tenantId === tenantId);
+  const prevHash = lastTenantEntry ? lastTenantEntry.hash : "0".repeat(32);
   const entry: DataRightsAuditEntry = {
     id: uid(),
     tenantId,
@@ -171,17 +172,21 @@ export function listRetentionPolicies(tenantId: string): RetentionPolicy[] {
   return [...retentionStore.values()].filter((p) => p.tenantId === tenantId);
 }
 
-export function getRetentionPolicy(id: string): RetentionPolicy | undefined {
-  return retentionStore.get(id);
+export function getRetentionPolicy(id: string, tenantId?: string): RetentionPolicy | undefined {
+  const policy = retentionStore.get(id);
+  if (!policy) return undefined;
+  if (tenantId && policy.tenantId !== tenantId) return undefined;
+  return policy;
 }
 
 export function updateRetentionPolicy(
+  tenantId: string,
   id: string,
   updates: Partial<Pick<RetentionPolicy, "retentionDays" | "action" | "description">>,
   actor: string
 ): RetentionPolicy | null {
   const policy = retentionStore.get(id);
-  if (!policy) return null;
+  if (!policy || policy.tenantId !== tenantId) return null;
   const updated: RetentionPolicy = {
     ...policy,
     ...updates,
@@ -192,9 +197,9 @@ export function updateRetentionPolicy(
   return updated;
 }
 
-export function deleteRetentionPolicy(id: string, actor: string): boolean {
+export function deleteRetentionPolicy(tenantId: string, id: string, actor: string): boolean {
   const policy = retentionStore.get(id);
-  if (!policy) return false;
+  if (!policy || policy.tenantId !== tenantId) return false;
   retentionStore.delete(id);
   appendAudit(policy.tenantId, "delete_policy", "retention_policy", id, actor, "Policy deleted");
   return true;
@@ -243,27 +248,32 @@ export function createDeletionRequest(
   return req;
 }
 
-export function approveDeletionRequest(id: string, approvedBy: string): DeletionRequest | null {
+export function approveDeletionRequest(tenantId: string, id: string, approvedBy: string): DeletionRequest | null {
   const req = deletionStore.get(id);
-  if (!req || req.status !== "requested") return null;
+  if (!req || req.tenantId !== tenantId || req.status !== "requested") return null;
   const updated: DeletionRequest = { ...req, status: "approved", approvedBy, updatedAt: now() };
   deletionStore.set(id, updated);
   appendAudit(req.tenantId, "approve_deletion", "deletion_request", id, approvedBy, "Deletion approved");
   return updated;
 }
 
-export function rejectDeletionRequest(id: string, rejectedBy: string, reason: string): DeletionRequest | null {
+export function rejectDeletionRequest(
+  tenantId: string,
+  id: string,
+  rejectedBy: string,
+  reason: string
+): DeletionRequest | null {
   const req = deletionStore.get(id);
-  if (!req || req.status !== "requested") return null;
+  if (!req || req.tenantId !== tenantId || req.status !== "requested") return null;
   const updated: DeletionRequest = { ...req, status: "rejected", rejectionReason: reason, updatedAt: now() };
   deletionStore.set(id, updated);
   appendAudit(req.tenantId, "reject_deletion", "deletion_request", id, rejectedBy, `Rejected: ${reason}`);
   return updated;
 }
 
-export function executeDeletionRequest(id: string, executor: string): DeletionRequest | null {
+export function executeDeletionRequest(tenantId: string, id: string, executor: string): DeletionRequest | null {
   const req = deletionStore.get(id);
-  if (!req || req.status !== "approved") return null;
+  if (!req || req.tenantId !== tenantId || req.status !== "approved") return null;
   const ts = now();
   const updated: DeletionRequest = { ...req, status: "executed", executedAt: ts, updatedAt: ts };
   deletionStore.set(id, updated);
@@ -271,9 +281,9 @@ export function executeDeletionRequest(id: string, executor: string): DeletionRe
   return updated;
 }
 
-export function verifyDeletionRequest(id: string, verifier: string): DeletionRequest | null {
+export function verifyDeletionRequest(tenantId: string, id: string, verifier: string): DeletionRequest | null {
   const req = deletionStore.get(id);
-  if (!req || req.status !== "executed") return null;
+  if (!req || req.tenantId !== tenantId || req.status !== "executed") return null;
   const ts = now();
   const updated: DeletionRequest = { ...req, status: "verified", verifiedAt: ts, updatedAt: ts };
   deletionStore.set(id, updated);
@@ -281,8 +291,11 @@ export function verifyDeletionRequest(id: string, verifier: string): DeletionReq
   return updated;
 }
 
-export function getDeletionRequest(id: string): DeletionRequest | undefined {
-  return deletionStore.get(id);
+export function getDeletionRequest(id: string, tenantId?: string): DeletionRequest | undefined {
+  const req = deletionStore.get(id);
+  if (!req) return undefined;
+  if (tenantId && req.tenantId !== tenantId) return undefined;
+  return req;
 }
 
 export function listDeletionRequests(tenantId: string, status?: DeletionStatus): DeletionRequest[] {
@@ -327,17 +340,20 @@ export function createLegalHold(
   return hold;
 }
 
-export function releaseLegalHold(id: string, releasedBy: string): LegalHold | null {
+export function releaseLegalHold(tenantId: string, id: string, releasedBy: string): LegalHold | null {
   const hold = holdStore.get(id);
-  if (!hold || hold.status !== "active") return null;
+  if (!hold || hold.tenantId !== tenantId || hold.status !== "active") return null;
   const updated: LegalHold = { ...hold, status: "released", releasedBy, updatedAt: now() };
   holdStore.set(id, updated);
   appendAudit(hold.tenantId, "release_hold", "legal_hold", id, releasedBy, `Hold released for case ${hold.caseReference}`);
   return updated;
 }
 
-export function getLegalHold(id: string): LegalHold | undefined {
-  return holdStore.get(id);
+export function getLegalHold(id: string, tenantId?: string): LegalHold | undefined {
+  const hold = holdStore.get(id);
+  if (!hold) return undefined;
+  if (tenantId && hold.tenantId !== tenantId) return undefined;
+  return hold;
 }
 
 export function listLegalHolds(tenantId: string, status?: LegalHoldStatus): LegalHold[] {
@@ -354,14 +370,17 @@ export function getDataRightsAudit(tenantId: string, limit: number = 100): DataR
   return auditStore.filter((e) => e.tenantId === tenantId).slice(-limit);
 }
 
-export function verifyDataRightsAuditChain(): { valid: boolean; entries: number; brokenAt: number | null } {
-  if (auditStore.length === 0) return { valid: true, entries: 0, brokenAt: null };
-  for (let i = 1; i < auditStore.length; i++) {
-    if (auditStore[i].prevHash !== auditStore[i - 1].hash) {
-      return { valid: false, entries: auditStore.length, brokenAt: i };
+export function verifyDataRightsAuditChain(
+  tenantId?: string
+): { valid: boolean; entries: number; brokenAt: number | null } {
+  const scopedAudit = tenantId ? auditStore.filter((entry) => entry.tenantId === tenantId) : auditStore;
+  if (scopedAudit.length === 0) return { valid: true, entries: 0, brokenAt: null };
+  for (let i = 1; i < scopedAudit.length; i++) {
+    if (scopedAudit[i].prevHash !== scopedAudit[i - 1].hash) {
+      return { valid: false, entries: scopedAudit.length, brokenAt: i };
     }
   }
-  return { valid: true, entries: auditStore.length, brokenAt: null };
+  return { valid: true, entries: scopedAudit.length, brokenAt: null };
 }
 
 /* ================================================================== */

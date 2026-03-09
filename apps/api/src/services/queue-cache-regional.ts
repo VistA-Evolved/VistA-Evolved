@@ -74,6 +74,7 @@ export interface QueueMetrics {
 
 export interface FailoverTransfer {
   id: string;
+  tenantId: string;
   fromRegion: string;
   toRegion: string;
   queue: string;
@@ -154,7 +155,12 @@ export function enqueueJob(input: {
   return job;
 }
 
-export function claimJob(region: string, queue: string, workerId: string): RegionalJob | null {
+export function claimJob(
+  region: string,
+  queue: string,
+  workerId: string,
+  tenantId?: string
+): RegionalJob | null {
   const rqKey = regionQueueKey(region, queue);
   const jobIds = jobsByRegionQueue.get(rqKey);
   if (!jobIds) return null;
@@ -164,7 +170,9 @@ export function claimJob(region: string, queue: string, workerId: string): Regio
   const pending: RegionalJob[] = [];
   for (const id of jobIds) {
     const job = jobStore.get(id);
-    if (job && job.status === "pending") pending.push(job);
+    if (!job || job.status !== "pending") continue;
+    if (tenantId && job.tenantId !== tenantId) continue;
+    pending.push(job);
   }
 
   if (pending.length === 0) return null;
@@ -187,9 +195,17 @@ export function claimJob(region: string, queue: string, workerId: string): Regio
   return job;
 }
 
-export function completeJob(jobId: string, success: boolean, error?: string): RegionalJob {
+export function completeJob(
+  jobId: string,
+  success: boolean,
+  error?: string,
+  tenantId?: string
+): RegionalJob {
   const job = jobStore.get(jobId);
   if (!job) throw Object.assign(new Error("Job not found"), { statusCode: 404 });
+  if (tenantId && job.tenantId !== tenantId) {
+    throw Object.assign(new Error("Job not found"), { statusCode: 404 });
+  }
 
   if (success) {
     job.status = "completed";
@@ -207,9 +223,12 @@ export function completeJob(jobId: string, success: boolean, error?: string): Re
   return job;
 }
 
-export function retryJob(jobId: string, actor: string): RegionalJob {
+export function retryJob(jobId: string, actor: string, tenantId?: string): RegionalJob {
   const job = jobStore.get(jobId);
   if (!job) throw Object.assign(new Error("Job not found"), { statusCode: 404 });
+  if (tenantId && job.tenantId !== tenantId) {
+    throw Object.assign(new Error("Job not found"), { statusCode: 404 });
+  }
   if (job.status !== "failed" && job.status !== "dead_letter") {
     throw Object.assign(new Error(`Cannot retry job in status: ${job.status}`), { statusCode: 400 });
   }
@@ -223,12 +242,18 @@ export function retryJob(jobId: string, actor: string): RegionalJob {
   job.workerId = null;
   job.updatedAt = new Date().toISOString();
   jobStore.set(jobId, job);
-  appendAudit("job.retried", actor, { jobId, queue: job.queue, region: job.region });
+  appendAudit("job.retried", actor, { jobId, queue: job.queue, region: job.region, tenant: job.tenantId });
   return job;
 }
 
 export function getJob(id: string): RegionalJob | undefined {
   return jobStore.get(id);
+}
+
+export function getJobForTenant(tenantId: string, id: string): RegionalJob | undefined {
+  const job = jobStore.get(id);
+  if (!job || job.tenantId !== tenantId) return undefined;
+  return job;
 }
 
 export function listJobs(filters?: {
@@ -252,6 +277,7 @@ export function listJobs(filters?: {
  * Idempotent: uses idempotencyKey to skip already-transferred jobs.
  */
 export function transferJobs(input: {
+  tenantId: string;
   fromRegion: string;
   toRegion: string;
   queue: string;
@@ -261,6 +287,7 @@ export function transferJobs(input: {
 
   const transfer: FailoverTransfer = {
     id: randomUUID(),
+    tenantId: input.tenantId,
     fromRegion: input.fromRegion,
     toRegion: input.toRegion,
     queue: input.queue,
@@ -282,6 +309,7 @@ export function transferJobs(input: {
   for (const jobId of jobIds) {
     const job = jobStore.get(jobId);
     if (!job || (job.status !== "pending" && job.status !== "failed")) continue;
+    if (job.tenantId !== input.tenantId) continue;
 
     // Check if job already exists in target region (duplicate detection)
     const existingMappedId = idempotencyIndex.get(job.idempotencyKey);
@@ -320,6 +348,7 @@ export function transferJobs(input: {
   transfer.completedAt = new Date().toISOString();
   transferStore.set(transfer.id, transfer);
   appendAudit("jobs.transferred", actor, {
+    tenant: input.tenantId,
     fromRegion: input.fromRegion,
     toRegion: input.toRegion,
     queue: input.queue,
@@ -329,8 +358,10 @@ export function transferJobs(input: {
   return transfer;
 }
 
-export function listTransfers(limit = 50): FailoverTransfer[] {
-  return Array.from(transferStore.values())
+export function listTransfers(tenantId?: string, limit = 50): FailoverTransfer[] {
+  let results = Array.from(transferStore.values());
+  if (tenantId) results = results.filter((transfer) => transfer.tenantId === tenantId);
+  return results
     .sort((a, b) => b.startedAt.localeCompare(a.startedAt))
     .slice(0, limit);
 }
@@ -420,11 +451,12 @@ export function listCachePartitions(filters?: { region?: string }): RegionalCach
 
 // ─── Queue Metrics ──────────────────────────────────────────────────────────
 
-export function getQueueMetrics(region?: string): QueueMetrics[] {
+export function getQueueMetrics(region?: string, tenantId?: string): QueueMetrics[] {
   const metricsMap = new Map<string, QueueMetrics>();
 
   for (const job of jobStore.values()) {
     if (region && job.region !== region) continue;
+    if (tenantId && job.tenantId !== tenantId) continue;
     const key = `${job.region}:${job.queue}`;
     if (!metricsMap.has(key)) {
       metricsMap.set(key, {
@@ -448,31 +480,42 @@ export function getQueueMetrics(region?: string): QueueMetrics[] {
 
 // ─── Summary ────────────────────────────────────────────────────────────────
 
-export function getRegionalSummary(): {
+export function getRegionalSummary(tenantId?: string): {
   totalJobs: number;
   jobsByStatus: Record<string, number>;
   jobsByRegion: Record<string, number>;
-  activeWorkers: number;
-  cachePartitions: number;
-  transfers: number;
+  activeWorkers: number | null;
+  cachePartitions: number | null;
+  transfers: number | null;
 } {
   const jobsByStatus: Record<string, number> = {};
   const jobsByRegion: Record<string, number> = {};
-  for (const j of jobStore.values()) {
+  const scopedJobs = tenantId
+    ? Array.from(jobStore.values()).filter((job) => job.tenantId === tenantId)
+    : Array.from(jobStore.values());
+  for (const j of scopedJobs) {
     jobsByStatus[j.status] = (jobsByStatus[j.status] || 0) + 1;
     jobsByRegion[j.region] = (jobsByRegion[j.region] || 0) + 1;
   }
 
-  let activeWorkers = 0;
-  for (const w of workerStore.values()) if (w.status === "active") activeWorkers++;
+  let activeWorkers: number | null = null;
+  let cachePartitions: number | null = null;
+  let transfers: number | null = null;
+
+  if (!tenantId) {
+    activeWorkers = 0;
+    for (const w of workerStore.values()) if (w.status === "active") activeWorkers++;
+    cachePartitions = cachePartitionStore.size;
+    transfers = transferStore.size;
+  }
 
   return {
-    totalJobs: jobStore.size,
+    totalJobs: scopedJobs.length,
     jobsByStatus,
     jobsByRegion,
     activeWorkers,
-    cachePartitions: cachePartitionStore.size,
-    transfers: transferStore.size,
+    cachePartitions,
+    transfers,
   };
 }
 
@@ -483,6 +526,9 @@ function appendAudit(action: string, actor: string, detail: Record<string, unkno
   if (auditLog.length > MAX_AUDIT) auditLog.splice(0, auditLog.length - MAX_AUDIT);
 }
 
-export function getQueueAuditLog(limit = 100, offset = 0): typeof auditLog {
-  return auditLog.slice().reverse().slice(offset, offset + limit);
+export function getQueueAuditLog(limit = 100, offset = 0, tenantId?: string): typeof auditLog {
+  const scoped = tenantId
+    ? auditLog.filter((entry) => entry.detail?.tenant === tenantId)
+    : auditLog;
+  return scoped.slice().reverse().slice(offset, offset + limit);
 }

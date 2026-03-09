@@ -90,6 +90,19 @@ export async function handleClaimStatusJob(job: {
     integrationMode: String(integrationMode),
     pollTimestamp: new Date().toISOString(),
   };
+  const tenantId = String((job.payload as any)?._tenantId ?? '');
+
+  if (!tenantId) {
+    const result: ClaimStatusPollResult = {
+      ...resultBase,
+      claimStatus: null,
+      status: 'failed',
+      errorMessage: 'Tenant context missing',
+      responseMs: Date.now() - start,
+    };
+    pushResult(result);
+    return result as unknown as Record<string, unknown>;
+  }
 
   try {
     const adapter = getPayerAdapterForMode(String(integrationMode));
@@ -109,7 +122,7 @@ export async function handleClaimStatusJob(job: {
       claimId: String(claimId),
       payerClaimId: String(payerClaimId ?? ''),
       payerId: String(payerCode),
-      tenantId: 'default',
+      tenantId,
     });
 
     const result: ClaimStatusPollResult = {

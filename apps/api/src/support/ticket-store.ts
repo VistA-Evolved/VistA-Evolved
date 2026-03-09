@@ -54,7 +54,7 @@ export interface CreateTicketInput {
   description: string;
   category: TicketCategory;
   priority: TicketPriority;
-  tenantId?: string;
+  tenantId: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -80,7 +80,7 @@ export function createTicket(input: CreateTicketInput, createdBy: string): Suppo
     category: input.category,
     priority: input.priority,
     status: 'open',
-    tenantId: input.tenantId || 'default',
+    tenantId: input.tenantId,
     createdBy,
     notes: [],
     createdAt: now,
@@ -95,8 +95,11 @@ export function createTicket(input: CreateTicketInput, createdBy: string): Suppo
   return ticket;
 }
 
-export function getTicket(id: string): SupportTicket | undefined {
-  return tickets.get(id);
+export function getTicket(id: string, tenantId?: string): SupportTicket | undefined {
+  const ticket = tickets.get(id);
+  if (!ticket) return undefined;
+  if (tenantId && ticket.tenantId !== tenantId) return undefined;
+  return ticket;
 }
 
 export function listTickets(filters?: {
@@ -113,9 +116,13 @@ export function listTickets(filters?: {
   return result.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-export function updateTicketStatus(id: string, status: TicketStatus): SupportTicket | null {
+export function updateTicketStatus(
+  tenantId: string,
+  id: string,
+  status: TicketStatus
+): SupportTicket | null {
   const ticket = tickets.get(id);
-  if (!ticket) return null;
+  if (!ticket || ticket.tenantId !== tenantId) return null;
 
   ticket.status = status;
   ticket.updatedAt = new Date().toISOString();
@@ -126,9 +133,14 @@ export function updateTicketStatus(id: string, status: TicketStatus): SupportTic
   return ticket;
 }
 
-export function addTicketNote(id: string, text: string, author: string): SupportTicket | null {
+export function addTicketNote(
+  tenantId: string,
+  id: string,
+  text: string,
+  author: string
+): SupportTicket | null {
   const ticket = tickets.get(id);
-  if (!ticket) return null;
+  if (!ticket || ticket.tenantId !== tenantId) return null;
 
   ticket.notes.push({
     id: genId('note'),
@@ -140,18 +152,22 @@ export function addTicketNote(id: string, text: string, author: string): Support
   return ticket;
 }
 
-export function assignTicket(id: string, assignedTo: string): SupportTicket | null {
+export function assignTicket(tenantId: string, id: string, assignedTo: string): SupportTicket | null {
   const ticket = tickets.get(id);
-  if (!ticket) return null;
+  if (!ticket || ticket.tenantId !== tenantId) return null;
 
   ticket.assignedTo = assignedTo;
   ticket.updatedAt = new Date().toISOString();
   return ticket;
 }
 
-export function attachDiagnosticSnapshot(id: string, snapshotId: string): SupportTicket | null {
+export function attachDiagnosticSnapshot(
+  tenantId: string,
+  id: string,
+  snapshotId: string
+): SupportTicket | null {
   const ticket = tickets.get(id);
-  if (!ticket) return null;
+  if (!ticket || ticket.tenantId !== tenantId) return null;
 
   ticket.diagnosticSnapshotId = snapshotId;
   ticket.updatedAt = new Date().toISOString();

@@ -24,6 +24,7 @@
 
 import { randomBytes, timingSafeEqual } from "node:crypto";
 import { portalAudit } from "./portal-audit.js";
+import { log } from "../lib/logger.js";
 
 /* ------------------------------------------------------------------ */
 /* Config                                                               */
@@ -52,6 +53,7 @@ export type ShareableSection =
 export interface ShareLink {
   id: string;
   token: string;
+  tenantId: string;
   patientDfn: string;
   patientName: string;
   patientDob: string; // ISO date for verification
@@ -84,9 +86,130 @@ const shareStore = new Map<string, ShareLink>();
 const tokenIndex = new Map<string, string>(); // token → shareId
 
 /* Phase 146: DB repo wiring */
-let shareDbRepo: { upsert(d: any): Promise<any> } | null = null;
-export function initShareStoreRepo(repo: typeof shareDbRepo): void { shareDbRepo = repo; }
+type ShareRepoRow = {
+  id: string;
+  tenantId?: string;
+  patientDfn?: string;
+  token?: string;
+  resourceType?: string;
+  resourceId?: string | null;
+  permissionsJson?: string | null;
+  expiresAt?: string;
+  accessedCount?: number | null;
+  createdAt?: string;
+};
+
+type ShareRepo = {
+  upsert(d: any): Promise<any>;
+  findByTenant?(
+    tenantId: string,
+    opts?: { limit?: number; offset?: number }
+  ): Promise<ShareRepoRow[]>;
+};
+
+let shareDbRepo: ShareRepo | null = null;
+export function initShareStoreRepo(repo: ShareRepo | null): void {
+  shareDbRepo = repo;
+  if (repo) {
+    void rehydrateShareLinks(repo);
+  }
+}
 const accessLog: ShareAccessLog[] = [];
+
+function persistShareRow(share: ShareLink): void {
+  shareDbRepo
+    ?.upsert({
+      id: share.id,
+      tenantId: share.tenantId,
+      patientDfn: share.patientDfn,
+      token: share.token,
+      resourceType: share.sections.join(','),
+      resourceId: null,
+      permissionsJson: JSON.stringify({
+        patientName: share.patientName,
+        patientDob: share.patientDob,
+        sections: share.sections,
+        accessCode: share.accessCode,
+        label: share.label,
+        revokedAt: share.revokedAt,
+        failedAttempts: share.failedAttempts,
+        locked: share.locked,
+        lastAccessedAt: share.lastAccessedAt,
+        oneTimeRedeem: share.oneTimeRedeem,
+      }),
+      expiresAt: share.expiresAt,
+      accessedCount: share.accessCount,
+      createdAt: share.createdAt,
+    })
+    .catch(() => {});
+}
+
+function fromShareRepoRow(row: ShareRepoRow | null | undefined): ShareLink | null {
+  if (!row?.id || !row.patientDfn || !row.token || !row.expiresAt || !row.createdAt) return null;
+  let meta: any = {};
+  try {
+    meta = row.permissionsJson ? JSON.parse(row.permissionsJson) : {};
+  } catch {
+    meta = {};
+  }
+  const sections = Array.isArray(meta.sections)
+    ? meta.sections.filter((s: unknown): s is ShareableSection => typeof s === "string")
+    : String(row.resourceType || "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean) as ShareableSection[];
+  if (!meta.patientDob || !meta.accessCode) return null;
+  return {
+    id: row.id,
+    token: row.token,
+    tenantId: row.tenantId || "default",
+    patientDfn: row.patientDfn,
+    patientName: typeof meta.patientName === "string" ? meta.patientName : "Unknown,Patient",
+    patientDob: meta.patientDob,
+    sections,
+    accessCode: meta.accessCode,
+    label: typeof meta.label === "string" ? meta.label : "",
+    createdAt: row.createdAt,
+    expiresAt: row.expiresAt,
+    revokedAt: typeof meta.revokedAt === "string" ? meta.revokedAt : null,
+    accessCount: Number(row.accessedCount ?? 0),
+    failedAttempts: Number(meta.failedAttempts ?? 0),
+    locked: Boolean(meta.locked),
+    lastAccessedAt: typeof meta.lastAccessedAt === "string" ? meta.lastAccessedAt : null,
+    oneTimeRedeem: Boolean(meta.oneTimeRedeem),
+  };
+}
+
+function cacheShare(share: ShareLink): void {
+  shareStore.set(share.id, share);
+  tokenIndex.set(share.token, share.id);
+}
+
+async function rehydrateShareLinks(repo: ShareRepo): Promise<void> {
+  if (!repo.findByTenant) return;
+  try {
+    let offset = 0;
+    const pageSize = 1000;
+    let loaded = 0;
+    while (true) {
+      const rows = (await repo.findByTenant("default", { limit: pageSize, offset })) || [];
+      for (const row of rows) {
+        const share = fromShareRepoRow(row);
+        if (share) {
+          cacheShare(share);
+          loaded++;
+        }
+      }
+      if (rows.length < pageSize) break;
+      offset += pageSize;
+    }
+    if (loaded > 0) {
+      log.info("Portal share links rehydrated from PG", { count: loaded });
+    }
+  } catch (err: any) {
+    log.warn("Portal share link rehydration failed", { error: err?.message });
+  }
+}
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -124,6 +247,7 @@ export function validateCaptcha(token?: string): boolean {
 }
 
 export function createShareLink(opts: {
+  tenantId?: string;
   patientDfn: string;
   patientName: string;
   patientDob: string;
@@ -135,6 +259,7 @@ export function createShareLink(opts: {
   // Enforce max active shares
   const active = [...shareStore.values()].filter(
     (s) =>
+      s.tenantId === (opts.tenantId ?? 'default') &&
       s.patientDfn === opts.patientDfn &&
       !s.revokedAt &&
       new Date(s.expiresAt) > new Date()
@@ -161,6 +286,7 @@ export function createShareLink(opts: {
   const share: ShareLink = {
     id,
     token,
+    tenantId: opts.tenantId ?? 'default',
     patientDfn: opts.patientDfn,
     patientName: opts.patientName,
     patientDob: opts.patientDob,
@@ -177,33 +303,35 @@ export function createShareLink(opts: {
     oneTimeRedeem: opts.oneTimeRedeem ?? false,
   };
 
-  shareStore.set(id, share);
-  tokenIndex.set(token, id);
+  cacheShare(share);
 
   // Phase 146: Write-through to PG
-  shareDbRepo?.upsert({ id, tenantId: 'default', patientDfn: opts.patientDfn, token, resourceType: opts.sections?.join(',') ?? '', expiresAt: share.expiresAt, createdAt: share.createdAt }).catch(() => {});
+  persistShareRow(share);
 
   portalAudit("portal.share.create", "success", opts.patientDfn, {
+    tenantId: opts.tenantId ?? 'default',
     detail: { shareId: id, sections: opts.sections, expiresAt: share.expiresAt },
   });
 
   return share;
 }
 
-export function getPatientShares(patientDfn: string): ShareLink[] {
+export function getPatientShares(tenantId: string, patientDfn: string): ShareLink[] {
   return [...shareStore.values()]
-    .filter((s) => s.patientDfn === patientDfn)
+    .filter((s) => s.tenantId === tenantId && s.patientDfn === patientDfn)
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-export function revokeShare(shareId: string, patientDfn: string): boolean {
+export function revokeShare(shareId: string, patientDfn: string, _tenantId: string = 'default'): boolean {
   const share = shareStore.get(shareId);
-  if (!share || share.patientDfn !== patientDfn) return false;
+  if (!share || share.tenantId !== _tenantId || share.patientDfn !== patientDfn) return false;
   if (share.revokedAt) return false;
 
   share.revokedAt = new Date().toISOString();
+  persistShareRow(share);
 
   portalAudit("portal.share.revoke", "success", patientDfn, {
+    tenantId: _tenantId,
     detail: { shareId },
   });
 
@@ -259,6 +387,7 @@ export function verifyShareAccess(
     if (share.failedAttempts >= MAX_ACCESS_ATTEMPTS) {
       share.locked = true;
     }
+    persistShareRow(share);
 
     accessLog.push({
       shareId: share.id,
@@ -268,6 +397,7 @@ export function verifyShareAccess(
     });
 
     portalAudit("portal.share.access", "failure", share.patientDfn, {
+      tenantId: share.tenantId,
       detail: { shareId: share.id, failedAttempts: share.failedAttempts, locked: share.locked },
     });
 
@@ -283,6 +413,7 @@ export function verifyShareAccess(
   // Success
   share.accessCount++;
   share.lastAccessedAt = new Date().toISOString();
+  persistShareRow(share);
 
   accessLog.push({
     shareId: share.id,
@@ -292,13 +423,16 @@ export function verifyShareAccess(
   });
 
   portalAudit("portal.share.access", "success", share.patientDfn, {
+    tenantId: share.tenantId,
     detail: { shareId: share.id, accessCount: share.accessCount, oneTimeRedeem: share.oneTimeRedeem },
   });
 
   // Phase 31: one-time redeem — auto-revoke after first successful verification
   if (share.oneTimeRedeem) {
     share.revokedAt = new Date().toISOString();
+    persistShareRow(share);
     portalAudit("portal.share.revoke", "success", share.patientDfn, {
+      tenantId: share.tenantId,
       detail: { shareId: share.id, reason: "one-time-redeem" },
     });
   }

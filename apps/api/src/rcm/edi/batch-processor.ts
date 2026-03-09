@@ -34,8 +34,8 @@ export interface BatchSubmitRequest {
   claimIds: string[];
   /** Optional: max concurrent submissions per connector */
   concurrency?: number;
-  /** Optional: tenant ID for filtering */
-  tenantId?: string;
+  /** Required tenant ID for filtering */
+  tenantId: string;
 }
 
 export interface BatchClaimResult {
@@ -48,6 +48,7 @@ export interface BatchClaimResult {
 
 export interface BatchStatus {
   batchId: string;
+  tenantId: string;
   status: 'queued' | 'processing' | 'completed' | 'failed';
   totalClaims: number;
   processed: number;
@@ -78,9 +79,11 @@ const MAX_BATCHES = 200;
 export function submitBatch(request: BatchSubmitRequest): BatchStatus {
   const batchId = `batch-${crypto.randomBytes(6).toString('hex')}`;
   const claimIds = request.claimIds.slice(0, MAX_BATCH_SIZE);
+  const tenantId = request.tenantId;
 
   const batch: BatchStatus = {
     batchId,
+    tenantId,
     status: 'queued',
     totalClaims: claimIds.length,
     processed: 0,
@@ -100,11 +103,12 @@ export function submitBatch(request: BatchSubmitRequest): BatchStatus {
   log.info('Batch claim submission queued', {
     component: 'rcm-batch',
     batchId,
+    tenantId,
     claimCount: claimIds.length,
   });
 
   // Process asynchronously
-  processBatch(batchId, claimIds, request.concurrency).catch((err) => {
+  processBatch(batchId, claimIds, tenantId, request.concurrency).catch((err) => {
     log.error('Batch processing error', {
       component: 'rcm-batch',
       batchId,
@@ -118,15 +122,19 @@ export function submitBatch(request: BatchSubmitRequest): BatchStatus {
 /**
  * Get batch status.
  */
-export function getBatchStatus(batchId: string): BatchStatus | undefined {
-  return batches.get(batchId);
+export function getBatchStatus(batchId: string, tenantId?: string): BatchStatus | undefined {
+  const batch = batches.get(batchId);
+  if (!batch) return undefined;
+  if (tenantId && batch.tenantId !== tenantId) return undefined;
+  return batch;
 }
 
 /**
  * List all batches.
  */
-export function listBatches(limit = 50): BatchStatus[] {
+export function listBatches(limit = 50, tenantId?: string): BatchStatus[] {
   return Array.from(batches.values())
+    .filter((batch) => !tenantId || batch.tenantId === tenantId)
     .sort((a, b) => b.startedAt - a.startedAt)
     .slice(0, limit);
 }
@@ -138,6 +146,7 @@ export function listBatches(limit = 50): BatchStatus[] {
 async function processBatch(
   batchId: string,
   claimIds: string[],
+  tenantId: string,
   concurrency?: number
 ): Promise<void> {
   const batch = batches.get(batchId);
@@ -149,7 +158,7 @@ async function processBatch(
   // Process in chunks for concurrency control
   for (let i = 0; i < claimIds.length; i += maxConcurrent) {
     const chunk = claimIds.slice(i, i + maxConcurrent);
-    const results = await Promise.allSettled(chunk.map((claimId) => processOneClaim(claimId)));
+    const results = await Promise.allSettled(chunk.map((claimId) => processOneClaim(claimId, tenantId)));
 
     for (let j = 0; j < results.length; j++) {
       const result = results[j]!;
@@ -187,10 +196,10 @@ async function processBatch(
   });
 }
 
-async function processOneClaim(claimId: string): Promise<BatchClaimResult> {
+async function processOneClaim(claimId: string, tenantId: string): Promise<BatchClaimResult> {
   const start = Date.now();
   try {
-    const claim = getClaim(claimId);
+    const claim = getClaim(claimId, tenantId);
     if (!claim) {
       return { claimId, ok: false, error: 'Claim not found', durationMs: Date.now() - start };
     }
@@ -211,7 +220,7 @@ async function processOneClaim(claimId: string): Promise<BatchClaimResult> {
     const payload = serialize837(ediClaim);
 
     // Create pipeline entry
-    const pipelineEntry = createPipelineEntry(claimId, '837P', connector.id, claim.payerId);
+    const pipelineEntry = createPipelineEntry(tenantId, claimId, '837P', connector.id, claim.payerId);
 
     // Submit through resilient wrapper
     const result = await resilientConnectorCall(connector.id, 'submit', () =>

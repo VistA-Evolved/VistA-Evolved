@@ -51,7 +51,7 @@ export interface ScrubResultRow {
 }
 
 export interface CreateScrubRuleInput {
-  tenantId?: string;
+  tenantId: string;
   payerId?: string;
   serviceType?: string;
   ruleCode: string;
@@ -125,7 +125,7 @@ export async function createScrubRule(input: CreateScrubRuleInput): Promise<Scru
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || 'default';
+  const tenantId = input.tenantId;
 
   await db.insert(scrubRule).values({
     id,

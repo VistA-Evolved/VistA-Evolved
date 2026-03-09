@@ -20,7 +20,7 @@ export default function AcknowledgeLabDialog() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const [syncStatus, setSyncStatus] = useState<'synced' | 'local' | ''>('');
+  const [syncStatus, setSyncStatus] = useState<'synced' | 'draft' | ''>('');
 
   async function handleAcknowledge() {
     if (!labIds.length) {
@@ -49,7 +49,7 @@ export default function AcknowledgeLabDialog() {
         return;
       }
       if (data.ok && data.mode === 'draft') {
-        setSyncStatus('local');
+        setSyncStatus('draft');
         setSuccess(true);
         setTimeout(() => closeModal(), 800);
         return;
@@ -94,7 +94,7 @@ export default function AcknowledgeLabDialog() {
             >
               {syncStatus === 'synced'
                 ? `${labIds.length} lab result(s) acknowledged in VistA`
-                : `${labIds.length} acknowledgement(s) stored locally (VistA sync pending)`}
+                : `${labIds.length} acknowledgement(s) stored server-side as draft (VistA sync pending)`}
             </div>
           )}
 

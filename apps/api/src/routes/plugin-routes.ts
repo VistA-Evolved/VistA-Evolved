@@ -6,6 +6,7 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
 import {
   installPlugin,
   activatePlugin,
@@ -24,11 +25,37 @@ import {
 } from '../services/plugin-sdk.js';
 
 export async function pluginRoutes(server: FastifyInstance): Promise<void> {
-  const TENANT = 'default';
+  function resolveTenantId(req: FastifyRequest): string | null {
+    const sessionTenantId =
+      typeof (req as any).session?.tenantId === 'string' &&
+      (req as any).session.tenantId.trim().length > 0
+        ? (req as any).session.tenantId.trim()
+        : undefined;
+    return sessionTenantId || null;
+  }
+
+  function requireTenantId(req: FastifyRequest, reply: FastifyReply): string | null {
+    const tenantId = resolveTenantId(req);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
+  function resolveActor(req: FastifyRequest): string {
+    return (
+      (req as any).session?.userName ||
+      (req as any).session?.duz ||
+      'admin'
+    );
+  }
 
   // ── Health ──────────────────────────────────────────────────────────
-  server.get('/plugins/health', async (_req: FastifyRequest, reply: FastifyReply) => {
-    const stats = getPluginStats(TENANT);
+  server.get('/plugins/health', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const stats = getPluginStats(tenantId);
     return reply.send({ ok: true, phase: 358, ...stats });
   });
 
@@ -85,13 +112,17 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
 
   // ── Install plugin ─────────────────────────────────────────────────
   server.post('/plugins/install', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const body = (req.body as any) || {};
-    const { manifest, actor } = body;
+    const { manifest } = body;
     if (!manifest) {
       return reply.code(400).send({ ok: false, error: 'manifest is required' });
     }
     try {
-      const plugin = installPlugin(TENANT, manifest, actor || 'admin');
+      const plugin = installPlugin(tenantId, manifest, resolveActor(req));
       return reply.code(201).send({ ok: true, plugin });
     } catch (_err: any) {
       return reply.code(400).send({ ok: false, error: 'Plugin registration failed' });
@@ -100,9 +131,13 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
 
   // ── Activate plugin ────────────────────────────────────────────────
   server.post('/plugins/:pluginId/activate', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { pluginId } = req.params as any;
     try {
-      const plugin = activatePlugin(TENANT, pluginId, 'admin');
+      const plugin = activatePlugin(tenantId, pluginId, resolveActor(req));
       return reply.send({ ok: true, plugin });
     } catch (_err: any) {
       return reply.code(404).send({ ok: false, error: 'Plugin not found' });
@@ -111,10 +146,14 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
 
   // ── Suspend plugin ─────────────────────────────────────────────────
   server.post('/plugins/:pluginId/suspend', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { pluginId } = req.params as any;
     const body = (req.body as any) || {};
     try {
-      const plugin = suspendPlugin(TENANT, pluginId, 'admin', body.reason);
+      const plugin = suspendPlugin(tenantId, pluginId, resolveActor(req), body.reason);
       return reply.send({ ok: true, plugin });
     } catch (_err: any) {
       return reply.code(404).send({ ok: false, error: 'Plugin not found' });
@@ -123,31 +162,47 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
 
   // ── Uninstall plugin ───────────────────────────────────────────────
   server.delete('/plugins/:pluginId', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { pluginId } = req.params as any;
-    const deleted = uninstallPlugin(TENANT, pluginId, 'admin');
+    const deleted = uninstallPlugin(tenantId, pluginId, resolveActor(req));
     if (!deleted) return reply.code(404).send({ ok: false, error: 'Plugin not found' });
     return reply.send({ ok: true, deleted: true });
   });
 
   // ── Get plugin ─────────────────────────────────────────────────────
   server.get('/plugins/:pluginId', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { pluginId } = req.params as any;
-    const plugin = getPlugin(TENANT, pluginId);
+    const plugin = getPlugin(tenantId, pluginId);
     if (!plugin) return reply.code(404).send({ ok: false, error: 'Plugin not found' });
     return reply.send({ ok: true, plugin });
   });
 
   // ── List plugins ───────────────────────────────────────────────────
   server.get('/plugins/list', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const query = (req.query as any) || {};
-    const list = listPlugins(TENANT, { status: query.status });
+    const list = listPlugins(tenantId, { status: query.status });
     return reply.send({ ok: true, plugins: list, count: list.length });
   });
 
   // ── Plugin audit ───────────────────────────────────────────────────
   server.get('/plugins/audit', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const query = (req.query as any) || {};
-    const entries = getPluginAudit(TENANT, {
+    const entries = getPluginAudit(tenantId, {
       pluginId: query.pluginId,
       limit: query.limit ? parseInt(query.limit, 10) : 100,
     });

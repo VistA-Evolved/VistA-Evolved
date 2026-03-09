@@ -147,10 +147,13 @@ export function storeClaim(claim: Claim): void {
   }
 }
 
-export function getClaim(id: string): Claim | undefined {
+export function getClaim(id: string, tenantId?: string): Claim | undefined {
   // Cache-first
   const cached = claims.get(id);
-  if (cached) return cached;
+  if (cached) {
+    if (tenantId && cached.tenantId !== tenantId) return undefined;
+    return cached;
+  }
 
   // DB fallback
   if (dbRepo) {
@@ -158,6 +161,7 @@ export function getClaim(id: string): Claim | undefined {
       const row = dbRepo.findClaimById(id);
       if (row) {
         const claim = dbRowToClaim(row);
+        if (tenantId && claim.tenantId !== tenantId) return undefined;
         // Rehydrate cache
         claims.set(claim.id, claim);
         if (!tenantClaimIndex.has(claim.tenantId)) {
@@ -384,10 +388,11 @@ export function listRemittances(
 }
 
 /** Link a remittance to a claim by matching payerClaimId */
-export function matchRemittanceToClaim(remitId: string, claimId: string): boolean {
+export function matchRemittanceToClaim(remitId: string, claimId: string, tenantId?: string): boolean {
   const remit = getRemittance(remitId);
-  const claim = getClaim(claimId);
+  const claim = getClaim(claimId, tenantId);
   if (!remit || !claim) return false;
+  if (tenantId && remit.tenantId !== tenantId) return false;
 
   remit.claimId = claimId;
   remit.matchedAt = new Date().toISOString();

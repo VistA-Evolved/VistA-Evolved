@@ -6,6 +6,7 @@
  */
 
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
 import {
   createTask,
   getTask,
@@ -21,13 +22,42 @@ import {
 } from '../services/workflow-inbox-service.js';
 import type { TaskCategory, TaskPriority, TaskStatus } from '../services/workflow-inbox-service.js';
 
-export async function workflowInboxRoutes(server: FastifyInstance): Promise<void> {
-  const tenantId = 'default';
+function resolveTenantId(request: FastifyRequest): string | null {
+  const sessionTenantId =
+    typeof (request as any).session?.tenantId === 'string' &&
+    (request as any).session.tenantId.trim().length > 0
+      ? (request as any).session.tenantId.trim()
+      : undefined;
+  const requestTenantId =
+    typeof (request as any).tenantId === 'string' && (request as any).tenantId.trim().length > 0
+      ? (request as any).tenantId.trim()
+      : undefined;
+  return sessionTenantId || requestTenantId || null;
+}
 
+function requireTenantId(request: FastifyRequest, reply: FastifyReply): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
+function getActor(request: FastifyRequest): string {
+  return (request as any).session?.userName || (request as any).session?.duz || 'unknown';
+}
+
+function getScopedTask(taskId: string, tenantId: string) {
+  return getTask(taskId, tenantId) || null;
+}
+
+export async function workflowInboxRoutes(server: FastifyInstance): Promise<void> {
   // ─── List / Filter Tasks ─────────────────────────────
 
   server.get('/workflow/tasks', async (req: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(req, reply);
     const q = (req.query as any) || {};
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const tasks = listTasks({
       tenantId,
       facilityId: q.facilityId,
@@ -44,9 +74,12 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
   // ─── Get Single Task ─────────────────────────────────
 
   server.get('/workflow/tasks/:id', async (req: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(req, reply);
     const { id } = req.params as { id: string };
-    const task = getTask(id);
-    if (!task || task.tenantId !== tenantId) {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const task = getScopedTask(id, tenantId);
+    if (!task) {
       return reply.code(404).send({ ok: false, error: 'Task not found' });
     }
     return reply.send({ ok: true, task });
@@ -55,22 +88,28 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
   // ─── Task Event History ──────────────────────────────
 
   server.get('/workflow/tasks/:id/events', async (req: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(req, reply);
     const { id } = req.params as { id: string };
-    const task = getTask(id);
-    if (!task || task.tenantId !== tenantId) {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const task = getScopedTask(id, tenantId);
+    if (!task) {
       return reply.code(404).send({ ok: false, error: 'Task not found' });
     }
-    return reply.send({ ok: true, events: getTaskEvents(id) });
+    return reply.send({ ok: true, events: getTaskEvents(id, tenantId) });
   });
 
   // ─── Create Task ─────────────────────────────────────
 
   server.post('/workflow/tasks', async (req: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(req, reply);
     const body = (req.body as any) || {};
-    if (!body.title || !body.category || !body.createdBy) {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    if (!body.title || !body.category) {
       return reply.code(400).send({
         ok: false,
-        error: 'title, category, and createdBy are required',
+        error: 'title and category are required',
       });
     }
     const task = createTask(tenantId, {
@@ -81,8 +120,8 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
       category: body.category,
       priority: body.priority || 'normal',
       assignedTo: body.assignedTo || null,
-      assignedBy: body.assignedBy || null,
-      createdBy: body.createdBy,
+      assignedBy: body.assignedTo ? getActor(req) : null,
+      createdBy: getActor(req),
       patientDfn: body.patientDfn || null,
       sourceType: body.sourceType || null,
       sourceId: body.sourceId || null,
@@ -96,12 +135,18 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
   // ─── Task Transitions ────────────────────────────────
 
   server.post('/workflow/tasks/:id/assign', async (req: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(req, reply);
     const { id } = req.params as { id: string };
     const body = (req.body as any) || {};
-    if (!body.assignedTo || !body.assignedBy) {
-      return reply.code(400).send({ ok: false, error: 'assignedTo and assignedBy are required' });
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    if (!body.assignedTo) {
+      return reply.code(400).send({ ok: false, error: 'assignedTo is required' });
     }
-    const task = assignTask(id, body.assignedTo, body.assignedBy);
+    if (!getScopedTask(id, tenantId)) {
+      return reply.code(404).send({ ok: false, error: 'Task not found' });
+    }
+    const task = assignTask(tenantId, id, body.assignedTo, getActor(req));
     if (!task) {
       return reply.code(404).send({ ok: false, error: 'Task not found' });
     }
@@ -109,9 +154,14 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
   });
 
   server.post('/workflow/tasks/:id/start', async (req: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(req, reply);
     const { id } = req.params as { id: string };
-    const body = (req.body as any) || {};
-    const task = startTask(id, body.actor || 'system');
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    if (!getScopedTask(id, tenantId)) {
+      return reply.code(404).send({ ok: false, error: 'Task not found' });
+    }
+    const task = startTask(tenantId, id, getActor(req));
     if (!task) {
       return reply.code(404).send({ ok: false, error: 'Task not found or not in assigned state' });
     }
@@ -119,9 +169,15 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
   });
 
   server.post('/workflow/tasks/:id/complete', async (req: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(req, reply);
     const { id } = req.params as { id: string };
     const body = (req.body as any) || {};
-    const task = completeTask(id, body.actor || 'system', body.comment);
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    if (!getScopedTask(id, tenantId)) {
+      return reply.code(404).send({ ok: false, error: 'Task not found' });
+    }
+    const task = completeTask(tenantId, id, getActor(req), body.comment);
     if (!task) {
       return reply.code(404).send({ ok: false, error: 'Task not found' });
     }
@@ -129,9 +185,15 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
   });
 
   server.post('/workflow/tasks/:id/cancel', async (req: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(req, reply);
     const { id } = req.params as { id: string };
     const body = (req.body as any) || {};
-    const task = cancelTask(id, body.actor || 'system', body.comment);
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    if (!getScopedTask(id, tenantId)) {
+      return reply.code(404).send({ ok: false, error: 'Task not found' });
+    }
+    const task = cancelTask(tenantId, id, getActor(req), body.comment);
     if (!task) {
       return reply.code(404).send({ ok: false, error: 'Task not found' });
     }
@@ -139,9 +201,15 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
   });
 
   server.post('/workflow/tasks/:id/escalate', async (req: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(req, reply);
     const { id } = req.params as { id: string };
     const body = (req.body as any) || {};
-    const task = escalateTask(id, body.actor || 'system', body.comment);
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    if (!getScopedTask(id, tenantId)) {
+      return reply.code(404).send({ ok: false, error: 'Task not found' });
+    }
+    const task = escalateTask(tenantId, id, getActor(req), body.comment);
     if (!task) {
       return reply.code(404).send({ ok: false, error: 'Task not found' });
     }
@@ -149,12 +217,18 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
   });
 
   server.post('/workflow/tasks/:id/defer', async (req: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(req, reply);
     const { id } = req.params as { id: string };
     const body = (req.body as any) || {};
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     if (!body.dueAt) {
       return reply.code(400).send({ ok: false, error: 'dueAt is required' });
     }
-    const task = deferTask(id, body.actor || 'system', body.dueAt, body.comment);
+    if (!getScopedTask(id, tenantId)) {
+      return reply.code(404).send({ ok: false, error: 'Task not found' });
+    }
+    const task = deferTask(tenantId, id, getActor(req), body.dueAt, body.comment);
     if (!task) {
       return reply.code(404).send({ ok: false, error: 'Task not found' });
     }
@@ -164,7 +238,10 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
   // ─── Dashboard Counts ────────────────────────────────
 
   server.get('/workflow/counts', async (req: FastifyRequest, reply: FastifyReply) => {
+    await requireSession(req, reply);
     const { departmentId } = (req.query as any) || {};
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     return reply.send({ ok: true, counts: getTaskCounts(tenantId, departmentId) });
   });
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo, useCallback } from 'react';
-import { useDataCache, type Note } from '@/stores/data-cache';
+import { useDataCache, type DomainFetchMeta, type Note } from '@/stores/data-cache';
 import { useTenant } from '@/stores/tenant-context';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
@@ -33,17 +33,58 @@ const LOCAL_TEMPLATES = [
 
 function statusBadge(status: string) {
   const s = status.toLowerCase().trim();
-  if (s.includes('completed') || s.includes('signed'))
-    return { label: 'Signed', color: 'var(--cprs-success, #28a745)' };
   if (s.includes('unsigned') || s.includes('uncosigned'))
     return { label: 'Unsigned', color: 'var(--cprs-warning, #ffc107)' };
+  if (s.includes('completed') || s.includes('signed'))
+    return { label: 'Signed', color: 'var(--cprs-success, #28a745)' };
   if (s.includes('retracted') || s.includes('amended'))
     return { label: s.charAt(0).toUpperCase() + s.slice(1), color: 'var(--cprs-info, #17a2b8)' };
   return { label: status || 'Unknown', color: 'var(--cprs-muted, #6c757d)' };
 }
 
+function isUnsignedStatus(status: string | undefined | null) {
+  const s = (status || '').toLowerCase().trim();
+  return s.includes('unsigned') || s.includes('uncosigned');
+}
+
 interface Props {
   dfn: string;
+}
+
+function NotesPendingBanner({ meta }: { meta: DomainFetchMeta }) {
+  const statusLabel = meta.status || (meta.ok ? 'ok' : 'request-failed');
+  const targetRpcs = meta.pendingTargets.length > 0 ? meta.pendingTargets : ['TIU DOCUMENTS BY CONTEXT'];
+
+  return (
+    <div
+      style={{
+        border: '1px solid #f59e0b',
+        borderRadius: 6,
+        padding: 12,
+        background: '#fffbeb',
+        color: '#92400e',
+      }}
+    >
+      <div style={{ fontWeight: 600, marginBottom: 6 }}>Notes list pending</div>
+      <div style={{ fontSize: 13, marginBottom: 6 }}>
+        {meta.error
+          ? `The latest notes fetch failed: ${meta.error}`
+          : meta.pendingNote ||
+            'The latest notes fetch did not return a trustworthy live TIU notes list.'}
+      </div>
+      <div style={{ fontSize: 12, marginBottom: 4 }}>
+        <strong>Status:</strong> {statusLabel}
+      </div>
+      {meta.rpcUsed.length > 0 && (
+        <div style={{ fontSize: 12, marginBottom: 4 }}>
+          <strong>RPC attempted:</strong> {meta.rpcUsed.join(', ')}
+        </div>
+      )}
+      <div style={{ fontSize: 12 }}>
+        <strong>Target RPCs:</strong> {targetRpcs.join(', ')}
+      </div>
+    </div>
+  );
 }
 
 export default function NotesPanel({ dfn }: Props) {
@@ -97,6 +138,42 @@ export default function NotesPanel({ dfn }: Props) {
 
   const notes = cache.getDomain(dfn, 'notes');
   const loading = cache.isLoading(dfn, 'notes');
+  const notesMeta = cache.getDomainMeta(dfn, 'notes');
+  const hasNotes = notes.length > 0;
+  const showPendingNotesBanner =
+    !loading && notes.length === 0 && notesMeta.fetched && (notesMeta.pending || notesMeta.ok !== true);
+
+  useEffect(() => {
+    setSelected(null);
+    setViewText(null);
+    setViewTextLoading(false);
+    setShowAddendum(false);
+    setShowSignDialog(false);
+    setAddendumText('');
+    setEsCode('');
+    setSignMsg(null);
+    setAddendumMsg(null);
+  }, [dfn]);
+
+  useEffect(() => {
+    if (!selected) return;
+
+    const freshSelected = notes.find((note) => note.id === selected.id) || null;
+    if (!freshSelected) {
+      setSelected(null);
+      setViewText(null);
+      setViewTextLoading(false);
+      setShowAddendum(false);
+      setShowSignDialog(false);
+      setAddendumText('');
+      setEsCode('');
+      return;
+    }
+
+    if (freshSelected !== selected) {
+      setSelected(freshSelected);
+    }
+  }, [notes, selected]);
 
   // Fetch VistA titles on mount
   useEffect(() => {
@@ -183,6 +260,12 @@ export default function NotesPanel({ dfn }: Props) {
         setNoteText('');
         setSelectedTemplate(null);
         cache.fetchDomain(dfn, 'notes');
+      } else if (data.status === 'create-blocked') {
+        setSaveMsg(
+          `Note creation blocked: ${data.message || data.error || 'note body persistence failed'}${
+            data.documentIen ? ` (TIU shell ID: ${data.documentIen})` : ''
+          }`
+        );
       } else {
         setSaveMsg(`Error: ${data.error || data.errors?.map((e: any) => e.message).join(', ')}`);
       }
@@ -211,11 +294,19 @@ export default function NotesPanel({ dfn }: Props) {
         setEsCode('');
         setShowSignDialog(false);
         cache.fetchDomain(dfn, 'notes');
+      } else if (data.status === 'sign-blocked') {
+        setEsCode('');
+        setSignMsg(`Signing blocked: ${data.message || data.error || 'e-signature verification failed'}`);
+      } else if (data.status === 'sign-failed') {
+        setEsCode('');
+        setSignMsg(`Signing failed: ${data.message || data.error || 'RPC call failed'}`);
       } else {
-        setSignMsg(`Error: ${data.error || 'Sign failed'}`);
+        setEsCode('');
+        setSignMsg(`Sign failed: ${data.message || data.error || 'unknown error'}`);
       }
     } catch (e: unknown) {
-      setSignMsg(`Error: ${(e as Error).message}`);
+      setEsCode('');
+      setSignMsg(`Sign error: ${(e as Error).message}`);
     } finally {
       setSignLoading(false);
     }
@@ -239,6 +330,12 @@ export default function NotesPanel({ dfn }: Props) {
         setAddendumText('');
         setShowAddendum(false);
         cache.fetchDomain(dfn, 'notes');
+      } else if (data.status === 'addendum-blocked') {
+        setAddendumMsg(
+          `Addendum blocked: ${data.message || data.error || 'note body persistence failed'}${
+            data.addendumIen ? ` (TIU shell ID: ${data.addendumIen})` : ''
+          }`
+        );
       } else {
         setAddendumMsg(`Error: ${data.error || 'Addendum failed'}`);
       }
@@ -258,10 +355,7 @@ export default function NotesPanel({ dfn }: Props) {
     }
   }
 
-  const isUnsigned =
-    selected &&
-    !selected.status?.toLowerCase().includes('completed') &&
-    !selected.status?.toLowerCase().includes('signed');
+  const isUnsigned = selected ? isUnsignedStatus(selected.status) : false;
 
   return (
     <div>
@@ -502,9 +596,17 @@ export default function NotesPanel({ dfn }: Props) {
       {/* --- Split Pane: List + Detail --- */}
       <div className={styles.splitPane}>
         <div className={styles.splitLeft}>
-          {loading && <p className={styles.loadingText}>Loading notes...</p>}
-          {!loading && notes.length === 0 && <p className={styles.emptyText}>No notes on record</p>}
-          {!loading && notes.length > 0 && (
+          {loading && !hasNotes && <p className={styles.loadingText}>Loading notes...</p>}
+          {loading && hasNotes && (
+            <p className={styles.loadingText} style={{ marginBottom: 8 }}>
+              Refreshing notes...
+            </p>
+          )}
+          {showPendingNotesBanner && <NotesPendingBanner meta={notesMeta} />}
+          {!loading && !showPendingNotesBanner && notes.length === 0 && (
+            <p className={styles.emptyText}>No notes on record</p>
+          )}
+          {!showPendingNotesBanner && notes.length > 0 && (
             <table className={styles.dataTable}>
               <thead>
                 <tr>

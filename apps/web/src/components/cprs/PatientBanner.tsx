@@ -4,7 +4,7 @@ import { usePatient } from '@/stores/patient-context';
 import styles from './cprs.module.css';
 
 export default function PatientBanner() {
-  const { dfn, demographics, loading } = usePatient();
+  const { dfn, demographics, loading, error } = usePatient();
 
   if (!dfn) {
     return (
@@ -14,10 +14,18 @@ export default function PatientBanner() {
     );
   }
 
-  if (loading || !demographics) {
+  if (loading) {
     return (
       <div className={styles.banner}>
         <span className={styles.bannerLoading}>Loading patient {dfn}...</span>
+      </div>
+    );
+  }
+
+  if (!demographics) {
+    return (
+      <div className={styles.banner}>
+        <span className={styles.bannerLoading}>{error || `Patient ${dfn} is unavailable.`}</span>
       </div>
     );
   }

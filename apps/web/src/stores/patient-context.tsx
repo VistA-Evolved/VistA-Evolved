@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, useRef, type ReactNode } from 'react';
 import { API_BASE } from '@/lib/api-config';
 import type { PatientDemographics } from '@vista-evolved/shared-types';
 
@@ -17,6 +17,8 @@ export interface PatientContextValue {
   demographics: PatientDemographics | null;
   /** Whether demographics are loading */
   loading: boolean;
+  /** Last demographics load error, if any */
+  error: string | null;
   /** Provider DUZ (from API sign-on) */
   providerDuz: string;
   /** Current encounter location */
@@ -42,28 +44,53 @@ export function PatientProvider({ children }: { children: ReactNode }) {
   const [dfn, setDfn] = useState('');
   const [demographics, setDemographics] = useState<PatientDemographics | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const retryCount = useRef(0);
   const [providerDuz, setProviderDuz] = useState('87'); // Default provider (DUZ 87)
   const [locationIen, setLocationIen] = useState('2');
   const [locationName, setLocationName] = useState('DR OFFICE');
 
-  const selectPatient = useCallback(async (newDfn: string) => {
-    setDfn(newDfn);
-    setDemographics(null);
+  const loadPatient = useCallback(async (patientDfn: string) => {
     setLoading(true);
+    setError(null);
     try {
-      const res = await fetch(`${API_BASE}/vista/patient-demographics?dfn=${newDfn}`, {
+      const res = await fetch(`${API_BASE}/vista/patient-demographics?dfn=${patientDfn}`, {
         credentials: 'include',
       });
       const data = await res.json();
       if (data.ok && data.patient) {
         setDemographics(data.patient);
+        setError(null);
+      } else {
+        setDemographics(null);
+        setError(data.error || 'Unable to load patient demographics.');
       }
     } catch {
-      // keep null demographics
+      setDemographics(null);
+      setError('Unable to load patient demographics.');
     } finally {
       setLoading(false);
     }
   }, []);
+
+  const selectPatient = useCallback((newDfn: string) => {
+    retryCount.current = 0;
+    setDfn(newDfn);
+    setDemographics(null);
+    setError(null);
+    void loadPatient(newDfn);
+  }, [loadPatient]);
+
+  useEffect(() => {
+    if (!dfn || demographics || loading || retryCount.current >= 2) return;
+
+    retryCount.current += 1;
+    const retryTimer = window.setTimeout(() => {
+      void loadPatient(dfn);
+    }, 1000);
+
+    return () => window.clearTimeout(retryTimer);
+  }, [demographics, dfn, loadPatient, loading]);
 
   const clearPatient = useCallback(() => {
     setDfn('');
@@ -82,6 +109,7 @@ export function PatientProvider({ children }: { children: ReactNode }) {
         dfn,
         demographics,
         loading,
+        error,
         providerDuz,
         locationIen,
         locationName,

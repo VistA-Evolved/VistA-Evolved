@@ -92,6 +92,19 @@ export async function handleEligibilityJob(job: {
     integrationMode: String(integrationMode),
     pollTimestamp: new Date().toISOString(),
   };
+  const tenantId = String((job.payload as any)?._tenantId ?? '');
+
+  if (!tenantId) {
+    const result: EligibilityPollResult = {
+      ...resultBase,
+      eligible: null,
+      status: 'failed',
+      errorMessage: 'Tenant context missing',
+      responseMs: Date.now() - start,
+    };
+    pushResult(result);
+    return result as unknown as Record<string, unknown>;
+  }
 
   try {
     const adapter = getPayerAdapterForMode(String(integrationMode));
@@ -111,7 +124,7 @@ export async function handleEligibilityJob(job: {
       payerId: String(payerCode),
       patientDfn: String(patientDfn ?? ''),
       subscriberId: String(subscriberId ?? ''),
-      tenantId: 'default',
+      tenantId,
     });
 
     const result: EligibilityPollResult = {

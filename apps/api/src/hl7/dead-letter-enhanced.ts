@@ -226,8 +226,11 @@ export function listEnhancedDeadLetters(opts?: {
 /**
  * Get a single DLQ entry by ID.
  */
-export function getEnhancedDeadLetter(id: string): EnhancedDeadLetterEntry | undefined {
-  return enhancedDlq.find((e) => e.id === id);
+export function getEnhancedDeadLetter(id: string, tenantId?: string): EnhancedDeadLetterEntry | undefined {
+  const entry = enhancedDlq.find((e) => e.id === id);
+  if (!entry) return undefined;
+  if (tenantId && entry.tenantId !== tenantId) return undefined;
+  return entry;
 }
 
 /**
@@ -236,9 +239,10 @@ export function getEnhancedDeadLetter(id: string): EnhancedDeadLetterEntry | und
  */
 export function replayDeadLetter(
   id: string,
-  actorId: string
+  actorId: string,
+  tenantId?: string
 ): ReplayResult & { rawMessage?: string } {
-  const entry = enhancedDlq.find((e) => e.id === id);
+  const entry = getEnhancedDeadLetter(id, tenantId);
   if (!entry) {
     return { ok: false, entryId: id, action: 'not_found', detail: 'DLQ entry not found' };
   }
@@ -291,8 +295,12 @@ export function replayDeadLetter(
 /**
  * Mark a DLQ entry as manually resolved.
  */
-export function resolveDeadLetter(id: string, actorId: string): { ok: boolean; detail: string } {
-  const entry = enhancedDlq.find((e) => e.id === id);
+export function resolveDeadLetter(
+  id: string,
+  actorId: string,
+  tenantId?: string
+): { ok: boolean; detail: string } {
+  const entry = getEnhancedDeadLetter(id, tenantId);
   if (!entry) {
     return { ok: false, detail: 'Not found' };
   }
@@ -308,19 +316,22 @@ export function resolveDeadLetter(id: string, actorId: string): { ok: boolean; d
 /**
  * Get DLQ stats summary.
  */
-export function getDlqStats(): {
+export function getDlqStats(tenantId?: string): {
   total: number;
   unresolved: number;
   resolved: number;
   vaultSize: number;
   oldestUnresolved: number | null;
 } {
-  const unresolved = enhancedDlq.filter((e) => !e.resolved);
+  const scopedEntries = tenantId ? enhancedDlq.filter((entry) => entry.tenantId === tenantId) : enhancedDlq;
+  const unresolved = scopedEntries.filter((e) => !e.resolved);
   return {
-    total: enhancedDlq.length,
+    total: scopedEntries.length,
     unresolved: unresolved.length,
-    resolved: enhancedDlq.length - unresolved.length,
-    vaultSize: rawMessageVault.size,
+    resolved: scopedEntries.length - unresolved.length,
+    vaultSize: tenantId
+      ? scopedEntries.filter((entry) => rawMessageVault.has(entry.id)).length
+      : rawMessageVault.size,
     oldestUnresolved: unresolved.length > 0 ? unresolved[0].receivedAt : null,
   };
 }

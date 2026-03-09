@@ -64,28 +64,35 @@ export async function insertMessage(data: {
 
 /* ── Lookup ────────────────────────────────────────────────── */
 
-export async function findMessageById(id: string): Promise<PortalMessageRow | undefined> {
+export async function findMessageById(
+  id: string,
+  tenantId?: string
+): Promise<PortalMessageRow | undefined> {
   const db = getPgDb();
-  const rows = await db.select().from(pgPortalMessage).where(eq(pgPortalMessage.id, id));
+  const where = tenantId
+    ? and(eq(pgPortalMessage.id, id), eq(pgPortalMessage.tenantId, tenantId))
+    : eq(pgPortalMessage.id, id);
+  const rows = await db.select().from(pgPortalMessage).where(where);
   return rows[0];
 }
 
-export async function findThread(threadId: string): Promise<PortalMessageRow[]> {
+export async function findThread(threadId: string, tenantId: string): Promise<PortalMessageRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(pgPortalMessage)
-    .where(eq(pgPortalMessage.threadId, threadId))
+    .where(and(eq(pgPortalMessage.threadId, threadId), eq(pgPortalMessage.tenantId, tenantId)))
     .orderBy(pgPortalMessage.createdAt);
 }
 
-export async function findInbox(dfn: string): Promise<PortalMessageRow[]> {
+export async function findInbox(tenantId: string, dfn: string): Promise<PortalMessageRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(pgPortalMessage)
     .where(
       and(
+        eq(pgPortalMessage.tenantId, tenantId),
         or(eq(pgPortalMessage.toDfn, dfn), eq(pgPortalMessage.fromDfn, dfn)),
         sql`${pgPortalMessage.status} != 'draft'`
       )
@@ -93,22 +100,29 @@ export async function findInbox(dfn: string): Promise<PortalMessageRow[]> {
     .orderBy(desc(pgPortalMessage.createdAt));
 }
 
-export async function findDrafts(dfn: string): Promise<PortalMessageRow[]> {
-  const db = getPgDb();
-  return db
-    .select()
-    .from(pgPortalMessage)
-    .where(and(eq(pgPortalMessage.fromDfn, dfn), eq(pgPortalMessage.status, 'draft')))
-    .orderBy(desc(pgPortalMessage.createdAt));
-}
-
-export async function findSent(dfn: string): Promise<PortalMessageRow[]> {
+export async function findDrafts(tenantId: string, dfn: string): Promise<PortalMessageRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(pgPortalMessage)
     .where(
       and(
+        eq(pgPortalMessage.tenantId, tenantId),
+        eq(pgPortalMessage.fromDfn, dfn),
+        eq(pgPortalMessage.status, 'draft')
+      )
+    )
+    .orderBy(desc(pgPortalMessage.createdAt));
+}
+
+export async function findSent(tenantId: string, dfn: string): Promise<PortalMessageRow[]> {
+  const db = getPgDb();
+  return db
+    .select()
+    .from(pgPortalMessage)
+    .where(
+      and(
+        eq(pgPortalMessage.tenantId, tenantId),
         eq(pgPortalMessage.fromDfn, dfn),
         or(eq(pgPortalMessage.status, 'sent'), eq(pgPortalMessage.status, 'read'))
       )
@@ -116,12 +130,18 @@ export async function findSent(dfn: string): Promise<PortalMessageRow[]> {
     .orderBy(desc(pgPortalMessage.createdAt));
 }
 
-export async function findStaffQueue(): Promise<PortalMessageRow[]> {
+export async function findStaffQueue(tenantId: string): Promise<PortalMessageRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(pgPortalMessage)
-    .where(and(eq(pgPortalMessage.status, 'sent'), eq(pgPortalMessage.toDfn, 'clinic')))
+    .where(
+      and(
+        eq(pgPortalMessage.tenantId, tenantId),
+        eq(pgPortalMessage.status, 'sent'),
+        eq(pgPortalMessage.toDfn, 'clinic')
+      )
+    )
     .orderBy(desc(pgPortalMessage.createdAt));
 }
 
@@ -129,6 +149,7 @@ export async function findStaffQueue(): Promise<PortalMessageRow[]> {
 
 export async function updateMessage(
   id: string,
+  tenantId: string,
   updates: Partial<{
     subject: string;
     body: string;
@@ -144,15 +165,17 @@ export async function updateMessage(
   await db
     .update(pgPortalMessage)
     .set({ ...updates, updatedAt: now } as any)
-    .where(eq(pgPortalMessage.id, id));
-  return findMessageById(id);
+    .where(and(eq(pgPortalMessage.id, id), eq(pgPortalMessage.tenantId, tenantId)));
+  return findMessageById(id, tenantId);
 }
 
 /* ── Delete ────────────────────────────────────────────────── */
 
-export async function deleteMessage(id: string): Promise<boolean> {
+export async function deleteMessage(id: string, tenantId: string): Promise<boolean> {
   const db = getPgDb();
-  const result = await db.delete(pgPortalMessage).where(eq(pgPortalMessage.id, id));
+  const result = await db
+    .delete(pgPortalMessage)
+    .where(and(eq(pgPortalMessage.id, id), eq(pgPortalMessage.tenantId, tenantId)));
   return (result as any)?.rowCount > 0;
 }
 

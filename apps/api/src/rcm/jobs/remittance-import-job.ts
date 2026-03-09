@@ -99,6 +99,12 @@ export async function handleRemittanceImportJob(job: {
     return result as unknown as Record<string, unknown>;
   }
 
+  const tenantId =
+    typeof (job.payload as any)?._tenantId === 'string' &&
+    (job.payload as any)._tenantId.trim().length > 0
+      ? (job.payload as any)._tenantId.trim()
+      : 'default';
+
   try {
     // Dynamic import to avoid circular dependencies
     const { createRemittanceImport, createPaymentRecord } =
@@ -109,6 +115,7 @@ export async function handleRemittanceImportJob(job: {
     const totalBilled = entries.reduce((sum, e) => sum + (e.billedAmount ?? 0), 0);
 
     const importRecord = await createRemittanceImport({
+      tenantId,
       sourceType: sourceType as any,
       lineCount: entries.length,
       totalPaidCents: Math.round(totalPaid * 100),
@@ -124,6 +131,7 @@ export async function handleRemittanceImportJob(job: {
       const entry = entries[i];
       try {
         await createPaymentRecord({
+          tenantId,
           remittanceImportId: importRecord.id,
           claimRef: entry.claimRef,
           payerId: entry.payerId,
@@ -154,7 +162,7 @@ export async function handleRemittanceImportJob(job: {
     // Step 3: Attempt matching via matching engine
     try {
       const { runBatchMatch } = await import('../reconciliation/matching-engine.js');
-      const matchResult = await runBatchMatch(importRecord.id);
+      const matchResult = await runBatchMatch(tenantId, importRecord.id);
       result.matchesAttempted = matchResult.attempted;
       result.matchesSucceeded = matchResult.matched;
     } catch (matchErr) {
@@ -165,7 +173,7 @@ export async function handleRemittanceImportJob(job: {
 
     // Step 4: Check for underpayments
     try {
-      const underpayments = await detectUnderpayments(importRecord.id);
+      const underpayments = await detectUnderpayments(tenantId, importRecord.id);
       result.underpaymentCasesCreated = underpayments;
     } catch (upErr) {
       result.errors.push(
@@ -208,11 +216,11 @@ export async function handleRemittanceImportJob(job: {
  * For each matched payment where paidAmount < billedAmount * threshold,
  * create an underpayment case.
  */
-async function detectUnderpayments(importId: string): Promise<number> {
+async function detectUnderpayments(tenantId: string, importId: string): Promise<number> {
   const { listPaymentsByImport, createUnderpaymentCase } =
     await import('../reconciliation/recon-store.js');
 
-  const payments = await listPaymentsByImport(importId);
+  const payments = await listPaymentsByImport(tenantId, importId);
   let created = 0;
 
   for (const payment of payments) {
@@ -223,6 +231,7 @@ async function detectUnderpayments(importId: string): Promise<number> {
     ) {
       try {
         await createUnderpaymentCase({
+          tenantId,
           claimRef: payment.claimRef,
           paymentId: payment.id,
           payerId: payment.payerId,

@@ -105,6 +105,15 @@ export function getEndpoint(id: string): Hl7TenantEndpoint | undefined {
   return endpointStore.get(id);
 }
 
+export function getEndpointForTenant(
+  tenantId: string,
+  id: string
+): Hl7TenantEndpoint | undefined {
+  const endpoint = endpointStore.get(id);
+  if (!endpoint || endpoint.tenantId !== tenantId) return undefined;
+  return endpoint;
+}
+
 export function listEndpoints(tenantId?: string): Hl7TenantEndpoint[] {
   const all = Array.from(endpointStore.values());
   if (tenantId) return all.filter((e) => e.tenantId === tenantId);
@@ -112,6 +121,7 @@ export function listEndpoints(tenantId?: string): Hl7TenantEndpoint[] {
 }
 
 export function updateEndpoint(
+  tenantId: string,
   id: string,
   updates: Partial<
     Pick<
@@ -128,13 +138,15 @@ export function updateEndpoint(
     >
   >
 ): Hl7TenantEndpoint {
-  const ep = endpointStore.get(id);
+  const ep = getEndpointForTenant(tenantId, id);
   if (!ep) throw new Error(`Endpoint not found: ${id}`);
   Object.assign(ep, updates, { updatedAt: new Date().toISOString() });
   return ep;
 }
 
-export function deleteEndpoint(id: string): boolean {
+export function deleteEndpoint(tenantId: string, id: string): boolean {
+  const endpoint = getEndpointForTenant(tenantId, id);
+  if (!endpoint) return false;
   return endpointStore.delete(id);
 }
 

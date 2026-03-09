@@ -51,11 +51,36 @@ import {
 const packetCache = new Map<string, ClaimPacket>();
 const exportCache = new Map<string, ReturnType<typeof generateExportBundle>>();
 
+function resolveTenantId(request: FastifyRequest): string | null {
+  const headerTenantId = request.headers['x-tenant-id'];
+  if (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0) {
+    return headerTenantId.trim();
+  }
+  const requestTenantId = (request as any).tenantId;
+  if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+    return requestTenantId.trim();
+  }
+  const sessionTenantId = (request as any).session?.tenantId;
+  if (typeof sessionTenantId === 'string' && sessionTenantId.trim().length > 0) {
+    return sessionTenantId.trim();
+  }
+  return null;
+}
+
+function requireTenantId(request: FastifyRequest, reply: FastifyReply): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.status(403).send({ ok: false, error: 'TENANT_REQUIRED' });
+  return null;
+}
+
 /* ── Plugin ─────────────────────────────────────────────────── */
 
 export default async function eclaims3Routes(server: FastifyInstance): Promise<void> {
   /* ── GET /rcm/eclaims3/status ─────────────────────────────── */
-  server.get('/rcm/eclaims3/status', async (_req: FastifyRequest, _reply: FastifyReply) => {
+  server.get('/rcm/eclaims3/status', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     return {
       ok: true,
       adapter: 'philhealth-eclaims3',
@@ -67,7 +92,7 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
       deprecationDate: '2026-03-31',
       message:
         'eClaims 3.0 adapter skeleton active. Automated submission pending spec acquisition.',
-      stats: getSubmissionStats(),
+      stats: getSubmissionStats(tenantId),
     };
   });
 
@@ -92,13 +117,15 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
     }
 
     // Get the Phase 90 claim draft
-    const draft = getPhilHealthClaimDraft(draftId);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const draft = getPhilHealthClaimDraft(tenantId, draftId);
     if (!draft) {
       return reply.status(404).send({ ok: false, error: 'Claim draft not found.' });
     }
 
     // Get facility setup for codes
-    const setup = getOrCreateFacilitySetup(draft.facilityId);
+    const setup = getOrCreateFacilitySetup(tenantId, draft.facilityId);
     const facilityCode = setup.facilityCode ?? 'PENDING';
     const facilityName = setup.facilityName ?? 'Facility Not Configured';
     const accreditationNumber = setup.accreditationNumber;
@@ -118,9 +145,9 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
     packetCache.set(result.packet.packetId, result.packet);
 
     // Create a submission record if one doesn't exist for this draft
-    let submission = getSubmissionByDraft(draftId);
+    let submission = getSubmissionByDraft(tenantId, draftId);
     if (!submission) {
-      submission = createSubmission(result.packet, actor);
+      submission = createSubmission(tenantId, result.packet, actor);
     }
 
     return {
@@ -159,16 +186,19 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
         return reply.status(404).send({ ok: false, error: 'Packet not found.' });
       }
 
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+
       const bundle = generateExportBundle(packet, { formats, actor });
       exportCache.set(bundle.bundleId, bundle);
 
       // Link to submission if exists
-      const submission = getSubmissionByDraft(packet.sourceClaimDraftId);
+      const submission = getSubmissionByDraft(tenantId, packet.sourceClaimDraftId);
       if (submission) {
-        recordExportBundle(submission.id, bundle.bundleId);
+        recordExportBundle(tenantId, submission.id, bundle.bundleId);
         // Auto-transition to "exported" if currently "reviewed"
         if (submission.status === 'reviewed') {
-          transitionSubmission(submission.id, 'exported', actor, 'Export bundle generated.');
+          transitionSubmission(tenantId, submission.id, 'exported', actor, 'Export bundle generated.');
         }
       }
 
@@ -192,12 +222,14 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
   );
 
   /* ── GET /rcm/eclaims3/submissions ────────────────────────── */
-  server.get('/rcm/eclaims3/submissions', async (request: FastifyRequest) => {
+  server.get('/rcm/eclaims3/submissions', async (request: FastifyRequest, reply: FastifyReply) => {
     const query = request.query as Record<string, string>;
     const status = query.status as EClaimsSubmissionStatus | undefined;
     const limit = query.limit ? parseInt(query.limit, 10) : undefined;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
-    const results = listSubmissions({ status, limit });
+    const results = listSubmissions({ tenantId, status, limit });
     return {
       ok: true,
       submissions: results,
@@ -206,8 +238,10 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
   });
 
   /* ── GET /rcm/eclaims3/submissions/stats ──────────────────── */
-  server.get('/rcm/eclaims3/submissions/stats', async () => {
-    return { ok: true, ...getSubmissionStats() };
+  server.get('/rcm/eclaims3/submissions/stats', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    return { ok: true, ...getSubmissionStats(tenantId) };
   });
 
   /* ── GET /rcm/eclaims3/submissions/:id ────────────────────── */
@@ -215,7 +249,9 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
     '/rcm/eclaims3/submissions/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as { id: string };
-      const submission = getSubmission(id);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const submission = getSubmission(tenantId, id);
       if (!submission) {
         return reply.status(404).send({ ok: false, error: 'Submission not found.' });
       }
@@ -232,6 +268,8 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
       const toStatus = body.status as EClaimsSubmissionStatus;
       const actor = (body.actor as string) || 'system';
       const detail = body.detail as string | undefined;
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
 
       if (!toStatus) {
         return reply.status(400).send({ ok: false, error: 'status is required.' });
@@ -248,7 +286,7 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
         }
       }
 
-      const result = transitionSubmission(id, toStatus, actor, detail);
+      const result = transitionSubmission(tenantId, id, toStatus, actor, detail);
       if (!result.ok) {
         return reply.status(422).send(result);
       }
@@ -272,7 +310,9 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
         return reply.status(400).send({ ok: false, error: 'Denial reason text is required.' });
       }
 
-      const result = recordDenialReason(id, { text, code, category, recordedBy });
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const result = recordDenialReason(tenantId, id, { text, code, category, recordedBy });
       if (!result.ok) {
         return reply.status(422).send(result);
       }
@@ -297,7 +337,9 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
         });
       }
 
-      const result = recordAcceptance(id, tcn, payerRefNumber);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const result = recordAcceptance(tenantId, id, tcn, payerRefNumber);
       if (!result.ok) {
         return reply.status(422).send(result);
       }
@@ -318,7 +360,9 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
         return reply.status(400).send({ ok: false, error: 'Note text is required.' });
       }
 
-      const added = addStaffNote(id, note);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const added = addStaffNote(tenantId, id, note);
       if (!added) {
         return reply.status(404).send({ ok: false, error: 'Submission not found.' });
       }

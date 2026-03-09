@@ -60,7 +60,7 @@ export interface CreateSiteRequest {
   name: string;
   code: string;
   environment: SiteEnvironment;
-  tenantId?: string;
+  tenantId: string;
   vistaEndpoint?: string;
   expectedUsers?: number;
   goLiveDate?: string;
@@ -93,7 +93,7 @@ export function createSite(req: CreateSiteRequest): SiteConfig {
     code: req.code,
     status: 'draft',
     environment: req.environment || 'sandbox',
-    tenantId: req.tenantId || 'default',
+    tenantId: req.tenantId,
     vistaEndpoint: req.vistaEndpoint || '127.0.0.1:9430',
     expectedUsers: req.expectedUsers || 0,
     goLiveDate: req.goLiveDate,
@@ -108,16 +108,21 @@ export function createSite(req: CreateSiteRequest): SiteConfig {
   return site;
 }
 
-export function getSite(id: string): SiteConfig | undefined {
-  return siteStore.get(id);
+export function getSite(id: string, tenantId?: string): SiteConfig | undefined {
+  const site = siteStore.get(id);
+  if (!site) return undefined;
+  if (tenantId && site.tenantId !== tenantId) return undefined;
+  return site;
 }
 
-export function listSites(): SiteConfig[] {
-  return Array.from(siteStore.values());
+export function listSites(tenantId?: string): SiteConfig[] {
+  const sites = Array.from(siteStore.values());
+  return tenantId ? sites.filter((site) => site.tenantId === tenantId) : sites;
 }
 
 export function updateSite(
   id: string,
+  tenantId: string,
   updates: Partial<
     Pick<
       SiteConfig,
@@ -134,22 +139,24 @@ export function updateSite(
   >
 ): SiteConfig {
   const site = siteStore.get(id);
-  if (!site) throw new Error(`Site not found: ${id}`);
+  if (!site || site.tenantId !== tenantId) throw new Error(`Site not found: ${id}`);
 
   Object.assign(site, updates, { updatedAt: new Date().toISOString() });
   return site;
 }
 
-export function deleteSite(id: string): boolean {
+export function deleteSite(id: string, tenantId: string): boolean {
+  const site = siteStore.get(id);
+  if (!site || site.tenantId !== tenantId) return false;
   return siteStore.delete(id);
 }
 
-export function getSiteSummary(): {
+export function getSiteSummary(input?: SiteConfig[]): {
   total: number;
   byStatus: Record<string, number>;
   byEnvironment: Record<string, number>;
 } {
-  const sites = Array.from(siteStore.values());
+  const sites = input ?? Array.from(siteStore.values());
   const byStatus: Record<string, number> = {};
   const byEnvironment: Record<string, number> = {};
   for (const s of sites) {

@@ -14,7 +14,7 @@
  */
 
 import type { FastifyInstance } from 'fastify';
-import { getSession, listSessions } from '../auth/session-store.js';
+import { getSession, revokeOtherSessions } from '../auth/session-store.js';
 import { SESSION_CONFIG } from '../config/server-config.js';
 import {
   getUserSessions,
@@ -82,19 +82,12 @@ export default async function sessionManagementRoutes(server: FastifyInstance): 
     const session = await getSession(token);
     if (!session) return reply.code(401).send({ ok: false, error: 'Invalid session' });
 
-    // Get all active sessions
-    const allSessions = await listSessions();
-    allSessions.filter((s) => s.duz === session.duz && s.token !== '[redacted]');
-
-    let revokedCount = 0;
-    // Note: listSessions returns redacted tokens, so we can't revoke by token.
-    // This is a best-effort revoke via the session security store.
-    // In production, this would use the DB repo to revoke by user_id.
+    const revokedCount = await revokeOtherSessions(token, session.tenantId, session.duz);
     log.info('Revoke-all sessions requested', { userId: session.duz, tenantId: session.tenantId });
 
     return {
       ok: true,
-      message: 'All other sessions revoked',
+      message: revokedCount > 0 ? 'All other sessions revoked' : 'No other active sessions found',
       revokedCount,
       remainingCount: 1, // current session
     };
@@ -117,13 +110,13 @@ export default async function sessionManagementRoutes(server: FastifyInstance): 
 
     const query = request.query as Record<string, string>;
     const events = querySecurityEvents({
-      tenantId: query.tenantId || session.tenantId,
+      tenantId: session.tenantId,
       userId: query.userId,
       eventType: query.eventType as any,
       limit: Math.min(Number(query.limit || 100), 500),
     });
 
-    const counts = getSecurityEventCounts();
+    const counts = getSecurityEventCounts(session.tenantId);
 
     return {
       ok: true,
@@ -137,6 +130,7 @@ export default async function sessionManagementRoutes(server: FastifyInstance): 
       })),
       counts,
       total: events.length,
+      scope: 'tenant-scoped',
     };
   });
 

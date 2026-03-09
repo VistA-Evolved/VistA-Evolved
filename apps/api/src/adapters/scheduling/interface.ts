@@ -99,6 +99,7 @@ export interface VistaGrounding {
 
 export interface WaitListEntry {
   id: string;
+  tenantId?: string;
   patientDfn: string;
   clinicName: string;
   preferredDate: string;
@@ -112,6 +113,7 @@ export interface WaitListEntry {
 }
 
 export interface AppointmentRequest {
+  tenantId?: string;
   patientDfn: string;
   clinicIen?: string;
   clinicName: string;
@@ -241,7 +243,8 @@ export interface SchedulingAdapter extends BaseAdapter {
   listAppointments(
     patientDfn: string,
     startDate?: string,
-    endDate?: string
+    endDate?: string,
+    tenantId?: string
   ): Promise<AdapterResult<Appointment[]>>;
   /** Create/book an appointment (SD W/L CREATE FILE -> SDEC when available, else request store) */
   createAppointment(
@@ -251,7 +254,8 @@ export interface SchedulingAdapter extends BaseAdapter {
   cancelAppointment(
     appointmentId: string,
     reason: string,
-    patientDfn?: string
+    patientDfn?: string,
+    tenantId?: string
   ): Promise<AdapterResult<void>>;
   /** Get available time slots for a clinic */
   getAvailableSlots(
@@ -272,7 +276,7 @@ export interface SchedulingAdapter extends BaseAdapter {
   /** Phase 123: Get diagnoses for encounter (SDOE GET DIAGNOSES) */
   getEncounterDiagnoses(encounterIen: string): Promise<AdapterResult<EncounterDiagnosis[]>>;
   /** Phase 123: Read wait-list entries (SD W/L RETRIVE FULL DATA) */
-  getWaitList(clinicIen?: string): Promise<AdapterResult<WaitListEntry[]>>;
+  getWaitList(clinicIen?: string, tenantId?: string): Promise<AdapterResult<WaitListEntry[]>>;
   /** Phase 131: Get CPRS-style appointment list (ORWPT APPTLST) */
   getAppointmentsCprs(patientDfn: string): Promise<AdapterResult<CprsAppointment[]>>;
   /** Phase 131: Get wait-list reference data (SD W/L PRIORITY/TYPE/STATUS) */

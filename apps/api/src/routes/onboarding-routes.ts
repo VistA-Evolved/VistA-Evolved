@@ -35,13 +35,33 @@ import { requireSession } from '../auth/auth-routes.js';
 /* ------------------------------------------------------------------ */
 
 export default async function onboardingRoutes(server: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: FastifyRequest): string | null {
+    const sessionTenantId =
+      typeof (request as any)?.session?.tenantId === 'string' &&
+      (request as any).session.tenantId.trim().length > 0
+        ? (request as any).session.tenantId.trim()
+        : undefined;
+    return sessionTenantId || null;
+  }
+
+  function requireTenantId(request: FastifyRequest, reply: FastifyReply): string | null {
+    const tenantId = resolveTenantId(request);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
+  function getScopedOnboarding(id: string, tenantId: string) {
+    return getOnboarding(id, tenantId) || null;
+  }
+
   /* ---- POST /admin/onboarding ---- */
   server.post('/admin/onboarding', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    const body = (request.body as { tenantId?: string }) || {};
-    const tenantId = body.tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     const onboarding = createOnboarding(tenantId, session.duz);
     return reply.code(201).send({ ok: true, session: onboarding });
@@ -52,7 +72,8 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    const { tenantId } = request.query as { tenantId?: string };
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const sessions = listOnboardingSessions(tenantId);
     return reply.send({ ok: true, sessions, total: sessions.length });
   });
@@ -63,7 +84,9 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
     if (!session) return;
 
     const { id } = request.params as { id: string };
-    const onboarding = getOnboarding(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const onboarding = getScopedOnboarding(id, tenantId);
     if (!onboarding) return reply.code(404).send({ ok: false, error: 'Session not found' });
     return reply.send({ ok: true, session: onboarding });
   });
@@ -77,8 +100,9 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
 
       const { id } = request.params as { id: string };
       const body = (request.body as { data?: Record<string, unknown> }) || {};
-
-      const current = getOnboarding(id);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const current = getScopedOnboarding(id, tenantId);
       if (!current) return reply.code(404).send({ ok: false, error: 'Session not found' });
 
       // Execute step-specific actions before advancing
@@ -89,7 +113,7 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
           .send({ ok: false, error: stepResult.error, step: current.currentStep });
       }
 
-      const updated = advanceStep(id, { ...body.data, ...stepResult.data });
+      const updated = advanceStep(current.tenantId, id, { ...body.data, ...stepResult.data });
       if (!updated) return reply.code(404).send({ ok: false, error: 'Session not found' });
 
       return reply.send({ ok: true, session: updated });
@@ -111,7 +135,12 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
           .send({ ok: false, error: `Invalid step. Must be one of: ${STEP_ORDER.join(', ')}` });
       }
 
-      const updated = updateStepData(id, body.step, body.data || {});
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const existing = getScopedOnboarding(id, tenantId);
+      if (!existing) return reply.code(404).send({ ok: false, error: 'Session not found' });
+
+      const updated = updateStepData(existing.tenantId, id, body.step, body.data || {});
       if (!updated) return reply.code(404).send({ ok: false, error: 'Session not found' });
 
       return reply.send({ ok: true, session: updated });
@@ -124,7 +153,11 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
     if (!session) return;
 
     const { id } = request.params as { id: string };
-    const deleted = deleteOnboarding(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const existing = getScopedOnboarding(id, tenantId);
+    if (!existing) return reply.code(404).send({ ok: false, error: 'Session not found' });
+    const deleted = deleteOnboarding(existing.tenantId, id);
     if (!deleted) return reply.code(404).send({ ok: false, error: 'Session not found' });
     return reply.send({ ok: true });
   });
@@ -137,7 +170,9 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
       if (!session) return;
 
       const { id } = request.params as { id: string };
-      const onboarding = getOnboarding(id);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const onboarding = getScopedOnboarding(id, tenantId);
       if (!onboarding) return reply.code(404).send({ ok: false, error: 'Session not found' });
 
       const tenantData = getTenant(onboarding.tenantId);

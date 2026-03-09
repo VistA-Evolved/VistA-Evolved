@@ -53,6 +53,10 @@ function findTsFilesRecursive(dir) {
   return results;
 }
 
+function normalizeRoutePath(path) {
+  return path.replace(/:[^/]+/g, '').replace(/\/+/g, '/').replace(/\/$/, '') || '/';
+}
+
 const apiSrc = join(ROOT, 'apps/api/src');
 const apiFiles = findTsFilesRecursive(apiSrc);
 const apiSource = apiFiles
@@ -65,9 +69,11 @@ const apiSource = apiFiles
   })
   .join('\n');
 
-// Extract route patterns (GET/POST/PUT/DELETE + path)
+// Extract route patterns (GET/POST/PUT/DELETE + path).
+// Support both plain registrations and typed Fastify handlers such as
+// server.post<{ Body: ... }>("/path", ...).
 const routePatterns = new Set();
-const routeRegex = /\.(get|post|put|delete|patch)\s*[(<]\s*["'`]([^"'`]+)/gi;
+const routeRegex = /\.(get|post|put|delete|patch)\s*(?:<[^>]*>)?\s*\(\s*["'`]([^"'`]+)/gi;
 let match;
 while ((match = routeRegex.exec(apiSource)) !== null) {
   routePatterns.add(`${match[1].toUpperCase()} ${match[2]}`);
@@ -109,9 +115,9 @@ for (const scenario of scenarios) {
     const routeParts = step.route.split(' ');
     const method = routeParts[0];
     const path = routeParts[1] || '';
-    const routeBase = path.replace(/:[^/]+/g, '').replace(/\/+$/, '');
+    const routeBase = normalizeRoutePath(path);
     const routeReachable = [...routePatterns].some((r) => {
-      const rPath = r.split(' ')[1] || '';
+      const rPath = normalizeRoutePath(r.split(' ')[1] || '');
       return r.startsWith(method) && (rPath.includes(routeBase) || routeBase.includes(rPath));
     });
 

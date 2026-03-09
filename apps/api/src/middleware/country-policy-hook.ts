@@ -62,7 +62,16 @@ export async function countryPolicyHook(app: FastifyInstance): Promise<void> {
 
     // Resolve tenant from session
     const session = (request as any).session;
-    const tenantId = session?.tenantId || 'default';
+    const tenantId = session?.tenantId;
+    if (!tenantId) {
+      request.countryPolicy = {
+        pack: null,
+        countryPackId: 'US',
+        locale: 'en',
+        timezone: 'America/New_York',
+      };
+      return;
+    }
 
     const tenant = getTenant(tenantId);
     if (!tenant) {

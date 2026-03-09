@@ -160,13 +160,13 @@ export function createHmoClaim(params: {
 
 /* ── Generate claim packet for existing claim ───────────────── */
 
-export function generateClaimPacketForClaim(claimId: string): {
+export function generateClaimPacketForClaim(tenantId: string, claimId: string): {
   ok: boolean;
   packet?: ReturnType<typeof createClaimPacket>;
   submissionPlan?: ClaimSubmissionPlan;
   error?: string;
 } {
-  const claim = getClaim(claimId);
+  const claim = getClaim(claimId, tenantId);
   if (!claim) return { ok: false, error: 'Claim not found' };
 
   ensureRegistry();
@@ -187,12 +187,13 @@ export function generateClaimPacketForClaim(claimId: string): {
 /* ── Transition with validation ─────────────────────────────── */
 
 export function transitionHmoClaim(
+  tenantId: string,
   claimId: string,
   toStatus: ClaimStatus,
   actor: string,
   detail?: string
 ): Claim {
-  const claim = getClaim(claimId);
+  const claim = getClaim(claimId, tenantId);
   if (!claim) throw new Error(`Claim not found: ${claimId}`);
 
   const updated = transitionClaim(claim, toStatus, actor, detail);
@@ -203,6 +204,7 @@ export function transitionHmoClaim(
 /* ── Denial capture ─────────────────────────────────────────── */
 
 export interface DenialRecord {
+  tenantId: string;
   claimId: string;
   reasonText: string;
   reasonCode?: string;
@@ -226,12 +228,18 @@ export function initDenialStoreRepo(repo: DenialDbRepo): void {
 const denialStore = new Map<string, DenialRecord[]>();
 
 export function recordDenial(params: {
+  tenantId: string;
   claimId: string;
   reasonText: string;
   reasonCode?: string;
   actor: string;
 }): DenialRecord {
+  const claim = getClaim(params.claimId, params.tenantId);
+  if (!claim) {
+    throw new Error(`Claim not found: ${params.claimId}`);
+  }
   const record: DenialRecord = {
+    tenantId: params.tenantId,
     claimId: params.claimId,
     reasonText: params.reasonText,
     reasonCode: params.reasonCode,
@@ -247,7 +255,7 @@ export function recordDenial(params: {
   denialDbRepo
     ?.insert({
       id: randomUUID(),
-      tenantId: 'default',
+      tenantId: params.tenantId,
       claimId: params.claimId,
       reasonCode: params.reasonCode,
       reasonDescription: params.reasonText,
@@ -261,8 +269,10 @@ export function recordDenial(params: {
   return record;
 }
 
-export function getDenials(claimId: string): DenialRecord[] {
-  return denialStore.get(claimId) ?? [];
+export function getDenials(tenantId: string, claimId: string): DenialRecord[] {
+  const claim = getClaim(claimId, tenantId);
+  if (!claim) return [];
+  return (denialStore.get(claimId) ?? []).filter((d) => d.tenantId === tenantId);
 }
 
 /* ── Status board summary ───────────────────────────────────── */
@@ -280,7 +290,7 @@ export function getClaimsStatusBoard(tenantId: string): {
 
   const recentDenials: DenialRecord[] = [];
   for (const [, records] of denialStore) {
-    recentDenials.push(...records);
+    recentDenials.push(...records.filter((r) => r.tenantId === tenantId));
   }
   recentDenials.sort((a, b) => b.deniedAt.localeCompare(a.deniedAt));
 

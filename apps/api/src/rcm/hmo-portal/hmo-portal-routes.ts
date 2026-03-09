@@ -59,6 +59,29 @@ import {
 const loaPacketCache = new Map<string, LoaPacket>();
 const claimPacketCache = new Map<string, HmoClaimPacket>();
 
+function resolveTenantId(request: FastifyRequest): string | null {
+  const headerTenantId = request.headers['x-tenant-id'];
+  if (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0) {
+    return headerTenantId.trim();
+  }
+  const requestTenantId = (request as any).tenantId;
+  if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+    return requestTenantId.trim();
+  }
+  const sessionTenantId = (request as any).session?.tenantId;
+  if (typeof sessionTenantId === 'string' && sessionTenantId.trim().length > 0) {
+    return sessionTenantId.trim();
+  }
+  return null;
+}
+
+function requireTenantId(request: FastifyRequest, reply: FastifyReply): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, error: 'TENANT_REQUIRED' });
+  return null;
+}
+
 /* ── Plugin ─────────────────────────────────────────────────── */
 
 export default async function hmoPortalRoutes(server: FastifyInstance): Promise<void> {
@@ -220,21 +243,25 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     // Create submission record
     const session = (req as any).session;
     const actor = session?.userName ?? session?.duz ?? 'system';
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const sub = createSubmission({
+      tenantId,
       payerId: packet.payerId,
       payerName: packet.payerName,
       loaRequestId: packet.loaRequestId,
       actor,
     });
-    updateSubmissionFields(sub.id, { loaPacketId: packet.packetId });
+    updateSubmissionFields(tenantId, sub.id, { loaPacketId: packet.packetId });
     transitionSubmission(
+      tenantId,
       sub.id,
       'loa_pending',
       actor,
       'LOA packet generated for manual portal submission.'
     );
     for (const f of result.exportFiles) {
-      addExportFile(sub.id, f.filename);
+      addExportFile(tenantId, sub.id, f.filename);
     }
 
     return { ok: true, submissionId: sub.id, result };
@@ -345,25 +372,29 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
 
     const session = (req as any).session;
     const actor = session?.userName ?? session?.duz ?? 'system';
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const sub = createSubmission({
+      tenantId,
       payerId: packet.payerId,
       payerName: packet.payerName,
       claimId: packet.sourceClaimId,
       actor,
     });
-    updateSubmissionFields(sub.id, { claimPacketId: packet.packetId });
+    updateSubmissionFields(tenantId, sub.id, { claimPacketId: packet.packetId });
     // Advance through state machine to claim_exported
-    transitionSubmission(sub.id, 'loa_pending', actor, 'Claim submission initiated.');
-    transitionSubmission(sub.id, 'loa_approved', actor, 'LOA pre-approved for claim.');
-    transitionSubmission(sub.id, 'claim_prepared', actor, 'Claim packet built.');
+    transitionSubmission(tenantId, sub.id, 'loa_pending', actor, 'Claim submission initiated.');
+    transitionSubmission(tenantId, sub.id, 'loa_approved', actor, 'LOA pre-approved for claim.');
+    transitionSubmission(tenantId, sub.id, 'claim_prepared', actor, 'Claim packet built.');
     transitionSubmission(
+      tenantId,
       sub.id,
       'claim_exported',
       actor,
       'Claim packet exported for portal submission.'
     );
     for (const f of result.exportFiles) {
-      addExportFile(sub.id, f.filename);
+      addExportFile(tenantId, sub.id, f.filename);
     }
 
     return { ok: true, submissionId: sub.id, result };
@@ -410,11 +441,14 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── GET /rcm/hmo-portal/submissions ──────────────────────── */
-  server.get('/rcm/hmo-portal/submissions', async (req: FastifyRequest) => {
+  server.get('/rcm/hmo-portal/submissions', async (req: FastifyRequest, reply: FastifyReply) => {
     const q = req.query as any;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     return {
       ok: true,
       submissions: listSubmissions({
+        tenantId,
         payerId: q.payerId,
         status: q.status as HmoSubmissionStatus | undefined,
         claimId: q.claimId,
@@ -424,8 +458,10 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
   });
 
   /* ── GET /rcm/hmo-portal/submissions/stats ────────────────── */
-  server.get('/rcm/hmo-portal/submissions/stats', async () => {
-    return { ok: true, stats: getSubmissionStats() };
+  server.get('/rcm/hmo-portal/submissions/stats', async (req: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    return { ok: true, stats: getSubmissionStats(tenantId) };
   });
 
   /* ── GET /rcm/hmo-portal/submissions/:id ──────────────────── */
@@ -433,7 +469,9 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     '/rcm/hmo-portal/submissions/:id',
     async (req: FastifyRequest, reply: FastifyReply) => {
       const { id } = req.params as { id: string };
-      const sub = getSubmission(id);
+      const tenantId = requireTenantId(req, reply);
+      if (!tenantId) return;
+      const sub = getSubmission(tenantId, id);
       if (!sub) {
         reply.code(404);
         return { ok: false, error: 'Submission not found.' };
@@ -457,8 +495,10 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
 
       const session = (req as any).session;
       const actor = session?.userName ?? session?.duz ?? 'system';
+      const tenantId = requireTenantId(req, reply);
+      if (!tenantId) return;
 
-      const result = transitionSubmission(id, toStatus, actor, detail);
+      const result = transitionSubmission(tenantId, id, toStatus, actor, detail);
       if (!result.ok) {
         reply.code(400);
         return result;
@@ -481,7 +521,9 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
         return { ok: false, error: 'note is required.' };
       }
 
-      const result = addStaffNote(id, note);
+      const tenantId = requireTenantId(req, reply);
+      if (!tenantId) return;
+      const result = addStaffNote(tenantId, id, note);
       if (!result.ok) {
         reply.code(404);
         return result;

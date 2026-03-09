@@ -57,9 +57,19 @@ import type { UnderpaymentStatus } from './types.js';
 
 function getSession(request: FastifyRequest): { duz: string; tenantId: string } {
   const s = (request as any).session;
+  const requestTenantId = (request as any).tenantId;
+  const headerTenantId = request.headers['x-tenant-id'];
   return {
     duz: s?.duz ?? 'system',
-    tenantId: s?.tenantId ?? 'default',
+    tenantId:
+      (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0
+        ? requestTenantId.trim()
+        : undefined) ||
+      (typeof s?.tenantId === 'string' && s.tenantId.trim().length > 0 ? s.tenantId.trim() : undefined) ||
+      (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined) ||
+      'default',
   };
 }
 
@@ -79,7 +89,7 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
         return reply.status(400).send({ ok: false, error: parsed.error.issues });
       }
 
-      const { duz } = getSession(request);
+      const { duz, tenantId } = getSession(request);
       const { entries, sourceType, originalFilename, parserVersion } = parsed.data;
 
       // Compute totals
@@ -92,6 +102,7 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
 
       // Create import record
       const imp = await createRemittanceImport({
+        tenantId,
         sourceType,
         originalFilename,
         parserName: 'batch-api',
@@ -106,6 +117,7 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
       const payments = await Promise.all(
         entries.map((e, idx) =>
           createPaymentRecord({
+            tenantId,
             remittanceImportId: imp.id,
             claimRef: e.claimRef,
             payerId: e.payerId,
@@ -151,8 +163,8 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
    * ───────────────────────────────────────────────── */
   server.get(
     '/rcm/reconciliation/imports',
-    async (_request: FastifyRequest, reply: FastifyReply) => {
-      const imports = await listRemittanceImports();
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const imports = await listRemittanceImports(getSession(request).tenantId);
       return reply.send({ ok: true, imports });
     }
   );
@@ -164,11 +176,12 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     '/rcm/reconciliation/imports/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as { id: string };
-      const imp = await getRemittanceImportById(id);
+      const { tenantId } = getSession(request);
+      const imp = await getRemittanceImportById(tenantId, id);
       if (!imp) {
         return reply.status(404).send({ ok: false, error: 'Import not found' });
       }
-      const payments = await listPaymentsByImport(id);
+      const payments = await listPaymentsByImport(tenantId, id);
       return reply.send({ ok: true, import: imp, payments });
     }
   );
@@ -184,7 +197,7 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
       if (!parsed.success) {
         return reply.status(400).send({ ok: false, error: parsed.error.issues });
       }
-      const result = await listPayments(parsed.data);
+      const result = await listPayments(getSession(request).tenantId, parsed.data);
       return reply.send({ ok: true, ...result });
     }
   );
@@ -196,11 +209,12 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     '/rcm/reconciliation/payments/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as { id: string };
-      const payment = await getPaymentById(id);
+      const { tenantId } = getSession(request);
+      const payment = await getPaymentById(tenantId, id);
       if (!payment) {
         return reply.status(404).send({ ok: false, error: 'Payment not found' });
       }
-      const matches = await listMatchesByPayment(id);
+      const matches = await listMatchesByPayment(tenantId, id);
       return reply.send({ ok: true, payment, matches });
     }
   );
@@ -213,7 +227,8 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     '/rcm/reconciliation/payments/:id/match',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as { id: string };
-      const payment = await getPaymentById(id);
+      const { duz, tenantId } = getSession(request);
+      const payment = await getPaymentById(tenantId, id);
       if (!payment) {
         return reply.status(404).send({ ok: false, error: 'Payment not found' });
       }
@@ -225,8 +240,8 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
         return reply.status(400).send({ ok: false, error: 'claimRef is required' });
       }
 
-      const { duz } = getSession(request);
       const match = await createMatch({
+        tenantId,
         paymentId: id,
         claimRef,
         matchConfidence: 100,
@@ -236,8 +251,8 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
       });
 
       // Confirm match immediately
-      await confirmMatch(match.id, 'CONFIRMED', duz, notes);
-      await updatePaymentStatus(id, 'MATCHED');
+      await confirmMatch(tenantId, match.id, 'CONFIRMED', duz, notes);
+      await updatePaymentStatus(tenantId, id, 'MATCHED');
 
       appendRcmAudit('recon.matched', {
         claimId: claimRef,
@@ -263,13 +278,13 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
         return reply.status(400).send({ ok: false, error: 'importId is required' });
       }
 
-      const imp = await getRemittanceImportById(importId);
+      const { duz, tenantId } = getSession(request);
+      const imp = await getRemittanceImportById(tenantId, importId);
       if (!imp) {
         return reply.status(404).send({ ok: false, error: 'Import not found' });
       }
 
-      const { duz } = getSession(request);
-      const result = await matchImportBatch(importId);
+      const result = await matchImportBatch(tenantId, importId);
 
       appendRcmAudit('recon.batch_matched', {
         userId: duz,
@@ -294,8 +309,8 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
    * ───────────────────────────────────────────────── */
   server.get(
     '/rcm/reconciliation/matches/review',
-    async (_request: FastifyRequest, reply: FastifyReply) => {
-      const matches = await listMatchesByStatus('REVIEW_REQUIRED');
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const matches = await listMatchesByStatus(getSession(request).tenantId, 'REVIEW_REQUIRED');
       return reply.send({ ok: true, matches });
     }
   );
@@ -308,7 +323,8 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     '/rcm/reconciliation/matches/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as { id: string };
-      const existing = await getMatchById(id);
+      const { duz, tenantId } = getSession(request);
+      const existing = await getMatchById(tenantId, id);
       if (!existing) {
         return reply.status(404).send({ ok: false, error: 'Match not found' });
       }
@@ -319,14 +335,13 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
         return reply.status(400).send({ ok: false, error: parsed.error.issues });
       }
 
-      const { duz } = getSession(request);
-      const updated = await confirmMatch(id, parsed.data.matchStatus, duz, parsed.data.notes);
+      const updated = await confirmMatch(tenantId, id, parsed.data.matchStatus, duz, parsed.data.notes);
 
       // Update payment status based on match decision
       if (parsed.data.matchStatus === 'CONFIRMED') {
-        await updatePaymentStatus(existing.paymentId, 'MATCHED');
+        await updatePaymentStatus(tenantId, existing.paymentId, 'MATCHED');
       } else if (parsed.data.matchStatus === 'REJECTED') {
-        await updatePaymentStatus(existing.paymentId, 'UNMATCHED');
+        await updatePaymentStatus(tenantId, existing.paymentId, 'UNMATCHED');
       }
 
       appendRcmAudit('recon.confirmed', {
@@ -355,7 +370,7 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
       if (!parsed.success) {
         return reply.status(400).send({ ok: false, error: parsed.error.issues });
       }
-      const result = await listUnderpayments(parsed.data);
+      const result = await listUnderpayments(getSession(request).tenantId, parsed.data);
       return reply.send({ ok: true, ...result });
     }
   );
@@ -367,13 +382,14 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     '/rcm/reconciliation/underpayments/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as { id: string };
-      const up = await getUnderpaymentById(id);
+      const { tenantId } = getSession(request);
+      const up = await getUnderpaymentById(tenantId, id);
       if (!up) {
         return reply.status(404).send({ ok: false, error: 'Underpayment case not found' });
       }
       // Fetch the associated payment + matches for context
-      const payment = await getPaymentById(up.paymentId);
-      const matches = payment ? await listMatchesByPayment(payment.id) : [];
+      const payment = await getPaymentById(tenantId, up.paymentId);
+      const matches = payment ? await listMatchesByPayment(tenantId, payment.id) : [];
       return reply.send({ ok: true, underpayment: up, payment, matches });
     }
   );
@@ -386,7 +402,8 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     '/rcm/reconciliation/underpayments/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as { id: string };
-      const existing = await getUnderpaymentById(id);
+      const { duz, tenantId } = getSession(request);
+      const existing = await getUnderpaymentById(tenantId, id);
       if (!existing) {
         return reply.status(404).send({ ok: false, error: 'Underpayment case not found' });
       }
@@ -408,8 +425,8 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
         });
       }
 
-      const { duz } = getSession(request);
       const updated = await updateUnderpaymentCase(
+        tenantId,
         id,
         {
           status: parsed.data.status,
@@ -443,7 +460,8 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     '/rcm/reconciliation/underpayments/:id/send-to-denials',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as { id: string };
-      const up = await getUnderpaymentById(id);
+      const { duz, tenantId } = getSession(request);
+      const up = await getUnderpaymentById(tenantId, id);
       if (!up) {
         return reply.status(404).send({ ok: false, error: 'Underpayment case not found' });
       }
@@ -456,14 +474,13 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
         });
       }
 
-      const { duz } = getSession(request);
-
       // Lazy import to avoid circular dependency
       const { createDenialCase } = await import('../denials/denial-store.js');
 
       // Create denial case from underpayment
       const denial = await createDenialCase(
         {
+          tenantId,
           claimRef: up.claimRef,
           payerId: up.payerId,
           denialSource: 'EDI_835',
@@ -477,6 +494,7 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
 
       // Link underpayment to denial
       await updateUnderpaymentCase(
+        tenantId,
         id,
         {
           status: 'APPEALING' as UnderpaymentStatus,
@@ -503,8 +521,8 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
   /* ─────────────────────────────────────────────────
    * GET /rcm/reconciliation/stats
    * ───────────────────────────────────────────────── */
-  server.get('/rcm/reconciliation/stats', async (_request: FastifyRequest, reply: FastifyReply) => {
-    const stats = await getReconciliationStats();
+  server.get('/rcm/reconciliation/stats', async (request: FastifyRequest, reply: FastifyReply) => {
+    const stats = await getReconciliationStats(getSession(request).tenantId);
     return reply.send({ ok: true, stats });
   });
 }

@@ -415,6 +415,7 @@ export function isHmoManualTransition(to: HmoSubmissionStatus): boolean {
 
 export interface HmoSubmissionRecord {
   id: string;
+  tenantId: string;
   payerId: string;
   payerName: string;
   claimId?: string; // Phase 38 claim store ID

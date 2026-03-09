@@ -135,6 +135,7 @@ export interface DenialCase {
 /* ── Create Denial Input ────────────────────────────────────── */
 
 export const CreateDenialSchema = z.object({
+  tenantId: z.string().max(100).optional(),
   claimRef: z.string().min(1).max(100),
   vistaClaimIen: z.string().max(50).optional(),
   patientDfn: z.string().max(50).optional(),

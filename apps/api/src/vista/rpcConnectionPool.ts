@@ -82,6 +82,19 @@ export type RpcParam =
   | { type: 'literal'; value: string }
   | { type: 'list'; value: Record<string, string> };
 
+function encodeListKeyForMumps(key: string): string {
+  const trimmed = key.trim();
+  if (!trimmed) return '""';
+  if (trimmed.startsWith('"')) return trimmed;
+  if (/^\d+(,\d+)*$/.test(trimmed)) return trimmed;
+  const commaIndex = trimmed.indexOf(',');
+  if (commaIndex === -1) return '"' + trimmed + '"';
+  const head = trimmed.slice(0, commaIndex).trim();
+  const tail = trimmed.slice(commaIndex);
+  if (!head) return trimmed;
+  return '"' + head + '"' + tail;
+}
+
 function buildRpcMessageEx(rpcName: string, params: RpcParam[]): string {
   let msg = PREFIX + '11302' + '\x01' + '1' + sPack(rpcName);
   if (params.length === 0) {
@@ -95,7 +108,7 @@ function buildRpcMessageEx(rpcName: string, params: RpcParam[]): string {
         const entries = Object.entries(p.value);
         msg += '2';
         entries.forEach(([key, val], idx) => {
-          const quotedKey = '"' + key + '"';
+          const quotedKey = encodeListKeyForMumps(key);
           msg += lPack(quotedKey) + lPack(val);
           msg += idx < entries.length - 1 ? 't' : 'f';
         });
@@ -211,17 +224,43 @@ function connRawSend(conn: PooledConnection, data: string): Promise<void> {
   });
 }
 
-function connReadToEOT(conn: PooledConnection): Promise<string> {
-  return new Promise((resolve, reject) => {
-    if (!conn.sock || conn.sock.destroyed) return reject(new Error('Socket closed'));
+function sanitizeBufferPreview(raw: string): string {
+  return raw.replace(/[\x00-\x1f]/g, ' ').trim().slice(0, 120);
+}
 
+function taintConnection(conn: PooledConnection): void {
+  conn.connected = false;
+  conn.readBuf = '';
+  try {
+    if (conn.sock && !conn.sock.destroyed) {
+      conn.sock.destroy();
+    }
+  } catch {
+    /* best effort */
+  }
+}
+
+function connReadToEOT(conn: PooledConnection): Promise<string> {
+  if (conn.readBuf.length > 0) {
     const existing = conn.readBuf.indexOf(EOT);
     if (existing !== -1) {
       const result = conn.readBuf.substring(0, existing);
       conn.readBuf = conn.readBuf.substring(existing + 1);
       conn.lastActivityMs = Date.now();
-      return resolve(result);
+      return Promise.resolve(result);
     }
+
+    const preview = sanitizeBufferPreview(conn.readBuf);
+    taintConnection(conn);
+    return Promise.reject(
+      new Error(
+        `Stale buffered RPC data detected before read${preview ? ` (${preview})` : ''}`
+      )
+    );
+  }
+
+  return new Promise((resolve, reject) => {
+    if (!conn.sock || conn.sock.destroyed) return reject(new Error('Socket closed'));
 
     function onData(chunk: Buffer) {
       conn.readBuf += chunk.toString('latin1');
@@ -237,23 +276,34 @@ function connReadToEOT(conn: PooledConnection): Promise<string> {
 
     function onErr(e: Error) {
       cleanup();
+      taintConnection(conn);
       reject(new Error('Read: ' + e.message));
     }
 
     function onClose() {
       cleanup();
-      if (conn.readBuf.length > 0) {
-        const result = conn.readBuf;
-        conn.readBuf = '';
-        resolve(result);
-      } else {
-        reject(new Error('Connection closed before response'));
-      }
+      const preview = sanitizeBufferPreview(conn.readBuf);
+      taintConnection(conn);
+      reject(
+        new Error(
+          preview
+            ? `Connection closed before response terminator (${preview})`
+            : 'Connection closed before response'
+        )
+      );
     }
 
     const timer = setTimeout(() => {
       cleanup();
-      reject(new Error(`Read timeout (${CONNECT_TIMEOUT_MS}ms)`));
+      const preview = sanitizeBufferPreview(conn.readBuf);
+      taintConnection(conn);
+      reject(
+        new Error(
+          preview
+            ? `Read timeout (${CONNECT_TIMEOUT_MS}ms) with partial buffered response (${preview})`
+            : `Read timeout (${CONNECT_TIMEOUT_MS}ms)`
+        )
+      );
     }, CONNECT_TIMEOUT_MS);
 
     function cleanup() {
@@ -358,6 +408,12 @@ async function createPooledConnection(
       avLines[3]?.trim() || avLines[2]?.trim() || avLines[1]?.trim() || 'Invalid credentials';
     throw new Error('Pool auth failed: ' + reason.replace(/[\x00-\x1f]/g, ' ').trim());
   }
+  if (authDuz !== duz) {
+    sock.destroy();
+    throw new Error(
+      `Pool DUZ mismatch: requested ${duz}, authenticated ${authDuz}. Refusing mislabeled clinician session.`
+    );
+  }
 
   // XWB CREATE CONTEXT
   const ctxEnc = cipherEncrypt(context);
@@ -403,8 +459,15 @@ export interface RpcContext {
   vistaHost: string;
   vistaPort: number;
   vistaContext?: string;
-  accessCode: string;
-  verifyCode: string;
+  accessCode?: string;
+  verifyCode?: string;
+}
+
+export interface RpcPoolTestConnection {
+  sock: Socket;
+  readBuf: string;
+  connected: boolean;
+  lastActivityMs: number;
 }
 
 /**
@@ -434,6 +497,12 @@ async function acquireConnection(ctx: RpcContext): Promise<PooledConnection> {
     }
   }
 
+  if (!ctx.accessCode || !ctx.verifyCode) {
+    throw new Error(
+      `No active VistA credential binding for ${key}. Re-login or re-bind before running clinician-scoped RPCs.`
+    );
+  }
+
   conn = await createPooledConnection(
     ctx.tenantId,
     ctx.duz,
@@ -445,6 +514,11 @@ async function acquireConnection(ctx: RpcContext): Promise<PooledConnection> {
   );
   pool.set(key, conn);
   return conn;
+}
+
+/** Eagerly establish a pooled connection so login/bind fails fast if attribution is broken. */
+export async function primeRpcContext(ctx: RpcContext): Promise<void> {
+  await acquireConnection(ctx);
 }
 
 /**
@@ -489,9 +563,60 @@ export async function poolCallRpc(
         duz: ctx.duz,
         requestId: getRequestId(),
       });
-      conn.connected = false;
+      taintConnection(conn);
       throw err;
     }
+  });
+}
+
+/**
+ * Execute a sequence of RPC reads atomically on one pooled connection.
+ * Use this when multiple related RPCs must not interleave with other callers.
+ */
+export async function poolRunRpcSequence<T>(
+  ctx: RpcContext,
+  fn: (callLocked: (rpcName: string, params: string[]) => Promise<string[]>) => Promise<T>
+): Promise<T> {
+  const conn = await acquireConnection(ctx);
+  return withConnLock(conn, async () => {
+    const callLocked = async (rpcName: string, params: string[]): Promise<string[]> => {
+      if (!conn.connected || !conn.sock || conn.sock.destroyed) {
+        throw new Error('Connection lost for ' + conn.key);
+      }
+
+      const rpcMsg = buildRpcMessage(rpcName, params);
+      const start = Date.now();
+      try {
+        await connRawSend(conn, rpcMsg);
+        const resp = stripNulls(await connReadToEOT(conn));
+        const lines = resp.split(/\r?\n/).filter((l) => l.length > 0);
+        recordRpcTrace({
+          rpcName,
+          params: [],
+          durationMs: Date.now() - start,
+          success: true,
+          responseLines: lines.length,
+          duz: ctx.duz,
+          requestId: getRequestId(),
+        });
+        return lines;
+      } catch (err: any) {
+        recordRpcTrace({
+          rpcName,
+          params: [],
+          durationMs: Date.now() - start,
+          success: false,
+          error: err.message?.slice(0, 200),
+          responseLines: 0,
+          duz: ctx.duz,
+          requestId: getRequestId(),
+        });
+        taintConnection(conn);
+        throw err;
+      }
+    };
+
+    return fn(callLocked);
   });
 }
 
@@ -536,7 +661,7 @@ export async function poolCallRpcWithList(
         duz: ctx.duz,
         requestId: getRequestId(),
       });
-      conn.connected = false;
+      taintConnection(conn);
       throw err;
     }
   });
@@ -596,3 +721,9 @@ export function startPoolReaper(): void {
   }, 60_000);
   idleReapTimer.unref();
 }
+
+export const __test__ = {
+  readToEot(conn: RpcPoolTestConnection): Promise<string> {
+    return connReadToEOT(conn as PooledConnection);
+  },
+};

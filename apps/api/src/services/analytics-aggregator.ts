@@ -338,22 +338,24 @@ export function getMetricSeries(
 /**
  * Get aggregation store stats.
  */
-export function getAggregationStats(): {
+export function getAggregationStats(tenantId?: string): {
   hourlyBuckets: number;
   dailyBuckets: number;
   oldestHourly: string | null;
   newestHourly: string | null;
   metrics: string[];
 } {
+  const scopedHourly = tenantId ? hourlyBuckets.filter((b) => b.tenantId === tenantId) : hourlyBuckets;
+  const scopedDaily = tenantId ? dailyBuckets.filter((b) => b.tenantId === tenantId) : dailyBuckets;
   const metricSet = new Set<string>();
-  for (const b of hourlyBuckets) metricSet.add(b.metric);
-  for (const b of dailyBuckets) metricSet.add(b.metric);
+  for (const b of scopedHourly) metricSet.add(b.metric);
+  for (const b of scopedDaily) metricSet.add(b.metric);
 
   return {
-    hourlyBuckets: hourlyBuckets.length,
-    dailyBuckets: dailyBuckets.length,
-    oldestHourly: hourlyBuckets.length > 0 ? hourlyBuckets[0].periodStart : null,
-    newestHourly: hourlyBuckets.length > 0 ? hourlyBuckets[hourlyBuckets.length - 1].periodStart : null,
+    hourlyBuckets: scopedHourly.length,
+    dailyBuckets: scopedDaily.length,
+    oldestHourly: scopedHourly.length > 0 ? scopedHourly[0].periodStart : null,
+    newestHourly: scopedHourly.length > 0 ? scopedHourly[scopedHourly.length - 1].periodStart : null,
     metrics: Array.from(metricSet).sort(),
   };
 }

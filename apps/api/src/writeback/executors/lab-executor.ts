@@ -17,8 +17,6 @@
 import type { ClinicalCommand, RpcExecutor, DryRunTranscript } from '../types.js';
 import { optionalRpc } from '../../vista/rpcCapabilities.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
-import { validateCredentials } from '../../vista/config.js';
-import { connect, disconnect, getDuz } from '../../vista/rpcBrokerClient.js';
 import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
@@ -56,26 +54,15 @@ export const labExecutor: RpcExecutor = {
       }
     }
 
-    validateCredentials();
-    await connect();
-
-    try {
-      switch (intent) {
-        case 'PLACE_LAB_ORDER':
-          return await execPlaceLabOrder(command);
-        case 'ACK_LAB_RESULT':
-          return await execAckLabResult(command);
-        default:
-          throw Object.assign(new Error(`Unimplemented LAB intent: ${intent}`), {
-            errorClass: 'permanent',
-          });
-      }
-    } finally {
-      try {
-        disconnect();
-      } catch {
-        /* best-effort */
-      }
+    switch (intent) {
+      case 'PLACE_LAB_ORDER':
+        return await execPlaceLabOrder(command);
+      case 'ACK_LAB_RESULT':
+        return await execAckLabResult(command);
+      default:
+        throw Object.assign(new Error(`Unimplemented LAB intent: ${intent}`), {
+          errorClass: 'permanent',
+        });
     }
   },
 
@@ -127,7 +114,15 @@ async function execPlaceLabOrder(cmd: ClinicalCommand): Promise<{
 
   try {
     // Step 2: SAVE lab order
-    const duz = getDuz();
+    const duz = String(cmd.createdBy || '').trim();
+    if (!duz) {
+      throw Object.assign(
+        new Error('createdBy DUZ required for clinician-attributed PLACE_LAB_ORDER'),
+        {
+          errorClass: 'permanent',
+        }
+      );
+    }
     const saveResult = await safeCallRpc('ORWDX SAVE', [
       dfn,
       duz,
@@ -177,7 +172,15 @@ async function execAckLabResult(cmd: ClinicalCommand): Promise<{
     });
   }
 
-  const duz = getDuz();
+  const duz = String(cmd.createdBy || '').trim();
+  if (!duz) {
+    throw Object.assign(
+      new Error('createdBy DUZ required for clinician-attributed ACK_LAB_RESULT'),
+      {
+        errorClass: 'permanent',
+      }
+    );
+  }
   await safeCallRpc('ORWLRR ACK', [orderIen, duz]);
 
   log.info(`LAB ACK_LAB_RESULT completed: orderIen=${orderIen}`);

@@ -196,16 +196,19 @@ export function deleteTemplate(tenantId: string, id: string): boolean {
 }
 
 /** Get template store stats */
-export function getTemplateStoreStats(): {
+export function getTemplateStoreStats(tenantId: string): {
   total: number;
   byStatus: Record<string, number>;
   byScope: Record<string, number>;
 } {
   const byStatus: Record<string, number> = {};
   const byScope: Record<string, number> = {};
+  let total = 0;
   for (const t of templates.values()) {
+    if (t.scope !== 'system' && t.tenantId !== tenantId) continue;
+    total++;
     byStatus[t.status] = (byStatus[t.status] || 0) + 1;
     byScope[t.scope] = (byScope[t.scope] || 0) + 1;
   }
-  return { total: templates.size, byStatus, byScope };
+  return { total, byStatus, byScope };
 }

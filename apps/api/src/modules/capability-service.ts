@@ -51,6 +51,14 @@ export interface ResolvedCapability {
   description: string;
 }
 
+function normalizeCapabilityStatus(status: string): CapabilityStatus {
+  // Older config entries use "configured" to mean "available when wired".
+  if (status === 'configured') {
+    return 'live';
+  }
+  return status as CapabilityStatus;
+}
+
 /* ------------------------------------------------------------------ */
 /* State                                                               */
 /* ------------------------------------------------------------------ */
@@ -69,7 +77,16 @@ export function initCapabilityService(): void {
   try {
     const capsPath = join(CONFIG_ROOT, 'capabilities.json');
     const capsData = JSON.parse(readFileSync(capsPath, 'utf-8'));
-    capabilityDefinitions = capsData.capabilities || {};
+    const rawDefinitions = capsData.capabilities || {};
+    capabilityDefinitions = Object.fromEntries(
+      Object.entries(rawDefinitions).map(([name, def]: [string, any]) => [
+        name,
+        {
+          ...def,
+          status: normalizeCapabilityStatus(def.status),
+        },
+      ])
+    );
 
     log.info('Capability service initialized', {
       capabilityCount: Object.keys(capabilityDefinitions).length,

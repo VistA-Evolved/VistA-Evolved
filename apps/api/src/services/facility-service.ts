@@ -121,7 +121,10 @@ const assignmentStore = new Map<string, ProviderFacilityAssignment>();
 export function createFacility(
   tenantId: string,
   input: Omit<Facility, "id" | "tenantId" | "createdAt" | "updatedAt">,
-): Facility {
+): Facility | undefined {
+  if (input.parentFacilityId && !getFacility(input.parentFacilityId, tenantId)) {
+    return undefined;
+  }
   const now = new Date().toISOString();
   const facility: Facility = {
     id: randomUUID(),
@@ -134,8 +137,11 @@ export function createFacility(
   return facility;
 }
 
-export function getFacility(id: string): Facility | undefined {
-  return facilityStore.get(id);
+export function getFacility(id: string, tenantId?: string): Facility | undefined {
+  const facility = facilityStore.get(id);
+  if (!facility) return undefined;
+  if (tenantId && facility.tenantId !== tenantId) return undefined;
+  return facility;
 }
 
 export function listFacilities(tenantId: string): Facility[] {
@@ -145,11 +151,15 @@ export function listFacilities(tenantId: string): Facility[] {
 }
 
 export function updateFacility(
+  tenantId: string,
   id: string,
   patch: Partial<Pick<Facility, "name" | "facilityType" | "address" | "city" | "state" | "postalCode" | "country" | "timezone" | "status" | "metadata" | "stationNumber" | "vistaStationIen" | "parentFacilityId">>,
 ): Facility | undefined {
   const existing = facilityStore.get(id);
-  if (!existing) return undefined;
+  if (!existing || existing.tenantId !== tenantId) return undefined;
+  if (patch.parentFacilityId && !getFacility(patch.parentFacilityId, tenantId)) {
+    return undefined;
+  }
   const updated: Facility = {
     ...existing,
     ...patch,
@@ -159,9 +169,9 @@ export function updateFacility(
   return updated;
 }
 
-export function decommissionFacility(id: string): boolean {
+export function decommissionFacility(tenantId: string, id: string): boolean {
   const existing = facilityStore.get(id);
-  if (!existing) return false;
+  if (!existing || existing.tenantId !== tenantId) return false;
   facilityStore.set(id, { ...existing, status: "decommissioned", updatedAt: new Date().toISOString() });
   return true;
 }
@@ -171,7 +181,11 @@ export function decommissionFacility(id: string): boolean {
 export function createDepartment(
   tenantId: string,
   input: Omit<Department, "id" | "tenantId" | "createdAt" | "updatedAt">,
-): Department {
+): Department | undefined {
+  if (!getFacility(input.facilityId, tenantId)) return undefined;
+  if (input.parentDepartmentId && !getDepartment(input.parentDepartmentId, tenantId)) {
+    return undefined;
+  }
   const now = new Date().toISOString();
   const dept: Department = {
     id: randomUUID(),
@@ -184,8 +198,11 @@ export function createDepartment(
   return dept;
 }
 
-export function getDepartment(id: string): Department | undefined {
-  return departmentStore.get(id);
+export function getDepartment(id: string, tenantId?: string): Department | undefined {
+  const department = departmentStore.get(id);
+  if (!department) return undefined;
+  if (tenantId && department.tenantId !== tenantId) return undefined;
+  return department;
 }
 
 export function listDepartments(tenantId: string, facilityId?: string): Department[] {
@@ -198,11 +215,15 @@ export function listDepartments(tenantId: string, facilityId?: string): Departme
 }
 
 export function updateDepartment(
+  tenantId: string,
   id: string,
   patch: Partial<Pick<Department, "name" | "departmentType" | "code" | "costCenter" | "status" | "metadata" | "vistaServiceIen" | "parentDepartmentId">>,
 ): Department | undefined {
   const existing = departmentStore.get(id);
-  if (!existing) return undefined;
+  if (!existing || existing.tenantId !== tenantId) return undefined;
+  if (patch.parentDepartmentId && !getDepartment(patch.parentDepartmentId, tenantId)) {
+    return undefined;
+  }
   const updated: Department = {
     ...existing,
     ...patch,
@@ -212,9 +233,9 @@ export function updateDepartment(
   return updated;
 }
 
-export function decommissionDepartment(id: string): boolean {
+export function decommissionDepartment(tenantId: string, id: string): boolean {
   const existing = departmentStore.get(id);
-  if (!existing) return false;
+  if (!existing || existing.tenantId !== tenantId) return false;
   departmentStore.set(id, { ...existing, status: "decommissioned", updatedAt: new Date().toISOString() });
   return true;
 }
@@ -224,7 +245,8 @@ export function decommissionDepartment(id: string): boolean {
 export function createLocation(
   tenantId: string,
   input: Omit<Location, "id" | "tenantId" | "createdAt" | "updatedAt">,
-): Location {
+): Location | undefined {
+  if (!getDepartment(input.departmentId, tenantId)) return undefined;
   const now = new Date().toISOString();
   const loc: Location = {
     id: randomUUID(),
@@ -237,8 +259,11 @@ export function createLocation(
   return loc;
 }
 
-export function getLocation(id: string): Location | undefined {
-  return locationStore.get(id);
+export function getLocation(id: string, tenantId?: string): Location | undefined {
+  const location = locationStore.get(id);
+  if (!location) return undefined;
+  if (tenantId && location.tenantId !== tenantId) return undefined;
+  return location;
 }
 
 export function listLocations(tenantId: string, departmentId?: string): Location[] {
@@ -251,11 +276,12 @@ export function listLocations(tenantId: string, departmentId?: string): Location
 }
 
 export function updateLocation(
+  tenantId: string,
   id: string,
   patch: Partial<Pick<Location, "name" | "locationType" | "floor" | "wing" | "roomNumber" | "bedCount" | "status" | "metadata" | "vistaLocationIen">>,
 ): Location | undefined {
   const existing = locationStore.get(id);
-  if (!existing) return undefined;
+  if (!existing || existing.tenantId !== tenantId) return undefined;
   const updated: Location = {
     ...existing,
     ...patch,
@@ -265,9 +291,9 @@ export function updateLocation(
   return updated;
 }
 
-export function decommissionLocation(id: string): boolean {
+export function decommissionLocation(tenantId: string, id: string): boolean {
   const existing = locationStore.get(id);
-  if (!existing) return false;
+  if (!existing || existing.tenantId !== tenantId) return false;
   locationStore.set(id, { ...existing, status: "decommissioned", updatedAt: new Date().toISOString() });
   return true;
 }
@@ -277,7 +303,9 @@ export function decommissionLocation(id: string): boolean {
 export function assignProvider(
   tenantId: string,
   input: Omit<ProviderFacilityAssignment, "id" | "tenantId" | "createdAt">,
-): ProviderFacilityAssignment {
+): ProviderFacilityAssignment | undefined {
+  if (!getFacility(input.facilityId, tenantId)) return undefined;
+  if (input.departmentId && !getDepartment(input.departmentId, tenantId)) return undefined;
   const assignment: ProviderFacilityAssignment = {
     id: randomUUID(),
     tenantId,
@@ -302,9 +330,9 @@ export function listProviderAssignments(
   );
 }
 
-export function removeAssignment(id: string): boolean {
+export function removeAssignment(tenantId: string, id: string): boolean {
   const existing = assignmentStore.get(id);
-  if (!existing) return false;
+  if (!existing || existing.tenantId !== tenantId) return false;
   existing.status = "inactive";
   return true;
 }
@@ -323,8 +351,8 @@ export function getFacilityHierarchy(
   tenantId: string,
   facilityId: string,
 ): FacilityHierarchy | undefined {
-  const facility = facilityStore.get(facilityId);
-  if (!facility || facility.tenantId !== tenantId) return undefined;
+  const facility = getFacility(facilityId, tenantId);
+  if (!facility) return undefined;
 
   const departments = listDepartments(tenantId, facilityId).map((dept) => ({
     department: dept,

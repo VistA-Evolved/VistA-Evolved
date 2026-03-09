@@ -1,46 +1,19 @@
 /**
- * Clinical Procedures Routes -- Phase 537: CP/MD v1
+ * Clinical Procedures Routes -- Phase 537 + Phase 581 + Phase 613
  *
  * Endpoints:
- *   GET  /vista/clinical-procedures?dfn=N                -- List CP results for patient
- *   GET  /vista/clinical-procedures/:id                  -- Detail of a CP result
- *   GET  /vista/clinical-procedures/medicine?dfn=N       -- Medicine (MD) data
- *   GET  /vista/clinical-procedures/consult-link?consultId=N -- Consult-procedure linkage
- *
- * Auth: session-based (/vista/* catch-all in security.ts).
- * VistA RPCs: MD namespace + ORQQCN medicine RPCs + TIU CLINPROC RPCs.
- *
- * All endpoints return integration-pending in the sandbox because
- * MD package RPCs have no data in WorldVistA Docker.
+ *   GET  /vista/clinical-procedures?dfn=N                     -- TIU Clinical Procedures notes, or consult fallback when TIU CP is empty
+ *   GET  /vista/clinical-procedures/:id?kind=tiu|consult      -- Detail for a CP note or consult-backed record
+ *   GET  /vista/clinical-procedures/medicine?dfn=N            -- Medicine (MD) package grounding / pending
+ *   GET  /vista/clinical-procedures/consult-link?dfn=N&consultId=ID -- Read-only consult linkage candidates + detail
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { requireSession } from '../../auth/auth-routes.js';
+import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 
-/* ------------------------------------------------------------------ */
-/* In-memory stub store (future writeback prep)                        */
-/* ------------------------------------------------------------------ */
-
-interface CpResult {
-  id: string;
-  dfn: string;
-  procedureName: string;
-  status: string;
-  datePerformed: string;
-  provider: string;
-  linkedConsultId?: string;
-  vistaIen?: string;
-}
-
-const cpResultStore = new Map<string, CpResult>();
-const patientCpIndex = new Map<string, string[]>();
-
-/* ------------------------------------------------------------------ */
-/* Integration-pending response builder                                */
-/* ------------------------------------------------------------------ */
-
-interface PendingInfo {
+interface VistaGrounding {
   vistaFiles: string[];
   targetRoutines: string[];
   targetRpcs: string[];
@@ -48,159 +21,325 @@ interface PendingInfo {
   sandboxNote: string;
 }
 
-function integrationPendingResponse(endpoint: string, dfn: string, info: PendingInfo) {
+interface CpListItem {
+  id: string;
+  entryType: 'tiu-clinproc' | 'consult';
+  procedureName: string;
+  status: string;
+  datePerformed: string;
+  provider: string;
+  location?: string;
+  service?: string;
+}
+
+function integrationPendingResponse(endpoint: string, key: string, vistaGrounding: VistaGrounding) {
   return {
     ok: true,
+    source: 'integration-pending',
     status: 'integration-pending',
     endpoint,
+    key,
     count: 0,
     results: [],
-    vistaGrounding: {
-      vistaFiles: info.vistaFiles,
-      targetRoutines: info.targetRoutines,
-      targetRpcs: info.targetRpcs,
-      migrationPath: info.migrationPath,
-      sandboxNote: info.sandboxNote,
-    },
-    hint: 'This endpoint returns real VistA data in production. MD package RPCs are callable but return empty results in the WorldVistA sandbox.',
+    vistaGrounding,
+    hint: 'This route remains pending only for MD-package functionality not exposed with useful sandbox data.',
+    rpcUsed: [],
   };
 }
 
-/* ------------------------------------------------------------------ */
-/* Route plugin                                                        */
-/* ------------------------------------------------------------------ */
+function formatVistaDateTime(value: string): string {
+  const input = (value || '').trim();
+  if (!input || input.includes('-') || input.length < 7) return input;
+  const [datePart, timePart] = input.split('.');
+  if (datePart.length < 7) return input;
+  const year = parseInt(datePart.substring(0, 3), 10) + 1700;
+  const month = datePart.substring(3, 5);
+  const day = datePart.substring(5, 7);
+  let output = `${year}-${month}-${day}`;
+  if (timePart && timePart.length >= 4) output += ` ${timePart.substring(0, 2)}:${timePart.substring(2, 4)}`;
+  return output;
+}
+
+function parseTiuDocuments(lines: string[]): CpListItem[] {
+  const seen = new Set<string>();
+  const results: CpListItem[] = [];
+  for (const line of lines) {
+    const parts = line.split('^');
+    if (parts.length < 7) continue;
+    const id = (parts[0] || '').trim();
+    if (!/^\d+$/.test(id) || seen.has(id)) continue;
+    seen.add(id);
+    const title = (parts[1] || '').replace(/^\+\s*/, '').trim();
+    const fmDate = (parts[2] || '').trim();
+    const authorField = (parts[4] || '').trim();
+    const location = (parts[5] || '').trim() || undefined;
+    const status = (parts[6] || '').trim();
+    const authorParts = authorField.split(';');
+    const provider = authorParts.length >= 3 ? authorParts[2] : authorParts[1] || authorField;
+    results.push({
+      id,
+      entryType: 'tiu-clinproc',
+      procedureName: title || `Clinical Procedure ${id}`,
+      status,
+      datePerformed: formatVistaDateTime(fmDate),
+      provider,
+      location,
+    });
+  }
+  return results;
+}
+
+function parseConsults(lines: string[]): CpListItem[] {
+  const results: CpListItem[] = [];
+  for (const line of lines) {
+    const parts = line.split('^');
+    if (parts.length < 9) continue;
+    const id = (parts[0] || '').trim();
+    if (!/^\d+$/.test(id)) continue;
+    const date = formatVistaDateTime(parts[1] || '');
+    const status = (parts[5] || '').trim();
+    const service = (parts[6] || '').trim();
+    const typeCode = (parts[8] || '').trim();
+    results.push({
+      id,
+      entryType: 'consult',
+      procedureName: service || `Consult ${id}`,
+      status,
+      datePerformed: date,
+      provider: '',
+      service,
+      location: typeCode || undefined,
+    });
+  }
+  return results;
+}
+
+function firstNumericValue(lines: string[]): string | undefined {
+  for (const line of lines) {
+    const value = String(line || '').trim();
+    if (/^\d+$/.test(value)) return value;
+  }
+  return undefined;
+}
+
+function hasMeaningfulText(lines: string[]): boolean {
+  return lines.some((line) => {
+    const value = String(line || '').trim();
+    return value.length > 0 && !value.startsWith('-1^');
+  });
+}
 
 export default async function clinicalProceduresRoutes(server: FastifyInstance) {
-  // Ensure stores are ready
   log.info('Clinical Procedures routes registered (Phase 537)');
 
-  /* ------------------------------------------------------------ */
-  /* GET /vista/clinical-procedures?dfn=N -- List CP results       */
-  /* ------------------------------------------------------------ */
   server.get('/vista/clinical-procedures', async (request: FastifyRequest, reply: FastifyReply) => {
-    const session = requireSession(request, reply);
+    const session = await requireSession(request, reply);
     if (!session) return;
 
-    const { dfn } = request.query as { dfn?: string };
-    if (!dfn) {
-      return reply.code(400).send({ ok: false, error: 'Missing dfn query parameter' });
+    const dfn = String((request.query as any)?.dfn || '').trim();
+    if (!/^\d+$/.test(dfn)) {
+      return reply.code(400).send({ ok: false, error: 'Missing or invalid dfn query parameter' });
     }
 
-    // Check in-memory store first
-    const ids = patientCpIndex.get(dfn) || [];
-    const localResults = ids.map((id) => cpResultStore.get(id)).filter(Boolean);
-    if (localResults.length > 0) {
+    const rpcUsed: string[] = [];
+    let classIen: string | undefined;
+
+    try {
+      const classLines = await safeCallRpc('TIU IDENTIFY CLINPROC CLASS', []);
+      rpcUsed.push('TIU IDENTIFY CLINPROC CLASS');
+      classIen = firstNumericValue(classLines);
+
+      if (classIen) {
+        const signedLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', [classIen, '1', dfn, '', '', '0', '0', 'D']);
+        const unsignedLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', [classIen, '2', dfn, '', '', '0', '0', 'D']);
+        rpcUsed.push('TIU DOCUMENTS BY CONTEXT');
+        const tiuResults = parseTiuDocuments([...unsignedLines, ...signedLines]);
+        if (tiuResults.length > 0) {
+          return {
+            ok: true,
+            source: 'vista-tiu-clinproc',
+            classIen,
+            count: tiuResults.length,
+            results: tiuResults,
+            note: 'Showing TIU Clinical Procedures class documents for this patient.',
+            rpcUsed,
+          };
+        }
+      }
+    } catch (err) {
+      log.warn('Clinical Procedures TIU probe failed; falling back to consult-side reads', {
+        err: String(err),
+        dfn,
+      });
+    }
+
+    try {
+      const consultLines = await safeCallRpc('ORQQCN LIST', [dfn]);
+      rpcUsed.push('ORQQCN LIST');
+      const consultResults = parseConsults(consultLines);
       return {
         ok: true,
-        source: 'local',
-        count: localResults.length,
-        results: localResults,
+        source: 'vista-consults-fallback',
+        classIen,
+        count: consultResults.length,
+        results: consultResults,
+        note:
+          consultResults.length > 0
+            ? 'No TIU Clinical Procedures documents were found; showing consult-tracked procedure records available for this patient.'
+            : 'No TIU Clinical Procedures documents or consult-tracked procedure records were found for this patient.',
+        rpcUsed,
       };
+    } catch (err: any) {
+      log.warn('Clinical Procedures consult fallback failed', { err: String(err), dfn });
+      return reply.code(502).send({
+        ok: false,
+        error: err?.message || String(err),
+        rpcUsed,
+      });
+    }
+  });
+
+  server.get('/vista/clinical-procedures/medicine', async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+
+    const dfn = String((request.query as any)?.dfn || '').trim();
+    if (!/^\d+$/.test(dfn)) {
+      return reply.code(400).send({ ok: false, error: 'Missing or invalid dfn query parameter' });
     }
 
-    // MD CLIO / MD TMDPROCEDURE -- not wired in sandbox
-    return integrationPendingResponse('/vista/clinical-procedures', dfn, {
+    return integrationPendingResponse('/vista/clinical-procedures/medicine', dfn, {
       vistaFiles: [
-        'File 702 (Clinical Procedures)',
-        'File 702.01 (CP Definitions)',
-        'File 702.09 (CP Results)',
         'File 697.2 (Medicine)',
+        'File 690 (Electrocardiogram)',
+        'File 691 (Pulmonary Function)',
+        'File 694 (Cardiac Catheterization)',
+        'File 699 (Endoscopy)',
       ],
-      targetRoutines: ['MDCLIO', 'MDRPCOD', 'MDRPCOP', 'MDRPCOR'],
-      targetRpcs: ['MD CLIO', 'MD TMDPROCEDURE', 'MD TMDPATIENT', 'MD TMDRECORDID'],
+      targetRoutines: ['MDRPCOP', 'MDRPCOW', 'MDRPCW'],
+      targetRpcs: ['MD TMDPATIENT', 'MD TMDWIDGET', 'MD TMDCIDC'],
       migrationPath:
-        '1) Wire MD CLIO to fetch CP results from File 702, 2) Parse CliO XML/delimited results, 3) Map to CpResult type',
+        '1) Verify MD package RPC availability in VEHU, 2) wire MD TMDPATIENT and MD TMDWIDGET for patient-scoped medicine results, 3) map package-specific output into stable web types.',
       sandboxNote:
-        'MD RPCs are callable but File 702 has no data in WorldVistA Docker. Requires CP package configuration.',
+        'The MD package remains pending because the sandbox does not expose useful medicine result data for these RPC families.',
     });
   });
 
-  /* ------------------------------------------------------------ */
-  /* GET /vista/clinical-procedures/:id -- CP result detail        */
-  /* ------------------------------------------------------------ */
-  server.get(
-    '/vista/clinical-procedures/:id',
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
-      if (!session) return;
+  server.get('/vista/clinical-procedures/consult-link', async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
 
-      const { id } = request.params as { id: string };
-      const result = cpResultStore.get(id);
-      if (result) {
-        return { ok: true, source: 'local', result };
-      }
-
-      return integrationPendingResponse('/vista/clinical-procedures/:id', id, {
-        vistaFiles: ['File 702 (Clinical Procedures)', 'File 702.09 (CP Results)'],
-        targetRoutines: ['MDCLIO', 'MDRPCOR', 'MDRPCOO'],
-        targetRpcs: ['MD CLIO', 'MD TMDRECORDID', 'MD TMDOUTPUT'],
-        migrationPath:
-          '1) Call MD TMDRECORDID with CP IEN, 2) Parse result record, 3) Optionally call MD TMDOUTPUT for report text',
-        sandboxNote: 'Detail endpoint requires seeded CP data in File 702.',
-      });
+    const dfn = String((request.query as any)?.dfn || '').trim();
+    const consultId = String((request.query as any)?.consultId || '').trim();
+    if (!/^\d+$/.test(dfn)) {
+      return reply.code(400).send({ ok: false, error: 'Missing or invalid dfn query parameter' });
     }
-  );
-
-  /* ------------------------------------------------------------ */
-  /* GET /vista/clinical-procedures/medicine?dfn=N -- Medicine data */
-  /* ------------------------------------------------------------ */
-  server.get(
-    '/vista/clinical-procedures/medicine',
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
-      if (!session) return;
-
-      const { dfn } = request.query as { dfn?: string };
-      if (!dfn) {
-        return reply.code(400).send({ ok: false, error: 'Missing dfn query parameter' });
-      }
-
-      return integrationPendingResponse('/vista/clinical-procedures/medicine', dfn, {
-        vistaFiles: [
-          'File 697.2 (Medicine)',
-          'File 690 (Electrocardiogram)',
-          'File 691 (Pulmonary Function)',
-          'File 694 (Cardiac Catheterization)',
-          'File 699 (Endoscopy)',
-        ],
-        targetRoutines: ['MDRPCOP', 'MDRPCOW', 'MDRPCW'],
-        targetRpcs: ['MD TMDPATIENT', 'MD TMDWIDGET', 'MD TMDCIDC'],
-        migrationPath:
-          '1) Wire MD TMDPATIENT for medicine results by patient, 2) Wire MD TMDWIDGET for widget display data, 3) Map to medicine result types',
-        sandboxNote:
-          'Medicine files (690-699) have no data in WorldVistA Docker. Requires procedure recording in production.',
-      });
+    if (consultId && !/^\d+$/.test(consultId)) {
+      return reply.code(400).send({ ok: false, error: 'consultId must be numeric when provided' });
     }
-  );
 
-  /* ------------------------------------------------------------ */
-  /* GET /vista/clinical-procedures/consult-link?consultId=N       */
-  /* ------------------------------------------------------------ */
-  server.get(
-    '/vista/clinical-procedures/consult-link',
-    async (request: FastifyRequest, reply: FastifyReply) => {
-      const session = requireSession(request, reply);
-      if (!session) return;
-
-      const { consultId } = request.query as { consultId?: string };
-      if (!consultId) {
-        return reply.code(400).send({ ok: false, error: 'Missing consultId query parameter' });
+    const rpcUsed: string[] = [];
+    try {
+      const consultLines = await safeCallRpc('ORQQCN LIST', [dfn]);
+      rpcUsed.push('ORQQCN LIST');
+      const results = parseConsults(consultLines);
+      let detailText = '';
+      if (consultId) {
+        const detailLines = await safeCallRpc('ORQQCN DETAIL', [consultId]);
+        rpcUsed.push('ORQQCN DETAIL');
+        detailText = detailLines.join('\n');
       }
-
-      return integrationPendingResponse('/vista/clinical-procedures/consult-link', consultId, {
-        vistaFiles: ['File 123 (Request/Consultation)', 'File 702 (Clinical Procedures)'],
-        targetRoutines: ['ORQQCN3', 'MDRPCOD'],
-        targetRpcs: [
-          'ORQQCN ASSIGNABLE MED RESULTS',
-          'ORQQCN ATTACH MED RESULTS',
-          'ORQQCN REMOVABLE MED RESULTS',
-          'ORQQCN GET MED RESULT DETAILS',
-        ],
-        migrationPath:
-          '1) Call ORQQCN ASSIGNABLE MED RESULTS to get linkable results, 2) Present for selection, 3) POST ORQQCN ATTACH MED RESULTS to link',
-        sandboxNote:
-          'Consult-procedure linking requires both File 123 consults and File 702 CP results.',
-      });
+      return {
+        ok: true,
+        source: 'vista',
+        count: results.length,
+        results,
+        selectedConsultId: consultId || undefined,
+        detailText,
+        rpcUsed,
+        vistaGrounding: {
+          vistaFiles: ['File 123 (Request/Consultation)', 'File 702 (Clinical Procedures)'],
+          targetRoutines: ['ORQQCN3', 'MDRPCOD'],
+          targetRpcs: [
+            'ORQQCN ASSIGNABLE MED RESULTS',
+            'ORQQCN ATTACH MED RESULTS',
+            'ORQQCN REMOVABLE MED RESULTS',
+            'ORQQCN GET MED RESULT DETAILS',
+          ],
+          migrationPath:
+            'Read-only consult candidates are live. The remaining step is wiring assignable medicine results and attach/detach writes when MD package data is available.',
+          sandboxNote:
+            'Consult reads are live now. Consult-to-medicine attach/detach remains pending until the MD package exposes assignable results in the sandbox.',
+        },
+      };
+    } catch (err: any) {
+      log.warn('Clinical Procedures consult-link route failed', { err: String(err), dfn, consultId });
+      return reply.code(502).send({ ok: false, error: err?.message || String(err), rpcUsed });
     }
-  );
+  });
+
+  server.get('/vista/clinical-procedures/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+
+    const id = String((request.params as any)?.id || '').trim();
+    const kind = String((request.query as any)?.kind || '').trim().toLowerCase();
+    if (!/^\d+$/.test(id)) {
+      return reply.code(400).send({ ok: false, error: 'Missing or invalid clinical procedure id' });
+    }
+
+    const detailOrder =
+      kind === 'consult' ? ['consult'] : kind === 'tiu' || kind === 'tiu-clinproc' ? ['tiu'] : ['tiu', 'consult'];
+
+    const rpcUsed: string[] = [];
+    for (const detailKind of detailOrder) {
+      try {
+        if (detailKind === 'tiu') {
+          const textLines = await safeCallRpc('TIU GET RECORD TEXT', [id]);
+          if (!hasMeaningfulText(textLines)) continue;
+          rpcUsed.push('TIU GET RECORD TEXT');
+          let detail = '';
+          try {
+            const detailLines = await safeCallRpc('TIU DETAILED DISPLAY', [id]);
+            if (hasMeaningfulText(detailLines)) {
+              detail = detailLines.join('\n');
+              rpcUsed.push('TIU DETAILED DISPLAY');
+            }
+          } catch {
+            // Leave detail empty if TIU detail is unavailable for this document.
+          }
+          return {
+            ok: true,
+            source: 'vista',
+            entryType: 'tiu-clinproc',
+            id,
+            text: textLines.join('\n'),
+            detail,
+            rpcUsed,
+          };
+        }
+
+        const consultLines = await safeCallRpc('ORQQCN DETAIL', [id]);
+        if (!hasMeaningfulText(consultLines)) continue;
+        rpcUsed.push('ORQQCN DETAIL');
+        return {
+          ok: true,
+          source: 'vista',
+          entryType: 'consult',
+          id,
+          text: consultLines.join('\n'),
+          detail: '',
+          rpcUsed,
+        };
+      } catch {
+        // Try the next compatible read path.
+      }
+    }
+
+    return reply.code(404).send({
+      ok: false,
+      error: 'No Clinical Procedures detail could be resolved for this id.',
+      rpcUsed,
+    });
+  });
 }

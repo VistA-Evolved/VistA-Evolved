@@ -12,6 +12,8 @@
 
 export interface PortalUser {
   id: string;
+  /** Tenant membership for portal auth/session scoping */
+  tenantId: string;
   /** Unique login identifier (email or username) */
   username: string;
   /** Display name */
@@ -82,6 +84,8 @@ export type PatientRelationship =
 
 export interface ProxyInvitation {
   id: string;
+  /** Tenant scope for this invitation */
+  tenantId: string;
   /** The portal user requesting proxy access */
   requestorUserId: string;
   requestorName: string;

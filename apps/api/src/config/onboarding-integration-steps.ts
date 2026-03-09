@@ -150,15 +150,22 @@ export function createIntegrationSession(
   return session;
 }
 
-export function getIntegrationSession(id: string): OnboardingIntegrationSession | undefined {
-  return integrationSessions.get(id);
+export function getIntegrationSession(
+  id: string,
+  tenantId?: string
+): OnboardingIntegrationSession | undefined {
+  const session = integrationSessions.get(id);
+  if (!session) return undefined;
+  if (tenantId && session.tenantId !== tenantId) return undefined;
+  return session;
 }
 
 export function getIntegrationSessionByOnboarding(
-  onboardingSessionId: string
+  onboardingSessionId: string,
+  tenantId?: string
 ): OnboardingIntegrationSession | undefined {
   for (const s of integrationSessions.values()) {
-    if (s.onboardingSessionId === onboardingSessionId) return s;
+    if (s.onboardingSessionId === onboardingSessionId && (!tenantId || s.tenantId === tenantId)) return s;
   }
   return undefined;
 }
@@ -171,11 +178,12 @@ export function listIntegrationSessions(tenantId?: string): OnboardingIntegratio
 
 /** Add or update an integration endpoint config */
 export function upsertEndpoint(
+  tenantId: string,
   sessionId: string,
   endpoint: Omit<IntegrationEndpointConfig, 'id'> & { id?: string }
 ): OnboardingIntegrationSession | null {
   const session = integrationSessions.get(sessionId);
-  if (!session) return null;
+  if (!session || session.tenantId !== tenantId) return null;
 
   const id = endpoint.id || `ep-${endpoint.kind}-${crypto.randomBytes(4).toString('hex')}`;
   const existing = session.endpoints.findIndex((e) => e.id === id);
@@ -207,11 +215,12 @@ export function upsertEndpoint(
 
 /** Remove an integration endpoint */
 export function removeEndpoint(
+  tenantId: string,
   sessionId: string,
   endpointId: string
 ): OnboardingIntegrationSession | null {
   const session = integrationSessions.get(sessionId);
-  if (!session) return null;
+  if (!session || session.tenantId !== tenantId) return null;
 
   session.endpoints = session.endpoints.filter((e) => e.id !== endpointId);
   session.updatedAt = new Date().toISOString();
@@ -220,11 +229,12 @@ export function removeEndpoint(
 
 /** Advance to next integration step */
 export function advanceIntegrationStep(
+  tenantId: string,
   sessionId: string,
   stepData?: Record<string, unknown>
 ): OnboardingIntegrationSession | null {
   const session = integrationSessions.get(sessionId);
-  if (!session) return null;
+  if (!session || session.tenantId !== tenantId) return null;
 
   const now = new Date().toISOString();
   const currentIdx = INTEGRATION_STEP_ORDER.indexOf(session.currentStep);
@@ -387,7 +397,9 @@ export function runPreflight(session: OnboardingIntegrationSession): PreflightSu
 }
 
 /** Delete an integration session */
-export function deleteIntegrationSession(id: string): boolean {
+export function deleteIntegrationSession(tenantId: string, id: string): boolean {
+  const session = integrationSessions.get(id);
+  if (!session || session.tenantId !== tenantId) return false;
   return integrationSessions.delete(id);
 }
 

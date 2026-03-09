@@ -7,12 +7,13 @@
  */
 
 import { FastifyInstance } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
 import {
   enqueueJob,
   claimJob,
   completeJob,
   retryJob,
-  getJob,
+  getJobForTenant,
   listJobs,
   transferJobs,
   listTransfers,
@@ -28,39 +29,79 @@ import {
 } from '../services/queue-cache-regional.js';
 
 export default async function queueCacheRegionalRoutes(server: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: any): string | null {
+    const sessionTenantId =
+      typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+        ? request.session.tenantId.trim()
+        : undefined;
+    return sessionTenantId || null;
+  }
+
+  function requireTenantId(request: any, reply: any): string | null {
+    const tenantId = resolveTenantId(request);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
   // ── Job Endpoints ───────────────────────────────────────────────
 
   /** POST /platform/queues/enqueue — enqueue a regional job */
   server.post('/platform/queues/enqueue', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const b = (request.body as any) || {};
-    if (!b.region || !b.tenantId || !b.queue || !b.payload) {
+    if (!b.region || !b.queue || !b.payload) {
       return reply
         .code(400)
-        .send({ ok: false, error: 'region, tenantId, queue, payload required' });
+        .send({ ok: false, error: 'region, queue, payload required' });
     }
-    const job = enqueueJob(b, 'admin');
+    const actor = (request as any)?.session?.duz || 'admin';
+    const job = enqueueJob(
+      {
+        region: b.region,
+        tenantId,
+        queue: b.queue,
+        payload: b.payload,
+        idempotencyKey: b.idempotencyKey,
+        priority: b.priority,
+        maxAttempts: b.maxAttempts,
+        scheduledAt: b.scheduledAt,
+      },
+      actor
+    );
     return reply.code(201).send({ ok: true, job });
   });
 
   /** POST /platform/queues/claim — claim next job from a region/queue */
   server.post('/platform/queues/claim', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const b = (request.body as any) || {};
     if (!b.region || !b.queue || !b.workerId) {
       return reply.code(400).send({ ok: false, error: 'region, queue, workerId required' });
     }
-    const job = claimJob(b.region, b.queue, b.workerId);
+    const job = claimJob(b.region, b.queue, b.workerId, tenantId);
     if (!job) return reply.code(204).send();
     return { ok: true, job };
   });
 
   /** POST /platform/queues/complete — mark job completed or failed */
   server.post('/platform/queues/complete', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const b = (request.body as any) || {};
     if (!b.jobId || typeof b.success !== 'boolean') {
       return reply.code(400).send({ ok: false, error: 'jobId, success required' });
     }
     try {
-      const job = completeJob(b.jobId, b.success, b.error);
+      const job = completeJob(b.jobId, b.success, b.error, tenantId);
       return { ok: true, job };
     } catch (e: any) {
       return reply.code(e.statusCode || 500).send({ ok: false, error: e.message });
@@ -69,10 +110,15 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
 
   /** POST /platform/queues/retry — retry a failed/dead_letter job */
   server.post('/platform/queues/retry', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const b = (request.body as any) || {};
     if (!b.jobId) return reply.code(400).send({ ok: false, error: 'jobId required' });
     try {
-      const job = retryJob(b.jobId, 'admin');
+      const actor = (request as any)?.session?.duz || 'admin';
+      const job = retryJob(b.jobId, actor, tenantId);
       return { ok: true, job };
     } catch (e: any) {
       return reply.code(e.statusCode || 500).send({ ok: false, error: e.message });
@@ -81,21 +127,29 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
 
   /** GET /platform/queues/jobs/:id — get a single job */
   server.get('/platform/queues/jobs/:id', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as any;
-    const job = getJob(id);
+    const job = getJobForTenant(tenantId, id);
     if (!job) return reply.code(404).send({ ok: false, error: 'not found' });
     return { ok: true, job };
   });
 
   /** GET /platform/queues/jobs — list jobs with optional filters */
-  server.get('/platform/queues/jobs', async (request) => {
+  server.get('/platform/queues/jobs', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const q = request.query as any;
     const jobs = listJobs(
       {
         region: q.region,
         queue: q.queue,
         status: q.status,
-        tenantId: q.tenantId,
+        tenantId,
       },
       q.limit ? parseInt(q.limit, 10) : 100
     );
@@ -103,9 +157,13 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
   });
 
   /** GET /platform/queues/metrics — queue metrics per region/queue */
-  server.get('/platform/queues/metrics', async (request) => {
+  server.get('/platform/queues/metrics', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const q = request.query as any;
-    const metrics = getQueueMetrics(q.region);
+    const metrics = getQueueMetrics(q.region, tenantId);
     return { ok: true, metrics };
   });
 
@@ -113,6 +171,10 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
 
   /** POST /platform/queues/transfer — transfer jobs between regions */
   server.post('/platform/queues/transfer', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const b = (request.body as any) || {};
     if (!b.fromRegion || !b.toRegion || !b.queue) {
       return reply.code(400).send({ ok: false, error: 'fromRegion, toRegion, queue required' });
@@ -120,14 +182,27 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     if (b.fromRegion === b.toRegion) {
       return reply.code(400).send({ ok: false, error: 'fromRegion and toRegion must differ' });
     }
-    const transfer = transferJobs(b, 'admin');
+    const actor = (request as any)?.session?.duz || 'admin';
+    const transfer = transferJobs(
+      {
+        tenantId,
+        fromRegion: b.fromRegion,
+        toRegion: b.toRegion,
+        queue: b.queue,
+      },
+      actor
+    );
     return reply.code(201).send({ ok: true, transfer });
   });
 
   /** GET /platform/queues/transfers — list transfer history */
-  server.get('/platform/queues/transfers', async (request) => {
+  server.get('/platform/queues/transfers', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const q = request.query as any;
-    const transfers = listTransfers(q.limit ? parseInt(q.limit, 10) : 50);
+    const transfers = listTransfers(tenantId, q.limit ? parseInt(q.limit, 10) : 50);
     return { ok: true, count: transfers.length, transfers };
   });
 
@@ -135,6 +210,8 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
 
   /** POST /platform/workers/register — register a regional worker */
   server.post('/platform/workers/register', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const b = (request.body as any) || {};
     if (!b.region || !Array.isArray(b.queues) || b.queues.length === 0) {
       return reply.code(400).send({ ok: false, error: 'region, queues[] required' });
@@ -145,6 +222,8 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
 
   /** POST /platform/workers/:id/heartbeat — worker heartbeat */
   server.post('/platform/workers/:id/heartbeat', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const { id } = request.params as any;
     const worker = heartbeatWorker(id);
     if (!worker) return reply.code(404).send({ ok: false, error: 'worker not found' });
@@ -152,16 +231,25 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
   });
 
   /** GET /platform/workers — list workers */
-  server.get('/platform/workers', async (request) => {
+  server.get('/platform/workers', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const q = request.query as any;
     const workers = listWorkers({ region: q.region, status: q.status });
-    return { ok: true, count: workers.length, workers };
+    return {
+      ok: true,
+      count: workers.length,
+      workers,
+      note: 'Workers are platform-global infrastructure and are not tenant-scoped.',
+    };
   });
 
   // ── Cache Partition Endpoints ───────────────────────────────────
 
   /** POST /platform/cache/partitions — register a cache partition */
   server.post('/platform/cache/partitions', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const b = (request.body as any) || {};
     if (!b.region || !b.name) {
       return reply.code(400).send({ ok: false, error: 'region, name required' });
@@ -172,6 +260,8 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
 
   /** PUT /platform/cache/partitions/:region/:name/stats — update cache stats */
   server.put('/platform/cache/partitions/:region/:name/stats', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const { region, name } = request.params as any;
     const b = (request.body as any) || {};
     const partition = updateCacheStats(region, name, b);
@@ -180,25 +270,44 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
   });
 
   /** GET /platform/cache/partitions — list cache partitions */
-  server.get('/platform/cache/partitions', async (request) => {
+  server.get('/platform/cache/partitions', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const q = request.query as any;
     const partitions = listCachePartitions({ region: q.region });
-    return { ok: true, count: partitions.length, partitions };
+    return {
+      ok: true,
+      count: partitions.length,
+      partitions,
+      note: 'Cache partitions are platform-global infrastructure and are not tenant-scoped.',
+    };
   });
 
   // ── Summary + Audit ─────────────────────────────────────────────
 
   /** GET /platform/queues/summary — regional summary */
-  server.get('/platform/queues/summary', async () => {
-    return { ok: true, summary: getRegionalSummary() };
+  server.get('/platform/queues/summary', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    return {
+      ok: true,
+      summary: getRegionalSummary(tenantId),
+      note: 'Job counts are tenant-scoped. Worker/cache/transfer infrastructure metrics are redacted.',
+    };
   });
 
   /** GET /platform/queues/audit — queue audit log */
-  server.get('/platform/queues/audit', async (request) => {
+  server.get('/platform/queues/audit', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const q = request.query as any;
     const limit = q.limit ? parseInt(q.limit, 10) : 100;
     const offset = q.offset ? parseInt(q.offset, 10) : 0;
-    const entries = getQueueAuditLog(limit, offset);
+    const entries = getQueueAuditLog(limit, offset, tenantId);
     return { ok: true, count: entries.length, entries };
   });
 }

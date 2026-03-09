@@ -84,6 +84,11 @@ export default function QueueAdminPage() {
   const [stats, setStats] = useState<QueueStatsData | null>(null);
   const [board, setBoard] = useState<DisplayBoard | null>(null);
   const [loading, setLoading] = useState(false);
+  const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
+  const [newPatientDfn, setNewPatientDfn] = useState('');
+  const [newPatientName, setNewPatientName] = useState('');
+  const [newPriority, setNewPriority] = useState('normal');
 
   const loadDepartments = useCallback(async () => {
     const data = await apiFetch('/queue/departments');
@@ -148,6 +153,36 @@ export default function QueueAdminPage() {
   const handleSeedDepts = async () => {
     await apiFetch('/queue/departments/seed', { method: 'POST' });
     loadDepartments();
+  };
+
+  const handleCreateTicket = async () => {
+    setCreating(true);
+    setCreateError(null);
+    try {
+      const data = await apiFetch('/queue/tickets', {
+        method: 'POST',
+        body: JSON.stringify({
+          department: selectedDept,
+          patientDfn: newPatientDfn.trim(),
+          patientName: newPatientName.trim(),
+          priority: newPriority,
+        }),
+      });
+      if (!data.ok) {
+        setCreateError(data.error || 'Ticket creation failed');
+        return;
+      }
+      setNewPatientDfn('');
+      setNewPatientName('');
+      setNewPriority('normal');
+      await loadTickets();
+      await loadStats();
+      await loadBoard();
+    } catch (err: any) {
+      setCreateError(err.message || 'Ticket creation failed');
+    } finally {
+      setCreating(false);
+    }
   };
 
   return (
@@ -226,6 +261,79 @@ export default function QueueAdminPage() {
       {/* Active Queue Tab */}
       {tab === 'queue' && (
         <div>
+          <div
+            style={{
+              border: '1px solid #d7e3f4',
+              background: '#f7fbff',
+              padding: 16,
+              borderRadius: 8,
+              marginBottom: 16,
+            }}
+          >
+            <div style={{ fontWeight: 700, marginBottom: 12 }}>Create Queue Ticket</div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1.2fr 1.8fr 1fr auto',
+                gap: 12,
+                alignItems: 'end',
+              }}
+            >
+              <label style={{ display: 'grid', gap: 6 }}>
+                <span style={{ fontSize: 12, color: '#555' }}>Patient DFN</span>
+                <input
+                  value={newPatientDfn}
+                  onChange={(e) => setNewPatientDfn(e.target.value)}
+                  placeholder="46"
+                  style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                />
+              </label>
+              <label style={{ display: 'grid', gap: 6 }}>
+                <span style={{ fontSize: 12, color: '#555' }}>Patient Name</span>
+                <input
+                  value={newPatientName}
+                  onChange={(e) => setNewPatientName(e.target.value)}
+                  placeholder="PROGRAMMER,ONE"
+                  style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                />
+              </label>
+              <label style={{ display: 'grid', gap: 6 }}>
+                <span style={{ fontSize: 12, color: '#555' }}>Priority</span>
+                <select
+                  value={newPriority}
+                  onChange={(e) => setNewPriority(e.target.value)}
+                  style={{ padding: 8, border: '1px solid #ccc', borderRadius: 4 }}
+                >
+                  <option value="urgent">Urgent</option>
+                  <option value="high">High</option>
+                  <option value="normal">Normal</option>
+                  <option value="low">Low</option>
+                </select>
+              </label>
+              <button
+                onClick={handleCreateTicket}
+                disabled={creating || !selectedDept || !newPatientDfn.trim() || !newPatientName.trim()}
+                style={{
+                  padding: '10px 18px',
+                  background: creating ? '#90a4ae' : '#1565c0',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: 4,
+                  cursor:
+                    creating || !selectedDept || !newPatientDfn.trim() || !newPatientName.trim()
+                      ? 'not-allowed'
+                      : 'pointer',
+                  fontWeight: 600,
+                }}
+              >
+                {creating ? 'Creating...' : 'Create Ticket'}
+              </button>
+            </div>
+            {createError && (
+              <div style={{ marginTop: 10, color: '#b71c1c', fontSize: 13 }}>{createError}</div>
+            )}
+          </div>
+
           <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
             <button
               onClick={handleCallNext}

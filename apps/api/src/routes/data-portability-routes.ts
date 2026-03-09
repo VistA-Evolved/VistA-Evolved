@@ -23,6 +23,30 @@ import {
   TENANT_EXPORT_SCOPES,
 } from '../exports/data-portability.js';
 
+function resolveTenantId(request: any): string | null {
+  const requestTenantId =
+    typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+      ? request.tenantId.trim()
+      : undefined;
+  const sessionTenantId =
+    typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+      ? request.session.tenantId.trim()
+      : undefined;
+  const headerTenantId = request?.headers?.['x-tenant-id'];
+  const headerTenant =
+    typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+      ? headerTenantId.trim()
+      : undefined;
+  return requestTenantId || sessionTenantId || headerTenant || null;
+}
+
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
 /* ------------------------------------------------------------------ */
 /*  Plugin                                                             */
 /* ------------------------------------------------------------------ */
@@ -33,7 +57,9 @@ export async function dataPortabilityRoutes(app: FastifyInstance): Promise<void>
   /** Kick off bulk export (FHIR Bulk Data Access pattern) */
   app.post('/admin/exports/bulk/kickoff', async (request, reply) => {
     const body = (request.body as any) || {};
-    const { level = 'system', subjectId, tenantId = 'default', resourceTypes, since } = body;
+    const { level = 'system', subjectId, resourceTypes, since } = body;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     if (!['system', 'patient', 'group'].includes(level)) {
       return reply.code(400).send({ ok: false, error: 'level must be system, patient, or group' });
@@ -72,7 +98,9 @@ export async function dataPortabilityRoutes(app: FastifyInstance): Promise<void>
   /** Check bulk export status */
   app.get('/admin/exports/bulk/:id/status', async (request, reply) => {
     const { id } = request.params as any;
-    const job = getBulkExportJob(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const job = getBulkExportJob(tenantId, id);
     if (!job) {
       return reply.code(404).send({ ok: false, error: 'Job not found' });
     }
@@ -102,9 +130,10 @@ export async function dataPortabilityRoutes(app: FastifyInstance): Promise<void>
   });
 
   /** List bulk export jobs */
-  app.get('/admin/exports/bulk', async (request) => {
-    const query = request.query as any;
-    const jobs = listBulkExportJobs(query.tenantId);
+  app.get('/admin/exports/bulk', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const jobs = listBulkExportJobs(tenantId);
     return {
       ok: true,
       jobs,
@@ -116,7 +145,9 @@ export async function dataPortabilityRoutes(app: FastifyInstance): Promise<void>
   /** Delete bulk export job */
   app.delete('/admin/exports/bulk/:id', async (request, reply) => {
     const { id } = request.params as any;
-    const deleted = deleteBulkExportJob(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const deleted = deleteBulkExportJob(tenantId, id);
     if (!deleted) {
       return reply.code(404).send({ ok: false, error: 'Job not found' });
     }
@@ -128,7 +159,9 @@ export async function dataPortabilityRoutes(app: FastifyInstance): Promise<void>
   /** Generate patient chart FHIR bundle */
   app.post('/admin/exports/patient-chart', async (request, reply) => {
     const body = (request.body as any) || {};
-    const { patientDfn, tenantId = 'default', format } = body;
+    const { patientDfn, format } = body;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     if (!patientDfn) {
       return reply.code(400).send({ ok: false, error: 'patientDfn required' });
@@ -148,7 +181,9 @@ export async function dataPortabilityRoutes(app: FastifyInstance): Promise<void>
   /** Get patient chart */
   app.get('/admin/exports/patient-chart/:id', async (request, reply) => {
     const { id } = request.params as any;
-    const chart = getPatientChart(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const chart = getPatientChart(tenantId, id);
     if (!chart) {
       return reply.code(404).send({ ok: false, error: 'Chart not found' });
     }
@@ -156,9 +191,10 @@ export async function dataPortabilityRoutes(app: FastifyInstance): Promise<void>
   });
 
   /** List patient charts */
-  app.get('/admin/exports/patient-charts', async (request) => {
-    const query = request.query as any;
-    const charts = listPatientCharts(query.tenantId);
+  app.get('/admin/exports/patient-charts', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const charts = listPatientCharts(tenantId);
     return {
       ok: true,
       charts,
@@ -172,7 +208,9 @@ export async function dataPortabilityRoutes(app: FastifyInstance): Promise<void>
   /** Kick off tenant data export */
   app.post('/admin/exports/tenant/kickoff', async (request, reply) => {
     const body = (request.body as any) || {};
-    const { tenantId = 'default', scopes, format } = body;
+    const { scopes, format } = body;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     const requestedBy = (request as any).session?.duz || 'admin';
     try {
@@ -198,7 +236,9 @@ export async function dataPortabilityRoutes(app: FastifyInstance): Promise<void>
   /** Check tenant export status */
   app.get('/admin/exports/tenant/:id/status', async (request, reply) => {
     const { id } = request.params as any;
-    const job = getTenantExportJob(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const job = getTenantExportJob(tenantId, id);
     if (!job) {
       return reply.code(404).send({ ok: false, error: 'Job not found' });
     }
@@ -220,9 +260,10 @@ export async function dataPortabilityRoutes(app: FastifyInstance): Promise<void>
   });
 
   /** List tenant export jobs */
-  app.get('/admin/exports/tenant', async (request) => {
-    const query = request.query as any;
-    const jobs = listTenantExportJobs(query.tenantId);
+  app.get('/admin/exports/tenant', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const jobs = listTenantExportJobs(tenantId);
     return {
       ok: true,
       jobs,

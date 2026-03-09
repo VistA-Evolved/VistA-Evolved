@@ -103,6 +103,24 @@ Since SDEC APPADD is absent from the sandbox:
 - VistA encounter fields normalized to portal shape (scheduledAt, clinicName)
 - Cancel/reschedule use same request-flow pattern
 
+## CPRS Cover Sheet Appointments
+
+The CPRS cover sheet appointments card now reads from the live
+`GET /vista/cprs/appointments?dfn=` endpoint instead of staying in a
+permanent placeholder state. The backend route is grounded to
+`ORWPT APPTLST` and returns a truthful posture contract:
+
+- `status: "ok"` with `pendingTargets: []` when CPRS appointment rows are available
+- `status: "integration-pending"` plus `pendingTargets` / `pendingNote` when
+  `ORWPT APPTLST` is unavailable or does not return trustworthy data
+
+The web cover sheet now mirrors that contract directly:
+
+- renders appointment rows only when the route is live
+- shows a pending badge only when the backend response is actually pending
+- no longer labels the card as `integration pending` when VEHU is already
+  returning real data
+
 ## Audit Trail
 
 All write operations are logged to the immutable audit trail:
@@ -122,7 +140,10 @@ curl http://localhost:3001/scheduling/clinics -b cookies.txt
 curl http://localhost:3001/scheduling/providers -b cookies.txt
 
 # Patient appointments
-curl "http://localhost:3001/scheduling/appointments?dfn=3" -b cookies.txt
+curl "http://localhost:3001/scheduling/appointments?dfn=46" -b cookies.txt
+
+# CPRS cover sheet appointments backing route
+curl "http://localhost:3001/vista/cprs/appointments?dfn=46" -b cookies.txt
 
 # Date range
 curl "http://localhost:3001/scheduling/appointments/range?startDate=2024-01-01&endDate=2025-12-31" -b cookies.txt

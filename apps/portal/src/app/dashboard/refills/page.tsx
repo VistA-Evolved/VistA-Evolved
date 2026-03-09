@@ -64,7 +64,9 @@ export default function RefillsPage() {
       });
       const d = await res.json();
       if (d.ok) {
-        setNotice('Refill request submitted successfully.');
+        setNotice(
+          'Refill request submitted successfully. Review and EHR filing are still pending until the request moves beyond the pending queue.'
+        );
         setMedName('');
         setMedId('');
         loadRefills();

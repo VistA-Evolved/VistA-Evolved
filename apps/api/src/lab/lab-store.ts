@@ -36,6 +36,13 @@ const specimenStore = new Map<string, SpecimenSample>();
 const labResultStore = new Map<string, LabResult>();
 const criticalAlertStore = new Map<string, CriticalAlert>();
 
+const ORDER_STATUS_AT_OR_BEYOND_RESULTED = new Set<LabOrderStatus>([
+  'resulted',
+  'reviewed',
+  'verified',
+  'final',
+]);
+
 // ─── FSM: Lab Order Transitions ─────────────────────────────
 
 const validOrderTransitions: Record<LabOrderStatus, LabOrderStatus[]> = {
@@ -332,13 +339,21 @@ export function createLabResult(input: {
   source?: 'manual' | 'device' | 'imported' | 'vista';
   deviceObservationId?: string;
   vistaLabIen?: string;
-}): { result: LabResult; criticalAlert: CriticalAlert | null } {
+}): { ok: boolean; result?: LabResult; criticalAlert?: CriticalAlert | null; error?: string } {
+  const order = labOrderStore.get(input.labOrderId);
+  if (!order || order.tenantId !== input.tenantId) {
+    return { ok: false, error: 'Lab order not found' };
+  }
+  if (order.status === 'cancelled') {
+    return { ok: false, error: 'Cannot record a result for a cancelled lab order' };
+  }
+
   const now = new Date().toISOString();
   const result: LabResult = {
     id: randomUUID(),
     tenantId: input.tenantId,
     labOrderId: input.labOrderId,
-    patientDfn: input.patientDfn,
+    patientDfn: order.patientDfn,
     analyteName: input.analyteName,
     loincCode: input.loincCode ?? null,
     value: input.value,
@@ -358,10 +373,16 @@ export function createLabResult(input: {
   labResultStore.set(result.id, result);
   enforceMax(labResultStore);
 
+  if (!ORDER_STATUS_AT_OR_BEYOND_RESULTED.has(order.status)) {
+    order.status = 'resulted';
+  }
+  order.resultedAt ??= now;
+  order.updatedAt = now;
+
   // Check for critical values and auto-create alert
   const criticalAlert = evaluateCriticalValue(result);
 
-  return { result, criticalAlert };
+  return { ok: true, result, criticalAlert };
 }
 
 export function getLabResult(id: string): LabResult | undefined {

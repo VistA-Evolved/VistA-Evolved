@@ -178,21 +178,28 @@ export function listScheduleTemplates(tenantId: string, departmentId?: string): 
   );
 }
 
-export function getScheduleTemplate(id: string): ScheduleTemplate | undefined {
-  return templateStore.get(id);
+export function getScheduleTemplate(id: string, tenantId?: string): ScheduleTemplate | undefined {
+  const template = templateStore.get(id);
+  if (!template) return undefined;
+  if (tenantId && template.tenantId !== tenantId) return undefined;
+  return template;
 }
 
 export function updateScheduleTemplate(
   id: string,
   patch: Partial<Pick<ScheduleTemplate, "name" | "description" | "effectiveTo" | "blocks" | "holidays" | "metadata">>,
+  tenantId?: string,
 ): ScheduleTemplate | undefined {
   const t = templateStore.get(id);
   if (!t) return undefined;
+  if (tenantId && t.tenantId !== tenantId) return undefined;
   Object.assign(t, patch, { updatedAt: new Date().toISOString() });
   return t;
 }
 
-export function deleteScheduleTemplate(id: string): boolean {
+export function deleteScheduleTemplate(id: string, tenantId?: string): boolean {
+  const template = getScheduleTemplate(id, tenantId);
+  if (!template) return false;
   return templateStore.delete(id);
 }
 
@@ -246,16 +253,21 @@ export function listResources(
   );
 }
 
-export function getResource(id: string): DeptResource | undefined {
-  return resourceStore.get(id);
+export function getResource(id: string, tenantId?: string): DeptResource | undefined {
+  const resource = resourceStore.get(id);
+  if (!resource) return undefined;
+  if (tenantId && resource.tenantId !== tenantId) return undefined;
+  return resource;
 }
 
 export function updateResource(
   id: string,
   patch: Partial<Pick<DeptResource, "name" | "description" | "status" | "capacity" | "capabilities" | "location" | "metadata">>,
+  tenantId?: string,
 ): DeptResource | undefined {
   const r = resourceStore.get(id);
   if (!r) return undefined;
+  if (tenantId && r.tenantId !== tenantId) return undefined;
   Object.assign(r, patch, { updatedAt: new Date().toISOString() });
   return r;
 }
@@ -340,9 +352,11 @@ export function listAllocations(
 export function updateAllocationStatus(
   id: string,
   status: ResourceAllocation["status"],
+  tenantId?: string,
 ): ResourceAllocation | undefined {
   const a = allocationStore.get(id);
   if (!a) return undefined;
+  if (tenantId && a.tenantId !== tenantId) return undefined;
   a.status = status;
   return a;
 }
@@ -450,14 +464,19 @@ export function evaluateSchedulingRules(
 export function updateSchedulingRule(
   id: string,
   patch: Partial<Pick<SchedulingRule, "name" | "description" | "priority" | "condition" | "action" | "active">>,
+  tenantId?: string,
 ): SchedulingRule | undefined {
   const r = ruleStore.get(id);
   if (!r) return undefined;
+  if (tenantId && r.tenantId !== tenantId) return undefined;
   Object.assign(r, patch, { updatedAt: new Date().toISOString() });
   return r;
 }
 
-export function deleteSchedulingRule(id: string): boolean {
+export function deleteSchedulingRule(id: string, tenantId?: string): boolean {
+  const rule = ruleStore.get(id);
+  if (!rule) return false;
+  if (tenantId && rule.tenantId !== tenantId) return false;
   return ruleStore.delete(id);
 }
 
@@ -524,8 +543,11 @@ export function listReferrals(
   });
 }
 
-export function getReferral(id: string): CrossDeptReferral | undefined {
-  return referralStore.get(id);
+export function getReferral(id: string, tenantId?: string): CrossDeptReferral | undefined {
+  const referral = referralStore.get(id);
+  if (!referral) return undefined;
+  if (tenantId && referral.tenantId !== tenantId) return undefined;
+  return referral;
 }
 
 const REFERRAL_TRANSITIONS: Record<ReferralStatus, ReferralStatus[]> = {
@@ -541,9 +563,11 @@ export function transitionReferral(
   id: string,
   newStatus: ReferralStatus,
   appointmentRef?: string,
+  tenantId?: string,
 ): CrossDeptReferral | { error: string } {
   const ref = referralStore.get(id);
   if (!ref) return { error: "Referral not found" };
+  if (tenantId && ref.tenantId !== tenantId) return { error: "Referral not found" };
   const allowed = REFERRAL_TRANSITIONS[ref.status];
   if (!allowed.includes(newStatus)) {
     return { error: `Cannot transition from '${ref.status}' to '${newStatus}'` };

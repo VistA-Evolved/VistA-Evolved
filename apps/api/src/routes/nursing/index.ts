@@ -56,7 +56,134 @@ function pendingFallback(
   };
 }
 
-/** Parse vitals response lines: date^type^value^... */
+function requestFailedFallback(
+  label: string,
+  targets: Array<{ rpc: string; package: string; reason: string }>,
+  rpcUsed: string[],
+  err: unknown,
+  note: string
+) {
+  return {
+    ok: false,
+    source: 'vista',
+    status: 'request-failed',
+    label,
+    items: [],
+    rpcUsed,
+    pendingTargets: targets,
+    error: err instanceof Error ? err.message : String(err),
+    note,
+  };
+}
+
+function buildTiuTextBuffer(noteText: unknown): Record<string, string> {
+  const textData: Record<string, string> = { HDR: '1^1' };
+  String(noteText || '')
+    .split(/\r?\n/)
+    .forEach((line, index) => {
+      textData[`TEXT,${index + 1},0`] = line;
+    });
+  return textData;
+}
+
+function tiuReadbackContainsExpectedText(lines: string[], noteText: unknown): boolean {
+  const expected = String(noteText || '')
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  if (expected.length === 0) return false;
+  const haystack = lines.map((line) => line.trim()).filter(Boolean);
+  return expected.every((line) => haystack.includes(line));
+}
+
+function parseTiuLineCount(lines: string[]): number {
+  for (const line of lines) {
+    const match = line.match(/Line Count:\s*(\d+)/i);
+    if (match) return parseInt(match[1], 10) || 0;
+  }
+  return -1;
+}
+
+function parseFileManDate(fmDate: string): string {
+  if (!fmDate || fmDate.length < 7) return fmDate;
+  const [datePart, timePart] = fmDate.split('.');
+  const y = parseInt(datePart.substring(0, 3), 10) + 1700;
+  const m = datePart.substring(3, 5);
+  const d = datePart.substring(5, 7);
+  let date = `${y}-${m}-${d}`;
+  if (timePart && timePart.length >= 4) {
+    date += ` ${timePart.substring(0, 2)}:${timePart.substring(2, 4)}`;
+  }
+  return date;
+}
+
+function sanitizeVistaSignText(rawValue: string): string {
+  return String(rawValue || '')
+    .replace(/\r/g, '\n')
+    .replace(/\n{2,}/g, '\n')
+    .replace(/[\x00-\x1f\x7f]+/g, ' ')
+    .replace(/^\d+(?:\[[^\]]+\])?\s*/i, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function normalizeNoteSignFailure(rawValue: string): {
+  status: 'sign-blocked' | 'sign-failed';
+  blocker?: string;
+  message: string;
+} {
+  const raw = String(rawValue || '').trim();
+  const sanitized = sanitizeVistaSignText(raw);
+  const matchText = sanitized || raw;
+
+  if (/incorrect electronic signature code|electronic signature code.*try again/i.test(matchText)) {
+    return {
+      status: 'sign-blocked',
+      blocker: 'invalid_esCode',
+      message: 'Incorrect electronic signature code. Try again.',
+    };
+  }
+
+  if (/electronic signature/i.test(matchText) && /not/i.test(matchText)) {
+    return {
+      status: 'sign-blocked',
+      blocker: 'esCode_unavailable',
+      message: 'Electronic signature is not available for this user in the current VistA context.',
+    };
+  }
+
+  if (/locked/i.test(matchText)) {
+    return {
+      status: 'sign-blocked',
+      blocker: 'document_locked',
+      message: 'This note is locked by another user or process. Refresh and try again.',
+    };
+  }
+
+  return {
+    status: 'sign-failed',
+    message: sanitized || 'TIU SIGN RECORD failed. Retry or contact support if the problem persists.',
+  };
+}
+
+function inferVitalUnits(type: string): string {
+  switch (type.trim().toUpperCase()) {
+    case 'T':
+      return 'F';
+    case 'P':
+      return 'bpm';
+    case 'R':
+      return 'breaths/min';
+    case 'BP':
+      return 'mmHg';
+    case 'PN':
+      return 'score';
+    default:
+      return '';
+  }
+}
+
+/** Parse vitals response lines: IEN^type^value^filemanDateTime^... */
 function parseVitals(
   lines: string[]
 ): Array<{ date: string; type: string; value: string; units: string }> {
@@ -65,17 +192,19 @@ function parseVitals(
     if (!line?.trim()) continue;
     const parts = line.split('^');
     if (parts.length < 3) continue;
+    const type = parts[1]?.trim() || '';
+    const fileManDate = parts[3]?.trim() || '';
     results.push({
-      date: parts[0]?.trim() || '',
-      type: parts[1]?.trim() || '',
+      date: parseFileManDate(fileManDate),
+      type,
       value: parts[2]?.trim() || '',
-      units: parts[3]?.trim() || '',
+      units: inferVitalUnits(type),
     });
   }
   return results;
 }
 
-/** Parse TIU document list lines: IEN^TITLE^DATE^AUTHOR^STATUS */
+/** Parse TIU document list lines using the same field positions as CPRS TIU notes. */
 function parseNotesList(
   lines: string[]
 ): Array<{ ien: string; title: string; date: string; author: string; status: string }> {
@@ -91,12 +220,15 @@ function parseNotesList(
     const parts = line.split('^');
     const ien = parts[0]?.trim() || '';
     if (!ien || ien === '0') continue;
+    const title = (parts[1] || '').replace(/^\+\s*/, '').trim();
+    const authorField = parts[4]?.trim() || '';
+    const authorParts = authorField.split(';');
     results.push({
       ien,
-      title: parts[1]?.trim() || '',
-      date: parts[2]?.trim() || '',
-      author: parts[3]?.trim() || '',
-      status: parts[4]?.trim() || '',
+      title,
+      date: parseFileManDate(parts[2]?.trim() || ''),
+      author: authorParts.length >= 3 ? authorParts[2] : authorParts[1] || authorField,
+      status: parts[6]?.trim() || '',
     });
   }
   return results;
@@ -151,16 +283,20 @@ export default async function nursingRoutes(server: FastifyInstance) {
         pendingTargets: [],
       };
     } catch (err) {
-      log.warn('Nursing vitals RPC failed, returning pending', {
+      log.warn('Nursing vitals RPC failed', {
         err: String(err),
         rpc: 'ORQQVI VITALS',
       });
       immutableAudit('nursing.vitals', 'error', auditActor(session), {
         detail: { dfn, error: 'RPC failed' },
       });
-      return pendingFallback('Nursing Vitals', [
-        { rpc: 'ORQQVI VITALS', package: 'OR', reason: 'RPC call failed' },
-      ]);
+      return requestFailedFallback(
+        'Nursing Vitals',
+        [{ rpc: 'ORQQVI VITALS', package: 'OR', reason: 'RPC call failed' }],
+        ['ORQQVI VITALS'],
+        err,
+        'Live ORQQVI VITALS capability exists, but this request failed at runtime.'
+      );
     }
   });
 
@@ -169,7 +305,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
     '/vista/nursing/vitals-range',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
-      const { dfn, start, end } = request.query as any;
+      const { dfn, start, end } = (request.query as any) || {};
       const dfnStr = String(dfn || '').trim();
       if (!dfnStr) return reply.code(400).send({ ok: false, error: 'Missing dfn parameter' });
       if (!/^\d+$/.test(dfnStr))
@@ -194,20 +330,26 @@ export default async function nursingRoutes(server: FastifyInstance) {
           pendingTargets: [],
         };
       } catch (err) {
-        log.warn('Nursing vitals-range RPC failed, returning pending', {
+        log.warn('Nursing vitals-range RPC failed', {
           err: String(err),
           rpc: 'ORQQVI VITALS FOR DATE RANGE',
         });
         immutableAudit('nursing.vitals-range', 'error', auditActor(session), {
           detail: { dfn: dfnStr, error: 'RPC failed' },
         });
-        return pendingFallback('Nursing Vitals (Shift Range)', [
-          {
-            rpc: 'ORQQVI VITALS FOR DATE RANGE',
-            package: 'OR',
-            reason: 'RPC call failed or not available in sandbox',
-          },
-        ]);
+        return requestFailedFallback(
+          'Nursing Vitals (Shift Range)',
+          [
+            {
+              rpc: 'ORQQVI VITALS FOR DATE RANGE',
+              package: 'OR',
+              reason: 'RPC call failed or not available in sandbox',
+            },
+          ],
+          ['ORQQVI VITALS FOR DATE RANGE'],
+          err,
+          'Live ORQQVI VITALS FOR DATE RANGE capability exists, but this request failed at runtime.'
+        );
       }
     }
   );
@@ -223,20 +365,40 @@ export default async function nursingRoutes(server: FastifyInstance) {
         .send({ ok: false, error: 'Invalid dfn -- must be a positive integer' });
 
     try {
-      // TIU DOCUMENTS BY CONTEXT: params = [class, context, DFN, ...]
-      // Class 3 = Nursing Documents in standard VistA; context 1 = All SIGNED
-      const lines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', [
+      // Merge signed and unsigned nursing TIU notes so freshly created unsigned
+      // documents appear in the standalone nursing workspace immediately.
+      const signedLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', [
         '3',
         '1',
         dfn,
         '',
         '',
+        '0',
+        '0',
+        'D',
+      ]);
+      const unsignedLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', [
+        '3',
+        '2',
+        dfn,
         '',
         '',
         '0',
-        '',
+        '0',
+        'D',
       ]);
-      const items = parseNotesList(lines);
+
+      const seenIens = new Set<string>();
+      const mergedLines: string[] = [];
+      for (const line of [...unsignedLines, ...signedLines]) {
+        const ien = line.split('^')[0]?.trim();
+        if (ien && /^\d+$/.test(ien) && !seenIens.has(ien)) {
+          seenIens.add(ien);
+          mergedLines.push(line);
+        }
+      }
+
+      const items = parseNotesList(mergedLines);
       immutableAudit('nursing.notes', 'success', auditActor(session), {
         detail: { dfn, count: items.length },
       });
@@ -246,7 +408,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
         items,
         rpcUsed: ['TIU DOCUMENTS BY CONTEXT'],
         pendingTargets: [],
-        note: 'Filtered by TIU document class 3 (Nursing Documents). Class may differ by site.',
+        note: 'Merged signed and unsigned TIU nursing notes for the current patient. Class 3 may differ by site.',
       };
     } catch (err) {
       log.warn('Nursing notes RPC failed, returning pending', {
@@ -424,8 +586,12 @@ export default async function nursingRoutes(server: FastifyInstance) {
     '/vista/nursing/mar/administer',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
+      if (!session) return;
       const body = (request.body as any) || {};
-      const { dfn, medicationId, action, note } = body;
+      const dfn = String(body.dfn || '').trim();
+      const medicationId = String(body.medicationId || '').trim();
+      const action = String(body.action || 'given').trim();
+      const note = String(body.note || body.reason || '').trim();
       if (!dfn || !medicationId)
         return reply.code(400).send({ ok: false, error: 'dfn and medicationId required' });
 
@@ -434,21 +600,45 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
       try {
         const adminNote = `Med admin: ${medicationId} - ${adminAction}${note ? ' - ' + note : ''}`;
+        const titleIen = '10';
+        const now = new Date();
+        const fmYear = now.getFullYear() - 1700;
+        const fmMonth = String(now.getMonth() + 1).padStart(2, '0');
+        const fmDay = String(now.getDate()).padStart(2, '0');
+        const fmHour = String(now.getHours()).padStart(2, '0');
+        const fmMin = String(now.getMinutes()).padStart(2, '0');
+        const visitDate = `${fmYear}${fmMonth}${fmDay}.${fmHour}${fmMin}`;
         const noteLines = await safeCallRpc('TIU CREATE RECORD', [
           dfn,
+          titleIen,
+          visitDate,
           '',
           '',
           '',
-          'NURSING NOTE',
           '',
-          adminNote,
         ]);
         rpcUsed.push('TIU CREATE RECORD');
-        const noteIen = (noteLines || [])[0]?.trim() || '';
+        const noteResult = (noteLines || [])[0]?.trim() || '';
+        const noteIen = noteResult.split('^')[0]?.trim() || '';
 
-        if (noteIen && /^\d+$/.test(noteIen)) {
-          await safeCallRpc('TIU SET DOCUMENT TEXT', [noteIen, adminNote]);
-          rpcUsed.push('TIU SET DOCUMENT TEXT');
+        if (!noteIen || noteIen === '0' || noteIen.startsWith('-') || !/^\d+$/.test(noteIen)) {
+          throw new Error(`TIU CREATE RECORD returned error: ${noteResult || '(empty)'}`);
+        }
+
+        const textParams: RpcParam[] = [
+          { type: 'literal', value: noteIen },
+          { type: 'list', value: buildTiuTextBuffer(adminNote) },
+          { type: 'literal', value: '0' },
+        ];
+        await safeCallRpcWithList('TIU SET DOCUMENT TEXT', textParams, { idempotent: false });
+        rpcUsed.push('TIU SET DOCUMENT TEXT');
+
+        const readbackLines = await safeCallRpc('TIU GET RECORD TEXT', [noteIen], {
+          idempotent: true,
+        });
+        rpcUsed.push('TIU GET RECORD TEXT');
+        if (!tiuReadbackContainsExpectedText(readbackLines, adminNote)) {
+          throw new Error('TIU note body did not persist after TIU SET DOCUMENT TEXT');
         }
 
         immutableAudit('nursing.mar.administer', 'success', auditActor(session), {
@@ -469,7 +659,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
         immutableAudit('nursing.mar.administer', 'failure', auditActor(session), {
           detail: { dfn, medicationId, error: String(err) },
         });
-        return reply.code(500).send({
+        return reply.code(409).send({
           ok: false,
           error: 'Failed to record administration',
           rpcUsed,
@@ -528,11 +718,17 @@ export default async function nursingRoutes(server: FastifyInstance) {
           .send({ ok: false, error: 'Invalid dfn -- must be a positive integer' });
 
       try {
-        // ORWPT16 ID INFO returns patient banner: NAME^SSN^DOB^SEX^VET^LOCATION^ROOM-BED^ATTENDING
+        // VEHU ORWPT16 ID INFO returns a positional banner line where the patient name
+        // is currently carried in the final field rather than the first.
         const lines = await safeCallRpc('ORWPT16 ID INFO', [dfn]);
         const raw = (lines || []).join('\n');
         const parts = raw.split('^');
-        const name = parts[0]?.trim() || '';
+        const name =
+          parts
+            .map((part) => part.trim())
+            .findLast((part) => !!part && part.includes(',') && !/^\d{3}-\d{2}-\d{4}$/.test(part)) ||
+          parts[8]?.trim() ||
+          '';
         const location = parts[5]?.trim() || '';
         const roomBed = parts[6]?.trim() || '';
         const attending = parts[7]?.trim() || '';
@@ -831,9 +1027,10 @@ export default async function nursingRoutes(server: FastifyInstance) {
     '/vista/nursing/notes/create',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const session = await requireSession(request, reply);
-      const body = ((request as any).body as any) || {};
-      const { dfn, title, text, shift } = body;
+      const body = (request.body as any) || {};
+      const { dfn, title, text, shift, esCode } = body;
       const dfnStr = String(dfn || '').trim();
+      const esCodeStr = String(esCode || '').trim();
 
       if (!dfnStr) return reply.code(400).send({ ok: false, error: 'Missing dfn' });
       if (!/^\d+$/.test(dfnStr))
@@ -852,6 +1049,12 @@ export default async function nursingRoutes(server: FastifyInstance) {
       // Then TIU SET DOCUMENT TEXT with the text content.
       // Both RPCs are in the TIU package under OR CPRS GUI CHART context.
       try {
+        const rpcUsed = [
+          'TIU CREATE RECORD',
+          'TIU SET DOCUMENT TEXT',
+          'TIU DETAILED DISPLAY',
+          'TIU GET RECORD TEXT',
+        ];
         // Try to create via TIU CREATE RECORD
         // Title IEN 3 = NURSING NOTE in most VistA installations
         const titleIen = '3';
@@ -863,57 +1066,173 @@ export default async function nursingRoutes(server: FastifyInstance) {
         const fmMin = String(now.getMinutes()).padStart(2, '0');
         const visitDate = `${fmYear}${fmMonth}${fmDay}.${fmHour}${fmMin}`;
 
-        const createLines = await safeCallRpc('TIU CREATE RECORD', [
-          dfnStr,
-          titleIen,
-          visitDate,
-          '',
-          '',
-          '',
-          '',
-        ]);
-        const newIen = (createLines || [])[0]?.trim() || '';
+        const duz = String(session?.duz || session?.user?.duz || '').trim();
+        const createLocation = '2';
+        const createFields: Record<string, string> = {
+          '1301': visitDate,
+        };
+        if (duz) createFields['1202'] = duz;
+
+        const createLines = await safeCallRpcWithList(
+          'TIU CREATE RECORD',
+          [
+            { type: 'literal', value: dfnStr },
+            { type: 'literal', value: titleIen },
+            { type: 'literal', value: visitDate },
+            { type: 'literal', value: createLocation },
+            { type: 'literal', value: '' },
+            { type: 'list', value: createFields },
+            { type: 'literal', value: '' },
+            { type: 'literal', value: '1' },
+            { type: 'literal', value: '0' },
+          ],
+          { idempotent: false }
+        );
+        const newIen = (createLines || [])[0]?.split('^')[0]?.trim() || '';
 
         if (!newIen || newIen === '0' || newIen.includes('ERROR') || newIen.startsWith('-')) {
-          throw new Error(`TIU CREATE RECORD returned: ${newIen || '(empty)'}`);
+          throw new Error(`TIU CREATE RECORD returned: ${(createLines || []).join(' ') || '(empty)'}`);
         }
 
         // Set the document text via LIST parameter (word-processing field).
         // Prepend shift identifier to ensure it's captured in the note body.
         const fullText = `[Shift: ${noteShift}] [Type: ${noteTitle}]\n${text}`;
-        const textLines = fullText.split('\n');
-        const listEntries: Record<string, string> = {};
-        textLines.forEach((l: string, i: number) => {
-          listEntries[`${i + 1},0`] = l;
-        });
         const textParams: RpcParam[] = [
           { type: 'literal', value: newIen },
-          { type: 'list', value: listEntries },
+          { type: 'list', value: buildTiuTextBuffer(fullText) },
+          { type: 'literal', value: '0' },
         ];
-        try {
-          await safeCallRpcWithList('TIU SET DOCUMENT TEXT', textParams, { idempotent: false });
-        } catch (textErr) {
-          log.warn('TIU SET DOCUMENT TEXT failed (note created but text not saved)', {
-            ien: newIen,
-            err: String(textErr),
-          });
+        const textResp = await safeCallRpcWithList('TIU SET DOCUMENT TEXT', textParams, {
+          idempotent: false,
+        });
+        const textAck = textResp[0]?.trim() || '';
+        if (textAck.startsWith('0^')) {
+          return {
+            ok: false,
+            source: 'vista',
+            status: 'create-blocked',
+            blocker: 'note_text_write_failed',
+            message:
+              textAck.split('^').slice(3).join('^') ||
+              'VistA rejected the note body text for this TIU note.',
+            noteIen: newIen,
+            rpcUsed,
+            pendingTargets: [],
+            _note: 'VistA created the TIU note shell but did not accept the nursing note body text.',
+          };
         }
 
-        log.info('Nursing note created via TIU', { ien: newIen });
+        const detailLines = await safeCallRpc('TIU DETAILED DISPLAY', [newIen], { idempotent: true });
+        const readbackLines = await safeCallRpc('TIU GET RECORD TEXT', [newIen], { idempotent: true });
+        const lineCount = parseTiuLineCount(detailLines);
+        const hasPersistedBody =
+          lineCount > 0 ||
+          tiuReadbackContainsExpectedText(readbackLines, fullText) ||
+          tiuReadbackContainsExpectedText(detailLines, fullText);
+        if (!hasPersistedBody) {
+          return {
+            ok: false,
+            source: 'vista',
+            status: 'create-blocked',
+            blocker: 'note_text_not_persisted',
+            message:
+              'VistA created a shell TIU note but did not persist the nursing note body text in this environment.',
+            noteIen: newIen,
+            rpcUsed,
+            pendingTargets: [],
+            _note:
+              'VistA created a shell TIU note but did not persist the nursing note body text in this environment.',
+          };
+        }
+
+        let status: 'created' | 'signed' = 'created';
+        let noteStatus = 'UNSIGNED';
+        let signStatus: 'not-requested' | 'signed' | 'sign-blocked' | 'sign-failed' =
+          'not-requested';
+        let signBlocker: string | undefined;
+        let signMessage =
+          'Note created in VistA and remains unsigned until an electronic signature code is entered.';
+
+        if (esCodeStr) {
+          rpcUsed.push('TIU LOCK RECORD', 'TIU SIGN RECORD', 'TIU UNLOCK RECORD');
+          let unlockNeeded = false;
+
+          try {
+            const lockResp = await safeCallRpc('TIU LOCK RECORD', [newIen], { idempotent: false });
+            const lockValue = lockResp[0]?.trim() || '';
+            unlockNeeded = true;
+
+            if (lockValue && lockValue !== '1' && lockValue !== '0') {
+              log.warn('TIU LOCK RECORD returned unexpected value during nursing sign flow', {
+                ien: newIen,
+                resp: lockValue,
+              });
+            }
+
+            const signResp = await safeCallRpc('TIU SIGN RECORD', [newIen, esCodeStr], {
+              idempotent: false,
+            });
+            const signResult = signResp.join('\n').trim();
+
+            if (signResult && signResult !== '0') {
+              const normalizedFailure = normalizeNoteSignFailure(signResult);
+              signStatus = normalizedFailure.status;
+              signBlocker = normalizedFailure.blocker;
+              signMessage = `Note created in VistA but not signed: ${normalizedFailure.message}`;
+            } else {
+              status = 'signed';
+              noteStatus = 'SIGNED';
+              signStatus = 'signed';
+              signMessage = 'Note created and signed in VistA.';
+            }
+          } catch (signErr) {
+            signStatus = 'sign-failed';
+            signMessage = 'Note created in VistA but signing failed. Retry from the chart notes workflow if needed.';
+            log.warn('Standalone nursing TIU sign flow failed after create', {
+              ien: newIen,
+              err: String(signErr),
+            });
+          } finally {
+            if (unlockNeeded) {
+              try {
+                await safeCallRpc('TIU UNLOCK RECORD', [newIen], { idempotent: false });
+              } catch (unlockErr) {
+                log.warn('TIU UNLOCK RECORD failed after standalone nursing sign attempt', {
+                  ien: newIen,
+                  err: String(unlockErr),
+                });
+              }
+            }
+          }
+        }
+
+        log.info('Nursing note created via TIU', { ien: newIen, status, signStatus });
         immutableAudit('nursing.create-note', 'success', auditActor(session), {
-          detail: { dfn: dfnStr, noteIen: newIen, source: 'vista' },
+          detail: {
+            dfn: dfnStr,
+            noteIen: newIen,
+            source: 'vista',
+            status,
+            signStatus,
+          },
         });
         return {
           ok: true,
           source: 'vista',
-          status: 'created',
+          status,
+          signed: status === 'signed',
+          noteStatus,
+          signAttempted: Boolean(esCodeStr),
+          signStatus,
+          signBlocker,
+          signMessage,
           noteIen: newIen,
           title: noteTitle,
           shift: noteShift,
           timestamp: now.toISOString(),
-          rpcUsed: ['TIU CREATE RECORD', 'TIU SET DOCUMENT TEXT'],
+          rpcUsed,
           pendingTargets: [],
-          _note: 'Note created. Signing requires TIU SIGN RECORD (deferred to Phase 84B).',
+          _note: signMessage,
         };
       } catch (err) {
         // Fallback: return a local draft with migration info
@@ -940,7 +1259,11 @@ export default async function nursingRoutes(server: FastifyInstance) {
               reason: 'TIU document creation -- RPC may not accept nursing note class in sandbox',
             },
             { rpc: 'TIU SET DOCUMENT TEXT', package: 'TIU', reason: 'Set note body text' },
-            { rpc: 'TIU SIGN RECORD', package: 'TIU', reason: 'Electronic signature (deferred)' },
+            {
+              rpc: 'TIU SIGN RECORD',
+              package: 'TIU',
+              reason: 'Electronic signature after TIU note creation when the sandbox note class is available',
+            },
           ],
           vistaGrounding: {
             vistaFiles: ['TIU(8925) TIU DOCUMENT', 'TIU(8925.1) TIU DOCUMENT DEFINITION'],

@@ -13,9 +13,6 @@ on:
         description: 'Test tier (smoke or load)'
         required: false
         default: 'smoke'
-  schedule:
-    # Nightly at 03:00 UTC — load tier
-    - cron: '0 3 * * *'
 
 concurrency:
   group: perf-gate-${{ github.ref }}

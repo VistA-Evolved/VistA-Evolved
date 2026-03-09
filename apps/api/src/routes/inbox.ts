@@ -14,10 +14,52 @@
  */
 
 import type { FastifyInstance } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
 import { validateCredentials } from '../vista/config.js';
 import { connect, disconnect, callRpc, getDuz } from '../vista/rpcBrokerClient.js';
 import { optionalRpc } from '../vista/rpcCapabilities.js';
 import { safeErr } from '../lib/safe-error.js';
+
+function parseNotificationDate(raw: string | undefined): string {
+  const normalized = (raw || '').trim().replace('@', ' ');
+  if (!normalized) return new Date().toISOString();
+
+  const parsed = new Date(normalized);
+  if (Number.isNaN(parsed.getTime())) {
+    return new Date().toISOString();
+  }
+
+  return parsed.toISOString();
+}
+
+function parseFastUserNotification(line: string, fallbackIndex: number): InboxItem | null {
+  const parts = line.split('^');
+  const maybeNotifIen = parts[0]?.trim();
+  const hasLeadingNotificationIen = !!maybeNotifIen && /^\d+$/.test(maybeNotifIen);
+
+  const patientName = (hasLeadingNotificationIen ? parts[1] : parts[1])?.trim() || undefined;
+  const message = (hasLeadingNotificationIen ? parts[2] : parts[5])?.trim() || line;
+  const urgency = (hasLeadingNotificationIen ? parts[3] : parts[3])?.trim() || '';
+  const dfnCandidate = (hasLeadingNotificationIen ? parts[4] : '')?.trim() || '';
+  const dateCandidate = (hasLeadingNotificationIen ? '' : parts[4])?.trim() || '';
+
+  return {
+    id: `notif-${hasLeadingNotificationIen ? maybeNotifIen : fallbackIndex}`,
+    type: 'notification',
+    priority:
+      urgency.toUpperCase() === 'STAT'
+        ? 'stat'
+        : urgency.toUpperCase() === 'URGENT'
+          ? 'urgent'
+          : 'routine',
+    patientDfn: /^\d+$/.test(dfnCandidate) ? dfnCandidate : undefined,
+    patientName,
+    summary: message,
+    detail: line,
+    dateTime: parseNotificationDate(dateCandidate),
+    acknowledged: false,
+  };
+}
 
 export interface InboxItem {
   id: string;
@@ -132,31 +174,10 @@ export default async function inboxRoutes(server: FastifyInstance): Promise<void
             featureStatus.push({ rpc: 'ORWORB FASTUSER', status: 'available' });
             for (const line of notifLines) {
               if (!line.trim()) continue;
-              const parts = line.split('^');
-              const notifIen = parts[0]?.trim();
-              const patientName = parts[1]?.trim() || '';
-              const message = parts[2]?.trim() || line;
-              const urgency = parts[3]?.trim() || '';
-              const dfn = parts[4]?.trim() || '';
-
-              if (notifIen && !/^\d+$/.test(notifIen)) continue;
-
-              items.push({
-                id: `notif-${notifIen || items.length}`,
-                type: 'notification',
-                priority:
-                  urgency.toUpperCase() === 'STAT'
-                    ? 'stat'
-                    : urgency.toUpperCase() === 'URGENT'
-                      ? 'urgent'
-                      : 'routine',
-                patientDfn: dfn || undefined,
-                patientName: patientName || undefined,
-                summary: message,
-                detail: line,
-                dateTime: new Date().toISOString(),
-                acknowledged: false,
-              });
+              const parsed = parseFastUserNotification(line, items.length);
+              if (parsed) {
+                items.push(parsed);
+              }
             }
           }
         } catch (err: any) {
@@ -191,5 +212,46 @@ export default async function inboxRoutes(server: FastifyInstance): Promise<void
               .map((f) => `${f.rpc}: ${f.detail || 'not available'}`)
           : undefined,
     };
+  });
+
+  // POST /vista/inbox/acknowledge
+  server.post('/vista/inbox/acknowledge', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+
+    const body = (request.body as any) || {};
+    const itemId = String(body.itemId || '').trim();
+    if (!itemId) {
+      return reply.code(400).send({ ok: false, error: 'itemId required' });
+    }
+
+    return reply.code(202).send({
+      ok: false,
+      status: 'integration-pending',
+      integrationPending: true,
+      pending: true,
+      itemId,
+      source: 'vista',
+      error:
+        'Inbox acknowledgement cannot be persisted in the current VEHU sandbox because ORWORB KILL EXPIR MSG is not available.',
+      rpcUsed: [],
+      pendingTargets: [
+        {
+          rpc: 'ORWORB KILL EXPIR MSG',
+          package: 'OR',
+          reason: 'Persist inbox acknowledgement back to VistA notifications',
+        },
+      ],
+      vistaGrounding: {
+        targetRpc: ['ORWORB KILL EXPIR MSG'],
+        status: 'integration-pending',
+        nextSteps: [
+          'Install or verify ORWORB KILL EXPIR MSG in the active VistA lane.',
+          'Wire the acknowledge action to real VistA persistence once the RPC is available.',
+        ],
+      },
+      note:
+        'The inbox item remains visible by design until a real VistA acknowledge path is available.',
+    });
   });
 }

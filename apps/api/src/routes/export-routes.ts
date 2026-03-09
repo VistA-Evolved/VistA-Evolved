@@ -25,6 +25,30 @@ import { SUPPORTED_FORMATS, type ExportV2Format } from '../exports/export-format
 import { log } from '../lib/logger.js';
 
 export default async function exportV2Routes(server: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: any, session: any): string | null {
+    const sessionTenantId =
+      typeof session?.tenantId === 'string' && session.tenantId.trim().length > 0
+        ? session.tenantId.trim()
+        : undefined;
+    const requestTenantId =
+      typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+        ? request.tenantId.trim()
+        : undefined;
+    const headerTenantId = request?.headers?.['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return sessionTenantId || requestTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(request: any, reply: any, session: any): string | null {
+    const tenantId = resolveTenantId(request, session);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
   /* ── GET /admin/exports/sources ─────────────────────────────── */
   server.get('/admin/exports/sources', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -38,6 +62,8 @@ export default async function exportV2Routes(server: FastifyInstance): Promise<v
   server.post('/admin/exports/jobs', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
 
     const body = (request.body as any) || {};
     const { sourceId, format, filters } = body;
@@ -56,7 +82,7 @@ export default async function exportV2Routes(server: FastifyInstance): Promise<v
     try {
       const job = await createExportJob(
         { duz: session.duz, name: session.userName, role: session.role },
-        session.tenantId || 'default',
+        tenantId,
         { sourceId, format, filters } as CreateExportRequest
       );
 

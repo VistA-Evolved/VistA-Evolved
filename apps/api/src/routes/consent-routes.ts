@@ -21,6 +21,30 @@ import {
 import { getEffectivePolicy } from '../middleware/country-policy-hook.js';
 
 export async function consentRoutes(app: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: any): string | null {
+    const requestTenantId =
+      typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+        ? request.tenantId.trim()
+        : undefined;
+    const sessionTenantId =
+      typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+        ? request.session.tenantId.trim()
+        : undefined;
+    const headerTenantId = request?.headers?.['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return requestTenantId || sessionTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(request: any, reply: any): string | null {
+    const tenantId = resolveTenantId(request);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
   // GET /consent/profiles — list available regulatory consent profiles
   app.get('/consent/profiles', async () => {
     const names = listConsentProfiles();
@@ -39,10 +63,12 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
   // GET /consent/patient — get consent records for a patient
   app.get('/consent/patient', async (request, reply) => {
     const query = (request.query as Record<string, string>) || {};
-    const { tenantId, dfn } = query;
+    const { dfn } = query;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
-    if (!tenantId || !dfn) {
-      return reply.code(400).send({ ok: false, error: 'tenantId and dfn required' });
+    if (!dfn) {
+      return reply.code(400).send({ ok: false, error: 'dfn required' });
     }
 
     const records = getConsentRecords(tenantId, dfn);
@@ -52,10 +78,12 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
   // GET /consent/check — check consent compliance for a patient
   app.get('/consent/check', async (request, reply) => {
     const query = (request.query as Record<string, string>) || {};
-    const { tenantId, dfn, framework } = query;
+    const { dfn, framework } = query;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
-    if (!tenantId || !dfn || !framework) {
-      return reply.code(400).send({ ok: false, error: 'tenantId, dfn, and framework required' });
+    if (!dfn || !framework) {
+      return reply.code(400).send({ ok: false, error: 'dfn and framework required' });
     }
 
     const profile = getConsentProfile(framework);
@@ -70,8 +98,9 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
   // POST /consent/grant — grant consent for a category
   app.post('/consent/grant', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const {
-      tenantId,
       patientDfn,
       category,
       grantedBy,
@@ -81,10 +110,10 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
       version,
     } = body as Record<string, string>;
 
-    if (!tenantId || !patientDfn || !category || !grantedBy) {
+    if (!patientDfn || !category || !grantedBy) {
       return reply.code(400).send({
         ok: false,
-        error: 'tenantId, patientDfn, category, grantedBy required',
+        error: 'patientDfn, category, grantedBy required',
       });
     }
 
@@ -118,6 +147,8 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
   // POST /consent/revoke — revoke a consent
   app.post('/consent/revoke', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { consentId, revokedBy, reason } = body as Record<string, string>;
 
     if (!consentId || !revokedBy || !reason) {
@@ -127,7 +158,7 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
       });
     }
 
-    const revoked = revokeConsent(consentId, revokedBy, reason);
+    const revoked = revokeConsent(tenantId, consentId, revokedBy, reason);
     if (!revoked) {
       return reply.code(404).send({
         ok: false,
@@ -141,10 +172,12 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
   // GET /consent/active — get active consent for a specific category
   app.get('/consent/active', async (request, reply) => {
     const query = (request.query as Record<string, string>) || {};
-    const { tenantId, dfn, category } = query;
+    const { dfn, category } = query;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
-    if (!tenantId || !dfn || !category) {
-      return reply.code(400).send({ ok: false, error: 'tenantId, dfn, category required' });
+    if (!dfn || !category) {
+      return reply.code(400).send({ ok: false, error: 'dfn and category required' });
     }
 
     if (!CONSENT_CATEGORIES.includes(category as ConsentCategory)) {
@@ -163,10 +196,12 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
   // Auto-resolves framework from the tenant's bound country pack.
   app.get('/consent/policy-check', async (request, reply) => {
     const query = (request.query as Record<string, string>) || {};
-    const { tenantId, dfn } = query;
+    const { dfn } = query;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
-    if (!tenantId || !dfn) {
-      return reply.code(400).send({ ok: false, error: 'tenantId and dfn required' });
+    if (!dfn) {
+      return reply.code(400).send({ ok: false, error: 'dfn required' });
     }
 
     const policy = getEffectivePolicy(request);

@@ -13,7 +13,7 @@
  * No diagnosis, treatment plans, prescribing guidance, or autonomous ordering.
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
 
@@ -34,6 +34,19 @@ interface AIResponseData {
   latencyMs: number;
   responseId: string;
   generatedAt: string;
+}
+
+interface IntakeSessionSummary {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+}
+
+interface IntakeReviewData {
+  summary?: {
+    draftNoteText?: string;
+  };
 }
 
 interface AuditEvent {
@@ -81,6 +94,55 @@ function IntakeSummaryTab({ dfn }: { dfn: string }) {
   const [confirmed, setConfirmed] = useState<boolean | null>(null);
   const [auditEventId, setAuditEventId] = useState<string | null>(null);
   const [error, setError] = useState('');
+  const [intakeAvailabilityLoading, setIntakeAvailabilityLoading] = useState(true);
+  const [hasIntakeSession, setHasIntakeSession] = useState(false);
+  const [intakeAvailabilityMsg, setIntakeAvailabilityMsg] = useState('');
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadIntakeAvailability() {
+      setIntakeAvailabilityLoading(true);
+      try {
+        const sessionsResponse = await apiFetch(`/intake/by-patient/${dfn}`);
+        if (!sessionsResponse.ok) {
+          if (!cancelled) {
+            setHasIntakeSession(false);
+            setIntakeAvailabilityMsg(
+              sessionsResponse.error || 'Unable to verify intake availability for this patient.'
+            );
+          }
+          return;
+        }
+
+        const sessions = (sessionsResponse.sessions || []) as IntakeSessionSummary[];
+        if (!cancelled) {
+          const available = sessions.length > 0;
+          setHasIntakeSession(available);
+          setIntakeAvailabilityMsg(
+            available
+              ? ''
+              : 'No intake sessions are available for this patient. Intake Summary requires a real intake session.'
+          );
+        }
+      } catch {
+        if (!cancelled) {
+          setHasIntakeSession(false);
+          setIntakeAvailabilityMsg('Unable to verify intake availability for this patient.');
+        }
+      } finally {
+        if (!cancelled) {
+          setIntakeAvailabilityLoading(false);
+        }
+      }
+    }
+
+    loadIntakeAvailability();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [dfn]);
 
   const generateSummary = useCallback(async () => {
     setLoading(true);
@@ -89,6 +151,41 @@ function IntakeSummaryTab({ dfn }: { dfn: string }) {
     setConfirmed(null);
 
     try {
+      const sessionsResponse = await apiFetch(`/intake/by-patient/${dfn}`);
+      if (!sessionsResponse.ok) {
+        setError(sessionsResponse.error || 'Failed to load intake sessions');
+        return;
+      }
+
+      const sessions = ((sessionsResponse.sessions || []) as IntakeSessionSummary[])
+        .slice()
+        .sort((left, right) => {
+          const leftTs = new Date(left.updatedAt || left.createdAt).getTime();
+          const rightTs = new Date(right.updatedAt || right.createdAt).getTime();
+          return rightTs - leftTs;
+        });
+
+      const latestSession = sessions[0];
+      if (!latestSession) {
+        setError('No intake sessions are available for this patient. Intake Summary requires a real intake session.');
+        return;
+      }
+
+      const reviewResponse = (await apiFetch(
+        `/intake/sessions/${latestSession.id}/review`
+      )) as IntakeReviewData & { ok?: boolean; error?: string };
+
+      if (!reviewResponse.ok) {
+        setError(reviewResponse.error || 'Failed to load intake review data');
+        return;
+      }
+
+      const intakeData = reviewResponse.summary?.draftNoteText?.trim();
+      if (!intakeData) {
+        setError('The latest intake session does not contain a draft summary yet. Review or submit intake before generating AI summary.');
+        return;
+      }
+
       const data = await apiFetch('/ai/request', {
         method: 'POST',
         body: JSON.stringify({
@@ -96,8 +193,8 @@ function IntakeSummaryTab({ dfn }: { dfn: string }) {
           promptId: 'intake-summary-v1',
           variables: {
             intakeDate: new Date().toISOString().split('T')[0],
-            intakeData: '(Intake data will be loaded from patient intake session)',
-            chartContext: '',
+            intakeData,
+            chartContext: `Patient DFN ${dfn}; intakeSession=${latestSession.id}; intakeStatus=${latestSession.status}`,
           },
           patientDfn: dfn,
         }),
@@ -136,22 +233,46 @@ function IntakeSummaryTab({ dfn }: { dfn: string }) {
         Generate a clinician-ready note draft from patient intake data.
         <strong> Requires your review and confirmation before use.</strong>
       </p>
+      <p style={{ fontSize: 12, color: '#666', margin: '0 0 12px' }}>
+        Generation is blocked unless this patient has a real intake session with reviewable summary content.
+      </p>
 
       <button
         onClick={generateSummary}
-        disabled={loading}
+        disabled={loading || intakeAvailabilityLoading || !hasIntakeSession}
         style={{
           padding: '6px 16px',
           background: '#2563eb',
           color: '#fff',
           border: 'none',
           borderRadius: 4,
-          cursor: loading ? 'wait' : 'pointer',
+          cursor: loading || intakeAvailabilityLoading || !hasIntakeSession ? 'not-allowed' : 'pointer',
+          opacity: loading || intakeAvailabilityLoading || !hasIntakeSession ? 0.6 : 1,
           fontSize: 13,
         }}
       >
-        {loading ? 'Generating...' : 'Generate Intake Summary'}
+        {loading
+          ? 'Generating...'
+          : intakeAvailabilityLoading
+            ? 'Checking Intake...'
+            : 'Generate Intake Summary'}
       </button>
+
+      {!hasIntakeSession && !intakeAvailabilityLoading && intakeAvailabilityMsg && (
+        <div
+          style={{
+            margin: '12px 0',
+            padding: 8,
+            background: '#f8fafc',
+            borderRadius: 4,
+            color: '#475569',
+            fontSize: 13,
+            border: '1px solid #cbd5e1',
+          }}
+        >
+          {intakeAvailabilityMsg}
+        </div>
+      )}
 
       {error && (
         <div

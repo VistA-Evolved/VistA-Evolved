@@ -201,8 +201,11 @@ export function ingestCostRecord(input: {
   return record;
 }
 
-export function getCostRecord(id: string): TenantCostDaily | undefined {
-  return costStore.get(id);
+export function getCostRecord(id: string, tenantId?: string): TenantCostDaily | undefined {
+  const record = costStore.get(id);
+  if (!record) return undefined;
+  if (tenantId && record.tenantId !== tenantId) return undefined;
+  return record;
 }
 
 export function listCostRecords(filters?: {
@@ -303,8 +306,9 @@ export function getBudget(tenantId: string): TenantBudget | undefined {
   return budgetStore.get(tenantId);
 }
 
-export function listBudgets(): TenantBudget[] {
-  return Array.from(budgetStore.values()).sort((a, b) => a.tenantId.localeCompare(b.tenantId));
+export function listBudgets(tenantId?: string): TenantBudget[] {
+  const budgets = Array.from(budgetStore.values()).filter((budget) => !tenantId || budget.tenantId === tenantId);
+  return budgets.sort((a, b) => a.tenantId.localeCompare(b.tenantId));
 }
 
 /**
@@ -378,9 +382,12 @@ function fireAlert(
   appendAudit("alert.fired", "system", { alertId: alert.id, tenantId, severity, actualPct });
 }
 
-export function acknowledgeAlert(alertId: string, actor: string): BudgetAlert {
+export function acknowledgeAlert(alertId: string, actor: string, tenantId?: string): BudgetAlert {
   const alert = alertStore.get(alertId);
   if (!alert) throw Object.assign(new Error("Alert not found"), { statusCode: 404 });
+  if (tenantId && alert.tenantId !== tenantId) {
+    throw Object.assign(new Error("Alert not found"), { statusCode: 404 });
+  }
   if (alert.status !== "active") throw Object.assign(new Error("Alert not active"), { statusCode: 400 });
   alert.status = "acknowledged";
   alert.acknowledgedAt = new Date().toISOString();
@@ -389,9 +396,12 @@ export function acknowledgeAlert(alertId: string, actor: string): BudgetAlert {
   return alert;
 }
 
-export function resolveAlert(alertId: string, actor: string): BudgetAlert {
+export function resolveAlert(alertId: string, actor: string, tenantId?: string): BudgetAlert {
   const alert = alertStore.get(alertId);
   if (!alert) throw Object.assign(new Error("Alert not found"), { statusCode: 404 });
+  if (tenantId && alert.tenantId !== tenantId) {
+    throw Object.assign(new Error("Alert not found"), { statusCode: 404 });
+  }
   alert.status = "resolved";
   alert.resolvedAt = new Date().toISOString();
   alertStore.set(alertId, alert);
@@ -470,7 +480,7 @@ export function listAnomalies(filters?: { tenantId?: string }, limit = 100): Cos
 
 // ─── Summary ────────────────────────────────────────────────────────────────
 
-export function getCostSummary(): {
+export function getCostSummary(tenantId?: string): {
   totalRecords: number;
   totalSpendUsd: number;
   tenantCount: number;
@@ -481,21 +491,27 @@ export function getCostSummary(): {
 } {
   let totalSpend = 0;
   const tenants = new Set<string>();
-  for (const r of costStore.values()) {
+  const records = Array.from(costStore.values()).filter((record) => !tenantId || record.tenantId === tenantId);
+  for (const r of records) {
     totalSpend += r.totalCostUsd;
     tenants.add(r.tenantId);
   }
 
   let activeAlerts = 0;
-  for (const a of alertStore.values()) if (a.status === "active") activeAlerts++;
+  for (const a of alertStore.values()) {
+    if (a.status === "active" && (!tenantId || a.tenantId === tenantId)) activeAlerts++;
+  }
+
+  const scopedBudgets = Array.from(budgetStore.values()).filter((budget) => !tenantId || budget.tenantId === tenantId);
+  const scopedAnomalies = Array.from(anomalyStore.values()).filter((anomaly) => !tenantId || anomaly.tenantId === tenantId);
 
   return {
-    totalRecords: costStore.size,
+    totalRecords: records.length,
     totalSpendUsd: Math.round(totalSpend * 10000) / 10000,
     tenantCount: tenants.size,
-    budgetCount: budgetStore.size,
+    budgetCount: scopedBudgets.length,
     activeAlerts,
-    anomalies: anomalyStore.size,
+    anomalies: scopedAnomalies.length,
     openCostEnabled: openCostConfig.enabled,
   };
 }
@@ -507,6 +523,9 @@ function appendAudit(action: string, actor: string, detail: Record<string, unkno
   if (auditLog.length > MAX_AUDIT) auditLog.splice(0, auditLog.length - MAX_AUDIT);
 }
 
-export function getCostAuditLog(limit = 100, offset = 0): typeof auditLog {
-  return auditLog.slice().reverse().slice(offset, offset + limit);
+export function getCostAuditLog(limit = 100, offset = 0, tenantId?: string): typeof auditLog {
+  const scopedEntries = tenantId
+    ? auditLog.filter((entry) => entry.detail?.tenantId === tenantId)
+    : auditLog;
+  return scopedEntries.slice().reverse().slice(offset, offset + limit);
 }

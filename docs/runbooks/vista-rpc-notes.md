@@ -43,6 +43,26 @@ GET /vista/notes?dfn=<dfn>
 }
 ```
 
+## Notes Panel Truthfulness Contract
+
+- The standalone CPRS Notes panel uses the shared `useDataCache()` notes-domain metadata, not just array length.
+- A successful live empty response renders `No notes on record`.
+- A failed or integration-pending notes read renders a grounded pending banner with status, attempted RPCs, and target RPCs instead of a false empty state.
+- Request-failure posture still identifies `TIU DOCUMENTS BY CONTEXT` as the target dependency so clinicians are not shown an ungrounded blank list.
+- TIU note status chips in the CPRS Notes panel must classify `unsigned` and `uncosigned` before any generic `signed` substring check; otherwise live unsigned notes are falsely labeled as signed in the chart.
+- CPRS note creation is only truthful when the returned TIU IEN can be read back with persisted body lines, not just the standard TIU header block.
+- `TIU SET DOCUMENT TEXT` acknowledgements alone are insufficient in VEHU for clinician-facing success. The route must verify persisted body lines through TIU readback before returning `ok:true`.
+- The XWB LIST serializer must preserve valid MUMPS compound keys such as `"TEXT",1,0` and leave numeric field keys such as `1202` and `1301` unquoted. Quoting the entire key string causes TIU body writes to land in the wrong node and TIU create field arrays to be ignored.
+- The authoritative `TIU CREATE RECORD` contract for CPRS create uses the 9-parameter Phase 7B sequence: `DFN`, `TITLE`, `VDT`, `VLOC`, `VSIT`, `TIUX{1202,1301}`, `VSTR`, `SUPPRESS`, `NOASF`.
+- In VEHU, `TIU DETAILED DISPLAY` may still report `Line Count: None` for a newly created unsigned note even when the body is present. Success must therefore be based on actual TIU readback content, not on line count alone.
+- Live verification on 2026-03-08 confirmed real note creation for DFN 46 with title IEN `10`: `POST /vista/cprs/notes/create` returned document IEN `14359`, and `TIU GET RECORD TEXT` returned the entered body lines.
+- During a notes refresh triggered by create, sign, addendum, or manual refresh, the CPRS Notes panel must keep already-known note rows visible and downgrade loading to a non-blocking refresh indicator. A blank loading-only pane is only acceptable before any trustworthy notes have been loaded.
+- Live verification on 2026-03-08 also confirmed real addendum creation for signed parent note `727`: `POST /vista/cprs/notes/addendum` returned addendum IEN `14361`.
+- Addenda against an unsigned parent note still degrade truthfully to server-side draft because `TIU CREATE ADDENDUM RECORD` does not produce a valid addendum IEN in that scenario.
+- Live verification on 2026-03-08 confirmed the nursing TIU fallback writer now persists frontend-entered reason text. `POST /vista/nursing/mar/administer` for DFN `46` and medication `8207` returned note IEN `14366`, and `GET /vista/cprs/notes/text?ien=14366` read back `Med admin: 8207 - given - PHASE668 nursing reason UI contract ...`.
+- Live verification on 2026-03-08 confirmed the eMAR TIU fallback writer now persists frontend-entered reason text. `POST /emar/administer` for DFN `46` and order `8207` returned note IEN `14367`, and `GET /vista/cprs/notes/text?ien=14367` read back `eMAR: given order 8207 - PHASE668 emar reason UI contract ...`.
+- The nursing fallback route must accept both `note` and `reason` inputs because the CPRS web UI posts `reason`; dropping that field silently loses clinician-entered administration context even when TIU text persistence is otherwise working.
+
 ---
 
 ## Under the Hood

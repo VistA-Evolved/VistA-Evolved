@@ -389,8 +389,11 @@ export function denyBreakGlass(params: {
 /**
  * Get a break-glass session by ID.
  */
-export function getBreakGlassSession(id: string): EnterpriseBreakGlassSession | null {
-  return breakGlassStore.get(id) || null;
+export function getBreakGlassSession(id: string, tenantId?: string): EnterpriseBreakGlassSession | null {
+  const session = breakGlassStore.get(id) || null;
+  if (!session) return null;
+  if (tenantId && session.tenantId !== tenantId) return null;
+  return session;
 }
 
 /**
@@ -461,7 +464,7 @@ export function listBreakGlassSessions(options?: {
 /**
  * Get summary statistics for break-glass sessions.
  */
-export function getBreakGlassStats(): {
+export function getBreakGlassStats(tenantId?: string): {
   total: number;
   byStatus: Record<string, number>;
   activeCount: number;
@@ -472,13 +475,16 @@ export function getBreakGlassStats(): {
   let pendingCount = 0;
 
   for (const session of breakGlassStore.values()) {
+    if (tenantId && session.tenantId !== tenantId) continue;
     byStatus[session.status] = (byStatus[session.status] || 0) + 1;
     if (session.status === 'active') activeCount++;
     if (session.status === 'pending') pendingCount++;
   }
 
   return {
-    total: breakGlassStore.size,
+    total: tenantId
+      ? Array.from(breakGlassStore.values()).filter((session) => session.tenantId === tenantId).length
+      : breakGlassStore.size,
     byStatus,
     activeCount,
     pendingCount,

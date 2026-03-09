@@ -19,6 +19,7 @@ export type RemittanceSourceType = (typeof REMITTANCE_SOURCE_TYPES)[number];
 
 export interface RemittanceImport {
   id: string;
+  tenantId: string;
   createdAt: string;
   sourceType: RemittanceSourceType;
   receivedAt: string;
@@ -62,6 +63,7 @@ export type PaymentCode = z.infer<typeof PaymentCodeSchema>;
 
 export interface PaymentRecord {
   id: string;
+  tenantId: string;
   remittanceImportId: string;
   createdAt: string;
   claimRef: string;
@@ -143,6 +145,7 @@ export type MatchStatus = (typeof MATCH_STATUSES)[number];
 
 export interface ReconciliationMatch {
   id: string;
+  tenantId: string;
   createdAt: string;
   paymentId: string;
   claimRef: string;
@@ -194,6 +197,7 @@ export function isValidUnderpaymentTransition(
 
 export interface UnderpaymentCase {
   id: string;
+  tenantId: string;
   createdAt: string;
   updatedAt: string;
   claimRef: string;

@@ -69,12 +69,114 @@ jobs:
         run: pnpm -r build
 
   # ================================================================
+  # Integration gates -- real VEHU + API runtime proof
+  # ================================================================
+  integration-gates:
+    name: Integration Gates (VEHU + Runtime Truth)
+    runs-on: ubuntu-latest
+    needs: [unit-gates]
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.13.0'
+
+      - name: Install pnpm
+        run: npm install -g pnpm@10.29.2
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Write API runtime env file
+        run: |
+          cat > apps/api/.env.local <<'EOF'
+          VISTA_HOST=127.0.0.1
+          VISTA_PORT=9431
+          VISTA_ACCESS_CODE=PRO1234
+          VISTA_VERIFY_CODE=PRO1234!!
+          VISTA_CONTEXT=OR CPRS GUI CHART
+          PLATFORM_PG_URL=postgresql://ve_api:ve_dev_only_change_in_prod@127.0.0.1:5433/ve_platform
+          AUTH_MODE=dev_local
+          EOF
+
+      - name: Start VEHU and platform DB
+        run: |
+          docker compose -f services/vista/docker-compose.yml --profile vehu up -d
+          docker compose -f services/platform-db/docker-compose.yml up -d
+
+      - name: Wait for VEHU broker
+        run: |
+          for i in $(seq 1 60); do
+            if bash -c '</dev/tcp/127.0.0.1/9431' 2>/dev/null; then
+              echo "VEHU broker ready on attempt $i"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "VEHU broker failed to become ready"
+          docker logs vehu 2>&1 | tail -50 || true
+          exit 1
+
+      - name: Verify direct VistA connectivity
+        run: pnpm verify:vista
+
+      - name: Start API server
+        run: |
+          mkdir -p artifacts
+          cd apps/api
+          npx tsx --env-file=.env.local src/index.ts > ../../artifacts/ci-api.log 2>&1 &
+          echo $! > ../../artifacts/ci-api.pid
+          cd ../..
+
+      - name: Wait for API health
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:3001/health > /dev/null 2>&1; then
+              echo "API ready on attempt $i"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "API failed to become ready"
+          tail -50 artifacts/ci-api.log || true
+          exit 1
+
+      - name: Generate runtime truth map
+        run: pnpm qa:runtime-truth
+
+      - name: Upload integration artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-runtime-truth-${{ github.run_number }}
+          path: |
+            artifacts/runtime-truth-map/latest.json
+            artifacts/ci-api.log
+          retention-days: 30
+
+      - name: Stop API
+        if: always()
+        run: |
+          if [ -f artifacts/ci-api.pid ]; then
+            kill "$(cat artifacts/ci-api.pid)" 2>/dev/null || true
+          fi
+
+      - name: Stop VEHU and platform DB
+        if: always()
+        run: |
+          docker compose -f services/vista/docker-compose.yml --profile vehu down || true
+          docker compose -f services/platform-db/docker-compose.yml down || true
+
+  # ================================================================
   # Evidence bundle -- collects all gate results + SBOM
   # ================================================================
   evidence-bundle:
     name: Generate Evidence Bundle
     runs-on: ubuntu-latest
-    needs: [unit-gates]
+    needs: [unit-gates, integration-gates]
     timeout-minutes: 20
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
@@ -101,24 +203,3 @@ jobs:
           path: artifacts/evidence/
           retention-days: 90
 
-  # ================================================================
-  # Integration gates -- requires Docker (VistA sandbox)
-  # Skipped in standard CI; runs on self-hosted or manual dispatch.
-  # ================================================================
-  # integration-gates:
-  #   name: Integration Gates (VistA sandbox)
-  #   runs-on: self-hosted
-  #   if: github.event_name == 'workflow_dispatch'
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Start VistA sandbox
-  #       run: docker compose -f services/vista/docker-compose.yml up -d
-  #     - name: Wait for VistA
-  #       run: sleep 30
-  #     - name: Run full verification
-  #       run: pwsh scripts/verify-latest.ps1 -SkipPlaywright
-  #     - name: Stop VistA sandbox
-  #       run: docker compose -f services/vista/docker-compose.yml down
-  #
-  # Re-enable when self-hosted runner is provisioned.
-  # See: docs/runbooks/phase34-regulated-sdlc.md

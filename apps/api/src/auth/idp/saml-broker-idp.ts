@@ -24,7 +24,7 @@
 import { log } from '../../lib/logger.js';
 import { validateJwt, type JwtValidationResult } from '../jwt-validator.js';
 import { mapClaimsToUserMeta } from '../oidc-provider.js';
-import { resolveTenantId } from '../../config/tenant-config.js';
+import { tryResolveTenantId } from '../../config/tenant-config.js';
 import type { UserRole } from '../session-store.js';
 import type {
   IdentityProvider,
@@ -180,11 +180,14 @@ export class SamlBrokerIdentityProvider implements IdentityProvider {
       else if (roleSet.has('support')) role = 'support';
     }
 
-    const facilityStation = userMeta.facilityStation || '500';
-    if (!userMeta.facilityStation) {
-      log.warn('SAML broker claims missing facility_station, defaulting to 500 (sandbox)');
+    const facilityStation = userMeta.facilityStation;
+    const tenantId = userMeta.tenantId || tryResolveTenantId(facilityStation);
+    if (!tenantId) {
+      return {
+        ok: false,
+        error: 'SAML tenant resolution failed: missing tenant_id claim or mapped facility_station',
+      };
     }
-    const tenantId = userMeta.tenantId || resolveTenantId(facilityStation);
 
     return {
       ok: true,
@@ -194,7 +197,7 @@ export class SamlBrokerIdentityProvider implements IdentityProvider {
         displayName: userMeta.userName,
         email: jwtResult.claims.email,
         role,
-        facilityStation,
+        facilityStation: facilityStation || '',
         facilityName: '',
         divisionIen: '',
         tenantId,

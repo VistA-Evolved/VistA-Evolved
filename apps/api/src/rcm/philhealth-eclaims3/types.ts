@@ -211,6 +211,7 @@ export interface DenialReason {
 
 export interface SubmissionRecord {
   id: string;
+  tenantId: string;
   packetId: string;
   sourceClaimDraftId: string;
   status: EClaimsSubmissionStatus;

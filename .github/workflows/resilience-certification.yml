@@ -4,16 +4,6 @@ name: resilience-certification
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'apps/api/src/lib/rpc-resilience.ts'
-      - 'apps/api/src/vista/rpcBrokerClient.ts'
-      - 'apps/api/src/middleware/security.ts'
-      - 'apps/api/src/posture/**'
-      - 'ops/drills/**'
-      - 'apps/api/tests/resilience-certification.test.ts'
-  schedule:
-    - cron: '0 4 * * *' # Daily 04:00 UTC
 
 jobs:
   resilience-static:

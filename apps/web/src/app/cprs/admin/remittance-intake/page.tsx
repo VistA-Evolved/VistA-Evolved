@@ -130,6 +130,13 @@ interface RemitStats {
   underpaymentTotal: number;
 }
 
+function getDisplayStatus(doc: RemittanceDoc): string {
+  if (doc.status === 'posted' && !doc.postedToVista) {
+    return 'posted-local';
+  }
+  return doc.status;
+}
+
 export default function RemittanceIntakePage() {
   const [tab, setTab] = useState<'documents' | 'upload' | 'stats'>('documents');
   const [docs, setDocs] = useState<RemittanceDoc[]>([]);
@@ -244,7 +251,13 @@ export default function RemittanceIntakePage() {
         body: JSON.stringify({ postingNotes: notes, actor: 'billing-staff' }),
       });
       const data = await res.json();
-      setMessage(data.ok ? `Marked as posted. ${data.vistaIntegration}` : `Error: ${data.error}`);
+      setMessage(
+        data.ok
+          ? data.document?.postedToVista
+            ? 'Posted to VistA AR successfully.'
+            : `Recorded locally for later VistA posting. ${data.vistaIntegration}`
+          : `Error: ${data.error}`
+      );
       fetchDocs();
     } catch (err) {
       setMessage(`Failed: ${err instanceof Error ? err.message : String(err)}`);
@@ -348,11 +361,14 @@ export default function RemittanceIntakePage() {
                       <span
                         style={{
                           ...BADGE,
-                          background: STATUS_COLORS[doc.status] ?? '#666',
+                          background:
+                            doc.status === 'posted' && !doc.postedToVista
+                              ? '#f59e0b'
+                              : STATUS_COLORS[doc.status] ?? '#666',
                           color: '#fff',
                         }}
                       >
-                        {doc.status}
+                        {getDisplayStatus(doc)}
                       </span>
                       {doc.underpaymentFlagged && (
                         <span
@@ -427,7 +443,7 @@ export default function RemittanceIntakePage() {
                   <strong>Payer:</strong> {selectedDoc.payerName ?? selectedDoc.payerId}
                 </div>
                 <div>
-                  <strong>Status:</strong> {selectedDoc.status}
+                  <strong>Status:</strong> {getDisplayStatus(selectedDoc)}
                 </div>
                 <div>
                   <strong>Type:</strong> {selectedDoc.docType}

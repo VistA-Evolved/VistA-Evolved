@@ -24,6 +24,8 @@
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
+import { getTenant } from '../config/tenant-config.js';
 import {
   registerCluster,
   listClusters,
@@ -64,6 +66,53 @@ const VALID_REASONS: PlacementReason[] = [
 
 function getActor(request: FastifyRequest): string {
   return (request as any).session?.duz || 'unknown';
+}
+
+function getSessionTenantId(request: FastifyRequest): string | null {
+  const sessionTenantId =
+    typeof (request as any).session?.tenantId === 'string' &&
+    (request as any).session.tenantId.trim().length > 0
+      ? (request as any).session.tenantId.trim()
+      : undefined;
+  const requestTenantId =
+    typeof (request as any).tenantId === 'string' && (request as any).tenantId.trim().length > 0
+      ? (request as any).tenantId.trim()
+      : undefined;
+  return sessionTenantId || requestTenantId || null;
+}
+
+function ensureTenantExists(tenantId: string, reply: FastifyReply): boolean {
+  if (!getTenant(tenantId)) {
+    reply.code(404).send({ ok: false, error: `Tenant '${tenantId}' not found` });
+    return false;
+  }
+  return true;
+}
+
+function resolveAdminTargetTenant(
+  request: FastifyRequest,
+  reply: FastifyReply,
+  explicitTenantId?: string,
+  reason?: string
+): string | undefined {
+  const sessionTenantId = getSessionTenantId(request);
+  if (!sessionTenantId) {
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return undefined;
+  }
+  const targetTenantId =
+    typeof explicitTenantId === 'string' && explicitTenantId.trim().length > 0
+      ? explicitTenantId.trim()
+      : sessionTenantId;
+  if (!ensureTenantExists(targetTenantId, reply)) return undefined;
+  if (targetTenantId !== sessionTenantId && (!reason || !reason.trim())) {
+    reply.code(400).send({
+      ok: false,
+      error: 'reason is required for cross-tenant cluster placement actions',
+    });
+    return undefined;
+  }
+  return targetTenantId;
 }
 
 export async function multiClusterRoutes(server: FastifyInstance): Promise<void> {
@@ -251,8 +300,12 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
   server.post(
     '/platform/tenants/:tenantId/place',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const { tenantId } = request.params as any;
+      const session = await requireSession(request, reply);
+      if (!session) return;
+      const { tenantId: requestedTenantId } = request.params as any;
       const body = (request.body as any) || {};
+      const tenantId = resolveAdminTargetTenant(request, reply, requestedTenantId, body.reason);
+      if (!tenantId) return reply;
 
       if (body.planTier && !VALID_PLAN_TIERS.includes(body.planTier)) {
         return reply
@@ -290,7 +343,12 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
   server.get(
     '/platform/tenants/:tenantId/placement',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const { tenantId } = request.params as any;
+      const session = await requireSession(request, reply);
+      if (!session) return;
+      const { tenantId: requestedTenantId } = request.params as any;
+      const query = request.query as any;
+      const tenantId = resolveAdminTargetTenant(request, reply, requestedTenantId, query.reason);
+      if (!tenantId) return reply;
       const placement = getTenantPlacement(tenantId);
       if (!placement)
         return reply.code(404).send({ ok: false, error: 'No active placement for tenant' });
@@ -303,7 +361,12 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
   server.delete(
     '/platform/tenants/:tenantId/placement',
     async (request: FastifyRequest, reply: FastifyReply) => {
-      const { tenantId } = request.params as any;
+      const session = await requireSession(request, reply);
+      if (!session) return;
+      const { tenantId: requestedTenantId } = request.params as any;
+      const body = (request.body as any) || {};
+      const tenantId = resolveAdminTargetTenant(request, reply, requestedTenantId, body.reason);
+      if (!tenantId) return reply;
       const deactivated = deactivatePlacement(tenantId, getActor(request));
       if (!deactivated) {
         return reply.code(404).send({ ok: false, error: 'No active placement to deactivate' });
@@ -316,12 +379,13 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
   server.post(
     '/platform/tenants/simulate-placement',
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
       const body = (request.body as any) || {};
-      if (!body.tenantId) {
-        return reply.code(400).send({ ok: false, error: 'tenantId is required' });
-      }
+      const tenantId = resolveAdminTargetTenant(request, reply, body.tenantId, body.reason);
+      if (!tenantId) return reply;
       const result = simulatePlacement({
-        tenantId: body.tenantId,
+        tenantId,
         preferredRegion: body.preferredRegion,
         countryPack: body.countryPack,
         dataResidencyConstraint: body.dataResidencyConstraint,

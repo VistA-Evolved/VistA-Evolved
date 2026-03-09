@@ -209,7 +209,7 @@ export async function labRoutes(server: FastifyInstance): Promise<void> {
         error: 'labOrderId, analyteName, and value required',
       });
     }
-    const { result, criticalAlert } = createLabResult({
+    const creation = createLabResult({
       tenantId: session.tenantId ?? 'default',
       labOrderId: String(body.labOrderId),
       patientDfn: String(body.dfn ?? ''),
@@ -227,7 +227,10 @@ export async function labRoutes(server: FastifyInstance): Promise<void> {
       deviceObservationId: body.deviceObservationId ? String(body.deviceObservationId) : undefined,
       vistaLabIen: body.vistaLabIen ? String(body.vistaLabIen) : undefined,
     });
-    return reply.code(201).send({ ok: true, result, criticalAlert });
+    if (!creation.ok) {
+      return reply.code(400).send({ ok: false, error: creation.error || 'Result recording failed' });
+    }
+    return reply.code(201).send({ ok: true, result: creation.result, criticalAlert: creation.criticalAlert });
   });
 
   server.patch('/lab/results/:id/status', async (request: FastifyRequest, reply: FastifyReply) => {

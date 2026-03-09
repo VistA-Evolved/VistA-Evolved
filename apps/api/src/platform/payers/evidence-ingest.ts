@@ -20,6 +20,7 @@ import { fileURLToPath } from 'node:url';
 import {
   insertEvidence,
   findEvidenceById,
+  findEvidenceByIdForTenant,
   updateEvidenceStatus,
 } from '../pg/repo/evidence-repo.js';
 import {
@@ -78,6 +79,7 @@ export async function ingestJsonSnapshot(params: {
   sourceUrl?: string;
   asOfDate: string;
   actor?: string;
+  tenantId?: string;
 }): Promise<IngestResult> {
   try {
     let raw = params.jsonContent;
@@ -122,6 +124,7 @@ export async function ingestJsonSnapshot(params: {
       storedPath: `data/evidence/${snapshotFilename}`,
       parserVersion: '1.0.0',
       payerCount: payerList.length,
+      tenantId: params.tenantId ?? null,
     });
 
     // Compute diff vs current DB state
@@ -167,6 +170,7 @@ export async function ingestPdfEvidence(params: {
   filename: string;
   asOfDate: string;
   actor?: string;
+  tenantId?: string;
 }): Promise<PdfIngestResult> {
   try {
     if (!existsSync(EVIDENCE_DIR)) {
@@ -184,6 +188,7 @@ export async function ingestPdfEvidence(params: {
       sha256,
       storedPath: `data/evidence/${storedFilename}`,
       parserVersion: '1.0.0',
+      tenantId: params.tenantId ?? null,
     });
 
     return {
@@ -272,9 +277,15 @@ export interface PromoteResult {
  * Reads the stored JSON file, applies adds/updates to payer table,
  * then marks the snapshot as "promoted".
  */
-export async function promoteSnapshot(snapshotId: string, actor?: string): Promise<PromoteResult> {
+export async function promoteSnapshot(
+  snapshotId: string,
+  actor?: string,
+  tenantId?: string
+): Promise<PromoteResult> {
   try {
-    const evidence = await findEvidenceById(snapshotId);
+    const evidence = tenantId
+      ? await findEvidenceByIdForTenant(tenantId, snapshotId)
+      : await findEvidenceById(snapshotId);
     if (!evidence) {
       return { ok: false, inserted: 0, updated: 0, skipped: 0, error: 'Snapshot not found' };
     }

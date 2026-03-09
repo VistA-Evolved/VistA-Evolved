@@ -15,16 +15,45 @@ import {
   removeCorrelation,
   buildPostureSummary,
 } from '../support/support-toolkit-v2.js';
+import { getTicket } from '../support/ticket-store.js';
+
+function resolveTenantId(request: any): string | null {
+  const requestTenantId = request?.tenantId || request?.session?.tenantId;
+  if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+    return requestTenantId.trim();
+  }
+  return null;
+}
+
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
 
 /* ------------------------------------------------------------------ */
 /*  Plugin                                                             */
 /* ------------------------------------------------------------------ */
 
 export async function supportToolkitV2Routes(app: FastifyInstance): Promise<void> {
+  function getScopedBundle(id: string, tenantId: string) {
+    const bundle = getDiagnosticBundle(id);
+    if (!bundle || bundle.tenantId !== tenantId) return null;
+    return bundle;
+  }
+
+  function getScopedTicket(id: string, tenantId: string) {
+    const ticket = getTicket(id);
+    if (!ticket || ticket.tenantId !== tenantId) return null;
+    return ticket;
+  }
+
   /* ---- Generate diagnostic bundle ---- */
   app.post('/admin/support/bundles', async (request, reply) => {
     const body = (request.body as any) || {};
-    const tenantId = body.tenantId || 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const generatedBy = body.generatedBy || 'admin';
 
     const bundle = generateDiagnosticBundle(tenantId, generatedBy);
@@ -32,16 +61,19 @@ export async function supportToolkitV2Routes(app: FastifyInstance): Promise<void
   });
 
   /* ---- List diagnostic bundles ---- */
-  app.get('/admin/support/bundles', async (request) => {
-    const query = request.query as any;
-    const bundles = listDiagnosticBundles(query.tenantId);
+  app.get('/admin/support/bundles', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const bundles = listDiagnosticBundles(tenantId);
     return { ok: true, bundles, count: bundles.length };
   });
 
   /* ---- Get single diagnostic bundle ---- */
   app.get('/admin/support/bundles/:id', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as any;
-    const bundle = getDiagnosticBundle(id);
+    const bundle = getScopedBundle(id, tenantId);
     if (!bundle) {
       return reply.code(404).send({ ok: false, error: 'Bundle not found' });
     }
@@ -50,8 +82,10 @@ export async function supportToolkitV2Routes(app: FastifyInstance): Promise<void
 
   /* ---- Download bundle as JSON ---- */
   app.get('/admin/support/bundles/:id/download', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as any;
-    const bundle = getDiagnosticBundle(id);
+    const bundle = getScopedBundle(id, tenantId);
     if (!bundle) {
       return reply.code(404).send({ ok: false, error: 'Bundle not found' });
     }
@@ -65,6 +99,8 @@ export async function supportToolkitV2Routes(app: FastifyInstance): Promise<void
 
   /* ---- Add ticket correlation ---- */
   app.post('/admin/support/tickets/:id/correlations', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as any;
     const body = (request.body as any) || {};
     const { correlationType, correlationId, label } = body;
@@ -73,6 +109,10 @@ export async function supportToolkitV2Routes(app: FastifyInstance): Promise<void
       return reply
         .code(400)
         .send({ ok: false, error: 'correlationType and correlationId required' });
+    }
+
+    if (!getScopedTicket(id, tenantId)) {
+      return reply.code(404).send({ ok: false, error: 'Ticket not found' });
     }
 
     const correlation = addCorrelation(id, {
@@ -85,15 +125,25 @@ export async function supportToolkitV2Routes(app: FastifyInstance): Promise<void
   });
 
   /* ---- Get ticket correlations ---- */
-  app.get('/admin/support/tickets/:id/correlations', async (request) => {
+  app.get('/admin/support/tickets/:id/correlations', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as any;
+    if (!getScopedTicket(id, tenantId)) {
+      return reply.code(404).send({ ok: false, error: 'Ticket not found' });
+    }
     const correlations = getCorrelations(id);
     return { ok: true, correlations, count: correlations.length };
   });
 
   /* ---- Remove ticket correlation ---- */
   app.delete('/admin/support/tickets/:id/correlations/:correlationId', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id, correlationId } = request.params as any;
+    if (!getScopedTicket(id, tenantId)) {
+      return reply.code(404).send({ ok: false, error: 'Ticket not found' });
+    }
     const removed = removeCorrelation(id, correlationId);
     if (!removed) {
       return reply.code(404).send({ ok: false, error: 'Correlation not found' });
@@ -128,7 +178,9 @@ export async function supportToolkitV2Routes(app: FastifyInstance): Promise<void
   });
 
   /* ---- HL7 message viewer (PHI-safe aggregation) ---- */
-  app.get('/admin/support/hl7-viewer', async (request) => {
+  app.get('/admin/support/hl7-viewer', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const query = request.query as any;
     // This endpoint provides a unified view of HL7 events for support
     // It delegates to the pipeline event store when available
@@ -136,7 +188,7 @@ export async function supportToolkitV2Routes(app: FastifyInstance): Promise<void
       ok: true,
       note: 'Query /hl7/pipeline/events for full event stream; /hl7/dlq for dead letters',
       filters: {
-        tenantId: query.tenantId || null,
+        tenantId,
         messageType: query.messageType || null,
         status: query.status || null,
       },

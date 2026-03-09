@@ -21,6 +21,7 @@ type Tab = 'profile' | 'settings' | 'sharing';
 export default function ProfilePage() {
   const [tab, setTab] = useState<Tab>('profile');
   const [demo, setDemo] = useState<any>(null);
+  const [demoSource, setDemoSource] = useState<'ehr' | 'pending' | 'local'>('local');
   const [settings, setSettings] = useState<any>(null);
   const [languages, setLanguages] = useState<any[]>([]);
   const [shares, setShares] = useState<any[]>([]);
@@ -40,7 +41,15 @@ export default function ProfilePage() {
       fetchSettings(),
       fetchShares(),
     ]);
-    setDemo((dRes.data as any)?.results?.[0] || null);
+    const demoData = (dRes.data as any) || null;
+    setDemo(demoData?.results?.[0] || null);
+    setDemoSource(
+      demoData?._integration === 'pending'
+        ? 'pending'
+        : demoData?.source === 'vista' || demoData?.rpcUsed
+          ? 'ehr'
+          : 'local'
+    );
     setSettings((sRes.data as any)?.settings || null);
     setLanguages((sRes.data as any)?.languages || []);
     setShares((shRes.data as any)?.shares || []);
@@ -158,7 +167,7 @@ export default function ProfilePage() {
                   }}
                 >
                   <h3 style={{ margin: 0 }}>Demographics</h3>
-                  <DataSourceBadge source="ehr" />
+                  <DataSourceBadge source={demoSource} />
                 </div>
                 {demo ? (
                   <div style={{ fontSize: '0.875rem' }}>

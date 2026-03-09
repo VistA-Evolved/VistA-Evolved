@@ -85,6 +85,9 @@ interface MovementEvent {
 /** Numeric IEN/DFN guard -- filters out MUMPS error text lines. */
 const NUMERIC_RE = /^\d+$/;
 
+/** FileMan date/time guard used by ORWPT16 ADMITLST. */
+const FILEMAN_DATE_RE = /^\d+(?:\.\d+)?$/;
+
 /** Parse IEN^NAME lines from ORQPT WARDS */
 function parseWardList(lines: string[]): Array<{ ien: string; name: string }> {
   const results: Array<{ ien: string; name: string }> = [];
@@ -100,20 +103,12 @@ function parseWardList(lines: string[]): Array<{ ien: string; name: string }> {
 
 /** Parse DFN^NAME from ORQPT WARD PATIENTS */
 function parsePatientList(lines: string[]): Array<{ dfn: string; name: string }> {
-  const results: Array<{ dfn: string; name: string }> = [];
-  for (const line of lines) {
-    if (!line?.trim()) continue;
-    const parts = line.split('^');
-    const dfn = parts[0]?.trim() || '';
-    if (!NUMERIC_RE.test(dfn)) continue;
-    results.push({ dfn, name: parts[1]?.trim() || '' });
-  }
-  return results;
+  return parseWardPatientList(lines).map(({ dfn, name }) => ({ dfn, name }));
 }
 
-/** Parse ORWPT16 ADMITLST: DFN^NAME^ADMIT_DATE^WARD^ROOM */
-function parseAdmissionList(lines: string[]): CensusPatient[] {
-  const results: CensusPatient[] = [];
+/** Parse DFN^NAME^ROOM/BED from ORQPT WARD PATIENTS */
+function parseWardPatientList(lines: string[]): Array<{ dfn: string; name: string; roomBed: string }> {
+  const results: Array<{ dfn: string; name: string; roomBed: string }> = [];
   for (const line of lines) {
     if (!line?.trim()) continue;
     const parts = line.split('^');
@@ -122,9 +117,71 @@ function parseAdmissionList(lines: string[]): CensusPatient[] {
     results.push({
       dfn,
       name: parts[1]?.trim() || '',
+      roomBed: parts[2]?.trim() || '',
+    });
+  }
+  return results;
+}
+
+function parseMovementLocation(locationText: string): {
+  fromLocation: string;
+  toLocation: string;
+  ward: string;
+} {
+  const text = locationText.trim();
+  if (!text) {
+    return { fromLocation: '', toLocation: '', ward: '' };
+  }
+  const toMatch = text.match(/^TO:\s*(.+)$/i);
+  if (toMatch) {
+    const value = toMatch[1].trim();
+    return { fromLocation: '', toLocation: value, ward: value };
+  }
+  const fromMatch = text.match(/^FROM:\s*(.+)$/i);
+  if (fromMatch) {
+    const value = fromMatch[1].trim();
+    return { fromLocation: value, toLocation: '', ward: value };
+  }
+  return { fromLocation: '', toLocation: text, ward: text };
+}
+
+/** Parse ORWPT16 ADMITLST: FM_DATE^MOVEMENT_IEN^DISPLAY_DATE^TYPE^LOCATION */
+function parseAdmissionList(lines: string[]): Array<{
+  movementDateTime: string;
+  movementIen: string;
+  admitDate: string;
+  movementType: string;
+  locationText: string;
+  fromLocation: string;
+  toLocation: string;
+  ward: string;
+}> {
+  const results: Array<{
+    movementDateTime: string;
+    movementIen: string;
+    admitDate: string;
+    movementType: string;
+    locationText: string;
+    fromLocation: string;
+    toLocation: string;
+    ward: string;
+  }> = [];
+  for (const line of lines) {
+    if (!line?.trim()) continue;
+    const parts = line.split('^');
+    const movementDateTime = parts[0]?.trim() || '';
+    if (!FILEMAN_DATE_RE.test(movementDateTime)) continue;
+    const locationText = parts[4]?.trim() || '';
+    const movementLocation = parseMovementLocation(locationText);
+    results.push({
+      movementDateTime,
+      movementIen: parts[1]?.trim() || '',
       admitDate: parts[2]?.trim() || '',
-      ward: parts[3]?.trim() || '',
-      roomBed: parts[4]?.trim() || '',
+      movementType: parts[3]?.trim() || '',
+      locationText,
+      fromLocation: movementLocation.fromLocation,
+      toLocation: movementLocation.toLocation,
+      ward: movementLocation.ward,
     });
   }
   return results;
@@ -230,22 +287,28 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
       try {
         // Get patient list for ward
         const patientLines = await safeCallRpc('ORQPT WARD PATIENTS', [String(wardIen)]);
-        const patients = parsePatientList(patientLines);
+        const patients = parseWardPatientList(patientLines);
+        let selectedWardName = '';
+        try {
+          const wardLines = await safeCallRpc('ORQPT WARDS', []);
+          selectedWardName = parseWardList(wardLines).find((ward) => ward.ien === String(wardIen))?.name || '';
+        } catch {
+          /* ward name unavailable */
+        }
 
         // Enrich each patient with admission info
         const census: CensusPatient[] = [];
         for (const pat of patients) {
           let admitDate = '';
-          let ward = '';
-          let roomBed = '';
+          let ward = selectedWardName;
           try {
             const admitLines = await safeCallRpc('ORWPT16 ADMITLST', [pat.dfn]);
             const admissions = parseAdmissionList(admitLines);
             // Most recent admission is typically first
             if (admissions.length > 0) {
-              admitDate = admissions[0].admitDate;
-              ward = admissions[0].ward;
-              roomBed = admissions[0].roomBed;
+              const matchingAdmission = admissions.find((entry) => entry.ward === selectedWardName) || admissions[0];
+              admitDate = matchingAdmission.admitDate || matchingAdmission.movementDateTime;
+              ward = matchingAdmission.toLocation || matchingAdmission.ward || ward;
             }
           } catch {
             // Admission details unavailable; patient still appears in census
@@ -255,7 +318,7 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
             name: pat.name,
             admitDate,
             ward,
-            roomBed,
+            roomBed: pat.roomBed,
           });
         }
 
@@ -268,7 +331,7 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
           source: 'vista',
           count: census.length,
           results: census,
-          rpcUsed: ['ORQPT WARD PATIENTS', 'ORWPT16 ADMITLST'],
+          rpcUsed: ['ORQPT WARD PATIENTS', 'ORWPT16 ADMITLST', 'ORQPT WARDS'],
           pendingTargets: [],
           wardIen: String(wardIen),
         });
@@ -303,7 +366,7 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
     try {
       // Get patients in ward
       const patientLines = await safeCallRpc('ORQPT WARD PATIENTS', [String(wardIen)]);
-      const patients = parsePatientList(patientLines);
+      const patients = parseWardPatientList(patientLines);
 
       // Get ward name from ORQPT WARDS (for display)
       let wardName = `Ward ${wardIen}`;
@@ -319,14 +382,12 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
       // Build occupied bed slots from admission data
       const beds: BedSlot[] = [];
       for (const pat of patients) {
-        let roomBed = '';
         let admitDate = '';
         try {
           const admitLines = await safeCallRpc('ORWPT16 ADMITLST', [pat.dfn]);
           const admissions = parseAdmissionList(admitLines);
           if (admissions.length > 0) {
-            roomBed = admissions[0].roomBed || '';
-            admitDate = admissions[0].admitDate || '';
+            admitDate = admissions[0].admitDate || admissions[0].movementDateTime || '';
           }
         } catch {
           // Bed info unavailable
@@ -334,7 +395,7 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
         beds.push({
           ward: wardName,
           wardIen: String(wardIen),
-          roomBed: roomBed || 'Unassigned',
+          roomBed: pat.roomBed || 'Unassigned',
           status: 'occupied',
           patientDfn: pat.dfn,
           patientName: pat.name,
@@ -395,12 +456,12 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
 
         // Convert admissions to movement events
         const movements: MovementEvent[] = admissions.map((adm) => ({
-          date: adm.admitDate,
-          type: 'ADMISSION',
-          fromLocation: '',
-          toLocation: adm.ward,
+          date: adm.admitDate || adm.movementDateTime,
+          type: adm.movementType || 'ADMISSION',
+          fromLocation: adm.fromLocation,
+          toLocation: adm.toLocation,
           ward: adm.ward,
-          roomBed: adm.roomBed,
+          roomBed: '',
           provider: '',
         }));
 

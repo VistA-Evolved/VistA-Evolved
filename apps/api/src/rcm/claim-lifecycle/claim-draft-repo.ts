@@ -103,7 +103,7 @@ export interface ClaimLifecycleEventRow {
 }
 
 export interface CreateClaimDraftInput {
-  tenantId?: string;
+  tenantId: string;
   idempotencyKey?: string;
   claimType?: string;
   encounterId?: string;
@@ -204,7 +204,7 @@ export async function createClaimDraft(input: CreateClaimDraftInput): Promise<Cl
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || 'default';
+  const tenantId = input.tenantId;
 
   // Idempotency check: if key provided and already exists, return existing
   if (input.idempotencyKey) {

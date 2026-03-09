@@ -33,6 +33,11 @@ import {
 import { checkWritebackGate } from './gates.js';
 import { log } from '../lib/logger.js';
 import { immutableAudit } from '../lib/immutable-audit.js';
+import { runWithRpcContext } from '../lib/rpc-resilience.js';
+import {
+  clearCommandVistaSession,
+  getCommandRpcContext,
+} from './command-rpc-context.js';
 
 /* ------------------------------------------------------------------ */
 /* Executor registry                                                   */
@@ -184,7 +189,20 @@ export async function processCommand(commandId: string): Promise<CommandExecutio
   recordAttempt(attempt);
 
   try {
-    const result = await executor.execute(cmd);
+    const rpcContext = getCommandRpcContext(commandId, {
+      tenantId: cmd.tenantId,
+      createdBy: cmd.createdBy,
+    });
+    if (!rpcContext) {
+      throw Object.assign(
+        new Error(
+          `No clinician VistA binding available for writeback command ${commandId}. Re-submit from an active bound session.`
+        ),
+        { errorClass: 'permanent' }
+      );
+    }
+
+    const result = await runWithRpcContext(rpcContext, () => executor.execute(cmd));
 
     // Success
     attempt.status = 'success';
@@ -198,6 +216,7 @@ export async function processCommand(commandId: string): Promise<CommandExecutio
     });
 
     updateCommandStatus(commandId, 'completed');
+    clearCommandVistaSession(commandId);
 
     log.info(`Writeback completed: id=${commandId} domain=${cmd.domain} intent=${cmd.intent}`);
     immutableAudit(
@@ -227,6 +246,9 @@ export async function processCommand(commandId: string): Promise<CommandExecutio
 
     const newStatus = isTransient && attemptNo < 3 ? 'retrying' : 'failed';
     updateCommandStatus(commandId, newStatus, attempt.errorDetailRedacted);
+    if (newStatus === 'failed') {
+      clearCommandVistaSession(commandId);
+    }
 
     const auditAction =
       newStatus === 'retrying' ? ('writeback.retry' as const) : ('writeback.fail' as const);

@@ -77,8 +77,8 @@ export function buildClaimFromEncounterData(
   encounter: VistaEncounterData,
   payerId: string,
   actor: string,
-  options?: {
-    tenantId?: string;
+  options: {
+    tenantId: string;
     payerName?: string;
     subscriberId?: string;
     patientFirstName?: string;
@@ -112,7 +112,7 @@ export function buildClaimFromEncounterData(
   }));
 
   return createDraftClaim({
-    tenantId: options?.tenantId ?? 'default',
+    tenantId: options.tenantId,
     patientDfn: encounter.patientDfn,
     payerId,
     claimType: 'professional',
@@ -121,15 +121,15 @@ export function buildClaimFromEncounterData(
     lines,
     totalCharge: encounter.procedures.reduce((s, p) => s + p.charge, 0),
     vistaChargeIen: encounter.ibChargeIen,
-    billingProviderNpi: options?.billingProviderNpi ?? encounter.providerNpi,
-    subscriberId: options?.subscriberId,
-    patientFirstName: options?.patientFirstName,
-    patientLastName: options?.patientLastName,
-    patientDob: options?.patientDob,
-    patientGender: options?.patientGender,
-    payerName: options?.payerName,
-    facilityName: options?.facilityName,
-    facilityTaxId: options?.facilityTaxId,
+    billingProviderNpi: options.billingProviderNpi ?? encounter.providerNpi,
+    subscriberId: options.subscriberId,
+    patientFirstName: options.patientFirstName,
+    patientLastName: options.patientLastName,
+    patientDob: options.patientDob,
+    patientGender: options.patientGender,
+    payerName: options.payerName,
+    facilityName: options.facilityName,
+    facilityTaxId: options.facilityTaxId,
     actor,
   });
 }

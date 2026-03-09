@@ -14,12 +14,35 @@ import {
   installPack,
   uninstallPack,
   listInstallations,
-  getInstallation,
+  getInstallationForTenant,
   resolveEffectiveFlags,
 } from '../services/dept-pack-service.js';
 
 export async function deptPackRoutes(server: FastifyInstance): Promise<void> {
-  const tenantId = 'default';
+  function resolveTenantId(req: FastifyRequest): string | null {
+    const requestTenantId =
+      typeof (req as any).tenantId === 'string' && (req as any).tenantId.trim().length > 0
+        ? (req as any).tenantId.trim()
+        : undefined;
+    const sessionTenantId =
+      typeof (req as any).session?.tenantId === 'string' &&
+      (req as any).session.tenantId.trim().length > 0
+        ? (req as any).session.tenantId.trim()
+        : undefined;
+    const headerTenantId = req.headers['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return requestTenantId || sessionTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(req: FastifyRequest, reply: FastifyReply): string | null {
+    const tenantId = resolveTenantId(req);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
 
   // Load manifests at registration time
   loadPackManifests();
@@ -55,6 +78,8 @@ export async function deptPackRoutes(server: FastifyInstance): Promise<void> {
 
   server.get('/dept-packs/installations', async (req: FastifyRequest, reply: FastifyReply) => {
     const { departmentId } = (req.query as any) || {};
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     return reply.send({
       ok: true,
       installations: listInstallations(tenantId, departmentId),
@@ -63,8 +88,10 @@ export async function deptPackRoutes(server: FastifyInstance): Promise<void> {
 
   server.get('/dept-packs/installations/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
-    const inst = getInstallation(id);
-    if (!inst || inst.tenantId !== tenantId) {
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const inst = getInstallationForTenant(tenantId, id);
+    if (!inst) {
       return reply.code(404).send({ ok: false, error: 'Installation not found' });
     }
     return reply.send({ ok: true, installation: inst });
@@ -72,6 +99,8 @@ export async function deptPackRoutes(server: FastifyInstance): Promise<void> {
 
   server.post('/dept-packs/install', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     if (!body.departmentId || !body.packId || !body.installedBy) {
       return reply.code(400).send({
         ok: false,
@@ -93,6 +122,14 @@ export async function deptPackRoutes(server: FastifyInstance): Promise<void> {
 
   server.post('/dept-packs/uninstall/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const { id } = req.params as { id: string };
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const inst = getInstallationForTenant(tenantId, id);
+    if (!inst) {
+      return reply
+        .code(404)
+        .send({ ok: false, error: 'Installation not found or already uninstalled' });
+    }
     const ok = uninstallPack(id);
     if (!ok) {
       return reply
@@ -106,6 +143,8 @@ export async function deptPackRoutes(server: FastifyInstance): Promise<void> {
 
   server.get('/dept-packs/effective-flags', async (req: FastifyRequest, reply: FastifyReply) => {
     const { departmentId } = (req.query as any) || {};
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     if (!departmentId) {
       return reply.code(400).send({ ok: false, error: 'departmentId query param is required' });
     }

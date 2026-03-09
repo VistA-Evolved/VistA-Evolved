@@ -104,6 +104,13 @@ export async function validateFhirBearerToken(
 
   // Extract patient context from launch context (SMART EHR launch)
   const patientContext = typeof claims.patient === 'string' ? claims.patient : undefined;
+  const tenantId =
+    typeof claims.tenant_id === 'string' && claims.tenant_id.trim().length > 0
+      ? claims.tenant_id.trim()
+      : null;
+  if (!tenantId) {
+    return { ok: false, error: 'FHIR bearer token missing tenant_id claim' };
+  }
 
   const principal: FhirPrincipal = {
     authMethod: 'bearer',
@@ -112,7 +119,7 @@ export async function validateFhirBearerToken(
     userName: (claims.name as string) || (claims.preferred_username as string) || claims.sub,
     roles,
     scopes,
-    tenantId: (claims.tenant_id as string) || 'default',
+    tenantId,
     patientContext,
   };
 
@@ -142,6 +149,6 @@ export function principalFromSession(session: {
     userName: session.userName,
     roles: [session.role],
     scopes: ['user/*.read'], // Session users get full user-level read access
-    tenantId: session.tenantId || 'default',
+    tenantId: session.tenantId || '',
   };
 }

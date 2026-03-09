@@ -20,17 +20,41 @@ import {
 import { getEffectivePolicy } from '../middleware/country-policy-hook.js';
 
 export async function privacyRoutes(app: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: FastifyRequest): string | null {
+    const requestTenantId = (request as any).tenantId || (request as any).session?.tenantId;
+    if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+      return requestTenantId.trim();
+    }
+    const headerTenantId = request.headers['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return headerTenant || null;
+  }
+
+  function requireTenantId(request: FastifyRequest, reply: FastifyReply): string | null {
+    const tenantId = resolveTenantId(request);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
   /**
    * GET /privacy/tags — List sensitivity tags.
    */
   app.get('/privacy/tags', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const query = request.query as {
-      tenantId?: string;
       patientDfn?: string;
       recordType?: string;
       category?: SensitivityCategory;
     };
-    const tags = getSensitivityTags(query);
+    const tags = getSensitivityTags({
+      ...query,
+      tenantId,
+    });
     return reply.send({ ok: true, tags, total: tags.length });
   });
 
@@ -40,13 +64,15 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   app.post('/privacy/tags', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const session = (request as any).session;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     if (!body.category) {
       return reply.code(400).send({ ok: false, error: 'category required' });
     }
 
     const tag = addSensitivityTag({
-      tenantId: (body.tenantId as string) || session?.tenantId || 'default',
+      tenantId,
       patientDfn: body.patientDfn as string | undefined,
       recordType: body.recordType as string | undefined,
       recordId: body.recordId as string | undefined,
@@ -65,6 +91,12 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   app.delete('/privacy/tags/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const session = (request as any).session;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const existing = getSensitivityTags({ tenantId }).find((tag) => tag.id === id);
+    if (!existing) {
+      return reply.code(404).send({ ok: false, error: 'tag_not_found' });
+    }
     const removed = removeSensitivityTag(id, session?.userName || session?.duz || 'admin');
     return reply.send({ ok: removed, removed });
   });
@@ -75,13 +107,15 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   app.post('/privacy/check-access', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const session = (request as any).session;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     if (!body.recordType || !body.recordId) {
       return reply.code(400).send({ ok: false, error: 'recordType and recordId required' });
     }
 
     const result = checkSensitivityAccess(
-      (body.tenantId as string) || session?.tenantId || 'default',
+      tenantId,
       body.recordType as string,
       body.recordId as string,
       session?.role || 'clerk',
@@ -97,6 +131,8 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   app.post('/privacy/access-reasons', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const session = (request as any).session;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     if (!body.reason || !body.patientDfn || !body.recordType || !body.recordId) {
       return reply
@@ -105,7 +141,7 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
     }
 
     const entry = recordAccessReason({
-      tenantId: (body.tenantId as string) || session?.tenantId || 'default',
+      tenantId,
       userId: session?.duz || 'unknown',
       userName: session?.userName || 'unknown',
       patientDfn: body.patientDfn as string,
@@ -123,8 +159,9 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
    * GET /privacy/access-reasons — Query access reasons.
    */
   app.get('/privacy/access-reasons', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const query = request.query as {
-      tenantId?: string;
       userId?: string;
       patientDfn?: string;
       breakGlass?: string;
@@ -132,6 +169,7 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
     };
     const reasons = queryAccessReasons({
       ...query,
+      tenantId,
       breakGlass:
         query.breakGlass === 'true' ? true : query.breakGlass === 'false' ? false : undefined,
       limit: query.limit ? parseInt(query.limit, 10) : undefined,
@@ -143,8 +181,9 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
    * GET /privacy/stats — Privacy statistics.
    */
   app.get('/privacy/stats', async (request: FastifyRequest, reply: FastifyReply) => {
-    const query = request.query as { tenantId?: string };
-    const stats = getPrivacyStats(query.tenantId);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const stats = getPrivacyStats(tenantId);
     return reply.send({ ok: true, ...stats });
   });
 

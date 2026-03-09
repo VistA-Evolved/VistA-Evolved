@@ -179,8 +179,13 @@ export default function IntakeSessionPage() {
 
   // Save draft
   async function saveDraft() {
-    await portalFetch(`/intake/sessions/${sessionId}/save`, { method: 'POST' });
-    setNotice({ type: 'success', text: 'Draft saved' });
+    setNotice(null);
+    const res = await portalFetch(`/intake/sessions/${sessionId}/save`, { method: 'POST' });
+    if (res.ok) {
+      setNotice({ type: 'success', text: 'Draft saved' });
+    } else {
+      setNotice({ type: 'error', text: res.error || 'Failed to save draft' });
+    }
   }
 
   /* ---- Styles ---- */

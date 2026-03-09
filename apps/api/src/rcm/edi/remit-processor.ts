@@ -58,7 +58,7 @@ export interface RemitIngestInput {
 
   /** Raw payload for compliance */
   rawPayload?: string;
-  tenantId?: string;
+  tenantId: string;
 }
 
 export interface RemitServiceLineInput {
@@ -99,8 +99,9 @@ export function initRemitProcessorRepo(repo: typeof remitProcDbRepo): void {
 /* ── Ingestion ─────────────────────────────────────────────── */
 
 export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIngestResult> {
+  const tenantKey = `${input.tenantId}:${input.idempotencyKey}`;
   // Idempotency check
-  const existingId = remitIdempotencyIndex.get(input.idempotencyKey);
+  const existingId = remitIdempotencyIndex.get(tenantKey);
   if (existingId) {
     const remit = processedRemittances.get(existingId);
     if (remit) {
@@ -144,7 +145,7 @@ export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIn
 
   const remittance: Remittance = {
     id: `remit-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-    tenantId: input.tenantId ?? 'default',
+    tenantId: input.tenantId,
     status: 'received',
     ediTransactionId: input.ediControlNumber,
     checkNumber: input.checkNumber,
@@ -168,13 +169,13 @@ export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIn
 
   storeRemittance(remittance);
   processedRemittances.set(remittance.id, remittance);
-  remitIdempotencyIndex.set(input.idempotencyKey, remittance.id);
+  remitIdempotencyIndex.set(tenantKey, remittance.id);
 
   // Phase 146: Write-through to PG
   remitProcDbRepo
     ?.upsert({
       id: remittance.id,
-      tenantId: (remittance as any).tenantId ?? 'default',
+      tenantId: remittance.tenantId,
       source: input.idempotencyKey,
       status: 'processed',
       createdAt: new Date().toISOString(),
@@ -187,12 +188,12 @@ export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIn
   let workqueueItemsCreated = 0;
 
   if (input.claimId) {
-    claimMatched = matchRemittanceToClaim(remittance.id, input.claimId);
+    claimMatched = matchRemittanceToClaim(remittance.id, input.claimId, remittance.tenantId);
   }
 
   const linkedClaimId = input.claimId ?? undefined;
   if (linkedClaimId) {
-    const claim = getClaim(linkedClaimId);
+    const claim = getClaim(linkedClaimId, remittance.tenantId);
     if (claim) {
       // Determine if this is a full pay, partial pay, or denial
       const isDenied = input.totalPaid === 0 && input.totalCharged > 0;
@@ -249,6 +250,7 @@ export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIn
               sourceId: remittance.id,
               sourceTimestamp: now,
               priority: isDenied ? 'critical' : 'high',
+              tenantId: remittance.tenantId,
             });
             workqueueItemsCreated++;
           }

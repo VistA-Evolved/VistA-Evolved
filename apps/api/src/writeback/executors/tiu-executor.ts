@@ -21,8 +21,6 @@ import { createHash } from 'crypto';
 import type { ClinicalCommand, RpcExecutor, DryRunTranscript } from '../types.js';
 import { optionalRpc } from '../../vista/rpcCapabilities.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
-import { validateCredentials } from '../../vista/config.js';
-import { connect, disconnect, getDuz } from '../../vista/rpcBrokerClient.js';
 import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
@@ -64,30 +62,19 @@ export const tiuExecutor: RpcExecutor = {
       }
     }
 
-    validateCredentials();
-    await connect();
-
-    try {
-      switch (intent) {
-        case 'CREATE_NOTE_DRAFT':
-          return await execCreateDraft(command);
-        case 'UPDATE_NOTE_TEXT':
-          return await execUpdateText(command);
-        case 'SIGN_NOTE':
-          return await execSignNote(command);
-        case 'CREATE_ADDENDUM':
-          return await execCreateAddendum(command);
-        default:
-          throw Object.assign(new Error(`Unimplemented TIU intent: ${intent}`), {
-            errorClass: 'permanent',
-          });
-      }
-    } finally {
-      try {
-        disconnect();
-      } catch {
-        /* best-effort */
-      }
+    switch (intent) {
+      case 'CREATE_NOTE_DRAFT':
+        return await execCreateDraft(command);
+      case 'UPDATE_NOTE_TEXT':
+        return await execUpdateText(command);
+      case 'SIGN_NOTE':
+        return await execSignNote(command);
+      case 'CREATE_ADDENDUM':
+        return await execCreateAddendum(command);
+      default:
+        throw Object.assign(new Error(`Unimplemented TIU intent: ${intent}`), {
+          errorClass: 'permanent',
+        });
     }
   },
 
@@ -134,7 +121,15 @@ async function execCreateDraft(cmd: ClinicalCommand): Promise<{
     });
   }
 
-  const duz = getDuz();
+  const duz = String(cmd.createdBy || '').trim();
+  if (!duz) {
+    throw Object.assign(
+      new Error('createdBy DUZ required for clinician-attributed CREATE_NOTE_DRAFT'),
+      {
+        errorClass: 'permanent',
+      }
+    );
+  }
 
   // Step 1: TIU CREATE RECORD
   const createResult = await safeCallRpc('TIU CREATE RECORD', [

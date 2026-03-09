@@ -50,8 +50,13 @@ API Routes (record-portability.ts)  -- 10 endpoints
 | ORQQVI VITALS               | Vitals                   | Available |
 | ORWPT SELECT                | Demographics             | Available |
 | ORWLRR INTERIMG             | Labs                     | Available |
-| ORQQPX IMMUN LIST           | Immunizations            | Pending   |
+| ORQQPX IMMUN LIST           | Immunizations            | Available |
 | GMTS HS ABBREVIATED PROFILE | Full Summary             | Pending   |
+
+Record portability export now uses the live immunization read path and no longer
+hardcodes immunizations as pending when the patient simply has no immunization
+rows. Empty live sections render as "No immunizations on file" or
+"No lab results on file" instead of a false integration-pending message.
 
 ## Security
 

@@ -57,36 +57,61 @@ export async function insertRoom(data: {
 
 /* ── Lookup ────────────────────────────────────────────────── */
 
-export async function findRoomById(id: string): Promise<TelehealthRoomRow | undefined> {
-  const db = getPgDb();
-  const rows = await db.select().from(pgTelehealthRoom).where(eq(pgTelehealthRoom.id, id));
-  return rows[0];
-}
-
 export async function findRoomByAppointment(
-  appointmentId: string
+  appointmentId: string,
+  tenantId?: string
 ): Promise<TelehealthRoomRow | undefined> {
   const db = getPgDb();
   const rows = await db
     .select()
     .from(pgTelehealthRoom)
-    .where(eq(pgTelehealthRoom.appointmentId, appointmentId));
+    .where(
+      tenantId
+        ? and(eq(pgTelehealthRoom.appointmentId, appointmentId), eq(pgTelehealthRoom.tenantId, tenantId))
+        : eq(pgTelehealthRoom.appointmentId, appointmentId)
+    );
   return rows[0];
 }
 
-export async function findActiveRooms(): Promise<TelehealthRoomRow[]> {
+export async function findActiveRooms(tenantId?: string): Promise<TelehealthRoomRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(pgTelehealthRoom)
     .where(
-      or(
-        eq(pgTelehealthRoom.roomStatus, 'created'),
-        eq(pgTelehealthRoom.roomStatus, 'scheduled'),
-        eq(pgTelehealthRoom.roomStatus, 'waiting'),
-        eq(pgTelehealthRoom.roomStatus, 'active')
-      )
+      tenantId
+        ? and(
+            eq(pgTelehealthRoom.tenantId, tenantId),
+            or(
+              eq(pgTelehealthRoom.roomStatus, 'created'),
+              eq(pgTelehealthRoom.roomStatus, 'scheduled'),
+              eq(pgTelehealthRoom.roomStatus, 'waiting'),
+              eq(pgTelehealthRoom.roomStatus, 'active')
+            )
+          )
+        : or(
+            eq(pgTelehealthRoom.roomStatus, 'created'),
+            eq(pgTelehealthRoom.roomStatus, 'scheduled'),
+            eq(pgTelehealthRoom.roomStatus, 'waiting'),
+            eq(pgTelehealthRoom.roomStatus, 'active')
+          )
     );
+}
+
+export async function findRoomById(
+  id: string,
+  tenantId?: string
+): Promise<TelehealthRoomRow | undefined> {
+  const db = getPgDb();
+  const rows = await db
+    .select()
+    .from(pgTelehealthRoom)
+    .where(
+      tenantId
+        ? and(eq(pgTelehealthRoom.id, id), eq(pgTelehealthRoom.tenantId, tenantId))
+        : eq(pgTelehealthRoom.id, id)
+    );
+  return rows[0];
 }
 
 /* ── Update ────────────────────────────────────────────────── */

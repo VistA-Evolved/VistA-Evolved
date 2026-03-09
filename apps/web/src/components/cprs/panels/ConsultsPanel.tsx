@@ -4,13 +4,24 @@ import { useState, useEffect } from 'react';
 import { useDataCache, type Consult } from '../../../stores/data-cache';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
+import CachePendingBanner from './CachePendingBanner';
 
 interface Props {
   dfn: string;
 }
 
+function isPendingConsultStatus(consult: Consult): boolean {
+  if (consult.statusCategory) return consult.statusCategory === 'pending';
+  return /pending|active|scheduled|in progress|hold/i.test(consult.status);
+}
+
+function isCompleteConsultStatus(consult: Consult): boolean {
+  if (consult.statusCategory) return consult.statusCategory === 'complete';
+  return /complete|discontinued|cancelled/i.test(consult.status);
+}
+
 export default function ConsultsPanel({ dfn }: Props) {
-  const { fetchDomain, getDomain, isLoading } = useDataCache();
+  const { fetchDomain, getDomain, getDomainMeta, isLoading } = useDataCache();
   const [selected, setSelected] = useState<Consult | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'complete'>('all');
   const [detailText, setDetailText] = useState<string>('');
@@ -22,12 +33,38 @@ export default function ConsultsPanel({ dfn }: Props) {
 
   const consults = getDomain(dfn, 'consults');
   const loading = isLoading(dfn, 'consults');
+  const consultsMeta = getDomainMeta(dfn, 'consults');
+
+  useEffect(() => {
+    setSelected(null);
+    setDetailText('');
+    setDetailLoading(false);
+  }, [dfn]);
+
+  useEffect(() => {
+    if (!selected) return;
+
+    const freshSelected = consults.find((consult) => consult.id === selected.id) || null;
+    if (!freshSelected) {
+      setSelected(null);
+      setDetailText('');
+      setDetailLoading(false);
+      return;
+    }
+
+    if (freshSelected !== selected) {
+      setSelected(freshSelected);
+    }
+  }, [consults, selected]);
 
   const filtered = consults.filter((c) => {
-    if (filter === 'pending') return /pending/i.test(c.status);
-    if (filter === 'complete') return /complete/i.test(c.status);
+    if (filter === 'pending') return isPendingConsultStatus(c);
+    if (filter === 'complete') return isCompleteConsultStatus(c);
     return true;
   });
+  const showPendingBanner =
+    !loading && consults.length === 0 && consultsMeta.fetched && (consultsMeta.pending || consultsMeta.ok !== true);
+  const showFilterEmpty = !loading && consults.length > 0 && filtered.length === 0;
 
   async function handleSelect(c: Consult) {
     setSelected(c);
@@ -71,41 +108,56 @@ export default function ConsultsPanel({ dfn }: Props) {
 
       <div className={styles.splitPane}>
         <div className={styles.splitLeft}>
-          <table className={styles.dataTable}>
-            <thead>
-              <tr>
-                <th>Service</th>
-                <th>Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((c) => (
-                <tr
-                  key={c.id}
-                  onClick={() => handleSelect(c)}
-                  style={selected?.id === c.id ? { background: 'var(--cprs-selected)' } : undefined}
-                >
-                  <td>{c.service}</td>
-                  <td>{c.date}</td>
-                  <td>
-                    <span
-                      className={`${styles.badge} ${/pending/i.test(c.status) ? styles.draft : styles.signed}`}
-                    >
-                      {c.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-              {!loading && filtered.length === 0 && (
+          {showPendingBanner && (
+            <CachePendingBanner
+              title="Consult list pending"
+              noun="consult-list"
+              meta={consultsMeta}
+              defaultTargets={['ORQQCN LIST']}
+            />
+          )}
+          {!showPendingBanner && (
+            <table className={styles.dataTable}>
+              <thead>
                 <tr>
-                  <td colSpan={3} style={{ textAlign: 'center', fontStyle: 'italic' }}>
-                    No consults on file
-                  </td>
+                  <th>Service</th>
+                  <th>Date</th>
+                  <th>Status</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filtered.map((c) => (
+                  <tr
+                    key={c.id}
+                    onClick={() => handleSelect(c)}
+                    style={selected?.id === c.id ? { background: 'var(--cprs-selected)' } : undefined}
+                  >
+                    <td>{c.service}</td>
+                    <td>{c.date}</td>
+                    <td>
+                      <span className={`${styles.badge} ${isPendingConsultStatus(c) ? styles.draft : styles.signed}`}>
+                        {c.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+                {!loading && showFilterEmpty && (
+                  <tr>
+                    <td colSpan={3} style={{ textAlign: 'center', fontStyle: 'italic' }}>
+                      No {filter} consults match the current filter
+                    </td>
+                  </tr>
+                )}
+                {!loading && !showFilterEmpty && filtered.length === 0 && (
+                  <tr>
+                    <td colSpan={3} style={{ textAlign: 'center', fontStyle: 'italic' }}>
+                      No consults on file
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
         </div>
         <div className={styles.splitRight}>
           {selected ? (
@@ -123,7 +175,7 @@ export default function ConsultsPanel({ dfn }: Props) {
                 <label>Status</label>
                 <div>
                   <span
-                    className={`${styles.badge} ${/pending/i.test(selected.status) ? styles.draft : styles.signed}`}
+                    className={`${styles.badge} ${isPendingConsultStatus(selected) ? styles.draft : styles.signed}`}
                   >
                     {selected.status}
                   </span>

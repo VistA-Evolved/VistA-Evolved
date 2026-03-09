@@ -5,6 +5,7 @@
  */
 
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
 import {
   seedDefaultTemplates,
   createTemplate,
@@ -19,11 +20,33 @@ import {
 import type { DeptRoleAction } from '../auth/dept-rbac-templates.js';
 
 export async function deptRbacRoutes(server: FastifyInstance): Promise<void> {
-  const tenantId = 'default';
+  function resolveTenantId(req: FastifyRequest): string | null {
+    const sessionTenantId =
+      typeof (req as any).session?.tenantId === 'string' &&
+      (req as any).session.tenantId.trim().length > 0
+        ? (req as any).session.tenantId.trim()
+        : undefined;
+    const requestTenantId =
+      typeof (req as any).tenantId === 'string' && (req as any).tenantId.trim().length > 0
+        ? (req as any).tenantId.trim()
+        : undefined;
+    return sessionTenantId || requestTenantId || null;
+  }
+
+  function requireTenantId(req: FastifyRequest, reply: FastifyReply): string | null {
+    const tenantId = resolveTenantId(req);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
 
   // ─── Templates ───────────────────────────────────────
 
   server.get('/dept-rbac/templates', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { departmentType, role } = (req.query as any) || {};
     return reply.send({
       ok: true,
@@ -32,6 +55,10 @@ export async function deptRbacRoutes(server: FastifyInstance): Promise<void> {
   });
 
   server.get('/dept-rbac/templates/:id', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { id } = req.params as { id: string };
     const template = getTemplate(id);
     if (!template || template.tenantId !== tenantId) {
@@ -41,6 +68,10 @@ export async function deptRbacRoutes(server: FastifyInstance): Promise<void> {
   });
 
   server.post('/dept-rbac/templates', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const body = (req.body as any) || {};
     if (!body.name || !body.departmentType || !body.role) {
       return reply.code(400).send({
@@ -61,9 +92,17 @@ export async function deptRbacRoutes(server: FastifyInstance): Promise<void> {
   });
 
   server.patch('/dept-rbac/templates/:id', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { id } = req.params as { id: string };
     const body = (req.body as any) || {};
-    const updated = updateTemplate(id, body);
+    const existing = getTemplate(id);
+    if (!existing || existing.tenantId !== tenantId) {
+      return reply.code(404).send({ ok: false, error: 'Template not found' });
+    }
+    const updated = updateTemplate(tenantId, id, body);
     if (!updated) {
       return reply.code(404).send({ ok: false, error: 'Template not found' });
     }
@@ -71,6 +110,10 @@ export async function deptRbacRoutes(server: FastifyInstance): Promise<void> {
   });
 
   server.post('/dept-rbac/seed-defaults', async (_req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(_req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(_req, reply);
+    if (!tenantId) return;
     const seeded = seedDefaultTemplates(tenantId);
     return reply.send({ ok: true, seeded: seeded.length, templates: seeded });
   });
@@ -78,6 +121,10 @@ export async function deptRbacRoutes(server: FastifyInstance): Promise<void> {
   // ─── Memberships ─────────────────────────────────────
 
   server.get('/dept-rbac/memberships', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { userId, departmentId } = (req.query as any) || {};
     return reply.send({
       ok: true,
@@ -86,6 +133,10 @@ export async function deptRbacRoutes(server: FastifyInstance): Promise<void> {
   });
 
   server.post('/dept-rbac/memberships', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const body = (req.body as any) || {};
     if (!body.userId || !body.departmentId || !body.templateId || !body.grantedBy) {
       return reply.code(400).send({
@@ -105,8 +156,16 @@ export async function deptRbacRoutes(server: FastifyInstance): Promise<void> {
   });
 
   server.delete('/dept-rbac/memberships/:id', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const { id } = req.params as { id: string };
-    const ok = revokeMembership(id);
+    const existing = listMemberships(tenantId).find((membership) => membership.id === id);
+    if (!existing) {
+      return reply.code(404).send({ ok: false, error: 'Membership not found' });
+    }
+    const ok = revokeMembership(tenantId, id);
     if (!ok) {
       return reply.code(404).send({ ok: false, error: 'Membership not found' });
     }
@@ -116,6 +175,10 @@ export async function deptRbacRoutes(server: FastifyInstance): Promise<void> {
   // ─── Access Decision ─────────────────────────────────
 
   server.post('/dept-rbac/evaluate', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const body = (req.body as any) || {};
     if (!body.userId || !body.departmentId || !body.action) {
       return reply.code(400).send({

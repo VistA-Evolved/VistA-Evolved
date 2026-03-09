@@ -268,6 +268,14 @@ const S = {
     background: '#fff',
     minWidth: '180px',
   } as React.CSSProperties,
+  textInput: {
+    width: '100%',
+    padding: '8px 10px',
+    fontSize: '13px',
+    border: '1px solid #e2e8f0',
+    borderRadius: '4px',
+    background: '#fff',
+  } as React.CSSProperties,
   pendingTag: {
     display: 'inline-block',
     padding: '1px 6px',
@@ -399,6 +407,7 @@ function NotesTab({ dfn }: { dfn: string }) {
   const [noteText, setNoteText] = useState('');
   const [noteTitle, setNoteTitle] = useState('NURSING NOTE');
   const [noteShift, setNoteShift] = useState('Day');
+  const [noteEsCode, setNoteEsCode] = useState('');
   const [selectedNote, setSelectedNote] = useState<NoteItem | null>(null);
   const [selectedNoteText, setSelectedNoteText] = useState<string>('');
   const [loadingText, setLoadingText] = useState(false);
@@ -431,11 +440,18 @@ function NotesTab({ dfn }: { dfn: string }) {
       const data = await apiFetch('/vista/nursing/notes/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ dfn, title: noteTitle, text: noteText, shift: noteShift }),
+        body: JSON.stringify({
+          dfn,
+          title: noteTitle,
+          text: noteText,
+          shift: noteShift,
+          esCode: noteEsCode.trim() || undefined,
+        }),
       });
       setCreateResult(data);
       if (data.ok) {
         setNoteText('');
+        setNoteEsCode('');
         await loadNotes(); // Refresh list
         // Auto-close modal after 1.5s on success
         setTimeout(() => {
@@ -587,6 +603,22 @@ function NotesTab({ dfn }: { dfn: string }) {
               />
             </div>
 
+            <div style={{ marginBottom: '12px' }}>
+              <div style={S.label}>Electronic Signature Code (optional)</div>
+              <input
+                type="password"
+                style={S.textInput}
+                value={noteEsCode}
+                onChange={(e) => setNoteEsCode(e.target.value)}
+                placeholder="Enter esCode to sign immediately"
+                autoComplete="off"
+              />
+              <div style={{ fontSize: '11px', color: '#718096', marginTop: '4px' }}>
+                Leave blank to create an unsigned TIU note. Enter an electronic signature code to
+                create and sign the note in one step.
+              </div>
+            </div>
+
             {createResult && (
               <div
                 style={
@@ -610,12 +642,22 @@ function NotesTab({ dfn }: { dfn: string }) {
                 }
               >
                 {createResult.ok
-                  ? `Note ${createResult.source === 'local-draft' ? 'saved as local draft' : 'created in VistA'} (${createResult.status})`
+                  ? createResult.signMessage ||
+                    (createResult.source === 'local-draft'
+                      ? 'Note saved as local draft.'
+                      : createResult.status === 'signed'
+                        ? 'Note created and signed in VistA.'
+                        : 'Note created in VistA.')
                   : `Error: ${createResult.error || createResult._error}`}
                 {createResult.source === 'local-draft' && (
                   <div style={{ fontSize: '11px', marginTop: '4px', color: '#975a16' }}>
                     Draft ID: {createResult.draftId} — Will persist to VistA when TIU Nursing Note
                     class is configured.
+                  </div>
+                )}
+                {createResult.ok && createResult.noteIen && createResult.source === 'vista' && (
+                  <div style={{ fontSize: '11px', marginTop: '4px', color: '#2d3748' }}>
+                    Document IEN: {createResult.noteIen} — Status: {createResult.noteStatus || createResult.status}
                   </div>
                 )}
               </div>
@@ -627,6 +669,7 @@ function NotesTab({ dfn }: { dfn: string }) {
                 onClick={() => {
                   setShowCreate(false);
                   setCreateResult(null);
+                  setNoteEsCode('');
                 }}
                 disabled={creating}
               >
@@ -637,7 +680,7 @@ function NotesTab({ dfn }: { dfn: string }) {
                 onClick={handleCreate}
                 disabled={!noteText.trim() || creating}
               >
-                {creating ? 'Saving...' : 'Save Note'}
+                {creating ? 'Saving...' : noteEsCode.trim() ? 'Save and Sign Note' : 'Save Note'}
               </button>
             </div>
           </div>
@@ -1044,17 +1087,33 @@ function TasksTab({ dfn }: { dfn: string }) {
   const [taskData, setTaskData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [flowError, setFlowError] = useState('');
+  const [taskError, setTaskError] = useState('');
 
   useEffect(() => {
     setLoading(true);
     setError('');
+    setFlowError('');
+    setTaskError('');
     Promise.allSettled([
       apiFetch(`/vista/nursing/flowsheet?dfn=${dfn}`),
       apiFetch(`/vista/nursing/tasks?dfn=${dfn}`),
     ])
       .then(([flowResult, taskResult]) => {
-        if (flowResult.status === 'fulfilled') setFlowData(flowResult.value);
-        if (taskResult.status === 'fulfilled') setTaskData(taskResult.value);
+        if (flowResult.status === 'fulfilled') {
+          setFlowData(flowResult.value);
+        } else {
+          setFlowData(null);
+          setFlowError(flowResult.reason?.message || 'Failed to load live nursing flowsheet data');
+        }
+
+        if (taskResult.status === 'fulfilled') {
+          setTaskData(taskResult.value);
+        } else {
+          setTaskData(null);
+          setTaskError(taskResult.reason?.message || 'Failed to load live nursing tasks');
+        }
+
         // Only show error if both failed
         if (flowResult.status === 'rejected' && taskResult.status === 'rejected') {
           setError(flowResult.reason?.message || 'Failed to load task data');
@@ -1069,102 +1128,137 @@ function TasksTab({ dfn }: { dfn: string }) {
   const overdue = flowData?.overdue || false;
   const criticalCount = flowData?.criticalCount || 0;
   const nextDue = flowData?.nextVitalsDue;
-
-  // Build task items from available data
-  const tasks: Array<{ id: string; label: string; priority: string; due: string; status: string }> =
-    [];
-
-  // Vitals task
-  tasks.push({
-    id: 'vitals-check',
-    label: 'Vitals Check',
-    priority: overdue ? 'high' : criticalCount > 0 ? 'high' : 'routine',
-    due: nextDue && nextDue !== 'Unknown' ? new Date(nextDue).toLocaleString() : 'Not scheduled',
-    status: overdue ? 'OVERDUE' : 'Scheduled',
-  });
-
-  // Safety checks (static reminders based on best practice)
-  tasks.push({
-    id: 'fall-risk',
-    label: 'Fall Risk Assessment',
-    priority: 'routine',
-    due: 'Every shift',
-    status: 'Due',
-  });
-  tasks.push({
-    id: 'skin-check',
-    label: 'Skin Integrity Check',
-    priority: 'routine',
-    due: 'Every shift',
-    status: 'Due',
-  });
-  tasks.push({
-    id: 'pain-assessment',
-    label: 'Pain Assessment',
-    priority: 'routine',
-    due: 'Every 4 hours',
-    status: 'Due',
-  });
-  tasks.push({
-    id: 'io-recording',
-    label: 'I&O Recording',
-    priority: 'routine',
-    due: 'End of shift',
-    status: 'Due',
-  });
+  const hasLiveTasks = Array.isArray(taskData?.items) && taskData.items.length > 0;
+  const taskNote = taskData?._note || taskData?.note;
+  const checklistItems: Array<{ id: string; label: string; priority: string; due: string }> = [
+    {
+      id: 'fall-risk',
+      label: 'Fall Risk Assessment',
+      priority: 'routine',
+      due: 'Every shift',
+    },
+    {
+      id: 'skin-check',
+      label: 'Skin Integrity Check',
+      priority: 'routine',
+      due: 'Every shift',
+    },
+    {
+      id: 'pain-assessment',
+      label: 'Pain Assessment',
+      priority: 'routine',
+      due: 'Every 4 hours',
+    },
+    {
+      id: 'io-recording',
+      label: 'I&O Recording',
+      priority: 'routine',
+      due: 'End of shift',
+    },
+  ];
 
   return (
     <div>
       {/* Safety summary */}
       <div style={{ ...S.card, display: 'flex', gap: '16px', alignItems: 'center' }}>
-        <div style={S.dueIndicator(overdue)}>
-          {overdue ? '⚠ VITALS OVERDUE' : '✓ Vitals Current'}
+        <div style={S.dueIndicator(flowError ? true : overdue)}>
+          {flowError ? '⚠ Vitals Schedule Unavailable' : overdue ? '⚠ VITALS OVERDUE' : '✓ Vitals Current'}
         </div>
         {criticalCount > 0 && (
           <span style={S.badge('red')}>{criticalCount} critical value(s) — notify provider</span>
         )}
+        {flowError && <span style={S.badge('yellow')}>{flowError}</span>}
       </div>
 
-      {/* Task list */}
+      {/* Live task list */}
       <div style={S.card}>
         <div style={{ fontWeight: 600, fontSize: '14px', color: '#2d3748', marginBottom: '12px' }}>
-          Nursing Tasks
+          Live Nursing Tasks
+        </div>
+        <div style={{ fontSize: '12px', color: '#718096', marginBottom: '12px' }}>
+          This table reflects the live `/vista/nursing/tasks` response for the current patient.
+        </div>
+        {taskError ? (
+          <div style={S.error}>{taskError}</div>
+        ) : hasLiveTasks ? (
+          <table style={S.table}>
+            <thead>
+              <tr>
+                <th style={S.th}>Medication</th>
+                <th style={S.th}>Sig</th>
+                <th style={S.th}>Priority</th>
+                <th style={S.th}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {taskData.items.map((task: any) => (
+                <tr key={task.id} style={task.status === 'overdue' ? S.criticalRow : {}}>
+                  <td style={S.td}>{task.medication || 'Unnamed medication task'}</td>
+                  <td style={S.td}>{task.sig || '-'}</td>
+                  <td style={S.td}>
+                    <span style={S.badge(task.priority === 'high' ? 'red' : 'blue')}>
+                      {task.priority || 'routine'}
+                    </span>
+                  </td>
+                  <td style={S.td}>
+                    <span
+                      style={S.badge(
+                        task.status === 'overdue'
+                          ? 'red'
+                          : task.status === 'active'
+                            ? 'green'
+                            : 'yellow'
+                      )}
+                    >
+                      {task.status || 'unknown'}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div style={{ fontSize: '13px', color: '#718096' }}>
+            {taskNote || 'No active medication-derived nursing tasks are available for this patient.'}
+          </div>
+        )}
+        <div style={{ fontSize: '11px', color: '#a0aec0', marginTop: '10px' }}>
+          RPC: {taskData?.rpcUsed?.join(', ') || 'none'} | Source: {taskData?.source || 'unknown'}
+        </div>
+      </div>
+
+      <div style={S.card}>
+        <div style={{ fontWeight: 600, fontSize: '14px', color: '#2d3748', marginBottom: '12px' }}>
+          Shift Safety Checklist
+        </div>
+        <div style={{ fontSize: '12px', color: '#718096', marginBottom: '12px' }}>
+          These are local nursing reminders for shift safety and are not counted as live VistA task rows.
         </div>
         <table style={S.table}>
           <thead>
             <tr>
-              <th style={S.th}>Task</th>
+              <th style={S.th}>Checklist Item</th>
               <th style={S.th}>Priority</th>
-              <th style={S.th}>Due</th>
-              <th style={S.th}>Status</th>
+              <th style={S.th}>Recommended Cadence</th>
             </tr>
           </thead>
           <tbody>
-            {tasks.map((t) => (
-              <tr key={t.id} style={t.status === 'OVERDUE' ? S.criticalRow : {}}>
-                <td style={S.td}>{t.label}</td>
+            {checklistItems.map((item) => (
+              <tr key={item.id}>
+                <td style={S.td}>{item.label}</td>
                 <td style={S.td}>
-                  <span style={S.badge(t.priority === 'high' ? 'red' : 'blue')}>{t.priority}</span>
+                  <span style={S.badge(item.priority === 'high' ? 'red' : 'blue')}>{item.priority}</span>
                 </td>
-                <td style={S.td}>{t.due}</td>
-                <td style={S.td}>
-                  <span
-                    style={S.badge(
-                      t.status === 'OVERDUE' ? 'red' : t.status === 'Scheduled' ? 'green' : 'yellow'
-                    )}
-                  >
-                    {t.status}
-                  </span>
-                </td>
+                <td style={S.td}>{item.due}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* Integration pending for full task engine */}
+      {/* Integration pending for expanded task engine */}
       {taskData?.pendingTargets?.length > 0 && (
-        <IntegrationPendingSection title="Full Task Engine" targets={taskData.pendingTargets} />
+        <IntegrationPendingSection title="Expanded BCMA Task Engine" targets={taskData.pendingTargets} />
       )}
 
       <div style={{ ...S.card, fontSize: '12px', color: '#718096' }}>
@@ -1175,8 +1269,9 @@ function TasksTab({ dfn }: { dfn: string }) {
             &lt;95/&gt;103°F, SpO2 ≤90%)
           </li>
           <li>Due/overdue indicators based on 4-hour inpatient vitals schedule</li>
-          <li>Shift-based safety checks: fall risk, skin integrity, pain, I&O</li>
-          <li>Full BCMA-derived task list pending PSB package integration</li>
+          <li>Shift safety checklist is local guidance and clearly separated from live VistA task rows</li>
+          <li>Medication-derived nursing tasks use the live ORWPS ACTIVE fallback today</li>
+          <li>Full BCMA-derived timing and administration workflow remain pending PSB package integration</li>
         </ul>
       </div>
     </div>

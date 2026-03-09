@@ -50,12 +50,32 @@ import type { DenialStatus } from './types.js';
 
 /* ── Session helper ────────────────────────────────────────── */
 
-function getSession(request: FastifyRequest): { duz: string; tenantId: string } {
+function getSession(request: FastifyRequest): { duz: string } {
   const s = (request as any).session;
-  return {
-    duz: s?.duz ?? 'system',
-    tenantId: s?.tenantId ?? 'default',
-  };
+  return { duz: s?.duz ?? 'system' };
+}
+
+function resolveTenantId(request: FastifyRequest): string | null {
+  const headerTenantId = request.headers['x-tenant-id'];
+  if (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0) {
+    return headerTenantId.trim();
+  }
+  const requestTenantId = (request as any).tenantId;
+  if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+    return requestTenantId.trim();
+  }
+  const sessionTenantId = (request as any).session?.tenantId;
+  if (typeof sessionTenantId === 'string' && sessionTenantId.trim().length > 0) {
+    return sessionTenantId.trim();
+  }
+  return null;
+}
+
+function requireTenantId(request: FastifyRequest, reply: FastifyReply): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
 }
 
 /* ── Route Registration ────────────────────────────────────── */
@@ -68,7 +88,9 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     if (!parsed.success) {
       return reply.status(400).send({ ok: false, error: parsed.error.issues });
     }
-    const result = await listDenials(parsed.data);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const result = await listDenials(tenantId, parsed.data);
     return reply.send({ ok: true, ...result });
   });
 
@@ -79,8 +101,10 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     if (!parsed.success) {
       return reply.status(400).send({ ok: false, error: parsed.error.issues });
     }
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { duz } = getSession(request);
-    const denial = await createDenialCase(parsed.data, duz);
+    const denial = await createDenialCase({ ...parsed.data, tenantId }, duz);
 
     appendRcmAudit('denial.created', {
       claimId: denial.claimRef,
@@ -93,15 +117,19 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
   });
 
   /* ── Dashboard Stats ───────────────────────────────────── */
-  server.get('/rcm/denials/stats', async (_request: FastifyRequest, reply: FastifyReply) => {
-    const stats = await getDenialStats();
+  server.get('/rcm/denials/stats', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const stats = await getDenialStats(tenantId);
     return reply.send({ ok: true, stats });
   });
 
   /* ── Get Denial Detail ─────────────────────────────────── */
   server.get('/rcm/denials/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
-    const denial = await getDenialById(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const denial = await getDenialById(tenantId, id);
     if (!denial) {
       return reply.status(404).send({ ok: false, error: 'Denial not found' });
     }
@@ -120,9 +148,11 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
       return reply.status(400).send({ ok: false, error: parsed.error.issues });
     }
 
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     // Validate transition if status change
     if (parsed.data.denialStatus) {
-      const existing = await getDenialById(id);
+      const existing = await getDenialById(tenantId, id);
       if (!existing) {
         return reply.status(404).send({ ok: false, error: 'Denial not found' });
       }
@@ -136,7 +166,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
 
     const { duz } = getSession(request);
     const { reason, ...updates } = parsed.data;
-    const denial = await updateDenialCase(id, updates, duz, reason);
+    const denial = await updateDenialCase(tenantId, id, updates, duz, reason);
     if (!denial) {
       return reply.status(404).send({ ok: false, error: 'Denial not found' });
     }
@@ -162,7 +192,9 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
       return reply.status(400).send({ ok: false, error: parsed.error.issues });
     }
 
-    const denial = await getDenialById(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const denial = await getDenialById(tenantId, id);
     if (!denial) {
       return reply.status(404).send({ ok: false, error: 'Denial not found' });
     }
@@ -171,7 +203,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     const payload = { ...parsed.data.payload };
     if (parsed.data.note) payload.note = parsed.data.note;
 
-    const action = await addDenialAction(id, duz, parsed.data.actionType, payload);
+    const action = await addDenialAction(tenantId, id, duz, parsed.data.actionType, payload);
 
     appendRcmAudit('denial.action_added', {
       claimId: denial.claimRef,
@@ -186,7 +218,9 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
   /* ── List Actions ──────────────────────────────────────── */
   server.get('/rcm/denials/:id/actions', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
-    const denial = await getDenialById(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const denial = await getDenialById(tenantId, id);
     if (!denial) {
       return reply.status(404).send({ ok: false, error: 'Denial not found' });
     }
@@ -205,7 +239,9 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
         return reply.status(400).send({ ok: false, error: 'label and refType required' });
       }
 
-      const denial = await getDenialById(id);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const denial = await getDenialById(tenantId, id);
       if (!denial) {
         return reply.status(404).send({ ok: false, error: 'Denial not found' });
       }
@@ -236,7 +272,9 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     '/rcm/denials/:id/attachments',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as { id: string };
-      const denial = await getDenialById(id);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const denial = await getDenialById(tenantId, id);
       if (!denial) {
         return reply.status(404).send({ ok: false, error: 'Denial not found' });
       }
@@ -250,7 +288,9 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     '/rcm/denials/:id/appeal-packet',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as { id: string };
-      const denial = await getDenialById(id);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const denial = await getDenialById(tenantId, id);
       if (!denial) {
         return reply.status(404).send({ ok: false, error: 'Denial not found' });
       }
@@ -265,7 +305,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
       const packet = generateAppealPacket(denial, actions, attachments, payerName);
 
       // Record packet generation as action
-      await addDenialAction(id, duz, 'GENERATE_APPEAL_PACKET', {
+      await addDenialAction(tenantId, id, duz, 'GENERATE_APPEAL_PACKET', {
         format,
         generatedAt: packet.generatedAt,
       });
@@ -295,7 +335,9 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
       return reply.status(400).send({ ok: false, error: parsed.error.issues });
     }
 
-    const denial = await getDenialById(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const denial = await getDenialById(tenantId, id);
     if (!denial) {
       return reply.status(404).send({ ok: false, error: 'Denial not found' });
     }
@@ -313,6 +355,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     // Transition to RESUBMITTED if currently APPEALING or TRIAGED
     if (denial.denialStatus === 'APPEALING' || denial.denialStatus === 'TRIAGED') {
       await updateDenialCase(
+        tenantId,
         id,
         { denialStatus: 'RESUBMITTED' as DenialStatus },
         duz,
@@ -335,7 +378,9 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     '/rcm/denials/:id/resubmissions',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { id } = request.params as { id: string };
-      const denial = await getDenialById(id);
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
+      const denial = await getDenialById(tenantId, id);
       if (!denial) {
         return reply.status(404).send({ ok: false, error: 'Denial not found' });
       }
@@ -353,7 +398,9 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     }
 
     const { duz } = getSession(request);
-    const result = await importRemittanceDenials(parsed.data, duz);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const result = await importRemittanceDenials(parsed.data, duz, tenantId);
 
     appendRcmAudit('denial.imported', {
       userId: duz,

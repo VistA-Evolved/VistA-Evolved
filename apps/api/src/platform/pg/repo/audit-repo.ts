@@ -6,7 +6,7 @@
  * Mirrors apps/api/src/platform/db/repo/audit-repo.ts using Postgres.
  */
 
-import { eq, and, or, ilike, sql, desc } from 'drizzle-orm';
+import { eq, and, or, ilike, sql, desc, isNull } from 'drizzle-orm';
 import { getPgDb } from '../pg-db.js';
 import { payerAuditEvent } from '../pg-schema.js';
 
@@ -21,12 +21,16 @@ export async function getAuditForEntity(entityType: string, entityId: string): P
     .orderBy(desc(payerAuditEvent.createdAt));
 }
 
-export async function getAuditForPayer(payerId: string): Promise<AuditRow[]> {
+export async function getAuditForPayer(payerId: string, tenantId?: string): Promise<AuditRow[]> {
   const db = getPgDb();
+  const payerCondition = eq(payerAuditEvent.entityId, payerId);
+  const where = tenantId
+    ? and(payerCondition, or(eq(payerAuditEvent.tenantId, tenantId), isNull(payerAuditEvent.tenantId)))
+    : payerCondition;
   return db
     .select()
     .from(payerAuditEvent)
-    .where(eq(payerAuditEvent.entityId, payerId))
+    .where(where)
     .orderBy(desc(payerAuditEvent.createdAt));
 }
 
@@ -45,14 +49,20 @@ export async function getRecentAudit(limit = 50): Promise<AuditRow[]> {
   return db.select().from(payerAuditEvent).orderBy(desc(payerAuditEvent.createdAt)).limit(limit);
 }
 
-export async function getAuditStats(): Promise<{
+export async function getAuditStats(tenantId?: string): Promise<{
   total: number;
   byAction: Record<string, number>;
   byEntityType: Record<string, number>;
 }> {
   const db = getPgDb();
+  const where = tenantId
+    ? or(eq(payerAuditEvent.tenantId, tenantId), isNull(payerAuditEvent.tenantId))
+    : undefined;
 
-  const countResult = await db.select({ count: sql<number>`count(*)::int` }).from(payerAuditEvent);
+  const countResult = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(payerAuditEvent)
+    .where(where);
   const total = countResult[0]?.count ?? 0;
 
   const actionRows = await db
@@ -61,6 +71,7 @@ export async function getAuditStats(): Promise<{
       count: sql<number>`count(*)::int`,
     })
     .from(payerAuditEvent)
+    .where(where)
     .groupBy(payerAuditEvent.action);
 
   const byAction: Record<string, number> = {};
@@ -74,6 +85,7 @@ export async function getAuditStats(): Promise<{
       count: sql<number>`count(*)::int`,
     })
     .from(payerAuditEvent)
+    .where(where)
     .groupBy(payerAuditEvent.entityType);
 
   const byEntityType: Record<string, number> = {};

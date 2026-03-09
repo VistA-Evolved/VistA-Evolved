@@ -200,42 +200,48 @@ export function queryMessageEvents(opts?: {
 /**
  * Get a single event by ID.
  */
-export function getMessageEvent(id: string): Hl7MessageEvent | undefined {
-  return events.find((e) => e.id === id);
+export function getMessageEvent(id: string, tenantId?: string): Hl7MessageEvent | undefined {
+  const event = events.find((e) => e.id === id);
+  if (!event) return undefined;
+  if (tenantId && event.tenantId !== tenantId) return undefined;
+  return event;
 }
 
 /**
  * Verify hash chain integrity.
  */
-export function verifyMessageEventChain(): {
+export function verifyMessageEventChain(tenantId?: string): {
   ok: boolean;
   totalEvents: number;
   brokenAt: number | null;
 } {
-  if (events.length === 0) {
+  const scopedEvents = tenantId ? events.filter((event) => event.tenantId === tenantId) : events;
+
+  if (scopedEvents.length === 0) {
     return { ok: true, totalEvents: 0, brokenAt: null };
   }
 
-  for (let i = 0; i < events.length; i++) {
-    const event = events[i];
+  for (let i = 0; i < scopedEvents.length; i++) {
+    const event = scopedEvents[i];
     const { hash, ...rest } = event;
     const expected = computeEventHash(rest as Omit<Hl7MessageEvent, 'hash'>);
     if (expected !== hash) {
-      return { ok: false, totalEvents: events.length, brokenAt: i };
+      return { ok: false, totalEvents: scopedEvents.length, brokenAt: i };
     }
   }
-  return { ok: true, totalEvents: events.length, brokenAt: null };
+  return { ok: true, totalEvents: scopedEvents.length, brokenAt: null };
 }
 
 /**
  * Get event count by status (for dashboard metrics).
  */
-export function getMessageEventStats(): Record<string, number> {
+export function getMessageEventStats(tenantId?: string): Record<string, number> {
   const stats: Record<string, number> = {};
-  for (const e of events) {
+  const scopedEvents = tenantId ? events.filter((event) => event.tenantId === tenantId) : events;
+  for (const e of scopedEvents) {
     stats[e.status] = (stats[e.status] ?? 0) + 1;
   }
-  stats._total = events.length;
+  stats._total = scopedEvents.length;
   return stats;
 }
 

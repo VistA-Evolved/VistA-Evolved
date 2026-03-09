@@ -11,7 +11,7 @@
 
 import { getPhHmo, initPhHmoRegistry } from '../payers/ph-hmo-registry.js';
 import { createLoaRequestPacket } from '../payers/ph-hmo-adapter.js';
-import { createLoaRequest, getLoaRequest, transitionLoa } from './loa-store.js';
+import { createLoaRequest, getLoaRequestForTenant, transitionLoa } from './loa-store.js';
 import type { LoaRequest, LoaSubmissionMode } from './loa-types.js';
 
 /* ── Ensure registry loaded ─────────────────────────────────── */
@@ -107,13 +107,13 @@ export function createLoaWithPayerDefaults(params: {
 
 /* ── Generate LOA packet for existing request ───────────────── */
 
-export function generateLoaPacketForRequest(loaId: string): {
+export function generateLoaPacketForRequest(tenantId: string, loaId: string): {
   ok: boolean;
   packet?: ReturnType<typeof createLoaRequestPacket>;
   instructions: string[];
   error?: string;
 } {
-  const loa = getLoaRequest(loaId);
+  const loa = getLoaRequestForTenant(tenantId, loaId);
   if (!loa) return { ok: false, instructions: [], error: 'LOA request not found' };
 
   ensureRegistry();
@@ -133,28 +133,39 @@ export function generateLoaPacketForRequest(loaId: string): {
 
 /* ── Submit LOA (transition + audit) ────────────────────────── */
 
-export function submitLoa(loaId: string, actor: string, detail?: string): LoaRequest {
-  return transitionLoa(loaId, 'submitted', actor, detail ?? 'LOA submitted to payer');
+export function submitLoa(
+  tenantId: string,
+  loaId: string,
+  actor: string,
+  detail?: string
+): LoaRequest {
+  return transitionLoa(tenantId, loaId, 'submitted', actor, detail ?? 'LOA submitted to payer');
 }
 
 /* ── Record payer response ──────────────────────────────────── */
 
 export function recordLoaApproval(
+  tenantId: string,
   loaId: string,
   loaReferenceNumber: string,
   approvedDate: string,
   expirationDate: string | undefined,
   actor: string
 ): LoaRequest {
-  return transitionLoa(loaId, 'approved', actor, `Approved: ${loaReferenceNumber}`, {
+  return transitionLoa(tenantId, loaId, 'approved', actor, `Approved: ${loaReferenceNumber}`, {
     loaReferenceNumber,
     approvedDate,
     expirationDate,
   });
 }
 
-export function recordLoaDenial(loaId: string, denialReason: string, actor: string): LoaRequest {
-  return transitionLoa(loaId, 'denied', actor, `Denied: ${denialReason}`, {
+export function recordLoaDenial(
+  tenantId: string,
+  loaId: string,
+  denialReason: string,
+  actor: string
+): LoaRequest {
+  return transitionLoa(tenantId, loaId, 'denied', actor, `Denied: ${denialReason}`, {
     denialReason,
   });
 }

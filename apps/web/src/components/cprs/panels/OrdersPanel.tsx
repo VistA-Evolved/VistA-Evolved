@@ -1,7 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useDataCache, type DraftOrder } from '@/stores/data-cache';
+import { usePatient } from '@/stores/patient-context';
+import { SESSION_EXPIRED_EVENT, useSession } from '@/stores/session-context';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
@@ -43,13 +45,44 @@ const QUICK_DRUGS = [
 /* VistA order from API (GET /vista/cprs/orders)                       */
 /* ------------------------------------------------------------------ */
 interface VistaOrder {
+  id: string;
   ien: string;
   name: string;
+  details: string;
   status: string;
   startDate?: string;
   stopDate?: string;
   displayGroup?: string;
   provider?: string;
+  packageRef?: string;
+  orderType?: OrderType;
+  textSource?: string;
+  raw?: string;
+  rawDetail?: string[];
+}
+
+type SelectedOrder = DraftOrder | VistaOrder;
+
+function isVistaOrder(order: SelectedOrder | null): order is VistaOrder {
+  return !!order && 'ien' in order && 'textSource' in order;
+}
+
+function isDraftOrder(order: SelectedOrder | null): order is DraftOrder {
+  return !!order && 'createdAt' in order && 'type' in order && !('textSource' in order);
+}
+
+function selectedOrderKey(order: SelectedOrder | null): string | null {
+  if (!order) return null;
+  return isVistaOrder(order) ? `vista:${order.ien}` : `draft:${order.id}`;
+}
+
+function formatFilemanDate(value?: string): string | undefined {
+  if (!value || !/^\d{7}(?:\.\d+)?$/.test(value)) return undefined;
+  const [datePart] = value.split('.');
+  const year = parseInt(datePart.slice(0, 3), 10) + 1700;
+  const month = datePart.slice(3, 5);
+  const day = datePart.slice(5, 7);
+  return `${year}-${month}-${day}`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -63,9 +96,12 @@ interface OrderCheck {
 
 export default function OrdersPanel({ dfn }: Props) {
   const cache = useDataCache();
+  const { dfn: patientDfn, demographics } = usePatient();
+  const { ready: sessionReady, authenticated } = useSession();
+  const pendingRetryCount = useRef(0);
   const [activeType, setActiveType] = useState<OrderType>('med');
   const [showComposer, setShowComposer] = useState(false);
-  const [selected, setSelected] = useState<DraftOrder | null>(null);
+  const [selected, setSelected] = useState<SelectedOrder | null>(null);
 
   // Med order state
   const [drug, setDrug] = useState('');
@@ -90,6 +126,13 @@ export default function OrdersPanel({ dfn }: Props) {
   const [signMsg, setSignMsg] = useState<string | null>(null);
   const [esCode, setEsCode] = useState('');
 
+  // Verify / flag state
+  const [verifyLoading, setVerifyLoading] = useState(false);
+  const [verifyMsg, setVerifyMsg] = useState<string | null>(null);
+  const [flagLoading, setFlagLoading] = useState(false);
+  const [flagMsg, setFlagMsg] = useState<string | null>(null);
+  const [flagReason, setFlagReason] = useState('Review requested');
+
   // Discontinue state
   const [dcLoading, setDcLoading] = useState(false);
   const [dcMsg, setDcMsg] = useState<string | null>(null);
@@ -99,19 +142,64 @@ export default function OrdersPanel({ dfn }: Props) {
 
   const draftOrders = cache.getDomain(dfn, 'orders');
   const filteredDrafts = draftOrders.filter((o) => o.type === activeType);
+  const filteredVistaOrders = vistaOrders.filter(
+    (order) => !order.orderType || order.orderType === activeType
+  );
+  const selectedVistaOrderIen = selected
+    ? isVistaOrder(selected)
+      ? selected.ien
+      : selected.vistaOrderIen
+    : undefined;
+  const selectedHasVistaActions = !!selectedVistaOrderIen && !!selected && (isVistaOrder(selected) || selected.source === 'vista');
+  const selectedCanRunOrderChecks =
+    !!selected &&
+    selectedHasVistaActions &&
+    (!isVistaOrder(selected) || selected.status === 'unsigned' || selected.status === 'pending');
 
   /* ---------------------------------------------------------------- */
   /* Fetch VistA orders on mount + after order placement               */
   /* ---------------------------------------------------------------- */
   const fetchVistaOrders = useCallback(async () => {
+    if (!sessionReady || !authenticated) {
+      return;
+    }
+
     setVistaLoading(true);
     try {
       const res = await fetch(`${API_BASE}/vista/cprs/orders?dfn=${dfn}`, {
         credentials: 'include',
       });
+
+      if (!res.ok) {
+        setVistaOrders([]);
+        if (res.status === 401) {
+          window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT));
+          setVistaSource('session-expired');
+          return;
+        }
+        setVistaSource(`http-${res.status}`);
+        return;
+      }
+
       const data = await res.json();
       if (data.ok && data.source === 'vista') {
-        setVistaOrders(data.orders ?? []);
+        const normalized = (data.orders ?? []).map((order: any) => ({
+          id: String(order.id ?? order.ien ?? ''),
+          ien: String(order.ien ?? order.id ?? ''),
+          name: String(order.name ?? order.text ?? order.raw ?? order.id ?? 'Unnamed order'),
+          details: String(order.details ?? order.name ?? order.text ?? order.raw ?? ''),
+          status: String(order.status || 'active'),
+          startDate: order.startDate ?? formatFilemanDate(order.timestamp),
+          stopDate: order.stopDate ?? undefined,
+          displayGroup: order.displayGroup ?? '',
+          provider: order.provider ?? '',
+          packageRef: order.packageRef ?? '',
+          orderType: order.orderType ?? undefined,
+          textSource: order.textSource ?? 'ORWORR AGET',
+          raw: order.raw ?? '',
+          rawDetail: Array.isArray(order.rawDetail) ? order.rawDetail : [],
+        }));
+        setVistaOrders(normalized);
         setVistaSource('vista');
       } else {
         setVistaOrders([]);
@@ -123,11 +211,41 @@ export default function OrdersPanel({ dfn }: Props) {
     } finally {
       setVistaLoading(false);
     }
-  }, [dfn]);
+  }, [authenticated, dfn, sessionReady]);
 
   useEffect(() => {
+    if (!sessionReady || !authenticated) return;
     fetchVistaOrders();
-  }, [fetchVistaOrders]);
+  }, [authenticated, fetchVistaOrders, sessionReady]);
+
+  useEffect(() => {
+    if (!sessionReady || !authenticated) return;
+    if (patientDfn !== dfn || !demographics) return;
+    fetchVistaOrders();
+  }, [authenticated, demographics, dfn, fetchVistaOrders, patientDfn, sessionReady]);
+
+  useEffect(() => {
+    if (!sessionReady || !authenticated) return;
+
+    if (vistaSource === 'vista') {
+      pendingRetryCount.current = 0;
+      return;
+    }
+
+    if (vistaLoading || vistaSource !== 'pending' || pendingRetryCount.current >= 2) return;
+
+    pendingRetryCount.current += 1;
+
+    const retryTimer = window.setTimeout(() => {
+      fetchVistaOrders();
+    }, 1000);
+
+    return () => window.clearTimeout(retryTimer);
+  }, [authenticated, fetchVistaOrders, sessionReady, vistaLoading, vistaSource]);
+
+  useEffect(() => {
+    pendingRetryCount.current = 0;
+  }, [dfn]);
 
   /* ---------------------------------------------------------------- */
   /* Medication order (existing AUTOACK path)                          */
@@ -145,15 +263,33 @@ export default function OrdersPanel({ dfn }: Props) {
       });
       const data = await res.json();
       if (data.ok) {
-        setMedMsg(`Order created: ${data.quickOrder || drug}`);
-        cache.addDraftOrder(dfn, {
-          id: `med-${Date.now()}`,
-          type: 'med',
-          name: data.quickOrder || drug,
-          status: 'unsigned',
-          details: `Quick order via ORWDXM AUTOACK`,
-          createdAt: new Date().toISOString(),
-        });
+        const orderName = data.quickOrder || drug;
+        if (data.orderIEN) {
+          setMedMsg(`Order created: ${orderName}`);
+          cache.addDraftOrder(dfn, {
+            id: `vista-med-${data.orderIEN}`,
+            type: 'med',
+            name: orderName,
+            status: 'unsigned',
+            details: 'Medication order created in VistA.',
+            createdAt: new Date().toISOString(),
+            source: 'vista',
+            vistaOrderIen: String(data.orderIEN),
+          });
+        } else if (data.mode === 'draft' || data.syncPending || data.status === 'sync-pending') {
+          cache.addDraftOrder(dfn, {
+            id: data.draftId || `med-${Date.now()}`,
+            type: 'med',
+            name: orderName,
+            status: 'draft',
+            details: data.message || 'Medication order saved as draft and is awaiting VistA sync.',
+            createdAt: new Date().toISOString(),
+            source: 'server-draft',
+          });
+          setMedMsg(data.message || `Medication order saved as draft -- sync pending (${orderName})`);
+        } else {
+          setMedMsg(data.message || `Medication order processed: ${orderName}`);
+        }
         setDrug('');
         setShowComposer(false);
         fetchVistaOrders(); // refresh list
@@ -191,28 +327,30 @@ export default function OrdersPanel({ dfn }: Props) {
       });
       const data = await res.json();
 
-      // Determine status from response
-      const orderStatus = data.integrationPending ? 'draft' : data.ok ? 'unsigned' : 'draft';
-      const statusLabel = data.integrationPending
-        ? `Integration pending -- ${data.pendingReason || 'backend not yet available'}`
-        : data.ok
-          ? `Order placed via VistA`
-          : `Error: ${data.error || 'unknown'}`;
-
-      cache.addDraftOrder(dfn, {
-        id: data.draftId || `${type}-${Date.now()}`,
-        type,
-        name: draftName.trim(),
-        status: orderStatus,
-        details: statusLabel,
-        createdAt: new Date().toISOString(),
-      });
-
-      if (data.integrationPending) {
-        setMedMsg(`${type} order saved as draft -- integration pending`);
-      } else if (data.ok) {
+      if (data.ok && data.orderIEN) {
+        cache.addDraftOrder(dfn, {
+          id: `vista-${type}-${data.orderIEN}`,
+          type,
+          name: draftName.trim(),
+          status: data.status === 'unsigned' ? 'unsigned' : 'draft',
+          details: data.message || 'Order placed via VistA.',
+          createdAt: new Date().toISOString(),
+          source: 'vista',
+          vistaOrderIen: String(data.orderIEN),
+        });
         setMedMsg(`${type} order placed successfully`);
         fetchVistaOrders();
+      } else if (data.mode === 'draft' || data.integrationPending || data.status === 'unsupported-in-sandbox') {
+        cache.addDraftOrder(dfn, {
+          id: data.draftId || `${type}-${Date.now()}`,
+          type,
+          name: draftName.trim(),
+          status: 'draft',
+          details: data.message || data.pendingNote || 'Integration pending',
+          createdAt: new Date().toISOString(),
+          source: 'server-draft',
+        });
+        setMedMsg(`${type} order saved as draft -- integration pending`);
       } else {
         setMedMsg(`Error: ${data.error || 'Order failed'}`);
       }
@@ -259,10 +397,69 @@ export default function OrdersPanel({ dfn }: Props) {
     }
   }
 
+  async function handleVerifyOrder(localOrderId: string | undefined, vistaOrderIen: string) {
+    setVerifyLoading(true);
+    setVerifyMsg(null);
+    try {
+      const res = await fetch(`${API_BASE}/vista/cprs/orders/verify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
+        credentials: 'include',
+        body: JSON.stringify({ dfn, orderId: vistaOrderIen, verifyAction: 'E' }),
+      });
+      const data = await res.json();
+      if (data.ok && data.status === 'verified') {
+        setVerifyMsg('Order verification completed.');
+        if (localOrderId) {
+          cache.updateOrderStatus(dfn, localOrderId, 'released');
+        }
+        fetchVistaOrders();
+        return;
+      }
+      if (data.ok && data.syncPending) {
+        setVerifyMsg(data.message || 'Order verification stored as draft and marked sync-pending.');
+        return;
+      }
+      setVerifyMsg(data.message || data.error || 'Order verification did not complete.');
+    } catch (e: unknown) {
+      setVerifyMsg(`Verify error: ${(e as Error).message}`);
+    } finally {
+      setVerifyLoading(false);
+    }
+  }
+
+  async function handleFlagOrder(vistaOrderIen: string) {
+    if (!flagReason.trim()) {
+      setFlagMsg('Flag reason is required.');
+      return;
+    }
+    setFlagLoading(true);
+    setFlagMsg(null);
+    try {
+      const res = await fetch(`${API_BASE}/vista/cprs/orders/flag`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
+        credentials: 'include',
+        body: JSON.stringify({ dfn, orderId: vistaOrderIen, flagReason: flagReason.trim() }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setFlagMsg(data.message || 'Order flag submitted.');
+        fetchVistaOrders();
+        return;
+      }
+      setFlagMsg(data.message || data.error || 'Order flag did not complete.');
+    } catch (e: unknown) {
+      setFlagMsg(`Flag error: ${(e as Error).message}`);
+    } finally {
+      setFlagLoading(false);
+    }
+  }
+
   /* ---------------------------------------------------------------- */
   /* Sign order (Phase 59 / Phase 154: requires esCode)                */
   /* ---------------------------------------------------------------- */
-  async function handleSignOrder(orderId: string) {
+  async function handleSignOrder(localOrderId: string | undefined, vistaOrderIen: string) {
     if (!esCode.trim()) {
       setSignMsg('E-signature code is required to sign orders.');
       return;
@@ -274,17 +471,19 @@ export default function OrdersPanel({ dfn }: Props) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Idempotency-Key': `sign-${orderId}-${Date.now()}`,
+          'Idempotency-Key': `sign-${vistaOrderIen}-${Date.now()}`,
           ...csrfHeaders(),
         },
         credentials: 'include',
-        body: JSON.stringify({ dfn, orderIds: [orderId], esCode: esCode.trim() }),
+        body: JSON.stringify({ dfn, orderIds: [vistaOrderIen], esCode: esCode.trim() }),
       });
       const data = await res.json();
       if (data.ok && data.status === 'signed') {
         setSignMsg('Order signed successfully');
         setEsCode('');
-        cache.updateOrderStatus(dfn, orderId, 'signed');
+        if (localOrderId) {
+          cache.updateOrderStatus(dfn, localOrderId, 'signed');
+        }
         fetchVistaOrders();
       } else if (data.status === 'sign-blocked') {
         setSignMsg(`Signing blocked: ${data.message || 'e-signature verification failed'}`);
@@ -319,7 +518,7 @@ export default function OrdersPanel({ dfn }: Props) {
   /* ---------------------------------------------------------------- */
   /* Discontinue order (Phase 124: honest API call + pending fallback)  */
   /* ---------------------------------------------------------------- */
-  async function handleDiscontinue(orderId: string) {
+  async function handleDiscontinue(localOrderId: string | undefined, vistaOrderIen: string) {
     setDcLoading(true);
     setDcMsg(null);
     try {
@@ -327,28 +526,30 @@ export default function OrdersPanel({ dfn }: Props) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
-        body: JSON.stringify({ dfn, orderId }),
+        body: JSON.stringify({ dfn, orderId: vistaOrderIen }),
       });
       const data = await res.json();
       if (data.ok && data.mode === 'real') {
         setDcMsg('Order discontinued via ORWDXA DC');
-        cache.updateOrderStatus(dfn, orderId, 'discontinued');
+        if (localOrderId) {
+          cache.updateOrderStatus(dfn, localOrderId, 'discontinued');
+        }
         fetchVistaOrders();
       } else if (data.ok && data.syncPending) {
-        cache.updateOrderStatus(dfn, orderId, 'discontinued');
         setDcMsg(
           `Discontinue stored as draft -- sync pending (${data.message || 'ORWDXA DC draft'})`
         );
+          fetchVistaOrders();
       } else if (data.ok) {
         setDcMsg(data.message || 'Order discontinue processed');
-        cache.updateOrderStatus(dfn, orderId, 'discontinued');
+        if (localOrderId) {
+          cache.updateOrderStatus(dfn, localOrderId, 'discontinued');
+        }
         fetchVistaOrders();
       } else {
         setDcMsg(`Discontinue failed: ${data.error || 'unknown error'}`);
       }
     } catch {
-      // API endpoint may not exist yet -- show honest pending status
-      cache.updateOrderStatus(dfn, orderId, 'discontinued');
       setDcMsg('Discontinue -- integration pending: ORWDXA DC endpoint not available');
     } finally {
       setDcLoading(false);
@@ -406,6 +607,17 @@ export default function OrdersPanel({ dfn }: Props) {
           {medMsg}
         </p>
       )}
+      {vistaSource === 'session-expired' && (
+        <p
+          style={{
+            color: 'var(--cprs-warning, orange)',
+            fontSize: 12,
+            margin: '4px 0',
+          }}
+        >
+          Session expired. Re-authenticate to resume live VistA order loading.
+        </p>
+      )}
       {signMsg && (
         <p
           style={{
@@ -418,6 +630,31 @@ export default function OrdersPanel({ dfn }: Props) {
           }}
         >
           {signMsg}
+        </p>
+      )}
+      {verifyMsg && (
+        <p
+          style={{
+            color: verifyMsg.includes('error') ? 'var(--cprs-danger)' : 'var(--cprs-success)',
+            fontSize: 12,
+            margin: '4px 0',
+          }}
+        >
+          {verifyMsg}
+        </p>
+      )}
+      {flagMsg && (
+        <p
+          style={{
+            color:
+              flagMsg.includes('error') || flagMsg.includes('required')
+                ? 'var(--cprs-danger)'
+                : 'var(--cprs-success)',
+            fontSize: 12,
+            margin: '4px 0',
+          }}
+        >
+          {flagMsg}
         </p>
       )}
 
@@ -525,6 +762,7 @@ export default function OrdersPanel({ dfn }: Props) {
       <div className={styles.subTabs}>
         {ORDER_TYPES.map((t) => {
           const draftCount = draftOrders.filter((o) => o.type === t).length;
+          const vistaCount = vistaOrders.filter((o) => !o.orderType || o.orderType === t).length;
           return (
             <button
               key={t}
@@ -534,6 +772,8 @@ export default function OrdersPanel({ dfn }: Props) {
                 setSelected(null);
                 setOrderChecks([]);
                 setSignMsg(null);
+                setVerifyMsg(null);
+                setFlagMsg(null);
               }}
             >
               {t === 'med'
@@ -543,14 +783,14 @@ export default function OrdersPanel({ dfn }: Props) {
                   : t === 'imaging'
                     ? 'Imaging'
                     : 'Consult'}{' '}
-              ({draftCount})
+              ({draftCount + vistaCount})
             </button>
           );
         })}
       </div>
 
       {/* VistA Active Orders (from API) */}
-      {vistaOrders.length > 0 && (
+      {filteredVistaOrders.length > 0 && (
         <div style={{ marginBottom: 8 }}>
           <div
             style={{
@@ -560,7 +800,7 @@ export default function OrdersPanel({ dfn }: Props) {
               color: 'var(--cprs-accent, #336)',
             }}
           >
-            VistA Active Orders ({vistaOrders.length})
+            VistA Active Orders ({filteredVistaOrders.length})
           </div>
           <table className={styles.dataTable}>
             <thead>
@@ -569,15 +809,31 @@ export default function OrdersPanel({ dfn }: Props) {
                 <th>Status</th>
                 <th>Start</th>
                 <th>Stop</th>
+                <th>Provider</th>
               </tr>
             </thead>
             <tbody>
-              {vistaOrders.map((vo) => (
-                <tr key={vo.ien}>
+              {filteredVistaOrders.map((vo) => (
+                <tr
+                  key={vo.ien}
+                  onClick={() => {
+                    setSelected(vo);
+                    setOrderChecks([]);
+                    setSignMsg(null);
+                    setVerifyMsg(null);
+                    setFlagMsg(null);
+                  }}
+                  style={
+                    selectedOrderKey(selected) === `vista:${vo.ien}`
+                      ? { background: 'var(--cprs-selected)' }
+                      : undefined
+                  }
+                >
                   <td>{vo.name}</td>
                   <td>{statusBadge(vo.status)}</td>
                   <td>{vo.startDate || '--'}</td>
                   <td>{vo.stopDate || '--'}</td>
+                  <td>{vo.provider || '--'}</td>
                 </tr>
               ))}
             </tbody>
@@ -589,7 +845,13 @@ export default function OrdersPanel({ dfn }: Props) {
       <div className={styles.splitPane}>
         <div className={styles.splitLeft}>
           {filteredDrafts.length === 0 ? (
-            <p className={styles.emptyText}>No {activeType} orders in local cache</p>
+            <p className={styles.emptyText}>
+              {vistaSource === 'session-expired'
+                ? 'Session expired before the live VistA order list could be refreshed.'
+                : filteredVistaOrders.length > 0
+                ? `No ${activeType} draft orders in local cache. Live VistA ${activeType} orders are shown above.`
+                : `No ${activeType} draft orders in local cache.`}
+            </p>
           ) : (
             <table className={styles.dataTable}>
               <thead>
@@ -631,20 +893,62 @@ export default function OrdersPanel({ dfn }: Props) {
               </div>
               <div className={styles.formGroup}>
                 <label>Type</label>
-                <div>{selected.type}</div>
+                <div>{isVistaOrder(selected) ? selected.orderType || 'unknown' : selected.type}</div>
               </div>
               <div className={styles.formGroup}>
                 <label>Status</label>
                 <div>{statusBadge(selected.status)}</div>
               </div>
               <div className={styles.formGroup}>
-                <label>Details</label>
-                <div style={{ whiteSpace: 'pre-wrap' }}>{selected.details}</div>
+                <label>Source</label>
+                <div>{isVistaOrder(selected) ? 'vista-active-order' : selected.source || 'local'}</div>
               </div>
+              {selectedVistaOrderIen && (
+                <div className={styles.formGroup}>
+                  <label>VistA Order IEN</label>
+                  <div>{selectedVistaOrderIen}</div>
+                </div>
+              )}
+              {isVistaOrder(selected) && (
+                <>
+                  <div className={styles.formGroup}>
+                    <label>Text Source</label>
+                    <div>{selected.textSource || 'ORWORR AGET'}</div>
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Display Group</label>
+                    <div>{selected.displayGroup || '--'}</div>
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Provider</label>
+                    <div>{selected.provider || '--'}</div>
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Package</label>
+                    <div>{selected.packageRef || '--'}</div>
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label>Start / Stop</label>
+                    <div>
+                      {selected.startDate || '--'} / {selected.stopDate || '--'}
+                    </div>
+                  </div>
+                </>
+              )}
               <div className={styles.formGroup}>
-                <label>Created</label>
-                <div>{new Date(selected.createdAt).toLocaleString()}</div>
+                <label>Details</label>
+                <div style={{ whiteSpace: 'pre-wrap' }}>
+                  {isVistaOrder(selected)
+                    ? selected.details || selected.raw || 'No detail text resolved from VistA.'
+                    : selected.details}
+                </div>
               </div>
+              {isDraftOrder(selected) ? (
+                <div className={styles.formGroup}>
+                  <label>Created</label>
+                  <div>{new Date(selected.createdAt).toLocaleString()}</div>
+                </div>
+              ) : null}
 
               {/* Order Checks display */}
               {orderChecks.length > 0 && (
@@ -679,18 +983,39 @@ export default function OrdersPanel({ dfn }: Props) {
               )}
 
               <div style={{ marginTop: 12, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                {!selectedHasVistaActions && (
+                  <div style={{ fontSize: 12, color: 'var(--cprs-warning, orange)' }}>
+                    VistA follow-up actions are disabled until this order has a real VistA order IEN.
+                  </div>
+                )}
+                {selectedHasVistaActions && !selectedCanRunOrderChecks && (
+                  <div style={{ fontSize: 12, color: 'var(--cprs-warning, orange)' }}>
+                    Order checks are available during new or unsigned order workflows. This active VistA order does not have the CPRS order-check session context required by the sandbox route.
+                  </div>
+                )}
                 {/* Order Checks button */}
-                {(selected.status === 'unsigned' || selected.status === 'draft') && (
+                {selectedCanRunOrderChecks && (
                   <button
                     className={styles.btn}
-                    onClick={() => handleOrderChecks(selected.id)}
+                    onClick={() => handleOrderChecks(selectedVistaOrderIen)}
                     disabled={checkLoading}
                   >
                     {checkLoading ? 'Checking...' : 'Run Order Checks'}
                   </button>
                 )}
+                {selectedHasVistaActions && (
+                  <button
+                    className={styles.btn}
+                    onClick={() =>
+                      handleVerifyOrder(isDraftOrder(selected) ? selected.id : undefined, selectedVistaOrderIen)
+                    }
+                    disabled={verifyLoading}
+                  >
+                    {verifyLoading ? 'Verifying...' : 'Verify Order'}
+                  </button>
+                )}
                 {/* Sign button + esCode input (Phase 154) */}
-                {(selected.status === 'draft' || selected.status === 'unsigned') && (
+                {selectedHasVistaActions && selected.status === 'unsigned' && (
                   <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
                     <input
                       type="password"
@@ -709,7 +1034,9 @@ export default function OrdersPanel({ dfn }: Props) {
                     />
                     <button
                       className={styles.btnPrimary}
-                      onClick={() => handleSignOrder(selected.id)}
+                      onClick={() =>
+                        handleSignOrder(isDraftOrder(selected) ? selected.id : undefined, selectedVistaOrderIen)
+                      }
                       disabled={signLoading || !esCode.trim()}
                     >
                       {signLoading ? 'Signing...' : 'Sign Order'}
@@ -717,14 +1044,43 @@ export default function OrdersPanel({ dfn }: Props) {
                   </div>
                 )}
                 {/* Discontinue button */}
-                {selected.status !== 'discontinued' && selected.status !== 'cancelled' && (
+                {selectedHasVistaActions &&
+                  selected.status !== 'discontinued' &&
+                  selected.status !== 'cancelled' && (
                   <button
                     className={styles.btnDanger}
-                    onClick={() => handleDiscontinue(selected.id)}
+                    onClick={() =>
+                      handleDiscontinue(isDraftOrder(selected) ? selected.id : undefined, selectedVistaOrderIen)
+                    }
                     disabled={dcLoading}
                   >
                     {dcLoading ? 'Processing...' : 'Discontinue'}
                   </button>
+                  )}
+                {selectedHasVistaActions && (
+                  <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                    <input
+                      type="text"
+                      placeholder="Flag reason"
+                      value={flagReason}
+                      onChange={(e) => setFlagReason(e.target.value)}
+                      style={{
+                        width: 160,
+                        padding: '4px 8px',
+                        fontSize: 12,
+                        borderRadius: 4,
+                        border: '1px solid var(--cprs-border)',
+                      }}
+                      disabled={flagLoading}
+                    />
+                    <button
+                      className={styles.btn}
+                      onClick={() => handleFlagOrder(selectedVistaOrderIen)}
+                      disabled={flagLoading || !flagReason.trim()}
+                    >
+                      {flagLoading ? 'Flagging...' : 'Flag Order'}
+                    </button>
+                  </div>
                 )}
               </div>
 

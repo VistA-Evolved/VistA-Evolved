@@ -219,9 +219,9 @@ export function createSlaConfig(input: Omit<Hl7SlaConfig, 'id' | 'createdAt'>): 
 }
 
 /** List SLA configs */
-export function listSlaConfigs(tenantId?: string): Hl7SlaConfig[] {
+export function listSlaConfigs(tenantId: string): Hl7SlaConfig[] {
   const all = Array.from(slaConfigs.values());
-  return tenantId ? all.filter((c) => c.tenantId === tenantId) : all;
+  return all.filter((c) => c.tenantId === tenantId);
 }
 
 /** Get SLA config by ID */
@@ -230,11 +230,9 @@ export function getSlaConfig(id: string): Hl7SlaConfig | undefined {
 }
 
 /** Delete SLA config (tenant-scoped) */
-export function deleteSlaConfig(id: string, tenantId?: string): boolean {
-  if (tenantId) {
-    const config = slaConfigs.get(id);
-    if (!config || config.tenantId !== tenantId) return false;
-  }
+export function deleteSlaConfig(id: string, tenantId: string): boolean {
+  const config = slaConfigs.get(id);
+  if (!config || config.tenantId !== tenantId) return false;
   return slaConfigs.delete(id);
 }
 
@@ -320,11 +318,18 @@ function createViolation(
 
 /** List SLA violations */
 export function listSlaViolations(filters?: {
+  tenantId?: string;
   slaId?: string;
   acknowledged?: boolean;
   limit?: number;
 }): SlaViolation[] {
   let result = [...slaViolations];
+  if (filters?.tenantId) {
+    result = result.filter((v) => {
+      const config = slaConfigs.get(v.slaId);
+      return config?.tenantId === filters.tenantId;
+    });
+  }
   if (filters?.slaId) result = result.filter((v) => v.slaId === filters.slaId);
   if (filters?.acknowledged !== undefined)
     result = result.filter((v) => v.acknowledged === filters.acknowledged);
@@ -333,13 +338,11 @@ export function listSlaViolations(filters?: {
 }
 
 /** Acknowledge a violation (tenant-scoped via SLA config lookup) */
-export function acknowledgeSlaViolation(id: string, tenantId?: string): boolean {
+export function acknowledgeSlaViolation(id: string, tenantId: string): boolean {
   const v = slaViolations.find((v) => v.id === id);
   if (!v) return false;
-  if (tenantId) {
-    const config = slaConfigs.get(v.slaId);
-    if (!config || config.tenantId !== tenantId) return false;
-  }
+  const config = slaConfigs.get(v.slaId);
+  if (!config || config.tenantId !== tenantId) return false;
   v.acknowledged = true;
   return true;
 }
@@ -370,6 +373,8 @@ export const DEFAULT_RETRY_POLICY: RetryPolicy = {
 
 /** A message queued for automatic retry */
 export interface RetryEntry {
+  /** Tenant ID */
+  tenantId: string;
   /** DLQ entry ID */
   dlqEntryId: string;
   /** Retry attempt number */
@@ -391,9 +396,11 @@ const retryQueue = new Map<string, RetryEntry>();
 /** Queue a DLQ entry for automatic retry */
 export function queueForRetry(
   dlqEntryId: string,
+  tenantId: string,
   policy: RetryPolicy = DEFAULT_RETRY_POLICY
 ): RetryEntry {
   const entry: RetryEntry = {
+    tenantId,
     dlqEntryId,
     attempt: 0,
     nextRetryAt: new Date(Date.now() + policy.initialBackoffMs).toISOString(),
@@ -405,27 +412,37 @@ export function queueForRetry(
 }
 
 /** Get retry state for a DLQ entry */
-export function getRetryState(dlqEntryId: string): RetryEntry | undefined {
-  return retryQueue.get(dlqEntryId);
+export function getRetryState(dlqEntryId: string, tenantId: string): RetryEntry | undefined {
+  const entry = retryQueue.get(dlqEntryId);
+  if (!entry) return undefined;
+  if (entry.tenantId !== tenantId) return undefined;
+  return entry;
 }
 
 /** List all retry queue entries */
-export function listRetryQueue(): RetryEntry[] {
-  return Array.from(retryQueue.values()).sort((a, b) => a.nextRetryAt.localeCompare(b.nextRetryAt));
+export function listRetryQueue(tenantId: string): RetryEntry[] {
+  const entries = Array.from(retryQueue.values()).filter((entry) => entry.tenantId === tenantId);
+  return entries.sort((a, b) => a.nextRetryAt.localeCompare(b.nextRetryAt));
 }
 
 /** Process retry queue: returns entries due for retry */
-export function getRetryDueEntries(): RetryEntry[] {
+export function getRetryDueEntries(tenantId: string): RetryEntry[] {
   const now = new Date().toISOString();
   return Array.from(retryQueue.values()).filter(
-    (e) => e.status === 'pending' && e.nextRetryAt <= now
+    (e) => e.tenantId === tenantId && e.status === 'pending' && e.nextRetryAt <= now
   );
 }
 
 /** Record a retry attempt result */
-export function recordRetryResult(dlqEntryId: string, success: boolean, error?: string): void {
+export function recordRetryResult(
+  dlqEntryId: string,
+  tenantId: string,
+  success: boolean,
+  error?: string
+): void {
   const entry = retryQueue.get(dlqEntryId);
   if (!entry) return;
+  if (entry.tenantId !== tenantId) return;
 
   entry.attempt++;
   entry.lastRetryAt = new Date().toISOString();
@@ -447,7 +464,7 @@ export function recordRetryResult(dlqEntryId: string, success: boolean, error?: 
 }
 
 /** Get retry queue stats */
-export function getRetryQueueStats(): {
+export function getRetryQueueStats(tenantId: string): {
   total: number;
   pending: number;
   retrying: number;
@@ -458,7 +475,8 @@ export function getRetryQueueStats(): {
     retrying = 0,
     succeeded = 0,
     exhausted = 0;
-  for (const e of retryQueue.values()) {
+  const entries = Array.from(retryQueue.values()).filter((e) => e.tenantId === tenantId);
+  for (const e of entries) {
     switch (e.status) {
       case 'pending':
         pending++;
@@ -474,7 +492,7 @@ export function getRetryQueueStats(): {
         break;
     }
   }
-  return { total: retryQueue.size, pending, retrying, succeeded, exhausted };
+  return { total: entries.length, pending, retrying, succeeded, exhausted };
 }
 
 /* ------------------------------------------------------------------ */
@@ -484,9 +502,10 @@ export function getRetryQueueStats(): {
 import { getChannelHealthSummary } from './channel-health.js';
 import { getDlqStats } from './dead-letter-enhanced.js';
 import { getMessageEventStats } from './message-event-store.js';
+import { getEndpointsByTenant } from './tenant-endpoints.js';
 
 /** Build a unified ops dashboard response */
-export function buildOpsDashboard(tenantId?: string): {
+export function buildOpsDashboard(tenantId: string): {
   channelHealth: ReturnType<typeof getChannelHealthSummary>;
   messageEvents: ReturnType<typeof getMessageEventStats>;
   dlq: ReturnType<typeof getDlqStats>;
@@ -496,34 +515,37 @@ export function buildOpsDashboard(tenantId?: string): {
   throughputEndpoints: string[];
 } {
   const slaList = listSlaConfigs(tenantId);
-  const violations = listSlaViolations({ acknowledged: false, limit: 50 });
+  const violations = listSlaViolations({ tenantId, acknowledged: false, limit: 50 });
+  const throughputEndpoints = getEndpointsByTenant(tenantId)
+    .map((endpoint) => endpoint.id)
+    .filter((endpointId) => throughputStore.has(endpointId));
 
   return {
     channelHealth: getChannelHealthSummary(tenantId),
-    messageEvents: getMessageEventStats(),
-    dlq: getDlqStats(),
-    retryQueue: getRetryQueueStats(),
+    messageEvents: getMessageEventStats(tenantId),
+    dlq: getDlqStats(tenantId),
+    retryQueue: getRetryQueueStats(tenantId),
     slaConfigs: slaList,
     activeSlaViolations: violations,
-    throughputEndpoints: Array.from(throughputStore.keys()),
+    throughputEndpoints,
   };
 }
 
 /** Get store stats for store-policy */
-export function getOpsStoreStats(): {
+export function getOpsStoreStats(tenantId: string): {
   throughputBuckets: number;
   slaConfigs: number;
   slaViolations: number;
   retryQueueSize: number;
 } {
   let totalBuckets = 0;
-  for (const buckets of throughputStore.values()) {
-    totalBuckets += buckets.length;
+  for (const endpoint of getEndpointsByTenant(tenantId)) {
+    totalBuckets += throughputStore.get(endpoint.id)?.length || 0;
   }
   return {
     throughputBuckets: totalBuckets,
-    slaConfigs: slaConfigs.size,
-    slaViolations: slaViolations.length,
-    retryQueueSize: retryQueue.size,
+    slaConfigs: listSlaConfigs(tenantId).length,
+    slaViolations: listSlaViolations({ tenantId, limit: Number.MAX_SAFE_INTEGER }).length,
+    retryQueueSize: listRetryQueue(tenantId).length,
   };
 }

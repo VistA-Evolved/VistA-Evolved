@@ -4643,6 +4643,32 @@ CREATE TABLE IF NOT EXISTS edi_control_sequence (
 CREATE INDEX IF NOT EXISTS idx_ecs_tenant_sender ON edi_control_sequence(tenant_id, sender_id, receiver_id);
 `,
   },
+  {
+    version: 62,
+    name: 'portal_proxy_invitation_durability_upgrade',
+    sql: `
+-- Portal proxy invitation durability upgrade: preserve full invitation payload.
+ALTER TABLE portal_proxy_invitation ADD COLUMN IF NOT EXISTS patient_dfn TEXT;
+ALTER TABLE portal_proxy_invitation ADD COLUMN IF NOT EXISTS patient_name TEXT;
+ALTER TABLE portal_proxy_invitation ADD COLUMN IF NOT EXISTS requestor_name TEXT;
+ALTER TABLE portal_proxy_invitation ADD COLUMN IF NOT EXISTS requested_access_level TEXT;
+ALTER TABLE portal_proxy_invitation ADD COLUMN IF NOT EXISTS reason TEXT;
+ALTER TABLE portal_proxy_invitation ADD COLUMN IF NOT EXISTS verification_doc_ref TEXT;
+ALTER TABLE portal_proxy_invitation ADD COLUMN IF NOT EXISTS patient_age INTEGER;
+ALTER TABLE portal_proxy_invitation ADD COLUMN IF NOT EXISTS policy_result_json TEXT;
+ALTER TABLE portal_proxy_invitation ADD COLUMN IF NOT EXISTS responded_at TEXT;
+CREATE INDEX IF NOT EXISTS idx_ppi_patient_dfn ON portal_proxy_invitation(tenant_id, patient_dfn);
+`,
+  },
+  {
+    version: 63,
+    name: 'portal_user_display_name_login_metadata',
+    sql: `
+-- Preserve portal user display name and last login metadata across rehydration.
+ALTER TABLE portal_user ADD COLUMN IF NOT EXISTS display_name TEXT;
+ALTER TABLE portal_user ADD COLUMN IF NOT EXISTS last_login_at TEXT;
+`,
+  },
 ];
 
 /**

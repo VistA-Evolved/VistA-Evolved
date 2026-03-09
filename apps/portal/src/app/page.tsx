@@ -106,7 +106,7 @@ export default function LoginPage() {
           <div className="sandbox-hint">
             <strong>Development mode</strong>
             <br />
-            Use <code>patient1</code> / <code>patient1</code> to sign in as a demo patient.
+            Use <code>patient1</code> / <code>Patient1!</code> to sign in as a demo patient.
           </div>
         )}
       </div>

@@ -59,6 +59,7 @@ function genId(): string {
 /* ─── Public: create pipeline entry ──────────────────────────────── */
 
 export function createPipelineEntry(
+  tenantId: string,
   claimId: string,
   transactionSet: X12TransactionSet,
   connectorId: string,
@@ -67,6 +68,7 @@ export function createPipelineEntry(
   const now = new Date().toISOString();
   const entry: PipelineEntry = {
     id: genId(),
+    tenantId,
     claimId,
     transactionSet,
     stage: 'build',
@@ -88,7 +90,7 @@ export function createPipelineEntry(
     dbRepo
       .insertPipelineEntry({
         id: entry.id,
-        tenantId: 'default',
+        tenantId: entry.tenantId,
         claimId: entry.claimId,
         transactionSet: entry.transactionSet,
         stage: entry.stage,
@@ -158,13 +160,14 @@ export function getPipelineEntriesForClaim(claimId: string): PipelineEntry[] {
 }
 
 export function listPipelineEntries(filters?: {
+  tenantId: string;
   stage?: PipelineStage;
   payerId?: string;
   transactionSet?: X12TransactionSet;
   limit?: number;
   offset?: number;
 }): { items: PipelineEntry[]; total: number } {
-  let items = Array.from(pipelineEntries.values());
+  let items = Array.from(pipelineEntries.values()).filter((e) => e.tenantId === filters?.tenantId);
 
   if (filters?.stage) items = items.filter((e) => e.stage === filters.stage);
   if (filters?.payerId) items = items.filter((e) => e.payerId === filters.payerId);
@@ -304,7 +307,7 @@ export function buildClaimStatusInquiry276(
 
 /* ─── Pipeline stats ──────────────────────────────────────────────── */
 
-export function getPipelineStats(): {
+export function getPipelineStats(tenantId: string): {
   total: number;
   byStage: Record<string, number>;
   byTransaction: Record<string, number>;
@@ -315,13 +318,14 @@ export function getPipelineStats(): {
   let errorCount = 0;
 
   for (const entry of pipelineEntries.values()) {
+    if (entry.tenantId !== tenantId) continue;
     byStage[entry.stage] = (byStage[entry.stage] ?? 0) + 1;
     byTransaction[entry.transactionSet] = (byTransaction[entry.transactionSet] ?? 0) + 1;
     if (entry.errors.length > 0) errorCount++;
   }
 
   return {
-    total: pipelineEntries.size,
+    total: Object.values(byStage).reduce((sum, count) => sum + count, 0),
     byStage,
     byTransaction,
     errorCount,

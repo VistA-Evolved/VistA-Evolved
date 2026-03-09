@@ -59,6 +59,26 @@ import { appendRcmAudit } from '../audit/rcm-audit.js';
 import { safeErr } from '../../lib/safe-error.js';
 
 const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
+  function resolveTenantId(request: any): string {
+    const headerTenantId = request?.headers?.['x-tenant-id'];
+    if (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0) {
+      return headerTenantId.trim();
+    }
+    const requestTenantId = request?.tenantId;
+    if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+      return requestTenantId.trim();
+    }
+    const sessionTenantId = request?.session?.tenantId;
+    if (typeof sessionTenantId === 'string' && sessionTenantId.trim().length > 0) {
+      return sessionTenantId.trim();
+    }
+    return 'default';
+  }
+
+  function resolveActor(request: any, explicitActor?: string): string {
+    return explicitActor || request?.session?.duz || request?.session?.userId || 'system';
+  }
+
   /* ================================================================ */
   /* Claim Drafts                                                      */
   /* ================================================================ */
@@ -73,8 +93,10 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       });
     }
     try {
+      const tenantId = resolveTenantId(request);
+      const actor = resolveActor(request, body.createdBy);
       const draft = await createClaimDraft({
-        tenantId: body.tenantId,
+        tenantId,
         idempotencyKey: body.idempotencyKey,
         claimType: body.claimType,
         encounterId: body.encounterId,
@@ -92,10 +114,10 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
         vistaChargeIen: body.vistaChargeIen,
         vistaArIen: body.vistaArIen,
         metadata: body.metadata,
-        createdBy: body.createdBy || 'system',
+        createdBy: actor,
       });
       appendRcmAudit('draft.created', {
-        userId: body.createdBy || 'system',
+        userId: actor,
         detail: { draftId: draft.id, payerId: draft.payerId, patient: draft.patientId },
       });
       return reply.code(201).send({ ok: true, draft });
@@ -107,7 +129,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   /* -- GET /rcm/claim-lifecycle/drafts -- list ---------------------- */
   server.get('/rcm/claim-lifecycle/drafts', async (request, _reply) => {
     const q = (request.query as any) || {};
-    const tenantId = q.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
     const drafts = await listClaimDrafts(
       tenantId,
       {
@@ -126,8 +148,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
 
   /* -- GET /rcm/claim-lifecycle/drafts/stats -- statistics ---------- */
   server.get('/rcm/claim-lifecycle/drafts/stats', async (request, _reply) => {
-    const q = (request.query as any) || {};
-    const tenantId = q.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
     const stats = await getClaimDraftStats(tenantId);
     return { ok: true, stats };
   });
@@ -135,7 +156,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   /* -- GET /rcm/claim-lifecycle/drafts/aging -- aging denials ------- */
   server.get('/rcm/claim-lifecycle/drafts/aging', async (request, _reply) => {
     const q = (request.query as any) || {};
-    const tenantId = q.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
     const olderThanDays = parseInt(q.olderThanDays) || 30;
     const aging = await getAgingDenials(tenantId, olderThanDays);
     return { ok: true, aging, count: aging.length };
@@ -144,8 +165,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   /* -- GET /rcm/claim-lifecycle/drafts/:id -- get draft ------------- */
   server.get('/rcm/claim-lifecycle/drafts/:id', async (request, reply) => {
     const { id } = request.params as any;
-    const q = (request.query as any) || {};
-    const tenantId = q.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
     const draft = await getClaimDraftById(tenantId, id);
     if (!draft) return reply.code(404).send({ ok: false, error: 'Draft not found' });
     return { ok: true, draft };
@@ -155,7 +175,8 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   server.patch('/rcm/claim-lifecycle/drafts/:id', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
-    const tenantId = body.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
+    const actor = resolveActor(request, body.actor);
     try {
       const draft = await updateClaimDraft(
         tenantId,
@@ -171,11 +192,11 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
           totalChargeCents: body.totalChargeCents,
           metadata: body.metadata,
         },
-        body.actor || 'system'
+        actor
       );
       if (!draft) return reply.code(404).send({ ok: false, error: 'Draft not found' });
       appendRcmAudit('draft.updated', {
-        userId: body.actor || 'system',
+        userId: actor,
         detail: { draftId: id },
       });
       return { ok: true, draft };
@@ -191,13 +212,14 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
     if (!body.toStatus) {
       return reply.code(400).send({ ok: false, error: 'Missing toStatus' });
     }
-    const tenantId = body.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
+    const actor = resolveActor(request, body.actor);
     try {
       const draft = await transitionClaimDraft(
         tenantId,
         id,
         body.toStatus as ClaimDraftStatus,
-        body.actor || 'system',
+        actor,
         {
           reason: body.reason,
           denialCode: body.denialCode,
@@ -208,7 +230,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       );
       if (!draft) return reply.code(404).send({ ok: false, error: 'Draft not found' });
       appendRcmAudit('draft.transition', {
-        userId: body.actor || 'system',
+        userId: actor,
         detail: { draftId: id, toStatus: body.toStatus },
       });
       return { ok: true, draft };
@@ -221,7 +243,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   server.post('/rcm/claim-lifecycle/drafts/:id/scrub', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
-    const tenantId = body.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
     const draft = await getClaimDraftById(tenantId, id);
     if (!draft) return reply.code(404).send({ ok: false, error: 'Draft not found' });
 
@@ -229,7 +251,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       autoTransition: body.autoTransition !== false,
     });
     appendRcmAudit('draft.scrubbed', {
-      userId: body.actor || 'system',
+      userId: resolveActor(request, body.actor),
       detail: {
         draftId: id,
         score: outcome.score,
@@ -247,18 +269,19 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
     if (!body.denialCode || !body.denialReason) {
       return reply.code(400).send({ ok: false, error: 'Missing denialCode and denialReason' });
     }
-    const tenantId = body.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
+    const actor = resolveActor(request, body.actor);
     try {
       const draft = await recordDenial(
         tenantId,
         id,
         body.denialCode,
         body.denialReason,
-        body.actor || 'system'
+        actor
       );
       if (!draft) return reply.code(404).send({ ok: false, error: 'Draft not found' });
       appendRcmAudit('draft.denial', {
-        userId: body.actor || 'system',
+        userId: actor,
         detail: { draftId: id, denialCode: body.denialCode },
       });
       return { ok: true, draft };
@@ -271,17 +294,18 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   server.post('/rcm/claim-lifecycle/drafts/:id/resubmit', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
-    const tenantId = body.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
+    const actor = resolveActor(request, body.actor);
     try {
       const newDraft = await createResubmission(
         tenantId,
         id,
-        body.actor || 'system',
+        actor,
         body.overrides
       );
       if (!newDraft) return reply.code(404).send({ ok: false, error: 'Draft not found' });
       appendRcmAudit('draft.resubmit', {
-        userId: body.actor || 'system',
+        userId: actor,
         detail: { originalId: id, newDraftId: newDraft.id },
       });
       return reply.code(201).send({ ok: true, draft: newDraft });
@@ -297,17 +321,18 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
     if (!body.appealPacketRef) {
       return reply.code(400).send({ ok: false, error: 'Missing appealPacketRef' });
     }
-    const tenantId = body.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
+    const actor = resolveActor(request, body.actor);
     try {
       const draft = await setAppealPacket(
         tenantId,
         id,
         body.appealPacketRef,
-        body.actor || 'system'
+        actor
       );
       if (!draft) return reply.code(404).send({ ok: false, error: 'Draft not found' });
       appendRcmAudit('draft.appeal_packet', {
-        userId: body.actor || 'system',
+        userId: actor,
         detail: { draftId: id, appealPacketRef: body.appealPacketRef },
       });
       return { ok: true, draft };
@@ -319,8 +344,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   /* -- GET /rcm/claim-lifecycle/drafts/:id/events -- lifecycle events */
   server.get('/rcm/claim-lifecycle/drafts/:id/events', async (request, reply) => {
     const { id } = request.params as any;
-    const q = (request.query as any) || {};
-    const tenantId = q.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
     const events = await getLifecycleEvents(tenantId, id);
     return { ok: true, events, count: events.length };
   });
@@ -354,8 +378,10 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       });
     }
     try {
+      const tenantId = resolveTenantId(request);
+      const actor = resolveActor(request, body.createdBy);
       const rule = await createScrubRule({
-        tenantId: body.tenantId,
+        tenantId,
         payerId: body.payerId,
         serviceType: body.serviceType,
         ruleCode: body.ruleCode,
@@ -368,10 +394,10 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
         evidenceSource: body.evidenceSource,
         evidenceDate: body.evidenceDate,
         blocksSubmission: body.blocksSubmission,
-        createdBy: body.createdBy || 'system',
+        createdBy: actor,
       });
       appendRcmAudit('scrub_rule.created', {
-        userId: body.createdBy || 'system',
+        userId: actor,
         detail: { ruleId: rule.id, ruleCode: rule.ruleCode },
       });
       return reply.code(201).send({ ok: true, rule });
@@ -383,7 +409,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   /* -- GET /rcm/claim-lifecycle/rules -- list rules ----------------- */
   server.get('/rcm/claim-lifecycle/rules', async (request, _reply) => {
     const q = (request.query as any) || {};
-    const tenantId = q.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
     const rules = await listScrubRules(tenantId, {
       payerId: q.payerId,
       category: q.category,
@@ -395,8 +421,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   /* -- GET /rcm/claim-lifecycle/rules/:id -- get rule --------------- */
   server.get('/rcm/claim-lifecycle/rules/:id', async (request, reply) => {
     const { id } = request.params as any;
-    const q = (request.query as any) || {};
-    const tenantId = q.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
     const rule = await getScrubRuleById(tenantId, id);
     if (!rule) return reply.code(404).send({ ok: false, error: 'Rule not found' });
     return { ok: true, rule };
@@ -406,7 +431,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   server.patch('/rcm/claim-lifecycle/rules/:id', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
-    const tenantId = body.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
     const rule = await updateScrubRule(tenantId, id, {
       description: body.description,
       condition: body.condition,
@@ -419,7 +444,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
     });
     if (!rule) return reply.code(404).send({ ok: false, error: 'Rule not found' });
     appendRcmAudit('scrub_rule.updated', {
-      userId: body.actor || 'system',
+      userId: resolveActor(request, body.actor),
       detail: { ruleId: id },
     });
     return { ok: true, rule };
@@ -428,12 +453,11 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   /* -- DELETE /rcm/claim-lifecycle/rules/:id -- delete rule ---------- */
   server.delete('/rcm/claim-lifecycle/rules/:id', async (request, reply) => {
     const { id } = request.params as any;
-    const q = (request.query as any) || {};
-    const tenantId = q.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
     const ok = await deleteScrubRule(tenantId, id);
     if (!ok) return reply.code(404).send({ ok: false, error: 'Rule not found' });
     appendRcmAudit('scrub_rule.deleted', {
-      userId: (q as any).actor || 'system',
+      userId: resolveActor(request),
       detail: { ruleId: id },
     });
     return { ok: true };
@@ -445,8 +469,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
 
   /* -- GET /rcm/claim-lifecycle/metrics -- draft metrics ------------ */
   server.get('/rcm/claim-lifecycle/metrics', async (request, _reply) => {
-    const q = (request.query as any) || {};
-    const tenantId = q.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
     const stats = await getClaimDraftStats(tenantId);
 
     // Compute first-pass rate and days-to-payment from stats
@@ -480,8 +503,7 @@ const claimLifecycleRoutes: FastifyPluginAsync = async (server: FastifyInstance)
 
   /* -- GET /rcm/claim-lifecycle/metrics/scrub -- scrub metrics ------ */
   server.get('/rcm/claim-lifecycle/metrics/scrub', async (request, _reply) => {
-    const q = (request.query as any) || {};
-    const tenantId = q.tenantId || 'default';
+    const tenantId = resolveTenantId(request);
     const metrics = await getScrubDashboardMetrics(tenantId);
     return { ok: true, metrics };
   });

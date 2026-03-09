@@ -1,9 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from '@/stores/session-context';
 import styles from '@/components/cprs/cprs.module.css';
+
+const DEV_VEHU_ACCESS_CODE = 'PRO1234';
+const DEV_VEHU_VERIFY_CODE = 'PRO1234!!';
+const isDevMode = process.env.NODE_ENV !== 'production';
 
 /**
  * CPRS Login page — Phase 13: real VistA authentication.
@@ -13,18 +17,21 @@ import styles from '@/components/cprs/cprs.module.css';
  */
 export default function CPRSLoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { authenticated, ready, login } = useSession();
-  const [accessCode, setAccessCode] = useState('');
-  const [verifyCode, setVerifyCode] = useState('');
+  const [accessCode, setAccessCode] = useState(() => (isDevMode ? DEV_VEHU_ACCESS_CODE : ''));
+  const [verifyCode, setVerifyCode] = useState(() => (isDevMode ? DEV_VEHU_VERIFY_CODE : ''));
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const redirectParam = searchParams.get('redirect');
+  const nextRoute = redirectParam && redirectParam.startsWith('/cprs/') ? redirectParam : '/cprs/patient-search';
 
   // Redirect if already authenticated
   useEffect(() => {
     if (ready && authenticated) {
-      router.push('/cprs/patient-search');
+      router.push(nextRoute);
     }
-  }, [ready, authenticated, router]);
+  }, [authenticated, nextRoute, ready, router]);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -39,7 +46,7 @@ export default function CPRSLoginPage() {
     try {
       const result = await login(accessCode.trim(), verifyCode.trim());
       if (result.ok) {
-        router.push('/cprs/patient-search');
+        router.push(nextRoute);
       } else {
         setError(result.error || 'Authentication failed. Check your credentials.');
       }
@@ -123,7 +130,7 @@ export default function CPRSLoginPage() {
               type="text"
               value={accessCode}
               onChange={(e) => setAccessCode(e.target.value)}
-              placeholder={process.env.NODE_ENV !== 'production' ? 'PROV123' : 'Access Code'}
+              placeholder="Access Code"
               autoFocus
             />
           </div>
@@ -134,7 +141,7 @@ export default function CPRSLoginPage() {
               type="password"
               value={verifyCode}
               onChange={(e) => setVerifyCode(e.target.value)}
-              placeholder={process.env.NODE_ENV !== 'production' ? 'PROV123!!' : 'Verify Code'}
+              placeholder="Verify Code"
             />
           </div>
           <button
@@ -147,7 +154,7 @@ export default function CPRSLoginPage() {
           </button>
         </form>
 
-        {process.env.NODE_ENV !== 'production' && (
+        {isDevMode && (
           <div
             style={{
               marginTop: 16,
@@ -158,23 +165,18 @@ export default function CPRSLoginPage() {
               color: 'var(--cprs-text-muted)',
             }}
           >
-            <strong>Sandbox accounts:</strong>
+            <strong>Verified dev lane account:</strong>
             <table style={{ width: '100%', marginTop: 4, fontSize: 10 }}>
               <tbody>
                 <tr>
-                  <td>PROV123 / PROV123!!</td>
-                  <td>Provider (Clyde)</td>
-                </tr>
-                <tr>
-                  <td>NURSE123 / NURSE123!!</td>
-                  <td>Nurse (Helen)</td>
-                </tr>
-                <tr>
-                  <td>PHARM123 / PHARM123!!</td>
-                  <td>Pharmacist (Linda)</td>
+                  <td>{DEV_VEHU_ACCESS_CODE} / {DEV_VEHU_VERIFY_CODE}</td>
+                  <td>Clinician (VEHU lane)</td>
                 </tr>
               </tbody>
             </table>
+            <p style={{ margin: '6px 0 0', fontSize: 10 }}>
+              Legacy WorldVistA guidance such as PROV123 may fail on the current VEHU-backed lane.
+            </p>
           </div>
         )}
       </div>

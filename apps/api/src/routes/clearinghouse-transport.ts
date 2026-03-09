@@ -21,6 +21,7 @@
  */
 
 import type { FastifyInstance } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
 import {
   listTransports,
   getTransport,
@@ -36,6 +37,34 @@ import {
 } from '../rcm/connectors/clearinghouse-transport.js';
 
 export async function clearinghouseTransportRoutes(app: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: any, session: any): string | null {
+    const sessionTenantId =
+      typeof session?.tenantId === 'string' && session.tenantId.trim().length > 0
+        ? session.tenantId.trim()
+        : undefined;
+    const requestTenantId =
+      typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+        ? request.tenantId.trim()
+        : undefined;
+    const headerTenantId = request?.headers?.['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return sessionTenantId || requestTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(request: any, reply: any, session: any): string | null {
+    const tenantId = resolveTenantId(request, session);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
+  function vaultKeyForTenant(tenantId: string, key: string): string {
+    return `${tenantId}::${key}`;
+  }
+
   // ─── Transport Providers ─────────────────────────────────────────
 
   app.get('/clearinghouse/transports', async () => {
@@ -69,6 +98,10 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
   // ─── Transport Profiles ──────────────────────────────────────────
 
   app.post('/clearinghouse/profiles', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     if (!body.connectorId || !body.transportConfig) {
       reply.code(400);
@@ -76,6 +109,7 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
     }
 
     const profile = createTransportProfile({
+      tenantId,
       connectorId: body.connectorId,
       transportConfig: body.transportConfig,
       rateLimitConfig: body.rateLimitConfig,
@@ -87,14 +121,22 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
     return { ok: true, profile };
   });
 
-  app.get('/clearinghouse/profiles', async () => {
-    const profiles = listTransportProfiles();
+  app.get('/clearinghouse/profiles', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
+    const profiles = listTransportProfiles(tenantId);
     return { ok: true, count: profiles.length, profiles };
   });
 
   app.get('/clearinghouse/profiles/:id', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const { id } = request.params as { id: string };
-    const profile = getTransportProfile(id);
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
+    const profile = getTransportProfile(id, tenantId);
     if (!profile) {
       reply.code(404);
       return { ok: false, error: 'profile_not_found' };
@@ -103,8 +145,12 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
   });
 
   app.delete('/clearinghouse/profiles/:id', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const { id } = request.params as { id: string };
-    const deleted = deleteTransportProfile(id);
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
+    const deleted = deleteTransportProfile(id, tenantId);
     if (!deleted) {
       reply.code(404);
       return { ok: false, error: 'profile_not_found' };
@@ -114,7 +160,11 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
 
   // ─── Credential Vault ───────────────────────────────────────────
 
-  app.get('/clearinghouse/vault/status', async () => {
+  app.get('/clearinghouse/vault/status', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
     const vault = getActiveVault();
     const health = await vault.healthCheck();
     const keys = await vault.listKeys();
@@ -124,12 +174,16 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
       activeVault: { id: vault.id, name: vault.name },
       providers,
       health,
-      credentialCount: keys.length,
+      credentialCount: keys.filter((key) => key.startsWith(`${tenantId}::`)).length,
       // Don't expose actual key names — just count
     };
   });
 
   app.post('/clearinghouse/vault/credentials', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     if (!body.key || !body.value || !body.type) {
       reply.code(400);
@@ -139,10 +193,10 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
     const vault = getActiveVault();
     try {
       await vault.setCredential({
-        key: body.key,
+        key: vaultKeyForTenant(tenantId, body.key),
         value: body.value,
         type: body.type,
-        metadata: body.metadata,
+        metadata: { ...(body.metadata || {}), tenantId },
       });
     } catch (_err: any) {
       reply.code(422);
@@ -154,9 +208,13 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
   });
 
   app.delete('/clearinghouse/vault/credentials/:key', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
     const { key } = request.params as { key: string };
     const vault = getActiveVault();
-    const deleted = await vault.deleteCredential(key);
+    const deleted = await vault.deleteCredential(vaultKeyForTenant(tenantId, key));
     if (!deleted) {
       reply.code(404);
       return { ok: false, error: 'credential_not_found' };
@@ -166,43 +224,64 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
 
   // ─── Rate Limiting ──────────────────────────────────────────────
 
-  app.get('/clearinghouse/rate-limits', async () => {
-    const limits = listRateLimits();
+  app.get('/clearinghouse/rate-limits', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
+    const limits = listRateLimits(tenantId);
     return { ok: true, count: limits.length, rateLimits: limits };
   });
 
   app.post('/clearinghouse/rate-limits', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     if (!body.connectorId || !body.maxTokens || !body.refillRatePerSec) {
       reply.code(400);
       return { ok: false, error: 'connectorId, maxTokens, and refillRatePerSec are required' };
     }
 
-    configureRateLimit(body.connectorId, body.maxTokens, body.refillRatePerSec);
+    configureRateLimit(tenantId, body.connectorId, body.maxTokens, body.refillRatePerSec);
     return { ok: true, configured: true, connectorId: body.connectorId };
   });
 
-  app.get('/clearinghouse/rate-limits/:id', async (request) => {
+  app.get('/clearinghouse/rate-limits/:id', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
     const { id } = request.params as { id: string };
-    const status = getRateLimitStatus(id);
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
+    const status = getRateLimitStatus(tenantId, id);
     return { ok: true, connectorId: id, ...status };
   });
 
   // ─── Health ─────────────────────────────────────────────────────
 
-  app.get('/clearinghouse/health', async () => {
+  app.get('/clearinghouse/health', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(request, reply, session);
+    if (!tenantId) return;
     const transports = listTransports();
-    const profiles = listTransportProfiles();
-    const limits = listRateLimits();
+    const profiles = listTransportProfiles(tenantId);
+    const limits = listRateLimits(tenantId);
     const vault = getActiveVault();
     const vaultHealth = await vault.healthCheck();
+    const keys = await vault.listKeys();
 
     return {
       ok: true,
       transports: transports.length,
       profiles: { total: profiles.length, enabled: profiles.filter((p) => p.enabled).length },
       rateLimits: limits.length,
-      vault: { id: vault.id, healthy: vaultHealth.healthy },
+      vault: {
+        id: vault.id,
+        healthy: vaultHealth.healthy,
+        credentialCount: keys.filter((key) => key.startsWith(`${tenantId}::`)).length,
+      },
     };
   });
 }

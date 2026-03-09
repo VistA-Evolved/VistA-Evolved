@@ -70,6 +70,7 @@ export interface PortalAuditEvent {
   timestamp: string;
   action: PortalAuditAction;
   outcome: "success" | "failure";
+  tenantId: string;
   /** Hashed patient identifier — never raw DFN */
   actorHash: string;
   /** Source IP (anonymized in production) */
@@ -100,9 +101,9 @@ let seq = 0;
  * Hash a patient identifier (DFN) for audit storage.
  * Never store raw DFN in portal audit events.
  */
-export function hashPatientId(dfn: string): string {
+export function hashPatientId(dfn: string, tenantId: string = "default"): string {
   return createHash("sha256")
-    .update(`${HASH_SALT}:${dfn}`)
+    .update(`${HASH_SALT}:${tenantId}:${dfn}`)
     .digest("hex")
     .slice(0, 16);
 }
@@ -116,16 +117,19 @@ export function portalAudit(
   outcome: "success" | "failure",
   actorDfn: string,
   opts?: {
+    tenantId?: string;
     sourceIp?: string;
     detail?: Record<string, unknown>;
   }
 ): PortalAuditEvent {
+  const tenantId = opts?.tenantId || "default";
   const event: PortalAuditEvent = {
     id: `paudit-${++seq}-${Date.now()}`,
     timestamp: new Date().toISOString(),
     action,
     outcome,
-    actorHash: hashPatientId(actorDfn),
+    tenantId,
+    actorHash: hashPatientId(actorDfn, tenantId),
     sourceIp: opts?.sourceIp || "unknown",
     detail: sanitizeAuditDetail(opts?.detail),
   };
@@ -145,12 +149,20 @@ export function portalAudit(
 }
 
 export function queryPortalAuditEvents(filters?: {
+  tenantId?: string;
   action?: PortalAuditAction;
   since?: string;
   limit?: number;
+  actorHash?: string;
 }): PortalAuditEvent[] {
   let result = [...store];
 
+  if (filters?.tenantId) {
+    result = result.filter((e) => e.tenantId === filters.tenantId);
+  }
+  if (filters?.actorHash) {
+    result = result.filter((e) => e.actorHash === filters.actorHash);
+  }
   if (filters?.action) {
     result = result.filter((e) => e.action === filters.action);
   }
@@ -167,16 +179,23 @@ export function queryPortalAuditEvents(filters?: {
   return result;
 }
 
-export function getPortalAuditStats(): {
+export function getPortalAuditStats(filters?: { tenantId?: string; actorHash?: string }): {
   totalEvents: number;
   loginCount: number;
   dataAccessCount: number;
   failureCount: number;
 } {
+  let scoped = [...store];
+  if (filters?.tenantId) {
+    scoped = scoped.filter((e) => e.tenantId === filters.tenantId);
+  }
+  if (filters?.actorHash) {
+    scoped = scoped.filter((e) => e.actorHash === filters.actorHash);
+  }
   return {
-    totalEvents: store.length,
-    loginCount: store.filter((e) => e.action === "portal.login").length,
-    dataAccessCount: store.filter((e) => e.action === "portal.data.access").length,
-    failureCount: store.filter((e) => e.outcome === "failure").length,
+    totalEvents: scoped.length,
+    loginCount: scoped.filter((e) => e.action === "portal.login").length,
+    dataAccessCount: scoped.filter((e) => e.action === "portal.data.access").length,
+    failureCount: scoped.filter((e) => e.outcome === "failure").length,
   };
 }

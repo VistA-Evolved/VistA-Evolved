@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useCPRSUI } from '../../../stores/cprs-ui-state';
-import { useDataCache, type Problem } from '../../../stores/data-cache';
+import { useDataCache } from '../../../stores/data-cache';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
@@ -16,11 +16,11 @@ interface LexResult {
 /**
  * Add Problem dialog with live ICD lexicon search (ORQQPL4 LEX).
  * Phase 12F: search box queries /vista/icd-search for real lexicon results.
- * Falls back to local drafts if problem save API is not yet fully wired.
+ * Falls back to server-side drafts when the problem write cannot complete live.
  */
 export default function AddProblemDialog() {
   const { closeModal, modalData } = useCPRSUI();
-  const { addLocalItem } = useDataCache();
+  const cache = useDataCache();
   const dfn = String(modalData?.dfn ?? '');
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,7 +35,7 @@ export default function AddProblemDialog() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const [syncStatus, setSyncStatus] = useState<'synced' | 'local' | ''>('');
+  const [syncStatus, setSyncStatus] = useState<'synced' | 'draft' | ''>('');
 
   const doSearch = useCallback(async (q: string) => {
     if (q.trim().length < 2) {
@@ -87,40 +87,35 @@ export default function AddProblemDialog() {
           ...csrfHeaders(),
         },
         credentials: 'include',
-        body: JSON.stringify({ dfn, problemText: description, icdCode, onset, status }),
+        body: JSON.stringify({
+          dfn,
+          problemText: description,
+          icdCode,
+          lexIen: selectedLex?.id || '',
+          onset,
+          status,
+        }),
       });
       const data = await res.json();
       if (data.ok && data.mode === 'real') {
+        await cache.fetchDomain(dfn, 'problems');
         setSyncStatus('synced');
         setSuccess(true);
         setTimeout(() => closeModal(), 800);
         return;
       }
       if (data.ok && data.mode === 'draft') {
-        setSyncStatus('local');
+        setSyncStatus('draft');
         setSuccess(true);
         setTimeout(() => closeModal(), 800);
         return;
       }
-      saveLocal();
+      setError(data.error || data.message || 'Problem save failed');
     } catch {
-      saveLocal();
+      setError('Network error -- unable to save problem');
     } finally {
       setSaving(false);
     }
-  }
-
-  function saveLocal() {
-    const draft: Problem = {
-      id: `draft-${Date.now()}`,
-      text: `${description.trim()}${icdCode ? ` (${icdCode})` : ''}`,
-      onset: onset || 'Unknown',
-      status,
-    };
-    addLocalItem(dfn, 'problems', draft);
-    setSyncStatus('local');
-    setSuccess(true);
-    setTimeout(() => closeModal(), 800);
   }
 
   if (!dfn) return null;
@@ -156,7 +151,7 @@ export default function AddProblemDialog() {
             >
               {syncStatus === 'synced'
                 ? 'Problem saved to VistA (ORQQPL ADD SAVE).'
-                : 'Problem saved as local draft (VistA sync pending).'}
+                : 'Problem saved as server-side draft (VistA sync pending).'}
             </div>
           )}
 

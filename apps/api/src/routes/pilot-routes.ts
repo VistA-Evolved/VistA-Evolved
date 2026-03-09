@@ -24,13 +24,35 @@ import {
 } from '../pilot/site-config.js';
 import { runPreflightChecks } from '../pilot/preflight.js';
 
+function resolveTenantId(request: any): string | null {
+  const headerTenantId = request?.headers?.['x-tenant-id'];
+  const headerTenant =
+    typeof headerTenantId === 'string' && headerTenantId.trim() ? headerTenantId.trim() : null;
+  const requestTenantId =
+    typeof request?.tenantId === 'string' && request.tenantId.trim() ? request.tenantId.trim() : null;
+  const sessionTenantId =
+    typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim()
+      ? request.session.tenantId.trim()
+      : null;
+  return headerTenant || requestTenantId || sessionTenantId || null;
+}
+
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
 export default async function pilotRoutes(server: FastifyInstance): Promise<void> {
   /* ── GET /admin/pilot/sites ─────────────────────────────────── */
   server.get('/admin/pilot/sites', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
-    const sites = listSites();
+    const sites = listSites(tenantId);
     return { ok: true, sites };
   });
 
@@ -38,6 +60,8 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
   server.post('/admin/pilot/sites', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     const body = (request.body as any) || {};
     if (!body.name || !body.code) {
@@ -45,7 +69,7 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
     }
 
     try {
-      const site = createSite(body as CreateSiteRequest);
+      const site = createSite({ ...(body as CreateSiteRequest), tenantId });
       return { ok: true, site };
     } catch (_err: any) {
       return reply.code(409).send({ ok: false, error: 'Pilot site registration conflict' });
@@ -56,9 +80,11 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
   server.get('/admin/pilot/sites/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     const { id } = request.params as { id: string };
-    const site = getSite(id);
+    const site = getSite(id, tenantId);
     if (!site) return reply.code(404).send({ ok: false, error: 'Site not found' });
 
     return { ok: true, site };
@@ -68,12 +94,14 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
   server.patch('/admin/pilot/sites/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
 
     try {
-      const site = updateSite(id, body);
+      const site = updateSite(id, tenantId, body);
       return { ok: true, site };
     } catch (_err: any) {
       return reply.code(404).send({ ok: false, error: 'Pilot site update failed' });
@@ -84,9 +112,11 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
   server.delete('/admin/pilot/sites/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     const { id } = request.params as { id: string };
-    const deleted = deleteSite(id);
+    const deleted = deleteSite(id, tenantId);
     if (!deleted) return reply.code(404).send({ ok: false, error: 'Site not found' });
 
     return { ok: true };
@@ -96,16 +126,18 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
   server.post('/admin/pilot/sites/:id/preflight', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     const { id } = request.params as { id: string };
-    const site = getSite(id);
+    const site = getSite(id, tenantId);
     if (!site) return reply.code(404).send({ ok: false, error: 'Site not found' });
 
     const result = await runPreflightChecks(site);
 
     // Update site with preflight score
     try {
-      updateSite(id, {
+      updateSite(id, tenantId, {
         lastPreflightScore: result.score,
         status: result.readiness === 'ready' ? 'ready' : 'preflight',
       });
@@ -120,8 +152,10 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
   server.get('/admin/pilot/summary', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
-    const summary = getSiteSummary();
+    const summary = getSiteSummary(listSites(tenantId));
     return { ok: true, summary };
   });
 }

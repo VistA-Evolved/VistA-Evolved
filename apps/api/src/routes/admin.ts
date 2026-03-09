@@ -5,7 +5,7 @@
  * All endpoints require admin role (enforced by AUTH_RULES regex in security.ts).
  */
 
-import type { FastifyInstance } from 'fastify';
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { requireSession, requireRole } from '../auth/auth-routes.js';
 import { audit } from '../lib/audit.js';
 import { log } from '../lib/logger.js';
@@ -42,6 +42,49 @@ function auditActor(request: any): { duz: string; name?: string; role?: string }
   return { duz: 'system' };
 }
 
+function getSessionTenantId(request: FastifyRequest): string | null {
+  const sessionTenantId =
+    typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+      ? request.session.tenantId.trim()
+      : undefined;
+  return sessionTenantId || null;
+}
+
+function resolveAdminTargetTenantId(
+  request: FastifyRequest,
+  reply: FastifyReply,
+  explicitTenantId?: string,
+  reason?: string
+): string | undefined {
+  const sessionTenantId = getSessionTenantId(request);
+  if (!sessionTenantId) {
+    reply.code(403).send({
+      ok: false,
+      code: 'TENANT_REQUIRED',
+      error: 'Tenant context missing',
+    });
+    return undefined;
+  }
+  const targetTenantId =
+    typeof explicitTenantId === 'string' && explicitTenantId.trim().length > 0
+      ? explicitTenantId.trim()
+      : sessionTenantId;
+  if (targetTenantId !== sessionTenantId && (!reason || !reason.trim())) {
+    reply.code(400).send({
+      ok: false,
+      error: 'reason is required for cross-tenant admin actions',
+    });
+    return undefined;
+  }
+  return targetTenantId;
+}
+
+function resolveProvisionTenantId(body: any): string | null {
+  if (typeof body?.tenantId !== 'string') return null;
+  const tenantId = body.tenantId.trim();
+  return tenantId.length > 0 ? tenantId : null;
+}
+
 /* ------------------------------------------------------------------ */
 /* Route registration                                                  */
 /* ------------------------------------------------------------------ */
@@ -53,14 +96,17 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.get('/admin/tenants', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    return { ok: true, tenants: listTenants() };
+    return { ok: true, tenants: listTenants(), scope: 'platform-global' };
   });
 
   /** GET /admin/tenants/:tenantId — get single tenant */
   server.get('/admin/tenants/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const q = (request.query as { reason?: string }) || {};
+    const tenantId = resolveAdminTargetTenantId(request, reply, requestedTenantId, q.reason);
+    if (!tenantId) return reply;
     const tenant = getTenant(tenantId);
     if (!tenant) return reply.code(404).send({ ok: false, error: 'Tenant not found' });
     return { ok: true, tenant };
@@ -70,8 +116,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.put('/admin/tenants/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
     const body = request.body as Partial<TenantConfig>;
+    const tenantId = resolveAdminTargetTenantId(request, reply, requestedTenantId, (body as any)?.reason);
+    if (!tenantId) return reply;
 
     const config: TenantConfig = {
       tenantId,
@@ -122,7 +170,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.delete('/admin/tenants/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const q = (request.query as { reason?: string }) || {};
+    const tenantId = resolveAdminTargetTenantId(request, reply, requestedTenantId, q.reason);
+    if (!tenantId) return reply;
     const deleted = deleteTenant(tenantId);
     if (!deleted) return reply.code(400).send({ ok: false, error: 'Cannot delete default tenant' });
     return { ok: true, deleted: tenantId };
@@ -140,14 +191,16 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     requireRole(session, ['admin'], reply);
     const body = (request.body as any) || {};
 
-    const tenantId = body.tenantId;
+    const tenantId = resolveProvisionTenantId(body);
     if (!tenantId || typeof tenantId !== 'string' || tenantId.length < 2) {
       return reply.code(400).send({ ok: false, error: 'tenantId is required (min 2 chars)' });
     }
+    const resolvedTargetTenantId = resolveAdminTargetTenantId(request, reply, tenantId, body.reason);
+    if (!resolvedTargetTenantId) return;
 
-    const existing = getTenant(tenantId);
+    const existing = getTenant(resolvedTargetTenantId);
     if (existing) {
-      return reply.code(409).send({ ok: false, error: `Tenant ${tenantId} already exists` });
+      return reply.code(409).send({ ok: false, error: `Tenant ${resolvedTargetTenantId} already exists` });
     }
 
     const steps: Array<{ step: string; ok: boolean; detail?: string }> = [];
@@ -155,8 +208,8 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     // Step 1: Create tenant config
     try {
       const config: TenantConfig = {
-        tenantId,
-        facilityName: body.facilityName ?? tenantId,
+        tenantId: resolvedTargetTenantId,
+        facilityName: body.facilityName ?? resolvedTargetTenantId,
         facilityStation: body.facilityStation ?? '',
         vistaHost: body.vistaHost ?? '127.0.0.1',
         vistaPort: body.vistaPort ?? 9430,
@@ -202,7 +255,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
       const { seedTenantModules } = await import('../platform/pg/repo/module-repo.js');
       const skuProfile = getActiveSkuProfile();
       const skuModules = skuProfile?.modules || Object.keys(getModuleDefinitions());
-      const seeded = await seedTenantModules(tenantId, skuModules, session.duz);
+      const seeded = await seedTenantModules(resolvedTargetTenantId, skuModules, session.duz);
       steps.push({
         step: 'seed_module_entitlements',
         ok: true,
@@ -252,14 +305,19 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
       detail: { tenantId, steps },
     });
 
-    log.info('Tenant provisioned', { tenantId, steps: steps.map((s) => `${s.step}:${s.ok}`) });
+    log.info('Tenant provisioned', {
+      tenantId: resolvedTargetTenantId,
+      steps: steps.map((s) => `${s.step}:${s.ok}`),
+    });
     return reply.code(allOk ? 201 : 207).send({
       ok: allOk,
-      tenantId,
+      tenantId: resolvedTargetTenantId,
+      scope: 'platform-admin',
+      platformNotes: ['vista_connectivity_probe uses process-level VistA env, not tenant-specific broker settings'],
       steps,
       message: allOk
-        ? `Tenant ${tenantId} fully provisioned`
-        : `Tenant ${tenantId} provisioned with warnings`,
+        ? `Tenant ${resolvedTargetTenantId} fully provisioned`
+        : `Tenant ${resolvedTargetTenantId} provisioned with warnings`,
     });
   });
 
@@ -269,7 +327,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.get('/admin/feature-flags/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const q = (request.query as { reason?: string }) || {};
+    const tenantId = resolveAdminTargetTenantId(request, reply, requestedTenantId, q.reason);
+    if (!tenantId) return reply;
     const tenant = getTenant(tenantId);
     if (!tenant) return reply.code(404).send({ ok: false, error: 'Tenant not found' });
     return { ok: true, tenantId, featureFlags: tenant.featureFlags };
@@ -279,8 +340,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.put('/admin/feature-flags/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
     const flags = request.body as FeatureFlags;
+    const tenantId = resolveAdminTargetTenantId(request, reply, requestedTenantId, (flags as any)?.reason);
+    if (!tenantId) return reply;
     const result = updateFeatureFlags(tenantId, flags);
     if (!result) return reply.code(404).send({ ok: false, error: 'Tenant not found' });
 
@@ -299,7 +362,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.get('/admin/ui-defaults/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const q = (request.query as { reason?: string }) || {};
+    const tenantId = resolveAdminTargetTenantId(request, reply, requestedTenantId, q.reason);
+    if (!tenantId) return reply;
     const tenant = getTenant(tenantId);
     if (!tenant) return reply.code(404).send({ ok: false, error: 'Tenant not found' });
     return { ok: true, tenantId, uiDefaults: tenant.uiDefaults };
@@ -309,8 +375,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.put('/admin/ui-defaults/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
     const defaults = request.body as Partial<UIDefaults>;
+    const tenantId = resolveAdminTargetTenantId(request, reply, requestedTenantId, (defaults as any)?.reason);
+    if (!tenantId) return reply;
     const result = updateUIDefaults(tenantId, defaults);
     if (!result) return reply.code(404).send({ ok: false, error: 'Tenant not found' });
 
@@ -329,7 +397,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.get('/admin/modules/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const q = (request.query as { reason?: string }) || {};
+    const tenantId = resolveAdminTargetTenantId(request, reply, requestedTenantId, q.reason);
+    if (!tenantId) return reply;
     const tenant = getTenant(tenantId);
     if (!tenant) return reply.code(404).send({ ok: false, error: 'Tenant not found' });
     return { ok: true, tenantId, enabledModules: tenant.enabledModules };
@@ -339,8 +410,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.put('/admin/modules/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
-    const { modules } = request.body as { modules: ModuleId[] };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const { modules, reason } = request.body as { modules: ModuleId[]; reason?: string };
+    const tenantId = resolveAdminTargetTenantId(request, reply, requestedTenantId, reason);
+    if (!tenantId) return reply;
     const result = updateEnabledModules(tenantId, modules);
     if (!result) return reply.code(404).send({ ok: false, error: 'Tenant not found' });
 
@@ -359,7 +432,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.get('/admin/note-templates/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const q = (request.query as { reason?: string }) || {};
+    const tenantId = resolveAdminTargetTenantId(request, reply, requestedTenantId, q.reason);
+    if (!tenantId) return reply;
     const tenant = getTenant(tenantId);
     if (!tenant) return reply.code(404).send({ ok: false, error: 'Tenant not found' });
     return { ok: true, tenantId, templates: tenant.noteTemplates };
@@ -369,8 +445,18 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.put('/admin/note-templates/:tenantId/:templateId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId, templateId } = request.params as { tenantId: string; templateId: string };
+    const { templateId } = request.params as {
+      tenantId: string;
+      templateId: string;
+    };
     const body = request.body as Partial<NoteTemplate>;
+    const tenantId = resolveAdminTargetTenantId(
+      request,
+      reply,
+      (request.params as { tenantId: string }).tenantId,
+      (body as any)?.reason
+    );
+    if (!tenantId) return reply;
 
     const template: NoteTemplate = {
       id: templateId,
@@ -397,7 +483,18 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.delete('/admin/note-templates/:tenantId/:templateId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId, templateId } = request.params as { tenantId: string; templateId: string };
+    const { templateId } = request.params as {
+      tenantId: string;
+      templateId: string;
+    };
+    const q = (request.query as { reason?: string }) || {};
+    const tenantId = resolveAdminTargetTenantId(
+      request,
+      reply,
+      (request.params as { tenantId: string }).tenantId,
+      q.reason
+    );
+    if (!tenantId) return reply;
     const deleted = deleteNoteTemplate(tenantId, templateId);
     if (!deleted) return reply.code(404).send({ ok: false, error: 'Template not found' });
 
@@ -416,7 +513,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.get('/admin/integrations/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const q = (request.query as { reason?: string }) || {};
+    const tenantId = resolveAdminTargetTenantId(request, reply, requestedTenantId, q.reason);
+    if (!tenantId) return reply;
     const tenant = getTenant(tenantId);
     if (!tenant) return reply.code(404).send({ ok: false, error: 'Tenant not found' });
     return { ok: true, tenantId, connectors: tenant.connectors };
@@ -426,7 +526,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.post('/admin/integrations/:tenantId/probe', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const body = (request.body as { reason?: string } | undefined) || {};
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const tenantId = resolveAdminTargetTenantId(request, reply, requestedTenantId, body.reason);
+    if (!tenantId) return reply;
     const tenant = getTenant(tenantId);
     if (!tenant) return reply.code(404).send({ ok: false, error: 'Tenant not found' });
 
@@ -451,9 +554,18 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     audit('config.connector-update', 'success', auditActor(request), {
       requestId: (request as any).requestId,
       sourceIp: request.ip,
-      detail: { tenantId, probeResults: results },
+      detail: {
+        tenantId,
+        probeResults: results,
+        probeScope: 'platform-global-vista-rpc-env-for-vista-connectors',
+      },
     });
-    return { ok: true, tenantId, results };
+    return {
+      ok: true,
+      tenantId,
+      results,
+      scopeNotes: ['VistA connector probe uses process-level broker env, not per-tenant connector host/port'],
+    };
   });
 
   // ── Tenant Branding — Phase 282 ────────────────────────────────
@@ -462,7 +574,10 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.get('/admin/branding/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
+    const { tenantId: requestedTenantId } = request.params as { tenantId: string };
+    const q = (request.query as { reason?: string }) || {};
+    const tenantId = resolveAdminTargetTenantId(request, reply, requestedTenantId, q.reason);
+    if (!tenantId) return reply;
     const tenant = getTenant(tenantId);
     if (!tenant) return reply.code(404).send({ ok: false, error: 'Tenant not found' });
     return { ok: true, tenantId, branding: tenant.branding };
@@ -472,8 +587,14 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   server.put('/admin/branding/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
-    const { tenantId } = request.params as { tenantId: string };
     const body = (request.body as Partial<BrandingConfig>) || {};
+    const tenantId = resolveAdminTargetTenantId(
+      request,
+      reply,
+      (request.params as { tenantId: string }).tenantId,
+      (body as any)?.reason
+    );
+    if (!tenantId) return reply;
 
     const { branding, errors } = sanitizeBranding(body);
     if (errors.length > 0) {
@@ -497,11 +618,14 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   /** GET /admin/my-tenant — get current user's tenant config (non-admin). */
   server.get('/admin/my-tenant', async (request, reply) => {
     const session = await requireSession(request, reply);
+    if (!session.tenantId) {
+      return reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    }
     const tenant = getTenant(session.tenantId);
     if (!tenant) return reply.code(404).send({ ok: false, error: 'Tenant not found' });
 
     // System-level module entitlements (Phase 135)
-    const systemModules = getEnabledModules(session.tenantId || 'default');
+    const systemModules = getEnabledModules(session.tenantId);
 
     // Return only client-safe fields (no vistaHost/port, no connector details)
     return {

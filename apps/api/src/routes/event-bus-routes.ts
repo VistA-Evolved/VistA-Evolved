@@ -5,6 +5,7 @@
  */
 
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
 import {
   publishEvent,
   getOutbox,
@@ -18,13 +19,31 @@ import {
   hashSubjectRef,
 } from '../services/event-bus.js';
 
-export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
-  const tenantId = 'default';
+function resolveTenantId(request: FastifyRequest): string | null {
+  const sessionTenantId =
+    typeof ((request as any).session?.tenantId) === 'string' &&
+    (request as any).session.tenantId.trim().length > 0
+      ? (request as any).session.tenantId.trim()
+      : undefined;
+  return sessionTenantId || null;
+}
 
+function requireTenantId(request: FastifyRequest, reply: FastifyReply): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
+export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
   // ─── Health ────────────────────────────────────────
 
-  server.get('/events/health', async (_req: FastifyRequest, reply: FastifyReply) => {
-    const stats = getEventBusStats();
+  server.get('/events/health', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const stats = getEventBusStats(tenantId);
     return reply.send({ ok: true, phase: 355, ...stats });
   });
 
@@ -37,14 +56,18 @@ export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
   // ─── Publish (for testing / manual triggering) ─────
 
   server.post('/events/publish', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
     const body = (req.body as any) || {};
     if (!body.eventType || !body.source) {
       return reply.code(400).send({ ok: false, error: 'eventType and source are required' });
     }
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const event = await publishEvent({
       eventType: body.eventType,
       version: body.version || 1,
-      tenantId: body.tenantId || tenantId,
+      tenantId,
       subjectRefHash: body.subjectRef ? hashSubjectRef(body.subjectRef) : hashSubjectRef('unknown'),
       payload: body.payload || {},
       source: body.source,
@@ -56,7 +79,11 @@ export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
   // ─── Outbox ────────────────────────────────────────
 
   server.get('/events/outbox', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
     const { eventType, limit } = (req.query as any) || {};
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const events = getOutbox({
       tenantId,
       eventType,
@@ -68,7 +95,11 @@ export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
   // ─── DLQ ──────────────────────────────────────────
 
   server.get('/events/dlq', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
     const { consumerId, limit } = (req.query as any) || {};
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const entries = getDlq({
       tenantId,
       consumerId,
@@ -78,8 +109,12 @@ export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
   });
 
   server.post('/events/dlq/:id/retry', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
     const { id } = req.params as { id: string };
-    const result = await retryDlqEntry(id);
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const result = await retryDlqEntry(id, tenantId);
     const code = result.ok ? 200 : 422;
     return reply.code(code).send(result);
   });
@@ -87,9 +122,13 @@ export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
   // ─── Replay ────────────────────────────────────────
 
   server.post('/events/replay', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
     const body = (req.body as any) || {};
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
     const result = await replayEvents({
-      tenantId: body.tenantId || tenantId,
+      tenantId,
       fromTime: body.fromTime,
       toTime: body.toTime,
       eventType: body.eventType,
@@ -100,12 +139,15 @@ export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
 
   // ─── Consumers ─────────────────────────────────────
 
-  server.get('/events/consumers', async (_req: FastifyRequest, reply: FastifyReply) => {
-    const list = listConsumers().map((c) => ({
+  server.get('/events/consumers', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const list = listConsumers(tenantId).map((c) => ({
       id: c.id,
       name: c.name,
       eventFilters: c.eventFilters,
-      tenantIds: c.tenantIds || [],
     }));
     return reply.send({ ok: true, consumers: list });
   });
@@ -113,8 +155,15 @@ export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
   // ─── Delivery Log ─────────────────────────────────
 
   server.get('/events/deliveries', async (req: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(req, reply);
+    if (!session) return;
     const { limit } = (req.query as any) || {};
-    const log = getDeliveryLog(limit ? parseInt(limit, 10) : 50);
+    const tenantId = requireTenantId(req, reply);
+    if (!tenantId) return;
+    const log = getDeliveryLog({
+      tenantId,
+      limit: limit ? parseInt(limit, 10) : 50,
+    });
     return reply.send({ ok: true, deliveries: log, count: log.length });
   });
 }

@@ -6,14 +6,18 @@
     "description": "Full outpatient visit: login → patient select → vitals → note → orders → sign",
     "steps": [
       { "action": "login", "route": "POST /auth/login", "rpc": "XUS AV CODE" },
-      { "action": "patient-search", "route": "GET /vista/patients", "rpc": "ORWPT LIST ALL" },
+      { "action": "patient-search", "route": "GET /vista/patient-search", "rpc": "ORWPT LIST ALL" },
       {
         "action": "demographics",
         "route": "GET /vista/patient-demographics",
-        "rpc": "ORWPT16 DEMOG"
+        "rpc": "ORWPT SELECT"
       },
       { "action": "vitals-read", "route": "GET /vista/vitals", "rpc": "ORQQVI VITALS" },
-      { "action": "note-create", "route": "POST /cprs/tiu/notes", "rpc": "TIU CREATE RECORD" },
+      {
+        "action": "note-create",
+        "route": "POST /vista/cprs/notes/create",
+        "rpc": "TIU CREATE RECORD"
+      },
       { "action": "orders-view", "route": "GET /cprs/orders", "rpc": "ORWORB FASTUSER" },
       { "action": "sign-order", "route": "POST /cprs/orders/sign", "rpc": "ORWOR1 SIG" }
     ],
@@ -27,8 +31,8 @@
     "description": "Patient login → view records → request refill → secure message",
     "steps": [
       { "action": "portal-login", "route": "POST /portal/auth/login" },
-      { "action": "view-demographics", "route": "GET /portal/demographics" },
-      { "action": "view-medications", "route": "GET /portal/medications" },
+      { "action": "view-demographics", "route": "GET /portal/health/demographics" },
+      { "action": "view-medications", "route": "GET /portal/health/medications" },
       { "action": "request-refill", "route": "POST /portal/refills" },
       { "action": "send-message", "route": "POST /portal/messages" }
     ],
@@ -43,7 +47,7 @@
     "steps": [
       { "action": "order-imaging", "route": "POST /imaging/worklist" },
       { "action": "ingest-callback", "route": "POST /imaging/ingest/callback" },
-      { "action": "view-studies", "route": "GET /imaging/proxy/studies" },
+      { "action": "view-studies", "route": "GET /imaging/dicom-web/studies" },
       { "action": "view-audit", "route": "GET /imaging/audit" }
     ],
     "expectedOutcome": "DICOM study ingested and viewable with full audit trail",
@@ -83,8 +87,8 @@
     "description": "Order lab → view pending → results return → sign off",
     "steps": [
       { "action": "order-lab", "route": "POST /cprs/orders", "rpc": "ORWDX SAVE" },
-      { "action": "view-labs", "route": "GET /cprs/labs", "rpc": "ORWLR REPORT" },
-      { "action": "lab-results", "route": "GET /vista/labs", "rpc": "ORWLR CUMULATIVE REPORT" }
+      { "action": "view-labs", "route": "GET /vista/cprs/labs/chart", "rpc": "ORWLRR CHART" },
+      { "action": "lab-results", "route": "GET /vista/labs", "rpc": "ORWLRR INTERIM" }
     ],
     "expectedOutcome": "Lab ordered and results viewable",
     "regulatoryRef": ["ONC-170.315(a)(3)"]
@@ -123,9 +127,9 @@
     "domain": "nursing",
     "description": "Vitals entry → nursing note → medication administration → handoff",
     "steps": [
-      { "action": "vitals-entry", "route": "POST /cprs/wave2/vitals" },
-      { "action": "nursing-note", "route": "POST /cprs/tiu/notes" },
-      { "action": "handoff-report", "route": "POST /cprs/handoff" }
+      { "action": "vitals-entry", "route": "POST /vista/cprs/vitals/add" },
+      { "action": "nursing-note", "route": "POST /vista/cprs/notes/create" },
+      { "action": "handoff-report", "route": "POST /handoff/reports" }
     ],
     "expectedOutcome": "Nursing documentation complete with shift handoff",
     "regulatoryRef": ["ONC-170.315(a)(1)"]
@@ -136,10 +140,10 @@
     "domain": "adt",
     "description": "Admit patient → transfer → discharge → bed management",
     "steps": [
-      { "action": "patient-lookup", "route": "GET /vista/patients" },
-      { "action": "admit", "route": "POST /cprs/adt/admit" },
-      { "action": "transfer", "route": "POST /cprs/adt/transfer" },
-      { "action": "discharge", "route": "POST /cprs/adt/discharge" }
+      { "action": "patient-lookup", "route": "GET /vista/patient-search" },
+      { "action": "admit", "route": "POST /vista/adt/admit" },
+      { "action": "transfer", "route": "POST /vista/adt/transfer" },
+      { "action": "discharge", "route": "POST /vista/adt/discharge" }
     ],
     "expectedOutcome": "Patient admitted, transferred, and discharged",
     "regulatoryRef": ["ONC-170.315(a)(1)"]
@@ -150,9 +154,12 @@
     "domain": "interop",
     "description": "VistA HL7 event → parse → route → acknowledge",
     "steps": [
-      { "action": "hl7-telemetry", "route": "GET /vista/interop/telemetry" },
-      { "action": "hl7-events", "route": "GET /vista/interop/events" },
-      { "action": "hl7-tenant-endpoints", "route": "GET /hl7/tenant-endpoints" }
+      { "action": "hl7-telemetry", "route": "GET /vista/interop/summary" },
+      { "action": "hl7-events", "route": "GET /vista/interop/hl7-messages" },
+      {
+        "action": "hl7-tenant-endpoints",
+        "route": "GET /api/platform/integrations/hl7v2/endpoints"
+      }
     ],
     "expectedOutcome": "HL7 messages received and routed per tenant config",
     "regulatoryRef": ["ONC-170.315(f)(5)"]

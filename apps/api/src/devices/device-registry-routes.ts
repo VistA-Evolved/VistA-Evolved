@@ -31,7 +31,15 @@ import type { DeviceClass, DeviceStatus } from './device-registry.types.js';
 const DEFAULT_TENANT = 'default';
 
 function tenantId(request: FastifyRequest): string {
-  return (request.headers['x-tenant-id'] as string) || DEFAULT_TENANT;
+  const requestTenantId = (request as any).tenantId || (request as any).session?.tenantId;
+  if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+    return requestTenantId.trim();
+  }
+  const headerTenantId = request.headers['x-tenant-id'];
+  if (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0) {
+    return headerTenantId.trim();
+  }
+  return DEFAULT_TENANT;
 }
 
 export default async function deviceRegistryRoutes(server: FastifyInstance): Promise<void> {
@@ -97,7 +105,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
   /** GET /devices/:id — Get single device */
   server.get('/devices/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
-    const dev = getDevice(id);
+    const dev = getDevice(id, tenantId(request));
     if (!dev) return reply.code(404).send({ ok: false, error: 'not_found' });
     return { ok: true, device: dev };
   });
@@ -133,7 +141,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     ]) {
       if (body[key] !== undefined) allowed[key] = body[key];
     }
-    const dev = updateDevice(id, allowed, 'admin');
+    const dev = updateDevice(tenantId(request), id, allowed, 'admin');
     if (!dev) return reply.code(404).send({ ok: false, error: 'not_found' });
     return { ok: true, device: dev };
   });
@@ -145,7 +153,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     if (!body.status) {
       return reply.code(400).send({ ok: false, error: 'status required' });
     }
-    const dev = changeDeviceStatus(id, body.status, 'admin');
+    const dev = changeDeviceStatus(tenantId(request), id, body.status, 'admin');
     if (!dev) return reply.code(404).send({ ok: false, error: 'not_found' });
     return { ok: true, device: dev };
   });
@@ -153,7 +161,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
   /** POST /devices/:id/decommission — Decommission device */
   server.post('/devices/:id/decommission', async (request, reply) => {
     const { id } = request.params as { id: string };
-    const ok = decommissionDevice(id, 'admin');
+    const ok = decommissionDevice(tenantId(request), id, 'admin');
     if (!ok) return reply.code(404).send({ ok: false, error: 'not_found' });
     return { ok: true, status: 'decommissioned' };
   });
@@ -186,7 +194,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
   /** POST /devices/:id/disassociate — End patient association */
   server.post('/devices/:id/disassociate', async (request, reply) => {
     const { id } = request.params as { id: string };
-    const ok = disassociatePatient(id, 'admin');
+    const ok = disassociatePatient(tenantId(request), id, 'admin');
     if (!ok) return reply.code(404).send({ ok: false, error: 'no_active_association' });
     return { ok: true, status: 'disassociated' };
   });
@@ -194,7 +202,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
   /** GET /devices/:id/association — Get active association */
   server.get('/devices/:id/association', async (request, reply) => {
     const { id } = request.params as { id: string };
-    const assoc = getActiveAssociation(id);
+    const assoc = getActiveAssociation(tenantId(request), id);
     if (!assoc) {
       return { ok: true, association: null, message: 'no_active_association' };
     }
@@ -248,7 +256,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
   /** GET /devices/:id/location — Get device location */
   server.get('/devices/:id/location', async (request, reply) => {
     const { id } = request.params as { id: string };
-    const loc = getDeviceLocation(id);
+    const loc = getDeviceLocation(tenantId(request), id);
     if (!loc) return { ok: true, location: null, message: 'no_location_mapped' };
     return { ok: true, location: loc };
   });
@@ -275,19 +283,19 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
   server.get('/devices/:id/audit', async (request, reply) => {
     const { id } = request.params as { id: string };
     const query = request.query as { limit?: string };
-    const entries = getDeviceAudit(id, parseInt(query.limit || '100', 10));
+    const entries = getDeviceAudit(tenantId(request), id, parseInt(query.limit || '100', 10));
     return { ok: true, audit: entries, total: entries.length };
   });
 
   /** GET /devices/audit — All device audit entries */
   server.get('/devices/audit', async (request, reply) => {
     const query = request.query as { limit?: string };
-    const entries = getDeviceAudit(undefined, parseInt(query.limit || '100', 10));
+    const entries = getDeviceAudit(tenantId(request), undefined, parseInt(query.limit || '100', 10));
     return { ok: true, audit: entries, total: entries.length };
   });
 
   /** GET /devices/stats — Registry statistics */
   server.get('/devices/stats', async (request, reply) => {
-    return { ok: true, stats: getRegistryStats() };
+    return { ok: true, stats: getRegistryStats(tenantId(request)) };
   });
 }

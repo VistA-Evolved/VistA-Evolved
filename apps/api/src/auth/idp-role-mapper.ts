@@ -17,6 +17,7 @@
 import type { UserRole } from './session-store.js';
 import type { OidcTokenClaims } from './oidc-provider.js';
 import { log } from '../lib/logger.js';
+import { tryResolveTenantId } from '../config/tenant-config.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -102,8 +103,11 @@ function getActiveMappings(): IdpRoleMapping[] {
  */
 export function mapOidcClaimsToIdentity(claims: OidcTokenClaims): MappedIdentity {
   const idpGroups = extractGroupsFromClaims(claims);
-  const tenantId = claims.tenant_id || claims.facility_station || 'default';
+  const tenantId = claims.tenant_id || tryResolveTenantId(claims.facility_station) || '';
   const warnings: string[] = [];
+  if (!tenantId) {
+    warnings.push('OIDC claims missing tenant_id and facility_station did not resolve to a tenant');
+  }
 
   // Find first matching rule
   const mappings = getActiveMappings();
@@ -228,7 +232,14 @@ export function mapSamlAttributesToIdentity(
   }
 
   const tenantId =
-    (attributes.tenant_id as string) || (attributes.facilityStation as string) || 'default';
+    (attributes.tenant_id as string) ||
+    tryResolveTenantId(attributes.facilityStation as string) ||
+    '';
+  if (!tenantId) {
+    warnings.push(
+      'SAML attributes missing tenant_id and facilityStation did not resolve to a tenant'
+    );
+  }
 
   // Reuse the same mapping logic
   const mappings = getActiveMappings();

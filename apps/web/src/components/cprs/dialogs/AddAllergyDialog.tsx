@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useCPRSUI } from '../../../stores/cprs-ui-state';
-import { useDataCache } from '../../../stores/data-cache';
 import { csrfHeaders } from '@/lib/csrf';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
@@ -10,11 +9,10 @@ import { API_BASE } from '@/lib/api-config';
 /**
  * Add Allergy dialog -- Phase 57 write safety model.
  * POST /vista/cprs/allergies/add with ORWDAL32 SAVE ALLERGY.
- * Falls back to local draft if RPC unavailable.
+ * Falls back to server-side draft storage if RPC unavailable.
  */
 export default function AddAllergyDialog() {
   const { closeModal, modalData } = useCPRSUI();
-  const { addLocalItem } = useDataCache();
   const dfn = String(modalData?.dfn ?? '');
 
   const [reactant, setReactant] = useState('');
@@ -25,7 +23,7 @@ export default function AddAllergyDialog() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const [syncStatus, setSyncStatus] = useState<'synced' | 'local' | ''>('');
+  const [syncStatus, setSyncStatus] = useState<'synced' | 'draft' | ''>('');
 
   async function handleSave() {
     if (!reactant.trim()) {
@@ -66,29 +64,17 @@ export default function AddAllergyDialog() {
         return;
       }
       if (data.ok && data.mode === 'draft') {
-        setSyncStatus('local');
+        setSyncStatus('draft');
         setSuccess(true);
         setTimeout(() => closeModal(), 800);
         return;
       }
-      saveLocal();
+      setError(data.error || data.message || 'Allergy save failed');
     } catch {
-      saveLocal();
+      setError('Network error -- unable to save allergy');
     } finally {
       setSaving(false);
     }
-  }
-
-  function saveLocal() {
-    addLocalItem(dfn, 'allergies', {
-      id: `draft-${Date.now()}`,
-      allergen: reactant.trim(),
-      reactions: reactions || 'Unknown',
-      severity: severity || 'Unknown',
-    });
-    setSyncStatus('local');
-    setSuccess(true);
-    setTimeout(() => closeModal(), 800);
   }
 
   if (!dfn) return null;
@@ -123,7 +109,7 @@ export default function AddAllergyDialog() {
             >
               {syncStatus === 'synced'
                 ? 'Allergy saved to VistA'
-                : 'Allergy saved as local draft (VistA sync pending)'}
+                : 'Allergy saved as server-side draft (VistA sync pending)'}
             </div>
           )}
 

@@ -8,6 +8,8 @@ export type WorkflowStepStatus = 'pending' | 'active' | 'completed' | 'skipped';
 /** Overall workflow instance status */
 export type WorkflowInstanceStatus = 'not_started' | 'in_progress' | 'completed' | 'cancelled';
 
+export type WorkflowIntegrationStatus = 'available' | 'integration-pending';
+
 /** A single step in a workflow definition */
 export interface WorkflowStepDef {
   id: string;
@@ -22,8 +24,18 @@ export interface WorkflowStepDef {
   automationHook?: string; // Future: RPC or webhook trigger
   vistaIntegration?: {
     targetRpc?: string;
-    status: 'available' | 'integration-pending';
+    status: WorkflowIntegrationStatus;
   };
+}
+
+export interface WorkflowStepIntegrationOutcome {
+  mode: 'tiu_draft' | 'integration_pending' | 'none';
+  status: 'completed' | 'failed' | 'not_requested' | WorkflowIntegrationStatus;
+  targetRpc?: string;
+  message: string;
+  rpcUsed?: string[];
+  docIen?: string;
+  resultSummary?: string;
 }
 
 /** A department workflow definition (reusable blueprint) */
@@ -52,6 +64,7 @@ export interface WorkflowStepInstance {
   completedBy?: string;
   notes?: string;
   skippedReason?: string;
+  integrationOutcome?: WorkflowStepIntegrationOutcome;
 }
 
 /** A workflow instance (runtime execution) */

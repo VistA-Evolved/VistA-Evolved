@@ -11,6 +11,7 @@
 
 import { useState, useEffect, useCallback, createContext, useContext } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
+import { API_BASE } from '@/lib/api-config';
 import {
   type SupportedLocale,
   DEFAULT_LOCALE,
@@ -69,11 +70,25 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     async function init() {
       let loc = getStoredLocale();
 
-      // Try to load from API
-      const apiLocale = await loadLocaleFromApi();
-      if (apiLocale && apiLocale !== loc) {
-        loc = apiLocale;
-        setStoredLocale(loc);
+      const pathname = typeof window === 'undefined' ? '/' : window.location.pathname;
+      const isDashboardRoute = pathname.startsWith('/dashboard');
+
+      // Only probe patient settings when a patient session is likely relevant.
+      if (isDashboardRoute) {
+        try {
+          const sessionRes = await fetch(`${API_BASE}/portal/auth/session`, {
+            credentials: 'include',
+          });
+          if (sessionRes.ok) {
+            const apiLocale = await loadLocaleFromApi();
+            if (apiLocale && apiLocale !== loc) {
+              loc = apiLocale;
+              setStoredLocale(loc);
+            }
+          }
+        } catch {
+          // Fall back to local storage below.
+        }
       }
 
       setLocaleState(loc);

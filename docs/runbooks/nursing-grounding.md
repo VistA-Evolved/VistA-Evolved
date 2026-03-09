@@ -10,7 +10,7 @@ module to its source in VistA FileMan, M routines, and RPCs.
 | Package                          | Prefix | Domain                      | Status                |
 | -------------------------------- | ------ | --------------------------- | --------------------- |
 | OR (CPRS)                        | OR     | Patient context, ward query | ✅ Live               |
-| TIU (Text Integration Utilities) | TIU    | Nursing notes CRUD          | ✅ Live (read+create) |
+| TIU (Text Integration Utilities) | TIU    | Nursing notes CRUD          | ✅ Live (read+create+sign path) |
 | GMV (Vitals/Measurements)        | GMV    | Vital signs write           | ✅ Live               |
 | GMR (Generic Med Record)         | GMR    | I&O tracking                | 🔄 Pending            |
 | GN (Nursing)                     | GN     | Nursing assessments         | 🔄 Pending            |
@@ -51,9 +51,15 @@ module to its source in VistA FileMan, M routines, and RPCs.
 | TIU GET RECORD TEXT          | TIU     | Note text               | note viewer                 | [IEN]                      |
 | TIU CREATE RECORD            | TIU     | Note create             | note creation               | [DFN, titleIEN, VDT, ...]  |
 | TIU SET DOCUMENT TEXT        | TIU     | Note text set           | note creation               | [IEN, text lines]          |
+| TIU LOCK RECORD              | TIU     | Note sign lock          | optional sign-on-create     | [IEN]                      |
+| TIU SIGN RECORD              | TIU     | Note electronic sign    | optional sign-on-create     | [IEN, esCode]              |
+| TIU UNLOCK RECORD            | TIU     | Note sign unlock        | optional sign-on-create     | [IEN]                      |
 | GMV ADD VM                   | GMV     | Vitals write            | vitals add (Phase 68 scope) | [formatted string]         |
 | ORWPT16 ID INFO              | OR      | Patient banner          | patient context             | [DFN]                      |
 | ORWPT ID INFO                | OR      | Patient info (fallback) | patient context             | [DFN]                      |
+
+Note: On the VEHU lane, `ORWPT16 ID INFO` currently returns a positional line shaped like
+`SSN^DOB^AGE^SEX^...^LOCATION^ROOM-BED^ATTENDING^NAME`, so the patient name is carried in the final piece.
 | ORQPT WARD PATIENTS          | OR      | Ward patients           | ward-patients               | [wardIEN]                  |
 
 ### Pending RPCs (integration targets)
@@ -62,7 +68,6 @@ module to its source in VistA FileMan, M routines, and RPCs.
 | --------------- | ------- | --------------------------- | ------------ |
 | GMRIO RESULTS   | GMR     | I&O results query           | Phase 84B    |
 | GMRIO ADD       | GMR     | I&O entry creation          | Phase 84B    |
-| TIU SIGN RECORD | TIU     | Note electronic signature   | Phase 84B    |
 | PSB MED LOG     | PSB     | BCMA med admin records      | Phase 68B    |
 | PSB ALLERGY     | PSB     | Allergy check for med admin | Phase 68B    |
 
@@ -134,7 +139,7 @@ custom `ZVECRIT` parameter set under XPAR.
 | ------------------------ | ------------------------------- | ------------------------------------------------- |
 | I&O not readable         | Shows integration-pending shell | Enable GMRIO RESULTS in context or build ZVEIOM   |
 | Assessments not readable | Shows assessment type list      | Build ZVENAS wrapping GN package or TIU templates |
-| Note signing             | Notes created but unsigned      | Wire TIU SIGN RECORD with DUZ+ES                  |
+| Valid e-sign test value  | Sign path is live but successful verification still depends on a real per-user electronic signature code | Use a known valid clinician e-signature during verification |
 | MAR                      | Shows pending banner            | Install BCMA/PSB package                          |
 | Threshold persistence    | In-memory config                | Migrate to VistA Parameter file (8989.5)          |
 | Task derivation          | Static checklist                | Derive from active orders + MAR schedule          |

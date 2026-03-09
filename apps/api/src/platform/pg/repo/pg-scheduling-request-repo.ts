@@ -18,7 +18,7 @@ export type SchedulingRequestRow = typeof pgSchedulingWaitlistRequest.$inferSele
 
 export async function insertSchedulingRequest(data: {
   id: string;
-  tenantId?: string;
+  tenantId: string;
   patientDfn: string;
   clinicName: string;
   preferredDate: string;
@@ -33,7 +33,7 @@ export async function insertSchedulingRequest(data: {
 
   await db.insert(pgSchedulingWaitlistRequest).values({
     id: data.id,
-    tenantId: data.tenantId ?? 'default',
+    tenantId: data.tenantId,
     patientDfn: data.patientDfn,
     clinicName: data.clinicName,
     preferredDate: data.preferredDate,
@@ -45,45 +45,60 @@ export async function insertSchedulingRequest(data: {
     updatedAt: data.updatedAt,
   });
 
-  const row = await findSchedulingRequestById(data.id);
+  const row = await findSchedulingRequestById(data.id, data.tenantId);
   return row!;
 }
 
 /* ── Lookup ────────────────────────────────────────────────── */
 
 export async function findSchedulingRequestById(
-  id: string
+  id: string,
+  tenantId: string
 ): Promise<SchedulingRequestRow | undefined> {
   const db = getPgDb();
   const rows = await db
     .select()
     .from(pgSchedulingWaitlistRequest)
-    .where(eq(pgSchedulingWaitlistRequest.id, id));
+    .where(
+      and(eq(pgSchedulingWaitlistRequest.id, id), eq(pgSchedulingWaitlistRequest.tenantId, tenantId))
+    );
   return rows[0];
 }
 
 export async function findSchedulingRequestsByPatient(
-  patientDfn: string
+  patientDfn: string,
+  tenantId: string
 ): Promise<SchedulingRequestRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(pgSchedulingWaitlistRequest)
-    .where(eq(pgSchedulingWaitlistRequest.patientDfn, patientDfn));
+    .where(
+      and(
+        eq(pgSchedulingWaitlistRequest.patientDfn, patientDfn),
+        eq(pgSchedulingWaitlistRequest.tenantId, tenantId)
+      )
+    );
 }
 
-export async function findAllActiveRequests(): Promise<SchedulingRequestRow[]> {
+export async function findAllActiveRequests(tenantId?: string): Promise<SchedulingRequestRow[]> {
   const db = getPgDb();
+  const activeWhere = sql`${pgSchedulingWaitlistRequest.status} IN ('pending', 'waitlisted', 'approved')`;
   return db
     .select()
     .from(pgSchedulingWaitlistRequest)
-    .where(sql`${pgSchedulingWaitlistRequest.status} IN ('pending', 'waitlisted', 'approved')`);
+    .where(
+      tenantId
+        ? and(eq(pgSchedulingWaitlistRequest.tenantId, tenantId), activeWhere)
+        : activeWhere
+    );
 }
 
 export async function findPendingByPatientClinicDate(
   patientDfn: string,
   clinicName: string,
-  preferredDate: string
+  preferredDate: string,
+  tenantId: string
 ): Promise<SchedulingRequestRow | undefined> {
   const db = getPgDb();
   const rows = await db
@@ -92,6 +107,7 @@ export async function findPendingByPatientClinicDate(
     .where(
       and(
         eq(pgSchedulingWaitlistRequest.patientDfn, patientDfn),
+        eq(pgSchedulingWaitlistRequest.tenantId, tenantId),
         eq(pgSchedulingWaitlistRequest.clinicName, clinicName),
         eq(pgSchedulingWaitlistRequest.preferredDate, preferredDate),
         eq(pgSchedulingWaitlistRequest.status, 'pending')
@@ -104,6 +120,7 @@ export async function findPendingByPatientClinicDate(
 
 export async function updateSchedulingRequest(
   id: string,
+  tenantId: string,
   updates: Partial<{
     status: string;
     reason: string;
@@ -114,21 +131,33 @@ export async function updateSchedulingRequest(
   await db
     .update(pgSchedulingWaitlistRequest)
     .set({ ...updates, updatedAt: now } as any)
-    .where(eq(pgSchedulingWaitlistRequest.id, id));
-  return findSchedulingRequestById(id);
+    .where(
+      and(eq(pgSchedulingWaitlistRequest.id, id), eq(pgSchedulingWaitlistRequest.tenantId, tenantId))
+    );
+  return findSchedulingRequestById(id, tenantId);
 }
 
 /* ── Stats ─────────────────────────────────────────────────── */
 
-export async function countRequests(): Promise<{ total: number; pending: number }> {
+export async function countRequests(tenantId?: string): Promise<{ total: number; pending: number }> {
   const db = getPgDb();
   const totalResult = await db
     .select({ count: sql<number>`count(*)` })
-    .from(pgSchedulingWaitlistRequest);
+    .from(pgSchedulingWaitlistRequest)
+    .where(
+      tenantId ? eq(pgSchedulingWaitlistRequest.tenantId, tenantId) : sql`1=1`
+    );
   const pendingResult = await db
     .select({ count: sql<number>`count(*)` })
     .from(pgSchedulingWaitlistRequest)
-    .where(eq(pgSchedulingWaitlistRequest.status, 'pending'));
+    .where(
+      tenantId
+        ? and(
+            eq(pgSchedulingWaitlistRequest.status, 'pending'),
+            eq(pgSchedulingWaitlistRequest.tenantId, tenantId)
+          )
+        : eq(pgSchedulingWaitlistRequest.status, 'pending')
+    );
   return {
     total: totalResult[0]?.count ?? 0,
     pending: pendingResult[0]?.count ?? 0,

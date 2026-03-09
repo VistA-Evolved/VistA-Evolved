@@ -40,18 +40,18 @@ import { randomBytes } from 'node:crypto';
 // Store operations
 import {
   createEnrollment,
-  getEnrollment,
+  getEnrollmentForTenant,
   listEnrollments,
   updateEnrollmentStatus,
   addCredentialRefToEnrollment,
   createLOACase,
-  getLOACase,
+  getLOACaseForTenant,
   listLOACases,
   transitionLOAStatus,
   addAttachmentToLOA,
   updateLOAPayerRef,
   createCredentialEntry,
-  getCredentialEntry,
+  getCredentialEntryForTenant,
   listCredentialEntries,
   deleteCredentialEntry,
   getExpiringCredentials,
@@ -105,6 +105,18 @@ function sessionActor(request: FastifyRequest): string {
   return s?.userName || s?.duz || 'unknown';
 }
 
+function resolveTenantId(request: FastifyRequest): string {
+  const requestTenantId = (request as any).tenantId || (request as any).session?.tenantId;
+  if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+    return requestTenantId.trim();
+  }
+  const headerTenantId = request.headers['x-tenant-id'];
+  if (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0) {
+    return headerTenantId.trim();
+  }
+  return 'default';
+}
+
 /* ── Route plugin ────────────────────────────────────────────── */
 
 export default async function payerOpsRoutes(server: FastifyInstance): Promise<void> {
@@ -125,8 +137,8 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
 
   /* ── Stats ─────────────────────────────────────────────────── */
 
-  server.get('/rcm/payerops/stats', async (_request, reply) => {
-    return reply.send({ ok: true, stats: getPayerOpsStats() });
+  server.get('/rcm/payerops/stats', async (request, reply) => {
+    return reply.send({ ok: true, stats: getPayerOpsStats(resolveTenantId(request)) });
   });
 
   /* ── Enrollments ───────────────────────────────────────────── */
@@ -134,6 +146,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
   server.get('/rcm/payerops/enrollments', async (request, reply) => {
     const q = query(request);
     const results = listEnrollments({
+      tenantId: resolveTenantId(request),
       facilityId: q.facilityId,
       payerId: q.payerId,
       status: q.status as EnrollmentStatus | undefined,
@@ -143,7 +156,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
 
   server.get('/rcm/payerops/enrollments/:id', async (request, reply) => {
     const { id } = params(request);
-    const enrollment = getEnrollment(id);
+    const enrollment = getEnrollmentForTenant(resolveTenantId(request), id);
     if (!enrollment) return reply.code(404).send({ ok: false, error: 'Enrollment not found' });
     return reply.send({ ok: true, enrollment });
   });
@@ -158,6 +171,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     }
     const actor = sessionActor(request);
     const enrollment = createEnrollment({
+      tenantId: resolveTenantId(request),
       facilityId: b.facilityId,
       facilityName: b.facilityName || b.facilityId,
       payerId: b.payerId,
@@ -183,7 +197,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
       return reply.code(400).send({ ok: false, error: 'status is required' });
     }
     const actor = sessionActor(request);
-    const updated = updateEnrollmentStatus(id, b.status, actor, b.detail);
+    const updated = updateEnrollmentStatus(resolveTenantId(request), id, b.status, actor, b.detail);
     if (!updated) return reply.code(404).send({ ok: false, error: 'Enrollment not found' });
     appendRcmAudit('enrollment.updated', {
       payerId: updated.payerId,
@@ -198,6 +212,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
   server.get('/rcm/payerops/loa', async (request, reply) => {
     const q = query(request);
     const results = listLOACases({
+      tenantId: resolveTenantId(request),
       facilityId: q.facilityId,
       patientDfn: q.patientDfn,
       payerId: q.payerId,
@@ -214,6 +229,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
       ? ((Array.isArray(q.status) ? q.status : q.status.split(',')) as LOAStatus[])
       : undefined;
     const result = listLOAQueue({
+      tenantId: resolveTenantId(request),
       status: statusFilter,
       payerId: q.payerId,
       assignedTo: q.assignedTo,
@@ -231,7 +247,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
 
   server.get('/rcm/payerops/loa/:id', async (request, reply) => {
     const { id } = params(request);
-    const loa = getLOACase(id);
+    const loa = getLOACaseForTenant(resolveTenantId(request), id);
     if (!loa) return reply.code(404).send({ ok: false, error: 'LOA case not found' });
     return reply.send({ ok: true, loaCase: refreshSLARisk(loa) });
   });
@@ -246,6 +262,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     }
     const actor = sessionActor(request);
     const loa = createLOACase({
+      tenantId: resolveTenantId(request),
       facilityId: b.facilityId,
       patientDfn: b.patientDfn,
       encounterIen: b.encounterIen,
@@ -279,7 +296,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     const { id } = params(request);
     const b = body(request);
     const actor = sessionActor(request);
-    const result = patchLOADraft(id, {
+    const result = patchLOADraft(resolveTenantId(request), id, {
       memberId: b.memberId,
       planName: b.planName,
       requestType: b.requestType,
@@ -312,7 +329,8 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
       return reply.code(400).send({ ok: false, error: 'status is required' });
     }
     const actor = sessionActor(request);
-    const result = transitionLOAStatus(id, b.status, actor, b.reason);
+    const tenantId = resolveTenantId(request);
+    const result = transitionLOAStatus(tenantId, id, b.status, actor, b.reason);
     if (!result.ok) {
       const code = result.error?.includes('not found') ? 404 : 422;
       return reply.code(code).send({ ok: false, error: result.error });
@@ -320,7 +338,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     // If transitioning to approved, optionally set payer reference
     if (b.status === 'approved' || b.status === 'partially_approved') {
       if (b.payerRefNumber) {
-        updateLOAPayerRef(id, b.payerRefNumber, b.approvedAmount, b.approvedServices);
+        updateLOAPayerRef(tenantId, id, b.payerRefNumber, b.approvedAmount, b.approvedServices);
       }
     }
     // Audit: use specific action for terminal states
@@ -352,7 +370,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
       return reply.code(400).send({ ok: false, error: 'assignedTo is required' });
     }
     const actor = sessionActor(request);
-    const result = assignLOA(id, b.assignedTo, actor);
+    const result = assignLOA(resolveTenantId(request), id, b.assignedTo, actor);
     if (!result.ok) {
       return reply.code(404).send({ ok: false, error: result.error });
     }
@@ -372,7 +390,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
       return reply.code(400).send({ ok: false, error: 'credentialId is required' });
     }
     const actor = sessionActor(request);
-    const ok = addAttachmentToLOA(id, b.credentialId);
+    const ok = addAttachmentToLOA(resolveTenantId(request), id, b.credentialId);
     if (!ok) return reply.code(404).send({ ok: false, error: 'LOA case not found' });
     appendRcmAudit('loa.attachment_added', {
       claimId: id,
@@ -384,7 +402,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
 
   server.post('/rcm/payerops/loa/:id/submit', async (request, reply) => {
     const { id } = params(request);
-    const loa = getLOACase(id);
+    const loa = getLOACaseForTenant(resolveTenantId(request), id);
     if (!loa) return reply.code(404).send({ ok: false, error: 'LOA case not found' });
 
     const actor = sessionActor(request);
@@ -409,7 +427,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
 
   server.post('/rcm/payerops/loa/:id/pack', async (request, reply) => {
     const { id } = params(request);
-    const loa = getLOACase(id);
+    const loa = getLOACaseForTenant(resolveTenantId(request), id);
     if (!loa) return reply.code(404).send({ ok: false, error: 'LOA case not found' });
 
     const actor = sessionActor(request);
@@ -434,7 +452,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
       payerInstructions: packData.payerInstructions,
       includedCredentials: packData.includedCredentials,
     };
-    addPackToLOA(id, pack);
+    addPackToLOA(resolveTenantId(request), id, pack);
 
     appendRcmAudit('loa.pack_generated', {
       claimId: id,
@@ -451,6 +469,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
   server.get('/rcm/payerops/credentials', async (request, reply) => {
     const q = query(request);
     const results = listCredentialEntries({
+      tenantId: resolveTenantId(request),
       facilityId: q.facilityId,
       docType: q.docType,
       payerId: q.payerId,
@@ -463,13 +482,13 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
   server.get('/rcm/payerops/credentials/expiring', async (request, reply) => {
     const q = query(request);
     const days = q.days ? Number(q.days) : 30;
-    const expiring = getExpiringCredentials(days);
+    const expiring = getExpiringCredentials(resolveTenantId(request), days);
     return reply.send({ ok: true, count: expiring.length, credentials: expiring });
   });
 
   server.get('/rcm/payerops/credentials/:id', async (request, reply) => {
     const { id } = params(request);
-    const entry = getCredentialEntry(id);
+    const entry = getCredentialEntryForTenant(resolveTenantId(request), id);
     if (!entry) return reply.code(404).send({ ok: false, error: 'Credential entry not found' });
     return reply.send({ ok: true, credential: entry });
   });
@@ -483,6 +502,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
       });
     }
     const entry = createCredentialEntry({
+      tenantId: resolveTenantId(request),
       facilityId: b.facilityId,
       docType: b.docType,
       title: b.title,
@@ -501,14 +521,14 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     });
     // Optionally link to enrollment
     if (b.enrollmentId) {
-      addCredentialRefToEnrollment(b.enrollmentId, entry.id);
+      addCredentialRefToEnrollment(resolveTenantId(request), b.enrollmentId, entry.id);
     }
     return reply.code(201).send({ ok: true, credential: entry });
   });
 
   server.delete('/rcm/payerops/credentials/:id', async (request, reply) => {
     const { id } = params(request);
-    const deleted = deleteCredentialEntry(id);
+    const deleted = deleteCredentialEntry(resolveTenantId(request), id);
     if (!deleted) return reply.code(404).send({ ok: false, error: 'Credential entry not found' });
     return reply.send({ ok: true, message: 'Credential deleted' });
   });

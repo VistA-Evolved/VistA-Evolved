@@ -17,8 +17,6 @@
 import type { ClinicalCommand, RpcExecutor, DryRunTranscript } from '../types.js';
 import { optionalRpc } from '../../vista/rpcCapabilities.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
-import { validateCredentials } from '../../vista/config.js';
-import { connect, disconnect, getDuz } from '../../vista/rpcBrokerClient.js';
 import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
@@ -109,58 +107,55 @@ async function execPlaceImagingOrder(cmd: ClinicalCommand): Promise<{
     }
   }
 
-  validateCredentials();
-  await connect();
+  const lockResult = await safeCallRpc('ORWDX LOCK', [dfn]);
+  const lockStr = Array.isArray(lockResult) ? lockResult.join('') : String(lockResult || '');
+  if (!lockStr.startsWith('1')) {
+    throw Object.assign(new Error(`ORWDX LOCK failed: ${lockStr.slice(0, 100)}`), {
+      errorClass: 'transient',
+    });
+  }
 
   try {
-    const lockResult = await safeCallRpc('ORWDX LOCK', [dfn]);
-    const lockStr = Array.isArray(lockResult) ? lockResult.join('') : String(lockResult || '');
-    if (!lockStr.startsWith('1')) {
-      throw Object.assign(new Error(`ORWDX LOCK failed: ${lockStr.slice(0, 100)}`), {
-        errorClass: 'transient',
-      });
+    const duz = String(cmd.createdBy || '').trim();
+    if (!duz) {
+      throw Object.assign(
+        new Error('createdBy DUZ required for clinician-attributed PLACE_IMAGING_ORDER'),
+        {
+          errorClass: 'permanent',
+        }
+      );
+    }
+    const saveResult = await safeCallRpc('ORWDX SAVE', [
+      dfn,
+      duz,
+      locationIen || '0',
+      orderDialogIen,
+    ]);
+
+    const orderIen = Array.isArray(saveResult)
+      ? saveResult[0]?.split('^')[0]?.trim()
+      : String(saveResult || '')
+          .split('^')[0]
+          ?.trim();
+
+    if (!orderIen || orderIen === '0') {
+      throw Object.assign(
+        new Error(`ORWDX SAVE returned invalid order IEN: ${String(orderIen).slice(0, 50)}`),
+        { errorClass: 'permanent' }
+      );
     }
 
-    try {
-      const duz = getDuz();
-      const saveResult = await safeCallRpc('ORWDX SAVE', [
-        dfn,
-        duz,
-        locationIen || '0',
-        orderDialogIen,
-      ]);
+    log.info(`IMG PLACE_IMAGING_ORDER completed: orderIen=${orderIen}`);
 
-      const orderIen = Array.isArray(saveResult)
-        ? saveResult[0]?.split('^')[0]?.trim()
-        : String(saveResult || '')
-            .split('^')[0]
-            ?.trim();
-
-      if (!orderIen || orderIen === '0') {
-        throw Object.assign(
-          new Error(`ORWDX SAVE returned invalid order IEN: ${String(orderIen).slice(0, 50)}`),
-          { errorClass: 'permanent' }
-        );
-      }
-
-      log.info(`IMG PLACE_IMAGING_ORDER completed: orderIen=${orderIen}`);
-
-      return {
-        vistaRefs: { orderIen },
-        resultSummary: `Imaging order placed: IEN ${orderIen}`,
-      };
-    } finally {
-      try {
-        await safeCallRpc('ORWDX UNLOCK', [dfn]);
-      } catch (unlockErr) {
-        log.warn(`ORWDX UNLOCK failed (best-effort): ${String(unlockErr)}`);
-      }
-    }
+    return {
+      vistaRefs: { orderIen },
+      resultSummary: `Imaging order placed: IEN ${orderIen}`,
+    };
   } finally {
     try {
-      disconnect();
-    } catch {
-      /* best-effort */
+      await safeCallRpc('ORWDX UNLOCK', [dfn]);
+    } catch (unlockErr) {
+      log.warn(`ORWDX UNLOCK failed (best-effort): ${String(unlockErr)}`);
     }
   }
 }

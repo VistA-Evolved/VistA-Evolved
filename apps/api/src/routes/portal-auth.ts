@@ -32,11 +32,14 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { randomBytes, randomUUID } from 'node:crypto';
 import { log } from '../lib/logger.js';
-import { portalAudit } from '../services/portal-audit.js';
+import { safeCallRpc } from '../lib/rpc-resilience.js';
+import { hashPatientId, portalAudit } from '../services/portal-audit.js';
+import { authenticateUser } from '../portal-iam/portal-user-store.js';
 import { validateCredentials } from '../vista/config.js';
 import { connect, disconnect, callRpc } from '../vista/rpcBrokerClient.js';
 import {
   hashPortalToken,
+  listActivePortalSessions,
   upsertPortalSession,
   revokePortalSession,
   touchPortalSession,
@@ -48,6 +51,7 @@ import {
 
 export interface PortalSessionData {
   token: string;
+  tenantId: string;
   patientDfn: string;
   patientName: string;
   createdAt: number;
@@ -63,15 +67,73 @@ const PORTAL_IDLE_TTL_MS = 15 * 60 * 1000; // 15 minutes idle
 // Cleanup expired sessions every 60s
 setInterval(() => {
   const now = Date.now();
-  for (const [token, session] of portalSessions) {
+  for (const [tokenHash, session] of portalSessions) {
     if (
       now - session.createdAt > PORTAL_SESSION_TTL_MS ||
       now - session.lastActivity > PORTAL_IDLE_TTL_MS
     ) {
-      portalSessions.delete(token);
+      portalSessions.delete(tokenHash);
     }
   }
 }, 60_000);
+
+function parsePatientName(dataJson: string): string {
+  try {
+    const parsed = JSON.parse(dataJson || '{}');
+    return typeof parsed?.patientName === 'string' && parsed.patientName.trim()
+      ? parsed.patientName
+      : 'Patient';
+  } catch {
+    return 'Patient';
+  }
+}
+
+function formatProblemOnsetFromFileMan(onsetFm?: string): string {
+  if (!onsetFm || onsetFm.length < 3 || !/^\d+/.test(onsetFm)) return '';
+
+  const year = parseInt(onsetFm.substring(0, 3), 10) + 1700;
+  const month = onsetFm.length >= 5 ? onsetFm.substring(3, 5) : '';
+  const day = onsetFm.length >= 7 ? onsetFm.substring(5, 7) : '';
+
+  if (month && month !== '00' && day && day !== '00') {
+    return `${year}-${month}-${day}`;
+  }
+  if (month && month !== '00') {
+    return `${year}-${month}`;
+  }
+  return String(year);
+}
+
+export async function rehydratePortalSessionsFromPg(): Promise<number> {
+  const rows = await listActivePortalSessions();
+  const now = Date.now();
+  let restored = 0;
+  for (const row of rows) {
+    const createdAt = new Date(row.createdAt).getTime();
+    const lastActivity = new Date(row.lastActivityAt).getTime();
+    const expiresAt = new Date(row.expiresAt).getTime();
+    if (!Number.isFinite(createdAt) || !Number.isFinite(lastActivity) || !Number.isFinite(expiresAt)) {
+      continue;
+    }
+    if (expiresAt <= now || now - lastActivity > PORTAL_IDLE_TTL_MS) {
+      continue;
+    }
+    if (!row.tenantId || !String(row.tenantId).trim()) {
+      continue;
+    }
+    portalSessions.set(row.tokenHash, {
+      token: row.tokenHash,
+      tenantId: String(row.tenantId).trim(),
+      patientDfn: row.patientDfn,
+      patientName: parsePatientName(row.dataJson),
+      createdAt,
+      lastActivity,
+    });
+    restored++;
+  }
+  log.info('Portal sessions rehydrated from PG', { count: restored });
+  return restored;
+}
 
 /* ------------------------------------------------------------------ */
 /* Dev-mode patient mapping                                             */
@@ -82,8 +144,8 @@ setInterval(() => {
  * In production, this would be replaced by OIDC/SAML identity provider.
  */
 const DEV_PATIENTS: Record<string, { dfn: string; name: string }> = {
-  patient1: { dfn: '100022', name: 'CARTER,DAVID' },
-  patient2: { dfn: '100033', name: 'SMITH,JOHN' },
+  patient1: { dfn: '46', name: 'ZZZRETFOURNINETYFOUR,PATIENT' },
+  patient2: { dfn: '47', name: 'ZZZRETFOURTWENTYSEVEN,PATIENT' },
 };
 
 /* ------------------------------------------------------------------ */
@@ -109,12 +171,14 @@ function checkLoginRate(ip: string): boolean {
 /* Session helpers                                                      */
 /* ------------------------------------------------------------------ */
 
-function createPortalSession(dfn: string, name: string): string {
+function createPortalSession(tenantId: string, dfn: string, name: string): string {
   const token = randomBytes(32).toString('hex');
+  const tokenHash = hashPortalToken(token);
   const now = Date.now();
   const sessionId = randomUUID();
-  portalSessions.set(token, {
-    token,
+  portalSessions.set(tokenHash, {
+    token: tokenHash,
+    tenantId,
     patientDfn: dfn,
     patientName: name,
     createdAt: now,
@@ -124,8 +188,8 @@ function createPortalSession(dfn: string, name: string): string {
   // Phase 150: Write-through to PG (fire-and-forget)
   void upsertPortalSession({
     id: sessionId,
-    tenantId: 'default',
-    tokenHash: hashPortalToken(token),
+    tenantId,
+    tokenHash,
     userId: dfn,
     subject: '',
     patientDfn: dfn,
@@ -141,7 +205,8 @@ function createPortalSession(dfn: string, name: string): string {
 export function getPortalSession(request: FastifyRequest): PortalSessionData | null {
   const cookie = (request as any).cookies?.[PORTAL_COOKIE];
   if (!cookie) return null;
-  const session = portalSessions.get(cookie);
+  const tokenHash = hashPortalToken(cookie);
+  const session = portalSessions.get(tokenHash);
   if (!session) return null;
 
   const now = Date.now();
@@ -149,14 +214,14 @@ export function getPortalSession(request: FastifyRequest): PortalSessionData | n
     now - session.createdAt > PORTAL_SESSION_TTL_MS ||
     now - session.lastActivity > PORTAL_IDLE_TTL_MS
   ) {
-    portalSessions.delete(cookie);
+    portalSessions.delete(tokenHash);
     return null;
   }
 
   session.lastActivity = now;
 
   // Phase 150: Touch PG session timestamp (fire-and-forget, best-effort)
-  void touchPortalSession(hashPortalToken(cookie));
+  void touchPortalSession(tokenHash);
 
   return session;
 }
@@ -197,6 +262,7 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
 
     if (!checkLoginRate(ip)) {
       portalAudit('portal.login.failed', 'failure', 'unknown', {
+        tenantId: 'unknown',
         sourceIp: ip,
         detail: { reason: 'rate_limited' },
       });
@@ -213,19 +279,35 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
       return reply.code(400).send({ ok: false, error: 'Username and password required' });
     }
 
-    // Dev mode: check demo patient map
-    const patient = DEV_PATIENTS[username];
-    if (!patient || password !== username) {
+    const auth = await authenticateUser(username, password);
+    const selfProfile = auth.user?.patientProfiles.find((profile) => profile.isSelf);
+    const fallbackPatient = DEV_PATIENTS[username];
+    const patient = selfProfile
+      ? { dfn: selfProfile.patientDfn, name: selfProfile.patientName }
+      : fallbackPatient;
+
+    if (!auth.success || !patient) {
       portalAudit('portal.login.failed', 'failure', 'unknown', {
+        tenantId: auth.user?.tenantId || 'unknown',
         sourceIp: ip,
-        detail: { reason: 'invalid_credentials' },
+        detail: { reason: auth.error || 'invalid_credentials' },
       });
-      return reply.code(401).send({ ok: false, error: 'Invalid credentials' });
+      return reply.code(401).send({ ok: false, error: auth.error || 'Invalid credentials' });
     }
 
-    const token = createPortalSession(patient.dfn, patient.name);
+    const tenantId = auth.user?.tenantId;
+    if (!tenantId) {
+      portalAudit('portal.login.failed', 'failure', patient.dfn, {
+        tenantId: 'unknown',
+        sourceIp: ip,
+        detail: { reason: 'tenant_unresolved' },
+      });
+      return reply.code(403).send({ ok: false, error: 'Portal tenant resolution failed' });
+    }
+    const token = createPortalSession(tenantId, patient.dfn, patient.name);
 
     portalAudit('portal.login', 'success', patient.dfn, {
+      tenantId,
       sourceIp: ip,
     });
 
@@ -242,15 +324,17 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
   server.post('/portal/auth/logout', async (request, reply) => {
     const cookie = (request as any).cookies?.[PORTAL_COOKIE];
     if (cookie) {
-      const session = portalSessions.get(cookie);
+      const tokenHash = hashPortalToken(cookie);
+      const session = portalSessions.get(tokenHash);
       if (session) {
         portalAudit('portal.logout', 'success', session.patientDfn, {
+          tenantId: session.tenantId,
           sourceIp: request.ip,
         });
       }
-      portalSessions.delete(cookie);
+      portalSessions.delete(tokenHash);
       // Phase 150: Revoke in PG (fire-and-forget)
-      void revokePortalSession(hashPortalToken(cookie));
+      void revokePortalSession(tokenHash);
     }
 
     reply.clearCookie(PORTAL_COOKIE, { path: '/' });
@@ -285,6 +369,7 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
     parser: (lines: string[]) => unknown[]
   ) {
     portalAudit('portal.data.access', 'success', session.patientDfn, {
+      tenantId: session.tenantId,
       sourceIp: request.ip,
       detail: { resource },
     });
@@ -352,8 +437,8 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
     const session = requirePortalSession(request, reply);
     return portalRpc(
       session,
-      'ORWCH PROBLEM LIST',
-      [session.patientDfn, '0'],
+      'ORQQPL PROBLEM LIST',
+      [session.patientDfn, 'A'],
       'problems',
       request,
       reply,
@@ -361,11 +446,14 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
         lines
           .map((l) => {
             const p = l.split('^');
-            if (!p[0]?.trim() || !p[1]?.trim()) return null;
-            const st = p[2]?.trim() || '';
+            if (!p[0]?.trim() || !p[2]?.trim() || !/^\d+$/.test(p[0].trim())) return null;
+            const st = p[1]?.trim() || '';
             let status = 'active';
             if (st.toUpperCase().includes('I') || st === '0') status = 'inactive';
-            return { id: p[0]?.trim(), text: p[1]?.trim(), status, onset: p[3]?.trim() || '' };
+            else if (st === 'R') status = 'resolved';
+            const onsetFm = p[4]?.trim() || '';
+            const onset = formatProblemOnsetFromFileMan(onsetFm);
+            return { id: p[0]?.trim(), text: p[2]?.trim(), status, onset };
           })
           .filter(Boolean)
     );
@@ -490,6 +578,7 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
   server.get('/portal/health/labs', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     portalAudit('portal.data.access', 'success', session.patientDfn, {
+      tenantId: session.tenantId,
       sourceIp: request.ip,
       detail: { resource: 'labs' },
     });
@@ -649,6 +738,7 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
   server.get('/portal/health/dc-summaries', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     portalAudit('portal.data.access', 'success', session.patientDfn, {
+      tenantId: session.tenantId,
       sourceIp: request.ip,
       detail: { resource: 'dc-summaries' },
     });
@@ -739,6 +829,7 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
     const session = requirePortalSession(request, reply);
     const { reportId, hsType } = request.query as any;
     portalAudit('portal.data.access', 'success', session.patientDfn, {
+      tenantId: session.tenantId,
       sourceIp: request.ip,
       detail: { resource: 'reports', reportId },
     });
@@ -747,9 +838,7 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
     if (!reportId) {
       try {
         validateCredentials();
-        await connect();
-        const lines = await callRpc('ORWRP REPORT LISTS', []);
-        disconnect();
+        const lines = await safeCallRpc('ORWRP REPORT LISTS', []);
         let currentSection = '';
         const reports: { id: string; heading: string; qualifier: string; category: string }[] = [];
         for (const line of lines) {
@@ -780,9 +869,6 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
           rpcUsed: 'ORWRP REPORT LISTS',
         });
       } catch (err: any) {
-        try {
-          disconnect();
-        } catch {}
         return reply.send({
           ok: true,
           source: 'vista',
@@ -799,8 +885,7 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
     // With reportId, fetch the report text
     try {
       validateCredentials();
-      await connect();
-      const lines = await callRpc('ORWRP REPORT TEXT', [
+      const lines = await safeCallRpc('ORWRP REPORT TEXT', [
         session.patientDfn,
         String(reportId),
         String(hsType || ''),
@@ -809,7 +894,6 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
         '',
         '',
       ]);
-      disconnect();
       return reply.send({
         ok: true,
         source: 'vista',
@@ -818,9 +902,6 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
         rpcUsed: 'ORWRP REPORT TEXT',
       });
     } catch (err: any) {
-      try {
-        disconnect();
-      } catch {}
       return reply.send({
         ok: true,
         source: 'vista',
@@ -836,10 +917,12 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
 
   // ─── Portal Audit Routes (admin-only) ───
   server.get('/portal/audit/events', async (request, reply) => {
-    // For now, portal audit is accessible (will add admin check later)
+    const session = requirePortalSession(request, reply);
     const { queryPortalAuditEvents } = await import('../services/portal-audit.js');
     const query = request.query as any;
     const events = queryPortalAuditEvents({
+      tenantId: session.tenantId,
+      actorHash: hashPatientId(session.patientDfn, session.tenantId),
       action: query.action,
       since: query.since,
       limit: query.limit ? parseInt(query.limit, 10) : 50,
@@ -847,8 +930,15 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
     return reply.send({ ok: true, events, total: events.length });
   });
 
-  server.get('/portal/audit/stats', async (_request, reply) => {
+  server.get('/portal/audit/stats', async (request, reply) => {
+    const session = requirePortalSession(request, reply);
     const { getPortalAuditStats } = await import('../services/portal-audit.js');
-    return reply.send({ ok: true, stats: getPortalAuditStats() });
+    return reply.send({
+      ok: true,
+      stats: getPortalAuditStats({
+        tenantId: session.tenantId,
+        actorHash: hashPatientId(session.patientDfn, session.tenantId),
+      }),
+    });
   });
 }

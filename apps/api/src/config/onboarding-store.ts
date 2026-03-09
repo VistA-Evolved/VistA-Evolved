@@ -80,8 +80,11 @@ export function createOnboarding(tenantId: string, createdBy: string): Onboardin
   return session;
 }
 
-export function getOnboarding(id: string): OnboardingSession | undefined {
-  return sessions.get(id);
+export function getOnboarding(id: string, tenantId?: string): OnboardingSession | undefined {
+  const session = sessions.get(id);
+  if (!session) return undefined;
+  if (tenantId && session.tenantId !== tenantId) return undefined;
+  return session;
 }
 
 export function listOnboardingSessions(tenantId?: string): OnboardingSession[] {
@@ -91,11 +94,12 @@ export function listOnboardingSessions(tenantId?: string): OnboardingSession[] {
 }
 
 export function advanceStep(
+  tenantId: string,
   id: string,
   stepData?: Record<string, unknown>
 ): OnboardingSession | null {
   const session = sessions.get(id);
-  if (!session) return null;
+  if (!session || session.tenantId !== tenantId) return null;
 
   const now = new Date().toISOString();
   const currentIdx = STEP_ORDER.indexOf(session.currentStep);
@@ -125,12 +129,13 @@ export function advanceStep(
 }
 
 export function updateStepData(
+  tenantId: string,
   id: string,
   step: OnboardingStep,
   data: Record<string, unknown>
 ): OnboardingSession | null {
   const session = sessions.get(id);
-  if (!session) return null;
+  if (!session || session.tenantId !== tenantId) return null;
 
   const stepObj = session.steps.find((s) => s.step === step);
   if (!stepObj) return null;
@@ -140,6 +145,8 @@ export function updateStepData(
   return session;
 }
 
-export function deleteOnboarding(id: string): boolean {
+export function deleteOnboarding(tenantId: string, id: string): boolean {
+  const session = sessions.get(id);
+  if (!session || session.tenantId !== tenantId) return false;
   return sessions.delete(id);
 }

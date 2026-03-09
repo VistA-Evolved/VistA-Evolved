@@ -46,6 +46,7 @@ function safeJsonParse<T>(val: string | null | undefined, fallback: T): T {
 function rowToImport(row: any): RemittanceImport {
   return {
     id: row.id,
+    tenantId: row.tenantId,
     createdAt: row.createdAt,
     sourceType: row.sourceType as RemittanceSourceType,
     receivedAt: row.receivedAt,
@@ -64,6 +65,7 @@ function rowToImport(row: any): RemittanceImport {
 function rowToPayment(row: any): PaymentRecord {
   return {
     id: row.id,
+    tenantId: row.tenantId,
     remittanceImportId: row.remittanceImportId,
     createdAt: row.createdAt,
     claimRef: row.claimRef,
@@ -87,6 +89,7 @@ function rowToPayment(row: any): PaymentRecord {
 function rowToMatch(row: any): ReconciliationMatch {
   return {
     id: row.id,
+    tenantId: row.tenantId,
     createdAt: row.createdAt,
     paymentId: row.paymentId,
     claimRef: row.claimRef,
@@ -102,6 +105,7 @@ function rowToMatch(row: any): ReconciliationMatch {
 function rowToUnderpayment(row: any): UnderpaymentCase {
   return {
     id: row.id,
+    tenantId: row.tenantId,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
     claimRef: row.claimRef,
@@ -122,6 +126,7 @@ function rowToUnderpayment(row: any): UnderpaymentCase {
 /* ── Remittance Import CRUD ─────────────────────────────────── */
 
 export async function createRemittanceImport(opts: {
+  tenantId: string;
   sourceType: RemittanceSourceType;
   fileHash?: string;
   originalFilename?: string;
@@ -139,6 +144,7 @@ export async function createRemittanceImport(opts: {
 
   const row = {
     id,
+    tenantId: opts.tenantId,
     createdAt: new Date(now),
     sourceType: opts.sourceType,
     receivedAt: new Date(now),
@@ -157,21 +163,32 @@ export async function createRemittanceImport(opts: {
   return rowToImport(row);
 }
 
-export async function getRemittanceImportById(id: string): Promise<RemittanceImport | null> {
+export async function getRemittanceImportById(
+  tenantId: string,
+  id: string
+): Promise<RemittanceImport | null> {
   const db = getPgDb();
-  const rows = await db.select().from(remittanceImport).where(eq(remittanceImport.id, id));
+  const rows = await db
+    .select()
+    .from(remittanceImport)
+    .where(and(eq(remittanceImport.tenantId, tenantId), eq(remittanceImport.id, id)));
   return rows[0] ? rowToImport(rows[0]) : null;
 }
 
-export async function listRemittanceImports(): Promise<RemittanceImport[]> {
+export async function listRemittanceImports(tenantId: string): Promise<RemittanceImport[]> {
   const db = getPgDb();
-  const rows = await db.select().from(remittanceImport).orderBy(desc(remittanceImport.createdAt));
+  const rows = await db
+    .select()
+    .from(remittanceImport)
+    .where(eq(remittanceImport.tenantId, tenantId))
+    .orderBy(desc(remittanceImport.createdAt));
   return rows.map(rowToImport);
 }
 
 /* ── Payment Record CRUD ────────────────────────────────────── */
 
 export async function createPaymentRecord(opts: {
+  tenantId: string;
   remittanceImportId: string;
   claimRef: string;
   payerId: string;
@@ -194,6 +211,7 @@ export async function createPaymentRecord(opts: {
 
   const row = {
     id,
+    tenantId: opts.tenantId,
     remittanceImportId: opts.remittanceImportId,
     createdAt: new Date(now),
     claimRef: opts.claimRef,
@@ -217,19 +235,26 @@ export async function createPaymentRecord(opts: {
   return rowToPayment(row);
 }
 
-export async function getPaymentById(id: string): Promise<PaymentRecord | null> {
+export async function getPaymentById(tenantId: string, id: string): Promise<PaymentRecord | null> {
   const db = getPgDb();
-  const rows = await db.select().from(paymentRecord).where(eq(paymentRecord.id, id));
+  const rows = await db
+    .select()
+    .from(paymentRecord)
+    .where(and(eq(paymentRecord.tenantId, tenantId), eq(paymentRecord.id, id)));
   return rows[0] ? rowToPayment(rows[0]) : null;
 }
 
 export async function updatePaymentStatus(
+  tenantId: string,
   id: string,
   status: PaymentStatus
 ): Promise<PaymentRecord | null> {
   const db = getPgDb();
-  await db.update(paymentRecord).set({ status }).where(eq(paymentRecord.id, id));
-  return getPaymentById(id);
+  await db
+    .update(paymentRecord)
+    .set({ status })
+    .where(and(eq(paymentRecord.tenantId, tenantId), eq(paymentRecord.id, id)));
+  return getPaymentById(tenantId, id);
 }
 
 export interface PaymentListResult {
@@ -240,9 +265,12 @@ export interface PaymentListResult {
   totalPages: number;
 }
 
-export async function listPayments(query: PaymentListQuery): Promise<PaymentListResult> {
+export async function listPayments(
+  tenantId: string,
+  query: PaymentListQuery
+): Promise<PaymentListResult> {
   const db = getPgDb();
-  const conditions: any[] = [];
+  const conditions: any[] = [eq(paymentRecord.tenantId, tenantId)];
 
   if (query.status) conditions.push(eq(paymentRecord.status, query.status));
   if (query.payerId) conditions.push(eq(paymentRecord.payerId, query.payerId));
@@ -283,12 +311,17 @@ export async function listPayments(query: PaymentListQuery): Promise<PaymentList
   };
 }
 
-export async function listPaymentsByImport(importId: string): Promise<PaymentRecord[]> {
+export async function listPaymentsByImport(
+  tenantId: string,
+  importId: string
+): Promise<PaymentRecord[]> {
   const db = getPgDb();
   const rows = await db
     .select()
     .from(paymentRecord)
-    .where(eq(paymentRecord.remittanceImportId, importId))
+    .where(
+      and(eq(paymentRecord.tenantId, tenantId), eq(paymentRecord.remittanceImportId, importId))
+    )
     .orderBy(asc(paymentRecord.lineIndex));
   return rows.map(rowToPayment);
 }
@@ -296,6 +329,7 @@ export async function listPaymentsByImport(importId: string): Promise<PaymentRec
 /* ── Reconciliation Match CRUD ──────────────────────────────── */
 
 export async function createMatch(opts: {
+  tenantId: string;
   paymentId: string;
   claimRef: string;
   matchConfidence: number;
@@ -309,6 +343,7 @@ export async function createMatch(opts: {
 
   const row = {
     id,
+    tenantId: opts.tenantId,
     createdAt: new Date(now),
     paymentId: opts.paymentId,
     claimRef: opts.claimRef,
@@ -324,13 +359,20 @@ export async function createMatch(opts: {
   return rowToMatch(row);
 }
 
-export async function getMatchById(id: string): Promise<ReconciliationMatch | null> {
+export async function getMatchById(
+  tenantId: string,
+  id: string
+): Promise<ReconciliationMatch | null> {
   const db = getPgDb();
-  const rows = await db.select().from(reconciliationMatch).where(eq(reconciliationMatch.id, id));
+  const rows = await db
+    .select()
+    .from(reconciliationMatch)
+    .where(and(eq(reconciliationMatch.tenantId, tenantId), eq(reconciliationMatch.id, id)));
   return rows[0] ? rowToMatch(rows[0]) : null;
 }
 
 export async function confirmMatch(
+  tenantId: string,
   id: string,
   status: MatchStatus,
   actor: string,
@@ -346,26 +388,36 @@ export async function confirmMatch(
       confirmedAt: new Date(now),
       matchNotes: notes ?? null,
     })
-    .where(eq(reconciliationMatch.id, id));
-  return getMatchById(id);
+    .where(and(eq(reconciliationMatch.tenantId, tenantId), eq(reconciliationMatch.id, id)));
+  return getMatchById(tenantId, id);
 }
 
-export async function listMatchesByPayment(paymentId: string): Promise<ReconciliationMatch[]> {
+export async function listMatchesByPayment(
+  tenantId: string,
+  paymentId: string
+): Promise<ReconciliationMatch[]> {
   const db = getPgDb();
   const rows = await db
     .select()
     .from(reconciliationMatch)
-    .where(eq(reconciliationMatch.paymentId, paymentId))
+    .where(
+      and(eq(reconciliationMatch.tenantId, tenantId), eq(reconciliationMatch.paymentId, paymentId))
+    )
     .orderBy(desc(reconciliationMatch.matchConfidence));
   return rows.map(rowToMatch);
 }
 
-export async function listMatchesByStatus(status: MatchStatus): Promise<ReconciliationMatch[]> {
+export async function listMatchesByStatus(
+  tenantId: string,
+  status: MatchStatus
+): Promise<ReconciliationMatch[]> {
   const db = getPgDb();
   const rows = await db
     .select()
     .from(reconciliationMatch)
-    .where(eq(reconciliationMatch.matchStatus, status))
+    .where(
+      and(eq(reconciliationMatch.tenantId, tenantId), eq(reconciliationMatch.matchStatus, status))
+    )
     .orderBy(desc(reconciliationMatch.createdAt));
   return rows.map(rowToMatch);
 }
@@ -373,6 +425,7 @@ export async function listMatchesByStatus(status: MatchStatus): Promise<Reconcil
 /* ── Underpayment Case CRUD ─────────────────────────────────── */
 
 export async function createUnderpaymentCase(opts: {
+  tenantId: string;
   claimRef: string;
   paymentId: string;
   payerId: string;
@@ -387,6 +440,7 @@ export async function createUnderpaymentCase(opts: {
 
   const row = {
     id,
+    tenantId: opts.tenantId,
     createdAt: new Date(now),
     updatedAt: new Date(now),
     claimRef: opts.claimRef,
@@ -407,19 +461,26 @@ export async function createUnderpaymentCase(opts: {
   return rowToUnderpayment(row);
 }
 
-export async function getUnderpaymentById(id: string): Promise<UnderpaymentCase | null> {
+export async function getUnderpaymentById(
+  tenantId: string,
+  id: string
+): Promise<UnderpaymentCase | null> {
   const db = getPgDb();
-  const rows = await db.select().from(underpaymentCase).where(eq(underpaymentCase.id, id));
+  const rows = await db
+    .select()
+    .from(underpaymentCase)
+    .where(and(eq(underpaymentCase.tenantId, tenantId), eq(underpaymentCase.id, id)));
   return rows[0] ? rowToUnderpayment(rows[0]) : null;
 }
 
 export async function updateUnderpaymentCase(
+  tenantId: string,
   id: string,
   updates: { status?: UnderpaymentStatus; resolutionNote?: string; denialCaseId?: string },
   actor: string
 ): Promise<UnderpaymentCase | null> {
   const db = getPgDb();
-  const existing = await getUnderpaymentById(id);
+  const existing = await getUnderpaymentById(tenantId, id);
   if (!existing) return null;
 
   const now = new Date().toISOString();
@@ -432,11 +493,17 @@ export async function updateUnderpaymentCase(
     setClause.resolvedBy = actor;
   }
 
-  await db.update(underpaymentCase).set(setClause).where(eq(underpaymentCase.id, id));
-  return getUnderpaymentById(id);
+  await db
+    .update(underpaymentCase)
+    .set(setClause)
+    .where(and(eq(underpaymentCase.tenantId, tenantId), eq(underpaymentCase.id, id)));
+  return getUnderpaymentById(tenantId, id);
 }
 
-export async function listUnderpayments(query: UnderpaymentListQuery): Promise<{
+export async function listUnderpayments(
+  tenantId: string,
+  query: UnderpaymentListQuery
+): Promise<{
   items: UnderpaymentCase[];
   total: number;
   page: number;
@@ -444,7 +511,7 @@ export async function listUnderpayments(query: UnderpaymentListQuery): Promise<{
   totalPages: number;
 }> {
   const db = getPgDb();
-  const conditions: any[] = [];
+  const conditions: any[] = [eq(underpaymentCase.tenantId, tenantId)];
 
   if (query.status) conditions.push(eq(underpaymentCase.status, query.status));
   if (query.payerId) conditions.push(eq(underpaymentCase.payerId, query.payerId));
@@ -485,32 +552,41 @@ export async function listUnderpayments(query: UnderpaymentListQuery): Promise<{
 
 /* ── Stats ──────────────────────────────────────────────────── */
 
-export async function getReconciliationStats(): Promise<ReconciliationStats> {
+export async function getReconciliationStats(tenantId: string): Promise<ReconciliationStats> {
   const db = getPgDb();
 
-  const importCountRows = await db.select({ count: sql<number>`count(*)` }).from(remittanceImport);
-  const paymentCountRows = await db.select({ count: sql<number>`count(*)` }).from(paymentRecord);
+  const importCountRows = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(remittanceImport)
+    .where(eq(remittanceImport.tenantId, tenantId));
+  const paymentCountRows = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(paymentRecord)
+    .where(eq(paymentRecord.tenantId, tenantId));
   const matchedCountRows = await db
     .select({ count: sql<number>`count(*)` })
     .from(paymentRecord)
-    .where(eq(paymentRecord.status, 'MATCHED'));
+    .where(and(eq(paymentRecord.tenantId, tenantId), eq(paymentRecord.status, 'MATCHED')));
   const unmatchedCountRows = await db
     .select({ count: sql<number>`count(*)` })
     .from(paymentRecord)
-    .where(eq(paymentRecord.status, 'UNMATCHED'));
+    .where(and(eq(paymentRecord.tenantId, tenantId), eq(paymentRecord.status, 'UNMATCHED')));
   const totalPaidRows = await db
     .select({ sum: sql<number>`COALESCE(SUM(paid_amount_cents), 0)` })
-    .from(paymentRecord);
+    .from(paymentRecord)
+    .where(eq(paymentRecord.tenantId, tenantId));
   const underpayCountRows = await db
     .select({ count: sql<number>`count(*)` })
-    .from(underpaymentCase);
+    .from(underpaymentCase)
+    .where(eq(underpaymentCase.tenantId, tenantId));
   const openUnderpayRows = await db
     .select({ count: sql<number>`count(*)` })
     .from(underpaymentCase)
-    .where(eq(underpaymentCase.status, 'NEW'));
+    .where(and(eq(underpaymentCase.tenantId, tenantId), eq(underpaymentCase.status, 'NEW')));
   const totalDeltaRows = await db
     .select({ sum: sql<number>`COALESCE(SUM(delta_cents), 0)` })
-    .from(underpaymentCase);
+    .from(underpaymentCase)
+    .where(eq(underpaymentCase.tenantId, tenantId));
 
   return {
     totalImports: (importCountRows[0] as any)?.count ?? 0,

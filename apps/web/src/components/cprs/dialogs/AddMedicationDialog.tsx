@@ -22,7 +22,7 @@ const QUICK_ORDERS = [
 
 export default function AddMedicationDialog() {
   const { closeModal, modalData } = useCPRSUI();
-  const { addDraftOrder, addLocalItem } = useDataCache();
+  const { addDraftOrder } = useDataCache();
   const dfn = String(modalData?.dfn ?? '');
 
   const [mode, setMode] = useState<'quick' | 'manual'>('quick');
@@ -51,12 +51,12 @@ export default function AddMedicationDialog() {
       });
       const data = await res.json();
       if (data.ok && data.mode === 'real') {
-        setResult({ ok: true, msg: data.response || 'Order placed in VistA (ORWDXM AUTOACK).' });
+        setResult({ ok: true, msg: data.message || 'Order placed in VistA (ORWDXM AUTOACK).' });
         setTimeout(() => closeModal(), 1200);
       } else if (data.ok && data.mode === 'draft') {
         setResult({
           ok: true,
-          msg: `Order saved as draft (VistA sync pending). Draft ID: ${data.draftId}`,
+          msg: `Order saved as server-side draft (VistA sync pending). Draft ID: ${data.draftId}`,
         });
         setTimeout(() => closeModal(), 1200);
       } else {
@@ -74,7 +74,7 @@ export default function AddMedicationDialog() {
 
   function handleSubmitManual() {
     if (!manualName.trim()) return;
-    // Save as local draft since manual med ordering requires OERR logic
+    // Manual medication entry is draft-only until full OERR writeback exists.
     addDraftOrder(dfn, {
       id: `draft-${Date.now()}`,
       type: 'med',
@@ -88,13 +88,10 @@ export default function AddMedicationDialog() {
       }),
       createdAt: new Date().toISOString(),
     });
-    addLocalItem(dfn, 'medications', {
-      id: `draft-med-${Date.now()}`,
-      name: manualName.trim(),
-      sig: `${manualDose} ${manualRoute} ${manualSchedule}`.trim(),
-      status: 'active',
+    setResult({
+      ok: true,
+      msg: 'Saved to the local draft list only. It will not appear as an active medication until placed in VistA.',
     });
-    setResult({ ok: true, msg: 'Saved as local draft order.' });
     setTimeout(() => closeModal(), 800);
   }
 
@@ -151,7 +148,7 @@ export default function AddMedicationDialog() {
           {mode === 'quick' && (
             <>
               <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)', margin: '4px 0 8px' }}>
-                Select a quick order to place via ORWDX SEND (Phase 8B AUTOACK):
+                Select a quick order to place via ORWDXM AUTOACK using the Phase 659 recovered quick-order flow:
               </p>
               <div style={{ maxHeight: 220, overflowY: 'auto' }}>
                 {QUICK_ORDERS.map((qo) => (
@@ -182,7 +179,7 @@ export default function AddMedicationDialog() {
           {mode === 'manual' && (
             <>
               <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)', margin: '4px 0 8px' }}>
-                Manual entry saves as a local draft order (full OERR integration pending).
+                Manual entry saves to the local draft list only. Active medications remain VistA-backed until full OERR integration is available.
               </p>
               <div className={styles.formGroup}>
                 <label>Medication Name *</label>

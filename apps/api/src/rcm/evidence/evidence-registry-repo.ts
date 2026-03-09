@@ -16,50 +16,55 @@ export type IntegrationEvidenceRow = typeof integrationEvidence.$inferSelect;
 
 /* ── Queries ─────────────────────────────────────────── */
 
-export async function findById(id: string): Promise<IntegrationEvidenceRow | undefined> {
+export async function findByIdForTenant(
+  tenantId: string,
+  id: string,
+): Promise<IntegrationEvidenceRow | undefined> {
   const rows = await getPgDb()
     .select()
     .from(integrationEvidence)
-    .where(eq(integrationEvidence.id, id));
+    .where(and(eq(integrationEvidence.id, id), eq(integrationEvidence.tenantId, tenantId)));
   return rows[0] ?? undefined;
 }
 
-export async function listAll(tenantId?: string): Promise<IntegrationEvidenceRow[]> {
-  const db = getPgDb();
-  if (tenantId) {
-    return await db
-      .select()
-      .from(integrationEvidence)
-      .where(eq(integrationEvidence.tenantId, tenantId))
-      .orderBy(desc(integrationEvidence.updatedAt));
-  }
-  return await db
-    .select()
-    .from(integrationEvidence)
-    .orderBy(desc(integrationEvidence.updatedAt));
-}
-
-export async function listByPayer(payerId: string): Promise<IntegrationEvidenceRow[]> {
+export async function listAll(tenantId: string): Promise<IntegrationEvidenceRow[]> {
   return await getPgDb()
     .select()
     .from(integrationEvidence)
-    .where(eq(integrationEvidence.payerId, payerId))
+    .where(eq(integrationEvidence.tenantId, tenantId))
     .orderBy(desc(integrationEvidence.updatedAt));
 }
 
-export async function listByStatus(status: string): Promise<IntegrationEvidenceRow[]> {
+export async function listByPayer(
+  tenantId: string,
+  payerId: string,
+): Promise<IntegrationEvidenceRow[]> {
   return await getPgDb()
     .select()
     .from(integrationEvidence)
-    .where(eq(integrationEvidence.status, status))
+    .where(and(eq(integrationEvidence.tenantId, tenantId), eq(integrationEvidence.payerId, payerId)))
     .orderBy(desc(integrationEvidence.updatedAt));
 }
 
-export async function listByMethod(method: string): Promise<IntegrationEvidenceRow[]> {
+export async function listByStatus(
+  tenantId: string,
+  status: string,
+): Promise<IntegrationEvidenceRow[]> {
   return await getPgDb()
     .select()
     .from(integrationEvidence)
-    .where(eq(integrationEvidence.method, method))
+    .where(and(eq(integrationEvidence.tenantId, tenantId), eq(integrationEvidence.status, status)))
+    .orderBy(desc(integrationEvidence.updatedAt));
+}
+
+export async function listByMethod(
+  tenantId: string,
+  method: string,
+): Promise<IntegrationEvidenceRow[]> {
+  return await getPgDb()
+    .select()
+    .from(integrationEvidence)
+    .where(and(eq(integrationEvidence.tenantId, tenantId), eq(integrationEvidence.method, method)))
     .orderBy(desc(integrationEvidence.updatedAt));
 }
 
@@ -67,6 +72,7 @@ export async function listByMethod(method: string): Promise<IntegrationEvidenceR
  * Find evidence for a specific payer + method combination.
  */
 export async function findByPayerAndMethod(
+  tenantId: string,
   payerId: string,
   method: string,
 ): Promise<IntegrationEvidenceRow | undefined> {
@@ -75,6 +81,7 @@ export async function findByPayerAndMethod(
     .from(integrationEvidence)
     .where(
       and(
+        eq(integrationEvidence.tenantId, tenantId),
         eq(integrationEvidence.payerId, payerId),
         eq(integrationEvidence.method, method),
       ),
@@ -85,7 +92,7 @@ export async function findByPayerAndMethod(
 /* ── Mutations ───────────────────────────────────────── */
 
 export interface CreateEvidenceInput {
-  tenantId?: string;
+  tenantId: string;
   payerId: string;
   method: string;
   channel?: string;
@@ -109,7 +116,7 @@ export async function insertEvidence(data: CreateEvidenceInput): Promise<Integra
   await db.insert(integrationEvidence)
     .values({
       id,
-      tenantId: data.tenantId ?? "default",
+      tenantId: data.tenantId,
       payerId: data.payerId,
       method: data.method,
       channel: data.channel ?? null,
@@ -127,14 +134,15 @@ export async function insertEvidence(data: CreateEvidenceInput): Promise<Integra
       updatedAt: now,
     });
 
-  return (await findById(id))!;
+  return (await findByIdForTenant(data.tenantId, id))!;
 }
 
 export async function updateEvidence(
+  tenantId: string,
   id: string,
   data: Partial<Omit<CreateEvidenceInput, "payerId">>,
 ): Promise<IntegrationEvidenceRow | undefined> {
-  const existing = await findById(id);
+  const existing = await findByIdForTenant(tenantId, id);
   if (!existing) return undefined;
 
   const now = new Date().toISOString();
@@ -162,23 +170,23 @@ export async function updateEvidence(
       ...(data.notes !== undefined && { notes: data.notes }),
       updatedAt: now,
     })
-    .where(eq(integrationEvidence.id, id));
+    .where(and(eq(integrationEvidence.id, id), eq(integrationEvidence.tenantId, tenantId)));
 
-  return await findById(id);
+  return await findByIdForTenant(tenantId, id);
 }
 
 /**
  * Soft-delete: set status to 'archived'.
  */
-export async function archiveEvidence(id: string): Promise<boolean> {
-  const existing = await findById(id);
+export async function archiveEvidence(tenantId: string, id: string): Promise<boolean> {
+  const existing = await findByIdForTenant(tenantId, id);
   if (!existing) return false;
 
   const now = new Date().toISOString();
   await getPgDb()
     .update(integrationEvidence)
     .set({ status: "archived", updatedAt: now })
-    .where(eq(integrationEvidence.id, id));
+    .where(and(eq(integrationEvidence.id, id), eq(integrationEvidence.tenantId, tenantId)));
 
   return true;
 }
@@ -197,12 +205,12 @@ export interface EvidenceCoverage {
 /**
  * Count evidence entries by status.
  */
-export async function getEvidenceStats(): Promise<{
+export async function getEvidenceStats(tenantId: string): Promise<{
   total: number;
   byStatus: Record<string, number>;
   byMethod: Record<string, number>;
 }> {
-  const all = await listAll();
+  const all = await listAll(tenantId);
   const byStatus: Record<string, number> = {};
   const byMethod: Record<string, number> = {};
 

@@ -7,6 +7,7 @@
  * Route convention: /hl7/pipeline/* for event stream, /hl7/dlq/* for DLQ.
  */
 import type { FastifyInstance } from 'fastify';
+import { requireSession } from '../auth/auth-routes.js';
 import {
   queryMessageEvents,
   getMessageEvent,
@@ -24,12 +25,30 @@ import {
 } from '../hl7/dead-letter-enhanced.js';
 
 export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> {
+  function resolveTenantId(request: any): string | null {
+    const sessionTenantId =
+      typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+        ? request.session.tenantId.trim()
+        : undefined;
+    return sessionTenantId || null;
+  }
+
+  function requireTenantId(request: any, reply: any): string | null {
+    const tenantId = resolveTenantId(request);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
   /* ── Message Event Stream ─────────────────────────────── */
 
   /**
    * GET /hl7/pipeline/events — Query message events
    */
   server.get('/hl7/pipeline/events', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
     const q = request.query as {
       tenantId?: string;
       messageType?: string;
@@ -38,9 +57,8 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
       limit?: string;
       offset?: string;
     };
-
     const result = queryMessageEvents({
-      tenantId: q.tenantId,
+      tenantId,
       messageType: q.messageType,
       status: q.status as Hl7ProcessingStatus | undefined,
       direction: q.direction as Hl7MessageDirection | undefined,
@@ -55,8 +73,11 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
    * GET /hl7/pipeline/events/:id — Get single event
    */
   server.get('/hl7/pipeline/events/:id', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
-    const event = getMessageEvent(id);
+    const event = getMessageEvent(id, tenantId);
     if (!event) {
       return reply.code(404).send({ ok: false, error: 'Event not found' });
     }
@@ -66,16 +87,22 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   /**
    * GET /hl7/pipeline/stats — Event statistics by status
    */
-  server.get('/hl7/pipeline/stats', async (_request, reply) => {
-    const stats = getMessageEventStats();
+  server.get('/hl7/pipeline/stats', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
+    const stats = getMessageEventStats(tenantId);
     return reply.send({ ok: true, stats });
   });
 
   /**
    * GET /hl7/pipeline/verify — Verify hash chain integrity
    */
-  server.get('/hl7/pipeline/verify', async (_request, reply) => {
-    const result = verifyMessageEventChain();
+  server.get('/hl7/pipeline/verify', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
+    const result = verifyMessageEventChain(tenantId);
     return reply.send({ ...result });
   });
 
@@ -85,13 +112,16 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
    * GET /hl7/dlq — List dead-lettered messages
    */
   server.get('/hl7/dlq', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
     const q = request.query as {
       tenantId?: string;
       resolved?: string;
       limit?: string;
     };
     const result = listEnhancedDeadLetters({
-      tenantId: q.tenantId,
+      tenantId,
       resolved: q.resolved === 'true' ? true : q.resolved === 'false' ? false : undefined,
       limit: q.limit ? parseInt(q.limit, 10) : undefined,
     });
@@ -101,8 +131,11 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   /**
    * GET /hl7/dlq/stats — DLQ summary stats
    */
-  server.get('/hl7/dlq/stats', async (_request, reply) => {
-    const stats = getDlqStats();
+  server.get('/hl7/dlq/stats', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
+    const stats = getDlqStats(tenantId);
     return reply.send({ ok: true, stats });
   });
 
@@ -110,8 +143,11 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
    * GET /hl7/dlq/:id — Get single DLQ entry
    */
   server.get('/hl7/dlq/:id', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
-    const entry = getEnhancedDeadLetter(id);
+    const entry = getEnhancedDeadLetter(id, tenantId);
     if (!entry) {
       return reply.code(404).send({ ok: false, error: 'DLQ entry not found' });
     }
@@ -122,11 +158,17 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
    * POST /hl7/dlq/:id/replay — Replay a dead-lettered message
    */
   server.post('/hl7/dlq/:id/replay', async (request, reply) => {
+    const session = await requireSession(request, reply);
     const { id } = request.params as { id: string };
-    const body = (request.body as { actorId?: string }) || {};
-    const actorId = body.actorId || 'system';
+    const actorId = session?.duz || 'system';
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
+    const entry = getEnhancedDeadLetter(id, tenantId);
+    if (!entry) {
+      return reply.code(404).send({ ok: false, action: 'not_found', detail: 'DLQ entry not found' });
+    }
 
-    const result = replayDeadLetter(id, actorId);
+    const result = replayDeadLetter(id, actorId, tenantId);
     if (!result.ok) {
       return reply.code(result.action === 'not_found' ? 404 : 409).send({
         ok: false,
@@ -150,11 +192,17 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
    * POST /hl7/dlq/:id/resolve — Mark DLQ entry as manually resolved
    */
   server.post('/hl7/dlq/:id/resolve', async (request, reply) => {
+    const session = await requireSession(request, reply);
     const { id } = request.params as { id: string };
-    const body = (request.body as { actorId?: string }) || {};
-    const actorId = body.actorId || 'system';
+    const actorId = session?.duz || 'system';
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
+    const entry = getEnhancedDeadLetter(id, tenantId);
+    if (!entry) {
+      return reply.code(404).send({ ok: false, detail: 'DLQ entry not found' });
+    }
 
-    const result = resolveDeadLetter(id, actorId);
+    const result = resolveDeadLetter(id, actorId, tenantId);
     if (!result.ok) {
       return reply.code(404).send({ ok: false, detail: result.detail });
     }

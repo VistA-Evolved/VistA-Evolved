@@ -10,6 +10,7 @@
  */
 
 import { FastifyInstance } from 'fastify';
+import { requireSession, requireRole } from '../auth/auth-routes.js';
 import {
   createCategory,
   listCategories,
@@ -24,7 +25,7 @@ import {
   installListing,
   uninstallListing,
   listInstalls,
-  getInstall,
+  getInstallForTenant,
   getMarketplaceStats,
   seedMarketplace,
   type ListingStatus,
@@ -34,9 +35,35 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
   // Seed built-in marketplace on first load
   seedMarketplace();
 
+  function resolveTenantId(request: any): string | null {
+    const sessionTenantId =
+      typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+        ? request.session.tenantId.trim()
+        : undefined;
+    const requestTenantId =
+      typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+        ? request.tenantId.trim()
+        : undefined;
+    const headerTenantId = request?.headers?.['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return sessionTenantId || requestTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(request: any, reply: any): string | null {
+    const tenantId = resolveTenantId(request);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
   /* ── Category endpoints ──────────────────────────────────────── */
 
   server.post('/marketplace/categories', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
     const body = (request.body as any) || {};
     const { name, description, parentId } = body;
     if (!name) return reply.code(400).send({ ok: false, error: 'name required' });
@@ -51,6 +78,8 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
   /* ── Listing endpoints ───────────────────────────────────────── */
 
   server.post('/marketplace/listings', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
     const body = (request.body as any) || {};
     const { name, description, type, categoryId, publisherId, publisherName } = body;
     if (!name || !description || !type || !categoryId) {
@@ -99,6 +128,8 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
   });
 
   server.post('/marketplace/listings/:id/versions', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
     const { id } = request.params as any;
     const body = (request.body as any) || {};
     const { version, releaseNotes, minApiVersion } = body;
@@ -112,6 +143,8 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
   });
 
   server.post('/marketplace/listings/:id/status', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
     const { id } = request.params as any;
     const body = (request.body as any) || {};
     const validStatuses: ListingStatus[] = ['draft', 'published', 'deprecated', 'archived'];
@@ -129,11 +162,14 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
   /* ── Review endpoints ────────────────────────────────────────── */
 
   server.post('/marketplace/listings/:id/reviews', async (request, reply) => {
+    const session = await requireSession(request, reply);
     const { id } = request.params as any;
     const body = (request.body as any) || {};
-    const { tenantId, rating, comment } = body;
-    if (!tenantId || rating === undefined) {
-      return reply.code(400).send({ ok: false, error: 'tenantId and rating required' });
+    const { rating, comment } = body;
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
+    if (rating === undefined) {
+      return reply.code(400).send({ ok: false, error: 'rating required' });
     }
     const review = addReview(id, tenantId, Number(rating), comment);
     if (!review)
@@ -151,10 +187,14 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
   /* ── Install endpoints ───────────────────────────────────────── */
 
   server.post('/marketplace/install', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
     const body = (request.body as any) || {};
-    const { listingId, tenantId, version, config } = body;
-    if (!listingId || !tenantId) {
-      return reply.code(400).send({ ok: false, error: 'listingId and tenantId required' });
+    const { listingId, version, config } = body;
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
+    if (!listingId) {
+      return reply.code(400).send({ ok: false, error: 'listingId required' });
     }
     const install = installListing(listingId, tenantId, version, config);
     if (!install)
@@ -165,10 +205,14 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
   });
 
   server.post('/marketplace/uninstall', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
     const body = (request.body as any) || {};
-    const { listingId, tenantId } = body;
-    if (!listingId || !tenantId) {
-      return reply.code(400).send({ ok: false, error: 'listingId and tenantId required' });
+    const { listingId } = body;
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
+    if (!listingId) {
+      return reply.code(400).send({ ok: false, error: 'listingId required' });
     }
     if (!uninstallListing(listingId, tenantId)) {
       return reply.code(404).send({ ok: false, error: 'install_not_found' });
@@ -176,22 +220,29 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
     return { ok: true, status: 'uninstalled' };
   });
 
-  server.get('/marketplace/installs', async (request) => {
-    const { tenantId } = request.query as any;
-    if (!tenantId) return { ok: true, installs: [] };
+  server.get('/marketplace/installs', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
     return { ok: true, installs: listInstalls(tenantId) };
   });
 
   server.get('/marketplace/installs/:id', async (request, reply) => {
+    const session = await requireSession(request, reply);
     const { id } = request.params as any;
-    const install = getInstall(id);
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
+    const install = getInstallForTenant(tenantId, id);
     if (!install) return reply.code(404).send({ ok: false, error: 'install_not_found' });
     return { ok: true, install };
   });
 
   /* ── Stats ─────────────────────────────────────────────────────── */
 
-  server.get('/marketplace/stats', async () => {
-    return { ok: true, stats: getMarketplaceStats() };
+  server.get('/marketplace/stats', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    const tenantId = requireTenantId({ ...request, session }, reply);
+    if (!tenantId) return;
+    return { ok: true, stats: getMarketplaceStats(tenantId) };
   });
 }

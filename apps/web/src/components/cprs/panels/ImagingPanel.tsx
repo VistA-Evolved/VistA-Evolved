@@ -1861,6 +1861,9 @@ function ImagingOrderForm({ dfn, onCreated }: { dfn: string; onCreated: () => vo
     location: 'RADIOLOGY',
   });
 
+  const canCreateOrder =
+    form.scheduledProcedure.trim().length > 0 && form.clinicalIndication.trim().length > 0;
+
   const set =
     (field: string) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
@@ -2000,20 +2003,25 @@ function ImagingOrderForm({ dfn, onCreated }: { dfn: string; onCreated: () => vo
       </div>
       <button
         onClick={submit}
-        disabled={submitting}
+        disabled={submitting || !canCreateOrder}
         style={{
           padding: '6px 20px',
-          background: submitting ? '#94a3b8' : 'var(--cprs-accent, #2563eb)',
+          background: submitting || !canCreateOrder ? '#94a3b8' : 'var(--cprs-accent, #2563eb)',
           color: '#fff',
           border: 'none',
           borderRadius: 4,
           fontSize: 12,
-          cursor: submitting ? 'default' : 'pointer',
+          cursor: submitting || !canCreateOrder ? 'not-allowed' : 'pointer',
           fontWeight: 600,
         }}
       >
         {submitting ? 'Creating...' : 'Create Order'}
       </button>
+      {!canCreateOrder && (
+        <p style={{ fontSize: 10, color: 'var(--cprs-text-muted)', marginTop: 8, marginBottom: 0 }}>
+          Enter Procedure and Clinical Indication to enable Create Order.
+        </p>
+      )}
       <p style={{ fontSize: 10, color: 'var(--cprs-text-muted)', marginTop: 8 }}>
         Orders are created in the local sidecar worklist. VistA Radiology integration is planned for
         a future phase.

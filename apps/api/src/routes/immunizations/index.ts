@@ -21,10 +21,35 @@ import { safeErr } from '../../lib/safe-error.js';
 /* ------------------------------------------------------------------ */
 
 /** Parse ORQQPX IMMUN LIST response: IEN^NAME^DATE/TIME^REACTION^INVERSE_DT */
+function fileManDateToIso(value: string): string {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+
+  const [datePart, timePart = ''] = raw.split('.');
+  if (!/^\d{7}$/.test(datePart)) return raw;
+
+  const year = Number(datePart.slice(0, 3)) + 1700;
+  const month = datePart.slice(3, 5);
+  const day = datePart.slice(5, 7);
+  if (!month || !day) return raw;
+
+  const paddedTime = (timePart + '000000').slice(0, 6);
+  const hour = paddedTime.slice(0, 2) || '00';
+  const minute = paddedTime.slice(2, 4) || '00';
+  const second = paddedTime.slice(4, 6) || '00';
+
+  if (timePart.trim()) {
+    return `${year}-${month}-${day}T${hour}:${minute}:${second}`;
+  }
+
+  return `${year}-${month}-${day}`;
+}
+
 function parseImmunList(lines: string[]): Array<{
   ien: string;
   name: string;
   dateTime: string;
+  rawDateTime: string;
   reaction: string;
   inverseDt: string;
 }> {
@@ -32,6 +57,7 @@ function parseImmunList(lines: string[]): Array<{
     ien: string;
     name: string;
     dateTime: string;
+    rawDateTime: string;
     reaction: string;
     inverseDt: string;
   }> = [];
@@ -40,10 +66,12 @@ function parseImmunList(lines: string[]): Array<{
     const parts = line.split('^');
     const ien = parts[0]?.trim() || '';
     if (!ien) continue;
+    const rawDateTime = parts[2]?.trim() || '';
     results.push({
       ien,
       name: parts[1]?.trim() || '',
-      dateTime: parts[2]?.trim() || '',
+      dateTime: fileManDateToIso(rawDateTime),
+      rawDateTime,
       reaction: parts[3]?.trim() || '',
       inverseDt: parts[4]?.trim() || '',
     });

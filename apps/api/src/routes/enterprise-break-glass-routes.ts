@@ -194,7 +194,7 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
     const query = request.query as Record<string, string>;
     const sessions = listBreakGlassSessions({
       status: query.status as any,
-      tenantId: query.tenantId,
+      tenantId: session.tenantId,
       limit: query.limit ? Number(query.limit) : 100,
     });
 
@@ -217,7 +217,7 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
 
-    const stats = getBreakGlassStats();
+    const stats = getBreakGlassStats(session.tenantId);
     return { ok: true, stats };
   });
 
@@ -234,7 +234,7 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
     requireRole(session, ['admin'], reply);
 
     const { id } = request.params as { id: string };
-    const bgSession = getBreakGlassSession(id);
+    const bgSession = getBreakGlassSession(id, session.tenantId);
 
     if (!bgSession) {
       return reply.code(404).send({ ok: false, error: 'Break-glass session not found' });
@@ -257,7 +257,7 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
 
     const authMode = getAuthModeStatus();
     const roleMapping = getIdpRoleMappings();
-    const breakGlassStatus = getBreakGlassStats();
+    const breakGlassStatus = getBreakGlassStats(session.tenantId);
 
     return {
       ok: true,

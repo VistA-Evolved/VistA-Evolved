@@ -18,8 +18,6 @@
 import type { ClinicalCommand, RpcExecutor, DryRunTranscript } from '../types.js';
 import { optionalRpc } from '../../vista/rpcCapabilities.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
-import { validateCredentials } from '../../vista/config.js';
-import { connect, disconnect, getDuz } from '../../vista/rpcBrokerClient.js';
 import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
@@ -68,26 +66,15 @@ export const pharmExecutor: RpcExecutor = {
       }
     }
 
-    validateCredentials();
-    await connect();
-
-    try {
-      switch (intent) {
-        case 'PLACE_MED_ORDER':
-          return await execPlaceMedOrder(command);
-        case 'DISCONTINUE_MED_ORDER':
-          return await execDiscontinueMedOrder(command);
-        default:
-          throw Object.assign(new Error(`Unimplemented PHARM intent: ${intent}`), {
-            errorClass: 'permanent',
-          });
-      }
-    } finally {
-      try {
-        disconnect();
-      } catch {
-        /* best-effort */
-      }
+    switch (intent) {
+      case 'PLACE_MED_ORDER':
+        return await execPlaceMedOrder(command);
+      case 'DISCONTINUE_MED_ORDER':
+        return await execDiscontinueMedOrder(command);
+      default:
+        throw Object.assign(new Error(`Unimplemented PHARM intent: ${intent}`), {
+          errorClass: 'permanent',
+        });
     }
   },
 
@@ -145,7 +132,15 @@ async function execPlaceMedOrder(cmd: ClinicalCommand): Promise<{
 
   try {
     // Step 2: SAVE medication order
-    const duz = getDuz();
+    const duz = String(cmd.createdBy || '').trim();
+    if (!duz) {
+      throw Object.assign(
+        new Error('createdBy DUZ required for clinician-attributed PLACE_MED_ORDER'),
+        {
+          errorClass: 'permanent',
+        }
+      );
+    }
     const saveResult = await safeCallRpc('ORWDX SAVE', [
       dfn,
       duz,
@@ -213,7 +208,15 @@ async function execDiscontinueMedOrder(cmd: ClinicalCommand): Promise<{
   }
 
   try {
-    const duz = getDuz();
+    const duz = String(cmd.createdBy || '').trim();
+    if (!duz) {
+      throw Object.assign(
+        new Error('createdBy DUZ required for clinician-attributed DISCONTINUE_MED_ORDER'),
+        {
+          errorClass: 'permanent',
+        }
+      );
+    }
     await safeCallRpc('ORWDXA DC', [orderIen, duz, '', reason || 'Discontinued']);
 
     log.info(`PHARM DISCONTINUE_MED_ORDER completed: orderIen=${orderIen}`);

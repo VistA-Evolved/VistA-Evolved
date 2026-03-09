@@ -18,6 +18,7 @@ import { enterRpcContext } from '../lib/rpc-resilience.js';
 import { RATE_LIMIT_CONFIG, CSRF_CONFIG } from '../config/server-config.js';
 import { getSession } from '../auth/session-store.js';
 import type { SessionData } from '../auth/session-store.js';
+import { getVistaBinding } from '../auth/idp/vista-binding.js';
 import { disconnect as disconnectRpcBroker } from '../vista/rpcBrokerClient.js';
 import { disconnectPool as disconnectRpcPool } from '../vista/rpcConnectionPool.js';
 import { disconnectRedis } from '../lib/redis.js';
@@ -49,10 +50,8 @@ import {
 } from '../telemetry/metrics.js';
 import { shutdownTracing } from '../telemetry/tracing.js';
 import { closePgDb } from '../platform/pg/pg-db.js';
-// Phase 573B: VistA config for RPC context injection
-import {
-  VISTA_HOST, VISTA_PORT, VISTA_ACCESS_CODE, VISTA_VERIFY_CODE, VISTA_CONTEXT,
-} from '../vista/config.js';
+// Phase 573B/573C: VistA config for RPC context injection
+import { VISTA_HOST, VISTA_PORT, VISTA_CONTEXT } from '../vista/config.js';
 
 /* ================================================================== */
 /* CORS origin allowlist                                                */
@@ -148,6 +147,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/iam\/oidc\/config$/, auth: 'none' }, // Phase 35: OIDC discovery (public)
   { pattern: /^\/iam\/health$/, auth: 'session' }, // Phase 35: IAM health
   { pattern: /^\/iam\//, auth: 'session' }, // Phase 35: IAM routes (role checked in handler)
+  { pattern: /^\/portal\/staff\//, auth: 'session' }, // Phase 623: CPRS staff queues use clinician session auth
   { pattern: /^\/portal\/auth\//, auth: 'none' }, // Phase 26: portal login/logout/session (own auth)
   { pattern: /^\/portal\//, auth: 'none' }, // Phase 26: portal routes (own session check in handler)
   { pattern: /^\/telehealth\/health$/, auth: 'session' }, // Phase 30: telehealth health (clinician)
@@ -508,18 +508,37 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
     // Attach session to request for downstream audit attribution
     request.session = session;
 
-    // Phase 573B: Inject RPC context so safeCallRpc routes through the
-    // connection pool with the correct DUZ attribution for this request.
-    // Uses system credentials for now; per-user AV codes come in Phase 573C.
-    if (session.duz && VISTA_ACCESS_CODE && VISTA_VERIFY_CODE) {
+    if (!session.tenantId || typeof session.tenantId !== 'string') {
+      audit(
+        'security.invalid-input',
+        'denied',
+        {
+          duz: session.duz,
+          name: session.userName,
+          role: session.role,
+        },
+        { sourceIp: request.ip, detail: { url, tokenPresent: true } }
+      );
+      (request as any)._rejected = true;
+      reply.code(403).send({ ok: false, error: 'Tenant context missing from session' });
+      return;
+    }
+
+    // Inject RPC context so safeCallRpc routes through the connection pool with
+    // clinician-bound credentials when available. If the request has a session
+    // but no active VistA binding, safeCallRpc will fail closed instead of
+    // silently falling back to the system DUZ.
+    const vistaBinding = getVistaBinding(token);
+    const effectiveDuz = vistaBinding?.duz || session.duz;
+    if (effectiveDuz) {
       enterRpcContext({
-        tenantId: session.tenantId || 'default',
-        duz: session.duz,
+        tenantId: session.tenantId || vistaBinding?.tenantId || '',
+        duz: effectiveDuz,
         vistaHost: VISTA_HOST,
         vistaPort: VISTA_PORT,
         vistaContext: VISTA_CONTEXT,
-        accessCode: VISTA_ACCESS_CODE,
-        verifyCode: VISTA_VERIFY_CODE,
+        accessCode: vistaBinding?.accessCode,
+        verifyCode: vistaBinding?.verifyCode,
       });
     }
 
@@ -697,9 +716,11 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
 
     // Phase 586 (W42-P15): Billing metering — count API calls per tenant
     try {
-      const tenantId = (request as any).session?.tenantId || 'default';
-      incrementMeter(tenantId, 'api_call');
-      if (route.startsWith('/fhir/')) incrementMeter(tenantId, 'fhir_request');
+      const tenantId = (request as any).session?.tenantId;
+      if (tenantId) {
+        incrementMeter(tenantId, 'api_call');
+        if (route.startsWith('/fhir/')) incrementMeter(tenantId, 'fhir_request');
+      }
     } catch {
       // Metering is best-effort; never block the response
     }

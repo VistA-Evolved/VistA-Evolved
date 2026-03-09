@@ -120,6 +120,7 @@ export function submitVulnerability(
 }
 
 export function assessVulnerability(
+  tenantId: string,
   id: string,
   input: {
     status: "accepted" | "rejected" | "mitigated" | "false_positive";
@@ -129,7 +130,7 @@ export function assessVulnerability(
   }
 ): Vulnerability | null {
   const vuln = vulnStore.get(id);
-  if (!vuln) return null;
+  if (!vuln || vuln.tenantId !== tenantId) return null;
   const updated: Vulnerability = {
     ...vuln,
     status: input.status,
@@ -142,9 +143,9 @@ export function assessVulnerability(
   return updated;
 }
 
-export function triageVulnerability(id: string, assessedBy: string): Vulnerability | null {
+export function triageVulnerability(tenantId: string, id: string, assessedBy: string): Vulnerability | null {
   const vuln = vulnStore.get(id);
-  if (!vuln || vuln.status !== "submitted") return null;
+  if (!vuln || vuln.tenantId !== tenantId || vuln.status !== "submitted") return null;
   const updated: Vulnerability = {
     ...vuln,
     status: "triaging",
@@ -155,8 +156,11 @@ export function triageVulnerability(id: string, assessedBy: string): Vulnerabili
   return updated;
 }
 
-export function getVulnerability(id: string): Vulnerability | undefined {
-  return vulnStore.get(id);
+export function getVulnerability(id: string, tenantId?: string): Vulnerability | undefined {
+  const vuln = vulnStore.get(id);
+  if (!vuln) return undefined;
+  if (tenantId && vuln.tenantId !== tenantId) return undefined;
+  return vuln;
 }
 
 export function listVulnerabilities(tenantId: string, severity?: VulnSeverity): Vulnerability[] {

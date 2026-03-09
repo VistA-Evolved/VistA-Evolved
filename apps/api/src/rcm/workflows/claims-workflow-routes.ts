@@ -35,6 +35,22 @@ import {
 } from '../payers/payer-rulepacks.js';
 import { safeErr } from '../../lib/safe-error.js';
 
+function resolveTenantId(request: any): string {
+  const requestTenantId = request?.tenantId || request?.session?.tenantId;
+  if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+    return requestTenantId.trim();
+  }
+  const headerTenantId = request?.headers?.['x-tenant-id'];
+  if (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0) {
+    return headerTenantId.trim();
+  }
+  return 'default';
+}
+
+function resolveActor(request: any, explicitActor?: string): string {
+  return explicitActor || request?.session?.userName || request?.session?.duz || 'system';
+}
+
 const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
   // Load rulepacks once
   loadPayerRulepacks();
@@ -43,7 +59,6 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   server.post('/rcm/claims/hmo', async (request, reply) => {
     const body = (request.body as any) || {};
     const {
-      tenantId = 'default',
       patientDfn,
       patientName,
       payerId,
@@ -52,7 +67,7 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
       lines,
       totalCharge,
       loaReferenceNumber,
-      actor = 'system',
+      actor,
     } = body;
 
     if (!patientDfn || !payerId || !dateOfService) {
@@ -64,7 +79,7 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
 
     try {
       const result = createHmoClaim({
-        tenantId,
+        tenantId: resolveTenantId(request),
         patientDfn,
         patientName,
         payerId,
@@ -73,7 +88,7 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
         lines,
         totalCharge,
         loaReferenceNumber,
-        actor,
+        actor: resolveActor(request, actor),
       });
 
       return reply.status(201).send({
@@ -91,8 +106,7 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
 
   /* ── GET /rcm/claims/hmo/board — status board ──────────── */
   server.get('/rcm/claims/hmo/board', async (request, reply) => {
-    const tenantId = (request.query as any)?.tenantId ?? 'default';
-    const board = getClaimsStatusBoard(tenantId);
+    const board = getClaimsStatusBoard(resolveTenantId(request));
     return reply.send({ ok: true, ...board });
   });
 
@@ -100,7 +114,7 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   server.get('/rcm/claims/hmo/:id/plan', async (request, reply) => {
     const { id } = request.params as { id: string };
     // For plan resolution, we get the payer from the claim
-    const result = generateClaimPacketForClaim(id);
+    const result = generateClaimPacketForClaim(resolveTenantId(request), id);
     if (!result.ok) {
       return reply.status(404).send({ ok: false, error: result.error });
     }
@@ -111,14 +125,20 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   server.post('/rcm/claims/hmo/:id/transition', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const { toStatus, actor = 'system', detail } = body;
+    const { toStatus, actor, detail } = body;
 
     if (!toStatus) {
       return reply.status(400).send({ ok: false, error: 'toStatus required' });
     }
 
     try {
-      const claim = transitionHmoClaim(id, toStatus as ClaimStatus, actor, detail);
+      const claim = transitionHmoClaim(
+        resolveTenantId(request),
+        id,
+        toStatus as ClaimStatus,
+        resolveActor(request, actor),
+        detail
+      );
       return reply.send({ ok: true, claim });
     } catch (err) {
       return reply.status(400).send({
@@ -132,27 +152,37 @@ const claimsWorkflowRoutes: FastifyPluginAsync = async (server: FastifyInstance)
   server.post('/rcm/claims/hmo/:id/denial', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const { reasonText, reasonCode, actor = 'system' } = body;
+    const { reasonText, reasonCode, actor } = body;
 
     if (!reasonText) {
       return reply.status(400).send({ ok: false, error: 'reasonText required' });
     }
 
-    const denial = recordDenial({ claimId: id, reasonText, reasonCode, actor });
-    return reply.status(201).send({ ok: true, denial });
+    try {
+      const denial = recordDenial({
+        tenantId: resolveTenantId(request),
+        claimId: id,
+        reasonText,
+        reasonCode,
+        actor: resolveActor(request, actor),
+      });
+      return reply.status(201).send({ ok: true, denial });
+    } catch (err) {
+      return reply.status(404).send({ ok: false, error: safeErr(err) });
+    }
   });
 
   /* ── GET /rcm/claims/hmo/:id/denials — denial history ─── */
   server.get('/rcm/claims/hmo/:id/denials', async (request, reply) => {
     const { id } = request.params as { id: string };
-    const denials = getDenials(id);
+    const denials = getDenials(resolveTenantId(request), id);
     return reply.send({ ok: true, count: denials.length, denials });
   });
 
   /* ── GET /rcm/claims/hmo/:id/packet — generate packet ─── */
   server.get('/rcm/claims/hmo/:id/packet', async (request, reply) => {
     const { id } = request.params as { id: string };
-    const result = generateClaimPacketForClaim(id);
+    const result = generateClaimPacketForClaim(resolveTenantId(request), id);
     if (!result.ok) {
       return reply.status(404).send({ ok: false, error: result.error });
     }

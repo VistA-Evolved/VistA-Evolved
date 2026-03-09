@@ -243,7 +243,7 @@ export function declareIncident(
     updatedAt: now,
   };
   incidents.set(incident.id, incident);
-  audit("incident.declared", commander, { incidentId: incident.id, severity });
+  audit("incident.declared", commander, { tenantId, incidentId: incident.id, severity });
   return incident;
 }
 
@@ -252,24 +252,27 @@ export function updateIncidentStatus(
   status: IncidentStatus,
   actor: string,
   detail: string,
+  tenantId?: string,
 ): Incident | null {
   const inc = incidents.get(id);
   if (!inc) return null;
+  if (tenantId && inc.tenantId !== tenantId) return null;
   const now = new Date().toISOString();
   inc.status = status;
   inc.timeline.push({ timestamp: now, actor, action: `status -> ${status}`, detail });
   if (status === "resolved") inc.resolvedAt = now;
   inc.updatedAt = now;
-  audit("incident.status_updated", actor, { incidentId: id, status });
+  audit("incident.status_updated", actor, { tenantId: inc.tenantId, incidentId: id, status });
   return inc;
 }
 
-export function addPostmortemUrl(id: string, url: string, actor: string): Incident | null {
+export function addPostmortemUrl(id: string, url: string, actor: string, tenantId?: string): Incident | null {
   const inc = incidents.get(id);
   if (!inc) return null;
+  if (tenantId && inc.tenantId !== tenantId) return null;
   inc.postmortemUrl = url;
   inc.updatedAt = new Date().toISOString();
-  audit("incident.postmortem_added", actor, { incidentId: id, url });
+  audit("incident.postmortem_added", actor, { tenantId: inc.tenantId, incidentId: id, url });
   return inc;
 }
 
@@ -277,8 +280,11 @@ export function listIncidents(tenantId: string): Incident[] {
   return [...incidents.values()].filter((i) => i.tenantId === tenantId).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-export function getIncident(id: string): Incident | null {
-  return incidents.get(id) ?? null;
+export function getIncident(id: string, tenantId?: string): Incident | null {
+  const incident = incidents.get(id) ?? null;
+  if (!incident) return null;
+  if (tenantId && incident.tenantId !== tenantId) return null;
+  return incident;
 }
 
 // ── Status Page ────────────────────────────────────────────────────────
@@ -354,7 +360,7 @@ export function createMaintenanceWindow(
     updatedAt: now,
   };
   maintenanceWindows.set(mw.id, mw);
-  audit("maintenance.created", createdBy, { maintenanceId: mw.id });
+  audit("maintenance.created", createdBy, { tenantId, maintenanceId: mw.id });
   return mw;
 }
 
@@ -362,12 +368,14 @@ export function updateMaintenanceState(
   id: string,
   state: MaintenanceState,
   actor: string,
+  tenantId?: string,
 ): MaintenanceWindow | null {
   const mw = maintenanceWindows.get(id);
   if (!mw) return null;
+  if (tenantId && mw.tenantId !== tenantId) return null;
   mw.state = state;
   mw.updatedAt = new Date().toISOString();
-  audit("maintenance.state_updated", actor, { maintenanceId: id, state });
+  audit("maintenance.state_updated", actor, { tenantId: mw.tenantId, maintenanceId: id, state });
   return mw;
 }
 
@@ -396,7 +404,7 @@ export function upsertOnCallSchedule(
     existing.escalationPolicy = escalationPolicy;
     existing.timezone = timezone;
     existing.updatedAt = now;
-    audit("oncall.updated", actor, { scheduleId: existing.id, teamName });
+    audit("oncall.updated", actor, { tenantId, scheduleId: existing.id, teamName });
     return existing;
   }
   const sched: OnCallSchedule = {
@@ -410,7 +418,7 @@ export function upsertOnCallSchedule(
     updatedAt: now,
   };
   onCallSchedules.set(sched.id, sched);
-  audit("oncall.created", actor, { scheduleId: sched.id, teamName });
+  audit("oncall.created", actor, { tenantId, scheduleId: sched.id, teamName });
   return sched;
 }
 
@@ -450,7 +458,7 @@ export function createRunbook(
     updatedAt: now,
   };
   runbooks.set(rb.id, rb);
-  audit("runbook.created", actor, { runbookId: rb.id, title });
+  audit("runbook.created", actor, { tenantId, runbookId: rb.id, title });
   return rb;
 }
 
@@ -458,25 +466,28 @@ export function updateRunbook(
   id: string,
   updates: Partial<Pick<Runbook, "title" | "service" | "severity" | "steps">>,
   actor: string,
+  tenantId?: string,
 ): Runbook | null {
   const rb = runbooks.get(id);
   if (!rb) return null;
+  if (tenantId && rb.tenantId !== tenantId) return null;
   if (updates.title !== undefined) rb.title = updates.title;
   if (updates.service !== undefined) rb.service = updates.service;
   if (updates.severity !== undefined) rb.severity = updates.severity;
   if (updates.steps !== undefined) rb.steps = updates.steps;
   rb.version++;
   rb.updatedAt = new Date().toISOString();
-  audit("runbook.updated", actor, { runbookId: id, version: rb.version });
+  audit("runbook.updated", actor, { tenantId: rb.tenantId, runbookId: id, version: rb.version });
   return rb;
 }
 
-export function markRunbookTested(id: string, actor: string): Runbook | null {
+export function markRunbookTested(id: string, actor: string, tenantId?: string): Runbook | null {
   const rb = runbooks.get(id);
   if (!rb) return null;
+  if (tenantId && rb.tenantId !== tenantId) return null;
   rb.lastTestedAt = new Date().toISOString();
   rb.updatedAt = rb.lastTestedAt;
-  audit("runbook.tested", actor, { runbookId: id });
+  audit("runbook.tested", actor, { tenantId: rb.tenantId, runbookId: id });
   return rb;
 }
 
@@ -484,8 +495,11 @@ export function listRunbooks(tenantId: string): Runbook[] {
   return [...runbooks.values()].filter((r) => r.tenantId === tenantId);
 }
 
-export function getRunbook(id: string): Runbook | null {
-  return runbooks.get(id) ?? null;
+export function getRunbook(id: string, tenantId?: string): Runbook | null {
+  const runbook = runbooks.get(id) ?? null;
+  if (!runbook) return null;
+  if (tenantId && runbook.tenantId !== tenantId) return null;
+  return runbook;
 }
 
 // ── SLA Definitions & Reports ──────────────────────────────────────────
@@ -512,7 +526,7 @@ export function createSlaDefinition(
     updatedAt: now,
   };
   slaDefinitions.set(sla.id, sla);
-  audit("sla.created", actor, { slaId: sla.id, name, metric });
+  audit("sla.created", actor, { tenantId, slaId: sla.id, name, metric });
   return sla;
 }
 
@@ -605,7 +619,7 @@ export function createSupportTicket(
     updatedAt: now,
   };
   supportTickets.set(ticket.id, ticket);
-  audit("ticket.created", createdBy, { ticketId: ticket.id, priority, category });
+  audit("ticket.created", createdBy, { tenantId, ticketId: ticket.id, priority, category });
   return ticket;
 }
 
@@ -613,22 +627,25 @@ export function updateTicketStatus(
   id: string,
   status: TicketStatus,
   actor: string,
+  tenantId?: string,
 ): SupportTicket | null {
   const t = supportTickets.get(id);
   if (!t) return null;
+  if (tenantId && t.tenantId !== tenantId) return null;
   t.status = status;
   t.updatedAt = new Date().toISOString();
-  audit("ticket.status_updated", actor, { ticketId: id, status });
+  audit("ticket.status_updated", actor, { tenantId: t.tenantId, ticketId: id, status });
   return t;
 }
 
-export function assignTicket(id: string, assignee: string, actor: string): SupportTicket | null {
+export function assignTicket(id: string, assignee: string, actor: string, tenantId?: string): SupportTicket | null {
   const t = supportTickets.get(id);
   if (!t) return null;
+  if (tenantId && t.tenantId !== tenantId) return null;
   t.assignee = assignee;
   t.status = t.status === "open" ? "triaged" : t.status;
   t.updatedAt = new Date().toISOString();
-  audit("ticket.assigned", actor, { ticketId: id, assignee });
+  audit("ticket.assigned", actor, { tenantId: t.tenantId, ticketId: id, assignee });
   return t;
 }
 
@@ -637,12 +654,14 @@ export function addTicketMessage(
   author: string,
   body: string,
   internal: boolean,
+  tenantId?: string,
 ): SupportTicket | null {
   const t = supportTickets.get(id);
   if (!t) return null;
+  if (tenantId && t.tenantId !== tenantId) return null;
   t.messages.push({ timestamp: new Date().toISOString(), author, body, internal });
   t.updatedAt = new Date().toISOString();
-  audit("ticket.message_added", author, { ticketId: id, internal });
+  audit("ticket.message_added", author, { tenantId: t.tenantId, ticketId: id, internal });
   return t;
 }
 
@@ -652,8 +671,11 @@ export function listSupportTickets(tenantId: string, status?: TicketStatus): Sup
   return list.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-export function getSupportTicket(id: string): SupportTicket | null {
-  return supportTickets.get(id) ?? null;
+export function getSupportTicket(id: string, tenantId?: string): SupportTicket | null {
+  const ticket = supportTickets.get(id) ?? null;
+  if (!ticket) return null;
+  if (tenantId && ticket.tenantId !== tenantId) return null;
+  return ticket;
 }
 
 // ── Tenant Communications ──────────────────────────────────────────────
@@ -691,8 +713,11 @@ export function listTenantCommunications(tenantId: string): TenantCommunication[
 
 // ── Audit ──────────────────────────────────────────────────────────────
 
-export function getSreAuditLog(limit = 200): AuditEntry[] {
-  return auditLog.slice(-limit);
+export function getSreAuditLog(limit = 200, tenantId?: string): AuditEntry[] {
+  const scopedEntries = tenantId
+    ? auditLog.filter((entry) => entry.detail?.tenantId === tenantId)
+    : auditLog;
+  return scopedEntries.slice(-limit);
 }
 
 // ── Summary / Posture ──────────────────────────────────────────────────
@@ -727,6 +752,6 @@ export function getSrePosture(tenantId: string): SrePostureSummary {
     recentCommunications: [...tenantCommunications.values()].filter(
       (c) => c.tenantId === tenantId && c.sentAt >= last24h,
     ).length,
-    auditEntryCount: auditLog.length,
+    auditEntryCount: auditLog.filter((entry) => entry.detail?.tenantId === tenantId).length,
   };
 }

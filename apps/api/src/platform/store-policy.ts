@@ -5450,3 +5450,25 @@ export function getStoreInventorySummary(): {
     policyViolations: criticalInMemory,
   };
 }
+
+export function getStorePolicyGateSummary(): {
+  pass: boolean;
+  summary: string;
+  criticalInMemoryCount: number;
+  cacheWithoutLimitsCount: number;
+  policyViolations: StoreEntry[];
+} {
+  const summary = getStoreInventorySummary();
+  const pass = summary.criticalInMemoryCount === 0;
+  const statusText = pass
+    ? 'no critical+in_memory_only violations'
+    : `${summary.criticalInMemoryCount} critical+in_memory_only violation(s)`;
+
+  return {
+    pass,
+    summary: `${summary.total} stores inventoried, ${statusText}`,
+    criticalInMemoryCount: summary.criticalInMemoryCount,
+    cacheWithoutLimitsCount: summary.cacheWithoutLimitsCount,
+    policyViolations: summary.policyViolations,
+  };
+}

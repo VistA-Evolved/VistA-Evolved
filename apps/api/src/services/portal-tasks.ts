@@ -37,6 +37,7 @@ export type TaskStatus = "active" | "completed" | "dismissed" | "expired";
 
 export interface PortalTask {
   id: string;
+  tenantId: string;
   patientDfn: string;
   patientName: string;
   category: TaskCategory;
@@ -67,6 +68,33 @@ let taskSeq = 0;
 /* Phase 146: DB repo wiring */
 let taskDbRepo: { upsert(d: any): Promise<any>; update?(id: string, u: any): Promise<any> } | null = null;
 export function initTaskStoreRepo(repo: typeof taskDbRepo): void { taskDbRepo = repo; }
+
+function persistTaskRow(task: PortalTask): void {
+  taskDbRepo
+    ?.upsert({
+      id: task.id,
+      tenantId: task.tenantId,
+      patientDfn: task.patientDfn,
+      title: task.title,
+      description: task.body,
+      taskType: task.category,
+      status: task.status,
+      priority: task.priority,
+      dueDate: task.expiresAt,
+      assignedTo: task.createdBy,
+      completedAt: task.status === 'completed' ? task.updatedAt : null,
+      metadataJson: JSON.stringify({
+        patientName: task.patientName,
+        actionUrl: task.actionUrl,
+        actionLabel: task.actionLabel,
+        sourceId: task.sourceId,
+        isSystemGenerated: task.isSystemGenerated,
+      }),
+      createdAt: task.createdAt,
+      updatedAt: task.updatedAt,
+    })
+    .catch(() => {});
+}
 
 function generateId(): string {
   return `task-${++taskSeq}-${randomBytes(4).toString("hex")}`;
@@ -128,6 +156,7 @@ function seedDemoTasks() {
     const id = generateId();
     taskStore.set(id, {
       id,
+      tenantId: "default",
       patientDfn: d.patientDfn!,
       patientName: d.patientName!,
       category: d.category!,
@@ -169,13 +198,13 @@ function expireStale() {
 /* Patient queries                                                      */
 /* ------------------------------------------------------------------ */
 
-export function getPatientTasks(patientDfn: string, opts?: {
+export function getPatientTasks(tenantId: string, patientDfn: string, opts?: {
   statusFilter?: TaskStatus[];
   categoryFilter?: TaskCategory[];
 }): PortalTask[] {
   expireStale();
   return [...taskStore.values()]
-    .filter(t => t.patientDfn === patientDfn)
+    .filter(t => t.tenantId === tenantId && t.patientDfn === patientDfn)
     .filter(t => !opts?.statusFilter?.length || opts.statusFilter.includes(t.status))
     .filter(t => !opts?.categoryFilter?.length || opts.categoryFilter.includes(t.category))
     .sort((a, b) => {
@@ -187,13 +216,13 @@ export function getPatientTasks(patientDfn: string, opts?: {
     });
 }
 
-export function getPatientTaskCounts(patientDfn: string): {
+export function getPatientTaskCounts(tenantId: string, patientDfn: string): {
   total: number;
   byCategory: Record<TaskCategory, number>;
 } {
   expireStale();
   const active = [...taskStore.values()]
-    .filter(t => t.patientDfn === patientDfn && t.status === "active");
+    .filter(t => t.tenantId === tenantId && t.patientDfn === patientDfn && t.status === "active");
 
   const byCategory: Record<TaskCategory, number> = {
     appointment_reminder: 0,
@@ -215,10 +244,12 @@ export function getPatientTaskCounts(patientDfn: string): {
 
 /** All active tasks across all patients — staff dashboard */
 export function getStaffTaskQueue(opts?: {
+  tenantId?: string;
   categoryFilter?: TaskCategory[];
 }): PortalTask[] {
   expireStale();
   return [...taskStore.values()]
+    .filter(t => t.tenantId === (opts?.tenantId || 'default'))
     .filter(t => t.status === "active")
     .filter(t => !opts?.categoryFilter?.length || opts.categoryFilter.includes(t.category))
     .sort((a, b) => {
@@ -235,6 +266,7 @@ export function getStaffTaskQueue(opts?: {
 
 /** Create a new task (system or staff) */
 export function createTask(opts: {
+  tenantId?: string;
   patientDfn: string;
   patientName: string;
   category: TaskCategory;
@@ -253,6 +285,7 @@ export function createTask(opts: {
 
   const task: PortalTask = {
     id,
+    tenantId: opts.tenantId ?? 'default',
     patientDfn: opts.patientDfn,
     patientName: opts.patientName,
     category: opts.category,
@@ -273,9 +306,10 @@ export function createTask(opts: {
   taskStore.set(id, task);
 
   // Phase 146: Write-through to PG
-  taskDbRepo?.upsert({ id, tenantId: 'default', patientDfn: task.patientDfn, category: task.category, priority: task.priority, status: task.status, title: task.title, body: task.body, createdAt: task.createdAt, updatedAt: task.updatedAt }).catch(() => {});
+  persistTaskRow(task);
 
   portalAudit("portal.task.create" as any, "success", opts.patientDfn, {
+    tenantId: opts.tenantId ?? 'default',
     detail: { taskId: id, category: opts.category, title: opts.title },
   });
 
@@ -283,18 +317,26 @@ export function createTask(opts: {
 }
 
 /** Patient or staff dismisses a task */
-export function dismissTask(taskId: string, patientDfn: string): PortalTask | null {
+export function dismissTask(taskId: string, patientDfn: string, tenantId: string = 'default'): PortalTask | null {
   const task = taskStore.get(taskId);
-  if (!task || task.patientDfn !== patientDfn) return null;
+  if (!task || task.tenantId !== tenantId || task.patientDfn !== patientDfn) return null;
   if (task.status !== "active") return null;
 
   task.status = "dismissed";
   task.updatedAt = new Date().toISOString();
 
   // Phase 146: Write-through dismiss
-  taskDbRepo?.upsert({ id: taskId, tenantId: 'default', status: task.status, updatedAt: task.updatedAt }).catch(() => {});
+  if (taskDbRepo?.update) {
+    taskDbRepo.update(taskId, {
+      status: task.status,
+      updatedAt: task.updatedAt,
+    }).catch(() => {});
+  } else {
+    persistTaskRow(task);
+  }
 
   portalAudit("portal.task.dismiss" as any, "success", patientDfn, {
+    tenantId,
     detail: { taskId },
   });
 
@@ -302,18 +344,27 @@ export function dismissTask(taskId: string, patientDfn: string): PortalTask | nu
 }
 
 /** Mark a task as completed */
-export function completeTask(taskId: string, patientDfn: string): PortalTask | null {
+export function completeTask(taskId: string, patientDfn: string, tenantId: string = 'default'): PortalTask | null {
   const task = taskStore.get(taskId);
-  if (!task || task.patientDfn !== patientDfn) return null;
+  if (!task || task.tenantId !== tenantId || task.patientDfn !== patientDfn) return null;
   if (task.status !== "active") return null;
 
   task.status = "completed";
   task.updatedAt = new Date().toISOString();
 
   // Phase 146: Write-through complete
-  taskDbRepo?.upsert({ id: taskId, tenantId: 'default', status: task.status, updatedAt: task.updatedAt }).catch(() => {});
+  if (taskDbRepo?.update) {
+    taskDbRepo.update(taskId, {
+      status: task.status,
+      completedAt: task.updatedAt,
+      updatedAt: task.updatedAt,
+    }).catch(() => {});
+  } else {
+    persistTaskRow(task);
+  }
 
   portalAudit("portal.task.complete" as any, "success", patientDfn, {
+    tenantId,
     detail: { taskId },
   });
 

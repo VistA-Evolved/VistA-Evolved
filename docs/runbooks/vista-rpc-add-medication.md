@@ -104,6 +104,10 @@ Params: [DFN, DUZ, LocationIEN, QuickOrderIEN]
 Response (array): order record lines
   Line 0: ~OrderIEN;status^displayGroup^dateTime^...^DUZ^providerName^...
   Line 1: tQuantity: N Refills: N *UNSIGNED*
+
+If the response contains runtime text such as `M ERROR`, `%YDB-E-*`, or
+`LAST REF=`, the API must treat the call as a failed live order and return a
+clean clinician-safe blocker state instead of reporting success.
 ```
 
 ### Step 3: Unlock Patient
@@ -177,6 +181,23 @@ curl -X POST http://127.0.0.1:3001/vista/medications \
 2. **Orders may not appear in GET /vista/medications**: `ORWPS ACTIVE` only
    returns pharmacy-verified active prescriptions. Unsigned orders are in the
    OE/RR order file (`^OR(100)`) but not yet dispensed by pharmacy.
+
+3. **VEHU may reject or no-op some quick orders**: when `ORWDXM AUTOACK`
+  returns no live order record, the API now responds truthfully with a
+  server-side draft (`mode: "draft"`, `syncPending: true`) instead of
+  claiming a VistA order was created. This preserves end-user intent without
+  masking the sandbox limitation.
+
+4. **Location IEN is required**: the grounded AUTOACK contract is
+  `[DFN, DUZ, LocationIEN, QuickOrderIEN]`. Omitting the location parameter can
+  produce raw `AUTOACK+4^ORWDXM` runtime errors rather than a live order.
+
+5. **UI truth contract**: the standalone CPRS Add Medication dialog must
+  describe the quick-order path as `ORWDXM AUTOACK`, not `ORWDX SEND`.
+  When the quick-order route falls back after a failed live placement, the
+  clinician-facing message must describe a server-side draft blocker.
+  The separate manual-entry path remains a local-only draft list and must be
+  labeled distinctly from the quick-order server-side draft path.
 
 3. **Limited drug selection**: Only the 22 pre-configured quick orders in the
    WorldVistA Docker sandbox are available. Full drug ordering requires

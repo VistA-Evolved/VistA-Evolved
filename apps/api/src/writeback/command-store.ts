@@ -51,8 +51,11 @@ export function initCommandStoreRepos(repos: {
 /** Rehydrate in-memory maps from PG on startup. */
 export async function rehydrateCommandStore(tenantId?: string): Promise<number> {
   if (!_cmdRepo) return 0;
+  const resolvedTenantId =
+    typeof tenantId === 'string' && tenantId.trim().length > 0 ? tenantId.trim() : null;
+  if (!resolvedTenantId) return 0;
   try {
-    const rows = await _cmdRepo.findByTenant(tenantId || 'default', { limit: MAX_COMMANDS });
+    const rows = await _cmdRepo.findByTenant(resolvedTenantId, { limit: MAX_COMMANDS });
     let count = 0;
     for (const row of rows) {
       if (!commands.has(row.id)) {

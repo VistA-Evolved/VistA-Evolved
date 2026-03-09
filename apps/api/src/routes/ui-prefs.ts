@@ -45,6 +45,22 @@ const THEME_PACK_LIST = [
   { id: 'high-contrast', name: 'High Contrast', category: 'built-in', isDark: false },
 ];
 
+function resolveTenantId(request: any): string | null {
+  const headerTenantId = request?.headers?.['x-tenant-id'];
+  const headerTenant =
+    typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+      ? headerTenantId.trim()
+      : undefined;
+  return request?.session?.tenantId || request?.tenantId || headerTenant || null;
+}
+
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId = resolveTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
 export default async function uiPrefsRoutes(server: FastifyInstance): Promise<void> {
   /* ----------------------------------------------------------------
    * GET /ui-prefs/coversheet
@@ -54,7 +70,8 @@ export default async function uiPrefsRoutes(server: FastifyInstance): Promise<vo
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    const tenantId = (request as any).session?.tenantId ?? 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const duz = session.duz;
 
     const saved = getUIPrefs(tenantId, duz);
@@ -84,7 +101,8 @@ export default async function uiPrefsRoutes(server: FastifyInstance): Promise<vo
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    const tenantId = (request as any).session?.tenantId ?? 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const duz = session.duz;
     const body = (request.body as any) || {};
 
@@ -123,7 +141,8 @@ export default async function uiPrefsRoutes(server: FastifyInstance): Promise<vo
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    const tenantId = (request as any).session?.tenantId ?? 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const duz = session.duz;
 
     deleteUIPrefs(tenantId, duz);
@@ -154,7 +173,8 @@ export default async function uiPrefsRoutes(server: FastifyInstance): Promise<vo
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    const tenantId = (request as any).session?.tenantId ?? 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const duz = session.duz;
 
     const userTheme = getUserThemePack(tenantId, duz);
@@ -182,7 +202,8 @@ export default async function uiPrefsRoutes(server: FastifyInstance): Promise<vo
     const session = await requireSession(request, reply);
     if (!session) return;
 
-    const tenantId = (request as any).session?.tenantId ?? 'default';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const duz = session.duz;
     const body = (request.body as any) || {};
     const { themePack } = body;

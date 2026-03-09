@@ -122,6 +122,7 @@ export interface PhilHealthElectronicSoa {
 
 export interface PhilHealthClaimDraft {
   id: string;
+  tenantId: string;
   facilityId: string;
   /** Patient DFN — clinical data from VistA at render time */
   patientDfn: string;
@@ -227,6 +228,7 @@ export interface PhilHealthTimelineEvent {
 
 export interface PhilHealthFacilitySetup {
   id: string;
+  tenantId: string;
   facilityId: string;
   /** PhilHealth Facility Code (e.g., "H12345678") */
   facilityCode: string;

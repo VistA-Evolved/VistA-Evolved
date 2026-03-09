@@ -78,7 +78,7 @@ if (-not $VistaUser) {
     # Check if /home/vehu exists in the container (VEHU image)
     $prevEAP = $ErrorActionPreference
     $ErrorActionPreference = "SilentlyContinue"
-    $vehuCheck = docker exec $ContainerName test -d /home/vehu 2>&1
+    docker exec $ContainerName test -d /home/vehu 2>&1 | Out-Null
     $vehuExit = $LASTEXITCODE
     $ErrorActionPreference = $prevEAP
     if ($vehuExit -eq 0) {
@@ -127,7 +127,8 @@ $productionRoutines = @(
     "ZVEMSIN.m",   # MailMan RPC installer
     "ZVERPC.m",    # RPC catalog lister
     "ZVERCMP.m",   # RCM provider info wrapper
-    "ZVEADT.m"     # ADT ward census/bed board (3 RPCs)
+    "ZVEADT.m",    # ADT ward census/bed board (3 RPCs)
+    "ZVEPROBADD.m" # Problem add wrapper (Phase 683)
 )
 
 if ($Seed) {
@@ -203,6 +204,11 @@ $installSteps = @(
         Label   = "ADT RPCs (3 ZVEADT *)"
         Command = "mumps -run INSTALL^ZVEADT"
         Match   = "registered|already|ZVEADT"
+    },
+    @{
+        Label   = "Problem add wrapper (VE PROBLEM ADD)"
+        Command = "mumps -run INSTALL^ZVEPROBADD"
+        Match   = "registered|already|VE PROBLEM ADD"
     }
 )
 

@@ -150,8 +150,11 @@ export function createTask(
   return task;
 }
 
-export function getTask(id: string): WorkflowTask | undefined {
-  return taskStore.get(id);
+export function getTask(id: string, tenantId?: string): WorkflowTask | undefined {
+  const task = taskStore.get(id);
+  if (!task) return undefined;
+  if (tenantId && task.tenantId !== tenantId) return undefined;
+  return task;
 }
 
 export function listTasks(filter: TaskFilter): WorkflowTask[] {
@@ -186,12 +189,13 @@ export function listTasks(filter: TaskFilter): WorkflowTask[] {
 // ─── Task Transitions ────────────────────────────────────
 
 export function assignTask(
+  tenantId: string,
   taskId: string,
   assignedTo: string,
   assignedBy: string,
 ): WorkflowTask | undefined {
   const task = taskStore.get(taskId);
-  if (!task || !VALID_TRANSITION_SOURCES.assign.has(task.status)) return undefined;
+  if (!task || task.tenantId !== tenantId || !VALID_TRANSITION_SOURCES.assign.has(task.status)) return undefined;
 
   const prev = task.status;
   task.assignedTo = assignedTo;
@@ -214,9 +218,9 @@ export function assignTask(
   return task;
 }
 
-export function startTask(taskId: string, actor: string): WorkflowTask | undefined {
+export function startTask(tenantId: string, taskId: string, actor: string): WorkflowTask | undefined {
   const task = taskStore.get(taskId);
-  if (!task || !VALID_TRANSITION_SOURCES.start.has(task.status)) return undefined;
+  if (!task || task.tenantId !== tenantId || !VALID_TRANSITION_SOURCES.start.has(task.status)) return undefined;
 
   const prev = task.status;
   task.status = "in_progress";
@@ -238,12 +242,13 @@ export function startTask(taskId: string, actor: string): WorkflowTask | undefin
 }
 
 export function completeTask(
+  tenantId: string,
   taskId: string,
   actor: string,
   comment?: string,
 ): WorkflowTask | undefined {
   const task = taskStore.get(taskId);
-  if (!task || !VALID_TRANSITION_SOURCES.complete.has(task.status)) return undefined;
+  if (!task || task.tenantId !== tenantId || !VALID_TRANSITION_SOURCES.complete.has(task.status)) return undefined;
 
   const prev = task.status;
   task.status = "completed";
@@ -266,12 +271,13 @@ export function completeTask(
 }
 
 export function cancelTask(
+  tenantId: string,
   taskId: string,
   actor: string,
   comment?: string,
 ): WorkflowTask | undefined {
   const task = taskStore.get(taskId);
-  if (!task || !VALID_TRANSITION_SOURCES.cancel.has(task.status)) return undefined;
+  if (!task || task.tenantId !== tenantId || !VALID_TRANSITION_SOURCES.cancel.has(task.status)) return undefined;
 
   const prev = task.status;
   task.status = "cancelled";
@@ -293,12 +299,13 @@ export function cancelTask(
 }
 
 export function escalateTask(
+  tenantId: string,
   taskId: string,
   actor: string,
   comment?: string,
 ): WorkflowTask | undefined {
   const task = taskStore.get(taskId);
-  if (!task || !VALID_TRANSITION_SOURCES.escalate.has(task.status)) return undefined;
+  if (!task || task.tenantId !== tenantId || !VALID_TRANSITION_SOURCES.escalate.has(task.status)) return undefined;
 
   const prev = task.status;
   task.status = "escalated";
@@ -321,13 +328,14 @@ export function escalateTask(
 }
 
 export function deferTask(
+  tenantId: string,
   taskId: string,
   actor: string,
   dueAt: string,
   comment?: string,
 ): WorkflowTask | undefined {
   const task = taskStore.get(taskId);
-  if (!task || !VALID_TRANSITION_SOURCES.defer.has(task.status)) return undefined;
+  if (!task || task.tenantId !== tenantId || !VALID_TRANSITION_SOURCES.defer.has(task.status)) return undefined;
 
   const prev = task.status;
   task.status = "deferred";
@@ -351,8 +359,8 @@ export function deferTask(
 
 // ─── Task Events ─────────────────────────────────────────
 
-export function getTaskEvents(taskId: string): TaskEvent[] {
-  return eventStore.filter((e) => e.taskId === taskId);
+export function getTaskEvents(taskId: string, tenantId?: string): TaskEvent[] {
+  return eventStore.filter((e) => e.taskId === taskId && (!tenantId || e.tenantId === tenantId));
 }
 
 // ─── Counts / Dashboard ──────────────────────────────────

@@ -43,7 +43,14 @@ export type ModuleId =
   | 'reports'
   | 'vitals'
   | 'allergies'
-  | 'imaging';
+  | 'imaging'
+  | 'immunizations'
+  | 'adt'
+  | 'nursing'
+  | 'intake'
+  | 'telehealth'
+  | 'tasks'
+  | 'aiassist';
 
 /** All known module IDs (used as default enabled set). */
 export const ALL_MODULES: ModuleId[] = [
@@ -60,6 +67,13 @@ export const ALL_MODULES: ModuleId[] = [
   'vitals',
   'allergies',
   'imaging',
+  'immunizations',
+  'adt',
+  'nursing',
+  'intake',
+  'telehealth',
+  'tasks',
+  'aiassist',
 ];
 
 /** Feature flag identifiers — extensible union. */
@@ -499,14 +513,30 @@ export function updateConnectorStatus(
   return connector;
 }
 
-/** Resolve tenant ID from session. Falls back to "default". */
-export function resolveTenantId(facilityStation?: string): string {
+/** Resolve tenant ID from facility station. Returns null when resolution is ambiguous or missing. */
+export function tryResolveTenantId(facilityStation?: string): string | null {
   if (facilityStation) {
-    // Check if there's a tenant keyed by facility-{station}
+    const exactMatches = Array.from(tenants.values()).filter(
+      (tenant) => tenant.facilityStation === facilityStation
+    );
+    const nonDefaultMatches = exactMatches.filter((tenant) => tenant.tenantId !== 'default');
+    if (nonDefaultMatches.length === 1) {
+      return nonDefaultMatches[0].tenantId;
+    }
+    if (exactMatches.length === 1) {
+      return exactMatches[0].tenantId;
+    }
+
+    // Backward compatibility for older facility-keyed tenants.
     const key = `facility-${facilityStation}`;
     if (tenants.has(key)) return key;
   }
-  return 'default';
+  return null;
+}
+
+/** Resolve tenant ID from session. Falls back to "default". */
+export function resolveTenantId(facilityStation?: string): string {
+  return tryResolveTenantId(facilityStation) ?? 'default';
 }
 
 /**

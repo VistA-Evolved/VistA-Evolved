@@ -101,6 +101,30 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     return resolveStore();
   }
 
+  function resolveTenantId(request: any): string | null {
+    const requestTenantId =
+      typeof request?.tenantId === 'string' && request.tenantId.trim().length > 0
+        ? request.tenantId.trim()
+        : undefined;
+    const sessionTenantId =
+      typeof request?.session?.tenantId === 'string' && request.session.tenantId.trim().length > 0
+        ? request.session.tenantId.trim()
+        : undefined;
+    const headerTenantId = request?.headers?.['x-tenant-id'];
+    const headerTenant =
+      typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+        ? headerTenantId.trim()
+        : undefined;
+    return requestTenantId || sessionTenantId || headerTenant || null;
+  }
+
+  function requireTenantId(request: any, reply: any): string | null {
+    const tenantId = resolveTenantId(request);
+    if (tenantId) return tenantId;
+    reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+    return null;
+  }
+
   /* ═══════════════════════════════════════════════════════════ */
   /* BACKEND INFO                                                */
   /* ═══════════════════════════════════════════════════════════ */
@@ -148,9 +172,11 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
   server.get('/admin/payer-db/payers/stats', async (request, reply) => {
     await ensureDb();
     const s = getStore();
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const total = await s.payerRepo.getPayerCount();
-    const auditStats = await s.auditRepo.getAuditStats();
-    const pendingEvidence = (await s.evidenceRepo.listEvidenceByStatus('pending')).length;
+    const auditStats = await s.auditRepo.getAuditStats(tenantId);
+    const pendingEvidence = (await s.evidenceRepo.listEvidenceByStatus('pending', tenantId)).length;
     return reply.send({
       ok: true,
       totalPayers: total,
@@ -189,11 +215,14 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
         .send({ ok: false, error: "Provide 'filePath' or 'json' in request body" });
     }
 
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const result = await ingestJsonSnapshot({
       jsonContent,
       sourceUrl: body.sourceUrl,
       asOfDate: body.asOfDate ?? new Date().toISOString().split('T')[0],
-      actor: body.actor,
+      actor: body.actor ?? session.duz,
+      tenantId,
     });
 
     return reply.code(result.ok ? 200 : 400).send(result);
@@ -214,11 +243,14 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     }
 
     const buffer = Buffer.from(body.base64, 'base64');
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const result = await ingestPdfEvidence({
       buffer,
       filename: body.filename ?? 'evidence.pdf',
       asOfDate: body.asOfDate ?? new Date().toISOString().split('T')[0],
-      actor: body.actor,
+      actor: body.actor ?? session.duz,
+      tenantId,
     });
 
     return reply.code(result.ok ? 200 : 400).send(result);
@@ -227,12 +259,14 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
   server.get('/admin/payer-db/evidence', async (request, reply) => {
     await ensureDb();
     const s = getStore();
-    const query = request.query as { tenantId?: string; status?: string };
+    const query = request.query as { status?: string };
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     let snapshots;
     if (query.status) {
-      snapshots = await s.evidenceRepo.listEvidenceByStatus(query.status);
+      snapshots = await s.evidenceRepo.listEvidenceByStatus(query.status, tenantId);
     } else {
-      snapshots = await s.evidenceRepo.listEvidence(query.tenantId);
+      snapshots = await s.evidenceRepo.listEvidence(tenantId);
     }
     return reply.send({ ok: true, count: snapshots.length, snapshots });
   });
@@ -241,7 +275,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     await ensureDb();
     const s = getStore();
     const { id } = request.params as { id: string };
-    const snapshot = await s.evidenceRepo.findEvidenceById(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const snapshot = await s.evidenceRepo.findEvidenceByIdForTenant(tenantId, id);
     if (!snapshot) {
       return reply.code(404).send({ ok: false, error: 'Evidence snapshot not found' });
     }
@@ -252,7 +288,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     await ensureDb();
     const s = getStore();
     const { id } = request.params as { id: string };
-    const snapshot = await s.evidenceRepo.findEvidenceById(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const snapshot = await s.evidenceRepo.findEvidenceByIdForTenant(tenantId, id);
     if (!snapshot) {
       return reply.code(404).send({ ok: false, error: 'Evidence snapshot not found' });
     }
@@ -281,7 +319,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     await ensureDb();
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const result = await promoteSnapshot(id, body.actor);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const result = await promoteSnapshot(id, body.actor ?? session.duz, tenantId);
     return reply.code(result.ok ? 200 : 400).send(result);
   });
 
@@ -292,13 +332,15 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
   server.get('/admin/payer-db/payers/:id', async (request, reply) => {
     await ensureDb();
     const s = getStore();
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
     const p = await s.payerRepo.findPayerById(id);
     if (!p) return reply.code(404).send({ ok: false, error: 'Payer not found' });
 
-    const capabilities = await s.capabilityRepo.listCapabilities(id);
-    const tasks = await s.taskRepo.listTasks(id);
-    const audit = await s.auditRepo.getAuditForPayer(id);
+    const capabilities = await s.capabilityRepo.listCapabilities(id, tenantId);
+    const tasks = await s.taskRepo.listTasks(id, tenantId);
+    const audit = await s.auditRepo.getAuditForPayer(id, tenantId);
 
     return reply.send({ ok: true, payer: p, capabilities, tasks, auditCount: audit.length });
   });
@@ -342,8 +384,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     await ensureDb();
     const s = getStore();
     const { id } = request.params as { id: string };
-    const query = request.query as { tenantId?: string };
-    const capabilities = await s.capabilityRepo.listCapabilities(id, query.tenantId);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const capabilities = await s.capabilityRepo.listCapabilities(id, tenantId);
     return reply.send({ ok: true, capabilities });
   });
 
@@ -369,15 +412,17 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     const payer = await s.payerRepo.findPayerById(id);
     if (!payer) return reply.code(404).send({ ok: false, error: 'Payer not found' });
 
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const result = await s.capabilityRepo.setCapability({
       payerId: id,
       capabilityKey: body.capabilityKey,
       value: body.value,
       confidence: body.confidence,
-      tenantId: body.tenantId,
+      tenantId,
       evidenceSnapshotId: body.evidenceSnapshotId,
       reason: body.reason,
-      actor: body.actor,
+      actor: body.actor ?? session.duz,
     });
 
     return reply.send({ ok: true, capability: result });
@@ -391,8 +436,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     await ensureDb();
     const s = getStore();
     const { id } = request.params as { id: string };
-    const query = request.query as { tenantId?: string };
-    const tasks = await s.taskRepo.listTasks(id, query.tenantId);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const tasks = await s.taskRepo.listTasks(id, tenantId);
     return reply.send({ ok: true, tasks });
   });
 
@@ -411,15 +457,17 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     const payer = await s.payerRepo.findPayerById(id);
     if (!payer) return reply.code(404).send({ ok: false, error: 'Payer not found' });
 
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const task = await s.taskRepo.createTask(
       {
         payerId: id,
-        tenantId: body.tenantId,
+        tenantId,
         title: body.title,
         description: body.description,
         dueDate: body.dueDate,
       },
-      body.actor
+      body.actor ?? session.duz
     );
 
     return reply.code(201).send({ ok: true, task });
@@ -442,7 +490,15 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
         .code(400)
         .send({ ok: false, error: 'reason is required for task status changes' });
     }
-    const result = await s.taskRepo.updateTaskStatus(taskId, body.status, body.reason, body.actor);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const result = await s.taskRepo.updateTaskStatus(
+      taskId,
+      body.status,
+      body.reason,
+      body.actor ?? session.duz,
+      tenantId
+    );
     if (!result) return reply.code(404).send({ ok: false, error: 'Task not found' });
     return reply.send({ ok: true, task: result });
   });
@@ -454,11 +510,12 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
   server.get('/admin/payer-db/audit', async (request, reply) => {
     await ensureDb();
     const s = getStore();
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const query = request.query as {
       action?: string;
       entityType?: string;
       actorId?: string;
-      tenantId?: string;
       limit?: string;
       offset?: string;
     };
@@ -466,7 +523,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
       action: query.action,
       entityType: query.entityType,
       actorId: query.actorId,
-      tenantId: query.tenantId,
+      tenantId,
       limit: query.limit ? parseInt(query.limit, 10) : undefined,
       offset: query.offset ? parseInt(query.offset, 10) : undefined,
     });
@@ -476,7 +533,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
   server.get('/admin/payer-db/audit/stats', async (request, reply) => {
     await ensureDb();
     const s = getStore();
-    const stats = await s.auditRepo.getAuditStats();
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const stats = await s.auditRepo.getAuditStats(tenantId);
     return reply.send({ ok: true, stats });
   });
 
@@ -484,7 +543,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     await ensureDb();
     const s = getStore();
     const { id } = request.params as { id: string };
-    const events = await s.auditRepo.getAuditForPayer(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const events = await s.auditRepo.getAuditForPayer(id, tenantId);
     return reply.send({ ok: true, count: events.length, events });
   });
 
@@ -509,14 +570,15 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     const query = request.query as {
       since?: string;
       until?: string;
-      tenantId?: string;
       entityType?: string;
       limit?: string;
     };
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const result = await exportAuditEntries({
       since: query.since,
       until: query.until,
-      tenantId: query.tenantId,
+      tenantId,
       entityType: query.entityType,
       limit: query.limit ? parseInt(query.limit, 10) : undefined,
     });
@@ -537,6 +599,11 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     await ensureDb();
     const s = getStore();
     const { tenantId } = request.params as { tenantId: string };
+    const resolvedTenantId = requireTenantId(request, reply);
+    if (!resolvedTenantId) return;
+    if (tenantId !== resolvedTenantId) {
+      return reply.code(404).send({ ok: false, error: 'Tenant payer config not found' });
+    }
     const tenantPayers = await s.tenantPayerRepo.listTenantPayers(tenantId);
     return reply.send({ ok: true, tenantPayers });
   });
@@ -549,6 +616,11 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     await ensureDb();
     const s = getStore();
     const { tenantId, payerId } = request.params as { tenantId: string; payerId: string };
+    const resolvedTenantId = requireTenantId(request, reply);
+    if (!resolvedTenantId) return;
+    if (tenantId !== resolvedTenantId) {
+      return reply.code(404).send({ ok: false, error: 'Tenant payer config not found' });
+    }
     const body = (request.body as any) || {};
     if (!body.reason) {
       return reply.code(400).send({ ok: false, error: 'reason is required' });
@@ -560,7 +632,7 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     const result = await s.tenantPayerRepo.upsertTenantPayer(
       { tenantId, payerId, status: body.status, notes: body.notes, vaultRef: body.vaultRef },
       body.reason,
-      body.actor
+      body.actor ?? session.duz
     );
 
     return reply.send({ ok: true, tenantPayer: result });

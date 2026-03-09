@@ -62,8 +62,20 @@ function requirePerm(session: any, perm: AnalyticsPermission, reply: any): void 
   }
 }
 
-function getTenantId(request: any): string {
-  return (request as any).tenantId || 'default';
+function getTenantId(request: any): string | null {
+  const headerTenantId = request.headers?.['x-tenant-id'];
+  const headerTenant =
+    typeof headerTenantId === 'string' && headerTenantId.trim().length > 0
+      ? headerTenantId.trim()
+      : undefined;
+  return (request as any).session?.tenantId || (request as any).tenantId || headerTenant || null;
+}
+
+function requireTenantId(request: any, reply: any): string | null {
+  const tenantId = getTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
 }
 
 /* ================================================================== */
@@ -95,12 +107,10 @@ export default async function w19ReportingRoutes(server: FastifyInstance): Promi
     requirePerm(session, 'analytics_admin', reply);
     const { reportId } = request.params as any;
     const body = (request.body as any) || {};
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     try {
-      const result = generateReport(
-        reportId as ReportId,
-        getTenantId(request),
-        body.parameters || {}
-      );
+      const result = generateReport(reportId as ReportId, tenantId, body.parameters || {});
       audit('analytics.report.generate' as AuditAction, 'success', auditActor(request), {
         detail: { reportId, rowCount: result.data.length },
       });
@@ -116,33 +126,22 @@ export default async function w19ReportingRoutes(server: FastifyInstance): Promi
     const { reportId } = request.params as any;
     const body = (request.body as any) || {};
     const format: 'csv' | 'json' = body.format === 'csv' ? 'csv' : 'json';
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     try {
-      const result = generateReport(
-        reportId as ReportId,
-        getTenantId(request),
-        body.parameters || {}
-      );
+      const result = generateReport(reportId as ReportId, tenantId, body.parameters || {});
 
       // Apply column masking before export (per-row)
       const datasetId: DatasetId = 'report_outputs';
-      const maskedData = result.data.map((row) =>
-        applyColumnMasking(getTenantId(request), datasetId, row, session.role)
-      );
+      const maskedData = result.data.map((row) => applyColumnMasking(tenantId, datasetId, row, session.role));
 
       const maskedResult = { ...result, data: maskedData };
       const exported =
         format === 'csv' ? exportReportCsv(maskedResult) : exportReportJson(maskedResult);
 
       // Record the export for audit
-      recordExportAudit(
-        getTenantId(request),
-        datasetId,
-        session.duz,
-        format,
-        maskedData.length,
-        `reportId=${reportId}`
-      );
+      recordExportAudit(tenantId, datasetId, session.duz, format, maskedData.length, `reportId=${reportId}`);
 
       audit('analytics.report.export' as AuditAction, 'success', auditActor(request), {
         detail: { reportId, format, rowCount: maskedData.length },
@@ -180,7 +179,9 @@ export default async function w19ReportingRoutes(server: FastifyInstance): Promi
     const session = await requireSession(request, reply);
     requirePerm(session, 'analytics_admin', reply);
     const q = request.query as any;
-    const perms = listDatasetPermissions(getTenantId(request));
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const perms = listDatasetPermissions(tenantId);
     const filtered = q.datasetId ? perms.filter((p) => p.datasetId === q.datasetId) : perms;
     return reply.send({ ok: true, permissions: filtered, count: filtered.length });
   });
@@ -189,16 +190,12 @@ export default async function w19ReportingRoutes(server: FastifyInstance): Promi
     const session = await requireSession(request, reply);
     requirePerm(session, 'analytics_admin', reply);
     const body = (request.body as any) || {};
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     if (!body.datasetId || !body.role || !body.actions) {
       return reply.code(400).send({ ok: false, error: 'datasetId, role, and actions required' });
     }
-    const perm = grantDatasetPermission(
-      getTenantId(request),
-      body.datasetId as DatasetId,
-      body.role,
-      body.actions,
-      session.duz
-    );
+    const perm = grantDatasetPermission(tenantId, body.datasetId as DatasetId, body.role, body.actions, session.duz);
     audit('analytics.access.grant' as AuditAction, 'success', auditActor(request), {
       detail: { datasetId: body.datasetId, role: body.role, actions: body.actions },
     });
@@ -209,10 +206,12 @@ export default async function w19ReportingRoutes(server: FastifyInstance): Promi
     const session = await requireSession(request, reply);
     requirePerm(session, 'analytics_admin', reply);
     const q = request.query as any;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     if (!q.datasetId || !q.role) {
       return reply.code(400).send({ ok: false, error: 'datasetId and role required' });
     }
-    const revoked = revokeDatasetPermission(getTenantId(request), q.datasetId as DatasetId, q.role);
+    const revoked = revokeDatasetPermission(tenantId, q.datasetId as DatasetId, q.role);
     if (!revoked) return reply.code(404).send({ ok: false, error: 'Permission not found' });
     audit('analytics.access.revoke' as AuditAction, 'success', auditActor(request), {
       detail: { datasetId: q.datasetId, role: q.role },
@@ -226,9 +225,11 @@ export default async function w19ReportingRoutes(server: FastifyInstance): Promi
     const session = await requireSession(request, reply);
     requirePerm(session, 'analytics_admin', reply);
     const { datasetId } = request.params as any;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     return reply.send({
       ok: true,
-      rules: getColumnMaskRules(getTenantId(request), datasetId as DatasetId),
+      rules: getColumnMaskRules(tenantId, datasetId as DatasetId),
     });
   });
 
@@ -237,16 +238,18 @@ export default async function w19ReportingRoutes(server: FastifyInstance): Promi
     requirePerm(session, 'analytics_admin', reply);
     const { datasetId } = request.params as any;
     const body = (request.body as any) || {};
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     if (!body.rules || !Array.isArray(body.rules)) {
       return reply.code(400).send({ ok: false, error: 'rules array required' });
     }
-    setColumnMaskRules(getTenantId(request), datasetId as DatasetId, body.rules);
+    setColumnMaskRules(tenantId, datasetId as DatasetId, body.rules);
     audit('analytics.access.mask' as AuditAction, 'success', auditActor(request), {
       detail: { datasetId, ruleCount: body.rules.length },
     });
     return reply.send({
       ok: true,
-      rules: getColumnMaskRules(getTenantId(request), datasetId as DatasetId),
+      rules: getColumnMaskRules(tenantId, datasetId as DatasetId),
     });
   });
 
@@ -256,7 +259,9 @@ export default async function w19ReportingRoutes(server: FastifyInstance): Promi
     const session = await requireSession(request, reply);
     requirePerm(session, 'analytics_admin', reply);
     const q = request.query as any;
-    const result = getExportAuditLog(getTenantId(request), parseInt(q.limit) || 100);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const result = getExportAuditLog(tenantId, parseInt(q.limit) || 100);
     return reply.send({ ok: true, entries: result.entries, count: result.total });
   });
 }

@@ -322,11 +322,17 @@ export function getInstall(id: string): ListingInstall | undefined {
   return installStore.get(id);
 }
 
+export function getInstallForTenant(tenantId: string, id: string): ListingInstall | undefined {
+  const install = installStore.get(id);
+  if (!install || install.tenantId !== tenantId) return undefined;
+  return install;
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    7. MARKETPLACE STATS
    ═══════════════════════════════════════════════════════════════════ */
 
-export function getMarketplaceStats(): {
+export function getMarketplaceStats(tenantId?: string): {
   categories: number;
   listings: { total: number; published: number; draft: number };
   reviews: number;
@@ -334,7 +340,20 @@ export function getMarketplaceStats(): {
   topListings: Array<{ id: string; name: string; type: ListingType; installs: number; rating: number }>;
 } {
   const listings = [...listingStore.values()];
-  const installs = [...installStore.values()];
+  const installs = tenantId
+    ? [...installStore.values()].filter((install) => install.tenantId === tenantId)
+    : [...installStore.values()];
+  const reviews = tenantId
+    ? [...reviewStore.values()].filter((review) => review.tenantId === tenantId)
+    : [...reviewStore.values()];
+  const installCountsByListing = new Map<string, number>();
+  for (const install of installs) {
+    if (install.status !== "installed") continue;
+    installCountsByListing.set(
+      install.listingId,
+      (installCountsByListing.get(install.listingId) || 0) + 1
+    );
+  }
 
   return {
     categories: categoryStore.size,
@@ -343,16 +362,27 @@ export function getMarketplaceStats(): {
       published: listings.filter((l) => l.status === "published").length,
       draft: listings.filter((l) => l.status === "draft").length,
     },
-    reviews: reviewStore.size,
+    reviews: reviews.length,
     installs: {
       total: installs.length,
       active: installs.filter((i) => i.status === "installed").length,
     },
     topListings: listings
       .filter((l) => l.status === "published")
-      .sort((a, b) => b.installCount - a.installCount)
+      .map((listing) => ({
+        listing,
+        installs: installCountsByListing.get(listing.id) || 0,
+      }))
+      .filter((entry) => entry.installs > 0 || !tenantId)
+      .sort((a, b) => b.installs - a.installs)
       .slice(0, 10)
-      .map((l) => ({ id: l.id, name: l.name, type: l.type, installs: l.installCount, rating: l.rating })),
+      .map((entry) => ({
+        id: entry.listing.id,
+        name: entry.listing.name,
+        type: entry.listing.type,
+        installs: entry.installs,
+        rating: entry.listing.rating,
+      })),
   };
 }
 

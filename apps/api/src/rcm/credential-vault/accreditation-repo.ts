@@ -48,7 +48,7 @@ export interface AccreditationTaskRow {
 }
 
 export interface CreateAccreditationInput {
-  tenantId?: string;
+  tenantId: string;
   payerId: string;
   payerName: string;
   providerEntityId: string;
@@ -60,7 +60,7 @@ export interface CreateAccreditationInput {
 
 export interface CreateTaskInput {
   accreditationId: string;
-  tenantId?: string;
+  tenantId: string;
   title: string;
   description?: string;
   priority?: string;
@@ -128,7 +128,7 @@ export async function createAccreditation(
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || 'default';
+  const tenantId = input.tenantId;
 
   await db.insert(accreditationStatus).values({
     id,
@@ -254,7 +254,11 @@ export async function createTask(input: CreateTaskInput): Promise<AccreditationT
   const db = getPgDb();
   const id = randomUUID();
   const now = new Date().toISOString();
-  const tenantId = input.tenantId || 'default';
+  const tenantId = input.tenantId;
+  const accreditation = await getAccreditationById(tenantId, input.accreditationId);
+  if (!accreditation) {
+    throw new Error('Accreditation not found');
+  }
 
   await db.insert(accreditationTask).values({
     id,
@@ -270,27 +274,42 @@ export async function createTask(input: CreateTaskInput): Promise<AccreditationT
     updatedAt: now,
   });
 
-  return (await getTaskById(id))!;
+  return (await getTaskById(tenantId, id))!;
 }
 
-export async function getTaskById(id: string): Promise<AccreditationTaskRow | null> {
-  const db = getPgDb();
-  const rows = await db.select().from(accreditationTask).where(eq(accreditationTask.id, id));
-  const row = rows[0] ?? null;
-  return row ? parseTask(row) : null;
-}
-
-export async function listTasks(accreditationId: string): Promise<AccreditationTaskRow[]> {
+export async function getTaskById(
+  tenantId: string,
+  id: string
+): Promise<AccreditationTaskRow | null> {
   const db = getPgDb();
   const rows = await db
     .select()
     .from(accreditationTask)
-    .where(eq(accreditationTask.accreditationId, accreditationId))
+    .where(and(eq(accreditationTask.tenantId, tenantId), eq(accreditationTask.id, id)));
+  const row = rows[0] ?? null;
+  return row ? parseTask(row) : null;
+}
+
+export async function listTasks(
+  tenantId: string,
+  accreditationId: string
+): Promise<AccreditationTaskRow[]> {
+  const db = getPgDb();
+  const rows = await db
+    .select()
+    .from(accreditationTask)
+    .where(
+      and(
+        eq(accreditationTask.tenantId, tenantId),
+        eq(accreditationTask.accreditationId, accreditationId)
+      )
+    )
     .orderBy(desc(accreditationTask.updatedAt));
   return rows.map(parseTask);
 }
 
 export async function updateTask(
+  tenantId: string,
   id: string,
   updates: Partial<
     Pick<CreateTaskInput, 'title' | 'description' | 'priority' | 'dueDate' | 'assignedTo'> & {
@@ -312,12 +331,16 @@ export async function updateTask(
     if (updates.status === 'completed') setClause.completedAt = now;
   }
 
-  await db.update(accreditationTask).set(setClause).where(eq(accreditationTask.id, id));
+  await db
+    .update(accreditationTask)
+    .set(setClause)
+    .where(and(eq(accreditationTask.tenantId, tenantId), eq(accreditationTask.id, id)));
 
-  return getTaskById(id);
+  return getTaskById(tenantId, id);
 }
 
 export async function completeTask(
+  tenantId: string,
   id: string,
   completedBy: string
 ): Promise<AccreditationTaskRow | null> {
@@ -326,12 +349,15 @@ export async function completeTask(
   await db
     .update(accreditationTask)
     .set({ status: 'completed', completedAt: now, completedBy, updatedAt: now })
-    .where(eq(accreditationTask.id, id));
-  return getTaskById(id);
+    .where(and(eq(accreditationTask.tenantId, tenantId), eq(accreditationTask.id, id)));
+  return getTaskById(tenantId, id);
 }
 
-export async function deleteTask(id: string): Promise<boolean> {
+export async function deleteTask(tenantId: string, id: string): Promise<boolean> {
   const db = getPgDb();
-  const result = await db.delete(accreditationTask).where(eq(accreditationTask.id, id)).returning();
+  const result = await db
+    .delete(accreditationTask)
+    .where(and(eq(accreditationTask.tenantId, tenantId), eq(accreditationTask.id, id)))
+    .returning();
   return result.length > 0;
 }

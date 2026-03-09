@@ -10,7 +10,7 @@
  *                                       \-> no_show
  */
 
-import { eq, desc, sql } from 'drizzle-orm';
+import { and, eq, desc, sql } from 'drizzle-orm';
 import { getPgDb } from '../pg-db.js';
 import { pgSchedulingLifecycle } from '../pg-schema.js';
 
@@ -96,37 +96,58 @@ export async function findLifecycleEntryById(
 }
 
 export async function findLifecycleByAppointmentRef(
-  appointmentRef: string
+  appointmentRef: string,
+  tenantId?: string
 ): Promise<SchedulingLifecycleRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(pgSchedulingLifecycle)
-    .where(eq(pgSchedulingLifecycle.appointmentRef, appointmentRef))
+    .where(
+      tenantId
+        ? and(
+            eq(pgSchedulingLifecycle.appointmentRef, appointmentRef),
+            eq(pgSchedulingLifecycle.tenantId, tenantId)
+          )
+        : eq(pgSchedulingLifecycle.appointmentRef, appointmentRef)
+    )
     .orderBy(desc(pgSchedulingLifecycle.createdAt));
 }
 
 export async function findLifecycleByPatient(
   patientDfn: string,
+  tenantId?: string,
   limit = 50
 ): Promise<SchedulingLifecycleRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(pgSchedulingLifecycle)
-    .where(eq(pgSchedulingLifecycle.patientDfn, patientDfn))
+    .where(
+      tenantId
+        ? and(eq(pgSchedulingLifecycle.patientDfn, patientDfn), eq(pgSchedulingLifecycle.tenantId, tenantId))
+        : eq(pgSchedulingLifecycle.patientDfn, patientDfn)
+    )
     .orderBy(desc(pgSchedulingLifecycle.createdAt))
     .limit(limit);
 }
 
 export async function findLatestByAppointmentRef(
-  appointmentRef: string
+  appointmentRef: string,
+  tenantId?: string
 ): Promise<SchedulingLifecycleRow | undefined> {
   const db = getPgDb();
   const rows = await db
     .select()
     .from(pgSchedulingLifecycle)
-    .where(eq(pgSchedulingLifecycle.appointmentRef, appointmentRef))
+    .where(
+      tenantId
+        ? and(
+            eq(pgSchedulingLifecycle.appointmentRef, appointmentRef),
+            eq(pgSchedulingLifecycle.tenantId, tenantId)
+          )
+        : eq(pgSchedulingLifecycle.appointmentRef, appointmentRef)
+    )
     .orderBy(desc(pgSchedulingLifecycle.createdAt))
     .limit(1);
   return rows[0];
@@ -134,28 +155,36 @@ export async function findLatestByAppointmentRef(
 
 export async function findLifecycleByState(
   state: string,
+  tenantId?: string,
   limit = 100
 ): Promise<SchedulingLifecycleRow[]> {
   const db = getPgDb();
   return db
     .select()
     .from(pgSchedulingLifecycle)
-    .where(eq(pgSchedulingLifecycle.state, state))
+    .where(
+      tenantId
+        ? and(eq(pgSchedulingLifecycle.state, state), eq(pgSchedulingLifecycle.tenantId, tenantId))
+        : eq(pgSchedulingLifecycle.state, state)
+    )
     .orderBy(desc(pgSchedulingLifecycle.createdAt))
     .limit(limit);
 }
 
 /* -- Stats ----------------------------------------------------------- */
 
-export async function countByState(): Promise<Record<string, number>> {
+export async function countByState(tenantId?: string): Promise<Record<string, number>> {
   const db = getPgDb();
-  const rows = await db
+  const base = db
     .select({
       state: pgSchedulingLifecycle.state,
       count: sql<number>`count(*)`,
     })
-    .from(pgSchedulingLifecycle)
-    .groupBy(pgSchedulingLifecycle.state);
+    .from(pgSchedulingLifecycle);
+  const rows = await (tenantId
+    ? base.where(eq(pgSchedulingLifecycle.tenantId, tenantId))
+    : base
+  ).groupBy(pgSchedulingLifecycle.state);
 
   const result: Record<string, number> = {};
   for (const row of rows) {
@@ -164,8 +193,11 @@ export async function countByState(): Promise<Record<string, number>> {
   return result;
 }
 
-export async function countTotal(): Promise<number> {
+export async function countTotal(tenantId?: string): Promise<number> {
   const db = getPgDb();
-  const rows = await db.select({ count: sql<number>`count(*)` }).from(pgSchedulingLifecycle);
+  const base = db.select({ count: sql<number>`count(*)` }).from(pgSchedulingLifecycle);
+  const rows = await (tenantId
+    ? base.where(eq(pgSchedulingLifecycle.tenantId, tenantId))
+    : base);
   return Number(rows[0]?.count ?? 0);
 }

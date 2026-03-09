@@ -161,12 +161,12 @@ export async function buildClaimDraftFromVista(
   rpc: RpcCaller,
   patientDfn: string,
   actor: string,
-  options?: {
+  options: {
     dateFrom?: string;
     dateTo?: string;
     encounterId?: string; // specific visit IEN
     payerId?: string;
-    tenantId?: string;
+    tenantId: string;
   }
 ): Promise<ClaimDraftResult> {
   const rpcsCalled: string[] = [];
@@ -312,7 +312,7 @@ export async function buildClaimDraftFromVista(
     const payerId = options?.payerId || primaryIns?.policyId || 'UNASSIGNED';
 
     const claim = createDraftClaim({
-      tenantId: options?.tenantId ?? 'default',
+      tenantId: options.tenantId,
       patientDfn,
       payerId,
       claimType: 'professional',

@@ -27,13 +27,17 @@ highest-value clinician journeys. Use it when removing duplicate UI/API paths.
 
 - UI: `OrdersPanel`
 - Canonical API: `/vista/cprs/orders/sign`
+- Canonical VistA write path: `ORWDX LOCK -> ORWD1 SIG4ONE -> ORWOR1 CHKDIG -> ORWDX SEND(dfn, duz, location, esCode, LIST(orderIds)) -> ORWDX UNLOCK`
 - Guardrails:
   - session required
   - CSRF required
   - idempotency supported
   - missing `esCode` returns structured blocker, not fake success
-- Status: real blocker path verified; full clinical signing still depends on a
-  valid VistA electronic signature code.
+-  patient lock conflicts return a structured blocker instead of a fake success
+-  raw VistA runtime errors are withheld from the clinician UI and returned as structured failures
+-  PKI-only digital-sign orders are blocked truthfully until a real PKI payload flow is wired
+-  when VistA returns `Unable to discontinue` for an unsigned discontinue artifact, the route performs a confirmation resend and returns success only if VistA confirms the order is already signed
+- Status: real route; verified against live VEHU with `POST /vista/cprs/orders/dc` creating unsigned order `8207;7` and `POST /vista/cprs/orders/sign` signing it successfully with the default frontend request shape.
 
 ### Module / Capability Status
 

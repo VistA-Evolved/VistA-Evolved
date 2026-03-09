@@ -6,13 +6,17 @@ Phase 84 adds enterprise-grade nursing documentation with flowsheets, critical
 value highlighting, I&O tracking shells, nursing assessments, and note
 creation — all grounded to VistA's TIU, GMV, GMR, and GN packages.
 
+Phase 707 extends the standalone nursing note flow so it now uses the proven
+TIU create contract, refreshes signed and unsigned TIU notes together, and
+attempts immediate signing when the user supplies an electronic signature code.
+
 ## Quick Start
 
 1. Start VistA Docker: `cd services/vista; docker compose --profile dev up -d`
 2. Start API: `cd apps/api; npx tsx --env-file=.env.local src/index.ts`
 3. Start Web: `cd apps/web; npx next dev`
 4. Navigate: Tools → Nursing Documentation (or go to `/cprs/nursing`)
-5. Enter a patient DFN (e.g., `3`) to load the nursing workspace
+5. Enter a patient DFN (use `46` in VEHU) to load the nursing workspace
 
 ## Page Layout
 
@@ -22,12 +26,15 @@ Shows patient name, DFN, location, room/bed, and attending provider.
 
 - Source: `ORWPT16 ID INFO` (fallback: `ORWPT ID INFO`)
 - Banner updates when patient DFN changes
+- VEHU currently returns the patient name in the final `ORWPT16 ID INFO` field, so the banner parser must not treat the first piece as the patient name
 
 ### Tab 1: Nursing Notes
 
-- Lists existing notes via `TIU DOCUMENTS BY CONTEXT` (class 3 = Nursing)
+- Lists existing signed and unsigned notes via merged `TIU DOCUMENTS BY CONTEXT` calls (class 3 = Nursing)
 - View full note text via `TIU GET RECORD TEXT`
 - Create new notes via `TIU CREATE RECORD` + `TIU SET DOCUMENT TEXT`
+- Optionally attempts `TIU LOCK RECORD` + `TIU SIGN RECORD` + `TIU UNLOCK RECORD` when an electronic signature code is entered
+- If the electronic signature code is missing or invalid, the note is still created and remains unsigned with a blocker message
 - If TIU Nursing Note class not configured, falls back to local draft with migration target documented
 - Note types: Nursing Note, Shift Assessment, Progress Note, Patient Education, Discharge Planning
 
@@ -60,10 +67,11 @@ Three sub-tabs:
 
 ### Tab 3: Tasks & Reminders
 
-- Derives task list from vitals due/overdue status
-- Safety checks: Fall Risk Assessment, Skin Integrity, Pain Assessment, I&O Recording
-- Critical value alerts with "notify provider" indicator
-- Full BCMA-derived task engine pending PSB package integration
+- The primary task table reflects live `/vista/nursing/tasks` results for the current patient
+- Current live fallback derives medication-related nursing tasks from `ORWPS ACTIVE`
+- Shift safety reminders remain available, but are explicitly labeled local checklist guidance rather than live patient task rows
+- Critical value alerts with "notify provider" indicator remain grounded to the live flowsheet/vitals feed
+- Full BCMA-derived task timing and administration workflow remain pending PSB package integration
 
 ## API Endpoints
 
@@ -74,7 +82,7 @@ Three sub-tabs:
 | GET    | `/vista/nursing/flowsheet?dfn=N`       | VistA live           | ORQQVI VITALS                             |
 | GET    | `/vista/nursing/io?dfn=N`              | integration-pending  | GMRIO RESULTS                             |
 | GET    | `/vista/nursing/assessments?dfn=N`     | integration-pending  | ZVENAS LIST                               |
-| POST   | `/vista/nursing/notes/create`          | VistA or local-draft | TIU CREATE RECORD + TIU SET DOCUMENT TEXT |
+| POST   | `/vista/nursing/notes/create`          | VistA or local-draft | TIU CREATE RECORD + TIU SET DOCUMENT TEXT (+ optional TIU sign sequence) |
 | GET    | `/vista/nursing/note-text?ien=N`       | VistA                | TIU GET RECORD TEXT                       |
 | GET    | `/vista/nursing/critical-thresholds`   | config               | (in-memory)                               |
 | GET    | `/vista/nursing/patient-context?dfn=N` | VistA                | ORWPT16 ID INFO                           |
@@ -87,7 +95,7 @@ Three sub-tabs:
 | GET    | `/vista/nursing/vitals-range?dfn=N&start=D&end=D` | VistA               | ORQQVI VITALS FOR DATE RANGE |
 | GET    | `/vista/nursing/notes?dfn=N`                      | VistA               | TIU DOCUMENTS BY CONTEXT     |
 | GET    | `/vista/nursing/ward-patients?ward=IEN`           | VistA               | ORQPT WARD PATIENTS          |
-| GET    | `/vista/nursing/tasks?dfn=N`                      | integration-pending | PSB MED LOG, ORWORDG IEN     |
+| GET    | `/vista/nursing/tasks?dfn=N`                      | VistA live fallback | ORWPS ACTIVE                 |
 | GET    | `/vista/nursing/mar?dfn=N`                        | integration-pending | PSB ALLERGY, PSB MED LOG     |
 | POST   | `/vista/nursing/mar/administer`                   | integration-pending | PSB MED LOG                  |
 
@@ -101,9 +109,16 @@ Three sub-tabs:
 
 ### Note creation returns "local draft"
 
-- TIU Nursing Note title (IEN 3) may not exist in sandbox TIU DOCUMENT DEFINITION
+- TIU Nursing Note creation hit a real TIU blocker in the current environment
 - The note is saved as a local draft with a `draftId`
 - Migration path: configure TIU Document Definition for Nursing Notes class
+
+### Note is created but remains unsigned
+
+- This is expected when no electronic signature code is entered
+- This is also expected when the entered electronic signature code is invalid for the current VistA user
+- Verify via `POST /vista/nursing/notes/create` with and without `esCode`
+- The route returns `status: created`, `noteStatus: UNSIGNED`, and a `signStatus` / `signMessage` that explains what happened
 
 ### Flowsheet shows no data
 
@@ -115,6 +130,27 @@ Three sub-tabs:
 
 - Expected — GMR I&O RPCs not exposed in OR CPRS GUI CHART context
 - Target: GMRIO RESULTS, GMRIO ADD from GMR package
+
+### Tasks tab shows no live nursing tasks
+
+- Confirm the patient has active medication-derived work on the VEHU lane before expecting rows in `/vista/nursing/tasks`
+- Verify: `curl http://localhost:3001/vista/nursing/tasks?dfn=46`
+- An empty truthful response should remain distinct from the local shift safety checklist shown underneath it
+
+## Nursing Tasks Truth Contract
+
+- The standalone `/cprs/nursing` Tasks tab must not present local checklist reminders as if they were live patient-specific nursing task rows.
+- The primary task table must reflect the live `/vista/nursing/tasks` response for the selected patient.
+- If the live task route returns no rows, the page must say so plainly instead of fabricating task rows from local heuristics.
+- If the live task route fails while flowsheet data still loads, the task section must surface the task-load failure rather than silently falling back to an empty-task message.
+- Local shift safety reminders may remain on the page only when they are clearly labeled as guidance and separated from the live VistA task feed.
+
+## Nursing Notes Truth Contract
+
+- The standalone `/cprs/nursing` Nursing Notes table must reflect the live TIU note feed for the selected patient, including newly created unsigned notes.
+- A successful nursing note creation must not disappear from the refreshed list simply because the note has not been signed yet.
+- The create modal must distinguish among local draft, created unsigned, and sign-blocked outcomes using the actual API response.
+- Invalid electronic signature codes must surface a clean blocker message instead of fake success or raw VistA error text.
 
 ## Safety Features (Competitive Baseline)
 

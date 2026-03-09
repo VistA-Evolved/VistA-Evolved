@@ -284,6 +284,41 @@ function getSubmissionSafetyStatus(): {
 
 let initialized = false;
 
+function resolveTenantId(request: FastifyRequest): string {
+  const requestTenantId = (request as any).tenantId || (request as any).session?.tenantId;
+  if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+    return requestTenantId.trim();
+  }
+  const headerTenantId = request.headers['x-tenant-id'];
+  if (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0) {
+    return headerTenantId.trim();
+  }
+  return 'default';
+}
+
+function resolveExplicitTenantId(request: FastifyRequest): string | null {
+  const headerTenantId = request.headers['x-tenant-id'];
+  if (typeof headerTenantId === 'string' && headerTenantId.trim().length > 0) {
+    return headerTenantId.trim();
+  }
+  const requestTenantId = (request as any).tenantId;
+  if (typeof requestTenantId === 'string' && requestTenantId.trim().length > 0) {
+    return requestTenantId.trim();
+  }
+  const sessionTenantId = (request as any).session?.tenantId;
+  if (typeof sessionTenantId === 'string' && sessionTenantId.trim().length > 0) {
+    return sessionTenantId.trim();
+  }
+  return null;
+}
+
+function requireTenantId(request: FastifyRequest, reply: FastifyReply): string | null {
+  const tenantId = resolveExplicitTenantId(request);
+  if (tenantId) return tenantId;
+  reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
+  return null;
+}
+
 async function ensureInitialized(): Promise<void> {
   if (initialized) return;
   initialized = true;
@@ -438,10 +473,11 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   // ───── Health ────────────────────────────────────────────────────
-  server.get('/rcm/health', async () => {
+  server.get('/rcm/health', async (request: FastifyRequest) => {
+    const tenantId = resolveTenantId(request);
     const payerStats = getPayerStats();
-    const claimStats = getClaimStats('default');
-    const pipelineStats = getPipelineStats();
+    const claimStats = getClaimStats(tenantId);
+    const pipelineStats = getPipelineStats(tenantId);
     const connectorList = listConnectors();
 
     const healthChecks: Record<string, { healthy: boolean; details?: string }> = {};
@@ -574,13 +610,15 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   // ───── Claims ────────────────────────────────────────────────────
-  server.get('/rcm/claims/stats', async () => {
-    return { ok: true, stats: getClaimStats('default'), store: getStoreStats() };
+  server.get('/rcm/claims/stats', async (request: FastifyRequest) => {
+    const tenantId = resolveTenantId(request);
+    return { ok: true, stats: getClaimStats(tenantId), store: getStoreStats() };
   });
 
   server.get('/rcm/claims', async (request: FastifyRequest) => {
+    const tenantId = resolveTenantId(request);
     const q = request.query as Record<string, string>;
-    const result = listClaims('default', {
+    const result = listClaims(tenantId, {
       status: q.status as ClaimStatus | undefined,
       patientDfn: q.patientDfn,
       payerId: q.payerId,
@@ -591,8 +629,9 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   server.get('/rcm/claims/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id);
+    const claim = getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
     return { ok: true, claim };
   });
@@ -605,7 +644,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
 
     const session = (request as any).session;
     const claim = createDraftClaim({
-      tenantId: 'default',
+      tenantId: resolveTenantId(request),
       patientDfn: body.patientDfn,
       payerId: body.payerId,
       claimType: body.claimType ?? 'professional',
@@ -643,8 +682,9 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   server.post('/rcm/claims/:id/validate', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id);
+    const claim = getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
     const result = validateClaim(claim);
@@ -677,9 +717,10 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   server.post('/rcm/claims/:id/submit', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
     const idempotencyKey = (request.headers as Record<string, string>)['x-idempotency-key'] ?? '';
-    const claim = getClaim(id);
+    const claim = getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
     // Idempotency guard: if already submitted with same key, return cached result
@@ -754,7 +795,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
         safetyMode: 'export_only',
         message:
           'Claim exported as X12 artifact (CLAIM_SUBMISSION_ENABLED=false). Review artifact before enabling live submission.',
-        claim: getClaim(id),
+          claim: getClaim(id, tenantId),
         exportArtifact: exportResult,
       };
     }
@@ -776,6 +817,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     const payload = JSON.stringify(edi837); // In production: serialize to X12 wire format
 
     const entry = createPipelineEntry(
+      claim.tenantId || tenantId,
       claim.id,
       claim.claimType === 'institutional' ? '837I' : '837P',
       connector.id,
@@ -815,7 +857,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       return {
         ok: true,
         submitted: true,
-        claim: getClaim(id),
+        claim: getClaim(id, tenantId),
         pipelineEntry: entry,
         connectorResult: result,
       };
@@ -838,6 +880,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.post(
     '/rcm/claims/:id/transition',
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = resolveTenantId(request);
       const { id } = request.params as { id: string };
       const body = (request.body as any) || {};
       const { newStatus, reason } = body;
@@ -846,7 +889,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
         return reply.code(400).send({ ok: false, error: 'newStatus is required' });
       }
 
-      const claim = getClaim(id);
+      const claim = getClaim(id, tenantId);
       if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
       if (!isValidTransition(claim.status, newStatus)) {
@@ -873,8 +916,9 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   );
 
   server.get('/rcm/claims/:id/timeline', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id);
+    const claim = getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
     const auditEntries = getRcmAuditEntries({ claimId: id, limit: 1000 });
@@ -883,8 +927,9 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
 
   // ───── Export Claim as X12 Artifact (Phase 40) ──────────────────
   server.post('/rcm/claims/:id/export', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id);
+    const claim = getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
     if (claim.status === 'draft') {
@@ -914,7 +959,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       detail: { action: 'export', exportPath: exportResult.path },
     });
 
-    return { ok: true, claim: getClaim(id), exportArtifact: exportResult };
+    return { ok: true, claim: getClaim(id, tenantId), exportArtifact: exportResult };
   });
 
   // ───── Submission Safety Status (Phase 40) ──────────────────────
@@ -928,9 +973,12 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   // with adapter-first provenance tracking + durable SQLite persistence.
 
   // ───── EDI Pipeline ─────────────────────────────────────────────
-  server.get('/rcm/edi/pipeline', async (request: FastifyRequest) => {
+  server.get('/rcm/edi/pipeline', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = request.query as Record<string, string>;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const result = listPipelineEntries({
+      tenantId,
       stage: q.stage as any,
       payerId: q.payerId,
       transactionSet: q.transactionSet as any,
@@ -940,8 +988,10 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, ...result };
   });
 
-  server.get('/rcm/edi/pipeline/stats', async () => {
-    return { ok: true, stats: getPipelineStats() };
+  server.get('/rcm/edi/pipeline/stats', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    return { ok: true, stats: getPipelineStats(tenantId) };
   });
 
   // ───── Connectors ───────────────────────────────────────────────
@@ -965,7 +1015,11 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   // ───── Remittances ──────────────────────────────────────────────
   server.get('/rcm/remittances', async (request: FastifyRequest) => {
     const q = request.query as Record<string, string>;
-    const result = listRemittances('default', Number(q.limit ?? 50), Number(q.offset ?? 0));
+    const result = listRemittances(
+      resolveTenantId(request),
+      Number(q.limit ?? 50),
+      Number(q.offset ?? 0)
+    );
     return { ok: true, ...result };
   });
 
@@ -976,11 +1030,17 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
         .code(400)
         .send({ ok: false, error: 'payerId, checkNumber, and paymentAmount are required' });
     }
+    if (body.claimId) {
+      const claim = getClaim(body.claimId, resolveTenantId(request));
+      if (!claim) {
+        return reply.code(404).send({ ok: false, error: 'Claim not found' });
+      }
+    }
 
     const now = new Date().toISOString();
     const remittance: import('./domain/remit.js').Remittance = {
       id: `remit-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-      tenantId: 'default',
+      tenantId: resolveTenantId(request),
       status: 'received',
       payerId: body.payerId,
       payerName: body.payerName ?? getPayer(body.payerId)?.name ?? 'Unknown',
@@ -1146,6 +1206,8 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     async (request: FastifyRequest, reply: FastifyReply) => {
       const body = (request.body as any) || {};
       const { visitIen, patientDfn, payerId } = body;
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       if (!patientDfn || !payerId) {
         return reply.code(400).send({ ok: false, error: 'patientDfn and payerId are required' });
       }
@@ -1175,7 +1237,10 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
 
       // Fallback: use manual encounter data if provided
       if (body.encounterData) {
-        const claim = buildClaimFromEncounterData(body.encounterData, payerId, actor, body.options);
+        const claim = buildClaimFromEncounterData(body.encounterData, payerId, actor, {
+          ...(body.options || {}),
+          tenantId,
+        });
         storeClaim(claim);
         appendRcmAudit('claim.created', {
           claimId: claim.id,
@@ -1363,7 +1428,9 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
    */
   server.post('/rcm/vista/claim-drafts', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
-    const { patientIen, dateFrom, dateTo, encounterId, payerId, tenantId } = body;
+    const { patientIen, dateFrom, dateTo, encounterId, payerId } = body;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     if (!patientIen || !/^\d+$/.test(String(patientIen))) {
       return reply.code(400).send({ ok: false, error: 'patientIen is required (numeric)' });
     }
@@ -1461,6 +1528,8 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.post('/rcm/acks/ingest', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const { type, disposition, originalControlNumber, ackControlNumber, idempotencyKey } = body;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     if (!type || !disposition || !originalControlNumber || !ackControlNumber || !idempotencyKey) {
       return reply.code(400).send({
@@ -1471,6 +1540,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     }
 
     const result = await ingestAck({
+      tenantId,
       type,
       disposition,
       originalControlNumber,
@@ -1492,11 +1562,14 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return reply.code(result.idempotent ? 200 : 201).send(result);
   });
 
-  server.get('/rcm/acks', async (request: FastifyRequest) => {
+  server.get('/rcm/acks', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = request.query as Record<string, string>;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     return {
       ok: true,
       ...listAcks({
+        tenantId,
         type: q.type as any,
         disposition: q.disposition as any,
         claimId: q.claimId,
@@ -1508,19 +1581,25 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
 
   server.get('/rcm/acks/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
-    const ack = getAck(id);
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const ack = getAck(tenantId, id);
     if (!ack) return reply.code(404).send({ ok: false, error: 'Ack not found' });
     return { ok: true, ack };
   });
 
-  server.get('/rcm/acks/stats', async () => {
-    return { ok: true, stats: getAckStats() };
+  server.get('/rcm/acks/stats', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    return { ok: true, stats: getAckStats(tenantId) };
   });
 
   // ───── Status Ingestion (276/277) ──────────────────────────────
   server.post('/rcm/status/ingest', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const { categoryCode, statusCode, statusDescription, idempotencyKey } = body;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
 
     if (!categoryCode || !statusCode || !idempotencyKey) {
       return reply.code(400).send({
@@ -1530,6 +1609,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     }
 
     const result = await ingestStatusUpdate({
+      tenantId,
       claimId: body.claimId,
       payerClaimId: body.payerClaimId,
       categoryCode,
@@ -1558,11 +1638,14 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return reply.code(result.idempotent ? 200 : 201).send(result);
   });
 
-  server.get('/rcm/status', async (request: FastifyRequest) => {
+  server.get('/rcm/status', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = request.query as Record<string, string>;
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     return {
       ok: true,
       ...listStatusUpdates({
+        tenantId,
         categoryCode: q.categoryCode,
         claimId: q.claimId,
         limit: Number(q.limit ?? 50),
@@ -1571,19 +1654,22 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     };
   });
 
-  server.get('/rcm/status/stats', async () => {
-    return { ok: true, stats: getStatusStats() };
+  server.get('/rcm/status/stats', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    return { ok: true, stats: getStatusStats(tenantId) };
   });
 
   // ───── Claim History (combined acks + status + remits) ─────────
   server.get('/rcm/claims/:id/history', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id);
+    const claim = getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
-    const claimAcks = getAcksForClaim(id);
-    const claimStatuses = getStatusUpdatesForClaim(id);
-    const claimWorkqueue = await getWorkqueueItemsForClaim(id);
+    const claimAcks = getAcksForClaim(tenantId, id);
+    const claimStatuses = getStatusUpdatesForClaim(tenantId, id);
+    const claimWorkqueue = await getWorkqueueItemsForClaim(tenantId, id);
     const auditEntries = getRcmAuditEntries({ claimId: id, limit: 1000 });
 
     return {
@@ -1608,6 +1694,12 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
         error: 'payerId, totalCharged, totalPaid, and idempotencyKey are required',
       });
     }
+    if (body.claimId) {
+      const claim = getClaim(body.claimId, resolveTenantId(request));
+      if (!claim) {
+        return reply.code(404).send({ ok: false, error: 'Claim not found' });
+      }
+    }
 
     const result = await processRemittance({
       payerId,
@@ -1626,7 +1718,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       serviceLines: body.serviceLines ?? [],
       idempotencyKey,
       rawPayload: body.rawPayload,
-      tenantId: body.tenantId,
+      tenantId: resolveTenantId(request),
     });
 
     return reply.code(result.idempotent ? 200 : 201).send(result);
@@ -1645,20 +1737,20 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       claimId: q.claimId,
       payerId: q.payerId,
       priority: q.priority as any,
-      tenantId: q.tenantId ?? 'default',
+      tenantId: resolveTenantId(request),
       limit: Number(q.limit ?? 50),
       offset: Number(q.offset ?? 0),
     });
     return { ok: true, ...result };
   });
 
-  server.get('/rcm/workqueues/stats', async () => {
-    return { ok: true, stats: await getWorkqueueStats() };
+  server.get('/rcm/workqueues/stats', async (request: FastifyRequest) => {
+    return { ok: true, stats: await getWorkqueueStats(resolveTenantId(request)) };
   });
 
   server.get('/rcm/workqueues/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
-    const item = await getWorkqueueItem(id);
+    const item = await getWorkqueueItem(resolveTenantId(request), id);
     if (!item) return reply.code(404).send({ ok: false, error: 'Workqueue item not found' });
     return { ok: true, item };
   });
@@ -1666,7 +1758,8 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.patch('/rcm/workqueues/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
-    const existing = await getWorkqueueItem(id);
+    const tenantId = resolveTenantId(request);
+    const existing = await getWorkqueueItem(tenantId, id);
     if (!existing) return reply.code(404).send({ ok: false, error: 'Workqueue item not found' });
 
     const session = (request as any).session;
@@ -1681,7 +1774,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       updates.resolvedBy = session?.duz ?? 'unknown';
     }
 
-    const updated = await updateWorkqueueItem(id, updates as any);
+    const updated = await updateWorkqueueItem(tenantId, id, updates as any);
 
     appendRcmAudit('workqueue.updated', {
       claimId: existing.claimId,
@@ -1692,10 +1785,11 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   server.get('/rcm/claims/:id/workqueue', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id);
+    const claim = getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
-    const items = await getWorkqueueItemsForClaim(id);
+    const items = await getWorkqueueItemsForClaim(tenantId, id);
     return { ok: true, claimId: id, items, total: items.length };
   });
 
@@ -1968,8 +2062,9 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
 
   /** POST /rcm/claims/:id/route -- resolve route for a claim */
   server.post('/rcm/claims/:id/route', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id);
+    const claim = getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
     const body = (request.body as any) || {};
@@ -2012,9 +2107,12 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   // ───── Transaction Engine (Phase 45) ──────────────────────────
 
   /** GET /rcm/transactions -- list transactions with optional filters */
-  server.get('/rcm/transactions', async (request: FastifyRequest) => {
+  server.get('/rcm/transactions', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const q = request.query as Record<string, string>;
     const items = listTxns({
+      tenantId,
       state: q.state as TransactionState | undefined,
       transactionSet: q.transactionSet as X12TransactionSet | undefined,
       sourceId: q.sourceId,
@@ -2024,20 +2122,28 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /** GET /rcm/transactions/stats -- transaction statistics */
-  server.get('/rcm/transactions/stats', async () => {
-    return { ok: true, stats: getTransactionStats() };
+  server.get('/rcm/transactions/stats', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    return { ok: true, stats: getTransactionStats(tenantId) };
   });
 
   /** GET /rcm/transactions/:id -- get single transaction */
   server.get('/rcm/transactions/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const { id } = request.params as { id: string };
     const txn = getTxn(id);
-    if (!txn) return reply.code(404).send({ ok: false, error: 'Transaction not found' });
+    if (!txn || txn.envelope.tenantId !== tenantId) {
+      return reply.code(404).send({ ok: false, error: 'Transaction not found' });
+    }
     return { ok: true, transaction: txn };
   });
 
   /** POST /rcm/transactions/build -- build envelope + translate to X12 */
   server.post('/rcm/transactions/build', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
     const body = (request.body as any) || {};
     if (!body.transactionSet || !body.senderId || !body.receiverId) {
       return reply
@@ -2046,6 +2152,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     }
 
     const envelope = buildEnvelope({
+      tenantId,
       transactionSet: body.transactionSet,
       senderId: body.senderId,
       receiverId: body.receiverId,
@@ -2101,9 +2208,15 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.post(
     '/rcm/transactions/:id/transition',
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
       const body = (request.body as any) || {};
       if (!body.state) return reply.code(400).send({ ok: false, error: 'state is required' });
+      const existing = getTxn(id);
+      if (!existing || existing.envelope.tenantId !== tenantId) {
+        return reply.code(404).send({ ok: false, error: 'Transaction not found' });
+      }
 
       const result = transitionTransaction(id, body.state, {
         responsePayload: body.responsePayload,
@@ -2127,12 +2240,16 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.post(
     '/rcm/transactions/:id/check-gates',
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
       const body = (request.body as any) || {};
       const gateType = body.gateType ?? 'pre-transmit';
 
       const txn = getTxn(id);
-      if (!txn) return reply.code(404).send({ ok: false, error: 'Transaction not found' });
+      if (!txn || txn.envelope.tenantId !== tenantId) {
+        return reply.code(404).send({ ok: false, error: 'Transaction not found' });
+      }
 
       if (gateType === 'ack') {
         const ackResult = checkAckGates(id);
@@ -2158,7 +2275,13 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.post(
     '/rcm/transactions/:id/retry',
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
+      const txn = getTxn(id);
+      if (!txn || txn.envelope.tenantId !== tenantId) {
+        return reply.code(404).send({ ok: false, error: 'Transaction not found' });
+      }
       const result = processRetry(id);
       if (!result.retried && !result.movedToDLQ) {
         return reply.code(422).send({ ok: false, error: 'Cannot retry this transaction' });
@@ -2173,15 +2296,26 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   );
 
   /** GET /rcm/transactions/dlq -- list dead-letter queue transactions */
-  server.get('/rcm/transactions/dlq', async () => {
-    return { ok: true, items: getDLQTransactions() };
+  server.get('/rcm/transactions/dlq', async (request: FastifyRequest, reply: FastifyReply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    return {
+      ok: true,
+      items: getDLQTransactions().filter((txn) => txn.envelope.tenantId === tenantId),
+    };
   });
 
   /** POST /rcm/transactions/dlq/:id/retry -- retry from dead-letter queue */
   server.post(
     '/rcm/transactions/dlq/:id/retry',
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = requireTenantId(request, reply);
+      if (!tenantId) return;
       const { id } = request.params as { id: string };
+      const txn = getTxn(id);
+      if (!txn || txn.envelope.tenantId !== tenantId) {
+        return reply.code(404).send({ ok: false, error: 'Transaction not found' });
+      }
       const success = retryFromDLQ(id);
       if (!success)
         return reply.code(422).send({ ok: false, error: 'Cannot retry: not in DLQ or not found' });
@@ -2213,8 +2347,9 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.get(
     '/rcm/claims/:id/reconciliation',
     async (request: FastifyRequest, reply: FastifyReply) => {
+      const tenantId = resolveTenantId(request);
       const { id } = request.params as { id: string };
-      const claim = getClaim(id);
+      const claim = getClaim(id, tenantId);
       if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
       const summary = buildReconciliationSummary(id);

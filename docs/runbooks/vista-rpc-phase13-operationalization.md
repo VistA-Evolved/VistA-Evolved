@@ -80,6 +80,7 @@ curl -X POST http://127.0.0.1:3001/auth/logout \
 | Method | Path           | Auth   | Description              |
 | ------ | -------------- | ------ | ------------------------ |
 | GET    | `/vista/inbox` | None\* | Aggregated notifications |
+| POST   | `/vista/inbox/acknowledge` | Session | Truthful acknowledge contract |
 
 \*Uses server-side DUZ from env config. Future: tie to session DUZ.
 
@@ -87,6 +88,26 @@ curl -X POST http://127.0.0.1:3001/auth/logout \
 
 - `ORWORB UNSIG ORDERS` — Unsigned orders for DUZ
 - `ORWORB FASTUSER` — Fast user notifications
+
+### Notification Parsing Contract
+
+- `ORWORB FASTUSER` rows are not uniform. Some sandbox notifications start with
+  a leading caret and omit a numeric notification IEN/DFN field.
+- The API must parse those rows into clinician-readable `summary` text instead
+  of surfacing the raw caret-delimited payload.
+- `patientDfn` must only be populated when the parsed value is actually numeric.
+  Never render `Open Chart` from a timestamp or other misparsed field.
+
+### Acknowledge Contract
+
+- `/cprs/inbox` may offer an `Acknowledge` action, but the backend route must
+  exist even when the current VistA lane cannot persist the acknowledgement.
+- In VEHU, acknowledgement persistence currently depends on `ORWORB KILL EXPIR
+  MSG`, which is not available in the active sandbox.
+- `POST /vista/inbox/acknowledge` must therefore return a structured
+  `integration-pending` response instead of a missing-route `404`.
+- The UI must keep the item visible and surface an explicit pending banner
+  rather than crashing the page or pretending the acknowledgement succeeded.
 
 ### Item Types
 

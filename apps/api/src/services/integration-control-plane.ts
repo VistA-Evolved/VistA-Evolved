@@ -204,11 +204,47 @@ export function getEndpoint(tenantId: string, endpointId: string): IntegrationEn
   return ep && ep.tenantId === tenantId ? ep : undefined;
 }
 
-export function toggleEndpoint(tenantId: string, endpointId: string, enabled: boolean): boolean {
+export function getEndpointForPartner(
+  tenantId: string,
+  partnerId: string,
+  endpointId: string
+): IntegrationEndpoint | undefined {
   const ep = getEndpoint(tenantId, endpointId);
+  return ep && ep.partnerId === partnerId ? ep : undefined;
+}
+
+export function toggleEndpoint(
+  tenantId: string,
+  partnerId: string,
+  endpointId: string,
+  enabled: boolean
+): boolean {
+  const ep = getEndpointForPartner(tenantId, partnerId, endpointId);
   if (!ep) return false;
   ep.enabled = enabled;
   ep.updatedAt = new Date().toISOString();
+  return true;
+}
+
+export function getCredentialRefForPartner(
+  tenantId: string,
+  partnerId: string,
+  credentialId: string
+): IntegrationCredentialRef | undefined {
+  const cred = credentialRefs.get(credentialId);
+  return cred && cred.tenantId === tenantId && cred.partnerId === partnerId ? cred : undefined;
+}
+
+export function rotateCredential(
+  tenantId: string,
+  partnerId: string,
+  credentialId: string,
+  newSecretRef: string
+): boolean {
+  const cred = getCredentialRefForPartner(tenantId, partnerId, credentialId);
+  if (!cred) return false;
+  cred.secretRef = newSecretRef;
+  cred.rotatedAt = new Date().toISOString();
   return true;
 }
 
@@ -237,14 +273,6 @@ export function addCredentialRef(
 
 export function listCredentialRefs(tenantId: string, partnerId: string): IntegrationCredentialRef[] {
   return [...credentialRefs.values()].filter((c) => c.tenantId === tenantId && c.partnerId === partnerId);
-}
-
-export function rotateCredential(tenantId: string, credentialId: string, newSecretRef: string): boolean {
-  const cred = credentialRefs.get(credentialId);
-  if (!cred || cred.tenantId !== tenantId) return false;
-  cred.secretRef = newSecretRef;
-  cred.rotatedAt = new Date().toISOString();
-  return true;
 }
 
 // ─── Routing Rules ───────────────────────────────────────────────────
@@ -355,6 +383,15 @@ export function startTestRun(
 export function getTestRun(tenantId: string, runId: string): IntegrationTestRun | undefined {
   const run = testRuns.get(runId);
   return run && run.tenantId === tenantId ? run : undefined;
+}
+
+export function getTestRunForPartner(
+  tenantId: string,
+  partnerId: string,
+  runId: string
+): IntegrationTestRun | undefined {
+  const run = getTestRun(tenantId, runId);
+  return run && run.partnerId === partnerId ? run : undefined;
 }
 
 export function listTestRuns(tenantId: string, partnerId: string): IntegrationTestRun[] {

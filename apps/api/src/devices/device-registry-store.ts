@@ -180,8 +180,11 @@ export function registerDevice(opts: {
   return device;
 }
 
-export function getDevice(id: string): ManagedDevice | undefined {
-  return devices.get(id);
+export function getDevice(id: string, tenantId?: string): ManagedDevice | undefined {
+  const device = devices.get(id);
+  if (!device) return undefined;
+  if (tenantId && device.tenantId !== tenantId) return undefined;
+  return device;
 }
 
 export function getDeviceBySerial(
@@ -208,6 +211,7 @@ export function listDevices(opts?: {
 }
 
 export function updateDevice(
+  tenantId: string,
   id: string,
   updates: Partial<
     Pick<
@@ -227,7 +231,7 @@ export function updateDevice(
   actor: string = 'system'
 ): ManagedDevice | undefined {
   const dev = devices.get(id);
-  if (!dev) return undefined;
+  if (!dev || dev.tenantId !== tenantId) return undefined;
   Object.assign(dev, updates, { updatedAt: now() });
   appendAudit(id, 'updated', actor, updates, dev.tenantId);
 
@@ -239,12 +243,13 @@ export function updateDevice(
 }
 
 export function changeDeviceStatus(
+  tenantId: string,
   id: string,
   status: DeviceStatus,
   actor: string = 'system'
 ): ManagedDevice | undefined {
   const dev = devices.get(id);
-  if (!dev) return undefined;
+  if (!dev || dev.tenantId !== tenantId) return undefined;
   const prev = dev.status;
   dev.status = status;
   dev.updatedAt = now();
@@ -259,9 +264,13 @@ export function changeDeviceStatus(
   return dev;
 }
 
-export function decommissionDevice(id: string, actor: string = 'system'): boolean {
+export function decommissionDevice(
+  tenantId: string,
+  id: string,
+  actor: string = 'system'
+): boolean {
   const dev = devices.get(id);
-  if (!dev) return false;
+  if (!dev || dev.tenantId !== tenantId) return false;
   dev.status = 'decommissioned';
   dev.updatedAt = now();
   // End all active associations
@@ -297,6 +306,7 @@ export function associatePatient(opts: {
   const dev = devices.get(opts.deviceId);
   if (!dev) return { error: 'device_not_found' };
   if (dev.status === 'decommissioned') return { error: 'device_decommissioned' };
+  if (opts.tenantId && opts.tenantId !== dev.tenantId) return { error: 'device_not_found' };
 
   // End any existing active association for this device
   for (const [, assoc] of associations) {
@@ -350,14 +360,18 @@ export function associatePatient(opts: {
   return assoc;
 }
 
-export function disassociatePatient(deviceId: string, actor: string = 'system'): boolean {
+export function disassociatePatient(
+  tenantId: string,
+  deviceId: string,
+  actor: string = 'system'
+): boolean {
   let found = false;
   for (const [, assoc] of associations) {
-    if (assoc.deviceId === deviceId && assoc.status === 'active') {
+    if (assoc.deviceId === deviceId && assoc.status === 'active' && assoc.tenantId === tenantId) {
       assoc.status = 'ended';
       assoc.endedAt = now();
       found = true;
-      const dev = devices.get(deviceId);
+      const dev = getDevice(deviceId, tenantId);
       appendAudit(
         deviceId,
         'disassociated',
@@ -370,9 +384,12 @@ export function disassociatePatient(deviceId: string, actor: string = 'system'):
   return found;
 }
 
-export function getActiveAssociation(deviceId: string): DevicePatientAssociation | undefined {
+export function getActiveAssociation(
+  tenantId: string,
+  deviceId: string
+): DevicePatientAssociation | undefined {
   for (const [, assoc] of associations) {
-    if (assoc.deviceId === deviceId && assoc.status === 'active') {
+    if (assoc.deviceId === deviceId && assoc.status === 'active' && assoc.tenantId === tenantId) {
       return assoc;
     }
   }
@@ -407,10 +424,11 @@ export function mapDeviceLocation(opts: {
 }): DeviceLocationMapping | { error: string } {
   const dev = devices.get(opts.deviceId);
   if (!dev) return { error: 'device_not_found' };
+  if (opts.tenantId && opts.tenantId !== dev.tenantId) return { error: 'device_not_found' };
 
   // Deactivate any existing location mapping for this device
   for (const [, m] of locationMappings) {
-    if (m.deviceId === opts.deviceId && m.active) {
+    if (m.deviceId === opts.deviceId && m.active && m.tenantId === dev.tenantId) {
       m.active = false;
     }
   }
@@ -456,9 +474,12 @@ export function mapDeviceLocation(opts: {
   return mapping;
 }
 
-export function getDeviceLocation(deviceId: string): DeviceLocationMapping | undefined {
+export function getDeviceLocation(
+  tenantId: string,
+  deviceId: string
+): DeviceLocationMapping | undefined {
   for (const [, m] of locationMappings) {
-    if (m.deviceId === deviceId && m.active) return m;
+    if (m.deviceId === deviceId && m.active && m.tenantId === tenantId) return m;
   }
   return undefined;
 }
@@ -479,8 +500,14 @@ export function listLocationMappings(opts?: {
 // Audit
 // ---------------------------------------------------------------------------
 
-export function getDeviceAudit(deviceId?: string, limit: number = 100): DeviceAuditEntry[] {
-  const filtered = deviceId ? auditLog.filter((e) => e.deviceId === deviceId) : auditLog;
+export function getDeviceAudit(
+  tenantId: string,
+  deviceId?: string,
+  limit: number = 100
+): DeviceAuditEntry[] {
+  const filtered = auditLog.filter(
+    (e) => e.tenantId === tenantId && (!deviceId || e.deviceId === deviceId)
+  );
   return filtered.slice(-limit);
 }
 
@@ -488,16 +515,26 @@ export function getDeviceAudit(deviceId?: string, limit: number = 100): DeviceAu
 // Store Stats
 // ---------------------------------------------------------------------------
 
-export function getRegistryStats(): {
+export function getRegistryStats(tenantId?: string): {
   devices: number;
   associations: number;
   locationMappings: number;
   auditEntries: number;
 } {
+  const deviceCount = tenantId
+    ? Array.from(devices.values()).filter((d) => d.tenantId === tenantId).length
+    : devices.size;
+  const associationCount = tenantId
+    ? Array.from(associations.values()).filter((a) => a.tenantId === tenantId).length
+    : associations.size;
+  const locationCount = tenantId
+    ? Array.from(locationMappings.values()).filter((m) => m.tenantId === tenantId).length
+    : locationMappings.size;
+  const auditCount = tenantId ? auditLog.filter((e) => e.tenantId === tenantId).length : auditLog.length;
   return {
-    devices: devices.size,
-    associations: associations.size,
-    locationMappings: locationMappings.size,
-    auditEntries: auditLog.length,
+    devices: deviceCount,
+    associations: associationCount,
+    locationMappings: locationCount,
+    auditEntries: auditCount,
   };
 }

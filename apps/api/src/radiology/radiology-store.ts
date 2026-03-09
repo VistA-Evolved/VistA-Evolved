@@ -201,8 +201,9 @@ export function createRadOrder(input: {
   return order;
 }
 
-export function getRadOrder(id: string): RadOrder | undefined {
-  return radOrderStore.get(id);
+export function getRadOrder(tenantId: string, id: string): RadOrder | undefined {
+  const order = radOrderStore.get(id);
+  return order?.tenantId === tenantId ? order : undefined;
 }
 
 export function listRadOrders(
@@ -225,11 +226,12 @@ export function listRadOrders(
 }
 
 export function transitionRadOrder(
+  tenantId: string,
   id: string,
   newStatus: RadOrderStatus,
   actor?: { duz: string; name: string }
 ): { ok: boolean; order?: RadOrder; error?: string } {
-  const order = radOrderStore.get(id);
+  const order = getRadOrder(tenantId, id);
   if (!order) return { ok: false, error: 'Rad order not found' };
 
   const allowed = validRadOrderTransitions[order.status];
@@ -258,11 +260,12 @@ export function transitionRadOrder(
 }
 
 export function assignProtocol(
+  tenantId: string,
   orderId: string,
   protocolName: string,
   assignedByDuz: string
 ): { ok: boolean; order?: RadOrder; error?: string } {
-  const order = radOrderStore.get(orderId);
+  const order = getRadOrder(tenantId, orderId);
   if (!order) return { ok: false, error: 'Rad order not found' };
   order.protocolName = protocolName;
   order.protocolAssignedByDuz = assignedByDuz;
@@ -286,10 +289,11 @@ export function assignProtocol(
 }
 
 export function linkMwlToRadOrder(
+  tenantId: string,
   orderId: string,
   mwlWorklistItemId: string
 ): { ok: boolean; error?: string } {
-  const order = radOrderStore.get(orderId);
+  const order = getRadOrder(tenantId, orderId);
   if (!order) return { ok: false, error: 'Rad order not found' };
   order.mwlWorklistItemId = mwlWorklistItemId;
   order.updatedAt = new Date().toISOString();
@@ -305,11 +309,12 @@ export function linkMwlToRadOrder(
 }
 
 export function linkMppsToRadOrder(
+  tenantId: string,
   orderId: string,
   mppsRecordId: string,
   studyInstanceUid?: string
 ): { ok: boolean; error?: string } {
-  const order = radOrderStore.get(orderId);
+  const order = getRadOrder(tenantId, orderId);
   if (!order) return { ok: false, error: 'Rad order not found' };
   order.mppsRecordId = mppsRecordId;
   if (studyInstanceUid) order.studyInstanceUid = studyInstanceUid;
@@ -397,12 +402,13 @@ export function listReadingWorklist(
 }
 
 export function assignRadiologist(
+  tenantId: string,
   itemId: string,
   radiologistDuz: string,
   radiologistName: string
 ): { ok: boolean; item?: ReadingWorklistItem; error?: string } {
   const item = readingWorklistStore.get(itemId);
-  if (!item) return { ok: false, error: 'Reading worklist item not found' };
+  if (!item || item.tenantId !== tenantId) return { ok: false, error: 'Reading worklist item not found' };
   item.assignedRadiologistDuz = radiologistDuz;
   item.assignedRadiologistName = radiologistName;
   item.assignedAt = new Date().toISOString();
@@ -421,11 +427,12 @@ export function assignRadiologist(
 }
 
 export function transitionReadingItem(
+  tenantId: string,
   itemId: string,
   newStatus: ReadingStatus
 ): { ok: boolean; item?: ReadingWorklistItem; error?: string } {
   const item = readingWorklistStore.get(itemId);
-  if (!item) return { ok: false, error: 'Reading worklist item not found' };
+  if (!item || item.tenantId !== tenantId) return { ok: false, error: 'Reading worklist item not found' };
   const allowed = validReadingTransitions[item.status];
   if (!allowed.includes(newStatus)) {
     return { ok: false, error: `Cannot transition reading from ${item.status} to ${newStatus}` };
@@ -504,8 +511,9 @@ export function createRadReport(input: {
   return report;
 }
 
-export function getRadReport(id: string): RadReport | undefined {
-  return radReportStore.get(id);
+export function getRadReport(tenantId: string, id: string): RadReport | undefined {
+  const report = radReportStore.get(id);
+  return report?.tenantId === tenantId ? report : undefined;
 }
 
 export function listRadReports(
@@ -528,11 +536,12 @@ export function listRadReports(
 }
 
 export function transitionRadReport(
+  tenantId: string,
   id: string,
   newStatus: ReportStatus,
   actor?: { duz: string; name: string }
 ): { ok: boolean; report?: RadReport; error?: string } {
-  const report = radReportStore.get(id);
+  const report = getRadReport(tenantId, id);
   if (!report) return { ok: false, error: 'Rad report not found' };
   const allowed = validReportTransitions[report.status];
   if (!allowed.includes(newStatus)) {
@@ -764,12 +773,13 @@ export function listRadCriticalAlerts(
 }
 
 export function communicateRadCriticalAlert(
+  tenantId: string,
   id: string,
   actor: { duz: string; name: string },
   method: 'direct_verbal' | 'phone' | 'secure_message' | 'in_person'
 ): { ok: boolean; alert?: RadCriticalAlert; error?: string } {
   const alert = radCriticalAlertStore.get(id);
-  if (!alert) return { ok: false, error: 'Critical alert not found' };
+  if (!alert || alert.tenantId !== tenantId) return { ok: false, error: 'Critical alert not found' };
   if (alert.status !== 'active') {
     return { ok: false, error: `Cannot communicate alert in ${alert.status} status` };
   }
@@ -795,11 +805,12 @@ export function communicateRadCriticalAlert(
 }
 
 export function acknowledgeRadCriticalAlert(
+  tenantId: string,
   id: string,
   actor: { duz: string; name: string }
 ): { ok: boolean; alert?: RadCriticalAlert; error?: string } {
   const alert = radCriticalAlertStore.get(id);
-  if (!alert) return { ok: false, error: 'Critical alert not found' };
+  if (!alert || alert.tenantId !== tenantId) return { ok: false, error: 'Critical alert not found' };
   if (alert.status !== 'communicated' && alert.status !== 'active') {
     return { ok: false, error: `Cannot acknowledge alert in ${alert.status} status` };
   }
@@ -822,13 +833,13 @@ export function acknowledgeRadCriticalAlert(
   return { ok: true, alert };
 }
 
-export function resolveRadCriticalAlert(id: string): {
+export function resolveRadCriticalAlert(tenantId: string, id: string): {
   ok: boolean;
   alert?: RadCriticalAlert;
   error?: string;
 } {
   const alert = radCriticalAlertStore.get(id);
-  if (!alert) return { ok: false, error: 'Critical alert not found' };
+  if (!alert || alert.tenantId !== tenantId) return { ok: false, error: 'Critical alert not found' };
   if (alert.status !== 'acknowledged') {
     return { ok: false, error: 'Alert must be acknowledged before resolving' };
   }
