@@ -567,8 +567,8 @@ async function startBackgroundServices(): Promise<void> {
     errors: flowResult.errors.length,
   });
 
-  // Phase 284: Initialize billing provider (mock or Lago based on BILLING_PROVIDER env)
-  initBillingProvider();
+  // Phase 284: Initialize billing provider (mock, Lago, or Stripe based on BILLING_PROVIDER env)
+  await initBillingProvider();
   startMeteringFlush();
   wireMeteringCallback((tenantId, event) => incrementMeter(tenantId, event as any));
 

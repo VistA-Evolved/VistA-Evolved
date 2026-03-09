@@ -61,6 +61,9 @@
     "qa:report:fast": "node scripts/qa/regenerate-gauntlet-fast-report.mjs",
     "validate:specialty-packs": "node scripts/qa/validate-specialty-packs.mjs",
     "audit:system": "node scripts/audit/system-audit.mjs",
+    "verify:all": "pnpm lint:ci && pnpm -C apps/api exec tsc --noEmit && pnpm -C apps/web exec tsc --noEmit && pnpm qa:gauntlet:fast",
+    "notion:sync": "node scripts/notion/sync-to-notion.mjs",
+    "notion:sync:dry": "node scripts/notion/sync-to-notion.mjs --dry-run",
     "verify:vista": "pnpm -C apps/api exec -- tsx --env-file=.env.local ../../scripts/verify-vista.ts",
     "seed:demo": "pnpm -C apps/api exec tsx ../../scripts/seed-demo-data.ts"
   },

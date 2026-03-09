@@ -9,8 +9,8 @@
       "description": "Independent physician or small group practice (1-5 providers)",
       "defaultSku": "CLINICIAN_ONLY",
       "maxProviders": 10,
-      "defaultModules": ["kernel", "clinical", "scheduling", "portal", "analytics"],
-      "optionalModules": ["telehealth", "rcm", "imaging", "intake", "ai"],
+      "defaultModules": ["kernel", "clinical", "scheduling", "portal", "analytics", "rcm"],
+      "optionalModules": ["telehealth", "imaging", "intake", "ai"],
       "defaultDepartments": ["PRIMARY_CARE"],
       "vistaConfig": {
         "divisions": 1,
@@ -25,8 +25,8 @@
       "description": "Multi-site clinical group (2-10 locations, 5-50 providers)",
       "defaultSku": "FULL_SUITE",
       "maxProviders": 100,
-      "defaultModules": ["kernel", "clinical", "scheduling", "portal", "analytics", "rcm", "interop"],
-      "optionalModules": ["telehealth", "imaging", "intake", "ai", "iam"],
+      "defaultModules": ["kernel", "clinical", "scheduling", "portal", "analytics", "rcm", "interop", "telehealth"],
+      "optionalModules": ["imaging", "intake", "ai", "iam"],
       "defaultDepartments": ["PRIMARY_CARE", "INTERNAL_MEDICINE", "PEDIATRICS"],
       "vistaConfig": {
         "divisions": 10,
@@ -41,8 +41,8 @@
       "description": "Single hospital with inpatient and outpatient services (50-500 providers)",
       "defaultSku": "FULL_SUITE",
       "maxProviders": 1000,
-      "defaultModules": ["kernel", "clinical", "scheduling", "portal", "analytics", "rcm", "imaging", "interop", "iam"],
-      "optionalModules": ["telehealth", "intake", "ai", "migration", "fhir"],
+      "defaultModules": ["kernel", "clinical", "scheduling", "portal", "analytics", "rcm", "imaging", "interop", "iam", "telehealth"],
+      "optionalModules": ["intake", "ai", "migration", "fhir"],
       "defaultDepartments": ["EMERGENCY", "SURGERY", "MEDICINE", "PEDIATRICS", "RADIOLOGY", "LABORATORY", "PHARMACY", "ICU"],
       "vistaConfig": {
         "divisions": 5,
@@ -66,6 +66,22 @@
         "maxClinics": 2000,
         "schedulingEnabled": true,
         "inpatientEnabled": true
+      }
+    },
+    "SPECIALTY_CENTER": {
+      "name": "Specialty Center / ASC",
+      "description": "Ambulatory surgery center, imaging center, dialysis center, or single-specialty facility (5-50 providers)",
+      "defaultSku": "FULL_SUITE",
+      "maxProviders": 100,
+      "defaultModules": ["kernel", "clinical", "scheduling", "portal", "analytics", "rcm", "imaging"],
+      "optionalModules": ["telehealth", "interop", "intake", "ai", "iam"],
+      "defaultDepartments": ["SURGERY", "RADIOLOGY", "ANESTHESIOLOGY"],
+      "vistaConfig": {
+        "divisions": 3,
+        "maxWards": 5,
+        "maxClinics": 20,
+        "schedulingEnabled": true,
+        "inpatientEnabled": false
       }
     }
   }

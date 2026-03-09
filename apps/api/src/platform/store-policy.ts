@@ -1374,13 +1374,13 @@ export const STORE_INVENTORY: StoreEntry[] = [
   {
     id: 'provisioning-tenants',
     file: 'routes/admin/provisioning.ts',
-    variable: 'tenantStore',
+    variable: 'tenant_catalog (PG) + fallbackStore (Map)',
     description: 'SaaS provisioning tenant requests and pipeline state',
     classification: 'important' as StoreClassification,
-    durability: 'in_memory_only' as DurabilityStatus,
+    durability: 'pg_backed' as DurabilityStatus,
     domain: 'infrastructure',
-    migrationTarget: 'pg: provisioning_tenant table',
-    notes: 'SaaS provisioning pipeline store. Resets on restart.',
+    migrationTarget: 'pg: tenant_catalog + tenant_provision_event (v64)',
+    notes: 'PG-backed when PLATFORM_PG_URL set. In-memory fallback for dev without PG.',
   },
   {
     id: 'imaging-tenant-config',

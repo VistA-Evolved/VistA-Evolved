@@ -24,6 +24,7 @@ import type {
   SubscriptionStatus,
   MeteringRecord,
   UsageSummary,
+  UsageEvent,
   Invoice,
   InvoiceLineItem,
   MeterEvent,
@@ -112,7 +113,7 @@ function mapLagoSubscription(lagoSub: any): Subscription {
     status: statusMap[lagoSub.status] || 'active',
     currentPeriodStart: lagoSub.started_at || new Date().toISOString(),
     currentPeriodEnd: lagoSub.ending_at || '',
-    cancelAtPeriodEnd: lagoSub.canceled_at != null,
+    cancelledAt: lagoSub.canceled_at || undefined,
     createdAt: lagoSub.created_at || new Date().toISOString(),
     updatedAt: lagoSub.updated_at || new Date().toISOString(),
   };
@@ -121,15 +122,9 @@ function mapLagoSubscription(lagoSub: any): Subscription {
 function mapLagoInvoice(lagoInv: any): Invoice {
   const statusMap: Record<string, Invoice['status']> = {
     draft: 'draft',
-    finalized: 'finalized',
+    finalized: 'open',
     voided: 'void',
   };
-  const lineItems: InvoiceLineItem[] = (lagoInv.fees || []).map((fee: any) => ({
-    description: fee.item?.name || fee.description || 'Item',
-    quantity: fee.units || 1,
-    unitPriceCents: fee.amount_cents || 0,
-    amountCents: fee.amount_cents || 0,
-  }));
 
   return {
     id: lagoInv.lago_id,
@@ -140,9 +135,6 @@ function mapLagoInvoice(lagoInv: any): Invoice {
     currency: lagoInv.currency || 'USD',
     periodStart: lagoInv.charges_from_datetime || '',
     periodEnd: lagoInv.charges_to_datetime || '',
-    lineItems,
-    issuedAt: lagoInv.issuing_date || '',
-    dueAt: lagoInv.payment_due_date || '',
     paidAt: lagoInv.payment_status === 'succeeded' ? lagoInv.updated_at : undefined,
   };
 }
@@ -235,19 +227,33 @@ export class LagoBillingProvider implements BillingProvider {
     return mapLagoSubscription(resp.subscription);
   }
 
-  async cancelSubscription(tenantId: string, cancelAtPeriodEnd = true): Promise<Subscription> {
+  async cancelSubscription(tenantId: string): Promise<Subscription> {
     const existing = await this.getSubscription(tenantId);
     if (!existing) throw new Error(`No subscription for tenant: ${tenantId}`);
 
     const resp = await lagoFetch(this.config, `/subscriptions/${existing.id}`, {
       method: 'DELETE',
     });
-    const sub = mapLagoSubscription(resp.subscription);
-    sub.cancelAtPeriodEnd = cancelAtPeriodEnd;
-    return sub;
+    return mapLagoSubscription(resp.subscription);
   }
 
-  /* ---- Metering ---- */
+  /* ---- Usage ---- */
+  async recordUsage(event: UsageEvent): Promise<{ ok: boolean }> {
+    await lagoFetch(this.config, '/events', {
+      method: 'POST',
+      body: {
+        event: {
+          transaction_id: event.idempotencyKey || `${event.tenantId}_${event.metric}_${Date.now()}`,
+          external_customer_id: event.tenantId,
+          code: event.metric,
+          timestamp: Math.floor(new Date(event.timestamp).getTime() / 1000),
+          properties: { quantity: event.quantity },
+        },
+      },
+    });
+    return { ok: true };
+  }
+
   async reportUsage(record: MeteringRecord): Promise<void> {
     await lagoFetch(this.config, '/events', {
       method: 'POST',
@@ -295,14 +301,23 @@ export class LagoBillingProvider implements BillingProvider {
     return (resp?.invoices || []).map(mapLagoInvoice);
   }
 
-  async getCurrentInvoice(tenantId: string): Promise<Invoice | null> {
+  async getUpcomingInvoice(tenantId: string): Promise<Invoice | null> {
     const invoices = await this.listInvoices(tenantId);
     const drafts = invoices.filter((i) => i.status === 'draft');
     return drafts.length > 0 ? drafts[0] : null;
   }
 
+  async handleWebhook(payload: unknown, _signature?: string): Promise<{ event: string; tenantId?: string }> {
+    const body = payload as any;
+    const eventType = body?.webhook_type || body?.event_type || 'unknown';
+    const tenantId = body?.object?.external_customer_id
+      || body?.invoice?.customer?.external_id
+      || body?.subscription?.external_customer_id;
+    return { event: `lago.${eventType}`, tenantId: tenantId || undefined };
+  }
+
   /* ---- Health ---- */
-  async healthCheck(): Promise<import('./types.js').BillingHealthStatus> {
+  async healthCheck(): Promise<{ ok: boolean; provider: string; healthy: boolean; configuredForProduction: boolean; details: Record<string, unknown> }> {
     const hasApiKey = !!this.config.apiKey;
     const apiUrl = this.config.apiUrl;
     try {

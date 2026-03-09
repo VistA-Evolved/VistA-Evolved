@@ -13,7 +13,7 @@
  */
 
 import type { MeterEvent, MeteringRecord } from './types.js';
-import { getBillingProvider } from './types.js';
+import { getBillingProvider } from './index.js';
 
 /* ------------------------------------------------------------------ */
 /* Counter store                                                       */
@@ -102,11 +102,15 @@ export async function flushMeters(): Promise<{ flushed: number; errors: number }
         quantity,
         timestamp: new Date().toISOString(),
       };
-      try {
-        await provider.reportUsage(record);
+      if (typeof provider.reportUsage === 'function') {
+        try {
+          await provider.reportUsage(record);
+          flushed++;
+        } catch {
+          errors++;
+        }
+      } else {
         flushed++;
-      } catch {
-        errors++;
       }
     }
 

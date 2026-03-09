@@ -4669,6 +4669,50 @@ ALTER TABLE portal_user ADD COLUMN IF NOT EXISTS display_name TEXT;
 ALTER TABLE portal_user ADD COLUMN IF NOT EXISTS last_login_at TEXT;
 `,
   },
+  {
+    version: 64,
+    name: 'tenant_catalog_provisioning',
+    sql: `
+-- SaaS tenant catalog: master registry for all provisioned tenants.
+CREATE TABLE IF NOT EXISTS tenant_catalog (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  entity_type TEXT NOT NULL,
+  country TEXT NOT NULL DEFAULT 'US',
+  contact_email TEXT NOT NULL,
+  sku TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'pending',
+  modules TEXT NOT NULL DEFAULT '[]',
+  config TEXT NOT NULL DEFAULT '{}',
+  vista_host TEXT,
+  vista_port INTEGER,
+  vista_container_name TEXT,
+  provision_log TEXT,
+  activated_at TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_tc_tenant_id ON tenant_catalog(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_tc_status ON tenant_catalog(status);
+CREATE INDEX IF NOT EXISTS idx_tc_entity_type ON tenant_catalog(entity_type);
+CREATE INDEX IF NOT EXISTS idx_tc_country ON tenant_catalog(country);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_tc_name ON tenant_catalog(tenant_id, name);
+
+-- Tenant provisioning events for audit trail.
+CREATE TABLE IF NOT EXISTS tenant_provision_event (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  catalog_id TEXT NOT NULL REFERENCES tenant_catalog(id),
+  step_name TEXT NOT NULL,
+  status TEXT NOT NULL,
+  error TEXT,
+  duration_ms INTEGER,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_tpe_catalog ON tenant_provision_event(tenant_id, catalog_id);
+`,
+  },
 ];
 
 /**
@@ -4944,6 +4988,9 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   'discharge_plan',
   'mar_safety_event',
   'device_alarm',
+  // Phase 722: SaaS Tenant Provisioning
+  'tenant_catalog',
+  'tenant_provision_event',
   // Wave 16 (Phase 338-343): Session security + SCIM + ABAC + key management
   'session_device_fingerprint',
   'session_mfa_state',

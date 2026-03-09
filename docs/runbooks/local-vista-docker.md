@@ -1,131 +1,119 @@
 # Local VistA Sandbox (Docker)
 
-This runbook explains how to start, verify, and interact with the WorldVistA sandbox container for Phase 2 development.
+This runbook explains how to start, verify, and interact with the WorldVistA
+sandbox containers for development.
 
-## Prerequisites
+## Recommended: VEHU Lane
 
-- Docker Desktop installed and running
-- Port 9430 available (or configure alternative in docker-compose.yml)
-- From repo root: `C:\Users\kmoul\OneDrive\Documents\GitHub\VistA-Evolved`
+The VEHU lane is recommended for all new development. It has richer clinical
+data and SDES scheduling RPCs.
 
-## Starting the sandbox
+### Start VEHU
 
-From the repo root, start the container:
+```powershell
+cd services\vista
+docker compose --profile vehu up -d
+```
+
+Container name: `vehu`, Broker port: **9431**, SSH port: 2223.
+
+### Verify VEHU is running
+
+```powershell
+docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}" | Select-String vehu
+Test-NetConnection 127.0.0.1 -Port 9431
+```
+
+### Enter VEHU roll-and-scroll
+
+```bash
+docker exec -it vehu su - vehu -c 'mumps -r ZU'
+```
+
+### VEHU Credentials
+
+| Access Code | Verify Code | User                      |
+| ----------- | ----------- | ------------------------- |
+| PRO1234     | PRO1234!!   | PROGRAMMER,ONE (DUZ 1)    |
+
+### VEHU Test Data
+
+- Valid patient DFNs: 46, 47, 49, 53-93 (NOT 1, 2, 3)
+- DFN=46 has: 2 allergies, 5 vitals, 2 problems, 1 note
+
+### Stop VEHU
+
+```powershell
+cd services\vista
+docker compose --profile vehu stop
+
+# Or stop and remove (preserves data):
+docker compose --profile vehu down
+
+# Remove all data and restart fresh:
+docker compose --profile vehu down -v
+docker compose --profile vehu up -d
+```
+
+---
+
+## Legacy Lane (worldvista-ehr)
+
+The legacy lane uses the older `worldvista/worldvista-ehr` image on port 9430.
+Use only if you need backward compatibility.
+
+### Start Legacy
 
 ```powershell
 cd services\vista
 docker compose --profile dev up -d
 ```
 
-Expected output:
+Container name: `wv`, Broker port: **9430**, SSH port: 2222.
 
-```
-[+] Running 1/1
- ✓ Container wv  Started
-```
+### Legacy Credentials
 
-## Verify container is running
+| Access Code | Verify Code | User                        |
+| ----------- | ----------- | --------------------------- |
+| PROV123     | PROV123!!   | PROVIDER,CLYDE WV (DUZ 87)  |
+| PHARM123    | PHARM123!!  | PHARMACIST,LINDA WV          |
+| NURSE123    | NURSE123!!  | NURSE,HELEN WV               |
 
-```bash
-docker ps
-```
-
-Look for the `wv` container with status `Up` and all ports bound (2222, 9430, 8001, 8080, 9080).
-
-## Verify RPC port is listening
-
-From PowerShell or cmd, test port 9430:
-
-```powershell
-Test-NetConnection 127.0.0.1 -Port 9430
-```
-
-Expected output:
-
-```
-ComputerName     : 127.0.0.1
-RemoteAddress    : 127.0.0.1
-RemotePort       : 9430
-TcpTestSucceeded : True
-```
-
-If `TcpTestSucceeded` is `False`, the container may still be starting. Wait 10–30 seconds and try again.
-
-## Enter VistA (roll-and-scroll)
-
-To access the VistA command-line UI (classic roll-and-scroll):
+### Enter Legacy roll-and-scroll
 
 ```bash
 docker exec -it wv su - wv -c 'mumps -r ZU'
 ```
 
-This drops you into the VistA prompt:
+---
 
-```
-VistA>
-```
+## One-Command Start (both lanes)
 
-Common commands:
-
-- `D ^%SY` — System menu
-- `H` — Help
-- `^C` — Exit (return to Docker shell)
-
-To exit VistA back to the container shell:
-
-```
-VistA> H
-```
-
-## Stop the sandbox
-
-To stop the container (data is preserved if using volumes):
+Instead of manual Docker commands, use the canonical dev startup script:
 
 ```powershell
-cd services\vista
-docker compose --profile dev stop
+.\scripts\dev-up.ps1 -RuntimeLane vehu    # recommended
+.\scripts\dev-up.ps1 -RuntimeLane compose  # full containerized stack
 ```
 
-Or stop and remove:
-
-```powershell
-cd services\vista
-docker compose --profile dev down
-```
-
-## Remove all data and restart fresh
-
-```powershell
-cd services\vista
-docker compose --profile dev down -v
-docker compose --profile dev up -d
-```
+See `docs/runbooks/run-from-zero.md` for the complete cold-start checklist.
 
 ## Troubleshooting
 
-### Port 9430 not responding
+### Broker port not responding
 
-- Wait 15–30 seconds after startup; the container initializes YottaDB and VistA listeners.
-- Check logs: `docker logs wv`
-- Ensure no other process is using port 9430: `netstat -ano | findstr :9430`
+- Wait 15-30 seconds after startup; the container initializes YottaDB.
+- Check logs: `docker logs vehu` (or `docker logs wv` for legacy)
+- Check port conflict: `netstat -ano | findstr :9431`
 
 ### Cannot enter roll-and-scroll
 
-- Verify container is fully started: `docker logs wv | tail -20`
-- Try: `docker exec -it wv /bin/bash` to get a shell and debug.
+- Verify container is fully started: `docker logs vehu | tail -20`
+- Try: `docker exec -it vehu /bin/bash` to get a shell and debug.
 
-### SSH access (alternative to docker exec)
+### SSH access
 
 ```bash
-ssh -p 2222 wv@127.0.0.1
+ssh -p 2223 vehu@127.0.0.1  # VEHU
+ssh -p 2222 wv@127.0.0.1    # Legacy
 ```
-
-(password may be set in the image; check WorldVistA docs)
-
-## Next steps
-
-Once the sandbox is running:
-
-1. Use the RPC listener (port 9430) to test Node.js bridge from `apps/api`.
-2. Reference the Port 9430 endpoint in bridge connection code.
-3. See: `utils/bridge/` (planned in later phases).

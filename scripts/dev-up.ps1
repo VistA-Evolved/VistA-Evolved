@@ -22,10 +22,17 @@
 .PARAMETER SkipGauntlet
     Skip pnpm qa:gauntlet:fast but still run verify:vista.
 
+.PARAMETER IncludeImaging
+    Also start imaging services (Orthanc + OHIF) from services/imaging/docker-compose.yml.
+
+.PARAMETER IncludeKeycloak
+    Also start Keycloak OIDC from services/keycloak/docker-compose.yml.
+
 .EXAMPLE
     .\scripts\dev-up.ps1 -RuntimeLane vehu
     .\scripts\dev-up.ps1 -RuntimeLane compose
     .\scripts\dev-up.ps1 -RuntimeLane vehu -SkipVerify
+    .\scripts\dev-up.ps1 -RuntimeLane vehu -IncludeImaging -IncludeKeycloak
 #>
 [CmdletBinding()]
 param(
@@ -33,7 +40,9 @@ param(
     [string]$RuntimeLane = "vehu",
 
     [switch]$SkipVerify,
-    [switch]$SkipGauntlet
+    [switch]$SkipGauntlet,
+    [switch]$IncludeImaging,
+    [switch]$IncludeKeycloak
 )
 
 Set-StrictMode -Version Latest
@@ -234,6 +243,44 @@ if ($RuntimeLane -eq "compose") {
 $ErrorActionPreference = $savedEAP
 
 Write-Host "  [OK] Docker services started" -ForegroundColor Green
+
+# Optional: Imaging (Orthanc + OHIF)
+if ($IncludeImaging) {
+    $imagingCompose = Join-Path $ROOT "services\imaging\docker-compose.yml"
+    if (Test-Path -LiteralPath $imagingCompose) {
+        Write-Host "  Starting imaging services (Orthanc + OHIF)..." -ForegroundColor Yellow
+        $savedEAP3 = $ErrorActionPreference
+        $ErrorActionPreference = "Continue"
+        docker compose -f $imagingCompose --profile imaging up -d 2>&1 | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
+        $ErrorActionPreference = $savedEAP3
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "  [OK] Imaging services started (Orthanc :8042, OHIF :3003)" -ForegroundColor Green
+        } else {
+            Write-Host "  [WARN] Imaging services failed to start" -ForegroundColor DarkYellow
+        }
+    } else {
+        Write-Host "  [WARN] services/imaging/docker-compose.yml not found -- skipping imaging" -ForegroundColor DarkYellow
+    }
+}
+
+# Optional: Keycloak (OIDC)
+if ($IncludeKeycloak) {
+    $kcCompose = Join-Path $ROOT "services\keycloak\docker-compose.yml"
+    if (Test-Path -LiteralPath $kcCompose) {
+        Write-Host "  Starting Keycloak OIDC..." -ForegroundColor Yellow
+        $savedEAP4 = $ErrorActionPreference
+        $ErrorActionPreference = "Continue"
+        docker compose -f $kcCompose up -d 2>&1 | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
+        $ErrorActionPreference = $savedEAP4
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "  [OK] Keycloak started (:8080)" -ForegroundColor Green
+        } else {
+            Write-Host "  [WARN] Keycloak failed to start" -ForegroundColor DarkYellow
+        }
+    } else {
+        Write-Host "  [WARN] services/keycloak/docker-compose.yml not found -- skipping Keycloak" -ForegroundColor DarkYellow
+    }
+}
 
 # ---------------------------------------------------------------------
 # Step 2: Wait for VistA broker health

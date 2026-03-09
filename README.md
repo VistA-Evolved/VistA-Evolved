@@ -54,10 +54,10 @@ Pick one profile and run a single command. Do not mix profiles in the same sessi
 
 ```powershell
 # Windows / PowerShell (default profile = vehu)
-.\scripts\dev-up.ps1 -Profile vehu
+.\scripts\dev-up.ps1 -RuntimeLane vehu
 
 # Or the all-in-one containerized stack
-.\scripts\dev-up.ps1 -Profile compose
+.\scripts\dev-up.ps1 -RuntimeLane compose
 ```
 
 ```bash

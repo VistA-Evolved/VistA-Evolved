@@ -21,6 +21,7 @@ import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { requireSession } from '../auth/auth-routes.js';
 import { safeCallRpc } from '../lib/rpc-resilience.js';
 import { immutableAudit } from '../lib/immutable-audit.js';
+import { log } from '../lib/logger.js';
 import { randomUUID, createHash } from 'node:crypto';
 
 // ── Types ───────────────────────────────────────────────────
@@ -330,13 +331,31 @@ export default async function identityLinkingRoutes(server: FastifyInstance) {
       // Clear verification data after approval
       linkReq.verificationData = {};
 
+      // Persist to PG portal_patient_identity table
+      let persisted = false;
+      try {
+        const { isPgConfigured, getPgPool } = await import('../../platform/pg/pg-db.js');
+        if (isPgConfigured()) {
+          const pool = getPgPool();
+          await pool.query(
+            `INSERT INTO portal_patient_identity (id, tenant_id, oidc_sub, patient_dfn, display_name, verified_at, created_at)
+             VALUES ($1, $2, $3, $4, $5, $6, $7)
+             ON CONFLICT (tenant_id, oidc_sub) DO UPDATE SET patient_dfn=$4, display_name=$5, verified_at=$6`,
+            [link.id, link.tenantId, link.userId, link.patientDfn, link.displayName || null, link.verifiedAt, link.createdAt]
+          );
+          persisted = true;
+        }
+      } catch (pgErr: any) {
+        log.warn('Failed to persist identity link to PG', { linkId: link.id, error: pgErr.message });
+      }
+
       immutableAudit(
         'identity.link_verified',
         'success',
         { sub: session.duz },
         {
           tenantId: session.tenantId,
-          detail: { linkId: link.id, requestId: linkReq.id, relationship: link.relationship },
+          detail: { linkId: link.id, requestId: linkReq.id, relationship: link.relationship, pgPersisted: persisted },
         }
       );
 
@@ -344,14 +363,7 @@ export default async function identityLinkingRoutes(server: FastifyInstance) {
         ok: true,
         linkId: link.id,
         status: 'verified',
-        vistaGrounding: {
-          targetTable: 'portal_patient_identity (PG v19)',
-          status: 'integration-pending',
-          nextSteps: [
-            'Persist link to portal_patient_identity PG table',
-            'Wire OIDC sub mapping when OIDC login is active',
-          ],
-        },
+        persisted: persisted ? 'pg' : 'memory',
       };
     }
   );

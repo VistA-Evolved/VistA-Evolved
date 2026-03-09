@@ -55,6 +55,7 @@ $gates = @(
   @{ Id="G06"; Label="RPC Trace Compare";          Type="node"; Path="scripts/qa-gates/rpc-trace-compare.mjs";         Required=$true  },
   @{ Id="G07a"; Label="TypeScript API";            Type="pnpm-tsc"; Path="apps/api";                                        Required=$true  },
   @{ Id="G07b"; Label="TypeScript Web";            Type="pnpm-tsc"; Path="apps/web";                                        Required=$true  },
+  @{ Id="G07c"; Label="ESLint";                   Type="pnpm-lint"; Path="";                                                Required=$true  },
   @{ Id="G08"; Label="Security Pre-Cert";          Type="ps1";  Path="scripts/security/run-precert.ps1";               Required=$true  },
   @{ Id="G09"; Label="Performance Smoke";          Type="ps1";  Path="scripts/perf/run-soak.ps1";                      Required=$false },
   @{ Id="G10"; Label="Defect Budget";              Type="ps1";  Path="scripts/qa/bug-bash-run.ps1";                    Required=$true  },
@@ -143,6 +144,13 @@ foreach ($gate in $gates) {
         $exitCode = $LASTEXITCODE
         Pop-Location
         if ($tscOut.Trim()) { Log $tscOut.TrimEnd() }
+      }
+      "pnpm-lint" {
+        Push-Location $root
+        $lintOut = & pnpm lint:ci 2>&1 | Out-String
+        $exitCode = $LASTEXITCODE
+        Pop-Location
+        if ($lintOut.Trim()) { Log $lintOut.TrimEnd() }
       }
       "ps1" {
         Push-Location $root

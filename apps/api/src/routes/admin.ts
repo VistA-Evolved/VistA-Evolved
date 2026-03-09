@@ -283,7 +283,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
 
     // Step 4: Create billing customer (if billing provider is active)
     try {
-      const { getBillingProvider } = await import('../billing/types.js');
+      const { getBillingProvider } = await import('../billing/index.js');
       const provider = getBillingProvider();
       if (provider) {
         steps.push({
