@@ -200,7 +200,7 @@ export default function InboxPage() {
               marginBottom: 12,
             }}
           >
-            <strong>VistA Writeback Unavailable:</strong> {ackPending.size} item
+            <strong>Integration Pending:</strong> {ackPending.size} item
             {ackPending.size !== 1 ? 's' : ''} could not be persisted to VistA. They remain visible
             until a real acknowledge path is available. VistA persistence requires ORWORB KILL EXPIR
             MSG RPC (not available in sandbox).

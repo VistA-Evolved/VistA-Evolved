@@ -257,7 +257,7 @@ export default function ImmunizationsPanel({ dfn }: Props) {
             fontSize: 12,
           }}
         >
-          <strong style={{ color: '#ffcc00' }}>VistA RPC Unavailable</strong>
+          <strong style={{ color: '#ffcc00' }}>Integration Pending</strong>
           <span style={{ color: '#d9c9a3', marginLeft: 8 }}>
             VistA RPC unavailable -- target: ORQQPX IMMUN LIST
           </span>
@@ -293,12 +293,12 @@ export default function ImmunizationsPanel({ dfn }: Props) {
         <StatusCard
           title="Patient History"
           value={loading ? '...' : String(immunizations.length)}
-          note={isPending ? 'History route awaiting VistA connection.' : 'Live VistA patient history response.'}
+          note={isPending ? 'History route is integration-pending.' : 'Live VistA patient history response.'}
         />
         <StatusCard
           title="Catalog Entries"
           value={catalogLoading ? '...' : String(catalog?.count || 0)}
-          note={catalogPending ? 'Catalog route awaiting VistA connection.' : 'Live VistA type-picker rows.'}
+          note={catalogPending ? 'Catalog route is integration-pending.' : 'Live VistA type-picker rows.'}
         />
         <StatusCard
           title="Write Posture"
@@ -466,7 +466,7 @@ export default function ImmunizationsPanel({ dfn }: Props) {
           <h4 style={{ margin: '0 0 10px', fontSize: 13 }}>Immunization Writeback Posture</h4>
           <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: '8px 12px', fontSize: 12 }}>
             <span style={{ color: '#888' }}>Current state</span>
-            <span>Write not available. No write call is attempted from this panel.</span>
+            <span>Integration pending. No write call is attempted from this panel.</span>
             <span style={{ color: '#888' }}>Read routes already live</span>
             <span>
               Patient history via ORQQPX IMMUN LIST and type picker via PXVIMM IMM SHORT LIST.

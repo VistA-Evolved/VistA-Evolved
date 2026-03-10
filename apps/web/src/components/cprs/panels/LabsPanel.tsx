@@ -5,12 +5,13 @@ import { useDataCache, type LabResult } from '@/stores/data-cache';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
 import styles from '../cprs.module.css';
+import CachePendingBanner from './CachePendingBanner';
 
 interface Props {
   dfn: string;
 }
 
-type LabView = 'results' | 'history' | 'orders' | 'specimens' | 'alerts' | 'posture';
+type LabView = 'results' | 'orders' | 'specimens' | 'alerts' | 'posture';
 
 type LabOrderStatus =
   | 'pending'
@@ -109,7 +110,7 @@ interface LabDashboardStats {
 
 interface LabWritebackPostureEntry {
   rpc: string;
-  status: 'available' | 'requires_config';
+  status: 'available' | 'integration_pending';
   note: string;
 }
 
@@ -148,7 +149,6 @@ const RESULT_STATUSES = ['preliminary', 'final', 'corrected', 'amended', 'cancel
 
 const LAB_VIEWS: Array<{ key: LabView; label: string }> = [
   { key: 'results', label: 'Results' },
-  { key: 'history', label: 'History' },
   { key: 'orders', label: 'Orders' },
   { key: 'specimens', label: 'Specimens' },
   { key: 'alerts', label: 'Critical Alerts' },
@@ -262,11 +262,6 @@ export default function LabsPanel({ dfn }: Props) {
   const [orderTransitionSelections, setOrderTransitionSelections] = useState<Record<string, string>>({});
   const [specimenTransitionSelections, setSpecimenTransitionSelections] = useState<Record<string, string>>({});
 
-  const [labHistory, setLabHistory] = useState<any[]>([]);
-  const [labHistoryLoading, setLabHistoryLoading] = useState(false);
-  const [labStatus, setLabStatus] = useState<any[]>([]);
-  const [labStatusLoading, setLabStatusLoading] = useState(false);
-
   const [quickLabTest, setQuickLabTest] = useState('');
   const [quickLabMessage, setQuickLabMessage] = useState<string | null>(null);
   const [quickLabMessageTone, setQuickLabMessageTone] = useState<'success' | 'info' | 'error'>('info');
@@ -356,30 +351,6 @@ export default function LabsPanel({ dfn }: Props) {
     });
   }, [results]);
 
-  async function loadLabHistory() {
-    setLabHistoryLoading(true);
-    try {
-      const res = await getJson<{ ok: boolean; results?: any[]; history?: any[] }>(`/vista/labs/history?dfn=${dfn}`);
-      setLabHistory(res.results || res.history || []);
-    } catch {
-      setLabHistory([]);
-    } finally {
-      setLabHistoryLoading(false);
-    }
-  }
-
-  async function loadLabStatus() {
-    setLabStatusLoading(true);
-    try {
-      const res = await getJson<{ ok: boolean; results?: any[]; statuses?: any[] }>(`/vista/labs/status?dfn=${dfn}`);
-      setLabStatus(res.results || res.statuses || []);
-    } catch {
-      setLabStatus([]);
-    } finally {
-      setLabStatusLoading(false);
-    }
-  }
-
   async function loadWorkflow() {
     setWorkflowLoading(true);
     setWorkflowError(null);
@@ -408,8 +379,6 @@ export default function LabsPanel({ dfn }: Props) {
 
   useEffect(() => {
     void loadWorkflow();
-    void loadLabHistory();
-    void loadLabStatus();
   }, [dfn]);
 
   function toggleAckSelection(result: LabResult) {
@@ -457,7 +426,7 @@ export default function LabsPanel({ dfn }: Props) {
         setQuickLabMessage(
           result.mode === 'real'
             ? `VistA lab request submitted: ${result.labTest || quickLabTest.trim()}`
-            : `Lab request captured as draft: ${result.message || 'awaiting VistA sync'}`
+            : `Lab request captured as draft: ${result.message || 'integration pending'}`
         );
       } else if (
         result.mode === 'draft' ||
@@ -657,7 +626,7 @@ export default function LabsPanel({ dfn }: Props) {
     <div>
       <div className={styles.panelTitle}>Laboratory</div>
       <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: '2px 0 10px' }}>
-        Live VistA lab results, workflow orders, specimens, critical alerts, and writeback posture.
+        Contract: live VistA results via ORWLRR INTERIM plus Phase 393 deep workflow state under /lab/*.
       </p>
 
       <div className={styles.panelToolbar} style={{ flexWrap: 'wrap' }}>
@@ -683,6 +652,16 @@ export default function LabsPanel({ dfn }: Props) {
 
       {activeView === 'results' && (
         <div>
+          {results.length === 0 && !resultsLoading && labsMeta.fetched && (labsMeta.pending || !labsMeta.ok) && (
+            <div style={{ marginBottom: 10 }}>
+              <CachePendingBanner
+                title="Lab results pending"
+                noun="lab-results"
+                meta={labsMeta}
+                defaultTargets={['ORWLRR INTERIM']}
+              />
+            </div>
+          )}
 
           <div className={styles.panelToolbar} style={{ alignItems: 'center', flexWrap: 'wrap' }}>
             <span style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>
@@ -785,77 +764,6 @@ export default function LabsPanel({ dfn }: Props) {
               )}
             </div>
           </div>
-        </div>
-      )}
-
-      {activeView === 'history' && (
-        <div>
-          <div className={styles.panelToolbar} style={{ alignItems: 'center' }}>
-            <span style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>
-              {labHistoryLoading ? 'Loading lab history...' : `${labHistory.length} historical result(s)`}
-            </span>
-            <button className={styles.btn} onClick={() => void loadLabHistory()}>Refresh History</button>
-          </div>
-          {labHistory.length === 0 && !labHistoryLoading ? (
-            <p className={styles.emptyText}>No lab history available for this patient.</p>
-          ) : (
-            <table className={styles.dataTable}>
-              <thead>
-                <tr>
-                  <th>Test</th>
-                  <th>Value</th>
-                  <th>Units</th>
-                  <th>Flag</th>
-                  <th>Date</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {labHistory.map((item: any, i: number) => (
-                  <tr key={item.id || i}>
-                    <td>{item.name || item.testName || item.analyteName || '--'}</td>
-                    <td>{item.value || '--'}</td>
-                    <td>{item.units || ''}</td>
-                    <td>{item.flag || ''}</td>
-                    <td>{fmtDate(item.date || item.resultedAt || item.collectedAt)}</td>
-                    <td>{item.status ? <StatusBadge status={item.status} /> : '--'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-
-          <h3 style={{ fontSize: 15, marginTop: 16 }}>Order Status</h3>
-          <div className={styles.panelToolbar} style={{ alignItems: 'center' }}>
-            <span style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>
-              {labStatusLoading ? 'Loading...' : `${labStatus.length} order(s)`}
-            </span>
-            <button className={styles.btn} onClick={() => void loadLabStatus()}>Refresh Status</button>
-          </div>
-          {labStatus.length === 0 && !labStatusLoading ? (
-            <p className={styles.emptyText}>No lab order status available.</p>
-          ) : (
-            <table className={styles.dataTable}>
-              <thead>
-                <tr>
-                  <th>Test</th>
-                  <th>Status</th>
-                  <th>Ordered</th>
-                  <th>Provider</th>
-                </tr>
-              </thead>
-              <tbody>
-                {labStatus.map((item: any, i: number) => (
-                  <tr key={item.id || i}>
-                    <td>{item.testName || item.name || '--'}</td>
-                    <td>{item.status ? <StatusBadge status={item.status} /> : '--'}</td>
-                    <td>{fmtDate(item.orderedAt || item.createdAt)}</td>
-                    <td>{item.provider || item.orderingProviderName || '--'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
         </div>
       )}
 
@@ -1233,6 +1141,12 @@ export default function LabsPanel({ dfn }: Props) {
               <p className={styles.emptyText}>Writeback posture unavailable.</p>
             )}
 
+            <div style={{ marginTop: 12, padding: 12, border: '1px solid var(--cprs-border)', borderRadius: 4, background: 'var(--cprs-section-bg)' }}>
+              <strong>Truthfulness Contract</strong>
+              <p style={{ margin: '6px 0 0', fontSize: 12, color: 'var(--cprs-text-muted)' }}>
+                This panel shows two layers at once: live VistA interim lab results on the Results tab, and the deeper workflow lifecycle implemented in the platform lab store. VistA-backed writes are only claimed where the backend reports success; unsupported sandbox actions remain visible through posture instead of being hidden.
+              </p>
+            </div>
           </div>
         </div>
       )}

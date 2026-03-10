@@ -9,7 +9,7 @@
  *  3) Tasks (due vitals, safety checks, med pass reminders)
  *
  * VistA-sourced: ORQQVI VITALS, TIU DOCUMENTS BY CONTEXT, TIU CREATE RECORD,
- *   TIU GET RECORD TEXT. I&O + assessments awaiting VistA configuration with named targets.
+ *   TIU GET RECORD TEXT. I&O + assessments integration-pending with named targets.
  */
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
@@ -351,7 +351,7 @@ function PatientBanner({ patient, dfn }: { patient: PatientContext | null; dfn: 
 }
 
 /* ------------------------------------------------------------------ */
-/* Configuration Required Banner                                        */
+/* Integration Pending Banner                                           */
 /* ------------------------------------------------------------------ */
 
 function IntegrationPendingSection({
@@ -365,7 +365,7 @@ function IntegrationPendingSection({
 }) {
   return (
     <div style={S.pendingBanner}>
-      <div style={S.pendingTitle}>{title} -- Configuration Required</div>
+      <div style={S.pendingTitle}>{title} -- Integration Pending</div>
       <div style={S.pendingText}>
         {targets.map((t, i) => (
           <div key={i}>
@@ -1255,7 +1255,7 @@ function TasksTab({ dfn }: { dfn: string }) {
         </table>
       </div>
 
-      {/* Configuration required for expanded task engine */}
+      {/* Integration pending for expanded task engine */}
       {taskData?.pendingTargets?.length > 0 && (
         <IntegrationPendingSection title="Expanded BCMA Task Engine" targets={taskData.pendingTargets} />
       )}

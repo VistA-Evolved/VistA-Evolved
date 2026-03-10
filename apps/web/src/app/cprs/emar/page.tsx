@@ -6,11 +6,11 @@
  * Standalone eMAR page with patient context and 4 tabs:
  *  1) Schedule -- Active medication schedule from ORWPS ACTIVE (real VistA)
  *  2) Allergies -- Allergy warnings from ORQQAL LIST (real VistA)
- *  3) Administration -- Record med admin (requires PSB MED LOG)
- *  4) BCMA Scanner -- Barcode medication verification (requires PSJBCMA)
+ *  3) Administration -- Record med admin (integration-pending -> PSB MED LOG)
+ *  4) BCMA Scanner -- Barcode medication verification (integration-pending -> PSJBCMA)
  *
  * VistA-sourced: ORWPS ACTIVE, ORQQAL LIST, ORWORR GETTXT.
- * BCMA write paths: require PSB/PSJ package configuration.
+ * BCMA write paths: integration-pending with named PSB/PSJ targets.
  * Heuristic duplicate therapy detection labeled as such.
  */
 
@@ -118,7 +118,7 @@ function IntegrationPendingBanner({
   status?: string;
 }) {
   const isUnsupported = status === 'unsupported-in-sandbox';
-  const title = isUnsupported ? 'Unsupported in Sandbox' : 'Additional Configuration Required';
+  const title = isUnsupported ? 'Unsupported in Sandbox' : 'Integration Pending';
   return (
     <div
       style={{
@@ -593,7 +593,7 @@ function AllergiesTab({ dfn }: { dfn: string }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Administration Tab (configuration required)                          */
+/* Administration Tab (integration-pending)                             */
 /* ------------------------------------------------------------------ */
 
 function AdminTab({ dfn }: { dfn: string }) {
@@ -833,14 +833,14 @@ function AdminTab({ dfn }: { dfn: string }) {
                     background:
                       adminResult.ok && adminResult.source === 'vista'
                         ? '#f0fff4'
-                        : adminResult.status === 'requires_config' ||
+                        : adminResult.status === 'integration-pending' ||
                             adminResult.status === 'unsupported-in-sandbox'
                           ? colors.pendingBg
                           : '#fed7d7',
                     border: `1px solid ${
                       adminResult.ok && adminResult.source === 'vista'
                         ? '#9ae6b4'
-                        : adminResult.status === 'requires_config' ||
+                        : adminResult.status === 'integration-pending' ||
                             adminResult.status === 'unsupported-in-sandbox'
                           ? colors.pendingBorder
                           : '#fc8181'
@@ -862,13 +862,13 @@ function AdminTab({ dfn }: { dfn: string }) {
                         </div>
                       )}
                     </>
-                  ) : adminResult.status === 'requires_config' ||
+                  ) : adminResult.status === 'integration-pending' ||
                     adminResult.status === 'unsupported-in-sandbox' ? (
                     <>
                       <strong>
                         {adminResult.status === 'unsupported-in-sandbox'
                           ? 'Unsupported in Sandbox:'
-                          : 'Configuration Required:'}
+                          : 'Integration Pending:'}
                       </strong>{' '}
                       {adminResult.message}
                       <div style={{ fontSize: 11, color: '#975a16', marginTop: 4 }}>
@@ -891,7 +891,7 @@ function AdminTab({ dfn }: { dfn: string }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* BCMA Scanner Tab (configuration required)                            */
+/* BCMA Scanner Tab (integration-pending)                               */
 /* ------------------------------------------------------------------ */
 
 function BCMATab({ dfn }: { dfn: string }) {
@@ -1106,7 +1106,7 @@ function BCMATab({ dfn }: { dfn: string }) {
               <strong>
                 {scanResult.status === 'unsupported-in-sandbox'
                   ? 'Unsupported in Sandbox:'
-                  : 'Configuration Required:'}
+                  : 'Integration Pending:'}
               </strong>{' '}
               {scanResult.message || 'BCMA verification requires PSB/PSJ packages'}
               <div style={{ fontSize: 11, color: '#975a16', marginTop: 4 }}>
